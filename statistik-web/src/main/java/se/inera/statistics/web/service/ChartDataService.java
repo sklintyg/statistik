@@ -19,10 +19,12 @@
 package se.inera.statistics.web.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -43,6 +45,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataResponse;
@@ -54,6 +58,7 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
+import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.SimpleDetailsData;
@@ -90,6 +95,9 @@ public class ChartDataService {
 
     @Autowired
     private FilterHashHandler filterHashHandler;
+
+    @Autowired
+    private Warehouse warehouse;
 
     @Autowired
     @Qualifier("webMonitoringLogService")
@@ -416,6 +424,26 @@ public class ChartDataService {
             return Response.ok(filterData.get()).build();
         }
         return Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @GET
+    @Path("filter/enhetsnamn/{filterHash}")
+    public Response getFilterEnhetnamn(@PathParam("filterHash") String filterHash) {
+        LOG.info("Calling get FilterEnhetnamn: " + filterHash);
+        monitoringLogService.logTrackAccessAnonymousChartData("getFilterEnhetnamn");
+        try {
+            final FilterData filterFromHash = filterHashHandler.getFilterFromHash(filterHash);
+            final List<String> filterEnheterIds = filterFromHash.getEnheter();
+            final List<HsaIdEnhet> filterEnheter = filterEnheterIds.stream().map(HsaIdEnhet::new).collect(Collectors.toList());
+            final List<Enhet> enhets = warehouse.getEnhetsWithHsaId(filterEnheter);
+            final Map<String, List<Enhet>> enhetsByName = enhets.stream().collect(Collectors.groupingBy(Enhet::getNamn));
+            final List<String> filterEnheterNames = enhetsByName.entrySet().stream().map(entry ->
+                    entry.getValue().size() > 1 ? entry.getValue().stream().map(e2 -> e2.getNamn() + " " + e2.getEnhetId()).collect(Collectors.toList()) : Arrays.asList(entry.getKey()))
+                    .flatMap(List::stream).collect(Collectors.toList());
+            return Response.ok(filterEnheterNames).build();
+        } catch (FilterHashException e) {
+            return Response.noContent().build();
+        }
     }
 
 }

@@ -18,48 +18,53 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.joda.time.LocalDateTime;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.JSONSource;
-import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.JSONParser;
-import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.warehouse.model.db.WideLine;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:warehouse-integration-test.xml", "classpath:icd10.xml"  })
-@DirtiesContext
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.junit.Test;
+
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.processlog.Enhet;
+
 public class WarehouseTest {
 
-    private JsonNode rawDocument = JSONParser.parse(JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1));
-    public static final JsonNode JSON_NODE = JSONParser.parse("{\"enhet\":{\"id\":\"enhetId\",\"namn\":\"Enhet enhetId\",\"enhetsTyp\":[\"02\"],\"agarform\":[\"Landsting/Region\"],\"startdatum\":\"\",\"slutdatum\":\"\",\"arkiverad\":null,\"organisationsnamn\":\"Organisationsnamn\",\"vardform\":null,\"geografi\":{\"koordinat\":\"nagonsortskoordinat\",\"plats\":\"Plats\",\"kommundelskod\":\"0\",\"kommundelsnamn\":\"Centrum\",\"lan\":\"20\",\"kommun\":\"62\"},\"verksamhet\":[\"1217\",\"1218\",\"1219\"],\"vgid\":\"vardgivarid\"},\"huvudenhet\":{\"id\":\"enhetId\",\"namn\":\"Enhet enhetId\",\"enhetsTyp\":[\"02\"],\"agarform\":[\"Landsting/Region\"],\"startdatum\":\"\",\"slutdatum\":\"\",\"arkiverad\":null,\"organisationsnamn\":\"Organisationsnamn\",\"vardform\":null,\"geografi\":{\"koordinat\":\"nagonsortskoordinat\",\"plats\":\"Plats\",\"kommundelskod\":\"0\",\"kommundelsnamn\":\"Centrum\",\"lan\":\"20\",\"kommun\":\"62\"},\"verksamhet\":[\"1217\",\"1218\",\"1219\"],\"vgid\":\"vardgivarid\"},\"vardgivare\":{\"id\":\"vardgivarid\",\"orgnr\":null,\"namn\":\"vardgivarnamn\",\"startdatum\":null,\"slutdatum\":null,\"arkiverad\":null},\"personal\":{\"id\":\"lakareId\",\"initial\":null,\"kon\":null,\"alder\":null,\"befattning\":null,\"specialitet\":null,\"yrkesgrupp\":null,\"skyddad\":null,\"tilltalsnamn\":\"Sirkka\",\"efternamn\":\"Isaac\"}}");
-
-    @Autowired
-    private Warehouse warehouse;
-
-    @Autowired
-    private WidelineConverter widelineConverter;
-
-    @Autowired
-    private FactPopulator factPopulator;
+    private Warehouse warehouse = new Warehouse();
 
     @Test
-    public void addingIntygAddsToCorrectAisle() {
-        JsonNode document = DocumentHelper.prepare(rawDocument);
-        for (WideLine wideLine : widelineConverter.toWideline(document, JSON_NODE, 0, "0", EventType.CREATED)) {
-            factPopulator.accept(wideLine);
-        }
-        warehouse.complete(LocalDateTime.now());
-        Aisle aisle = warehouse.get(new HsaIdVardgivare("VARDGIVARID"));
-        assertEquals(1, aisle.getSize());
+    public void testGetEnhetsWithHsaId() throws Exception {
+        //Given
+        warehouse.accept(new Enhet(new HsaIdVardgivare("vg1"), null, new HsaIdEnhet("e1"), "1", null, null, null));
+        warehouse.accept(new Enhet(new HsaIdVardgivare("vg1"), null, new HsaIdEnhet("e2"), "2", null, null, null));
+        warehouse.accept(new Enhet(new HsaIdVardgivare("vg1"), null, new HsaIdEnhet("e3"), "3", null, null, null));
+        warehouse.accept(new Enhet(new HsaIdVardgivare("vg2"), null, new HsaIdEnhet("e4"), "4", null, null, null));
+        warehouse.accept(new Enhet(new HsaIdVardgivare("vg2"), null, new HsaIdEnhet("e5"), "5", null, null, null));
+        warehouse.completeEnhets();
+
+        //When
+        final List<Enhet> enhetsWithHsaId = warehouse.getEnhetsWithHsaId(Arrays.asList(new HsaIdEnhet("e1"), new HsaIdEnhet("e2"), new HsaIdEnhet("e4")));
+
+        //Then
+        final List<String> enhetNames = enhetsWithHsaId.stream().map(Enhet::getNamn).collect(Collectors.toList());
+        assertEquals(3, enhetNames.size());
+        assertTrue(enhetNames.contains("1"));
+        assertTrue(enhetNames.contains("2"));
+        assertTrue(enhetNames.contains("4"));
     }
+
+    @Test
+    public void testGetEnhetsWithHsaIdWithoutCallingCompleteEnhets() throws Exception {
+        //Given
+
+        //When
+        final List<Enhet> enhetsWithHsaId = warehouse.getEnhetsWithHsaId(Arrays.asList(new HsaIdEnhet("e1"), new HsaIdEnhet("e2"), new HsaIdEnhet("e4")));
+
+        //Then
+        assertEquals(0, enhetsWithHsaId.size());
+    }
+
 }

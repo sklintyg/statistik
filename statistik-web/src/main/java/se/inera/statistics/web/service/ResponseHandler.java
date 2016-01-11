@@ -23,6 +23,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.web.model.TableDataReport;
@@ -30,23 +31,43 @@ import se.inera.statistics.web.model.TableDataReport;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ResponseHandler {
 
     public static final String ALL_AVAILABLE_DXS_SELECTED_IN_FILTER = "allAvailableDxsSelectedInFilter";
+    public static final String ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER = "allAvailableEnhetsSelectedInFilter";
 
     @Autowired
     private Icd10 icd10;
 
-    Response getResponse(TableDataReport result, String csv) {
+    Response getResponse(TableDataReport result, String csv, List<HsaIdEnhet> availableEnhetsForUser) {
         if (csv == null || csv.isEmpty()) {
             ObjectMapper mapper = new ObjectMapper();
             @SuppressWarnings("unchecked") Map<String, Object> mappedResult = result != null ? mapper.convertValue(result, Map.class) : Maps.newHashMap();
+
             final boolean allAvailableDxsSelectedInFilter = result != null ? areAllAvailableDxsSelectedInFilter(result.getFilter()) : true;
             mappedResult.put(ALL_AVAILABLE_DXS_SELECTED_IN_FILTER, allAvailableDxsSelectedInFilter);
+
+            final boolean allAvailableEnhetsSelectedInFilter = result != null ? areAllAvailableEnhetsSelectedInFilter(result.getFilter(), availableEnhetsForUser) : true;
+            mappedResult.put(ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER, allAvailableEnhetsSelectedInFilter);
+
             return Response.ok(mappedResult).build();
         }
         return CsvConverter.getCsvResponse(result.getTableData(), "export.csv");
+    }
+
+    private boolean areAllAvailableEnhetsSelectedInFilter(FilterDataResponse filter, List<HsaIdEnhet> availableEnhetsForUser) {
+        if (filter == null) {
+            return true;
+        }
+        final List<String> enheter = filter.getEnheter();
+        if (enheter == null) {
+            return true;
+        }
+        final List<String> enhetsFilter = enheter.stream().sorted().collect(Collectors.toList());
+        final List<String> availableEnhetIds = availableEnhetsForUser.stream().map(HsaIdEnhet::getId).sorted().collect(Collectors.toList());
+        return availableEnhetIds.equals(enhetsFilter);
     }
 
     private boolean areAllAvailableDxsSelectedInFilter(FilterDataResponse filter) {

@@ -24,18 +24,25 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
+import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Response;
 
+import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
@@ -55,6 +62,12 @@ public class ChartDataServiceTest {
 
     @Mock
     private MonitoringLogService monitoringLogService;
+
+    @Mock
+    private FilterHashHandler filterHashHandler;
+
+    @Mock
+    private Warehouse warehouse;
 
     @InjectMocks
     private ChartDataService chartDataService = new ChartDataService();
@@ -106,6 +119,58 @@ public class ChartDataServiceTest {
         }
         Mockito.verify(nationellData).getDiagnosavsnitt(any(Range.class), eq("A00-B99"));
     }
+
+    @Test
+    public void testGetFilterEnhetnamnMissingFilterHash() throws Exception {
+        //Given
+        final String filterHash = "abc";
+        Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenThrow(new FilterHashMissingException(""));
+
+        //When
+        final Response filterEnhetnamn = chartDataService.getFilterEnhetnamn(filterHash);
+
+        //Then
+        assertEquals(Response.Status.NO_CONTENT.getStatusCode(), filterEnhetnamn.getStatus());
+    }
+
+    @Test
+    public void testGetFilterEnhetnamnMissingEnhet() throws Exception {
+        //Given
+        final String filterHash = "abc";
+        Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(new FilterData(null, Arrays.asList("1", "2"), null, null, null, true));
+        Mockito.doReturn(Arrays.asList(createEnhet("1", "ett"))).when(warehouse).getEnhetsWithHsaId(any(Collection.class));
+
+        //When
+        final Response filterEnhetnamn = chartDataService.getFilterEnhetnamn(filterHash);
+
+        //Then
+        final List<String> entity = (List<String>) filterEnhetnamn.getEntity();
+        assertEquals(1, entity.size());
+        assertEquals("ett", entity.get(0));
+        // Att testa: Saknade enheter, saknad filterhash, att id läggs till när namnen är samma (oavsett case), etc
+    }
+
+    @Test
+    public void testGetFilterEnhetnamnIdIsAddedToNameWhenDuplicate() throws Exception {
+        //Given
+        final String filterHash = "abc";
+        Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(new FilterData(null, Arrays.asList("1", "2"), null, null, null, true));
+        Mockito.doReturn(Arrays.asList(createEnhet("1", "ett"), createEnhet("2", "ett"))).when(warehouse).getEnhetsWithHsaId(any(Collection.class));
+
+        //When
+        final Response filterEnhetnamn = chartDataService.getFilterEnhetnamn(filterHash);
+
+        //Then
+        final List<String> entity = (List<String>) filterEnhetnamn.getEntity();
+        assertEquals(2, entity.size());
+        assertEquals("ett 1", entity.get(0));
+        assertEquals("ett 2", entity.get(1));
+    }
+
+    private Enhet createEnhet(String id, String namn) {
+        return new Enhet(new HsaIdVardgivare(""), null, new HsaIdEnhet(id), namn, null, null, null);
+    }
+
 
     // CHECKSTYLE:ON MagicNumber
     // CHECKSTYLE:ON EmptyBlock

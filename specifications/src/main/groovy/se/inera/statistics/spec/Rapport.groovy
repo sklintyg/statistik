@@ -4,6 +4,7 @@ import se.inera.statistics.service.report.util.Icd10
 import se.inera.statistics.service.report.util.Icd10RangeType
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.statistics.web.service.FilterData
+import se.inera.statistics.web.service.ResponseHandler
 
 abstract class Rapport {
 
@@ -23,6 +24,7 @@ abstract class Rapport {
     def filterSlutdatum
     def meddelande
     def allaDiagnosfilterValda
+    def allaEnhetsfilterValda
 
     ReportsUtil reportsUtil = new ReportsUtil()
 
@@ -33,7 +35,8 @@ abstract class Rapport {
 
     public final void executeWithReport(report) {
         meddelande = report.message
-        allaDiagnosfilterValda = report.allAvailableDxsSelectedInFilter
+        allaDiagnosfilterValda = report[ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER]
+        allaEnhetsfilterValda = report[ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER]
     }
 
     abstract void doExecute()
@@ -56,6 +59,10 @@ abstract class Rapport {
 
     def allaDiagnosfilterValda() {
         return allaDiagnosfilterValda
+    }
+
+    def allaEnhetsfilterValda() {
+        return allaEnhetsfilterValda
     }
 
     def markerad() {

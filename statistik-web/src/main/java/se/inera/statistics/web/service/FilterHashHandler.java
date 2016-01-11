@@ -70,7 +70,7 @@ public class FilterHashHandler {
     FilterData getFilterFromHash(String filterHash) {
         final Optional<String> filterData = getFilterData(filterHash);
         if (!filterData.isPresent()) {
-            throw new RuntimeException("Could not find filter with given hash: " + filterHash);
+            throw new FilterHashMissingException("Could not find filter with given hash: " + filterHash);
         }
         final String filterDataString = filterData.get();
         return parseFilterData(filterDataString);
@@ -90,7 +90,7 @@ public class FilterHashHandler {
             return new FilterData(diagnoser, enheter, verksamhetstyper, fromDate, toDate, useDefaultPeriod);
         } catch (IOException e) {
             LOG.error("Failed to parse filter data: " + filterDataString, e);
-            throw new RuntimeException("Filter data failed");
+            throw new FilterHashParseException("Filter data failed");
         }
     }
 
