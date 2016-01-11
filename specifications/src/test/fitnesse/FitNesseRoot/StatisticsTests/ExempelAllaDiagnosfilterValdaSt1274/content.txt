@@ -1,5 +1,10 @@
 !contents -R2 -g -p -f -h
 
+Testet är ignorerat eftersom kommentaren nedan (att värdet ska vara sant när inget diagnosfilter är valt oavsett övriga filter). Detta stämmer inte eftersom filtren 
+enbart ses som en helhet, dvs är något "delfilter" aktivt så kommer samtliga "delfilter" att tas i beaktning. I GUIt är detta dock inte något som användaren behöver
+tänka på eftersom default-inställningen för diagnosfiltret är att alla diagnoser är valda.
+
+
 Detta är ett exempel för att visa hur man kan testa värdet som visar om alla diagnoser är valda i filtret eller inte.
 Det värdet används i guit för att avgöra om listan över valda diagnoser ska visas i rapporten (STATISTIK-1274).
 
