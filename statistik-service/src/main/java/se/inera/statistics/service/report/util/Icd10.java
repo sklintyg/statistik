@@ -576,7 +576,7 @@ public class Icd10 {
 
     private static class LineReader implements Closeable {
         private final BufferedReader reader;
-        public LineReader(Resource resource) throws IOException {
+        LineReader(Resource resource) throws IOException {
             reader = new BufferedReader(new InputStreamReader(resource.getInputStream(), "ISO-8859-1"));
         }
 

@@ -34,7 +34,7 @@ class SjukfallGroupCacheKey {
     private final boolean useOriginalSjukfallStart;
     private final String key;
 
-    public SjukfallGroupCacheKey(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter filter, boolean useOriginalSjukfallStart) {
+    SjukfallGroupCacheKey(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter filter, boolean useOriginalSjukfallStart) {
         this.from = from;
         this.periods = periods;
         this.periodSize = periodSize;

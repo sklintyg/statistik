@@ -28,7 +28,7 @@ class DiagnosisKapitelAndAvsnittAndKategoriResponse {
     private final Map<String, List<Icd>> avsnitts;
     private final Map<String, List<Icd>> kategoris;
 
-    public DiagnosisKapitelAndAvsnittAndKategoriResponse(Map<String, List<Icd>> kategoris, Map<String, List<Icd>> avsnitts, List<Icd> kapitels) {
+    DiagnosisKapitelAndAvsnittAndKategoriResponse(Map<String, List<Icd>> kategoris, Map<String, List<Icd>> avsnitts, List<Icd> kapitels) {
         this.kapitels = kapitels;
         this.avsnitts = avsnitts;
         this.kategoris = kategoris;

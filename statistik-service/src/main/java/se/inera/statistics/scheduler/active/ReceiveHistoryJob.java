@@ -57,7 +57,7 @@ public class ReceiveHistoryJob {
         private final long[] history;
         private int index;
 
-        public History(int size) {
+        History(int size) {
             history = new long[size];
         }
 

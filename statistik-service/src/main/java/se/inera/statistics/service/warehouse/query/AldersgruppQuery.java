@@ -58,7 +58,7 @@ public final class AldersgruppQuery {
         for (Counter<Ranges.Range> counter : toKeep) {
             int current = counter.getCount();
             int previous = previousCount.get(counter.getKey()).getCount();
-            result.add(new OverviewChartRowExtended(counter.getKey().getName() , current, percentChange(current, previous)));
+            result.add(new OverviewChartRowExtended(counter.getKey().getName(), current, percentChange(current, previous)));
         }
 
         return result;
