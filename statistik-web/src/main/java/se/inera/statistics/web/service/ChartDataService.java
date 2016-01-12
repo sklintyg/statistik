@@ -19,7 +19,7 @@
 package se.inera.statistics.web.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -438,7 +438,7 @@ public class ChartDataService {
             final List<Enhet> enhets = warehouse.getEnhetsWithHsaId(filterEnheter);
             final Map<String, List<Enhet>> enhetsByName = enhets.stream().collect(Collectors.groupingBy(Enhet::getNamn));
             final List<String> filterEnheterNames = enhetsByName.entrySet().stream().map(entry ->
-                    entry.getValue().size() > 1 ? entry.getValue().stream().map(e2 -> e2.getNamn() + " " + e2.getEnhetId()).collect(Collectors.toList()) : Arrays.asList(entry.getKey()))
+                    entry.getValue().size() > 1 ? entry.getValue().stream().map(e2 -> e2.getNamn() + " " + e2.getEnhetId()).collect(Collectors.toList()) : Collections.singletonList(entry.getKey()))
                     .flatMap(List::stream).collect(Collectors.toList());
             return Response.ok(filterEnheterNames).build();
         } catch (FilterHashException e) {
