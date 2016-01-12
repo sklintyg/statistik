@@ -80,7 +80,7 @@ public class Warehouse implements Iterable<Aisle> {
     }
 
     public List<Enhet> getEnhetsWithHsaId(Collection<HsaIdEnhet> enhetIds) {
-        if (enhets == null) {
+        if (enhets == null || enhetIds == null) {
             return new ArrayList<>();
         }
         return enhets.values().stream().reduce(Lists.newArrayList(), (a, b) -> {

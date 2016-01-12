@@ -442,7 +442,7 @@ public class ChartDataService {
             final Map<String, List<Enhet>> enhetsByName = enhets.stream().collect(Collectors.groupingBy(Enhet::getNamn));
             final List<String> filterEnheterNames = enhetsByName.entrySet().stream().map(entry ->
                     entry.getValue().size() > 1 ? entry.getValue().stream().map(e2 -> e2.getNamn() + " " + e2.getEnhetId()).collect(Collectors.toList()) : Collections.singletonList(entry.getKey()))
-                    .flatMap(List::stream).collect(Collectors.toList());
+                    .flatMap(List::stream).sorted().collect(Collectors.toList());
             return Response.ok(filterEnheterNames).build();
         } catch (FilterHashException e) {
             return Response.noContent().build();
