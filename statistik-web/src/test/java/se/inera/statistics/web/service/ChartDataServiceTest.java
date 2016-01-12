@@ -64,7 +64,7 @@ public class ChartDataServiceTest {
     private MonitoringLogService monitoringLogService;
 
     @Mock
-    private FilterHashHandler filterHashHandler;
+    private FilterHandler filterHandler;
 
     @Mock
     private Warehouse warehouse;
@@ -124,10 +124,10 @@ public class ChartDataServiceTest {
     public void testGetFilterEnhetnamnMissingFilterHash() throws Exception {
         //Given
         final String filterHash = "abc";
-        Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenThrow(new FilterHashMissingException(""));
+        Mockito.when(filterHandler.getFilter(null, filterHash, 0)).thenThrow(new FilterHashMissingException(""));
 
         //When
-        final Response filterEnhetnamn = chartDataService.getFilterEnhetnamn(filterHash);
+        final Response filterEnhetnamn = chartDataService.getFilterEnhetnamn(filterHash, null);
 
         //Then
         assertEquals(Response.Status.NO_CONTENT.getStatusCode(), filterEnhetnamn.getStatus());
@@ -137,11 +137,13 @@ public class ChartDataServiceTest {
     public void testGetFilterEnhetnamnMissingEnhet() throws Exception {
         //Given
         final String filterHash = "abc";
-        Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(new FilterData(null, Arrays.asList("1", "2"), null, null, null, true));
+        final Filter filter = Mockito.mock(Filter.class);
+        Mockito.when(filter.getEnheter()).thenReturn(Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("2")));
+        Mockito.when(filterHandler.getFilter(null, filterHash, 0)).thenReturn(new FilterSettings(filter, Range.quarter()));
         Mockito.doReturn(Arrays.asList(createEnhet("1", "ett"))).when(warehouse).getEnhetsWithHsaId(any(Collection.class));
 
         //When
-        final Response filterEnhetnamn = chartDataService.getFilterEnhetnamn(filterHash);
+        final Response filterEnhetnamn = chartDataService.getFilterEnhetnamn(filterHash, null);
 
         //Then
         final List<String> entity = (List<String>) filterEnhetnamn.getEntity();
@@ -154,11 +156,13 @@ public class ChartDataServiceTest {
     public void testGetFilterEnhetnamnIdIsAddedToNameWhenDuplicate() throws Exception {
         //Given
         final String filterHash = "abc";
-        Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(new FilterData(null, Arrays.asList("1", "2"), null, null, null, true));
+        final Filter filter = Mockito.mock(Filter.class);
+        Mockito.when(filter.getEnheter()).thenReturn(Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("2")));
+        Mockito.when(filterHandler.getFilter(null, filterHash, 0)).thenReturn(new FilterSettings(filter, Range.quarter()));
         Mockito.doReturn(Arrays.asList(createEnhet("1", "ett"), createEnhet("2", "ett"))).when(warehouse).getEnhetsWithHsaId(any(Collection.class));
 
         //When
-        final Response filterEnhetnamn = chartDataService.getFilterEnhetnamn(filterHash);
+        final Response filterEnhetnamn = chartDataService.getFilterEnhetnamn(filterHash, null);
 
         //Then
         final List<String> entity = (List<String>) filterEnhetnamn.getEntity();

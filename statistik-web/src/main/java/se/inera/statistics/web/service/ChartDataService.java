@@ -19,6 +19,7 @@
 package se.inera.statistics.web.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -95,6 +96,9 @@ public class ChartDataService {
 
     @Autowired
     private FilterHashHandler filterHashHandler;
+
+    @Autowired
+    private FilterHandler filterHandler;
 
     @Autowired
     private Warehouse warehouse;
@@ -428,13 +432,12 @@ public class ChartDataService {
 
     @GET
     @Path("filter/enhetsnamn/{filterHash}")
-    public Response getFilterEnhetnamn(@PathParam("filterHash") String filterHash) {
+    public Response getFilterEnhetnamn(@PathParam("filterHash") String filterHash, @Context HttpServletRequest request) {
         LOG.info("Calling get FilterEnhetnamn: " + filterHash);
         monitoringLogService.logTrackAccessAnonymousChartData("getFilterEnhetnamn");
         try {
-            final FilterData filterFromHash = filterHashHandler.getFilterFromHash(filterHash);
-            final List<String> filterEnheterIds = filterFromHash.getEnheter();
-            final List<HsaIdEnhet> filterEnheter = filterEnheterIds.stream().map(HsaIdEnhet::new).collect(Collectors.toList());
+            final FilterSettings filter = filterHandler.getFilter(request, filterHash, 0);
+            final Collection<HsaIdEnhet> filterEnheter = filter.getFilter().getEnheter();
             final List<Enhet> enhets = warehouse.getEnhetsWithHsaId(filterEnheter);
             final Map<String, List<Enhet>> enhetsByName = enhets.stream().collect(Collectors.groupingBy(Enhet::getNamn));
             final List<String> filterEnheterNames = enhetsByName.entrySet().stream().map(entry ->
