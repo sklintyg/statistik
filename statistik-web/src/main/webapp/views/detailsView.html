@@ -39,7 +39,8 @@
 			{{subTitle}}
 			<a class="hidden-print pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>" tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px; margin-left: 5px;"><img src="img/questionmark2.png"></a>
 			<a class="hidden-print" id="chart-footnote-trigger" data-toggle="collapse" data-target="#chart-footnote-text" data-ng-show="chartFootnotes" text="Information om diagrammet" style="position: relative; top: -2px; margin-left: 5px;"><img src="img/information.png"></a>
-			<a class="hidden-print" id="chart-diagnosfilterinfo-trigger" data-toggle="collapse" data-target="#chart-diagnosfilterinfo-text" data-ng-show="activeDiagnosFilters" text="Diagnosfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Diagnosfilter &#x25BE</a>
+			<a class="hidden-print" id="chart-diagnosfilterinfo-trigger" data-toggle="collapse" data-target="#chart-diagnosfilterinfo-text" data-ng-show="activeDiagnosFilters" text="Diagnosfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Diagnosfilter&nbsp;&#x25BE</a>
+			<a class="hidden-print" id="chart-enhetsfilterinfo-trigger" data-toggle="collapse" data-target="#chart-enhetsfilterinfo-text" data-ng-show="activeEnhetsFilters" text="Enhetsfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Enhetsfilter&nbsp;&#x25BE</a>
 		</span>
 	</div>
 
@@ -61,6 +62,18 @@
        			<div class="alert alert-info" style="margin-top: 3px;">
        				<div data-ng-repeat="activeDiagnosFilter in activeDiagnosFilters">
        					<p bindonce="activeDiagnosFilter"></p>
+       				</div>
+       			</div>
+       		</div>
+        </div>
+	</div>
+
+	<div class="row hidden-print pull-left">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="activeEnhetsFilters">
+			<div class="collapse" id="chart-enhetsfilterinfo-text">
+       			<div class="alert alert-info" style="margin-top: 3px;">
+       				<div data-ng-repeat="activeEnhetsFilter in activeEnhetsFilters">
+       					<p bindonce="activeEnhetsFilter"></p>
        				</div>
        			</div>
        		</div>
@@ -224,6 +237,17 @@
 					<div class="alert alert-info" style="margin-top: 3px; background: #FFFFFF">
 						<div data-ng-repeat="activeDiagnosFilter in activeDiagnosFiltersForPrint">
 							<p bindonce="activeDiagnosFilter"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row pull-left" data-ng-show="activeEnhetsFiltersForPrint">
+				<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress pull-left ng-binding">Sammanställning av enhetsfilter</span>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="alert alert-info" style="margin-top: 3px; background: #FFFFFF">
+						<div data-ng-repeat="activeEnhetsFilter in activeEnhetsFiltersForPrint">
+							<p bindonce="activeEnhetsFilter"></p>
 						</div>
 					</div>
 				</div>

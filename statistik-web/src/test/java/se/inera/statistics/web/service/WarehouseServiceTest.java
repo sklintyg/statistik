@@ -103,10 +103,11 @@ public class WarehouseServiceTest {
     public void testGetCasesPerEnhetLandstingIsExtendingNameWithIdIfDuplicateSTATISTIK1121() throws Exception {
         //Given
         final Predicate predicate = Mockito.mock(Predicate.class);
-        final SjukfallFilter predicate1 = new SjukfallFilter(predicate, "testhash");
+        final String testhash = "testhash";
+        final SjukfallFilter predicate1 =  new SjukfallFilter(predicate, testhash);
         final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
         final ArrayList<String> diagnoser = new ArrayList<>();
-        final Filter filter = new Filter(predicate1, enheter, diagnoser);
+        final Filter filter = new Filter(testhash, predicate1, enheter, diagnoser);
         final Range range = new Range();
         final FilterSettings filterSettings = new FilterSettings(filter, range);
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
@@ -131,10 +132,11 @@ public class WarehouseServiceTest {
     public void testGetCasesPerPatientsPerEnhetLandstingIsExtendingNameWithIdIfDuplicateSTATISTIK1121() throws Exception {
         //Given
         final Predicate predicate = Mockito.mock(Predicate.class);
-        final SjukfallFilter predicate1 = new SjukfallFilter(predicate, "testhash");
+        final String testhash = "testhash";
+        final SjukfallFilter predicate1 = new SjukfallFilter(predicate, testhash);
         final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
         final ArrayList<String> diagnoser = new ArrayList<>();
-        final Filter filter = new Filter(predicate1, enheter, diagnoser);
+        final Filter filter = new Filter(testhash, predicate1, enheter, diagnoser);
         final Range range = new Range();
         final FilterSettings filterSettings = new FilterSettings(filter, range);
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();

@@ -78,7 +78,7 @@ public class ResponseHandlerTest {
         Mockito.when(icd10.getIcdStructure()).thenReturn(createIcdList(1, 2, 3));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(Arrays.asList("1", "2", "3"), null)), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("1", "2", "3"), null)), null, null);
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));
@@ -90,7 +90,7 @@ public class ResponseHandlerTest {
         Mockito.when(icd10.getIcdStructure()).thenReturn(createIcdList(1, 2, 3));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(Arrays.asList("2", "1", "3"), null)), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("2", "1", "3"), null)), null, null);
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));
@@ -102,7 +102,7 @@ public class ResponseHandlerTest {
         Mockito.when(icd10.getIcdStructure()).thenReturn(createIcdList(1, 2, 3));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(Arrays.asList("1", "2"), null)), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("1", "2"), null)), null, null);
 
         //Then
         assertFalse((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));
@@ -123,7 +123,7 @@ public class ResponseHandlerTest {
         final List<HsaIdEnhet> enhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("2"), new HsaIdEnhet("3"));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, enhets)), null, enhets);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, enhets)), null, enhets);
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER));
@@ -136,7 +136,7 @@ public class ResponseHandlerTest {
         final List<HsaIdEnhet> filteredEnhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("3"), new HsaIdEnhet("2"));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, filteredEnhets)), null, availableEnhets);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, filteredEnhets)), null, availableEnhets);
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER));
@@ -149,7 +149,7 @@ public class ResponseHandlerTest {
         final List<HsaIdEnhet> filteredEnhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("2"));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, filteredEnhets)), null, availableEnhets);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, filteredEnhets)), null, availableEnhets);
 
         //Then
         assertFalse((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER));

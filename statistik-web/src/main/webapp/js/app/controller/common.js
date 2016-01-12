@@ -89,8 +89,18 @@ var ControllerCommons = new function(){
         });
     };
 
+    this.populateActiveFilters = function(scope, statisticsData, diagnosIds, isPrint, isAllAvailableDxsSelectedInFilter, filterHash, isAllAvailableEnhetsSelectedInFilter) {
+        this.populateActiveDiagnosFilter(scope, statisticsData, diagnosIds, isPrint, isAllAvailableDxsSelectedInFilter);
+        this.populateActiveEnhetsFilter(scope, statisticsData, filterHash, isPrint, isAllAvailableEnhetsSelectedInFilter);
+    };
+
     this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isPrint, isAllAvailableDxsSelectedInFilter) {
         if (isAllAvailableDxsSelectedInFilter) {
+            return;
+        }
+        if (diagnosIds.length === 0) {
+            scope.activeDiagnosFilters = [""];
+            scope.activeDiagnosFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
             return;
         }
         if (!diagnosIds) {
@@ -102,6 +112,22 @@ var ControllerCommons = new function(){
         }, function () {
             scope.activeDiagnosFilters = diagnosIds;
             scope.activeDiagnosFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
+        });
+    };
+
+    this.populateActiveEnhetsFilter = function(scope, statisticsData, filterHash, isPrint, isAllAvailableEnhetsSelectedInFilter) {
+        if (isAllAvailableEnhetsSelectedInFilter) {
+            return;
+        }
+        if (!filterHash) {
+            return;
+        }
+        statisticsData.getFilterEnhetnamns(filterHash, function (enhetNames) {
+            scope.activeEnhetsFilters = enhetNames.length > 0 ? enhetNames : [""];
+            scope.activeEnhetsFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
+        }, function () {
+            scope.activeEnhetsFilters = ["Fel vid anrop..."];
+            scope.activeEnhetsFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
         });
     };
 

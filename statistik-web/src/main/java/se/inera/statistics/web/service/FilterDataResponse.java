@@ -28,6 +28,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class FilterDataResponse {
+
+    private String filterhash;
     private List<String> diagnoser;
     private List<String> enheter;
 
@@ -35,7 +37,8 @@ public class FilterDataResponse {
     FilterDataResponse() {
     }
 
-    public FilterDataResponse(Collection<String> diagnoser, Collection<HsaIdEnhet> enheter) {
+    public FilterDataResponse(String filterhash, Collection<String> diagnoser, Collection<HsaIdEnhet> enheter) {
+        this.filterhash = filterhash;
         this.diagnoser = diagnoser == null ? null : Collections.unmodifiableList(new ArrayList<>(diagnoser));
         this.enheter = enheter == null ? null : Lists.transform(new ArrayList<>(enheter), new Function<HsaIdEnhet, String>() {
             @Override
@@ -45,8 +48,12 @@ public class FilterDataResponse {
         });
     }
 
+    public FilterDataResponse(Filter filter) {
+        this(filter.getFilterhash(), filter.getDiagnoser(), filter.getEnheter());
+    }
+
     public static FilterDataResponse empty() {
-        return new FilterDataResponse(null, null);
+        return new FilterDataResponse(null, null, null);
     }
 
     public List<String> getDiagnoser() {
@@ -55,6 +62,10 @@ public class FilterDataResponse {
 
     public List<String> getEnheter() {
         return enheter;
+    }
+
+    public String getFilterhash() {
+        return filterhash;
     }
 
 }

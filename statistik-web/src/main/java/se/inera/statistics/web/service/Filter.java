@@ -25,18 +25,20 @@ import java.util.Collection;
 
 class Filter {
 
+    private String filterhash;
     private SjukfallFilter predicate;
     private Collection<HsaIdEnhet> enheter;
     private Collection<String> diagnoser;
 
-    Filter(SjukfallFilter predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser) {
+    Filter(String filterhash, SjukfallFilter predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser) {
+        this.filterhash = filterhash;
         this.predicate = predicate;
         this.enheter = enheter;
         this.diagnoser = diagnoser;
     }
 
     static Filter empty() {
-        return new Filter(null, null, null);
+        return new Filter(null, null, null, null);
     }
 
     SjukfallFilter getPredicate() {
@@ -51,4 +53,7 @@ class Filter {
         return diagnoser;
     }
 
+    public String getFilterhash() {
+        return filterhash;
+    }
 }

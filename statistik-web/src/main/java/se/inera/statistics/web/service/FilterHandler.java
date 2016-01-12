@@ -129,7 +129,7 @@ public class FilterHandler {
         final List<String> diagnoser = inFilter.getDiagnoser();
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         final SjukfallFilter sjukfallFilter = new SjukfallFilter(Predicates.and(enhetFilter, diagnosFilter), filterHash);
-        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser);
+        final Filter filter = new Filter(filterHash, sjukfallFilter, enhetsIDs, diagnoser);
         final Range range = getRange(inFilter, defaultRangeValue);
         return new FilterSettings(filter, range);
     }
@@ -177,11 +177,11 @@ public class FilterHandler {
                 return Warehouse.getEnhet(enhetid);
             }
         }));
-        return getFilterForEnhets(availableEnhets, enhets);
+        return getFilterForEnhets(availableEnhets, enhets, null);
     }
 
-    private Filter getFilterForEnhets(final Set<Integer> enhetsIntIds, List<HsaIdEnhet> enhets) {
-        return new Filter(new SjukfallFilter(new Predicate<Fact>() {
+    private Filter getFilterForEnhets(final Set<Integer> enhetsIntIds, List<HsaIdEnhet> enhets, String filterhash) {
+        return new Filter(filterhash, new SjukfallFilter(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return enhetsIntIds.contains(fact.getEnhet());
@@ -192,7 +192,7 @@ public class FilterHandler {
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
         if (info.isProcessledare()) {
-            return new Filter(SjukfallUtil.ALL_ENHETER, null, null);
+            return new Filter(null, SjukfallUtil.ALL_ENHETER, null, null);
         }
         final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(info.getBusinesses(), new Function<Verksamhet, Integer>() {
             @Override
@@ -200,7 +200,7 @@ public class FilterHandler {
                 return Warehouse.getEnhet(verksamhet.getId());
             }
         }));
-        return getFilterForEnhets(availableEnhets, null);
+        return getFilterForEnhets(availableEnhets, null, null);
     }
 
     private ArrayList<HsaIdEnhet> getEnhetsFilteredLandsting(FilterData inFilter) {

@@ -45,7 +45,7 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
         ChartData maleChart = extractChartData(data, Kon.Male, seriesNameTemplate);
         ChartData femaleChart = extractChartData(data, Kon.Female, seriesNameTemplate);
         final Filter filter = filterSettings.getFilter();
-        final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
+        final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
         final String combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse, combinedMessage);
