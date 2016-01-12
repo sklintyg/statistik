@@ -65,6 +65,10 @@ abstract class Rapport {
         return allaEnhetsfilterValda
     }
 
+    def enhetsfilterlista() {
+        return reportsUtil.getFilterEnhetnamnlista(filter)
+    }
+
     def markerad() {
         if (markerad == null) {
             return null
