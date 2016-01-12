@@ -124,10 +124,10 @@ var ControllerCommons = new function(){
         }
         statisticsData.getFilterEnhetnamns(filterHash, function (enhetNames) {
             scope.activeEnhetsFilters = enhetNames.length > 0 ? enhetNames : [""];
-            scope.activeEnhetsFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
+            scope.activeEnhetsFiltersForPrint = isPrint ? scope.activeEnhetsFilters : null;
         }, function () {
             scope.activeEnhetsFilters = ["Fel vid anrop..."];
-            scope.activeEnhetsFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
+            scope.activeEnhetsFiltersForPrint = isPrint ? scope.activeEnhetsFilters : null;
         });
     };
 
