@@ -49,7 +49,7 @@ public class FilterDataResponse {
     }
 
     public FilterDataResponse(Filter filter) {
-        this(filter.getFilterhash(), filter.getDiagnoser(), filter.getEnheter());
+        this(filter.getFilterHash(), filter.getDiagnoser(), filter.getEnheter());
     }
 
     public static FilterDataResponse empty() {
