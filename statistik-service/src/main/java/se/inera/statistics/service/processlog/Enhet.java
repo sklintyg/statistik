@@ -21,6 +21,7 @@ package se.inera.statistics.service.processlog;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kommun;
+import se.inera.statistics.service.report.model.VerksamhetsTyp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -119,6 +120,9 @@ public class Enhet implements Comparable<Enhet> {
     }
 
     public String getVerksamhetsTyper() {
+        if (verksamhetsTyper == null || verksamhetsTyper.isEmpty()) {
+            return VerksamhetsTyp.OVRIGT_ID;
+        }
         return verksamhetsTyper;
     }
 
