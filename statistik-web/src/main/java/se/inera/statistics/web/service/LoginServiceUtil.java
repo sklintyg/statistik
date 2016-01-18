@@ -138,7 +138,7 @@ public class LoginServiceUtil {
         String lansNamn = lan.getNamn(lansId);
         String kommunId = enhetOpt.isPresent() ? lansId + enhetOpt.get().getKommunId() : Kommun.OVRIGT_ID;
         String kommunNamn = kommun.getNamn(kommunId);
-        Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper = enhetOpt.isPresent() ? getVerksamhetsTyper(enhetOpt.get().getVerksamhetsTyper()) : Collections.<Verksamhet.VerksamhetsTyp>emptySet();
+        Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper = enhetOpt.isPresent() ? getVerksamhetsTyper(enhetOpt.get().getVerksamhetsTyper()) : Collections.<Verksamhet.VerksamhetsTyp>singleton(new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT));
 
         return new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(), lansId, lansNamn, kommunId, kommunNamn, verksamhetsTyper);
     }

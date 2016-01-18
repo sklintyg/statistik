@@ -163,6 +163,10 @@ public class Verksamhet implements Serializable {
             return name;
         }
 
+        @Override
+        public String toString() {
+            return id;
+        }
     }
 
 }
