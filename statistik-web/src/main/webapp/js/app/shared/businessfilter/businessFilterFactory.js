@@ -157,8 +157,8 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
             return _.find(businessFilter.verksamhetsTyper, function(verksamhet) { return _.contains(verksamhet.ids, verksamhetstyp); }).id;
         }));
         businessFilter.selectGeographyBusiness(filterData.enheter);
-        businessFilter.toDate = filterDate.toDate ? moment(filterData.toDate).utc().toDate() : null;
-        businessFilter.fromDate = filterDate.fromDate ? moment(filterData.fromDate).utc().toDate() : null;
+        businessFilter.toDate = filterData.toDate ? moment(filterData.toDate).utc().toDate() : null;
+        businessFilter.fromDate = filterData.fromDate ? moment(filterData.fromDate).utc().toDate() : null;
         businessFilter.useDefaultPeriod = filterData.useDefaultPeriod;
 
         businessFilter.filterChanged();
