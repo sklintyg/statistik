@@ -63,7 +63,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
 
         var setColorToTotalCasesSeries = function (series) {
             for (var i = 0; i < series.length; i++) {
-                if (series[i].name === "Antal sjukfall totalt") {
+                if (series[i].sex === null) {
                     series[i].color = "#5d5d5d";
                     break;
                 }
