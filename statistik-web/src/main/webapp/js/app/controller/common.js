@@ -98,12 +98,12 @@ var ControllerCommons = new function(){
         if (isAllAvailableDxsSelectedInFilter) {
             return;
         }
+        if (!diagnosIds) {
+            return;
+        }
         if (diagnosIds.length === 0) {
             scope.activeDiagnosFilters = [""];
             scope.activeDiagnosFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
-            return;
-        }
-        if (!diagnosIds) {
             return;
         }
         statisticsData.getIcd10Structure(function (diagnoses) {
