@@ -122,13 +122,13 @@ var app = angular.module('StatisticsApp',
         }).when('/verksamhet/diagnosavsnitt/kapitel/:kapitelId/avsnitt/:avsnittId/kategori/:kategoriId', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',
-            controllerAs: 'VerksamhetDiagnoskategoriCtrl',
+            controllerAs: 'VerksamhetDiagnosavsnittCtrl',
             resolve: { config: app.diagnosisSubGroupConfig },
             title: 'Enskilt diagnoskapitel'
         }).when('/verksamhet/diagnosavsnitt/kapitel/:kapitelId/avsnitt/:avsnittId', {
             templateUrl: 'views/detailsView.html',
             controller: 'doubleAreaChartsCtrl',
-            controllerAs: 'VerksamhetDiagnoskategoriCtrl',
+            controllerAs: 'VerksamhetDiagnosavsnittCtrl',
             resolve: { config: app.diagnosisSubGroupConfig },
             title: 'Enskilt diagnoskapitel'
         }).when('/verksamhet/diagnosavsnitt/kapitel/:kapitelId', {
@@ -142,13 +142,13 @@ var app = angular.module('StatisticsApp',
         }).when('/verksamhet/diagnosavsnitttvarsnitt/kapitel/:kapitelId/avsnitt/:avsnittId/kategori/:kategoriId', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
-            controllerAs: 'VerksamhetDiagnoskategoriCtrl',
+            controllerAs: 'VerksamhetDiagnosavsnittCtrl',
             resolve: { config: app.diagnosisSubGroupTvarsnittConfig },
             title: 'Enskilt diagnoskapitel'
         }).when('/verksamhet/diagnosavsnitttvarsnitt/kapitel/:kapitelId/avsnitt/:avsnittId', {
             templateUrl: 'views/detailsView.html',
             controller: 'columnChartDetailsViewCtrl',
-            controllerAs: 'VerksamhetDiagnoskategoriCtrl',
+            controllerAs: 'VerksamhetDiagnosavsnittCtrl',
             resolve: { config: app.diagnosisSubGroupTvarsnittConfig },
             title: 'Enskilt diagnoskapitel'
         }).when('/verksamhet/diagnosavsnitttvarsnitt/kapitel/:kapitelId', {
