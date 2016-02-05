@@ -75,6 +75,7 @@ import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit;
 import se.inera.ifv.hsawsresponder.v3.StatisticsNameInfo;
 import se.inera.ifv.hsawsresponder.v3.VpwGetPublicUnitsResponseType;
 import se.inera.ifv.hsawsresponder.v3.VpwGetPublicUnitsType;
+import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.hsa.stub.HsaServiceStub;
 import se.inera.statistics.hsa.stub.Medarbetaruppdrag;
@@ -131,15 +132,15 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     }
 
     private JsonNode getOrCreatePersonal(HSAKey key) {
-        if (personals.containsKey(key.getLakareId())) {
-            return personals.get(key.getLakareId());
+        if (personals.containsKey(key.getLakareId().getId())) {
+            return personals.get(key.getLakareId().getId());
         }
         return createPersonal(key);
     }
 
     public JsonNode createEnhet(HSAKey key, boolean isHuvudenhet) {
         ObjectNode root = factory.objectNode();
-        final String enhetId = getEnhetId(key.getEnhetId(), isHuvudenhet);
+        final String enhetId = getEnhetId(key.getEnhetId().getId(), isHuvudenhet);
         root.put("id", enhetId);
         root.put("namn", getEnhetsNamn(enhetId));
         root.put(HSAService.ENHETS_TYP, asList(VerksamhetsTyp.VARDCENTRAL_ID));
@@ -151,7 +152,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         root.put("vardform", (JsonNode) null);
         root.put("geografi", createGeografiskIndelning(key));
         root.put("verksamhet", asList(createVerksamhet(key)));
-        root.put("vgid", key.getVardgivareId());
+        root.put("vgid", key.getVardgivareId().getId());
         return root;
     }
 
@@ -175,7 +176,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
 
     private JsonNode createPersonal(HSAKey key) {
         ObjectNode root = factory.objectNode();
-        root.put("id", key.getLakareId());
+        root.put("id", key.getLakareId().getId());
         root.put("initial", (JsonNode) null);
         root.put("kon", (JsonNode) null);
         root.put("alder", (JsonNode) null);
@@ -188,9 +189,9 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         return root;
     }
 
-    public ObjectNode createPersonal(String id, String firstName, String lastName, HsaKon kon, int age, List<String> befattnings) {
+    public ObjectNode createPersonal(HsaIdLakare id, String firstName, String lastName, HsaKon kon, int age, List<String> befattnings) {
         ObjectNode root = factory.objectNode();
-        root.put("id", id);
+        root.put("id", id.getId());
         root.put("initial", (JsonNode) null);
         root.put("kon", String.valueOf(kon.getHsaRepresantation()));
         root.put("alder", String.valueOf(age));
@@ -266,7 +267,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         int numberOfVerksamhet = (key.getEnhetId().hashCode() & POSITIVE_MASK) % VERKSAMHET_MODULO;
         int i = 0;
         while (returnSet.size() < numberOfVerksamhet) {
-            int index = ((key.getVardgivareId() + key.getEnhetId() + i).hashCode()) & POSITIVE_MASK;
+            int index = ((key.getVardgivareId().getId() + key.getEnhetId().getId() + i).hashCode()) & POSITIVE_MASK;
             returnSet.add(VERKSAMHET_CODES.get(index % VERKSAMHET_CODES.size()));
             i++;
         }
@@ -284,9 +285,9 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     }
 
     @Override
-    public void addPersonal(String id, String firstName, String lastName, HsaKon kon, int age, List<String> befattning) {
+    public void addPersonal(HsaIdLakare id, String firstName, String lastName, HsaKon kon, int age, List<String> befattning) {
         final ObjectNode personal = createPersonal(id, firstName, lastName, kon, age, befattning);
-        personals.put(id, personal);
+        personals.put(id.getId(), personal);
     }
 
     @Override

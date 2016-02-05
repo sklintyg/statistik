@@ -46,25 +46,25 @@ public class LakareManager {
 
     @Transactional
     public void saveLakare(JsonNode hsaInfo) {
-        String vardgivareId = HSAServiceHelper.getVardgivarId(hsaInfo);
-        String lakareId = HSAServiceHelper.getLakareId(hsaInfo);
+        HsaIdVardgivare vardgivareId = HSAServiceHelper.getVardgivarId(hsaInfo);
+        HsaIdLakare lakareId = HSAServiceHelper.getLakareId(hsaInfo);
         String tilltalsNamn = HSAServiceHelper.getLakareTilltalsnamn(hsaInfo);
         String efterNamn = HSAServiceHelper.getLakareEfternamn(hsaInfo);
 
-        if (vardgivareId == null) {
+        if (vardgivareId == null || vardgivareId.isEmpty()) {
             LOG.error("Vardgivare saknas: " + hsaInfo.toString());
             return;
         }
         TypedQuery<Lakare> lakareQuery = manager.createQuery("SELECT l FROM Lakare l WHERE l.lakareId = :lakareId", Lakare.class);
-        List<Lakare> resultList = lakareQuery.setParameter("lakareId", lakareId).getResultList();
+        List<Lakare> resultList = lakareQuery.setParameter("lakareId", lakareId.getId()).getResultList();
 
         if (validate(vardgivareId, lakareId, tilltalsNamn, efterNamn)) {
             if (resultList.isEmpty()) {
-                manager.persist(new Lakare(new HsaIdVardgivare(vardgivareId), new HsaIdLakare(lakareId), tilltalsNamn, efterNamn));
+                manager.persist(new Lakare(vardgivareId, lakareId, tilltalsNamn, efterNamn));
             } else {
                 Lakare updatedLakare = resultList.get(0);
-                updatedLakare.setVardgivareId(new HsaIdVardgivare(vardgivareId));
-                updatedLakare.setLakareId(new HsaIdLakare(lakareId));
+                updatedLakare.setVardgivareId(vardgivareId);
+                updatedLakare.setLakareId(lakareId);
                 updatedLakare.setTilltalsNamn(tilltalsNamn);
                 updatedLakare.setEfterNamn(efterNamn);
                 manager.merge(updatedLakare);
@@ -99,17 +99,17 @@ public class LakareManager {
         return query.getResultList();
     }
 
-    private boolean validate(String vardgivare, String lakareId, String tilltalsNamn, String efterNamn) {
+    private boolean validate(HsaIdVardgivare vardgivare, HsaIdLakare lakareId, String tilltalsNamn, String efterNamn) {
         // Utan vardgivare har vi inget uppdrag att behandla intyg, avbryt direkt
-        if (vardgivare == null) {
+        if (vardgivare == null || vardgivare.isEmpty()) {
             LOG.error("Vardgivare saknas for lakare");
             return false;
         }
-        if (vardgivare.length() > WidelineConverter.MAX_LENGTH_VGID) {
-            LOG.error("Vardgivare saknas for lakare");
+        if (vardgivare.getId().length() > WidelineConverter.MAX_LENGTH_VGID) {
+            LOG.error("Vardgivare id ogiltigt for lakare");
             return false;
         }
-        boolean result = checkLength(lakareId, "Lakareid", WidelineConverter.MAX_LENGTH_LAKARE_ID);
+        boolean result = checkLength(lakareId.getId(), "Lakareid", WidelineConverter.MAX_LENGTH_LAKARE_ID);
         result |= checkLength(tilltalsNamn, "Tilltalsnamn", WidelineConverter.MAX_LENGTH_TILLTALSNAMN);
         result |= checkLength(efterNamn, "Efternamn", WidelineConverter.MAX_LENGTH_EFTERNAMN);
         return result;

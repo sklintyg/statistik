@@ -27,6 +27,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
 
@@ -54,8 +55,8 @@ public class LakareManagerTest {
         List<Lakare> allLakares = lakareManager.getAllLakares();
         assertEquals(1, allLakares.size());
         assertEquals("LAKARE", allLakares.get(0).getLakareId().getId());
-        assertEquals("Cecilia", allLakares.get(0).getTilltalsNamn());
-        assertEquals("Juhanen", allLakares.get(0).getEfterNamn());
+        assertEquals("My", allLakares.get(0).getTilltalsNamn());
+        assertEquals("Åsgren", allLakares.get(0).getEfterNamn());
     }
 
     @Test
@@ -79,11 +80,11 @@ public class LakareManagerTest {
         List<Lakare> allLakares = lakareManager.getAllLakares();
         assertEquals(2, allLakares.size());
         assertEquals("LAKARE1", allLakares.get(0).getLakareId().getId());
-        assertEquals("Fredrika", allLakares.get(0).getTilltalsNamn());
-        assertEquals("En", allLakares.get(0).getEfterNamn());
+        assertEquals("Natasha", allLakares.get(0).getTilltalsNamn());
+        assertEquals("Uddhammar", allLakares.get(0).getEfterNamn());
         assertEquals("LAKARE2", allLakares.get(1).getLakareId().getId());
-        assertEquals("My", allLakares.get(1).getTilltalsNamn());
-        assertEquals("Manard", allLakares.get(1).getEfterNamn());
+        assertEquals("Vieux", allLakares.get(1).getTilltalsNamn());
+        assertEquals("En", allLakares.get(1).getEfterNamn());
     }
 
 }

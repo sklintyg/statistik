@@ -29,8 +29,7 @@ public class HsaIdAny implements Serializable {
     private String id;
 
     HsaIdAny(String id) {
-        assert id != null : "HSA id may not be null";
-        this.id = id == null ? "" : id.toUpperCase(Locale.ENGLISH);
+        this.id = id == null ? "" : id.toUpperCase(Locale.ENGLISH).replaceAll("\\s", "");
     }
 
     /**
@@ -76,6 +75,10 @@ public class HsaIdAny implements Serializable {
 
     private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
         id = (String) stream.readObject();
+    }
+
+    public boolean isEmpty() {
+        return id.isEmpty();
     }
 
 }

@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HsaWsResponderMock;
@@ -193,7 +194,7 @@ public class RestSupportService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response insertPersonal(Personal personal) {
         LOG.info("Insert personal: " + personal);
-        hsaDataInjectable.addPersonal(personal.getId(), personal.getFirstName(), personal.getLastName(), personal.getKon(), personal.getAge(), personal.getBefattning());
+        hsaDataInjectable.addPersonal(new HsaIdLakare(personal.getId()), personal.getFirstName(), personal.getLastName(), personal.getKon(), personal.getAge(), personal.getBefattning());
         return Response.ok().build();
     }
 

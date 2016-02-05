@@ -68,7 +68,7 @@ public class WidelineConverter {
         String lkf = getLkf(hsa);
 
         String enhet = HSAServiceHelper.getEnhetId(hsa);
-        String vardgivare = HSAServiceHelper.getVardgivarId(hsa);
+        HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
 
         final DocumentHelper.IntygVersion version = DocumentHelper.getIntygVersion(intyg);
 
@@ -109,7 +109,7 @@ public class WidelineConverter {
         int lakarkon = HSAServiceHelper.getLakarkon(hsa);
         int lakaralder = HSAServiceHelper.getLakaralder(hsa);
         String lakarbefattning = HSAServiceHelper.getLakarbefattning(hsa);
-        String lakareid = HSAServiceHelper.getLakareId(hsa);
+        HsaIdLakare lakareid = HSAServiceHelper.getLakareId(hsa);
 
         List<WideLine> lines = new ArrayList<>();
 
@@ -127,7 +127,7 @@ public class WidelineConverter {
             line.setIntygTyp(type);
             line.setLkf(lkf);
             line.setEnhet(new HsaIdEnhet(enhet));
-            line.setVardgivareId(new HsaIdVardgivare(vardgivare));
+            line.setVardgivareId(vardgivare);
 
             line.setStartdatum(toDay(kalenderStart));
             line.setSlutdatum(toDay(kalenderEnd));
@@ -145,7 +145,7 @@ public class WidelineConverter {
             line.setLakaralder(lakaralder);
             line.setLakarkon(lakarkon);
             line.setLakarbefattning(lakarbefattning);
-            line.setLakareId(new HsaIdLakare(lakareid));
+            line.setLakareId(lakareid);
             lines.add(line);
         }
         return lines;

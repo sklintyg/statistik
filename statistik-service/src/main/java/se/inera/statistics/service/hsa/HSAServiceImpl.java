@@ -38,6 +38,7 @@ import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessClassificationCo
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.CareTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.Managements;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import java.util.Iterator;
 import java.util.List;
@@ -75,7 +76,7 @@ public class HSAServiceImpl implements HSAService {
                     || (!root.root.get(HSA_INFO_ENHET).has("vgid") && !root.has(HSA_INFO_HUVUDENHET))
                     || (!root.root.get(HSA_INFO_ENHET).has("vgid") && root.has(HSA_INFO_HUVUDENHET) && !root.root.get(HSA_INFO_HUVUDENHET).has("vgid"))
                     ) {
-                GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId());
+                GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId().getId());
                 if (unit != null) {
                     //huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det kopplad/underliggande enhet
                     root.put(HSA_INFO_ENHET, createUnit(unit.getStatisticsUnit()));
@@ -84,19 +85,19 @@ public class HSAServiceImpl implements HSAService {
             }
 
             if (!root.has(HSA_INFO_VARDGIVARE)) {
-                final String vgId = getVardgivareHsaId(root, HSA_INFO_ENHET, HSA_INFO_HUVUDENHET);
-                if (vgId == null || !vgId.equalsIgnoreCase(key.getVardgivareId())) {
+                final HsaIdVardgivare vgId = getVardgivareHsaId(root, HSA_INFO_ENHET, HSA_INFO_HUVUDENHET);
+                if (vgId == null || !vgId.equals(key.getVardgivareId())) {
                     LOG.info("VardgivarId mismatch found for enhet: {}. Was {} in HSA but expected {} from intyg", key.getEnhetId(), key.getVardgivareId(), vgId);
                 }
                 if (vgId != null && !vgId.isEmpty()) {
-                    GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(vgId);
+                    GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(vgId.getId());
                     root.put(HSA_INFO_VARDGIVARE, createCareGiver(caregiver));
                 }
             }
 
             if (!root.has(HSA_INFO_PERSONAL)) {
-                GetStatisticsPersonResponseType personal = getStatisticsPerson(key.getLakareId());
-                GetStatisticsNamesResponseType names = getStatisticsNames(key.getLakareId());
+                GetStatisticsPersonResponseType personal = getStatisticsPerson(key.getLakareId().getId());
+                GetStatisticsNamesResponseType names = getStatisticsNames(key.getLakareId().getId());
                 root.put(HSA_INFO_PERSONAL, createPersonal(personal, names));
             }
 
@@ -107,12 +108,12 @@ public class HSAServiceImpl implements HSAService {
         }
     }
 
-    private String getVardgivareHsaId(Builder root, String... enhetNodeNames) {
+    private HsaIdVardgivare getVardgivareHsaId(Builder root, String... enhetNodeNames) {
         for (String enhetNodeName : enhetNodeNames) {
             if (root.has(enhetNodeName)) {
                 JsonNode enhetJsonNode = root.root.get(enhetNodeName);
                 if (enhetJsonNode.has("vgid")) {
-                    return enhetJsonNode.get("vgid").textValue();
+                    return new HsaIdVardgivare(enhetJsonNode.get("vgid").textValue());
                 }
             }
         }

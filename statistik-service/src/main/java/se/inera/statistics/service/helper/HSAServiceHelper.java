@@ -22,6 +22,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Iterators;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
@@ -58,11 +60,12 @@ public final class HSAServiceHelper {
         return result;
     }
 
-    public static String getVardgivarId(JsonNode hsaData) {
+    public static HsaIdVardgivare getVardgivarId(JsonNode hsaData) {
         if (hsaData == null) {
-            return null;
+            return HsaIdVardgivare.empty();
         } else {
-            return hsaData.path("vardgivare").path("id").textValue();
+            final String idText = hsaData.path("vardgivare").path("id").textValue();
+            return new HsaIdVardgivare(idText);
         }
     }
 
@@ -189,9 +192,9 @@ public final class HSAServiceHelper {
         return hsaData.path(enhet).path("namn").textValue();
     }
 
-    public static String getLakareId(JsonNode hsaData) {
+    public static HsaIdLakare getLakareId(JsonNode hsaData) {
         String result = hsaData.path("personal").path("id").textValue();
-        return result != null ? result : "";
+        return new HsaIdLakare(result);
     }
 
     public static String getLakareTilltalsnamn(JsonNode hsaData) {

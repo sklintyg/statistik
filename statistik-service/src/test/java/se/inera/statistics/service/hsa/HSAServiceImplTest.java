@@ -116,7 +116,7 @@ public class HSAServiceImplTest {
     @Test
     public void hsUnitWithMissingGeography() throws Exception {
         GetStatisticsHsaUnitResponseType response = getHsaUnitResponse("GetStatisticsHsaUnit-small.xml");
-        when(wsCalls.getStatisticsHsaUnit("enhetId")).thenReturn(response);
+        when(wsCalls.getStatisticsHsaUnit("ENHETID")).thenReturn(response);
 
         HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
         JsonNode info = serviceImpl.getHSAInfo(key);
@@ -139,7 +139,7 @@ public class HSAServiceImplTest {
     @Test
     public void serviceReturnsNullOnException() throws Exception {
         HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
-        when(wsCalls.getStatisticsHsaUnit("enhetId")).thenThrow(new IllegalStateException("This WS generated and exception"));
+        when(wsCalls.getStatisticsHsaUnit("ENHETID")).thenThrow(new IllegalStateException("This WS generated and exception"));
         JsonNode hsaInfo = serviceImpl.getHSAInfo(key);
         assertNull(hsaInfo);
     }
@@ -234,8 +234,8 @@ public class HSAServiceImplTest {
         //Then
         assertEquals(null, result.get(HSAService.HSA_INFO_ENHET).get("vgid"));
         assertEquals("\"vgId\"", result.get(HSAService.HSA_INFO_HUVUDENHET).get("vgid").toString());
-        Mockito.verify(wsCalls, times(1)).getStatisticsHsaUnit(enhetId);
-        Mockito.verify(wsCalls, times(1)).getStatisticsCareGiver("vgId");
+        Mockito.verify(wsCalls, times(1)).getStatisticsHsaUnit(enhetId.toUpperCase());
+        Mockito.verify(wsCalls, times(1)).getStatisticsCareGiver("vgId".toUpperCase());
     }
 
     @Test

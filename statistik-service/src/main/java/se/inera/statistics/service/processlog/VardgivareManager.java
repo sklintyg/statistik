@@ -37,6 +37,7 @@ import java.util.List;
 @Component
 public class VardgivareManager {
     private static final Logger LOG = LoggerFactory.getLogger(VardgivareManager.class);
+    public static final HsaIdEnhet UTAN_ENHETSID = new HsaIdEnhet(DocumentHelper.UTANENHETSID);
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
@@ -44,12 +45,13 @@ public class VardgivareManager {
     @Transactional
     public void saveEnhet(JsonNode hsaInfo, JsonNode document) {
         boolean hsaEnhet = true;
-        String enhet = HSAServiceHelper.getEnhetId(hsaInfo);
-        if (enhet == null) {
+        String enhetIdString = HSAServiceHelper.getEnhetId(hsaInfo);
+        if (enhetIdString == null) {
             hsaEnhet = false;
-            enhet = DocumentHelper.getEnhetId(document, DocumentHelper.getIntygVersion(document));
+            enhetIdString = DocumentHelper.getEnhetId(document, DocumentHelper.getIntygVersion(document));
         }
-        String vardgivare = HSAServiceHelper.getVardgivarId(hsaInfo);
+        final HsaIdEnhet enhet = new HsaIdEnhet(enhetIdString);
+        final HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsaInfo);
         String enhetNamn = HSAServiceHelper.getEnhetNamn(hsaInfo);
         String vardgivareNamn = HSAServiceHelper.getVardgivarNamn(hsaInfo);
         String lansId = HSAServiceHelper.getLan(hsaInfo);
@@ -57,19 +59,19 @@ public class VardgivareManager {
         String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(hsaInfo);
 
         if (enhetNamn == null) {
-            enhetNamn = DocumentHelper.UTANENHETSID.equals(enhet) ? "Utan enhets-id" : enhet;
+            enhetNamn = UTAN_ENHETSID.equals(enhet) ? "Utan enhets-id" : enhet.getId();
         }
         if (vardgivareNamn == null) {
-            vardgivareNamn = vardgivare;
+            vardgivareNamn = vardgivare.getId();
         }
 
         if (validate(vardgivare, enhetNamn, vardgivareNamn, lansId, kommunId, verksamhetsTyper, hsaInfo)) {
             //Must use 'LIKE' instead of '=' due to STATISTIK-1231
             TypedQuery<Enhet> vardgivareQuery = manager.createQuery("SELECT v FROM Enhet v WHERE v.enhetId LIKE :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
-            List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet).setParameter("vardgivareId", vardgivare).getResultList();
+            List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet.getId()).setParameter("vardgivareId", vardgivare.getId()).getResultList();
 
             if (resultList.isEmpty()) {
-                manager.persist(new Enhet(new HsaIdVardgivare(vardgivare), vardgivareNamn, new HsaIdEnhet(enhet), enhetNamn, lansId, kommunId, verksamhetsTyper));
+                manager.persist(new Enhet(vardgivare, vardgivareNamn, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper));
             } else if (hsaEnhet) {
                 Enhet updatedEnhet = resultList.get(0);
                 updatedEnhet.setVardgivareNamn(vardgivareNamn);
@@ -99,14 +101,14 @@ public class VardgivareManager {
         return query.getResultList();
     }
 
-    private boolean validate(String vardgivare, String enhetNamn, String vardgivareNamn, String lansId, String kommunId, String verksamhetsTyper, JsonNode hsaInfo) {
+    private boolean validate(HsaIdVardgivare vardgivare, String enhetNamn, String vardgivareNamn, String lansId, String kommunId, String verksamhetsTyper, JsonNode hsaInfo) {
         // Utan vardgivare har vi inget uppdrag att behandla intyg, avbryt direkt
-        if (vardgivare == null) {
+        if (vardgivare == null || vardgivare.isEmpty()) {
             LOG.error("Vardgivare saknas: " + hsaInfo.asText());
             return false;
         }
-        if (vardgivare.length() > WidelineConverter.MAX_LENGTH_VGID) {
-            LOG.error("Vardgivare saknas: " + hsaInfo.asText());
+        if (vardgivare.getId().length() > WidelineConverter.MAX_LENGTH_VGID) {
+            LOG.error("Vardgivare id ogiltigt: " + hsaInfo.asText());
             return false;
         }
         boolean result = checkLength(enhetNamn, "Enhetsnamn", WidelineConverter.MAX_LENGTH_ENHETNAME, hsaInfo);

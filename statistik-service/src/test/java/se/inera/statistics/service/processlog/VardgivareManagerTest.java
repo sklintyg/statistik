@@ -61,7 +61,7 @@ public class VardgivareManagerTest {
         assertEquals("ENHET", allEnhets.get(0).getEnhetId().getId());
         //Enhet name is set by external script (tools/fileservice).
         //Default name until set by script will be the hsa id.
-        assertEquals("enhet", allEnhets.get(0).getNamn());
+        assertEquals("ENHET", allEnhets.get(0).getNamn());
     }
 
     @Test
@@ -95,7 +95,7 @@ public class VardgivareManagerTest {
         assertEquals("ENHET", enhets.get(0).getEnhetId().getId());
         //Enhet name is set by external script (tools/fileservice).
         //Default name until set by script will be the hsa id.
-        assertEquals("enhet", enhets.get(0).getNamn());
+        assertEquals("ENHET", enhets.get(0).getNamn());
     }
 
     @Test
@@ -117,6 +117,6 @@ public class VardgivareManagerTest {
         assertEquals("VG", allVardgivares.get(0).getId());
         //Enhet name is set by external script (tools/fileservice).
         //Default name until set by script will be the hsa id.
-        assertEquals("vg", allVardgivares.get(0).getNamn());
+        assertEquals("VG", allVardgivares.get(0).getNamn());
     }
 }

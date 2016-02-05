@@ -40,7 +40,7 @@ class HSADecoratorTest {
 
         ObjectNode result = hsaService.getHSAInfo(key)
 
-        assertEquals "län för vardgivareId,enhetId,lakareId", result.findPath("lan").textValue()
+        assertEquals "län för VARDGIVAREID,ENHETID,LAKAREID", result.findPath("lan").textValue()
 
     }
 
@@ -50,9 +50,9 @@ class HSADecoratorTest {
 
         def key = hsaDecorator.extractHSAKey(doc)
 
-        assertEquals "enhetId", key.enhetId
-        assertEquals "Personal HSA-ID", key.lakareId
-        assertEquals "VardgivarId", key.vardgivareId
+        assertEquals "enhetId".toUpperCase(), key.enhetId.id
+        assertEquals "Personal HSA-ID".toUpperCase().replaceAll(" ", ""), key.lakareId.id
+        assertEquals "VardgivarId".toUpperCase(), key.vardgivareId.id
     }
 
 }
