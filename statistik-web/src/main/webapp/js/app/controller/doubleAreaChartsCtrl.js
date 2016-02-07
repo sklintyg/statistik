@@ -47,12 +47,12 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             chartOptions.yAxis.title.align = 'high';
             chartOptions.yAxis.title.offset = 0;
             chartOptions.yAxis.labels.formatter = function () {
-                return ControllerCommons.makeThousandSeparated(this.value) + (percentChart ? "%" : "");
+                return ControllerCommons.makeThousandSeparated(this.value) + (percentChart ? " %" : "");
             };
             chartOptions.plotOptions.series.stacking = percentChart ? 'percent' : 'normal';
 
             if (percentChart) {
-                chartOptions.tooltip.pointFormat = '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f}%</b><br/>';
+                chartOptions.tooltip.pointFormat = '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f} %</b><br/>';
             }
 
             return new Highcharts.Chart(chartOptions);

@@ -51,9 +51,9 @@ public class SjukfallPerSexConverterTest {
         assertEquals("län 1", rows.get(0).getName());
         assertEquals("län 2", rows.get(1).getName());
         assertEquals("län 3", rows.get(2).getName());
-        assertEquals("[25, 48% (12), 52% (13)]", rows.get(0).getData().toString());
-        assertEquals("[50, 40% (20), 60% (30)]", rows.get(1).getData().toString());
-        assertEquals("[30, 17% (5), 83% (25)]", rows.get(2).getData().toString());
+        assertEquals("[25, 48 % (12), 52 % (13)]", rows.get(0).getData().toString());
+        assertEquals("[50, 40 % (20), 60 % (30)]", rows.get(1).getData().toString());
+        assertEquals("[30, 17 % (5), 83 % (25)]", rows.get(2).getData().toString());
     }
 
     // CHECKSTYLE:ON MagicNumber

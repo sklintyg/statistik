@@ -134,19 +134,19 @@ Inloggad:
 | user2        | 41-45 år    | 1    | 0        |
 
 | Sjukfall i rapporten sjukskrivningsgrad |
-| inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| user2        | 2013 | maj   | 50%                  | -1   | -1       |
-| user2        | 2013 | jun   | 100%                 | 0    | 1        |
-| user2        | 2013 | jul   | 100%                 | 0    | 1        |
-| user2        | 2013 | aug   | 100%                 | 0    | 1        |
-| user2        | 2013 | sep   | 100%                 | 0    | 1        |
-| user2        | 2013 | okt   | 100%                 | 0    | 1        |
-| user2        | 2013 | nov   | 100%                 | 0    | 1        |
-| user2        | 2014 | jul   | 50%                  | 0    | 1        |
-| user2        | 2014 | aug   | 50%                  | 0    | 1        |
-| user2        | 2014 | sep   | 50%                  | 0    | 1        |
-| user2        | 2014 | okt   | 50%                  | 0    | 1        |
-| user2        | 2014 | nov   | 25%                  | 1    | 0        |
+| inloggad som | år   | månad | sjukskrivningsgrad | män? | kvinnor? |
+| user2        | 2013 | maj   | 50 %               | -1   | -1       |
+| user2        | 2013 | jun   | 100 %              | 0    | 1        |
+| user2        | 2013 | jul   | 100 %              | 0    | 1        |
+| user2        | 2013 | aug   | 100 %              | 0    | 1        |
+| user2        | 2013 | sep   | 100 %              | 0    | 1        |
+| user2        | 2013 | okt   | 100 %              | 0    | 1        |
+| user2        | 2013 | nov   | 100 %              | 0    | 1        |
+| user2        | 2014 | jul   | 50 %               | 0    | 1        |
+| user2        | 2014 | aug   | 50 %               | 0    | 1        |
+| user2        | 2014 | sep   | 50 %               | 0    | 1        |
+| user2        | 2014 | okt   | 50 %               | 0    | 1        |
+| user2        | 2014 | nov   | 25 %               | 1    | 0        |
 
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | sjukskrivningslängd | män? | kvinnor? |

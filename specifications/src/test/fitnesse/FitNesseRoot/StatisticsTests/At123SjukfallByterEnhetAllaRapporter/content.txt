@@ -76,12 +76,12 @@ Inloggad:
 
 | Sjukfall i rapporten sjukskrivningsgrad |
 | inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| user1        | 2014 | jun   | 50%                  | 1    | 0        |
-| user1        | 2014 | jun   | 100%                 | 0    | 0        |
-| user4        | 2014 | jun   | 50%                  | 0    | 0        |
-| user4        | 2014 | jun   | 100%                 | 1    | 0        |
-| user2        | 2014 | jun   | 50%                  | 0    | 0        |
-| user2        | 2014 | jun   | 100%                 | 1    | 0        |
+| user1        | 2014 | jun   | 50 %                 | 1    | 0        |
+| user1        | 2014 | jun   | 100 %                | 0    | 0        |
+| user4        | 2014 | jun   | 50 %                 | 0    | 0        |
+| user4        | 2014 | jun   | 100 %                | 1    | 0        |
+| user2        | 2014 | jun   | 50 %                 | 0    | 0        |
+| user2        | 2014 | jun   | 100 %                | 1    | 0        |
 
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | sjukskrivningslängd | män? | kvinnor? |

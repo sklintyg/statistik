@@ -55,7 +55,7 @@ public final class SjukskrivningsgradQuery {
         for (Integer range : GRAD) {
             int current = currentCount.get(range).getCount();
             int previous = previousCount.get(range).getCount();
-            result.add(new OverviewChartRowExtended(range.toString() + "%", current, percentChange(current, previous)));
+            result.add(new OverviewChartRowExtended(range.toString() + " %", current, percentChange(current, previous)));
         }
 
         return result;

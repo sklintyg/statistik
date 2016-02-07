@@ -24,7 +24,7 @@ import se.inera.statistics.web.model.DualSexStatisticsData;
 public class DegreeOfSickLeaveConverter extends MultiDualSexConverter<KonDataResponse> {
 
     DualSexStatisticsData convert(KonDataResponse degreeOfSickLeave, FilterSettings filterSettings) {
-        return super.convert(degreeOfSickLeave, filterSettings, null, "%1$s%% sjukskrivningsgrad");
+        return super.convert(degreeOfSickLeave, filterSettings, null, "%1$s %% sjukskrivningsgrad");
     }
 
 }

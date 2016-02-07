@@ -68,8 +68,8 @@
 								</span>
 								<span class="overview-widget-content img-responsive">
 									<p id="overview-distribution-per-sex-values">
-						                <span style="position: relative; right: 11px;" id="overview-distribution-female-lbl">{{casesPerMonthFemaleProportion}}% </span>
-						                <span style="position: relative; left: 16px;" id="overview-distribution-male-lbl">{{casesPerMonthMaleProportion}}% </span>
+						                <span style="position: relative; right: 11px;" id="overview-distribution-female-lbl">{{casesPerMonthFemaleProportion}} % </span>
+						                <span style="position: relative; left: 16px;" id="overview-distribution-male-lbl">{{casesPerMonthMaleProportion}} % </span>
 						            </p>
 						            <img id="overview-distribution-per-sex-image" class="center-block" src="img/distribution_sex_stat.png"/>	
 								</span>
@@ -120,7 +120,7 @@
 						                    <td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
 				                            <td class="diagnostics-group-name">{{group.name}}</td>
 						                    <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-						                    <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
+						                    <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
 						                </tr>
 						                </tbody>
 						            </table>
@@ -157,7 +157,7 @@
 				                        	<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
 				                            <td class="diagnostics-group-name">{{group.name}}</td>
 				                            <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-				                            <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
+				                            <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
 				                        </tr>
 				                        </tbody>
 				                    </table>
@@ -190,9 +190,9 @@
 				                        <tbody>
 				                        <tr data-ng-repeat="group in degreeOfSickLeaveGroups">
 				                        	<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-				                            <td>{{group.name}}%</td>
+				                            <td>{{group.name}} %</td>
 				                            <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-				                            <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
+				                            <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
 				                        </tr>
 				                        </tbody>
 				                    </table>
@@ -220,7 +220,7 @@
 				                        	<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90"></span></span>
 				                        </div>
 				                        <div class="overview-chart-info-section pull-right">
-				                        	<span class="longSickLeavesValue">{{longSickLeavesAlteration}}%</span><br/>
+				                        	<span class="longSickLeavesValue">{{longSickLeavesAlteration}} %</span><br/>
 				                        	<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader"></span></span>
 				                        </div>
 				                    </div>
@@ -256,7 +256,7 @@
 				                            <td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
 				                            <td class="diagnostics-group-name">{{group.name}}</td>
 				                            <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-				                            <td class="diagnostics-group-alternation">{{group.alternation}}%</td>
+				                            <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
 				                        </tr>
 				                        </tbody>
 				                    </table>

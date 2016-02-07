@@ -25,7 +25,7 @@ Nationell:
 | dec 2014–feb 2015 | Okänt län      | 0    | 0        |
 
 | Sjukfall i rapporten andel sjukfall per kon |
-| län            | totalt? | män?     | kvinnor? |
-| Stockholms län | 0       | 0% (0)   | 0% (0)   |
-| Uppsala län    | 1       | 100% (1) | 0% (0)   |
-| Okänt län      | 0       | 0% (0)   | 0% (0)   |
+| län            | totalt? | män?      | kvinnor? |
+| Stockholms län | 0       | 0 % (0)   | 0 % (0)  |
+| Uppsala län    | 1       | 100 % (1) | 0 % (0)  |
+| Okänt län      | 0       | 0 % (0)   | 0 % (0)  |

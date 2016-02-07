@@ -20,15 +20,15 @@ Graden väljs från det intyg som är aktivt minst en dag i perioden och som har
 Nationell:
 | Sjukfall i rapporten sjukskrivningsgrad |
 | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| 2014 | mar   | 100%                 | 0    | 0        |
-| 2014 | mar   | 50%                  | 0    | 1        |
-| 2014 | apr   | 100%                 | 0    | 0        |
-| 2014 | apr   | 50%                  | 0    | 1        |
+| 2014 | mar   | 100 %                | 0    | 0        |
+| 2014 | mar   | 50 %                 | 0    | 1        |
+| 2014 | apr   | 100 %                | 0    | 0        |
+| 2014 | apr   | 50 %                 | 0    | 1        |
 
 Inloggad:
 | Sjukfall i rapporten sjukskrivningsgrad |
 | inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| user1        | 2014 | mar   | 100%                 | 0    | 0        |
-| user1        | 2014 | mar   | 50%                  | 0    | 1        |
-| user1        | 2014 | apr   | 100%                 | 0    | 0        |
-| user1        | 2014 | apr   | 50%                  | 0    | 1        |
+| user1        | 2014 | mar   | 100 %                | 0    | 0        |
+| user1        | 2014 | mar   | 50 %                 | 0    | 1        |
+| user1        | 2014 | apr   | 100 %                | 0    | 0        |
+| user1        | 2014 | apr   | 50 %                 | 0    | 1        |

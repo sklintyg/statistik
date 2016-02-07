@@ -28,9 +28,9 @@ Det spelar ingen roll att samma personnummer förekommer i två län samtidigt.
 Nationell:
 | Sjukfall i rapporten andel sjukfall per kon |
 | län            | totalt? | män?     | kvinnor? |
-| Stockholms län | 6       | 50% (3)  | 50% (3)  |
-| Blekinge län   | 1       | 100% (1) | 0% (0)   |
-| Dalarnas län   | 0       | 0% (0)   | 0% (0)   |
+| Stockholms län | 6       | 50 % (3) | 50 % (3) |
+| Blekinge län   | 1       | 100 % (1)| 0 % (0)  |
+| Dalarnas län   | 0       | 0 % (0)  | 0 % (0)  |
 
 | Sjukfall i rapporten andel sjukfall per kon diagram |
 | län            | män? | kvinnor? |

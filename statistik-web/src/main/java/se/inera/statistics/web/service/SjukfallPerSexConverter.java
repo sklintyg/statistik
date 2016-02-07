@@ -54,7 +54,7 @@ public class SjukfallPerSexConverter {
         symbols.setGroupingSeparator(' ');
         final DecimalFormat formatter = new DecimalFormat("###,###", symbols);
         final float toPercentFactor = 100.0F;
-        return Math.round(toPercentFactor * value / rowSum) + "% (" + formatter.format(value) + ")";
+        return Math.round(toPercentFactor * value / rowSum) + " % (" + formatter.format(value) + ")";
     }
 
     private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {

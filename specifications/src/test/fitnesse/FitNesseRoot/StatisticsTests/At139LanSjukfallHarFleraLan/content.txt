@@ -26,7 +26,7 @@ Nationell:
 | maj–jul 2013 | Okänt län      | 1    | 0        |
 
 | Sjukfall i rapporten andel sjukfall per kon |
-| län            | totalt? | män?     | kvinnor? |
-| Stockholms län | 0       | 0% (0)   | 0% (0)   |
-| Uppsala län    | 0       | 0% (0)   | 0% (0)   |
-| Okänt län      | 1       | 100% (1) | 0% (0)   |
+| län            | totalt? | män?      | kvinnor? |
+| Stockholms län | 0       | 0 % (0)   | 0 % (0)  |
+| Uppsala län    | 0       | 0 % (0)   | 0 % (0)  |
+| Okänt län      | 1       | 100 % (1) | 0 % (0)  |

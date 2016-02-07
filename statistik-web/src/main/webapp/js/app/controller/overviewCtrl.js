@@ -66,7 +66,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             chartOptions.title = {
                 verticalAlign: 'middle',
                 floating: true,
-                text: alteration + '%',
+                text: alteration + ' %',
                 style: {
                     fontFamily: 'Helvetica, Arial, sans-serif',
                     color: '#FFFFFF',
@@ -86,7 +86,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             return new Highcharts.Chart(chartOptions);
         }
 
-        var paintDonutChart = function (containerId, chartData, tooltipHeaderPrefix) {
+        var paintDonutChart = function (containerId, chartData, tooltipHeaderPrefix, tooltipHeaderSuffix) {
             var series = [
                 {
                     name: 'Antal',
@@ -105,7 +105,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             chartOptions.chart.renderTo = containerId;
             chartOptions.chart.height = 180;
             chartOptions.chart.plotBorderWidth = 0;
-            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
+            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}'  + (tooltipHeaderSuffix || "") + '</span><br/>';
 
             //Things we need to do when the chart is going to be printed
             if($routeParams.printBw || $routeParams.print) {
@@ -140,7 +140,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
 
             var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
             printFactory.setupSeriesForDisplayType($routeParams.printBw, degreeOfSickLeaveDonutData, "pie");
-            degreeOfSickLeaveChart = paintDonutChart("degreeOfSickLeaveChart", degreeOfSickLeaveDonutData);
+            degreeOfSickLeaveChart = paintDonutChart("degreeOfSickLeaveChart", degreeOfSickLeaveDonutData, null, " %");
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
             printFactory.setupSeriesForDisplayType($routeParams.printBw, result.sickLeaveLength.chartData, "bar");

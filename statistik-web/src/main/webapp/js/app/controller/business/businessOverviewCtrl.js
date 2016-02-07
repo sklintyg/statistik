@@ -151,14 +151,14 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
 
         };
         chartOptions.legend = {
-            labelFormat: '{name} {percentage:.0f}% (antal: {y})',
+            labelFormat: '{name} {percentage:.0f} % (antal: {y})',
             align: 'top left',
             verticalAlign: 'top',
             borderWidth: 0,
             useHTML: true,
             layout: 'vertical'
         };
-        chartOptions.tooltip.pointFormat = '{point.percentage:.0f}% (antal: {point.y})';
+        chartOptions.tooltip.pointFormat = '{point.percentage:.0f} % (antal: {point.y})';
 
         return new Highcharts.Chart(chartOptions);
     };
