@@ -41,13 +41,14 @@
           factory-method="createTcpServer"
           init-method="start"
           destroy-method="stop" lazy-init="false">
-        <constructor-arg value="-tcp,-tcpAllowOthers,-tcpPort,9094"/>
+        <constructor-arg value="-tcp,-tcpAllowOthers"/>
+        <!--<constructor-arg value="-tcp,-tcpAllowOthers,-tcpPort,9094"/>-->
     </bean>
 
-    <bean id="h2WebServer" class="org.h2.tools.Server" factory-method="createWebServer" init-method="start"
-          destroy-method="stop">
-        <constructor-arg value="-web,-webAllowOthers,-webPort,8084"/>
-    </bean>
+    <!--<bean id="h2WebServer" class="org.h2.tools.Server" factory-method="createWebServer" init-method="start"-->
+          <!--destroy-method="stop">-->
+        <!--<constructor-arg value="-web,-webAllowOthers,-webPort,8084"/>-->
+    <!--</bean>-->
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
