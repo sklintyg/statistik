@@ -189,7 +189,11 @@ angular.module('StatisticsApp.charts', ['underscore'])
                     }
                 };
             }
-            chart.exportChart(options, extendedChartOptions);
+            try {
+                chart.exportChart(options, extendedChartOptions);
+            } catch (e) {
+                alert("Diagrammet kunde inte exporteras. Testa att applicera ett filter för att minska datamängden och försök igen.");
+            }
         };
 
         var calculateSeriesStacking = function calculateSeriesStacking(chart, chartType) {
