@@ -9,21 +9,25 @@ Verifierar INTYG-1812
 | script | troskel varde | 0 |
 
 | Enbart foljande intyg finns |
-| personnr      | diagnoskod | start      | slut       | enhet       | kommentar             |
-| 19790330-9230 | G01        | 2014-03-05 | 2014-03-16 | enhet1      | Inget mellanslag      |
-| 19790330-9230 | G01        | 2014-04-05 | 2014-04-16 | enh et1     | Mellanslag mitt i     |
-| 19790330-9230 | G01        | 2014-05-05 | 2014-05-16 | !- enhet1-! | Börjar med mellanslag |
-| 19790330-9230 | G01        | 2014-06-05 | 2014-06-16 | !-enhet1 -! | Slutar med mellanslag |
+| personnr      | diagnoskod | start      | slut       | enhet       | vardgivare | kommentar                   |
+| 19790330-9230 | G01        | 2014-03-05 | 2014-03-16 | enhet1      | vg1        | ENHET Inget mellanslag      |
+| 19790330-9230 | G01        | 2014-04-05 | 2014-04-16 | enh et1     | vg1        | ENHET Mellanslag mitt i     |
+| 19790330-9230 | G01        | 2014-05-05 | 2014-05-16 | !- enhet1-! | vg1        | ENHET Börjar med mellanslag |
+| 19790330-9230 | G01        | 2014-06-05 | 2014-06-16 | !-enhet1 -! | vg1        | ENHET Slutar med mellanslag |
+| 19790330-9230 | G01        | 2013-07-05 | 2013-07-16 | enhet1      | vg1        | VG Inget mellanslag         |
+| 19790330-9230 | G01        | 2013-08-05 | 2013-08-16 | enhet1      | v g1       | VG Mellanslag mitt i        |
+| 19790330-9230 | G01        | 2013-09-05 | 2013-09-16 | enhet1      | !- vg1-!   | VG Börjar med mellanslag    |
+| 19790330-9230 | G01        | 2013-10-05 | 2013-10-16 | enhet1      | !-vg1 -!   | VG Slutar med mellanslag    |
 
 !3 Då gäller:
 
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? | kommentar |
 | user1        | 2013 | jun   | 0    | 0        |           |
-| user1        | 2013 | jul   | 0    | 0        |           |
-| user1        | 2013 | aug   | 0    | 0        |           |
-| user1        | 2013 | sep   | 0    | 0        |           |
-| user1        | 2013 | okt   | 0    | 0        |           |
+| user1        | 2013 | jul   | 1    | 0        |           |
+| user1        | 2013 | aug   | 1    | 0        |           |
+| user1        | 2013 | sep   | 1    | 0        |           |
+| user1        | 2013 | okt   | 1    | 0        |           |
 | user1        | 2013 | nov   | 0    | 0        |           |
 | user1        | 2013 | dec   | 0    | 0        |           |
 | user1        | 2014 | jan   | 0    | 0        |           |
