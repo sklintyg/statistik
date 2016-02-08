@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+Verifierar INTYG-1812
+
 !3 Givet att:
 
 | script | dagens datum | 2014-11-28 |
