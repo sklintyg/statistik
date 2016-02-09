@@ -32,7 +32,7 @@ describe("Chart services", function() {
     });
 
     describe("Export charts", function () {
-        it("can export a chart", function () {
+        it("INTYG-1829: can export a chart with fewer than 10 series", function () {
             var callTimes = 0;
             var name = "testName";
             var chart = {
@@ -42,11 +42,29 @@ describe("Chart services", function() {
                     expect(chartOpt.legend.enabled).toBe(true);
                     expect(chartOpt.legend.layout).toBe("MyLayout");
                     expect(chartOpt.title.text).toBe("title text");
-                }
+                },
+                series: ["1", "2"]
+            };
+            chartFactory.exportChart(chart, name, "title text", "MyLayout");
+            expect(callTimes).toBe(1);
+        });
+
+        it("INTYG-1829: can export a chart with more than 10 series", function () {
+            var callTimes = 0;
+            var name = "testName";
+            var chart = {
+                exportChart: function (opt, chartOpt) {
+                    callTimes++;
+                    expect(opt.filename).toMatch(/testName/);
+                    expect(chartOpt.legend).toBeUndefined();
+                    expect(chartOpt.title.text).toBe("title text");
+                },
+                series: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
             };
             chartFactory.exportChart(chart, name, "title text", "MyLayout");
             expect(callTimes).toBe(1);
         });
         //code goes here
     });
+
 });
