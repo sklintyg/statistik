@@ -156,7 +156,6 @@ angular.module('StatisticsApp.charts', ['underscore'])
                 };
                 extendedChartOptions.chart.marginTop = null;
                 extendedChartOptions.chart.backgroundColor = "#FFFFFF";
-                extendedChartOptions.chart.spacingLeft = 0;
             }
             extendedChartOptions.subtitle = {
                 text: " "
