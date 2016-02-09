@@ -23,7 +23,7 @@ import se.inera.statistics.web.service.FilterDataResponse;
 
 import java.util.List;
 
-public abstract class TableDataReport {
+public abstract class TableDataReport implements FilteredDataReport {
 
     public abstract TableData getTableData();
     public abstract String getPeriod();

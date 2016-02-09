@@ -57,6 +57,7 @@ import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.Verksamhet;
+import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 /**
@@ -350,7 +351,12 @@ public class ProtectedChartDataService {
         final Range range = Range.quarter();
         final String message = filterHash == null || filterHash.isEmpty() || filterHashHandler.getFilterFromHash(filterHash).isUseDefaultPeriod() ? null : "Valt tidsintervall i filtret gäller inte för översiktssidan";
         VerksamhetOverviewResponse response = warehouse.getOverview(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        return Response.ok(new VerksamhetOverviewConverter().convert(response, range, filter, message)).build();
+        final VerksamhetOverviewData overviewData = new VerksamhetOverviewConverter().convert(response, range, filter, message);
+
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
+        final List<Verksamhet> businesses = loginInfo.getBusinesses();
+        final List<HsaIdEnhet> hsaIdEnhets = businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
+        return responseHandler.getResponseForDataReport(overviewData, hsaIdEnhets);
     }
 
     /**

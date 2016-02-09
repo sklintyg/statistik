@@ -18,20 +18,24 @@
  */
 package se.inera.statistics.web.service;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.ws.rs.core.Response;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.service.report.model.Icd;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.web.model.FilteredDataReport;
+import se.inera.statistics.web.model.TableDataReport;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import org.springframework.beans.factory.annotation.Autowired;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.service.report.model.Icd;
-import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.web.model.TableDataReport;
-
-import javax.ws.rs.core.Response;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ResponseHandler {
 
@@ -43,18 +47,22 @@ public class ResponseHandler {
 
     Response getResponse(TableDataReport result, String csv, List<HsaIdEnhet> availableEnhetsForUser) {
         if (csv == null || csv.isEmpty()) {
-            ObjectMapper mapper = new ObjectMapper();
-            @SuppressWarnings("unchecked") Map<String, Object> mappedResult = result != null ? mapper.convertValue(result, Map.class) : Maps.newHashMap();
-
-            final boolean allAvailableDxsSelectedInFilter = result != null ? areAllAvailableDxsSelectedInFilter(result.getFilter()) : true;
-            mappedResult.put(ALL_AVAILABLE_DXS_SELECTED_IN_FILTER, allAvailableDxsSelectedInFilter);
-
-            final boolean allAvailableEnhetsSelectedInFilter = result != null ? areAllAvailableEnhetsSelectedInFilter(result.getFilter(), availableEnhetsForUser) : true;
-            mappedResult.put(ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER, allAvailableEnhetsSelectedInFilter);
-
-            return Response.ok(mappedResult).build();
+            return getResponseForDataReport(result, availableEnhetsForUser);
         }
         return CsvConverter.getCsvResponse(result.getTableData(), "export.csv");
+    }
+
+    Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser) {
+        ObjectMapper mapper = new ObjectMapper();
+        @SuppressWarnings("unchecked") Map<String, Object> mappedResult = result != null ? mapper.convertValue(result, Map.class) : Maps.newHashMap();
+
+        final boolean allAvailableDxsSelectedInFilter = result != null ? areAllAvailableDxsSelectedInFilter(result.getFilter()) : true;
+        mappedResult.put(ALL_AVAILABLE_DXS_SELECTED_IN_FILTER, allAvailableDxsSelectedInFilter);
+
+        final boolean allAvailableEnhetsSelectedInFilter = result != null ? areAllAvailableEnhetsSelectedInFilter(result.getFilter(), availableEnhetsForUser) : true;
+        mappedResult.put(ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER, allAvailableEnhetsSelectedInFilter);
+
+        return Response.ok(mappedResult).build();
     }
 
     private boolean areAllAvailableEnhetsSelectedInFilter(FilterDataResponse filter, List<HsaIdEnhet> availableEnhetsForUser) {

@@ -39,7 +39,79 @@ describe("Test of common functions for controllers", function() {
         expect(ControllerCommons.getFileName("Mitt Diagram")).toMatch(/^Mitt_Diagram_\d{8}_\d{6}$/);
         expect(ControllerCommons.getFileName("Mitt     Diagram")).toMatch(/^Mitt_Diagram_\d{8}_\d{6}$/);
     });
+
+    it("INTYG-1853: populateActiveEnhetsFilter with all enhets selected shows verksamhet name", function() {
+        //Given
+        var scope = {verksamhetName: "VerksamhetName"};
+        var dataService = {getFilterEnhetnamns: function(hash, callbackFunc) { callbackFunc(["OneEnhet"]);}};
+
+        //When
+        ControllerCommons.populateActiveEnhetsFilter(scope, dataService, "hash", false, true);
+
+        //Then
+        expect(scope.headerEnhetInfo).toMatch("VerksamhetName");
+    });
     
+    it("INTYG-1853: populateActiveEnhetsFilter without active filter shows verksamhet name", function() {
+        //Given
+        var scope = {verksamhetName: "VerksamhetName"};
+        var dataService = {getFilterEnhetnamns: function(hash, callbackFunc) { callbackFunc(["OneEnhet"]);}};
+
+        //When
+        ControllerCommons.populateActiveEnhetsFilter(scope, dataService, null, false, false);
+
+        //Then
+        expect(scope.headerEnhetInfo).toMatch("VerksamhetName");
+    });
+
+    it("INTYG-1853: populateActiveEnhetsFilter with more than one (but not all) enhetes in filter shows nothing in title", function() {
+        //Given
+        var scope = {verksamhetName: "VerksamhetName"};
+        var dataService = {getFilterEnhetnamns: function(hash, callbackFunc) { callbackFunc(["OneEnhet", "SecondEnhet"]);}};
+
+        //When
+        ControllerCommons.populateActiveEnhetsFilter(scope, dataService, "hash", false, false);
+
+        //Then
+        expect(scope.headerEnhetInfo).toMatch("");
+    });
+
+    it("INTYG-1853: populateActiveEnhetsFilter with more than one (but not all) enhetes in filter shows list of filtered enhets", function() {
+        //Given
+        var scope = {verksamhetName: "VerksamhetName"};
+        var dataService = {getFilterEnhetnamns: function(hash, callbackFunc) { callbackFunc(["OneEnhet", "SecondEnhet"]);}};
+
+        //When
+        ControllerCommons.populateActiveEnhetsFilter(scope, dataService, "hash", false, false);
+
+        //Then
+        expect(scope.activeEnhetsFilters).toMatch(["OneEnhet", "SecondEnhet"]);
+    });
+
+    it("INTYG-1854: populateActiveEnhetsFilter with one enhet in filter shows enhet name in title", function() {
+        //Given
+        var scope = {verksamhetName: "VerksamhetName"};
+        var dataService = {getFilterEnhetnamns: function(hash, callbackFunc) { callbackFunc(["OneEnhet"]);}};
+
+        //When
+        ControllerCommons.populateActiveEnhetsFilter(scope, dataService, "hash", false, false);
+
+        //Then
+        expect(scope.headerEnhetInfo).toMatch("OneEnhet");
+    });
+
+    it("INTYG-1854: populateActiveEnhetsFilter with more than one enhet in filter shows no list of filtered enhets", function() {
+        //Given
+        var scope = {verksamhetName: "VerksamhetName"};
+        var dataService = {getFilterEnhetnamns: function(hash, callbackFunc) { callbackFunc(["OneEnhet"]);}};
+
+        //When
+        ControllerCommons.populateActiveEnhetsFilter(scope, dataService, "hash", false, false);
+
+        //Then
+        expect(scope.activeEnhetsFilters).toMatch([""]);
+    });
+
     it("isNumber", function() {
         expect(ControllerCommons.isNumber()).toBe(false);
         expect(ControllerCommons.isNumber(0)).toBe(true);

@@ -18,11 +18,12 @@
  */
 package se.inera.statistics.web.model.overview;
 
+import se.inera.statistics.web.model.FilteredDataReport;
 import se.inera.statistics.web.service.FilterDataResponse;
 
 import java.util.List;
 
-public class VerksamhetOverviewData {
+public class VerksamhetOverviewData implements FilteredDataReport {
 
     private final String periodText;
     private final VerksamhetNumberOfCasesPerMonthOverview casesPerMonth;

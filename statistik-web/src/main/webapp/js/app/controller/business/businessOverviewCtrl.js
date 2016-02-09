@@ -222,6 +222,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
 
     var populatePageWithData = function (result) {
         $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
+        ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter);
         $timeout(function () {
             updateCharts(result);
 

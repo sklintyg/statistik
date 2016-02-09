@@ -66,11 +66,13 @@ var ControllerCommons = new function(){
     };
 
     this.getEnhetCountText = function(enhetsCount, basedOnAlreadyInText) {
-        var singleEnhet = enhetsCount === 1;
-        if (basedOnAlreadyInText) {
-            return enhetsCount ? " och " + enhetsCount + " enhet" + (singleEnhet ? "" : "er") + " " : " ";
+        if (enhetsCount === 1) {
+            return " ";
         }
-        return enhetsCount ? " baserat på " + enhetsCount + " enhet" + (singleEnhet ? "" : "er") + " " : " ";
+        if (basedOnAlreadyInText) {
+            return enhetsCount ? " och " + enhetsCount + " enheter" + " " : " ";
+        }
+        return enhetsCount ? " baserat på " + enhetsCount + " enheter" + " " : " ";
     };
 
     function icdStructureAsArray(icdStructure) {
@@ -117,14 +119,21 @@ var ControllerCommons = new function(){
 
     this.populateActiveEnhetsFilter = function(scope, statisticsData, filterHash, isPrint, isAllAvailableEnhetsSelectedInFilter) {
         if (isAllAvailableEnhetsSelectedInFilter) {
+            scope.headerEnhetInfo = scope.verksamhetName;
             return;
         }
         if (!filterHash) {
+            scope.headerEnhetInfo = scope.verksamhetName;
             return;
         }
         statisticsData.getFilterEnhetnamns(filterHash, function (enhetNames) {
-            scope.activeEnhetsFilters = enhetNames.length > 0 ? enhetNames : [""];
-            scope.activeEnhetsFiltersForPrint = isPrint ? scope.activeEnhetsFilters : null;
+            if (enhetNames.length === 1) {
+                scope.headerEnhetInfo = enhetNames[0];
+            } else {
+                scope.headerEnhetInfo = "";
+                scope.activeEnhetsFilters = enhetNames.length > 1 ? enhetNames : [""];
+                scope.activeEnhetsFiltersForPrint = isPrint ? scope.activeEnhetsFilters : null;
+            }
         }, function () {
             scope.activeEnhetsFilters = ["Fel vid anrop..."];
             scope.activeEnhetsFiltersForPrint = isPrint ? scope.activeEnhetsFilters : null;
