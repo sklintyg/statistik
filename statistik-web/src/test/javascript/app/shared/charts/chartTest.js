@@ -40,12 +40,11 @@ describe("Chart services", function() {
                     callTimes++;
                     expect(opt.filename).toMatch(/testName/);
                     expect(chartOpt.legend.enabled).toBe(true);
-                    expect(chartOpt.legend.layout).toBe("MyLayout");
                     expect(chartOpt.title.text).toBe("title text");
                 },
                 series: ["1", "2"]
             };
-            chartFactory.exportChart(chart, name, "title text", "MyLayout");
+            chartFactory.exportChart(chart, name, "title text");
             expect(callTimes).toBe(1);
         });
 
@@ -61,7 +60,7 @@ describe("Chart services", function() {
                 },
                 series: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"]
             };
-            chartFactory.exportChart(chart, name, "title text", "MyLayout");
+            chartFactory.exportChart(chart, name, "title text");
             expect(callTimes).toBe(1);
         });
         //code goes here

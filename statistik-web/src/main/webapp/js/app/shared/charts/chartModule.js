@@ -139,14 +139,11 @@ angular.module('StatisticsApp.charts', ['underscore'])
             };
         };
 
-        var exportChart = function(chart, chartName, title, legendLayout) {
+        var exportChart = function(chart, chartName, title) {
             var options = {filename: ControllerCommons.getFileName(chartName)};
             var extendedChartOptions = {};
             if (chart.series.length <= 10) {
                 extendedChartOptions.legend = { enabled: true };
-                if (legendLayout) {
-                    extendedChartOptions.legend.layout = legendLayout;
-                }
             }
             var chartHeight = 400;
             extendedChartOptions.chart = {};
