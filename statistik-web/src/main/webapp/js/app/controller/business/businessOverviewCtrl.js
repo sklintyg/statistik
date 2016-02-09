@@ -27,7 +27,8 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
     $scope.baseUrl = "#/verksamhet";
 
     var dataReceived = function (result) {
-        $scope.subTitle = "Utveckling för verksamheten de senaste tre månaderna, " + result.periodText;
+        var enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
+        $scope.subTitle = "Utveckling för verksamheten de senaste tre månaderna" + ControllerCommons.getEnhetCountText(enhetsCount, false).slice(0, -1) + ", " + result.periodText;
         $scope.popoverTextAmount = "Totala antalet sjukfall under perioden " + result.periodText;
         $scope.popoverTextChangeProcentage = "Procentsatsen visar förändringen av antalet sjukfall under perioden " + result.periodText;
         $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden " + result.periodText;

@@ -35,7 +35,11 @@
 			</div>
 	    </div>
 		<div class="row">
-		    <span class="col-xs-12 col-sm-9 col-md-9 col-lg-9 overview-ingress pull-left" data-ng-bind="subTitle"></span>
+			<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9  pull-left" >
+		    <span class="overview-ingress" data-ng-bind="subTitle"></span>
+				<a class="hidden-print" id="chart-enhetsfilterinfo-trigger" data-toggle="collapse" data-target="#chart-enhetsfilterinfo-text" data-ng-show="activeEnhetsFilters" text="Enhetsfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Enhetsfilter&nbsp;&#x25BE</a>
+				<a class="hidden-print" id="chart-diagnosfilterinfo-trigger" data-toggle="collapse" data-target="#chart-diagnosfilterinfo-text" data-ng-show="activeDiagnosFilters" text="Diagnosfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Diagnosfilter&nbsp;&#x25BE</a>
+			</div>
 		    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-right margin-bottom hidden-print" data-ng-class="{margin_top_button_group: showDetailsOptions}"
 		         style="width: auto;">
 		        <!-- PRINT BUTTON GROUP -->
@@ -50,6 +54,30 @@
                     </ul>
 		        </div>
 		    </div>
+		</div>
+
+		<div class="row hidden-print pull-left">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="activeDiagnosFilters">
+				<div class="collapse" id="chart-diagnosfilterinfo-text">
+					<div class="alert alert-info" style="margin-top: 3px;">
+						<div data-ng-repeat="activeDiagnosFilter in activeDiagnosFilters">
+							<p bindonce="activeDiagnosFilter"></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row hidden-print pull-left">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="activeEnhetsFilters">
+				<div class="collapse" id="chart-enhetsfilterinfo-text">
+					<div class="alert alert-info" style="margin-top: 3px;">
+						<div data-ng-repeat="activeEnhetsFilter in activeEnhetsFilters">
+							<p bindonce="activeEnhetsFilter"></p>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 
         <!-- Alert the user about specific conditions -->
