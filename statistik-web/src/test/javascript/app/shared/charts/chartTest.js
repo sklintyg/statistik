@@ -44,7 +44,7 @@ describe("Chart services", function() {
                     expect(chartOpt.title.text).toBe("title text");
                 }
             };
-            chartFactory.exportChart(chart, name, "title text", null, "MyLayout");
+            chartFactory.exportChart(chart, name, "title text", "MyLayout");
             expect(callTimes).toBe(1);
         });
         //code goes here

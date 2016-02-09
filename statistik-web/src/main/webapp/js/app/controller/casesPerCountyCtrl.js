@@ -90,7 +90,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
         $scope.dataLoadingError = false;
         $scope.chartFootnotes = [messageService.getProperty('info.lan.information', null, "", null, true)];
         $scope.exportChart = function () {
-            chartFactory.exportChart(chart, $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters);
+            chartFactory.exportChart(chart, $scope.pageName, $scope.subTitle);
         };
 
         $scope.print = function (bwPrint) {

@@ -139,16 +139,19 @@ angular.module('StatisticsApp.charts', ['underscore'])
             };
         };
 
-        var exportChart = function(chart, chartName, title, diagnosFilters, legendLayout) {
+        var exportChart = function(chart, chartName, title, legendLayout) {
             var options = {filename: ControllerCommons.getFileName(chartName)};
-            var extendedChartOptions = { legend: { enabled: true } };
+            var extendedChartOptions = {};
+            if (chart.series.length <= 10) {
+                extendedChartOptions.legend = { enabled: true };
+                if (legendLayout) {
+                    extendedChartOptions.legend.layout = legendLayout;
+                }
+            }
             var chartHeight = 400;
             extendedChartOptions.chart = {};
             extendedChartOptions.chart.height = chartHeight;
             extendedChartOptions.chart.width = 600;
-            if (legendLayout) {
-                extendedChartOptions.legend.layout = legendLayout;
-            }
             if (title) {
                 extendedChartOptions.title = {
                     text: title,
@@ -164,31 +167,6 @@ angular.module('StatisticsApp.charts', ['underscore'])
             extendedChartOptions.subtitle = {
                 text: " "
             };
-            if (diagnosFilters) {
-                var fontSize = 12;
-                var fontSizeHeader = 15;
-                extendedChartOptions.chart.spacingBottom = (diagnosFilters.length + 2) * fontSize + fontSizeHeader + diagnosFilters.length * 2;
-                extendedChartOptions.chart.height = chartHeight + extendedChartOptions.chart.spacingBottom;
-                extendedChartOptions.chart.events = {
-                    load: function () {
-                        this.renderer.text('Sammanställning av diagnosfilter', 10, chartHeight + fontSize / 2 + fontSizeHeader)
-                            .css({
-                                color: '#008391',
-                                fontSize: fontSizeHeader + 'px'
-                            })
-                            .add();
-                        var arrayLength = diagnosFilters.length;
-                        for (var i = 0; i < arrayLength; i++) {
-                            this.renderer.text(diagnosFilters[i], 10, chartHeight + (2 + i) * fontSize + fontSizeHeader + i * 2)
-                                .css({
-                                    color: '#008391',
-                                    fontSize: fontSize + 'px'
-                                })
-                                .add();
-                        }
-                    }
-                };
-            }
             try {
                 chart.exportChart(options, extendedChartOptions);
             } catch (e) {

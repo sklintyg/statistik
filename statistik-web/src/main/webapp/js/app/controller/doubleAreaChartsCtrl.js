@@ -254,7 +254,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         $scope.useSpecialPrintTable = true;
 
         $scope.exportChart = function (chartName) {
-            chartFactory.exportChart(that[chartName], $scope.pageName, $scope.subTitle, $scope.activeDiagnosFilters, 'vertical');
+            chartFactory.exportChart(that[chartName], $scope.pageName, $scope.subTitle, 'vertical');
         };
 
         $scope.print = function (bwPrint) {
