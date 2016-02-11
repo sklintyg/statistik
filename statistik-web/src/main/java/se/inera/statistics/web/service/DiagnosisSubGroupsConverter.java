@@ -45,7 +45,8 @@ public class DiagnosisSubGroupsConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(DiagnosisSubGroupsConverter.class);
 
-    static final int NUMBER_OF_CHART_SERIES = 6;
+    static final int MAX_NUMBER_OF_CHART_SERIES = 7;
+    static final int OTHER_GROUP = -1;
 
     private DiagnosisGroupsConverter diagnosisGroupsConverter = new DiagnosisGroupsConverter();
 
@@ -83,12 +84,13 @@ public class DiagnosisSubGroupsConverter {
             return topColumns;
         }
         for (Integer index : topIndexes) {
-            List<Integer> indexData = data.getDataFromIndex(index, sex);
-            topColumns.add(new ChartSeries(data.getGroups().get(index), indexData, true));
-        }
-        if (data.getGroups().size() > NUMBER_OF_CHART_SERIES) {
-            List<Integer> remainingData = sumRemaining(topIndexes, data, sex);
-            topColumns.add(new ChartSeries("Övriga", remainingData, true));
+            if (index == OTHER_GROUP) {
+                List<Integer> remainingData = sumRemaining(topIndexes, data, sex);
+                topColumns.add(new ChartSeries("Övriga", remainingData, true));
+            } else {
+                List<Integer> indexData = data.getDataFromIndex(index, sex);
+                topColumns.add(new ChartSeries(data.getGroups().get(index), indexData, true));
+            }
         }
         return topColumns;
     }
@@ -141,7 +143,16 @@ public class DiagnosisSubGroupsConverter {
                 return integerIntegerPair.getKey();
             }
         });
-        return sortedIndexes.subList(0, Math.min(NUMBER_OF_CHART_SERIES, sortedIndexes.size()));
+
+        if (sortedIndexes.size() == MAX_NUMBER_OF_CHART_SERIES) {
+            return sortedIndexes.subList(0, MAX_NUMBER_OF_CHART_SERIES);
+        } else if (sortedIndexes.size() > MAX_NUMBER_OF_CHART_SERIES) {
+            final ArrayList<Integer> sortedIndexesSubList = new ArrayList<>(sortedIndexes.subList(0, MAX_NUMBER_OF_CHART_SERIES - 1));
+            sortedIndexesSubList.add(OTHER_GROUP);
+            return sortedIndexesSubList;
+        } else {
+            return sortedIndexes;
+        }
     }
 
     private static List<Pair<Integer, Integer>> getIndexedSums(SimpleKonResponse<SimpleKonDataRow> simpleKonDataRowSimpleKonResponse) {

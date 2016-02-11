@@ -1,6 +1,6 @@
 !contents -R2 -g -p -f -h
 
-IGNORED: Waiting for STATISTIK-770
+Testing STATISTIK-770
 
 !3 Givet att:
 
@@ -18,6 +18,8 @@ Det finns ett sjukfall med diagnos som faller inom avsnitt:
 Det finns inga sjukfall med diagnos som faller inom övriga avsnitt.
 
 | script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |

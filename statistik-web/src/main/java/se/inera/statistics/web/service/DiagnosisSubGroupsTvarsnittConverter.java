@@ -44,12 +44,13 @@ public class DiagnosisSubGroupsTvarsnittConverter extends SimpleDualSexConverter
             simpleKonDataRows.add(new SimpleKonDataRow("Totalt", 0, 0));
         } else {
             for (Integer index : topIndexes) {
-                final SimpleKonDataRow row = skr.getRows().get(index);
-                simpleKonDataRows.add(row);
-            }
-            if (skr.getRows().size() > DiagnosisSubGroupsConverter.NUMBER_OF_CHART_SERIES) {
-                final KonField otherData = getDataForOtherGroups(skr, topIndexes);
-                simpleKonDataRows.add(new SimpleKonDataRow("Övriga", otherData));
+                if (index == DiagnosisSubGroupsConverter.OTHER_GROUP) {
+                    final KonField otherData = getDataForOtherGroups(skr, topIndexes);
+                    simpleKonDataRows.add(new SimpleKonDataRow("Övriga", otherData));
+                } else {
+                    final SimpleKonDataRow row = skr.getRows().get(index);
+                    simpleKonDataRows.add(row);
+                }
             }
         }
         return new SimpleKonResponse<>(simpleKonDataRows);
