@@ -44,9 +44,9 @@ public class DiagnosisSubGroupsTvarsnittConverter extends SimpleDualSexConverter
             simpleKonDataRows.add(new SimpleKonDataRow("Totalt", 0, 0));
         } else {
             for (Integer index : topIndexes) {
-                if (index == DiagnosisSubGroupsConverter.OTHER_GROUP) {
+                if (index == DiagnosisSubGroupsConverter.OTHER_GROUP_INDEX) {
                     final KonField otherData = getDataForOtherGroups(skr, topIndexes);
-                    simpleKonDataRows.add(new SimpleKonDataRow("Övriga", otherData));
+                    simpleKonDataRows.add(new SimpleKonDataRow(DiagnosisSubGroupsConverter.OTHER_GROUP_NAME, otherData));
                 } else {
                     final SimpleKonDataRow row = skr.getRows().get(index);
                     simpleKonDataRows.add(row);
