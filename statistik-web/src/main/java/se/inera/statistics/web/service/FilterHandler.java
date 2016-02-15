@@ -18,12 +18,15 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.sun.istack.NotNull;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -31,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
@@ -44,13 +48,12 @@ import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.Verksamhet;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.sun.istack.NotNull;
 
 @Component
 public class FilterHandler {
@@ -106,7 +109,7 @@ public class FilterHandler {
             return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));
         }
         final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
-        final ArrayList<HsaIdEnhet> enhetsIDs = getEnhetsFiltered(request, inFilter);
+        final List<HsaIdEnhet> enhetsIDs = getEnhetsFiltered(request, inFilter);
         try {
             return getFilterSettings(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
         } catch (FilterException e) {
@@ -115,7 +118,7 @@ public class FilterHandler {
         }
     }
 
-    private FilterSettings getFilterSettings(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter, ArrayList<HsaIdEnhet> enhetsIDs) throws FilterException {
+    private FilterSettings getFilterSettings(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter, List<HsaIdEnhet> enhetsIDs) throws FilterException {
         final Predicate<Fact> enhetFilter = getEnhetFilter(request, enhetsIDs);
         return getFilterSettings(filterHash, defaultRangeValue, inFilter, enhetsIDs, enhetFilter);
     }
@@ -125,7 +128,7 @@ public class FilterHandler {
         return getFilterSettings(filterHash, defaultRangeValue, inFilter, enhetsIDs, enhetFilter);
     }
 
-    private FilterSettings getFilterSettings(String filterHash, int defaultRangeValue, FilterData inFilter, ArrayList<HsaIdEnhet> enhetsIDs, Predicate<Fact> enhetFilter) throws FilterException {
+    private FilterSettings getFilterSettings(String filterHash, int defaultRangeValue, FilterData inFilter, List<HsaIdEnhet> enhetsIDs, Predicate<Fact> enhetFilter) throws FilterException {
         final List<String> diagnoser = inFilter.getDiagnoser();
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         final SjukfallFilter sjukfallFilter = new SjukfallFilter(Predicates.and(enhetFilter, diagnosFilter), filterHash);
@@ -218,10 +221,20 @@ public class FilterHandler {
         });
     }
 
-    private ArrayList<HsaIdEnhet> getEnhetsFiltered(HttpServletRequest request, FilterData inFilter) {
-        Set<HsaIdEnhet> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyper(inFilter.getVerksamhetstyper(), request);
-        final HashSet<HsaIdEnhet> enhets = new HashSet<>(toHsaIds(inFilter.getEnheter()));
-        return new ArrayList<>(Sets.intersection(enhetsMatchingVerksamhetstyp, enhets));
+    private List<HsaIdEnhet> getEnhetsFiltered(HttpServletRequest request, FilterData inFilter) {
+        final List<String> verksamhetstyper = inFilter.getVerksamhetstyper();
+        Set<HsaIdEnhet> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyper(verksamhetstyper, request);
+        final List<String> enheter = inFilter.getEnheter();
+        final HashSet<HsaIdEnhet> enhets = new HashSet<>(toHsaIds(enheter));
+        if (verksamhetstyper.isEmpty() && enheter.isEmpty()) {
+            return new ArrayList<>(enhetsMatchingVerksamhetstyp); //All available enhets for user
+        } else if (verksamhetstyper.isEmpty()) {
+            return new ArrayList<>(enhets);
+        } else if (enheter.isEmpty()) {
+            return new ArrayList<>(enhetsMatchingVerksamhetstyp);
+        } else {
+            return new ArrayList<>(Sets.intersection(enhetsMatchingVerksamhetstyp, enhets));
+        }
     }
 
     private Set<HsaIdEnhet> getEnhetsForVerksamhetstyperLandsting(FilterData filterData) {
@@ -264,31 +277,28 @@ public class FilterHandler {
     }
 
     private boolean isOfVerksamhetsTyp(Verksamhet verksamhet, List<String> verksamhetstyper) {
+        if (verksamhetstyper.isEmpty()) {
+            return true;
+        }
         final Set<Verksamhet.VerksamhetsTyp> verksamhetstyperForCurrentVerksamhet = verksamhet.getVerksamhetsTyper();
         return isOfVerksamhetsTyp(verksamhetstyper, verksamhetstyperForCurrentVerksamhet);
     }
 
     private Predicate<Fact> getDiagnosFilter(final List<String> diagnosIds) {
-        return new Predicate<Fact>() {
-            @Override
-            public boolean apply(Fact fact) {
-                if (diagnosIds == null || diagnosIds.isEmpty()) {
-                    return false;
-                }
-                String diagnosKapitelString = String.valueOf(fact.getDiagnoskapitel());
-                if (diagnosIds.contains(diagnosKapitelString)) {
-                    return true;
-                }
-                String diagnosAvsnittString = String.valueOf(fact.getDiagnosavsnitt());
-                if (diagnosIds.contains(diagnosAvsnittString)) {
-                    return true;
-                }
-                String diagnosKategoriString = String.valueOf(fact.getDiagnoskategori());
-                if (diagnosIds.contains(diagnosKategoriString)) {
-                    return true;
-                }
-                return false;
+        return fact -> {
+            if (diagnosIds == null || diagnosIds.isEmpty()) {
+                return true;
             }
+            String diagnosKapitelString = String.valueOf(fact.getDiagnoskapitel());
+            if (diagnosIds.contains(diagnosKapitelString)) {
+                return true;
+            }
+            String diagnosAvsnittString = String.valueOf(fact.getDiagnosavsnitt());
+            if (diagnosIds.contains(diagnosAvsnittString)) {
+                return true;
+            }
+            String diagnosKategoriString = String.valueOf(fact.getDiagnoskategori());
+            return diagnosIds.contains(diagnosKategoriString);
         };
     }
 

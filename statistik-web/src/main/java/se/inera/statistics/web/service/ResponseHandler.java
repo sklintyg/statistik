@@ -56,10 +56,10 @@ public class ResponseHandler {
         ObjectMapper mapper = new ObjectMapper();
         @SuppressWarnings("unchecked") Map<String, Object> mappedResult = result != null ? mapper.convertValue(result, Map.class) : Maps.newHashMap();
 
-        final boolean allAvailableDxsSelectedInFilter = result != null ? areAllAvailableDxsSelectedInFilter(result.getFilter()) : true;
+        final boolean allAvailableDxsSelectedInFilter = result == null || areAllAvailableDxsSelectedInFilter(result.getFilter());
         mappedResult.put(ALL_AVAILABLE_DXS_SELECTED_IN_FILTER, allAvailableDxsSelectedInFilter);
 
-        final boolean allAvailableEnhetsSelectedInFilter = result != null ? areAllAvailableEnhetsSelectedInFilter(result.getFilter(), availableEnhetsForUser) : true;
+        final boolean allAvailableEnhetsSelectedInFilter = result == null || areAllAvailableEnhetsSelectedInFilter(result.getFilter(), availableEnhetsForUser);
         mappedResult.put(ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER, allAvailableEnhetsSelectedInFilter);
 
         return Response.ok(mappedResult).build();
