@@ -78,16 +78,8 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
         businessFilter.selectedBusinesses.length = 0;
         businessFilter.geographyBusinessIds.length = 0;
         businessFilter.selectedVerksamhetTypIds.length = 0;
-        _.each(businessFilter.businesses, function (business) {
-            businessFilter.selectedBusinesses.push(business.id);
-            businessFilter.geographyBusinessIds.push(business.id);
-        });
-        _.each(businessFilter.verksamhetsTyper, function (verksamhetsTyp) {
-            businessFilter.selectedVerksamhetTypIds.push(verksamhetsTyp.id);
-        });
-        businessFilter.selectAll(businessFilter.geography, true);
-        businessFilter.selectAll(businessFilter.icd10, true);
-        businessFilter.updateDiagnoses();
+        businessFilter.selectedDiagnoses = [];
+        businessFilter.deselectAll(businessFilter.icd10);
 
         //Reset datepickers
         businessFilter.toDate = null;
@@ -147,7 +139,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
     businessFilter.setIcd10Structure = function (diagnoses) {
         businessFilter.setupDiagnosisTreeForSelectionModal(diagnoses);
         businessFilter.icd10.subs = diagnoses;
-        businessFilter.selectAll(businessFilter.icd10, true);
         businessFilter.updateDiagnoses();
     };
 
@@ -268,11 +259,19 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
     };
 
     businessFilter.selectAll = function (item) {
-        item.allSelected = true;
+        businessFilter.selectAllWithValue(item, true);
+    };
+
+    businessFilter.deselectAll = function (item) {
+        businessFilter.selectAllWithValue(item, false);
+    };
+
+    businessFilter.selectAllWithValue = function (item, selected) {
+        item.allSelected = selected;
         item.someSelected = false;
         if (item.subs) {
             _.each(item.subs, function (sub) {
-                businessFilter.selectAll(sub);
+                businessFilter.selectAllWithValue(sub, selected);
             });
         }
     };

@@ -91,9 +91,9 @@ var ControllerCommons = new function(){
         });
     };
 
-    this.populateActiveFilters = function(scope, statisticsData, diagnosIds, isPrint, isAllAvailableDxsSelectedInFilter, filterHash, isAllAvailableEnhetsSelectedInFilter) {
+    this.populateActiveFilters = function(scope, statisticsData, diagnosIds, isPrint, isAllAvailableDxsSelectedInFilter, filterHash, isAllAvailableEnhetsSelectedInFilter, filteredEnhets) {
         this.populateActiveDiagnosFilter(scope, statisticsData, diagnosIds, isPrint, isAllAvailableDxsSelectedInFilter);
-        this.populateActiveEnhetsFilter(scope, statisticsData, filterHash, isPrint, isAllAvailableEnhetsSelectedInFilter);
+        this.populateActiveEnhetsFilter(scope, filterHash, isPrint, isAllAvailableEnhetsSelectedInFilter, filteredEnhets);
     };
 
     this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isPrint, isAllAvailableDxsSelectedInFilter) {
@@ -117,7 +117,7 @@ var ControllerCommons = new function(){
         });
     };
 
-    this.populateActiveEnhetsFilter = function(scope, statisticsData, filterHash, isPrint, isAllAvailableEnhetsSelectedInFilter) {
+    this.populateActiveEnhetsFilter = function(scope, filterHash, isPrint, isAllAvailableEnhetsSelectedInFilter, enhetNames) {
         if (isAllAvailableEnhetsSelectedInFilter) {
             scope.headerEnhetInfo = scope.verksamhetName;
             return;
@@ -126,18 +126,13 @@ var ControllerCommons = new function(){
             scope.headerEnhetInfo = scope.verksamhetName;
             return;
         }
-        statisticsData.getFilterEnhetnamns(filterHash, function (enhetNames) {
-            if (enhetNames.length === 1) {
-                scope.headerEnhetInfo = enhetNames[0];
-            } else {
-                scope.headerEnhetInfo = "";
-                scope.activeEnhetsFilters = enhetNames.length > 1 ? enhetNames : [""];
-                scope.activeEnhetsFiltersForPrint = isPrint ? scope.activeEnhetsFilters : null;
-            }
-        }, function () {
-            scope.activeEnhetsFilters = ["Fel vid anrop..."];
+        if (enhetNames.length === 1) {
+            scope.headerEnhetInfo = enhetNames[0];
+        } else {
+            scope.headerEnhetInfo = "";
+            scope.activeEnhetsFilters = enhetNames.length > 1 ? enhetNames : [""];
             scope.activeEnhetsFiltersForPrint = isPrint ? scope.activeEnhetsFilters : null;
-        });
+        }
     };
 
     this.setupDiagnosisSelector = function(diagnosisTreeFilter, $routeParams, $scope, messageService, $timeout, statisticsData, $location) {

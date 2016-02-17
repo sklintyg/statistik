@@ -95,7 +95,7 @@ public class FilterHandler {
             return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));
         }
         final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
-        final ArrayList<HsaIdEnhet> enhetsIDs = getEnhetsFilteredLandsting(inFilter);
+        final ArrayList<HsaIdEnhet> enhetsIDs = getEnhetsFilteredLandsting(request, inFilter);
         try {
             return getFilterSettingsLandsting(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
         } catch (FilterException e) {
@@ -104,15 +104,28 @@ public class FilterHandler {
         }
     }
 
+    List<Verksamhet> getAllVerksamhetsForLoggedInLandstingsUser(HttpServletRequest request) {
+        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final List<HsaIdEnhet> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
+        final List<Enhet> enhets = enhetManager.getEnhets(allEnhets);
+        return Lists.transform(enhets, new Function<Enhet, Verksamhet>() {
+            @Override
+            public Verksamhet apply(Enhet enhet) {
+                return loginServiceUtil.toVerksamhet(enhet);
+            }
+        });
+    }
+
+
     FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultRangeValue) {
-        if (filterHash == null || filterHash.isEmpty()) {
-            return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));
-        }
-        final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
-        final List<HsaIdEnhet> enhetsIDs = getEnhetsFiltered(request, inFilter);
         try {
+            if (filterHash == null || filterHash.isEmpty()) {
+                return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));
+            }
+            final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
+            final List<HsaIdEnhet> enhetsIDs = getEnhetsFiltered(request, inFilter);
             return getFilterSettings(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
-        } catch (FilterException e) {
+        } catch (FilterException | FilterHashException e) {
             LOG.warn("Could not use selected filter. Falling back to default filter", e);
             return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
         }
@@ -206,10 +219,20 @@ public class FilterHandler {
         return getFilterForEnhets(availableEnhets, null);
     }
 
-    private ArrayList<HsaIdEnhet> getEnhetsFilteredLandsting(FilterData inFilter) {
-        Set<HsaIdEnhet> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyperLandsting(inFilter);
-        final HashSet<HsaIdEnhet> enhets = new HashSet<>(toHsaIds(inFilter.getEnheter()));
-        return new ArrayList<>(Sets.intersection(enhetsMatchingVerksamhetstyp, enhets));
+    private ArrayList<HsaIdEnhet> getEnhetsFilteredLandsting(HttpServletRequest request, FilterData inFilter) {
+        final List<String> verksamhetstyper = inFilter.getVerksamhetstyper();
+        Set<HsaIdEnhet> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyperLandsting(inFilter, request);
+        final List<String> enheter = inFilter.getEnheter();
+        final HashSet<HsaIdEnhet> enhets = new HashSet<>(toHsaIds(enheter));
+        if (verksamhetstyper.isEmpty() && enheter.isEmpty()) {
+            return new ArrayList<>(enhetsMatchingVerksamhetstyp); //All available enhets for user
+        } else if (verksamhetstyper.isEmpty()) {
+            return new ArrayList<>(enhets);
+        } else if (enheter.isEmpty()) {
+            return new ArrayList<>(enhetsMatchingVerksamhetstyp);
+        } else {
+            return new ArrayList<>(Sets.intersection(enhetsMatchingVerksamhetstyp, enhets));
+        }
     }
 
     private List<HsaIdEnhet> toHsaIds(List<String> enheter) {
@@ -237,12 +260,12 @@ public class FilterHandler {
         }
     }
 
-    private Set<HsaIdEnhet> getEnhetsForVerksamhetstyperLandsting(FilterData filterData) {
-        final List<Enhet> enhets = enhetManager.getEnhets(toHsaIds(filterData.getEnheter()));
+    private Set<HsaIdEnhet> getEnhetsForVerksamhetstyperLandsting(FilterData filterData, HttpServletRequest request) {
+        final List<Verksamhet> verksamhets = getAllVerksamhetsForLoggedInLandstingsUser(request);
         Set<HsaIdEnhet> enhetsIds = new HashSet<>();
-        for (Enhet verksamhet : enhets) {
-            if (isOfVerksamhetsTypLandsting(verksamhet, filterData.getVerksamhetstyper())) {
-                enhetsIds.add(verksamhet.getEnhetId());
+        for (Verksamhet verksamhet : verksamhets) {
+            if (isOfVerksamhetsTyp(filterData.getVerksamhetstyper(), verksamhet.getVerksamhetsTyper())) {
+                enhetsIds.add(verksamhet.getIdUnencoded());
             }
         }
         return enhetsIds;
@@ -259,13 +282,8 @@ public class FilterHandler {
         return enhetsIds;
     }
 
-    private boolean isOfVerksamhetsTypLandsting(Enhet verksamhet, List<String> verksamhetstyper) {
-        final Set<Verksamhet.VerksamhetsTyp> verksamhetstyperForCurrentVerksamhet = loginServiceUtil.getVerksamhetsTyper(verksamhet.getVerksamhetsTyper());
-        return isOfVerksamhetsTyp(verksamhetstyper, verksamhetstyperForCurrentVerksamhet);
-    }
-
     private boolean isOfVerksamhetsTyp(List<String> verksamhetstyper, Set<Verksamhet.VerksamhetsTyp> verksamhetstyperForCurrentVerksamhet) {
-        if (verksamhetstyperForCurrentVerksamhet == null || verksamhetstyperForCurrentVerksamhet.isEmpty()) {
+        if (verksamhetstyper == null || verksamhetstyper.isEmpty() || verksamhetstyperForCurrentVerksamhet == null || verksamhetstyperForCurrentVerksamhet.isEmpty()) {
             return true;
         }
         for (Verksamhet.VerksamhetsTyp verksamhetsTyp : verksamhetstyperForCurrentVerksamhet) {

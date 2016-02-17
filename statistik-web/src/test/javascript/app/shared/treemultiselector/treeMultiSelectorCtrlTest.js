@@ -415,11 +415,12 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it("deselect all levels when kapitel is deselected", inject(function (businessFilterFactory) {
         // Given
-
-        // When
         businessFilterFactory.setIcd10Structure(diagnoses);
         businessFilterFactory.dataInitialized = true;
         scope.menuOptions = businessFilterFactory.icd10;
+        businessFilterFactory.selectAll(businessFilterFactory.icd10);
+
+        // When
         scope.itemClicked(A00B99, businessFilterFactory.icd10);
         businessFilterFactory.updateDiagnoses();
 
@@ -431,11 +432,12 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it("deselect all kategorier below unselected avsnitt", inject(function (businessFilterFactory) {
         // Given
-
-        // When
         businessFilterFactory.setIcd10Structure(diagnoses);
         businessFilterFactory.dataInitialized = true;
         scope.menuOptions = businessFilterFactory.icd10;
+        businessFilterFactory.selectAll(businessFilterFactory.icd10);
+
+        // When
         scope.itemClicked(A00A09, businessFilterFactory.icd10);
         businessFilterFactory.updateDiagnoses();
 
@@ -448,11 +450,12 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it("report selected kategoris", inject(function (businessFilterFactory) {
         // Given
-
-        // When
         businessFilterFactory.setIcd10Structure(diagnoses);
         businessFilterFactory.dataInitialized = true;
         scope.menuOptions = businessFilterFactory.icd10;
+        businessFilterFactory.selectAll(businessFilterFactory.icd10);
+
+        // When
         scope.itemClicked(A01, businessFilterFactory.icd10);
         businessFilterFactory.updateDiagnoses();
 

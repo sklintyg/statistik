@@ -123,21 +123,28 @@ describe("Tests for business filter factory", function () {
     });
 
     describe("Setting Icd10 structure and selections on that structure", function () {
-        it("selects all diagnoses by default when setting icd 10 structure", function () {
+        it("selects no diagnoses by default when setting icd 10 structure - INTYG-1855", function () {
             // Given
 
             // When
             businessFilter.setIcd10Structure(diagnoses);
 
             //Then
-            expect(A00.allSelected).toBeTruthy();
-            expect(B07.allSelected).toBeTruthy();
-            expect(D50.allSelected).toBeTruthy();
-            expect(D70.allSelected).toBeTruthy();
-            expect(A00A09.allSelected).toBeTruthy();
-            expect(D70D77.allSelected).toBeTruthy();
-            expect(A00B99.allSelected).toBeTruthy();
+            expect(A00.allSelected).not.toBeTruthy();
+            expect(B07.allSelected).not.toBeTruthy();
+            expect(D50.allSelected).not.toBeTruthy();
+            expect(D70.allSelected).not.toBeTruthy();
+            expect(A00A09.allSelected).not.toBeTruthy();
+            expect(D70D77.allSelected).not.toBeTruthy();
+            expect(A00B99.allSelected).not.toBeTruthy();
 
+            expect(A00.someSelected).not.toBeTruthy();
+            expect(B07.someSelected).not.toBeTruthy();
+            expect(D50.someSelected).not.toBeTruthy();
+            expect(D70.someSelected).not.toBeTruthy();
+            expect(A00A09.someSelected).not.toBeTruthy();
+            expect(D70D77.someSelected).not.toBeTruthy();
+            expect(A00B99.someSelected).not.toBeTruthy();
         });
 
         it("can select diagnoses by id attribute", function () {

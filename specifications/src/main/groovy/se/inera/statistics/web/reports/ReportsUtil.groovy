@@ -423,10 +423,5 @@ class ReportsUtil {
         return get("/api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting", filter, "", "landstingfilter")
     }
 
-    def getFilterEnhetnamnlista(FilterData filterData) {
-        def hash = getFilterHash(filterData)
-        return get("/api/filter/enhetsnamn/" + hash)
-    }
-
 }
 

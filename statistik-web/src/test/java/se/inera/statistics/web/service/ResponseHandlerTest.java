@@ -25,18 +25,27 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.web.model.FilteredDataReport;
 import se.inera.statistics.web.model.SimpleDetailsData;
 
 import javax.ws.rs.core.Response;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.eq;
 
 public class ResponseHandlerTest {
 
@@ -45,6 +54,9 @@ public class ResponseHandlerTest {
 
     @Mock
     private Icd10 icd10;
+
+    @Mock
+    private Warehouse warehouse;
 
     @Before
     public void setUp() throws Exception {
@@ -153,6 +165,50 @@ public class ResponseHandlerTest {
 
         //Then
         assertFalse((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER));
+    }
+
+    // CHECKSTYLE:OFF
+    @Test
+    public void testGetFilterEnhetnamnMissingEnhet() throws Exception {
+        //Given
+        final String filterHash = "abc";
+        final List<HsaIdEnhet> enhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("2"));
+        Mockito.doReturn(Collections.singletonList(createEnhet("1", "ett"))).when(warehouse).getEnhetsWithHsaId(any(Collection.class));
+        final FilteredDataReport report = () -> new FilterDataResponse(filterHash, Collections.emptyList(), enhets);
+
+        //When
+        final Response response = responseHandler.getResponseForDataReport(report, new ArrayList<>());
+
+        //Then
+        final Map<String, Object> entity = (Map<String, Object>) response.getEntity();
+        final List<String> enhetsNames = (List<String>) entity.get(ResponseHandler.FILTERED_ENHETS);
+        assertEquals(1, enhetsNames.size());
+        assertEquals("ett", enhetsNames.get(0));
+    }
+
+    @Test
+    public void testGetFilterEnhetnamnIdIsAddedToNameWhenDuplicate() throws Exception {
+        //Given
+        final String filterHash = "abc";
+        final Filter filter = Mockito.mock(Filter.class);
+        final List<HsaIdEnhet> enhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("2"));
+        Mockito.doReturn(Arrays.asList(createEnhet("1", "ett"), createEnhet("2", "ett"))).when(warehouse).getEnhetsWithHsaId(any(Collection.class));
+        final FilteredDataReport report = () -> new FilterDataResponse(filterHash, Collections.emptyList(), enhets);
+
+        //When
+        final Response response = responseHandler.getResponseForDataReport(report, new ArrayList<>());
+
+        //Then
+        final Map<String, Object> entity = (Map<String, Object>) response.getEntity();
+        final List<String> enhetsNames = (List<String>) entity.get(ResponseHandler.FILTERED_ENHETS);
+        assertEquals(2, enhetsNames.size());
+        assertEquals("ett 1", enhetsNames.get(0));
+        assertEquals("ett 2", enhetsNames.get(1));
+    }
+    // CHECKSTYLE:ON
+
+    private Enhet createEnhet(String id, String namn) {
+        return new Enhet(new HsaIdVardgivare(""), null, new HsaIdEnhet(id), namn, null, null, null);
     }
 
 }

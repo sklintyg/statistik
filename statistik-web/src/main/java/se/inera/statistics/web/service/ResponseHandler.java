@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.web.service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,8 +29,10 @@ import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.FilteredDataReport;
 import se.inera.statistics.web.model.TableDataReport;
 
@@ -41,9 +45,13 @@ public class ResponseHandler {
 
     public static final String ALL_AVAILABLE_DXS_SELECTED_IN_FILTER = "allAvailableDxsSelectedInFilter";
     public static final String ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER = "allAvailableEnhetsSelectedInFilter";
+    public static final String FILTERED_ENHETS = "filteredEnhets";
 
     @Autowired
     private Icd10 icd10;
+
+    @Autowired
+    private Warehouse warehouse;
 
     Response getResponse(TableDataReport result, String csv, List<HsaIdEnhet> availableEnhetsForUser) {
         if (csv == null || csv.isEmpty()) {
@@ -61,6 +69,9 @@ public class ResponseHandler {
 
         final boolean allAvailableEnhetsSelectedInFilter = result == null || areAllAvailableEnhetsSelectedInFilter(result.getFilter(), availableEnhetsForUser);
         mappedResult.put(ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER, allAvailableEnhetsSelectedInFilter);
+
+        final List<String> enhetNames = allAvailableEnhetsSelectedInFilter ? getEnhetNames(availableEnhetsForUser) : getEnhetNamesFromFilter(result.getFilter());
+        mappedResult.put(FILTERED_ENHETS, enhetNames);
 
         return Response.ok(mappedResult).build();
     }
@@ -97,6 +108,22 @@ public class ResponseHandler {
         topLevelIcdCodes.sort(String.CASE_INSENSITIVE_ORDER);
 
         return topLevelIcdCodes.equals(dxFilter);
+    }
+
+    private List<String> getEnhetNamesFromFilter(FilterDataResponse filter) {
+        if (filter == null || filter.getEnheter() == null) {
+            return null;
+        }
+        final List<HsaIdEnhet> enhetIds = filter.getEnheter().stream().map(HsaIdEnhet::new).collect(Collectors.toList());
+        return getEnhetNames(enhetIds);
+    }
+
+    private List<String> getEnhetNames(Collection<HsaIdEnhet> enhetIds) {
+        final List<Enhet> enhets = warehouse.getEnhetsWithHsaId(enhetIds);
+        final Map<String, List<Enhet>> enhetsByName = enhets.stream().collect(Collectors.groupingBy(Enhet::getNamn));
+        return enhetsByName.entrySet().stream().map(entry ->
+                entry.getValue().size() > 1 ? entry.getValue().stream().map(e2 -> e2.getNamn() + " " + e2.getEnhetId()).collect(Collectors.toList()) : Collections.singletonList(entry.getKey()))
+                .flatMap(List::stream).sorted().collect(Collectors.toList());
     }
 
 }

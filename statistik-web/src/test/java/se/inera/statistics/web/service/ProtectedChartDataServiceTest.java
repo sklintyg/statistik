@@ -18,6 +18,14 @@
  */
 package se.inera.statistics.web.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +34,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+
 import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
@@ -34,13 +43,6 @@ import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProtectedChartDataServiceTest {
@@ -55,6 +57,12 @@ public class ProtectedChartDataServiceTest {
 
     @Mock
     private MonitoringLogService monitoringLogService;
+
+    @Mock
+    private FilterHandler filterHandler;
+
+    @Mock
+    private FilterHashHandler filterHashHandler;
 
     @InjectMocks
     private ProtectedChartDataService chartDataService = new ProtectedChartDataService();
@@ -90,4 +98,5 @@ public class ProtectedChartDataServiceTest {
         Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new HsaIdUser(""), "", null, false, false, false, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
         chartDataService.userAccess(request);
     }
+
 }

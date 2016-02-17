@@ -34,7 +34,7 @@ public class FilterDataResponse {
     private List<String> enheter;
 
     //To be used by json converter
-    FilterDataResponse() {
+    private FilterDataResponse() {
     }
 
     public FilterDataResponse(String filterhash, Collection<String> diagnoser, Collection<HsaIdEnhet> enheter) {

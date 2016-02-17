@@ -151,7 +151,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         };
 
         var populatePageWithData = function (result) {
-            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter);
+            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
             $scope.enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.kapitelId);

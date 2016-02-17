@@ -91,7 +91,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
         var populatePageWithData = function (result) {
             $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
-            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter);
+            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;

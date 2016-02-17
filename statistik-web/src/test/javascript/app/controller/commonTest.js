@@ -43,10 +43,10 @@ describe("Test of common functions for controllers", function() {
     it("INTYG-1853: populateActiveEnhetsFilter with all enhets selected shows verksamhet name", function() {
         //Given
         var scope = {verksamhetName: "VerksamhetName"};
-        var dataService = {getFilterEnhetnamns: function(hash, callbackFunc) { callbackFunc(["OneEnhet"]);}};
+        var enhetnames = ["OneEnhet"];
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, dataService, "hash", false, true);
+        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", false, true, enhetnames);
 
         //Then
         expect(scope.headerEnhetInfo).toMatch("VerksamhetName");
@@ -55,10 +55,10 @@ describe("Test of common functions for controllers", function() {
     it("INTYG-1853: populateActiveEnhetsFilter without active filter shows verksamhet name", function() {
         //Given
         var scope = {verksamhetName: "VerksamhetName"};
-        var dataService = {getFilterEnhetnamns: function(hash, callbackFunc) { callbackFunc(["OneEnhet"]);}};
+        var enhetnames = ["OneEnhet"];
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, dataService, null, false, false);
+        ControllerCommons.populateActiveEnhetsFilter(scope, null, false, false, enhetnames);
 
         //Then
         expect(scope.headerEnhetInfo).toMatch("VerksamhetName");
@@ -67,10 +67,10 @@ describe("Test of common functions for controllers", function() {
     it("INTYG-1853: populateActiveEnhetsFilter with more than one (but not all) enhetes in filter shows nothing in title", function() {
         //Given
         var scope = {verksamhetName: "VerksamhetName"};
-        var dataService = {getFilterEnhetnamns: function(hash, callbackFunc) { callbackFunc(["OneEnhet", "SecondEnhet"]);}};
+        var enhetnames = ["OneEnhet", "SecondEnhet"];
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, dataService, "hash", false, false);
+        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", false, false, enhetnames);
 
         //Then
         expect(scope.headerEnhetInfo).toMatch("");
@@ -79,10 +79,10 @@ describe("Test of common functions for controllers", function() {
     it("INTYG-1853: populateActiveEnhetsFilter with more than one (but not all) enhetes in filter shows list of filtered enhets", function() {
         //Given
         var scope = {verksamhetName: "VerksamhetName"};
-        var dataService = {getFilterEnhetnamns: function(hash, callbackFunc) { callbackFunc(["OneEnhet", "SecondEnhet"]);}};
+        var enhetnames = ["OneEnhet", "SecondEnhet"];
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, dataService, "hash", false, false);
+        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", false, false, enhetnames);
 
         //Then
         expect(scope.activeEnhetsFilters).toMatch(["OneEnhet", "SecondEnhet"]);
@@ -91,10 +91,10 @@ describe("Test of common functions for controllers", function() {
     it("INTYG-1854: populateActiveEnhetsFilter with one enhet in filter shows enhet name in title", function() {
         //Given
         var scope = {verksamhetName: "VerksamhetName"};
-        var dataService = {getFilterEnhetnamns: function(hash, callbackFunc) { callbackFunc(["OneEnhet"]);}};
+        var enhetnames = ["OneEnhet"];
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, dataService, "hash", false, false);
+        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", false, false, enhetnames);
 
         //Then
         expect(scope.headerEnhetInfo).toMatch("OneEnhet");
@@ -103,10 +103,10 @@ describe("Test of common functions for controllers", function() {
     it("INTYG-1854: populateActiveEnhetsFilter with more than one enhet in filter shows no list of filtered enhets", function() {
         //Given
         var scope = {verksamhetName: "VerksamhetName"};
-        var dataService = {getFilterEnhetnamns: function(hash, callbackFunc) { callbackFunc(["OneEnhet"]);}};
+        var enhetnames = ["OneEnhet"];
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, dataService, "hash", false, false);
+        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", false, false, enhetnames);
 
         //Then
         expect(scope.activeEnhetsFilters).toMatch([""]);

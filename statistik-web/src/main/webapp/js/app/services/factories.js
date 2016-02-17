@@ -209,10 +209,6 @@ angular.module('StatisticsApp').factory('statisticsData', ['$http', '$rootScope'
         makeRequestNational("getIcd10Structure", successCallback, failureCallback, true, true);
     };
 
-    factory.getFilterEnhetnamns = function (filterhash, successCallback, failureCallback) {
-        makeRequestNational("filter/enhetsnamn/" + filterhash, successCallback, failureCallback, true, true);
-    };
-
     factory.getFilterHash = function (params) {
         var deferred = $q.defer();
 

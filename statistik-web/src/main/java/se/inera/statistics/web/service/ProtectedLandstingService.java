@@ -309,15 +309,7 @@ public class ProtectedLandstingService {
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getLandstingFilterInfo(@Context HttpServletRequest request) {
-        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final List<HsaIdEnhet> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
-        final List<Enhet> enhets = enhetManager.getEnhets(allEnhets);
-        List<Verksamhet> businesses = Lists.transform(enhets, new Function<Enhet, Verksamhet>() {
-            @Override
-            public Verksamhet apply(Enhet enhet) {
-                return loginServiceUtil.toVerksamhet(enhet);
-            }
-        });
+        List<Verksamhet> businesses = filterHandler.getAllVerksamhetsForLoggedInLandstingsUser(request);
         final Map<String, Object> result = new HashMap<>();
         result.put("businesses", businesses);
         return Response.ok(result).build();
