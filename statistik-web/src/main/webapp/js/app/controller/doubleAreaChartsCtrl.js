@@ -116,8 +116,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
 
         function updateChartsYAxisMaxValue() {
             var yMax = Math.max(that.chart1.yAxis[0].dataMax, that.chart2.yAxis[0].dataMax);
-            that.chart1.yAxis[0].setExtremes(0, yMax);
-            that.chart2.yAxis[0].setExtremes(0, yMax);
+            that.chart1.yAxis[0].setExtremes(0, yMax + 1);
+            that.chart2.yAxis[0].setExtremes(0, yMax + 1);
         }
 
         var updateChart = function (ajaxResult, doneLoadingCallback) {
