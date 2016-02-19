@@ -152,7 +152,7 @@ public class ProtectedChartDataService {
         final Range range = filterSettings.getRange();
         Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, filterHandler.getEnhetsFilterIds(filterHash, request));
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhet(filter.getPredicate(), idToNameMap, range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData result = new GroupedSjukfallConverter("Vårdenhet").convert(casesPerEnhet, filterSettings);
+        SimpleDetailsData result = new GroupedSjukfallConverter("").convert(casesPerEnhet, filterSettings);
         return getResponse(result, csv, request);
     }
 
@@ -189,7 +189,7 @@ public class ProtectedChartDataService {
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
         SimpleKonResponse<SimpleKonDataRow> casesPerLakare = warehouse.getCasesPerLakare(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        final SimpleDetailsData result = new GroupedSjukfallConverter("Läkare").convert(casesPerLakare, filterSettings);
+        final SimpleDetailsData result = new GroupedSjukfallConverter("").convert(casesPerLakare, filterSettings);
         return getResponse(result, csv, request);
     }
 

@@ -21,7 +21,7 @@ package se.inera.statistics.web.service;
 public class CompareDiagnosisConverter extends SimpleDualSexConverter {
 
     public CompareDiagnosisConverter() {
-        super("Diagnoser", false, "%1$s");
+        super("", false, "%1$s");
     }
 
 }

@@ -21,7 +21,7 @@ package se.inera.statistics.web.service;
 public class LakarbefattningConverter extends SimpleDualSexConverter {
 
     public LakarbefattningConverter() {
-        super("Läkarbefattning", false, "%1$s");
+        super("", false, "%1$s");
     }
 
 }

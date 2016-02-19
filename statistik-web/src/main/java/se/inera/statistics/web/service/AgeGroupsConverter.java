@@ -21,7 +21,7 @@ package se.inera.statistics.web.service;
 public class AgeGroupsConverter extends SimpleDualSexConverter {
 
     public AgeGroupsConverter() {
-        super("Åldersgrupper", false, "%1$s");
+        super("", false, "%1$s");
     }
 
 }

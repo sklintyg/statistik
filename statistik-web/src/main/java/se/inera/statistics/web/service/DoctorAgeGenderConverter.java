@@ -21,7 +21,7 @@ package se.inera.statistics.web.service;
 public class DoctorAgeGenderConverter extends SimpleDualSexConverter {
 
     public DoctorAgeGenderConverter() {
-        super("Läkare", false, "%1$s");
+        super("", false, "%1$s");
     }
 
 }
