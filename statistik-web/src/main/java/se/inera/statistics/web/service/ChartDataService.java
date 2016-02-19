@@ -191,7 +191,7 @@ public class ChartDataService {
         Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
         SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getHistoricalAgeGroups(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(range.getMonths()));
-        aldersgrupper = new AgeGroupsConverter().convert(ageGroups, filterSettings);
+        aldersgrupper = SimpleDualSexConverter.newGenericTvarsnitt().convert(ageGroups, filterSettings);
     }
 
     private void buildSjukskrivningsgrad() {
@@ -205,7 +205,7 @@ public class ChartDataService {
         Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
         SimpleKonResponse<SimpleKonDataRow> sickLeaveLength = data.getSjukfallslangd(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
-        sjukfallslangd = new SickLeaveLengthConverter().convert(sickLeaveLength, filterSettings);
+        sjukfallslangd = SimpleDualSexConverter.newGenericTvarsnitt().convert(sickLeaveLength, filterSettings);
     }
 
     private void buildSjukfallPerLan() {

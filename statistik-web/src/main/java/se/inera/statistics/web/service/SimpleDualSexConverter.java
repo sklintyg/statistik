@@ -45,6 +45,10 @@ public class SimpleDualSexConverter {
         this.seriesNameTemplate = seriesNameTemplate;
     }
 
+    public static SimpleDualSexConverter newGenericTvarsnitt() {
+        return new SimpleDualSexConverter("", false, "%1$s");
+    }
+
     public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings) {
         return convert(casesPerMonth, filterSettings, null);
     }

@@ -41,7 +41,7 @@ public class AldersgruppConverterTest {
     @Test
     public void convertCasesPerMonthDataTest() {
         //Given
-        AgeGroupsConverter converter = new AgeGroupsConverter();
+        SimpleDualSexConverter converter = SimpleDualSexConverter.newGenericTvarsnitt();
         ArrayList<SimpleKonDataRow> ageGroupsRows = new ArrayList<>();
         ageGroupsRows.add(new SimpleKonDataRow("<20", 13, 14));
         ageGroupsRows.add(new SimpleKonDataRow("20-50", 24, 15));
@@ -55,7 +55,7 @@ public class AldersgruppConverterTest {
 
         //Then
         TableData tableDataResult = result.getTableData();
-        assertEquals("[[Åldersgrupper;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableDataResult.getHeaders().toString());
+        assertEquals("[[;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableDataResult.getHeaders().toString());
         List<NamedData> rows = tableDataResult.getRows();
         assertEquals(3, rows.size());
         assertEquals("<20", rows.get(0).getName());

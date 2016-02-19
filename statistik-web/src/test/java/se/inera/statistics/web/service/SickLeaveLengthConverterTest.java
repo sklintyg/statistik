@@ -40,7 +40,7 @@ public class SickLeaveLengthConverterTest {
     @Test
     public void convertCasesPerMonthDataTest() {
         //Given
-        SickLeaveLengthConverter converter = new SickLeaveLengthConverter();
+        SimpleDualSexConverter converter = SimpleDualSexConverter.newGenericTvarsnitt();
         ArrayList<SimpleKonDataRow> sjukfallslangdRows = new ArrayList<>();
         sjukfallslangdRows.add(new SimpleKonDataRow("< 20 dagar", 13, 14));
         sjukfallslangdRows.add(new SimpleKonDataRow("20-50 dagar", 24, 15));
@@ -54,7 +54,7 @@ public class SickLeaveLengthConverterTest {
 
         //Then
         TableData tableDataResult = result.getTableData();
-        assertEquals("[[Sjukskrivningslängd;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableDataResult.getHeaders().toString());
+        assertEquals("[[;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableDataResult.getHeaders().toString());
         List<NamedData> rows = tableDataResult.getRows();
         assertEquals(3, rows.size());
         assertEquals("< 20 dagar", rows.get(0).getName());
