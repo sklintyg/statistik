@@ -94,7 +94,7 @@ public class ResponseHandler {
             return true;
         }
         final List<String> diagnoser = filter.getDiagnoser();
-        if (diagnoser == null) {
+        if (diagnoser == null || diagnoser.isEmpty()) {
             return true;
         }
         final List<String> dxFilter = Lists.newArrayList(diagnoser);
