@@ -86,6 +86,8 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
         businessFilter.fromDate = null;
 
         businessFilter.useDefaultPeriod = true;
+
+        businessFilter.filterChanged();
     };
 
     var isSet = function (value) {
@@ -351,9 +353,16 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
     };
 
     businessFilter.collectVerksamhetsIds = function () {
-        var selectedVerksamhettyps = _.filter(businessFilter.verksamhetsTyper, function(verksamhetstyp) {
-            return _.contains(businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
-        });
+        function getSelectedVerksamhets() {
+            if (businessFilter.selectedVerksamhetTypIds.length === 0) {
+                return businessFilter.verksamhetsTyper;
+            }
+            return _.filter(businessFilter.verksamhetsTyper, function(verksamhetstyp) {
+                return _.contains(businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
+            });
+        }
+
+        var selectedVerksamhettyps = getSelectedVerksamhets();
         var selectedUnitsFromVerksamhetstyps = _.map(selectedVerksamhettyps, function (verksamhetstyp) {
             return verksamhetstyp.units;
         });
@@ -363,7 +372,15 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
 
     businessFilter.filterChanged = function () {
         var verksamhetsBusinessIds = businessFilter.collectVerksamhetsIds();
-        businessFilter.selectedBusinesses = _.intersection(businessFilter.geographyBusinessIds, verksamhetsBusinessIds);
+
+        function getSelectedGeoEnhets() {
+            if (businessFilter.geographyBusinessIds.length === 0) {
+                return _.pluck(businessFilter.businesses, 'id');
+            }
+            return businessFilter.geographyBusinessIds;
+        }
+
+        businessFilter.selectedBusinesses = _.intersection(getSelectedGeoEnhets(), verksamhetsBusinessIds);
     };
 
     return businessFilter;
