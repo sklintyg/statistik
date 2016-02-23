@@ -144,6 +144,14 @@
         max-width: 40px;
     }
 
+    .chart-table .panel-heading {
+        display: none;
+    }
+
+    .chart-table .panel-body {
+        padding: 0;
+    }
+
     .chart-table-body {
         margin-left: 5px;
         font-size: 12px;
