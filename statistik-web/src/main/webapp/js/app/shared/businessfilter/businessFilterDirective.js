@@ -263,7 +263,11 @@ angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown'
         var bf = scope.$parent.businessFilter;
         element.multiselect({
             buttonText: function (options, select) {
-                return options.length + ' av ' + multiselectSize(select) + ' valda <b class="caret"></b>';
+                if (options.length === 0 || options.length === multiselectSize(select)) {
+                    return 'Alla valda ';
+                }
+
+                return options.length + ' av ' + multiselectSize(select) + ' valda ';
             },
             onChange: function (optionElement, checked) {
                 optionElement.removeAttr('selected');

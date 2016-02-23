@@ -48,7 +48,7 @@
     <link href="<c:url value='/css/inera-statistics.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/inera-statistics-responsive.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/helperclasses.css'/>" rel="stylesheet" media="not print">
-    <link href="<c:url value='/webjars/bootstrap-multiselect/0.9.8/css/bootstrap-multiselect.css'/>" rel="stylesheet" media="not print">
+    <link href="<c:url value='/webjars/bootstrap-multiselect/0.9.13/css/bootstrap-multiselect.css'/>" rel="stylesheet" media="not print">
     <link href="<c:url value='/css/filter.css'/>" rel="stylesheet" media="not print">
 
     <link href="<c:url value='/webjars/bootstrap/3.1.1/css/bootstrap.min.css'/>" rel="stylesheet" media="all">
@@ -186,7 +186,7 @@
 <script type="text/javascript" src="<c:url value='/webjars/angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/dropzone/4.0.1/dropzone.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/respond/1.3.0/respond.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/webjars/bootstrap-multiselect/0.9.8/js/bootstrap-multiselect.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/tablesorter/2.17.8/js/jquery.tablesorter.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/resources/constantsModule.js'/>"></script>
