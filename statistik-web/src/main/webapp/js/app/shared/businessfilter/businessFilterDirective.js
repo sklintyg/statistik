@@ -58,7 +58,18 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
     scope.showDateValidationError = false;
 
     function updateGeographyFilterSelectorDataButtonLabelText() {
-        scope.geographyFilterSelectorData.buttonLabelText = scope.businessFilter.geographyBusinessIds.length + " av " + scope.businessFilter.businesses.length + " valda";
+        var selected = scope.businessFilter.geographyBusinessIds.length;
+        var total = scope.businessFilter.businesses.length;
+
+        var text;
+        if (selected === 0 || selected === total) {
+            text = 'Alla valda';
+        }
+        else {
+            text = selected + " av " + total + " valda";
+        }
+
+        scope.geographyFilterSelectorData.buttonLabelText = text;
     }
 
     scope.$watch('businessFilter.geographyBusinessIds', function(newValue,oldValue,scope) {
