@@ -69,6 +69,8 @@
 
 - name: Add fileservice execution as daily cron job
   cron: name="hsa fileservice" user="inera" minute="0" hour="4" job="{{ hsa_fileservice_executable }} --hsafileservice={{ hsaFileService_properties_file }} --datasource={{ dataSource_properties_file }}"
+  when: environment == "qa"
 
 - name: Execute hsaFileService
   shell: "{{ hsa_fileservice_executable }} --hsafileservice={{ hsaFileService_properties_file }} --datasource={{ dataSource_properties_file }}"
+  when: environment == "qa"

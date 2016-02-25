@@ -3,6 +3,10 @@
 - name: Download activemq-client-5.8.0.jar
   get_url: url=http://repo1.maven.org/maven2/org/apache/activemq/activemq-client/5.8.0/activemq-client-5.8.0.jar
            dest={{ tomcat_lib }}
+
+- name: Download activemq-broker-5.8.0.jar
+  get_url: url=http://repo1.maven.org/maven2/org/apache/activemq/activemq-broker/5.8.0/activemq-broker-5.8.0.jar
+           dest={{ tomcat_lib }}
     
 - name: Download slf4j-api-1.6.4.jar
   get_url: url=http://repo1.maven.org/maven2/org/slf4j/slf4j-api/1.6.4/slf4j-api-1.6.4.jar 

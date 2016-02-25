@@ -88,7 +88,7 @@ jar.dependsOn createVersionPropertyFile
 dependencies {
     compile project(':statistik-service')
 
-    compile "org.springframework.security.extensions:spring-security-saml2-core:1.0.0.RC2"
+    compile "org.springframework.security.extensions:spring-security-saml2-core:1.0.1.RELEASE"
     compile "xml-apis:xml-apis:1.4.01"
     compile "org.springframework:spring-webmvc:$springContextVersion"
     compile "org.apache.commons:commons-lang3:3.2.1"

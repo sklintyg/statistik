@@ -32,7 +32,7 @@
 
 - name: Make sure statistik-web file download is forced when using shapshot repo
   file: state=absent  path={{ releases_folder }}/statistik-web-{{ version }}.war
-  when: repo == "snapshot"
+  when: repo == "snapshots"
 
 - name: Download statistik-web-{{ version }}.war
   get_url: url=https://build-inera.nordicmedtest.se/nexus/content/repositories/{{ repo }}/se/inera/statistik/statistik-web/{{ version }}/statistik-web-{{ version }}.war

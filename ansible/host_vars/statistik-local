@@ -3,3 +3,5 @@
 config_etc_folder: "{{ config_folder }}/local"
 profile: hsa-stub,security-both,qm,db-resetter
 host_url: ""
+
+activemq_broker_url: "vm://localhost:61616?broker.persistent=false"

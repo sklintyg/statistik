@@ -3,3 +3,5 @@
 config_etc_folder: "{{ config_folder }}/test"
 profile: hsa-stub,security-fake,qm,db-resetter
 host_url: https://fitnesse.inera.nordicmedtest.se
+
+activemq_broker_url: "vm://localhost:61616?broker.persistent=false"
