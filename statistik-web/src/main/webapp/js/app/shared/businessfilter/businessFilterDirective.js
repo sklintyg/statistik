@@ -281,9 +281,11 @@ angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown'
                 return options.length + ' av ' + multiselectSize(select) + ' valda ';
             },
             onChange: function (optionElement, checked) {
-                optionElement.removeAttr('selected');
-                if (checked) {
-                    optionElement.prop('selected', 'selected');
+                if (optionElement) {
+                    optionElement.removeAttr('selected');
+                    if (checked) {
+                        optionElement.prop('selected', 'selected');
+                    }
                 }
                 bf.filterChanged();
 
