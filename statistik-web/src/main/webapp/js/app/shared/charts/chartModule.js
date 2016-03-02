@@ -119,7 +119,8 @@ angular.module('StatisticsApp.charts', ['underscore'])
                         color: '#333333',
                         fontSize: '12px',
                         padding: '8px'
-                    }
+                    },
+                    pointFormat: '{series.name}: <nobr><b>{point.y}</b></nobr><br/>'
                 },
                 credits : {
                     enabled : false
