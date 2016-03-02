@@ -26,6 +26,8 @@ module.exports = function(config) {
             WEBJAR_DIR + 'angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js',
             WEBJAR_DIR + 'underscorejs/1.7.0/underscore.js',
             WEBJAR_DIR + 'momentjs/2.10.3/moment.js',
+            WEBJAR_DIR + 'pdfmake/0.1.20/build/pdfmake.min.js',
+            WEBJAR_DIR + 'pdfmake/0.1.20/build/vfs_fonts.js',
             'src/main/webapp/js/**/*.js',
             'src/test/javascript/**/*.js',
             '**/*.html'

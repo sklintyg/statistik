@@ -188,10 +188,13 @@
 <script type="text/javascript" src="<c:url value='/webjars/respond/1.3.0/respond.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/tablesorter/2.17.8/js/jquery.tablesorter.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/pdfmake/0.1.20/build/pdfmake.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/pdfmake/0.1.20/build/vfs_fonts.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/resources/constantsModule.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/factories.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/printFactory.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/services/pdfFactory.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/businessfilter/businessFilterModule.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/businessfilter/businessFilterFactory.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/businessfilter/businessFilterDirective.js'/>"></script>
@@ -224,6 +227,10 @@
 <script type="text/javascript" src="<c:url value='/js/lib/highcharts/3.0.5/modules/highcharts-more.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/highcharts/3.0.5/modules/exporting.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/highcharts/pattern-fill/pattern-fill.js'/>"></script>
+  <script type="text/javascript" src="<c:url value='/js/lib/canvg/1.4/rgbcolor.js'/>"></script>
+  <script type="text/javascript" src="<c:url value='/js/lib/canvg/1.4/StackBlur.js'/>"></script>
+  <script type="text/javascript" src="<c:url value='/js/lib/canvg/1.4/canvg.js'/>"></script>
+
 
 <script type="text/javascript">
     $('.dropdown-toggle').dropdown();

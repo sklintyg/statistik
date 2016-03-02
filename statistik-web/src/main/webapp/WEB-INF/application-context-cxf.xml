@@ -19,6 +19,7 @@
                 <bean class="se.inera.statistics.web.service.CalcCoordinatorInvoker"/>
             </jaxrs:invoker>
             <jaxrs:serviceBeans>
+                <ref bean="pdfService"/>
                 <ref bean="chartDataService"/>
                 <ref bean="protectedChartDataService"/>
                 <ref bean="protectedLandstingService"/>

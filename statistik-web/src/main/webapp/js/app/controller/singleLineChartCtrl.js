@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'config', 'printFactory', '$location', 'messageService', 'chartFactory',
-    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, printFactory, $location, messageService, chartFactory) {
+angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'config', 'printFactory', '$location', 'messageService', 'chartFactory', 'pdfFactory',
+    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, printFactory, $location, messageService, chartFactory, pdfFactory) {
 
         var chart;
 
@@ -160,6 +160,18 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
 
         $scope.print = function (bwPrint) {
             printFactory.print(bwPrint, $rootScope, $window);
+        };
+
+        $scope.printPdf = function () {
+
+            var table = {
+                header: $scope.headerrows,
+                data: $scope.rows
+            };
+
+            var charts = [chart];
+
+            pdfFactory.create($scope.viewHeader, $scope.subTitle, table, charts);
         };
 
         $scope.$on('$destroy', function() {
