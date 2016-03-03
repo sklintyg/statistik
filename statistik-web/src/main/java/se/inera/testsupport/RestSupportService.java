@@ -132,12 +132,17 @@ public class RestSupportService {
     @Transactional
     public Response insertIntyg(Intyg intyg) {
         LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
+        insertIntygWithoutLogging(intyg);
+        return Response.ok().build();
+    }
+
+    @Transactional
+    public void insertIntygWithoutLogging(Intyg intyg) {
         hsaDataInjectable.setCountyForNextIntyg(intyg.getCounty());
         hsaDataInjectable.setHuvudenhetIdForNextIntyg(intyg.getHuvudenhetId());
         hsaDataInjectable.setHsaKey(new HSAKey(intyg.getVardgivareId(), intyg.getEnhetId(), intyg.getLakareId()));
         receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
         setEnhetName(intyg);
-        return Response.ok().build();
     }
 
     private void setEnhetName(Intyg intyg) {

@@ -18,11 +18,23 @@
  */
 package se.inera.statistics.service.demo;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
+import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
+import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import javax.annotation.PostConstruct;
+
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.DocumentHelper;
@@ -41,16 +53,7 @@ import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-
-import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
-import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
-import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class LargeTestDataGenerator {
     private static final int NUMBER_OF_UNITS = 3000;

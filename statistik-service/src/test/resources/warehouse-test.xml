@@ -32,8 +32,6 @@
 
     <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
 
-    <bean id="dataGenerator" class="se.inera.statistics.service.demo.LargeTestDataGenerator" />
-
     <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactPopulator" />
     <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
     <bean id="vardgivareManager" class="se.inera.statistics.service.processlog.VardgivareManager" />

@@ -67,4 +67,8 @@
         </jaxrs:server>
     </beans>
 
+    <beans profile="embedded">
+        <bean class="se.inera.testsupport.TestIntygInjector" lazy-init="false"/>
+    </beans>
+
 </beans>

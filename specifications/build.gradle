@@ -22,8 +22,8 @@ if (project.hasProperty('runFitnesse')) {
         contextPath = '/'
         contextConfigFile = project(":statistik-web").projectDir.path + "/src/main/webapp/WEB-INF/jetty-context.xml"
         logbackConfigFile = "${projectDir}/src/main/resources/logback-test.xml"
-        jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake,db-resetter', '-XX:MaxPermSize=256M']
-        jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake,db-resetter', '-Dstatistics.test.max.intyg=1', '-XX:MaxPermSize=256M']
+        jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake', '-XX:MaxPermSize=256M']
+//        jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake', '-Dstatistics.test.max.intyg=1', '-XX:MaxPermSize=256M']
     }
 
     farm {

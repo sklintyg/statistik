@@ -16,30 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.demo;
+package se.inera.testsupport;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
-import org.joda.time.LocalDate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdLakare;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.common.CommonPersistence;
-import se.inera.statistics.service.helper.UtlatandeBuilder;
-import se.inera.statistics.service.hsa.HSAKey;
-import se.inera.statistics.service.hsa.HsaDataInjectable;
-import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.processlog.Receiver;
-import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.warehouse.WarehouseManager;
-
-import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -47,10 +25,31 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class InjectUtlatande {
+import javax.annotation.PostConstruct;
+
+import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.UtlatandeBuilder;
+import se.inera.statistics.service.hsa.HSAKey;
+import se.inera.statistics.service.hsa.HsaDataInjectable;
+import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.report.util.Icd10;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
+
+public class TestIntygInjector {
     private static final int SEED = 1235;
 
-    private static final Logger LOG = LoggerFactory.getLogger(InjectUtlatande.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TestIntygInjector.class);
 
     private static final int LONG_PERIOD_DAYS = 365;
     private static final int SHORT_PERIOD_DAYS = 30;
@@ -87,22 +86,13 @@ public class InjectUtlatande {
     }
 
     @Autowired
-    private CommonPersistence persistence;
-
-    @Autowired
-    private Receiver receiver;
-
-    @Autowired
-    private LogConsumer consumer;
-
-    @Autowired
     private Icd10 icd10;
 
     @Autowired
-    private WarehouseManager warehouseManager;
+    private HsaDataInjectable hsaDataInjectable;
 
     @Autowired
-    private HsaDataInjectable hsaDataInjectable;
+    private RestSupportService restSupportService;
 
     private List<String> getDiagnoser() {
         if (DIAGNOSER.isEmpty()) {
@@ -121,19 +111,9 @@ public class InjectUtlatande {
 
     @PostConstruct
     public void init() {
-        cleanupDB();
+        restSupportService.clearDatabase();
         publishUtlatanden();
-        LOG.debug("Log Job");
-        int count;
-        do {
-            count = consumer.processBatch();
-            LOG.info("Processed batch with {} entries", count);
-        } while (count > 0);
-        warehouseManager.loadEnhetAndWideLines();
-    }
-
-    private void cleanupDB() {
-        persistence.cleanDb();
+        restSupportService.processIntyg();
     }
 
     private void publishUtlatanden() {
@@ -144,13 +124,12 @@ public class InjectUtlatande {
 
         LOG.info("Inserting " + personNummers.size() + " certificates");
         for (String id : personNummers) {
-            JsonNode newPermutation = permutate(builder, id);
-            accept(newPermutation.toString(), newPermutation.path("id").textValue());
+            createAndInsertIntyg(builder, id);
         }
         LOG.info("Inserting " + personNummers.size() + " certificates completed. Use -Dstatistics.test.max.intyg=<x> to limit inserts.");
     }
 
-    public JsonNode permutate(UtlatandeBuilder builder, String patientId) {
+    private void createAndInsertIntyg(UtlatandeBuilder builder, String patientId) {
         // CHECKSTYLE:OFF MagicNumber
         LocalDate start = BASE.plusMonths(random.nextInt(MONTHS)).plusDays(random.nextInt(SHORT_PERIOD_DAYS));
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
@@ -171,15 +150,19 @@ public class InjectUtlatande {
 
         hsaDataInjectable.setHsaKey(new HSAKey(vardgivare, vardenhet, lakare));
 
-        return builder.build(patientId, start, end, lakare, vardenhet, vardgivare, diagnos, arbetsformaga);
+        final JsonNode data = builder.build(patientId, start, end, lakare, vardenhet, vardgivare, diagnos, arbetsformaga);
+        final EventType type = EventType.CREATED;
+        final String id = data.path("id").textValue();
+        final long timestamp = System.currentTimeMillis();
+        final String vgId = vardgivare.getId();
+        final String enhetId = vardenhet.getId();
+        final String lakareId = lakare.getId();
+        final Intyg intyg = new Intyg(type, data.toString(), id, timestamp, null, null, null, vgId, enhetId, lakareId);
+        restSupportService.insertIntygWithoutLogging(intyg);
     }
 
     private static <T> T random(List<T> list) {
         return list.get(random.nextInt(list.size()));
-    }
-
-    private void accept(final String intyg, final String correlationId) {
-        receiver.accept(EventType.CREATED, intyg, correlationId, System.currentTimeMillis());
     }
 
     private List<String> readList(final String path, final int maxIntyg) {

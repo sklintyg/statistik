@@ -125,7 +125,6 @@ De profiler som finns är:
 |dev            |starta applikationen i utvecklingsläge|
 |embedded       |använd inbäddad databas (H2), och lägg in testintyg|
 |hsa-stub       |gå inte mot hsa, utan använd en stub istället|
-|db-resetter    |rensa databasen vid uppstart|
 |security-fake  |stöd enbart simulerad inloggning|
 |security-both  |stöd saml-inloggning och simulerad inloggning|
 |security-saml  |stöd enbart saml-inloggning|
