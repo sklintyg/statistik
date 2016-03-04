@@ -39,14 +39,16 @@ angular.module('StatisticsApp')
                 charts = [charts];
             }
 
-            _create(headers, table, charts);
+            _create(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters);
         }
 
-        function _create(headers, table, images) {
+        function _create(headers, table, images, enhetsFilter, diagnosFilter) {
             var content = [];
 
             _addHeader(content, headers);
             content.push(_getImages(images));
+            _addListFilter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
+            _addListFilter(content, 'Sammanställning av enhetsfilter', enhetsFilter);
             content.push(_getTable(table.header, table.data));
 
             var docDefinition = {
@@ -93,8 +95,23 @@ angular.module('StatisticsApp')
                 footer: {
                     fontSize: 10,
                     margin: [0, 0, 20, 0]
+                },
+                filterheader: {
+                    fontSize: 12,
+                    bold: true,
+                    margin: [0, 10, 0, 2]
                 }
             };
+        }
+
+        function _addListFilter(content, rubrik, filter) {
+            if (filter && filter.length > 0) {
+                content.push({text: rubrik, style: 'filterheader'});
+
+                content.push({
+                    ul: filter
+                });
+            }
         }
 
         function _getFooter(currentPage, pageCount) {
