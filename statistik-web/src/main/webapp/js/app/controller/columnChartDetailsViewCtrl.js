@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'printFactory', 'chartFactory',
-    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, printFactory, chartFactory) {
+angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'printFactory', 'chartFactory', 'pdfFactory',
+    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, printFactory, chartFactory, pdfFactory) {
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
         var isLandsting = ControllerCommons.isShowingLandsting($location);
         var chart = {};
@@ -177,6 +177,10 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
         $scope.print = function (bwPrint) {
             printFactory.print(bwPrint, $rootScope, $window);
+        };
+
+        $scope.printPdf = function () {
+            pdfFactory.print($scope, chart);
         };
 
         $scope.$on('$destroy', function() {

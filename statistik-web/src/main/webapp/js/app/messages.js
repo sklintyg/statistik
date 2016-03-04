@@ -122,6 +122,7 @@ var stMessages = {
         'lbl.valj-annan-diagnoskategori': 'Välj diagnoskategori',
         'dropdown.val.rapport': 'Spara/Skriv ut',
         'dropdown.val.skrivut-farg': ' Skriv ut i färg',
+        'dropdown.val.skrivut-pdf': ' Spara som pdf',
         'dropdown.val.skrivut-svart-vitt': ' Skriv ut i svartvitt',
         'dropdown.val.spara-diagram-bild-1': ' Spara ',
         'dropdown.val.spara-diagram-bild-2': ' som bild',

@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$rootScope', '$timeout', '$routeParams', '$window', 'statisticsData', 'messageService', 'printFactory', 'chartFactory',
-    function ($scope, $rootScope, $timeout, $routeParams, $window, statisticsData, messageService, printFactory, chartFactory) {
+angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$rootScope', '$timeout', '$routeParams', '$window', 'statisticsData', 'messageService', 'printFactory', 'chartFactory', 'pdfFactory',
+    function ($scope, $rootScope, $timeout, $routeParams, $window, statisticsData, messageService, printFactory, chartFactory, pdfFactory) {
 
         var chart = {};
         $scope.chartContainers = [
@@ -95,6 +95,10 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
 
         $scope.print = function (bwPrint) {
             printFactory.print(bwPrint, $rootScope, $window);
+        };
+
+        $scope.printPdf = function () {
+            pdfFactory.print($scope, chart);
         };
 
         $scope.$on('$destroy', function() {

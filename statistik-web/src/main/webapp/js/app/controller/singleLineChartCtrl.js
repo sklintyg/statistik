@@ -163,15 +163,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         };
 
         $scope.printPdf = function () {
-
-            var table = {
-                header: $scope.headerrows,
-                data: $scope.rows
-            };
-
-            var charts = [chart];
-
-            pdfFactory.create($scope.viewHeader, $scope.subTitle, table, charts);
+            pdfFactory.print($scope, chart);
         };
 
         $scope.$on('$destroy', function() {
