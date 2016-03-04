@@ -1,5 +1,8 @@
 <div id="statistics-filter-container" class="hidden-print" collapse="isFilterCollapsed">
-    <div class="row">
+    <div class="row" style="text-align: center" data-ng-hide="businessFilter.dataInitialized">
+            <span style="margin: auto">Laddar filterdata</span>
+    </div>
+    <div class="row" data-ng-show="businessFilter.dataInitialized">
 
         <div class="filter-level" id="first-level-filter">
 
