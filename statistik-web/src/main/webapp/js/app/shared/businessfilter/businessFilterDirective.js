@@ -215,7 +215,7 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
         scope.toDateValidationError = false;
     };
 
-    scope.resetFilter = function() {
+    scope.resetBusinessFilter = function() {
         businessFilter.resetSelections();
         resetDatePickers();
         updateGeographyFilterSelectorDataButtonLabelText();
