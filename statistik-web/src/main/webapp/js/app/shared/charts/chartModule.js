@@ -154,7 +154,7 @@ angular.module('StatisticsApp.charts', ['underscore'])
                 extendedChartOptions.title = {
                     text: title,
                     margin: 30,
-                    x: 50
+                    x: 55
                 };
                 extendedChartOptions.chart.marginTop = null;
                 extendedChartOptions.chart.backgroundColor = "#FFFFFF";
