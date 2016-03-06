@@ -79,6 +79,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
         businessFilter.geographyBusinessIds.length = 0;
         businessFilter.selectedVerksamhetTypIds.length = 0;
         businessFilter.selectedDiagnoses = [];
+        businessFilter.deselectAll(businessFilter.geography);
         businessFilter.deselectAll(businessFilter.icd10);
 
         //Reset datepickers
