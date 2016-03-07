@@ -18,318 +18,349 @@
   -->
 
 <div id="chart-content">
-	<div class="row" id="print-logo-display">
- 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
- 			<img src="img/statistiktjansten-logotype-print.png">
- 			<h2 class="business-name-header print-only-no-display">- <span bindonce="verksamhetName"></span></h2>
- 		</div>
- 	</div>
-
-	<div class="row">
-		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print right-2px-padding" style="width: auto !important;">
-			<h1 class="national-statistic-h1" data-ng-bind="viewHeader" style="line-height: 17px; margin-bottom: 0px;"></h1>
-		</div>
-    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print left-2px-padding" ng-show="verksamhetViewShowing" id="business-name-header-container" style="width: auto !important;">
-			<h2 class="business-name-header" style="line-height: 16px;">{{headerEnhetInfo}}</h2>
-		</div>
+  <div class="row" id="print-logo-display">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <img src="img/statistiktjansten-logotype-print.png">
+      <h2 class="business-name-header print-only-no-display">- <span bindonce="verksamhetName"></span></h2>
     </div>
+  </div>
 
-	<div class="row">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print right-2px-padding"
+         style="width: auto !important;">
+      <h1 class="national-statistic-h1" data-ng-bind="viewHeader" style="line-height: 17px; margin-bottom: 0px;"></h1>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print left-2px-padding"
+         ng-show="verksamhetViewShowing" id="business-name-header-container" style="width: auto !important;">
+      <h2 class="business-name-header" style="line-height: 16px;">{{headerEnhetInfo}}</h2>
+    </div>
+  </div>
+
+  <div class="row">
 		<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress pull-left" style="min-height: 5px;">
 			{{subTitle}}
-			<a class="hidden-print pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>" tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px; margin-left: 5px;"><img src="img/questionmark2.png"></a>
-			<a class="hidden-print" id="chart-footnote-trigger" data-toggle="collapse" data-target="#chart-footnote-text" data-ng-show="chartFootnotes" text="Information om diagrammet" style="position: relative; top: -2px; margin-left: 5px;"><img src="img/information.png"></a>
-			<a class="hidden-print" id="chart-diagnosfilterinfo-trigger" data-toggle="collapse" data-target="#chart-diagnosfilterinfo-text" data-ng-show="activeDiagnosFilters" text="Diagnosfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Diagnosfilter&nbsp;&#x25BE</a>
-			<a class="hidden-print" id="chart-enhetsfilterinfo-trigger" data-toggle="collapse" data-target="#chart-enhetsfilterinfo-text" data-ng-show="activeEnhetsFilters" text="Enhetsfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Enhetsfilter&nbsp;&#x25BE</a>
+			<a class="hidden-print pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>"
+         tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText"
+         style="position: relative; top: -2px; margin-left: 5px;"><img src="img/questionmark2.png"></a>
+			<a class="hidden-print" id="chart-footnote-trigger" data-toggle="collapse" data-target="#chart-footnote-text"
+         data-ng-show="chartFootnotes" text="Information om diagrammet"
+         style="position: relative; top: -2px; margin-left: 5px;"><img src="img/information.png"></a>
+			<a class="hidden-print" id="chart-diagnosfilterinfo-trigger" data-toggle="collapse"
+         data-target="#chart-diagnosfilterinfo-text" data-ng-show="activeDiagnosFilters" text="Diagnosfilter"
+         style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Diagnosfilter&nbsp;&#x25BE</a>
+			<a class="hidden-print" id="chart-enhetsfilterinfo-trigger" data-toggle="collapse"
+         data-target="#chart-enhetsfilterinfo-text" data-ng-show="activeEnhetsFilters" text="Enhetsfilter"
+         style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Enhetsfilter&nbsp;&#x25BE</a>
 		</span>
-	</div>
+  </div>
 
-	<div class="row pull-left">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="chartFootnotes">
-			<div class="collapse" id="chart-footnote-text">
-       			<div class="alert alert-info" style="margin-top: 3px;">
-       				<div data-ng-repeat="chartFootnote in chartFootnotes">
-       					<p bindonce="chartFootnote"></p>
-       				</div>
-       			</div>
-       		</div>
+  <div class="row pull-left">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="chartFootnotes">
+      <div class="collapse" id="chart-footnote-text">
+        <div class="alert alert-info" style="margin-top: 3px;">
+          <div data-ng-repeat="chartFootnote in chartFootnotes">
+            <p bindonce="chartFootnote"></p>
+          </div>
         </div>
-	</div>
-
-	<div class="row hidden-print pull-left">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="activeDiagnosFilters">
-			<div class="collapse" id="chart-diagnosfilterinfo-text">
-       			<div class="alert alert-info" style="margin-top: 3px;">
-       				<div data-ng-repeat="activeDiagnosFilter in activeDiagnosFilters">
-       					<p bindonce="activeDiagnosFilter"></p>
-       				</div>
-       			</div>
-       		</div>
-        </div>
-	</div>
-
-	<div class="row hidden-print pull-left">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="activeEnhetsFilters">
-			<div class="collapse" id="chart-enhetsfilterinfo-text">
-       			<div class="alert alert-info" style="margin-top: 3px;">
-       				<div data-ng-repeat="activeEnhetsFilter in activeEnhetsFilters">
-       					<p bindonce="activeEnhetsFilter"></p>
-       				</div>
-       			</div>
-       		</div>
-        </div>
-	</div>
-
-	<!-- Start detailsOptions if any -->
-    <div class="row hidden-print" style="width: auto !important; margin-top: 10px;">
-    	
+      </div>
     </div>
-    <div class="row hidden-print">
-		<tree-multi-selector style="margin-top: 20px;"
-			class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left"
-			menu-options="diagnosisTreeFilter.diagnosisOptionsTree"
-			done-clicked="diagnosisSelected"
-			data-ng-show="showDiagnosisSelector"
-			text-data="diagnosisSelectorData">
-		</tree-multi-selector>
-    	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="showDetailsOptions">
-    		<label class="dropdown-label" for="selectDiagnosticChapter"><span message key="lbl.valj-annat-diagnoskapitel"></span></label>
-    	</div>
-   		<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions">
-       		<div class="btn-group margin-bottom" id="detailsOptionsDropdown">
-           		<button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticChapter" data-toggle="dropdown" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
-           			<span class="caret pull-right" style="margin-top: 9px;"></span>
-           			<span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span>
-           		</button>
-           		<ul class="dropdown-menu left overflow-menu-options">
-	               <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}{{queryString}}"><span bindonce="detailsOption.id"></span> <span bindonce="detailsOption.name"></span></a></li>
-	        	</ul>
-         	</div>
-       	</div>
+  </div>
+
+  <div class="row hidden-print pull-left">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="activeDiagnosFilters">
+      <div class="collapse" id="chart-diagnosfilterinfo-text">
+        <div class="alert alert-info" style="margin-top: 3px;">
+          <div data-ng-repeat="activeDiagnosFilter in activeDiagnosFilters">
+            <p bindonce="activeDiagnosFilter"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row hidden-print pull-left">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="activeEnhetsFilters">
+      <div class="collapse" id="chart-enhetsfilterinfo-text">
+        <div class="alert alert-info" style="margin-top: 3px;">
+          <div data-ng-repeat="activeEnhetsFilter in activeEnhetsFilters">
+            <p bindonce="activeEnhetsFilter"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Start detailsOptions if any -->
+  <div class="row hidden-print" style="width: auto !important; margin-top: 10px;">
+
+  </div>
+  <div class="row hidden-print">
+    <tree-multi-selector style="margin-top: 20px;" class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left"
+                         menu-options="diagnosisTreeFilter.diagnosisOptionsTree" done-clicked="diagnosisSelected"
+                         data-ng-show="showDiagnosisSelector" text-data="diagnosisSelectorData"></tree-multi-selector>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="showDetailsOptions">
+      <label class="dropdown-label" for="selectDiagnosticChapter"><span message
+                                                                        key="lbl.valj-annat-diagnoskapitel"></span></label>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions">
+      <div class="btn-group margin-bottom" id="detailsOptionsDropdown">
+        <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticChapter" data-toggle="dropdown"
+                style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+          <span class="caret pull-right" style="margin-top: 9px;"></span>
+          <span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span>
+        </button>
+        <ul class="dropdown-menu left overflow-menu-options">
+          <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}{{queryString}}"><span
+              bindonce="detailsOption.id"></span> <span bindonce="detailsOption.name"></span></a></li>
+        </ul>
+      </div>
+    </div>
 
     	<span class="col-xs-12" data-ng-show="showDetailsOptions2">
-    		<label class="dropdown-label" for="selectDiagnosticCategory"><span message key="lbl.valj-annat-diagnosavsnitt"></span>:</label>
+    		<label class="dropdown-label" for="selectDiagnosticCategory"><span message
+                                                                           key="lbl.valj-annat-diagnosavsnitt"></span>:</label>
     	</span>
-   		<div class="col-xs-6 pull-left" data-ng-show="showDetailsOptions2">
-       		<div class="btn-group margin-bottom" id="detailsOptionsDropdown2">
-           		<button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticCategory" data-toggle="dropdown" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
-           			<span class="caret pull-right" style="margin-top: 9px;"></span>
-           			<span>{{selectedDetailsOption2.id}} {{selectedDetailsOption2.name}}</span>
-           		</button>
-           		<ul class="dropdown-menu left overflow-menu-options">
-	               <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}{{queryString}}"><span bindonce="detailsOption2.id"></span> <span bindonce="detailsOption2.name"></span></a></li>
-	        	</ul>
-         	</div>
-       	</div>
+    <div class="col-xs-6 pull-left" data-ng-show="showDetailsOptions2">
+      <div class="btn-group margin-bottom" id="detailsOptionsDropdown2">
+        <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticCategory" data-toggle="dropdown"
+                style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+          <span class="caret pull-right" style="margin-top: 9px;"></span>
+          <span>{{selectedDetailsOption2.id}} {{selectedDetailsOption2.name}}</span>
+        </button>
+        <ul class="dropdown-menu left overflow-menu-options">
+          <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}{{queryString}}"><span
+              bindonce="detailsOption2.id"></span> <span bindonce="detailsOption2.name"></span></a></li>
+        </ul>
+      </div>
+    </div>
 
     	<span class="col-xs-12" data-ng-show="showDetailsOptions3">
-    		<label class="dropdown-label" for="selectDiagnosticKategori"><span message key="lbl.valj-annan-diagnoskategori"></span>:</label>
-            <a class="hidden-print pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{showDetailOptions3PopoverText}}</div>" tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px; margin-left: 5px;"><img src="img/questionmark2.png"></a>
+    		<label class="dropdown-label" for="selectDiagnosticKategori"><span message
+                                                                           key="lbl.valj-annan-diagnoskategori"></span>:</label>
+            <a class="hidden-print pageHelpToolTip"
+               tooltip-html-unsafe="<div class=popover-content>{{showDetailOptions3PopoverText}}</div>"
+               tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText"
+               style="position: relative; top: -2px; margin-left: 5px;"><img src="img/questionmark2.png"></a>
     	</span>
 
-   		<div class="col-xs-6 pull-left" data-ng-show="showDetailsOptions3">
-       		<div class="btn-group margin-bottom" id="detailsOptionsDropdown3">
-           		<button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticKategori" data-toggle="dropdown" style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
-           			<span class="caret pull-right" style="margin-top: 9px;"></span>
-           			<span>{{selectedDetailsOption3.id}} {{selectedDetailsOption3.name}}</span>
-           		</button>
-           		<ul class="dropdown-menu left overflow-menu-options">
-	               <li data-ng-repeat="detailsOption3 in detailsOptions3"><a href="{{detailsOption3.url}}{{queryString}}"><span bindonce="detailsOption3.id"></span> <span bindonce="detailsOption3.name"></span></a></li>
-	        	</ul>
-         	</div>
-       	</div>
-
-		<div class="row" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
-            <!-- toolbar -->
-            <!--<div class="row">-->
-                <!-- Button group for viewing different series -->
-
-            <div class="col-sm-12 col-lg-8 pull-right">
-                <div class="pull-right">
-                    <div class="col-sm-5 col-sm-push-1" ng-show="isVerksamhetShowing">
-                        <h3 message key="lbl.visa-knappgrupp-serier" data-ng-if="exchangeableViews"></h3>
-                        <chart-series-bg views="exchangeableViews"></chart-series-bg>
-                    </div>
-
-                    <div class="col-sm-4" ng-show="isVerksamhetShowing">
-                        <h3 message key="lbl.diagramtyp-knappgrupp"></h3>
-
-                        <span><div ng-class="{'chart-icon-column-active': activeChartType === 'column', 'chart-icon-column': activeChartType !== 'column'}" data-ng-click="switchChartType('column')"
-                                   tooltip="Stapeldiagram" tooltip-placement="bottom" tooltip-popup-delay="1000"></div></span>
-
-                        <span><div ng-class="{'chart-icon-line-active': activeChartType === 'line', 'chart-icon-line': activeChartType !== 'line'}" data-ng-click="switchChartType('line')"
-                                   tooltip="Linjediagram" tooltip-placement="bottom" tooltip-popup-delay="1000"></div></span>
-
-                        <span><div ng-class="{'chart-icon-area-active': activeChartType === 'area', 'chart-icon-area': activeChartType !== 'area'}" data-ng-click="switchChartType('area')"
-                                   tooltip="Ytdiagram" tooltip-placement="bottom" tooltip-popup-delay="1000"></div></span>
-                    </div>
-
-                    <!-- PRINT BUTTON GROUP -->
-                    <div class="col-sm-3 col-sm-pull-1 top-45px-margin">
-                        <button class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown">
-                            <span message key="dropdown.val.rapport"></span>
-                            <span class="caret"></span>
-                        </button>
-
-                        <ul class="dropdown-menu detail-view-choice-dropdown dropdown-menu-right">
-                            <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/><span message
-                                                                                                                key="dropdown.val.skrivut-farg"></span></a>
-                            </li>
-                            <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message
-                                                                                                                 key="dropdown.val.skrivut-svart-vitt"></span></a>
-                            </li>
-														<li><a data-ng-click="printPdf()"><img src="img/dropdown-icons/farg1b.png"/><span message
-																																																							 key="dropdown.val.skrivut-pdf"></span></a>
-														</li>
-                            <!-- li><a class="disabled"><img src="img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
-                            <li data-ng-repeat="chartContainer in chartContainers"><a
-                                    data-ng-click="exportChart(chartContainer.id)"><img
-                                    src="img/dropdown-icons/png1b.png"/><span message
-                                                                              key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span
-                                    message key="dropdown.val.spara-diagram-bild-2"></span></a></li>
-                            <li><a data-ng-href="{{exportTableUrl}}{{queryString}}" target="_self"><img
-                                    src="img/dropdown-icons/csv_icon.png"/><span message
-                                                                                 key="dropdown.val.spara-excel"></span></a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!--</div>-->
-        </div>
-
+    <div class="col-xs-6 pull-left" data-ng-show="showDetailsOptions3">
+      <div class="btn-group margin-bottom" id="detailsOptionsDropdown3">
+        <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticKategori" data-toggle="dropdown"
+                style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+          <span class="caret pull-right" style="margin-top: 9px;"></span>
+          <span>{{selectedDetailsOption3.id}} {{selectedDetailsOption3.name}}</span>
+        </button>
+        <ul class="dropdown-menu left overflow-menu-options">
+          <li data-ng-repeat="detailsOption3 in detailsOptions3"><a href="{{detailsOption3.url}}{{queryString}}"><span
+              bindonce="detailsOption3.id"></span> <span bindonce="detailsOption3.name"></span></a></li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Alert the user about specific conditions -->
-    <div class="row hidden-print">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-            <div class="ng-binding top-20px-margin alert alert-info" data-ng-show="resultMessage" role="alert">
-                <strong>Observera!</strong> {{resultMessage}}
-            </div>
+    <div class="row" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
+      <!-- toolbar -->
+      <!--<div class="row">-->
+      <!-- Button group for viewing different series -->
+
+      <div class="col-sm-12 col-lg-8 pull-right">
+        <div class="pull-right">
+          <div class="col-sm-5 col-sm-push-1" ng-show="isVerksamhetShowing">
+            <h3 message key="lbl.visa-knappgrupp-serier" data-ng-if="exchangeableViews"></h3>
+            <chart-series-bg views="exchangeableViews"></chart-series-bg>
+          </div>
+
+          <div class="col-sm-4" ng-show="isVerksamhetShowing">
+            <h3 message key="lbl.diagramtyp-knappgrupp"></h3>
+
+                        <span><div
+                            ng-class="{'chart-icon-column-active': activeChartType === 'column', 'chart-icon-column': activeChartType !== 'column'}"
+                            data-ng-click="switchChartType('column')" tooltip="Stapeldiagram" tooltip-placement="bottom"
+                            tooltip-popup-delay="1000"></div></span>
+
+                        <span><div
+                            ng-class="{'chart-icon-line-active': activeChartType === 'line', 'chart-icon-line': activeChartType !== 'line'}"
+                            data-ng-click="switchChartType('line')" tooltip="Linjediagram" tooltip-placement="bottom"
+                            tooltip-popup-delay="1000"></div></span>
+
+                        <span><div
+                            ng-class="{'chart-icon-area-active': activeChartType === 'area', 'chart-icon-area': activeChartType !== 'area'}"
+                            data-ng-click="switchChartType('area')" tooltip="Ytdiagram" tooltip-placement="bottom"
+                            tooltip-popup-delay="1000"></div></span>
+          </div>
+
+          <!-- PRINT BUTTON GROUP -->
+          <div class="col-sm-3 col-sm-pull-1 top-45px-margin">
+            <button class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown">
+              <span message key="dropdown.val.rapport"></span>
+              <span class="caret"></span>
+            </button>
+
+            <ul class="dropdown-menu detail-view-choice-dropdown dropdown-menu-right">
+              <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png" /><span message
+                                                                                                   key="dropdown.val.skrivut-farg"></span></a>
+              </li>
+              <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png" /><span message
+                                                                                                    key="dropdown.val.skrivut-svart-vitt"></span></a>
+              </li>
+              <li><a data-ng-click="printPdf()"><img src="img/dropdown-icons/farg1b.png" /><span message
+                                                                                                 key="dropdown.val.skrivut-pdf"></span></a>
+              </li>
+              <!-- li><a class="disabled"><img src="img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
+              <li data-ng-repeat="chartContainer in chartContainers"><a
+                  data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png1b.png" /><span message
+                                                                                                                 key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span
+                  message key="dropdown.val.spara-diagram-bild-2"></span></a></li>
+              <li><a data-ng-href="{{exportTableUrl}}{{queryString}}" target="_self"><img
+                  src="img/dropdown-icons/csv_icon.png" /><span message key="dropdown.val.spara-excel"></span></a>
+              </li>
+            </ul>
+          </div>
         </div>
+      </div>
+      <!--</div>-->
     </div>
 
-    <!-- Start ingress -->
-    <div data-ng-include="errorPageUrl"></div>
-    <div dataerrorview show-error="dataLoadingError">
-        <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading && !resultMessage">
-			<!-- Start graph -->
-			<div class="row">
-				<div data-ng-repeat="chartContainer in chartContainers" data-ng-class="{'col-xs-12 col-sm-12 col-md-12 col-lg-12': chartContainers.length == 1, 'col-lg-6': chartContainers.length == 2}" class="left-2px-padding right-2px-padding">
-                    <div class="visible-print" style="margin-top: 50px!important;"><!-- This is a div that adds margin in print mode to separate charts. Hardwired styles, otherwise won't work when printing --></div>
-					<div class="chart-page-chart" id="{{chartContainer.id}}" style="height: 400px; margin: 0 auto"></div>
-                    <div class="visible-print" style="margin-bottom: 50px!important;"><!-- This is a div that adds margin in print mode to separate charts. Hardwired styles, otherwise won't work when printing --></div>
-				</div>
-			</div>
+  </div>
 
-			<div class="row hidden-print">
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<div class="btn-group legend-btn-group">
-						<span data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6 col-md-6 col-lg-6" data-ng-show="showInLegend($index)">
-							<label id="legend-label" style="white-space: nowrap;" legend-height  >
-								<input type="checkbox" checked="" class="detail-checkbox" data-ng-click="toggleSeriesVisibility($index)" style="cursor: pointer; cursor: hand;"/>
-								<span class="legend-color-square" data-ng-style="{backgroundColor: seriesData.color}"></span>
-								<span class="legend-name">{{seriesData.name}}</span>
-							</label>
+  <!-- Alert the user about specific conditions -->
+  <div class="row hidden-print">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+      <div class="ng-binding top-20px-margin alert alert-info" data-ng-show="resultMessage" role="alert">
+        <strong>Observera!</strong> {{resultMessage}}
+      </div>
+    </div>
+  </div>
+
+  <!-- Start ingress -->
+  <div data-ng-include="errorPageUrl"></div>
+  <div dataerrorview show-error="dataLoadingError">
+    <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading && !resultMessage">
+      <!-- Start graph -->
+      <div class="row">
+        <div data-ng-repeat="chartContainer in chartContainers"
+             data-ng-class="{'col-xs-12 col-sm-12 col-md-12 col-lg-12': chartContainers.length == 1, 'col-lg-6': chartContainers.length == 2}"
+             class="left-2px-padding right-2px-padding">
+          <div class="visible-print" style="margin-top: 50px!important;">
+            <!-- This is a div that adds margin in print mode to separate charts. Hardwired styles, otherwise won't work when printing --></div>
+          <div class="chart-page-chart" id="{{chartContainer.id}}" style="height: 400px; margin: 0 auto"></div>
+          <div class="visible-print" style="margin-bottom: 50px!important;">
+            <!-- This is a div that adds margin in print mode to separate charts. Hardwired styles, otherwise won't work when printing --></div>
+        </div>
+      </div>
+
+      <div class="row hidden-print">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="btn-group legend-btn-group">
+						<span data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+                  data-ng-show="showInLegend($index)">
+							<label id="legend-label" style="white-space: nowrap;" legend-height>
+                <input type="checkbox" checked="" class="detail-checkbox" data-ng-click="toggleSeriesVisibility($index)"
+                       style="cursor: pointer; cursor: hand;" />
+                <span class="legend-color-square" data-ng-style="{backgroundColor: seriesData.color}"></span>
+                <span class="legend-name">{{seriesData.name}}</span>
+              </label>
 						</span>
-					</div>
-				</div>
-			</div>
+          </div>
+        </div>
+      </div>
 
-			<div class="row pull-left" data-ng-show="activeDiagnosFiltersForPrint">
-				<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress pull-left ng-binding">Sammanställning av diagnosfilter</span>
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<div class="alert alert-info" style="margin-top: 3px; background: #FFFFFF">
-						<div data-ng-repeat="activeDiagnosFilter in activeDiagnosFiltersForPrint">
-							<p bindonce="activeDiagnosFilter"></p>
-						</div>
-					</div>
-				</div>
-			</div>
+      <div class="row pull-left" data-ng-show="activeDiagnosFiltersForPrint">
+        <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress pull-left ng-binding">Sammanställning av diagnosfilter</span>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="alert alert-info" style="margin-top: 3px; background: #FFFFFF">
+            <div data-ng-repeat="activeDiagnosFilter in activeDiagnosFiltersForPrint">
+              <p bindonce="activeDiagnosFilter"></p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-			<div class="row pull-left" data-ng-show="activeEnhetsFiltersForPrint">
-				<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress pull-left ng-binding">Sammanställning av enhetsfilter</span>
-				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-					<div class="alert alert-info" style="margin-top: 3px; background: #FFFFFF">
-						<div data-ng-repeat="activeEnhetsFilter in activeEnhetsFiltersForPrint">
-							<p bindonce="activeEnhetsFilter"></p>
-						</div>
-					</div>
-				</div>
-			</div>
+      <div class="row pull-left" data-ng-show="activeEnhetsFiltersForPrint">
+        <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress pull-left ng-binding">Sammanställning av enhetsfilter</span>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <div class="alert alert-info" style="margin-top: 3px; background: #FFFFFF">
+            <div data-ng-repeat="activeEnhetsFilter in activeEnhetsFiltersForPrint">
+              <p bindonce="activeEnhetsFilter"></p>
+            </div>
+          </div>
+        </div>
+      </div>
 
-			<!-- Page break for print -->
-            <p><!-- pagebreak --></p>
-            
-            <!-- Starting data-table -->
-            <div class="rotate-print browserTable" data-ng-class="{printTable: !useSpecialPrintTable, 'hidden-print': useSpecialPrintTable}">
-	            <div class="row">
+      <!-- Page break for print -->
+      <p><!-- pagebreak --></p>
+
+      <!-- Starting data-table -->
+      <div class="rotate-print browserTable"
+           data-ng-class="{printTable: !useSpecialPrintTable, 'hidden-print': useSpecialPrintTable}">
+        <div class="row">
 					<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress" id="data-table-print-header">
 						{{subTitle}}
 					</span>
-				</div>
-                <div class="row">
-                    <div id="chart-data-table" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 chart-table"
-                         data-ng-init="tableVisible=true" data-ng-class="{collapsed: !tableVisible}">
-                        <accordion id="accordion2">
-                            <accordion-group is-open="$parent.tableVisible">
-                                <accordion-heading class="hidden-print">
-                                    <i class="chart-table-expand-icon"></i>
-                                    <span data-ng-if="tableVisible"><span message key="lbl.dolj-tabell"></span></span>
-                                    <span data-ng-if="!tableVisible"><span message key="lbl.visa-tabell"></span></span>
-                                </accordion-heading>
-                                <div class="scrollable">
+        </div>
+        <div class="row">
+          <div id="chart-data-table" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 chart-table"
+               data-ng-init="tableVisible=true" data-ng-class="{collapsed: !tableVisible}">
+            <accordion id="accordion2">
+              <accordion-group is-open="$parent.tableVisible">
+                <accordion-heading class="hidden-print">
+                  <i class="chart-table-expand-icon"></i>
+                  <span data-ng-if="tableVisible"><span message key="lbl.dolj-tabell"></span></span>
+                  <span data-ng-if="!tableVisible"><span message key="lbl.visa-tabell"></span></span>
+                </accordion-heading>
+                <div class="scrollable">
 
-                                    <div class="scrolling">
-                                        <table id="datatable" class="table table-striped" sortable-table>
-                                            <thead>
-                                            <tr data-ng-repeat="headerrow in headerrows track by $index">
-                                                <td class="scrollable details-table-data ellipsis details-th"
-                                                    data-ng-class="{headcol: $first, centeralign: headerrow.centerAlign, 'sorter-false': !$parent.$last || $first}"
-                                                    colspan="{{header.colspan}}" data-ng-repeat="header in headerrow"
-                                                    title="{{header.text}}" bindonce="header.text" style="padding-right: 20px; white-space: nowrap;"></td>
-                                            </tr>
-                                            </thead>
-                                            <tbody class="table-condensed">
-                                            <tr data-ng-repeat="row in rows" title="{{row.name}}">
-                                                <td class="scrollable headcol"><span class="headcol-name" ng-class="{bold: row.marked}"
-                                                                                     bindonce="row.name"></span></td>
-                                                <td class="scrollable"
-                                                    data-ng-repeat="fieldData in row.data track by $index"
-                                                    bindonce="fieldData | thousandseparated"></td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </accordion-group>
-                        </accordion>
-                    </div>
+                  <div class="scrolling">
+                    <table id="datatable" class="table table-striped" sortable-table>
+                      <thead>
+                      <tr data-ng-repeat="headerrow in headerrows track by $index">
+                        <td class="scrollable details-table-data ellipsis details-th"
+                            data-ng-class="{headcol: $first, centeralign: headerrow.centerAlign, 'sorter-false': !$parent.$last || $first}"
+                            colspan="{{header.colspan}}" data-ng-repeat="header in headerrow" title="{{header.text}}"
+                            bindonce="header.text" style="padding-right: 20px; white-space: nowrap;"></td>
+                      </tr>
+                      </thead>
+                      <tbody class="table-condensed">
+                      <tr data-ng-repeat="row in rows" title="{{row.name}}">
+                        <td class="scrollable headcol"><span class="headcol-name" ng-class="{bold: row.marked}"
+                                                             bindonce="row.name"></span></td>
+                        <td class="scrollable" data-ng-repeat="fieldData in row.data track by $index"
+                            bindonce="fieldData | thousandseparated"></td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-            </div>
-            
-            <div data-ng-class="{printTable: useSpecialPrintTable, 'hidden-print': !useSpecialPrintTable}" style="display:none;">
-                <div class="row">
+              </accordion-group>
+            </accordion>
+          </div>
+        </div>
+      </div>
+
+      <div data-ng-class="{printTable: useSpecialPrintTable, 'hidden-print': !useSpecialPrintTable}"
+           style="display:none;">
+        <div class="row">
                     <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress" id="data-table-print-header">
                         {{subTitle}}
                     </span>
-                </div>
-                <table id="datatable" class="table table-striped print-pagebreak-after" data-ng-repeat="printTable in printDataTables">
-                    <thead>
-                        <tr class="table-print-header" data-ng-repeat="headerrow in printTable.headers">
-                            <td colspan="{{header.colspan}}" data-ng-repeat="header in headerrow track by $index" bindonce="header.text"></td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-ng-repeat="row in printTable.rows">
-                            <td ng-class="{bold: row.marked}" bindonce="row.name"></td>
-                            <td data-ng-repeat="fieldData in row.data track by $index" bindonce="fieldData | thousandseparated"></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <!-- Page break for print -->
-        		<p><!-- pagebreak --></p>
-            </div>
         </div>
+        <table id="datatable" class="table table-striped print-pagebreak-after"
+               data-ng-repeat="printTable in printDataTables">
+          <thead>
+          <tr class="table-print-header" data-ng-repeat="headerrow in printTable.headers">
+            <td colspan="{{header.colspan}}" data-ng-repeat="header in headerrow track by $index"
+                bindonce="header.text"></td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr data-ng-repeat="row in printTable.rows">
+            <td ng-class="{bold: row.marked}" bindonce="row.name"></td>
+            <td data-ng-repeat="fieldData in row.data track by $index" bindonce="fieldData | thousandseparated"></td>
+          </tr>
+          </tbody>
+        </table>
+        <!-- Page break for print -->
+        <p><!-- pagebreak --></p>
+      </div>
     </div>
+  </div>
 </div>
