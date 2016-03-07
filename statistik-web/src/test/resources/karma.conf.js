@@ -5,7 +5,7 @@ module.exports = function(config) {
     'use strict';
 
     var WEBJAR_DIR = 'build/webjars/META-INF/resources/webjars/';
-    var angularVersion = '1.2.16';
+    var angularVersion = '1.2.29';
     config.set({
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '../../../',

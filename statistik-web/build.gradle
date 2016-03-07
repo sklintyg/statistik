@@ -43,7 +43,7 @@ node {
 //Enter the webjars dependencies here. Its a bit akward, but it is a workaround to keep karma tests
 //and gretty/jetty happy
 List webjars = [[group: 'org.webjars', name: 'jquery', version: '1.10.2'],
-                [group: 'org.webjars', name: 'angularjs', version: '1.2.16'],
+                [group: 'org.webjars', name: 'angularjs', version: '1.2.29'],
                 [group: 'org.webjars', name: 'angular-ui-bootstrap', version: '0.12.1'],
                 [group: 'org.webjars', name: 'bootstrap', version: '3.1.1'],
                 [group: 'org.webjars', name: 'bootstrap-multiselect', version: '0.9.13'],
