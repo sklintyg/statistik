@@ -231,6 +231,7 @@
   <script type="text/javascript" src="<c:url value='/js/lib/canvg/1.4/rgbcolor.js'/>"></script>
   <script type="text/javascript" src="<c:url value='/js/lib/canvg/1.4/StackBlur.js'/>"></script>
   <script type="text/javascript" src="<c:url value='/js/lib/canvg/1.4/canvg.js'/>"></script>
+  <script type="text/javascript" src="<c:url value='/js/app/shared/filterList/filterList.directive.js'/>"></script>
 
 
 <script type="text/javascript">

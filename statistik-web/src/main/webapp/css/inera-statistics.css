@@ -2051,3 +2051,7 @@ div.dropzone a{
 .modal-body>.spinner {
     margin: 0px;
 }
+
+.filter-list {
+    margin-right: 10px;
+}
