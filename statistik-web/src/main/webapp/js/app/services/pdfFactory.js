@@ -217,8 +217,10 @@ angular.module('StatisticsApp')
                         style: 'tableHeader'
                     });
 
-                    if (item.colspan === 2) {
-                        header.push({});
+                    if (item.colspan > 1) {
+                        for (var i = 1; i < item.colspan; i++) {
+                            header.push({});
+                        }
                     }
                 });
 
