@@ -1,0 +1,63 @@
+<div class="row hidden-print" data-ng-if="showDetailsOptions">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left">
+    <label class="dropdown-label" for="selectDiagnosticChapter">
+      <span message key="lbl.valj-annat-diagnoskapitel"></span>
+    </label><br />
+
+    <div class="btn-group margin-bottom" id="detailsOptionsDropdown">
+      <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticChapter" data-toggle="dropdown"
+              style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+        <span class="caret pull-right" style="margin-top: 9px;"></span>
+        <span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span>
+      </button>
+      <ul class="dropdown-menu left overflow-menu-options">
+        <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}{{queryString}}"><span
+            bindonce="detailsOption.id"></span> <span bindonce="detailsOption.name"></span></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="row hidden-print" data-ng-if="showDetailsOptions2">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left">
+    <label class="dropdown-label" for="selectDiagnosticCategory">
+      <span message key="lbl.valj-annat-diagnosavsnitt"></span>:
+    </label><br />
+
+    <div class="btn-group margin-bottom" id="detailsOptionsDropdown2">
+      <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticCategory" data-toggle="dropdown"
+              style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+        <span class="caret pull-right" style="margin-top: 9px;"></span>
+        <span>{{selectedDetailsOption2.id}} {{selectedDetailsOption2.name}}</span>
+      </button>
+      <ul class="dropdown-menu left overflow-menu-options">
+        <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}{{queryString}}"><span
+            bindonce="detailsOption2.id"></span> <span bindonce="detailsOption2.name"></span></a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="row hidden-print" data-ng-if="showDetailsOptions3">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left">
+    <label class="dropdown-label" for="selectDiagnosticKategori"><span message
+                                                                       key="lbl.valj-annan-diagnoskategori"></span>:</label>
+    <a class="hidden-print pageHelpToolTip"
+       tooltip-html-unsafe="<div class=popover-content>{{showDetailOptions3PopoverText}}</div>"
+       tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText"
+       style="position: relative; top: -2px; margin-left: 5px;"><img src="img/questionmark2.png"></a>
+    <br />
+
+    <div class="btn-group margin-bottom" id="detailsOptionsDropdown3">
+      <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticKategori" data-toggle="dropdown"
+              style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+        <span class="caret pull-right" style="margin-top: 9px;"></span>
+        <span>{{selectedDetailsOption3.id}} {{selectedDetailsOption3.name}}</span>
+      </button>
+      <ul class="dropdown-menu left overflow-menu-options">
+        <li data-ng-repeat="detailsOption3 in detailsOptions3"><a href="{{detailsOption3.url}}{{queryString}}"><span
+            bindonce="detailsOption3.id"></span> <span bindonce="detailsOption3.name"></span></a></li>
+      </ul>
+    </div>
+  </div>
+</div>

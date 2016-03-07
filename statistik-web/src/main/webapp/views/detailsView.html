@@ -72,78 +72,31 @@
     </div>
       
     <div class="pull-left filter-list" data-ng-if="activeEnhetsFilters"> 
-      <filter-list collapse-id="chart-enhetsfilterinfo-text" filters="activeEnhetsFilters"></filter-list> 
+      <filter-list collapse-id="chart-enhetsfilterinfo-text" filters="activeEnhetsFilters"></filter-list>
+       
     </div>
   </div>
 
-
-<!-- Start detailsOptions if any -->
-<div class="row hidden-print">
-  <tree-multi-selector style="margin-top: 20px;" class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left"
-                       menu-options="diagnosisTreeFilter.diagnosisOptionsTree" done-clicked="diagnosisSelected"
-                       data-ng-show="showDiagnosisSelector" text-data="diagnosisSelectorData"></tree-multi-selector>
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="showDetailsOptions">
-    <label class="dropdown-label" for="selectDiagnosticChapter"><span message
-                                                                      key="lbl.valj-annat-diagnoskapitel"></span></label>
-  </div>
-  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left" data-ng-show="showDetailsOptions">
-    <div class="btn-group margin-bottom" id="detailsOptionsDropdown">
-      <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticChapter" data-toggle="dropdown"
-              style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
-        <span class="caret pull-right" style="margin-top: 9px;"></span>
-        <span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span>
-      </button>
-      <ul class="dropdown-menu left overflow-menu-options">
-        <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}{{queryString}}"><span
-            bindonce="detailsOption.id"></span> <span bindonce="detailsOption.name"></span></a></li>
-      </ul>
-    </div>
+  <!-- Start detailsOptions if any -->
+  <div class="row hidden-print">
+    <tree-multi-selector style="margin-top: 20px;" class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left"
+                         menu-options="diagnosisTreeFilter.diagnosisOptionsTree" done-clicked="diagnosisSelected"
+                         data-ng-show="showDiagnosisSelector" text-data="diagnosisSelectorData"></tree-multi-selector>
   </div>
 
-    	<span class="col-xs-12" data-ng-show="showDetailsOptions2">
-    		<label class="dropdown-label" for="selectDiagnosticCategory"><span message
-                                                                           key="lbl.valj-annat-diagnosavsnitt"></span>:</label>
-    	</span>
-  <div class="col-xs-6 pull-left" data-ng-show="showDetailsOptions2">
-    <div class="btn-group margin-bottom" id="detailsOptionsDropdown2">
-      <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticCategory" data-toggle="dropdown"
-              style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
-        <span class="caret pull-right" style="margin-top: 9px;"></span>
-        <span>{{selectedDetailsOption2.id}} {{selectedDetailsOption2.name}}</span>
-      </button>
-      <ul class="dropdown-menu left overflow-menu-options">
-        <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}{{queryString}}"><span
-            bindonce="detailsOption2.id"></span> <span bindonce="detailsOption2.name"></span></a></li>
-      </ul>
-    </div>
-  </div>
+  <diagnos-selection
+      show-details-options="showDetailsOptions"
+      details-options="detailsOptions"
+      selected-details-option="selectedDetailsOption"
+      show-details-options2="showDetailsOptions2"
+      details-options2="detailsOptions2"
+      selected-details-option2="selectedDetailsOption2"
+      show-details-options3="showDetailsOptions3"
+      details-options3="detailsOptions3"
+      selected-details-option3="selectedDetailsOption3"></diagnos-selection>
 
-    	<span class="col-xs-12" data-ng-show="showDetailsOptions3">
-    		<label class="dropdown-label" for="selectDiagnosticKategori"><span message
-                                                                           key="lbl.valj-annan-diagnoskategori"></span>:</label>
-            <a class="hidden-print pageHelpToolTip"
-               tooltip-html-unsafe="<div class=popover-content>{{showDetailOptions3PopoverText}}</div>"
-               tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText"
-               style="position: relative; top: -2px; margin-left: 5px;"><img src="img/questionmark2.png"></a>
-    	</span>
-
-  <div class="col-xs-6 pull-left" data-ng-show="showDetailsOptions3">
-    <div class="btn-group margin-bottom" id="detailsOptionsDropdown3">
-      <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticKategori" data-toggle="dropdown"
-              style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
-        <span class="caret pull-right" style="margin-top: 9px;"></span>
-        <span>{{selectedDetailsOption3.id}} {{selectedDetailsOption3.name}}</span>
-      </button>
-      <ul class="dropdown-menu left overflow-menu-options">
-        <li data-ng-repeat="detailsOption3 in detailsOptions3"><a href="{{detailsOption3.url}}{{queryString}}"><span
-            bindonce="detailsOption3.id"></span> <span bindonce="detailsOption3.name"></span></a></li>
-      </ul>
-    </div>
-  </div>
 
   <div class="row" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
-    <!-- toolbar -->
-    <!--<div class="row">-->
     <!-- Button group for viewing different series -->
 
     <div class="col-sm-12 col-lg-8 pull-right">
@@ -201,10 +154,8 @@
         </div>
       </div>
     </div>
-    <!--</div>-->
   </div>
 
-</div>
 
 <!-- Alert the user about specific conditions -->
 <div class="row hidden-print">
@@ -346,5 +297,4 @@
       <p><!-- pagebreak --></p>
     </div>
   </div>
-</div>
-</div>
+</div></div>
