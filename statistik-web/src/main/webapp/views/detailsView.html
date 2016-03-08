@@ -108,21 +108,20 @@
 
         <div class="col-sm-4" ng-show="isVerksamhetShowing">
           <h3 message key="lbl.diagramtyp-knappgrupp"></h3>
+            <span><div
+                ng-class="{'chart-icon-column-active': activeChartType === 'column', 'chart-icon-column': activeChartType !== 'column'}"
+                data-ng-click="switchChartType('column')" tooltip="Stapeldiagram" tooltip-placement="bottom"
+                tooltip-popup-delay="1000"></div></span>
 
-                        <span><div
-                            ng-class="{'chart-icon-column-active': activeChartType === 'column', 'chart-icon-column': activeChartType !== 'column'}"
-                            data-ng-click="switchChartType('column')" tooltip="Stapeldiagram" tooltip-placement="bottom"
-                            tooltip-popup-delay="1000"></div></span>
+            <span><div
+                ng-class="{'chart-icon-line-active': activeChartType === 'line', 'chart-icon-line': activeChartType !== 'line'}"
+                data-ng-click="switchChartType('line')" tooltip="Linjediagram" tooltip-placement="bottom"
+                tooltip-popup-delay="1000"></div></span>
 
-                        <span><div
-                            ng-class="{'chart-icon-line-active': activeChartType === 'line', 'chart-icon-line': activeChartType !== 'line'}"
-                            data-ng-click="switchChartType('line')" tooltip="Linjediagram" tooltip-placement="bottom"
-                            tooltip-popup-delay="1000"></div></span>
-
-                        <span><div
-                            ng-class="{'chart-icon-area-active': activeChartType === 'area', 'chart-icon-area': activeChartType !== 'area'}"
-                            data-ng-click="switchChartType('area')" tooltip="Ytdiagram" tooltip-placement="bottom"
-                            tooltip-popup-delay="1000"></div></span>
+            <span><div
+                ng-class="{'chart-icon-area-active': activeChartType === 'area', 'chart-icon-area': activeChartType !== 'area'}"
+                data-ng-click="switchChartType('area')" tooltip="Ytdiagram" tooltip-placement="bottom"
+                tooltip-popup-delay="1000"></div></span>
         </div>
 
         <!-- PRINT BUTTON GROUP -->
@@ -139,10 +138,9 @@
             <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png" /><span message
                                                                                                   key="dropdown.val.skrivut-svart-vitt"></span></a>
             </li>
-            <li><a data-ng-click="printPdf()"><img src="img/dropdown-icons/farg1b.png" /><span message
+            <li><a data-ng-click="printPdf()"><img src="img/dropdown-icons/pdf1b.png" /><span message
                                                                                                key="dropdown.val.skrivut-pdf"></span></a>
             </li>
-            <!-- li><a class="disabled"><img src="img/dropdown-icons/pdf-inactive.png"/> PDF-fil</a></li -->
             <li data-ng-repeat="chartContainer in chartContainers"><a
                 data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png1b.png" /><span message
                                                                                                                key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span
