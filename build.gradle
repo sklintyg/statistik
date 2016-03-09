@@ -3,8 +3,8 @@ plugins {
 }
 
 allprojects {
-    group = 'se.inera.statistik'
-    version = '3.1.0-SNAPSHOT'
+    group = project_group
+    version = project_version
 
     repositories {
         mavenLocal()
