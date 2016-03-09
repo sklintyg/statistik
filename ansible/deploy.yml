@@ -4,13 +4,25 @@
   sudo: yes
   vars:
     # repo - values: snapshots or release
-    repo: snapshots
 
     # latest release: XXX
     # latest snapshot: XXX
     version: 3.1.0-SNAPSHOT
     config_version: master
     highcharts_version: 2.1.0
+
+  pre_tasks:
+
+    - name: set repo variable for snapshot version
+      set_fact: repo="snapshots"
+      when: version.find('SNAPSHOT') != -1
+
+    - name: set repo variable for release version
+      set_fact: repo="release"
+      when: version.find('SNAPSHOT') == -1
+
+    - debug: var=version
+    - debug: var=repo
 
   roles:
     - statistik
