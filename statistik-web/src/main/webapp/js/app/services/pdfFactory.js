@@ -42,30 +42,6 @@ angular.module('StatisticsApp')
             _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters);
         }
 
-        function _printOverview($scope, charts) {
-            var content = [];
-
-            var headers = {
-                header: $scope.viewHeader,
-                subHeader: $scope.subTitle
-            };
-
-            _addHeader(content, headers);
-
-
-            /*var chart = {
-                width: 300,
-                height: 300,
-                chart: charts[0],
-                displayWidth: 150
-            };
-
-            _addOverviewChart(content, 'Fördelning diagnosgrupper', chart);*/
-
-
-            _create(content, 'overview');
-        }
-
         function _generate(headers, table, images, enhetsFilter, diagnosFilter) {
             var content = [];
 
@@ -137,19 +113,23 @@ angular.module('StatisticsApp')
             };
         }
 
-        function _addOverviewChart(content, header, chart, table) {
+        function _addOverviewChart(content, chart) {
 
-            content.push({text: header, style: 'chartheader'});
+            content.push({text: chart.title, style: 'chartheader'});
 
-            content.push({
+            var columns = [];
+
+            columns.push({
                image: _getChart(chart.chart, chart.width, chart.height),
-                width: chart.displayWidth
+                width: chart.displayWidth ? chart.displayWidth : chart.width
             });
 
 
-            if (table) {
-                _getTable(table.header, table.data);
+            if (chart.table) {
+                content.push(_getTable(chart.table.header, chart.table.data));
             }
+
+            content.push({ columns: columns});
         }
 
         function _addListFilter(content, rubrik, filter) {
@@ -212,7 +192,7 @@ angular.module('StatisticsApp')
                 },
                 plotOptions: {
                     pie: {
-                        showInLegend: true
+                        showInLegend: false
                     }
                 },
                 chart: {
@@ -240,6 +220,10 @@ angular.module('StatisticsApp')
                 body.push(rowData);
             });
 
+            return _getTableLayout(numberOfHeaderRows, body);
+        }
+
+        function _getTableLayout(numberOfHeaderRows, body) {
             return {
                 table: {
                     headerRows: numberOfHeaderRows,
@@ -248,16 +232,16 @@ angular.module('StatisticsApp')
                 style: 'table',
                 layout: {
                     hLineWidth: function(i, node) {
-                        return (i === numberOfHeaderRows || i === node.table.body.length) ? 2 : 1;
+                        return 1;
                     },
                     vLineWidth: function(i, node) {
                         return 1;
                     },
                     hLineColor: function(i, node) {
-                        return 'gray';
+                        return (i === numberOfHeaderRows) ? 'gray' :'lightgray';
                     },
                     vLineColor: function(i, node) {
-                        return 'gray';
+                        return 'lightgray';
                     }
                 }
             };
@@ -293,6 +277,12 @@ angular.module('StatisticsApp')
         return {
             create: _create,
             print: _print,
-            printOverview: _printOverview
+            factory: {
+                create: _create,
+                footer: _getFooter,
+                header: _addHeader,
+                chart: _getChart,
+                table: _getTableLayout
+            }
         };
     }]);

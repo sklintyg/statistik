@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory', 'COUNTY_COORDS', 'chartFactory', 'messageService', 'pdfFactory',
-    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory, COUNTY_COORDS, chartFactory, messageService, pdfFactory) {
+angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory', 'COUNTY_COORDS', 'chartFactory', 'messageService', 'pdfOverviewFactory',
+    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory, COUNTY_COORDS, chartFactory, messageService, pdfOverviewFactory) {
 
         var self = this;
 
@@ -218,7 +218,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                     layout: 'vertical'
                 };
             } else {
-                chartOptions.legend = false;
+                chartOptions.legend.enabled = false;
             }
 
             chartOptions.plotOptions = {
@@ -297,8 +297,106 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
         };
 
         $scope.printPdf = function () {
-            pdfFactory.printOverview($scope);
+            var charts = [];
+
+            var topCharts = [];
+
+
+            topCharts.push({
+                chart: perMonthAlterationChart,
+                title: messageService.getProperty('national.widget.header.konsfordelning'),
+                width: 300,
+                height: 300,
+                displayWidth: 150
+            });
+
+            topCharts.push({
+                chart: perMonthAlterationChart,
+                title: messageService.getProperty('national.widget.header.forandring'),
+                width: 300,
+                height: 300,
+                displayWidth: 150
+            });
+
+            charts.push(topCharts);
+
+            charts.push({
+                chart: diagnosisDonutChart,
+                title: messageService.getProperty('national.widget.header.fordelning-diagnosgrupper'),
+                width: 300,
+                height: 300,
+                displayWidth: 150,
+                table: {
+                    header: ['',
+                        messageService.getProperty('overview.widget.table.column.diagnosgrupp'),
+                        messageService.getProperty('overview.widget.table.column.antal'),
+                        messageService.getProperty('overview.widget.table.column.forandring')
+                    ],
+                    data: getTableData($scope.diagnosisGroups)
+                }
+            });
+
+            charts.push({
+                chart: ageDonutChart,
+                title: messageService.getProperty('national.widget.header.fordelning-aldersgrupper'),
+                width: 300,
+                height: 300,
+                displayWidth: 150,
+                table: {
+                    header: ['',
+                        messageService.getProperty('overview.widget.table.column.aldersgrupp'),
+                        messageService.getProperty('overview.widget.table.column.antal'),
+                        messageService.getProperty('overview.widget.table.column.forandring')
+                    ],
+                    data: getTableData($scope.ageGroups)
+                }
+            });
+
+            charts.push({
+                chart: degreeOfSickLeaveChart,
+                title: messageService.getProperty('national.widget.header.fordelning-sjukskrivningsgrad'),
+                width: 300,
+                height: 300,
+                displayWidth: 150,
+                table: {
+                    header: ['',
+                        messageService.getProperty('overview.widget.table.column.sjukskrivningsgrad'),
+                        messageService.getProperty('overview.widget.table.column.antal'),
+                        messageService.getProperty('overview.widget.table.column.forandring')
+                    ],
+                    data: getTableData($scope.degreeOfSickLeaveGroups)
+                }
+            });
+
+            charts.push({
+                chart: sickLeaveLengthChart,
+                title: messageService.getProperty('national.widget.header.fordelning-sjukskrivningslangd'),
+                width: 680,
+                height: 300,
+                displayWidth: 510
+            });
+
+            charts.push({
+                chart: sickLeavePerCountyChart,
+                title: messageService.getProperty('national.widget.header.fordelning-lan'),
+                height: 350,
+                width: 188,
+                displayWidth: 188
+            });
+
+
+            pdfOverviewFactory.printOverview($scope, charts);
         };
+
+        function getTableData(data) {
+            var tableData = [];
+
+            angular.forEach(data, function(row) {
+                tableData.push([row.color, row.name, row.quantity, row.alternation + ' %']);
+            });
+
+            return tableData;
+        }
 
         $scope.$on('$destroy', function() {
             if(perMonthAlterationChart && typeof perMonthAlterationChart.destroy === 'function') {

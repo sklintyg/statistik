@@ -3,12 +3,12 @@ angular.module('StatisticsApp.charts', ['underscore'])
         'use strict';
 
         var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback) {
-            return {
+
+            var options = {
                 chart : {
                     renderTo : 'chart1',
                     backgroundColor : null, //transparent
-                    plotBorderWidth: 1,
-                    events: { load: doneLoadingCallback }
+                    plotBorderWidth: 1
                 },
                 title : {
                     text : ''
@@ -138,6 +138,12 @@ angular.module('StatisticsApp.charts', ['underscore'])
                     return series;
                 })
             };
+
+            if (doneLoadingCallback) {
+                options.chart.events = { load: doneLoadingCallback };
+            }
+
+            return options;
         };
 
         var exportChart = function(chart, chartName, title) {

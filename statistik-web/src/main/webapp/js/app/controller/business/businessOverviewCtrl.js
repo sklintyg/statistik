@@ -170,7 +170,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 180;
         chartOptions.chart.plotBorderWidth = 0;
-        chartOptions.plotOptions.pie.showInLegend = $routeParams.printBw || $routeParams.print;
+        chartOptions.plotOptions.pie.showInLegend = $routeParams.printBw || $routeParams.print || false;
         chartOptions.series = [
             {
                 name: 'Antal',
