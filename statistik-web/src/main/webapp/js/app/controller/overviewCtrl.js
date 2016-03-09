@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory', 'COUNTY_COORDS', 'chartFactory', 'messageService',
-    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory, COUNTY_COORDS, chartFactory, messageService) {
+angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory', 'COUNTY_COORDS', 'chartFactory', 'messageService', 'pdfFactory',
+    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory, COUNTY_COORDS, chartFactory, messageService, pdfFactory) {
 
         var self = this;
 
@@ -294,6 +294,10 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
 
         $scope.print = function (bwPrint) {
             printFactory.print(bwPrint, $rootScope, $window);
+        };
+
+        $scope.printPdf = function () {
+            pdfFactory.printOverview($scope);
         };
 
         $scope.$on('$destroy', function() {

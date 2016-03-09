@@ -18,7 +18,7 @@
  */
 'use strict';
 angular.module('StatisticsApp')
-    .factory('pdfFactory', ['$window', '$q', function($window, $q) {
+    .factory('pdfFactory', ['$window', function($window) {
 
         function _print($scope, charts) {
             var table = {
@@ -39,10 +39,34 @@ angular.module('StatisticsApp')
                 charts = [charts];
             }
 
-            _create(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters);
+            _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters);
         }
 
-        function _create(headers, table, images, enhetsFilter, diagnosFilter) {
+        function _printOverview($scope, charts) {
+            var content = [];
+
+            var headers = {
+                header: $scope.viewHeader,
+                subHeader: $scope.subTitle
+            };
+
+            _addHeader(content, headers);
+
+
+            /*var chart = {
+                width: 300,
+                height: 300,
+                chart: charts[0],
+                displayWidth: 150
+            };
+
+            _addOverviewChart(content, 'Fördelning diagnosgrupper', chart);*/
+
+
+            _create(content, 'overview');
+        }
+
+        function _generate(headers, table, images, enhetsFilter, diagnosFilter) {
             var content = [];
 
             _addHeader(content, headers);
@@ -51,6 +75,10 @@ angular.module('StatisticsApp')
             _addListFilter(content, 'Sammanställning av enhetsfilter', enhetsFilter);
             content.push(_getTable(table.header, table.data));
 
+            _create(content, headers.header);
+        }
+
+        function _create(content, fileName) {
             var docDefinition = {
                 content: content,
                 footer: _getFooter,
@@ -61,7 +89,7 @@ angular.module('StatisticsApp')
             pdfMake.createPdf(docDefinition).getBase64(function(result) {
 
                 var inputs = '<input type="hidden" name="pdf" value="'+result+'">';
-                inputs += '<input type="hidden" name="name" value="'+headers.header + '_' + moment().format('YYYY-MM-DD') + '.pdf">';
+                inputs += '<input type="hidden" name="name" value="'+fileName + '_' + moment().format('YYYY-MM-DD') + '.pdf">';
 
                 $window.jQuery('<form action="/api/pdf/create" target="_blank" method="post">'+inputs+'</form>')
                     .appendTo('body').submit().remove();
@@ -85,6 +113,11 @@ angular.module('StatisticsApp')
                     bold: true,
                     margin: [0, 5, 0, 10]
                 },
+                chartheader: {
+                    fontSize: 12,
+                    bold: true,
+                    margin: [0, 5, 0, 10]
+                },
                 table: {
                     margin: [0, 10, 0, 5]
                 },
@@ -102,6 +135,21 @@ angular.module('StatisticsApp')
                     margin: [0, 10, 0, 2]
                 }
             };
+        }
+
+        function _addOverviewChart(content, header, chart, table) {
+
+            content.push({text: header, style: 'chartheader'});
+
+            content.push({
+               image: _getChart(chart.chart, chart.width, chart.height),
+                width: chart.displayWidth
+            });
+
+
+            if (table) {
+                _getTable(table.header, table.data);
+            }
         }
 
         function _addListFilter(content, rubrik, filter) {
@@ -142,21 +190,7 @@ angular.module('StatisticsApp')
             var chartHeight = 400;
 
             angular.forEach(images, function(chart) {
-                var canvas = document.createElement('CANVAS');
-                canvas.height = chartHeight;
-                canvas.width = chartWidth;
-
-                canvg(canvas, chart.getSVG({
-                    legend: {
-                        enabled: true
-                    },
-                    chart: {
-                        width: chartWidth,
-                        height: chartHeight
-                    }
-                }));
-
-                var image = canvas.toDataURL("image/png");
+                var image = _getChart(chart, chartWidth, chartHeight);
 
                 content.push({
                     image: image,
@@ -165,6 +199,29 @@ angular.module('StatisticsApp')
             });
 
             return content;
+        }
+
+        function _getChart(chart, width, height) {
+            var canvas = document.createElement('CANVAS');
+            canvas.height = height;
+            canvas.width = width;
+
+            canvg(canvas, chart.getSVG({
+                legend: {
+                    enabled: true
+                },
+                plotOptions: {
+                    pie: {
+                        showInLegend: true
+                    }
+                },
+                chart: {
+                    height: height,
+                    width: width
+                }
+            }));
+
+            return canvas.toDataURL("image/png");
         }
 
         function _getTable(headerRows, data) {
@@ -235,6 +292,7 @@ angular.module('StatisticsApp')
         //The public api of this factory
         return {
             create: _create,
-            print: _print
+            print: _print,
+            printOverview: _printOverview
         };
     }]);
