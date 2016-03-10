@@ -26,6 +26,10 @@ angular.module('StatisticsApp')
                 subHeader: $scope.subTitle
             };
 
+            if ($scope.verksamhetViewShowing) {
+                headers.extraHeader = $scope.headerEnhetInfo;
+            }
+
             _generateOverview(headers, charts);
         }
 
@@ -75,10 +79,20 @@ angular.module('StatisticsApp')
             var columns = [];
 
             if (chart.chart) {
-                columns.push({
-                    image: pdfFactory.factory.chart(chart.chart, chart.width, chart.height),
-                    width: chart.displayWidth ? chart.displayWidth : chart.width
-                });
+                if (angular.isArray(chart.chart)) {
+                    angular.forEach(chart.chart, function(c) {
+                        columns.push({
+                            image: pdfFactory.factory.chart(c, chart.width, chart.height),
+                            width: chart.displayWidth ? chart.displayWidth : chart.width
+                        });
+                    });
+                }
+                else {
+                    columns.push({
+                        image: pdfFactory.factory.chart(chart.chart, chart.width, chart.height),
+                        width: chart.displayWidth ? chart.displayWidth : chart.width
+                    });
+                }
             }
 
             if (chart.table) {
@@ -134,7 +148,6 @@ angular.module('StatisticsApp')
                     text: headerRow,
                     style: 'tableHeader'
                 });
-
             });
 
             body.push(header);

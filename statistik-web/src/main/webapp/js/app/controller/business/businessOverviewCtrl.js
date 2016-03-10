@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory', 'chartFactory', 'messageService',
-function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory, chartFactory, messageService) {
+angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory', 'chartFactory', 'messageService', 'pdfOverviewFactory', 'thousandseparatedFilter',
+function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory, chartFactory, messageService, pdfOverviewFactory, thousandseparatedFilter) {
 
     var perMonthAlterationChart = {}, newSexProportionChart = {}, oldSexProportionChart = {},
         ageDonutChart = {}, diagnosisDonutChart = {}, degreeOfSickLeaveChart = {}, sickLeaveLengthChart = {};
@@ -126,7 +126,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
                 type: 'pie',
                 name: 'Könsfördelning',
                 showInLegend: true,
-                useHTML: true,
                 data: [
                     {name: 'Kvinnor', y: female, color: femaleColor},
                     {name: 'Män', y: male, color: maleColor}
@@ -153,7 +152,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
         };
         chartOptions.legend = {
             labelFormat: '{name} {percentage:.0f} % (antal: {y})',
-            align: 'top left',
             verticalAlign: 'top',
             borderWidth: 0,
             useHTML: true,
@@ -301,6 +299,111 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
     $scope.print = function (bwPrint) {
         printFactory.print(bwPrint, $rootScope, $window);
     };
+
+    $scope.printPdf = function () {
+        var charts = [];
+        var topCharts = [];
+
+        charts.push({
+            chart: perMonthAlterationChart,
+            title: messageService.getProperty('business.widget.header.total-antal'),
+            width: 300,
+            height: 300,
+            displayWidth: 150
+        });
+
+        charts.push({
+            chart: [oldSexProportionChart, newSexProportionChart],
+            title: messageService.getProperty('business.widget.header.konsfordelning-sjukfall'),
+            width: 500,
+            height: 300,
+            displayWidth: 250
+        });
+
+        charts.push({
+            chart: diagnosisDonutChart,
+            title: messageService.getProperty('business.widget.header.fordelning-diagnosgrupper'),
+            width: 300,
+            height: 300,
+            displayWidth: 150,
+            pageBreak: true,
+            table: {
+                header: ['',
+                    messageService.getProperty('overview.widget.table.column.diagnosgrupp'),
+                    messageService.getProperty('overview.widget.table.column.antal'),
+                    messageService.getProperty('overview.widget.table.column.forandring')
+                ],
+                data: getTableData($scope.diagnosisGroups)
+            }
+        });
+
+        charts.push({
+            chart: ageDonutChart,
+            title: messageService.getProperty('business.widget.header.fordelning-aldersgrupper'),
+            width: 300,
+            height: 300,
+            displayWidth: 150,
+            table: {
+                header: ['',
+                    messageService.getProperty('overview.widget.table.column.aldersgrupp'),
+                    messageService.getProperty('overview.widget.table.column.antal'),
+                    messageService.getProperty('overview.widget.table.column.forandring')
+                ],
+                data: getTableData($scope.ageGroups)
+            }
+        });
+
+        charts.push({
+            chart: sickLeaveLengthChart,
+            title: messageService.getProperty('business.widget.header.fordelning-sjukskrivningslangd'),
+            width: 680,
+            height: 300,
+            displayWidth: 510,
+            chartDescription: [
+                {
+                    header: thousandseparatedFilter($scope.longSickLeavesTotal),
+                    text: messageService.getProperty('overview.widget.fordelning-sjukskrivningslangd.overgar-90')
+                },
+                {
+                    header: $scope.longSickLeavesAlteration + ' %',
+                    text: messageService.getProperty('overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader')
+                }
+            ]
+        });
+
+        charts.push({
+            chart: degreeOfSickLeaveChart,
+            title: messageService.getProperty('business.widget.header.fordelning-sjukskrivningsgrad'),
+            width: 300,
+            height: 300,
+            displayWidth: 150,
+            table: {
+                header: ['',
+                    messageService.getProperty('overview.widget.table.column.sjukskrivningsgrad'),
+                    messageService.getProperty('overview.widget.table.column.antal'),
+                    messageService.getProperty('overview.widget.table.column.forandring')
+                ],
+                data: getTableData($scope.degreeOfSickLeaveGroups, ' %')
+            }
+        });
+
+
+        pdfOverviewFactory.printOverview($scope, charts);
+    };
+
+    function getTableData(data, nameSuffix) {
+        var tableData = [];
+
+        if (!nameSuffix) {
+            nameSuffix = '';
+        }
+
+        angular.forEach(data, function(row) {
+            tableData.push([row.color, row.name + nameSuffix, thousandseparatedFilter(row.quantity), row.alternation + ' %']);
+        });
+
+        return tableData;
+    }
 
     $scope.$on('$destroy', function() {
         if(perMonthAlterationChart && typeof perMonthAlterationChart.destroy === 'function') {
