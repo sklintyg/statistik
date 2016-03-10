@@ -158,7 +158,7 @@ var stMessages = {
         'login.alert-inaktivitet': 'Du har blivit utloggad på grund av inaktivitet.',
         'login.alert-logga.in': 'Du måste logga in igen för att komma till sidorna för verksamhetsstatistik.',
         'login.lbl.gor-foljande': 'Gör följande:',
-        'login.instruktioner-for-login': 'Sätt <span style="text-decoration: underline;">SITHS-kortet i din kortläsare</span> och klicka sedan på knappen "SITHS login"',
+        'login.instruktioner-for-login': 'Sätt <span style="text-decoration: underline;">SITHS-kortet i din kortläsare</span> och klicka sedan på knappen "SITHS login". För att logga in krävs medarbetaruppdraget "Statistik" i HSA-katalogen.',
         'login.btn.siths-login': 'SITHS login',
 
         //about texts
