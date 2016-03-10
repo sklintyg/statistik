@@ -58,6 +58,7 @@ angular.module('StatisticsApp')
             var docDefinition = {
                 content: content,
                 footer: _getFooter,
+                pageSize: 'A4',
                 //pageOrientation: 'landscape',
                 styles: _getPdfStyle()
             };
@@ -95,6 +96,7 @@ angular.module('StatisticsApp')
                     margin: [0, 5, 0, 10]
                 },
                 table: {
+                    fontSize: 11,
                     margin: [0, 10, 0, 5]
                 },
                 tableHeader: {
@@ -109,6 +111,13 @@ angular.module('StatisticsApp')
                     fontSize: 12,
                     bold: true,
                     margin: [0, 10, 0, 2]
+                },
+                chartDescHeader: {
+                    fontSize: 16,
+                    bold: true
+                },
+                chartDescText: {
+                    margin: [15, 10, 15, 10]
                 }
             };
         }

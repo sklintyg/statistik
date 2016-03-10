@@ -32,15 +32,15 @@ angular.module('StatisticsApp')
         function _generateOverview(headers, charts) {
             var content = [];
 
-
             pdfFactory.factory.header(content, headers);
 
             angular.forEach(charts, function(chart) {
                 if (angular.isArray(chart)) {
                     var columns = [];
 
-                    columns.push(_getOverviewChart(chart[0]));
-                    columns.push(_getOverviewChart(chart[1]));
+                    angular.forEach(chart, function(chartChild) {
+                        columns.push(_getOverviewChart(chartChild));
+                    });
 
                     content.push({
                         columns: columns
@@ -59,21 +59,41 @@ angular.module('StatisticsApp')
             var content = [];
             content.push({text: chart.title, style: 'chartheader'});
 
+            if (chart.chartDescription) {
+                var chartDescriptions = [];
+
+                angular.forEach(chart.chartDescription, function(descirption) {
+                    chartDescriptions.push([
+                        {text: descirption.header, style: 'chartDescHeader', alignment: 'center'},
+                        {text: descirption.text, style: 'chartDescText', alignment: 'center'}
+                    ])
+                });
+
+                content.push({columns: chartDescriptions});
+            }
+
             var columns = [];
 
-            columns.push({
-                image: pdfFactory.factory.chart(chart.chart, chart.width, chart.height),
-                width: chart.displayWidth ? chart.displayWidth : chart.width
-            });
-
+            if (chart.chart) {
+                columns.push({
+                    image: pdfFactory.factory.chart(chart.chart, chart.width, chart.height),
+                    width: chart.displayWidth ? chart.displayWidth : chart.width
+                });
+            }
 
             if (chart.table) {
                 var table = _getTable(chart.table.header, chart.table.data);
-                table.margin = [20, 20, 0, 0];
+                table.margin = [20, 10, 0, 0];
                 columns.push(table);
             }
 
-            content.push({ columns: columns});
+            var columnsObject = {columns: columns};
+
+            if (chart.pageBreak) {
+                columnsObject.pageBreak = 'after';
+            }
+
+            content.push(columnsObject);
 
             return content;
         }
