@@ -303,11 +303,10 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
 
 
             topCharts.push({
-                //chart: perMonthAlterationChart,
                 title: messageService.getProperty('national.widget.header.konsfordelning'),
-                width: 300,
-                height: 300,
-                displayWidth: 150
+                male: $scope.casesPerMonthMaleProportion + ' %',
+                female: $scope.casesPerMonthFemaleProportion + ' %',
+                genderImage: true
             });
 
             topCharts.push({

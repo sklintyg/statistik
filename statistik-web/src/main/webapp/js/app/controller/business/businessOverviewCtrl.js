@@ -302,7 +302,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
 
     $scope.printPdf = function () {
         var charts = [];
-        var topCharts = [];
 
         charts.push({
             chart: perMonthAlterationChart,

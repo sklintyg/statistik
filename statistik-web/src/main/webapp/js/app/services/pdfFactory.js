@@ -118,27 +118,13 @@ angular.module('StatisticsApp')
                 },
                 chartDescText: {
                     margin: [15, 10, 15, 10]
+                },
+                genderImageText: {
+                    fontSize: 20,
+                    color: 'white',
+                    bold: true
                 }
             };
-        }
-
-        function _addOverviewChart(content, chart) {
-
-            content.push({text: chart.title, style: 'chartheader'});
-
-            var columns = [];
-
-            columns.push({
-               image: _getChart(chart.chart, chart.width, chart.height),
-                width: chart.displayWidth ? chart.displayWidth : chart.width
-            });
-
-
-            if (chart.table) {
-                content.push(_getTable(chart.table.header, chart.table.data));
-            }
-
-            content.push({ columns: columns});
         }
 
         function _addListFilter(content, rubrik, filter) {
@@ -190,19 +176,18 @@ angular.module('StatisticsApp')
             return content;
         }
 
-        function _getChart(chart, width, height) {
+        function _getChart(chart, width, height, showLegend) {
             var canvas = document.createElement('CANVAS');
             canvas.height = height;
             canvas.width = width;
 
+            if (!angular.isDefined(showLegend)) {
+                showLegend = true;
+            }
+
             canvg(canvas, chart.getSVG({
                 legend: {
-                    enabled: true
-                },
-                plotOptions: {
-                    pie: {
-                        showInLegend: false
-                    }
+                    enabled: showLegend
                 },
                 chart: {
                     height: height,
