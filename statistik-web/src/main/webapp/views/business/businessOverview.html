@@ -48,10 +48,11 @@
 						<span message key="dropdown.val.oversikt"></span>
 						<span class="caret"></span>
 					</button>
-                    <ul class="dropdown-menu pull-right">
-                        <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/><span message key="dropdown.val.skrivut-farg"></span></a></li>
-                        <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message key="dropdown.val.skrivut-svart-vitt"></span></a></li>
-                    </ul>
+							<ul class="dropdown-menu pull-right">
+								<li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png"/><span message key="dropdown.val.skrivut-farg"></span></a></li>
+								<li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png"/><span message key="dropdown.val.skrivut-svart-vitt"></span></a></li>
+								<li><a data-ng-click="printPdf()"><img src="img/dropdown-icons/pdf1b.png"/><span message key="dropdown.val.skrivut-pdf"></span></a></li>
+							</ul>
 		        </div>
 		    </div>
 		</div>
@@ -80,14 +81,14 @@
 			</div>
 		</div>
 
-        <!-- Alert the user about specific conditions -->
-        <div class="row hidden-print">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <div class="ng-binding top-20px-margin alert alert-info" data-ng-show="resultMessage" role="alert">
-                    <strong>Observera!</strong> {{resultMessage}}
-                </div>
-            </div>
-        </div>
+		<!-- Alert the user about specific conditions -->
+		<div class="row hidden-print">
+				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						<div class="ng-binding top-20px-margin alert alert-info" data-ng-show="resultMessage" role="alert">
+								<strong>Observera!</strong> {{resultMessage}}
+						</div>
+				</div>
+		</div>
 
 		<div dataerrorview show-error="dataLoadingError">
 			<div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
@@ -144,24 +145,24 @@
 								</span>
 								<span class="overview-widget-content">
 									<span class="chart-container" id="diagnosisChart"></span>
-						            <table id="datatable" class="table table-striped overview-graph-table">
-						                <thead>
-						                <tr>
-						                	<td>&nbsp;</td>
-						                    <td><span message key="overview.widget.table.column.diagnosgrupp"></span></td>
-						                    <td><span message key="overview.widget.table.column.antal"></span></td>
-						                    <td><span message key="overview.widget.table.column.forandring"></span></td>
-						                </tr>
-						                </thead>
-						                <tbody>
-						                <tr data-ng-repeat="group in diagnosisGroups">
-						                	<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-						                    <td class="diagnostics-group-name">{{group.name}}</td>
-						                    <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-						                    <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
-						                </tr>
-						                </tbody>
-						            </table>
+									<table class="datatable table table-striped overview-graph-table">
+											<thead>
+											<tr>
+												<td>&nbsp;</td>
+													<td><span message key="overview.widget.table.column.diagnosgrupp"></span></td>
+													<td><span message key="overview.widget.table.column.antal"></span></td>
+													<td><span message key="overview.widget.table.column.forandring"></span></td>
+											</tr>
+											</thead>
+											<tbody>
+											<tr data-ng-repeat="group in diagnosisGroups">
+												<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
+													<td class="diagnostics-group-name">{{group.name}}</td>
+													<td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+													<td class="diagnostics-group-alternation">{{group.alternation}} %</td>
+											</tr>
+											</tbody>
+									</table>
 								</span>
 							</span>
 						</a>
@@ -179,24 +180,24 @@
 								</span>
 								<span class="overview-widget-content">
 									<span class="chart-container" id="ageChart"></span>
-						            <table id="datatable" class="table table-striped overview-graph-table">
-						                <thead>
-						                <tr>
-						                	<td>&nbsp;</td>
-						                    <td><span message key="overview.widget.table.column.aldersgrupp"></span></td>
-						                    <td><span message key="overview.widget.table.column.antal"></span></td>
-						                    <td><span message key="overview.widget.table.column.forandring"></span></td>
-						                </tr>
-						                </thead>
-						                <tbody>
-						                <tr data-ng-repeat="group in ageGroups">
-						                    <td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-						                    <td class="diagnostics-group-name">{{group.name}}</td>
-						                    <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-						                    <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
-						                </tr>
-						                </tbody>
-						            </table>
+									<table class="datatable table table-striped overview-graph-table">
+											<thead>
+											<tr>
+												<td>&nbsp;</td>
+													<td><span message key="overview.widget.table.column.aldersgrupp"></span></td>
+													<td><span message key="overview.widget.table.column.antal"></span></td>
+													<td><span message key="overview.widget.table.column.forandring"></span></td>
+											</tr>
+											</thead>
+											<tbody>
+											<tr data-ng-repeat="group in ageGroups">
+													<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
+													<td class="diagnostics-group-name">{{group.name}}</td>
+													<td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+													<td class="diagnostics-group-alternation">{{group.alternation}} %</td>
+											</tr>
+											</tbody>
+									</table>
 								</span>
 							</span>
 						</a>
@@ -217,16 +218,16 @@
 								</span>
 								<div class="overview-widget-content">
 									<div class="overview-chart-info" id="sicklength-chart-info">
-				                        <div class="overview-chart-info-section pull-left">
-				                        	<span class="longSickLeavesValue">{{longSickLeavesTotal | thousandseparated}}</span><br/>
-				                        	<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90"></span></span>
-				                        </div>
-				                        <div class="overview-chart-info-section pull-right">
-				                        	<span class="longSickLeavesValue">{{longSickLeavesAlteration}} %</span><br/>
-				                        	<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader"></span></span>
-				                        </div>
-				                    </div>
-				                    <div class="chart-container" id="sickLeaveLengthChart"></div>
+											<div class="overview-chart-info-section pull-left">
+												<span class="longSickLeavesValue">{{longSickLeavesTotal | thousandseparated}}</span><br/>
+												<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90"></span></span>
+											</div>
+											<div class="overview-chart-info-section pull-right">
+												<span class="longSickLeavesValue">{{longSickLeavesAlteration}} %</span><br/>
+												<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader"></span></span>
+											</div>
+									</div>
+									<div class="chart-container" id="sickLeaveLengthChart"></div>
 								</div>
 							</span>
 						</a>
@@ -243,25 +244,25 @@
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
 								</span>
 								<span class="overview-widget-content">
-						        	<div class="chart-container" id="degreeOfSickLeaveChart"></div>
-						            <table id="datatable" class="table table-striped overview-graph-table">
-						                <thead>
-						                <tr>
-						                	<td>&nbsp;</td>
-						                    <td><span message key="overview.widget.table.column.sjukskrivningsgrad"></span></td>
-						                    <td><span message key="overview.widget.table.column.antal"></span></td>
-						                    <td><span message key="overview.widget.table.column.forandring"></span></td>
-						                </tr>
-						                </thead>
-						                <tbody>
-						                <tr data-ng-repeat="group in degreeOfSickLeaveGroups">
-						                    <td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-						                    <td class="diagnostics-group-name">{{group.name}}</td>
-						                    <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-						                    <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
-						                </tr>
-						                </tbody>
-						            </table>    
+									<div class="chart-container" id="degreeOfSickLeaveChart"></div>
+									<table class="datatable table table-striped overview-graph-table">
+											<thead>
+											<tr>
+												<td>&nbsp;</td>
+													<td><span message key="overview.widget.table.column.sjukskrivningsgrad"></span></td>
+													<td><span message key="overview.widget.table.column.antal"></span></td>
+													<td><span message key="overview.widget.table.column.forandring"></span></td>
+											</tr>
+											</thead>
+											<tbody>
+											<tr data-ng-repeat="group in degreeOfSickLeaveGroups">
+													<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
+													<td class="diagnostics-group-name">{{group.name}}</td>
+													<td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+													<td class="diagnostics-group-alternation">{{group.alternation}} %</td>
+											</tr>
+											</tbody>
+									</table>
 								</span>
 							</span>
 						</a>

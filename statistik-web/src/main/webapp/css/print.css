@@ -129,7 +129,7 @@
         font-size: 12px;
     }
 
-    .printTable #datatable {
+    .printTable .datatable {
         width: 100%;
     }
 

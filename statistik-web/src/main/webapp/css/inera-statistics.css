@@ -402,13 +402,13 @@ legend {
 	border-left: 1px solid #dddddd;
 	text-align: right !important;
 }
-#overview-content table#datatable {
+#overview-content table.datatable {
 	width: 100%;
 	border: 1px solid transparent;
 	border-bottom: 1px solid #dddddd;
 	text-align: right;
 }
-#overview-content table#datatable thead tr td span{ float: right; }
+#overview-content table.datatable thead tr td span{ float: right; }
 .sickLeaveByCountyTable {
 	top: 65px;
 	position: relative;
@@ -1582,7 +1582,7 @@ span.longSickLeavesText{
 
 .chart-container svg { width: 100%;}
 
-table#datatable {
+table.datatable {
 	width: 100%;
 }
 

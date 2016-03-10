@@ -989,7 +989,7 @@ form.bs-docs-example {
   #navigation-container div.row-fluid div.offset4 {
   	margin-left: 10.58011%;
   }
-  #overview-content table#datatable {
+  #overview-content table.datatable {
 	width: 100%;
   }
 }
@@ -1159,7 +1159,7 @@ form.bs-docs-example {
 
 /* Large desktop */
 @media (min-width: 1200px) {
-	#overview-content table#datatable {
+	#overview-content table.datatable {
 		width: 61%;
 		border: 1px solid transparent;
 		border-bottom: 1px solid #dddddd;
@@ -1189,7 +1189,7 @@ form.bs-docs-example {
 		width: 100%;
 		margin: 25px 0 0 0;
 	}
-	#chart-data-table table#datatable {
+	#chart-data-table table.datatable {
 		width: 100%;
 		margin: 0px 0 0 0;
 	}
@@ -1335,7 +1335,7 @@ form.bs-docs-example {
 		font-size: 1em !important;
 		margin-top: 31px;
 	}
-	table#datatable {
+	table.datatable {
 		width: 100%;
 	}
 	.chart-container#sickLeaveLengthChart{
@@ -1428,10 +1428,10 @@ form.bs-docs-example {
 		width: 100%;
 		float: left;
 	}
-	table#datatable {
+	table.datatable {
 		width: 100%;
 	}
-	#overview-content table#datatable {
+	#overview-content table.datatable {
 		width: 100%;
 	}
 	.chart-container#sickLeaveLengthChart{
