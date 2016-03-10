@@ -18,6 +18,8 @@ Detta är ett exempel för att visa hur man kan testa värdet som visar om alla 
 
 !3 Då gäller:
 
+Om användaren inte gjort något val, eller om användaren valt alla, så visas statistik för alla enheter/diagnoser.
+
 Enhetsfilter:
 
 | Sjukfall i rapporten sjukfall per enhet |

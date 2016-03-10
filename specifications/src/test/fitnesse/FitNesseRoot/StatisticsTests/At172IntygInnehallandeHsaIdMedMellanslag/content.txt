@@ -21,6 +21,8 @@ Verifierar INTYG-1812
 
 !3 Då gäller:
 
+Ingen hänsyn tas till mellanslag i HSA-id (både för enhet och vårdgivare).
+
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? | kommentar |
 | user1        | 2013 | jun   | 0    | 0        |           |
