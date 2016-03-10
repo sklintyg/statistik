@@ -31,7 +31,7 @@
 		            <span message key="national.overview-header"></span>
 		            <a class="hidden-print pageHelpToolTip"
 		               tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>" tooltip-trigger="mouseenter"
-		               tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px;"> 
+		               tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px;">
 		               <img src="img/questionmark2.png">
 		            </a>
 		        </h1>
@@ -65,14 +65,14 @@
 										<span class="hidden-print pageHelpToolTip pull-right"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextSexDistribution}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
-					                </h2>
+                  </h2>
 								</span>
 								<span class="overview-widget-content img-responsive">
 									<p id="overview-distribution-per-sex-values">
-						                <span style="position: relative; right: 11px;" id="overview-distribution-female-lbl">{{casesPerMonthFemaleProportion}} % </span>
-						                <span style="position: relative; left: 16px;" id="overview-distribution-male-lbl">{{casesPerMonthMaleProportion}} % </span>
-						            </p>
-						            <img id="overview-distribution-per-sex-image" class="center-block" src="img/distribution_sex_stat.png"/>	
+                      <span style="position: relative; right: 11px;" id="overview-distribution-female-lbl">{{casesPerMonthFemaleProportion}} % </span>
+                      <span style="position: relative; left: 16px;" id="overview-distribution-male-lbl">{{casesPerMonthMaleProportion}} % </span>
+                  </p>
+                  <img id="overview-distribution-per-sex-image" class="center-block" src="img/distribution_sex_stat.png"/>
 								</span>
 							</span>
 						</a>
@@ -103,28 +103,28 @@
 										<span class="hidden-print pageHelpToolTip pull-right"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextDiagnosisGroups1}}</div><div class=popover-content>{{popoverTextChangeCurrentVSPrevious}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
-					                </h2>
+                  </h2>
 								</span>
 								<span class="overview-widget-content">
 									<div class="chart-container" id="diagnosisChart"></div>
-						            <table id="datatable" class="table table-striped overview-graph-table">
-						                <thead>
-						                <tr>
-						                	<td>&nbsp;</td>
-						                    <td><span message key="overview.widget.table.column.diagnosgrupp"></span></td>
-						                    <td><span message key="overview.widget.table.column.antal"></span></td>
-						                    <td><span message key="overview.widget.table.column.forandring"></span></td>
-						                </tr>
-						                </thead>
-						                <tbody>
-						                <tr data-ng-repeat="group in diagnosisGroups">
-						                    <td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-				                            <td class="diagnostics-group-name">{{group.name}}</td>
-						                    <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-						                    <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
-						                </tr>
-						                </tbody>
-						            </table>
+                    <table class="table table-striped overview-graph-table">
+                        <thead>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><span message key="overview.widget.table.column.diagnosgrupp"></span></td>
+                            <td><span message key="overview.widget.table.column.antal"></span></td>
+                            <td><span message key="overview.widget.table.column.forandring"></span></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="group in diagnosisGroups">
+                            <td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
+                            <td class="diagnostics-group-name">{{group.name}}</td>
+                            <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+                            <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
+                        </tr>
+                        </tbody>
+                    </table>
 								</span>
 							</span>
 						</a>
@@ -140,28 +140,28 @@
 										<span class="hidden-print pageHelpToolTip pull-right"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextAgeGroups1}}</div><div class=popover-content>{{popoverTextChangeCurrentVSPrevious}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
-					                </h2>
+                  </h2>
 								</span>
 								<span class="overview-widget-content">
 									<div class="chart-container" id="ageChart"></div>
-				                    <table id="datatable" class="table table-striped overview-graph-table">
-				                        <thead>
-				                        <tr>
-				                        	<td>&nbsp;</td>
-				                            <td><span message key="overview.widget.table.column.aldersgrupp"></span></td>
-				                            <td><span message key="overview.widget.table.column.antal"></span></td>
-				                            <td><span message key="overview.widget.table.column.forandring"></span></td>
-				                        </tr>
-				                        </thead>
-				                        <tbody>
-				                        <tr data-ng-repeat="group in ageGroups">
-				                        	<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-				                            <td class="diagnostics-group-name">{{group.name}}</td>
-				                            <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-				                            <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
-				                        </tr>
-				                        </tbody>
-				                    </table>
+                    <table class="table table-striped overview-graph-table">
+                        <thead>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td><span message key="overview.widget.table.column.aldersgrupp"></span></td>
+                            <td><span message key="overview.widget.table.column.antal"></span></td>
+                            <td><span message key="overview.widget.table.column.forandring"></span></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="group in ageGroups">
+                            <td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
+                            <td class="diagnostics-group-name">{{group.name}}</td>
+                            <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+                            <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
+                        </tr>
+                        </tbody>
+                    </table>
 								</span>
 							</span>
 						</a>
@@ -175,28 +175,28 @@
 										<span class="hidden-print pageHelpToolTip pull-right"><img
 					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextDegreeOfSickLeave1}}</div><div class=popover-content>{{popoverTextChangeCurrentVSPrevious}}</div>"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
-					                </h2>
+                  </h2>
 								</span>
 								<div class="overview-widget-content">
 									<div class="chart-container" id="degreeOfSickLeaveChart"></div>
-				                    <table id="datatable" class="table table-striped overview-graph-table">
-				                        <thead>
-				                        <tr>
-				                        	<td>&nbsp;</td>
-				                            <td class="diagnostics-group-name"><span message key="overview.widget.table.column.sjukskrivningsgrad"></span></td>
-				                            <td><span message key="overview.widget.table.column.antal"></span></td>
-				                            <td><span message key="overview.widget.table.column.forandring"></span></td>
-				                        </tr>
-				                        </thead>
-				                        <tbody>
-				                        <tr data-ng-repeat="group in degreeOfSickLeaveGroups">
-				                        	<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-				                            <td>{{group.name}} %</td>
-				                            <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-				                            <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
-				                        </tr>
-				                        </tbody>
-				                    </table>
+                    <table class="table table-striped overview-graph-table">
+                        <thead>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td class="diagnostics-group-name"><span message key="overview.widget.table.column.sjukskrivningsgrad"></span></td>
+                            <td><span message key="overview.widget.table.column.antal"></span></td>
+                            <td><span message key="overview.widget.table.column.forandring"></span></td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr data-ng-repeat="group in degreeOfSickLeaveGroups">
+                            <td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
+                            <td>{{group.name}} %</td>
+                            <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+                            <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
+                        </tr>
+                        </tbody>
+                    </table>
 								</div>
 							</span>
 						</a>
@@ -216,16 +216,16 @@
 								</span>
 								<div class="overview-widget-content">
 									<div class="overview-chart-info" id="sicklength-chart-info">
-				                        <div class="overview-chart-info-section pull-left">
-				                        	<span class="longSickLeavesValue">{{longSickLeavesTotal | thousandseparated}}</span><br/>
-				                        	<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90"></span></span>
-				                        </div>
-				                        <div class="overview-chart-info-section pull-right">
-				                        	<span class="longSickLeavesValue">{{longSickLeavesAlteration}} %</span><br/>
-				                        	<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader"></span></span>
-				                        </div>
-				                    </div>
-				                    <div class="chart-container" id="sickLeaveLengthChart"></div>
+                      <div class="overview-chart-info-section pull-left">
+                        <span class="longSickLeavesValue">{{longSickLeavesTotal | thousandseparated}}</span><br/>
+                        <span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90"></span></span>
+                      </div>
+                      <div class="overview-chart-info-section pull-right">
+                        <span class="longSickLeavesValue">{{longSickLeavesAlteration}} %</span><br/>
+                        <span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader"></span></span>
+                      </div>
+                  </div>
+                  <div class="chart-container" id="sickLeaveLengthChart"></div>
 								</div>
 							</span>
 						</a>
@@ -237,30 +237,30 @@
 									<h2 class="overview-widget-title">
 										<span message key="national.widget.header.fordelning-lan"></span>
 										<span class="hidden-print pageHelpToolTip pull-right"><img
-					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextPerCountyDescription1}}</div><div class=popover-content>{{popoverTextChangeCurrentVSPrevious}}</div><div class=popover-content>{{popoverTextPerCountyDescription2}}</div>"
-					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
-					                </h2>
+												tooltip-html-unsafe="<div class=popover-content>{{popoverTextPerCountyDescription1}}</div><div class=popover-content>{{popoverTextChangeCurrentVSPrevious}}</div><div class=popover-content>{{popoverTextPerCountyDescription2}}</div>"
+												tooltip-trigger="mouseenter" tooltip-placement="left" src="img/question_white.png" alt=""></span>
+									</h2>
 								</span>
 								<div class="overview-widget-content" id="overview-widget-content-geo">
 									<div class="chart-container" id="sickLeavePerCountyChart"></div>
-				                    <table id="datatable" class="table table-striped overview-graph-table sickLeaveByCountyTable">
-				                        <thead>
-				                        <tr>
-				                        	<td>&nbsp;</td>
-				                            <td><span message key="overview.widget.table.column.lan"></span></td>
-				                            <td><span message key="overview.widget.table.column.antal"></span></td>
-				                            <td><span message key="overview.widget.table.column.forandring"></span></td>
-				                        </tr>
-				                        </thead>
-				                        <tbody>
-				                        <tr data-ng-repeat="group in sickLeavePerCountyGroups">
-				                            <td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-				                            <td class="diagnostics-group-name">{{group.name}}</td>
-				                            <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-				                            <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
-				                        </tr>
-				                        </tbody>
-				                    </table>
+										<table class="table table-striped overview-graph-table sickLeaveByCountyTable">
+												<thead>
+                          <tr>
+                            <td>&nbsp;</td>
+                              <td><span message key="overview.widget.table.column.lan"></span></td>
+                              <td><span message key="overview.widget.table.column.antal"></span></td>
+                              <td><span message key="overview.widget.table.column.forandring"></span></td>
+                          </tr>
+												</thead>
+												<tbody>
+                          <tr data-ng-repeat="group in sickLeavePerCountyGroups">
+                              <td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
+                              <td class="diagnostics-group-name">{{group.name}}</td>
+                              <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+                              <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
+                          </tr>
+												</tbody>
+										</table>
 								</div>
 							</span>
 						</a>
