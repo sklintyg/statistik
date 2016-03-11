@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+IGNORERAT. Väntar på INTYG-2005.
+
 !3 Givet att:
 
 Ett sjukfall består av två intyg. De två intygen har olika vårdenhet, diagnos, sjukskrivningsgrad och läkare. 
