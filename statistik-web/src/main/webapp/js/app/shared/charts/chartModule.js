@@ -14,10 +14,14 @@ angular.module('StatisticsApp.charts', ['underscore'])
                     text : ''
                 },
                 legend : {
-                    align : 'top left',
+                    align : 'left',
                     x : 120,
                     y : 0,
-                    borderWidth : 0
+                    borderWidth : 0,
+                    itemStyle: {
+                        color: '#008391',
+                        fontWeight: 'bold'
+                    }
                 },
                 xAxis : {
                     labels : {
@@ -39,7 +43,8 @@ angular.module('StatisticsApp.charts', ['underscore'])
                     title: {
                         align: 'high',
                         style: {
-                            color: '#008391'
+                            color: '#008391',
+                            fontWeight: 'bold'
                         }
                     }
                 },
@@ -55,7 +60,8 @@ angular.module('StatisticsApp.charts', ['underscore'])
                         x : -10,
                         y : 5,
                         style: {
-                            color: '#008391'
+                            color: '#008391',
+                            fontWeight: 'bold'
                         }
                     },
                     labels : {

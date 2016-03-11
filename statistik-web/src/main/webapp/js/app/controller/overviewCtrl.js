@@ -182,8 +182,8 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             chartOptions.chart.type = 'column';
             chartOptions.chart.renderTo = containerId;
             chartOptions.chart.height = 240;
-            chartOptions.xAxis.title = { text: 'Sjukskrivningslängd' };
-            chartOptions.yAxis.title = { text: 'Antal' };
+            chartOptions.xAxis.title = { text: 'Sjukskrivningslängd', style : chartOptions.xAxis.title.style };
+            chartOptions.yAxis.title = { text: 'Antal', style : chartOptions.yAxis.title.style };
             
             chartOptions.yAxis.tickPixelInterval = 30;
             chartOptions.legend.enabled = false;

@@ -155,7 +155,12 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
             verticalAlign: 'top',
             borderWidth: 0,
             useHTML: true,
-            layout: 'vertical'
+            layout: 'vertical',
+            itemStyle: {
+                color: '#008391',
+                fontWeight: 'bold'
+            }
+
         };
         chartOptions.tooltip.pointFormat = '{point.percentage:.0f} % (antal: {point.y})';
 
@@ -263,9 +268,9 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
         chartOptions.chart.type = 'column';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 240;
-        chartOptions.xAxis.title = { text: 'Sjukskrivningslängd' };
+        chartOptions.xAxis.title = { text: 'Sjukskrivningslängd' , style : chartOptions.xAxis.title.style };
         chartOptions.xAxis.labels.format = '{value}';
-        chartOptions.yAxis.title = { text: 'Antal' };
+        chartOptions.yAxis.title = { text: 'Antal', style : chartOptions.yAxis.title.style  };
         chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
         chartOptions.yAxis.tickPixelInterval = 30;
         chartOptions.legend.enabled = false;
