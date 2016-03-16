@@ -25,7 +25,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 	Contains all landsting, i.e. which VGs that have access to landstings statistics.
+ * Contains all landsting, i.e. which VGs that have access to landstings statistics.
  */
 @Entity
 @Table(name = "Landsting")
