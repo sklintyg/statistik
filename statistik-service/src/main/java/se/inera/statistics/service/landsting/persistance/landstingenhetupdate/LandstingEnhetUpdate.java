@@ -27,6 +27,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 
+/**
+ * Keeps information about last file upload action for landsting.
+ */
 @Entity
 @Table(name = "LandstingEnhetUpdate")
 public class LandstingEnhetUpdate {

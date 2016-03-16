@@ -26,6 +26,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Contains information about which enhets that are available as landstings statistics
+ * including number of signed up patients (i.e. the content of the uploaded file).
+ */
 @Entity
 @Table(name = "LandstingEnhet")
 public class LandstingEnhet {
