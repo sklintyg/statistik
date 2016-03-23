@@ -320,6 +320,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
             chart: [oldSexProportionChart, newSexProportionChart],
             title: messageService.getProperty('business.widget.header.konsfordelning-sjukfall'),
             width: 500,
+            showLegend: true,
             height: 300,
             displayWidth: 250
         });
@@ -330,7 +331,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
             width: 300,
             height: 300,
             displayWidth: 150,
-            pageBreak: true,
             table: {
                 header: ['',
                     messageService.getProperty('overview.widget.table.column.diagnosgrupp'),

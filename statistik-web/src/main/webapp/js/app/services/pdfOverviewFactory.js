@@ -30,20 +30,23 @@ angular.module('StatisticsApp')
                 headers.extraHeader = $scope.headerEnhetInfo;
             }
 
-            _generateOverview(headers, charts);
+            _generateOverview(headers, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters);
         }
 
-        function _generateOverview(headers, charts) {
+        function _generateOverview(headers, charts, enhetsFilter, diagnosFilter) {
             var content = [];
 
             pdfFactory.factory.header(content, headers);
+
+            pdfFactory.factory.filter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
+            pdfFactory.factory.filter(content, 'Sammanställning av enhetsfilter', enhetsFilter);
 
             angular.forEach(charts, function(chart) {
                 if (angular.isArray(chart)) {
                     var columns = [];
 
                     angular.forEach(chart, function(chartChild) {
-                        columns.push(_getOverviewChart(chartChild));
+                        columns.push(_addBorder(_getOverviewChart(chartChild), chartChild));
                     });
 
                     content.push({
@@ -51,11 +54,46 @@ angular.module('StatisticsApp')
                     });
                 }
                 else {
-                    content.push(_getOverviewChart(chart));
+                    content.push(_addBorder(_getOverviewChart(chart), chart));
                 }
             });
 
             pdfFactory.factory.create(content, 'overview');
+        }
+
+        function _addBorder(content, chart) {
+            var value = {
+                table: {
+                    dontBreakRows: 1,
+                    headerRows: 1,
+                    body: [[{
+                        stack: content,
+                        margin: [5, 5, 5, 5]
+                    }]]
+                },
+                style: 'tableBorder',
+                layout: {
+                    hLineWidth: function(i, node) {
+                        return 1;
+                    },
+                    vLineWidth: function(i, node) {
+                        return 1;
+                    },
+                    hLineColor: function(i, node) {
+                        return 'lightgray';
+                    },
+                    vLineColor: function(i, node) {
+                        return 'lightgray';
+                    }
+                }
+            };
+
+            if (chart.pageBreak) {
+                value.pageBreak = 'after';
+            }
+
+
+            return value;
         }
 
         function _getOverviewChart(chart) {
@@ -101,10 +139,6 @@ angular.module('StatisticsApp')
 
             var columnsObject = {columns: columns};
 
-            if (chart.pageBreak) {
-                columnsObject.pageBreak = 'after';
-            }
-
             content.push(columnsObject);
 
             return content;
@@ -133,7 +167,7 @@ angular.module('StatisticsApp')
 
         function _getChartContent(config, chart) {
             return {
-                image: pdfFactory.factory.chart(chart, config.width, config.height, false),
+                image: pdfFactory.factory.chart(chart, config.width, config.height, config.showLegend || false),
                 width: config.displayWidth ? config.displayWidth : config.width
             };
         }

@@ -103,6 +103,9 @@ angular.module('StatisticsApp')
                     bold: true,
                     color: 'black'
                 },
+                tableBorder: {
+                    margin: [0, 5, 0, 5]
+                },
                 footer: {
                     fontSize: 10,
                     margin: [0, 0, 20, 0]
@@ -276,7 +279,8 @@ angular.module('StatisticsApp')
                 footer: _getFooter,
                 header: _addHeader,
                 chart: _getChart,
-                table: _getTableLayout
+                table: _getTableLayout,
+                filter: _addListFilter
             }
         };
     }]);
