@@ -2059,3 +2059,14 @@ div.dropzone a{
 diagnos-selection {
     display: block;
 }
+
+
+.select-chart-type {
+    margin-right: 10px;
+    position: relative;
+}
+
+.print-page-panel {
+    margin-right: 15px;
+    position: relative;
+}

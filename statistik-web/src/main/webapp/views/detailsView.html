@@ -73,7 +73,6 @@
       
     <div class="pull-left filter-list" data-ng-if="activeEnhetsFilters"> 
       <filter-list collapse-id="chart-enhetsfilterinfo-text" filters="activeEnhetsFilters"></filter-list>
-       
     </div>
   </div>
 
@@ -99,14 +98,19 @@
   <div class="row" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
     <!-- Button group for viewing different series -->
 
-    <div class="col-sm-12 col-lg-8 pull-right">
-      <div class="pull-right">
-        <div class="col-sm-5 col-sm-push-1" ng-show="isVerksamhetShowing">
+    <div class="col-md-12 col-lg-7"  data-ng-if="resultMessage">
+      <div class="ng-binding top-20px-margin alert alert-info" role="alert">
+        <strong>Observera!</strong> {{resultMessage}}
+      </div>
+    </div>
+
+    <div class="pull-right">
+        <div class="pull-left select-chart-type" ng-if="isVerksamhetShowing">
           <h3 message key="lbl.visa-knappgrupp-serier" data-ng-if="exchangeableViews"></h3>
           <chart-series-bg views="exchangeableViews"></chart-series-bg>
         </div>
 
-        <div class="col-sm-4" ng-show="isVerksamhetShowing">
+        <div class="pull-left select-chart-type" ng-if="isVerksamhetShowing">
           <h3 message key="lbl.diagramtyp-knappgrupp"></h3>
             <span><div
                 ng-class="{'chart-icon-column-active': activeChartType === 'column', 'chart-icon-column': activeChartType !== 'column'}"
@@ -125,21 +129,21 @@
         </div>
 
         <!-- PRINT BUTTON GROUP -->
-        <div class="col-sm-3 col-sm-pull-1 top-45px-margin">
+        <div class="pull-left print-page-panel top-45px-margin">
           <button class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown">
             <span message key="dropdown.val.rapport"></span>
             <span class="caret"></span>
           </button>
 
           <ul class="dropdown-menu detail-view-choice-dropdown dropdown-menu-right">
-            <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png" /><span message
-                                                                                                 key="dropdown.val.skrivut-farg"></span></a>
+            <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png" />
+                  <span message key="dropdown.val.skrivut-farg"></span></a>
             </li>
-            <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png" /><span message
-                                                                                                  key="dropdown.val.skrivut-svart-vitt"></span></a>
+            <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png" />
+                  <span message key="dropdown.val.skrivut-svart-vitt"></span></a>
             </li>
-            <li><a data-ng-click="printPdf()"><img src="img/dropdown-icons/pdf1b.png" /><span message
-                                                                                               key="dropdown.val.skrivut-pdf"></span></a>
+            <li><a data-ng-click="printPdf()"><img src="img/dropdown-icons/pdf1b.png" />
+                  <span message key="dropdown.val.skrivut-pdf"></span></a>
             </li>
             <li data-ng-repeat="chartContainer in chartContainers"><a
                 data-ng-click="exportChart(chartContainer.id)"><img src="img/dropdown-icons/png1b.png" /><span message
@@ -151,18 +155,10 @@
           </ul>
         </div>
       </div>
-    </div>
   </div>
 
 
 <!-- Alert the user about specific conditions -->
-<div class="row hidden-print">
-  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-    <div class="ng-binding top-20px-margin alert alert-info" data-ng-show="resultMessage" role="alert">
-      <strong>Observera!</strong> {{resultMessage}}
-    </div>
-  </div>
-</div>
 
 <!-- Start ingress -->
 <div data-ng-include="errorPageUrl"></div>

@@ -57,27 +57,13 @@
 		    </div>
 		</div>
 
-		<div class="row hidden-print pull-left">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="activeDiagnosFilters">
-				<div class="collapse" id="chart-diagnosfilterinfo-text">
-					<div class="alert alert-info" style="margin-top: 3px;">
-						<div data-ng-repeat="activeDiagnosFilter in activeDiagnosFilters">
-							<p bindonce="activeDiagnosFilter"></p>
-						</div>
-					</div>
-				</div>
+		<div class="hidden-print clearfix"> 
+			<div class="pull-left filter-list" data-ng-if="activeDiagnosFilters"> 
+				<filter-list collapse-id="chart-diagnosfilterinfo-text" filters="activeDiagnosFilters"></filter-list>
 			</div>
-		</div>
-
-		<div class="row hidden-print pull-left">
-			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" data-ng-show="activeEnhetsFilters">
-				<div class="collapse" id="chart-enhetsfilterinfo-text">
-					<div class="alert alert-info" style="margin-top: 3px;">
-						<div data-ng-repeat="activeEnhetsFilter in activeEnhetsFilters">
-							<p bindonce="activeEnhetsFilter"></p>
-						</div>
-					</div>
-				</div>
+			  
+			<div class="pull-left filter-list" data-ng-if="activeEnhetsFilters"> 
+				<filter-list collapse-id="chart-enhetsfilterinfo-text" filters="activeEnhetsFilters"></filter-list>
 			</div>
 		</div>
 
