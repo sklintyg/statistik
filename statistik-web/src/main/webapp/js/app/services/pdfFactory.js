@@ -18,9 +18,11 @@
  */
 'use strict';
 angular.module('StatisticsApp')
-    .factory('pdfFactory', ['$window', function($window) {
+    .factory('pdfFactory', ['$window', '$timeout', function($window, $timeout) {
 
         function _print($scope, charts) {
+            $scope.generatingPdf = true;
+            
             var table = {
                 header: $scope.headerrows,
                 data: $scope.rows
@@ -38,11 +40,17 @@ angular.module('StatisticsApp')
             if (!angular.isArray(charts)) {
                 charts = [charts];
             }
+            
+            var pdfDoneCallback = function() {
+                $timeout(function() {
+                    $scope.generatingPdf = false;
+                });
+            };
 
-            _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters);
+            _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, pdfDoneCallback);
         }
 
-        function _generate(headers, table, images, enhetsFilter, diagnosFilter) {
+        function _generate(headers, table, images, enhetsFilter, diagnosFilter, pdfDoneCallback) {
             var content = [];
 
             _addHeader(content, headers);
@@ -51,10 +59,10 @@ angular.module('StatisticsApp')
             _addListFilter(content, 'Sammanställning av enhetsfilter', enhetsFilter);
             content.push(_getTable(table.header, table.data));
 
-            _create(content, headers.header);
+            _create(content, headers.header, pdfDoneCallback);
         }
 
-        function _create(content, fileName) {
+        function _create(content, fileName, pdfDoneCallback) {
             var docDefinition = {
                 content: content,
                 footer: _getFooter,
@@ -65,11 +73,16 @@ angular.module('StatisticsApp')
 
             pdfMake.createPdf(docDefinition).getBase64(function(result) {
 
+                if (pdfDoneCallback) {
+                    pdfDoneCallback();
+                }
                 var inputs = '<input type="hidden" name="pdf" value="'+result+'">';
                 inputs += '<input type="hidden" name="name" value="'+fileName + '_' + moment().format('YYYY-MM-DD') + '.pdf">';
 
                 $window.jQuery('<form action="/api/pdf/create" target="_blank" method="post">'+inputs+'</form>')
                     .appendTo('body').submit().remove();
+
+
             });
         }
 

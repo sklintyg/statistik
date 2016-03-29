@@ -57,6 +57,13 @@
 		    </div>
 		</div>
 
+		<div class="spinnser" data-ng-if="generatingPdf">
+			<div class="cssspinner"></div>
+			<p id="loading-message" style="text-align: center">
+				<strong><span>Skapar pdf</span></strong>
+			</p>
+		</div>
+
 		<div class="hidden-print clearfix">
 			<div class="pull-left filter-list" data-ng-if="activeDiagnosFilters">
 				<filter-list collapse-id="chart-diagnosfilterinfo-text" filters="activeDiagnosFilters"></filter-list>

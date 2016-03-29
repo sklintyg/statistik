@@ -18,9 +18,10 @@
  */
 'use strict';
 angular.module('StatisticsApp')
-    .factory('pdfOverviewFactory', ['$window', 'pdfFactory', function($window, pdfFactory) {
+    .factory('pdfOverviewFactory', ['$window', 'pdfFactory','$timeout', function($window, pdfFactory, $timeout) {
 
         function _printOverview($scope, charts) {
+            $scope.generatingPdf = true;
             var headers = {
                 header: $scope.viewHeader,
                 subHeader: $scope.subTitle
@@ -30,10 +31,16 @@ angular.module('StatisticsApp')
                 headers.extraHeader = $scope.headerEnhetInfo;
             }
 
-            _generateOverview(headers, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters);
+            var pdfDoneCallback = function() {
+                $timeout(function() {
+                    $scope.generatingPdf = false;
+                });
+            };
+
+            _generateOverview(headers, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, pdfDoneCallback);
         }
 
-        function _generateOverview(headers, charts, enhetsFilter, diagnosFilter) {
+        function _generateOverview(headers, charts, enhetsFilter, diagnosFilter, pdfDoneCallback) {
             var content = [];
 
             pdfFactory.factory.header(content, headers);
@@ -58,7 +65,7 @@ angular.module('StatisticsApp')
                 }
             });
 
-            pdfFactory.factory.create(content, 'overview');
+            pdfFactory.factory.create(content, 'overview', pdfDoneCallback);
         }
 
         function _addBorder(content, chart) {
