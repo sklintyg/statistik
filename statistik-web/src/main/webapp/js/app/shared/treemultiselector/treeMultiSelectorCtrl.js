@@ -174,6 +174,9 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             $scope.$parent.doneLoading = false;
             $scope.doneLoading = false;
             $timeout(function () {
+                if ($scope.dialogOpen) {
+                    $scope.doneLoading = true;
+                }
                 $scope.dialogOpen = true;
                 $scope.updateCounters();
                 resetFilter();
