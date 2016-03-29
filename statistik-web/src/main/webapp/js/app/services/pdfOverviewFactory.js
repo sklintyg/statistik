@@ -85,7 +85,8 @@ angular.module('StatisticsApp')
                     vLineColor: function(i, node) {
                         return 'lightgray';
                     }
-                }
+                },
+                width: chart.displayWidth + 50
             };
 
             if (chart.pageBreak) {

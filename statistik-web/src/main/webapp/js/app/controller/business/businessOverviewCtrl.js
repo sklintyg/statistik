@@ -308,22 +308,22 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
     $scope.printPdf = function () {
         var charts = [];
 
-        charts.push({
-            chart: perMonthAlterationChart,
-            title: messageService.getProperty('business.widget.header.total-antal'),
-            width: 300,
-            height: 300,
-            displayWidth: 150
-        });
-
-        charts.push({
-            chart: [oldSexProportionChart, newSexProportionChart],
-            title: messageService.getProperty('business.widget.header.konsfordelning-sjukfall'),
-            width: 500,
-            showLegend: true,
-            height: 300,
-            displayWidth: 250
-        });
+        charts.push([{
+                chart: perMonthAlterationChart,
+                title: messageService.getProperty('business.widget.header.total-antal'),
+                width: 300,
+                height: 300,
+                displayWidth: 150
+            },
+            {
+                chart: [oldSexProportionChart, newSexProportionChart],
+                title: messageService.getProperty('business.widget.header.konsfordelning-sjukfall'),
+                width: 300,
+                showLegend: true,
+                height: 300,
+                displayWidth: 150
+            }
+        ]);
 
         charts.push({
             chart: diagnosisDonutChart,
