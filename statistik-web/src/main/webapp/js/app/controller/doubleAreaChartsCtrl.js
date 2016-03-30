@@ -61,7 +61,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         var updatePrintDataTable = function (ajaxResult) {
             var headers = ajaxResult.tableData.headers,
             rows = ajaxResult.tableData.rows,
-            printTables = [], currentDataColumn = 1, maxHeadersPerPage = 7;
+            printTables = [], currentDataColumn = 1, maxHeadersPerPage = 5;
 
             var topLevelHeaders = _.rest(headers[0]); //Take all headers but the first, the first is handled separately
             var totalNumberOfPrintPages = Math.ceil(topLevelHeaders.length/maxHeadersPerPage); //Calculate how many print pages we will have
@@ -106,7 +106,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
                     });
 
                     //Taking a new chunk of the top level headers for the next iteration
-                    topLevelHeaders = _.rest(topLevelHeaders, maxHeadersPerPage);
+                    topLevelHeaders = _.drop(topLevelHeaders, maxHeadersPerPage);
                     printTables.push(printTable);
                 }
             );

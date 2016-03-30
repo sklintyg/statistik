@@ -22,11 +22,24 @@ angular.module('StatisticsApp')
 
         function _print($scope, charts) {
             $scope.generatingPdf = true;
-            
-            var table = {
-                header: $scope.headerrows,
-                data: $scope.rows
-            };
+
+            var table;
+            if ($scope.useSpecialPrintTable) {
+                table = [];
+
+                angular.forEach($scope.printDataTables, function(t) {
+                    table.push({
+                        header: t.headers,
+                        data: t.rows
+                    });
+                });
+            }
+            else {
+                table = {
+                    header: $scope.headerrows,
+                    data: $scope.rows
+                };
+            }
 
             var headers = {
                 header: $scope.viewHeader,
@@ -57,7 +70,16 @@ angular.module('StatisticsApp')
             content.push(_getImages(images));
             _addListFilter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
             _addListFilter(content, 'Sammanställning av enhetsfilter', enhetsFilter);
-            content.push(_getTable(table.header, table.data));
+            if (angular.isArray(table)) {
+                angular.forEach(table, function(t) {
+                    var pdfTable = _getTable(t.header, t.data);
+                        pdfTable.pageBreak = 'before';
+                    content.push(pdfTable);
+
+                });
+            } else {
+                content.push(_getTable(table.header, table.data));
+            }
 
             _create(content, headers.header, pdfDoneCallback);
         }
