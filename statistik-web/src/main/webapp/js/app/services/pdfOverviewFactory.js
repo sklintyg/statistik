@@ -92,9 +92,12 @@ angular.module('StatisticsApp')
                     vLineColor: function(i, node) {
                         return 'lightgray';
                     }
-                },
-                width: chart.displayWidth + 50
+                }
             };
+
+            if (chart.displayWidth) {
+                value.width = chart.displayWidth + 50;
+            }
 
             if (chart.pageBreak) {
                 value.pageBreak = 'after';
@@ -159,13 +162,13 @@ angular.module('StatisticsApp')
             });
 
             content.push({
-                absolutePosition: {x: 60, y: 185},
+                absolutePosition: {x: 35, y: 65},
                 text: config.female,
                 style: 'genderImageText'
             });
 
             content.push({
-                absolutePosition: {x: 150, y: 185},
+                absolutePosition: {x: 125, y: 65},
                 text: config.male,
                 style: 'genderImageText'
             });
