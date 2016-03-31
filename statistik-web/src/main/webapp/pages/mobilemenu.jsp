@@ -60,7 +60,7 @@
         <li class="divider"></li>
 
         <!-- Landsting mobile menu -->
-        <li class="dropdown-landsting" data-ng-show="hasLandstingAccess">
+        <li class="dropdown-landsting" data-ng-if="hasLandstingAccess">
           <a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#landsting-menu" ng-click="isLandstingCollapsed = !isLandstingCollapsed"><span message key="nav.landsting-header"></span><span class="caret pull-right mobile-menu-caret"></span></a>
           <ul class="collapse" id="landsting-menu" collapse="!isLandstingCollapsed">
             <li class="subMenuItem"><a data-ng-href="#/landsting/sjukfallPerManad{{queryString}}" ctrlname="LandstingCasesPerMonthCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" ng-class="{'not-active': !landstingAvailable}" navigationaware><span message key="nav.sjukfall-totalt"></span></a></li>
@@ -70,11 +70,13 @@
             <li class="subMenuItem"><a data-ng-href="#/landsting/filuppladdning{{queryString}}" ctrlname="LandstingFileUploadCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.landsting.filuppladdning"></span></a></li>
           </ul>
         </li>
-        <li class="divider"></li>
-
+        <li class="divider" data-ng-if="hasLandstingAccess"></li>
+        
         <!-- Business mobile menu -->
-        <li class="dropdown-business">
-          <a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#business-menu" ng-click="isBusinessCollapsed = !isBusinessCollapsed"><span message key="nav.business-header"></span><span class="caret pull-right mobile-menu-caret"></span></a>
+        <li class="dropdown-business" data-ng-if="enableVerksamhetMenu">
+          <a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#business-menu" data-ng-click="isBusinessCollapsed = !isBusinessCollapsed">
+            <span message key="nav.business-header"></span><span class="caret pull-right mobile-menu-caret"></span>
+          </a>
           <ul class="collapse" id="business-menu" collapse="!isBusinessCollapsed">
             <li class="subMenuItem"><a data-ng-href="#/verksamhet/oversikt{{queryString}}" ctrlname="businessOverviewCtrl" role="menuitem" ng-click="isCollapsed = !isCollapsed" navigationaware><span message key="nav.oversikt"></span></a></li>
             <li class="subMenuItem" ng-show="isProcessledare || isDelprocessledare"><a data-ng-href="#/verksamhet/sjukfallperenhet{{queryString}}"
@@ -127,7 +129,7 @@
             </li>
           </ul>
         </li>
-        <li class="divider"></li>
+        <li class="divider" data-ng-if="enableVerksamhetMenu"></li>
 
         <!-- About mobile menu -->
         <li class="dropdown-about-statistic">
