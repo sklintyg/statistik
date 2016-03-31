@@ -75,48 +75,44 @@
 
 <!-- Navbar
 ================================================== -->
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-xs-12 navbar hidden-print">
-		    <div class="navbar-inner">
-		        <div class="container-fluid">
-		            <div class="row" id="navigation-container">
-		                <div class="col-xs-12 col-sm-3 pull-left" style="width: auto !important;">
-		                    <div class="headerbox-logo">
-		                        <a href="<c:url value='/'/>">
-		                            <img alt="Till startsidan" src="<c:url value='/img/statistiktjansten-logotype.png'/>"/>
-		                        </a>
-		                    </div>
-		                </div>
-		                <div class="col-xs-12 col-sm-2 pull-left">
-		                    <span message key="statistics.header.extra-text"></span>
-		                </div>
-		                <c:if test="${loginVisible}">
-		                    <div class="hidden-xs col-sm-5 col-md-6 col-lg-4 pull-right">
-		                        <div class="ng-hide" id="business-login-container" ng-hide="isLoggedIn">
-		                            <span id="business-login-span"><span message key="lbl.for-verksamhetsstatistik"></span></span>
-		                            <button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"
-		                                    type="button" id="business-login-btn" value="Logga in"><span message key="lbl.log-in"></span>
-		                            </button>
-		                        </div>
-		                        <div class="ng-hide" id="business-logged-in-user-container" ng-show="isLoggedIn">
-		                            <div class="header-box-user-profile pull-right">
-		                                <span class="user-name pull-right" data-ng-bind="userNameWithAccess"></span>
-		                                <br>
-		                                <span>{{verksamhetName}}</span>
-		                                <br/>
-		                                <span class="user-logout pull-right">
-											<a href="saml/logout"><span message key="lbl.log-out"></span></a>
-										</span>
-		                            </div>
-		                        </div>
-		                    </div>
-		                </c:if>
-		            </div>
-		        </div>
-		    </div>
-		</div>
-	</div>
+<div id="navigation-container">
+  <div class="header clearfix">
+    <div class="headerbox">
+      <span class="headerbox-logo pull-left">
+        <a href="<c:url value='/'/>">
+          <img alt="Till startsidan" src="<c:url value='/img/statistiktjansten-logotype.png'/>"/>
+        </a>
+      </span>
+      <span class="headerbox-date pull-left">
+        <div id="location" class="hidden-xs location ng-hide" data-ng-show="isLoggedIn">{{verksamhetName}}</div>
+        <div class="headerbox-info-text"  data-ng-class="{'headerbox-info-text-padding': !isLoggedIn}" message key="statistics.header.extra-text"></div>
+      </span>
+    </div>
+
+    <c:if test="${loginVisible}">
+      <div class="hidden-xs">
+        <div class="ng-hide headerbox-login" id="business-login-container" data-ng-show="!isLoggedIn">
+          <span id="business-login-span"><span message key="lbl.for-verksamhetsstatistik"></span></span>
+          <button class="btn" data-ng-click="loginClicked('${applicationScope.loginUrl}')"
+                  type="button" id="business-login-btn" value="Logga in"><span message key="lbl.log-in"></span>
+          </button>
+        </div>
+        <div class="ng-hide" data-ng-show="isLoggedIn">
+          <div class="headerbox-avatar pull-right">
+            <img ng-src="img/avatar.png">
+          </div>
+          <div class="headerbox-user pull-right">
+            <div class="headerbox-user-profile">
+              <span class="logged-in">{{userNameWithAccess}}</span><br>
+              <span class="pull-right">
+                <a id="logoutLink" href="saml/logout"><span message key="lbl.log-out"></span></a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </c:if>
+  </div>
 </div>
 
 <div id="wrapper">
