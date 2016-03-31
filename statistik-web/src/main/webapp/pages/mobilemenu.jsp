@@ -71,7 +71,7 @@
           </ul>
         </li>
         <li class="divider" data-ng-if="hasLandstingAccess"></li>
-        
+
         <!-- Business mobile menu -->
         <li class="dropdown-business" data-ng-if="enableVerksamhetMenu">
           <a class="mobileMenuHeaderItem" data-toggle="collapse in" data-target="#business-menu" data-ng-click="isBusinessCollapsed = !isBusinessCollapsed">

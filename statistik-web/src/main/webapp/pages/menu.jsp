@@ -60,7 +60,7 @@
   </div>
 
   <!-- LANDSTING MENU -->
-    <div class="accordion-group" id="landsting-statistics-menu-group" data-ng-show="hasLandstingAccess">
+    <div class="accordion-group" id="landsting-statistics-menu-group" data-ng-if="hasLandstingAccess">
       <h2 class="hidden-header"><span message key="statistics.hidden-header.landsting-navigering"></span></h2>
       <div class="accordion-heading statistics-menu">
         <div class="accordion-toggle first-level-menu" id="landsting-statistics-toggle"
@@ -97,7 +97,7 @@
           <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
         </div>
       </div>
-      <div id="business-statistics-collapse" class="accordion-body collapse navigation-group"
+      <div id="business-statistics-collapse" class="accordion-body collapse navigation-group" data-ng-if="enableVerksamhetMenu"
            data-ng-class="{in: showOperation}">
         <div class="accordion-inner">
           <ul id="business-statistic-menu-content" class="nav nav-list">

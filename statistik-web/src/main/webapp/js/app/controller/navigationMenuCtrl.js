@@ -81,7 +81,7 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
             } else if (navigationGroupId === "business-statistics-collapse") {
                 $scope.showNational = false;
                 $scope.showLandsting = false;
-                $scope.showOperation = $scope.isLoggedIn ? true : false;
+                $scope.showOperation = true;
                 $scope.showAbout = false;
             } else {
                 $scope.showNational = true;
