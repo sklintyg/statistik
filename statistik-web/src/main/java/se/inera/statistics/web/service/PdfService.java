@@ -39,6 +39,8 @@ public class PdfService {
 
         byte[] array = DatatypeConverter.parseBase64Binary(pdf);
 
+        name = name.replaceAll("[^A-Za-z0-9._]", "");
+
         Response.ResponseBuilder response = Response.ok().entity(array).type(MediaType.APPLICATION_OCTET_STREAM_TYPE);
         response.header("Content-Disposition", "attachment; filename=" + name);
 
