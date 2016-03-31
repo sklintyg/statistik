@@ -24,7 +24,7 @@ module.exports = function(config) {
             WEBJAR_DIR + 'angularjs/' + angularVersion + '/angular-mocks.js',
             WEBJAR_DIR + 'angularjs/' + angularVersion + '/i18n/angular-locale_sv.js',
             WEBJAR_DIR + 'angular-ui-bootstrap/0.12.1/ui-bootstrap-tpls.min.js',
-            WEBJAR_DIR + 'underscorejs/1.7.0/underscore.js',
+            WEBJAR_DIR + 'lodash/3.10.1/lodash.min.js',
             WEBJAR_DIR + 'momentjs/2.10.3/moment.js',
             WEBJAR_DIR + 'pdfmake/0.1.20/build/pdfmake.min.js',
             WEBJAR_DIR + 'pdfmake/0.1.20/build/vfs_fonts.js',

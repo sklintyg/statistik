@@ -176,7 +176,7 @@
 <![endif]-->
 <script type="text/javascript" src="<c:url value='/webjars/jquery/1.10.2/jquery.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/bootstrap/3.1.1/js/bootstrap.min.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/webjars/underscorejs/1.7.0/underscore-min.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/lodash/3.10.1/lodash.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/momentjs/2.10.3/moment.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.29/angular.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/angularjs/1.2.29/i18n/angular-locale_sv.js'/>"></script>

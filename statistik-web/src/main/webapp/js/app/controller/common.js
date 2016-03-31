@@ -82,7 +82,7 @@ var ControllerCommons = new function(){
     }
 
     this.getDiagnosFilterInformationText = function(diagnosFilterIds, icdStructure) {
-        var icdStructureAsFlatArray = _.compose(_.flatten, icdStructureAsArray)(icdStructure);
+        var icdStructureAsFlatArray = _.compose(_.flattenDeep, icdStructureAsArray)(icdStructure);
         return _.map(diagnosFilterIds, function(diagnosId){
             var icdItem = _.find(icdStructureAsFlatArray, function(icd){
                 return icd.numericalId === parseInt(diagnosId, 10);
