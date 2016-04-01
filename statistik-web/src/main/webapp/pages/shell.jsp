@@ -128,6 +128,7 @@
 
     <div id="page-content-wrapper">
         <div class="container-fluid">
+          <stat-cookie-banner></stat-cookie-banner>
             <!-- Docs nav
             ================================================== -->
             <div class="row">
@@ -184,8 +185,9 @@
 <script type="text/javascript" src="<c:url value='/webjars/respond/1.3.0/respond.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/bootstrap-multiselect/0.9.13/js/bootstrap-multiselect.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/webjars/tablesorter/2.17.8/js/jquery.tablesorter.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/webjars/pdfmake/0.1.20/build/pdfmake.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/pdfmake/0.1.20/build/pdfmake.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/lib/vfs_fonts.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/webjars/ngstorage/0.3.10/ngStorage.min.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/resources/constantsModule.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/factories.js'/>"></script>
@@ -229,6 +231,7 @@
   <script type="text/javascript" src="<c:url value='/js/lib/canvg/1.4/canvg.js'/>"></script>
   <script type="text/javascript" src="<c:url value='/js/app/shared/filterList/filterList.directive.js'/>"></script>
   <script type="text/javascript" src="<c:url value='/js/app/shared/diagnosSelection/diagnosSelection.directive.js'/>"></script>
+  <script type="text/javascript" src="<c:url value='/js/app/components/directives/statCookieBanner/statCookieBanner.directive.js'/>"></script>
 
 <script type="text/javascript">
     $('.dropdown-toggle').dropdown();

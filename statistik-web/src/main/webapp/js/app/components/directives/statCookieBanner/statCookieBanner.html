@@ -1,0 +1,41 @@
+<div class="stat-cookie-banner banner-slide-in" ng-if="isOpen">
+  <div class="container-fluid">
+    <div class="alert alert-info">
+      <div class="row">
+        <div class="col-sm-10">
+          Vi använder kakor (cookies) för att den här webbplatsen ska fungera på ett bra sätt för dig. Genom att fortsätta använda den här webbplatsen
+          accepterar du vår användning av kakor.<br>
+
+          <div data-ng-if="showDetails">
+            <p><br>Den typ av kakor som används på den här webbplatsen kallas för sessionskakor. De lagras temporärt i
+              din dators minne under tiden du är inne på webbplatsen.
+              Sessionskakor sparar ingen personlig information om dig, och de försvinner när du stänger din webbläsare.
+            </p>
+
+            <p>
+              I den nationella delen av Statistiktjänsten används sessionskakor för att möjliggöra uppföljning av hur tjänsten används, i syfte att kunna förbättra användarupplevelsen.
+              I den delen av Statistiktjänsten som kräver inloggning används kakor för att du ska kunna navigera i tjänsten utan att behöva logga in på nytt varje gång du går till en ny sida.
+            </p>
+
+            <p>
+              Om du inte accepterar användningen av kakor kan du ställa in webbläsaren så att kakor blockeras.
+              Observera att det då inte går att logga in. Då får det endast att se den nationella statistiken.
+            </p>
+
+            <p>Mer information om kakor (cookies) på <a
+                href="http://www.pts.se/sv/Privat/Internet/Integritet1/Fragor-och-svar-om-kakor-for-anvandare2/"
+                target="_blank">Post- och telestyrelsens webbplats</a></p>
+
+          </div>
+          <a href data-ng-click="showDetails=!showDetails">Så här använder vi kakor <i class="glyphicon"
+                                                                                      ng-class="{'glyphicon-chevron-up': showDetails, 'glyphicon-chevron-down': !showDetails}"></i></a>
+        </div>
+        <div class="col-sm-2 text-right">
+          <button class="btn btn-default" id="cookie-usage-consent-btn" data-ng-click="onCookieConsentClick()">Jag förstår</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+

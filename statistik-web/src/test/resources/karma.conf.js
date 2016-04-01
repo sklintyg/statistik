@@ -27,7 +27,7 @@ module.exports = function(config) {
             WEBJAR_DIR + 'lodash/3.10.1/lodash.min.js',
             WEBJAR_DIR + 'momentjs/2.10.3/moment.js',
             WEBJAR_DIR + 'pdfmake/0.1.20/build/pdfmake.min.js',
-            WEBJAR_DIR + 'pdfmake/0.1.20/build/vfs_fonts.js',
+            WEBJAR_DIR + 'ngstorage/0.3.10/ngstorage.min.js',
             'src/main/webapp/js/**/*.js',
             'src/test/javascript/**/*.js',
             '**/*.html'

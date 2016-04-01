@@ -2108,3 +2108,21 @@ diagnos-selection {
     margin-right: 15px;
     position: relative;
 }
+
+.stat-cookie-banner {
+
+    margin: 10px;
+    top: 0;
+    position: absolute;
+    right: 0;
+    left: 0;
+    border: none;
+    z-index: 1010;
+}
+
+.stat-cookie-banner .alert {
+    max-width: inherit;
+}
+.stat-cookie-banner .container-fluid {
+    padding: 0;
+}

@@ -53,7 +53,8 @@ List webjars = [[group: 'org.webjars', name: 'jquery', version: '1.10.2'],
                 [group: 'org.webjars', name: 'momentjs', version: '2.10.3'],
                 [group: 'org.webjars', name: 'tablesorter', version: '2.17.8'],
                 [group: 'org.webjars', name: 'outdated-browser', version: '1.1.0'],
-                [group: 'org.webjars.bower', name: 'pdfmake', version: '0.1.20']]
+                [group: 'org.webjars.bower', name: 'pdfmake', version: '0.1.20'],
+                [group: 'org.webjars.bower', name: 'ngstorage', version: '0.3.10']]
 
 task unzipWebjars(type: Copy) {
     description 'Copies anything that is a webjar from the classpath and expands it so that we can use their static resources with karma'

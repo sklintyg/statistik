@@ -8,7 +8,7 @@
     <Call name="setAttribute">
         <Arg>org.eclipse.jetty.server.webapp.WebInfIncludeJarPattern</Arg>
         <Arg>
-            .*/.*jsp-api-[^/]\.jar$|./.*jsp-[^/]\.jar$|./.*taglibs[^/]*\.jar$|.*/.*bootstrap-.*\.jar$|.*/.*angularjs-.*\.jar$|.*/.*bootstrap-.*\.jar$|.*/.*lodash-.*\.jar$|.*/.*respond-.*\.jar$|.*/.*jquery-.*\.jar$|.*/.*moment.*\.jar$|.*/.*dropzone.*\.jar$|.*/.*outdated-browser.*\.jar|.*/.*tablesorter.*\.jar|.*/.*pdfmake.*\.jar$
+            .*/.*jsp-api-[^/]\.jar$|./.*jsp-[^/]\.jar$|./.*taglibs[^/]*\.jar$|.*/.*bootstrap-.*\.jar$|.*/.*angularjs-.*\.jar$|.*/.*bootstrap-.*\.jar$|.*/.*lodash-.*\.jar$|.*/.*respond-.*\.jar$|.*/.*jquery-.*\.jar$|.*/.*moment.*\.jar$|.*/.*dropzone.*\.jar$|.*/.*outdated-browser.*\.jar|.*/.*tablesorter.*\.jar|.*/.*pdfmake.*\.jar|.*/.*ngstorage.*\.jar$
         </Arg>
     </Call>
 
