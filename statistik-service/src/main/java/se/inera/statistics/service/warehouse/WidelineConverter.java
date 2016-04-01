@@ -18,11 +18,14 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
@@ -30,15 +33,17 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
+import se.inera.statistics.service.helper.Patientdata;
+import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10.Kategori;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @Component
 public class WidelineConverter {
@@ -84,27 +89,7 @@ public class WidelineConverter {
         final boolean enkeltIntyg = DocumentHelper.isEnkeltIntyg(intyg, version);
 
         String diagnos = DocumentHelper.getDiagnos(intyg, version);
-        boolean isUnknownDiagnos = diagnos == null || "unknown".equals(diagnos);
-        final Icd10.Kod kod = isUnknownDiagnos ? null : icd10.findKod(diagnos);
-        final Kategori kategori = kod != null ? kod.getKategori() : isUnknownDiagnos ? null : icd10.findKategori(diagnos);
-        String diagnoskod = kod != null ? kod.getId() : null;
-
-        String diagnoskapitel;
-        String diagnosavsnitt;
-        String diagnoskategori;
-        if (kategori != null) {
-            diagnoskapitel = kategori.getAvsnitt().getKapitel().getId();
-            diagnosavsnitt = kategori.getAvsnitt().getId();
-            diagnoskategori = kategori.getId();
-        } else if ("unknown".equals(diagnos)) {
-            diagnoskapitel = null;
-            diagnosavsnitt = null;
-            diagnoskategori = "unknown";
-        } else {
-            diagnoskapitel = null;
-            diagnosavsnitt = null;
-            diagnoskategori = null;
-        }
+        final Diagnos dx = parseDiagnos(diagnos);
 
         int lakarkon = HSAServiceHelper.getLakarkon(hsa);
         int lakaralder = HSAServiceHelper.getLakaralder(hsa);
@@ -114,41 +99,104 @@ public class WidelineConverter {
         List<WideLine> lines = new ArrayList<>();
 
         for (Arbetsnedsattning arbetsnedsattning : DocumentHelper.getArbetsnedsattning(intyg, version)) {
-
-            WideLine line = new WideLine();
-
-            int sjukskrivningsgrad = arbetsnedsattning.getNedsattning();
-
-            LocalDate kalenderStart = arbetsnedsattning.getStart();
-            LocalDate kalenderEnd = arbetsnedsattning.getSlut();
-
-            line.setCorrelationId(correlationId);
-            line.setLakarintyg(logId);
-            line.setIntygTyp(type);
-            line.setLkf(lkf);
-            line.setEnhet(new HsaIdEnhet(enhet));
-            line.setVardgivareId(vardgivare);
-
-            line.setStartdatum(toDay(kalenderStart));
-            line.setSlutdatum(toDay(kalenderEnd));
-            line.setDiagnoskapitel(diagnoskapitel);
-            line.setDiagnosavsnitt(diagnosavsnitt);
-            line.setDiagnoskategori(diagnoskategori);
-            line.setDiagnoskod(diagnoskod);
-            line.setSjukskrivningsgrad(sjukskrivningsgrad);
-            line.setEnkelt(enkeltIntyg);
-
-            line.setPatientid(patient);
-            line.setAlder(alder);
-            line.setKon(kon);
-
-            line.setLakaralder(lakaralder);
-            line.setLakarkon(lakarkon);
-            line.setLakarbefattning(lakarbefattning);
-            line.setLakareId(lakareid);
+            WideLine line = createWideLine(logId, correlationId, type, lkf, enhet, vardgivare, patient, kon, alder, enkeltIntyg, dx, lakarkon, lakaralder, lakarbefattning, lakareid, arbetsnedsattning);
             lines.add(line);
         }
         return lines;
+    }
+
+    public List<WideLine> toWideline(RegisterCertificateType intyg, Patientdata patientData, JsonNode hsa, long logId, String correlationId, EventType type) {
+        String lkf = getLkf(hsa);
+
+        String enhet = HSAServiceHelper.getEnhetId(hsa);
+        HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
+
+        if (enhet == null) {
+            enhet = RegisterCertificateHelper.getEnhetId(intyg);
+        }
+
+        String patient = RegisterCertificateHelper.getPatientId(intyg);
+
+        int kon = Kon.valueOf(patientData.getKon()).getNumberRepresentation();
+        int alder = patientData.getAlder();
+
+        final boolean enkeltIntyg = RegisterCertificateHelper.isEnkeltIntyg(intyg);
+
+        String diagnos = RegisterCertificateHelper.getDx(intyg);
+        final Diagnos dx = parseDiagnos(diagnos);
+
+        int lakarkon = HSAServiceHelper.getLakarkon(hsa);
+        int lakaralder = HSAServiceHelper.getLakaralder(hsa);
+        String lakarbefattning = HSAServiceHelper.getLakarbefattning(hsa);
+        HsaIdLakare lakareid = HSAServiceHelper.getLakareId(hsa);
+
+        List<WideLine> lines = new ArrayList<>();
+
+        for (Arbetsnedsattning arbetsnedsattning : RegisterCertificateHelper.getArbetsnedsattning(intyg)) {
+            WideLine line = createWideLine(logId, correlationId, type, lkf, enhet, vardgivare, patient, kon, alder, enkeltIntyg, dx, lakarkon, lakaralder, lakarbefattning, lakareid, arbetsnedsattning);
+            lines.add(line);
+        }
+        return lines;
+    }
+
+    // CHECKSTYLE:OFF ParameterNumberCheck
+    private WideLine createWideLine(long logId, String correlationId, EventType type, String lkf, String enhet, HsaIdVardgivare vardgivare, String patient, int kon, int alder, boolean enkeltIntyg, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning, HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning) {
+        WideLine line = new WideLine();
+
+        int sjukskrivningsgrad = arbetsnedsattning.getNedsattning();
+
+        LocalDate kalenderStart = arbetsnedsattning.getStart();
+        LocalDate kalenderEnd = arbetsnedsattning.getSlut();
+
+        line.setCorrelationId(correlationId);
+        line.setLakarintyg(logId);
+        line.setIntygTyp(type);
+        line.setLkf(lkf);
+        line.setEnhet(new HsaIdEnhet(enhet));
+        line.setVardgivareId(vardgivare);
+
+        line.setStartdatum(toDay(kalenderStart));
+        line.setSlutdatum(toDay(kalenderEnd));
+        line.setDiagnoskapitel(dx.diagnoskapitel);
+        line.setDiagnosavsnitt(dx.diagnosavsnitt);
+        line.setDiagnoskategori(dx.diagnoskategori);
+        line.setDiagnoskod(dx.diagnoskod);
+        line.setSjukskrivningsgrad(sjukskrivningsgrad);
+        line.setEnkelt(enkeltIntyg);
+
+        line.setPatientid(patient);
+        line.setAlder(alder);
+        line.setKon(kon);
+
+        line.setLakaralder(lakaralder);
+        line.setLakarkon(lakarkon);
+        line.setLakarbefattning(lakarbefattning);
+        line.setLakareId(lakareid);
+        return line;
+    }
+    // CHECKSTYLE:ON ParameterNumberCheck
+
+    private Diagnos parseDiagnos(String diagnos) {
+        boolean isUnknownDiagnos = diagnos == null || "unknown".equals(diagnos);
+        final Icd10.Kod kod = isUnknownDiagnos ? null : icd10.findKod(diagnos);
+        final Kategori kategori = kod != null ? kod.getKategori() : isUnknownDiagnos ? null : icd10.findKategori(diagnos);
+        final Diagnos dx = new Diagnos();
+        dx.diagnoskod = kod != null ? kod.getId() : null;
+
+        if (kategori != null) {
+            dx.diagnoskapitel = kategori.getAvsnitt().getKapitel().getId();
+            dx.diagnosavsnitt = kategori.getAvsnitt().getId();
+            dx.diagnoskategori = kategori.getId();
+        } else if ("unknown".equals(diagnos)) {
+            dx.diagnoskapitel = null;
+            dx.diagnosavsnitt = null;
+            dx.diagnoskategori = "unknown";
+        } else {
+            dx.diagnoskapitel = null;
+            dx.diagnosavsnitt = null;
+            dx.diagnoskategori = null;
+        }
+        return dx;
     }
 
     private void checkSjukskrivningsgrad(List<String> errors, int grad) {
@@ -232,6 +280,13 @@ public class WidelineConverter {
         if (alder == ConversionHelper.NO_AGE) {
             errors.add("Error in patient age");
         }
+    }
+
+    private class Diagnos {
+        private String diagnoskod;
+        private String diagnoskapitel;
+        private String diagnosavsnitt;
+        private String diagnoskategori;
     }
 
 }

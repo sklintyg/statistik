@@ -39,6 +39,7 @@ public class JmsReceiver implements MessageListener {
     public static final String REVOKED = "revoked";
     public static final String ACTION = "action";
     public static final String CERTIFICATE_ID = "certificate-id";
+    private static final String MESSAGE_VERSION = "MsgVersion";
 
     @Autowired
     private Receiver receiver;
@@ -55,7 +56,11 @@ public class JmsReceiver implements MessageListener {
                 long timestamp = rawMessage.getJMSTimestamp();
                 String typeName = rawMessage.getStringProperty(ACTION);
                 String certificateId = rawMessage.getStringProperty(CERTIFICATE_ID);
-                receiver.accept(typeEvent(typeName), doc, certificateId, timestamp);
+                if (rawMessage.propertyExists(MESSAGE_VERSION)) {
+                    receiver.acceptRegisterCertificate(typeEvent(typeName), doc, certificateId, timestamp);
+                } else {
+                    receiver.accept(typeEvent(typeName), doc, certificateId, timestamp);
+                }
                 LOG.info("Received intyg {}", certificateId);
                 monitoringLogService.logInFromQueue(certificateId);
             } catch (JMSException e) {

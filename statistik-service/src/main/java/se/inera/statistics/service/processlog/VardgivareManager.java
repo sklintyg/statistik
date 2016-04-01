@@ -43,12 +43,12 @@ public class VardgivareManager {
     private EntityManager manager;
 
     @Transactional
-    public void saveEnhet(JsonNode hsaInfo, JsonNode document) {
+    public void saveEnhet(JsonNode hsaInfo, String enhetIdFromIntyg) {
         boolean hsaEnhet = true;
         String enhetIdString = HSAServiceHelper.getEnhetId(hsaInfo);
         if (enhetIdString == null) {
             hsaEnhet = false;
-            enhetIdString = DocumentHelper.getEnhetId(document, DocumentHelper.getIntygVersion(document));
+            enhetIdString = enhetIdFromIntyg;
         }
         final HsaIdEnhet enhet = new HsaIdEnhet(enhetIdString);
         final HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsaInfo);

@@ -16,19 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.processlog;
+package se.inera.statistics.service.helper;
 
-import java.util.List;
+public class Patientdata {
 
-import org.springframework.stereotype.Component;
+    private final int alder;
+    private final String kon;
 
-@Component
-public interface ProcessLog {
+    public Patientdata(int alder, String kon) {
+        this.alder = alder;
+        this.kon = kon;
+    }
 
-    long store(EventType type, String string, String correlationId, long timestamp, IntygFormat intygFormat);
+    public int getAlder() {
+        return alder;
+    }
 
-    void confirm(long id);
-
-    List<IntygEvent> getPending(int max);
+    public String getKon() {
+        return kon;
+    }
 
 }

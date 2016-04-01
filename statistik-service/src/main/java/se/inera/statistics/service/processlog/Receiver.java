@@ -23,9 +23,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import se.inera.statistics.service.helper.JSONParser;
+import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 
 public class Receiver  {
     private static final Logger LOG = LoggerFactory.getLogger(Receiver.class);
@@ -43,8 +45,14 @@ public class Receiver  {
     private long accepted;
 
     public void accept(EventType type, String data, String documentId, long timestamp) {
-        processLog.store(type, data, documentId, timestamp);
-        hsa(documentId, data);
+        processLog.store(type, data, documentId, timestamp, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
+        hsaForJson(documentId, data);
+        accepted++;
+    }
+
+    public void acceptRegisterCertificate(EventType eventType, String doc, String certificateId, long timestamp) {
+        processLog.store(eventType, doc, certificateId, timestamp, IntygFormat.REGISTER_CERTIFICATE);
+        hsaForXml(certificateId, doc);
         accepted++;
     }
 
@@ -52,16 +60,27 @@ public class Receiver  {
         return accepted;
     }
 
-    private void hsa(String documentId, String data) {
+    private void hsaForJson(String documentId, String data) {
         try {
             JsonNode utlatande = JSONParser.parse(data);
             hsaDecorator.decorate(utlatande, documentId);
         } catch (Exception e) {
-            LOG.error("Failed decorating intyg {}", documentId, e.getMessage());
+            LOG.error("Failed decorating json intyg {}: '{}'", documentId, e.getMessage());
+        }
+    }
+
+    private void hsaForXml(String documentId, String data) {
+        try {
+            final RegisterCertificateType utlatande = RegisterCertificateHelper.unmarshalRegisterCertificateXml(data);
+            hsaDecorator.populateHsaData(utlatande, documentId);
+        } catch (Exception e) {
+            LOG.error("Failed decorating xml intyg {}: '{}'", documentId, e.getMessage());
+            LOG.error("Failed decorating stacktrace:", e);
         }
     }
 
     public void setProcessLog(ProcessLog processLog) {
         this.processLog = processLog;
     }
+
 }

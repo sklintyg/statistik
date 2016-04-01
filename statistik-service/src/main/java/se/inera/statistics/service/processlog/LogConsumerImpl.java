@@ -18,16 +18,22 @@
  */
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.util.List;
+
+import javax.xml.bind.JAXBException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.service.helper.JSONParser;
-import se.inera.statistics.service.hsa.HSADecorator;
 
-import java.util.List;
+import se.inera.statistics.service.helper.JSONParser;
+import se.inera.statistics.service.helper.RegisterCertificateHelper;
+import se.inera.statistics.service.hsa.HSADecorator;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 @Component
 public class LogConsumerImpl implements LogConsumer {
@@ -55,14 +61,22 @@ public class LogConsumerImpl implements LogConsumer {
                 return 0;
             }
             for (IntygEvent event: result) {
+                final IntygFormat format = event.getFormat();
                 try {
-                    EventType type = event.getType();
-                    JsonNode intyg = JSONParser.parse(event.getData());
-                    JsonNode hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
-                    if (hsaInfo != null || type.equals(EventType.REVOKED)) {
-                        processor.accept(intyg, hsaInfo, event.getId(), event.getCorrelationId(), type);
-                    } else {
-                        return processed;
+                    switch (format) {
+                        case REGISTER_MEDICAL_CERTIFICATE:
+                            if (!processOld(event)) {
+                                return processed;
+                            }
+                            break;
+                        case REGISTER_CERTIFICATE:
+                            if (!processNew(event)) {
+                                return processed;
+                            }
+                            break;
+                        default:
+                            LOG.warn("Unhandled intyg format: " + format);
+                            return processed;
                     }
                 } catch (Exception e) {
                     LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
@@ -77,10 +91,49 @@ public class LogConsumerImpl implements LogConsumer {
             setRunning(false);
         }
     }
+
+    /**
+     * @return true for success, otherwise false
+     */
+    private boolean processOld(IntygEvent event) {
+        EventType type = event.getType();
+        JsonNode intyg = JSONParser.parse(event.getData());
+        JsonNode hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
+        if (hsaInfo != null || type.equals(EventType.REVOKED)) {
+            processor.accept(intyg, hsaInfo, event.getId(), event.getCorrelationId(), type);
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @return true for success, otherwise false
+     */
+    private boolean processNew(IntygEvent event) {
+        EventType type = event.getType();
+        RegisterCertificateType rc = null;
+        try {
+            rc = RegisterCertificateHelper.unmarshalRegisterCertificateXml(event.getData());
+        } catch (JAXBException e) {
+            LOG.warn("Failed to unmarshal intyg xml");
+            return false;
+        }
+        JsonNode hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
+        if (hsaInfo != null || type.equals(EventType.REVOKED)) {
+            processor.accept(rc, hsaInfo, event.getId(), event.getCorrelationId(), type);
+        } else {
+            return false;
+        }
+        return true;
+    }
+
     public synchronized boolean isRunning() {
         return isRunning;
     }
+
     private synchronized void setRunning(boolean b) {
         isRunning = b;
     }
+
 }

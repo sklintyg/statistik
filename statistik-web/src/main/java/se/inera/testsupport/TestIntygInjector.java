@@ -39,6 +39,7 @@ import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.processlog.IntygFormat;
 import se.inera.statistics.service.report.util.Icd10;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -157,7 +158,7 @@ public class TestIntygInjector {
         final String vgId = vardgivare.getId();
         final String enhetId = vardenhet.getId();
         final String lakareId = lakare.getId();
-        final Intyg intyg = new Intyg(type, data.toString(), id, timestamp, null, null, null, vgId, enhetId, lakareId);
+        final Intyg intyg = new Intyg(type, data.toString(), id, timestamp, null, null, null, vgId, enhetId, lakareId, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
         restSupportService.insertIntygWithoutLogging(intyg);
     }
 

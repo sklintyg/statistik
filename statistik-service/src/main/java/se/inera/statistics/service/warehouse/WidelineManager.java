@@ -24,12 +24,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.Patientdata;
+import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
+
 import java.util.List;
 
 @Component
@@ -53,22 +57,41 @@ public class WidelineManager {
             return;
         }
         for (WideLine line : widelineConverter.toWideline(intyg, hsa, logId, correlationId, type)) {
-            List<String> errors = widelineConverter.validate(line);
+            persistIfValid(logId, intygid, line);
+        }
+    }
 
-            if (errors.isEmpty()) {
-                manager.persist(line);
-            } else {
-                StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid).append(" error count ").append(errCount++);
-                for (String error : errors) {
-                    errorBuilder.append('\n').append(error);
-                }
-                LOG.error(errorBuilder.toString());
+    private void persistIfValid(long logId, String intygid, WideLine line) {
+        List<String> errors = widelineConverter.validate(line);
+
+        if (errors.isEmpty()) {
+            manager.persist(line);
+        } else {
+            StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid).append(" error count ").append(errCount++);
+            for (String error : errors) {
+                errorBuilder.append('\n').append(error);
             }
+            LOG.error(errorBuilder.toString());
+        }
+    }
+
+    @Transactional(noRollbackFor = Exception.class)
+    public void accept(RegisterCertificateType intyg, Patientdata patientData, JsonNode hsa, long logId, String correlationId, EventType type) {
+        final String intygid = RegisterCertificateHelper.getIntygId(intyg);
+        final String intygtyp = RegisterCertificateHelper.getIntygtyp(intyg);
+        if (!isSupportedIntygType(intygtyp)) {
+            LOG.info("Intygtype not supported. Ignoring intyg: " + intygid);
+            return;
+        }
+        for (WideLine line : widelineConverter.toWideline(intyg, patientData, hsa, logId, correlationId, type)) {
+            persistIfValid(logId, intygid, line);
         }
     }
 
     private boolean isSupportedIntygType(String intygType) {
-        return "fk7263".equalsIgnoreCase(intygType);
+        return     "fk7263".equalsIgnoreCase(intygType)
+                || "LIS".equalsIgnoreCase(intygType)
+                || "LISU".equalsIgnoreCase(intygType);
     }
 
     @Transactional
@@ -80,4 +103,5 @@ public class WidelineManager {
     public int count() {
         return ((Long) manager.createQuery("SELECT COUNT (wl) FROM WideLine wl").getSingleResult()).intValue();
     }
+
 }

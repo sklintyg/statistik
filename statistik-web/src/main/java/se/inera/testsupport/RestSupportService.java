@@ -141,8 +141,21 @@ public class RestSupportService {
         hsaDataInjectable.setCountyForNextIntyg(intyg.getCounty());
         hsaDataInjectable.setHuvudenhetIdForNextIntyg(intyg.getHuvudenhetId());
         hsaDataInjectable.setHsaKey(new HSAKey(intyg.getVardgivareId(), intyg.getEnhetId(), intyg.getLakareId()));
-        receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
+        acceptIntyg(intyg);
         setEnhetName(intyg);
+    }
+
+    private void acceptIntyg(Intyg intyg) {
+        switch (intyg.getIntygFormat()) {
+            case REGISTER_MEDICAL_CERTIFICATE:
+                receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
+                break;
+            case REGISTER_CERTIFICATE:
+                receiver.acceptRegisterCertificate(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
+                break;
+            default:
+                throw new RuntimeException("Intyg format not handled: " + intyg.getIntygFormat());
+        }
     }
 
     private void setEnhetName(Intyg intyg) {

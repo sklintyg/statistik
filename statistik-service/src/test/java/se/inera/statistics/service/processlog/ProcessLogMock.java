@@ -34,7 +34,7 @@ public class ProcessLogMock implements ProcessLog {
 
     @Override
     @Transactional
-    public final long store(EventType type, String data, String correlationId, long timestamp) {
+    public final long store(EventType type, String data, String correlationId, long timestamp, IntygFormat intygFormat) {
         throw new RuntimeException("This is a runtime exception that causes a rollback of the jdbc transaction");
     }
 

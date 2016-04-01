@@ -18,16 +18,19 @@
  */
 package se.inera.statistics.service.helper;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.joda.time.LocalDate;
 import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.inera.statistics.service.processlog.Arbetsnedsattning;
 
-import java.util.ArrayList;
-import java.util.List;
+import se.inera.statistics.service.processlog.Arbetsnedsattning;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public final class DocumentHelper {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentHelper.class);
@@ -85,12 +88,31 @@ public final class DocumentHelper {
         return preparedDoc;
     }
 
+    public static Patientdata getPatientData(RegisterCertificateType intyg) {
+        final String patientIdRaw = RegisterCertificateHelper.getPatientId(intyg);
+        final String personId = getUnifiedPersonId(patientIdRaw);
+        int alder;
+        try {
+            alder = ConversionHelper.extractAlder(personId, getSistaNedsattningsdag(intyg));
+        } catch (Exception e) {
+            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId);
+            alder = ConversionHelper.NO_AGE;
+        }
+        String kon = ConversionHelper.extractKon(personId);
+
+        return new Patientdata(alder, kon);
+    }
+
     public static IntygVersion getIntygVersion(JsonNode document) {
         return document.has("grundData") ? IntygVersion.VERSION2 : IntygVersion.VERSION1;
     }
 
     public static String getPersonId(JsonNode document, IntygVersion version) {
         String personIdRaw = getPersonIdFromIntyg(document, version);
+        return getUnifiedPersonId(personIdRaw);
+    }
+
+    public static String getUnifiedPersonId(String personIdRaw) {
         if (personIdRaw.matches("[0-9]{8}-[0-9]{4}")) {
             return personIdRaw;
         } else if (personIdRaw.matches("[0-9]{12}")) {
@@ -128,11 +150,9 @@ public final class DocumentHelper {
 
     public static String getEnhetNamn(JsonNode document, IntygVersion version) {
         if (IntygVersion.VERSION1 == version) {
-            final String result = document.path("skapadAv").path("vardenhet").path("namn").textValue();
-            return result;
+            return document.path("skapadAv").path("vardenhet").path("namn").textValue();
         } else {
-            final String result = document.path("grundData").path("skapadAv").path("vardenhet").path("enhetsnamn").textValue();
-            return result;
+            return document.path("grundData").path("skapadAv").path("vardenhet").path("enhetsnamn").textValue();
         }
     }
 
@@ -193,8 +213,22 @@ public final class DocumentHelper {
                 LocalDate tom = new LocalDate(document.path("nedsattMed100").path("tom").asText());
                 date = tom.isAfter(date) ? tom : date;
             }
-            return date == null ? "2000-01-01" : date.toString();
+            return date.toString();
         }
+    }
+
+    public static LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {
+        final List<Arbetsnedsattning> arbetsnedsattnings = RegisterCertificateHelper.getArbetsnedsattning(document);
+        final int startYear = 2000;
+        LocalDate date = new LocalDate(startYear, 1, 1);
+        LocalDate to = null;
+        for (Arbetsnedsattning arbetsnedsattning : arbetsnedsattnings) {
+            final LocalDate candidate = arbetsnedsattning.getSlut();
+            if (to == null || candidate.isAfter(to)) {
+                to = candidate;
+            }
+        }
+        return to;
     }
 
     public static String getKon(JsonNode document) {

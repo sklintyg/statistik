@@ -8,9 +8,9 @@ Testar hantering av det gamla intygsformatet i Intygstjänsten.
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet  | jsonformat |
-| 19680524-9288 | F32 | 2013-02-01 | 2013-02-14 | enhet1 | gammalt    |
-| 19680524-9288 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | gammalt    |
+| personnr | diagnoskod | start    | slut       | enhet  | intygformat |
+| 19680524-9288 | F32 | 2013-02-01 | 2013-02-14 | enhet1 | gammaltJson |
+| 19680524-9288 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | gammaltJson |
 
 !3 Då gäller:
 Inloggad:

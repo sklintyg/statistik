@@ -22,7 +22,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.Patientdata;
+import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.warehouse.WidelineManager;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 
 public class Processor {
     @Autowired
@@ -39,11 +42,24 @@ public class Processor {
     public void accept(JsonNode utlatande, JsonNode hsa, long logId, String correlationId, EventType type) {
         ObjectNode preparedDoc = DocumentHelper.prepare(utlatande);
 
-        vardgivareManager.saveEnhet(hsa, preparedDoc);
+        final String enhetId = DocumentHelper.getEnhetId(utlatande, DocumentHelper.getIntygVersion(utlatande));
+        vardgivareManager.saveEnhet(hsa, enhetId);
 
         lakareManager.saveLakare(hsa);
 
         widelineManager.accept(preparedDoc, hsa, logId, correlationId, type);
+
+        processedCounter++;
+    }
+
+    public void accept(RegisterCertificateType utlatande, JsonNode hsa, long logId, String correlationId, EventType type) {
+        final Patientdata patientData = DocumentHelper.getPatientData(utlatande);
+
+        vardgivareManager.saveEnhet(hsa, RegisterCertificateHelper.getEnhetId(utlatande));
+
+        lakareManager.saveLakare(hsa);
+
+        widelineManager.accept(utlatande, patientData, hsa, logId, correlationId, type);
 
         processedCounter++;
     }

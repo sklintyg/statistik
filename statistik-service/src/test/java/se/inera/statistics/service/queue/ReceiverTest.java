@@ -33,6 +33,7 @@ import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.processlog.IntygFormat;
 import se.inera.statistics.service.processlog.ProcessLog;
 import se.inera.statistics.service.processlog.Processor;
 import se.inera.statistics.service.processlog.Receiver;
@@ -59,7 +60,7 @@ public class ReceiverTest {
 
         receiver.accept(EventType.CREATED, data, "corr", 123L);
 
-        verify(processLog).store(EventType.CREATED, data, "corr", 123L);
+        verify(processLog).store(EventType.CREATED, data, "corr", 123L, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
         verify(hsaDecorator).decorate(any(JsonNode.class), anyString());
     }
     // CHECKSTYLE:ON MagicNumber

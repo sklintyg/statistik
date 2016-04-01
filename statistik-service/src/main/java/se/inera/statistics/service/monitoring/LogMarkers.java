@@ -16,19 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.processlog;
+package se.inera.statistics.service.monitoring;
 
-import java.util.List;
+import org.slf4j.Marker;
+import org.slf4j.MarkerFactory;
 
-import org.springframework.stereotype.Component;
+public final class LogMarkers {
 
-@Component
-public interface ProcessLog {
+    private LogMarkers() {
+    }
 
-    long store(EventType type, String string, String correlationId, long timestamp, IntygFormat intygFormat);
-
-    void confirm(long id);
-
-    List<IntygEvent> getPending(int max);
-
+    public static final Marker VALIDATION = MarkerFactory.getMarker("Validation");
+    public static final Marker MONITORING = MarkerFactory.getMarker("Monitoring");
+    public static final Marker HSA = MarkerFactory.getMarker("HSA");
 }

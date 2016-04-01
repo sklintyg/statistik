@@ -41,7 +41,7 @@ public class ProcessLogImplTest extends ProcessLogImpl {
     // CHECKSTYLE:OFF MagicNumber
     @Test
     public void storedEventCanBeFetched() throws InterruptedException, NotSupportedException, SystemException {
-        long id = store(EventType.CREATED, "data", "corr", 123L);
+        long id = store(EventType.CREATED, "data", "corr", 123L, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
         IntygEvent event = get(id);
         assertEquals("data", event.getData());
     }
@@ -54,8 +54,8 @@ public class ProcessLogImplTest extends ProcessLogImpl {
 
     @Test
     public void withTwoPendingEventPollReturnsFirstEvent() {
-        store(EventType.CREATED, "1", "corr1", 123L);
-        store(EventType.CREATED, "2", "corr2", 123L);
+        store(EventType.CREATED, "1", "corr1", 123L, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
+        store(EventType.CREATED, "2", "corr2", 123L, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
 
         List<IntygEvent> pending = getPending(2);
         assertEquals(2, pending.size());
@@ -64,8 +64,8 @@ public class ProcessLogImplTest extends ProcessLogImpl {
 
     @Test
     public void withTwoPendingEventsForSameIntygOnlyStoreFirst() {
-        store(EventType.CREATED, "1", "corr", 123L);
-        store(EventType.CREATED, "2", "corr", 123L);
+        store(EventType.CREATED, "1", "corr", 123L, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
+        store(EventType.CREATED, "2", "corr", 123L, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
 
         List<IntygEvent> pending = getPending(1);
         assertEquals("1", pending.get(0).getData());
@@ -77,8 +77,8 @@ public class ProcessLogImplTest extends ProcessLogImpl {
 
     @Test
     public void withTwoPendingEventEachEventCanBeGottenInOrderAfterConfirm() {
-        store(EventType.CREATED, "1", "corr1", 123L);
-        store(EventType.CREATED, "2", "corr2", 123L);
+        store(EventType.CREATED, "1", "corr1", 123L, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
+        store(EventType.CREATED, "2", "corr2", 123L, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
 
         List<IntygEvent> pending = getPending(1);
         assertEquals("1", pending.get(0).getData());

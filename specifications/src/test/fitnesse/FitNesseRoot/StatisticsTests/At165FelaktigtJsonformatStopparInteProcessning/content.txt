@@ -10,10 +10,10 @@ Testar att ett felaktigt intyg inte stoppar senare intyg från att processas.
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet  | jsonformat |
-| 19680524-9288 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | nytt       |
-| 19671109-2681 | F32 | 2013-02-01 | 2013-02-14 | enhet1 | felaktigt  |
-| 19671127-3026 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | nytt       |
+| personnr | diagnoskod | start    | slut       | enhet  | intygformat   |
+| 19680524-9288 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | nyttJson      |
+| 19671109-2681 | F32 | 2013-02-01 | 2013-02-14 | enhet1 | felaktigtJson |
+| 19671127-3026 | F40 | 2013-02-17 | 2013-02-28 | enhet1 | nyttJson      |
 
 !3 Då gäller:
 Inloggad:

@@ -36,6 +36,8 @@ public class IntygEvent {
     @Enumerated
     private EventType type;
 
+    private int format;
+
     private String data;
 
     private String correlationId;
@@ -48,11 +50,12 @@ public class IntygEvent {
     public IntygEvent() {
     }
 
-    public IntygEvent(EventType type, String data, String correlationId, long timestamp) {
+    public IntygEvent(EventType type, String data, String correlationId, long timestamp, IntygFormat intygFormat) {
         this.type = type;
         this.data = data;
         this.correlationId = correlationId;
         this.timestamp = timestamp;
+        this.format = intygFormat.getIntValue();
     }
 
     public EventType getType() {
@@ -73,6 +76,10 @@ public class IntygEvent {
 
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public IntygFormat getFormat() {
+        return IntygFormat.parseIntValue(format);
     }
 
 }

@@ -18,17 +18,34 @@
  */
 package se.inera.statistics.service.processlog;
 
-import java.util.List;
+public enum IntygFormat {
 
-import org.springframework.stereotype.Component;
+    /**
+     * Legacy format using JSON.
+     */
+    REGISTER_MEDICAL_CERTIFICATE(0),
 
-@Component
-public interface ProcessLog {
+    /**
+     * New format using XML.
+     */
+    REGISTER_CERTIFICATE(1);
 
-    long store(EventType type, String string, String correlationId, long timestamp, IntygFormat intygFormat);
+    private int intValue;
 
-    void confirm(long id);
+    IntygFormat(int intValue) {
+        this.intValue = intValue;
+    }
 
-    List<IntygEvent> getPending(int max);
+    public int getIntValue() {
+        return intValue;
+    }
 
+    public static IntygFormat parseIntValue(int format) {
+        for (IntygFormat intygFormat : values()) {
+            if (intygFormat.intValue == format) {
+                return intygFormat;
+            }
+        }
+        throw new IllegalArgumentException("Format with value could not be found: " + format);
+    }
 }

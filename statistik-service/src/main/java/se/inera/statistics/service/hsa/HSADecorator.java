@@ -18,22 +18,26 @@
  */
 package se.inera.statistics.service.hsa;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
+import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
+import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
+import se.inera.statistics.service.helper.RegisterCertificateHelper;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
-import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
-import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
-import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Component
 public class HSADecorator {
@@ -50,18 +54,32 @@ public class HSADecorator {
         final JsonNode info = getHSAInfo(documentId);
         if (missingData(info)) {
             HSAKey key = extractHSAKey(doc);
-            LOG.debug(key.toString());
-            LOG.info("Fetching HSA data for " + documentId);
-            final ObjectNode updatedHsaInfo = service.getHSAInfo(key, info);
-            try {
-                storeHSAInfo(documentId, updatedHsaInfo);
-            } catch (javax.persistence.PersistenceException e) {
-                // Expected error if multiple HSA is fetched for same key. Ignore.
-                LOG.debug("Ignoring expected error", e);
-            }
-            return updatedHsaInfo;
+            return getAndUpdateHsaJson(documentId, info, key);
         }
         return info;
+    }
+
+    @Transactional
+    public JsonNode populateHsaData(RegisterCertificateType doc, String documentId) {
+        final JsonNode info = getHSAInfo(documentId);
+        if (missingData(info)) {
+            HSAKey key = extractHSAKey(doc);
+            return getAndUpdateHsaJson(documentId, info, key);
+        }
+        return info;
+    }
+
+    private JsonNode getAndUpdateHsaJson(String documentId, JsonNode info, HSAKey key) {
+        LOG.debug(key.toString());
+        LOG.info("Fetching HSA data for " + documentId);
+        final ObjectNode updatedHsaInfo = service.getHSAInfo(key, info);
+        try {
+            storeHSAInfo(documentId, updatedHsaInfo);
+        } catch (javax.persistence.PersistenceException e) {
+            // Expected error if multiple HSA is fetched for same key. Ignore.
+            LOG.debug("Ignoring expected error", e);
+        }
+        return updatedHsaInfo;
     }
 
     private boolean missingData(JsonNode info) {
@@ -92,6 +110,13 @@ public class HSADecorator {
         String vardgivareId = getVardgivareId(document, version);
         String enhetId = getEnhetId(document, version);
         String lakareId = getLakarId(document, version);
+        return new HSAKey(vardgivareId, enhetId, lakareId);
+    }
+
+    protected HSAKey extractHSAKey(RegisterCertificateType document) {
+        String vardgivareId = RegisterCertificateHelper.getVardgivareId(document);
+        String enhetId = RegisterCertificateHelper.getEnhetId(document);
+        String lakareId = RegisterCertificateHelper.getLakareId(document);
         return new HSAKey(vardgivareId, enhetId, lakareId);
     }
 
