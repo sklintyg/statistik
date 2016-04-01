@@ -61,7 +61,7 @@ var stMessages = {
 
 
         //filter
-        'lbl.filter.valj-verksamhetstyper': 'Välj verksamhetstyper:',
+        'lbl.filter.valj-verksamhetstyper': 'Välj&nbsp;verksamhetstyper:',
         'lbl.filter.val-av-enheter': 'Välj enheter:',
         'lbl.filter.val-av-diagnoser': 'Välj diagnoser:',
         'lbl.filter.val-av-tidsintervall': 'Välj tidsintervall',
