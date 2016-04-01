@@ -18,7 +18,7 @@
  */
 'use strict';
 angular.module('StatisticsApp')
-    .factory('pdfFactory', ['$window', '$timeout', function($window, $timeout) {
+    .factory('pdfFactory', ['$window', '$timeout', 'thousandseparatedFilter', function($window, $timeout, thousandseparatedFilter) {
 
         function _print($scope, charts) {
             $scope.generatingPdf = true;
@@ -30,14 +30,14 @@ angular.module('StatisticsApp')
                 angular.forEach($scope.printDataTables, function(t) {
                     table.push({
                         header: t.headers,
-                        data: t.rows
+                        data: formatTableData(t.rows)
                     });
                 });
             }
             else {
                 table = {
                     header: $scope.headerrows,
-                    data: $scope.rows
+                    data: formatTableData($scope.rows)
                 };
             }
 
@@ -63,6 +63,24 @@ angular.module('StatisticsApp')
             _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, pdfDoneCallback);
         }
 
+        function formatTableData(data) {
+            var tableData = [];
+
+            angular.forEach(data, function(row) {
+                var rowData = [];
+
+                angular.forEach(row.data, function(item) {
+                    rowData.push(thousandseparatedFilter(item));
+                });
+
+                row.data = rowData;
+
+                tableData.push(row);
+            });
+
+            return tableData;
+        };
+
         function _generate(headers, table, images, enhetsFilter, diagnosFilter, pdfDoneCallback) {
             var content = [];
 
@@ -85,12 +103,31 @@ angular.module('StatisticsApp')
         }
 
         function _create(content, fileName, pdfDoneCallback) {
+
+            pdfMake.fonts = {
+                Lato: {
+                    normal: 'Lato-Regular.ttf',
+                    bold: 'Lato-Bold.ttf',
+                    italics: 'Lato-Regular.ttf',
+                    bolditalics: 'Lato-Regular.ttf'
+                },
+                Roboto: {
+                    normal: 'Roboto-Regular.ttf',
+                    bold: 'Roboto-Medium.ttf',
+                    italics: 'Roboto-Italic.ttf',
+                    bolditalics: 'Roboto-Italic.ttf'
+                }
+            };
+
             var docDefinition = {
                 content: content,
                 footer: _getFooter,
                 pageSize: 'A4',
                 //pageOrientation: 'landscape',
-                styles: _getPdfStyle()
+                styles: _getPdfStyle(),
+                defaultStyle: {
+                    font: 'Lato'
+                }
             };
 
             pdfMake.createPdf(docDefinition).getBase64(function(result) {

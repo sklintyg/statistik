@@ -331,7 +331,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                         messageService.getProperty('overview.widget.table.column.antal'),
                         messageService.getProperty('overview.widget.table.column.forandring')
                     ],
-                    data: getTableData($scope.diagnosisGroups)
+                    data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.diagnosisGroups)
                 }
             });
 
@@ -348,7 +348,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                         messageService.getProperty('overview.widget.table.column.antal'),
                         messageService.getProperty('overview.widget.table.column.forandring')
                     ],
-                    data: getTableData($scope.ageGroups)
+                    data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.ageGroups)
                 }
             });
 
@@ -364,7 +364,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                         messageService.getProperty('overview.widget.table.column.antal'),
                         messageService.getProperty('overview.widget.table.column.forandring')
                     ],
-                    data: getTableData($scope.degreeOfSickLeaveGroups, ' %')
+                    data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.degreeOfSickLeaveGroups, ' %')
                 }
             });
 
@@ -398,27 +398,13 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                         messageService.getProperty('overview.widget.table.column.antal'),
                         messageService.getProperty('overview.widget.table.column.forandring')
                     ],
-                    data: getTableData($scope.sickLeavePerCountyGroups)
+                    data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.sickLeavePerCountyGroups)
                 }
             });
 
 
             pdfOverviewFactory.printOverview($scope, charts);
         };
-
-        function getTableData(data, nameSuffix) {
-            var tableData = [];
-
-            if (!nameSuffix) {
-                nameSuffix = '';
-            }
-
-            angular.forEach(data, function(row) {
-                tableData.push([row.color, row.name + nameSuffix, thousandseparatedFilter(row.quantity), row.alternation + ' %']);
-            });
-
-            return tableData;
-        }
 
         $scope.$on('$destroy', function() {
             if(perMonthAlterationChart && typeof perMonthAlterationChart.destroy === 'function') {

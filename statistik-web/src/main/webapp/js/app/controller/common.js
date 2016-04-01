@@ -308,7 +308,21 @@ var ControllerCommons = new function(){
 
     this.getResultMessage = function(result, messageService) {
         return result.message ? result.message : (result.empty ? messageService.getProperty("info.emptyreponse", null, "", null, true) : "");
-    }
+    };
+
+    this.formatOverViewTablePDF = function(thousandseparatedFilter, data, nameSuffix) {
+        var tableData = [];
+
+        if (!nameSuffix) {
+            nameSuffix = '';
+        }
+
+        angular.forEach(data, function(row) {
+            tableData.push([row.color, row.name + nameSuffix, thousandseparatedFilter(row.quantity), row.alternation + ' %']);
+        });
+
+        return tableData;
+    };
 
 };
 

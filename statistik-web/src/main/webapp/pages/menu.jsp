@@ -97,7 +97,7 @@
           <!-- Inloggad: Enbart "Verksamhetsstatistik" -->
         </div>
       </div>
-      <div id="business-statistics-collapse" class="accordion-body collapse navigation-group" data-ng-if="enableVerksamhetMenu"
+      <div id="business-statistics-collapse" class="accordion-body collapse navigation-group" data-ng-show="enableVerksamhetMenu"
            data-ng-class="{in: showOperation}">
         <div class="accordion-inner">
           <ul id="business-statistic-menu-content" class="nav nav-list">

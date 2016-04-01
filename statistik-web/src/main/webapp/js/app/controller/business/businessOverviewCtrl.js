@@ -337,7 +337,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
                     messageService.getProperty('overview.widget.table.column.antal'),
                     messageService.getProperty('overview.widget.table.column.forandring')
                 ],
-                data: getTableData($scope.diagnosisGroups)
+                data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.diagnosisGroups)
             }
         });
 
@@ -353,7 +353,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
                     messageService.getProperty('overview.widget.table.column.antal'),
                     messageService.getProperty('overview.widget.table.column.forandring')
                 ],
-                data: getTableData($scope.ageGroups)
+                data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.ageGroups)
             }
         });
 
@@ -387,27 +387,13 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
                     messageService.getProperty('overview.widget.table.column.antal'),
                     messageService.getProperty('overview.widget.table.column.forandring')
                 ],
-                data: getTableData($scope.degreeOfSickLeaveGroups, ' %')
+                data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.degreeOfSickLeaveGroups, ' %')
             }
         });
 
 
         pdfOverviewFactory.printOverview($scope, charts);
     };
-
-    function getTableData(data, nameSuffix) {
-        var tableData = [];
-
-        if (!nameSuffix) {
-            nameSuffix = '';
-        }
-
-        angular.forEach(data, function(row) {
-            tableData.push([row.color, row.name + nameSuffix, thousandseparatedFilter(row.quantity), row.alternation + ' %']);
-        });
-
-        return tableData;
-    }
 
     $scope.$on('$destroy', function() {
         if(perMonthAlterationChart && typeof perMonthAlterationChart.destroy === 'function') {
