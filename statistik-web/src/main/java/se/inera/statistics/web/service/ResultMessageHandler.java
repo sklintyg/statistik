@@ -34,7 +34,7 @@ public class ResultMessageHandler {
     private Icd10 icd10;
 
     boolean isDxFilterDisableAllSelectedDxs(List<String> selectedDxs, Collection<String> filterDiagnoser) {
-        if (filterDiagnoser == null) {
+        if (filterDiagnoser == null || filterDiagnoser.isEmpty()) {
             return false;
         }
         for (String dx : selectedDxs) {
