@@ -120,12 +120,13 @@ public class LogConsumerImpl implements LogConsumer {
             return false;
         }
         JsonNode hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
-        if (hsaInfo != null || type.equals(EventType.REVOKED)) {
-            processor.accept(rc, hsaInfo, event.getId(), event.getCorrelationId(), type);
-        } else {
+
+        if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
             return false;
         }
+        processor.accept(rc, hsaInfo, event.getId(), event.getCorrelationId(), type);
         return true;
+
     }
 
     public synchronized boolean isRunning() {
