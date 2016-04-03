@@ -18,23 +18,25 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import org.springframework.transaction.annotation.Transactional;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 
-import java.util.List;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @Component
 public class WidelineManager {
@@ -89,9 +91,12 @@ public class WidelineManager {
     }
 
     private boolean isSupportedIntygType(String intygType) {
-        return     "fk7263".equalsIgnoreCase(intygType)
-                || "LIS".equalsIgnoreCase(intygType)
-                || "LISU".equalsIgnoreCase(intygType);
+        for (IntygType type : IntygType.values()) {
+            if (type.name().equalsIgnoreCase(intygType)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Transactional

@@ -36,6 +36,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
+import se.inera.statistics.service.warehouse.IntygType;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v2.CVType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v2.DatePeriodType;
@@ -80,7 +81,7 @@ public final class RegisterCertificateHelper {
 
     public static boolean isEnkeltIntyg(RegisterCertificateType intyg) {
         final String code = intyg.getIntyg().getTyp().getCode();
-        return "LIS".equalsIgnoreCase(code);
+        return IntygType.LIS.name().equalsIgnoreCase(code);
     }
 
     private static String getIntygsTyp(RegisterCertificateType certificateType) {
