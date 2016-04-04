@@ -62,7 +62,7 @@
   args:
     creates: "{{ tomcat_webapps }}/ROOT"
 
-- name: Deploy highchart-export-web-{{ highchart_version }}.war
+- name: Deploy highchart-export-web-{{ highcharts_version }}.war
   command: cp {{ releases_folder }}/highcharts-export-web-{{ highcharts_version }}.war {{ tomcat_webapps }}/highcharts-export-web.war
 
 - name: Create version file
