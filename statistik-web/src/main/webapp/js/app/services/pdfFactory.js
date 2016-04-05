@@ -283,7 +283,10 @@ angular.module('StatisticsApp')
                 var rowData = [row.name];
 
                 angular.forEach(row.data, function(item) {
-                    rowData.push(item+'');
+                    rowData.push({
+                        text: item+'',
+                        alignment: 'right'
+                    });
                 });
 
                 body.push(rowData);
