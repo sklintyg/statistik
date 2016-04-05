@@ -191,7 +191,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             return new Highcharts.Chart(chartOptions);
         }
 
-        function paintSickLeavePerCountyChart(containerId, chartData) {
+        function paintSickLeavePerCountyChart(containerId, chartData, hideImage) {
             var series = _.map(chartData, function (e) {
                 var coords = self.getCoordinates(e);
                 return {"data": [
@@ -239,7 +239,8 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                 labels: {
                     enabled: false
                 },
-                gridLineWidth: 0
+                gridLineWidth: 0,
+                visible: false
             };
             chartOptions.yAxis = {
                 min: 0,
@@ -251,11 +252,14 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                     enabled: false
                 },
                 gridLineWidth: 0,
-                title: ''
+                title: '',
+                visible: false
             };
 
             return new Highcharts.Chart(chartOptions, function (chart) { // on complete
-                chart.renderer.image('img/sverige.png', 20, 10, 127, 300).add();
+                if (!hideImage) {
+                    chart.renderer.image('img/sverige.png', 20, 10, 127, 300).add();
+                }
             });
         }
 
@@ -386,8 +390,10 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                 ]
             });
 
+            var sickLeavePerCountyChart2 = paintSickLeavePerCountyChart("sickLeavePerCountyChartPrint", $scope.sickLeavePerCountyGroups, true);
+
             charts.push({
-                //chart: sickLeavePerCountyChart,
+                countryChart: sickLeavePerCountyChart2,
                 title: messageService.getProperty('national.widget.header.fordelning-lan'),
                 height: 350,
                 width: 188,
@@ -404,6 +410,9 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
 
 
             pdfOverviewFactory.printOverview($scope, charts);
+
+
+            sickLeavePerCountyChart2.destroy();
         };
 
         $scope.$on('$destroy', function() {
