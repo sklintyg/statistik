@@ -79,7 +79,7 @@
   <div class="header clearfix">
     <div class="headerbox">
       <span class="headerbox-logo pull-left">
-        <a href="<c:url value='/'/>">
+        <a ng-href="/#/">
           <img alt="Till startsidan" src="<c:url value='/img/statistiktjansten-logotype.png'/>"/>
         </a>
       </span>
