@@ -174,7 +174,14 @@ var ControllerCommons = new function(){
         var success = function (selectionHash) {
             var path = $location.path();
             var newPath = path.replace(/\/[^\/]+$/gm, "/" + selectionHash);
-            $location.path(newPath);
+
+            if (path === newPath) {
+                $timeout(function () {
+                    $scope.doneLoading = true;
+                }, 1);
+            } else {
+                $location.path(newPath);
+            }
         };
 
         var error = function () {

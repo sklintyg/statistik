@@ -171,7 +171,6 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         };
 
         $scope.openDialogClicked = function () {
-            $scope.$parent.doneLoading = false;
             $scope.doneLoading = false;
             $timeout(function () {
                 if ($scope.dialogOpen) {
