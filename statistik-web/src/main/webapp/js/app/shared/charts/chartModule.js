@@ -20,7 +20,10 @@ angular.module('StatisticsApp.charts', ['underscore'])
                     borderWidth : 0,
                     itemStyle: {
                         color: '#008391',
-                        fontWeight: 'bold'
+                        fontWeight: 'bold',
+                        textOverflow: 'ellipsis',
+                        overflow: 'hidden',
+                        width: '400px'
                     }
                 },
                 xAxis : {

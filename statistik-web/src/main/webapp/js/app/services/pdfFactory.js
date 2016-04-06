@@ -262,7 +262,10 @@ angular.module('StatisticsApp')
 
             canvg(canvas, chart.getSVG({
                 legend: {
-                    enabled: showLegend
+                    enabled: showLegend,
+                    itemStyle: {
+                        width: '600px'
+                    }
                 },
                 chart: {
                     height: height,
