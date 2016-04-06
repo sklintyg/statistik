@@ -321,6 +321,7 @@ var app = angular.module('StatisticsApp',
             title: 'Kontakt till support'
         }).when('/om/vanligafragor', {
             templateUrl: 'views/about/faq.html',
+            controller: 'aboutFaqCtrl',
             controllerAs: 'AboutFaqCtrl',
             title: 'Vanliga frågor och svar'
         }).when('/om/inloggning', {

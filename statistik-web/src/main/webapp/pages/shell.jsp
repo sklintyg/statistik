@@ -212,6 +212,7 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/pageCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/loginCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/navigationMenuCtrl.js'/>"></script>
+<script type="text/javascript" src="<c:url value='/js/app/controller/about/aboutFaqCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/treemultiselector/treeMultiSelectorModule.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/treemultiselector/treeMultiSelectorUtil.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/treemultiselector/treeMultiSelectorCtrl.js'/>"></script>
