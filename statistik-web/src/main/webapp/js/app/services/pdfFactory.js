@@ -79,7 +79,7 @@ angular.module('StatisticsApp')
             });
 
             return tableData;
-        };
+        }
 
         function _generate(headers, table, images, enhetsFilter, diagnosFilter, pdfDoneCallback) {
             var content = [];
@@ -299,15 +299,16 @@ angular.module('StatisticsApp')
             return {
                 table: {
                     headerRows: numberOfHeaderRows,
-                    body: body
+                    body: body,
+                    dontBreakRows: true
                 },
                 style: 'table',
                 layout: {
                     hLineWidth: function(i, node) {
-                        return 1;
+                        return 0.5;
                     },
                     vLineWidth: function(i, node) {
-                        return 1;
+                        return 0.5;
                     },
                     hLineColor: function(i, node) {
                         return (i === numberOfHeaderRows) ? 'gray' :'lightgray';
