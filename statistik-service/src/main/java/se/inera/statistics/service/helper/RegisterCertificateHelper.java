@@ -37,6 +37,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v2.CVType;
@@ -137,7 +138,7 @@ public class RegisterCertificateHelper {
         }
         String kon = ConversionHelper.extractKon(personId);
 
-        return new Patientdata(alder, kon);
+        return new Patientdata(alder, Kon.parse(kon));
     }
 
     public LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {

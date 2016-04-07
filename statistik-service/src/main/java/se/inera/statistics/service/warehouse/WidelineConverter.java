@@ -37,7 +37,6 @@ import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10.Kategori;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
@@ -86,7 +85,7 @@ public class WidelineConverter {
 
         String patient = DocumentHelper.getPersonId(intyg, version);
 
-        int kon = Kon.valueOf(patientData.getKon()).getNumberRepresentation();
+        int kon = patientData.getKon().getNumberRepresentation();
         int alder = patientData.getAlder();
 
         final boolean enkeltIntyg = DocumentHelper.isEnkeltIntyg(intyg, version);
@@ -120,7 +119,7 @@ public class WidelineConverter {
 
         String patient = registerCertificateHelper.getPatientId(intyg);
 
-        int kon = Kon.valueOf(patientData.getKon()).getNumberRepresentation();
+        int kon = patientData.getKon().getNumberRepresentation();
         int alder = patientData.getAlder();
 
         final boolean enkeltIntyg = registerCertificateHelper.isEnkeltIntyg(intyg);

@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import se.inera.statistics.service.report.model.Kon;
 
 public final class DocumentHelper {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentHelper.class);
@@ -75,7 +76,7 @@ public final class DocumentHelper {
             alder = ConversionHelper.NO_AGE;
         }
         String kon = ConversionHelper.extractKon(personId);
-        return new Patientdata(alder, kon);
+        return new Patientdata(alder, Kon.parse(kon));
     }
 
     public static IntygVersion getIntygVersion(JsonNode document) {

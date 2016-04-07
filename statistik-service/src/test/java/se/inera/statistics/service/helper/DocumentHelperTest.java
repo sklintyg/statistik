@@ -49,7 +49,7 @@ public class DocumentHelperTest {
         final Patientdata patientData = DocumentHelper.getPatientData(documentOldFormat);
 
         assertEquals(35, patientData.getAlder());
-        assertEquals("Male", patientData.getKon());
+        assertEquals(Kon.Male, patientData.getKon());
     }
 
     @Test
@@ -57,7 +57,7 @@ public class DocumentHelperTest {
         final Patientdata patientData = DocumentHelper.getPatientData(documentVersion2);
 
         assertEquals(98, patientData.getAlder());
-        assertEquals("Male", patientData.getKon());
+        assertEquals(Kon.Male, patientData.getKon());
     }
 
     @Test
