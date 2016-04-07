@@ -115,6 +115,8 @@
   </div>
 </div>
 
+<stat-cookie-banner></stat-cookie-banner>
+
 <div id="wrapper">
     <%-- Sidebar --%>
     <div id="sidebar-wrapper" class="hidden-print" data-ng-controller="navigationMenuCtrl">
@@ -128,7 +130,7 @@
 
     <div id="page-content-wrapper">
         <div class="container-fluid">
-          <stat-cookie-banner></stat-cookie-banner>
+
             <!-- Docs nav
             ================================================== -->
             <div class="row">

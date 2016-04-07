@@ -2109,19 +2109,18 @@ diagnos-selection {
     position: relative;
 }
 
-.stat-cookie-banner {
+stat-cookie-banner {
+    display: block;
+}
 
-    margin: 10px;
-    top: 0;
-    position: absolute;
-    right: 0;
-    left: 0;
+.stat-cookie-banner {
+    margin: 10px 10px 0;
     border: none;
-    z-index: 1010;
 }
 
 .stat-cookie-banner .alert {
     max-width: inherit;
+    margin-bottom: 0;
 }
 .stat-cookie-banner .container-fluid {
     padding: 0;
