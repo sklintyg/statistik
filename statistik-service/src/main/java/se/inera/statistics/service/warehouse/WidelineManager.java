@@ -51,6 +51,9 @@ public class WidelineManager {
     @Autowired
     private WidelineConverter widelineConverter;
 
+    @Autowired
+    private RegisterCertificateHelper registerCertificateHelper;
+
     @Transactional(noRollbackFor = Exception.class)
     public void accept(JsonNode intyg, JsonNode hsa, long logId, String correlationId, EventType type) {
         String intygid = DocumentHelper.getIntygId(intyg, DocumentHelper.getIntygVersion(intyg));
@@ -79,8 +82,8 @@ public class WidelineManager {
 
     @Transactional(noRollbackFor = Exception.class)
     public void accept(RegisterCertificateType intyg, Patientdata patientData, JsonNode hsa, long logId, String correlationId, EventType type) {
-        final String intygid = RegisterCertificateHelper.getIntygId(intyg);
-        final String intygtyp = RegisterCertificateHelper.getIntygtyp(intyg);
+        final String intygid = registerCertificateHelper.getIntygId(intyg);
+        final String intygtyp = registerCertificateHelper.getIntygtyp(intyg);
         if (!isSupportedIntygType(intygtyp)) {
             LOG.info("Intygtype not supported. Ignoring intyg: " + intygid);
             return;

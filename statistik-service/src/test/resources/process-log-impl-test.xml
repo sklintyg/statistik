@@ -88,6 +88,7 @@
     <bean class="se.inera.statistics.service.processlog.LakareManager"/>
     <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
     <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
+    <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper"/>
 
     <context:component-scan base-package="se.inera.statistics.service.warehouse, se.inera.statistics.service.monitoring"/>
 

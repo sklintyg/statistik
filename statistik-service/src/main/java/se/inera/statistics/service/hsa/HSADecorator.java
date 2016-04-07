@@ -49,6 +49,9 @@ public class HSADecorator {
     @Autowired
     private HSAService service;
 
+    @Autowired
+    private RegisterCertificateHelper registerCertificateHelper;
+
     @Transactional
     public JsonNode decorate(JsonNode doc, String documentId) {
         final JsonNode info = getHSAInfo(documentId);
@@ -114,9 +117,9 @@ public class HSADecorator {
     }
 
     protected HSAKey extractHSAKey(RegisterCertificateType document) {
-        String vardgivareId = RegisterCertificateHelper.getVardgivareId(document);
-        String enhetId = RegisterCertificateHelper.getEnhetId(document);
-        String lakareId = RegisterCertificateHelper.getLakareId(document);
+        String vardgivareId = registerCertificateHelper.getVardgivareId(document);
+        String enhetId = registerCertificateHelper.getEnhetId(document);
+        String lakareId = registerCertificateHelper.getLakareId(document);
         return new HSAKey(vardgivareId, enhetId, lakareId);
     }
 

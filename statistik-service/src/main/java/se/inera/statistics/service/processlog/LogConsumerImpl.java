@@ -49,6 +49,9 @@ public class LogConsumerImpl implements LogConsumer {
     @Autowired
     private HSADecorator hsa;
 
+    @Autowired
+    private RegisterCertificateHelper registerCertificateHelper;
+
     private volatile boolean isRunning = false;
 
     @Transactional
@@ -114,7 +117,7 @@ public class LogConsumerImpl implements LogConsumer {
         EventType type = event.getType();
         RegisterCertificateType rc = null;
         try {
-            rc = RegisterCertificateHelper.unmarshalRegisterCertificateXml(event.getData());
+            rc = registerCertificateHelper.unmarshalRegisterCertificateXml(event.getData());
         } catch (JAXBException e) {
             LOG.warn("Failed to unmarshal intyg xml");
             return false;

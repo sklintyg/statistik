@@ -37,6 +37,9 @@ public class Processor {
     @Autowired
     private LakareManager lakareManager;
 
+    @Autowired
+    private RegisterCertificateHelper registerCertificateHelper;
+
     private int processedCounter;
 
     public void accept(JsonNode utlatande, JsonNode hsa, long logId, String correlationId, EventType type) {
@@ -53,9 +56,9 @@ public class Processor {
     }
 
     public void accept(RegisterCertificateType utlatande, JsonNode hsa, long logId, String correlationId, EventType type) {
-        final Patientdata patientData = DocumentHelper.getPatientData(utlatande);
+        final Patientdata patientData = registerCertificateHelper.getPatientData(utlatande);
 
-        vardgivareManager.saveEnhet(hsa, RegisterCertificateHelper.getEnhetId(utlatande));
+        vardgivareManager.saveEnhet(hsa, registerCertificateHelper.getEnhetId(utlatande));
 
         lakareManager.saveLakare(hsa);
 

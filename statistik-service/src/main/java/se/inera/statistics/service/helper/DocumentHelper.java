@@ -27,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -86,21 +85,6 @@ public final class DocumentHelper {
         patientNode.put("alder", alder);
         patientNode.put("kon", kon);
         return preparedDoc;
-    }
-
-    public static Patientdata getPatientData(RegisterCertificateType intyg) {
-        final String patientIdRaw = RegisterCertificateHelper.getPatientId(intyg);
-        final String personId = getUnifiedPersonId(patientIdRaw);
-        int alder;
-        try {
-            alder = ConversionHelper.extractAlder(personId, getSistaNedsattningsdag(intyg));
-        } catch (Exception e) {
-            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId);
-            alder = ConversionHelper.NO_AGE;
-        }
-        String kon = ConversionHelper.extractKon(personId);
-
-        return new Patientdata(alder, kon);
     }
 
     public static IntygVersion getIntygVersion(JsonNode document) {
@@ -215,20 +199,6 @@ public final class DocumentHelper {
             }
             return date.toString();
         }
-    }
-
-    public static LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {
-        final List<Arbetsnedsattning> arbetsnedsattnings = RegisterCertificateHelper.getArbetsnedsattning(document);
-        final int startYear = 2000;
-        LocalDate date = new LocalDate(startYear, 1, 1);
-        LocalDate to = null;
-        for (Arbetsnedsattning arbetsnedsattning : arbetsnedsattnings) {
-            final LocalDate candidate = arbetsnedsattning.getSlut();
-            if (to == null || candidate.isAfter(to)) {
-                to = candidate;
-            }
-        }
-        return to;
     }
 
     public static String getKon(JsonNode document) {

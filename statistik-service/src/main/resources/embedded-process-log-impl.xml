@@ -75,6 +75,8 @@
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
+    <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper"/>
+
     <task:annotation-driven executor="taskExecutor"/>
     <task:executor id="taskExecutor" pool-size="5-10" queue-capacity="25" rejection-policy="CALLER_RUNS" />
 

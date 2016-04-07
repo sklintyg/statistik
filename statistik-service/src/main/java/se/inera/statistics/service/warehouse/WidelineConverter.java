@@ -69,6 +69,9 @@ public class WidelineConverter {
     @Autowired
     private Icd10 icd10;
 
+    @Autowired
+    private RegisterCertificateHelper registerCertificateHelper;
+
     public List<WideLine> toWideline(JsonNode intyg, JsonNode hsa, long logId, String correlationId, EventType type) {
         String lkf = getLkf(hsa);
 
@@ -112,17 +115,17 @@ public class WidelineConverter {
         HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
 
         if (enhet == null) {
-            enhet = RegisterCertificateHelper.getEnhetId(intyg);
+            enhet = registerCertificateHelper.getEnhetId(intyg);
         }
 
-        String patient = RegisterCertificateHelper.getPatientId(intyg);
+        String patient = registerCertificateHelper.getPatientId(intyg);
 
         int kon = Kon.valueOf(patientData.getKon()).getNumberRepresentation();
         int alder = patientData.getAlder();
 
-        final boolean enkeltIntyg = RegisterCertificateHelper.isEnkeltIntyg(intyg);
+        final boolean enkeltIntyg = registerCertificateHelper.isEnkeltIntyg(intyg);
 
-        String diagnos = RegisterCertificateHelper.getDx(intyg);
+        String diagnos = registerCertificateHelper.getDx(intyg);
         final Diagnos dx = parseDiagnos(diagnos);
 
         int lakarkon = HSAServiceHelper.getLakarkon(hsa);
@@ -132,7 +135,7 @@ public class WidelineConverter {
 
         List<WideLine> lines = new ArrayList<>();
 
-        for (Arbetsnedsattning arbetsnedsattning : RegisterCertificateHelper.getArbetsnedsattning(intyg)) {
+        for (Arbetsnedsattning arbetsnedsattning : registerCertificateHelper.getArbetsnedsattning(intyg)) {
             WideLine line = createWideLine(logId, correlationId, type, lkf, enhet, vardgivare, patient, kon, alder, enkeltIntyg, dx, lakarkon, lakaralder, lakarbefattning, lakareid, arbetsnedsattning);
             lines.add(line);
         }

@@ -42,6 +42,9 @@ public class Receiver  {
     @Autowired
     private HSADecorator hsaDecorator;
 
+    @Autowired
+    private RegisterCertificateHelper registerCertificateHelper;
+
     private long accepted;
 
     public void accept(EventType type, String data, String documentId, long timestamp) {
@@ -79,7 +82,7 @@ public class Receiver  {
 
     private void hsaForXml(String documentId, String data) {
         try {
-            final RegisterCertificateType utlatande = RegisterCertificateHelper.unmarshalRegisterCertificateXml(data);
+            final RegisterCertificateType utlatande = registerCertificateHelper.unmarshalRegisterCertificateXml(data);
             hsaDecorator.populateHsaData(utlatande, documentId);
         } catch (Exception e) {
             LOG.error("Failed decorating xml intyg {}: '{}'", documentId, e.getMessage());
