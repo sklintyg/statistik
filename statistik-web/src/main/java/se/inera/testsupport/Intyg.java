@@ -1,7 +1,6 @@
 package se.inera.testsupport;
 
 import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.processlog.IntygFormat;
 
 public class Intyg {
     private EventType type;
@@ -14,10 +13,9 @@ public class Intyg {
     private String vardgivareId;
     private String enhetId;
     private String lakareId;
-    private IntygFormat intygFormat;
 
     // CHECKSTYLE:OFF ParameterNumberCheck
-    public Intyg(EventType type, String data, String documentId, long timestamp, String county, String huvudenhetId, String enhetName, String vgId, String enhetId, String lakareId, IntygFormat intygFormat) {
+    public Intyg(EventType type, String data, String documentId, long timestamp, String county, String huvudenhetId, String enhetName, String vgId, String enhetId, String lakareId) {
         this.type = type;
         this.data = data;
         this.documentId = documentId;
@@ -28,7 +26,6 @@ public class Intyg {
         this.vardgivareId = vgId;
         this.enhetId = enhetId;
         this.lakareId = lakareId;
-        this.intygFormat = intygFormat;
     }
     // CHECKSTYLE:ON
 
@@ -75,10 +72,6 @@ public class Intyg {
 
     public String getLakareId() {
         return lakareId;
-    }
-
-    public IntygFormat getIntygFormat() {
-        return intygFormat;
     }
 
 }

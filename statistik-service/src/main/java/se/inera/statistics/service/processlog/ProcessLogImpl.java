@@ -40,12 +40,12 @@ public class ProcessLogImpl implements ProcessLog {
 
     @Override
     @Transactional
-    public final long store(EventType type, String data, String correlationId, long timestamp, IntygFormat intygFormat) {
+    public final long store(EventType type, String data, String correlationId, long timestamp) {
         TypedQuery<IntygEvent> select = manager.createQuery("SELECT e FROM IntygEvent e WHERE e.correlationId = :correlationId AND e.type = :type", IntygEvent.class);
         select.setParameter("correlationId", correlationId).setParameter("type", type);
         List<IntygEvent> result = select.getResultList();
         if (result.isEmpty()) {
-            IntygEvent event = new IntygEvent(type, data, correlationId, timestamp, intygFormat);
+            IntygEvent event = new IntygEvent(type, data, correlationId, timestamp);
             manager.persist(event);
             return event.getId();
         } else {

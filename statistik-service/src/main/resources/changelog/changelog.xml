@@ -55,6 +55,5 @@
     <include file="changelog/db.changelog-v27.0_add_landsting.xml"/>
     <include file="changelog/db.changelog-v28.0_hsaid_to_same_case.xml"/>
     <include file="changelog/db.changelog-v29.0_add_enkla_intyg_to_wideline.xml"/>
-    <include file="changelog/db.changelog-v30.0_add_intyg_type_to_intyg_event.xml"/>
 
 </databaseChangeLog>

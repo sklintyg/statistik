@@ -73,7 +73,7 @@ public class LogConsumerImplTest {
 
     @Test
     public void processingSucceedsForOneEvent() {
-        IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
+        IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
         when(hsa.decorate(any(JsonNode.class), anyString())).thenReturn(JSONParser.parse("{}"));
         int count = consumer.processBatch();
@@ -84,7 +84,7 @@ public class LogConsumerImplTest {
 
     @Test
     public void failingHsaSkipsProcessing() {
-        IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
+        IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
         when(hsa.decorate(any(JsonNode.class), anyString())).thenReturn(null);
         int count = consumer.processBatch();
@@ -95,7 +95,7 @@ public class LogConsumerImplTest {
 
     @Test
     public void failingAcceptContinuesProcessing() {
-        IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
+        IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
         when(hsa.decorate(any(JsonNode.class), anyString())).thenReturn(JSONParser.parse("{}"));
         doThrow(new IllegalArgumentException("Invalid intyg")).when(processor).accept(any(JsonNode.class), any(JsonNode.class), Mockito.anyLong(), anyString(), any(EventType.class));
@@ -106,7 +106,7 @@ public class LogConsumerImplTest {
 
     @Test
     public void deleteEventsAreAdded() {
-        IntygEvent event = new IntygEvent(EventType.REVOKED, "{}", "correlationId", 1, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
+        IntygEvent event = new IntygEvent(EventType.REVOKED, "{}", "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
         int count = consumer.processBatch();
         assertEquals(1, count);

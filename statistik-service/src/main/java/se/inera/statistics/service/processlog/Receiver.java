@@ -45,19 +45,27 @@ public class Receiver  {
     private long accepted;
 
     public void accept(EventType type, String data, String documentId, long timestamp) {
-        processLog.store(type, data, documentId, timestamp, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
-        hsaForJson(documentId, data);
-        accepted++;
-    }
-
-    public void acceptRegisterCertificate(EventType eventType, String doc, String certificateId, long timestamp) {
-        processLog.store(eventType, doc, certificateId, timestamp, IntygFormat.REGISTER_CERTIFICATE);
-        hsaForXml(certificateId, doc);
+        processLog.store(type, data, documentId, timestamp);
+        hsa(documentId, data);
         accepted++;
     }
 
     public long getAccepted() {
         return accepted;
+    }
+
+    private void hsa(String documentId, String data) {
+        final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
+        switch (intygFormat) {
+            case REGISTER_MEDICAL_CERTIFICATE:
+                hsaForJson(documentId, data);
+                break;
+            case REGISTER_CERTIFICATE:
+                hsaForXml(documentId, data);
+                break;
+            default:
+                LOG.error("Unhandled intyg format: " + intygFormat);
+        }
     }
 
     private void hsaForJson(String documentId, String data) {

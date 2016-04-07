@@ -65,12 +65,12 @@ public class LogConsumerImpl implements LogConsumer {
                 try {
                     switch (format) {
                         case REGISTER_MEDICAL_CERTIFICATE:
-                            if (!processOld(event)) {
+                            if (!processJsonMedicalCertificate(event)) {
                                 return processed;
                             }
                             break;
                         case REGISTER_CERTIFICATE:
-                            if (!processNew(event)) {
+                            if (!processXmlCertificate(event)) {
                                 return processed;
                             }
                             break;
@@ -95,7 +95,7 @@ public class LogConsumerImpl implements LogConsumer {
     /**
      * @return true for success, otherwise false
      */
-    private boolean processOld(IntygEvent event) {
+    private boolean processJsonMedicalCertificate(IntygEvent event) {
         EventType type = event.getType();
         JsonNode intyg = JSONParser.parse(event.getData());
         JsonNode hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
@@ -110,7 +110,7 @@ public class LogConsumerImpl implements LogConsumer {
     /**
      * @return true for success, otherwise false
      */
-    private boolean processNew(IntygEvent event) {
+    private boolean processXmlCertificate(IntygEvent event) {
         EventType type = event.getType();
         RegisterCertificateType rc = null;
         try {
