@@ -76,6 +76,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
         chartOptions.chart.height = 210;
         chartOptions.chart.marginTop = 20;
         chartOptions.chart.plotBorderWidth = 0;
+        chartOptions.subtitle = null;
         chartOptions.title = {
             verticalAlign: 'middle',
             floating: true,
@@ -138,6 +139,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 220;
         chartOptions.chart.plotBorderWidth = 0;
+        chartOptions.subtitle = null;
         chartOptions.title = {
             text: period,
             verticalAlign: 'bottom',
@@ -173,6 +175,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 180;
         chartOptions.chart.plotBorderWidth = 0;
+        chartOptions.subtitle = null;
         chartOptions.plotOptions.pie.showInLegend = $routeParams.printBw || $routeParams.print || false;
         chartOptions.series = [
             {
@@ -270,7 +273,8 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
         chartOptions.chart.height = 240;
         chartOptions.xAxis.title = { text: 'Sjukskrivningslängd' , style : chartOptions.xAxis.title.style };
         chartOptions.xAxis.labels.format = '{value}';
-        chartOptions.yAxis.title = { text: 'Antal', style : chartOptions.yAxis.title.style  };
+        chartOptions.subtitle.text = null;
+        chartOptions.yAxis.title = { text: 'Antal', style : chartOptions.subtitle.style  };
         chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
         chartOptions.yAxis.tickPixelInterval = 30;
         chartOptions.legend.enabled = false;

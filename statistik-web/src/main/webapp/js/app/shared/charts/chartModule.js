@@ -10,13 +10,24 @@ angular.module('StatisticsApp.charts', ['underscore'])
                     backgroundColor : null, //transparent
                     plotBorderWidth: 1
                 },
-                title : {
-                    text : ''
+                title: {
+                    text: null,
+                    style: {
+                        fontSize: '16px'
+                    }
+                },
+                subtitle : {
+                    text : 'Antal sjukfall',
+                    align: 'left',
+                    style: {
+                        color: '#008391',
+                        fontWeight: 'bold',
+                        fontSize: '12px'
+                    },
+                    margin: 7
                 },
                 legend : {
                     align : 'left',
-                    x : 120,
-                    y : 0,
                     borderWidth : 0,
                     itemStyle: {
                         color: '#008391',
@@ -55,17 +66,7 @@ angular.module('StatisticsApp.charts', ['underscore'])
                     allowDecimals : false,
                     min : 0,
                     title : {
-                        text : 'Antal sjukfall',
-                        align : 'high',
-                        verticalAlign : 'top',
-                        rotation : 0,
-                        floating : true,
-                        x : -10,
-                        y : 5,
-                        style: {
-                            color: '#008391',
-                            fontWeight: 'bold'
-                        }
+                        text : null
                     },
                     labels : {
                         formatter : function() {
@@ -161,22 +162,16 @@ angular.module('StatisticsApp.charts', ['underscore'])
             if (chart.series.length <= 10) {
                 extendedChartOptions.legend = { enabled: true };
             }
-            var chartHeight = 400;
-            extendedChartOptions.chart = {};
-            extendedChartOptions.chart.height = chartHeight;
-            extendedChartOptions.chart.width = 600;
+            extendedChartOptions.chart = {
+                height: 400,
+                width: 600
+            };
             if (title) {
                 extendedChartOptions.title = {
-                    text: title,
-                    margin: 30,
-                    x: 55
+                    text: title
                 };
-                extendedChartOptions.chart.marginTop = null;
                 extendedChartOptions.chart.backgroundColor = "#FFFFFF";
             }
-            extendedChartOptions.subtitle = {
-                text: " "
-            };
             try {
                 chart.exportChart(options, extendedChartOptions);
             } catch (e) {
