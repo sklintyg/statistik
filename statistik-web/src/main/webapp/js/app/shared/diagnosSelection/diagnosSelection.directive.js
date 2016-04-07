@@ -32,6 +32,13 @@ angular.module('StatisticsApp.filter.directive')
                 selectedDetailsOption3: '='
             },
             restrict: 'E',
-            templateUrl: 'js/app/shared/diagnosSelection/diagnosSelection.directive.html'
+            templateUrl: 'js/app/shared/diagnosSelection/diagnosSelection.directive.html',
+            controller: function($scope) {
+                $scope.hideDiagnosCategorySelection = true;
+
+                $scope.$watch('detailsOptions3.length', function(length) {
+                    $scope.hideDiagnosCategorySelection = length === 0;
+                });
+            }
         };
     }]);

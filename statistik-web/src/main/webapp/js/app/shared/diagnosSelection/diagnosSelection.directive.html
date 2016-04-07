@@ -48,7 +48,15 @@
        style="position: relative; top: -2px; margin-left: 5px;"><img src="img/questionmark2.png"></a>
     <br />
 
-    <div class="btn-group margin-bottom" id="detailsOptionsDropdown3">
+    <div class="btn-group margin-bottom" data-ng-if="hideDiagnosCategorySelection" id="detailsOptionsDropdown3" tooltip="För att välja diagnoskategori behöver du först välja diagnosavsnitt">
+      <button class="multiselect dropdown-toggle btn btn-default disabled"
+              style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
+        <span class="caret pull-right" style="margin-top: 9px;"></span>
+        <span>{{selectedDetailsOption3.id}} {{selectedDetailsOption3.name}}</span>
+      </button>
+    </div>
+
+    <div class="btn-group margin-bottom" data-ng-if="!hideDiagnosCategorySelection" id="detailsOptionsDropdown3">
       <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticKategori" data-toggle="dropdown"
               style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
         <span class="caret pull-right" style="margin-top: 9px;"></span>
