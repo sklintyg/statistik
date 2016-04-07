@@ -72,7 +72,7 @@ public class WidelineConverter {
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
 
-    public List<WideLine> toWideline(JsonNode intyg, JsonNode hsa, long logId, String correlationId, EventType type) {
+    public List<WideLine> toWideline(JsonNode intyg, Patientdata patientData, JsonNode hsa, long logId, String correlationId, EventType type) {
         String lkf = getLkf(hsa);
 
         String enhet = HSAServiceHelper.getEnhetId(hsa);
@@ -86,8 +86,8 @@ public class WidelineConverter {
 
         String patient = DocumentHelper.getPersonId(intyg, version);
 
-        int kon = Kon.valueOf(DocumentHelper.getKon(intyg)).getNumberRepresentation();
-        int alder = DocumentHelper.getAge(intyg);
+        int kon = Kon.valueOf(patientData.getKon()).getNumberRepresentation();
+        int alder = patientData.getAlder();
 
         final boolean enkeltIntyg = DocumentHelper.isEnkeltIntyg(intyg, version);
 

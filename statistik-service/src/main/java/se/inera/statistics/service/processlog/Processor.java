@@ -40,34 +40,25 @@ public class Processor {
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
 
-    private int processedCounter;
-
     public void accept(JsonNode utlatande, JsonNode hsa, long logId, String correlationId, EventType type) {
-        ObjectNode preparedDoc = DocumentHelper.prepare(utlatande);
-
         final String enhetId = DocumentHelper.getEnhetId(utlatande, DocumentHelper.getIntygVersion(utlatande));
-        vardgivareManager.saveEnhet(hsa, enhetId);
+        saveEnhetAndLakare(hsa, enhetId);
 
-        lakareManager.saveLakare(hsa);
-
-        widelineManager.accept(preparedDoc, hsa, logId, correlationId, type);
-
-        processedCounter++;
+        final Patientdata patientData = DocumentHelper.getPatientData(utlatande);
+        widelineManager.accept(utlatande, patientData, hsa, logId, correlationId, type);
     }
 
     public void accept(RegisterCertificateType utlatande, JsonNode hsa, long logId, String correlationId, EventType type) {
+        final String enhetId = registerCertificateHelper.getEnhetId(utlatande);
+        saveEnhetAndLakare(hsa, enhetId);
+
         final Patientdata patientData = registerCertificateHelper.getPatientData(utlatande);
-
-        vardgivareManager.saveEnhet(hsa, registerCertificateHelper.getEnhetId(utlatande));
-
-        lakareManager.saveLakare(hsa);
-
         widelineManager.accept(utlatande, patientData, hsa, logId, correlationId, type);
-
-        processedCounter++;
     }
 
-    public int getProcessedCounter() {
-        return processedCounter;
+    private void saveEnhetAndLakare(JsonNode hsa, String enhetId) {
+        vardgivareManager.saveEnhet(hsa, enhetId);
+        lakareManager.saveLakare(hsa);
     }
+
 }
