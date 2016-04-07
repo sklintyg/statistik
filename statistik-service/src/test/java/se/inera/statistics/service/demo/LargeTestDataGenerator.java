@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
@@ -121,9 +122,9 @@ public class LargeTestDataGenerator {
                 JsonNode utlatande = permutate(builder, id, now);
                 HSAKey hsaKey = extractHSAKey(utlatande);
                 JsonNode hsaInfo = hsaService.getHSAInfo(hsaKey);
-                JsonNode document = DocumentHelper.prepare(utlatande);
+                final Patientdata patientData = DocumentHelper.getPatientData(utlatande);
                 try {
-                    for (WideLine wideLine : widelineConverter.toWideline(document, hsaInfo, count++, "" + count, EventType.CREATED)) {
+                    for (WideLine wideLine : widelineConverter.toWideline(utlatande, patientData, hsaInfo, count++, "" + count, EventType.CREATED)) {
                         factPopulator.accept(wideLine);
                         if (count > maxIntyg) {
                             break maxIntyg;

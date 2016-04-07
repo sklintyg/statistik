@@ -41,6 +41,7 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
+import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
@@ -66,8 +67,8 @@ public class PopulationTest {
 
     @Test
     public void addingIntygAddsToCorrectAisle() {
-        JsonNode document = DocumentHelper.prepare(rawDocument);
-        for (WideLine wideLine : widelineConverter.toWideline(document, JSON_NODE, 0, "0", EventType.CREATED)) {
+        final Patientdata patientData = DocumentHelper.getPatientData(rawDocument);
+        for (WideLine wideLine : widelineConverter.toWideline(rawDocument, patientData, JSON_NODE, 0, "0", EventType.CREATED)) {
             factPopulator.accept(wideLine);
         }
         warehouse.complete(LocalDateTime.now());

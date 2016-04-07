@@ -28,6 +28,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.helper.JSONParser;
+import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.WidelineManager;
 
@@ -63,13 +64,14 @@ public class ProcessorTest {
     public void processorCallsListener() {
         ArgumentCaptor<JsonNode> utlatandeCaptor = ArgumentCaptor.forClass(JsonNode.class);
         ArgumentCaptor<JsonNode> hsaCaptor = ArgumentCaptor.forClass(JsonNode.class);
-        Mockito.doNothing().when(widelineManager).accept(utlatandeCaptor.capture(), hsaCaptor.capture(), anyLong(), anyString(), any(EventType.class));
+        ArgumentCaptor<Patientdata> patientdataCaptor = ArgumentCaptor.forClass(Patientdata.class);
+        Mockito.doNothing().when(widelineManager).accept(utlatandeCaptor.capture(), patientdataCaptor.capture(), hsaCaptor.capture(), anyLong(), anyString(), any(EventType.class));
         Mockito.doNothing().when(vardgivareManager).saveEnhet(any(JsonNode.class), any(String.class));
 
         processor.accept(utlatande, null, 1L, "1", EventType.CREATED);
 
-        assertEquals("35", utlatandeCaptor.getValue().path("patient").path("alder").asText());
-        assertEquals(Kon.Male.toString(), utlatandeCaptor.getValue().path("patient").path("kon").asText());
+        assertEquals(35, patientdataCaptor.getValue().getAlder());
+        assertEquals(Kon.Male.toString(), patientdataCaptor.getValue().getKon());
     }
 
 }

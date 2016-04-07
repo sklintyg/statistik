@@ -46,18 +46,18 @@ public class DocumentHelperTest {
 
     @Test
     public void prepareOld() {
-        final JsonNode prepare = DocumentHelper.prepare(documentOldFormat);
+        final Patientdata patientData = DocumentHelper.getPatientData(documentOldFormat);
 
-        assertEquals(35, prepare.path("patient").path("alder").asInt());
-        assertEquals("Male", prepare.path("patient").path("kon").textValue());
+        assertEquals(35, patientData.getAlder());
+        assertEquals("Male", patientData.getKon());
     }
 
     @Test
     public void prepareVersion2() {
-        final JsonNode prepare = DocumentHelper.prepare(documentVersion2);
+        final Patientdata patientData = DocumentHelper.getPatientData(documentVersion2);
 
-        assertEquals(98, prepare.path("patient").path("alder").asInt());
-        assertEquals("Male", prepare.path("patient").path("kon").textValue());
+        assertEquals(98, patientData.getAlder());
+        assertEquals("Male", patientData.getKon());
     }
 
     @Test
@@ -106,14 +106,14 @@ public class DocumentHelperTest {
 
     @Test
     public void getAgeOld() {
-        final int age = DocumentHelper.getAge(DocumentHelper.prepare(documentOldFormat));
+        final int age = DocumentHelper.getPatientData(documentOldFormat).getAlder();
 
         assertEquals(35, age);
     }
 
     @Test
     public void getAgeVersion2() {
-        final int age = DocumentHelper.getAge(DocumentHelper.prepare(documentVersion2));
+        final int age = DocumentHelper.getPatientData(documentVersion2).getAlder();
 
         assertEquals(98, age);
     }
