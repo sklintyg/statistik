@@ -80,6 +80,8 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
         chartOptions.title = {
             verticalAlign: 'middle',
             floating: true,
+            align: 'center',
+            y: 15,
             text: alteration,
             style: {
                 fontFamily: 'Helvetica, Arial, sans-serif',

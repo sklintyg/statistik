@@ -63,9 +63,11 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             chartOptions.chart.height = 210;
             chartOptions.chart.marginTop = 20;
             chartOptions.chart.plotBorderWidth = 0;
-            chartOptions.subtitle.text = null;
+            chartOptions.subtitle = null;
             chartOptions.title = {
                 verticalAlign: 'middle',
+                align: 'center',
+                y: 15,
                 floating: true,
                 text: alteration + ' %',
                 style: {
