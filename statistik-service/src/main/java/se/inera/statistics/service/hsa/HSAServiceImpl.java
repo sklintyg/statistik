@@ -18,15 +18,14 @@
  */
 package se.inera.statistics.service.hsa;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.List;
+
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import se.inera.ifv.hsawsresponder.v3.GeoCoord;
 import se.inera.ifv.hsawsresponder.v3.GeoCoordEnum;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
@@ -40,9 +39,9 @@ import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.CareTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.Managements;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Component
 public class HSAServiceImpl implements HSAService {
@@ -55,67 +54,64 @@ public class HSAServiceImpl implements HSAService {
     private HsaWebService service;
 
     @Override
-    public ObjectNode getHSAInfo(HSAKey key) {
+    public HsaInfo getHSAInfo(HSAKey key) {
         return getHSAInfo(key, null);
     }
 
     @Override
-    public ObjectNode getHSAInfo(HSAKey key, JsonNode baseHsaInfo) {
+    public HsaInfo getHSAInfo(HSAKey key, HsaInfo baseHsaInfo) {
         try {
-            Builder root = new Builder();
+            HsaInfo nonNullBase = baseHsaInfo != null ? baseHsaInfo : new HsaInfo(null, null, null, null);
 
-            if (baseHsaInfo != null) {
-                Iterator<Map.Entry<String, JsonNode>> fields = baseHsaInfo.fields();
-                while (fields.hasNext()) {
-                    Map.Entry<String, JsonNode> next = fields.next();
-                    root.root.replace(next.getKey(), next.getValue());
-                }
-            }
+            HsaInfoEnhet enhet = nonNullBase.getEnhet();
+            HsaInfoEnhet huvudenhet = nonNullBase.getHuvudenhet();
 
-            if (!root.has(HSA_INFO_ENHET)
-                    || (!root.root.get(HSA_INFO_ENHET).has("vgid") && !root.has(HSA_INFO_HUVUDENHET))
-                    || (!root.root.get(HSA_INFO_ENHET).has("vgid") && root.has(HSA_INFO_HUVUDENHET) && !root.root.get(HSA_INFO_HUVUDENHET).has("vgid"))
+            if (enhet == null
+                    || (enhet.getVgid() == null && huvudenhet == null)
+                    || (enhet.getVgid() == null && huvudenhet != null && huvudenhet.getVgid() == null)
                     ) {
                 GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId().getId());
                 if (unit != null) {
                     //huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det kopplad/underliggande enhet
-                    root.put(HSA_INFO_ENHET, createUnit(unit.getStatisticsUnit()));
-                    root.put(HSA_INFO_HUVUDENHET, createUnit(unit.getStatisticsCareUnit()));
+                    enhet = createUnit(unit.getStatisticsUnit());
+                    huvudenhet = createUnit(unit.getStatisticsCareUnit());
                 }
             }
 
-            if (!root.has(HSA_INFO_VARDGIVARE)) {
-                final HsaIdVardgivare vgId = getVardgivareHsaId(root, HSA_INFO_ENHET, HSA_INFO_HUVUDENHET);
+            HsaInfoVg vardgivare = nonNullBase.getVardgivare();
+
+            if (vardgivare == null) {
+                final HsaIdVardgivare vgId = getVardgivareHsaId(enhet, huvudenhet);
                 if (vgId == null || !vgId.equals(key.getVardgivareId())) {
                     LOG.info("VardgivarId mismatch found for enhet: {}. Was {} in HSA but expected {} from intyg", key.getEnhetId(), key.getVardgivareId(), vgId);
                 }
                 if (vgId != null && !vgId.isEmpty()) {
                     GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(vgId.getId());
-                    root.put(HSA_INFO_VARDGIVARE, createCareGiver(caregiver));
+                    vardgivare = createCareGiver(caregiver);
                 }
             }
 
-            if (!root.has(HSA_INFO_PERSONAL)) {
-                GetStatisticsPersonResponseType personal = getStatisticsPerson(key.getLakareId().getId());
+            HsaInfoPersonal personal = nonNullBase.getPersonal();
+
+            if (personal == null) {
+                GetStatisticsPersonResponseType personalType = getStatisticsPerson(key.getLakareId().getId());
                 GetStatisticsNamesResponseType names = getStatisticsNames(key.getLakareId().getId());
-                root.put(HSA_INFO_PERSONAL, createPersonal(personal, names));
+                personal = createPersonal(personalType, names);
             }
 
-            return root.root;
+            return new HsaInfo(enhet, huvudenhet, vardgivare, personal);
         } catch (RuntimeException e) {
             LOG.error("Unexpected error fetching HSA data", e);
             return null;
         }
     }
 
-    private HsaIdVardgivare getVardgivareHsaId(Builder root, String... enhetNodeNames) {
-        for (String enhetNodeName : enhetNodeNames) {
-            if (root.has(enhetNodeName)) {
-                JsonNode enhetJsonNode = root.root.get(enhetNodeName);
-                if (enhetJsonNode.has("vgid")) {
-                    return new HsaIdVardgivare(enhetJsonNode.get("vgid").textValue());
-                }
-            }
+    private HsaIdVardgivare getVardgivareHsaId(HsaInfoEnhet enhet, HsaInfoEnhet huvudenhet) {
+        if (enhet != null && enhet.getVgid() != null) {
+            return new HsaIdVardgivare(enhet.getVgid());
+        }
+        if (huvudenhet != null && huvudenhet.getVgid() != null) {
+            return new HsaIdVardgivare(huvudenhet.getVgid());
         }
         return null;
     }
@@ -152,23 +148,25 @@ public class HSAServiceImpl implements HSAService {
         return unit;
     }
 
-    private Builder createPersonal(GetStatisticsPersonResponseType personal, GetStatisticsNamesResponseType names) {
+    private HsaInfoPersonal createPersonal(GetStatisticsPersonResponseType personal, GetStatisticsNamesResponseType names) {
         if (personal == null) {
             return null;
         }
-        Builder root = new Builder();
-        root.put("id", personal.getHsaIdentity());
-        root.put("kon", personal.getGender());
-        root.put("alder", personal.getAge());
-        root.put("befattning", personal.getPaTitleCodes() != null ? personal.getPaTitleCodes().getPaTitleCode() : null);
-        root.put("specialitet", personal.getSpecialityCodes() != null ? personal.getSpecialityCodes().getSpecialityCode() : null);
-        root.put("yrkesgrupp", personal.getHsaTitles() != null ? personal.getHsaTitles().getHsaTitle() : null);
+        final String id = personal.getHsaIdentity();
+        final String gender = personal.getGender();
+        final String age = personal.getAge();
+        final List<String> befattning = personal.getPaTitleCodes() != null ? personal.getPaTitleCodes().getPaTitleCode() : null;
+        final List<String> specialitet = personal.getSpecialityCodes() != null ? personal.getSpecialityCodes().getSpecialityCode() : null;
+        final List<String> yrkesgrupp = personal.getHsaTitles() != null ? personal.getHsaTitles().getHsaTitle() : null;
 
-        final boolean isProtectedPerson = personal.isIsProtectedPerson() == null ? false : personal.isIsProtectedPerson();
-        root.put("skyddad", isProtectedPerson);
-        root.put("tilltalsnamn", getFornamn(names, isProtectedPerson));
-        root.put("efternamn", getMellanOchEfternamn(names, isProtectedPerson));
-        return root;
+        final Boolean isProtectedPerson = personal.isIsProtectedPerson();
+        final String fornamn = getFornamn(names, nullSafe(isProtectedPerson));
+        final String efternamn = getMellanOchEfternamn(names, nullSafe(isProtectedPerson));
+        return new HsaInfoPersonal(id, gender, age, befattning, specialitet, yrkesgrupp, isProtectedPerson, fornamn, efternamn);
+    }
+
+    private boolean nullSafe(Boolean boolObj) {
+        return boolObj == null ? false : boolObj;
     }
 
     private String getFornamn(GetStatisticsNamesResponseType names, boolean isProtected) {
@@ -191,36 +189,34 @@ public class HSAServiceImpl implements HSAService {
         return names.getStatisticsNameInfos().getStatisticsNameInfo().get(0).getPersonMiddleAndSurName();
     }
 
-    private Builder createCareGiver(GetStatisticsCareGiverResponseType caregiver) {
+    private HsaInfoVg createCareGiver(GetStatisticsCareGiverResponseType caregiver) {
         if (caregiver == null) {
             return null;
         }
-        Builder root = new Builder();
-        root.put("id", caregiver.getHsaIdentity());
-        root.put("orgnr", caregiver.getCareGiverOrgNo());
-        root.put("startdatum", caregiver.getStartDate());
-        root.put("slutdatum", caregiver.getEndDate());
-        root.put("arkiverad", caregiver.isIsArchived());
-        return root;
+        final String hsaIdentity = caregiver.getHsaIdentity();
+        final String careGiverOrgNo = caregiver.getCareGiverOrgNo();
+        final LocalDateTime startDate = caregiver.getStartDate();
+        final LocalDateTime endDate = caregiver.getEndDate();
+        final Boolean isArchived = caregiver.isIsArchived();
+        return new HsaInfoVg(hsaIdentity, careGiverOrgNo, startDate, endDate, isArchived);
     }
 
-    private Builder createUnit(StatisticsHsaUnit unit) {
+    private HsaInfoEnhet createUnit(StatisticsHsaUnit unit) {
         if (unit == null) {
             return null;
         }
-        Builder root = new Builder();
 
-        root.put("id", unit.getHsaIdentity());
-        root.put(ENHETS_TYP, createEnhetsTyp(unit.getBusinessTypes()));
-        root.put("agarform", createAgarTyp(unit.getManagements()));
-        root.put("startdatum", unit.getStartDate());
-        root.put("slutdatum", unit.getEndDate());
-        root.put("arkiverad", unit.isIsArchived());
-        root.put("verksamhet", createVerksamhet(unit.getBusinessClassificationCodes()));
-        root.put("vardform", createVardform(unit.getCareTypes()));
-        root.put("geografi", createGeografiskIndelning(unit));
-        root.put("vgid", unit.getCareGiverHsaIdentity());
-        return root;
+        final String hsaIdentity = unit.getHsaIdentity();
+        final List<String> enhetsTyp = createEnhetsTyp(unit.getBusinessTypes());
+        final List<String> agarTyp = createAgarTyp(unit.getManagements());
+        final LocalDateTime startDate = unit.getStartDate();
+        final LocalDateTime endDate = unit.getEndDate();
+        final Boolean isArchived = unit.isIsArchived();
+        final List<String> verksamhet = createVerksamhet(unit.getBusinessClassificationCodes());
+        final List<String> vardform = createVardform(unit.getCareTypes());
+        final HsaInfoEnhetGeo geografiskIndelning = createGeografiskIndelning(unit);
+        final String careGiverHsaIdentity = unit.getCareGiverHsaIdentity();
+        return new HsaInfoEnhet(hsaIdentity, enhetsTyp, agarTyp, startDate, endDate, isArchived, verksamhet, vardform, geografiskIndelning, careGiverHsaIdentity);
     }
 
     private List<String> createVardform(CareTypes careTypes) {
@@ -239,31 +235,30 @@ public class HSAServiceImpl implements HSAService {
         return businessTypes != null ? businessTypes.getBusinessType() : null;
     }
 
-    private Builder createGeografiskIndelning(StatisticsHsaUnit unit) {
-        Builder root = new Builder();
-        root.put("koordinat", createCoordinate(unit));
-        root.put("plats", unit.getLocation());
-        root.put("kommundelskod", unit.getMunicipalitySectionCode());
-        root.put("kommundelsnamn", unit.getMunicipalitySectionName());
-        root.put("kommun", unit.getMunicipalityCode());
-        root.put("lan", unit.getCountyCode());
-        return root;
+    private HsaInfoEnhetGeo createGeografiskIndelning(StatisticsHsaUnit unit) {
+        final HsaInfoCoordinate coordinate = createCoordinate(unit);
+        final String location = unit.getLocation();
+        final String municipalitySectionCode = unit.getMunicipalitySectionCode();
+        final String municipalitySectionName = unit.getMunicipalitySectionName();
+        final String municipalityCode = unit.getMunicipalityCode();
+        final String countyCode = unit.getCountyCode();
+        final HsaInfoEnhetGeo hsaInfoEnhetGeo = new HsaInfoEnhetGeo(coordinate, location, municipalitySectionCode, municipalitySectionName, municipalityCode, countyCode);
+        return hsaInfoEnhetGeo.isEmpty() ? null : hsaInfoEnhetGeo;
     }
 
 
-    private Builder createCoordinate(StatisticsHsaUnit unit) {
+    private HsaInfoCoordinate createCoordinate(StatisticsHsaUnit unit) {
         return createCoordinates(unit.getGeographicalCoordinatesRt90());
     }
 
-    private Builder createCoordinates(GeoCoord coordinate) {
+    private HsaInfoCoordinate createCoordinates(GeoCoord coordinate) {
         if (coordinate == null || coordinate.getType() != GeoCoordEnum.RT_90) {
             return null;
         }
-        Builder root = new Builder();
-        root.put("typ", coordinate.getType().toString());
-        root.put("x", coordinate.getX());
-        root.put("y", coordinate.getY());
-        return root;
+        final String typ = coordinate.getType().toString();
+        final String x = coordinate.getX();
+        final String y = coordinate.getY();
+        return new HsaInfoCoordinate(typ, x, y);
     }
 
     private class Builder {
@@ -308,4 +303,5 @@ public class HSAServiceImpl implements HSAService {
         }
 
     }
+
 }

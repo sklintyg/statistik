@@ -18,18 +18,40 @@
  */
 package se.inera.statistics.service.hsa;
 
-public interface HSAService {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-    String ENHETS_TYP = "enhetsTyp";
+public class HsaInfoCoordinate {
 
-    /**
-     * Get HSA info using fields from baseHsaInfo when available.
-     */
-    HsaInfo getHSAInfo(HSAKey key, HsaInfo baseHsaInfo);
+    @JsonProperty("typ") private String typ;
+    @JsonProperty("x") private String x;
+    @JsonProperty("y") private String y;
 
-    /**
-     * Get full HSA info.
-     */
-    HsaInfo getHSAInfo(HSAKey key);
+    //Default constructor required by json mapper
+    private HsaInfoCoordinate() {
+    }
+
+    public HsaInfoCoordinate(String typ, String x, String y) {
+        this.typ = typ;
+        this.x = x;
+        this.y = y;
+    }
+
+    public String getTyp() {
+        return typ;
+    }
+
+    public String getX() {
+        return x;
+    }
+
+    public String getY() {
+        return y;
+    }
+
+    @JsonIgnore
+    public boolean isEmpty() {
+        return typ == null && x == null && y == null;
+    }
 
 }

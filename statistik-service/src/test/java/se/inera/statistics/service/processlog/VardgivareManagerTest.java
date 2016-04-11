@@ -26,9 +26,11 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
+import se.inera.statistics.service.hsa.HsaInfo;
 
 import java.util.List;
 
@@ -52,9 +54,9 @@ public class VardgivareManagerTest {
     public void saveOneEnhet() {
         HSAKey key = new HSAKey("vg", "enhet", "lakare");
         hsaDataInjectable.setHsaKey(key);
-        JsonNode hsaInfo = hsaService.getHSAInfo(key);
+        HsaInfo hsaInfo = hsaService.getHSAInfo(key);
 
-        vardgivareManager.saveEnhet(hsaInfo, null);
+        vardgivareManager.saveEnhet(HSADecorator.toJsonNode(hsaInfo), null);
 
         List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
         assertEquals(1, allEnhets.size());
@@ -66,8 +68,8 @@ public class VardgivareManagerTest {
 
     @Test
     public void getEnhetsForNonExistingVardgivare() {
-        JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
-        vardgivareManager.saveEnhet(hsaInfo, null);
+        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
+        vardgivareManager.saveEnhet(HSADecorator.toJsonNode(hsaInfo), null);
 
         List<Enhet> enhets = vardgivareManager.getEnhets("jag finns inte");
 
@@ -80,12 +82,12 @@ public class VardgivareManagerTest {
     public void getEnhetsForExistingVardgivare() {
         HSAKey key = new HSAKey("vg", "enhet", "lakare");
         hsaDataInjectable.setHsaKey(key);
-        JsonNode hsaInfo = hsaService.getHSAInfo(key);
-        vardgivareManager.saveEnhet(hsaInfo, null);
+        HsaInfo hsaInfo = hsaService.getHSAInfo(key);
+        vardgivareManager.saveEnhet(HSADecorator.toJsonNode(hsaInfo), null);
         HSAKey key1 = new HSAKey("other-vg", "other-enhet", "lakare");
         hsaDataInjectable.setHsaKey(key1);
         hsaInfo = hsaService.getHSAInfo(key1);
-        vardgivareManager.saveEnhet(hsaInfo, null);
+        vardgivareManager.saveEnhet(HSADecorator.toJsonNode(hsaInfo), null);
 
         List<Enhet> enhets = vardgivareManager.getEnhets("VG");
 
@@ -102,12 +104,12 @@ public class VardgivareManagerTest {
     public void getVardgivareWithOneVardgivareTwoEnhets() {
         HSAKey key = new HSAKey("vg", "enhet1", "lakare");
         hsaDataInjectable.setHsaKey(key);
-        JsonNode hsaInfo = hsaService.getHSAInfo(key);
-        vardgivareManager.saveEnhet(hsaInfo, null);
+        HsaInfo hsaInfo = hsaService.getHSAInfo(key);
+        vardgivareManager.saveEnhet(HSADecorator.toJsonNode(hsaInfo), null);
         HSAKey key1 = new HSAKey("vg", "enhet2", "lakare");
         hsaDataInjectable.setHsaKey(key1);
         hsaInfo = hsaService.getHSAInfo(key1);
-        vardgivareManager.saveEnhet(hsaInfo, null);
+        vardgivareManager.saveEnhet(HSADecorator.toJsonNode(hsaInfo), null);
 
         List<Vardgivare> allVardgivares = vardgivareManager.getAllVardgivares();
 
@@ -119,4 +121,5 @@ public class VardgivareManagerTest {
         //Default name until set by script will be the hsa id.
         assertEquals("VG", allVardgivares.get(0).getNamn());
     }
+
 }

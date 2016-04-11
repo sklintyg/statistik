@@ -22,9 +22,13 @@ import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
 import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
 import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
 
+import java.io.IOException;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +40,9 @@ import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class HSADecorator {
@@ -54,28 +59,54 @@ public class HSADecorator {
 
     @Transactional
     public JsonNode decorate(JsonNode doc, String documentId) {
-        final JsonNode info = getHSAInfo(documentId);
+        final HsaInfo info = getHSAInfo(documentId);
         if (missingData(info)) {
             HSAKey key = extractHSAKey(doc);
-            return getAndUpdateHsaJson(documentId, info, key);
+            return toJsonNode(getAndUpdateHsaJson(documentId, info, key));
         }
-        return info;
+        return toJsonNode(info);
     }
 
     @Transactional
     public JsonNode populateHsaData(RegisterCertificateType doc, String documentId) {
-        final JsonNode info = getHSAInfo(documentId);
+        final HsaInfo info = getHSAInfo(documentId);
         if (missingData(info)) {
             HSAKey key = extractHSAKey(doc);
-            return getAndUpdateHsaJson(documentId, info, key);
+            return toJsonNode(getAndUpdateHsaJson(documentId, info, key));
         }
-        return info;
+        return toJsonNode(info);
     }
 
-    private JsonNode getAndUpdateHsaJson(String documentId, JsonNode info, HSAKey key) {
+    /**
+     * Temporary method to be used in the first step of removing HSA JsonNodes from the java code.
+     */
+    public static JsonNode toJsonNode(Object data) {
+        ObjectMapper mapper = getHsaInfoMapper();
+        final String infoJson;
+        try {
+            infoJson = mapper.writeValueAsString(data);
+            return JSONParser.parse(infoJson);
+        } catch (JsonProcessingException e) {
+            LOG.error("Failed to convert Object to json");
+            return null;
+        }
+    }
+
+    private static ObjectMapper getHsaInfoMapper() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        mapper.setVisibilityChecker(mapper.getSerializationConfig().getDefaultVisibilityChecker()
+                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withCreatorVisibility(JsonAutoDetect.Visibility.ANY));
+        return mapper;
+    }
+
+    private HsaInfo getAndUpdateHsaJson(String documentId, HsaInfo info, HSAKey key) {
         LOG.debug(key.toString());
         LOG.info("Fetching HSA data for " + documentId);
-        final ObjectNode updatedHsaInfo = service.getHSAInfo(key, info);
+        final HsaInfo updatedHsaInfo = service.getHSAInfo(key, info);
         try {
             storeHSAInfo(documentId, updatedHsaInfo);
         } catch (javax.persistence.PersistenceException e) {
@@ -85,24 +116,33 @@ public class HSADecorator {
         return updatedHsaInfo;
     }
 
-    private boolean missingData(JsonNode info) {
-        return info == null || !(info.has(HSAService.HSA_INFO_ENHET)
-                && info.has(HSAService.HSA_INFO_HUVUDENHET)
-                && info.has(HSAService.HSA_INFO_PERSONAL)
-                && info.has(HSAService.HSA_INFO_VARDGIVARE));
+    private boolean missingData(HsaInfo info) {
+        return info == null || !info.hasEnhet() || !info.hasHuvudenhet() || !info.hasPersonal() || !info.hasVardgivare();
     }
 
-    protected void storeHSAInfo(String documentId, JsonNode info) {
+    protected void storeHSAInfo(String documentId, HsaInfo info) {
         if (info != null) {
-            HSAStore entity = new HSAStore(documentId, info.toString());
-            manager.merge(entity);
+            ObjectMapper mapper = getHsaInfoMapper();
+            try {
+                final String infoJson = mapper.writeValueAsString(info);
+                HSAStore entity = new HSAStore(documentId, infoJson);
+                manager.merge(entity);
+            } catch (JsonProcessingException e) {
+                LOG.error("Failed to convert HSA object to json. HSA info has not been stored");
+            }
         }
     }
 
-    public JsonNode getHSAInfo(String documentId) {
+    public HsaInfo getHSAInfo(String documentId) {
         HSAStore hsaStore = manager.find(HSAStore.class, documentId);
         if (hsaStore != null) {
-            return JSONParser.parse(hsaStore.getData());
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                return mapper.readValue(hsaStore.getData(), HsaInfo.class);
+            } catch (IOException e) {
+                LOG.error("Failed to parse HSA info json");
+                return null;
+            }
         } else {
             return null;
         }

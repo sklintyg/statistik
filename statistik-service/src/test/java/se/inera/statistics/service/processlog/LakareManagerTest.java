@@ -28,8 +28,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
+import se.inera.statistics.service.hsa.HsaInfo;
 
 import java.util.List;
 
@@ -48,9 +50,9 @@ public class LakareManagerTest {
 
     @Test
     public void saveOneLakare() {
-        JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
+        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
 
-        lakareManager.saveLakare(hsaInfo);
+        lakareManager.saveLakare(HSADecorator.toJsonNode(hsaInfo));
 
         List<Lakare> allLakares = lakareManager.getAllLakares();
         assertEquals(1, allLakares.size());
@@ -61,10 +63,10 @@ public class LakareManagerTest {
 
     @Test
     public void saveOneLakareWithoutVGFailsWithoutError() {
-        ObjectNode hsaInfo = hsaService.getHSAInfo(new HSAKey(null, "enhet", "lakare"));
-        hsaInfo.remove(HSAService.HSA_INFO_VARDGIVARE);
+        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey(null, "enhet", "lakare"));
+        hsaInfo = new HsaInfo(hsaInfo.getEnhet(), hsaInfo.getHuvudenhet(), null, hsaInfo.getPersonal());
 
-        lakareManager.saveLakare(hsaInfo);
+        lakareManager.saveLakare(HSADecorator.toJsonNode(hsaInfo));
 
         List<Lakare> allLakares = lakareManager.getAllLakares();
         assertEquals(0, allLakares.size());
@@ -72,10 +74,10 @@ public class LakareManagerTest {
 
     @Test
     public void getAllLakares() {
-        JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare1"));
-        lakareManager.saveLakare(hsaInfo);
+        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare1"));
+        lakareManager.saveLakare(HSADecorator.toJsonNode(hsaInfo));
         hsaInfo = hsaService.getHSAInfo(new HSAKey("other-vg", "other-enhet", "lakare2"));
-        lakareManager.saveLakare(hsaInfo);
+        lakareManager.saveLakare(HSADecorator.toJsonNode(hsaInfo));
 
         List<Lakare> allLakares = lakareManager.getAllLakares();
         assertEquals(2, allLakares.size());
