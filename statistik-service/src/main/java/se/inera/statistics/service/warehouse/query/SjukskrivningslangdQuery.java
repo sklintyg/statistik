@@ -120,10 +120,10 @@ public final class SjukskrivningslangdQuery {
     }
 
     public static SimpleKonResponse<SimpleKonDataRow> getEnklaSjukfallTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
-        final Function<Sjukfall, Integer> toCount = new Function<Sjukfall, Integer>() {
+        final CounterFunction<Integer> toCount = new CounterFunction<Integer>() {
             @Override
-            public Integer apply(Sjukfall sjukfall) {
-                return getEnkelSjukfallGroup(sjukfall);
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
+                counter.add(getEnkelSjukfallGroup(sjukfall));
             }
         };
         SimpleKonResponse<SimpleKonDataRow> response = sjukfallUtil.calculateSimpleKonResponseUsingOriginalSjukfallStart(aisle, filter, from, periods, periodLength, toCount, ENKLA_SJUKFALL_IDS);

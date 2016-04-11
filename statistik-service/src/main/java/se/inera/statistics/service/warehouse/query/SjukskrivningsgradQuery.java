@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import com.google.common.base.Function;
 import com.google.common.collect.HashMultiset;
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.KonDataResponse;
@@ -88,10 +87,10 @@ public final class SjukskrivningsgradQuery {
     }
 
     public static SimpleKonResponse<SimpleKonDataRow> getSjukskrivningsgradTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
-        final Function<Sjukfall, Integer> toCount = new Function<Sjukfall, Integer>() {
+        final CounterFunction<Integer> toCount = new CounterFunction<Integer>() {
             @Override
-            public Integer apply(Sjukfall sjukfall) {
-                return sjukfall.getSjukskrivningsgrad();
+            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
+                counter.addAll(sjukfall.getSjukskrivningsgrader());
             }
         };
         return sjukfallUtil.calculateSimpleKonResponse(aisle, filter, from, periods, periodLength, toCount, GRAD);

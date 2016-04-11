@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
 
-IGNORERAT. Väntar på INTYG-2005.
-
 !3 Givet att:
 
 Ett sjukfall består av två intyg. De två intygen har olika vårdenhet, diagnos, sjukskrivningsgrad och läkare. 
@@ -29,9 +27,9 @@ Inloggad:
 | user2        | enhet2    | 1       | 0    | 1       |
 
 | Sjukfall i rapporten diagnosgrupp som tvarsnitt |
-| inloggad som | grupp                              | män? | kvinnor? |
-| user2        | F00-F99 Psykiska sjukdomar         | 0    | 1       |
-| user2        | M00-M99 Muskuloskeletala sjukdomar | 0    | 1       |
+| inloggad som | grupp                                                          | män? | kvinnor? |
+| user2        | F00-F99 Psykiska sjukdomar                                     | 0    | 1       |
+| user2        | M00-M99 Sjukdomar i muskuloskeletala systemet och bindväven    | 0    | 1       |
 
 | Sjukfall i rapporten enskilt diagnoskapitel som tvarsnitt |
 | inloggad som | valt diagnoskapitel | grupp   | män? | kvinnor? |
