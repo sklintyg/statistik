@@ -1,6 +1,17 @@
 {
-    "id" : "enhet3",
-    "namn" : "Enhet enhet3",
-    "vardgivarId" : "vg3",
-    "vardgivarNamn" : "Fitnessetestvårdgivare3"
+    "@class": "se.inera.intyg.common.integration.hsa.model.Vardgivare",
+    "id": "vg3",
+    "namn": "Fitnessetestvårdgivare3",
+    "vardenheter": [
+        {
+            "@class": "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+            "id" : "enhet3",
+            "namn" : "Enhet enhet3"
+        },
+        {
+            "@class": "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+            "id" : "enhet4",
+            "namn" : "Enhet enhet4"
+        }
+    ]
 }

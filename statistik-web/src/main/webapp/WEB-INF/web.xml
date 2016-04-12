@@ -51,10 +51,25 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+  <!-- Integration services (used for new HSA stubs under /services) -->
+  <servlet>
+    <servlet-name>services</servlet-name>
+    <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+    <init-param>
+      <param-name>config-location</param-name>
+      <param-value>/WEB-INF/services-cxf-servlet.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
     <servlet-mapping>
         <servlet-name>cxf</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>services</servlet-name>
+    <url-pattern>/services/*</url-pattern>
+  </servlet-mapping>
 
     <!-- Listener for external logback configuration file -->
     <listener>

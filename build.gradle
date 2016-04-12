@@ -44,6 +44,9 @@ subprojects {
     ext.liquibaseVersion = "2.0.5"
     ext.jaxb2Version = "0.9.5"
 
+    // Internal
+    ext.intygCommonVersion = "2.5.+"
+
     test {
         exclude '**/*FunctionalTest.*'
         reports.html.destination = file("$reports.html.destination/unit")

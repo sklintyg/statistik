@@ -1,4 +1,6 @@
 {
   "hsaId": "user1",
-  "enhetIds": ["enhet1"]
+  "uppdrag": [
+    {"andamal":["STATISTIK"], "enhet":"enhet1"}
+  ]
 }

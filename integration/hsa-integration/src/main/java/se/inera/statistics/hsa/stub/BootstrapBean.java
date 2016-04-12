@@ -18,21 +18,18 @@
  */
 package se.inera.statistics.hsa.stub;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-
 import se.inera.statistics.hsa.model.Vardenhet;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class BootstrapBean {
     private static final Logger LOG = LoggerFactory.getLogger(BootstrapBean.class);
@@ -47,13 +44,13 @@ public class BootstrapBean {
     public void bootstrapVardgivare() throws IOException {
 
         LOG.debug("Bootstrapping vardgivare for HSA stub ...");
-        List<Resource> files = getResourceListing("bootstrap-vardgivare/*.json");
+        List<Resource> files = getResourceListing("bootstrap-ws-vardgivare/*.json");
         for (Resource res : files) {
             addVardgivare(res);
         }
 
         LOG.debug("Bootstrapping medarbetare for HSA stub ...");
-        files = getResourceListing("bootstrap-medarbetaruppdrag/*.json");
+        files = getResourceListing("bootstrap-ws-medarbetaruppdrag/*.json");
         for (Resource res : files) {
             addMedarbetaruppdrag(res);
         }

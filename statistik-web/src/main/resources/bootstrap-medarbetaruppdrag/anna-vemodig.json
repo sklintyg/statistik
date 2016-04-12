@@ -1,4 +1,6 @@
 {
   "hsaId": "HSA-AM2",
-  "enhetIds": ["SE162321000255-O11635"]
+  "uppdrag": [
+    {"andamal":["STATISTIK"], "enhet":"SE162321000255-O11635"}
+  ]
 }

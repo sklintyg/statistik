@@ -64,4 +64,20 @@ public class Vardenhet implements Serializable {
     public String toString() {
         return "Vardenhet " + id + " " + namn + " " + vardgivarId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Vardenhet)) return false;
+
+        Vardenhet vardenhet = (Vardenhet) o;
+
+        return id.equals(vardenhet.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

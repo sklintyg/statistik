@@ -1,17 +1,17 @@
 {
     "@class": "se.inera.intyg.common.integration.hsa.model.Vardgivare",
-    "id": "vg-verksamhet1",
-    "namn": "Småregionen",
+    "id": "SE2321000131-E000000000001",
+    "namn": "Storregionen",
     "vardenheter": [
         {
             "@class": "se.inera.intyg.common.integration.hsa.model.Vardenhet",
-            "id": "verksamhet1",
-            "namn": "Närhälsan i Småmåla"
+            "id": "SE2321000131-E000000000431",
+            "namn": "SE2321000131-E000000000431"
         },
         {
             "@class": "se.inera.intyg.common.integration.hsa.model.Vardenhet",
-            "id": "verksamhet2",
-            "namn": "Småmålas akutmottagning"
+            "id" : "SE2321000131-E000000004004",
+            "namn" : "SE2321000131-E000000004004"
         }
     ]
 }

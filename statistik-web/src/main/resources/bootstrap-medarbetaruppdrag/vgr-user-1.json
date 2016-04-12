@@ -1,4 +1,6 @@
 {
   "hsaId": "vgr-user-1",
-  "enhetIds": ["SE2321000131-E000000000740"]
+  "uppdrag": [
+    {"andamal":["STATISTIK"], "enhet":"SE2321000131-E000000000740"}
+  ]
 }

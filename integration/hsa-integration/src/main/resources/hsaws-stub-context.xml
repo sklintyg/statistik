@@ -28,12 +28,12 @@
                             http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd"
        profile="hsa-stub">
 
-  <bean id="hsaServiceStub" class="se.inera.statistics.hsa.stub.HsaServiceStub"/>
-  <jaxws:endpoint address="/hsa" implementor="se.inera.statistics.hsa.stub.HsaWebServiceStub"/>
+  <bean id="hsaWsServiceStub" class="se.inera.statistics.hsa.stub.HsaServiceStub"/>
+  <jaxws:endpoint address="/hsaws" implementor="se.inera.statistics.hsa.stub.HsaWebServiceStub"/>
 
-  <jaxrs:server address="/hsa-api">
+  <jaxrs:server address="/hsaws-api">
     <jaxrs:serviceBeans>
-      <ref bean="hsaStubRestApi"/>
+      <ref bean="hsaWsStubRestApi"/>
     </jaxrs:serviceBeans>
     <jaxrs:providers>
       <ref bean="jacksonJsonProvider"/>
@@ -49,7 +49,7 @@
       <bean class="com.fasterxml.jackson.databind.ObjectMapper"/>
     </property>
   </bean>
-  <bean id="hsaStubRestApi" class="se.inera.statistics.hsa.stub.HsaStubRestApi"/>
+  <bean id="hsaWsStubRestApi" class="se.inera.statistics.hsa.stub.HsaStubRestApi"/>
 
   <bean class="se.inera.statistics.hsa.stub.BootstrapBean"/>
 </beans>

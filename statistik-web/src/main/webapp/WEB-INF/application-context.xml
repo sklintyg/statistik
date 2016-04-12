@@ -78,7 +78,9 @@
         <bean id="loggingService" class="se.inera.statistics.web.service.LoggingService"/>
 
         <import resource="classpath*:hsa-services-config.xml"/>
-        <import resource="classpath*:hsa-stub-context.xml"/>
+        <import resource="classpath*:hsaws-services-config.xml"/>
+      <!--  <import resource="classpath*:hsa-stub-context.xml"/>        -->
+        <import resource="classpath*:hsaws-stub-context.xml"/>
         <import resource="classpath*:icd10.xml"/>
         <import resource="application-context-cxf.xml"/>
         <import resource="application-context-security.xml"/>

@@ -22,18 +22,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonType;
-import se.inera.ifv.hsawsresponder.v3.MiuInformationType;
-import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
+import se.inera.intyg.common.integration.hsa.client.AuthorizationManagementService;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.hsa.stub.Medarbetaruppdrag;
+import se.riv.infrastructure.directory.authorizationmanagement.v1.GetCredentialsForPersonIncludingProtectedPersonResponseType;
+import se.riv.infrastructure.directory.v1.CommissionType;
+import se.riv.infrastructure.directory.v1.CredentialInformationType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author andreaskaltenbach
@@ -44,26 +45,28 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
     private static final Logger LOG = LoggerFactory.getLogger(HsaOrganizationsServiceImpl.class);
 
     @Autowired
-    private HSAWebServiceCalls client;
+    private AuthorizationManagementService authorizationManagementService;
+
 
     @Override
     public List<Vardenhet> getAuthorizedEnheterForHosPerson(HsaIdUser hosPersonHsaId) {
         List<Vardenhet> vardenhetList = new ArrayList<>();
 
-        // Set hos person hsa ID
-        GetMiuForPersonType parameters = new GetMiuForPersonType();
-        parameters.setHsaIdentity(hosPersonHsaId.getId());
-        GetMiuForPersonResponseType response = client.callMiuRights(parameters);
-        if (response != null && response.getMiuInformation() != null) {
-            LOG.debug("User with HSA-Id " + hosPersonHsaId + " has " + response.getMiuInformation().size() + " medarbetaruppdrag");
+        GetCredentialsForPersonIncludingProtectedPersonResponseType response = authorizationManagementService.getAuthorizationsForPerson(hosPersonHsaId.getId(), "", "");
 
-            for (MiuInformationType info : response.getMiuInformation()) {
-                if (Medarbetaruppdrag.STATISTIK.equalsIgnoreCase(info.getMiuPurpose())) {
-                    vardenhetList.add(new Vardenhet(new HsaIdEnhet(info.getCareUnitHsaIdentity()), info.getCareUnitName(), new HsaIdVardgivare(info.getCareGiver()), info.getCareGiverName()));
+        if (response != null && response.getCredentialInformation() != null) {
+            LOG.debug("User with HSA-Id " + hosPersonHsaId + " has " + response.getCredentialInformation().size() + " medarbetaruppdrag");
+
+            for (CredentialInformationType info : response.getCredentialInformation()) {
+                for (CommissionType commissionType : info.getCommission()) {
+                    if (Medarbetaruppdrag.STATISTIK.equalsIgnoreCase(commissionType.getCommissionPurpose())) {
+                        vardenhetList.add(new Vardenhet(new HsaIdEnhet(commissionType.getHealthCareUnitHsaId()), commissionType.getHealthCareUnitName(), new HsaIdVardgivare(commissionType.getHealthCareProviderHsaId()), commissionType.getHealthCareProviderName()));
+                    }
                 }
             }
+            vardenhetList = vardenhetList.stream().distinct().collect(Collectors.toList());
         }
-        LOG.debug("User with HSA-Id " + hosPersonHsaId + " has active 'Vård och behandling' for " + vardenhetList.size() + " enheter");
+        LOG.debug("User with HSA-Id " + hosPersonHsaId + " has active 'Statistik' for " + vardenhetList.size() + " enheter");
 
         return vardenhetList;
     }

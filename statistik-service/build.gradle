@@ -1,3 +1,4 @@
+
 description = 'Inera Statistics Service - Service Module'
 
 apply plugin: 'groovy'
@@ -37,6 +38,7 @@ dependencies {
     compile "org.liquibase:liquibase-core:${liquibaseVersion}"
     compile 'se.riv.clinicalprocess.healthcond.certificate:clinicalprocess-healthcond-certificate-schemas:2.0.RC4.2'
     compile 'se.inera.intyg.common:logging-util:2.4.0-RC1'
+    compile 'se.inera.intyg.common:hsa-integration:${intygCommonVersion}'
 
     testCompile 'org.codehaus.groovy:groovy-all:2.3.6'
     testCompile "org.apache.activemq:activemq-spring:5.8.0"
