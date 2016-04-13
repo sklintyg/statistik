@@ -29,6 +29,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.Patientdata;
+import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.WidelineManager;
 
@@ -63,10 +64,10 @@ public class ProcessorTest {
     @Test
     public void processorCallsListener() {
         ArgumentCaptor<JsonNode> utlatandeCaptor = ArgumentCaptor.forClass(JsonNode.class);
-        ArgumentCaptor<JsonNode> hsaCaptor = ArgumentCaptor.forClass(JsonNode.class);
+        ArgumentCaptor<HsaInfo> hsaCaptor = ArgumentCaptor.forClass(HsaInfo.class);
         ArgumentCaptor<Patientdata> patientdataCaptor = ArgumentCaptor.forClass(Patientdata.class);
         Mockito.doNothing().when(widelineManager).accept(utlatandeCaptor.capture(), patientdataCaptor.capture(), hsaCaptor.capture(), anyLong(), anyString(), any(EventType.class));
-        Mockito.doNothing().when(vardgivareManager).saveEnhet(any(JsonNode.class), any(String.class));
+        Mockito.doNothing().when(vardgivareManager).saveEnhet(any(HsaInfo.class), any(String.class));
 
         processor.accept(utlatande, null, 1L, "1", EventType.CREATED);
 

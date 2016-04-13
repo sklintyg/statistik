@@ -37,6 +37,7 @@ dependencies {
     compile "org.liquibase:liquibase-core:${liquibaseVersion}"
     compile 'se.riv.clinicalprocess.healthcond.certificate:clinicalprocess-healthcond-certificate-schemas:2.0.RC4.2'
     compile 'se.inera.intyg.common:logging-util:2.4.0-RC1'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-joda:2.2.3'
 
     testCompile 'org.codehaus.groovy:groovy-all:2.3.6'
     testCompile "org.apache.activemq:activemq-spring:5.8.0"

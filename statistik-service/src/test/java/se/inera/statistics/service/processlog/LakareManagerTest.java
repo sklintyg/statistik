@@ -18,8 +18,10 @@
  */
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,15 +29,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.service.hsa.HSADecorator;
+
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.hsa.HsaInfo;
-
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
@@ -52,7 +49,7 @@ public class LakareManagerTest {
     public void saveOneLakare() {
         HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
 
-        lakareManager.saveLakare(HSADecorator.toJsonNode(hsaInfo));
+        lakareManager.saveLakare(hsaInfo);
 
         List<Lakare> allLakares = lakareManager.getAllLakares();
         assertEquals(1, allLakares.size());
@@ -66,7 +63,7 @@ public class LakareManagerTest {
         HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey(null, "enhet", "lakare"));
         hsaInfo = new HsaInfo(hsaInfo.getEnhet(), hsaInfo.getHuvudenhet(), null, hsaInfo.getPersonal());
 
-        lakareManager.saveLakare(HSADecorator.toJsonNode(hsaInfo));
+        lakareManager.saveLakare(hsaInfo);
 
         List<Lakare> allLakares = lakareManager.getAllLakares();
         assertEquals(0, allLakares.size());
@@ -75,9 +72,9 @@ public class LakareManagerTest {
     @Test
     public void getAllLakares() {
         HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare1"));
-        lakareManager.saveLakare(HSADecorator.toJsonNode(hsaInfo));
+        lakareManager.saveLakare(hsaInfo);
         hsaInfo = hsaService.getHSAInfo(new HSAKey("other-vg", "other-enhet", "lakare2"));
-        lakareManager.saveLakare(HSADecorator.toJsonNode(hsaInfo));
+        lakareManager.saveLakare(hsaInfo);
 
         List<Lakare> allLakares = lakareManager.getAllLakares();
         assertEquals(2, allLakares.size());

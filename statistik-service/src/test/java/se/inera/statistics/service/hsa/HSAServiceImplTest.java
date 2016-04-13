@@ -18,29 +18,6 @@
  */
 package se.inera.statistics.service.hsa;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.joda.time.LocalDateTime;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
-import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit;
-import se.inera.ifv.hsawsresponder.v3.StatisticsNameInfo;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import java.io.InputStream;
-import java.util.Arrays;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -49,6 +26,29 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
+
+import java.io.InputStream;
+import java.util.Arrays;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
+import org.joda.time.LocalDateTime;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
+import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
+import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit;
+import se.inera.ifv.hsawsresponder.v3.StatisticsNameInfo;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HSAServiceImplTest {
@@ -117,21 +117,21 @@ public class HSAServiceImplTest {
         when(wsCalls.getStatisticsHsaUnit("ENHETID")).thenReturn(response);
 
         HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
-        JsonNode info = HSADecorator.toJsonNode(serviceImpl.getHSAInfo(key));
+        HsaInfo info = serviceImpl.getHSAInfo(key);
         assertNotNull(info);
-        assertEquals("IFV1239877878-103H", info.get("enhet").get("id").textValue());
-        assertFalse(info.get("enhet").has("geografi"));
+        assertEquals("IFV1239877878-103H", info.getEnhet().getId());
+        assertNull(info.getEnhet().getGeografi());
     }
 
     @Test
     public void wsFindsNothing() throws Exception {
         HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
-        JsonNode info = HSADecorator.toJsonNode(serviceImpl.getHSAInfo(key));
+        HsaInfo info = serviceImpl.getHSAInfo(key);
         assertNotNull(info);
-        assertFalse(info.has("enhet"));
-        assertFalse(info.has("huvudenhet"));
-        assertFalse(info.has("vardgivare"));
-        assertFalse(info.has("personal"));
+        assertFalse(info.hasEnhet());
+        assertFalse(info.hasHuvudenhet());
+        assertFalse(info.hasVardgivare());
+        assertFalse(info.hasPersonal());
     }
 
     @Test

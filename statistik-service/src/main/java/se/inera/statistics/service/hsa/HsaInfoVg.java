@@ -18,8 +18,10 @@
  */
 package se.inera.statistics.service.hsa;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.joda.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 
 public class HsaInfoVg {
 
@@ -59,6 +61,17 @@ public class HsaInfoVg {
 
     public Boolean isArkiverad() {
         return arkiverad;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("orgnr", orgnr)
+                .add("startdatum", startdatum)
+                .add("slutdatum", slutdatum)
+                .add("arkiverad", arkiverad)
+                .toString();
     }
 
 }

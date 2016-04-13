@@ -27,8 +27,7 @@ import java.io.IOException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,17 +35,24 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 @Component
 public class HSADecorator {
     private static final Logger LOG = LoggerFactory.getLogger(HSADecorator.class);
+
+    private static ObjectMapper hsaInfoMapper = getHsaInfoMapper();
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
@@ -58,38 +64,23 @@ public class HSADecorator {
     private RegisterCertificateHelper registerCertificateHelper;
 
     @Transactional
-    public JsonNode decorate(JsonNode doc, String documentId) {
+    public HsaInfo decorate(JsonNode doc, String documentId) {
         final HsaInfo info = getHSAInfo(documentId);
         if (missingData(info)) {
             HSAKey key = extractHSAKey(doc);
-            return toJsonNode(getAndUpdateHsaJson(documentId, info, key));
+            return getAndUpdateHsaJson(documentId, info, key);
         }
-        return toJsonNode(info);
+        return info;
     }
 
     @Transactional
-    public JsonNode populateHsaData(RegisterCertificateType doc, String documentId) {
+    public HsaInfo populateHsaData(RegisterCertificateType doc, String documentId) {
         final HsaInfo info = getHSAInfo(documentId);
         if (missingData(info)) {
             HSAKey key = extractHSAKey(doc);
-            return toJsonNode(getAndUpdateHsaJson(documentId, info, key));
+            return getAndUpdateHsaJson(documentId, info, key);
         }
-        return toJsonNode(info);
-    }
-
-    /**
-     * Temporary method to be used in the first step of removing HSA JsonNodes from the java code.
-     */
-    public static JsonNode toJsonNode(Object data) {
-        ObjectMapper mapper = getHsaInfoMapper();
-        final String infoJson;
-        try {
-            infoJson = mapper.writeValueAsString(data);
-            return JSONParser.parse(infoJson);
-        } catch (JsonProcessingException e) {
-            LOG.error("Failed to convert Object to json");
-            return null;
-        }
+        return info;
     }
 
     private static ObjectMapper getHsaInfoMapper() {
@@ -100,6 +91,8 @@ public class HSADecorator {
                 .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
                 .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
                 .withCreatorVisibility(JsonAutoDetect.Visibility.ANY));
+        mapper.registerModule(new JodaModule().addSerializer(LocalDateTime.class, new OurLocalDateTimeSerializer()));
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return mapper;
     }
 
@@ -122,27 +115,37 @@ public class HSADecorator {
 
     protected void storeHSAInfo(String documentId, HsaInfo info) {
         if (info != null) {
-            ObjectMapper mapper = getHsaInfoMapper();
-            try {
-                final String infoJson = mapper.writeValueAsString(info);
-                HSAStore entity = new HSAStore(documentId, infoJson);
+            String infoJson = hsaInfoToJson(info);
+            if (infoJson != null) {
+                final HSAStore entity = new HSAStore(documentId, infoJson);
                 manager.merge(entity);
-            } catch (JsonProcessingException e) {
-                LOG.error("Failed to convert HSA object to json. HSA info has not been stored");
             }
+        }
+    }
+
+    public static String hsaInfoToJson(HsaInfo info) {
+        try {
+            return hsaInfoMapper.writeValueAsString(info);
+        } catch (JsonProcessingException e) {
+            LOG.error("Failed to convert HSA object to json. HSA info has not been stored");
+            return null;
+        }
+    }
+
+    public static HsaInfo jsonToHsaInfo(String data) {
+        try {
+            return hsaInfoMapper.readValue(data, HsaInfo.class);
+        } catch (IOException e) {
+            LOG.error("Failed to parse HSA info json");
+            return null;
         }
     }
 
     public HsaInfo getHSAInfo(String documentId) {
         HSAStore hsaStore = manager.find(HSAStore.class, documentId);
         if (hsaStore != null) {
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                return mapper.readValue(hsaStore.getData(), HsaInfo.class);
-            } catch (IOException e) {
-                LOG.error("Failed to parse HSA info json");
-                return null;
-            }
+            final String data = hsaStore.getData();
+            return jsonToHsaInfo(data);
         } else {
             return null;
         }
@@ -161,6 +164,18 @@ public class HSADecorator {
         String enhetId = registerCertificateHelper.getEnhetId(document);
         String lakareId = registerCertificateHelper.getLakareId(document);
         return new HSAKey(vardgivareId, enhetId, lakareId);
+    }
+
+    /**
+     * This dateformat is not recommended (ISO-8601 is default and recommended), but is used for backward compatibility.
+     */
+    private static class OurLocalDateTimeSerializer extends com.fasterxml.jackson.databind.JsonSerializer<LocalDateTime> {
+
+        @Override
+        public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+            jsonGenerator.writeString(localDateTime.toString("yyyy-MM-dd"));
+        }
+
     }
 
 }

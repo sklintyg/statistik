@@ -19,8 +19,10 @@
 package se.inera.statistics.service.hsa;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HsaInfoPersonal {
@@ -66,14 +68,23 @@ public class HsaInfoPersonal {
     }
 
     public List<String> getBefattning() {
+        if (befattning == null) {
+            return Collections.emptyList();
+        }
         return new ArrayList<>(befattning);
     }
 
     public List<String> getSpecialitet() {
+        if (specialitet == null) {
+            return Collections.emptyList();
+        }
         return new ArrayList<>(specialitet);
     }
 
     public List<String> getYrkesgrupp() {
+        if (yrkesgrupp == null) {
+            return Collections.emptyList();
+        }
         return new ArrayList<>(yrkesgrupp);
     }
 
@@ -87,6 +98,21 @@ public class HsaInfoPersonal {
 
     public String getEfternamn() {
         return efternamn;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("kon", kon)
+                .add("alder", alder)
+                .add("befattning", befattning)
+                .add("specialitet", specialitet)
+                .add("yrkesgrupp", yrkesgrupp)
+                .add("skyddad", skyddad)
+                .add("tilltalsnamn", tilltalsnamn)
+                .add("efternamn", efternamn)
+                .toString();
     }
 
 }

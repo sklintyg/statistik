@@ -35,6 +35,8 @@ import javax.persistence.EntityManager;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
@@ -178,4 +180,30 @@ public class HSADecoratorTest {
         verify(hsaDecoratorSpy, times(0)).storeHSAInfo(eq("aaa"), any(HsaInfo.class));
     }
 
+    @Test
+    public void testHsaInfoToJson() throws Exception {
+        //Given
+        final LocalDateTime startdatum = new LocalDateTime(2016, 4, 12, 22, 48);
+        final HsaInfoVg hsaInfoVg = new HsaInfoVg(null, null, startdatum, null, false);
+        final HsaInfo hsaInfo = new HsaInfo(null, null, hsaInfoVg, null);
+
+        //When
+        final String result = HSADecorator.hsaInfoToJson(hsaInfo);
+
+        //Then
+        assertTrue(result.contains("2016-04-12"));
+    }
+
+    @Test
+    public void testHsaInfoConversion() throws Exception {
+        //Given
+        String hsaDataFronTestDb = "{\"enhet\":{\"agarform\":[\"Privat\"],\"geografi\":{\"kommun\":\"80\",\"koordinat\":{\"typ\":\"RT_90\",\"x\":\"6638800\",\"y\":\"1603250\"},\"lan\":\"03\",\"plats\":\"Uppsala\"},\"id\":\"SE162321000024-0036142\",\"startdatum\":\"2013-01-11\",\"vardform\":[\"01\"],\"verksamhet\":[\"1500\"],\"vgid\":\"SE162321000024-0036141\"},\"personal\":{\"alder\":\"77\",\"befattning\":[\"203010\"],\"efternamn\":\"Hilding\",\"id\":\"SE149165871\",\"kon\":\"1\",\"skyddad\":false,\"specialitet\":[\"20\",\"24\"],\"tilltalsnamn\":\"S?ren\",\"yrkesgrupp\":[\"L?kare\"]},\"vardgivare\":{\"id\":\"SE162321000024-0036141\",\"orgnr\":\"556193-0693\",\"startdatum\":\"2013-01-11\"}}";
+
+        //When
+        final HsaInfo hsaInfo = HSADecorator.jsonToHsaInfo(hsaDataFronTestDb);
+        final String result = HSADecorator.hsaInfoToJson(hsaInfo);
+
+        //Then
+        assertTrue(result.contains("\"id\":\"SE162321000024-0036142\""));
+    }
 }

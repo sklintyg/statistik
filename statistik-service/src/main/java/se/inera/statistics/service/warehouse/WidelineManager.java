@@ -32,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
+import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
@@ -55,7 +56,7 @@ public class WidelineManager {
     private RegisterCertificateHelper registerCertificateHelper;
 
     @Transactional(noRollbackFor = Exception.class)
-    public void accept(JsonNode intyg, Patientdata patientdata, JsonNode hsa, long logId, String correlationId, EventType type) {
+    public void accept(JsonNode intyg, Patientdata patientdata, HsaInfo hsa, long logId, String correlationId, EventType type) {
         String intygid = DocumentHelper.getIntygId(intyg, DocumentHelper.getIntygVersion(intyg));
         if (!isSupportedIntygType(DocumentHelper.getIntygType(intyg))) {
             LOG.info("Intygtype not supported. Ignoring intyg: " + intygid);
@@ -81,7 +82,7 @@ public class WidelineManager {
     }
 
     @Transactional(noRollbackFor = Exception.class)
-    public void accept(RegisterCertificateType intyg, Patientdata patientData, JsonNode hsa, long logId, String correlationId, EventType type) {
+    public void accept(RegisterCertificateType intyg, Patientdata patientData, HsaInfo hsa, long logId, String correlationId, EventType type) {
         final String intygid = registerCertificateHelper.getIntygId(intyg);
         final String intygtyp = registerCertificateHelper.getIntygtyp(intyg);
         if (!isSupportedIntygType(intygtyp)) {

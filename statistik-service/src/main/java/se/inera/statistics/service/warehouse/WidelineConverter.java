@@ -35,6 +35,7 @@ import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
+import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.report.util.Icd10;
@@ -71,7 +72,7 @@ public class WidelineConverter {
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
 
-    public List<WideLine> toWideline(JsonNode intyg, Patientdata patientData, JsonNode hsa, long logId, String correlationId, EventType type) {
+    public List<WideLine> toWideline(JsonNode intyg, Patientdata patientData, HsaInfo hsa, long logId, String correlationId, EventType type) {
         String lkf = getLkf(hsa);
 
         String enhet = HSAServiceHelper.getEnhetId(hsa);
@@ -107,7 +108,7 @@ public class WidelineConverter {
         return lines;
     }
 
-    public List<WideLine> toWideline(RegisterCertificateType intyg, Patientdata patientData, JsonNode hsa, long logId, String correlationId, EventType type) {
+    public List<WideLine> toWideline(RegisterCertificateType intyg, Patientdata patientData, HsaInfo hsa, long logId, String correlationId, EventType type) {
         String lkf = getLkf(hsa);
 
         String enhet = HSAServiceHelper.getEnhetId(hsa);
@@ -245,7 +246,7 @@ public class WidelineConverter {
         }
     }
 
-    private String getLkf(JsonNode hsa) {
+    private String getLkf(HsaInfo hsa) {
         String lkf = HSAServiceHelper.getKommun(hsa);
         if (lkf.isEmpty()) {
             lkf = HSAServiceHelper.getLan(hsa);

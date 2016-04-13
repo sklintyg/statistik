@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
+import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.warehouse.WidelineManager;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 
@@ -41,7 +42,7 @@ public class Processor {
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
 
-    public void accept(JsonNode utlatande, JsonNode hsa, long logId, String correlationId, EventType type) {
+    public void accept(JsonNode utlatande, HsaInfo hsa, long logId, String correlationId, EventType type) {
         final String enhetId = DocumentHelper.getEnhetId(utlatande, DocumentHelper.getIntygVersion(utlatande));
         saveEnhetAndLakare(hsa, enhetId);
 
@@ -49,7 +50,7 @@ public class Processor {
         widelineManager.accept(utlatande, patientData, hsa, logId, correlationId, type);
     }
 
-    public void accept(RegisterCertificateType utlatande, JsonNode hsa, long logId, String correlationId, EventType type) {
+    public void accept(RegisterCertificateType utlatande, HsaInfo hsa, long logId, String correlationId, EventType type) {
         final String enhetId = registerCertificateHelper.getEnhetId(utlatande);
         saveEnhetAndLakare(hsa, enhetId);
 
@@ -57,7 +58,7 @@ public class Processor {
         widelineManager.accept(utlatande, patientData, hsa, logId, correlationId, type);
     }
 
-    private void saveEnhetAndLakare(JsonNode hsa, String enhetId) {
+    private void saveEnhetAndLakare(HsaInfo hsa, String enhetId) {
         vardgivareManager.saveEnhet(hsa, enhetId);
         lakareManager.saveLakare(hsa);
     }

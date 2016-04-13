@@ -43,6 +43,7 @@ import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
+import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10.Avsnitt;
@@ -122,7 +123,7 @@ public class LargeTestDataGenerator {
                 String id = randomPerson();
                 JsonNode utlatande = permutate(builder, id, now);
                 HSAKey hsaKey = extractHSAKey(utlatande);
-                JsonNode hsaInfo = HSADecorator.toJsonNode(hsaService.getHSAInfo(hsaKey));
+                HsaInfo hsaInfo = hsaService.getHSAInfo(hsaKey);
                 final Patientdata patientData = DocumentHelper.getPatientData(utlatande);
                 try {
                     for (WideLine wideLine : widelineConverter.toWideline(utlatande, patientData, hsaInfo, count++, "" + count, EventType.CREATED)) {

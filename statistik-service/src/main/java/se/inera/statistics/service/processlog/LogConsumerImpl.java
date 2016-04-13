@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
+import se.inera.statistics.service.hsa.HsaInfo;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -101,7 +102,7 @@ public class LogConsumerImpl implements LogConsumer {
     private boolean processJsonMedicalCertificate(IntygEvent event) {
         EventType type = event.getType();
         JsonNode intyg = JSONParser.parse(event.getData());
-        JsonNode hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
+        HsaInfo hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
         if (hsaInfo != null || type.equals(EventType.REVOKED)) {
             processor.accept(intyg, hsaInfo, event.getId(), event.getCorrelationId(), type);
         } else {
@@ -122,7 +123,7 @@ public class LogConsumerImpl implements LogConsumer {
             LOG.warn("Failed to unmarshal intyg xml");
             return false;
         }
-        JsonNode hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
+        HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
 
         if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
             return false;

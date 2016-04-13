@@ -19,6 +19,7 @@
 package se.inera.statistics.service.hsa;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 
 public class HsaInfo {
 
@@ -69,4 +70,15 @@ public class HsaInfo {
     public boolean hasPersonal() {
         return personal != null;
     }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("enhet", enhet)
+                .add("huvudenhet", huvudenhet)
+                .add("vardgivare", vardgivare)
+                .add("personal", personal)
+                .toString();
+    }
+
 }

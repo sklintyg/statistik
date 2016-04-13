@@ -18,11 +18,14 @@
  */
 package se.inera.statistics.service.hsa;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.joda.time.LocalDateTime;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 
 /**
  * Immutable value class.
@@ -64,10 +67,16 @@ public class HsaInfoEnhet {
     }
 
     public List<String> getEnhetsTyp() {
+        if (enhetsTyp == null) {
+            return Collections.emptyList();
+        }
         return new ArrayList<>(enhetsTyp);
     }
 
     public List<String> getAgarform() {
+        if (agarform == null) {
+            return Collections.emptyList();
+        }
         return new ArrayList<>(agarform);
     }
 
@@ -84,10 +93,16 @@ public class HsaInfoEnhet {
     }
 
     public List<String> getVerksamhet() {
+        if (verksamhet == null) {
+            return Collections.emptyList();
+        }
         return new ArrayList<>(verksamhet);
     }
 
     public List<String> getVardform() {
+        if (vardform == null) {
+            return Collections.emptyList();
+        }
         return new ArrayList<>(vardform);
     }
 
@@ -97,6 +112,22 @@ public class HsaInfoEnhet {
 
     public String getVgid() {
         return vgid;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("id", id)
+                .add("enhetsTyp", enhetsTyp)
+                .add("agarform", agarform)
+                .add("startdatum", startdatum)
+                .add("slutdatum", slutdatum)
+                .add("arkiverad", arkiverad)
+                .add("verksamhet", verksamhet)
+                .add("vardform", vardform)
+                .add("geografi", geografi)
+                .add("vgid", vgid)
+                .toString();
     }
 
 }

@@ -20,6 +20,7 @@ package se.inera.statistics.service.hsa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 
 public class HsaInfoCoordinate {
 
@@ -52,6 +53,15 @@ public class HsaInfoCoordinate {
     @JsonIgnore
     public boolean isEmpty() {
         return typ == null && x == null && y == null;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("typ", typ)
+                .add("x", x)
+                .add("y", y)
+                .toString();
     }
 
 }

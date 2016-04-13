@@ -20,6 +20,7 @@ package se.inera.statistics.service.hsa;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.MoreObjects;
 
 public class HsaInfoEnhetGeo {
 
@@ -70,6 +71,18 @@ public class HsaInfoEnhetGeo {
     @JsonIgnore
     public boolean isEmpty() {
         return koordinat == null && plats == null && kommundelskod == null && kommundelsnamn == null && kommun == null && lan == null;
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("koordinat", koordinat)
+                .add("plats", plats)
+                .add("kommundelskod", kommundelskod)
+                .add("kommundelsnamn", kommundelsnamn)
+                .add("kommun", kommun)
+                .add("lan", lan)
+                .toString();
     }
 
 }
