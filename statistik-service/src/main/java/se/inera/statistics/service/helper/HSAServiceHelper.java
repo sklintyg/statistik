@@ -18,18 +18,21 @@
  */
 package se.inera.statistics.service.helper;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.collect.Iterators;
+import java.util.Collections;
+import java.util.List;
+
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.hsa.HSAService;
+import se.inera.statistics.service.hsa.HsaInfo;
+import se.inera.statistics.service.hsa.HsaInfoEnhet;
+import se.inera.statistics.service.hsa.HsaInfoEnhetGeo;
+import se.inera.statistics.service.hsa.HsaInfoPersonal;
+import se.inera.statistics.service.hsa.HsaInfoVg;
 import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
 
-import java.util.Iterator;
+import com.google.common.base.Joiner;
 
 public final class HSAServiceHelper {
 
@@ -38,50 +41,33 @@ public final class HSAServiceHelper {
     private HSAServiceHelper() {
     }
 
-    public static String getEnhetId(JsonNode hsaData) {
+    public static String getEnhetId(HsaInfo hsaData) {
         if (hsaData == null) {
             return null;
         }
-        String result = getEnhetId(hsaData, "huvudenhet");
+        String result = getEnhetId(hsaData.getHuvudenhet());
         if (result == null) {
-            result = getEnhetId(hsaData, "enhet");
+            result = getEnhetId(hsaData.getEnhet());
         }
         return result;
     }
 
-    public static String getEnhetNamn(JsonNode hsaData) {
-        if (hsaData == null) {
-            return null;
-        }
-        String result = getEnhetNamn(hsaData, "huvudenhet");
-        if (result == null) {
-            result = getEnhetNamn(hsaData, "enhet");
-        }
-        return result;
-    }
-
-    public static HsaIdVardgivare getVardgivarId(JsonNode hsaData) {
+    public static HsaIdVardgivare getVardgivarId(HsaInfo hsaData) {
         if (hsaData == null) {
             return HsaIdVardgivare.empty();
-        } else {
-            final String idText = hsaData.path("vardgivare").path("id").textValue();
-            return new HsaIdVardgivare(idText);
         }
+        final HsaInfoVg vardgivare = hsaData.getVardgivare();
+        if (vardgivare == null) {
+            return HsaIdVardgivare.empty();
+        }
+        return new HsaIdVardgivare(vardgivare.getId());
     }
 
-    public static String getVardgivarNamn(JsonNode hsaData) {
-        if (hsaData == null) {
-            return null;
-        } else {
-            return hsaData.path("vardgivare").path("namn").textValue();
-        }
-    }
-
-    public static String getLan(JsonNode hsaData) {
+    public static String getLan(HsaInfo hsaData) {
         if (hsaData != null) {
-            String result = getLan(hsaData, "enhet");
+            String result = getLan(hsaData.getEnhet());
             if (result == null) {
-                result = getLan(hsaData, "huvudenhet");
+                result = getLan(hsaData.getHuvudenhet());
             }
             return result != null ? result : Lan.OVRIGT_ID;
         } else {
@@ -89,15 +75,22 @@ public final class HSAServiceHelper {
         }
     }
 
-    private static String getLan(JsonNode hsaData, String enhet) {
-        return hsaData.path(enhet).path("geografi").path("lan").textValue();
+    private static String getLan(HsaInfoEnhet hsaData) {
+        if (hsaData == null) {
+            return null;
+        }
+        final HsaInfoEnhetGeo geografi = hsaData.getGeografi();
+        if (geografi == null) {
+            return null;
+        }
+        return geografi.getLan();
     }
 
-    public static String getKommun(JsonNode hsaData) {
+    public static String getKommun(HsaInfo hsaData) {
         if (hsaData != null) {
-            String result = getKommun(hsaData, "enhet");
+            String result = getKommun(hsaData.getEnhet());
             if (result == null) {
-                result = getKommun(hsaData, "huvudenhet");
+                result = getKommun(hsaData.getHuvudenhet());
             }
             return result != null ? result : Kommun.OVRIGT_ID.substring(2);
         } else {
@@ -105,46 +98,61 @@ public final class HSAServiceHelper {
         }
     }
 
-    private static String getKommun(JsonNode hsaData, String enhet) {
-        return hsaData.path(enhet).path("geografi").path("kommun").textValue();
+    private static String getKommun(HsaInfoEnhet hsaData) {
+        if (hsaData == null) {
+            return null;
+        }
+        final HsaInfoEnhetGeo geografi = hsaData.getGeografi();
+        if (geografi == null) {
+            return null;
+        }
+        return geografi.getKommun();
     }
 
-    public static int getLakaralder(JsonNode hsaData) {
+    public static int getLakaralder(HsaInfo hsaData) {
         try {
-            String result = hsaData.path("personal").path("alder").textValue();
+            final String result = hsaData.getPersonal().getAlder();
             return result != null ? Integer.parseInt(result) : 0;
         } catch (NullPointerException | NumberFormatException e) {
             return 0;
         }
     }
 
-    public static int getLakarkon(JsonNode hsaData) {
+    public static int getLakarkon(HsaInfo hsaData) {
         try {
-            String result = hsaData.path("personal").path("kon").textValue();
+            final String result = hsaData.getPersonal().getKon();
             return result != null ? Integer.parseInt(result) : 0;
         } catch (NullPointerException | NumberFormatException e) {
             return 0;
         }
     }
 
-    public static String getLakarbefattning(JsonNode hsaData) {
-        Iterator<String> stringIterator = Iterators.transform(hsaData.path("personal").path("befattning").elements(),
-                new Function<JsonNode, String>() {
-                    @Override
-                    public String apply(JsonNode node) {
-                        return node.textValue();
-                    }
-                });
-        return joiner.join(stringIterator);
+    public static String getLakarbefattning(HsaInfo hsaData) {
+        final HsaInfoPersonal personal = getHsaInfoPersonalNullSafe(hsaData);
+        if (personal == null) {
+            return null;
+        }
+        final List<String> befattning = personal.getBefattning();
+        if (befattning == null) {
+            return null;
+        }
+        return joiner.join(befattning);
     }
 
-    public static String getVerksamhetsTyper(JsonNode hsaData) {
+    private static HsaInfoPersonal getHsaInfoPersonalNullSafe(HsaInfo hsaData) {
+        if  (hsaData == null) {
+            return null;
+        }
+        return hsaData.getPersonal();
+    }
+
+    public static String getVerksamhetsTyper(HsaInfo hsaData) {
         if (hsaData != null) {
-            String result = getVerksamhetsTyper(hsaData, "enhet");
+            String result = getVerksamhetsTyper(hsaData.getEnhet());
             if (result == null) {
-                result = getVerksamhetsTyper(hsaData, "huvudenhet");
+                result = getVerksamhetsTyper(hsaData.getHuvudenhet());
             }
-            final boolean isVardcentral = isVardcentral(hsaData, "enhet") || isVardcentral(hsaData, "huvudenhet");
+            final boolean isVardcentral = isVardcentral(hsaData.getEnhet()) || isVardcentral(hsaData.getHuvudenhet());
             result = isVardcentral ? (result != null && !result.isEmpty() ? result + "," : "") + VerksamhetsTyp.VARDCENTRAL_ID : result;
             return result != null && !result.isEmpty() ? result : VerksamhetsTyp.OVRIGT_ID;
         } else {
@@ -152,10 +160,9 @@ public final class HSAServiceHelper {
         }
     }
 
-    private static boolean isVardcentral(JsonNode hsaData, String enhet) {
-        final Iterator<String> enhetstyper = getEnhetstyper(hsaData, enhet);
-        while (enhetstyper.hasNext()) {
-            String enhetstyp = enhetstyper.next();
+    private static boolean isVardcentral(HsaInfoEnhet hsaData) {
+        final List<String> enhetstyper = getEnhetstyper(hsaData);
+        for (String enhetstyp : enhetstyper) {
             if (VerksamhetsTyp.VARDCENTRAL_ID.equals(enhetstyp)) {
                 return true;
             }
@@ -163,47 +170,58 @@ public final class HSAServiceHelper {
         return false;
     }
 
-    public static Iterator<String> getEnhetstyper(JsonNode hsaData, String enhet) {
-        return Iterators.transform(hsaData.path(enhet).path(HSAService.ENHETS_TYP).elements(),
-        new Function<JsonNode, String>() {
-                    @Override
-                    public String apply(JsonNode node) {
-                        return node.asText();
-                    }
-                });
+    public static List<String> getEnhetstyper(HsaInfoEnhet hsaData) {
+        if (hsaData == null) {
+            return Collections.emptyList();
+        }
+        final List<String> enhetsTyps = hsaData.getEnhetsTyp();
+        if (enhetsTyps == null) {
+            return Collections.emptyList();
+        }
+        return enhetsTyps;
     }
 
-    private static String getVerksamhetsTyper(JsonNode hsaData, String enhet) {
-        Iterator<String> stringIterator = Iterators.transform(hsaData.path(enhet).path("verksamhet").elements(),
-                new Function<JsonNode, String>() {
-                    @Override
-                    public String apply(JsonNode node) {
-                        return node.asText();
-                    }
-                });
-        return joiner.join(stringIterator);
+    private static String getVerksamhetsTyper(HsaInfoEnhet hsaData) {
+        if (hsaData == null) {
+            return null;
+        }
+        final List<String> verksamhets = hsaData.getVerksamhet();
+        if (verksamhets == null) {
+            return null;
+        }
+        return joiner.join(verksamhets);
     }
 
-    private static String getEnhetId(JsonNode hsaData, String enhet) {
-        return hsaData.path(enhet).path("id").textValue();
+    private static String getEnhetId(HsaInfoEnhet hsaData) {
+        if (hsaData == null) {
+            return null;
+        }
+        return hsaData.getId();
     }
 
-    private static String getEnhetNamn(JsonNode hsaData, String enhet) {
-        return hsaData.path(enhet).path("namn").textValue();
+    public static HsaIdLakare getLakareId(HsaInfo hsaData) {
+        final HsaInfoPersonal personal = getHsaInfoPersonalNullSafe(hsaData);
+        if (personal == null) {
+            return null;
+        }
+        return new HsaIdLakare(personal.getId());
     }
 
-    public static HsaIdLakare getLakareId(JsonNode hsaData) {
-        String result = hsaData.path("personal").path("id").textValue();
-        return new HsaIdLakare(result);
-    }
-
-    public static String getLakareTilltalsnamn(JsonNode hsaData) {
-        String result = hsaData.path("personal").path("tilltalsnamn").textValue();
+    public static String getLakareTilltalsnamn(HsaInfo hsaData) {
+        final HsaInfoPersonal personal = getHsaInfoPersonalNullSafe(hsaData);
+        if (personal == null) {
+            return "";
+        }
+        final String result = personal.getTilltalsnamn();
         return result != null ? result : "";
     }
 
-    public static String getLakareEfternamn(JsonNode hsaData) {
-        String result = hsaData.path("personal").path("efternamn").textValue();
+    public static String getLakareEfternamn(HsaInfo hsaData) {
+        final HsaInfoPersonal personal = getHsaInfoPersonalNullSafe(hsaData);
+        if (personal == null) {
+            return "";
+        }
+        final String result = personal.getEfternamn();
         return result != null ? result : "";
     }
 

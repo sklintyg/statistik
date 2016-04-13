@@ -18,12 +18,14 @@
  */
 package se.inera.statistics.service.helper;
 
+import se.inera.statistics.service.report.model.Kon;
+
 public class Patientdata {
 
     private final int alder;
-    private final String kon;
+    private final Kon kon;
 
-    public Patientdata(int alder, String kon) {
+    public Patientdata(int alder, Kon kon) {
         this.alder = alder;
         this.kon = kon;
     }
@@ -32,7 +34,7 @@ public class Patientdata {
         return alder;
     }
 
-    public String getKon() {
+    public Kon getKon() {
         return kon;
     }
 

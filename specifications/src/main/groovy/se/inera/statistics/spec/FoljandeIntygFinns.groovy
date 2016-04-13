@@ -69,8 +69,7 @@ class FoljandeIntygFinns {
             huvudenhet = enhet;
         }
         def finalIntygDataString = getIntygDataString()
-        def format = intygformat.matches(~/^(?i).*xml$/) ? IntygFormat.REGISTER_CERTIFICATE : IntygFormat.REGISTER_MEDICAL_CERTIFICATE;
-        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, huvudenhet, enhetsnamn, vardgivare, enhet, läkare, format)
+        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
         reportsUtil.insertIntyg(intyg)
     }
 

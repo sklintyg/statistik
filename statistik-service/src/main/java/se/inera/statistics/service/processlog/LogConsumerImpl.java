@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
+import se.inera.statistics.service.hsa.HsaInfo;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -49,6 +50,9 @@ public class LogConsumerImpl implements LogConsumer {
     @Autowired
     private HSADecorator hsa;
 
+    @Autowired
+    private RegisterCertificateHelper registerCertificateHelper;
+
     private volatile boolean isRunning = false;
 
     @Transactional
@@ -65,12 +69,12 @@ public class LogConsumerImpl implements LogConsumer {
                 try {
                     switch (format) {
                         case REGISTER_MEDICAL_CERTIFICATE:
-                            if (!processOld(event)) {
+                            if (!processJsonMedicalCertificate(event)) {
                                 return processed;
                             }
                             break;
                         case REGISTER_CERTIFICATE:
-                            if (!processNew(event)) {
+                            if (!processXmlCertificate(event)) {
                                 return processed;
                             }
                             break;
@@ -95,10 +99,10 @@ public class LogConsumerImpl implements LogConsumer {
     /**
      * @return true for success, otherwise false
      */
-    private boolean processOld(IntygEvent event) {
+    private boolean processJsonMedicalCertificate(IntygEvent event) {
         EventType type = event.getType();
         JsonNode intyg = JSONParser.parse(event.getData());
-        JsonNode hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
+        HsaInfo hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
         if (hsaInfo != null || type.equals(EventType.REVOKED)) {
             processor.accept(intyg, hsaInfo, event.getId(), event.getCorrelationId(), type);
         } else {
@@ -110,16 +114,16 @@ public class LogConsumerImpl implements LogConsumer {
     /**
      * @return true for success, otherwise false
      */
-    private boolean processNew(IntygEvent event) {
+    private boolean processXmlCertificate(IntygEvent event) {
         EventType type = event.getType();
         RegisterCertificateType rc = null;
         try {
-            rc = RegisterCertificateHelper.unmarshalRegisterCertificateXml(event.getData());
+            rc = registerCertificateHelper.unmarshalRegisterCertificateXml(event.getData());
         } catch (JAXBException e) {
             LOG.warn("Failed to unmarshal intyg xml");
             return false;
         }
-        JsonNode hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
+        HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
 
         if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
             return false;

@@ -24,6 +24,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "intyghandelse")
@@ -35,8 +36,6 @@ public class IntygEvent {
 
     @Enumerated
     private EventType type;
-
-    private int format;
 
     private String data;
 
@@ -50,12 +49,11 @@ public class IntygEvent {
     public IntygEvent() {
     }
 
-    public IntygEvent(EventType type, String data, String correlationId, long timestamp, IntygFormat intygFormat) {
+    public IntygEvent(EventType type, String data, String correlationId, long timestamp) {
         this.type = type;
         this.data = data;
         this.correlationId = correlationId;
         this.timestamp = timestamp;
-        this.format = intygFormat.getIntValue();
     }
 
     public EventType getType() {
@@ -78,8 +76,14 @@ public class IntygEvent {
         return timestamp;
     }
 
+    @Transient
     public IntygFormat getFormat() {
-        return IntygFormat.parseIntValue(format);
+        return getIntygFormat(data);
+    }
+
+    public static IntygFormat getIntygFormat(String intyg) {
+        final boolean isRegisterCertificateXmlFormat = intyg != null && intyg.matches("(?s)^.*<[^>]*RegisterCertificate.*>.*$");
+        return isRegisterCertificateXmlFormat ? IntygFormat.REGISTER_CERTIFICATE : IntygFormat.REGISTER_MEDICAL_CERTIFICATE;
     }
 
 }

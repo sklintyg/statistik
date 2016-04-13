@@ -183,22 +183,22 @@ public class SjukfallUtil {
     }
     //CHECKSTYLE:ON
 
-    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Function<Sjukfall, Integer> toCount, List<Integer> groups) {
+    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, CounterFunction<Integer> toCount, List<Integer> groups) {
         return calculateSimpleKonResponse(toCount, groups, sjukfallGrupper(from, periods, periodLength, aisle, filter));
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponseUsingOriginalSjukfallStart(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Function<Sjukfall, Integer> toCount, List<Integer> groups) {
+    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponseUsingOriginalSjukfallStart(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, CounterFunction<Integer> toCount, List<Integer> groups) {
         return calculateSimpleKonResponse(toCount, groups, sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle, filter));
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Function<Sjukfall, Integer> toCount, List<Integer> groups, Iterable<SjukfallGroup> sjukfallGroups) {
+    private SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(CounterFunction<Integer> toCount, List<Integer> groups, Iterable<SjukfallGroup> sjukfallGroups) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         HashMultiset<Integer> maleCounter = HashMultiset.create();
         HashMultiset<Integer> femaleCounter = HashMultiset.create();
         for (SjukfallGroup sjukfallGroup: sjukfallGroups) {
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                 HashMultiset<Integer> counter = Kon.Male.equals(sjukfall.getKon()) ? maleCounter : femaleCounter;
-                counter.add(toCount.apply(sjukfall));
+                toCount.addCount(sjukfall, counter);
             }
         }
         for (Integer group : groups) {

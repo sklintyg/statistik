@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 @Component
 public interface ProcessLog {
 
-    long store(EventType type, String string, String correlationId, long timestamp, IntygFormat intygFormat);
+    long store(EventType type, String string, String correlationId, long timestamp);
 
     void confirm(long id);
 

@@ -63,8 +63,11 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             chartOptions.chart.height = 210;
             chartOptions.chart.marginTop = 20;
             chartOptions.chart.plotBorderWidth = 0;
+            chartOptions.subtitle = null;
             chartOptions.title = {
                 verticalAlign: 'middle',
+                align: 'center',
+                y: 15,
                 floating: true,
                 text: alteration + ' %',
                 style: {
@@ -104,6 +107,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             chartOptions.chart.type = 'pie';
             chartOptions.chart.renderTo = containerId;
             chartOptions.chart.height = 180;
+            chartOptions.subtitle.text = null;
             chartOptions.chart.plotBorderWidth = 0;
             chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}'  + (tooltipHeaderSuffix || "") + '</span><br/>';
 
@@ -183,7 +187,8 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             chartOptions.chart.renderTo = containerId;
             chartOptions.chart.height = 240;
             chartOptions.xAxis.title = { text: 'Sjukskrivningslängd', style : chartOptions.xAxis.title.style };
-            chartOptions.yAxis.title = { text: 'Antal', style : chartOptions.yAxis.title.style };
+            chartOptions.subtitle.text = null;
+            chartOptions.yAxis.title = {text: 'Antal', style : chartOptions.subtitle.style };
             
             chartOptions.yAxis.tickPixelInterval = 30;
             chartOptions.legend.enabled = false;
@@ -242,6 +247,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                 gridLineWidth: 0,
                 visible: false
             };
+            chartOptions.subtitle.text = null;
             chartOptions.yAxis = {
                 min: 0,
                 max: 100,

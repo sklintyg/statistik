@@ -18,12 +18,8 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Sets;
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.Range;
-
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,6 +28,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.Range;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Sets;
 
 public class SjukfallExtended {
 
@@ -212,6 +214,10 @@ public class SjukfallExtended {
 
     public int getSjukskrivningsgrad() {
         return getLastFact().getSjukskrivningsgrad();
+    }
+
+    public Collection<Integer> getSjukskrivningsgrads() {
+        return sjukskrivningsgrad.values();
     }
 
     public int getDiagnosavsnitt() {

@@ -18,24 +18,27 @@
  */
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.hsa.model.HsaIdLakare;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.HSAServiceHelper;
-import se.inera.statistics.service.warehouse.WidelineConverter;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.HSAServiceHelper;
+import se.inera.statistics.service.hsa.HsaInfo;
+import se.inera.statistics.service.warehouse.WidelineConverter;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 
 @Component
 public class LakareManager {
@@ -45,7 +48,7 @@ public class LakareManager {
     private EntityManager manager;
 
     @Transactional
-    public void saveLakare(JsonNode hsaInfo) {
+    public void saveLakare(HsaInfo hsaInfo) {
         HsaIdVardgivare vardgivareId = HSAServiceHelper.getVardgivarId(hsaInfo);
         HsaIdLakare lakareId = HSAServiceHelper.getLakareId(hsaInfo);
         String tilltalsNamn = HSAServiceHelper.getLakareTilltalsnamn(hsaInfo);
@@ -122,4 +125,5 @@ public class LakareManager {
         }
         return true;
     }
+
 }

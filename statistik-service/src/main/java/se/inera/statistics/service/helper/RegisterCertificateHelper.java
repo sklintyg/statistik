@@ -32,17 +32,20 @@ import org.apache.neethi.builders.converters.ConverterException;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v2.CVType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v2.DatePeriodType;
 import se.riv.clinicalprocess.healthcond.certificate.v2.Svar;
 
-public final class RegisterCertificateHelper {
+@Component
+public class RegisterCertificateHelper {
 
     public static final String DIAGNOS_SVAR_ID_6 = "6";
     public static final String DIAGNOS_DELSVAR_ID_6 = "6.2";
@@ -52,43 +55,43 @@ public final class RegisterCertificateHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(RegisterCertificateHelper.class);
 
-    private RegisterCertificateHelper() {
+    public RegisterCertificateHelper() {
     }
 
-    public static String getEnhetId(RegisterCertificateType utlatande) {
+    public String getEnhetId(RegisterCertificateType utlatande) {
         return utlatande.getIntyg().getSkapadAv().getEnhet().getEnhetsId().getExtension();
     }
 
-    public static String getLakareId(RegisterCertificateType document) {
+    public String getLakareId(RegisterCertificateType document) {
         return document.getIntyg().getSkapadAv().getPersonalId().getExtension();
     }
 
-    public static String getVardgivareId(RegisterCertificateType document) {
+    public String getVardgivareId(RegisterCertificateType document) {
         return document.getIntyg().getSkapadAv().getEnhet().getVardgivare().getVardgivareId().getExtension();
     }
 
-    public static String getPatientId(RegisterCertificateType intyg) {
+    public String getPatientId(RegisterCertificateType intyg) {
         return intyg.getIntyg().getPatient().getPersonId().getExtension();
     }
 
-    public static String getIntygId(RegisterCertificateType intyg) {
+    public String getIntygId(RegisterCertificateType intyg) {
         return intyg.getIntyg().getIntygsId().getExtension();
     }
 
-    public static String getIntygtyp(RegisterCertificateType intyg) {
+    public String getIntygtyp(RegisterCertificateType intyg) {
         return intyg.getIntyg().getTyp().getCode();
     }
 
-    public static boolean isEnkeltIntyg(RegisterCertificateType intyg) {
+    public boolean isEnkeltIntyg(RegisterCertificateType intyg) {
         final String code = intyg.getIntyg().getTyp().getCode();
         return IntygType.LIS.name().equalsIgnoreCase(code);
     }
 
-    private static String getIntygsTyp(RegisterCertificateType certificateType) {
+    private String getIntygsTyp(RegisterCertificateType certificateType) {
         return certificateType.getIntyg().getTyp().getCode().toLowerCase();
     }
 
-    public static String getDx(RegisterCertificateType intyg) {
+    public String getDx(RegisterCertificateType intyg) {
         for (Svar svar : intyg.getIntyg().getSvar()) {
             if (DIAGNOS_SVAR_ID_6.equals(svar.getId())) {
                 for (Svar.Delsvar delsvar : svar.getDelsvar()) {
@@ -102,7 +105,7 @@ public final class RegisterCertificateHelper {
         return null;
     }
 
-    private static Arbetsnedsattning getArbetsnedsattning(Svar svar) throws ConverterException {
+    private Arbetsnedsattning getArbetsnedsattning(Svar svar) throws ConverterException {
         int nedsattning = -1;
         DatePeriodType datePeriod = new DatePeriodType();
 
@@ -123,7 +126,36 @@ public final class RegisterCertificateHelper {
         return new Arbetsnedsattning(nedsattning, datePeriod.getStart(), datePeriod.getEnd());
     }
 
-    public static List<Arbetsnedsattning> getArbetsnedsattning(RegisterCertificateType intyg) {
+    public Patientdata getPatientData(RegisterCertificateType intyg) {
+        final String patientIdRaw = getPatientId(intyg);
+        final String personId = DocumentHelper.getUnifiedPersonId(patientIdRaw);
+        int alder;
+        try {
+            alder = ConversionHelper.extractAlder(personId, getSistaNedsattningsdag(intyg));
+        } catch (Exception e) {
+            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId);
+            alder = ConversionHelper.NO_AGE;
+        }
+        String kon = ConversionHelper.extractKon(personId);
+
+        return new Patientdata(alder, Kon.parse(kon));
+    }
+
+    public LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {
+        final List<Arbetsnedsattning> arbetsnedsattnings = getArbetsnedsattning(document);
+        final int startYear = 2000;
+        LocalDate date = new LocalDate(startYear, 1, 1);
+        LocalDate to = null;
+        for (Arbetsnedsattning arbetsnedsattning : arbetsnedsattnings) {
+            final LocalDate candidate = arbetsnedsattning.getSlut();
+            if (to == null || candidate.isAfter(to)) {
+                to = candidate;
+            }
+        }
+        return to;
+    }
+
+    public List<Arbetsnedsattning> getArbetsnedsattning(RegisterCertificateType intyg) {
         final ArrayList<Arbetsnedsattning> arbetsnedsattnings = new ArrayList<>();
         for (Svar svar : intyg.getIntyg().getSvar()) {
             if (BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32.equals(svar.getId())) {
@@ -185,7 +217,7 @@ public final class RegisterCertificateHelper {
 
     }
 
-    public static RegisterCertificateType unmarshalRegisterCertificateXml(String data) throws JAXBException {
+    public RegisterCertificateType unmarshalRegisterCertificateXml(String data) throws JAXBException {
         Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(RegisterCertificateType.class).createUnmarshaller();
         jaxbUnmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
         final StringReader reader = new StringReader(data);
@@ -200,7 +232,7 @@ public final class RegisterCertificateHelper {
      * @return CVType
      * @throws ConverterException
      */
-    public static CVType getCVSvarContent(Svar.Delsvar delsvar) throws ConverterException {
+    public CVType getCVSvarContent(Svar.Delsvar delsvar) throws ConverterException {
         for (Object o : delsvar.getContent()) {
             if (o instanceof Node) {
                 CVType cvType = new CVType();
@@ -251,7 +283,7 @@ public final class RegisterCertificateHelper {
      * @param delsvar
      * @throws ConverterException
      */
-    public static DatePeriodType getDatePeriodTypeContent(Svar.Delsvar delsvar) throws ConverterException {
+    public DatePeriodType getDatePeriodTypeContent(Svar.Delsvar delsvar) throws ConverterException {
         for (Object o : delsvar.getContent()) {
             if (o instanceof Node) {
                 DatePeriodType datePeriodType = new DatePeriodType();

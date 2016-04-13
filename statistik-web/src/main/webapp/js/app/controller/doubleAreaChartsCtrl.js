@@ -33,19 +33,13 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
 
             chartOptions.chart.type = defaultChartType;
-            chartOptions.chart.marginTop = 27;
-            chartOptions.chart.spacingLeft = chartSpacingLeft;
+            chartOptions.chart.renderTo = containerId;
             chartOptions.plotOptions.area.lineWidth = 1;
             chartOptions.plotOptions.area.lineColor = 'grey';
-            chartOptions.chart.renderTo = containerId;
             chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
             chartOptions.xAxis.title.text = "Period";
             chartOptions.tooltip.useHTML = true;
-            chartOptions.yAxis.title.text = (config.percentChart ? "Andel " : "Antal ") + yAxisTitle;
-            chartOptions.yAxis.title.x = yAxisTitleXPos;
-            chartOptions.yAxis.title.y = -13;
-            chartOptions.yAxis.title.align = 'high';
-            chartOptions.yAxis.title.offset = 0;
+            chartOptions.subtitle.text = (config.percentChart ? "Andel " : "Antal ") + yAxisTitle;
             chartOptions.yAxis.labels.formatter = function () {
                 return ControllerCommons.makeThousandSeparated(this.value) + (percentChart ? " %" : "");
             };
@@ -175,16 +169,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             $timeout(function () {
                 $scope.printDataTables = updatePrintDataTable(result);
             }, 100);
-        };
-
-        var getMapKeys = function(mapObject) {
-            var keys = [];
-            for (var key in mapObject) {
-                if (mapObject.hasOwnProperty(key)) {
-                    keys.push(key);
-                }
-            }
-            return keys;
         };
 
         var populateDetailsOptions = function (result) {

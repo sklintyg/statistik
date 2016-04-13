@@ -983,6 +983,8 @@ div.headerbox-user-profile {
 
 #business-login-container {
 	float: right;
+    padding-right: 25px;
+    padding-top: 15px;
 }
 .settings {
   display: block;
@@ -2126,7 +2128,7 @@ stat-cookie-banner {
     padding: 0;
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
+@media (min-width: 768px) and (max-width: 1199px) {
     .business-filter-time-interval {
         margin-top: 15px;
     }

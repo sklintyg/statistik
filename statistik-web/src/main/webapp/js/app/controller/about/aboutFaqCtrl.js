@@ -85,13 +85,13 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl', ['$scope',
             body: '<p>Den allmänna delen av Statistiktjänsten som visar nationell statistik kräver inte någon registrering eller behörighet.</p>' +
                     '<p>Om du har ansvar för verksamhetsuppföljning inom hälso- och sjukvården kan du ta del av statistik som är särskilt riktad till ditt uppföljningsområde.</p>' +
                     '<p>Uppföljningsområde kan vara en eller flera vårdenheter, eller hela vårdgivaren om du har ett övergripande uppföljningsansvar. Det krävs att du har ett medarbetaruppdrag för statistik som delas ut av din verksamhetschef och sätts av din HSA-administratör.</p>' +
-                    '<p>Mer information om det finns <a href="http://www.inera.se/sarskild_behorighet" target="_blank">HÄR</a>.</p>' +
                     '<p>För att kunna logga in och se statistik för enskilda vårdenheter eller en hel vårdgivare krävs:</p>' +
                     '<ul>' +
                         '<li>ett SITHS-kort med pinkod</li>' +
                         '<li>en kortläsare med tillhörande programvara, NetID</li>' +
                         '<li>ett medarbetaruppdrag i HSA som ger dig rätt att ta del av statistik</li>' +
-                    '</ul>'
+                    '</ul>' +
+					'<p><a href="http://www.inera.se/sarskild_behorighet" target="_blank">Mer information om behörighet för Statistiktjänsten (extern länk)</a></p>' 
         });
         faq.push({
             title: '10. Hur exporterar jag tabellen till Excel?',

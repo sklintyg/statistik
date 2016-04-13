@@ -18,8 +18,10 @@
  */
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +29,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
+
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
-
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
+import se.inera.statistics.service.hsa.HsaInfo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
@@ -48,7 +47,7 @@ public class LakareManagerTest {
 
     @Test
     public void saveOneLakare() {
-        JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
+        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
 
         lakareManager.saveLakare(hsaInfo);
 
@@ -61,8 +60,8 @@ public class LakareManagerTest {
 
     @Test
     public void saveOneLakareWithoutVGFailsWithoutError() {
-        ObjectNode hsaInfo = hsaService.getHSAInfo(new HSAKey(null, "enhet", "lakare"));
-        hsaInfo.remove(HSAService.HSA_INFO_VARDGIVARE);
+        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey(null, "enhet", "lakare"));
+        hsaInfo = new HsaInfo(hsaInfo.getEnhet(), hsaInfo.getHuvudenhet(), null, hsaInfo.getPersonal());
 
         lakareManager.saveLakare(hsaInfo);
 
@@ -72,7 +71,7 @@ public class LakareManagerTest {
 
     @Test
     public void getAllLakares() {
-        JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare1"));
+        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare1"));
         lakareManager.saveLakare(hsaInfo);
         hsaInfo = hsaService.getHSAInfo(new HSAKey("other-vg", "other-enhet", "lakare2"));
         lakareManager.saveLakare(hsaInfo);

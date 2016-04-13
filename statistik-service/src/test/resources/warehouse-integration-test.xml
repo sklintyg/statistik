@@ -84,6 +84,7 @@
     <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
     <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
     <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
+    <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper"/>
 
     <bean id="dataGenerator" class="se.inera.statistics.service.demo.LargeTestDataGenerator" />
 

@@ -34,8 +34,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
             var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
             chartOptions.chart.type = defaultChartType;
-            chartOptions.chart.marginLeft = 60;
-            chartOptions.chart.marginTop = 27;
 
             //Set the chart.width to a fixed width when we are about to print.
             //It will prevent the chart from overflowing the printed page.
@@ -46,11 +44,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
             chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
             chartOptions.xAxis.title.text = config.chartXAxisTitle;
-            chartOptions.yAxis.title.text = config.chartYAxisTitle ? config.chartYAxisTitle : (config.percentChart ? "Andel sjukfall i %" : 'Antal sjukfall');
-            chartOptions.yAxis.title.x = config.chartYAxisTitle ? 160 : (config.percentChart ? 60 : 30);
-            chartOptions.yAxis.title.y = -13;
-            chartOptions.yAxis.title.align = 'high';
-            chartOptions.yAxis.title.offset = 0;
+            chartOptions.subtitle.text = config.chartYAxisTitle ? config.chartYAxisTitle : (config.percentChart ? "Andel sjukfall i %" : 'Antal sjukfall');
             chartOptions.yAxis.labels.formatter = function () {
                 return ControllerCommons.makeThousandSeparated(this.value) + (config.percentChart ? " %" : "");
             };

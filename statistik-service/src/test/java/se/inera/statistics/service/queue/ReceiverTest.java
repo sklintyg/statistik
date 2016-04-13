@@ -60,7 +60,7 @@ public class ReceiverTest {
 
         receiver.accept(EventType.CREATED, data, "corr", 123L);
 
-        verify(processLog).store(EventType.CREATED, data, "corr", 123L, IntygFormat.REGISTER_MEDICAL_CERTIFICATE);
+        verify(processLog).store(EventType.CREATED, data, "corr", 123L);
         verify(hsaDecorator).decorate(any(JsonNode.class), anyString());
     }
     // CHECKSTYLE:ON MagicNumber

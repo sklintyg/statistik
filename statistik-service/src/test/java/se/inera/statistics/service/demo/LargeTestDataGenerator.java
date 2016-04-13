@@ -38,9 +38,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
+import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
+import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10.Avsnitt;
@@ -120,10 +123,10 @@ public class LargeTestDataGenerator {
                 String id = randomPerson();
                 JsonNode utlatande = permutate(builder, id, now);
                 HSAKey hsaKey = extractHSAKey(utlatande);
-                JsonNode hsaInfo = hsaService.getHSAInfo(hsaKey);
-                JsonNode document = DocumentHelper.prepare(utlatande);
+                HsaInfo hsaInfo = hsaService.getHSAInfo(hsaKey);
+                final Patientdata patientData = DocumentHelper.getPatientData(utlatande);
                 try {
-                    for (WideLine wideLine : widelineConverter.toWideline(document, hsaInfo, count++, "" + count, EventType.CREATED)) {
+                    for (WideLine wideLine : widelineConverter.toWideline(utlatande, patientData, hsaInfo, count++, "" + count, EventType.CREATED)) {
                         factPopulator.accept(wideLine);
                         if (count > maxIntyg) {
                             break maxIntyg;

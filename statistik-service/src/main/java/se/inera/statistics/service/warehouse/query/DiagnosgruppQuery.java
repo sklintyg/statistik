@@ -79,16 +79,20 @@ public class DiagnosgruppQuery {
         return result;
     }
 
-    public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
+    public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, boolean countAllDxs) {
         List<Icd10.Kapitel> kapitel = icd10.getKapitel(true);
         final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
-        List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel, Icd10RangeType.KAPITEL, false);
+        List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel, Icd10RangeType.KAPITEL, countAllDxs);
         removeEmptyInternalIcd10Groups(kapitel, rows);
         List<Icd> avsnitt = new ArrayList<>(kapitel.size());
         for (Icd10.Kapitel k: kapitel) {
             avsnitt.add(new Icd(k.getVisibleId(), k.getName(), k.toInt()));
         }
         return new DiagnosgruppResponse(avsnitt, rows);
+    }
+
+    public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
+        return getDiagnosgrupper(aisle, filter, start, periods, periodLength, false);
     }
 
     private void removeEmptyInternalIcd10Groups(List<Icd10.Kapitel> kapitel, List<KonDataRow> rows) {
@@ -124,19 +128,23 @@ public class DiagnosgruppQuery {
     }
 
     public DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, String rangeId) throws RangeNotFoundException {
+        return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, rangeId, false);
+    }
+
+    public DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, String rangeId, boolean countAllDxs) throws RangeNotFoundException {
         final Icd10.Kapitel kapitel = icd10.getKapitel(rangeId);
         if (kapitel != null) {
-            return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, kapitel, Icd10RangeType.AVSNITT);
+            return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, kapitel, Icd10RangeType.AVSNITT, countAllDxs);
         }
 
         final Icd10.Avsnitt avsnitt = icd10.getAvsnitt(rangeId);
         if (avsnitt != null) {
-            return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, avsnitt, Icd10RangeType.KATEGORI);
+            return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, avsnitt, Icd10RangeType.KATEGORI, countAllDxs);
         }
 
         final Icd10.Kategori kategori = icd10.getKategori(rangeId);
         if (kategori != null) {
-            return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, kategori, Icd10RangeType.KOD);
+            return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, kategori, Icd10RangeType.KOD, countAllDxs);
         }
 
         throw new RangeNotFoundException("Could not find ICD10 range: " + rangeId);
@@ -189,15 +197,20 @@ public class DiagnosgruppQuery {
 
         return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
     }
-
-    private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType) {
+    // CHECKSTYLE:OFF ParameterNumber
+    private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType, boolean countAllDxs) {
         final List<Icd> icdTyps = new ArrayList<>();
         for (Icd10.Id icdItem : kapitel.getSubItems()) {
             icdTyps.add(new Icd(icdItem.getVisibleId(), icdItem.getName(), icdItem.toInt()));
         }
         final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
-        final List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel.getSubItems(), rangeType, false);
+        final List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel.getSubItems(), rangeType, countAllDxs);
         return new DiagnosgruppResponse(icdTyps, rows);
+    }
+    // CHECKSTYLE:ON ParameterNumber
+
+    private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType) {
+        return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, kapitel, rangeType, false);
     }
 
     private List<KonDataRow> getKonDataRows(Iterable<SjukfallGroup> sjukfallGroups, List<? extends Icd10.Id> kapitel, Icd10RangeType rangeType, boolean countAllDxs) {
@@ -277,12 +290,12 @@ public class DiagnosgruppQuery {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getDiagnosgrupperTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
-        final DiagnosgruppResponse diagnosgruppResponse = getDiagnosgrupper(aisle, filter, start, periods, periodLength);
+        final DiagnosgruppResponse diagnosgruppResponse = getDiagnosgrupper(aisle, filter, start, periods, periodLength, true);
         return SimpleKonResponse.create(diagnosgruppResponse);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getUnderdiagnosgrupperTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, String rangeId) throws RangeNotFoundException {
-        final DiagnosgruppResponse underdiagnosgrupper = getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, rangeId);
+        final DiagnosgruppResponse underdiagnosgrupper = getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, rangeId, true);
         return SimpleKonResponse.create(underdiagnosgrupper);
     }
 }

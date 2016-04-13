@@ -41,4 +41,13 @@ public enum Kon {
         throw new IllegalArgumentException("Unknown number for Kon: " + number);
     }
 
+    public static Kon parse(String konString) {
+        for (Kon kon : values()) {
+            if (kon.name().equalsIgnoreCase(konString)) {
+                return kon;
+            }
+        }
+        throw new IllegalArgumentException("Unknown name for Kon: " + konString);
+    }
+
 }

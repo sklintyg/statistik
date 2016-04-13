@@ -27,10 +27,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import se.inera.statistics.service.report.model.Kon;
 
 public final class DocumentHelper {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentHelper.class);
@@ -66,7 +65,7 @@ public final class DocumentHelper {
     private DocumentHelper() {
     }
 
-    public static ObjectNode prepare(JsonNode intyg) {
+    public static Patientdata getPatientData(JsonNode intyg) {
         final IntygVersion version = getIntygVersion(intyg);
         String personId = getPersonId(intyg, version);
         int alder;
@@ -77,30 +76,7 @@ public final class DocumentHelper {
             alder = ConversionHelper.NO_AGE;
         }
         String kon = ConversionHelper.extractKon(personId);
-
-        ObjectNode preparedDoc = intyg.deepCopy();
-        if (version == IntygVersion.VERSION2) {
-            preparedDoc.put(PATIENT, preparedDoc.path("grundData").path("patient"));
-        }
-        ObjectNode patientNode = (ObjectNode) preparedDoc.path(PATIENT);
-        patientNode.put("alder", alder);
-        patientNode.put("kon", kon);
-        return preparedDoc;
-    }
-
-    public static Patientdata getPatientData(RegisterCertificateType intyg) {
-        final String patientIdRaw = RegisterCertificateHelper.getPatientId(intyg);
-        final String personId = getUnifiedPersonId(patientIdRaw);
-        int alder;
-        try {
-            alder = ConversionHelper.extractAlder(personId, getSistaNedsattningsdag(intyg));
-        } catch (Exception e) {
-            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId);
-            alder = ConversionHelper.NO_AGE;
-        }
-        String kon = ConversionHelper.extractKon(personId);
-
-        return new Patientdata(alder, kon);
+        return new Patientdata(alder, Kon.parse(kon));
     }
 
     public static IntygVersion getIntygVersion(JsonNode document) {
@@ -217,24 +193,6 @@ public final class DocumentHelper {
         }
     }
 
-    public static LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {
-        final List<Arbetsnedsattning> arbetsnedsattnings = RegisterCertificateHelper.getArbetsnedsattning(document);
-        final int startYear = 2000;
-        LocalDate date = new LocalDate(startYear, 1, 1);
-        LocalDate to = null;
-        for (Arbetsnedsattning arbetsnedsattning : arbetsnedsattnings) {
-            final LocalDate candidate = arbetsnedsattning.getSlut();
-            if (to == null || candidate.isAfter(to)) {
-                to = candidate;
-            }
-        }
-        return to;
-    }
-
-    public static String getKon(JsonNode document) {
-        return document.path(PATIENT).path("kon").textValue();
-    }
-
     public static String getDiagnos(JsonNode document, IntygVersion version) {
         if (version == IntygVersion.VERSION1) {
             for (JsonNode node : document.path(OBSERVATIONER)) {
@@ -283,10 +241,6 @@ public final class DocumentHelper {
             }
             return result;
         }
-    }
-
-    public static int getAge(JsonNode document) {
-        return document.path(PATIENT).path("alder").intValue();
     }
 
     public static String getIntygId(JsonNode document, IntygVersion version) {

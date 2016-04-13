@@ -18,21 +18,23 @@
  */
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.HSAServiceHelper;
-import se.inera.statistics.service.warehouse.WidelineConverter;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.HSAServiceHelper;
+import se.inera.statistics.service.hsa.HsaInfo;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 
 @Component
 public class VardgivareManager {
@@ -43,7 +45,7 @@ public class VardgivareManager {
     private EntityManager manager;
 
     @Transactional
-    public void saveEnhet(JsonNode hsaInfo, String enhetIdFromIntyg) {
+    public void saveEnhet(HsaInfo hsaInfo, String enhetIdFromIntyg) {
         boolean hsaEnhet = true;
         String enhetIdString = HSAServiceHelper.getEnhetId(hsaInfo);
         if (enhetIdString == null) {
@@ -52,18 +54,11 @@ public class VardgivareManager {
         }
         final HsaIdEnhet enhet = new HsaIdEnhet(enhetIdString);
         final HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsaInfo);
-        String enhetNamn = HSAServiceHelper.getEnhetNamn(hsaInfo);
-        String vardgivareNamn = HSAServiceHelper.getVardgivarNamn(hsaInfo);
+        String enhetNamn = UTAN_ENHETSID.equals(enhet) ? "Utan enhets-id" : enhet.getId();
+        String vardgivareNamn = vardgivare.getId();
         String lansId = HSAServiceHelper.getLan(hsaInfo);
         String kommunId = HSAServiceHelper.getKommun(hsaInfo);
         String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(hsaInfo);
-
-        if (enhetNamn == null) {
-            enhetNamn = UTAN_ENHETSID.equals(enhet) ? "Utan enhets-id" : enhet.getId();
-        }
-        if (vardgivareNamn == null) {
-            vardgivareNamn = vardgivare.getId();
-        }
 
         if (validate(vardgivare, enhetNamn, vardgivareNamn, lansId, kommunId, verksamhetsTyper, hsaInfo)) {
             //Must use 'LIKE' instead of '=' due to STATISTIK-1231
@@ -101,14 +96,14 @@ public class VardgivareManager {
         return query.getResultList();
     }
 
-    private boolean validate(HsaIdVardgivare vardgivare, String enhetNamn, String vardgivareNamn, String lansId, String kommunId, String verksamhetsTyper, JsonNode hsaInfo) {
+    private boolean validate(HsaIdVardgivare vardgivare, String enhetNamn, String vardgivareNamn, String lansId, String kommunId, String verksamhetsTyper, HsaInfo hsaInfo) {
         // Utan vardgivare har vi inget uppdrag att behandla intyg, avbryt direkt
         if (vardgivare == null || vardgivare.isEmpty()) {
-            LOG.error("Vardgivare saknas: " + hsaInfo.asText());
+            LOG.error("Vardgivare saknas: " + hsaInfo);
             return false;
         }
         if (vardgivare.getId().length() > WidelineConverter.MAX_LENGTH_VGID) {
-            LOG.error("Vardgivare id ogiltigt: " + hsaInfo.asText());
+            LOG.error("Vardgivare id ogiltigt: " + hsaInfo);
             return false;
         }
         boolean result = checkLength(enhetNamn, "Enhetsnamn", WidelineConverter.MAX_LENGTH_ENHETNAME, hsaInfo);
@@ -119,9 +114,9 @@ public class VardgivareManager {
         return result;
     }
 
-    private boolean checkLength(String field, String name, int max, JsonNode hsaInfo) {
+    private boolean checkLength(String field, String name, int max, HsaInfo hsaInfo) {
         if (field != null && field.length() > max) {
-            LOG.error(name + " saknas: " + hsaInfo.asText());
+            LOG.error(name + " saknas: " + hsaInfo);
             return false;
         }
         return true;

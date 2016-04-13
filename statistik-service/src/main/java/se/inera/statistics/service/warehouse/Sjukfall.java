@@ -35,6 +35,7 @@ public final class Sjukfall {
     private int end;
     private int kon;
     private int alder;
+    private List<Integer> sjukskrivningsgrader = new ArrayList<>();
     private int sjukskrivningsgrad;
     private Set<Lakare> lakare = new HashSet<>();
     private int[] enhets;
@@ -56,6 +57,7 @@ public final class Sjukfall {
         sjukfall.kon = extendedSjukfall.getKonInt();
         sjukfall.alder = extendedSjukfall.getAlder();
         sjukfall.sjukskrivningsgrad = extendedSjukfall.getSjukskrivningsgrad();
+        sjukfall.sjukskrivningsgrader = new ArrayList<>(extendedSjukfall.getSjukskrivningsgrads());
         sjukfall.lan = extendedSjukfall.getLan();
         sjukfall.lakare = extendedSjukfall.getLakare();
         sjukfall.enhets = toArray(extendedSjukfall.getEnhets());
@@ -156,6 +158,10 @@ public final class Sjukfall {
 
     public int getSjukskrivningsgrad() {
         return sjukskrivningsgrad;
+    }
+
+    public List<Integer> getSjukskrivningsgrader() {
+        return sjukskrivningsgrader;
     }
 
     public int getDiagnosavsnitt() {
