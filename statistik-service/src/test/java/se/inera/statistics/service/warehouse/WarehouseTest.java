@@ -38,11 +38,11 @@ public class WarehouseTest {
     @Test
     public void testGetEnhetsWithHsaId() throws Exception {
         //Given
-        warehouse.accept(new Enhet(new HsaIdVardgivare("vg1"), null, new HsaIdEnhet("e1"), "1", null, null, null));
-        warehouse.accept(new Enhet(new HsaIdVardgivare("vg1"), null, new HsaIdEnhet("e2"), "2", null, null, null));
-        warehouse.accept(new Enhet(new HsaIdVardgivare("vg1"), null, new HsaIdEnhet("e3"), "3", null, null, null));
-        warehouse.accept(new Enhet(new HsaIdVardgivare("vg2"), null, new HsaIdEnhet("e4"), "4", null, null, null));
-        warehouse.accept(new Enhet(new HsaIdVardgivare("vg2"), null, new HsaIdEnhet("e5"), "5", null, null, null));
+        warehouse.accept(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e1"), "1", null, null, null));
+        warehouse.accept(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e2"), "2", null, null, null));
+        warehouse.accept(new Enhet(new HsaIdVardgivare("vg1"), new HsaIdEnhet("e3"), "3", null, null, null));
+        warehouse.accept(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e4"), "4", null, null, null));
+        warehouse.accept(new Enhet(new HsaIdVardgivare("vg2"), new HsaIdEnhet("e5"), "5", null, null, null));
         warehouse.completeEnhets();
 
         //When

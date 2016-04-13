@@ -110,15 +110,8 @@ public class VardgivareManagerTest {
         hsaInfo = hsaService.getHSAInfo(key1);
         vardgivareManager.saveEnhet(hsaInfo, null);
 
-        List<Vardgivare> allVardgivares = vardgivareManager.getAllVardgivares();
-
         List<Enhet> allEnhets = vardgivareManager.getAllEnhets();
         assertEquals(2, allEnhets.size());
-        assertEquals(1, allVardgivares.size());
-        assertEquals("VG", allVardgivares.get(0).getId());
-        //Enhet name is set by external script (tools/fileservice).
-        //Default name until set by script will be the hsa id.
-        assertEquals("VG", allVardgivares.get(0).getNamn());
     }
 
 }

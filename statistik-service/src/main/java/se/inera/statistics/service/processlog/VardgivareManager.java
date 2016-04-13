@@ -55,21 +55,19 @@ public class VardgivareManager {
         final HsaIdEnhet enhet = new HsaIdEnhet(enhetIdString);
         final HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsaInfo);
         String enhetNamn = UTAN_ENHETSID.equals(enhet) ? "Utan enhets-id" : enhet.getId();
-        String vardgivareNamn = vardgivare.getId();
         String lansId = HSAServiceHelper.getLan(hsaInfo);
         String kommunId = HSAServiceHelper.getKommun(hsaInfo);
         String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(hsaInfo);
 
-        if (validate(vardgivare, enhetNamn, vardgivareNamn, lansId, kommunId, verksamhetsTyper, hsaInfo)) {
+        if (validate(vardgivare, enhetNamn, lansId, kommunId, verksamhetsTyper, hsaInfo)) {
             //Must use 'LIKE' instead of '=' due to STATISTIK-1231
             TypedQuery<Enhet> vardgivareQuery = manager.createQuery("SELECT v FROM Enhet v WHERE v.enhetId LIKE :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
             List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet.getId()).setParameter("vardgivareId", vardgivare.getId()).getResultList();
 
             if (resultList.isEmpty()) {
-                manager.persist(new Enhet(vardgivare, vardgivareNamn, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper));
+                manager.persist(new Enhet(vardgivare, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper));
             } else if (hsaEnhet) {
                 Enhet updatedEnhet = resultList.get(0);
-                updatedEnhet.setVardgivareNamn(vardgivareNamn);
                 updatedEnhet.setLansId(lansId);
                 updatedEnhet.setKommunId(kommunId);
                 updatedEnhet.setVerksamhetsTyper(verksamhetsTyper);
@@ -90,13 +88,7 @@ public class VardgivareManager {
         return query.getResultList();
     }
 
-    @Transactional
-    public List<Vardgivare> getAllVardgivares() {
-        TypedQuery<Vardgivare> query = manager.createQuery("SELECT DISTINCT new se.inera.statistics.service.processlog.Vardgivare(v.vardgivareId, v.vardgivareNamn) FROM Enhet v", Vardgivare.class);
-        return query.getResultList();
-    }
-
-    private boolean validate(HsaIdVardgivare vardgivare, String enhetNamn, String vardgivareNamn, String lansId, String kommunId, String verksamhetsTyper, HsaInfo hsaInfo) {
+    private boolean validate(HsaIdVardgivare vardgivare, String enhetNamn, String lansId, String kommunId, String verksamhetsTyper, HsaInfo hsaInfo) {
         // Utan vardgivare har vi inget uppdrag att behandla intyg, avbryt direkt
         if (vardgivare == null || vardgivare.isEmpty()) {
             LOG.error("Vardgivare saknas: " + hsaInfo);
@@ -107,7 +99,6 @@ public class VardgivareManager {
             return false;
         }
         boolean result = checkLength(enhetNamn, "Enhetsnamn", WidelineConverter.MAX_LENGTH_ENHETNAME, hsaInfo);
-        result |= checkLength(vardgivareNamn, "Vardgivarnamn", WidelineConverter.MAX_LENGTH_VARDGIVARE_NAMN, hsaInfo);
         result |= lansId != null && checkLength(lansId, "Lansid", WidelineConverter.MAX_LENGTH_LAN_ID, hsaInfo);
         result |= kommunId != null && checkLength(kommunId, "Kommunid", WidelineConverter.MAX_LENGTH_KOMMUN_ID, hsaInfo);
         result |= verksamhetsTyper != null && checkLength(verksamhetsTyper, "Verksamhetstyper", WidelineConverter.MAX_LENGTH_VERKSAMHET_TYP, hsaInfo);

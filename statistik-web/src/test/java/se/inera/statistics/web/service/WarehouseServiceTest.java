@@ -116,7 +116,7 @@ public class WarehouseServiceTest {
         rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
         final SimpleKonResponse<SimpleKonDataRow> simpleKonResponse = new SimpleKonResponse<>(rows);
         Mockito.when(sjukfallQuery.getSjukfallPerEnhet(any(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(), eq(range.getMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_PER_SEX))).thenReturn(simpleKonResponse);
-        Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), "vg1", new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
+        Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
 
         //When
         final SimpleKonResponse<SimpleKonDataRow> result = warehouseService.getCasesPerEnhetLandsting(filterSettings);
@@ -145,7 +145,7 @@ public class WarehouseServiceTest {
         rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
         final SimpleKonResponse<SimpleKonDataRow> simpleKonResponse = new SimpleKonResponse<>(rows);
         Mockito.when(sjukfallQuery.getSjukfallPerEnhet(any(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(), eq(range.getMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_ON_TOTAL))).thenReturn(simpleKonResponse);
-        Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), "vg1", new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
+        Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
 
         //When
         final SimpleKonResponse<SimpleKonDataRow> result = warehouseService.getCasesPerPatientsPerEnhetLandsting(filterSettings);

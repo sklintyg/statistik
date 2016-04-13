@@ -283,6 +283,10 @@ class ReportsUtil {
         System.out.println("Using logindata: " + loginData)
     }
 
+    def getLoginInfo() {
+        return get("/api/login/getLoginInfo")
+    }
+
     def getReportAldersgrupp() {
         return get("/api/getAgeGroupsStatistics")
     }

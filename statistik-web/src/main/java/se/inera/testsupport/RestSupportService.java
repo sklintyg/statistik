@@ -155,7 +155,7 @@ public class RestSupportService {
         query.setParameter("enhetId", intyg.getEnhetId());
         int executeUpdate = query.executeUpdate();
         if (executeUpdate < 1) {
-            Enhet enhet = new Enhet(new HsaIdVardgivare(intyg.getVardgivareId()), "", new HsaIdEnhet(intyg.getEnhetId()), name, "", "", "");
+            Enhet enhet = new Enhet(new HsaIdVardgivare(intyg.getVardgivareId()), new HsaIdEnhet(intyg.getEnhetId()), name, "", "", "");
             manager.persist(enhet);
         }
     }

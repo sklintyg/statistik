@@ -2,6 +2,7 @@ package se.inera.statistics.spec
 
 import se.inera.statistics.service.report.util.Icd10
 import se.inera.statistics.service.report.util.Icd10RangeType
+import se.inera.statistics.web.model.LoginInfo
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.statistics.web.service.FilterData
 import se.inera.statistics.web.service.ResponseHandler
@@ -9,6 +10,7 @@ import se.inera.statistics.web.service.ResponseHandler
 abstract class Rapport {
 
     String inloggadSom
+    def loginInfo
     boolean inloggad
     def män
     def kvinnor
@@ -78,6 +80,10 @@ abstract class Rapport {
         return markerad ? "ja" : "nej"
     }
 
+    def vårdgivarnamn() {
+        return loginInfo?.defaultVerksamhet?.vardgivarName
+    }
+
     void setVårdgivarnivå(boolean vårdgivarnivå) {
         this.vårdgivarnivå = vårdgivarnivå
     }
@@ -134,6 +140,7 @@ abstract class Rapport {
 
     public void reset() {
         inloggadSom = null
+        loginInfo = null
         inloggad = false
         totalt = -1
         män = -1
@@ -161,6 +168,7 @@ abstract class Rapport {
         if (inloggadSom != null && !inloggadSom.isEmpty()) {
             reportsUtil.login(inloggadSom, vårdgivarnivå)
             inloggad = true
+            loginInfo = reportsUtil.getLoginInfo()
         }
     }
 

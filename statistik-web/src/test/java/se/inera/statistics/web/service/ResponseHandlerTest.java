@@ -208,7 +208,7 @@ public class ResponseHandlerTest {
     // CHECKSTYLE:ON
 
     private Enhet createEnhet(String id, String namn) {
-        return new Enhet(new HsaIdVardgivare(""), null, new HsaIdEnhet(id), namn, null, null, null);
+        return new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet(id), namn, null, null, null);
     }
 
 }

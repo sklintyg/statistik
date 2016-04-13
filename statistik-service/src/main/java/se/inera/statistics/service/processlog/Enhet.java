@@ -38,8 +38,6 @@ public class Enhet implements Comparable<Enhet> {
 
     private String vardgivareId;
 
-    private String vardgivareNamn;
-
     private String enhetId;
 
     private String namn;
@@ -57,9 +55,8 @@ public class Enhet implements Comparable<Enhet> {
         return id;
     }
 
-    public Enhet(HsaIdVardgivare vardgivareId, String vardgivareNamn, HsaIdEnhet enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
+    public Enhet(HsaIdVardgivare vardgivareId, HsaIdEnhet enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
         setVardgivareId(vardgivareId);
-        this.vardgivareNamn = vardgivareNamn;
         setEnhetId(enhetId);
         this.namn = namn;
         this.lansId = lansId;
@@ -77,14 +74,6 @@ public class Enhet implements Comparable<Enhet> {
 
     public void setVardgivareId(HsaIdVardgivare vardgivareId) {
         this.vardgivareId = vardgivareId.getId();
-    }
-
-    public String getVardgivareNamn() {
-        return vardgivareNamn;
-    }
-
-    public void setVardgivareNamn(String namn) {
-        this.vardgivareNamn = namn;
     }
 
     public HsaIdEnhet getEnhetId() {
