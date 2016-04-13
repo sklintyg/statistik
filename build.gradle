@@ -45,7 +45,8 @@ subprojects {
     ext.jaxb2Version = "0.9.5"
 
     // Internal
-    ext.intygCommonVersion = "2.5.+"
+    //ext.intygCommonVersion = "2.5.+"
+    ext.intygCommonVersion = "0-SNAPSHOT"
 
     test {
         exclude '**/*FunctionalTest.*'

@@ -67,8 +67,12 @@ public class Vardenhet implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Vardenhet)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Vardenhet)) {
+            return false;
+        }
 
         Vardenhet vardenhet = (Vardenhet) o;
 
