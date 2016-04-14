@@ -7,12 +7,16 @@
   file: path={{ releases_folder }} state=directory
   
 - name: Make sure liquibase runner file download is forced when using shapshot repo
-  file: state=absent  path={{ releases_folder }}/liquibase-runner-{{ version }}.zip
+  file: state=absent path={{ releases_folder }}/liquibase-runner-{{ version }}.zip
   when: repo == "snapshots"
 
 - name: download liquibase-runner-{{ version }}.zip
   get_url: url=https://build-inera.nordicmedtest.se/nexus/content/repositories/{{ repo }}/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip
       dest={{ releases_folder }}/liquibase-runner-{{ version }}.zip
+
+- name: Make sure liquibase runner file unzip is forced when using shapshot repo
+  file: state=absent path={{ releases_folder }}/liquibase-runner-{{ version }}
+  when: repo == "snapshots"
 
 - name: Unzip liquibase-runner-{{ version }}.zip
   command: unzip -d {{ releases_folder }} {{ releases_folder }}/liquibase-runner-{{ version }}.zip
