@@ -31,10 +31,7 @@ gretty {
     debugSuspend = false
     scanInterval=1
     managedClassReload=true
-    jvmArgs = [jvmArgSpringProfiles,
-               '-Dstatistics.test.max.intyg=500',
-               '-XX:MaxPermSize=256M',
-               '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8012']
+    jvmArgs = [jvmArgSpringProfiles, '-Dstatistics.test.max.intyg=500', '-XX:MaxPermSize=256M']
 }
 
 node {
