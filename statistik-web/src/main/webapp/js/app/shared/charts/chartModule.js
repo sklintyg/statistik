@@ -102,7 +102,8 @@ angular.module('StatisticsApp.charts', ['underscore'])
                         showInLegend : true
                     },
                     column : {
-                        stacking : 'normal'
+                        stacking : 'normal',
+                        showInLegend : true
                     },
                     series: {
                     },
@@ -112,7 +113,8 @@ angular.module('StatisticsApp.charts', ['underscore'])
                         marker : {
                             enabled : false,
                             symbol : 'circle'
-                        }
+                        },
+                        showInLegend : true
                     },
                     pie : {
                         cursor : 'pointer',
