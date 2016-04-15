@@ -22,25 +22,31 @@ Som inloggad med behörighet till endast enhet2 syns sjukfallet i gruppen "91-18
 Nationell:
 | Sjukfall i rapporten sjukskrivningslangd |
 | sjukskrivningslängd | män? | kvinnor? |
-| 31-90 dagar         | 0    | 0        |
+| 31-60 dagar         | 0    | 0        |
+| 61-90 dagar         | 0    | 0        |
 | 91-180 dagar        | 0    | 1        |
 
 | Sjukfall i oversikt sjukskrivningslangd |
 | grupp          | antal? |
-| 31-90 dagar    | 0      |
+| 31-60 dagar    | 0      |
+| 61-90 dagar    | 0      |
 | 91-180 dagar   | 1    |
 
 Inloggad:
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | sjukskrivningslängd | män? | kvinnor? |
-| user1        | 31-90 dagar         | 0    | 1        |
+| user1        | 31-60 dagar         | 0    | 0        |
+| user1        | 61-90 dagar         | 0    | 1        |
 | user1        | 91-180 dagar        | 0    | 0        |
-| user4        | 31-90 dagar         | 0    | 0        |
+| user4        | 31-60 dagar         | 0    | 0        |
+| user4        | 61-90 dagar         | 0    | 0        |
 | user4        | 91-180 dagar        | 0    | 1        |
 
 | Sjukfall i oversikt sjukskrivningslangd |
 |inloggad som | grupp          | antal? |
-| user1       | 31-90 dagar    | 1     |
+| user1       | 31-60 dagar    | 0     |
+| user1       | 61-90 dagar    | 1     |
 | user1       | 91-180 dagar   | 0    |
-| user4       | 31-90 dagar    | 0     |
+| user4       | 31-60 dagar    | 0     |
+| user4       | 61-90 dagar    | 0     |
 | user4       | 91-180 dagar   | 1    |

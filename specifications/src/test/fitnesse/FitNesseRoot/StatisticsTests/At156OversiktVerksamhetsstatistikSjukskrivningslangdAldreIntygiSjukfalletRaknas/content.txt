@@ -19,7 +19,8 @@ Inloggad:
 |inloggad som | grupp          | antal? |
 | user2       | Under 15 dagar | 0      |
 | user2       | 15-30 dagar    | 1      |
-| user2       | 31-90 dagar    | 0     |
+| user2       | 31-60 dagar    | 0     |
+| user2       | 61-90 dagar    | 0     |
 | user2       | 91-180 dagar   | 0    |
 | user2       | 181-365 dagar  | 0    |
 | user2       | Över 365 dagar | 0   |
@@ -29,7 +30,8 @@ Nationell:
 | grupp          | antal? |
 | Under 15 dagar | 0      |
 | 15-30 dagar    | 1      |
-| 31-90 dagar    | 0      |
+| 31-60 dagar    | 0      |
+| 61-90 dagar    | 0      |
 | 91-180 dagar   | 0    |
 | 181-365 dagar  | 0    |
 | Över 365 dagar | 0    |

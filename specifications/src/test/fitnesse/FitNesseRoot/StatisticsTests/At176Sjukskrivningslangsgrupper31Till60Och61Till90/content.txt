@@ -5,7 +5,7 @@
 Ett sjukfall består av ett intyg med 46 dagars giltighetstid.
 Ett sjukfall består av ett intyg med 74 dagars giltighetstid.
 
-| script | dagens datum | 2013-06-06 |
+| script | dagens datum | 2013-03-20 |
 
 | script | troskel varde | 1 |
 
