@@ -137,7 +137,6 @@ public class Icd10 {
                 while ((line = lr.next()) != null) {
                     Avsnitt avsnitt = Avsnitt.valueOf(line, idToKapitelMap.values());
                     if (avsnitt != null) {
-                        avsnitt.kapitel.avsnitt.add(avsnitt);
                         idToAvsnittMap.put(avsnitt);
                     }
                 }
@@ -148,7 +147,6 @@ public class Icd10 {
                 while ((line = lr.next()) != null) {
                     Kategori kategori = Kategori.valueOf(line, idToAvsnittMap.values());
                     if (kategori != null) {
-                        kategori.avsnitt.kategori.add(kategori);
                         idToKategoriMap.put(kategori);
                     }
                 }
@@ -159,7 +157,6 @@ public class Icd10 {
                 while ((line = lr.next()) != null) {
                     Kod kod = Kod.valueOf(line, idToKategoriMap.values());
                     if (kod != null) {
-                        kod.kategori.kods.add(kod);
                         idToKodMap.put(kod);
                     }
                 }
@@ -170,7 +167,6 @@ public class Icd10 {
                 while ((line = lr.next()) != null) {
                     Kod kod = Kod.valueOf(line, idToKategoriMap.values());
                     if (kod != null) {
-                        kod.kategori.kods.add(kod);
                         idToKodMap.put(kod);
                     }
                 }
@@ -229,7 +225,7 @@ public class Icd10 {
         final List<Icd> icds = new ArrayList<>(Lists.transform(kapitel, new Function<Icd10.Kapitel, Icd>() {
             @Override
             public Icd apply(Icd10.Kapitel kapitel) {
-                return new Icd(kapitel);
+                return new Icd(kapitel, Kategori.class);
             }
         }));
         icds.add(new Icd("", "Utan giltig ICD-10 kod", Icd10.icd10ToInt(Icd10.OTHER_KATEGORI, Icd10RangeType.KATEGORI)));
@@ -449,6 +445,7 @@ public class Icd10 {
             super(range.toUpperCase(), name);
             this.kapitel = kapitel;
             kategori = new ArrayList<>();
+            kapitel.avsnitt.add(this);
         }
 
         public static Avsnitt valueOf(String line, Collection<Kapitel> kapitels) {
@@ -493,6 +490,7 @@ public class Icd10 {
             super(id.toUpperCase(), name);
             this.avsnitt = avsnitt;
             this.kods = new ArrayList<>();
+            avsnitt.kategori.add(this);
         }
 
         public static Kategori valueOf(String line, Collection<Avsnitt> avsnitts) {
@@ -542,6 +540,7 @@ public class Icd10 {
         public Kod(String id, String name, Kategori kategori) {
             super(id.toUpperCase(), name);
             this.kategori = kategori;
+            kategori.kods.add(this);
         }
 
         public static Kod valueOf(String line, Collection<Kategori> kategoris) {

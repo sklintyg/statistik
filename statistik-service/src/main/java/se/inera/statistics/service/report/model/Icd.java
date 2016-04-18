@@ -37,11 +37,19 @@ public class Icd implements Comparable<Icd> {
         this.numericalId = numericalId;
     }
 
-    public Icd(Icd10.Id source) {
+    /**
+     * Create Icd from Icd10.Id source.
+     * @param source Id object to use as source
+     * @param includeAllDownToThisLevel How deep to include subitems, e.g. Avsnitt class would include both kapitel and avsnitt but not kategori or kod.
+     */
+    public Icd(Icd10.Id source, Class includeAllDownToThisLevel) {
         this(source.getVisibleId(), source.getName(), source.toInt());
+        if (includeAllDownToThisLevel != null && includeAllDownToThisLevel.isInstance(source)) {
+            return;
+        }
         for (Icd10.Id subItem : source.getSubItems()) {
             if (!subItem.isInternal()) {
-                subItems.add(new Icd(subItem));
+                subItems.add(new Icd(subItem, includeAllDownToThisLevel));
             }
         }
     }
