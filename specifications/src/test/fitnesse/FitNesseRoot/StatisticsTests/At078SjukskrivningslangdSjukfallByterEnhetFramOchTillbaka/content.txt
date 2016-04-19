@@ -17,7 +17,7 @@ Ett sjukfall består av 3 intyg, det första utfärdat på enhet1 (43 dagar), de
 !3 Då gäller:
 
 Som inloggad med behörighet till bara enhet1 syns sjukfallet EN GÅNG i grupp "91-180 dagar", dvs. det blir bara ett sjukfall och totala längden räknas.
-Som inloggad med behörighet till bara enhet2 syns sjukfallet i grupp "31-90 dagar".
+Som inloggad med behörighet till bara enhet2 syns sjukfallet i grupp "61-90 dagar".
 
 Nationell:
 | Sjukfall i rapporten sjukskrivningslangd |

@@ -16,7 +16,7 @@ Det första intyget pågår i 74 dagar och det andra i 31 dagar.
 
 !3 Då gäller:
 
-Som inloggad med behörighet till endast enhet1 syns sjukfallet i gruppen "31-90 dagar", eftersom det är så länge sjukfallet pågått fram till och med att det kom till min enhet.
+Som inloggad med behörighet till endast enhet1 syns sjukfallet i gruppen "61-90 dagar", eftersom det är så länge sjukfallet pågått fram till och med att det kom till min enhet.
 Som inloggad med behörighet till endast enhet2 syns sjukfallet i gruppen "91-180 dagar", eftersom det är så länge sjukfallet pågått fram till och med att det kom till min enhet.
 
 Nationell:
