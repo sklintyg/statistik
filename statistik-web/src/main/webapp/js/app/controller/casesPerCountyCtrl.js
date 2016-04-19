@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$rootScope', '$timeout', '$routeParams', '$window', 'statisticsData', 'messageService', 'printFactory', 'chartFactory', 'pdfFactory',
-    function ($scope, $rootScope, $timeout, $routeParams, $window, statisticsData, messageService, printFactory, chartFactory, pdfFactory) {
+angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$rootScope', '$timeout', '$routeParams', '$window', 'statisticsData', 'messageService', 'chartFactory', 'pdfFactory',
+    function ($scope, $rootScope, $timeout, $routeParams, $window, statisticsData, messageService, chartFactory, pdfFactory) {
 
         var chart = {};
         $scope.chartContainers = [
@@ -30,21 +30,13 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
             var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
             chartOptions.chart.type = 'column';
-
-            //Set the chart.width to a fixed width when we are about the print.
-            //It will prevent the chart from overflowing the printed page.
-            //Maybe there is some better way around this since this is not very responsive.
-            if($routeParams.printBw || $routeParams.print) {
-                chartOptions.chart.width = 768;
-            }
-            
-            chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
+            chartOptions.legend.enabled = false;
             chartOptions.xAxis.title.text = "Län";
             return new Highcharts.Chart(chartOptions);
         };
 
         var updateChart = function (ajaxResult, doneLoadingCallback) {
-            $scope.series = printFactory.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "bar");
+            $scope.series = chartFactory.addColor(ajaxResult.series);
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
         };
 
@@ -53,7 +45,7 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
         };
 
         var populatePageWithData = function (result, enhetsIds, diagnosIds) {
-            ControllerCommons.populateActiveFilters($scope, statisticsData, diagnosIds, $routeParams.printBw || $routeParams.print, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+            ControllerCommons.populateActiveFilters($scope, statisticsData, diagnosIds, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             var enhetsCount = enhetsIds ? enhetsIds.length : null;
             $scope.subTitle = "Antal sjukfall per län" + ControllerCommons.getEnhetCountText(enhetsCount, false) + result.period;
@@ -63,9 +55,6 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
                 $timeout(function () {
                     $rootScope.$broadcast('pageDataPopulated');
                 });
-                if ($routeParams.printBw || $routeParams.print) {
-                    printFactory.printAndCloseWindow($timeout, $window);
-                }
             }, 1);
         };
 
@@ -85,10 +74,6 @@ angular.module('StatisticsApp').controller('casesPerCountyCtrl', ['$scope', '$ro
         $scope.chartFootnotes = [messageService.getProperty('info.lan.information', null, "", null, true)];
         $scope.exportChart = function () {
             chartFactory.exportChart(chart, $scope.pageName, $scope.subTitle);
-        };
-
-        $scope.print = function (bwPrint) {
-            printFactory.print(bwPrint, $rootScope, $window);
         };
 
         $scope.printPdf = function () {

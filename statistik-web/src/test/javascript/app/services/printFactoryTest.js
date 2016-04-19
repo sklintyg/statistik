@@ -22,7 +22,7 @@ describe("Test of common print services", function() {
 
     beforeEach(module('StatisticsApp'));
 
-    var printFactory;
+    var chartFactory;
     var nonFemaleOrMaleColors = [
         "#E11964",
         "#032C53",
@@ -35,8 +35,8 @@ describe("Test of common print services", function() {
         "#5CC2BC",
         "#704F38"];
 
-    beforeEach(inject(function(_printFactory_) {
-        printFactory = _printFactory_;
+    beforeEach(inject(function(_chartFactory_) {
+        chartFactory = _chartFactory_;
     }));
 
     describe("Adding color to series", function () {
@@ -47,7 +47,7 @@ describe("Test of common print services", function() {
             });
 
             //when
-            printFactory.addColor(listOfSeries);
+            chartFactory.addColor(listOfSeries);
 
             //then
             expect(listOfSeries[0].color).toBe(nonFemaleOrMaleColors[0]);
@@ -70,7 +70,7 @@ describe("Test of common print services", function() {
             });
 
             //when
-            printFactory.addColor(listOfSeries);
+            chartFactory.addColor(listOfSeries);
 
             //then
             expect(listOfSeries[10].color).toBe(nonFemaleOrMaleColors[0]);
@@ -82,7 +82,7 @@ describe("Test of common print services", function() {
             var list = [{id: 1, sex: 'Male'}, {id: 2, sex: 'Male'}];
 
             //when
-            printFactory.addColor(list);
+            chartFactory.addColor(list);
 
             //then
             expect(list[0].color).toBe("#008391");
@@ -94,108 +94,12 @@ describe("Test of common print services", function() {
             var list = [{id: 1, sex: 'Female'}, {id: 2, sex: 'Female'}];
 
             //when
-            printFactory.addColor(list);
+            chartFactory.addColor(list);
 
             //then
             expect(list[0].color).toBe("#EA8025");
             expect(list[1].color).toBe("#f6c08d");
         });
-
-        it("should use color objects with pattern when black and white print === true", function () {
-            //given
-            var list = [{id: 1}, {id: 2}, {id: 3, sex: 'Male'}, {id: 4, sex: 'Male'}, {id: 5, sex: 'Female'}, {
-                id: 6,
-                sex: 'Female'
-            }];
-
-            //when
-            printFactory.addColor(list, true);
-
-            //then
-            expect(list[0].color.pattern).toMatch(/.*1\.png/);
-            expect(list[1].color.pattern).toMatch(/.*2\.png/);
-            expect(list[2].color.pattern).toMatch(/.*5\.png/); //Male bw pattern 1
-            expect(list[3].color.pattern).toMatch(/.*6\.png/); //Male bw pattern 2
-            expect(list[4].color.pattern).toMatch(/.*7\.png/); //Female bw pattern 1
-            expect(list[5].color.pattern).toMatch(/.*8\.png/); //Female bw pattern 2
-        });
-
-    });
-
-    describe("Setting up a series for display type", function () {
-        it("will return a black color when the bw argument is true", function () {
-            //when
-            var result = printFactory.setupSeriesForDisplayType(true, [{}], "line");
-
-            //then
-            expect(result[0].color).toBe("black");
-        });
-
-        it("will set 10 black patterns when the bw argument is true and chart type not line chart ", function () {
-            //given
-            var listOfSeries = _.map(_.range(1, 11), function (item) {
-                return {id: item};
-            });
-
-            //when
-            printFactory.setupSeriesForDisplayType(true, listOfSeries, 'bar');
-
-            //then
-            expect(listOfSeries[0].color.pattern).toMatch(/.*1\.png/);
-            expect(listOfSeries[1].color.pattern).toMatch(/.*2\.png/);
-            expect(listOfSeries[2].color.pattern).toMatch(/.*3\.png/);
-            expect(listOfSeries[3].color.pattern).toMatch(/.*4\.png/);
-            expect(listOfSeries[4].color.pattern).toMatch(/.*5\.png/);
-            expect(listOfSeries[5].color.pattern).toMatch(/.*6\.png/);
-            expect(listOfSeries[6].color.pattern).toMatch(/.*7\.png/);
-            expect(listOfSeries[7].color.pattern).toMatch(/.*8\.png/);
-            expect(listOfSeries[8].color.pattern).toMatch(/.*9\.png/);
-            expect(listOfSeries[9].color.pattern).toMatch(/.*10\.png/);
-        });
-
-        it("will start from the beginning when more than 10 black patterns are needed", function () {
-            //given
-            var listOfSeries = _.map(_.range(1, 13), function (item) {
-                return {id: item};
-            });
-
-            //when
-            printFactory.setupSeriesForDisplayType(true, listOfSeries, 'bar');
-
-            //then
-            expect(listOfSeries[10].color.pattern).toMatch(/.*1\.png/);
-            expect(listOfSeries[11].color.pattern).toMatch(/.*2\.png/);
-        });
-
-        it("will use 10 different dash styles when the bw argument is true and chart type is line", function () {
-            //given
-            var dashStyles = [ 'shortdashdotdot', 'dashdot', 'dot', 'longdash', 'shortdot', 'solid', 'shortdash', 'shortdashdot', 'dash', 'longdashdot', 'longdashdotdot' ];
-            var listOfSeries = _.map(_.range(1, 12), function (item) {
-                return {id: item};
-            });
-
-            //when
-            printFactory.setupSeriesForDisplayType(true, listOfSeries, 'line');
-
-            //then
-            expect(listOfSeries[0].dashStyle).toMatch(dashStyles[0]);
-            expect(listOfSeries[1].dashStyle).toMatch(dashStyles[1]);
-            expect(listOfSeries[2].dashStyle).toMatch(dashStyles[2]);
-            expect(listOfSeries[3].dashStyle).toMatch(dashStyles[3]);
-            expect(listOfSeries[4].dashStyle).toMatch(dashStyles[4]);
-            expect(listOfSeries[5].dashStyle).toMatch(dashStyles[5]);
-            expect(listOfSeries[6].dashStyle).toMatch(dashStyles[6]);
-            expect(listOfSeries[7].dashStyle).toMatch(dashStyles[7]);
-            expect(listOfSeries[8].dashStyle).toMatch(dashStyles[8]);
-            expect(listOfSeries[9].dashStyle).toMatch(dashStyles[9]);
-            expect(listOfSeries[10].dashStyle).toMatch(dashStyles[10]);
-        });
-
-        it("color property will have the right colors when bw argument is false", function () {
-            var result = printFactory.setupSeriesForDisplayType(false, [{}], "line");
-            expect(result[0].color).toBe("#E11964");
-        });
-
     });
 
 });

@@ -1,6 +1,6 @@
 describe("Chart services", function() {
     var chartFactory;
-    beforeEach(module('StatisticsApp.charts'));
+    beforeEach(module('StatisticsApp'));
 
     beforeEach(inject(function(_chartFactory_, ___) {
         chartFactory = _chartFactory_;

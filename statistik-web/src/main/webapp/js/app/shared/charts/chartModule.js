@@ -1,5 +1,5 @@
-angular.module('StatisticsApp.charts', ['underscore'])
-    .factory('chartFactory', ['_', function(_) {
+angular.module('StatisticsApp')
+    .factory('chartFactory', ['COLORS', function(COLORS) {
         'use strict';
 
         var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback) {
@@ -254,8 +254,33 @@ angular.module('StatisticsApp.charts', ['underscore'])
             }
         };
 
+        var addColor = function (rawData) {
+            var colorSelector = 0, maleColorSelector = 0, femaleColorSelector = 0;
+
+            var colors = COLORS.other,
+                maleColor = COLORS.male,
+                femaleColor = COLORS.female;
+
+            _.each(rawData, function (data) {
+                if (data.sex === "Male") {
+                    data.color = maleColor[maleColorSelector++];
+                } else if (data.sex === "Female") {
+                    data.color = femaleColor[femaleColorSelector++];
+                } else {
+                    if(colorSelector === colors.length) {
+                        //Begin anew with colors array
+                        colorSelector = 0;
+                    }
+                    data.color = colors[colorSelector++];
+                }
+
+            });
+            return rawData;
+        };
+
         //This is the public api accessible to customers of this factory
         return {
+            addColor: addColor,
             getHighChartConfigBase: getHighChartConfigBase,
             exportChart: exportChart,
             switchChartType: switchChartType,

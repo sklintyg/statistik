@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'config', 'printFactory', '$location', 'messageService', 'chartFactory', 'pdfFactory',
-    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, printFactory, $location, messageService, chartFactory, pdfFactory) {
+angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'config', '$location', 'messageService', 'chartFactory', 'pdfFactory',
+    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, $location, messageService, chartFactory, pdfFactory) {
 
         var chart;
 
@@ -38,15 +38,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
 
             var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
             chartOptions.chart.type = defaultChartType;
-
-            //Set the chart.width to a fixed width when we are about the print.
-            //It will prevent the chart from overflowing the printed page.
-            //Maybe there is some better way around this since this is not very responsive.
-            if($routeParams.printBw || $routeParams.print) {
-                chartOptions.chart.width = 768;
-            }
-            
-            chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
+            chartOptions.legend.enabled = false;
             chartOptions.xAxis.title.text = "Period";
             chartOptions.subtitle.text = "Antal sjukfall";
             chartOptions.text = "#008391";
@@ -65,7 +57,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         };
 
         var updateChart = function (ajaxResult, doneLoadingCallback) {
-            $scope.series = printFactory.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "line");
+            $scope.series = chartFactory.addColor(ajaxResult.series);
             setColorToTotalCasesSeries($scope.series);
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
         };
@@ -81,7 +73,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         };
 
         var populatePageWithData = function (result) {
-            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
             $timeout(function () {
@@ -90,9 +82,6 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
                 $timeout(function () {
                     $rootScope.$broadcast('pageDataPopulated');
                 });
-                if ($routeParams.printBw || $routeParams.print) {
-                    printFactory.printAndCloseWindow($timeout, $window);
-                }
             }, 1);
         };
 
@@ -151,10 +140,6 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
 
             $scope.exchangeableViews = config.exchangeableViews;
         }
-
-        $scope.print = function (bwPrint) {
-            printFactory.print(bwPrint, $rootScope, $window);
-        };
 
         $scope.printPdf = function () {
             pdfFactory.print($scope, chart);

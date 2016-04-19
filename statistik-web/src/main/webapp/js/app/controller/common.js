@@ -91,12 +91,12 @@ var ControllerCommons = new function(){
         });
     };
 
-    this.populateActiveFilters = function(scope, statisticsData, diagnosIds, isPrint, isAllAvailableDxsSelectedInFilter, filterHash, isAllAvailableEnhetsSelectedInFilter, filteredEnhets) {
-        this.populateActiveDiagnosFilter(scope, statisticsData, diagnosIds, isPrint, isAllAvailableDxsSelectedInFilter);
-        this.populateActiveEnhetsFilter(scope, filterHash, isPrint, isAllAvailableEnhetsSelectedInFilter, filteredEnhets);
+    this.populateActiveFilters = function(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter, filterHash, isAllAvailableEnhetsSelectedInFilter, filteredEnhets) {
+        this.populateActiveDiagnosFilter(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter);
+        this.populateActiveEnhetsFilter(scope, filterHash, isAllAvailableEnhetsSelectedInFilter, filteredEnhets);
     };
 
-    this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isPrint, isAllAvailableDxsSelectedInFilter) {
+    this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter) {
         if (isAllAvailableDxsSelectedInFilter) {
             return;
         }
@@ -105,19 +105,16 @@ var ControllerCommons = new function(){
         }
         if (diagnosIds.length === 0) {
             scope.activeDiagnosFilters = [""];
-            scope.activeDiagnosFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
             return;
         }
         statisticsData.getIcd10Structure(function (diagnoses) {
             scope.activeDiagnosFilters = diagnoses ? ControllerCommons.getDiagnosFilterInformationText(diagnosIds, diagnoses) : null;
-            scope.activeDiagnosFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
         }, function () {
             scope.activeDiagnosFilters = diagnosIds;
-            scope.activeDiagnosFiltersForPrint = isPrint ? scope.activeDiagnosFilters : null;
         });
     };
 
-    this.populateActiveEnhetsFilter = function(scope, filterHash, isPrint, isAllAvailableEnhetsSelectedInFilter, enhetNames) {
+    this.populateActiveEnhetsFilter = function(scope, filterHash, isAllAvailableEnhetsSelectedInFilter, enhetNames) {
         if (isAllAvailableEnhetsSelectedInFilter) {
             scope.headerEnhetInfo = scope.verksamhetName;
             return;
@@ -131,7 +128,6 @@ var ControllerCommons = new function(){
         } else {
             scope.headerEnhetInfo = "";
             scope.activeEnhetsFilters = enhetNames.length > 1 ? enhetNames : [""];
-            scope.activeEnhetsFiltersForPrint = isPrint ? scope.activeEnhetsFilters : null;
         }
     };
 

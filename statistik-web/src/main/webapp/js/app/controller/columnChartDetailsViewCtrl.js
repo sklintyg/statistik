@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'printFactory', 'chartFactory', 'pdfFactory',
-    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, printFactory, chartFactory, pdfFactory) {
+angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'chartFactory', 'pdfFactory',
+    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, chartFactory, pdfFactory) {
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
         var isLandsting = ControllerCommons.isShowingLandsting($location);
         var chart = {};
@@ -34,15 +34,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
             var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
             chartOptions.chart.type = defaultChartType;
-
-            //Set the chart.width to a fixed width when we are about to print.
-            //It will prevent the chart from overflowing the printed page.
-            //Maybe there is some better way around this since this is not very responsive.
-            if($routeParams.printBw || $routeParams.print) {
-                chartOptions.chart.width = 768;
-            }
-
-            chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
+            chartOptions.legend.enabled = false;
             chartOptions.xAxis.title.text = config.chartXAxisTitle;
             chartOptions.subtitle.text = config.chartYAxisTitle ? config.chartYAxisTitle : (config.percentChart ? "Andel sjukfall i %" : 'Antal sjukfall');
             chartOptions.yAxis.labels.formatter = function () {
@@ -59,7 +51,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         var updateChart = function (ajaxResult, doneLoadingCallback) {
-            $scope.series = printFactory.setupSeriesForDisplayType($routeParams.printBw, ajaxResult.series, "bar");
+            $scope.series = chartFactory.addColor(ajaxResult.series);
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
         };
 
@@ -85,7 +77,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
         var populatePageWithData = function (result) {
             $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
-            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;
@@ -99,9 +91,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
                 $timeout(function () {
                     $rootScope.$broadcast('pageDataPopulated');
                 });
-                if ($routeParams.printBw || $routeParams.print) {
-                    printFactory.printAndCloseWindow($timeout, $window);
-                }
             }, 1);
         };
 
@@ -167,10 +156,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
 
         $scope.exportChart = function () {
             chartFactory.exportChart(chart, $scope.pageName, $scope.subTitle);
-        };
-
-        $scope.print = function (bwPrint) {
-            printFactory.print(bwPrint, $rootScope, $window);
         };
 
         $scope.printPdf = function () {

@@ -32,7 +32,6 @@ describe('Controller: overviewCtrl', function () {
             $timeout: $timeout,
             statisticsData: statisticsData,
             $routeParams: $routeParams,
-            printFactory: {}
         });
         scope.$digest();
     }));

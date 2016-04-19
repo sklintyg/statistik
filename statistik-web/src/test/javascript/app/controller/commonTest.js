@@ -46,7 +46,7 @@ describe("Test of common functions for controllers", function() {
         var enhetnames = ["OneEnhet"];
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", false, true, enhetnames);
+        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", true, enhetnames);
 
         //Then
         expect(scope.headerEnhetInfo).toMatch("VerksamhetName");
@@ -58,7 +58,7 @@ describe("Test of common functions for controllers", function() {
         var enhetnames = ["OneEnhet"];
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, null, false, false, enhetnames);
+        ControllerCommons.populateActiveEnhetsFilter(scope, null, false, enhetnames);
 
         //Then
         expect(scope.headerEnhetInfo).toMatch("VerksamhetName");
@@ -70,7 +70,7 @@ describe("Test of common functions for controllers", function() {
         var enhetnames = ["OneEnhet", "SecondEnhet"];
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", false, false, enhetnames);
+        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", false, enhetnames);
 
         //Then
         expect(scope.headerEnhetInfo).toMatch("");
@@ -82,7 +82,7 @@ describe("Test of common functions for controllers", function() {
         var enhetnames = ["OneEnhet", "SecondEnhet"];
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", false, false, enhetnames);
+        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", false, enhetnames);
 
         //Then
         expect(scope.activeEnhetsFilters).toMatch(["OneEnhet", "SecondEnhet"]);
@@ -94,7 +94,7 @@ describe("Test of common functions for controllers", function() {
         var enhetnames = ["OneEnhet"];
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", false, false, enhetnames);
+        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", false, enhetnames);
 
         //Then
         expect(scope.headerEnhetInfo).toMatch("OneEnhet");
@@ -106,7 +106,7 @@ describe("Test of common functions for controllers", function() {
         var enhetnames = ["OneEnhet"];
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", false, false, enhetnames);
+        ControllerCommons.populateActiveEnhetsFilter(scope, "hash", false, enhetnames);
 
         //Then
         expect(scope.activeEnhetsFilters).toMatch([""]);

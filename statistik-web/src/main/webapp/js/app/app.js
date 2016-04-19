@@ -16,7 +16,6 @@ var app = angular.module('StatisticsApp',
      'StatisticsApp.treeMultiSelector',
      'StatisticsApp.chartSeriesButtonGroup',
      'StatisticsApp.businessFilter',
-     'StatisticsApp.charts',
      'dropzone',
      'ngStorage'])
     .config(

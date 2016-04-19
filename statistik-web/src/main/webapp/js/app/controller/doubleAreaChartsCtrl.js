@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'config', 'messageService', 'printFactory', 'diagnosisTreeFilter', '$location', 'chartFactory', '_', 'pdfFactory',
-    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, config, messageService, printFactory, diagnosisTreeFilter, $location ,chartFactory, _, pdfFactory) {
+angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'config', 'messageService', 'diagnosisTreeFilter', '$location', 'chartFactory', '_', 'pdfFactory',
+    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, config, messageService, diagnosisTreeFilter, $location ,chartFactory, _, pdfFactory) {
         var that = this;
         var chart1 = {};
         var chart2 = {};
@@ -36,7 +36,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             chartOptions.chart.renderTo = containerId;
             chartOptions.plotOptions.area.lineWidth = 1;
             chartOptions.plotOptions.area.lineColor = 'grey';
-            chartOptions.legend.enabled = $routeParams.printBw || $routeParams.print;
+            chartOptions.legend.enabled = false;
             chartOptions.xAxis.title.text = "Period";
             chartOptions.tooltip.useHTML = true;
             chartOptions.subtitle.text = (config.percentChart ? "Andel " : "Antal ") + yAxisTitle;
@@ -118,11 +118,11 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
             var chartCategories = ajaxResult.femaleChart.categories;
 
             var chartSeriesFemale = ajaxResult.femaleChart.series;
-            printFactory.setupSeriesForDisplayType($routeParams.printBw, chartSeriesFemale, "area");
+            chartFactory.addColor(chartSeriesFemale);
             that.chart1 = that.paintChart('chart1', 'sjukfall för kvinnor', 118, chartCategories, chartSeriesFemale, -100, doneLoadingCallback, config.percentChart);
 
             var chartSeriesMale = ajaxResult.maleChart.series;
-            printFactory.setupSeriesForDisplayType($routeParams.printBw, chartSeriesMale, "area");
+            chartFactory.addColor(chartSeriesMale);
             that.chart2 = that.paintChart('chart2', 'sjukfall för män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback, config.percentChart);
 
             updateChartsYAxisMaxValue();
@@ -145,7 +145,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
         };
 
         var populatePageWithData = function (result) {
-            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
             $scope.enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.kapitelId);
@@ -162,9 +162,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
                 $timeout(function () {
                     $rootScope.$broadcast('pageDataPopulated');
                 });
-                if ($routeParams.printBw || $routeParams.print) {
-                    printFactory.printAndCloseWindow($timeout, $window);
-                }
             }, 1);
             $timeout(function () {
                 $scope.printDataTables = updatePrintDataTable(result);
@@ -239,10 +236,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
 
         $scope.exportChart = function (chartName) {
             chartFactory.exportChart(that[chartName], $scope.pageName, $scope.subTitle);
-        };
-
-        $scope.print = function (bwPrint) {
-            printFactory.print(bwPrint, $rootScope, $window);
         };
 
         $scope.printPdf = function () {

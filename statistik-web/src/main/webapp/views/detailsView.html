@@ -140,12 +140,6 @@
           </button>
 
           <ul class="dropdown-menu detail-view-choice-dropdown dropdown-menu-right">
-            <li><a data-ng-click="print(false)"><img src="img/dropdown-icons/farg1b.png" />
-                  <span message key="dropdown.val.skrivut-farg"></span></a>
-            </li>
-            <li><a data-ng-click="print(true)"><img src="img/dropdown-icons/sv_vit1b.png" />
-                  <span message key="dropdown.val.skrivut-svart-vitt"></span></a>
-            </li>
             <li><a data-ng-click="printPdf()"><img src="img/dropdown-icons/pdf1b.png" />
                   <span message key="dropdown.val.skrivut-pdf"></span></a>
             </li>
@@ -223,8 +217,7 @@
     <p><!-- pagebreak --></p>
 
     <!-- Starting data-table -->
-    <div class="rotate-print browserTable"
-         data-ng-class="{printTable: !useSpecialPrintTable, 'hidden-print': useSpecialPrintTable}">
+    <div class="rotate-print browserTable">
       <div class="row">
 					<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress" id="data-table-print-header">
 						{{subTitle}}
@@ -267,32 +260,6 @@
           </accordion>
         </div>
       </div>
-    </div>
-
-    <div data-ng-class="{printTable: useSpecialPrintTable, 'hidden-print': !useSpecialPrintTable}"
-         style="display:none;">
-      <div class="row">
-                    <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress" id="data-table-print-header">
-                        {{subTitle}}
-                    </span>
-      </div>
-      <table id="datatable" class="table table-striped print-pagebreak-after"
-             data-ng-repeat="printTable in printDataTables">
-        <thead>
-        <tr class="table-print-header" data-ng-repeat="headerrow in printTable.headers">
-          <td colspan="{{header.colspan}}" data-ng-repeat="header in headerrow track by $index"
-              bindonce="header.text"></td>
-        </tr>
-        </thead>
-        <tbody>
-        <tr data-ng-repeat="row in printTable.rows">
-          <td ng-class="{bold: row.marked}" bindonce="row.name"></td>
-          <td data-ng-repeat="fieldData in row.data track by $index" bindonce="fieldData | thousandseparated"></td>
-        </tr>
-        </tbody>
-      </table>
-      <!-- Page break for print -->
-      <p><!-- pagebreak --></p>
     </div>
   </div>
 </div></div>

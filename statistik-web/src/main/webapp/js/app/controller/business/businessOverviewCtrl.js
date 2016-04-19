@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory', 'chartFactory', 'messageService', 'pdfOverviewFactory', 'thousandseparatedFilter',
-function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory, chartFactory, messageService, pdfOverviewFactory, thousandseparatedFilter) {
+angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'chartFactory', 'messageService', 'pdfOverviewFactory', 'thousandseparatedFilter',
+function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, chartFactory, messageService, pdfOverviewFactory, thousandseparatedFilter) {
 
     var perMonthAlterationChart = {}, newSexProportionChart = {}, oldSexProportionChart = {},
         ageDonutChart = {}, diagnosisDonutChart = {}, degreeOfSickLeaveChart = {}, sickLeaveLengthChart = {};
@@ -53,15 +53,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
 
     var paintPerMonthAlternationChart = function (alteration) {
         var chartOptions, color = "#57843B", patternPath;
-        if ($routeParams.printBw) {
-            patternPath = window.location.pathname + 'img/print-patterns/1.png';
-            //Override the default color with a black and white pattern
-            color = {
-                pattern: patternPath,
-                width: 6,
-                height: 6
-            };
-        }
 
         chartOptions = chartFactory.getHighChartConfigBase([], [
             {
@@ -104,25 +95,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
     };
 
     var paintSexProportionChart = function(containerId, male, female, period) {
-        var femaleColor = "#EA8025", maleColor = "#008391", chartOptions, patternPathFemale, patternPathMale;
-
-        if ($routeParams.printBw) {
-            patternPathMale = window.location.pathname + 'img/print-patterns/5.png';
-            patternPathFemale = window.location.pathname + 'img/print-patterns/7.png';
-
-            //Override the default color with a black and white pattern
-            femaleColor = {
-                pattern: patternPathFemale,
-                width: 6,
-                height: 6
-            };
-
-            maleColor = {
-                pattern: patternPathMale,
-                width: 6,
-                height: 6
-            };
-        }
+        var femaleColor = "#EA8025", maleColor = "#008391", chartOptions;
 
         var series = [
             {
@@ -178,7 +151,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
         chartOptions.chart.height = 180;
         chartOptions.chart.plotBorderWidth = 0;
         chartOptions.subtitle = null;
-        chartOptions.plotOptions.pie.showInLegend = $routeParams.printBw || $routeParams.print || false;
+        chartOptions.plotOptions.pie.showInLegend = false;
         chartOptions.series = [
             {
                 name: 'Antal',
@@ -197,32 +170,32 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
 
     var updateCharts = function (result) {
 
-        printFactory.setupSeriesForDisplayType($routeParams.printBw, result.casesPerMonth.totalCases, "pie");
+        chartFactory.addColor(result.casesPerMonth.totalCases);
         perMonthAlterationChart = paintPerMonthAlternationChart(result.casesPerMonth.totalCases);
 
-        printFactory.setupSeriesForDisplayType($routeParams.printBw, result.casesPerMonth.amountMaleOld, "pie");
+        chartFactory.addColor(result.casesPerMonth.amountMaleOld);
         oldSexProportionChart = paintSexProportionChart("sexProportionChartOld", result.casesPerMonth.amountMaleOld, result.casesPerMonth.amountFemaleOld, result.casesPerMonth.oldPeriod);
 
-        printFactory.setupSeriesForDisplayType($routeParams.printBw, result.casesPerMonth.amountFemaleNew, "pie");
+        chartFactory.addColor(result.casesPerMonth.amountFemaleNew);
         newSexProportionChart = paintSexProportionChart("sexProportionChartNew", result.casesPerMonth.amountMaleNew, result.casesPerMonth.amountFemaleNew, result.casesPerMonth.newPeriod);
 
         var diagnosisDonutData = extractDonutData(result.diagnosisGroups);
-        printFactory.setupSeriesForDisplayType($routeParams.printBw, diagnosisDonutData, "pie");
+        chartFactory.addColor(diagnosisDonutData);
         diagnosisDonutChart = paintDonutChart("diagnosisChart", diagnosisDonutData);
         $scope.diagnosisGroups = result.diagnosisGroups;
 
         var ageGroupsDonutData = extractDonutData(result.ageGroups);
-        printFactory.setupSeriesForDisplayType($routeParams.printBw, ageGroupsDonutData, "pie");
+        chartFactory.addColor(ageGroupsDonutData);
         ageDonutChart = paintDonutChart("ageChart", ageGroupsDonutData);
         $scope.ageGroups = result.ageGroups;
 
         var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
-        printFactory.setupSeriesForDisplayType($routeParams.printBw, degreeOfSickLeaveDonutData, "pie");
+        chartFactory.addColor(degreeOfSickLeaveDonutData);
         degreeOfSickLeaveChart = paintDonutChart("degreeOfSickLeaveChart", degreeOfSickLeaveDonutData);
 
         $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
-        printFactory.setupSeriesForDisplayType($routeParams.printBw, result.sickLeaveLength.chartData, "bar");
+        chartFactory.addColor(result.sickLeaveLength.chartData);
         sickLeaveLengthChart = paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
 
         $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
@@ -231,29 +204,14 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
 
     var populatePageWithData = function (result) {
         $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
-        ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, $routeParams.printBw || $routeParams.print, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+        ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
         $timeout(function () {
             updateCharts(result);
-
-            if ($routeParams.printBw || $routeParams.print) {
-                printFactory.printAndCloseWindow($timeout, $window);
-            }
         }, 1);
     };
 
     function paintBarChart(containerId, chartData, tooltipHeaderPrefix) {
         var color = '#57843B', chartOptions, patternPath;
-
-        if ($routeParams.printBw) {
-            patternPath = window.location.pathname + 'img/print-patterns/8.png';
-
-            //Override the default color with a black and white pattern
-            color = {
-                pattern: patternPath,
-                width: 6,
-                height: 6
-            };
-        }
 
         var series = [
             {
@@ -284,7 +242,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
     }
 
     function extractDonutData(rawData) {
-        printFactory.addColor(rawData);
+        chartFactory.addColor(rawData);
         var donutData = [];
         for (var i = 0; i < rawData.length; i++) {
             donutData.push({
@@ -306,10 +264,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, p
     $scope.spinnerText = "Laddar information...";
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
-
-    $scope.print = function (bwPrint) {
-        printFactory.print(bwPrint, $rootScope, $window);
-    };
 
     $scope.printPdf = function () {
         var charts = [];

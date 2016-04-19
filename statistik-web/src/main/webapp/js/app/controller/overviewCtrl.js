@@ -19,8 +19,8 @@
 
 'use strict';
 
-angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'printFactory', 'COUNTY_COORDS', 'chartFactory', 'messageService', 'pdfOverviewFactory', 'thousandseparatedFilter',
-    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, printFactory, COUNTY_COORDS, chartFactory, messageService, pdfOverviewFactory, thousandseparatedFilter) {
+angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'COUNTY_COORDS', 'chartFactory', 'messageService', 'pdfOverviewFactory', 'thousandseparatedFilter',
+    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, COUNTY_COORDS, chartFactory, messageService, pdfOverviewFactory, thousandseparatedFilter) {
 
         var self = this;
 
@@ -111,16 +111,6 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             chartOptions.chart.plotBorderWidth = 0;
             chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}'  + (tooltipHeaderSuffix || "") + '</span><br/>';
 
-            //Things we need to do when the chart is going to be printed
-            if($routeParams.printBw || $routeParams.print) {
-                chartOptions.chart.height = 300; //Make it a little bigger to accomodate for the legend
-                chartOptions.chart.marginBottom = 120; //Give it a little bit of margin to put the legend in
-                chartOptions.plotOptions.pie.showInLegend = true;
-                chartOptions.legend = {
-                    align: 'center',
-                    verticalAlign: 'bottom'
-                };
-            }
             return new Highcharts.Chart(chartOptions);
         };
 
@@ -129,31 +119,31 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             $scope.casesPerMonthMaleProportion = result.casesPerMonth.proportionMale;
             $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
 
-            printFactory.setupSeriesForDisplayType($routeParams.printBw, result.casesPerMonth.alteration, "pie");
+            chartFactory.addColor(result.casesPerMonth.alteration);
             perMonthAlterationChart = paintPerMonthAlternationChart(result.casesPerMonth.alteration);
 
             var diagnosisDonutData = extractDonutData(result.diagnosisGroups);
-            printFactory.setupSeriesForDisplayType($routeParams.printBw, diagnosisDonutData, "pie");
+            chartFactory.addColor(diagnosisDonutData);
             diagnosisDonutChart = paintDonutChart("diagnosisChart", diagnosisDonutData);
             $scope.diagnosisGroups = result.diagnosisGroups;
 
             var ageGroupsDonutData = extractDonutData(result.ageGroups);
-            printFactory.setupSeriesForDisplayType($routeParams.printBw, ageGroupsDonutData, "pie");
+            chartFactory.addColor(ageGroupsDonutData);
             ageDonutChart = paintDonutChart("ageChart", ageGroupsDonutData);
             $scope.ageGroups = result.ageGroups;
 
             var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
-            printFactory.setupSeriesForDisplayType($routeParams.printBw, degreeOfSickLeaveDonutData, "pie");
+            chartFactory.addColor(degreeOfSickLeaveDonutData);
             degreeOfSickLeaveChart = paintDonutChart("degreeOfSickLeaveChart", degreeOfSickLeaveDonutData, null, " %");
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
-            printFactory.setupSeriesForDisplayType($routeParams.printBw, result.sickLeaveLength.chartData, "bar");
+            chartFactory.addColor(result.sickLeaveLength.chartData);
             sickLeaveLengthChart = paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
 
             $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
             $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
 
-            printFactory.setupSeriesForDisplayType($routeParams.printBw, result.perCounty);
+            chartFactory.addColor(result.perCounty);
             sickLeavePerCountyChart = paintSickLeavePerCountyChart("sickLeavePerCountyChart", result.perCounty);
             $scope.sickLeavePerCountyGroups = result.perCounty;
         };
@@ -162,10 +152,6 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             $timeout(function () {
                 updateCharts(result);
-
-                if ($routeParams.printBw || $routeParams.print) {
-                    printFactory.printAndCloseWindow($timeout, $window);
-                }
             }, 1);
         };
 
@@ -213,19 +199,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                 backgroundColor: null //Transparent
             };
 
-            if($routeParams.printBw || $routeParams.print) {
-                chartOptions.chart.width = 308; //Make the chart 120px wider than normal
-                chartOptions.chart.marginRight = 120; //Let the 120px be a margin to the right
-                //Enable the legend and put it to the right
-                chartOptions.legend = {
-                    enabled: true,
-                    align: 'right',
-                    layout: 'vertical'
-                };
-            } else {
-                chartOptions.legend.enabled = false;
-            }
-
+            chartOptions.legend.enabled = false;
             chartOptions.plotOptions = {
                 bubble: {
                     tooltip: {
@@ -284,7 +258,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
         }
 
         function extractDonutData(rawData) {
-            printFactory.addColor(rawData);
+            chartFactory.addColor(rawData);
 
             return _.map(rawData, function(data) {
                 return {
@@ -301,10 +275,6 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
         $scope.spinnerText = "Laddar information...";
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
-
-        $scope.print = function (bwPrint) {
-            printFactory.print(bwPrint, $rootScope, $window);
-        };
 
         $scope.printPdf = function () {
             var charts = [];
