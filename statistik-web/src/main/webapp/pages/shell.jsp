@@ -76,7 +76,7 @@
 <!-- Navbar
 ================================================== -->
 <div id="navigation-container">
-  <div class="header clearfix">
+  <div class="header clearfix hidden-print">
     <div class="headerbox">
       <span class="headerbox-logo pull-left">
         <a ng-href="/#/">
@@ -193,7 +193,6 @@
 <script type="text/javascript" src="<c:url value='/js/app/app.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/resources/constantsModule.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/factories.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/services/printFactory.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/pdfFactory.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/services/pdfOverviewFactory.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/shared/businessfilter/businessFilterModule.js'/>"></script>

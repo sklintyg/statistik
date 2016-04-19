@@ -21,16 +21,16 @@
   <div class="row" id="print-logo-display">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
       <img src="img/statistiktjansten-logotype-print.png">
-      <h2 class="business-name-header print-only-no-display">- <span bindonce="verksamhetName"></span></h2>
+      <h2 class="business-name-header print-only-no-display"><span bindonce="verksamhetName"></span></h2>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print right-2px-padding"
+  <div class="row hidden-print">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left right-2px-padding"
          style="width: auto !important;">
       <h1 class="national-statistic-h1" data-ng-bind="viewHeader" style="line-height: 17px; margin-bottom: 0px;"></h1>
     </div>
-    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print left-2px-padding"
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left left-2px-padding"
          ng-show="verksamhetViewShowing" id="business-name-header-container" style="width: auto !important;">
       <h2 class="business-name-header" style="line-height: 16px;">{{headerEnhetInfo}}</h2>
     </div>
@@ -66,7 +66,7 @@
     </div>
   </div>
 
-  <div class="hidden-print clearfix">
+  <div class="clearfix">
     <div class="pull-left filter-list" data-ng-if="activeDiagnosFilters">
       <filter-list collapse-id="chart-diagnosfilterinfo-text" filters="activeDiagnosFilters"></filter-list>
     </div>
@@ -77,7 +77,7 @@
   </div>
 
   <!-- Start detailsOptions if any -->
-  <div class="row hidden-print">
+  <div class="row">
     <tree-multi-selector style="margin-top: 20px;" class="col-xs-6 col-sm-6 col-md-6 col-lg-6 pull-left"
                          menu-options="diagnosisTreeFilter.diagnosisOptionsTree" done-clicked="diagnosisSelected"
                          data-ng-show="showDiagnosisSelector" text-data="diagnosisSelectorData"></tree-multi-selector>
@@ -108,7 +108,7 @@
       <div class="col-md-12 col-lg-7" spinner label="Skapar pdf" show-spinner="generatingPdf"></div>
     </div>
 
-    <div class="pull-right">
+    <div class="pull-right hidden-print">
         <div class="pull-left select-chart-type" ng-if="isVerksamhetShowing">
           <h3 message key="lbl.visa-knappgrupp-serier" data-ng-if="exchangeableViews"></h3>
           <chart-series-bg views="exchangeableViews"></chart-series-bg>
@@ -175,7 +175,7 @@
       </div>
     </div>
 
-    <div class="row hidden-print">
+    <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="btn-group legend-btn-group">
 						<span data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
@@ -183,38 +183,13 @@
 							<label id="legend-label" style="white-space: nowrap;" legend-height>
                 <input type="checkbox" checked="" class="detail-checkbox" data-ng-click="toggleSeriesVisibility($index)"
                        style="cursor: pointer; cursor: hand;" />
-                <span class="legend-color-square" data-ng-style="{backgroundColor: seriesData.color}"></span>
+                <span class="legend-color-square" data-ng-attr-style="background-color: {{seriesData.color}}!important"></span>
                 <span class="legend-name">{{seriesData.name}}</span>
               </label>
 						</span>
         </div>
       </div>
     </div>
-
-    <div class="row pull-left" data-ng-show="activeDiagnosFiltersForPrint">
-      <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress pull-left ng-binding">Sammanställning av diagnosfilter</span>
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="alert alert-info" style="margin-top: 3px; background: #FFFFFF">
-          <div data-ng-repeat="activeDiagnosFilter in activeDiagnosFiltersForPrint">
-            <p bindonce="activeDiagnosFilter"></p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row pull-left" data-ng-show="activeEnhetsFiltersForPrint">
-      <span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress pull-left ng-binding">Sammanställning av enhetsfilter</span>
-      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div class="alert alert-info" style="margin-top: 3px; background: #FFFFFF">
-          <div data-ng-repeat="activeEnhetsFilter in activeEnhetsFiltersForPrint">
-            <p bindonce="activeEnhetsFilter"></p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Page break for print -->
-    <p><!-- pagebreak --></p>
 
     <!-- Starting data-table -->
     <div class="rotate-print browserTable">
