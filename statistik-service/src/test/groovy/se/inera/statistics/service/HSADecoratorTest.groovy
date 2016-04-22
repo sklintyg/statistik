@@ -1,8 +1,5 @@
 package se.inera.statistics.service
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ObjectNode
-import groovy.json.JsonBuilder
 import org.junit.Before
 import org.junit.Test
 import se.inera.statistics.service.helper.DocumentHelper
