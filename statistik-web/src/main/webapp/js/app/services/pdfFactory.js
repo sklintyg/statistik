@@ -21,6 +21,10 @@ angular.module('StatisticsApp')
     .factory('pdfFactory', ['$window', '$timeout', 'thousandseparatedFilter', function($window, $timeout, thousandseparatedFilter) {
 
         function _print($scope, charts) {
+            if (!charts || angular.equals({}, charts)) {
+                return;
+            }
+
             $scope.generatingPdf = true;
 
             var table;

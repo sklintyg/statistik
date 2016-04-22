@@ -159,6 +159,10 @@ angular.module('StatisticsApp')
         };
 
         var exportChart = function(chart, chartName, title) {
+            if (!chart || angular.equals({}, chart)) {
+                return;
+            }
+
             var options = {filename: ControllerCommons.getFileName(chartName)};
             var extendedChartOptions = {};
             if (chart.series.length <= 10) {
