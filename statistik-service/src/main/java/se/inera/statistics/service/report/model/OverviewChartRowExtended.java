@@ -35,4 +35,27 @@ public class OverviewChartRowExtended extends OverviewChartRow {
     public String toString() {
         return super.toString() + ", {\"OverviewChartRowExtended\":{\"alternation\":" + alternation + "}}";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof OverviewChartRowExtended)) {
+            return false;
+        }
+
+        OverviewChartRowExtended that = (OverviewChartRowExtended) o;
+
+        if (!super.equals(o)) {
+            return false;
+        }
+
+        return alternation == that.alternation;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode() + alternation;
+    }
 }

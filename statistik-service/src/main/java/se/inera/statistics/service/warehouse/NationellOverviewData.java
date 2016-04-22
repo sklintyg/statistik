@@ -41,6 +41,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import static se.inera.statistics.service.warehouse.query.AldersgruppQuery.ALDERSGRUPPER_REST;
+
 @Component
 public class NationellOverviewData {
 
@@ -83,16 +85,7 @@ public class NationellOverviewData {
 
         Set<String> include = getTop(MAX_LAN, currentData);
 
-        List<OverviewChartRowExtended> result = new ArrayList<>();
-        for (int i = 0; i < currentData.getRows().size(); i++) {
-            String rowName = previousData.getRows().get(i).getName();
-            if (include.contains(rowName)) {
-                int previous = total(previousData.getRows().get(i));
-                int current = total(currentData.getRows().get(i));
-                result.add(new OverviewChartRowExtended(rowName, current, percentChange(current, previous)));
-            }
-        }
-        return result;
+        return getResult(include, previousData, currentData, null);
     }
 
     private int getForandringLangaSjukskrivningar(Range range) {
@@ -146,15 +139,32 @@ public class NationellOverviewData {
     private List<OverviewChartRowExtended> getAldersgrupper(Range range) {
         SimpleKonResponse<SimpleKonDataRow> previousData = data.getAldersgrupper(ReportUtil.getPreviousPeriod(range).getFrom(), 1, KVARTAL);
         SimpleKonResponse<SimpleKonDataRow> currentData = data.getAldersgrupper(range.getFrom(), 1, KVARTAL);
+        Set<String> include = getTop(MAX_ALDERSGRUPPER - 1, currentData);
+
+        return getResult(include, previousData, currentData, ALDERSGRUPPER_REST);
+    }
+
+    private List<OverviewChartRowExtended> getResult(Set<String> include, SimpleKonResponse<SimpleKonDataRow> previousData,  SimpleKonResponse<SimpleKonDataRow> currentData, String rest) {
         List<OverviewChartRowExtended> result = new ArrayList<>();
-        Set<String> include = getTop(MAX_ALDERSGRUPPER, currentData);
+
+        int restCurrent = 0;
+        int restPrevious = 0;
+
         for (int i = 0; i < currentData.getRows().size(); i++) {
             String rowName = previousData.getRows().get(i).getName();
+            int previous = total(previousData.getRows().get(i));
+            int current = total(currentData.getRows().get(i));
+
             if (include.contains(rowName)) {
-                int previous = total(previousData.getRows().get(i));
-                int current = total(currentData.getRows().get(i));
                 result.add(new OverviewChartRowExtended(rowName, current, percentChange(current, previous)));
+            } else {
+                restCurrent += current;
+                restPrevious += previous;
             }
+        }
+
+        if (rest != null) {
+            result.add(new OverviewChartRowExtended(rest, restCurrent, percentChange(restCurrent, restPrevious)));
         }
 
         return result;

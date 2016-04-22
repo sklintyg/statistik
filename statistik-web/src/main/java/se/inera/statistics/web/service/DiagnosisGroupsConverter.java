@@ -47,6 +47,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
     private static final Map<String, List<Integer>> DIAGNOSIS_CHART_GROUPS = createDiagnosisGroupsMap(true);
     static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
     private static final int DISPLAYED_DIAGNOSIS_GROUPS = 5;
+    static final String DIAGNOS_REST_NAME = "Andra diagnosgrupper";
 
     private static Map<Integer, String> map(Map<String, List<Integer>> diagnosisChartGroups) {
         Map<Integer, String> result = new HashMap<>();
@@ -92,20 +93,31 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
 
     public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> diagnosisGroups) {
         List<OverviewChartRowExtended> merged = mergeOverviewChartGroups(diagnosisGroups);
-        Collections.sort(merged, new Comparator<OverviewChartRowExtended>() {
-            @Override
-            public int compare(OverviewChartRowExtended o1, OverviewChartRowExtended o2) {
-                return o2.getQuantity() - o1.getQuantity();
-            }
-        });
+        Collections.sort(merged, (o1,  o2) -> o2.getQuantity() - o1.getQuantity());
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
-        for (OverviewChartRowExtended row : merged.subList(0, DISPLAYED_DIAGNOSIS_GROUPS)) {
+        int i = 0;
+        int displayedGroups = merged.size() > DISPLAYED_DIAGNOSIS_GROUPS ? DISPLAYED_DIAGNOSIS_GROUPS - 1 : DISPLAYED_DIAGNOSIS_GROUPS;
+
+        for (; i < displayedGroups && i < merged.size(); i++) {
+            OverviewChartRowExtended row = merged.get(i);
             final int alternation = row.getAlternation();
             int previous = row.getQuantity() - alternation;
             int percentChange = calculatePercentage(alternation, previous);
             result.add(new OverviewChartRowExtended(row.getName(), row.getQuantity(), percentChange));
         }
+
+        // Calculate diagnosGroups left
+        int restQuantity = 0;
+        int restAlternation = 0;
+        for (; i < merged.size(); i++) {
+            OverviewChartRowExtended row = merged.get(i);
+            restQuantity += row.getQuantity();
+            restAlternation += row.getAlternation();
+        }
+        int percentChange = calculatePercentage(restAlternation, restQuantity - restAlternation);
+        result.add(new OverviewChartRowExtended(DIAGNOS_REST_NAME, restQuantity, percentChange));
+
         return result;
     }
 
