@@ -1,0 +1,40 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+| script | dagens datum | 2014-05-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  | län |
+| 19790717-9111 | G01 | 2013-05-05 | 2013-06-06 | enhet1 | 01  |
+| 19790717-9121 | G01 | 2013-05-11 | 2013-09-12 | enhet3 | 06  |
+| 19790717-9131 | G01 | 2013-05-13 | 2013-10-12 | enhet1 | 01  |
+| 19790717-9141 | G01 | 2013-05-13 | 2013-11-12 | enhet1 | 14  |
+| 19790717-9141 | G01 | 2013-05-13 | 2013-11-12 | enhet1 | 30  |
+
+| Foljande befolkningsmängd finns |
+| län | befolkningsmängd |
+| 01  | 15 |
+| 06  | 12 |
+| 14  | 21 |
+
+!3 Då gäller:
+
+Nationell:
+| Sjukfall i rapporten lan |
+| län                  | antal sjukfall? | antal sjukfall per tusen invånare? |
+| Samtliga län         | 5               | 104,17  |
+| Stockholms län       | 2               | 133,33  | 
+| Jönköpings län       | 1               | 83,33   |
+| Västra Götalands län | 1               | 47,62   |
+| Okänt län            | 1               | -       |
+
+| Sjukfall i rapporten lan diagram |
+| län                  | antal sjukfall? | antal sjukfall per tusen invånare? |
+| Samtliga län         | 5               | 104,17  |
+| Stockholms län       | 2               | 133,33  | 
+| Jönköpings län       | 1               | 83,33   |
+| Västra Götalands län | 1               | 47,62   |
+| Okänt län            | -1              | -1      |
