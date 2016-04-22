@@ -13,6 +13,7 @@ Flera olika sjukfall med olika åldrar och datum.
 | 19801210-9289 | M40 | 2014-09-01 | 2014-12-14 | enhet1 |
 | 19280228-6886 | R00 | 2014-09-01 | 2014-09-14 | enhet1 |
 | 19280219-7059 | R00 | 2014-09-01 | 2014-09-14 | enhet1 |
+| 19800326-2388 | M40 | 2014-09-01 | 2014-09-14 | enhet1 |
 | 19280128-7158 | L40 | 2014-09-01 | 2014-12-14 | enhet1 |
 | 19280128-7075 | P99 | 2014-09-01 | 2014-12-14 | enhet1 |
 | 19581030-2868 | P99 | 2014-09-01 | 2014-12-14 | enhet1 |
@@ -23,7 +24,8 @@ Flera olika sjukfall med olika åldrar och datum.
 | 19911002-2382 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
 | 20050326-2388 | hej | 2014-09-01 | 2014-09-14 | enhet1 |
 | 20050327-2395 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 20050326-2388 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
+| 20050326-2368 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
+| 19700326-2388 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
 
 
 !3 Då gäller:
@@ -35,7 +37,7 @@ Verksamhetsnivå:
 |inloggad som | grupp                         | antal? | förändring? |
 | user1       | Under 21 år                   | 2      | 100         |
 | user1       | 21-25 år                      | 2      | 0           |
-| user1       | Andra åldersgrupper           | 1      | 0           |
+| user1       | Andra åldersgrupper           | 2      | 0           |
 | user1       | 56-60 år                      | 4      | 100         |
 | user1       | Över 60 år                    | 2      | -50         |
 
@@ -44,6 +46,6 @@ Nationell:
 | grupp                         | antal? | förändring? |
 | Under 21 år                   | 2      | 100         |
 | 21-25 år                      | 2      | 0           |
-| Andra åldersgrupper           | 1      | 0           |
+| Andra åldersgrupper           | 2      | 0           |
 | 56-60 år                      | 4      | 100         |
 | Över 60 år                    | 2      | -50         |
