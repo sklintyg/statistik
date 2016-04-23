@@ -40,13 +40,13 @@ artifacts {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.3.6'
-    compile 'org.apache.commons:commons-dbcp2:2.0'
-    compile 'org.codehaus.gpars:gpars:1.1.0'
-    compile 'joda-time:joda-time:2.3'
-    compile 'org.apache.httpcomponents:httpclient:4.2.1'
-    compile 'commons-cli:commons-cli:1.2'
+    compile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
+    compile "org.apache.commons:commons-dbcp2:${commonDCHPVersion}"
+    compile "org.codehaus.gpars:gpars:${gparsVersion}"
+    compile "joda-time:joda-time:${jodaTimeVersion}"
+    compile "org.apache.httpcomponents:httpclient:${httpClientVersion}"
+    compile "commons-cli:commons-cli:${commonCliVersion}"
 
-    runtime 'mysql:mysql-connector-java:5.1.32'
+    runtime "mysql:mysql-connector-java:${mysqlConnectorVersion}"
     runtime project(":statistik-service")
 }

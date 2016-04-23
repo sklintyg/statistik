@@ -22,7 +22,7 @@ if (project.hasProperty('runFitnesse')) {
         contextPath = '/'
         contextConfigFile = project(":statistik-web").projectDir.path + "/src/main/webapp/WEB-INF/jetty-context.xml"
         logbackConfigFile = "${projectDir}/src/main/resources/logback-test.xml"
-        jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake', '-XX:MaxPermSize=256M']
+        jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake']
 //        jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake', '-Dstatistics.test.max.intyg=1', '-XX:MaxPermSize=256M']
     }
 
@@ -33,19 +33,19 @@ if (project.hasProperty('runFitnesse')) {
     }
 
     dependencies {
-        gretty "com.h2database:h2:1.3.171"
-        gretty "mysql:mysql-connector-java:5.1.29"
-        gretty "org.apache.activemq:activemq-broker:5.8.0"
-        gretty "org.apache.tomcat:tomcat-catalina:7.0.20"
+        gretty "com.h2database:h2:${h2Version}"
+        gretty "mysql:mysql-connector-java:${mysqlConnectorVersion}"
+        gretty "org.apache.activemq:activemq-broker:${activeMqVersion}"
+        gretty "org.apache.tomcat:tomcat-catalina:${tomcatVersion}"
      }
 }
 
 dependencies {
     compile project(":statistik-web")
 
-    compile "org.fitnesse:fitnesse:20140901"
+    compile "org.fitnesse:fitnesse:${fitnessVersion}"
     compile "org.codehaus.groovy:groovy-all:2.4.0"
-    compile "org.codehaus.groovy.modules.http-builder:http-builder:0.7"
-    compile "org.apache.httpcomponents:httpmime:4.4.1"
-    compile "org.apache.httpcomponents:httpcore:4.4.1"
+    compile "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
+    compile "org.apache.httpcomponents:httpmime:${httpVersion}"
+    compile "org.apache.httpcomponents:httpcore:${httpVersion}"
 }
