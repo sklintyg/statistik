@@ -55,8 +55,9 @@ var app = angular.module('StatisticsApp',
             title: 'Sjukskrivningslängd'
         }).when('/nationell/lan', {
             templateUrl: 'views/detailsView.html',
-            controller: 'casesPerCountyCtrl',
+            controller: 'columnChartDetailsViewCtrl',
             controllerAs: 'NationalCasesPerCountyCtrl',
+            resolve: { config: app.casesPerCountyConfig },
             title: 'Län'
         }).when('/nationell/diagnosgrupp', {
             templateUrl: 'views/detailsView.html',

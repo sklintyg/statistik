@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2016 Inera AB (http://www.inera.se)
+
+    This file is part of statistik (https://github.com/sklintyg/statistik).
+
+    statistik is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    statistik is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+                   logicalFilePath="liquibase/db.changelog-v31.0_add_tabel_for_county_population.xml">
+    <changeSet id="31.0_add_tabel_for_county_population" author="fredrik.engstrom">
+        <createTable tableName="CountyPopulation">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="data" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="31.1_populate_county_population" author="fredrik.engstrom">
+        <insert tableName="CountyPopulation">
+            <column name="data" value='{"10":156253,"20":281028,"13":314784,"08":237679,"07":191369,"09":57391,"21":281815,"23":127376,"06":347837,"25":249733,"12":1303627,"01":2231439,"04":283712,"03":354164,"17":275904,"24":263378,"22":243897,"19":264276,"14":1648682,"18":291012,"05":445661}'/>
+            <column name="date" value="2015-12-31"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

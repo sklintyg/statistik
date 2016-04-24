@@ -21,6 +21,7 @@ package se.inera.statistics.web.service;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.joda.time.LocalDate;
@@ -43,53 +44,54 @@ public class SjukfallPerLanConverterTest {
     public void convertCasesPerCountyDataTest() {
         //Given
         ArrayList<SimpleKonDataRow> perCountyRows1 = new ArrayList<>();
-        perCountyRows1.add(new SimpleKonDataRow("<20", 13, 14));
-        perCountyRows1.add(new SimpleKonDataRow("20-50", 24, 15));
-        perCountyRows1.add(new SimpleKonDataRow(">50", 3, 9));
+        perCountyRows1.add(new SimpleKonDataRow("<20", 13, 14, "01"));
+        perCountyRows1.add(new SimpleKonDataRow("20-50", 24, 15, "02"));
+        perCountyRows1.add(new SimpleKonDataRow(">50", 3, 9, "03"));
         SimpleKonResponse<SimpleKonDataRow> ageGroupsResponseNew = new SimpleKonResponse<>(perCountyRows1);
 
-        ArrayList<SimpleKonDataRow> perCountyRowsOld = new ArrayList<>();
-        perCountyRowsOld.add(new SimpleKonDataRow("<20", 3, 4));
-        perCountyRowsOld.add(new SimpleKonDataRow("20-50", 4, 5));
-        perCountyRowsOld.add(new SimpleKonDataRow(">50", 2, 8));
-        SimpleKonResponse<SimpleKonDataRow> ageGroupsResponseOld = new SimpleKonResponse<>(perCountyRowsOld);
+//        ArrayList<SimpleKonDataRow> perCountyRowsOld = new ArrayList<>();
+//        perCountyRowsOld.add(new SimpleKonDataRow("<20", 3, 4));
+//        perCountyRowsOld.add(new SimpleKonDataRow("20-50", 4, 5));
+//        perCountyRowsOld.add(new SimpleKonDataRow(">50", 2, 8));
+//        SimpleKonResponse<SimpleKonDataRow> ageGroupsResponseOld = new SimpleKonResponse<>(perCountyRowsOld);
 
-        LocalDate fromOld = new LocalDate(2013, 2, 1);
-        LocalDate toOld = new LocalDate(2013, 4, 1);
+//        LocalDate fromOld = new LocalDate(2013, 2, 1);
+//        LocalDate toOld = new LocalDate(2013, 4, 1);
         LocalDate fromNew = new LocalDate(2013, 5, 1);
         LocalDate toNew = new LocalDate(2013, 7, 1);
 
-        CasesPerCountyConverter converter = new CasesPerCountyConverter(ageGroupsResponseNew, ageGroupsResponseOld, new Range(fromNew, toNew), new Range(fromOld, toOld));
+        final HashMap<String, Integer> population = new HashMap<>();
+        population.put("01", 1000);
+        population.put("02", 1000);
+        population.put("03", 1000);
+
+        CasesPerCountyConverter converter = new CasesPerCountyConverter(ageGroupsResponseNew, population, new Range(fromNew, toNew));
 
         //When
         CasesPerCountyData result = converter.convert();
 
         //Then
         TableData tableDataResult = result.getTableData();
-        assertEquals("[[;1, feb\u2013apr 2013;3, maj\u2013jul 2013;3], [Län;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableDataResult.getHeaders().toString());
+        assertEquals("[[Län;1, Antal sjukfall;1, Antal invånare;1, Antal sjukfall per 1000 invånare;1]]", tableDataResult.getHeaders().toString());
         List<NamedData> rows = tableDataResult.getRows();
-        assertEquals(3, rows.size());
-        assertEquals("<20", rows.get(0).getName());
-        assertEquals("20-50", rows.get(1).getName());
-        assertEquals(">50", rows.get(2).getName());
-        assertEquals("[7, 3, 4, 27, 13, 14]", rows.get(0).getData().toString());
-        assertEquals("[9, 4, 5, 39, 24, 15]", rows.get(1).getData().toString());
-        assertEquals("[10, 2, 8, 12, 3, 9]", rows.get(2).getData().toString());
+        assertEquals(4, rows.size());
+        assertEquals("Samtliga län", rows.get(0).getName());
+        assertEquals("<20", rows.get(1).getName());
+        assertEquals("20-50", rows.get(2).getName());
+        assertEquals(">50", rows.get(3).getName());
+        assertEquals("[78, 3000, 26,00]", rows.get(0).getData().toString());
+        assertEquals("[27, 1000, 27,00]", rows.get(1).getData().toString());
+        assertEquals("[39, 1000, 39,00]", rows.get(2).getData().toString());
+        assertEquals("[12, 1000, 12,00]", rows.get(3).getData().toString());
 
         ChartData chartDataResult = result.getChartData();
-        assertEquals("[<20, 20-50, >50]", chartDataResult.getCategories().toString());
+        assertEquals("[Samtliga län, <20, 20-50, >50]", chartDataResult.getCategories().toString());
         List<ChartSeries> series = chartDataResult.getSeries();
-        assertEquals(4, series.size());
-        assertEquals("Sjukfall feb\u2013apr 2013 kvinnor", series.get(0).getName());
-        assertEquals("Sjukfall feb\u2013apr 2013 män", series.get(1).getName());
-        assertEquals("Sjukfall maj\u2013jul 2013 kvinnor", series.get(2).getName());
-        assertEquals("Sjukfall maj\u2013jul 2013 män", series.get(3).getName());
-        assertEquals("[3, 4, 2]", series.get(0).getData().toString());
-        assertEquals("[4, 5, 8]", series.get(1).getData().toString());
-        assertEquals("[13, 24, 3]", series.get(2).getData().toString());
-        assertEquals("[14, 15, 9]", series.get(3).getData().toString());
+        assertEquals(1, series.size());
+        assertEquals("Antal sjukfall per 1000 invånare", series.get(0).getName());
+        assertEquals("[26.0, 27.0, 39.0, 12.0]", series.get(0).getData().toString());
 
-        assertEquals(new Range(fromOld, toNew).toString(), result.getPeriod());
+        assertEquals(new Range(fromNew, toNew).toString(), result.getPeriod());
     }
 
     // CHECKSTYLE:ON MagicNumber

@@ -1,5 +1,7 @@
 package se.inera.testsupport;
 
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -23,9 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.countypopulation.CountyPopulationManager;
 import se.inera.statistics.service.hsa.HSAKey;
-import se.inera.statistics.service.hsa.HsaWsResponderMock;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
+import se.inera.statistics.service.hsa.HsaWsResponderMock;
 import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.LogConsumer;
@@ -76,6 +79,9 @@ public class RestSupportService {
 
     @Autowired
     private SjukfallQuery sjukfallQuery;
+
+    @Autowired
+    private CountyPopulationManager countyPopulationManager;
 
     @GET
     @Path("converteddate/{internalDate}")
@@ -213,6 +219,26 @@ public class RestSupportService {
             landstingManager.add(vgId, new HsaIdVardgivare(vgId));
         }
         return Response.ok().build();
+    }
+
+    @POST
+    @Path("clearCountyPopulation")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Transactional
+    public Response clearCountyPopulation() {
+        countyPopulationManager.clearCountyPopulation();
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("countyPopulation/{date}")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Transactional
+    public Response insertCountyPopulation(Map<String, Integer> countyPopulation, @PathParam("date") String date) {
+        LOG.info("For date: {}, insert county population: {}", date, countyPopulation);
+        final boolean success = countyPopulationManager.insertCountyPopulation(countyPopulation, date);
+        return Response.ok(success).build();
     }
 
 }

@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+Ignorerat i väntan på justering efter INTYG-2068.
+
 !3 Givet att:
 
 Ett sjukfall består av två intyg, där det andra börjar efter det första och slutar innan det första. Månadsbrytning mellan intygens slutdatum.

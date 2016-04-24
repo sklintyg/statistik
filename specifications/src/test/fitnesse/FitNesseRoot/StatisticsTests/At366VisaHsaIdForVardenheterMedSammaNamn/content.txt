@@ -36,8 +36,9 @@ Inloggad:
 
 | Sjukfall i rapporten landsting sjukfall per listningar per enhet   |
 | inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
-| user1        | test ENHET1  | 1                                    |
-| user1        | Test ENHET2  | 10                                   |
+| user1        | test ENHET1  | 1,00                                 |
+| user1        | Test ENHET2  | 10,00                                |
+
 
 !3 Uppstädning efter testet
 | Uppladdade landstingsfiler |

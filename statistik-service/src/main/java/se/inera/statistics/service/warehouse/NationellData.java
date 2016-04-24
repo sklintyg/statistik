@@ -279,7 +279,7 @@ public class NationellData {
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLan(LocalDate start, int perioder, int periodlangd) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (String lanId : lans) {
-            result.add(new SimpleKonDataRow(lans.getNamn(lanId), 0, 0));
+            result.add(new SimpleKonDataRow(lans.getNamn(lanId), 0, 0, lanId));
         }
         for (Aisle aisle : warehouse) {
             Map<String, Counter<String>> map = new HashMap<>();
@@ -302,7 +302,7 @@ public class NationellData {
             for (String lanId : lans) {
                 Counter<String> counter = map.get(lanId);
                 SimpleKonDataRow previous = result.get(index);
-                result.set(index, new SimpleKonDataRow(previous.getName(), filterCutoff(counter.getCountFemale()) + previous.getFemale(), filterCutoff(counter.getCountMale()) + previous.getMale()));
+                result.set(index, new SimpleKonDataRow(previous.getName(), filterCutoff(counter.getCountFemale()) + previous.getFemale(), filterCutoff(counter.getCountMale()) + previous.getMale(), lanId));
                 index++;
             }
             if (!okandLans.isEmpty()) {

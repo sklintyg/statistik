@@ -21,10 +21,11 @@ package se.inera.statistics.web.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -36,70 +37,126 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableHeader;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+
 public class CasesPerCountyConverter {
 
-    private final SimpleKonResponse<SimpleKonDataRow> respNewest;
-    private final SimpleKonResponse<SimpleKonDataRow> respOldest;
-    private final Range rangeOld;
-    private final Range rangeNew;
+    public static final float THOUSAND = 1000F;
+    public static final String SAMTLIGA_LAN = "Samtliga län";
+    public static final String LAN = "Län";
+    public static final String ANTAL_SJUKFALL = "Antal sjukfall";
+    public static final String ANTAL_INVANARE = "Antal invånare";
+    public static final String ANTAL_SJUKFALL_PER_1000_INVANARE = "Antal sjukfall per 1000 invånare";
+    private final SimpleKonResponse<SimpleKonDataRow> resp;
+    private final Range range;
+    private final Map<String, Integer> populationPerCounty;
 
-    public CasesPerCountyConverter(SimpleKonResponse<SimpleKonDataRow> respNewest, SimpleKonResponse<SimpleKonDataRow> respOldest, Range rangeNewest, Range rangeOldest) {
-        assert respNewest.getRows().size() == respOldest.getRows().size();
-        this.respNewest = respNewest;
-        this.respOldest = respOldest;
-        this.rangeNew = rangeNewest;
-        this.rangeOld = rangeOldest;
+    public CasesPerCountyConverter(SimpleKonResponse<SimpleKonDataRow> sjukfallPerLan, Map<String, Integer> populationPerCounty, Range range) {
+        this.resp = sjukfallPerLan;
+        this.range = range;
+        this.populationPerCounty = populationPerCounty;
     }
 
     private TableData convertToTable() {
         List<NamedData> data = new ArrayList<>();
-        for (int i = 0; i < respNewest.getRows().size(); i++) {
-            SimpleKonDataRow newestRow = respNewest.getRows().get(i);
-            SimpleKonDataRow oldestRow = respOldest.getRows().get(i);
-            assert newestRow.getName().equals(oldestRow.getName());
 
-            int rowSumNewest = newestRow.getFemale() + newestRow.getMale();
-            int rowSumOldest = oldestRow.getFemale() + oldestRow.getMale();
+        final List<Object> samtligaLanRowData = getSamtligaLanRowData();
+        data.add(new NamedData(SAMTLIGA_LAN, samtligaLanRowData));
 
-            final List<Integer> rowData = Arrays.asList(rowSumOldest, oldestRow.getFemale(), oldestRow.getMale(),
-                                                        rowSumNewest, newestRow.getFemale(), newestRow.getMale());
-            data.add(new NamedData(oldestRow.getName(), rowData));
+        for (int i = 0; i < resp.getRows().size(); i++) {
+            SimpleKonDataRow row = resp.getRows().get(i);
+
+            final int numberOfSjukfall = row.getFemale() + row.getMale();
+            final Integer populationObject = populationPerCounty.get(row.getExtras().toString());
+            final int population = populationObject == null ? 0 : populationObject;
+
+            final boolean calculateThisRow = population != 0 || populationObject != null;
+            final Object sjukfallPerKPopulation = calculateThisRow ? SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimalsAndFormatToString(numberOfSjukfall / (population / THOUSAND)) : "-";
+
+            final Object populationValueToShow = populationObject != null ? population : "-";
+            final List<Object> rowData = Arrays.asList(numberOfSjukfall, populationValueToShow, sjukfallPerKPopulation);
+            if (!Lan.OVRIGT_ID.equals(row.getExtras()) || numberOfSjukfall > 0) {
+                data.add(new NamedData(row.getName(), rowData));
+            }
         }
 
-        final int topHeaderSpan = 3;
-        List<TableHeader> topHeaders = Arrays.asList(new TableHeader("", 1), new TableHeader(rangeOld.toStringAbbreviated(), topHeaderSpan), new TableHeader(rangeNew.toStringAbbreviated(), topHeaderSpan));
-        final List<String> subHeaderTexts = Arrays.asList("Län", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män");
-        List<TableHeader> subHeaders = TableData.toTableHeaderList(subHeaderTexts, 1);
+        final List<String> headerTexts = Arrays.asList(LAN, ANTAL_SJUKFALL, ANTAL_INVANARE, ANTAL_SJUKFALL_PER_1000_INVANARE);
+        List<TableHeader> headers = TableData.toTableHeaderList(headerTexts, 1);
         List<List<TableHeader>> headerRows = new ArrayList<>();
-        headerRows.add(topHeaders);
-        headerRows.add(subHeaders);
+        headerRows.add(headers);
         return new TableData(data, headerRows);
     }
 
+    private List<Object> getSamtligaLanRowData() {
+        final int totalSjukfall = resp.getRows().stream().mapToInt(value -> value.getFemale() + value.getMale()).sum();
+        final int totalPopulation = populationPerCounty.values().stream().mapToInt(value -> value).sum();
+        final String sjukfallPerKPopulationForAllLan = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimalsAndFormatToString(((float) totalSjukfall) / (totalPopulation / THOUSAND));
+        return Arrays.asList(totalSjukfall, totalPopulation, sjukfallPerKPopulationForAllLan);
+    }
+
     private ChartData convertToChart() {
-        assert respNewest.getGroups().equals(respOldest.getGroups());
-        final List<ChartCategory> groups = Lists.transform(respNewest.getGroups(), new Function<String, ChartCategory>() {
+        final List<String> chartGroups = new ArrayList<>(resp.getGroups());
+        final List<SimpleKonDataRow> chartRows = new ArrayList<>(resp.getRows());
+
+        final int ovrigaLanIndex = getIndexOfLan(resp, Lan.OVRIGT_ID);
+        if (ovrigaLanIndex > -1) {
+            chartGroups.remove(ovrigaLanIndex);
+            chartRows.remove(ovrigaLanIndex);
+        }
+
+        final List<ChartCategory> groups = new ArrayList<>(Lists.transform(chartGroups, new Function<String, ChartCategory>() {
             @Override
-            public ChartCategory apply(String period) {
-                return new ChartCategory(period);
+            public ChartCategory apply(String name) {
+                return new ChartCategory(name);
             }
-        });
+        }));
+        groups.add(0, new ChartCategory(SAMTLIGA_LAN));
+        final double sjukfallPerKPopulationForAllLan = getSjukfallPerKPopulationForAllLan(resp.getRows());
+
         List<ChartSeries> series = new ArrayList<>();
-        List<Integer> femaleDataOld = respOldest.getDataForSex(Kon.Female);
-        series.add(new ChartSeries("Sjukfall " + rangeOld.toStringAbbreviated() + " kvinnor", femaleDataOld, "old", Kon.Female));
-        List<Integer> maleDataOld = respOldest.getDataForSex(Kon.Male);
-        series.add(new ChartSeries("Sjukfall " + rangeOld.toStringAbbreviated() + " män", maleDataOld, "old", Kon.Male));
-        List<Integer> femaleDataNew = respNewest.getDataForSex(Kon.Female);
-        series.add(new ChartSeries("Sjukfall " + rangeNew.toStringAbbreviated() + " kvinnor", femaleDataNew, "new", Kon.Female));
-        List<Integer> maleDataNew = respNewest.getDataForSex(Kon.Male);
-        series.add(new ChartSeries("Sjukfall " + rangeNew.toStringAbbreviated() + " män", maleDataNew, "new", Kon.Male));
+        final Stream<Number> sjukfallPerKPopulationStream = chartRows.stream().map(this::getSjukfallPerKPopulation).map(SjukfallPerPatientsPerEnhetConverter::roundToTwoDecimals);
+        final List<Number> sjukfallPerPopulation = Stream.concat(Stream.of(sjukfallPerKPopulationForAllLan), sjukfallPerKPopulationStream).collect(Collectors.toList());
+
+        series.add(new ChartSeries(ANTAL_SJUKFALL_PER_1000_INVANARE, sjukfallPerPopulation, false));
         return new ChartData(series, groups);
+    }
+
+    private int getIndexOfLan(SimpleKonResponse<SimpleKonDataRow> resp, String lanId) {
+        final List<SimpleKonDataRow> rows = resp.getRows();
+        for (int i = 0; i < rows.size(); i++) {
+            SimpleKonDataRow row = rows.get(i);
+            if (lanId.equals(row.getExtras().toString())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private double getSjukfallPerKPopulationForAllLan(List<SimpleKonDataRow> rows) {
+        final int totalSjukfall = rows.stream().mapToInt(value -> value.getFemale() + value.getMale()).sum();
+        final int totalPopulation = populationPerCounty.values().stream().mapToInt(value -> value).sum();
+        if (totalPopulation == 0) {
+            return 0F;
+        }
+        return SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimals(((float) totalSjukfall) / (totalPopulation / THOUSAND));
+    }
+
+    private Float getSjukfallPerKPopulation(SimpleKonDataRow row) {
+        final int rowSum = row.getFemale() + row.getMale();
+        final Integer populationObject = populationPerCounty.get(row.getExtras().toString());
+        final int population = populationObject == null ? 0 : populationObject;
+        if (population == 0) {
+            return 0F;
+        }
+        return rowSum / (population / THOUSAND);
     }
 
     CasesPerCountyData convert() {
         TableData tableData = convertToTable();
         ChartData chartData = convertToChart();
-        Range fullRange = new Range(rangeOld.getFrom(), rangeNew.getTo());
+        Range fullRange = new Range(range.getFrom(), range.getTo());
         return new CasesPerCountyData(tableData, chartData, fullRange.toString(), FilterDataResponse.empty());
     }
+
 }

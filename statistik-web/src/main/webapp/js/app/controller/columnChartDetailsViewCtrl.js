@@ -37,6 +37,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
             chartOptions.legend.enabled = false;
             chartOptions.xAxis.title.text = config.chartXAxisTitle;
             chartOptions.subtitle.text = config.chartYAxisTitle ? config.chartYAxisTitle : (config.percentChart ? "Andel sjukfall i %" : 'Antal sjukfall');
+            chartOptions.yAxis.allowDecimals = !!config.allowDecimalsYAxis;
             chartOptions.yAxis.labels.formatter = function () {
                 return ControllerCommons.makeThousandSeparated(this.value) + (config.percentChart ? " %" : "");
             };
@@ -76,7 +77,8 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
         };
 
         var populatePageWithData = function (result) {
-            $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
+            var enhetsCount = (result.filter && result.filter.enheter) ? result.filter.enheter.length : null;
+            $scope.subTitle = config.title(result.period, enhetsCount);
             ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             if (config.showDetailsOptions) {
@@ -449,5 +451,20 @@ angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig = function () {
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '#/verksamhet/diagnosavsnitt', active: false},
         {description: 'Tvärsnitt', state: '#/verksamhet/diagnosavsnitttvarsnitt', active: true}];
+    return conf;
+};
+
+angular.module('StatisticsApp').casesPerCountyConfig = function () {
+    var conf = {};
+    conf.dataFetcher = "getNationalCountyData";
+    conf.exportTableUrl = "api/getCountyStatistics/csv";
+    conf.allowDecimalsYAxis = true;
+    conf.title = function (period, enhetsCount) {
+        return "Antal sjukfall per 1000 invånare fördelat på län" + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    };
+    conf.chartXAxisTitle = "Län";
+    conf.chartYAxisTitle = "Antal sjukfall per 1000 invånare";
+    conf.chartFootnotes = ["info.lan.information"];
+    conf.exchangeableViews = null;
     return conf;
 };

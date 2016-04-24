@@ -96,16 +96,16 @@ public class SjukfallPerPatientsPerEnhetConverter {
         return TableData.createWithSingleHeadersRow(data, Arrays.asList("Vårdenhet", "Antal sjukfall", "Antal listningar", "Antal sjukfall per 1000 listningar"));
     }
 
-    private String roundToTwoDecimalsAndFormatToString(float number) {
+    static String roundToTwoDecimalsAndFormatToString(float number) {
         DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         decimalFormatSymbols.setDecimalSeparator(',');
-        DecimalFormat twoDecimalsFormat = new DecimalFormat("#.##", decimalFormatSymbols);
+        DecimalFormat twoDecimalsFormat = new DecimalFormat("0.00", decimalFormatSymbols);
         return twoDecimalsFormat.format(number);
     }
 
-    private double roundToTwoDecimals(double number) {
+    static double roundToTwoDecimals(double number) {
         DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
-        DecimalFormat twoDecimalsFormat = new DecimalFormat("#.##", decimalFormatSymbols);
+        DecimalFormat twoDecimalsFormat = new DecimalFormat("0.00", decimalFormatSymbols);
         return Double.valueOf(twoDecimalsFormat.format(number));
     }
 

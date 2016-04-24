@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+Ignorerat i väntan på justering efter INTYG-2068.
+
 Verifierar en buggfix.
 
 Testar att om två län har samma antal sjukfall, så visas båda två på översikten.

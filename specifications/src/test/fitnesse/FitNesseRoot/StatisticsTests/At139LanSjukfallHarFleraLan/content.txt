@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+Ignorerat i väntan på justering efter INTYG-2068.
+
 !3 Givet att:
 
 Ett sjukfall består av tre intyg på två olika enheter. En enhet byter län mellan intygen.

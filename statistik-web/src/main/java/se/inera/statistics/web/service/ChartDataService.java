@@ -27,6 +27,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
+
+import se.inera.statistics.service.countypopulation.CountyPopulationManager;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataResponse;
@@ -35,7 +37,6 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
 import se.inera.statistics.web.model.CasesPerCountyData;
@@ -87,6 +88,9 @@ public class ChartDataService {
 
     @Autowired
     private FilterHashHandler filterHashHandler;
+
+    @Autowired
+    private CountyPopulationManager countyPopulationManager;
 
     @Autowired
     @Qualifier("webMonitoringLogService")
@@ -203,12 +207,10 @@ public class ChartDataService {
     }
 
     private void buildSjukfallPerLan() {
-        Range range1 = Range.quarter();
-        Range range2 = ReportUtil.getPreviousPeriod(range1);
-
-        SimpleKonResponse<SimpleKonDataRow> countyStatRange1 = data.getSjukfallPerLan(range1);
-        SimpleKonResponse<SimpleKonDataRow> countyStatRange2 = data.getSjukfallPerLan(range2);
-        sjukfallPerLan = new CasesPerCountyConverter(countyStatRange1, countyStatRange2, range1, range2).convert();
+        Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
+        SimpleKonResponse<SimpleKonDataRow> calculatedSjukfallPerLan = data.getSjukfallPerLan(range);
+        Map<String, Integer> populationPerCounty = countyPopulationManager.getCountyPopulation().getPopulationPerCountyCode();
+        sjukfallPerLan = new CasesPerCountyConverter(calculatedSjukfallPerLan, populationPerCounty, range).convert();
     }
 
     private void buildKonsfordelningPerLan() {
