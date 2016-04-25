@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
 
-Ignorerat i väntan på justering efter INTYG-2068.
-
 Verifierar en buggfix.
 
 Testar att om två län har samma antal sjukfall, så visas båda två på översikten.
@@ -11,6 +9,11 @@ Testar att om två län har samma antal sjukfall, så visas båda två på över
 | script | dagens datum | 2013-11-06 |
 
 | script | troskel varde | 1 |
+
+| Angivna invanarantal |
+| länkod | invånarantal | datum      | kommentar |
+| 10     | 1000         | 2015-12-31 | Blekinge län |
+| 20     | 1000         | 2015-12-31 | Dalarnas län |
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | län |
@@ -23,11 +26,9 @@ Testar att om två län har samma antal sjukfall, så visas båda två på över
 
 Nationell:
 | Sjukfall i rapporten lan |
-| period       | län          | totalt? | män? | kvinnor? |
-| maj–jul 2013 | Blekinge län | 0       | 0    | 0        |
-| maj–jul 2013 | Dalarnas län | 0       | 0    | 0        |
-| aug–okt 2013 | Blekinge län | 2       | 2    | 0        |
-| aug–okt 2013 | Dalarnas län | 2       | 2    | 0        |
+| län          | totalt? | antalInvånare? | sjukfallPer1000Invånare? |
+| Blekinge län | 2       | 1000    | 2,00        |
+| Dalarnas län | 2       | 1000    | 2,00        |
 
 | Sjukfall i oversikt per lan |
 | grupp        | antal? | förändring? |

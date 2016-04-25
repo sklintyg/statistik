@@ -1,14 +1,17 @@
 !contents -R2 -g -p -f -h
 
-Ignorerat i väntan på justering efter INTYG-2068.
-
 !3 Givet att:
 
-Ett sjukfall består av två intyg, där det andra börjar efter det första och slutar innan det första. Månadsbrytning mellan det andra intygens slutdatum.
+Ett sjukfall består av två intyg, där det andra börjar efter det första och slutar innan det första. Månadsbrytning mellan intygens slutdatum.
 
 | script | dagens datum | 2015-03-06 |
 
 | script | troskel varde | 1 |
+
+| Angivna invanarantal |
+| länkod | invånarantal | datum      | kommentar |
+| 01     | 1000         | 2015-12-31 | Stockholms län |
+| 03     | 1000         | 2015-12-31 | Uppsala län |
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | län |
@@ -21,13 +24,11 @@ Sjukfallet visas för Uppsala, eftersom det är intyget med senast startdatum so
 
 Nationell:
 | Sjukfall i rapporten lan |
-| period       | län            | män? | kvinnor? |
-| dec 2014–feb 2015 | Stockholms län | 0    | 0        |
-| dec 2014–feb 2015 | Uppsala län    | 1    | 0        |
-| dec 2014–feb 2015 | Okänt län      | 0    | 0        |
+| län            | totalt? | antalInvånare? | sjukfallPer1000Invånare? |
+| Stockholms län | 0    | 1000        | 0,00 |
+| Uppsala län    | 1    | 1000        | 1,00 |
 
 | Sjukfall i rapporten andel sjukfall per kon |
 | län            | totalt? | män?      | kvinnor? |
 | Stockholms län | 0       | 0 % (0)   | 0 % (0)  |
 | Uppsala län    | 1       | 100 % (1) | 0 % (0)  |
-| Okänt län      | 0       | 0 % (0)   | 0 % (0)  |

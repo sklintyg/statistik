@@ -1,6 +1,5 @@
 !contents -R2 -g -p -f -h
 
-Ignorerat i väntan på justering efter INTYG-2068.
 
 !3 Givet att:
 
@@ -10,6 +9,12 @@ Ett annat sjukfall har samma län hela fallet.
 | script | dagens datum | 2013-11-06 |
 
 | script | troskel varde | 1 |
+
+| Angivna invanarantal |
+| länkod | invånarantal | datum      | kommentar |
+| 06     | 1000         | 2015-12-31 | Jönköpings län |
+| 01     | 1000         | 2015-12-31 | Stockholms län |
+| 14     | 1000         | 2015-12-31 | Västra Götalands län |
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | län |
@@ -24,12 +29,7 @@ Sjukfall som byter vårdgivare räknas som två separata sjukfall.
 
 Nationell:
 | Sjukfall i rapporten lan |
-| period       | län                  | totalt? | män? | kvinnor? |
-| maj–jul 2013 | Stockholms län       | 1       | 1    | 0        |
-| maj–jul 2013 | Jönköpings län       | 1       | 1    | 0        |
-| maj–jul 2013 | Västra Götalands län | 0       | 0    | 0        |
-| maj–jul 2013 | Okänt län            | 0       | 0    | 0        |
-| aug–okt 2013 | Stockholms län       | 1       | 1    | 0        |
-| aug–okt 2013 | Jönköpings län       | 1       | 1    | 0        |
-| aug–okt 2013 | Västra Götalands län | 1       | 0    | 1        |
-| aug–okt 2013 | Okänt län            | 0       | 0    | 0        |
+| län                  | totalt? | antalInvånare? | sjukfallPer1000Invånare? |
+| Stockholms län       | 2       | 1000    | 2,00        |
+| Jönköpings län       | 1       | 1000    | 1,00        |
+| Västra Götalands län | 1       | 1000    | 1,00        |

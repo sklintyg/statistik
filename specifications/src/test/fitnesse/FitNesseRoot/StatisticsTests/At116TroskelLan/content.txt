@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
 
-Ignorerat i väntan på justering efter INTYG-2068.
-
 !3 Givet att:
 
 Följande sjukfall finns:
@@ -17,6 +15,11 @@ vg2
 | script | dagens datum | 2013-04-06 |
 
 | script | troskel varde | 3 |
+
+| Angivna invanarantal |
+| länkod | invånarantal | datum      | kommentar |
+| 10     | 1000         | 2015-12-31 | Blekinge län |
+| 01     | 1000         | 2015-12-31 | Stockholms län |
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | län |
@@ -37,6 +40,6 @@ Tröskelvärdet appliceras per vårdgivare, kön och län.
 
 Nationell:
 | Sjukfall i rapporten lan |
-| period       | län            | totalt? | män? | kvinnor? |
-| jan–mar 2013 | Stockholms län | 3       | 0    | 3        |
-| jan–mar 2013 | Blekinge län   | 4       | 4    | 0        |
+| län            | totalt? | antalInvånare? | sjukfallPer1000Invånare? |
+| Stockholms län | 3       | 1000    | 3,00        |
+| Blekinge län   | 4       | 1000    | 4,00        |

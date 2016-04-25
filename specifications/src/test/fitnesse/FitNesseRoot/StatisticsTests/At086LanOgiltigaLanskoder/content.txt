@@ -1,6 +1,6 @@
 !contents -R2 -g -p -f -h
 
-Ignorerat i väntan på justering efter INTYG-2068.
+Utgår och ersätts av At178
 
 !3 Givet att:
 
