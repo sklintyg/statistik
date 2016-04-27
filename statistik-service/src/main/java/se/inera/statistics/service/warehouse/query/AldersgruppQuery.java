@@ -74,9 +74,15 @@ public final class AldersgruppQuery {
             }
         }
 
+        sortByQuantity(result);
+
         result.add(new OverviewChartRowExtended(ALDERSGRUPPER_REST, restCurrent, percentChange(restCurrent, restPrevious)));
 
         return result;
+    }
+
+    private static void sortByQuantity(List<OverviewChartRowExtended> result) {
+        Collections.sort(result, (o1, o2) -> o2.getQuantity() - o1.getQuantity());
     }
 
     private static int percentChange(int current, int previous) {

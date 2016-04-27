@@ -57,7 +57,13 @@ public final class SjukskrivningsgradQuery {
             result.add(new OverviewChartRowExtended(range.toString() + " %", current, percentChange(current, previous)));
         }
 
+        sortByQuantity(result);
+
         return result;
+    }
+
+    private static void sortByQuantity(List<OverviewChartRowExtended> result) {
+        Collections.sort(result, (o1, o2) -> o2.getQuantity() - o1.getQuantity());
     }
 
     private static Map<Integer, Counter<Integer>> count2(Collection<Sjukfall> sjukfalls) {

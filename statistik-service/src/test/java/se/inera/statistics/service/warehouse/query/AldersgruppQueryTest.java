@@ -82,8 +82,8 @@ public class AldersgruppQueryTest {
 
         assertEquals(4, count.size());
         assertEquals(4, count.get(0).getQuantity());
-        assertEquals(2, count.get(1).getQuantity());
-        assertEquals(3, count.get(3).getQuantity());
+        assertEquals(3, count.get(1).getQuantity());
+        assertEquals(2, count.get(2).getQuantity());
     }
 
     private void fact(int startday, int length, int alder) {

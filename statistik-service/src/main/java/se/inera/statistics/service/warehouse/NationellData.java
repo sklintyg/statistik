@@ -129,7 +129,7 @@ public class NationellData {
             result = new SimpleKonResponse<>(list);
         }
         if (result == null) {
-            return new SimpleKonResponse<>(new ArrayList<SimpleKonDataRow>());
+            return new SimpleKonResponse<>(new ArrayList<>());
         } else {
             return result;
         }

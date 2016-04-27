@@ -35,7 +35,6 @@ import se.inera.statistics.service.report.util.ReportUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -132,13 +131,20 @@ public class NationellOverviewData {
                 int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
                 result.add(new OverviewChartRowExtended(periods.getGroups().get(i), current, percentChange(current, previous)));
             }
+
+            sortByQuantity(result);
         }
         return result;
+    }
+
+    private void sortByQuantity(List<OverviewChartRowExtended> result) {
+        Collections.sort(result, (o1, o2) -> o2.getQuantity() - o1.getQuantity());
     }
 
     private List<OverviewChartRowExtended> getAldersgrupper(Range range) {
         SimpleKonResponse<SimpleKonDataRow> previousData = data.getAldersgrupper(ReportUtil.getPreviousPeriod(range).getFrom(), 1, KVARTAL);
         SimpleKonResponse<SimpleKonDataRow> currentData = data.getAldersgrupper(range.getFrom(), 1, KVARTAL);
+
         Set<String> include = getTop(MAX_ALDERSGRUPPER - 1, currentData);
 
         return getResult(include, previousData, currentData, ALDERSGRUPPER_REST);
@@ -163,6 +169,8 @@ public class NationellOverviewData {
             }
         }
 
+        sortByQuantity(result);
+
         if (rest != null) {
             result.add(new OverviewChartRowExtended(rest, restCurrent, percentChange(restCurrent, restPrevious)));
         }
@@ -172,13 +180,8 @@ public class NationellOverviewData {
 
     private Set<String> getTop(int size, SimpleKonResponse<SimpleKonDataRow> currentData) {
         List<SimpleKonDataRow> sorted = new ArrayList<>(currentData.getRows());
-        Collections.sort(sorted, new Comparator<SimpleKonDataRow>() {
-            @Override
-            public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {
-                return (total(o2)) - (total(o1));
-            }
-        });
-        sorted.addAll(currentData.getRows());
+        Collections.sort(sorted, (o1, o2) -> total(o2) - total(o1));
+
         Set<String> include = new HashSet<>();
         Iterator<SimpleKonDataRow> iterator = sorted.iterator();
         while (include.size() < size && iterator.hasNext()) {
