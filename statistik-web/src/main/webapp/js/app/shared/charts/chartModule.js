@@ -132,7 +132,9 @@ angular.module('StatisticsApp')
                         fontSize: '12px',
                         padding: '8px'
                     },
-                    pointFormat: '{series.name}: <nobr><b>{point.y}</b></nobr><br/>'
+                    pointFormatter: function() {
+                        return this.series.name + ': <nobr><b>'+ControllerCommons.makeThousandSeparated(this.y)+'</b></nobr><br/>';
+                    }
                 },
                 credits : {
                     enabled : false
