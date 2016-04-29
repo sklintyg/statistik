@@ -119,14 +119,18 @@
 
 <div id="wrapper">
     <%-- Sidebar --%>
-    <div id="sidebar-wrapper" class="hidden-print" data-ng-controller="navigationMenuCtrl">
+    <div id="sidebar-wrapper" class="hidden-print hidden-xs" data-ng-controller="navigationMenuCtrl">
         <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
         <jsp:include page="menu.jsp"/>
     </div>
     <%-- Sidebar end--%>
 
     <%-- The mobile menu must be outside of the sidebar-wrapper --%>
-    <jsp:include page="mobilemenu.jsp"/>
+    <div data-ng-controller="navigationMenuCtrl" class="hidden-sm hidden-md hidden-lg">
+      <jsp:include page="mobilemenu.jsp">
+        <jsp:param name="loginVisible" value="${loginVisible}"/>
+      </jsp:include>
+    </div>
 
     <div id="page-content-wrapper">
         <div class="container-fluid">
@@ -208,7 +212,6 @@
 <script type="text/javascript" src="<c:url value='/js/app/controller/business/businessOverviewCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/business/businessLandingPageCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/columnChartDetailsViewCtrl.js'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/app/controller/casesPerCountyCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/landsting/landstingFileUploadCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/pageCtrl.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/app/controller/loginCtrl.js'/>"></script>
