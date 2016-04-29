@@ -49,7 +49,7 @@
 
               <ul data-ng-if="submenu.subMenu && showMenu(submenu)">
                 <li class="subMenuItem" data-ng-repeat="subsubmenu in submenu.subMenu">
-                  <a data-ng-href="{{subsubmenu.link}}{{queryString}}" id="{{subsubmenu.id}}" ctrlname="{{subsubmenu.ctrl}}" role="menuitem"
+                  <a data-ng-href="{{subsubmenu.link}}{{queryString}}" ctrlname="{{subsubmenu.ctrl}}" role="menuitem"
                      data-ng-click="toggleMobileMenu()" navigationaware><span message key="{{subsubmenu.name}}"></span></a></li>
               </ul>
             </li>
