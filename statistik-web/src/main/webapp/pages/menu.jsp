@@ -23,7 +23,7 @@
                 </a>
             </li>
             <ul data-ng-repeat-end
-                data-ng-if="submenu.subMenu && showMenu(submenu)"
+                data-ng-if="submenu.subMenu"
                 id="{{submenu.subMenuId}}"
                 class="nav nav-list sub-nav-list accordion-body in collapse">
                 <li data-ng-repeat="subsubmenu in submenu.subMenu">
