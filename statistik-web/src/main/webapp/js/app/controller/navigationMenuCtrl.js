@@ -22,6 +22,7 @@
 angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$rootScope',
     function ($scope, $rootScope) {
 
+        $scope.mobile = false;
         $scope.menus = [];
 
         var national = {
@@ -134,8 +135,8 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
         };
 
         var operation = {
-            checkVisible: function(mobile) {
-                if (mobile) {
+            checkVisible: function() {
+                if ($scope.mobile) {
                     return $scope.isLoggedIn;
                 }
                 return true;
@@ -270,8 +271,8 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
                 id: 'business-statistics-toggle',
                 name: 'login.header',
                 show: false,
-                checkVisible: function(mobile) {
-                    if (mobile) {
+                checkVisible: function() {
+                    if ($scope.mobile) {
                         return $scope.isLoggedIn;
                     }
                     return true;
@@ -282,6 +283,13 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
         $scope.menus.push(about);
 
         $scope.isCollapsed = true;
+
+        $scope.init = function(mobile) {
+            $scope.mobile = mobile;
+            angular.forEach($scope.menus, function(m) {
+                m.show = false;
+            });
+        };
 
         $scope.toggleMobileMenu = function() {
             $scope.isCollapsed = !$scope.isCollapsed;
@@ -296,9 +304,9 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
             menu.show = !temp;
         };
 
-        $scope.showMenu = function(menu, mobile) {
+        $scope.showMenu = function(menu) {
             if (angular.isFunction(menu.checkVisible)) {
-                return menu.checkVisible(mobile);
+                return menu.checkVisible();
             }
             else {
                 return true;

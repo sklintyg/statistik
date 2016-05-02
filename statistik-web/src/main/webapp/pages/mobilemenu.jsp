@@ -33,24 +33,29 @@
     <div class="collapse navbar-collapse-navigation" id="navbar-mobile-menu-national" collapse="isCollapsed">
       <ul class="nav navbar-nav" style="margin-top: 0">
 
-        <li class="divider" data-ng-repeat-start="menu in menus"  data-ng-if="showMenu(menu, true)"></li>
-        <li data-ng-repeat-end  data-ng-if="showMenu(menu, true)">
+        <li class="divider" data-ng-repeat-start="menu in menus | filter: showMenu"></li>
+        <li data-ng-repeat-end>
           <a class="mobileMenuHeaderItem" data-ng-click="toggleMenu(menu)">
-            <span message key="{{menu.name}}"></span><span class="caret pull-right mobile-menu-caret"></span>
+            <span message key="{{menu.name}}"></span><span class="glyphicon pull-right mobile-menu-caret" data-ng-class="{'glyphicon-chevron-up': menu.show, 'glyphicon-chevron-down': !menu.show}"></span>
           </a>
 
           <ul data-ng-if="menu.show">
-            <li class="subMenuItem"  data-ng-repeat="submenu in menu.subMenu" data-ng-if="showMenu(submenu)">
+            <li class="subMenuItem"  data-ng-repeat="submenu in menu.subMenu | filter: showMenu">
               <a data-ng-href="{{submenu.link}}{{queryString}}"
                  data-ng-click="toggleMobileMenu()"
                  data-ng-class="{'not-active': !menuEnabled(submenu)}"
                  ctrlname="{{submenu.ctrl}}"
-                 role="menuitem" navigationaware><span message key="{{submenu.name}}"></span></a>
+                 role="menuitem" navigationaware>
+                <span message key="{{submenu.name}}"></span>
+              </a>
 
-              <ul data-ng-if="submenu.subMenu && showMenu(submenu)">
+              <ul data-ng-if="submenu.subMenu">
                 <li class="subMenuItem" data-ng-repeat="subsubmenu in submenu.subMenu">
-                  <a data-ng-href="{{subsubmenu.link}}{{queryString}}" ctrlname="{{subsubmenu.ctrl}}" role="menuitem"
-                     data-ng-click="toggleMobileMenu()" navigationaware><span message key="{{subsubmenu.name}}"></span></a></li>
+                  <a data-ng-href="{{subsubmenu.link}}{{queryString}}"
+                     ctrlname="{{subsubmenu.ctrl}}" role="menuitem"
+                     data-ng-click="toggleMobileMenu()" navigationaware>
+                    <span message key="{{subsubmenu.name}}"></span></a>
+                </li>
               </ul>
             </li>
           </ul>

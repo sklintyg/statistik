@@ -1784,7 +1784,7 @@ input[type="radio"], input[type="checkbox"] {
 	list-style-type: none;
 	padding-left: 15px;
 }
-.mobile-menu-caret { margin-top: 8px; border-top-color: #000 !important; }
+.mobile-menu-caret { margin-top: 3px;}
 .mobile-sub-caret { margin-right: 15px; }
 .mobileMenuHeaderItem { font-weight: 700; }
 .subMenuItem, .subMenuItem a { 

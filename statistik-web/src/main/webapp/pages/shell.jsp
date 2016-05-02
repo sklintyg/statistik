@@ -126,7 +126,7 @@
     <%-- Sidebar end--%>
 
     <%-- The mobile menu must be outside of the sidebar-wrapper --%>
-    <div data-ng-controller="navigationMenuCtrl" class="hidden-sm hidden-md hidden-lg">
+    <div data-ng-controller="navigationMenuCtrl" class="hidden-sm hidden-md hidden-lg"  ng-init="init(true)">
       <jsp:include page="mobilemenu.jsp">
         <jsp:param name="loginVisible" value="${loginVisible}"/>
       </jsp:include>

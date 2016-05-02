@@ -12,7 +12,7 @@
     <div class="accordion-body collapse navigation-group" data-ng-class="{in: menu.show}">
       <div class="accordion-inner">
         <ul class="nav nav-list" id="{{menu.menuId}}">
-            <li data-ng-repeat-start="submenu in menu.subMenu" data-ng-if="showMenu(submenu)">
+            <li data-ng-repeat-start="submenu in menu.subMenu | filter: showMenu">
                 <a
                   data-ng-class="{'menu-item-has-childs': submenu.subMenu, 'not-active': !menuEnabled(submenu)}"
                   data-ng-href="{{submenu.link}}{{queryString}}"
