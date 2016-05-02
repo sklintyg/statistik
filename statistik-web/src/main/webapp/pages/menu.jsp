@@ -9,7 +9,7 @@
         <span class="statistics-menu-heading" message key="{{menu.name}}"></span><i class="statistict-left-menu-expand-icon"></i>
       </div>
     </div>
-    <div class="accordion-body collapse navigation-group" data-ng-class="{in: menu.show}">
+    <div class="accordion-body collapse navigation-group" id="{{menu.navigationId}}" data-ng-class="{in: menu.show}">
       <div class="accordion-inner">
         <ul class="nav nav-list" id="{{menu.menuId}}">
             <li data-ng-repeat-start="submenu in menu.subMenu | filter: showMenu">
