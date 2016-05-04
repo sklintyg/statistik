@@ -90,48 +90,5 @@
         <saml:Attribute FriendlyName="x509IssuerName" Name="urn:sambi:names:attribute:x509IssuerName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
             <saml:AttributeValue>CN=SITHS CA TEST v4,O=SITHS CA,C=SE</saml:AttributeValue>
         </saml:Attribute>
-        <saml:Attribute Name="http://www.carelink.se/names/subject#systemRoll" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <saml:AttributeValue>BIF;Loggadministratör</saml:AttributeValue>
-            <saml:AttributeValue>INTYG;Statistik</saml:AttributeValue>
-        </saml:Attribute>
-        <saml:Attribute Name="http://www.carelink.se/names/subject#uppdragsid" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <saml:AttributeValue>IFV1239877878-103N</saml:AttributeValue>
-        </saml:Attribute>
-        <saml:Attribute Name="http://www.carelink.se/names/subject#befattningskod" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <saml:AttributeValue>204010</saml:AttributeValue>
-        </saml:Attribute>
-        <saml:Attribute Name="http://www.carelink.se/names/subject#vårdgivarid" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <saml:AttributeValue>IFV1239877878-0001</saml:AttributeValue>
-        </saml:Attribute>
-        <saml:Attribute Name="http://www.carelink.se/names/subject#vårdenhetsid" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <saml:AttributeValue>IFV1239877878-103F</saml:AttributeValue>
-        </saml:Attribute>
-        <saml:Attribute Name="http://www.carelink.se/names/subject#syftesbeskrivning" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <saml:AttributeValue>Vård och behandling</saml:AttributeValue>
-        </saml:Attribute>
-        <saml:Attribute Name="http://www.carelink.se/names/subject#vårdenhetsnamn" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <saml:AttributeValue>VårdEnhet1A</saml:AttributeValue>
-        </saml:Attribute>
-        <saml:Attribute Name="http://www.carelink.se/names/subject#vårdgivarnamn" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <saml:AttributeValue>IFV Testdata</saml:AttributeValue>
-        </saml:Attribute>
-        <saml:Attribute Name="http://www.carelink.se/names/subject#uppdragsnamn" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <saml:AttributeValue>TestVårdEnhet1A VårdEnhet1A</saml:AttributeValue>
-        </saml:Attribute>
-        <saml:Attribute Name="http://www.carelink.se/names/subject#rättighetstyp" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <saml:AttributeValue>Läsa;vbe;SJF</saml:AttributeValue>
-        </saml:Attribute>
-        <saml:Attribute Name="http://www.carelink.se/names/subject#förnamn" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <saml:AttributeValue>Markus</saml:AttributeValue>
-        </saml:Attribute>
-        <saml:Attribute Name="http://www.carelink.se/names/subject#förskrivarkod" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <saml:AttributeValue>8787878</saml:AttributeValue>
-        </saml:Attribute>
-        <saml:Attribute Name="http://www.carelink.se/names/subject#medarbetarid" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <saml:AttributeValue>TST5565594230-106J</saml:AttributeValue>
-        </saml:Attribute>
-        <saml:Attribute Name="http://www.carelink.se/names/subject#mellanOchEfternamn" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
-            <saml:AttributeValue>Gran</saml:AttributeValue>
-        </saml:Attribute>
     </saml:AttributeStatement>
 </saml:Assertion>
