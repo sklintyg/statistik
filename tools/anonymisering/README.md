@@ -1,6 +1,6 @@
 Statistiktjänsten anonymisering
 
-Anonymiserings-applikationen anonymiserar intygsinne3håll i en statistikdatabas. Den används för att skapa anonymiserade kopior av produktions-databasen för Statistik enligt följande flöde:
+Anonymiserings-applikationen anonymiserar intygsinnehåll i en statistikdatabas. Den används för att skapa anonymiserade kopior av produktions-databasen för Statistik enligt följande flöde:
 
     Exportera produktions-databasen till fil
     Importera den exporterade databasen till ny, temporär databas
@@ -11,17 +11,22 @@ Anonymiserings-applikationen anonymiserar intygsinne3håll i en statistikdatabas
 Anonymisering
 Att köra applikationen
 
-    Hämta zip-filen i repot: http://repository-callistasoftware.forge.cloudbees.com/release/se/inera/statistik/anonymisering/3.0.7/
+    Hämta zip-filen i repot: https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/se/inera/statistik/anonymisering/3.0.8/
     packa up zip-filen, gå in i katalogen:
-    unzip anonymisering-3.0.7.zip
-    cd anonymisering-3.0.7
+    unzip anonymisering-3.0.8.zip
+    cd anonymisering-3.0.8
 
     Hämta inställningsfilen: https://raw.githubusercontent.com/sklintyg/statistik/master/tools/anonymisering/dataSource.properties
     Redigera inställningsfilen
     Kör programmet: bin/anonymisering (det kan ta en bra stund innan det blir klart)
 
-Anonymisering görs på original-meddelandet (intyghandelse.data) samt för (hsa.personal.id).
+Anonymisering görs på original-meddelandet (intyghandelse.data) samt för (hsa.personal.id, hsa.personal.tilltalsnamn och hsa.personal.efternamn).
+
 Implementation
 
-Källkoden ligger i statistikprojektet (https://github.com/sklintyg/statistik/tree/master/tools/anonymisering). Applikationen itererar över intygs-id, och anonymiserar ursprungligt intygs-meddelande (data) i steg 1. Därefter itererar applikationen över hsa och anonymiserar personid-kolumnen för att slutligen anonymisera läkare genom att anonymisera kolumnerna lakareid, tilltalsnamn och efternamn.
-wideline och handelsepekare nollställs. När statistikapplikationen startas kommer wideline populeras från början.
+Källkoden ligger i statistikprojektet (https://github.com/sklintyg/statistik/tree/master/tools/anonymisering).
+
+Applikationen itererar över intygs-id, och anonymiserar ursprungligt intygs-meddelande (data) i steg 1.
+Därefter itererar applikationen över hsa och anonymiserar personid-kolumnen för att slutligen anonymisera läkare genom att anonymisera kolumnerna lakareid, tilltalsnamn och efternamn.
+wideline och handelsepekare nollställs.
+När statistikapplikationen startas kommer wideline populeras från början.
