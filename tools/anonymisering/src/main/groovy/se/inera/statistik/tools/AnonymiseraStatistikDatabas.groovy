@@ -184,6 +184,8 @@ class AnonymiseraStatistikDatabas {
         def hsa = new JsonSlurper().parseText(s)
         if (hsa.personal) {
             hsa.personal.id = anonymiseraHsaId.anonymisera(hsa.personal.id)
+            hsa.personal.tilltalsnamn = AnonymizeString.anonymisera(hsa.personal.tilltalsnamn)
+            hsa.personal.efternamn = AnonymizeString.anonymisera(hsa.personal.efternamn);
         }
         JsonBuilder builder = new JsonBuilder(hsa)
         return builder.toString()
