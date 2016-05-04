@@ -1,22 +1,26 @@
 !contents -R2 -g -p -f -h
 
+TEST #1 - Intyg med olika diagnoser
+
 !3 Givet att:
 
 | script | dagens datum | 2016-01-06 |
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut        | enhet  | län | kommentar |
-| 19671109-2681 | M54   | 2015-01-16 | 2015-01-30 | enhet1 | 01  | 15 dagar |
+| 19671109-2681 | F32   | 2015-01-16 | 2015-01-30 | enhet1 | 01  | 15 dagar |
 | 19671109-2681 | F410  | 2015-02-01 | 2015-02-13 | enhet1 | 01  | 13 dagar |
 
 !3 Då gäller:
 
-Tas inte med alls då intygen i sjukfallet har olika diagnoser.
+Tas inte med alls då intygen i sjukfallet har olika diagnoser (inte ens om båda diagnoserna ingår bland de diagnoser som Sos är intresserad av).
 
 | Sjukfall i rapporten socialstyrelsen |
 | diagnos | kön | län | sjukskrivningslängd |
 
--------------------------------------------
+
+
+TEST #2 - Beräkning sjukskrivningslängd intyg med samma diagnos
 
 !3 Givet att:
 
@@ -37,7 +41,9 @@ Sjukskrivningslängd blir 382 dagar då längd beräknas för samtliga intyg i s
 | diagnos | kön | län | sjukskrivningslängd |
 | F410    | K   | 01  | 382 |
 
--------------------------------------------
+
+
+TEST #3 - Ej avslutat sjukfall
 
 !3 Givet att:
 
@@ -55,7 +61,9 @@ Tas inte med alls få sjukfallet inte är avslutat vid dagens datum.
 | Sjukfall i rapporten socialstyrelsen |
 | diagnos | kön | län | sjukskrivningslängd |
 
--------------------------------------------
+
+
+TEST #4 - Intyg med olika län
 
 !3 Givet att:
 
