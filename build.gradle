@@ -112,7 +112,7 @@ subprojects {
         ext.year = Calendar.getInstance().get(Calendar.YEAR)
         strictCheck true
         header rootProject.file("header.txt")
-        includes(["**/*.xml", "**/se/inera/statistics/**/*.java", "**/se/inera/auth/**/*.java", "**/se/inera/ifv/statistics/**/*.java"])
+        includes(["**/*.xml", "**/se/inera/statistics/**/*.java", "**/se/inera/auth/**/*.java", "**/se/inera/ifv/statistics/**/*.java", "**/se/inera/testsupport/**/*.java"])
     }
 
     dependencies {
