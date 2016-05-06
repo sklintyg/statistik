@@ -148,6 +148,10 @@ public final class Sjukfall {
         return realDays;
     }
 
+    public int getStart() {
+        return start;
+    }
+
     public int getEnd() {
         return end;
     }

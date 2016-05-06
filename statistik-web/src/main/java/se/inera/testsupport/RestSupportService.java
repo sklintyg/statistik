@@ -1,5 +1,6 @@
 package se.inera.testsupport;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -33,6 +34,7 @@ import se.inera.statistics.service.landsting.persistance.landsting.LandstingMana
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
+import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
@@ -41,6 +43,9 @@ import se.inera.statistics.service.warehouse.WidelineConverter;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.web.service.ChartDataService;
+import se.inera.statistics.web.service.WarehouseService;
+import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
+import se.inera.testsupport.socialstyrelsenspecial.SosRow;
 
 @Service("restSupportService")
 public class RestSupportService {
@@ -61,6 +66,9 @@ public class RestSupportService {
 
     @Autowired
     private WarehouseManager warehouseManager;
+
+    @Autowired
+    private WarehouseService warehouseService;
 
     @Autowired
     private LogConsumer consumer;
@@ -239,6 +247,20 @@ public class RestSupportService {
         LOG.info("For date: {}, insert county population: {}", date, countyPopulation);
         final boolean success = countyPopulationManager.insertCountyPopulation(countyPopulation, date);
         return Response.ok(success).build();
+    }
+
+    /**
+     * Get sjukfall information requested by socialstyrelsen (INTYG-2449).
+     */
+    @GET
+    @Path("getSocialstyrelsenReport")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public Response getAgeGroupsStatistics() {
+        final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil);
+        final ArrayList<SosRow> sosReport =  sosReportCreator.getSosReport();
+        return Response.ok(sosReport).build();
     }
 
 }

@@ -427,6 +427,10 @@ class ReportsUtil {
         statistik.put(path: url)
     }
 
+    def getSocialstyrelsenReport() {
+        return get("/api/testsupport/getSocialstyrelsenReport")
+    }
+
     def getReportAntalIntygLandstingInloggad(filter) {
         return get("/api/landsting/getNumberOfCasesPerMonthLandsting", filter, "", "landstingfilter")
     }
