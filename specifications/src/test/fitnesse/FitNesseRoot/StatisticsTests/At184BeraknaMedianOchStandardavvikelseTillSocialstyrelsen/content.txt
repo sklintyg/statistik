@@ -55,11 +55,11 @@
 | F33     | Female | 01   | 30                   |
 
 | Sjukfall i rapporten socialstyrelsen som median |
-| diagnos | totalt? | kvinnor? | män? | stockholmslän? | jönköpingslän? |
-| F32     | 18,5    | 19,5     | 17   | 11             | 21 |
-| F33     | 28      | 28       | 28,5 | 30             | 28 |
+| diagnos | totalt? | kvinnor? | män? | lan01? | lan06? |
+| F32     | 18.5    | 19.5     | 17   | 11     | 21     |
+| F33     | 28      | 28       | 28.5 | 30     | 28     |
 
 | Sjukfall i rapporten socialstyrelsen som standardavvikelse |
-| diagnos | totalt? | kvinnor? | män? | stockholmslän? | jönköpingslän? |
-| F32     | 4,47    | 3,96     | 3,98 | 2,16           | 3,15 |
-| F33     | 1,47    | 0,99     | 1,41 | 0,47           | 1,26 |
+| diagnos | totalt? | kvinnor? | män?   | lan01?   | lan06?   |
+| F32     | ~=4.47  | ~=3.96   | ~=3.98 | ~=2.16   | ~=3.15   |
+| F33     | ~=1.47  | ~=0.99   | ~=1.41 | ~=0.47   | ~=1.26   |

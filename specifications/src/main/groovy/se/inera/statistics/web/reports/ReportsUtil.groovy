@@ -431,6 +431,14 @@ class ReportsUtil {
         return get("/api/testsupport/getSocialstyrelsenReport")
     }
 
+    def getSocialstyrelsenMedianReport() {
+        return get("/api/testsupport/getSocialstyrelsenMedianReport")
+    }
+
+    def getSocialstyrelsenStdDevReport() {
+        return get("/api/testsupport/getSocialstyrelsenStdDevReport")
+    }
+
     def getReportAntalIntygLandstingInloggad(filter) {
         return get("/api/landsting/getNumberOfCasesPerMonthLandsting", filter, "", "landstingfilter")
     }

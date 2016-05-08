@@ -18,7 +18,7 @@
  */
 package se.inera.testsupport;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -62,6 +62,7 @@ import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.web.service.ChartDataService;
 import se.inera.statistics.web.service.WarehouseService;
+import se.inera.testsupport.socialstyrelsenspecial.SosCalculatedRow;
 import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
 import se.inera.testsupport.socialstyrelsenspecial.SosRow;
 
@@ -274,11 +275,39 @@ public class RestSupportService {
     @Path("getSocialstyrelsenReport")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response getAgeGroupsStatistics() {
+    public Response getSosStatistics() {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
         final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil);
-        final ArrayList<SosRow> sosReport =  sosReportCreator.getSosReport();
+        final List<SosRow> sosReport =  sosReportCreator.getSosReport();
         return Response.ok(sosReport).build();
+    }
+
+    /**
+     * Get sjukfall mean value information requested by socialstyrelsen (INTYG-2449).
+     */
+    @GET
+    @Path("getSocialstyrelsenMedianReport")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public Response getSosMedianStatistics() {
+        final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil);
+        final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getMedianValuesSosReport();
+        return Response.ok(medianValuesSosReport).build();
+    }
+
+    /**
+     * Get sjukfall standard deviation information requested by socialstyrelsen (INTYG-2449).
+     */
+    @GET
+    @Path("getSocialstyrelsenStdDevReport")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public Response getSosStdDevStatistics() {
+        final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil);
+        final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getStdDevValuesSosReport();
+        return Response.ok(medianValuesSosReport).build();
     }
 
 }
