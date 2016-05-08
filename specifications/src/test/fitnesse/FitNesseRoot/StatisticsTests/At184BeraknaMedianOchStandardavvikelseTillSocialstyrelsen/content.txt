@@ -30,6 +30,7 @@
 
 !3 Då gäller:
 
+| Comment |
 | Sjukfall i rapporten socialstyrelsen |
 | diagnos | kön?   | län? | sjukskrivningslängd? |
 | F32     | Male   | 01   | 10                   |
