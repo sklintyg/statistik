@@ -43,7 +43,7 @@
     </bean>
     <bean id="h2WebServer" class="org.h2.tools.Server" factory-method="createWebServer" init-method="start"
           destroy-method="stop">
-        <constructor-arg value="-web,-webAllowOthers,-webPort,8085"/>
+        <constructor-arg value="-web,-webAllowOthers"/>
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
