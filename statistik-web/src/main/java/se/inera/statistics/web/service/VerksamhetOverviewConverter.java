@@ -30,8 +30,10 @@ import se.inera.statistics.web.model.overview.VerksamhetNumberOfCasesPerMonthOve
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class VerksamhetOverviewConverter {
 
@@ -43,23 +45,11 @@ public class VerksamhetOverviewConverter {
                 casesPerMonthNew.getFemaleAmount(), casesPerMonthNew.getPeriod().toString(), casesPerMonthOld.getMaleAmount(),
                 casesPerMonthOld.getFemaleAmount(), casesPerMonthOld.getPeriod().toString(), resp.getTotalCases());
 
-        ArrayList<DonutChartData> diagnosisGroups = new ArrayList<>();
+        List<DonutChartData> diagnosisGroups = resp.getDiagnosisGroups().stream().map(mapOverviewRowData()).collect(Collectors.toList());
 
-        for (OverviewChartRowExtended row : resp.getDiagnosisGroups()) {
-            diagnosisGroups.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
-        }
+        List<DonutChartData> ageGroups = resp.getAgeGroups().stream().map(mapOverviewRowData()).collect(Collectors.toList());
 
-        ArrayList<DonutChartData> ageGroups = new ArrayList<>();
-        for (OverviewChartRowExtended row : resp.getAgeGroups()) {
-            ageGroups.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
-        }
-
-        ArrayList<DonutChartData> degreeOfSickLeaveGroups = new ArrayList<>();
-        for (OverviewChartRowExtended row : resp.getDegreeOfSickLeaveGroups()) {
-            degreeOfSickLeaveGroups.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
-        }
-
-        sortByQuantity(degreeOfSickLeaveGroups);
+        List<DonutChartData> degreeOfSickLeaveGroups = resp.getDegreeOfSickLeaveGroups().stream().map(mapOverviewRowData()).sorted(comp()).collect(Collectors.toList());
 
         ArrayList<BarChartData> sickLeaveLengthData = new ArrayList<>();
         for (OverviewChartRow row : resp.getSickLeaveLengthGroups()) {
@@ -72,8 +62,12 @@ public class VerksamhetOverviewConverter {
         return new VerksamhetOverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength, filterResponse, message);
     }
 
-    private void sortByQuantity(List<DonutChartData> result) {
-        Collections.sort(result, (o1, o2) -> o2.getQuantity() - o1.getQuantity());
+    private Comparator<DonutChartData> comp() {
+        return (o1, o2) -> o2.getQuantity() - o1.getQuantity();
+    }
+
+    private Function<OverviewChartRowExtended, DonutChartData> mapOverviewRowData() {
+        return (r) -> new DonutChartData(r.getName(), r.getQuantity(), r.getAlternation());
     }
 
 }
