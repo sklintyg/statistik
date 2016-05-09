@@ -18,8 +18,6 @@
  */
 package se.inera.statistics.web.service;
 
-import java.util.ArrayList;
-
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
@@ -30,6 +28,10 @@ import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 import se.inera.statistics.web.model.overview.VerksamhetNumberOfCasesPerMonthOverview;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class VerksamhetOverviewConverter {
 
@@ -57,6 +59,8 @@ public class VerksamhetOverviewConverter {
             degreeOfSickLeaveGroups.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
         }
 
+        sortByQuantity(degreeOfSickLeaveGroups);
+
         ArrayList<BarChartData> sickLeaveLengthData = new ArrayList<>();
         for (OverviewChartRow row : resp.getSickLeaveLengthGroups()) {
             sickLeaveLengthData.add(new BarChartData(row.getName(), row.getQuantity()));
@@ -66,6 +70,10 @@ public class VerksamhetOverviewConverter {
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
 
         return new VerksamhetOverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength, filterResponse, message);
+    }
+
+    private void sortByQuantity(List<DonutChartData> result) {
+        Collections.sort(result, (o1, o2) -> o2.getQuantity() - o1.getQuantity());
     }
 
 }

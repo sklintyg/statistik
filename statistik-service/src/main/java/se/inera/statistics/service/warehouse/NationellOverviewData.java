@@ -131,8 +131,6 @@ public class NationellOverviewData {
                 int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
                 result.add(new OverviewChartRowExtended(periods.getGroups().get(i), current, percentChange(current, previous)));
             }
-
-            sortByQuantity(result);
         }
         return result;
     }

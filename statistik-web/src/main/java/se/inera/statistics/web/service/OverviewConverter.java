@@ -18,10 +18,6 @@
  */
 package se.inera.statistics.web.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
@@ -31,6 +27,10 @@ import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.OverviewData;
 import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 import se.inera.statistics.web.model.overview.SjukfallPerManadOverview;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class OverviewConverter {
 
@@ -55,6 +55,8 @@ public class OverviewConverter {
             degreeOfSickLeaveGroups.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
         }
 
+        sortByQuantity(degreeOfSickLeaveGroups);
+
         ArrayList<BarChartData> sickLeaveLengthData = new ArrayList<>();
         for (OverviewChartRow row : resp.getSickLeaveLengthGroups()) {
             sickLeaveLengthData.add(new BarChartData(row.getName(), row.getQuantity()));
@@ -65,14 +67,13 @@ public class OverviewConverter {
         for (OverviewChartRowExtended row : resp.getPerCounty()) {
             perCounty.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
         }
-        Collections.sort(perCounty, new Comparator<DonutChartData>() {
-            @Override
-            public int compare(DonutChartData o1, DonutChartData o2) {
-                return o2.getQuantity() - o1.getQuantity();
-            }
-        });
+
+        sortByQuantity(perCounty);
 
         return new OverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength, perCounty);
     }
 
+    private void sortByQuantity(List<DonutChartData> result) {
+        Collections.sort(result, (o1, o2) -> o2.getQuantity() - o1.getQuantity());
+    }
 }
