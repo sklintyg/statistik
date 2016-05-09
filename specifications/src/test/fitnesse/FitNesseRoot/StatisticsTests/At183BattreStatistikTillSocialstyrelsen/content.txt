@@ -130,7 +130,7 @@ Sjukfall med diagnos F32.1 tas med eftersom F32 tillhör diagnoserna som Socials
 
 
 
-TEST #8 - Sjukfall med "underdiagnoser"
+TEST #8 - Sjukfall med F438-diagnoser
 
 !3 Givet att:
 
@@ -138,7 +138,9 @@ TEST #8 - Sjukfall med "underdiagnoser"
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | län | kommentar |
-| 19671109-1041 | F43.8A     | 2015-12-01 | 2015-12-28 | enhet1 | 01  | 28 dagar  |
+| 19671109-1041 | F438     | 2015-12-01 | 2015-12-28 | enhet1 | 01  | 28 dagar  |
+| 19671109-1051 | F438A    | 2015-12-01 | 2015-12-29 | enhet1 | 01  | 29 dagar  |
+| 19671109-1061 | F438W    | 2015-12-01 | 2015-12-30 | enhet1 | 01  | 30 dagar  |
 
 !3 Då gäller:
 
@@ -147,3 +149,5 @@ Sjukfall med diagnos F43.8A tas med eftersom F438 tillhör diagnoserna som Socia
 | Sjukfall i rapporten socialstyrelsen |
 | diagnos | kön?   | län? | sjukskrivningslängd? |
 | F438    | Female | 01   | 28                   |
+| F438A   | Male   | 01   | 29                   |
+| F438W   | Female | 01   | 30                   |
