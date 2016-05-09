@@ -104,7 +104,13 @@ Sjukskrivningslängd blir 44 dagar då dagar med dubbla intyg bara räknas en g�
 | diagnos | kön?   | län? | sjukskrivningslängd? |
 | F410    | Female | 01   | 44                   |
 
-TEST #6 - Sjukfall med samma diagnos, kön och län
+
+
+TEST #6 - UTGÅR
+
+
+
+TEST #7 - Sjukfall med "underdiagnoser"
 
 !3 Givet att:
 
@@ -112,16 +118,32 @@ TEST #6 - Sjukfall med samma diagnos, kön och län
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | enhet  | län | kommentar |
-| 19671109-2681 | F410       | 2015-11-01 | 2015-11-24 | enhet1 | 01  | 24 dagar  |
-| 19671109-2681 | F410       | 2015-12-01 | 2015-12-28 | enhet1 | 01  | 28 dagar  |
-| 19671109-2661 | F410       | 2015-12-01 | 2015-12-26 | enhet1 | 01  | 26 dagar  |
+| 19671109-2681 | F321       | 2015-11-01 | 2015-11-29 | enhet1 | 01  | 29 dagar  |
 
 !3 Då gäller:
 
-Varje sjukfall blir en egen rad i sjukfallstabellen.
+Sjukfall med diagnos F32.1 tas med eftersom F32 tillhör diagnoserna som Socialstyrelsen vill ha.
 
 | Sjukfall i rapporten socialstyrelsen |
 | diagnos | kön?   | län? | sjukskrivningslängd? |
-| F410    | Female | 01   | 24                   |
-| F410    | Female | 01   | 28                   |
-| F410    | Female | 01   | 26                   |
+| F32     | Female | 01   | 29                   |
+
+
+
+TEST #8 - Sjukfall med "underdiagnoser"
+
+!3 Givet att:
+
+| script | dagens datum | 2016-01-30 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | län | kommentar |
+| 19671109-1041 | F43.8A     | 2015-12-01 | 2015-12-28 | enhet1 | 01  | 28 dagar  |
+
+!3 Då gäller:
+
+Sjukfall med diagnos F43.8A tas med eftersom F438 tillhör diagnoserna som Socialstyrelsen vill ha.
+
+| Sjukfall i rapporten socialstyrelsen |
+| diagnos | kön?   | län? | sjukskrivningslängd? |
+| F438    | Female | 01   | 28                   |
