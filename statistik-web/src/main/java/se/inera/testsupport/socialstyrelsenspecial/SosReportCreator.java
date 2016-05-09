@@ -46,24 +46,35 @@ public class SosReportCreator {
 
     private final Map<HsaIdVardgivare, Aisle> allVardgivare;
     private final SjukfallUtil sjukfallUtil;
+    private HashMap<String, Integer> dxsToShowInReport = new HashMap<>();;
 
-    public SosReportCreator(Map<HsaIdVardgivare, Aisle> allVardgivare, SjukfallUtil sjukfallUtil) {
+    /**
+     * @param dxString diagnosis to generate report for, if null then use default dxs
+     */
+    public SosReportCreator(Map<HsaIdVardgivare, Aisle> allVardgivare, SjukfallUtil sjukfallUtil, Icd10 icd10, String dxString) {
         this.allVardgivare = allVardgivare;
         this.sjukfallUtil = sjukfallUtil;
+        if (dxString == null || dxString.isEmpty()) {
+            populateDefaultDxs();
+        } else {
+            Icd10.Id dx = icd10.findFromIcd10Code(dxString);
+            dxsToShowInReport.put(dx.getId(), dx.toInt());
+        }
+    }
+
+    private void populateDefaultDxs() {
+        dxsToShowInReport.put("F32", Icd10.icd10ToInt("F32", Icd10RangeType.KATEGORI));
+        dxsToShowInReport.put("F33", Icd10.icd10ToInt("F33", Icd10RangeType.KATEGORI));
+        dxsToShowInReport.put("F410", Icd10.icd10ToInt("F410", Icd10RangeType.KOD));
+        dxsToShowInReport.put("F411", Icd10.icd10ToInt("F411", Icd10RangeType.KOD));
+        dxsToShowInReport.put("F430", Icd10.icd10ToInt("F430", Icd10RangeType.KOD));
+        dxsToShowInReport.put("F432", Icd10.icd10ToInt("F432", Icd10RangeType.KOD));
+        dxsToShowInReport.put("F438", Icd10.icd10ToInt("F438", Icd10RangeType.KOD));
+        dxsToShowInReport.put("F438A", Icd10.icd10ToInt("F438A", Icd10RangeType.KOD));
+        dxsToShowInReport.put("F438W", Icd10.icd10ToInt("F438W", Icd10RangeType.KOD));
     }
 
     public List<SosRow> getSosReport() {
-        final HashMap<String, Integer> mymap = new HashMap<>();
-        mymap.put("F32", Icd10.icd10ToInt("F32", Icd10RangeType.KATEGORI));
-        mymap.put("F33", Icd10.icd10ToInt("F33", Icd10RangeType.KATEGORI));
-        mymap.put("F410", Icd10.icd10ToInt("F410", Icd10RangeType.KOD));
-        mymap.put("F411", Icd10.icd10ToInt("F411", Icd10RangeType.KOD));
-        mymap.put("F430", Icd10.icd10ToInt("F430", Icd10RangeType.KOD));
-        mymap.put("F432", Icd10.icd10ToInt("F432", Icd10RangeType.KOD));
-        mymap.put("F438", Icd10.icd10ToInt("F438", Icd10RangeType.KOD));
-        mymap.put("F438A", Icd10.icd10ToInt("F438A", Icd10RangeType.KOD));
-        mymap.put("F438W", Icd10.icd10ToInt("F438W", Icd10RangeType.KOD));
-
         final LocalDate from = LocalDate.parse("2015-01-01");
         final Range range = new Range(from, LocalDate.now());
         final int fromIntDay = WidelineConverter.toDay(from);
@@ -71,7 +82,7 @@ public class SosReportCreator {
         final int nowMinusFiveDaysIntDay = WidelineConverter.toDay(LocalDate.now().minusDays(5));
 
         final ArrayList<SosRow> sosRows = new ArrayList<>();
-        for (Map.Entry<String, Integer> stringIntegerEntry : mymap.entrySet()) {
+        for (Map.Entry<String, Integer> stringIntegerEntry : dxsToShowInReport.entrySet()) {
             final Integer dx = stringIntegerEntry.getValue();
             final String dxString = stringIntegerEntry.getKey();
             final SjukfallFilter sjukfallFilter = new SjukfallFilter(new Predicate<Fact>() {
@@ -105,15 +116,15 @@ public class SosReportCreator {
             final Map<Kon, List<SosRow>> dxrowsByKon = dxEntry.getValue().stream().collect(Collectors.groupingBy(SosRow::getKon));
 
 
-            final double total = calcFunc.apply(dxEntry.getValue());
-            final double female = calcFunc.apply(dxrowsByKon.get(Kon.Female));
-            final double male = calcFunc.apply(dxrowsByKon.get(Kon.Male));
+            final Double total = calcFunc.apply(dxEntry.getValue());
+            final Double female = calcFunc.apply(dxrowsByKon.get(Kon.Female));
+            final Double male = calcFunc.apply(dxrowsByKon.get(Kon.Male));
 
             final Map<String, List<SosRow>> dxrowsByLan = dxEntry.getValue().stream().collect(Collectors.groupingBy(SosRow::getLanId));
             final HashMap<String, Number> lanNumbers = new HashMap<>();
             for (Map.Entry<String, List<SosRow>> lanEntry : dxrowsByLan.entrySet()) {
                 final String lanId = lanEntry.getKey();
-                final double valueForLan = calcFunc.apply(lanEntry.getValue());
+                final Double valueForLan = calcFunc.apply(lanEntry.getValue());
                 lanNumbers.put(lanId, valueForLan);
             }
 
@@ -124,6 +135,9 @@ public class SosReportCreator {
 
     public List<SosCalculatedRow> getMedianValuesSosReport() {
         return getCalculatedValuesSosReport(value -> {
+            if (value == null) {
+                return null;
+            }
             final List<Double> totalValues = getDoubles(value);
             return new MathStatistics(totalValues).median();
         });
@@ -131,6 +145,9 @@ public class SosReportCreator {
 
     public List<SosCalculatedRow> getStdDevValuesSosReport() {
         return getCalculatedValuesSosReport(value -> {
+            if (value == null) {
+                return null;
+            }
             final List<Double> totalValues = getDoubles(value);
             return new MathStatistics(totalValues).getStdDev();
         });

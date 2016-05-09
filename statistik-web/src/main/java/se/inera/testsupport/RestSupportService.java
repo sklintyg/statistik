@@ -52,6 +52,7 @@ import se.inera.statistics.service.landsting.persistance.landsting.LandstingMana
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
+import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
@@ -109,6 +110,9 @@ public class RestSupportService {
 
     @Autowired
     private CountyPopulationManager countyPopulationManager;
+
+    @Autowired
+    private Icd10 icd10;
 
     @GET
     @Path("converteddate/{internalDate}")
@@ -272,12 +276,12 @@ public class RestSupportService {
      * Get sjukfall information requested by socialstyrelsen (INTYG-2449).
      */
     @GET
-    @Path("getSocialstyrelsenReport")
+    @Path("getSocialstyrelsenReport{dx:(/dx)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response getSosStatistics() {
+    public Response getSosStatistics(@PathParam("dx") String dx) {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil);
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx);
         final List<SosRow> sosReport =  sosReportCreator.getSosReport();
         return Response.ok(sosReport).build();
     }
@@ -286,12 +290,12 @@ public class RestSupportService {
      * Get sjukfall mean value information requested by socialstyrelsen (INTYG-2449).
      */
     @GET
-    @Path("getSocialstyrelsenMedianReport")
+    @Path("getSocialstyrelsenMedianReport{dx:(/dx)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response getSosMedianStatistics() {
+    public Response getSosMedianStatistics(@PathParam("dx") String dx) {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil);
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getMedianValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
     }
@@ -300,12 +304,12 @@ public class RestSupportService {
      * Get sjukfall standard deviation information requested by socialstyrelsen (INTYG-2449).
      */
     @GET
-    @Path("getSocialstyrelsenStdDevReport")
+    @Path("getSocialstyrelsenStdDevReport{dx:(/dx)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response getSosStdDevStatistics() {
+    public Response getSosStdDevStatistics(@PathParam("dx") String dx) {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil);
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getStdDevValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
     }
