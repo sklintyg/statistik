@@ -61,6 +61,8 @@ public class SosReportCreator {
         mymap.put("F430", Icd10.icd10ToInt("F430", Icd10RangeType.KOD));
         mymap.put("F432", Icd10.icd10ToInt("F432", Icd10RangeType.KOD));
         mymap.put("F438", Icd10.icd10ToInt("F438", Icd10RangeType.KOD));
+        mymap.put("F438A", Icd10.icd10ToInt("F438A", Icd10RangeType.KOD));
+        mymap.put("F438W", Icd10.icd10ToInt("F438W", Icd10RangeType.KOD));
 
         final LocalDate from = LocalDate.parse("2015-01-01");
         final Range range = new Range(from, LocalDate.now());
