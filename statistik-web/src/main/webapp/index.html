@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="sv" id="ng-app" data-ng-app="StatisticsApp">
+<head>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="/img/favicon.ico">
+
+    <title data-ng-bind="$root.page_title">Statistiktjänsten</title>
+
+    <!-- build:css(src/main/webapp) app/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css" />
+    <link rel="stylesheet" href="bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" />
+    <link rel="stylesheet" href="bower_components/dropzone/dist/min/dropzone.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css({build/.tmp,src/main/webapp}) app/app.css -->
+    <!-- injector:css -->
+    <link rel="stylesheet" href="app/app.css">
+    <link rel="stylesheet" href="app/css/print.css">
+    <!-- endinjector -->
+    <!-- endbuild -->
+
+    <script>
+        var highchartsExportUrl = '';
+        var isLoggedIn = true;
+    </script>
+</head>
+<body data-ng-controller="pageCtrl">
+
+<!-- Navbar
+================================================== -->
+<div id="navigation-container">
+  <div class="header clearfix hidden-print">
+    <div class="headerbox">
+      <span class="headerbox-logo pull-left">
+        <a ng-href="/#/">
+          <img alt="Till startsidan" src="/img/statistiktjansten-logotype.png"/>
+        </a>
+      </span>
+      <span class="headerbox-date pull-left">
+        <div id="location" class="hidden-xs location ng-hide" data-ng-show="isLoggedIn">{{verksamhetName}}</div>
+        <div class="headerbox-info-text"  data-ng-class="{'headerbox-info-text-padding': !(isLoggedIn && verksamhetName)}" message key="statistics.header.extra-text"></div>
+      </span>
+    </div>
+
+    <div class="hidden-xs">
+      <div class="ng-hide headerbox-login" id="business-login-container" data-ng-show="!isLoggedIn">
+        <span id="business-login-span"><span message key="lbl.for-verksamhetsstatistik"></span></span>
+        <button class="btn" data-ng-click="loginClicked('fakelogin')"
+                type="button" id="business-login-btn" value="Logga in"><span message key="lbl.log-in"></span>
+        </button>
+      </div>
+      <div class="ng-hide" data-ng-show="isLoggedIn">
+        <div class="headerbox-avatar pull-right">
+          <img ng-src="img/avatar.png">
+        </div>
+        <div class="headerbox-user pull-right">
+          <div class="headerbox-user-profile">
+            <span class="logged-in">{{userNameWithAccess}}</span><br>
+            <span class="pull-right">
+              <a id="logoutLink" href="saml/logout"><span message key="lbl.log-out"></span></a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<stat-cookie-banner></stat-cookie-banner>
+
+<div id="wrapper">
+    <div id="sidebar-wrapper" class="hidden-print hidden-xs" data-ng-controller="navigationMenuCtrl">
+        <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
+
+    </div>
+
+    <div data-ng-controller="navigationMenuCtrl" class="hidden-sm hidden-md hidden-lg"  ng-init="init(true)">
+
+    </div>
+
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+
+            <!-- Docs nav
+            ================================================== -->
+            <div class="row">
+
+                <div class="col-xs-12">
+                    <div class="row ng-hide" ng-show="isVerksamhetShowing">
+                        <div class="col-xs-12">
+                            <business-filter></business-filter>
+                        </div>
+                    </div>
+
+                    <div class="row ng-hide" ng-show="isLandstingShowing">
+                        <div class="col-xs-12">
+                            <landsting-filter></landsting-filter>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div id="view" data-ng-view></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<!-- Placed at the end of the document so the pages load faster -->
+  <!--[if lt IE 9]>
+  <script src="bower_components/html5shiv/dist/html5shiv.js"></script>
+  <script src="bower_components/respond/respond.min.js"></script>
+  <script src="bower_components/es5-shim/es5-shim.js"></script>
+  <script src="bower_components/json3/lib/json3.min.js"></script>
+  <![endif]-->
+  <!-- build:js({src/main/webapp,node_modules}) app/vendor.js -->
+  <!-- bower:js -->
+  <script src="bower_components/jquery/jquery.js"></script>
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+  <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-i18n/angular-locale_sv-se.js"></script>
+  <script src="bower_components/lodash/lodash.js"></script>
+  <script src="bower_components/jquery.tablesorter/js/jquery.tablesorter.js"></script>
+  <script src="bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.js"></script>
+  <script src="bower_components/pdfmake/build/pdfmake.js"></script>
+  <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
+  <script src="bower_components/momentjs/moment.js"></script>
+  <script src="bower_components/dropzone/dist/min/dropzone.min.js"></script>
+  <script src="bower_components/ngstorage/ngStorage.js"></script>
+  <script src="bower_components/highcharts/highcharts.js"></script>
+  <script src="bower_components/highcharts/modules/exporting.js"></script>
+  <script src="bower_components/highcharts/highcharts-more.js"></script>
+  <script src="bower_components/rgb-color/rgb-color.js"></script>
+  <script src="bower_components/canvg-gabelerner/canvg.js"></script>
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:js({build/.tmp,src/main/webapp}) app/app.main.js -->
+  <script src="app/app.js"></script>
+  <!-- injector:js -->
+  <script src="app/app.js"></script>
+  <script src="app/components/directives/statCookieBanner/statCookieBanner.directive.js"></script>
+  <script src="app/controller/about/aboutFaqCtrl.js"></script>
+  <script src="app/controller/business/businessLandingPageCtrl.js"></script>
+  <script src="app/controller/business/businessOverviewCtrl.js"></script>
+  <script src="app/controller/columnChartDetailsViewCtrl.js"></script>
+  <script src="app/controller/common.js"></script>
+  <script src="app/controller/doubleAreaChartsCtrl.js"></script>
+  <script src="app/controller/landsting/landstingFileUploadCtrl.js"></script>
+  <script src="app/controller/loginCtrl.js"></script>
+  <script src="app/controller/navigationMenuCtrl.js"></script>
+  <script src="app/controller/overviewCtrl.js"></script>
+  <script src="app/controller/pageCtrl.js"></script>
+  <script src="app/controller/singleLineChartCtrl.js"></script>
+  <script src="app/directives.js"></script>
+  <script src="app/filters.js"></script>
+  <script src="app/messages.js"></script>
+  <script src="app/services/diagnosisTreeFilter.js"></script>
+  <script src="app/services/factories.js"></script>
+  <script src="app/services/messageService.js"></script>
+  <script src="app/services/pdfFactory.js"></script>
+  <script src="app/services/pdfOverviewFactory.js"></script>
+  <script src="app/shared/angular-dropzone/dropzoneDirective.js"></script>
+  <script src="app/shared/businessfilter/businessFilterDirective.js"></script>
+  <script src="app/shared/businessfilter/businessFilterFactory.js"></script>
+  <script src="app/shared/businessfilter/businessFilterModule.js"></script>
+  <script src="app/shared/charts/chartModule.js"></script>
+  <script src="app/shared/chartseriesbuttongroup/chartSeriesButtonGroupDirective.js"></script>
+  <script src="app/shared/chartseriesbuttongroup/chartSeriesButtonGroupModule.js"></script>
+  <script src="app/shared/diagnosSelection/diagnosSelection.directive.js"></script>
+  <script src="app/shared/filterList/filterList.directive.js"></script>
+  <script src="app/shared/resources/constantsModule.js"></script>
+  <script src="app/shared/treemultiselector/treeMultiSelectorCtrl.js"></script>
+  <script src="app/shared/treemultiselector/treeMultiSelectorModule.js"></script>
+  <script src="app/shared/treemultiselector/treeMultiSelectorUtil.js"></script>
+  <script src="app/shared/treemultiselector/treemultiselectorDirective.js"></script>
+  <!-- endinjector -->
+  <!-- endbuild -->
+
+<script type="text/javascript">
+    //$('.dropdown-toggle').dropdown();
+</script>
+
+<!-- This sections will give users of not so modern browsers a message that their browser is too old to run this thing. -->
+<div id="outdated">
+    <h1><b>Din webbläsare stöds inte av Statistiktjänsten och det kan göra att den inte fungerar korrekt.</b></h1>
+    <h1><b>Statistiktjänsten stöds av Internet Explorer 9 och nyare, även om andra webbläsare kan fungera.</b></h1>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+    <!-- It seems like a div called btnUpdateBrowser need to exist, otherwise the outdated browser plugin will bug us with console warning messages on every reload -->
+    <div id="btnUpdateBrowser" style="display: none;"></div>
+</div>
+
+<script type="text/javascript">
+    function addLoadEvent(func) {
+        var oldonload = window.onload;
+        if (typeof window.onload != 'function') {
+            window.onload = func;
+        } else {
+            window.onload = function() {
+                if (oldonload) {
+                    oldonload();
+                }
+                func();
+            }
+        }
+    }
+    //call plugin function after DOM ready
+    addLoadEvent(function(){
+        outdatedBrowser({
+            bgColor: '#31708F',
+            color: '#ffffff',
+            lowerThan: 'IE9',
+            languagePath: ''
+        })
+    });
+</script>
+</body>
+</html>
