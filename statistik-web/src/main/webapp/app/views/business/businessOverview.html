@@ -1,0 +1,270 @@
+<!--
+~ Copyright (C) 2013 - 2014 Inera AB (http://www.inera.se)
+~
+~     This file is part of Inera Statistics (http://code.google.com/p/inera-statistics/).
+~
+~     Inera Statistics is free software: you can redistribute it and/or modify
+~     it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
+~     the Free Software Foundation, either version 3 of the License, or
+~     (at your option) any later version.
+~
+~     Inera Statistics is distributed in the hope that it will be useful,
+~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+~     GNU LESSER GENERAL PUBLIC LICENSE for more details.
+~
+~     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
+~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<div ng-show="showEmptyDataView" ng-include="'views/business/emptyFilterData.html'" />
+<div id="business-overview" ng-show="!showEmptyDataView">
+	<div id="overview-content"> <!-- Start: Overview content -->
+		<div class="row" id="print-logo-display">
+		    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		        <img src="/assets/images/statistiktjansten-logotype-print.png">
+		        <h2 class="business-name-header print-only-no-display"><span class="hidden-print">- </span>{{ verksamhetName }}</h2>
+		    </div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print right-2px-padding" style="width: auto !important; float: left;">
+				<h1 class="national-statistic-h1" data-ng-bind="viewHeader"></h1>
+			</div>
+	    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print left-2px-padding business-name" id="business-name-header-container">
+				<h2 class="business-name-header">{{ headerEnhetInfo }}</h2>
+			</div>
+	    </div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9  pull-left" >
+		    <span class="overview-ingress" data-ng-bind="subTitle"></span>
+				<a class="hidden-print" id="chart-enhetsfilterinfo-trigger" data-toggle="collapse" data-target="#chart-enhetsfilterinfo-text" data-ng-show="activeEnhetsFilters" text="Enhetsfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Enhetsfilter&nbsp;&#x25BE</a>
+				<a class="hidden-print" id="chart-diagnosfilterinfo-trigger" data-toggle="collapse" data-target="#chart-diagnosfilterinfo-text" data-ng-show="activeDiagnosFilters" text="Diagnosfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Diagnosfilter&nbsp;&#x25BE</a>
+			</div>
+		    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-right margin-bottom hidden-print" data-ng-class="{margin_top_button_group: showDetailsOptions}"
+		         style="width: auto;">
+		        <!-- PRINT BUTTON GROUP -->
+		        <div class="btn-group statistics-btn-group">
+		            <button class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown">
+						<span message key="dropdown.val.rapport"></span>
+						<span class="caret"></span>
+					</button>
+							<ul class="dropdown-menu pull-right">
+								<li><a data-ng-click="printPdf()"><img src="/assets/images/dropdown-icons/pdf1b.png"/><span message key="dropdown.val.skrivut-pdf"></span></a></li>
+							</ul>
+		        </div>
+		    </div>
+		</div>
+
+		<div class="spinnser" data-ng-if="generatingPdf">
+			<div class="cssspinner"></div>
+			<p id="loading-message" style="text-align: center">
+				<strong><span>Skapar pdf</span></strong>
+			</p>
+		</div>
+
+		<div class="clearfix">
+			<div class="pull-left filter-list" data-ng-if="activeDiagnosFilters">
+				<filter-list collapse-id="chart-diagnosfilterinfo-text" filters="activeDiagnosFilters"></filter-list>
+			</div>
+
+			<div class="pull-left filter-list" data-ng-if="activeEnhetsFilters">
+				<filter-list collapse-id="chart-enhetsfilterinfo-text" filters="activeEnhetsFilters"></filter-list>
+			</div>
+		</div>
+
+		<!-- Alert the user about specific conditions -->
+		<div class="row hidden-print">
+				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+						<div class="ng-binding top-20px-margin alert alert-info" data-ng-show="resultMessage" role="alert">
+								<strong>Observera!</strong> {{resultMessage}}
+						</div>
+				</div>
+		</div>
+
+		<div dataerrorview show-error="dataLoadingError">
+			<div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
+				<!-- Start business overview boxes -->
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 left-2px-padding right-2px-padding">
+						<a data-ng-href="{{baseUrl}}/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLink" class="overview-widget-link">
+							<span class="overview-widget" >
+								<span class="overview-widget-header">
+									<h2 class="overview-widget-title pull-left">
+										<span message key="business.widget.header.total-antal"></span>
+									</h2>
+									<span class="hidden-print pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
+					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextAmount}}</div>"
+					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
+								</span>
+								<span class="overview-widget-content">
+									<div id="alterationChart"></div>
+								</span>
+							</span>
+						</a>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 left-2px-padding right-2px-padding">
+						<a data-ng-href="{{baseUrl}}/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLink" class="overview-widget-link">
+							<span class="overview-widget" >
+								<span class="overview-widget-header">
+									<h2 class="overview-widget-title pull-left">
+										<span message key="business.widget.header.konsfordelning-sjukfall"></span>
+									</h2>
+									<span class="hidden-print pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
+					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextSexDistribution}}{{popoverPreviousMonths}}</div>"
+					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
+								</span>
+								<span class="overview-widget-content">
+									<div class="chart-container" id="sexProportionChartOld"></div>
+									<div class="chart-container" id="sexProportionChartNew"></div>
+								</span>
+							</span>
+						</a>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
+						<a data-ng-href="{{baseUrl}}/diagnosgrupp{{queryString}}" id="diagnosisGroupsHeaderLink" class="overview-widget-link">
+							<span class="overview-widget" >
+								<span class="overview-widget-header">
+									<h2 class="overview-widget-title pull-left">
+										<span message key="business.widget.header.fordelning-diagnosgrupper"></span>
+									</h2>
+									<span class="hidden-print pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
+					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextDiagnosisGroups1}}</div><div class=popover-content>{{popoverTextChangeCurrentVSPrevious}}{{popoverPreviousMonths}}</div>"
+					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
+								</span>
+								<span class="overview-widget-content">
+									<span class="chart-container" id="diagnosisChart"></span>
+									<table class="datatable table table-striped overview-graph-table">
+											<thead>
+											<tr>
+												<td>&nbsp;</td>
+													<td><span message key="overview.widget.table.column.diagnosgrupp"></span></td>
+													<td><span message key="overview.widget.table.column.antal"></span></td>
+													<td><span message key="overview.widget.table.column.forandring"></span></td>
+											</tr>
+											</thead>
+											<tbody>
+											<tr data-ng-repeat="group in diagnosisGroups">
+												<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
+													<td class="diagnostics-group-name">{{group.name}}</td>
+													<td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+													<td class="diagnostics-group-alternation">{{group.alternation}} %</td>
+											</tr>
+											</tbody>
+									</table>
+								</span>
+							</span>
+						</a>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
+						<a data-ng-href="{{baseUrl}}/aldersgrupper{{queryString}}" id="ageGroupsHeaderLink" class="overview-widget-link">
+							<span class="overview-widget" >
+								<span class="overview-widget-header">
+									<h2 class="overview-widget-title pull-left">
+										<span message key="business.widget.header.fordelning-aldersgrupper"></span>
+									</h2>
+									<span class="hidden-print pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
+					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextAgeGroups1}}</div><div class=popover-content>{{popoverTextChangeCurrentVSPrevious}}{{popoverPreviousMonths}}</div>"
+					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
+								</span>
+								<span class="overview-widget-content">
+									<span class="chart-container" id="ageChart"></span>
+									<table class="datatable table table-striped overview-graph-table">
+											<thead>
+											<tr>
+												<td>&nbsp;</td>
+													<td><span message key="overview.widget.table.column.aldersgrupp"></span></td>
+													<td><span message key="overview.widget.table.column.antal"></span></td>
+													<td><span message key="overview.widget.table.column.forandring"></span></td>
+											</tr>
+											</thead>
+											<tbody>
+											<tr data-ng-repeat="group in ageGroups">
+													<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
+													<td class="diagnostics-group-name">{{group.name}}</td>
+													<td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+													<td class="diagnostics-group-alternation">{{group.alternation}} %</td>
+											</tr>
+											</tbody>
+									</table>
+								</span>
+							</span>
+						</a>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
+						<a data-ng-href="{{baseUrl}}/sjukskrivningslangd{{queryString}}" id="sickLeaveLengthHeaderLink" class="overview-widget-link">
+							<span class="overview-widget" >
+								<span class="overview-widget-header">
+									<h2 class="overview-widget-title pull-left">
+										<span message key="business.widget.header.fordelning-sjukskrivningslangd"></span>
+									</h2>
+									<span class="hidden-print pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
+					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextSickLeaveLength1}}</div><div class=popover-content>{{popoverTextSickLeaveLength2}}</div>"
+					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
+								</span>
+								<div class="overview-widget-content">
+									<div class="overview-chart-info" id="sicklength-chart-info">
+											<div class="overview-chart-info-section pull-left">
+												<span class="longSickLeavesValue">{{longSickLeavesTotal | thousandseparated}}</span><br/>
+												<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90"></span></span>
+											</div>
+											<div class="overview-chart-info-section pull-right">
+												<span class="longSickLeavesValue">{{longSickLeavesAlteration}} %</span><br/>
+												<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader"></span></span>
+											</div>
+									</div>
+									<div class="chart-container" id="sickLeaveLengthChart"></div>
+								</div>
+							</span>
+						</a>
+					</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
+						<a data-ng-href="{{baseUrl}}/sjukskrivningsgrad{{queryString}}" id="degreeOfSickLeaveHeaderLink" class="overview-widget-link">
+							<span class="overview-widget" >
+								<span class="overview-widget-header">
+									<h2 class="overview-widget-title pull-left">
+										<span message key="business.widget.header.fordelning-sjukskrivningsgrad"></span>
+									</h2>
+									<span class="hidden-print pageHelpToolTip pull-right" style="padding: 8px 7px 7px 5px;"><img
+					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextDegreeOfSickLeave1}}</div><div class=popover-content>{{popoverTextChangeCurrentVSPrevious}}{{popoverPreviousMonths}}</div>"
+					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
+								</span>
+								<span class="overview-widget-content">
+									<div class="chart-container" id="degreeOfSickLeaveChart"></div>
+									<table class="datatable table table-striped overview-graph-table">
+											<thead>
+											<tr>
+												<td>&nbsp;</td>
+													<td><span message key="overview.widget.table.column.sjukskrivningsgrad"></span></td>
+													<td><span message key="overview.widget.table.column.antal"></span></td>
+													<td><span message key="overview.widget.table.column.forandring"></span></td>
+											</tr>
+											</thead>
+											<tbody>
+											<tr data-ng-repeat="group in degreeOfSickLeaveGroups">
+													<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
+													<td class="diagnostics-group-name">{{group.name}}</td>
+													<td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
+													<td class="diagnostics-group-alternation">{{group.alternation}} %</td>
+											</tr>
+											</tbody>
+									</table>
+								</span>
+							</span>
+						</a>
+					</div>
+				</div>
+				<!-- End business overview boxes -->
+			</div>
+		</div>
+	</div>
+<!-- End: Overview content -->
+</div> <!-- /container -->
+    
+    
+    

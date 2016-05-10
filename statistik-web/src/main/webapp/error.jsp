@@ -45,7 +45,7 @@
 
     <div class="row-fluid">
         <div class="span6">
-            <img class="pull-right" src="/img/404.png" style="width: 50%"/>
+            <img class="pull-right" src="/assets/images/404.png" style="width: 50%"/>
         </div>
         <div class="span6">
 

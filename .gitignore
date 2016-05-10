@@ -5,6 +5,7 @@
 .gradle
 .idea
 *.iml
+.gradletasknamecache
 classes
 
 .DS_Store
@@ -13,6 +14,10 @@ bin
 target
 build
 statistik-web/node_modules
+statistik-web/src/main/webapp/bower_components/
+statistik-web/src/main/webapp/app/app.css
+statistik-web/.sass-cache/
+*.map
 statistik-web/node
 statistik-web/npm-debug.log
 generatedSource

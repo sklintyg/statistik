@@ -238,7 +238,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
 
             return new Highcharts.Chart(chartOptions, function (chart) { // on complete
                 if (!hideImage) {
-                    chart.renderer.image('img/sverige.png', 20, 10, 127, 300).add();
+                    chart.renderer.image('assets/images/sverige.png', 20, 10, 127, 300).add();
                 }
             });
         }
