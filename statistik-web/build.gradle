@@ -38,35 +38,7 @@ node {
     download = true
 }
 
-//Enter the webjars dependencies here. Its a bit akward, but it is a workaround to keep karma tests
-//and gretty/jetty happy
-List webjars = [[group: 'org.webjars', name: 'jquery', version: '1.10.2'],
-                [group: 'org.webjars', name: 'angularjs', version: '1.2.29'],
-                [group: 'org.webjars', name: 'angular-ui-bootstrap', version: '0.12.1'],
-                [group: 'org.webjars', name: 'bootstrap', version: '3.1.1'],
-                [group: 'org.webjars', name: 'bootstrap-multiselect', version: '0.9.13'],
-                [group: 'org.webjars.bower', name: 'lodash', version: '3.10.1'],
-                [group: 'org.webjars', name: 'respond', version: '1.3.0'],
-                [group: 'org.webjars', name: 'dropzone', version: '4.0.1'],
-                [group: 'org.webjars', name: 'momentjs', version: '2.10.3'],
-                [group: 'org.webjars', name: 'tablesorter', version: '2.17.8'],
-                [group: 'org.webjars', name: 'outdated-browser', version: '1.1.0'],
-                [group: 'org.webjars.bower', name: 'pdfmake', version: '0.1.20'],
-                [group: 'org.webjars.bower', name: 'ngstorage', version: '0.3.10']]
-
-task unzipWebjars(type: Copy) {
-    description 'Copies anything that is a webjar from the classpath and expands it so that we can use their static resources with karma'
-
-    into "$buildDir/webjars/"
-
-    from {
-        configurations.compile.filter{file ->
-            webjars.any{jar -> file.name.startsWith(jar.name) }
-        }.collect{zipTree(it)}
-    }
-}
-
-task jsTests(type: NodeTask, dependsOn: [npmInstall, unzipWebjars]) {
+task jsTests(type: NodeTask, dependsOn: [npmInstall]) {
     script = file('node_modules/grunt-cli/bin/grunt')
     args = ['test']
 }
@@ -97,8 +69,6 @@ dependencies {
     compile "org.apache.poi:poi:${poiVersion}"
     compile "org.apache.poi:poi-ooxml:${poiVersion}"
     compile "xalan:xalan:${xalanVersion}"
-
-    compile webjars //Define your webjar in the list above
 
     gretty "com.h2database:h2:${h2Version}"
     gretty "mysql:mysql-connector-java:${mysqlConnectorVersion}"

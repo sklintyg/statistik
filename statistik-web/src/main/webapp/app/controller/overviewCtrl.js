@@ -19,8 +19,10 @@
 
 
 angular.module('StatisticsApp').controller('overviewCtrl',
-    ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'COUNTY_COORDS', 'chartFactory', 'messageService', 'pdfOverviewFactory', 'thousandseparatedFilter','ControllerCommons',
-    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, COUNTY_COORDS, chartFactory, messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons) {
+    ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'COUNTY_COORDS', 'chartFactory',
+        'messageService', 'pdfOverviewFactory', 'thousandseparatedFilter','ControllerCommons', '_',
+    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, COUNTY_COORDS, chartFactory,
+        messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _) {
         'use strict';
 
         var self = this;
@@ -110,7 +112,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             chartOptions.chart.height = 180;
             chartOptions.subtitle.text = null;
             chartOptions.chart.plotBorderWidth = 0;
-            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}'  + (tooltipHeaderSuffix || "") + '</span><br/>';
+            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || '') + '{point.key}'  + (tooltipHeaderSuffix || '') + '</span><br/>';
 
             return new Highcharts.Chart(chartOptions);
         };
@@ -135,7 +137,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
 
             var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
             chartFactory.addColor(degreeOfSickLeaveDonutData);
-            degreeOfSickLeaveChart = paintDonutChart('degreeOfSickLeaveChart', degreeOfSickLeaveDonutData, null, " %");
+            degreeOfSickLeaveChart = paintDonutChart('degreeOfSickLeaveChart', degreeOfSickLeaveDonutData, null, ' %');
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
             chartFactory.addColor(result.sickLeaveLength.chartData);

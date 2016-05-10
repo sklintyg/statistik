@@ -76,9 +76,9 @@
 <stat-cookie-banner></stat-cookie-banner>
 
 <div id="wrapper">
-    <div id="sidebar-wrapper" class="hidden-print hidden-xs" data-ng-controller="navigationMenuCtrl">
+    <div id="sidebar-wrapper" class="hidden-print hidden-xs">
         <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
-
+        <navigation-menu></navigation-menu>
     </div>
 
     <div data-ng-controller="navigationMenuCtrl" class="hidden-sm hidden-md hidden-lg"  ng-init="init(true)">
@@ -181,6 +181,7 @@
   <script src="components/directives/angular-dropzone/dropzoneDirective.js"></script>
   <script src="components/directives/directives.js"></script>
   <script src="components/directives/filterList/filterList.directive.js"></script>
+  <script src="components/directives/navigationMenu/navigationMenu.directive.js"></script>
   <script src="components/directives/statCookieBanner/statCookieBanner.directive.js"></script>
   <script src="components/filters/filters.js"></script>
   <script src="components/services/diagnosisTreeFilter.js"></script>

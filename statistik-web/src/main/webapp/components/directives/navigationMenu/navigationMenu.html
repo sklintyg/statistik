@@ -1,0 +1,43 @@
+<div class="statistics accordion" id="statistics-menu-accordion">
+  <div class="accordion-group" data-ng-repeat="menu in menus" data-ng-if="showMenu(menu)">
+    <h2 class="hidden-header"><span message key="{{menu.hiddenTitle}}"></span></h2>
+
+    <div class="accordion-heading statistics-menu">
+      <div class="accordion-toggle first-level-menu" id="{{menu.id}}"
+           data-ng-class="{active: menu.show, collapsed: !menu.show, disabled: !menu.subMenu}"
+           data-ng-click="toggleMenu(menu)">
+        <span class="statistics-menu-heading" message key="{{menu.name}}"></span><i class="statistict-left-menu-expand-icon"></i>
+      </div>
+    </div>
+    <div class="accordion-body collapse navigation-group" id="{{menu.navigationId}}" data-ng-class="{in: menu.show}">
+      <div class="accordion-inner">
+        <ul class="nav nav-list" id="{{menu.menuId}}">
+          <li data-ng-repeat-start="submenu in menu.subMenu | filter: showMenu">
+            <a
+                data-ng-class="{'menu-item-has-childs': submenu.subMenu, 'not-active': !menuEnabled(submenu)}"
+                data-ng-href="{{submenu.link}}{{queryString}}"
+                id="{{submenu.id}}" ctrlname="{{submenu.ctrl}}" navigationaware>
+              <span message key="{{submenu.name}}"></span>
+
+              <i data-ng-if="submenu.subMenu" class="statistict-left-menu-expand-icon" data-toggle="collapse" href="{{submenu.subMenuIdLink}}"></i>
+            </a>
+          </li>
+          <ul data-ng-repeat-end
+              data-ng-if="submenu.subMenu"
+              id="{{submenu.subMenuId}}"
+              class="nav nav-list sub-nav-list accordion-body in collapse">
+            <li data-ng-repeat="subsubmenu in submenu.subMenu">
+              <a
+                  data-ng-href="{{subsubmenu.link}}{{queryString}}" id="{{subsubmenu.id}}"
+                  ctrlname="{{subsubmenu.ctrl}}" navigationaware><span message key="{{subsubmenu.name}}"></span>
+              </a>
+            </li>
+          </ul>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+

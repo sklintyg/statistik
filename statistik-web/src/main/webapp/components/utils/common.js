@@ -23,6 +23,8 @@ angular.module('StatisticsApp').factory('ControllerCommons',
     function(_) {
         'use strict';
 
+        var that = this;
+
         this.updateDataTable = function (scope, tableData) {
             scope.headerrows = tableData.headers;
             if (scope.headerrows.length > 1) {
@@ -298,7 +300,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             if (isVerksamhet && config.exchangeableViews) {
                 //If we have a diagnosisHash then added to the next route before anything else
                 _.each(config.exchangeableViews, function (view) {
-                    view.state = view.state + this.createDiagnosHashPathOrAlternativePath($routeParams);
+                    view.state = view.state + that.createDiagnosHashPathOrAlternativePath($routeParams);
                 });
                 var queryParamsString = this.createQueryStringOfQueryParams($location.search());
                 //Add queryParams if any
@@ -308,7 +310,6 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                     });
                 }
                 $scope.exchangeableViews = config.exchangeableViews;
-
             }
         };
 
