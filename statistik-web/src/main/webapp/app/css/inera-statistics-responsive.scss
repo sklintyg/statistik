@@ -21,11 +21,6 @@
 /* Body and structure
 -------------------------------------------------- */
 
-body {
-  position: relative;
-  padding-top: 0px;
-}
-
 /* Code in headings */
 h3 code {
   font-size: 14px;
@@ -63,7 +58,7 @@ body > .navbar .brand:hover {
 
 /* padding for in-page bookmarks and fixed navbar */
 section {
-  padding-top: 0px;
+  padding-top: 0;
 }
 section > .page-header,
 section > .lead {
@@ -151,7 +146,7 @@ hr.soften {
   right: 0;
   bottom: 0;
   left: 0;
-  background: url(../img/bs-docs-masthead-pattern.png) repeat center center;
+  background: url(../assets/images/bs-docs-masthead-pattern.png) repeat center center;
   opacity: .4;
 }
 @media
@@ -163,35 +158,6 @@ only screen and (     -o-min-device-pixel-ratio: 2/1) {
     background-size: 150px 150px;
   }
 
-}
-
-/* Masthead (docs home)
-------------------------- */
-.masthead {
-  padding: 70px 0 80px;
-  margin-bottom: 0;
-  color: #fff;
-}
-.masthead h1 {
-  font-size: 120px;
-  line-height: 1;
-  letter-spacing: -2px;
-}
-.masthead p {
-  font-size: 40px;
-  font-weight: 200;
-  line-height: 1.25;
-}
-
-/* Textual links in masthead */
-.masthead-links {
-  margin: 0;
-  list-style: none;
-}
-.masthead-links li {
-  display: inline;
-  padding: 0 10px;
-  color: rgba(255,255,255,.25);
 }
 
 /* Social proof buttons from GitHub & Twitter */
@@ -466,15 +432,6 @@ h3 + table,
 h4 + table,
 h2 + .row {
   margin-top: 5px;
-}
-
-/* Example sites showcase */
-.example-sites {
-  xmargin-left: 20px;
-}
-.example-sites img {
-  max-width: 100%;
-  margin: 0 auto;
 }
 
 .scrollspy-example {
@@ -772,7 +729,7 @@ form.bs-docs-example {
 }
 .bs-docs-sidenav .active .icon-chevron-right,
 .bs-docs-sidenav .active a:hover .icon-chevron-right {
-  background-image: url(../img/glyphicons-halflings-white.png);
+  background-image: url(../assets/images/glyphicons-halflings-white.png);
   opacity: 1;
 }
 .bs-docs-sidenav.affix#national-statistic-menu{
@@ -1109,55 +1066,67 @@ form.bs-docs-example {
 		border: 1px solid transparent;
 		border-bottom: 1px solid #dddddd;
 	}
+
 	ul.overview-box-header {
 		width: 100%;
-	}	
+	}
+
 	li.overview-box-header-listItem a h2 {
 		font-size: 1em;
 	}
+
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
 		margin-left: 26px !important;
 		font-size: 1em !important;
 		margin-top: 5px;
 	}
+
 	.chart-container {
 		width: 38%;
 		margin: 18px 0 0 0;
 		float: left;
 	}
+
 	#sexProportionChartOld,
 	#sexProportionChartNew {
 		width: 50%;
 	}
+
 	.chart-container#sickLeaveLengthChart{
 		width: 100%;
 		margin: 25px 0 0 0;
 	}
+
 	#chart-data-table table.datatable {
 		width: 100%;
-		margin: 0px 0 0 0;
+		margin: 0 0 0 0;
 	}
+
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
 		padding: 40%;
-		margin: 0%;
+		margin: 0;
 		top: 0;
 		right: 0;
 		bottom: 0;
 		left: 0;
 	}
+
 	#overview-content #overview-change-container .overview-change-responsive-circle > div {
 		padding: 26%;
-		margin: 14% 22% 0% 22%;
+		margin: 14% 22% 0 22%;
 	}
+
 	.overview-chart-info{
 		float: left;
 		width: 30%;
 		margin: 20px 15px 10px 15px;
 	}
+
 	.overview-chart-info#sicklength-chart-info {
 		width: 95%;
 	}
+
 	#sicklength-chart-info .overview-chart-info-section {
 		width: 45%;
 	}
@@ -1165,7 +1134,7 @@ form.bs-docs-example {
 }
 @media (min-width: 979px) and (max-width: 1104px) {
 	#overview-distribution-per-sex-container {
-		padding: 0% 3% 0% 4%;
+		padding: 0 3% 0 4%;
 	}
 	#overview-distribution-per-sex-values {
 		top: 60px;
@@ -1187,10 +1156,10 @@ form.bs-docs-example {
 		margin-left: 33.707182% !important;
 	}
 	#wrap {
-		margin-top: 0px;
+		margin-top: 0;
 	}
 	#overview-content, #chart-content {
-		margin: 10px 0px 0px 0px;
+		margin: 10px 0 0 0;
 	}
 	#overview-content .span3 {
 		width: 48%;
@@ -1200,7 +1169,7 @@ form.bs-docs-example {
 	}
 	#overview-content .span6 {
 		width: 100%;
-		margin-left: 0px;
+		margin-left: 0;
 	}
 	#overview-content .span9 {
 		width: 100%;
@@ -1219,7 +1188,6 @@ form.bs-docs-example {
 		color: #fff;
 		font-weight: bold;
 		font-size: .7em !important;
-		font-family: Helvetica;
 		-webkit-transition: all 0.7s ease;
 		-moz-transition: all 1s ease;
 		cursor: inherit;
@@ -1227,13 +1195,13 @@ form.bs-docs-example {
 		margin-left: 35px !important;
 	}
 	#overview-content .overview-box-information-container {
-		margin-bottom: 0px;
+		margin-bottom: 0;
 	}
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
 		width: 100%;
 		float: left;
 		position: relative;
-		background-image: url("../img/distribution_per_sex_stat_bg.png");
+		background-image: url("../assets/images/distribution_per_sex_stat_bg.png");
 		background-repeat: no-repeat;
 		background-position: 50% 25%;
 		background-size: 72%;
@@ -1244,11 +1212,11 @@ form.bs-docs-example {
 	}
 	#business-overview #overview-content #overview-change-container .overview-change-responsive-circle > div {
 		padding: 15%;
-		margin: 3% 9% 0% 33%;
+		margin: 3% 9% 0 33%;
 	}
 	#overview-content #overview-change-container .overview-change-responsive-circle > div {
 		padding: 28%;
-		margin: 10% 15% 0% 21%;
+		margin: 10% 15% 0 21%;
 	}
 	.chart-container#sickLeaveLengthChart{
 		width: 62%;
@@ -1259,13 +1227,13 @@ form.bs-docs-example {
 	.overview-chart-info {
 		width: 38%;
 		float: left;
-		margin: 25px 0px 0px 0px;
+		margin: 25px 0 0 0;
 	}
 	span.longSickLeavesValue {
 		color: #919191;
 		font-weight: bold;
 		font-size: 2em;
-		margin: 0px 10px 10px 0px;
+		margin: 0 10px 10px 0;
 	}
 	#about-content {
 		width: 95%;
@@ -1297,7 +1265,7 @@ form.bs-docs-example {
 	}	
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
 		padding: 40%;
-		margin: 24% 13% 0% 10%;
+		margin: 24% 13% 0 10%;
 	}
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
@@ -1343,13 +1311,13 @@ form.bs-docs-example {
 		background-position: 53% 42%;
 	}
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
-		padding: 0%;
-		margin: 40% 3% 0% 19%;
+		padding: 0;
+		margin: 40% 3% 0 19%;
 	}
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
 		font-size: 1em !important;
-		margin-top: 0px;
+		margin-top: 0;
 		margin-left: 37px !important;
 		display: initial;
 		position: relative;
@@ -1359,10 +1327,10 @@ form.bs-docs-example {
 	}
 	#overview-content #overview-change-container .overview-change-responsive-circle > div {
 		padding: 13%;
-		margin: 3% 0% 0% 36%;
+		margin: 3% 0 0 36%;
 	}
 	#overview-content .overview-box-information-container {
-		margin-bottom: 0px;
+		margin-bottom: 0;
 	}
 	#navigation-container .span2 {
 		width: 32%;
@@ -1386,13 +1354,13 @@ form.bs-docs-example {
 	.overview-chart-info {
 		width: 38%;
 		float: left;
-		margin: 25px 0px 0px 0px;
+		margin: 25px 0 0 0;
 	}
 	span.longSickLeavesValue {
 		color: #919191;
 		font-weight: bold;
 		font-size: 2em;
-		margin: 0px 0px 0px 0px;
+		margin: 0;
 	}
 	#about-content {
 		width: 100%;
@@ -1403,9 +1371,4 @@ form.bs-docs-example {
 	.navbar .span2 { width: 100% !important; }
 	.navbar .span3 { width: 50% !important; }
 	.navbar .span4 { width: 100% !important; }
-}
-
-/* Landscape phones and down */
-@media (max-width: 480px) { 
-	
 }

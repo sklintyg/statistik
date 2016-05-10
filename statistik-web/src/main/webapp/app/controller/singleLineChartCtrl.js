@@ -18,6 +18,7 @@
  */
 
 
+/* globals Highcharts */
 angular.module('StatisticsApp').controller('singleLineChartCtrl',
     [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'config', '$location',
         'messageService', 'chartFactory', 'pdfFactory', '_', 'ControllerCommons',

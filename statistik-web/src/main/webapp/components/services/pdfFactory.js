@@ -16,6 +16,8 @@
  *     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/* globals pdfMake */
 angular.module('StatisticsApp')
     .factory('pdfFactory', ['$window', '$timeout', 'thousandseparatedFilter', function($window, $timeout, thousandseparatedFilter) {
         'use strict';

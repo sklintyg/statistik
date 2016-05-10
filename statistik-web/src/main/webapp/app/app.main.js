@@ -1,3 +1,5 @@
+/* globals Highcharts */
+
 var underscore = angular.module('underscore', []);
 underscore.factory('_', function() {
     'use strict';
@@ -349,16 +351,19 @@ app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route
         lang: { thousandsSep: ' ' }
     });
 
-    $rootScope.page_title = 'Statistiktjänsten';
+    $rootScope.pageTitle = 'Statistiktjänsten';
     $rootScope.pageName = '';
     $rootScope.isLoggedIn = isLoggedIn;
 
     $rootScope.$on('$routeChangeSuccess', function (e, current) {
         if ($route.current.$$route) {
             $rootScope.pageName = $route.current.$$route.title;
-            $rootScope.page_title = ($rootScope.pageName ? $rootScope.pageName + ' | ' : '') + 'Statistiktjänsten';
+            $rootScope.pageTitle = ($rootScope.pageName ? $rootScope.pageName + ' | ' : '') + 'Statistiktjänsten';
             $rootScope.queryString = current.params.filter ? '?filter=' + current.params.filter : '';
-            $rootScope.queryString += current.params.landstingfilter ? ($rootScope.queryString.length > 0 ? '&' : '?') + ('landstingfilter=' + current.params.landstingfilter) : '';
+            if (current.params.landstingfilter) {
+                $rootScope.queryString += $rootScope.queryString.length > 0 ? '&' : '?';
+                $rootScope.queryString += 'landstingfilter=' + current.params.landstingfilter;
+            }
             $rootScope.verksamhetViewShowing = current.$$route.originalPath.indexOf('/verksamhet') === 0;
         }
     });

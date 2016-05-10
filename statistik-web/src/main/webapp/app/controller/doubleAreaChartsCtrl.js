@@ -17,7 +17,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
+/* globals Highcharts */
 angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
     ['$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'config', 'messageService', 'diagnosisTreeFilter', '$location', 'chartFactory', '_', 'pdfFactory', 'ControllerCommons',
     function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, config, messageService, diagnosisTreeFilter, $location ,chartFactory, _, pdfFactory, ControllerCommons) {

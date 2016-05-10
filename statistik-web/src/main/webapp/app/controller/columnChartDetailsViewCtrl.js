@@ -17,6 +17,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* globals Highcharts */
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
     [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'chartFactory', 'pdfFactory', '_', 'ControllerCommons',
     function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, chartFactory, pdfFactory, _, ControllerCommons) {

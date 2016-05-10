@@ -51,7 +51,6 @@
 
     body {
         background-color: #ffffff;
-        font: 14px/1.3 Georgia, "Times New Roman", times, serif;
         padding-top: 10px;
         padding-bottom: 10px;
         -webkit-font-smoothing: antialiased;
@@ -79,7 +78,6 @@
 
     blockquote:before, blockquote:after,
     q:before, q:after {
-        content: '';
         content: none;
     }
 
@@ -109,7 +107,7 @@
     }
 
     #wrap {
-        margin-top: 0px;
+        margin-top: 0;
         width: 100%;
         height: 100%;
     }
@@ -284,10 +282,8 @@
     li.overview-box-header-listItem a h2 {
         color: #fff !important;
         margin: 0;
-        margin-top: 0px;
-        padding: 10px 0px 10px 25px;
+        padding: 10px 0 10px 25px;
         font-size: 1em;
-        font-family: Helvetica;
     }
 
     #overview-content #overview-distribution-per-sex-container, #overview-content #overview-change-container, #overview-content #overview-distribution-diagnostic-groups-container, #overview-content #overview-distribution-of-age-groups-container, #overview-content #overview-distribution-of-sick-degree-container, #overview-content #overview-distribution-sick-length-container, #overview-content #overview-distribution-by-county-container {
@@ -301,7 +297,7 @@
     }
 
     #overview-distribution-per-sex-container {
-        padding: 0% 3% 0% 4%;
+        padding: 0 3% 0 4%;
     }
 
     #overview-content #overview-distribution-per-sex-container p {
@@ -311,7 +307,6 @@
     #overview-distribution-per-sex-values {
         text-align: center;
         vertical-align: middle;
-        font-size: 2em;
         font-weight: bold;
         color: #fff;
         margin-left: auto;
@@ -332,7 +327,7 @@
         display: block;
         margin-left: auto;
         margin-right: auto;
-        margin-top: 0%;
+        margin-top: 0;
     }
 
     p {
@@ -341,47 +336,31 @@
 
     #overview-content .overview-box-information-container {
         background-color: #ededed;
-        padding: 0px 0px 35px 0px;
-        -webkit-border-bottom-right-radius: 10px;
-        -webkit-border-bottom-left-radius: 10px;
-        -moz-border-radius-bottomright: 10px;
-        -moz-border-radius-bottomleft: 10px;
+        padding: 0 2px 35px;
         border-bottom-right-radius: 10px;
         border-bottom-left-radius: 10px;
-        border-left: 1px solid #C4C4C4;
-        border-right: 1px solid #C4C4C4;
-        border-bottom: 1px solid #C4C4C4;
+        border: 1px solid #C4C4C4;
         border-top: 1px solid transparent;
-        padding-left: 2px;
-        padding-right: 2px;
     }
 
     #overview-content .overview-box-information-container {
         background-color: #ededed;
-        padding: 0px 0px 35px 0px;
-        -webkit-border-bottom-right-radius: 10px;
-        -webkit-border-bottom-left-radius: 10px;
-        -moz-border-radius-bottomright: 10px;
-        -moz-border-radius-bottomleft: 10px;
+        padding: 0 2px 35px;
         border-bottom-right-radius: 10px;
         border-bottom-left-radius: 10px;
-        border-left: 1px solid #C4C4C4;
-        border-right: 1px solid #C4C4C4;
-        border-bottom: 1px solid #C4C4C4;
+        border: 1px solid #C4C4C4;
         border-top: 1px solid transparent;
-        padding-left: 2px;
-        padding-right: 2px;
     }
 
     div.box-bottom {
-        margin-top: 0px;
-        padding: 0px;
+        margin-top: 0;
+        padding: 0;
         margin-bottom: 10px;
         min-height: 10px;
     }
 
     #overview-content #overview-change-container .overview-change-responsive-circle {
-        margin: 0px auto;
+        margin: 0 auto;
     }
 
     #overview-content #overview-change-container .overview-change-responsive-circle > div {
@@ -391,9 +370,6 @@
         height: auto;
         position: relative;
         border-radius: 50%;
-        -moz-border-radius: 50%;
-        -webkit-border-radius: 50%;
-        -khtml-border-radius: 50%;
         background: #11b73c;
     }
 
@@ -410,7 +386,6 @@
         padding: 5px 5px;
         background: #008391;
         background: linear-gradient(to bottom, #008391 0%, #00687d 100%);
-        /* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#008391', endColorstr='#00687d',GradientType=0 ); */
     }
 
     #overview-content h2, #chart-content h2 {
@@ -425,8 +400,7 @@
         margin-bottom: 20px;
         color: #333;
         font-size: 12px;
-        padding: 0px 0px 5px 0px;
-        border-bottom-color: #ddd;
+        padding: 0 0 5px 0;
         display: inline-block;
         background: #ebebeb;
     }
@@ -437,10 +411,8 @@
     }
 
     #overview-content #overview-change-container .overview-change-responsive-circle > div {
-        /*padding: 13%;
-        margin: 3% 0% 0% 36%;*/
         padding: 6%;
-        margin: 2% 0% 0% 43%;
+        margin: 2% 0 0 43%;
     }
 
     #overview-content #overview-change-container .overview-change-responsive-circle > div > div,
@@ -505,7 +477,7 @@
 
     span.longSickLeavesText {
         position: relative;
-        padding: 0px 0px 15px 0px;
+        padding: 0 0 15px 0;
         font-size: 12px;
     }
 

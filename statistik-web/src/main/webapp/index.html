@@ -7,14 +7,15 @@
 
     <link rel="icon" type="image/png" href="/assets/images/favicon.ico">
 
-    <title data-ng-bind="$root.page_title">Statistiktjänsten</title>
+    <title data-ng-bind="$root.pageTitle">Statistiktjänsten</title>
 
     <!-- build:css(src/main/webapp) app/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.css" />
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" />
+    <link rel="stylesheet" href="bower_components/jquery.tablesorter/css/theme.default.css" />
+    <link rel="stylesheet" href="bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.css" />
     <link rel="stylesheet" href="bower_components/dropzone/dist/min/dropzone.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
@@ -132,13 +133,13 @@
   <script src="bower_components/angular-cookies/angular-cookies.js"></script>
   <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
   <script src="bower_components/angular-i18n/angular-locale_sv-se.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+  <script src="bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
   <script src="bower_components/lodash/lodash.js"></script>
   <script src="bower_components/jquery.tablesorter/js/jquery.tablesorter.js"></script>
   <script src="bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.js"></script>
   <script src="bower_components/pdfmake/build/pdfmake.js"></script>
-  <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
-  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-  <script src="bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
   <script src="bower_components/momentjs/moment.js"></script>
   <script src="bower_components/dropzone/dist/min/dropzone.min.js"></script>
   <script src="bower_components/ngstorage/ngStorage.js"></script>
@@ -150,10 +151,11 @@
   <!-- endbower -->
   <!-- endbuild -->
 
+  <script src="js/lib/vfs_fonts.js"></script>
+
   <!-- build:js({build/.tmp,src/main/webapp}) app/app.main.js -->
-  <script src="app/app.js"></script>
+  <script src="app/app.main.js"></script>
   <!-- injector:js -->
-  <script src="app/app.js"></script>
   <script src="app/controller/about/aboutFaqCtrl.js"></script>
   <script src="app/controller/business/businessLandingPageCtrl.js"></script>
   <script src="app/controller/business/businessOverviewCtrl.js"></script>
@@ -194,7 +196,7 @@
   <!-- endbuild -->
 
 <script type="text/javascript">
-    //$('.dropdown-toggle').dropdown();
+    $('.dropdown-toggle').dropdown();
 </script>
 
 <!-- This sections will give users of not so modern browsers a message that their browser is too old to run this thing. -->
