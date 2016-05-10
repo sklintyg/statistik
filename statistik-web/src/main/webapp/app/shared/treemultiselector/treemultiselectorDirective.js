@@ -17,7 +17,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 angular.module('StatisticsApp.treeMultiSelector.directive', [])
-    .directive("treeMultiSelector", function () {
+    .directive('treeMultiSelector', function () {
         'use strict';
         return {
             restrict: 'EA',
@@ -27,6 +27,6 @@ angular.module('StatisticsApp.treeMultiSelector.directive', [])
                 textData: '='
             },
             controller: 'treeMultiSelectorCtrl',
-            templateUrl: 'js/app/shared/treemultiselector/treeMultiSelectorView.html'
+            templateUrl: 'app/shared/treemultiselector/treeMultiSelectorView.html'
         };
     });

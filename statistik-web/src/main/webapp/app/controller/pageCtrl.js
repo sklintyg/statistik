@@ -17,27 +17,28 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
-
-angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope', '$window', '$location', 'statisticsData', 'businessFilterFactory', 'landstingFilterFactory', '_',
+angular.module('StatisticsApp').controller('pageCtrl',
+    [ '$scope', '$rootScope', '$window', '$location', 'statisticsData', 'businessFilterFactory', 'landstingFilterFactory', '_',
     function ($scope, $rootScope, $window, $location, statisticsData, businessFilterFactory, landstingFilterFactory, _) {
+        'use strict';
+
         var self = this;
 
         self.getSelectedVerksamhet = function (selectedVerksamhetId, verksamhets) {
             var selectedVerksamhet = _.findWhere(verksamhets, { vardgivarId: selectedVerksamhetId });
-            return selectedVerksamhet ? selectedVerksamhet : {name: "Okänd verksamhet"};
+            return selectedVerksamhet ? selectedVerksamhet : {name: 'Okänd verksamhet'};
         };
 
-        $rootScope.$on('$routeChangeSuccess', function (angularEvent, next, current) {
+        $rootScope.$on('$routeChangeSuccess', function () {
             var d = new Date();
             var currDate = d.getDate();
             var currMonth = d.getMonth() + 1; //Months are zero based
             var currYear = d.getFullYear();
-            $scope.currentTime = currYear + "-" + currMonth + "-" + currDate;
+            $scope.currentTime = currYear + '-' + currMonth + '-' + currDate;
 
             $scope.isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
             $scope.isLandstingShowing = ControllerCommons.isShowingLandsting($location);
-            $scope.viewHeader = $scope.isVerksamhetShowing ? "Verksamhetsstatistik" : ControllerCommons.isShowingLandsting($location) ? "Landstingsstatistik" : "Nationell statistik";
+            $scope.viewHeader = $scope.isVerksamhetShowing ? 'Verksamhetsstatistik' : ControllerCommons.isShowingLandsting($location) ? 'Landstingsstatistik' : 'Nationell statistik';
 
             if ($rootScope.isLoggedIn) {
                 if (!$scope.isLoginInfoFetched) {
@@ -45,7 +46,7 @@ angular.module('StatisticsApp').controller('pageCtrl', [ '$scope', '$rootScope',
                         businessFilterFactory.setup(loginInfo.businesses, $location.$$search.filter);
 
                         var v = loginInfo.defaultVerksamhet;
-                        $scope.verksamhetName = v ? (loginInfo.businesses && loginInfo.businesses.length === 1 ? v.name : (loginInfo.processledare ? v.vardgivarName : "")) : "";
+                        $scope.verksamhetName = v ? (loginInfo.businesses && loginInfo.businesses.length === 1 ? v.name : (loginInfo.processledare ? v.vardgivarName : '')) : '';
                         $scope.userName = loginInfo.name;
                         $scope.userNameWithAccess = loginInfo.name;
 

@@ -1,19 +1,18 @@
-'use strict';
-
-angular.module('StatisticsApp').directive("navigationaware", function ($rootScope) {
+angular.module('StatisticsApp').directive('navigationaware', function ($rootScope) {
+    'use strict';
 
     var isActivePage = function(currentRoute, navLinkAttrs) {
         return currentRoute.controllerAs === navLinkAttrs.ctrlname || currentRoute.controller === navLinkAttrs.ctrlname;
     };
     
     return {
-        restrict: "A",
+        restrict: 'A',
         link: function ($scope, elem, $attrs) {
-            $rootScope.$on('$routeChangeSuccess', function(angularEvent, current, previous) {
-                elem.parent().removeClass("active");
+            $rootScope.$on('$routeChangeSuccess', function(angularEvent, current) {
+                elem.parent().removeClass('active');
                 if (isActivePage(current, $attrs)){
-                    elem.parent().addClass("active");
-                    var groupId = elem.closest(".navigation-group").attr('id');
+                    elem.parent().addClass('active');
+                    var groupId = elem.closest('.navigation-group').attr('id');
                     if (groupId) {
                         $rootScope.$broadcast('navigationUpdate', groupId);
                     }
@@ -23,15 +22,17 @@ angular.module('StatisticsApp').directive("navigationaware", function ($rootScop
     };
 });
 
-angular.module('StatisticsApp').directive("spinner", function() {
+angular.module('StatisticsApp').directive('spinner', function() {
+    'use strict';
+
     return {
-        restrict : "A",
+        restrict : 'A',
         transclude : true,
         replace : true,
         scope : {
-          label: "@",
-          showSpinner: "=",
-          showContent: "="
+          label: '@',
+          showSpinner: '=',
+          showContent: '='
         },
         template :
             '<div>' +
@@ -46,19 +47,21 @@ angular.module('StatisticsApp').directive("spinner", function() {
     };
 });
 
-angular.module('StatisticsApp').directive("dataerrorview", function() {
+angular.module('StatisticsApp').directive('dataerrorview', function() {
+    'use strict';
+
     return {
-        restrict : "A",
+        restrict : 'A',
         transclude : true,
         replace : true,
         scope : {
-            errorPageUrl: "=",
-            showError: "="
+            errorPageUrl: '=',
+            showError: '='
         },
         template :
             '<div>'+
                 '<div ng-show="showError">' +
-                    '<div ng-include="\'views/error/failedToFetchData.html\'"></div>' +
+                    '<div ng-include="app/views/error/failedToFetchData.html"></div>' +
                 '</div>' +
                 '  <div ng-show="!showError">' +
                 '    <div ng-transclude></div>' +
@@ -67,7 +70,9 @@ angular.module('StatisticsApp').directive("dataerrorview", function() {
     };
 });
 
-angular.module('StatisticsApp').directive('legendHeight', function() {
+angular.module('StatisticsApp').directive('legendHeight', ['_', function(_) {
+    'use strict';
+
     return function(scope, element) {
        if (scope.$last) {
           scope.$watch('seriesData', function(){
@@ -77,9 +82,11 @@ angular.module('StatisticsApp').directive('legendHeight', function() {
           });
        }   
     };
-});
+}]);
 
 angular.module('StatisticsApp').directive('intermediate', function() {
+    'use strict';
+
     return function(scope, element, attrs) {
         scope.$watch(attrs.intermediate, function (newVal) {
             element[0].indeterminate = newVal;
@@ -88,14 +95,18 @@ angular.module('StatisticsApp').directive('intermediate', function() {
 });
 
 angular.module('StatisticsApp').directive('bindonce', function () {
+    'use strict';
+
     return {
-        link:function (scope, elem, attr, ctrl) {
+        link:function (scope, elem, attr) {
             elem.text(scope.$eval(attr.bindonce));
         }
     };
 });
 
 angular.module('StatisticsApp').directive('onFinishRender', function () {
+    'use strict';
+
     return {
         restrict: 'A',
         link: function (scope, element, attr) {
@@ -107,21 +118,25 @@ angular.module('StatisticsApp').directive('onFinishRender', function () {
 });
 
 angular.module('StatisticsApp').directive('sortableTable', function () {
+    'use strict';
+
     return {
-        link: function(scope, elm, attrs) {
-            scope.$on('pageDataPopulated', function (event) {
+        link: function(scope, elm) {
+            scope.$on('pageDataPopulated', function () {
                 elm.tablesorter({sortReset: true, sortInitialOrder: 'desc'});
             });
         }
-    }
+    };
 });
 
-angular.module('StatisticsApp').directive("submenu", function (recursionService) {
+angular.module('StatisticsApp').directive('submenu', function (recursionService) {
+    'use strict';
+
     return {
-        restrict: "E",
-        scope: { item: "=", itemroot: "=", depth: "=", recursionhelper: "=" },
+        restrict: 'E',
+        scope: { item: '=', itemroot: '=', depth: '=', recursionhelper: '=' },
         template:
-            '<span ng-click="recursionhelper.hideclick(item)" class="ellipsis-text"><span class="glyphicon" ng-class="{glyphiconMinusSign: !item.hideChildren, glyphiconPlusSign: item.hideChildren}"/><span bindonce="item.name"></span></span>' +
+            '<span ng-click="recursionhelper.hideclick(item)" class="ellipsis-text"><span class="glyphicon" ng-class=""{glyphiconMinusSign: !item.hideChildren, glyphiconPlusSign: item.hideChildren}"/><span bindonce="item.name"></span></span>' +
             '<input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="recursionhelper.itemclick(item)"/>' +
             '<ul ng-init="item.hideChildren=true" ng-show="item.subs && !item.hideChildren" style="list-style-type: none;">' +
               '<li data-ng-init="depth=depth+1" data-ng-repeat="item in item.subs">' +
@@ -182,13 +197,15 @@ angular.module('StatisticsApp').directive('message',
 
 angular.module('StatisticsApp').directive('confirmClick', [
     function(){
+        'use strict';
+
         return {
             link: function (scope, element, attr) {
-                var msg = attr.confirmMessage || "Är du säker?";
+                var msg = attr.confirmMessage || 'Är du säker?';
                 var clickAction = attr.confirmedClickAction;
-                element.bind('click',function (event) {
-                    if ( window.confirm(msg) ) {
-                        scope.$eval(clickAction)
+                element.bind('click',function () {
+                    if (window.confirm(msg) ) {
+                        scope.$eval(clickAction);
                     }
                 });
             }

@@ -17,28 +17,27 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
-
 angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'chartFactory', 'messageService', 'pdfOverviewFactory', 'thousandseparatedFilter',
 function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, chartFactory, messageService, pdfOverviewFactory, thousandseparatedFilter) {
+    'use strict';
 
     var perMonthAlterationChart = {}, newSexProportionChart = {}, oldSexProportionChart = {},
         ageDonutChart = {}, diagnosisDonutChart = {}, degreeOfSickLeaveChart = {}, sickLeaveLengthChart = {};
-    $scope.baseUrl = "#/verksamhet";
+    $scope.baseUrl = '#/verksamhet';
 
     var dataReceived = function (result) {
         var enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
-        $scope.subTitle = "Utveckling för verksamheten de senaste tre månaderna" + ControllerCommons.getEnhetCountText(enhetsCount, false).slice(0, -1) + ", " + result.periodText;
-        $scope.popoverTextAmount = "Totala antalet sjukfall under perioden " + result.periodText;
-        $scope.popoverTextChangeProcentage = "Procentsatsen visar förändringen av antalet sjukfall under perioden " + result.periodText;
-        $scope.popoverTextSexDistribution = "Könsfördelningen av totala antalet sjukfall under perioden " + result.periodText;
-        $scope.popoverTextDiagnosisGroups1 = "Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under " + result.periodText + ".";
-        $scope.popoverTextChangeCurrentVSPrevious = "Spalten förändring visar skillnaden i antal sjukfall mellan perioden " + result.periodText;
-        $scope.popoverTextAgeGroups1 = "Diagrammet visar de åldersgrupper som har flest sjukfall under " + result.periodText + ".";
-        $scope.popoverTextSickLeaveLength1 = "Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden " + result.periodText + ".";
-        $scope.popoverTextSickLeaveLength2 = "Ställ markören i respektive stapel för att se antalet sjukfall.";
-        $scope.popoverTextDegreeOfSickLeave1 = "Diagrammet visar antalet sjukfall per sjukskrivningsgrad under perioden  " + result.periodText + ".";
-        $scope.popoverPreviousMonths = " jämfört med föregående tre månader.";
+        $scope.subTitle = 'Utveckling för verksamheten de senaste tre månaderna' + ControllerCommons.getEnhetCountText(enhetsCount, false).slice(0, -1) + ', ' + result.periodText;
+        $scope.popoverTextAmount = 'Totala antalet sjukfall under perioden ' + result.periodText;
+        $scope.popoverTextChangeProcentage = 'Procentsatsen visar förändringen av antalet sjukfall under perioden ' + result.periodText;
+        $scope.popoverTextSexDistribution = 'Könsfördelningen av totala antalet sjukfall under perioden ' + result.periodText;
+        $scope.popoverTextDiagnosisGroups1 = 'Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under ' + result.periodText + '.';
+        $scope.popoverTextChangeCurrentVSPrevious = 'Spalten förändring visar skillnaden i antal sjukfall mellan perioden ' + result.periodText;
+        $scope.popoverTextAgeGroups1 = 'Diagrammet visar de åldersgrupper som har flest sjukfall under ' + result.periodText + '.';
+        $scope.popoverTextSickLeaveLength1 = 'Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden ' + result.periodText + '.';
+        $scope.popoverTextSickLeaveLength2 = 'Ställ markören i respektive stapel för att se antalet sjukfall.';
+        $scope.popoverTextDegreeOfSickLeave1 = 'Diagrammet visar antalet sjukfall per sjukskrivningsgrad under perioden  ' + result.periodText + '.';
+        $scope.popoverPreviousMonths = ' jämfört med föregående tre månader.';
         $scope.popoverTextPeriod = result.periodText;
         $scope.doneLoading = true;
         if (result.casesPerMonth.totalCases === 0) {
@@ -52,7 +51,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     };
 
     var paintPerMonthAlternationChart = function (alteration) {
-        var chartOptions, color = "#57843B", patternPath;
+        var chartOptions, color = '#57843B';
 
         chartOptions = chartFactory.getHighChartConfigBase([], [
             {
@@ -62,8 +61,8 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             }
         ]);
 
-        chartOptions.chart.renderTo = "alterationChart";
-        chartOptions.chart.type = "pie";
+        chartOptions.chart.renderTo = 'alterationChart';
+        chartOptions.chart.type = 'pie';
         chartOptions.chart.height = 210;
         chartOptions.chart.marginTop = 20;
         chartOptions.chart.plotBorderWidth = 0;
@@ -95,7 +94,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     };
 
     var paintSexProportionChart = function(containerId, male, female, period) {
-        var femaleColor = "#EA8025", maleColor = "#008391", chartOptions;
+        var femaleColor = '#EA8025', maleColor = '#008391', chartOptions;
 
         var series = [
             {
@@ -164,7 +163,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
                 }
             }
         ];
-        chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
+        chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || '') + '{point.key}</span><br/>';
         return new Highcharts.Chart(chartOptions);
     };
 
@@ -174,29 +173,29 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         perMonthAlterationChart = paintPerMonthAlternationChart(result.casesPerMonth.totalCases);
 
         chartFactory.addColor(result.casesPerMonth.amountMaleOld);
-        oldSexProportionChart = paintSexProportionChart("sexProportionChartOld", result.casesPerMonth.amountMaleOld, result.casesPerMonth.amountFemaleOld, result.casesPerMonth.oldPeriod);
+        oldSexProportionChart = paintSexProportionChart('sexProportionChartOld', result.casesPerMonth.amountMaleOld, result.casesPerMonth.amountFemaleOld, result.casesPerMonth.oldPeriod);
 
         chartFactory.addColor(result.casesPerMonth.amountFemaleNew);
-        newSexProportionChart = paintSexProportionChart("sexProportionChartNew", result.casesPerMonth.amountMaleNew, result.casesPerMonth.amountFemaleNew, result.casesPerMonth.newPeriod);
+        newSexProportionChart = paintSexProportionChart('sexProportionChartNew', result.casesPerMonth.amountMaleNew, result.casesPerMonth.amountFemaleNew, result.casesPerMonth.newPeriod);
 
         var diagnosisDonutData = extractDonutData(result.diagnosisGroups);
         chartFactory.addColor(diagnosisDonutData);
-        diagnosisDonutChart = paintDonutChart("diagnosisChart", diagnosisDonutData);
+        diagnosisDonutChart = paintDonutChart('diagnosisChart', diagnosisDonutData);
         $scope.diagnosisGroups = result.diagnosisGroups;
 
         var ageGroupsDonutData = extractDonutData(result.ageGroups);
         chartFactory.addColor(ageGroupsDonutData);
-        ageDonutChart = paintDonutChart("ageChart", ageGroupsDonutData);
+        ageDonutChart = paintDonutChart('ageChart', ageGroupsDonutData);
         $scope.ageGroups = result.ageGroups;
 
         var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
         chartFactory.addColor(degreeOfSickLeaveDonutData);
-        degreeOfSickLeaveChart = paintDonutChart("degreeOfSickLeaveChart", degreeOfSickLeaveDonutData);
+        degreeOfSickLeaveChart = paintDonutChart('degreeOfSickLeaveChart', degreeOfSickLeaveDonutData);
 
         $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
         chartFactory.addColor(result.sickLeaveLength.chartData);
-        sickLeaveLengthChart = paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
+        sickLeaveLengthChart = paintBarChart('sickLeaveLengthChart', result.sickLeaveLength.chartData);
 
         $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
         $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
@@ -211,11 +210,11 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     };
 
     function paintBarChart(containerId, chartData, tooltipHeaderPrefix) {
-        var color = '#57843B', chartOptions, patternPath;
+        var color = '#57843B', chartOptions;
 
         var series = [
             {
-                name: "Antal",
+                name: 'Antal',
                 data: _.map(chartData, function (e) {
                     return e.quantity;
                 }),
@@ -235,7 +234,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         chartOptions.xAxis.labels.format = '{value}';
         chartOptions.subtitle.text = null;
         chartOptions.yAxis.title = { text: 'Antal', style : chartOptions.subtitle.style  };
-        chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || "") + '{point.key}</span><br/>';
+        chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || '') + '{point.key}</span><br/>';
         chartOptions.yAxis.tickPixelInterval = 30;
         chartOptions.legend.enabled = false;
         return new Highcharts.Chart(chartOptions);
@@ -261,7 +260,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     }
 
     refresh();
-    $scope.spinnerText = "Laddar information...";
+    $scope.spinnerText = 'Laddar information...';
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
 

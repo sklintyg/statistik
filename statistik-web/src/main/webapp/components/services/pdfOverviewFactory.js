@@ -16,9 +16,9 @@
  *     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-'use strict';
 angular.module('StatisticsApp')
     .factory('pdfOverviewFactory', ['$window', 'pdfFactory','$timeout', function($window, pdfFactory, $timeout) {
+        'use strict';
 
         function _printOverview($scope, charts) {
             $scope.generatingPdf = true;
@@ -80,16 +80,16 @@ angular.module('StatisticsApp')
                 },
                 style: 'tableBorder',
                 layout: {
-                    hLineWidth: function(i, node) {
+                    hLineWidth: function(/*i, node*/) {
                         return 1;
                     },
-                    vLineWidth: function(i, node) {
+                    vLineWidth: function(/*i, node*/) {
                         return 1;
                     },
-                    hLineColor: function(i, node) {
+                    hLineColor: function(/*i, node*/) {
                         return 'lightgray';
                     },
-                    vLineColor: function(i, node) {
+                    vLineColor: function(/*i, node*/) {
                         return 'lightgray';
                     }
                 }
@@ -119,7 +119,7 @@ angular.module('StatisticsApp')
                     chartDescriptions.push([
                         {text: descirption.header, style: 'chartDescHeader', alignment: 'center'},
                         {text: descirption.text, style: 'chartDescText', alignment: 'center'}
-                    ])
+                    ]);
                 });
 
                 content.push({columns: chartDescriptions});

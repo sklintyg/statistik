@@ -17,9 +17,9 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
 
-var ControllerCommons = new function(){
+var ControllerCommons = function(){
+    'use strict';
 
     this.updateDataTable = function (scope, tableData) {
         scope.headerrows = tableData.headers;
@@ -44,7 +44,7 @@ var ControllerCommons = new function(){
             if (splittedOnDot.length === 1) {
                 return integerPartThousandSeparated;
             }
-            return integerPartThousandSeparated + "," + splittedOnDot[1];
+            return integerPartThousandSeparated + ',' + splittedOnDot[1];
         }
         return input;
     };
@@ -52,27 +52,27 @@ var ControllerCommons = new function(){
     this.getFileName = function(chartName) {
         var d = new Date();
 
-        var year = "" + d.getFullYear();
-        var month = d.getMonth() < 9 ? "0" + (d.getMonth() + 1) : "" + (d.getMonth() + 1);
-        var day = d.getDate() < 10 ? "0" + d.getDate() : "" + d.getDate();
+        var year = '' + d.getFullYear();
+        var month = d.getMonth() < 9 ? '0' + (d.getMonth() + 1) : '' + (d.getMonth() + 1);
+        var day = d.getDate() < 10 ? '0' + d.getDate() : '' + d.getDate();
         var date = year + month + day;
 
-        var hour = d.getHours() < 10 ? "0" + d.getHours() : "" + d.getHours();
-        var minute = d.getMinutes() < 10 ? "0" + d.getMinutes() : "" + d.getMinutes();
-        var second = d.getSeconds() < 10 ? "0" + d.getSeconds() : "" + d.getSeconds();
+        var hour = d.getHours() < 10 ? '0' + d.getHours() : '' + d.getHours();
+        var minute = d.getMinutes() < 10 ? '0' + d.getMinutes() : '' + d.getMinutes();
+        var second = d.getSeconds() < 10 ? '0' + d.getSeconds() : '' + d.getSeconds();
         var time = hour + minute + second;
 
-        return String(chartName).replace(/\s+/g, "_") + "_" + date + "_" + time;
+        return String(chartName).replace(/\s+/g, '_') + '_' + date + '_' + time;
     };
 
     this.getEnhetCountText = function(enhetsCount, basedOnAlreadyInText) {
         if (enhetsCount === 1) {
-            return " ";
+            return ' ';
         }
         if (basedOnAlreadyInText) {
-            return enhetsCount ? " och " + enhetsCount + " enheter" + " " : " ";
+            return enhetsCount ? ' och ' + enhetsCount + ' enheter' + ' ' : ' ';
         }
-        return enhetsCount ? " baserat på " + enhetsCount + " enheter" + " " : " ";
+        return enhetsCount ? ' baserat på ' + enhetsCount + ' enheter' + ' ' : ' ';
     };
 
     function icdStructureAsArray(icdStructure) {
@@ -87,7 +87,7 @@ var ControllerCommons = new function(){
             var icdItem = _.find(icdStructureAsFlatArray, function(icd){
                 return icd.numericalId === parseInt(diagnosId, 10);
             });
-            return icdItem.id + " " + icdItem.name;
+            return icdItem.id + ' ' + icdItem.name;
         });
     };
 
@@ -104,7 +104,7 @@ var ControllerCommons = new function(){
             return;
         }
         if (diagnosIds.length === 0) {
-            scope.activeDiagnosFilters = [""];
+            scope.activeDiagnosFilters = [''];
             return;
         }
         statisticsData.getIcd10Structure(function (diagnoses) {
@@ -126,8 +126,8 @@ var ControllerCommons = new function(){
         if (enhetNames.length === 1) {
             scope.headerEnhetInfo = enhetNames[0];
         } else {
-            scope.headerEnhetInfo = "";
-            scope.activeEnhetsFilters = enhetNames.length > 1 ? enhetNames : [""];
+            scope.headerEnhetInfo = '';
+            scope.activeEnhetsFilters = enhetNames.length > 1 ? enhetNames : [''];
         }
     };
 
@@ -137,11 +137,11 @@ var ControllerCommons = new function(){
         $scope.diagnosisTreeFilter = diagnosisTreeFilter;
 
         $scope.diagnosisSelectorData = {
-            titleText: messageService.getProperty("comparediagnoses.lbl.val-av-diagnoser", null, "", null, true),
-            buttonLabelText: messageService.getProperty("lbl.filter.val-av-diagnoser-knapp", null, "", null, true),
-            firstLevelLabelText: messageService.getProperty("lbl.filter.modal.kapitel", null, "", null, true),
-            secondLevelLabelText: messageService.getProperty("lbl.filter.modal.avsnitt", null, "", null, true),
-            thirdLevelLabelText: messageService.getProperty("lbl.filter.modal.kategorier", null, "", null, true)
+            titleText: messageService.getProperty('comparediagnoses.lbl.val-av-diagnoser', null, '', null, true),
+            buttonLabelText: messageService.getProperty('lbl.filter.val-av-diagnoser-knapp', null, '', null, true),
+            firstLevelLabelText: messageService.getProperty('lbl.filter.modal.kapitel', null, '', null, true),
+            secondLevelLabelText: messageService.getProperty('lbl.filter.modal.avsnitt', null, '', null, true),
+            thirdLevelLabelText: messageService.getProperty('lbl.filter.modal.kategorier', null, '', null, true)
         };
 
         $scope.diagnosisSelected = function () {
@@ -169,7 +169,7 @@ var ControllerCommons = new function(){
 
         var success = function (selectionHash) {
             var path = $location.path();
-            var newPath = path.replace(/\/[^\/]+$/gm, "/" + selectionHash);
+            var newPath = path.replace(/\/[^\/]+$/gm, '/' + selectionHash);
 
             if (path === newPath) {
                 $timeout(function () {
@@ -181,23 +181,23 @@ var ControllerCommons = new function(){
         };
 
         var error = function () {
-            throw new Error("Failed to get filter hash value");
+            throw new Error('Failed to get filter hash value');
         };
 
         statisticsData.getFilterHash(params).then(success, error);
     };
 
     this.isShowingVerksamhet = function($location) {
-        return $location.path().indexOf("/verksamhet/") === 0;
+        return $location.path().indexOf('/verksamhet/') === 0;
     };
 
     this.isShowingLandsting = function($location) {
-        return $location.path().indexOf("/landsting/") === 0;
+        return $location.path().indexOf('/landsting/') === 0;
     };
 
     this.createQueryStringOfQueryParams = function (queryParams) {
         return !_.isEmpty(queryParams) ? _.map(queryParams, function (value, key) {
-            return key + "=" + value;
+            return key + '=' + value;
         }).join('&') : '';
     };
 
@@ -235,32 +235,32 @@ var ControllerCommons = new function(){
         }
 
         $scope.detailsOptions = _.map(kapitels, function (e) {
-            e.url = basePath + "/kapitel/" + e.id;
+            e.url = basePath + '/kapitel/' + e.id;
             return e;
         });
         $scope.detailsOptions2 = _.map(avsnitts, function (e) {
-            e.url = basePath + "/kapitel/" + $routeParams.kapitelId + "/avsnitt/" + e.id;
+            e.url = basePath + '/kapitel/' + $routeParams.kapitelId + '/avsnitt/' + e.id;
             return e;
         });
         $scope.detailsOptions3 = _.map(kategoris, function (e) {
-            e.url = basePath + "/kapitel/" + $routeParams.kapitelId + "/avsnitt/" + $routeParams.avsnittId + "/kategori/" + e.id;
+            e.url = basePath + '/kapitel/' + $routeParams.kapitelId + '/avsnitt/' + $routeParams.avsnittId + '/kategori/' + e.id;
             return e;
         });
 
         //Add default option for detailsOptions2
-        var defaultId = messageService.getProperty("lbl.valj-annat-diagnosavsnitt", null, "", null, true);
-        $scope.detailsOptions2.unshift({"id": defaultId, "name":"", "url":basePath + "/kapitel/" + $routeParams.kapitelId});
+        var defaultId = messageService.getProperty('lbl.valj-annat-diagnosavsnitt', null, '', null, true);
+        $scope.detailsOptions2.unshift({'id': defaultId, 'name':'', 'url':basePath + '/kapitel/' + $routeParams.kapitelId});
         if (!$scope.selectedDetailsOption2) {
             $scope.selectedDetailsOption2 = $scope.detailsOptions2[0];
         }
 
         if ($routeParams.avsnittId) {
             //Add default option for detailsOptions3
-            var defaultIdKategori = messageService.getProperty("lbl.valj-annan-diagnoskategori", null, "", null, true);
+            var defaultIdKategori = messageService.getProperty('lbl.valj-annan-diagnoskategori', null, '', null, true);
             $scope.detailsOptions3.unshift({
-                "id": defaultIdKategori,
-                "name": "",
-                "url": basePath + "/kapitel/" + $routeParams.kapitelId + "/avsnitt/" + $routeParams.avsnittId
+                'id': defaultIdKategori,
+                'name': '',
+                'url': basePath + '/kapitel/' + $routeParams.kapitelId + '/avsnitt/' + $routeParams.avsnittId
             });
             if (!$scope.selectedDetailsOption3) {
                 $scope.selectedDetailsOption3 = $scope.detailsOptions3[0];
@@ -271,24 +271,24 @@ var ControllerCommons = new function(){
     };
 
     function getDiagnosPathPart($routeParams) {
-        return $routeParams.kapitelId ? "/kapitel/" + $routeParams.kapitelId + ($routeParams.avsnittId ? "/avsnitt/" + $routeParams.avsnittId + ($routeParams.kategoriId ? "/kategori/" + $routeParams.kategoriId : "") : "") : "";
+        return $routeParams.kapitelId ? '/kapitel/' + $routeParams.kapitelId + ($routeParams.avsnittId ? '/avsnitt/' + $routeParams.avsnittId + ($routeParams.kategoriId ? '/kategori/' + $routeParams.kategoriId : '') : '') : '';
     }
 
     function getSubtitle(period, selectedOption1, selectedOption2, selectedOption3, $scope, config) {
         if ((selectedOption3 && selectedOption3.name && selectedOption3.id)) {
-            return config.title(period, $scope.enhetsCount, selectedOption3.id + " " + selectedOption3.name);
+            return config.title(period, $scope.enhetsCount, selectedOption3.id + ' ' + selectedOption3.name);
         }
         if ((selectedOption2 && selectedOption2.name && selectedOption2.id)) {
-            return config.title(period, $scope.enhetsCount, selectedOption2.id + " " + selectedOption2.name);
+            return config.title(period, $scope.enhetsCount, selectedOption2.id + ' ' + selectedOption2.name);
         }
         if (selectedOption1 && selectedOption1.name && selectedOption1.id) {
-            return config.title(period, $scope.enhetsCount, selectedOption1.id + " " + selectedOption1.name);
+            return config.title(period, $scope.enhetsCount, selectedOption1.id + ' ' + selectedOption1.name);
         }
-        return "";
+        return '';
     }
 
     this.createDiagnosHashPathOrAlternativePath = function($routeParams){
-        return ($routeParams.diagnosHash ? "/" + $routeParams.diagnosHash : getDiagnosPathPart($routeParams));
+        return ($routeParams.diagnosHash ? '/' + $routeParams.diagnosHash : getDiagnosPathPart($routeParams));
     };
 
     this.updateExchangeableViewsUrl = function(isVerksamhet, config, $location, $scope, $routeParams) {
@@ -301,7 +301,7 @@ var ControllerCommons = new function(){
             //Add queryParams if any
             if (queryParamsString) {
                 _.each(config.exchangeableViews, function (view) {
-                    view.state = view.state + "?" + queryParamsString;
+                    view.state = view.state + '?' + queryParamsString;
                 });
             }
             $scope.exchangeableViews = config.exchangeableViews;
@@ -310,7 +310,7 @@ var ControllerCommons = new function(){
     };
 
     this.getResultMessage = function(result, messageService) {
-        return result.message ? result.message : (result.empty ? messageService.getProperty("info.emptyreponse", null, "", null, true) : "");
+        return result.message ? result.message : (result.empty ? messageService.getProperty('info.emptyreponse', null, '', null, true) : '');
     };
 
     this.formatOverViewTablePDF = function(thousandseparatedFilter, data, nameSuffix) {

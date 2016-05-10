@@ -19,6 +19,7 @@
 
 angular.module('StatisticsApp.filter.directive')
     .directive('filterList', [function() {
+        'use strict';
         return {
             scope: {
                 filters: '=',
@@ -26,6 +27,6 @@ angular.module('StatisticsApp.filter.directive')
             },
             replace: true,
             restrict: 'E',
-            templateUrl: 'js/app/shared/filterList/filterList.directive.html'
+            templateUrl: 'components/directives/filterList/filterList.directive.html'
         };
     }]);

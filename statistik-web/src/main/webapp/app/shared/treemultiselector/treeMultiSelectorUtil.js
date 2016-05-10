@@ -16,12 +16,11 @@
  *     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-'use strict';
-
 angular.module('StatisticsApp.treeMultiSelector.util', ['underscore'])
     .factory('treeMultiSelectorUtil', ['_',
         function (_) {
-
+            'use strict';
+            
             var externalApi = {};
 
             externalApi.updateSelectionState = function (item) {

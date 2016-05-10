@@ -16,4 +16,6 @@
  *     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-angular.module('StatisticsApp.chartSeriesButtonGroup', ['StatisticsApp.chartSeriesButtonGroup.directive']);
+angular.module('StatisticsApp.chartSeriesButtonGroup', [
+    'StatisticsApp.chartSeriesButtonGroup.directive'
+]);

@@ -16,10 +16,9 @@
  *     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-'use strict';
-
 angular.module('StatisticsApp.treeMultiSelector.controller', [])
-    .controller('treeMultiSelectorCtrl', ['$scope', 'treeMultiSelectorUtil', '$timeout', function ($scope, treeMultiSelectorUtil, $timeout) {
+    .controller('treeMultiSelectorCtrl', ['$scope', 'treeMultiSelectorUtil', '$timeout', '_', function ($scope, treeMultiSelectorUtil, $timeout, _) {
+        'use strict';
 
         var self = this;
         
@@ -186,7 +185,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         };
 
         function resetFilter() {
-            $scope.multiMenuFilter = "";
+            $scope.multiMenuFilter = '';
             _.each($scope.menuOptions.subs, function (item) {
                 $scope.updateItemHiddenState(item, function () {
                     return true;

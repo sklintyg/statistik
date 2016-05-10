@@ -1,1 +1,6 @@
-angular.module('StatisticsApp.treeMultiSelector', ['StatisticsApp.treeMultiSelector.util', 'StatisticsApp.treeMultiSelector.directive', 'StatisticsApp.treeMultiSelector.controller']);
+angular.module('StatisticsApp.treeMultiSelector',
+    [
+        'StatisticsApp.treeMultiSelector.util',
+        'StatisticsApp.treeMultiSelector.directive',
+        'StatisticsApp.treeMultiSelector.controller'
+    ]);

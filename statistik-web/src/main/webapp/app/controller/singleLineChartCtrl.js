@@ -17,10 +17,12 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
 
-angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'config', '$location', 'messageService', 'chartFactory', 'pdfFactory',
-    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, $location, messageService, chartFactory, pdfFactory) {
+angular.module('StatisticsApp').controller('singleLineChartCtrl',
+    [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'config', '$location',
+        'messageService', 'chartFactory', 'pdfFactory', '_',
+    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, $location, messageService, chartFactory, pdfFactory, _) {
+        'use strict';
 
         var chart;
 
@@ -28,7 +30,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         $scope.activeChartType = defaultChartType;
 
         $scope.chartContainers = [
-            {id: "chart1", name: "diagram"}
+            {id: 'chart1', name: 'diagram'}
         ];
 
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
@@ -39,10 +41,10 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
             chartOptions.chart.type = defaultChartType;
             chartOptions.legend.enabled = false;
-            chartOptions.xAxis.title.text = "Period";
-            chartOptions.subtitle.text = "Antal sjukfall";
-            chartOptions.text = "#008391";
-            chartOptions.tooltip.text = "#000";
+            chartOptions.xAxis.title.text = 'Period';
+            chartOptions.subtitle.text = 'Antal sjukfall';
+            chartOptions.text = '#008391';
+            chartOptions.tooltip.text = '#000';
 
             return new Highcharts.Chart(chartOptions);
         };
@@ -50,7 +52,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
         var setColorToTotalCasesSeries = function (series) {
             for (var i = 0; i < series.length; i++) {
                 if (series[i].sex === null) {
-                    series[i].color = "#5d5d5d";
+                    series[i].color = '#5d5d5d';
                     break;
                 }
             }
@@ -124,17 +126,17 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
             ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
         };
 
-        $scope.spinnerText = "Laddar information...";
+        $scope.spinnerText = 'Laddar information...';
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
-        $scope.popoverText = messageService.getProperty(config.pageHelpText, null, "", null, true);
+        $scope.popoverText = messageService.getProperty(config.pageHelpText, null, '', null, true);
 
         if (isVerksamhet && config.exchangeableViews) {
             var queryParamsString = ControllerCommons.createQueryStringOfQueryParams($location.search());
 
             if(queryParamsString) {
                 _.each(config.exchangeableViews, function (view) {
-                    view.state = view.state + "?" + queryParamsString;
+                    view.state = view.state + '?' + queryParamsString;
                 });
             }
 
@@ -155,21 +157,23 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl', [ '$scope', '$
 ]);
 
 angular.module('StatisticsApp').casesPerMonthConfig = function () {
+    'use strict';
+
     var conf = {};
-    conf.dataFetcher = "getNumberOfCasesPerMonth";
-    conf.dataFetcherVerksamhet = "getNumberOfCasesPerMonthVerksamhet";
-    conf.dataFetcherLandsting = "getNumberOfCasesPerMonthLandsting";
-    conf.exportTableUrl = "api/getNumberOfCasesPerMonth/csv";
+    conf.dataFetcher = 'getNumberOfCasesPerMonth';
+    conf.dataFetcherVerksamhet = 'getNumberOfCasesPerMonthVerksamhet';
+    conf.dataFetcherLandsting = 'getNumberOfCasesPerMonthLandsting';
+    conf.exportTableUrl = 'api/getNumberOfCasesPerMonth/csv';
     conf.exportTableUrlVerksamhet = function () {
-        return "api/verksamhet/getNumberOfCasesPerMonth/csv";
+        return 'api/verksamhet/getNumberOfCasesPerMonth/csv';
     };
     conf.exportTableUrlLandsting = function () {
-        return "api/landsting/getNumberOfCasesPerMonthLandsting/csv";
+        return 'api/landsting/getNumberOfCasesPerMonthLandsting/csv';
     };
     conf.title = function (months, enhetsCount) {
-        return "Antal sjukfall per månad" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
+        return 'Antal sjukfall per månad' + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
     };
-    conf.pageHelpText = "help.casespermonth";
+    conf.pageHelpText = 'help.casespermonth';
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '#/verksamhet/sjukfallPerManad', active: true},
@@ -179,13 +183,15 @@ angular.module('StatisticsApp').casesPerMonthConfig = function () {
 };
 
 angular.module('StatisticsApp').longSickLeavesConfig = function () {
+    'use strict';
+
     var conf = {};
-    conf.dataFetcherVerksamhet = "getLongSickLeavesDataVerksamhet";
+    conf.dataFetcherVerksamhet = 'getLongSickLeavesDataVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return "api/verksamhet/getLongSickLeavesData/csv";
+        return 'api/verksamhet/getLongSickLeavesData/csv';
     };
     conf.title = function (months, enhetsCount) {
-        return "Antal långa sjukfall - mer än 90 dagar" + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
+        return 'Antal långa sjukfall - mer än 90 dagar' + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
     };
 
     conf.exchangeableViews = [

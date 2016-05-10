@@ -17,10 +17,10 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
 
 angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'COUNTY_COORDS', 'chartFactory', 'messageService', 'pdfOverviewFactory', 'thousandseparatedFilter',
     function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, COUNTY_COORDS, chartFactory, messageService, pdfOverviewFactory, thousandseparatedFilter) {
+        'use strict';
 
         var self = this;
 
@@ -28,23 +28,23 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             ageDonutChart = {}, diagnosisDonutChart = {}, degreeOfSickLeaveChart = {}, sickLeaveLengthChart = {};
 
         var setTooltipText = function (result) {
-            $scope.popoverText = "Statistiktjänsten är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. Tjänsten visar statistik för alla elektroniska läkarintyg. Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.";
-            $scope.popoverTextAmount = "Totala antalet sjukfall under perioden " + result.periodText;
-            $scope.popoverTextSexDistribution = "Andel kvinnor och andel män av det totala antalet sjukfall under perioden " + result.periodText;
-            $scope.popoverTextChangeProcentageThisMonth = "Diagrammet visar hur antalet sjukfall förändrats mellan perioden " + result.periodText;
-            $scope.popoverTextChangeProcentagePreviousMonth = " och föregående period " + result.casesPerMonth.previousPeriodText;
-            $scope.popoverTextChangeCurrentVSPrevious = "Spalten förändring visar skillnaden i antal sjukfall mellan perioden " + result.periodText + "  och föregående period " + result.casesPerMonth.previousPeriodText;
-            $scope.popoverTextDiagnosisGroups1 = "Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under " + result.periodText + ".";
-            $scope.popoverTextAgeGroups1 = "Diagrammet visar de åldersgrupper som har flest sjukfall under " + result.periodText + ".";
-            $scope.popoverTextDegreeOfSickLeave1 = "Diagrammet visar antalet sjukfall per sjukskrivningsgrad under perioden  " + result.periodText + ".";
-            $scope.popoverTextDegreeOfSickLeave2 = "Flytta markören i cirkeln för att se antalet sjukfall per sjukskrivningsgrad.";
-            $scope.popoverTextSickLeaveLength1 = "Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden " + result.periodText + ".";
-            $scope.popoverTextSickLeaveLength2 = "Ställ markören i respektive stapel för att se antalet sjukfall.";
-            $scope.popoverTextPerCountyDescription1 = "Kartan visar de län med flest antal sjukfall under " + result.periodText + ".";
+            $scope.popoverText = 'Statistiktjänsten är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. Tjänsten visar statistik för alla elektroniska läkarintyg. Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.';
+            $scope.popoverTextAmount = 'Totala antalet sjukfall under perioden ' + result.periodText;
+            $scope.popoverTextSexDistribution = 'Andel kvinnor och andel män av det totala antalet sjukfall under perioden ' + result.periodText;
+            $scope.popoverTextChangeProcentageThisMonth = 'Diagrammet visar hur antalet sjukfall förändrats mellan perioden ' + result.periodText;
+            $scope.popoverTextChangeProcentagePreviousMonth = ' och föregående period ' + result.casesPerMonth.previousPeriodText;
+            $scope.popoverTextChangeCurrentVSPrevious = 'Spalten förändring visar skillnaden i antal sjukfall mellan perioden ' + result.periodText + '  och föregående period ' + result.casesPerMonth.previousPeriodText;
+            $scope.popoverTextDiagnosisGroups1 = 'Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under ' + result.periodText + '.';
+            $scope.popoverTextAgeGroups1 = 'Diagrammet visar de åldersgrupper som har flest sjukfall under ' + result.periodText + '.';
+            $scope.popoverTextDegreeOfSickLeave1 = 'Diagrammet visar antalet sjukfall per sjukskrivningsgrad under perioden  ' + result.periodText + '.';
+            $scope.popoverTextDegreeOfSickLeave2 = 'Flytta markören i cirkeln för att se antalet sjukfall per sjukskrivningsgrad.';
+            $scope.popoverTextSickLeaveLength1 = 'Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden ' + result.periodText + '.';
+            $scope.popoverTextSickLeaveLength2 = 'Ställ markören i respektive stapel för att se antalet sjukfall.';
+            $scope.popoverTextPerCountyDescription1 = 'Kartan visar de län med flest antal sjukfall under ' + result.periodText + '.';
         };
 
         var dataReceived = function (result) {
-            $scope.subTitle = "Utvecklingen i Sverige de senaste tre månaderna, " + result.periodText;
+            $scope.subTitle = 'Utvecklingen i Sverige de senaste tre månaderna, ' + result.periodText;
             setTooltipText(result);
             $scope.doneLoading = true;
             $timeout(function () {
@@ -58,8 +58,8 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                     [ 1 ]
                 ] }
             ]);
-            chartOptions.chart.renderTo = "alterationChart";
-            chartOptions.chart.type = "pie";
+            chartOptions.chart.renderTo = 'alterationChart';
+            chartOptions.chart.type = 'pie';
             chartOptions.chart.height = 210;
             chartOptions.chart.marginTop = 20;
             chartOptions.chart.plotBorderWidth = 0;
@@ -80,7 +80,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
             };
             chartOptions.tooltip = { enabled: false };
             chartOptions.plotOptions.pie = {
-                colors: [ "#57843B" ],
+                colors: [ '#57843B' ],
                 animation: false,
                 borderWidth: 0,
                 dataLabels: { enabled: false },
@@ -124,27 +124,27 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
 
             var diagnosisDonutData = extractDonutData(result.diagnosisGroups);
             chartFactory.addColor(diagnosisDonutData);
-            diagnosisDonutChart = paintDonutChart("diagnosisChart", diagnosisDonutData);
+            diagnosisDonutChart = paintDonutChart('diagnosisChart', diagnosisDonutData);
             $scope.diagnosisGroups = result.diagnosisGroups;
 
             var ageGroupsDonutData = extractDonutData(result.ageGroups);
             chartFactory.addColor(ageGroupsDonutData);
-            ageDonutChart = paintDonutChart("ageChart", ageGroupsDonutData);
+            ageDonutChart = paintDonutChart('ageChart', ageGroupsDonutData);
             $scope.ageGroups = result.ageGroups;
 
             var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
             chartFactory.addColor(degreeOfSickLeaveDonutData);
-            degreeOfSickLeaveChart = paintDonutChart("degreeOfSickLeaveChart", degreeOfSickLeaveDonutData, null, " %");
+            degreeOfSickLeaveChart = paintDonutChart('degreeOfSickLeaveChart', degreeOfSickLeaveDonutData, null, " %");
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
             chartFactory.addColor(result.sickLeaveLength.chartData);
-            sickLeaveLengthChart = paintBarChart("sickLeaveLengthChart", result.sickLeaveLength.chartData);
+            sickLeaveLengthChart = paintBarChart('sickLeaveLengthChart', result.sickLeaveLength.chartData);
 
             $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
             $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
 
             chartFactory.addColor(result.perCounty);
-            sickLeavePerCountyChart = paintSickLeavePerCountyChart("sickLeavePerCountyChart", result.perCounty);
+            sickLeavePerCountyChart = paintSickLeavePerCountyChart('sickLeavePerCountyChart', result.perCounty);
             $scope.sickLeavePerCountyGroups = result.perCounty;
         };
 
@@ -158,7 +158,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
         function paintBarChart(containerId, chartData) {
             var series = [
                 {
-                    name: "Antal",
+                    name: 'Antal',
                     data: _.map(chartData, function (e) {
                         return e.quantity;
                     }),
@@ -185,7 +185,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
         function paintSickLeavePerCountyChart(containerId, chartData, hideImage) {
             var series = _.map(chartData, function (e) {
                 var coords = self.getCoordinates(e);
-                return {"data": [
+                return {'data': [
                     [coords.x, coords.y, e.quantity]
                 ], color: e.color, name: ControllerCommons.htmlsafe(e.name) };
             });
@@ -250,7 +250,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                 }
             });
 
-            return result ? result.xy : _.find(COUNTY_COORDS, function(c) { return c.name === "DEFAULT";}).xy;
+            return result ? result.xy : _.find(COUNTY_COORDS, function(c) { return c.name === 'DEFAULT';}).xy;
         };
 
         function contains(master, substring) {
@@ -272,7 +272,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
         statisticsData.getOverview(dataReceived, function () {
             $scope.dataLoadingError = true;
         });
-        $scope.spinnerText = "Laddar information...";
+        $scope.spinnerText = 'Laddar information...';
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
 
@@ -366,7 +366,7 @@ angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootSco
                 ]
             });
 
-            var sickLeavePerCountyChart2 = paintSickLeavePerCountyChart("sickLeavePerCountyChartPrint", $scope.sickLeavePerCountyGroups, true);
+            var sickLeavePerCountyChart2 = paintSickLeavePerCountyChart('sickLeavePerCountyChartPrint', $scope.sickLeavePerCountyGroups, true);
 
             charts.push({
                 countryChart: sickLeavePerCountyChart2,

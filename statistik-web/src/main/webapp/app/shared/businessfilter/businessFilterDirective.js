@@ -16,38 +16,44 @@
  *     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-'use strict';
+
 angular.module('StatisticsApp.filter.directive', []);
 
 angular.module('StatisticsApp.filter.directive')
     .directive('businessFilter', ['businessFilterFactory', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
+        'use strict';
+
         return {
             scope: true,
             restrict: 'E',
-            link: function(scope, element, attrs) {
-                scope.filterButtonIdText = "Verksamhet";
-                scope.filterHashParamName = "filter";
+            link: function(scope) {
+                scope.filterButtonIdText = 'Verksamhet';
+                scope.filterHashParamName = 'filter';
                 linkFunction(scope, businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
             },
-            templateUrl: 'js/app/shared/businessfilter/businessFilterView.html'
+            templateUrl: 'app/shared/businessfilter/businessFilterView.html'
         };
     }]);
 
 angular.module('StatisticsApp.filter.directive')
     .directive('landstingFilter', ['landstingFilterFactory', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
+        'use strict';
+
         return {
             scope: true,
             restrict: 'E',
-            link: function(scope, element, attrs) {
-                scope.filterButtonIdText = "Landsting";
-                scope.filterHashParamName = "landstingfilter";
+            link: function(scope) {
+                scope.filterButtonIdText = 'Landsting';
+                scope.filterHashParamName = 'landstingfilter';
                 linkFunction(scope, landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
             },
-            templateUrl: 'js/app/shared/businessfilter/businessFilterView.html'
+            templateUrl: 'app/shared/businessfilter/businessFilterView.html'
         };
     }]);
 
 function linkFunction(scope, businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
+    'use strict';
+
     //Initially we don't want to see the filter
     scope.isFilterCollapsed = true;
 
@@ -72,10 +78,10 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
         scope.geographyFilterSelectorData.buttonLabelText = text;
     }
 
-    scope.$watch('businessFilter.geographyBusinessIds', function(newValue,oldValue,scope) {
+    scope.$watch('businessFilter.geographyBusinessIds', function() {
         updateGeographyFilterSelectorDataButtonLabelText();
     });
-    scope.$watch('businessFilter.businesses', function(newValue,oldValue,scope) {
+    scope.$watch('businessFilter.businesses', function() {
         updateGeographyFilterSelectorDataButtonLabelText();
     });
     scope.$watch('businessFilter', function(newValue,oldValue,scope) {
@@ -86,7 +92,7 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
     });
 
     scope.$watch('businessFilter.useDefaultPeriod', function(newValue, oldvalue, scope) {
-        if(!newValue && businessFilter.toDate && businessFilter.fromDate) {
+        if (!newValue && businessFilter.toDate && businessFilter.fromDate) {
             scope.timeIntervalChecked = true;
         } else {
             scope.timeIntervalChecked = false;
@@ -94,19 +100,19 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
     });
 
     scope.geographyFilterSelectorData = {
-        titleText: messageService.getProperty("lbl.filter.val-av-enheter", null, "", null, true),
-        buttonLabelText:"Enheter",
-        firstLevelLabelText: messageService.getProperty("lbl.filter.modal.lan", null, "", null, true),
-        secondLevelLabelText: messageService.getProperty("lbl.filter.modal.kommuner", null, "", null, true),
-        thirdLevelLabelText: messageService.getProperty("lbl.filter.modal.enheter", null, "", null, true)
+        titleText: messageService.getProperty('lbl.filter.val-av-enheter', null, '', null, true),
+        buttonLabelText: 'Enheter',
+        firstLevelLabelText: messageService.getProperty('lbl.filter.modal.lan', null, '', null, true),
+        secondLevelLabelText: messageService.getProperty('lbl.filter.modal.kommuner', null, '', null, true),
+        thirdLevelLabelText: messageService.getProperty('lbl.filter.modal.enheter', null, '', null, true)
     };
 
     scope.diagnosisFilterSelectorData = {
-        titleText: messageService.getProperty("lbl.filter.val-av-diagnoser", null, "", null, true),
-        buttonLabelText: messageService.getProperty("lbl.filter.val-av-diagnoser-knapp", null, "", null, true),
-        firstLevelLabelText: messageService.getProperty("lbl.filter.modal.kapitel", null, "", null, true),
-        secondLevelLabelText: messageService.getProperty("lbl.filter.modal.avsnitt", null, "", null, true),
-        thirdLevelLabelText: messageService.getProperty("lbl.filter.modal.kategorier", null, "", null, true)
+        titleText: messageService.getProperty('lbl.filter.val-av-diagnoser', null, '', null, true),
+        buttonLabelText: messageService.getProperty('lbl.filter.val-av-diagnoser-knapp', null, '', null, true),
+        firstLevelLabelText: messageService.getProperty('lbl.filter.modal.kapitel', null, '', null, true),
+        secondLevelLabelText: messageService.getProperty('lbl.filter.modal.avsnitt', null, '', null, true),
+        thirdLevelLabelText: messageService.getProperty('lbl.filter.modal.kategorier', null, '', null, true)
     };
 
 
@@ -161,7 +167,7 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
         return fromDateValidationError || toDateValidationError ;
     };
 
-    scope.makeSelection = function ($event) {
+    scope.makeSelection = function () {
         var formattedFromDate, formattedToDate;
 
         if (hasDatepickersValidationError()) {
@@ -201,7 +207,7 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
             };
 
             var error = function () {
-                throw new Error("Failed to get filter hash value");
+                throw new Error('Failed to get filter hash value');
             };
 
             statisticsData.getFilterHash(params).then(success, error);
@@ -253,7 +259,7 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
     });
     scope.filterIsActive = !!$location.search()[scope.filterHashParamName];
 
-    scope.$watch('businessFilter.fromDate', function(newValue, oldValue) {
+    scope.$watch('businessFilter.fromDate', function(newValue) {
         scope.minToDate = newValue;
         if(businessFilter.toDate < newValue) {
             businessFilter.toDate = null;
@@ -266,6 +272,8 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
 }
 
 angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown', function () {
+    'use strict';
+
     function multiselectSize($el) {
         return $('option', $el).length;
     }
@@ -292,7 +300,7 @@ angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown'
                 element.change();
             },
             includeSelectAllOption: true,
-            selectAllText: "Markera alla"
+            selectAllText: 'Markera alla'
         });
 
         // Watch for any changes to the length of our select element
@@ -309,9 +317,11 @@ angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown'
     };
 });
 
-angular.module('StatisticsApp.filter.directive').directive("filterButton", function () {
+angular.module('StatisticsApp.filter.directive').directive('filterButton', function () {
+    'use strict';
+
     return {
-        restrict: "E",
+        restrict: 'E',
         template:
         '<button id="show-hide-filter-btn" type="button" class="btn btn-small center-block" ng-class="{filterbtnactivefilter: filterIsActive}" ng-click="isFilterCollapsed = !isFilterCollapsed">' +
         '<i class="glyphicon" ng-class="{glyphiconDownSign: isFilterCollapsed, glyphiconUpSign: !isFilterCollapsed}"></i> {{!isFilterCollapsed ? "Dölj filter" : "Visa filter"}}<span style="font-size: 12px; font-style: italic;"><br/>{{filterButtonIdText}}</span><span ng-show="filterIsActive" style="font-size: 12px; font-style: italic;"><br/>Val gjorda</span>' +

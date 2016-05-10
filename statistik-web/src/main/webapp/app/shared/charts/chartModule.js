@@ -1,5 +1,5 @@
 angular.module('StatisticsApp')
-    .factory('chartFactory', ['COLORS', function(COLORS) {
+    .factory('chartFactory', ['COLORS', '_', function(COLORS, _) {
         'use strict';
 
         var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback) {
@@ -47,12 +47,12 @@ angular.module('StatisticsApp')
                         },
                         formatter: function() {
                             //If the label is more than 30 characters then cut the text and add ellipsis
-                            return this.value.length > 30 ? this.value.substring(0,30) + "..." : this.value;
+                            return this.value.length > 30 ? this.value.substring(0,30) + '...' : this.value;
                         }
                     },
                     categories : _.map(chartCategories, function(category) {
                         var name = ControllerCommons.htmlsafe(category.name);
-                        return category.marked ? "<b>" + name + "</b>" : name;
+                        return category.marked ? '<b>' + name + '</b>' : name;
                     }),
                     title: {
                         align: 'high',
@@ -133,7 +133,7 @@ angular.module('StatisticsApp')
                         padding: '8px'
                     },
                     pointFormatter: function() {
-                        return this.series.name + ': <nobr><b>'+ControllerCommons.makeThousandSeparated(this.y)+'</b></nobr><br/>';
+                        return this.series.name + ': <nobr><b>' + ControllerCommons.makeThousandSeparated(this.y)+'</b></nobr><br/>';
                     }
                 },
                 credits : {
@@ -178,12 +178,12 @@ angular.module('StatisticsApp')
                 extendedChartOptions.title = {
                     text: title
                 };
-                extendedChartOptions.chart.backgroundColor = "#FFFFFF";
+                extendedChartOptions.chart.backgroundColor = '#FFFFFF';
             }
             try {
                 chart.exportChart(options, extendedChartOptions);
             } catch (e) {
-                alert("Diagrammet kunde inte exporteras. Testa att applicera ett filter för att minska datamängden och försök igen.");
+                alert('Diagrammet kunde inte exporteras. Testa att applicera ett filter för att minska datamängden och försök igen.');
             }
         };
 
@@ -222,13 +222,13 @@ angular.module('StatisticsApp')
          a series with totals when the chart type is area. If the area chart uses stack and stacking the total will add to the other series
          and the numbers will accumulate which isn't correct when show in the chart*/
         var showOrHideTotalSeries = function showOrHideTotalSeries(chartType, series, config) {
-            if(chartType === "area" && series.options.sex === null) {
+            if(chartType === 'area' && series.options.sex === null) {
                 //Mark legend that it wont be shown.
                 // We don't actually use highcharts legends so this won't update the chart legends by itself
                 config.showInLegend = false;
 
                 series.hide();
-            } else if (chartType !== "area" && series.options.sex === null) {
+            } else if (chartType !== 'area' && series.options.sex === null) {
                 config.showInLegend = true;
                 series.show();
             } else {
@@ -268,9 +268,9 @@ angular.module('StatisticsApp')
                 femaleColor = COLORS.female;
 
             _.each(rawData, function (data) {
-                if (data.sex === "Male") {
+                if (data.sex === 'Male') {
                     data.color = maleColor[maleColorSelector++];
-                } else if (data.sex === "Female") {
+                } else if (data.sex === 'Female') {
                     data.color = femaleColor[femaleColorSelector++];
                 } else {
                     if(colorSelector === colors.length) {

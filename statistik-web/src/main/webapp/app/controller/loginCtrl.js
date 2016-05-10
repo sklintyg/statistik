@@ -17,10 +17,10 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
-
 angular.module('StatisticsApp').controller('loginCtrl', [ '$scope', '$rootScope',
     function ($scope, $rootScope) {
+        'use strict';
+        
         $scope.isLoggedIn = $rootScope.isLoggedIn;
     }
 ]);

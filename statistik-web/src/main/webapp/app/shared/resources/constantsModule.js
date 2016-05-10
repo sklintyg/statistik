@@ -24,46 +24,46 @@ var constantModule = angular.module('StatisticsApp.constants', []);
  * X and Y Offsets for county
  */
 var countyCoordinates = [
-    {name: 'blekinge', xy: {"x": 35, "y": 14}},
-    {name: 'dalarna', xy: {"x": 29, "y": 49}},
-    {name: 'halland', xy: {"x": 15, "y": 19}},
-    {name: 'kalmar', xy: {"x": 40, "y": 20}},
-    {name: 'kronoberg', xy: {"x": 29, "y": 19}},
-    {name: 'gotland', xy: {"x": 55, "y": 22}},
-    {name: 'gävleborg', xy: {"x": 45, "y": 50}},
-    {name: 'jämtland', xy: {"x": 29, "y": 62}},
-    {name: 'jönköping', xy: {"x": 28, "y": 24}},
-    {name: 'norrbotten', xy: {"x": 59, "y": 87}},
-    {name: 'skåne', xy: {"x": 21, "y": 11}},
-    {name: 'stockholm', xy: {"x": 52, "y": 37}},
-    {name: 'södermanland', xy: {"x": 44, "y": 33}},
-    {name: 'uppsala', xy: {"x": 50, "y": 42}},
-    {name: 'värmland', xy: {"x": 18, "y": 38}},
-    {name: 'västerbotten', xy: {"x": 50, "y": 72}},
-    {name: 'västernorrland', xy: {"x": 48, "y": 62}},
-    {name: 'västmanland', xy: {"x": 42, "y": 40}},
-    {name: 'västra götaland', xy: {"x": 12, "y": 25}},
-    {name: 'örebro', xy: {"x": 32, "y": 36}},
-    {name: 'östergötland', xy: {"x": 39, "y": 29}},
-    {name: 'DEFAULT', xy: {"x": 12, "y": 94}}];
+    {name: 'blekinge', xy: {'x': 35, 'y': 14}},
+    {name: 'dalarna', xy: {'x': 29, 'y': 49}},
+    {name: 'halland', xy: {'x': 15, 'y': 19}},
+    {name: 'kalmar', xy: {'x': 40, 'y': 20}},
+    {name: 'kronoberg', xy: {'x': 29, 'y': 19}},
+    {name: 'gotland', xy: {'x': 55, 'y': 22}},
+    {name: 'gävleborg', xy: {'x': 45, 'y': 50}},
+    {name: 'jämtland', xy: {'x': 29, 'y': 62}},
+    {name: 'jönköping', xy: {'x': 28, 'y': 24}},
+    {name: 'norrbotten', xy: {'x': 59, 'y': 87}},
+    {name: 'skåne', xy: {'x': 21, 'y': 11}},
+    {name: 'stockholm', xy: {'x': 52, 'y': 37}},
+    {name: 'södermanland', xy: {'x': 44, 'y': 33}},
+    {name: 'uppsala', xy: {'x': 50, 'y': 42}},
+    {name: 'värmland', xy: {'x': 18, 'y': 38}},
+    {name: 'västerbotten', xy: {'x': 50, 'y': 72}},
+    {name: 'västernorrland', xy: {'x': 48, 'y': 62}},
+    {name: 'västmanland', xy: {'x': 42, 'y': 40}},
+    {name: 'västra götaland', xy: {'x': 12, 'y': 25}},
+    {name: 'örebro', xy: {'x': 32, 'y': 36}},
+    {name: 'östergötland', xy: {'x': 39, 'y': 29}},
+    {name: 'DEFAULT', xy: {'x': 12, 'y': 94}}];
 
 constantModule.constant('COUNTY_COORDS',countyCoordinates);
 
 /* Color definitions to be used with highcharts */
 var colors = {
-    male: ["#008391", "#90cad0"],
-    female: ["#EA8025", "#f6c08d"],
+    male: ['#008391', '#90cad0'],
+    female: ['#EA8025', '#f6c08d'],
     other: [
-        "#E11964",
-        "#032C53",
-        "#FFBA3E",
-        "#799745",
-        "#3CA3FF",
-        "#C37EB2",
-        "#2A5152",
-        "#FB7F4D",
-        "#5CC2BC",
-        "#704F38"]
+        '#E11964',
+        '#032C53',
+        '#FFBA3E',
+        '#799745',
+        '#3CA3FF',
+        '#C37EB2',
+        '#2A5152',
+        '#FB7F4D',
+        '#5CC2BC',
+        '#704F38']
 };
 
 constantModule.constant('COLORS', colors);

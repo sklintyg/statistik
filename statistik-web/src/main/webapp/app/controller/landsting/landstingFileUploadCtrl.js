@@ -17,13 +17,12 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
-
 angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope', '$rootScope', '$timeout', 'statisticsData', 'messageService', '$location',
     function ($scope, $rootScope, $timeout, statisticsData, messageService, $location) {
+        'use strict';
 
         var updateLastUpdateMessage = function() {
-            $scope.lastLandstingUpdateMessage = "";
+            $scope.lastLandstingUpdateMessage = '';
             $timeout(function () {
                 statisticsData.getLastLandstingUpdateInfo(function (result) {
                     $scope.lastLandstingUpdateMessage = result.infoMessage;
@@ -42,18 +41,18 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
                 url: 'api/landsting/fileupload',
                 parallelUploads: 1,
                 maxFilesize: 10, //MB
-                paramName: "file",
+                paramName: 'file',
                 uploadMultiple: false,
                 addRemoveLinks: false,
                 createImageThumbnails: false,
                 maxFiles: 1,
-                acceptedFiles: ".xls,.xlsx",
+                acceptedFiles: '.xls,.xlsx',
                 autoProcessQueue: true,
                 clickable: true,
-                previewTemplate: '<div id="preview-template" style="display: none;"></div>',
+                previewTemplate: '<div id='preview-template' style='display: none;'></div>',
                 dictDefaultMessage: '',
-                dictInvalidFileType: messageService.getProperty("upload.filetype.error", null, "", null, true),
-                dictFileTooBig: messageService.getProperty("upload.filesize.error", null, "", null, true)
+                dictInvalidFileType: messageService.getProperty('upload.filetype.error', null, '', null, true),
+                dictFileTooBig: messageService.getProperty('upload.filesize.error', null, '', null, true)
             },
             'eventHandlers': {
                 'success': function (file, response) {
@@ -67,7 +66,7 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
                 'error': function (file, response, xhr) {
                     $scope.$apply(function() {
                         if(xhr && xhr.status === 403) {
-                            $location.path("/login");
+                            $location.path('/login');
                         }
                         $scope.uploadSuccess = false;
                         updateStatus(response);
@@ -120,7 +119,7 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
         $scope.clearLandstingEnhets = function() {
             $timeout(function () {
                 statisticsData.clearLandstingEnhets(function (result) {
-                    $scope.lastLandstingUpdateMessage = "";
+                    $scope.lastLandstingUpdateMessage = '';
                     $scope.parsedRows = [];
                     $rootScope.landstingAvailable = false;
                     $scope.uploadCompleted = false;

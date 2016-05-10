@@ -17,10 +17,9 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
-
 angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$rootScope',
     function ($scope, $rootScope) {
+        'use strict';
 
         $scope.mobile = false;
         $scope.menus = [];
@@ -88,7 +87,7 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
 
         var landsting = {
             checkVisible: function() {
-                return $scope.hasLandstingAccess
+                return $scope.hasLandstingAccess;
             },
             id: 'landsting-statistics-toggle',
             menuId: 'landsting-statistic-menu-content',
@@ -98,7 +97,7 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
             show: false,
             subMenu: [{
                 checkEnable: function() {
-                    return $scope.landstingAvailable
+                    return $scope.landstingAvailable;
                 },
                 id: 'navLandstingCasesPerMonthLink',
                 link: '#/landsting/sjukfallPerManad',
@@ -106,7 +105,7 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
                 ctrl: 'LandstingCasesPerMonthCtrl'
             },{
                 checkEnable: function() {
-                    return $scope.landstingAvailable
+                    return $scope.landstingAvailable;
                 },
                 id: 'navLandstingCasesPerEnhetLink',
                 link: '#/landsting/sjukfallPerEnhet',
@@ -114,7 +113,7 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
                 ctrl: 'LandstingCasesPerBusinessCtrl'
             },{
                 checkEnable: function() {
-                    return $scope.landstingAvailable
+                    return $scope.landstingAvailable;
                 },
                 id: 'navLandstingCasesPerPatientsPerEnhetLink',
                 link: '#/landsting/sjukfallPerListningarPerEnhet',
@@ -127,7 +126,7 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
                 ctrl: 'LandstingAboutCtrl'
             },{
                 checkVisible: function() {
-                    return $scope.isLandstingAdmin
+                    return $scope.isLandstingAdmin;
                 },
                 id: 'navLandstingUploadLink',
                 link: '#/landsting/filuppladdning',
@@ -161,7 +160,7 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
                 ctrl: 'VerksamhetCasesPerBusinessCtrl'
             },{
                 checkVisible: function() {
-                    return $scope.isProcessledare || $scope.isDelprocessledare
+                    return $scope.isProcessledare || $scope.isDelprocessledare;
                 },
                 id: 'navBusinessCasesPerMonthLink',
                 link: '#/verksamhet/sjukfallPerManad',
@@ -210,7 +209,7 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
                 }]
             },{
                 checkVisible: function() {
-                    return !$scope.isProcessledare
+                    return !$scope.isProcessledare;
                 },
                 id: 'navBusinessCasesPerLakareLink',
                 link: '#/verksamhet/sjukfallperlakare',
@@ -331,15 +330,18 @@ angular.module('StatisticsApp').controller('navigationMenuCtrl', [ '$scope', '$r
                 m.show = false;
             });
 
-            if (navigationGroupId === "about-statistics-collapse") {
+            switch(navigationGroupId) {
+            case 'about-statistics-collapse':
                 about.show = true;
-            } else if (navigationGroupId === "national-statistics-collapse") {
-                national.show = true;
-            } else if (navigationGroupId === "landsting-statistics-collapse") {
+                break;
+            case 'landsting-statistics-collapse':
                 landsting.show = true;
-            } else if (navigationGroupId === "business-statistics-collapse") {
+                break;
+            case 'business-statistics-collapse':
                 operation.show = true;
-            } else {
+                break;
+            //case 'national-statistics-collapse':
+            default:
                 national.show = true;
             }
         });

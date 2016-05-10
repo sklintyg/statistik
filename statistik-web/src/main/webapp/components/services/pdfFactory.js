@@ -16,9 +16,9 @@
  *     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-'use strict';
 angular.module('StatisticsApp')
     .factory('pdfFactory', ['$window', '$timeout', 'thousandseparatedFilter', function($window, $timeout, thousandseparatedFilter) {
+        'use strict';
 
         function _print($scope, charts) {
             if (!charts || angular.equals({}, charts)) {
@@ -221,7 +221,7 @@ angular.module('StatisticsApp')
                 alignment: 'right',
                 style: 'footer',
                 text: moment().format('YYYY-MM-DD') + '  Sida ' + currentPage.toString() + ' av ' + pageCount
-            }
+            };
         }
 
         function _addHeader(content, headers) {
@@ -277,7 +277,7 @@ angular.module('StatisticsApp')
                 }
             }));
 
-            return canvas.toDataURL("image/png");
+            return canvas.toDataURL('image/png');
         }
 
         function _getTable(headerRows, data) {
@@ -311,16 +311,16 @@ angular.module('StatisticsApp')
                 },
                 style: 'table',
                 layout: {
-                    hLineWidth: function(i, node) {
+                    hLineWidth: function(/*i, node*/) {
                         return 0.5;
                     },
-                    vLineWidth: function(i, node) {
+                    vLineWidth: function(/*i, node*/) {
                         return 0.5;
                     },
-                    hLineColor: function(i, node) {
+                    hLineColor: function(i) {
                         return (i === numberOfHeaderRows) ? 'gray' :'lightgray';
                     },
-                    vLineColor: function(i, node) {
+                    vLineColor: function(/*i, node*/) {
                         return 'lightgray';
                     }
                 }

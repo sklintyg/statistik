@@ -42,7 +42,7 @@ angular.module('StatisticsApp')
             };
 
            diagnosisTreeFilter.selectDiagnoses = function selectDiagnoses(diagnoses) {
-                diagnosisTreeFilter.selectByAttribute(diagnosisTreeFilter.diagnosisOptionsTree, diagnoses, "numericalId");
+                diagnosisTreeFilter.selectByAttribute(diagnosisTreeFilter.diagnosisOptionsTree, diagnoses, 'numericalId');
                 treeMultiSelectUtil.updateSelectionState(diagnosisTreeFilter.diagnosisOptionsTree);
             };
 
@@ -55,13 +55,13 @@ angular.module('StatisticsApp')
                 _.each(diagnoses, function (kapitel) {
                     kapitel.typ = 'kapitel';
                     kapitel.subs = kapitel.subItems;
-                    kapitel.name = kapitel.id + " " + kapitel.name;
+                    kapitel.name = kapitel.id + ' ' + kapitel.name;
                     _.each(kapitel.subItems, function (avsnitt) {
                         avsnitt.typ = 'avsnitt';
                         avsnitt.subs = avsnitt.subItems;
-                        avsnitt.name = avsnitt.id + " " + avsnitt.name;
+                        avsnitt.name = avsnitt.id + ' ' + avsnitt.name;
                         _.each(avsnitt.subItems, function (kategori) {
-                            kategori.name = kategori.id + " " + kategori.name;
+                            kategori.name = kategori.id + ' ' + kategori.name;
                         });
                     });
                 });
@@ -92,13 +92,13 @@ angular.module('StatisticsApp')
             };
 
             var diagnosHashExists = function diagnosHashExists(routeParams) {
-                return routeParams.diagnosHash !== "-";
+                return routeParams.diagnosHash !== '-';
             };
 
             var populateTreeMultiSelectWithPrefilteredData = function populateTreeMultiSelectWithPrefilteredData(routeParams) {
                 statisticsData.getFilterData(routeParams.diagnosHash, function(filterData) {
                     diagnosisTreeFilter.setPreselectedFilter(filterData);
-                }, function(){ throw new Error("Could not parse filter"); });
+                }, function(){ throw new Error('Could not parse filter'); });
             };
 
             var hasDiagnosisOptionsTreeAnySubs = function hasDiagnosisOptionsTreeAnySubs() {
@@ -116,7 +116,7 @@ angular.module('StatisticsApp')
                         populateTreeMultiSelectWithPrefilteredData(routeParams);
                     }
                 }, function () {
-                    alert("Failed to fetch ICD10 structure tree from server");
+                    alert('Failed to fetch ICD10 structure tree from server');
                 });
             };
 

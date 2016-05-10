@@ -19,6 +19,8 @@
 
 angular.module('StatisticsApp.filter.directive')
     .directive('diagnosSelection', [function() {
+        'use strict';
+
         return {
             scope: {
                 showDetailsOptions: '=',
@@ -32,7 +34,7 @@ angular.module('StatisticsApp.filter.directive')
                 selectedDetailsOption3: '='
             },
             restrict: 'E',
-            templateUrl: 'js/app/shared/diagnosSelection/diagnosSelection.directive.html',
+            templateUrl: 'app/shared/diagnosSelection/diagnosSelection.directive.html',
             controller: function($scope) {
                 $scope.hideDiagnosCategorySelection = true;
 

@@ -17,16 +17,15 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-'use strict';
-
 angular.module('StatisticsApp').controller('businessLandingPageCtrl', ['$scope', '$location', 'statisticsData',
     function ($scope, $location, statisticsData) {
+        'use strict';
 
         statisticsData.getLoginInfo(function (loginInfo) {
             if (loginInfo.businesses.length < 1) {
-                $location.path("login");
+                $location.path('login');
             } else {
-                $location.path("verksamhet/oversikt");
+                $location.path('verksamhet/oversikt');
             }
         }, function () {
             $scope.dataLoadingError = true;

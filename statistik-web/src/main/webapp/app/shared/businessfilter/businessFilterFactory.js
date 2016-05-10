@@ -16,13 +16,14 @@
  *     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-'use strict';
 
 angular.module('StatisticsApp.filterFactory.factory', []);
 
 angular.module('StatisticsApp.filterFactory.factory')
     .factory('businessFilterFactory', ['statisticsData', '_', 'treeMultiSelectorUtil', 'moment',
         function (statisticsData, _, treeMultiSelectorUtil, moment) {
+            'use strict';
+
             return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment);
         }
     ]);
@@ -30,12 +31,16 @@ angular.module('StatisticsApp.filterFactory.factory')
 angular.module('StatisticsApp.filterFactory.factory')
     .factory('landstingFilterFactory', ['statisticsData', '_', 'treeMultiSelectorUtil', 'moment',
         function (statisticsData, _, treeMultiSelectorUtil, moment) {
+            'use strict';
+
             return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment);
         }
     ]);
 
 
 function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) {
+    'use strict';
+
     //The businessFilter object holds all methods and properties that are part of the public API
     var businessFilter = {};
 
@@ -53,7 +58,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
         businessFilter.selectedVerksamhetTypIds = [];
 
         businessFilter.icd10 = {subs: []};
-        businessFilter.selectedDiagnoses;
 
         //Init the datepicker components
         businessFilter.fromDate = null;
@@ -63,13 +67,13 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
     }());
 
     businessFilter.selectDiagnoses = function (diagnoses) {
-        businessFilter.selectByAttribute(businessFilter.icd10, diagnoses, "numericalId");
+        businessFilter.selectByAttribute(businessFilter.icd10, diagnoses, 'numericalId');
         businessFilter.selectedDiagnoses = diagnoses;
         treeMultiSelectorUtil.updateSelectionState(businessFilter.icd10);
     };
 
     businessFilter.selectGeographyBusiness = function (businessIds) {
-        businessFilter.selectByAttribute(businessFilter.geography, businessIds, "id");
+        businessFilter.selectByAttribute(businessFilter.geography, businessIds, 'id');
         businessFilter.geographyBusinessIds = businessIds;
         treeMultiSelectorUtil.updateSelectionState(businessFilter.geography);
     };
@@ -92,11 +96,11 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
     };
 
     var isSet = function (value) {
-        return typeof value !== "undefined" && value !== null;
+        return typeof value !== 'undefined' && value !== null;
     };
 
     function sortSwedish(arrayToSort, propertyName, alwaysLast) {
-        var swedishAlphabet = "0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzÅåÄäÖö";
+        var swedishAlphabet = '0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzÅåÄäÖö';
         return arrayToSort.sort(function (first, second) {
             if (first[propertyName] === second[propertyName]) {
                 return 0;
@@ -127,13 +131,13 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
         _.each(diagnoses, function (kapitel) {
             kapitel.typ = 'kapitel';
             kapitel.subs = kapitel.subItems;
-            kapitel.name = kapitel.id + " " + kapitel.name;
+            kapitel.name = kapitel.id + ' ' + kapitel.name;
             _.each(kapitel.subItems, function (avsnitt) {
                 avsnitt.typ = 'avsnitt';
                 avsnitt.subs = avsnitt.subItems;
-                avsnitt.name = avsnitt.id + " " + avsnitt.name;
+                avsnitt.name = avsnitt.id + ' ' + avsnitt.name;
                 _.each(avsnitt.subItems, function (kategori) {
-                    kategori.name = kategori.id + " " + kategori.name;
+                    kategori.name = kategori.id + ' ' + kategori.name;
                 });
             });
         });
@@ -167,7 +171,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
                     successCallback();
                 },
                 function () {
-                    throw new Error("Failed to fetch ICD10 structure tree from server");
+                    throw new Error('Failed to fetch ICD10 structure tree from server');
                 });
         }
     }
@@ -177,7 +181,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
             statisticsData.getFilterData(preSelectedFilter, function (filterData) {
                 setPreselectedFilter(filterData);
             }, function () {
-                throw new Error("Could not parse filter");
+                throw new Error('Could not parse filter');
             });
         } else {
             businessFilter.resetSelections();
@@ -187,8 +191,8 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
     businessFilter.setup = function (businesses, preSelectedFilter) {
         updateIcd10StructureOnce(function () {
             if (!businessFilter.dataInitialized) {
-                businessFilter.businesses = sortSwedish(businesses, "name", "Okän");
-                if (businessFilter.numberOfBusinesses() === "large") {
+                businessFilter.businesses = sortSwedish(businesses, 'name', 'Okän');
+                if (businessFilter.numberOfBusinesses() === 'large') {
                     businessFilter.populateGeography(businesses);
                 }
                 businessFilter.populateVerksamhetsTyper(businesses);
@@ -201,12 +205,12 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
 
     businessFilter.numberOfBusinesses = function () {
         if (businessFilter.businesses.length <= 1) {
-            return "small";
+            return 'small';
         }
         if (businessFilter.businesses.length <= 10) {
-            return "medium";
+            return 'medium';
         }
-        return "large";
+        return 'large';
     };
 
     businessFilter.populateGeography = function (businesses) {
@@ -226,9 +230,9 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
 
             munip.subs.push(business);
         });
-        businessFilter.geography.subs = sortSwedish(businessFilter.geography.subs, "name", "Okän");
+        businessFilter.geography.subs = sortSwedish(businessFilter.geography.subs, 'name', 'Okän');
         _.each(businessFilter.geography.subs, function (county) {
-            county.subs = sortSwedish(county.subs, "name", "Okän");
+            county.subs = sortSwedish(county.subs, 'name', 'Okän');
         });
     };
 
@@ -258,7 +262,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
                 }
             });
         });
-        businessFilter.verksamhetsTyper = sortSwedish(_.values(verksamhetsTypSet), "name", "Okän");
+        businessFilter.verksamhetsTyper = sortSwedish(_.values(verksamhetsTypSet), 'name', 'Okän');
     };
 
     businessFilter.selectAll = function (item) {

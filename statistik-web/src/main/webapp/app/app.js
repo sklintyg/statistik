@@ -1,7 +1,6 @@
-'use strict';
-
 var underscore = angular.module('underscore', []);
 underscore.factory('_', function() {
+    'use strict';
     return window._;
 });
 
@@ -20,6 +19,8 @@ var app = angular.module('StatisticsApp',
      'ngStorage'])
     .config(
     [ '$routeProvider', function ($routeProvider) {
+        'use strict';
+
         $routeProvider.when('/login', {
             templateUrl: 'views/login.html',
             controller: 'loginCtrl',
@@ -338,6 +339,8 @@ var app = angular.module('StatisticsApp',
     } ]);
 
 app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route, messageService) {
+    'use strict';
+
     $rootScope.lang = 'sv';
     $rootScope.DEFAULT_LANG = 'sv';
     messageService.addResources(stMessages);
@@ -354,14 +357,16 @@ app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route
         if ($route.current.$$route) {
             $rootScope.pageName = $route.current.$$route.title;
             $rootScope.page_title = ($rootScope.pageName ? $rootScope.pageName + ' | ' : '') + 'Statistiktjänsten';
-            $rootScope.queryString = current.params.filter ? "?filter=" + current.params.filter : "";
-            $rootScope.queryString += current.params.landstingfilter ? ($rootScope.queryString.length > 0 ? "&" : "?") + ("landstingfilter=" + current.params.landstingfilter) : "";
-            $rootScope.verksamhetViewShowing = current.$$route.originalPath.indexOf("/verksamhet") === 0;
+            $rootScope.queryString = current.params.filter ? '?filter=' + current.params.filter : '';
+            $rootScope.queryString += current.params.landstingfilter ? ($rootScope.queryString.length > 0 ? '&' : '?') + ('landstingfilter=' + current.params.landstingfilter) : '';
+            $rootScope.verksamhetViewShowing = current.$$route.originalPath.indexOf('/verksamhet') === 0;
         }
     });
 } ]);
 
 app.config(['$httpProvider', function($httpProvider) {
+    'use strict';
+
     if (!$httpProvider.defaults.headers.get) {
         $httpProvider.defaults.headers.get = {};
     }
@@ -370,5 +375,5 @@ app.config(['$httpProvider', function($httpProvider) {
     $httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
 
     $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
-    $httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
+    $httpProvider.defaults.headers.get.Pragma = 'no-cache';
 }]);
