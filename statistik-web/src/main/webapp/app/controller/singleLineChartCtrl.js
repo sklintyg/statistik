@@ -20,8 +20,8 @@
 
 angular.module('StatisticsApp').controller('singleLineChartCtrl',
     [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'config', '$location',
-        'messageService', 'chartFactory', 'pdfFactory', '_',
-    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, $location, messageService, chartFactory, pdfFactory, _) {
+        'messageService', 'chartFactory', 'pdfFactory', '_', 'ControllerCommons',
+    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, $location, messageService, chartFactory, pdfFactory, _, ControllerCommons) {
         'use strict';
 
         var chart;
@@ -156,7 +156,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
     }
 ]);
 
-angular.module('StatisticsApp').casesPerMonthConfig = function () {
+angular.module('StatisticsApp').casesPerMonthConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -182,7 +182,7 @@ angular.module('StatisticsApp').casesPerMonthConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').longSickLeavesConfig = function () {
+angular.module('StatisticsApp').longSickLeavesConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};

@@ -20,7 +20,9 @@
 angular.module('StatisticsApp.filter.directive', []);
 
 angular.module('StatisticsApp.filter.directive')
-    .directive('businessFilter', ['businessFilterFactory', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
+    .directive('businessFilter',
+        ['businessFilterFactory', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', '_',
+            function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _) {
         'use strict';
 
         return {
@@ -29,14 +31,16 @@ angular.module('StatisticsApp.filter.directive')
             link: function(scope) {
                 scope.filterButtonIdText = 'Verksamhet';
                 scope.filterHashParamName = 'filter';
-                linkFunction(scope, businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
+                linkFunction(_, scope, businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
             },
             templateUrl: 'app/shared/businessfilter/businessFilterView.html'
         };
     }]);
 
 angular.module('StatisticsApp.filter.directive')
-    .directive('landstingFilter', ['landstingFilterFactory', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
+    .directive('landstingFilter',
+    ['landstingFilterFactory', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', '_',
+        function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _) {
         'use strict';
 
         return {
@@ -45,13 +49,13 @@ angular.module('StatisticsApp.filter.directive')
             link: function(scope) {
                 scope.filterButtonIdText = 'Landsting';
                 scope.filterHashParamName = 'landstingfilter';
-                linkFunction(scope, landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
+                linkFunction(_, scope, landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
             },
             templateUrl: 'app/shared/businessfilter/businessFilterView.html'
         };
     }]);
 
-function linkFunction(scope, businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
+function linkFunction(_, scope, businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
     'use strict';
 
     //Initially we don't want to see the filter
@@ -72,7 +76,7 @@ function linkFunction(scope, businessFilter, $location, messageService, statisti
             text = 'Alla valda';
         }
         else {
-            text = selected + " av " + total + " valda";
+            text = selected + ' av ' + total + ' valda';
         }
 
         scope.geographyFilterSelectorData.buttonLabelText = text;

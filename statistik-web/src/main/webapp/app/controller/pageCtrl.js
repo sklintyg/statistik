@@ -18,8 +18,8 @@
  */
 
 angular.module('StatisticsApp').controller('pageCtrl',
-    [ '$scope', '$rootScope', '$window', '$location', 'statisticsData', 'businessFilterFactory', 'landstingFilterFactory', '_',
-    function ($scope, $rootScope, $window, $location, statisticsData, businessFilterFactory, landstingFilterFactory, _) {
+    [ '$scope', '$rootScope', '$window', '$location', 'statisticsData', 'businessFilterFactory', 'landstingFilterFactory', '_', 'ControllerCommons',
+    function ($scope, $rootScope, $window, $location, statisticsData, businessFilterFactory, landstingFilterFactory, _, ControllerCommons) {
         'use strict';
 
         var self = this;

@@ -1,8 +1,9 @@
-angular.module('StatisticsApp').filter('thousandseparated', function() {
-    'use strict';
+angular.module('StatisticsApp').filter('thousandseparated', ['ControllerCommons',
+    function(ControllerCommons) {
+        'use strict';
 
-    return function(input) {
-        return ControllerCommons.makeThousandSeparated(input);
-    };
-});
+        return function(input) {
+            return ControllerCommons.makeThousandSeparated(input);
+        };
+}]);
 

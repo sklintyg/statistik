@@ -1,5 +1,5 @@
 angular.module('StatisticsApp')
-    .factory('chartFactory', ['COLORS', '_', function(COLORS, _) {
+    .factory('chartFactory', ['COLORS', '_', 'ControllerCommons', function(COLORS, _, ControllerCommons) {
         'use strict';
 
         var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback) {

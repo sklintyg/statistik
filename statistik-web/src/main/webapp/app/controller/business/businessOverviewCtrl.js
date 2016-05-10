@@ -17,8 +17,12 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').controller('businessOverviewCtrl', ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'chartFactory', 'messageService', 'pdfOverviewFactory', 'thousandseparatedFilter',
-function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, chartFactory, messageService, pdfOverviewFactory, thousandseparatedFilter) {
+angular.module('StatisticsApp').controller('businessOverviewCtrl',
+
+    ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'chartFactory',
+        'messageService', 'pdfOverviewFactory', 'thousandseparatedFilter', 'ControllerCommons', '_',
+function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, chartFactory,
+    messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _) {
     'use strict';
 
     var perMonthAlterationChart = {}, newSexProportionChart = {}, oldSexProportionChart = {},

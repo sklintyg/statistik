@@ -17,8 +17,9 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'chartFactory', 'pdfFactory', '_',
-    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, chartFactory, pdfFactory, _) {
+angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
+    [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'chartFactory', 'pdfFactory', '_', 'ControllerCommons',
+    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, chartFactory, pdfFactory, _, ControllerCommons) {
         'use strict';
 
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
@@ -172,7 +173,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl', [ '$sco
     }
 ]);
 
-angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function () {
+angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -195,7 +196,9 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').nationalAgeGroupConfig = function () {
+angular.module('StatisticsApp').nationalAgeGroupConfig = function (ControllerCommons) {
+    'use strict';
+
     var conf = {};
     conf.dataFetcher = 'getAgeGroups';
     conf.dataFetcherVerksamhet = 'getAgeGroupsVerksamhet';
@@ -214,7 +217,7 @@ angular.module('StatisticsApp').nationalAgeGroupConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerSexConfig = function () {
+angular.module('StatisticsApp').casesPerSexConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -230,7 +233,7 @@ angular.module('StatisticsApp').casesPerSexConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerBusinessConfig = function () {
+angular.module('StatisticsApp').casesPerBusinessConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -255,7 +258,7 @@ angular.module('StatisticsApp').casesPerBusinessConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig = function () {
+angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -272,7 +275,7 @@ angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig = function () 
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerLakareConfig = function () {
+angular.module('StatisticsApp').casesPerLakareConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -291,7 +294,7 @@ angular.module('StatisticsApp').casesPerLakareConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig = function () {
+angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -311,7 +314,7 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
+angular.module('StatisticsApp').casesPerLakarbefattningConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -331,7 +334,7 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').compareDiagnosis = function () {
+angular.module('StatisticsApp').compareDiagnosis = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -352,7 +355,7 @@ angular.module('StatisticsApp').compareDiagnosis = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerMonthTvarsnittConfig = function () {
+angular.module('StatisticsApp').casesPerMonthTvarsnittConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -374,7 +377,7 @@ angular.module('StatisticsApp').casesPerMonthTvarsnittConfig = function () {
 };
 
 
-angular.module('StatisticsApp').longSickLeavesTvarsnittConfig = function () {
+angular.module('StatisticsApp').longSickLeavesTvarsnittConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -392,7 +395,7 @@ angular.module('StatisticsApp').longSickLeavesTvarsnittConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig = function () {
+angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -415,7 +418,7 @@ angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').differentieratIntygandeTvarsnittConfig = function () {
+angular.module('StatisticsApp').differentieratIntygandeTvarsnittConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -437,7 +440,7 @@ angular.module('StatisticsApp').differentieratIntygandeTvarsnittConfig = functio
     return conf;
 };
 
-angular.module('StatisticsApp').diagnosisGroupTvarsnittConfig = function () {
+angular.module('StatisticsApp').diagnosisGroupTvarsnittConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -458,7 +461,7 @@ angular.module('StatisticsApp').diagnosisGroupTvarsnittConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig = function () {
+angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -482,7 +485,7 @@ angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerCountyConfig = function () {
+angular.module('StatisticsApp').casesPerCountyConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};

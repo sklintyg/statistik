@@ -17,7 +17,8 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope', '$rootScope', '$timeout', 'statisticsData', 'messageService', '$location',
+angular.module('StatisticsApp').controller('landstingFileUploadCtrl',
+    [ '$scope', '$rootScope', '$timeout', 'statisticsData', 'messageService', '$location',
     function ($scope, $rootScope, $timeout, statisticsData, messageService, $location) {
         'use strict';
 
@@ -49,7 +50,7 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
                 acceptedFiles: '.xls,.xlsx',
                 autoProcessQueue: true,
                 clickable: true,
-                previewTemplate: '<div id='preview-template' style='display: none;'></div>',
+                previewTemplate: '<div id="preview-template" style="display: none;"></div>',
                 dictDefaultMessage: '',
                 dictInvalidFileType: messageService.getProperty('upload.filetype.error', null, '', null, true),
                 dictFileTooBig: messageService.getProperty('upload.filesize.error', null, '', null, true)
@@ -99,7 +100,7 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
                         }
                     );
                 },
-                'uploadprogress': function(file, progress, bytesSent) {
+                'uploadprogress': function(file, progress) {
                     $scope.$apply(function() {
                             $scope.uploadProgress = progress;
                         }
@@ -118,7 +119,7 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl', [ '$scope'
 
         $scope.clearLandstingEnhets = function() {
             $timeout(function () {
-                statisticsData.clearLandstingEnhets(function (result) {
+                statisticsData.clearLandstingEnhets(function () {
                     $scope.lastLandstingUpdateMessage = '';
                     $scope.parsedRows = [];
                     $rootScope.landstingAvailable = false;

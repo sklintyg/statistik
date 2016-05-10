@@ -61,7 +61,7 @@ angular.module('StatisticsApp').directive('dataerrorview', function() {
         template :
             '<div>'+
                 '<div ng-show="showError">' +
-                    '<div ng-include="app/views/error/failedToFetchData.html"></div>' +
+                    '<div ng-include="\'app/views/error/failedToFetchData.html\'"></div>' +
                 '</div>' +
                 '  <div ng-show="!showError">' +
                 '    <div ng-transclude></div>' +

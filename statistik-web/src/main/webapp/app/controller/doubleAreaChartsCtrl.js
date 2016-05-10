@@ -18,8 +18,9 @@
  */
 
 
-angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'config', 'messageService', 'diagnosisTreeFilter', '$location', 'chartFactory', '_', 'pdfFactory',
-    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, config, messageService, diagnosisTreeFilter, $location ,chartFactory, _, pdfFactory) {
+angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
+    ['$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'config', 'messageService', 'diagnosisTreeFilter', '$location', 'chartFactory', '_', 'pdfFactory', 'ControllerCommons',
+    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, config, messageService, diagnosisTreeFilter, $location ,chartFactory, _, pdfFactory, ControllerCommons) {
         'use strict';
 
         var that = this;
@@ -258,7 +259,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl', [ '$scope', '
     }
 ]);
 
-angular.module('StatisticsApp').diagnosisGroupConfig = function () {
+angular.module('StatisticsApp').diagnosisGroupConfig = function (ControllerCommons) {
     'use strict';
 
 
@@ -284,7 +285,7 @@ angular.module('StatisticsApp').diagnosisGroupConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').diagnosisSubGroupConfig = function () {
+angular.module('StatisticsApp').diagnosisSubGroupConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -312,7 +313,7 @@ angular.module('StatisticsApp').diagnosisSubGroupConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').degreeOfSickLeaveConfig = function () {
+angular.module('StatisticsApp').degreeOfSickLeaveConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -338,7 +339,7 @@ angular.module('StatisticsApp').degreeOfSickLeaveConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').differentieratIntygandeConfig = function () {
+angular.module('StatisticsApp').differentieratIntygandeConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -361,7 +362,7 @@ angular.module('StatisticsApp').differentieratIntygandeConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig = function () {
+angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -381,7 +382,7 @@ angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig = function () {
+angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -400,7 +401,7 @@ angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig = function () {
+angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -417,7 +418,7 @@ angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').sickLeaveLengthTimeSeriesConfig = function () {
+angular.module('StatisticsApp').sickLeaveLengthTimeSeriesConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -437,7 +438,7 @@ angular.module('StatisticsApp').sickLeaveLengthTimeSeriesConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig = function () {
+angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -455,7 +456,7 @@ angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig = functio
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig = function () {
+angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -472,7 +473,7 @@ angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig = function () {
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerLakaresAlderOchKonTidsserieConfig = function () {
+angular.module('StatisticsApp').casesPerLakaresAlderOchKonTidsserieConfig = function (ControllerCommons) {
     'use strict';
 
     var conf = {};

@@ -18,8 +18,9 @@
  */
 
 
-angular.module('StatisticsApp').controller('overviewCtrl', [ '$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'COUNTY_COORDS', 'chartFactory', 'messageService', 'pdfOverviewFactory', 'thousandseparatedFilter',
-    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, COUNTY_COORDS, chartFactory, messageService, pdfOverviewFactory, thousandseparatedFilter) {
+angular.module('StatisticsApp').controller('overviewCtrl',
+    ['$scope', '$rootScope', '$window', '$timeout', 'statisticsData', '$routeParams', 'COUNTY_COORDS', 'chartFactory', 'messageService', 'pdfOverviewFactory', 'thousandseparatedFilter','ControllerCommons',
+    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, COUNTY_COORDS, chartFactory, messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons) {
         'use strict';
 
         var self = this;
