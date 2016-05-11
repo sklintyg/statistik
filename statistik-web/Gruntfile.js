@@ -257,6 +257,10 @@ module.exports = function(grunt) {
                     js: [
                         [/(assets\/images\/.*?\.(?:gif|jpeg|jpg|png|webp|svg))/gm,
                             'Update the JS to reference our revved images']
+                    ],
+                    css: [
+                        [/(assets\/images\/.*?\.(?:gif|jpeg|jpg|png|webp|svg))/gm,
+                            'Update the JS to reference our revved images']
                     ]
                 }
             }
@@ -319,6 +323,7 @@ module.exports = function(grunt) {
                             'bower_components/**/*',
                             'pubapp/**/*',
                             'WEB-INF/**/*',
+                            'js/**/*',
                             '*.*'
                         ]
                     },
@@ -490,7 +495,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        'jshint',
+        //'jshint',
         'copy:dist',
         'injector:sass',
         'sass',

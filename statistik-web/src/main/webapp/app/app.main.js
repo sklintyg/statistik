@@ -353,7 +353,8 @@ app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route
 
     $rootScope.pageTitle = 'Statistiktjänsten';
     $rootScope.pageName = '';
-    $rootScope.isLoggedIn = isLoggedIn;
+    $rootScope.isLoggedIn = true;
+    //$rootScope.isLoggedIn = isLoggedIn;
 
     $rootScope.$on('$routeChangeSuccess', function (e, current) {
         if ($route.current.$$route) {
