@@ -75,10 +75,10 @@ public class SosReportCreator {
     }
 
     public List<SosRow> getSosReport() {
-        final LocalDate from = LocalDate.parse("2015-01-01");
+        final LocalDate from = getFirstDateOfLastYear();
         final Range range = new Range(from, LocalDate.now());
         final int fromIntDay = WidelineConverter.toDay(from);
-        final int toIntDay = WidelineConverter.toDay(LocalDate.parse("2015-12-31"));
+        final int toIntDay = WidelineConverter.toDay(getLastDateOfLastYear());
         final int nowMinusFiveDaysIntDay = WidelineConverter.toDay(LocalDate.now().minusDays(5));
 
         final ArrayList<SosRow> sosRows = new ArrayList<>();
@@ -106,6 +106,14 @@ public class SosReportCreator {
             }
         }
         return sosRows;
+    }
+
+    static LocalDate getLastDateOfLastYear() {
+        return LocalDate.now().withDayOfYear(1).minusDays(1);
+    }
+
+    static LocalDate getFirstDateOfLastYear() {
+        return LocalDate.now().withDayOfYear(1).minusYears(1);
     }
 
     private List<SosCalculatedRow> getCalculatedValuesSosReport(Function<List<SosRow>, Double> calcFunc) {
