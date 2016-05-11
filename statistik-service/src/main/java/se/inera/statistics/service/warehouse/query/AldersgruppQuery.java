@@ -43,8 +43,6 @@ import java.util.Map;
 
 public final class AldersgruppQuery {
     private static final Ranges RANGES = AldersgroupUtil.RANGES;
-    private static final int PERCENT = 100;
-    public static final String ALDERSGRUPPER_REST = "Andra åldersgrupper";
 
     private AldersgruppQuery() {
     }
@@ -53,10 +51,7 @@ public final class AldersgruppQuery {
         Map<Ranges.Range, Counter<Ranges.Range>> previousCount = count(previousSjukfall);
 
         Map<Ranges.Range, Counter<Ranges.Range>> map = count(currentSjukfall);
-        Collection<Ranges.Range> rowsToKeep = rowsToKeep(map, noOfRows - 1);
-
-        int restCurrent = 0;
-        int restPrevious = 0;
+        Collection<Ranges.Range> rowsToKeep = rowsToKeep(map, noOfRows);
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
 
@@ -67,30 +62,11 @@ public final class AldersgruppQuery {
             int previous = previousCount.get(counter.getKey()).getCount();
 
             if (rowsToKeep.contains(range)) {
-                result.add(new OverviewChartRowExtended(counter.getKey().getName(), current, percentChange(current, previous)));
-            } else {
-                restCurrent += current;
-                restPrevious += previous;
+                result.add(new OverviewChartRowExtended(counter.getKey().getName(), current, current - previous));
             }
         }
 
-        sortByQuantity(result);
-
-        result.add(new OverviewChartRowExtended(ALDERSGRUPPER_REST, restCurrent, percentChange(restCurrent, restPrevious)));
-
         return result;
-    }
-
-    private static void sortByQuantity(List<OverviewChartRowExtended> result) {
-        Collections.sort(result, (o1, o2) -> o2.getQuantity() - o1.getQuantity());
-    }
-
-    private static int percentChange(int current, int previous) {
-        if (previous == 0) {
-            return 0;
-        } else {
-            return (current - previous) * PERCENT / previous;
-        }
     }
 
     private static Collection<Ranges.Range> rowsToKeep(Map<Ranges.Range, Counter<Ranges.Range>> count, int noOfRows) {

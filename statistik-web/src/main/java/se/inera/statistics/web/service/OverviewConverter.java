@@ -44,7 +44,7 @@ public class OverviewConverter {
 
         List<DonutChartData> diagnosisGroups = new DiagnosisGroupsConverter().convert(resp.getDiagnosisGroups()).stream().map(mapOverviewRowData()).collect(Collectors.toList());
 
-        List<DonutChartData> ageGroups = resp.getAgeGroups().stream().map(mapOverviewRowData()).collect(Collectors.toList());
+        List<DonutChartData> ageGroups = new AldersGroupsConverter().convert(resp.getAgeGroups()).stream().map(mapOverviewRowData()).collect(Collectors.toList());
 
         List<DonutChartData> degreeOfSickLeaveGroups = resp.getDegreeOfSickLeaveGroups().stream().map(mapOverviewRowData()).sorted(comp()).collect(Collectors.toList());
 

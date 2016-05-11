@@ -30,6 +30,7 @@ import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -79,8 +80,11 @@ public class WarehouseService {
     public VerksamhetOverviewResponse getOverview(SjukfallFilter filter, Range range, HsaIdVardgivare vardgivarId) {
         VerksamhetOverviewResponse overview = overviewQuery.getOverview(warehouse.get(vardgivarId), filter, ReportUtil.getPreviousPeriod(range).getFrom(), range.getMonths());
 
+        List<OverviewChartRowExtended> diagnosisGroups = new DiagnosisGroupsConverter().convert(overview.getDiagnosisGroups());
+        List<OverviewChartRowExtended> ageGroups = new AldersGroupsConverter().convert(overview.getAgeGroups());
+
         return new VerksamhetOverviewResponse(overview.getTotalCases(), overview.getCasesPerMonthSexProportionPreviousPeriod(), overview.getCasesPerMonthSexProportionBeforePreviousPeriod(),
-                new DiagnosisGroupsConverter().convert(overview.getDiagnosisGroups()), overview.getAgeGroups(), overview.getDegreeOfSickLeaveGroups(), overview.getSickLeaveLengthGroups(),
+                diagnosisGroups, ageGroups, overview.getDegreeOfSickLeaveGroups(), overview.getSickLeaveLengthGroups(),
                 overview.getLongSickLeavesTotal(), overview.getLongSickLeavesAlternation());
     }
 

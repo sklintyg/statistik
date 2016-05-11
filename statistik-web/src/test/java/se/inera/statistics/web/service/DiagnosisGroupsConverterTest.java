@@ -29,18 +29,6 @@ import static org.junit.Assert.assertEquals;
 public class DiagnosisGroupsConverterTest {
 
     @Test
-    public void testCalculatePercentageSTATISTIK987() throws Exception {
-        final int percentage = new DiagnosisGroupsConverter().calculatePercentage(37 - 23, 23);
-        assertEquals(61, percentage);
-    }
-
-    @Test
-    public void testCalculatePercentageZero() throws Exception {
-        final int percentage = new DiagnosisGroupsConverter().calculatePercentage(37, 0);
-        assertEquals(0, percentage);
-    }
-
-    @Test
     public void testConvertList() throws Exception {
         List<OverviewChartRowExtended> rows = new ArrayList<>();
         rows.add(new OverviewChartRowExtended("180108190", 20, 0));

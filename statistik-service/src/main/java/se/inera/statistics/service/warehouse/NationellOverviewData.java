@@ -40,14 +40,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import static se.inera.statistics.service.warehouse.query.AldersgruppQuery.ALDERSGRUPPER_REST;
 
 @Component
 public class NationellOverviewData {
 
     public static final int KVARTAL = 3;
     public static final int MAX_LAN = 5;
-    public static final int MAX_ALDERSGRUPPER = 5;
     public static final int PERCENT = 100;
 
     @Autowired
@@ -143,9 +141,21 @@ public class NationellOverviewData {
         SimpleKonResponse<SimpleKonDataRow> previousData = data.getAldersgrupper(ReportUtil.getPreviousPeriod(range).getFrom(), 1, KVARTAL);
         SimpleKonResponse<SimpleKonDataRow> currentData = data.getAldersgrupper(range.getFrom(), 1, KVARTAL);
 
-        Set<String> include = getTop(MAX_ALDERSGRUPPER - 1, currentData);
+        List<SimpleKonDataRow> previousDataRows = previousData.getRows();
+        List<SimpleKonDataRow> currentDataRows = currentData.getRows();
 
-        return getResult(include, previousData, currentData, ALDERSGRUPPER_REST);
+        List<OverviewChartRowExtended> result = new ArrayList<>();
+        for (int i = 0; i < currentDataRows.size(); i++) {
+            SimpleKonDataRow previousRow = previousDataRows.get(i);
+            SimpleKonDataRow currentRow = currentDataRows.get(i);
+            int previous = previousRow.getFemale() + previousRow.getMale();
+            int current = currentRow.getFemale() + currentRow.getMale();
+            final String rowName = currentRow.getName();
+            final OverviewChartRowExtended row = new OverviewChartRowExtended(rowName, current, current - previous);
+            result.add(row);
+        }
+
+        return result;
     }
 
     private List<OverviewChartRowExtended> getResult(Set<String> include, SimpleKonResponse<SimpleKonDataRow> previousData,  SimpleKonResponse<SimpleKonDataRow> currentData, String rest) {

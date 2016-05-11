@@ -40,7 +40,6 @@ import java.util.List;
 @Component
 public class OverviewQuery {
 
-    private static final int DISPLAYED_AGE_GROUPS = 5;
     public static final int PERCENT = 100;
 
     @Autowired
@@ -64,7 +63,7 @@ public class OverviewQuery {
         int currentLongSjukfall = SjukskrivningslangdQuery.getLong(currentSjukfallUsingOriginalSjukfallStart.getSjukfall());
         int previousLongSjukfall = SjukskrivningslangdQuery.getLong(previousSjukfallUsingOriginalSjukfallStart.getSjukfall());
 
-        List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall(), DISPLAYED_AGE_GROUPS);
+        List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall(), Integer.MAX_VALUE);
         List<OverviewChartRowExtended> diagnosgrupper = query.getOverviewDiagnosgrupper(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall(), Integer.MAX_VALUE);
         List<OverviewChartRowExtended> sjukskrivningsgrad = SjukskrivningsgradQuery.getOverviewSjukskrivningsgrad(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall());
         List<OverviewChartRow> sjukskrivningslangd = SjukskrivningslangdQuery.getOverviewSjukskrivningslangd(currentSjukfallUsingOriginalSjukfallStart.getSjukfall(), Integer.MAX_VALUE);

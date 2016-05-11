@@ -21,8 +21,12 @@ package se.inera.statistics.web.service;
 import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public final class Converters {
 
@@ -40,6 +44,45 @@ public final class Converters {
             return null;
         }
         return message;
+    }
+
+    public static List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> rows, int maxRows, String extraText) {
+        Collections.sort(rows, (o1, o2) -> o2.getQuantity() - o1.getQuantity());
+
+        List<OverviewChartRowExtended> result = new ArrayList<>();
+        int i = 0;
+        int numberOfRows = rows.size();
+        int displayedGroups = numberOfRows > maxRows ? maxRows - 1 : maxRows;
+
+        for (; i < displayedGroups && i < numberOfRows; i++) {
+            OverviewChartRowExtended row = rows.get(i);
+            final int alternation = row.getAlternation();
+            int previous = row.getQuantity() - alternation;
+            int percentChange = calculatePercentage(alternation, previous);
+            result.add(new OverviewChartRowExtended(row.getName(), row.getQuantity(), percentChange));
+        }
+
+        if (numberOfRows > maxRows) {
+            int restQuantity = 0;
+            int restAlternation = 0;
+            for (; i < rows.size(); i++) {
+                OverviewChartRowExtended row = rows.get(i);
+                restQuantity += row.getQuantity();
+                restAlternation += row.getAlternation();
+            }
+            int percentChange = calculatePercentage(restAlternation, restQuantity - restAlternation);
+            result.add(new OverviewChartRowExtended(extraText, restQuantity, percentChange));
+        }
+
+        return result;
+    }
+
+    private static int calculatePercentage(int part, int whole) {
+        if (whole == 0) {
+            return 0;
+        }
+        final double percentage = 100.0;
+        return (int) Math.round(part * percentage / whole);
     }
 
 }

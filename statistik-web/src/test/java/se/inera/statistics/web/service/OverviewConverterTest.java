@@ -47,13 +47,13 @@ public class OverviewConverterTest {
         int casesPerMonthProportionFemale = 1;
         OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
         int casesPerMonthAlteration = 2;
-        ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
-        ArrayList<OverviewChartRowExtended> ageGroups = new ArrayList<OverviewChartRowExtended>();
-        ArrayList<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<OverviewChartRowExtended>();
-        ArrayList<OverviewChartRow> sickLeaveLengthGroups = new ArrayList<OverviewChartRow>();
+        List<OverviewChartRowExtended> diagnosisGroups = new ArrayList<>();
+        List<OverviewChartRowExtended> ageGroups = new ArrayList<>();
+        List<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<>();
+        List<OverviewChartRow> sickLeaveLengthGroups = new ArrayList<>();
         int longSickLeavesTotal = 3;
         int longSickLeavesAlternation = 4;
-        ArrayList<OverviewChartRowExtended> perCounty = new ArrayList<OverviewChartRowExtended>();
+        List<OverviewChartRowExtended> perCounty = new ArrayList<>();
 
         //When
         OverviewResponse resp = new OverviewResponse(overviewKonsfordelning, casesPerMonthAlteration, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
@@ -71,17 +71,17 @@ public class OverviewConverterTest {
         int casesPerMonthProportionFemale = 1;
         OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
         int casesPerMonthAlteration = 2;
-        ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
+        List<OverviewChartRowExtended> diagnosisGroups = new ArrayList<>();
         diagnosisGroups.add(new OverviewChartRowExtended(String.valueOf(Icd10.icd10ToInt("A00-B99", Icd10RangeType.KAPITEL)), 1, -2));
-        ArrayList<OverviewChartRowExtended> ageGroups = new ArrayList<OverviewChartRowExtended>();
-        ageGroups.add(new OverviewChartRowExtended("ageName", 3, 4));
-        ArrayList<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<OverviewChartRowExtended>();
+        List<OverviewChartRowExtended> ageGroups = new ArrayList<>();
+        ageGroups.add(new OverviewChartRowExtended("ageName", 3, 2));
+        List<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<>();
         degreeOfSickLeaveGroups.add(new OverviewChartRowExtended("degName", 5, 6));
-        ArrayList<OverviewChartRow> sickLeaveLengthGroups = new ArrayList<OverviewChartRow>();
+        List<OverviewChartRow> sickLeaveLengthGroups = new ArrayList<>();
         sickLeaveLengthGroups.add(new OverviewChartRow("sickName", 7));
         int longSickLeavesTotal = 3;
         int longSickLeavesAlternation = 4;
-        ArrayList<OverviewChartRowExtended> perCounty = new ArrayList<OverviewChartRowExtended>();
+        List<OverviewChartRowExtended> perCounty = new ArrayList<>();
         perCounty.add(new OverviewChartRowExtended("countyName", 8, 9));
 
         //When
@@ -105,7 +105,7 @@ public class OverviewConverterTest {
         assertEquals(1, ageGroupsResult.size());
         assertEquals("ageName", ageGroupsResult.get(0).getName());
         assertEquals(3, ageGroupsResult.get(0).getQuantity());
-        assertEquals(4, ageGroupsResult.get(0).getAlternation());
+        assertEquals(200, ageGroupsResult.get(0).getAlternation());
 
         List<DonutChartData> degreeGroupsResult = data.getDegreeOfSickLeaveGroups();
         assertEquals(1, degreeGroupsResult.size());

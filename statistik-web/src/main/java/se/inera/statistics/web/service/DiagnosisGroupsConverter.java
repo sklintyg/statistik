@@ -95,38 +95,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
         List<OverviewChartRowExtended> merged = mergeOverviewChartGroups(diagnosisGroups);
         Collections.sort(merged, (o1,  o2) -> o2.getQuantity() - o1.getQuantity());
 
-        List<OverviewChartRowExtended> result = new ArrayList<>();
-        int i = 0;
-        int displayedGroups = merged.size() > DISPLAYED_DIAGNOSIS_GROUPS ? DISPLAYED_DIAGNOSIS_GROUPS - 1 : DISPLAYED_DIAGNOSIS_GROUPS;
-
-        for (; i < displayedGroups && i < merged.size(); i++) {
-            OverviewChartRowExtended row = merged.get(i);
-            final int alternation = row.getAlternation();
-            int previous = row.getQuantity() - alternation;
-            int percentChange = calculatePercentage(alternation, previous);
-            result.add(new OverviewChartRowExtended(row.getName(), row.getQuantity(), percentChange));
-        }
-
-        // Calculate diagnosGroups left
-        int restQuantity = 0;
-        int restAlternation = 0;
-        for (; i < merged.size(); i++) {
-            OverviewChartRowExtended row = merged.get(i);
-            restQuantity += row.getQuantity();
-            restAlternation += row.getAlternation();
-        }
-        int percentChange = calculatePercentage(restAlternation, restQuantity - restAlternation);
-        result.add(new OverviewChartRowExtended(DIAGNOS_REST_NAME, restQuantity, percentChange));
-
-        return result;
-    }
-
-    int calculatePercentage(int part, int whole) {
-        if (whole == 0) {
-            return 0;
-        }
-        final double percentage = 100.0;
-        return (int) Math.round(part * percentage / whole);
+        return Converters.convert(merged, DISPLAYED_DIAGNOSIS_GROUPS, DIAGNOS_REST_NAME);
     }
 
     private List<OverviewChartRowExtended> mergeOverviewChartGroups(List<OverviewChartRowExtended> allGroups) {
