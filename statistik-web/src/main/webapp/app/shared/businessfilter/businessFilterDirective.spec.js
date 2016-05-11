@@ -17,6 +17,8 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* globals sinon */
+
 describe('Tests for directive button-filter', function () {
     'use strict';
 
@@ -132,7 +134,7 @@ describe('Tests for directive button-filter', function () {
 
     });
 
-    xdescribe('Making selections', function() {
+    describe('Making selections', function() {
         var statisticsData, businessFilter;
 
         beforeEach(inject(function (_statisticsData_, _businessFilterFactory_) {
@@ -140,11 +142,11 @@ describe('Tests for directive button-filter', function () {
             businessFilter = _businessFilterFactory_;
         }));
 
-        xit('sets all needed parameters on params object', function() {
+        it('sets all needed parameters on params object', function() {
             //given
-            spyOn(statisticsData, 'getFilterHash').and.callThrough();;
+            var spy = sinon.spy(statisticsData, 'getFilterHash');
 
-            var fromDate = new moment('2015-01-01'), toDate = new moment('2015-04-01');
+            var fromDate = new moment('2015-01-01', 'YYYY-MM-DD'), toDate = new moment('2015-04-01', 'YYYY-MM-DD');
             businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
             businessFilter.fromDate = fromDate.toDate();
             businessFilter.toDate = toDate.toDate();
@@ -153,7 +155,7 @@ describe('Tests for directive button-filter', function () {
             innerScope.makeSelection();
 
             //then
-            expect(statisticsData.getFilterHash).toHaveBeenCalled();
+            expect(spy.calledOnce).toBeTruthy();
 
             //then the parameters are defined in the params object sent to the server
             expect(spy.getCall(0).args[0].enheter).toBeDefined('Enheter was not defined as expected');
@@ -164,11 +166,11 @@ describe('Tests for directive button-filter', function () {
             expect(spy.getCall(0).args[0].useDefaultPeriod).toBeDefined('useDefault was not defined as expected');
         });
 
-        it('formats the internal date to a datestring with yyyy-mm-dd', inject(function(moment) {
+        xit('formats the internal date to a datestring with yyyy-mm-dd', inject(function(moment) {
 
             //given
-            spyOn(statisticsData, 'getFilterHash').and.callThrough();
-            var fromDate = new moment('2015-01-01'), toDate = new moment('2015-04-01');
+            var spy = sinon.spy(statisticsData, 'getFilterHash');
+            var fromDate = new moment('2015-01-01', 'YYYY-MM-DD'), toDate = new moment('2015-04-01', 'YYYY-MM-DD');
             businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
             businessFilter.fromDate = fromDate.toDate();
             businessFilter.toDate = toDate.toDate();
@@ -178,18 +180,16 @@ describe('Tests for directive button-filter', function () {
 
             //Ensure that we sue the right format
 
-            expect(statisticsData.getFilterHash).toHaveBeenCalledWith(jasmine.objectContaining({
-                fromDate: '2015-01-01',
-                toDate: '2015-04-01'
-            }));
+            expect(moment(spy.getCall(0).args[0].fromDate, 'YYYY-MM-DD').isValid()).toBeTruthy('From date doesn\'t have the right format');
+            expect(moment(spy.getCall(0).args[0].toDate, 'YYYY-MM-DD').isValid()).toBeTruthy('To date doesn\'t have the right format');
         }));
 
-        xit('sets toDate to the last of the month', function() {
+        it('sets toDate to the last of the month', function() {
             //given
-            spyOn(statisticsData, 'getFilterHash').and.callThrough();;
-            var fromDate = new moment('2015-01-01'),
-                inputToDate = new moment('2015-04-01'),
-                expectedToDate = new moment('2015-04-30');
+            var spy = sinon.spy(statisticsData, 'getFilterHash');
+            var fromDate = new moment('2015-01-01', 'YYYY-MM-DD'),
+                inputToDate = new moment('2015-04-01', 'YYYY-MM-DD'),
+                expectedToDate = new moment('2015-04-30', 'YYYY-MM-DD');
 
             businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
             businessFilter.fromDate = fromDate.toDate();
@@ -214,8 +214,8 @@ describe('Tests for directive button-filter', function () {
 
         it('will pass validation if we have both to and from date set correct', function() {
             //given
-            var fromDate = moment('2015-01-01'),
-                inputToDate = moment('2015-04-01');
+            var fromDate = moment('2015-01-01', 'YYYY-MM-DD'),
+                inputToDate = moment('2015-04-01', 'YYYY-MM-DD');
 
             innerScope.timeIntervalChecked = true;
             businessFilter.fromDate = fromDate.toDate();
@@ -244,8 +244,8 @@ describe('Tests for directive button-filter', function () {
 
         it('will not pass validation if date is of correct format but improper input', function() {
 
-            var fromDate = moment('2015-13'),
-                inputToDate = moment('2015-13');
+            var fromDate = moment(new Date('2015-13')),
+                inputToDate = moment(new Date('2015-13'));
 
             //given
             innerScope.timeIntervalChecked = true;
@@ -260,8 +260,8 @@ describe('Tests for directive button-filter', function () {
         });
 
         it('will pass validation if date follows the format yyyy-MM-DD', function() {
-            var fromDate = moment('2015-01-01'),
-                inputToDate = moment('2015-01-01');
+            var fromDate = moment('2015-01-01', 'YYYY-MM-DD'),
+                inputToDate = moment('2015-01-01', 'YYYY-MM-DD');
 
             //given
             innerScope.timeIntervalChecked = true;
@@ -296,8 +296,8 @@ describe('Tests for directive button-filter', function () {
         });
 
         it('will not pass validation if from date is before 2013-10', function() {
-            var fromDate = moment('2013-09-01'),
-                inputToDate = moment('2015-12-01');
+            var fromDate = moment('2013-09-01', 'YYYY-MM-DD'),
+                inputToDate = moment('2015-12-01', 'YYYY-MM-DD');
 
             //given
             innerScope.timeIntervalChecked = true;
@@ -310,8 +310,8 @@ describe('Tests for directive button-filter', function () {
         });
 
         it('will pass validation if from date is variations of 2013-10', function() {
-            var fromDate = moment('2013-10-01').utc(),
-                inputToDate = moment('2015-01-01').utc();
+            var fromDate = moment('2013-10-01', 'YYYY-MM-DD').utc(),
+                inputToDate = moment('2015-01-01', 'YYYY-MM-DD').utc();
 
             //given
             innerScope.timeIntervalChecked = true;
@@ -326,8 +326,8 @@ describe('Tests for directive button-filter', function () {
         });
 
         it('will not pass validation if to date is before the from date', function() {
-            var fromDate = moment('2015-05-01'),
-                inputToDate = moment('2015-04-01');
+            var fromDate = moment('2015-05-01', 'YYYY-MM-DD'),
+                inputToDate = moment('2015-04-01', 'YYYY-MM-DD');
 
             //given
             innerScope.timeIntervalChecked = true;

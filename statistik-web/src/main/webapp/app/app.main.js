@@ -1,9 +1,9 @@
 /* globals Highcharts */
 
 var underscore = angular.module('underscore', []);
-underscore.factory('_', function() {
+underscore.factory('_', function($window) {
     'use strict';
-    return window._;
+    return $window._;
 });
 
 /* App Module */

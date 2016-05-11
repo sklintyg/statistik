@@ -69,7 +69,7 @@ var colors = {
 constantModule.constant('COLORS', colors);
 
 /* Beginning of time for the StatiscsApp*/
-var timeIntervalMinDate = new moment('2013-10-01');
+var timeIntervalMinDate = new moment('2013-10-01', 'YYYY-MM-DD');
 constantModule.constant('TIME_INTERVAL_MIN_DATE', timeIntervalMinDate);
 
 /* Max selectable date will always be the current month*/
