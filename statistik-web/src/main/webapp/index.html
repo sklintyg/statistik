@@ -59,7 +59,7 @@
       </div>
       <div class="ng-hide" data-ng-show="isLoggedIn">
         <div class="headerbox-avatar pull-right">
-          <img ng-src="/assets/images/avatar.png">
+          <img src="/assets/images/avatar.png">
         </div>
         <div class="headerbox-user pull-right">
           <div class="headerbox-user-profile">
@@ -82,9 +82,7 @@
         <navigation-menu></navigation-menu>
     </div>
 
-    <div data-ng-controller="navigationMenuCtrl" class="hidden-sm hidden-md hidden-lg"  ng-init="init(true)">
-
-    </div>
+    <navigation-menu class="hidden-sm hidden-md hidden-lg" is-mobile="true"></navigation-menu>
 
     <div id="page-content-wrapper">
         <div class="container-fluid">
@@ -163,7 +161,6 @@
   <script src="app/controller/doubleAreaChartsCtrl.js"></script>
   <script src="app/controller/landsting/landstingFileUploadCtrl.js"></script>
   <script src="app/controller/loginCtrl.js"></script>
-  <script src="app/controller/navigationMenuCtrl.js"></script>
   <script src="app/controller/overviewCtrl.js"></script>
   <script src="app/controller/pageCtrl.js"></script>
   <script src="app/controller/singleLineChartCtrl.js"></script>
@@ -186,6 +183,7 @@
   <script src="components/directives/navigationMenu/navigationMenu.directive.js"></script>
   <script src="components/directives/statCookieBanner/statCookieBanner.directive.js"></script>
   <script src="components/filters/filters.js"></script>
+  <script src="components/models/user.model.js"></script>
   <script src="components/services/diagnosisTreeFilter.js"></script>
   <script src="components/services/factories.js"></script>
   <script src="components/services/messageService.js"></script>
