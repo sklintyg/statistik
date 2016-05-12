@@ -18,8 +18,10 @@
  */
 
 angular.module('StatisticsApp').controller('pageCtrl',
-    [ '$scope', '$rootScope', '$window', '$location', 'statisticsData', 'businessFilterFactory', 'landstingFilterFactory', '_', 'ControllerCommons',
-    function ($scope, $rootScope, $window, $location, statisticsData, businessFilterFactory, landstingFilterFactory, _, ControllerCommons) {
+    [ '$scope', '$rootScope', '$window', '$location', 'statisticsData', 'businessFilterFactory', 'landstingFilterFactory',
+        '_', 'ControllerCommons', 'AppModel',
+    function ($scope, $rootScope, $window, $location, statisticsData, businessFilterFactory, landstingFilterFactory,
+        _, ControllerCommons, AppModel) {
         'use strict';
 
         var self = this;
@@ -28,6 +30,8 @@ angular.module('StatisticsApp').controller('pageCtrl',
             var selectedVerksamhet = _.findWhere(verksamhets, { vardgivarId: selectedVerksamhetId });
             return selectedVerksamhet ? selectedVerksamhet : {name: 'Okänd verksamhet'};
         };
+        
+        $scope.AppModel = AppModel;
 
         $rootScope.$on('$routeChangeSuccess', function () {
             var d = new Date();
@@ -101,8 +105,8 @@ angular.module('StatisticsApp').controller('pageCtrl',
             }
         });
 
-        $scope.loginClicked = function (url) {
-            $location.path(url);
+        $scope.loginClicked = function () {
+            $location.path(AppModel.get().loginUrl);
         };
     }
 ]);

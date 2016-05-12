@@ -166,7 +166,7 @@ describe('Tests for directive button-filter', function () {
             expect(spy.getCall(0).args[0].useDefaultPeriod).toBeDefined('useDefault was not defined as expected');
         });
 
-        xit('formats the internal date to a datestring with yyyy-mm-dd', inject(function(moment) {
+        it('formats the internal date to a datestring with yyyy-mm-dd', inject(function(moment) {
 
             //given
             var spy = sinon.spy(statisticsData, 'getFilterHash');

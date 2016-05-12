@@ -18,7 +18,8 @@
  */
 
 angular.module('StatisticsApp')
-    .factory('chartFactory', ['COLORS', '_', 'ControllerCommons', '$window', function(COLORS, _, ControllerCommons, $window) {
+    .factory('chartFactory', ['COLORS', '_', 'ControllerCommons', '$window', 'AppModel',
+        function(COLORS, _, ControllerCommons, $window, AppModel) {
         'use strict';
 
         var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback) {
@@ -100,7 +101,7 @@ angular.module('StatisticsApp')
                 },
                 exporting : {
                     enabled : false,
-                    url: highchartsExportUrl
+                    url: AppModel.get().highchartsExportUrl
                 },
                 plotOptions : {
                     line : {

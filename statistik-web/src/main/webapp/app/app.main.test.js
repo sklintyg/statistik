@@ -5,7 +5,7 @@ underscore.factory('_', function($window) {
 });
 
 /* App Module */
-var app = angular.module('StatisticsApp',
+angular.module('StatisticsApp',
     ['ngRoute',
      'ngCookies',
      'ngSanitize',
@@ -17,9 +17,3 @@ var app = angular.module('StatisticsApp',
      'StatisticsApp.businessFilter',
      'dropzone',
      'ngStorage']);
-
-app.run(['AppService', function (AppService) {
-    'use strict';
-
-    AppService.get();
-} ]);

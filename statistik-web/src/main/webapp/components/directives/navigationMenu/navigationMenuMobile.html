@@ -10,9 +10,9 @@
         <span class="icon-bar"></span>
       </button>
 
-      <div class="col-xs-6 hidden-sm hidden-md hidden-lg pull-right">
+      <div class="col-xs-6 hidden-sm hidden-md hidden-lg pull-right" data-ng-if="loginVisible">
         <div class="pull-right" ng-hide="isLoggedIn">
-          <a class="btn" data-ng-click="loginClicked('fakelogin')"
+          <a class="btn" data-ng-click="loginClicked()"
              type="button" id="business-login-btn" value="Logga in"><span message key="lbl.log-in"></span>
           </a>
         </div>

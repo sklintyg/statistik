@@ -248,7 +248,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         }, 100);
     }));
 
-    xit('parent should be visible for matching node', inject(function ($timeout) {
+    it('parent should be visible for matching node', inject(function ($timeout) {
         //Given
         var sub11 = {name: 'sub11'};
         var sub12 = {name: 'sub12'};

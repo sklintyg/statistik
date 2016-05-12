@@ -26,7 +26,9 @@
             return {
                 restrict: 'E',
                 scope: {
-                    isMobile: '='
+                    isMobile: '=',
+                    loginVisible: '=',
+                    loginClicked: '&'
                 },
                 templateUrl: 'components/directives/navigationMenu/navigationMenu.html',
                 controller: NavigationMenuCtrl

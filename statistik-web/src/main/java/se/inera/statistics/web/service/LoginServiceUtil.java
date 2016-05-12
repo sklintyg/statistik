@@ -26,8 +26,10 @@ import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.stereotype.Component;
+import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
@@ -38,6 +40,7 @@ import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.Verksamhet;
 
@@ -61,6 +64,15 @@ public class LoginServiceUtil {
 
     @Autowired
     private LandstingEnhetHandler landstingEnhetHandler;
+
+    @Autowired
+    private LoginVisibility loginVisibility;
+
+    @Value("${highcharts.export.url}")
+    private String higchartsExportUrl;
+    @Value("${login.url}")
+    private String loginUrl;
+
 
     private Kommun kommun = new Kommun();
 
@@ -156,6 +168,17 @@ public class LoginServiceUtil {
 
     HsaIdVardgivare getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
         return getLoginInfo(request).getDefaultVerksamhet().getVardgivarId();
+    }
+
+
+    public AppSettings getSettings(HttpServletRequest request) {
+        AppSettings settings = new AppSettings();
+
+        settings.setLoginVisible(loginVisibility.isLoginVisible());
+        settings.setHighchartsExportUrl(higchartsExportUrl);
+        settings.setLoginUrl(loginUrl);
+
+        return settings;
     }
 
 }

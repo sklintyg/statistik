@@ -495,7 +495,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
-        //'jshint',
+        'jshint',
         'copy:dist',
         'injector:sass',
         'sass',

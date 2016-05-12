@@ -17,24 +17,27 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-xdescribe('Chart services', function() {
+describe('Chart services', function() {
     'use strict';
 
     var chartFactory;
     var _;
-    var highchartsExportUrl;
+    var AppModel;
 
     beforeEach(module('StatisticsApp'));
 
-    beforeEach(inject(function(_chartFactory_, ___) {
+    beforeEach(inject(function(_chartFactory_, ___, _AppModel_) {
         chartFactory = _chartFactory_;
+        AppModel = _AppModel_;
         _ = ___; //This set the local underscore variable
     }));
 
 
     describe('General configuration of charts', function() {
         it('can setup a basic configuration for a chart', function() {
-            highchartsExportUrl = 'http://www.testurl.com:1234/exporttest';
+            AppModel.set({
+                highchartsExportUrl: 'http://www.testurl.com:1234/exporttest'
+            });
             var categories = [{name:'Namn 1'}, {name:'Namn < 1'}];
             var series = [{b: 4, data: []}];
             var result = chartFactory.getHighChartConfigBase(categories, series);
@@ -46,7 +49,9 @@ xdescribe('Chart services', function() {
         });
 
         it('will enable markers on specific series if there is only one data point for the series', function() {
-            highchartsExportUrl = 'http://www.testurl.com:1234/exporttest';
+            AppModel.set({
+                highchartsExportUrl: 'http://www.testurl.com:1234/exporttest'
+            });
             var categories = [{name:'Namn 1'}, {name:'Namn < 1'}];
             var seriesWithOneDataPoint = [{b: 4, data: [1]}];
             var result = chartFactory.getHighChartConfigBase(categories, seriesWithOneDataPoint);
