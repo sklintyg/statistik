@@ -265,7 +265,9 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
     }
 ]);
 
-angular.module('StatisticsApp').diagnosisGroupConfig = function (ControllerCommons) {
+angular.module('StatisticsApp').diagnosisGroupConfig =
+    /** @ngInject */
+    function (ControllerCommons) {
     'use strict';
 
 
@@ -291,7 +293,9 @@ angular.module('StatisticsApp').diagnosisGroupConfig = function (ControllerCommo
     return conf;
 };
 
-angular.module('StatisticsApp').diagnosisSubGroupConfig = function (ControllerCommons) {
+angular.module('StatisticsApp').diagnosisSubGroupConfig =
+    /** @ngInject */
+    function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -319,7 +323,9 @@ angular.module('StatisticsApp').diagnosisSubGroupConfig = function (ControllerCo
     return conf;
 };
 
-angular.module('StatisticsApp').degreeOfSickLeaveConfig = function (ControllerCommons) {
+angular.module('StatisticsApp').degreeOfSickLeaveConfig =
+    /** @ngInject */
+    function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -345,7 +351,9 @@ angular.module('StatisticsApp').degreeOfSickLeaveConfig = function (ControllerCo
     return conf;
 };
 
-angular.module('StatisticsApp').differentieratIntygandeConfig = function (ControllerCommons) {
+angular.module('StatisticsApp').differentieratIntygandeConfig =
+    /** @ngInject */
+    function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -368,7 +376,9 @@ angular.module('StatisticsApp').differentieratIntygandeConfig = function (Contro
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig = function (ControllerCommons) {
+angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig =
+    /** @ngInject */
+    function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -388,7 +398,9 @@ angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig = function (Con
     return conf;
 };
 
-angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig = function (ControllerCommons) {
+angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig =
+    /** @ngInject */
+    function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -407,7 +419,9 @@ angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig = function (Con
     return conf;
 };
 
-angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig = function (ControllerCommons) {
+angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig =
+    /** @ngInject */
+    function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -424,7 +438,9 @@ angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig = function (Con
     return conf;
 };
 
-angular.module('StatisticsApp').sickLeaveLengthTimeSeriesConfig = function (ControllerCommons) {
+angular.module('StatisticsApp').sickLeaveLengthTimeSeriesConfig =
+    /** @ngInject */
+    function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -444,7 +460,9 @@ angular.module('StatisticsApp').sickLeaveLengthTimeSeriesConfig = function (Cont
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig = function (ControllerCommons) {
+angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig =
+    /** @ngInject */
+    function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -462,7 +480,9 @@ angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig = functio
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig = function (ControllerCommons) {
+angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig =
+    /** @ngInject */
+    function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -479,7 +499,9 @@ angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig = function (Contr
     return conf;
 };
 
-angular.module('StatisticsApp').casesPerLakaresAlderOchKonTidsserieConfig = function (ControllerCommons) {
+angular.module('StatisticsApp').casesPerLakaresAlderOchKonTidsserieConfig =
+    /** @ngInject */
+    function (ControllerCommons) {
     'use strict';
 
     var conf = {};

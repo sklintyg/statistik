@@ -40,6 +40,10 @@ Nu ska det gå att starta applikationen med:
 Nu går det att öppna en webbläsare och surfa till http://localhost:8080/ Observera jetty körs i gradleprocessen, så gradle "blir
 inte klar" förrän du stoppar servern med ^c, och applikationen är bara igång fram till dess.
 
+För att testa applikationen i ett mer prodlikt läge kan man även starta med en flagga för att köra i minifierat läge då css/js är packade och sammanslagna genom att starta:
+
+    gradle clean appRunWar -Pstatistik.useMinifiedJavaScript
+
 ##Gradle
 Vi använder Gradle för att bygga, test, installera och köra statistiktjänsten. Gradle spottar ur sig ganska mycket text, generellt sett har det gått bra om det sista som skrivs ut är något i stil med:
 

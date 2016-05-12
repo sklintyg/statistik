@@ -19,6 +19,7 @@
 
 
 angular.module('StatisticsApp').factory('AppService',
+    /** @ngInject */
     function($http, $log, $q, AppModel) {
         'use strict';
 

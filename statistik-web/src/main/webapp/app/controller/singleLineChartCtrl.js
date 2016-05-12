@@ -159,7 +159,9 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
     }
 ]);
 
-angular.module('StatisticsApp').casesPerMonthConfig = function (ControllerCommons) {
+angular.module('StatisticsApp').casesPerMonthConfig =
+    /** @ngInject */
+    function (ControllerCommons) {
     'use strict';
 
     var conf = {};
@@ -185,7 +187,9 @@ angular.module('StatisticsApp').casesPerMonthConfig = function (ControllerCommon
     return conf;
 };
 
-angular.module('StatisticsApp').longSickLeavesConfig = function (ControllerCommons) {
+angular.module('StatisticsApp').longSickLeavesConfig =
+    /** @ngInject */
+    function (ControllerCommons) {
     'use strict';
 
     var conf = {};
