@@ -24,7 +24,26 @@
 <html>
 <head>
   <title>Application Version</title>
-  <link rel="stylesheet" type="text/css" href="bootstrap/2.3.2/css/bootstrap.min.css">
+
+  <link rel="icon" href="<c:url value="/assets/images/favicon.ico" />" type="image/vnd.microsoft.icon"/>
+
+  <!-- build:css(src/main/webapp) app/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css" />
+  <link rel="stylesheet" href="bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" />
+  <link rel="stylesheet" href="bower_components/jquery.tablesorter/css/theme.default.css" />
+  <link rel="stylesheet" href="bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.css" />
+  <link rel="stylesheet" href="bower_components/dropzone/dist/min/dropzone.min.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:css({build/.tmp,src/main/webapp}) app/app.css -->
+  <!-- injector:css -->
+  <link rel="stylesheet" href="app/app.css">
+  <link rel="stylesheet" href="app/css/print.css">
+  <!-- endinjector -->
+  <!-- endbuild -->
 </head>
 <body>
 <div style="padding-left:20px">

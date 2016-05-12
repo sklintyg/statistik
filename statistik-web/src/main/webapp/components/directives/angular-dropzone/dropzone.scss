@@ -1,0 +1,29 @@
+/*Styling for filuppladdning*/
+.jumbotron.dropzone {
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+
+/* The postion property of the jumbtron disturbed links in som kind of weird way*/
+.dropzone.jumbotron:after {
+  position: inherit;
+}
+
+div.dropzone a{
+  color:dimgrey !important;
+  text-decoration: underline;
+}
+
+.dropzone {
+  border: dashed grey 2px;
+  border-radius: 6px;
+  background-color: rgb(247, 247, 249);
+}
+
+.dropzone-drag {
+  background-color: rgb(225,225,232) !important;
+}
+
+.dropzone-info-area {
+  text-align: center;
+}

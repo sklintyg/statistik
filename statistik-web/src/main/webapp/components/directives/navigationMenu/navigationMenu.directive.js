@@ -334,6 +334,7 @@
                     id: operation.id,
                     name: 'login.header',
                     show: false,
+                    disabled: true,
                     checkVisible: operation.checkVisible
                 });
             }
@@ -352,12 +353,14 @@
         };
 
         $scope.toggleMenu = function(menu) {
-            var temp = menu.show;
-            angular.forEach($scope.menus, function(m) {
-                m.show = false;
-            });
+            if (!menu.disabled) {
+                var temp = menu.show;
+                angular.forEach($scope.menus, function(m) {
+                    m.show = false;
+                });
 
-            menu.show = !temp;
+                menu.show = !temp;
+            }
         };
 
         $scope.showMenu = function(menu) {

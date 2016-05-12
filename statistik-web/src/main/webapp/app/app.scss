@@ -1928,36 +1928,6 @@ li.subMenuItem.active .active-menu-item { display: block;  }
     background-color: #E6E6E6;
 }
 
-/*Styling for filuppladdning*/
-.jumbotron.dropzone {
-    margin-bottom: 0;
-    margin-top: 10px;
-}
-
-/* The postion property of the jumbtron disturbed links in som kind of weird way*/
-.dropzone.jumbotron:after {
-    position: inherit;
-}
-
-div.dropzone a{
-    color:dimgrey !important;
-    text-decoration: underline;
-}
-
-.dropzone {
-    border: dashed grey 2px;
-    border-radius: 6px;
-    background-color: rgb(247, 247, 249);
-}
-
-.dropzone-drag {
-    background-color: rgb(225,225,232) !important;
-}
-
-.dropzone-info-area {
-    text-align: center;
-}
-
 .glyphicon-plus-sign, .glyphicon-plus-sign-drag, .glyphicon-ok-sign, .glyphicon-warning-sign {
     font-size: 6em;
     display: block;
@@ -2044,23 +2014,6 @@ diagnos-selection {
     position: relative;
 }
 
-stat-cookie-banner {
-    display: block;
-}
-
-.stat-cookie-banner {
-    margin: 10px 10px 0;
-    border: none;
-}
-
-.stat-cookie-banner .alert {
-    max-width: inherit;
-    margin-bottom: 0;
-}
-.stat-cookie-banner .container-fluid {
-    padding: 0;
-}
-
 @media (min-width: 768px) and (max-width: 1199px) {
     .business-filter-time-interval {
         margin-top: 15px;
@@ -2098,4 +2051,6 @@ stat-cookie-banner {
 // injector
 @import 'css/filter.scss';
 @import 'css/inera-statistics-responsive.scss';
+@import 'directives/angular-dropzone/dropzone.scss';
+@import 'directives/statCookieBanner/statCookieBanner.scss';
 // endinjector
