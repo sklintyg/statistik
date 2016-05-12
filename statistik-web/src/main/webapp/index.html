@@ -58,7 +58,7 @@
         </div>
         <div class="headerbox-user pull-right">
           <div class="headerbox-user-profile">
-            <span class="logged-in">{{userNameWithAccess}}</span><br>
+            <span class="logged-in">{{UserModel.get().userNameWithAccess}}</span><br>
             <span class="pull-right">
               <a id="logoutLink" href="saml/logout"><span message key="lbl.log-out"></span></a>
             </span>
@@ -74,7 +74,7 @@
 <div id="wrapper">
     <div id="sidebar-wrapper" class="hidden-print hidden-xs">
         <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
-        <navigation-menu></navigation-menu>
+        <navigation-menu login-visible="AppModel.get().loginVisible"></navigation-menu>
     </div>
 
     <navigation-menu class="hidden-sm hidden-md hidden-lg" is-mobile="true" login-visible="AppModel.get().loginVisible" login-clicked="loginClicked()"></navigation-menu>

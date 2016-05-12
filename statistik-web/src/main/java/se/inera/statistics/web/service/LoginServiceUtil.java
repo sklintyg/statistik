@@ -177,6 +177,7 @@ public class LoginServiceUtil {
         settings.setLoginVisible(loginVisibility.isLoginVisible());
         settings.setHighchartsExportUrl(higchartsExportUrl);
         settings.setLoginUrl(loginUrl);
+        settings.setLoggedIn(isLoggedIn(request));
 
         return settings;
     }

@@ -1,4 +1,4 @@
-angular.module('StatisticsApp').directive('navigationaware', function ($rootScope) {
+angular.module('StatisticsApp').directive('navigationaware', function ($rootScope, $route) {
     'use strict';
 
     var isActivePage = function(currentRoute, navLinkAttrs) {
@@ -8,7 +8,10 @@ angular.module('StatisticsApp').directive('navigationaware', function ($rootScop
     return {
         restrict: 'A',
         link: function ($scope, elem, $attrs) {
-            $rootScope.$on('$routeChangeSuccess', function(angularEvent, current) {
+
+            init($route.current);
+
+            function init(current) {
                 elem.parent().removeClass('active');
                 if (isActivePage(current, $attrs)){
                     elem.parent().addClass('active');
@@ -17,6 +20,10 @@ angular.module('StatisticsApp').directive('navigationaware', function ($rootScop
                         $rootScope.$broadcast('navigationUpdate', groupId);
                     }
                 }
+            }
+
+            $rootScope.$on('$routeChangeSuccess', function(angularEvent, current) {
+                init(current);
             });
         }
     };

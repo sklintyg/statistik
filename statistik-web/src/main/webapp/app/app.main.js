@@ -18,8 +18,12 @@ var app = angular.module('StatisticsApp',
      'dropzone',
      'ngStorage']);
 
-app.run(['AppService', function (AppService) {
+app.run(['AppService', '$rootScope', function (AppService, $rootScope) {
     'use strict';
 
-    AppService.get();
+    $rootScope.isLoggedIn = false;
+
+    AppService.get().then(function(data) {
+        $rootScope.isLoggedIn = data.loggedIn;
+    });
 } ]);

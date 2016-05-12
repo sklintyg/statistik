@@ -36,10 +36,12 @@
         }]);
 
     /** @ngInject */
-    function NavigationMenuCtrl($scope, $rootScope) {
+    function NavigationMenuCtrl($scope, AppModel, UserModel) {
         $scope.mobile = $scope.isMobile;
         $scope.menus = [];
-        $scope.isLoggedIn = $rootScope.isLoggedIn;
+        $scope.AppModel = AppModel;
+        $scope.UserModel = UserModel;
+        $scope.isLoggedIn = AppModel.get().isLoggedIn;
         $scope.isCollapsed = true;
 
         var national = {
@@ -105,7 +107,7 @@
 
         var landsting = {
             checkVisible: function() {
-                return $scope.hasLandstingAccess;
+                return UserModel.get().hasLandstingAccess;
             },
             id: 'landsting-statistics-toggle',
             menuId: 'landsting-statistic-menu-content',
@@ -115,7 +117,7 @@
             show: false,
             subMenu: [{
                 checkEnable: function() {
-                    return $scope.landstingAvailable;
+                    return UserModel.get().landstingAvailable;
                 },
                 id: 'navLandstingCasesPerMonthLink',
                 link: '#/landsting/sjukfallPerManad',
@@ -123,7 +125,7 @@
                 ctrl: 'LandstingCasesPerMonthCtrl'
             },{
                 checkEnable: function() {
-                    return $scope.landstingAvailable;
+                    return UserModel.get().landstingAvailable;
                 },
                 id: 'navLandstingCasesPerEnhetLink',
                 link: '#/landsting/sjukfallPerEnhet',
@@ -131,7 +133,7 @@
                 ctrl: 'LandstingCasesPerBusinessCtrl'
             },{
                 checkEnable: function() {
-                    return $scope.landstingAvailable;
+                    return UserModel.get().landstingAvailable;
                 },
                 id: 'navLandstingCasesPerPatientsPerEnhetLink',
                 link: '#/landsting/sjukfallPerListningarPerEnhet',
@@ -144,7 +146,7 @@
                 ctrl: 'LandstingAboutCtrl'
             },{
                 checkVisible: function() {
-                    return $scope.isLandstingAdmin;
+                    return UserModel.get().isLandstingAdmin;
                 },
                 id: 'navLandstingUploadLink',
                 link: '#/landsting/filuppladdning',
@@ -156,9 +158,9 @@
         var operation = {
             checkVisible: function() {
                 if ($scope.isMobile) {
-                    return $rootScope.isLoggedIn;
+                    return $scope.isLoggedIn;
                 }
-                return true;
+                return $scope.loginVisible;
             },
             id: 'business-statistics-toggle',
             menuId: 'business-statistic-menu-content',
@@ -172,14 +174,14 @@
                 name: 'nav.oversikt',
                 ctrl: 'businessOverviewCtrl'
             },{
+                checkVisible: function() {
+                    return UserModel.get().isProcessledare || UserModel.get().isDelprocessledare;
+                },
                 id: 'navBusinessCasesPerBusinessLink',
                 link: '#/verksamhet/sjukfallperenhet',
                 name: 'nav.vardenhet',
                 ctrl: 'VerksamhetCasesPerBusinessCtrl'
             },{
-                checkVisible: function() {
-                    return $scope.isProcessledare || $scope.isDelprocessledare;
-                },
                 id: 'navBusinessCasesPerMonthLink',
                 link: '#/verksamhet/sjukfallPerManad',
                 name: 'nav.sjukfall-totalt',
@@ -227,7 +229,7 @@
                 }]
             },{
                 checkVisible: function() {
-                    return !$scope.isProcessledare;
+                    return !UserModel.get().isProcessledare;
                 },
                 id: 'navBusinessCasesPerLakareLink',
                 link: '#/verksamhet/sjukfallperlakare',
@@ -281,32 +283,68 @@
             }]
         };
 
-        $scope.menus.push(national);
-        $scope.menus.push(landsting);
-
-        if ($rootScope.isLoggedIn) {
-            $scope.menus.push(operation);
-        }
-        else {
-            $scope.menus.push({
-                id: 'business-statistics-toggle',
-                name: 'login.header',
-                show: false,
-                checkVisible: function() {
-                    if ($scope.isMobile) {
-                        return $scope.isLoggedIn;
-                    }
-                    return true;
-                }
-            });
-        }
-
-        $scope.menus.push(about);
-
-        if ($scope.isMobile) {
+        $scope.$on('navigationUpdate', function (event, navigationGroupId) {
             angular.forEach($scope.menus, function(m) {
                 m.show = false;
             });
+
+            switch(navigationGroupId) {
+            case 'about-statistics-collapse':
+                about.show = true;
+                break;
+            case 'landsting-statistics-collapse':
+                landsting.show = true;
+                break;
+            case 'business-statistics-collapse':
+                operation.show = true;
+                break;
+                //case 'national-statistics-collapse':
+            default:
+                national.show = true;
+            }
+        });
+
+        initMenu();
+
+        var oldValue = $scope.isLoggedIn;
+
+        $scope.$watch('AppModel.get()', function() {
+            $scope.isLoggedIn = AppModel.get().isLoggedIn;
+
+            if (oldValue !== $scope.isLoggedIn) {
+                oldValue = $scope.isLoggedIn;
+                initMenu();
+            }
+        }, true);
+
+        $scope.$watch('UserModel.get().enableVerksamhetMenu', function() {
+            initMenu();
+        });
+
+        function initMenu() {
+            $scope.menus.length = 0;
+            $scope.menus.push(national);
+            $scope.menus.push(landsting);
+
+            if (UserModel.get().enableVerksamhetMenu) {
+                $scope.menus.push(operation);
+            }
+            else {
+                $scope.menus.push({
+                    id: operation.id,
+                    name: 'login.header',
+                    show: false,
+                    checkVisible: operation.checkVisible
+                });
+            }
+
+            $scope.menus.push(about);
+
+            if ($scope.isMobile) {
+                angular.forEach($scope.menus, function(m) {
+                    m.show = false;
+                });
+            }
         }
 
         $scope.toggleMobileMenu = function() {
@@ -339,26 +377,7 @@
             }
         };
 
-        $scope.$on('navigationUpdate', function (event, navigationGroupId) {
-            angular.forEach($scope.menus, function(m) {
-                m.show = false;
-            });
 
-            switch(navigationGroupId) {
-            case 'about-statistics-collapse':
-                about.show = true;
-                break;
-            case 'landsting-statistics-collapse':
-                landsting.show = true;
-                break;
-            case 'business-statistics-collapse':
-                operation.show = true;
-                break;
-                //case 'national-statistics-collapse':
-            default:
-                national.show = true;
-            }
-        });
 
     }
 })();

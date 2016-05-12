@@ -23,6 +23,8 @@ angular.module('StatisticsApp').factory('AppModel',
 
         var data = {};
 
+        _reset();
+        
         function _reset() {
             data.isLoggedIn = false;
             data.loginUrl = '';
@@ -38,7 +40,7 @@ angular.module('StatisticsApp').factory('AppModel',
             },
             set: function(app) {
                 _reset();
-                data.isLoggedIn = app.isLoggedIn;
+                data.isLoggedIn = app.loggedIn;
                 data.loginUrl = app.loginUrl;
                 data.loginVisible = app.loginVisible;
                 data.highchartsExportUrl = app.highchartsExportUrl;

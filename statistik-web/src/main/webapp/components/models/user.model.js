@@ -23,38 +23,35 @@ angular.module('StatisticsApp').factory('UserModel',
 
         var data = {};
 
-        function _reset() {
-            data.name = null;
-            data.role = null;
-            data.authenticationScheme = null;
-            data.fakeSchemeId = 'urn:inera:rehabstod:siths:fake';
-            data.valdVardenhet = null;
-            data.valdVardgivare = null;
-            data.vardgivare = null;
-            data.totaltAntalVardenheter = 0;
-            data.isLakare = false;
-            data.urval = null;
+        _reset();
 
-            data.loggedIn = false;
+        function _reset() {
+            data.userName = '';
+            data.userNameWithAccess = '';
+            data.loggedInWithoutStatistikuppdrag = true;
+            data.isDelprocessledare = false;
+            data.isProcessledare = false;
+            data.hasLandstingAccess = false;
+            data.landstingAvailable = false;
+            data.isLandstingAdmin = false;
+            data.enableVerksamhetMenu = false;
             return data;
         }
 
         return {
             reset: _reset,
-            init: function() {
-                return _reset();
-            },
 
-            set: function(user) {
+            set: function(loginInfo) {
                 _reset();
-                data.name = user.namn;
-                data.authenticationScheme = user.authenticationScheme;
-                data.valdVardenhet = user.valdVardenhet;
-                data.valdVardgivare = user.valdVardgivare;
-                data.vardgivare = user.vardgivare;
-                data.totaltAntalVardenheter = user.totaltAntalVardenheter;
-                data.loggedIn = true;
-                data.urval = user.urval;
+                data.userName = loginInfo.name;
+                data.userNameWithAccess = loginInfo.name;
+                data.loggedInWithoutStatistikuppdrag = !(loginInfo.businesses && loginInfo.businesses.length >= 1);
+                data.isDelprocessledare = loginInfo.delprocessledare;
+                data.isProcessledare = loginInfo.processledare;
+                data.hasLandstingAccess = loginInfo.landstingsvardgivare;
+                data.landstingAvailable = loginInfo.landstingsvardgivareWithUpload;
+                data.isLandstingAdmin = loginInfo.landstingAdmin;
+                data.enableVerksamhetMenu = loginInfo.businesses && loginInfo.businesses.length >= 1;
             },
             get: function() {
                 return data;

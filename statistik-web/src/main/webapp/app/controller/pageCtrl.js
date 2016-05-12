@@ -19,9 +19,9 @@
 
 angular.module('StatisticsApp').controller('pageCtrl',
     [ '$scope', '$rootScope', '$window', '$location', 'statisticsData', 'businessFilterFactory', 'landstingFilterFactory',
-        '_', 'ControllerCommons', 'AppModel',
+        '_', 'ControllerCommons', 'AppModel', 'UserModel',
     function ($scope, $rootScope, $window, $location, statisticsData, businessFilterFactory, landstingFilterFactory,
-        _, ControllerCommons, AppModel) {
+        _, ControllerCommons, AppModel, UserModel) {
         'use strict';
 
         var self = this;
@@ -32,6 +32,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
         };
         
         $scope.AppModel = AppModel;
+        $scope.UserModel = UserModel;
 
         $rootScope.$on('$routeChangeSuccess', function () {
             var d = new Date();
@@ -58,6 +59,8 @@ angular.module('StatisticsApp').controller('pageCtrl',
                     statisticsData.getLoginInfo(function (loginInfo) {
                         businessFilterFactory.setup(loginInfo.businesses, $location.$$search.filter);
 
+                        UserModel.set(loginInfo);
+                        
                         var v = loginInfo.defaultVerksamhet;
 
                         $scope.verksamhetName = '';
@@ -71,20 +74,10 @@ angular.module('StatisticsApp').controller('pageCtrl',
                             }
                         }
 
-                        $scope.userName = loginInfo.name;
-                        $scope.userNameWithAccess = loginInfo.name;
-
                         $scope.loggedInWithoutStatistikuppdrag = !(loginInfo.businesses && loginInfo.businesses.length >= 1);
-
-                        $scope.isDelprocessledare = loginInfo.delprocessledare;
-                        $scope.isProcessledare = loginInfo.processledare;
-
-                        $scope.hasLandstingAccess = loginInfo.landstingsvardgivare;
+                        
                         $rootScope.landstingAvailable = loginInfo.landstingsvardgivareWithUpload;
-                        $scope.isLandstingAdmin = loginInfo.landstingAdmin;
-
-                        $scope.enableVerksamhetMenu = loginInfo.businesses && loginInfo.businesses.length >= 1;
-
+                        
                         if ($rootScope.landstingAvailable) {
                             statisticsData.getLandstingFilterInfo(function (landstingFilterInfo) {
                                 landstingFilterFactory.setup(landstingFilterInfo.businesses, $location.$$search.landstingfilter);

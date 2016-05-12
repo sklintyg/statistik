@@ -26,6 +26,7 @@ public class AppSettings {
     private String loginUrl;
     private String highchartsExportUrl;
     private boolean loginVisible;
+    private boolean isLoggedIn;
 
 
     public String getLoginUrl() {
@@ -50,5 +51,13 @@ public class AppSettings {
 
     public void setLoginVisible(boolean loginVisible) {
         this.loginVisible = loginVisible;
+    }
+
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        isLoggedIn = loggedIn;
     }
 }
