@@ -19,8 +19,10 @@
 
 /* globals Highcharts */
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
-    [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter', 'config', 'messageService', 'chartFactory', 'pdfFactory', '_', 'ControllerCommons',
-    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter, config, messageService, chartFactory, pdfFactory, _, ControllerCommons) {
+    [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter',
+        'config', 'messageService', 'chartFactory', 'pdfFactory', '_', 'ControllerCommons',
+    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter,
+        config, messageService, chartFactory, pdfFactory, _, ControllerCommons) {
         'use strict';
 
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
@@ -38,7 +40,19 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             chartOptions.chart.type = defaultChartType;
             chartOptions.legend.enabled = false;
             chartOptions.xAxis.title.text = config.chartXAxisTitle;
-            chartOptions.subtitle.text = config.chartYAxisTitle ? config.chartYAxisTitle : (config.percentChart ? 'Andel sjukfall i %' : 'Antal sjukfall');
+
+            var yAxisTitle;
+            if (config.chartYAxisTitle) {
+                yAxisTitle = config.chartYAxisTitle;
+            }
+            else if (config.percentChart) {
+                yAxisTitle = 'Andel sjukfall i %';
+            }
+            else {
+                yAxisTitle = 'Antal sjukfall';
+            }
+
+            chartOptions.subtitle.text = yAxisTitle;
             chartOptions.yAxis.allowDecimals = !!config.allowDecimalsYAxis;
             chartOptions.yAxis.labels.formatter = function () {
                 return ControllerCommons.makeThousandSeparated(this.value) + (config.percentChart ? ' %' : '');
@@ -81,12 +95,13 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         var populatePageWithData = function (result) {
             var enhetsCount = (result.filter && result.filter.enheter) ? result.filter.enheter.length : null;
             $scope.subTitle = config.title(result.period, enhetsCount);
-            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
+                                    result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;
                 statisticsData.getDiagnosisKapitelAndAvsnittAndKategori(populateDetailsOptions, function () {
-                    alert('Kunde inte ladda data');
+                    $window.alert('Kunde inte ladda data');
                 });
             }
             $timeout(function () {

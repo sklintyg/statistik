@@ -136,11 +136,14 @@ angular.module('StatisticsApp').directive('submenu', function (recursionService)
         restrict: 'E',
         scope: { item: '=', itemroot: '=', depth: '=', recursionhelper: '=' },
         template:
-            '<span ng-click="recursionhelper.hideclick(item)" class="ellipsis-text"><span class="glyphicon" ng-class=""{glyphiconMinusSign: !item.hideChildren, glyphiconPlusSign: item.hideChildren}"/><span bindonce="item.name"></span></span>' +
+            '<span ng-click="recursionhelper.hideclick(item)" class="ellipsis-text">' +
+            '<span class="glyphicon" ng-class=""{glyphiconMinusSign: !item.hideChildren, glyphiconPlusSign: item.hideChildren}"/>' +
+            '<span bindonce="item.name"></span></span>' +
             '<input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="recursionhelper.itemclick(item)"/>' +
             '<ul ng-init="item.hideChildren=true" ng-show="item.subs && !item.hideChildren" style="list-style-type: none;">' +
               '<li data-ng-init="depth=depth+1" data-ng-repeat="item in item.subs">' +
-                '<submenu item="item" itemroot="itemroot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" ng-class="{leaf: !item.subs}" class="depth{{depth}}"></submenu>' +
+                '<submenu item="item" itemroot="itemroot" depth="depth" recursionhelper="recursionhelper" ' +
+                'ng-hide="item.hide" ng-class="{leaf: !item.subs}" class="depth{{depth}}"></submenu>' +
               '</li>' +
             '</ul>',
         compile: recursionService.compile
@@ -195,8 +198,8 @@ angular.module('StatisticsApp').directive('message',
             };
         }]);
 
-angular.module('StatisticsApp').directive('confirmClick', [
-    function(){
+angular.module('StatisticsApp').directive('confirmClick', ['$window',
+    function($window){
         'use strict';
 
         return {
@@ -204,7 +207,7 @@ angular.module('StatisticsApp').directive('confirmClick', [
                 var msg = attr.confirmMessage || 'Är du säker?';
                 var clickAction = attr.confirmedClickAction;
                 element.bind('click',function () {
-                    if (window.confirm(msg) ) {
+                    if ($window.confirm(msg) ) {
                         scope.$eval(clickAction);
                     }
                 });

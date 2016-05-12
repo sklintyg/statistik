@@ -1,6 +1,6 @@
 angular.module('StatisticsApp')
-    .factory('diagnosisTreeFilter', ['statisticsData', '_', 'treeMultiSelectorUtil',
-        function (statisticsData, _, treeMultiSelectUtil) {
+    .factory('diagnosisTreeFilter', ['statisticsData', '_', 'treeMultiSelectorUtil', '$window',
+        function (statisticsData, _, treeMultiSelectUtil, $window) {
             'use strict';
 
             var diagnosisTreeFilter = {};
@@ -116,7 +116,7 @@ angular.module('StatisticsApp')
                         populateTreeMultiSelectWithPrefilteredData(routeParams);
                     }
                 }, function () {
-                    alert('Failed to fetch ICD10 structure tree from server');
+                    $window.alert('Failed to fetch ICD10 structure tree from server');
                 });
             };
 

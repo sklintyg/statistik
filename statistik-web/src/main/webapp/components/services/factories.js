@@ -1,6 +1,6 @@
 angular.module('StatisticsApp').factory('statisticsData',
-    ['$http', '$rootScope', '$q', '$location', '_',
-    function ($http, $rootScope, $q, $location, _) {
+    ['$http', '$rootScope', '$q', '$location', '_', '$log',
+    function ($http, $rootScope, $q, $location, _, $log) {
     'use strict';
 
     var factory = {};
@@ -277,7 +277,7 @@ angular.module('StatisticsApp').factory('statisticsData',
         $http.post('api/logging/log', {message: message, url: $location.url()}, {cache: false})
         .success(function (/*result*/) {
         }).error(function (/*data, status, headers, config*/) {
-            console.log('Could not log to server: ' + message);
+            $log('Could not log to server: ' + message);
         });
     };
 

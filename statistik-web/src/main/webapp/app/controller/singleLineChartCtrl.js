@@ -22,7 +22,8 @@
 angular.module('StatisticsApp').controller('singleLineChartCtrl',
     [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'config', '$location',
         'messageService', 'chartFactory', 'pdfFactory', '_', 'ControllerCommons',
-    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, $location, messageService, chartFactory, pdfFactory, _, ControllerCommons) {
+    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, $location,
+        messageService, chartFactory, pdfFactory, _, ControllerCommons) {
         'use strict';
 
         var chart;
@@ -76,7 +77,8 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         };
 
         var populatePageWithData = function (result) {
-            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
+                                    result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
             $timeout(function () {

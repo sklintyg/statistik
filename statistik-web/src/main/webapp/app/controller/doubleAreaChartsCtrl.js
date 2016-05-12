@@ -19,8 +19,10 @@
 
 /* globals Highcharts */
 angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
-    ['$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'config', 'messageService', 'diagnosisTreeFilter', '$location', 'chartFactory', '_', 'pdfFactory', 'ControllerCommons',
-    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, config, messageService, diagnosisTreeFilter, $location ,chartFactory, _, pdfFactory, ControllerCommons) {
+    ['$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'config', 'messageService', 'diagnosisTreeFilter',
+            '$location', 'chartFactory', '_', 'pdfFactory', 'ControllerCommons',
+    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, config, messageService, diagnosisTreeFilter,
+            $location ,chartFactory, _, pdfFactory, ControllerCommons) {
         'use strict';
 
         var that = this;
@@ -31,7 +33,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         $scope.activeChartType = defaultChartType;
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
 
-        this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft, doneLoadingCallback, percentChart) {
+        this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries,
+                                    chartSpacingLeft, doneLoadingCallback, percentChart) {
             var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
 
             chartOptions.chart.type = defaultChartType;
@@ -121,11 +124,13 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
 
             var chartSeriesFemale = ajaxResult.femaleChart.series;
             chartFactory.addColor(chartSeriesFemale);
-            that.chart1 = that.paintChart('chart1', 'sjukfall för kvinnor', 118, chartCategories, chartSeriesFemale, -100, doneLoadingCallback, config.percentChart);
+            that.chart1 = that.paintChart('chart1', 'sjukfall för kvinnor', 118, chartCategories,
+                                chartSeriesFemale, -100, doneLoadingCallback, config.percentChart);
 
             var chartSeriesMale = ajaxResult.maleChart.series;
             chartFactory.addColor(chartSeriesMale);
-            that.chart2 = that.paintChart('chart2', 'sjukfall för män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback, config.percentChart);
+            that.chart2 = that.paintChart('chart2', 'sjukfall för män', 97, chartCategories,
+                                chartSeriesMale, -80, doneLoadingCallback, config.percentChart);
 
             updateChartsYAxisMaxValue();
 
@@ -147,14 +152,15 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         };
 
         var populatePageWithData = function (result) {
-            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
+                            result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
             $scope.enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.kapitelId);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;
                 statisticsData.getDiagnosisKapitelAndAvsnittAndKategori(populateDetailsOptions, function () {
-                    alert('Kunde inte ladda data');
+                    $window.alert('Kunde inte ladda data');
                 });
             }
 

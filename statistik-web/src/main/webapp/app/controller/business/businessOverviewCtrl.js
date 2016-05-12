@@ -32,11 +32,13 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
 
     var dataReceived = function (result) {
         var enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
-        $scope.subTitle = 'Utveckling för verksamheten de senaste tre månaderna' + ControllerCommons.getEnhetCountText(enhetsCount, false).slice(0, -1) + ', ' + result.periodText;
+        $scope.subTitle = 'Utveckling för verksamheten de senaste tre månaderna' +
+                            ControllerCommons.getEnhetCountText(enhetsCount, false).slice(0, -1) + ', ' + result.periodText;
         $scope.popoverTextAmount = 'Totala antalet sjukfall under perioden ' + result.periodText;
         $scope.popoverTextChangeProcentage = 'Procentsatsen visar förändringen av antalet sjukfall under perioden ' + result.periodText;
         $scope.popoverTextSexDistribution = 'Könsfördelningen av totala antalet sjukfall under perioden ' + result.periodText;
-        $scope.popoverTextDiagnosisGroups1 = 'Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under ' + result.periodText + '.';
+        $scope.popoverTextDiagnosisGroups1 = 'Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under ' +
+                                                result.periodText + '.';
         $scope.popoverTextChangeCurrentVSPrevious = 'Spalten förändring visar skillnaden i antal sjukfall mellan perioden ' + result.periodText;
         $scope.popoverTextAgeGroups1 = 'Diagrammet visar de åldersgrupper som har flest sjukfall under ' + result.periodText + '.';
         $scope.popoverTextSickLeaveLength1 = 'Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden ' + result.periodText + '.';
@@ -178,10 +180,12 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         perMonthAlterationChart = paintPerMonthAlternationChart(result.casesPerMonth.totalCases);
 
         chartFactory.addColor(result.casesPerMonth.amountMaleOld);
-        oldSexProportionChart = paintSexProportionChart('sexProportionChartOld', result.casesPerMonth.amountMaleOld, result.casesPerMonth.amountFemaleOld, result.casesPerMonth.oldPeriod);
+        oldSexProportionChart = paintSexProportionChart('sexProportionChartOld', result.casesPerMonth.amountMaleOld,
+                                    result.casesPerMonth.amountFemaleOld, result.casesPerMonth.oldPeriod);
 
         chartFactory.addColor(result.casesPerMonth.amountFemaleNew);
-        newSexProportionChart = paintSexProportionChart('sexProportionChartNew', result.casesPerMonth.amountMaleNew, result.casesPerMonth.amountFemaleNew, result.casesPerMonth.newPeriod);
+        newSexProportionChart = paintSexProportionChart('sexProportionChartNew', result.casesPerMonth.amountMaleNew,
+                                    result.casesPerMonth.amountFemaleNew, result.casesPerMonth.newPeriod);
 
         var diagnosisDonutData = extractDonutData(result.diagnosisGroups);
         chartFactory.addColor(diagnosisDonutData);
@@ -208,7 +212,8 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
 
     var populatePageWithData = function (result) {
         $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
-        ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter, result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+        ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
+                                result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
         $timeout(function () {
             updateCharts(result);
         }, 1);

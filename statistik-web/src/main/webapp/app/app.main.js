@@ -345,7 +345,7 @@ app.run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route
 
     $rootScope.lang = 'sv';
     $rootScope.DEFAULT_LANG = 'sv';
-    messageService.addResources(stMessages);
+    messageService.addResources(stMessages); // jshint ignore:line
 
     Highcharts.setOptions({
         lang: { thousandsSep: ' ' }

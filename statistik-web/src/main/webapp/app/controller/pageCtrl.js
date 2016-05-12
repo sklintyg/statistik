@@ -38,7 +38,16 @@ angular.module('StatisticsApp').controller('pageCtrl',
 
             $scope.isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
             $scope.isLandstingShowing = ControllerCommons.isShowingLandsting($location);
-            $scope.viewHeader = $scope.isVerksamhetShowing ? 'Verksamhetsstatistik' : ControllerCommons.isShowingLandsting($location) ? 'Landstingsstatistik' : 'Nationell statistik';
+
+            if ($scope.isVerksamhetShowing) {
+                $scope.viewHeader = 'Verksamhetsstatistik';
+            }
+            else if (ControllerCommons.isShowingLandsting($location)) {
+                $scope.viewHeader = 'Landstingsstatistik';
+            }
+            else {
+                $scope.viewHeader = 'Nationell statistik';
+            }
 
             if ($rootScope.isLoggedIn) {
                 if (!$scope.isLoginInfoFetched) {
@@ -46,7 +55,18 @@ angular.module('StatisticsApp').controller('pageCtrl',
                         businessFilterFactory.setup(loginInfo.businesses, $location.$$search.filter);
 
                         var v = loginInfo.defaultVerksamhet;
-                        $scope.verksamhetName = v ? (loginInfo.businesses && loginInfo.businesses.length === 1 ? v.name : (loginInfo.processledare ? v.vardgivarName : '')) : '';
+
+                        $scope.verksamhetName = '';
+
+                        if (v) {
+                            if (loginInfo.businesses && loginInfo.businesses.length === 1) {
+                                $scope.verksamhetName = v.name;
+                            }
+                            else if (loginInfo.processledare) {
+                                $scope.verksamhetName = v.vardgivarName;
+                            }
+                        }
+
                         $scope.userName = loginInfo.name;
                         $scope.userNameWithAccess = loginInfo.name;
 
