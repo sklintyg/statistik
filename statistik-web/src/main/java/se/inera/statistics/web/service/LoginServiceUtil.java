@@ -65,7 +65,7 @@ public class LoginServiceUtil {
     @Autowired
     private LandstingEnhetHandler landstingEnhetHandler;
 
-    @Autowired
+    @Autowired(required = false)
     private LoginVisibility loginVisibility;
 
     @Value("${highcharts.export.url}")
