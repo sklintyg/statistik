@@ -17,6 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+$icon-font-path: '../bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap/';
+
+@import '../bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss';
+@import '../bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap/_theme.scss';
+
+
 /**
  * App-wide Styles
  */

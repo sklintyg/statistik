@@ -53,14 +53,16 @@ angular.module('StatisticsApp').controller('pageCtrl',
             else {
                 $scope.viewHeader = 'Nationell statistik';
             }
+        });
 
-            if ($rootScope.isLoggedIn) {
+        $scope.$watch('AppModel.get().isLoggedIn', function(value){
+            if (value) {
                 if (!$scope.isLoginInfoFetched) {
                     statisticsData.getLoginInfo(function (loginInfo) {
                         businessFilterFactory.setup(loginInfo.businesses, $location.$$search.filter);
 
                         UserModel.set(loginInfo);
-                        
+
                         var v = loginInfo.defaultVerksamhet;
 
                         $scope.verksamhetName = '';
@@ -75,9 +77,9 @@ angular.module('StatisticsApp').controller('pageCtrl',
                         }
 
                         $scope.loggedInWithoutStatistikuppdrag = !(loginInfo.businesses && loginInfo.businesses.length >= 1);
-                        
+
                         $rootScope.landstingAvailable = loginInfo.landstingsvardgivareWithUpload;
-                        
+
                         if ($rootScope.landstingAvailable) {
                             statisticsData.getLandstingFilterInfo(function (landstingFilterInfo) {
                                 landstingFilterFactory.setup(landstingFilterInfo.businesses, $location.$$search.landstingfilter);

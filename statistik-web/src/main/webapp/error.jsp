@@ -36,8 +36,6 @@
 
     <!-- build:css(src/main/webapp) app/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css" />
     <link rel="stylesheet" href="bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" />
     <link rel="stylesheet" href="bower_components/jquery.tablesorter/css/theme.default.css" />
     <link rel="stylesheet" href="bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.css" />
