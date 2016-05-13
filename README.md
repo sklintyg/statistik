@@ -18,7 +18,7 @@ HSA fileservice hämta en lista över sjukvårdsenheter från HSA och uppdaterar
 ##Komma igång med lokal installation
 Den här sektionen beskriver hur man bygger Inera Statistics för att kunna köras helt fristående.
 
-Vi använder Gradle, för närvarande version 2.2.1, för att bygga applikationerna.
+Vi använder Gradle, för närvarande version 2.13, för att bygga applikationerna.
 
 Börja med att skapa en lokal klon av källkodsrepositoryt:
 
@@ -39,6 +39,12 @@ Nu ska det gå att starta applikationen med:
 
 Nu går det att öppna en webbläsare och surfa till http://localhost:8080/ Observera jetty körs i gradleprocessen, så gradle "blir
 inte klar" förrän du stoppar servern med ^c, och applikationen är bara igång fram till dess.
+
+För att starta en lokal grunt server gå in i statistk-web och kör:
+
+    grunt serve
+
+Då öppnas sidan med adressen http://localhost:9095/ OBS att jetty också behöver vara igång samtidigt.
 
 För att testa applikationen i ett mer prodlikt läge kan man även starta med en flagga för att köra i minifierat läge då css/js är packade och sammanslagna genom att starta:
 
