@@ -51,6 +51,8 @@
         "./dist/fonts/glyphicons-halflings-regular.woff"
       ]
     },
+    "pdfmake": [
+      "build/pdfmake.js"],
     "jquery.tablesorter": {
       "main": [
         "js/jquery.tablesorter.js",
