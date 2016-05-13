@@ -43,7 +43,10 @@
     "karma-junit-reporter": "0.2.2",
     "karma-ng-html2js-preprocessor": "0.1.0",
     "karma-phantomjs-launcher": "0.1.4",
-    "time-grunt": "0.3.1",
-    "sinon": "1.14.1"
+    "time-grunt": "0.3.1"
+  },
+  "devDependencies": {
+    "karma-sinon": "^1.0.5",
+    "sinon": "^1.14.1"
   }
 }

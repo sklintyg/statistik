@@ -15,15 +15,6 @@ module.exports = function(config) {
 
         browsers: [ 'PhantomJS' ],
 
-        plugins: [
-            'karma-jasmine',
-            'karma-junit-reporter',
-            'karma-phantomjs-launcher',
-            'karma-mocha-reporter',
-            'karma-ng-html2js-preprocessor',
-            'karma-sinon'
-        ],
-
         // coverage reporter generates the coverage
         reporters: ['progress', 'coverage'],
 
