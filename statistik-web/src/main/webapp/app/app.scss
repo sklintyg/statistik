@@ -45,10 +45,6 @@ a:hover {
   text-decoration: none !important;
 }
 
-h1, h2, h3, h4, h5 {
-  color: #940823;
-}
-
 h1,h2,h3,h4,h5,h6 {
   text-rendering: optimizelegibility;
 }
@@ -1961,11 +1957,7 @@ li.subMenuItem.active .active-menu-item { display: block;  }
 /* Styling for the sidebar end*/
 
 /*Override the spinner margin when it is placed within a modal-body*/
-.modal-body>.spinner {
-    margin: 0;
-}
-
-.spinner-overview .stat-spinner .spinner{
+.spinner-overview .stat-spinner .spinner, .modal-dialog .stat-spinner .spinner{
   position: static;
   margin: 0;
 }

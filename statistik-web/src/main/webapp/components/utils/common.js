@@ -121,6 +121,8 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.populateActiveEnhetsFilter = function(scope, filterHash, isAllAvailableEnhetsSelectedInFilter, enhetNames) {
+            scope.activeEnhetsFilters = [''];
+            
             if (isAllAvailableEnhetsSelectedInFilter) {
                 scope.headerEnhetInfo = scope.verksamhetName;
                 return;

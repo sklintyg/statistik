@@ -95,7 +95,7 @@ describe('Test of common functions for controllers', function() {
         ControllerCommons.populateActiveEnhetsFilter(scope, 'hash', false, enhetnames);
 
         //Then
-        expect(scope.activeEnhetsFilters).toMatch(['OneEnhet', 'SecondEnhet']);
+        expect(scope.activeEnhetsFilters).toEqual(['OneEnhet', 'SecondEnhet']);
     });
 
     it('INTYG-1854: populateActiveEnhetsFilter with one enhet in filter shows enhet name in title', function() {
@@ -119,7 +119,7 @@ describe('Test of common functions for controllers', function() {
         ControllerCommons.populateActiveEnhetsFilter(scope, 'hash', false, enhetnames);
 
         //Then
-        expect(scope.activeEnhetsFilters).toMatch(['']);
+        expect(scope.activeEnhetsFilters).toEqual(['']);
     });
 
     it('isNumber', function() {
