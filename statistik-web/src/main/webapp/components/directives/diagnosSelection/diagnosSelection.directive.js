@@ -17,16 +17,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp')
-    .directive('filterList', [function() {
+angular.module('StatisticsApp.filter.directive')
+    .directive('diagnosSelection', [function() {
         'use strict';
+
         return {
             scope: {
-                filters: '=',
-                collapseId: '@'
+                showDetailsOptions: '=',
+                showDetailsOptions2: '=',
+                showDetailsOptions3: '=',
+                detailsOptions: '=',
+                detailsOptions2: '=',
+                detailsOptions3: '=',
+                selectedDetailsOption: '=',
+                selectedDetailsOption2: '=',
+                selectedDetailsOption3: '='
             },
-            replace: true,
             restrict: 'E',
-            templateUrl: 'components/directives/filterList/filterList.html'
+            templateUrl: 'components/directives/diagnosSelection/diagnosSelection.html',
+            controller: function($scope) {
+                $scope.hideDiagnosCategorySelection = true;
+
+                $scope.$watch('detailsOptions3.length', function(length) {
+                    $scope.hideDiagnosCategorySelection = length === 0;
+                });
+            }
         };
     }]);
