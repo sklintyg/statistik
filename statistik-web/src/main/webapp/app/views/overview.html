@@ -51,11 +51,8 @@
 		        </div>
 		    </div>
 		</div>
-		<div class="spinnser" data-ng-if="generatingPdf">
-			<div class="cssspinner"></div>
-			<p id="loading-message" style="text-align: center">
-				<strong><span>Skapar pdf</span></strong>
-			</p>
+		<div class="spinner-overview" data-ng-if="generatingPdf">
+			<div spinner label="Skapar pdf" show-spinner="generatingPdf"></div>
 		</div>
 
 		<div dataerrorview show-error="dataLoadingError">

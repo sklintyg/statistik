@@ -1605,18 +1605,7 @@ div.scrolling {
 .row-margin-bottom {
   margin-bottom: 15px;
 }
-.spinner {
-  position: absolute;
-  width: 100%;
-  left: 0;
-  margin: 5% 0 0 0;
-  text-align: center;
-    z-index: 1;
-}
-.spinner #loading-message {
-  margin-top: 10px;
-  text-align: center;
-}
+
 .pageHelpToolTip:hover {
   cursor: pointer;
 }
@@ -1774,17 +1763,6 @@ li.subMenuItem.active .active-menu-item { display: block;  }
     to {
                 transform: rotate(360deg);
     }
-}
-
-.cssspinner {
-    width: 32px;
-    height: 32px;
-    margin: 20px auto;
-    background-image: url("../assets/images/ajax-loader.gif");
-    animation-name:             rotate;
-    animation-duration:         1.5s;
-    animation-iteration-count:  infinite;
-    animation-timing-function:  linear;
 }
 
 .ng-hide:not(.ng-hide-animate) {
@@ -1987,6 +1965,11 @@ li.subMenuItem.active .active-menu-item { display: block;  }
     margin: 0;
 }
 
+.spinner-overview .stat-spinner .spinner{
+  position: static;
+  margin: 0;
+}
+
 .filter-list {
     margin-right: 10px;
 }
@@ -2044,5 +2027,6 @@ diagnos-selection {
 @import 'css/filter.scss';
 @import 'css/inera-statistics-responsive.scss';
 @import 'directives/angular-dropzone/dropzone.scss';
+@import 'directives/spinner/spinner.scss';
 @import 'directives/statCookieBanner/statCookieBanner.scss';
 // endinjector

@@ -1,0 +1,26 @@
+.stat-spinner {
+  .css-spinner {
+    width: 32px;
+    height: 32px;
+    margin: 20px auto;
+    background-image: url("../assets/images/ajax-loader.gif");
+    animation-name: rotate;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  .spinner {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    margin: 5% 0 0 0;
+    text-align: center;
+    z-index: 1;
+  }
+
+  .spinner #loading-message {
+    margin-top: 10px;
+    text-align: center;
+  }
+}
