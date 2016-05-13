@@ -910,29 +910,13 @@ div.headerbox-user-profile {
     padding-right: 25px;
     padding-top: 15px;
 }
-.settings {
-  display: block;
-  width: 40px;
-  height: 25px;
-  background-image: url(../assets/images/settings_sprite.png);
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  top: 10px;
-  position: relative;
-}
 
-.dropdown.pull-right.open .settings {
-  background-image: url(../assets/images/settings_sprite.png);
-  background-position: 0px -25px; 
-}
 .detail-view-choice-dropdown {
   min-width: 200px !important;
 }
+
 .detail-view-choice-dropdown a {
   font-size: 0.9em;
-}
-#settings-dropdown { 
-  top: 35px;
 }
 
 .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus, .dropdown-submenu:hover > a, .dropdown-submenu:focus > a {
@@ -1928,18 +1912,20 @@ li.subMenuItem.active .active-menu-item { display: block;  }
     background-color: #E6E6E6;
 }
 
-.glyphicon-plus-sign, .glyphicon-plus-sign-drag, .glyphicon-ok-sign, .glyphicon-warning-sign {
+.dropzone-info-area {
+  .glyphicon-plus-sign, .glyphicon-plus-sign-drag, .glyphicon-ok-sign, .glyphicon-warning-sign {
     font-size: 6em;
     display: block;
-    color: rgb(191,191,207);
-}
+    color: rgb(191, 191, 207);
+  }
 
-.glyphicon-plus-sign-drag{
-    color: rgb(2,2,3);
-}
+  .glyphicon-plus-sign-drag {
+    color: rgb(2, 2, 3);
+  }
 
-.glyphicon-ok-sign{
+  .glyphicon-ok-sign {
     color: green;
+  }
 }
 
 .glyphicon-warning-sign {

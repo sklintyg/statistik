@@ -98,17 +98,7 @@ input[type="radio"], input[type="checkbox"] {
 	border: 1px solid #ccc;
 	border-radius: 4px;
 }
-.glyphicon {
-	position: relative;
-	top: 1px;
-	display: inline-block;
-	font-family: 'Glyphicons Halflings';
-	-webkit-font-smoothing: antialiased;
-	font-style: normal;
-	font-weight: normal;
-	line-height: 1;
-	-moz-osx-font-smoothing: grayscale;
-}
+
 .leaf .glyphicon {
 	display: none;
 }
@@ -216,45 +206,19 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	white-space: nowrap;
 	float: left;
 }
-.glyphiconMinusSign, .glyphiconPlusSign {
-	width: 13px;
-	height: 12px;
-	background-image: url("../assets/images/glyphicons-halflings.png");
-	font-family: 'Glyphicons Halflings';
-	margin-right: 5px;
-	margin-top: 2px;
-	float: left;
+
+.submenuicon {
+	&.glyphicon-minus-sign, &.glyphicon-plus-sign {
+		cursor: pointer;
+		margin-right: 5px;
+		margin-top: 2px;
+		font-size: 12px;
+	}
 }
-.glyphiconDownSign, .glyphiconUpSign {
-	width: 13px;
-	height: 12px;
-	background-image: url("../assets/images/glyphicons-halflings-white.png");
-	font-family: 'Glyphicons Halflings';
-	margin-right: 5px;
-	margin-top: 2px;
-	float: left;
-}
-.glyphiconMinusSign {
-	background-position: -24px -97px;
-	cursor: pointer;
-}
-.glyphiconPlusSign {
-	background-position: 0px -97px;
-	cursor: pointer;
-	color: #fff;
-}
-.glyphiconDownSign {
-	background-position: -313px 38px;
-	cursor: pointer;
-	color: #fff;
-}
-.glyphiconUpSign {
-	background-position: -289px 38px;
-	cursor: pointer;
-	color: #fff;
-}
-.depth2 span.glyphiconMinusSign, .depth2 span.glyphiconPlusSign {
+
+.depth2 span.glyphicon-minus-sign, .depth2 span.glyphicon-plus-sign {
 	display: none;
+	cursor: default;
 }
 
 .check-permanent-filter-container {
@@ -264,4 +228,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 .multiselect-container>li>a>label {
 	padding: 5px 20px 3px 40px;
 }
-.multiselect-container>li>a>label input { top: -2px !important; }
+
+.multiselect-container>li>a>label input {
+	top: -2px !important;
+}

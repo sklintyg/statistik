@@ -20,7 +20,7 @@
 angular.module('StatisticsApp')
     .factory('diagnosisTreeFilter',
         /** @ngInject */
-        function (statisticsData, _, treeMultiSelectUtil, $window) {
+        function (statisticsData, _, treeMultiSelectorUtil, $window) {
             'use strict';
 
             var diagnosisTreeFilter = {};
@@ -63,7 +63,7 @@ angular.module('StatisticsApp')
 
            diagnosisTreeFilter.selectDiagnoses = function selectDiagnoses(diagnoses) {
                 diagnosisTreeFilter.selectByAttribute(diagnosisTreeFilter.diagnosisOptionsTree, diagnoses, 'numericalId');
-                treeMultiSelectUtil.updateSelectionState(diagnosisTreeFilter.diagnosisOptionsTree);
+                treeMultiSelectorUtil.updateSelectionState(diagnosisTreeFilter.diagnosisOptionsTree);
             };
 
             diagnosisTreeFilter.setPreselectedFilter = function(filterData) {

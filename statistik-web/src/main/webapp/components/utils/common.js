@@ -42,7 +42,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.makeThousandSeparated = function(input) {
-            if (this.isNumber(input)) {
+            if (that.isNumber(input)) {
                 var splittedOnDot = input.toString().split('\.');
                 var integerPartThousandSeparated = splittedOnDot[0].split('').reverse().join('')
                                                     .match(/.{1,3}/g).join('\u00A0').split('').reverse().join('');
@@ -98,8 +98,8 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
         this.populateActiveFilters = function(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter, filterHash,
                                                 isAllAvailableEnhetsSelectedInFilter, filteredEnhets) {
-            this.populateActiveDiagnosFilter(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter);
-            this.populateActiveEnhetsFilter(scope, filterHash, isAllAvailableEnhetsSelectedInFilter, filteredEnhets);
+            that.populateActiveDiagnosFilter(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter);
+            that.populateActiveEnhetsFilter(scope, filterHash, isAllAvailableEnhetsSelectedInFilter, filteredEnhets);
         };
 
         this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter) {
@@ -114,7 +114,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 return;
             }
             statisticsData.getIcd10Structure(function (diagnoses) {
-                scope.activeDiagnosFilters = diagnoses ? this.getDiagnosFilterInformationText(diagnosIds, diagnoses) : null;
+                scope.activeDiagnosFilters = diagnoses ? that.getDiagnosFilterInformationText(diagnosIds, diagnoses) : null;
             }, function () {
                 scope.activeDiagnosFilters = diagnosIds;
             });
@@ -151,7 +151,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             };
 
             $scope.diagnosisSelected = function () {
-                this.diagnosisToCompareSelected(diagnosisTreeFilter, $timeout, $scope, statisticsData, $location);
+                that.diagnosisToCompareSelected(diagnosisTreeFilter, $timeout, $scope, statisticsData, $location);
             };
         };
 
@@ -208,7 +208,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.getExtraPathParam = function(routeParams) {
-            return routeParams.diagnosHash ? routeParams.diagnosHash : this.getMostSpecificGroupId(routeParams);
+            return routeParams.diagnosHash ? routeParams.diagnosHash : that.getMostSpecificGroupId(routeParams);
         };
 
         this.getMostSpecificGroupId = function(routeParams) {
@@ -325,7 +325,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 _.each(config.exchangeableViews, function (view) {
                     view.state = view.state + that.createDiagnosHashPathOrAlternativePath($routeParams);
                 });
-                var queryParamsString = this.createQueryStringOfQueryParams($location.search());
+                var queryParamsString = that.createQueryStringOfQueryParams($location.search());
                 //Add queryParams if any
                 if (queryParamsString) {
                     _.each(config.exchangeableViews, function (view) {

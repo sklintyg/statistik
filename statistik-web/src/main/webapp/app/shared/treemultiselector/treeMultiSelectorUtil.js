@@ -37,7 +37,7 @@ angular.module('StatisticsApp.treeMultiSelector.util', ['underscore'])
                         item.someSelected = false;
                     } else {
                         item.allSelected = false;
-                        item.someSelected = someSelected ? true : false;
+                        item.someSelected = !!someSelected;
                     }
                 }
             };
