@@ -32,7 +32,7 @@
 
     <jdbc:embedded-database id="dataSource" type="H2"/>
 
-    <context:property-placeholder location="classpath:statistics.properties"/>
+    <context:property-placeholder location="classpath:default.dev.properties"/>
 
 
     <bean id="org.h2.tools.Server"
