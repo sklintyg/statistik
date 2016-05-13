@@ -186,7 +186,7 @@ module.exports = function(grunt) {
                     'karma.conf.js'
                 ],
                 ignorePath: '<%= config.client %>/',
-                exclude: [/bootstrap-sass-official/, '/json3/', '/es5-shim/', 'vfs_fonts.js'],
+                exclude: [/bootstrap-sass-official/, '/json3/', '/es5-shim/', '/respond/', 'vfs_fonts.js'],
                 fileTypes: {
                     js: {
                         block: /(([\s\t]*)\/\/\s*bower:*(\S*))(\n|\r|.)*?(\/\/\s*endbower)/gi,
