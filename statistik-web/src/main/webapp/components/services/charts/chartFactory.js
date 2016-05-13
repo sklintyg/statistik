@@ -242,7 +242,7 @@ angular.module('StatisticsApp')
         /* This is just a very akward way of telling the chart not to display
          a series with totals when the chart type is area. If the area chart uses stack and stacking the total will add to the other series
          and the numbers will accumulate which isn't correct when show in the chart*/
-        var showOrHideTotalSeries = function showOrHideTotalSeries(chartType, series, config) {
+        function showOrHideTotalSeries(chartType, series, config) {
             if(chartType === 'area' && series.options.sex === null) {
                 //Mark legend that it wont be shown.
                 // We don't actually use highcharts legends so this won't update the chart legends by itself
@@ -255,9 +255,9 @@ angular.module('StatisticsApp')
             } else {
                 config.showInLegend = true;
             }
-        };
+        }
 
-        var isSexSetOnChartSeries = function isSexSetOnChartSeries(chartSeries) {
+        function isSexSetOnChartSeries(chartSeries) {
             var maleSeries = _.find(chartSeries, function(series) {
                 return series.options.sex === 'Male';
             });
@@ -267,7 +267,7 @@ angular.module('StatisticsApp')
             });
 
             return maleSeries && femaleSeries? true: false;
-        };
+        }
 
         var showInLegend = function(series, index) {
             return series[index].options.showInLegend;

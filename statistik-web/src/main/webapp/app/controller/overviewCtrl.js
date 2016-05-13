@@ -158,12 +158,12 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             $scope.sickLeavePerCountyGroups = result.perCounty;
         };
 
-        var populatePageWithData = function (result) {
+        function populatePageWithData(result) {
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             $timeout(function () {
                 updateCharts(result);
             }, 1);
-        };
+        }
 
         function paintBarChart(containerId, chartData) {
             var series = [

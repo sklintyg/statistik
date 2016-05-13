@@ -176,10 +176,10 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             }, 100);
         };
 
-        var populateDetailsOptions = function (result) {
+        function populateDetailsOptions(result) {
             var basePath = isVerksamhet ? '#/verksamhet/diagnosavsnitt' : '#/nationell/diagnosavsnitt';
             ControllerCommons.populateDetailsOptions(result, basePath, $scope, $routeParams, messageService, config);
-        };
+        }
 
         $scope.chartFootnotes = _.map(config.chartFootnotes, function(msgKey){
             return messageService.getProperty(msgKey, null, '', null, true);

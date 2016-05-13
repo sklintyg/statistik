@@ -146,7 +146,7 @@ describe('Tests for directive button-filter', function () {
             //given
             var spy = sinon.spy(statisticsData, 'getFilterHash');
 
-            var fromDate = new moment('2015-01-01', 'YYYY-MM-DD'), toDate = new moment('2015-04-01', 'YYYY-MM-DD');
+            var fromDate = moment('2015-01-01', 'YYYY-MM-DD'), toDate = moment('2015-04-01', 'YYYY-MM-DD');
             businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
             businessFilter.fromDate = fromDate.toDate();
             businessFilter.toDate = toDate.toDate();
@@ -170,7 +170,7 @@ describe('Tests for directive button-filter', function () {
 
             //given
             var spy = sinon.spy(statisticsData, 'getFilterHash');
-            var fromDate = new moment('2015-01-01', 'YYYY-MM-DD'), toDate = new moment('2015-04-01', 'YYYY-MM-DD');
+            var fromDate = moment('2015-01-01', 'YYYY-MM-DD'), toDate = moment('2015-04-01', 'YYYY-MM-DD');
             businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
             businessFilter.fromDate = fromDate.toDate();
             businessFilter.toDate = toDate.toDate();
@@ -187,9 +187,9 @@ describe('Tests for directive button-filter', function () {
         it('sets toDate to the last of the month', function() {
             //given
             var spy = sinon.spy(statisticsData, 'getFilterHash');
-            var fromDate = new moment('2015-01-01', 'YYYY-MM-DD'),
-                inputToDate = new moment('2015-04-01', 'YYYY-MM-DD'),
-                expectedToDate = new moment('2015-04-30', 'YYYY-MM-DD');
+            var fromDate = moment('2015-01-01', 'YYYY-MM-DD'),
+                inputToDate = moment('2015-04-01', 'YYYY-MM-DD'),
+                expectedToDate = moment('2015-04-30', 'YYYY-MM-DD');
 
             businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
             businessFilter.fromDate = fromDate.toDate();
