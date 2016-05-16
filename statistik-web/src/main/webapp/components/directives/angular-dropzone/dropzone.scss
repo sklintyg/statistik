@@ -27,3 +27,19 @@ div.dropzone a{
 .dropzone-info-area {
   text-align: center;
 }
+
+.dropzone-info-area {
+  .glyphicon-plus-sign, .glyphicon-plus-sign-drag, .glyphicon-ok-sign, .glyphicon-warning-sign {
+    font-size: 6em;
+    display: block;
+    color: rgb(191, 191, 207);
+  }
+
+  .glyphicon-plus-sign-drag {
+    color: rgb(2, 2, 3);
+  }
+
+  .glyphicon-ok-sign {
+    color: green;
+  }
+}

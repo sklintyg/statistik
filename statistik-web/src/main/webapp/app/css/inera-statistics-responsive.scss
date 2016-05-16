@@ -270,14 +270,6 @@ h2 + .row {
 		border-bottom: 1px solid #dddddd;
 	}
 
-	ul.overview-box-header {
-		width: 100%;
-	}
-
-	li.overview-box-header-listItem a h2 {
-		font-size: 1em;
-	}
-
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
 		margin-left: 26px !important;
@@ -378,12 +370,7 @@ h2 + .row {
 		width: 100%;
 		margin-left: 0;
 	}
-	ul.overview-box-header {
-		width: 100%;
-	}
-	li.overview-box-header-listItem a h2 {
-		font-size: 1em;
-	}
+
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
 		position: relative;
@@ -397,9 +384,7 @@ h2 + .row {
 		z-index: 9;
 		margin-left: 35px !important;
 	}
-	#overview-content .overview-box-information-container {
-		margin-bottom: 0;
-	}
+
 	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
 		width: 100%;
 		float: left;
@@ -529,9 +514,7 @@ h2 + .row {
 		padding: 13%;
 		margin: 3% 0 0 36%;
 	}
-	#overview-content .overview-box-information-container {
-		margin-bottom: 0;
-	}
+
 	#navigation-container .span2 {
 		width: 32%;
 		float: left;

@@ -33,7 +33,7 @@
 
         <li class="divider" data-ng-repeat-start="menu in menus | filter: showMenu"></li>
         <li data-ng-repeat-end>
-          <a class="mobileMenuHeaderItem" data-ng-click="toggleMenu(menu)">
+          <a class="mobile-menu-header-item" data-ng-click="toggleMenu(menu)">
             <span message key="{{menu.name}}"></span><span class="glyphicon pull-right mobile-menu-caret" data-ng-class="{'glyphicon-chevron-up': menu.show, 'glyphicon-chevron-down': !menu.show}"></span>
           </a>
 

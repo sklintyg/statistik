@@ -252,40 +252,6 @@
         display: none;
     }
 
-    ul.overview-box-header {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    li.overview-box-header-listItem {
-        line-height: 20px;
-    }
-
-    li.overview-box-header-listItem a {
-        display: block;
-        margin: 0 0 -1px;
-        padding: 0;
-        color: #000;
-        background: #008391;
-        background: linear-gradient(to bottom, #008391 0%, #00687d 100%);
-        filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#008391', endColorstr='#00687d', GradientType=0);
-        -webkit-border-top-left-radius: 10px;
-        -webkit-border-top-right-radius: 10px;
-        -moz-border-radius-topleft: 10px;
-        -moz-border-radius-topright: 10px;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        position: relative;
-    }
-
-    li.overview-box-header-listItem a h2 {
-        color: #fff !important;
-        margin: 0;
-        padding: 10px 0 10px 25px;
-        font-size: 1em;
-    }
-
     #overview-content #overview-distribution-per-sex-container, #overview-content #overview-change-container, #overview-content #overview-distribution-diagnostic-groups-container, #overview-content #overview-distribution-of-age-groups-container, #overview-content #overview-distribution-of-sick-degree-container, #overview-content #overview-distribution-sick-length-container, #overview-content #overview-distribution-by-county-container {
         background-color: #ededed;
         min-height: 230px;
@@ -332,24 +298,6 @@
 
     p {
         margin: 0 0 10px;
-    }
-
-    #overview-content .overview-box-information-container {
-        background-color: #ededed;
-        padding: 0 2px 35px;
-        border-bottom-right-radius: 10px;
-        border-bottom-left-radius: 10px;
-        border: 1px solid #C4C4C4;
-        border-top: 1px solid transparent;
-    }
-
-    #overview-content .overview-box-information-container {
-        background-color: #ededed;
-        padding: 0 2px 35px;
-        border-bottom-right-radius: 10px;
-        border-bottom-left-radius: 10px;
-        border: 1px solid #C4C4C4;
-        border-top: 1px solid transparent;
     }
 
     div.box-bottom {

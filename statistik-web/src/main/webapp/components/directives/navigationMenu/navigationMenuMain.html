@@ -6,7 +6,7 @@
       <div class="accordion-toggle first-level-menu" id="{{menu.id}}"
            data-ng-class="{active: menu.show, collapsed: !menu.show, disabled: !menu.subMenu}"
            data-ng-click="toggleMenu(menu)">
-        <span class="statistics-menu-heading" message key="{{menu.name}}"></span><i class="statistict-left-menu-expand-icon"></i>
+        <span class="statistics-menu-heading" message key="{{menu.name}}"></span><i class="glyphicon statistict-left-menu-expand-icon"></i>
       </div>
     </div>
     <div class="accordion-body collapse navigation-group" id="{{menu.navigationId}}" data-ng-class="{in: menu.show}">
@@ -19,7 +19,7 @@
                 id="{{submenu.id}}" ctrlname="{{submenu.ctrl}}" navigationaware>
               <span message key="{{submenu.name}}"></span>
 
-              <i data-ng-if="submenu.subMenu" class="statistict-left-menu-expand-icon" data-toggle="collapse" href="{{submenu.subMenuIdLink}}"></i>
+              <i data-ng-if="submenu.subMenu" class="glyphicon statistict-left-menu-expand-icon" data-toggle="collapse" href="{{submenu.subMenuIdLink}}"></i>
             </a>
           </li>
           <ul data-ng-repeat-end

@@ -17,16 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* App Module */
-angular.module('StatisticsApp',
-    ['ngRoute',
-     'ngCookies',
-     'ngSanitize',
-     'ui.bootstrap',
-     'underscore',
-     'StatisticsApp.constants',
-     'StatisticsApp.treeMultiSelector',
-     'StatisticsApp.chartSeriesButtonGroup',
-     'StatisticsApp.businessFilter',
-     'dropzone',
-     'ngStorage']);
+angular.module('underscore', [])
+    .factory('_',
+        /** @ngInject */
+        function($window) {
+            'use strict';
+            return $window._;
+        }
+    );
