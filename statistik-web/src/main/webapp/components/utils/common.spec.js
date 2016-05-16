@@ -119,7 +119,7 @@ describe('Test of common functions for controllers', function() {
         ControllerCommons.populateActiveEnhetsFilter(scope, 'hash', false, enhetnames);
 
         //Then
-        expect(scope.activeEnhetsFilters).toEqual(['']);
+        expect(scope.activeEnhetsFilters).toEqual([]);
     });
 
     it('isNumber', function() {
