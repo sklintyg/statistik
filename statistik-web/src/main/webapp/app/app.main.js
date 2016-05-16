@@ -20,18 +20,21 @@ var app = angular.module('StatisticsApp',
 
 app.run(
     /** @ngInject */
-    function (AppService, $rootScope) {
+    function (AppService, $rootScope, $timeout) {
     'use strict';
 
-    $rootScope.isLoggedIn = false;
+        $rootScope.isLoggedIn = false;
 
-    AppService.get().then(function(data) {
-        $rootScope.isLoggedIn = data.loggedIn;
-    });
+        AppService.get().then(function(data) {
+            $rootScope.isLoggedIn = data.loggedIn;
+        });
 
-    // Append pdf font
-    var script = document.createElement( 'script' );
-    script.type = 'text/javascript';
-    script.src = 'js/lib/vfs_fonts.js';
-    $('body').append( script );
-});
+        // Append pdf font
+        $timeout(function() {
+            var script = document.createElement( 'script' );
+            script.type = 'text/javascript';
+            script.src = 'js/lib/vfs_fonts.js';
+            $('body').append( script );
+        }, 100);
+    }
+);
