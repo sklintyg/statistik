@@ -18,7 +18,10 @@
  */
 
 /* globals Highcharts */
-angular.module('StatisticsApp').run([ '$rootScope', '$route', 'messageService', function ($rootScope, $route, messageService) {
+angular.module('StatisticsApp').run(
+
+    /** @ngInject */
+    function ($rootScope, $route, messageService) {
     'use strict';
 
     $rootScope.lang = 'sv';
@@ -44,4 +47,11 @@ angular.module('StatisticsApp').run([ '$rootScope', '$route', 'messageService', 
             $rootScope.verksamhetViewShowing = current.$$route.originalPath.indexOf('/verksamhet') === 0;
         }
     });
-} ]);
+
+    // Append pdf font
+    var script = document.createElement( 'script' );
+    script.type = 'text/javascript';
+    script.src = 'js/lib/vfs_fonts.js';
+    $('body').append( script );
+
+});
