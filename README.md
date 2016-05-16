@@ -40,13 +40,30 @@ Nu ska det gå att starta applikationen med:
 Nu går det att öppna en webbläsare och surfa till http://localhost:8080/ Observera jetty körs i gradleprocessen, så gradle "blir
 inte klar" förrän du stoppar servern med ^c, och applikationen är bara igång fram till dess.
 
-För att starta en lokal grunt server gå in i statistk-web och kör:
+###Bygga klienten utanför gradle
+Installera nodjs 0.12.14 tex med NVM, https://github.com/creationix/nvm
+
+Installera grunt och bower
+
+    npm install -g grunt-cli bower
+
+Gå in i statistk-web och kör
+
+    npm install
+    bower install
+
+För att starta en lokal grunt server  kör:
 
     grunt serve
 
-Då öppnas sidan med adressen http://localhost:9095/ OBS att jetty också behöver vara igång samtidigt.
+Då öppnas sidan med adressen http://localhost:9095/
+OBS att jetty behöver vara igång samtidigt för att sidan ska fungera.
 
-För att testa applikationen i ett mer prodlikt läge kan man även starta med en flagga för att köra i minifierat läge då css/js är packade och sammanslagna genom att starta:
+För att köra hela bygget
+
+    grunt build
+
+För att testa applikationen i ett mer prodlikt läge kan man även starta med en flagga för att köra i minifierat, läge då css/js är packade och sammanslagna, genom att starta:
 
     gradle clean appRunWar -Pstatistik.useMinifiedJavaScript
 
