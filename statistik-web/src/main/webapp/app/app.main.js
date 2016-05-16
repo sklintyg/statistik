@@ -18,7 +18,9 @@ var app = angular.module('StatisticsApp',
      'dropzone',
      'ngStorage']);
 
-app.run(['AppService', '$rootScope', function (AppService, $rootScope) {
+app.run(
+    /** @ngInject */
+    function (AppService, $rootScope) {
     'use strict';
 
     $rootScope.isLoggedIn = false;
@@ -26,4 +28,10 @@ app.run(['AppService', '$rootScope', function (AppService, $rootScope) {
     AppService.get().then(function(data) {
         $rootScope.isLoggedIn = data.loggedIn;
     });
-} ]);
+
+    // Append pdf font
+    var script = document.createElement( 'script' );
+    script.type = 'text/javascript';
+    script.src = 'js/lib/vfs_fonts.js';
+    $('body').append( script );
+});

@@ -47,11 +47,4 @@ angular.module('StatisticsApp').run(
             $rootScope.verksamhetViewShowing = current.$$route.originalPath.indexOf('/verksamhet') === 0;
         }
     });
-
-    // Append pdf font
-    var script = document.createElement( 'script' );
-    script.type = 'text/javascript';
-    script.src = 'js/lib/vfs_fonts.js';
-    $('body').append( script );
-
 });
