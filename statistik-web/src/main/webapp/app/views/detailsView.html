@@ -20,7 +20,7 @@
   <div class="row">
 		<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress pull-left" style="min-height: 5px;">
 			{{subTitle}}
-			<a class="hidden-print pageHelpToolTip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>"
+			<a class="hidden-print page-help-tool-tip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>"
          tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText"
          style="position: relative; top: -2px; margin-left: 5px;"><img src="/assets/images/questionmark2.png"></a>
 			<a class="hidden-print" id="chart-footnote-trigger" data-toggle="collapse" data-target="#chart-footnote-text"
@@ -192,7 +192,7 @@
               <div class="scrollable">
 
                 <div class="scrolling">
-                  <table id="datatable" class="table table-striped" sortable-table>
+                  <table class="datatable table table-striped" sortable-table>
                     <thead>
                     <tr data-ng-repeat="headerrow in headerrows track by $index">
                       <td class="scrollable details-table-data ellipsis details-th"

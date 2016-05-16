@@ -150,11 +150,6 @@ table.table tfoot th {
     background-color: #8c8c8c;
 }
 
-table.table thead th, table.table tbody td {
-    border: 0;
-    padding: 12px;
-}
-
 table.table tbody td {
     background-color: #e9eae8;
     border-bottom: none;
@@ -614,6 +609,10 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
   text-align: right;
   vertical-align: top;
   border-right: 1px solid #ddd;
+
+  &.sorter-false {
+    padding: 4px;
+  }
 }
 
 #faq-accordion {}
@@ -1421,7 +1420,11 @@ div.scrolling {
   margin-bottom: 15px;
 }
 
-.pageHelpToolTip:hover {
+.overview-widget-title .page-help-tool-tip {
+  margin-top: -3px;
+}
+
+.page-help-tool-tip:hover {
   cursor: pointer;
 }
 #data-table-print-header {
