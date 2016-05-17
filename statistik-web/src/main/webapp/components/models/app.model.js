@@ -31,21 +31,21 @@ angular.module('StatisticsApp').factory('AppModel',
             data.loginUrl = '';
             data.loginVisible = false;
             data.highchartsExportUrl = '';
-            data.sjukskrivningslangd = [];
+            data.sjukskrivningLengths = [];
             return data;
         }
 
         function setSjukskrivningslangd(app) {
-            data.sjukskrivningslangd.length = 0;
+            data.sjukskrivningLengths.length = 0;
 
             angular.forEach(app.sjukskrivningLengths, function(value, key)  {
-                data.sjukskrivningslangd.push({
+                data.sjukskrivningLengths.push({
                     id: key,
                     name: value
                 });
             });
 
-            data.sjukskrivningslangd = $filter('orderBy')(data.sjukskrivningslangd, 'id', false);
+            data.sjukskrivningLengths = $filter('orderBy')(data.sjukskrivningLengths, 'id', false);
         }
 
         return {

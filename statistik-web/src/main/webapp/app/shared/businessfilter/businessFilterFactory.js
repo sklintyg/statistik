@@ -246,7 +246,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
     businessFilter.populateSjukskrivningsLangd = function() {
 
-        businessFilter.sjukskrivningslangd = AppModel.get().sjukskrivningslangd;
+        businessFilter.sjukskrivningslangd = AppModel.get().sjukskrivningLengths;
     };
 
     businessFilter.populateVerksamhetsTyper = function (businesses) {
