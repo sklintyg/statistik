@@ -16,49 +16,49 @@
 !3 Då gäller:
 
 | Sjukfall i rapporten sjukskrivningslangd |
-| inloggad som | sjukskrivningslängd | filter sjukskrivningslängd                  | totalt? | män? | kvinnor? |
-| user2        | Under 15 dagar      |                                             | 1       | 1    | 0        |
-| user2        | 15-30 dagar         |                                             | 0       | 0    | 0        |
-| user2        | 31-60 dagar         |                                             | 0       | 0    | 0        |
-| user2        | 61-90 dagar         |                                             | 1       | 1    | 0        |
-| user2        | 91-180 dagar        |                                             | 0       | 0    | 0        |
-| user2        | 181-365 dagar       |                                             | 1       | 0    | 1        |
-| user2        | Över 365 dagar      |                                             | 1       | 0    | 1        |
-| user2        | Under 15 dagar      | Under 15 dagar, 61-90 dagar, Över 365 dagar | 1       | 1    | 0        |
-| user2        | 15-30 dagar         | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0       | 0    | 0        |
-| user2        | 31-60 dagar         | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0       | 0    | 0        |
-| user2        | 61-90 dagar         | Under 15 dagar, 61-90 dagar, Över 365 dagar | 1       | 1    | 0        |
-| user2        | 91-180 dagar        | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0       | 0    | 0        |
-| user2        | 181-365 dagar       | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0       | 0    | 0        |
-| user2        | Över 365 dagar      | Under 15 dagar, 61-90 dagar, Över 365 dagar | 1       | 0    | 1        |
-| user2        | Under 15 dagar      | 181-365 dagar                               | 0       | 0    | 0        |
-| user2        | 15-30 dagar         | 181-365 dagar                               | 0       | 0    | 0        |
-| user2        | 31-60 dagar         | 181-365 dagar                               | 0       | 0    | 0        |
-| user2        | 61-90 dagar         | 181-365 dagar                               | 0       | 0    | 0        |
-| user2        | 91-180 dagar        | 181-365 dagar                               | 0       | 0    | 0        |
-| user2        | 181-365 dagar       | 181-365 dagar                               | 1       | 0    | 1        |
-| user2        | Över 365 dagar      | 181-365 dagar                               | 0       | 0    | 0        |
+| inloggad som | sjukskrivningslängd | filter sjukskrivningslängd                  | män? | kvinnor? |
+| user2        | Under 15 dagar      |                                             | 0    | 1        |
+| user2        | 15-30 dagar         |                                             | 0    | 0        |
+| user2        | 31-60 dagar         |                                             | 0    | 0        |
+| user2        | 61-90 dagar         |                                             | 1    | 0        |
+| user2        | 91-180 dagar        |                                             | 0    | 0        |
+| user2        | 181-365 dagar       |                                             | 0    | 1        |
+| user2        | Över 365 dagar      |                                             | 1    | 0        |
+| user2        | Under 15 dagar      | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0    | 1        |
+| user2        | 15-30 dagar         | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0    | 0        |
+| user2        | 31-60 dagar         | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0    | 0        |
+| user2        | 61-90 dagar         | Under 15 dagar, 61-90 dagar, Över 365 dagar | 1    | 0        |
+| user2        | 91-180 dagar        | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0    | 0        |
+| user2        | 181-365 dagar       | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0    | 0        |
+| user2        | Över 365 dagar      | Under 15 dagar, 61-90 dagar, Över 365 dagar | 1    | 0        |
+| user2        | Under 15 dagar      | 181-365 dagar                               | 0    | 0        |
+| user2        | 15-30 dagar         | 181-365 dagar                               | 0    | 0        |
+| user2        | 31-60 dagar         | 181-365 dagar                               | 0    | 0        |
+| user2        | 61-90 dagar         | 181-365 dagar                               | 0    | 0        |
+| user2        | 91-180 dagar        | 181-365 dagar                               | 0    | 0        |
+| user2        | 181-365 dagar       | 181-365 dagar                               | 0    | 1        |
+| user2        | Över 365 dagar      | 181-365 dagar                               | 0    | 0        |
 
 | Sjukfall i rapporten sjukskrivningslangd som tidsserie |
-| inloggad som | år   | månad | sjukskrivningslängd | filter sjukskrivningslängd                  | totalt? | män? | kvinnor? |
-| user2        | 2014 | feb   | Under 15 dagar      |                                             | 0       | 0    | 0        |
-| user2        | 2014 | feb   | 15-30 dagar         |                                             | 0       | 0    | 0        |
-| user2        | 2014 | feb   | 31-60 dagar         |                                             | 0       | 0    | 0        |
-| user2        | 2014 | feb   | 61-90 dagar         |                                             | 1       | 1    | 0        |
-| user2        | 2014 | feb   | 91-180 dagar        |                                             | 0       | 0    | 0        |
-| user2        | 2014 | feb   | 181-365 dagar       |                                             | 1       | 0    | 1        |
-| user2        | 2014 | feb   | Över 365 dagar      |                                             | 1       | 0    | 1        |
-| user2        | 2014 | feb   | Under 15 dagar      | Under 15 dagar, 61-90 dagar, Över 365 dagar | 1       | 1    | 0        |
-| user2        | 2014 | feb   | 15-30 dagar         | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0       | 0    | 0        |
-| user2        | 2014 | feb   | 31-60 dagar         | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0       | 0    | 0        |
-| user2        | 2014 | feb   | 61-90 dagar         | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0       | 0    | 0        |
-| user2        | 2014 | feb   | 91-180 dagar        | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0       | 0    | 0        |
-| user2        | 2014 | feb   | 181-365 dagar       | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0       | 0    | 0        |
-| user2        | 2014 | feb   | Över 365 dagar      | Under 15 dagar, 61-90 dagar, Över 365 dagar | 1       | 0    | 1        |
-| user2        | 2014 | feb   | Under 15 dagar      | 181-365 dagar                               | 0       | 0    | 0        |
-| user2        | 2014 | feb   | 15-30 dagar         | 181-365 dagar                               | 0       | 0    | 0        |
-| user2        | 2014 | feb   | 31-60 dagar         | 181-365 dagar                               | 0       | 0    | 0        |
-| user2        | 2014 | feb   | 61-90 dagar         | 181-365 dagar                               | 0       | 0    | 0        |
-| user2        | 2014 | feb   | 91-180 dagar        | 181-365 dagar                               | 0       | 0    | 0        |
-| user2        | 2014 | feb   | 181-365 dagar       | 181-365 dagar                               | 1       | 0    | 1        |
-| user2        | 2014 | feb   | Över 365 dagar      | 181-365 dagar                               | 0       | 0    | 0        |
+| inloggad som | år   | månad | sjukskrivningslängd | filter sjukskrivningslängd                  | män? | kvinnor? |
+| user2        | 2014 | feb   | Under 15 dagar      |                                             | 0    | 0        |
+| user2        | 2014 | feb   | 15-30 dagar         |                                             | 1    | 0        |
+| user2        | 2014 | feb   | 31-60 dagar         |                                             | 0    | 1        |
+| user2        | 2014 | feb   | 61-90 dagar         |                                             | 0    | 0        |
+| user2        | 2014 | feb   | 91-180 dagar        |                                             | 0    | 0        |
+| user2        | 2014 | feb   | 181-365 dagar       |                                             | 0    | 0        |
+| user2        | 2014 | feb   | Över 365 dagar      |                                             | 1    | 0        |
+| user2        | 2014 | feb   | Under 15 dagar      | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0    | 0        |
+| user2        | 2014 | feb   | 15-30 dagar         | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0    | 0        |
+| user2        | 2014 | feb   | 31-60 dagar         | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0    | 0        |
+| user2        | 2014 | feb   | 61-90 dagar         | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0    | 0        |
+| user2        | 2014 | feb   | 91-180 dagar        | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0    | 0        |
+| user2        | 2014 | feb   | 181-365 dagar       | Under 15 dagar, 61-90 dagar, Över 365 dagar | 0    | 0        |
+| user2        | 2014 | feb   | Över 365 dagar      | Under 15 dagar, 61-90 dagar, Över 365 dagar | 1    | 0        |
+| user2        | 2014 | feb   | Under 15 dagar      | 15-30 dagar                                 | 0    | 0        |
+| user2        | 2014 | feb   | 15-30 dagar         | 15-30 dagar                               | 1    | 0        |
+| user2        | 2014 | feb   | 31-60 dagar         | 15-30 dagar                               | 0    | 0        |
+| user2        | 2014 | feb   | 61-90 dagar         | 15-30 dagar                               | 0    | 0        |
+| user2        | 2014 | feb   | 91-180 dagar        | 15-30 dagar                               | 0    | 0        |
+| user2        | 2014 | feb   | 181-365 dagar       | 15-30 dagar                               | 0    | 0        |
+| user2        | 2014 | feb   | Över 365 dagar      | 15-30 dagar                               | 0    | 0        |
