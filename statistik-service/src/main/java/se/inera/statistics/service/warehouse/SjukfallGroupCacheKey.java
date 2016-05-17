@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
@@ -104,8 +103,8 @@ class SjukfallGroupCacheKey {
         return aisle;
     }
 
-    public Predicate<Fact> getFilter() {
-        return filter.getFilter();
+    public SjukfallFilter getFilter() {
+        return filter;
     }
 
     public boolean isUseOriginalSjukfallStart() {

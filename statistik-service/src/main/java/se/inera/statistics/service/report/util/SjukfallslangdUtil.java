@@ -18,10 +18,19 @@
  */
 package se.inera.statistics.service.report.util;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import static se.inera.statistics.service.report.util.Ranges.range;
 
 public final class SjukfallslangdUtil {
-    public static final Ranges RANGES = new Ranges(range("Under 15 dagar", 15), range("15-30 dagar", 31), range("31-60 dagar", 61), range("61-90 dagar", 91), range("91-180 dagar", 181), range("181-365 dagar", 366), range("Över 365 dagar", Integer.MAX_VALUE));
+
+    public static final Ranges RANGES = new Ranges(Arrays.stream(SjukfallsLangdGroup.values())
+                    .map(group -> range(group.getGroupName(), group.getTo() + 1))
+                    .collect(Collectors.toList())
+                    .toArray(new Ranges.Range[0]));
+
     private SjukfallslangdUtil() {
     }
+
 }

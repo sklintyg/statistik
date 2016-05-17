@@ -85,12 +85,8 @@ public class SosReportCreator {
         for (Map.Entry<String, Integer> stringIntegerEntry : dxsToShowInReport.entrySet()) {
             final Integer dx = stringIntegerEntry.getValue();
             final String dxString = stringIntegerEntry.getKey();
-            final SjukfallFilter sjukfallFilter = new SjukfallFilter(new Predicate<Fact>() {
-                @Override
-                public boolean apply(Fact fact) {
-                    return fact.getDiagnoskod() == dx || fact.getDiagnoskategori() == dx;
-                }
-            }, "sosspecial" + dx);
+            final Predicate<Fact> intygFilter = fact -> fact.getDiagnoskod() == dx || fact.getDiagnoskategori() == dx;
+            final SjukfallFilter sjukfallFilter = new SjukfallFilter(intygFilter, sjukfall -> true, "sosspecial" + dx);
 
             for (Map.Entry<HsaIdVardgivare, Aisle> vgEntry : allVardgivare.entrySet()) {
                 final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1, range.getMonths(),

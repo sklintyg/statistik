@@ -2,6 +2,7 @@ package se.inera.statistics.spec
 
 import se.inera.statistics.service.report.util.Icd10
 import se.inera.statistics.service.report.util.Icd10RangeType
+import se.inera.statistics.service.report.util.SjukfallsLangdGroup
 import se.inera.statistics.web.model.LoginInfo
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.statistics.web.service.FilterData
@@ -22,6 +23,7 @@ abstract class Rapport {
     def filterKategorier
     def filterEnheter
     def filterVerksamhetstyper
+    def filterSjukskrivningslängd
     def filterStartdatum
     def filterSlutdatum
     def meddelande
@@ -124,6 +126,15 @@ abstract class Rapport {
         }
     }
 
+    void setFilterSjukskrivningslängd(String sjukskrivningslängdString) {
+        if (sjukskrivningslängdString != null && !sjukskrivningslängdString.trim().isEmpty()) {
+            this.filterSjukskrivningslängd = sjukskrivningslängdString.split(",")*.trim().collect {
+                def optionalGroup = SjukfallsLangdGroup.getByName(it)
+                optionalGroup.present ? optionalGroup.get().name() : it;
+            }
+        }
+    }
+
     def getFilter() {
         def diagnoser = new ArrayList<String>();
         if (filterKapitel != null) {
@@ -135,7 +146,7 @@ abstract class Rapport {
         if (filterKategorier != null) {
             diagnoser.addAll(filterKategorier)
         }
-        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
+        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper, filterSjukskrivningslängd, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
     }
 
     public void reset() {
@@ -151,6 +162,7 @@ abstract class Rapport {
         filterKategorier = null
         filterEnheter = null
         filterVerksamhetstyper = null
+        filterSjukskrivningslängd = null
         filterStartdatum = null
         filterSlutdatum = null
         meddelande = null

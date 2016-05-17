@@ -104,7 +104,7 @@ public class WarehouseServiceTest {
         //Given
         final Predicate predicate = Mockito.mock(Predicate.class);
         final String testhash = "testhash";
-        final SjukfallFilter predicate1 =  new SjukfallFilter(predicate, testhash);
+        final SjukfallFilter predicate1 =  new SjukfallFilter(predicate, sjukfall -> true, testhash);
         final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
         final ArrayList<String> diagnoser = new ArrayList<>();
         final Filter filter = new Filter(predicate1, enheter, diagnoser);
@@ -133,7 +133,7 @@ public class WarehouseServiceTest {
         //Given
         final Predicate predicate = Mockito.mock(Predicate.class);
         final String testhash = "testhash";
-        final SjukfallFilter predicate1 = new SjukfallFilter(predicate, testhash);
+        final SjukfallFilter predicate1 = new SjukfallFilter(predicate, sjukfall -> true, testhash);
         final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
         final ArrayList<String> diagnoser = new ArrayList<>();
         final Filter filter = new Filter(predicate1, enheter, diagnoser);

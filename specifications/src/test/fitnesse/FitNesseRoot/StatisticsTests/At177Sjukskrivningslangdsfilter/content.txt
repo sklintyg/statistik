@@ -15,8 +15,8 @@
 
 !3 Då gäller:
 
-| Sjukfall i rapporten sjukfall per sjukskrivningslangd |
-| inloggad som | sjukskrivningslangd | filter sjukskrivningslangd                  | totalt? | män? | kvinnor? |
+| Sjukfall i rapporten sjukskrivningslangd |
+| inloggad som | sjukskrivningslängd | filter sjukskrivningslängd                  | totalt? | män? | kvinnor? |
 | user2        | Under 15 dagar      |                                             | 1       | 1    | 0        |
 | user2        | 15-30 dagar         |                                             | 0       | 0    | 0        |
 | user2        | 31-60 dagar         |                                             | 0       | 0    | 0        |
@@ -39,8 +39,8 @@
 | user2        | 181-365 dagar       | 181-365 dagar                               | 1       | 0    | 1        |
 | user2        | Över 365 dagar      | 181-365 dagar                               | 0       | 0    | 0        |
 
-| Sjukfall i rapporten sjukfall per sjukskrivningslangd som tidsserie |
-| inloggad som | år   | månad | sjukskrivningslangd | filter sjukskrivningslangd                  | totalt? | män? | kvinnor? |
+| Sjukfall i rapporten sjukskrivningslangd som tidsserie |
+| inloggad som | år   | månad | sjukskrivningslängd | filter sjukskrivningslängd                  | totalt? | män? | kvinnor? |
 | user2        | 2014 | feb   | Under 15 dagar      |                                             | 0       | 0    | 0        |
 | user2        | 2014 | feb   | 15-30 dagar         |                                             | 0       | 0    | 0        |
 | user2        | 2014 | feb   | 31-60 dagar         |                                             | 0       | 0    | 0        |
