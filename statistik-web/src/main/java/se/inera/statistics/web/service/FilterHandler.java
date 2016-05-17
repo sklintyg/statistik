@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -158,7 +159,11 @@ public class FilterHandler {
         if (filterLangds == null || filterLangds.isEmpty()) {
             return sjukfall -> true;
         }
-        final List<SjukfallsLangdGroup> filteredLangdGroups = filterLangds.stream().map(SjukfallsLangdGroup::valueOf).collect(Collectors.toList());
+        final List<SjukfallsLangdGroup> filteredLangdGroups = filterLangds.stream()
+                .map(SjukfallsLangdGroup::parse)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
         return sjukfall -> {
             final int realDays = sjukfall.getRealDays();
             return filteredLangdGroups.stream().anyMatch(group -> group.getFrom() <= realDays && group.getTo() >= realDays);
