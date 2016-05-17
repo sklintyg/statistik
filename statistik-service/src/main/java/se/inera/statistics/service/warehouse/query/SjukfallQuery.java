@@ -180,7 +180,14 @@ public class SjukfallQuery {
     }
 
     private String lakarNamn(Lakare lakare) {
-        return lakare.getTilltalsNamn() + " " + lakare.getEfterNamn();
+
+        String name = lakare.getTilltalsNamn() + " " + lakare.getEfterNamn();
+
+        if (name.trim().isEmpty()) {
+            name = lakare.getLakareId().toString();
+        }
+
+        return name;
     }
 
     @VisibleForTesting
