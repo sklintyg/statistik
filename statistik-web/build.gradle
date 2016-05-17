@@ -30,6 +30,11 @@ gretty {
     logbackConfigFile = "${projectDir}/src/main/resources/logback.xml"
     jvmArgs = [jvmArgSpringProfiles, '-Dstatistics.test.max.intyg=500']
     debugSuspend = false
+    recompileOnSourceChange = false
+    reloadOnClassChange = false
+    reloadOnConfigChange = false
+    reloadOnLibChange = false
+
 }
 
 idea {
