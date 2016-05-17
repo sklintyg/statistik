@@ -18,16 +18,16 @@
  */
 package se.inera.statistics.web.model;
 
-/**
- * Created by hesse on 12/05/16.
- */
+import java.util.Collections;
+import java.util.Map;
+
 public class AppSettings {
 
     private String loginUrl;
     private String highchartsExportUrl;
     private boolean loginVisible;
     private boolean isLoggedIn;
-
+    private Map<String, String> sjukskrivningLengths;
 
     public String getLoginUrl() {
         return loginUrl;
@@ -59,5 +59,13 @@ public class AppSettings {
 
     public void setLoggedIn(boolean loggedIn) {
         isLoggedIn = loggedIn;
+    }
+
+    public Map<String, String> getSjukskrivningLengths() {
+        return sjukskrivningLengths;
+    }
+
+    public void setSjukskrivningLengths(Map<String, String> sjukskrivningLengths) {
+        this.sjukskrivningLengths = Collections.unmodifiableMap(sjukskrivningLengths);
     }
 }

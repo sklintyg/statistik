@@ -23,13 +23,13 @@ import java.util.Optional;
 
 public enum SjukfallsLangdGroup {
 
-    GROUP0TO14("Under 15 dagar", 0, 14),
-    GROUP15TO30("15-30 dagar", 16, 30),
-    GROUP31TO60("31-60 dagar", 31, 60),
-    GROUP61TO90("61-90 dagar", 61, 90),
-    GROUP91TO180("91-180 dagar", 91, 180),
-    GROUP181TO365("181-365 dagar", 181, 365),
-    GROUP366PLUS("Över 365 dagar", 366, Integer.MAX_VALUE - 1);
+    GROUP1_0TO14("Under 15 dagar", 0, 14),
+    GROUP2_15TO30("15-30 dagar", 16, 30),
+    GROUP3_31TO60("31-60 dagar", 31, 60),
+    GROUP4_61TO90("61-90 dagar", 61, 90),
+    GROUP5_91TO180("91-180 dagar", 91, 180),
+    GROUP6_181TO365("181-365 dagar", 181, 365),
+    GROUP7_366PLUS("Över 365 dagar", 366, Integer.MAX_VALUE - 1);
 
     private final String groupName;
     private final int from;

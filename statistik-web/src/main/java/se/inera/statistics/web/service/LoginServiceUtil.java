@@ -18,17 +18,26 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
+import static com.google.common.collect.Iterables.tryFind;
+import static com.google.common.collect.Lists.transform;
+
+import java.security.Principal;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.stereotype.Component;
+
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -39,20 +48,17 @@ import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
+import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.Verksamhet;
 
-import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static com.google.common.collect.Iterables.tryFind;
-import static com.google.common.collect.Lists.transform;
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 
 @Component
 public class LoginServiceUtil {
@@ -173,12 +179,11 @@ public class LoginServiceUtil {
 
     public AppSettings getSettings(HttpServletRequest request) {
         AppSettings settings = new AppSettings();
-
         settings.setLoginVisible(loginVisibility.isLoginVisible());
         settings.setHighchartsExportUrl(higchartsExportUrl);
         settings.setLoginUrl(loginUrl);
         settings.setLoggedIn(isLoggedIn(request));
-
+        settings.setSjukskrivningLengths(Arrays.stream(SjukfallsLangdGroup.values()).collect(Collectors.toMap(Enum::name, SjukfallsLangdGroup::getGroupName)));
         return settings;
     }
 
