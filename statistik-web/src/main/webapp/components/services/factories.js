@@ -243,6 +243,7 @@ angular.module('StatisticsApp').factory('statisticsData',
         var param = {
             'enheter': params.enheter || null,
             'verksamhetstyper': params.verksamhetstyper || null,
+            'sjukskrivningslangd': params.sjukskrivningslangd || null,
             'diagnoser': concatDiagnoser(params.diagnoser),
             'fromDate': params.fromDate || null,
             'toDate': params.toDate || null,

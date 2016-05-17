@@ -18,7 +18,8 @@
  */
 
 angular.module('StatisticsApp').factory('AppModel',
-    function() {
+    /** @ngInject */
+    function($filter) {
         'use strict';
 
         var data = {};
@@ -30,7 +31,21 @@ angular.module('StatisticsApp').factory('AppModel',
             data.loginUrl = '';
             data.loginVisible = false;
             data.highchartsExportUrl = '';
+            data.sjukskrivningslangd = [];
             return data;
+        }
+
+        function setSjukskrivningslangd(app) {
+            data.sjukskrivningslangd.length = 0;
+
+            angular.forEach(app.sjukskrivningLengths, function(value, key)  {
+                data.sjukskrivningslangd.push({
+                    id: key,
+                    name: value
+                });
+            });
+
+            data.sjukskrivningslangd = $filter('orderBy')(data.sjukskrivningslangd, 'id', false);
         }
 
         return {
@@ -44,6 +59,8 @@ angular.module('StatisticsApp').factory('AppModel',
                 data.loginUrl = app.loginUrl;
                 data.loginVisible = app.loginVisible;
                 data.highchartsExportUrl = app.highchartsExportUrl;
+
+                setSjukskrivningslangd(app);
             },
             get: function() {
                 return data;

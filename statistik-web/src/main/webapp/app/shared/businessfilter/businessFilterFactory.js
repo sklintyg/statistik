@@ -20,25 +20,27 @@
 angular.module('StatisticsApp.filterFactory.factory', []);
 
 angular.module('StatisticsApp.filterFactory.factory')
-    .factory('businessFilterFactory', ['statisticsData', '_', 'treeMultiSelectorUtil', 'moment',
-        function (statisticsData, _, treeMultiSelectorUtil, moment) {
+    .factory('businessFilterFactory',
+        /** @ngInject */
+        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel) {
             'use strict';
 
-            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment);
+            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel);
         }
-    ]);
+    );
 
 angular.module('StatisticsApp.filterFactory.factory')
-    .factory('landstingFilterFactory', ['statisticsData', '_', 'treeMultiSelectorUtil', 'moment',
-        function (statisticsData, _, treeMultiSelectorUtil, moment) {
+    .factory('landstingFilterFactory',
+        /** @ngInject */
+        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel) {
             'use strict';
 
-            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment);
+            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel);
         }
-    ]);
+    );
 
 
-function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) {
+function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel) {
     'use strict';
 
     //The businessFilter object holds all methods and properties that are part of the public API
@@ -56,6 +58,9 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
 
         businessFilter.verksamhetsTyper = [];
         businessFilter.selectedVerksamhetTypIds = [];
+
+        businessFilter.sjukskrivningslangd = [];
+        businessFilter.selectedSjukskrivningslangdIds = [];
 
         businessFilter.icd10 = {subs: []};
 
@@ -82,6 +87,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
         businessFilter.selectedBusinesses.length = 0;
         businessFilter.geographyBusinessIds.length = 0;
         businessFilter.selectedVerksamhetTypIds.length = 0;
+        businessFilter.selectedSjukskrivningslangdIds.length = 0;
         businessFilter.selectedDiagnoses = [];
         businessFilter.deselectAll(businessFilter.geography);
         businessFilter.deselectAll(businessFilter.icd10);
@@ -154,6 +160,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
         businessFilter.selectedVerksamhetTypIds = _.uniq(_.map(filterData.verksamhetstyper, function(verksamhetstyp) {
             return _.find(businessFilter.verksamhetsTyper, function(verksamhet) { return _.contains(verksamhet.ids, verksamhetstyp); }).id;
         }));
+        businessFilter.selectedSjukskrivningslangdIds = filterData.sjukskrivningslangd;
         businessFilter.selectGeographyBusiness(filterData.enheter);
         businessFilter.toDate = filterData.toDate ? moment(filterData.toDate).utc().toDate() : null;
         businessFilter.fromDate = filterData.fromDate ? moment(filterData.fromDate).utc().toDate() : null;
@@ -196,6 +203,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
                     businessFilter.populateGeography(businesses);
                 }
                 businessFilter.populateVerksamhetsTyper(businesses);
+                businessFilter.populateSjukskrivningsLangd();
                 businessFilter.resetSelections();
                 businessFilter.dataInitialized = true;
             }
@@ -234,6 +242,11 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment) 
         _.each(businessFilter.geography.subs, function (county) {
             county.subs = sortSwedish(county.subs, 'name', 'Okän');
         });
+    };
+
+    businessFilter.populateSjukskrivningsLangd = function() {
+
+        businessFilter.sjukskrivningslangd = AppModel.get().sjukskrivningslangd;
     };
 
     businessFilter.populateVerksamhetsTyper = function (businesses) {

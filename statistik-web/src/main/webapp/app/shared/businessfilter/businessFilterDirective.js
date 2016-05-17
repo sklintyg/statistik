@@ -21,8 +21,8 @@ angular.module('StatisticsApp.filter.directive', []);
 
 angular.module('StatisticsApp.filter.directive')
     .directive('businessFilter',
-        ['businessFilterFactory', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', '_',
-            function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _) {
+        /** @ngInject */
+        function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _) {
         'use strict';
 
         return {
@@ -36,11 +36,11 @@ angular.module('StatisticsApp.filter.directive')
             },
             templateUrl: 'app/shared/businessfilter/businessFilterView.html'
         };
-    }]);
+    });
 
 angular.module('StatisticsApp.filter.directive')
     .directive('landstingFilter',
-    ['landstingFilterFactory', '$location', 'messageService', 'statisticsData', 'moment', 'TIME_INTERVAL_MIN_DATE', 'TIME_INTERVAL_MAX_DATE', '_',
+        /** @ngInject */
         function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _) {
         'use strict';
 
@@ -55,18 +55,15 @@ angular.module('StatisticsApp.filter.directive')
             },
             templateUrl: 'app/shared/businessfilter/businessFilterView.html'
         };
-    }]);
+    });
 
 function linkFunction(_, scope, businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
     'use strict';
 
     //Initially we don't want to see the filter
     scope.isFilterCollapsed = true;
-
     scope.businessFilter = businessFilter;
-
     scope.useDefaultPeriod = true;
-
     scope.showDateValidationError = false;
 
     function updateGeographyFilterSelectorDataButtonLabelText() {
@@ -201,6 +198,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
                 diagnoser: businessFilter.selectedDiagnoses,
                 enheter: businessFilter.geographyBusinessIds,
                 verksamhetstyper: getVerksamhetstyper(),
+                sjukskrivningslangd: businessFilter.selectedSjukskrivningslangdIds,
                 fromDate: formattedFromDate,
                 toDate: formattedToDate,
                 useDefaultPeriod: businessFilter.useDefaultPeriod
