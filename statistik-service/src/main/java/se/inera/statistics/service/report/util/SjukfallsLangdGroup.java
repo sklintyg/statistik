@@ -24,7 +24,7 @@ import java.util.Optional;
 public enum SjukfallsLangdGroup {
 
     GROUP1_0TO14("Under 15 dagar", 0, 14),
-    GROUP2_15TO30("15-30 dagar", 16, 30),
+    GROUP2_15TO30("15-30 dagar", 15, 30),
     GROUP3_31TO60("31-60 dagar", 31, 60),
     GROUP4_61TO90("61-90 dagar", 61, 90),
     GROUP5_91TO180("91-180 dagar", 91, 180),
@@ -59,6 +59,15 @@ public enum SjukfallsLangdGroup {
 
     public static Optional<SjukfallsLangdGroup> getByName(String name) {
         return Arrays.stream(values()).filter(group -> group.groupName.equalsIgnoreCase(name)).findFirst();
+    }
+
+    public static Optional<SjukfallsLangdGroup> parse(String name) {
+        try {
+            final SjukfallsLangdGroup sjukfallsLangdGroup = valueOf(name);
+            return Optional.of(sjukfallsLangdGroup);
+        } catch (IllegalArgumentException e) {
+            return Optional.empty();
+        }
     }
 
 }

@@ -40,6 +40,16 @@
                                  text-data="diagnosisFilterSelectorData">
             </tree-multi-selector>
 
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2 clearfix business-filter-sjukskrivningslangd">
+                <label for="select-unit">
+                    <span message key="lbl.filter.valj-sjukskrivningslangd"></span>
+                </label><br/>
+                <select ng-model="businessFilter.selectedSjukskrivningslangdIds" multiple="multiple"
+                        ng-options="sjukskrivningslangd.id as sjukskrivningslangd.name for sjukskrivningslangd in businessFilter.sjukskrivningslangd"
+                        multiselect-dropdown id="select-sjukskrivningslangd">
+                </select>
+            </div>
+
             <div class="col-xs-12 col-sm-8 col-md-8 col-lg-4 clearfix business-filter-time-interval">
 
                 <div >

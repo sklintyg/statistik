@@ -28,7 +28,8 @@
                 scope: {
                     isMobile: '=',
                     loginVisible: '=',
-                    loginClicked: '&'
+                    loginClicked: '&',
+                    queryString: '='
                 },
                 templateUrl: 'components/directives/navigationMenu/navigationMenu.html',
                 controller: NavigationMenuCtrl
