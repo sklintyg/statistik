@@ -9,7 +9,7 @@
     # latest snapshot: XXX
     version: 3.1.0-SNAPSHOT
     config_version: master
-    highcharts_version: 2.1.0
+    highcharts_version: 2.2.0
 
   pre_tasks:
 

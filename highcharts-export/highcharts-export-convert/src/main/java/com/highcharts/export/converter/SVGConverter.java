@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeoutException;
 
+import com.highcharts.export.util.TempDir;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,8 @@ public class SVGConverter {
 	private static final String SVG_DOCTYPE = "<?xml version=\"1.0\" standalone=\"no\"?><!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">";
 
 	public String convert(String input, MimeType mime,
-			String constructor, String callback, Float width, Float scale, String filename) throws SVGConverterException, PoolException, NoSuchElementException, TimeoutException {
-		return this.convert(input, null, null, null, mime, constructor, callback, width, scale, filename);
+			String constructor, String callback, String globalOptions, Float width, Float scale, String filename) throws SVGConverterException, PoolException, NoSuchElementException, TimeoutException {
+		return this.convert(input, globalOptions, null, null, mime, constructor, callback, width, scale, filename);
 	}
 
 	public String convert(String input, String globalOptions, String dataOptions, String customCode, MimeType mime,
@@ -50,7 +51,7 @@ public class SVGConverter {
 			if (filename != null) {
 				params.put("outfile", filename);
 			} else {
-				params.put("outtype", mime.name().toLowerCase());
+				params.put("type", mime.name().toLowerCase());
 			}
 
 			params.put("infile", input);
@@ -92,7 +93,6 @@ public class SVGConverter {
 
 			// check first for errors
 			if (output.length() > 5 && output.substring(0,5).equalsIgnoreCase("error")) {
-				logger.debug("recveived error from phantomjs: " + output);
 				throw new SVGConverterException("recveived error from phantomjs:" + output);
 			}
 
@@ -106,10 +106,10 @@ public class SVGConverter {
 		// add XML Doctype for svg
 		String output = SVG_DOCTYPE + svg;
 
+		// for async/android use we need to load the file
 		if (filename != null) {
 			// Create file and return filename instead.
-			//String filename = createUniqueFileName(".svg");
-			File file = new File(filename);
+			File file = new File(TempDir.getOutputDir() + "/" + filename);
 			try {
 				FileUtils.writeStringToFile(file, output);
 			} catch (IOException ioex) {
@@ -130,15 +130,17 @@ public class SVGConverter {
 
 			return response;
 		} catch (SocketTimeoutException ste) {
+			logger.error(ste);
 			throw new TimeoutException(ste.getMessage());
 		} catch (TimeoutException te) {
+			logger.error(te);
 			throw new TimeoutException(te.getMessage());
 		} catch (PoolException nse) {
 				logger.error("POOL EXHAUSTED!!");
 				throw new PoolException(nse.getMessage());
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
-			throw new SVGConverterException("Error converting SVG" + e.getMessage());
+			logger.error(e);
+			throw new SVGConverterException("Error converting SVG: " + e.getMessage());
 		} finally {
 			try {
 				serverPool.returnObject(server, true);
