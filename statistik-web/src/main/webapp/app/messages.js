@@ -68,7 +68,7 @@ var stMessages = {
         'lbl.filter.val-av-tidsintervall-fran': 'Från:',
         'lbl.filter.val-av-tidsintervall-till': 'Till:',
         'lbl.filter.val-av-diagnoser-knapp': 'Diagnoser',
-        'lbl.filter.valj-sjukskrivningslangd': 'Sjukskrivningslängd',
+        'lbl.filter.valj-sjukskrivningslangd': 'Välj sjukskrivningslängd:',
         'lbl.filter.select-all': 'Markera alla',
         'lbl.filter.modal.lan': 'Län: ',
         'lbl.filter.modal.kommuner': 'Kommuner: ',
