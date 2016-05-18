@@ -42,7 +42,7 @@ subprojects {
         // >>> Dependency Management
 
         // External
-        activeMqVersion = "5.8.0"
+        activeMqVersion = "5.13.0"
 
         commonsLang3Version = "3.2.1"
         commonCliVersion = "1.2"
