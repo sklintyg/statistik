@@ -42,12 +42,12 @@ app.run(
             $rootScope.isLoggedIn = data.loggedIn;
         });
 
-        // Append pdf font
+        // Append pdf font to page body
         $timeout(function() {
             var script = document.createElement( 'script' );
             script.type = 'text/javascript';
             script.src = 'js/lib/vfs_fonts.js';
             $('body').append( script );
-        }, 500);
+        }, 1000);
     }
 );
