@@ -30,7 +30,7 @@ database_pool_initialSize: 10
 activemq_username: ""
 activemq_password: ""
 
-phantomjs_version: 1.9.8
+phantomjs_version: 2.1.1
 
 gitcrypt_key_name: "git-crypt4.key"
 gitcrypt_key_file: "~/.ssh/{{ gitcrypt_key_name }}"
