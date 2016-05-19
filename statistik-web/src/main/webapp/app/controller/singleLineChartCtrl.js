@@ -77,17 +77,27 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         };
 
         var populatePageWithData = function (result) {
-            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
-                                    result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
-            $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
-            $scope.subTitle = config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
-            $timeout(function () {
-                ControllerCommons.updateDataTable($scope, result.tableData);
-                updateChart(result.chartData, function() { $scope.doneLoading = true; });
-                $timeout(function () {
-                    $rootScope.$broadcast('pageDataPopulated');
-                });
-            }, 1);
+            $scope.errorPageUrl = null;
+            if (result === '' && !isVerksamhet && !isLandsting) {
+                $scope.dataLoadingError = true;
+                $scope.errorPageUrl = 'app/views/error/statisticNotDone.html';
+            } else {
+                ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser,
+                    result.allAvailableDxsSelectedInFilter,
+                    result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+                $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
+                $scope.subTitle =
+                    config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
+                $timeout(function() {
+                    ControllerCommons.updateDataTable($scope, result.tableData);
+                    updateChart(result.chartData, function() {
+                        $scope.doneLoading = true;
+                    });
+                    $timeout(function() {
+                        $rootScope.$broadcast('pageDataPopulated');
+                    });
+                }, 1);
+            }
         };
 
         $scope.toggleSeriesVisibility = function (index) {

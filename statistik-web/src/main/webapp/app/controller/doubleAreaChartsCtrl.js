@@ -152,28 +152,37 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         };
 
         var populatePageWithData = function (result) {
-            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
-                            result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
-            $scope.enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
-            $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
-            $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.kapitelId);
-            if (config.showDetailsOptions) {
-                $scope.currentPeriod = result.period;
-                statisticsData.getDiagnosisKapitelAndAvsnittAndKategori(populateDetailsOptions, function () {
-                    $window.alert('Kunde inte ladda data');
-                });
-            }
+            $scope.errorPageUrl = null;
+            if (result === '' && !isVerksamhet) {
+                $scope.dataLoadingError = true;
+                $scope.errorPageUrl = 'app/views/error/statisticNotDone.html';
+            } else {
+                ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser,
+                    result.allAvailableDxsSelectedInFilter,
+                    result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+                $scope.enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
+                $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
+                $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.kapitelId);
+                if (config.showDetailsOptions) {
+                    $scope.currentPeriod = result.period;
+                    statisticsData.getDiagnosisKapitelAndAvsnittAndKategori(populateDetailsOptions, function() {
+                        $window.alert('Kunde inte ladda data');
+                    });
+                }
 
-            $timeout(function () {
-                ControllerCommons.updateDataTable($scope, result.tableData);
-                updateChart(result, function() { $scope.doneLoading = true; });
-                $timeout(function () {
-                    $rootScope.$broadcast('pageDataPopulated');
-                });
-            }, 1);
-            $timeout(function () {
-                $scope.printDataTables = updatePrintDataTable(result);
-            }, 100);
+                $timeout(function() {
+                    ControllerCommons.updateDataTable($scope, result.tableData);
+                    updateChart(result, function() {
+                        $scope.doneLoading = true;
+                    });
+                    $timeout(function() {
+                        $rootScope.$broadcast('pageDataPopulated');
+                    });
+                }, 1);
+                $timeout(function() {
+                    $scope.printDataTables = updatePrintDataTable(result);
+                }, 100);
+            }
         };
 
         function populateDetailsOptions(result) {

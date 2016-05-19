@@ -137,11 +137,8 @@
   </div>
 
 
-<!-- Alert the user about specific conditions -->
-
 <!-- Start ingress -->
-<div data-ng-include="errorPageUrl"></div>
-<div dataerrorview show-error="dataLoadingError">
+<div dataerrorview show-error="dataLoadingError" error-page-url="errorPageUrl">
   <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading && !resultMessage">
     <!-- Start graph -->
     <div class="row">

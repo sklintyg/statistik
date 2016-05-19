@@ -56,12 +56,19 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         };
 
         var dataReceived = function (result) {
-            $scope.subTitle = 'Utvecklingen i Sverige de senaste tre månaderna, ' + result.periodText;
-            setTooltipText(result);
-            $scope.doneLoading = true;
-            $timeout(function () {
-                populatePageWithData(result);
-            }, 1);
+            $scope.errorPageUrl = null;
+            if (result === '') {
+                $scope.dataLoadingError = true;
+                $scope.errorPageUrl = 'app/views/error/statisticNotDone.html';
+            } else {
+                $scope.subTitle = 'Utvecklingen i Sverige de senaste tre månaderna, ' + result.periodText;
+                setTooltipText(result);
+                $scope.statisticNotDone = false;
+                $scope.doneLoading = true;
+                $timeout(function() {
+                    populatePageWithData(result);
+                }, 1);
+            }
         };
 
         function paintPerMonthAlternationChart(alteration) {
