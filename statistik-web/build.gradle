@@ -28,7 +28,12 @@ gretty {
         contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
     }
     logbackConfigFile = "${projectDir}/src/main/resources/logback.xml"
-    jvmArgs = [jvmArgSpringProfiles, '-Dstatistics.test.max.intyg=500']
+    jvmArgs = [
+            jvmArgSpringProfiles,
+            '-Dstatistics.test.max.intyg=500',
+            '-Dstatistics.config.file=' + projectDir + '/src/main/resources/default.dev.properties',
+            '-Dstatistics.credentials.file=' + projectDir + '/src/main/resources/dev-credentials.properties'
+    ]
     debugSuspend = false
     recompileOnSourceChange = false
     reloadOnClassChange = false
