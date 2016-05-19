@@ -114,6 +114,10 @@ public class ChartDataService {
             LOG.info("New warehouse timestamp '{}', populating national cache", last);
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
+            buildOverview();
+            stopWatch.stop();
+            LOG.info("National cache buildOverview  " + stopWatch.getTotalTimeMillis());
+            stopWatch.start();
             buildNumberOfCasesPerMonth();
             stopWatch.stop();
             LOG.info("National cache buildNumberOfCasesPerMonth " + stopWatch.getTotalTimeMillis());
@@ -145,10 +149,6 @@ public class ChartDataService {
             buildSjukfallPerLan();
             stopWatch.stop();
             LOG.info("National cache buildSjukfallPerLan " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildOverview();
-            stopWatch.stop();
-            LOG.info("National cache buildOverview  " + stopWatch.getTotalTimeMillis());
             lastUpdated = last;
             LOG.info("National cache populated");
         }
@@ -182,7 +182,6 @@ public class ChartDataService {
         Range range = Range.quarter();
         OverviewResponse response = overviewData.getOverview(range);
         overview = new OverviewConverter().convert(response, range);
-
     }
 
     private void buildAldersgrupper() {
