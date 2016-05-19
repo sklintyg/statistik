@@ -1,0 +1,55 @@
+/*
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
+ *
+ * This file is part of statistik (https://github.com/sklintyg/statistik).
+ *
+ * statistik is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * statistik is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+angular.module('StatisticsApp').directive('statScrollTable',
+    /** @ngInject */
+    function ($timeout) {
+        'use strict';
+
+        return {
+            restrict: 'E',
+            scope: {
+                rows: '=',
+                headerRows: '='
+            },
+            templateUrl: 'components/directives/statScrollTable/statScrollTable.html',
+            link: function($scope, element) {
+                $scope.$watch('rows', waitOn);
+                $scope.$watch('headerRows', waitOn);
+
+                function waitOn() {
+                    $timeout(setWidth);
+                }
+
+                function setWidth() {
+                    var columns = element.find('.headcol');
+
+                    var maxWidth = Math.max.apply( null, columns.map( function () {
+                        return $( this ).outerWidth( true );
+                    }).get() );
+
+                    // Add padding
+                    maxWidth += 7;
+
+                    columns.css('width', maxWidth + 'px');
+                    element.find('.scrolling').css('margin-left', maxWidth + 'px');
+                }
+            }
+        };
+    });

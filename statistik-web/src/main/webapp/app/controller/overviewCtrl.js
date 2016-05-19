@@ -172,7 +172,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             $timeout(function () {
                 updateCharts(result);
-            }, 1);
+            }, 100);
         }
 
         function paintBarChart(containerId, chartData) {

@@ -1,0 +1,33 @@
+td.scrollable {
+  white-space:nowrap;
+  margin:0;
+}
+thead tr td.headcol.scrollable:first-child {
+  height: 30px;
+}
+.headcol.scrollable {
+  position:absolute;
+  top:auto;
+  //width: 34em;
+  left:0;
+  text-align: left !important;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+.headcol-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 34em;
+}
+div.scrollable {
+  position: relative;
+}
+
+div.scrolling {
+  overflow-x:auto;
+  margin-left: 34em;
+  overflow-y:visible;
+  padding-bottom:1px;
+  font-size: 12px;
+}

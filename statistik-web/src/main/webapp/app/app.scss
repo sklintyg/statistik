@@ -1385,37 +1385,6 @@ table.datatable {
   width: 100%;
 }
 
-td.scrollable {
-    white-space:nowrap;
-    margin:0;
-}
-thead tr td.headcol.scrollable:first-child { height: 30px; }
-.headcol.scrollable {
-    position:absolute;
-    width: 34em;
-    top:auto;
-    left:0;
-    text-align: left !important;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-}
-.headcol-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 34em;
-}
-div.scrollable {
-    position: relative;
-}
-
-div.scrolling {
-    overflow-x:auto;  
-    margin-left: 34em;
-    overflow-y:visible;
-    padding-bottom:1px;
-    font-size: 12px;
-}
 .row-margin-bottom {
   margin-bottom: 15px;
 }
@@ -1811,4 +1780,5 @@ input[type="radio"], input[type="checkbox"] {
 @import 'directives/overviewWidget/overviewWidget.scss';
 @import 'directives/spinner/spinner.scss';
 @import 'directives/statCookieBanner/statCookieBanner.scss';
+@import 'directives/statScrollTable/statScrollTable.scss';
 // endinjector

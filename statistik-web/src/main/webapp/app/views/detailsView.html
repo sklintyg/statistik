@@ -186,29 +186,7 @@
                 <span data-ng-if="tableVisible"><span message key="lbl.dolj-tabell"></span></span>
                 <span data-ng-if="!tableVisible"><span message key="lbl.visa-tabell"></span></span>
               </accordion-heading>
-              <div class="scrollable">
-
-                <div class="scrolling">
-                  <table class="datatable table table-striped" sortable-table>
-                    <thead>
-                    <tr data-ng-repeat="headerrow in headerrows track by $index">
-                      <td class="scrollable details-table-data ellipsis details-th"
-                          data-ng-class="{headcol: $first, centeralign: headerrow.centerAlign, 'sorter-false': !$parent.$last || $first}"
-                          colspan="{{header.colspan}}" data-ng-repeat="header in headerrow" title="{{header.text}}"
-                          bindonce="header.text" style="padding-right: 20px; white-space: nowrap;"></td>
-                    </tr>
-                    </thead>
-                    <tbody class="table-condensed">
-                    <tr data-ng-repeat="row in rows" title="{{row.name}}">
-                      <td class="scrollable headcol"><span class="headcol-name" ng-class="{bold: row.marked}"
-                                                           bindonce="row.name"></span></td>
-                      <td class="scrollable" data-ng-repeat="fieldData in row.data track by $index"
-                          bindonce="fieldData | thousandseparated"></td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              <stat-scroll-table header-rows="headerrows" rows="rows"></stat-scroll-table>
             </accordion-group>
           </accordion>
         </div>
