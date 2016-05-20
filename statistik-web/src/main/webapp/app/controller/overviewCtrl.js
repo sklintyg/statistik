@@ -55,20 +55,18 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                                             '<div class="popover-content">' + $scope.popoverTextChangeCurrentVSPrevious + '</div>';
         };
 
+        var dataReceivedSuccess = function(result) {
+            $scope.subTitle = 'Utvecklingen i Sverige de senaste tre månaderna, ' + result.periodText;
+            setTooltipText(result);
+            $scope.statisticNotDone = false;
+            $scope.doneLoading = true;
+            $timeout(function() {
+                populatePageWithData(result);
+            }, 1);
+        };
+
         var dataReceived = function (result) {
-            $scope.errorPageUrl = null;
-            if (result === '') {
-                $scope.dataLoadingError = true;
-                $scope.errorPageUrl = 'app/views/error/statisticNotDone.html';
-            } else {
-                $scope.subTitle = 'Utvecklingen i Sverige de senaste tre månaderna, ' + result.periodText;
-                setTooltipText(result);
-                $scope.statisticNotDone = false;
-                $scope.doneLoading = true;
-                $timeout(function() {
-                    populatePageWithData(result);
-                }, 1);
-            }
+            ControllerCommons.checkNationalResult($scope, result, false, false, dataReceivedSuccess);
         };
 
         function paintPerMonthAlternationChart(alteration) {

@@ -92,34 +92,32 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             ControllerCommons.populateDetailsOptions(result, basePath, $scope, $routeParams, messageService, config);
         };
 
-        var populatePageWithData = function (result) {
-            $scope.errorPageUrl = null;
-            if (result === '' && !isVerksamhet && !isLandsting) {
-                $scope.dataLoadingError = true;
-                $scope.errorPageUrl = 'app/views/error/statisticNotDone.html';
-            } else {
-                var enhetsCount = (result.filter && result.filter.enheter) ? result.filter.enheter.length : null;
-                $scope.subTitle = config.title(result.period, enhetsCount);
-                ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser,
-                    result.allAvailableDxsSelectedInFilter,
-                    result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
-                $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
-                if (config.showDetailsOptions) {
-                    $scope.currentPeriod = result.period;
-                    statisticsData.getDiagnosisKapitelAndAvsnittAndKategori(populateDetailsOptions, function() {
-                        $window.alert('Kunde inte ladda data');
-                    });
-                }
-                $timeout(function() {
-                    ControllerCommons.updateDataTable($scope, result.tableData);
-                    updateChart(result.chartData, function() {
-                        $scope.doneLoading = true;
-                    });
-                    $timeout(function() {
-                        $rootScope.$broadcast('pageDataPopulated');
-                    });
-                }, 1);
+        var populatePageWithDataSuccess = function(result) {
+            var enhetsCount = (result.filter && result.filter.enheter) ? result.filter.enheter.length : null;
+            $scope.subTitle = config.title(result.period, enhetsCount);
+            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser,
+                result.allAvailableDxsSelectedInFilter,
+                result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+            $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
+            if (config.showDetailsOptions) {
+                $scope.currentPeriod = result.period;
+                statisticsData.getDiagnosisKapitelAndAvsnittAndKategori(populateDetailsOptions, function() {
+                    $window.alert('Kunde inte ladda data');
+                });
             }
+            $timeout(function() {
+                ControllerCommons.updateDataTable($scope, result.tableData);
+                updateChart(result.chartData, function() {
+                    $scope.doneLoading = true;
+                });
+                $timeout(function() {
+                    $rootScope.$broadcast('pageDataPopulated');
+                });
+            }, 1);
+        };
+        
+        var populatePageWithData = function (result) {
+            ControllerCommons.checkNationalResult($scope, result, isVerksamhet, isLandsting, populatePageWithDataSuccess);
         };
 
         function refreshVerksamhet() {

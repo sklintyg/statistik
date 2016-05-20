@@ -20,7 +20,7 @@
 angular.module('StatisticsApp').factory('statisticsData',
 
     /** @ngInject */
-    function ($http, $rootScope, $q, $location, _, $log) {
+    function ($http, $rootScope, $q, $location, _, $log, $cacheFactory) {
     'use strict';
 
     var factory = {};
@@ -42,6 +42,7 @@ angular.module('StatisticsApp').factory('statisticsData',
             try {
                 successCallback(result);
             } catch (e) {
+                $cacheFactory.get('$http').removeAll();
                 failureCallback();
             }
         }).error(function (/*data, status, headers, config*/) {

@@ -169,4 +169,57 @@ describe('Test of common functions for controllers', function() {
 
     });
 
+    describe('Test check nation result', function() {
+        var scope, result, called;
+        var successFunction = function() {
+            called = true;
+        };
+
+        beforeEach(function() {
+            called = false;
+            result = '';
+            scope = {};
+        });
+
+        it('Nationell and empty result', function() {
+            ControllerCommons.checkNationalResult(scope, result, false, false, successFunction);
+
+            expect(called).toBeFalsy();
+            expect(scope.dataLoadingError).toBeTruthy();
+            expect(scope.errorPageUrl).toBe('app/views/error/statisticNotDone.html');
+        });
+
+        it('Nationell and empty result checkCache', inject(function($cacheFactory) {
+            $cacheFactory.get('$http').put('test', 'hej');
+
+            expect($cacheFactory.get('$http').info().size).toBe(1);
+
+            ControllerCommons.checkNationalResult(scope, result, false, false, successFunction);
+
+            expect($cacheFactory.get('$http').info().size).toBe(0);
+        }));
+
+        it('Nationell and not result', function() {
+            result = {test: 'testData'};
+            ControllerCommons.checkNationalResult(scope, result, false, false, successFunction);
+
+            expect(called).toBeTruthy();
+            expect(scope.errorPageUrl).toBeNull();
+        });
+
+        it('Verksamhet and empty result', function() {
+            ControllerCommons.checkNationalResult(scope, result, true, false, successFunction);
+
+            expect(called).toBeTruthy();
+            expect(scope.errorPageUrl).toBeNull();
+        });
+
+        it('Landsting and empty result', function() {
+            ControllerCommons.checkNationalResult(scope, result, false, true, successFunction);
+
+            expect(called).toBeTruthy();
+            expect(scope.errorPageUrl).toBeNull();
+        });
+    });
+
 });

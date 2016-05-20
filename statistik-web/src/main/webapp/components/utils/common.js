@@ -20,7 +20,7 @@
 
 angular.module('StatisticsApp').factory('ControllerCommons',
     /** @ngInject */
-    function(_) {
+    function(_, $cacheFactory) {
         'use strict';
 
         var that = this;
@@ -354,6 +354,19 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             });
 
             return tableData;
+        };
+        
+        
+        this.checkNationalResult = function($scope, result, verksamhet, landsting, success) {
+            $scope.errorPageUrl = null;
+            if (result === '' && !verksamhet && !landsting) {
+                $scope.dataLoadingError = true;
+                $scope.errorPageUrl = 'app/views/error/statisticNotDone.html';
+
+                $cacheFactory.get('$http').removeAll();
+            } else {
+                success(result);
+            }
         };
 
         return this;
