@@ -63,7 +63,11 @@ angular.module('StatisticsApp').factory('statisticsData',
     function makeRequest(url, successCallback, failureCallback, httpMethod, notAbortable) {
         httpMethod = httpMethod ? httpMethod : 'get';
         var timeoutFunction = notAbortable ? null : newAbortable();
-        $http[httpMethod](url, {}, {cache: false, timeout: timeoutFunction}).success(function (result) {
+
+        var config = {cache: false, timeout: timeoutFunction};
+        var arg1 = httpMethod === 'get' ? config : {};
+
+        $http[httpMethod](url, arg1, config).success(function (result) {
             try {
                 successCallback(result);
             } catch (e) {
