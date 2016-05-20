@@ -12,7 +12,7 @@ Det finns län som saknar invånarantal och det finns intyg som har okända län
 | script | troskel varde | 1 |
 
 | Angivna invanarantal |
-| länkod | invånarantalKvinnor | invånarantalMän | datum      | kommentar |
+| länkod | kvinnor | män | datum      | kommentar |
 | 10     | 500                 | 500             | 2015-12-31 | Blekinge län |
 | 20     | 500                 | 500             | 2015-12-31 | Dalarnas län |
 | 13     | 500                 | 500             | 2015-12-31 | Hallands län |
@@ -53,20 +53,31 @@ Intyg med okänt län hamnar i gruppen "Okänt län".
 Antal sjukfall per 1000 invånare för Samtliga län beräknas: Antal sjukfall för alla län inkl. Okänt län delat med totalt invånarantal.
 
 | Sjukfall i rapporten lan |
-| län               | totalt? | kvinnor? | män? | antalInvånare? | antalInvånareKvinnor? | antalInvånareMän? | sjukfallPer1000Invånare? | sjukfallPer1000InvånareKvinnor? | sjukfallPer1000InvånareMän? |
-| Samtliga län      | 5       | 1        | 4    | 1000           | 500                   | 500               | 5,00                     | 2,00                            | 8,00                        |
-| Stockholms län    | 1       | 0        | 1    | 1000           | 500                   | 500               | 1,00                     | 0                               | 2,00                        |
-| Örebro län        | 0       | 0        | 0    | 1000           | 500                   | 500               | 0                        | 0                               | 0                           |
-| Östergötlands län | 1       | 0        | 1    | -              | -                     | -                 | -                        | -                               | -                           |
-| Okänt län         | 3       | 1        | 2    | 1000           | 500                   | 500               | -                        | -                               | -                           |
+| län               | kolumngrupp                | totalt? | kvinnor? | män? |
+| Samtliga län      | antal sjukfall             | 5       | 1        | 4    |
+| Samtliga län      | antal invånare             | 1000    | 500      | 500  |
+| Samtliga län      | sjukfall per 1000 invånare | 5,00    | 2,00     | 8,00 |
+| Stockholms län    | antal sjukfall             | 1       | 0        | 1    |
+| Stockholms län    | antal invånare             | 1000    | 500      | 500  |
+| Stockholms län    | sjukfall per 1000 invånare | 1,00    | 0,00     | 2,00 |
+| Örebro län        | antal sjukfall             | 0       | 0        | 0    |
+| Örebro län        | antal invånare             | 1000    | 500      | 500  |
+| Örebro län        | sjukfall per 1000 invånare | 0,00    | 0,00     | 0,00 |
+| Östergötlands län | antal sjukfall             | 1       | 0        | 1    |
+| Östergötlands län | antal invånare             | -       | -        | -    |
+| Östergötlands län | sjukfall per 1000 invånare | -       | -        | -    |
+| Okänt län         | antal sjukfall             | 3       | 1        | 2    |
+| Okänt län         | antal invånare             | 1000    | 500      | 500  |
+| Okänt län         | sjukfall per 1000 invånare | -       | -        | -    |
+
 
 | Sjukfall i rapporten lan diagram |
-| län               | sjukfallPer1000InvånareKvinnor? | sjukfallPer1000InvånareMän? | kommentar                          |
-| Samtliga län      | 2                               | 8                           |                                    |
-| Stockholms län    | 0                               | 2                           |                                    |
-| Örebro län        | 0                               | 0                           | Saknar intyg, men har invånarantal |
-| Östergötlands län | 0                               | 0                           | Saknar invånarantal, men har intyg |
-| Okänt län         | -1                              | -1                          |                                    |
+| län               | kvinnor? | män? | kommentar                          |
+| Samtliga län      | 2        | 8    |                                    |
+| Stockholms län    | 0        | 2    |                                    |
+| Örebro län        | 0        | 0    | Saknar intyg, men har invånarantal |
+| Östergötlands län | 0        | 0    | Saknar invånarantal, men har intyg |
+| Okänt län         | -1       | -1   |                                    |
 
 
 TEST#2
@@ -81,11 +92,11 @@ Det inte finns några intyg på "okänt län"
 "Okänt län" visas varken i diagram eller tabell.
 
 | Sjukfall i rapporten lan |
-| län            | totalt? |
-| Okänt län      | -1      |
+| län            | kolumngrupp    | totalt? |
+| Okänt län      | antal sjukfall | -1      |
 
 | Sjukfall i rapporten lan diagram |
-| län            | sjukfallPer1000InvånareKvinnor? | sjukfallPer1000InvånareMän? |
+| län            | kvinnor? | män? |
 | Okänt län      | -1                              | -1                          |
 
 
@@ -96,7 +107,7 @@ TEST#3
 Det finns invånarantal för samma län från två olika tidpunkter.
 
 | Angivna invanarantal |
-| länkod | invånarantalKvinnor | invånarantalMän | datum      | kommentar |
+| länkod | kvinnor | män | datum      | kommentar |
 | 10     | 1000                | 2000            | 2014-12-31 | Blekinge län |
 | 10     | 2000                | 1000            | 2015-12-31 | Blekinge län |
 
@@ -109,5 +120,5 @@ Det finns invånarantal för samma län från två olika tidpunkter.
 Det senaste invånarantalet används.
 
 | Sjukfall i rapporten lan |
-| län            | antalInvånareKvinnor? | antalInvånareMän? | kommentar |
-| Blekinge län   | 2000                  | 1000              | Senaste invånarantalet används |
+| län          | kolumngrupp    | kvinnor? | män? | kommentar |
+| Blekinge län | antal invånare | 2000     | 1000 | Senaste invånarantalet används |
