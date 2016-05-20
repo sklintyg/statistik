@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+IGNORED while waiting to be fixed after INTYG-2474
+
 Verifierar en buggfix.
 
 Testar att om två län har samma antal sjukfall, så visas båda två på översikten.

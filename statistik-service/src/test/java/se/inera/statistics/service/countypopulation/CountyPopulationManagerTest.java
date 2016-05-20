@@ -49,7 +49,7 @@ public class CountyPopulationManagerTest {
     public void testGetCountyPopulation() throws Exception {
         //Given
         final Query query = Mockito.mock(Query.class);
-        final CountyPopulationRow populationRow = new CountyPopulationRow("{\"01\": \"101\"}", LocalDate.parse("2016-04-24"));
+        final CountyPopulationRow populationRow = new CountyPopulationRow("{\"01\": {\"male\": \"202\", \"female\": \"101\"}}", LocalDate.parse("2016-04-24"));
         Mockito.when(query.getSingleResult()).thenReturn(populationRow);
         Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
 
@@ -62,7 +62,8 @@ public class CountyPopulationManagerTest {
         assertEquals(24, countyPopulation.getDate().getDayOfMonth());
 
         assertEquals(1, countyPopulation.getPopulationPerCountyCode().size());
-        assertEquals(101, countyPopulation.getPopulationPerCountyCode().get("01").intValue());
+        assertEquals(101, countyPopulation.getPopulationPerCountyCode().get("01").getFemale());
+        assertEquals(202, countyPopulation.getPopulationPerCountyCode().get("01").getMale());
     }
 
 }

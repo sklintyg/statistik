@@ -27,6 +27,7 @@ import java.util.List;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -49,21 +50,13 @@ public class SjukfallPerLanConverterTest {
         perCountyRows1.add(new SimpleKonDataRow(">50", 3, 9, "03"));
         SimpleKonResponse<SimpleKonDataRow> ageGroupsResponseNew = new SimpleKonResponse<>(perCountyRows1);
 
-//        ArrayList<SimpleKonDataRow> perCountyRowsOld = new ArrayList<>();
-//        perCountyRowsOld.add(new SimpleKonDataRow("<20", 3, 4));
-//        perCountyRowsOld.add(new SimpleKonDataRow("20-50", 4, 5));
-//        perCountyRowsOld.add(new SimpleKonDataRow(">50", 2, 8));
-//        SimpleKonResponse<SimpleKonDataRow> ageGroupsResponseOld = new SimpleKonResponse<>(perCountyRowsOld);
-
-//        LocalDate fromOld = new LocalDate(2013, 2, 1);
-//        LocalDate toOld = new LocalDate(2013, 4, 1);
         LocalDate fromNew = new LocalDate(2013, 5, 1);
         LocalDate toNew = new LocalDate(2013, 7, 1);
 
-        final HashMap<String, Integer> population = new HashMap<>();
-        population.put("01", 1000);
-        population.put("02", 1000);
-        population.put("03", 1000);
+        final HashMap<String, KonField> population = new HashMap<>();
+        population.put("01", new KonField(200, 800));
+        population.put("02", new KonField(200, 800));
+        population.put("03", new KonField(200, 800));
 
         CasesPerCountyConverter converter = new CasesPerCountyConverter(ageGroupsResponseNew, population, new Range(fromNew, toNew));
 
@@ -72,24 +65,26 @@ public class SjukfallPerLanConverterTest {
 
         //Then
         TableData tableDataResult = result.getTableData();
-        assertEquals("[[Län;1, Antal sjukfall;1, Antal invånare;1, Antal sjukfall per 1000 invånare;1]]", tableDataResult.getHeaders().toString());
+        assertEquals("[[;1, Antal sjukfall;3, Antal invånare;3, Antal sjukfall per 1000 invånare;3], [Län;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1]]", tableDataResult.getHeaders().toString());
         List<NamedData> rows = tableDataResult.getRows();
         assertEquals(4, rows.size());
         assertEquals("Samtliga län", rows.get(0).getName());
         assertEquals("<20", rows.get(1).getName());
         assertEquals("20-50", rows.get(2).getName());
         assertEquals(">50", rows.get(3).getName());
-        assertEquals("[78, 3000, 26,00]", rows.get(0).getData().toString());
-        assertEquals("[27, 1000, 27,00]", rows.get(1).getData().toString());
-        assertEquals("[39, 1000, 39,00]", rows.get(2).getData().toString());
-        assertEquals("[12, 1000, 12,00]", rows.get(3).getData().toString());
+        assertEquals("[78, 40, 38, 3000, 600, 2400, 26,00, 66,67, 15,83]", rows.get(0).getData().toString());
+        assertEquals("[27, 13, 14, 1000, 200, 800, 27,00, 65,00, 17,50]", rows.get(1).getData().toString());
+        assertEquals("[39, 24, 15, 1000, 200, 800, 39,00, 120,00, 18,75]", rows.get(2).getData().toString());
+        assertEquals("[12, 3, 9, 1000, 200, 800, 12,00, 15,00, 11,25]", rows.get(3).getData().toString());
 
         ChartData chartDataResult = result.getChartData();
         assertEquals("[Samtliga län, <20, 20-50, >50]", chartDataResult.getCategories().toString());
         List<ChartSeries> series = chartDataResult.getSeries();
-        assertEquals(1, series.size());
-        assertEquals("Antal sjukfall per 1000 invånare", series.get(0).getName());
-        assertEquals("[26.0, 27.0, 39.0, 12.0]", series.get(0).getData().toString());
+        assertEquals(2, series.size());
+        assertEquals("Kvinnor", series.get(0).getName());
+        assertEquals("[66.67, 65.0, 120.0, 15.0]", series.get(0).getData().toString());
+        assertEquals("Män", series.get(1).getName());
+        assertEquals("[15.83, 17.5, 18.75, 11.25]", series.get(1).getData().toString());
 
         assertEquals(new Range(fromNew, toNew).toString(), result.getPeriod());
     }

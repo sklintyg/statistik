@@ -32,6 +32,7 @@ import se.inera.statistics.service.countypopulation.CountyPopulationManager;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -208,7 +209,7 @@ public class ChartDataService {
     private void buildSjukfallPerLan() {
         Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
         SimpleKonResponse<SimpleKonDataRow> calculatedSjukfallPerLan = data.getSjukfallPerLan(range);
-        Map<String, Integer> populationPerCounty = countyPopulationManager.getCountyPopulation().getPopulationPerCountyCode();
+        Map<String, KonField> populationPerCounty = countyPopulationManager.getCountyPopulation().getPopulationPerCountyCode();
         sjukfallPerLan = new CasesPerCountyConverter(calculatedSjukfallPerLan, populationPerCounty, range).convert();
     }
 

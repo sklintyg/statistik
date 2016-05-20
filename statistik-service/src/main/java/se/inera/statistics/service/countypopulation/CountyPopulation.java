@@ -18,21 +18,23 @@
  */
 package se.inera.statistics.service.countypopulation;
 
+import se.inera.statistics.service.report.model.KonField;
+
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Map;
 
 public class CountyPopulation {
 
-    private Map<String, Integer> populationPerCountyCode;
+    private Map<String, KonField> populationPerCountyCode;
     private LocalDate date;
 
-    public CountyPopulation(Map<String, Integer> populationPerCountyCode, LocalDate date) {
+    public CountyPopulation(Map<String, KonField> populationPerCountyCode, LocalDate date) {
         this.populationPerCountyCode = populationPerCountyCode;
         this.date = date;
     }
 
-    public Map<String, Integer> getPopulationPerCountyCode() {
+    public Map<String, KonField> getPopulationPerCountyCode() {
         return populationPerCountyCode;
     }
 

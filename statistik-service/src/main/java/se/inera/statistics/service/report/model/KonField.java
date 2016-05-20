@@ -20,8 +20,14 @@ package se.inera.statistics.service.report.model;
 
 public class KonField {
 
-    private final int female;
-    private final int male;
+    private int female;
+    private int male;
+
+    /**
+     * Used by json parser.
+     */
+    private KonField() {
+    }
 
     public KonField(int female, int male) {
         this.female = female;

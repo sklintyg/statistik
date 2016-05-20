@@ -10,6 +10,7 @@ import org.codehaus.groovy.runtime.MethodClosure
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import se.inera.statistics.service.countypopulation.CountyPopulation
+import se.inera.statistics.service.report.model.KonField
 import se.inera.statistics.web.service.FilterData
 import se.inera.testsupport.Intyg
 import se.inera.testsupport.Personal
@@ -104,7 +105,7 @@ class ReportsUtil {
         assert response.status == 200
     }
 
-    def insertCountyPopulation(Map<String, Integer> countyPopulation, String date) {
+    def insertCountyPopulation(Map<String, KonField> countyPopulation, String date) {
         def builder = new JsonBuilder(countyPopulation)
         def response = statistik.put(path: '/api/testsupport/countyPopulation/' + date, body: builder.toString())
         assert response.status == 200

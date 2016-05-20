@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+IGNORED while waiting to be fixed after INTYG-2474
+
 !3 Givet att:
 
 Följande sjukfall finns:

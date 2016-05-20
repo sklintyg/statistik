@@ -36,6 +36,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
+import se.inera.statistics.service.report.model.KonField;
 
 @Component
 public class CountyPopulationManager {
@@ -52,8 +53,8 @@ public class CountyPopulationManager {
         query.setMaxResults(1);
         try {
             final CountyPopulationRow populationRow = (CountyPopulationRow) query.getSingleResult();
-            final MapType mapType = mapper.getTypeFactory().constructMapType(HashMap.class, String.class, Integer.class);
-            final Map<String, Integer> populationData = mapper.readValue(new StringReader(populationRow.getData()), mapType);
+            final MapType mapType = mapper.getTypeFactory().constructMapType(HashMap.class, String.class, KonField.class);
+            final Map<String, KonField> populationData = mapper.readValue(new StringReader(populationRow.getData()), mapType);
             return new CountyPopulation(populationData, populationRow.getDate());
         } catch (NoResultException e) {
             LOG.error("County population is missing!");
@@ -67,7 +68,7 @@ public class CountyPopulationManager {
     /**
      * Currently only used for testing.
      */
-    public boolean insertCountyPopulation(Map<String, Integer> countyPopulation, String date) {
+    public boolean insertCountyPopulation(Map<String, KonField> countyPopulation, String date) {
         try {
             final String populationData = mapper.writeValueAsString(countyPopulation);
             final CountyPopulationRow entity = new CountyPopulationRow(populationData, LocalDate.parse(date));

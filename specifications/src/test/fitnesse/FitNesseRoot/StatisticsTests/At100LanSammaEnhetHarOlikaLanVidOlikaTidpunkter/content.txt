@@ -1,5 +1,8 @@
 !contents -R2 -g -p -f -h
 
+IGNORED while waiting to be fixed after INTYG-2474
+
+
 !3 Givet att:
 
 Sjukfall där samma enhet har olika angivelse om län vid olika tidpunkter.

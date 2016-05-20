@@ -3,8 +3,7 @@ package se.inera.statistics.spec
 abstract class LanRapport extends Rapport {
 
     String län
-    def antalInvånare
-    def sjukfallPer1000Invånare
+    String kolumngrupp
 
     def antalInvånare() {
         return antalInvånare
@@ -17,14 +16,21 @@ abstract class LanRapport extends Rapport {
     public void executeDiagram(report) {
         def index = report.chartData.categories.findIndexOf { item -> item.name.equals(län) }
         markerad = report.chartData.categories[index].marked
-        sjukfallPer1000Invånare = index < 0 ? -1 : report.chartData.series[0].data[index]
+        kvinnor = index < 0 ? -1 : report.chartData.series[0].data[index]
+        män = index < 0 ? -1 : report.chartData.series[1].data[index]
     }
 
     public void executeTabell(report) {
+        def headerIndex = report.tableData.headers[0].findIndexOf { item ->
+            item.text != null && item.text.toLowerCase(Locale.ENGLISH).contains(kolumngrupp.toLowerCase(Locale.ENGLISH))
+        }
         def row = report.tableData.rows.find { currentRow -> currentRow.name == (län)  }
-        totalt = row == null ? -1 : row.data[0]
-        antalInvånare = row == null ? -1 : row.data[1]
-        sjukfallPer1000Invånare = row == null ? -1 : row.data[2]
+        def totalIndex = ((headerIndex - 1) * 3)
+        def womenIndex = totalIndex + 1
+        def menIndex = womenIndex + 1
+        totalt = row == null ? -1 : row.data[totalIndex]
+        kvinnor = row == null ? -1 : row.data[womenIndex]
+        män = row == null ? -1 : row.data[menIndex]
         markerad = row == null ? false : row.marked
     }
 

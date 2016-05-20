@@ -47,7 +47,7 @@ public class ChartSeries {
         this(name, data, stack, null);
     }
 
-    public ChartSeries(String name, List<Integer> data, boolean stacked, Kon sex) {
+    public ChartSeries(String name, List<? extends Number> data, boolean stacked, Kon sex) {
         this(name, data, getStackValue(stacked), sex);
     }
 

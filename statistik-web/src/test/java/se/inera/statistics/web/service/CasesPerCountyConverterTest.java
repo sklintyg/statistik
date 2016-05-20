@@ -19,6 +19,7 @@
 package se.inera.statistics.web.service;
 
 import org.junit.Test;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -40,8 +41,8 @@ public class CasesPerCountyConverterTest {
         final String lanCode = "01";
         simpleKonDataRows.add(new SimpleKonDataRow(name, 1, 2, lanCode));
         final SimpleKonResponse<SimpleKonDataRow> sjukfallPerLan = new SimpleKonResponse<>(simpleKonDataRows);
-        final HashMap<String, Integer> populationPerCounty = new HashMap<>();
-        populationPerCounty.put(lanCode, 500);
+        final HashMap<String, KonField> populationPerCounty = new HashMap<>();
+        populationPerCounty.put(lanCode, new KonField(300, 200));
         final Range range = Range.year();
         final CasesPerCountyConverter converter = new CasesPerCountyConverter(sjukfallPerLan, populationPerCounty, range);
 
@@ -51,17 +52,18 @@ public class CasesPerCountyConverterTest {
         //Then
         assertEquals("Samtliga län", result.getChartData().getCategories().get(0).getName());
         assertEquals(name, result.getChartData().getCategories().get(1).getName());
-        assertEquals("Antal sjukfall per 1000 invånare", result.getChartData().getSeries().get(0).getName());
-        assertEquals(6.00, result.getChartData().getSeries().get(0).getData().get(0));
+        assertEquals("Kvinnor", result.getChartData().getSeries().get(0).getName());
+        assertEquals(3.33, result.getChartData().getSeries().get(0).getData().get(0));
 
         assertEquals("Samtliga län", result.getTableData().getRows().get(0).getName());
-        assertEquals(name, result.getTableData().getRows().get(1).getName());
         assertEquals(3, result.getTableData().getRows().get(0).getData().get(0));
-        assertEquals(500, result.getTableData().getRows().get(0).getData().get(1));
-        assertEquals("6,00", result.getTableData().getRows().get(0).getData().get(2));
+        assertEquals(500, result.getTableData().getRows().get(0).getData().get(3));
+        assertEquals("6,00", result.getTableData().getRows().get(0).getData().get(6));
+
+        assertEquals(name, result.getTableData().getRows().get(1).getName());
         assertEquals(3, result.getTableData().getRows().get(1).getData().get(0));
-        assertEquals(500, result.getTableData().getRows().get(1).getData().get(1));
-        assertEquals("6,00", result.getTableData().getRows().get(1).getData().get(2));
+        assertEquals(500, result.getTableData().getRows().get(1).getData().get(3));
+        assertEquals("6,00", result.getTableData().getRows().get(1).getData().get(6));
     }
 
 }

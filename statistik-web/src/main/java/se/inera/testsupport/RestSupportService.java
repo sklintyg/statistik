@@ -52,6 +52,7 @@ import se.inera.statistics.service.landsting.persistance.landsting.LandstingMana
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.NationellData;
@@ -266,7 +267,7 @@ public class RestSupportService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     @Transactional
-    public Response insertCountyPopulation(Map<String, Integer> countyPopulation, @PathParam("date") String date) {
+    public Response insertCountyPopulation(Map<String, KonField> countyPopulation, @PathParam("date") String date) {
         LOG.info("For date: {}, insert county population: {}", date, countyPopulation);
         final boolean success = countyPopulationManager.insertCountyPopulation(countyPopulation, date);
         return Response.ok(success).build();
