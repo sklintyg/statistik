@@ -612,6 +612,10 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 
   &.sorter-false {
     padding: 4px;
+
+    &.headcol {
+      padding: 7px;
+    }
   }
 }
 

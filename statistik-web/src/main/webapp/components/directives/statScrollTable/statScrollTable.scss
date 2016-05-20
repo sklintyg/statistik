@@ -2,9 +2,11 @@ td.scrollable {
   white-space:nowrap;
   margin:0;
 }
+
 thead tr td.headcol.scrollable:first-child {
   height: 30px;
 }
+
 .headcol.scrollable {
   position:absolute;
   top:auto;
@@ -15,11 +17,13 @@ thead tr td.headcol.scrollable:first-child {
   display: -ms-flexbox;
   display: flex;
 }
+
 .headcol-name {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 34em;
 }
+
 div.scrollable {
   position: relative;
 }
