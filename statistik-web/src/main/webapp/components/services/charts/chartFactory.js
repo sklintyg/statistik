@@ -36,14 +36,14 @@ angular.module('StatisticsApp').factory('chartFactory',
             };
         };
 
-        var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback) {
+        var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback, overview) {
 
             var options = {
                 chart : {
                     renderTo : 'chart1',
                     backgroundColor : null, //transparent
                     plotBorderWidth: 1,
-                    marginLeft: 80
+                    marginLeft: overview ? null : 80
                 },
                 title: {
                     text: null,

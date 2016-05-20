@@ -65,7 +65,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
                     [1]
                 ]
             }
-        ]);
+        ], null, true);
 
         chartOptions.chart.renderTo = 'alterationChart';
         chartOptions.chart.type = 'pie';
@@ -114,7 +114,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             }
         ];
 
-        chartOptions = chartFactory.getHighChartConfigBase([], series);
+        chartOptions = chartFactory.getHighChartConfigBase([], series, null, true);
         chartOptions.chart.type = 'pie';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 220;
@@ -150,7 +150,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     };
 
     var paintDonutChart = function(containerId, chartData, tooltipHeaderPrefix) {
-        var chartOptions = chartFactory.getHighChartConfigBase([], []);
+        var chartOptions = chartFactory.getHighChartConfigBase([], [], null, true);
         chartOptions.chart.type = 'pie';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 180;
@@ -235,7 +235,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             return {name: e.name};
         });
 
-        chartOptions = chartFactory.getHighChartConfigBase(categories, series);
+        chartOptions = chartFactory.getHighChartConfigBase(categories, series, null, true);
         chartOptions.chart.type = 'column';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 240;

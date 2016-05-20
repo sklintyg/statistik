@@ -74,7 +74,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                 { data: [
                     [ 1 ]
                 ] }
-            ]);
+            ], null, true);
             chartOptions.chart.renderTo = 'alterationChart';
             chartOptions.chart.type = 'pie';
             chartOptions.chart.height = 210;
@@ -119,7 +119,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                     }
                 }
             ];
-            var chartOptions = chartFactory.getHighChartConfigBase([], series);
+            var chartOptions = chartFactory.getHighChartConfigBase([], series, null, true);
 
             chartOptions.chart.type = 'pie';
             chartOptions.chart.renderTo = containerId;
@@ -186,7 +186,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             var categories = _.map(chartData, function (e) {
                 return {name: e.name};
             });
-            var chartOptions = chartFactory.getHighChartConfigBase(categories, series);
+            var chartOptions = chartFactory.getHighChartConfigBase(categories, series, null, true);
             chartOptions.chart.type = 'column';
             chartOptions.chart.renderTo = containerId;
             chartOptions.chart.height = 240;
@@ -208,7 +208,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                 ], color: e.color, name: ControllerCommons.htmlsafe(e.name) };
             });
 
-            var chartOptions = chartFactory.getHighChartConfigBase([], series);
+            var chartOptions = chartFactory.getHighChartConfigBase([], series, null, true);
             chartOptions.chart = {
                 renderTo: containerId,
                 height: 350,
