@@ -305,9 +305,19 @@ angular.module('StatisticsApp')
             return rawData;
         };
 
+        var setColorToTotalCasesSeries = function (series) {
+            for (var i = 0; i < series.length; i++) {
+                if (series[i].sex === null) {
+                    series[i].color = COLORS.total;
+                    break;
+                }
+            }
+        };
+
         //This is the public api accessible to customers of this factory
         return {
             addColor: addColor,
+            setColorToTotalCasesSeries: setColorToTotalCasesSeries,
             getHighChartConfigBase: getHighChartConfigBase,
             exportChart: exportChart,
             switchChartType: switchChartType,

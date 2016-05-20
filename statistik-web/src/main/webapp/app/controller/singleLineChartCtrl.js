@@ -50,19 +50,11 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
 
             return new Highcharts.Chart(chartOptions);
         };
-
-        var setColorToTotalCasesSeries = function (series) {
-            for (var i = 0; i < series.length; i++) {
-                if (series[i].sex === null) {
-                    series[i].color = '#5d5d5d';
-                    break;
-                }
-            }
-        };
+        
 
         var updateChart = function (ajaxResult, doneLoadingCallback) {
             $scope.series = chartFactory.addColor(ajaxResult.series);
-            setColorToTotalCasesSeries($scope.series);
+            chartFactory.setColorToTotalCasesSeries($scope.series);
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
         };
 

@@ -69,6 +69,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
 
         var updateChart = function (ajaxResult, doneLoadingCallback) {
             $scope.series = chartFactory.addColor(ajaxResult.series);
+            chartFactory.setColorToTotalCasesSeries($scope.series);
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
         };
 

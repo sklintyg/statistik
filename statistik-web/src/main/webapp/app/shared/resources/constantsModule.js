@@ -55,6 +55,7 @@
     var colors = {
         male: ['#008391', '#90cad0'],
         female: ['#EA8025', '#f6c08d'],
+        total: '#5D5D5D',
         other: [
             '#E11964',
             '#032C53',

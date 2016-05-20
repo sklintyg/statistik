@@ -102,6 +102,26 @@ describe('Test of common print services', function() {
             expect(list[0].color).toBe('#EA8025');
             expect(list[1].color).toBe('#f6c08d');
         });
+
+        it('set grey color on none sex series', function () {
+            //given
+            var list = [{id: 1, sex: 'Male'}, {id: 2, sex: 'Female'}, {id: 2, sex: null}];
+
+            //when
+            chartFactory.addColor(list);
+
+            //then
+            expect(list[0].color).toBe('#008391');
+            expect(list[1].color).toBe('#EA8025');
+            expect(list[2].color).toBe('#E11964');
+            
+            
+            //when 
+            chartFactory.setColorToTotalCasesSeries(list);
+            
+            //then
+            expect(list[2].color).toBe('#5D5D5D');
+        });
     });
 
 });
