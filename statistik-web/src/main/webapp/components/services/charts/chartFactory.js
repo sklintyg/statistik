@@ -17,11 +17,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp')
-    .factory('chartFactory',
-        /** @ngInject */
-        function(COLORS, _, ControllerCommons, $window, AppModel) {
-        'use strict';
+angular.module('StatisticsApp').factory('chartFactory',
+    /** @ngInject */
+    function(COLORS, _, ControllerCommons, $window, AppModel) {
+    'use strict';
+
+        var labelFormatter = function(maxWidth) {
+
+            return function() {
+                //If the label is more than 30 characters then cut the text and add ellipsis
+                var numberOfChars = maxWidth;
+
+                if (this.isFirst) {
+                    numberOfChars = maxWidth-10;
+                }
+
+                return this.value.length > numberOfChars ? this.value.substring(0, numberOfChars) + '...' : this.value;
+            };
+        };
 
         var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback) {
 
@@ -29,7 +42,8 @@ angular.module('StatisticsApp')
                 chart : {
                     renderTo : 'chart1',
                     backgroundColor : null, //transparent
-                    plotBorderWidth: 1
+                    plotBorderWidth: 1,
+                    marginLeft: 80
                 },
                 title: {
                     text: null,
@@ -66,10 +80,7 @@ angular.module('StatisticsApp')
                             whiteSpace: 'pre',
                             width: '200px'
                         },
-                        formatter: function() {
-                            //If the label is more than 30 characters then cut the text and add ellipsis
-                            return this.value.length > 30 ? this.value.substring(0,30) + '...' : this.value;
-                        }
+                        formatter: labelFormatter(30)
                     },
                     categories : _.map(chartCategories, function(category) {
                         var name = ControllerCommons.htmlsafe(category.name);
@@ -195,6 +206,7 @@ angular.module('StatisticsApp')
                 height: 400,
                 width: 600
             };
+
             if (title) {
                 extendedChartOptions.title = {
                     text: title
