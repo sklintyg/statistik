@@ -16,12 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.hsa.stub;
+package se.inera.statistics.service.hsa;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import se.inera.statistics.hsa.model.Vardenhet;
+import se.inera.statistics.hsa.services.Medarbetaruppdrag;
 
 /**
  * @author rlindsjo

@@ -27,7 +27,6 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
-import se.inera.statistics.hsa.stub.Medarbetaruppdrag;
 import se.riv.infrastructure.directory.authorizationmanagement.v1.GetCredentialsForPersonIncludingProtectedPersonResponseType;
 import se.riv.infrastructure.directory.v1.CommissionType;
 import se.riv.infrastructure.directory.v1.CredentialInformationType;

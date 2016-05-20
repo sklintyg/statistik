@@ -29,8 +29,11 @@
     <context:property-placeholder location="file:${statistics.credentials.file}, file:${statistics.config.file}"
                                   order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
 
-    <beans profile="dev">
-      <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
+    <beans profile="hsa-stub">
+        <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
+        <bean class="se.inera.statistics.service.hsa.HsaServiceStub"/>
+        <bean class="se.inera.statistics.service.hsa.BootstrapBean"/>
+        <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
     </beans>
 
     <beans>
@@ -76,8 +79,6 @@
 
         <import resource="classpath*:hsa-services-config.xml"/>
         <import resource="classpath*:hsaws-services-config.xml"/>
-      <!--  <import resource="classpath*:hsa-stub-context.xml"/>        -->
-        <import resource="classpath*:hsaws-stub-context.xml"/>
         <import resource="classpath*:icd10.xml"/>
         <import resource="application-context-cxf.xml"/>
         <import resource="application-context-security.xml"/>
