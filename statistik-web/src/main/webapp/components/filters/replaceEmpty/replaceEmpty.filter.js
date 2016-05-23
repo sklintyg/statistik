@@ -17,20 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').directive('sortableTable',
-    /** @ngInject */
-    function () {
-    'use strict';
+angular.module('StatisticsApp').filter('replaceEmpty',
 
-    return {
-        link: function(scope, elm) {
-            
-            scope.$on('pageDataPopulated', function () {
-                elm.tablesorter({
-                    sortReset: true,
-                    sortInitialOrder: 'desc'
-                });
-            });
-        }
-    };
-});
+    /** @ngInject */
+    function() {
+        'use strict';
+
+        return function(input) {
+            return input === '-' ? -1 : input;
+        };
+    }
+);

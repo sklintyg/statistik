@@ -48,6 +48,6 @@ app.run(
             script.type = 'text/javascript';
             script.src = 'js/lib/vfs_fonts.js';
             $('body').append( script );
-        }, 5000);
+        }, 2500);
     }
 );
