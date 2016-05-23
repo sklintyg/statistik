@@ -31,7 +31,8 @@ angular.module('StatisticsApp')
                 detailsOptions3: '=',
                 selectedDetailsOption: '=',
                 selectedDetailsOption2: '=',
-                selectedDetailsOption3: '='
+                selectedDetailsOption3: '=',
+                queryString: '='
             },
             restrict: 'E',
             templateUrl: 'components/directives/diagnosSelection/diagnosSelection.html',
