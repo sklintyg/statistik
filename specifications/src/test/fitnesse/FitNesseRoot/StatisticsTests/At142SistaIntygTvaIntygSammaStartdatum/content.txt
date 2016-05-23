@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
 
-IGNORED while waiting to be fixed after INTYG-2474. Här saknas även tabell för att sätta upp invånarantal.
-
 !3 Givet att:
 
 Ett sjukfall består av två intyg med samma startdatum.
@@ -11,11 +9,6 @@ Ett sjukfall består av två intyg med samma startdatum.
 | script | troskel varde | 1 |
 
 | script | ta bort existerande intyg |
-
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet  | län |
-| 19790717-9191 | G01 | 2015-02-15 | 2015-03-15 | enhet1 | 01  |
-| 19790717-9191 | G01 | 2015-02-20 | 2015-02-27 | enhet2 | 03  |
 
 | Foljande lakare finns |
 | id      | förnamn | efternamn | kön | ålder | befattningar   | kommentar |
@@ -59,9 +52,9 @@ Nationell:
 | 2013 | mar   | 50 %               | 0    | 1        |
 
 | Sjukfall i rapporten lan |
-| län            | totalt? | antalInvånare? | sjukfallPer1000Invånare? |
-| Stockholms län | 0    | 1000        | 0,00 |
-| Uppsala län    | 1    | 1000        | 1,00 |
+| län            | kolumngrupp    | totalt? | kvinnor? | män? |
+| Stockholms län | antal sjukfall | 0    | 0        | 0 |
+| Uppsala län    | antal sjukfall | 1    | 1        | 0 |
 
 | Sjukfall i rapporten andel sjukfall per kon |
 | län            | totalt? | män?    | kvinnor?  |

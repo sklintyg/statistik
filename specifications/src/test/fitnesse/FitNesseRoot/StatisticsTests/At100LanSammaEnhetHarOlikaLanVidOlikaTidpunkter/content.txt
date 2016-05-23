@@ -1,8 +1,5 @@
 !contents -R2 -g -p -f -h
 
-IGNORED while waiting to be fixed after INTYG-2474
-
-
 !3 Givet att:
 
 Sjukfall där samma enhet har olika angivelse om län vid olika tidpunkter.
@@ -10,11 +7,6 @@ Sjukfall där samma enhet har olika angivelse om län vid olika tidpunkter.
 | script | dagens datum | 2013-08-06 |
 
 | script | troskel varde | 1 |
-
-| Angivna invanarantal |
-| länkod | invånarantal | datum      | kommentar |
-| 06     | 1000         | 2015-12-31 | Jönköpings län |
-| 01     | 1000         | 2015-12-31 | Stockholms län |
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | län |
@@ -27,6 +19,6 @@ Sjukfallen visas för det län som finns angivet vid utfärdandetidpunkten, dvs.
 
 Nationell:
 | Sjukfall i rapporten lan |
-| län                  | totalt? | antalInvånare? | sjukfallPer1000Invånare? |
-| Stockholms län       | 1       | 1000    | 1,00        |
-| Jönköpings län       | 1       | 1000    | 1,00        |
+| län                  | kolumngrupp    | totalt? | kvinnor? | män? |
+| Stockholms län       | antal sjukfall | 1       | 0     | 1        |
+| Jönköpings län       | antal sjukfall | 1       | 0     | 1        |

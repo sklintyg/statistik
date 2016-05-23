@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
 
-IGNORED while waiting to be fixed after INTYG-2474. Här saknas även en tabell för att sätta upp invånarantalet (testet funkade tidigare pga att något annat test redan satt upp detta, men varje test för sätta upp sin egen data för att inte vara beroende av något annat test).
-
 !3 Givet att:
 
 Ett sjukfall består av två intyg, där det andra börjar efter det första och slutar innan det första. Månadsbrytning mellan intygens slutdatum.
@@ -21,9 +19,9 @@ Rapporten Län som har perioden mars 15-feb 16, visar sjukfallet i Stockholm (ef
 
 Nationell:
 | Sjukfall i rapporten lan |
-| län            | totalt? | antalInvånare? | sjukfallPer1000Invånare? |
-| Stockholms län | 1    | 1000        | 1,00 |
-| Uppsala län    | 0    | 1000        | 0,00 |
+| län            | kolumngrupp    | totalt? | kvinnor? | män? |
+| Stockholms län | antal sjukfall | 1    | 0        | 1 |
+| Uppsala län    | antal sjukfall | 0    | 0        | 0 |
 
 | Sjukfall i rapporten andel sjukfall per kon |
 | län            | totalt? | män?      | kvinnor? |
