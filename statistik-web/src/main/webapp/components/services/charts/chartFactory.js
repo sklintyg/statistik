@@ -204,7 +204,8 @@ angular.module('StatisticsApp').factory('chartFactory',
             }
             extendedChartOptions.chart = {
                 height: 400,
-                width: 600
+                width: 600,
+                marginLeft: 90
             };
 
             if (title) {
