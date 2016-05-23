@@ -34,6 +34,8 @@ import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.FilteredDataReport;
+import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableDataReport;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,6 +48,8 @@ public class ResponseHandler {
     public static final String ALL_AVAILABLE_DXS_SELECTED_IN_FILTER = "allAvailableDxsSelectedInFilter";
     public static final String ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER = "allAvailableEnhetsSelectedInFilter";
     public static final String FILTERED_ENHETS = "filteredEnhets";
+    public static final int LIMIT_FOR_TOO_MUCH_DATA_MESSAGE = 100;
+    public static final String MESSAGE_KEY = "message";
 
     @Autowired
     private Icd10 icd10;
@@ -73,7 +77,32 @@ public class ResponseHandler {
         final List<String> enhetNames = allAvailableEnhetsSelectedInFilter ? getEnhetNames(availableEnhetsForUser) : getEnhetNamesFromFilter(result.getFilter());
         mappedResult.put(FILTERED_ENHETS, enhetNames);
 
+        if (result instanceof TableDataReport) {
+            final TableDataReport detailReport = (TableDataReport) result;
+            if (containsMoreDataThanLimit(detailReport, LIMIT_FOR_TOO_MUCH_DATA_MESSAGE)) {
+                mappedResult.put(MESSAGE_KEY, "Rapporten innehåller mycket data, vilket kan göra diagrammet svårt att läsa. Överväg att filtrera resultatet för att minska mängden data.");
+            }
+        }
+
         return Response.ok(mappedResult).build();
+    }
+
+    private boolean containsMoreDataThanLimit(TableDataReport detailReport, int limitForTooMuchDataMessage) {
+        if (detailReport == null) {
+            return false;
+        }
+
+        final TableData tableData = detailReport.getTableData();
+        if (tableData == null) {
+            return false;
+        }
+
+        final List<NamedData> rows = tableData.getRows();
+        if (rows == null) {
+            return false;
+        }
+
+        return rows.size() >= limitForTooMuchDataMessage;
     }
 
     private boolean areAllAvailableEnhetsSelectedInFilter(FilterDataResponse filter, List<HsaIdEnhet> availableEnhetsForUser) {
