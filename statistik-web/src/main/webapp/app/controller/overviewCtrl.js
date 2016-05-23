@@ -155,15 +155,17 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             degreeOfSickLeaveChart = paintDonutChart('degreeOfSickLeaveChart', degreeOfSickLeaveDonutData, null, ' %');
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
-            chartFactory.addColor(result.sickLeaveLength.chartData);
-            sickLeaveLengthChart = paintBarChart('sickLeaveLengthChart', result.sickLeaveLength.chartData);
+            $timeout(function() {
+                chartFactory.addColor(result.sickLeaveLength.chartData);
+                sickLeaveLengthChart = paintBarChart('sickLeaveLengthChart', result.sickLeaveLength.chartData);
 
-            $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
-            $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
+                $scope.longSickLeavesTotal = result.sickLeaveLength.longSickLeavesTotal;
+                $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
 
-            chartFactory.addColor(result.perCounty);
-            sickLeavePerCountyChart = paintSickLeavePerCountyChart('sickLeavePerCountyChart', result.perCounty);
-            $scope.sickLeavePerCountyGroups = result.perCounty;
+                chartFactory.addColor(result.perCounty);
+                sickLeavePerCountyChart = paintSickLeavePerCountyChart('sickLeavePerCountyChart', result.perCounty);
+                $scope.sickLeavePerCountyGroups = result.perCounty;
+            }, 100);
         };
 
         function populatePageWithData(result) {
