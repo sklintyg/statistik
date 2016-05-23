@@ -27,6 +27,7 @@ import java.util.List;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
+import se.inera.statistics.service.countypopulation.CountyPopulation;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -58,7 +59,9 @@ public class SjukfallPerLanConverterTest {
         population.put("02", new KonField(200, 800));
         population.put("03", new KonField(200, 800));
 
-        CasesPerCountyConverter converter = new CasesPerCountyConverter(ageGroupsResponseNew, population, new Range(fromNew, toNew));
+        final CountyPopulation countyPopulation = new CountyPopulation(population, java.time.LocalDate.now());
+
+        CasesPerCountyConverter converter = new CasesPerCountyConverter(ageGroupsResponseNew, countyPopulation, new Range(fromNew, toNew));
 
         //When
         CasesPerCountyData result = converter.convert();

@@ -18,13 +18,14 @@
  */
 package se.inera.statistics.web.service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import se.inera.statistics.service.countypopulation.CountyPopulation;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Lan;
@@ -55,12 +56,12 @@ public class CasesPerCountyConverter {
     public static final int COLSPAN = 3;
     private final SimpleKonResponse<SimpleKonDataRow> resp;
     private final Range range;
-    private final Map<String, KonField> populationPerCounty;
+    private final CountyPopulation countyPopulation;
 
-    public CasesPerCountyConverter(SimpleKonResponse<SimpleKonDataRow> sjukfallPerLan, Map<String, KonField> populationPerCounty, Range range) {
+    public CasesPerCountyConverter(SimpleKonResponse<SimpleKonDataRow> sjukfallPerLan, CountyPopulation countyPopulation, Range range) {
         this.resp = sjukfallPerLan;
         this.range = range;
-        this.populationPerCounty = populationPerCounty;
+        this.countyPopulation = countyPopulation;
     }
 
     private TableData convertToTable() {
@@ -72,7 +73,7 @@ public class CasesPerCountyConverter {
         for (int i = 0; i < resp.getRows().size(); i++) {
             SimpleKonDataRow row = resp.getRows().get(i);
 
-            final KonField populationObject = populationPerCounty.get(row.getExtras().toString());
+            final KonField populationObject = countyPopulation.getPopulationPerCountyCode().get(row.getExtras().toString());
 
             final int totalNumberOfSjukfall = row.getFemale() + row.getMale();
             final int totalPopulation = populationObject == null ? 0 : populationObject.getMale() + populationObject.getFemale();
@@ -114,15 +115,15 @@ public class CasesPerCountyConverter {
 
     private List<Object> getSamtligaLanRowData() {
         final int totalSjukfall = resp.getRows().stream().mapToInt(value -> value.getFemale() + value.getMale()).sum();
-        final int totalPopulation = populationPerCounty.values().stream().mapToInt(value -> value.getFemale() + value.getMale()).sum();
+        final int totalPopulation = countyPopulation.getPopulationPerCountyCode().values().stream().mapToInt(value -> value.getFemale() + value.getMale()).sum();
         final String totalSjukfallPerKPopulationForAllLan = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimalsAndFormatToString(((float) totalSjukfall) / (totalPopulation / THOUSAND));
 
         final int femaleSjukfall = resp.getRows().stream().mapToInt(value -> value.getFemale()).sum();
-        final int femalePopulation = populationPerCounty.values().stream().mapToInt(value -> value.getFemale()).sum();
+        final int femalePopulation = countyPopulation.getPopulationPerCountyCode().values().stream().mapToInt(value -> value.getFemale()).sum();
         final String femaleSjukfallPerKPopulationForAllLan = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimalsAndFormatToString(((float) femaleSjukfall) / (femalePopulation / THOUSAND));
 
         final int maleSjukfall = resp.getRows().stream().mapToInt(value -> value.getMale()).sum();
-        final int malePopulation = populationPerCounty.values().stream().mapToInt(value -> value.getMale()).sum();
+        final int malePopulation = countyPopulation.getPopulationPerCountyCode().values().stream().mapToInt(value -> value.getMale()).sum();
         final String maleSjukfallPerKPopulationForAllLan = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimalsAndFormatToString(((float) maleSjukfall) / (malePopulation / THOUSAND));
 
         return Arrays.asList(
@@ -171,26 +172,26 @@ public class CasesPerCountyConverter {
 
     private double getSjukfallPerKPopulationForAllLanFemale(List<SimpleKonDataRow> rows) {
         final int totalSjukfall = rows.stream().mapToInt(SimpleKonDataRow::getFemale).sum();
-        final int totalPopulation = populationPerCounty.values().stream().mapToInt(KonField::getFemale).sum();
+        final int totalPopulation = countyPopulation.getPopulationPerCountyCode().values().stream().mapToInt(KonField::getFemale).sum();
         return calculateSjukfallPerKPopulation(totalSjukfall, totalPopulation);
     }
 
     private double getSjukfallPerKPopulationForAllLanMale(List<SimpleKonDataRow> rows) {
         final int totalSjukfall = rows.stream().mapToInt(SimpleKonDataRow::getMale).sum();
-        final int totalPopulation = populationPerCounty.values().stream().mapToInt(KonField::getMale).sum();
+        final int totalPopulation = countyPopulation.getPopulationPerCountyCode().values().stream().mapToInt(KonField::getMale).sum();
         return calculateSjukfallPerKPopulation(totalSjukfall, totalPopulation);
     }
 
     private double getSjukfallPerKPopulationFemale(SimpleKonDataRow row) {
         final int rowSum = row.getFemale();
-        final KonField populationObject = populationPerCounty.get(row.getExtras().toString());
+        final KonField populationObject = countyPopulation.getPopulationPerCountyCode().get(row.getExtras().toString());
         final int population = populationObject == null ? 0 : populationObject.getFemale();
         return calculateSjukfallPerKPopulation(rowSum, population);
     }
 
     private double getSjukfallPerKPopulationMale(SimpleKonDataRow row) {
         final int rowSum = row.getMale();
-        final KonField populationObject = populationPerCounty.get(row.getExtras().toString());
+        final KonField populationObject = countyPopulation.getPopulationPerCountyCode().get(row.getExtras().toString());
         final int population = populationObject == null ? 0 : populationObject.getMale();
         return calculateSjukfallPerKPopulation(rowSum, population);
     }
@@ -206,7 +207,8 @@ public class CasesPerCountyConverter {
         TableData tableData = convertToTable();
         ChartData chartData = convertToChart();
         Range fullRange = new Range(range.getFrom(), range.getTo());
-        return new CasesPerCountyData(tableData, chartData, fullRange.toString(), FilterDataResponse.empty());
+        final String originDate = countyPopulation.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return new CasesPerCountyData(tableData, chartData, fullRange.toString(), FilterDataResponse.empty(), originDate);
     }
 
 }

@@ -96,6 +96,10 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         var populatePageWithDataSuccess = function(result) {
             var enhetsCount = (result.filter && result.filter.enheter) ? result.filter.enheter.length : null;
             $scope.subTitle = config.title(result.period, enhetsCount);
+            if (config.chartFootnotesExtra) {
+                $scope.chartFootnotes.push(config.chartFootnotesExtra(result));
+            }
+
             ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser,
                 result.allAvailableDxsSelectedInFilter,
                 result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
@@ -554,6 +558,9 @@ angular.module('StatisticsApp').casesPerCountyConfig =
     conf.chartXAxisTitle = 'Län';
     conf.chartYAxisTitle = 'Antal sjukfall per 1000 invånare';
     conf.chartFootnotes = ['info.lan.information'];
+    conf.chartFootnotesExtra = function(result) {
+        return 'Nedanstående rapport bygger på befolkningssiffror från ' + result.sourceDate + '.';
+    };
     conf.exchangeableViews = null;
     return conf;
 };

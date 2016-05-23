@@ -19,6 +19,7 @@
 package se.inera.statistics.web.service;
 
 import org.junit.Test;
+import se.inera.statistics.service.countypopulation.CountyPopulation;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.Range;
@@ -26,6 +27,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.CasesPerCountyData;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -44,7 +46,8 @@ public class CasesPerCountyConverterTest {
         final HashMap<String, KonField> populationPerCounty = new HashMap<>();
         populationPerCounty.put(lanCode, new KonField(300, 200));
         final Range range = Range.year();
-        final CasesPerCountyConverter converter = new CasesPerCountyConverter(sjukfallPerLan, populationPerCounty, range);
+        final CountyPopulation countyPopulation = new CountyPopulation(populationPerCounty, LocalDate.now());
+        final CasesPerCountyConverter converter = new CasesPerCountyConverter(sjukfallPerLan, countyPopulation, range);
 
         //When
         final CasesPerCountyData result = converter.convert();
