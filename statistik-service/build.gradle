@@ -44,6 +44,10 @@ dependencies {
     testCompile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     testCompile "org.apache.activemq:activemq-spring:${activeMqVersion}"
 
+    testCompile "org.springframework:spring-aop:${springContextVersion}"
+    testCompile "org.aspectj:aspectjrt:1.8.9"
+    testCompile "org.aspectj:aspectjweaver:1.8.9"
+
     testRuntime "com.h2database:h2:${h2Version}"
 
     provided "org.apache.geronimo.specs:geronimo-jms_1.1_spec:${jmsVersion}"

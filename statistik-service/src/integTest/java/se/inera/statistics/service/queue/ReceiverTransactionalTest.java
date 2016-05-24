@@ -25,7 +25,6 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jms.core.BrowserCallback;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -37,37 +36,33 @@ import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
 
 import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-import javax.jms.QueueBrowser;
-import javax.jms.Session;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.assertEquals;
 
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml" })
+@ContextConfiguration(locations = {"classpath:application-context-test.xml", "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml" })
 @DirtiesContext
 @ActiveProfiles("transactional-test-mock")
 public class ReceiverTransactionalTest {
 
     private static final int PERSON_K1950 = 0;
-
-    public static final int ENVE = 0;
-    public static final int TVAVE = 1;
-
-    public static final String ACTIVEMQ_DLQ = "ActiveMQ.DLQ";
+    private static final String ACTIVEMQ_DLQ = "ActiveMQ.DLQ";
 
     private static final Logger LOG = LoggerFactory.getLogger(ReceiverTransactionalTest.class);
     private List<String> persons = new ArrayList<>();
 
     private JmsTemplate jmsTemplate;
 
+    @Autowired
+    private QueueAspect queueAspect;
     @Autowired
     private ConnectionFactory connectionFactory;
 
@@ -88,6 +83,9 @@ public class ReceiverTransactionalTest {
 
     @Test
     public void unprocessable_document_should_end_up_on_DLQ_because_we_use_transactions() throws IOException {
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+        queueAspect.setCountDownLatch(countDownLatch);
+
         UtlatandeBuilder builder = new UtlatandeBuilder("/json/integration/intyg1.json");
 
         assertEquals("Verify no messages on DLQ before we test", 0, getMessagesInQueue(ACTIVEMQ_DLQ));
@@ -99,6 +97,13 @@ public class ReceiverTransactionalTest {
                     "" + i++);
         }
 
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // For message to end up in dlq
         sleep();
 
         assertEquals("Verify that no messages have been processed.", 0, consumer.processBatch());
@@ -108,25 +113,22 @@ public class ReceiverTransactionalTest {
 
     private void sleep() {
         try {
-            Thread.sleep(5000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    protected int getMessagesInQueue(String queueName) {
-        return jmsTemplate.browse(queueName, new BrowserCallback<Integer>() {
-            @Override
-            public Integer doInJms(Session session, QueueBrowser browser) throws JMSException {
-                Enumeration<?> messages = browser.getEnumeration();
-                int total = 0;
-                while (messages.hasMoreElements()) {
-                    messages.nextElement();
-                    total++;
-                }
-
-                return total;
+    private int getMessagesInQueue(String queueName) {
+        return jmsTemplate.browse(queueName, (session, browser) -> {
+            Enumeration<?> messages = browser.getEnumeration();
+            int total = 0;
+            while (messages.hasMoreElements()) {
+                messages.nextElement();
+                total++;
             }
+
+            return total;
         });
     }
 

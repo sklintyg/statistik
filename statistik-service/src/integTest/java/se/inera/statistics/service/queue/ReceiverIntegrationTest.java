@@ -49,17 +49,22 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import java.util.concurrent.CountDownLatch;
 
 import static org.junit.Assert.assertEquals;
 
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml" })
+@ContextConfiguration(locations = {"classpath:application-context-test.xml", "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml" })
 @DirtiesContext
 public class ReceiverIntegrationTest {
 
+    private static final String QUEUE_NAME = "intyg.queue";
+
     private JmsTemplate jmsTemplate;
 
+    @Autowired
+    private QueueAspect queueAspect;
     @Autowired
     private ConnectionFactory connectionFactory;
 
@@ -113,25 +118,24 @@ public class ReceiverIntegrationTest {
 
     @Transactional
     public void populate() {
+        CountDownLatch countDownLatch = new CountDownLatch(2);
+        queueAspect.setCountDownLatch(countDownLatch);
+
         UtlatandeBuilder builder = new UtlatandeBuilder();
         simpleSend(builder.build("19121212-0010", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), new HsaIdEnhet("enhetId"), "A00", 0).toString(), "001");
         simpleSend(builder.build("19121212-0110", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), new HsaIdEnhet("enhetId"), "A00", 0).toString(), "002");
 
-        sleep();
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         assertEquals(2, consumer.processBatch());
     }
 
-    private void sleep() {
-        try {
-            Thread.sleep(10000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void simpleSend(final String intyg, final String correlationId) {
-        Destination destination = new ActiveMQQueue("intyg.queue");
+        Destination destination = new ActiveMQQueue(QUEUE_NAME);
 
         this.jmsTemplate.send(destination, new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
