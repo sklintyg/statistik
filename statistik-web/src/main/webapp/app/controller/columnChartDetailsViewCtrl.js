@@ -559,7 +559,7 @@ angular.module('StatisticsApp').casesPerCountyConfig =
     conf.chartYAxisTitle = 'Antal sjukfall per 1000 invånare';
     conf.chartFootnotes = ['info.lan.information'];
     conf.chartFootnotesExtra = function(result) {
-        return 'Nedanstående rapport bygger på befolkningssiffror från ' + result.sourceDate + '.';
+        return 'Nedanstående rapport bygger på Statistiska Centralbyråns befolkningssiffror från ' + result.sourceDate + '.';
     };
     conf.exchangeableViews = null;
     return conf;
