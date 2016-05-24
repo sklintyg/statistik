@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
@@ -98,7 +99,7 @@ public class ReceiverTransactionalTest {
         }
 
         try {
-            countDownLatch.await();
+            countDownLatch.await(20, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

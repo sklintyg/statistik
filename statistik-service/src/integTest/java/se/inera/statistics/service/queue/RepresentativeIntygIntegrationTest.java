@@ -45,6 +45,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
@@ -153,7 +154,7 @@ public class RepresentativeIntygIntegrationTest {
         }
 
         try {
-            countDownLatch.await();
+            countDownLatch.await(20, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

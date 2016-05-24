@@ -50,6 +50,7 @@ import javax.jms.Message;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
@@ -126,7 +127,7 @@ public class ReceiverIntegrationTest {
         simpleSend(builder.build("19121212-0110", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), new HsaIdEnhet("enhetId"), "A00", 0).toString(), "002");
 
         try {
-            countDownLatch.await();
+            countDownLatch.await(20, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
