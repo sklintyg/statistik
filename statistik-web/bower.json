@@ -55,8 +55,8 @@
       "build/pdfmake.js"],
     "jquery.tablesorter": {
       "main": [
-        "js/jquery.tablesorter.js",
-        "css/theme.default.css"
+        "dist/js/jquery.tablesorter.js",
+        "dist/css/theme.default.min.css"
       ]
     }
   }
