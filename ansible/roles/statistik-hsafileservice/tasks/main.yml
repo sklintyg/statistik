@@ -9,10 +9,10 @@
            dest={{ archive_dir }}/fileservice-{{ version }}.zip
 
 - name: Remove old fileservice
-  command: rm -Rf {{ inera_root }}/fileservice
+  file: path={{ inera_root }}/fileservice state=absent
 
 - name: Create fileservice folder
-  command: mkdir -p {{ inera_root }}/fileservice
+  file: path={{ inera_root }}/fileservice state=directory
 
 - name: Extract fileservice
   unarchive: src={{ archive_dir }}/fileservice-{{ version }}.zip

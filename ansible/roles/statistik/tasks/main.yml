@@ -1,7 +1,7 @@
 ---
 
 - name: stop tomcat
-  service: name={{ tomcat_service }} state=stopped pattern=org.apache.catalina.startup.Bootstrap
+  service: name={{ tomcat_service }} state=stopped
 
 - name: create release directory
   file: path={{ releases_folder }} state=directory
@@ -94,4 +94,4 @@
     replace='<security:logout logout-url="/saml/logout" logout-success-url="{{ host_url }}/" invalidate-session="true"/>'
 
 - name: start tomcat
-  service: name={{ tomcat_service }} state=started pattern={{ tomcat_service }}
+  service: name={{ tomcat_service }} state=started
