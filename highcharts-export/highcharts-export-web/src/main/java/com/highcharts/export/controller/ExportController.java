@@ -16,7 +16,6 @@ import com.highcharts.export.util.MimeType;
 import com.highcharts.export.util.TempDir;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -24,7 +23,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
@@ -53,12 +58,7 @@ public class ExportController extends HttpServlet {
 	@Autowired
 	private SVGConverter converter;
 
-	@RequestMapping(value = "/demo", method = RequestMethod.GET)
-	public String demo() {
-		return "demo";
-	}
-
-	@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET})
+	@RequestMapping(method = {RequestMethod.POST})
 	public HttpEntity<byte[]> exporter(
 		@RequestParam(value = "svg", required = false) String svg,
 		@RequestParam(value = "type", required = false) String type,
@@ -79,22 +79,6 @@ public class ExportController extends HttpServlet {
 		String randomFilename = null;
 		String jsonpCallback = "";
 		boolean isAndroid = request.getHeader("user-agent") != null && request.getHeader("user-agent").contains("Android");
-
-		if ("GET".equalsIgnoreCase(request.getMethod())) {
-
-			// Handle redirect downloads for Android devices, these come in without request parameters
-			String tempFile = (String) session.getAttribute("tempFile");
-			session.removeAttribute("tempFile");
-
-			if (tempFile != null && !tempFile.isEmpty()) {
-				logger.debug("filename stored in session, read and stream from filesystem");
-				String basename = FilenameUtils.getBaseName(tempFile);
-				String extension = FilenameUtils.getExtension(tempFile);
-
-				return getFile(basename, extension);
-
-			}
-		}
 
 		// check for visitors who don't know this domain is really only for the exporting service ;)
 		if (request.getParameterMap().isEmpty()) {
