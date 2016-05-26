@@ -206,7 +206,11 @@ angular.module('StatisticsApp').factory('chartFactory',
                 height: 400,
                 width: 600,
                 marginLeft: 90,
-                spacing: [10, 15, 20, 15]
+                xAxis : {
+                    labels: {
+                        formatter: labelFormatter(25)
+                    }
+                }
             };
 
             if (title) {
