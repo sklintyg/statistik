@@ -80,7 +80,8 @@ angular.module('StatisticsApp').factory('chartFactory',
                             whiteSpace: 'pre',
                             width: '200px'
                         },
-                        formatter: labelFormatter(30)
+                        formatter: labelFormatter(30),
+                        step: 1
                     },
                     categories : _.map(chartCategories, function(category) {
                         var name = ControllerCommons.htmlsafe(category.name);
