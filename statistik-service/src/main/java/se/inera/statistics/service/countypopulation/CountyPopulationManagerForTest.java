@@ -18,10 +18,8 @@
  */
 package se.inera.statistics.service.countypopulation;
 
-import se.inera.statistics.service.report.model.Range;
+public interface CountyPopulationManagerForTest extends CountyPopulationManager {
 
-public interface CountyPopulationManager {
-
-    CountyPopulation getCountyPopulation(Range range);
+    void clearCountyPopulation();
 
 }

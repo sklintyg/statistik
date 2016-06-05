@@ -16,12 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.countypopulation;
+package se.inera.testsupport;
 
-import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.KonField;
 
-public interface CountyPopulationManager {
+import java.util.Map;
 
-    CountyPopulation getCountyPopulation(Range range);
+public interface CountyPopulationInjector {
+
+    void clearCountyPopulations();
+
+    void addCountyPopulation(Map<String, KonField> countyPopulation, int year);
 
 }

@@ -18,10 +18,14 @@
  */
 package se.inera.statistics.service.countypopulation;
 
-import se.inera.statistics.service.report.model.Range;
+class ScbPopulationException extends RuntimeException {
 
-public interface CountyPopulationManager {
+    ScbPopulationException(String msg) {
+        super(msg);
+    }
 
-    CountyPopulation getCountyPopulation(Range range);
+    ScbPopulationException(String msg, Throwable cause) {
+        super(msg, cause);
+    }
 
 }

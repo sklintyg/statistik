@@ -121,4 +121,11 @@
         <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect" />
     </beans>
 
+    <beans profile="dev">
+        <bean class="se.inera.testsupport.RestTemplateStub" />
+    </beans>
+    <beans profile="!dev">
+        <bean class="org.springframework.web.client.RestTemplate" />
+    </beans>
+
 </beans>

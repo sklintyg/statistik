@@ -211,7 +211,7 @@ public class ChartDataService {
     private void buildSjukfallPerLan() {
         Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
         SimpleKonResponse<SimpleKonDataRow> calculatedSjukfallPerLan = data.getSjukfallPerLan(range);
-        final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation();
+        final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation(range);
         sjukfallPerLan = new CasesPerCountyConverter(calculatedSjukfallPerLan, countyPopulation, range).convert();
     }
 

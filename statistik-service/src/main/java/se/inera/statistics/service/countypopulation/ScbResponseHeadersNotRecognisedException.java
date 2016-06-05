@@ -18,10 +18,10 @@
  */
 package se.inera.statistics.service.countypopulation;
 
-import se.inera.statistics.service.report.model.Range;
+class ScbResponseHeadersNotRecognisedException extends ScbPopulationException {
 
-public interface CountyPopulationManager {
-
-    CountyPopulation getCountyPopulation(Range range);
+    ScbResponseHeadersNotRecognisedException(String msg) {
+        super(msg);
+    }
 
 }

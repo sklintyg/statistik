@@ -35,6 +35,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.joda.time.DateTimeUtils;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.countypopulation.CountyPopulationManager;
+import se.inera.statistics.service.countypopulation.CountyPopulationManagerForTest;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
 import se.inera.statistics.service.hsa.HsaWsResponderMock;
@@ -53,6 +54,7 @@ import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.NationellData;
@@ -63,7 +65,6 @@ import se.inera.statistics.service.warehouse.WidelineConverter;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.web.service.ChartDataService;
-import se.inera.statistics.web.service.WarehouseService;
 import se.inera.testsupport.socialstyrelsenspecial.SosCalculatedRow;
 import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
 import se.inera.testsupport.socialstyrelsenspecial.SosRow;
@@ -89,9 +90,6 @@ public class RestSupportService {
     private WarehouseManager warehouseManager;
 
     @Autowired
-    private WarehouseService warehouseService;
-
-    @Autowired
     private LogConsumer consumer;
 
     @Autowired
@@ -110,10 +108,13 @@ public class RestSupportService {
     private SjukfallQuery sjukfallQuery;
 
     @Autowired
-    private CountyPopulationManager countyPopulationManager;
+    private CountyPopulationManagerForTest countyPopulationManager;
 
     @Autowired
     private Icd10 icd10;
+
+    @Autowired
+    private CountyPopulationInjector countyPopulationInjector;
 
     @GET
     @Path("converteddate/{internalDate}")
@@ -258,6 +259,7 @@ public class RestSupportService {
     @Produces({ MediaType.APPLICATION_JSON })
     @Transactional
     public Response clearCountyPopulation() {
+        countyPopulationInjector.clearCountyPopulations();
         countyPopulationManager.clearCountyPopulation();
         return Response.ok().build();
     }
@@ -269,8 +271,10 @@ public class RestSupportService {
     @Transactional
     public Response insertCountyPopulation(Map<String, KonField> countyPopulation, @PathParam("date") String date) {
         LOG.info("For date: {}, insert county population: {}", date, countyPopulation);
-        final boolean success = countyPopulationManager.insertCountyPopulation(countyPopulation, date);
-        return Response.ok(success).build();
+        countyPopulationInjector.addCountyPopulation(countyPopulation, java.time.LocalDate.parse(date).getYear());
+        final LocalDate nextYear = LocalDate.parse(date).plusYears(1);
+        countyPopulationManager.getCountyPopulation(new Range(nextYear, nextYear)); //Populate the cache in db
+        return Response.ok().build();
     }
 
     /**
