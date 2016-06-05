@@ -83,12 +83,8 @@ public class RegisterCertificateHelper {
     }
 
     public boolean isEnkeltIntyg(RegisterCertificateType intyg) {
-        final String code = intyg.getIntyg().getTyp().getCode();
+        final String code = getIntygtyp(intyg);
         return IntygType.LIS.name().equalsIgnoreCase(code);
-    }
-
-    private String getIntygsTyp(RegisterCertificateType certificateType) {
-        return certificateType.getIntyg().getTyp().getCode().toLowerCase();
     }
 
     public String getDx(RegisterCertificateType intyg) {
