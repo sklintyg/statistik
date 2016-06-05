@@ -66,8 +66,8 @@ public class SjukfallPerSexConverter {
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
         final String stacked = "Stacked";
-        series.add(new ChartSeries("Andel sjukfall för kvinnor", getSeriesForSexWithTotal(casesPerMonth, Kon.Female), stacked, Kon.Female));
-        series.add(new ChartSeries("Andel sjukfall för män", getSeriesForSexWithTotal(casesPerMonth, Kon.Male), stacked, Kon.Male));
+        series.add(new ChartSeries("Kvinnor", getSeriesForSexWithTotal(casesPerMonth, Kon.Female), stacked, Kon.Female));
+        series.add(new ChartSeries("Män", getSeriesForSexWithTotal(casesPerMonth, Kon.Male), stacked, Kon.Male));
 
         return new ChartData(series, categories);
     }
