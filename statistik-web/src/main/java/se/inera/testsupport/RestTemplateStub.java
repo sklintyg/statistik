@@ -20,6 +20,7 @@ package se.inera.testsupport;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -71,16 +72,16 @@ public class RestTemplateStub extends RestTemplate implements CountyPopulationIn
 
     public RestTemplateStub() {
         final int year = LocalDate.now().getYear();
-        final int yearsToGenerate = 10;
-        for (int i = year - yearsToGenerate; i <= year; i++) {
-            countyPopulationPerYear.put(String.valueOf(year), createRandomizedPopulation());
+        final int yearsBackToGenerate = 10;
+        for (int i = year - yearsBackToGenerate; i <= year; i++) {
+            countyPopulationPerYear.put(String.valueOf(i), createRandomizedPopulation());
         }
     }
 
     private Map<String, KonField> createRandomizedPopulation() {
         final Map<String, KonField> population = new HashMap<>();
         final int minPopulation = 100;
-        final int maxPopulation = 1001000;
+        final int maxPopulation = 500000;
         for (String countyCode : countynamesPerCountyCode.keySet()) {
             final int randomMalePopulation = ThreadLocalRandom.current().nextInt(minPopulation, maxPopulation);
             final int randomFemalePopulation = ThreadLocalRandom.current().nextInt(minPopulation, maxPopulation);
@@ -128,4 +129,7 @@ public class RestTemplateStub extends RestTemplate implements CountyPopulationIn
         countyPopulationPerYear.put(String.valueOf(year), countyPopulation);
     }
 
+    public Map<String, Map<String, KonField>> getCountyPopulationPerYear() {
+        return Collections.unmodifiableMap(countyPopulationPerYear);
+    }
 }
