@@ -1,0 +1,17 @@
+{
+  "@class": "se.inera.intyg.common.integration.hsa.model.Vardgivare",
+  "id": "TSTNMT2321000156-1002",
+  "namn": "nmt_vg1",
+  "vardenheter": [
+    {
+      "@class": "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "id": "TSTNMT2321000156-1039",
+      "namn": "Enhet 1 nmt_vg1"
+    },
+    {
+      "@class": "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "id": "TSTNMT2321000156-105F",
+      "namn": "Enhet 2 nmt_vg1"
+    }
+  ]
+}
