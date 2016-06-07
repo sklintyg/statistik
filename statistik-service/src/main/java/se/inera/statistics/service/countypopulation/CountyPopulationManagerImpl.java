@@ -18,6 +18,21 @@
  */
 package se.inera.statistics.service.countypopulation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.MapType;
+import org.joda.time.DateTimeZone;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Range;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.io.IOException;
 import java.io.StringReader;
 import java.sql.Date;
@@ -26,24 +41,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
-import org.joda.time.DateTimeZone;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.service.report.model.Range;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.MapType;
 
 @Component
 public class CountyPopulationManagerImpl implements CountyPopulationManagerForTest {
@@ -115,7 +112,7 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
     }
 
     private Optional<CountyPopulationRow> getPreFetchedCountyPopulation(org.joda.time.LocalDate from, String ql) {
-        final Date fromDate = localdateToDate(from);
+        final Date fromDate = localDateToDate(from);
         final Query query = manager.createQuery(ql);
         if (ql.contains(":fromDate")) {
             query.setParameter("fromDate", fromDate);
@@ -130,7 +127,7 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
         }
     }
 
-    public static java.sql.Date localdateToDate(org.joda.time.LocalDate ld) {
+    private static java.sql.Date localDateToDate(org.joda.time.LocalDate ld) {
         if (ld == null) {
             return null;
         }

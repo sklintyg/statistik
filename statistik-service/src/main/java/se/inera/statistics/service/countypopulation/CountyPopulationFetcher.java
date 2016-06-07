@@ -18,6 +18,17 @@
  */
 package se.inera.statistics.service.countypopulation;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonField;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,22 +38,14 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
-
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.KonField;
-
 @Component
 public class CountyPopulationFetcher {
 
     private static final Logger LOG = LoggerFactory.getLogger(CountyPopulationFetcher.class);
+    private static final String FEMALE = "kvinnor";
+    private static final String HEADER_REGION = "region";
+    private static final String HEADER_GENDER = "kön";
+    private static final String HEADER_POPULATION = "Folkmängd";
 
     @Autowired
     private RestTemplate rest;
@@ -84,13 +87,13 @@ public class CountyPopulationFetcher {
 
     private void validateScbResponseHeaders(String row, int year) throws ScbResponseHeadersNotRecognisedException {
         final String[] headers = splitStringAndRemoveQuotationMarks(row);
-        if (!"region".equalsIgnoreCase(headers[0])) {
+        if (!HEADER_REGION.equalsIgnoreCase(headers[0])) {
             throw new ScbResponseHeadersNotRecognisedException("Region header [0] mismatch");
         }
-        if (!"kön".equalsIgnoreCase(headers[1])) {
+        if (!HEADER_GENDER.equalsIgnoreCase(headers[1])) {
             throw new ScbResponseHeadersNotRecognisedException("Gender header [1] mismatch");
         }
-        if (!("Folkmängd " + year).equalsIgnoreCase(headers[2])) {
+        if (!(HEADER_POPULATION + " " + year).equalsIgnoreCase(headers[2])) {
             throw new ScbResponseHeadersNotRecognisedException("Population header [2] mismatch");
         }
     }
@@ -113,7 +116,7 @@ public class CountyPopulationFetcher {
         if (!countyId.matches("^[0-9][0-9]$")) {
             throw new ScbPopulationException("County id should be an integer with two digits: " + countyId);
         }
-        final Kon gender = rowFields[1].contains("kvinnor") ? Kon.Female : Kon.Male;
+        final Kon gender = rowFields[1].contains(FEMALE) ? Kon.Female : Kon.Male;
         final Integer amount = Integer.valueOf(rowFields[2]);
         return new ScbRow(countyId, gender, amount);
     }
