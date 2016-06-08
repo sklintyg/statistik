@@ -7,15 +7,16 @@
         <td class="scrollable details-table-data ellipsis details-th"
             data-ng-class="{headcol: $first, centeralign: headerrow.centerAlign, 'sorter-false': !$parent.$last || $first}"
             colspan="{{header.colspan}}" data-ng-repeat="header in headerrow" title="{{header.text}}"
-            bindonce="header.text" style="padding-right: 20px; white-space: nowrap;"></td>
+            style="padding-right: 20px; white-space: nowrap;">
+          {{::header.text}}
+        </td>
       </tr>
       </thead>
       <tbody class="table-condensed">
       <tr data-ng-repeat="row in rows" title="{{row.name}}">
-        <td class="scrollable headcol"><span class="headcol-name" ng-class="{bold: row.marked}"
-                                             bindonce="row.name"></span></td>
+        <td class="scrollable headcol"><span class="headcol-name" ng-class="{bold: row.marked}">{{::row.name}}</span></td>
         <td class="scrollable" data-text="{{fieldData | replaceEmpty}}" data-ng-repeat="fieldData in row.data track by $index"
-            bindonce="fieldData | thousandseparated"></td>
+            >{{::fieldData | thousandseparated}}</td>
       </tr>
       </tbody>
     </table>

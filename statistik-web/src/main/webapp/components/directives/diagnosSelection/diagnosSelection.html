@@ -11,8 +11,9 @@
         <span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span>
       </button>
       <ul class="dropdown-menu left overflow-menu-options">
-        <li data-ng-repeat="detailsOption in detailsOptions"><a href="{{detailsOption.url}}{{queryString}}"><span
-            bindonce="detailsOption.id"></span> <span bindonce="detailsOption.name"></span></a></li>
+        <li data-ng-repeat="detailsOption in detailsOptions">
+          <a href="{{detailsOption.url}}{{queryString}}">{{::detailsOption.id}} {{::detailsOption.name}}</a>
+        </li>
       </ul>
     </div>
   </div>
@@ -31,8 +32,9 @@
         <span>{{selectedDetailsOption2.id}} {{selectedDetailsOption2.name}}</span>
       </button>
       <ul class="dropdown-menu left overflow-menu-options">
-        <li data-ng-repeat="detailsOption2 in detailsOptions2"><a href="{{detailsOption2.url}}{{queryString}}"><span
-            bindonce="detailsOption2.id"></span> <span bindonce="detailsOption2.name"></span></a></li>
+        <li data-ng-repeat="detailsOption2 in detailsOptions2">
+          <a href="{{detailsOption2.url}}{{queryString}}">{{::detailsOption2.id}} {{::detailsOption2.name}}</a>
+        </li>
       </ul>
     </div>
   </div>
@@ -66,8 +68,9 @@
         <span>{{selectedDetailsOption3.id}} {{selectedDetailsOption3.name}}</span>
       </button>
       <ul class="dropdown-menu left overflow-menu-options">
-        <li data-ng-repeat="detailsOption3 in detailsOptions3"><a href="{{detailsOption3.url}}{{queryString}}"><span
-            bindonce="detailsOption3.id"></span> <span bindonce="detailsOption3.name"></span></a></li>
+        <li data-ng-repeat="detailsOption3 in detailsOptions3">
+          <a href="{{detailsOption3.url}}{{queryString}}">{{::detailsOption3.id}} {{::detailsOption3.name}}</a>
+        </li>
       </ul>
     </div>
   </div>
