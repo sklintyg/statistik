@@ -1730,7 +1730,7 @@ input[type="radio"], input[type="checkbox"] {
 /* Styling for the sidebar end*/
 
 /*Override the spinner margin when it is placed within a modal-body*/
-.spinner-overview .stat-spinner .spinner, .modal-dialog .stat-spinner .spinner{
+.spinner-overview .stat-spinner .spinner, .modal-dialog .stat-spinner .spinner, .spinner-detail .stat-spinner .spinner {
   position: static;
   margin: 0;
 }
