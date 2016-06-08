@@ -1,4 +1,4 @@
-<div id="statistics-filter-container" class="hidden-print" collapse="isFilterCollapsed">
+<div id="statistics-filter-container" class="hidden-print" uib-collapse="isFilterCollapsed">
     <div class="row" style="text-align: center" data-ng-hide="businessFilter.dataInitialized">
             <span style="margin: auto">Laddar filterdata</span>
     </div>
@@ -76,7 +76,7 @@
                                    show-weeks="false"
                                    min-date="minDate"
                                    max-date="maxDate"
-                                   datepicker-popup="{{format}}"
+                                   uib-datepicker-popup="{{format}}"
                                    is-open="isFromDateOpen"
                                    datepicker-options="{minMode: 'month'}"
                                    datepicker-mode="'month'"
@@ -109,7 +109,7 @@
                                    show-weeks="false"
                                    min-date="minToDate"
                                    max-date="maxDate"
-                                   datepicker-popup="{{format}}"
+                                   uib-datepicker-popup="{{format}}"
                                    is-open="isToDateOpen"
                                    datepicker-options="{minMode: 'month'}"
                                    datepicker-mode="'month'"
@@ -152,7 +152,7 @@
                             <span message key="lbl.filter.sum-progress-1"></span>{{ businessFilter.selectedBusinesses.length }}
                             <span message key="lbl.filter.sum-progress-2"></span>{{ businessFilter.businesses.length }}
                             <span message key="lbl.filter.sum-progress-3"></span>
-                            <progressbar max="businessFilter.businesses.length" value="businessFilter.selectedBusinesses.length"></progressbar>
+                            <uib-progressbar max="businessFilter.businesses.length" value="businessFilter.selectedBusinesses.length"></uib-progressbar>
                         </span>
 
                         <button type="button" class="btn btn-default pull-right" data-ng-click="resetBusinessFilter()">

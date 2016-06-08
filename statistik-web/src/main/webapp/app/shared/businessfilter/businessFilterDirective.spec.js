@@ -100,8 +100,8 @@ describe('Tests for directive button-filter', function () {
             expect(innerScope.format).toMatch(dateFormat);
 
             //Assert that the format is reflected in the view
-            expect(element.find('#filterFromDate').attr('datepicker-popup')).toMatch(dateFormat);
-            expect(element.find('#filterToDate').attr('datepicker-popup')).toMatch(dateFormat);
+            expect(element.find('#filterFromDate').attr('uib-datepicker-popup')).toMatch(dateFormat);
+            expect(element.find('#filterToDate').attr('uib-datepicker-popup')).toMatch(dateFormat);
         });
 
         it('has a minimum date set on the scope', inject(function (TIME_INTERVAL_MIN_DATE) {
