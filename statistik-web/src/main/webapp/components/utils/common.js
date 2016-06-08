@@ -110,7 +110,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 return;
             }
             if (diagnosIds.length === 0) {
-                scope.activeDiagnosFilters = [''];
+                scope.activeDiagnosFilters = null;
                 return;
             }
             statisticsData.getIcd10Structure(function (diagnoses) {
@@ -121,7 +121,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.populateActiveEnhetsFilter = function(scope, filterHash, isAllAvailableEnhetsSelectedInFilter, enhetNames) {
-            scope.activeEnhetsFilters = [];
+            scope.activeEnhetsFilters = null;
             
             if (isAllAvailableEnhetsSelectedInFilter) {
                 scope.headerEnhetInfo = scope.verksamhetName;
@@ -135,7 +135,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 scope.headerEnhetInfo = enhetNames[0];
             } else {
                 scope.headerEnhetInfo = '';
-                scope.activeEnhetsFilters = enhetNames.length > 1 ? enhetNames : [''];
+                scope.activeEnhetsFilters = enhetNames.length > 1 ? enhetNames : null;
             }
         };
 

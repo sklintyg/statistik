@@ -681,12 +681,18 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 .popover {
   z-index: 9999 !important;
 }
-.popover-content {
+
+.tooltip.popover-content .tooltip-inner {
+  padding: 15px 20px;
+}
+
+.popover-content, .tooltip.popover-content .tooltip-inner {
   font-weight: normal;
   font-size: 12px;
   line-height: 20px;
   text-align: left;
 }
+
 .overflow-menu-options {
   max-height: 255px;
   max-width: 600px;

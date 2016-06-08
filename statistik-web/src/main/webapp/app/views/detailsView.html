@@ -20,11 +20,12 @@
   <div class="row">
 		<span class="col-xs-12 col-sm-12 col-md-12 col-lg-12 graph-ingress pull-left" style="min-height: 5px;">
 			{{subTitle}}
-			<a class="hidden-print page-help-tool-tip" tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>"
+			<a class="hidden-print page-help-tool-tip" tooltip-html="popoverText"
+         tooltip-class="popover-content"
          tooltip-trigger="mouseenter" tooltip-placement="right" data-ng-show="popoverText"
          style="position: relative; top: -2px; margin-left: 5px;"><img src="/assets/images/questionmark2.png"></a>
 			<a class="hidden-print" id="chart-footnote-trigger" data-toggle="collapse" data-target="#chart-footnote-text"
-         data-ng-show="chartFootnotes" text="Information om diagrammet"
+         data-ng-show="chartFootnotes.length > 0" text="Information om diagrammet"
          style="position: relative; top: -2px; margin-left: 5px;"><img src="/assets/images/information.png"></a>
 			<a class="hidden-print" id="chart-diagnosfilterinfo-trigger" data-toggle="collapse"
          data-target="#chart-diagnosfilterinfo-text" data-ng-show="activeDiagnosFilters" text="Diagnosfilter"
@@ -74,7 +75,10 @@
       show-details-options3="showDetailsOptions3"
       details-options3="detailsOptions3"
       selected-details-option3="selectedDetailsOption3"
-      query-string="queryString"></diagnos-selection>
+      query-string="queryString"
+      show-detail-options3-popover-text="showDetailOptions3PopoverText",
+      popover-text="popoverText"
+  ></diagnos-selection>
 
 
   <div class="row" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">

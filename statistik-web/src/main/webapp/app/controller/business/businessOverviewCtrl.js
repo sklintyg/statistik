@@ -31,19 +31,24 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
 
     var dataReceived = function (result) {
         var enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
+
+        var popoverPreviousMonths = ' jämfört med föregående tre månader.';
+        var popoverTextChangeCurrentVSPrevious = '<br><br>Spalten förändring visar skillnaden i antal sjukfall mellan perioden ' +
+            result.periodText + popoverPreviousMonths;
+
         $scope.subTitle = 'Utveckling för verksamheten de senaste tre månaderna' +
                             ControllerCommons.getEnhetCountText(enhetsCount, false).slice(0, -1) + ', ' + result.periodText;
         $scope.popoverTextAmount = 'Totala antalet sjukfall under perioden ' + result.periodText;
         $scope.popoverTextChangeProcentage = 'Procentsatsen visar förändringen av antalet sjukfall under perioden ' + result.periodText;
-        $scope.popoverTextSexDistribution = 'Könsfördelningen av totala antalet sjukfall under perioden ' + result.periodText;
-        $scope.popoverTextDiagnosisGroups1 = 'Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under ' +
-                                                result.periodText + '.';
-        $scope.popoverTextChangeCurrentVSPrevious = 'Spalten förändring visar skillnaden i antal sjukfall mellan perioden ' + result.periodText;
-        $scope.popoverTextAgeGroups1 = 'Diagrammet visar de åldersgrupper som har flest sjukfall under ' + result.periodText + '.';
-        $scope.popoverTextSickLeaveLength1 = 'Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden ' + result.periodText + '.';
-        $scope.popoverTextSickLeaveLength2 = 'Ställ markören i respektive stapel för att se antalet sjukfall.';
-        $scope.popoverTextDegreeOfSickLeave1 = 'Diagrammet visar antalet sjukfall per sjukskrivningsgrad under perioden  ' + result.periodText + '.';
-        $scope.popoverPreviousMonths = ' jämfört med föregående tre månader.';
+        $scope.popoverTextSexDistribution = 'Könsfördelningen av totala antalet sjukfall under perioden ' + result.periodText + popoverPreviousMonths;
+        $scope.popoverTextDiagnosisGroups = 'Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under ' +
+                                                result.periodText + '.' + popoverTextChangeCurrentVSPrevious;
+        $scope.popoverTextAgeGroups = 'Diagrammet visar de åldersgrupper som har flest sjukfall under ' + result.periodText + '.' +
+            popoverTextChangeCurrentVSPrevious;
+        $scope.popoverTextSickLeaveLength = 'Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden ' + result.periodText + '.' +
+                '<br><br>Ställ markören i respektive stapel för att se antalet sjukfall.';
+        $scope.popoverTextDegreeOfSickLeave = 'Diagrammet visar antalet sjukfall per sjukskrivningsgrad under perioden  ' + result.periodText + '.' +
+            popoverTextChangeCurrentVSPrevious;
         $scope.popoverTextPeriod = result.periodText;
         $scope.doneLoading = true;
         if (result.casesPerMonth.totalCases === 0) {

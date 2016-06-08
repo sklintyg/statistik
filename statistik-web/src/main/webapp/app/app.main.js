@@ -47,7 +47,7 @@ app.run(
             var script = document.createElement( 'script' );
             script.type = 'text/javascript';
             script.src = 'js/lib/vfs_fonts.js';
-            $('body').append( script );
+            document.body.appendChild(script);
         }, 2500);
     }
 );

@@ -11,7 +11,7 @@
 		        <h1 class="national-statistic-h1" id="nationalOverviewHeading">
 		            <span message key="national.overview-header"></span>
 		            <a class="hidden-print page-help-tool-tip"
-		               tooltip-html-unsafe="<div class=popover-content>{{popoverText}}</div>" tooltip-trigger="mouseenter" tooltip-append-to-body="true"
+		               tooltip-html="popoverText" tooltip-class="popover-content" tooltip-trigger="mouseenter" tooltip-append-to-body="true"
 		               tooltip-placement="right" data-ng-show="popoverText" style="position: relative; top: -2px;">
 		               <img src="/assets/images/questionmark2.png">
 		            </a>
@@ -47,7 +47,7 @@
 									<h2 class="overview-widget-title">
 										<span message key="national.widget.header.konsfordelning"></span>
 										<span class="hidden-print page-help-tool-tip pull-right"><img
-					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextSexDistribution}}</div>"
+					                    tooltip-html="popoverTextSexDistribution" tooltip-class="popover-content"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
                   </h2>
 								</span>
@@ -68,7 +68,8 @@
 									<h2 class="overview-widget-title">
 										<span message key="national.widget.header.forandring"></span>
 										<span class="hidden-print page-help-tool-tip pull-right"><img
-					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextChangeProcentageThisMonth}} {{popoverTextChangeProcentagePreviousMonth}}</div>"
+					                    tooltip-html="popoverTextChangeProcentage"
+															tooltip-class="popover-content"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
 									</h2>
 								</span>
@@ -81,8 +82,7 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
 						<a data-ng-href="#/nationell/diagnosgrupp{{queryString}}" id="diagnosisGroupsHeaderLink" class="overview-widget-link">
 							<overview-widget title-key="national.widget.header.fordelning-diagnosgrupper"
-															 tooltip-content="popoverTextDiagnosisGroups1"
-															 tooltip-content2="popoverTextChangeCurrentVSPrevious"
+															 tooltip-content="popoverTextDiagnosisGroups"
 															 chart-id="diagnosisChart"
 															 groups="diagnosisGroups"
 															 column-title1="overview.widget.table.column.diagnosgrupp"
@@ -96,8 +96,7 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
 						<a data-ng-href="#/nationell/aldersgrupper{{queryString}}" id="ageGroupsHeaderLink" class="overview-widget-link">
 							<overview-widget title-key="national.widget.header.fordelning-aldersgrupper"
-															 tooltip-content="popoverTextAgeGroups1"
-															 tooltip-content2="popoverTextChangeCurrentVSPrevious"
+															 tooltip-content="popoverTextAgeGroups"
 															 chart-id="ageChart"
 															 groups="ageGroups"
 															 column-title1="overview.widget.table.column.aldersgrupp"
@@ -109,8 +108,7 @@
 					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
 						<a data-ng-href="#/nationell/sjukskrivningsgrad{{queryString}}" id="degreeOfSickLeaveHeaderLink" class="overview-widget-link">
 							<overview-widget title-key="national.widget.header.fordelning-sjukskrivningsgrad"
-															 tooltip-content="popoverTextDegreeOfSickLeave1"
-															 tooltip-content2="popoverTextChangeCurrentVSPrevious"
+															 tooltip-content="popoverTextDegreeOfSickLeave"
 															 chart-id="degreeOfSickLeaveChart"
 															 groups="degreeOfSickLeaveGroups"
 															 value-prefix="%"
@@ -130,7 +128,8 @@
 									<h2 class="overview-widget-title">
 										<span message key="national.widget.header.fordelning-sjukskrivningslangd"></span>
 										<span class="hidden-print page-help-tool-tip pull-right"><img
-					                    tooltip-html-unsafe="<div class=popover-content>{{popoverTextSickLeaveLength1}}</div><div class=popover-content>{{popoverTextSickLeaveLength2}}</div>"
+					                    tooltip-html="popoverTextSickLeaveLength"
+															tooltip-class="popover-content"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
 					                </h2>
 								</span>
@@ -157,7 +156,8 @@
 									<h2 class="overview-widget-title">
 										<span message key="national.widget.header.fordelning-lan"></span>
 										<span class="hidden-print page-help-tool-tip pull-right"><img
-												tooltip-html-unsafe="<div class=popover-content>{{popoverTextPerCountyDescription1}}</div><div class=popover-content>{{popoverTextChangeCurrentVSPrevious}}</div><div class=popover-content>{{popoverTextPerCountyDescription2}}</div>"
+												tooltip-html="popoverTextPerCountyDescription"
+												tooltip-class="popover-content"
 												tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
 									</h2>
 								</span>

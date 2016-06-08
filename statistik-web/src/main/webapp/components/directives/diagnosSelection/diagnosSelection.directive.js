@@ -32,7 +32,9 @@ angular.module('StatisticsApp')
                 selectedDetailsOption: '=',
                 selectedDetailsOption2: '=',
                 selectedDetailsOption3: '=',
-                queryString: '='
+                queryString: '=',
+                popoverText: '=',
+                showDetailOptions3PopoverText: '='
             },
             restrict: 'E',
             templateUrl: 'components/directives/diagnosSelection/diagnosSelection.html',

@@ -27,7 +27,6 @@ angular.module('StatisticsApp').directive('overviewWidget',
             scope: {
                 titleKey: '@',
                 tooltipContent: '=',
-                tooltipContent2: '=',
                 chartId: '@',
                 groups: '=',
                 columnTitle1: '@',
