@@ -23,11 +23,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.common.integration.hsa.client.AuthorizationManagementService;
+import se.inera.intyg.common.support.modules.support.api.exception.ExternalServiceCallException;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
-import se.riv.infrastructure.directory.authorizationmanagement.v1.GetCredentialsForPersonIncludingProtectedPersonResponseType;
 import se.riv.infrastructure.directory.v1.CommissionType;
 import se.riv.infrastructure.directory.v1.CredentialInformationType;
 
@@ -51,12 +51,17 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
     public List<Vardenhet> getAuthorizedEnheterForHosPerson(HsaIdUser hosPersonHsaId) {
         List<Vardenhet> vardenhetList = new ArrayList<>();
 
-        GetCredentialsForPersonIncludingProtectedPersonResponseType response = authorizationManagementService.getAuthorizationsForPerson(hosPersonHsaId.getId(), "", "");
+        List<CredentialInformationType> response = null;
+        try {
+            response = authorizationManagementService.getAuthorizationsForPerson(hosPersonHsaId.getId(), "", "");
+        } catch (ExternalServiceCallException e) {
+            LOG.error("Error loading authorizations", e);
+        }
 
-        if (response != null && response.getCredentialInformation() != null) {
-            LOG.debug("User with HSA-Id " + hosPersonHsaId + " has " + response.getCredentialInformation().size() + " medarbetaruppdrag");
+        if (response != null) {
+            LOG.debug("User with HSA-Id " + hosPersonHsaId + " has " + response.size() + " medarbetaruppdrag");
 
-            for (CredentialInformationType info : response.getCredentialInformation()) {
+            for (CredentialInformationType info : response) {
                 for (CommissionType commissionType : info.getCommission()) {
                     if (Medarbetaruppdrag.STATISTIK.equalsIgnoreCase(commissionType.getCommissionPurpose())) {
                         vardenhetList.add(new Vardenhet(new HsaIdEnhet(commissionType.getHealthCareUnitHsaId()), commissionType.getHealthCareUnitName(), new HsaIdVardgivare(commissionType.getHealthCareProviderHsaId()), commissionType.getHealthCareProviderName()));

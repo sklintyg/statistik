@@ -25,13 +25,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.intyg.common.integration.hsa.client.AuthorizationManagementService;
 import se.inera.intyg.common.integration.hsa.stub.Medarbetaruppdrag;
+import se.inera.intyg.common.support.modules.support.api.exception.ExternalServiceCallException;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.Vardenhet;
-import se.riv.infrastructure.directory.authorizationmanagement.v1.GetCredentialsForPersonIncludingProtectedPersonResponseType;
 import se.riv.infrastructure.directory.v1.CommissionType;
 import se.riv.infrastructure.directory.v1.CredentialInformationType;
-import se.riv.infrastructure.directory.v1.ResultCodeEnum;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.IntStream.range;
@@ -53,32 +53,30 @@ public class HsaOrganizationsServiceImplTest {
     private HsaOrganizationsServiceImpl testee;
     
     @Test
-    public void testWithSingleMiuStatistik() {
+    public void testWithSingleMiuStatistik() throws ExternalServiceCallException {
         when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 1));
         List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID);
         assertEquals(1, authorizedEnheter.size());
     }
 
     @Test
-    public void testWithSingleMiuVardOchBehandling() {
+    public void testWithSingleMiuVardOchBehandling() throws ExternalServiceCallException {
         when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.VARD_OCH_BEHANDLING, 1));
         List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID);
         assertEquals(0, authorizedEnheter.size());
     }
 
     @Test
-    public void testThatSingleAuthEnhetIsReturnedWhenHavingTwoMiuOnUnit() {
+    public void testThatSingleAuthEnhetIsReturnedWhenHavingTwoMiuOnUnit() throws ExternalServiceCallException {
         when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 2));
         List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID);
         assertEquals(1, authorizedEnheter.size());
     }
 
-    private GetCredentialsForPersonIncludingProtectedPersonResponseType buildCredzResponse(String purpose, int number) {
-        GetCredentialsForPersonIncludingProtectedPersonResponseType resp = new GetCredentialsForPersonIncludingProtectedPersonResponseType();
+    private List<CredentialInformationType> buildCredzResponse(String purpose, int number) {
+        List<CredentialInformationType> resp = new ArrayList<>();
+        range(0, number).forEach(i -> resp.add(buildCred(purpose)));
 
-        range(0, number).forEach(i -> resp.getCredentialInformation().add(buildCred(purpose)));
-
-        resp.setResultCode(ResultCodeEnum.OK);
         return resp;
     }
 
