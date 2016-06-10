@@ -32,10 +32,15 @@ public final class ServiceUtil {
     static List<Integer> getMergedSexData(KonDataRow row) {
         List<Integer> data = new ArrayList<>();
         for (KonField konField : row.getData()) {
+            data.add(konField.getFemale() + konField.getMale());
             data.add(konField.getFemale());
             data.add(konField.getMale());
         }
         return data;
+    }
+
+    static int getRowSum(KonDataRow row) {
+        return row.getData().stream().mapToInt(r -> r.getMale() + r.getFemale()).sum();
     }
 
     static void addSumRow(List<NamedData> rows, boolean includeSumForLastColumn) {

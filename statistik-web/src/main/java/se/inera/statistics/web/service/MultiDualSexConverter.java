@@ -39,6 +39,9 @@ import java.util.List;
 
 public abstract class MultiDualSexConverter<T extends KonDataResponse> {
 
+    private static final String TOTAL = "Totalt";
+    private static final int NUMBER_OF_COLUMNS = 3;
+
     DualSexStatisticsData convert(T dataIn, FilterSettings filterSettings, String message, String seriesNameTemplate) {
         TableData tableData = convertTable(dataIn, seriesNameTemplate);
         T data = dataIn.getGroups().isEmpty() ? createEmptyResponse() : dataIn;
@@ -52,9 +55,9 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
     }
 
     private T createEmptyResponse() {
-        final List<String> groups = Arrays.asList("Totalt");
+        final List<String> groups = Arrays.asList(TOTAL);
         final List<KonField> data = Arrays.asList(new KonField(0, 0));
-        final List<KonDataRow> rows = Arrays.asList(new KonDataRow("Totalt", data));
+        final List<KonDataRow> rows = Arrays.asList(new KonDataRow(TOTAL, data));
         return (T) (new KonDataResponse(groups, rows));
     }
 
@@ -90,10 +93,8 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
         List<NamedData> rows = new ArrayList<>();
         for (KonDataRow row : resp.getRows()) {
             List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
-            int sum = 0;
-            for (Integer dataField : mergedSexData) {
-                sum += dataField;
-            }
+            int sum = ServiceUtil.getRowSum(row);
+
             mergedSexData.add(0, sum);
             rows.add(new NamedData(row.getName(), mergedSexData));
         }
@@ -107,13 +108,14 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
         List<String> degreesOfSickLeave = resp.getGroups();
         for (String groupName : degreesOfSickLeave) {
             final String seriesName = "%1$s".equals(seriesNameTemplate) ? groupName : String.format(seriesNameTemplate, groupName);
-            topHeaderRow.add(new TableHeader(seriesName, 2));
+            topHeaderRow.add(new TableHeader(seriesName, NUMBER_OF_COLUMNS));
         }
 
         List<TableHeader> subHeaderRow = new ArrayList<>();
         subHeaderRow.add(new TableHeader("Period"));
         subHeaderRow.add(new TableHeader("Antal sjukfall totalt"));
         for (String s : degreesOfSickLeave) {
+            subHeaderRow.add(new TableHeader(TOTAL));
             subHeaderRow.add(new TableHeader("Kvinnor"));
             subHeaderRow.add(new TableHeader("Män"));
         }

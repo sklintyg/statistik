@@ -3,7 +3,6 @@ package se.inera.statistics.spec
 import se.inera.statistics.service.report.util.Icd10
 import se.inera.statistics.service.report.util.Icd10RangeType
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup
-import se.inera.statistics.web.model.LoginInfo
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.statistics.web.service.FilterData
 import se.inera.statistics.web.service.ResponseHandler
@@ -15,6 +14,7 @@ abstract class Rapport {
     boolean inloggad
     def män
     def kvinnor
+    def könTotalt
     def totalt
     Boolean markerad
     boolean vårdgivarnivå
@@ -53,6 +53,10 @@ abstract class Rapport {
 
     def kvinnor() {
         return kvinnor
+    }
+
+    def könTotalt() {
+        return könTotalt
     }
 
     def totalt() {

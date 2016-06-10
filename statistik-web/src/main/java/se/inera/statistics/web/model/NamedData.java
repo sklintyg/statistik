@@ -54,4 +54,34 @@ public class NamedData {
         return name + ": " + data.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        NamedData namedData = (NamedData) o;
+
+        if (marked != namedData.marked) {
+            return false;
+        }
+        if (name != null ? !name.equals(namedData.name) : namedData.name != null) {
+            return false;
+        }
+        return data != null ? data.equals(namedData.data) : namedData.data == null;
+
+    }
+
+    // CHECKSTYLE:OFF MagicNumber
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (data != null ? data.hashCode() : 0);
+        result = 31 * result + (marked ? 1 : 0);
+        return result;
+    }
+    // CHECKSTYLE:ON MagicNumber
 }

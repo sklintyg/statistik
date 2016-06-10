@@ -27,6 +27,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -34,7 +35,7 @@ public class DiagnoskapitelConverterTest {
 
     @Test
     public void converterTestEmpty() {
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Icd>(), new ArrayList<KonDataRow>());
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<>(), new ArrayList<>());
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range());
         DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(resp, filterSettings);
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
@@ -44,10 +45,10 @@ public class DiagnoskapitelConverterTest {
     @Test
     public void converterTest() {
         //Given
-        ArrayList<Icd> avsnitts = new ArrayList<>();
+        List<Icd> avsnitts = new ArrayList<>();
         avsnitts.add(new Icd("A00-B99", "name1", 1));
-        ArrayList<KonDataRow> rows = new ArrayList<>();
-        ArrayList<KonField> diagnosisGroupData = new ArrayList<>();
+        List<KonDataRow> rows = new ArrayList<>();
+        List<KonField> diagnosisGroupData = new ArrayList<>();
         // CHECKSTYLE:OFF MagicNumber
         diagnosisGroupData.add(new KonField(3, 2));
         // CHECKSTYLE:ON MagicNumber
@@ -66,14 +67,14 @@ public class DiagnoskapitelConverterTest {
         assertEquals("[period1]", data.getMaleChart().getCategories().toString());
         assertEquals("[A00-B99 name1: [2]]", data.getMaleChart().getSeries().toString());
 
-        assertEquals("[[;1, ;1, A00-B99 name1;2], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1]]", data.getTableData().getHeaders().toString());
-        assertEquals("[period1: [5, 3, 2]]", data.getTableData().getRows().toString());
+        assertEquals("[[;1, ;1, A00-B99 name1;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1]]", data.getTableData().getHeaders().toString());
+        assertEquals("[period1: [5, 5, 3, 2]]", data.getTableData().getRows().toString());
     }
 
     @Test
     public void converterTopColumnsTest() {
         //Given
-        ArrayList<Icd> avsnitts = new ArrayList<>();
+        List<Icd> avsnitts = new ArrayList<>();
         avsnitts.add(new Icd("A00-B90", "name1", -1));
         avsnitts.add(new Icd("A00-B91", "name1", -1));
         avsnitts.add(new Icd("A00-B92", "name1", -1));
@@ -82,8 +83,8 @@ public class DiagnoskapitelConverterTest {
         avsnitts.add(new Icd("A00-B95", "name1", -1));
         avsnitts.add(new Icd("A00-B96", "name1", -1));
         avsnitts.add(new Icd("A00-B97", "name1", -1));
-        ArrayList<KonDataRow> rows = new ArrayList<>();
-        ArrayList<KonField> diagnosisGroupData = new ArrayList<>();
+        List<KonDataRow> rows = new ArrayList<>();
+        List<KonField> diagnosisGroupData = new ArrayList<>();
         // CHECKSTYLE:OFF MagicNumber
         diagnosisGroupData.add(new KonField(3, 30));
         diagnosisGroupData.add(new KonField(4, 40));
@@ -110,8 +111,8 @@ public class DiagnoskapitelConverterTest {
         assertEquals("[period1]", data.getMaleChart().getCategories().toString());
         assertEquals("[A00-B94 name1: [50], A00-B95 name1: [80], A00-B93 name1: [70], A00-B97 name1: [60], A00-B91 name1: [40], A00-B90 name1: [30], Övriga: [30]]", data.getMaleChart().getSeries().toString());
 
-        assertEquals("[[;1, ;1, A00-B90 name1;2, A00-B91 name1;2, A00-B92 name1;2, A00-B93 name1;2, A00-B94 name1;2, A00-B95 name1;2, A00-B96 name1;2, A00-B97 name1;2], [Period;1, Antal sjukfall totalt;1, Kvinnor;1, Män;1, Kvinnor;1, Män;1, Kvinnor;1, Män;1, Kvinnor;1, Män;1, Kvinnor;1, Män;1, Kvinnor;1, Män;1, Kvinnor;1, Män;1, Kvinnor;1, Män;1]]", data.getTableData().getHeaders().toString());
-        assertEquals("[period1: [446, 3, 30, 4, 40, 1, 10, 7, 70, 55, 50, 8, 80, 2, 20, 6, 60]]", data.getTableData().getRows().toString());
+        assertEquals("[[;1, ;1, A00-B90 name1;3, A00-B91 name1;3, A00-B92 name1;3, A00-B93 name1;3, A00-B94 name1;3, A00-B95 name1;3, A00-B96 name1;3, A00-B97 name1;3], [Period;1, Antal sjukfall totalt;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1, Totalt;1, Kvinnor;1, Män;1]]", data.getTableData().getHeaders().toString());
+        assertEquals("[period1: [446, 33, 3, 30, 44, 4, 40, 11, 1, 10, 77, 7, 70, 105, 55, 50, 88, 8, 80, 22, 2, 20, 66, 6, 60]]", data.getTableData().getRows().toString());
         // CHECKSTYLE:ON MagicNumber
     }
 

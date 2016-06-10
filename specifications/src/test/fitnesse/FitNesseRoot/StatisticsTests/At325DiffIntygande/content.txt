@@ -29,19 +29,19 @@ Ett sjukfall räknas tillhöra gruppen "Enkla upp till 60 dagar" om sjukskrivnin
 Andelen för varje grupp (övriga, enkla <60, enkla >60) beräknas för kvinnor och män separat.
 
 | Sjukfall i rapporten differentierat intygande |
-| inloggad som | år   | månad | typ                     | totalt? | män?     | kvinnor? |
-| user2        | 2015 | feb   | Övriga                  | 6       | 1        | 1        |
-| user2        | 2015 | feb   | Enkla upp till 60 dagar | 6       | 0        | 3        |
-| user2        | 2015 | feb   | Enkla över 60 dagar     | 6       | 0        | 1        |
-| user2        | 2015 | mar   | Övriga                  | 6       | 1        | 0        |
-| user2        | 2015 | mar   | Enkla upp till 60 dagar | 6       | 2        | 1        |
-| user2        | 2015 | mar   | Enkla över 60 dagar     | 6       | 1        | 1        |
-| user2        | 2015 | apr   | Övriga                  | 5       | 1        | 0        |
-| user2        | 2015 | apr   | Enkla upp till 60 dagar | 5       | 1        | 0        |
-| user2        | 2015 | apr   | Enkla över 60 dagar     | 5       | 2        | 1        |
-| user2        | 2015 | maj   | Övriga                  | 3       | 1        | 0        |
-| user2        | 2015 | maj   | Enkla upp till 60 dagar | 3       | 0        | 0        |
-| user2        | 2015 | maj   | Enkla över 60 dagar     | 3       | 1        | 1        |
+| inloggad som | år   | månad | typ                     | totalt? | kön totalt? | män?     | kvinnor? |
+| user2        | 2015 | feb   | Övriga                  | 6       | 2           | 1        | 1        |
+| user2        | 2015 | feb   | Enkla upp till 60 dagar | 6       | 3           | 0        | 3        |
+| user2        | 2015 | feb   | Enkla över 60 dagar     | 6       | 1           | 0        | 1        |
+| user2        | 2015 | mar   | Övriga                  | 6       | 1           | 1        | 0        |
+| user2        | 2015 | mar   | Enkla upp till 60 dagar | 6       | 3           | 2        | 1        |
+| user2        | 2015 | mar   | Enkla över 60 dagar     | 6       | 2           | 1        | 1        |
+| user2        | 2015 | apr   | Övriga                  | 5       | 1           | 1        | 0        |
+| user2        | 2015 | apr   | Enkla upp till 60 dagar | 5       | 1           | 1        | 0        |
+| user2        | 2015 | apr   | Enkla över 60 dagar     | 5       | 3           | 2        | 1        |
+| user2        | 2015 | maj   | Övriga                  | 3       | 1           | 1        | 0        |
+| user2        | 2015 | maj   | Enkla upp till 60 dagar | 3       | 0           | 0        | 0        |
+| user2        | 2015 | maj   | Enkla över 60 dagar     | 3       | 2           | 1        | 1        |
 
 | Sjukfall i rapporten differentierat intygande som tvarsnitt |
 | inloggad som | typ                     | totalt? | män?    | kvinnor? |
