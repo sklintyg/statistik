@@ -58,6 +58,10 @@ public class LakareManager {
             LOG.error("Vardgivare saknas: " + hsaInfo.toString());
             return;
         }
+        if (lakareId == null || lakareId.isEmpty()) {
+            LOG.error("Läkare saknas: " + hsaInfo.toString());
+            return;
+        }
         TypedQuery<Lakare> lakareQuery = manager.createQuery("SELECT l FROM Lakare l WHERE l.lakareId = :lakareId", Lakare.class);
         List<Lakare> resultList = lakareQuery.setParameter("lakareId", lakareId.getId()).getResultList();
 
@@ -110,6 +114,10 @@ public class LakareManager {
         }
         if (vardgivare.getId().length() > WidelineConverter.MAX_LENGTH_VGID) {
             LOG.error("Vardgivare id ogiltigt for lakare");
+            return false;
+        }
+        if (lakareId == null || lakareId.isEmpty()) {
+            LOG.error("LakareId saknas for lakare");
             return false;
         }
         boolean result = checkLength(lakareId.getId(), "Lakareid", WidelineConverter.MAX_LENGTH_LAKARE_ID);

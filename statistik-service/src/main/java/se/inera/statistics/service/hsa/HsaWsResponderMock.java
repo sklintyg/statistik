@@ -131,6 +131,9 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     }
 
     private JsonNode getOrCreatePersonal(HSAKey key) {
+        if (!shouldExistInHsa(key.getLakareId().getId())) {
+            return null;
+        }
         if (personals.containsKey(key.getLakareId().getId())) {
             return personals.get(key.getLakareId().getId());
         }
@@ -323,6 +326,9 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     public GetStatisticsPersonResponseType getStatisticsPerson(AttributedURIType logicalAddress, AttributedURIType id, GetStatisticsPersonType parameters) throws HsaWsFault {
         GetStatisticsPersonResponseType resp = new GetStatisticsPersonResponseType();
         String hsaId = parameters.getHsaIdentity();
+        if (!shouldExistInHsa(hsaId)) {
+            return null;
+        }
         resp.setHsaIdentity(hsaId);
         JsonNode personal = getOrCreatePersonal(getHsaKey(hsaId));
         resp.setGender(personal.get("kon").textValue());
@@ -370,6 +376,9 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     @Override
     public GetStatisticsNamesResponseType getStatisticsNames(AttributedURIType logicalAddress, AttributedURIType id, GetStatisticsNamesType parameters) throws HsaWsFault {
         String hsaid = parameters.getHsaIdentities().getHsaIdentity().get(0);
+        if (!shouldExistInHsa(hsaid)) {
+            return null;
+        }
         GetStatisticsNamesResponseType resp = new GetStatisticsNamesResponseType();
         GetStatisticsNamesResponseType.StatisticsNameInfos nameInfos = new GetStatisticsNamesResponseType.StatisticsNameInfos();
         StatisticsNameInfo nameInfo = new StatisticsNameInfo();
@@ -444,7 +453,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     public GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(AttributedURIType logicalAddress, AttributedURIType id, GetStatisticsHsaUnitType parameters) throws HsaWsFault {
         String hsaid = parameters.getHsaIdentity();
         HSAKey key = getHsaKey(hsaid);
-        if (shouldEnhetExistInHsa(hsaid)) {
+        if (shouldExistInHsa(hsaid)) {
             GetStatisticsHsaUnitResponseType resp = new GetStatisticsHsaUnitResponseType();
             resp.setStatisticsUnit(createHsaUnit(key, false));
             resp.setStatisticsCareUnit(createHsaUnit(key, true));
@@ -460,7 +469,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         return null;
     }
 
-    public static boolean shouldEnhetExistInHsa(String enhetId) {
+    public static boolean shouldExistInHsa(String enhetId) {
         return enhetId != null && !enhetId.startsWith("EJHSA") && !"UTANENHETSID".equals(enhetId);
     }
 

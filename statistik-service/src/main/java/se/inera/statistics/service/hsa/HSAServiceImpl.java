@@ -119,7 +119,7 @@ public class HSAServiceImpl implements HSAService {
     private GetStatisticsPersonResponseType getStatisticsPerson(String key) {
         GetStatisticsPersonResponseType person = service.getStatisticsPerson(key);
         if (person == null) {
-            LOG.warn("No person '{}' found", key);
+            LOG.warn("No statistics person '{}' found", key);
         }
         return person;
     }
@@ -127,7 +127,7 @@ public class HSAServiceImpl implements HSAService {
     private GetStatisticsNamesResponseType getStatisticsNames(String key) {
         GetStatisticsNamesResponseType person = service.getStatisticsNames(key);
         if (person == null) {
-            LOG.warn("No person '{}' found", key);
+            LOG.warn("No statistics names '{}' found", key);
         }
         return person;
     }

@@ -185,7 +185,7 @@ public class RestSupportService {
     }
 
     private void setEnhetName(Intyg intyg) {
-        if (intyg.getEnhetId() == null || intyg.getEnhetId().isEmpty() || !HsaWsResponderMock.shouldEnhetExistInHsa(intyg.getEnhetId())) {
+        if (intyg.getEnhetId() == null || intyg.getEnhetId().isEmpty() || !HsaWsResponderMock.shouldExistInHsa(intyg.getEnhetId())) {
             return;
         }
         String name = intyg.getEnhetName() != null && !intyg.getEnhetName().isEmpty() ? intyg.getEnhetName() : intyg.getEnhetId();
