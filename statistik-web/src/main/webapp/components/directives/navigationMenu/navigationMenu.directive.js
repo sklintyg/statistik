@@ -333,7 +333,8 @@
             else {
                 $scope.menus.push({
                     id: operation.id,
-                    name: 'login.header',
+                    name: 'nav.business-header',
+                    tooltip: 'login.header',
                     show: false,
                     disabled: true,
                     checkVisible: operation.checkVisible

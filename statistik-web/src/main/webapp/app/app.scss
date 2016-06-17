@@ -566,8 +566,8 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
   border-radius: 4px;
   color: #fff;
 }
-.accordion-toggle.disabled { background: #dadada; cursor: initial; }
-.accordion-toggle.disabled span { color: #a3a3a3; }
+.accordion-toggle.disabled { background: #EEEEEE; cursor: initial; }
+.accordion-toggle.disabled span { color: #CCCCCC; }
 
 .accordion {
   margin-bottom: 20px !important;
