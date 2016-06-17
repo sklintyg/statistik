@@ -29,38 +29,45 @@ from lib import *
 THRESHOLD = 5
 DBUSER = 'root'
 DBNAME = 'statistik'
+DBHOST = 'mysql.ip20.nordicmedtest.se'
+STANDARD_INTERVALL = '2016-01-01:2016-12-31'
+
 
 def usage():
-    print '''Användning: python report.py -i <start-intervall:slut-intervall> [options] <rule>
-options:
-    -t              Använd tröskelvärde (%s) för vårdgivare and man/kvinna
-    -i <start:end>  Intervall för sjukfall, måste vara enligt följande:
-                       YYYY-MM-DD:YYYY-MM-DD
-    -p              Validera personid
-    -w <lösenord>   Databasens lösenord
-    -f <filename>   Namn på resultatfil från databas
-    -b <hostname>   Databasens host-name
-    -q <database-name>   Databasens host-name
-    -v <vårdgivar-hsa>  Vårdgivare ID
-    -c <enhet-hsa>   Vårdenhet ID
+    # -f <filename>    Namn på resultatfil från databas
+    print '''Användning: python report.py -i <start-intervall:slut-intervall> [konfiguration] [filter] <gruppering>
+Konfiguration:
+    -p               Validera personid
+    -w <lösenord>    Databasens lösenord
 
-rule:
-    -s      Gruppera på sjukfall
-    -d      Gruppera på diagnos (kapitel)
-    -a      Gruppera på ålder
-    -g      Gruppera på sjukskrivningsgrad
-    -l      Gruppera på sjukskrivningslängd
-    -n      Gruppera på län
-    -k      Gruppera på läkarbefattning
-    -K      Gruppera på läkarålder och kön
-    -L <enhet>  Gruppera på läkare för en specifik enhet
-    -E <enhet>  Gruppera på sjukfall och specifik enhet
-    -e      Gruppera på sjukfall och enheter
-    -N      Gruppera på sjukfall längre än 90 dagar
-    -9 <enhet>  Group on sjukfall längre än 90 dagar för enhet
+    -b <hostnamn>    Databasens host
+    -q <databasnamn> Databasens namn
+    --dump           Skapa en databasdump
+Filter:
+    -i <start:end>   Intervall för sjukfall, måste vara enligt följande:
+                     YYYY-MM-DD:YYYY-MM-DD
+    -v <hsaid>       Vårdgivare ID
+    -c <hsaid>       Vårdenhet ID
+    -t               Använd tröskelvärde (%s) för vårdgivare and man/kvinna
+
+Gruppera på:
+    -s               Sjukfall
+    -d               Diagnos (kapitel)
+    -a               Ålder
+    -g               Sjukskrivningsgrad
+    -l               Sjukskrivningslängd
+    -n               Län
+    -k               Läkarbefattning
+    -K               Läkarålder och kön
+    -L <enhet>       Läkare för en specifik enhet
+    -E <enhet>       Sjukfall och specifik enhet
+    -e               Sjukfall och enheter
+    -N               Sjukfall längre än 90 dagar
+    -9 <enhet>       Sjukfall längre än 90 dagar för enhet
 ''' % THRESHOLD
 
-def get_enheter(filename):
+
+def get_enheter(filename): 
     """Return all vårdenheter, key is vårdgivare+vårdenhet"""
     fd = open(filename)
     # Skip first line
@@ -79,27 +86,50 @@ def get_enheter(filename):
     return res
 
 
+def get_caregiver_id_from_user(host, password, dbname):
+    sql_cmd = 'SELECT * FROM Landsting;'
+    ssh_cmd = 'mysql --user %s --password=%s %s -e "%s"' % (DBUSER, password, dbname, sql_cmd)
+    cmd = ['ssh', '-q', 'nmt@%s' % host, ssh_cmd]
+    print sql_cmd
+    try:
+        output = subprocess.check_output(cmd)
+        vgs = output.decode('iso8859-1').splitlines()
+
+        print '\n'.join(vgs)
+        print 'Ange id på det landsting du är intresserad av:'
+        vg_id = input()
+
+        if vg_id <= 0 or vg_id > (len(vgs)-1):
+            print 'Det finns inget landsting med det id:t'
+            sys.exit()
+
+        vg = vgs[vg_id].split('\t')
+        print 'Du har valt ' + vg[1]
+        return vg[2].encode('utf-8')
+
+    except Exception as exc:
+        print exc
+        raise
+
 def get_data(file_name, start, end, caregiver, careunit, host, password, dbname):
     ''' Extracts data from the database and stores it to file_name '''
 
     # Start nedan är antalet dagar efter 2000 som är en tidräkning som statistiktjänsten använder sig av i databasen.
     # Villkoret "correlationid not in ..." är viktigt för det plockar bort intyg som blivit annulerade.
 
+    sql_cmd = 'mysql --user %s --password=%s %s -e "select * from wideline w where ((startdatum >= %s and startdatum <= %s) or '  % (DBUSER,password,dbname, start, end)
+    sql_cmd += '(slutdatum >= %s and slutdatum <= %s) or (startdatum < %s and slutdatum > %s)) and sjukskrivningsgrad > 0 ' % (start, end, start, end)
+    sql_cmd += 'and correlationid not in (select correlationid from wideline where intygtyp=1) '
+
     if caregiver:
-        print "INFO: Utför sökning med vårdgivare"
-        sql_cmd = 'mysql --user %s --password=%s %s -e "select * from wideline w where ((startdatum >= %s and startdatum <= %s) or '  % (DBUSER,password,dbname, start, end)
-        sql_cmd += '(slutdatum >= %s and slutdatum <= %s) or (startdatum < %s and slutdatum > %s)) and sjukskrivningsgrad > 0 ' % (start, end, start, end)
-        sql_cmd += 'and correlationid not in (select correlationid from wideline where intygtyp=1) '
+        print 'INFO: Hämtar data för vårdgivare %s' % caregiver
         sql_cmd += "and w.vardgivareid='%s'" % caregiver
-        sql_cmd += '"'
 
     elif careunit:
-        print "INFO: Utför sökning med vårdenhet"
-        sql_cmd = 'mysql --user %s --password=%s %s -e "select * from wideline w where ((startdatum >= %s and startdatum <= %s) or '  % (DBUSER,password,dbname, start, end)
-        sql_cmd += '(slutdatum >= %s and slutdatum <= %s) or (startdatum < %s and slutdatum > %s)) and sjukskrivningsgrad > 0 ' %  (start, end, start, end)
-        sql_cmd += 'and correlationid not in (select correlationid from wideline where intygtyp=1) '
+        print "INFO: Hämtar data för vårdenhet %s" % careunit
         sql_cmd += "and w.enhet='%s'" % careunit
         sql_cmd += '"'
+    sql_cmd += '"'
 
     cmd = ['ssh', '-q', 'nmt@%s' % host, sql_cmd]
     print sql_cmd
@@ -108,20 +138,22 @@ def get_data(file_name, start, end, caregiver, careunit, host, password, dbname)
 
         with open(file_name, 'w') as aFile:
             aFile.write(output)
-        
+
     except Exception as exc:
         print exc
         raise
-    
+
+
+
 def main(argv):
     threshold = False
     check_personid = False
     alpha = datetime(2000, 1, 1)
     now = datetime.now()
     end_limit = datetime(now.year + 5, now.month, now.day) - alpha
-    start_limit = datetime(2010,1,1) - alpha
+    start_limit = datetime(2010, 1, 1) - alpha
     start_interval = None
-    end_interval   = None
+    end_interval = None
     interval = None
     rule = None
     result_file = None
@@ -129,9 +161,10 @@ def main(argv):
     careunit = None
     db_host = None
     db_password = None
-    db_name = DBNAME
+    db_name = None
+    make_dbdump = None
 
-    opts, args = getopt.getopt(argv,"tdapglni:ekKL:hsE:Nj:9:f:v:c:w:b:q:")
+    opts, args = getopt.getopt(argv, "tdapglni:ekKL:hsE:Nj:9:v:c:w:b:q:",['dump'])
     for opt, arg in opts:
         if opt == '-t':
             threshold = True
@@ -164,10 +197,7 @@ def main(argv):
         elif opt == '-j':
             rule = RuleJamfor(arg.strip())
         elif opt == '-i':
-            interval = arg.split(':')
-            assert(len(interval) == 2)
-            start_interval = date2days(interval[0], alpha)
-            end_interval   = date2days(interval[1], alpha)
+            interval = arg
         elif opt == '-k':
             rule = RuleLakarbefattning()
         elif opt == '-K':
@@ -176,40 +206,65 @@ def main(argv):
             rule = RuleLakare(arg.strip())
         elif opt == '-h':
             return usage()
-        elif opt == '-f':
-            result_file = arg
+        elif opt == '--dump':
+            make_dbdump = 1
+        # elif opt == '-f':
+        #     result_file = arg
+        elif opt == '-q':
+            db_name = arg
+        elif opt == '-b':
+            db_host = arg
+        elif opt == '-w':
+            db_password = arg
         elif opt == '-v':
             caregiver = arg
         elif opt == '-c':
             careunit = arg
-        elif opt == '-w':
-            db_password = arg
-        elif opt == '-b':
-            db_host = arg
-        elif opt == '-q':
-            print arg
-            db_name = arg
+    if not interval:
+        interval = STANDARD_INTERVALL
+        print('Intervall saknas. Ange intervall på formen YYYY-MM-DD:YYYY-MM-DD  (%s)' % STANDARD_INTERVALL)
+        given_interval = raw_input()
+        if(given_interval):
+            interval = given_interval
+
+    interval = interval.split(':')
+    assert(len(interval) == 2)
+    start_interval = date2days(interval[0], alpha)
+    end_interval = date2days(interval[1], alpha)
 
     if start_interval is None or end_interval is None:
         print "Intervall saknas"
         usage()
         return
 
-    if result_file:
-        if not caregiver:
-            print "INFO: Vårdgivare saknas"
-            if not careunit:
-                print "ERROR: Vårdgivare eller vårdenhet saknas"
-                usage()
-                return
+    if make_dbdump:
         if not db_host:
-            print "Ange db-host:"
-            db_host = raw_input()
+            db_host = DBHOST
+            print('Ange databashost (%s)' % DBHOST)
+            given_db_host = raw_input()
+            if(given_db_host):
+                db_host = given_db_host
+
+        if not db_name:
+            db_name = DBNAME
+            print('Ange databasens namn (%s)' % DBNAME)
+            given_db_name = raw_input()
+            if(given_db_name):
+                db_name = given_db_name
+
         if not db_password:
             print "Ange db-lösenord för användare %s:" % (DBUSER)
             db_password = raw_input()
+            if not db_password:
+                'Lösenord saknas!'
+                return 
 
-        get_data(result_file, start_interval, end_interval, caregiver, careunit, db_host, db_password,db_name)
+        if not caregiver:
+            if not careunit:
+                print "INFO: Vårdgivare eller vårdenhet ej angiven"
+                caregiver = get_caregiver_id_from_user(db_host, db_password, db_name)
+
+        get_data(result_file, start_interval, end_interval, caregiver, careunit, db_host, db_password, db_name)
         return
 
     if rule is None:
@@ -218,56 +273,57 @@ def main(argv):
         return
 
     # Read the column names, must be first line
-    wideline = Wideline(sys.stdin.readline())
+    with open('result.txt', 'rb') as f:
+        wideline = Wideline(f.readline())
+        # wideline = sys.stdin.readline()
 
-    # Check that the right columns was included for this test
-    rule.check(wideline)
+        # Check that the right columns was included for this test
+        rule.check(wideline)
 
-    vgmap = {}
-    for line in sys.stdin:
-        intyg = Intyg(line, wideline)
+        vgmap = {}
+        for line in f:
+            intyg = Intyg(line, wideline)
 
-
-		# Check that slutdatum is not less than startdatum
-        if intyg.slut < intyg.start:
-            print "disregarding intyg: ", intyg.start, intyg.slut
-            continue
-
-        if not re.search('[\d]{8}-[\d]{4}', intyg.id):
-            print "Invalid patientid: ", intyg.id
-            continue
-
-        # Make a simple check of personid
-        if check_personid:          
-            year = int(intyg.id[0:4])
-            month = int(intyg.id[4:6])
-            day = int(intyg.id[6:8])
-            if month == 0 or day == 0:
-                print "Invalid personid: " + intyg.id
-                continue
-            if month > 12 or day > 31 or year > 2015:
-                print "Invalid personid2: " + intyg.id
+            # Check that slutdatum is not less than startdatum
+            if intyg.slut < intyg.start:
+                print "Ignorerar intyg: ", intyg.start, intyg.slut
                 continue
 
-        # Start- eller slutdatum för sjukskrivningsperioden får inte vara mer än fem år fram i tiden.
-        # Ingen idé att kolla startdatum för då skulle inte intyget kommit med i urvalet
-        if intyg.slut > end_limit.days:
-            print "Ignoring intyg with bad end date: ", intyg.slut
-            continue
+            if not re.search('[\d]{8}-[\d]{4}', intyg.id):
+                print "Ogiltigt patientid: ", intyg.id
+                continue
 
-        # Startdatumet för sjukskrivningsperioden får inte vara före 2010-01-01
-        if intyg.start < start_limit.days:
-            print "Ignoring intyg with invalid start date: ", intyg.start
-            continue
+            # Make a simple check of personid
+            if check_personid:          
+                year = int(intyg.id[0:4])
+                month = int(intyg.id[4:6])
+                day = int(intyg.id[6:8])
+                if month == 0 or day == 0:
+                    print "Ogiltigt personid: " + intyg.id
+                    continue
+                if month > 12 or day > 31 or year > 2016:
+                    print "Ogiltigt personid2: " + intyg.id
+                    continue
 
-        if intyg.vardgivare in vgmap:
-            vg = vgmap[intyg.vardgivare]
-            vg.add(intyg)
-        else:
-            vg = VG(intyg.vardgivare)
-            vg.add(intyg)
+            # Start- eller slutdatum för sjukskrivningsperioden får inte vara mer än fem år fram i tiden.
+            # Ingen idé att kolla startdatum för då skulle inte intyget kommit med i urvalet
+            if intyg.slut > end_limit.days:
+                print "Ignorerar intyg med ogiltigt slutdatum: ", intyg.slut
+                continue
 
-        vgmap[intyg.vardgivare] = vg
+            # Startdatumet för sjukskrivningsperioden får inte vara före 2010-01-01
+            if intyg.start < start_limit.days:
+                print "Ignorerar intyg med ogiltigt startdatum: ", intyg.start
+                continue
+
+            if intyg.vardgivare in vgmap:
+                vg = vgmap[intyg.vardgivare]
+                vg.add(intyg)
+            else:
+                vg = VG(intyg.vardgivare)
+                vg.add(intyg)
+
+            vgmap[intyg.vardgivare] = vg
 
     tot = 0
     agg = Group()

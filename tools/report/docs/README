@@ -11,14 +11,16 @@ För att exekvera report.py scriptet behöver man först extrahera ut de rader s
 
 1. Skapa ett utdrag från databasen för en viss vårdgivare
 
-   ./report.py -i 2015-04-01:2015-04-31 -f result.txt -v SE2321000206-E00001 -w password -b mysql.ip20.nordicmedtest.se
+   ./report.py -i 2015-04-01:2015-04-31 --dump -v SE2321000206-E00001 -w password -b mysql.ip20.nordicmedtest.se
+
+   Scriptet kommer att fråga efter de värden som saknas
 
 2. Kör rapportberäkningarna. Ex vis:
 
-   # ./report.py -i 2015-04-01:2015-04-31 -g < result.txt 
-   # ./report.py -i 2015-05-01:2015-05-31 -a < result.txt 
-   # ./report.py -i 2013-11-01:2015-04-30 -d < result.txt 
-   # ./report.py -i 2015-04-01:2015-04-30 -D < result.txt
+   # ./report.py -i 2015-04-01:2015-04-31 -g
+   # ./report.py -i 2015-05-01:2015-05-31 -a
+   # ./report.py -i 2013-11-01:2015-04-30 -d
+   # ./report.py -i 2015-04-01:2015-04-30 -D
 
 För att se vilka rapportberäkningar som finns tillgängliga:
 # ./report.py -h
