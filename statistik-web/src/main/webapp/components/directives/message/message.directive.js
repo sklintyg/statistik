@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').directive('message',
     /** @ngInject */
-    function($log, $rootScope, messageService) {
+    function($log, $rootScope, $filter) {
         'use strict';
 
         return {
@@ -30,29 +30,8 @@ angular.module('StatisticsApp').directive('message',
                 var result;
                 // observe changes to interpolated attribute
                 function updateMessage(interpolatedKey) {
-                    var normalizedKey = angular.lowercase(interpolatedKey);
-                    var useLanguage;
-                    if (typeof attr.lang !== 'undefined') {
-                        useLanguage = attr.lang;
-                    } else {
-                        useLanguage = $rootScope.lang;
-                    }
-
-                    result = messageService.getProperty(normalizedKey, null, attr.fallback, useLanguage,
-                        (typeof attr.fallbackDefaultLang !== 'undefined'));
-
-                    if (typeof attr.param !== 'undefined') {
-                        $log.debug(attr.param);
-                        result = result.replace('%0', attr.param);
-                    } else {
-                        if (typeof attr.params !== 'undefined') {
-                            var myparams = attr.params;
-                            for (var i = 0; i < myparams.length; i++) {
-                                result = result.replace('%' + i, myparams[i]);
-                            }
-                        }
-                    }
-
+                    var params = typeof attr.param !== 'undefined' ? [attr.param] : attr.params;
+                    result = $filter('messageFilter')(interpolatedKey, attr.fallback, attr.fallbackDefaultLang, params, attr.lang);
                     element.html('<span>' + result + '</span>');
                 }
 
