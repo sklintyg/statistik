@@ -52,12 +52,16 @@
       ]
     },
     "pdfmake": [
-      "build/pdfmake.js"],
+      "build/pdfmake.js"
+    ],
     "jquery.tablesorter": {
       "main": [
         "dist/js/jquery.tablesorter.js",
         "dist/css/theme.default.min.css"
       ]
     }
+  },
+  "resolutions": {
+    "angular": "1.4.11"
   }
 }
