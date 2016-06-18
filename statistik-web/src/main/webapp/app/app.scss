@@ -1670,6 +1670,24 @@ input[type="radio"], input[type="checkbox"] {
     background-position: right bottom;
 }
 
+.chart-icon-percentarea, .chart-icon-percentarea-active {
+  background-image: url("../assets/images/chart-types/ytdiagram_procent_x2.png");
+  background-repeat: no-repeat;
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 34px;
+  background-size: 38px 34px;
+}
+
+.chart-icon-percentarea:hover {
+  box-shadow: 1px 100px rgba(0, 0, 0, 0.1) inset;
+}
+
+.chart-icon-percentarea-active {
+  box-shadow: 1px 100px rgba(0, 0, 0, 0.2) inset;
+}
+
 .not-active {
     pointer-events: none;
     cursor: default;

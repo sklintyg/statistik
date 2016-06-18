@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* globals Highcharts */
 angular.module('StatisticsApp').factory('chartFactory',
     /** @ngInject */
     function(COLORS, _, ControllerCommons, $window, AppModel) {
@@ -230,7 +231,26 @@ angular.module('StatisticsApp').factory('chartFactory',
         var calculateSeriesStacking = function calculateSeriesStacking(chart, chartType) {
             //Figure out if we stacking should be percent, normal or null when we switch the type of the diagram
             var seriesStacking = chart.options.plotOptions.series.stacking;
-            return seriesStacking === 'percent'? seriesStacking : chartType === 'area'? 'normal' : null;
+            return seriesStacking === 'percent' || chartType === 'percentarea' ? 'percent' : chartType === 'area' ? 'normal' : null;
+        };
+
+        var getYAxisConfig = function(config) {
+            if (config.stacking === 'percent') {
+                return {
+                    labels: {
+                        formatter: function() {
+                            return ControllerCommons.makeThousandSeparated(this.value) + ' %';
+                        }
+                    }
+                };
+            }
+            return {
+                labels: {
+                    formatter: function() {
+                        return ControllerCommons.makeThousandSeparated(this.value);
+                    }
+                }
+            };
         };
 
         /* Configure all existing series of a specific chart for a new chart type.
@@ -238,9 +258,17 @@ angular.module('StatisticsApp').factory('chartFactory',
         var switchChartType = function (chart, chartType) {
 
             var config = config || {
-                type: chartType,
-                stack: chartType === 'area'? 'stacked' : null,
-                stacking: calculateSeriesStacking(chart, chartType)
+                type: chartType.indexOf('area') > -1 ? 'area' : chartType,
+                stack: chartType.indexOf('area') > -1 ? 'stacked' : null,
+                stacking: calculateSeriesStacking(chart, chartType),
+                tooltip: {
+                    pointFormatter: function() {
+                        var value = chartType === 'percentarea' ?
+                            Highcharts.numberFormat(this.percentage, 0, ',') + ' %' :
+                            ControllerCommons.makeThousandSeparated(this.y);
+                        return this.series.name + ': <nobr><b>' + value + '</b></nobr><br/>';
+                    }
+                }
             };
 
             var hasSexSet = isSexSetOnChartSeries(chart.series);
@@ -256,19 +284,21 @@ angular.module('StatisticsApp').factory('chartFactory',
 
                 series.update(config, false);
             });
+
+            chart.yAxis[0].update(getYAxisConfig(config), false);
         };
 
         /* This is just a very akward way of telling the chart not to display
          a series with totals when the chart type is area. If the area chart uses stack and stacking the total will add to the other series
          and the numbers will accumulate which isn't correct when show in the chart*/
         function showOrHideTotalSeries(chartType, series, config) {
-            if(chartType === 'area' && series.options.sex === null) {
+            if(chartType.indexOf('area') > -1 && series.options.sex === null) {
                 //Mark legend that it wont be shown.
                 // We don't actually use highcharts legends so this won't update the chart legends by itself
                 config.showInLegend = false;
 
                 series.hide();
-            } else if (chartType !== 'area' && series.options.sex === null) {
+            } else if (chartType.indexOf('area') < 0 && series.options.sex === null) {
                 config.showInLegend = true;
                 series.show();
             } else {
