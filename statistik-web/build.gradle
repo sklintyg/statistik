@@ -81,14 +81,6 @@ task bowerInstall(type: NodeTask, dependsOn:npmInstall) {
 grunt_build.dependsOn bowerInstall
 grunt_build_no_minify.dependsOn bowerInstall
 
-/*task jsTests(type: NodeTask, dependsOn: [npmInstall]) {
-    script = file('node_modules/grunt-cli/bin/grunt')
-    args = ['test']
-}
-
-test.dependsOn(jsTests)
-*/
-
 task createVersionPropertyFile(dependsOn: processResources) << {
     def propertyFile = "${buildDir}/resources/main/version.properties"
     ant.touch(file: propertyFile, mkdirs: "true")
@@ -113,6 +105,7 @@ dependencies {
     compile "org.apache.poi:poi:${poiVersion}"
     compile "org.apache.poi:poi-ooxml:${poiVersion}"
     compile "xalan:xalan:${xalanVersion}"
+    compile "com.github.ziplet:ziplet:${zipletVersion}"
 
     gretty "com.h2database:h2:${h2Version}"
     gretty "mysql:mysql-connector-java:${mysqlConnectorVersion}"

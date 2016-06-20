@@ -83,6 +83,8 @@ subprojects {
         xalanVersion = "2.7.2"
         xmlApisVersion = "1.4.01"
 
+        zipletVersion = "2.1.2"
+
         // Internal
         //intygCommonVersion = "2.5.+"
         intygCommonVersion = "0-SNAPSHOT"
