@@ -1,6 +1,6 @@
 !contents -R2 -g -p -f -h
 
-Ett intyg med en icke-existerande läkare ska inte sorteras bort. Det ska tas med i statistiken men hamnar i gruppen "Okänd läkare" i rapporterna som baseras på läkare.
+Ett intyg med en icke-existerande läkare ska inte sorteras bort. Det ska tas med i statistiken men hamnar i gruppen "Okänd läkare" i rapporterna "Läkarbefattning" och "Läkarålder- och kön". I rapporten "Läkare" så skrivs det felaktiga HSA-idt ut istället för läkarnamn.
 
 !3 Givet att:
 
@@ -28,7 +28,7 @@ Inloggad:
 | Sjukfall i rapporten sjukfall per lakare |
 | inloggad som | läkare         | män? | kvinnor? |
 | user1        | Bo Bengtsson   | 0    | 1        |
-| user1        | Okänd läkare   | 1    | 0        |
+| user1        | EJHSA          | 1    | 0        |
 
 | Sjukfall i rapporten lakarkonalder |
 | inloggad som | läkargrupp               | män? | kvinnor? |
