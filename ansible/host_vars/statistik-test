@@ -2,6 +2,6 @@
 # file: host_vars/statistik-test
 config_etc_folder: "{{ config_folder }}/test"
 profile: dev,hsa-stub,wc-hsa-stub,security-fake,qm,active,hsacached
-host_url: https://fitnesse.inera.nordicmedtest.se
+host_url: https://statistik.inera.nordicmedtest.se
 
-activemq_broker_url: "vm://localhost:61616?broker.persistent=false"
+activemq_broker_url: "tcp://intygstjanst.inera.nordicmedtest.se:61616"
