@@ -114,9 +114,15 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         };
 
         function updateChartsYAxisMaxValue() {
-            var yMax = Math.max(that.chart1.yAxis[0].dataMax, that.chart2.yAxis[0].dataMax);
-            that.chart1.yAxis[0].setExtremes(0, yMax + 1);
-            that.chart2.yAxis[0].setExtremes(0, yMax + 1);
+            // Reset values to default
+            that.chart1.yAxis[0].setExtremes(0, null);
+            that.chart2.yAxis[0].setExtremes(0, null);
+
+            var yMax = Math.max(that.chart1.yAxis[0].getExtremes().max, that.chart2.yAxis[0].getExtremes().max);
+
+            // Set both values to same max.
+            that.chart1.yAxis[0].setExtremes(0, yMax);
+            that.chart2.yAxis[0].setExtremes(0, yMax);
         }
 
         var updateChart = function (ajaxResult, doneLoadingCallback) {
