@@ -534,13 +534,7 @@ legend {
   cursor: default !important;
   font-weight: normal !important;
 }
-.accordion-toggle.disabled i.statistict-left-menu-expand-icon{
-  display: none;
-}
-.accordion-toggle.disabled i.statistict-left-menu-expand-icon {
-  opacity: .8;
-  cursor: default;
-} 
+
 .accordion-toggle.active {
   background: #212633;
   background: linear-gradient(to bottom, #666666 0%,#212633 57%);

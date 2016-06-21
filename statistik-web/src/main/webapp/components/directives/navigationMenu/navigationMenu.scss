@@ -22,12 +22,14 @@
   border-bottom: 1px solid transparent;
 }
 
-#statistics-menu-accordion #national-statistic-menu-content li.active a,
-#statistics-menu-accordion #business-statistic-menu-content li.active a,
-#statistics-menu-accordion #landsting-statistic-menu-content li.active a,
-#statistics-menu-accordion #about-statistic-menu-content li.active a {
-  background: #CCCCCC !important;
-  color: #0b0b0b !important;
+#statistics-menu-accordion {
+  #national-statistic-menu-content li.active a,
+  #business-statistic-menu-content li.active a,
+  #landsting-statistic-menu-content li.active a,
+  #about-statistic-menu-content li.active a {
+    background: #CCCCCC !important;
+    color: #0b0b0b !important;
+  }
 }
 
 #national-statistic-menu-content .sub-nav-list li a,
@@ -59,6 +61,12 @@ i.statistict-left-menu-expand-icon {
 #national-statistic-menu-content i.statistict-left-menu-expand-icon.collapsed,
 #business-statistic-menu-content i.statistict-left-menu-expand-icon.collapsed {
   @extend .glyphicon-plus-sign;
+}
+
+.accordion-toggle.disabled i.statistict-left-menu-expand-icon{
+  color: #ccc;
+  opacity: .8;
+  cursor: default;
 }
 
 .mobile-menu-caret {
