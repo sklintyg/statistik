@@ -37,7 +37,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
                                     chartSpacingLeft, doneLoadingCallback, percentChart) {
             var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
 
-            chartOptions.chart.type = $scope.activeChartType;
+            chartOptions.chart.type = defaultChartType;
             chartOptions.chart.renderTo = containerId;
             chartOptions.plotOptions.area.lineWidth = 1;
             chartOptions.plotOptions.area.lineColor = 'grey';
