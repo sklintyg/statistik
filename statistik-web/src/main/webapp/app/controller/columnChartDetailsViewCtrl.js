@@ -29,7 +29,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         var isLandsting = ControllerCommons.isShowingLandsting($location);
         var chart = {};
         var defaultChartType = 'column';
-        $scope.activeChartType = defaultChartType;
+        $scope.activeChartType = $routeParams.chartType || defaultChartType;
 
         $scope.chartContainers = [
             {id: 'chart1', name: 'diagram'}
@@ -71,13 +71,12 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             $scope.series = chartFactory.addColor(ajaxResult.series);
             chartFactory.setColorToTotalCasesSeries($scope.series);
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
+            chartFactory.switchChartType(chart, $scope.activeChartType);
+            chart.redraw();
         };
 
         $scope.switchChartType = function (chartType) {
-            chartFactory.switchChartType(chart, chartType);
-            $scope.activeChartType = chartType;
-
-            chart.redraw();
+            ControllerCommons.rerouteWhenNeededForChartTypeChange($scope.activeChartType, chartType, config.exchangeableViews, $location);
         };
 
         $scope.showInLegend = function(index) {
@@ -161,8 +160,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             $scope.doneLoading = true;
         }
 
-        ControllerCommons.updateExchangeableViewsUrl(isVerksamhet, config, $location, $scope, $routeParams);
-
         $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
 
         $scope.toggleTableVisibility = function (event) {
@@ -221,8 +218,8 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig =
     conf.pageHelpText = 'help.sickleavelength';
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/sjukskrivningslangdTidsserie', active: false},
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukskrivningslangd', active: true}];
+        {description: 'Tidsserie', state: '/verksamhet/sjukskrivningslangdTidsserie', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/sjukskrivningslangd', active: true}];
     return conf;
 };
 
@@ -244,8 +241,8 @@ angular.module('StatisticsApp').nationalAgeGroupConfig =
     conf.chartXAxisTitle = 'Åldersgrupp';
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/aldersgrupperTidsserie', active: false},
-        {description: 'Tvärsnitt', state: '#/verksamhet/aldersgrupper', active: true}];
+        {description: 'Tidsserie', state: '/verksamhet/aldersgrupperTidsserie', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/aldersgrupper', active: true}];
     return conf;
 };
 
@@ -288,8 +285,8 @@ angular.module('StatisticsApp').casesPerBusinessConfig =
     conf.chartFootnotes = ['alert.vardenhet.information'];
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperenhettidsserie', active: false},
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperenhet', active: true}];
+        {description: 'Tidsserie', state: '/verksamhet/sjukfallperenhettidsserie', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/sjukfallperenhet', active: true}];
 
     return conf;
 };
@@ -329,8 +326,8 @@ angular.module('StatisticsApp').casesPerLakareConfig =
     conf.chartXAxisTitle = 'Läkare';
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakaretidsserie', active: false},
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakare', active: true}];
+        {description: 'Tidsserie', state: '/verksamhet/sjukfallperlakaretidsserie', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/sjukfallperlakare', active: true}];
     return conf;
 };
 
@@ -351,8 +348,8 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig =
     conf.pageHelpText = 'alert.lakarkon-alder.questionmark';
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakaresalderochkontidsserie', active: false},
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakaresalderochkon', active: true}];
+        {description: 'Tidsserie', state: '/verksamhet/sjukfallperlakaresalderochkontidsserie', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/sjukfallperlakaresalderochkon', active: true}];
     return conf;
 };
 
@@ -373,8 +370,8 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig =
     conf.chartFootnotes = ['alert.lakare-befattning.information'];
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/sjukfallperlakarbefattningtidsserie', active: false},
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallperlakarbefattning', active: true}];
+        {description: 'Tidsserie', state: '/verksamhet/sjukfallperlakarbefattningtidsserie', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/sjukfallperlakarbefattning', active: true}];
     return conf;
 };
 
@@ -395,8 +392,8 @@ angular.module('StatisticsApp').compareDiagnosis =
     conf.showDiagnosisSelector = true;
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/jamforDiagnoserTidsserie', active: false},
-        {description: 'Tvärsnitt', state: '#/verksamhet/jamforDiagnoser', active: true}];
+        {description: 'Tidsserie', state: '/verksamhet/jamforDiagnoserTidsserie', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/jamforDiagnoser', active: true}];
 
     return conf;
 };
@@ -418,8 +415,8 @@ angular.module('StatisticsApp').casesPerMonthTvarsnittConfig =
     conf.pageHelpText = 'help.casespermonth';
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/sjukfallPerManad', active: false},
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallPerManadTvarsnitt', active: true}];
+        {description: 'Tidsserie', state: '/verksamhet/sjukfallPerManad', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/sjukfallPerManadTvarsnitt', active: true}];
 
     return conf;
 };
@@ -440,8 +437,8 @@ angular.module('StatisticsApp').longSickLeavesTvarsnittConfig =
     };
     conf.chartXAxisTitle = '';
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/langasjukskrivningar', active: false},
-        {description: 'Tvärsnitt', state: '#/verksamhet/langasjukskrivningartvarsnitt', active: true}];
+        {description: 'Tidsserie', state: '/verksamhet/langasjukskrivningar', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/langasjukskrivningartvarsnitt', active: true}];
     return conf;
 };
 
@@ -464,8 +461,8 @@ angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig =
     conf.chartFootnotes = ['alert.degreeofsickleave.information'];
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/sjukskrivningsgrad', active: false},
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukskrivningsgradtvarsnitt', active: true}];
+        {description: 'Tidsserie', state: '/verksamhet/sjukskrivningsgrad', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/sjukskrivningsgradtvarsnitt', active: true}];
 
     return conf;
 };
@@ -488,8 +485,8 @@ angular.module('StatisticsApp').differentieratIntygandeTvarsnittConfig =
     conf.pageHelpText = 'help.differentieratintygande';
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/differentieratintygande', active: false},
-        {description: 'Tvärsnitt', state: '#/verksamhet/differentieratintygandetvarsnitt', active: true}];
+        {description: 'Tidsserie', state: '/verksamhet/differentieratintygande', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/differentieratintygandetvarsnitt', active: true}];
 
     return conf;
 };
@@ -512,8 +509,8 @@ angular.module('StatisticsApp').diagnosisGroupTvarsnittConfig =
     conf.chartFootnotes = ['alert.diagnosisgroup.information'];
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/diagnosgrupp', active: false},
-        {description: 'Tvärsnitt', state: '#/verksamhet/diagnosgrupptvarsnitt', active: true}];
+        {description: 'Tidsserie', state: '/verksamhet/diagnosgrupp', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/diagnosgrupptvarsnitt', active: true}];
     return conf;
 };
 
@@ -538,8 +535,8 @@ angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig =
     conf.chartFootnotes = ['alert.diagnosissubgroup.information'];
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/diagnosavsnitt', active: false},
-        {description: 'Tvärsnitt', state: '#/verksamhet/diagnosavsnitttvarsnitt', active: true}];
+        {description: 'Tidsserie', state: '/verksamhet/diagnosavsnitt', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/diagnosavsnitttvarsnitt', active: true}];
     return conf;
 };
 

@@ -29,7 +29,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         var chart;
 
         var defaultChartType = 'line';
-        $scope.activeChartType = defaultChartType;
+        $scope.activeChartType = $routeParams.chartType || defaultChartType;
 
         $scope.chartContainers = [
             {id: 'chart1', name: 'diagram'}
@@ -56,12 +56,12 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             $scope.series = chartFactory.addColor(ajaxResult.series);
             chartFactory.setColorToTotalCasesSeries($scope.series);
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
+            chartFactory.switchChartType(chart, $scope.activeChartType);
+            chart.redraw();
         };
 
         $scope.switchChartType = function (chartType) {
-            chartFactory.switchChartType(chart, chartType);
-            $scope.activeChartType = chartType;
-            chart.redraw();
+            ControllerCommons.rerouteWhenNeededForChartTypeChange($scope.activeChartType, chartType, config.exchangeableViews, $location);
         };
 
         $scope.showInLegend = function(index) {
@@ -134,18 +134,6 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         $scope.dataLoadingError = false;
         $scope.popoverText = messageService.getProperty(config.pageHelpText, null, '', null, true);
 
-        if (isVerksamhet && config.exchangeableViews) {
-            var queryParamsString = ControllerCommons.createQueryStringOfQueryParams($location.search());
-
-            if(queryParamsString) {
-                _.each(config.exchangeableViews, function (view) {
-                    view.state = view.state + '?' + queryParamsString;
-                });
-            }
-
-            $scope.exchangeableViews = config.exchangeableViews;
-        }
-
         $scope.printPdf = function () {
             pdfFactory.print($scope, chart);
         };
@@ -181,8 +169,8 @@ angular.module('StatisticsApp').casesPerMonthConfig =
     conf.pageHelpText = 'help.casespermonth';
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/sjukfallPerManad', active: true},
-        {description: 'Tvärsnitt', state: '#/verksamhet/sjukfallPerManadTvarsnitt', active: false}];
+        {description: 'Tidsserie', state: '/verksamhet/sjukfallPerManad', active: true},
+        {description: 'Tvärsnitt', state: '/verksamhet/sjukfallPerManadTvarsnitt', active: false}];
 
     return conf;
 };
@@ -202,8 +190,8 @@ angular.module('StatisticsApp').longSickLeavesConfig =
     };
 
     conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '#/verksamhet/langasjukskrivningar', active: true},
-        {description: 'Tvärsnitt', state: '#/verksamhet/langasjukskrivningartvarsnitt', active: false}];
+        {description: 'Tidsserie', state: '/verksamhet/langasjukskrivningar', active: true},
+        {description: 'Tvärsnitt', state: '/verksamhet/langasjukskrivningartvarsnitt', active: false}];
 
     return conf;
 };

@@ -26,7 +26,6 @@ angular.module('StatisticsApp',
      'underscore',
      'StatisticsApp.constants',
      'StatisticsApp.treeMultiSelector',
-     'StatisticsApp.chartSeriesButtonGroup',
      'StatisticsApp.businessFilter',
      'dropzone',
      'ngStorage']);

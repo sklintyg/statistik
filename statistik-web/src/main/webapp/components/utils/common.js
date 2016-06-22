@@ -321,23 +321,6 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return ($routeParams.diagnosHash ? '/' + $routeParams.diagnosHash : getDiagnosPathPart($routeParams));
         };
 
-        this.updateExchangeableViewsUrl = function(isVerksamhet, config, $location, $scope, $routeParams) {
-            if (isVerksamhet && config.exchangeableViews) {
-                //If we have a diagnosisHash then added to the next route before anything else
-                _.each(config.exchangeableViews, function (view) {
-                    view.state = view.state + that.createDiagnosHashPathOrAlternativePath($routeParams);
-                });
-                var queryParamsString = that.createQueryStringOfQueryParams($location.search());
-                //Add queryParams if any
-                if (queryParamsString) {
-                    _.each(config.exchangeableViews, function (view) {
-                        view.state = view.state + '?' + queryParamsString;
-                    });
-                }
-                $scope.exchangeableViews = config.exchangeableViews;
-            }
-        };
-
         this.getResultMessage = function(result, messageService) {
             return result.message ? result.message : (result.empty ? messageService.getProperty('info.emptyreponse', null, '', null, true) : '');
         };
@@ -366,6 +349,27 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 $cacheFactory.get('$http').removeAll();
             } else {
                 success(result);
+            }
+        };
+
+        function getStatisticsTypeForChartType(chartType) {
+            if (chartType === 'column') {
+                return 'Tvärsnitt';
+            }
+            return 'Tidsserie';
+        }
+
+        this.rerouteWhenNeededForChartTypeChange = function(currentChartType, chartType, exchangeableViews, location) {
+            if (chartType !== currentChartType) {
+                var statisticsTypeForChartType = getStatisticsTypeForChartType(chartType);
+                var newStatisticsType = _.find(exchangeableViews, function(exchangeableView) {
+                    return exchangeableView.description === statisticsTypeForChartType;
+                });
+                if (!newStatisticsType.active) {
+                    location.search('chartType', chartType).path(newStatisticsType.state);
+                } else {
+                    location.search('chartType', chartType);
+                }
             }
         };
 

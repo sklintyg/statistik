@@ -94,37 +94,36 @@
       <div class="col-md-12 col-lg-5" spinner label="Skapar pdf" show-spinner="generatingPdf"></div>
     </div>
 
-    <div class="pull-right hidden-print">
-        <div class="pull-left select-chart-type" ng-if="isVerksamhetShowing">
-          <h3 message key="lbl.visa-knappgrupp-serier" data-ng-if="exchangeableViews"></h3>
-          <chart-series-bg views="exchangeableViews"></chart-series-bg>
-        </div>
+    <div class="row hidden-print top-45px-margin">
+        <div class="col-md-10 select-chart-type" ng-if="isVerksamhetShowing">
+          <span class="col-md-2" message key="lbl.diagramtyp-knappgrupp"/>
+          <span class="col-md-10">
+              <span message key="lbl.diagramtyp-tidsserie"/>
+                <span><div
+                    ng-class="{'chart-icon-line-active': activeChartType === 'line', 'chart-icon-line': activeChartType !== 'line'}"
+                    data-ng-click="switchChartType('line')" uib-tooltip="Linjediagram" tooltip-placement="bottom"
+                    tooltip-popup-delay="1000"></div></span>
 
-        <div class="pull-left select-chart-type" ng-if="isVerksamhetShowing">
-          <h3 message key="lbl.diagramtyp-knappgrupp"></h3>
-            <span><div
-                ng-class="{'chart-icon-column-active': activeChartType === 'column', 'chart-icon-column': activeChartType !== 'column'}"
-                data-ng-click="switchChartType('column')" uib-tooltip="Stapeldiagram" tooltip-placement="bottom"
-                tooltip-popup-delay="1000"></div></span>
+                <span><div
+                    ng-class="{'chart-icon-area-active': activeChartType === 'area', 'chart-icon-area': activeChartType !== 'area'}"
+                    data-ng-click="switchChartType('area')" uib-tooltip="Ytdiagram" tooltip-placement="bottom"
+                    tooltip-popup-delay="1000"></div></span>
 
-            <span><div
-                ng-class="{'chart-icon-line-active': activeChartType === 'line', 'chart-icon-line': activeChartType !== 'line'}"
-                data-ng-click="switchChartType('line')" uib-tooltip="Linjediagram" tooltip-placement="bottom"
-                tooltip-popup-delay="1000"></div></span>
+                <span><div
+                    ng-class="{'chart-icon-percentarea-active': activeChartType === 'percentarea', 'chart-icon-percentarea': activeChartType !== 'percentarea'}"
+                    data-ng-click="switchChartType('percentarea')" uib-tooltip="Procentuellt ytdiagram" tooltip-placement="bottom"
+                    tooltip-popup-delay="1000"></div></span>
 
-            <span><div
-                ng-class="{'chart-icon-area-active': activeChartType === 'area', 'chart-icon-area': activeChartType !== 'area'}"
-                data-ng-click="switchChartType('area')" uib-tooltip="Ytdiagram" tooltip-placement="bottom"
-                tooltip-popup-delay="1000"></div></span>
-
-            <span><div
-                ng-class="{'chart-icon-percentarea-active': activeChartType === 'percentarea', 'chart-icon-percentarea': activeChartType !== 'percentarea'}"
-                data-ng-click="switchChartType('percentarea')" uib-tooltip="Procentuellt ytdiagram" tooltip-placement="bottom"
-                tooltip-popup-delay="1000"></div></span>
+              <span message key="lbl.diagramtyp-tvarsnitt"/>
+                <span><div
+                    ng-class="{'chart-icon-column-active': activeChartType === 'column', 'chart-icon-column': activeChartType !== 'column'}"
+                    data-ng-click="switchChartType('column')" uib-tooltip="Stapeldiagram" tooltip-placement="bottom"
+                    tooltip-popup-delay="1000"></div></span>
+          </span>
         </div>
 
         <!-- PRINT BUTTON GROUP -->
-        <div class="pull-left print-page-panel top-45px-margin">
+        <div class="col-md-1 print-page-panel">
           <button class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown">
             <span message key="dropdown.val.rapport"></span>
             <span class="caret"></span>

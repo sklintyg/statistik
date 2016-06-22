@@ -58,6 +58,8 @@ var stMessages = {
         'lbl.visa-tabell': 'Visa tabell',
         'lbl.visa-knappgrupp-serier': 'Visa som',
         'lbl.diagramtyp-knappgrupp': 'Typ av diagram',
+        'lbl.diagramtyp-tidsserie': 'Tidsserie',
+        'lbl.diagramtyp-tvarsnitt': 'Tvärsnitt',
 
 
         //filter
