@@ -1617,51 +1617,55 @@ input[type="radio"], input[type="checkbox"] {
 
 /*Icons for charts*/
 
-.chart-icon-column, .chart-icon-line, .chart-icon-area,
-.chart-icon-area-active, .chart-icon-column-active,
-.chart-icon-line-active {
-    background-image: url("../assets/images/chart-types/ikoner_statistik_state.png");
-    background-repeat: no-repeat;
-    position: relative;
-    display: inline-block;
-    width: 38px;
-    height: 34px;
-}
-
-.chart-icon-column {
-    background-position: left top;
+.chart-icon-column, .chart-icon-column-active {
+  @include at2x("../assets/images/chart-types/stapeldiagram", $ext: "png", $w: 38px, $h: 34px);
+  background-repeat: no-repeat;
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 34px;
 }
 
 .chart-icon-column:hover {
-    background-position: left center;
+  box-shadow: 1px 100px rgba(0, 0, 0, 0.1) inset;
 }
 
 .chart-icon-column-active {
-    background-position: left bottom;
+  box-shadow: 1px 100px rgba(0, 0, 0, 0.2) inset;
 }
 
-.chart-icon-line {
-    background-position: center top;
-}
-
-.chart-icon-line:hover {
-    background-position: center center;
-}
-
-.chart-icon-line-active{
-    background-position: center bottom;
-}
-
-.chart-icon-area {
-    background-position: right top;
+.chart-icon-area, .chart-icon-area-active {
+  @include at2x("../assets/images/chart-types/ytdiagram", $ext: "png", $w: 38px, $h: 34px);
+  background-repeat: no-repeat;
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 34px;
 }
 
 .chart-icon-area:hover {
-    background-position: right center;
+  box-shadow: 1px 100px rgba(0, 0, 0, 0.1) inset;
 }
 
 .chart-icon-area-active {
-    background-position: right bottom;
+  box-shadow: 1px 100px rgba(0, 0, 0, 0.2) inset;
+}
+
+.chart-icon-line, .chart-icon-line-active {
+  @include at2x("../assets/images/chart-types/linjediagram", $ext: "png", $w: 38px, $h: 34px);
+  background-repeat: no-repeat;
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 34px;
+}
+
+.chart-icon-line:hover {
+  box-shadow: 1px 100px rgba(0, 0, 0, 0.1) inset;
+}
+
+.chart-icon-line-active {
+  box-shadow: 1px 100px rgba(0, 0, 0, 0.2) inset;
 }
 
 .chart-icon-percentarea, .chart-icon-percentarea-active {
