@@ -1617,72 +1617,33 @@ input[type="radio"], input[type="checkbox"] {
 
 /*Icons for charts*/
 
-.chart-icon-column, .chart-icon-column-active {
+.chart-icon {
+  background-repeat: no-repeat;
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 34px;
+  cursor: pointer;
+
+  &:hover, &.chart-icon-active {
+    box-shadow: 1px 100px rgba(0, 0, 0, 0.1) inset;
+  }
+}
+
+.chart-icon-column {
   @include at2x("../assets/images/chart-types/stapeldiagram", $ext: "png", $w: 38px, $h: 34px);
-  background-repeat: no-repeat;
-  position: relative;
-  display: inline-block;
-  width: 38px;
-  height: 34px;
 }
 
-.chart-icon-column:hover {
-  box-shadow: 1px 100px rgba(0, 0, 0, 0.1) inset;
-}
-
-.chart-icon-column-active {
-  box-shadow: 1px 100px rgba(0, 0, 0, 0.2) inset;
-}
-
-.chart-icon-area, .chart-icon-area-active {
+.chart-icon-area{
   @include at2x("../assets/images/chart-types/ytdiagram", $ext: "png", $w: 38px, $h: 34px);
-  background-repeat: no-repeat;
-  position: relative;
-  display: inline-block;
-  width: 38px;
-  height: 34px;
 }
 
-.chart-icon-area:hover {
-  box-shadow: 1px 100px rgba(0, 0, 0, 0.1) inset;
-}
-
-.chart-icon-area-active {
-  box-shadow: 1px 100px rgba(0, 0, 0, 0.2) inset;
-}
-
-.chart-icon-line, .chart-icon-line-active {
+.chart-icon-line {
   @include at2x("../assets/images/chart-types/linjediagram", $ext: "png", $w: 38px, $h: 34px);
-  background-repeat: no-repeat;
-  position: relative;
-  display: inline-block;
-  width: 38px;
-  height: 34px;
 }
 
-.chart-icon-line:hover {
-  box-shadow: 1px 100px rgba(0, 0, 0, 0.1) inset;
-}
-
-.chart-icon-line-active {
-  box-shadow: 1px 100px rgba(0, 0, 0, 0.2) inset;
-}
-
-.chart-icon-percentarea, .chart-icon-percentarea-active {
+.chart-icon-percentarea {
   @include at2x("../assets/images/chart-types/ytdiagram_procent", $ext: "png", $w: 38px, $h: 34px);
-  background-repeat: no-repeat;
-  position: relative;
-  display: inline-block;
-  width: 38px;
-  height: 34px;
-}
-
-.chart-icon-percentarea:hover {
-  box-shadow: 1px 100px rgba(0, 0, 0, 0.1) inset;
-}
-
-.chart-icon-percentarea-active {
-  box-shadow: 1px 100px rgba(0, 0, 0, 0.2) inset;
 }
 
 .not-active {
@@ -1751,13 +1712,36 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 .select-chart-type {
-    margin-right: 10px;
-    position: relative;
+    font-weight: bold;
+    padding-left: ($grid-gutter-width);
+    padding-right: 0;
+
+    span, div {
+      vertical-align: middle;
+      margin: 0 5px 0 0;
+    }
+
+    .select-chart-type-description {
+      color: #008391;
+      display: inline-block;
+      margin-right: 40px;
+    }
+
+    .select-chart-type-tidsserie {
+      display: inline-block;
+      margin-right: ($grid-gutter-width);
+    }
+
+    .select-chart-type-tvarsnitt {
+      display: inline-block;
+      margin: 0;
+    }
+
 }
 
 .print-page-panel {
-    margin-right: 15px;
-    position: relative;
+    text-align: right;
+    padding-right: ($grid-gutter-width);
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
