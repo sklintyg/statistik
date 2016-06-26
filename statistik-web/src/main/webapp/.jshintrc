@@ -21,7 +21,7 @@
     "trailing": true,
     "maxstatements": 150,
     "maxcomplexity": 10,
-    "maxlen": 150,
+    "maxlen": 500,
     "maxerr": 10000,
     "browser": false,
     "devel": false,
