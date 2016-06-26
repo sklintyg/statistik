@@ -30,30 +30,21 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         var chart2 = {};
 
         var defaultChartType = 'area';
-        $scope.activeChartType = $routeParams.chartType || defaultChartType;
+        var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType);
+        $scope.activeChartType = chartTypeInfo.activeChartType;
+
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
 
-        this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries,
-                                    chartSpacingLeft, doneLoadingCallback, percentChart) {
-            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
-
-            chartOptions.chart.type = defaultChartType;
+        this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft, doneLoadingCallback) {
+            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback, false, chartTypeInfo.usePercentChart, chartTypeInfo.stacked);
+            chartOptions.chart.type = chartTypeInfo.activeHighchartType;
             chartOptions.chart.renderTo = containerId;
             chartOptions.plotOptions.area.lineWidth = 1;
             chartOptions.plotOptions.area.lineColor = 'grey';
             chartOptions.legend.enabled = false;
             chartOptions.xAxis.title.text = 'Period';
             chartOptions.tooltip.useHTML = true;
-            chartOptions.subtitle.text = (config.percentChart ? 'Andel ' : 'Antal ') + yAxisTitle;
-            chartOptions.yAxis.labels.formatter = function () {
-                return ControllerCommons.makeThousandSeparated(this.value) + (percentChart ? ' %' : '');
-            };
-            chartOptions.plotOptions.series.stacking = percentChart ? 'percent' : 'normal';
-
-            if (percentChart) {
-                chartOptions.tooltip.pointFormat = '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f} %</b><br/>';
-            }
-
+            chartOptions.subtitle.text = (chartTypeInfo.usePercentChart ? 'Andel ' : 'Antal ') + yAxisTitle;
             return new Highcharts.Chart(chartOptions);
         };
 
@@ -130,18 +121,11 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
 
             var chartSeriesFemale = ajaxResult.femaleChart.series;
             chartFactory.addColor(chartSeriesFemale);
-            that.chart1 = that.paintChart('chart1', 'sjukfall för kvinnor', 118, chartCategories,
-                                chartSeriesFemale, -100, doneLoadingCallback, config.percentChart);
+            that.chart1 = that.paintChart('chart1', 'sjukfall för kvinnor', 118, chartCategories, chartSeriesFemale, -100, doneLoadingCallback);
 
             var chartSeriesMale = ajaxResult.maleChart.series;
             chartFactory.addColor(chartSeriesMale);
-            that.chart2 = that.paintChart('chart2', 'sjukfall för män', 97, chartCategories,
-                                chartSeriesMale, -80, doneLoadingCallback, config.percentChart);
-
-            chartFactory.switchChartType(that.chart1, $scope.activeChartType);
-            chartFactory.switchChartType(that.chart2, $scope.activeChartType);
-            that.chart1.redraw();
-            that.chart2.redraw();
+            that.chart2 = that.paintChart('chart2', 'sjukfall för män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback);
 
             updateChartsYAxisMaxValue();
 
@@ -149,7 +133,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         };
 
         $scope.switchChartType = function (chartType) {
-            ControllerCommons.rerouteWhenNeededForChartTypeChange($scope.activeChartType, chartType, config.exchangeableViews, $location);
+            ControllerCommons.rerouteWhenNeededForChartTypeChange($scope.activeChartType, chartType, config.exchangeableViews, $location, $routeParams);
         };
 
         $scope.showInLegend = function(index) {
@@ -381,7 +365,7 @@ angular.module('StatisticsApp').differentieratIntygandeConfig =
         {description: 'Tidsserie', state: '/verksamhet/differentieratintygande', active: true},
         {description: 'Tvärsnitt', state: '/verksamhet/differentieratintygandetvarsnitt', active: false}];
 
-    conf.percentChart = true;
+    conf.defaultChartType = 'percentarea';
 
     return conf;
 };

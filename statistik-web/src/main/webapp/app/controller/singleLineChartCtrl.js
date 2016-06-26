@@ -29,7 +29,9 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         var chart;
 
         var defaultChartType = 'line';
-        $scope.activeChartType = $routeParams.chartType || defaultChartType;
+        var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType);
+        $scope.activeChartType = chartTypeInfo.activeChartType;
+
 
         $scope.chartContainers = [
             {id: 'chart1', name: 'diagram'}
@@ -39,15 +41,13 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         var isLandsting = ControllerCommons.isShowingLandsting($location);
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
-
-            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
-            chartOptions.chart.type = defaultChartType;
+            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback, false, chartTypeInfo.usePercentChart, chartTypeInfo.stacked);
+            chartOptions.chart.type = chartTypeInfo.activeHighchartType;
             chartOptions.legend.enabled = false;
             chartOptions.xAxis.title.text = 'Period';
             chartOptions.subtitle.text = 'Antal sjukfall';
             chartOptions.text = '#008391';
             chartOptions.tooltip.text = '#000';
-
             return new Highcharts.Chart(chartOptions);
         };
         
@@ -56,12 +56,10 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             $scope.series = chartFactory.addColor(ajaxResult.series);
             chartFactory.setColorToTotalCasesSeries($scope.series);
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
-            chartFactory.switchChartType(chart, $scope.activeChartType);
-            chart.redraw();
         };
 
         $scope.switchChartType = function (chartType) {
-            ControllerCommons.rerouteWhenNeededForChartTypeChange($scope.activeChartType, chartType, config.exchangeableViews, $location);
+            ControllerCommons.rerouteWhenNeededForChartTypeChange($scope.activeChartType, chartType, config.exchangeableViews, $location, $routeParams);
         };
 
         $scope.showInLegend = function(index) {

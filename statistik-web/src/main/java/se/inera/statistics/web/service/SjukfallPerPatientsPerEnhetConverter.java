@@ -130,7 +130,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Antal sjukfall per 1000 listningar", filteredSummedData, false));
+        series.add(new ChartSeries("Antal sjukfall per 1000 listningar", filteredSummedData));
 
         return new ChartData(series, categories);
     }

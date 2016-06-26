@@ -359,18 +359,23 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return 'Tidsserie';
         }
 
-        this.rerouteWhenNeededForChartTypeChange = function(currentChartType, chartType, exchangeableViews, location) {
+        this.rerouteWhenNeededForChartTypeChange = function(currentChartType, chartType, exchangeableViews, location, routeParams) {
             if (chartType !== currentChartType) {
                 var statisticsTypeForChartType = getStatisticsTypeForChartType(chartType);
                 var newStatisticsType = _.find(exchangeableViews, function(exchangeableView) {
                     return exchangeableView.description === statisticsTypeForChartType;
                 });
-                if (!newStatisticsType.active) {
-                    location.search('chartType', chartType).path(newStatisticsType.state);
-                } else {
-                    location.search('chartType', chartType);
-                }
+                var newPath = newStatisticsType.state + that.createDiagnosHashPathOrAlternativePath(routeParams);
+                location.search('chartType', chartType).path(newPath);
             }
+        };
+
+        this.getChartTypeInfo = function($routeParams, config, defaultChartType) {
+            var activeChartType = $routeParams.chartType || config.defaultChartType || defaultChartType;
+            var usePercentChart = activeChartType === 'percentarea' || config.percentChart;
+            var activeHighchartType = usePercentChart ? 'area' : activeChartType;
+            var stacked = activeHighchartType === 'area';
+            return {activeChartType: activeChartType, usePercentChart: usePercentChart, activeHighchartType: activeHighchartType, stacked: stacked};
         };
 
         return this;

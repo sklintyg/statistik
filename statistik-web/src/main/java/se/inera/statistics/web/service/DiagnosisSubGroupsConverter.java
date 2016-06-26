@@ -82,16 +82,16 @@ public class DiagnosisSubGroupsConverter {
     private List<ChartSeries> getTopColumns(KonDataResponse data, List<Integer> topIndexes, Kon sex) {
         List<ChartSeries> topColumns = new ArrayList<>();
         if (topIndexes.isEmpty()) {
-            topColumns.add(new ChartSeries("Totalt", createList(data.getRows().size(), 0), true));
+            topColumns.add(new ChartSeries("Totalt", createList(data.getRows().size(), 0)));
             return topColumns;
         }
         for (Integer index : topIndexes) {
             if (index == OTHER_GROUP_INDEX) {
                 List<Integer> remainingData = sumRemaining(topIndexes, data, sex);
-                topColumns.add(new ChartSeries(OTHER_GROUP_NAME, remainingData, true));
+                topColumns.add(new ChartSeries(OTHER_GROUP_NAME, remainingData));
             } else {
                 List<Integer> indexData = data.getDataFromIndex(index, sex);
-                topColumns.add(new ChartSeries(data.getGroups().get(index), indexData, true));
+                topColumns.add(new ChartSeries(data.getGroups().get(index), indexData));
             }
         }
         return topColumns;

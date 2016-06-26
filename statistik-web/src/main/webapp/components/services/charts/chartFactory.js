@@ -37,7 +37,9 @@ angular.module('StatisticsApp').factory('chartFactory',
             };
         };
 
-        var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback, overview) {
+        var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback, overview, percentChart, stacked) {
+
+            var hasSexSet = isSexSetOnChartSeries(chartSeries);
 
             var options = {
                 chart : {
@@ -53,7 +55,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     }
                 },
                 subtitle : {
-                    text : 'Antal sjukfall',
+                    text : (percentChart ? 'Andel sjukfall' : 'Antal sjukfall'),
                     align: 'left',
                     style: {
                         color: '#008391',
@@ -104,7 +106,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     },
                     labels : {
                         formatter : function() {
-                            return ControllerCommons.makeThousandSeparated(this.value);
+                            return ControllerCommons.makeThousandSeparated(this.value) + (percentChart ? ' %' : '');
                         }
                     },
                     plotLines : [ {
@@ -133,11 +135,12 @@ angular.module('StatisticsApp').factory('chartFactory',
                                 return false;
                             }
                         },
-                        showInLegend : true
+                        showInLegend : true,
+                        stacking: null
                     },
                     column : {
-                        stacking : 'normal',
-                        showInLegend : true
+                        showInLegend : true,
+                        stacking: null
                     },
                     series: {
                     },
@@ -148,7 +151,8 @@ angular.module('StatisticsApp').factory('chartFactory',
                             enabled : false,
                             symbol : 'circle'
                         },
-                        showInLegend : true
+                        showInLegend : true,
+                        stacking: percentChart ? 'percent' : 'normal'
                     },
                     pie : {
                         cursor : 'pointer',
@@ -167,7 +171,10 @@ angular.module('StatisticsApp').factory('chartFactory',
                         padding: '8px'
                     },
                     pointFormatter: function() {
-                        return this.series.name + ': <nobr><b>' + ControllerCommons.makeThousandSeparated(this.y)+'</b></nobr><br/>';
+                        var value = percentChart ?
+                        Highcharts.numberFormat(this.percentage, 0, ',') + ' %' :
+                            ControllerCommons.makeThousandSeparated(this.y);
+                        return this.series.name + ': <nobr><b>' + value + '</b></nobr><br/>';
                     }
                 },
                 credits : {
@@ -180,6 +187,13 @@ angular.module('StatisticsApp').factory('chartFactory',
                             series.marker.enabled = true;
                         } else {
                             series.marker = {enabled: true};
+                        }
+                    }
+
+                    if (stacked && hasSexSet) {
+                        if(series.sex === null) {
+                            series.showInLegend = false;
+                            series.visible = false;
                         }
                     }
 
@@ -228,94 +242,16 @@ angular.module('StatisticsApp').factory('chartFactory',
             }
         };
 
-        var calculateSeriesStacking = function calculateSeriesStacking(chart, chartType) {
-            //Figure out if we stacking should be percent, normal or null when we switch the type of the diagram
-            var seriesStacking = chart.options.plotOptions.series.stacking;
-            return seriesStacking === 'percent' || chartType === 'percentarea' ? 'percent' : chartType === 'area' ? 'normal' : null;
-        };
-
-        var getYAxisConfig = function(config) {
-            if (config.stacking === 'percent') {
-                return {
-                    labels: {
-                        formatter: function() {
-                            return ControllerCommons.makeThousandSeparated(this.value) + ' %';
-                        }
-                    }
-                };
-            }
-            return {
-                labels: {
-                    formatter: function() {
-                        return ControllerCommons.makeThousandSeparated(this.value);
-                    }
-                }
-            };
-        };
-
-        /* Configure all existing series of a specific chart for a new chart type.
-         */
-        var switchChartType = function (chart, chartType) {
-
-            var config = config || {
-                type: chartType.indexOf('area') > -1 ? 'area' : chartType,
-                stack: chartType.indexOf('area') > -1 ? 'stacked' : null,
-                stacking: calculateSeriesStacking(chart, chartType),
-                tooltip: {
-                    pointFormatter: function() {
-                        var value = chartType === 'percentarea' ?
-                            Highcharts.numberFormat(this.percentage, 0, ',') + ' %' :
-                            ControllerCommons.makeThousandSeparated(this.y);
-                        return this.series.name + ': <nobr><b>' + value + '</b></nobr><br/>';
-                    }
-                }
-            };
-
-            var hasSexSet = isSexSetOnChartSeries(chart.series);
-
-            //This updates the chart object with new options
-            _.each(chart.series, function (series) {
-
-                //If the sex property is available on the series object, then there is a series with sex === null that is a total series.
-                //We want this sereis to be hidden when the chart type is === area
-                if(hasSexSet) {
-                    showOrHideTotalSeries(chartType, series, config);
-                }
-
-                series.update(config, false);
-            });
-
-            chart.yAxis[0].update(getYAxisConfig(config), false);
-        };
-
-        /* This is just a very akward way of telling the chart not to display
-         a series with totals when the chart type is area. If the area chart uses stack and stacking the total will add to the other series
-         and the numbers will accumulate which isn't correct when show in the chart*/
-        function showOrHideTotalSeries(chartType, series, config) {
-            if(chartType.indexOf('area') > -1 && series.options.sex === null) {
-                //Mark legend that it wont be shown.
-                // We don't actually use highcharts legends so this won't update the chart legends by itself
-                config.showInLegend = false;
-
-                series.hide();
-            } else if (chartType.indexOf('area') < 0 && series.options.sex === null) {
-                config.showInLegend = true;
-                series.show();
-            } else {
-                config.showInLegend = true;
-            }
-        }
-
         function isSexSetOnChartSeries(chartSeries) {
             var maleSeries = _.find(chartSeries, function(series) {
-                return series.options.sex === 'Male';
+                return series.sex === 'Male';
             });
 
             var femaleSeries = _.find(chartSeries, function(series) {
-                return series.options.sex === 'Female';
+                return series.sex === 'Female';
             });
 
-            return maleSeries && femaleSeries? true: false;
+            return maleSeries && femaleSeries? true : false;
         }
 
         var showInLegend = function(series, index) {
@@ -369,7 +305,6 @@ angular.module('StatisticsApp').factory('chartFactory',
             setColorToTotalCasesSeries: setColorToTotalCasesSeries,
             getHighChartConfigBase: getHighChartConfigBase,
             exportChart: exportChart,
-            switchChartType: switchChartType,
             showInLegend: showInLegend,
             toggleSeriesVisibility: toggleSeriesVisibility
         };

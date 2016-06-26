@@ -130,7 +130,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
         Map<String, List<Integer>> mergedGroups = mergeChartGroups(allGroups);
         ArrayList<ChartSeries> rows = new ArrayList<>();
         for (Entry<String, List<Integer>> entry : mergedGroups.entrySet()) {
-            rows.add(new ChartSeries(entry.getKey(), entry.getValue(), true));
+            rows.add(new ChartSeries(entry.getKey(), entry.getValue()));
         }
 
         final List<ChartCategory> categories = Lists.transform(resp.getPeriods(), new Function<String, ChartCategory>() {

@@ -89,10 +89,10 @@ public class SimpleDualSexConverter {
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
         if (totalSeriesInChart) {
-            series.add(new ChartSeries("Totalt", casesPerMonth.getSummedData(), false));
+            series.add(new ChartSeries("Totalt", casesPerMonth.getSummedData()));
         }
-        series.add(new ChartSeries("Kvinnor", casesPerMonth.getDataForSex(Kon.Female), false, Kon.Female));
-        series.add(new ChartSeries("Män", casesPerMonth.getDataForSex(Kon.Male), false, Kon.Male));
+        series.add(new ChartSeries("Kvinnor", casesPerMonth.getDataForSex(Kon.Female), Kon.Female));
+        series.add(new ChartSeries("Män", casesPerMonth.getDataForSex(Kon.Male), Kon.Male));
 
         return new ChartData(series, categories);
     }

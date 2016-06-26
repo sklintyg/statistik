@@ -78,7 +78,7 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
             List<Integer> indexData = data.getDataFromIndex(i, sex);
             final String groupName = data.getGroups().get(i);
             final String seriesName = "%1$s".equals(seriesNameTemplate) ? groupName : String.format(seriesNameTemplate, groupName);
-            series.add(new ChartSeries(seriesName, indexData, true));
+            series.add(new ChartSeries(seriesName, indexData));
         }
         return series;
     }

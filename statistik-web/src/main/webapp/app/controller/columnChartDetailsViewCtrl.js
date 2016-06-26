@@ -29,41 +29,22 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         var isLandsting = ControllerCommons.isShowingLandsting($location);
         var chart = {};
         var defaultChartType = 'column';
-        $scope.activeChartType = $routeParams.chartType || defaultChartType;
+        var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType);
+        $scope.activeChartType = chartTypeInfo.activeChartType;
 
         $scope.chartContainers = [
             {id: 'chart1', name: 'diagram'}
         ];
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
-            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback);
-            chartOptions.chart.type = defaultChartType;
+            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback, false, chartTypeInfo.usePercentChart, chartTypeInfo.stacked);
+            chartOptions.chart.type = chartTypeInfo.activeHighchartType;
             chartOptions.legend.enabled = false;
-            chartOptions.xAxis.title.text = config.chartXAxisTitle;
-
-            var yAxisTitle;
-            if (config.chartYAxisTitle) {
-                yAxisTitle = config.chartYAxisTitle;
-            }
-            else if (config.percentChart) {
-                yAxisTitle = 'Andel sjukfall i %';
-            }
-            else {
-                yAxisTitle = 'Antal sjukfall';
-            }
-
-            chartOptions.subtitle.text = yAxisTitle;
             chartOptions.yAxis.allowDecimals = !!config.allowDecimalsYAxis;
-            chartOptions.yAxis.labels.formatter = function () {
-                return ControllerCommons.makeThousandSeparated(this.value) + (config.percentChart ? ' %' : '');
-            };
-
-            chartOptions.plotOptions.series.stacking = config.percentChart ? 'percent' : 'normal';
-
-            if (config.percentChart) {
-                chartOptions.tooltip.pointFormat = '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.0f} %</b><br/>';
+            chartOptions.xAxis.title.text = config.chartXAxisTitle;
+            if (config.chartYAxisTitle) {
+                chartOptions.subtitle.text = config.chartYAxisTitle;
             }
-
             return new Highcharts.Chart(chartOptions);
         };
 
@@ -71,12 +52,10 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             $scope.series = chartFactory.addColor(ajaxResult.series);
             chartFactory.setColorToTotalCasesSeries($scope.series);
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
-            chartFactory.switchChartType(chart, $scope.activeChartType);
-            chart.redraw();
         };
 
         $scope.switchChartType = function (chartType) {
-            ControllerCommons.rerouteWhenNeededForChartTypeChange($scope.activeChartType, chartType, config.exchangeableViews, $location);
+            ControllerCommons.rerouteWhenNeededForChartTypeChange($scope.activeChartType, chartType, config.exchangeableViews, $location, $routeParams);
         };
 
         $scope.showInLegend = function(index) {
@@ -257,7 +236,6 @@ angular.module('StatisticsApp').casesPerSexConfig =
     conf.title = function (period, enhetsCount) {
         return 'Andel sjukfall per kön per län' + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
     };
-    conf.percentChart = true;
     conf.chartXAxisTitle = 'Län';
     conf.chartFootnotes = ['info.lan.information'];
     conf.pageHelpText = 'alert.lan-andel-sjukfall-per-kon.questionmark';
