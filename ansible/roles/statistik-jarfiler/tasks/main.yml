@@ -13,13 +13,6 @@
 - name: Download activemq-broker-5.13.0.jar
   get_url: url=http://repo1.maven.org/maven2/org/apache/activemq/activemq-broker/5.13.0/activemq-broker-5.13.0.jar
            dest={{ tomcat_lib }}
-
-- name: Remove old activemq openwire legacy lib
-  shell: rm -f {{ tomcat_lib }}/activemq-openwire-legacy*.jar
-
-- name: Download activemq-openwire-legacy-5.13.0.jar
-  get_url: url=http://repo1.maven.org/maven2/org/apache/activemq/activemq-openwire-legacy/5.13.0/activemq-openwire-legacy-5.13.0.jar
-           dest={{ tomcat_lib }}
     
 - name: Remove old slf4j api lib
   shell: rm -f {{ tomcat_lib }}/slf4j-api*.jar
