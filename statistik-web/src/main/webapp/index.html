@@ -37,7 +37,11 @@
         </a>
       </span>
       <span class="headerbox-date pull-left">
-        <div id="location" class="hidden-xs location ng-hide" data-ng-show="isLoggedIn">{{verksamhetName}}</div>
+        <div id="location" class="hidden-xs location ng-hide" data-ng-show="isLoggedIn">{{verksamhetName}}
+          <span data-ng-show="showBusinessesDetails">
+            (<a class="btn-link" data-toggle="modal" data-target="#ViewEnhetsModal" data-keyboard="true">se enheter</a>)
+          </span>
+        </div>
         <div class="headerbox-info-text" data-ng-class="{'headerbox-info-text-padding': !(isLoggedIn && verksamhetName)}" message key="statistics.header.extra-text"></div>
       </span>
     </div>
@@ -105,6 +109,23 @@
             </div>
         </div>
     </div>
+</div>
+
+<div id="ViewEnhetsModal" class="modal fade enhets-modal" role="dialog" tabindex='-1'>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Enheter på {{verksamhetName}}</h4>
+      </div>
+      <div class="modal-body">
+        <p>Inom vårdgivaren <b>{{verksamhetName}}</b> har du behörighet att se statistik för följande vårdenheter:</p>
+        <ul data-ng-repeat="business in UserModel.get().businesses">
+          <li>{{business.name}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- Scripts -->

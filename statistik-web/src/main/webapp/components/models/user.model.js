@@ -35,6 +35,7 @@ angular.module('StatisticsApp').factory('UserModel',
             data.landstingAvailable = false;
             data.isLandstingAdmin = false;
             data.enableVerksamhetMenu = false;
+            data.businesses = [];
             return data;
         }
 
@@ -52,6 +53,7 @@ angular.module('StatisticsApp').factory('UserModel',
                 data.landstingAvailable = loginInfo.landstingsvardgivareWithUpload;
                 data.isLandstingAdmin = loginInfo.landstingAdmin;
                 data.enableVerksamhetMenu = loginInfo.businesses && loginInfo.businesses.length >= 1;
+                data.businesses = loginInfo.businesses;
             },
             get: function() {
                 return data;

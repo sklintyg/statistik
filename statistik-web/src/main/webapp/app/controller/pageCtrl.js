@@ -70,10 +70,10 @@ angular.module('StatisticsApp').controller('pageCtrl',
                         if (v) {
                             if (loginInfo.businesses && loginInfo.businesses.length === 1) {
                                 $scope.verksamhetName = v.name;
-                            }
-                            else if (loginInfo.processledare) {
+                            } else {
                                 $scope.verksamhetName = v.vardgivarName;
                             }
+                            $scope.showBusinessesDetails = loginInfo.businesses && loginInfo.businesses.length > 1;
                         }
 
                         $scope.loggedInWithoutStatistikuppdrag = !(loginInfo.businesses && loginInfo.businesses.length >= 1);
