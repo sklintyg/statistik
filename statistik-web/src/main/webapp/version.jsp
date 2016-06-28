@@ -25,7 +25,7 @@
 <head>
   <title>Application Version</title>
 
-  <link rel="icon" href="<c:url value="/assets/images/favicon.ico" />" type="image/vnd.microsoft.icon"/>
+  <link rel="icon" href="assets/images/favicon.ico" type="image/vnd.microsoft.icon"/>
 
   <!-- build:css(src/main/webapp) app/vendor.css -->
   <!-- bower:css -->
