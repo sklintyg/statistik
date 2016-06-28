@@ -6,13 +6,19 @@ allprojects {
     group = project_group
     version = project_version
 
+    if (project.hasProperty("buildVersion")) {
+        version = project.getProperty("buildVersion")
+    }
+
+    project.ext.set("buildVersion", version)
+
     repositories {
         mavenLocal()
         mavenCentral()
         maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/" }
+        maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/nightly/" }
         maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/snapshots/" }
         maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/thirdparty/" }
-        maven { url "https://repository-callistasoftware.forge.cloudbees.com/3rdparty/" }
     }
 
     buildscript {
