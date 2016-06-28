@@ -1,0 +1,25 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Ett sjukfall byter diagnosgrupp mitt i.
+
+| script | dagens datum | 2014-12-01 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr  | diagnoskod | start    | slut       | enhet |
+| 19790717-9191 | F32 | 2014-09-01 | 2014-10-14 | enhet1 |
+| 19790717-9191 | M34 | 2014-10-15 | 2014-11-14 | enhet1 |
+
+!3 Då gäller:
+
+Om diagnosbytet sker under tidsperioden som gäller på översikten, så byter sjukfallet grupp beroende på om den senaste diagnosen filtrerats bort eller inte. Den gruppen man filtrerar fram kan alltså innehålla fler sjukfall efter filtrering.
+
+| Sjukfall i oversikt diagnos |
+|inloggad som | filter enheter | filter verksamhetstyper | filter kapitel | grupp                                         | antal? | förändring? |
+| user1       |                |                         |                | F00-F99 Psykiska sjukdomar                    | 0      | 0           |
+| user1       |                |                         |                | M00-M99 Muskuloskeletala sjukdomar            | 1      | 0           |
+| user1       | enhet1         | 02                      | F00-F99        | F00-F99 Psykiska sjukdomar                    | 1      | 0           |
+| user1       | enhet1         | 02                      | F00-F99        | M00-M99 Muskuloskeletala sjukdomar            | 0      | 0           |
