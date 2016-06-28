@@ -62,5 +62,5 @@
 
 | Sjukfall i rapporten socialstyrelsen som standardavvikelse |
 | diagnos | totalt? | kvinnor? | män?   | lan01?   | lan06?   |
-| F32     | ~=4.47  | ~=3.96   | ~=3.98 | ~=2.16   | ~=3.15   |
-| F33     | ~=1.47  | ~=0.99   | ~=1.41 | ~=0.47   | ~=1.26   |
+| F32     | ~=4.47  | ~=4.64   | ~=4.12 | ~=2.16   | ~=3.15   |
+| F33     | ~=1.47  | ~=1.02   | ~=1.87 | ~=0.47   | ~=1.26   |
