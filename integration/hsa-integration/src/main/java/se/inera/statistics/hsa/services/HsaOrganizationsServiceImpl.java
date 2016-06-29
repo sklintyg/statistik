@@ -36,7 +36,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author andreaskaltenbach
+ * Interfaces with the {@link AuthorizationManagementService} in order to fetch Medarbetaruppdrag for the given
+ * employeeHsaId. Will filter out any non "Statistik"-purposed MiU:s.
+ *
+ * @author erikl
  */
 @Service
 public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {

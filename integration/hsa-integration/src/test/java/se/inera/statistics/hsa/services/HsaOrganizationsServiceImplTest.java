@@ -47,6 +47,7 @@ import static org.mockito.Mockito.when;
 public class HsaOrganizationsServiceImplTest {
 
     private static final HsaIdUser HSA_ID = new HsaIdUser("hsa-123");
+
     @Mock
     AuthorizationManagementService authorizationManagementService;
 

@@ -23,6 +23,9 @@ import se.inera.statistics.hsa.model.Vardenhet;
 import java.util.List;
 
 /**
+ * Encapsulates data fetched from GetCredentialsForPersonIncludingProtectedPerson, e.g. a list of Vardenhet the
+ * user has MiU "Statistik" for and any systemRoles on such a MiU.
+ *
  * Created by eriklupander on 2016-06-29.
  */
 public class UserAuthorization {

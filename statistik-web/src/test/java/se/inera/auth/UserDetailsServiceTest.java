@@ -77,7 +77,7 @@ public class UserDetailsServiceTest {
 
     @Before
     public void setup() throws SAXException, UnmarshallingException, ParserConfigurationException, ConfigurationException, IOException {
-        newCredentials("/test-saml-biljett.xml");
+        newCredentials("/test-saml-biljett-uppdragslos.xml");
         setupHsaPersonService();
     }
 
@@ -99,7 +99,7 @@ public class UserDetailsServiceTest {
 
     @Test
     public void hasVgAccessByMultipleEnhets() throws Exception {
-        newCredentials("/test-saml-biljett-no-systemroles.xml");
+        newCredentials("/test-saml-biljett-uppdragslos.xml");
         when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(new UserAuthorization(Arrays.asList(VE1_VG1, VE2_VG1), Collections.emptyList()));
         User user = (User) service.loadUserBySAML(credential);
         assertTrue(user.isDelprocessledare());

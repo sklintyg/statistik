@@ -44,7 +44,7 @@ public class SakerhetstjanstAssertionTest {
     }
 
     static Assertion getSamlAssertion() {
-        return getSamlAssertion("/test-saml-biljett.xml");
+        return getSamlAssertion("/test-saml-biljett-uppdragslos.xml");
     }
 
     static Assertion getSamlAssertion(String ticketFile) {
