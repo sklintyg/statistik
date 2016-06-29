@@ -18,15 +18,37 @@
  */
 package se.inera.statistics.hsa.services;
 
-import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.Vardenhet;
+
+import java.util.List;
 
 /**
- * @author andreaskaltenbach
+ * Created by eriklupander on 2016-06-29.
  */
-public interface HsaOrganizationsService {
+public class UserAuthorization {
 
-    /**
-     * Returns a list of Vardenheter where the HoS person is authorized to get statistics information.
-     */
-    UserAuthorization getAuthorizedEnheterForHosPerson(HsaIdUser hosPersonHsaId);
+    private List<Vardenhet> vardenhetList;
+
+    private List<String> systemRoles;
+
+    public UserAuthorization(List<Vardenhet> vardenhetList, List<String> systemRoles) {
+        this.vardenhetList = vardenhetList;
+        this.systemRoles = systemRoles;
+    }
+
+    public List<Vardenhet> getVardenhetList() {
+        return vardenhetList;
+    }
+
+    public void setVardenhetList(List<Vardenhet> vardenhetList) {
+        this.vardenhetList = vardenhetList;
+    }
+
+    public List<String> getSystemRoles() {
+        return systemRoles;
+    }
+
+    public void setSystemRoles(List<String> systemRoles) {
+        this.systemRoles = systemRoles;
+    }
 }

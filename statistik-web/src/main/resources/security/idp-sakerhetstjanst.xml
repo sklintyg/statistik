@@ -19,46 +19,53 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-<md:EntityDescriptor xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute" xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" entityID="https://idp2.acctest.sakerhetstjanst.inera.se:443/idp/saml">
+<md:EntityDescriptor xmlns:mdattr="urn:oasis:names:tc:SAML:metadata:attribute" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:idpdisc="urn:oasis:names:tc:SAML:profiles:SSO:idp-discovery-protocol" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" entityID="https://idp2.acctest.sakerhetstjanst.sjunet.org:443/idp/saml">
+  <md:Extensions>
+    <mdattr:EntityAttributes>
+      <saml:Attribute Name="urn:oasis:names:tc:SAML:attribute:assurance-certification" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri">
+        <saml:AttributeValue>https://id.sambi.se/loa/loa3</saml:AttributeValue>
+      </saml:Attribute>
+    </mdattr:EntityAttributes>
+  </md:Extensions>
   <md:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
     <md:KeyDescriptor use="signing">
       <ds:KeyInfo>
         <ds:X509Data>
           <ds:X509Certificate>
-            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
+            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
           </ds:X509Certificate>
         </ds:X509Data>
       </ds:KeyInfo>
     </md:KeyDescriptor>
-    <md:ArtifactResolutionService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://idp2.acctest.sakerhetstjanst.inera.se:443/idp/saml/artifact/SOAP" index="1" isDefault="false"/>
-    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp2.acctest.sakerhetstjanst.inera.se:443/idp/saml/slo/HTTP-POST"/>
-    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp2.acctest.sakerhetstjanst.inera.se:443/idp/saml/slo/HTTP-Redirect"/>
+    <md:ArtifactResolutionService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://idp2.acctest.sakerhetstjanst.sjunet.org:443/idp/saml/artifact/SOAP" index="1" isDefault="false"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://idp2.acctest.sakerhetstjanst.sjunet.org:443/idp/saml/slo/HTTP-POST"/>
+    <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp2.acctest.sakerhetstjanst.sjunet.org:443/idp/saml/slo/HTTP-Redirect"/>
     <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
     <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
-    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp2.acctest.sakerhetstjanst.inera.se:443/idp/saml/sso/HTTP-Redirect"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:x509IssuerName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="x509IssuerName"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:careUnitHsaId" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="careUnitHsaId"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:assignmentName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="assignmentName"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:authnMethod" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="authnMethod"/>
+    <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://idp2.acctest.sakerhetstjanst.sjunet.org:443/idp/saml/sso/HTTP-Redirect"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/employeeHsaId" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="employeeHsaId"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/systemRole" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="systemRole"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/commissionName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="assignmentName"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/healthCareUnitName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="careUnitName"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/commissionRight" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="commissionRight"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/healthCareUnitHsaId" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="careUnitHsaId"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/healthCareProviderName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="careProviderName"/>
     <saml:Attribute Name="urn:sambi:names:attribute:levelOfAssurance" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="levelOfAssurance"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:commissionRight" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="commissionRight"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:assignmentHsaId" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="assignmentHsaId"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:middleAndSurname" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="middleAndSurname"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:commissionPurpose" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="commissionPurpose"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:systemRole" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="systemRole"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:title" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="title"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:employeeHsaId" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="employeeHsaId"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:givenName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="givenName"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:careProviderHsaId" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="careProviderHsaId"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:careUnitName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="careUnitName"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:careProviderName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="careProviderName"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:personalPrescriptionCode" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="personalPrescriptionCode"/>
-    <saml:Attribute Name="urn:sambi:names:attribute:titleCode" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="titleCode"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/paTitleCode" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="titleCode"/>
+    <saml:Attribute Name="urn:sambi:names:attribute:x509IssuerName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="x509IssuerName"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/givenName" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="givenName"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/surname" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="middleAndSurname"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/commissionHsaId" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="assignmentHsaId"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/commissionPurpose" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="commissionPurpose"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/healthCareProviderHsaId" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="careProviderHsaId"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/healthcareProfessionalLicense" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="title"/>
+    <saml:Attribute Name="http://sambi.se/attributes/1/personalPrescriptionCode" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="personalPrescriptionCode"/>
+    <saml:Attribute Name="urn:sambi:names:attribute:authnMethod" NameFormat="urn:oasis:names:tc:SAML:2.0:attrname-format:uri" FriendlyName="authnMethod"/>
   </md:IDPSSODescriptor>
   <md:Organization>
     <md:OrganizationName xml:lang="sv">Säkerhetstjänster</md:OrganizationName>
     <md:OrganizationDisplayName xml:lang="sv">Säkerhetstjänster</md:OrganizationDisplayName>
-    <md:OrganizationURL xml:lang="sv">https://idp.acctest.sakerhetstjanst.inera.se:443/idp/saml</md:OrganizationURL>
+    <md:OrganizationURL xml:lang="sv">https://idp.acctest.sakerhetstjanst.sjunet.org:443/idp/saml</md:OrganizationURL>
   </md:Organization>
   <md:ContactPerson xml:lang="sv" contactType="technical">
     <md:Company>CGI</md:Company>

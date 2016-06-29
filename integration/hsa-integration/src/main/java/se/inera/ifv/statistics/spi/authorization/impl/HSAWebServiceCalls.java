@@ -36,6 +36,10 @@ import se.inera.ifv.hsawsresponder.v3.HsaWsFaultType;
 import se.inera.ifv.hsawsresponder.v3.PingResponseType;
 import se.inera.ifv.hsawsresponder.v3.PingType;
 
+/**
+ * This class interfaces with the "old" Web Service-based HSA, e.g. NOT over NTjP. It is subject to be replaced by
+ * NTjP-based HSA integration.
+ */
 public class HSAWebServiceCalls {
 
     @Autowired

@@ -30,6 +30,7 @@ import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.riv.infrastructure.directory.v1.CommissionType;
 import se.riv.infrastructure.directory.v1.CredentialInformationType;
+import se.riv.infrastructure.directory.v1.HsaSystemRoleType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,22 +56,29 @@ public class HsaOrganizationsServiceImplTest {
     @Test
     public void testWithSingleMiuStatistik() throws ExternalServiceCallException {
         when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 1));
-        List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID);
+        List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID).getVardenhetList();
         assertEquals(1, authorizedEnheter.size());
     }
 
     @Test
     public void testWithSingleMiuVardOchBehandling() throws ExternalServiceCallException {
         when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.VARD_OCH_BEHANDLING, 1));
-        List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID);
+        List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID).getVardenhetList();
         assertEquals(0, authorizedEnheter.size());
     }
 
     @Test
     public void testThatSingleAuthEnhetIsReturnedWhenHavingTwoMiuOnUnit() throws ExternalServiceCallException {
         when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 2));
-        List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID);
+        List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID).getVardenhetList();
         assertEquals(1, authorizedEnheter.size());
+    }
+
+    @Test
+    public void testThatSystemRoleIsSet() throws ExternalServiceCallException {
+        when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 1));
+        UserAuthorization userAuthorization = testee.getAuthorizedEnheterForHosPerson(HSA_ID);
+        assertEquals("Statistik;enhet-123", userAuthorization.getSystemRoles().get(0));
     }
 
     private List<CredentialInformationType> buildCredzResponse(String purpose, int number) {
@@ -83,6 +91,7 @@ public class HsaOrganizationsServiceImplTest {
     private CredentialInformationType buildCred(String purpose) {
         CredentialInformationType cit = new CredentialInformationType();
         cit.getCommission().add(buildCommission(purpose));
+        cit.getHsaSystemRole().add(buildHsaSystemRole());
         return cit;
     }
 
@@ -90,5 +99,12 @@ public class HsaOrganizationsServiceImplTest {
         CommissionType ct = new CommissionType();
         ct.setCommissionPurpose(purpose);
         return ct;
+    }
+
+    private HsaSystemRoleType buildHsaSystemRole() {
+        HsaSystemRoleType hsaSystemRoleType = new HsaSystemRoleType();
+        hsaSystemRoleType.setSystemId("Statistik");
+        hsaSystemRoleType.setRole("enhet-123");
+        return hsaSystemRoleType;
     }
 }

@@ -18,20 +18,6 @@
  */
 package se.inera.auth;
 
-import static se.inera.auth.SakerhetstjanstAssertion.ENHET_HSA_ID_ATTRIBUTE;
-import static se.inera.auth.SakerhetstjanstAssertion.FORNAMN_ATTRIBUTE;
-import static se.inera.auth.SakerhetstjanstAssertion.HSA_ID_ATTRIBUTE;
-import static se.inera.auth.SakerhetstjanstAssertion.MELLAN_OCH_EFTERNAMN_ATTRIBUTE;
-import static se.inera.auth.SakerhetstjanstAssertion.VARDGIVARE_HSA_ID_ATTRIBUTE;
-import static se.inera.auth.SakerhetstjanstAssertion.SYSTEM_ROLE_ATTRIBUTE;
-
-import java.util.ArrayList;
-
-import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.core.AttributeStatement;
@@ -50,6 +36,14 @@ import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.util.ArrayList;
+
+import static se.inera.auth.SakerhetstjanstAssertion.HSA_ID_ATTRIBUTE;
 
 /**
  * @author andreaskaltenbach
@@ -95,13 +89,13 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
         assertion.getAttributeStatements().add(attributeStatement);
 
         attributeStatement.getAttributes().add(createAttribute(HSA_ID_ATTRIBUTE, fakeCredentials.getHsaId()));
-        attributeStatement.getAttributes().add(createAttribute(FORNAMN_ATTRIBUTE, fakeCredentials.getFornamn()));
-        attributeStatement.getAttributes().add(createAttribute(MELLAN_OCH_EFTERNAMN_ATTRIBUTE, fakeCredentials.getEfternamn()));
-        attributeStatement.getAttributes().add(createAttribute(ENHET_HSA_ID_ATTRIBUTE, fakeCredentials.getEnhetId()));
-        attributeStatement.getAttributes().add(createAttribute(VARDGIVARE_HSA_ID_ATTRIBUTE, fakeCredentials.getVardgivarId()));
+//        attributeStatement.getAttributes().add(createAttribute(FORNAMN_ATTRIBUTE, fakeCredentials.getFornamn()));
+//        attributeStatement.getAttributes().add(createAttribute(MELLAN_OCH_EFTERNAMN_ATTRIBUTE, fakeCredentials.getEfternamn()));
+//        attributeStatement.getAttributes().add(createAttribute(ENHET_HSA_ID_ATTRIBUTE, fakeCredentials.getEnhetId()));
+//        attributeStatement.getAttributes().add(createAttribute(VARDGIVARE_HSA_ID_ATTRIBUTE, fakeCredentials.getVardgivarId()));
 
         if (fakeCredentials.isVardgivarniva()) {
-            attributeStatement.getAttributes().add(createAttribute(SYSTEM_ROLE_ATTRIBUTE, "INTYG;Statistik-" + fakeCredentials.getVardgivarId()));
+//            attributeStatement.getAttributes().add(createAttribute(SYSTEM_ROLE_ATTRIBUTE, "INTYG;Statistik-" + fakeCredentials.getVardgivarId()));
         }
         NameID nameId = new NameIDBuilder().buildObject();
         nameId.setValue(token.getCredentials().toString());

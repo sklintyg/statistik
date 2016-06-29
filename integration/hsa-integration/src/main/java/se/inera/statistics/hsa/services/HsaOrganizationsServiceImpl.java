@@ -48,8 +48,9 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
 
 
     @Override
-    public List<Vardenhet> getAuthorizedEnheterForHosPerson(HsaIdUser hosPersonHsaId) {
+    public UserAuthorization getAuthorizedEnheterForHosPerson(HsaIdUser hosPersonHsaId) {
         List<Vardenhet> vardenhetList = new ArrayList<>();
+        List<String> systemRoles = new ArrayList<>();
 
         List<CredentialInformationType> response = null;
         try {
@@ -67,12 +68,13 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
                         vardenhetList.add(new Vardenhet(new HsaIdEnhet(commissionType.getHealthCareUnitHsaId()), commissionType.getHealthCareUnitName(), new HsaIdVardgivare(commissionType.getHealthCareProviderHsaId()), commissionType.getHealthCareProviderName()));
                     }
                 }
+                systemRoles.addAll(info.getHsaSystemRole().stream().map(sr -> sr.getSystemId() + ";" + sr.getRole()).collect(Collectors.toList()));
             }
             vardenhetList = vardenhetList.stream().distinct().collect(Collectors.toList());
         }
         LOG.debug("User with HSA-Id " + hosPersonHsaId + " has active 'Statistik' for " + vardenhetList.size() + " enheter");
 
-        return vardenhetList;
+        return new UserAuthorization(vardenhetList, systemRoles);
     }
 
 }
