@@ -360,18 +360,19 @@
         <!-- SAML 2.0 WebSSO Assertion Consumer -->
         <bean id="webSSOprofileConsumer" class="org.springframework.security.saml.websso.WebSSOProfileConsumerImpl"/>
 
-        <!-- SAML 2.0 Holder-of-Key WebSSO Assertion Consumer -->
+        <!-- SAML 2.0 Holder-of-Key WebSSO Assertion Consumer
         <bean id="hokWebSSOprofileConsumer"
               class="org.springframework.security.saml.websso.WebSSOProfileConsumerHoKImpl"/>
-
+        -->
         <!-- SAML 2.0 Web SSO profile -->
-        <bean id="webSSOprofile" class="org.springframework.security.saml.websso.WebSSOProfileImpl"/>
+        <bean id="webSSOprofile" class="se.inera.auth.StatistikWebSSOProfileImpl"/>
 
-        <!-- SAML 2.0 Holder-of-Key Web SSO profile -->
+        <!-- SAML 2.0 Holder-of-Key Web SSO profile
         <bean id="hokWebSSOProfile" class="org.springframework.security.saml.websso.WebSSOProfileConsumerHoKImpl"/>
-
-        <!-- SAML 2.0 ECP profile -->
+                 -->
+        <!-- SAML 2.0 ECP profile
         <bean id="ecpprofile" class="org.springframework.security.saml.websso.WebSSOProfileECPImpl"/>
+        -->
 
         <!-- SAML 2.0 Logout Profile -->
         <bean id="logoutprofile" class="org.springframework.security.saml.websso.SingleLogoutProfileImpl"/>
