@@ -21,7 +21,7 @@
 angular.module('StatisticsApp')
     .factory('pdfFactory',
         /** @ngInject */
-        function($window, $timeout, thousandseparatedFilter, $location) {
+        function($window, $timeout, thousandseparatedFilter, $location, _) {
         'use strict';
 
         function _print($scope, charts) {
@@ -35,7 +35,10 @@ angular.module('StatisticsApp')
             if ($scope.useSpecialPrintTable) {
                 table = [];
 
-                angular.forEach($scope.printDataTables, function(t) {
+                var tableData = _updatePrintDataTable($scope.headerrows, $scope.rows);
+
+
+                angular.forEach(tableData, function(t) {
                     table.push({
                         header: t.headers,
                         data: formatTableData(t.rows)
@@ -352,6 +355,61 @@ angular.module('StatisticsApp')
 
                 body.push(header);
             });
+        }
+
+        function _updatePrintDataTable(headers, rows) {
+            var printTables = [], currentDataColumn = 1, maxHeadersPerPage = 4;
+
+            var topLevelHeaders = _.rest(headers[0]); //Take all headers but the first, the first is handled separately
+            var totalNumberOfPrintPages = Math.ceil(topLevelHeaders.length/maxHeadersPerPage); //Calculate how many print pages we will have
+            maxHeadersPerPage = Math.ceil(topLevelHeaders.length/totalNumberOfPrintPages);
+
+            /*
+             This block takes care of everything we need to do for each and every page
+             we need to print, effectively splitting every page in its own print table
+             */
+            _.each(_.range(0, totalNumberOfPrintPages), function() {
+                    //For every print page we need to set up an new printTable
+                    var printTable = {headers: [], rows: []};
+
+                    //Add headers for first column
+                    _.each(headers, function(header, headerIndex) {
+                        printTable.headers[headerIndex] = [header[0]];
+                    });
+
+                    //Add row name for each row
+                    _.each(rows, function(row) {
+                        printTable.rows.push({name: row.name, data: []});
+                    });
+
+                    //Add the data for the print page
+                    //Start by taking a maxHeadersPerPage chunk of all the toplevel headers
+                    _.each(_.take(topLevelHeaders, maxHeadersPerPage), function(topLevelHeader) {
+
+                        //Add the top level topLevelHeader
+                        printTable.headers[0].push(topLevelHeader);
+
+                        //Add the sub level headers, the colspan of the top level header
+                        //decides how many sub level columns we have.
+                        _.each(_.range(topLevelHeader.colspan), function() {
+                            printTable.headers[1].push(headers[1][currentDataColumn]);
+
+                            //Add the data that goes into the sublevel
+                            _.each(rows, function(row, rowindex) {
+                                printTable.rows[rowindex].data.push(row.data[currentDataColumn - 1]);
+                            });
+
+                            currentDataColumn++;
+                        });
+                    });
+
+                    //Taking a new chunk of the top level headers for the next iteration
+                    topLevelHeaders = _.drop(topLevelHeaders, maxHeadersPerPage);
+                    printTables.push(printTable);
+                }
+            );
+
+            return printTables;
         }
 
         function _getLogo() {

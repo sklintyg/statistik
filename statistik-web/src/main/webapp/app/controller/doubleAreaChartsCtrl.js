@@ -48,62 +48,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             return new Highcharts.Chart(chartOptions);
         };
 
-        var updatePrintDataTable = function (ajaxResult) {
-            var headers = ajaxResult.tableData.headers,
-            rows = ajaxResult.tableData.rows,
-            printTables = [], currentDataColumn = 1, maxHeadersPerPage = 5;
-
-            var topLevelHeaders = _.rest(headers[0]); //Take all headers but the first, the first is handled separately
-            var totalNumberOfPrintPages = Math.ceil(topLevelHeaders.length/maxHeadersPerPage); //Calculate how many print pages we will have
-
-            /*
-                This block takes care of everything we need to do for each and every page
-                we need to print, effectively splitting every page in its own print table
-             */
-            _.each(_.range(0, totalNumberOfPrintPages), function() {
-                    //For every print page we need to set up an new printTable
-                    var printTable = {headers: [], rows: []};
-
-                    //Add headers for first column
-                    _.each(headers, function(header, headerIndex) {
-                        printTable.headers[headerIndex] = [header[0]];
-                    });
-
-                    //Add row name for each row
-                    _.each(rows, function(row) {
-                        printTable.rows.push({name: row.name, data: []});
-                    });
-
-                    //Add the data for the print page
-                    //Start by taking a maxHeadersPerPage chunk of all the toplevel headers
-                    _.each(_.take(topLevelHeaders, maxHeadersPerPage), function(topLevelHeader) {
-
-                        //Add the top level topLevelHeader
-                        printTable.headers[0].push(topLevelHeader);
-
-                        //Add the sub level headers, the colspan of the top level header
-                        //decides how many sub level columns we have.
-                        _.each(_.range(topLevelHeader.colspan), function() {
-                            printTable.headers[1].push(headers[1][currentDataColumn]);
-
-                            //Add the data that goes into the sublevel
-                            _.each(rows, function(row, rowindex) {
-                                printTable.rows[rowindex].data.push(row.data[currentDataColumn - 1]);
-                            });
-
-                            currentDataColumn++;
-                        });
-                    });
-
-                    //Taking a new chunk of the top level headers for the next iteration
-                    topLevelHeaders = _.drop(topLevelHeaders, maxHeadersPerPage);
-                    printTables.push(printTable);
-                }
-            );
-
-            return printTables;
-        };
-
         function updateChartsYAxisMaxValue() {
             // Reset values to default
             that.chart1.yAxis[0].setExtremes(0, null);
@@ -163,9 +107,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
                     $rootScope.$broadcast('pageDataPopulated');
                 });
             }, 1);
-            $timeout(function() {
-                $scope.printDataTables = updatePrintDataTable(result);
-            }, 100);
         };
 
         var populatePageWithData = function (result) {
