@@ -27,6 +27,11 @@ public class LogData {
         //Used by jackson
     }
 
+    public LogData(String message, String url) {
+        this.message = message;
+        this.url = url;
+    }
+
     public String getMessage() {
         return message;
     }

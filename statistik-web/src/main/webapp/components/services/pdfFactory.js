@@ -21,7 +21,7 @@
 angular.module('StatisticsApp')
     .factory('pdfFactory',
         /** @ngInject */
-        function($window, $timeout, thousandseparatedFilter) {
+        function($window, $timeout, thousandseparatedFilter, $location) {
         'use strict';
 
         function _print($scope, charts) {
@@ -145,6 +145,7 @@ angular.module('StatisticsApp')
                 }
                 var inputs = '<input type="hidden" name="pdf" value="'+result+'">';
                 inputs += '<input type="hidden" name="name" value="'+fileName + '_' + moment().format('YYYY-MM-DD') + '.pdf">';
+                inputs += '<input type="hidden" name="url" value="' + $location.url() + '">';
 
                 $window.jQuery('<form action="/api/pdf/create" target="_blank" method="post">'+inputs+'</form>')
                     .appendTo('body').submit().remove();

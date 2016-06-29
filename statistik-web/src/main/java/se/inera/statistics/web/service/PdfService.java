@@ -18,11 +18,15 @@
  */
 package se.inera.statistics.web.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import se.inera.statistics.web.model.LogData;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.DatatypeConverter;
@@ -31,11 +35,14 @@ import javax.xml.bind.DatatypeConverter;
 @Path("/pdf")
 public class PdfService {
 
+    @Autowired
+    private LoggingService loggingService;
+
     public PdfService() { }
 
     @POST
     @Path("create")
-    public Response pdf(@FormParam("pdf") String pdf, @FormParam("name") String name) {
+    public Response pdf(@Context HttpServletRequest request, @FormParam("pdf") String pdf, @FormParam("name") String name, @FormParam("url") String url) {
 
         byte[] array = DatatypeConverter.parseBase64Binary(pdf);
 
@@ -43,6 +50,9 @@ public class PdfService {
 
         Response.ResponseBuilder response = Response.ok().entity(array).type(MediaType.APPLICATION_OCTET_STREAM_TYPE);
         response.header("Content-Disposition", "attachment; filename=" + name);
+
+        LogData logData = new LogData("Printing pdf", url);
+        loggingService.frontendLogging(request, logData);
 
         return response.build();
     }
