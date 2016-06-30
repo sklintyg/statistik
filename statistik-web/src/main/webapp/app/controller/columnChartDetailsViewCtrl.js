@@ -35,6 +35,9 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         $scope.chartContainers = [
             {id: 'chart1', name: 'diagram'}
         ];
+        $scope.status = {
+            isTableOpen: true
+        };
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
             var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback, false, chartTypeInfo.usePercentChart, chartTypeInfo.stacked);
@@ -138,12 +141,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         } else {
             $scope.doneLoading = true;
         }
-
-        $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
-
-        $scope.toggleTableVisibility = function (event) {
-            ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
-        };
 
         $scope.popoverText = messageService.getProperty(config.pageHelpText, null, '', null, true);
         $scope.showDetailOptions3PopoverText = messageService.getProperty(config.pageHelpTextShowDetailOptions, null, '', null, true);

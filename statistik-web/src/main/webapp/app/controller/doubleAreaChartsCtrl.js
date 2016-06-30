@@ -28,6 +28,9 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         var that = this;
         var chart1 = {};
         var chart2 = {};
+        $scope.status = {
+            isTableOpen: true
+        };
 
         var defaultChartType = 'area';
         var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType);
@@ -160,11 +163,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         } else {
             $scope.doneLoading = true;
         }
-
-        $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
-        $scope.toggleTableVisibility = function (event) {
-            ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
-        };
 
         $scope.showDiagnosisSelector = config.showDiagnosisSelector;
         if ($scope.showDiagnosisSelector) {

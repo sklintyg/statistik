@@ -31,7 +31,9 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         var defaultChartType = 'line';
         var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType);
         $scope.activeChartType = chartTypeInfo.activeChartType;
-
+        $scope.status = {
+            isTableOpen: true
+        };
 
         $scope.chartContainers = [
             {id: 'chart1', name: 'diagram'}
@@ -121,11 +123,6 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
                 $scope.dataLoadingError = true;
             });
         }
-
-        $scope.showHideDataTable = ControllerCommons.showHideDataTableDefault;
-        $scope.toggleTableVisibility = function (event) {
-            ControllerCommons.toggleTableVisibilityGeneric(event, $scope);
-        };
 
         $scope.spinnerText = 'Laddar information...';
         $scope.doneLoading = false;

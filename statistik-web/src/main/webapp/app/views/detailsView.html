@@ -152,7 +152,6 @@
       </div>
   </div>
 
-
 <!-- Start ingress -->
 <div dataerrorview show-error="dataLoadingError" error-page-url="errorPageUrl">
   <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading && !resultMessage">
@@ -161,11 +160,7 @@
       <div data-ng-repeat="chartContainer in chartContainers"
            data-ng-class="{'col-xs-12 col-sm-12 col-md-12 col-lg-12': chartContainers.length == 1, 'col-lg-6': chartContainers.length == 2}"
            class="left-2px-padding right-2px-padding">
-        <div class="visible-print" style="margin-top: 50px!important;">
-          <!-- This is a div that adds margin in print mode to separate charts. Hardwired styles, otherwise won't work when printing --></div>
         <div class="chart-page-chart" id="{{chartContainer.id}}" style="height: 400px; margin: 0 auto"></div>
-        <div class="visible-print" style="margin-bottom: 50px!important;">
-          <!-- This is a div that adds margin in print mode to separate charts. Hardwired styles, otherwise won't work when printing --></div>
       </div>
     </div>
 
@@ -193,14 +188,13 @@
 					</span>
       </div>
       <div class="row">
-        <div id="chart-data-table" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 chart-table"
-             data-ng-init="tableVisible=true" data-ng-class="{collapsed: !tableVisible}">
+        <div id="chart-data-table" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 chart-table">
           <uib-accordion id="accordion2">
-            <uib-accordion-group is-open="$parent.tableVisible">
+            <uib-accordion-group is-open="status.isTableOpen">
               <uib-accordion-heading class="hidden-print">
                 <i class="glyphicon chart-table-expand-icon"></i>
-                <span data-ng-if="tableVisible"><span message key="lbl.dolj-tabell"></span></span>
-                <span data-ng-if="!tableVisible"><span message key="lbl.visa-tabell"></span></span>
+                <span data-ng-if="status.isTableOpen"><span message key="lbl.dolj-tabell"></span></span>
+                <span data-ng-if="!status.isTableOpen"><span message key="lbl.visa-tabell"></span></span>
               </uib-accordion-heading>
               <stat-scroll-table header-rows="headerrows" rows="rows"></stat-scroll-table>
             </uib-accordion-group>
