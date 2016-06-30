@@ -798,11 +798,6 @@ div.headerbox-user-profile {
     text-align: left;
 }
 
-.enhets-modal ul {
-  list-style-type: disc !important;
-  margin-bottom: 2px;
-}
-
 #business-login-container {
   float: right;
     padding-right: 25px;
@@ -1791,6 +1786,7 @@ input[type="radio"], input[type="checkbox"] {
 @import 'directives/filterList/filterList.scss';
 @import 'directives/navigationMenu/navigationMenu.scss';
 @import 'directives/overviewWidget/overviewWidget.scss';
+@import 'directives/showBusinesses/showBusinesses.scss';
 @import 'directives/spinner/spinner.scss';
 @import 'directives/statCookieBanner/statCookieBanner.scss';
 @import 'directives/statScrollTable/statScrollTable.scss';
