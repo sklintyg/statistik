@@ -278,6 +278,9 @@ public final class DocumentHelper {
      * Denna kod implementeras också i AnonymizeJson.groovy och bör hållas i synk med denna
      */
     private static boolean isFieldIndicatingEnkeltIntyg(String field) {
+        if (field == null) {
+            return false;
+        }
         final String cleanedField = field.replaceAll("[^A-Za-zåäöÅÄÖ]", "");
         return "E".equalsIgnoreCase(cleanedField) || "Enkel".equalsIgnoreCase(cleanedField) || "Enkelt".equalsIgnoreCase(cleanedField);
     }

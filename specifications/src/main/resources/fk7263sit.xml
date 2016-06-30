@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+
+    Copyright (C) 2016 Inera AB (http://www.inera.se)
+
+    This file is part of statistik (https://github.com/sklintyg/statistik).
+
+    statistik is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    statistik is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<ns2:RegisterCertificate xmlns:ns2="urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2">
+   <ns2:intyg>
+      <tag0:intygs-id xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2">
+         <ns3:root xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">EnhetsId</ns3:root>
+         <ns3:extension xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">1234589</ns3:extension>
+      </tag0:intygs-id>
+      <tag0:typ xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2">
+         <ns3:code xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">FK7263</ns3:code>
+         <ns3:codeSystem xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">f6fb361a-e31d-48b8-8657-99b63912dd9b</ns3:codeSystem>
+         <ns3:displayName xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">Läkarintyg FK 7263</ns3:displayName>
+      </tag0:typ>
+      <tag0:version xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2"/>
+      <tag0:signeringstidpunkt xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2">2016-06-22T00:00:00</tag0:signeringstidpunkt>
+      <tag0:skickatTidpunkt xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2">2016-06-22T00:00:00</tag0:skickatTidpunkt>
+      <tag0:patient xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2">
+         <tag0:person-id>
+            <ns3:root xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">1.2.752.129.2.1.3.1</ns3:root>
+            <ns3:extension xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">192703104321</ns3:extension>
+         </tag0:person-id>
+         <tag0:fornamn/>
+         <tag0:efternamn>Tolvan Tolvansson</tag0:efternamn>
+         <tag0:postadress/>
+         <tag0:postnummer/>
+         <tag0:postort/>
+      </tag0:patient>
+      <tag0:skapadAv xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2">
+         <tag0:personal-id>
+            <ns3:root xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">1.2.752.129.2.1.4.1</ns3:root>
+            <ns3:extension xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">Personal HSA-ID</ns3:extension>
+         </tag0:personal-id>
+         <tag0:fullstandigtNamn>Abra Kadabra</tag0:fullstandigtNamn>
+         <tag0:forskrivarkod>1234567</tag0:forskrivarkod>
+         <tag0:enhet>
+            <tag0:enhets-id>
+               <ns3:root xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">1.2.752.129.2.1.4.1</ns3:root>
+               <ns3:extension xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">EnhetsId</ns3:extension>
+            </tag0:enhets-id>
+            <tag0:arbetsplatskod>
+               <ns3:root xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">1.2.752.29.4.71</ns3:root>
+               <ns3:extension xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">123456789011</ns3:extension>
+            </tag0:arbetsplatskod>
+            <tag0:enhetsnamn>Kir Mott</tag0:enhetsnamn>
+            <tag0:postadress>gatan 1</tag0:postadress>
+            <tag0:postnummer>12345</tag0:postnummer>
+            <tag0:postort>Postboda</tag0:postort>
+            <tag0:telefonnummer>015053524</tag0:telefonnummer>
+            <tag0:epost>abc@gmail.com</tag0:epost>
+            <tag0:vardgivare>
+               <tag0:vardgivare-id>
+                  <ns3:root xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">1.2.752.129.2.1.4.1</ns3:root>
+                  <ns3:extension xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">Vardgivarid</ns3:extension>
+               </tag0:vardgivare-id>
+               <tag0:vardgivarnamn>Landstinget Norrland</tag0:vardgivarnamn>
+            </tag0:vardgivare>
+         </tag0:enhet>
+      </tag0:skapadAv>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="32">
+         <tag0:delsvar id="32.1">
+            <ns3:cv xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">
+               <ns3:code>4</ns3:code>
+               <ns3:codeSystem>KV_FKMU_0003</ns3:codeSystem>
+               <ns3:displayName>KV_FKMU_0003</ns3:displayName>
+            </ns3:cv>
+         </tag0:delsvar>
+         <tag0:delsvar id="32.2">
+            <ns3:datePeriod xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">
+               <ns3:start>2013-03-17</ns3:start>
+               <ns3:end>2013-04-15</ns3:end>
+            </ns3:datePeriod>
+         </tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="10004">
+         <tag0:delsvar id="10004.1">När skadan förbättrats rekommenderas muskeluppbyggande sjukgymnastik</tag0:delsvar>
+         <tag0:delsvar id="10004.2">När skadan förbättrats rekommenderas muskeluppbyggande sjukgymnastik</tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="6">
+         <tag0:delsvar id="6.2">
+            <ns3:cv xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">
+               <ns3:code>S47</ns3:code>
+               <ns3:codeSystem>ICD_10_SE</ns3:codeSystem>
+               <ns3:displayName/>
+            </ns3:cv>
+         </tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="10001">
+         <tag0:delsvar id="10001.1">Klämskada på överarm</tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="10006">
+         <tag0:delsvar id="10006.3">true</tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="1">
+         <tag0:delsvar id="1.2">
+            <ns3:cv xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">
+               <ns3:code>TELEFONKONTAKT</ns3:code>
+               <ns3:codeSystem>KV_FKMU_0001</ns3:codeSystem>
+               <ns3:displayName>Min telefonkontakt med patienten</ns3:displayName>
+            </ns3:cv>
+         </tag0:delsvar>
+         <tag0:delsvar id="1.1">2013-03-10</tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="1">
+         <tag0:delsvar id="1.2">
+            <ns3:cv xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">
+               <ns3:code>JOURNALUPPGIFTER</ns3:code>
+               <ns3:codeSystem>KV_FKMU_0001</ns3:codeSystem>
+               <ns3:displayName>Journaluppgifter från den</ns3:displayName>
+            </ns3:cv>
+         </tag0:delsvar>
+         <tag0:delsvar id="1.1">2013-03-10</tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="10002">
+         <tag0:delsvar id="10002.1">Patienten klämde höger överarm vid olycka i hemmet. Problemen har pågått en längre tid.</tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="10003">
+         <tag0:delsvar id="10003.1">false</tag0:delsvar>
+         <tag0:delsvar id="10003.2">false</tag0:delsvar>
+         <tag0:delsvar id="10003.3">När skadan förbättrats rekommenderas muskeluppbyggande sjukgymnastik</tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="17">
+         <tag0:delsvar id="17.1">Kraftigt nedsatt rörlighet i överarmen pga skadan</tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="25">
+         <tag0:delsvar id="25.1">kommenterar</tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="26">
+         <tag0:delsvar id="26.1">false</tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="27">
+         <tag0:delsvar id="27.1">false</tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="28">
+         <tag0:delsvar id="28.1">
+            <ns3:cv xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:2">
+               <ns3:code>NUVARANDE_ARBETE</ns3:code>
+               <ns3:codeSystem>KV_FKMU_0002</ns3:codeSystem>
+               <ns3:displayName>Nuvarande arbete</ns3:displayName>
+            </ns3:cv>
+         </tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="29">
+         <tag0:delsvar id="29.1">Dirigent
+            Dirigerar en för större orkester på deltid</tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="34">
+         <tag0:delsvar id="34.1">false</tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="35">
+         <tag0:delsvar id="35.1">Kraftigt nedsatt rörlighet i överarmen pga skadan. Böj- och sträckförmågan är mycket dålig.
+                                Smärtar vid rörelse vilket ger att patienten inte kan använda armen särkilt mycket.
+               </tag0:delsvar>
+      </tag0:svar>
+      <tag0:svar xmlns:tag0="urn:riv:clinicalprocess:healthcond:certificate:2" id="37">
+         <tag0:delsvar id="37.1">Skadan har förvärrats vid varje tillfälle patienten använt armen.</tag0:delsvar>
+      </tag0:svar>
+   </ns2:intyg>
+</ns2:RegisterCertificate>

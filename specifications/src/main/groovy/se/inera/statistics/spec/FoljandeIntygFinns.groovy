@@ -4,7 +4,6 @@ import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import org.joda.time.DateTimeUtils
 import se.inera.statistics.service.processlog.EventType
-import se.inera.statistics.service.processlog.IntygFormat
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.testsupport.Intyg
 
@@ -56,7 +55,7 @@ class FoljandeIntygFinns {
         län = null
         händelsetyp = EventType.CREATED.name()
         exaktintygid = intygIdCounter++
-        intygformat = "NyttJson"
+        intygformat = "Xml"
         huvudenhet = null
         intygstyp = "fk7263"
         enhetsnamn = null
@@ -93,48 +92,70 @@ class FoljandeIntygFinns {
     }
 
     private String executeForLisuXmlFormat() {
-        def slurper = new XmlParser()
-        String intygString = getClass().getResource('/sjukpenning-utokad-transport.xml').getText('UTF-8')
+        def slurper = new XmlParser(false, true)
+        String intygString = getClass().getResource('/fk7263sit.xml').getText('UTF-8')
         def result = slurper.parseText(intygString)
         def intyg = result.value()[0]
 
-        setExtension(intyg.patient["person-id"][0], personnr)
-        setLeafValue(intyg.typ[0], "code", intygstyp)
-        setExtension(intyg.skapadAv["personal-id"][0], läkare)
-        setExtension(intyg.skapadAv.enhet["enhets-id"][0], enhet)
-        setExtension(intyg.skapadAv.enhet.vardgivare["vardgivare-id"][0], vardgivare)
+        def patientNode = findNode(intyg, "patient")
 
+        def patientPersonIdNode = findNode(patientNode, "person-id")
+        setExtension(patientPersonIdNode, personnr)
+        setLeafValue(findNode(intyg, "typ"), "code", intygstyp)
+
+        def skapadAvNode = findNode(intyg, "skapadAv")
+        setExtension(findNode(skapadAvNode, "personal-id"), läkare)
+
+        def skapadAvEnhetNode = findNode(skapadAvNode, "enhet")
+        setExtension(findNode(skapadAvEnhetNode, "enhets-id"), enhet)
+
+        def skapadAvEnhetVgNode = findNode(skapadAvEnhetNode, "vardgivare")
+        setExtension(findNode(skapadAvEnhetVgNode, "vardgivare-id"), vardgivare)
+
+        def svarNodes = findNodes(intyg, "svar")
         if ("UTANDIAGNOSKOD".equalsIgnoreCase(diagnoskod)) {
-            intyg.remove(intyg.svar.find{it.@id=="6"})
+            intyg.remove(svarNodes.find{it.@id=="6"})
         } else {
-            def dxCodeNode = intyg.svar.delsvar.find{it.@id=="6.2"}.value()[0]
+            def dxCodeSvarNode = svarNodes.find{ it.@id=="6" }
+            def dxCodeNode = dxCodeSvarNode.find{it.@id=="6.2"}.value()[0]
             setLeafValue(dxCodeNode, "code", diagnoskod)
         }
 
-        if (!funktionsnedsättning.isEmpty() || !aktivitetsbegränsning.isEmpty()) {
-            def enkeltIntyg = isFieldIndicatingEnkeltIntyg(funktionsnedsättning) || isFieldIndicatingEnkeltIntyg(aktivitetsbegränsning)
-            setLeafValue(intyg.typ[0], "code", enkeltIntyg ? "LIS" : "LISU")
-        }
+        def funktionsnedsattningNode = svarNodes.find{ it.@id=="35" }
+        def funktionsnedsattningCodeNode = funktionsnedsattningNode.value().find{it.@id=="35.1"}
+        funktionsnedsattningCodeNode.setValue(funktionsnedsättning)
 
-        def arbetsformagaNode = intyg.svar.find{ it.@id=="32" }
-        def arbetsformagaCodeNode = arbetsformagaNode.value().find{it.@id=="32.1"}
-        setLeafValue(arbetsformagaCodeNode.value()[0], "code", (Integer.valueOf(arbetsförmåga) / 25) + 1);
-        def arbetsformagaPeriodNode = arbetsformagaNode.value().find{it.@id=="32.2"}
-        setLeafValue(arbetsformagaPeriodNode.value()[0], "start", start)
-        setLeafValue(arbetsformagaPeriodNode.value()[0], "end", slut)
+        def aktivitetsbegransningNode = svarNodes.find{ it.@id=="17" }
+        def aktivitetsbegransningCodeNode = aktivitetsbegransningNode.value().find{it.@id=="17.1"}
+        aktivitetsbegransningCodeNode.setValue(aktivitetsbegränsning)
+
+        def arbetsformagaNode = svarNodes.find{ it.@id=="32" }
+        def arbetsformagaCodeNode = arbetsformagaNode.value().find{it.@id=="32.1"}.value()[0]
+        setLeafValue(arbetsformagaCodeNode, "code", (Integer.valueOf(arbetsförmåga) / 25) + 1);
+        def arbetsformagaPeriodNode = arbetsformagaNode.value().find{it.@id=="32.2"}.value()[0]
+        setLeafValue(arbetsformagaPeriodNode, "start", start)
+        setLeafValue(arbetsformagaPeriodNode, "end", slut)
 
         if (!arbetsförmåga2.isEmpty()) {
             def arbetsformagaNode2 = arbetsformagaNode.clone();
             intyg.append(arbetsformagaNode2);
-            def arbetsformagaCodeNode2 = arbetsformagaNode2.value().find{it.@id=="32.1"}
-            setLeafValue(arbetsformagaCodeNode2.value()[0], "code", (Integer.valueOf(arbetsförmåga2) / 25) + 1);
-            def arbetsformagaPeriodNode2 = arbetsformagaNode2.value().find{it.@id=="32.2"}
-            setLeafValue(arbetsformagaPeriodNode2.value()[0], "start", start2)
-            setLeafValue(arbetsformagaPeriodNode2.value()[0], "end", slut2)
+            def arbetsformagaCodeNode2 = arbetsformagaNode2.value().find{it.@id=="32.1"}.value()[0]
+            setLeafValue(arbetsformagaCodeNode2, "code", (Integer.valueOf(arbetsförmåga2) / 25) + 1);
+            def arbetsformagaPeriodNode2 = arbetsformagaNode2.value().find{it.@id=="32.2"}.value()[0]
+            setLeafValue(arbetsformagaPeriodNode2, "start", start2)
+            setLeafValue(arbetsformagaPeriodNode2, "end", slut2)
         }
 
         def builder = groovy.xml.XmlUtil.serialize(result)
         return builder.toString()
+    }
+
+    private Object findNode(parent, String nodeName) {
+        return parent.find { it.name().localPart.equals(nodeName) }
+    }
+
+    private Object findNodes(parent, String nodeName) {
+        return parent.findAll { it.name().localPart.equals(nodeName) }
     }
 
     def setLeafValue(Node node, String leafName, def value) {
@@ -147,11 +168,6 @@ class FoljandeIntygFinns {
 
     def setExtension(Node node, def value) {
         setLeafValue(node, "extension", value)
-    }
-
-    private boolean isFieldIndicatingEnkeltIntyg(String field) {
-        final String cleanedField = field.replaceAll("[^A-Za-zåäöÅÄÖ]", "");
-        return "E".equalsIgnoreCase(cleanedField) || "Enkel".equalsIgnoreCase(cleanedField) || "Enkelt".equalsIgnoreCase(cleanedField);
     }
 
     private String executeForNewJsonFormat() {

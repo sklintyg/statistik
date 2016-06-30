@@ -38,7 +38,6 @@ import org.w3c.dom.NodeList;
 
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.warehouse.IntygType;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v2.CVType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v2.DatePeriodType;
@@ -49,6 +48,10 @@ public class RegisterCertificateHelper {
 
     public static final String DIAGNOS_SVAR_ID_6 = "6";
     public static final String DIAGNOS_DELSVAR_ID_6 = "6.2";
+    public static final String FUNKTIONSNEDSATTNING_SVAR = "35";
+    public static final String FUNKTIONSNEDSATTNING_DELSVAR = "35.1";
+    public static final String AKTIVITETSBEGRANSNING_SVAR = "17";
+    public static final String AKTIVITETSBEGRANSNING_DELSVAR = "17.1";
     public static final String BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32 = "32";
     public static final String BEHOV_AV_SJUKSKRIVNING_NIVA_DELSVARSVAR_ID_32 = "32.1";
     public static final String BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32 = "32.2";
@@ -83,8 +86,34 @@ public class RegisterCertificateHelper {
     }
 
     public boolean isEnkeltIntyg(RegisterCertificateType intyg) {
-        final String code = getIntygtyp(intyg);
-        return IntygType.LIS.name().equalsIgnoreCase(code);
+        final String funktionsnedsattning = getFunktionsnedsattning(intyg);
+        final String aktivitetsbegransning = getAktivitetsbegransning(intyg);
+        return DocumentHelper.isAnyFieldIndicatingEnkeltIntyg(funktionsnedsattning, aktivitetsbegransning);
+    }
+
+    private String getFunktionsnedsattning(RegisterCertificateType intyg) {
+        return getDelsvarString(intyg, FUNKTIONSNEDSATTNING_SVAR, FUNKTIONSNEDSATTNING_DELSVAR);
+    }
+
+    private String getAktivitetsbegransning(RegisterCertificateType intyg) {
+        return getDelsvarString(intyg, AKTIVITETSBEGRANSNING_SVAR, AKTIVITETSBEGRANSNING_DELSVAR);
+    }
+
+    private String getDelsvarString(RegisterCertificateType intyg, String svarId, String delsvarId) {
+        for (Svar svar : intyg.getIntyg().getSvar()) {
+            if (svarId.equals(svar.getId())) {
+                for (Svar.Delsvar delsvar : svar.getDelsvar()) {
+                    if (delsvarId.equals(delsvar.getId())) {
+                        for (Object content : delsvar.getContent()) {
+                            if (content instanceof String) {
+                                return (String) content;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     public String getDx(RegisterCertificateType intyg) {
