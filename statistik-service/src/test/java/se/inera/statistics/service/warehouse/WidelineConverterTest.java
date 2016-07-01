@@ -131,7 +131,7 @@ public class WidelineConverterTest {
         List<String> errors = converter.validate(new WideLine());
 
         LOG.error("Error message: {}", errors);
-        assertEquals(8, errors.size());
+        assertEquals(7, errors.size());
     }
 
     @Test

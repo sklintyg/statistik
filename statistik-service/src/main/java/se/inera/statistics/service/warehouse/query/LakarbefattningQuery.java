@@ -41,6 +41,8 @@ public final class LakarbefattningQuery {
 
     public static final Integer NO_BEFATTNING_CODE = -1;
     private static final String NO_BEFATTNING_TEXT = "Ej läkarbefattning";
+    public static final Integer UNKNOWN_BEFATTNING_CODE = -2;
+    private static final String UNKNOWN_BEFATTNING_TEXT = "Okänd befattning";
 
     private static Map<Integer, String> getAllLakarbefattnings(boolean includeInternalBefattnings) {
         Map<Integer, String> lakarbefattnings = new LinkedHashMap<>();
@@ -56,6 +58,7 @@ public final class LakarbefattningQuery {
         lakarbefattnings.put(204090, "Läkare ej legitimerad, annan");
         if (includeInternalBefattnings) {
             lakarbefattnings.put(NO_BEFATTNING_CODE, NO_BEFATTNING_TEXT);
+            lakarbefattnings.put(UNKNOWN_BEFATTNING_CODE, UNKNOWN_BEFATTNING_TEXT);
         }
         return lakarbefattnings;
         // CHECKSTYLE:ON MagicNumber
@@ -72,7 +75,7 @@ public final class LakarbefattningQuery {
     private static List<Integer> getLakarbefattnings(Lakare lakare) {
         final List<Integer> lakarbefattnings = new ArrayList<>();
         final int[] allBefattnings = lakare.getBefattnings();
-        final Set<Integer> existingLakarebefattnings = getAllLakarbefattnings(false).keySet();
+        final Set<Integer> existingLakarebefattnings = getAllLakarbefattnings(true).keySet();
         for (int befattning : allBefattnings) {
             if (existingLakarebefattnings.contains(befattning)) {
                 lakarbefattnings.add(befattning);

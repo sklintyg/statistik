@@ -97,7 +97,7 @@ public class WidelineConverter {
         int lakarkon = HSAServiceHelper.getLakarkon(hsa);
         int lakaralder = HSAServiceHelper.getLakaralder(hsa);
         String lakarbefattning = HSAServiceHelper.getLakarbefattning(hsa);
-        HsaIdLakare lakareid = HSAServiceHelper.getLakareId(hsa);
+        HsaIdLakare lakareid = new HsaIdLakare(DocumentHelper.getLakarId(intyg, version));
 
         List<WideLine> lines = new ArrayList<>();
 
@@ -131,7 +131,7 @@ public class WidelineConverter {
         int lakarkon = HSAServiceHelper.getLakarkon(hsa);
         int lakaralder = HSAServiceHelper.getLakaralder(hsa);
         String lakarbefattning = HSAServiceHelper.getLakarbefattning(hsa);
-        HsaIdLakare lakareid = HSAServiceHelper.getLakareId(hsa);
+        HsaIdLakare lakareid = new HsaIdLakare(registerCertificateHelper.getLakareId(intyg));
 
         List<WideLine> lines = new ArrayList<>();
 
@@ -271,7 +271,6 @@ public class WidelineConverter {
         checkField(errors, line.getEnhet(), "Enhet");
         checkField(errors, line.getPatientid(), "Patient");
         checkAge(errors, line.getAlder());
-        checkField(errors, line.getLakareId(), "LäkarID");
         checkField(errors, line.getCorrelationId(), "CorrelationId", MAX_LENGTH_CORRELATION_ID);
         checkSjukskrivningsgrad(errors, line.getSjukskrivningsgrad());
         checkStartdatum(errors, line.getStartdatum());

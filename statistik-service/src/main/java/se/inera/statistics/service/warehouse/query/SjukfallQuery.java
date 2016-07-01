@@ -223,23 +223,17 @@ public class SjukfallQuery {
     }
 
     public KonDataResponse getSjukfallPerLakareSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
-        final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
-            @Override
-            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
-                for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
-                    counter.add(lakare.getId());
-                }
+        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
+            for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
+                counter.add(lakare.getId());
             }
         };
-        final Function<Sjukfall, Collection<Integer>> groupsFunction = new Function<Sjukfall, Collection<Integer>>() {
-            @Override
-            public Collection<Integer> apply(Sjukfall sjukfall) {
-                final ArrayList<Integer> integers = new ArrayList<>();
-                for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
-                    integers.add(lakare.getId());
-                }
-                return integers;
+        final Function<Sjukfall, Collection<Integer>> groupsFunction = sjukfall -> {
+            final ArrayList<Integer> integers = new ArrayList<>();
+            for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
+                integers.add(lakare.getId());
             }
+            return integers;
         };
 
         final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, groupsFunction, counterFunction);
@@ -248,7 +242,7 @@ public class SjukfallQuery {
     }
 
     private KonDataResponse changeLakareIdToLakarName(final KonDataResponse response) {
-        List<HsaIdLakare> lakares = Lists.transform(response.getGroups(), new Function<String, HsaIdLakare>() {
+        final List<HsaIdLakare> lakares = Lists.transform(response.getGroups(), new Function<String, HsaIdLakare>() {
             @Override
             public HsaIdLakare apply(String group) {
                 final Optional<HsaIdLakare> lakarId = Warehouse.getLakarId(Integer.parseInt(group));
@@ -263,15 +257,16 @@ public class SjukfallQuery {
         final Set<String> nameDuplicates = findDuplicates(allLakareInResponse);
         final List<String> updatedLakareNames = Lists.transform(response.getGroups(), new Function<String, String>() {
             @Override
-            public String apply(String lakareId) {
+            public String apply(String lakareIdNum) {
                 for (Lakare lakare : allLakareInResponse) {
-                    if (lakareId.equals(String.valueOf(Warehouse.getNumLakarId(lakare.getLakareId())))) {
+                    if (lakareIdNum.equals(String.valueOf(Warehouse.getNumLakarId(lakare.getLakareId())))) {
                         final String namn = lakarNamn(lakare);
                         return namn + (nameDuplicates.contains(namn) ? " " + lakare.getLakareId() : "");
                     }
                 }
-                LOG.warn("Could not find name for lakare: " + lakareId);
-                return lakareId;
+                LOG.warn("Could not find name for lakare: " + lakareIdNum);
+                final Optional<HsaIdLakare> lakarId = Warehouse.getLakarId(Integer.parseInt(lakareIdNum));
+                return lakarId.isPresent() ? lakarId.get().getId() : lakareIdNum;
             }
         });
         return new KonDataResponse(updatedLakareNames, response.getRows());

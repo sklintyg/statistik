@@ -18,10 +18,14 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.util.ArrayList;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.util.Icd10;
@@ -72,23 +76,21 @@ public class FactPopulator {
         String lakarbefattningString = wideline.getLakarbefattning();
         if (lakarbefattningString != null && lakarbefattningString.length() > 0) {
             final String[] befattningStrings = lakarbefattningString.split(",");
-            final int[] befattnings = new int[befattningStrings.length];
-            for (int i = 0; i < befattningStrings.length; i++) {
-                String befattning = befattningStrings[i].trim();
-                if (befattning.equals("-")) {
-                    befattnings[i] = LakarbefattningQuery.NO_BEFATTNING_CODE;
-                }
+            final ArrayList<Integer> befattnings = new ArrayList<>();
+            for (String befattningString : befattningStrings) {
+                String befattning = befattningString.trim();
                 try {
-                    befattnings[i] = Integer.parseInt(befattning);
+                    befattnings.add(Integer.parseInt(befattning));
                 } catch (NumberFormatException nfe) {
                     LOG.info("Unknown befattning: '" + befattning + "' for doctor in intyg: " + wideline.getCorrelationId());
-                    befattnings[i] = LakarbefattningQuery.NO_BEFATTNING_CODE;
                 }
             }
-            return befattnings;
-        } else {
-            return new int[0];
+            if (befattnings.isEmpty()) {
+                return new int[]{LakarbefattningQuery.NO_BEFATTNING_CODE};
+            }
+            return ArrayUtils.toPrimitive(befattnings.toArray(new Integer[0]));
         }
+        return new int[]{LakarbefattningQuery.NO_BEFATTNING_CODE};
     }
 
     private int extractKategori(String diagnoskategori) {

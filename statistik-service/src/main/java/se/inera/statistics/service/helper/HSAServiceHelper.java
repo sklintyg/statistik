@@ -29,10 +29,12 @@ import se.inera.statistics.service.hsa.HsaInfoEnhetGeo;
 import se.inera.statistics.service.hsa.HsaInfoPersonal;
 import se.inera.statistics.service.hsa.HsaInfoVg;
 import se.inera.statistics.service.report.model.Kommun;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
 
 import com.google.common.base.Joiner;
+import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 
 public final class HSAServiceHelper {
 
@@ -121,20 +123,20 @@ public final class HSAServiceHelper {
     public static int getLakarkon(HsaInfo hsaData) {
         try {
             final String result = hsaData.getPersonal().getKon();
-            return result != null ? Integer.parseInt(result) : 0;
+            return result != null ? Integer.parseInt(result) : Kon.Unknown.getNumberRepresentation();
         } catch (NullPointerException | NumberFormatException e) {
-            return 0;
+            return Kon.Unknown.getNumberRepresentation();
         }
     }
 
     public static String getLakarbefattning(HsaInfo hsaData) {
         final HsaInfoPersonal personal = getHsaInfoPersonalNullSafe(hsaData);
         if (personal == null) {
-            return null;
+            return String.valueOf(LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE);
         }
         final List<String> befattning = personal.getBefattning();
-        if (befattning == null) {
-            return null;
+        if (befattning == null || befattning.isEmpty()) {
+            return String.valueOf(LakarbefattningQuery.NO_BEFATTNING_CODE);
         }
         return joiner.join(befattning);
     }

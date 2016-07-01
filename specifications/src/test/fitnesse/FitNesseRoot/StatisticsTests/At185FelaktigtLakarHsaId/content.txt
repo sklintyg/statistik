@@ -38,7 +38,9 @@ Inloggad:
 | user1        | Okänt kön okänd ålder    | 1    | 0        |
 
 | Sjukfall i rapporten lakarbefattning |
-| inloggad som | läkarbefattning  | män? | kvinnor? |
-| user1        | Överläkare       | 0    | 1        |
-| user1        | Okänd befattning | 1    | 0        |
+| inloggad som | läkarbefattning    | män? | kvinnor? |
+| user1        | Överläkare         | 0    | 1        |
+| user1        | Okänd befattning   | 1    | 0        |
+| user1        | Ej läkarbefattning | -1   | -1       |
+
 

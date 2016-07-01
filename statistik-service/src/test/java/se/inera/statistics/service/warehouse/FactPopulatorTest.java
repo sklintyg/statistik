@@ -75,10 +75,9 @@ import static org.junit.Assert.assertEquals;
 
         Fact fact = factPopulator.toFact(wideLine);
 
-        assertEquals(3, fact.getLakarbefattnings().length);
+        assertEquals(2, fact.getLakarbefattnings().length);
         assertEquals(123, fact.getLakarbefattnings()[0]);
-        assertEquals(-1, fact.getLakarbefattnings()[1]);
-        assertEquals(456, fact.getLakarbefattnings()[2]);
+        assertEquals(456, fact.getLakarbefattnings()[1]);
     }
 
 }
