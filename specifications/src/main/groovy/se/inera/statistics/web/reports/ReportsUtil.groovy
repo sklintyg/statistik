@@ -1,23 +1,17 @@
 package se.inera.statistics.web.reports
 
 import groovy.json.JsonBuilder
-import groovy.json.JsonException
 import groovyx.net.http.HttpResponseException
 import groovyx.net.http.RESTClient
-import groovyx.net.http.ResponseParseException
 import org.apache.http.HttpEntity
+import org.apache.http.entity.mime.MultipartEntityBuilder
 import org.codehaus.groovy.runtime.MethodClosure
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import se.inera.statistics.service.countypopulation.CountyPopulation
 import se.inera.statistics.service.report.model.KonField
 import se.inera.statistics.web.service.FilterData
 import se.inera.testsupport.Intyg
 import se.inera.testsupport.Personal
-import org.apache.http.entity.mime.MultipartEntityBuilder
-
-import org.apache.http.entity.mime.HttpMultipartMode
-import org.apache.http.entity.mime.content.InputStreamBody
 
 import javax.ws.rs.core.MediaType
 
@@ -210,7 +204,8 @@ class ReportsUtil {
     }
 
     def getVardgivareForUser(String user) {
-        switch (user) {
+        String lCaseUser = user.toLowerCase()
+        switch (lCaseUser) {
             case "user1": return VARDGIVARE;
             case "user2": return VARDGIVARE;
             case "user3": return VARDGIVARE3;
@@ -218,7 +213,7 @@ class ReportsUtil {
             case "user5_vg1": return VARDGIVARE;
             case "user5_vg3": return VARDGIVARE3;
             case "user6": return VARDGIVARE3;
-            default: throw new RuntimeException("Unknown user: " + user)
+            default: throw new RuntimeException("Unknown user: " + lCaseUser)
         }
     }
 

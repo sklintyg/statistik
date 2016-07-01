@@ -35,7 +35,6 @@ import se.inera.statistics.hsa.services.UserAuthorization;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.riv.infrastructure.directory.v1.PersonInformationType;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserDetailsService implements SAMLUserDetailsService {
@@ -62,20 +61,18 @@ public class UserDetailsService implements SAMLUserDetailsService {
         List<PersonInformationType> hsaPersonInfo = hsaPersonService.getHsaPersonInfo(hsaId.getId());
         UserAuthorization userAuthorization = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(hsaId);
 
-        Vardenhet selectedVerksamhet = userAuthorization.getVardenhetList().stream().findFirst().orElseThrow(() -> new IllegalStateException("Cannot log you in, no Vardenhet!"));
-        //Vardenhet selectedVerksamhet = getLoginVerksamhet(userAuthorization.getVardenhetList(), new HsaIdEnhet(assertion.getEnhetHsaId()));
+        Vardenhet selectedVerksamhet = userAuthorization.getVardenhetList().stream().findFirst().orElse(null);
         HsaIdVardgivare vardgivare = selectedVerksamhet != null ? selectedVerksamhet.getVardgivarId() : null;
 
         HsaIdEnhet vardEnhet = selectedVerksamhet != null ? selectedVerksamhet.getId() : null;
-        List<Vardenhet> filtered = filterByVardgivare(userAuthorization.getVardenhetList(), vardgivare);
 
+        // TODO store either systemRoles on user or store processLedare per VårdgivarHsaId on user.
         final boolean processledare = isProcessledare(userAuthorization.getSystemRoles(), vardgivare);
         monitoringLogService.logUserLogin(hsaId, vardgivare, vardEnhet, processledare);
 
-        //final String name = assertion.getFornamn() + ' ' + assertion.getMellanOchEfternamn();
         final String name = extractPersonName(hsaPersonInfo);
 
-        return new User(hsaId, name, processledare, selectedVerksamhet, filtered);
+        return new User(hsaId, name, processledare, selectedVerksamhet, userAuthorization.getVardenhetList());
     }
 
     private String extractPersonName(List<PersonInformationType> hsaPersonInfo) {
@@ -95,27 +92,7 @@ public class UserDetailsService implements SAMLUserDetailsService {
         return false;
     }
 
-    SakerhetstjanstAssertion getSakerhetstjanstAssertion(SAMLCredential credential) {
+    private SakerhetstjanstAssertion getSakerhetstjanstAssertion(SAMLCredential credential) {
         return new SakerhetstjanstAssertion(credential.getAuthenticationAssertion());
     }
-
-    private List<Vardenhet> filterByVardgivare(List<Vardenhet> vardenhets, HsaIdVardgivare vardgivarId) {
-        ArrayList<Vardenhet> filtered = new ArrayList<>();
-        for (Vardenhet vardenhet: vardenhets) {
-            if (vardenhet.getVardgivarId() != null && vardenhet.getVardgivarId().equals(vardgivarId)) {
-                filtered.add(vardenhet);
-            }
-        }
-        return filtered;
-    }
-
-    Vardenhet getLoginVerksamhet(List<Vardenhet> vardenhets, HsaIdEnhet enhetHsaId) {
-        for (Vardenhet vardenhet : vardenhets) {
-            if (vardenhet.getId().equals(enhetHsaId)) {
-                return vardenhet;
-            }
-        }
-        return null;
-    }
-
 }

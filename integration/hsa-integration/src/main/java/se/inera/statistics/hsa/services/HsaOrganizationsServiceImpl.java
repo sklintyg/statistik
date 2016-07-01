@@ -32,6 +32,7 @@ import se.riv.infrastructure.directory.v1.CommissionType;
 import se.riv.infrastructure.directory.v1.CredentialInformationType;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,6 +49,8 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
 
     @Autowired
     private AuthorizationManagementService authorizationManagementService;
+
+    private final VardenhetComparator veComparator = new VardenhetComparator();
 
 
     @Override
@@ -73,11 +76,19 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
                 }
                 systemRoles.addAll(info.getHsaSystemRole().stream().map(sr -> sr.getSystemId() + ";" + sr.getRole()).collect(Collectors.toList()));
             }
-            vardenhetList = vardenhetList.stream().distinct().collect(Collectors.toList());
+            vardenhetList = vardenhetList.stream().distinct().sorted(veComparator).collect(Collectors.toList());
         }
         LOG.debug("User with HSA-Id " + hosPersonHsaId + " has active 'Statistik' for " + vardenhetList.size() + " enheter");
 
         return new UserAuthorization(vardenhetList, systemRoles);
+    }
+
+    private final class VardenhetComparator implements Comparator<Vardenhet> {
+
+        @Override
+        public int compare(Vardenhet o1, Vardenhet o2) {
+            return o1.getId().getId().compareTo(o2.getId().getId());
+        }
     }
 
 }

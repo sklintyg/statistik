@@ -26,8 +26,6 @@ import org.opensaml.xml.schema.impl.XSAnyImpl;
 import org.springframework.security.saml.SAMLCredential;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**

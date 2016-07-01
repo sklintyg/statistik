@@ -90,11 +90,13 @@ public class UserDetailsServiceTest {
     }
 
     @Test
-    public void vardenhetOnOtherVardgivareAreFiltered() throws Exception {
+    public void vardenhetOnOtherVardgivareAreNotFiltered() throws Exception {
         auktoriseradeEnheter(VE1_VG1, VE3_VG2, VE4_VG2);
         User user = (User) service.loadUserBySAML(credential);
-        assertEquals(1, user.getVardenhetList().size());
+        assertEquals(3, user.getVardenhetList().size());
         assertEquals(VE1_VG1, user.getVardenhetList().get(0));
+        assertEquals(VE3_VG2, user.getVardenhetList().get(1));
+        assertEquals(VE4_VG2, user.getVardenhetList().get(2));
     }
 
     @Test

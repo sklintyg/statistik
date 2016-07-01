@@ -36,6 +36,8 @@ import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import se.inera.auth.model.User;
+import se.inera.statistics.hsa.model.Vardenhet;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -70,10 +72,27 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
         SAMLCredential credential = createSamlCredential(token);
         Object details = userDetails.loadUserBySAML(credential);
 
-        ExpiringUsernameAuthenticationToken result = new ExpiringUsernameAuthenticationToken(null, details, credential, new ArrayList<GrantedAuthority>());
-        result.setDetails(details);
+        // As per INTYG-2638 we need to augment the principal with fake properties _after_ the loadUserBySAML.
+        User user = (User) details;
+        FakeCredentials fakeCredentials = (FakeCredentials) token.getCredentials();
+        // Being immutable, we build up a new User principal combining the User from loadUserBySAML and fakes.
+
+        String name = user.getName() != null && user.getName().trim().length() > 0 && !user.getName().startsWith("null") ? user.getName() : fakeCredentials.getFornamn() + " " + fakeCredentials.getEfternamn();
+        User decoratedUser = new User(user.getHsaId(), name, fakeCredentials.isVardgivarniva(), selectVardenhet(user, fakeCredentials.getEnhetId()), user.getVardenhetList());
+
+        ExpiringUsernameAuthenticationToken result = new ExpiringUsernameAuthenticationToken(null, decoratedUser, credential, new ArrayList<GrantedAuthority>());
+        result.setDetails(decoratedUser);
 
         return result;
+    }
+
+    private Vardenhet selectVardenhet(User user, String enhetId) {
+        for (Vardenhet ve : user.getVardenhetList()) {
+            if (ve.getId().getId().equalsIgnoreCase(enhetId)) {
+                return ve;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -89,14 +108,6 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
         assertion.getAttributeStatements().add(attributeStatement);
 
         attributeStatement.getAttributes().add(createAttribute(HSA_ID_ATTRIBUTE, fakeCredentials.getHsaId()));
-//        attributeStatement.getAttributes().add(createAttribute(FORNAMN_ATTRIBUTE, fakeCredentials.getFornamn()));
-//        attributeStatement.getAttributes().add(createAttribute(MELLAN_OCH_EFTERNAMN_ATTRIBUTE, fakeCredentials.getEfternamn()));
-//        attributeStatement.getAttributes().add(createAttribute(ENHET_HSA_ID_ATTRIBUTE, fakeCredentials.getEnhetId()));
-//        attributeStatement.getAttributes().add(createAttribute(VARDGIVARE_HSA_ID_ATTRIBUTE, fakeCredentials.getVardgivarId()));
-
-        if (fakeCredentials.isVardgivarniva()) {
-//            attributeStatement.getAttributes().add(createAttribute(SYSTEM_ROLE_ATTRIBUTE, "INTYG;Statistik-" + fakeCredentials.getVardgivarId()));
-        }
         NameID nameId = new NameIDBuilder().buildObject();
         nameId.setValue(token.getCredentials().toString());
         return new SAMLCredential(nameId, assertion, "fake-idp", "statistics");
