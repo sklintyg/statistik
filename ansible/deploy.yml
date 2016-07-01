@@ -7,7 +7,7 @@
 
     # latest release: XXX
     # latest snapshot: XXX
-    version: 3.1.0-SNAPSHOT
+    version: 4.0.0-b9
     config_version: master
     highcharts_version: 2.2.0
 
@@ -18,7 +18,7 @@
       when: version.find('SNAPSHOT') != -1
 
     - name: set repo variable for release version
-      set_fact: repo="release"
+      set_fact: repo="releases"
       when: version.find('SNAPSHOT') == -1
 
     - debug: var=version

@@ -32,11 +32,15 @@ import se.riv.infrastructure.directory.v1.CommissionType;
 import se.riv.infrastructure.directory.v1.CredentialInformationType;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author andreaskaltenbach
+ * Interfaces with the {@link AuthorizationManagementService} in order to fetch Medarbetaruppdrag for the given
+ * employeeHsaId. Will filter out any non "Statistik"-purposed MiU:s.
+ *
+ * @author erikl
  */
 @Service
 public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
@@ -46,10 +50,13 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
     @Autowired
     private AuthorizationManagementService authorizationManagementService;
 
+    private final VardenhetComparator veComparator = new VardenhetComparator();
+
 
     @Override
-    public List<Vardenhet> getAuthorizedEnheterForHosPerson(HsaIdUser hosPersonHsaId) {
+    public UserAuthorization getAuthorizedEnheterForHosPerson(HsaIdUser hosPersonHsaId) {
         List<Vardenhet> vardenhetList = new ArrayList<>();
+        List<String> systemRoles = new ArrayList<>();
 
         List<CredentialInformationType> response = null;
         try {
@@ -67,12 +74,21 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
                         vardenhetList.add(new Vardenhet(new HsaIdEnhet(commissionType.getHealthCareUnitHsaId()), commissionType.getHealthCareUnitName(), new HsaIdVardgivare(commissionType.getHealthCareProviderHsaId()), commissionType.getHealthCareProviderName()));
                     }
                 }
+                systemRoles.addAll(info.getHsaSystemRole().stream().map(sr -> sr.getSystemId() + ";" + sr.getRole()).collect(Collectors.toList()));
             }
-            vardenhetList = vardenhetList.stream().distinct().collect(Collectors.toList());
+            vardenhetList = vardenhetList.stream().distinct().sorted(veComparator).collect(Collectors.toList());
         }
         LOG.debug("User with HSA-Id " + hosPersonHsaId + " has active 'Statistik' for " + vardenhetList.size() + " enheter");
 
-        return vardenhetList;
+        return new UserAuthorization(vardenhetList, systemRoles);
+    }
+
+    private final class VardenhetComparator implements Comparator<Vardenhet> {
+
+        @Override
+        public int compare(Vardenhet o1, Vardenhet o2) {
+            return o1.getId().getId().compareTo(o2.getId().getId());
+        }
     }
 
 }
