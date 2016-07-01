@@ -33,10 +33,10 @@ Inloggad:
 | Sjukfall i rapporten lakarkonalder |
 | inloggad som | läkargrupp               | män? | kvinnor? |
 | user1        | Manlig läkare 40-49 år   | 0    | 1        |
-| user1        | Okänd läkare             | 1    | 0        |
+| user1        | Okänt kön okänd ålder    | 1    | 0        |
 
 | Sjukfall i rapporten lakarbefattning |
 | inloggad som | läkarbefattning  | män? | kvinnor? |
 | user1        | Överläkare       | 0    | 1        |
-| user1        | Okänd läkare     | 1    | 0        |
+| user1        | Okänd befattning | 1    | 0        |
 
