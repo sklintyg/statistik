@@ -1,13 +1,21 @@
-.enhets-modal {
-  color: #333;
+.show-businesses {
+  font-weight:normal;
 
-  ul {
-    list-style-type: disc !important;
-    margin-bottom: 2px;
+  a:hover {
+    text-decoration: underline !important;
   }
 
-  .modal-body p {
-    text-align: left;
-  }
+  .enhets-modal {
+    color: #333;
 
+    ul {
+      list-style-type: disc !important;
+      margin-bottom: 2px;
+    }
+
+    .modal-body p {
+      text-align: left;
+    }
+
+  }
 }
