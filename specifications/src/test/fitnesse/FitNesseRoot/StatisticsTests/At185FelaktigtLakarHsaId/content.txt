@@ -1,8 +1,8 @@
 !contents -R2 -g -p -f -h
 
-Ett intyg med en icke-existerande läkare ska inte sorteras bort. Det ska tas med i statistiken men hamnar i gruppen "Okänd läkare" i rapporterna "Läkarbefattning" och "Läkarålder- och kön". I rapporten "Läkare" så skrivs det felaktiga HSA-idt ut istället för läkarnamn.
-
 !3 Givet att:
+
+Ett sjukfall består av ett intyg som har utfärdats av en läkare vars HSA-id inte finns i HSA-katalogen.
 
 | script | dagens datum | 2014-11-28 |
 
@@ -18,6 +18,8 @@ Ett intyg med en icke-existerande läkare ska inte sorteras bort. Det ska tas me
 | 19800820-9285 | 2014-06-16 | 2014-07-30 | enhet1 | lakare2 |           |
 
 !3 Då gäller:
+
+Ett intyg med en ogiltigt HSA-id ska inte sorteras bort. Det ska tas med i statistiken men hamnar i gruppen "Okänt kön okänd ålder" i rapporten "Läkarålder- och kön" och i gruppen "Okänd befattning" i rapporten "Läkarbefattning". I rapporten "Läkare" så skrivs det felaktiga HSA-idt ut istället för läkarnamn.
 
 Inloggad:
 | Sjukfall i rapporten sjukfall totalt |
