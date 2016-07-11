@@ -1,0 +1,20 @@
+<div class="send-feedback">
+  <button class="btn btn-default send-feedback-btn" id="sendFeedBackBtn">Tyck till</button>
+</div>
+
+<script type="text/javascript" src="https://inera-certificate.atlassian.net/s/95c6dd4baa5c7e33123c6f2eb75eef10-T/-ursk2h/100004/4b07fe5146963ed6a907920bbffc4c86/1000.0.4/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-US&collectorId=c0d8ffa4"></script>
+
+<script type="text/javascript">
+  window.ATL_JQ_PAGE_PROPS =  {
+    "triggerFunction": function(showCollectorDialog) {
+      //Requires that jQuery is available!
+      jQuery("#sendFeedBackBtn").click(function(e) {
+        e.preventDefault();
+        showCollectorDialog();
+      });
+    },
+    fieldValues: {
+      summary: 'Feedback från statistik'
+    }
+  };
+</script>
