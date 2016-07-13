@@ -86,11 +86,11 @@ public class FactPopulator {
                 }
             }
             if (befattnings.isEmpty()) {
-                return new int[]{LakarbefattningQuery.NO_BEFATTNING_CODE};
+                return new int[]{LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
             }
             return ArrayUtils.toPrimitive(befattnings.toArray(new Integer[0]));
         }
-        return new int[]{LakarbefattningQuery.NO_BEFATTNING_CODE};
+        return new int[]{LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
     }
 
     private int extractKategori(String diagnoskategori) {

@@ -18,10 +18,14 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import com.google.common.base.Function;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.joda.time.LocalDate;
+
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -31,11 +35,9 @@ import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.google.common.base.Function;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Lists;
 
 public final class LakarbefattningQuery {
 
@@ -107,13 +109,25 @@ public final class LakarbefattningQuery {
                         counter.add(befattningId);
                     }
                     if (lakarbefattnings.isEmpty()) {
-                        counter.add(NO_BEFATTNING_CODE);
+                        counter.add(getCorrectCodeWhenNoLakarbefattningExists(lakare.getBefattnings()));
                     }
                 }
             }
         };
         final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
         return KonDataResponse.createNewWithoutEmptyGroups(response);
+    }
+
+    private static Integer getCorrectCodeWhenNoLakarbefattningExists(int[] befattnings) {
+        for (int befattning : befattnings) {
+            if (befattning < 0) {
+                return befattning;
+            }
+        }
+        if (befattnings.length == 0) {
+            return UNKNOWN_BEFATTNING_CODE;
+        }
+        return NO_BEFATTNING_CODE;
     }
 
 }

@@ -136,7 +136,7 @@ public final class HSAServiceHelper {
         }
         final List<String> befattning = personal.getBefattning();
         if (befattning == null || befattning.isEmpty()) {
-            return String.valueOf(LakarbefattningQuery.NO_BEFATTNING_CODE);
+            return String.valueOf(LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE);
         }
         return joiner.join(befattning);
     }
