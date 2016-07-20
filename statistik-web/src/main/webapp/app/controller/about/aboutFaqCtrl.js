@@ -58,8 +58,8 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl', ['$scope',
         });
 		faq.push({
             title: '4. Vilka intyg filtreras bort från statistiken?',
-            body: '<p>Läkarintyg som inte motsvarar Statistiktjänstens kvalitetskrav tas inte med i statistiken. Dessa läkarintyg filtreras ' +
-						'bort och kommer inte med i några rapporter. Bortfiltreringen görs för att öka kvaliteten i den resulterande statistiken.</p>' +
+            body: '<p>Läkarintyg som inte motsvarar Statistiktjänstens kvalitetskrav filtreras ' +
+						'bort och kommer inte med i några statistikrapporter. Filtreringen görs för att öka kvaliteten i den resulterande statistiken.</p>' +
 					'<p>Kraven som ställs på läkarintyg för att de ska kunna vara del av statistiken är:</p>' +
 					'<ul>' +
 						'<li>Patientens födelsedatum i läkarintyget (utifrån personnummer eller samordningsnummer) måste motsvara ett riktigt datum.</li>' +
@@ -82,7 +82,7 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl', ['$scope',
         faq.push({
             title: '7. Hur ofta uppdateras Statistiktjänsten?',
             body: '<p>Statistiktjänsten uppdateras löpande med nya läkarintyg. Den nationella statistiken uppdateras vid varje månadsskifte. ' +
-						'Statistiken för verksamhetsuppföljning som kräver inloggning uppdateras en gång per dygn.</p>' +
+						'Statistiken för verksamhetsuppföljning som kräver inloggning uppdateras en gång per dygn.</p>'
         });
         faq.push({
             title: '8. Vilka olika typer av behörighet finns för att logga in i Statistiktjänsten?',
