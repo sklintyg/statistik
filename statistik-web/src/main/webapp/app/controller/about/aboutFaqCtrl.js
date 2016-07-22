@@ -42,9 +42,11 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl', ['$scope',
         faq.push({
             title: '3. Vad innehåller Statistiktjänsten?',
             body: '<p>Innehållet i Statistiktjänsten baseras på det elektroniska läkarintyg som utfärdas när en läkare bedömer att en individ behöver sjukskrivas. ' +
-						'Tjänsten innehåller information från samtliga elektroniska läkarintyg som utfärdats inom hälso- och sjukvården efter oktober 2013.</p>'+
+						'Tjänsten innehåller information från samtliga elektroniska läkarintyg som utfärdats inom hälso- och sjukvården sedan oktober 2013.</p>' +
                     '<p>Statistiktjänsten registrerar inte om intyget används för ansökan om sjukpenning hos Försäkringskassan, ' +
-                        'eller vilken bedömning Försäkringskassan gör.</p>'
+                        'eller vilken bedömning Försäkringskassan gör.</p>' +
+					'<p>Utifrån intygsinformationen hämtar Statistiktjänsten dessutom mer information om läkaren som skrivit intyget och om vårdenheten som han eller ' +
+						'hon arbetar på. Dessa uppgifter hämtas från HSA-katalogen och syftet är att kunna ta fram mer värdefull och intressant statistik.</p>'
         });
 		faq.push({
             title: '5. Vad är ett sjukfall?',
@@ -85,7 +87,7 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl', ['$scope',
 						'Statistiken för verksamhetsuppföljning som kräver inloggning uppdateras en gång per dygn.</p>'
         });
         faq.push({
-            title: '8. Vilka olika typer av behörighet finns för att logga in i Statistiktjänsten?',
+            title: '8. Vilken behörighet krävs för att logga in i Statistiktjänsten?',
             body: '<p>Den allmänna delen av Statistiktjänsten som visar nationell statistik kräver inte någon registrering eller behörighet.</p>' +
                     '<p>Om du har ansvar för verksamhetsuppföljning inom hälso- och sjukvården kan du ta del av statistik ' +
                         'som är särskilt riktad till ditt uppföljningsområde.</p>' +
