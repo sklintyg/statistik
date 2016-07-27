@@ -236,6 +236,8 @@ angular.module('StatisticsApp').casesPerSexConfig =
     conf.chartXAxisTitle = 'Län';
     conf.chartFootnotes = ['info.lan.information'];
     conf.pageHelpText = 'alert.lan-andel-sjukfall-per-kon.questionmark';
+    conf.percentChart = true;
+    conf.highchartType = 'column';
     return conf;
 };
 

@@ -140,7 +140,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     },
                     column : {
                         showInLegend : true,
-                        stacking: null
+                        stacking: percentChart ? 'percent' : (stacked ? 'normal' : null)
                     },
                     series: {
                     },

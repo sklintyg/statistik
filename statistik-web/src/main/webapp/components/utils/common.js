@@ -373,8 +373,8 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         this.getChartTypeInfo = function($routeParams, config, defaultChartType) {
             var activeChartType = $routeParams.chartType || config.defaultChartType || defaultChartType;
             var usePercentChart = activeChartType === 'percentarea' || config.percentChart;
-            var activeHighchartType = usePercentChart ? 'area' : activeChartType;
-            var stacked = activeHighchartType === 'area';
+            var activeHighchartType = config.highchartType ? config.highchartType : (usePercentChart ? 'area' : activeChartType);
+            var stacked = activeHighchartType === 'area' || usePercentChart;
             return {activeChartType: activeChartType, usePercentChart: usePercentChart, activeHighchartType: activeHighchartType, stacked: stacked};
         };
 
