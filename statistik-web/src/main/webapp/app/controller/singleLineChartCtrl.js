@@ -71,7 +71,8 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         var populatePageWithDataSuccess = function (result) {
             ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser,
                 result.allAvailableDxsSelectedInFilter,
-                result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+                result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets,
+                result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter);
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             $scope.subTitle =
                 config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);

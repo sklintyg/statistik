@@ -19,6 +19,7 @@
 package se.inera.statistics.web.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -150,9 +151,24 @@ public class FilterHandler {
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         final Predicate<Sjukfall> sjukfallLengthFilter = getSjukfallLengthFilter(inFilter.getSjukskrivningslangd());
         final SjukfallFilter sjukfallFilter = new SjukfallFilter(Predicates.and(enhetFilter, diagnosFilter), sjukfallLengthFilter, filterHash);
-        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser);
+        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter));
         final Range range = getRange(inFilter, defaultRangeValue);
         return new FilterSettings(filter, range);
+    }
+
+    private List<String> filterDataToReadableSjukskrivningslangdName(FilterData inFilter) {
+        return toReadableSjukskrivningslangdName(inFilter.getSjukskrivningslangd());
+    }
+
+    private List<String> toReadableSjukskrivningslangdName(List<String> sjukskrivningslangds) {
+        if (sjukskrivningslangds == null) {
+            return Arrays.stream(SjukfallsLangdGroup.values()).map(SjukfallsLangdGroup::getGroupName).collect(Collectors.toList());
+        }
+        return sjukskrivningslangds.stream()
+                .map(sjukskrivningslangd -> SjukfallsLangdGroup.parse(sjukskrivningslangd)
+                    .flatMap(slg -> Optional.of(slg.getGroupName()))
+                    .orElse(sjukskrivningslangd))
+                .collect(Collectors.toList());
     }
 
     private Predicate<Sjukfall> getSjukfallLengthFilter(List<String> filterLangds) {
@@ -218,13 +234,13 @@ public class FilterHandler {
 
     private Filter getFilterForEnhets(final Set<Integer> enhetsIntIds, List<HsaIdEnhet> enhets) {
         final String hashValue = SjukfallFilter.getHashValueForEnhets(enhetsIntIds.toArray());
-        return new Filter(new SjukfallFilter(fact -> enhetsIntIds.contains(fact.getEnhet()), sjukfall -> true, hashValue), enhets, null);
+        return new Filter(new SjukfallFilter(fact -> enhetsIntIds.contains(fact.getEnhet()), sjukfall -> true, hashValue), enhets, null, toReadableSjukskrivningslangdName(null));
     }
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
         if (info.isProcessledare()) {
-            return new Filter(SjukfallUtil.ALL_ENHETER, null, null);
+            return new Filter(SjukfallUtil.ALL_ENHETER, null, null, toReadableSjukskrivningslangdName(null));
         }
         final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(info.getBusinesses(), new Function<Verksamhet, Integer>() {
             @Override

@@ -33,6 +33,9 @@
 			<a class="hidden-print" id="chart-enhetsfilterinfo-trigger" data-toggle="collapse"
          data-target="#chart-enhetsfilterinfo-text" data-ng-show="activeEnhetsFilters" text="Enhetsfilter"
          style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Enhetsfilter&nbsp;&#x25BE</a>
+			<a class="hidden-print" id="chart-sjukskrivningslangdsfilterinfo-trigger" data-toggle="collapse"
+         data-target="#chart-sjukskrivningslangdsfilterinfo-text" data-ng-show="activeSjukskrivningslangdsFilters" text="Sjukskrivningslangdsfilter"
+         style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Sjukskrivningslangdsfilter&nbsp;&#x25BE</a>
 		</span>
   </div>
 
@@ -55,6 +58,10 @@
 
     <div class="pull-left filter-list" data-ng-if="activeEnhetsFilters">
       <filter-list collapse-id="chart-enhetsfilterinfo-text" filters="activeEnhetsFilters"></filter-list>
+    </div>
+
+    <div class="pull-left filter-list" data-ng-if="activeSjukskrivningslangdsFilters">
+      <filter-list collapse-id="chart-sjukskrivningslangdsfilterinfo-text" filters="activeSjukskrivningslangdsFilters"></filter-list>
     </div>
   </div>
 

@@ -82,8 +82,9 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             }
 
             ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser,
-                result.allAvailableDxsSelectedInFilter,
-                result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+                result.allAvailableDxsSelectedInFilter, result.filter.filterhash,
+                result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets,
+                result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter);
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;

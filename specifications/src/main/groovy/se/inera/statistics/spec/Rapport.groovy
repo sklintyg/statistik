@@ -29,7 +29,9 @@ abstract class Rapport {
     def meddelande
     def allaDiagnosfilterValda
     def allaEnhetsfilterValda
+    def allaSjukskrivningslängdfilterValda
     def enhetsfilterlista
+    def sjukskrivningslangdfilterlista
 
     ReportsUtil reportsUtil = new ReportsUtil()
 
@@ -42,7 +44,9 @@ abstract class Rapport {
         meddelande = report.message
         allaDiagnosfilterValda = report[ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER]
         allaEnhetsfilterValda = report[ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER]
+        allaSjukskrivningslängdfilterValda = report[ResponseHandler.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER]
         enhetsfilterlista = report[ResponseHandler.FILTERED_ENHETS]
+        sjukskrivningslangdfilterlista = report.filter.sjukskrivningslangd
     }
 
     abstract void doExecute()
@@ -75,8 +79,16 @@ abstract class Rapport {
         return allaEnhetsfilterValda
     }
 
+    def allaSjukskrivningslängdfilterValda() {
+        return allaSjukskrivningslängdfilterValda
+    }
+
     def enhetsfilterlista() {
         return enhetsfilterlista
+    }
+
+    def sjukskrivningslangdfilterlista() {
+        return sjukskrivningslangdfilterlista
     }
 
     def markerad() {

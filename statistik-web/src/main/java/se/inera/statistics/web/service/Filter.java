@@ -28,15 +28,17 @@ class Filter {
     private SjukfallFilter predicate;
     private Collection<HsaIdEnhet> enheter;
     private Collection<String> diagnoser;
+    private Collection<String> sjukskrivningslangd;
 
-    Filter(SjukfallFilter predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser) {
+    Filter(SjukfallFilter predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser, Collection<String> sjukskrivningslangd) {
         this.predicate = predicate;
         this.enheter = enheter;
         this.diagnoser = diagnoser;
+        this.sjukskrivningslangd = sjukskrivningslangd;
     }
 
     static Filter empty() {
-        return new Filter(null, null, null);
+        return new Filter(null, null, null, null);
     }
 
     SjukfallFilter getPredicate() {
@@ -49,6 +51,10 @@ class Filter {
 
     Collection<String> getDiagnoser() {
         return diagnoser;
+    }
+
+    public Collection<String> getSjukskrivningslangd() {
+        return sjukskrivningslangd;
     }
 
     String getFilterHash() {

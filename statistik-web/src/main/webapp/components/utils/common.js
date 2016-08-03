@@ -97,9 +97,10 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.populateActiveFilters = function(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter, filterHash,
-                                                isAllAvailableEnhetsSelectedInFilter, filteredEnhets) {
+                                                isAllAvailableEnhetsSelectedInFilter, filteredEnhets, filteredSjukskrivningslangd, isAllAvailableSjukskrivningslangdsSelectedInFilter) {
             that.populateActiveDiagnosFilter(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter);
             that.populateActiveEnhetsFilter(scope, filterHash, isAllAvailableEnhetsSelectedInFilter, filteredEnhets);
+            that.populateActiveSjukskrivningslangdFilter(scope, filterHash, filteredSjukskrivningslangd, isAllAvailableSjukskrivningslangdsSelectedInFilter);
         };
 
         this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter) {
@@ -136,6 +137,16 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             } else {
                 scope.headerEnhetInfo = '';
                 scope.activeEnhetsFilters = enhetNames.length > 1 ? enhetNames : null;
+            }
+        };
+
+        this.populateActiveSjukskrivningslangdFilter = function(scope, filterHash, sjukskrivningslangds, isAllAvailableSjukskrivningslangdsSelectedInFilter) {
+            scope.activeSjukskrivningslangdsFilters = null;
+            if (isAllAvailableSjukskrivningslangdsSelectedInFilter) {
+                return;
+            }
+            if (sjukskrivningslangds && sjukskrivningslangds.length > 0) {
+                scope.activeSjukskrivningslangdsFilters = sjukskrivningslangds;
             }
         };
 

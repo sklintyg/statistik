@@ -71,7 +71,7 @@ angular.module('StatisticsApp')
 
                     $scope.status.isTableOpen = isTableVisible;
 
-                    _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, pdfDoneCallback);
+                    _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, pdfDoneCallback);
                 });
             }
             else {
@@ -80,7 +80,7 @@ angular.module('StatisticsApp')
                     data: formatTableData($scope.rows)
                 };
 
-                _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, pdfDoneCallback);
+                _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, pdfDoneCallback);
             }
         }
 
@@ -102,13 +102,14 @@ angular.module('StatisticsApp')
             return tableData;
         }
 
-        function _generate(headers, table, images, enhetsFilter, diagnosFilter, pdfDoneCallback) {
+        function _generate(headers, table, images, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, pdfDoneCallback) {
             var content = [];
 
             _addHeader(content, headers);
             content.push(_getImages(images));
             _addListFilter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
             _addListFilter(content, 'Sammanställning av enhetsfilter', enhetsFilter);
+            _addListFilter(content, 'Sammanställning av sjukskrivningslängdsfilter', sjukskrivningslangdFilter);
             if (angular.isArray(table)) {
                 angular.forEach(table, function(t) {
                     var pdfTable = _getTable(t.header, t.data);

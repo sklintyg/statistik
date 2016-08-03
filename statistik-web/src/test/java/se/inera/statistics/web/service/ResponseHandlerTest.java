@@ -29,6 +29,7 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.FilteredDataReport;
 import se.inera.statistics.web.model.SimpleDetailsData;
@@ -41,6 +42,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
@@ -90,7 +92,7 @@ public class ResponseHandlerTest {
         Mockito.when(icd10.getIcdStructure()).thenReturn(createIcdList(1, 2, 3));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("1", "2", "3"), null)), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("1", "2", "3"), null, null)), null, null);
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));
@@ -102,7 +104,7 @@ public class ResponseHandlerTest {
         Mockito.when(icd10.getIcdStructure()).thenReturn(createIcdList(1, 2, 3));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("2", "1", "3"), null)), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("2", "1", "3"), null, null)), null, null);
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));
@@ -114,7 +116,7 @@ public class ResponseHandlerTest {
         Mockito.when(icd10.getIcdStructure()).thenReturn(createIcdList(1, 2, 3));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("1", "2"), null)), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("1", "2"), null, null)), null, null);
 
         //Then
         assertFalse((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));
@@ -135,7 +137,7 @@ public class ResponseHandlerTest {
         final List<HsaIdEnhet> enhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("2"), new HsaIdEnhet("3"));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, enhets)), null, enhets);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, enhets, null)), null, enhets);
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER));
@@ -148,7 +150,7 @@ public class ResponseHandlerTest {
         final List<HsaIdEnhet> filteredEnhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("3"), new HsaIdEnhet("2"));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, filteredEnhets)), null, availableEnhets);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, filteredEnhets, null)), null, availableEnhets);
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER));
@@ -161,7 +163,7 @@ public class ResponseHandlerTest {
         final List<HsaIdEnhet> filteredEnhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("2"));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, filteredEnhets)), null, availableEnhets);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, filteredEnhets, null)), null, availableEnhets);
 
         //Then
         assertFalse((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER));
@@ -174,7 +176,7 @@ public class ResponseHandlerTest {
         final String filterHash = "abc";
         final List<HsaIdEnhet> enhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("2"));
         Mockito.doReturn(Collections.singletonList(createEnhet("1", "ett"))).when(warehouse).getEnhetsWithHsaId(any(Collection.class));
-        final FilteredDataReport report = () -> new FilterDataResponse(filterHash, Collections.emptyList(), enhets);
+        final FilteredDataReport report = () -> new FilterDataResponse(filterHash, Collections.emptyList(), enhets, null);
 
         //When
         final Response response = responseHandler.getResponseForDataReport(report, new ArrayList<>());
@@ -193,7 +195,7 @@ public class ResponseHandlerTest {
         final Filter filter = Mockito.mock(Filter.class);
         final List<HsaIdEnhet> enhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("2"));
         Mockito.doReturn(Arrays.asList(createEnhet("1", "ett"), createEnhet("2", "ett"))).when(warehouse).getEnhetsWithHsaId(any(Collection.class));
-        final FilteredDataReport report = () -> new FilterDataResponse(filterHash, Collections.emptyList(), enhets);
+        final FilteredDataReport report = () -> new FilterDataResponse(filterHash, Collections.emptyList(), enhets, null);
 
         //When
         final Response response = responseHandler.getResponseForDataReport(report, new ArrayList<>());
@@ -209,6 +211,44 @@ public class ResponseHandlerTest {
 
     private Enhet createEnhet(String id, String namn) {
         return new Enhet(new HsaIdVardgivare(""), new HsaIdEnhet(id), namn, null, null, null);
+    }
+
+
+    @Test
+    public void testGetResponseAllSjukskrivningslangdsEqual() throws Exception {
+        //Given
+        final List<String> sjukskrivningslangds = Arrays.stream(SjukfallsLangdGroup.values()).map(SjukfallsLangdGroup::getGroupName).collect(Collectors.toList());
+
+        //When
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, sjukskrivningslangds)), null, null);
+
+        //Then
+        assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER));
+    }
+
+    @Test
+    public void testGetResponseDifferentSjukskrivningslangdsOrder() throws Exception {
+        //Given
+        final List<String> sjukskrivningslangds = Arrays.stream(SjukfallsLangdGroup.values()).map(SjukfallsLangdGroup::getGroupName).collect(Collectors.toList());
+        Collections.shuffle(sjukskrivningslangds);
+
+        //When
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, sjukskrivningslangds)), null, null);
+
+        //Then
+        assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER));
+    }
+
+    @Test
+    public void testGetResponseMissingSjukskrivningslangdInFilter() throws Exception {
+        //Given
+        final List<String> sjukskrivningslangds = Arrays.stream(SjukfallsLangdGroup.values()).map(SjukfallsLangdGroup::getGroupName).collect(Collectors.toList());
+
+        //When
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, sjukskrivningslangds.subList(0, sjukskrivningslangds.size() - 1))), null, null);
+
+        //Then
+        assertFalse((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER));
     }
 
 }

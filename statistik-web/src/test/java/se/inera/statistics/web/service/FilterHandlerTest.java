@@ -97,6 +97,29 @@ public class FilterHandlerTest {
     }
 
     @Test
+    public void testGetFilterSelectingNoneSjukfallLenghtsWillMakeAllLengthsMatch() throws Exception {
+        //Given
+        final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        final String filterHash = "abc";
+        final FilterData filterData = new FilterData(null, null, null, null, null, null, true);
+        Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
+        final Verksamhet defaultVerksamhet = Mockito.mock(Verksamhet.class);
+        final LoginInfo loginInfo = new LoginInfo(null, "", defaultVerksamhet, false, false, false, Collections.emptyList(), null);
+        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(loginInfo);
+        Mockito.when(sjukfallUtil.createEnhetFilter(new HsaIdEnhet[0])).thenReturn(new SjukfallFilter(f -> true, s -> true, filterHash));
+
+        //When
+        final FilterSettings filter = filterHandler.getFilter(request, filterHash, 1);
+
+        //Then
+        for (int days = 0; days < 1000; days++) {
+            final Sjukfall sjukfall = Mockito.mock(Sjukfall.class);
+            Mockito.when(sjukfall.getRealDays()).thenReturn(days);
+            assertTrue(days + " days is not matching", filter.getFilter().getPredicate().getSjukfallFilter().apply(sjukfall));
+        }
+    }
+
+    @Test
     public void testGetFilterNonExistingSjukfallsLengthWillBeIgnored() throws Exception {
         //Given
         final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);

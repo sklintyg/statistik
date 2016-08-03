@@ -90,7 +90,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         var populatePageWithDataSuccess = function(result) {
             ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser,
                 result.allAvailableDxsSelectedInFilter,
-                result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets);
+                result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets,
+                result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter);
             $scope.enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.kapitelId);
