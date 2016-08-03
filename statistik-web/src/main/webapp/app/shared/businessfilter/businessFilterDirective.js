@@ -299,7 +299,7 @@ angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown'
                         optionElement.prop('selected', 'selected');
                     }
                 }
-                bf.filterChanged();
+                bf && bf.filterChanged();
 
                 element.change();
             },
