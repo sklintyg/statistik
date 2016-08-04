@@ -10,7 +10,7 @@ Flera sjukfall med diagnoskoder på olika nivåer.
 | personnr | diagnoskod | start    | slut       | enhet  | kommentar |
 | 19790407-9020 | F401  | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod|
 | 19790407-9120 | f401  | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, gemen |
-| 19790407-9220 | F40.1 | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, formaterad med punkt |
+| 19790407-8220 | F40.1 | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, formaterad med punkt |
 | 19790407-9320 | F40-1 | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, formaterad med bindestreck |
 | 19790407-9420 | F40 1 | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, formaterad med mellanslag |
 | 19790407-9520 | F403  | 2013-02-01 | 2013-02-14 | enhet1 | Icke existerande kod |

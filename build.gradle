@@ -134,6 +134,55 @@ subprojects {
     }
 }
 
+//Kontroll av personnummer enligt https://sv.wikipedia.org/wiki/Luhn-algoritmen
+def validatePnr(String pnr) {
+    def pnrNumberOnly = pnr.replaceAll(/\D/,"")
+    if (pnrNumberOnly.length() < 10) {
+        return false
+    }
+    def pnrShort = pnrNumberOnly.substring(pnrNumberOnly.length() - 10, pnrNumberOnly.length())
+    if (pnrShort.startsWith("00")) {
+        return false
+    }
+    def shortPnrChars = pnrShort.toCharArray()
+    int sum = 0;
+    shortPnrChars.eachWithIndex{ num, idx ->
+        def product = Integer.parseInt(new String(num)) * (((idx + 1) % 2) + 1)
+        sum += product / 10 + product % 10;
+    }
+    return sum % 10 == 0
+}
+
+task('breakBuildForValidPersonnummer') << {
+    def testpersonnummer = new File("statistik-service/src/main/resources/personnr/testpersoner.log").text
+    def allowedPnrs = ["165565594230", //Logisk adress för HSA test
+                       "162321000255", //Del av HSAid för enheter och vardgivare for vara testinloggningar, vagar inte andra denna
+                       "19121212-1212", "191212121212", "121212-1212", "1212121212", //Tolvan Tolvansson, testpersonnummer
+                       "2321000081", "2321000180", "2321000198", "2321000115", "2321000214", "2321000057", //Landsting
+                       "2321000073", "2321000065", "2321000230", "162321000255", "2321000016", "2321000016", //Landsting
+                       "2321000032", "162321000024", "232100-0024", "162321000156", "2321000156", //Landsting
+                       "2321000222", "2321000206", "2321000172", "2321000131", "2321000164", "2321000040", //Landsting
+                       "556559-4230", "5565594230", //Ineras orgnr
+                       "738103759000", //Del av Orebro lans HSAid, kommer dock inte blir ett giltigt personnummer på valdigt lang tid
+                       "556193-0693"] //Cityakuten i Praktikertjänst AB orgnr, orgnr gar latt att hitta pa internet och kan darfor inte vara skyddat
+
+    FileTree tree = fileTree(dir: '.').exclude('**/.gradle', '**/.idea', '**/node_modules', '**/bower_components', '**/*.iml', '**/*.jar')
+    tree.each {File file ->
+        if (file.file) {
+            def pnrs = file.text.findAll(/(\d{2})?\d{6}-?\d{4}/)
+            if (!pnrs.isEmpty()) {
+                pnrs.each { pnr ->
+                    if (!allowedPnrs.contains(pnr) && !testpersonnummer.contains(pnr) && validatePnr(pnr)) {
+                        throw new GradleException("Found valid personnummer: " + pnr + " in file: " + file.canonicalPath)
+                    }
+                }
+            }
+        }
+    }
+}
+
+check.dependsOn breakBuildForValidPersonnummer
+
 configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statistik-web'].contains(it.name) }) {
     apply plugin: 'checkstyle'
 

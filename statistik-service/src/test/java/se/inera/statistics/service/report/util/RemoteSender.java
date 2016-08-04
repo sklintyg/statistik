@@ -85,11 +85,11 @@ public class RemoteSender {
 
     public void send() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
-        simpleSend(builder.build("20121212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaIdLakare("TST5565594230-106J"), new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "D01", 0).toString(), UUID.randomUUID().toString());
-        simpleSend(builder.build("20121212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaIdLakare("TST5565594230-106J"), new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "INVALID", 0).toString(), UUID.randomUUID().toString());
-        simpleSend(builder.build("20121262-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaIdLakare("TST5565594230-106J"), new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "D01", 0).toString(), UUID.randomUUID().toString());
-        simpleSend(builder.build("20126212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaIdLakare("TST5565594230-106J"), new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "D01", 0).toString(), UUID.randomUUID().toString());
-        simpleSend(builder.build("20126212-1212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaIdLakare("TST5565594230-106J"), new HsaIdEnhet(longify("IFV1239877878-103H", 100)), new HsaIdVardgivare(longify("IFV1239877878-0001", 100)), "D01", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20121212-2212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaIdLakare("TST5565595230-106J"), new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "D01", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20121212-2212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaIdLakare("TST5565595230-106J"), new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "INVALID", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20121262-2212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaIdLakare("TST5565595230-106J"), new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "D01", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20126212-2212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaIdLakare("TST5565595230-106J"), new HsaIdEnhet("IFV1239877878-103H"), new HsaIdVardgivare("IFV1239877878-0001"), "D01", 0).toString(), UUID.randomUUID().toString());
+        simpleSend(builder.build("20126212-2212", new LocalDate("2013-10-20"), new LocalDate("2013-11-11"), new HsaIdLakare("TST5565595230-106J"), new HsaIdEnhet(longify("IFV1239877878-103H", 100)), new HsaIdVardgivare(longify("IFV1239877878-0001", 100)), "D01", 0).toString(), UUID.randomUUID().toString());
     }
 
     private String longify(String base, int length) {

@@ -15,7 +15,7 @@ Det finns intyg som har personnummer med födelsedatum som inte motsvarar ett ri
 | 19990600-2383 | G01 | 2003-02-11 | 2003-02-12 | enhet1 |
 | 19960132-2391 | G01 | 2003-02-11 | 2003-02-12 | enhet1 |
 | 19960230-2384 | G01 | 2003-02-11 | 2003-02-12 | enhet1 |
-| 20051231-2398 | G01 | 2003-02-11 | 2003-02-12 | enhet1 |
+| 20051231-3398 | G01 | 2003-02-11 | 2003-02-12 | enhet1 |
 
 !3 Då gäller:
 
