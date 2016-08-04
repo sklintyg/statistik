@@ -44,6 +44,12 @@ if (project.hasProperty('runFitnesse')) {
      }
 }
 
+clean {
+    delete "${projectDir}/src/test/fitnesse/FitNesseRoot/ErrorLogs"
+    delete "${projectDir}/src/test/fitnesse/FitNesseRoot/files/testResults"
+    delete "${projectDir}/catalina.base_IS_UNDEFINED"
+}
+
 dependencies {
     compile project(":statistik-web")
 
