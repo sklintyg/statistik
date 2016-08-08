@@ -144,6 +144,14 @@ def validatePnr(String pnr) {
     if (pnrShort.startsWith("00")) {
         return false
     }
+
+    // Kollar att det är ett personnummer och inte ett orgnr, orgnr gar latt att hitta pa internet och kan darfor inte vara skyddat
+    def month = Integer.parseInt(pnrShort.substring(2, 4))
+    def day = Integer.parseInt(pnrShort.substring(4, 6))
+    if (month > 12 || day > 31) {
+        return false
+    }
+
     def shortPnrChars = pnrShort.toCharArray()
     int sum = 0;
     shortPnrChars.eachWithIndex{ num, idx ->
@@ -155,16 +163,9 @@ def validatePnr(String pnr) {
 
 task('breakBuildForValidPersonnummer') << {
     def testpersonnummer = new File("statistik-service/src/main/resources/personnr/testpersoner.log").text
-    def allowedPnrs = ["165565594230", //Logisk adress för HSA test
-                       "162321000255", //Del av HSAid för enheter och vardgivare for vara testinloggningar, vagar inte andra denna
-                       "19121212-1212", "191212121212", "121212-1212", "1212121212", //Tolvan Tolvansson, testpersonnummer
-                       "2321000081", "2321000180", "2321000198", "2321000115", "2321000214", "2321000057", //Landsting
-                       "2321000073", "2321000065", "2321000230", "162321000255", "2321000016", "2321000016", //Landsting
-                       "2321000032", "162321000024", "232100-0024", "162321000156", "2321000156", //Landsting
-                       "2321000222", "2321000206", "2321000172", "2321000131", "2321000164", "2321000040", //Landsting
-                       "556559-4230", "5565594230", //Ineras orgnr
-                       "738103759000", //Del av Orebro lans HSAid, kommer dock inte blir ett giltigt personnummer på valdigt lang tid
-                       "556193-0693"] //Cityakuten i Praktikertjänst AB orgnr, orgnr gar latt att hitta pa internet och kan darfor inte vara skyddat
+    def allowedPnrs = [
+                       "19121212-1212", "191212121212", "121212-1212", "1212121212" //Tolvan Tolvansson, testpersonnummer
+                       ]
 
     FileTree tree = fileTree(dir: '.').exclude('**/.gradle', '**/.idea', '**/node_modules', '**/bower_components', '**/*.iml', '**/*.jar')
     tree.each {File file ->
