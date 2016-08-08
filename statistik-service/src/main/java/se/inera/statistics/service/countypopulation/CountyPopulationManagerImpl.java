@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 
@@ -89,6 +90,7 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
         return Optional.empty();
     }
 
+    @Transactional
     private CountyPopulation parsePopulationRow(CountyPopulationRow populationRow) {
         try {
             final MapType mapType = mapper.getTypeFactory().constructMapType(HashMap.class, String.class, KonField.class);
@@ -111,6 +113,7 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
         return getPreFetchedCountyPopulation(org.joda.time.LocalDate.now(), "SELECT r FROM CountyPopulationRow r ORDER BY r.date DESC");
     }
 
+    @Transactional
     private Optional<CountyPopulationRow> getPreFetchedCountyPopulation(org.joda.time.LocalDate from, String ql) {
         final Date fromDate = localDateToDate(from);
         final Query query = manager.createQuery(ql);
@@ -135,6 +138,7 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
         return new Date(ld.toDateTimeAtStartOfDay(jodaTzUTC).getMillis());
     }
 
+    @Transactional
     private boolean insertCountyPopulation(Map<String, KonField> countyPopulation, LocalDate date) {
         try {
             final String populationData = mapper.writeValueAsString(countyPopulation);
