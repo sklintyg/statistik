@@ -22,20 +22,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonField;
 
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
 @Component
@@ -46,12 +45,11 @@ public class CountyPopulationFetcher {
     private static final String HEADER_REGION = "region";
     private static final String HEADER_GENDER = "kön";
     private static final String HEADER_POPULATION = "Folkmängd";
+    private static final String POPULATION_REQUEST_FILE = "/scb-county-population-request.json";
 
     @Autowired
     private RestTemplate rest;
 
-    @Value("classpath:scb-county-population-request.json")
-    private Resource scbCountyPopulationRequestResource;
 
     @Value("${scb.population.url}")
     private String scbPopulationUrl;
@@ -151,10 +149,18 @@ public class CountyPopulationFetcher {
     }
 
     private String getRequestBody(int year) {
-        try {
-            String bodySource = new Scanner(scbCountyPopulationRequestResource.getFile(), "UTF-8").useDelimiter("\\Z").next();
-            return bodySource.replaceAll("%year%", String.valueOf(year));
-        } catch (IOException e) {
+        String bodySource = readTemplate(POPULATION_REQUEST_FILE);
+        return bodySource.replaceAll("%year%", String.valueOf(year));
+    }
+
+    private static String readTemplate(String path) {
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(CountyPopulationFetcher.class.getResourceAsStream(path), "utf8"))) {
+            StringBuilder sb = new StringBuilder();
+            for (String line = in.readLine(); line != null; line = in.readLine()) {
+                sb.append(line).append('\n');
+            }
+            return sb.toString();
+        } catch (Exception e) {
             throw new ScbPopulationException("Could not read scb county population request resource file", e);
         }
     }
