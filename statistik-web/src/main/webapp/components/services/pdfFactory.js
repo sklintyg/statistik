@@ -230,7 +230,7 @@ angular.module('StatisticsApp')
                 content.push({text: rubrik, style: 'filterheader'});
 
                 content.push({
-                    ul: filter
+                    ul: filter.slice(0)
                 });
             }
         }
