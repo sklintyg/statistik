@@ -379,7 +379,7 @@ angular.module('StatisticsApp')
             var topLevelHeaders = _.rest(headers[0]); //Take all headers but the first, the first is handled separately
 
             var firstColumnWidth = $('.datatable .headcol').width();
-            var widthLeft = 0;
+            var remainingWidth = 0;
             var printTable;
 
             $('.datatable thead tr:first td').each(function(index, td) {
@@ -389,10 +389,10 @@ angular.module('StatisticsApp')
 
                 var columnWidth = $(td).width();
 
-                if (widthLeft > columnWidth) {
-                    widthLeft -= columnWidth;
+                if (remainingWidth > columnWidth) {
+                    remainingWidth -= columnWidth;
                 } else {
-                    widthLeft = maxWidth - firstColumnWidth;
+                    remainingWidth = maxWidth - firstColumnWidth;
 
                     // Create new table
                     printTable = createNewTable();
