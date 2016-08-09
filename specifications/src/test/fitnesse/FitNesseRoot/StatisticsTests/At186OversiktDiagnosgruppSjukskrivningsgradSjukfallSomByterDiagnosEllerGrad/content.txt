@@ -2,7 +2,7 @@
 
 !3 Givet att:
 
-Ett sjukfall består av två intyg.
+Sjukfall byter diagnos och grad mitt i.
 
 | script | dagens datum | 2014-07-01 |
 
@@ -19,7 +19,7 @@ Ett sjukfall består av två intyg.
 
 !3 Då gäller:
 
-Översiktsrapporten på diagnosgrupper visar antal sjukfall i respektive diagnosgrupp de senaste 3 månaderna (oktober-december). Förändringen anger procentuell ökning/minskning jämfört med föregående tre månader.
+Ett sjukfall kan tillhöra flera diagnosgrupper och sjukskrivningsgrader på översikten på samma sätt som i rapporterna Diagnosgrupp och Sjukskrivningsgrad som tvärsnitt. På det sättet dyker det inte "mystiskt" upp sjukfall i grupper som tidigare hade färre/inga sjukfall om den senaste diagnosen/graden filtreras bort. Översikten bör betraktas som ett tvärsnitt på 3 månader.
 
 Verksamhetsnivå:
 | Sjukfall i oversikt diagnos |
@@ -42,4 +42,3 @@ Nationell:
 | grupp                                      | antal? | förändring? |
 | 100                                        | 1         | 0       |
 | 25                                         | 1         | 0       |
-
