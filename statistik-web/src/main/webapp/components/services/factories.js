@@ -76,6 +76,8 @@ angular.module('StatisticsApp').factory('statisticsData',
         }).error(function (data, status/*, headers, config*/) {
             if (status === 403) {
                 var url = AppModel.get().loginUrl;
+                $rootScope.loginTimedOut = $rootScope.isLoggedIn;
+                $rootScope.isLoggedIn = false;
                 $location.path(url ? url : '/login');
             }
             if (status === 503) {
