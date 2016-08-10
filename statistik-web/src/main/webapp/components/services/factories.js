@@ -20,7 +20,7 @@
 angular.module('StatisticsApp').factory('statisticsData',
 
     /** @ngInject */
-    function ($http, $rootScope, $q, $location, _, $log, $cacheFactory) {
+    function ($http, $rootScope, $q, $location, _, $log, $cacheFactory, AppModel) {
     'use strict';
 
     var factory = {};
@@ -75,7 +75,8 @@ angular.module('StatisticsApp').factory('statisticsData',
             }
         }).error(function (data, status/*, headers, config*/) {
             if (status === 403) {
-                $location.path('/login');
+                var url = AppModel.get().loginUrl;
+                $location.path(url ? url : '/login');
             }
             if (status === 503) {
                 $location.path('/serverbusy');

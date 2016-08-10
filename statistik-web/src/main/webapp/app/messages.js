@@ -156,13 +156,15 @@ var stMessages = {
         'info.emptyreponse' : 'Ingen data tillgänglig. Det kan bero på att det inte finns någon data för verksamheten eller att du har angivit en alltför restriktiv filtrering.',
 
         //login view
-        'login.header': 'Logga in för verksamhetsstatistik',
-        'login.alert-info.behorighet': 'Data för verksamheten är inte tillgänglig. Detta kan bero på att du inte har rätt behörighet för att se statistik för verksamhet. Logga in med rätt behörighet för att se data.',
-        'login.alert-inaktivitet': 'Du har blivit utloggad på grund av inaktivitet.',
-        'login.alert-logga.in': 'Du måste logga in igen för att komma till sidorna för verksamhetsstatistik.',
-        'login.lbl.gor-foljande': 'Gör följande:',
-        'login.instruktioner-for-login': 'Sätt <span style="text-decoration: underline;">SITHS-kortet i din kortläsare</span> och klicka sedan på knappen "SITHS login". För att logga in krävs medarbetaruppdraget "Statistik" i HSA-katalogen.',
-        'login.btn.siths-login': 'SITHS login',
+        'login.header': 'Logga in',
+        'login.alert-info.behorighet': 'Det verkar som att du saknar medarbetaruppdraget "Statistik" i HSA.',
+        'login.alert-inaktivitet': 'Du har loggats ut på grund av inaktivitet. Vänligen logga in på nytt.',
+        'login.alert-info': 'Info!',
+        'login.alert-danger': 'Ajdå!',
+        'login.instruktioner-for-login': 'För att logga in behöver du ett SITHS-kort samt medarbetaruppdraget "Statistik" i HSA-katalogen.',
+        'login.btn.siths-login': 'Logga in',
+        'login.siths.problem': 'Problem med inloggning med SITHS-kort?',
+        'login.siths.problem-link': 'Läs mer om hur du kan felsöka.',
 
         //about texts
         'about.service': 'Om Statistiktjänsten',

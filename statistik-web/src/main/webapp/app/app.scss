@@ -56,16 +56,16 @@ h1 small,h2 small,h3 small,h4 small,h5 small,h6 small{
 }
 
 h1 {
-  font-size:19.5px !important;;
+  font-size:19.5px;
   margin-bottom: 30px; 
 }
 
 h2 {
-  font-size:14.5px !important;
+  font-size:14.5px;
 }
 
 h3 {
-  font-size:13.5px !important;
+  font-size:13.5px;
 }
 
 .business-name-header { 
@@ -643,14 +643,6 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle{
 }
 .faq-accordion-inner p {
   line-height: 20px;
-}
-.login-button {
-  width: 100%;
-}
-
-.login-button-label {
-  color: #008391;
-  font-weight: bold;
 }
 
 .national-statistic-h1 {  
@@ -1757,6 +1749,49 @@ input[type="radio"], input[type="checkbox"] {
     #first-level-filter .col-xs-12:first-child {
         margin-top: 0;
     }
+}
+
+.login-view {
+  h1 {
+    font-size: 26px;
+    margin-bottom: 15px;
+    color: #008391;
+  }
+
+  .login-link {
+    text-decoration: underline;
+  }
+
+  .login-button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .alert {
+    margin-bottom: 5px;
+  }
+}
+
+.login-modal {
+  h2 {
+    color: #28b4c4;
+    font-size: 18px;
+    margin-top: 0;
+    font-weight: bold;
+  }
+
+  h3 {
+    color: #28b4c4;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  h4 {
+    color: #28b4c4;
+    font-size: 16px;
+  }
 }
 
 /** Padding-helpers below **/

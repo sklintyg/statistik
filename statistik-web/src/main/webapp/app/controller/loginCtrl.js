@@ -17,10 +17,25 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').controller('loginCtrl', [ '$scope', '$rootScope',
-    function ($scope, $rootScope) {
+angular.module('StatisticsApp').controller('loginCtrl',
+    /** @ngInject */
+    function ($scope, $rootScope, $uibModal) {
         'use strict';
         
         $scope.isLoggedIn = $rootScope.isLoggedIn;
+
+        $scope.open = function () {
+            $scope.modalInstance = $uibModal.open({
+                templateUrl: '/app/views/siths.help.html',
+                scope: $scope,
+                size: 'lg',
+                windowClass: 'login-modal'
+            });
+        };
+
+        $scope.ok = function () {
+            $scope.modalInstance.close();
+        };
+
     }
-]);
+);

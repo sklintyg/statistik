@@ -12,9 +12,8 @@
 
       <div class="col-xs-6 hidden-sm hidden-md hidden-lg pull-right" data-ng-if="loginVisible">
         <div class="pull-right" ng-hide="isLoggedIn">
-          <a class="btn" data-ng-click="loginClicked()"
-             type="button" id="business-login-btn" value="Logga in"><span message key="lbl.log-in"></span>
-          </a>
+          <button class="btn btn-link" data-ng-click="loginClicked()" id="business-login-btn"><span message key="lbl.log-in"></span>
+          </button>
         </div>
         <div id="business-logged-in-user-container" ng-show="isLoggedIn">
           <div class="header-box-user-profile pull-right">

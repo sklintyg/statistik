@@ -1,24 +1,23 @@
-<div>
-	<div class="container-fluid">
-	    <div class="row">
-	    	<div class="overview-content">
-	    		<div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
-                    <h1><span message key="login.header"></span></h1>
-		        	<p ng-show="loggedInWithoutStatistikuppdrag" class="alert alert-info">
-                        <span message key="login.alert-info.behorighet"></span>
-                    </p>
-                    <p ng-show="isLoggedIn && !loggedInWithoutStatistikuppdrag" class="alert alert-info">
-                        <span message key="login.alert-inaktivitet"></span>
-                        <br/>
-                        <span message key="login.alert-logga.in"></span>
-                    </p>
-                    <h2><span message key="login.lbl.gor-foljande"></span></h2>
-		        	<p><span message key="login.instruktioner-for-login"></span></p>
-					<p>
-						<a class="btn btn-success" href="saml/login"><span message key="login.btn.siths-login"></span></a>
-					</p>
-		        </div>	
-	    	</div>
-	    </div>
-	</div>
+<div class="container-fluid login-view">
+  <h1>
+    <span message key="login.header"></span> <i class="glyphicon glyphicon-log-in"></i>
+  </h1>
+
+  <p message key="login.instruktioner-for-login"></p>
+
+  <p data-ng-if="loggedInWithoutStatistikuppdrag" class="alert alert-danger">
+    <strong message key="login.alert-danger"></strong> <span message key="login.alert-info.behorighet"></span>
+  </p>
+  <p data-ng-if="isLoggedIn && !loggedInWithoutStatistikuppdrag" class="alert alert-info">
+    <strong message key="login.alert-info"></strong> <span message key="login.alert-inaktivitet"></span>
+  </p>
+
+  <p>
+    <a class="btn btn-success login-button" href="saml/login" message key="login.btn.siths-login"></a>
+  </p>
+
+  <p>
+    <span message key="login.siths.problem"></span><br>
+    <a href class="login-link" data-ng-click="open()"><span message key="login.siths.problem-link"></span></a>
+  </p>
 </div>
