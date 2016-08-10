@@ -118,7 +118,7 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRowExtended> getSjukskrivningsgrader(Range range) {
-        KonDataResponse periods = data.getSjukskrivningsgrad(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL);
+        KonDataResponse periods = data.getSjukskrivningsgrad(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL, true);
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
         if (periods.getRows().size() >= 2) {
@@ -207,7 +207,7 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRowExtended> getDiagnosgrupper(Range range) {
-        DiagnosgruppResponse periods = data.getDiagnosgrupper(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL);
+        DiagnosgruppResponse periods = data.getDiagnosgrupper(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL, true);
         List<OverviewChartRowExtended> result = new ArrayList<>();
         if (periods.getRows().size() >= 2) {
             List<KonField> previousData = periods.getRows().get(0).getData();

@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 // CHECKSTYLE:OFF FinalClass
 public class Sjukfall {
@@ -159,6 +160,10 @@ public class Sjukfall {
 
     public int getDiagnoskapitel() {
         return diagnos.diagnoskapitel;
+    }
+
+    public Stream<Integer> getDiagnoskapitels() {
+        return diagnoses.stream().map(d -> d.diagnoskapitel);
     }
 
     public int getSjukskrivningsgrad() {

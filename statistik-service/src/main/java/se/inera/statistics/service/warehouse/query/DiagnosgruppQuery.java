@@ -279,12 +279,14 @@ public class DiagnosgruppQuery {
     public Map<Integer, Counter<Integer>> count(Collection<Sjukfall> sjukfalls) {
         Map<Integer, Counter<Integer>> counters = new HashMap<>();
         for (Sjukfall sjukfall : sjukfalls) {
-            Counter<Integer> counter = counters.get(sjukfall.getDiagnoskapitel());
-            if (counter == null) {
-                counter = new Counter<>(sjukfall.getDiagnoskapitel());
-                counters.put(sjukfall.getDiagnoskapitel(), counter);
-            }
-            counter.increase(sjukfall);
+            sjukfall.getDiagnoskapitels().forEach(d -> {
+                Counter<Integer> counter = counters.get(d);
+                if (counter == null) {
+                    counter = new Counter<>(d);
+                    counters.put(d, counter);
+                }
+                counter.increase(sjukfall);
+            });
         }
         return counters;
     }
