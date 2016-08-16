@@ -65,6 +65,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.businessFilter = businessFilter;
     scope.useDefaultPeriod = true;
     scope.showDateValidationError = false;
+    scope.loadingFilter = false;
 
     function updateGeographyFilterSelectorDataButtonLabelText() {
         var selected = scope.businessFilter.geographyBusinessIds.length;
@@ -176,10 +177,10 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         if (hasDatepickersValidationError()) {
             scope.showDateValidationError = true;
         } else {
-            scope.isFilterCollapsed = !scope.isFilterCollapsed;
             scope.showDateValidationError = false;
             scope.toDateValidationError = false;
             scope.fromDateValidationError = false;
+            scope.loadingFilter = true;
 
             //Be sure to format the date objects correctly before sending anything to the server
             if (businessFilter.fromDate && businessFilter.toDate) {
@@ -208,9 +209,12 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
                 var queryParams = $location.search();
                 queryParams[scope.filterHashParamName] = filterHash;
                 $location.search(queryParams);
+                scope.isFilterCollapsed = !scope.isFilterCollapsed;
+                scope.loadingFilter = false;
             };
 
             var error = function () {
+                scope.loadingFilter = false;
                 throw new Error('Failed to get filter hash value');
             };
 
