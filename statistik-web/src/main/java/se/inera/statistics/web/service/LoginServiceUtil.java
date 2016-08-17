@@ -23,9 +23,7 @@ import static com.google.common.collect.Lists.transform;
 import static java.util.stream.Collectors.toMap;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -143,8 +141,9 @@ public class LoginServiceUtil {
     }
 
     private List<Verksamhet> getVerksamhetsList(User realUser) {
-        Collection<Verksamhet> allUserVerksamhets = realUser.getVardenhetList().stream()
+        return realUser.getVardenhetList().stream()
                 .map(Vardenhet::getVardgivarId)
+                .distinct()
                 .map(hsaIdVardgivare -> {
                     List<Enhet> allEnhetsForVg = warehouse.getEnhets(hsaIdVardgivare);
                     if (realUser.isProcessledareForVg(hsaIdVardgivare) && allEnhetsForVg != null && !allEnhetsForVg.isEmpty()) {
@@ -154,9 +153,7 @@ public class LoginServiceUtil {
                     }
                 })
                 .flatMap(List::stream)
-                .collect(toMap(Verksamhet::getId, p -> p, (p, q) -> p))
-                .values();
-        return new ArrayList<>(allUserVerksamhets);
+                .collect(Collectors.toList());
     }
 
     Verksamhet toVerksamhet(Enhet enhet) {
