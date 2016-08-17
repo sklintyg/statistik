@@ -288,6 +288,7 @@ class ReportsUtil {
         def loginData = logins[user]
         def response = statistik.post(path: '/fake', body: [ userJsonDisplay:loginData ], requestContentType : "application/x-www-form-urlencoded" )
         assert response.status == 302
+        get("/api/login/setSelectedVg/" + getVardgivareForUser(user))
         System.out.println("Using logindata: " + loginData)
     }
 

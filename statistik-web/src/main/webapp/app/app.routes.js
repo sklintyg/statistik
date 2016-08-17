@@ -91,6 +91,10 @@ var app = angular.module('StatisticsApp')
                 templateUrl: 'app/views/empty.html',
                 controller: 'businessLandingPageCtrl',
                 title: 'Verksamhet'
+            }).when('/verksamhet/valjVardgivare', {
+                templateUrl: 'app/views/business/selectVg.html',
+                controller: 'loginCtrl',
+                title: 'Välj vårdgivare'
             }).when('/verksamhet/oversikt', {
                 templateUrl: 'app/views/business/businessOverview.html',
                 controller: 'businessOverviewCtrl',

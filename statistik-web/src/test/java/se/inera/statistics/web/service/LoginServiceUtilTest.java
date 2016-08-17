@@ -18,23 +18,34 @@
  */
 package se.inera.statistics.web.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+
 import se.inera.auth.LoginVisibility;
+import se.inera.auth.model.User;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
+import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.AppSettings;
-
-import java.util.ArrayList;
-
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
+import se.inera.statistics.web.model.LoginInfo;
 
 public class LoginServiceUtilTest {
 
@@ -52,6 +63,8 @@ public class LoginServiceUtilTest {
 
     private LoginServiceUtil loginServiceUtil;
 
+    public final Random rand = new Random();
+
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
@@ -67,6 +80,76 @@ public class LoginServiceUtilTest {
         //Then
         assertEquals(7, settings.getSjukskrivningLengths().size());
         assertEquals("Under 15 dagar", settings.getSjukskrivningLengths().get("GROUP1_0TO14"));
+    }
+
+    @Test
+    public void testGetLoginInfoSeveralVgsNotProcessledare() throws Exception {
+        //Given
+        final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        final AbstractAuthenticationToken token = Mockito.mock(AbstractAuthenticationToken.class);
+        Mockito.when(request.getUserPrincipal()).thenReturn(token);
+        final HsaIdUser userId = new HsaIdUser("testuserid");
+        final Vardenhet enhet1 = newVardenhet("e1", "vg1");
+        final Vardenhet enhet2 = newVardenhet("e2", "vg1");
+        final Vardenhet enhet3 = newVardenhet("e3", "vg2");
+        final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
+        final User user = new User(userId, "testname", null, null, vardenhetsList);
+        Mockito.when(token.getDetails()).thenReturn(user);
+
+        //When
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
+
+        //Then
+        assertEquals(userId, loginInfo.getHsaId());
+        assertEquals(3, loginInfo.getBusinesses().size());
+        assertEquals(2, loginInfo.getBusinessesForVg(enhet1.getVardgivarId()).size());
+        assertEquals(1, loginInfo.getBusinessesForVg(enhet3.getVardgivarId()).size());
+
+        assertEquals(enhet1.getVardgivarId(), loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().getHsaId());
+        assertEquals(false, loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().isProcessledare());
+        assertEquals(false, loginInfo.getLoginInfoForVg(enhet3.getVardgivarId()).get().isProcessledare());
+
+    }
+
+    @Test
+    public void testGetLoginInfoSeveralVgsWhenProcessledare() throws Exception {
+        //Given
+        final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        final AbstractAuthenticationToken token = Mockito.mock(AbstractAuthenticationToken.class);
+        Mockito.when(request.getUserPrincipal()).thenReturn(token);
+        final HsaIdUser userId = new HsaIdUser("testuserid");
+        final Vardenhet enhet1 = newVardenhet("e1", "vg1");
+        final Vardenhet enhet2 = newVardenhet("e2", "vg1");
+        final Vardenhet enhet3 = newVardenhet("e3", "vg2");
+        final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
+        final User user = new User(userId, "testname", Arrays.asList(new HsaIdVardgivare("vg2")), null, vardenhetsList);
+        Mockito.when(token.getDetails()).thenReturn(user);
+
+        Mockito.when(warehouse.getEnhets(any())).thenAnswer(invocationOnMock -> {
+            final HsaIdVardgivare vg = (HsaIdVardgivare) invocationOnMock.getArguments()[0];
+            return Arrays.asList(newEnhet(vg), newEnhet(vg), newEnhet(vg), newEnhet(vg));
+        });
+
+        //When
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
+
+        //Then
+        assertEquals(userId, loginInfo.getHsaId());
+        assertEquals(6, loginInfo.getBusinesses().size());
+        assertEquals(2, loginInfo.getBusinessesForVg(enhet1.getVardgivarId()).size());
+        assertEquals(4, loginInfo.getBusinessesForVg(enhet3.getVardgivarId()).size());
+
+        assertEquals(enhet1.getVardgivarId(), loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().getHsaId());
+        assertEquals(false, loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().isProcessledare());
+        assertEquals(true, loginInfo.getLoginInfoForVg(enhet3.getVardgivarId()).get().isProcessledare());
+    }
+
+    private Enhet newEnhet(HsaIdVardgivare vg) {
+        return new Enhet(vg, new HsaIdEnhet(String.valueOf(rand.nextInt())), "", "", "", "");
+    }
+
+    private Vardenhet newVardenhet(String enhetId, String vgId) {
+        return new Vardenhet(new HsaIdEnhet(enhetId), enhetId + "name", new HsaIdVardgivare(vgId));
     }
 
 }

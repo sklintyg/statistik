@@ -1,0 +1,13 @@
+<div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="overview-content">
+        <ul>
+          <li data-ng-repeat="vgInfo in UserModel.get().vgs">
+            <a data-ng-click="setSelectedVardgivare(vgInfo.id)">{{::vgInfo.name}}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

@@ -20,12 +20,16 @@ package se.inera.statistics.web.service;
 
 import static com.google.common.collect.Iterables.tryFind;
 import static com.google.common.collect.Lists.transform;
+import static java.util.stream.Collectors.toMap;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -40,6 +44,8 @@ import org.springframework.stereotype.Component;
 
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
+import se.inera.auth.model.UserAccessLevel;
+import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
@@ -52,6 +58,8 @@ import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.LoginInfoVg;
+import se.inera.statistics.web.model.UserAccessInfo;
 import se.inera.statistics.web.model.Verksamhet;
 
 import com.google.common.base.Function;
@@ -94,47 +102,61 @@ public class LoginServiceUtil {
     }
 
     public LoginInfo getLoginInfo(HttpServletRequest request) {
-        Principal user = request.getUserPrincipal();
+        User realUser;
+        try {
+            realUser = getCurrentUser(request);
+        } catch (IllegalStateException e) {
+            return new LoginInfo();
+        }
+        Map<HsaIdVardgivare, String> allVgNames = realUser.getVardenhetList().stream()
+                .collect(toMap(Vardenhet::getVardgivarId, Vardenhet::getVardgivarNamn, (p, q) -> p));
+        List<Verksamhet> verksamhets = getVerksamhetsList(realUser);
+        final List<LoginInfoVg> loginInfoVgs = allVgNames.entrySet().stream()
+                .map(vgidWithName -> toLoginInfoVg(realUser, vgidWithName))
+                .collect(Collectors.toList());
+        return new LoginInfo(realUser, verksamhets, loginInfoVgs);
+    }
+
+    private LoginInfoVg toLoginInfoVg(User realUser, Map.Entry<HsaIdVardgivare, String> vgidWithName) {
+        final HsaIdVardgivare vgId = vgidWithName.getKey();
+        final boolean processledare = realUser.isProcessledareForVg(vgId);
+        final List<Vardenhet> vardenhetsForVg = realUser.getVardenhetsForVg(vgId);
+        final UserAccessLevel userAccessLevel = new UserAccessLevel(processledare, vardenhetsForVg.size());
+        final String vgName = vgidWithName.getValue();
+        final LandstingsVardgivareStatus landstingsVardgivareStatus = landstingEnhetHandler.getLandstingsVardgivareStatus(vgId);
+        return new LoginInfoVg(vgId, vgName, landstingsVardgivareStatus, userAccessLevel);
+    }
+
+    private User getCurrentUser(HttpServletRequest request) {
+        final Principal user = request.getUserPrincipal();
         if (!(user instanceof AbstractAuthenticationToken)) {
             LOG.error("user object is of wrong type: " + user);
-            return new LoginInfo();
+            throw new IllegalStateException("user object is of wrong type: " + user);
         }
         AbstractAuthenticationToken token = (AbstractAuthenticationToken) user;
         final Object details = token.getDetails();
         if (!(details instanceof User)) {
             LOG.warn("details object is of wrong type: " + details);
-            return new LoginInfo();
+            throw new IllegalStateException("details object is of wrong type: " + details);
         }
-        User realUser = (User) details;
-        final Vardenhet valdVardenhet = realUser.getValdVardenhet();
-        if (valdVardenhet == null) {
-            LOG.warn("valdEnhet may not be null");
-            return new LoginInfo();
-        }
-        final HsaIdVardgivare vardgivarId = valdVardenhet.getVardgivarId();
-        List<Enhet> enhetsList = warehouse.getEnhets(vardgivarId);
-        Verksamhet defaultVerksamhet = toVerksamhet(valdVardenhet, enhetsList);
-        List<Verksamhet> verksamhets = getVerksamhetsList(realUser, enhetsList);
-        final LandstingsVardgivareStatus landstingsVardgivareStatus = landstingEnhetHandler.getLandstingsVardgivareStatus(vardgivarId);
-        return new LoginInfo(realUser.getHsaId(), realUser.getName(), defaultVerksamhet, realUser.isVerksamhetschef(), realUser.isDelprocessledare(), realUser.isProcessledare(), verksamhets, landstingsVardgivareStatus);
+        return (User) details;
     }
 
-    private List<Verksamhet> getVerksamhetsList(User realUser, final List<Enhet> enhetsList) {
-        if (realUser.isProcessledare() && enhetsList != null && !enhetsList.isEmpty()) {
-            return transform(enhetsList, new Function<Enhet, Verksamhet>() {
-                @Override
-                public Verksamhet apply(Enhet enhet) {
-                    return toVerksamhet(enhet);
-                }
-            });
-        } else {
-            return transform(realUser.getVardenhetList(), new Function<Vardenhet, Verksamhet>() {
-                @Override
-                public Verksamhet apply(Vardenhet vardEnhet) {
-                    return toVerksamhet(vardEnhet, enhetsList);
-                }
-            });
-        }
+    private List<Verksamhet> getVerksamhetsList(User realUser) {
+        Collection<Verksamhet> allUserVerksamhets = realUser.getVardenhetList().stream()
+                .map(Vardenhet::getVardgivarId)
+                .map(hsaIdVardgivare -> {
+                    List<Enhet> allEnhetsForVg = warehouse.getEnhets(hsaIdVardgivare);
+                    if (realUser.isProcessledareForVg(hsaIdVardgivare) && allEnhetsForVg != null && !allEnhetsForVg.isEmpty()) {
+                        return transform(allEnhetsForVg, this::toVerksamhet);
+                    } else {
+                        return transform(realUser.getVardenhetsForVg(hsaIdVardgivare), vardEnhet -> toVerksamhet(vardEnhet, allEnhetsForVg));
+                    }
+                })
+                .flatMap(List::stream)
+                .collect(toMap(Verksamhet::getId, p -> p, (p, q) -> p))
+                .values();
+        return new ArrayList<>(allUserVerksamhets);
     }
 
     Verksamhet toVerksamhet(Enhet enhet) {
@@ -173,9 +195,8 @@ public class LoginServiceUtil {
     }
 
     HsaIdVardgivare getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
-        return getLoginInfo(request).getDefaultVerksamhet().getVardgivarId();
+        return getCurrentUser(request).getSelectedVardgivare();
     }
-
 
     public AppSettings getSettings(HttpServletRequest request) {
         AppSettings settings = new AppSettings();
@@ -183,8 +204,22 @@ public class LoginServiceUtil {
         settings.setHighchartsExportUrl(higchartsExportUrl);
         settings.setLoginUrl(loginUrl);
         settings.setLoggedIn(isLoggedIn(request));
-        settings.setSjukskrivningLengths(Arrays.stream(SjukfallsLangdGroup.values()).collect(Collectors.toMap(Enum::name, SjukfallsLangdGroup::getGroupName)));
+        settings.setSjukskrivningLengths(Arrays.stream(SjukfallsLangdGroup.values()).collect(toMap(Enum::name, SjukfallsLangdGroup::getGroupName)));
         return settings;
+    }
+
+    public UserAccessInfo getUserAccessInfo(HttpServletRequest request) {
+        final HsaIdVardgivare vgId = getCurrentUser(request).getSelectedVardgivare();
+        final LoginInfo loginInfo = getLoginInfo(request);
+        final HsaIdUser hsaId = loginInfo.getHsaId();
+        final LoginInfoVg vgInfo = loginInfo.getLoginInfoForVg(vgId).orElse(null);
+        final List<Verksamhet> businessesForVg = loginInfo.getBusinessesForVg(vgId);
+        return new UserAccessInfo(hsaId, vgInfo, businessesForVg);
+    }
+
+    public void setSelectedVg(HttpServletRequest request, HsaIdVardgivare vgId) {
+        final User user = getCurrentUser(request);
+        user.setSelectedVardgivare(vgId);
     }
 
 }

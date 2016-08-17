@@ -43,6 +43,7 @@ import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.Verksamhet;
@@ -119,10 +120,12 @@ public class ProtectedLandstingService {
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response fileupload(@Context HttpServletRequest request, MultipartBody body) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final LoginInfoVg loginInfoVg = info.getLoginInfoForVg(vgId).orElse(LoginInfoVg.empty());
         final String fallbackUpload = body.getAttachmentObject("fallbackUpload", String.class);
         final boolean isUsingClassicFormFileUpload = fallbackUpload != null;
         final UploadResultFormat resultFormat = isUsingClassicFormFileUpload ? UploadResultFormat.HTML : UploadResultFormat.JSON;
-        if (!info.isProcessledare()) {
+        if (!loginInfoVg.isProcessledare()) {
             final String msg = "A user without processledar-status tried to update landstingsdata";
             LOG.warn(msg + " : " + info.getHsaId());
             return createFileUploadResponse(Response.Status.FORBIDDEN, msg, resultFormat);
@@ -133,7 +136,7 @@ public class ProtectedLandstingService {
         }
         try {
             final List<LandstingEnhetFileDataRow> landstingFileRows = landstingFileReader.readExcelData(dataSource);
-            final HsaIdVardgivare vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
+            final HsaIdVardgivare vardgivarId = loginInfoVg.getHsaId();
             final LandstingEnhetFileData fileData = new LandstingEnhetFileData(vardgivarId, landstingFileRows, info.getName(), info.getHsaId(), dataSource.getName());
             landstingEnhetHandler.update(fileData);
 
@@ -156,7 +159,7 @@ public class ProtectedLandstingService {
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response clearLandstingEnhets(@Context HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
-        final HsaIdVardgivare vgId = info.getDefaultVerksamhet().getVardgivarId();
+        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         try {
             landstingEnhetHandler.clear(vgId, info.getName(), info.getHsaId());
             return Response.ok().build();
@@ -276,7 +279,8 @@ public class ProtectedLandstingService {
 
     private List<HsaIdEnhet> getEnhetIdsToMark(@Context HttpServletRequest request) {
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
-        if (loginInfo.isProcessledare()) {
+        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        if (loginInfo.getLoginInfoForVg(vgId).map(LoginInfoVg::isProcessledare).orElse(false)) {
             return Collections.emptyList();
         }
         final List<Verksamhet> businesses = loginInfo.getBusinesses();
@@ -325,19 +329,22 @@ public class ProtectedLandstingService {
         if (request == null) {
             return false;
         }
-        return loginServiceUtil.getLoginInfo(request).isLandstingAdmin();
+        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        return loginServiceUtil.getLoginInfo(request).getLoginInfoForVg(vg).map(LoginInfoVg::isLandstingAdmin).orElse(false);
     }
 
     public boolean hasAccessToLandsting(HttpServletRequest request) {
         if (request == null) {
             return false;
         }
-        return loginServiceUtil.getLoginInfo(request).isLandstingsvardgivare();
+        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        return loginServiceUtil.getLoginInfo(request).getLoginInfoForVg(vg).map(LoginInfoVg::isLandstingsvardgivare).orElse(false);
     }
 
     public boolean userAccess(HttpServletRequest request) {
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
-        LOG.info("User " + loginInfo.getHsaId() + " accessed verksamhet " + loginInfo.getDefaultVerksamhet().getVardgivarId() + " (" + getUriSafe(request) + ") session " + request.getSession().getId());
+        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        LOG.info("User " + loginInfo.getHsaId() + " accessed vg " + vgId + " (" + getUriSafe(request) + ") session " + request.getSession().getId());
         return true;
     }
 

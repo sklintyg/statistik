@@ -43,16 +43,20 @@ describe('Model: UserModel', function () {
 
     it('payload without businesses', function() {
 
-        UserModel.set({
+        UserModel.setLoginInfo({
             name: 'Test user',
-            loggedIn: true,
+            vgs: []
+        });
+        UserModel.setUserAccessInfo({
             businesses: [],
-            verksamhetschef: false,
-            delprocessledare: false,
-            processledare: true,
-            landstingAdmin: false,
-            landstingsvardgivare: false,
-            landstingsvardgivareWithUpload: false
+            vgInfo: {
+                verksamhetschef: false,
+                delprocessledare: false,
+                processledare: true,
+                landstingAdmin: false,
+                landstingsvardgivare: false,
+                landstingsvardgivareWithUpload: false
+            }
         });
 
         expect(UserModel.get().userName).toEqual('Test user');
@@ -68,18 +72,22 @@ describe('Model: UserModel', function () {
 
     it('payload with businesses', function() {
 
-        UserModel.set({
+        UserModel.setLoginInfo({
             name: 'Test user',
-            loggedIn: true,
+            vgs: ['VG1']
+        });
+        UserModel.setUserAccessInfo({
             businesses: [{
                 id: 'VG1-ENHET-1'
             }],
-            verksamhetschef: true,
-            delprocessledare: true,
-            processledare: false,
-            landstingAdmin: true,
-            landstingsvardgivare: true,
-            landstingsvardgivareWithUpload: false
+            vgInfo: {
+                verksamhetschef: true,
+                delprocessledare: true,
+                processledare: false,
+                landstingAdmin: true,
+                landstingsvardgivare: true,
+                landstingsvardgivareWithUpload: false
+            }
         });
 
         expect(UserModel.get().userName).toEqual('Test user');

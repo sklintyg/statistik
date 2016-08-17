@@ -99,7 +99,7 @@ abstract class Rapport {
     }
 
     def vårdgivarnamn() {
-        return loginInfo?.defaultVerksamhet?.vardgivarName
+        return loginInfo?.vgs?.get(0).name
     }
 
     void setVårdgivarnivå(boolean vårdgivarnivå) {

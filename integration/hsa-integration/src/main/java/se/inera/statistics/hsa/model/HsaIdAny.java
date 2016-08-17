@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.hsa.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.common.base.Objects;
 
 import java.io.IOException;
@@ -43,6 +44,7 @@ public class HsaIdAny implements Serializable {
         return new HsaIdAny("");
     }
 
+    @JsonValue
     public String getId() {
         return id;
     }

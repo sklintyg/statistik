@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
+import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -26,7 +27,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
 import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
@@ -80,8 +83,7 @@ public class FilterHandlerTest {
         final List<String> sjukskrivningslangd = Arrays.stream(SjukfallsLangdGroup.values()).map(Enum::name).collect(Collectors.toList());
         final FilterData filterData = new FilterData(null, null, null, sjukskrivningslangd, null, null, true);
         Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
-        final Verksamhet defaultVerksamhet = Mockito.mock(Verksamhet.class);
-        final LoginInfo loginInfo = new LoginInfo(null, "", defaultVerksamhet, false, false, false, Collections.emptyList(), null);
+        final LoginInfo loginInfo = new LoginInfo(new User(new HsaIdUser(""), "", Lists.newArrayList(), null, Lists.newArrayList()), Lists.newArrayList(), Lists.newArrayList());
         Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(loginInfo);
         Mockito.when(sjukfallUtil.createEnhetFilter(new HsaIdEnhet[0])).thenReturn(new SjukfallFilter(f -> true, s -> true, filterHash));
 
@@ -103,8 +105,7 @@ public class FilterHandlerTest {
         final String filterHash = "abc";
         final FilterData filterData = new FilterData(null, null, null, null, null, null, true);
         Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
-        final Verksamhet defaultVerksamhet = Mockito.mock(Verksamhet.class);
-        final LoginInfo loginInfo = new LoginInfo(null, "", defaultVerksamhet, false, false, false, Collections.emptyList(), null);
+        final LoginInfo loginInfo = new LoginInfo(new User(new HsaIdUser(""), "", Lists.newArrayList(), null, Lists.newArrayList()), Lists.newArrayList(), Lists.newArrayList());
         Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(loginInfo);
         Mockito.when(sjukfallUtil.createEnhetFilter(new HsaIdEnhet[0])).thenReturn(new SjukfallFilter(f -> true, s -> true, filterHash));
 
@@ -127,8 +128,7 @@ public class FilterHandlerTest {
         final List<String> sjukskrivningslangd = Stream.concat(Arrays.stream(SjukfallsLangdGroup.values()).map(Enum::name), Stream.of("EjGiltigLangd")).collect(Collectors.toList());
         final FilterData filterData = new FilterData(null, null, null, sjukskrivningslangd, null, null, true);
         Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
-        final Verksamhet defaultVerksamhet = Mockito.mock(Verksamhet.class);
-        final LoginInfo loginInfo = new LoginInfo(null, "", defaultVerksamhet, false, false, false, Collections.emptyList(), null);
+        final LoginInfo loginInfo = new LoginInfo(new User(new HsaIdUser(""), "", Lists.newArrayList(), null, Lists.newArrayList()), Lists.newArrayList(), Lists.newArrayList());
         Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(loginInfo);
         Mockito.when(sjukfallUtil.createEnhetFilter(new HsaIdEnhet[0])).thenReturn(new SjukfallFilter(f -> true, s -> true, filterHash));
 

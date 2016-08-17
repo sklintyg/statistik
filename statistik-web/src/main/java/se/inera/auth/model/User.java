@@ -18,35 +18,45 @@
  */
 package se.inera.auth.model;
 
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.Vardenhet;
-
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.hsa.model.Vardenhet;
 
 public class User implements Serializable {
 
     private final HsaIdUser hsaId;
     private final String name;
-    private final boolean processledare;
-    private final Vardenhet vardenhet;
+    private final List<HsaIdVardgivare> vgsWithProcessledarStatus;
     private final List<Vardenhet> vardenhetList;
+    private HsaIdVardgivare selectedVardgivare;
+    private UserAccessLevel userAccessLevel;
 
-    public User(HsaIdUser hsaId, String name, boolean processledare, Vardenhet vardenhet, List<Vardenhet> vardenhetsList) {
+    public User(HsaIdUser hsaId, String name, List<HsaIdVardgivare> vgsWithProcessledarStatus, HsaIdVardgivare selectedVardgivare, List<Vardenhet> vardenhetsList) {
         this.hsaId = hsaId;
         this.name = name;
-        this.processledare = processledare;
-        this.vardenhet = vardenhet;
-        this.vardenhetList = Collections.unmodifiableList(vardenhetsList);
+        this.vgsWithProcessledarStatus = vgsWithProcessledarStatus != null ? Collections.unmodifiableList(vgsWithProcessledarStatus) : Collections.emptyList();
+        this.vardenhetList = vardenhetsList != null ? Collections.unmodifiableList(vardenhetsList) : Collections.emptyList();
+        setSelectedVardgivare(selectedVardgivare);
+    }
+
+    private boolean isProcessledareForSelectedVg() {
+        return isProcessledareForVg(this.selectedVardgivare);
+    }
+
+    public boolean isProcessledareForVg(HsaIdVardgivare vardgivareId) {
+        if (vardgivareId == null) {
+            return false;
+        }
+        return vgsWithProcessledarStatus.contains(vardgivareId);
     }
 
     public HsaIdUser getHsaId() {
         return hsaId;
-    }
-
-    public Vardenhet getValdVardenhet() {
-        return vardenhet;
     }
 
     public String getName() {
@@ -58,15 +68,40 @@ public class User implements Serializable {
     }
 
     public boolean isVerksamhetschef() {
-        return !isDelprocessledare() && !isProcessledare();
+        return userAccessLevel.isVerksamhetschef();
     }
 
     public boolean isDelprocessledare() {
-        return !processledare && vardenhetList.size() > 1;
+        return userAccessLevel.isDelprocessledare();
     }
 
     public boolean isProcessledare() {
-        return processledare;
+        return userAccessLevel.isProcessledare();
+    }
+
+    public HsaIdVardgivare getSelectedVardgivare() {
+        return selectedVardgivare;
+    }
+
+    public void setSelectedVardgivare(HsaIdVardgivare selectedVardgivare) {
+        this.selectedVardgivare = selectedVardgivare;
+        this.userAccessLevel = new UserAccessLevel(isProcessledareForSelectedVg(), getEnhetsForSelectedVardgivare().size());
+    }
+
+    public List<HsaIdVardgivare> getVgsWithProcessledarStatus() {
+        return vgsWithProcessledarStatus;
+    }
+
+    private List<Vardenhet> getEnhetsForSelectedVardgivare() {
+        return getVardenhetsForVg(this.selectedVardgivare);
+    }
+
+    public List<Vardenhet> getVardenhetsForVg(HsaIdVardgivare vardgivare) {
+        return vardenhetList.stream()
+                .filter(vardenhet -> {
+                    return vardenhet.getVardgivarId().equals(vardgivare);
+                })
+                .collect(Collectors.toList());
     }
 
 }

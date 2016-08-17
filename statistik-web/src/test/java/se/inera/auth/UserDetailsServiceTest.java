@@ -18,6 +18,19 @@
  */
 package se.inera.auth;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +44,7 @@ import org.opensaml.xml.ConfigurationException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.springframework.security.saml.SAMLCredential;
 import org.xml.sax.SAXException;
+
 import se.inera.auth.model.User;
 import se.inera.intyg.common.integration.hsa.services.HsaPersonService;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -41,18 +55,6 @@ import se.inera.statistics.hsa.services.HsaOrganizationsService;
 import se.inera.statistics.hsa.services.UserAuthorization;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.riv.infrastructure.directory.v1.PersonInformationType;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserDetailsServiceTest {
@@ -82,10 +84,18 @@ public class UserDetailsServiceTest {
     }
 
     @Test
-    public void correctVardenhetIsChosen() throws Exception {
-        auktoriseradeEnheter(VE1_VG1, VE2_VG1);
+    public void vgIsChosenWhenOnlyOneIsAvailable() throws Exception {
+        auktoriseradeEnheter(VE1_VG1);
         User user = (User) service.loadUserBySAML(credential);
-        assertEquals(new HsaIdEnhet("IFV1239877878-103F"), user.getValdVardenhet().getId());
+        assertEquals(new HsaIdVardgivare("IFV1239877878-0001"), user.getSelectedVardgivare());
+        assertEquals(1, user.getVardenhetList().size());
+    }
+
+    @Test
+    public void noVgIsChosenWhenMoreThanOneIsAvailable() throws Exception {
+        auktoriseradeEnheter(VE1_VG1, VE3_VG2);
+        User user = (User) service.loadUserBySAML(credential);
+        assertEquals(null, user.getSelectedVardgivare());
         assertEquals(2, user.getVardenhetList().size());
     }
 
@@ -110,16 +120,19 @@ public class UserDetailsServiceTest {
 
     @Test
     public void hasVgAccessBySystemRole() throws Exception {
-        auktoriseradeEnheter(VE1_VG1);
+        auktoriseradeEnheter(VE1_VG1, VE3_VG2);
         User user = (User) service.loadUserBySAML(credential);
+        user.setSelectedVardgivare(new HsaIdVardgivare("IFV1239877878-0001"));
         assertFalse(user.isDelprocessledare());
         assertTrue(user.isProcessledare());
     }
 
     @Test
     public void hasNoVgAccessBySystemRole() throws Exception {
-        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(new UserAuthorization(Arrays.asList(VE2_VG1), Collections.emptyList()));
+        final UserAuthorization userAuthorization = new UserAuthorization(Arrays.asList(VE2_VG1, VE3_VG2), Collections.emptyList());
+        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(userAuthorization);
         User user = (User) service.loadUserBySAML(credential);
+        user.setSelectedVardgivare(new HsaIdVardgivare("IFV1239877878-0001"));
         assertFalse(user.isDelprocessledare());
         assertFalse(user.isProcessledare());
     }

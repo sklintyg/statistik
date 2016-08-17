@@ -211,6 +211,14 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestNational('login/getLoginInfo', successCallback, failureCallback, false, true);
     };
 
+    factory.getUserAccessInfo = function (successCallback, failureCallback) {
+        makeRequestNational('login/getUserAccessInfo', successCallback, failureCallback, false, true);
+    };
+
+    factory.setSelectedVg = function (vgId, successCallback, failureCallback) {
+        makeRequestNational('login/setSelectedVg/' + vgId, successCallback, failureCallback, false, true);
+    };
+
     factory.getSjukfallPerBusinessVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet('getNumberOfCasesPerEnhet', successCallback, failureCallback);
     };

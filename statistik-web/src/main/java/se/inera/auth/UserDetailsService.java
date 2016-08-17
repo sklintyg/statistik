@@ -18,15 +18,19 @@
  */
 package se.inera.auth;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
+
 import se.inera.auth.model.User;
 import se.inera.intyg.common.integration.hsa.services.HsaPersonService;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
@@ -34,8 +38,6 @@ import se.inera.statistics.hsa.services.HsaOrganizationsService;
 import se.inera.statistics.hsa.services.UserAuthorization;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.riv.infrastructure.directory.v1.PersonInformationType;
-
-import java.util.List;
 
 public class UserDetailsService implements SAMLUserDetailsService {
 
@@ -61,18 +63,15 @@ public class UserDetailsService implements SAMLUserDetailsService {
         List<PersonInformationType> hsaPersonInfo = hsaPersonService.getHsaPersonInfo(hsaId.getId());
         UserAuthorization userAuthorization = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(hsaId);
 
-        Vardenhet selectedVerksamhet = userAuthorization.getVardenhetList().stream().findFirst().orElse(null);
-        HsaIdVardgivare vardgivare = selectedVerksamhet != null ? selectedVerksamhet.getVardgivarId() : null;
-
-        HsaIdEnhet vardEnhet = selectedVerksamhet != null ? selectedVerksamhet.getId() : null;
-
-        // TODO store either systemRoles on user or store processLedare per VårdgivarHsaId on user.
-        final boolean processledare = isProcessledare(userAuthorization.getSystemRoles(), vardgivare);
-        monitoringLogService.logUserLogin(hsaId, vardgivare, vardEnhet, processledare);
+        final List<HsaIdVardgivare> vgsWithProcessledarStatus = getVgsWithProcessledarStatus(userAuthorization.getSystemRoles());
+        monitoringLogService.logUserLogin(hsaId, null, null, false);
 
         final String name = extractPersonName(hsaPersonInfo);
+        final List<HsaIdVardgivare> vgs = userAuthorization.getVardenhetList().stream()
+                .map(Vardenhet::getVardgivarId).distinct().collect(Collectors.toList());
+        HsaIdVardgivare defaultSelectedVg = vgs.size() == 1 ? vgs.get(0) : null;
 
-        return new User(hsaId, name, processledare, selectedVerksamhet, userAuthorization.getVardenhetList());
+        return new User(hsaId, name, vgsWithProcessledarStatus, defaultSelectedVg, userAuthorization.getVardenhetList());
     }
 
     private String extractPersonName(List<PersonInformationType> hsaPersonInfo) {
@@ -83,13 +82,15 @@ public class UserDetailsService implements SAMLUserDetailsService {
         }
     }
 
-    private boolean isProcessledare(List<String> systemRoles, HsaIdVardgivare vardgivare) {
+    private List<HsaIdVardgivare> getVgsWithProcessledarStatus(List<String> systemRoles) {
+        final ArrayList<HsaIdVardgivare> statistikRoles = new ArrayList<>();
         for (String systemRole : systemRoles) {
-            if ((GLOBAL_VG_ACCESS_PREFIX + vardgivare).equalsIgnoreCase(systemRole)) {
-                return true;
+            if (systemRole.toLowerCase().startsWith(GLOBAL_VG_ACCESS_PREFIX.toLowerCase())) {
+                final HsaIdVardgivare vgId = new HsaIdVardgivare(systemRole.substring(GLOBAL_VG_ACCESS_PREFIX.length()));
+                statistikRoles.add(vgId);
             }
         }
-        return false;
+        return statistikRoles;
     }
 
     private SakerhetstjanstAssertion getSakerhetstjanstAssertion(SAMLCredential credential) {

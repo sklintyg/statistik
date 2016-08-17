@@ -18,49 +18,34 @@
  */
 package se.inera.statistics.web.model;
 
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
-
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import se.inera.auth.model.User;
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 public class LoginInfo {
 
     private final String hsaId;
     private final String name;
-    private final Verksamhet defaultVerksamhet;
-    private final boolean loggedIn;
     private final List<Verksamhet> businesses;
-    private boolean verksamhetschef;
-    private boolean delprocessledare;
-    private boolean processledare;
-    private LandstingsVardgivareStatus landstingsVardgivareStatus;
+    private final List<LoginInfoVg> loginInfoVgs;
 
     public LoginInfo() {
-        loggedIn = false;
         hsaId = "";
         name = "";
-        defaultVerksamhet = null;
         businesses = Collections.emptyList();
-        verksamhetschef = false;
-        delprocessledare = false;
-        processledare = false;
-        landstingsVardgivareStatus = LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE;
+        loginInfoVgs = Collections.emptyList();
     }
-
-    // CHECKSTYLE:OFF ParameterNumberCheck
-    public LoginInfo(HsaIdUser hsaId, String name, Verksamhet defaultVerksamhet, boolean verksamhetschef, boolean delprocessledare, boolean processledare, List<Verksamhet> businesses, LandstingsVardgivareStatus landstingsVardgivareStatus) {
-        this.hsaId = hsaId == null ? null : hsaId.getId();
-        this.name = name;
-        this.defaultVerksamhet = defaultVerksamhet;
-        this.verksamhetschef = verksamhetschef;
-        this.delprocessledare = delprocessledare;
-        this.processledare = processledare;
-        this.loggedIn = true;
-        this.businesses = businesses;
-        this.landstingsVardgivareStatus = landstingsVardgivareStatus;
+    public LoginInfo(User user, List<Verksamhet> businesses, List<LoginInfoVg> loginInfoVgs) {
+        this.hsaId = user != null ? user.getHsaId() != null ? user.getHsaId().getId() : "" : "";
+        this.name = user != null ? user.getName() : "";
+        this.businesses = businesses != null ? Collections.unmodifiableList(businesses) : Collections.emptyList();
+        this.loginInfoVgs = loginInfoVgs != null ? Collections.unmodifiableList(loginInfoVgs) : Collections.emptyList();
     }
-    // CHECKSTYLE:ON ParameterNumberCheck
 
     public HsaIdUser getHsaId() {
         return new HsaIdUser(hsaId);
@@ -70,40 +55,27 @@ public class LoginInfo {
         return name;
     }
 
-    public Verksamhet getDefaultVerksamhet() {
-        return defaultVerksamhet;
-    }
-
     public boolean isLoggedIn() {
-        return loggedIn;
+        return hsaId != null && !hsaId.isEmpty();
     }
 
     public List<Verksamhet> getBusinesses() {
         return businesses;
     }
 
-    public boolean isVerksamhetschef() {
-        return verksamhetschef;
+    public Optional<LoginInfoVg> getLoginInfoForVg(HsaIdVardgivare vgId) {
+        return loginInfoVgs.stream().filter(loginInfoVg -> loginInfoVg.getHsaId().equals(vgId)).findFirst();
     }
 
-    public boolean isDelprocessledare() {
-        return delprocessledare;
+    public List<LoginInfoVg> getVgs() {
+        return loginInfoVgs;
     }
 
-    public boolean isProcessledare() {
-        return processledare;
-    }
-
-    public boolean isLandstingsvardgivare() {
-        return loggedIn && !LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE.equals(landstingsVardgivareStatus);
-    }
-
-    public boolean isLandstingsvardgivareWithUpload() {
-        return loggedIn && LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITH_UPLOAD.equals(landstingsVardgivareStatus);
-    }
-
-    public boolean isLandstingAdmin() {
-        return isLandstingsvardgivare() && processledare;
+    public List<Verksamhet> getBusinessesForVg(HsaIdVardgivare vgId) {
+        return getBusinesses()
+                .stream()
+                .filter(verksamhet -> verksamhet.getVardgivarId().equals(vgId))
+                .collect(Collectors.toList());
     }
 
 }

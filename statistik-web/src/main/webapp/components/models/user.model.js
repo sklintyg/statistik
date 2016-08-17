@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').factory('UserModel',
-    function() {
+angular.module('StatisticsApp').factory('UserModel', ['_',
+    function(_) {
         'use strict';
 
         var data = {};
@@ -36,28 +36,31 @@ angular.module('StatisticsApp').factory('UserModel',
             data.isLandstingAdmin = false;
             data.enableVerksamhetMenu = false;
             data.businesses = [];
+            data.vgs = [];
             return data;
         }
 
         return {
             reset: _reset,
 
-            set: function(loginInfo) {
-                _reset();
+            setLoginInfo: function(loginInfo) {
                 data.userName = loginInfo.name;
                 data.userNameWithAccess = loginInfo.name;
-                data.loggedInWithoutStatistikuppdrag = !(loginInfo.businesses && loginInfo.businesses.length >= 1);
-                data.isDelprocessledare = loginInfo.delprocessledare;
-                data.isProcessledare = loginInfo.processledare;
-                data.hasLandstingAccess = loginInfo.landstingsvardgivare;
-                data.landstingAvailable = loginInfo.landstingsvardgivareWithUpload;
-                data.isLandstingAdmin = loginInfo.landstingAdmin;
-                data.enableVerksamhetMenu = loginInfo.businesses && loginInfo.businesses.length >= 1;
-                data.businesses = loginInfo.businesses;
+                data.vgs = _.map(loginInfo.vgs, function(vg) {return {id: vg.hsaId, name: vg.name};});
+            },
+            setUserAccessInfo: function(userAccessInfo) {
+                data.businesses = userAccessInfo.businesses;
+                data.loggedInWithoutStatistikuppdrag = !(userAccessInfo.businesses && userAccessInfo.businesses.length >= 1);
+                data.isDelprocessledare = userAccessInfo.vgInfo.delprocessledare;
+                data.isProcessledare = userAccessInfo.vgInfo.processledare;
+                data.hasLandstingAccess = userAccessInfo.vgInfo.landstingsvardgivare;
+                data.landstingAvailable = userAccessInfo.vgInfo.landstingsvardgivareWithUpload;
+                data.isLandstingAdmin = userAccessInfo.vgInfo.landstingAdmin;
+                data.enableVerksamhetMenu = userAccessInfo.businesses && userAccessInfo.businesses.length >= 1;
             },
             get: function() {
                 return data;
             }
         };
     }
-);
+]);

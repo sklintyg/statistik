@@ -71,7 +71,7 @@ public class LoginInfoServiceIntegrationTest {
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
         final AbstractAuthenticationToken abstractAuthenticationToken = Mockito.mock(AbstractAuthenticationToken.class);
         final Vardenhet vardenhet = new Vardenhet(new HsaIdEnhet("ENHETID"), "e1namn", new HsaIdVardgivare("VG1"));
-        Mockito.when(abstractAuthenticationToken.getDetails()).thenReturn(new User(new HsaIdUser("USERID"), "UserName", false, vardenhet, Arrays.asList(vardenhet)));
+        Mockito.when(abstractAuthenticationToken.getDetails()).thenReturn(new User(new HsaIdUser("USERID"), "UserName", Collections.emptyList(), vardenhet.getVardgivarId(), Arrays.asList(vardenhet)));
         Mockito.when(req.getUserPrincipal()).thenReturn(abstractAuthenticationToken);
 
         warehouse.accept(new Enhet(new HsaIdVardgivare("VG2"), new HsaIdEnhet("ENHETID"), "EnhetNamn", Lan.OVRIGT_ID, Kommun.OVRIGT_ID, VerksamhetsTyp.OVRIGT_ID));

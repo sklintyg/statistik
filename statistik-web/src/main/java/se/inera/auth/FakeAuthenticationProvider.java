@@ -37,6 +37,7 @@ import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import se.inera.auth.model.User;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
 
 import javax.xml.namespace.QName;
@@ -44,6 +45,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static se.inera.auth.SakerhetstjanstAssertion.HSA_ID_ATTRIBUTE;
 
@@ -78,7 +81,10 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
         // Being immutable, we build up a new User principal combining the User from loadUserBySAML and fakes.
 
         String name = user.getName() != null && user.getName().trim().length() > 0 && !user.getName().startsWith("null") ? user.getName() : fakeCredentials.getFornamn() + " " + fakeCredentials.getEfternamn();
-        User decoratedUser = new User(user.getHsaId(), name, fakeCredentials.isVardgivarniva(), selectVardenhet(user, fakeCredentials.getEnhetId()), user.getVardenhetList());
+        final Vardenhet vardenhet = selectVardenhet(user, fakeCredentials.getEnhetId());
+        final HsaIdVardgivare vg = vardenhet.getVardgivarId();
+        final List<HsaIdVardgivare> vgsWithProcessledarStatus = fakeCredentials.isVardgivarniva() ? Collections.singletonList(vg) : Collections.emptyList();
+        User decoratedUser = new User(user.getHsaId(), name, vgsWithProcessledarStatus, user.getSelectedVardgivare(), user.getVardenhetList());
 
         ExpiringUsernameAuthenticationToken result = new ExpiringUsernameAuthenticationToken(null, decoratedUser, credential, new ArrayList<GrantedAuthority>());
         result.setDetails(decoratedUser);

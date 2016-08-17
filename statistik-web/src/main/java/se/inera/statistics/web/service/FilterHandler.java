@@ -239,7 +239,8 @@ public class FilterHandler {
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
-        if (info.isProcessledare()) {
+        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        if (info.getLoginInfoForVg(vgId).map(vgInfo -> vgInfo.isProcessledare()).orElse(false)) {
             return new Filter(SjukfallUtil.ALL_ENHETER, null, null, toReadableSjukskrivningslangdName(null));
         }
         final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(info.getBusinesses(), new Function<Verksamhet, Integer>() {
@@ -390,7 +391,7 @@ public class FilterHandler {
     }
 
     private HsaIdVardgivare getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
-        return loginServiceUtil.getLoginInfo(request).getDefaultVerksamhet().getVardgivarId();
+        return loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
     }
 
 }

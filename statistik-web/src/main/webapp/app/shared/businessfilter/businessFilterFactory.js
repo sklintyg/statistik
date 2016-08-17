@@ -197,16 +197,14 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
     businessFilter.setup = function (businesses, preSelectedFilter) {
         updateIcd10StructureOnce(function () {
-            if (!businessFilter.dataInitialized) {
-                businessFilter.businesses = sortSwedish(businesses, 'name', 'Okän');
-                if (businessFilter.numberOfBusinesses() === 'large') {
-                    businessFilter.populateGeography(businesses);
-                }
-                businessFilter.populateVerksamhetsTyper(businesses);
-                businessFilter.populateSjukskrivningsLangd();
-                businessFilter.resetSelections();
-                businessFilter.dataInitialized = true;
+            businessFilter.businesses = sortSwedish(businesses, 'name', 'Okän');
+            if (businessFilter.numberOfBusinesses() === 'large') {
+                businessFilter.populateGeography(businesses);
             }
+            businessFilter.populateVerksamhetsTyper(businesses);
+            businessFilter.populateSjukskrivningsLangd();
+            businessFilter.resetSelections();
+            businessFilter.dataInitialized = true;
             businessFilter.selectPreselectedFilter(preSelectedFilter);
         });
     };

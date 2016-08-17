@@ -55,39 +55,62 @@ angular.module('StatisticsApp').controller('pageCtrl',
             }
         });
 
+        function setupSelectedVardgivare(userAccessInfo) {
+            UserModel.setUserAccessInfo(userAccessInfo);
+
+            businessFilterFactory.setup(userAccessInfo.businesses, $location.$$search.filter);
+
+            $scope.verksamhetName = '';
+            if (userAccessInfo.businesses && userAccessInfo.businesses.length === 1) {
+                $scope.verksamhetName = userAccessInfo.businesses[0].name;
+            } else {
+                $scope.verksamhetName = userAccessInfo.vgInfo.name;
+            }
+            $scope.showBusinessesDetails = userAccessInfo.businesses && userAccessInfo.businesses.length > 1;
+            $rootScope.landstingAvailable = userAccessInfo.vgInfo.landstingsvardgivareWithUpload;
+
+            if ($rootScope.landstingAvailable) {
+                statisticsData.getLandstingFilterInfo(function(landstingFilterInfo) {
+                    landstingFilterFactory.setup(landstingFilterInfo.businesses,
+                        $location.$$search.landstingfilter);
+                    $scope.isLandstingInfoFetched = true;
+                });
+            }
+        }
+
+        $scope.setSelectedVardgivare = function(vgId) {
+            statisticsData.setSelectedVg(vgId, function(userAccessInfo) {
+                setupSelectedVardgivare(userAccessInfo);
+                $location.path('verksamhet');
+            }, function() {
+                $scope.dataLoadingError = true;
+            });
+        };
+
         $scope.$watch('AppModel.get().isLoggedIn', function(value){
             if (value) {
                 if (!$scope.isLoginInfoFetched) {
                     statisticsData.getLoginInfo(function (loginInfo) {
-                        businessFilterFactory.setup(loginInfo.businesses, $location.$$search.filter);
-
-                        UserModel.set(loginInfo);
-
-                        var v = loginInfo.defaultVerksamhet;
-
-                        $scope.verksamhetName = '';
-
-                        if (v) {
-                            if (loginInfo.businesses && loginInfo.businesses.length === 1) {
-                                $scope.verksamhetName = v.name;
-                            } else {
-                                $scope.verksamhetName = v.vardgivarName;
-                            }
-                            $scope.showBusinessesDetails = loginInfo.businesses && loginInfo.businesses.length > 1;
-                        }
+                        UserModel.setLoginInfo(loginInfo);
 
                         $scope.loggedInWithoutStatistikuppdrag = !(loginInfo.businesses && loginInfo.businesses.length >= 1);
 
-                        $rootScope.landstingAvailable = loginInfo.landstingsvardgivareWithUpload;
-
-                        if ($rootScope.landstingAvailable) {
-                            statisticsData.getLandstingFilterInfo(function (landstingFilterInfo) {
-                                landstingFilterFactory.setup(landstingFilterInfo.businesses, $location.$$search.landstingfilter);
-                                $scope.isLandstingInfoFetched = true;
-                            });
-                        }
-
                         $scope.isLoginInfoFetched = true;
+
+                        statisticsData.getUserAccessInfo(function(userAccesInfo) {
+                            if (!!userAccesInfo.vgInfo) {
+                                setupSelectedVardgivare(userAccesInfo);
+                            } else {
+                                if (loginInfo.vgs.length === 1) {
+                                    $scope.setSelectedVardgivare(loginInfo.vgs[0].hsaId);
+                                } else {
+                                    $location.path('verksamhet/valjVardgivare');
+                                }
+                            }
+
+                        }, function () {
+                            $scope.dataLoadingError = true;
+                        });
                     }, function () {
                         $scope.dataLoadingError = true;
                     });

@@ -22,10 +22,12 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -73,7 +75,7 @@ public class ProtectedChartDataServiceTest {
         final Vardenhet vardenhet2 = new Vardenhet(new HsaIdEnhet("verksamhet2"), "Småmålas akutmottagning", new HsaIdVardgivare("VG2"));
         List<Vardenhet> vardenhets = Arrays.asList(vardenhet1, vardenhet2);
 
-        User user = new User(new HsaIdUser("hsaId"), "name", false, vardenhets.get(0), vardenhets);
+        User user = new User(new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets.get(0).getVardgivarId(), vardenhets);
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
         when(request.getUserPrincipal()).thenReturn(principal);
         when(principal.getDetails()).thenReturn(user);
@@ -88,14 +90,14 @@ public class ProtectedChartDataServiceTest {
 
     @Test
     public void checkAllowedAccessToVerksamhetTest() {
-        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new HsaIdUser(""), "", null, false, false, false, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
+        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new User(new HsaIdUser("testid"), "", Lists.newArrayList(), null, Lists.newArrayList()), Lists.newArrayList(), Lists.newArrayList()));
         boolean result = chartDataService.hasAccessTo(request);
         assertEquals(true, result);
     }
 
     @Test
     public void userAccessShouldLog() {
-        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new HsaIdUser(""), "", null, false, false, false, null, LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE));
+        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new User(new HsaIdUser(""), "", Lists.newArrayList(), null, Lists.newArrayList()), Lists.newArrayList(), Lists.newArrayList()));
         chartDataService.userAccess(request);
     }
 

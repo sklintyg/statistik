@@ -598,7 +598,7 @@ public class ProtectedChartDataService {
     public boolean userAccess(HttpServletRequest request) {
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
         if (loginInfo != null) {
-            HsaIdVardgivare hsaIdVardgivare = loginInfo.getDefaultVerksamhet() != null ? loginInfo.getDefaultVerksamhet().getVardgivarId() : null;
+            final HsaIdVardgivare hsaIdVardgivare = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
             String sessionId = request.getSession() != null ? request.getSession().getId() : null;
             LOG.info("User " + loginInfo.getHsaId() + " accessed verksamhet " + hsaIdVardgivare + " (" + getUriSafe(request) + ") session " + sessionId);
             monitoringLogService.logTrackAccessProtectedChartData(loginInfo.getHsaId(), hsaIdVardgivare, getUriSafe(request));
