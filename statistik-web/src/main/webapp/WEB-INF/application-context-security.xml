@@ -87,14 +87,12 @@
         <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
             <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
-       <!--     <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>   -->
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
         </security:http>
         <security:http entry-point-ref="samlEntryPoint">
             <security:csrf disabled="true"/>
             <security:intercept-url pattern="/login.jsp*" access="isAnonymous()"/>
-          <!--  <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>   -->
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
         </security:http>
@@ -111,13 +109,11 @@
         <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
             <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
-          <!-- <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/> -->
            <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
        </security:http>
        <security:http use-expressions="false" entry-point-ref="samlEntryPoint">
            <security:csrf disabled="true"/>
            <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
-          <!-- <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>   -->
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
         </security:http>
         <security:authentication-manager alias="authenticationManager">
@@ -143,16 +139,6 @@
 
     <beans profile="security-saml,security-both">
         <bean id="samlFilter" class="org.springframework.security.web.FilterChainProxy">
-          <!-- Old set of patterns
-            <security:filter-chain-map request-matcher="ant">
-                <security:filter-chain pattern="/saml/login/**" filters="samlEntryPoint"/>
-                <security:filter-chain pattern="/saml/logout/**" filters="samlLogoutFilter"/>
-                <security:filter-chain pattern="/saml/metadata/**" filters="metadataDisplayFilter"/>
-                <security:filter-chain pattern="/saml/SSO/**" filters="samlWebSSOProcessingFilter"/>
-                <security:filter-chain pattern="/saml/SSOHoK/**" filters="samlWebSSOHoKProcessingFilter"/>
-                <security:filter-chain pattern="/saml/SingleLogout/**" filters="samlLogoutProcessingFilter"/>
-            </security:filter-chain-map>
-            -->
           <security:filter-chain-map request-matcher="ant">
             <security:filter-chain pattern="/saml/login/**" filters="samlEntryPoint"/>
             <security:filter-chain pattern="/saml/logout/**" filters="samlLogoutFilter"/>
@@ -195,48 +181,6 @@
             </property>
         </bean>
 
-        <!-- Filter automatically generates default SP metadata     UNUSED per STAT 4.0
-        <bean id="metadataGeneratorFilter" class="org.springframework.security.saml.metadata.MetadataGeneratorFilter">
-            <constructor-arg>
-                <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
-                    <property name="entityId" value="${saml.entityId}"/>
-                    <property name="entityBaseURL" value="${saml.entityBaseUrl}"/>
-                    <property name="bindingsSSO" value="POST"/>
-                </bean>
-            </constructor-arg>
-        </bean>
-         -->
-
-        <!-- The filter is waiting for connections on URL suffixed with filterSuffix and presents SP metadata there
-        UNUSED per STAT 4.0
-        <bean id="metadataDisplayFilter" class="org.springframework.security.saml.metadata.MetadataDisplayFilter"/>
-        -->
-
-        <!-- IDP Metadata configuration - paths to metadata of IDPs in circle of trust is here -->
-        <!-- Do no forget to call initalize method on providers
-        <bean id="metadata" class="org.springframework.security.saml.metadata.CachingMetadataManager">
-            <constructor-arg>
-                <list>
-                    <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
-                        <constructor-arg>
-                            <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
-                                <constructor-arg>
-                                    <value type="java.io.File">${saml.idp.metadata.file}</value>
-                                </constructor-arg>
-                                <property name="parserPool" ref="parserPool"/>
-                            </bean>
-                        </constructor-arg>
-                        <constructor-arg>
-                            <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
-                        </constructor-arg>
-                        <property name="metadataTrustCheck" value="false"/>
-                    </bean>
-                </list>
-            </constructor-arg>
-            <property name="refreshCheckInterval" value="86400000"/>
-
-        </bean>
-  -->
       <!-- IDP Metadata configuration - paths to metadata of IDPs in circle of trust is here -->
       <!-- Do no forget to call initalize method on providers -->
       <bean id="metadata" class="org.springframework.security.saml.metadata.CachingMetadataManager">
@@ -302,10 +246,6 @@
 
       </bean>
 
-      <!-- Unused per STAT 4.0
-        <bean id="httpClientFactory" class="se.inera.auth.HttpClientFactory"/>
-        <bean id="httpClient" factory-bean="httpClientFactory" factory-method="createInstance"/>
-      -->
         <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
         <bean id="samlAuthenticationProvider" class="org.springframework.security.saml.SAMLAuthenticationProvider">
             <property name="userDetails" ref="userDetailsService"/>

@@ -38,7 +38,7 @@ import se.inera.ifv.hsawsresponder.v3.PingType;
 
 /**
  * This class interfaces with the "old" Web Service-based HSA, e.g. NOT over NTjP. It is subject to be replaced by
- * NTjP-based HSA integration.
+ * NTjP-based HSA integration (INTYG-2226).
  */
 public class HSAWebServiceCalls {
 
