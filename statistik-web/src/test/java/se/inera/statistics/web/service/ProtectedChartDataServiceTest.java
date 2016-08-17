@@ -90,14 +90,14 @@ public class ProtectedChartDataServiceTest {
 
     @Test
     public void checkAllowedAccessToVerksamhetTest() {
-        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new User(new HsaIdUser("testid"), "", Lists.newArrayList(), null, Lists.newArrayList()), Lists.newArrayList(), Lists.newArrayList()));
+        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new HsaIdUser("testid"), "", Lists.newArrayList(), Lists.newArrayList()));
         boolean result = chartDataService.hasAccessTo(request);
         assertEquals(true, result);
     }
 
     @Test
     public void userAccessShouldLog() {
-        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new User(new HsaIdUser(""), "", Lists.newArrayList(), null, Lists.newArrayList()), Lists.newArrayList(), Lists.newArrayList()));
+        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList()));
         chartDataService.userAccess(request);
     }
 

@@ -41,7 +41,7 @@ public class LoginInfoTest {
         //Given
         final LoginInfoVg vg1 = new LoginInfoVg(new HsaIdVardgivare("vgid1"), "vg1", LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(true, 2));
         final LoginInfoVg vg2 = new LoginInfoVg(new HsaIdVardgivare("vgid2"), "vg2", LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(true, 2));
-        final LoginInfo loginInfo = new LoginInfo(createUser("testid", "testname"), null, new ArrayList<>(Arrays.asList(vg1, vg2)));
+        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", null, new ArrayList<>(Arrays.asList(vg1, vg2)));
 
         //Then
         assertEquals(vg1, loginInfo.getLoginInfoForVg(vg1.getHsaId()).get());
@@ -51,7 +51,7 @@ public class LoginInfoTest {
     @Test
     public void testGetLoginInfoForVgNullSafe() throws Exception {
         //Given
-        final LoginInfo loginInfo = new LoginInfo(null, null, null);
+        final LoginInfo loginInfo = new LoginInfo(null, null, null, null);
 
         //When
         assertEquals("", loginInfo.getName());
@@ -70,7 +70,7 @@ public class LoginInfoTest {
     @Test
     public void testLoginInfoIsImmutable() throws Exception {
         //Given
-        final LoginInfo loginInfo = new LoginInfo(createUser("testid", "testname"), new ArrayList<>(), new ArrayList<>());
+        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", new ArrayList<>(), new ArrayList<>());
 
         //When
         try {
@@ -97,7 +97,7 @@ public class LoginInfoTest {
         final Verksamhet e1 = createVerksamhet("e1", "vg1");
         final Verksamhet e2 = createVerksamhet("e2", "vg1");
         final Verksamhet e3 = createVerksamhet("e3", "vg2");
-        final LoginInfo loginInfo = new LoginInfo(createUser("testid", "testname"), new ArrayList<>(Arrays.asList(e1, e2, e3)), null);
+        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser("testid"), "testname", new ArrayList<>(Arrays.asList(e1, e2, e3)), null);
 
         //When
         final List<Verksamhet> businessesForVg1 = loginInfo.getBusinessesForVg(e1.getVardgivarId());

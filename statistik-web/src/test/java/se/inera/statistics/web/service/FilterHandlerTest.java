@@ -83,7 +83,7 @@ public class FilterHandlerTest {
         final List<String> sjukskrivningslangd = Arrays.stream(SjukfallsLangdGroup.values()).map(Enum::name).collect(Collectors.toList());
         final FilterData filterData = new FilterData(null, null, null, sjukskrivningslangd, null, null, true);
         Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
-        final LoginInfo loginInfo = new LoginInfo(new User(new HsaIdUser(""), "", Lists.newArrayList(), null, Lists.newArrayList()), Lists.newArrayList(), Lists.newArrayList());
+        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList());
         Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(loginInfo);
         Mockito.when(sjukfallUtil.createEnhetFilter(new HsaIdEnhet[0])).thenReturn(new SjukfallFilter(f -> true, s -> true, filterHash));
 
@@ -105,7 +105,7 @@ public class FilterHandlerTest {
         final String filterHash = "abc";
         final FilterData filterData = new FilterData(null, null, null, null, null, null, true);
         Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
-        final LoginInfo loginInfo = new LoginInfo(new User(new HsaIdUser(""), "", Lists.newArrayList(), null, Lists.newArrayList()), Lists.newArrayList(), Lists.newArrayList());
+        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList());
         Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(loginInfo);
         Mockito.when(sjukfallUtil.createEnhetFilter(new HsaIdEnhet[0])).thenReturn(new SjukfallFilter(f -> true, s -> true, filterHash));
 
@@ -128,7 +128,7 @@ public class FilterHandlerTest {
         final List<String> sjukskrivningslangd = Stream.concat(Arrays.stream(SjukfallsLangdGroup.values()).map(Enum::name), Stream.of("EjGiltigLangd")).collect(Collectors.toList());
         final FilterData filterData = new FilterData(null, null, null, sjukskrivningslangd, null, null, true);
         Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
-        final LoginInfo loginInfo = new LoginInfo(new User(new HsaIdUser(""), "", Lists.newArrayList(), null, Lists.newArrayList()), Lists.newArrayList(), Lists.newArrayList());
+        final LoginInfo loginInfo = new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList());
         Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(loginInfo);
         Mockito.when(sjukfallUtil.createEnhetFilter(new HsaIdEnhet[0])).thenReturn(new SjukfallFilter(f -> true, s -> true, filterHash));
 

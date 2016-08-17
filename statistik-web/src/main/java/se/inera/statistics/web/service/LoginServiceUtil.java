@@ -114,7 +114,7 @@ public class LoginServiceUtil {
         final List<LoginInfoVg> loginInfoVgs = allVgNames.entrySet().stream()
                 .map(vgidWithName -> toLoginInfoVg(realUser, vgidWithName))
                 .collect(Collectors.toList());
-        return new LoginInfo(realUser, verksamhets, loginInfoVgs);
+        return new LoginInfo(realUser.getHsaId(), realUser.getName(), verksamhets, loginInfoVgs);
     }
 
     private LoginInfoVg toLoginInfoVg(User realUser, Map.Entry<HsaIdVardgivare, String> vgidWithName) {

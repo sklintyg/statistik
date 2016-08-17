@@ -23,32 +23,33 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
+import com.google.common.base.Strings;
+
 public class LoginInfo {
 
-    private final String hsaId;
+    private final HsaIdUser hsaId;
     private final String name;
     private final List<Verksamhet> businesses;
     private final List<LoginInfoVg> loginInfoVgs;
 
     public LoginInfo() {
-        hsaId = "";
+        hsaId = new HsaIdUser("");
         name = "";
         businesses = Collections.emptyList();
         loginInfoVgs = Collections.emptyList();
     }
-    public LoginInfo(User user, List<Verksamhet> businesses, List<LoginInfoVg> loginInfoVgs) {
-        this.hsaId = user != null ? user.getHsaId() != null ? user.getHsaId().getId() : "" : "";
-        this.name = user != null ? user.getName() : "";
+    public LoginInfo(HsaIdUser userId, String userName, List<Verksamhet> businesses, List<LoginInfoVg> loginInfoVgs) {
+        this.hsaId = userId != null ? userId : new HsaIdUser("");
+        this.name = Strings.nullToEmpty(userName);
         this.businesses = businesses != null ? Collections.unmodifiableList(businesses) : Collections.emptyList();
         this.loginInfoVgs = loginInfoVgs != null ? Collections.unmodifiableList(loginInfoVgs) : Collections.emptyList();
     }
 
     public HsaIdUser getHsaId() {
-        return new HsaIdUser(hsaId);
+        return hsaId;
     }
 
     public String getName() {
