@@ -50,9 +50,9 @@ angular.module('StatisticsApp').factory('statisticsData',
         });
     };
 
-    var makeRequestVerksamhet = function (restFunctionName, successCallback, failureCallback, notAbortable) {
+    var makeRequestVerksamhet = function (restFunctionName, successCallback, failureCallback, httpMethod, notAbortable) {
         var url = 'api/verksamhet/' + restFunctionName + $rootScope.queryString;
-        makeRequest(url, successCallback, failureCallback, notAbortable);
+        makeRequest(url, successCallback, failureCallback, httpMethod, notAbortable);
     };
 
     var makeRequestLandsting = function (restFunctionName, successCallback, failureCallback, httpMethod, notAbortable) {
