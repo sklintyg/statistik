@@ -199,9 +199,8 @@
           <uib-accordion id="accordion2">
             <uib-accordion-group is-open="status.isTableOpen">
               <uib-accordion-heading class="hidden-print">
-                <i class="glyphicon chart-table-expand-icon"></i>
-                <span data-ng-if="status.isTableOpen"><span message key="lbl.dolj-tabell"></span></span>
-                <span data-ng-if="!status.isTableOpen"><span message key="lbl.visa-tabell"></span></span>
+                <span data-ng-if="status.isTableOpen"><i class="glyphicon chart-table-min-icon"></i> <span message key="lbl.dolj-tabell"></span></span>
+                <span data-ng-if="!status.isTableOpen"><i class="glyphicon chart-table-expand-icon"></i> <span message key="lbl.visa-tabell"></span></span>
               </uib-accordion-heading>
               <stat-scroll-table header-rows="headerrows" rows="rows"></stat-scroll-table>
             </uib-accordion-group>

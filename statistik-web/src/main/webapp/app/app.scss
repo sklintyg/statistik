@@ -509,19 +509,21 @@ legend {
   cursor: pointer;
 }
 
-#chart-data-table i.chart-table-expand-icon {
-  @extend .glyphicon-minus-sign;
-
+#chart-data-table i.glyphicon {
   color: #fff;
   font-size: 12px;
   float: left;
   margin-top: 3px;
   margin-right: 10px;
   margin-left: 0;
-}
 
-#chart-data-table.collapsed i.chart-table-expand-icon {
-  @extend .glyphicon-plus-sign;
+  &.chart-table-min-icon {
+    @extend .glyphicon-minus-sign;
+  }
+
+  &.chart-table-expand-icon {
+    @extend .glyphicon-plus-sign;
+  }
 }
 
 #chart-data-table .panel-body {

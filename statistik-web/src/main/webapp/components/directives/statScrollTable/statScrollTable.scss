@@ -19,6 +19,7 @@ thead tr td.headcol.scrollable:first-child {
 }
 
 .headcol-name {
+  display: inline-block;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 34em;
