@@ -30,10 +30,26 @@ angular.module('StatisticsApp').directive('statScrollTable',
             },
             templateUrl: 'components/directives/statScrollTable/statScrollTable.html',
             link: function($scope, element) {
-                $scope.$watch('rows', waitOn);
-                $scope.$watch('headerRows', waitOn);
+                $scope.$watch('rows', watchRows);
 
-                function waitOn() {
+                var maxRows = 499;
+                $scope.moreThanMax = false;
+
+                function watchRows(rows) {
+                    $scope.moreThanMax = false;
+
+                    if (angular.isUndefined(rows)) {
+                        return;
+                    }
+
+                    if (rows.length > maxRows) {
+                        $scope.rowsShown = rows.splice(0, maxRows);
+                        $scope.moreThanMax = true;
+                    } else {
+                        $scope.rowsShown = rows;
+                    }
+
+                    // Wait for table to render
                     $timeout(setWidth);
                 }
 

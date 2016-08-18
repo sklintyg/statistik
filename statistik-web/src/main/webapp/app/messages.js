@@ -118,7 +118,7 @@ var stMessages = {
         'overview.widget.table.column.forandring': 'Förändring',
         'overview.widget.fordelning-sjukskrivningslangd.overgar-90': 'Antal sjukfall som är 91 dagar eller längre.',
         'overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader': 'Procentuell förändring av antal sjukfall som är längre än 90 dagar jämfört med föregående tre månader.',
-        
+
         //detail views
         'lbl.valj-annat-diagnoskapitel': 'Välj diagnoskapitel:',
         'lbl.valj-annat-diagnosavsnitt': 'Välj diagnosavsnitt',
@@ -132,6 +132,9 @@ var stMessages = {
         'dropdown.val.spara-excel': ' Spara tabell till Excel',
         'alert.diagnosgrupp.information': 'För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen M54 och intyg två efter vidare utredning sätter diagnosen F32, så kommer sjukfallet både räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) och i gruppen för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad.',
         'comparediagnoses.lbl.val-av-diagnoser': 'Välj vilken eller vilka diagnoser som din rapport ska baseras på:',
+
+        'table.warning.title' : 'Varning!',
+        'table.warning.text' : 'Tabellen kan inte visas i sin helhet. Spara ner tabellen som PDF eller Excel för att se all data.',
 
         //help texts
         'alert.lan-andel-sjukfall-per-kon.questionmark' : 'I tabellen visas andel sjukfall i procent per kön och län. Antal sjukfall anges inom parentes.',
