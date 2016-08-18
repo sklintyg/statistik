@@ -364,9 +364,9 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
         //Then
         $timeout(function(){
-            expect(menuItems[0].hideChildren).toBe(false);
-            expect(sub12.hideChildren).toBe(false);
-            expect(sub122.hideChildren).toBe(false);
+            expect(menuItems[0].showChildren).toBe(true);
+            expect(sub12.showChildren).toBe(true);
+            expect(sub122.showChildren).toBe(true);
             expect(sub121.hide).toBe(true);
             expect(menuItems[1].hide).toBe(true);
         }, 100);

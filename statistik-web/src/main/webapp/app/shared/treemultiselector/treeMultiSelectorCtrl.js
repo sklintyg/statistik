@@ -88,7 +88,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         };
 
         $scope.hideClicked = function (item) {
-            item.hideChildren = !item.hideChildren;
+            item.showChildren = !item.showChildren;
         };
 
         $scope.deselectAll = function (item) {
@@ -117,7 +117,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             });
             if (visibleItems.length === 1) {
                 var item = visibleItems[0];
-                item.hideChildren = false;
+                item.showChildren = true;
                 expandIfOnlyOneVisible(item.subs);
             }
         }
