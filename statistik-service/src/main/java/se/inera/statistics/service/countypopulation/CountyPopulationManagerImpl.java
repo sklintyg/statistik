@@ -68,7 +68,7 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
     }
 
     private org.joda.time.LocalDate getPopulationFromDate(Range range) {
-        return range.getFrom().withDayOfYear(1).minusDays(1);
+        return range.getTo().withDayOfYear(1).minusDays(1);
     }
 
     private Optional<CountyPopulation> getCountyPopulation(org.joda.time.LocalDate date) {

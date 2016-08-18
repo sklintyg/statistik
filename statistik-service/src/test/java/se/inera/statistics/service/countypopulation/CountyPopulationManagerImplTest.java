@@ -88,7 +88,7 @@ public class CountyPopulationManagerImplTest {
         countyPopulationManager.getCountyPopulation(range);
 
         //Then
-        Mockito.verify(countyPopulationFetcher, times(0)).getPopulationFor(range.getFrom().getYear() - 1);
+        Mockito.verify(countyPopulationFetcher, times(0)).getPopulationFor(range.getTo().getYear() - 1);
         Mockito.verify(query, times(1)).getSingleResult();
     }
 
@@ -105,7 +105,7 @@ public class CountyPopulationManagerImplTest {
         final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation(range);
 
         //Then
-        Mockito.verify(countyPopulationFetcher, times(1)).getPopulationFor(range.getFrom().getYear() - 1);
+        Mockito.verify(countyPopulationFetcher, times(1)).getPopulationFor(range.getTo().getYear() - 1);
         Mockito.verify(query, times(2)).getSingleResult();
     }
 
