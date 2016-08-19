@@ -159,7 +159,7 @@
         var operation = {
             checkVisible: function() {
                 if ($scope.isMobile) {
-                    return $scope.isLoggedIn;
+                    return UserModel.get().enableVerksamhetMenu;
                 }
                 return $scope.loginVisible;
             },
@@ -334,7 +334,7 @@
                 $scope.menus.push({
                     id: operation.id,
                     name: 'nav.business-header',
-                    tooltip: 'login.header',
+                    tooltip: 'login.header.verksamhet',
                     show: false,
                     disabled: true,
                     checkVisible: operation.checkVisible

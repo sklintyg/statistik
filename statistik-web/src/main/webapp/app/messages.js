@@ -159,6 +159,7 @@ var stMessages = {
         'info.emptyreponse' : 'Ingen data tillgänglig. Det kan bero på att det inte finns någon data för verksamheten eller att du har angivit en alltför restriktiv filtrering.',
 
         //login view
+        'login.header.verksamhet': 'Logga in för verksamhetsstatistik',
         'login.header': 'Logga in',
         'login.alert-info.behorighet': 'Det verkar som att du saknar medarbetaruppdraget "Statistik" i HSA.',
         'login.alert-inaktivitet': 'Du har loggats ut på grund av inaktivitet. Vänligen logga in på nytt.',
@@ -168,6 +169,11 @@ var stMessages = {
         'login.btn.siths-login': 'Logga in',
         'login.siths.problem': 'Problem med inloggning med SITHS-kort?',
         'login.siths.problem-link': 'Läs mer om hur du kan felsöka.',
+
+        'login.instruktioner-for-valj-vg': 'Du har behörighet till vårdenheter som tillhör flera olika vårdgivare. Välj den vårdgivare som du vill se verksamhetsstatistik för. <br> Observera att du bara kan se statistik för de vårdenheter som du har behörighet till inom vald vårdgivare.',
+        'login.valj-vg.help.text' : 'Beräkningen av statistik baseras på personuppgifter i de elektroniska intyg som hälso- och sjukvården utfärdar. Med beaktande av sekretessen inom hälso- och sjukvården är det i huvudregel förbjudet att lämna ut och samköra personuppgifter från olika vårdgivare. Lagregler möjliggör inte utlämnande av personuppgifter mellan vårdgivare vilket resulterar i att användare av Statistiktjänsten inte kan få tillgång till uppgifter från olika vårdgivare utan att genomföra separata val.',
+        'login.valj-vg.help.link': 'Varför behöver jag välja vårdgivare?',
+        'login.valj-vg.change-after-login' : 'Du kan byta mellan olika vårdgivare även efter inloggning.',
 
         //about texts
         'about.service': 'Om Statistiktjänsten',

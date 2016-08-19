@@ -11,7 +11,7 @@
         <div class="modal-body">
           <p>Inom vårdgivaren <b>{{::verksamhetName}}</b> har du behörighet att se statistik för följande vårdenheter:</p>
           <ul>
-            <li data-ng-repeat="business in businesses">{{::business.name}}</li>
+            <li data-ng-repeat="business in businesses | orderBy:'name'">{{::business.name}}</li>
           </ul>
         </div>
       </div>

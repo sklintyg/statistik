@@ -18,8 +18,7 @@
  */
 
 angular.module('StatisticsApp').controller('pageCtrl',
-    [ '$scope', '$rootScope', '$window', '$location', 'statisticsData', 'businessFilterFactory', 'landstingFilterFactory',
-        '_', 'ControllerCommons', 'AppModel', 'UserModel',
+    /** @ngInject */
     function ($scope, $rootScope, $window, $location, statisticsData, businessFilterFactory, landstingFilterFactory,
         _, ControllerCommons, AppModel, UserModel) {
         'use strict';
@@ -104,7 +103,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
                                 if (loginInfo.vgs.length === 1) {
                                     $scope.setSelectedVardgivare(loginInfo.vgs[0].hsaId);
                                 } else {
-                                    $location.path('verksamhet/valjVardgivare');
+                                    $location.path('valjVardgivare');
                                 }
                             }
 
@@ -124,7 +123,11 @@ angular.module('StatisticsApp').controller('pageCtrl',
         });
 
         $scope.loginClicked = function () {
-            $location.path(AppModel.get().loginUrl);
+            if ($rootScope.isLoggedIn) {
+                $location.path('valjVardgivare');
+            } else {
+                $location.path(AppModel.get().loginUrl);
+            }
         };
     }
-]);
+);

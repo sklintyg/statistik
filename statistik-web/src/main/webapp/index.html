@@ -48,13 +48,13 @@
     </div>
 
     <div class="hidden-xs" data-ng-if="AppModel.get().loginVisible">
-      <div class="ng-hide headerbox-login" id="business-login-container" data-ng-show="!isLoggedIn">
+      <div class="ng-hide headerbox-login" id="business-login-container" data-ng-show="!UserModel.get().enableVerksamhetMenu">
         <span id="business-login-span"><span message key="lbl.for-verksamhetsstatistik"></span></span>
         <button class="btn" data-ng-click="loginClicked()"
                 type="button" id="business-login-btn" value="Logga in"><span message key="lbl.log-in"></span>
         </button>
       </div>
-      <div class="ng-hide" data-ng-show="isLoggedIn">
+      <div class="ng-hide" data-ng-show="UserModel.get().enableVerksamhetMenu">
         <div class="headerbox-avatar pull-right">
           <img src="/assets/images/avatar.png">
         </div>
@@ -129,6 +129,7 @@
   <script src="bower_components/angular-route/angular-route.js"></script>
   <script src="bower_components/angular-cookies/angular-cookies.js"></script>
   <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+  <script src="bower_components/angular-animate/angular-animate.js"></script>
   <script src="bower_components/angular-i18n/angular-locale_sv-se.js"></script>
   <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -158,6 +159,7 @@
   <script src="app/controller/about/aboutFaqCtrl.js"></script>
   <script src="app/controller/business/businessLandingPageCtrl.js"></script>
   <script src="app/controller/business/businessOverviewCtrl.js"></script>
+  <script src="app/controller/business/selectVgCtrl.js"></script>
   <script src="app/controller/columnChartDetailsViewCtrl.js"></script>
   <script src="app/controller/doubleAreaChartsCtrl.js"></script>
   <script src="app/controller/landsting/landstingFileUploadCtrl.js"></script>
