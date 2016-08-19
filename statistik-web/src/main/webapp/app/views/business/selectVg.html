@@ -3,26 +3,5 @@
     <span message key="login.header"></span> <i class="glyphicon glyphicon-log-in"></i>
   </h1>
 
-  <p message key="login.instruktioner-for-valj-vg"></p>
-
-  <ul>
-    <li data-ng-repeat="vgInfo in UserModel.get().vgs | orderBy:'name'">
-      <a href data-ng-click="setSelectedVardgivare(vgInfo.id)" title="Klicka för att välja denna vårdgivare.">{{::vgInfo.name}}</a>
-    </li>
-  </ul>
-
-  <p message key="login.valj-vg.change-after-login"></p>
-
-  <p>
-    <button class="btn btn-link btn-link-minimal valj-vg-help" ng-click="isCollapsed = !isCollapsed"
-            ng-switch="isCollapsed">
-      <span message key="login.valj-vg.help.link"></span>
-      <span ng-switch-when="false" class="glyphicon glyphicon-chevron-up"></span>
-      <span ng-switch-when="true" class="glyphicon glyphicon-chevron-down"></span>
-    </button>
-  </p>
-
-  <div uib-collapse="isCollapsed">
-    <p message key="login.valj-vg.help.text"></p>
-  </div>
+  <select-vardgivare vardgivare="UserModel.get().vgs" is-login="true" select-vardgivare="setSelectedVardgivare(vgId)"></select-vardgivare>
 </div>

@@ -17,13 +17,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').controller('selectVgCtrl',
+angular.module('StatisticsApp').directive('selectVardgivare',
     /** @ngInject */
-    function ($scope, $rootScope) {
+    function () {
         'use strict';
 
-        if (!$rootScope.isLoggedIn) {
-            $scope.loginClicked();
-        }
-    }
-);
+        return {
+            restrict: 'E',
+            scope: {
+                vardgivare: '=',
+                isLogin: '=',
+                selectVardgivare: '&'
+            },
+            templateUrl: 'components/directives/selectVardgivare/selectVardgivare.html',
+            link: function($scope) {
+                $scope.isCollapsed = true;
+
+                $scope.setSelectedVardgivare = function(vgId) {
+                  $scope.selectVardgivare({vgId: vgId});
+                };
+            }
+        };
+    });

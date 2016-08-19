@@ -174,6 +174,8 @@ var stMessages = {
         'login.valj-vg.help.text' : 'Beräkningen av statistik baseras på personuppgifter i de elektroniska intyg som hälso- och sjukvården utfärdar. Med beaktande av sekretessen inom hälso- och sjukvården är det i huvudregel förbjudet att lämna ut och samköra personuppgifter från olika vårdgivare. Lagregler möjliggör inte utlämnande av personuppgifter mellan vårdgivare vilket resulterar i att användare av Statistiktjänsten inte kan få tillgång till uppgifter från olika vårdgivare utan att genomföra separata val.',
         'login.valj-vg.help.link': 'Varför behöver jag välja vårdgivare?',
         'login.valj-vg.change-after-login' : 'Du kan byta mellan olika vårdgivare även efter inloggning.',
+        'login.valj-vg.title' : 'Välj vårdgivare',
+        'login.valj-vg.change': 'Byt vårdgivare',
 
         //about texts
         'about.service': 'Om Statistiktjänsten',
