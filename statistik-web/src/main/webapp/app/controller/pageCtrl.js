@@ -98,11 +98,14 @@ angular.module('StatisticsApp').controller('pageCtrl',
             businessFilterFactory.setup(userAccessInfo.businesses, $location.$$search.filter);
         }
 
-        $scope.setSelectedVardgivare = function(vgId, skipRedirect) {
+        $scope.setSelectedVardgivare = function(vgId, keepExistingUrl) {
+            if (!keepExistingUrl) {
+                $location.url($location.path()); //Clear query params (e.g. filter)
+            }
             $location.search('vgid', vgId);
             statisticsData.getUserAccessInfo(vgId, function(userAccessInfo) {
                 setupSelectedVardgivare(userAccessInfo);
-                if (!skipRedirect) {
+                if (!keepExistingUrl) {
                     $location.path('verksamhet');
                 }
             }, function() {
