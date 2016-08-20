@@ -33,19 +33,12 @@ public class User implements Serializable {
     private final String name;
     private final List<HsaIdVardgivare> vgsWithProcessledarStatus;
     private final List<Vardenhet> vardenhetList;
-    private HsaIdVardgivare selectedVardgivare;
-    private UserAccessLevel userAccessLevel;
 
-    public User(HsaIdUser hsaId, String name, List<HsaIdVardgivare> vgsWithProcessledarStatus, HsaIdVardgivare selectedVardgivare, List<Vardenhet> vardenhetsList) {
+    public User(HsaIdUser hsaId, String name, List<HsaIdVardgivare> vgsWithProcessledarStatus, List<Vardenhet> vardenhetsList) {
         this.hsaId = hsaId;
         this.name = name;
         this.vgsWithProcessledarStatus = vgsWithProcessledarStatus != null ? Collections.unmodifiableList(vgsWithProcessledarStatus) : Collections.emptyList();
         this.vardenhetList = vardenhetsList != null ? Collections.unmodifiableList(vardenhetsList) : Collections.emptyList();
-        setSelectedVardgivare(selectedVardgivare);
-    }
-
-    private boolean isProcessledareForSelectedVg() {
-        return isProcessledareForVg(this.selectedVardgivare);
     }
 
     public boolean isProcessledareForVg(HsaIdVardgivare vardgivareId) {
@@ -67,33 +60,12 @@ public class User implements Serializable {
         return vardenhetList;
     }
 
-    public boolean isVerksamhetschef() {
-        return userAccessLevel.isVerksamhetschef();
-    }
-
-    public boolean isDelprocessledare() {
-        return userAccessLevel.isDelprocessledare();
-    }
-
-    public boolean isProcessledare() {
-        return userAccessLevel.isProcessledare();
-    }
-
-    public HsaIdVardgivare getSelectedVardgivare() {
-        return selectedVardgivare;
-    }
-
-    public void setSelectedVardgivare(HsaIdVardgivare selectedVardgivare) {
-        this.selectedVardgivare = selectedVardgivare;
-        this.userAccessLevel = new UserAccessLevel(isProcessledareForSelectedVg(), getEnhetsForSelectedVardgivare().size());
+    public UserAccessLevel getUserAccessLevelForVg(HsaIdVardgivare vg) {
+        return new UserAccessLevel(isProcessledareForVg(vg), getVardenhetsForVg(vg).size());
     }
 
     public List<HsaIdVardgivare> getVgsWithProcessledarStatus() {
         return vgsWithProcessledarStatus;
-    }
-
-    private List<Vardenhet> getEnhetsForSelectedVardgivare() {
-        return getVardenhetsForVg(this.selectedVardgivare);
     }
 
     public List<Vardenhet> getVardenhetsForVg(HsaIdVardgivare vardgivare) {

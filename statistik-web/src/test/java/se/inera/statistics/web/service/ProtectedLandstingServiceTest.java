@@ -114,7 +114,7 @@ public class ProtectedLandstingServiceTest {
         final Vardenhet vardenhet2 = new Vardenhet(new HsaIdEnhet("verksamhet2"), "Småmålas akutmottagning", new HsaIdVardgivare("VG2"));
         List<Vardenhet> vardenhets = Arrays.asList(vardenhet1, vardenhet2);
 
-        User user = new User(new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets.get(0).getVardgivarId(), vardenhets);
+        User user = new User(new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets);
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
         when(request.getUserPrincipal()).thenReturn(principal);
         when(principal.getDetails()).thenReturn(user);
@@ -202,9 +202,8 @@ public class ProtectedLandstingServiceTest {
         Mockito.when(ds.getName()).thenReturn("testfilename");
         Mockito.when(dh.getDataSource()).thenReturn(ds);
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        final User user = new User(new HsaIdUser(""), "", Lists.newArrayList(), null, Lists.newArrayList());
+        final User user = new User(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList());
         final HsaIdVardgivare vg = new HsaIdVardgivare("TestVg");
-        user.setSelectedVardgivare(vg);
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vg);
         final LoginInfoVg loginInfoVg = new LoginInfoVg(vg, "", LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE, new UserAccessLevel(true, 1));
         Mockito.when(loginServiceUtil.getLoginInfo(req)).thenReturn(new LoginInfo(user.getHsaId(), user.getName(), Lists.newArrayList(), Lists.newArrayList(loginInfoVg)));

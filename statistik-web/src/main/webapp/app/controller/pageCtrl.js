@@ -52,35 +52,59 @@ angular.module('StatisticsApp').controller('pageCtrl',
             else {
                 $scope.viewHeader = 'Nationell statistik';
             }
+
+            if ($scope.isVerksamhetShowing) {
+                var vgid = $location.search().vgid;
+                if (!!vgid) {
+                    if ($scope.previousVgid !== vgid) {
+                        $scope.setSelectedVardgivare(vgid, true);
+                    }
+                    $scope.previousVgid = vgid;
+                } else {
+                    var vgs = UserModel.get().vgs;
+                    if (vgs.length === 1) {
+                        $scope.setSelectedVardgivare(vgs[0].id, true);
+                    } else {
+                        $location.path('/valjVardgivare');
+                    }
+                }
+            }
         });
 
         function setupSelectedVardgivare(userAccessInfo) {
-            UserModel.setUserAccessInfo(userAccessInfo);
-
-            businessFilterFactory.setup(userAccessInfo.businesses, $location.$$search.filter);
-
-            $scope.verksamhetName = '';
-            if (userAccessInfo.businesses && userAccessInfo.businesses.length === 1) {
-                $scope.verksamhetName = userAccessInfo.businesses[0].name;
+            if (userAccessInfo.vgInfo) {
+                UserModel.setUserAccessInfo(userAccessInfo);
+                $scope.verksamhetName = '';
+                if (userAccessInfo.businesses && userAccessInfo.businesses.length === 1) {
+                    $scope.verksamhetName = userAccessInfo.businesses[0].name;
+                } else {
+                    $scope.verksamhetName = userAccessInfo.vgInfo.name;
+                }
+                $scope.showBusinessesDetails = userAccessInfo.businesses && userAccessInfo.businesses.length > 1;
+                $rootScope.landstingAvailable = userAccessInfo.vgInfo.landstingsvardgivareWithUpload;
+                if ($rootScope.landstingAvailable) {
+                    statisticsData.getLandstingFilterInfo(function(landstingFilterInfo) {
+                        landstingFilterFactory.setup(landstingFilterInfo.businesses,
+                            $location.$$search.landstingfilter);
+                        $scope.isLandstingInfoFetched = true;
+                    });
+                }
             } else {
-                $scope.verksamhetName = userAccessInfo.vgInfo.name;
+                UserModel.resetUserAccessInfo();
+                $scope.showBusinessesDetails = false;
+                $rootScope.landstingAvailable = false;
+                $scope.verksamhetName = '';
             }
-            $scope.showBusinessesDetails = userAccessInfo.businesses && userAccessInfo.businesses.length > 1;
-            $rootScope.landstingAvailable = userAccessInfo.vgInfo.landstingsvardgivareWithUpload;
-
-            if ($rootScope.landstingAvailable) {
-                statisticsData.getLandstingFilterInfo(function(landstingFilterInfo) {
-                    landstingFilterFactory.setup(landstingFilterInfo.businesses,
-                        $location.$$search.landstingfilter);
-                    $scope.isLandstingInfoFetched = true;
-                });
-            }
+            businessFilterFactory.setup(userAccessInfo.businesses, $location.$$search.filter);
         }
 
-        $scope.setSelectedVardgivare = function(vgId) {
-            statisticsData.setSelectedVg(vgId, function(userAccessInfo) {
+        $scope.setSelectedVardgivare = function(vgId, skipRedirect) {
+            $location.search('vgid', vgId);
+            statisticsData.getUserAccessInfo(vgId, function(userAccessInfo) {
                 setupSelectedVardgivare(userAccessInfo);
-                $location.path('verksamhet');
+                if (!skipRedirect) {
+                    $location.path('verksamhet');
+                }
             }, function() {
                 $scope.dataLoadingError = true;
             });
@@ -96,20 +120,9 @@ angular.module('StatisticsApp').controller('pageCtrl',
 
                         $scope.isLoginInfoFetched = true;
 
-                        statisticsData.getUserAccessInfo(function(userAccesInfo) {
-                            if (!!userAccesInfo.vgInfo) {
-                                setupSelectedVardgivare(userAccesInfo);
-                            } else {
-                                if (loginInfo.vgs.length === 1) {
-                                    $scope.setSelectedVardgivare(loginInfo.vgs[0].hsaId);
-                                } else {
-                                    $location.path('valjVardgivare');
-                                }
-                            }
-
-                        }, function () {
-                            $scope.dataLoadingError = true;
-                        });
+                        if (!$location.search().vgid && loginInfo.vgs.length === 1) {
+                            $scope.setSelectedVardgivare(loginInfo.vgs[0].hsaId, false);
+                        }
                     }, function () {
                         $scope.dataLoadingError = true;
                     });
@@ -129,5 +142,6 @@ angular.module('StatisticsApp').controller('pageCtrl',
                 $location.path(AppModel.get().loginUrl);
             }
         };
+
     }
 );

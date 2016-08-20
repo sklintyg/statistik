@@ -36,7 +36,7 @@ class UppladdadeLandstingsfiler {
         if (file == null) {
             throw new RuntimeException("File not found: " + filnamn)
         }
-        def result = reportsUtil.uploadFile(file, filnamn)
+        def result = reportsUtil.uploadFile(vgId, file, filnamn)
         statusmeddelande = result.message
     }
 

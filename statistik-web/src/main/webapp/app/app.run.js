@@ -36,14 +36,22 @@ angular.module('StatisticsApp').run(
     $rootScope.pageName = '';
 
     $rootScope.$on('$routeChangeSuccess', function (e, current) {
+        function addToQueryString(name, value) {
+            if (value) {
+                $rootScope.queryString += !!$rootScope.queryString ? '&' : '?';
+                $rootScope.queryString += name + '=' + value;
+            }
+        }
+
         if ($route.current.$$route) {
             $rootScope.pageName = $route.current.$$route.title;
             $rootScope.pageTitle = ($rootScope.pageName ? $rootScope.pageName + ' | ' : '') + 'Statistiktjänsten';
-            $rootScope.queryString = current.params.filter ? '?filter=' + current.params.filter : '';
-            if (current.params.landstingfilter) {
-                $rootScope.queryString += $rootScope.queryString.length > 0 ? '&' : '?';
-                $rootScope.queryString += 'landstingfilter=' + current.params.landstingfilter;
-            }
+
+            $rootScope.queryString = '';
+            addToQueryString('vgid', current.params.vgid);
+            addToQueryString('filter', current.params.filter);
+            addToQueryString('landstingfilter', current.params.landstingfilter);
+
             $rootScope.verksamhetViewShowing = current.$$route.originalPath.indexOf('/verksamhet') === 0;
         }
     });

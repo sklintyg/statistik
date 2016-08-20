@@ -88,7 +88,7 @@ public class LoginInfoTest {
     }
 
     private User createUser(String id, String name) {
-        return new User(new HsaIdUser(id), name, null, null, null);
+        return new User(new HsaIdUser(id), name, null, null);
     }
 
     @Test

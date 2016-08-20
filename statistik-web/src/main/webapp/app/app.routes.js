@@ -88,9 +88,7 @@ var app = angular.module('StatisticsApp')
                 resolve: { config: app.casesPerSexConfig },
                 title: 'Andel sjukfall per kön'
             }).when('/verksamhet', {
-                templateUrl: 'app/views/empty.html',
-                controller: 'businessLandingPageCtrl',
-                title: 'Verksamhet'
+                redirectTo: '/verksamhet/oversikt'
             }).when('/valjVardgivare', {
                 templateUrl: 'app/views/business/selectVg.html',
                 controller: 'selectVgCtrl',

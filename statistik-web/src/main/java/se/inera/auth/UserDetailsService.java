@@ -20,7 +20,6 @@ package se.inera.auth;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +32,6 @@ import se.inera.auth.model.User;
 import se.inera.intyg.common.integration.hsa.services.HsaPersonService;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.hsa.services.HsaOrganizationsService;
 import se.inera.statistics.hsa.services.UserAuthorization;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
@@ -67,11 +65,7 @@ public class UserDetailsService implements SAMLUserDetailsService {
         monitoringLogService.logUserLogin(hsaId, null, null, false);
 
         final String name = extractPersonName(hsaPersonInfo);
-        final List<HsaIdVardgivare> vgs = userAuthorization.getVardenhetList().stream()
-                .map(Vardenhet::getVardgivarId).distinct().collect(Collectors.toList());
-        HsaIdVardgivare defaultSelectedVg = vgs.size() == 1 ? vgs.get(0) : null;
-
-        return new User(hsaId, name, vgsWithProcessledarStatus, defaultSelectedVg, userAuthorization.getVardenhetList());
+        return new User(hsaId, name, vgsWithProcessledarStatus, userAuthorization.getVardenhetList());
     }
 
     private String extractPersonName(List<PersonInformationType> hsaPersonInfo) {

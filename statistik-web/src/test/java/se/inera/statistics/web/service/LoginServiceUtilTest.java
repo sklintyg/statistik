@@ -93,7 +93,7 @@ public class LoginServiceUtilTest {
         final Vardenhet enhet2 = newVardenhet("e2", "vg1");
         final Vardenhet enhet3 = newVardenhet("e3", "vg2");
         final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
-        final User user = new User(userId, "testname", null, null, vardenhetsList);
+        final User user = new User(userId, "testname", null, vardenhetsList);
         Mockito.when(token.getDetails()).thenReturn(user);
 
         //When
@@ -122,7 +122,7 @@ public class LoginServiceUtilTest {
         final Vardenhet enhet2 = newVardenhet("e2", "vg1");
         final Vardenhet enhet3 = newVardenhet("e3", "vg2");
         final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
-        final User user = new User(userId, "testname", Arrays.asList(new HsaIdVardgivare("vg2")), null, vardenhetsList);
+        final User user = new User(userId, "testname", Arrays.asList(new HsaIdVardgivare("vg2")), vardenhetsList);
         Mockito.when(token.getDetails()).thenReturn(user);
 
         Mockito.when(warehouse.getEnhets(any())).thenAnswer(invocationOnMock -> {

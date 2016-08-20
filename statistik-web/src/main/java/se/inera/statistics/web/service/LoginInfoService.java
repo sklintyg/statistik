@@ -58,18 +58,17 @@ public class LoginInfoService {
     }
 
     @GET
-    @Path("getUserAccessInfo")
+    @Path("getUserAccessInfo/{vgId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public UserAccessInfo getUserAccessInfo(@Context HttpServletRequest request) {
-        return loginServiceUtil.getUserAccessInfo(request);
+    public UserAccessInfo getUserAccessInfo(@Context HttpServletRequest request, @PathParam("vgId") String vgId) {
+        return loginServiceUtil.getUserAccessInfoForVg(request, new HsaIdVardgivare(vgId));
     }
 
     @GET
     @Path("setSelectedVg/{vgId}")
     @Produces({ MediaType.APPLICATION_JSON })
     public UserAccessInfo setSelectedVg(@Context HttpServletRequest request, @PathParam("vgId") String vgId) {
-        loginServiceUtil.setSelectedVg(request, new HsaIdVardgivare(vgId));
-        return getUserAccessInfo(request);
+        return getUserAccessInfo(request, vgId);
     }
 
 }

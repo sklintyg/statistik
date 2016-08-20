@@ -28,6 +28,12 @@ angular.module('StatisticsApp').factory('UserModel', ['_',
         function _reset() {
             data.userName = '';
             data.userNameWithAccess = '';
+            data.vgs = [];
+            _resetUserAccessInfo();
+            return data;
+        }
+
+        function _resetUserAccessInfo() {
             data.loggedInWithoutStatistikuppdrag = true;
             data.isDelprocessledare = false;
             data.isProcessledare = false;
@@ -36,12 +42,12 @@ angular.module('StatisticsApp').factory('UserModel', ['_',
             data.isLandstingAdmin = false;
             data.enableVerksamhetMenu = false;
             data.businesses = [];
-            data.vgs = [];
             return data;
         }
 
         return {
             reset: _reset,
+            resetUserAccessInfo: _resetUserAccessInfo,
 
             setLoginInfo: function(loginInfo) {
                 data.userName = loginInfo.name;
@@ -62,5 +68,6 @@ angular.module('StatisticsApp').factory('UserModel', ['_',
                 return data;
             }
         };
+
     }
 ]);

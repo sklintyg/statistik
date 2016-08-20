@@ -38,12 +38,14 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import se.inera.auth.model.User;
+import se.inera.auth.model.UserAccessLevel;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -75,7 +77,7 @@ public class ProtectedChartDataServiceTest {
         final Vardenhet vardenhet2 = new Vardenhet(new HsaIdEnhet("verksamhet2"), "Småmålas akutmottagning", new HsaIdVardgivare("VG2"));
         List<Vardenhet> vardenhets = Arrays.asList(vardenhet1, vardenhet2);
 
-        User user = new User(new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets.get(0).getVardgivarId(), vardenhets);
+        User user = new User(new HsaIdUser("hsaId"), "name", Collections.emptyList(), vardenhets);
         UsernamePasswordAuthenticationToken principal = Mockito.mock(UsernamePasswordAuthenticationToken.class);
         when(request.getUserPrincipal()).thenReturn(principal);
         when(principal.getDetails()).thenReturn(user);
@@ -90,8 +92,16 @@ public class ProtectedChartDataServiceTest {
 
     @Test
     public void checkAllowedAccessToVerksamhetTest() {
-        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new HsaIdUser("testid"), "", Lists.newArrayList(), Lists.newArrayList()));
+        //Given
+        final HsaIdVardgivare testvg = new HsaIdVardgivare("testvg");
+        final List<LoginInfoVg> loginInfoVgs = Collections.singletonList(new LoginInfoVg(testvg, "", LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(false, 2)));
+        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new HsaIdUser("testid"), "", Lists.newArrayList(), loginInfoVgs));
+        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(request)).thenReturn(testvg);
+
+        //When
         boolean result = chartDataService.hasAccessTo(request);
+
+        //Then
         assertEquals(true, result);
     }
 

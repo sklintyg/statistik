@@ -109,20 +109,20 @@ class ReportsUtil {
         return get("/api/getNumberOfCasesPerMonth")
     }
 
-    def getReportAntalIntygInloggad(filter) {
-        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonth", filter)
+    def getReportAntalIntygInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonth", filter, "vgid=" + vgid)
     }
 
-    def getReportLangaSjukfallInloggad(filter) {
-        return get(getVerksamhetUrlPrefix() + "/getLongSickLeavesData", filter)
+    def getReportLangaSjukfallInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getLongSickLeavesData", filter, "vgid=" + vgid)
     }
 
-    def getReportLangaSjukfallSomTvarsnittInloggad(FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getLongSickLeavesTvarsnitt", filter)
+    def getReportLangaSjukfallSomTvarsnittInloggad(String vgid, FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getLongSickLeavesTvarsnitt", filter, "vgid=" + vgid)
     }
 
-    def getReportSjukfallPerEnhet(filter) {
-        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerEnhet", filter)
+    def getReportSjukfallPerEnhet(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerEnhet", filter, "vgid=" + vgid)
     }
 
     def getReportEnskiltDiagnoskapitel(String kapitel) {
@@ -183,20 +183,20 @@ class ReportsUtil {
         return queryString + prefixChar + filterQueryName + "=" + filterHash
     }
 
-    def getReportEnskiltDiagnoskapitelInloggad(String kapitel, filter) {
-        return get(getVerksamhetUrlPrefix() + "/getDiagnosavsnittstatistik/" + kapitel, filter)
+    def getReportEnskiltDiagnoskapitelInloggad(String vgid, String kapitel, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getDiagnosavsnittstatistik/" + kapitel, filter, "vgid=" + vgid)
     }
 
-    def getReportEnskiltDiagnoskapitelSomTvarsnittInloggad(String kapitel, filter) {
-        return get(getVerksamhetUrlPrefix() + "/getDiagnosavsnittTvarsnitt/" + kapitel, filter)
+    def getReportEnskiltDiagnoskapitelSomTvarsnittInloggad(String vgid, String kapitel, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getDiagnosavsnittTvarsnitt/" + kapitel, filter, "vgid=" + vgid)
     }
 
-    def getReportDiagnosgruppInloggad(filter) {
-        return get(getVerksamhetUrlPrefix() + "/getDiagnoskapitelstatistik", filter)
+    def getReportDiagnosgruppInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getDiagnoskapitelstatistik", filter, "vgid=" + vgid)
     }
 
-    def getReportDiagnosgruppSomTvarsnittInloggad(FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getDiagnosGruppTvarsnitt", filter)
+    def getReportDiagnosgruppSomTvarsnittInloggad(String vgid, FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getDiagnosGruppTvarsnitt", filter, "vgid=" + vgid)
     }
 
     def getReportDiagnosgrupp() {
@@ -288,7 +288,6 @@ class ReportsUtil {
         def loginData = logins[user]
         def response = statistik.post(path: '/fake', body: [ userJsonDisplay:loginData ], requestContentType : "application/x-www-form-urlencoded" )
         assert response.status == 302
-        get("/api/login/setSelectedVg/" + getVardgivareForUser(user))
         System.out.println("Using logindata: " + loginData)
     }
 
@@ -300,56 +299,56 @@ class ReportsUtil {
         return get("/api/getAgeGroupsStatistics")
     }
 
-    def getReportAldersgruppInloggad(filter) {
-        return get(getVerksamhetUrlPrefix() + "/getAgeGroupsStatistics", filter)
+    def getReportAldersgruppInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getAgeGroupsStatistics", filter, "vgid=" + vgid)
     }
 
-    def getReportAldersgruppSomTidsserieInloggad(FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getAgeGroupsStatisticsAsTimeSeries", filter)
+    def getReportAldersgruppSomTidsserieInloggad(String vgid, FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getAgeGroupsStatisticsAsTimeSeries", filter, "vgid=" + vgid)
     }
 
     def getReportSjukskrivningslangd() {
         return get("/api/getSickLeaveLengthData")
     }
 
-    def getReportSjukskrivningslangdInloggad(filter) {
-        return get(getVerksamhetUrlPrefix() + "/getSickLeaveLengthData", filter)
+    def getReportSjukskrivningslangdInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getSickLeaveLengthData", filter, "vgid=" + vgid)
     }
 
-    def getReportSjukskrivningsgradInloggad(filter) {
-        return get(getVerksamhetUrlPrefix() + "/getDegreeOfSickLeaveStatistics", filter)
+    def getReportSjukskrivningsgradInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getDegreeOfSickLeaveStatistics", filter, "vgid=" + vgid)
     }
 
-    def getReportSjukskrivningsgradSomTvarsnittInloggad(FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getDegreeOfSickLeaveTvarsnitt", filter)
+    def getReportSjukskrivningsgradSomTvarsnittInloggad(String vgid, FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getDegreeOfSickLeaveTvarsnitt", filter, "vgid=" + vgid)
     }
 
     def getReportSjukskrivningsgrad() {
         return get("/api/getDegreeOfSickLeaveStatistics")
     }
 
-    def getReportDifferentieratIntygandeSomTidsserieInloggad(FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getDifferentieratIntygandeStatistics", filter)
+    def getReportDifferentieratIntygandeSomTidsserieInloggad(String vgid, FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getDifferentieratIntygandeStatistics", filter, "vgid=" + vgid)
     }
 
-    def getReportDifferentieratIntygandeTvarsnittSomTvarsnittInloggad(FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getDifferentieratIntygandeTvarsnitt", filter)
+    def getReportDifferentieratIntygandeTvarsnittSomTvarsnittInloggad(String vgid, FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getDifferentieratIntygandeTvarsnitt", filter, "vgid=" + vgid)
     }
 
-    def getReportLakareAlderOchKonInloggad(filter) {
-        return get(getVerksamhetUrlPrefix() + "/getCasesPerDoctorAgeAndGenderStatistics", filter)
+    def getReportLakareAlderOchKonInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getCasesPerDoctorAgeAndGenderStatistics", filter, "vgid=" + vgid)
     }
 
-    def getReportLakarBefattningInloggad(filter) {
-        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakarbefattning", filter)
+    def getReportLakarBefattningInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakarbefattning", filter, "vgid=" + vgid)
     }
 
-    def getReportLakarBefattningSomTidsserieInloggad(filter) {
-        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakarbefattningSomTidsserie", filter)
+    def getReportLakarBefattningSomTidsserieInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakarbefattningSomTidsserie", filter, "vgid=" + vgid)
     }
 
-    def getReportSjukfallPerLakareInloggad(filter) {
-        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakare", filter)
+    def getReportSjukfallPerLakareInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerLakare", filter, "vgid=" + vgid)
     }
 
     def getReportCasesPerSex() {
@@ -360,8 +359,8 @@ class ReportsUtil {
         return get("/api/getCountyStatistics")
     }
 
-    def getReportJamforDiagnoserInloggad(filter, String diagnosHash) {
-        return get(getVerksamhetUrlPrefix() + "/getJamforDiagnoserStatistik/" + diagnosHash, filter)
+    def getReportJamforDiagnoserInloggad(String vgid, filter, String diagnosHash) {
+        return get(getVerksamhetUrlPrefix() + "/getJamforDiagnoserStatistik/" + diagnosHash, filter, "vgid=" + vgid)
     }
 
     String getFilterHash(FilterData filterData) {
@@ -372,8 +371,8 @@ class ReportsUtil {
         return response.data.getText();
     }
 
-    def getVerksamhetsoversikt(FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getOverview", filter)
+    def getVerksamhetsoversikt(String vgid, FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getOverview", filter, "vgid=" + vgid)
     }
 
     private String getVerksamhetUrlPrefix() {
@@ -384,34 +383,34 @@ class ReportsUtil {
         return get("/api/getOverview")
     }
 
-    def getReportSjukfallPerEnhetSomTidsserieInloggad(FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerEnhetTimeSeries", filter)
+    def getReportSjukfallPerEnhetSomTidsserieInloggad(String vgid, FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerEnhetTimeSeries", filter, "vgid=" + vgid)
     }
 
-    def getReportJamforDiagnoserSomTidsserieInloggad(FilterData filterData, String diagnosHash) {
-        return get(getVerksamhetUrlPrefix() + "/getJamforDiagnoserStatistikTidsserie/" + diagnosHash, filterData)
+    def getReportJamforDiagnoserSomTidsserieInloggad(String vgid, FilterData filterData, String diagnosHash) {
+        return get(getVerksamhetUrlPrefix() + "/getJamforDiagnoserStatistikTidsserie/" + diagnosHash, filterData, "vgid=" + vgid)
     }
 
-    def getReportSjukskrivningslangdSomTidsserieInloggad(FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getSickLeaveLengthTimeSeries", filter)
+    def getReportSjukskrivningslangdSomTidsserieInloggad(String vgid, FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getSickLeaveLengthTimeSeries", filter, "vgid=" + vgid)
     }
 
-    def getReportSjukfallPerLakareSomTidsserieInloggad(FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getSjukfallPerLakareSomTidsserie", filter)
+    def getReportSjukfallPerLakareSomTidsserieInloggad(String vgid, FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getSjukfallPerLakareSomTidsserie", filter, "vgid=" + vgid)
     }
 
-    def getReportLakareAlderOchKonSomTidsserieInloggad(FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getCasesPerDoctorAgeAndGenderTimeSeriesStatistics", filter)
+    def getReportLakareAlderOchKonSomTidsserieInloggad(String vgid, FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getCasesPerDoctorAgeAndGenderTimeSeriesStatistics", filter, "vgid=" + vgid)
     }
 
-    def getReportAntalIntygSomTvarsnittInloggad(FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonthTvarsnitt", filter)
+    def getReportAntalIntygSomTvarsnittInloggad(String vgid, FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonthTvarsnitt", filter, "vgid=" + vgid)
     }
 
-    def uploadFile(InputStream file, filename) {
+    def uploadFile(String vgid, InputStream file, filename) {
         def body = new MultipartBody(file: file, filename: filename);
         try {
-        def response = statistik.post(requestContentType: "multipart/form-data", path: '/api/landsting/fileupload', body: body)
+        def response = statistik.post(requestContentType: "multipart/form-data", path: '/api/landsting/fileupload', body: body, queryString : "vgid=" + vgid)
         return response.data
         } catch (HttpResponseException e) {
             return e.getResponse().getData()
@@ -436,16 +435,16 @@ class ReportsUtil {
         return get("/api/testsupport/getSocialstyrelsenStdDevReport")
     }
 
-    def getReportAntalIntygLandstingInloggad(filter) {
-        return get("/api/landsting/getNumberOfCasesPerMonthLandsting", filter, "", "landstingfilter")
+    def getReportAntalIntygLandstingInloggad(String vgid, filter) {
+        return get("/api/landsting/getNumberOfCasesPerMonthLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 
-    def getReportSjukfallPerEnhetLandsting(filter) {
-        return get("/api/landsting/getNumberOfCasesPerEnhetLandsting", filter, "", "landstingfilter")
+    def getReportSjukfallPerEnhetLandsting(String vgid, filter) {
+        return get("/api/landsting/getNumberOfCasesPerEnhetLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 
-    def getReportSjukfallPerListningarPerEnhetLandsting(filter) {
-        return get("/api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting", filter, "", "landstingfilter")
+    def getReportSjukfallPerListningarPerEnhetLandsting(String vgid, filter) {
+        return get("/api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 
 }

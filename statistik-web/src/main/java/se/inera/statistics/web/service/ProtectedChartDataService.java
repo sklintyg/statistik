@@ -54,6 +54,7 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.Verksamhet;
@@ -591,9 +592,11 @@ public class ProtectedChartDataService {
         if (request == null) {
             return false;
         }
-        return loginServiceUtil.getLoginInfo(request).isLoggedIn();
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
+        final HsaIdVardgivare vgid = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final boolean userHasAccessToRequestedVg = loginInfo.getVgs().stream().map(LoginInfoVg::getHsaId).anyMatch(userVg -> userVg.equals(vgid));
+        return loginInfo.isLoggedIn() && userHasAccessToRequestedVg;
     }
-
 
     public boolean userAccess(HttpServletRequest request) {
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);

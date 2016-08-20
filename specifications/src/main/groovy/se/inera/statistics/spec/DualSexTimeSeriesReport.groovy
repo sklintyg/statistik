@@ -47,28 +47,28 @@ abstract class DualSexTimeSeriesReport extends Rapport {
 
     def getReportEnskiltDiagnoskapitel(kapitel) {
         if (inloggad) {
-            return reportsUtil.getReportEnskiltDiagnoskapitelInloggad(kapitel, filter);
+            return reportsUtil.getReportEnskiltDiagnoskapitelInloggad(vg, kapitel, filter);
         }
         return reportsUtil.getReportEnskiltDiagnoskapitel(kapitel);
     }
 
     def getReportDiagnosgrupp() {
         if (inloggad) {
-            return reportsUtil.getReportDiagnosgruppInloggad(filter);
+            return reportsUtil.getReportDiagnosgruppInloggad(vg, filter);
         }
         return reportsUtil.getReportDiagnosgrupp();
     }
 
     def getReportSjukskrivningsgrad() {
         if (inloggad) {
-            return reportsUtil.getReportSjukskrivningsgradInloggad(filter);
+            return reportsUtil.getReportSjukskrivningsgradInloggad(vg, filter);
         }
         return reportsUtil.getReportSjukskrivningsgrad();
     }
 
     def getReportSjukfallPerEnhetSomTidsserie() {
         if (inloggad) {
-            return reportsUtil.getReportSjukfallPerEnhetSomTidsserieInloggad(filter);
+            return reportsUtil.getReportSjukfallPerEnhetSomTidsserieInloggad(vg, filter);
         }
         throw new RuntimeException("Report -Sjukfall per enhet som tidsserie- is not available on national level");
     }
@@ -76,49 +76,49 @@ abstract class DualSexTimeSeriesReport extends Rapport {
     def getReportJamforDiagnoserSomTidsserie(diagnoser) {
         def diagnosHash = reportsUtil.getFilterHash(FilterData.createForDxsOnly(diagnoser))
         if (inloggad) {
-            return reportsUtil.getReportJamforDiagnoserSomTidsserieInloggad(filter, diagnosHash);
+            return reportsUtil.getReportJamforDiagnoserSomTidsserieInloggad(vg, filter, diagnosHash);
         }
         throw new RuntimeException("Report -Jämför diagnoser som tidsserie- is not available on national level");
     }
 
     def getReportAldersgruppSomTidsserie() {
         if (inloggad) {
-            return reportsUtil.getReportAldersgruppSomTidsserieInloggad(filter);
+            return reportsUtil.getReportAldersgruppSomTidsserieInloggad(vg, filter);
         }
         throw new RuntimeException("Report -åldersgrupp som tidsserie- is not available on national level");
     }
 
     def getReportSjukskrivningslangdSomTidsserie() {
         if (inloggad) {
-            return reportsUtil.getReportSjukskrivningslangdSomTidsserieInloggad(filter);
+            return reportsUtil.getReportSjukskrivningslangdSomTidsserieInloggad(vg, filter);
         }
         throw new RuntimeException("Report -sjukskrivningslangd som tidsserie- is not available on national level");
     }
 
     def getReportLakarBefattningSomTidsserie() {
         if (inloggad) {
-            return reportsUtil.getReportLakarBefattningSomTidsserieInloggad(filter);
+            return reportsUtil.getReportLakarBefattningSomTidsserieInloggad(vg, filter);
         }
         throw new RuntimeException("Report -läkarbefattning som tidsserie- is not available on national level");
     }
 
     def getReportSjukfallPerLakareSomTidsserie() {
         if (inloggad) {
-            return reportsUtil.getReportSjukfallPerLakareSomTidsserieInloggad(filter);
+            return reportsUtil.getReportSjukfallPerLakareSomTidsserieInloggad(vg, filter);
         }
         throw new RuntimeException("Report -sjukfall per läkare som tidsserie- is not available on national level");
     }
 
     def getReportLakarkonalderSomTidsserie() {
         if (inloggad) {
-            return reportsUtil.getReportLakareAlderOchKonSomTidsserieInloggad(filter);
+            return reportsUtil.getReportLakareAlderOchKonSomTidsserieInloggad(vg, filter);
         }
         throw new RuntimeException("Report -läkareålder och kön som tidsserie- is not available on national level");
     }
 
     def getReportDifferentieratIntygande() {
         if (inloggad) {
-            return reportsUtil.getReportDifferentieratIntygandeSomTidsserieInloggad(filter);
+            return reportsUtil.getReportDifferentieratIntygandeSomTidsserieInloggad(vg, filter);
         }
         throw new RuntimeException("Report -Differentierat Intygande- is not available on national level");
     }

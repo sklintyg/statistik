@@ -84,7 +84,7 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
         final Vardenhet vardenhet = selectVardenhet(user, fakeCredentials.getEnhetId());
         final HsaIdVardgivare vg = vardenhet.getVardgivarId();
         final List<HsaIdVardgivare> vgsWithProcessledarStatus = fakeCredentials.isVardgivarniva() ? Collections.singletonList(vg) : Collections.emptyList();
-        User decoratedUser = new User(user.getHsaId(), name, vgsWithProcessledarStatus, user.getSelectedVardgivare(), user.getVardenhetList());
+        User decoratedUser = new User(user.getHsaId(), name, vgsWithProcessledarStatus, user.getVardenhetList());
 
         ExpiringUsernameAuthenticationToken result = new ExpiringUsernameAuthenticationToken(null, decoratedUser, credential, new ArrayList<GrantedAuthority>());
         result.setDetails(decoratedUser);

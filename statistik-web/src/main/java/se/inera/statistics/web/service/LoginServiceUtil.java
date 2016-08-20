@@ -192,7 +192,7 @@ public class LoginServiceUtil {
     }
 
     HsaIdVardgivare getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
-        return getCurrentUser(request).getSelectedVardgivare();
+        return new HsaIdVardgivare(request.getParameter("vgid"));
     }
 
     public AppSettings getSettings(HttpServletRequest request) {
@@ -205,18 +205,12 @@ public class LoginServiceUtil {
         return settings;
     }
 
-    public UserAccessInfo getUserAccessInfo(HttpServletRequest request) {
-        final HsaIdVardgivare vgId = getCurrentUser(request).getSelectedVardgivare();
+    public UserAccessInfo getUserAccessInfoForVg(HttpServletRequest request, HsaIdVardgivare vgId) {
         final LoginInfo loginInfo = getLoginInfo(request);
         final HsaIdUser hsaId = loginInfo.getHsaId();
         final LoginInfoVg vgInfo = loginInfo.getLoginInfoForVg(vgId).orElse(null);
         final List<Verksamhet> businessesForVg = loginInfo.getBusinessesForVg(vgId);
         return new UserAccessInfo(hsaId, vgInfo, businessesForVg);
-    }
-
-    public void setSelectedVg(HttpServletRequest request, HsaIdVardgivare vgId) {
-        final User user = getCurrentUser(request);
-        user.setSelectedVardgivare(vgId);
     }
 
 }

@@ -10,6 +10,7 @@ import se.inera.statistics.web.service.ResponseHandler
 abstract class Rapport {
 
     String inloggadSom
+    String valdVg
     def loginInfo
     boolean inloggad
     def män
@@ -167,6 +168,7 @@ abstract class Rapport {
 
     public void reset() {
         inloggadSom = null
+        valdVg = null
         loginInfo = null
         inloggad = false
         totalt = -1
@@ -192,6 +194,14 @@ abstract class Rapport {
         this.inloggadSom = inloggadSom
     }
 
+    def getVg() {
+        return valdVg != null ? valdVg : reportsUtil.getVardgivareForUser(inloggadSom)
+    }
+
+    void setVg(String vg) {
+        this.valdVg = vg
+    }
+
     void doLoginIfRequested() {
         if (inloggadSom != null && !inloggadSom.isEmpty()) {
             reportsUtil.login(inloggadSom, vårdgivarnivå)
@@ -202,7 +212,7 @@ abstract class Rapport {
 
     def getVerksamhetsoversikt() {
         if (inloggad) {
-            return reportsUtil.getVerksamhetsoversikt(filter);
+            return reportsUtil.getVerksamhetsoversikt(vg, filter);
         }
         return reportsUtil.getNationalOverview();
     }

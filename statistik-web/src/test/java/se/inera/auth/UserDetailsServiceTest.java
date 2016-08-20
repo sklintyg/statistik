@@ -84,22 +84,6 @@ public class UserDetailsServiceTest {
     }
 
     @Test
-    public void vgIsChosenWhenOnlyOneIsAvailable() throws Exception {
-        auktoriseradeEnheter(VE1_VG1);
-        User user = (User) service.loadUserBySAML(credential);
-        assertEquals(new HsaIdVardgivare("IFV1239877878-0001"), user.getSelectedVardgivare());
-        assertEquals(1, user.getVardenhetList().size());
-    }
-
-    @Test
-    public void noVgIsChosenWhenMoreThanOneIsAvailable() throws Exception {
-        auktoriseradeEnheter(VE1_VG1, VE3_VG2);
-        User user = (User) service.loadUserBySAML(credential);
-        assertEquals(null, user.getSelectedVardgivare());
-        assertEquals(2, user.getVardenhetList().size());
-    }
-
-    @Test
     public void vardenhetOnOtherVardgivareAreNotFiltered() throws Exception {
         auktoriseradeEnheter(VE1_VG1, VE3_VG2, VE4_VG2);
         User user = (User) service.loadUserBySAML(credential);
@@ -114,17 +98,16 @@ public class UserDetailsServiceTest {
         newCredentials("/test-saml-biljett-uppdragslos.xml");
         when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(new UserAuthorization(Arrays.asList(VE1_VG1, VE2_VG1), Collections.emptyList()));
         User user = (User) service.loadUserBySAML(credential);
-        assertTrue(user.isDelprocessledare());
-        assertFalse(user.isProcessledare());
+        assertTrue(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
+        assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
     }
 
     @Test
     public void hasVgAccessBySystemRole() throws Exception {
         auktoriseradeEnheter(VE1_VG1, VE3_VG2);
         User user = (User) service.loadUserBySAML(credential);
-        user.setSelectedVardgivare(new HsaIdVardgivare("IFV1239877878-0001"));
-        assertFalse(user.isDelprocessledare());
-        assertTrue(user.isProcessledare());
+        assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
+        assertTrue(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
     }
 
     @Test
@@ -132,9 +115,8 @@ public class UserDetailsServiceTest {
         final UserAuthorization userAuthorization = new UserAuthorization(Arrays.asList(VE2_VG1, VE3_VG2), Collections.emptyList());
         when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(userAuthorization);
         User user = (User) service.loadUserBySAML(credential);
-        user.setSelectedVardgivare(new HsaIdVardgivare("IFV1239877878-0001"));
-        assertFalse(user.isDelprocessledare());
-        assertFalse(user.isProcessledare());
+        assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
+        assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
     }
 
     private void newCredentials(String samlTicketName) {
