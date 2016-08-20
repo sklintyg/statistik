@@ -3,6 +3,7 @@ package se.inera.statistics.spec
 import se.inera.statistics.service.report.util.Icd10
 import se.inera.statistics.service.report.util.Icd10RangeType
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup
+import se.inera.statistics.web.model.LoginInfo
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.statistics.web.service.FilterData
 import se.inera.statistics.web.service.ResponseHandler
@@ -100,7 +101,7 @@ abstract class Rapport {
     }
 
     def vårdgivarnamn() {
-        return loginInfo?.vgs?.get(0).name
+        return loginInfo?.vgs?.find{ it.hsaId.equalsIgnoreCase(vg)}?.name
     }
 
     void setVårdgivarnivå(boolean vårdgivarnivå) {
