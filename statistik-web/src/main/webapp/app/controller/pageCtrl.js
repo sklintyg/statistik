@@ -25,11 +25,6 @@ angular.module('StatisticsApp').controller('pageCtrl',
 
         var self = this;
 
-        self.getSelectedVerksamhet = function (selectedVerksamhetId, verksamhets) {
-            var selectedVerksamhet = _.findWhere(verksamhets, { vardgivarId: selectedVerksamhetId });
-            return selectedVerksamhet ? selectedVerksamhet : {name: 'Okänd verksamhet'};
-        };
-        
         $scope.AppModel = AppModel;
         $scope.UserModel = UserModel;
 
