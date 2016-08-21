@@ -64,11 +64,4 @@ public class LoginInfoService {
         return loginServiceUtil.getUserAccessInfoForVg(request, new HsaIdVardgivare(vgId));
     }
 
-    @GET
-    @Path("setSelectedVg/{vgId}")
-    @Produces({ MediaType.APPLICATION_JSON })
-    public UserAccessInfo setSelectedVg(@Context HttpServletRequest request, @PathParam("vgId") String vgId) {
-        return getUserAccessInfo(request, vgId);
-    }
-
 }
