@@ -52,7 +52,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
                     if ($scope.previousVgid) {
                         $scope.changeVardgivare(vgid, true);
                     } else {
-                        $scope.setSelectedVardgivare(vgid);
+                        setSelectedVardgivare(vgid);
                     }
                     $scope.previousVgid = vgid;
                 }
@@ -102,13 +102,13 @@ angular.module('StatisticsApp').controller('pageCtrl',
             $window.location.reload();
         };
 
-        $scope.setSelectedVardgivare = function(vgId) {
+        function setSelectedVardgivare(vgId) {
             statisticsData.getUserAccessInfo(vgId, function(userAccessInfo) {
                 setupSelectedVardgivare(userAccessInfo);
             }, function() {
                 $scope.dataLoadingError = true;
             });
-        };
+        }
 
         $scope.$watch('AppModel.get().isLoggedIn', function(value){
             if (value) {
@@ -121,7 +121,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
                         $scope.isLoginInfoFetched = true;
 
                         if (!$location.search().vgid && loginInfo.vgs.length === 1) {
-                            $scope.setSelectedVardgivare(loginInfo.vgs[0].hsaId);
+                            $scope.changeVardgivare(loginInfo.vgs[0].hsaId, false);
                         }
                     }, function () {
                         $scope.dataLoadingError = true;
