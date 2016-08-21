@@ -23,8 +23,6 @@ angular.module('StatisticsApp').controller('pageCtrl',
         _, ControllerCommons, AppModel, UserModel) {
         'use strict';
 
-        var self = this;
-
         $scope.AppModel = AppModel;
         $scope.UserModel = UserModel;
 
