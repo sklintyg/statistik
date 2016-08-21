@@ -18,8 +18,8 @@
  */
 
 angular.module('StatisticsApp').controller('landstingFileUploadCtrl',
-    [ '$scope', '$rootScope', '$timeout', 'statisticsData', 'messageService', '$location',
-    function ($scope, $rootScope, $timeout, statisticsData, messageService, $location) {
+    [ '$scope', '$rootScope', '$timeout', '$window', 'statisticsData', 'messageService', '$location',
+    function ($scope, $rootScope, $timeout, $window, statisticsData, messageService, $location) {
         'use strict';
 
         var updateLastUpdateMessage = function() {
@@ -39,7 +39,7 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl',
 
         $scope.dropzoneConfig = {
             'options': {
-                url: 'api/landsting/fileupload',
+                url: 'api/landsting/fileupload?vgid=' + $location.search().vgid,
                 parallelUploads: 1,
                 maxFilesize: 10, //MB
                 paramName: 'file',
@@ -61,6 +61,7 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl',
                             $scope.uploadSuccess = true;
                             updateStatus(response);
                             updateLastUpdateMessage();
+                            $window.location.reload();
                         }
                     );
                 },
@@ -125,6 +126,7 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl',
                     $rootScope.landstingAvailable = false;
                     $scope.uploadCompleted = false;
                     updateLastUpdateMessage();
+                    $window.location.reload();
                 });
             }, 1);
         };
