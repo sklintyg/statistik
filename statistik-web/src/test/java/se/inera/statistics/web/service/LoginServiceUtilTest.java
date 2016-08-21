@@ -101,7 +101,6 @@ public class LoginServiceUtilTest {
 
         //Then
         assertEquals(userId, loginInfo.getHsaId());
-        assertEquals(3, loginInfo.getBusinesses().size());
         assertEquals(2, loginInfo.getBusinessesForVg(enhet1.getVardgivarId()).size());
         assertEquals(1, loginInfo.getBusinessesForVg(enhet3.getVardgivarId()).size());
 
@@ -135,7 +134,6 @@ public class LoginServiceUtilTest {
 
         //Then
         assertEquals(userId, loginInfo.getHsaId());
-        assertEquals(6, loginInfo.getBusinesses().size());
         assertEquals(2, loginInfo.getBusinessesForVg(enhet1.getVardgivarId()).size());
         assertEquals(4, loginInfo.getBusinessesForVg(enhet3.getVardgivarId()).size());
 

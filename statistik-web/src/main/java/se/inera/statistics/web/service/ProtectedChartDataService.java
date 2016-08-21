@@ -118,7 +118,7 @@ public class ProtectedChartDataService {
 
     private Response getResponse(TableDataReport result, String csv, HttpServletRequest request) {
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
-        final List<Verksamhet> businesses = loginInfo.getBusinesses();
+        final List<Verksamhet> businesses = loginInfo.getBusinessesForVg(loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final List<HsaIdEnhet> hsaIdEnhets = businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
         return responseHandler.getResponse(result, csv, hsaIdEnhets);
     }
@@ -355,7 +355,7 @@ public class ProtectedChartDataService {
         final VerksamhetOverviewData overviewData = new VerksamhetOverviewConverter().convert(response, range, filter, message);
 
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
-        final List<Verksamhet> businesses = loginInfo.getBusinesses();
+        final List<Verksamhet> businesses = loginInfo.getBusinessesForVg(loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final List<HsaIdEnhet> hsaIdEnhets = businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
         return responseHandler.getResponseForDataReport(overviewData, hsaIdEnhets);
     }

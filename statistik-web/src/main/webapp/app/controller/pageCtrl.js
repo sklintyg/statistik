@@ -116,7 +116,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
                     statisticsData.getLoginInfo(function (loginInfo) {
                         UserModel.setLoginInfo(loginInfo);
 
-                        $scope.loggedInWithoutStatistikuppdrag = !(loginInfo.businesses && loginInfo.businesses.length >= 1);
+                        $scope.loggedInWithoutStatistikuppdrag = !(loginInfo.vgs && loginInfo.vgs.length >= 1);
 
                         $scope.isLoginInfoFetched = true;
 

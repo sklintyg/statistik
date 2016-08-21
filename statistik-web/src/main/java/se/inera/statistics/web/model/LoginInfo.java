@@ -60,10 +60,6 @@ public class LoginInfo {
         return hsaId != null && !hsaId.isEmpty();
     }
 
-    public List<Verksamhet> getBusinesses() {
-        return businesses;
-    }
-
     public Optional<LoginInfoVg> getLoginInfoForVg(HsaIdVardgivare vgId) {
         return loginInfoVgs.stream().filter(loginInfoVg -> loginInfoVg.getHsaId().equals(vgId)).findFirst();
     }
@@ -73,8 +69,7 @@ public class LoginInfo {
     }
 
     public List<Verksamhet> getBusinessesForVg(HsaIdVardgivare vgId) {
-        return getBusinesses()
-                .stream()
+        return businesses.stream()
                 .filter(verksamhet -> verksamhet.getVardgivarId().equals(vgId))
                 .collect(Collectors.toList());
     }

@@ -283,13 +283,8 @@ public class ProtectedLandstingService {
         if (loginInfo.getLoginInfoForVg(vgId).map(LoginInfoVg::isProcessledare).orElse(false)) {
             return Collections.emptyList();
         }
-        final List<Verksamhet> businesses = loginInfo.getBusinesses();
-        return Lists.transform(businesses, new Function<Verksamhet, HsaIdEnhet>() {
-            @Override
-            public HsaIdEnhet apply(Verksamhet verksamhet) {
-                return verksamhet.getId();
-            }
-        });
+        final List<Verksamhet> businesses = loginInfo.getBusinessesForVg(loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        return Lists.transform(businesses, Verksamhet::getId);
     }
 
     @GET

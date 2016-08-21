@@ -56,7 +56,6 @@ public class LoginInfoTest {
         //When
         assertEquals("", loginInfo.getName());
         assertEquals(HsaIdUser.empty().getId(), loginInfo.getHsaId().getId());
-        assertTrue(loginInfo.getBusinesses().isEmpty());
         assertTrue(loginInfo.getVgs().isEmpty());
         assertTrue(loginInfo.getBusinessesForVg(HsaIdVardgivare.empty()).isEmpty());
         assertTrue(loginInfo.getBusinessesForVg(null).isEmpty());
@@ -74,16 +73,11 @@ public class LoginInfoTest {
 
         //When
         try {
-            loginInfo.getBusinesses().add(new Verksamhet(HsaIdEnhet.empty(), "", HsaIdVardgivare.empty(), "", "", "", "", "", null));
-        } catch (UnsupportedOperationException ignored) {
-        }
-        try {
             loginInfo.getVgs().add(LoginInfoVg.empty());
         } catch (UnsupportedOperationException ignored) {
         }
 
         //Then
-        assertEquals(0, loginInfo.getBusinesses().size());
         assertEquals(0, loginInfo.getVgs().size());
     }
 

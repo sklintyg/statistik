@@ -83,13 +83,8 @@ public class FilterHandler {
     List<HsaIdEnhet> getEnhetsFilterIds(String filterHash, HttpServletRequest request) {
         if (filterHash == null || filterHash.isEmpty()) {
             final LoginInfo info = loginServiceUtil.getLoginInfo(request);
-            final List<Verksamhet> businesses = info.getBusinesses();
-            return Lists.transform(businesses, new Function<Verksamhet, HsaIdEnhet>() {
-                @Override
-                public HsaIdEnhet apply(Verksamhet verksamhet) {
-                    return verksamhet.getId();
-                }
-            });
+            final List<Verksamhet> businesses = info.getBusinessesForVg(getSelectedVgIdForLoggedInUser(request));
+            return Lists.transform(businesses, Verksamhet::getId);
         }
         final FilterData filterData = filterHashHandler.getFilterFromHash(filterHash);
         return getEnhetsFiltered(request, filterData);
@@ -243,12 +238,7 @@ public class FilterHandler {
         if (info.getLoginInfoForVg(vgId).map(vgInfo -> vgInfo.isProcessledare()).orElse(false)) {
             return new Filter(SjukfallUtil.ALL_ENHETER, null, null, toReadableSjukskrivningslangdName(null));
         }
-        final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(info.getBusinesses(), new Function<Verksamhet, Integer>() {
-            @Override
-            public Integer apply(Verksamhet verksamhet) {
-                return Warehouse.getEnhet(verksamhet.getId());
-            }
-        }));
+        final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(info.getBusinessesForVg(vgId), verksamhet -> Warehouse.getEnhet(verksamhet.getId())));
         return getFilterForEnhets(availableEnhets, null);
     }
 
@@ -307,7 +297,7 @@ public class FilterHandler {
     private Set<HsaIdEnhet> getEnhetsForVerksamhetstyper(List<String> verksamhetstyper, HttpServletRequest request) {
         Set<HsaIdEnhet> enhetsIds = new HashSet<>();
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
-        for (Verksamhet verksamhet : info.getBusinesses()) {
+        for (Verksamhet verksamhet : info.getBusinessesForVg(getSelectedVgIdForLoggedInUser(request))) {
             if (isOfVerksamhetsTyp(verksamhet, verksamhetstyper)) {
                 enhetsIds.add(verksamhet.getIdUnencoded());
             }
@@ -362,11 +352,9 @@ public class FilterHandler {
         final HsaIdVardgivare vgid = getSelectedVgIdForLoggedInUser(request);
         LoginInfo info = loginServiceUtil.getLoginInfo(request);
         Map<HsaIdEnhet, String> enheter = new HashMap<>();
-        for (Verksamhet userVerksamhet : info.getBusinesses()) {
-            if (userVerksamhet.getVardgivarId().equals(vgid)) {
-                if (enhetsIDs != null && enhetsIDs.contains(userVerksamhet.getId())) {
-                    enheter.put(userVerksamhet.getId(), userVerksamhet.getName());
-                }
+        for (Verksamhet userVerksamhet : info.getBusinessesForVg(vgid)) {
+            if (enhetsIDs != null && enhetsIDs.contains(userVerksamhet.getId())) {
+                enheter.put(userVerksamhet.getId(), userVerksamhet.getName());
             }
         }
         return enheter;

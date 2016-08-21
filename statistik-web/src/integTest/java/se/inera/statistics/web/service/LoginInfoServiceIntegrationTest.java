@@ -82,7 +82,7 @@ public class LoginInfoServiceIntegrationTest {
 
         //Then
         final String expected = Arrays.toString(Collections.singleton(VerksamhetsTyp.OVRIGT_ID).toArray());
-        final String actual = Arrays.toString(loginInfo.getBusinesses().get(0).getVerksamhetsTyper().toArray());
+        final String actual = Arrays.toString(loginInfo.getBusinessesForVg(new HsaIdVardgivare("VG1")).get(0).getVerksamhetsTyper().toArray());
         assertEquals(expected, actual);
     }
 
