@@ -161,7 +161,7 @@ angular.module('StatisticsApp')
                 inputs += '<input type="hidden" name="name" value="'+fileName + '_' + moment().format('YYYY-MM-DD') + '.pdf">';
                 inputs += '<input type="hidden" name="url" value="' + $location.url() + '">';
 
-                $window.jQuery('<form action="/api/pdf/create" target="_blank" method="post">'+inputs+'</form>')
+                $window.jQuery('<form action="/api/pdf/create" method="post">'+inputs+'</form>')
                     .appendTo('body').submit().remove();
 
 
