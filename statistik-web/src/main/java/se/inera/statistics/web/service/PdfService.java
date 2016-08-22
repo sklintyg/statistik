@@ -48,8 +48,11 @@ public class PdfService {
 
         name = name.replaceAll("[^A-Za-z0-9._]", "");
 
-        Response.ResponseBuilder response = Response.ok().entity(array).type(MediaType.APPLICATION_OCTET_STREAM_TYPE);
-        response.header("Content-Disposition", "attachment; filename=" + name);
+        Response.ResponseBuilder response = Response.ok()
+                .entity(array)
+                .type(MediaType.APPLICATION_OCTET_STREAM_TYPE)
+                .header("Content-Length", array.length)
+                .header("Content-Disposition", "attachment; filename=" + name);
 
         LogData logData = new LogData("Printing pdf", url);
         loggingService.frontendLogging(request, logData);
