@@ -107,32 +107,40 @@
 
           <div class="select-chart-type-tidsserie">
             <span message key="lbl.diagramtyp-tidsserie"></span>
-            <div
-                class="chart-icon chart-icon-line"
-                ng-class="{'chart-icon-active': activeChartType === 'line'}"
+            <button
+                class="btn btn-default"
+                ng-class="{'active': activeChartType === 'line'}"
                 data-ng-click="switchChartType('line')" uib-tooltip="Linjediagram" tooltip-placement="bottom"
-                tooltip-popup-delay="1000"></div>
+                tooltip-popup-delay="1000">
+              <span class="chart-icon chart-icon-line"></span>
+            </button>
 
-            <div
-                class="chart-icon chart-icon-area"
-                ng-class="{'chart-icon-active': activeChartType === 'area'}"
+            <button
+                class="btn btn-default"
+                ng-class="{'active': activeChartType === 'area'}"
                 data-ng-click="switchChartType('area')" uib-tooltip="Ytdiagram" tooltip-placement="bottom"
-                tooltip-popup-delay="1000"></div>
+                tooltip-popup-delay="1000">
+                <span class="chart-icon chart-icon-area"></span>
+            </button>
 
-            <div
-                class="chart-icon chart-icon-percentarea"
-                ng-class="{'chart-icon-active': activeChartType === 'percentarea'}"
+            <button
+                class="btn btn-default"
+                ng-class="{'active': activeChartType === 'percentarea'}"
                 data-ng-click="switchChartType('percentarea')" uib-tooltip="Procentuellt ytdiagram" tooltip-placement="bottom"
-                tooltip-popup-delay="1000"></div>
+                tooltip-popup-delay="1000">
+              <span class="chart-icon chart-icon-percentarea"></span>
+            </button>
           </div>
 
           <div class="select-chart-type-tvarsnitt">
             <span message key="lbl.diagramtyp-tvarsnitt"></span>
-            <div
-                class="chart-icon chart-icon-column"
-                ng-class="{'chart-icon-active': activeChartType === 'column'}"
+            <button
+                class="btn btn-default"
+                ng-class="{'active': activeChartType === 'column'}"
                 data-ng-click="switchChartType('column')" uib-tooltip="Stapeldiagram" tooltip-placement="bottom"
-                tooltip-popup-delay="1000"></div>
+                tooltip-popup-delay="1000">
+              <span class="chart-icon chart-icon-column"></span>
+            </button>
           </div>
         </div>
 
