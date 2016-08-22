@@ -120,8 +120,12 @@ angular.module('StatisticsApp').controller('pageCtrl',
 
                         $scope.isLoginInfoFetched = true;
 
-                        if (!$location.search().vgid && loginInfo.vgs.length === 1) {
-                            $scope.changeVardgivare(loginInfo.vgs[0].hsaId, false);
+                        if (!$location.search().vgid) {
+                            if (loginInfo.vgs.length === 1) {
+                                $scope.changeVardgivare(loginInfo.vgs[0].hsaId, false);
+                            } else {
+                                $location.path('/valjVardgivare');
+                            }
                         }
                     }, function () {
                         $scope.dataLoadingError = true;

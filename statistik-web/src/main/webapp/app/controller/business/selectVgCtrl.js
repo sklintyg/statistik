@@ -19,10 +19,10 @@
 
 angular.module('StatisticsApp').controller('selectVgCtrl',
     /** @ngInject */
-    function ($scope, $rootScope) {
+    function ($scope, AppModel) {
         'use strict';
 
-        if (!$rootScope.isLoggedIn) {
+        if (!AppModel.get().isLoggedIn) {
             $scope.loginClicked();
         }
     }
