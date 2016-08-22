@@ -42,15 +42,15 @@
               data-ng-if="showBusinessesDetails"
               businesses="UserModel.get().businesses"
               verksamhet-name="verksamhetName"></show-businesses>
-        </div>
-        <div class="headerbox-info-text" data-ng-class="{'headerbox-info-text-padding': !(isLoggedIn && verksamhetName)}">
-          <span message key="statistics.header.extra-text"></span>
-
           <select-vardgivare-modal
               data-ng-if="UserModel.get().enableVerksamhetMenu && UserModel.get().vgs.length > 1"
               vardgivare="UserModel.get().vgs"
               select-vardgivare="changeVardgivare(vgId)"></select-vardgivare-modal>
         </div>
+        <div class="headerbox-info-text"
+             data-ng-class="{'headerbox-info-text-padding': !(isLoggedIn && verksamhetName)}"
+             message key="statistics.header.extra-text"
+        ></div>
       </span>
     </div>
 
