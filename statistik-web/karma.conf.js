@@ -66,7 +66,7 @@ module.exports = function(config) {
         },
 
         // web server port
-        port: 8080,
+        port: 47652,
 
         // level of logging
         // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
