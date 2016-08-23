@@ -191,7 +191,7 @@ angular.module('StatisticsApp')
                     margin: [0, 5, 0, 10]
                 },
                 table: {
-                    fontSize: 11,
+                    fontSize: 9,
                     margin: [0, 10, 0, 5]
                 },
                 tableHeader: {
