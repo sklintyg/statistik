@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class SjukskrivningsgradQuery {
     public static final List<String> GRAD_LABEL = Collections.unmodifiableList(Arrays.asList("25", "50", "75", "100"));
@@ -63,7 +64,7 @@ public final class SjukskrivningsgradQuery {
         Map<Integer, Counter<Integer>> counters = Counter.mapFor(GRAD);
 
         for (Sjukfall sjukfall : sjukfalls) {
-            sjukfall.getSjukskrivningsgrader().forEach((g) -> {
+            sjukfall.getSjukskrivningsgrader().stream().distinct().forEach((g) -> {
                 Counter counter = counters.get(g);
                 counter.increase(sjukfall);
             });
@@ -77,7 +78,7 @@ public final class SjukskrivningsgradQuery {
     public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil, boolean all) {
         CounterFunction<Integer> toCount;
         if (all) {
-            toCount = (sjukfall, counter) -> counter.addAll(sjukfall.getSjukskrivningsgrader());
+            toCount = (sjukfall, counter) -> counter.addAll(sjukfall.getSjukskrivningsgrader().stream().distinct().collect(Collectors.toSet()));
         } else {
             toCount = (sjukfall, counter) -> counter.add(sjukfall.getSjukskrivningsgrad());
         }
