@@ -138,12 +138,12 @@ Ett sjukfall kan tillhöra flera diagnosgrupper och sjukskrivningsgrader på öv
 Verksamhetsnivå:
 | Sjukfall i oversikt diagnos |
 |inloggad som  | grupp                              | filter kategorier | antal?    | förändring? |
-| user1        | F00-F99 Psykiska sjukdomar         | F32               | 2         | 0           |
+| user1        | F00-F99 Psykiska sjukdomar         | F32               | 1         | 0           |
 | user1        | M00-M99 Muskuloskeletala sjukdomar | F32               | 0         | 0           |
 
 | Sjukfall i oversikt sjukskrivningsgrad |
 |inloggad som | grupp | filter kategorier | antal?    | förändring? |
-| user1        | 100  | F32               | 2         | 0       |
+| user1        | 100  | F32               | 1         | 0       |
 | user1        | 25   | F32               | 0         | 0       |
 
 Nationell:
