@@ -22,6 +22,9 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl',
     function ($scope, $rootScope, $timeout, $window, statisticsData, messageService, $location) {
         'use strict';
 
+        $scope.prepopulatedLandstingFileUrl = '/api/landsting/prepopulatedLandstingFile?vgid=' + $location.search().vgid;
+        $scope.emptyLandstingFileUrl = '/api/landsting/emptyLandstingFile?vgid=' + $location.search().vgid;
+
         var updateLastUpdateMessage = function() {
             $scope.lastLandstingUpdateMessage = '';
             $timeout(function () {
