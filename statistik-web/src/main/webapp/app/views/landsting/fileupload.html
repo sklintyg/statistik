@@ -46,8 +46,8 @@
                                     <span ng-show="uploadCompleted" class="glyphicon"
                                           ng-class="{'glyphicon-ok-sign': uploadSuccess, 'glyphicon-warning-sign': !uploadSuccess}"></span>
 
-                            <progressbar ng-show="uploading" class="progress-striped active" value="uploadProgress"
-                                         type="{{progressType}}"></progressbar>
+                            <uib-progressbar ng-show="uploading" class="progress-striped active" value="uploadProgress"
+                                         type="{{progressType}}"></uib-progressbar>
 
                             <div ng-show="uploadCompleted && !uploadSuccess">
                                 <h5>
