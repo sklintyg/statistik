@@ -16,14 +16,76 @@ Testar att alla rapporter hanterar sjukfall med flera värden under samma period
 | lakare2 | Bo      | Bengtsson | MALE   | 45    | 201013       | Företagsläkare |
 
 | Enbart foljande intyg finns |
-| personnr      | diagnoskod | start      | slut       | arbetsförmåga | enhet  | läkare  | kommentar |
-| 19880619-2392 | F32        | 2014-06-01 | 2014-06-10 | 50            | enhet1 | lakare1 |           |
-| 19880619-2392 | M54        | 2014-06-11 | 2014-06-20 | 0             | enhet2 | lakare2 |           |
-| 19880619-2392 | F32        | 2014-06-21 | 2014-06-30 | 50            | enhet1 | lakare1 |           |
+| personnr      | diagnoskod | start      | slut       | arbetsförmåga | enhet  | län | läkare  | kommentar |
+| 19880619-2392 | F32        | 2014-06-01 | 2014-06-10 | 50            | enhet1 | 01  | lakare1 |           |
+| 19880619-2392 | M54        | 2014-06-11 | 2014-06-20 | 0             | enhet2 | 06  | lakare2 |           |
+| 19880619-2392 | F32        | 2014-06-21 | 2014-06-30 | 50            | enhet1 | 01  | lakare1 |           |
+
+| Uppladdade landstingsfiler |
+| användare | filnamn        | statusmeddelande? |
+| user2     | vg1lista12.xlsx  | Data updated ok   |
 
 !3 Då gäller:
+Nationell:
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2014 | jun   | 1    | 0        |
+
+| Sjukfall i rapporten diagnosgrupp |
+| år   | månad | grupp   | män? | kvinnor? |
+| 2014 | jun   | F00-F99 | 1    | 0        |
+| 2014 | jun   | M00-M99 | 0    | 0        |
+
+| Sjukfall i rapporten enskilt diagnoskapitel diagram |
+| valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
+| F00-F99             | 2014 | jun   | F30-F39 | 1    | 0       |
+| M00-M99             | 2014 | jun   | M50-M54 | -1    | -1        |
+
+| Sjukfall i rapporten aldersgrupp |
+| åldersgrupp | män? | kvinnor? |
+| 21-25 år    | 0    | 0        |
+| 26-30 år    | 1    | 0        |
+
+| Sjukfall i rapporten sjukskrivningsgrad |
+| år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
+| 2014 | jun   | 50 %                 | 1    | 0        |
+| 2014 | jun   | 100 %                | 0    | 0        |
+
+| Sjukfall i rapporten sjukskrivningslangd |
+| sjukskrivningslängd | män? | kvinnor? |
+| Under 15 dagar      | 0    | 0        |
+| 15-30 dagar         | 1    | 0        |
+
+| Sjukfall i rapporten lan |
+| län            | kolumngrupp    | totalt? | kvinnor? | män? |
+| Stockholms län | antal sjukfall | 1    | 0        | 1 | 
+| Jönköpings län | antal sjukfall | 0    | 0        | 0 |
+
+| Sjukfall i rapporten andel sjukfall per kon |
+| län            | totalt? | män?      | kvinnor? |
+| Stockholms län | 1       | 100 % (1)   | 0 % (0)  |
+| Jönköpings län | 0       | 0 % (0)   | 0 % (0)  |
 
 Inloggad:
+
+Landsting
+
+| Sjukfall i rapporten landsting sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user2        | 2014 | jun   | 1    | 0        |
+
+| Sjukfall i rapporten landsting sjukfall per enhet |
+| inloggad som | vårdenhet    | män? | kvinnor? |
+| user2        | enhet1 | 1    | 0        |
+| user2        | enhet2 | 1    | 0        |
+
+| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
+| user2        | enhet1 | 1   |
+| user2        | enhet2 | 1   |
+
+Verksamhet
+
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet     | filter kategorier | män?     | kvinnor? |
 | user2        | enhet1        | F32               | 1        | 0        |
@@ -178,8 +240,19 @@ Inloggad:
 | user2        | Företagsläkare  |                   | 1    | 0        |
 
 | Sjukfall i rapporten lakarbefattning som tidsserie |
+<<<<<<< HEAD
 | inloggad som | år   | månad | läkarbefattning | filter kategorier | män? | kvinnor? |
 | user2        | 2014 | jun   | Överläkare      | F32               | 1    | 0        |
 | user2        | 2014 | jun   | Företagsläkare  | F32               | -1   | -1       |
 | user2        | 2014 | jun   | Överläkare      |                   | 1    | 0        |
 | user2        | 2014 | jun   | Företagsläkare  |                   | -1   | -1       |
+=======
+| inloggad som | år   | månad | läkarbefattning | män? | kvinnor? |
+| user2        | 2014 | jun   | Överläkare      | 1    | 0        |
+| user2        | 2014 | jun   | Företagsläkare  | 0    | 0        |
+
+!3 Uppstädning efter testet
+| Uppladdade landstingsfiler |
+| användare | filnamn                  | statusmeddelande? |
+| user3     | tomlandstingslista.xlsx  | Data updated ok   |
+>>>>>>> Lagt till At188 och uppdaterat Ut2832
