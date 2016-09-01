@@ -21,12 +21,9 @@ Testar att alla rapporter hanterar sjukfall med flera värden under samma period
 | 19880619-2392 | M54        | 2014-06-11 | 2014-06-20 | 0             | enhet2 | 06  | lakare2 |           |
 | 19880619-2392 | F32        | 2014-06-21 | 2014-06-30 | 50            | enhet1 | 01  | lakare1 |           |
 
-| Uppladdade landstingsfiler |
-| användare | filnamn        | statusmeddelande? |
-| user2     | vg1lista12.xlsx  | Data updated ok   |
-
 !3 Då gäller:
-Nationell:
+
+!5 Nationell:
 | Sjukfall i rapporten sjukfall totalt |
 | år   | månad | män? | kvinnor? |
 | 2014 | jun   | 1    | 0        |
@@ -66,25 +63,41 @@ Nationell:
 | Stockholms län | 1       | 100 % (1)   | 0 % (0)  |
 | Jönköpings län | 0       | 0 % (0)   | 0 % (0)  |
 
-Inloggad:
+!4 Inloggad:
 
-Landsting
+!5 Landsting
+
+!6 Initiering av landstingstestet
+| Uppladdade landstingsfiler |
+| användare | filnamn        | statusmeddelande? |
+| user2     | vg1lista12.xlsx  | Data updated ok   |
 
 | Sjukfall i rapporten landsting sjukfall totalt |
-| inloggad som | år   | månad | män? | kvinnor? |
-| user2        | 2014 | jun   | 1    | 0        |
+| inloggad som | år   | månad | filter kategorier | män? | kvinnor? |
+| user2        | 2014 | jun   | F32               | 1    | 0        |
+| user2        | 2014 | jun   |                   | 1    | 0        |
 
 | Sjukfall i rapporten landsting sjukfall per enhet |
-| inloggad som | vårdenhet    | män? | kvinnor? |
-| user2        | enhet1 | 1    | 0        |
-| user2        | enhet2 | 1    | 0        |
+| inloggad som | vårdenhet | filter kategorier | män? | kvinnor? |
+| user2        | enhet1    | F32               | 1    | 0        |
+| user2        | enhet2    | F32               | -1   | -1       |
+| user2        | enhet1    |                   | 1    | 0        |
+| user2        | enhet2    |                   | 1    | 0        |
 
 | Sjukfall i rapporten landsting sjukfall per listningar per enhet |
-| inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
-| user2        | enhet1 | 1   |
-| user2        | enhet2 | 1   |
+| inloggad som | vårdenhet | filter kategorier | antal sjukfall per tusen listningar? |
+| user2        | enhet1    | F32               | 1,00                                 |
+| user2        | enhet2    | F32               | -1                                   |
+| user2        | enhet1    |                   | 1,00                                 |
+| user2        | enhet2    |                   | 1,00                                 |
 
-Verksamhet
+!6 Uppstädning efter landstingstestet
+| Uppladdade landstingsfiler |
+| användare | filnamn                  | statusmeddelande? |
+| user3     | tomlandstingslista.xlsx  | Data updated ok   |
+
+
+!5 Verksamhet
 
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet     | filter kategorier | män?     | kvinnor? |
@@ -240,19 +253,8 @@ Verksamhet
 | user2        | Företagsläkare  |                   | 1    | 0        |
 
 | Sjukfall i rapporten lakarbefattning som tidsserie |
-<<<<<<< HEAD
 | inloggad som | år   | månad | läkarbefattning | filter kategorier | män? | kvinnor? |
 | user2        | 2014 | jun   | Överläkare      | F32               | 1    | 0        |
 | user2        | 2014 | jun   | Företagsläkare  | F32               | -1   | -1       |
 | user2        | 2014 | jun   | Överläkare      |                   | 1    | 0        |
 | user2        | 2014 | jun   | Företagsläkare  |                   | -1   | -1       |
-=======
-| inloggad som | år   | månad | läkarbefattning | män? | kvinnor? |
-| user2        | 2014 | jun   | Överläkare      | 1    | 0        |
-| user2        | 2014 | jun   | Företagsläkare  | 0    | 0        |
-
-!3 Uppstädning efter testet
-| Uppladdade landstingsfiler |
-| användare | filnamn                  | statusmeddelande? |
-| user3     | tomlandstingslista.xlsx  | Data updated ok   |
->>>>>>> Lagt till At188 och uppdaterat Ut2832
