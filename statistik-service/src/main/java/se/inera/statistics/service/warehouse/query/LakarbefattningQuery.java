@@ -19,6 +19,8 @@
 package se.inera.statistics.service.warehouse.query;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +72,8 @@ public final class LakarbefattningQuery {
     }
 
      public static SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
-        final KonDataResponse sjukfallSomTidsserie = getSjukfallSomTidsserie(aisle, filter, start, periods, periodLength, sjukfallUtil);
+         final Function<Sjukfall, Collection<Lakare>> getLakare = Sjukfall::getLakare;
+         final KonDataResponse sjukfallSomTidsserie = getSjukfallCommon(aisle, filter, start, periods, periodLength, sjukfallUtil, getLakare);
         return SimpleKonResponse.create(sjukfallSomTidsserie);
     }
 
@@ -87,6 +90,11 @@ public final class LakarbefattningQuery {
     }
 
     public static KonDataResponse getSjukfallSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        final Function<Sjukfall, Collection<Lakare>> getLakare = sjukfall -> Collections.singleton(sjukfall.getLastLakare());
+        return getSjukfallCommon(aisle, filter, start, periods, periodLength, sjukfallUtil, getLakare);
+    }
+
+    private static KonDataResponse getSjukfallCommon(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil, final Function<Sjukfall, Collection<Lakare>> getLakare) {
         final ArrayList<Map.Entry<Integer, String>> ranges = new ArrayList<>(getAllLakarbefattnings(true).entrySet());
         final List<String> names = Lists.transform(ranges, new Function<Map.Entry<Integer, String>, String>() {
             @Override
@@ -103,7 +111,7 @@ public final class LakarbefattningQuery {
         final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
             @Override
             public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
-                for (Lakare lakare : sjukfall.getLakare()) {
+                for (Lakare lakare : getLakare.apply(sjukfall)) {
                     final List<Integer> lakarbefattnings = getLakarbefattnings(lakare);
                     for (Integer befattningId : lakarbefattnings) {
                         counter.add(befattningId);

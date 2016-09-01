@@ -160,8 +160,14 @@ public class SjukfallQuery {
         return count;
     }
 
+
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakare(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
-        final KonDataResponse konDataResponse = getSjukfallPerLakareSomTidsserie(aisle, filter, start, periods, periodLength);
+        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
+            for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
+                counter.add(lakare.getId());
+            }
+        };
+        final KonDataResponse konDataResponse = getSjukfallPerLakareCommon(aisle, filter, start, periods, periodLength, counterFunction);
         return SimpleKonResponse.create(konDataResponse);
     }
 
@@ -197,37 +203,19 @@ public class SjukfallQuery {
 
     public KonDataResponse getSjukfallPerEnhetSeries(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, Map<HsaIdEnhet, String> idsToNames) {
         final ArrayList<Map.Entry<HsaIdEnhet, String>> groupEntries = new ArrayList<>(idsToNames.entrySet());
-        final List<String> names = Lists.transform(groupEntries, new Function<Map.Entry<HsaIdEnhet, String>, String>() {
-            @Override
-            public String apply(Map.Entry<HsaIdEnhet, String> entry) {
-                return entry.getKey().getId();
-            }
-        });
-        final List<Integer> ids = Lists.transform(groupEntries, new Function<Map.Entry<HsaIdEnhet, String>, Integer>() {
-            @Override
-            public Integer apply(Map.Entry<HsaIdEnhet, String> entry) {
-                return Warehouse.getEnhet(entry.getKey());
-            }
-        });
-
-        final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
-            @Override
-            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
-                for (Integer enhetid : sjukfall.getEnhets()) {
-                    counter.add(enhetid);
-                }
-            }
-        };
+        final List<String> names = Lists.transform(groupEntries, entry -> entry.getKey().getId());
+        final List<Integer> ids = Lists.transform(groupEntries, entry -> Warehouse.getEnhet(entry.getKey()));
+        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> counter.add(sjukfall.getLastEnhet());
         final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, names, ids, counterFunction);
         return KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);
     }
 
     public KonDataResponse getSjukfallPerLakareSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
-        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
-            for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
-                counter.add(lakare.getId());
-            }
-        };
+        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> counter.add(sjukfall.getLastLakare().getId());
+        return getSjukfallPerLakareCommon(aisle, filter, start, periods, periodLength, counterFunction);
+    }
+
+    private KonDataResponse getSjukfallPerLakareCommon(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, CounterFunction<Integer> counterFunction) {
         final Function<Sjukfall, Collection<Integer>> groupsFunction = sjukfall -> {
             final ArrayList<Integer> integers = new ArrayList<>();
             for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
