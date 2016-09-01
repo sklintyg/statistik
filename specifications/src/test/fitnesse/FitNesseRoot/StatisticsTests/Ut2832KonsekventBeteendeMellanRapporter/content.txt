@@ -118,7 +118,7 @@ Inloggad:
 | Sjukfall i rapporten sjukfall per lakare som tidsserie |
 | inloggad som | år   | månad | läkare         | män? | kvinnor? |
 | user2        | 2014 | jun   | Anna Andersson | 1    | 0        |
-| user2        | 2014 | jun   | Bo Bengtsson   | 0    | 0        |
+| user2        | 2014 | jun   | Bo Bengtsson   | -1   | -1       |
 
 | Sjukfall i rapporten lakarkonalder |
 | inloggad som | läkargrupp               | män? | kvinnor? |
@@ -138,4 +138,4 @@ Inloggad:
 | Sjukfall i rapporten lakarbefattning som tidsserie |
 | inloggad som | år   | månad | läkarbefattning | män? | kvinnor? |
 | user2        | 2014 | jun   | Överläkare      | 1    | 0        |
-| user2        | 2014 | jun   | Företagsläkare  | 0    | 0        |
+| user2        | 2014 | jun   | Företagsläkare  | -1   | -1       |

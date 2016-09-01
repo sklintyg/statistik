@@ -40,11 +40,13 @@ public class Sjukfall {
     private List<Integer> sjukskrivningsgrader = new ArrayList<>();
     private int sjukskrivningsgrad;
     private Set<Lakare> lakare = new HashSet<>();
+    private Lakare lastLakare;
     private int[] enhets;
     private int realDays;
     private List<Diagnos> diagnoses = new ArrayList<>();
     private Diagnos diagnos;
     private boolean enkelt;
+    private int lastEnhet;
 
     private Sjukfall() {
     }
@@ -62,7 +64,9 @@ public class Sjukfall {
         sjukfall.sjukskrivningsgrader = new ArrayList<>(extendedSjukfall.getSjukskrivningsgrads());
         sjukfall.lan = extendedSjukfall.getLan();
         sjukfall.lakare = extendedSjukfall.getLakare();
+        sjukfall.lastLakare = extendedSjukfall.getLastLakare();
         sjukfall.enhets = toArray(extendedSjukfall.getEnhets());
+        sjukfall.lastEnhet = extendedSjukfall.getLastEnhet();
         sjukfall.enkelt = extendedSjukfall.isEnkelt();
         return sjukfall;
     }
@@ -186,8 +190,16 @@ public class Sjukfall {
         return lakare;
     }
 
+    public Lakare getLastLakare() {
+        return lastLakare;
+    }
+
     public int[] getEnhets() {
         return enhets;
+    }
+
+    public int getLastEnhet() {
+        return lastEnhet;
     }
 
     public boolean isEnkelt() {

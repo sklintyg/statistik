@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -95,7 +96,7 @@ public final class SjukskrivningsgradQuery {
     }
 
     public static SimpleKonResponse<SimpleKonDataRow> getSjukskrivningsgradTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
-        final CounterFunction<Integer> toCount = (sjukfall, counter) -> counter.addAll(sjukfall.getSjukskrivningsgrader());
+        final CounterFunction<Integer> toCount = (sjukfall, counter) -> counter.addAll(new HashSet<>(sjukfall.getSjukskrivningsgrader()));
 
         return sjukfallUtil.calculateSimpleKonResponse(aisle, filter, from, periods, periodLength, toCount, GRAD);
     }

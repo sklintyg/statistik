@@ -62,12 +62,16 @@ public class SjukfallExtended {
         diagnoses.add(new Diagnos(start, end, line.getDiagnoskapitel(), line.getDiagnosavsnitt(), line.getDiagnoskategori(), line.getDiagnoskod()));
         sjukskrivningsgrad.put(new Range(WidelineConverter.toDate(start), WidelineConverter.toDate(end)), line.getSjukskrivningsgrad());
         lan = line.getLan();
+        this.lakare.add(getLakareFromFact(line));
+        this.enhets.add(line.getEnhet());
+    }
+
+    private Lakare getLakareFromFact(Fact line) {
         final int lakarid = line.getLakarid();
         final Kon lakarKon = Kon.byNumberRepresentation(line.getLakarkon());
         final int lakaralder = line.getLakaralder();
         final int[] lakarbefattnings = line.getLakarbefattnings();
-        this.lakare.add(new Lakare(lakarid, lakarKon, lakaralder, lakarbefattnings));
-        this.enhets.add(line.getEnhet());
+        return new Lakare(lakarid, lakarKon, lakaralder, lakarbefattnings);
     }
 
     public SjukfallExtended(SjukfallExtended previous, Fact line) {
@@ -264,8 +268,16 @@ public class SjukfallExtended {
         return lakare;
     }
 
+    public Lakare getLastLakare() {
+        return getLakareFromFact(getLastFact());
+    }
+
     public Set<Integer> getEnhets() {
         return enhets;
+    }
+
+    public int getLastEnhet() {
+        return getLastFact().getEnhet();
     }
 
     public SjukfallExtended extendWithRealDaysWithinPeriod(SjukfallExtended previous) {
