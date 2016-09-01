@@ -20,6 +20,7 @@ abstract class LandstingSjukfallPerListningarPerEnhetReport extends Rapport {
     }
 
     public void reset() {
+        super.reset();
         antalSjukfall = -1
         antalListningar = -1
         antalSjukfallPerTusenListningar = -1
