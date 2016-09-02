@@ -18,13 +18,7 @@
  */
 package se.inera.statistics.web.util;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.io.IOException;
-
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,10 +27,14 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
-
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.web.service.ChartDataService;
 import se.inera.statistics.web.util.HealthCheckUtil.Status;
+
+import java.io.IOException;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HealthCheckUtilTest {
@@ -92,16 +90,16 @@ public class HealthCheckUtilTest {
     }
 
     @Test
-    public void testMeasurementsForAccessingHighcharts() throws HttpException, IOException {
-        Mockito.when(client.executeMethod(Mockito.any(GetMethod.class))).thenReturn(HttpStatus.METHOD_NOT_ALLOWED.value());
+    public void testMeasurementsForAccessingHighcharts() throws IOException {
+        Mockito.when(client.executeMethod(Mockito.any(GetMethod.class))).thenReturn(HttpStatus.ACCEPTED.value());
         Status status = healthCheck.getHighchartsExportStatus();
         assertTrue(status.getMeasurement() >= 0);
         assertTrue(status.isOk());
     }
 
     @Test
-    public void testMeasurementsForAccessingFailingHighcharts() throws HttpException, IOException {
-        Mockito.when(client.executeMethod(Mockito.any(GetMethod.class))).thenReturn(HttpStatus.ACCEPTED.value());
+    public void testMeasurementsForAccessingFailingHighcharts() throws IOException {
+        Mockito.when(client.executeMethod(Mockito.any(GetMethod.class))).thenReturn(HttpStatus.METHOD_NOT_ALLOWED.value());
         Status status = healthCheck.getHighchartsExportStatus();
         assertTrue(status.getMeasurement() >= 0);
         assertFalse(status.isOk());
