@@ -72,11 +72,11 @@
                     </div>
                 </div>
                 <div id="fallbackUploadZone" style="display: none;">
-                    <form method="POST" action="api/landsting/fileupload" enctype="multipart/form-data" class="dropzone" style="padding: 12px;">
+                    <form method="POST" action="{{uploadUrl}}" enctype="multipart/form-data" class="dropzone" style="padding: 12px;">
                         <span message key="info.upload.fallbackText"></span>
-                        <input type="file" name="file" />
+                        <input type="file" name="file" /> <br />
                         <input type="hidden" name="fallbackUpload" value="true">
-                        <input type="submit" />
+                        <input type="submit" value="Ladda upp filen" class="btn btn-primary" />
                     </form>
                 </div>
             </div>

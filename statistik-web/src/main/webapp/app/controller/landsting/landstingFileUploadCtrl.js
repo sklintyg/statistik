@@ -40,9 +40,11 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl',
             $scope.uploadResultMessage = response.message ? response.message : response;
         };
 
+        $scope.uploadUrl = 'api/landsting/fileupload?vgid=' + $location.search().vgid;
+
         $scope.dropzoneConfig = {
             'options': {
-                url: 'api/landsting/fileupload?vgid=' + $location.search().vgid,
+                url: $scope.uploadUrl,
                 parallelUploads: 1,
                 maxFilesize: 10, //MB
                 paramName: 'file',
