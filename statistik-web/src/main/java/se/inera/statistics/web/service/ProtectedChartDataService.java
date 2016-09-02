@@ -262,6 +262,7 @@ public class ProtectedChartDataService {
             final DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, filterSettings, message);
             return getResponse(data, csv, request);
         } catch (RangeNotFoundException e) {
+            LOG.debug("Range not found", e);
             return Response.serverError().entity(e.getMessage()).build();
         }
     }
@@ -289,6 +290,7 @@ public class ProtectedChartDataService {
             final SimpleDetailsData data = new DiagnosisSubGroupsTvarsnittConverter().convert(diagnosavsnitt, filterSettings, message);
             return getResponse(data, csv, request);
         } catch (RangeNotFoundException e) {
+            LOG.debug("Range not found", e);
             return Response.serverError().entity(e.getMessage()).build();
         }
     }

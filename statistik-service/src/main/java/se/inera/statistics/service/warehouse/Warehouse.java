@@ -157,7 +157,7 @@ public class Warehouse implements Iterable<Aisle> {
 
     public void completeEnhets() {
         for (List<Enhet> enhetList: loadingEnhets.values()) {
-            Collections.sort(enhetList);
+            Collections.sort(enhetList, Enhet.byEnhetId());
         }
         enhets = Collections.unmodifiableMap(loadingEnhets);
         loadingEnhets = new HashMap<>();

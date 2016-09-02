@@ -37,7 +37,7 @@ public final class DocumentHelper {
     private static final String OBSERVATIONER = "observationer";
     private static final String EXTENSION = "extension";
     private static final String PATIENT = "patient";
-    public static final int SEX_DIGIT = 11;
+    static final int SEX_DIGIT = 11;
     private static final int MAX_SJUKSKRIVNING = 100;
 
     private static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationskategori").add(Matcher.Builder.matcher("code", "439401001")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
@@ -73,6 +73,7 @@ public final class DocumentHelper {
             alder = ConversionHelper.extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(getSistaNedsattningsdag(intyg, version)));
         } catch (IllegalArgumentException e) {
             LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId);
+            LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId, e);
             alder = ConversionHelper.NO_AGE;
         }
         String kon = ConversionHelper.extractKon(personId);

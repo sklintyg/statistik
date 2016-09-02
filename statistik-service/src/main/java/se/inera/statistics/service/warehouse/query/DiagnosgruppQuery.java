@@ -254,7 +254,7 @@ public class DiagnosgruppQuery {
         for (Counter<T> counter : count.values()) {
             sorted.add(counter);
         }
-        Collections.sort(sorted);
+        Collections.sort(sorted, Counter.byTotalCount());
 
         Collection<T> result = new ArrayList<>();
         for (Counter<T> counter : sorted) {

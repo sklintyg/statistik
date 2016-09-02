@@ -72,7 +72,7 @@ public final class AldersgruppQuery {
     private static Collection<Ranges.Range> rowsToKeep(Map<Ranges.Range, Counter<Ranges.Range>> count, int noOfRows) {
         List<Counter<Ranges.Range>> sorted = new ArrayList<>();
         sorted.addAll(count.values());
-        Collections.sort(sorted);
+        Collections.sort(sorted, Counter.byTotalCount());
 
         Collection<Ranges.Range> result = new HashSet<>();
         for (Counter<Ranges.Range> counter : sorted) {

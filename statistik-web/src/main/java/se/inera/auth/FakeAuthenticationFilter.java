@@ -60,7 +60,7 @@ public class FakeAuthenticationFilter extends AbstractAuthenticationProcessingFi
         } catch (IOException e) {
             String message = "Failed to parse JSON: " + json;
             LOG.error(message, e);
-            throw new RuntimeException(message, e);
+            throw new FakeAuthJsonParseFailedException(message, e);
         }
     }
 }

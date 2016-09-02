@@ -128,6 +128,7 @@ public class HSADecorator {
             return hsaInfoMapper.writeValueAsString(info);
         } catch (JsonProcessingException e) {
             LOG.error("Failed to convert HSA object to json. HSA info has not been stored");
+            LOG.debug("Failed to convert HSA object to json. HSA info has not been stored", e);
             return null;
         }
     }
@@ -137,6 +138,7 @@ public class HSADecorator {
             return hsaInfoMapper.readValue(data, HsaInfo.class);
         } catch (IOException e) {
             LOG.error("Failed to parse HSA info json");
+            LOG.debug("Failed to parse HSA info json", e);
             return null;
         }
     }

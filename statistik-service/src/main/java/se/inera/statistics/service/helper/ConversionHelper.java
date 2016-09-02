@@ -76,6 +76,7 @@ public final class ConversionHelper {
             Period period = new Period(birthDate, referenceDate);
             age = period.getYears();
         } catch (NumberFormatException | IllegalFieldValueException e) {
+            LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help", e);
             throw new IllegalArgumentException("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: " + personId);
         }
         return age;

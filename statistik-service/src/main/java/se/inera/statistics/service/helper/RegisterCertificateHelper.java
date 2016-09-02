@@ -159,6 +159,7 @@ public class RegisterCertificateHelper {
             alder = ConversionHelper.extractAlder(personId, getSistaNedsattningsdag(intyg));
         } catch (Exception e) {
             LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId);
+            LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId, e);
             alder = ConversionHelper.NO_AGE;
         }
         String kon = ConversionHelper.extractKon(personId);

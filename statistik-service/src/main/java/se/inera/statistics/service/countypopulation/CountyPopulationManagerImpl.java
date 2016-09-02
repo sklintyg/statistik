@@ -98,9 +98,11 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
             return new CountyPopulation(populationData, populationRow.getDate());
         } catch (NoResultException e) {
             LOG.error("County population is missing!");
+            LOG.debug("County population is missing!", e);
             return CountyPopulation.empty();
         } catch (IOException e) {
             LOG.error("Could not parse population data!");
+            LOG.debug("Could not parse population data!", e);
             return CountyPopulation.empty();
         }
     }
@@ -125,6 +127,7 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
             return Optional.of(populationRow);
         } catch (NoResultException e) {
             LOG.error("County population is missing!");
+            LOG.debug("County population is missing!", e);
             return Optional.empty();
         }
     }
@@ -145,6 +148,7 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
             return true;
         } catch (JsonProcessingException e) {
             LOG.error("Could not insert county population!");
+            LOG.debug("Could not insert county population!", e);
             return false;
         }
     }

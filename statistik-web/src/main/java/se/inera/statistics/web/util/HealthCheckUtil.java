@@ -22,6 +22,8 @@ import java.io.IOException;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,8 @@ import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.web.service.ChartDataService;
 
 public class HealthCheckUtil {
+
+    private static final Logger LOG = LoggerFactory.getLogger(HealthCheckUtil.class);
 
     private static final int NANOS_PER_MS = 1_000_000;
 
@@ -52,6 +56,7 @@ public class HealthCheckUtil {
             chartDataService.getOverviewData();
             ok = true;
         } catch (Exception e) {
+            LOG.debug("Could not get overview data", e);
             ok = false;
         }
         long doneTime = System.nanoTime();
@@ -65,6 +70,7 @@ public class HealthCheckUtil {
             hsaService.callPing();
             ok = true;
         } catch (Exception e) {
+            LOG.debug("Could not call hsa ping", e);
             ok = false;
         }
         long doneTime = System.nanoTime();
@@ -81,6 +87,7 @@ public class HealthCheckUtil {
         try {
             ok = client.executeMethod(new GetMethod(highchartsUrl)) == HttpStatus.METHOD_NOT_ALLOWED.value();
         } catch (IOException e) {
+            LOG.debug("Highcharts service not reachable", e);
             // Squelch this as it is quite ok to throw IOException.
             // It simply means that the service is not reachable
             ok = false;

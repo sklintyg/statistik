@@ -30,7 +30,26 @@ import static org.junit.Assert.*;
 public class CounterTest {
 
     @Test
-    public void testCompareTo1() throws Exception {
+    public void testGet() throws Exception {
+        //Given
+        final String testKey = "1";
+        final Counter<String> counter = new Counter<>(testKey);
+
+        //When
+        counter.increase(createSjukfall(Kon.Female));
+        counter.increase(createSjukfall(Kon.Male));
+        counter.increase(createSjukfall(Kon.Male));
+        counter.increase(createSjukfall(Kon.Male));
+
+        //Then
+        assertEquals(4, counter.getCount());
+        assertEquals(3, counter.getCountMale());
+        assertEquals(1, counter.getCountFemale());
+        assertEquals(testKey, counter.getKey());
+    }
+
+    @Test
+    public void testByTotalCount1() throws Exception {
         //Given
         final Counter<String> counter1 = new Counter<>("1");
         counter1.increase(createSjukfall(Kon.Female));
@@ -40,14 +59,14 @@ public class CounterTest {
         counter2.increase(createSjukfall(Kon.Male));
 
         //When
-        final int i = counter1.compareTo(counter2);
+        final int i = Counter.byTotalCount().compare(counter1, counter2);
 
         //Then
         assertTrue(i > 0);
     }
 
     @Test
-    public void testCompareTo2() throws Exception {
+    public void testByTotalCount2() throws Exception {
         //Given
         final Counter<String> counter1 = new Counter<>("1");
         counter1.increase(createSjukfall(Kon.Female));
@@ -57,14 +76,14 @@ public class CounterTest {
         counter2.increase(createSjukfall(Kon.Male));
 
         //When
-        final int i = counter2.compareTo(counter1);
+        final int i = Counter.byTotalCount().compare(counter2, counter1);
 
         //Then
         assertTrue(i < 0);
     }
 
     @Test
-    public void testCompareToSameEquals() throws Exception {
+    public void testByTotalCountSameEquals() throws Exception {
         //Given
         final Counter<String> counter = new Counter<>("2");
         counter.increase(createSjukfall(Kon.Female));
@@ -73,7 +92,7 @@ public class CounterTest {
         counter.increase(createSjukfall(Kon.Male));
 
         //When
-        final int i = counter.compareTo(counter);
+        final int i = Counter.byTotalCount().compare(counter, counter);
 
         //Then
         assertTrue(i == 0);

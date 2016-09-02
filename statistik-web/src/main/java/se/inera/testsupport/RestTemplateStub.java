@@ -108,6 +108,7 @@ public class RestTemplateStub extends RestTemplate implements CountyPopulationIn
                 }
             } catch (IOException e) {
                 LOG.error("Failed to create mocked population response");
+                LOG.debug("Failed to create mocked population response", e);
             }
         }
         return null;

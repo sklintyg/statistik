@@ -105,6 +105,7 @@ public class SjukfallUtil {
         } catch (ExecutionException e) {
             //Failed to get from cache. Do nothing and fall through.
             LOG.warn("Failed to get value from cache");
+            LOG.debug("Failed to get value from cache", e);
         }
         return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
     }

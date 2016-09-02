@@ -73,7 +73,7 @@ public final class SjukskrivningslangdQuery {
         for (Counter counter : count.values()) {
             sorted.add(counter);
         }
-        Collections.sort(sorted);
+        Collections.sort(sorted, Counter.byTotalCount());
 
         Collection<Ranges.Range> result = new HashSet<>();
         for (Counter<Ranges.Range> counter : sorted) {

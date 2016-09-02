@@ -99,7 +99,8 @@ public class FilterHandler {
         try {
             return getFilterSettingsLandsting(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
         } catch (FilterException e) {
-            LOG.warn("Could not use selected filter. Falling back to default filter", e);
+            LOG.warn("Could not use selected landsting filter. Falling back to default filter. Msg: " + e.getMessage());
+            LOG.debug("Could not use selected landsting filter. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
         }
     }
@@ -126,7 +127,8 @@ public class FilterHandler {
             final List<HsaIdEnhet> enhetsIDs = getEnhetsFiltered(request, inFilter);
             return getFilterSettings(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
         } catch (FilterException | FilterHashException e) {
-            LOG.warn("Could not use selected filter. Falling back to default filter", e);
+            LOG.warn("Could not use selected filter. Falling back to default filter. Msg: " + e.getMessage());
+            LOG.debug("Could not use selected filter. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
         }
     }
@@ -190,7 +192,7 @@ public class FilterHandler {
         final String toDate = inFilter.getToDate();
 
         if (fromDate == null || toDate == null) {
-            throw new FilterException(String.format("Can not parse null range dates. From: {}, To: {}", fromDate, toDate));
+            throw new FilterException("Can not parse null range dates. From: " + fromDate + ", To: " + toDate);
         }
         try {
             final LocalDate from = dateStringFormat.parseLocalDate(fromDate);
@@ -198,7 +200,7 @@ public class FilterHandler {
             validateFilterRange(from, to);
             return new Range(from.withDayOfMonth(1), to.dayOfMonth().withMaximumValue());
         } catch (IllegalArgumentException e) {
-            throw new FilterException(String.format("Could not parse range dates. From: {}, To: {}", fromDate, toDate), e);
+            throw new FilterException("Could not parse range dates. From: " + fromDate + ", To: " + toDate, e);
         }
     }
 

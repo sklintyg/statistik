@@ -18,22 +18,12 @@
  */
 package se.inera.auth;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import java.io.IOException;
 
-public class ApplicationContextProvider implements ApplicationContextAware {
-    private static ApplicationContext context = null;
+class FakeAuthJsonParseFailedException extends RuntimeException {
 
-    public static ApplicationContext getApplicationContext() {
-        return context;
+    FakeAuthJsonParseFailedException(String message, IOException e) {
+        super(message, e);
     }
 
-    @Override
-    public void setApplicationContext(ApplicationContext ctx) {
-        setContext(ctx);
-    }
-
-    private static void setContext(ApplicationContext ctx) {
-        context = ctx;
-    }
 }

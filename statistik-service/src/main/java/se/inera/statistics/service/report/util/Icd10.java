@@ -52,13 +52,13 @@ public class Icd10 {
 
     private static final int ENDINDEX_ID = 7;
     private static final int STARTINDEX_DESCRIPTION = 7;
-    public static final int MAX_CODE_LENGTH = 3;
+    private static final int MAX_CODE_LENGTH = 3;
 
     public static final String OTHER_KAPITEL = "Ö00-Ö00";
     public static final String OTHER_AVSNITT = "Ö00-Ö00";
     public static final String OTHER_KATEGORI = "Ö00";
     public static final String OTHER_KOD = "Ö000";
-    public static final List<Integer> INTERNAL_ICD10_INTIDS = Arrays.asList(
+    private static final List<Integer> INTERNAL_ICD10_INTIDS = Arrays.asList(
                                                                         icd10ToInt(OTHER_KAPITEL, Icd10RangeType.KAPITEL),
                                                                         icd10ToInt(OTHER_AVSNITT, Icd10RangeType.AVSNITT),
                                                                         icd10ToInt(OTHER_KATEGORI, Icd10RangeType.KATEGORI),

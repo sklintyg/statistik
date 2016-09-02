@@ -182,6 +182,7 @@ public class ProtectedLandstingService {
             return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
                     .header("Content-Disposition", "attachment; filename=\"" + vardgivarId + "_landsting.xlsx\"").build();
         } catch (LandstingFileGenerationException e) {
+            LOG.debug("File generation failed", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not generate excel file").build();
         }
     }
@@ -197,6 +198,7 @@ public class ProtectedLandstingService {
             return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
                     .header("Content-Disposition", "attachment; filename=\"mall_landsting.xlsx\"").build();
         } catch (LandstingFileGenerationException e) {
+            LOG.debug("Empty file generation failed", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could generate empty landsting excel file").build();
         }
     }

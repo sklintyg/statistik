@@ -104,6 +104,7 @@ public class LoginServiceUtil {
         try {
             realUser = getCurrentUser(request);
         } catch (IllegalStateException e) {
+            LOG.debug("Could not get current user", e);
             return new LoginInfo();
         }
         Map<HsaIdVardgivare, String> allVgNames = realUser.getVardenhetList().stream()

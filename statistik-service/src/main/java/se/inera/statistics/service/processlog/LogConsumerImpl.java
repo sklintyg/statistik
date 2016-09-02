@@ -84,6 +84,7 @@ public class LogConsumerImpl implements LogConsumer {
                     }
                 } catch (Exception e) {
                     LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
+                    LOG.debug("Could not process intyg {} ({}).", event.getId(), event.getCorrelationId(), e);
                 } finally {
                     processLog.confirm(event.getId());
                     processed++;
@@ -121,6 +122,7 @@ public class LogConsumerImpl implements LogConsumer {
             rc = registerCertificateHelper.unmarshalRegisterCertificateXml(event.getData());
         } catch (JAXBException e) {
             LOG.warn("Failed to unmarshal intyg xml");
+            LOG.debug("Failed to unmarshal intyg xml", e);
             return false;
         }
         HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());

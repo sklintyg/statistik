@@ -91,7 +91,7 @@ public class SakerhetstjanstAssertion {
                     if (val != null && hsaId == null) {
                         hsaId = val;
                     }
-
+                    break;
                 default:
                     // Ignore.
             }
