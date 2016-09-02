@@ -192,7 +192,7 @@ configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statis
         ignoreFailures = false
         // This is empty b/c we run checkstyle explicitly in the "testAll" task below
         sourceSets = []
-        toolVersion = "6.1"
+        toolVersion = "7.1"
     }
     // Make sure we don't run checkstyle on generated source code
     checkstyleMain.source = "src/main/java"
