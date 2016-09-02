@@ -52,12 +52,12 @@ public class ResultMessagHandlerTest {
             }
 
             @Override
-            public List<? extends Icd10.Id> getSubItems() {
+            public List<Icd10.Id> getSubItems() {
                 return new ArrayList<>();
             }
 
             @Override
-            public Optional<? extends Icd10.Id> getParent() {
+            public Optional<Icd10.Id> getParent() {
                 return Optional.absent();
             }
         });

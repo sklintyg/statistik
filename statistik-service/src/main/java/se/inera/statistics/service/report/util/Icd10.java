@@ -41,6 +41,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Icd10 {
 
@@ -120,61 +123,28 @@ public class Icd10 {
     }
 
     @PostConstruct
+    @java.lang.SuppressWarnings("squid:UnusedPrivateMethod") // Suppress Sonar warning. Method is invoked by Spring.
     private void init() {
         try {
-            kapitels = new ArrayList<>();
-            try (LineReader lr = new LineReader(icd10KapitelAnsiFile)) {
-                String line;
-                while ((line = lr.next()) != null) {
-                    Kapitel kapitel = Kapitel.valueOf(line);
-                    kapitels.add(kapitel);
-                    idToKapitelMap.put(kapitel);
-                }
-            }
-
-            try (LineReader lr = new LineReader(icd10AvsnittAnsiFile)) {
-                String line;
-                while ((line = lr.next()) != null) {
-                    Avsnitt avsnitt = Avsnitt.valueOf(line, idToKapitelMap.values());
-                    if (avsnitt != null) {
-                        idToAvsnittMap.put(avsnitt);
-                    }
-                }
-            }
-
-            try (LineReader lr = new LineReader(icd10KategoriAnsiFile)) {
-                String line;
-                while ((line = lr.next()) != null) {
-                    Kategori kategori = Kategori.valueOf(line, idToAvsnittMap.values());
-                    if (kategori != null) {
-                        idToKategoriMap.put(kategori);
-                    }
-                }
-            }
-
-            try (LineReader lr = new LineReader(icd10KodAnsiFile)) {
-                String line;
-                while ((line = lr.next()) != null) {
-                    Kod kod = Kod.valueOf(line, idToKategoriMap.values());
-                    if (kod != null) {
-                        idToKodMap.put(kod);
-                    }
-                }
-            }
-
-            try (LineReader lr = new LineReader(icd10VwxyKodAnsiFile)) {
-                String line;
-                while ((line = lr.next()) != null) {
-                    Kod kod = Kod.valueOf(line, idToKategoriMap.values());
-                    if (kod != null) {
-                        idToKodMap.put(kod);
-                    }
-                }
-            }
-
+            populateIdMap(icd10KapitelAnsiFile, idToKapitelMap, Kapitel::valueOf);
+            populateIdMap(icd10AvsnittAnsiFile, idToAvsnittMap, s -> Avsnitt.valueOf(s, idToKapitelMap.values()));
+            populateIdMap(icd10KategoriAnsiFile, idToKategoriMap, s -> Kategori.valueOf(s, idToAvsnittMap.values()));
+            populateIdMap(icd10KodAnsiFile, idToKodMap, s -> Kod.valueOf(s, idToKategoriMap.values()));
+            populateIdMap(icd10VwxyKodAnsiFile, idToKodMap, s -> Kod.valueOf(s, idToKategoriMap.values()));
             populateInternalIcd10();
+            kapitels = new ArrayList<>(idToKapitelMap.values());
         } catch (IOException e) {
             LOG.error("Could not parse ICD10: " + e);
+        }
+    }
+
+    private <T extends Id> void populateIdMap(Resource file, IdMap<T> idMapToPopulate, Function<String, T> parseToRangeFunction) throws IOException {
+        try (LineReader lr = new LineReader(file)) {
+            String line;
+            while ((line = lr.next()) != null) {
+                T kapitel = parseToRangeFunction.apply(line);
+                idMapToPopulate.put(kapitel);
+            }
         }
     }
 
@@ -263,32 +233,11 @@ public class Icd10 {
     }
 
     public Id findIcd10FromNumericId(int numId) {
-        for (Id kategori : idToKategoriMap.values()) {
-            if (kategori.toInt() == numId) {
-                return kategori;
-            }
-        }
-        for (Id avsnitt : idToAvsnittMap.values()) {
-            if (avsnitt.toInt() == numId) {
-                return avsnitt;
-            }
-        }
-        for (Id kapitel : idToKapitelMap.values()) {
-            if (kapitel.toInt() == numId) {
-                return kapitel;
-            }
-        }
-        for (Id kod : idToKodMap.values()) {
-            if (kod.toInt() == numId) {
-                return kod;
-            }
-        }
-        for (Id internal : internalIcd10) {
-            if (internal.toInt() == numId) {
-                return internal;
-            }
-        }
-        throw new RuntimeException("ICD10 with numerical id could not be found: " + numId);
+        return Stream
+                .of(idToKategoriMap.values(), idToAvsnittMap.values(), idToKapitelMap.values(), idToKodMap.values(), internalIcd10)
+                .flatMap(Collection::stream)
+                .filter((java.util.function.Predicate<Id>) id -> id.toInt() == numId)
+                .findAny().orElseThrow((Supplier<RuntimeException>) () -> new Icd10NotFoundException("ICD10 with numerical id could not be found: " + numId));
     }
 
     public static List<Integer> getKapitelIntIds(String... icdIds) {
@@ -301,32 +250,11 @@ public class Icd10 {
     }
 
     public Id findFromIcd10Code(String icd10) {
-        for (Id kategori : idToKategoriMap.values()) {
-            if (icd10.equals(kategori.getId())) {
-                return kategori;
-            }
-        }
-        for (Id avsnitt : idToAvsnittMap.values()) {
-            if (icd10.equals(avsnitt.getId())) {
-                return avsnitt;
-            }
-        }
-        for (Id kapitel : idToKapitelMap.values()) {
-            if (icd10.equals(kapitel.getId())) {
-                return kapitel;
-            }
-        }
-        for (Id kod : idToKodMap.values()) {
-            if (icd10.equals(kod.getId())) {
-                return kod;
-            }
-        }
-        for (Id internal : internalIcd10) {
-            if (icd10.equals(internal.getId())) {
-                return internal;
-            }
-        }
-        throw new RuntimeException("ICD10 with id could not be found: " + icd10);
+        return Stream
+                .of(idToKategoriMap.values(), idToAvsnittMap.values(), idToKapitelMap.values(), idToKodMap.values(), internalIcd10)
+                .flatMap(Collection::stream)
+                .filter((java.util.function.Predicate<Id>) id -> id.getId().equals(icd10))
+                .findAny().orElseThrow((Supplier<RuntimeException>) () -> new Icd10NotFoundException("ICD10 with id could not be found: " + icd10));
     }
 
     private static <T extends Range> T find(String id, Collection<T> ranges) {
@@ -365,9 +293,9 @@ public class Icd10 {
 
         public abstract int toInt();
 
-        public abstract List<? extends Id> getSubItems();
+        public abstract List<Id> getSubItems();
 
-        public abstract Optional<? extends Id> getParent();
+        public abstract Optional<Id> getParent();
 
         public String getVisibleId() {
             return isInternal() ? "" : getId();
@@ -398,6 +326,7 @@ public class Icd10 {
             lastId = range.substring(STARTINDEX_LAST_KATEGORI);
         }
 
+        @Override
         public boolean contains(String kategoriId) {
             return firstId.compareTo(kategoriId) <= 0 && lastId.compareTo(kategoriId) >= 0;
         }
@@ -412,12 +341,12 @@ public class Icd10 {
         }
 
         @Override
-        public List<? extends Id> getSubItems() {
-            return getAvsnitt();
+        public List<Id> getSubItems() {
+            return getAvsnitt().stream().map(avs -> (Id) avs).collect(Collectors.toList());
         }
 
         @Override
-        public Optional<? extends Id> getParent() {
+        public Optional<Id> getParent() {
             return Optional.absent();
         }
 
@@ -466,12 +395,14 @@ public class Icd10 {
             return kapitel;
         }
 
-        public Optional<? extends Id> getParent() {
+        @Override
+        public Optional<Id> getParent() {
             return Optional.of(getKapitel());
         }
 
-        public List<? extends Id> getSubItems() {
-            return getKategori();
+        @Override
+        public List<Id> getSubItems() {
+            return getKategori().stream().map(kat -> (Id) kat).collect(Collectors.toList());
         }
 
         @Override
@@ -511,12 +442,12 @@ public class Icd10 {
         }
 
         @Override
-        public List<? extends Id> getSubItems() {
-            return getKods();
+        public List<Id> getSubItems() {
+            return getKods().stream().map(kod -> (Id) kod).collect(Collectors.toList());
         }
 
         @Override
-        public Optional<? extends Id> getParent() {
+        public Optional<Id> getParent() {
             return Optional.of(getAvsnitt());
         }
 
@@ -544,7 +475,7 @@ public class Icd10 {
         }
 
         public static Kod valueOf(String line, Collection<Kategori> kategoris) {
-            String id = line.replaceAll("\\s.*", ""); //line.substring(0, );
+            String id = line.replaceAll("\\s.*", "");
             Kategori kategori = find(id, kategoris);
             if (kategori == null) {
                 return null;
@@ -557,12 +488,12 @@ public class Icd10 {
         }
 
         @Override
-        public Optional<? extends Id> getParent() {
+        public Optional<Id> getParent() {
             return Optional.of(getKategori());
         }
 
         @Override
-        public List<? extends Id> getSubItems() {
+        public List<Id> getSubItems() {
             return Collections.emptyList();
         }
 
@@ -588,4 +519,13 @@ public class Icd10 {
             reader.close();
         }
     }
+
+    private class Icd10NotFoundException extends RuntimeException {
+
+        Icd10NotFoundException(String s) {
+            super(s);
+        }
+
+    }
+
 }

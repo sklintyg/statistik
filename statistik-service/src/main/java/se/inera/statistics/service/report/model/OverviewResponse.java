@@ -20,6 +20,7 @@ package se.inera.statistics.service.report.model;
 
 import java.util.List;
 
+@java.lang.SuppressWarnings("common-java:DuplicatedBlocks") // Code will not be cleaner if extracting a common class for OverviewResponse and VerksamhetOverviewResponse.
 public class OverviewResponse {
 
     private final OverviewKonsfordelning casesPerMonthSexProportion;
@@ -38,6 +39,7 @@ public class OverviewResponse {
     private final List<OverviewChartRowExtended> perCounty;
 
     // CHECKSTYLE:OFF ParameterNumberCheck
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public OverviewResponse(OverviewKonsfordelning casesPerMonthSexProportion,
             int casesPerMonthAlteration, List<OverviewChartRowExtended> diagnosisGroups,
             List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
