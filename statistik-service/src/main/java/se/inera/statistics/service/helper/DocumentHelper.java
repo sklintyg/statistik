@@ -40,8 +40,8 @@ public final class DocumentHelper {
     static final int SEX_DIGIT = 11;
     private static final int MAX_SJUKSKRIVNING = 100;
 
-    private static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationskategori").add(Matcher.Builder.matcher("code", "439401001")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
-    private static final Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationskod").add(Matcher.Builder.matcher("code", "302119000")).add((Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1")));
+    private static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationskategori").add(Matcher.Builder.matcher("code", "439401001")).add(Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1"));
+    private static final Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationskod").add(Matcher.Builder.matcher("code", "302119000")).add(Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1"));
     private static final String DOCUMENT_ID = "1.2.752.129.2.1.2.1";
     public static final String UTANENHETSID = "UTANENHETSID";
     private static final int NEDSATT100 = 100;
@@ -95,7 +95,7 @@ public final class DocumentHelper {
         } else if (personIdRaw.matches("[0-9]{12}")) {
             return personIdRaw.substring(0, ConversionHelper.DATE_PART_OF_PERSON_ID) + "-" + personIdRaw.substring(ConversionHelper.DATE_PART_OF_PERSON_ID);
         } else {
-            throw new RuntimeException("Failed to parse person id");
+            throw new PersonIdParseException("Failed to parse person id");
         }
     }
 
@@ -141,57 +141,69 @@ public final class DocumentHelper {
         }
     }
 
-    public static String getForstaNedsattningsdag(JsonNode document, IntygVersion version) {
+    static String getForstaNedsattningsdag(JsonNode document, IntygVersion version) {
         if (version == IntygVersion.VERSION1) {
-            String from = null;
-            for (JsonNode node : document.path(OBSERVATIONER)) {
-                if (ARBETSFORMAGA_MATCHER.match(node)) {
-                    JsonNode varde = node.path("observationsperiod");
-                    String candidate = varde.path("from").asText();
-                    if (from == null || from.compareTo(candidate) > 0) {
-                        from = candidate;
-                    }
-                }
-            }
-            return from;
+            return getForstaNedsattningsdagV1(document);
         } else {
             return document.path("giltighet").path("from").textValue();
         }
     }
 
-    public static String getSistaNedsattningsdag(JsonNode document, IntygVersion version) {
-        if (version == IntygVersion.VERSION1) {
-            String to = null;
-            for (JsonNode node : document.path(OBSERVATIONER)) {
-                if (ARBETSFORMAGA_MATCHER.match(node)) {
-                    JsonNode varde = node.path("observationsperiod");
-                    String candidate = varde.path("tom").asText();
-                    if (to == null || to.compareTo(candidate) < 0) {
-                        to = candidate;
-                    }
+    private static String getForstaNedsattningsdagV1(JsonNode document) {
+        String from = null;
+        for (JsonNode node : document.path(OBSERVATIONER)) {
+            if (ARBETSFORMAGA_MATCHER.match(node)) {
+                JsonNode varde = node.path("observationsperiod");
+                String candidate = varde.path("from").asText();
+                if (from == null || from.compareTo(candidate) > 0) {
+                    from = candidate;
                 }
             }
-            return to;
-        } else {
-            final int startYear = 2000;
-            LocalDate date = new LocalDate(startYear, 1, 1);
-            if (document.has("nedsattMed25")) {
-                date = new LocalDate(document.path("nedsattMed25").path("tom").asText());
-            }
-            if (document.has("nedsattMed50")) {
-                LocalDate tom = new LocalDate(document.path("nedsattMed50").path("tom").asText());
-                date = tom.isAfter(date) ? tom : date;
-            }
-            if (document.has("nedsattMed75")) {
-                LocalDate tom = new LocalDate(document.path("nedsattMed75").path("tom").asText());
-                date = tom.isAfter(date) ? tom : date;
-            }
-            if (document.has("nedsattMed100")) {
-                LocalDate tom = new LocalDate(document.path("nedsattMed100").path("tom").asText());
-                date = tom.isAfter(date) ? tom : date;
-            }
-            return date.toString();
         }
+        return from;
+    }
+
+    static String getSistaNedsattningsdag(JsonNode document, IntygVersion version) {
+        if (version == IntygVersion.VERSION1) {
+            return getSistaNedsattningsdagV1(document);
+        } else {
+            return getSistaNedsattningsdagV2(document);
+        }
+    }
+
+    private static String getSistaNedsattningsdagV2(JsonNode document) {
+        final int startYear = 2000;
+        LocalDate date = new LocalDate(startYear, 1, 1);
+        if (document.has("nedsattMed25")) {
+            date = new LocalDate(document.path("nedsattMed25").path("tom").asText());
+        }
+        if (document.has("nedsattMed50")) {
+            LocalDate tom = new LocalDate(document.path("nedsattMed50").path("tom").asText());
+            date = tom.isAfter(date) ? tom : date;
+        }
+        if (document.has("nedsattMed75")) {
+            LocalDate tom = new LocalDate(document.path("nedsattMed75").path("tom").asText());
+            date = tom.isAfter(date) ? tom : date;
+        }
+        if (document.has("nedsattMed100")) {
+            LocalDate tom = new LocalDate(document.path("nedsattMed100").path("tom").asText());
+            date = tom.isAfter(date) ? tom : date;
+        }
+        return date.toString();
+    }
+
+    private static String getSistaNedsattningsdagV1(JsonNode document) {
+        String to = null;
+        for (JsonNode node : document.path(OBSERVATIONER)) {
+            if (ARBETSFORMAGA_MATCHER.match(node)) {
+                JsonNode varde = node.path("observationsperiod");
+                String candidate = varde.path("tom").asText();
+                if (to == null || to.compareTo(candidate) < 0) {
+                    to = candidate;
+                }
+            }
+        }
+        return to;
     }
 
     public static String getDiagnos(JsonNode document, IntygVersion version) {

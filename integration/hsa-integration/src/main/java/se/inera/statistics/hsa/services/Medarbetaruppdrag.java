@@ -35,7 +35,8 @@ public class Medarbetaruppdrag {
 
     private String andamal = STATISTIK;
 
-    public Medarbetaruppdrag() {
+    Medarbetaruppdrag() {
+        //Not sure why/if this is needed
     }
 
     public Medarbetaruppdrag(HsaIdUser hsaId, List<HsaIdEnhet> enhetIds) {

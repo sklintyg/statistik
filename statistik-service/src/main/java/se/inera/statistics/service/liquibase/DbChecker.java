@@ -35,6 +35,7 @@ import java.util.List;
 public class DbChecker {
     private static final Logger LOG = LoggerFactory.getLogger(DbChecker.class);
 
+    @java.lang.SuppressWarnings("squid:S1118") // Suppress Sonar warning for "Utility classes should not have public constructors" since this contructor is actually invoked by Spring
     public DbChecker(DataSource dataSource, String script) {
         try {
             DatabaseConnection connection = new JdbcConnection(dataSource.getConnection());
@@ -47,11 +48,24 @@ public class DbChecker {
                 for (ChangeSet changeSet : changeSets) {
                     errors.append('>').append(changeSet.toString()).append('\n');
                 }
-                throw new Error("Database version mismatch. Check liquibase status. Errors:\n" + errors.toString() + database.getDatabaseProductName() + ", " + database);
+                throw new DbCheckError("Database version mismatch. Check liquibase status. Errors:\n" + errors.toString() + database.getDatabaseProductName() + ", " + database);
             }
         } catch (liquibase.exception.LiquibaseException | SQLException e) {
-            throw new Error("Database not ok, aborting startup.", e);
+            throw new DbCheckError("Database not ok, aborting startup.", e);
         }
         LOG.info("Liquibase ok");
     }
+
+    private class DbCheckError extends Error {
+
+        DbCheckError(String s) {
+            super(s);
+        }
+
+        DbCheckError(String s, Exception e) {
+            super(s, e);
+        }
+
+    }
+
 }

@@ -50,7 +50,8 @@ public class Enhet {
 
     private String verksamhetsTyper;
 
-    public Enhet() {
+    Enhet() {
+        //Not sure why/if this is needed
     }
 
     public long getId() {

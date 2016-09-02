@@ -63,11 +63,14 @@ public class UtlatandeBuilder {
         return build(patientId, start, end, new HsaIdLakare("Personal HSA-ID"), vardenhet, vardgivare, diagnos, arbetsformaga);
     }
 
+
     //CHECKSTYLE:OFF ParameterNumberCheck
+    @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
     public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdLakare personal, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos, int arbetsformaga) {
         return build(patientId, start, end, personal, vardenhet, vardgivare, diagnos, Collections.singletonList(String.valueOf(arbetsformaga)));
     }
 
+    @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
     public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdLakare personal, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos, List<String> arbetsformaga) {
         return build(patientId, list(start), list(end), personal, vardenhet, vardgivare, diagnos, arbetsformaga);
     }
@@ -76,6 +79,7 @@ public class UtlatandeBuilder {
         return build(person, starts, stops, new HsaIdLakare("personalId"), enhet, vardgivare, diagnos, grads);
     }
 
+    @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
     public JsonNode build(String person, List<LocalDate> starts, List<LocalDate> stops, HsaIdLakare personal, HsaIdEnhet enhet, HsaIdVardgivare vardgivare, String diagnos, List<String> grads) {
         ObjectNode intyg = template.deepCopy();
         ObjectNode patientIdNode = (ObjectNode) intyg.path("grundData").path("patient");
@@ -140,7 +144,15 @@ public class UtlatandeBuilder {
             }
             return sb.toString();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ReadTemplateException(e);
         }
     }
+
+    private static class ReadTemplateException extends RuntimeException {
+
+        ReadTemplateException(Exception e) {
+            super(e);
+        }
+    }
+
 }

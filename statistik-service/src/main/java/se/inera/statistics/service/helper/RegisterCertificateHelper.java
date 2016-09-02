@@ -58,9 +58,6 @@ public class RegisterCertificateHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(RegisterCertificateHelper.class);
 
-    public RegisterCertificateHelper() {
-    }
-
     public String getEnhetId(RegisterCertificateType utlatande) {
         return utlatande.getIntyg().getSkapadAv().getEnhet().getEnhetsId().getExtension();
     }
@@ -99,6 +96,7 @@ public class RegisterCertificateHelper {
         return getDelsvarString(intyg, AKTIVITETSBEGRANSNING_SVAR, AKTIVITETSBEGRANSNING_DELSVAR);
     }
 
+    @java.lang.SuppressWarnings("squid:S134") //I can't see a better way to write this with fewer nested statements
     private String getDelsvarString(RegisterCertificateType intyg, String svarId, String delsvarId) {
         for (Svar svar : intyg.getIntyg().getSvar()) {
             if (svarId.equals(svar.getId())) {
@@ -116,6 +114,7 @@ public class RegisterCertificateHelper {
         return null;
     }
 
+    @java.lang.SuppressWarnings("squid:S134") //I can't see a better way to write this with fewer nested statements
     public String getDx(RegisterCertificateType intyg) {
         for (Svar svar : intyg.getIntyg().getSvar()) {
             if (DIAGNOS_SVAR_ID_6.equals(svar.getId())) {
@@ -169,8 +168,6 @@ public class RegisterCertificateHelper {
 
     public LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {
         final List<Arbetsnedsattning> arbetsnedsattnings = getArbetsnedsattning(document);
-        final int startYear = 2000;
-        LocalDate date = new LocalDate(startYear, 1, 1);
         LocalDate to = null;
         for (Arbetsnedsattning arbetsnedsattning : arbetsnedsattnings) {
             final LocalDate candidate = arbetsnedsattning.getSlut();
@@ -258,6 +255,8 @@ public class RegisterCertificateHelper {
      * @return CVType
      * @throws ConverterException
      */
+    //This code is copied from intygsprojektet and is best to keep unchanged
+    @java.lang.SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S134", "squid:UselessParenthesesCheck"})
     public CVType getCVSvarContent(Svar.Delsvar delsvar) throws ConverterException {
         for (Object o : delsvar.getContent()) {
             if (o instanceof Node) {
@@ -309,6 +308,8 @@ public class RegisterCertificateHelper {
      * @param delsvar
      * @throws ConverterException
      */
+    //This code is copied from intygsprojektet and is best to keep unchanged
+    @java.lang.SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S134", "squid:UselessParenthesesCheck"})
     public DatePeriodType getDatePeriodTypeContent(Svar.Delsvar delsvar) throws ConverterException {
         for (Object o : delsvar.getContent()) {
             if (o instanceof Node) {

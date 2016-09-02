@@ -33,7 +33,7 @@ public class ReceiveHistoryJob {
     @Autowired
     private Receiver receiver;
 
-    private History history = new History(HISTORY_ITEMS);
+    private History jobHistory = new History(HISTORY_ITEMS);
 
     @Scheduled(fixedDelay = DELAY_MS)
     public void checkReceived() {
@@ -41,14 +41,14 @@ public class ReceiveHistoryJob {
     }
 
     private synchronized void insert(long accepted) {
-        synchronized (history) {
-            history.add(accepted);
+        synchronized (jobHistory) {
+            jobHistory.add(accepted);
         }
     }
 
     public long getCurrentRate() {
-        synchronized (history) {
-            return history.getCurrent() - history.getOldest();
+        synchronized (jobHistory) {
+            return jobHistory.getCurrent() - jobHistory.getOldest();
         }
     }
 

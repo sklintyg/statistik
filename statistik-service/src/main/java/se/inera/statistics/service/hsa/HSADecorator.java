@@ -109,6 +109,7 @@ public class HSADecorator {
         return updatedHsaInfo;
     }
 
+    @java.lang.SuppressWarnings("squid:S1067") // Expression complexity check ignored in Sonar
     private boolean missingData(HsaInfo info) {
         return info == null || !info.hasEnhet() || !info.hasHuvudenhet() || !info.hasPersonal() || !info.hasVardgivare();
     }

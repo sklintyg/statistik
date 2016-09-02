@@ -69,6 +69,7 @@ public class HsaInfoEnhetGeo {
     }
 
     @JsonIgnore
+    @java.lang.SuppressWarnings("squid:S1067") // Expression complexity check ignored in Sonar
     public boolean isEmpty() {
         return koordinat == null && plats == null && kommundelskod == null && kommundelsnamn == null && kommun == null && lan == null;
     }

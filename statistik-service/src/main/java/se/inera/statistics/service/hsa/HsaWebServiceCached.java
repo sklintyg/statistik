@@ -49,10 +49,12 @@ public class HsaWebServiceCached implements HsaWebService {
     @Autowired
     private AuthorizationManagementService authorizationManagementService;
 
+    @Override
     public void setHsaLogicalAddress(String hsaLogicalAddress) {
         service.setHsaLogicalAddress(hsaLogicalAddress);
     }
 
+    @Override
     public void callPing() {
         service.callPing();
     }
@@ -62,6 +64,7 @@ public class HsaWebServiceCached implements HsaWebService {
             .expireAfterAccess(1, TimeUnit.DAYS)
             .build(
                     new CacheLoader<String, Optional<GetStatisticsHsaUnitResponseType>>() {
+                        @Override
                         public Optional<GetStatisticsHsaUnitResponseType> load(String key) throws Exception {
                             LOG.info("HSA call was not cached. Making remote call getStatisticsHsaUnit for: " + key);
                             return Optional.fromNullable(service.getStatisticsHsaUnit(key));
@@ -83,6 +86,7 @@ public class HsaWebServiceCached implements HsaWebService {
             .expireAfterAccess(1, TimeUnit.DAYS)
             .build(
                     new CacheLoader<String, Optional<GetStatisticsNamesResponseType>>() {
+                        @Override
                         public Optional<GetStatisticsNamesResponseType> load(String key) throws Exception {
                             LOG.info("HSA call was not cached. Making remote call getStatisticsNames for: " + key);
                             return Optional.fromNullable(service.getStatisticsNames(key));
@@ -104,6 +108,7 @@ public class HsaWebServiceCached implements HsaWebService {
             .expireAfterAccess(1, TimeUnit.DAYS)
             .build(
                     new CacheLoader<String, Optional<GetStatisticsPersonResponseType>>() {
+                        @Override
                         public Optional<GetStatisticsPersonResponseType> load(String key) throws Exception {
                             LOG.info("HSA call was not cached. Making remote call getStatisticsPerson for: " + key);
                             return Optional.fromNullable(service.getStatisticsPerson(key));
@@ -125,6 +130,7 @@ public class HsaWebServiceCached implements HsaWebService {
             .expireAfterAccess(1, TimeUnit.DAYS)
             .build(
                     new CacheLoader<String, Optional<GetStatisticsCareGiverResponseType>>() {
+                        @Override
                         public Optional<GetStatisticsCareGiverResponseType> load(String key) throws Exception {
                             LOG.info("HSA call was not cached. Making remote call getStatisticsCareGiver for: " + key);
                             return Optional.fromNullable(service.getStatisticsCareGiver(key));

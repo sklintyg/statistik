@@ -56,6 +56,7 @@ public class LogConsumerImpl implements LogConsumer {
     private volatile boolean isRunning = false;
 
     @Transactional
+    @Override
     public synchronized int processBatch() {
         try {
             setRunning(true);

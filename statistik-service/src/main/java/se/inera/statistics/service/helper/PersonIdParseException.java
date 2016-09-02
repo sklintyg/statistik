@@ -16,41 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.auth;
+package se.inera.statistics.service.helper;
 
-import org.springframework.security.authentication.AbstractAuthenticationToken;
+class PersonIdParseException extends RuntimeException {
 
-/**
- * @author andreaskaltenbach
- */
-@SuppressWarnings("serial")
-public class FakeAuthenticationToken extends AbstractAuthenticationToken {
-
-    private final FakeCredentials fakeCredentials;
-
-    public FakeAuthenticationToken(FakeCredentials fakeCredentials) {
-        super(null);
-        this.fakeCredentials = fakeCredentials;
-    }
-
-    @Override
-    public Object getCredentials() {
-        return fakeCredentials;
-    }
-
-    @Override
-    public Object getPrincipal() {
-        return null;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
+    PersonIdParseException(String s) {
+        super(s);
     }
 
 }

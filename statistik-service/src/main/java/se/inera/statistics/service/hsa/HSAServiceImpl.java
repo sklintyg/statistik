@@ -26,6 +26,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+
 import se.inera.ifv.hsawsresponder.v3.GeoCoord;
 import se.inera.ifv.hsawsresponder.v3.GeoCoordEnum;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
@@ -38,10 +40,6 @@ import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.CareTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.Managements;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Component
 public class HSAServiceImpl implements HSAService {
@@ -61,49 +59,62 @@ public class HSAServiceImpl implements HSAService {
     @Override
     public HsaInfo getHSAInfo(HSAKey key, HsaInfo baseHsaInfo) {
         try {
-            HsaInfo nonNullBase = baseHsaInfo != null ? baseHsaInfo : new HsaInfo(null, null, null, null);
-
-            HsaInfoEnhet enhet = nonNullBase.getEnhet();
-            HsaInfoEnhet huvudenhet = nonNullBase.getHuvudenhet();
-
-            if (enhet == null
-                    || (enhet.getVgid() == null && huvudenhet == null)
-                    || (enhet.getVgid() == null && huvudenhet != null && huvudenhet.getVgid() == null)
-                    ) {
-                GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId().getId());
-                if (unit != null) {
-                    //huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det kopplad/underliggande enhet
-                    enhet = createUnit(unit.getStatisticsUnit());
-                    huvudenhet = createUnit(unit.getStatisticsCareUnit());
-                }
-            }
-
-            HsaInfoVg vardgivare = nonNullBase.getVardgivare();
-
-            if (vardgivare == null) {
-                final HsaIdVardgivare vgId = getVardgivareHsaId(enhet, huvudenhet);
-                if (vgId == null || !vgId.equals(key.getVardgivareId())) {
-                    LOG.info("VardgivarId mismatch found for enhet: {}. Was {} in HSA but expected {} from intyg", key.getEnhetId(), key.getVardgivareId(), vgId);
-                }
-                if (vgId != null && !vgId.isEmpty()) {
-                    GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(vgId.getId());
-                    vardgivare = createCareGiver(caregiver);
-                }
-            }
-
-            HsaInfoPersonal personal = nonNullBase.getPersonal();
-
-            if (personal == null) {
-                GetStatisticsPersonResponseType personalType = getStatisticsPerson(key.getLakareId().getId());
-                GetStatisticsNamesResponseType names = getStatisticsNames(key.getLakareId().getId());
-                personal = createPersonal(personalType, names);
-            }
-
-            return new HsaInfo(enhet, huvudenhet, vardgivare, personal);
+            return getHsaInfoWithoutExceptionHandling(key, baseHsaInfo);
         } catch (RuntimeException e) {
             LOG.error("Unexpected error fetching HSA data", e);
             return null;
         }
+    }
+
+    private HsaInfo getHsaInfoWithoutExceptionHandling(HSAKey key, HsaInfo baseHsaInfo) {
+        HsaInfo nonNullBase = baseHsaInfo != null ? baseHsaInfo : new HsaInfo(null, null, null, null);
+
+        HsaInfoEnhet enhet = nonNullBase.getEnhet();
+        HsaInfoEnhet huvudenhet = nonNullBase.getHuvudenhet();
+
+        if (enhet == null
+                || (enhet.getVgid() == null && huvudenhet == null)
+                || (enhet.getVgid() == null && huvudenhet != null && huvudenhet.getVgid() == null)
+                ) {
+            GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId().getId());
+            if (unit != null) {
+                //huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det kopplad/underliggande enhet
+                enhet = createUnit(unit.getStatisticsUnit());
+                huvudenhet = createUnit(unit.getStatisticsCareUnit());
+            }
+        }
+
+        HsaInfoVg vardgivare = getVardgivare(key, nonNullBase, enhet, huvudenhet);
+        HsaInfoPersonal personal = getPersonal(key, nonNullBase);
+
+        return new HsaInfo(enhet, huvudenhet, vardgivare, personal);
+    }
+
+    private HsaInfoPersonal getPersonal(HSAKey key, HsaInfo nonNullBase) {
+        HsaInfoPersonal personal = nonNullBase.getPersonal();
+
+        if (personal == null) {
+            GetStatisticsPersonResponseType personalType = getStatisticsPerson(key.getLakareId().getId());
+            GetStatisticsNamesResponseType names = getStatisticsNames(key.getLakareId().getId());
+            personal = createPersonal(personalType, names);
+        }
+        return personal;
+    }
+
+    private HsaInfoVg getVardgivare(HSAKey key, HsaInfo nonNullBase, HsaInfoEnhet enhet, HsaInfoEnhet huvudenhet) {
+        HsaInfoVg vardgivare = nonNullBase.getVardgivare();
+
+        if (vardgivare == null) {
+            final HsaIdVardgivare vgId = getVardgivareHsaId(enhet, huvudenhet);
+            if (vgId == null || !vgId.equals(key.getVardgivareId())) {
+                LOG.info("VardgivarId mismatch found for enhet: {}. Was {} in HSA but expected {} from intyg", key.getEnhetId(), key.getVardgivareId(), vgId);
+            }
+            if (vgId != null && !vgId.isEmpty()) {
+                GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(vgId.getId());
+                vardgivare = createCareGiver(caregiver);
+            }
+        }
+        return vardgivare;
     }
 
     private HsaIdVardgivare getVardgivareHsaId(HsaInfoEnhet enhet, HsaInfoEnhet huvudenhet) {
@@ -259,49 +270,6 @@ public class HSAServiceImpl implements HSAService {
         final String x = coordinate.getX();
         final String y = coordinate.getY();
         return new HsaInfoCoordinate(typ, x, y);
-    }
-
-    private class Builder {
-        private ObjectNode root = factory.objectNode();
-        public Builder put(String name, String value) {
-            if (value != null) {
-                root.put(name, value);
-            }
-            return this;
-        }
-        public Builder put(String name, List<String> items) {
-            if (items != null && !items.isEmpty()) {
-                ArrayNode container = factory.arrayNode();
-                for (String item: items) {
-                    container.add(item);
-                }
-                root.put(name, container);
-            }
-            return this;
-        }
-        public Builder put(String name, Builder b) {
-            if (b != null && b.root.size() > 0) {
-                root.put(name,  b.root);
-            }
-            return this;
-        }
-        public Builder put(String name, Boolean bool) {
-            if (bool != null) {
-                root.put(name, bool);
-            }
-            return this;
-        }
-        public Builder put(String name, LocalDateTime date) {
-            if (date != null) {
-                put(name, date.toString("yyyy-MM-dd"));
-            }
-            return this;
-        }
-
-        public boolean has(String entryName) {
-            return root.has(entryName);
-        }
-
     }
 
 }

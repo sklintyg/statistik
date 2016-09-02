@@ -314,12 +314,12 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
 
     @Override
     public VpwGetPublicUnitsResponseType vpwGetPublicUnits(AttributedURIType logicalAddress, AttributedURIType id, VpwGetPublicUnitsType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetCareUnitResponseType getCareUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
@@ -345,32 +345,32 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
 
     @Override
     public IsAuthorizedToSystemResponseType isAuthorizedToSystem(AttributedURIType logicalAddress, AttributedURIType id, IsAuthorizedToSystemType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetCareUnitListResponseType getCareUnitList(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetHospLastUpdateResponseType getHospLastUpdate(AttributedURIType logicalAddress, AttributedURIType id, GetHospLastUpdateType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetHsaUnitResponseType getHsaUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetPriceUnitsForAuthResponseType getPriceUnitsForAuth(AttributedURIType logicalAddress, AttributedURIType id, GetPriceUnitsForAuthType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetHsaPersonResponseType getHsaPerson(AttributedURIType logicalAddress, AttributedURIType id, GetHsaPersonType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
@@ -401,7 +401,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     @Override
     public PingResponseType ping(AttributedURIType logicalAddress, AttributedURIType id, PingType parameters) throws HsaWsFault {
         // Is part of HSAWebServiceCalls but is never used
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
@@ -446,7 +446,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
 
     @Override
     public HsawsSimpleLookupResponseType hsawsSimpleLookup(AttributedURIType logicalAddress, AttributedURIType id, HsawsSimpleLookupType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
@@ -497,7 +497,6 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         unit.setMunicipalityCode(kommun);
         unit.setMunicipality(KOMMUN.getNamn(kommun));
         unit.setCareGiverHsaIdentity(enhet.get("vgid").textValue());
-        StatisticsHsaUnit.CareTypes careTypes = new StatisticsHsaUnit.CareTypes();
         String[] verksamhet = createVerksamhet(key);
         StatisticsHsaUnit.BusinessClassificationCodes classificationCodes = new StatisticsHsaUnit.BusinessClassificationCodes();
         classificationCodes.getBusinessClassificationCode().addAll(Arrays.asList(verksamhet));
@@ -507,22 +506,30 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
 
     @Override
     public GetCareUnitMembersResponseType getCareUnitMembers(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetHospPersonResponseType getHospPerson(AttributedURIType logicalAddress, AttributedURIType id, GetHospPersonType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetInformationListResponseType getInformationList(AttributedURIType logicalAddress, AttributedURIType id, GetInformationListType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public HandleCertifierResponseType handleCertifier(AttributedURIType logicalAddress, AttributedURIType id, HandleCertifierType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
+    }
+
+    private class UnusedMethodException extends RuntimeException {
+
+        UnusedMethodException() {
+            super("This method is not used by Statistiktjansten and has therefore not been implemented");
+        }
+
     }
 
 }

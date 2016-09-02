@@ -86,9 +86,8 @@ public class SakerhetstjanstAssertion {
                     hsaId = getValue(attribute);
                     break;
                 case HSA_ID_ATTRIBUTE_LEGACY:
-                    // Only set if other not already set.
                     String val = getValue(attribute);
-                    if (val != null && hsaId == null) {
+                    if (val != null && hsaId == null) { // Only set if other not already set.
                         hsaId = val;
                     }
                     break;
@@ -100,7 +99,7 @@ public class SakerhetstjanstAssertion {
 
     private String getValue(Attribute attribute) {
         List<String> values = getValues(attribute);
-        return (values.isEmpty()) ? null : values.get(0);
+        return values.isEmpty() ? null : values.get(0);
     }
 
     private List<String> getValues(Attribute attribute) {

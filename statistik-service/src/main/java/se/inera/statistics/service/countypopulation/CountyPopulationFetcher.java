@@ -108,6 +108,7 @@ public class CountyPopulationFetcher {
         return new KonField(valuePerKon.get(Kon.Female), valuePerKon.get(Kon.Male));
     }
 
+    @java.lang.SuppressWarnings("squid:UnusedPrivateMethod") // SONAR reports this method as not used due to https://jira.sonarsource.com/browse/SONARJAVA-583
     private ScbRow parseScbRow(String row) {
         final String[] rowFields = splitStringAndRemoveQuotationMarks(row);
         final String countyId = rowFields[0].substring(0, 2);

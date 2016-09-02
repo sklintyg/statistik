@@ -51,7 +51,8 @@ public class Lakare {
         this.efterNamn = efterNamn;
     }
 
-    public Lakare() {
+    Lakare() {
+        //Not sure why/if this is needed
     }
 
     public void setId(long id) {

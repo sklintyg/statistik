@@ -18,39 +18,12 @@
  */
 package se.inera.auth;
 
-import org.springframework.security.authentication.AbstractAuthenticationToken;
+import javax.xml.parsers.ParserConfigurationException;
 
-/**
- * @author andreaskaltenbach
- */
-@SuppressWarnings("serial")
-public class FakeAuthenticationToken extends AbstractAuthenticationToken {
+class DocumentBuilderInstantiationException extends RuntimeException {
 
-    private final FakeCredentials fakeCredentials;
-
-    public FakeAuthenticationToken(FakeCredentials fakeCredentials) {
-        super(null);
-        this.fakeCredentials = fakeCredentials;
-    }
-
-    @Override
-    public Object getCredentials() {
-        return fakeCredentials;
-    }
-
-    @Override
-    public Object getPrincipal() {
-        return null;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
+    DocumentBuilderInstantiationException(String s, ParserConfigurationException e) {
+        super(s, e);
     }
 
 }

@@ -155,17 +155,16 @@ public final class HSAServiceHelper {
     }
 
     public static String getVerksamhetsTyper(HsaInfo hsaData) {
-        if (hsaData != null) {
-            String result = getVerksamhetsTyper(hsaData.getEnhet());
-            if (result == null) {
-                result = getVerksamhetsTyper(hsaData.getHuvudenhet());
-            }
-            final boolean isVardcentral = isVardcentral(hsaData.getEnhet()) || isVardcentral(hsaData.getHuvudenhet());
-            result = isVardcentral ? (result != null && !result.isEmpty() ? result + "," : "") + VerksamhetsTyp.VARDCENTRAL_ID : result;
-            return result != null && !result.isEmpty() ? result : VerksamhetsTyp.OVRIGT_ID;
-        } else {
+        if (hsaData == null) {
             return VerksamhetsTyp.OVRIGT_ID;
         }
+        String result = getVerksamhetsTyper(hsaData.getEnhet());
+        if (result == null) {
+            result = getVerksamhetsTyper(hsaData.getHuvudenhet());
+        }
+        final boolean isVardcentral = isVardcentral(hsaData.getEnhet()) || isVardcentral(hsaData.getHuvudenhet());
+        result = isVardcentral ? (result != null && !result.isEmpty() ? result + "," : "") + VerksamhetsTyp.VARDCENTRAL_ID : result;
+        return result != null && !result.isEmpty() ? result : VerksamhetsTyp.OVRIGT_ID;
     }
 
     private static boolean isVardcentral(HsaInfoEnhet hsaData) {
