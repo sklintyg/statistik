@@ -40,8 +40,20 @@ Nu ska det gå att starta applikationen med:
 Nu går det att öppna en webbläsare och surfa till http://localhost:8080/ Observera jetty körs i gradleprocessen, så gradle "blir
 inte klar" förrän du stoppar servern med ^c, och applikationen är bara igång fram till dess.
 
+###Uppgrader från node 0.12 
+Installera nodjs 6.5.0 tex med NVM, https://github.com/creationix/nvm
+
+Har du nvm så kan du skriva 
+
+    nvm install 6
+    nvm alias default 6
+    
+Ta bort `statistik-web/node_modules` och `statistik-web/src/main/webapp/bower_components`
+
+Följ anvisningarna i "Bygga klienten utanför gradle"
+
 ###Bygga klienten utanför gradle
-Installera nodjs 0.12.14 tex med NVM, https://github.com/creationix/nvm
+Installera nodjs 6.5.0 tex med NVM, https://github.com/creationix/nvm
 
 Installera grunt och bower
 

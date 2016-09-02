@@ -49,9 +49,7 @@ module.exports = function(config) {
         ],
 
         preprocessors: {
-            '**/*.jade': 'ng-jade2js',
             '**/*.html': ['ng-html2js'],
-            '**/*.coffee': 'coffee',
             '**/*.js': ['coverage']
         },
 
@@ -59,10 +57,6 @@ module.exports = function(config) {
             stripPrefix: 'src/main/webapp/',
             // the name of the Angular module to create
             moduleName: 'htmlTemplates'
-        },
-
-        ngJade2JsPreprocessor: {
-            stripPrefix: 'src/main/webapp/'
         },
 
         // web server port
