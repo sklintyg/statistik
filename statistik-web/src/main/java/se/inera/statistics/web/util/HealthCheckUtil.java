@@ -18,8 +18,6 @@
  */
 package se.inera.statistics.web.util;
 
-import java.io.IOException;
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.slf4j.Logger;
@@ -27,10 +25,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.web.service.ChartDataService;
+
+import java.io.IOException;
 
 public class HealthCheckUtil {
 
@@ -85,7 +84,7 @@ public class HealthCheckUtil {
         }
         long startTime = System.nanoTime();
         try {
-            ok = client.executeMethod(new GetMethod(highchartsUrl)) == HttpStatus.METHOD_NOT_ALLOWED.value();
+            ok = client.executeMethod(new GetMethod(highchartsUrl)) == HttpStatus.ACCEPTED.value();
         } catch (IOException e) {
             LOG.debug("Highcharts service not reachable", e);
             // Squelch this as it is quite ok to throw IOException.

@@ -1,0 +1,73 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java"
+	session="false"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<html lang="sv">
+<head>
+<title>Statistiktjänsten - Health Check</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+<meta name="ROBOTS" content="nofollow, noindex" />
+
+<!-- build:css(src/main/webapp) app/vendor.css -->
+<!-- bower:css -->
+<link rel="stylesheet" href="bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" />
+<link rel="stylesheet" href="bower_components/jquery.tablesorter/dist/css/theme.default.min.css" />
+<link rel="stylesheet" href="bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.css" />
+<link rel="stylesheet" href="bower_components/dropzone/dist/min/dropzone.min.css" />
+<!-- endbower -->
+<!-- endbuild -->
+
+<!-- build:css({build/.tmp,src/main/webapp}) app/app.css -->
+<!-- injector:css -->
+<link rel="stylesheet" href="app/app.css">
+<!-- endinjector -->
+<!-- endbuild -->
+
+</head>
+<body>
+	<div class="container">
+		<div class="page-header">
+			<h1>Statistiktjänsten - HealthCheck</h1>
+		</div>
+
+		<c:set var="overview" value="${healthcheckUtil.overviewStatus}" />
+		<c:set var="highchart" value="${healthcheckUtil.highchartsExportStatus}" />
+		<c:set var="workloadStatus" value="${healthcheckUtil.workloadStatus}" />
+		<c:set var="hsa" value="${healthcheckUtil.hsaStatus}" />
+
+		<div class="table-responsive">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>Check</th>
+						<th>Tid</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Hämta översikt nationell statstik</td>
+						<td id="overviewMeasurement">${overview.measurement}ms</td>
+						<td id="overviewStatus" class="${overview.ok ? "text-success" : "text-danger"}">${overview.ok ? "OK" : "FAIL"}</td>
+					</tr>
+					<tr>
+						<td>Highcharts</td>
+						<td id="highchartMeasurement">${highchart.measurement}ms</td>
+						<td id="highchartStatus" class="${highchart.ok ? "text-success" : "text-danger"}">${highchart.ok ? "OK" : "FAIL"}</td>
+					</tr>
+					<tr>
+						<td>workloadStatus</td>
+						<td id="workloadMeasurement">${workloadStatus.measurement}ms</td>
+						<td id="workloadStatus" class="${workloadStatus.ok ? "text-success" : "text-danger"}">${workloadStatus.ok ? "OK" : "FAIL"}</td>
+					</tr>
+					<tr>
+						<td>HSA</td>
+						<td id="hsaMeasurement">${hsa.measurement}ms</td>
+						<td id="hsaStatus" class="${hsa.ok ? "text-success" : "text-danger"}">${hsa.ok ? "OK" : "FAIL"}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
