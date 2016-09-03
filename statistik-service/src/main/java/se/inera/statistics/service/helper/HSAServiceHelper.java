@@ -128,10 +128,10 @@ public final class HSAServiceHelper {
     public static int getLakarkon(HsaInfo hsaData) {
         try {
             final String result = hsaData.getPersonal().getKon();
-            return result != null ? Integer.parseInt(result) : Kon.Unknown.getNumberRepresentation();
+            return result != null ? Integer.parseInt(result) : Kon.UNKNOWN.getNumberRepresentation();
         } catch (NullPointerException | NumberFormatException e) {
             LOG.debug("Could not parse lakare gender", e);
-            return Kon.Unknown.getNumberRepresentation();
+            return Kon.UNKNOWN.getNumberRepresentation();
         }
     }
 

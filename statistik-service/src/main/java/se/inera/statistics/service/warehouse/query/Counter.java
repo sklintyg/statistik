@@ -36,7 +36,7 @@ public class Counter<T> {
     }
 
     public void increase(Sjukfall sjukfall) {
-        if (sjukfall.getKon() == Kon.Female) {
+        if (sjukfall.getKon() == Kon.FEMALE) {
             countFemale++;
         } else {
             countMale++;

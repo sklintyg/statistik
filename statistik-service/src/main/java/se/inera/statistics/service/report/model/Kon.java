@@ -20,7 +20,7 @@ package se.inera.statistics.service.report.model;
 
 public enum Kon {
 
-    Male(1), Female(2), Unknown(0);
+    MALE(1), FEMALE(2), UNKNOWN(0);
 
     private final int numberRepresentation;
 

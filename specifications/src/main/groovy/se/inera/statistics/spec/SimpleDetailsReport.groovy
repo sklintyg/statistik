@@ -15,9 +15,9 @@ abstract class SimpleDetailsReport extends Rapport {
             item.name.contains(categoryNameMatcher)
         }
         markerad = index < 0 ? null : report.chartData.categories[index].marked
-        def male = report.chartData.series.find { item -> "Male".equals(item.sex) }
+        def male = report.chartData.series.find { item -> "MALE".equals(item.sex) }
         män = index < 0 ? -1 : male.data[index]
-        def female = report.chartData.series.find { item -> "Female".equals(item.sex) }
+        def female = report.chartData.series.find { item -> "FEMALE".equals(item.sex) }
         kvinnor = index < 0 ? -1 : female.data[index]
         def total = report.chartData.series.find { item -> item.sex == null }
         totalt = index < 0 ? -1 : (total != null ? total.data[index] : -1)

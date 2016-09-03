@@ -121,7 +121,7 @@ public class SjukfallQuery {
             final Multiset<Integer> maleSjukfallPerEnhet = HashMultiset.create();
 
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-                Multiset<Integer> sjukfallPerEnhet = sjukfall.getKon() == Kon.Female ? femaleSjukfallPerEnhet : maleSjukfallPerEnhet;
+                Multiset<Integer> sjukfallPerEnhet = sjukfall.getKon() == Kon.FEMALE ? femaleSjukfallPerEnhet : maleSjukfallPerEnhet;
                 for (Integer enhetId : sjukfall.getEnhets()) {
                     sjukfallPerEnhet.add(enhetId);
                 }
@@ -153,7 +153,7 @@ public class SjukfallQuery {
     public static int countMale(Collection<Sjukfall> sjukfalls) {
         int count = 0;
         for (Sjukfall sjukfall : sjukfalls) {
-            if (sjukfall.getKon() == Kon.Male) {
+            if (sjukfall.getKon() == Kon.MALE) {
                 count++;
             }
         }

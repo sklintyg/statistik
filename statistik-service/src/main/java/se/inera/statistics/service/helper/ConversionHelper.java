@@ -54,7 +54,7 @@ public final class ConversionHelper {
     }
 
     protected static String extractKon(String personId) {
-        return personId.charAt(DocumentHelper.SEX_DIGIT) % 2 == 0 ? Kon.Female.toString() : Kon.Male.toString();
+        return personId.charAt(DocumentHelper.SEX_DIGIT) % 2 == 0 ? Kon.FEMALE.toString() : Kon.MALE.toString();
     }
 
     protected static int extractAlder(String personId, LocalDate start) {

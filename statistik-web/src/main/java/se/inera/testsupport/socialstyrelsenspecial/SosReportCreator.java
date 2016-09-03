@@ -121,8 +121,8 @@ public class SosReportCreator {
 
 
             final Double total = calcFunc.apply(dxEntry.getValue());
-            final Double female = calcFunc.apply(dxrowsByKon.get(Kon.Female));
-            final Double male = calcFunc.apply(dxrowsByKon.get(Kon.Male));
+            final Double female = calcFunc.apply(dxrowsByKon.get(Kon.FEMALE));
+            final Double male = calcFunc.apply(dxrowsByKon.get(Kon.MALE));
 
             final Map<String, List<SosRow>> dxrowsByLan = dxEntry.getValue().stream().collect(Collectors.groupingBy(SosRow::getLanId));
             final HashMap<String, Number> lanNumbers = new HashMap<>();

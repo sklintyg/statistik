@@ -56,9 +56,9 @@ public final class LakaresAlderOchKonQuery {
 
     private String getLakareAlderOchKonTitleKonPart(Kon kon) {
         switch (kon) {
-            case Female: return "Kvinnlig läkare";
-            case Male: return "Manlig läkare";
-            case Unknown: return "Okänt kön";
+            case FEMALE: return "Kvinnlig läkare";
+            case MALE: return "Manlig läkare";
+            case UNKNOWN: return "Okänt kön";
             default: throw new IllegalArgumentException("Unhandled type: " + kon);
         }
     }
@@ -102,7 +102,7 @@ public final class LakaresAlderOchKonQuery {
                 names.add(getLakareAlderOchKonTitle(kon, range.getName()));
             }
         }
-        names.add(getLakareAlderOchKonTitle(Kon.Unknown, UNKNOWN_AGE_NAME));
+        names.add(getLakareAlderOchKonTitle(Kon.UNKNOWN, UNKNOWN_AGE_NAME));
         Lists.transform(ranges, new Function<Ranges.Range, String>() {
             @Override
             public String apply(Ranges.Range range) {
@@ -117,8 +117,8 @@ public final class LakaresAlderOchKonQuery {
         final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, names, counterFunction);
         final List<String> groupsThatShouldAlwaysBeRetained = new ArrayList<>();
         for (Ranges.Range range : ranges) {
-            groupsThatShouldAlwaysBeRetained.add(getLakareAlderOchKonTitle(Kon.Male, range.getName()));
-            groupsThatShouldAlwaysBeRetained.add(getLakareAlderOchKonTitle(Kon.Female, range.getName()));
+            groupsThatShouldAlwaysBeRetained.add(getLakareAlderOchKonTitle(Kon.MALE, range.getName()));
+            groupsThatShouldAlwaysBeRetained.add(getLakareAlderOchKonTitle(Kon.FEMALE, range.getName()));
         }
         return KonDataResponse.createNewWithoutEmptyGroups(response, groupsThatShouldAlwaysBeRetained);
     }

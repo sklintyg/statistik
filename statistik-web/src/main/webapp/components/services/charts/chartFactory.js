@@ -244,11 +244,11 @@ angular.module('StatisticsApp').factory('chartFactory',
 
         function isSexSetOnChartSeries(chartSeries) {
             var maleSeries = _.find(chartSeries, function(series) {
-                return series.sex === 'Male';
+                return series.sex === 'MALE';
             });
 
             var femaleSeries = _.find(chartSeries, function(series) {
-                return series.sex === 'Female';
+                return series.sex === 'FEMALE';
             });
 
             return maleSeries && femaleSeries? true : false;
@@ -274,9 +274,9 @@ angular.module('StatisticsApp').factory('chartFactory',
                 femaleColor = COLORS.female;
 
             _.each(rawData, function (data) {
-                if (data.sex === 'Male') {
+                if (data.sex === 'MALE') {
                     data.color = maleColor[maleColorSelector++];
-                } else if (data.sex === 'Female') {
+                } else if (data.sex === 'FEMALE') {
                     data.color = femaleColor[femaleColorSelector++];
                 } else {
                     if(colorSelector === colors.length) {

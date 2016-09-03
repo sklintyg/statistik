@@ -65,8 +65,8 @@ public class SjukfallPerSexConverter {
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Kvinnor", getSeriesForSexWithTotal(casesPerMonth, Kon.Female), Kon.Female));
-        series.add(new ChartSeries("Män", getSeriesForSexWithTotal(casesPerMonth, Kon.Male), Kon.Male));
+        series.add(new ChartSeries("Kvinnor", getSeriesForSexWithTotal(casesPerMonth, Kon.FEMALE), Kon.FEMALE));
+        series.add(new ChartSeries("Män", getSeriesForSexWithTotal(casesPerMonth, Kon.MALE), Kon.MALE));
 
         return new ChartData(series, categories);
     }

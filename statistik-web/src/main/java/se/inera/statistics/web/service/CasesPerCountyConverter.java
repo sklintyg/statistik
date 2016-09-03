@@ -154,8 +154,8 @@ public class CasesPerCountyConverter {
         final Stream<Number> sjukfallPerKPopulationStreamMale = chartRows.stream().map(this::getSjukfallPerKPopulationMale);
         final List<Number> sjukfallPerPopulationMale = Stream.concat(Stream.of(sjukfallPerKPopulationForAllLanMale), sjukfallPerKPopulationStreamMale).collect(Collectors.toList());
 
-        series.add(new ChartSeries(H_KVINNOR, sjukfallPerPopulationFemale, Kon.Female));
-        series.add(new ChartSeries(H_MAN, sjukfallPerPopulationMale, Kon.Male));
+        series.add(new ChartSeries(H_KVINNOR, sjukfallPerPopulationFemale, Kon.FEMALE));
+        series.add(new ChartSeries(H_MAN, sjukfallPerPopulationMale, Kon.MALE));
         return new ChartData(series, groups);
     }
 

@@ -59,8 +59,8 @@ public class DiagnosisSubGroupsConverter {
     DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, FilterSettings filterSettings, String message) {
         TableData tableData = diagnosisGroupsConverter.convertTable(diagnosisGroups, "%1$s");
         List<Integer> topIndexes = getTopColumnIndexes(diagnosisGroups);
-        ChartData maleChart = extractChartData(diagnosisGroups, topIndexes, Kon.Male);
-        ChartData femaleChart = extractChartData(diagnosisGroups, topIndexes, Kon.Female);
+        ChartData maleChart = extractChartData(diagnosisGroups, topIndexes, Kon.MALE);
+        ChartData femaleChart = extractChartData(diagnosisGroups, topIndexes, Kon.FEMALE);
         final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();

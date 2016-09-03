@@ -298,7 +298,7 @@ public class Fact {
         }
 
         public FactBuilder withKon(Kon kon) {
-            this.kon = kon == null ? Kon.Unknown.getNumberRepresentation() : kon.getNumberRepresentation();
+            this.kon = kon == null ? Kon.UNKNOWN.getNumberRepresentation() : kon.getNumberRepresentation();
             return this;
         }
 
@@ -333,7 +333,7 @@ public class Fact {
         }
 
         public FactBuilder withLakarkon(Kon lakarkon) {
-            this.lakarkon = lakarkon == null ? Kon.Unknown.getNumberRepresentation() : lakarkon.getNumberRepresentation();
+            this.lakarkon = lakarkon == null ? Kon.UNKNOWN.getNumberRepresentation() : lakarkon.getNumberRepresentation();
             return this;
         }
 

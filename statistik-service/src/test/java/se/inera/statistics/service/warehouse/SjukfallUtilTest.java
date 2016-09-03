@@ -19,7 +19,6 @@
 package se.inera.statistics.service.warehouse;
 
 import com.google.common.base.Function;
-import com.google.common.base.Predicate;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
@@ -44,7 +43,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
-import static se.inera.statistics.service.report.model.Kon.Female;
+import static se.inera.statistics.service.report.model.Kon.FEMALE;
 import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 public class SjukfallUtilTest {
@@ -139,10 +138,10 @@ public class SjukfallUtilTest {
 
     private Fact createFact(int enhet, int patient, int startdatum, int sjukskrivningslangd, int lakarintyg, int lakarId) {
         return aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(enhet).
-                    withLakarintyg(lakarintyg).withPatient(patient).withStartdatum(startdatum).withKon(Female).withAlder(45).
+                    withLakarintyg(lakarintyg).withPatient(patient).withStartdatum(startdatum).withKon(FEMALE).withAlder(45).
                     withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
                     withSjukskrivningsgrad(100).withSlutdatum(startdatum + sjukskrivningslangd - 1).
-                    withLakarkon(Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(lakarId).withEnkeltIntyg(false).build();
+                    withLakarkon(FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(lakarId).withEnkeltIntyg(false).build();
     }
 
     @Test
@@ -218,7 +217,7 @@ public class SjukfallUtilTest {
 
         final SjukfallUtil spy = Mockito.spy(sjukfallUtil);
         final ArrayList<SjukfallGroup> sjukfallGrupper = new ArrayList<>();
-        sjukfallGrupper.add(new SjukfallGroup(Range.createForLastMonthsExcludingCurrent(1), Arrays.asList(createSjukfall(Kon.Female), createSjukfall(Kon.Male), createSjukfall(Kon.Male))));
+        sjukfallGrupper.add(new SjukfallGroup(Range.createForLastMonthsExcludingCurrent(1), Arrays.asList(createSjukfall(Kon.FEMALE), createSjukfall(Kon.MALE), createSjukfall(Kon.MALE))));
         final Aisle currentAisle = aisle.createAisle();
         Mockito.when(spy.sjukfallGrupper(start, periods, periodSize, currentAisle, filter, false)).thenReturn(sjukfallGrupper);
 
@@ -231,8 +230,8 @@ public class SjukfallUtilTest {
         });
 
         //Then
-        assertEquals(new Integer(1), response.getDataFromIndex(0, Kon.Female).get(0));
-        assertEquals(new Integer(2), response.getDataFromIndex(0, Kon.Male).get(0));
+        assertEquals(new Integer(1), response.getDataFromIndex(0, Kon.FEMALE).get(0));
+        assertEquals(new Integer(2), response.getDataFromIndex(0, Kon.MALE).get(0));
     }
 
     private Sjukfall createSjukfall(Kon kon) {

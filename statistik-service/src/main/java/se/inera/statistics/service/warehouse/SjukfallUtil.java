@@ -126,7 +126,7 @@ public class SjukfallUtil {
             final HashMultiset<T> maleCounter = HashMultiset.create();
             final HashMultiset<T> femaleCounter = HashMultiset.create();
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-                final HashMultiset<T> currentCounter = Kon.Female.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
+                final HashMultiset<T> currentCounter = Kon.FEMALE.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
                 counterFunction.addCount(sjukfall, currentCounter);
             }
             List<KonField> list = new ArrayList<>(groupIds.size());
@@ -152,7 +152,7 @@ public class SjukfallUtil {
             final HashMultiset<T> maleCounter = HashMultiset.create();
             final HashMultiset<T> femaleCounter = HashMultiset.create();
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-                final HashMultiset<T> currentCounter = Kon.Female.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
+                final HashMultiset<T> currentCounter = Kon.FEMALE.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
                 counterFunction.addCount(sjukfall, currentCounter);
             }
             List<KonField> list = new ArrayList<>();
@@ -186,7 +186,7 @@ public class SjukfallUtil {
         HashMultiset<Integer> femaleCounter = HashMultiset.create();
         for (SjukfallGroup sjukfallGroup: sjukfallGroups) {
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-                HashMultiset<Integer> counter = Kon.Male.equals(sjukfall.getKon()) ? maleCounter : femaleCounter;
+                HashMultiset<Integer> counter = Kon.MALE.equals(sjukfall.getKon()) ? maleCounter : femaleCounter;
                 toCount.addCount(sjukfall, counter);
             }
         }

@@ -91,7 +91,7 @@ public class OverviewQuery {
     public static int countMale(Collection<Sjukfall> sjukfalls) {
         int count = 0;
         for (Sjukfall sjukfall : sjukfalls) {
-            if (sjukfall.getKon() == Kon.Male) {
+            if (sjukfall.getKon() == Kon.MALE) {
                 count++;
             }
         }

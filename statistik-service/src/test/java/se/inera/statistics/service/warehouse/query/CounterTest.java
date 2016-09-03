@@ -19,7 +19,6 @@
 package se.inera.statistics.service.warehouse.query;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
@@ -36,10 +35,10 @@ public class CounterTest {
         final Counter<String> counter = new Counter<>(testKey);
 
         //When
-        counter.increase(createSjukfall(Kon.Female));
-        counter.increase(createSjukfall(Kon.Male));
-        counter.increase(createSjukfall(Kon.Male));
-        counter.increase(createSjukfall(Kon.Male));
+        counter.increase(createSjukfall(Kon.FEMALE));
+        counter.increase(createSjukfall(Kon.MALE));
+        counter.increase(createSjukfall(Kon.MALE));
+        counter.increase(createSjukfall(Kon.MALE));
 
         //Then
         assertEquals(4, counter.getCount());
@@ -52,11 +51,11 @@ public class CounterTest {
     public void testByTotalCount1() throws Exception {
         //Given
         final Counter<String> counter1 = new Counter<>("1");
-        counter1.increase(createSjukfall(Kon.Female));
+        counter1.increase(createSjukfall(Kon.FEMALE));
         final Counter<String> counter2 = new Counter<>("2");
-        counter2.increase(createSjukfall(Kon.Male));
-        counter2.increase(createSjukfall(Kon.Male));
-        counter2.increase(createSjukfall(Kon.Male));
+        counter2.increase(createSjukfall(Kon.MALE));
+        counter2.increase(createSjukfall(Kon.MALE));
+        counter2.increase(createSjukfall(Kon.MALE));
 
         //When
         final int i = Counter.byTotalCount().compare(counter1, counter2);
@@ -69,11 +68,11 @@ public class CounterTest {
     public void testByTotalCount2() throws Exception {
         //Given
         final Counter<String> counter1 = new Counter<>("1");
-        counter1.increase(createSjukfall(Kon.Female));
+        counter1.increase(createSjukfall(Kon.FEMALE));
         final Counter<String> counter2 = new Counter<>("2");
-        counter2.increase(createSjukfall(Kon.Male));
-        counter2.increase(createSjukfall(Kon.Male));
-        counter2.increase(createSjukfall(Kon.Male));
+        counter2.increase(createSjukfall(Kon.MALE));
+        counter2.increase(createSjukfall(Kon.MALE));
+        counter2.increase(createSjukfall(Kon.MALE));
 
         //When
         final int i = Counter.byTotalCount().compare(counter2, counter1);
@@ -86,10 +85,10 @@ public class CounterTest {
     public void testByTotalCountSameEquals() throws Exception {
         //Given
         final Counter<String> counter = new Counter<>("2");
-        counter.increase(createSjukfall(Kon.Female));
-        counter.increase(createSjukfall(Kon.Male));
-        counter.increase(createSjukfall(Kon.Male));
-        counter.increase(createSjukfall(Kon.Male));
+        counter.increase(createSjukfall(Kon.FEMALE));
+        counter.increase(createSjukfall(Kon.MALE));
+        counter.increase(createSjukfall(Kon.MALE));
+        counter.increase(createSjukfall(Kon.MALE));
 
         //When
         final int i = Counter.byTotalCount().compare(counter, counter);

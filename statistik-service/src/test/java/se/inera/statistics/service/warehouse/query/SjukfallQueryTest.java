@@ -79,9 +79,9 @@ public class SjukfallQueryTest {
     private static final HsaIdLakare LAKARE3_ID = new HsaIdLakare("LAKARE3");
 
     private static final int PATIENT1_ID = 1;
-    private static final Kon PATIENT1_KON = Kon.Female;
+    private static final Kon PATIENT1_KON = Kon.FEMALE;
     private static final int PATIENT2_ID = 2;
-    private static final Kon PATIENT2_KON = Kon.Male;
+    private static final Kon PATIENT2_KON = Kon.MALE;
 
     private LocalDate sjukfallDate = new LocalDate(2014, 5, 5);
 
@@ -132,13 +132,13 @@ public class SjukfallQueryTest {
         for (SimpleKonDataRow lakareRow : result.getRows()) {
             switch (lakareRow.getName()) {
                 case "Agata Adamsson":
-                    assertEquals(1, lakareRow.getDataForSex(Kon.Female));
-                    assertEquals(0, lakareRow.getDataForSex(Kon.Male));
+                    assertEquals(1, lakareRow.getDataForSex(Kon.FEMALE));
+                    assertEquals(0, lakareRow.getDataForSex(Kon.MALE));
                     checksum +=1;
                     break;
                 case "Beata Bertilsson":
-                    assertEquals(0, lakareRow.getDataForSex(Kon.Female));
-                    assertEquals(1, lakareRow.getDataForSex(Kon.Male));
+                    assertEquals(0, lakareRow.getDataForSex(Kon.FEMALE));
+                    assertEquals(1, lakareRow.getDataForSex(Kon.MALE));
                     checksum +=2;
                     break;
                 default:
@@ -165,13 +165,13 @@ public class SjukfallQueryTest {
         for (SimpleKonDataRow lakareRow : result.getRows()) {
             switch (lakareRow.getName()) {
                 case "Agata Adamsson":
-                    assertEquals(1, lakareRow.getDataForSex(Kon.Female));
-                    assertEquals(0, lakareRow.getDataForSex(Kon.Male));
+                    assertEquals(1, lakareRow.getDataForSex(Kon.FEMALE));
+                    assertEquals(0, lakareRow.getDataForSex(Kon.MALE));
                     checksum +=1;
                     break;
                 case "Beata Bertilsson":
-                    assertEquals(1, lakareRow.getDataForSex(Kon.Female));
-                    assertEquals(0, lakareRow.getDataForSex(Kon.Male));
+                    assertEquals(1, lakareRow.getDataForSex(Kon.FEMALE));
+                    assertEquals(0, lakareRow.getDataForSex(Kon.MALE));
                     checksum +=2;
                     break;
                 default:
@@ -197,13 +197,13 @@ public class SjukfallQueryTest {
         for (SimpleKonDataRow lakareRow : result.getRows()) {
             switch (lakareRow.getName()) {
                 case "Beata Bertilsson LAKARE2":
-                    assertEquals(1, lakareRow.getDataForSex(Kon.Female));
-                    assertEquals(0, lakareRow.getDataForSex(Kon.Male));
+                    assertEquals(1, lakareRow.getDataForSex(Kon.FEMALE));
+                    assertEquals(0, lakareRow.getDataForSex(Kon.MALE));
                     checksum +=1;
                     break;
                 case "Beata Bertilsson LAKARE3":
-                    assertEquals(1, lakareRow.getDataForSex(Kon.Female));
-                    assertEquals(0, lakareRow.getDataForSex(Kon.Male));
+                    assertEquals(1, lakareRow.getDataForSex(Kon.FEMALE));
+                    assertEquals(0, lakareRow.getDataForSex(Kon.MALE));
                     checksum +=2;
                     break;
                 default:
@@ -256,7 +256,7 @@ public class SjukfallQueryTest {
                 withPatient(patientId).withKon(patientKon).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
                 withSjukskrivningsgrad(100).withStartdatum(toDay(sjukfallDate)).withSlutdatum(toDay(sjukfallDate) + 46).
-                 withLakarkon(Kon.Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(lakarIdMap.get(lakareId)).withEnkeltIntyg(false).build();
+                 withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(lakarIdMap.get(lakareId)).withEnkeltIntyg(false).build();
     }
 
     @Test

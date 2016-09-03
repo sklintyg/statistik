@@ -90,10 +90,10 @@ public class AldersgruppQueryTest {
     private void fact(int startday, int length, int alder) {
         Fact fact = aFact().withLan(3).withKommun(380).withForsamling(38002).
                 withEnhet(1).withLakarintyg(intyg++).
-                withPatient(patient++).withKon(Kon.Female).withAlder(alder).
+                withPatient(patient++).withKon(Kon.FEMALE).withAlder(alder).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
                 withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + length - 1).
-                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).withEnkeltIntyg(false).build();
+                withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).withEnkeltIntyg(false).build();
         warehouse.accept(fact, VARDGIVARE);
     }
 }

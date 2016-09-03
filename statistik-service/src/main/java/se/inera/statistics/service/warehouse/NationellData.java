@@ -221,7 +221,7 @@ public class NationellData {
                 List<KonField> c = new ArrayList<>();
                 final int maxDataSize = Math.max(a.getData().size(), b.getData().size());
                 for (int i = 0; i < maxDataSize; i++) {
-                    c.add(new KonField(safeSumForIndex(a, b, i, Kon.Female), safeSumForIndex(a, b, i, Kon.Male)));
+                    c.add(new KonField(safeSumForIndex(a, b, i, Kon.FEMALE), safeSumForIndex(a, b, i, Kon.MALE)));
                 }
                 list.add(new KonDataRow(a.getName(), c));
             }

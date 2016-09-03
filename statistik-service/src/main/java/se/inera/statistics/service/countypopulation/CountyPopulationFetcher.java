@@ -101,11 +101,11 @@ public class CountyPopulationFetcher {
         for (ScbRow scbRow : konValuesForSingleCounty) {
             valuePerKon.put(scbRow.gender, scbRow.amount);
         }
-        if (!valuePerKon.containsKey(Kon.Female) || !valuePerKon.containsKey(Kon.Male)) {
+        if (!valuePerKon.containsKey(Kon.FEMALE) || !valuePerKon.containsKey(Kon.MALE)) {
             final String countyId = konValuesForSingleCounty.isEmpty() ? "?" : konValuesForSingleCounty.get(0).countyId;
             throw new ScbPopulationException("Can't find population for both genders on county: " + countyId);
         }
-        return new KonField(valuePerKon.get(Kon.Female), valuePerKon.get(Kon.Male));
+        return new KonField(valuePerKon.get(Kon.FEMALE), valuePerKon.get(Kon.MALE));
     }
 
     @java.lang.SuppressWarnings("squid:UnusedPrivateMethod") // SONAR reports this method as not used due to https://jira.sonarsource.com/browse/SONARJAVA-583
@@ -115,7 +115,7 @@ public class CountyPopulationFetcher {
         if (!countyId.matches("^[0-9][0-9]$")) {
             throw new ScbPopulationException("County id should be an integer with two digits: " + countyId);
         }
-        final Kon gender = rowFields[1].contains(FEMALE) ? Kon.Female : Kon.Male;
+        final Kon gender = rowFields[1].contains(FEMALE) ? Kon.FEMALE : Kon.MALE;
         final Integer amount = Integer.valueOf(rowFields[2]);
         return new ScbRow(countyId, gender, amount);
     }

@@ -221,7 +221,7 @@ public class DiagnosgruppQuery {
             Map<Integer, Integer> male = new HashMap<>();
             for (Sjukfall sjukfall: sjukfallGroup.getSjukfall()) {
                 final Set<Integer> icd10Codes = new HashSet<>(countAllDxs ? sjukfall.getAllIcd10OfType(rangeType) : Arrays.asList(sjukfall.getIcd10CodeForType(rangeType)));
-                final Map<Integer, Integer> genderMap = sjukfall.getKon() == Kon.Female ? female : male;
+                final Map<Integer, Integer> genderMap = sjukfall.getKon() == Kon.FEMALE ? female : male;
                 for (Integer icd10Code : icd10Codes) {
                     final int currentCount = getCurrentCount(icd10Code, genderMap);
                     genderMap.put(icd10Code, currentCount + 1);

@@ -57,11 +57,11 @@ public class SimpleKonDataRow {
     }
 
     public int getFemale() {
-        return data.getValue(Kon.Female);
+        return data.getValue(Kon.FEMALE);
     }
 
     public int getMale() {
-        return data.getValue(Kon.Male);
+        return data.getValue(Kon.MALE);
     }
 
     public Object getExtras() {
