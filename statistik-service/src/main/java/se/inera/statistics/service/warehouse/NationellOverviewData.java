@@ -233,7 +233,7 @@ public class NationellOverviewData {
     private OverviewKonsfordelning getSexProportion(Range range) {
         SimpleKonResponse<SimpleKonDataRow> intyg = data.getAntalIntyg(range.getFrom(), 1, KVARTAL);
 
-        if (intyg.getRows().size() == 0) {
+        if (intyg.getRows().isEmpty()) {
             return new OverviewKonsfordelning(0, 0, range);
         }
         SimpleKonDataRow dataRow = intyg.getRows().get(0);

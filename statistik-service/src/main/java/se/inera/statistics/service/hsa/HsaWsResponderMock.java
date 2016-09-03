@@ -93,8 +93,14 @@ import com.google.common.collect.FluentIterable;
 @Profile({ "dev", "hsa-stub" })
 @Primary
 public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjectable {
+
     private static final int POSITIVE_MASK = 0x7fffffff;
-    public static final int VERKSAMHET_MODULO = 7;
+    private static final int VERKSAMHET_MODULO = 7;
+    private static final String ENHETS_TYP = "enhetsTyp";
+    public static final String ALDER = "alder";
+    public static final String BEFATTNING = "befattning";
+    public static final String TILLTALSNAMN = "tilltalsnamn";
+    public static final String EFTERNAMN = "efternamn";
 
     private JsonNodeFactory factory = JsonNodeFactory.instance;
 
@@ -145,7 +151,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         final String enhetId = getEnhetId(key.getEnhetId().getId(), isHuvudenhet);
         root.put("id", enhetId);
         root.put("namn", getEnhetsNamn(enhetId));
-        root.put(HSAService.ENHETS_TYP, asList(VerksamhetsTyp.VARDCENTRAL_ID));
+        root.put(ENHETS_TYP, asList(VerksamhetsTyp.VARDCENTRAL_ID));
         root.put("agarform", asList("Landsting/Region"));
         root.put("startdatum", "");
         root.put("slutdatum", "");
@@ -181,13 +187,13 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         root.put("id", key.getLakareId().getId());
         root.put("initial", (JsonNode) null);
         root.put("kon", (JsonNode) null);
-        root.put("alder", (JsonNode) null);
-        root.put("befattning", (JsonNode) null);
+        root.put(ALDER, (JsonNode) null);
+        root.put(BEFATTNING, (JsonNode) null);
         root.put("specialitet", (JsonNode) null);
         root.put("yrkesgrupp", (JsonNode) null);
         root.put("skyddad", (JsonNode) null);
-        root.put("tilltalsnamn", getTilltalsnamn(key));
-        root.put("efternamn", getEfternamn(key));
+        root.put(TILLTALSNAMN, getTilltalsnamn(key));
+        root.put(EFTERNAMN, getEfternamn(key));
         return root;
     }
 
@@ -196,13 +202,13 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         root.put("id", id.getId());
         root.put("initial", (JsonNode) null);
         root.put("kon", String.valueOf(kon.getHsaRepresantation()));
-        root.put("alder", String.valueOf(age));
-        root.put("befattning", toArrayNode(befattnings));
+        root.put(ALDER, String.valueOf(age));
+        root.put(BEFATTNING, toArrayNode(befattnings));
         root.put("specialitet", (JsonNode) null);
         root.put("yrkesgrupp", (JsonNode) null);
         root.put("skyddad", (JsonNode) null);
         root.put("tilltalsnamn", firstName);
-        root.put("efternamn", lastName);
+        root.put(EFTERNAMN, lastName);
         return root;
     }
 
@@ -332,9 +338,9 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         resp.setHsaIdentity(hsaId);
         JsonNode personal = getOrCreatePersonal(getHsaKey(hsaId));
         resp.setGender(personal.get("kon").textValue());
-        resp.setAge(personal.get("alder").textValue());
+        resp.setAge(personal.get(ALDER).textValue());
         GetStatisticsPersonResponseType.PaTitleCodes titleCodes = new GetStatisticsPersonResponseType.PaTitleCodes();
-        Iterator<JsonNode> befattnings = personal.get("befattning").iterator();
+        Iterator<JsonNode> befattnings = personal.get(BEFATTNING).iterator();
         while (befattnings.hasNext()) {
             JsonNode befattning = befattnings.next();
             titleCodes.getPaTitleCode().add(befattning.textValue());
@@ -384,7 +390,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         StatisticsNameInfo nameInfo = new StatisticsNameInfo();
         JsonNode personal = getOrCreatePersonal(getHsaKey(hsaid));
         nameInfo.setPersonGivenName(personal.get("tilltalsnamn").textValue());
-        nameInfo.setPersonMiddleAndSurName(personal.get("efternamn").textValue());
+        nameInfo.setPersonMiddleAndSurName(personal.get(EFTERNAMN).textValue());
         nameInfo.setHsaIdentity(hsaid);
         nameInfos.getStatisticsNameInfo().add(nameInfo);
         resp.setStatisticsNameInfos(nameInfos);

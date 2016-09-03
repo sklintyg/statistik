@@ -26,8 +26,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-
 import se.inera.ifv.hsawsresponder.v3.GeoCoord;
 import se.inera.ifv.hsawsresponder.v3.GeoCoordEnum;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
@@ -46,7 +44,6 @@ public class HSAServiceImpl implements HSAService {
     private static final Logger LOG = LoggerFactory.getLogger(HSAServiceImpl.class);
     private static final String SKYDDAD = "Skyddad";
     private static final String IDENTITET = "Identitet";
-    private JsonNodeFactory factory = JsonNodeFactory.instance;
 
     @Autowired
     private HsaWebService service;
@@ -66,6 +63,7 @@ public class HSAServiceImpl implements HSAService {
         }
     }
 
+    @java.lang.SuppressWarnings("squid:S1067") // I can't see a better way to write the expression using fewer conditional operators
     private HsaInfo getHsaInfoWithoutExceptionHandling(HSAKey key, HsaInfo baseHsaInfo) {
         HsaInfo nonNullBase = baseHsaInfo != null ? baseHsaInfo : new HsaInfo(null, null, null, null);
 

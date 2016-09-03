@@ -111,6 +111,7 @@ public class SjukfallUtil {
     }
 
     //CHECKSTYLE:OFF ParameterNumberCheck
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public <T> KonDataResponse calculateKonDataResponseUsingOriginalSjukfallStart(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction) {
         return calculateKonDataResponse(aisle, filter, start, periods, periodSize, groupNames, groupIds, counterFunction, true);
     }

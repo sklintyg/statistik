@@ -129,7 +129,7 @@ public class RegisterCertificateHelper {
         return null;
     }
 
-    private Arbetsnedsattning getArbetsnedsattning(Svar svar) throws ConverterException {
+    private Arbetsnedsattning getArbetsnedsattning(Svar svar) {
         int nedsattning = -1;
         DatePeriodType datePeriod = new DatePeriodType();
 
@@ -244,8 +244,7 @@ public class RegisterCertificateHelper {
         Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(RegisterCertificateType.class).createUnmarshaller();
         jaxbUnmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
         final StringReader reader = new StringReader(data);
-        RegisterCertificateType unmarshal = (RegisterCertificateType) JAXBIntrospector.getValue(jaxbUnmarshaller.unmarshal(reader));
-        return (RegisterCertificateType) unmarshal;
+        return (RegisterCertificateType) JAXBIntrospector.getValue(jaxbUnmarshaller.unmarshal(reader));
     }
 
     /**
@@ -257,7 +256,7 @@ public class RegisterCertificateHelper {
      */
     //This code is copied from intygsprojektet and is best to keep unchanged
     @java.lang.SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S134", "squid:UselessParenthesesCheck"})
-    public CVType getCVSvarContent(Svar.Delsvar delsvar) throws ConverterException {
+    public CVType getCVSvarContent(Svar.Delsvar delsvar) {
         for (Object o : delsvar.getContent()) {
             if (o instanceof Node) {
                 CVType cvType = new CVType();
@@ -310,7 +309,7 @@ public class RegisterCertificateHelper {
      */
     //This code is copied from intygsprojektet and is best to keep unchanged
     @java.lang.SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S134", "squid:UselessParenthesesCheck"})
-    public DatePeriodType getDatePeriodTypeContent(Svar.Delsvar delsvar) throws ConverterException {
+    public DatePeriodType getDatePeriodTypeContent(Svar.Delsvar delsvar) {
         for (Object o : delsvar.getContent()) {
             if (o instanceof Node) {
                 DatePeriodType datePeriodType = new DatePeriodType();

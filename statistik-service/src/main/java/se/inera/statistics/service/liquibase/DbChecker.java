@@ -56,6 +56,8 @@ public class DbChecker {
         LOG.info("Liquibase ok");
     }
 
+
+    @java.lang.SuppressWarnings("squid:S1194") // I assume there is a reason for throwing and Error and do not dare to change it
     private class DbCheckError extends Error {
 
         DbCheckError(String s) {

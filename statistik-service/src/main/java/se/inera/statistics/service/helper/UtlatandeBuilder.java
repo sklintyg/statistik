@@ -37,9 +37,12 @@ import java.util.List;
 import java.util.UUID;
 
 public class UtlatandeBuilder {
+
     private static final LocalTime SIGN_TIME_OF_DAY = new LocalTime(7, 7);
     private static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
     private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd'T'hh:mm:ss.SSS");
+    public static final String GRUND_DATA = "grundData";
+    public static final String SKAPAD_AV = "skapadAv";
 
     private final JsonNode template;
 
@@ -82,10 +85,10 @@ public class UtlatandeBuilder {
     @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
     public JsonNode build(String person, List<LocalDate> starts, List<LocalDate> stops, HsaIdLakare personal, HsaIdEnhet enhet, HsaIdVardgivare vardgivare, String diagnos, List<String> grads) {
         ObjectNode intyg = template.deepCopy();
-        ObjectNode patientIdNode = (ObjectNode) intyg.path("grundData").path("patient");
+        ObjectNode patientIdNode = (ObjectNode) intyg.path(GRUND_DATA).path("patient");
         patientIdNode.put("personId", person);
         LocalDateTime startWithTime = starts.get(0).toLocalDateTime(SIGN_TIME_OF_DAY);
-        ObjectNode signeringsdatumNode = (ObjectNode) intyg.path("grundData");
+        ObjectNode signeringsdatumNode = (ObjectNode) intyg.path(GRUND_DATA);
         signeringsdatumNode.put("signeringsdatum", ISO_FORMATTER.print(startWithTime));
 
         intyg.put("id", UUID.randomUUID().toString());
@@ -94,9 +97,9 @@ public class UtlatandeBuilder {
             addGrad(starts, stops, intyg, grad);
         }
 
-        ((ObjectNode) intyg.path("grundData").path("skapadAv")).put("personId", personal.getId());
-        ((ObjectNode) intyg.path("grundData").path("skapadAv").path("vardenhet")).put("enhetsid", enhet.getId());
-        ((ObjectNode) intyg.path("grundData").path("skapadAv").path("vardenhet").path("vardgivare")).put("vardgivarid", vardgivare.getId());
+        ((ObjectNode) intyg.path(GRUND_DATA).path(SKAPAD_AV)).put("personId", personal.getId());
+        ((ObjectNode) intyg.path(GRUND_DATA).path(SKAPAD_AV).path("vardenhet")).put("enhetsid", enhet.getId());
+        ((ObjectNode) intyg.path(GRUND_DATA).path(SKAPAD_AV).path("vardenhet").path("vardgivare")).put("vardgivarid", vardgivare.getId());
         intyg.put("diagnosKod", diagnos);
 
         return intyg;

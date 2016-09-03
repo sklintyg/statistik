@@ -120,7 +120,7 @@ public class Sjukfall {
             case AVSNITT: return getDiagnosavsnitt();
             case KATEGORI: return getDiagnoskategori();
             case KOD: return getDiagnoskod();
-            default: throw new RuntimeException("Unknown range type: " + rangeType);
+            default: throw new UnknownRangeTypeException("Unknown range type: " + rangeType);
         }
     }
 
@@ -140,7 +140,7 @@ public class Sjukfall {
                 case KOD:
                     result.add(diagnose.diagnoskod);
                     break;
-                default: throw new RuntimeException("Unknown icd range type: " + icd10RangeType);
+                default: throw new UnknownRangeTypeException("Unknown icd range type: " + icd10RangeType);
             }
         }
         return result;
@@ -220,4 +220,10 @@ public class Sjukfall {
         }
     }
 
+    private class UnknownRangeTypeException extends RuntimeException {
+
+        UnknownRangeTypeException(String s) {
+            super(s);
+        }
+    }
 }

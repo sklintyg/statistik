@@ -143,6 +143,7 @@ public class WidelineConverter {
     }
 
     // CHECKSTYLE:OFF ParameterNumberCheck
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     private WideLine createWideLine(long logId, String correlationId, EventType type, String lkf, String enhet, HsaIdVardgivare vardgivare, String patient, int kon, int alder, boolean enkeltIntyg, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning, HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning) {
         WideLine line = new WideLine();
 

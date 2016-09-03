@@ -43,6 +43,54 @@ public class HsaWebServiceCached implements HsaWebService {
     private static final Logger LOG = LoggerFactory.getLogger(HsaWebServiceCached.class);
     private static final int MAX_SIZE = 10000;
 
+    private LoadingCache<String, Optional<GetStatisticsHsaUnitResponseType>> units = CacheBuilder.newBuilder()
+            .maximumSize(MAX_SIZE)
+            .expireAfterAccess(1, TimeUnit.DAYS)
+            .build(
+                    new CacheLoader<String, Optional<GetStatisticsHsaUnitResponseType>>() {
+                        @Override
+                        public Optional<GetStatisticsHsaUnitResponseType> load(String key) throws Exception {
+                            LOG.info("HSA call was not cached. Making remote call getStatisticsHsaUnit for: " + key);
+                            return Optional.fromNullable(service.getStatisticsHsaUnit(key));
+                        }
+                    });
+
+    private LoadingCache<String, Optional<GetStatisticsNamesResponseType>> names = CacheBuilder.newBuilder()
+            .maximumSize(MAX_SIZE)
+            .expireAfterAccess(1, TimeUnit.DAYS)
+            .build(
+                    new CacheLoader<String, Optional<GetStatisticsNamesResponseType>>() {
+                        @Override
+                        public Optional<GetStatisticsNamesResponseType> load(String key) throws Exception {
+                            LOG.info("HSA call was not cached. Making remote call getStatisticsNames for: " + key);
+                            return Optional.fromNullable(service.getStatisticsNames(key));
+                        }
+                    });
+
+    private LoadingCache<String, Optional<GetStatisticsPersonResponseType>> persons = CacheBuilder.newBuilder()
+            .maximumSize(MAX_SIZE)
+            .expireAfterAccess(1, TimeUnit.DAYS)
+            .build(
+                    new CacheLoader<String, Optional<GetStatisticsPersonResponseType>>() {
+                        @Override
+                        public Optional<GetStatisticsPersonResponseType> load(String key) throws Exception {
+                            LOG.info("HSA call was not cached. Making remote call getStatisticsPerson for: " + key);
+                            return Optional.fromNullable(service.getStatisticsPerson(key));
+                        }
+                    });
+
+    private LoadingCache<String, Optional<GetStatisticsCareGiverResponseType>> careGivers = CacheBuilder.newBuilder()
+            .maximumSize(MAX_SIZE)
+            .expireAfterAccess(1, TimeUnit.DAYS)
+            .build(
+                    new CacheLoader<String, Optional<GetStatisticsCareGiverResponseType>>() {
+                        @Override
+                        public Optional<GetStatisticsCareGiverResponseType> load(String key) throws Exception {
+                            LOG.info("HSA call was not cached. Making remote call getStatisticsCareGiver for: " + key);
+                            return Optional.fromNullable(service.getStatisticsCareGiver(key));
+                        }
+                    });
+
     @Autowired
     private HSAWebServiceCalls service;
 
@@ -59,18 +107,6 @@ public class HsaWebServiceCached implements HsaWebService {
         service.callPing();
     }
 
-    private LoadingCache<String, Optional<GetStatisticsHsaUnitResponseType>> units = CacheBuilder.newBuilder()
-            .maximumSize(MAX_SIZE)
-            .expireAfterAccess(1, TimeUnit.DAYS)
-            .build(
-                    new CacheLoader<String, Optional<GetStatisticsHsaUnitResponseType>>() {
-                        @Override
-                        public Optional<GetStatisticsHsaUnitResponseType> load(String key) throws Exception {
-                            LOG.info("HSA call was not cached. Making remote call getStatisticsHsaUnit for: " + key);
-                            return Optional.fromNullable(service.getStatisticsHsaUnit(key));
-                        }
-                    });
-
     @Override
     public GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(String unitId) {
         try {
@@ -80,18 +116,6 @@ public class HsaWebServiceCached implements HsaWebService {
             return service.getStatisticsHsaUnit(unitId);
         }
     }
-
-    private LoadingCache<String, Optional<GetStatisticsNamesResponseType>> names = CacheBuilder.newBuilder()
-            .maximumSize(MAX_SIZE)
-            .expireAfterAccess(1, TimeUnit.DAYS)
-            .build(
-                    new CacheLoader<String, Optional<GetStatisticsNamesResponseType>>() {
-                        @Override
-                        public Optional<GetStatisticsNamesResponseType> load(String key) throws Exception {
-                            LOG.info("HSA call was not cached. Making remote call getStatisticsNames for: " + key);
-                            return Optional.fromNullable(service.getStatisticsNames(key));
-                        }
-                    });
 
     @Override
     public GetStatisticsNamesResponseType getStatisticsNames(String personId) {
@@ -103,18 +127,6 @@ public class HsaWebServiceCached implements HsaWebService {
         }
     }
 
-    private LoadingCache<String, Optional<GetStatisticsPersonResponseType>> persons = CacheBuilder.newBuilder()
-            .maximumSize(MAX_SIZE)
-            .expireAfterAccess(1, TimeUnit.DAYS)
-            .build(
-                    new CacheLoader<String, Optional<GetStatisticsPersonResponseType>>() {
-                        @Override
-                        public Optional<GetStatisticsPersonResponseType> load(String key) throws Exception {
-                            LOG.info("HSA call was not cached. Making remote call getStatisticsPerson for: " + key);
-                            return Optional.fromNullable(service.getStatisticsPerson(key));
-                        }
-                    });
-
     @Override
     public GetStatisticsPersonResponseType getStatisticsPerson(String personId) {
         try {
@@ -124,18 +136,6 @@ public class HsaWebServiceCached implements HsaWebService {
             return service.getStatisticsPerson(personId);
         }
     }
-
-    private LoadingCache<String, Optional<GetStatisticsCareGiverResponseType>> careGivers = CacheBuilder.newBuilder()
-            .maximumSize(MAX_SIZE)
-            .expireAfterAccess(1, TimeUnit.DAYS)
-            .build(
-                    new CacheLoader<String, Optional<GetStatisticsCareGiverResponseType>>() {
-                        @Override
-                        public Optional<GetStatisticsCareGiverResponseType> load(String key) throws Exception {
-                            LOG.info("HSA call was not cached. Making remote call getStatisticsCareGiver for: " + key);
-                            return Optional.fromNullable(service.getStatisticsCareGiver(key));
-                        }
-                    });
 
     @Override
     public GetStatisticsCareGiverResponseType getStatisticsCareGiver(String careGiverId) {

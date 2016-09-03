@@ -71,19 +71,19 @@ public class CountyPopulationFetcher {
         }
     }
 
-    private Map<String, KonField> getPopulationFromScb(int year) throws ScbPopulationException {
+    private Map<String, KonField> getPopulationFromScb(int year) {
         final String scbPopulationResponse = requestPopulationFromScb(year);
         return parseScbResult(scbPopulationResponse, year);
     }
 
-    private Map<String, KonField> parseScbResult(String result, int year) throws ScbResponseHeadersNotRecognisedException {
+    private Map<String, KonField> parseScbResult(String result, int year) {
         final String[] rows = result.split("(\\r\\n|\\r|\\n)");
         validateScbResponseHeaders(rows[0], year);
         final Map<String, List<ScbRow>> rowsPerCounty = Arrays.stream(rows).skip(1).map(this::parseScbRow).collect(Collectors.groupingBy(scbRow -> scbRow.countyId));
         return rowsPerCounty.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> toKonField(e.getValue())));
     }
 
-    private void validateScbResponseHeaders(String row, int year) throws ScbResponseHeadersNotRecognisedException {
+    private void validateScbResponseHeaders(String row, int year) {
         final String[] headers = splitStringAndRemoveQuotationMarks(row);
         if (!HEADER_REGION.equalsIgnoreCase(headers[0])) {
             throw new ScbResponseHeadersNotRecognisedException("Region header [0] mismatch");
@@ -96,7 +96,7 @@ public class CountyPopulationFetcher {
         }
     }
 
-    private KonField toKonField(List<ScbRow> konValuesForSingleCounty) throws ScbPopulationException {
+    private KonField toKonField(List<ScbRow> konValuesForSingleCounty) {
         final HashMap<Kon, Integer> valuePerKon = new HashMap<>();
         for (ScbRow scbRow : konValuesForSingleCounty) {
             valuePerKon.put(scbRow.gender, scbRow.amount);

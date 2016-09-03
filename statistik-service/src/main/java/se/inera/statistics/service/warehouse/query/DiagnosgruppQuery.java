@@ -198,6 +198,7 @@ public class DiagnosgruppQuery {
         return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
     }
     // CHECKSTYLE:OFF ParameterNumber
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType, boolean countAllDxs) {
         final List<Icd> icdTyps = new ArrayList<>();
         for (Icd10.Id icdItem : kapitel.getSubItems()) {

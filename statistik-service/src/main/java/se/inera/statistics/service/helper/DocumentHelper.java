@@ -32,6 +32,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.statistics.service.report.model.Kon;
 
 public final class DocumentHelper {
+
     private static final Logger LOG = LoggerFactory.getLogger(DocumentHelper.class);
 
     private static final String OBSERVATIONER = "observationer";
@@ -48,6 +49,17 @@ public final class DocumentHelper {
     private static final int NEDSATT25 = 25;
     private static final int NEDSATT50 = 50;
     private static final int NEDSATT75 = 75;
+    public static final String GRUND_DATA = "grundData";
+    public static final String SKAPAD_AV = "skapadAv";
+    public static final String VARDENHET = "vardenhet";
+    public static final String OBSERVATIONSPERIOD = "observationsperiod";
+    public static final String NEDSATT_MED_25 = "nedsattMed25";
+    public static final String NEDSATT_MED_50 = "nedsattMed50";
+    public static final String NEDSATT_MED_75 = "nedsattMed75";
+    public static final String NEDSATT_MED_100 = "nedsattMed100";
+
+    private DocumentHelper() {
+    }
 
     public static String getIntygType(JsonNode intyg) {
         final IntygVersion version = getIntygVersion(intyg);
@@ -60,9 +72,6 @@ public final class DocumentHelper {
 
     public enum IntygVersion {
         VERSION1, VERSION2
-    }
-
-    private DocumentHelper() {
     }
 
     public static Patientdata getPatientData(JsonNode intyg) {
@@ -81,7 +90,7 @@ public final class DocumentHelper {
     }
 
     public static IntygVersion getIntygVersion(JsonNode document) {
-        return document.has("grundData") ? IntygVersion.VERSION2 : IntygVersion.VERSION1;
+        return document.has(GRUND_DATA) ? IntygVersion.VERSION2 : IntygVersion.VERSION1;
     }
 
     public static String getPersonId(JsonNode document, IntygVersion version) {
@@ -103,41 +112,41 @@ public final class DocumentHelper {
         if (IntygVersion.VERSION1 == version) {
             return document.path(PATIENT).path("id").path(EXTENSION).textValue();
         } else {
-            return document.path("grundData").path("patient").path("personId").textValue();
+            return document.path(GRUND_DATA).path("patient").path("personId").textValue();
         }
     }
 
     public static String getVardgivareId(JsonNode document, IntygVersion version) {
         if (IntygVersion.VERSION1 == version) {
-            return document.path("skapadAv").path("vardenhet").path("vardgivare").path("id").path(EXTENSION).textValue();
+            return document.path(SKAPAD_AV).path(VARDENHET).path("vardgivare").path("id").path(EXTENSION).textValue();
         } else {
-            return document.path("grundData").path("skapadAv").path("vardenhet").path("vardgivare").path("vardgivarid").textValue();
+            return document.path(GRUND_DATA).path(SKAPAD_AV).path(VARDENHET).path("vardgivare").path("vardgivarid").textValue();
         }
     }
 
     public static String getEnhetId(JsonNode document, IntygVersion version) {
         if (IntygVersion.VERSION1 == version) {
-            final String result = document.path("skapadAv").path("vardenhet").path("id").path(EXTENSION).textValue();
+            final String result = document.path(SKAPAD_AV).path(VARDENHET).path("id").path(EXTENSION).textValue();
             return result != null ? result : UTANENHETSID;
         } else {
-            final String result = document.path("grundData").path("skapadAv").path("vardenhet").path("enhetsid").textValue();
+            final String result = document.path(GRUND_DATA).path(SKAPAD_AV).path(VARDENHET).path("enhetsid").textValue();
             return result != null ? result : UTANENHETSID;
         }
     }
 
     public static String getEnhetNamn(JsonNode document, IntygVersion version) {
         if (IntygVersion.VERSION1 == version) {
-            return document.path("skapadAv").path("vardenhet").path("namn").textValue();
+            return document.path(SKAPAD_AV).path(VARDENHET).path("namn").textValue();
         } else {
-            return document.path("grundData").path("skapadAv").path("vardenhet").path("enhetsnamn").textValue();
+            return document.path(GRUND_DATA).path(SKAPAD_AV).path(VARDENHET).path("enhetsnamn").textValue();
         }
     }
 
     public static String getLakarId(JsonNode document, IntygVersion version) {
         if (IntygVersion.VERSION1 == version) {
-            return document.path("skapadAv").path("id").path(EXTENSION).textValue();
+            return document.path(SKAPAD_AV).path("id").path(EXTENSION).textValue();
         } else {
-            return document.path("grundData").path("skapadAv").path("personId").textValue();
+            return document.path(GRUND_DATA).path(SKAPAD_AV).path("personId").textValue();
         }
     }
 
@@ -153,7 +162,7 @@ public final class DocumentHelper {
         String from = null;
         for (JsonNode node : document.path(OBSERVATIONER)) {
             if (ARBETSFORMAGA_MATCHER.match(node)) {
-                JsonNode varde = node.path("observationsperiod");
+                JsonNode varde = node.path(OBSERVATIONSPERIOD);
                 String candidate = varde.path("from").asText();
                 if (from == null || from.compareTo(candidate) > 0) {
                     from = candidate;
@@ -174,19 +183,19 @@ public final class DocumentHelper {
     private static String getSistaNedsattningsdagV2(JsonNode document) {
         final int startYear = 2000;
         LocalDate date = new LocalDate(startYear, 1, 1);
-        if (document.has("nedsattMed25")) {
-            date = new LocalDate(document.path("nedsattMed25").path("tom").asText());
+        if (document.has(NEDSATT_MED_25)) {
+            date = new LocalDate(document.path(NEDSATT_MED_25).path("tom").asText());
         }
-        if (document.has("nedsattMed50")) {
-            LocalDate tom = new LocalDate(document.path("nedsattMed50").path("tom").asText());
+        if (document.has(NEDSATT_MED_50)) {
+            LocalDate tom = new LocalDate(document.path(NEDSATT_MED_50).path("tom").asText());
             date = tom.isAfter(date) ? tom : date;
         }
-        if (document.has("nedsattMed75")) {
-            LocalDate tom = new LocalDate(document.path("nedsattMed75").path("tom").asText());
+        if (document.has(NEDSATT_MED_75)) {
+            LocalDate tom = new LocalDate(document.path(NEDSATT_MED_75).path("tom").asText());
             date = tom.isAfter(date) ? tom : date;
         }
-        if (document.has("nedsattMed100")) {
-            LocalDate tom = new LocalDate(document.path("nedsattMed100").path("tom").asText());
+        if (document.has(NEDSATT_MED_100)) {
+            LocalDate tom = new LocalDate(document.path(NEDSATT_MED_100).path("tom").asText());
             date = tom.isAfter(date) ? tom : date;
         }
         return date.toString();
@@ -196,7 +205,7 @@ public final class DocumentHelper {
         String to = null;
         for (JsonNode node : document.path(OBSERVATIONER)) {
             if (ARBETSFORMAGA_MATCHER.match(node)) {
-                JsonNode varde = node.path("observationsperiod");
+                JsonNode varde = node.path(OBSERVATIONSPERIOD);
                 String candidate = varde.path("tom").asText();
                 if (to == null || to.compareTo(candidate) < 0) {
                     to = candidate;
@@ -225,31 +234,31 @@ public final class DocumentHelper {
             for (JsonNode node : document.path(OBSERVATIONER)) {
                 if (ARBETSFORMAGA_MATCHER.match(node)) {
                     int varde = MAX_SJUKSKRIVNING - node.path("varde").get(0).path("quantity").asInt();
-                    LocalDate from = new LocalDate(node.path("observationsperiod").path("from").asText());
-                    LocalDate tom = new LocalDate(node.path("observationsperiod").path("tom").asText());
+                    LocalDate from = new LocalDate(node.path(OBSERVATIONSPERIOD).path("from").asText());
+                    LocalDate tom = new LocalDate(node.path(OBSERVATIONSPERIOD).path("tom").asText());
                     result.add(new Arbetsnedsattning(varde, from, tom));
                 }
             }
             return result;
         } else {
-            if (document.has("nedsattMed25")) {
-                LocalDate from = new LocalDate(document.path("nedsattMed25").path("from").asText());
-                LocalDate tom = new LocalDate(document.path("nedsattMed25").path("tom").asText());
+            if (document.has(NEDSATT_MED_25)) {
+                LocalDate from = new LocalDate(document.path(NEDSATT_MED_25).path("from").asText());
+                LocalDate tom = new LocalDate(document.path(NEDSATT_MED_25).path("tom").asText());
                 result.add(new Arbetsnedsattning(NEDSATT25, from, tom));
             }
-            if (document.has("nedsattMed50")) {
-                LocalDate from = new LocalDate(document.path("nedsattMed50").path("from").asText());
-                LocalDate tom = new LocalDate(document.path("nedsattMed50").path("tom").asText());
+            if (document.has(NEDSATT_MED_50)) {
+                LocalDate from = new LocalDate(document.path(NEDSATT_MED_50).path("from").asText());
+                LocalDate tom = new LocalDate(document.path(NEDSATT_MED_50).path("tom").asText());
                 result.add(new Arbetsnedsattning(NEDSATT50, from, tom));
             }
-            if (document.has("nedsattMed75")) {
-                LocalDate from = new LocalDate(document.path("nedsattMed75").path("from").asText());
-                LocalDate tom = new LocalDate(document.path("nedsattMed75").path("tom").asText());
+            if (document.has(NEDSATT_MED_75)) {
+                LocalDate from = new LocalDate(document.path(NEDSATT_MED_75).path("from").asText());
+                LocalDate tom = new LocalDate(document.path(NEDSATT_MED_75).path("tom").asText());
                 result.add(new Arbetsnedsattning(NEDSATT75, from, tom));
             }
-            if (document.has("nedsattMed100")) {
-                LocalDate from = new LocalDate(document.path("nedsattMed100").path("from").asText());
-                LocalDate tom = new LocalDate(document.path("nedsattMed100").path("tom").asText());
+            if (document.has(NEDSATT_MED_100)) {
+                LocalDate from = new LocalDate(document.path(NEDSATT_MED_100).path("from").asText());
+                LocalDate tom = new LocalDate(document.path(NEDSATT_MED_100).path("tom").asText());
                 result.add(new Arbetsnedsattning(NEDSATT100, from, tom));
             }
             return result;

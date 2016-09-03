@@ -89,6 +89,7 @@ public class QueueHelper {
     private SjukfallQuery sjukfallQuery;
 
     // CHECKSTYLE:OFF ParameterNumberCheck
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public void enqueue(UtlatandeBuilder builder, String typString, String person, String diagnos, List<LocalDate> start, List<LocalDate> stop, List<String> grad, HsaIdEnhet enhet, HsaIdVardgivare vardgivare, String transId) {
         EventType typ = EventType.valueOf(typString);
         sender.simpleSend(builder.build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), transId, typ);

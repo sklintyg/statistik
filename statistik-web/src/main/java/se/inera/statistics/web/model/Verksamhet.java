@@ -55,6 +55,7 @@ public class Verksamhet implements Serializable {
     }
 
     // CHECKSTYLE:OFF ParameterNumber
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public Verksamhet(HsaIdEnhet id, String name, HsaIdVardgivare vardgivarId, String vardgivarName, String lansId, String lansName, String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper) {
         this.id = id.getId();
         this.name = name;

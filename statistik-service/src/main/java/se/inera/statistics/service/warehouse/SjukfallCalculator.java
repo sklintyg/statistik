@@ -18,17 +18,6 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Multimap;
-import org.joda.time.LocalDate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import se.inera.statistics.service.report.model.Range;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,9 +26,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SjukfallCalculator {
+import org.joda.time.LocalDate;
 
-    private static final Logger LOG = LoggerFactory.getLogger(SjukfallCalculator.class);
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Multimap;
+
+import se.inera.statistics.service.report.model.Range;
+
+public class SjukfallCalculator {
 
     private final List<Fact> aisle;
     private final boolean useOriginalSjukfallStart;

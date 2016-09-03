@@ -54,10 +54,6 @@ public class Enhet {
         //Not sure why/if this is needed
     }
 
-    public long getId() {
-        return id;
-    }
-
     public Enhet(HsaIdVardgivare vardgivareId, HsaIdEnhet enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
         setVardgivareId(vardgivareId);
         setEnhetId(enhetId);
@@ -65,6 +61,10 @@ public class Enhet {
         this.lansId = lansId;
         this.kommunId = kommunId;
         this.verksamhetsTyper = verksamhetsTyper;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public void setId(long id) {

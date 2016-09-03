@@ -66,7 +66,7 @@ public class EnhetManager {
 
     private List<Enhet> getEnhetsFromResultList(List resultList) {
         if (resultList == null) {
-            return null;
+            return Collections.emptyList();
         }
         final List<Enhet> enhets = new ArrayList<>();
         for (Object o : resultList) {
