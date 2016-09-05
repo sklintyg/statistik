@@ -234,7 +234,7 @@ public class ProtectedLandstingService {
             final LandstingEnhetUpdate update = lastUpdateInfo.get();
             final LandstingEnhetUpdateOperation operation = update.getOperation();
             String dateTime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date(update.getTimestamp().getTime()));
-            return operation.getMessage() + (LandstingEnhetUpdateOperation.Update.equals(operation) ? " (" + update.getFilename() + ")" : "") + " - " + dateTime + " av " + update.getUpdatedByName() + " (" + update.getUpdatedByHsaid() + ")";
+            return operation.getMessage() + (LandstingEnhetUpdateOperation.UPDATE.equals(operation) ? " (" + update.getFilename() + ")" : "") + " - " + dateTime + " av " + update.getUpdatedByName() + " (" + update.getUpdatedByHsaid() + ")";
         }
         return "Ingen";
     }

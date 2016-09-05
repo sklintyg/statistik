@@ -48,7 +48,6 @@ import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
-import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.service.landsting.LandstingEnhetFileParseException;
 import se.inera.statistics.web.service.landsting.LandstingFileGenerationException;
 import se.inera.statistics.web.service.landsting.LandstingFileReader;
@@ -276,7 +275,7 @@ public class ProtectedLandstingServiceTest {
         final HsaIdVardgivare vgid = new HsaIdVardgivare("VgidTest");
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgid);
 
-        final LandstingEnhetUpdate landstingEnhetUpdate = new LandstingEnhetUpdate(123L, "Test Name", new HsaIdUser("TESTHSAID"), new Timestamp(5L), "TestFile.xls", LandstingEnhetUpdateOperation.Update);
+        final LandstingEnhetUpdate landstingEnhetUpdate = new LandstingEnhetUpdate(123L, "Test Name", new HsaIdUser("TESTHSAID"), new Timestamp(5L), "TestFile.xls", LandstingEnhetUpdateOperation.UPDATE);
         Mockito.when(landstingEnhetHandler.getLastUpdateInfo(vgid)).thenReturn(Optional.of(landstingEnhetUpdate));
 
         final ArrayList<LandstingEnhet> landstingEnhets = new ArrayList<>();

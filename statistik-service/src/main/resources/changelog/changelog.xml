@@ -58,5 +58,6 @@
     <include file="changelog/db.changelog-v30.0_remove_unused_vgname_from_enhet.xml"/>
     <include file="changelog/db.changelog-v31.0_add_tabel_for_county_population.xml"/>
     <include file="changelog/db.changelog-v32.0_county_population_per_gender.xml"/>
+    <include file="changelog/db.changelog-v33.0_LandstingEnhetUpdateOperationToUpperCase.xml"/>
 
 </databaseChangeLog>
