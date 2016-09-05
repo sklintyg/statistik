@@ -38,53 +38,38 @@
         <div class="row">
             <div class="col-md-8">
                 <div id="uploadZone" class="jumbotron dropzone" dropzone="dropzoneConfig" ng-class="{'dropzone-drag': draggingIt}">
-                    <div class="row dz-message">
-                        <div class="col-md-5 col-md-push-3 dropzone-info-area">
+                  <uib-progressbar data-ng-if="uploading" class="progress-striped active" value="uploadProgress"></uib-progressbar>
+                  <div class="row dz-message">
+                    <div class="col-md-5 col-md-push-3 dropzone-info-area">
 
-                                    <span ng-show="!uploadCompleted" class="glyphicon glyphicon-plus-sign"
-                                          ng-class="{'glyphicon-plus-sign-drag': draggingIt}"></span>
-                                    <span ng-show="uploadCompleted" class="glyphicon"
-                                          ng-class="{'glyphicon-ok-sign': uploadSuccess, 'glyphicon-warning-sign': !uploadSuccess}"></span>
+                      <span ng-show="!uploadCompleted" class="glyphicon glyphicon-plus-sign"
+                            ng-class="{'glyphicon-plus-sign-drag': draggingIt}"></span>
+                      <span ng-show="uploadCompleted" class="glyphicon"
+                            ng-class="{'glyphicon-ok-sign': uploadSuccess, 'glyphicon-warning-sign': !uploadSuccess}"></span>
 
-                            <progressbar ng-show="uploading" class="progress-striped active" value="uploadProgress"
-                                         type="{{progressType}}"></progressbar>
+                      <div data-ng-if="uploadCompleted && !uploadSuccess">
+                        <h5 message key="alert.upload.failed"></h5>
+                        <h5>{{uploadResultMessage}}</h5>
+                        <h5>
+                          <span message key="info.upload.dropfile.here"></span>
+                          <a message key="info.upload.dropfile.here.add"></a>
+                        </h5>
+                      </div>
 
-                            <div ng-show="uploadCompleted && !uploadSuccess">
-                                <h5>
-                                            <span message
-                                                  key="alert.upload.failed"></span>
-                                </h5>
-                                <h5>{{uploadResultMessage}}</h5>
-                                <h5>
-                                            <span message
-                                                  key="info.upload.dropfile.here"></span>
-                                    <a>
-                                        <span message key="info.upload.dropfile.here.add"></span>
-                                    </a>
-                                </h5>
-                            </div>
+                      <h5 data-ng-if="!uploading && !uploadCompleted">
+                        <span message key="info.upload.dropfile.here"></span>
+                        <a message key="info.upload.dropfile.here.add"></a>
+                      </h5>
 
-                            <h5 ng-show="!uploading && !uploadCompleted">
-                                        <span message
-                                              key="info.upload.dropfile.here"></span>
-                                <a>
-                                    <span message key="info.upload.dropfile.here.add"></span>
-                                </a>
-                            </h5>
-
-                            <div ng-show="uploadCompleted && uploadSuccess">
-                                <h5><span message
-                                          key="alert.upload.success"></span></h5>
-                                <h5>
-                                            <span message
-                                                  key="info.upload.dropfile.here"></span>
-                                    <a>
-                                        <span message key="info.upload.dropfile.here.add"></span>
-                                    </a>
-                                </h5>
-                            </div>
-                        </div>
+                      <div data-ng-if="uploadCompleted && uploadSuccess">
+                        <h5 message key="alert.upload.success"></h5>
+                        <h5>
+                          <span message key="info.upload.dropfile.here"></span>
+                          <a message key="info.upload.dropfile.here.add"></a>
+                        </h5>
+                      </div>
                     </div>
+                  </div>
                 </div>
                 <div id="fallbackUploadZone" style="display: none;">
                     <form method="POST" action="{{uploadUrl}}" enctype="multipart/form-data" class="dropzone" style="padding: 12px;">
