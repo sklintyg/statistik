@@ -40,7 +40,7 @@ Nu ska det gå att starta applikationen med:
 Nu går det att öppna en webbläsare och surfa till http://localhost:8080/ Observera jetty körs i gradleprocessen, så gradle "blir
 inte klar" förrän du stoppar servern med ^c, och applikationen är bara igång fram till dess.
 
-###Uppgrader från node 0.12 
+###Uppgradera från node 0.12
 Installera nodjs 6.5.0 tex med NVM, https://github.com/creationix/nvm
 
 Har du nvm så kan du skriva 
