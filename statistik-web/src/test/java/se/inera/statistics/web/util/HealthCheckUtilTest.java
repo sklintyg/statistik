@@ -91,7 +91,7 @@ public class HealthCheckUtilTest {
 
     @Test
     public void testMeasurementsForAccessingHighcharts() throws IOException {
-        Mockito.when(client.executeMethod(Mockito.any(GetMethod.class))).thenReturn(HttpStatus.ACCEPTED.value());
+        Mockito.when(client.executeMethod(Mockito.any(GetMethod.class))).thenReturn(HttpStatus.OK.value());
         Status status = healthCheck.getHighchartsExportStatus();
         assertTrue(status.getMeasurement() >= 0);
         assertTrue(status.isOk());
