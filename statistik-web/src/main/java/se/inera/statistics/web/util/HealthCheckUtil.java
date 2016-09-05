@@ -84,7 +84,7 @@ public class HealthCheckUtil {
         }
         long startTime = System.nanoTime();
         try {
-            ok = client.executeMethod(new GetMethod(highchartsUrl)) == HttpStatus.ACCEPTED.value();
+            ok = client.executeMethod(new GetMethod(highchartsUrl)) == HttpStatus.OK.value();
         } catch (IOException e) {
             LOG.debug("Highcharts service not reachable", e);
             // Squelch this as it is quite ok to throw IOException.
