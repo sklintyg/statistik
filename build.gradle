@@ -280,9 +280,7 @@ if (project.hasProperty('runSonar')) {
                     sonarProperties {
                         property "sonar.javascript.lcov.reportPath", "$buildDir/karma/coverage/lcov/lcov.info"
                         property "sonar.sources", "${projectDir}/src/main/resources,${projectDir}/src/main/java,${projectDir}/src/main/webapp"
-                        property "sonar.exclusions", [
-                                "${projectDir}/src/main/webapp/bower_components/**"
-                        ]
+                        property "sonar.exclusions", "${projectDir}/src/main/webapp/bower_components/**"
                     }
                 }
             }
