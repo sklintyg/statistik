@@ -34,6 +34,8 @@
 		<c:set var="highchart" value="${healthcheckUtil.highchartsExportStatus}" />
 		<c:set var="workloadStatus" value="${healthcheckUtil.workloadStatus}" />
 		<c:set var="hsa" value="${healthcheckUtil.hsaStatus}" />
+		<c:set var="db" value="${healthcheckUtil.checkDB()}" />
+		<c:set var="uptime" value="${healthcheckUtil.uptimeAsString}" />
 
 		<div class="table-responsive">
 			<table class="table table-bordered table-striped">
@@ -46,6 +48,11 @@
 				</thead>
 				<tbody>
 					<tr>
+						<td>Koppling databas</td>
+						<td id="dbMeasurement">${db.measurement}ms</td>
+						<td id="dbStatus" class="${db.ok ? "text-success" : "text-danger"}">${db.ok ? "OK" : "FAIL"}</td>
+					</tr>
+					<tr>
 						<td>Hämta översikt nationell statstik</td>
 						<td id="overviewMeasurement">${overview.measurement}ms</td>
 						<td id="overviewStatus" class="${overview.ok ? "text-success" : "text-danger"}">${overview.ok ? "OK" : "FAIL"}</td>
@@ -56,7 +63,7 @@
 						<td id="highchartStatus" class="${highchart.ok ? "text-success" : "text-danger"}">${highchart.ok ? "OK" : "FAIL"}</td>
 					</tr>
 					<tr>
-						<td>workloadStatus</td>
+						<td>WorkloadStatus</td>
 						<td id="workloadMeasurement">${workloadStatus.measurement}ms</td>
 						<td id="workloadStatus" class="${workloadStatus.ok ? "text-success" : "text-danger"}">${workloadStatus.ok ? "OK" : "FAIL"}</td>
 					</tr>
@@ -64,6 +71,10 @@
 						<td>HSA</td>
 						<td id="hsaMeasurement">${hsa.measurement}ms</td>
 						<td id="hsaStatus" class="${hsa.ok ? "text-success" : "text-danger"}">${hsa.ok ? "OK" : "FAIL"}</td>
+					</tr>
+					<tr>
+						<td>Applikationens upptid</td>
+						<td colspan="2" id="uptime">${uptime}</td>
 					</tr>
 				</tbody>
 			</table>

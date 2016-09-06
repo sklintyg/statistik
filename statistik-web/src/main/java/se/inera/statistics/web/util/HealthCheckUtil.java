@@ -20,22 +20,29 @@ package se.inera.statistics.web.util;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.web.service.ChartDataService;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.io.IOException;
+import java.sql.Time;
 
 public class HealthCheckUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(HealthCheckUtil.class);
-
+    private static final long START_TIME = System.currentTimeMillis();
     private static final int NANOS_PER_MS = 1_000_000;
+    private static final String CURR_TIME_SQL = "SELECT CURRENT_TIME()";
 
     @Value("${highcharts.export.url.pingdom}")
     private String highchartsUrl;
@@ -45,6 +52,9 @@ public class HealthCheckUtil {
 
     @Autowired
     private HSAWebServiceCalls hsaService;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     private HttpClient client;
 
@@ -97,6 +107,38 @@ public class HealthCheckUtil {
 
     public Status getWorkloadStatus() {
         return new Status(CalcCoordinator.getWorkloadPercentage(), true);
+    }
+
+    public Status checkUptime() {
+        long uptime = System.currentTimeMillis() - START_TIME;
+        LOG.debug("Current system uptime is {}", DurationFormatUtils.formatDurationWords(uptime, true, true));
+        return new Status(uptime, true);
+    }
+
+    public String getUptimeAsString() {
+        Status uptime = checkUptime();
+        return DurationFormatUtils.formatDurationWords(uptime.getMeasurement(), true, true);
+    }
+
+    @Transactional
+    public Status checkDB() {
+        boolean ok;
+        long startTime = System.nanoTime();
+        ok = checkTimeFromDb();
+        long doneTime = System.nanoTime();
+        return createStatus(ok, startTime, doneTime);
+    }
+
+    private boolean checkTimeFromDb() {
+        Time timestamp;
+        try {
+            Query query = entityManager.createNativeQuery(CURR_TIME_SQL);
+            timestamp = (Time) query.getSingleResult();
+        } catch (Exception e) {
+            LOG.error("checkTimeFromDb failed with exception: " + e.getMessage());
+            return false;
+        }
+        return timestamp != null;
     }
 
     private Status createStatus(boolean ok, long startTime, long doneTime) {
