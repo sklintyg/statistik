@@ -48,6 +48,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
     static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
     private static final int DISPLAYED_DIAGNOSIS_GROUPS = 5;
     static final String DIAGNOS_REST_NAME = "Andra diagnosgrupper";
+    private static final String OVRIGT_CHART_GROUP = "P00-P96, Q00-Q99, S00-Y98 Övrigt";
 
     private static Map<Integer, String> map(Map<String, List<Integer>> diagnosisChartGroups) {
         Map<Integer, String> result = new HashMap<>();
@@ -58,8 +59,6 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
         }
         return result;
     }
-
-    private static final String OVRIGT_CHART_GROUP = "P00-P96, Q00-Q99, S00-Y98 Övrigt";
 
     private static Map<String, List<Integer>> createDiagnosisGroupsMap(boolean includeUnknownGroup) {
         final Map<String, List<Integer>> diagnosisGroups = new LinkedHashMap<>();
