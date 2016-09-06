@@ -23,6 +23,14 @@
     </beans>
 
     <beans>
+      <!-- SessionRegistry is needed for keeping track of authenticated sessions (i.e users), this impl performs audit logging of login and logouts. -->
+      <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+
+      <!-- Session authentication strategy that registers authenticated sessions with the session registry -->
+      <bean id="registerSessionAuthenticationStrategy" class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
+        <constructor-arg ref="sessionRegistry" />
+      </bean>
+
         <!-- Logger for SAML messages and events -->
         <bean id="samlLogger" class="org.springframework.security.saml.log.SAMLDefaultLogger"/>
 
@@ -126,6 +134,7 @@
             <property name="authenticationManager" ref="authenticationManager"/>
             <property name="authenticationSuccessHandler" ref="fakeSuccessHandler"/>
             <property name="authenticationFailureHandler" ref="failureHandler"/>
+            <property name="sessionAuthenticationStrategy" ref="registerSessionAuthenticationStrategy"/>
         </bean>
         <bean id="fakeSuccessHandler"
               class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
@@ -256,6 +265,7 @@
             <property name="authenticationManager" ref="authenticationManager"/>
             <property name="authenticationSuccessHandler" ref="successRedirectHandler"/>
             <property name="authenticationFailureHandler" ref="failureHandler"/>
+          <property name="sessionAuthenticationStrategy" ref="registerSessionAuthenticationStrategy"/>
         </bean>
 
         <!-- Processing filter for WebSSO Holder-of-Key profile -->

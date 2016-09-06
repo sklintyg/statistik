@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
@@ -36,6 +37,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.io.IOException;
 import java.sql.Time;
+import java.util.List;
 
 public class HealthCheckUtil {
 
@@ -55,6 +57,9 @@ public class HealthCheckUtil {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
+    private SessionRegistry sessionRegistry;
 
     private HttpClient client;
 
@@ -139,6 +144,24 @@ public class HealthCheckUtil {
             return false;
         }
         return timestamp != null;
+    }
+
+    public Status checkNbrOfUsers() {
+        boolean ok;
+        long size = -1;
+        try {
+            List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
+            size = allPrincipals.size();
+            ok = true;
+        } catch (Exception e) {
+            LOG.warn("Operation checkNbrOfUsers failed", e);
+            ok = false;
+        }
+
+        String result = ok ? "OK" : "FAIL";
+        LOG.debug("Operation checkNbrOfUsers completed with result {}, nbr of users is {}", result, size);
+
+        return new Status(size, ok);
     }
 
     private Status createStatus(boolean ok, long startTime, long doneTime) {
