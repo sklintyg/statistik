@@ -111,11 +111,11 @@
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
            <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
        </security:http>
-       <security:http use-expressions="false" entry-point-ref="samlEntryPoint">
-           <security:csrf disabled="true"/>
-           <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
-            <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
-        </security:http>
+       <!--<security:http use-expressions="false" entry-point-ref="samlEntryPoint">-->
+           <!--<security:csrf disabled="true"/>-->
+           <!--<security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>-->
+            <!--<security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>-->
+        <!--</security:http>-->
         <security:authentication-manager alias="authenticationManager">
             <security:authentication-provider ref="samlAuthenticationProvider"/>
         </security:authentication-manager>
