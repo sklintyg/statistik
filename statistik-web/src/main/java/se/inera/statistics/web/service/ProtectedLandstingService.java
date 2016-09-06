@@ -192,7 +192,7 @@ public class ProtectedLandstingService {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
-    public Response getEmptyLandstingFile(@Context HttpServletRequest request) {
+    public Response getEmptyLandstingFile() {
         try {
             final ByteArrayOutputStream generatedFile = landstingFileWriter.generateExcelFile(Collections.<Enhet>emptyList());
             return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)

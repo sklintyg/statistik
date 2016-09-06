@@ -76,6 +76,7 @@ public class SimpleDualSexConverter {
         return TableData.createWithSingleHeadersRow(data, Arrays.asList(tableGroupTitle, "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
     }
 
+    @java.lang.SuppressWarnings("squid:S1172") // Parameter "row" is used by method in extending class
     protected boolean isMarked(SimpleKonDataRow row) {
         return false;
     }
