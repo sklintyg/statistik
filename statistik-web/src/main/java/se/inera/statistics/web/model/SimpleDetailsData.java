@@ -43,6 +43,7 @@ public class SimpleDetailsData extends TableDataReport {
         this(tableData, chartData, period, filter, null);
     }
 
+    @Override
     public TableData getTableData() {
         return tableData;
     }
@@ -51,14 +52,17 @@ public class SimpleDetailsData extends TableDataReport {
         return chartData;
     }
 
+    @Override
     public String getPeriod() {
         return period;
     }
 
+    @Override
     public FilterDataResponse getFilter() {
         return filter;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }

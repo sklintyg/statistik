@@ -27,7 +27,7 @@ public abstract class TableDataReport implements FilteredDataReport {
 
     public abstract TableData getTableData();
     public abstract String getPeriod();
-    public abstract FilterDataResponse getFilter();
+    @Override public abstract FilterDataResponse getFilter();
     public abstract String getMessage();
 
     @JsonIgnore

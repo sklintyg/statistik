@@ -74,6 +74,7 @@ public class VerksamhetOverviewData implements FilteredDataReport {
         return sickLeaveLength;
     }
 
+    @Override
     public FilterDataResponse getFilter() {
         return filter;
     }

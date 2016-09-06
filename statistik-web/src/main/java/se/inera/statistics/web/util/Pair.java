@@ -35,15 +35,18 @@ public class Pair<K, V> {
         this.value = var2;
     }
 
+    @Override
     public String toString() {
         return this.key + "=" + this.value;
     }
 
+    @Override
     public int hashCode() {
         final int number = 13;
         return this.key.hashCode() * number + (this.value == null ? 0 : this.value.hashCode());
     }
 
+    @Override
     public boolean equals(Object var1) {
         if (this == var1) {
             return true;
