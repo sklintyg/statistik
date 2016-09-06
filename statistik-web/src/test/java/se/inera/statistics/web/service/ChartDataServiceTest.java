@@ -92,7 +92,7 @@ public class ChartDataServiceTest {
     public void getDiagnosisGroupsTest() {
         Mockito.when(icd10.getKapitel(anyBoolean())).thenReturn(Arrays.asList(new Icd10.Kapitel("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"), new Icd10.Kapitel("C00-D48", "Tumörer")));
         HttpServletRequest request = null;
-        List<Icd> kapitel = chartDataService.getDiagnoskapitel(request);
+        List<Icd> kapitel = chartDataService.getDiagnoskapitel();
         assertEquals(2, kapitel.size());
     }
 
