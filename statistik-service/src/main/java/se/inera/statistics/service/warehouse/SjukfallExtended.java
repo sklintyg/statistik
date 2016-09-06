@@ -242,10 +242,9 @@ public class SjukfallExtended {
             } else if (fact.getStartdatum() == currentLastFound.getStartdatum()) {
                 if (fact.getLakarintyg() > currentLastFound.getLakarintyg()) {
                     currentLastFound = fact;
-                } else if (fact.getLakarintyg() == currentLastFound.getLakarintyg()) {
-                    if (fact.getSjukskrivningsgrad() > currentLastFound.getSjukskrivningsgrad()) {
-                        currentLastFound = fact;
-                    }
+                } else if (fact.getLakarintyg() == currentLastFound.getLakarintyg()
+                        && fact.getSjukskrivningsgrad() > currentLastFound.getSjukskrivningsgrad()) {
+                    currentLastFound = fact;
                 }
             }
         }

@@ -79,6 +79,16 @@ public final class Ranges implements Iterable<Ranges.Range> {
         return ranges.iterator();
     }
 
+    public int getRangeCutoffForValue(int value) {
+        for (Ranges.Range range: ranges) {
+            final int cutoff = range.getCutoff();
+            if (cutoff > value) {
+                return cutoff;
+            }
+        }
+        throw new IllegalStateException("Ranges have not been defined correctly. No range includes " + value);
+    }
+
     public static final class Range {
         private final String name;
         private final int cutoff;

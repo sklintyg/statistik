@@ -33,7 +33,7 @@ import org.mockito.MockitoAnnotations;
 
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import com.google.common.collect.HashMultiset;
@@ -54,7 +54,7 @@ public class SjukskrivningsgradQueryTest {
         //Given
         final Aisle aisle = Mockito.mock(Aisle.class);
         final SjukfallUtil sjukfallUtil = Mockito.mock(SjukfallUtil.class);
-        final SjukfallFilter filter = SjukfallUtil.ALL_ENHETER;
+        final FilterPredicates filter = SjukfallUtil.ALL_ENHETER;
         final LocalDate start = new LocalDate();
         final int periods = 1;
         final int periodSize = 1;

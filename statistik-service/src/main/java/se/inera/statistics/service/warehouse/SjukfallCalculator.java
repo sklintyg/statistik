@@ -35,10 +35,13 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.report.model.Range;
 
 public class SjukfallCalculator {
 
+    private static final Logger LOG = LoggerFactory.getLogger(SjukfallCalculator.class);
     private final List<Fact> aisle;
     private final boolean useOriginalSjukfallStart;
     private final boolean extendSjukfall; //true = försök att komplettera sjukfall från andra enheter än de man har tillgång till, false = titta bara på tillgängliga enheter, lämplig att använda t ex om man vet att man har tillgång till alla enheter
@@ -79,23 +82,31 @@ public class SjukfallCalculator {
         }
 
         if (useOriginalSjukfallStart) {
-            for (Fact fact : facts) {
-                final int rangeIndex = getRangeIndex(fact.getStartdatum(), rangeEnds);
+            populateFactsPerPatientAndPeriodUsingOriginalSjukfallStart(facts, rangeEnds, factsPerPatientAndPeriod);
+        } else {
+            populateFactsPerPatientAndPeriod(facts, rangeEnds, factsPerPatientAndPeriod);
+        }
+        return factsPerPatientAndPeriod;
+    }
+
+    private static void populateFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Integer> rangeEnds, List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod) {
+        for (Fact fact : facts) {
+            final List<Integer> rangeIndexes = getRangeIndexes(fact.getStartdatum(), fact.getSlutdatum(), rangeEnds);
+            for (Integer rangeIndex : rangeIndexes) {
                 if (rangeIndex >= 0) {
                     factsPerPatientAndPeriod.get(rangeIndex).put(fact.getPatient(), fact);
                 }
             }
-        } else {
-            for (Fact fact : facts) {
-                final List<Integer> rangeIndexes = getRangeIndexes(fact.getStartdatum(), fact.getSlutdatum(), rangeEnds);
-                for (Integer rangeIndex : rangeIndexes) {
-                    if (rangeIndex >= 0) {
-                        factsPerPatientAndPeriod.get(rangeIndex).put(fact.getPatient(), fact);
-                    }
-                }
+        }
+    }
+
+    private static void populateFactsPerPatientAndPeriodUsingOriginalSjukfallStart(Iterable<Fact> facts, List<Integer> rangeEnds, List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod) {
+        for (Fact fact : facts) {
+            final int rangeIndex = getRangeIndex(fact.getStartdatum(), rangeEnds);
+            if (rangeIndex >= 0) {
+                factsPerPatientAndPeriod.get(rangeIndex).put(fact.getPatient(), fact);
             }
         }
-        return factsPerPatientAndPeriod;
     }
 
     private ArrayListMultimap<Long, Fact> getFactsPerPatient(Iterable<Fact> facts) {
@@ -133,28 +144,45 @@ public class SjukfallCalculator {
         final Set<Long> patients = new HashSet<>(sjukfallForAvailableEnhets.keySet());
         final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = getSjukfallsPerPatientInAisle(patients);
         for (long patient : patients) {
-            final Collection<SjukfallExtended> sjukfalls = sjukfallForAvailableEnhets.get(patient);
-            Collection<SjukfallExtended> sjukfallFromAllIntygForPatient = sjukfallsPerPatient.get(patient);
-            if (countIntyg(sjukfalls) != countIntyg(sjukfallFromAllIntygForPatient)) {
-                SjukfallExtended firstSjukfall = useOriginalSjukfallStart ? getFirstSjukfall(sjukfalls) : null;
-                for (SjukfallExtended sjukfall : sjukfallFromAllIntygForPatient) {
-                    List<SjukfallExtended> mergableSjukfalls = filterSjukfallInPeriod(sjukfall.getStart(), sjukfall.getEnd(), sjukfalls);
-                    final SjukfallExtended mergedSjukfall = mergeAllSjukfallInList(mergableSjukfalls);
-                    if (mergedSjukfall != null) {
-                        SjukfallExtended mergedSjukfallExtendedWithRealDays = mergedSjukfall.extendWithRealDaysWithinPeriod(sjukfall);
-                        if (mergedSjukfallExtendedWithRealDays != null) {
-                            if (useOriginalSjukfallStart && firstSjukfall != null && firstSjukfall.getStart() == mergedSjukfallExtendedWithRealDays.getStart()) {
-                                mergedSjukfallExtendedWithRealDays = getExtendedSjukfallStart(patient, mergedSjukfallExtendedWithRealDays);
-                            }
-                            for (SjukfallExtended mergableSjukfall : mergableSjukfalls) {
-                                sjukfalls.remove(mergableSjukfall);
-                            }
-                            sjukfalls.add(mergedSjukfallExtendedWithRealDays);
-                        }
-                    }
-                }
-            }
+            extendSjukfallConnectedByIntygOnOtherEnhetsForPatientIfNeeded(sjukfallForAvailableEnhets, sjukfallsPerPatient, patient);
         }
+    }
+
+    private void extendSjukfallConnectedByIntygOnOtherEnhetsForPatientIfNeeded(Multimap<Long, SjukfallExtended> sjukfallForAvailableEnhets, ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient, long patient) {
+        final Collection<SjukfallExtended> sjukfalls = sjukfallForAvailableEnhets.get(patient);
+        Collection<SjukfallExtended> sjukfallFromAllIntygForPatient = sjukfallsPerPatient.get(patient);
+        if (countIntyg(sjukfalls) == countIntyg(sjukfallFromAllIntygForPatient)) {
+            return; //All intygs for patient are already included
+        }
+        SjukfallExtended firstSjukfall = useOriginalSjukfallStart ? getFirstSjukfall(sjukfalls) : null;
+        for (SjukfallExtended sjukfall : sjukfallFromAllIntygForPatient) {
+            mergeAndUpdateSjukfall(patient, sjukfalls, firstSjukfall, sjukfall);
+        }
+    }
+
+    private void mergeAndUpdateSjukfall(long patient, Collection<SjukfallExtended> sjukfalls, SjukfallExtended firstSjukfall, SjukfallExtended sjukfall) {
+        List<SjukfallExtended> mergableSjukfalls = filterSjukfallInPeriod(sjukfall.getStart(), sjukfall.getEnd(), sjukfalls);
+        final SjukfallExtended mergedSjukfall = mergeAllSjukfallInList(mergableSjukfalls);
+        if (mergedSjukfall == null) {
+            LOG.error("Merged sjukfall should not be null");
+            return;
+        }
+        updateMergedSjukfall(patient, sjukfalls, firstSjukfall, sjukfall, mergableSjukfalls, mergedSjukfall);
+    }
+
+    private void updateMergedSjukfall(long patient, Collection<SjukfallExtended> sjukfalls, SjukfallExtended firstSjukfall, SjukfallExtended sjukfall, List<SjukfallExtended> mergableSjukfalls, SjukfallExtended mergedSjukfall) {
+        SjukfallExtended mergedSjukfallExtendedWithRealDays = mergedSjukfall.extendWithRealDaysWithinPeriod(sjukfall);
+        if (mergedSjukfallExtendedWithRealDays == null) {
+            LOG.error("extendWithRealDaysWithinPeriod should not return null");
+            return;
+        }
+        if (useOriginalSjukfallStart && firstSjukfall != null && firstSjukfall.getStart() == mergedSjukfallExtendedWithRealDays.getStart()) {
+            mergedSjukfallExtendedWithRealDays = getExtendedSjukfallStart(patient, mergedSjukfallExtendedWithRealDays);
+        }
+        for (SjukfallExtended mergableSjukfall : mergableSjukfalls) {
+            sjukfalls.remove(mergableSjukfall);
+        }
+        sjukfalls.add(mergedSjukfallExtendedWithRealDays);
     }
 
     private SjukfallExtended getExtendedSjukfallStart(long patient, SjukfallExtended mergedSjukfall) {

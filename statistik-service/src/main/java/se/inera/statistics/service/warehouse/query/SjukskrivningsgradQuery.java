@@ -34,7 +34,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 public final class SjukskrivningsgradQuery {
@@ -71,11 +71,11 @@ public final class SjukskrivningsgradQuery {
         }
         return counters;
     }
-    public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil) {
+    public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil) {
         return getSjukskrivningsgrad(aisle, filter, start, periods, periodSize, sjukfallUtil, false);
     }
 
-    public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil, boolean all) {
+    public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil, boolean all) {
         CounterFunction<Integer> toCount;
         if (all) {
             toCount = (sjukfall, counter) -> counter.addAll(new HashSet<>(sjukfall.getSjukskrivningsgrader()));
@@ -94,7 +94,7 @@ public final class SjukskrivningsgradQuery {
         }
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getSjukskrivningsgradTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+    public static SimpleKonResponse<SimpleKonDataRow> getSjukskrivningsgradTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         final CounterFunction<Integer> toCount = (sjukfall, counter) -> counter.addAll(new HashSet<>(sjukfall.getSjukskrivningsgrader()));
 
         return sjukfallUtil.calculateSimpleKonResponse(aisle, filter, from, periods, periodLength, toCount, GRAD);

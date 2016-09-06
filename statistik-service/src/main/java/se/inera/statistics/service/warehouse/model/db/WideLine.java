@@ -61,6 +61,7 @@ public class WideLine {
     private boolean enkelt;
 
     public WideLine() {
+        // Used by WidelineConverter
     }
 
     // CHECKSTYLE:OFF ParameterNumber

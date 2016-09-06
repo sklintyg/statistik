@@ -47,7 +47,7 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.MutableAisle;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.SjukfallUtilTest;
 import se.inera.statistics.service.warehouse.Warehouse;
@@ -97,7 +97,7 @@ public class SjukfallQueryTest {
 
     private SjukfallUtil sjukfallUtil = new SjukfallUtil();
 
-    private SjukfallFilter enhetFilter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
+    private FilterPredicates enhetFilter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
 
     @Captor
     private ArgumentCaptor<List<Object>> ids;
@@ -263,10 +263,10 @@ public class SjukfallQueryTest {
     public void testGetSjukfallPerEnhetSeries() throws Exception {
         //Given
         final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
-        Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(SjukfallFilter.class), any(LocalDate.class), anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class))).thenReturn(new KonDataResponse(Collections.<String>emptyList(), Collections.<KonDataRow>emptyList()));
+        Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(FilterPredicates.class), any(LocalDate.class), anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class))).thenReturn(new KonDataResponse(Collections.<String>emptyList(), Collections.<KonDataRow>emptyList()));
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
 
-        final SjukfallFilter filter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
+        final FilterPredicates filter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
         final LocalDate start = new LocalDate();
         final int periods = 1;
         final int periodSize = 2;
@@ -288,9 +288,9 @@ public class SjukfallQueryTest {
         //Given
         final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
         final KonDataResponse konDataResponse = new KonDataResponse(Arrays.asList("1", "2", "3"), Collections.<KonDataRow>emptyList());
-        Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(SjukfallFilter.class), any(LocalDate.class), anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class))).thenReturn(konDataResponse);
+        Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(FilterPredicates.class), any(LocalDate.class), anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class))).thenReturn(konDataResponse);
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
-        final SjukfallFilter enhetFilterFromInternalIntValues = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
+        final FilterPredicates enhetFilterFromInternalIntValues = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
         final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
         idsToNames.put(new HsaIdEnhet("1"), "ABC");
         idsToNames.put(new HsaIdEnhet("2"), "CBA");

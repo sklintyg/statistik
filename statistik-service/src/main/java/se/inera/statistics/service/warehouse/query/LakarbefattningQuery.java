@@ -34,7 +34,7 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Lakare;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import com.google.common.base.Function;
@@ -47,6 +47,9 @@ public final class LakarbefattningQuery {
     private static final String NO_BEFATTNING_TEXT = "Ej läkarbefattning";
     public static final Integer UNKNOWN_BEFATTNING_CODE = -2;
     private static final String UNKNOWN_BEFATTNING_TEXT = "Okänd befattning";
+
+    private LakarbefattningQuery() {
+    }
 
     private static Map<Integer, String> getAllLakarbefattnings(boolean includeInternalBefattnings) {
         Map<Integer, String> lakarbefattnings = new LinkedHashMap<>();
@@ -68,10 +71,7 @@ public final class LakarbefattningQuery {
         // CHECKSTYLE:ON MagicNumber
     }
 
-    private LakarbefattningQuery() {
-    }
-
-     public static SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+     public static SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
          final Function<Sjukfall, Collection<Lakare>> getLakare = Sjukfall::getLakare;
          final KonDataResponse sjukfallSomTidsserie = getSjukfallCommon(aisle, filter, start, periods, periodLength, sjukfallUtil, getLakare);
         return SimpleKonResponse.create(sjukfallSomTidsserie);
@@ -89,12 +89,12 @@ public final class LakarbefattningQuery {
         return lakarbefattnings;
     }
 
-    public static KonDataResponse getSjukfallSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+    public static KonDataResponse getSjukfallSomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         final Function<Sjukfall, Collection<Lakare>> getLakare = sjukfall -> Collections.singleton(sjukfall.getLastLakare());
         return getSjukfallCommon(aisle, filter, start, periods, periodLength, sjukfallUtil, getLakare);
     }
 
-    private static KonDataResponse getSjukfallCommon(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil, final Function<Sjukfall, Collection<Lakare>> getLakare) {
+    private static KonDataResponse getSjukfallCommon(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil, final Function<Sjukfall, Collection<Lakare>> getLakare) {
         final ArrayList<Map.Entry<Integer, String>> ranges = new ArrayList<>(getAllLakarbefattnings(true).entrySet());
         final List<String> names = Lists.transform(ranges, new Function<Map.Entry<Integer, String>, String>() {
             @Override

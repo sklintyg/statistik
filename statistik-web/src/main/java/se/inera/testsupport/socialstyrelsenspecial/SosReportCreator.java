@@ -35,7 +35,7 @@ import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.WidelineConverter;
@@ -86,7 +86,7 @@ public class SosReportCreator {
             final Integer dx = stringIntegerEntry.getValue();
             final String dxString = stringIntegerEntry.getKey();
             final Predicate<Fact> intygFilter = fact -> fact.getDiagnoskod() == dx || fact.getDiagnoskategori() == dx;
-            final SjukfallFilter sjukfallFilter = new SjukfallFilter(intygFilter, sjukfall -> true, "sosspecial" + dx);
+            final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true, "sosspecial" + dx);
 
             for (Map.Entry<HsaIdVardgivare, Aisle> vgEntry : allVardgivare.entrySet()) {
                 final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1, range.getMonths(),

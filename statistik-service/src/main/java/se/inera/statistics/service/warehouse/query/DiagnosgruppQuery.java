@@ -38,7 +38,7 @@ import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
@@ -72,14 +72,14 @@ public class DiagnosgruppQuery {
             int current = counter.getCount();
             final Counter<Integer> previousCounter = previousCount.get(counter.getKey());
             int previous = previousCounter == null ? 0 : previousCounter.getCount();
-            final Icd10.Id icd10 = this.icd10.findIcd10FromNumericId(counter.getKey());
-            result.add(new OverviewChartRowExtended(String.valueOf(icd10.toInt()), current, current - previous));
+            final Icd10.Id icd10Code = this.icd10.findIcd10FromNumericId(counter.getKey());
+            result.add(new OverviewChartRowExtended(String.valueOf(icd10Code.toInt()), current, current - previous));
         }
 
         return result;
     }
 
-    public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, boolean countAllDxs) {
+    public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, boolean countAllDxs) {
         List<Icd10.Kapitel> kapitel = icd10.getKapitel(true);
         final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
         List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel, Icd10RangeType.KAPITEL, countAllDxs);
@@ -91,7 +91,7 @@ public class DiagnosgruppQuery {
         return new DiagnosgruppResponse(avsnitt, rows);
     }
 
-    public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
+    public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength) {
         return getDiagnosgrupper(aisle, filter, start, periods, periodLength, false);
     }
 
@@ -127,11 +127,11 @@ public class DiagnosgruppQuery {
         return -1;
     }
 
-    public DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, String rangeId) throws RangeNotFoundException {
+    public DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, String rangeId) throws RangeNotFoundException {
         return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, rangeId, false);
     }
 
-    public DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, String rangeId, boolean countAllDxs) throws RangeNotFoundException {
+    public DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, String rangeId, boolean countAllDxs) throws RangeNotFoundException {
         final Icd10.Kapitel kapitel = icd10.getKapitel(rangeId);
         if (kapitel != null) {
             return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, kapitel, Icd10RangeType.AVSNITT, countAllDxs);
@@ -150,7 +150,7 @@ public class DiagnosgruppQuery {
         throw new RangeNotFoundException("Could not find ICD10 range: " + rangeId);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getJamforDiagnoser(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, List<String> diagnosis) {
+    public SimpleKonResponse<SimpleKonDataRow> getJamforDiagnoser(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, List<String> diagnosis) {
         final List<Icd10.Id> kategoris = Lists.transform(diagnosis, new Function<String, Icd10.Id>() {
             @Override
             public Icd10.Id apply(String diagnos) {
@@ -169,7 +169,7 @@ public class DiagnosgruppQuery {
         return new SimpleKonResponse<>(rows);
     }
 
-    public KonDataResponse getJamforDiagnoserTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, List<String> diagnosis) {
+    public KonDataResponse getJamforDiagnoserTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, List<String> diagnosis) {
         final List<Icd10.Id> kategoris = Lists.transform(diagnosis, new Function<String, Icd10.Id>() {
             @Override
             public Icd10.Id apply(String diagnos) {
@@ -199,7 +199,7 @@ public class DiagnosgruppQuery {
     }
     // CHECKSTYLE:OFF ParameterNumber
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType, boolean countAllDxs) {
+    private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType, boolean countAllDxs) {
         final List<Icd> icdTyps = new ArrayList<>();
         for (Icd10.Id icdItem : kapitel.getSubItems()) {
             icdTyps.add(new Icd(icdItem.getVisibleId(), icdItem.getName(), icdItem.toInt()));
@@ -210,7 +210,7 @@ public class DiagnosgruppQuery {
     }
     // CHECKSTYLE:ON ParameterNumber
 
-    private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType) {
+    private DiagnosgruppResponse getUnderdiagnosgrupper(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, Icd10.Range kapitel, Icd10RangeType rangeType) {
         return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, kapitel, rangeType, false);
     }
 
@@ -245,7 +245,7 @@ public class DiagnosgruppQuery {
         return 0;
     }
 
-    public DiagnosgruppResponse getDiagnosavsnitts(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, String kapitelId) {
+    public DiagnosgruppResponse getDiagnosavsnitts(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, String kapitelId) {
         Icd10.Kapitel kapitel = icd10.getKapitel(kapitelId);
         return getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, kapitel, Icd10RangeType.AVSNITT);
     }
@@ -292,12 +292,12 @@ public class DiagnosgruppQuery {
         return counters;
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getDiagnosgrupperTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
+    public SimpleKonResponse<SimpleKonDataRow> getDiagnosgrupperTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength) {
         final DiagnosgruppResponse diagnosgruppResponse = getDiagnosgrupper(aisle, filter, start, periods, periodLength, true);
         return SimpleKonResponse.create(diagnosgruppResponse);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getUnderdiagnosgrupperTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, String rangeId) throws RangeNotFoundException {
+    public SimpleKonResponse<SimpleKonDataRow> getUnderdiagnosgrupperTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, String rangeId) throws RangeNotFoundException {
         final DiagnosgruppResponse underdiagnosgrupper = getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, rangeId, true);
         return SimpleKonResponse.create(underdiagnosgrupper);
     }

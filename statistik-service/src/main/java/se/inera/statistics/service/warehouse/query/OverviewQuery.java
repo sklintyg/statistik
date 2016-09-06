@@ -29,7 +29,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
@@ -48,7 +48,7 @@ public class OverviewQuery {
     @Autowired
     private SjukfallUtil sjukfallUtil;
 
-    public VerksamhetOverviewResponse getOverview(Aisle aisle, SjukfallFilter filter, LocalDate start, int periodlangd) {
+    public VerksamhetOverviewResponse getOverview(Aisle aisle, FilterPredicates filter, LocalDate start, int periodlangd) {
         Iterator<SjukfallGroup> groupIterator = sjukfallUtil.sjukfallGrupper(start, 2, periodlangd, aisle, filter).iterator();
         SjukfallGroup previousSjukfall = groupIterator.next();
         SjukfallGroup currentSjukfall = groupIterator.next();

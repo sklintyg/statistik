@@ -37,7 +37,7 @@ import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.MutableAisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 
@@ -131,7 +131,7 @@ public class DiagnosgruppQueryTest {
     @Test
     public void testGetUnderdiagnosGrupperForKapitel() throws Exception {
         //When
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(), new SjukfallFilter(new Predicate<Fact>() {
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(), new FilterPredicates(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return false;
@@ -146,7 +146,7 @@ public class DiagnosgruppQueryTest {
     @Test
     public void testGetUnderdiagnosGrupperForAvsnitt() throws Exception {
         //When
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(), new SjukfallFilter(new Predicate<Fact>() {
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(), new FilterPredicates(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return false;

@@ -45,6 +45,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 
 public class TestIntygInjector {
     private static final int SEED = 1235;
@@ -143,7 +144,7 @@ public class TestIntygInjector {
 
         String diagnos = random(getDiagnoser());
         if (random.nextFloat() < FEL_DIAGNOS_THRESHOLD) {
-            diagnos = "unknown";
+            diagnos = WidelineConverter.UNKNOWN_DIAGNOS;
         }
 
         int arbetsformaga = random(ARBETSFORMAGOR);

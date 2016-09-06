@@ -63,16 +63,15 @@ public class HSAServiceImpl implements HSAService {
         }
     }
 
-    @java.lang.SuppressWarnings("squid:S1067") // I can't see a better way to write the expression using fewer conditional operators
     private HsaInfo getHsaInfoWithoutExceptionHandling(HSAKey key, HsaInfo baseHsaInfo) {
         HsaInfo nonNullBase = baseHsaInfo != null ? baseHsaInfo : new HsaInfo(null, null, null, null);
 
         HsaInfoEnhet enhet = nonNullBase.getEnhet();
         HsaInfoEnhet huvudenhet = nonNullBase.getHuvudenhet();
 
-        if (enhet == null
-                || (enhet.getVgid() == null && huvudenhet == null)
-                || (enhet.getVgid() == null && huvudenhet != null && huvudenhet.getVgid() == null)
+        if (noEnhetIsDefined(enhet)
+                || enhetHasNoVgAndNoHuvudenhetIsDefined(enhet, huvudenhet)
+                || neitherEnhetOrHuvudenhetHasVg(enhet, huvudenhet)
                 ) {
             GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId().getId());
             if (unit != null) {
@@ -86,6 +85,18 @@ public class HSAServiceImpl implements HSAService {
         HsaInfoPersonal personal = getPersonal(key, nonNullBase);
 
         return new HsaInfo(enhet, huvudenhet, vardgivare, personal);
+    }
+
+    private boolean neitherEnhetOrHuvudenhetHasVg(HsaInfoEnhet enhet, HsaInfoEnhet huvudenhet) {
+        return enhet.getVgid() == null && huvudenhet != null && huvudenhet.getVgid() == null;
+    }
+
+    private boolean enhetHasNoVgAndNoHuvudenhetIsDefined(HsaInfoEnhet enhet, HsaInfoEnhet huvudenhet) {
+        return enhet.getVgid() == null && huvudenhet == null;
+    }
+
+    private boolean noEnhetIsDefined(HsaInfoEnhet enhet) {
+        return enhet == null;
     }
 
     private HsaInfoPersonal getPersonal(HSAKey key, HsaInfo nonNullBase) {

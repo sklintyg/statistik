@@ -33,7 +33,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.CutoffUsage;
@@ -104,7 +104,7 @@ public class WarehouseServiceTest {
         //Given
         final Predicate predicate = Mockito.mock(Predicate.class);
         final String testhash = "testhash";
-        final SjukfallFilter predicate1 =  new SjukfallFilter(predicate, sjukfall -> true, testhash);
+        final FilterPredicates predicate1 =  new FilterPredicates(predicate, sjukfall -> true, testhash);
         final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
         final ArrayList<String> diagnoser = new ArrayList<>();
         final Filter filter = new Filter(predicate1, enheter, diagnoser, null);
@@ -133,7 +133,7 @@ public class WarehouseServiceTest {
         //Given
         final Predicate predicate = Mockito.mock(Predicate.class);
         final String testhash = "testhash";
-        final SjukfallFilter predicate1 = new SjukfallFilter(predicate, sjukfall -> true, testhash);
+        final FilterPredicates predicate1 = new FilterPredicates(predicate, sjukfall -> true, testhash);
         final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
         final ArrayList<String> diagnoser = new ArrayList<>();
         final Filter filter = new Filter(predicate1, enheter, diagnoser, null);

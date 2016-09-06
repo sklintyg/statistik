@@ -47,7 +47,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.LoginInfo;
@@ -147,7 +147,7 @@ public class FilterHandler {
         final List<String> diagnoser = inFilter.getDiagnoser();
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         final Predicate<Sjukfall> sjukfallLengthFilter = getSjukfallLengthFilter(inFilter.getSjukskrivningslangd());
-        final SjukfallFilter sjukfallFilter = new SjukfallFilter(Predicates.and(enhetFilter, diagnosFilter), sjukfallLengthFilter, filterHash);
+        final FilterPredicates sjukfallFilter = new FilterPredicates(Predicates.and(enhetFilter, diagnosFilter), sjukfallLengthFilter, filterHash);
         final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter));
         final Range range = getRange(inFilter, defaultRangeValue);
         return new FilterSettings(filter, range);
@@ -230,8 +230,8 @@ public class FilterHandler {
     }
 
     private Filter getFilterForEnhets(final Set<Integer> enhetsIntIds, List<HsaIdEnhet> enhets) {
-        final String hashValue = SjukfallFilter.getHashValueForEnhets(enhetsIntIds.toArray());
-        return new Filter(new SjukfallFilter(fact -> enhetsIntIds.contains(fact.getEnhet()), sjukfall -> true, hashValue), enhets, null, toReadableSjukskrivningslangdName(null));
+        final String hashValue = FilterPredicates.getHashValueForEnhets(enhetsIntIds);
+        return new Filter(new FilterPredicates(fact -> enhetsIntIds.contains(fact.getEnhet()), sjukfall -> true, hashValue), enhets, null, toReadableSjukskrivningslangdName(null));
     }
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {

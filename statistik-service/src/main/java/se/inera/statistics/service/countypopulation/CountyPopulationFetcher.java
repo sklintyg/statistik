@@ -66,7 +66,9 @@ public class CountyPopulationFetcher {
             final CountyPopulation countyPopulation = new CountyPopulation(populationFromScb, date);
             return Optional.of(countyPopulation);
         } catch (Exception e) {
-            LOG.error("Failed to get county population from SCB for " + year, e);
+            final String msg = "Failed to get county population from SCB for " + year;
+            LOG.error(msg);
+            LOG.debug(msg, e);
             return Optional.empty();
         }
     }

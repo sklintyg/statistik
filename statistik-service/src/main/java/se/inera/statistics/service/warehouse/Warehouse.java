@@ -50,7 +50,6 @@ public class Warehouse implements Iterable<Aisle> {
     private static IdMap<HsaIdEnhet> enhetsMap = new IdMap<>();
     private static IdMap<HsaIdLakare> lakareMap = new IdMap<>();
     private LocalDateTime lastUpdate = null;
-    private LocalDateTime lastEnhetUpdate = null;
 
     public void accept(Fact fact, HsaIdVardgivare vardgivareId) {
         MutableAisle aisle = getAisle(vardgivareId, loadingAisles, true);
@@ -100,6 +99,7 @@ public class Warehouse implements Iterable<Aisle> {
         return aisle;
     }
 
+    @Override
     public String toString() {
         long total = 0;
         for (Aisle aisle: aisles.values()) {

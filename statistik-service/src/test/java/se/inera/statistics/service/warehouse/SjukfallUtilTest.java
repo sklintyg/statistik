@@ -210,7 +210,7 @@ public class SjukfallUtilTest {
     @Test
     public void testCalculateKonDataResponse() throws Exception {
         //Given
-        final SjukfallFilter filter = SjukfallUtil.ALL_ENHETER;
+        final FilterPredicates filter = SjukfallUtil.ALL_ENHETER;
         final LocalDate start = new LocalDate();
         final int periods = 1;
         final int periodSize = 2;
@@ -238,10 +238,10 @@ public class SjukfallUtilTest {
         return Sjukfall.create(new SjukfallExtended(new Fact(0, 1, 2, 3, 4, 1, 6, 15, kon.getNumberRepresentation(), 30, 0, 0, 0, 0, 100, 1, 30, new int[0], 0, false)));
     }
 
-    public static SjukfallFilter createEnhetFilterFromInternalIntValues(Integer... enhetIds) {
+    public static FilterPredicates createEnhetFilterFromInternalIntValues(Integer... enhetIds) {
         final HashSet<Integer> availableEnhets = new HashSet<>(Arrays.asList(enhetIds));
-        final String hashValue = SjukfallFilter.getHashValueForEnhets(availableEnhets.toArray());
-        return new SjukfallFilter(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue);
+        final String hashValue = FilterPredicates.getHashValueForEnhets(availableEnhets);
+        return new FilterPredicates(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue);
     }
 
     private Collection<Sjukfall> calculateSjukfallsHelper() {

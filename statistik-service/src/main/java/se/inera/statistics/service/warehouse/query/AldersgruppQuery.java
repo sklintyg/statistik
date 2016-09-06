@@ -18,8 +18,6 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import com.google.common.base.Function;
-import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.KonDataResponse;
@@ -30,7 +28,7 @@ import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
@@ -94,7 +92,7 @@ public final class AldersgruppQuery {
         return counters;
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+    public static SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(Aisle aisle, FilterPredicates filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = AldersgruppQuery.count(sjukfallGroup.getSjukfall());
@@ -106,40 +104,16 @@ public final class AldersgruppQuery {
         return new SimpleKonResponse<>(rows);
     }
 
-    public static KonDataResponse getAldersgrupperSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
-        final ArrayList<Ranges.Range> ranges = Lists.newArrayList(AldersgroupUtil.RANGES);
-        final List<String> names = Lists.transform(ranges, new Function<Ranges.Range, String>() {
-            @Override
-            public String apply(Ranges.Range range) {
-                return range.getName();
-            }
-        });
-        final List<Integer> ids = Lists.transform(ranges, new Function<Ranges.Range, Integer>() {
-            @Override
-            public Integer apply(Ranges.Range range) {
-                return range.getCutoff();
-            }
-        });
-        final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
-            @Override
-            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
-                final int age = sjukfall.getAlder();
-                final int rangeId = getRangeIdForAge(age);
-                counter.add(rangeId);
-            }
-
-            private int getRangeIdForAge(int age) {
-                for (Ranges.Range range: ranges) {
-                    final int cutoff = range.getCutoff();
-                    if (cutoff > age) {
-                        return cutoff;
-                    }
-                }
-                throw new IllegalStateException("Ranges have not been defined correctly. No range includes " + age);
-            }
-
+    public static KonDataResponse getAldersgrupperSomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        final Ranges ranges = AldersgroupUtil.RANGES;
+        final ArrayList<Ranges.Range> rangesList = Lists.newArrayList(ranges);
+        final List<String> names = Lists.transform(rangesList, Ranges.Range::getName);
+        final List<Integer> ids = Lists.transform(rangesList, Ranges.Range::getCutoff);
+        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
+            final int age = sjukfall.getAlder();
+            final int rangeId = ranges.getRangeCutoffForValue(age);
+            counter.add(rangeId);
         };
-
         return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
     }
 
