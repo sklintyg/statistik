@@ -9,7 +9,7 @@ var stMessages = {
         'statistics.hidden-header.landsting-navigering': 'Navigering för landstingsstatistik',
         'statistics.hidden-header.business-navigering': 'Navigering för verksamhetsstatistik',
         'statistics.hidden-header.about-navigering': 'Navigering för information om tjänsten',
-        
+
         //navigation
         'nav.national-header': 'Nationell statistik',
         'nav.landsting-header': 'Landstingsstatistik',
@@ -98,7 +98,7 @@ var stMessages = {
         'national.widget.header.fordelning-sjukskrivningsgrad': 'Fördelning sjukskrivningsgrad',
         'national.widget.header.fordelning-sjukskrivningslangd': 'Fördelning sjukskrivningslängd',
         'national.widget.header.fordelning-lan': 'Fördelning per län',
-        
+
         //business statistics overview
         'business.overview-header': 'Verksamhetsstatistik',
         'business.widget.header.total-antal': 'Totalt antal',
@@ -107,7 +107,7 @@ var stMessages = {
         'business.widget.header.fordelning-aldersgrupper': 'Fördelning åldersgrupper',
         'business.widget.header.fordelning-sjukskrivningsgrad': 'Fördelning sjukskrivningsgrad',
         'business.widget.header.fordelning-sjukskrivningslangd': 'Fördelning sjukskrivningslängd',
-        
+
         //general overview
         'dropdown.val.oversikt': 'Skriv ut',
         'overview.widget.table.column.diagnosgrupp': 'Diagnosgrupp',

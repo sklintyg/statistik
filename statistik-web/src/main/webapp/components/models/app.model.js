@@ -25,7 +25,7 @@ angular.module('StatisticsApp').factory('AppModel',
         var data = {};
 
         _reset();
-        
+
         function _reset() {
             data.isLoggedIn = false;
             data.loginUrl = '';

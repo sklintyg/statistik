@@ -21,7 +21,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         'use strict';
 
         var self = this;
-        
+
         $scope.transitionsSupported = supportsTransitions();
 
         $scope.clickedDone = function () {

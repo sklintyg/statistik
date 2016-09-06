@@ -121,7 +121,6 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl', ['$scope',
                     'att du gjort ett för begränsat filterval.</p>'
         });
 
-        
         $scope.faq = faq;
     }
 ]);

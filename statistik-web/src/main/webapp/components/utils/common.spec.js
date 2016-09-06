@@ -40,7 +40,7 @@ describe('Test of common functions for controllers', function() {
         expect(ControllerCommons.makeThousandSeparated(45321.16)).toBe('45\u00A0321,16');
         expect(ControllerCommons.makeThousandSeparated(0.123456)).toBe('0,123456');
     });
-    
+
     it('getFileName', function() {
         expect(ControllerCommons.getFileName()).toMatch(/_\d{8}_\d{6}/);
         expect(ControllerCommons.getFileName(123456)).toMatch(/^123456_\d{8}_\d{6}$/);
@@ -61,7 +61,7 @@ describe('Test of common functions for controllers', function() {
         //Then
         expect(scope.headerEnhetInfo).toMatch('VerksamhetName');
     });
-    
+
     it('INTYG-1853: populateActiveEnhetsFilter without active filter shows verksamhet name', function() {
         //Given
         var scope = {verksamhetName: 'VerksamhetName'};
@@ -133,7 +133,7 @@ describe('Test of common functions for controllers', function() {
         expect(ControllerCommons.isNumber('7ett9')).toBe(false);
         expect(ControllerCommons.isNumber({1: 3})).toBe(false);
     });
-    
+
     it('htmlsafe', function() {
         expect(ControllerCommons.htmlsafe('f')).toBe('f');
         expect(ControllerCommons.htmlsafe('f&<')).toBe('f&amp;&lt;');

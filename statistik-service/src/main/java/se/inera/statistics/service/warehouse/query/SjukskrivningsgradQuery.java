@@ -64,7 +64,7 @@ public final class SjukskrivningsgradQuery {
         Map<Integer, Counter<Integer>> counters = Counter.mapFor(GRAD);
 
         for (Sjukfall sjukfall : sjukfalls) {
-            sjukfall.getSjukskrivningsgrader().stream().distinct().forEach((g) -> {
+            sjukfall.getSjukskrivningsgrader().stream().distinct().forEach(g -> {
                 Counter counter = counters.get(g);
                 counter.increase(sjukfall);
             });

@@ -52,7 +52,6 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             chartOptions.tooltip.text = '#000';
             return new Highcharts.Chart(chartOptions);
         };
-        
 
         var updateChart = function (ajaxResult, doneLoadingCallback) {
             $scope.series = chartFactory.addColor(ajaxResult.series);

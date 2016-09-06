@@ -114,11 +114,10 @@ describe('Test of common print services', function() {
             expect(list[0].color).toBe('#008391');
             expect(list[1].color).toBe('#EA8025');
             expect(list[2].color).toBe('#E11964');
-            
-            
-            //when 
+
+            //when
             chartFactory.setColorToTotalCasesSeries(list);
-            
+
             //then
             expect(list[2].color).toBe('#5D5D5D');
         });

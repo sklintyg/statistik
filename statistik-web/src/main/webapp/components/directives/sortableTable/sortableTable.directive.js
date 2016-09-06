@@ -24,7 +24,7 @@ angular.module('StatisticsApp').directive('sortableTable',
 
     return {
         link: function(scope, elm) {
-            
+
             scope.$on('pageDataPopulated', function () {
                 elm.tablesorter({
                     sortReset: true,
