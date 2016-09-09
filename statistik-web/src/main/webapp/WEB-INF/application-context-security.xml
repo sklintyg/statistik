@@ -14,12 +14,11 @@
     <!-- Unsecured pages -->
     <beans>
       <security:http security="none" pattern="/services/**"/>
-        <security:http security="none" pattern="/app/**"/>
+      <security:http security="none" pattern="/app/**"/>
       <security:http security="none" pattern="/bower_components/**"/>
       <security:http security="none" pattern="/js/**"/>
       <security:http security="none" pattern="/assets/**"/>
       <security:http security="none" pattern="/highcharts-export-web/**"/>
-      <security:http security="none" pattern="/favicon.ico"/>
     </beans>
 
     <beans>
@@ -72,7 +71,7 @@
     <!-- Dev profile only supports Fake login                            -->
     <!-- =============================================================== -->
     <beans profile="security-fake">
-        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
+        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
             <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
@@ -92,7 +91,7 @@
     <!-- Test and QA profile support both Säkerhetstjänst and Fake login -->
     <!-- =============================================================== -->
     <beans profile="security-both">
-        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
+        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
             <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
@@ -114,16 +113,16 @@
     <!-- Prod profile only supports Säkerhetstjänst login                -->
     <!-- =============================================================== -->
     <beans profile="security-saml">
-        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
+        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
             <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
            <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
        </security:http>
-       <!--<security:http use-expressions="false" entry-point-ref="samlEntryPoint">-->
-           <!--<security:csrf disabled="true"/>-->
-           <!--<security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>-->
-            <!--<security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>-->
-        <!--</security:http>-->
+       <security:http use-expressions="false" entry-point-ref="samlEntryPoint" pattern="/saml/**">
+           <security:csrf disabled="true"/>
+           <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
+            <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
+        </security:http>
         <security:authentication-manager alias="authenticationManager">
             <security:authentication-provider ref="samlAuthenticationProvider"/>
         </security:authentication-manager>

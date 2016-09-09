@@ -46,8 +46,8 @@ public class LoginInfoService {
     @GET
     @Path("getLoginInfo")
     @Produces({ MediaType.APPLICATION_JSON })
-    public LoginInfo getLoginInfo(@Context HttpServletRequest request) {
-        return loginServiceUtil.getLoginInfo(request);
+    public LoginInfo getLoginInfo() {
+        return loginServiceUtil.getLoginInfo();
     }
 
     @GET

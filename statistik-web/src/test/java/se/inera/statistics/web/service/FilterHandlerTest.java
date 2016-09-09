@@ -79,7 +79,7 @@ public class FilterHandlerTest {
         final FilterData filterData = new FilterData(null, null, null, sjukskrivningslangd, null, null, true);
         Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
         final LoginInfo loginInfo = new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList());
-        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(loginInfo);
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
         Mockito.when(sjukfallUtil.createEnhetFilter(new HsaIdEnhet[0])).thenReturn(new FilterPredicates(f -> true, s -> true, filterHash));
 
         //When
@@ -101,7 +101,7 @@ public class FilterHandlerTest {
         final FilterData filterData = new FilterData(null, null, null, null, null, null, true);
         Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
         final LoginInfo loginInfo = new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList());
-        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(loginInfo);
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
         Mockito.when(sjukfallUtil.createEnhetFilter(new HsaIdEnhet[0])).thenReturn(new FilterPredicates(f -> true, s -> true, filterHash));
 
         //When
@@ -124,7 +124,7 @@ public class FilterHandlerTest {
         final FilterData filterData = new FilterData(null, null, null, sjukskrivningslangd, null, null, true);
         Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
         final LoginInfo loginInfo = new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList());
-        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(loginInfo);
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
         Mockito.when(sjukfallUtil.createEnhetFilter(new HsaIdEnhet[0])).thenReturn(new FilterPredicates(f -> true, s -> true, filterHash));
 
         //When

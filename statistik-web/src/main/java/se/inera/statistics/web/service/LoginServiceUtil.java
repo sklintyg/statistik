@@ -22,7 +22,6 @@ import static com.google.common.collect.Iterables.tryFind;
 import static com.google.common.collect.Lists.transform;
 import static java.util.stream.Collectors.toMap;
 
-import java.security.Principal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -38,7 +37,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
@@ -59,12 +66,6 @@ import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.UserAccessInfo;
 import se.inera.statistics.web.model.Verksamhet;
-
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
 
 @Component
 public class LoginServiceUtil {
@@ -94,15 +95,19 @@ public class LoginServiceUtil {
 
     private static final Splitter ID_SPLITTER = Splitter.on(',').trimResults().omitEmptyStrings();
 
-    public boolean isLoggedIn(HttpServletRequest request) {
-        return (request.getUserPrincipal() != null)
-                && (((AbstractAuthenticationToken) request.getUserPrincipal()).getDetails() != null);
+    public boolean isLoggedIn() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            return false;
+        }
+        final AbstractAuthenticationToken principal = (AbstractAuthenticationToken) authentication.getPrincipal();
+        return principal != null && principal.getDetails() != null;
     }
 
-    public LoginInfo getLoginInfo(HttpServletRequest request) {
+    public LoginInfo getLoginInfo() {
         User realUser;
         try {
-            realUser = getCurrentUser(request);
+            realUser = getCurrentUser();
         } catch (IllegalStateException e) {
             LOG.debug("Could not get current user", e);
             return new LoginInfo();
@@ -126,17 +131,18 @@ public class LoginServiceUtil {
         return new LoginInfoVg(vgId, vgName, landstingsVardgivareStatus, userAccessLevel);
     }
 
-    private User getCurrentUser(HttpServletRequest request) {
-        final Principal user = request.getUserPrincipal();
-        if (!(user instanceof AbstractAuthenticationToken)) {
-            LOG.error("user object is of wrong type: " + user);
-            throw new IllegalStateException("user object is of wrong type: " + user);
+    private User getCurrentUser() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            final String msg = "Authentication object is null";
+            LOG.error(msg);
+            throw new IllegalStateException(msg);
         }
-        AbstractAuthenticationToken token = (AbstractAuthenticationToken) user;
-        final Object details = token.getDetails();
+        final Object details = authentication.getPrincipal();
         if (!(details instanceof User)) {
-            LOG.warn("details object is of wrong type: " + details);
-            throw new IllegalStateException("details object is of wrong type: " + details);
+            final String msg = "details object is of wrong type: " + details;
+            LOG.warn(msg);
+            throw new IllegalStateException(msg);
         }
         return (User) details;
     }
@@ -201,13 +207,13 @@ public class LoginServiceUtil {
         settings.setLoginVisible(loginVisibility.isLoginVisible());
         settings.setHighchartsExportUrl(higchartsExportUrl);
         settings.setLoginUrl(loginUrl);
-        settings.setLoggedIn(isLoggedIn(request));
+        settings.setLoggedIn(isLoggedIn());
         settings.setSjukskrivningLengths(Arrays.stream(SjukfallsLangdGroup.values()).collect(toMap(Enum::name, SjukfallsLangdGroup::getGroupName)));
         return settings;
     }
 
     public UserAccessInfo getUserAccessInfoForVg(HttpServletRequest request, HsaIdVardgivare vgId) {
-        final LoginInfo loginInfo = getLoginInfo(request);
+        final LoginInfo loginInfo = getLoginInfo();
         final HsaIdUser hsaId = loginInfo.getHsaId();
         final LoginInfoVg vgInfo = loginInfo.getLoginInfoForVg(vgId).orElse(null);
         final List<Verksamhet> businessesForVg = loginInfo.getBusinessesForVg(vgId);
