@@ -33,6 +33,9 @@
         <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
         <bean class="se.inera.statistics.service.hsa.HsaServiceStub"/>
         <bean class="se.inera.statistics.service.hsa.BootstrapBean"/>
+    </beans>
+
+    <beans profile="hsa-stub,wc-hsa-stub">
         <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
     </beans>
 
