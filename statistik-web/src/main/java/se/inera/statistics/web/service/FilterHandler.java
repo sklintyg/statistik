@@ -82,7 +82,7 @@ public class FilterHandler {
 
     List<HsaIdEnhet> getEnhetsFilterIds(String filterHash, HttpServletRequest request) {
         if (filterHash == null || filterHash.isEmpty()) {
-            final LoginInfo info = loginServiceUtil.getLoginInfo(request);
+            final LoginInfo info = loginServiceUtil.getLoginInfo();
             final List<Verksamhet> businesses = info.getBusinessesForVg(getSelectedVgIdForLoggedInUser(request));
             return Lists.transform(businesses, Verksamhet::getId);
         }
@@ -233,7 +233,7 @@ public class FilterHandler {
     }
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
-        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        LoginInfo info = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         if (info.getLoginInfoForVg(vgId).map(vgInfo -> vgInfo.isProcessledare()).orElse(false)) {
             return new Filter(SjukfallUtil.ALL_ENHETER, null, null, toReadableSjukskrivningslangdName(null));
@@ -296,7 +296,7 @@ public class FilterHandler {
 
     private Set<HsaIdEnhet> getEnhetsForVerksamhetstyper(List<String> verksamhetstyper, HttpServletRequest request) {
         Set<HsaIdEnhet> enhetsIds = new HashSet<>();
-        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        LoginInfo info = loginServiceUtil.getLoginInfo();
         for (Verksamhet verksamhet : info.getBusinessesForVg(getSelectedVgIdForLoggedInUser(request))) {
             if (isOfVerksamhetsTyp(verksamhet, verksamhetstyper)) {
                 enhetsIds.add(verksamhet.getIdUnencoded());
@@ -350,7 +350,7 @@ public class FilterHandler {
 
     Map<HsaIdEnhet, String> getEnhetNameMap(HttpServletRequest request, List<HsaIdEnhet> enhetsIDs) {
         final HsaIdVardgivare vgid = getSelectedVgIdForLoggedInUser(request);
-        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        LoginInfo info = loginServiceUtil.getLoginInfo();
         Map<HsaIdEnhet, String> enheter = new HashMap<>();
         for (Verksamhet userVerksamhet : info.getBusinessesForVg(vgid)) {
             if (enhetsIDs != null && enhetsIDs.contains(userVerksamhet.getId())) {
