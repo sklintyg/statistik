@@ -106,14 +106,14 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl', ['$scope',
         });
 		faq.push({
             title: '9. Hur skriver jag ut en rapport?',
-            body: '<p>På varje rapportsida finns en knapp med texten ”Spara/Skriv ut” ovanför diagrammet. ' +
-                    'När du väljer "Spara som pdf" laddas ett pdf-dokument ner till din dator. Dokumentet innehåller rapportens diagram, tabell och ' +
+            body: '<p>På varje rapportsida finns en knapp med texten ”Spara som” ovanför diagrammet. ' +
+                    'När du väljer "PDF" laddas ett pdf-dokument ner till din dator. Dokumentet innehåller rapportens diagram, tabell och ' +
 					'uppgifter om eventuella filtreringar. När dokumentet laddats ner kan du öppna det och skriva ut det.</p>'
         });
         faq.push({
             title: '10. Hur exporterar jag tabellen till Excel?',
-            body: '<p>På varje rapportsida finns en knapp med texten ”Spara/Skriv ut” ovanför diagrammet. ' +
-                    'När du väljer ”Spara tabell till Excel” laddas tabellen ner till din dator och går sedan att öppna i Excel.</p>'
+            body: '<p>På varje rapportsida finns en knapp med texten ”Spara som” ovanför diagrammet. ' +
+                    'När du väljer ”Excel” laddas tabellen ner till din dator och går sedan att öppna i Excel.</p>'
         });
         faq.push({
             title: '11. Varför ser jag ingen statistik för den valda verksamheten?',
