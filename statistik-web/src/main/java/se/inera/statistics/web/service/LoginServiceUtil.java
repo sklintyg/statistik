@@ -96,12 +96,11 @@ public class LoginServiceUtil {
     private static final Splitter ID_SPLITTER = Splitter.on(',').trimResults().omitEmptyStrings();
 
     public boolean isLoggedIn() {
-        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
+        try {
+            return getCurrentUser() != null;
+        } catch (Exception ignored) {
             return false;
         }
-        final AbstractAuthenticationToken principal = (AbstractAuthenticationToken) authentication.getPrincipal();
-        return principal != null && principal.getDetails() != null;
     }
 
     public LoginInfo getLoginInfo() {
