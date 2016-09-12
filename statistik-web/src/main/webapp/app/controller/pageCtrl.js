@@ -98,8 +98,9 @@ angular.module('StatisticsApp').controller('pageCtrl',
             $location.search('vgid', vgId);
             if (!keepExistingUrl) {
                 $location.path('verksamhet');
+            } else {
+                $window.location.reload();
             }
-            $window.location.reload();
         };
 
         function setSelectedVardgivare(vgId) {
