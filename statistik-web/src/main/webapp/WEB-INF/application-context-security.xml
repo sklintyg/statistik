@@ -113,6 +113,7 @@
     <!-- Prod profile only supports Säkerhetstjänst login                -->
     <!-- =============================================================== -->
     <beans profile="security-saml">
+
         <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
             <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
@@ -123,6 +124,10 @@
            <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
         </security:http>
+      <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/login/**">
+        <security:csrf disabled="true"/>
+        <security:intercept-url pattern="/**" access="permitAll"/>
+      </security:http>
         <security:authentication-manager alias="authenticationManager">
             <security:authentication-provider ref="samlAuthenticationProvider"/>
         </security:authentication-manager>
@@ -257,6 +262,7 @@
         <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
         <bean id="samlAuthenticationProvider" class="org.springframework.security.saml.SAMLAuthenticationProvider">
             <property name="userDetails" ref="userDetailsService"/>
+            <property name="forcePrincipalAsString" value="false"/>
         </bean>
 
         <!-- Processing filter for WebSSO profile messages -->
