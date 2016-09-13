@@ -12,7 +12,7 @@ Testar INTYG-2911.
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | arbetsförmåga | enhet  | kommentar |
 | 19880619-2392 | F32        | 2016-04-09 | 2016-04-10 | 25            | enhet1 |           |
-| 19880619-2392 | F32        | 2016-04-11 | 2016-04-17 | 50            | enhet2 |           |
+| 19880619-2392 | F32        | 2016-04-11 | 2016-04-17 | 50            | enhet1 |           |
 | 19880619-2392 | F32        | 2016-04-17 | 2016-04-25 | 75            | enhet1 |           |
 | 19880619-2392 | F32        | 2016-07-30 | 2016-11-09 | 0             | enhet1 |           |
 
@@ -52,4 +52,3 @@ Testar INTYG-2911.
 | user2        | 50                                         | 0         | -100       |
 | user2        | 75                                         | 0         | -100       |
 | user2        | 100                                        | 1         | 0       |
-
