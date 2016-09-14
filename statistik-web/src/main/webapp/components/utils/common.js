@@ -214,6 +214,10 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return $location.path().indexOf('/landsting/') === 0;
         };
 
+        this.isShowingProtectedPage = function(location) {
+            return this.isShowingVerksamhet(location) || this.isShowingLandsting(location);
+        };
+
         this.createQueryStringOfQueryParams = function (queryParams) {
             return !_.isEmpty(queryParams) ? _.map(queryParams, function (value, key) {
                 return key + '=' + value;
