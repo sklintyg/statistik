@@ -76,7 +76,7 @@ subprojects {
         liquibaseVersion = "2.0.5"
         logbackVersion = "1.1.1"
 
-        mysqlConnectorVersion = "5.1.32"
+        mysqlConnectorVersion = "5.1.39"
 
         poiVersion = "3.11"
 
