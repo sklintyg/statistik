@@ -106,6 +106,7 @@ dependencies {
     compile "org.apache.poi:poi-ooxml:${poiVersion}"
     compile "xalan:xalan:${xalanVersion}"
     compile "com.github.ziplet:ziplet:${zipletVersion}"
+    compile "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${monitoringSchemaVersion}"
 
     gretty "com.h2database:h2:${h2Version}"
     gretty "mysql:mysql-connector-java:${mysqlConnectorVersion}"

@@ -93,10 +93,11 @@ subprojects {
 
         // Internal
         intygCommonVersion = "3.0.0"
-        intygCommonLoggingVersion = "2.4.0-RC1"
+        intygCommonLoggingVersion = "3.0.0"
 
         // Schemas
         certificateSchemaVersion = "2.0.RC4.2"
+        monitoringSchemaVersion = "1.0.0.0"
 
         // Test
         fitnessVersion = "20151230"
