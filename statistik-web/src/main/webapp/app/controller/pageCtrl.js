@@ -46,22 +46,13 @@ angular.module('StatisticsApp').controller('pageCtrl',
                 $scope.viewHeader = 'Nationell statistik';
             }
 
-            var vgid = $location.search().vgid;
-            if (!!vgid) {
-                if ($scope.previousVgid !== vgid) {
-                    if ($scope.previousVgid) {
-                        $scope.changeVardgivare(vgid, true);
-                    } else {
-                        setSelectedVardgivare(vgid);
-                    }
+            if (ControllerCommons.isShowingProtectedPage($location)) {
+                var vgid = $location.search().vgid;
+                if (!vgid) {
+                    $location.path('valjVardgivare');
+                } else if ($scope.previousVgid !== vgid) {
+                    setSelectedVardgivare(vgid);
                     $scope.previousVgid = vgid;
-                }
-            } else if ($scope.isVerksamhetShowing) {
-                var vgs = UserModel.get().vgs;
-                if (vgs.length === 1) {
-                    $scope.changeVardgivare(vgs[0].id, true);
-                } else {
-                    $location.path('/valjVardgivare');
                 }
             }
         });
@@ -93,14 +84,10 @@ angular.module('StatisticsApp').controller('pageCtrl',
             businessFilterFactory.setup(userAccessInfo.businesses, $location.$$search.filter);
         }
 
-        $scope.changeVardgivare = function(vgId, keepExistingUrl) {
+        $scope.changeVardgivare = function(vgId) {
             $location.url($location.path()); //Clear query params (e.g. filter)
             $location.search('vgid', vgId);
-            if (!keepExistingUrl) {
-                $location.path('verksamhet');
-            } else {
-                $window.location.reload();
-            }
+            $location.path('verksamhet');
         };
 
         function setSelectedVardgivare(vgId) {
@@ -123,7 +110,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
 
                         if (!$location.search().vgid) {
                             if (loginInfo.vgs.length === 1) {
-                                $scope.changeVardgivare(loginInfo.vgs[0].hsaId, false);
+                                $scope.changeVardgivare(loginInfo.vgs[0].hsaId);
                             } else {
                                 $location.path('/valjVardgivare');
                             }
