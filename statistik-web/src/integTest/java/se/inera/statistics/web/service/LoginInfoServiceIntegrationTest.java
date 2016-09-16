@@ -18,19 +18,9 @@
  */
 package se.inera.statistics.web.service;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -46,10 +36,7 @@ import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.LoginInfo;
-import se.inera.statistics.web.model.Verksamhet;
-import se.inera.statistics.web.service.LoginInfoService;
 
-import java.security.Principal;
 import java.util.Arrays;
 import java.util.Collections;
 

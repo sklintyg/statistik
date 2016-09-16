@@ -80,6 +80,9 @@ subprojects {
 
         poiVersion = "3.11"
 
+        restAssuredVersion = "2.9.0"
+
+        stringTemplateVersion = "4.0.8"
         springContextVersion = "4.2.2.RELEASE"
         springSecurityVersion = "4.0.3.RELEASE"
         springSecuritySamlVersion = "1.0.1.RELEASE"
@@ -199,18 +202,42 @@ configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statis
     checkstyleMain.source = "src/main/java"
 
     sourceSets {
-        integrationTest {
+        integrationTests {
             java.srcDir file('src/integTest/java')
             resources.srcDir file('src/integTest/resources')
-            compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.testRuntime
-            runtimeClasspath = output + compileClasspath
+            compileClasspath += sourceSets.main.output + sourceSets.test.output
+            runtimeClasspath += sourceSets.main.output + sourceSets.test.output
         }
+
+        integrationTest {
+            java.srcDir file('src/integrationTest/java')
+            resources.srcDir file('src/integrationTest/resources')
+            compileClasspath += sourceSets.main.output + sourceSets.test.output
+            runtimeClasspath += sourceSets.main.output + sourceSets.test.output
+        }
+    }
+
+    configurations {
+        integrationTestsCompile.extendsFrom testCompile
+        integrationTestsRuntime.extendsFrom testRuntime
+
+        integrationTestCompile.extendsFrom testCompile
+        integrationTestRuntime.extendsFrom testRuntime
+    }
+
+    task integrationTest(type: Test) {
+        systemProperties['integration.tests.baseUrl'] =  'http://localhost:8080/'
+        outputs.upToDateWhen { false }
+        testClassesDir = sourceSets.integrationTest.output.classesDir
+        classpath = sourceSets.integrationTest.runtimeClasspath
+        reports.html.destination = file("$reports.html.destination/integrationTests")
+        reports.junitXml.destination = file("$reports.junitXml.destination/integrationTests")
     }
 
     task integrationTests(type: Test) {
         outputs.upToDateWhen { false }
-        testClassesDir = sourceSets.integrationTest.output.classesDir
-        classpath = sourceSets.integrationTest.runtimeClasspath
+        testClassesDir = sourceSets.integrationTests.output.classesDir
+        classpath = sourceSets.integrationTests.runtimeClasspath
         reports.html.destination = file("$reports.html.destination/integration")
         reports.junitXml.destination = file("$reports.junitXml.destination/integration")
     }
