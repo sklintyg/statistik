@@ -146,7 +146,7 @@ public class HealthCheckUtil {
         return timestamp != null;
     }
 
-    public Status checkNbrOfUsers() {
+    public Status checkNbrOfLoggedInUsers() {
         boolean ok;
         long size = -1;
         try {
@@ -154,12 +154,12 @@ public class HealthCheckUtil {
             size = allPrincipals.size();
             ok = true;
         } catch (Exception e) {
-            LOG.warn("Operation checkNbrOfUsers failed", e);
+            LOG.warn("Operation checkNbrOfLoggedInUsers failed", e);
             ok = false;
         }
 
         String result = ok ? "OK" : "FAIL";
-        LOG.debug("Operation checkNbrOfUsers completed with result {}, nbr of users is {}", result, size);
+        LOG.debug("Operation checkNbrOfLoggedInUsers completed with result {}, nbr of users is {}", result, size);
 
         return new Status(size, ok);
     }

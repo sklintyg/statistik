@@ -63,13 +63,13 @@ public class InternalPingForConfigurationResponderImpl implements InternalPingFo
         HealthCheckUtil.Status db = healthCheck.checkDB();
         HealthCheckUtil.Status highchartsExport = healthCheck.getHighchartsExportStatus();
         String uptime = healthCheck.getUptimeAsString();
-        HealthCheckUtil.Status nbrOfUsers = healthCheck.checkNbrOfUsers();
+        HealthCheckUtil.Status nbrOfLoggedInUsers = healthCheck.checkNbrOfLoggedInUsers();
 
         addConfiguration(response, "dbStatus", db.isOk() ? "ok" : "error");
         addConfiguration(response, "highchartExportStatus", highchartsExport.isOk() ? "ok" : "error");
         addConfiguration(response, "buildTime", buildTimeString);
         addConfiguration(response, "systemUptime", uptime);
-        addConfiguration(response, "nbrOfLoggedInUsers", "" + Long.toString(nbrOfUsers.getMeasurement()));
+        addConfiguration(response, "nbrOfLoggedInUsers", "" + Long.toString(nbrOfLoggedInUsers.getMeasurement()));
 
         return response;
     }
