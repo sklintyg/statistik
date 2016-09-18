@@ -26,7 +26,7 @@ angular.module('StatisticsApp').controller('loginCtrl',
 
         $scope.open = function () {
             $scope.modalInstance = $uibModal.open({
-                templateUrl: 'app/views/siths.help.html',
+                templateUrl: '/app/views/siths.help.html',
                 scope: $scope,
                 size: 'lg',
                 windowClass: 'login-modal'

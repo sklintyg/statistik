@@ -37,7 +37,7 @@ angular.module('StatisticsApp')
                 showDetailOptions3PopoverText: '='
             },
             restrict: 'E',
-            templateUrl: 'components/directives/diagnosSelection/diagnosSelection.html',
+            templateUrl: '/components/directives/diagnosSelection/diagnosSelection.html',
             controller: function($scope) {
                 $scope.hideDiagnosCategorySelection = true;
 

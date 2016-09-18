@@ -27,6 +27,6 @@ angular.module('StatisticsApp.treeMultiSelector.directive', [])
                 textData: '='
             },
             controller: 'treeMultiSelectorCtrl',
-            templateUrl: 'app/shared/treemultiselector/treeMultiSelectorView.html'
+            templateUrl: '/app/shared/treemultiselector/treeMultiSelectorView.html'
         };
     });

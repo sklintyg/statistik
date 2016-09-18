@@ -34,7 +34,7 @@ angular.module('StatisticsApp.filter.directive')
                 linkFunction(_, scope, businessFilterFactory, $location, messageService, statisticsData,
                                 moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
             },
-            templateUrl: 'app/shared/businessfilter/businessFilterView.html'
+            templateUrl: '/app/shared/businessfilter/businessFilterView.html'
         };
     });
 
@@ -53,7 +53,7 @@ angular.module('StatisticsApp.filter.directive')
                 linkFunction(_, scope, landstingFilterFactory, $location, messageService, statisticsData,
                                 moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
             },
-            templateUrl: 'app/shared/businessfilter/businessFilterView.html'
+            templateUrl: '/app/shared/businessfilter/businessFilterView.html'
         };
     });
 
