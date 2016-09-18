@@ -34,7 +34,7 @@ angular.module('StatisticsApp').directive('overviewWidget',
                 columnTitle3: '@',
                 valuePrefix: '@'
             },
-            templateUrl: 'components/directives/overviewWidget/overviewWidget.html',
+            templateUrl: '/components/directives/overviewWidget/overviewWidget.html',
             link: function($scope) {
                 if ($scope.valuePrefix) {
                     $scope.valuePrefixWithSpace = ' ' + $scope.valuePrefix;

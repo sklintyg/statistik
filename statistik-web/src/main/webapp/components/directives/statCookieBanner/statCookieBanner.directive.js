@@ -24,7 +24,7 @@ angular.module('StatisticsApp').directive('statCookieBanner',
         return {
             restrict: 'E',
             scope: {},
-            templateUrl: 'components/directives/statCookieBanner/statCookieBanner.html',
+            templateUrl: '/components/directives/statCookieBanner/statCookieBanner.html',
             controller: function($scope, $timeout, $localStorage) {
                 $scope.isOpen = false;
                 $scope.showDetails = false;

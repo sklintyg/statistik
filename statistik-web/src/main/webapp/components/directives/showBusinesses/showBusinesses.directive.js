@@ -28,6 +28,6 @@ angular.module('StatisticsApp').directive('showBusinesses',
                 verksamhetName: '=',
                 businesses: '='
             },
-            templateUrl: 'components/directives/showBusinesses/showBusinesses.html'
+            templateUrl: '/components/directives/showBusinesses/showBusinesses.html'
         };
     });

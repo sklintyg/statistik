@@ -28,12 +28,12 @@ angular.module('StatisticsApp').directive('selectVardgivareModal',
                 vardgivare: '=',
                 selectVardgivare: '&'
             },
-            templateUrl: 'components/directives/selectVardgivareModal/selectVardgivareModal.html',
+            templateUrl: '/components/directives/selectVardgivareModal/selectVardgivareModal.html',
             link: function($scope) {
                 $scope.openDialog = function() {
                     var modalInstance = $uibModal.open({
                         animation: true,
-                        templateUrl: 'components/directives/selectVardgivareModal/modal/modal.html',
+                        templateUrl: '/components/directives/selectVardgivareModal/modal/modal.html',
                         controller: 'SelectVardgivareModalCtrl',
                         size: 'lg',
                         backdrop: 'static',

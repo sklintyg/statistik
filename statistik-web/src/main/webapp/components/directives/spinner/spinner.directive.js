@@ -29,6 +29,6 @@ angular.module('StatisticsApp').directive('spinner', function() {
             showSpinner: '=',
             showContent: '='
         },
-        templateUrl: 'components/directives/spinner/spinner.html'
+        templateUrl: '/components/directives/spinner/spinner.html'
     };
 });

@@ -21,7 +21,7 @@ angular.module('StatisticsApp').directive('legendHeight',
     /** @ngInject */
     function(_) {
     'use strict';
-
+console.log('legend height');
     return function(scope, element) {
         if (scope.$last) {
             scope.$watch('seriesData', function(){

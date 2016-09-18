@@ -26,6 +26,6 @@ angular.module('StatisticsApp').directive('sendFeedback',
             restrict: 'E',
             scope: {
             },
-            templateUrl: 'components/directives/sendFeedback/sendFeedback.html'
+            templateUrl: '/components/directives/sendFeedback/sendFeedback.html'
         };
     });

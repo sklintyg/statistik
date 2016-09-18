@@ -27,6 +27,6 @@ angular.module('StatisticsApp')
             },
             replace: true,
             restrict: 'E',
-            templateUrl: 'components/directives/filterList/filterList.html'
+            templateUrl: '/components/directives/filterList/filterList.html'
         };
     }]);

@@ -21,7 +21,7 @@ angular.module('StatisticsApp').directive('navigationaware',
     /** @ngInject */
     function ($rootScope, $route) {
         'use strict';
-
+console.log('navigation aware');
         var isActivePage = function(currentRoute, navLinkAttrs) {
             return currentRoute.controllerAs === navLinkAttrs.ctrlname || currentRoute.controller === navLinkAttrs.ctrlname;
         };

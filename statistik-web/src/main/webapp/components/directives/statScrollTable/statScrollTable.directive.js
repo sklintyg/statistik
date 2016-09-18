@@ -28,7 +28,7 @@ angular.module('StatisticsApp').directive('statScrollTable',
                 rows: '=',
                 headerRows: '='
             },
-            templateUrl: 'components/directives/statScrollTable/statScrollTable.html',
+            templateUrl: '/components/directives/statScrollTable/statScrollTable.html',
             link: function($scope, element) {
                 $scope.$watch('rows', watchRows);
 

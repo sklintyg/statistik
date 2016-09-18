@@ -29,7 +29,7 @@ angular.module('StatisticsApp').directive('selectVardgivare',
                 isLogin: '=',
                 selectVardgivare: '&'
             },
-            templateUrl: 'components/directives/selectVardgivare/selectVardgivare.html',
+            templateUrl: '/components/directives/selectVardgivare/selectVardgivare.html',
             link: function($scope) {
                 $scope.isCollapsed = true;
 
