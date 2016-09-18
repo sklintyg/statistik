@@ -63,7 +63,7 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
         try {
             documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         } catch (ParserConfigurationException e) {
-            throw new RuntimeException("Failed to instantiate DocumentBuilder", e);
+            throw new DocumentBuilderInstantiationException("Failed to instantiate DocumentBuilder", e);
         }
     }
 

@@ -70,9 +70,7 @@ public class User implements Serializable {
 
     public List<Vardenhet> getVardenhetsForVg(HsaIdVardgivare vardgivare) {
         return vardenhetList.stream()
-                .filter(vardenhet -> {
-                    return vardenhet.getVardgivarId().equals(vardgivare);
-                })
+                .filter(vardenhet -> vardenhet.getVardgivarId().equals(vardgivare))
                 .collect(Collectors.toList());
     }
 

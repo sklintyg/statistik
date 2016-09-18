@@ -93,8 +93,14 @@ import com.google.common.collect.FluentIterable;
 @Profile({ "dev", "hsa-stub" })
 @Primary
 public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjectable {
+
     private static final int POSITIVE_MASK = 0x7fffffff;
-    public static final int VERKSAMHET_MODULO = 7;
+    private static final int VERKSAMHET_MODULO = 7;
+    private static final String ENHETS_TYP = "enhetsTyp";
+    public static final String ALDER = "alder";
+    public static final String BEFATTNING = "befattning";
+    public static final String TILLTALSNAMN = "tilltalsnamn";
+    public static final String EFTERNAMN = "efternamn";
 
     private JsonNodeFactory factory = JsonNodeFactory.instance;
 
@@ -145,7 +151,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         final String enhetId = getEnhetId(key.getEnhetId().getId(), isHuvudenhet);
         root.put("id", enhetId);
         root.put("namn", getEnhetsNamn(enhetId));
-        root.put(HSAService.ENHETS_TYP, asList(VerksamhetsTyp.VARDCENTRAL_ID));
+        root.put(ENHETS_TYP, asList(VerksamhetsTyp.VARDCENTRAL_ID));
         root.put("agarform", asList("Landsting/Region"));
         root.put("startdatum", "");
         root.put("slutdatum", "");
@@ -181,13 +187,13 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         root.put("id", key.getLakareId().getId());
         root.put("initial", (JsonNode) null);
         root.put("kon", (JsonNode) null);
-        root.put("alder", (JsonNode) null);
-        root.put("befattning", (JsonNode) null);
+        root.put(ALDER, (JsonNode) null);
+        root.put(BEFATTNING, (JsonNode) null);
         root.put("specialitet", (JsonNode) null);
         root.put("yrkesgrupp", (JsonNode) null);
         root.put("skyddad", (JsonNode) null);
-        root.put("tilltalsnamn", getTilltalsnamn(key));
-        root.put("efternamn", getEfternamn(key));
+        root.put(TILLTALSNAMN, getTilltalsnamn(key));
+        root.put(EFTERNAMN, getEfternamn(key));
         return root;
     }
 
@@ -196,13 +202,13 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         root.put("id", id.getId());
         root.put("initial", (JsonNode) null);
         root.put("kon", String.valueOf(kon.getHsaRepresantation()));
-        root.put("alder", String.valueOf(age));
-        root.put("befattning", toArrayNode(befattnings));
+        root.put(ALDER, String.valueOf(age));
+        root.put(BEFATTNING, toArrayNode(befattnings));
         root.put("specialitet", (JsonNode) null);
         root.put("yrkesgrupp", (JsonNode) null);
         root.put("skyddad", (JsonNode) null);
         root.put("tilltalsnamn", firstName);
-        root.put("efternamn", lastName);
+        root.put(EFTERNAMN, lastName);
         return root;
     }
 
@@ -314,12 +320,12 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
 
     @Override
     public VpwGetPublicUnitsResponseType vpwGetPublicUnits(AttributedURIType logicalAddress, AttributedURIType id, VpwGetPublicUnitsType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetCareUnitResponseType getCareUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
@@ -332,9 +338,9 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         resp.setHsaIdentity(hsaId);
         JsonNode personal = getOrCreatePersonal(getHsaKey(hsaId));
         resp.setGender(personal.get("kon").textValue());
-        resp.setAge(personal.get("alder").textValue());
+        resp.setAge(personal.get(ALDER).textValue());
         GetStatisticsPersonResponseType.PaTitleCodes titleCodes = new GetStatisticsPersonResponseType.PaTitleCodes();
-        Iterator<JsonNode> befattnings = personal.get("befattning").iterator();
+        Iterator<JsonNode> befattnings = personal.get(BEFATTNING).iterator();
         while (befattnings.hasNext()) {
             JsonNode befattning = befattnings.next();
             titleCodes.getPaTitleCode().add(befattning.textValue());
@@ -345,32 +351,32 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
 
     @Override
     public IsAuthorizedToSystemResponseType isAuthorizedToSystem(AttributedURIType logicalAddress, AttributedURIType id, IsAuthorizedToSystemType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetCareUnitListResponseType getCareUnitList(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetHospLastUpdateResponseType getHospLastUpdate(AttributedURIType logicalAddress, AttributedURIType id, GetHospLastUpdateType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetHsaUnitResponseType getHsaUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetPriceUnitsForAuthResponseType getPriceUnitsForAuth(AttributedURIType logicalAddress, AttributedURIType id, GetPriceUnitsForAuthType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetHsaPersonResponseType getHsaPerson(AttributedURIType logicalAddress, AttributedURIType id, GetHsaPersonType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
@@ -384,7 +390,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         StatisticsNameInfo nameInfo = new StatisticsNameInfo();
         JsonNode personal = getOrCreatePersonal(getHsaKey(hsaid));
         nameInfo.setPersonGivenName(personal.get("tilltalsnamn").textValue());
-        nameInfo.setPersonMiddleAndSurName(personal.get("efternamn").textValue());
+        nameInfo.setPersonMiddleAndSurName(personal.get(EFTERNAMN).textValue());
         nameInfo.setHsaIdentity(hsaid);
         nameInfos.getStatisticsNameInfo().add(nameInfo);
         resp.setStatisticsNameInfos(nameInfos);
@@ -401,7 +407,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     @Override
     public PingResponseType ping(AttributedURIType logicalAddress, AttributedURIType id, PingType parameters) throws HsaWsFault {
         // Is part of HSAWebServiceCalls but is never used
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
@@ -446,7 +452,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
 
     @Override
     public HsawsSimpleLookupResponseType hsawsSimpleLookup(AttributedURIType logicalAddress, AttributedURIType id, HsawsSimpleLookupType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
@@ -497,7 +503,6 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         unit.setMunicipalityCode(kommun);
         unit.setMunicipality(KOMMUN.getNamn(kommun));
         unit.setCareGiverHsaIdentity(enhet.get("vgid").textValue());
-        StatisticsHsaUnit.CareTypes careTypes = new StatisticsHsaUnit.CareTypes();
         String[] verksamhet = createVerksamhet(key);
         StatisticsHsaUnit.BusinessClassificationCodes classificationCodes = new StatisticsHsaUnit.BusinessClassificationCodes();
         classificationCodes.getBusinessClassificationCode().addAll(Arrays.asList(verksamhet));
@@ -507,22 +512,30 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
 
     @Override
     public GetCareUnitMembersResponseType getCareUnitMembers(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetHospPersonResponseType getHospPerson(AttributedURIType logicalAddress, AttributedURIType id, GetHospPersonType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public GetInformationListResponseType getInformationList(AttributedURIType logicalAddress, AttributedURIType id, GetInformationListType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
     }
 
     @Override
     public HandleCertifierResponseType handleCertifier(AttributedURIType logicalAddress, AttributedURIType id, HandleCertifierType parameters) throws HsaWsFault {
-        throw new RuntimeException("This method is not used by Statistiktjansten and has therefore not been implemented");
+        throw new UnusedMethodException();
+    }
+
+    private class UnusedMethodException extends RuntimeException {
+
+        UnusedMethodException() {
+            super("This method is not used by Statistiktjansten and has therefore not been implemented");
+        }
+
     }
 
 }

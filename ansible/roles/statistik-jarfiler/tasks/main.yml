@@ -45,8 +45,8 @@
 - name: Remove old mysql-connector-java lib
   shell: rm -f {{ tomcat_lib }}/mysql-connector-java*.jar
 
-- name: Download mysql-connector-java-5.1.29.jar
-  get_url: url=http://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.29/mysql-connector-java-5.1.29.jar
+- name: Download mysql-connector-java-5.1.39.jar
+  get_url: url=http://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.39/mysql-connector-java-5.1.39.jar
            dest={{ tomcat_lib }}
 
 - name: Remove old javax.servlet.jsp.jstl libs

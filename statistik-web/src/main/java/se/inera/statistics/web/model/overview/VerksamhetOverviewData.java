@@ -35,6 +35,7 @@ public class VerksamhetOverviewData implements FilteredDataReport {
     private final String message;
 
     // CHECKSTYLE:OFF ParameterNumber
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public VerksamhetOverviewData(String periodText, VerksamhetNumberOfCasesPerMonthOverview casesPerMonth, List<DonutChartData> diagnosisGroups,
             List<DonutChartData> ageGroups, List<DonutChartData> degreeOfSickLeaveGroups,
             SickLeaveLengthOverview sickLeaveLength, FilterDataResponse filter, String message) {
@@ -73,6 +74,7 @@ public class VerksamhetOverviewData implements FilteredDataReport {
         return sickLeaveLength;
     }
 
+    @Override
     public FilterDataResponse getFilter() {
         return filter;
     }

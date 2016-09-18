@@ -77,6 +77,7 @@ public class Receiver  {
             hsaDecorator.decorate(utlatande, documentId);
         } catch (Exception e) {
             LOG.error("Failed decorating json intyg {}: '{}'", documentId, e.getMessage());
+            LOG.debug("Failed decorating json intyg {}", documentId, e);
         }
     }
 

@@ -65,6 +65,7 @@ public class WidelineConverter {
     private static final int DATE20100101 = 3653; // 365*10 + 3
     private static final int MAX_YEARS_INTO_FUTURE = 5;
     private static final int MAX_LENGTH_CORRELATION_ID = 50;
+    public static final String UNKNOWN_DIAGNOS = "unknown";
 
     @Autowired
     private Icd10 icd10;
@@ -143,6 +144,7 @@ public class WidelineConverter {
     }
 
     // CHECKSTYLE:OFF ParameterNumberCheck
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     private WideLine createWideLine(long logId, String correlationId, EventType type, String lkf, String enhet, HsaIdVardgivare vardgivare, String patient, int kon, int alder, boolean enkeltIntyg, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning, HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning) {
         WideLine line = new WideLine();
 
@@ -180,7 +182,7 @@ public class WidelineConverter {
     // CHECKSTYLE:ON ParameterNumberCheck
 
     private Diagnos parseDiagnos(String diagnos) {
-        boolean isUnknownDiagnos = diagnos == null || "unknown".equals(diagnos);
+        boolean isUnknownDiagnos = diagnos == null || UNKNOWN_DIAGNOS.equals(diagnos);
         final Icd10.Kod kod = isUnknownDiagnos ? null : icd10.findKod(diagnos);
         final Kategori kategori = kod != null ? kod.getKategori() : isUnknownDiagnos ? null : icd10.findKategori(diagnos);
         final Diagnos dx = new Diagnos();
@@ -190,10 +192,10 @@ public class WidelineConverter {
             dx.diagnoskapitel = kategori.getAvsnitt().getKapitel().getId();
             dx.diagnosavsnitt = kategori.getAvsnitt().getId();
             dx.diagnoskategori = kategori.getId();
-        } else if ("unknown".equals(diagnos)) {
+        } else if (UNKNOWN_DIAGNOS.equals(diagnos)) {
             dx.diagnoskapitel = null;
             dx.diagnosavsnitt = null;
-            dx.diagnoskategori = "unknown";
+            dx.diagnoskategori = UNKNOWN_DIAGNOS;
         } else {
             dx.diagnoskapitel = null;
             dx.diagnosavsnitt = null;

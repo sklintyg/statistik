@@ -109,6 +109,7 @@ public class HSADecorator {
         return updatedHsaInfo;
     }
 
+    @java.lang.SuppressWarnings("squid:S1067") // Expression complexity check ignored in Sonar
     private boolean missingData(HsaInfo info) {
         return info == null || !info.hasEnhet() || !info.hasHuvudenhet() || !info.hasPersonal() || !info.hasVardgivare();
     }
@@ -128,6 +129,7 @@ public class HSADecorator {
             return hsaInfoMapper.writeValueAsString(info);
         } catch (JsonProcessingException e) {
             LOG.error("Failed to convert HSA object to json. HSA info has not been stored");
+            LOG.debug("Failed to convert HSA object to json. HSA info has not been stored", e);
             return null;
         }
     }
@@ -137,6 +139,7 @@ public class HSADecorator {
             return hsaInfoMapper.readValue(data, HsaInfo.class);
         } catch (IOException e) {
             LOG.error("Failed to parse HSA info json");
+            LOG.debug("Failed to parse HSA info json", e);
             return null;
         }
     }
@@ -172,7 +175,7 @@ public class HSADecorator {
     private static class OurLocalDateTimeSerializer extends com.fasterxml.jackson.databind.JsonSerializer<LocalDateTime> {
 
         @Override
-        public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+        public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
             jsonGenerator.writeString(localDateTime.toString("yyyy-MM-dd"));
         }
 

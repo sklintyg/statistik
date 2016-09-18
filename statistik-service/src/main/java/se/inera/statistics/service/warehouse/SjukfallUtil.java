@@ -55,15 +55,12 @@ public class SjukfallUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallUtil.class);
 
+    public static final FilterPredicates ALL_ENHETER = new FilterPredicates(fact -> true, sjukfall -> true, FilterPredicates.HASH_EMPTY_FILTER);
+
     private LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> sjukfallGroupsCache;
 
     public void clearSjukfallGroupCache() {
         getSjukfallGroupsCache().invalidateAll();
-    }
-
-    public static final SjukfallFilter ALL_ENHETER = new SjukfallFilter(fact -> true, sjukfall -> true, SjukfallFilter.HASH_EMPTY_FILTER);
-
-    public SjukfallUtil() {
     }
 
     private LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> getSjukfallGroupsCache() {
@@ -71,12 +68,13 @@ public class SjukfallUtil {
             sjukfallGroupsCache = CacheBuilder.newBuilder()
                     .softValues()
                     .build(new CacheLoader<SjukfallGroupCacheKey, List<SjukfallGroup>>() {
+                        @Override
                         public List<SjukfallGroup> load(SjukfallGroupCacheKey key) {
                             final LocalDate from = key.getFrom();
                             final int periods = key.getPeriods();
                             final int periodSize = key.getPeriodSize();
                             final Aisle aisle = key.getAisle();
-                            final SjukfallFilter filter = key.getFilter();
+                            final FilterPredicates filter = key.getFilter();
                             final boolean useOriginalSjukfallStart = key.isUseOriginalSjukfallStart();
                             return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter, useOriginalSjukfallStart));
                         }
@@ -85,46 +83,52 @@ public class SjukfallUtil {
         return sjukfallGroupsCache;
     }
 
-    public SjukfallFilter createEnhetFilter(HsaIdEnhet... enhetIds) {
+    public FilterPredicates createEnhetFilter(HsaIdEnhet... enhetIds) {
         final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(Arrays.asList(enhetIds), enhetId -> Warehouse.getEnhet(enhetId)));
-        final String hashValue = SjukfallFilter.getHashValueForEnhets(availableEnhets.toArray());
-        return new SjukfallFilter(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue);
+        final String hashValue = FilterPredicates.getHashValueForEnhets(availableEnhets);
+        return new FilterPredicates(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue);
     }
 
-    public Iterable<SjukfallGroup> sjukfallGrupperUsingOriginalSjukfallStart(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final SjukfallFilter filter) {
+    public Iterable<SjukfallGroup> sjukfallGrupperUsingOriginalSjukfallStart(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final FilterPredicates filter) {
         return sjukfallGrupper(from, periods, periodSize, aisle, filter, true);
     }
 
-    public Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final SjukfallFilter filter) {
+    public Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final FilterPredicates filter) {
         return sjukfallGrupper(from, periods, periodSize, aisle, filter, false);
     }
 
-    List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter sjukfallFilter, boolean useOriginalSjukfallStart) {
+    List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates sjukfallFilter, boolean useOriginalSjukfallStart) {
         try {
             return getSjukfallGroupsCache().get(new SjukfallGroupCacheKey(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
         } catch (ExecutionException e) {
             //Failed to get from cache. Do nothing and fall through.
             LOG.warn("Failed to get value from cache");
+            LOG.debug("Failed to get value from cache", e);
         }
         return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
     }
 
     //CHECKSTYLE:OFF ParameterNumberCheck
-    public <T> KonDataResponse calculateKonDataResponseUsingOriginalSjukfallStart(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction) {
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
+    public <T> KonDataResponse calculateKonDataResponseUsingOriginalSjukfallStart(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction) {
         return calculateKonDataResponse(aisle, filter, start, periods, periodSize, groupNames, groupIds, counterFunction, true);
     }
 
-    public <T> KonDataResponse calculateKonDataResponse(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction) {
+    //CHECKSTYLE:OFF ParameterNumberCheck
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
+    public <T> KonDataResponse calculateKonDataResponse(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction) {
         return calculateKonDataResponse(aisle, filter, start, periods, periodSize, groupNames, groupIds, counterFunction, false);
     }
 
-    private <T> KonDataResponse calculateKonDataResponse(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction, boolean useOriginalSjukfallStart) {
+    //CHECKSTYLE:OFF ParameterNumberCheck
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
+    private <T> KonDataResponse calculateKonDataResponse(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction, boolean useOriginalSjukfallStart) {
         List<KonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallGrupper(start, periods, periodSize, aisle, filter, useOriginalSjukfallStart)) {
             final HashMultiset<T> maleCounter = HashMultiset.create();
             final HashMultiset<T> femaleCounter = HashMultiset.create();
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-                final HashMultiset<T> currentCounter = Kon.Female.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
+                final HashMultiset<T> currentCounter = Kon.FEMALE.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
                 counterFunction.addCount(sjukfall, currentCounter);
             }
             List<KonField> list = new ArrayList<>(groupIds.size());
@@ -137,7 +141,7 @@ public class SjukfallUtil {
         return new KonDataResponse(groupNames, rows);
     }
 
-    public <T> KonDataResponse calculateKonDataResponse(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, Function<Sjukfall, Collection<T>> groupsFunction, CounterFunction<T> counterFunction) {
+    public <T> KonDataResponse calculateKonDataResponse(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize, Function<Sjukfall, Collection<T>> groupsFunction, CounterFunction<T> counterFunction) {
         List<KonDataRow> rows = new ArrayList<>();
         final Iterable<SjukfallGroup> sjukfallGroups = sjukfallGrupper(start, periods, periodSize, aisle, filter);
         final HashSet<T> hashSet = new LinkedHashSet<>();
@@ -150,7 +154,7 @@ public class SjukfallUtil {
             final HashMultiset<T> maleCounter = HashMultiset.create();
             final HashMultiset<T> femaleCounter = HashMultiset.create();
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-                final HashMultiset<T> currentCounter = Kon.Female.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
+                final HashMultiset<T> currentCounter = Kon.FEMALE.equals(sjukfall.getKon()) ? femaleCounter : maleCounter;
                 counterFunction.addCount(sjukfall, currentCounter);
             }
             List<KonField> list = new ArrayList<>();
@@ -170,11 +174,11 @@ public class SjukfallUtil {
     }
     //CHECKSTYLE:ON
 
-    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, CounterFunction<Integer> toCount, List<Integer> groups) {
+    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Aisle aisle, FilterPredicates filter, LocalDate from, int periods, int periodLength, CounterFunction<Integer> toCount, List<Integer> groups) {
         return calculateSimpleKonResponse(toCount, groups, sjukfallGrupper(from, periods, periodLength, aisle, filter));
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponseUsingOriginalSjukfallStart(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, CounterFunction<Integer> toCount, List<Integer> groups) {
+    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponseUsingOriginalSjukfallStart(Aisle aisle, FilterPredicates filter, LocalDate from, int periods, int periodLength, CounterFunction<Integer> toCount, List<Integer> groups) {
         return calculateSimpleKonResponse(toCount, groups, sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle, filter));
     }
 
@@ -184,7 +188,7 @@ public class SjukfallUtil {
         HashMultiset<Integer> femaleCounter = HashMultiset.create();
         for (SjukfallGroup sjukfallGroup: sjukfallGroups) {
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-                HashMultiset<Integer> counter = Kon.Male.equals(sjukfall.getKon()) ? maleCounter : femaleCounter;
+                HashMultiset<Integer> counter = Kon.MALE.equals(sjukfall.getKon()) ? maleCounter : femaleCounter;
                 toCount.addCount(sjukfall, counter);
             }
         }

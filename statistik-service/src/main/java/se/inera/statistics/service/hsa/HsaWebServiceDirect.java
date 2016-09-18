@@ -34,10 +34,12 @@ public class HsaWebServiceDirect implements HsaWebService {
     @Autowired
     private HSAWebServiceCalls service;
 
+    @Override
     public void setHsaLogicalAddress(String hsaLogicalAddress) {
         service.setHsaLogicalAddress(hsaLogicalAddress);
     }
 
+    @Override
     public void callPing() {
         service.callPing();
     }

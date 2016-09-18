@@ -123,7 +123,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
         this.populateActiveEnhetsFilter = function(scope, filterHash, isAllAvailableEnhetsSelectedInFilter, enhetNames) {
             scope.activeEnhetsFilters = null;
-            
+
             if (isAllAvailableEnhetsSelectedInFilter) {
                 scope.headerEnhetInfo = scope.verksamhetName;
                 return;
@@ -212,6 +212,10 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
         this.isShowingLandsting = function($location) {
             return $location.path().indexOf('/landsting/') === 0;
+        };
+
+        this.isShowingProtectedPage = function(location) {
+            return this.isShowingVerksamhet(location) || this.isShowingLandsting(location);
         };
 
         this.createQueryStringOfQueryParams = function (queryParams) {
@@ -349,8 +353,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
             return tableData;
         };
-        
-        
+
         this.checkNationalResult = function($scope, result, verksamhet, landsting, success) {
             $scope.errorPageUrl = null;
             if (result === '' && !verksamhet && !landsting) {

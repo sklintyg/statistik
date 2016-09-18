@@ -35,6 +35,11 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import se.inera.auth.AuthUtil;
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -69,7 +74,7 @@ public class LoginServiceUtilTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         loginServiceUtil = Mockito.spy(loginServiceUtilInjected);
-        Mockito.doReturn(true).when(loginServiceUtil).isLoggedIn(any());
+        Mockito.doReturn(true).when(loginServiceUtil).isLoggedIn();
     }
 
     @Test
@@ -85,19 +90,16 @@ public class LoginServiceUtilTest {
     @Test
     public void testGetLoginInfoSeveralVgsNotProcessledare() throws Exception {
         //Given
-        final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        final AbstractAuthenticationToken token = Mockito.mock(AbstractAuthenticationToken.class);
-        Mockito.when(request.getUserPrincipal()).thenReturn(token);
         final HsaIdUser userId = new HsaIdUser("testuserid");
         final Vardenhet enhet1 = newVardenhet("e1", "vg1");
         final Vardenhet enhet2 = newVardenhet("e2", "vg1");
         final Vardenhet enhet3 = newVardenhet("e3", "vg2");
         final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
         final User user = new User(userId, "testname", null, vardenhetsList);
-        Mockito.when(token.getDetails()).thenReturn(user);
+        AuthUtil.setUserToSecurityContext(user);
 
         //When
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
 
         //Then
         assertEquals(userId, loginInfo.getHsaId());
@@ -113,16 +115,14 @@ public class LoginServiceUtilTest {
     @Test
     public void testGetLoginInfoSeveralVgsWhenProcessledare() throws Exception {
         //Given
-        final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
-        final AbstractAuthenticationToken token = Mockito.mock(AbstractAuthenticationToken.class);
-        Mockito.when(request.getUserPrincipal()).thenReturn(token);
         final HsaIdUser userId = new HsaIdUser("testuserid");
         final Vardenhet enhet1 = newVardenhet("e1", "vg1");
         final Vardenhet enhet2 = newVardenhet("e2", "vg1");
         final Vardenhet enhet3 = newVardenhet("e3", "vg2");
         final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
         final User user = new User(userId, "testname", Arrays.asList(new HsaIdVardgivare("vg2")), vardenhetsList);
-        Mockito.when(token.getDetails()).thenReturn(user);
+        AuthUtil.setUserToSecurityContext(user);
+
 
         Mockito.when(warehouse.getEnhets(any())).thenAnswer(invocationOnMock -> {
             final HsaIdVardgivare vg = (HsaIdVardgivare) invocationOnMock.getArguments()[0];
@@ -130,7 +130,7 @@ public class LoginServiceUtilTest {
         });
 
         //When
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
 
         //Then
         assertEquals(userId, loginInfo.getHsaId());

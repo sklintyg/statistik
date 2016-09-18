@@ -66,24 +66,26 @@ public class CountyPopulationFetcher {
             final CountyPopulation countyPopulation = new CountyPopulation(populationFromScb, date);
             return Optional.of(countyPopulation);
         } catch (Exception e) {
-            LOG.error("Failed to get county population from SCB for " + year, e);
+            final String msg = "Failed to get county population from SCB for " + year;
+            LOG.error(msg);
+            LOG.debug(msg, e);
             return Optional.empty();
         }
     }
 
-    private Map<String, KonField> getPopulationFromScb(int year) throws ScbPopulationException {
+    private Map<String, KonField> getPopulationFromScb(int year) {
         final String scbPopulationResponse = requestPopulationFromScb(year);
         return parseScbResult(scbPopulationResponse, year);
     }
 
-    private Map<String, KonField> parseScbResult(String result, int year) throws ScbResponseHeadersNotRecognisedException {
+    private Map<String, KonField> parseScbResult(String result, int year) {
         final String[] rows = result.split("(\\r\\n|\\r|\\n)");
         validateScbResponseHeaders(rows[0], year);
         final Map<String, List<ScbRow>> rowsPerCounty = Arrays.stream(rows).skip(1).map(this::parseScbRow).collect(Collectors.groupingBy(scbRow -> scbRow.countyId));
         return rowsPerCounty.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> toKonField(e.getValue())));
     }
 
-    private void validateScbResponseHeaders(String row, int year) throws ScbResponseHeadersNotRecognisedException {
+    private void validateScbResponseHeaders(String row, int year) {
         final String[] headers = splitStringAndRemoveQuotationMarks(row);
         if (!HEADER_REGION.equalsIgnoreCase(headers[0])) {
             throw new ScbResponseHeadersNotRecognisedException("Region header [0] mismatch");
@@ -96,25 +98,26 @@ public class CountyPopulationFetcher {
         }
     }
 
-    private KonField toKonField(List<ScbRow> konValuesForSingleCounty) throws ScbPopulationException {
+    private KonField toKonField(List<ScbRow> konValuesForSingleCounty) {
         final HashMap<Kon, Integer> valuePerKon = new HashMap<>();
         for (ScbRow scbRow : konValuesForSingleCounty) {
             valuePerKon.put(scbRow.gender, scbRow.amount);
         }
-        if (!valuePerKon.containsKey(Kon.Female) || !valuePerKon.containsKey(Kon.Male)) {
+        if (!valuePerKon.containsKey(Kon.FEMALE) || !valuePerKon.containsKey(Kon.MALE)) {
             final String countyId = konValuesForSingleCounty.isEmpty() ? "?" : konValuesForSingleCounty.get(0).countyId;
             throw new ScbPopulationException("Can't find population for both genders on county: " + countyId);
         }
-        return new KonField(valuePerKon.get(Kon.Female), valuePerKon.get(Kon.Male));
+        return new KonField(valuePerKon.get(Kon.FEMALE), valuePerKon.get(Kon.MALE));
     }
 
+    @java.lang.SuppressWarnings("squid:UnusedPrivateMethod") // SONAR reports this method as not used due to https://jira.sonarsource.com/browse/SONARJAVA-583
     private ScbRow parseScbRow(String row) {
         final String[] rowFields = splitStringAndRemoveQuotationMarks(row);
         final String countyId = rowFields[0].substring(0, 2);
         if (!countyId.matches("^[0-9][0-9]$")) {
             throw new ScbPopulationException("County id should be an integer with two digits: " + countyId);
         }
-        final Kon gender = rowFields[1].contains(FEMALE) ? Kon.Female : Kon.Male;
+        final Kon gender = rowFields[1].contains(FEMALE) ? Kon.FEMALE : Kon.MALE;
         final Integer amount = Integer.valueOf(rowFields[2]);
         return new ScbRow(countyId, gender, amount);
     }

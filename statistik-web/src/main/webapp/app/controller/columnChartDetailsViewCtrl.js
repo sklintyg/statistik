@@ -102,7 +102,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
                 });
             }, 1);
         };
-        
+
         var populatePageWithData = function (result) {
             ControllerCommons.checkNationalResult($scope, result, isVerksamhet, isLandsting, populatePageWithDataSuccess);
         };

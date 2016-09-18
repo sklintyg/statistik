@@ -93,8 +93,8 @@ public class KonDataResponse {
     private static List<List<KonField>> initRowsDataFiltered(List<KonDataRow> rows) {
         final List<List<KonField>> rowsDataFiltered = new ArrayList<>();
 
-        for (KonDataRow row : rows) {
-            rowsDataFiltered.add(new ArrayList<KonField>());
+        for (int i = 0; i < rows.size(); i++) {
+            rowsDataFiltered.add(new ArrayList<>());
         }
         return rowsDataFiltered;
     }

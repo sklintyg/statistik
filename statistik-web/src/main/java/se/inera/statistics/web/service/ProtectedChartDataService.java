@@ -117,7 +117,7 @@ public class ProtectedChartDataService {
     }
 
     private Response getResponse(TableDataReport result, String csv, HttpServletRequest request) {
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
         final List<Verksamhet> businesses = loginInfo.getBusinessesForVg(loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final List<HsaIdEnhet> hsaIdEnhets = businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
         return responseHandler.getResponse(result, csv, hsaIdEnhets);
@@ -262,6 +262,7 @@ public class ProtectedChartDataService {
             final DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, filterSettings, message);
             return getResponse(data, csv, request);
         } catch (RangeNotFoundException e) {
+            LOG.debug("Range not found", e);
             return Response.serverError().entity(e.getMessage()).build();
         }
     }
@@ -289,6 +290,7 @@ public class ProtectedChartDataService {
             final SimpleDetailsData data = new DiagnosisSubGroupsTvarsnittConverter().convert(diagnosavsnitt, filterSettings, message);
             return getResponse(data, csv, request);
         } catch (RangeNotFoundException e) {
+            LOG.debug("Range not found", e);
             return Response.serverError().entity(e.getMessage()).build();
         }
     }
@@ -354,7 +356,7 @@ public class ProtectedChartDataService {
         VerksamhetOverviewResponse response = warehouse.getOverview(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final VerksamhetOverviewData overviewData = new VerksamhetOverviewConverter().convert(response, range, filter, message);
 
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
         final List<Verksamhet> businesses = loginInfo.getBusinessesForVg(loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final List<HsaIdEnhet> hsaIdEnhets = businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
         return responseHandler.getResponseForDataReport(overviewData, hsaIdEnhets);
@@ -592,14 +594,14 @@ public class ProtectedChartDataService {
         if (request == null) {
             return false;
         }
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgid = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final boolean userHasAccessToRequestedVg = loginInfo.getVgs().stream().map(LoginInfoVg::getHsaId).anyMatch(userVg -> userVg.equals(vgid));
         return loginInfo.isLoggedIn() && userHasAccessToRequestedVg;
     }
 
     public boolean userAccess(HttpServletRequest request) {
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
         if (loginInfo != null) {
             final HsaIdVardgivare hsaIdVardgivare = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
             String sessionId = request.getSession() != null ? request.getSession().getId() : null;

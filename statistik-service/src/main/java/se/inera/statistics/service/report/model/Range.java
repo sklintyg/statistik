@@ -69,6 +69,7 @@ public final class Range {
         return to;
     }
 
+    @Override
     public String toString() {
         return FULL_MONTH_FORMAT.format(from, to);
     }

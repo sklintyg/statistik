@@ -27,7 +27,7 @@ public abstract class TableDataReport implements FilteredDataReport {
 
     public abstract TableData getTableData();
     public abstract String getPeriod();
-    public abstract FilterDataResponse getFilter();
+    @Override public abstract FilterDataResponse getFilter();
     public abstract String getMessage();
 
     @JsonIgnore
@@ -44,7 +44,8 @@ public abstract class TableDataReport implements FilteredDataReport {
                 sum += sum(chartData.getSeries());
             }
         }
-        return sum == 0;
+        final double maxDiffForEquality = 0.00001D;
+        return Math.abs(sum) < maxDiffForEquality;
     }
 
     private double sum(List<ChartSeries> series) {

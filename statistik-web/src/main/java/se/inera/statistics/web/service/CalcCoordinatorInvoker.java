@@ -18,18 +18,23 @@
  */
 package se.inera.statistics.web.service;
 
+import javax.ws.rs.core.Response;
+
 import org.apache.cxf.common.util.ClassHelper;
 import org.apache.cxf.interceptor.Fault;
 import org.apache.cxf.jaxrs.JAXRSInvoker;
 import org.apache.cxf.message.Exchange;
 import org.apache.cxf.message.MessageContentsList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
+
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.CalcException;
 
-import javax.ws.rs.core.Response;
-
 public class CalcCoordinatorInvoker extends JAXRSInvoker {
+
+    private static final Logger LOG = LoggerFactory.getLogger(CalcCoordinatorInvoker.class);
 
     @Override
     public Object invoke(Exchange exchange, Object requestParams, Object resourceObject) {
@@ -42,6 +47,7 @@ public class CalcCoordinatorInvoker extends JAXRSInvoker {
             ticket = CalcCoordinator.getTicket();
             return super.invoke(exchange, requestParams, resourceObject);
         } catch (CalcException c) {
+            LOG.debug("calc exception", c);
             return new MessageContentsList(Response.status(Response.Status.SERVICE_UNAVAILABLE).build());
         } catch (Fault f) {
             if (f.getCause() instanceof AccessDeniedException) {

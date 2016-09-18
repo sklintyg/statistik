@@ -54,7 +54,7 @@ public final class ConversionHelper {
     }
 
     protected static String extractKon(String personId) {
-        return personId.charAt(DocumentHelper.SEX_DIGIT) % 2 == 0 ? Kon.Female.toString() : Kon.Male.toString();
+        return personId.charAt(DocumentHelper.SEX_DIGIT) % 2 == 0 ? Kon.FEMALE.toString() : Kon.MALE.toString();
     }
 
     protected static int extractAlder(String personId, LocalDate start) {
@@ -76,6 +76,7 @@ public final class ConversionHelper {
             Period period = new Period(birthDate, referenceDate);
             age = period.getYears();
         } catch (NumberFormatException | IllegalFieldValueException e) {
+            LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help", e);
             throw new IllegalArgumentException("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: " + personId);
         }
         return age;

@@ -22,6 +22,11 @@ public class Pair<K, V> {
     private K key;
     private V value;
 
+    public Pair(K var1, V var2) {
+        this.key = var1;
+        this.value = var2;
+    }
+
     public K getKey() {
         return this.key;
     }
@@ -30,20 +35,18 @@ public class Pair<K, V> {
         return this.value;
     }
 
-    public Pair(K var1, V var2) {
-        this.key = var1;
-        this.value = var2;
-    }
-
+    @Override
     public String toString() {
         return this.key + "=" + this.value;
     }
 
+    @Override
     public int hashCode() {
         final int number = 13;
         return this.key.hashCode() * number + (this.value == null ? 0 : this.value.hashCode());
     }
 
+    @Override
     public boolean equals(Object var1) {
         if (this == var1) {
             return true;

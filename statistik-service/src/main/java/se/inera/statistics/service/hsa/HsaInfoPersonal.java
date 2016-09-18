@@ -42,6 +42,7 @@ public class HsaInfoPersonal {
     }
 
     // CHECKSTYLE:OFF ParameterNumberCheck
+    @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
     public HsaInfoPersonal(String id, String kon, String alder, List<String> befattning, List<String> specialitet, List<String> yrkesgrupp, Boolean skyddad, String tilltalsnamn, String efternamn) {
         this.id = id;
         this.kon = kon;

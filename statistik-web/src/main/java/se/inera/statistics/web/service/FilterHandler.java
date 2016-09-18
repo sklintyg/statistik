@@ -47,7 +47,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.LoginInfo;
@@ -82,7 +82,7 @@ public class FilterHandler {
 
     List<HsaIdEnhet> getEnhetsFilterIds(String filterHash, HttpServletRequest request) {
         if (filterHash == null || filterHash.isEmpty()) {
-            final LoginInfo info = loginServiceUtil.getLoginInfo(request);
+            final LoginInfo info = loginServiceUtil.getLoginInfo();
             final List<Verksamhet> businesses = info.getBusinessesForVg(getSelectedVgIdForLoggedInUser(request));
             return Lists.transform(businesses, Verksamhet::getId);
         }
@@ -99,7 +99,8 @@ public class FilterHandler {
         try {
             return getFilterSettingsLandsting(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
         } catch (FilterException e) {
-            LOG.warn("Could not use selected filter. Falling back to default filter", e);
+            LOG.warn("Could not use selected landsting filter. Falling back to default filter. Msg: " + e.getMessage());
+            LOG.debug("Could not use selected landsting filter. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
         }
     }
@@ -126,7 +127,8 @@ public class FilterHandler {
             final List<HsaIdEnhet> enhetsIDs = getEnhetsFiltered(request, inFilter);
             return getFilterSettings(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
         } catch (FilterException | FilterHashException e) {
-            LOG.warn("Could not use selected filter. Falling back to default filter", e);
+            LOG.warn("Could not use selected filter. Falling back to default filter. Msg: " + e.getMessage());
+            LOG.debug("Could not use selected filter. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
         }
     }
@@ -145,7 +147,7 @@ public class FilterHandler {
         final List<String> diagnoser = inFilter.getDiagnoser();
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         final Predicate<Sjukfall> sjukfallLengthFilter = getSjukfallLengthFilter(inFilter.getSjukskrivningslangd());
-        final SjukfallFilter sjukfallFilter = new SjukfallFilter(Predicates.and(enhetFilter, diagnosFilter), sjukfallLengthFilter, filterHash);
+        final FilterPredicates sjukfallFilter = new FilterPredicates(Predicates.and(enhetFilter, diagnosFilter), sjukfallLengthFilter, filterHash);
         final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter));
         final Range range = getRange(inFilter, defaultRangeValue);
         return new FilterSettings(filter, range);
@@ -190,7 +192,7 @@ public class FilterHandler {
         final String toDate = inFilter.getToDate();
 
         if (fromDate == null || toDate == null) {
-            throw new FilterException(String.format("Can not parse null range dates. From: {}, To: {}", fromDate, toDate));
+            throw new FilterException("Can not parse null range dates. From: " + fromDate + ", To: " + toDate);
         }
         try {
             final LocalDate from = dateStringFormat.parseLocalDate(fromDate);
@@ -198,7 +200,7 @@ public class FilterHandler {
             validateFilterRange(from, to);
             return new Range(from.withDayOfMonth(1), to.dayOfMonth().withMaximumValue());
         } catch (IllegalArgumentException e) {
-            throw new FilterException(String.format("Could not parse range dates. From: {}, To: {}", fromDate, toDate), e);
+            throw new FilterException("Could not parse range dates. From: " + fromDate + ", To: " + toDate, e);
         }
     }
 
@@ -228,12 +230,12 @@ public class FilterHandler {
     }
 
     private Filter getFilterForEnhets(final Set<Integer> enhetsIntIds, List<HsaIdEnhet> enhets) {
-        final String hashValue = SjukfallFilter.getHashValueForEnhets(enhetsIntIds.toArray());
-        return new Filter(new SjukfallFilter(fact -> enhetsIntIds.contains(fact.getEnhet()), sjukfall -> true, hashValue), enhets, null, toReadableSjukskrivningslangdName(null));
+        final String hashValue = FilterPredicates.getHashValueForEnhets(enhetsIntIds);
+        return new Filter(new FilterPredicates(fact -> enhetsIntIds.contains(fact.getEnhet()), sjukfall -> true, hashValue), enhets, null, toReadableSjukskrivningslangdName(null));
     }
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
-        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        LoginInfo info = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         if (info.getLoginInfoForVg(vgId).map(vgInfo -> vgInfo.isProcessledare()).orElse(false)) {
             return new Filter(SjukfallUtil.ALL_ENHETER, null, null, toReadableSjukskrivningslangdName(null));
@@ -296,7 +298,7 @@ public class FilterHandler {
 
     private Set<HsaIdEnhet> getEnhetsForVerksamhetstyper(List<String> verksamhetstyper, HttpServletRequest request) {
         Set<HsaIdEnhet> enhetsIds = new HashSet<>();
-        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        LoginInfo info = loginServiceUtil.getLoginInfo();
         for (Verksamhet verksamhet : info.getBusinessesForVg(getSelectedVgIdForLoggedInUser(request))) {
             if (isOfVerksamhetsTyp(verksamhet, verksamhetstyper)) {
                 enhetsIds.add(verksamhet.getIdUnencoded());
@@ -350,7 +352,7 @@ public class FilterHandler {
 
     Map<HsaIdEnhet, String> getEnhetNameMap(HttpServletRequest request, List<HsaIdEnhet> enhetsIDs) {
         final HsaIdVardgivare vgid = getSelectedVgIdForLoggedInUser(request);
-        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        LoginInfo info = loginServiceUtil.getLoginInfo();
         Map<HsaIdEnhet, String> enheter = new HashMap<>();
         for (Verksamhet userVerksamhet : info.getBusinessesForVg(vgid)) {
             if (enhetsIDs != null && enhetsIDs.contains(userVerksamhet.getId())) {

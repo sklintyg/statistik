@@ -40,7 +40,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                                     'Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, ' +
                                     ' och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.';
             $scope.popoverTextSexDistribution = 'Andel kvinnor och andel män av det totala antalet sjukfall under perioden ' + result.periodText;
-            $scope.popoverTextChangeProcentage = 'Diagrammet visar hur antalet sjukfall förändrats mellan perioden ' + result.periodText + 
+            $scope.popoverTextChangeProcentage = 'Diagrammet visar hur antalet sjukfall förändrats mellan perioden ' + result.periodText +
                                                     ' och föregående period ' + result.casesPerMonth.previousPeriodText;
 
             $scope.popoverTextDiagnosisGroups = 'Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under ' +
@@ -194,7 +194,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             chartOptions.xAxis.title = { text: 'Sjukskrivningslängd', style : chartOptions.xAxis.title.style };
             chartOptions.subtitle.text = null;
             chartOptions.yAxis.title = {text: 'Antal', style : chartOptions.subtitle.style };
-            
+
             chartOptions.yAxis.tickPixelInterval = 30;
             chartOptions.legend.enabled = false;
 
@@ -430,7 +430,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             if(sickLeaveLengthChart && typeof sickLeaveLengthChart.destroy === 'function') {
                 sickLeaveLengthChart.destroy();
             }
-            
+
             if(sickLeavePerCountyChart && typeof sickLeavePerCountyChart.destroy === 'function') {
                 sickLeavePerCountyChart.destroy();
             }

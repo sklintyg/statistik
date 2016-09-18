@@ -56,6 +56,7 @@ public class LogConsumerImpl implements LogConsumer {
     private volatile boolean isRunning = false;
 
     @Transactional
+    @Override
     public synchronized int processBatch() {
         try {
             setRunning(true);
@@ -67,23 +68,12 @@ public class LogConsumerImpl implements LogConsumer {
             for (IntygEvent event: result) {
                 final IntygFormat format = event.getFormat();
                 try {
-                    switch (format) {
-                        case REGISTER_MEDICAL_CERTIFICATE:
-                            if (!processJsonMedicalCertificate(event)) {
-                                return processed;
-                            }
-                            break;
-                        case REGISTER_CERTIFICATE:
-                            if (!processXmlCertificate(event)) {
-                                return processed;
-                            }
-                            break;
-                        default:
-                            LOG.warn("Unhandled intyg format: " + format);
-                            return processed;
+                    if (!handleEvent(event, format)) {
+                        return processed;
                     }
                 } catch (Exception e) {
                     LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
+                    LOG.debug("Could not process intyg {} ({}).", event.getId(), event.getCorrelationId(), e);
                 } finally {
                     processLog.confirm(event.getId());
                     processed++;
@@ -94,6 +84,25 @@ public class LogConsumerImpl implements LogConsumer {
         } finally {
             setRunning(false);
         }
+    }
+
+    private boolean handleEvent(IntygEvent event, IntygFormat format) {
+        switch (format) {
+            case REGISTER_MEDICAL_CERTIFICATE:
+                if (!processJsonMedicalCertificate(event)) {
+                    return false;
+                }
+                break;
+            case REGISTER_CERTIFICATE:
+                if (!processXmlCertificate(event)) {
+                    return false;
+                }
+                break;
+            default:
+                LOG.warn("Unhandled intyg format: " + format);
+                return false;
+        }
+        return true;
     }
 
     /**
@@ -121,6 +130,7 @@ public class LogConsumerImpl implements LogConsumer {
             rc = registerCertificateHelper.unmarshalRegisterCertificateXml(event.getData());
         } catch (JAXBException e) {
             LOG.warn("Failed to unmarshal intyg xml");
+            LOG.debug("Failed to unmarshal intyg xml", e);
             return false;
         }
         HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());

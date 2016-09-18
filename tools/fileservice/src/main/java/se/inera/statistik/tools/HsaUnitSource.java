@@ -29,6 +29,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -47,6 +49,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 public final class HsaUnitSource {
+
+    private static final Logger LOG = LoggerFactory.getLogger(HsaUnitSource.class);
 
     public static final int SSL_PORT = 443;
     private static final int BUFFER_SIZE = 10000;
@@ -96,6 +100,7 @@ public final class HsaUnitSource {
             }
             throw new IOException("Respons entity is null.");
         } catch (CertificateException | NoSuchAlgorithmException | IOException | UnrecoverableKeyException | KeyStoreException | KeyManagementException e) {
+            LOG.debug("Failed to get units", e);
             e.printStackTrace();
         }
         return null;

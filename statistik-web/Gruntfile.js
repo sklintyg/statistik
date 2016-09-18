@@ -15,6 +15,8 @@ module.exports = function(grunt) {
         configureProxies: 'grunt-connect-proxy'
     });
 
+    var serveStatic = require('serve-static');
+
     // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
 
@@ -53,7 +55,7 @@ module.exports = function(grunt) {
                         return [
                             enablePost,
                             require('connect-livereload')(),
-                            connect.static('src/main/webapp'),
+                            serveStatic('src/main/webapp'),
                             require('grunt-connect-proxy/lib/utils').proxyRequest
                         ];
                     }
@@ -183,10 +185,11 @@ module.exports = function(grunt) {
                     '<%= config.client %>/index.html',
                     '<%= config.client %>/error.jsp',
                     '<%= config.client %>/version.jsp',
+                    '<%= config.client %>/healthcheck.jsp',
                     'karma.conf.js'
                 ],
                 ignorePath: '<%= config.client %>/',
-                exclude: [/bootstrap-sass-official/, '/json3/', '/es5-shim/', '/respond/', 'vfs_fonts.js'],
+                exclude: [/bootstrap-sass-official/, 'vfs_fonts.js'],
                 fileTypes: {
                     js: {
                         block: /(([\s\t]*)\/\/\s*bower:*(\S*))(\n|\r|.)*?(\/\/\s*endbower)/gi,
@@ -443,6 +446,9 @@ module.exports = function(grunt) {
                         '<%= config.client %>/{app,components}/**/*.css'
                     ],
                     '<%= config.client %>/version.jsp': [
+                        '<%= config.client %>/{app,components}/**/*.css'
+                    ],
+                    '<%= config.client %>/healthcheck.jsp': [
                         '<%= config.client %>/{app,components}/**/*.css'
                     ]
                 }

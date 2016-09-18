@@ -62,7 +62,7 @@ public class BootstrapBean {
             PathMatchingResourcePatternResolver r = new PathMatchingResourcePatternResolver();
             return Arrays.asList(r.getResources(classpathResourcePath));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new GetResourcesException(e);
         }
     }
 
@@ -75,4 +75,13 @@ public class BootstrapBean {
         Vardenhet vardenhet = objectMapper.readValue(res.getFile(), Vardenhet.class);
         hsaServiceStub.getVardenhets().add(vardenhet);
     }
+
+    private class GetResourcesException extends RuntimeException {
+
+        GetResourcesException(Exception e) {
+            super(e);
+        }
+
+    }
+
 }

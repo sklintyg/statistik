@@ -30,7 +30,8 @@ public class Vardenhet implements Serializable {
     private HsaIdVardgivare vardgivarId;
     private String vardgivarNamn;
 
-    public Vardenhet() {
+    Vardenhet() {
+        //Not sure if/why this is needed
     }
 
     public Vardenhet(HsaIdEnhet id, String namn, HsaIdVardgivare vardgivarId) {

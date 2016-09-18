@@ -48,6 +48,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
     static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
     private static final int DISPLAYED_DIAGNOSIS_GROUPS = 5;
     static final String DIAGNOS_REST_NAME = "Andra diagnosgrupper";
+    private static final String OVRIGT_CHART_GROUP = "P00-P96, Q00-Q99, S00-Y98 Övrigt";
 
     private static Map<Integer, String> map(Map<String, List<Integer>> diagnosisChartGroups) {
         Map<Integer, String> result = new HashMap<>();
@@ -58,8 +59,6 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
         }
         return result;
     }
-
-    private static final String OVRIGT_CHART_GROUP = "P00-P96, Q00-Q99, S00-Y98 Övrigt";
 
     private static Map<String, List<Integer>> createDiagnosisGroupsMap(boolean includeUnknownGroup) {
         final Map<String, List<Integer>> diagnosisGroups = new LinkedHashMap<>();
@@ -83,8 +82,8 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
 
     DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, FilterSettings filterSettings) {
         TableData tableData = convertTable(diagnosisGroups, "%1$s");
-        ChartData maleChart = convertChart(diagnosisGroups, Kon.Male);
-        ChartData femaleChart = convertChart(diagnosisGroups, Kon.Female);
+        ChartData maleChart = convertChart(diagnosisGroups, Kon.MALE);
+        ChartData femaleChart = convertChart(diagnosisGroups, Kon.FEMALE);
         final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();

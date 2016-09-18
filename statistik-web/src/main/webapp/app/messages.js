@@ -9,7 +9,7 @@ var stMessages = {
         'statistics.hidden-header.landsting-navigering': 'Navigering för landstingsstatistik',
         'statistics.hidden-header.business-navigering': 'Navigering för verksamhetsstatistik',
         'statistics.hidden-header.about-navigering': 'Navigering för information om tjänsten',
-        
+
         //navigation
         'nav.national-header': 'Nationell statistik',
         'nav.landsting-header': 'Landstingsstatistik',
@@ -98,7 +98,7 @@ var stMessages = {
         'national.widget.header.fordelning-sjukskrivningsgrad': 'Fördelning sjukskrivningsgrad',
         'national.widget.header.fordelning-sjukskrivningslangd': 'Fördelning sjukskrivningslängd',
         'national.widget.header.fordelning-lan': 'Fördelning per län',
-        
+
         //business statistics overview
         'business.overview-header': 'Verksamhetsstatistik',
         'business.widget.header.total-antal': 'Totalt antal',
@@ -107,9 +107,8 @@ var stMessages = {
         'business.widget.header.fordelning-aldersgrupper': 'Fördelning åldersgrupper',
         'business.widget.header.fordelning-sjukskrivningsgrad': 'Fördelning sjukskrivningsgrad',
         'business.widget.header.fordelning-sjukskrivningslangd': 'Fördelning sjukskrivningslängd',
-        
+
         //general overview
-        'dropdown.val.oversikt': 'Skriv ut',
         'overview.widget.table.column.diagnosgrupp': 'Diagnosgrupp',
         'overview.widget.table.column.aldersgrupp': 'Åldersgrupp',
         'overview.widget.table.column.sjukskrivningsgrad': 'Sjukskrivningsgrad',
@@ -123,13 +122,11 @@ var stMessages = {
         'lbl.valj-annat-diagnoskapitel': 'Välj diagnoskapitel:',
         'lbl.valj-annat-diagnosavsnitt': 'Välj diagnosavsnitt',
         'lbl.valj-annan-diagnoskategori': 'Välj diagnoskategori',
-        'dropdown.val.rapport': 'Spara/Skriv ut',
-        'dropdown.val.skrivut-farg': ' Skriv ut i färg',
-        'dropdown.val.skrivut-pdf': ' Spara som pdf',
-        'dropdown.val.skrivut-svart-vitt': ' Skriv ut i svartvitt',
-        'dropdown.val.spara-diagram-bild-1': ' Spara ',
-        'dropdown.val.spara-diagram-bild-2': ' som bild',
-        'dropdown.val.spara-excel': ' Spara tabell till Excel',
+        'dropdown.val.rapport': 'Spara som',
+        'dropdown.val.skrivut-pdf': ' PDF',
+        'dropdown.val.spara-diagram-bild-1': ' Bild (',
+        'dropdown.val.spara-diagram-bild-2': ')',
+        'dropdown.val.spara-excel': ' Excel',
         'alert.diagnosgrupp.information': 'För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen M54 och intyg två efter vidare utredning sätter diagnosen F32, så kommer sjukfallet både räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) och i gruppen för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad.',
         'comparediagnoses.lbl.val-av-diagnoser': 'Välj vilken eller vilka diagnoser som din rapport ska baseras på:',
 

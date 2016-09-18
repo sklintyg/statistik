@@ -37,9 +37,12 @@ import java.util.List;
 import java.util.UUID;
 
 public class UtlatandeBuilder {
+
     private static final LocalTime SIGN_TIME_OF_DAY = new LocalTime(7, 7);
     private static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
     private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd'T'hh:mm:ss.SSS");
+    public static final String GRUND_DATA = "grundData";
+    public static final String SKAPAD_AV = "skapadAv";
 
     private final JsonNode template;
 
@@ -63,11 +66,14 @@ public class UtlatandeBuilder {
         return build(patientId, start, end, new HsaIdLakare("Personal HSA-ID"), vardenhet, vardgivare, diagnos, arbetsformaga);
     }
 
+
     //CHECKSTYLE:OFF ParameterNumberCheck
+    @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
     public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdLakare personal, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos, int arbetsformaga) {
         return build(patientId, start, end, personal, vardenhet, vardgivare, diagnos, Collections.singletonList(String.valueOf(arbetsformaga)));
     }
 
+    @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
     public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdLakare personal, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos, List<String> arbetsformaga) {
         return build(patientId, list(start), list(end), personal, vardenhet, vardgivare, diagnos, arbetsformaga);
     }
@@ -76,12 +82,13 @@ public class UtlatandeBuilder {
         return build(person, starts, stops, new HsaIdLakare("personalId"), enhet, vardgivare, diagnos, grads);
     }
 
+    @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
     public JsonNode build(String person, List<LocalDate> starts, List<LocalDate> stops, HsaIdLakare personal, HsaIdEnhet enhet, HsaIdVardgivare vardgivare, String diagnos, List<String> grads) {
         ObjectNode intyg = template.deepCopy();
-        ObjectNode patientIdNode = (ObjectNode) intyg.path("grundData").path("patient");
+        ObjectNode patientIdNode = (ObjectNode) intyg.path(GRUND_DATA).path("patient");
         patientIdNode.put("personId", person);
         LocalDateTime startWithTime = starts.get(0).toLocalDateTime(SIGN_TIME_OF_DAY);
-        ObjectNode signeringsdatumNode = (ObjectNode) intyg.path("grundData");
+        ObjectNode signeringsdatumNode = (ObjectNode) intyg.path(GRUND_DATA);
         signeringsdatumNode.put("signeringsdatum", ISO_FORMATTER.print(startWithTime));
 
         intyg.put("id", UUID.randomUUID().toString());
@@ -90,9 +97,9 @@ public class UtlatandeBuilder {
             addGrad(starts, stops, intyg, grad);
         }
 
-        ((ObjectNode) intyg.path("grundData").path("skapadAv")).put("personId", personal.getId());
-        ((ObjectNode) intyg.path("grundData").path("skapadAv").path("vardenhet")).put("enhetsid", enhet.getId());
-        ((ObjectNode) intyg.path("grundData").path("skapadAv").path("vardenhet").path("vardgivare")).put("vardgivarid", vardgivare.getId());
+        ((ObjectNode) intyg.path(GRUND_DATA).path(SKAPAD_AV)).put("personId", personal.getId());
+        ((ObjectNode) intyg.path(GRUND_DATA).path(SKAPAD_AV).path("vardenhet")).put("enhetsid", enhet.getId());
+        ((ObjectNode) intyg.path(GRUND_DATA).path(SKAPAD_AV).path("vardenhet").path("vardgivare")).put("vardgivarid", vardgivare.getId());
         intyg.put("diagnosKod", diagnos);
 
         return intyg;
@@ -140,7 +147,15 @@ public class UtlatandeBuilder {
             }
             return sb.toString();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ReadTemplateException(e);
         }
     }
+
+    private static class ReadTemplateException extends RuntimeException {
+
+        ReadTemplateException(Exception e) {
+            super(e);
+        }
+    }
+
 }

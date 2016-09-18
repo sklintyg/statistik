@@ -28,6 +28,7 @@ public class ApplicationContextProvider implements ApplicationContextAware {
         return context;
     }
 
+    @Override
     public void setApplicationContext(ApplicationContext ctx) {
         setContext(ctx);
     }

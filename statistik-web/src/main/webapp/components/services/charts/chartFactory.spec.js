@@ -81,7 +81,7 @@ describe('Test of common print services', function() {
 
         it('can add 2 different male colors', function () {
             //given
-            var list = [{id: 1, sex: 'Male'}, {id: 2, sex: 'Male'}];
+            var list = [{id: 1, sex: 'MALE'}, {id: 2, sex: 'MALE'}];
 
             //when
             chartFactory.addColor(list);
@@ -93,7 +93,7 @@ describe('Test of common print services', function() {
 
         it('can add 2 different female colors', function () {
             //given
-            var list = [{id: 1, sex: 'Female'}, {id: 2, sex: 'Female'}];
+            var list = [{id: 1, sex: 'FEMALE'}, {id: 2, sex: 'FEMALE'}];
 
             //when
             chartFactory.addColor(list);
@@ -105,7 +105,7 @@ describe('Test of common print services', function() {
 
         it('set grey color on none sex series', function () {
             //given
-            var list = [{id: 1, sex: 'Male'}, {id: 2, sex: 'Female'}, {id: 2, sex: null}];
+            var list = [{id: 1, sex: 'MALE'}, {id: 2, sex: 'FEMALE'}, {id: 2, sex: null}];
 
             //when
             chartFactory.addColor(list);
@@ -114,11 +114,10 @@ describe('Test of common print services', function() {
             expect(list[0].color).toBe('#008391');
             expect(list[1].color).toBe('#EA8025');
             expect(list[2].color).toBe('#E11964');
-            
-            
-            //when 
+
+            //when
             chartFactory.setColorToTotalCasesSeries(list);
-            
+
             //then
             expect(list[2].color).toBe('#5D5D5D');
         });

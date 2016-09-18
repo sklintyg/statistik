@@ -21,8 +21,9 @@ package se.inera.statistics.service.warehouse;
 import com.google.common.base.Predicate;
 
 import java.util.Arrays;
+import java.util.Set;
 
-public class SjukfallFilter {
+public class FilterPredicates {
 
     public static final String HASH_EMPTY_FILTER = "EMPTY_FILTER";
 
@@ -30,7 +31,7 @@ public class SjukfallFilter {
     private Predicate<Sjukfall> sjukfallFilter;
     private String hash;
 
-    public SjukfallFilter(Predicate<Fact> intygFilter, Predicate<Sjukfall> sjukfallFilter, String hash) {
+    public FilterPredicates(Predicate<Fact> intygFilter, Predicate<Sjukfall> sjukfallFilter, String hash) {
         if (intygFilter == null) {
             throw new IllegalArgumentException("Intygfilter must not be null");
         }
@@ -58,7 +59,8 @@ public class SjukfallFilter {
         return hash;
     }
 
-    public static String getHashValueForEnhets(Object[] numericalIds) {
+    public static String getHashValueForEnhets(Set<Integer> enhetIds) {
+        final Object[] numericalIds = enhetIds.toArray();
         Arrays.sort(numericalIds);
         return Arrays.toString(numericalIds);
     }

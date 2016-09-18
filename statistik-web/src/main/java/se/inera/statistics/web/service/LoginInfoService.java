@@ -38,16 +38,16 @@ import se.inera.statistics.web.model.UserAccessInfo;
 @Path("/login")
 public class LoginInfoService {
 
-    public LoginInfoService() { }
-
     @Autowired
     private LoginServiceUtil loginServiceUtil;
+
+    public LoginInfoService() { }
 
     @GET
     @Path("getLoginInfo")
     @Produces({ MediaType.APPLICATION_JSON })
-    public LoginInfo getLoginInfo(@Context HttpServletRequest request) {
-        return loginServiceUtil.getLoginInfo(request);
+    public LoginInfo getLoginInfo() {
+        return loginServiceUtil.getLoginInfo();
     }
 
     @GET

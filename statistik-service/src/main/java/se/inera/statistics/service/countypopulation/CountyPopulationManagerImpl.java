@@ -48,6 +48,7 @@ import java.util.Optional;
 public class CountyPopulationManagerImpl implements CountyPopulationManagerForTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(CountyPopulationManagerImpl.class);
+    public static final String COUNTY_POPULATION_IS_MISSING = "County population is missing!";
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
@@ -97,10 +98,12 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
             final Map<String, KonField> populationData = mapper.readValue(new StringReader(populationRow.getData()), mapType);
             return new CountyPopulation(populationData, populationRow.getDate());
         } catch (NoResultException e) {
-            LOG.error("County population is missing!");
+            LOG.error(COUNTY_POPULATION_IS_MISSING);
+            LOG.debug(COUNTY_POPULATION_IS_MISSING, e);
             return CountyPopulation.empty();
         } catch (IOException e) {
             LOG.error("Could not parse population data!");
+            LOG.debug("Could not parse population data!", e);
             return CountyPopulation.empty();
         }
     }
@@ -124,7 +127,8 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
             final CountyPopulationRow populationRow = (CountyPopulationRow) query.getSingleResult();
             return Optional.of(populationRow);
         } catch (NoResultException e) {
-            LOG.error("County population is missing!");
+            LOG.error(COUNTY_POPULATION_IS_MISSING);
+            LOG.debug(COUNTY_POPULATION_IS_MISSING, e);
             return Optional.empty();
         }
     }
@@ -145,6 +149,7 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
             return true;
         } catch (JsonProcessingException e) {
             LOG.error("Could not insert county population!");
+            LOG.debug("Could not insert county population!", e);
             return false;
         }
     }

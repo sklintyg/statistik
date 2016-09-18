@@ -76,10 +76,13 @@ subprojects {
         liquibaseVersion = "2.0.5"
         logbackVersion = "1.1.1"
 
-        mysqlConnectorVersion = "5.1.32"
+        mysqlConnectorVersion = "5.1.39"
 
         poiVersion = "3.11"
 
+        restAssuredVersion = "2.9.0"
+
+        stringTemplateVersion = "4.0.8"
         springContextVersion = "4.2.2.RELEASE"
         springSecurityVersion = "4.0.3.RELEASE"
         springSecuritySamlVersion = "1.0.1.RELEASE"
@@ -93,10 +96,11 @@ subprojects {
 
         // Internal
         intygCommonVersion = "3.0.0"
-        intygCommonLoggingVersion = "2.4.0-RC1"
+        intygCommonLoggingVersion = "3.0.0"
 
         // Schemas
         certificateSchemaVersion = "2.0.RC4.2"
+        monitoringSchemaVersion = "1.0.0.0"
 
         // Test
         fitnessVersion = "20151230"
@@ -192,24 +196,48 @@ configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statis
         ignoreFailures = false
         // This is empty b/c we run checkstyle explicitly in the "testAll" task below
         sourceSets = []
-        toolVersion = "6.1"
+        toolVersion = "7.1"
     }
     // Make sure we don't run checkstyle on generated source code
     checkstyleMain.source = "src/main/java"
 
     sourceSets {
-        integrationTest {
+        integrationTests {
             java.srcDir file('src/integTest/java')
             resources.srcDir file('src/integTest/resources')
-            compileClasspath = sourceSets.main.output + sourceSets.test.output + configurations.testRuntime
-            runtimeClasspath = output + compileClasspath
+            compileClasspath += sourceSets.main.output + sourceSets.test.output
+            runtimeClasspath += sourceSets.main.output + sourceSets.test.output
         }
+
+        integrationTest {
+            java.srcDir file('src/integrationTest/java')
+            resources.srcDir file('src/integrationTest/resources')
+            compileClasspath += sourceSets.main.output + sourceSets.test.output
+            runtimeClasspath += sourceSets.main.output + sourceSets.test.output
+        }
+    }
+
+    configurations {
+        integrationTestsCompile.extendsFrom testCompile
+        integrationTestsRuntime.extendsFrom testRuntime
+
+        integrationTestCompile.extendsFrom testCompile
+        integrationTestRuntime.extendsFrom testRuntime
+    }
+
+    task integrationTest(type: Test) {
+        systemProperties['integration.tests.baseUrl'] =  'http://localhost:8080/'
+        outputs.upToDateWhen { false }
+        testClassesDir = sourceSets.integrationTest.output.classesDir
+        classpath = sourceSets.integrationTest.runtimeClasspath
+        reports.html.destination = file("$reports.html.destination/integrationTests")
+        reports.junitXml.destination = file("$reports.junitXml.destination/integrationTests")
     }
 
     task integrationTests(type: Test) {
         outputs.upToDateWhen { false }
-        testClassesDir = sourceSets.integrationTest.output.classesDir
-        classpath = sourceSets.integrationTest.runtimeClasspath
+        testClassesDir = sourceSets.integrationTests.output.classesDir
+        classpath = sourceSets.integrationTests.runtimeClasspath
         reports.html.destination = file("$reports.html.destination/integration")
         reports.junitXml.destination = file("$reports.junitXml.destination/integration")
     }
@@ -271,6 +299,15 @@ if (project.hasProperty('runSonar')) {
                 sonarRunner {
                     sonarProperties {
                         properties["sonar.sources"] -= project(":hsa-integration").generatedJavaDir
+                    }
+                }
+            }
+
+            project(":statistik-web") {
+                sonarRunner {
+                    sonarProperties {
+                        property "sonar.javascript.lcov.reportPath", "$buildDir/karma/coverage/lcov/lcov.info"
+                        property "sonar.sources", "${projectDir}/src/main/resources,${projectDir}/src/main/java,${projectDir}/src/main/webapp/app,${projectDir}/src/main/webapp/components"
                     }
                 }
             }

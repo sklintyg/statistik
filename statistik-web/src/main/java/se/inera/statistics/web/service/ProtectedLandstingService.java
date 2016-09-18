@@ -119,7 +119,7 @@ public class ProtectedLandstingService {
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response fileupload(@Context HttpServletRequest request, MultipartBody body) {
-        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        LoginInfo info = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final LoginInfoVg loginInfoVg = info.getLoginInfoForVg(vgId).orElse(LoginInfoVg.empty());
         final String fallbackUpload = body.getAttachmentObject("fallbackUpload", String.class);
@@ -158,7 +158,7 @@ public class ProtectedLandstingService {
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response clearLandstingEnhets(@Context HttpServletRequest request) {
-        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        LoginInfo info = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         try {
             landstingEnhetHandler.clear(vgId, info.getName(), info.getHsaId());
@@ -182,6 +182,7 @@ public class ProtectedLandstingService {
             return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
                     .header("Content-Disposition", "attachment; filename=\"" + vardgivarId + "_landsting.xlsx\"").build();
         } catch (LandstingFileGenerationException e) {
+            LOG.debug("File generation failed", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not generate excel file").build();
         }
     }
@@ -191,12 +192,13 @@ public class ProtectedLandstingService {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
-    public Response getEmptyLandstingFile(@Context HttpServletRequest request) {
+    public Response getEmptyLandstingFile() {
         try {
             final ByteArrayOutputStream generatedFile = landstingFileWriter.generateExcelFile(Collections.<Enhet>emptyList());
             return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
                     .header("Content-Disposition", "attachment; filename=\"mall_landsting.xlsx\"").build();
         } catch (LandstingFileGenerationException e) {
+            LOG.debug("Empty file generation failed", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could generate empty landsting excel file").build();
         }
     }
@@ -232,7 +234,7 @@ public class ProtectedLandstingService {
             final LandstingEnhetUpdate update = lastUpdateInfo.get();
             final LandstingEnhetUpdateOperation operation = update.getOperation();
             String dateTime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date(update.getTimestamp().getTime()));
-            return operation.getMessage() + (LandstingEnhetUpdateOperation.Update.equals(operation) ? " (" + update.getFilename() + ")" : "") + " - " + dateTime + " av " + update.getUpdatedByName() + " (" + update.getUpdatedByHsaid() + ")";
+            return operation.getMessage() + (LandstingEnhetUpdateOperation.UPDATE.equals(operation) ? " (" + update.getFilename() + ")" : "") + " - " + dateTime + " av " + update.getUpdatedByName() + " (" + update.getUpdatedByHsaid() + ")";
         }
         return "Ingen";
     }
@@ -278,7 +280,7 @@ public class ProtectedLandstingService {
     }
 
     private List<HsaIdEnhet> getEnhetIdsToMark(@Context HttpServletRequest request) {
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         if (loginInfo.getLoginInfoForVg(vgId).map(LoginInfoVg::isProcessledare).orElse(false)) {
             return Collections.emptyList();
@@ -325,7 +327,7 @@ public class ProtectedLandstingService {
             return false;
         }
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        return loginServiceUtil.getLoginInfo(request).getLoginInfoForVg(vg).map(LoginInfoVg::isLandstingAdmin).orElse(false);
+        return loginServiceUtil.getLoginInfo().getLoginInfoForVg(vg).map(LoginInfoVg::isLandstingAdmin).orElse(false);
     }
 
     public boolean hasAccessToLandsting(HttpServletRequest request) {
@@ -333,11 +335,11 @@ public class ProtectedLandstingService {
             return false;
         }
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        return loginServiceUtil.getLoginInfo(request).getLoginInfoForVg(vg).map(LoginInfoVg::isLandstingsvardgivare).orElse(false);
+        return loginServiceUtil.getLoginInfo().getLoginInfoForVg(vg).map(LoginInfoVg::isLandstingsvardgivare).orElse(false);
     }
 
     public boolean userAccess(HttpServletRequest request) {
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         LOG.info("User " + loginInfo.getHsaId() + " accessed vg " + vgId + " (" + getUriSafe(request) + ") session " + request.getSession().getId());
         return true;

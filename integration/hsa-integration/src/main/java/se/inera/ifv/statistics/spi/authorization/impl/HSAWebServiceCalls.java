@@ -61,8 +61,6 @@ public class HSAWebServiceCalls {
 
     /**
      * Help method to test access to HSA.
-     *
-     * @throws Exception
      */
     public void callPing() {
 
@@ -71,7 +69,7 @@ public class HSAWebServiceCalls {
             PingResponseType response = serverInterface.ping(logicalAddressHeader, messageId, pingtype);
             LOG.debug("Response:" + response.getMessage());
 
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             LOG.warn("Exception={}", ex.getMessage(), ex);
             throw new HsaCommunicationException("Could not call ping", ex);
         }
@@ -86,8 +84,9 @@ public class HSAWebServiceCalls {
         } catch (HsaWsFault hsaWsFault) {
             HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
             LOG.error("Could not call getStatisticsCareGiver for {} hsaWsFault ({}, {}). {}", careGiverId, faultInfo.getCode(), faultInfo.getMessage(), hsaWsFault.getMessage());
+            LOG.debug("getStatisticsCareGiver fault", hsaWsFault);
             return null;
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             throw new HsaCommunicationException("Could not call getStatisticsCareGiver for " + careGiverId, ex);
         }
     }
@@ -102,8 +101,9 @@ public class HSAWebServiceCalls {
         } catch (HsaWsFault hsaWsFault) {
             HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
             LOG.error("Could not call getStatisticsHsaUnit for {} hsaWsFault ({}, {}). {}", unitId, faultInfo.getCode(), faultInfo.getMessage(), hsaWsFault.getMessage());
+            LOG.debug("getStatisticsHsaUnit fault", hsaWsFault);
             return null;
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             throw new HsaCommunicationException("Could not call getStatisticsHsaUnit for " + unitId, ex);
         }
     }
@@ -117,8 +117,9 @@ public class HSAWebServiceCalls {
         } catch (HsaWsFault hsaWsFault) {
             HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
             LOG.error("Could not call getStatisticsPerson for {} hsaWsFault ({}, {}). {}", personId, faultInfo.getCode(), faultInfo.getMessage(), hsaWsFault.getMessage());
+            LOG.debug("getStatisticsPerson fault", hsaWsFault);
             return null;
-        } catch (Throwable ex) {
+        } catch (Exception ex) {
             throw new HsaCommunicationException("Could not call getStatisticsPerson for " + personId, ex);
         }
     }
@@ -134,8 +135,9 @@ public class HSAWebServiceCalls {
         } catch (HsaWsFault hsaWsFault) {
             HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
             LOG.error("Could not call getStatisticsNames for {} hsaWsFault ({}, {}). {}", personId, faultInfo.getCode(), faultInfo.getMessage(), hsaWsFault.getMessage());
+            LOG.debug("getStatisticsNames fault", hsaWsFault);
             return null;
-        } catch (Throwable ex) {
+            } catch (Exception ex) {
             throw new HsaCommunicationException("Could not call getStatisticsPerson for " + personId, ex);
         }
     }

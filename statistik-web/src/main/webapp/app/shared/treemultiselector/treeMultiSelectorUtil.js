@@ -20,7 +20,7 @@ angular.module('StatisticsApp.treeMultiSelector.util', ['underscore'])
     .factory('treeMultiSelectorUtil', ['_',
         function (_) {
             'use strict';
-            
+
             var externalApi = {};
 
             externalApi.updateSelectionState = function (item) {

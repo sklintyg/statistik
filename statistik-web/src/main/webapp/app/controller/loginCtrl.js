@@ -21,7 +21,7 @@ angular.module('StatisticsApp').controller('loginCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $uibModal) {
         'use strict';
-        
+
         $scope.isLoggedIn = $rootScope.isLoggedIn;
 
         $scope.open = function () {

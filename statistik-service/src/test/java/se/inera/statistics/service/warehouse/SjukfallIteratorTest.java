@@ -27,8 +27,10 @@ import se.inera.statistics.service.report.model.Range;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class SjukfallIteratorTest {
 
@@ -64,4 +66,36 @@ public class SjukfallIteratorTest {
         //Then
         assertEquals(false, hasNext);
     }
+
+    @Test
+    public void testNextThrowsNoSuchElementExceptionIfTheIterationHasNoMoreElementsAccordingToContract() throws Exception {
+        //Given
+        final LocalDate fromDate = new LocalDate(2015, 1, 1);
+        final int periodSize = 1;
+        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize, new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER, false){
+            @Override
+            SjukfallCalculator getSjukfallCalculator(Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart, List<Range> ranges) {
+                return Mockito.mock(SjukfallCalculator.class);
+            }
+        };
+
+        //When and then
+        try {
+            sjukfallIterator.next();
+        } catch (NoSuchElementException e) {
+            fail("Should not fail yet, there are still elements left");
+        }
+        try {
+            sjukfallIterator.next();
+        } catch (NoSuchElementException e) {
+            fail("Should not fail yet, there are still elements left");
+        }
+        try {
+            sjukfallIterator.next();
+        } catch (NoSuchElementException e) {
+            return; //Success, there are no more elements left
+        }
+        fail("Should have failed at last call to next(), there are no elements left");
+    }
+
 }

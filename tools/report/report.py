@@ -31,6 +31,7 @@ DBUSER = 'root'
 DBNAME = 'statistik'
 DBHOST = 'mysql.ip20.nordicmedtest.se'
 STANDARD_INTERVALL = '2016-01-01:2016-12-31'
+DUMP_FILE = 'statistik_dump.txt'
 
 
 def usage():
@@ -48,6 +49,7 @@ Filter:
                      YYYY-MM-DD:YYYY-MM-DD
     -v <hsaid>       Vårdgivare ID
     -c <hsaid>       Vårdenhet ID
+    -8 <lanskod>     Länskod (2siffror)
     -t               Använd tröskelvärde (%s) för vårdgivare and man/kvinna
 
 Gruppera på:
@@ -111,7 +113,7 @@ def get_caregiver_id_from_user(host, password, dbname):
         print exc
         raise
 
-def get_data(file_name, start, end, caregiver, careunit, host, password, dbname):
+def get_data(file_name, start, end, caregiver, careunit,lanskod, host, password, dbname):
     ''' Extracts data from the database and stores it to file_name '''
 
     # Start nedan är antalet dagar efter 2000 som är en tidräkning som statistiktjänsten använder sig av i databasen.
@@ -128,7 +130,11 @@ def get_data(file_name, start, end, caregiver, careunit, host, password, dbname)
     elif careunit:
         print "INFO: Hämtar data för vårdenhet %s" % careunit
         sql_cmd += "and w.enhet='%s'" % careunit
-        sql_cmd += '"'
+
+    elif lanskod:
+        print "INFO: Hämtar data för län %s" % lanskod
+        sql_cmd += "and lkf LIKE '%s%%'" % lanskod
+
     sql_cmd += '"'
 
     cmd = ['ssh', '-q', 'nmt@%s' % host, sql_cmd]
@@ -156,15 +162,16 @@ def main(argv):
     end_interval = None
     interval = None
     rule = None
-    result_file = None
+    dump_file = DUMP_FILE
     caregiver = None
     careunit = None
+    lanskod = None
     db_host = None
     db_password = None
     db_name = None
     make_dbdump = None
 
-    opts, args = getopt.getopt(argv, "tdapglni:ekKL:hsE:Nj:9:v:c:w:b:q:",['dump'])
+    opts, args = getopt.getopt(argv, "tdapglni:ekKL:hsE:Nj:9:v:8:c:w:b:q:",['dump'])
     for opt, arg in opts:
         if opt == '-t':
             threshold = True
@@ -208,8 +215,8 @@ def main(argv):
             return usage()
         elif opt == '--dump':
             make_dbdump = 1
-        # elif opt == '-f':
-        #     result_file = arg
+        elif opt == '-f':
+            dump_file = arg
         elif opt == '-q':
             db_name = arg
         elif opt == '-b':
@@ -218,6 +225,8 @@ def main(argv):
             db_password = arg
         elif opt == '-v':
             caregiver = arg
+        elif opt == '-8':
+            lanskod = arg
         elif opt == '-c':
             careunit = arg
     if not interval:
@@ -261,10 +270,11 @@ def main(argv):
 
         if not caregiver:
             if not careunit:
-                print "INFO: Vårdgivare eller vårdenhet ej angiven"
-                caregiver = get_caregiver_id_from_user(db_host, db_password, db_name)
+                if not lanskod:
+                    print "INFO: Vårdgivare, vårdenhet eller länskod ej angiven"
+                    caregiver = get_caregiver_id_from_user(db_host, db_password, db_name)
 
-        get_data(result_file, start_interval, end_interval, caregiver, careunit, db_host, db_password, db_name)
+        get_data(dump_file, start_interval, end_interval, caregiver, careunit,lanskod, db_host, db_password, db_name)
         return
 
     if rule is None:
@@ -273,7 +283,7 @@ def main(argv):
         return
 
     # Read the column names, must be first line
-    with open('result.txt', 'rb') as f:
+    with open(dump_file, 'rb') as f:
         wideline = Wideline(f.readline())
         # wideline = sys.stdin.readline()
 

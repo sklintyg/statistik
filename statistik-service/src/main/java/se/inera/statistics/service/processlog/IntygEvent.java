@@ -47,6 +47,7 @@ public class IntygEvent {
      * Empty constructor (as required by JPA spec).
      */
     public IntygEvent() {
+        // Empty constructor (as required by JPA spec).
     }
 
     public IntygEvent(EventType type, String data, String correlationId, long timestamp) {

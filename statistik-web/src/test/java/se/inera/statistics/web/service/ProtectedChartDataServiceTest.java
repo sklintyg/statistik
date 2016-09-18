@@ -85,7 +85,7 @@ public class ProtectedChartDataServiceTest {
 
     @Test
     public void checkDeniedAccessToVerksamhetTest() {
-        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo());
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo());
         boolean result = chartDataService.hasAccessTo(request);
         assertEquals(false, result);
     }
@@ -95,7 +95,7 @@ public class ProtectedChartDataServiceTest {
         //Given
         final HsaIdVardgivare testvg = new HsaIdVardgivare("testvg");
         final List<LoginInfoVg> loginInfoVgs = Collections.singletonList(new LoginInfoVg(testvg, "", LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITHOUT_UPLOAD, new UserAccessLevel(false, 2)));
-        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new HsaIdUser("testid"), "", Lists.newArrayList(), loginInfoVgs));
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(new HsaIdUser("testid"), "", Lists.newArrayList(), loginInfoVgs));
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(request)).thenReturn(testvg);
 
         //When
@@ -107,7 +107,7 @@ public class ProtectedChartDataServiceTest {
 
     @Test
     public void userAccessShouldLog() {
-        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList()));
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList()));
         chartDataService.userAccess(request);
     }
 

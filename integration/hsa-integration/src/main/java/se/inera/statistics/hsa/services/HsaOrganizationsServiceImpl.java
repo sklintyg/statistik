@@ -69,11 +69,7 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
             LOG.debug("User with HSA-Id " + hosPersonHsaId + " has " + response.size() + " medarbetaruppdrag");
 
             for (CredentialInformationType info : response) {
-                for (CommissionType commissionType : info.getCommission()) {
-                    if (Medarbetaruppdrag.STATISTIK.equalsIgnoreCase(commissionType.getCommissionPurpose())) {
-                        vardenhetList.add(new Vardenhet(new HsaIdEnhet(commissionType.getHealthCareUnitHsaId()), commissionType.getHealthCareUnitName(), new HsaIdVardgivare(commissionType.getHealthCareProviderHsaId()), commissionType.getHealthCareProviderName()));
-                    }
-                }
+                vardenhetList.addAll(getAllVardenhetsWithMuWithStatistikPurpose(info));
                 systemRoles.addAll(info.getHsaSystemRole().stream().map(sr -> sr.getSystemId() + ";" + sr.getRole()).collect(Collectors.toList()));
             }
             vardenhetList = vardenhetList.stream().distinct().sorted(veComparator).collect(Collectors.toList());
@@ -81,6 +77,16 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
         LOG.debug("User with HSA-Id " + hosPersonHsaId + " has active 'Statistik' for " + vardenhetList.size() + " enheter");
 
         return new UserAuthorization(vardenhetList, systemRoles);
+    }
+
+    private List<Vardenhet> getAllVardenhetsWithMuWithStatistikPurpose(CredentialInformationType info) {
+        List<Vardenhet> enhets = new ArrayList<>();
+        for (CommissionType commissionType : info.getCommission()) {
+            if (Medarbetaruppdrag.STATISTIK.equalsIgnoreCase(commissionType.getCommissionPurpose())) {
+                enhets.add(new Vardenhet(new HsaIdEnhet(commissionType.getHealthCareUnitHsaId()), commissionType.getHealthCareUnitName(), new HsaIdVardgivare(commissionType.getHealthCareProviderHsaId()), commissionType.getHealthCareProviderName()));
+            }
+        }
+        return enhets;
     }
 
     private final class VardenhetComparator implements Comparator<Vardenhet> {

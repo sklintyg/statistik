@@ -37,9 +37,6 @@ public class LoginVisibility {
     @Autowired(required = true)
     private HttpServletRequest httpServletRequest;
 
-    public LoginVisibility() {
-    }
-
     public boolean isLoginVisible() {
         @SuppressWarnings("unchecked")
         Enumeration<String> headers = httpServletRequest.getHeaders(hideParamName);

@@ -59,8 +59,8 @@ public class Icd10Test {
     }
 
     @Test
-    public void kapitel22HasCorrectNameAndRange() {
-        Kapitel kapitel = icd10.getKapitel(true).get(21);
+    public void kapitelZHasCorrectNameAndRange() {
+        Kapitel kapitel = icd10.getKapitel(true).stream().filter(k -> k.getId().startsWith("Z")).findFirst().orElse(null);
         assertEquals("Z00-Z99", kapitel.getId());
         assertEquals("Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården", kapitel.getName());
     }

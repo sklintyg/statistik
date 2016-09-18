@@ -29,6 +29,7 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -52,13 +53,30 @@ public class EnhetManager {
                 return hsaId.getId();
             }
         }));
-        return query.getResultList();
+        final List resultList = query.getResultList();
+        return getEnhetsFromResultList(resultList);
     }
 
     public List<Enhet> getAllEnhetsForVardgivareId(HsaIdVardgivare vgId) {
         final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.vardgivareId = :vgId");
         query.setParameter("vgId", vgId.getId());
-        return query.getResultList();
+        final List resultList = query.getResultList();
+        return getEnhetsFromResultList(resultList);
+    }
+
+    private List<Enhet> getEnhetsFromResultList(List resultList) {
+        if (resultList == null) {
+            return Collections.emptyList();
+        }
+        final List<Enhet> enhets = new ArrayList<>();
+        for (Object o : resultList) {
+            if (o instanceof Enhet) {
+                enhets.add((Enhet) o);
+            } else {
+                LOG.error("Wrong enhet type found");
+            }
+        }
+        return enhets;
     }
 
 }
