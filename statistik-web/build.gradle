@@ -1,14 +1,16 @@
 buildscript {
     dependencies {
-        classpath 'com.moowork.gradle:gradle-grunt-plugin:0.10'
         classpath 'org.akhikhl.gretty:gretty:1.2.4' //Will be using springLoadedVersion:1.2.4.RELEASE due to "https://github.com/spring-projects/spring-loaded/issues/122", defined in gradle.properties
     }
 }
 
+plugins {
+    id "com.moowork.grunt" version "0.12"
+    id "com.moowork.node" version "0.12"
+}
 
 apply plugin: 'war'
 apply plugin: 'idea'
-apply plugin: 'com.moowork.grunt'
 apply plugin: 'org.akhikhl.gretty'
 
 description = 'Inera Statistics Service - Web Module'
