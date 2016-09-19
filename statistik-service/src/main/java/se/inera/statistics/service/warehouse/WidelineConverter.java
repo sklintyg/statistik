@@ -275,9 +275,16 @@ public class WidelineConverter {
         checkAge(errors, line.getAlder());
         checkField(errors, line.getCorrelationId(), "CorrelationId", MAX_LENGTH_CORRELATION_ID);
         checkSjukskrivningsgrad(errors, line.getSjukskrivningsgrad());
-        checkStartdatum(errors, line.getStartdatum());
-        checkSlutdatum(errors, line.getSlutdatum());
+        checkDates(errors, line.getStartdatum(), line.getSlutdatum());
         return errors;
+    }
+
+    private void checkDates(List<String> errors, int startdatum, int slutdatum) {
+        checkStartdatum(errors, startdatum);
+        checkSlutdatum(errors, slutdatum);
+        if (startdatum > slutdatum) {
+            errors.add("Illegal dates. Start date (" + startdatum + ") must be before end date (" + slutdatum + ")");
+        }
     }
 
     private void checkAge(List<String> errors, int alder) {

@@ -9,11 +9,6 @@
   <iso:ns prefix="gn" uri="urn:riv:clinicalprocess:healthcond:certificate:2"/>
   <iso:ns prefix="tp" uri="urn:riv:clinicalprocess:healthcond:certificate:types:2"/>
 
-  <iso:include href='types.sch#non-empty-string-pattern'/>
-  <iso:include href='types.sch#cv-pattern'/>
-  <iso:include href='types.sch#date-pattern'/>
-  <iso:include href='types.sch#period-pattern'/>
-
   <iso:pattern id="intyg">
     <iso:rule context="//rg:intyg/gn:patient/gn:person-id"> 
       <iso:assert test="matches(normalize-space(tp:extension), '(.*[0-9]{6}.?[0-9]{4}.*)')">
@@ -22,7 +17,7 @@
     </iso:rule>
 
     <iso:rule context="//rg:intyg/gn:skapadAv/gn:enhet/gn:enhets-id/tp:extension">
-      <iso:extends rule="non-empty-string"/>
+      <iso:assert test="string-length(normalize-space(text())) > 0">Sträng kan inte vara tom.</iso:assert>
     </iso:rule>
 
     <iso:rule context="//rg:intyg">
@@ -42,7 +37,10 @@
 
   <iso:pattern id="q32.1">
     <iso:rule context="//gn:delsvar[@id='32.1']">
-      <iso:extends rule="cv"/>
+      <iso:assert test="count(tp:cv) = 1">Ett värde av typen CV måste ha ett cv-element</iso:assert>
+      <iso:assert test="count(tp:cv/tp:codeSystem) = 1">codeSystem är obligatoriskt</iso:assert>
+      <iso:assert test="count(tp:cv/tp:code) = 1">code är obligatoriskt</iso:assert>
+      <iso:assert test="count(tp:cv/tp:displayName) le 1">högst ett displayName kan anges</iso:assert>
       <iso:assert test="tp:cv/tp:codeSystem = 'KV_FKMU_0003'">'codeSystem' måste vara 'KV_FKMU_0003'.</iso:assert>
       <iso:assert test="matches(normalize-space(tp:cv/tp:code), '^[1-4]$')">
         'Sjukskrivningsnivå' kan ha ett av värdena 1, 2, 3 eller 4.
@@ -52,7 +50,9 @@
 
   <iso:pattern id="q32.2">
     <iso:rule context="//gn:delsvar[@id='32.2']">
-      <iso:extends rule="period"/>
+      <iso:assert test="tp:datePeriod">En period måste inneslutas av ett 'datePeriod'-element</iso:assert>
+      <iso:assert test="tp:datePeriod/tp:start castable as xs:date">'from' måste vara ett giltigt datum.</iso:assert>
+      <iso:assert test="tp:datePeriod/tp:end castable as xs:date">'tom' måste vara ett giltigt datum.</iso:assert>
     </iso:rule>
   </iso:pattern>
 
