@@ -40,6 +40,7 @@ dependencies {
     compile "se.inera.intyg.common:logging-util:${intygCommonLoggingVersion}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${jacksonJodaTimeVersion}"
     compile "se.inera.intyg.common:hsa-integration:${intygCommonVersion}"
+    compile "com.helger:ph-schematron:${schematronVersion}"
 
     testCompile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     testCompile "org.apache.activemq:activemq-spring:${activeMqVersion}"

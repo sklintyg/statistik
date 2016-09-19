@@ -59,8 +59,8 @@ class FoljandeIntygFinns {
         huvudenhet = null
         intygstyp = "fk7263"
         enhetsnamn = null
-        funktionsnedsättning = ""
-        aktivitetsbegränsning = ""
+        funktionsnedsättning = "Default funktionsnedsattning"
+        aktivitetsbegränsning = "Default arbetsbegransning"
     }
 
     public void execute() {

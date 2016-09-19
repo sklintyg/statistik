@@ -263,29 +263,32 @@ public class RegisterCertificateHelper {
                 Node node = (Node) o;
                 NodeList list = node.getChildNodes();
                 for (int i = 0; i < list.getLength(); i++) {
+                    if (Node.ELEMENT_NODE != list.item(i).getNodeType()) {
+                        continue;
+                    }
                     String textContent = list.item(i).getTextContent();
-                    switch (list.item(i).getNodeName()) {
-                    case "ns3:code":
-                        cvType.setCode(textContent);
-                        break;
-                    case "ns3:codeSystem":
-                        cvType.setCodeSystem(textContent);
-                        break;
-                    case "ns3:codeSystemVersion":
-                        cvType.setCodeSystemVersion(textContent);
-                        break;
-                    case "ns3:codeSystemName":
-                        cvType.setCodeSystemName(textContent);
-                        break;
-                    case "ns3:displayName":
-                        cvType.setDisplayName(textContent);
-                        break;
-                    case "ns3:originalText":
-                        cvType.setOriginalText(textContent);
-                        break;
-                    default:
-                        LOG.debug("Unexpected element found while parsing CVType");
-                        break;
+                    switch (list.item(i).getLocalName()) {
+                        case "code":
+                            cvType.setCode(textContent);
+                            break;
+                        case "codeSystem":
+                            cvType.setCodeSystem(textContent);
+                            break;
+                        case "codeSystemVersion":
+                            cvType.setCodeSystemVersion(textContent);
+                            break;
+                        case "codeSystemName":
+                            cvType.setCodeSystemName(textContent);
+                            break;
+                        case "displayName":
+                            cvType.setDisplayName(textContent);
+                            break;
+                        case "originalText":
+                            cvType.setOriginalText(textContent);
+                            break;
+                        default:
+                            LOG.debug("Unexpected element found while parsing CVType");
+                            break;
                     }
                 }
                 if (cvType.getCode() == null || cvType.getCodeSystem() == null) {
@@ -316,17 +319,20 @@ public class RegisterCertificateHelper {
                 Node node = (Node) o;
                 NodeList list = node.getChildNodes();
                 for (int i = 0; i < list.getLength(); i++) {
+                    if (Node.ELEMENT_NODE != list.item(i).getNodeType()) {
+                        continue;
+                    }
                     String textContent = list.item(i).getTextContent();
-                    switch (list.item(i).getNodeName()) {
-                    case "ns3:start":
-                        datePeriodType.setStart(new LocalDate(textContent));
-                        break;
-                    case "ns3:end":
-                        datePeriodType.setEnd(new LocalDate(textContent));
-                        break;
-                    default:
-                        LOG.debug("Unexpected element found while parsing DatePeriodType");
-                        break;
+                    switch (list.item(i).getLocalName()) {
+                        case "start":
+                            datePeriodType.setStart(LocalDate.parse(textContent));
+                            break;
+                        case "end":
+                            datePeriodType.setEnd(LocalDate.parse(textContent));
+                            break;
+                        default:
+                            LOG.debug("Unexpected element found while parsing DatePeriodType");
+                            break;
                     }
                 }
                 if (datePeriodType.getStart() == null || datePeriodType.getEnd() == null) {

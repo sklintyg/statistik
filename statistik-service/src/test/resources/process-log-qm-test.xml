@@ -27,6 +27,7 @@
         >
 
     <context:component-scan base-package="se.inera.statistics.service.processlog"/>
+    <context:component-scan base-package="se.inera.statistics.service.schemavalidation"/>
 
     <bean class="se.inera.statistics.service.hsa.HSADecorator"/>
 

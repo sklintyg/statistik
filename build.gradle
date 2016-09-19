@@ -83,6 +83,9 @@ subprojects {
         restAssuredVersion = "2.9.0"
 
         stringTemplateVersion = "4.0.8"
+
+        schematronVersion = "4.1.0"
+
         springContextVersion = "4.2.2.RELEASE"
         springSecurityVersion = "4.0.3.RELEASE"
         springSecuritySamlVersion = "1.0.1.RELEASE"
