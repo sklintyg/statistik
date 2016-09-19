@@ -12,7 +12,7 @@ I Blekinge finns följande sjukfall: 1 man (som samtidigt har ett sjukfall i Sto
 | Enbart foljande intyg finns|
 | personnr | diagnoskod | start    | slut       | enhet  | län |
 | 19790618-9282 | G01 | 2014-02-05 | 2014-02-06 | enhet1 | 01  |
-| 19790709-9282 | Goj | 2014-02-05 | 2014-02-02 | enhet1 | 01  |
+| 19790709-9282 | Goj | 2014-02-05 | 2014-02-07 | enhet1 | 01  |
 | 19790709-9282 | Xor | 2014-03-05 | 2014-04-20 | enhet1 | 01  |
 | 19791020-9290 | G01 | 2014-02-11 | 2014-02-12 | enhet1 | 01  |
 | 19790918-9230 | G01 | 2014-02-11 | 2014-02-12 | enhet1 | 01  |

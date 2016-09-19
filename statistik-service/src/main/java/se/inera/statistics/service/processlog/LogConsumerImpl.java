@@ -28,13 +28,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HsaInfo;
+import se.inera.statistics.service.schemavalidation.SchemaValidator;
+import se.inera.statistics.service.schemavalidation.ValidateXmlResponse;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 @Component
 public class LogConsumerImpl implements LogConsumer {
@@ -52,6 +54,9 @@ public class LogConsumerImpl implements LogConsumer {
 
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
+
+    @Autowired
+    private SchemaValidator schemaValidator;
 
     private volatile boolean isRunning = false;
 
@@ -89,12 +94,19 @@ public class LogConsumerImpl implements LogConsumer {
     private boolean handleEvent(IntygEvent event, IntygFormat format) {
         switch (format) {
             case REGISTER_MEDICAL_CERTIFICATE:
-                if (!processJsonMedicalCertificate(event)) {
+                final boolean successfullyProcessedJson = processJsonMedicalCertificate(event);
+                if (!successfullyProcessedJson) {
                     return false;
                 }
                 break;
             case REGISTER_CERTIFICATE:
-                if (!processXmlCertificate(event)) {
+                final ValidateXmlResponse validation = schemaValidator.validate(event.getData());
+                if (!validation.isValid()) {
+                    LOG.warn("Register certificate validation failed: " + validation.getValidationErrors()); //TODO Kontrollera att det här blir snyggt i loggen
+                    return false;
+                }
+                final boolean successfullyProcessedXml = processXmlCertificate(event);
+                if (!successfullyProcessedXml) {
                     return false;
                 }
                 break;
