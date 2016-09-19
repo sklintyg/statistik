@@ -24,7 +24,7 @@
 </head>
 <body ng-app="showcase">
   <h1>Statistik komponenter showcase</h1>
-  <a ng-href='#/showcase.bootstrap'>Bootstrap komponenter</a> | <a ng-href='#/showcase.navigation'>Navigation</a> | <a ng-href='#/showcase.bootstrap'>Övriga komponenter</a>
+  <a ng-href='#/showcase.bootstrap'>Bootstrap komponenter</a> | <a ng-href='#/showcase.navigation'>Navigation</a> | <a ng-href='#/showcase.statistik'>Övriga komponenter</a>
 
 
   <div ng-view id="view"></div>
@@ -55,18 +55,13 @@
   <script src="../../bower_components/rgb-color/rgb-color.js"></script>
   <script src="../../bower_components/canvg-gabelerner/canvg.js"></script>
   <!-- endbower -->
-
   <script type="text/javascript" src="../../bower_components/angular-mocks/angular-mocks.js"></script>
+
 <!-- in pubapp-->
   <script type="text/javascript" src="ref.app.js"></script>
   <script type="text/javascript" src="ref.app.routes.js"></script>
   
   <!-- build:js({build/.tmp,src/main/webapp}) /app/showcase.js -->
-<!--   <script type="text/javascript" src="/pubapp/index-app.main.js"></script> -->
-
-<!--   <script type="text/javascript" src="/app/app.value.js"></script> -->
-<!-- from statistik-web-->
-  <!-- injector:js -->
   <script type="text/javascript" src="/app/app.underscore.js"></script>
   <script src="/app/controller/about/aboutFaqCtrl.js"></script>
   <script src="/app/controller/business/businessOverviewCtrl.js"></script>
@@ -124,10 +119,10 @@
   <script src="/components/services/pdfOverviewFactory.js"></script>
   <script src="/components/services/recursion/recursion.service.js"></script>
   <script src="/components/utils/common.js"></script>
+  <!-- endbuild -->
   
     <script type="text/javascript" src="views/bootstrap.controller.js"></script>
   <script type="text/javascript" src="views/navigation.controller.js"></script>
-  <script type="text/javascript" src="views/sjukfall.controller.js"></script>
-
+  <script type="text/javascript" src="views/statistik.controller.js"></script>
 </body>
 </html>
