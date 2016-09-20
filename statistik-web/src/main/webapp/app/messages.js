@@ -122,6 +122,7 @@ var stMessages = {
         'lbl.valj-annat-diagnoskapitel': 'Välj diagnoskapitel:',
         'lbl.valj-annat-diagnosavsnitt': 'Välj diagnosavsnitt',
         'lbl.valj-annan-diagnoskategori': 'Välj diagnoskategori',
+        'button.label.save-as-pdf': 'Spara som PDF',
         'dropdown.val.rapport': 'Spara som',
         'dropdown.val.skrivut-pdf': ' PDF',
         'dropdown.val.spara-diagram-bild-1': ' Bild (',
