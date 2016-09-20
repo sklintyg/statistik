@@ -18,9 +18,9 @@
  */
 
 angular.module('showcase').controller('showcase.StatistikCtrl',
-        [ '$scope', '$window', function($scope, $window) {
+        [ '$scope', function($scope) {
             'use strict';
-            $scope.headerRows = [[{text:'Rubrik 1'},{text:"Rubrik 2"}]]; 
+            $scope.headerRows = [[{text:'Rubrik 1'},{text:'Rubrik 2'}, {text:'Rubrik 3'}]];
             $scope.rows = [{
             	  name: 'Rad 1',
             	  data: [1,2]
@@ -29,24 +29,12 @@ angular.module('showcase').controller('showcase.StatistikCtrl',
             	  data: [3,4]
             	}];
             $scope.activeSjukskrivningslangdsFilters=['1 vecka', '2 veckor'];
+            $scope.businesses = [
+                {name : 'Enhet 1'},
+                {name : 'Enhet 2'}
+            ];
             
-            $scope.headerRows = [[{text:'Rubrik 1'},{text:"Rubrik 2"}, {text:"Rubrik 3"}]]; 
-            $scope.rows = [{
-            	  name: 'Rad 1',
-            	  data: [1,2]
-            	},{
-            	  name: 'Rad 2',
-            	  data: [3,4]
-            	}];
-            $scope.activeSjukskrivningslangdsFilters=['1 vecka', '2 veckor'];
-            $scope.businesses = new Array();
-            var data1 = {name : "Enhet 1"};
-            var data2 = {name : "Enhet 2"};
-            $scope.businesses = [];
-            $scope.businesses.push(data1);
-            $scope.businesses.push(data2);
-            
-            $scope.isCollapsed = true;
-      
-
+            $scope.status = {
+                isTableOpen: true
+            };
         } ]);

@@ -17,8 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* global window */
-
 (function() {
     'use strict';
 
@@ -38,8 +36,6 @@
     	     'ui.bootstrap',
     	     'underscore',
     	     'StatisticsApp.constants',
-    	     'StatisticsApp.treeMultiSelector',
-    	     'StatisticsApp.businessFilter',
     	     'dropzone',
     	     'ngStorage']);
 
@@ -65,7 +61,7 @@
     
     // Inject language resources
     app.run(['$rootScope', '$httpBackend',
-        function($rootScope, $httpBackend, UserModel) {
+        function($rootScope, $httpBackend) {
             $rootScope.lang = 'sv';
             $rootScope.DEFAULT_LANG = 'sv';
 

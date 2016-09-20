@@ -31,7 +31,7 @@
 </div>
 
 
-<div class="showcase-directive-group">
+<div class="showcase-directive-group" id="chart-content">
 	<h2>overviewWidget</h2>
 	<overview-widget
 		title-key="national.widget.header.fordelning-diagnosgrupper"
@@ -44,17 +44,17 @@
 </div>
 
 
-<div class="showcase-directive-group">
+<div class="showcase-directive-group" id="chart-data-table">
 <h2>statScrollTable</h2>
-<uib-accordion id="accordion2"> <uib-accordion-group
-	is-open="status.isTableOpen"> <uib-accordion-heading
-	class="hidden-print"> <span
-	data-ng-if="status.isTableOpen"><i
-	class="glyphicon chart-table-min-icon"></i> <span message
-	key="lbl.dolj-tabell"></span></span> <span data-ng-if="!status.isTableOpen"><i
-	class="glyphicon chart-table-expand-icon"></i> <span message
-	key="lbl.visa-tabell"></span></span> </uib-accordion-heading> <stat-scroll-table
-	header-rows="headerRows" rows="rows"></stat-scroll-table> </uib-accordion-group> </uib-accordion>
+<uib-accordion id="accordion2">
+	<uib-accordion-group is-open="status.isTableOpen">
+		<uib-accordion-heading class="hidden-print">
+			<span data-ng-if="status.isTableOpen"><i class="glyphicon chart-table-min-icon"></i> <span message key="lbl.dolj-tabell"></span></span>
+			<span data-ng-if="!status.isTableOpen"><i class="glyphicon chart-table-expand-icon"></i> <span message key="lbl.visa-tabell"></span></span>
+		</uib-accordion-heading>
+		<stat-scroll-table header-rows="headerRows" rows="rows"></stat-scroll-table>
+	</uib-accordion-group>
+</uib-accordion>
 </div>
 
 

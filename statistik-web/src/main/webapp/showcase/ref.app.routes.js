@@ -20,7 +20,7 @@
 angular.module('showcase').config(function($routeProvider) {
     'use strict';
     var templateRoot = '';
-    console.log('conf:ed');
+
     $routeProvider.
     
     when('/', {
@@ -99,7 +99,7 @@ angular.module('showcase').config(function($routeProvider) {
             templateUrl: templateRoot + 'views/navigation.html',
             controller: 'showcase.NavigationCtrl'
         }).
-                    	otherwise({redirectTo: templateRoot + 'views/bootstrap.html',
-                    		});
+        otherwise({redirectTo: templateRoot + 'views/bootstrap.html'
+        });
 
 });

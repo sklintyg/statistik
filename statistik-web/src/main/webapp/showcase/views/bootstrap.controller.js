@@ -21,7 +21,7 @@ angular.module('showcase').controller('showcase.BootstrapCtrl',
     ['$scope', '$timeout', '$uibModal',
         function($scope, $timeout, $uibModal) {
             'use strict';
-             console.log('bootstrap running');
+
             //Vidarebefodra knapp states
             $scope.cert1 = {
                 vidarebefordrad: false
@@ -66,7 +66,7 @@ angular.module('showcase').controller('showcase.BootstrapCtrl',
             $scope.showDialog = function() {
                 $uibModal.open({
                     animation: true,
-                    templateUrl: '/pubapp/showcase/views/modal-dialog.html',
+                    templateUrl: '/showcase/views/modal-dialog.html',
                     size: 'md',
                     backdrop: 'static'
                 });
