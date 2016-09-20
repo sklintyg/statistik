@@ -32,12 +32,12 @@ angular.module('StatisticsApp').directive('overviewWidget',
                 columnTitle1: '@',
                 columnTitle2: '@',
                 columnTitle3: '@',
-                valuePrefix: '@'
+                valueSuffix: '@'
             },
             templateUrl: 'components/directives/overviewWidget/overviewWidget.html',
             link: function($scope) {
-                if ($scope.valuePrefix) {
-                    $scope.valuePrefixWithSpace = ' ' + $scope.valuePrefix;
+                if ($scope.valueSuffix) {
+                    $scope.valueSuffixWithSpace = ' ' + $scope.valueSuffix;
                 }
             }
         };
