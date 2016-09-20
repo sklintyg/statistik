@@ -24,12 +24,12 @@ angular.module('showcase').config(function($routeProvider) {
     $routeProvider.
     
     when('/', {
-        templateUrl: templateRoot + 'views/navigation.html',
-        controller: 'showcase.NavigationCtrl'
+    	templateUrl: templateRoot + 'views/bootstrap.html',
+        controller: 'showcase.BootstrapCtrl'
     }).
         when('/showcase', {
-        	templateUrl: templateRoot + 'views/navigation.html',
-            controller: 'showcase.NavigationCtrl'
+        	templateUrl: templateRoot + 'views/bootstrap.html',
+            controller: 'showcase.BootstrapCtrl'
                    // templateUrl: templateRoot + 'header.html'
         }).
 
@@ -99,7 +99,7 @@ angular.module('showcase').config(function($routeProvider) {
             templateUrl: templateRoot + 'views/navigation.html',
             controller: 'showcase.NavigationCtrl'
         }).
-                    	otherwise({redirectTo: templateRoot + 'views/statistik.html',
+                    	otherwise({redirectTo: templateRoot + 'views/bootstrap.html',
                     		});
 
 });
