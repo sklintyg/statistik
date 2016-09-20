@@ -31,8 +31,8 @@
       <iso:assert test="count(tp:cv/tp:codeSystem) = 1">codeSystem är obligatoriskt</iso:assert>
       <iso:assert test="count(tp:cv/tp:code) = 1">code är obligatoriskt</iso:assert>
       <iso:assert test="tp:cv/tp:codeSystem = 'KV_FKMU_0003'">'codeSystem' måste vara 'KV_FKMU_0003'.</iso:assert>
-      <iso:assert test="matches(normalize-space(tp:cv/tp:code), '^[1-4]$')">
-        'Sjukskrivningsnivå' kan ha ett av värdena 1, 2, 3 eller 4.
+      <iso:assert test="matches(normalize-space(tp:cv/tp:code), '^(HELT_NEDSATT|TRE_FJARDEDEL|HALFTEN|EN_FJARDEDEL)$')">
+      'Sjukskrivningsnivå' kan ha ett av värdena HELT_NEDSATT, TRE_FJARDEDEL, HALFTEN, EN_FJARDEDEL.
       </iso:assert>
     </iso:rule>
   </iso:pattern>

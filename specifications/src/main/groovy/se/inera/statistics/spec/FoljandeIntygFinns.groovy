@@ -3,6 +3,7 @@ package se.inera.statistics.spec
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import org.joda.time.DateTimeUtils
+import se.inera.statistics.service.helper.SjukskrivningsGrad
 import se.inera.statistics.service.processlog.EventType
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.testsupport.Intyg
@@ -131,7 +132,7 @@ class FoljandeIntygFinns {
 
         def arbetsformagaNode = svarNodes.find{ it.@id=="32" }
         def arbetsformagaCodeNode = arbetsformagaNode.value().find{it.@id=="32.1"}.value()[0]
-        setLeafValue(arbetsformagaCodeNode, "code", (Integer.valueOf(arbetsförmåga) / 25) + 1);
+        setLeafValue(arbetsformagaCodeNode, "code", SjukskrivningsGrad.fromId((Integer.valueOf(arbetsförmåga) / 25).intValue() + 1));
         def arbetsformagaPeriodNode = arbetsformagaNode.value().find{it.@id=="32.2"}.value()[0]
         setLeafValue(arbetsformagaPeriodNode, "start", start)
         setLeafValue(arbetsformagaPeriodNode, "end", slut)
@@ -140,7 +141,7 @@ class FoljandeIntygFinns {
             def arbetsformagaNode2 = arbetsformagaNode.clone();
             intyg.append(arbetsformagaNode2);
             def arbetsformagaCodeNode2 = arbetsformagaNode2.value().find{it.@id=="32.1"}.value()[0]
-            setLeafValue(arbetsformagaCodeNode2, "code", (Integer.valueOf(arbetsförmåga2) / 25) + 1);
+            setLeafValue(arbetsformagaCodeNode2, "code", SjukskrivningsGrad.fromId((Integer.valueOf(arbetsförmåga2) / 25).intValue() + 1));
             def arbetsformagaPeriodNode2 = arbetsformagaNode2.value().find{it.@id=="32.2"}.value()[0]
             setLeafValue(arbetsformagaPeriodNode2, "start", start2)
             setLeafValue(arbetsformagaPeriodNode2, "end", slut2)

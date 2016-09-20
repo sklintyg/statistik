@@ -137,7 +137,7 @@ public class RegisterCertificateHelper {
             switch (delsvar.getId()) {
             case BEHOV_AV_SJUKSKRIVNING_NIVA_DELSVARSVAR_ID_32:
                 String sjukskrivningsnivaString = getCVSvarContent(delsvar).getCode();
-                final SjukskrivningsGrad sjukskrivningsGrad = SjukskrivningsGrad.fromId(Integer.parseInt(sjukskrivningsnivaString));
+                final SjukskrivningsGrad sjukskrivningsGrad = SjukskrivningsGrad.valueOf(sjukskrivningsnivaString);
                 nedsattning = sjukskrivningsGrad.getNedsattning();
                 break;
             case BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32:
@@ -187,57 +187,6 @@ public class RegisterCertificateHelper {
             }
         }
         return arbetsnedsattnings;
-    }
-
-    private enum SjukskrivningsGrad {
-        /**
-         * Helt nedsatt (id 1).
-         */
-        HELT_NEDSATT(1, "Helt nedsatt", 100),
-        /**
-         * Nedsatt till 3/4 (id 2).
-         */
-        NEDSATT_3_4(2, "Nedsatt med 3/4", 75),
-        /**
-         * Nedsatt till hälften (id 3).
-         */
-        NEDSATT_HALFTEN(3, "Nedsatt med hälften", 50),
-        /**
-         * Nedsatt till 1/4 (id 4).
-         */
-        NEDSATT_1_4(4, "Nedsatt med 1/4", 25);
-
-        private final int id;
-        private final String label;
-        private final int nedsattning;
-
-        SjukskrivningsGrad(int id, String label, int nedsattning) {
-            this.id = id;
-            this.label = label;
-            this.nedsattning = nedsattning;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-        public int getNedsattning() {
-            return nedsattning;
-        }
-
-        public static SjukskrivningsGrad fromId(int id) {
-            for (SjukskrivningsGrad typ : values()) {
-                if (typ.id == id) {
-                    return typ;
-                }
-            }
-            throw new IllegalArgumentException();
-        }
-
     }
 
     public RegisterCertificateType unmarshalRegisterCertificateXml(String data) throws JAXBException {
