@@ -118,6 +118,16 @@ public class WidelineConverterTest {
     }
 
     @Test
+    public void errorOnEndDateBeforeStartDateIntyg2943() throws Exception {
+        wideLine.setStartdatum(7001);
+        wideLine.setSlutdatum(7000);
+        List<String> errors = converter.validate(wideLine);
+
+        LOG.error("Error message: {}", errors);
+        assertEquals("N:o of errors: " +  errors.size(), 1, errors.size());
+    }
+
+    @Test
     public void errorOnLongCorrelationId() throws Exception {
         wideLine.setCorrelationId("012345678901234567890123456789012345678901234567890");
         List<String> errors = converter.validate(wideLine);

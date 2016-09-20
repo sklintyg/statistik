@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import se.inera.ifv.statistics.spi.authorization.impl.HsaCommunicationException;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
@@ -66,16 +67,21 @@ public class LogConsumerImpl implements LogConsumer {
         try {
             setRunning(true);
             List<IntygEvent> result = processLog.getPending(BATCH_SIZE);
-            int processed = 0;
             if (result.isEmpty()) {
                 return 0;
             }
+            int processed = 0;
             for (IntygEvent event: result) {
                 final IntygFormat format = event.getFormat();
                 try {
-                    if (!handleEvent(event, format)) {
-                        return processed;
+                    final boolean eventSuccessfullyHandled = handleEvent(event, format);
+                    if (!eventSuccessfullyHandled) {
+                        LOG.error("Failed to process intyg {} ({})", event.getId(), event.getCorrelationId());
                     }
+                } catch (HsaCommunicationException e) {
+                    LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
+                    LOG.debug("Could not process intyg {} ({}).", event.getId(), event.getCorrelationId(), e);
+                    return processed;
                 } catch (Exception e) {
                     LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
                     LOG.debug("Could not process intyg {} ({}).", event.getId(), event.getCorrelationId(), e);
