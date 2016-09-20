@@ -18,6 +18,16 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import org.joda.time.LocalDate;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.FilterPredicates;
+import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,17 +35,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
-import org.joda.time.LocalDate;
-
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.FilterPredicates;
-import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 public final class SjukskrivningsgradQuery {
     static final List<String> GRAD_LABEL = Collections.unmodifiableList(Arrays.asList("25", "50", "75", "100"));
@@ -54,7 +53,7 @@ public final class SjukskrivningsgradQuery {
         for (Integer range : GRAD) {
             int current = currentCount.get(range).getCount();
             int previous = previousCount.get(range).getCount();
-            result.add(new OverviewChartRowExtended(range.toString() + " %", current, percentChange(current, previous)));
+            result.add(new OverviewChartRowExtended(range.toString(), current, percentChange(current, previous)));
         }
 
         return result;
