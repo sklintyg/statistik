@@ -132,7 +132,7 @@ var stMessages = {
         'comparediagnoses.lbl.val-av-diagnoser': 'Välj vilken eller vilka diagnoser som din rapport ska baseras på:',
 
         'table.warning.title' : 'Varning!',
-        'table.warning.text' : 'Tabellen kan inte visas i sin helhet. Spara ner tabellen som PDF eller Excel för att se all data.',
+        'table.warning.text' : 'Tabellen kan inte visas i sin helhet. Spara ner tabellen som Excel för att se all data.',
 
         //help texts
         'alert.lan-andel-sjukfall-per-kon.questionmark' : 'I tabellen visas andel sjukfall i procent per kön och län. Antal sjukfall anges inom parentes.',

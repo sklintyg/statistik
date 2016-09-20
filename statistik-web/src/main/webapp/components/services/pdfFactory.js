@@ -21,13 +21,16 @@
 angular.module('StatisticsApp')
     .factory('pdfFactory',
         /** @ngInject */
-        function($window, $timeout, thousandseparatedFilter, $location, _) {
+        function($window, $timeout, thousandseparatedFilter, $location, _, TABLE_CONFIG, messageService) {
         'use strict';
+
+        var showTableWarning  = false;
 
         function _print($scope, charts) {
             if (!charts || angular.equals({}, charts)) {
                 return;
             }
+            showTableWarning = false;
 
             $scope.generatingPdf = true;
 
@@ -87,7 +90,15 @@ angular.module('StatisticsApp')
         function formatTableData(data) {
             var tableData = [];
 
-            angular.forEach(data, function(row) {
+            var tableRows = data;
+            var maxRows = TABLE_CONFIG.maxRows;
+
+            if (data.length > maxRows) {
+                tableRows = data.slice(0, maxRows);
+                showTableWarning = true;
+            }
+
+            angular.forEach(tableRows, function(row) {
                 var rowData = [];
 
                 angular.forEach(row.data, function(item) {
@@ -110,6 +121,11 @@ angular.module('StatisticsApp')
             _addListFilter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
             _addListFilter(content, 'Sammanställning av enhetsfilter', enhetsFilter);
             _addListFilter(content, 'Sammanställning av sjukskrivningslängdsfilter', sjukskrivningslangdFilter);
+
+            if (showTableWarning) {
+                content.push({text: messageService.getProperty('table.warning.text'), style: 'tableWarning'});
+            }
+
             if (angular.isArray(table)) {
                 angular.forEach(table, function(t) {
                     var pdfTable = _getTable(t.header, t.data);
@@ -189,6 +205,11 @@ angular.module('StatisticsApp')
                     fontSize: 12,
                     bold: true,
                     margin: [0, 5, 0, 10]
+                },
+                tableWarning: {
+                    fontSize: 12,
+                    bold: true,
+                    margin: [0, 10, 0, 2]
                 },
                 table: {
                     fontSize: 9,
