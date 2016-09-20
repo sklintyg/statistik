@@ -361,7 +361,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
                     messageService.getProperty('overview.widget.table.column.antal'),
                     messageService.getProperty('overview.widget.table.column.forandring')
                 ],
-                data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.degreeOfSickLeaveGroups, ' %')
+                data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.degreeOfSickLeaveGroups)
             }
         });
 
