@@ -22,6 +22,6 @@ import javax.annotation.Nonnull;
 
 public interface SchematronValidator {
 
-    ValidateXmlResponse validateSchematron(@Nonnull final String xmlContent);
+    ValidateXmlResponse validateSchematron(@Nonnull String xmlContent);
 
 }

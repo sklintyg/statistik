@@ -56,9 +56,9 @@ class FoljandeIntygFinns {
         län = null
         händelsetyp = EventType.CREATED.name()
         exaktintygid = intygIdCounter++
-        intygformat = "Xml"
+        intygformat = "FK7263SIT"
         huvudenhet = null
-        intygstyp = "fk7263"
+        intygstyp = null
         enhetsnamn = null
         funktionsnedsättning = "Default funktionsnedsattning"
         aktivitetsbegränsning = "Default arbetsbegransning"
@@ -79,8 +79,10 @@ class FoljandeIntygFinns {
                 return executeForOldJsonFormat();
             case ~/^(?i)NyttJson$/:
                 return executeForNewJsonFormat();
-            case ~/^(?i)Xml$/:
-                return executeForLisuXmlFormat();
+            case ~/^(?i)LISU$/:
+                return executeForXmlFormat('/lisu.xml', "LISU");
+            case ~/^(?i)FK7263SIT$/:
+                return executeForXmlFormat('/fk7263sit.xml', "fk7263");
             case ~/^(?i)felaktigt.*$/:
                 return executeForIllegalIntygFormat();
             default:
@@ -92,9 +94,9 @@ class FoljandeIntygFinns {
         return "This intyg will not be possible to parse"
     }
 
-    private String executeForLisuXmlFormat() {
+    private String executeForXmlFormat(String filepath, String defaultIntygstyp) {
         def slurper = new XmlParser(false, true)
-        String intygString = getClass().getResource('/fk7263sit.xml').getText('UTF-8')
+        String intygString = getClass().getResource(filepath).getText('UTF-8')
         def result = slurper.parseText(intygString)
         def intyg = result.value()[0]
 
@@ -102,7 +104,7 @@ class FoljandeIntygFinns {
 
         def patientPersonIdNode = findNode(patientNode, "person-id")
         setExtension(patientPersonIdNode, personnr)
-        setLeafValue(findNode(intyg, "typ"), "code", intygstyp)
+        setLeafValue(findNode(intyg, "typ"), "code", intygstyp != null ? intygstyp : defaultIntygstyp)
 
         def skapadAvNode = findNode(intyg, "skapadAv")
         setExtension(findNode(skapadAvNode, "personal-id"), läkare)
@@ -177,7 +179,7 @@ class FoljandeIntygFinns {
         def result = slurper.parseText(intygString)
 
         result.grundData.patient.personId = personnr
-        result.typ = intygstyp
+        result.typ = intygstyp != null ? intygstyp : "fk7263"
         result.grundData.skapadAv.personId = läkare
         result.grundData.skapadAv.vardenhet.enhetsid = enhet
         result.grundData.skapadAv.vardenhet.vardgivare.vardgivarid = vardgivare
@@ -214,7 +216,7 @@ class FoljandeIntygFinns {
         def result = slurper.parseText(intygString)
 
         result.patient.id.extension = personnr
-        result.typ.code = intygstyp
+        result.typ.code = intygstyp != null ? intygstyp : "fk7263"
         result.skapadAv.id.extension = läkare
 
         def observation = slurper.parseText(observationKodString)
