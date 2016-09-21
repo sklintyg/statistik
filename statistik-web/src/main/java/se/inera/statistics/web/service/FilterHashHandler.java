@@ -85,10 +85,11 @@ public class FilterHashHandler {
             final ArrayList<String> enheter = getJsonArray(rootNode.path("enheter"));
             final ArrayList<String> verksamhetstyper = getJsonArray(rootNode.path("verksamhetstyper"));
             final ArrayList<String> sjukskrivningslangd = getJsonArray(rootNode.path("sjukskrivningslangd"));
+            final ArrayList<String> aldersgrupp = getJsonArray(rootNode.path("aldersgrupp"));
             final String fromDate = rootNode.path("fromDate").asText().isEmpty() ? null : rootNode.path("fromDate").asText();
             final String toDate = rootNode.path("toDate").asText().isEmpty() ? null : rootNode.path("toDate").asText();
             final boolean useDefaultPeriod = rootNode.path("useDefaultPeriod").asBoolean(true);
-            return new FilterData(diagnoser, enheter, verksamhetstyper, sjukskrivningslangd, fromDate, toDate, useDefaultPeriod);
+            return new FilterData(diagnoser, enheter, verksamhetstyper, sjukskrivningslangd, aldersgrupp, fromDate, toDate, useDefaultPeriod);
         } catch (IOException e) {
             LOG.error("Failed to parse filter data: " + filterDataString, e);
             throw new FilterHashParseException("Filter data failed");
