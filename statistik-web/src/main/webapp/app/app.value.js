@@ -17,28 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').directive('overviewWidget',
-    /** @ngInject */
-    function () {
-        'use strict';
+angular.module('StatisticsApp').value('TABLE_CONFIG', {
+    maxRows: 499
+});
 
-        return {
-            restrict: 'E',
-            scope: {
-                titleKey: '@',
-                tooltipContent: '=',
-                chartId: '@',
-                groups: '=',
-                columnTitle1: '@',
-                columnTitle2: '@',
-                columnTitle3: '@',
-                valueSuffix: '@'
-            },
-            templateUrl: '/components/directives/overviewWidget/overviewWidget.html',
-            link: function($scope) {
-                if ($scope.valueSuffix) {
-                    $scope.valueSuffixWithSpace = ' ' + $scope.valueSuffix;
-                }
-            }
-        };
-    });
+

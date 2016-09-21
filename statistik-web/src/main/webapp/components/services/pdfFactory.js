@@ -21,14 +21,13 @@
 angular.module('StatisticsApp')
     .factory('pdfFactory',
         /** @ngInject */
-        function($window, $timeout, thousandseparatedFilter, $location, _) {
+        function($window, $timeout, thousandseparatedFilter, $location, _, TABLE_CONFIG, messageService) {
         'use strict';
 
         function _print($scope, charts) {
             if (!charts || angular.equals({}, charts)) {
                 return;
             }
-
             $scope.generatingPdf = true;
 
             var headers = {
@@ -65,7 +64,8 @@ angular.module('StatisticsApp')
                     angular.forEach(tableData, function(t) {
                         table.push({
                             header: t.headers,
-                            data: formatTableData(t.rows)
+                            data: formatTableData(t.rows),
+                            hasMoreThanMaxRows: t.rows.length > TABLE_CONFIG.maxRows
                         });
                     });
 
@@ -77,7 +77,8 @@ angular.module('StatisticsApp')
             else {
                 table = {
                     header: $scope.headerrows,
-                    data: formatTableData($scope.rows)
+                    data: formatTableData($scope.rows),
+                    hasMoreThanMaxRows: $scope.rows.length > TABLE_CONFIG.maxRows
                 };
 
                 _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, pdfDoneCallback);
@@ -86,8 +87,8 @@ angular.module('StatisticsApp')
 
         function formatTableData(data) {
             var tableData = [];
-
-            angular.forEach(data, function(row) {
+            var tableRows = data.slice(0, TABLE_CONFIG.maxRows);
+            angular.forEach(tableRows, function(row) {
                 var rowData = [];
 
                 angular.forEach(row.data, function(item) {
@@ -98,7 +99,6 @@ angular.module('StatisticsApp')
 
                 tableData.push(row);
             });
-
             return tableData;
         }
 
@@ -110,14 +110,23 @@ angular.module('StatisticsApp')
             _addListFilter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
             _addListFilter(content, 'Sammanställning av enhetsfilter', enhetsFilter);
             _addListFilter(content, 'Sammanställning av sjukskrivningslängdsfilter', sjukskrivningslangdFilter);
+
             if (angular.isArray(table)) {
                 angular.forEach(table, function(t) {
+                    if (t.hasMoreThanMaxRows) {
+                        content.push({text: messageService.getProperty('table.warning.text'), style: 'tableWarning'});
+                    }
+
                     var pdfTable = _getTable(t.header, t.data);
                         pdfTable.pageBreak = 'before';
                     content.push(pdfTable);
 
                 });
             } else {
+                if (table.hasMoreThanMaxRows) {
+                    content.push({text: messageService.getProperty('table.warning.text'), style: 'tableWarning'});
+                }
+
                 content.push(_getTable(table.header, table.data));
             }
 
@@ -189,6 +198,11 @@ angular.module('StatisticsApp')
                     fontSize: 12,
                     bold: true,
                     margin: [0, 5, 0, 10]
+                },
+                tableWarning: {
+                    fontSize: 12,
+                    bold: true,
+                    margin: [0, 10, 0, 2]
                 },
                 table: {
                     fontSize: 9,
