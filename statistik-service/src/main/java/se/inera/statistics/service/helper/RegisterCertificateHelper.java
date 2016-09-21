@@ -79,7 +79,7 @@ public class RegisterCertificateHelper {
     }
 
     public String getIntygtyp(RegisterCertificateType intyg) {
-        return intyg.getIntyg().getTyp().getCode();
+        return intyg.getIntyg().getTyp().getCode().trim();
     }
 
     public boolean isEnkeltIntyg(RegisterCertificateType intyg) {

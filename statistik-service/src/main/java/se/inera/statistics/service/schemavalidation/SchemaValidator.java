@@ -18,10 +18,10 @@
  */
 package se.inera.statistics.service.schemavalidation;
 
+import javax.annotation.Nonnull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Nonnull;
 
 @Component
 public class SchemaValidator {
@@ -32,13 +32,14 @@ public class SchemaValidator {
     @Autowired
     private Fk7263sitValidator fk7263sitValidator;
 
-    public ValidateXmlResponse validate(@Nonnull final String xmlContent) {
-        if (xmlContent.toUpperCase().contains(">FK7263<")) {
-            return fk7263sitValidator.validateSchematron(xmlContent);
-        } else if (xmlContent.toUpperCase().contains(">LISU<")) {
-            return lisuValidator.validateSchematron(xmlContent);
-        } else {
-            return new ValidateXmlResponse("Unknown certificate type");
+    public ValidateXmlResponse validate(@Nonnull final String typ, @Nonnull final String data) {
+        switch (typ) {
+            case "FK7263":
+                return fk7263sitValidator.validateSchematron(data);
+            case "LISU":
+                return lisuValidator.validateSchematron(data);
+            default:
+                return new ValidateXmlResponse("Unknown certificate type");
         }
     }
 

@@ -11,7 +11,7 @@
 
   <iso:pattern id="intyg">
     <iso:rule context="//rg:intyg">
-      <iso:assert test="upper-case(gn:typ/tp:code) = 'FK7263'">Intygstypen måste vara FK7263</iso:assert>
+      <iso:assert test="upper-case(normalize-space(gn:typ/tp:code)) = 'FK7263'">Intygstypen måste vara FK7263</iso:assert>
       <iso:assert test="count(gn:svar[@id='32']) ge 1">
         Ett 'MU' måste ha minst ett 'Behov av sjukskrivning'
       </iso:assert>

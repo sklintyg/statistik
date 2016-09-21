@@ -20,8 +20,6 @@ package se.inera.statistics.service.processlog;
 
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,19 +104,35 @@ public class LogConsumerImpl implements LogConsumer {
                 }
                 break;
             case REGISTER_CERTIFICATE:
-                final ValidateXmlResponse validation = schemaValidator.validate(event.getData());
-                if (!validation.isValid()) {
-                    LOG.warn("Register certificate validation failed: " + validation.getValidationErrors()); //TODO Kontrollera att det här blir snyggt i loggen
-                    return false;
-                }
-                final boolean successfullyProcessedXml = processXmlCertificate(event);
-                if (!successfullyProcessedXml) {
+                final boolean successfullyProcessedRc = processRegisterCertificate(event);
+                if (!successfullyProcessedRc) {
                     return false;
                 }
                 break;
             default:
                 LOG.warn("Unhandled intyg format: " + format);
                 return false;
+        }
+        return true;
+    }
+
+    private boolean processRegisterCertificate(IntygEvent event) {
+        try {
+            final RegisterCertificateType rc = registerCertificateHelper.unmarshalRegisterCertificateXml(event.getData());
+            final String intygTyp = rc.getIntyg().getTyp().getCode().toUpperCase().trim();
+            final ValidateXmlResponse validation = schemaValidator.validate(intygTyp, event.getData());
+            if (!validation.isValid()) {
+                LOG.warn("Register certificate validation failed: " + validation.getValidationErrors()); //TODO Kontrollera att det här blir snyggt i loggen
+                return false;
+            }
+            final boolean successfullyProcessedXml = processXmlCertificate(event, rc);
+            if (!successfullyProcessedXml) {
+                return false;
+            }
+        } catch (Exception e) {
+            LOG.warn("Failed to unmarshal intyg xml");
+            LOG.debug("Failed to unmarshal intyg xml", e);
+            return false;
         }
         return true;
     }
@@ -141,24 +155,14 @@ public class LogConsumerImpl implements LogConsumer {
     /**
      * @return true for success, otherwise false
      */
-    private boolean processXmlCertificate(IntygEvent event) {
+    private boolean processXmlCertificate(IntygEvent event, RegisterCertificateType rc) {
         EventType type = event.getType();
-        RegisterCertificateType rc = null;
-        try {
-            rc = registerCertificateHelper.unmarshalRegisterCertificateXml(event.getData());
-        } catch (JAXBException e) {
-            LOG.warn("Failed to unmarshal intyg xml");
-            LOG.debug("Failed to unmarshal intyg xml", e);
-            return false;
-        }
         HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
-
         if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
             return false;
         }
         processor.accept(rc, hsaInfo, event.getId(), event.getCorrelationId(), type);
         return true;
-
     }
 
     public synchronized boolean isRunning() {
