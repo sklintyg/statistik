@@ -92,7 +92,10 @@
 
     <logger name="se.inera.certificate.web" level="WARN"/>
 
-    <!-- Enable logging of frontend activities -->
+    <logger name="org.springframework.security.saml.log" level="INFO" />
+    <logger name="org.opensaml" level="INFO" />
+
+  <!-- Enable logging of frontend activities -->
     <logger name="se.inera.statistics.web.service.LoggingService" level="INFO">
       <appender-ref ref="FRONTEND_FILE" />
     </logger>
@@ -127,7 +130,7 @@
       <appender-ref ref="MONITORING" />
     </logger>
 
-    <root level="INFO">
+  <root level="INFO">
       <appender-ref ref="STDOUT"/>
     </root>
 
