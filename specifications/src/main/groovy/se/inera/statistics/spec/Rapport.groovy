@@ -1,5 +1,6 @@
 package se.inera.statistics.spec
 
+import se.inera.statistics.service.report.util.AgeGroup
 import se.inera.statistics.service.report.util.Icd10
 import se.inera.statistics.service.report.util.Icd10RangeType
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup
@@ -26,6 +27,7 @@ abstract class Rapport {
     def filterEnheter
     def filterVerksamhetstyper
     def filterSjukskrivningslängd
+    def filterÅldersgrupp
     def filterStartdatum
     def filterSlutdatum
     def meddelande
@@ -153,6 +155,15 @@ abstract class Rapport {
         }
     }
 
+    void setFilterÅldersgrupp(String aldersgruppString) {
+        if (aldersgruppString != null && !aldersgruppString.trim().isEmpty()) {
+            this.filterÅldersgrupp = aldersgruppString.split(",")*.trim().collect {
+                def optionalGroup = AgeGroup.getByName(it)
+                optionalGroup.present ? optionalGroup.get().name() : it;
+            }
+        }
+    }
+
     def getFilter() {
         def diagnoser = new ArrayList<String>();
         if (filterKapitel != null) {
@@ -164,7 +175,7 @@ abstract class Rapport {
         if (filterKategorier != null) {
             diagnoser.addAll(filterKategorier)
         }
-        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper, filterSjukskrivningslängd, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
+        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper, filterSjukskrivningslängd, filterÅldersgrupp, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
     }
 
     public void reset() {
@@ -182,6 +193,7 @@ abstract class Rapport {
         filterEnheter = null
         filterVerksamhetstyper = null
         filterSjukskrivningslängd = null
+        filterÅldersgrupp = null
         filterStartdatum = null
         filterSlutdatum = null
         meddelande = null
