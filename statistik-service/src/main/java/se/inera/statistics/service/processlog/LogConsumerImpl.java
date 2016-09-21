@@ -122,7 +122,7 @@ public class LogConsumerImpl implements LogConsumer {
             final String intygTyp = rc.getIntyg().getTyp().getCode().toUpperCase().trim();
             final ValidateXmlResponse validation = schemaValidator.validate(intygTyp, event.getData());
             if (!validation.isValid()) {
-                LOG.warn("Register certificate validation failed: " + validation.getValidationErrors()); //TODO Kontrollera att det här blir snyggt i loggen
+                LOG.warn("Register certificate validation failed: " + validation.getValidationErrors());
                 return false;
             }
             final boolean successfullyProcessedXml = processXmlCertificate(event, rc);
