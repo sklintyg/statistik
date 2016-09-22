@@ -108,6 +108,9 @@
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
+  <listener>
+    <listener-class>se.inera.statistics.web.service.monitoring.SessionCounterListener</listener-class>
+  </listener>
 
     <error-page>
         <error-code>404</error-code>

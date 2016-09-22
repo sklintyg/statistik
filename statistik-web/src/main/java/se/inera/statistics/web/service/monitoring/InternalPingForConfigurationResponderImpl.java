@@ -21,10 +21,10 @@ package se.inera.statistics.web.service.monitoring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import se.inera.statistics.web.util.HealthCheckUtil;
+import se.inera.statistics.web.util.VersionUtil;
 import se.riv.clinicalprocess.healthcond.monitoring.rivtabp21.v1.InternalPingForConfigurationResponderInterface;
 import se.riv.clinicalprocess.healthcond.monitoring.v1.ConfigurationType;
 import se.riv.clinicalprocess.healthcond.monitoring.v1.InternalPingForConfigurationResponseType;
@@ -42,11 +42,8 @@ import java.util.Date;
 public class InternalPingForConfigurationResponderImpl implements InternalPingForConfigurationResponderInterface {
     private static final Logger LOG = LoggerFactory.getLogger(InternalPingForConfigurationResponderImpl.class);
 
-    @Value("${project.version}")
-    private String projectVersion;
-
-    @Value("${project.buildtime}")
-    private String buildTimeString;
+    @Autowired
+    private VersionUtil versionUtil;
 
     @Autowired
     private HealthCheckUtil healthCheck;
@@ -57,19 +54,21 @@ public class InternalPingForConfigurationResponderImpl implements InternalPingFo
             @WebParam(partName = "parameters", name = "InternalPingForConfiguration", targetNamespace = "urn:riv:clinicalprocess:healthcond:monitoring:InternalPingForConfigurationResponder:1") InternalPingForConfigurationType parameters) {
         InternalPingForConfigurationResponseType response = new InternalPingForConfigurationResponseType();
         response.setPingDateTime(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
-        LOG.info("Version String: " + projectVersion);
-        response.setVersion(projectVersion);
+        LOG.info("Version String: " + versionUtil.getProjectVersion());
+        response.setVersion(versionUtil.getProjectVersion());
 
         HealthCheckUtil.Status db = healthCheck.checkDB();
         HealthCheckUtil.Status highchartsExport = healthCheck.getHighchartsExportStatus();
         String uptime = healthCheck.getUptimeAsString();
         HealthCheckUtil.Status nbrOfLoggedInUsers = healthCheck.checkNbrOfLoggedInUsers();
+        HealthCheckUtil.Status nbrOfUsers = healthCheck.getNumberOfUsers();
 
         addConfiguration(response, "dbStatus", db.isOk() ? "ok" : "error");
         addConfiguration(response, "highchartExportStatus", highchartsExport.isOk() ? "ok" : "error");
-        addConfiguration(response, "buildTime", buildTimeString);
+        addConfiguration(response, "buildTime", versionUtil.getBuildTime());
         addConfiguration(response, "systemUptime", uptime);
         addConfiguration(response, "nbrOfLoggedInUsers", "" + Long.toString(nbrOfLoggedInUsers.getMeasurement()));
+        addConfiguration(response, "nbrOfUsers", "" + Long.toString(nbrOfUsers.getMeasurement()));
 
         return response;
     }

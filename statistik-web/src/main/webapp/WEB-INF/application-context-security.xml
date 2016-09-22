@@ -77,7 +77,7 @@
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
         </security:http>
-        <security:http entry-point-ref="http403ForbiddenEntryPoint">
+        <security:http create-session="always" entry-point-ref="http403ForbiddenEntryPoint">
             <security:csrf disabled="true"/>
             <security:logout logout-url="/saml/logout" logout-success-url="/" invalidate-session="true"/>
             <security:intercept-url pattern="/**" access="permitAll"/>
@@ -92,7 +92,7 @@
     <!-- Test and QA profile support both Säkerhetstjänst and Fake login -->
     <!-- =============================================================== -->
     <beans profile="security-both">
-        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
+        <security:http create-session="always" use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
             <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
@@ -125,7 +125,7 @@
            <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
         </security:http>
-      <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/login/**">
+      <security:http create-session="always" entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/login/**">
         <security:csrf disabled="true"/>
         <security:intercept-url pattern="/**" access="permitAll"/>
       </security:http>

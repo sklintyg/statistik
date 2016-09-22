@@ -37,6 +37,7 @@
 		<c:set var="db" value="${healthcheckUtil.checkDB()}" />
 		<c:set var="uptime" value="${healthcheckUtil.uptimeAsString}" />
 		<c:set var="loggedInUsers" value="${healthcheckUtil.checkNbrOfLoggedInUsers()}" />
+		<c:set var="users" value="${healthcheckUtil.getNumberOfUsers()}" />
 
 		<div class="table-responsive">
 			<table class="table table-bordered table-striped">
@@ -74,8 +75,12 @@
 						<td id="hsaStatus" class="${hsa.ok ? "text-success" : "text-danger"}">${hsa.ok ? "OK" : "FAIL"}</td>
 					</tr>
 					<tr>
+						<td>Antal användare</td>
+						<td colspan="2" id="users">${users.measurement}</td>
+					</tr>
+					<tr>
 						<td>Antal inloggade användare</td>
-						<td colspan="2" id="users">${loggedInUsers.measurement}</td>
+						<td colspan="2" id="loggedInUsers">${loggedInUsers.measurement}</td>
 					</tr>
 					<tr>
 						<td>Applikationens upptid</td>

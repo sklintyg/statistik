@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.web.service.ChartDataService;
+import se.inera.statistics.web.service.monitoring.SessionCounterListener;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -162,6 +163,12 @@ public class HealthCheckUtil {
         LOG.debug("Operation checkNbrOfLoggedInUsers completed with result {}, nbr of users is {}", result, size);
 
         return new Status(size, ok);
+    }
+
+    public Status getNumberOfUsers() {
+        long size = SessionCounterListener.getTotalActiveSession();
+
+        return new Status(size, true);
     }
 
     private Status createStatus(boolean ok, long startTime, long doneTime) {
