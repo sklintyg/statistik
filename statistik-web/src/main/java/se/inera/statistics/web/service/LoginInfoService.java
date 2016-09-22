@@ -54,7 +54,7 @@ public class LoginInfoService {
     @Path("getAppSettings")
     @Produces({ MediaType.APPLICATION_JSON })
     public AppSettings getAppSettings(@Context HttpServletRequest request) {
-        return loginServiceUtil.getSettings(request);
+        return loginServiceUtil.getSettings();
     }
 
     @GET

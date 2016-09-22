@@ -80,7 +80,7 @@ public class LoginServiceUtilTest {
     @Test
     public void testGetSettings() throws Exception {
         //When
-        final AppSettings settings = loginServiceUtil.getSettings(null);
+        final AppSettings settings = loginServiceUtil.getSettings();
 
         //Then
         assertEquals(7, settings.getSjukskrivningLengths().size());

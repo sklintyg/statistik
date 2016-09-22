@@ -71,6 +71,7 @@ var stMessages = {
         'lbl.filter.val-av-tidsintervall-till': 'Till:',
         'lbl.filter.val-av-diagnoser-knapp': 'Diagnoser',
         'lbl.filter.valj-sjukskrivningslangd': 'Välj&nbsp;sjukskrivningslängd:',
+        'lbl.filter.valj-aldersgrupp': 'Välj&nbsp;åldersgrupp:',
         'lbl.filter.select-all': 'Markera alla',
         'lbl.filter.modal.lan': 'Län: ',
         'lbl.filter.modal.kommuner': 'Kommuner: ',

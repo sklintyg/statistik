@@ -62,6 +62,9 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.sjukskrivningslangd = [];
         businessFilter.selectedSjukskrivningslangdIds = [];
 
+        businessFilter.aldersgrupp = [];
+        businessFilter.selectedAldersgruppIds = [];
+
         businessFilter.icd10 = {subs: []};
 
         //Init the datepicker components
@@ -88,6 +91,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.geographyBusinessIds.length = 0;
         businessFilter.selectedVerksamhetTypIds.length = 0;
         businessFilter.selectedSjukskrivningslangdIds.length = 0;
+        businessFilter.selectedAldersgruppIds.length = 0;
         businessFilter.selectedDiagnoses = [];
         businessFilter.deselectAll(businessFilter.geography);
         businessFilter.deselectAll(businessFilter.icd10);
@@ -161,6 +165,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
             return _.find(businessFilter.verksamhetsTyper, function(verksamhet) { return _.contains(verksamhet.ids, verksamhetstyp); }).id;
         }));
         businessFilter.selectedSjukskrivningslangdIds = filterData.sjukskrivningslangd;
+        businessFilter.selectedAldersgruppIds = filterData.aldersgrupp;
         businessFilter.selectGeographyBusiness(filterData.enheter);
         businessFilter.toDate = filterData.toDate ? moment(filterData.toDate).utc().toDate() : null;
         businessFilter.fromDate = filterData.fromDate ? moment(filterData.fromDate).utc().toDate() : null;
@@ -203,6 +208,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
             }
             businessFilter.populateVerksamhetsTyper(businesses);
             businessFilter.populateSjukskrivningsLangd();
+            businessFilter.populateAldersgrupp();
             businessFilter.resetSelections();
             businessFilter.dataInitialized = true;
             businessFilter.selectPreselectedFilter(preSelectedFilter);
@@ -243,8 +249,11 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     };
 
     businessFilter.populateSjukskrivningsLangd = function() {
-
         businessFilter.sjukskrivningslangd = AppModel.get().sjukskrivningLengths;
+    };
+
+    businessFilter.populateAldersgrupp = function() {
+        businessFilter.aldersgrupp = AppModel.get().aldersgrupps;
     };
 
     businessFilter.populateVerksamhetsTyper = function (businesses) {

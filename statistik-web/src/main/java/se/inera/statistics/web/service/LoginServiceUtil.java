@@ -58,6 +58,7 @@ import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
+import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.AppSettings;
@@ -200,13 +201,14 @@ public class LoginServiceUtil {
         return new HsaIdVardgivare(request.getParameter("vgid"));
     }
 
-    public AppSettings getSettings(HttpServletRequest request) {
+    public AppSettings getSettings() {
         AppSettings settings = new AppSettings();
         settings.setLoginVisible(loginVisibility.isLoginVisible());
         settings.setHighchartsExportUrl(higchartsExportUrl);
         settings.setLoginUrl(loginUrl);
         settings.setLoggedIn(isLoggedIn());
         settings.setSjukskrivningLengths(Arrays.stream(SjukfallsLangdGroup.values()).collect(toMap(Enum::name, SjukfallsLangdGroup::getGroupName)));
+        settings.setAgeGroups(Arrays.stream(AgeGroup.values()).collect(toMap(Enum::name, AgeGroup::getGroupName)));
         return settings;
     }
 

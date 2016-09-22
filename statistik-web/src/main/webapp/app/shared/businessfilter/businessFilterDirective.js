@@ -200,6 +200,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
                 enheter: businessFilter.geographyBusinessIds,
                 verksamhetstyper: getVerksamhetstyper(),
                 sjukskrivningslangd: businessFilter.selectedSjukskrivningslangdIds,
+                aldersgrupp: businessFilter.selectedAldersgruppIds,
                 fromDate: formattedFromDate,
                 toDate: formattedToDate,
                 useDefaultPeriod: businessFilter.useDefaultPeriod

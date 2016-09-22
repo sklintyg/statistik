@@ -50,6 +50,16 @@
                 </select>
             </div>
 
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2 clearfix business-filter-aldersgrupp">
+                <label for="select-unit">
+                    <span message key="lbl.filter.valj-aldersgrupp"></span>
+                </label><br/>
+                <select ng-model="businessFilter.selectedAldersgruppIds" multiple="multiple"
+                        ng-options="aldersgrupp.id as aldersgrupp.name for aldersgrupp in businessFilter.aldersgrupp"
+                        multiselect-dropdown id="select-aldersgrupp">
+                </select>
+            </div>
+
             <div class="col-xs-12 col-sm-8 col-md-8 col-lg-4 clearfix business-filter-time-interval">
 
                 <div >

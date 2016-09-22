@@ -32,6 +32,7 @@ angular.module('StatisticsApp').factory('AppModel',
             data.loginVisible = false;
             data.highchartsExportUrl = '';
             data.sjukskrivningLengths = [];
+            data.aldersgrupps = [];
             return data;
         }
 
@@ -48,6 +49,19 @@ angular.module('StatisticsApp').factory('AppModel',
             data.sjukskrivningLengths = $filter('orderBy')(data.sjukskrivningLengths, 'id', false);
         }
 
+        function setAldersgrupps(app) {
+            data.aldersgrupps.length = 0;
+
+            angular.forEach(app.ageGroups, function(value, key)  {
+                data.aldersgrupps.push({
+                    id: key,
+                    name: value
+                });
+            });
+
+            data.aldersgrupps = $filter('orderBy')(data.aldersgrupps, 'id', false);
+        }
+
         return {
             reset: _reset,
             init: function() {
@@ -61,6 +75,7 @@ angular.module('StatisticsApp').factory('AppModel',
                 data.highchartsExportUrl = app.highchartsExportUrl;
 
                 setSjukskrivningslangd(app);
+                setAldersgrupps(app);
             },
             get: function() {
                 return data;
