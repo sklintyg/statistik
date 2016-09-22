@@ -62,6 +62,9 @@ module.exports = function(config) {
         // web server port
         port: 47652,
 
+        // Increase timeout
+        browserNoActivityTimeout: 30000,
+
         // level of logging
         // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
         logLevel: config.LOG_INFO,
