@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.service.helper;
 
+import java.util.stream.Stream;
+
 public enum SjukskrivningsGrad {
 
     /**
@@ -60,12 +62,9 @@ public enum SjukskrivningsGrad {
     }
 
     public static SjukskrivningsGrad fromId(int id) {
-        for (SjukskrivningsGrad typ : values()) {
-            if (typ.id == id) {
-                return typ;
-            }
-        }
-        throw new IllegalArgumentException();
+        return Stream.of(values())
+                .filter(typ -> typ.id == id).findFirst()
+                .orElseThrow(IllegalArgumentException::new);
     }
 
 }
