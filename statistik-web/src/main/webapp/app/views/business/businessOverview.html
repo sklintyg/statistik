@@ -2,35 +2,39 @@
 <div id="business-overview" ng-show="!showEmptyDataView">
 	<div id="overview-content"> <!-- Start: Overview content -->
 		<div class="row" id="print-logo-display">
-		    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		    <div class="col-xs-12">
 		        <img src="/assets/images/statistiktjansten-logotype-print.png">
-		        <h2 class="business-name-header print-only-no-display"><span class="hidden-print">- </span>{{ verksamhetName }}</h2>
+		        <h2 class="business-name-header print-only-no-display">{{ verksamhetName }}</h2>
 		    </div>
 		</div>
+
+		<div class="clearfix">
+			<div class="pull-left right-2px-padding">
+				<h1 class="national-statistic-h1">{{subTitle}}</h1>
+			</div>
+		</div>
+
+		<show-help-text texts="chartFootnotes"></show-help-text>
+
 		<div class="row">
-			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print right-2px-padding" style="width: auto !important; float: left;">
-				<h1 class="national-statistic-h1" data-ng-bind="viewHeader"></h1>
+			<div class="col-xs-12 col-sm-9 graph-ingress pull-left">
+				<a class="hidden-print filter-link" id="chart-diagnosfilterinfo-trigger"
+					 data-ng-click="diagnosfilterShown = !diagnosfilterShown"
+					 data-ng-show="activeDiagnosFilters">Diagnosfilter&nbsp;&#x25BE</a>
+				<a class="hidden-print filter-link" id="chart-enhetsfilterinfo-trigger"
+					 data-ng-click="enhetsfilterShown = !enhetsfilterShown"
+					 data-ng-show="activeEnhetsFilters">Enhetsfilter&nbsp;&#x25BE</a>
+				<a class="hidden-print filter-link" id="chart-sjukskrivningslangdsfilterinfo-trigger"
+					 data-ng-click="sjukskrivningslangdsfilterShown = !sjukskrivningslangdsfilterShown"
+					 data-ng-show="activeSjukskrivningslangdsFilters">Sjukskrivningslängdsfilter&nbsp;&#x25BE</a>
 			</div>
-	    	<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pull-left hidden-print left-2px-padding business-name" id="business-name-header-container">
-				<h2 class="business-name-header">{{ headerEnhetInfo }}</h2>
+			<div class="col-xs-12 col-sm-3 pull-right margin-bottom hidden-print" data-ng-class="{margin_top_button_group: showDetailsOptions}"
+					 style="width: auto;">
+				<!-- PRINT BUTTON -->
+				<button class="btn btn-default" data-ng-click="printPdf()">
+					<span message key="button.label.save-as-pdf"></span>
+				</button>
 			</div>
-	    </div>
-		<div class="row">
-			<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9  pull-left" >
-		    <span class="overview-ingress" data-ng-bind="subTitle"></span>
-				<a class="hidden-print" id="chart-enhetsfilterinfo-trigger" data-toggle="collapse" data-target="#chart-enhetsfilterinfo-text" data-ng-show="activeEnhetsFilters" text="Enhetsfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Enhetsfilter&nbsp;&#x25BE</a>
-				<a class="hidden-print" id="chart-diagnosfilterinfo-trigger" data-toggle="collapse" data-target="#chart-diagnosfilterinfo-text" data-ng-show="activeDiagnosFilters" text="Diagnosfilter" style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Diagnosfilter&nbsp;&#x25BE</a>
-				<a class="hidden-print" id="chart-sjukskrivningslangdsfilterinfo-trigger" data-toggle="collapse"
-					 data-target="#chart-sjukskrivningslangdsfilterinfo-text" data-ng-show="activeSjukskrivningslangdsFilters" text="Sjukskrivningslangdsfilter"
-					 style="position: relative; color: #0b0b0b; font-weight: normal; margin-left: 5px;">Sjukskrivningslängdsfilter&nbsp;&#x25BE</a>
-			</div>
-		    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-right margin-bottom hidden-print" data-ng-class="{margin_top_button_group: showDetailsOptions}"
-		         style="width: auto;">
-					<!-- PRINT BUTTON -->
-					<button class="btn btn-default" data-ng-click="printPdf()">
-						<span message key="button.label.save-as-pdf"></span>
-					</button>
-		    </div>
 		</div>
 
 		<div class="spinner-overview" data-ng-if="generatingPdf">
@@ -39,15 +43,15 @@
 
 		<div class="clearfix">
 			<div class="pull-left filter-list" data-ng-if="activeDiagnosFilters">
-				<filter-list collapse-id="chart-diagnosfilterinfo-text" filters="activeDiagnosFilters"></filter-list>
+				<filter-list is-collapsed="!diagnosfilterShown" filters="activeDiagnosFilters"></filter-list>
 			</div>
 
 			<div class="pull-left filter-list" data-ng-if="activeEnhetsFilters">
-				<filter-list collapse-id="chart-enhetsfilterinfo-text" filters="activeEnhetsFilters"></filter-list>
+				<filter-list is-collapsed="!enhetsfilterShown" filters="activeEnhetsFilters"></filter-list>
 			</div>
 
 			<div class="pull-left filter-list" data-ng-if="activeSjukskrivningslangdsFilters">
-				<filter-list collapse-id="chart-sjukskrivningslangdsfilterinfo-text" filters="activeSjukskrivningslangdsFilters"></filter-list>
+				<filter-list is-collapsed="!sjukskrivningslangdsfilterShown" filters="activeSjukskrivningslangdsFilters"></filter-list>
 			</div>
 		</div>
 

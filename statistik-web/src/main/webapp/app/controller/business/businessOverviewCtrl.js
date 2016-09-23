@@ -25,6 +25,8 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _) {
     'use strict';
 
+    ControllerCommons.initParams($scope);
+
     var perMonthAlterationChart = {}, newSexProportionChart = {}, oldSexProportionChart = {},
         ageDonutChart = {}, diagnosisDonutChart = {}, degreeOfSickLeaveChart = {}, sickLeaveLengthChart = {};
     $scope.baseUrl = '#/verksamhet';

@@ -294,6 +294,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         $scope.spinnerText = 'Laddar information...';
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
+        $scope.chartFootnotes = ['help.nationell.overview'];
 
         $scope.printPdf = function () {
             var charts = [];

@@ -18,14 +18,13 @@
  */
 
 angular.module('StatisticsApp')
-    .directive('filterList', [function() {
+    .directive('showHelpText', [function() {
         'use strict';
         return {
             scope: {
-                filters: '=',
-                isCollapsed: '='
+                texts: '='
             },
             restrict: 'E',
-            templateUrl: '/components/directives/filterList/filterList.html'
+            templateUrl: '/components/directives/showHelpText/showHelpText.html'
         };
     }]);

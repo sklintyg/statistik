@@ -25,6 +25,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             $location ,chartFactory, _, pdfFactory, ControllerCommons) {
         'use strict';
 
+        ControllerCommons.initParams($scope);
+
         var that = this;
         var chart1 = {};
         var chart2 = {};
@@ -92,9 +94,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
                 result.allAvailableDxsSelectedInFilter,
                 result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets,
                 result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter);
-            $scope.enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
-            $scope.subTitle = config.title(result.period, $scope.enhetsCount, $routeParams.kapitelId);
+            $scope.subTitle = config.title(result.period, $routeParams.kapitelId);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;
                 statisticsData.getDiagnosisKapitelAndAvsnittAndKategori(populateDetailsOptions, function() {
@@ -122,10 +123,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             ControllerCommons.populateDetailsOptions(result, basePath, $scope, $routeParams, messageService, config);
         }
 
-        $scope.chartFootnotes = _.map(config.chartFootnotes, function(msgKey){
-            return messageService.getProperty(msgKey, null, '', null, true);
-        });
-        $scope.popoverText = messageService.getProperty(config.pageHelpText, null, '', null, true);
         $scope.showDetailOptions3PopoverText = messageService.getProperty(config.pageHelpTextShowDetailOptions, null, '', null, true);
 
         $scope.chartContainers = [
@@ -165,6 +162,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             $scope.doneLoading = true;
         }
 
+        $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet) : config.chartFootnotes;
         $scope.showDiagnosisSelector = config.showDiagnosisSelector;
         if ($scope.showDiagnosisSelector) {
             ControllerCommons.setupDiagnosisSelector(diagnosisTreeFilter, $routeParams, $scope, messageService, $timeout, statisticsData, $location);
@@ -201,7 +199,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
 
 angular.module('StatisticsApp').diagnosisGroupConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (ControllerCommons, messageService) {
     'use strict';
 
 
@@ -215,11 +213,10 @@ angular.module('StatisticsApp').diagnosisGroupConfig =
         return 'api/verksamhet/getDiagnoskapitelstatistik/csv';
     };
     conf.showDetailsOptions = false;
-    conf.title = function (period, enhetsCount) {
-        return 'Antal sjukfall per diagnosgrupp' + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    conf.title = function (period) {
+        return messageService.getProperty('title.diagnosisgroup') + ' ' + period;
     };
-    conf.pageHelpText = 'help.diagnosisgroup';
-    conf.chartFootnotes = ['alert.diagnosisgroup.information'];
+    conf.chartFootnotes = ['help.nationell.diagnosisgroup'];
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/diagnosgrupp', active: true},
@@ -229,7 +226,7 @@ angular.module('StatisticsApp').diagnosisGroupConfig =
 
 angular.module('StatisticsApp').diagnosisSubGroupConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (ControllerCommons, messageService) {
     'use strict';
 
     var conf = {};
@@ -244,12 +241,17 @@ angular.module('StatisticsApp').diagnosisSubGroupConfig =
     conf.showDetailsOptions = true;
     conf.showDetailsOptions2 = true;
     conf.showDetailsOptions3 = true;
-    conf.title = function (period, enhetsCount, name) {
-        return 'Antal sjukfall för ' + name + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    conf.title = function (period, name) {
+        return messageService.getProperty('title.diagnosgroup') + ' ' + name + ' ' + period;
     };
-    conf.pageHelpText = 'help.diagnosissubgroup';
     conf.pageHelpTextShowDetailOptions = 'help.diagnosissubgroup.showdetailoptions';
-    conf.chartFootnotes = ['alert.diagnosissubgroup.information'];
+    conf.chartFootnotes = function(isVerksamhet) {
+        if (isVerksamhet) {
+            return ['help.verksamhet.diagnosgroup'];
+        }
+
+        return ['help.nationell.diagnosgroup'];
+    };
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/diagnosavsnitt', active: true},
         {description: 'Tvärsnitt', state: '/verksamhet/diagnosavsnitttvarsnitt', active: false}];
@@ -259,7 +261,7 @@ angular.module('StatisticsApp').diagnosisSubGroupConfig =
 
 angular.module('StatisticsApp').degreeOfSickLeaveConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (ControllerCommons, messageService) {
     'use strict';
 
     var conf = {};
@@ -272,11 +274,10 @@ angular.module('StatisticsApp').degreeOfSickLeaveConfig =
         return 'api/verksamhet/getDegreeOfSickLeaveStatistics/csv';
     };
     conf.showDetailsOptions = false;
-    conf.title = function (period, enhetsCount) {
-        return 'Antal sjukfall per sjukskrivningsgrad' + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    conf.title = function (period) {
+        return messageService.getProperty('title.degreeofsickleave') + ' ' + period;
     };
-    conf.pageHelpText = 'help.degreeofsickleave';
-    conf.chartFootnotes = ['alert.degreeofsickleave.information'];
+    conf.chartFootnotes = ['help.nationell.degreeofsickleave'];
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/sjukskrivningsgrad', active: true},
@@ -287,7 +288,7 @@ angular.module('StatisticsApp').degreeOfSickLeaveConfig =
 
 angular.module('StatisticsApp').differentieratIntygandeConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (ControllerCommons, messageService) {
     'use strict';
 
     var conf = {};
@@ -296,10 +297,10 @@ angular.module('StatisticsApp').differentieratIntygandeConfig =
         return 'api/verksamhet/getDifferentieratIntygandeStatistics/csv';
     };
     conf.showDetailsOptions = false;
-    conf.title = function (period, enhetsCount) {
-        return 'Andel sjukfall för differentierat intygande' + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    conf.title = function (period) {
+        return messageService.getProperty('title.differentierat') + ' ' + period;
     };
-    conf.pageHelpText = 'help.differentieratintygande';
+    conf.chartFootnotes = ['help.verksamhet.differentierat1', 'help.verksamhet.differentierat2', 'help.verksamhet.differentierat3'];
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/differentieratintygande', active: true},
@@ -312,7 +313,7 @@ angular.module('StatisticsApp').differentieratIntygandeConfig =
 
 angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (ControllerCommons, messageService) {
     'use strict';
 
     var conf = {};
@@ -320,10 +321,16 @@ angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getNumberOfCasesPerEnhetTimeSeries/csv';
     };
-    conf.title = function (period, enhetsCount) {
-        return 'Antal sjukfall per vårdenhet' + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    conf.title = function (period) {
+        return messageService.getProperty('title.vardenhet') + ' ' + period;
     };
-    conf.chartFootnotes = ['alert.vardenhet.information'];
+    conf.chartFootnotes = function(isVerksamhet, isLandsting) {
+        if (isLandsting) {
+            return ['help.landsting.vardenhet'];
+        }
+
+        return ['help.verksamhet.vardenhet'];
+    };
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/sjukfallperenhettidsserie', active: true},
@@ -334,7 +341,7 @@ angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig =
 
 angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (ControllerCommons, messageService) {
     'use strict';
 
     var conf = {};
@@ -342,8 +349,8 @@ angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig =
     conf.exportTableUrlVerksamhet = function (diagnosisHash) {
         return 'api/verksamhet/getJamforDiagnoserStatistikTidsserie/' + diagnosisHash + '/csv';
     };
-    conf.title = function (period, enhetsCount) {
-        return 'Jämförelse av valfria diagnoser' + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    conf.title = function (period) {
+        return messageService.getProperty('title.diagnoscompare') + ' ' + period;
     };
     conf.showDiagnosisSelector = true;
 
@@ -355,7 +362,7 @@ angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig =
 
 angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (ControllerCommons, messageService) {
     'use strict';
 
     var conf = {};
@@ -363,8 +370,8 @@ angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getAgeGroupsStatisticsAsTimeSeries/csv';
     };
-    conf.title = function (period, enhetsCount) {
-        return 'Antal sjukfall per åldersgrupp' + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    conf.title = function (period) {
+        return messageService.getProperty('title.agegroup') + ' ' + period;
     };
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/aldersgrupperTidsserie', active: true},
@@ -374,7 +381,7 @@ angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig =
 
 angular.module('StatisticsApp').sickLeaveLengthTimeSeriesConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (ControllerCommons, messageService) {
     'use strict';
 
     var conf = {};
@@ -382,11 +389,17 @@ angular.module('StatisticsApp').sickLeaveLengthTimeSeriesConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getSickLeaveLengthTimeSeries/csv';
     };
-    conf.title = function (period, enhetsCount) {
-        return 'Antal sjukfall per sjukskrivningslängd' + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    conf.title = function (period) {
+        return messageService.getProperty('title.sickleavelength') + ' ' + period;
     };
-    conf.chartFootnotes = ['info.sickleavelength'];
-    conf.pageHelpText = 'help.sickleavelength';
+    conf.chartFootnotes = function(isVerksamhet) {
+        var text = ['help.nationell.sickleavelength'];
+
+        if (isVerksamhet) {
+            text.push('help.verksamhet.sickleavelength');
+        }
+        return text;
+    };
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/sjukskrivningslangdTidsserie', active: true},
@@ -396,7 +409,7 @@ angular.module('StatisticsApp').sickLeaveLengthTimeSeriesConfig =
 
 angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (ControllerCommons, messageService) {
     'use strict';
 
     var conf = {};
@@ -404,10 +417,10 @@ angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getNumberOfCasesPerLakarbefattningSomTidsserie/csv';
     };
-    conf.title = function (period, enhetsCount) {
-        return 'Antal sjukfall baserat på läkarbefattning' + ControllerCommons.getEnhetCountText(enhetsCount, true) + period;
+    conf.title = function (period) {
+        return messageService.getProperty('title.lakare-befattning') + ' ' + period;
     };
-    conf.chartFootnotes = ['alert.lakare-befattning.information'];
+    conf.chartFootnotes = ['help.verksamhet.lakare-befattning'];
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/sjukfallperlakarbefattningtidsserie', active: true},
         {description: 'Tvärsnitt', state: '/verksamhet/sjukfallperlakarbefattning', active: false}];
@@ -416,7 +429,7 @@ angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig =
 
 angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (ControllerCommons, messageService) {
     'use strict';
 
     var conf = {};
@@ -424,9 +437,10 @@ angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getSjukfallPerLakareSomTidsserie/csv';
     };
-    conf.title = function (period, enhetsCount) {
-        return 'Antal sjukfall per läkare' + ControllerCommons.getEnhetCountText(enhetsCount, false) + period;
+    conf.title = function (period) {
+        return messageService.getProperty('title.lakare') + ' ' + period;
     };
+    conf.chartFootnotes = ['help.verksamhet.lakare'];
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/sjukfallperlakaretidsserie', active: true},
         {description: 'Tvärsnitt', state: '/verksamhet/sjukfallperlakare', active: false}];
@@ -435,7 +449,7 @@ angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig =
 
 angular.module('StatisticsApp').casesPerLakaresAlderOchKonTidsserieConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (ControllerCommons, messageService) {
     'use strict';
 
     var conf = {};
@@ -443,10 +457,11 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonTidsserieConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getCasesPerDoctorAgeAndGenderTimeSeriesStatistics/csv';
     };
-    conf.title = function (period, enhetsCount) {
-        return 'Antal sjukfall baserat på läkares kön och ålder' + ControllerCommons.getEnhetCountText(enhetsCount, true) + period;
+    conf.title = function (period) {
+        return messageService.getProperty('title.lakaregender') + ' ' + period;
     };
-    conf.pageHelpText = 'alert.lakarkon-alder.questionmark';
+    conf.chartFootnotes = ['help.verksamhet.lakaregender'];
+
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/sjukfallperlakaresalderochkontidsserie', active: true},
         {description: 'Tvärsnitt', state: '/verksamhet/sjukfallperlakaresalderochkon', active: false}];

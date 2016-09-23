@@ -26,6 +26,8 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         messageService, chartFactory, pdfFactory, _, ControllerCommons) {
         'use strict';
 
+        ControllerCommons.initParams($scope);
+
         var chart;
 
         var defaultChartType = 'line';
@@ -74,7 +76,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
                 result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter);
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
             $scope.subTitle =
-                config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
+                config.title(result.period);
             $timeout(function() {
                 ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result.chartData, function() {
@@ -124,10 +126,10 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             });
         }
 
+        $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet) : config.chartFootnotes;
         $scope.spinnerText = 'Laddar information...';
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
-        $scope.popoverText = messageService.getProperty(config.pageHelpText, null, '', null, true);
 
         $scope.printPdf = function () {
             pdfFactory.print($scope, chart);
@@ -144,7 +146,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
 
 angular.module('StatisticsApp').casesPerMonthConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (ControllerCommons, messageService) {
     'use strict';
 
     var conf = {};
@@ -158,10 +160,9 @@ angular.module('StatisticsApp').casesPerMonthConfig =
     conf.exportTableUrlLandsting = function () {
         return 'api/landsting/getNumberOfCasesPerMonthLandsting/csv';
     };
-    conf.title = function (months, enhetsCount) {
-        return 'Antal sjukfall per månad' + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
+    conf.title = function (months) {
+        return messageService.getProperty('title.sickleave') + ' ' + months;
     };
-    conf.pageHelpText = 'help.casespermonth';
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/sjukfallPerManad', active: true},
@@ -172,7 +173,7 @@ angular.module('StatisticsApp').casesPerMonthConfig =
 
 angular.module('StatisticsApp').longSickLeavesConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (ControllerCommons, messageService) {
     'use strict';
 
     var conf = {};
@@ -180,8 +181,8 @@ angular.module('StatisticsApp').longSickLeavesConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getLongSickLeavesData/csv';
     };
-    conf.title = function (months, enhetsCount) {
-        return 'Antal långa sjukfall - mer än 90 dagar' + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
+    conf.title = function (months) {
+        return messageService.getProperty('title.sickleavelength90') + ' ' + months;
     };
 
     conf.exchangeableViews = [

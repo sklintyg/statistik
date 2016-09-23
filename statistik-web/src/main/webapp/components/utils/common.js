@@ -25,6 +25,12 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
         var that = this;
 
+        this.initParams = function($scope) {
+            $scope.diagnosfilterShown = false;
+            $scope.enhetsfilterShown = false;
+            $scope.sjukskrivningslangdsfilterShown = false;
+        };
+
         this.updateDataTable = function (scope, tableData) {
             scope.headerrows = tableData.headers;
             if (scope.headerrows.length > 1) {
@@ -273,7 +279,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             }
 
             $scope.subTitle = getSubtitle($scope.currentPeriod, $scope.selectedDetailsOption, $scope.selectedDetailsOption2,
-                                            $scope.selectedDetailsOption3, $scope, config);
+                                            $scope.selectedDetailsOption3, config);
         };
 
         function setSelectedOptions($scope, $routeParams, kapitels, avsnitts, kategoris) {
@@ -319,15 +325,15 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return path;
         }
 
-        function getSubtitle(period, selectedOption1, selectedOption2, selectedOption3, $scope, config) {
+        function getSubtitle(period, selectedOption1, selectedOption2, selectedOption3, config) {
             if ((selectedOption3 && selectedOption3.name && selectedOption3.id)) {
-                return config.title(period, $scope.enhetsCount, selectedOption3.id + ' ' + selectedOption3.name);
+                return config.title(period, selectedOption3.id + ' ' + selectedOption3.name);
             }
             if ((selectedOption2 && selectedOption2.name && selectedOption2.id)) {
-                return config.title(period, $scope.enhetsCount, selectedOption2.id + ' ' + selectedOption2.name);
+                return config.title(period, selectedOption2.id + ' ' + selectedOption2.name);
             }
             if (selectedOption1 && selectedOption1.name && selectedOption1.id) {
-                return config.title(period, $scope.enhetsCount, selectedOption1.id + ' ' + selectedOption1.name);
+                return config.title(period, selectedOption1.id + ' ' + selectedOption1.name);
             }
             return '';
         }
