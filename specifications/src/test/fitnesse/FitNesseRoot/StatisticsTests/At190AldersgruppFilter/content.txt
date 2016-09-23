@@ -20,6 +20,8 @@
 
 !3 Då gäller:
 
+Filter på åldersgrupp appliceras per intyg i sjukfallet.
+
 | Sjukfall i rapporten aldersgrupp |
 | inloggad som | åldersgrupp | filter åldersgrupp   | män? | kvinnor? |
 | user2        | Under 21 år |                      | 0    | 1        |
