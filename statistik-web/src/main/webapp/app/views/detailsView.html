@@ -14,33 +14,11 @@
 
   <show-help-text texts="chartFootnotes"></show-help-text>
 
-  <div class="row">
-		<div class="col-xs-12 graph-ingress">
-			<a class="hidden-print filter-link" id="chart-diagnosfilterinfo-trigger"
-         data-ng-click="diagnosfilterShown = !diagnosfilterShown"
-         data-ng-show="activeDiagnosFilters">Diagnosfilter&nbsp;&#x25BE</a>
-			<a class="hidden-print filter-link" id="chart-enhetsfilterinfo-trigger"
-         data-ng-click="enhetsfilterShown = !enhetsfilterShown"
-         data-ng-show="activeEnhetsFilters">Enhetsfilter&nbsp;&#x25BE</a>
-			<a class="hidden-print filter-link" id="chart-sjukskrivningslangdsfilterinfo-trigger"
-         data-ng-click="sjukskrivningslangdsfilterShown = !sjukskrivningslangdsfilterShown"
-         data-ng-show="activeSjukskrivningslangdsFilters">Sjukskrivningslängdsfilter&nbsp;&#x25BE</a>
-		</div>
-  </div>
-
-  <div class="clearfix">
-    <div class="pull-left filter-list" data-ng-if="activeDiagnosFilters">
-      <filter-list is-collapsed="!diagnosfilterShown" filters="activeDiagnosFilters"></filter-list>
-    </div>
-
-    <div class="pull-left filter-list" data-ng-if="activeEnhetsFilters">
-      <filter-list is-collapsed="!enhetsfilterShown" filters="activeEnhetsFilters"></filter-list>
-    </div>
-
-    <div class="pull-left filter-list" data-ng-if="activeSjukskrivningslangdsFilters">
-      <filter-list is-collapsed="!sjukskrivningslangdsfilterShown" filters="activeSjukskrivningslangdsFilters"></filter-list>
-    </div>
-  </div>
+  <show-filter-list
+      diagnos-filters="activeDiagnosFilters"
+      enhets-filters="activeEnhetsFilters"
+      sjukskrivningslangds-filters="activeSjukskrivningslangdsFilters">
+  </show-filter-list>
 
   <!-- Start detailsOptions if any -->
   <div data-ng-if="showDiagnosisSelector" class="top-20px-margin">

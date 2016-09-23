@@ -16,44 +16,20 @@
 
 		<show-help-text texts="chartFootnotes"></show-help-text>
 
-		<div class="row">
-			<div class="col-xs-12 col-sm-9 graph-ingress pull-left">
-				<a class="hidden-print filter-link" id="chart-diagnosfilterinfo-trigger"
-					 data-ng-click="diagnosfilterShown = !diagnosfilterShown"
-					 data-ng-show="activeDiagnosFilters">Diagnosfilter&nbsp;&#x25BE</a>
-				<a class="hidden-print filter-link" id="chart-enhetsfilterinfo-trigger"
-					 data-ng-click="enhetsfilterShown = !enhetsfilterShown"
-					 data-ng-show="activeEnhetsFilters">Enhetsfilter&nbsp;&#x25BE</a>
-				<a class="hidden-print filter-link" id="chart-sjukskrivningslangdsfilterinfo-trigger"
-					 data-ng-click="sjukskrivningslangdsfilterShown = !sjukskrivningslangdsfilterShown"
-					 data-ng-show="activeSjukskrivningslangdsFilters">Sjukskrivningslängdsfilter&nbsp;&#x25BE</a>
-			</div>
+		<show-filter-list diagnos-filters="activeDiagnosFilters" enhets-filters="activeEnhetsFilters" sjukskrivningslangds-filters="activeSjukskrivningslangdsFilters">
 			<div class="col-xs-12 col-sm-3 pull-right margin-bottom hidden-print" data-ng-class="{margin_top_button_group: showDetailsOptions}"
 					 style="width: auto;">
 				<!-- PRINT BUTTON -->
 				<button class="btn btn-default" data-ng-click="printPdf()">
 					<span message key="button.label.save-as-pdf"></span>
 				</button>
+				<div class="spinner-overview" data-ng-if="generatingPdf">
+					<div spinner label="Skapar pdf" show-spinner="generatingPdf"></div>
+				</div>
 			</div>
-		</div>
+		</show-filter-list>
 
-		<div class="spinner-overview" data-ng-if="generatingPdf">
-			<div spinner label="Skapar pdf" show-spinner="generatingPdf"></div>
-		</div>
 
-		<div class="clearfix">
-			<div class="pull-left filter-list" data-ng-if="activeDiagnosFilters">
-				<filter-list is-collapsed="!diagnosfilterShown" filters="activeDiagnosFilters"></filter-list>
-			</div>
-
-			<div class="pull-left filter-list" data-ng-if="activeEnhetsFilters">
-				<filter-list is-collapsed="!enhetsfilterShown" filters="activeEnhetsFilters"></filter-list>
-			</div>
-
-			<div class="pull-left filter-list" data-ng-if="activeSjukskrivningslangdsFilters">
-				<filter-list is-collapsed="!sjukskrivningslangdsfilterShown" filters="activeSjukskrivningslangdsFilters"></filter-list>
-			</div>
-		</div>
 
 		<!-- Alert the user about specific conditions -->
 		<div class="row hidden-print">

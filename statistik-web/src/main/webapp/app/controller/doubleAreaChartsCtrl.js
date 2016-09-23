@@ -25,8 +25,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             $location ,chartFactory, _, pdfFactory, ControllerCommons) {
         'use strict';
 
-        ControllerCommons.initParams($scope);
-
         var that = this;
         var chart1 = {};
         var chart2 = {};

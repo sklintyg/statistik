@@ -26,8 +26,6 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         messageService, chartFactory, pdfFactory, _, ControllerCommons) {
         'use strict';
 
-        ControllerCommons.initParams($scope);
-
         var chart;
 
         var defaultChartType = 'line';

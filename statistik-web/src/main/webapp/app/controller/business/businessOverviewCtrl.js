@@ -25,21 +25,16 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _) {
     'use strict';
 
-    ControllerCommons.initParams($scope);
-
     var perMonthAlterationChart = {}, newSexProportionChart = {}, oldSexProportionChart = {},
         ageDonutChart = {}, diagnosisDonutChart = {}, degreeOfSickLeaveChart = {}, sickLeaveLengthChart = {};
     $scope.baseUrl = '#/verksamhet';
 
     var dataReceived = function (result) {
-        var enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
-
         var popoverPreviousMonths = ' jämfört med föregående tre månader.';
         var popoverTextChangeCurrentVSPrevious = '<br><br>Spalten förändring visar skillnaden i antal sjukfall mellan perioden ' +
             result.periodText + popoverPreviousMonths;
 
-        $scope.subTitle = 'Utveckling för verksamheten de senaste tre månaderna' +
-                            ControllerCommons.getEnhetCountText(enhetsCount, false).slice(0, -1) + ', ' + result.periodText;
+        $scope.subTitle = 'Utveckling för verksamheten de senaste tre månaderna ' + result.periodText;
         $scope.popoverTextAmount = 'Totala antalet sjukfall under perioden ' + result.periodText;
         $scope.popoverTextChangeProcentage = 'Procentsatsen visar förändringen av antalet sjukfall under perioden ' + result.periodText;
         $scope.popoverTextSexDistribution = 'Könsfördelningen av totala antalet sjukfall under perioden ' + result.periodText + popoverPreviousMonths;

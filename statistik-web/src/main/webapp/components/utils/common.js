@@ -25,12 +25,6 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
         var that = this;
 
-        this.initParams = function($scope) {
-            $scope.diagnosfilterShown = false;
-            $scope.enhetsfilterShown = false;
-            $scope.sjukskrivningslangdsfilterShown = false;
-        };
-
         this.updateDataTable = function (scope, tableData) {
             scope.headerrows = tableData.headers;
             if (scope.headerrows.length > 1) {

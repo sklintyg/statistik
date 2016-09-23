@@ -25,8 +25,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         config, messageService, chartFactory, pdfFactory, _, ControllerCommons) {
         'use strict';
 
-        ControllerCommons.initParams($scope);
-
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
         var isLandsting = ControllerCommons.isShowingLandsting($location);
         var chart = {};
