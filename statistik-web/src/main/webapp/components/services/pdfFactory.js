@@ -21,7 +21,7 @@
 angular.module('StatisticsApp')
     .factory('pdfFactory',
         /** @ngInject */
-        function($window, $timeout, thousandseparatedFilter, $location, _, TABLE_CONFIG, messageService) {
+        function($window, $timeout, thousandseparatedFilter, $location, _, TABLE_CONFIG, messageService, $rootScope) {
         'use strict';
 
         function _print($scope, charts) {
@@ -133,8 +133,19 @@ angular.module('StatisticsApp')
             _create(content, headers.header, pdfDoneCallback);
         }
 
-        function _create(content, fileName, pdfDoneCallback) {
+        function _waitOnFont(content, fileName, pdfDoneCallback) {
+            if (!$rootScope.pdfFontLoaded) {
+                $timeout(_waitOnFont, 500, true, content, fileName, pdfDoneCallback);
+            } else {
+                _createPdf(content, fileName, pdfDoneCallback);
+            }
+        }
 
+        function _create(content, fileName, pdfDoneCallback) {
+            _waitOnFont(content, fileName, pdfDoneCallback);
+        }
+
+        function _createPdf(content, fileName, pdfDoneCallback) {
             pdfMake.fonts = {
                 Lato: {
                     normal: 'Lato-Regular.ttf',
