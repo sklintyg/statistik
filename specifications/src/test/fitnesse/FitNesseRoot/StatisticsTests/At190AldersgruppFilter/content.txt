@@ -51,7 +51,7 @@ Filter på åldersgrupp appliceras per intyg i sjukfallet.
 | user2        | 2014 | apr   | 21-25 år    | 21-25 år           | 0    | 1        |
 | user2        | 2014 | maj   | 21-25 år    | 21-25 år           | 0    | 1        |
 | user2        | 2014 | jun   | 21-25 år    | 21-25 år           | 0    | 1        |
-| user2        | 2014 | jul   | 21-25 år    | 21-25 år           | 0    | 0        |
+| user2        | 2014 | jul   | 21-25 år    | 21-25 år           | 0    | 1        |
 | user2        | 2014 | aug   | 21-25 år    | 21-25 år           | 0    | 0        |
 | user2        | 2014 | sep   | 21-25 år    | 21-25 år           | 0    | 0        |
 | user2        | 2014 | okt   | 21-25 år    | 21-25 år           | 0    | 0        |
