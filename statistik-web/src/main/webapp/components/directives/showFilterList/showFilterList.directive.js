@@ -24,7 +24,8 @@ angular.module('StatisticsApp')
             scope: {
                 diagnosFilters: '=',
                 enhetsFilters: '=',
-                sjukskrivningslangdsFilters: '='
+                sjukskrivningslangdsFilters: '=',
+                aldersgruppFilters: '='
             },
             transclude: true,
             restrict: 'E',
@@ -33,6 +34,7 @@ angular.module('StatisticsApp')
                 $scope.diagnosfilterShown = false;
                 $scope.enhetsfilterShown = false;
                 $scope.sjukskrivningslangdsfilterShown = false;
+                $scope.aldergruppsfilterShown = false;
             }
         };
     }]);

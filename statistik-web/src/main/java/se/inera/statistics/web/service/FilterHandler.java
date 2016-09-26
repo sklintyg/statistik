@@ -151,7 +151,7 @@ public class FilterHandler {
         final Predicate<Fact> aldersgruppFilter = getAldersgruppFilter(aldersgrupp);
         final Predicate<Sjukfall> sjukfallLengthFilter = getSjukfallLengthFilter(inFilter.getSjukskrivningslangd());
         final FilterPredicates sjukfallFilter = new FilterPredicates(Predicates.and(enhetFilter, diagnosFilter, aldersgruppFilter), sjukfallLengthFilter, filterHash);
-        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter), aldersgrupp);
+        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter), toReadableAgeGroupNames(aldersgrupp));
         final Range range = getRange(inFilter, defaultRangeValue);
         return new FilterSettings(filter, range);
     }

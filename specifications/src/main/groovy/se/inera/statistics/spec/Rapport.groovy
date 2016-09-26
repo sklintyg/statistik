@@ -34,8 +34,10 @@ abstract class Rapport {
     def allaDiagnosfilterValda
     def allaEnhetsfilterValda
     def allaSjukskrivningslängdfilterValda
+    def allaÅldersgruppfilterValda
     def enhetsfilterlista
     def sjukskrivningslangdfilterlista
+    def åldersgruppfilterlista
 
     ReportsUtil reportsUtil = new ReportsUtil()
 
@@ -49,8 +51,10 @@ abstract class Rapport {
         allaDiagnosfilterValda = report[ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER]
         allaEnhetsfilterValda = report[ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER]
         allaSjukskrivningslängdfilterValda = report[ResponseHandler.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER]
+        allaÅldersgruppfilterValda = report[ResponseHandler.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER]
         enhetsfilterlista = report[ResponseHandler.FILTERED_ENHETS]
         sjukskrivningslangdfilterlista = report.filter.sjukskrivningslangd
+        åldersgruppfilterlista = report.filter.aldersgrupp
     }
 
     abstract void doExecute()
@@ -87,12 +91,20 @@ abstract class Rapport {
         return allaSjukskrivningslängdfilterValda
     }
 
+    def allaÅldersgruppfilterValda() {
+        return allaÅldersgruppfilterValda
+    }
+
     def enhetsfilterlista() {
         return enhetsfilterlista
     }
 
     def sjukskrivningslangdfilterlista() {
         return sjukskrivningslangdfilterlista
+    }
+
+    def åldersgruppfilterlista() {
+        return åldersgruppfilterlista
     }
 
     def markerad() {

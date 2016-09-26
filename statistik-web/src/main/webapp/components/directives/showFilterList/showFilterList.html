@@ -9,6 +9,9 @@
     <a class="hidden-print filter-link" id="chart-sjukskrivningslangdsfilterinfo-trigger"
        data-ng-click="sjukskrivningslangdsfilterShown = !sjukskrivningslangdsfilterShown"
        data-ng-show="sjukskrivningslangdsFilters">Sjukskrivningslängdsfilter&nbsp;&#x25BE</a>
+    <a class="hidden-print filter-link" id="chart-aldersgruppfilterinfo-trigger"
+       data-ng-click="aldergruppsfilterShown = !aldergruppsfilterShown"
+       data-ng-show="aldersgruppFilters">Åldersgruppfilter&nbsp;&#x25BE</a>
   </div>
   <ng-transclude></ng-transclude>
 </div>
@@ -24,5 +27,9 @@
 
   <div class="pull-left filter-list" data-ng-if="sjukskrivningslangdsFilters">
     <filter-list is-collapsed="!sjukskrivningslangdsfilterShown" filters="sjukskrivningslangdsFilters"></filter-list>
+  </div>
+
+  <div class="pull-left filter-list" data-ng-if="aldersgruppFilters">
+    <filter-list is-collapsed="!aldergruppsfilterShown" filters="aldersgruppFilters"></filter-list>
   </div>
 </div>

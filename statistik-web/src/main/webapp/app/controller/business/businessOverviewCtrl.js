@@ -215,7 +215,8 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
         ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
                                 result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets,
-                                result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter);
+                                result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
+                                result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter);
         $timeout(function () {
             updateCharts(result);
         }, 1);

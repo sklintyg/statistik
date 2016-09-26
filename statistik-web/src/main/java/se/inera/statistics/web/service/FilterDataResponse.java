@@ -33,15 +33,17 @@ public class FilterDataResponse {
     private List<String> diagnoser;
     private List<String> enheter;
     private List<String> sjukskrivningslangd;
+    private List<String> aldersgrupp;
 
     //To be used by json converter
     private FilterDataResponse() {
     }
 
-    public FilterDataResponse(String filterhash, Collection<String> diagnoser, Collection<HsaIdEnhet> enheter, Collection<String> sjukskrivningslangd) {
+    FilterDataResponse(String filterhash, Collection<String> diagnoser, Collection<HsaIdEnhet> enheter, Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp) {
         this.filterhash = filterhash;
         this.diagnoser = diagnoser == null ? null : Collections.unmodifiableList(new ArrayList<>(diagnoser));
         this.sjukskrivningslangd = sjukskrivningslangd == null ? null : Collections.unmodifiableList(new ArrayList<>(sjukskrivningslangd));
+        this.aldersgrupp = aldersgrupp == null ? null : Collections.unmodifiableList(new ArrayList<>(aldersgrupp));
         this.enheter = enheter == null ? null : Lists.transform(new ArrayList<>(enheter), new Function<HsaIdEnhet, String>() {
             @Override
             public String apply(HsaIdEnhet hsaId) {
@@ -51,11 +53,11 @@ public class FilterDataResponse {
     }
 
     public FilterDataResponse(Filter filter) {
-        this(filter.getFilterHash(), filter.getDiagnoser(), filter.getEnheter(), filter.getSjukskrivningslangd());
+        this(filter.getFilterHash(), filter.getDiagnoser(), filter.getEnheter(), filter.getSjukskrivningslangd(), filter.getAldersgrupp());
     }
 
     public static FilterDataResponse empty() {
-        return new FilterDataResponse(null, null, null, null);
+        return new FilterDataResponse(null, null, null, null, null);
     }
 
     public List<String> getDiagnoser() {
@@ -68,6 +70,10 @@ public class FilterDataResponse {
 
     public List<String> getSjukskrivningslangd() {
         return sjukskrivningslangd;
+    }
+
+    public List<String> getAldersgrupp() {
+        return aldersgrupp;
     }
 
     public String getFilterhash() {

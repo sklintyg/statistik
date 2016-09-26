@@ -71,7 +71,7 @@ angular.module('StatisticsApp')
 
                     $scope.status.isTableOpen = isTableVisible;
 
-                    _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, pdfDoneCallback);
+                    _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, pdfDoneCallback);
                 });
             }
             else {
@@ -81,7 +81,7 @@ angular.module('StatisticsApp')
                     hasMoreThanMaxRows: $scope.rows.length > TABLE_CONFIG.maxRows
                 };
 
-                _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, pdfDoneCallback);
+                _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, pdfDoneCallback);
             }
         }
 
@@ -102,7 +102,7 @@ angular.module('StatisticsApp')
             return tableData;
         }
 
-        function _generate(headers, table, images, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, pdfDoneCallback) {
+        function _generate(headers, table, images, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter, pdfDoneCallback) {
             var content = [];
 
             _addHeader(content, headers);
@@ -110,6 +110,7 @@ angular.module('StatisticsApp')
             _addListFilter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
             _addListFilter(content, 'Sammanställning av enhetsfilter', enhetsFilter);
             _addListFilter(content, 'Sammanställning av sjukskrivningslängdsfilter', sjukskrivningslangdFilter);
+            _addListFilter(content, 'Sammanställning av åldersgruppfilter', aldersgruppFilter);
 
             if (angular.isArray(table)) {
                 angular.forEach(table, function(t) {
