@@ -108,7 +108,7 @@ public class LoginServiceUtil {
         try {
             realUser = getCurrentUser();
         } catch (IllegalStateException e) {
-            LOG.debug("Could not get current user", e);
+            LOG.warn("Could not get current user", e);
             return new LoginInfo();
         }
         Map<HsaIdVardgivare, String> allVgNames = realUser.getVardenhetList().stream()
@@ -133,15 +133,11 @@ public class LoginServiceUtil {
     private User getCurrentUser() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
-            final String msg = "Authentication object is null";
-            LOG.error(msg);
-            throw new IllegalStateException(msg);
+            throw new IllegalStateException("Authentication object is null");
         }
         final Object details = authentication.getPrincipal();
         if (!(details instanceof User)) {
-            final String msg = "details object is of wrong type: " + details;
-            LOG.warn(msg);
-            throw new IllegalStateException(msg);
+            throw new IllegalStateException("details object is of wrong type: " + details);
         }
         return (User) details;
     }
