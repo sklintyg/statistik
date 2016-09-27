@@ -334,6 +334,8 @@ var app = angular.module('StatisticsApp')
                 title: 'Inloggning och behörighet'
             }).when('/', {
                 redirectTo: '/nationell/oversikt'
+            }).when('/nationell', {
+                redirectTo: '/nationell/oversikt'
             }).otherwise({
                 templateUrl: '/app/views/error/pageNotFound.html',
                 title: 'Fel'
