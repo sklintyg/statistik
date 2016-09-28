@@ -48,7 +48,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
 
             if (ControllerCommons.isShowingProtectedPage($location)) {
                 var vgid = $location.search().vgid;
-                if (!vgid) {
+                if (!vgid && UserModel.get().vgs.length > 0) {
                     $location.path('valjVardgivare');
                 } else if ($scope.previousVgid !== vgid) {
                     setSelectedVardgivare(vgid);
@@ -109,7 +109,9 @@ angular.module('StatisticsApp').controller('pageCtrl',
                         $scope.isLoginInfoFetched = true;
 
                         if (!$location.search().vgid) {
-                            if (loginInfo.vgs.length === 1) {
+                            if (loginInfo.vgs.length === 0) {
+                                $location.path('/login');
+                            } else if (loginInfo.vgs.length === 1) {
                                 $scope.changeVardgivare(loginInfo.vgs[0].hsaId);
                             } else {
                                 $location.path('/valjVardgivare');
@@ -128,7 +130,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
         });
 
         $scope.loginClicked = function () {
-            if ($rootScope.isLoggedIn) {
+            if ($rootScope.isLoggedIn && !$scope.loggedInWithoutStatistikuppdrag) {
                 $location.path('valjVardgivare');
             } else {
                 $location.path(AppModel.get().loginUrl);
