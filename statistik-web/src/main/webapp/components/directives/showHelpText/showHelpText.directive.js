@@ -18,13 +18,28 @@
  */
 
 angular.module('StatisticsApp')
-    .directive('showHelpText', [function() {
+    .directive('showHelpText',
+        /** @ngInject */
+        function($filter) {
         'use strict';
         return {
             scope: {
                 texts: '='
             },
             restrict: 'E',
-            templateUrl: '/components/directives/showHelpText/showHelpText.html'
+            templateUrl: '/components/directives/showHelpText/showHelpText.html',
+            link: function($scope) {
+                $scope.$watch('texts', function(values) {
+                    $scope.translatedTexts = [];
+
+                    if (values) {
+                        angular.forEach(values, function(value) {
+                            var translatedText = $filter('messageFilter')(value, value);
+                            translatedText = $filter('helpTooltip')(translatedText);
+                            $scope.translatedTexts.push(translatedText);
+                        });
+                    }
+                });
+            }
         };
-    }]);
+    });

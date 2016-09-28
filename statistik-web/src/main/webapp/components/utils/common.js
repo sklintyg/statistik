@@ -70,16 +70,6 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return String(chartName).replace(/\s+/g, '_') + '_' + date + '_' + time;
         };
 
-        this.getEnhetCountText = function(enhetsCount, basedOnAlreadyInText) {
-            if (enhetsCount === 1) {
-                return ' ';
-            }
-            if (basedOnAlreadyInText) {
-                return enhetsCount ? ' och ' + enhetsCount + ' enheter' + ' ' : ' ';
-            }
-            return enhetsCount ? ' baserat på ' + enhetsCount + ' enheter' + ' ' : ' ';
-        };
-
         function icdStructureAsArray(icdStructure) {
             return _.map(icdStructure, function (icd) {
                 return icdStructureAsArray(icd.subItems).concat(icd);
@@ -283,7 +273,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 }
             }
 
-            $scope.subTitle = getSubtitle($scope.currentPeriod, $scope.selectedDetailsOption, $scope.selectedDetailsOption2,
+            $scope.subTitlePeriod = getSubtitle($scope.currentPeriod, $scope.selectedDetailsOption, $scope.selectedDetailsOption2,
                                             $scope.selectedDetailsOption3, config);
         };
 
@@ -332,13 +322,13 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
         function getSubtitle(period, selectedOption1, selectedOption2, selectedOption3, config) {
             if ((selectedOption3 && selectedOption3.name && selectedOption3.id)) {
-                return config.title(period, selectedOption3.id + ' ' + selectedOption3.name);
+                return config.suffixTitle(period, selectedOption3.id + ' ' + selectedOption3.name);
             }
             if ((selectedOption2 && selectedOption2.name && selectedOption2.id)) {
-                return config.title(period, selectedOption2.id + ' ' + selectedOption2.name);
+                return config.suffixTitle(period, selectedOption2.id + ' ' + selectedOption2.name);
             }
             if (selectedOption1 && selectedOption1.name && selectedOption1.id) {
-                return config.title(period, selectedOption1.id + ' ' + selectedOption1.name);
+                return config.suffixTitle(period, selectedOption1.id + ' ' + selectedOption1.name);
             }
             return '';
         }

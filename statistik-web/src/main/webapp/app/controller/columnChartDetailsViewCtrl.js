@@ -20,9 +20,9 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
     [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter',
-        'config', 'messageService', 'chartFactory', 'pdfFactory', '_', 'ControllerCommons',
+        'config', 'messageService', 'chartFactory', 'pdfFactory', '_', 'ControllerCommons', '$filter',
     function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter,
-        config, messageService, chartFactory, pdfFactory, _, ControllerCommons) {
+        config, messageService, chartFactory, pdfFactory, _, ControllerCommons, $filter) {
         'use strict';
 
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
@@ -75,7 +75,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         };
 
         var populatePageWithDataSuccess = function(result) {
-            $scope.subTitle = config.title(result.period);
+            $scope.subTitlePeriod = angular.isFunction(config.suffixTitle) ? config.suffixTitle(result.period, $routeParams.kapitelId) : result.period;
             if (angular.isFunction(config.chartFootnotesExtra)) {
                 $scope.chartFootnotes.push(config.chartFootnotesExtra(result));
             }
@@ -143,6 +143,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             $scope.doneLoading = true;
         }
 
+        $scope.subTitle = $filter('helpTooltip')(config.title);
         $scope.showDetailOptions3PopoverText = messageService.getProperty(config.pageHelpTextShowDetailOptions, null, '', null, true);
         $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet, isLandsting) : config.chartFootnotes;
         $scope.showDetailsOptions = config.showDetailsOptions;
@@ -172,7 +173,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
 
 angular.module('StatisticsApp').nationalSickLeaveLengthConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -182,9 +183,7 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getSickLeaveLengthData/csv';
     };
-    conf.title = function (period) {
-        return messageService.getProperty('title.sickleavelength') + ' ' + period;
-    };
+    conf.title = messageService.getProperty('title.sickleavelength');
     conf.chartFootnotes = function(isVerksamhet) {
         var text = ['help.nationell.sickleavelength'];
 
@@ -203,7 +202,7 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig =
 
 angular.module('StatisticsApp').nationalAgeGroupConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -213,9 +212,7 @@ angular.module('StatisticsApp').nationalAgeGroupConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getAgeGroupsStatistics/csv';
     };
-    conf.title = function (period) {
-        return messageService.getProperty('title.agegroup') + ' ' + period;
-    };
+    conf.title = messageService.getProperty('title.agegroup');
     conf.chartXAxisTitle = 'Åldersgrupp';
 
     conf.exchangeableViews = [
@@ -226,15 +223,13 @@ angular.module('StatisticsApp').nationalAgeGroupConfig =
 
 angular.module('StatisticsApp').casesPerSexConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
     conf.dataFetcher = 'getNationalSjukfallPerSexData';
     conf.exportTableUrl = 'api/getSjukfallPerSexStatistics/csv';
-    conf.title = function (period) {
-        return messageService.getProperty('title.lan.gender') + ' ' + period;
-    };
+    conf.title = messageService.getProperty('title.lan.gender');
     conf.chartXAxisTitle = 'Län';
     conf.chartFootnotes = ['help.nationell.lan.gender'];
     conf.percentChart = true;
@@ -244,7 +239,7 @@ angular.module('StatisticsApp').casesPerSexConfig =
 
 angular.module('StatisticsApp').casesPerBusinessConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -256,9 +251,7 @@ angular.module('StatisticsApp').casesPerBusinessConfig =
     conf.exportTableUrlLandsting = function () {
         return 'api/landsting/getNumberOfCasesPerEnhetLandsting/csv';
     };
-    conf.title = function (period) {
-        return messageService.getProperty('title.vardenhet') + ' ' + period;
-    };
+    conf.title = messageService.getProperty('title.vardenhet');
     conf.chartXAxisTitle = 'Vårdenhet';
     conf.chartFootnotes = function(isVerksamhet, isLandsting) {
         if (isLandsting) {
@@ -277,7 +270,7 @@ angular.module('StatisticsApp').casesPerBusinessConfig =
 
 angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -285,9 +278,7 @@ angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig =
     conf.exportTableUrlLandsting = function () {
         return 'api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting/csv';
     };
-    conf.title = function (period) {
-        return messageService.getProperty('title.vardenhet-listning') + ' ' + period;
-    };
+    conf.title = messageService.getProperty('title.vardenhet-listning');
     conf.chartFootnotes = ['help.landsting.vardenhet-listning1', 'help.landsting.vardenhet-listning2'];
 
     conf.chartXAxisTitle = 'Vårdenhet';
@@ -297,7 +288,7 @@ angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig =
 
 angular.module('StatisticsApp').casesPerLakareConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -305,9 +296,7 @@ angular.module('StatisticsApp').casesPerLakareConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getNumberOfCasesPerLakare/csv';
     };
-    conf.title = function (period) {
-        return messageService.getProperty('title.lakare') + ' ' + period;
-    };
+    conf.title = messageService.getProperty('title.lakare');
     conf.chartFootnotes = ['help.verksamhet.lakare'];
     conf.chartXAxisTitle = 'Läkare';
 
@@ -319,7 +308,7 @@ angular.module('StatisticsApp').casesPerLakareConfig =
 
 angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -327,9 +316,7 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getCasesPerDoctorAgeAndGenderStatistics/csv';
     };
-    conf.title = function (period) {
-        return messageService.getProperty('title.lakaregender') + ' ' + period;
-    };
+    conf.title = messageService.getProperty('title.lakaregender');
     conf.chartFootnotes = ['help.verksamhet.lakaregender'];
     conf.chartXAxisTitle = 'Läkare';
 
@@ -341,7 +328,7 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig =
 
 angular.module('StatisticsApp').casesPerLakarbefattningConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -349,9 +336,7 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getNumberOfCasesPerLakarbefattning/csv';
     };
-    conf.title = function (period) {
-        return messageService.getProperty('title.lakare-befattning') + ' ' + period;
-    };
+    conf.title = messageService.getProperty('title.lakare-befattning');
     conf.chartXAxisTitle = 'Läkarbefattning';
     conf.chartFootnotes = ['help.verksamhet.lakare-befattning'];
 
@@ -363,7 +348,7 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig =
 
 angular.module('StatisticsApp').compareDiagnosis =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -371,9 +356,7 @@ angular.module('StatisticsApp').compareDiagnosis =
     conf.exportTableUrlVerksamhet = function (diagnosisHash) {
         return 'api/verksamhet/getJamforDiagnoserStatistik/' + diagnosisHash + '/csv';
     };
-    conf.title = function (period) {
-        return messageService.getProperty('title.diagnoscompare') + ' ' + period;
-    };
+    conf.title = messageService.getProperty('title.diagnoscompare');
     conf.chartXAxisTitle = 'Diagnos';
     conf.showDiagnosisSelector = true;
 
@@ -386,7 +369,7 @@ angular.module('StatisticsApp').compareDiagnosis =
 
 angular.module('StatisticsApp').casesPerMonthTvarsnittConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -394,9 +377,7 @@ angular.module('StatisticsApp').casesPerMonthTvarsnittConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getNumberOfCasesPerMonthTvarsnitt/csv';
     };
-    conf.title = function (months) {
-        return messageService.getProperty('title.sickleave') + ' ' + months;
-    };
+    conf.title = messageService.getProperty('title.sickleave');
     conf.chartXAxisTitle = '';
 
     conf.exchangeableViews = [
@@ -409,7 +390,7 @@ angular.module('StatisticsApp').casesPerMonthTvarsnittConfig =
 
 angular.module('StatisticsApp').longSickLeavesTvarsnittConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -417,9 +398,7 @@ angular.module('StatisticsApp').longSickLeavesTvarsnittConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getLongSickLeavesTvarsnitt/csv';
     };
-    conf.title = function (months) {
-        return messageService.getProperty('title.sickleavelength90') + ' ' + months;
-    };
+    conf.title = messageService.getProperty('title.sickleavelength90');
     conf.chartXAxisTitle = '';
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/langasjukskrivningar', active: false},
@@ -429,7 +408,7 @@ angular.module('StatisticsApp').longSickLeavesTvarsnittConfig =
 
 angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -438,9 +417,7 @@ angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig =
         return 'api/verksamhet/getDegreeOfSickLeaveTvarsnitt/csv';
     };
     conf.showDetailsOptions = false;
-    conf.title = function (period) {
-        return messageService.getProperty('title.degreeofsickleave') + ' ' + period;
-    };
+    conf.title = messageService.getProperty('title.degreeofsickleave');
     conf.chartXAxisTitle = '';
     conf.chartFootnotes = ['help.nationell.degreeofsickleave'];
 
@@ -453,7 +430,7 @@ angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig =
 
 angular.module('StatisticsApp').differentieratIntygandeTvarsnittConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -462,9 +439,7 @@ angular.module('StatisticsApp').differentieratIntygandeTvarsnittConfig =
         return 'api/verksamhet/getDifferentieratIntygandeTvarsnitt/csv';
     };
     conf.showDetailsOptions = false;
-    conf.title = function (period) {
-        return messageService.getProperty('title.differentierat') + ' ' + period;
-    };
+    conf.title = messageService.getProperty('title.differentierat');
     conf.chartFootnotes = ['help.verksamhet.differentierat1', 'help.verksamhet.differentierat2', 'help.verksamhet.differentierat3'];
     conf.chartXAxisTitle = '';
 
@@ -477,7 +452,7 @@ angular.module('StatisticsApp').differentieratIntygandeTvarsnittConfig =
 
 angular.module('StatisticsApp').diagnosisGroupTvarsnittConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -486,9 +461,7 @@ angular.module('StatisticsApp').diagnosisGroupTvarsnittConfig =
         return 'api/verksamhet/getDiagnosGruppTvarsnitt/csv';
     };
     conf.showDetailsOptions = false;
-    conf.title = function (period) {
-        return messageService.getProperty('title.diagnosisgroup') + ' ' + period;
-    };
+    conf.title = messageService.getProperty('title.diagnosisgroup');
     conf.chartFootnotes = ['help.nationell.diagnosisgroup'];
 
     conf.exchangeableViews = [
@@ -499,7 +472,7 @@ angular.module('StatisticsApp').diagnosisGroupTvarsnittConfig =
 
 angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -510,9 +483,10 @@ angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig =
     conf.showDetailsOptions = true;
     conf.showDetailsOptions2 = true;
     conf.showDetailsOptions3 = true;
-    conf.title = function (period, name) {
-        return messageService.getProperty('title.diagnosgroup') + ' ' + name + ' ' + period;
+    conf.suffixTitle = function (period, name) {
+        return name + ' ' + period;
     };
+    conf.title = messageService.getProperty('title.diagnosgroup');
     conf.pageHelpTextShowDetailOptions = 'help.diagnosissubgroup.showdetailoptions';
     conf.chartFootnotes = function(isVerksamhet) {
         if (isVerksamhet) {
@@ -530,16 +504,14 @@ angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig =
 
 angular.module('StatisticsApp').casesPerCountyConfig =
     /** @ngInject */
-    function (ControllerCommons, messageService) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
     conf.dataFetcher = 'getNationalCountyData';
     conf.exportTableUrl = 'api/getCountyStatistics/csv';
     conf.allowDecimalsYAxis = true;
-    conf.title = function (period) {
-        return messageService.getProperty('title.lan') + ' ' + period;
-    };
+    conf.title = messageService.getProperty('title.lan');
     conf.chartXAxisTitle = 'Län';
     conf.chartYAxisTitle = 'Antal sjukfall per 1000 invånare';
     conf.chartFootnotes = ['help.nationell.lan'];

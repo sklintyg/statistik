@@ -8,7 +8,10 @@
 
   <div class="clearfix">
     <div class="pull-left right-2px-padding">
-      <h1 class="national-statistic-h1">{{subTitle}}</h1>
+      <h1 class="national-statistic-h1">
+        <span bind-html-compile="subTitle"></span>
+        <span>{{subTitlePeriod}}</span>
+      </h1>
     </div>
   </div>
 
