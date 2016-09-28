@@ -19,6 +19,7 @@
 package se.inera.statistics.service.helper;
 
 import java.io.StringReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,6 @@ import javax.xml.bind.JAXBIntrospector;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.neethi.builders.converters.ConverterException;
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -147,7 +147,7 @@ public class RegisterCertificateHelper {
                 break;
             }
         }
-        return new Arbetsnedsattning(nedsattning, datePeriod.getStart(), datePeriod.getEnd());
+        return new Arbetsnedsattning(nedsattning, JodaConverterHelper.toJodaLocalDate(datePeriod.getStart()), JodaConverterHelper.toJodaLocalDate(datePeriod.getEnd()));
     }
 
     public Patientdata getPatientData(RegisterCertificateType intyg) {
@@ -155,7 +155,7 @@ public class RegisterCertificateHelper {
         final String personId = DocumentHelper.getUnifiedPersonId(patientIdRaw);
         int alder;
         try {
-            alder = ConversionHelper.extractAlder(personId, getSistaNedsattningsdag(intyg));
+            alder = ConversionHelper.extractAlder(personId, JodaConverterHelper.toJodaLocalDate(getSistaNedsattningsdag(intyg)));
         } catch (Exception e) {
             LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId);
             LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId, e);
@@ -170,7 +170,7 @@ public class RegisterCertificateHelper {
         final List<Arbetsnedsattning> arbetsnedsattnings = getArbetsnedsattning(document);
         LocalDate to = null;
         for (Arbetsnedsattning arbetsnedsattning : arbetsnedsattnings) {
-            final LocalDate candidate = arbetsnedsattning.getSlut();
+            final LocalDate candidate = JodaConverterHelper.toJavaLocalDate(arbetsnedsattning.getSlut());
             if (to == null || candidate.isAfter(to)) {
                 to = candidate;
             }

@@ -98,11 +98,11 @@ subprojects {
         zipletVersion = "2.1.2"
 
         // Internal
-        intygCommonVersion = "3.0.0"
+        intygCommonVersion = "0-SNAPSHOT"
         intygCommonLoggingVersion = "3.0.0"
 
         // Schemas
-        certificateSchemaVersion = "2.0.RC4.2"
+        certificateSchemaVersion = "2.0.RC6.1"
         monitoringSchemaVersion = "1.0.0.0"
 
         // Test
