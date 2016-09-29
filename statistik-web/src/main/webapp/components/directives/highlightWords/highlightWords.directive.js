@@ -49,6 +49,7 @@ angular.module('StatisticsApp')
 
             angular.forEach(getPhrases(), function(phrase) {
                 instance.mark(phrase.phrase, {
+                    element: 'span',
                     exclude: ['svg *'],
                     className: 'highlight-words',
                     separateWordSearch: false,
@@ -86,6 +87,22 @@ angular.module('StatisticsApp')
                 {
                     phrase: 'utfärdade intyg',
                     text: 'Elektroniska intyg som har utfärdats och signerats av hälso- och sjukvården.'
+                },
+                {
+                    phrase: 'Okänd befattning',
+                    text: 'Innehåller sjukfall där läkaren inte går att slå upp i HSA-katalogen eller där läkaren inte har någon befattning angiven'
+                },
+                {
+                    phrase: 'Ej läkarbefattning',
+                    text: 'Innehåller sjukfall där läkaren inte har någon läkarbefattning angiven i HSA men däremot andra slags befattningar'
+                },
+                {
+                    phrase: 'Utan giltig ICD-10 kod',
+                    text: 'Innehåller sjukfall som inte har någon diagnoskod angiven eller där den angivna diagnoskoden inte finns i klassificeringssystemet för diagnoser, ICD-10-SE'
+                },
+                {
+                    phrase: 'Okänt län',
+                    text: 'Innehåller de sjukfall där enheten som utfärdat intygen inte har något län angivet i HSA-katalogen'
                 }
             ];
 

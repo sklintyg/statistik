@@ -33,7 +33,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     numberOfChars = maxWidth-10;
                 }
 
-                return this.value.length > numberOfChars ? this.value.substring(0, numberOfChars) + '...' : this.value;
+                return this.value.length > numberOfChars ? '<span title="'+this.value +'">' + this.value.substring(0, numberOfChars) + '...</span>' : this.value;
             };
         };
 
@@ -83,6 +83,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                             whiteSpace: 'pre',
                             width: '200px'
                         },
+                        useHTML: true,
                         formatter: labelFormatter(30),
                         step: 1
                     },
