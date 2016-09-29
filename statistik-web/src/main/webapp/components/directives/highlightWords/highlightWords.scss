@@ -1,0 +1,13 @@
+.highlight-words {
+  border-bottom: 1px dotted #333;
+  display: inline-block;
+}
+
+mark {
+  background: transparent;
+  color: inherit;
+
+  .tooltip-inner {
+    white-space:pre-wrap;
+  }
+}

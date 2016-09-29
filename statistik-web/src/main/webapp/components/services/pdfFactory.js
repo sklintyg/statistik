@@ -32,7 +32,7 @@ angular.module('StatisticsApp')
 
             var headers = {
                 header: $scope.viewHeader,
-                subHeader: $scope.subTitle
+                subHeader: $scope.subTitle + $scope.subTitlePeriod
             };
 
             if ($scope.verksamhetViewShowing) {

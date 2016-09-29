@@ -25,7 +25,7 @@
     <!-- endbuild -->
 </head>
 <body data-ng-controller="pageCtrl">
-
+<highlight-words></highlight-words>
 <!-- Navbar
 ================================================== -->
 <div id="navigation-container">
@@ -147,7 +147,7 @@
   <script src="bower_components/highcharts/highcharts-more.js"></script>
   <script src="bower_components/rgb-color/rgb-color.js"></script>
   <script src="bower_components/canvg-gabelerner/canvg.js"></script>
-  <script src="bower_components/angular-bind-html-compile/angular-bind-html-compile.js"></script>
+  <script src="bower_components/mark.js/dist/mark.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -183,6 +183,7 @@
   <script src="/components/directives/dataerrorview/dataerrorview.directive.js"></script>
   <script src="/components/directives/diagnosSelection/diagnosSelection.directive.js"></script>
   <script src="/components/directives/filterList/filterList.directive.js"></script>
+  <script src="/components/directives/highlightWords/highlightWords.directive.js"></script>
   <script src="/components/directives/intermediate/intermediate.directive.js"></script>
   <script src="/components/directives/legendHeight/legendHeight.directive.js"></script>
   <script src="/components/directives/message/message.directive.js"></script>
@@ -202,7 +203,6 @@
   <script src="/components/directives/statCookieBanner/statCookieBanner.directive.js"></script>
   <script src="/components/directives/statScrollTable/statScrollTable.directive.js"></script>
   <script src="/components/directives/submenu/submenu.directive.js"></script>
-  <script src="/components/filters/helpTooltip/helpTooltip.filter.js"></script>
   <script src="/components/filters/messageFilter/message.filter.js"></script>
   <script src="/components/filters/replaceEmpty/replaceEmpty.filter.js"></script>
   <script src="/components/filters/thousandseparated/thousandseparated.filter.js"></script>

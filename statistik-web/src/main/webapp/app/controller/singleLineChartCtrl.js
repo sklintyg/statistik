@@ -20,10 +20,9 @@
 
 /* globals Highcharts */
 angular.module('StatisticsApp').controller('singleLineChartCtrl',
-    [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'config', '$location',
-        'messageService', 'chartFactory', 'pdfFactory', '_', 'ControllerCommons', '$filter',
+    /** @ngInject */
     function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, $location,
-        messageService, chartFactory, pdfFactory, _, ControllerCommons, $filter) {
+        messageService, chartFactory, pdfFactory, _, ControllerCommons) {
         'use strict';
 
         var chart;
@@ -124,7 +123,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             });
         }
 
-        $scope.subTitle = $filter('helpTooltip')(config.title);
+        $scope.subTitle = config.title;
         $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet) : config.chartFootnotes;
         $scope.spinnerText = 'Laddar information...';
         $scope.doneLoading = false;
@@ -141,7 +140,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         });
 
     }
-]);
+);
 
 angular.module('StatisticsApp').casesPerMonthConfig =
     /** @ngInject */

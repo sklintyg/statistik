@@ -2023,6 +2023,7 @@ input[type="radio"], input[type="checkbox"] {
 @import 'directives/angular-dropzone/dropzone.scss';
 @import 'directives/diagnosSelection/diagnosSelection.scss';
 @import 'directives/filterList/filterList.scss';
+@import 'directives/highlightWords/highlightWords.scss';
 @import 'directives/navigationMenu/navigationMenu.scss';
 @import 'directives/overviewWidget/overviewWidget.scss';
 @import 'directives/selectVardgivare/selectVardgivare.scss';
@@ -2034,5 +2035,4 @@ input[type="radio"], input[type="checkbox"] {
 @import 'directives/spinner/spinner.scss';
 @import 'directives/statCookieBanner/statCookieBanner.scss';
 @import 'directives/statScrollTable/statScrollTable.scss';
-@import 'filters/helpTooltip/helpTooltip.scss';
 // endinjector

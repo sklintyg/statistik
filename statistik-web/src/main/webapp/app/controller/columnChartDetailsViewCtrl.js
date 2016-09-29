@@ -19,10 +19,9 @@
 
 /* globals Highcharts */
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
-    [ '$scope', '$rootScope', '$routeParams', '$window', '$location', '$timeout', 'statisticsData', 'diagnosisTreeFilter',
-        'config', 'messageService', 'chartFactory', 'pdfFactory', '_', 'ControllerCommons', '$filter',
+    /** @ngInject */
     function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter,
-        config, messageService, chartFactory, pdfFactory, _, ControllerCommons, $filter) {
+        config, messageService, chartFactory, pdfFactory, _, ControllerCommons) {
         'use strict';
 
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
@@ -143,7 +142,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             $scope.doneLoading = true;
         }
 
-        $scope.subTitle = $filter('helpTooltip')(config.title);
+        $scope.subTitle = config.title;
         $scope.showDetailOptions3PopoverText = messageService.getProperty(config.pageHelpTextShowDetailOptions, null, '', null, true);
         $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet, isLandsting) : config.chartFootnotes;
         $scope.showDetailsOptions = config.showDetailsOptions;
@@ -169,7 +168,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             }
         });
     }
-]);
+);
 
 angular.module('StatisticsApp').nationalSickLeaveLengthConfig =
     /** @ngInject */

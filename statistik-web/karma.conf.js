@@ -34,7 +34,7 @@ module.exports = function(config) {
             'src/main/webapp/bower_components/highcharts/highcharts-more.js',
             'src/main/webapp/bower_components/rgb-color/rgb-color.js',
             'src/main/webapp/bower_components/canvg-gabelerner/canvg.js',
-            'src/main/webapp/bower_components/angular-bind-html-compile/angular-bind-html-compile.js',
+            'src/main/webapp/bower_components/mark.js/dist/mark.js',
             // endbower
             'src/main/webapp/bower_components/angular-mocks/angular-mocks.js',
             'src/main/webapp/app/app.main.test.js',

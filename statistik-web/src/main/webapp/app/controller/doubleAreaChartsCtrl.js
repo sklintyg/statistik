@@ -19,10 +19,9 @@
 
 /* globals Highcharts */
 angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
-    ['$scope', '$rootScope', '$routeParams', '$window', '$timeout', 'statisticsData', 'config', 'messageService', 'diagnosisTreeFilter',
-            '$location', 'chartFactory', '_', 'pdfFactory', 'ControllerCommons', '$filter',
+    /** @ngInject */
     function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, config, messageService, diagnosisTreeFilter,
-            $location ,chartFactory, _, pdfFactory, ControllerCommons, $filter) {
+            $location ,chartFactory, _, pdfFactory, ControllerCommons) {
         'use strict';
 
         var that = this;
@@ -161,7 +160,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             $scope.doneLoading = true;
         }
 
-        $scope.subTitle = $filter('helpTooltip')(config.title);
+        $scope.subTitle = config.title;
         $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet) : config.chartFootnotes;
         $scope.showDiagnosisSelector = config.showDiagnosisSelector;
         if ($scope.showDiagnosisSelector) {
@@ -195,7 +194,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         return this;
 
     }
-]);
+);
 
 angular.module('StatisticsApp').diagnosisGroupConfig =
     /** @ngInject */
