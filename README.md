@@ -41,12 +41,12 @@ Nu går det att öppna en webbläsare och surfa till http://localhost:8080/ Obse
 inte klar" förrän du stoppar servern med ^c, och applikationen är bara igång fram till dess.
 
 ###Uppgradera från node 0.12
-Installera nodjs 6.5.0 tex med NVM, https://github.com/creationix/nvm
+Installera nodjs 6.6.0 tex med NVM, https://github.com/creationix/nvm
 
 Har du nvm så kan du skriva 
 
-    nvm install 6
-    nvm alias default 6
+    nvm install 6.6
+    nvm alias default 6.6
     
 Ta bort `statistik-web/node_modules` och `statistik-web/src/main/webapp/bower_components`
 
