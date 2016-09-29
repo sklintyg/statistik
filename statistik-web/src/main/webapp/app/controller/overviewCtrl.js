@@ -57,7 +57,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         };
 
         var dataReceivedSuccess = function(result) {
-            $scope.subTitle = 'Utvecklingen i Sverige de senaste tre månaderna, ' + result.periodText;
+            $scope.subTitlePeriod = result.periodText;
             setTooltipText(result);
             $scope.statisticNotDone = false;
             $scope.doneLoading = true;
@@ -291,6 +291,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         statisticsData.getOverview(dataReceived, function () {
             $scope.dataLoadingError = true;
         });
+        $scope.subTitle = 'Utvecklingen i Sverige de senaste tre månaderna, ';
         $scope.spinnerText = 'Laddar information...';
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;

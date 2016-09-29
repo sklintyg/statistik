@@ -34,7 +34,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         var popoverTextChangeCurrentVSPrevious = '<br><br>Spalten förändring visar skillnaden i antal sjukfall mellan perioden ' +
             result.periodText + popoverPreviousMonths;
 
-        $scope.subTitle = 'Utveckling för verksamheten de senaste tre månaderna ' + result.periodText;
+        $scope.subTitlePeriod = result.periodText;
         $scope.popoverTextAmount = 'Totala antalet sjukfall under perioden ' + result.periodText;
         $scope.popoverTextChangeProcentage = 'Procentsatsen visar förändringen av antalet sjukfall under perioden ' + result.periodText;
         $scope.popoverTextSexDistribution = 'Könsfördelningen av totala antalet sjukfall under perioden ' + result.periodText + popoverPreviousMonths;
@@ -273,6 +273,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     }
 
     refresh();
+    $scope.subTitle = 'Utveckling för verksamheten de senaste tre månaderna, ';
     $scope.spinnerText = 'Laddar information...';
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
