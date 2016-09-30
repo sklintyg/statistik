@@ -20,8 +20,7 @@
     "momentjs": "2.14.1",
     "dropzone": "4.3.0",
     "ngstorage": "0.3.11",
-    "highcharts": "4.2.5",
-    "canvg-gabelerner": "v1.4",
+    "highcharts": "4.2.7",
     "mark.js": "^8.4.0"
   },
   "devDependencies": {

@@ -32,8 +32,6 @@ module.exports = function(config) {
             'src/main/webapp/bower_components/highcharts/highcharts.js',
             'src/main/webapp/bower_components/highcharts/modules/exporting.js',
             'src/main/webapp/bower_components/highcharts/highcharts-more.js',
-            'src/main/webapp/bower_components/rgb-color/rgb-color.js',
-            'src/main/webapp/bower_components/canvg-gabelerner/canvg.js',
             'src/main/webapp/bower_components/mark.js/dist/mark.js',
             // endbower
             'src/main/webapp/bower_components/angular-mocks/angular-mocks.js',
@@ -41,7 +39,7 @@ module.exports = function(config) {
             'src/main/webapp/app/**/*.js',
             'src/main/webapp/components/**/*.js',
             'src/main/webapp/app/**/*.html',
-            'src/main/webapp/components/**/*.html'
+            'src/main/webapp/components/**/*.html',
         ],
 
         // list of files / patterns to exclude

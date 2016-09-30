@@ -53,13 +53,23 @@
   <script src="../bower_components/highcharts/highcharts.js"></script>
   <script src="../bower_components/highcharts/modules/exporting.js"></script>
   <script src="../bower_components/highcharts/highcharts-more.js"></script>
-  <script src="../bower_components/rgb-color/rgb-color.js"></script>
-  <script src="../bower_components/canvg-gabelerner/canvg.js"></script>
   <script src="../bower_components/mark.js/dist/mark.js"></script>
   <!-- endbower -->
+
   <script type="text/javascript" src="../bower_components/angular-mocks/angular-mocks.js"></script>
 
-<!-- in pubapp-->
+  <!-- canvg:js -->
+  <!--
+    Beroendet till canvg har lagts till manuellt och inte via Bower för
+    att få med en buggrättning som gör att PDFer skapade i MSEdge fungerar.
+    Beroendet bör ske via Bower igen när canvg släppts i version 1.5 eller högre.
+  -->
+  <script type="text/javascript" src="../js/lib/StackBlur.js"></script>
+  <script type="text/javascript" src="../js/lib/rgbcolor.js"></script>
+  <script type="text/javascript" src="../js/lib/canvg.js"></script>
+  <!-- endcanvg -->
+
+  <!-- in pubapp-->
 
   <!-- build:js({build/.tmp,src/main/webapp}) /app/showcase.js -->
   <script type="text/javascript" src="/showcase/ref.app.js"></script>
