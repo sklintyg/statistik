@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 
 public class WarehouseManager {
 

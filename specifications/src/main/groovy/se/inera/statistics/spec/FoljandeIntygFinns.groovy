@@ -2,7 +2,6 @@ package se.inera.statistics.spec
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
-import org.joda.time.DateTimeUtils
 import se.inera.statistics.service.helper.SjukskrivningsGrad
 import se.inera.statistics.service.processlog.EventType
 import se.inera.statistics.web.reports.ReportsUtil
@@ -69,7 +68,7 @@ class FoljandeIntygFinns {
             huvudenhet = enhet;
         }
         def finalIntygDataString = getIntygDataString()
-        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(exaktintygid), DateTimeUtils.currentTimeMillis(), län, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
+        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(exaktintygid), System.currentTimeMillis(), län, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
         reportsUtil.insertIntyg(intyg)
     }
 

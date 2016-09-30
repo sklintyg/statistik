@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -353,7 +354,7 @@ public class NationellData {
         return actual < cutoff ? 0 : actual;
     }
 
-    public org.joda.time.LocalDateTime getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return warehouse.getLastUpdate();
     }
 

@@ -35,7 +35,7 @@ public class JodaConverterHelperTest {
         final LocalDate javaDate = LocalDate.of(year, month, dayOfMonth);
 
         //When
-        final org.joda.time.LocalDate jodaDate = JodaConverterHelper.toJodaLocalDate(javaDate);
+        final org.joda.time.LocalDate jodaDate = JodaConverterHelper.toJodaTime(javaDate);
 
         //Then
         assertEquals(year, jodaDate.getYear());
@@ -46,8 +46,14 @@ public class JodaConverterHelperTest {
 
     @Test
     public void testToJodaLocalDateNullInput() throws Exception {
-        final org.joda.time.LocalDate jodaDate = JodaConverterHelper.toJodaLocalDate(null);
-        assertNull(jodaDate);
+        //Given
+        final LocalDate javaDate = null;
+
+        //When
+        final org.joda.time.LocalDate jodaTime = JodaConverterHelper.toJodaTime(javaDate);
+
+        //Then
+        assertNull(jodaTime);
     }
 
     @Test
@@ -59,7 +65,7 @@ public class JodaConverterHelperTest {
         final org.joda.time.LocalDate jodaDate = new org.joda.time.LocalDate(year, month, dayOfMonth);
 
         //When
-        final LocalDate javaDate = JodaConverterHelper.toJavaLocalDate(jodaDate);
+        final LocalDate javaDate = JodaConverterHelper.toJavaTime(jodaDate);
 
         //Then
         assertEquals(year, javaDate.getYear());
@@ -70,7 +76,13 @@ public class JodaConverterHelperTest {
 
     @Test
     public void testToJavaLocalDateNullInput() throws Exception {
-        final LocalDate javaDate = JodaConverterHelper.toJavaLocalDate(null);
+        //Given
+        final org.joda.time.LocalDate jodaDate = null;
+
+        //When
+        final LocalDate javaDate = JodaConverterHelper.toJavaTime(jodaDate);
+
+        //Then
         assertNull(javaDate);
     }
 

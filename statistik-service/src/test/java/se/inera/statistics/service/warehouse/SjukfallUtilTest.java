@@ -21,7 +21,6 @@ package se.inera.statistics.service.warehouse;
 import com.google.common.base.Function;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -31,6 +30,8 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.warehouse.query.CounterFunction;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -110,14 +111,14 @@ public class SjukfallUtilTest {
         aisle.addLine(createFact(3, 2, 4020));
         aisle.addLine(createFact(2, 2, 4030));
 
-        Iterator<SjukfallGroup> actives = sjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 3, 1, aisle.createAisle(), createEnhetFilterFromInternalIntValues(2)).iterator();
+        Iterator<SjukfallGroup> actives = sjukfallUtil.sjukfallGrupper(LocalDate.parse("2010-11-01"), 3, 1, aisle.createAisle(), createEnhetFilterFromInternalIntValues(2)).iterator();
         assertTrue(actives.next().getSjukfall().isEmpty());
 
         assertEquals(2, actives.next().getSjukfall().size());
         assertEquals(2, actives.next().getSjukfall().size());
         assertFalse(actives.hasNext());
 
-        actives = sjukfallUtil.sjukfallGrupper(new LocalDate("2010-11-01"), 2, 12, aisle.createAisle(), createEnhetFilterFromInternalIntValues(2)).iterator();
+        actives = sjukfallUtil.sjukfallGrupper(LocalDate.parse("2010-11-01"), 2, 12, aisle.createAisle(), createEnhetFilterFromInternalIntValues(2)).iterator();
 
         assertEquals(2, actives.next().getSjukfall().size());
         assertEquals(0, actives.next().getSjukfall().size());
@@ -148,7 +149,7 @@ public class SjukfallUtilTest {
     public void oneSjukfalFromTwoDifferentEnhetsIsNotAffectedByEnhetFilter() throws Exception {
         int ENHET1 = 1;
         int ENHET2 = 2;
-        LocalDate monthStart = new LocalDate("2010-11-01");
+        LocalDate monthStart = LocalDate.parse("2010-11-01");
         aisle.addLine(createFact(ENHET1, 1, WidelineConverter.toDay(monthStart), 1));
         aisle.addLine(createFact(ENHET2, 1, WidelineConverter.toDay(monthStart.plusDays(10)), 2));
         aisle.addLine(createFact(ENHET1, 1, WidelineConverter.toDay(monthStart.plusDays(20)), 3));
@@ -160,7 +161,7 @@ public class SjukfallUtilTest {
     @Test
     public void twoIntygsFarApartAreTwoSjukfalls() throws Exception {
         int ENHET1 = 1;
-        LocalDate monthStart = new LocalDate("2010-11-01");
+        LocalDate monthStart = LocalDate.parse("2010-11-01");
         aisle.addLine(createFact(ENHET1, 1, WidelineConverter.toDay(monthStart), 1));
         aisle.addLine(createFact(ENHET1, 1, WidelineConverter.toDay(monthStart.plusDays(21)), 3));
 
@@ -171,7 +172,7 @@ public class SjukfallUtilTest {
     @Test
     public void testSjukfallCacheIsWorking() throws Exception {
         //Given
-        LocalDate monthStart = new LocalDate("2015-03-11");
+        LocalDate monthStart = LocalDate.parse("2015-03-11");
 
         //When
         final Iterable<SjukfallGroup> sjukfallGroups1 = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle.createAisle(), SjukfallUtil.ALL_ENHETER);
@@ -188,7 +189,7 @@ public class SjukfallUtilTest {
     @Test
     public void testSjukfallCacheWillOnlyReturnValuesForTheCorrectVg() throws Exception {
         //Given
-        LocalDate monthStart = new LocalDate("2015-03-11");
+        LocalDate monthStart = LocalDate.parse("2015-03-11");
         MutableAisle aisle1 = new MutableAisle(new HsaIdVardgivare("vgid1"));
         MutableAisle aisle2 = new MutableAisle(new HsaIdVardgivare("vgid2"));
 
@@ -210,14 +211,15 @@ public class SjukfallUtilTest {
     @Test
     public void testCalculateKonDataResponse() throws Exception {
         //Given
+        final Clock clock = Clock.systemDefaultZone();
         final FilterPredicates filter = SjukfallUtil.ALL_ENHETER;
-        final LocalDate start = new LocalDate();
+        final LocalDate start = LocalDate.now(clock);
         final int periods = 1;
         final int periodSize = 2;
 
         final SjukfallUtil spy = Mockito.spy(sjukfallUtil);
         final ArrayList<SjukfallGroup> sjukfallGrupper = new ArrayList<>();
-        sjukfallGrupper.add(new SjukfallGroup(Range.createForLastMonthsExcludingCurrent(1), Arrays.asList(createSjukfall(Kon.FEMALE), createSjukfall(Kon.MALE), createSjukfall(Kon.MALE))));
+        sjukfallGrupper.add(new SjukfallGroup(Range.createForLastMonthsExcludingCurrent(1, clock), Arrays.asList(createSjukfall(Kon.FEMALE), createSjukfall(Kon.MALE), createSjukfall(Kon.MALE))));
         final Aisle currentAisle = aisle.createAisle();
         Mockito.when(spy.sjukfallGrupper(start, periods, periodSize, currentAisle, filter, false)).thenReturn(sjukfallGrupper);
 
@@ -245,7 +247,7 @@ public class SjukfallUtilTest {
     }
 
     private Collection<Sjukfall> calculateSjukfallsHelper() {
-        return sjukfallUtil.sjukfallGrupper(new LocalDate(2000, 1, 1), 1, 1000000, aisle.createAisle(), SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
+        return sjukfallUtil.sjukfallGrupper(LocalDate.of(2000, 1, 1), 1, 1000000, aisle.createAisle(), SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
     }
 
 }

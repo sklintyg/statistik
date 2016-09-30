@@ -20,6 +20,7 @@ package se.inera.statistics.web.service;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class AldersgruppConverterTest {
         SimpleKonResponse<SimpleKonDataRow> ageGroupsResponse = new SimpleKonResponse<>(ageGroupsRows);
 
         //When
-        final Range range = Range.createForLastMonthsExcludingCurrent(7);
+        final Range range = Range.createForLastMonthsExcludingCurrent(7, Clock.systemDefaultZone());
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         SimpleDetailsData result = converter.convert(ageGroupsResponse, filterSettings);
 

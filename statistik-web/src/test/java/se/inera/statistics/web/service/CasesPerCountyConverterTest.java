@@ -27,6 +27,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.CasesPerCountyData;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ public class CasesPerCountyConverterTest {
     @Test
     public void testConvert() throws Exception {
         //Given
+        final Clock clock = Clock.systemDefaultZone();
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         final String name = "Rad1";
         final String lanCode = "01";
@@ -45,8 +47,8 @@ public class CasesPerCountyConverterTest {
         final SimpleKonResponse<SimpleKonDataRow> sjukfallPerLan = new SimpleKonResponse<>(simpleKonDataRows);
         final HashMap<String, KonField> populationPerCounty = new HashMap<>();
         populationPerCounty.put(lanCode, new KonField(300, 200));
-        final Range range = Range.year();
-        final CountyPopulation countyPopulation = new CountyPopulation(populationPerCounty, LocalDate.now());
+        final Range range = Range.year(clock);
+        final CountyPopulation countyPopulation = new CountyPopulation(populationPerCounty, LocalDate.now(clock));
         final CasesPerCountyConverter converter = new CasesPerCountyConverter(sjukfallPerLan, countyPopulation, range);
 
         //When

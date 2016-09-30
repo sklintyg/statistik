@@ -25,6 +25,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
@@ -36,6 +37,7 @@ import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.util.SpyableClock;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -63,6 +65,9 @@ public class FilterHandlerTest {
 
     @Mock
     private EnhetManager enhetManager;
+
+    @Spy
+    private SpyableClock clock = new SpyableClock();
 
     @InjectMocks
     private FilterHandler filterHandler;

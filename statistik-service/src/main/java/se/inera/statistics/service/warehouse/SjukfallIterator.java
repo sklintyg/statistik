@@ -18,13 +18,12 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
-
-import org.joda.time.LocalDate;
 
 import se.inera.statistics.service.report.model.Range;
 
@@ -75,7 +74,7 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         }
         List<Sjukfall> result = sjukfallCalculator.getSjukfallsForNextPeriod().stream().filter(t -> sjukfallFilter.getSjukfallFilter().apply(t)).collect(Collectors.toList());
         final LocalDate fromDate = from.plusMonths(period * periodSize);
-        Range range = new Range(fromDate, from.plusMonths(period * periodSize + periodSize - 1).dayOfMonth().withMaximumValue());
+        Range range = new Range(fromDate, from.plusMonths(period * periodSize + periodSize - 1).plusMonths(1).withDayOfMonth(1).minusDays(1));
         SjukfallGroup sjukfallGroup = new SjukfallGroup(range, result);
         period++;
         return sjukfallGroup;

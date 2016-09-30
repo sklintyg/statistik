@@ -18,9 +18,12 @@
  */
 package se.inera.testsupport.socialstyrelsenspecial;
 
-import org.joda.time.DateTimeUtils;
-import org.joda.time.LocalDate;
 import org.junit.Test;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 import static org.junit.Assert.*;
 
@@ -29,10 +32,11 @@ public class SosReportCreatorTest {
     @Test
     public void testGetLastDateOfLastYear() throws Exception {
         //Given
-        DateTimeUtils.setCurrentMillisFixed(LocalDate.parse("2016-05-11").toDate().getTime());
+        final Clock clock = Clock.fixed(Instant.parse("2016-05-11T10:15:30.00Z"), ZoneId.systemDefault());
+        final SosReportCreator sosReportCreator = new SosReportCreator(null, null, null, null, clock);
 
         //When
-        final LocalDate firstDateOfLastYear = SosReportCreator.getFirstDateOfLastYear();
+        final LocalDate firstDateOfLastYear = sosReportCreator.getFirstDateOfLastYear();
 
         //Then
         assertEquals(LocalDate.parse("2015-01-01"), firstDateOfLastYear);
@@ -41,12 +45,14 @@ public class SosReportCreatorTest {
     @Test
     public void testGetFirstDateOfLastYear() throws Exception {
         //Given
-        DateTimeUtils.setCurrentMillisFixed(LocalDate.parse("2015-05-11").toDate().getTime());
+        final Clock clock = Clock.fixed(Instant.parse("2015-05-11T10:15:30.00Z"), ZoneId.systemDefault());
+        final SosReportCreator sosReportCreator = new SosReportCreator(null, null, null, null, clock);
 
         //When
-        final LocalDate lastDateOfLastYear = SosReportCreator.getLastDateOfLastYear();
+        final LocalDate lastDateOfLastYear = sosReportCreator.getLastDateOfLastYear();
 
         //Then
         assertEquals(LocalDate.parse("2014-12-31"), lastDateOfLastYear);
     }
+
 }

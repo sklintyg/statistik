@@ -1,11 +1,6 @@
 package se.inera.statistics.spec
 
-import groovy.json.JsonBuilder
-import groovy.json.JsonSlurper
-import org.joda.time.DateTimeUtils
-import se.inera.statistics.service.processlog.EventType
 import se.inera.statistics.web.reports.ReportsUtil
-import se.inera.testsupport.Intyg
 
 class UppladdadeLandstingsfiler {
 

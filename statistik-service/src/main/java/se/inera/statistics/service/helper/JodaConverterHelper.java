@@ -24,18 +24,32 @@ public final class JodaConverterHelper {
         //Constructor is expected to be empty in this helper class since it should not be instantiated
     }
 
-    public static org.joda.time.LocalDate toJodaLocalDate(java.time.LocalDate javaLd) {
+    public static org.joda.time.LocalDate toJodaTime(java.time.LocalDate javaLd) {
         if (javaLd == null) {
             return null;
         }
         return new org.joda.time.LocalDate(javaLd.getYear(), javaLd.getMonthValue(), javaLd.getDayOfMonth());
     }
 
-    public static java.time.LocalDate toJavaLocalDate(org.joda.time.LocalDate joda) {
+    public static java.time.LocalDate toJavaTime(org.joda.time.LocalDate joda) {
         if (joda == null) {
             return null;
         }
         return java.time.LocalDate.of(joda.getYear(), joda.getMonthOfYear(), joda.getDayOfMonth());
+    }
+
+    public static org.joda.time.LocalDateTime toJodaTime(java.time.LocalDateTime java) {
+        if (java == null) {
+            return null;
+        }
+        return new org.joda.time.LocalDateTime(java.getYear(), java.getMonthValue(), java.getDayOfMonth(), java.getHour(), java.getMinute(), java.getSecond());
+    }
+
+    public static java.time.LocalDateTime toJavaTime(org.joda.time.LocalDateTime joda) {
+        if (joda == null) {
+            return null;
+        }
+        return java.time.LocalDateTime.of(joda.getYear(), joda.getMonthOfYear(), joda.getDayOfMonth(), joda.getHourOfDay(), joda.getMinuteOfHour(), joda.getSecondOfMinute());
     }
 
 }

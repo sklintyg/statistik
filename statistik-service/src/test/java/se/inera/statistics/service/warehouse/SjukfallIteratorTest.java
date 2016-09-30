@@ -19,12 +19,12 @@
 package se.inera.statistics.service.warehouse;
 
 import com.google.common.base.Predicate;
-import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.mockito.Mockito;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Range;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -37,7 +37,7 @@ public class SjukfallIteratorTest {
     @Test
     public void testNext() throws Exception {
         //Given
-        final LocalDate fromDate = new LocalDate(2015, 1, 1);
+        final LocalDate fromDate = LocalDate.of(2015, 1, 1);
         final int periodSize = 1;
         final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize, new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER, false){
             @Override
@@ -70,7 +70,7 @@ public class SjukfallIteratorTest {
     @Test
     public void testNextThrowsNoSuchElementExceptionIfTheIterationHasNoMoreElementsAccordingToContract() throws Exception {
         //Given
-        final LocalDate fromDate = new LocalDate(2015, 1, 1);
+        final LocalDate fromDate = LocalDate.of(2015, 1, 1);
         final int periodSize = 1;
         final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize, new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER, false){
             @Override

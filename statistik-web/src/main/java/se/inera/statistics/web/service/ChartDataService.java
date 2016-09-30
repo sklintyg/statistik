@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.web.service;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -32,7 +34,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +98,9 @@ public class ChartDataService {
     @Qualifier("webMonitoringLogService")
     private MonitoringLogService monitoringLogService;
 
+    @Autowired
+    private Clock clock;
+
     private volatile SimpleDetailsData numberOfCasesPerMonth;
     private volatile DualSexStatisticsData diagnosgrupper;
     private volatile Map<String, DualSexStatisticsData> diagnoskapitel = new HashMap<>();
@@ -156,21 +160,21 @@ public class ChartDataService {
     }
 
     public void buildNumberOfCasesPerMonth() {
-        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
+        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getCasesPerMonth(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         numberOfCasesPerMonth = new PeriodConverter().convert(casesPerMonth, filterSettings);
     }
 
     public void buildDiagnosgrupper() {
-        Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
+        Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
         DiagnosgruppResponse diagnosisGroups = data.getDiagnosgrupper(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         diagnosgrupper = new DiagnosisGroupsConverter().convert(diagnosisGroups, filterSettings);
     }
 
     public void buildDiagnoskapitel() {
-        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
+        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
         for (Icd10.Kapitel kapitel : icd10.getKapitel(false)) {
             String id = kapitel.getId();
             DiagnosgruppResponse diagnosisGroups = data.getDiagnosavsnitt(range, id);
@@ -180,41 +184,41 @@ public class ChartDataService {
     }
 
     public void buildOverview() {
-        Range range = Range.quarter();
+        Range range = Range.quarter(clock);
         OverviewResponse response = overviewData.getOverview(range);
         overview = new OverviewConverter().convert(response, range);
     }
 
     private void buildAldersgrupper() {
-        Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
+        Range range = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
         SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getHistoricalAgeGroups(range);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(range.getMonths()));
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(range.getMonths(), clock));
         aldersgrupper = SimpleDualSexConverter.newGenericTvarsnitt().convert(ageGroups, filterSettings);
     }
 
     private void buildSjukskrivningsgrad() {
-        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
+        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
         KonDataResponse degreeOfSickLeaveStatistics = data.getSjukskrivningsgrad(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         sjukskrivningsgrad = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, filterSettings);
     }
 
     private void buildSjukfallslangd() {
-        Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
+        Range range = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
         SimpleKonResponse<SimpleKonDataRow> sickLeaveLength = data.getSjukfallslangd(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         sjukfallslangd = SimpleDualSexConverter.newGenericTvarsnitt().convert(sickLeaveLength, filterSettings);
     }
 
     private void buildSjukfallPerLan() {
-        Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
+        Range range = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
         SimpleKonResponse<SimpleKonDataRow> calculatedSjukfallPerLan = data.getSjukfallPerLan(range);
         final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation(range);
         sjukfallPerLan = new CasesPerCountyConverter(calculatedSjukfallPerLan, countyPopulation, range).convert();
     }
 
     private void buildKonsfordelningPerLan() {
-        final Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
+        final Range range = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getSjukfallPerLan(range);
         konsfordelningPerLan = new SjukfallPerSexConverter().convert(casesPerMonth, range);
     }

@@ -28,6 +28,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import javax.xml.bind.JAXBContext;
@@ -35,7 +37,6 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -54,6 +55,7 @@ import se.inera.ifv.hsawsresponder.v3.StatisticsNameInfo;
 public class HSAServiceImplTest {
 
     public static final GetStatisticsHsaUnitResponseType WS_ENHET = createGetStatisticsHsaUnitResponseType();
+    private final Clock clock = Clock.systemDefaultZone();
 
     private static GetStatisticsHsaUnitResponseType createGetStatisticsHsaUnitResponseType() {
         GetStatisticsHsaUnitResponseType responseType = new GetStatisticsHsaUnitResponseType();
@@ -160,11 +162,11 @@ public class HSAServiceImplTest {
     }
 
     private HsaInfoVg getHsaInfoVg() {
-        return new HsaInfoVg("", "", new LocalDateTime(), new LocalDateTime(), false);
+        return new HsaInfoVg("", "", LocalDateTime.now(clock), LocalDateTime.now(clock), false);
     }
 
     private HsaInfoEnhet getHsaInfoEnhet(String vgid) {
-        return new HsaInfoEnhet("", Arrays.asList(""), Arrays.asList(""), new LocalDateTime(), new LocalDateTime(), false, Arrays.asList(""), Arrays.asList(""), new HsaInfoEnhetGeo(new HsaInfoCoordinate("", "", ""), "", "", "", "", ""), vgid);
+        return new HsaInfoEnhet("", Arrays.asList(""), Arrays.asList(""), LocalDateTime.now(clock), LocalDateTime.now(clock), false, Arrays.asList(""), Arrays.asList(""), new HsaInfoEnhetGeo(new HsaInfoCoordinate("", "", ""), "", "", "", "", ""), vgid);
     }
 
     @Test

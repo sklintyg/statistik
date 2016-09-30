@@ -18,16 +18,15 @@
  */
 package se.inera.statistics.service.helper;
 
-import org.joda.time.IllegalFieldValueException;
-import org.joda.time.LocalDate;
-import org.joda.time.MonthDay;
-import org.joda.time.Period;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.report.model.Kon;
+
+import java.time.LocalDate;
+import java.time.MonthDay;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public final class ConversionHelper {
     private static final Logger LOG = LoggerFactory.getLogger(ConversionHelper.class);
@@ -37,7 +36,7 @@ public final class ConversionHelper {
     private static final int DAY_PART_OF_DATE_PART = 6;
     private static final int MONTH_PART_OF_DATE_PART = 4;
     private static final int SAMORDNINGSNUMMER_DAY_CONSTANT = 60;
-    private static final DateTimeFormatter MONTHDAY_FORMATTER = DateTimeFormat.forPattern("MMdd");
+    private static final DateTimeFormatter MONTHDAY_FORMATTER = DateTimeFormatter.ofPattern("MMdd");
     public static final int NO_AGE = -1;
 
     private ConversionHelper() {
@@ -69,13 +68,13 @@ public final class ConversionHelper {
             int month = Integer.parseInt(dateString.substring(MONTH_PART_OF_DATE_PART, DAY_PART_OF_DATE_PART));
 
             if (day > SAMORDNINGSNUMMER_DAY_CONSTANT) {
-                dateString = dateString.substring(0, MONTH_PART_OF_DATE_PART) + (MONTHDAY_FORMATTER.print(new MonthDay(month, day - SAMORDNINGSNUMMER_DAY_CONSTANT)));
+                dateString = dateString.substring(0, MONTH_PART_OF_DATE_PART) + (MONTHDAY_FORMATTER.format(MonthDay.of(month, day - SAMORDNINGSNUMMER_DAY_CONSTANT)));
             }
-            birthDate = ISODateTimeFormat.basicDate().parseLocalDate(dateString);
-            LocalDate referenceDate = new LocalDate(start);
-            Period period = new Period(birthDate, referenceDate);
+            birthDate = LocalDate.from(DateTimeFormatter.BASIC_ISO_DATE.parse(dateString));
+            LocalDate referenceDate = LocalDate.from(start);
+            Period period = Period.between(birthDate, referenceDate);
             age = period.getYears();
-        } catch (NumberFormatException | IllegalFieldValueException e) {
+        } catch (NumberFormatException | DateTimeParseException e) {
             LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help", e);
             throw new IllegalArgumentException("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: " + personId);
         }

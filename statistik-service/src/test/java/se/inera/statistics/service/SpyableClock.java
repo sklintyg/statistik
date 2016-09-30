@@ -16,35 +16,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.processlog;
+package se.inera.statistics.service;
 
-import java.time.LocalDate;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
 
-public class Arbetsnedsattning {
-    private static final int MAX_NEDSATTNING = 100;
-    private final int nedsattning;
-    private final LocalDate start;
-    private final LocalDate slut;
+public class SpyableClock extends Clock {
 
-    public Arbetsnedsattning(int nedsattning, LocalDate start, LocalDate slut) {
-        this.nedsattning = nedsattning;
-        this.start = start;
-        this.slut = slut;
+    private Clock clock;
+
+    public SpyableClock() {
+        this.clock = Clock.systemDefaultZone();
     }
 
-    public int getNedsattning() {
-        return nedsattning;
+    public SpyableClock(Clock clock) {
+        this.clock = clock;
     }
 
-    public int getSysselsattningsgrad() {
-        return MAX_NEDSATTNING - nedsattning;
+    @Override
+    public ZoneId getZone() {
+        return clock.getZone();
     }
 
-    public LocalDate getStart() {
-        return start;
+    @Override
+    public Clock withZone(ZoneId zone) {
+        return clock.withZone(zone);
     }
 
-    public LocalDate getSlut() {
-        return slut;
+    @Override
+    public Instant instant() {
+        return clock.instant();
     }
+
 }

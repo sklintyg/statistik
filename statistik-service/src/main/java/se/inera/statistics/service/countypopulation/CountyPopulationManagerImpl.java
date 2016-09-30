@@ -21,7 +21,6 @@ package se.inera.statistics.service.countypopulation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.MapType;
-import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +36,7 @@ import javax.persistence.Query;
 import java.io.IOException;
 import java.io.StringReader;
 import java.sql.Date;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashMap;
@@ -56,23 +56,26 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
     @Autowired
     private CountyPopulationFetcher countyPopulationFetcher;
 
+    @Autowired
+    private Clock clock;
+
     private static ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public CountyPopulation getCountyPopulation(Range range) {
-        final org.joda.time.LocalDate jodaDate = getPopulationFromDate(range);
-        final Optional<CountyPopulation> countyPopulation = getCountyPopulation(jodaDate);
+        final LocalDate date = getPopulationFromDate(range);
+        final Optional<CountyPopulation> countyPopulation = getCountyPopulation(date);
         return countyPopulation.isPresent()
                 ? countyPopulation.get()
                 : new CountyPopulation(Collections.emptyMap(),
-                        LocalDate.of(jodaDate.getYear(), jodaDate.getMonthOfYear(), jodaDate.getDayOfMonth()));
+                        LocalDate.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth()));
     }
 
-    private org.joda.time.LocalDate getPopulationFromDate(Range range) {
+    private LocalDate getPopulationFromDate(Range range) {
         return range.getTo().withDayOfYear(1).minusDays(1);
     }
 
-    private Optional<CountyPopulation> getCountyPopulation(org.joda.time.LocalDate date) {
+    private Optional<CountyPopulation> getCountyPopulation(LocalDate date) {
         final Optional<CountyPopulationRow> preFetchedCountyPopulation = getPreFetchedCountyPopulationForDate(date);
         if (preFetchedCountyPopulation.isPresent()) {
             return Optional.of(parsePopulationRow(preFetchedCountyPopulation.get()));
@@ -108,15 +111,15 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
         }
     }
 
-    private Optional<CountyPopulationRow> getPreFetchedCountyPopulationForDate(org.joda.time.LocalDate date) {
+    private Optional<CountyPopulationRow> getPreFetchedCountyPopulationForDate(LocalDate date) {
         return getPreFetchedCountyPopulation(date, "SELECT r FROM CountyPopulationRow r WHERE r.date = :fromDate");
     }
 
     private Optional<CountyPopulationRow> getLatestPreFetchedCountyPopulation() {
-        return getPreFetchedCountyPopulation(org.joda.time.LocalDate.now(), "SELECT r FROM CountyPopulationRow r ORDER BY r.date DESC");
+        return getPreFetchedCountyPopulation(LocalDate.now(clock), "SELECT r FROM CountyPopulationRow r ORDER BY r.date DESC");
     }
 
-    private Optional<CountyPopulationRow> getPreFetchedCountyPopulation(org.joda.time.LocalDate from, String ql) {
+    private Optional<CountyPopulationRow> getPreFetchedCountyPopulation(LocalDate from, String ql) {
         final Date fromDate = localDateToDate(from);
         final Query query = manager.createQuery(ql);
         if (ql.contains(":fromDate")) {
@@ -133,12 +136,11 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
         }
     }
 
-    private static java.sql.Date localDateToDate(org.joda.time.LocalDate ld) {
+    private static java.sql.Date localDateToDate(LocalDate ld) {
         if (ld == null) {
             return null;
         }
-        DateTimeZone jodaTzUTC = DateTimeZone.forID("UTC");
-        return new Date(ld.toDateTimeAtStartOfDay(jodaTzUTC).getMillis());
+        return new Date(ld.toEpochDay());
     }
 
     private boolean insertCountyPopulation(Map<String, KonField> countyPopulation, LocalDate date) {

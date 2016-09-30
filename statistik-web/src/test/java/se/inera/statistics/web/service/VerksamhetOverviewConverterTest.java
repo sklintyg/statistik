@@ -20,6 +20,7 @@ package se.inera.statistics.web.service;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,8 @@ import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 
 public class VerksamhetOverviewConverterTest {
 
+    private final Clock clock = Clock.systemDefaultZone();
+
     // CHECKSTYLE:OFF MagicNumber
 
     @Test
@@ -44,8 +47,8 @@ public class VerksamhetOverviewConverterTest {
         //Given
         int casesPerMonthProportionMale = 0;
         int casesPerMonthProportionFemale = 1;
-        OverviewKonsfordelning overviewKonsfordelningNew = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
-        OverviewKonsfordelning overviewKonsfordelningOld = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
+        OverviewKonsfordelning overviewKonsfordelningNew = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range(clock));
+        OverviewKonsfordelning overviewKonsfordelningOld = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range(clock));
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         ArrayList<OverviewChartRowExtended> ageGroups = new ArrayList<OverviewChartRowExtended>();
         ArrayList<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<OverviewChartRowExtended>();
@@ -57,7 +60,7 @@ public class VerksamhetOverviewConverterTest {
         //When
         VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(totalCases, overviewKonsfordelningNew, overviewKonsfordelningOld, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation);
-        VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range(), Filter.empty(), null);
+        VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range(clock), Filter.empty(), null);
 
         //Then
         assertEquals("[]", data.getAgeGroups().toString());
@@ -68,10 +71,10 @@ public class VerksamhetOverviewConverterTest {
         //Given
         int casesPerMonthProportionMaleNew = 0;
         int casesPerMonthProportionFemaleNew = 1;
-        OverviewKonsfordelning overviewKonsfordelningNew = new OverviewKonsfordelning(casesPerMonthProportionMaleNew, casesPerMonthProportionFemaleNew, new Range());
+        OverviewKonsfordelning overviewKonsfordelningNew = new OverviewKonsfordelning(casesPerMonthProportionMaleNew, casesPerMonthProportionFemaleNew, new Range(clock));
         int casesPerMonthProportionMaleOld = 2;
         int casesPerMonthProportionFemaleOld = 3;
-        OverviewKonsfordelning overviewKonsfordelningOld = new OverviewKonsfordelning(casesPerMonthProportionMaleOld, casesPerMonthProportionFemaleOld, new Range());
+        OverviewKonsfordelning overviewKonsfordelningOld = new OverviewKonsfordelning(casesPerMonthProportionMaleOld, casesPerMonthProportionFemaleOld, new Range(clock));
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
         diagnosisGroups.add(new OverviewChartRowExtended("diagName", 1, 2));
         ArrayList<OverviewChartRowExtended> ageGroups = new ArrayList<OverviewChartRowExtended>();
@@ -89,7 +92,7 @@ public class VerksamhetOverviewConverterTest {
         //When
         VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(totalCases, overviewKonsfordelningNew, overviewKonsfordelningOld, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation);
-        VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range(), Filter.empty(), null);
+        VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range(clock), Filter.empty(), null);
 
         //Then
         assertEquals(totalCases, data.getCasesPerMonth().getTotalCases());

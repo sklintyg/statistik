@@ -67,6 +67,7 @@ subprojects {
         httpClientVersion = "4.2.1"
 
         jacksonJodaTimeVersion = "2.2.3"
+        jacksonJavaTimeVersion = "2.8.3"
         javaxServletVersion = "3.1.0"
         jaxb2Version = "0.9.5"
         jettyJmxVersion = "9.2.10.v20150310"
@@ -132,7 +133,6 @@ subprojects {
     dependencies {
         compile "ch.qos.logback:logback-classic:${logbackVersion}"
         compile "com.google.guava:guava:${googleGuavaVersion}"
-        compile "joda-time:joda-time:${jodaTimeVersion}"
 
         testCompile "org.springframework:spring-test:${springTestVersion}"
         testCompile "junit:junit:${junitVersion}"

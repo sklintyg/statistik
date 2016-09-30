@@ -18,8 +18,6 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
@@ -31,6 +29,8 @@ import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +57,7 @@ public class SjukskrivningslangdQueryTest {
     }
 
     private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
-        return new SjukfallUtil().sjukfallGrupper(new LocalDate(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
+        return new SjukfallUtil().sjukfallGrupper(LocalDate.of(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
     }
 
     @Test

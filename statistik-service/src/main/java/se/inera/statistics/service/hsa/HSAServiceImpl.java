@@ -18,9 +18,9 @@
  */
 package se.inera.statistics.service.hsa;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +38,7 @@ import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.CareTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.Managements;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.JodaConverterHelper;
 
 @Component
 public class HSAServiceImpl implements HSAService {
@@ -215,8 +216,8 @@ public class HSAServiceImpl implements HSAService {
         }
         final String hsaIdentity = caregiver.getHsaIdentity();
         final String careGiverOrgNo = caregiver.getCareGiverOrgNo();
-        final LocalDateTime startDate = caregiver.getStartDate();
-        final LocalDateTime endDate = caregiver.getEndDate();
+        final LocalDateTime startDate = JodaConverterHelper.toJavaTime(caregiver.getStartDate());
+        final LocalDateTime endDate = JodaConverterHelper.toJavaTime(caregiver.getEndDate());
         final Boolean isArchived = caregiver.isIsArchived();
         return new HsaInfoVg(hsaIdentity, careGiverOrgNo, startDate, endDate, isArchived);
     }
@@ -229,8 +230,8 @@ public class HSAServiceImpl implements HSAService {
         final String hsaIdentity = unit.getHsaIdentity();
         final List<String> enhetsTyp = createEnhetsTyp(unit.getBusinessTypes());
         final List<String> agarTyp = createAgarTyp(unit.getManagements());
-        final LocalDateTime startDate = unit.getStartDate();
-        final LocalDateTime endDate = unit.getEndDate();
+        final LocalDateTime startDate = JodaConverterHelper.toJavaTime(unit.getStartDate());
+        final LocalDateTime endDate = JodaConverterHelper.toJavaTime(unit.getEndDate());
         final Boolean isArchived = unit.isIsArchived();
         final List<String> verksamhet = createVerksamhet(unit.getBusinessClassificationCodes());
         final List<String> vardform = createVardform(unit.getCareTypes());

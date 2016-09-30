@@ -147,7 +147,7 @@ public class RegisterCertificateHelper {
                 break;
             }
         }
-        return new Arbetsnedsattning(nedsattning, JodaConverterHelper.toJodaLocalDate(datePeriod.getStart()), JodaConverterHelper.toJodaLocalDate(datePeriod.getEnd()));
+        return new Arbetsnedsattning(nedsattning, datePeriod.getStart(), datePeriod.getEnd());
     }
 
     public Patientdata getPatientData(RegisterCertificateType intyg) {
@@ -155,7 +155,7 @@ public class RegisterCertificateHelper {
         final String personId = DocumentHelper.getUnifiedPersonId(patientIdRaw);
         int alder;
         try {
-            alder = ConversionHelper.extractAlder(personId, JodaConverterHelper.toJodaLocalDate(getSistaNedsattningsdag(intyg)));
+            alder = ConversionHelper.extractAlder(personId, getSistaNedsattningsdag(intyg));
         } catch (Exception e) {
             LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId);
             LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId, e);
@@ -166,11 +166,11 @@ public class RegisterCertificateHelper {
         return new Patientdata(alder, Kon.parse(kon));
     }
 
-    public LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {
+    private LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {
         final List<Arbetsnedsattning> arbetsnedsattnings = getArbetsnedsattning(document);
         LocalDate to = null;
         for (Arbetsnedsattning arbetsnedsattning : arbetsnedsattnings) {
-            final LocalDate candidate = JodaConverterHelper.toJavaLocalDate(arbetsnedsattning.getSlut());
+            final LocalDate candidate = arbetsnedsattning.getSlut();
             if (to == null || candidate.isAfter(to)) {
                 to = candidate;
             }

@@ -29,6 +29,7 @@ import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class AvsnittConverterTest {
+
+    private final Clock clock = Clock.systemDefaultZone();
 
     @Test
     public void tableConverterTestEmptyInput() {
@@ -69,7 +72,7 @@ public class AvsnittConverterTest {
     @Test
     public void converterTestEmpty() {
         DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Icd>(), new ArrayList<KonDataRow>());
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range(clock));
         DualSexStatisticsData data = new DiagnosisGroupsConverter().convert(resp, filterSettings);
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[A00-E90, G00-L99, N00-N99 Somatiska sjukdomar: [], F00-F99 Psykiska sjukdomar: [], M00-M99 Muskuloskeletala sjukdomar: [], O00-O99 Graviditet och förlossning: [], P00-P96, Q00-Q99, S00-Y98 Övrigt: [], R00-R99 Symtomdiagnoser: [], Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården: []]", data.getFemaleChart().getSeries().toString());
@@ -90,7 +93,7 @@ public class AvsnittConverterTest {
 
         //When
         DiagnosisGroupsConverter converter = new DiagnosisGroupsConverter();
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range(clock));
         DualSexStatisticsData data = converter.convert(resp, filterSettings);
 
         //Then

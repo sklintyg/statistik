@@ -19,7 +19,6 @@
 package se.inera.statistics.service.warehouse.query;
 
 import com.google.common.collect.Lists;
-import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -32,6 +31,7 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

@@ -20,7 +20,6 @@ package se.inera.statistics.service.hsa;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -32,6 +31,8 @@ import se.inera.statistics.service.helper.DocumentHelper;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static junit.framework.TestCase.assertTrue;
@@ -41,6 +42,8 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HSADecoratorTest {
+
+    private final Clock clock = Clock.systemDefaultZone();
 
     @Mock
     private HSAService hsaService;// = Mockito.mock(HSAService.class);
@@ -77,13 +80,13 @@ public class HSADecoratorTest {
     }
     private HsaInfo getFullJsonNode() {
         final HsaInfoEnhet enhet = getHsaEnhet("cachedvgid");
-        final HsaInfoVg vardgivare = new HsaInfoVg("", "", new LocalDateTime(), new LocalDateTime(), false);
+        final HsaInfoVg vardgivare = new HsaInfoVg("", "", LocalDateTime.now(clock), LocalDateTime.now(clock), false);
         final HsaInfoPersonal personal = new HsaInfoPersonal("", "", "", Arrays.asList(""), Arrays.asList(""), Arrays.asList(""), false, "", "");
         return new HsaInfo(enhet, enhet, vardgivare, personal);
     }
 
     private HsaInfoEnhet getHsaEnhet(String vgid) {
-        return new HsaInfoEnhet("", Arrays.asList(""), Arrays.asList(""), new LocalDateTime(), new LocalDateTime(), false, Arrays.asList(""), Arrays.asList(""), new HsaInfoEnhetGeo(new HsaInfoCoordinate("", "", ""), "", "", "", "", ""), vgid);
+        return new HsaInfoEnhet("", Arrays.asList(""), Arrays.asList(""), LocalDateTime.now(clock), LocalDateTime.now(clock), false, Arrays.asList(""), Arrays.asList(""), new HsaInfoEnhetGeo(new HsaInfoCoordinate("", "", ""), "", "", "", "", ""), vgid);
     }
 
     @Test
@@ -179,7 +182,7 @@ public class HSADecoratorTest {
     @Test
     public void testHsaInfoToJson() throws Exception {
         //Given
-        final LocalDateTime startdatum = new LocalDateTime(2016, 4, 12, 22, 48);
+        final LocalDateTime startdatum = LocalDateTime.of(2016, 4, 12, 22, 48);
         final HsaInfoVg hsaInfoVg = new HsaInfoVg(null, null, startdatum, null, false);
         final HsaInfo hsaInfo = new HsaInfo(null, null, hsaInfoVg, null);
 

@@ -18,11 +18,12 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -48,7 +49,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 @Component
 public class WidelineConverter {
 
-    private static final LocalDate ERA = new LocalDate("2000-01-01");
+    private static final LocalDate ERA = LocalDate.parse("2000-01-01");
     public static final int QUARTER = 25;
     public static final int HALF = 50;
     public static final int THREE_QUARTER = 75;
@@ -72,6 +73,9 @@ public class WidelineConverter {
 
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
+
+    @Autowired
+    private Clock clock;
 
     public List<WideLine> toWideline(JsonNode intyg, Patientdata patientData, HsaInfo hsa, long logId, String correlationId, EventType type) {
         String lkf = getLkf(hsa);
@@ -211,13 +215,13 @@ public class WidelineConverter {
     }
 
     private void checkStartdatum(List<String> errors, int startdatum) {
-        if (startdatum < DATE20100101 || startdatum > toDay(LocalDate.now().plusYears(MAX_YEARS_INTO_FUTURE))) {
+        if (startdatum < DATE20100101 || startdatum > toDay(LocalDate.now(clock).plusYears(MAX_YEARS_INTO_FUTURE))) {
             errors.add("Illegal startdatum: " + startdatum);
         }
     }
 
     private void checkSlutdatum(List<String> errors, int slutdatum) {
-        if (slutdatum > toDay(LocalDate.now().plusYears(MAX_YEARS_INTO_FUTURE))) {
+        if (slutdatum > toDay(LocalDate.now(clock).plusYears(MAX_YEARS_INTO_FUTURE))) {
             errors.add("Illegal slutdatum: " + slutdatum);
         }
     }
@@ -259,7 +263,7 @@ public class WidelineConverter {
     }
 
     public static int toDay(LocalDate dayDate) {
-        return Days.daysBetween(ERA, dayDate).getDays();
+        return (int) ChronoUnit.DAYS.between(ERA, dayDate);
     }
 
     public static LocalDate toDate(int day) {

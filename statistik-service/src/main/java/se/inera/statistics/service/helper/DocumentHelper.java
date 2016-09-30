@@ -18,11 +18,12 @@
  */
 package se.inera.statistics.service.helper;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.LocalDate;
-import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +80,13 @@ public final class DocumentHelper {
         String personId = getPersonId(intyg, version);
         int alder;
         try {
-            alder = ConversionHelper.extractAlder(personId, ISODateTimeFormat.dateTimeParser().parseLocalDate(getSistaNedsattningsdag(intyg, version)));
+            final LocalDate intygDate = parseDate(getSistaNedsattningsdag(intyg, version));
+            if (intygDate != null) {
+                alder = ConversionHelper.extractAlder(personId, intygDate);
+            } else {
+                LOG.error("Date for 'sista nedsattningsdag' could not be parsed: {}", personId);
+                alder = ConversionHelper.NO_AGE;
+            }
         } catch (IllegalArgumentException e) {
             LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId);
             LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId, e);
@@ -182,21 +189,30 @@ public final class DocumentHelper {
 
     private static String getSistaNedsattningsdagV2(JsonNode document) {
         final int startYear = 2000;
-        LocalDate date = new LocalDate(startYear, 1, 1);
+        LocalDate date = LocalDate.of(startYear, 1, 1);
         if (document.has(NEDSATT_MED_25)) {
-            date = new LocalDate(document.path(NEDSATT_MED_25).path("tom").asText());
+            final LocalDate parsedDate = parseDate(document.path(NEDSATT_MED_25).path("tom").asText());
+            if (parsedDate != null) {
+                date = parsedDate;
+            }
         }
         if (document.has(NEDSATT_MED_50)) {
-            LocalDate tom = new LocalDate(document.path(NEDSATT_MED_50).path("tom").asText());
-            date = tom.isAfter(date) ? tom : date;
+            LocalDate tom = parseDate(document.path(NEDSATT_MED_50).path("tom").asText());
+            if (tom != null) {
+                date = tom.isAfter(date) ? tom : date;
+            }
         }
         if (document.has(NEDSATT_MED_75)) {
-            LocalDate tom = new LocalDate(document.path(NEDSATT_MED_75).path("tom").asText());
-            date = tom.isAfter(date) ? tom : date;
+            LocalDate tom = parseDate(document.path(NEDSATT_MED_75).path("tom").asText());
+            if (tom != null) {
+                date = tom.isAfter(date) ? tom : date;
+            }
         }
         if (document.has(NEDSATT_MED_100)) {
-            LocalDate tom = new LocalDate(document.path(NEDSATT_MED_100).path("tom").asText());
-            date = tom.isAfter(date) ? tom : date;
+            LocalDate tom = parseDate(document.path(NEDSATT_MED_100).path("tom").asText());
+            if (tom != null) {
+                date = tom.isAfter(date) ? tom : date;
+            }
         }
         return date.toString();
     }
@@ -234,34 +250,55 @@ public final class DocumentHelper {
             for (JsonNode node : document.path(OBSERVATIONER)) {
                 if (ARBETSFORMAGA_MATCHER.match(node)) {
                     int varde = MAX_SJUKSKRIVNING - node.path("varde").get(0).path("quantity").asInt();
-                    LocalDate from = new LocalDate(node.path(OBSERVATIONSPERIOD).path("from").asText());
-                    LocalDate tom = new LocalDate(node.path(OBSERVATIONSPERIOD).path("tom").asText());
-                    result.add(new Arbetsnedsattning(varde, from, tom));
+                    LocalDate from = parseDate(node.path(OBSERVATIONSPERIOD).path("from").asText());
+                    LocalDate tom = parseDate(node.path(OBSERVATIONSPERIOD).path("tom").asText());
+                    if (from != null && tom != null) {
+                        result.add(new Arbetsnedsattning(varde, from, tom));
+                    }
                 }
             }
             return result;
         } else {
             if (document.has(NEDSATT_MED_25)) {
-                LocalDate from = new LocalDate(document.path(NEDSATT_MED_25).path("from").asText());
-                LocalDate tom = new LocalDate(document.path(NEDSATT_MED_25).path("tom").asText());
-                result.add(new Arbetsnedsattning(NEDSATT25, from, tom));
+                LocalDate from = parseDate(document.path(NEDSATT_MED_25).path("from").asText());
+                LocalDate tom = parseDate(document.path(NEDSATT_MED_25).path("tom").asText());
+                if (from != null && tom != null) {
+                    result.add(new Arbetsnedsattning(NEDSATT25, from, tom));
+                }
             }
             if (document.has(NEDSATT_MED_50)) {
-                LocalDate from = new LocalDate(document.path(NEDSATT_MED_50).path("from").asText());
-                LocalDate tom = new LocalDate(document.path(NEDSATT_MED_50).path("tom").asText());
-                result.add(new Arbetsnedsattning(NEDSATT50, from, tom));
+                LocalDate from = parseDate(document.path(NEDSATT_MED_50).path("from").asText());
+                LocalDate tom = parseDate(document.path(NEDSATT_MED_50).path("tom").asText());
+                if (from != null && tom != null) {
+                    result.add(new Arbetsnedsattning(NEDSATT50, from, tom));
+                }
             }
             if (document.has(NEDSATT_MED_75)) {
-                LocalDate from = new LocalDate(document.path(NEDSATT_MED_75).path("from").asText());
-                LocalDate tom = new LocalDate(document.path(NEDSATT_MED_75).path("tom").asText());
-                result.add(new Arbetsnedsattning(NEDSATT75, from, tom));
+                LocalDate from = parseDate(document.path(NEDSATT_MED_75).path("from").asText());
+                LocalDate tom = parseDate(document.path(NEDSATT_MED_75).path("tom").asText());
+                if (from != null && tom != null) {
+                    result.add(new Arbetsnedsattning(NEDSATT75, from, tom));
+                }
             }
             if (document.has(NEDSATT_MED_100)) {
-                LocalDate from = new LocalDate(document.path(NEDSATT_MED_100).path("from").asText());
-                LocalDate tom = new LocalDate(document.path(NEDSATT_MED_100).path("tom").asText());
-                result.add(new Arbetsnedsattning(NEDSATT100, from, tom));
+                LocalDate from = parseDate(document.path(NEDSATT_MED_100).path("from").asText());
+                LocalDate tom = parseDate(document.path(NEDSATT_MED_100).path("tom").asText());
+                if (from != null && tom != null) {
+                    result.add(new Arbetsnedsattning(NEDSATT100, from, tom));
+                }
             }
             return result;
+        }
+    }
+
+    private static LocalDate parseDate(String date) {
+        try {
+            return LocalDate.from(DateTimeFormatter.ISO_DATE.parse(date));
+        } catch (NumberFormatException | DateTimeParseException e) {
+            final String msg = "Failed to parse date: " + date;
+            LOG.info(msg);
+            LOG.debug(msg, e);
+            return null;
         }
     }
 

@@ -29,6 +29,7 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -47,7 +48,7 @@ public class GroupedSjukfallWithLandstingSortingConverterTest {
         businessRows.add(new SimpleKonDataRow("enhet2", 20, 30));
         businessRows.add(new SimpleKonDataRow("enhet3", 5, 25));
         SimpleKonResponse<SimpleKonDataRow> casesPerUnit = new SimpleKonResponse<>(businessRows);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(1));
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
 
         //When
         SimpleDetailsData result = converter.convert(casesPerUnit, filterSettings);

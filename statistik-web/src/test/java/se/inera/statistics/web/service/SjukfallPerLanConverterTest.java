@@ -20,11 +20,12 @@ package se.inera.statistics.web.service;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import se.inera.statistics.service.countypopulation.CountyPopulation;
@@ -45,21 +46,22 @@ public class SjukfallPerLanConverterTest {
     @Test
     public void convertCasesPerCountyDataTest() {
         //Given
+        final Clock clock = Clock.systemDefaultZone();
         ArrayList<SimpleKonDataRow> perCountyRows1 = new ArrayList<>();
         perCountyRows1.add(new SimpleKonDataRow("<20", 13, 14, "01"));
         perCountyRows1.add(new SimpleKonDataRow("20-50", 24, 15, "02"));
         perCountyRows1.add(new SimpleKonDataRow(">50", 3, 9, "03"));
         SimpleKonResponse<SimpleKonDataRow> ageGroupsResponseNew = new SimpleKonResponse<>(perCountyRows1);
 
-        LocalDate fromNew = new LocalDate(2013, 5, 1);
-        LocalDate toNew = new LocalDate(2013, 7, 1);
+        LocalDate fromNew = LocalDate.of(2013, 5, 1);
+        LocalDate toNew = LocalDate.of(2013, 7, 1);
 
         final HashMap<String, KonField> population = new HashMap<>();
         population.put("01", new KonField(200, 800));
         population.put("02", new KonField(200, 800));
         population.put("03", new KonField(200, 800));
 
-        final CountyPopulation countyPopulation = new CountyPopulation(population, java.time.LocalDate.now());
+        final CountyPopulation countyPopulation = new CountyPopulation(population, LocalDate.now(clock));
 
         CasesPerCountyConverter converter = new CasesPerCountyConverter(ageGroupsResponseNew, countyPopulation, new Range(fromNew, toNew));
 

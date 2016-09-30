@@ -18,10 +18,11 @@
  */
 package se.inera.statistics.service.report.model;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Locale;
-
-import org.joda.time.LocalDate;
-import org.joda.time.Months;
 
 public final class Range {
     private static final String RANGE_SEPARATOR = "\u2013";
@@ -37,8 +38,8 @@ public final class Range {
     private final LocalDate from;
     private final LocalDate to;
 
-    public Range() {
-        this(DEFAULT_PERIOD);
+    public Range(Clock clock) {
+        this(DEFAULT_PERIOD, clock);
     }
 
     public Range(LocalDate from, LocalDate to) {
@@ -46,17 +47,17 @@ public final class Range {
         this.to = to;
     }
 
-    private Range(int months) {
-        to = new LocalDate().withDayOfMonth(1).minusDays(1);
+    private Range(int months, Clock clock) {
+        to = LocalDate.now(clock).withDayOfMonth(1).minusDays(1);
         from = to.withDayOfMonth(1).minusMonths(months - 1);
     }
 
-    public static Range createForLastMonthsExcludingCurrent(int months) {
-        return new Range(months);
+    public static Range createForLastMonthsExcludingCurrent(int months, Clock clock) {
+        return new Range(months, clock);
     }
 
-    public static Range createForLastMonthsIncludingCurrent(int months) {
-        final LocalDate toDate = new LocalDate().dayOfMonth().withMaximumValue();
+    public static Range createForLastMonthsIncludingCurrent(int months, Clock clock) {
+        final LocalDate toDate = LocalDate.now(clock).plusMonths(1).withDayOfMonth(1).minusDays(1);
         final LocalDate fromDate = toDate.withDayOfMonth(1).minusMonths(months - 1);
         return new Range(fromDate, toDate);
     }
@@ -79,15 +80,15 @@ public final class Range {
     }
 
     public int getMonths() {
-        return Months.monthsBetween(from, to).getMonths() + 1;
+        return (int) ChronoUnit.MONTHS.between(from, to) + 1;
     }
 
-    public static Range year() {
-        return new Range(YEAR_PERIOD);
+    public static Range year(Clock clock) {
+        return new Range(YEAR_PERIOD, clock);
     }
 
-    public static Range quarter() {
-        return new Range(QUARTER_PERIOD);
+    public static Range quarter(Clock clock) {
+        return new Range(QUARTER_PERIOD, clock);
     }
 
     private static final class RangeFormatter {
@@ -99,7 +100,7 @@ public final class Range {
 
         private String format(LocalDate from, LocalDate to) {
             if (from.getYear() == to.getYear()) {
-                if (from.getMonthOfYear() == to.getMonthOfYear()) {
+                if (from.getMonthValue() == to.getMonthValue()) {
                     return formatMonthWithYear(to);
                 } else {
                     return formatMonth(from) + RANGE_SEPARATOR + formatMonthWithYear(to);
@@ -109,11 +110,11 @@ public final class Range {
             }
         }
         private String formatMonthWithYear(LocalDate when) {
-            return when.toString(monthFormat + " yyyy", SV);
+            return when.format(DateTimeFormatter.ofPattern(monthFormat + " yyyy", SV));
         }
 
         private String formatMonth(LocalDate when) {
-            return when.toString(monthFormat, SV);
+            return when.format(DateTimeFormatter.ofPattern(monthFormat, SV));
         }
     }
 }

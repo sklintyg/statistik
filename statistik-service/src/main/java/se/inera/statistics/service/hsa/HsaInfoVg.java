@@ -18,10 +18,10 @@
  */
 package se.inera.statistics.service.hsa;
 
-import org.joda.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
+
+import java.time.LocalDateTime;
 
 public class HsaInfoVg {
 

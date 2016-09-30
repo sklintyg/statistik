@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
+import java.time.Clock;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -99,6 +100,9 @@ public class ProtectedChartDataService {
 
     @Autowired
     private ResponseHandler responseHandler;
+
+    @Autowired
+    private Clock clock;
 
     /**
      * Gets sjukfall per manad for verksamhetId.
@@ -351,7 +355,7 @@ public class ProtectedChartDataService {
     public Response getOverviewData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 3);
         final Filter filter = filterSettings.getFilter();
-        final Range range = Range.quarter();
+        final Range range = Range.quarter(clock);
         final String message = filterHash == null || filterHash.isEmpty() || filterHashHandler.getFilterFromHash(filterHash).isUseDefaultPeriod() ? null : "Valt tidsintervall i filtret gäller inte för översiktssidan";
         VerksamhetOverviewResponse response = warehouse.getOverview(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final VerksamhetOverviewData overviewData = new VerksamhetOverviewConverter().convert(response, range, filter, message);

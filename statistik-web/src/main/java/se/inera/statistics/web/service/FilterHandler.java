@@ -18,6 +18,10 @@
  */
 package se.inera.statistics.web.service;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,9 +34,6 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,9 @@ public class FilterHandler {
     @Autowired
     private EnhetManager enhetManager;
 
+    @Autowired
+    private Clock clock;
+
     List<HsaIdEnhet> getEnhetsFilterIds(String filterHash, HttpServletRequest request) {
         if (filterHash == null || filterHash.isEmpty()) {
             final LoginInfo info = loginServiceUtil.getLoginInfo();
@@ -93,7 +97,7 @@ public class FilterHandler {
 
     FilterSettings getFilterForLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue) {
         if (filterHash == null || filterHash.isEmpty()) {
-            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));
+            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock));
         }
         final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
         final ArrayList<HsaIdEnhet> enhetsIDs = getEnhetsFilteredLandsting(request, inFilter);
@@ -102,7 +106,7 @@ public class FilterHandler {
         } catch (FilterException e) {
             LOG.warn("Could not use selected landsting filter. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("Could not use selected landsting filter. Falling back to default filter.", e);
-            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
+            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
         }
     }
 
@@ -122,7 +126,7 @@ public class FilterHandler {
     FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultRangeValue) {
         try {
             if (filterHash == null || filterHash.isEmpty()) {
-                return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));
+                return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock));
             }
             final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
             final List<HsaIdEnhet> enhetsIDs = getEnhetsFiltered(request, inFilter);
@@ -130,7 +134,7 @@ public class FilterHandler {
         } catch (FilterException | FilterHashException e) {
             LOG.warn("Could not use selected filter. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("Could not use selected filter. Falling back to default filter.", e);
-            return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
+            return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
         }
     }
 
@@ -188,9 +192,9 @@ public class FilterHandler {
 
     private Range getRange(@NotNull FilterData inFilter, int defaultRangeValue) throws FilterException {
         if (inFilter.isUseDefaultPeriod()) {
-            return Range.createForLastMonthsIncludingCurrent(defaultRangeValue);
+            return Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock);
         }
-        DateTimeFormatter dateStringFormat = DateTimeFormat.forPattern(FilterData.DATE_FORMAT);
+        DateTimeFormatter dateStringFormat = DateTimeFormatter.ofPattern(FilterData.DATE_FORMAT);
         final String fromDate = inFilter.getFromDate();
         final String toDate = inFilter.getToDate();
 
@@ -198,24 +202,24 @@ public class FilterHandler {
             throw new FilterException("Can not parse null range dates. From: " + fromDate + ", To: " + toDate);
         }
         try {
-            final LocalDate from = dateStringFormat.parseLocalDate(fromDate);
-            final LocalDate to = dateStringFormat.parseLocalDate(toDate);
+            final LocalDate from = LocalDate.from(dateStringFormat.parse(fromDate));
+            final LocalDate to = LocalDate.from(dateStringFormat.parse(toDate));
             validateFilterRange(from, to);
-            return new Range(from.withDayOfMonth(1), to.dayOfMonth().withMaximumValue());
-        } catch (IllegalArgumentException e) {
+            return new Range(from.withDayOfMonth(1), to.plusMonths(1).withDayOfMonth(1).minusDays(1));
+        } catch (IllegalArgumentException | DateTimeParseException e) {
             throw new FilterException("Could not parse range dates. From: " + fromDate + ", To: " + toDate, e);
         }
     }
 
     private void validateFilterRange(LocalDate from, LocalDate to) throws FilterException {
-        final LocalDate lowestAcceptedStartDate = new LocalDate(2013, 10, 1);
+        final LocalDate lowestAcceptedStartDate = LocalDate.of(2013, 10, 1);
         if (from.isBefore(lowestAcceptedStartDate)) {
             throw new FilterException("Start date before 2013-10-01 is not allowed");
         }
         if (to.isBefore(from)) {
             throw new FilterException("Start date must be before end date");
         }
-        if (to.isAfter(new LocalDate().dayOfMonth().withMaximumValue())) {
+        if (to.isAfter(LocalDate.now(clock).plusMonths(1).withDayOfMonth(1).minusDays(1))) {
             throw new FilterException("End date may not be after the last day of current month");
         }
     }

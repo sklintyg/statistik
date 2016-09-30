@@ -128,9 +128,11 @@
 
     <beans profile="dev">
         <bean class="se.inera.testsupport.RestTemplateStub" />
+        <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable" />
     </beans>
     <beans profile="!dev">
         <bean class="org.springframework.web.client.RestTemplate" />
+        <bean class="se.inera.statistics.time.ChangableClock" factory-method="newSystemDefault"/>
     </beans>
 
 </beans>

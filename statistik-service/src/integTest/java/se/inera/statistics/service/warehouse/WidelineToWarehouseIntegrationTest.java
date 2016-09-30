@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import org.joda.time.LocalDateTime;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,6 +34,10 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+
+// CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
 @DirtiesContext
@@ -48,6 +51,9 @@ public class WidelineToWarehouseIntegrationTest {
 
     @Autowired
     private Warehouse warehouse;
+
+    @Autowired
+    private Clock clock;
 
     @Test
     public void testPopulateWarehouse() throws Exception {
@@ -76,7 +82,7 @@ public class WidelineToWarehouseIntegrationTest {
         widelineManager.saveWideline(line1);
 
         widelineLoader.populateWarehouse();
-        warehouse.complete(LocalDateTime.now());
+        warehouse.complete(LocalDateTime.now(clock));
 
         Aisle a = warehouse.get(new HsaIdVardgivare("VG1"));
         Assert.assertEquals(1, a.getSize());
@@ -96,3 +102,4 @@ public class WidelineToWarehouseIntegrationTest {
         Assert.assertEquals(1, fact.getKon());
     }
 }
+// CHECKSTYLE:ON MagicNumber

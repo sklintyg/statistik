@@ -43,7 +43,7 @@ public class CountyPopulation {
     }
 
     public static CountyPopulation empty() {
-        return new CountyPopulation(Collections.emptyMap(), LocalDate.now());
+        return new CountyPopulation(Collections.emptyMap(), LocalDate.ofEpochDay(0));
     }
 
 }

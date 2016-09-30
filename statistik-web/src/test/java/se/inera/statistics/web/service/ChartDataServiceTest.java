@@ -33,6 +33,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import se.inera.statistics.service.report.model.Icd;
@@ -42,6 +43,7 @@ import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
+import se.inera.statistics.web.util.SpyableClock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChartDataServiceTest {
@@ -64,6 +66,9 @@ public class ChartDataServiceTest {
     @Mock
     private Warehouse warehouse;
 
+    @Spy
+    private SpyableClock clock = new SpyableClock();
+
     @InjectMocks
     private ChartDataService chartDataService = new ChartDataService();
 
@@ -75,6 +80,7 @@ public class ChartDataServiceTest {
         try {
             chartDataService.buildOverview();
         } catch (NullPointerException e) {
+            e.printStackTrace();
         }
         Mockito.verify(overviewMock).getOverview(any(Range.class));
     }

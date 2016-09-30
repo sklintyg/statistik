@@ -21,9 +21,10 @@ package se.inera.statistics.service.warehouse.query;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.Arrays;
 
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -52,10 +53,11 @@ public class SjukskrivningsgradQueryTest {
     @Test
     public void testGetSjukskrivningsgradCountingAllDegreesOnlyCountDistinctDegrees() throws Exception {
         //Given
+        final Clock clock = Clock.systemDefaultZone();
         final Aisle aisle = Mockito.mock(Aisle.class);
         final SjukfallUtil sjukfallUtil = Mockito.mock(SjukfallUtil.class);
         final FilterPredicates filter = SjukfallUtil.ALL_ENHETER;
-        final LocalDate start = new LocalDate();
+        final LocalDate start = LocalDate.now(clock);
         final int periods = 1;
         final int periodSize = 1;
         Mockito.doReturn(null).when(sjukfallUtil).calculateKonDataResponse(eq(aisle), eq(filter), eq(start), eq(periods), eq(periodSize), eq(SjukskrivningsgradQuery.GRAD_LABEL), eq(SjukskrivningsgradQuery.GRAD), counterCaptor.capture());

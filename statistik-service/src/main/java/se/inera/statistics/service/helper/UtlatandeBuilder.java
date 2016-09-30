@@ -20,17 +20,16 @@ package se.inera.statistics.service.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.LocalTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,9 +37,9 @@ import java.util.UUID;
 
 public class UtlatandeBuilder {
 
-    private static final LocalTime SIGN_TIME_OF_DAY = new LocalTime(7, 7);
-    private static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd");
-    private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormat.forPattern("yyyy-MM-dd'T'hh:mm:ss.SSS");
+    private static final LocalTime SIGN_TIME_OF_DAY = LocalTime.of(7, 7);
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'hh:mm:ss.SSS");
     public static final String GRUND_DATA = "grundData";
     public static final String SKAPAD_AV = "skapadAv";
 
@@ -87,9 +86,9 @@ public class UtlatandeBuilder {
         ObjectNode intyg = template.deepCopy();
         ObjectNode patientIdNode = (ObjectNode) intyg.path(GRUND_DATA).path("patient");
         patientIdNode.put("personId", person);
-        LocalDateTime startWithTime = starts.get(0).toLocalDateTime(SIGN_TIME_OF_DAY);
+        LocalDateTime startWithTime = starts.get(0).atTime(SIGN_TIME_OF_DAY);
         ObjectNode signeringsdatumNode = (ObjectNode) intyg.path(GRUND_DATA);
-        signeringsdatumNode.put("signeringsdatum", ISO_FORMATTER.print(startWithTime));
+        signeringsdatumNode.put("signeringsdatum", ISO_FORMATTER.format(startWithTime));
 
         intyg.put("id", UUID.randomUUID().toString());
 
@@ -126,8 +125,8 @@ public class UtlatandeBuilder {
 
     private void createNedsatNode(List<LocalDate> starts, List<LocalDate> stops, ObjectNode intyg, String nedsattning) {
         ObjectNode nedsatt = (ObjectNode) intyg.set(nedsattning, intyg.objectNode());
-        ((ObjectNode) nedsatt.path(nedsattning)).put("from", FORMATTER.print(starts.get(0)));
-        ((ObjectNode) nedsatt.path(nedsattning)).put("tom", FORMATTER.print(stops.get(0)));
+        ((ObjectNode) nedsatt.path(nedsattning)).put("from", FORMATTER.format(starts.get(0)));
+        ((ObjectNode) nedsatt.path(nedsattning)).put("tom", FORMATTER.format(stops.get(0)));
         starts.remove(0);
         stops.remove(0);
     }

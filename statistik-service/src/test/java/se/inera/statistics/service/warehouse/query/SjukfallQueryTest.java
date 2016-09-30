@@ -22,7 +22,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -52,6 +51,8 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.SjukfallUtilTest;
 import se.inera.statistics.service.warehouse.Warehouse;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -83,7 +84,7 @@ public class SjukfallQueryTest {
     private static final int PATIENT2_ID = 2;
     private static final Kon PATIENT2_KON = Kon.MALE;
 
-    private LocalDate sjukfallDate = new LocalDate(2014, 5, 5);
+    private LocalDate sjukfallDate = LocalDate.of(2014, 5, 5);
 
     private Range range = new Range(sjukfallDate.minusMonths(2).withDayOfMonth(1), sjukfallDate.plusMonths(2).withDayOfMonth(1));
 
@@ -262,12 +263,13 @@ public class SjukfallQueryTest {
     @Test
     public void testGetSjukfallPerEnhetSeries() throws Exception {
         //Given
+        final Clock clock = Clock.systemDefaultZone();
         final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
         Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(FilterPredicates.class), any(LocalDate.class), anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class))).thenReturn(new KonDataResponse(Collections.<String>emptyList(), Collections.<KonDataRow>emptyList()));
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
 
         final FilterPredicates filter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
-        final LocalDate start = new LocalDate();
+        final LocalDate start = LocalDate.now(clock);
         final int periods = 1;
         final int periodSize = 2;
         final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
@@ -286,6 +288,7 @@ public class SjukfallQueryTest {
     @Test
     public void testGetSjukfallPerEnhetSeriesTwoEnhetsWthSameNameWillGetIdAsSuffixSTATISTIK1121() throws Exception {
         //Given
+        final Clock clock = Clock.systemDefaultZone();
         final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
         final KonDataResponse konDataResponse = new KonDataResponse(Arrays.asList("1", "2", "3"), Collections.<KonDataRow>emptyList());
         Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(FilterPredicates.class), any(LocalDate.class), anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class))).thenReturn(konDataResponse);
@@ -297,7 +300,7 @@ public class SjukfallQueryTest {
         idsToNames.put(new HsaIdEnhet("3"), "ABC");
 
         //When
-        final KonDataResponse result = sjukfallQuery.getSjukfallPerEnhetSeries(aisle.createAisle(), enhetFilterFromInternalIntValues, new LocalDate(), 1, 2, idsToNames);
+        final KonDataResponse result = sjukfallQuery.getSjukfallPerEnhetSeries(aisle.createAisle(), enhetFilterFromInternalIntValues, LocalDate.now(clock), 1, 2, idsToNames);
 
         //Then
         assertEquals(3, result.getGroups().size());

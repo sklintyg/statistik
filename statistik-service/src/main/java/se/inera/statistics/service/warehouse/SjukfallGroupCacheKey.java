@@ -18,9 +18,9 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import org.joda.time.LocalDate;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 class SjukfallGroupCacheKey {
@@ -61,7 +61,7 @@ class SjukfallGroupCacheKey {
         if (from == null) {
             return -1;
         }
-        final Date date = from.toDate();
+        final Date date = new Date(from.toEpochDay());
         if (date == null) {
             return -1;
         }
