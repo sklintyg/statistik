@@ -38,7 +38,6 @@ import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.CareTypes;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.Managements;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.JodaConverterHelper;
 
 @Component
 public class HSAServiceImpl implements HSAService {
@@ -216,8 +215,8 @@ public class HSAServiceImpl implements HSAService {
         }
         final String hsaIdentity = caregiver.getHsaIdentity();
         final String careGiverOrgNo = caregiver.getCareGiverOrgNo();
-        final LocalDateTime startDate = JodaConverterHelper.toJavaTime(caregiver.getStartDate());
-        final LocalDateTime endDate = JodaConverterHelper.toJavaTime(caregiver.getEndDate());
+        final LocalDateTime startDate = toJavaTime(caregiver.getStartDate());
+        final LocalDateTime endDate = toJavaTime(caregiver.getEndDate());
         final Boolean isArchived = caregiver.isIsArchived();
         return new HsaInfoVg(hsaIdentity, careGiverOrgNo, startDate, endDate, isArchived);
     }
@@ -230,8 +229,8 @@ public class HSAServiceImpl implements HSAService {
         final String hsaIdentity = unit.getHsaIdentity();
         final List<String> enhetsTyp = createEnhetsTyp(unit.getBusinessTypes());
         final List<String> agarTyp = createAgarTyp(unit.getManagements());
-        final LocalDateTime startDate = JodaConverterHelper.toJavaTime(unit.getStartDate());
-        final LocalDateTime endDate = JodaConverterHelper.toJavaTime(unit.getEndDate());
+        final LocalDateTime startDate = toJavaTime(unit.getStartDate());
+        final LocalDateTime endDate = toJavaTime(unit.getEndDate());
         final Boolean isArchived = unit.isIsArchived();
         final List<String> verksamhet = createVerksamhet(unit.getBusinessClassificationCodes());
         final List<String> vardform = createVardform(unit.getCareTypes());
@@ -280,6 +279,13 @@ public class HSAServiceImpl implements HSAService {
         final String x = coordinate.getX();
         final String y = coordinate.getY();
         return new HsaInfoCoordinate(typ, x, y);
+    }
+
+    private LocalDateTime toJavaTime(org.joda.time.LocalDateTime joda) {
+        if (joda == null) {
+            return null;
+        }
+        return LocalDateTime.of(joda.getYear(), joda.getMonthOfYear(), joda.getDayOfMonth(), joda.getHourOfDay(), joda.getMinuteOfHour(), joda.getSecondOfMinute());
     }
 
 }
