@@ -38,7 +38,6 @@ dependencies {
     compile "org.liquibase:liquibase-core:${liquibaseVersion}"
     compile "se.riv.clinicalprocess.healthcond.certificate:clinicalprocess-healthcond-certificate-schemas:${certificateSchemaVersion}"
     compile "se.inera.intyg.common:logging-util:${intygCommonLoggingVersion}"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:${jacksonJodaTimeVersion}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonJavaTimeVersion}"
     compile "se.inera.intyg.common:hsa-integration:${intygCommonVersion}"
     compile "com.helger:ph-schematron:${schematronVersion}"
