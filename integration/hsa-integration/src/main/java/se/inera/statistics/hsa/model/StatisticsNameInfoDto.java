@@ -16,25 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.hsa;
+package se.inera.statistics.hsa.model;
 
-import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
+public class StatisticsNameInfoDto {
 
-public interface HsaWebService {
+    private String hsaIdentity;
+    private String personMiddleAndSurName;
+    private String personGivenName;
 
-    void setHsaLogicalAddress(String hsaLogicalAddress);
+    public String getHsaIdentity() {
+        return hsaIdentity;
+    }
 
-    void callPing();
+    public void setHsaIdentity(String hsaIdentity) {
+        this.hsaIdentity = hsaIdentity;
+    }
 
-    GetStatisticsHsaUnitResponseDto getStatisticsHsaUnit(String unitId);
+    public String getPersonMiddleAndSurName() {
+        return personMiddleAndSurName;
+    }
 
-    GetStatisticsNamesResponseDto getStatisticsNames(String personId);
+    public void setPersonMiddleAndSurName(String personMiddleAndSurName) {
+        this.personMiddleAndSurName = personMiddleAndSurName;
+    }
 
-    GetStatisticsPersonResponseDto getStatisticsPerson(String personId);
+    public String getPersonGivenName() {
+        return personGivenName;
+    }
 
-    GetStatisticsCareGiverResponseDto getStatisticsCareGiver(String careGiverId);
-
+    public void setPersonGivenName(String personGivenName) {
+        this.personGivenName = personGivenName;
+    }
 }

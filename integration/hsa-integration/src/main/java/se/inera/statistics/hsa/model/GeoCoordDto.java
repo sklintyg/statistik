@@ -16,25 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.hsa;
+package se.inera.statistics.hsa.model;
 
-import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
+public class GeoCoordDto {
 
-public interface HsaWebService {
+    private GeoCoordType type;
+    private String x;
+    private String y;
 
-    void setHsaLogicalAddress(String hsaLogicalAddress);
+    public GeoCoordType getType() {
+        return type;
+    }
 
-    void callPing();
+    public void setType(GeoCoordType type) {
+        this.type = type;
+    }
 
-    GetStatisticsHsaUnitResponseDto getStatisticsHsaUnit(String unitId);
+    public String getX() {
+        return x;
+    }
 
-    GetStatisticsNamesResponseDto getStatisticsNames(String personId);
+    public void setX(String x) {
+        this.x = x;
+    }
 
-    GetStatisticsPersonResponseDto getStatisticsPerson(String personId);
+    public String getY() {
+        return y;
+    }
 
-    GetStatisticsCareGiverResponseDto getStatisticsCareGiver(String careGiverId);
-
+    public void setY(String y) {
+        this.y = y;
+    }
 }

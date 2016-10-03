@@ -26,18 +26,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import se.inera.ifv.hsawsresponder.v3.GeoCoord;
-import se.inera.ifv.hsawsresponder.v3.GeoCoordEnum;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
-import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit;
-import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessClassificationCodes;
-import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.BusinessTypes;
-import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.CareTypes;
-import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit.Managements;
+import se.inera.statistics.hsa.model.GeoCoordDto;
+import se.inera.statistics.hsa.model.GeoCoordType;
+import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.hsa.model.StatisticsHsaUnitDto;
 
 @Component
 public class HSAServiceImpl implements HSAService {
@@ -73,7 +69,7 @@ public class HSAServiceImpl implements HSAService {
                 || enhetHasNoVgAndNoHuvudenhetIsDefined(enhet, huvudenhet)
                 || neitherEnhetOrHuvudenhetHasVg(enhet, huvudenhet)
                 ) {
-            GetStatisticsHsaUnitResponseType unit = getStatisticsHsaUnit(key.getEnhetId().getId());
+            GetStatisticsHsaUnitResponseDto unit = getStatisticsHsaUnit(key.getEnhetId().getId());
             if (unit != null) {
                 //huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det kopplad/underliggande enhet
                 enhet = createUnit(unit.getStatisticsUnit());
@@ -103,8 +99,8 @@ public class HSAServiceImpl implements HSAService {
         HsaInfoPersonal personal = nonNullBase.getPersonal();
 
         if (personal == null) {
-            GetStatisticsPersonResponseType personalType = getStatisticsPerson(key.getLakareId().getId());
-            GetStatisticsNamesResponseType names = getStatisticsNames(key.getLakareId().getId());
+            GetStatisticsPersonResponseDto personalType = getStatisticsPerson(key.getLakareId().getId());
+            GetStatisticsNamesResponseDto names = getStatisticsNames(key.getLakareId().getId());
             personal = createPersonal(personalType, names);
         }
         return personal;
@@ -119,7 +115,7 @@ public class HSAServiceImpl implements HSAService {
                 LOG.info("VardgivarId mismatch found for enhet: {}. Was {} in HSA but expected {} from intyg", key.getEnhetId(), key.getVardgivareId(), vgId);
             }
             if (vgId != null && !vgId.isEmpty()) {
-                GetStatisticsCareGiverResponseType caregiver = getStatisticsCareGiver(vgId.getId());
+                GetStatisticsCareGiverResponseDto caregiver = getStatisticsCareGiver(vgId.getId());
                 vardgivare = createCareGiver(caregiver);
             }
         }
@@ -136,50 +132,50 @@ public class HSAServiceImpl implements HSAService {
         return null;
     }
 
-    private GetStatisticsPersonResponseType getStatisticsPerson(String key) {
-        GetStatisticsPersonResponseType person = service.getStatisticsPerson(key);
+    private GetStatisticsPersonResponseDto getStatisticsPerson(String key) {
+        GetStatisticsPersonResponseDto person = service.getStatisticsPerson(key);
         if (person == null) {
             LOG.warn("No statistics person '{}' found", key);
         }
         return person;
     }
 
-    private GetStatisticsNamesResponseType getStatisticsNames(String key) {
-        GetStatisticsNamesResponseType person = service.getStatisticsNames(key);
+    private GetStatisticsNamesResponseDto getStatisticsNames(String key) {
+        GetStatisticsNamesResponseDto person = service.getStatisticsNames(key);
         if (person == null) {
             LOG.warn("No statistics names '{}' found", key);
         }
         return person;
     }
 
-    private GetStatisticsCareGiverResponseType getStatisticsCareGiver(String key) {
-        GetStatisticsCareGiverResponseType caregiver = service.getStatisticsCareGiver(key);
+    private GetStatisticsCareGiverResponseDto getStatisticsCareGiver(String key) {
+        GetStatisticsCareGiverResponseDto caregiver = service.getStatisticsCareGiver(key);
         if (caregiver == null) {
             LOG.warn("No care giver '{}' found", key);
         }
         return caregiver;
     }
 
-    private GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(String key) {
-        GetStatisticsHsaUnitResponseType unit = service.getStatisticsHsaUnit(key);
+    private GetStatisticsHsaUnitResponseDto getStatisticsHsaUnit(String key) {
+        GetStatisticsHsaUnitResponseDto unit = service.getStatisticsHsaUnit(key);
         if (unit == null) {
             LOG.warn("No unit '{}' found", key);
         }
         return unit;
     }
 
-    private HsaInfoPersonal createPersonal(GetStatisticsPersonResponseType personal, GetStatisticsNamesResponseType names) {
+    private HsaInfoPersonal createPersonal(GetStatisticsPersonResponseDto personal, GetStatisticsNamesResponseDto names) {
         if (personal == null) {
             return null;
         }
         final String id = personal.getHsaIdentity();
         final String gender = personal.getGender();
         final String age = personal.getAge();
-        final List<String> befattning = personal.getPaTitleCodes() != null ? personal.getPaTitleCodes().getPaTitleCode() : null;
-        final List<String> specialitet = personal.getSpecialityCodes() != null ? personal.getSpecialityCodes().getSpecialityCode() : null;
-        final List<String> yrkesgrupp = personal.getHsaTitles() != null ? personal.getHsaTitles().getHsaTitle() : null;
+        final List<String> befattning = personal.getPaTitleCodes();
+        final List<String> specialitet = personal.getSpecialityCodes();
+        final List<String> yrkesgrupp = personal.getHsaTitles();
 
-        final Boolean isProtectedPerson = personal.isIsProtectedPerson();
+        final Boolean isProtectedPerson = personal.isProtectedPerson();
         final String fornamn = getFornamn(names, nullSafe(isProtectedPerson));
         final String efternamn = getMellanOchEfternamn(names, nullSafe(isProtectedPerson));
         return new HsaInfoPersonal(id, gender, age, befattning, specialitet, yrkesgrupp, isProtectedPerson, fornamn, efternamn);
@@ -189,73 +185,57 @@ public class HSAServiceImpl implements HSAService {
         return boolObj == null ? false : boolObj;
     }
 
-    private String getFornamn(GetStatisticsNamesResponseType names, boolean isProtected) {
+    private String getFornamn(GetStatisticsNamesResponseDto names, boolean isProtected) {
         if (isProtected) {
             return SKYDDAD;
         }
         if (names == null) {
             return null;
         }
-        return names.getStatisticsNameInfos().getStatisticsNameInfo().get(0).getPersonGivenName();
+        return names.getStatisticsNameInfos().get(0).getPersonGivenName();
     }
 
-    private String getMellanOchEfternamn(GetStatisticsNamesResponseType names, boolean isProtected) {
+    private String getMellanOchEfternamn(GetStatisticsNamesResponseDto names, boolean isProtected) {
         if (isProtected) {
             return IDENTITET;
         }
         if (names == null) {
             return null;
         }
-        return names.getStatisticsNameInfos().getStatisticsNameInfo().get(0).getPersonMiddleAndSurName();
+        return names.getStatisticsNameInfos().get(0).getPersonMiddleAndSurName();
     }
 
-    private HsaInfoVg createCareGiver(GetStatisticsCareGiverResponseType caregiver) {
+    private HsaInfoVg createCareGiver(GetStatisticsCareGiverResponseDto caregiver) {
         if (caregiver == null) {
             return null;
         }
         final String hsaIdentity = caregiver.getHsaIdentity();
         final String careGiverOrgNo = caregiver.getCareGiverOrgNo();
-        final LocalDateTime startDate = toJavaTime(caregiver.getStartDate());
-        final LocalDateTime endDate = toJavaTime(caregiver.getEndDate());
-        final Boolean isArchived = caregiver.isIsArchived();
+        final LocalDateTime startDate = caregiver.getStartDate();
+        final LocalDateTime endDate = caregiver.getEndDate();
+        final Boolean isArchived = caregiver.isArchived();
         return new HsaInfoVg(hsaIdentity, careGiverOrgNo, startDate, endDate, isArchived);
     }
 
-    private HsaInfoEnhet createUnit(StatisticsHsaUnit unit) {
+    private HsaInfoEnhet createUnit(StatisticsHsaUnitDto unit) {
         if (unit == null) {
             return null;
         }
 
         final String hsaIdentity = unit.getHsaIdentity();
-        final List<String> enhetsTyp = createEnhetsTyp(unit.getBusinessTypes());
-        final List<String> agarTyp = createAgarTyp(unit.getManagements());
-        final LocalDateTime startDate = toJavaTime(unit.getStartDate());
-        final LocalDateTime endDate = toJavaTime(unit.getEndDate());
-        final Boolean isArchived = unit.isIsArchived();
-        final List<String> verksamhet = createVerksamhet(unit.getBusinessClassificationCodes());
-        final List<String> vardform = createVardform(unit.getCareTypes());
+        final List<String> enhetsTyp = unit.getBusinessTypes();
+        final List<String> agarTyp = unit.getManagements();
+        final LocalDateTime startDate = unit.getStartDate();
+        final LocalDateTime endDate = unit.getEndDate();
+        final Boolean isArchived = unit.isArchived();
+        final List<String> verksamhet = unit.getBusinessClassificationCodes();
+        final List<String> vardform = unit.getCareTypes();
         final HsaInfoEnhetGeo geografiskIndelning = createGeografiskIndelning(unit);
         final String careGiverHsaIdentity = unit.getCareGiverHsaIdentity();
         return new HsaInfoEnhet(hsaIdentity, enhetsTyp, agarTyp, startDate, endDate, isArchived, verksamhet, vardform, geografiskIndelning, careGiverHsaIdentity);
     }
 
-    private List<String> createVardform(CareTypes careTypes) {
-        return careTypes != null ? careTypes.getCareType() : null;
-    }
-
-    private List<String> createVerksamhet(BusinessClassificationCodes codes) {
-        return codes != null ? codes.getBusinessClassificationCode() : null;
-    }
-
-    private List<String> createAgarTyp(Managements managements) {
-        return managements != null ? managements.getManagement() : null;
-    }
-
-    private List<String> createEnhetsTyp(BusinessTypes businessTypes) {
-        return businessTypes != null ? businessTypes.getBusinessType() : null;
-    }
-
-    private HsaInfoEnhetGeo createGeografiskIndelning(StatisticsHsaUnit unit) {
+    private HsaInfoEnhetGeo createGeografiskIndelning(StatisticsHsaUnitDto unit) {
         final HsaInfoCoordinate coordinate = createCoordinate(unit);
         final String location = unit.getLocation();
         final String municipalitySectionCode = unit.getMunicipalitySectionCode();
@@ -266,26 +246,18 @@ public class HSAServiceImpl implements HSAService {
         return hsaInfoEnhetGeo.isEmpty() ? null : hsaInfoEnhetGeo;
     }
 
-
-    private HsaInfoCoordinate createCoordinate(StatisticsHsaUnit unit) {
+    private HsaInfoCoordinate createCoordinate(StatisticsHsaUnitDto unit) {
         return createCoordinates(unit.getGeographicalCoordinatesRt90());
     }
 
-    private HsaInfoCoordinate createCoordinates(GeoCoord coordinate) {
-        if (coordinate == null || coordinate.getType() != GeoCoordEnum.RT_90) {
+    private HsaInfoCoordinate createCoordinates(GeoCoordDto coordinate) {
+        if (coordinate == null || coordinate.getType() != GeoCoordType.RT_90) {
             return null;
         }
         final String typ = coordinate.getType().toString();
         final String x = coordinate.getX();
         final String y = coordinate.getY();
         return new HsaInfoCoordinate(typ, x, y);
-    }
-
-    private LocalDateTime toJavaTime(org.joda.time.LocalDateTime joda) {
-        if (joda == null) {
-            return null;
-        }
-        return LocalDateTime.of(joda.getYear(), joda.getMonthOfYear(), joda.getDayOfMonth(), joda.getHourOfDay(), joda.getMinuteOfHour(), joda.getSecondOfMinute());
     }
 
 }

@@ -16,25 +16,30 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.hsa;
+package se.inera.statistics.hsa.model;
 
-import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
+public enum GeoCoordType {
 
-public interface HsaWebService {
+    RT_90("RT90"),
+    SWEREF_99_TM("SWEREF99TM");
 
-    void setHsaLogicalAddress(String hsaLogicalAddress);
+    private final String value;
 
-    void callPing();
+    GeoCoordType(String v) {
+        value = v;
+    }
 
-    GetStatisticsHsaUnitResponseDto getStatisticsHsaUnit(String unitId);
+    public String value() {
+        return value;
+    }
 
-    GetStatisticsNamesResponseDto getStatisticsNames(String personId);
-
-    GetStatisticsPersonResponseDto getStatisticsPerson(String personId);
-
-    GetStatisticsCareGiverResponseDto getStatisticsCareGiver(String careGiverId);
+    public static GeoCoordType fromValue(String v) {
+        for (GeoCoordType c: GeoCoordType.values()) {
+            if (c.value.equals(v)) {
+                return c;
+            }
+        }
+        throw new IllegalArgumentException(v);
+    }
 
 }

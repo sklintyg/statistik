@@ -16,25 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.hsa;
+package se.inera.statistics.hsa.model;
 
-import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
-import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
+import java.util.Collections;
+import java.util.List;
 
-public interface HsaWebService {
+public class GetStatisticsNamesResponseDto {
 
-    void setHsaLogicalAddress(String hsaLogicalAddress);
+    private List<StatisticsNameInfoDto> statisticsNameInfos = Collections.emptyList();
 
-    void callPing();
+    public List<StatisticsNameInfoDto> getStatisticsNameInfos() {
+        return statisticsNameInfos;
+    }
 
-    GetStatisticsHsaUnitResponseDto getStatisticsHsaUnit(String unitId);
-
-    GetStatisticsNamesResponseDto getStatisticsNames(String personId);
-
-    GetStatisticsPersonResponseDto getStatisticsPerson(String personId);
-
-    GetStatisticsCareGiverResponseDto getStatisticsCareGiver(String careGiverId);
-
+    public void setStatisticsNameInfos(List<StatisticsNameInfoDto> statisticsNameInfos) {
+        this.statisticsNameInfos = statisticsNameInfos;
+    }
 }

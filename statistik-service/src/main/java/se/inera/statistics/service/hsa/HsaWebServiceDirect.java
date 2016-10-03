@@ -20,11 +20,11 @@ package se.inera.statistics.service.hsa;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
+import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
 
 /**
  * This implementation will simply delegate all calls directly to HSA.
@@ -45,22 +45,22 @@ public class HsaWebServiceDirect implements HsaWebService {
     }
 
     @Override
-    public GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(String unitId) {
+    public GetStatisticsHsaUnitResponseDto getStatisticsHsaUnit(String unitId) {
         return service.getStatisticsHsaUnit(unitId);
     }
 
     @Override
-    public GetStatisticsNamesResponseType getStatisticsNames(String personId) {
+    public GetStatisticsNamesResponseDto getStatisticsNames(String personId) {
         return service.getStatisticsNames(personId);
     }
 
     @Override
-    public GetStatisticsPersonResponseType getStatisticsPerson(String personId) {
+    public GetStatisticsPersonResponseDto getStatisticsPerson(String personId) {
         return service.getStatisticsPerson(personId);
     }
 
     @Override
-    public GetStatisticsCareGiverResponseType getStatisticsCareGiver(String careGiverId) {
+    public GetStatisticsCareGiverResponseDto getStatisticsCareGiver(String careGiverId) {
         return service.getStatisticsCareGiver(careGiverId);
     }
 
