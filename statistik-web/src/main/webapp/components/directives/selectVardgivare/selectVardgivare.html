@@ -3,7 +3,8 @@
 
   <ul>
     <li data-ng-repeat="vgInfo in vardgivare | orderBy:'name'">
-      <a href data-ng-click="setSelectedVardgivare(vgInfo.id)" title="Klicka för att välja denna vårdgivare.">{{::vgInfo.name}}</a>
+      <a href data-ng-if="currentVgid != vgInfo.id" data-ng-click="setSelectedVardgivare(vgInfo.id)" title="Klicka för att välja denna vårdgivare">{{::vgInfo.name}}</a>
+      <span data-ng-if="currentVgid == vgInfo.id" title="Vald vårdgivare"><strong>{{::vgInfo.name}}</strong> (vald enhet)</span>
     </li>
   </ul>
 
