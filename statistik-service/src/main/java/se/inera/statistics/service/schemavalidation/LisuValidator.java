@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 class LisuValidator extends RegisterCertificateValidator {
 
     LisuValidator() {
-        super("schematron/lisu.sch");
+        super("lisu.sch");
     }
 
 }

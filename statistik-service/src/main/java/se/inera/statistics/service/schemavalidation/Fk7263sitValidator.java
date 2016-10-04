@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 class Fk7263sitValidator extends RegisterCertificateValidator {
 
     Fk7263sitValidator() {
-        super("schematron/fk7263sit.sch");
+        super("fk7263sit.sch");
     }
 
 }
