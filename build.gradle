@@ -101,6 +101,7 @@ subprojects {
         // Internal
         intygCommonVersion = "0-SNAPSHOT"
         intygCommonLoggingVersion = "3.0.0"
+        intygSchematronVersion = "1.0.0"
 
         // Schemas
         certificateSchemaVersion = "2.0.RC6.1"
