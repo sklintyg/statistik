@@ -110,36 +110,53 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         return moment(new Date(date)).isValid() || moment(new Date(date).getUTCDate()).isValid();
     };
 
-    var hasFromDateValidationError = function() {
-        return !businessFilter.fromDate ||
-            !isValidDate(businessFilter.fromDate) ||
-            moment(businessFilter.fromDate).isBefore(TIME_INTERVAL_MIN_DATE) ||
-            moment(businessFilter.fromDate).isAfter(moment());
-    };
-
-    var hasToDateValidationError = function() {
-        return !businessFilter.toDate ||
-            !isValidDate(businessFilter.toDate) ||
-            moment(businessFilter.toDate).isBefore(businessFilter.fromDate) ||
-            moment(businessFilter.toDate).isAfter(moment().date(moment().daysInMonth()).toDate());
-    };
-
     var hasDatepickersValidationError = function() {
-        var fromDateValidationError, toDateValidationError;
+        scope.errorMessage = messageService.getProperty('alert.filter.date-invalid');
+        scope.fromDateValidationError = false;
+        scope.toDateValidationError = false;
+
+        // Fel format
+        if (!scope.myForm.fromDate.$valid || !scope.myForm.toDate.$valid) {
+            return true;
+        }
 
         if (scope.businessFilter.fromDate || scope.businessFilter.toDate) {
-            fromDateValidationError = hasFromDateValidationError();
-            toDateValidationError = hasToDateValidationError();
-
-            if(fromDateValidationError) {
-                scope.fromDateValidationError = true;
-            }
-            if(toDateValidationError) {
+            // Till är tomt men inte från
+            if (scope.businessFilter.fromDate && !scope.businessFilter.toDate || !isValidDate(businessFilter.toDate)) {
+                scope.errorMessage = messageService.getProperty('alert.filter.date.empty');
                 scope.toDateValidationError = true;
+                return true;
+            }
+
+            // Från är tomt men inte till
+            if (!scope.businessFilter.fromDate && scope.businessFilter.toDate || !isValidDate(businessFilter.fromDate)) {
+                scope.errorMessage = messageService.getProperty('alert.filter.date.empty');
+                scope.fromDateValidationError = true;
+                return true;
+            }
+
+            // Från är satt till efter till
+            if (moment(businessFilter.toDate).isBefore(businessFilter.fromDate)) {
+                scope.errorMessage = messageService.getProperty('alert.filter.date.wrong-order');
+                scope.fromDateValidationError = true;
+                scope.toDateValidationError = true;
+                return true;
+            }
+
+            if (moment(businessFilter.fromDate).isBefore(TIME_INTERVAL_MIN_DATE)) {
+                scope.errorMessage = messageService.getProperty('alert.filter.date.before', {date: TIME_INTERVAL_MIN_DATE.format('YYYY-MM')});
+                scope.fromDateValidationError = true;
+                return true;
+            }
+
+            if (moment(businessFilter.toDate).isAfter(TIME_INTERVAL_MAX_DATE)) {
+                scope.errorMessage = messageService.getProperty('alert.filter.date.after');
+                scope.toDateValidationError = true;
+                return true;
             }
         }
 
-        return fromDateValidationError || toDateValidationError ;
+        return false;
     };
 
     scope.makeSelection = function () {
@@ -149,8 +166,6 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
             scope.showDateValidationError = true;
         } else {
             scope.showDateValidationError = false;
-            scope.toDateValidationError = false;
-            scope.fromDateValidationError = false;
             scope.loadingFilter = true;
 
             //Be sure to format the date objects correctly before sending anything to the server
@@ -200,7 +215,12 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         scope.toDateValidationError = false;
     };
 
-    scope.resetBusinessFilter = function() {
+    scope.resetBusinessFilter = function(form) {
+        if (form) {
+            form.$setPristine();
+            form.$setUntouched();
+        }
+
         businessFilter.resetSelections();
         resetDatePickers();
         var queryParams = $location.search();
@@ -255,7 +275,6 @@ angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown'
     return function(scope, element, attrs) {
         var text = attrs.multiselectDropdown;
         var icon = attrs.multiselectDropdownIcon;
-        var bf = scope.$parent.businessFilter;
         element.multiselect({
             buttonText: function () {
                 return '<span class="fa ' + icon + '"></span> ' + text;
@@ -266,9 +285,6 @@ angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown'
                     if (checked) {
                         optionElement.prop('selected', 'selected');
                     }
-                }
-                if (bf) {
-                    bf.filterChanged();
                 }
 
                 element.change();

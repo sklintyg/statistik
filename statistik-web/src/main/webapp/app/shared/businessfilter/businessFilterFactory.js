@@ -51,7 +51,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.dataInitialized = false;
 
         businessFilter.businesses = [];
-        businessFilter.selectedBusinesses = [];
 
         businessFilter.geography = {subs: []};
         businessFilter.geographyBusinessIds = [];
@@ -87,7 +86,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     };
 
     businessFilter.resetSelections = function () {
-        businessFilter.selectedBusinesses.length = 0;
         businessFilter.geographyBusinessIds.length = 0;
         businessFilter.selectedVerksamhetTypIds.length = 0;
         businessFilter.selectedSjukskrivningslangdIds.length = 0;
@@ -101,8 +99,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.fromDate = null;
 
         businessFilter.useDefaultPeriod = true;
-
-        businessFilter.filterChanged();
     };
 
     var isSet = function (value) {
@@ -170,8 +166,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.toDate = filterData.toDate ? moment(filterData.toDate).utc().toDate() : null;
         businessFilter.fromDate = filterData.fromDate ? moment(filterData.fromDate).utc().toDate() : null;
         businessFilter.useDefaultPeriod = filterData.useDefaultPeriod;
-
-        businessFilter.filterChanged();
     }
 
     function updateIcd10StructureOnce(successCallback) {
@@ -369,7 +363,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
     businessFilter.updateGeography = function () {
         businessFilter.geographyBusinessIds = businessFilter.collectGeographyIds(businessFilter.geography);
-        businessFilter.filterChanged();
     };
 
     businessFilter.updateDiagnoses = function () {
@@ -393,19 +386,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         });
         var selectedUnitsFromVerksamhetstypsFlattened = _.flatten(selectedUnitsFromVerksamhetstyps);
         return _.pluck(selectedUnitsFromVerksamhetstypsFlattened, 'id');
-    };
-
-    businessFilter.filterChanged = function () {
-        var verksamhetsBusinessIds = businessFilter.collectVerksamhetsIds();
-
-        function getSelectedGeoEnhets() {
-            if (businessFilter.geographyBusinessIds.length === 0) {
-                return _.pluck(businessFilter.businesses, 'id');
-            }
-            return businessFilter.geographyBusinessIds;
-        }
-
-        businessFilter.selectedBusinesses = _.intersection(getSelectedGeoEnhets(), verksamhetsBusinessIds);
     };
 
     return businessFilter;

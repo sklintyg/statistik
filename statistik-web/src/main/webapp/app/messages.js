@@ -80,7 +80,11 @@ var stMessages = {
         'lbl.filter.sum-progress-1': 'Genom filtreringen visas statistik från ',
         'lbl.filter.sum-progress-2': ' av totalt ',
         'lbl.filter.sum-progress-3': ' vårdenheter.',
-        'alert.filter.date-invalid': 'Felaktigt tidsintervall har angetts',
+        'alert.filter.date-invalid': 'Du har angett en månad som inte finns. Kontrollera att du fyllt i rätt månad.',
+        'alert.filter.date.wrong-order': 'Tidsintervallens fråndatum får inte inträffa senare än tilldatum. Vänligen ändra från- eller tilldatum.',
+        'alert.filter.date.empty': 'Ett datumfält verkar vara tomt. Du behöver fylla i båda datumfälten eller lämna båda tomma.',
+        'alert.filter.date.before': 'Det finns ingen statistik innan ${date}. Vänligen ange ett senare datum.',
+        'alert.filter.date.after': 'Det finns ingen statistik för framtiden. Vänligen ange ett tidigare datum.',
 
         //Multi-select
         'info.multiselect.loading': 'Laddar information, var god vänta.',
