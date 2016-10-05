@@ -17,11 +17,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+$fa-font-path: '../bower_components/font-awesome/fonts';
+@import '../bower_components/font-awesome/scss/font-awesome.scss';
+
 $icon-font-path: '../bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap/';
 
 @import '../bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss';
 @import '../bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap/_theme.scss';
 @import '../scss_mixins/_retina.scss';
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
 
 /**
  * App-wide Styles
@@ -2019,11 +2026,16 @@ input[type="radio"], input[type="checkbox"] {
   margin: 0;
 }
 
+.inline-block {
+  display: inline-block;
+}
+
 // Component styles are injected through grunt
 // injector
 @import 'css/filter.scss';
 @import 'css/inera-statistics-responsive.scss';
 @import 'css/print.scss';
+@import 'shared/businessfilter/businessFilter.scss';
 @import 'directives/angular-dropzone/dropzone.scss';
 @import 'directives/diagnosSelection/diagnosSelection.scss';
 @import 'directives/filterList/filterList.scss';

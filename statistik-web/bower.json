@@ -21,7 +21,8 @@
     "dropzone": "4.3.0",
     "ngstorage": "0.3.11",
     "highcharts": "4.2.7",
-    "mark.js": "^8.4.0"
+    "mark.js": "^8.4.0",
+    "font-awesome": "fontawesome#^4.6.3"
   },
   "devDependencies": {
     "angular-mocks": "1.4.11",

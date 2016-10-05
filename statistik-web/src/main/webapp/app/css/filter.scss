@@ -7,27 +7,9 @@
 	top: 4px;
 	position: relative;
 }
-.filter-level label {
-	font-size: 12px;
-}
 
 label.btn {
 	font-size: 14px;
-}
-
-.filter-level input[type=checkbox] {
-	position: relative;
-	top: 4px;
-}
-
-#statistics-filter-container {
-	margin-top: 2px;
-}
-
-#statistics-filter-container table.table tbody td,
-#statistics-filter-container table.table tbody td:hover {
-	background-color: #e9eae8;
-	border-bottom: none;
 }
 
 #first-level-filter, #second-level-filter, #third-level-filter { }
@@ -137,22 +119,6 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 
 .multiselect-select-all-container {
 	padding: 5px;
-}
-
-#statistics-filter-container {
-	background-color: rgb(247, 247, 249);
-	border-top: 0;
-	border-left: 1px solid #ddd;
-	border-right: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
-	margin-top: 0;
-	box-shadow: 0 3px 4px 0 rgba(50, 50, 50, 0.2);
-}
-
-.filter-level { 
-	float: left;
-	width: 100%;
-	padding: 10px;
 }
 
 .multiselect-container a {

@@ -53,7 +53,8 @@ var stMessages = {
         'lbl.for-verksamhetsstatistik': 'För verksamhetsstatistik: ',
         'lbl.aterstall': 'Återställ',
         'lbl.sok': 'Sök',
-        'lbl.gor-urval': 'Gör urval',
+        'lbl.clear': 'Rensa',
+        'lbl.filtrera': 'Filtrera',
         'lbl.dolj-tabell': 'Dölj tabell',
         'lbl.visa-tabell': 'Visa tabell',
         'lbl.visa-knappgrupp-serier': 'Visa som',
@@ -63,15 +64,11 @@ var stMessages = {
 
 
         //filter
-        'lbl.filter.valj-verksamhetstyper': 'Välj&nbsp;verksamhetstyper:',
         'lbl.filter.val-av-enheter': 'Välj enheter:',
         'lbl.filter.val-av-diagnoser': 'Välj diagnoser:',
-        'lbl.filter.val-av-tidsintervall': 'Välj tidsintervall',
-        'lbl.filter.val-av-tidsintervall-fran': 'Från:',
-        'lbl.filter.val-av-tidsintervall-till': 'Till:',
+        'lbl.filter.val-av-tidsintervall-fran': 'Från',
+        'lbl.filter.val-av-tidsintervall-till': 'Till',
         'lbl.filter.val-av-diagnoser-knapp': 'Diagnoser',
-        'lbl.filter.valj-sjukskrivningslangd': 'Välj&nbsp;sjukskrivningslängd:',
-        'lbl.filter.valj-aldersgrupp': 'Välj&nbsp;åldersgrupp:',
         'lbl.filter.select-all': 'Markera alla',
         'lbl.filter.modal.lan': 'Län: ',
         'lbl.filter.modal.kommuner': 'Kommuner: ',

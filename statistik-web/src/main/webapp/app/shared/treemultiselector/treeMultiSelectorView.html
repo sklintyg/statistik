@@ -1,6 +1,7 @@
-<div>
-    <label class="dropdown-label" for="select-diagnoses{{$id}}">{{textData.titleText}}</label><br/>
+<div data-ng-class="{'inline-block': !showLabel}">
+    <label data-ng-if="showLabel" class="dropdown-label" for="select-diagnoses{{$id}}">{{textData.titleText}}</label><br data-ng-if="showLabel"/>
     <button class="btn btn-default" data-toggle="modal" data-target="#diagnosisModal{{$id}}" id="select-diagnoses{{$id}}" ng-click="openDialogClicked()">
+        <i data-ng-if="buttonIcon" class="fa {{buttonIcon}}"></i>
         {{textData.buttonLabelText}}
     </button>
     <div class="modal" id="diagnosisModal{{$id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

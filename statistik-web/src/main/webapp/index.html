@@ -28,7 +28,7 @@
 <highlight-words></highlight-words>
 <!-- Navbar
 ================================================== -->
-<div id="navigation-container">
+<div id="navigation-container" ng-cloak>
   <div class="header clearfix hidden-print">
     <div class="headerbox">
       <span class="headerbox-logo pull-left">
@@ -83,7 +83,7 @@
 <send-feedback></send-feedback>
 
 <div id="wrapper">
-    <div id="sidebar-wrapper" class="hidden-print hidden-xs">
+    <div id="sidebar-wrapper" class="hidden-print hidden-xs" ng-cloak>
         <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
         <navigation-menu login-visible="AppModel.get().loginVisible" query-string="queryString"></navigation-menu>
     </div>
@@ -92,31 +92,15 @@
 
     <div id="page-content-wrapper">
         <div class="container-fluid">
+          <business-filter data-ng-if="isVerksamhetShowing" ng-cloak></business-filter>
 
-            <!-- Docs nav
-            ================================================== -->
-            <div class="row">
+          <landsting-filter data-ng-if="isLandstingShowing" ng-cloak></landsting-filter>
 
-                <div class="col-xs-12">
-                    <div class="row ng-hide" ng-show="isVerksamhetShowing">
-                        <div class="col-xs-12">
-                            <business-filter></business-filter>
-                        </div>
-                    </div>
-
-                    <div class="row ng-hide" ng-show="isLandstingShowing">
-                        <div class="col-xs-12">
-                            <landsting-filter></landsting-filter>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div id="view" data-ng-view></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          <div class="row" ng-cloak>
+              <div class="col-xs-12">
+                  <div id="view" data-ng-view></div>
+              </div>
+          </div>
         </div>
     </div>
 </div>

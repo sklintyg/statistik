@@ -22,6 +22,8 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
 
         var self = this;
 
+        $scope.showLabel = !$scope.hideLabel;
+
         $scope.transitionsSupported = supportsTransitions();
 
         $scope.clickedDone = function () {

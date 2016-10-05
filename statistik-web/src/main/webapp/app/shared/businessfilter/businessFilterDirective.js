@@ -67,40 +67,11 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.showDateValidationError = false;
     scope.loadingFilter = false;
 
-    function updateGeographyFilterSelectorDataButtonLabelText() {
-        var selected = scope.businessFilter.geographyBusinessIds.length;
-        var total = scope.businessFilter.businesses.length;
-
-        var text;
-        if (selected === 0 || selected === total) {
-            text = 'Alla valda';
-        }
-        else {
-            text = selected + ' av ' + total + ' valda';
-        }
-
-        scope.geographyFilterSelectorData.buttonLabelText = text;
-    }
-
-    scope.$watch('businessFilter.geographyBusinessIds', function() {
-        updateGeographyFilterSelectorDataButtonLabelText();
-    });
-    scope.$watch('businessFilter.businesses', function() {
-        updateGeographyFilterSelectorDataButtonLabelText();
-    });
     scope.$watch('businessFilter', function(newValue,oldValue,scope) {
         scope.icd10 = newValue.icd10;
     });
     scope.$watch('businessFilter.geography', function(newValue,oldValue,scope) {
         scope.geography = newValue.geography;
-    });
-
-    scope.$watch('businessFilter.useDefaultPeriod', function(newValue, oldvalue, scope) {
-        if (!newValue && businessFilter.toDate && businessFilter.fromDate) {
-            scope.timeIntervalChecked = true;
-        } else {
-            scope.timeIntervalChecked = false;
-        }
     });
 
     scope.geographyFilterSelectorData = {
@@ -156,7 +127,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     var hasDatepickersValidationError = function() {
         var fromDateValidationError, toDateValidationError;
 
-        if (scope.timeIntervalChecked) {
+        if (scope.businessFilter.fromDate || scope.businessFilter.toDate) {
             fromDateValidationError = hasFromDateValidationError();
             toDateValidationError = hasToDateValidationError();
 
@@ -189,7 +160,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
                 formattedToDate = formattedToDate.date(formattedToDate.daysInMonth()).format('YYYY-MM-DD');
             }
             //Only use a non default period if everything is set as expected
-            if (scope.timeIntervalChecked && businessFilter.fromDate && businessFilter.toDate) {
+            if (businessFilter.fromDate && businessFilter.toDate) {
                 businessFilter.useDefaultPeriod = false;
             } else {
                 businessFilter.useDefaultPeriod = true;
@@ -224,7 +195,6 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     };
 
     var resetDatePickers = function() {
-        scope.timeIntervalChecked = false;
         scope.showDateValidationError = false;
         scope.fromDateValidationError = false;
         scope.toDateValidationError = false;
@@ -233,35 +203,21 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.resetBusinessFilter = function() {
         businessFilter.resetSelections();
         resetDatePickers();
-        updateGeographyFilterSelectorDataButtonLabelText();
         var queryParams = $location.search();
         delete queryParams[scope.filterHashParamName];
         $location.search(queryParams);
     };
 
-    //Configuration and scope functions for datepicker
-    scope.minDate = TIME_INTERVAL_MIN_DATE;
-    scope.maxDate = TIME_INTERVAL_MAX_DATE;
+    scope.clearDates = function() {
+        businessFilter.fromDate = null;
+        businessFilter.toDate = null;
 
-    scope.minToDate = businessFilter.fromDate;
+        resetDatePickers();
+    };
 
     //Are the datepicker dialogs open or not
     scope.isFromDateOpen = false;
     scope.isToDateOpen = false;
-
-    scope.openFromDate = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-
-        scope.isFromDateOpen = true;
-    };
-
-    scope.openToDate = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-
-        scope.isToDateOpen = true;
-    };
 
     scope.$on('$routeChangeSuccess', function(){
         scope.filterIsActive = !!$location.search()[scope.filterHashParamName];
@@ -269,7 +225,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.filterIsActive = !!$location.search()[scope.filterHashParamName];
 
     scope.$watch('businessFilter.fromDate', function(newValue) {
-        scope.minToDate = newValue;
+        scope.dateOptionsTo.minDate = newValue;
         if(businessFilter.toDate < newValue) {
             businessFilter.toDate = null;
         }
@@ -277,25 +233,32 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
     //The format of dates date we show in the GUI when the user selects something
     scope.format =  'yyyy-MM';
+    scope.dateFormatPlaceholder= 'ÅÅÅÅ-MM';
 
+    //Configuration and scope functions for datepicker
+    scope.dateOptions = {
+        minDate: TIME_INTERVAL_MIN_DATE,
+        maxDate: TIME_INTERVAL_MAX_DATE,
+        showWeeks: false,
+        minMode: 'month',
+        datepickerMode: 'month'
+    };
+
+    scope.dateOptionsTo = angular.copy(scope.dateOptions);
 }
 
-angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown', function () {
+angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown',
+    /** @ngInject */
+    function () {
     'use strict';
 
-    function multiselectSize($el) {
-        return $('option', $el).length;
-    }
-
     return function(scope, element, attrs) {
+        var text = attrs.multiselectDropdown;
+        var icon = attrs.multiselectDropdownIcon;
         var bf = scope.$parent.businessFilter;
         element.multiselect({
-            buttonText: function (options, select) {
-                if (options.length === 0 || options.length === multiselectSize(select)) {
-                    return 'Alla valda ';
-                }
-
-                return options.length + ' av ' + multiselectSize(select) + ' valda ';
+            buttonText: function () {
+                return '<span class="fa ' + icon + '"></span> ' + text;
             },
             onChange: function (optionElement, checked) {
                 if (optionElement) {
@@ -310,6 +273,7 @@ angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown'
 
                 element.change();
             },
+            enableHTML: true,
             includeSelectAllOption: true,
             selectAllText: 'Markera alla'
         });
@@ -337,7 +301,7 @@ angular.module('StatisticsApp.filter.directive').directive('filterButton', funct
         '<button id="show-hide-filter-btn" type="button" class="btn btn-small center-block" ' +
             'ng-class="{filterbtnactivefilter: filterIsActive}" ng-click="isFilterCollapsed = !isFilterCollapsed">' +
         '<i class="glyphicon" ng-class="{\'glyphicon-chevron-down\': isFilterCollapsed, \'glyphicon-chevron-up\': !isFilterCollapsed}"></i> ' +
-            '{{!isFilterCollapsed ? "Dölj filter" : "Visa filter"}}<span style="font-size: 12px; font-style: italic;"><br/>' +
+            '{{!isFilterCollapsed ? "Stäng filter" : "Öppna filter"}}<span style="font-size: 12px; font-style: italic;"><br/>' +
             '{{filterButtonIdText}}</span><span ng-show="filterIsActive" style="font-size: 12px; font-style: italic;"><br/>Val gjorda</span>' +
         '</button>'
     };
