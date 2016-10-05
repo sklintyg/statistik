@@ -103,7 +103,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         };
 
         var populatePageWithData = function (result) {
-            ControllerCommons.checkNationalResult($scope, result, isVerksamhet, isLandsting, populatePageWithDataSuccess);
+            ControllerCommons.checkNationalResultAndEnableExport($scope, result, isVerksamhet, isLandsting, populatePageWithDataSuccess);
         };
 
         function refreshVerksamhet() {

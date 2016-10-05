@@ -355,7 +355,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return tableData;
         };
 
-        this.checkNationalResult = function($scope, result, verksamhet, landsting, success) {
+        this.checkNationalResultAndEnableExport = function($scope, result, verksamhet, landsting, success) {
             $scope.errorPageUrl = null;
             if (result === '' && !verksamhet && !landsting) {
                 $scope.dataLoadingError = true;
@@ -363,6 +363,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
                 $cacheFactory.get('$http').removeAll();
             } else {
+                $scope.exportEnabled = true;
                 success(result);
             }
         };

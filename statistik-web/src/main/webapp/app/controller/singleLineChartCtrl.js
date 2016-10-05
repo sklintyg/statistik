@@ -86,7 +86,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         };
 
         var populatePageWithData = function (result) {
-            ControllerCommons.checkNationalResult($scope, result, isVerksamhet, isLandsting, populatePageWithDataSuccess);
+            ControllerCommons.checkNationalResultAndEnableExport($scope, result, isVerksamhet, isLandsting, populatePageWithDataSuccess);
         };
 
         $scope.toggleSeriesVisibility = function (index) {

@@ -67,7 +67,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         };
 
         var dataReceived = function (result) {
-            ControllerCommons.checkNationalResult($scope, result, false, false, dataReceivedSuccess);
+            ControllerCommons.checkNationalResultAndEnableExport($scope, result, false, false, dataReceivedSuccess);
         };
 
         function paintPerMonthAlternationChart(alteration) {

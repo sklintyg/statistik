@@ -182,7 +182,7 @@ describe('Test of common functions for controllers', function() {
         });
 
         it('Nationell and empty result', function() {
-            ControllerCommons.checkNationalResult(scope, result, false, false, successFunction);
+            ControllerCommons.checkNationalResultAndEnableExport(scope, result, false, false, successFunction);
 
             expect(called).toBeFalsy();
             expect(scope.dataLoadingError).toBeTruthy();
@@ -194,28 +194,28 @@ describe('Test of common functions for controllers', function() {
 
             expect($cacheFactory.get('$http').info().size).toBe(1);
 
-            ControllerCommons.checkNationalResult(scope, result, false, false, successFunction);
+            ControllerCommons.checkNationalResultAndEnableExport(scope, result, false, false, successFunction);
 
             expect($cacheFactory.get('$http').info().size).toBe(0);
         }));
 
         it('Nationell and not result', function() {
             result = {test: 'testData'};
-            ControllerCommons.checkNationalResult(scope, result, false, false, successFunction);
+            ControllerCommons.checkNationalResultAndEnableExport(scope, result, false, false, successFunction);
 
             expect(called).toBeTruthy();
             expect(scope.errorPageUrl).toBeNull();
         });
 
         it('Verksamhet and empty result', function() {
-            ControllerCommons.checkNationalResult(scope, result, true, false, successFunction);
+            ControllerCommons.checkNationalResultAndEnableExport(scope, result, true, false, successFunction);
 
             expect(called).toBeTruthy();
             expect(scope.errorPageUrl).toBeNull();
         });
 
         it('Landsting and empty result', function() {
-            ControllerCommons.checkNationalResult(scope, result, false, true, successFunction);
+            ControllerCommons.checkNationalResultAndEnableExport(scope, result, false, true, successFunction);
 
             expect(called).toBeTruthy();
             expect(scope.errorPageUrl).toBeNull();

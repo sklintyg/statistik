@@ -113,7 +113,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         };
 
         var populatePageWithData = function (result) {
-            ControllerCommons.checkNationalResult($scope, result, isVerksamhet, false, populatePageWithDataSuccess);
+            ControllerCommons.checkNationalResultAndEnableExport($scope, result, isVerksamhet, false, populatePageWithDataSuccess);
         };
 
         function populateDetailsOptions(result) {
