@@ -7,8 +7,6 @@
     <div class="modal" id="diagnosisModal{{$id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-
-
                 <div class="modal-header">
                     <span id="myModalLabel">{{textData.titleText}}</span>
                 </div>
@@ -27,8 +25,10 @@
                             <input type="search" ng-model="multiMenuFilter" class="multiMenuFilterSearch form-control" ng-change="filterMenuItems(menuOptions.subs, multiMenuFilter)" placeholder="Sök"/>
                         </li>
                         <li class="select-all-items">
-                            <input type="checkbox" ng-checked="menuOptions.allSelected" id="select-all-diagnoses" class="multiMenuSelectAll" ng-click="itemClicked(menuOptions)"></input>
-                            <label for="select-all-diagnoses"><span message key="lbl.filter.select-all"></span></label>
+                            <label>
+                                <input type="checkbox" ng-checked="menuOptions.allSelected" id="select-all-diagnoses" class="multiMenuSelectAll" ng-click="itemClicked(menuOptions)"></input>
+                                <span message key="lbl.filter.select-all"></span>
+                            </label>
                         </li>
                         <li data-ng-repeat="item in menuOptions.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=menuOptions; depth=0" on-finish-render="doneRenderingDialog()">
                             <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" />

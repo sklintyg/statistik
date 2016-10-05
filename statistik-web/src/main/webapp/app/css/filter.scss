@@ -150,11 +150,25 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	top: 1px;
 }
 
-.modal-body .modal-list li.select-all-items input[type=checkbox] {
-	margin-left: 0;
+.modal-body .modal-list li.select-all-items {
+	label {
+		font-weight: bold;
+		cursor: pointer;
+	}
+
+	span {
+		vertical-align: middle;
+		display: inline-block;
+	}
+
+	input[type=checkbox] {
+		margin-left: 0;
+		margin-right: 5px;
+		vertical-align: middle;
+	}
 }
 
-.modal-body .modal-list input[type=checkbox] {
+.business-filter .modal-body .modal-list input[type=checkbox] {
 	margin-left: 10px;
 	top: 0;
 	position: relative;

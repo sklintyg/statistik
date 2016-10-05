@@ -10,7 +10,7 @@
 
       <label for="filterFromDate">
         <span message key="lbl.filter.val-av-tidsintervall-fran"></span>
-      </label>
+      </label>&nbsp;
       <div class="input-wrapper margin-right">
         <span class="input-group input-group-sm datepicker" ng-class="{'has-error': fromDateValidationError}">
           <input
@@ -35,8 +35,8 @@
       </div>
 
       <label for="filterToDate">
-        <span message key="lbl.filter.val-av-tidsintervall-fran"></span>
-      </label>
+        <span message key="lbl.filter.val-av-tidsintervall-till"></span>
+      </label>&nbsp;
       <div class="input-wrapper margin-right">
         <span class="input-group input-group-sm datepicker" ng-class="{'has-error': toDateValidationError}">
           <input
@@ -133,7 +133,7 @@
             multiple="multiple"
             ng-options="aldersgrupp.id as aldersgrupp.name for aldersgrupp in businessFilter.aldersgrupp"
             multiselect-dropdown="Åldersgrupper"
-            multiselect-dropdown-icon="fa-calendar"
+            multiselect-dropdown-icon="fa-users"
             id="select-aldersgrupp">
           </select>
         </div>
