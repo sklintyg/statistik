@@ -60,11 +60,11 @@ angular.module('StatisticsApp').controller('pageCtrl',
         function setupSelectedVardgivare(userAccessInfo) {
             if (userAccessInfo.vgInfo) {
                 UserModel.setUserAccessInfo(userAccessInfo);
-                $scope.verksamhetName = '';
+                $scope.vgName = userAccessInfo.vgInfo.name;
                 if (userAccessInfo.businesses && userAccessInfo.businesses.length === 1) {
-                    $scope.verksamhetName = userAccessInfo.businesses[0].name;
+                    $scope.pageHeaderVerksamhetName = userAccessInfo.businesses[0].name;
                 } else {
-                    $scope.verksamhetName = userAccessInfo.vgInfo.name;
+                    $scope.pageHeaderVerksamhetName = userAccessInfo.vgInfo.name;
                 }
                 $scope.showBusinessesDetails = userAccessInfo.businesses && userAccessInfo.businesses.length > 1;
                 $rootScope.landstingAvailable = userAccessInfo.vgInfo.landstingsvardgivareWithUpload;
@@ -79,7 +79,8 @@ angular.module('StatisticsApp').controller('pageCtrl',
                 UserModel.resetUserAccessInfo();
                 $scope.showBusinessesDetails = false;
                 $rootScope.landstingAvailable = false;
-                $scope.verksamhetName = '';
+                $scope.pageHeaderVerksamhetName = '';
+                $scope.vgName = '';
             }
             businessFilterFactory.setup(userAccessInfo.businesses, $location.$$search.filter);
         }

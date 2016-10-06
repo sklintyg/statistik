@@ -30,10 +30,6 @@ angular.module('StatisticsApp')
                 subHeader: $scope.subTitle  + ' ' + $scope.subTitlePeriod
             };
 
-            if ($scope.verksamhetViewShowing) {
-                headers.extraHeader = $scope.headerEnhetInfo;
-            }
-
             var pdfDoneCallback = function() {
                 $timeout(function() {
                     $scope.generatingPdf = false;
@@ -49,7 +45,7 @@ angular.module('StatisticsApp')
             pdfFactory.factory.header(content, headers);
 
             pdfFactory.factory.filter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
-            pdfFactory.factory.filter(content, 'Sammanställning av enhetsfilter', enhetsFilter);
+            pdfFactory.factory.filter(content, 'Sammanställning av enheter', enhetsFilter);
             pdfFactory.factory.filter(content, 'Sammanställning av sjukskrivningslängdsfilter', sjukskrivningslangdFilter);
             pdfFactory.factory.filter(content, 'Sammanställning av åldersgruppfilter', aldersgruppFilter);
 

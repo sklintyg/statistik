@@ -37,18 +37,19 @@
         </a>
       </span>
       <span class="headerbox-date pull-left">
-        <div id="location" class="location ng-hide" data-ng-show="isLoggedIn">{{verksamhetName}}
+        <div id="location" class="location ng-hide" data-ng-show="isLoggedIn">
+          {{pageHeaderVerksamhetName}}
           <show-businesses
               data-ng-if="showBusinessesDetails"
               businesses="UserModel.get().businesses"
-              verksamhet-name="verksamhetName"></show-businesses>
+              vg-name="vgName"></show-businesses>
           <select-vardgivare-modal
               data-ng-if="UserModel.get().enableVerksamhetMenu && UserModel.get().vgs.length > 1"
               vardgivare="UserModel.get().vgs"
               select-vardgivare="changeVardgivare(vgId)"></select-vardgivare-modal>
         </div>
         <div class="headerbox-info-text"
-             data-ng-class="{'headerbox-info-text-padding': !(isLoggedIn && verksamhetName)}"
+             data-ng-class="{'headerbox-info-text-padding': !(isLoggedIn && pageHeaderVerksamhetName)}"
              message key="statistics.header.extra-text"
         ></div>
       </span>

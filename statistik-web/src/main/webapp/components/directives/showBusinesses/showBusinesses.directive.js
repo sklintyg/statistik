@@ -25,7 +25,7 @@ angular.module('StatisticsApp').directive('showBusinesses',
         return {
             restrict: 'E',
             scope: {
-                verksamhetName: '=',
+                vgName: '=',
                 businesses: '='
             },
             templateUrl: '/components/directives/showBusinesses/showBusinesses.html'

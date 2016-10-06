@@ -6,10 +6,10 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Enheter på {{verksamhetName}}</h4>
+          <h4 class="modal-title">Enheter på {{vgName}}</h4>
         </div>
         <div class="modal-body">
-          <p>Inom vårdgivaren <b>{{verksamhetName}}</b> har du behörighet att se statistik för följande vårdenheter:</p>
+          <p>Inom vårdgivaren <b>{{vgName}}</b> har du behörighet att se statistik för följande vårdenheter:</p>
           <ul>
             <li data-ng-repeat="business in businesses | orderBy:'name'">{{::business.name}}</li>
           </ul>

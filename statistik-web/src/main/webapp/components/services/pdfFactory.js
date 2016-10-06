@@ -35,10 +35,6 @@ angular.module('StatisticsApp')
                 subHeader: $scope.subTitle + ' ' + $scope.subTitlePeriod
             };
 
-            if ($scope.verksamhetViewShowing) {
-                headers.extraHeader = $scope.headerEnhetInfo;
-            }
-
             if (!angular.isArray(charts)) {
                 charts = [charts];
             }
@@ -108,7 +104,7 @@ angular.module('StatisticsApp')
             _addHeader(content, headers);
             content.push(_getImages(images));
             _addListFilter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
-            _addListFilter(content, 'Sammanställning av enhetsfilter', enhetsFilter);
+            _addListFilter(content, 'Sammanställning av enheter', enhetsFilter);
             _addListFilter(content, 'Sammanställning av sjukskrivningslängdsfilter', sjukskrivningslangdFilter);
             _addListFilter(content, 'Sammanställning av åldersgruppfilter', aldersgruppFilter);
 
@@ -196,11 +192,6 @@ angular.module('StatisticsApp')
                     bold: true,
                     margin: [0, 0, 0, 0]
                 },
-                extraheader: {
-                    fontSize: 14,
-                    bold: true,
-                    margin: [100, 100, 100, 100]
-                },
                 subheader: {
                     fontSize: 14,
                     bold: true,
@@ -273,10 +264,6 @@ angular.module('StatisticsApp')
             content.push({ image: _getLogo(), width: 180});
 
             var headerText = [headers.header];
-
-            if (headers.extraHeader) {
-                headerText.push({ text: '  ' + headers.extraHeader, style: 'extraheader' });
-            }
 
             content.push({ text: headerText, style: 'header'});
             content.push({ text: headers.subHeader, style: 'subheader' });

@@ -20,7 +20,7 @@
 
 angular.module('StatisticsApp').factory('ControllerCommons',
     /** @ngInject */
-    function(_, $cacheFactory) {
+    function(_, $cacheFactory, UserModel) {
         'use strict';
 
         var that = this;
@@ -89,7 +89,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         this.populateActiveFilters = function(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter, filterHash,
                                                 isAllAvailableEnhetsSelectedInFilter, filteredEnhets, filteredSjukskrivningslangd, isAllAvailableSjukskrivningslangdsSelectedInFilter, filteredAldersgrupp, isAllAvailableAgeGroupsSelectedInFilter) {
             that.populateActiveDiagnosFilter(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter);
-            that.populateActiveEnhetsFilter(scope, filterHash, isAllAvailableEnhetsSelectedInFilter, filteredEnhets);
+            that.populateActiveEnhetsFilter(scope, filteredEnhets, isAllAvailableEnhetsSelectedInFilter);
             that.populateActiveSjukskrivningslangdFilter(scope, filterHash, filteredSjukskrivningslangd, isAllAvailableSjukskrivningslangdsSelectedInFilter);
             that.populateActiveAldersgruppFilter(scope, filterHash, filteredAldersgrupp, isAllAvailableAgeGroupsSelectedInFilter);
         };
@@ -112,22 +112,11 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             });
         };
 
-        this.populateActiveEnhetsFilter = function(scope, filterHash, isAllAvailableEnhetsSelectedInFilter, enhetNames) {
-            scope.activeEnhetsFilters = null;
-
-            if (isAllAvailableEnhetsSelectedInFilter) {
-                scope.headerEnhetInfo = scope.verksamhetName;
-                return;
-            }
-            if (!filterHash) {
-                scope.headerEnhetInfo = scope.verksamhetName;
-                return;
-            }
-            if (enhetNames.length === 1) {
-                scope.headerEnhetInfo = enhetNames[0];
+        this.populateActiveEnhetsFilter = function(scope, enhetNames, isAllAvailableEnhetsSelectedInFilter) {
+            if (UserModel.get().isProcessledare && isAllAvailableEnhetsSelectedInFilter) {
+                scope.activeEnhetsFilters = ['Samtliga enheter inom vårdgivaren ' + scope.vgName];
             } else {
-                scope.headerEnhetInfo = '';
-                scope.activeEnhetsFilters = enhetNames.length > 1 ? enhetNames : null;
+                scope.activeEnhetsFilters = enhetNames;
             }
         };
 
