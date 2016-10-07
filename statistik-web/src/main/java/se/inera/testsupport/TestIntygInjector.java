@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.core.env.Environment;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -99,6 +100,9 @@ public class TestIntygInjector {
     @Autowired
     private Clock clock;
 
+    @Autowired
+    private Environment env;
+
     private List<String> getDiagnoser() {
         if (DIAGNOSER.isEmpty()) {
             for (Icd10.Kapitel kapitel : icd10.getKapitel(true)) {
@@ -116,6 +120,9 @@ public class TestIntygInjector {
 
     @PostConstruct
     public void init() {
+        if (env.acceptsProfiles("skipTestIntygInjection")) {
+            return;
+        }
         base = LocalDate.now(clock).minusMonths(MONTHS);
         restSupportService.clearDatabase();
         publishUtlatanden();
