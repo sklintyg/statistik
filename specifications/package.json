@@ -27,6 +27,7 @@
     "protractor": "^4.0.9",
     "protractor-cucumber-framework": "latest",
     "protractor-jasmine2-screenshot-reporter": "^0.1.7",
+    "phantomjs-prebuilt": "^2.1.13",
     "request": "^2.65.0",
     "simple-xml-dom": "^1.0.0",
     "soap": "^0.14.0",

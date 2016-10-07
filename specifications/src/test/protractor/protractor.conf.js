@@ -54,9 +54,9 @@ exports.config = {
         /*browserName: 'internet explorer',
         platform: 'ANY',
         version: '11',*/
-
+        'phantomjs.binary.path':'./node_modules/phantomjs-prebuilt/lib/phantom/bin/phantomjs',
         // Any other browser
-        browserName: 'chrome', // possible values: phantomjs, firefox, chrome
+        browserName: 'phantomjs', // possible values: phantomjs, firefox, chrome
 
         // Run parallell instances of same browser (combine with any browser above)
         shardTestFiles: false, // set to true to divide tests among instances
