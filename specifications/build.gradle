@@ -5,10 +5,22 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.moowork.grunt" version "0.13"
+    id "com.moowork.node" version "0.13"
+}
+
 description = 'Inera Statistics Fitnesse specifications'
 
 apply plugin: 'groovy'
 apply plugin: 'inera-fitnesse'
+
+
+node {
+    version = '6.6.0'
+    download = true
+    distBaseUrl = 'https://build-inera.nordicmedtest.se/node/'
+}
 
 fitnesse {
     port = 9125
@@ -16,7 +28,27 @@ fitnesse {
     workingDir = "src/test/fitnesse"
 }
 
-if (project.hasProperty('runFitnesse')) {
+task startSelenium << {
+    println "Starting Selenium..."
+    ant.exec(executable: './node_modules/protractor/bin/webdriver-manager', spawn: true) {
+        arg(value: 'start')
+    }
+}
+
+grunt_build.dependsOn 'installGrunt'
+grunt_build.dependsOn 'npmInstall'
+
+task protractorTest(dependsOn: [grunt_default]) {
+    println 'running protractor tests'
+}
+
+grunt_default.dependsOn 'startSelenium'
+
+task allIntegrationTests(dependsOn: [fitnesseTest, protractorTest]) << {
+    println 'running integration tests'
+}
+
+if (project.hasProperty('runFitnesse') || project.hasProperty('runProtractor')) {
     apply plugin: 'org.akhikhl.gretty'
     gretty {
         contextPath = '/'
@@ -33,7 +65,13 @@ if (project.hasProperty('runFitnesse')) {
     farm {
         webapp ":statistik-web"
         webapp project
-        integrationTestTask = 'fitnesseTest'
+        if (project.hasProperty('runFitnesse') && project.hasProperty('runProtractor')) {
+            integrationTestTask = 'allIntegrationTests'
+        } else if (project.hasProperty('runFitnesse')) {
+            integrationTestTask = 'fitnesseTest'
+        } else {
+            integrationTestTask = 'protractorTest'
+        }
     }
 
     dependencies {
