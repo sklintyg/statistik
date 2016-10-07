@@ -35,8 +35,17 @@ task startSelenium << {
     }
 }
 
-grunt_build.dependsOn 'installGrunt'
-grunt_build.dependsOn 'npmInstall'
+task webdriverUpdate << {
+    println "Updateing Selenium server and driver..."
+    ant.exec(executable: './node_modules/protractor/bin/webdriver-manager', spawn: false) {
+        arg(value: 'update')
+    }
+}
+
+startSelenium.dependsOn 'webdriverUpdate'
+
+grunt_default.dependsOn 'installGrunt'
+grunt_default.dependsOn 'npmInstall'
 
 task protractorTest(dependsOn: [grunt_default]) {
     println 'running protractor tests'
