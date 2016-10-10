@@ -20,6 +20,7 @@ node {
     version = '6.6.0'
     download = true
     distBaseUrl = 'https://build-inera.nordicmedtest.se/node/'
+    npmVersion = '3.10.8'
 }
 
 fitnesse {
