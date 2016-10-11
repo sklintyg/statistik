@@ -147,9 +147,9 @@ describe('Tests for directive button-filter', function () {
             var spy = sinon.spy(statisticsData, 'getFilterHash');
 
             var fromDate = moment('2015-01-01', 'YYYY-MM-DD'), toDate = moment('2015-04-01', 'YYYY-MM-DD');
-            businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
-            businessFilter.fromDate = fromDate.toDate();
-            businessFilter.toDate = toDate.toDate();
+            innerScope.businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
+            innerScope.businessFilter.fromDate = fromDate.toDate();
+            innerScope.businessFilter.toDate = toDate.toDate();
 
             //when
             innerScope.makeSelection();
@@ -171,9 +171,9 @@ describe('Tests for directive button-filter', function () {
             //given
             var spy = sinon.spy(statisticsData, 'getFilterHash');
             var fromDate = moment('2015-01-01', 'YYYY-MM-DD'), toDate = moment('2015-04-01', 'YYYY-MM-DD');
-            businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
-            businessFilter.fromDate = fromDate.toDate();
-            businessFilter.toDate = toDate.toDate();
+            innerScope.businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
+            innerScope.businessFilter.fromDate = fromDate.toDate();
+            innerScope.businessFilter.toDate = toDate.toDate();
 
             //when
             innerScope.makeSelection();
@@ -191,9 +191,9 @@ describe('Tests for directive button-filter', function () {
                 inputToDate = moment('2015-04-01', 'YYYY-MM-DD'),
                 expectedToDate = moment('2015-04-30', 'YYYY-MM-DD');
 
-            businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
-            businessFilter.fromDate = fromDate.toDate();
-            businessFilter.toDate = inputToDate.toDate();
+            innerScope.businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
+            innerScope.businessFilter.fromDate = fromDate.toDate();
+            innerScope.businessFilter.toDate = inputToDate.toDate();
 
             //when
             innerScope.makeSelection();
@@ -217,8 +217,8 @@ describe('Tests for directive button-filter', function () {
             var fromDate = moment('2015-01-01', 'YYYY-MM-DD'),
                 inputToDate = moment('2015-04-01', 'YYYY-MM-DD');
 
-            businessFilter.fromDate = fromDate.toDate();
-            businessFilter.toDate = inputToDate.toDate();
+            innerScope.businessFilter.fromDate = fromDate.toDate();
+            innerScope.businessFilter.toDate = inputToDate.toDate();
 
             //when
             innerScope.makeSelection();
@@ -230,8 +230,8 @@ describe('Tests for directive button-filter', function () {
 
         it('will not pass validation if object is not a date', function() {
             //given
-            businessFilter.fromDate = '!#€%&/()=?';
-            businessFilter.toDate = '!#€%&/()=?';
+            innerScope.businessFilter.fromDate = '!#€%&/()=?';
+            innerScope.businessFilter.toDate = '!#€%&/()=?';
 
             //when
             innerScope.makeSelection();
@@ -246,8 +246,8 @@ describe('Tests for directive button-filter', function () {
                 inputToDate = moment(new Date('2015-13'));
 
             //given
-            businessFilter.fromDate = fromDate.toDate();
-            businessFilter.toDate = inputToDate.toDate();
+            innerScope.businessFilter.fromDate = fromDate.toDate();
+            innerScope.businessFilter.toDate = inputToDate.toDate();
 
             //when
             innerScope.makeSelection();
@@ -262,8 +262,8 @@ describe('Tests for directive button-filter', function () {
 
             //given
             innerScope.timeIntervalChecked = true;
-            businessFilter.fromDate = fromDate.toDate();
-            businessFilter.toDate = inputToDate.toDate();
+            innerScope.businessFilter.fromDate = fromDate.toDate();
+            innerScope.businessFilter.toDate = inputToDate.toDate();
 
             //when
             innerScope.makeSelection();
@@ -276,8 +276,8 @@ describe('Tests for directive button-filter', function () {
             var inputToDate = moment('2015-01-01', 'YYYY-MM-DD');
 
             //given
-            businessFilter.fromDate = null;
-            businessFilter.toDate = inputToDate.toDate();
+            innerScope.businessFilter.fromDate = null;
+            innerScope.businessFilter.toDate = inputToDate.toDate();
             //when
             innerScope.makeSelection();
             //then
@@ -287,8 +287,8 @@ describe('Tests for directive button-filter', function () {
         it('will not pass validation if we have an empty to date', function() {
             var inputFromDate = moment('2015-01-01', 'YYYY-MM-DD');
             //given
-            businessFilter.fromDate = inputFromDate.toDate();
-            businessFilter.toDate = null;
+            innerScope.businessFilter.fromDate = inputFromDate.toDate();
+            innerScope.businessFilter.toDate = null;
             //when
             innerScope.makeSelection();
             //then
@@ -300,8 +300,8 @@ describe('Tests for directive button-filter', function () {
                 inputToDate = moment('2015-12-01', 'YYYY-MM-DD');
 
             //given
-            businessFilter.fromDate = fromDate.toDate();
-            businessFilter.toDate = inputToDate.toDate();
+            innerScope.businessFilter.fromDate = fromDate.toDate();
+            innerScope.businessFilter.toDate = inputToDate.toDate();
             //when
             innerScope.makeSelection();
             //then
@@ -313,8 +313,8 @@ describe('Tests for directive button-filter', function () {
                 inputToDate = moment('2015-01-01', 'YYYY-MM-DD').utc();
 
             //given
-            businessFilter.fromDate = fromDate.toDate();
-            businessFilter.toDate = inputToDate.toDate();
+            innerScope.businessFilter.fromDate = fromDate.toDate();
+            innerScope.businessFilter.toDate = inputToDate.toDate();
 
             //when
             innerScope.makeSelection();
@@ -328,8 +328,8 @@ describe('Tests for directive button-filter', function () {
                 inputToDate = moment('2015-04-01', 'YYYY-MM-DD');
 
             //given
-            businessFilter.fromDate = fromDate.toDate();
-            businessFilter.toDate = inputToDate.toDate();
+            innerScope.businessFilter.fromDate = fromDate.toDate();
+            innerScope.businessFilter.toDate = inputToDate.toDate();
             //when
             innerScope.makeSelection();
             //then
@@ -341,8 +341,8 @@ describe('Tests for directive button-filter', function () {
                 inputToDate = moment().add(2, 'months').date(1).hours(0).minutes(0).seconds(0);
 
             //given
-            businessFilter.fromDate = fromDate.toDate();
-            businessFilter.toDate = inputToDate.toDate();
+            innerScope.businessFilter.fromDate = fromDate.toDate();
+            innerScope.businessFilter.toDate = inputToDate.toDate();
             //when
             innerScope.makeSelection();
             //then
@@ -351,8 +351,8 @@ describe('Tests for directive button-filter', function () {
 
         it('will pass validation both dates are empty', function() {
             //given
-            businessFilter.fromDate = null;
-            businessFilter.toDate = null;
+            innerScope.businessFilter.fromDate = null;
+            innerScope.businessFilter.toDate = null;
             //when
             innerScope.makeSelection();
             //then

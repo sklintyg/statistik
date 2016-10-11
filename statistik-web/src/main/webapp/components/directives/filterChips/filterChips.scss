@@ -1,0 +1,36 @@
+filter-chips {
+  .filter-chip {
+    padding: 5px 10px;
+    background: #e0e0e0;
+    display: inline-block;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    margin-right: 10px;
+    margin-top: 10px;
+
+    .remove-filter {
+      display: none;
+    }
+
+    &:hover {
+      border: dotted #646565 1px;
+      cursor: pointer;
+
+      .default-text {
+        display: none;
+      }
+
+      .remove-filter {
+        display: inline;
+      }
+    }
+
+    &.inactive {
+      background: none;
+
+      .default-text {
+        color: #7e7e7f;
+      }
+    }
+  }
+}

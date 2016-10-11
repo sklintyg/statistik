@@ -38,6 +38,7 @@ angular.module('StatisticsApp').factory('AppModel',
 
         function setSjukskrivningslangd(app) {
             data.sjukskrivningLengths.length = 0;
+            data.sjukskrivningLengthsObject = app.sjukskrivningLengths;
 
             angular.forEach(app.sjukskrivningLengths, function(value, key)  {
                 data.sjukskrivningLengths.push({
@@ -51,6 +52,7 @@ angular.module('StatisticsApp').factory('AppModel',
 
         function setAldersgrupps(app) {
             data.aldersgrupps.length = 0;
+            data.ageGroups = app.ageGroups;
 
             angular.forEach(app.ageGroups, function(value, key)  {
                 data.aldersgrupps.push({
