@@ -31,7 +31,7 @@
 var HtmlScreenshotReporter = require('protractor-jasmine2-screenshot-reporter');
 
 exports.config = {
-    seleniumAddress: 'http://localhost:4444/wd/hub',
+    // seleniumAddress: 'http://localhost:4444/wd/hub',
     // baseUrl: require('./../minaintygTestTools/environment.js').envConfig.MINAINTYG_URL,
     baseUrl: 'http://localhost:8080',
 

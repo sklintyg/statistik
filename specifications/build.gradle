@@ -29,32 +29,12 @@ fitnesse {
     workingDir = "src/test/fitnesse"
 }
 
-task startSelenium << {
-    println "Starting Selenium..."
-    ant.exec(executable: './node_modules/protractor/bin/webdriver-manager', spawn: true) {
-        arg(value: 'start')
-    }
+
+task runProtractor(dependsOn: [npmInstall], type: Exec) {
+    commandLine './node_modules/protractor/bin/protractor', 'src/test/protractor/protractor.conf.js'
 }
 
-task webdriverUpdate << {
-    println "Updating Selenium server and driver..."
-    ant.exec(executable: './node_modules/protractor/bin/webdriver-manager', spawn: false) {
-        arg(value: 'update')
-    }
-}
-
-startSelenium.dependsOn 'webdriverUpdate'
-
-grunt_default.dependsOn 'installGrunt'
-grunt_default.dependsOn 'npmInstall'
-
-task protractorTest(dependsOn: [grunt_default]) {
-    println 'running protractor tests'
-}
-
-grunt_default.dependsOn 'startSelenium'
-
-task allIntegrationTests(dependsOn: [fitnesseTest, protractorTest]) << {
+task allIntegrationTests(dependsOn: [fitnesseTest, runProtractor]) << {
     println 'running integration tests'
 }
 
@@ -80,7 +60,7 @@ if (project.hasProperty('runFitnesse') || project.hasProperty('runProtractor')) 
         } else if (project.hasProperty('runFitnesse')) {
             integrationTestTask = 'fitnesseTest'
         } else {
-            integrationTestTask = 'protractorTest'
+            integrationTestTask = 'runProtractor'
         }
     }
 
