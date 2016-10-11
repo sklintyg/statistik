@@ -22,6 +22,10 @@
 /*globals describe,it,helpers */
 'use strict';
 
+var pages = require('../pages/pages.js');
+var fakeloginPage = pages.fakeloginPage;
+var headerPage = pages.headerPage;
+
 describe('Logga in som medborgare', function() {
 
     describe('Oppna appen och hamna på startsidan', function() {
@@ -30,10 +34,16 @@ describe('Logga in som medborgare', function() {
             browser.ignoreSynchronization = false;
         });
 
-        // Logga in
         it('Oppna oversikten', function() {
             browser.get("http://localhost:8080");
             expect(browser.getTitle()).toEqual('Översikt | Statistiktjänsten');
+        });
+
+        it('Logga in', function() {
+            headerPage.clickLogin();
+            fakeloginPage.verifyAt();
+            fakeloginPage.loginUser1();
+            expect(browser.getTitle()).toEqual('Verksamhetsöversikt | Statistiktjänsten');
         });
 
     });

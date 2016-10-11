@@ -37,7 +37,7 @@ task startSelenium << {
 }
 
 task webdriverUpdate << {
-    println "Updateing Selenium server and driver..."
+    println "Updating Selenium server and driver..."
     ant.exec(executable: './node_modules/protractor/bin/webdriver-manager', spawn: false) {
         arg(value: 'update')
     }

@@ -108,6 +108,8 @@ exports.config = {
             console.log(text);
         };
 
+        browser.driver.manage().window().setSize(1600, 1200);
+
         var reporters = require('jasmine-reporters');
         jasmine.getEnv().addReporter(
             new reporters.JUnitXmlReporter({
