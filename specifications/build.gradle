@@ -21,7 +21,11 @@ node {
     download = true
     distBaseUrl = 'https://build-inera.nordicmedtest.se/node/'
     npmVersion = '3.10.8'
+    workDir = file("${project.buildDir}/nodejs")
+    nodeModulesDir = file("${project.projectDir}")
 }
+
+String nodeBinaryPath = new com.moowork.gradle.node.variant.VariantBuilder(node).build().nodeExec
 
 fitnesse {
     port = 9125
@@ -31,7 +35,7 @@ fitnesse {
 
 
 task protractorTest(dependsOn: [npmInstall], type: Exec) {
-    commandLine './node_modules/protractor/bin/protractor', 'src/test/protractor/protractor.conf.js'
+    commandLine nodeBinaryPath, './node_modules/protractor/bin/protractor', 'src/test/protractor/protractor.conf.js'
 }
 
 task allIntegrationTests(dependsOn: [fitnesseTest, protractorTest]) << {
