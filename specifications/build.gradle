@@ -30,11 +30,11 @@ fitnesse {
 }
 
 
-task runProtractor(dependsOn: [npmInstall], type: Exec) {
+task protractorTest(dependsOn: [npmInstall], type: Exec) {
     commandLine './node_modules/protractor/bin/protractor', 'src/test/protractor/protractor.conf.js'
 }
 
-task allIntegrationTests(dependsOn: [fitnesseTest, runProtractor]) << {
+task allIntegrationTests(dependsOn: [fitnesseTest, protractorTest]) << {
     println 'running integration tests'
 }
 
@@ -60,7 +60,7 @@ if (project.hasProperty('runFitnesse') || project.hasProperty('runProtractor')) 
         } else if (project.hasProperty('runFitnesse')) {
             integrationTestTask = 'fitnesseTest'
         } else {
-            integrationTestTask = 'runProtractor'
+            integrationTestTask = 'protractorTest'
         }
     }
 
