@@ -52,6 +52,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
         businessFilter.businesses = [];
 
+        businessFilter.geographyBusinessIdsSaved = [];
         businessFilter.geography = {subs: []};
         businessFilter.geographyBusinessIds = [];
 
@@ -59,11 +60,15 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.selectedVerksamhetTypIds = [];
 
         businessFilter.sjukskrivningslangd = [];
+        businessFilter.sjukskrivningslangdSaved = [];
         businessFilter.selectedSjukskrivningslangdIds = [];
 
         businessFilter.aldersgrupp = [];
+        businessFilter.aldersgruppSaved = [];
         businessFilter.selectedAldersgruppIds = [];
 
+        businessFilter.diagnoserSaved = [];
+        businessFilter.selectedDiagnoses = [];
         businessFilter.icd10 = {subs: []};
 
         //Init the datepicker components
@@ -158,12 +163,16 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     };
 
     function setPreselectedFilter(filterData) {
+        businessFilter.diagnoserSaved = angular.copy(filterData.diagnoser);
         businessFilter.selectDiagnoses(filterData.diagnoser);
         businessFilter.selectedVerksamhetTypIds = _.uniq(_.map(filterData.verksamhetstyper, function(verksamhetstyp) {
             return _.find(businessFilter.verksamhetsTyper, function(verksamhet) { return _.contains(verksamhet.ids, verksamhetstyp); }).id;
         }));
         businessFilter.selectedSjukskrivningslangdIds = filterData.sjukskrivningslangd;
+        businessFilter.sjukskrivningslangdSaved = angular.copy(filterData.sjukskrivningslangd);
         businessFilter.selectedAldersgruppIds = filterData.aldersgrupp;
+        businessFilter.aldersgruppSaved = angular.copy(filterData.aldersgrupp);
+        businessFilter.geographyBusinessIdsSaved = angular.copy(filterData.enheter);
         businessFilter.selectGeographyBusiness(filterData.enheter);
         businessFilter.toDate = filterData.toDate ? moment(filterData.toDate).utc().toDate() : null;
         businessFilter.fromDate = filterData.fromDate ? moment(filterData.fromDate).utc().toDate() : null;

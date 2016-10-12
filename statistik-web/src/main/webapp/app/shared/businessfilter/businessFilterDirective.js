@@ -62,16 +62,14 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
     //Initially we don't want to see the filter
     scope.isFilterCollapsed = true;
-    scope.businessFilterSaved = businessFilter;
-    scope.businessFilter = angular.copy(businessFilter);
+    scope.businessFilter = businessFilter;
     scope.useDefaultPeriod = true;
     scope.showDateValidationError = false;
     scope.loadingFilter = false;
 
-    scope.$watch('businessFilterSaved', function(newValue,oldValue,scope) {
+    scope.$watch('businessFilter', function(newValue,oldValue,scope) {
         scope.icd10 = newValue.icd10;
-        scope.businessFilter = angular.copy(newValue);
-    }, true);
+    });
     scope.$watch('businessFilter.geography', function(newValue,oldValue,scope) {
         scope.geography = newValue.geography;
     });
@@ -201,7 +199,10 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
                 scope.isFilterCollapsed = !scope.isFilterCollapsed;
                 scope.loadingFilter = false;
 
-                scope.businessFilterSaved = scope.businessFilter;
+                scope.businessFilter.aldersgruppSaved = params.aldersgrupp;
+                scope.businessFilter.sjukskrivningslangdSaved = params.sjukskrivningslangd;
+                scope.businessFilter.diagnoserSaved = params.diagnoser;
+                scope.businessFilter.geographyBusinessIdsSaved = params.enheter;
             };
 
             var error = function () {

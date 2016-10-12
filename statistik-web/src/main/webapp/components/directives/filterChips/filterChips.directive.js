@@ -39,17 +39,17 @@ angular.module('StatisticsApp')
                     aldersgrupp: []
                 };
 
-                //$scope.$watchCollection('businessFilter.geographyBusinessIds', enhetsFilter);
-                //$scope.$watchCollection('businessFilterSaved.geographyBusinessIds', enhetsFilter);
+                $scope.$watchCollection('businessFilter.geographyBusinessIds', enhetsFilter);
+                $scope.$watchCollection('businessFilter.geographyBusinessIdsSaved', enhetsFilter);
 
                 $scope.$watchCollection('businessFilter.selectedDiagnoses', diagnosFilter);
-                $scope.$watchCollection('businessFilterSaved.selectedDiagnoses', diagnosFilter);
+                $scope.$watchCollection('businessFilter.diagnoserSaved', diagnosFilter);
 
                 $scope.$watchCollection('businessFilter.selectedAldersgruppIds', aldersGruppsFilter);
-                $scope.$watchCollection('businessFilterSaved.selectedAldersgruppIds', aldersGruppsFilter);
+                $scope.$watchCollection('businessFilter.aldersgruppSaved', aldersGruppsFilter);
 
                 $scope.$watchCollection('businessFilter.selectedSjukskrivningslangdIds', sjukskrivningsLangdsFilter);
-                $scope.$watchCollection('businessFilterSaved.selectedSjukskrivningslangdIds', sjukskrivningsLangdsFilter);
+                $scope.$watchCollection('businessFilter.sjukskrivningslangdSaved', sjukskrivningsLangdsFilter);
 
                 $scope.removeChip = function(chip) {
                     switch(chip.type) {
@@ -66,31 +66,33 @@ angular.module('StatisticsApp')
                         break;
                     case 'enhet':
                         _.pull($scope.businessFilter.geographyBusinessIds, chip.id);
+
+                        $scope.businessFilter.selectGeographyBusiness($scope.businessFilter.geographyBusinessIds);
                         break;
                     }
                 };
 
-                /*function enhetsFilter() {
-                    //that.getDiagnosFilterInformationText(diagnosIds, diagnoses) : null;
-
+                function enhetsFilter() {
                     var filter = $scope.businessFilter.geographyBusinessIds;
 
                     $scope.chips.enheter.length = 0;
                     angular.forEach(filter, function(enhet) {
+
+                        var text = _.findWhere($scope.businessFilter.businesses, {id: enhet});
                         $scope.chips.enheter.push({
                             type: 'enhet',
                             icon: 'fa-building-o',
                             id: enhet,
-                            newFilter: $scope.businessFilterSaved.geographyBusinessIds.indexOf(enhet) === -1,
-                            text: enhet
+                            newFilter: $scope.businessFilter.geographyBusinessIdsSaved.indexOf(enhet) === -1,
+                            text: text ? text.name : enhet
                         });
                     });
 
                     setHaveChips();
-                }*/
+                }
 
                 function diagnosFilter() {
-                    var icd10 = $scope.businessFilterSaved.icd10.untuched;
+                    var icd10 = $scope.businessFilter.icd10.untuched;
 
                     var filter = $scope.businessFilter.selectedDiagnoses;
 
@@ -102,7 +104,7 @@ angular.module('StatisticsApp')
                             type: 'diagnos',
                             icon: 'fa-stethoscope',
                             id: diagnos.id,
-                            newFilter: $scope.businessFilterSaved.selectedDiagnoses.indexOf(diagnos.id) === -1,
+                            newFilter: $scope.businessFilter.diagnoserSaved.indexOf(diagnos.id) === -1,
                             text: diagnos.text
                         });
                     });
@@ -119,7 +121,7 @@ angular.module('StatisticsApp')
                             type: 'sjukskrivningslangd',
                             icon: 'fa-calendar',
                             id: sjukskrivningslangd,
-                            newFilter: $scope.businessFilterSaved.selectedSjukskrivningslangdIds.indexOf(sjukskrivningslangd) === -1,
+                            newFilter: $scope.businessFilter.sjukskrivningslangdSaved.indexOf(sjukskrivningslangd) === -1,
                             text: AppModel.get().sjukskrivningLengthsObject[sjukskrivningslangd]
                         });
                     });
@@ -136,7 +138,7 @@ angular.module('StatisticsApp')
                             type: 'aldersgrupp',
                             id: aldersGrupp,
                             icon: 'fa-users',
-                            newFilter: $scope.businessFilterSaved.selectedAldersgruppIds.indexOf(aldersGrupp) === -1,
+                            newFilter: $scope.businessFilter.aldersgruppSaved.indexOf(aldersGrupp) === -1,
                             text: AppModel.get().ageGroups[aldersGrupp]
                         });
                     });
