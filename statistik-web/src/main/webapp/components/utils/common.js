@@ -76,13 +76,22 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             });
         }
 
-        this.getDiagnosFilterInformationText = function(diagnosFilterIds, icdStructure) {
+        this.getDiagnosFilterInformationText = function(diagnosFilterIds, icdStructure, asObject) {
             var icdStructureAsFlatArray = _.compose(_.flattenDeep, icdStructureAsArray)(icdStructure);
             return _.map(diagnosFilterIds, function(diagnosId){
                 var icdItem = _.find(icdStructureAsFlatArray, function(icd){
                     return icd.numericalId === parseInt(diagnosId, 10);
                 });
-                return icdItem.id + ' ' + icdItem.name;
+
+                var text = icdItem.id + ' ' + icdItem.name;
+
+                if (asObject) {
+                    return {
+                        id: diagnosId,
+                        text: text
+                    };
+                }
+                return text;
             });
         };
 

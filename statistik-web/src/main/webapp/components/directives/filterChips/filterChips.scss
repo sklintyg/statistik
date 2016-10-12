@@ -3,10 +3,15 @@ filter-chips {
     padding: 5px 10px;
     background: #e0e0e0;
     display: inline-block;
-    border-radius: 10px;
+    border-radius: 40px;
     border: 1px solid #e0e0e0;
     margin-right: 10px;
     margin-top: 10px;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
 
     .remove-filter {
       display: none;
@@ -16,12 +21,17 @@ filter-chips {
       border: dotted #646565 1px;
       cursor: pointer;
 
-      .default-text {
-        display: none;
-      }
-
       .remove-filter {
-        display: inline;
+        position: absolute;
+        display: block;
+        background: #e0e0e0;
+        padding: 5px 10px;
+        top: 0;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis
       }
     }
 

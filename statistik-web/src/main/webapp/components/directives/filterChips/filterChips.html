@@ -1,11 +1,17 @@
-<span data-ng-repeat="typ in chips">
-  <span data-ng-repeat="chip in typ" data-ng-click="removeChip(chip)" class="filter-chip" data-ng-class="{inactive: chip.newFilter}" title="{{::chip.text}}">
-    <span class="default-text">
-      <i class="fa {{::chip.icon}}"></i> {{::chip.text}}
+<div data-ng-if="haveChips" class="divider" style="margin-bottom: 0"></div>
+
+<div data-ng-if="haveChips" class="filter-level">
+  <div class="col-xs-12">
+    <span data-ng-repeat="typ in chips">
+      <span data-ng-repeat="chip in typ" data-ng-click="removeChip(chip)" class="filter-chip" data-ng-class="{inactive: chip.newFilter}" title="{{::chip.text}}">
+        <span class="default-text">
+          <i class="fa {{::chip.icon}}"></i> {{::chip.text}}
+        </span>
+        <span class="remove-filter">
+          <i class="fa fa-times"></i> Ta bort filter
+        </span>
+      </span>
     </span>
-    <span class="remove-filter">
-      <i class="fa fa-times"></i> Ta bort filter
-    </span>
-  </span>
-</span>
+  </div>
+</div>
 

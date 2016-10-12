@@ -71,7 +71,6 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.$watch('businessFilterSaved', function(newValue,oldValue,scope) {
         scope.icd10 = newValue.icd10;
         scope.businessFilter = angular.copy(newValue);
-
     }, true);
     scope.$watch('businessFilter.geography', function(newValue,oldValue,scope) {
         scope.geography = newValue.geography;

@@ -150,8 +150,10 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     };
 
     businessFilter.setIcd10Structure = function (diagnoses) {
+        businessFilter.icd10.untuched = angular.copy(diagnoses);
         businessFilter.setupDiagnosisTreeForSelectionModal(diagnoses);
         businessFilter.icd10.subs = diagnoses;
+
         businessFilter.updateDiagnoses();
     };
 

@@ -450,6 +450,11 @@ legend {
   margin-right: 5px;
 }
 
+.table.table-striped.overview-graph-table td span.highlight-words {
+  float: none;
+  margin-right: 0;
+}
+
 /****** Start: Bootstrap style overrides ******/
 .nav-tabs.nav-stacked {
   border-bottom: 0;
