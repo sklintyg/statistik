@@ -1851,7 +1851,7 @@ input[type="radio"], input[type="checkbox"] {
 #page-content-wrapper {
   width: 100%;
   position: absolute;
-  padding: 0 15px 15px 15px;
+  padding: 0 45px 15px 15px;
 }
 
 @media (min-width: 768px) {
@@ -1864,7 +1864,6 @@ input[type="radio"], input[type="checkbox"] {
   }
 
   #page-content-wrapper {
-    padding: 0 15px 15px 15px;
     position: relative;
   }
 }
