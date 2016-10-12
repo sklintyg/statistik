@@ -3,7 +3,7 @@
 <div data-ng-if="haveChips" class="filter-level">
   <div class="col-xs-12">
     <span
-        data-ng-repeat="chip in shownChips"
+        data-ng-repeat="chip in shownChips track by chip.id"
         data-ng-click="removeChip(chip)"
         class="filter-chip"
         data-ng-class="{inactive: chip.newFilter}"

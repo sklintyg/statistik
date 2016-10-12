@@ -43,6 +43,15 @@ filter-chips {
         color: #7e7e7f;
       }
     }
+
+    &.ng-leave{
+      transition: 0.3s;
+      opacity: 1;
+
+      &.ng-leave-active {
+        opacity: 0;
+      }
+    }
   }
 
   .show-all-filter {

@@ -30,5 +30,16 @@ filter-chips-list {
     .remove-filter {
       visibility: visible;
     }
+
+    &.ng-leave {
+      transition: 0.3s;
+      opacity: 1;
+
+      &.ng-leave-active {
+        opacity: 0;
+      }
+    }
   }
+
+
 }

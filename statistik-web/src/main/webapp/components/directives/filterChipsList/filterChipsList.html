@@ -3,7 +3,7 @@
     <i class="fa {{icon}}"></i> {{title}}
   </li>
   <li
-      data-ng-repeat="chip in chips"
+      data-ng-repeat="chip in chips track by chip.id"
       data-ng-click="removeChip({chip: chip})"
       data-ng-class="{inactive: chip.newFilter}"
       class="filter-chips"
