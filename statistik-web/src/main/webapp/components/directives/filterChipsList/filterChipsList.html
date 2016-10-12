@@ -1,0 +1,18 @@
+<ul data-ng-if="chips.length > 0">
+  <li class="filter-heading">
+    <i class="fa {{icon}}"></i> {{title}}
+  </li>
+  <li
+      data-ng-repeat="chip in chips"
+      data-ng-click="removeChip({chip: chip})"
+      data-ng-class="{inactive: chip.newFilter}"
+      class="filter-chips"
+      title="{{::chip.text}}">
+      <span class="default-text">
+        {{::chip.text}}
+      </span>
+    <span class="remove-filter">
+        <i class="fa fa-times-circle" aria-hidden="true"></i>
+      </span>
+  </li>
+</ul>

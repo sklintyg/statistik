@@ -101,24 +101,13 @@
           </select>
         </div>
 
-        <div class="margin-right top-10px-margin" data-ng-if="businessFilter.numberOfBusinesses() === 'medium'">
-          <select
-              ng-model="businessFilter.geographyBusinessIds"
-              multiple="multiple"
-              ng-options="business.id as business.name for business in businessFilter.businesses"
-              multiselect-dropdown="Enheter"
-              multiselect-dropdown-icon="fa-building-o"
-              id="select-unit">
-          </select>
-        </div>
-
         <tree-multi-selector
             class="margin-right top-10px-margin"
             hide-label="true"
             button-icon="fa-building-o"
             menu-options="businessFilter.geography"
             done-clicked="businessFilter.updateGeography"
-            data-ng-if="businessFilter.numberOfBusinesses() === 'large'"
+            data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'"
             text-data="geographyFilterSelectorData">
         </tree-multi-selector>
 

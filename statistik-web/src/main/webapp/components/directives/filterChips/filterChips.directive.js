@@ -20,7 +20,7 @@
 angular.module('StatisticsApp')
     .directive('filterChips',
     /** @ngInject */
-    function(AppModel, _, ControllerCommons) {
+    function(AppModel, _, ControllerCommons, $uibModal) {
         'use strict';
         return {
             scope: {
@@ -31,12 +31,31 @@ angular.module('StatisticsApp')
             templateUrl: '/components/directives/filterChips/filterChips.html',
             link: function($scope) {
                 $scope.haveChips = false;
+                $scope.shownChips = [];
+                $scope.numberOfChipsNotShown = 0;
 
                 $scope.chips = {
                     diagnos: [],
                     enheter: [],
                     sjukskrivningslangd: [],
                     aldersgrupp: []
+                };
+
+                $scope.showAll = function() {
+                    $uibModal.open({
+                        animation: true,
+                        templateUrl: '/components/directives/filterChips/modal/modal.html',
+                        controller: 'FilterChipsModalCtrl',
+                        size: 'lg',
+                        resolve: {
+                            chips: function () {
+                                return $scope.chips;
+                            },
+                            removeChip: function() {
+                                return $scope.removeChip;
+                            }
+                        }
+                    });
                 };
 
                 $scope.$watchCollection('businessFilter.geographyBusinessIds', enhetsFilter);
@@ -147,8 +166,16 @@ angular.module('StatisticsApp')
                 }
 
                 function setHaveChips() {
-                    $scope.haveChips = $scope.chips.aldersgrupp.length > 0 || $scope.chips.sjukskrivningslangd.length > 0 ||
-                        $scope.chips.enheter.length > 0 || $scope.chips.diagnos.length > 0;
+
+                    $scope.numberOfChipsNotShown = 0;
+                    $scope.shownChips.length = 0;
+
+                    angular.forEach($scope.chips, function(type) {
+                        $scope.numberOfChipsNotShown += type.length;
+                        $scope.shownChips = $scope.shownChips.concat(type);
+                    });
+
+                    $scope.haveChips = $scope.numberOfChipsNotShown > 0;
                 }
             }
         };

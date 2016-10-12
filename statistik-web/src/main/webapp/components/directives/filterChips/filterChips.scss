@@ -12,6 +12,7 @@ filter-chips {
     text-overflow: ellipsis;
     white-space: nowrap;
     position: relative;
+    vertical-align: top;
 
     .remove-filter {
       display: none;
@@ -42,5 +43,11 @@ filter-chips {
         color: #7e7e7f;
       }
     }
+  }
+
+  .show-all-filter {
+    vertical-align: top;
+    margin-top: 8px;
+    padding-left: 0;
   }
 }

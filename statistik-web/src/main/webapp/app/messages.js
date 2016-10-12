@@ -64,6 +64,7 @@ var stMessages = {
 
 
         //filter
+        'lbl.filter.modal.title': 'Aktiva filter',
         'lbl.filter.val-av-enheter': 'Välj enheter:',
         'lbl.filter.val-av-diagnoser': 'Välj diagnoser:',
         'lbl.filter.val-av-tidsintervall-fran': 'Från',

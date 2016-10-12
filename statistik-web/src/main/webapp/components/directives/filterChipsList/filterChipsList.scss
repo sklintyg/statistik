@@ -1,0 +1,34 @@
+filter-chips-list {
+  ul {
+    padding: 0;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 40px;
+  }
+
+  .filter-heading {
+    font-weight: bold;
+  }
+
+  .remove-filter {
+    visibility: hidden;
+    vertical-align: top;
+  }
+
+  .default-text {
+    max-width: 250px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: top;
+  }
+
+  li.filter-chips:hover {
+    cursor: pointer;
+
+    .remove-filter {
+      visibility: visible;
+    }
+  }
+}
