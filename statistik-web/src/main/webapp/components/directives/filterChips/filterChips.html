@@ -2,7 +2,7 @@
 
 <div data-ng-if="haveChips" class="filter-level">
   <div class="col-xs-12">
-    <span
+    <button
         data-ng-repeat="chip in shownChips track by chip.id"
         data-ng-click="removeChip(chip)"
         class="filter-chip"
@@ -14,7 +14,7 @@
       <span class="remove-filter">
         <i class="fa fa-times"></i> Ta bort
       </span>
-    </span>
+    </button>
 
     <button
         data-ng-if="numberOfChipsNotShown > 0"

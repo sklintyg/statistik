@@ -13,13 +13,21 @@ filter-chips {
     white-space: nowrap;
     position: relative;
     vertical-align: top;
+    text-align: left;
 
     .remove-filter {
       display: none;
     }
 
-    &:hover {
+    &:hover, &:active, &:focus {
       border: dotted #646565 1px;
+    }
+
+    &:active:focus {
+      border-style: solid;
+    }
+
+    &:hover {
       cursor: pointer;
 
       .remove-filter {

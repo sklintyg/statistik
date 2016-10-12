@@ -92,10 +92,14 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
     businessFilter.resetSelections = function () {
         businessFilter.geographyBusinessIds.length = 0;
+        businessFilter.geographyBusinessIdsSaved.length = 0;
         businessFilter.selectedVerksamhetTypIds.length = 0;
         businessFilter.selectedSjukskrivningslangdIds.length = 0;
+        businessFilter.sjukskrivningslangdSaved.length = 0;
         businessFilter.selectedAldersgruppIds.length = 0;
-        businessFilter.selectedDiagnoses = [];
+        businessFilter.aldersgruppSaved.length = 0;
+        businessFilter.selectedDiagnoses.length = 0;
+        businessFilter.diagnoserSaved.length = 0;
         businessFilter.deselectAll(businessFilter.geography);
         businessFilter.deselectAll(businessFilter.icd10);
 

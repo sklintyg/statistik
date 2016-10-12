@@ -166,16 +166,24 @@ angular.module('StatisticsApp')
                 }
 
                 function setHaveChips() {
-
+                    var totaltChips = 0;
+                    var maxChips = 10;
                     $scope.numberOfChipsNotShown = 0;
                     $scope.shownChips.length = 0;
 
                     angular.forEach($scope.chips, function(type) {
-                        $scope.numberOfChipsNotShown += type.length;
-                        $scope.shownChips = $scope.shownChips.concat(type);
+                        angular.forEach(type, function(chip) {
+                            if (totaltChips < maxChips) {
+                                $scope.shownChips.push(chip);
+                            } else {
+                                $scope.numberOfChipsNotShown += 1;
+                            }
+
+                            totaltChips += 1;
+                        });
                     });
 
-                    $scope.haveChips = $scope.numberOfChipsNotShown > 0;
+                    $scope.haveChips = totaltChips > 0;
                 }
             }
         };

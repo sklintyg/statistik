@@ -13,6 +13,8 @@ filter-chips-list {
   .remove-filter {
     visibility: hidden;
     vertical-align: top;
+    display: inline-block;
+    margin-left: 5px;
   }
 
   .default-text {
