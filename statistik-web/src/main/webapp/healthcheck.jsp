@@ -33,7 +33,6 @@
 		<c:set var="overview" value="${healthcheckUtil.overviewStatus}" />
 		<c:set var="highchart" value="${healthcheckUtil.highchartsExportStatus}" />
 		<c:set var="workloadStatus" value="${healthcheckUtil.workloadStatus}" />
-		<c:set var="hsa" value="${healthcheckUtil.hsaStatus}" />
 		<c:set var="db" value="${healthcheckUtil.checkDB()}" />
 		<c:set var="uptime" value="${healthcheckUtil.uptimeAsString}" />
 		<c:set var="loggedInUsers" value="${healthcheckUtil.checkNbrOfLoggedInUsers()}" />
@@ -68,11 +67,6 @@
 						<td>WorkloadStatus</td>
 						<td id="workloadMeasurement">${workloadStatus.measurement}ms</td>
 						<td id="workloadStatus" class="${workloadStatus.ok ? "text-success" : "text-danger"}">${workloadStatus.ok ? "OK" : "FAIL"}</td>
-					</tr>
-					<tr>
-						<td>HSA</td>
-						<td id="hsaMeasurement">${hsa.measurement}ms</td>
-						<td id="hsaStatus" class="${hsa.ok ? "text-success" : "text-danger"}">${hsa.ok ? "OK" : "FAIL"}</td>
 					</tr>
 					<tr>
 						<td>Antal användare</td>
