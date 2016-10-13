@@ -5,19 +5,15 @@
 var jsonInput = element(by.name('userJsonDisplay'));
 var loginBtn = element(by.id('login_btn'));
 
-var login = function(userId, enhetId, vgId, isProcessledare) {
+var login = function(firstName, lastName, userId, enhetId, vgId, isProcessledare) {
     jsonInput.sendKeys('{' +
-        '"fornamn":"Anna",' +
-        '"efternamn":"Modig",' +
+        '"fornamn":"' + firstName + '",' +
+        '"efternamn":"' + lastName + '",' +
         '"hsaId":"' + userId + '",' +
         '"enhetId":"' + enhetId + '",' +
         '"vardgivarId":"' + vgId + '",' +
         '"vardgivarniva":"' + isProcessledare + '"}');
     loginBtn.click();
-};
-
-var loginUser1 = function() {
-    login('user1', 'enhet1', 'vg1', true);
 };
 
 var verifyAt = function() {
@@ -27,6 +23,5 @@ var verifyAt = function() {
 
 module.exports = {
     'login': login,
-    'loginUser1': loginUser1,
     'verifyAt': verifyAt
 };

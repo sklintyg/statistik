@@ -22,30 +22,28 @@
 /*globals describe,it,helpers */
 'use strict';
 
-var pages = require('../pages/pages.js');
-var fakeloginPage = pages.fakeloginPage;
-var headerPage = pages.headerPage;
+var testfw = require('../testFramework.js');
+var pages = testfw.pages;
+var features = testfw.features;
+var fakeloginPage = pages.fakeloginPo;
+var headerPage = pages.headerPo;
 
-describe('Logga in som medborgare', function() {
+describe('Grundläggande tester av statistiktjänsten: ', function() {
 
-    describe('Oppna appen och hamna på startsidan', function() {
+    beforeEach(function() {
+        browser.get("http://localhost:8080");
+    });
 
-        beforeEach(function() {
-            browser.ignoreSynchronization = false;
-        });
+    it('Användaren routas till nationell översikt när man inte anger någon sökväg', function() {
+        expect(browser.getTitle()).toEqual('Översikt | Statistiktjänsten');
+    });
 
-        it('Oppna oversikten', function() {
-            browser.get("http://localhost:8080");
-            expect(browser.getTitle()).toEqual('Översikt | Statistiktjänsten');
-        });
-
-        it('Logga in', function() {
-            headerPage.clickLogin();
-            fakeloginPage.verifyAt();
-            fakeloginPage.loginUser1();
-            expect(browser.getTitle()).toEqual('Verksamhetsöversikt | Statistiktjänsten');
-        });
-
+    it('Inloggning fungerar', function() {
+        features.user.makeSureNotLoggedIn();
+        headerPage.clickLogin();
+        fakeloginPage.verifyAt();
+        features.user.loginUser1();
+        expect(browser.getTitle()).toEqual('Verksamhetsöversikt | Statistiktjänsten');
     });
 
 });

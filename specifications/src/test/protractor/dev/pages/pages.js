@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = {
-    'fakeloginPage': require('./fakelogin.po.js'),
-    'headerPage': require('./header.po.js')
+    'fakeloginPo': require('./fakelogin.po.js'),
+    'headerPo': require('./header.po.js'),
+    'navmenu': require('./navmenu.po.js')
 };

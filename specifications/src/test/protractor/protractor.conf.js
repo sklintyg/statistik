@@ -31,6 +31,7 @@
 var HtmlScreenshotReporter = require('protractor-jasmine2-screenshot-reporter');
 
 exports.config = {
+    rootElement: '#ng-app',
     // seleniumAddress: 'http://localhost:4444/wd/hub',
     // baseUrl: require('./../minaintygTestTools/environment.js').envConfig.MINAINTYG_URL,
     baseUrl: 'http://localhost:8080',
@@ -59,8 +60,8 @@ exports.config = {
         browserName: 'phantomjs', // possible values: phantomjs, firefox, chrome
 
         // Run parallell instances of same browser (combine with any browser above)
-        shardTestFiles: false, // set to true to divide tests among instances
-        maxInstances: 1 // change to >1 for parallell instances
+        shardTestFiles: true, // set to true to divide tests among instances
+        maxInstances: 10 // change to >1 for parallell instances
     },
 
     // Run *different browsers* in parallell (optional, completely replaces 'capabilities' above)
@@ -73,12 +74,12 @@ exports.config = {
         shardTestFiles: true,
         maxInstances: 1
     }],*/
-    framework: 'jasmine',
+    framework: 'jasmine2',
     jasmineNodeOpts: {
         // If true, print colors to the terminal.
         showColors: true,
         // Default time to wait in ms before a test fails.
-        defaultTimeoutInterval: 30000
+        defaultTimeoutInterval: 30000,
         // Function called to print jasmine results.
         //print: function() {},
         // If set, only execute specs whose names match the pattern, which is
@@ -109,6 +110,7 @@ exports.config = {
         };
 
         browser.driver.manage().window().setSize(1600, 1200);
+        browser.driver.manage().window().maximize();
 
         var reporters = require('jasmine-reporters');
         jasmine.getEnv().addReporter(
