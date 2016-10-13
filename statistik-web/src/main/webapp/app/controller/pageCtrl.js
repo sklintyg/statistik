@@ -109,7 +109,8 @@ angular.module('StatisticsApp').controller('pageCtrl',
 
                         $scope.isLoginInfoFetched = true;
 
-                        if (!$location.search().vgid) {
+                        var vgid = $location.search().vgid;
+                        if (!vgid) {
                             if (loginInfo.vgs.length === 0) {
                                 $location.path('/login');
                             } else if (loginInfo.vgs.length === 1) {
@@ -117,6 +118,9 @@ angular.module('StatisticsApp').controller('pageCtrl',
                             } else {
                                 $location.path('/valjVardgivare');
                             }
+                        } else {
+                            setSelectedVardgivare(vgid);
+                            $scope.previousVgid = vgid;
                         }
                     }, function () {
                         $scope.dataLoadingError = true;
