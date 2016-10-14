@@ -88,6 +88,19 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.selectByAttribute(businessFilter.geography, businessIds, 'id');
         businessFilter.geographyBusinessIds = businessIds;
         treeMultiSelectorUtil.updateSelectionState(businessFilter.geography);
+        businessFilter.updateSelectionVerksamhetsTyper(businessFilter.verksamhetsTyper);
+    };
+
+    businessFilter.updateSelectionVerksamhetsTyper = function(verksamhetsTyper) {
+        angular.forEach(verksamhetsTyper, function(verksamhetsTyp) {
+            var selected = true;
+
+            angular.forEach(verksamhetsTyp.units, function(businesse) {
+                selected = selected && businesse.allSelected;
+            });
+
+            verksamhetsTyp.checked = selected;
+        });
     };
 
     businessFilter.resetSelections = function () {

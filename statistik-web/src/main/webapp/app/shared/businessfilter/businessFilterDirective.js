@@ -270,6 +270,24 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     };
 
     scope.dateOptionsTo = angular.copy(scope.dateOptions);
+
+    scope.isVerksamhetTypeCollapsed = true;
+
+    scope.selectVerksamhetsTyp = function(verksamhetsTyp) {
+        var checked = verksamhetsTyp.checked;
+
+        angular.forEach(verksamhetsTyp.units, function(businesse) {
+           businesse.allSelected = !checked;
+        });
+
+        verksamhetsTyp.checked = !checked;
+
+        scope.$broadcast('updateSelections');
+    };
+
+    scope.$on('selectionsChanged', function() {
+        scope.businessFilter.updateSelectionVerksamhetsTyper(scope.businessFilter.verksamhetsTyper);
+    });
 }
 
 angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown',

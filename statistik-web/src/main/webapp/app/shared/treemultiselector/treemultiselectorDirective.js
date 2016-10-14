@@ -28,6 +28,7 @@ angular.module('StatisticsApp.treeMultiSelector.directive', [])
                 hideLabel: '=',
                 buttonIcon: '@'
             },
+            transclude: true,
             controller: 'treeMultiSelectorCtrl',
             templateUrl: '/app/shared/treemultiselector/treeMultiSelectorView.html'
         };

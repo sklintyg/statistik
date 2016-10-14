@@ -90,17 +90,6 @@
             text-data="diagnosisFilterSelectorData">
         </tree-multi-selector>
 
-        <div class="margin-right top-10px-margin" data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'">
-          <select
-              ng-model="businessFilter.selectedVerksamhetTypIds"
-              multiple="multiple"
-              ng-options="verksamhet.id as verksamhet.name for verksamhet in businessFilter.verksamhetsTyper"
-              multiselect-dropdown="Verksamhetstyper"
-              multiselect-dropdown-icon="fa-building-o"
-              id="select-verksamhet">
-          </select>
-        </div>
-
         <tree-multi-selector
             class="margin-right top-10px-margin"
             hide-label="true"
@@ -109,6 +98,23 @@
             done-clicked="businessFilter.updateGeography"
             data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'"
             text-data="geographyFilterSelectorData">
+
+            <button class="btn btn-link btn-link-minimal valj-vg-help" ng-click="isVerksamhetTypeCollapsed = !isVerksamhetTypeCollapsed" ng-switch="isVerksamhetTypeCollapsed">
+              <span message key="lbl.filter.verksamhet.link"></span>
+              <span ng-switch-when="false" class="fa fa-chevron-up"></span>
+              <span ng-switch-when="true" class="fa fa-chevron-down"></span>
+            </button>
+
+            <div uib-collapse="isVerksamhetTypeCollapsed">
+              <ul class="verksamhets-typer-list">
+                <li data-ng-repeat="verksamhet in businessFilter.verksamhetsTyper">
+                  <span data-ng-click="selectVerksamhetsTyp(verksamhet)">
+                    <input type="checkbox" data-ng-checked="verksamhet.checked" />
+                    {{verksamhet.name}}
+                  </span>
+                </li>
+              </ul>
+            </div>
         </tree-multi-selector>
 
         <div class="margin-right top-10px-margin">

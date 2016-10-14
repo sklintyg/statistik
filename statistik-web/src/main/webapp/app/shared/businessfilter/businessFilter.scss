@@ -79,4 +79,12 @@
       position: relative;
     }
   }
+
+  .verksamhets-typer-list {
+    padding-left: 20px;
+
+    li span, li span input{
+      cursor: pointer;
+    }
+  }
 }

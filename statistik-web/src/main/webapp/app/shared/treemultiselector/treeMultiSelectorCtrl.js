@@ -85,9 +85,19 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             } else {
                 $scope.selectAll(item);
             }
+
+            updateSelections();
+        };
+
+        function updateSelections() {
             $scope.updateCounters();
             $scope.updateState($scope.menuOptions);
-        };
+            $scope.$emit('selectionsChanged');
+        }
+
+        $scope.$on('updateSelections', function() {
+            updateSelections();
+        });
 
         $scope.hideClicked = function (item) {
             item.showChildren = !item.showChildren;
