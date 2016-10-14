@@ -12,6 +12,10 @@
   padding-top: 10px;
   padding-bottom: 10px;
 
+  &.filter-active {
+    border-bottom-color: #EA8025;
+  }
+
   .alert {
     margin-bottom: 0;
     margin-top: 10px;
