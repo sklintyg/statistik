@@ -69,7 +69,7 @@ angular.module('StatisticsApp')
         function addTooltip(phrase) {
             return function(element) {
                 element.setAttribute('data-toggle', 'tooltip');
-                element.setAttribute('data-placement', 'right');
+                element.setAttribute('data-placement', 'auto right');
                 element.setAttribute('title', phrase.text);
             };
         }
