@@ -105,6 +105,12 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         });
     };
 
+    businessFilter.deselectVerksamhetsTyper = function(verksamhetsTyper) {
+        angular.forEach(verksamhetsTyper, function(verksamhetsTyp) {
+            verksamhetsTyp.checked = false;
+        });
+    };
+
     businessFilter.resetSelections = function () {
         businessFilter.geographyBusinessIds.length = 0;
         businessFilter.geographyBusinessIdsSaved.length = 0;
@@ -117,6 +123,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.diagnoserSaved.length = 0;
         businessFilter.deselectAll(businessFilter.geography);
         businessFilter.deselectAll(businessFilter.icd10);
+        businessFilter.updateSelectionVerksamhetsTyper(businessFilter.verksamhetsTyper);
 
         //Reset datepickers
         businessFilter.toDate = null;

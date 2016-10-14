@@ -274,13 +274,26 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.isVerksamhetTypeCollapsed = true;
 
     scope.selectVerksamhetsTyp = function(verksamhetsTyp) {
-        var checked = verksamhetsTyp.checked;
+        var checked = !verksamhetsTyp.checked;
 
         angular.forEach(verksamhetsTyp.units, function(businesse) {
-           businesse.allSelected = !checked;
+            if (checked || businesse.verksamhetsTyper.length === 1) {
+                businesse.allSelected = checked;
+            } else {
+                var shouldUncheck = true;
+                angular.forEach(scope.businessFilter.verksamhetsTyper, function(type) {
+                    if (type !== verksamhetsTyp && type.checked &&
+                        type.units.indexOf(businesse) > -1) {
+                        shouldUncheck = false;
+                    }
+                });
+                if (shouldUncheck) {
+                    businesse.allSelected = false;
+                }
+            }
         });
 
-        verksamhetsTyp.checked = !checked;
+        verksamhetsTyp.checked = checked;
 
         scope.$broadcast('updateSelections');
     };
