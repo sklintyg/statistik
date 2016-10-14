@@ -42,7 +42,7 @@ public class VerksamhetsTyp implements Iterable<String> {
         kodToName.put("13", "Opererande verksamhet");
         kodToName.put("14", "Övrig medicinsk verksamhet");
         kodToName.put("15", "Primärvårdsverksamhet");
-        kodToName.put("16", "Psykatrisk verksamhet");
+        kodToName.put("16", "Psykiatrisk verksamhet");
         kodToName.put("17", "Radiologisk verksamhet");
         kodToName.put("18", "Tandvårdsverksamhet");
         kodToName.put("20", "Övrig medicinsk serviceverksamhet");

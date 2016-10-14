@@ -88,7 +88,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.selectByAttribute(businessFilter.geography, businessIds, 'id');
         businessFilter.geographyBusinessIds = businessIds;
         treeMultiSelectorUtil.updateSelectionState(businessFilter.geography);
-        businessFilter.updateSelectionVerksamhetsTyper(businessFilter.verksamhetsTyper);
+        //businessFilter.updateSelectionVerksamhetsTyper(businessFilter.verksamhetsTyper);
     };
 
     businessFilter.updateSelectionVerksamhetsTyper = function(verksamhetsTyper) {
@@ -99,7 +99,9 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
                 selected = selected && businesse.allSelected;
             });
 
-            verksamhetsTyp.checked = selected;
+            if (!selected) {
+                verksamhetsTyp.checked = selected;
+            }
         });
     };
 
