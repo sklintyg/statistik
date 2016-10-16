@@ -2,7 +2,7 @@
 
 'use strict';
 
-var features = require('../features/features.js');
+var pohelper = require('./pohelper.js');
 
 var loginBtn = element(by.id('business-login-btn'));
 var logoutLink = element(by.id('logoutLink'));
@@ -12,7 +12,7 @@ var clickLogin = function() {
 };
 
 var clickLogout = function() {
-    features.helper.clickAndWaitForPageRedirect(logoutLink);
+    pohelper.clickAndWaitForPageRedirect(logoutLink);
 };
 
 module.exports = {
