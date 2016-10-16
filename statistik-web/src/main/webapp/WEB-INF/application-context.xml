@@ -132,7 +132,7 @@
     </beans>
     <beans profile="!dev">
         <bean class="org.springframework.web.client.RestTemplate" />
-        <bean class="se.inera.statistics.time.ChangableClock" factory-method="newSystemDefault"/>
+        <bean class="java.time.Clock" factory-method="systemDefaultZone"/>
     </beans>
 
 </beans>

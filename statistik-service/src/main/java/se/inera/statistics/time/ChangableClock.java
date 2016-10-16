@@ -43,26 +43,10 @@ public final class ChangableClock extends Clock implements Serializable {
     }
 
     /**
-     * To be used when creating a clock instance in an environment
-     * where time should not be tampered with, e.g. production.
-     */
-    public static ChangableClock newSystemDefault() {
-        return new ChangableClock(Clock.systemDefaultZone(), false);
-    }
-
-    /**
      * To be used when creating a clock instance that should be possible to change.
      */
     public static ChangableClock newChangable() {
         return new ChangableClock(Clock.systemDefaultZone(), true);
-    }
-
-    /**
-     * To be used when creating a clock instance that should be possible to change.
-     * @param clock The underlying clock to be used
-     */
-    public static ChangableClock newChangable(Clock clock) {
-        return new ChangableClock(clock, true);
     }
 
     /**
