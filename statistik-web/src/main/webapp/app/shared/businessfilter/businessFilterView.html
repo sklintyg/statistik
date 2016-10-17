@@ -82,15 +82,6 @@
         <strong class="title">Filter</strong>
 
         <tree-multi-selector
-            class="margin-right top-10px-margin highlight-content"
-            hide-label="true"
-            button-icon="fa-stethoscope"
-            menu-options="icd10"
-            done-clicked="businessFilter.updateDiagnoses"
-            text-data="diagnosisFilterSelectorData">
-        </tree-multi-selector>
-
-        <tree-multi-selector
             class="margin-right top-10px-margin"
             hide-label="true"
             button-icon="fa-building-o"
@@ -115,6 +106,15 @@
                 </li>
               </ul>
             </div>
+        </tree-multi-selector>
+
+        <tree-multi-selector
+            class="margin-right top-10px-margin highlight-content"
+            hide-label="true"
+            button-icon="fa-stethoscope"
+            menu-options="icd10"
+            done-clicked="businessFilter.updateDiagnoses"
+            text-data="diagnosisFilterSelectorData">
         </tree-multi-selector>
 
         <div class="margin-right top-10px-margin">

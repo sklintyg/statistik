@@ -36,8 +36,8 @@ angular.module('StatisticsApp')
                 $scope.numberOfChipsNotShown = 0;
 
                 $scope.chips = {
-                    diagnos: [],
                     enheter: [],
+                    diagnos: [],
                     sjukskrivningslangd: [],
                     aldersgrupp: []
                 };
@@ -197,7 +197,7 @@ angular.module('StatisticsApp')
                         });
                     });
 
-                    $scope.shownChips = $scope.allChips;
+                    //$scope.shownChips = $scope.allChips;
                     $scope.haveChips = $scope.allChips.length > 0;
                 }
 
@@ -205,10 +205,18 @@ angular.module('StatisticsApp')
                     $timeout(function() {
                         var filterElement = element.find('.filter-level .col-xs-12');
                         var width = filterElement.width();
+                        var allChips = $scope.allChips.length;
+                        var numberOfChips = Math.floor((width/200) * 2);
+
+                        if (numberOfChips < allChips) {
+                            numberOfChips--;
+                            $scope.numberOfChipsNotShown = allChips - numberOfChips;
+                        }
+
+                        /*
                         var numberOfRows = 1;
                         var maxNumberOfRows = 2;
                         var totalChipWith = 0;
-                        var numberOfChips = 0;
                         var showAllWidth = element.find('.show-all-filter').outerWidth(true);
                         showAllWidth = showAllWidth < 80 ? 80 : showAllWidth;
 
@@ -240,7 +248,7 @@ angular.module('StatisticsApp')
                             } else {
                                 $scope.numberOfChipsNotShown += 1;
                             }
-                        });
+                        });*/
 
                         $scope.shownChips = $scope.allChips.slice(0, numberOfChips);
                     });
