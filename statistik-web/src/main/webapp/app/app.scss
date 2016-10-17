@@ -2034,6 +2034,11 @@ input[type="radio"], input[type="checkbox"] {
   display: inline-block;
 }
 
+.modal-header .close {
+  margin-top: -7px;
+  padding: 5px 10px;
+}
+
 // Component styles are injected through grunt
 // injector
 @import 'css/filter.scss';

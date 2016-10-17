@@ -26,6 +26,10 @@ filter-chips-list {
     vertical-align: top;
   }
 
+  .inactive {
+    color: #7e7e7f;
+  }
+
   li.filter-chips:hover {
     cursor: pointer;
 

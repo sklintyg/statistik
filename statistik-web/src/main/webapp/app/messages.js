@@ -66,8 +66,8 @@ var stMessages = {
         //filter
         'lbl.filter.verksamhet.link': 'Visa snabbval av enheter baserat på verksamhetstyper',
         'lbl.filter.modal.title': 'Aktiva filter',
-        'lbl.filter.val-av-enheter': 'Välj enheter:',
-        'lbl.filter.val-av-diagnoser': 'Välj diagnoser:',
+        'lbl.filter.val-av-enheter': 'Välj enheter',
+        'lbl.filter.val-av-diagnoser': 'Välj diagnoser',
         'lbl.filter.val-av-tidsintervall-fran': 'Från',
         'lbl.filter.val-av-tidsintervall-till': 'Till',
         'lbl.filter.val-av-diagnoser-knapp': 'Diagnoser',

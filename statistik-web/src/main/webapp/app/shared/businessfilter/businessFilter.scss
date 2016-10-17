@@ -84,8 +84,12 @@
     }
   }
 
+  .valj-verksamhetstyp-link {
+    padding-left: 0;
+  }
+
   .verksamhets-typer-list {
-    padding-left: 20px;
+    padding-left: 0;
 
     li span, li span input{
       cursor: pointer;

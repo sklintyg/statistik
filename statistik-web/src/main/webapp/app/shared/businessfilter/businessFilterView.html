@@ -99,7 +99,7 @@
             data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'"
             text-data="geographyFilterSelectorData">
 
-            <button class="btn btn-link btn-link-minimal valj-vg-help" ng-click="isVerksamhetTypeCollapsed = !isVerksamhetTypeCollapsed" ng-switch="isVerksamhetTypeCollapsed">
+            <button class="btn btn-link btn-link-minimal valj-verksamhetstyp-link" ng-click="isVerksamhetTypeCollapsed = !isVerksamhetTypeCollapsed" ng-switch="isVerksamhetTypeCollapsed">
               <span message key="lbl.filter.verksamhet.link"></span>
               <span ng-switch-when="false" class="fa fa-chevron-up"></span>
               <span ng-switch-when="true" class="fa fa-chevron-down"></span>
