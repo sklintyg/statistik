@@ -20,7 +20,7 @@
 angular.module('StatisticsApp')
     .directive('filterChips',
     /** @ngInject */
-    function(AppModel, _, ControllerCommons, $uibModal) {
+    function(AppModel, _, ControllerCommons, $uibModal, $timeout, $window) {
         'use strict';
         return {
             scope: {
@@ -29,9 +29,10 @@ angular.module('StatisticsApp')
             },
             restrict: 'E',
             templateUrl: '/components/directives/filterChips/filterChips.html',
-            link: function($scope) {
+            link: function($scope, element) {
                 $scope.haveChips = false;
                 $scope.shownChips = [];
+                $scope.allChips = [];
                 $scope.numberOfChipsNotShown = 0;
 
                 $scope.chips = {
@@ -69,6 +70,19 @@ angular.module('StatisticsApp')
 
                 $scope.$watchCollection('businessFilter.selectedSjukskrivningslangdIds', sjukskrivningsLangdsFilter);
                 $scope.$watchCollection('businessFilter.sjukskrivningslangdSaved', sjukskrivningsLangdsFilter);
+
+                $scope.$watchCollection('allChips', calcMaxNumberOfChips);
+
+                $($window).on('resize.doResize', _.debounce(function () {
+                    $scope.$apply(function(){
+                        $scope.shownChips = $scope.allChips;
+                        calcMaxNumberOfChips();
+                    });
+                },100));
+
+                $scope.$on('$destroy', function () {
+                    $($window).off('resize.doResize'); //remove the handler added earlier
+                });
 
                 $scope.removeChip = function(chip) {
                     switch(chip.type) {
@@ -166,24 +180,61 @@ angular.module('StatisticsApp')
                 }
 
                 function setHaveChips() {
-                    var totaltChips = 0;
-                    var maxChips = 10;
-                    $scope.numberOfChipsNotShown = 0;
-                    $scope.shownChips.length = 0;
+                    $scope.allChips.length = 0;
 
                     angular.forEach($scope.chips, function(type) {
                         angular.forEach(type, function(chip) {
-                            if (totaltChips < maxChips) {
-                                $scope.shownChips.push(chip);
-                            } else {
-                                $scope.numberOfChipsNotShown += 1;
-                            }
-
-                            totaltChips += 1;
+                            $scope.allChips.push(chip);
                         });
                     });
 
-                    $scope.haveChips = totaltChips > 0;
+                    $scope.shownChips = $scope.allChips;
+                    $scope.haveChips = $scope.allChips.length > 0;
+                }
+
+                function calcMaxNumberOfChips() {
+                    $timeout(function() {
+                        var filterElement = element.find('.filter-level .col-xs-12');
+                        var width = filterElement.width();
+                        var numberOfRows = 1;
+                        var maxNumberOfRows = 2;
+                        var totalChipWith = 0;
+                        var numberOfChips = 0;
+                        var showAllWidth = element.find('.show-all-filter').outerWidth(true);
+                        showAllWidth = showAllWidth < 80 ? 80 : showAllWidth;
+
+                        $scope.numberOfChipsNotShown = 0;
+
+                        var chips = filterElement.find('.filter-chip');
+
+                        chips.each(function() {
+                            var chipWidth = $( this ).outerWidth(true);
+
+                            var addChip = false;
+
+                            if (totalChipWith + chipWidth < width) {
+                                addChip = true;
+                            } else if (numberOfRows < maxNumberOfRows) {
+                                numberOfRows++;
+                                addChip = true;
+
+                                if (numberOfRows === maxNumberOfRows) {
+                                    totalChipWith = showAllWidth;
+                                } else {
+                                    totalChipWith = 0;
+                                }
+                            }
+
+                            if (addChip) {
+                                totalChipWith += chipWidth;
+                                numberOfChips++;
+                            } else {
+                                $scope.numberOfChipsNotShown += 1;
+                            }
+                        });
+
+                        $scope.shownChips = $scope.allChips.slice(0, numberOfChips);
+                    });
                 }
             }
         };
