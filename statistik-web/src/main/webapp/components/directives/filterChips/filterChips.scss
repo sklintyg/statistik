@@ -16,6 +16,7 @@ filter-chips {
     text-align: left;
 
     .remove-filter {
+      position: absolute;
       display: none;
       background: #e0e0e0;
       padding: 5px 10px;
@@ -39,12 +40,11 @@ filter-chips {
       cursor: pointer;
 
       .remove-filter {
-        position: absolute;
         display: block;
       }
     }
 
-    &.inactive {
+    &.inactive, &.removed {
       background: none;
 
       .default-text {
@@ -53,6 +53,28 @@ filter-chips {
 
       .remove-filter {
         background: #f7f7f9;
+      }
+    }
+
+    &.removed {
+      .default-text {
+        text-decoration: line-through;
+      }
+
+      &:hover, &:active, &:focus {
+        border: solid #e0e0e0 1px;
+      }
+
+      &:active:focus {
+        border-style: solid;
+      }
+
+      &:hover {
+        cursor: default;
+
+        .remove-filter {
+          display: none;
+        }
       }
     }
 

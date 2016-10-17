@@ -26,15 +26,31 @@ filter-chips-list {
     vertical-align: top;
   }
 
-  .inactive {
+  .inactive, .removed {
     color: #7e7e7f;
   }
 
-  li.filter-chips:hover {
-    cursor: pointer;
+  li.filter-chips {
+    &:hover {
+      cursor: pointer;
 
-    .remove-filter {
-      visibility: visible;
+      .remove-filter {
+        visibility: visible;
+      }
+    }
+
+    &.removed {
+      .default-text {
+        text-decoration: line-through;
+      }
+
+      &:hover {
+        cursor: default;
+
+        .remove-filter {
+          visibility: hidden;
+        }
+      }
     }
 
     &.ng-leave {

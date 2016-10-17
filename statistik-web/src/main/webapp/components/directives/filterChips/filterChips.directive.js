@@ -75,7 +75,6 @@ angular.module('StatisticsApp')
 
                 $scope.$watch('isCollapsed', function(value) {
                     if (!value) {
-                        $scope.shownChips = $scope.allChips;
                         calcMaxNumberOfChips();
                     }
                 });
@@ -83,7 +82,6 @@ angular.module('StatisticsApp')
                 $($window).on('resize.doResize', _.debounce(function () {
                     if (!$scope.isCollapsed) {
                         $scope.$apply(function() {
-                            $scope.shownChips = $scope.allChips;
                             calcMaxNumberOfChips();
                         });
                     }
@@ -94,6 +92,10 @@ angular.module('StatisticsApp')
                 });
 
                 $scope.removeChip = function(chip) {
+                    if (chip.removedFilter) {
+                        return;
+                    }
+
                     switch(chip.type) {
                     case 'sjukskrivningslangd':
                         _.pull($scope.businessFilter.selectedSjukskrivningslangdIds, chip.id);
@@ -119,13 +121,27 @@ angular.module('StatisticsApp')
 
                     $scope.chips.enheter.length = 0;
                     angular.forEach(filter, function(enhet) {
-
                         var text = _.findWhere($scope.businessFilter.businesses, {id: enhet});
                         $scope.chips.enheter.push({
                             type: 'enhet',
                             icon: 'fa-building-o',
                             id: enhet,
                             newFilter: $scope.businessFilter.geographyBusinessIdsSaved.indexOf(enhet) === -1,
+                            removedFilter: false,
+                            text: text ? text.name : enhet
+                        });
+                    });
+
+                    var left =  _.difference($scope.businessFilter.geographyBusinessIdsSaved, $scope.businessFilter.geographyBusinessIds);
+
+                    angular.forEach(left, function(enhet) {
+                        var text = _.findWhere($scope.businessFilter.businesses, {id: enhet});
+                        $scope.chips.enheter.push({
+                            type: 'enhet',
+                            icon: 'fa-building-o',
+                            id: enhet,
+                            newFilter: false,
+                            removedFilter: true,
                             text: text ? text.name : enhet
                         });
                     });
@@ -147,6 +163,20 @@ angular.module('StatisticsApp')
                             icon: 'fa-stethoscope',
                             id: diagnos.id,
                             newFilter: $scope.businessFilter.diagnoserSaved.indexOf(diagnos.id) === -1,
+                            removedFilter: false,
+                            text: diagnos.text
+                        });
+                    });
+
+                    var left =  _.difference($scope.businessFilter.diagnoserSaved, $scope.businessFilter.selectedDiagnoses);
+
+                    angular.forEach(left, function(diagnos) {
+                        $scope.chips.diagnos.push({
+                            type: 'diagnos',
+                            icon: 'fa-stethoscope',
+                            id: diagnos.id,
+                            newFilter: false,
+                            removedFilter: true,
                             text: diagnos.text
                         });
                     });
@@ -164,6 +194,20 @@ angular.module('StatisticsApp')
                             icon: 'fa-calendar',
                             id: sjukskrivningslangd,
                             newFilter: $scope.businessFilter.sjukskrivningslangdSaved.indexOf(sjukskrivningslangd) === -1,
+                            removedFilter: false,
+                            text: AppModel.get().sjukskrivningLengthsObject[sjukskrivningslangd]
+                        });
+                    });
+
+                    var left =  _.difference($scope.businessFilter.sjukskrivningslangdSaved, $scope.businessFilter.selectedSjukskrivningslangdIds);
+
+                    angular.forEach(left, function(sjukskrivningslangd) {
+                        $scope.chips.sjukskrivningslangd.push({
+                            type: 'sjukskrivningslangd',
+                            icon: 'fa-calendar',
+                            id: sjukskrivningslangd,
+                            newFilter: false,
+                            removedFilter: true,
                             text: AppModel.get().sjukskrivningLengthsObject[sjukskrivningslangd]
                         });
                     });
@@ -181,6 +225,20 @@ angular.module('StatisticsApp')
                             id: aldersGrupp,
                             icon: 'fa-users',
                             newFilter: $scope.businessFilter.aldersgruppSaved.indexOf(aldersGrupp) === -1,
+                            removedFilter: false,
+                            text: AppModel.get().ageGroups[aldersGrupp]
+                        });
+                    });
+
+                    var left =  _.difference($scope.businessFilter.aldersgruppSaved, $scope.businessFilter.selectedAldersgruppIds);
+
+                    angular.forEach(left, function(aldersGrupp) {
+                        $scope.chips.aldersgrupp.push({
+                            type: 'aldersgrupp',
+                            id: aldersGrupp,
+                            icon: 'fa-users',
+                            newFilter: false,
+                            removedFilter: true,
                             text: AppModel.get().ageGroups[aldersGrupp]
                         });
                     });
@@ -197,7 +255,6 @@ angular.module('StatisticsApp')
                         });
                     });
 
-                    //$scope.shownChips = $scope.allChips;
                     $scope.haveChips = $scope.allChips.length > 0;
                 }
 
@@ -211,44 +268,9 @@ angular.module('StatisticsApp')
                         if (numberOfChips < allChips) {
                             numberOfChips--;
                             $scope.numberOfChipsNotShown = allChips - numberOfChips;
+                        } else {
+                            $scope.numberOfChipsNotShown = 0;
                         }
-
-                        /*
-                        var numberOfRows = 1;
-                        var maxNumberOfRows = 2;
-                        var totalChipWith = 0;
-                        var showAllWidth = element.find('.show-all-filter').outerWidth(true);
-                        showAllWidth = showAllWidth < 80 ? 80 : showAllWidth;
-
-                        $scope.numberOfChipsNotShown = 0;
-
-                        var chips = filterElement.find('.filter-chip:not(.ng-leave)');
-
-                        chips.each(function() {
-                            var chipWidth = $( this ).outerWidth(true);
-
-                            var addChip = false;
-
-                            if (totalChipWith + chipWidth < width) {
-                                addChip = true;
-                            } else if (numberOfRows < maxNumberOfRows) {
-                                numberOfRows++;
-                                addChip = true;
-
-                                if (numberOfRows === maxNumberOfRows) {
-                                    totalChipWith = showAllWidth;
-                                } else {
-                                    totalChipWith = 0;
-                                }
-                            }
-
-                            if (addChip) {
-                                totalChipWith += chipWidth;
-                                numberOfChips++;
-                            } else {
-                                $scope.numberOfChipsNotShown += 1;
-                            }
-                        });*/
 
                         $scope.shownChips = $scope.allChips.slice(0, numberOfChips);
                     });

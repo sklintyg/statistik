@@ -6,7 +6,7 @@
         data-ng-repeat="chip in shownChips track by chip.id"
         data-ng-click="removeChip(chip)"
         class="filter-chip"
-        data-ng-class="{inactive: chip.newFilter}"
+        data-ng-class="{inactive: chip.newFilter, removed: chip.removedFilter}"
         title="{{::chip.text}}">
       <span class="default-text">
         <i class="fa {{::chip.icon}}"></i> {{::chip.text}}

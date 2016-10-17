@@ -199,10 +199,10 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
                 scope.isFilterCollapsed = !scope.isFilterCollapsed;
                 scope.loadingFilter = false;
 
-                scope.businessFilter.aldersgruppSaved = params.aldersgrupp;
-                scope.businessFilter.sjukskrivningslangdSaved = params.sjukskrivningslangd;
-                scope.businessFilter.diagnoserSaved = params.diagnoser;
-                scope.businessFilter.geographyBusinessIdsSaved = params.enheter;
+                scope.businessFilter.aldersgruppSaved = angular.copy(params.aldersgrupp);
+                scope.businessFilter.sjukskrivningslangdSaved = angular.copy(params.sjukskrivningslangd);
+                scope.businessFilter.diagnoserSaved = angular.copy(params.diagnoser);
+                scope.businessFilter.geographyBusinessIdsSaved = angular.copy(params.enheter);
             };
 
             var error = function () {
