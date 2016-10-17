@@ -25,7 +25,7 @@ angular.module('StatisticsApp')
         return {
             scope: {
                 businessFilter: '=',
-                businessFilterSaved: '='
+                isCollapsed: '='
             },
             restrict: 'E',
             templateUrl: '/components/directives/filterChips/filterChips.html',
@@ -73,12 +73,21 @@ angular.module('StatisticsApp')
 
                 $scope.$watchCollection('allChips', calcMaxNumberOfChips);
 
-                $($window).on('resize.doResize', _.debounce(function () {
-                    $scope.$apply(function(){
+                $scope.$watch('isCollapsed', function(value) {
+                    if (!value) {
                         $scope.shownChips = $scope.allChips;
                         calcMaxNumberOfChips();
-                    });
-                },100));
+                    }
+                });
+
+                $($window).on('resize.doResize', _.debounce(function () {
+                    if (!$scope.isCollapsed) {
+                        $scope.$apply(function() {
+                            $scope.shownChips = $scope.allChips;
+                            calcMaxNumberOfChips();
+                        });
+                    }
+                }, 100));
 
                 $scope.$on('$destroy', function () {
                     $($window).off('resize.doResize'); //remove the handler added earlier
@@ -205,7 +214,7 @@ angular.module('StatisticsApp')
 
                         $scope.numberOfChipsNotShown = 0;
 
-                        var chips = filterElement.find('.filter-chip');
+                        var chips = filterElement.find('.filter-chip:not(.ng-leave)');
 
                         chips.each(function() {
                             var chipWidth = $( this ).outerWidth(true);
