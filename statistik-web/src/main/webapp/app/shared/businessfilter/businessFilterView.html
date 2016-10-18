@@ -1,0 +1,174 @@
+<div id="statistics-filter-container" class="hidden-print" uib-collapse="isFilterCollapsed">
+    <div class="row" style="text-align: center" data-ng-hide="businessFilter.dataInitialized">
+            <span style="margin: auto">Laddar filterdata</span>
+    </div>
+    <div class="row" data-ng-show="businessFilter.dataInitialized">
+
+        <div class="filter-level" id="first-level-filter">
+
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2 clearfix"
+                 data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'">
+                <label for="select-unit">
+                    <span message key="lbl.filter.valj-verksamhetstyper"></span>
+                </label><br/>
+                <select ng-model="businessFilter.selectedVerksamhetTypIds" multiple="multiple"
+                        ng-options="verksamhet.id as verksamhet.name for verksamhet in businessFilter.verksamhetsTyper"
+                        multiselect-dropdown id="select-verksamhet">
+                </select>
+            </div>
+
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2 clearfix" data-ng-if="businessFilter.numberOfBusinesses() === 'medium'">
+                <label for="select-unit">
+                    <span message key="lbl.filter.val-av-enheter"></span>
+                </label><br/>
+                <select ng-model="businessFilter.geographyBusinessIds" multiple="multiple"
+                        ng-options="business.id as business.name for business in businessFilter.businesses"
+                        multiselect-dropdown id="select-unit">
+                </select>
+            </div>
+
+            <tree-multi-selector class="col-xs-12 col-sm-4 col-md-4 col-lg-2 clearfix"
+                                 menu-options="businessFilter.geography"
+                                 done-clicked="businessFilter.updateGeography"
+                                 data-ng-if="businessFilter.numberOfBusinesses() === 'large'"
+                                 text-data="geographyFilterSelectorData">
+            </tree-multi-selector>
+
+            <tree-multi-selector class="col-xs-12 col-sm-4 col-md-4 col-lg-2 clearfix"
+                                 menu-options="icd10"
+                                 done-clicked="businessFilter.updateDiagnoses"
+                                 text-data="diagnosisFilterSelectorData">
+            </tree-multi-selector>
+
+            <div class="col-xs-12 col-sm-4 col-md-4 col-lg-2 clearfix business-filter-sjukskrivningslangd">
+                <label for="select-unit">
+                    <span message key="lbl.filter.valj-sjukskrivningslangd"></span>
+                </label><br/>
+                <select ng-model="businessFilter.selectedSjukskrivningslangdIds" multiple="multiple"
+                        ng-options="sjukskrivningslangd.id as sjukskrivningslangd.name for sjukskrivningslangd in businessFilter.sjukskrivningslangd"
+                        multiselect-dropdown id="select-sjukskrivningslangd">
+                </select>
+            </div>
+
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-4 clearfix business-filter-time-interval">
+
+                <div >
+                    <label>
+                        <input type="checkbox" ng-model="timeIntervalChecked" />
+                    </label>
+                    <label><span message key="lbl.filter.val-av-tidsintervall"></span></label>
+                </div>
+
+                <div class="row">
+                    <!--From date datepicker-->
+                    <div class="col-xs-10 col-sm-6 clearfix">
+                        <label for="filterFromDate">
+                            <span message key="lbl.filter.val-av-tidsintervall-fran"></span>
+                        </label><br/>
+
+                        <p class="input-group input-group-sm datepicker">
+                            <input id="filterFromDate"
+                                   type="text"
+                                   class="form-control"
+                                   ng-class="{'alert-danger': fromDateValidationError}"
+                                   ng-model="businessFilter.fromDate"
+                                   ng-disabled="!timeIntervalChecked"
+                                   show-weeks="false"
+                                   min-date="minDate"
+                                   max-date="maxDate"
+                                   uib-datepicker-popup="{{format}}"
+                                   is-open="isFromDateOpen"
+                                   datepicker-options="{minMode: 'month'}"
+                                   datepicker-mode="'month'"
+                                   show-button-bar="false"/>
+                                        <span class="input-group-btn">
+                                            <button id="fromDatePickerBtn"
+                                                    type="button"
+                                                    class="btn btn-default"
+                                                    ng-click="openFromDate($event)"
+                                                    ng-disabled="!timeIntervalChecked">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </button>
+                                        </span>
+                        </p>
+                    </div>
+
+                    <!--To date datepicker-->
+                    <div class="col-xs-10 col-sm-6 clearfix">
+                        <label for="filterToDate">
+                            <span message key="lbl.filter.val-av-tidsintervall-till"></span>
+                        </label><br/>
+
+                        <p class="input-group input-group-sm datepicker">
+                            <input id="filterToDate"
+                                   type="text"
+                                   class="form-control"
+                                   ng-class="{'alert-danger': toDateValidationError}"
+                                   ng-model="businessFilter.toDate"
+                                   ng-disabled="!timeIntervalChecked"
+                                   show-weeks="false"
+                                   min-date="minToDate"
+                                   max-date="maxDate"
+                                   uib-datepicker-popup="{{format}}"
+                                   is-open="isToDateOpen"
+                                   datepicker-options="{minMode: 'month'}"
+                                   datepicker-mode="'month'"
+                                   show-button-bar="false"/>
+                                        <span class="input-group-btn">
+                                            <button id="toDatePickerBtn"
+                                                    type="button"
+                                                    class="btn btn-default"
+                                                    ng-click="openToDate($event)"
+                                                    ng-disabled="!timeIntervalChecked">
+                                                <i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="alert alert-danger" role="alert" ng-show="showDateValidationError">
+                    <span message key="alert.filter.date-invalid"></span>
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+
+        <div class="filter-level no-padding" ng-if="businessFilter.numberOfBusinesses() !== 'small'">
+            <div class="col-xs-12">
+                <div class="divider"></div>
+            </div>
+        </div>
+
+        <div class="filter-level" id="actions-for-filter">
+            <div class="col-xs-12 pull-right">
+                <div class="row">
+                    <div class="col-xs-12 pull-right">
+
+                        <span ng-if="businessFilter.numberOfBusinesses() !== 'small'">
+                            <span message key="lbl.filter.sum-progress-1"></span>{{ businessFilter.selectedBusinesses.length }}
+                            <span message key="lbl.filter.sum-progress-2"></span>{{ businessFilter.businesses.length }}
+                            <span message key="lbl.filter.sum-progress-3"></span>
+                            <uib-progressbar max="businessFilter.businesses.length" value="businessFilter.selectedBusinesses.length"></uib-progressbar>
+                        </span>
+
+                        <button type="button" class="btn btn-default pull-right" data-ng-click="resetBusinessFilter()">
+                            <span message key="lbl.aterstall"></span>
+                        </button>
+
+                        <button class="btn btn-success pull-right"
+                                ng-click="makeSelection()">
+                            <span class="button-loader" ng-show="loadingFilter"></span> <span message key="lbl.gor-urval"></span>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<filter-button class="hidden-print"></filter-button>

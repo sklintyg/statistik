@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -45,6 +45,10 @@ public class SimpleDualSexConverter {
         this.seriesNameTemplate = seriesNameTemplate;
     }
 
+    public static SimpleDualSexConverter newGenericTvarsnitt() {
+        return new SimpleDualSexConverter("", false, "%1$s");
+    }
+
     public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings) {
         return convert(casesPerMonth, filterSettings, null);
     }
@@ -54,7 +58,7 @@ public class SimpleDualSexConverter {
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = casesPerMonthIn.getRows().isEmpty() ? new SimpleKonResponse<>(Arrays.asList(new SimpleKonDataRow("Totalt", 0, 0))) : casesPerMonthIn;
         ChartData chartData = convertToChartData(casesPerMonth);
         final Filter filter = filterSettings.getFilter();
-        final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
+        final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
         final String combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
         return new SimpleDetailsData(tableData, chartData, range.toString(), filterResponse, combinedMessage);
@@ -85,10 +89,10 @@ public class SimpleDualSexConverter {
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
         if (totalSeriesInChart) {
-            series.add(new ChartSeries("Antal sjukfall totalt", casesPerMonth.getSummedData(), false));
+            series.add(new ChartSeries("Totalt", casesPerMonth.getSummedData()));
         }
-        series.add(new ChartSeries("Antal sjukfall för kvinnor", casesPerMonth.getDataForSex(Kon.Female), false, Kon.Female));
-        series.add(new ChartSeries("Antal sjukfall för män", casesPerMonth.getDataForSex(Kon.Male), false, Kon.Male));
+        series.add(new ChartSeries("Kvinnor", casesPerMonth.getDataForSex(Kon.Female), Kon.Female));
+        series.add(new ChartSeries("Män", casesPerMonth.getDataForSex(Kon.Male), Kon.Male));
 
         return new ChartData(series, categories);
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -21,6 +21,7 @@ package se.inera.statistics.service.warehouse;
 import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.Lists;
 import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +31,13 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Warehouse implements Iterable<Aisle> {
 
@@ -74,6 +77,16 @@ public class Warehouse implements Iterable<Aisle> {
     public List<Enhet> getEnhets(HsaIdVardgivare vardgivareId) {
         List<Enhet> result = enhets.get(vardgivareId);
         return result == null ? new ArrayList<Enhet>() : result;
+    }
+
+    public List<Enhet> getEnhetsWithHsaId(Collection<HsaIdEnhet> enhetIds) {
+        if (enhets == null || enhetIds == null) {
+            return new ArrayList<>();
+        }
+        return enhets.values().stream().reduce(Lists.newArrayList(), (a, b) -> {
+            a.addAll(b);
+            return a;
+        }).stream().filter(enhet -> enhetIds.contains(enhet.getEnhetId())).collect(Collectors.toList());
     }
 
     private MutableAisle getAisle(HsaIdVardgivare vardgivareId, Map<HsaIdVardgivare, MutableAisle> aisles, boolean add) {

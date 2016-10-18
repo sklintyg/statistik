@@ -1,34 +1,54 @@
 apply plugin: 'scala'
 
+// Fixes a gradle-gatling-plugin bug that requires test .class files in a /target/test-classes directory...
+task fixBug(type: Copy) {
+    from 'build/classes/main'
+    into 'target/test-classes'
+    include '**/*.class'
+}
+task cleanTargetDir {
+    def targetDir = new File('target')
+    if (targetDir.exists()) {
+        targetDir.deleteDir()
+        targetDir.mkdirs()
+    }
+}
+
+// Starts the standard se.inera.statistics.gatling.StandardScenario test.
+task gatlingStandard(type: JavaExec) {
+    // Classpath, note that we manually supply the folder with gatling.conf and logback-test.xml
+    classpath = files('src/test/resources') + (sourceSets.main.runtimeClasspath)
+    // Gatling application
+    main = "io.gatling.app.Gatling"
+    // Specify the simulation to run
+    args = Eval.me("['-s', 'se.inera.statistics.gatling.StandardScenario']")
+    args += Eval.me("['-rf', 'build/reports/gatling']")
+    args += Eval.me("['-on', 'build/reports/gatling']")
+    args += Eval.me("['-bdf', 'build/reports/gatling']")
+}
+
+// Orchestrate the tasks
+fixBug.dependsOn cleanTargetDir
+gatlingStandard.dependsOn fixBug
+
+
+sourceSets {
+    main {
+        scala {
+            srcDirs = ['src']
+        }
+    }
+}
+
+version = '1.0'
+
 repositories {
     mavenCentral()
+    // Gatling libraries
+    maven { url 'http://repository.excilys.com/content/groups/public' }
 }
 
 dependencies {
-    compile 'io.gatling.highcharts:gatling-charts-highcharts:2.1.3'
-}
-
-sourceSets {
-    gatling {
-        java.srcDir file('src/main/java')
-        compileClasspath = sourceSets.test.output + configurations.testRuntime
-        runtimeClasspath = output + compileClasspath
-    }
-}
-
-task gatlingStandard(dependsOn: 'compileTestScala') << {
-    def gatlingScenarioClass = "se.inera.statistics.gatling.StandardScenario"
-
-    javaexec {
-        main = 'io.gatling.app.Gatling'
-        classpath = sourceSets.main.output + sourceSets.main.runtimeClasspath
-        args        '-s',
-                gatlingScenarioClass,
-                '-rf',
-                'build/reports/gatling',
-                '-on',
-                'build/reports/gatling',
-                '-bdf',
-                'build/reports/gatling'
-    }
+    // Gatling dependencies
+    compile 'io.gatling.highcharts:gatling-charts-highcharts:2.1.6'
 }

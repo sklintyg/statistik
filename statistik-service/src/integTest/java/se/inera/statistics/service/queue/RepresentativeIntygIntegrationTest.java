@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -44,12 +44,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
 // CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml" })
+@ContextConfiguration(locations = {"classpath:application-context-test.xml", "classpath:process-log-impl-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml" })
 @DirtiesContext
 public class RepresentativeIntygIntegrationTest {
     private static final int PERSON_K1950 = 0;
@@ -65,6 +67,8 @@ public class RepresentativeIntygIntegrationTest {
 
     private List<String> persons = new ArrayList<>();
 
+    @Autowired
+    private QueueAspect queueAspect;
     @Autowired
     private QueueHelper queueHelper;
     @Autowired
@@ -87,6 +91,8 @@ public class RepresentativeIntygIntegrationTest {
 
     @Test
     public void deliver_document_from_in_queue_to_statistics_repository() throws IOException {
+        CountDownLatch countDownLatch = new CountDownLatch(3);
+        queueAspect.setCountDownLatch(countDownLatch);
         UtlatandeBuilder builder = new UtlatandeBuilder("/json/integration/intyg1.json");
 
         LOG.info("===========START==========");
@@ -100,7 +106,11 @@ public class RepresentativeIntygIntegrationTest {
                     "" + i++);
         }
 
-        sleep();
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         assertEquals("Verify that all messages have been processed.", 3, consumer.processBatch());
 
@@ -115,6 +125,9 @@ public class RepresentativeIntygIntegrationTest {
 
     @Test
     public void deliver_document_from_in_queue_to_statistics_repository_with_usecase_data() throws IOException {
+        CountDownLatch countDownLatch = new CountDownLatch(27);
+        queueAspect.setCountDownLatch(countDownLatch);
+
         UtlatandeBuilder builder = new UtlatandeBuilder("/json/integration/intyg1.json");
 
         LOG.info("===========START==========");
@@ -140,7 +153,11 @@ public class RepresentativeIntygIntegrationTest {
                     "" + i++);
         }
 
-        sleep();
+        try {
+            countDownLatch.await(20, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         assertEquals("Verify that all messages have been processed.", 27, consumer.processBatch());
 
@@ -148,14 +165,6 @@ public class RepresentativeIntygIntegrationTest {
         queueHelper.printAndGetPersistedData(getVardenhet(ENVE), getVardenhet(TVAVE), new Range(getStart(0), getStop(3)));
 
         LOG.info("============END===========\n");
-    }
-
-    private void sleep() {
-        try {
-            Thread.sleep(9000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     private List<String> readList(String path) {

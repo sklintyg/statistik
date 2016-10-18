@@ -20,11 +20,11 @@ Sjukfallet syns i gruppen "181-365 dagar". Även intyg som ligger före tidsinte
 Nationell:
 | Sjukfall i rapporten sjukskrivningslangd |
 | sjukskrivningslängd | män? | kvinnor? |
-| 31-90 dagar         | 0    | 0        |
+| 61-90 dagar         | 0    | 0        |
 | 181-365 dagar       | 0    | 1        |
 
 Inloggad:
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | sjukskrivningslängd | män? | kvinnor? |
-| user1        | 31-90 dagar         | 0    | 0        |
+| user1        | 61-90 dagar         | 0    | 0        |
 | user1        | 181-365 dagar       | 0    | 1        |

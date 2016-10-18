@@ -4,7 +4,7 @@ profile: dev
 inera_root: /opt/inera
 archive_dir: "{{ inera_root }}/archives"
 releases_folder: "{{ inera_root }}/releases"
-java_home: "{{ inera_root }}/jre"
+java_home: "{{ inera_root }}/jre8"
 environment_name: "test"
 config_repository: https://github.com/sklintyg/statistik-konfiguration.git
 config_folder: "{{ inera_root }}/statistik-konfiguration"
@@ -29,5 +29,8 @@ database_pool_minIdle: 10
 database_pool_initialSize: 10
 activemq_username: ""
 activemq_password: ""
-activemq_broker_url: "tcp://localhost:61616"
-phantomjs_version: 1.9.8
+
+phantomjs_version: 2.1.1
+
+gitcrypt_key_name: "git-crypt4.key"
+gitcrypt_key_file: "~/.ssh/{{ gitcrypt_key_name }}"

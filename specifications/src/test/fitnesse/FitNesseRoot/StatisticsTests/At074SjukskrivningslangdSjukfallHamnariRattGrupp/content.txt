@@ -14,30 +14,34 @@ Ett sjukfall består av ett intyg med 74 dagars giltighetstid.
 
 !3 Då gäller:
 
-Sjukfallet hamnar i gruppen "31-90 dagar".
+Sjukfallet hamnar i gruppen "61-90 dagar".
 
 Nationell:
 | Sjukfall i rapporten sjukskrivningslangd |
 | sjukskrivningslängd | män? | kvinnor? |
 | 15-30 dagar         | 0    | 0        |
-| 31-90 dagar         | 0    | 1        |
+| 31-60 dagar         | 0    | 0        |
+| 61-90 dagar         | 0    | 1        |
 | 91-180 dagar        | 0    | 0        |
 
 | Sjukfall i oversikt sjukskrivningslangd |
 | grupp          | antal? |
 | 15-30 dagar    | 0      |
-| 31-90 dagar    | 1      |
+| 31-60 dagar    | 0      |
+| 61-90 dagar    | 1      |
 | 91-180 dagar   | 0    |
 
 Inloggad:
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | sjukskrivningslängd | män? | kvinnor? |
 | user1        | 15-30 dagar         | 0    | 0        |
-| user1        | 31-90 dagar         | 0    | 1        |
+| user1        | 31-60 dagar         | 0    | 0        |
+| user1        | 61-90 dagar         | 0    | 1        |
 | user1        | 91-180 dagar        | 0    | 0        |
 
 | Sjukfall i oversikt sjukskrivningslangd |
 |inloggad som | grupp          | antal? |
 | user1       | 15-30 dagar    | 0      |
-| user1       | 31-90 dagar    | 1     |
+| user1       | 31-60 dagar    | 0     |
+| user1       | 61-90 dagar    | 1     |
 | user1       | 91-180 dagar   | 0    |

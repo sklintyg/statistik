@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -25,6 +25,7 @@ import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,7 @@ import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.Verksamhet;
@@ -49,6 +51,7 @@ import se.inera.statistics.web.service.landsting.LandstingEnhetFileParseExceptio
 import se.inera.statistics.web.service.landsting.LandstingFileGenerationException;
 import se.inera.statistics.web.service.landsting.LandstingFileReader;
 import se.inera.statistics.web.service.landsting.LandstingFileWriter;
+import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
@@ -98,6 +101,13 @@ public class ProtectedLandstingService {
     @Autowired
     private EnhetManager enhetManager;
 
+    @Autowired
+    @Qualifier("webMonitoringLogService")
+    private MonitoringLogService monitoringLogService;
+
+    @Autowired
+    private ResponseHandler responseHandler;
+
     private LandstingFileReader landstingFileReader = new LandstingFileReader();
 
     private LandstingFileWriter landstingFileWriter = new LandstingFileWriter();
@@ -109,11 +119,13 @@ public class ProtectedLandstingService {
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response fileupload(@Context HttpServletRequest request, MultipartBody body) {
-        LoginInfo info = loginServiceUtil.getLoginInfo(request);
+        LoginInfo info = loginServiceUtil.getLoginInfo();
+        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final LoginInfoVg loginInfoVg = info.getLoginInfoForVg(vgId).orElse(LoginInfoVg.empty());
         final String fallbackUpload = body.getAttachmentObject("fallbackUpload", String.class);
         final boolean isUsingClassicFormFileUpload = fallbackUpload != null;
         final UploadResultFormat resultFormat = isUsingClassicFormFileUpload ? UploadResultFormat.HTML : UploadResultFormat.JSON;
-        if (!info.isProcessledare()) {
+        if (!loginInfoVg.isProcessledare()) {
             final String msg = "A user without processledar-status tried to update landstingsdata";
             LOG.warn(msg + " : " + info.getHsaId());
             return createFileUploadResponse(Response.Status.FORBIDDEN, msg, resultFormat);
@@ -124,9 +136,12 @@ public class ProtectedLandstingService {
         }
         try {
             final List<LandstingEnhetFileDataRow> landstingFileRows = landstingFileReader.readExcelData(dataSource);
-            final HsaIdVardgivare vardgivarId = info.getDefaultVerksamhet().getVardgivarId();
+            final HsaIdVardgivare vardgivarId = loginInfoVg.getHsaId();
             final LandstingEnhetFileData fileData = new LandstingEnhetFileData(vardgivarId, landstingFileRows, info.getName(), info.getHsaId(), dataSource.getName());
             landstingEnhetHandler.update(fileData);
+
+            monitoringLogService.logFileUpload(info.getHsaId(), vardgivarId, dataSource.getName(), landstingFileRows != null ? landstingFileRows.size() : null);
+
             return createFileUploadResponse(Response.Status.OK, "Data updated ok", resultFormat);
         } catch (LandstingEnhetFileParseException e) {
             LOG.warn("Failed to parse landstings file", e);
@@ -143,8 +158,8 @@ public class ProtectedLandstingService {
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response clearLandstingEnhets(@Context HttpServletRequest request) {
-        LoginInfo info = loginServiceUtil.getLoginInfo(request);
-        final HsaIdVardgivare vgId = info.getDefaultVerksamhet().getVardgivarId();
+        LoginInfo info = loginServiceUtil.getLoginInfo();
+        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         try {
             landstingEnhetHandler.clear(vgId, info.getName(), info.getHsaId());
             return Response.ok().build();
@@ -246,7 +261,7 @@ public class ProtectedLandstingService {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonthLandsting(filterSettings);
         SimpleDetailsData result = new PeriodConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, csv);
+        return getResponse(result, csv, request);
     }
 
     @GET
@@ -259,21 +274,17 @@ public class ProtectedLandstingService {
         final List<HsaIdEnhet> connectedEnhetIds = getEnhetIdsToMark(request);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhetLandsting(filterSettings);
         SimpleDetailsData result = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", connectedEnhetIds).convert(casesPerEnhet, filterSettings);
-        return getResponse(result, csv);
+        return getResponse(result, csv, request);
     }
 
     private List<HsaIdEnhet> getEnhetIdsToMark(@Context HttpServletRequest request) {
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
-        if (loginInfo.isProcessledare()) {
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
+        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        if (loginInfo.getLoginInfoForVg(vgId).map(LoginInfoVg::isProcessledare).orElse(false)) {
             return Collections.emptyList();
         }
-        final List<Verksamhet> businesses = loginInfo.getBusinesses();
-        return Lists.transform(businesses, new Function<Verksamhet, HsaIdEnhet>() {
-            @Override
-            public HsaIdEnhet apply(Verksamhet verksamhet) {
-                return verksamhet.getId();
-            }
-        });
+        final List<Verksamhet> businesses = loginInfo.getBusinessesForVg(loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        return Lists.transform(businesses, Verksamhet::getId);
     }
 
     @GET
@@ -288,7 +299,7 @@ public class ProtectedLandstingService {
         final List<HsaIdEnhet> connectedEnhetIds = getEnhetIdsToMark(request);
         final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vgIdForLoggedInUser);
         SimpleDetailsData result = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, connectedEnhetIds).convert(casesPerEnhet, filterSettings, null);
-        return getResponse(result, csv);
+        return getResponse(result, csv, request);
     }
 
     @GET
@@ -297,44 +308,38 @@ public class ProtectedLandstingService {
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getLandstingFilterInfo(@Context HttpServletRequest request) {
-        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final List<HsaIdEnhet> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
-        final List<Enhet> enhets = enhetManager.getEnhets(allEnhets);
-        List<Verksamhet> businesses = Lists.transform(enhets, new Function<Enhet, Verksamhet>() {
-            @Override
-            public Verksamhet apply(Enhet enhet) {
-                return loginServiceUtil.toVerksamhet(enhet);
-            }
-        });
+        List<Verksamhet> businesses = filterHandler.getAllVerksamhetsForLoggedInLandstingsUser(request);
         final Map<String, Object> result = new HashMap<>();
         result.put("businesses", businesses);
         return Response.ok(result).build();
     }
 
-    private Response getResponse(TableDataReport result, String csv) {
-        if (csv == null || csv.isEmpty()) {
-            return Response.ok(result).build();
-        }
-        return CsvConverter.getCsvResponse(result.getTableData(), "export.csv");
+    private Response getResponse(TableDataReport result, String csv, HttpServletRequest request) {
+        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final List<HsaIdEnhet> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
+        return responseHandler.getResponse(result, csv, allEnhets);
     }
 
     public boolean hasAccessToLandstingAdmin(HttpServletRequest request) {
         if (request == null) {
             return false;
         }
-        return loginServiceUtil.getLoginInfo(request).isLandstingAdmin();
+        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        return loginServiceUtil.getLoginInfo().getLoginInfoForVg(vg).map(LoginInfoVg::isLandstingAdmin).orElse(false);
     }
 
     public boolean hasAccessToLandsting(HttpServletRequest request) {
         if (request == null) {
             return false;
         }
-        return loginServiceUtil.getLoginInfo(request).isLandstingsvardgivare();
+        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        return loginServiceUtil.getLoginInfo().getLoginInfoForVg(vg).map(LoginInfoVg::isLandstingsvardgivare).orElse(false);
     }
 
     public boolean userAccess(HttpServletRequest request) {
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo(request);
-        LOG.info("User " + loginInfo.getHsaId() + " accessed verksamhet " + loginInfo.getDefaultVerksamhet().getVardgivarId() + " (" + getUriSafe(request) + ") session " + request.getSession().getId());
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
+        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        LOG.info("User " + loginInfo.getHsaId() + " accessed vg " + vgId + " (" + getUriSafe(request) + ") session " + request.getSession().getId());
         return true;
     }
 

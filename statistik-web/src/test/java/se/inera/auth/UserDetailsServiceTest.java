@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,6 +18,19 @@
  */
 package se.inera.auth;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,22 +44,17 @@ import org.opensaml.xml.ConfigurationException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.springframework.security.saml.SAMLCredential;
 import org.xml.sax.SAXException;
+
 import se.inera.auth.model.User;
+import se.inera.intyg.common.integration.hsa.services.HsaPersonService;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.hsa.services.HsaOrganizationsService;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.util.Arrays;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
+import se.inera.statistics.hsa.services.UserAuthorization;
+import se.inera.statistics.web.service.monitoring.MonitoringLogService;
+import se.riv.infrastructure.directory.v1.PersonInformationType;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserDetailsServiceTest {
@@ -58,6 +66,12 @@ public class UserDetailsServiceTest {
     @Mock
     private HsaOrganizationsService hsaOrganizationsService;
 
+    @Mock
+    private HsaPersonService hsaPersonService;
+    
+    @Mock
+    private MonitoringLogService monitoringLogService; 
+
     @InjectMocks
     private UserDetailsService service = new UserDetailsService();
 
@@ -65,48 +79,44 @@ public class UserDetailsServiceTest {
 
     @Before
     public void setup() throws SAXException, UnmarshallingException, ParserConfigurationException, ConfigurationException, IOException {
-        newCredentials("/test-saml-biljett.xml");
+        newCredentials("/test-saml-biljett-uppdragslos.xml");
+        setupHsaPersonService();
     }
 
     @Test
-    public void correctVardenhetIsChosen() throws Exception {
-        auktoriseradeEnheter(VE1_VG1, VE2_VG1);
-        User user = (User) service.loadUserBySAML(credential);
-        assertEquals(new HsaIdEnhet("IFV1239877878-103F"), user.getValdVardenhet().getId());
-        assertEquals(2, user.getVardenhetList().size());
-    }
-
-    @Test
-    public void vardenhetOnOtherVardgivareAreFiltered() throws Exception {
+    public void vardenhetOnOtherVardgivareAreNotFiltered() throws Exception {
         auktoriseradeEnheter(VE1_VG1, VE3_VG2, VE4_VG2);
         User user = (User) service.loadUserBySAML(credential);
-        assertEquals(1, user.getVardenhetList().size());
+        assertEquals(3, user.getVardenhetList().size());
         assertEquals(VE1_VG1, user.getVardenhetList().get(0));
+        assertEquals(VE3_VG2, user.getVardenhetList().get(1));
+        assertEquals(VE4_VG2, user.getVardenhetList().get(2));
     }
 
     @Test
     public void hasVgAccessByMultipleEnhets() throws Exception {
-        newCredentials("/test-saml-biljett-no-systemroles.xml");
-        auktoriseradeEnheter(VE1_VG1, VE2_VG1);
+        newCredentials("/test-saml-biljett-uppdragslos.xml");
+        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(new UserAuthorization(Arrays.asList(VE1_VG1, VE2_VG1), Collections.emptyList()));
         User user = (User) service.loadUserBySAML(credential);
-        assertTrue(user.isDelprocessledare());
-        assertFalse(user.isProcessledare());
+        assertTrue(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
+        assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
     }
 
     @Test
     public void hasVgAccessBySystemRole() throws Exception {
-        auktoriseradeEnheter(VE1_VG1);
+        auktoriseradeEnheter(VE1_VG1, VE3_VG2);
         User user = (User) service.loadUserBySAML(credential);
-        assertFalse(user.isDelprocessledare());
-        assertTrue(user.isProcessledare());
+        assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
+        assertTrue(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
     }
 
     @Test
     public void hasNoVgAccessBySystemRole() throws Exception {
-        auktoriseradeEnheter(VE2_VG1);
+        final UserAuthorization userAuthorization = new UserAuthorization(Arrays.asList(VE2_VG1, VE3_VG2), Collections.emptyList());
+        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(userAuthorization);
         User user = (User) service.loadUserBySAML(credential);
-        assertFalse(user.isDelprocessledare());
-        assertFalse(user.isProcessledare());
+        assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isDelprocessledare());
+        assertFalse(user.getUserAccessLevelForVg(VE1_VG1.getVardgivarId()).isProcessledare());
     }
 
     private void newCredentials(String samlTicketName) {
@@ -117,7 +127,18 @@ public class UserDetailsServiceTest {
     }
 
     private void auktoriseradeEnheter(Vardenhet...enheter) {
-        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(Arrays.asList(enheter));
+        when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(new UserAuthorization(Arrays.asList(enheter), Arrays.asList("INTYG;Statistik-IFV1239877878-0001")));
+    }
+
+    private void setupHsaPersonService() {
+        when(hsaPersonService.getHsaPersonInfo(anyString())).thenReturn(Arrays.asList(buildPersonInformation()));
+    }
+
+    private PersonInformationType buildPersonInformation() {
+        PersonInformationType pit = new PersonInformationType();
+        pit.setGivenName("Läkar");
+        pit.setMiddleAndSurName("Läkarsson");
+        return pit;
     }
 
 }

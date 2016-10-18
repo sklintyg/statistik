@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -129,20 +129,20 @@ public class NationellData {
             result = new SimpleKonResponse<>(list);
         }
         if (result == null) {
-            return new SimpleKonResponse<>(new ArrayList<SimpleKonDataRow>());
+            return new SimpleKonResponse<>(new ArrayList<>());
         } else {
             return result;
         }
     }
 
     public KonDataResponse getSjukskrivningsgrad(Range range) {
-        return getSjukskrivningsgrad(range.getFrom(), range.getMonths(), 1);
+        return getSjukskrivningsgrad(range.getFrom(), range.getMonths(), 1, false);
     }
 
-    public KonDataResponse getSjukskrivningsgrad(LocalDate start, int perioder, int periodlangd) {
+    public KonDataResponse getSjukskrivningsgrad(LocalDate start, int perioder, int periodlangd, boolean all) {
         KonDataResponse result = null;
         for (Aisle aisle : warehouse) {
-            KonDataResponse grader = SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
+            KonDataResponse grader = SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil, all);
             if (result == null) {
                 result = createEmptyKonDataResponse(grader);
             }
@@ -162,7 +162,7 @@ public class NationellData {
             result = new KonDataResponse(result.getGroups(), list);
         }
         if (result == null) {
-            return new KonDataResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
+            return new KonDataResponse(new ArrayList<>(), new ArrayList<>());
         } else {
             return result;
         }
@@ -191,7 +191,7 @@ public class NationellData {
             result = new SimpleKonResponse<>(list);
         }
         if (result == null) {
-            return new SimpleKonResponse<>(new ArrayList<SimpleKonDataRow>());
+            return new SimpleKonResponse<>(new ArrayList<>());
         } else {
             return result;
         }
@@ -202,9 +202,13 @@ public class NationellData {
     }
 
     public DiagnosgruppResponse getDiagnosgrupper(LocalDate start, int perioder, int periodlangd) {
+        return getDiagnosgrupper(start, perioder, periodlangd, false);
+    }
+
+    public DiagnosgruppResponse getDiagnosgrupper(LocalDate start, int perioder, int periodlangd, boolean all) {
         DiagnosgruppResponse result = null;
         for (Aisle aisle : warehouse) {
-            DiagnosgruppResponse diagnosgrupper = query.getDiagnosgrupper(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd);
+            DiagnosgruppResponse diagnosgrupper = query.getDiagnosgrupper(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, all);
             if (result == null) {
                 result = createEmptyDiagnosgruppResponse(diagnosgrupper);
             }
@@ -226,7 +230,7 @@ public class NationellData {
             result = new DiagnosgruppResponse(icdTyps, list);
         }
         if (result == null) {
-            return new DiagnosgruppResponse(new ArrayList<Icd>(), new ArrayList<KonDataRow>());
+            return new DiagnosgruppResponse(new ArrayList<>(), new ArrayList<>());
         } else {
             return result;
         }
@@ -266,7 +270,7 @@ public class NationellData {
             result = new DiagnosgruppResponse(result.getIcdTyps(), list);
         }
         if (result == null) {
-            return new DiagnosgruppResponse(new ArrayList<Icd>(), new ArrayList<KonDataRow>());
+            return new DiagnosgruppResponse(new ArrayList<>(), new ArrayList<>());
         } else {
             return result;
         }
@@ -279,7 +283,7 @@ public class NationellData {
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLan(LocalDate start, int perioder, int periodlangd) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (String lanId : lans) {
-            result.add(new SimpleKonDataRow(lans.getNamn(lanId), 0, 0));
+            result.add(new SimpleKonDataRow(lans.getNamn(lanId), 0, 0, lanId));
         }
         for (Aisle aisle : warehouse) {
             Map<String, Counter<String>> map = new HashMap<>();
@@ -302,7 +306,7 @@ public class NationellData {
             for (String lanId : lans) {
                 Counter<String> counter = map.get(lanId);
                 SimpleKonDataRow previous = result.get(index);
-                result.set(index, new SimpleKonDataRow(previous.getName(), filterCutoff(counter.getCountFemale()) + previous.getFemale(), filterCutoff(counter.getCountMale()) + previous.getMale()));
+                result.set(index, new SimpleKonDataRow(previous.getName(), filterCutoff(counter.getCountFemale()) + previous.getFemale(), filterCutoff(counter.getCountMale()) + previous.getMale(), lanId));
                 index++;
             }
             if (!okandLans.isEmpty()) {
@@ -334,7 +338,7 @@ public class NationellData {
             result = new SimpleKonResponse<>(list);
         }
         if (result == null) {
-            return new SimpleKonResponse<>(new ArrayList<SimpleKonDataRow>());
+            return new SimpleKonResponse<>(new ArrayList<>());
         } else {
             return result;
         }

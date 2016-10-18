@@ -1,0 +1,94 @@
+package se.inera.statistics.spec
+
+abstract class SjukfallIRapportenSocialstyrelsenSom extends Rapport {
+
+    def diagnos
+    def totalt
+    def kvinnor
+    def män
+    def lan10
+    def lan20
+    def lan13
+    def lan08
+    def lan07
+    def lan09
+    def lan21
+    def lan23
+    def lan06
+    def lan25
+    def lan12
+    def lan01
+    def lan04
+    def lan03
+    def lan17
+    def lan24
+    def lan22
+    def lan19
+    def lan14
+    def lan18
+    def lan05
+    def lan00
+
+    def totalt() { return totalt }
+    def kvinnor() { return kvinnor }
+    def män() { return män }
+    def lan10() { return lan10 }
+    def lan20() { return lan20 }
+    def lan13() { return lan13 }
+    def lan08() { return lan08 }
+    def lan07() { return lan07 }
+    def lan09() { return lan09 }
+    def lan21() { return lan21 }
+    def lan23() { return lan23 }
+    def lan06() { return lan06 }
+    def lan25() { return lan25 }
+    def lan12() { return lan12 }
+    def lan01() { return lan01 }
+    def lan04() { return lan04 }
+    def lan03() { return lan03 }
+    def lan17() { return lan17 }
+    def lan24() { return lan24 }
+    def lan22() { return lan22 }
+    def lan19() { return lan19 }
+    def lan14() { return lan14 }
+    def lan18() { return lan18 }
+    def lan05() { return lan05 }
+    def lan00() { return lan00 }
+
+    public void executeTabell(report) {
+        def row = report.find { currentRow -> currentRow.diagnos == diagnos  }
+        totalt = row == null ? -1 : row.totalt
+        kvinnor = row == null ? -1 : row.kvinnor
+        män = row == null ? -1 : row.man
+        lan10 = row == null ? -1 : row.blekingeLan
+        lan20 = row == null ? -1 : row.dalarnasLan
+        lan13 = row == null ? -1 : row.hallandsLan
+        lan08 = row == null ? -1 : row.kalmarLan
+        lan07 = row == null ? -1 : row.kronobergsLan
+        lan09 = row == null ? -1 : row.gotlandsLan
+        lan21 = row == null ? -1 : row.gavleborgsLan
+        lan23 = row == null ? -1 : row.jamtlandsLan
+        lan06 = row == null ? -1 : row.jonkopingsLan
+        lan25 = row == null ? -1 : row.norrbottensLan
+        lan12 = row == null ? -1 : row.skaneLan
+        lan01 = row == null ? -1 : row.stockholmsLan
+        lan04 = row == null ? -1 : row.sodermanlandsLan
+        lan03 = row == null ? -1 : row.uppsalaLan
+        lan17 = row == null ? -1 : row.varmlandsLan
+        lan24 = row == null ? -1 : row.vasterbottensLan
+        lan22 = row == null ? -1 : row.vasternorrlandsLan
+        lan19 = row == null ? -1 : row.vastmanlandsLan
+        lan14 = row == null ? -1 : row.vastraGotalandsLan
+        lan18 = row == null ? -1 : row.orebroLan
+        lan05 = row == null ? -1 : row.ostergotlandsLan
+        lan00 = row == null ? -1 : row.okantLan
+    }
+
+    public void doExecute() {
+        def report = getReport()
+        executeTabell(report)
+    }
+
+    def abstract getReport();
+
+}

@@ -11,8 +11,8 @@ Ett sjukfall består av tre intyg på två olika enheter. En enhet byter län me
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | län |
 | 19790717-9191 | G01 | 2013-05-05 | 2013-06-06 | enhet1 | 01  |
-| 19790717-9191 | G01 | 2013-06-07 | 2013-06-30 | enhet2 | 03  |
-| 19790717-9191 | G01 | 2013-07-01 | 2013-07-30 | enhet1 | 00  |
+| 19790717-9191 | G01 | 2013-06-07 | 2013-06-30 | enhet2 | 06  |
+| 19790717-9191 | G01 | 2013-07-01 | 2013-07-30 | enhet1 | 10  |
 
 !3 Då gäller:
 
@@ -20,13 +20,13 @@ Ett sjukfall kan bara tillhöra ett län. Sjukfallet visas för länet i det sen
 
 Nationell:
 | Sjukfall i rapporten lan |
-| period       | län            | män? | kvinnor? |
-| maj–jul 2013 | Stockholms län | 0    | 0        |
-| maj–jul 2013 | Uppsala län    | 0    | 0        |
-| maj–jul 2013 | Okänt län      | 1    | 0        |
+| län            | kolumngrupp    | totalt? | kvinnor? | män? |
+| Stockholms län | antal sjukfall | 0    | 0        | 0 | 
+| Jönköpings län | antal sjukfall | 0    | 0        | 0 |
+| Blekinge län   | antal sjukfall | 1    | 0        | 1 |
 
 | Sjukfall i rapporten andel sjukfall per kon |
-| län            | totalt? | män?     | kvinnor? |
-| Stockholms län | 0       | 0% (0)   | 0% (0)   |
-| Uppsala län    | 0       | 0% (0)   | 0% (0)   |
-| Okänt län      | 1       | 100% (1) | 0% (0)   |
+| län            | totalt? | män?      | kvinnor? |
+| Stockholms län | 0       | 0 % (0)   | 0 % (0)  |
+| Jönköpings län    | 0       | 0 % (0)   | 0 % (0)  |
+| Blekinge län      | 1       | 100 % (1) | 0 % (0)  |

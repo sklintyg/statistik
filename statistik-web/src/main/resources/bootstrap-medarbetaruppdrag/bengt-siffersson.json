@@ -1,4 +1,8 @@
 {
   "hsaId": "HSA-BS",
-  "enhetIds": ["verksamhet1", "verksamhet2", "verksamhet3"]
+  "uppdrag": [
+    {"andamal":["STATISTIK"], "enhet":"verksamhet1"},
+    {"andamal":["STATISTIK"], "enhet":"verksamhet2"},
+    {"andamal":["STATISTIK"], "enhet":"verksamhet3"}
+  ]
 }

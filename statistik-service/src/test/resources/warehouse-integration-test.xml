@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2015 Inera AB (http://www.inera.se)
+    Copyright (C) 2016 Inera AB (http://www.inera.se)
 
     This file is part of statistik (https://github.com/sklintyg/statistik).
 
@@ -39,11 +39,11 @@
           factory-method="createTcpServer"
           init-method="start"
           destroy-method="stop" lazy-init="false">
-        <constructor-arg value="-tcp,-tcpAllowOthers,-tcpPort,9095"/>
+        <constructor-arg value="-tcp,-tcpAllowOthers"/>
     </bean>
     <bean id="h2WebServer" class="org.h2.tools.Server" factory-method="createWebServer" init-method="start"
           destroy-method="stop">
-        <constructor-arg value="-web,-webAllowOthers,-webPort,8085"/>
+        <constructor-arg value="-web,-webAllowOthers"/>
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
@@ -73,7 +73,7 @@
     </bean>
 
     <bean class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" id="hsaWebServiceCalls"/>
-    <bean class="se.inera.statistics.hsa.stub.HsaServiceStub" id="hsaServiceStub"/>
+    <bean class="se.inera.statistics.service.hsa.HsaServiceStub" id="hsaServiceStub"/>
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
     <bean class="se.inera.statistics.service.processlog.Processor"/>
     <bean class="se.inera.statistics.service.warehouse.FactPopulator"/>
@@ -84,6 +84,7 @@
     <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
     <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
     <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
+    <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper"/>
 
     <bean id="dataGenerator" class="se.inera.statistics.service.demo.LargeTestDataGenerator" />
 

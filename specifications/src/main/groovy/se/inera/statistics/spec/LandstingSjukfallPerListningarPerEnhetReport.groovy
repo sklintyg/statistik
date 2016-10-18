@@ -20,6 +20,7 @@ abstract class LandstingSjukfallPerListningarPerEnhetReport extends Rapport {
     }
 
     public void reset() {
+        super.reset();
         antalSjukfall = -1
         antalListningar = -1
         antalSjukfallPerTusenListningar = -1
@@ -56,7 +57,7 @@ abstract class LandstingSjukfallPerListningarPerEnhetReport extends Rapport {
 
     def getReportSjukfallPerListningarPerEnhetLandsting() {
         if (inloggad) {
-            return reportsUtil.getReportSjukfallPerListningarPerEnhetLandsting(filter);
+            return reportsUtil.getReportSjukfallPerListningarPerEnhetLandsting(vg, filter);
         }
         throw new RuntimeException("Report -Landsting Sjukfall per listningar per enhet- is not available on national level");
     }

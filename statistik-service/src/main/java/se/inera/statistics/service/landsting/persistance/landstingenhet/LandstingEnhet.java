@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -26,6 +26,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Contains information about which enhets that are available as landstings statistics
+ * including number of signed up patients (i.e. the content of the uploaded file).
+ */
 @Entity
 @Table(name = "LandstingEnhet")
 public class LandstingEnhet {

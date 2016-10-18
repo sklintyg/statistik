@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -21,9 +21,9 @@ package se.inera.statistics.gatling
 import io.gatling.core.Predef._
 
 object InloggadAldersgruppReport {
-  def exec(user: Login.User) = RestCall.post(
+  def exec(user: Login.User) = RestCall.get(
     s"getAgeGroupsStatistics: ${user.vardgivare}",
-    s"${Conf.uri}/api/verksamhet/${user.vardgivare}/getAgeGroupsStatistics")
+    s"${Conf.uri}/api/verksamhet/getAgeGroupsStatistics")
 }
 
 class InloggadAldersgrupp extends Simulation {

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -39,6 +39,15 @@ public enum Kon {
             }
         }
         throw new IllegalArgumentException("Unknown number for Kon: " + number);
+    }
+
+    public static Kon parse(String konString) {
+        for (Kon kon : values()) {
+            if (kon.name().equalsIgnoreCase(konString)) {
+                return kon;
+            }
+        }
+        throw new IllegalArgumentException("Unknown name for Kon: " + konString);
     }
 
 }

@@ -36,5 +36,5 @@ Tröskelvärdet appliceras per vårdgivare, kön och sjukskrivningsgrad.
 Nationell:
 | Sjukfall i rapporten sjukskrivningsgrad |
 | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| 2013 | feb   | 100%                 | 0    | 3        |
-| 2013 | feb   | 25%                  | 4    | 0        |
+| 2013 | feb   | 100 %                | 0    | 3        |
+| 2013 | feb   | 25 %                 | 4    | 0        |

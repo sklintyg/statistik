@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -57,7 +57,7 @@ public class ReceiveHistoryJob {
         private final long[] history;
         private int index;
 
-        public History(int size) {
+        History(int size) {
             history = new long[size];
         }
 

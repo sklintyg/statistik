@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -29,19 +29,19 @@ public class ConversionHelperTest {
     @Test
     public void testPatientIdToString() throws Exception {
         //Given
-        final long id = 197503259280L;
+        final long id = 197503258280L;
 
         //When
         final String pnr = ConversionHelper.patientIdToString(id);
 
         //Then
-        assertEquals("19750325-9280", pnr);
+        assertEquals("19750325-8280", pnr);
     }
 
     @Test
     public void testExtractAlder() throws Exception {
         //When
-        final int alder = ConversionHelper.extractAlder("19750325-9280", new LocalDate(2015, 3, 5));
+        final int alder = ConversionHelper.extractAlder("19750325-8280", new LocalDate(2015, 3, 5));
 
         //Then
         assertEquals(39, alder);

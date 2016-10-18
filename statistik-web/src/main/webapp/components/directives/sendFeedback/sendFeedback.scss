@@ -1,0 +1,23 @@
+.send-feedback {
+  background: #337ab7;
+  padding: 2px;
+  transform: rotate(90deg);
+  position: fixed;
+  right: -30px;
+  bottom: 50px;
+  z-index: 1000;
+  border-radius: 6px;
+}
+
+.send-feedback-btn {
+  color: #ffffff;
+  text-transform: uppercase;
+  background: #337ab7;
+  border: 1px solid #ffffff;
+
+  &:hover {
+    color: #337ab7;
+    background: #ffffff;
+    border: 1px solid #ffffff;
+  }
+}

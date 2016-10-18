@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -55,10 +55,9 @@ public class LoginInfoServiceTest {
 
     @Test
     public void getLoginInfoTest() {
-        HttpServletRequest request = null;
         final LoginInfo loginInfo = new LoginInfo();
-        Mockito.when(loginServiceUtil.getLoginInfo(request)).thenReturn(loginInfo);
-        LoginInfo info = loginInfoService.getLoginInfo(request);
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
+        LoginInfo info = loginInfoService.getLoginInfo();
         Assert.assertEquals(loginInfo, info);
     }
 

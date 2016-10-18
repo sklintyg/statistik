@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -54,7 +54,7 @@ public class SjukfallPerSexConverter {
         symbols.setGroupingSeparator(' ');
         final DecimalFormat formatter = new DecimalFormat("###,###", symbols);
         final float toPercentFactor = 100.0F;
-        return Math.round(toPercentFactor * value / rowSum) + "% (" + formatter.format(value) + ")";
+        return Math.round(toPercentFactor * value / rowSum) + " % (" + formatter.format(value) + ")";
     }
 
     private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
@@ -65,9 +65,8 @@ public class SjukfallPerSexConverter {
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
-        final String stacked = "Stacked";
-        series.add(new ChartSeries("Andel sjukfall för kvinnor", getSeriesForSexWithTotal(casesPerMonth, Kon.Female), stacked, Kon.Female));
-        series.add(new ChartSeries("Andel sjukfall för män", getSeriesForSexWithTotal(casesPerMonth, Kon.Male), stacked, Kon.Male));
+        series.add(new ChartSeries("Kvinnor", getSeriesForSexWithTotal(casesPerMonth, Kon.Female), Kon.Female));
+        series.add(new ChartSeries("Män", getSeriesForSexWithTotal(casesPerMonth, Kon.Male), Kon.Male));
 
         return new ChartData(series, categories);
     }
@@ -91,6 +90,6 @@ public class SjukfallPerSexConverter {
     public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, Range range) {
         TableData tableData = convertToTableData(casesPerMonth.getRows());
         ChartData chartData = convertToChartData(casesPerMonth);
-        return new SimpleDetailsData(tableData, chartData, range.toString(), new FilterDataResponse(null, null));
+        return new SimpleDetailsData(tableData, chartData, range.toString(), FilterDataResponse.empty());
     }
 }

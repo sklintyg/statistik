@@ -19,6 +19,7 @@
                 <bean class="se.inera.statistics.web.service.CalcCoordinatorInvoker"/>
             </jaxrs:invoker>
             <jaxrs:serviceBeans>
+                <ref bean="pdfService"/>
                 <ref bean="chartDataService"/>
                 <ref bean="protectedChartDataService"/>
                 <ref bean="protectedLandstingService"/>
@@ -64,6 +65,10 @@
                 <ref bean="jacksonJsonProvider"/>
             </jaxrs:providers>
         </jaxrs:server>
+    </beans>
+
+    <beans profile="embedded">
+        <bean class="se.inera.testsupport.TestIntygInjector" lazy-init="false"/>
     </beans>
 
 </beans>

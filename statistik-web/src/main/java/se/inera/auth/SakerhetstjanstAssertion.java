@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -22,10 +22,10 @@ import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.Attribute;
 import org.opensaml.saml2.core.AttributeStatement;
 import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.schema.impl.XSAnyImpl;
+import org.springframework.security.saml.SAMLCredential;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,87 +33,67 @@ import java.util.List;
  */
 public class SakerhetstjanstAssertion {
 
-    public static final String TITEL_ATTRIBUTE = "urn:sambi:names:attribute:title";
-    private static final String TITEL_KOD_ATTRIBUTE = "urn:sambi:names:attribute:titleCode";
+    // Användarens HSA-ID.
+    public static final String HSA_ID_ATTRIBUTE = "http://sambi.se/attributes/1/employeeHsaId";
 
-    private static final String FORSKRIVARKOD_ATTRIBUTE = "urn:sambi:names:attribute:personalPrescriptionCode";
+    // Användarens HSA-ID, legacy.
+    public static final String HSA_ID_ATTRIBUTE_LEGACY = "urn:sambi:names:attribute:employeeHsaId";
 
-    public static final String HSA_ID_ATTRIBUTE = "urn:sambi:names:attribute:employeeHsaId";
-
-    public static final String FORNAMN_ATTRIBUTE = "urn:sambi:names:attribute:givenName";
-    public static final String MELLAN_OCH_EFTERNAMN_ATTRIBUTE = "urn:sambi:names:attribute:middleAndSurname";
-
-    public static final String ENHET_HSA_ID_ATTRIBUTE = "urn:sambi:names:attribute:careUnitHsaId";
-    private static final String ENHET_NAMN_ATTRIBUTE = "urn:sambi:names:attribute:careUnitName";
-
-    public static final String VARDGIVARE_HSA_ID_ATTRIBUTE = "urn:sambi:names:attribute:careProviderHsaId";
-    private static final String VARDGIVARE_NAMN_ATTRIBUTE = "urn:sambi:names:attribute:careProviderName";
-
-    public static final String SYSTEM_ROLE_ATTRIBUTE = "urn:sambi:names:attribute:systemRole";
-
-    private String titelKod;
-    private String titel;
-
-    private String forskrivarkod;
 
     private String hsaId;
+    private String authenticationScheme;
 
-    private String fornamn;
-    private String mellanOchEfternamn;
 
-    private String enhetHsaId;
-    private String enhetNamn;
-
-    private String vardgivareHsaId;
-    private String vardgivareNamn;
-
-    private Collection<String> systemRole = Collections.emptyList();
-
+    /* Constructor taking an Assertion object */
     public SakerhetstjanstAssertion(Assertion assertion) {
         if (assertion.getAttributeStatements() != null) {
             for (AttributeStatement attributeStatement : assertion.getAttributeStatements()) {
                 extractAttributes(attributeStatement.getAttributes());
             }
         }
+
+        if (!assertion.getAuthnStatements().isEmpty()) {
+            authenticationScheme = assertion.getAuthnStatements().get(0).getAuthnContext().getAuthnContextClassRef().getAuthnContextClassRef();
+        }
     }
+
+    // - - - - -  Static - - - - -
+
+    public static SakerhetstjanstAssertion getAssertion(SAMLCredential credential) {
+        return new SakerhetstjanstAssertion(credential.getAuthenticationAssertion());
+    }
+
+
+
+    // - - - - -  Getters and setters - - - - -
+
+    public String getHsaId() {
+        return hsaId;
+    }
+
+    public String getAuthenticationScheme() {
+        return authenticationScheme;
+    }
+
+
+    // - - - - - Private scope - - - - -
 
     private void extractAttributes(List<Attribute> attributes) {
         for (Attribute attribute : attributes) {
             switch (attribute.getName()) {
-            case TITEL_ATTRIBUTE:
-                titel = getValue(attribute);
-                break;
-            case TITEL_KOD_ATTRIBUTE:
-                titelKod = getValue(attribute);
-                break;
-            case FORSKRIVARKOD_ATTRIBUTE:
-                forskrivarkod = getValue(attribute);
-                break;
-            case HSA_ID_ATTRIBUTE:
-                hsaId = getValue(attribute);
-                break;
-            case FORNAMN_ATTRIBUTE:
-                fornamn = getValue(attribute);
-                break;
-            case MELLAN_OCH_EFTERNAMN_ATTRIBUTE:
-                mellanOchEfternamn = getValue(attribute);
-                break;
-            case ENHET_HSA_ID_ATTRIBUTE:
-                enhetHsaId = getValue(attribute);
-                break;
-            case ENHET_NAMN_ATTRIBUTE:
-                enhetNamn = getValue(attribute);
-                break;
-            case VARDGIVARE_HSA_ID_ATTRIBUTE:
-                vardgivareHsaId = getValue(attribute);
-                break;
-            case VARDGIVARE_NAMN_ATTRIBUTE:
-                vardgivareNamn = getValue(attribute);
-                break;
-            case SYSTEM_ROLE_ATTRIBUTE:
-                    systemRole = getValues(attribute);
+
+                case HSA_ID_ATTRIBUTE:
+                    hsaId = getValue(attribute);
                     break;
-            default:
+                case HSA_ID_ATTRIBUTE_LEGACY:
+                    // Only set if other not already set.
+                    String val = getValue(attribute);
+                    if (val != null && hsaId == null) {
+                        hsaId = val;
+                    }
+
+                default:
+                    // Ignore.
             }
         }
     }
@@ -129,52 +109,12 @@ public class SakerhetstjanstAssertion {
             return values;
         }
         for (XMLObject xmlObject : attribute.getAttributeValues()) {
-            values.add(xmlObject.getDOM().getTextContent());
+            if (xmlObject.getDOM() != null) {
+                values.add(xmlObject.getDOM().getTextContent());
+            } else if (xmlObject instanceof XSAnyImpl) {
+                values.add(((XSAnyImpl) xmlObject).getTextContent());
+            }
         }
         return values;
-    }
-
-    public String getTitel() {
-        return titel;
-    }
-
-    public String getTitelKod() {
-        return titelKod;
-    }
-
-    public String getForskrivarkod() {
-        return forskrivarkod;
-    }
-
-    public String getHsaId() {
-        return hsaId;
-    }
-
-    public String getFornamn() {
-        return fornamn;
-    }
-
-    public String getMellanOchEfternamn() {
-        return mellanOchEfternamn;
-    }
-
-    public String getEnhetHsaId() {
-        return enhetHsaId;
-    }
-
-    public String getEnhetNamn() {
-        return enhetNamn;
-    }
-
-    public String getVardgivareHsaId() {
-        return vardgivareHsaId;
-    }
-
-    public String getVardgivareNamn() {
-        return vardgivareNamn;
-    }
-
-    public Collection<String> getSystemRoles() {
-        return systemRole;
     }
 }

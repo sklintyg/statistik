@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -63,5 +63,25 @@ public class Vardenhet implements Serializable {
     @Override
     public String toString() {
         return "Vardenhet " + id + " " + namn + " " + vardgivarId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Vardenhet)) {
+            return false;
+        }
+
+        Vardenhet vardenhet = (Vardenhet) o;
+
+        return id.equals(vardenhet.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

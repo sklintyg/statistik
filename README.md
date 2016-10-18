@@ -18,7 +18,7 @@ HSA fileservice hämta en lista över sjukvårdsenheter från HSA och uppdaterar
 ##Komma igång med lokal installation
 Den här sektionen beskriver hur man bygger Inera Statistics för att kunna köras helt fristående.
 
-Vi använder Gradle, för närvarande version 2.2.1, för att bygga applikationerna.
+Vi använder Gradle, för närvarande version 2.13, för att bygga applikationerna.
 
 Börja med att skapa en lokal klon av källkodsrepositoryt:
 
@@ -39,6 +39,33 @@ Nu ska det gå att starta applikationen med:
 
 Nu går det att öppna en webbläsare och surfa till http://localhost:8080/ Observera jetty körs i gradleprocessen, så gradle "blir
 inte klar" förrän du stoppar servern med ^c, och applikationen är bara igång fram till dess.
+
+###Bygga klienten utanför gradle
+Installera nodjs 0.12.14 tex med NVM, https://github.com/creationix/nvm
+
+Installera grunt och bower
+
+    npm install -g grunt-cli bower
+
+Gå in i statistk-web och kör
+
+    npm install
+    bower install
+
+För att starta en lokal grunt server  kör:
+
+    grunt serve
+
+Då öppnas sidan med adressen http://localhost:9095/
+OBS att jetty behöver vara igång samtidigt för att sidan ska fungera.
+
+För att köra hela bygget
+
+    grunt build
+
+För att testa applikationen i ett mer prodlikt läge kan man även starta med en flagga för att köra i minifierat, läge då css/js är packade och sammanslagna, genom att starta:
+
+    gradle clean appRunWar -Pstatistik.useMinifiedJavaScript
 
 ##Gradle
 Vi använder Gradle för att bygga, test, installera och köra statistiktjänsten. Gradle spottar ur sig ganska mycket text, generellt sett har det gått bra om det sista som skrivs ut är något i stil med:
@@ -125,7 +152,6 @@ De profiler som finns är:
 |dev            |starta applikationen i utvecklingsläge|
 |embedded       |använd inbäddad databas (H2), och lägg in testintyg|
 |hsa-stub       |gå inte mot hsa, utan använd en stub istället|
-|db-resetter    |rensa databasen vid uppstart|
 |security-fake  |stöd enbart simulerad inloggning|
 |security-both  |stöd saml-inloggning och simulerad inloggning|
 |security-saml  |stöd enbart saml-inloggning|

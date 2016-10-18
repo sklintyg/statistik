@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,18 +18,20 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
+
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
@@ -40,14 +42,13 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.CounterFunction;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
+import com.google.common.base.Function;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Lists;
 
 @Component
 public class SjukfallUtil {
@@ -60,12 +61,7 @@ public class SjukfallUtil {
         getSjukfallGroupsCache().invalidateAll();
     }
 
-    public static final SjukfallFilter ALL_ENHETER = new SjukfallFilter(new Predicate<Fact>() {
-        @Override
-        public boolean apply(Fact fact) {
-            return true;
-        }
-    }, SjukfallFilter.HASH_EMPTY_FILTER);
+    public static final SjukfallFilter ALL_ENHETER = new SjukfallFilter(fact -> true, sjukfall -> true, SjukfallFilter.HASH_EMPTY_FILTER);
 
     public SjukfallUtil() {
     }
@@ -80,7 +76,7 @@ public class SjukfallUtil {
                             final int periods = key.getPeriods();
                             final int periodSize = key.getPeriodSize();
                             final Aisle aisle = key.getAisle();
-                            final Predicate<Fact> filter = key.getFilter();
+                            final SjukfallFilter filter = key.getFilter();
                             final boolean useOriginalSjukfallStart = key.isUseOriginalSjukfallStart();
                             return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter, useOriginalSjukfallStart));
                         }
@@ -90,18 +86,9 @@ public class SjukfallUtil {
     }
 
     public SjukfallFilter createEnhetFilter(HsaIdEnhet... enhetIds) {
-        final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(Arrays.asList(enhetIds), new Function<HsaIdEnhet, Integer>() {
-            @Override
-            public Integer apply(HsaIdEnhet enhetId) {
-                return Warehouse.getEnhet(enhetId);
-            }
-        }));
-        return new SjukfallFilter(new Predicate<Fact>() {
-            @Override
-            public boolean apply(Fact fact) {
-                return availableEnhets.contains(fact.getEnhet());
-            }
-        }, SjukfallFilter.getHashValueForEnhets(availableEnhets.toArray()));
+        final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(Arrays.asList(enhetIds), enhetId -> Warehouse.getEnhet(enhetId)));
+        final String hashValue = SjukfallFilter.getHashValueForEnhets(availableEnhets.toArray());
+        return new SjukfallFilter(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue);
     }
 
     public Iterable<SjukfallGroup> sjukfallGrupperUsingOriginalSjukfallStart(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final SjukfallFilter filter) {
@@ -119,7 +106,7 @@ public class SjukfallUtil {
             //Failed to get from cache. Do nothing and fall through.
             LOG.warn("Failed to get value from cache");
         }
-        return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, sjukfallFilter.getFilter(), useOriginalSjukfallStart));
+        return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
     }
 
     //CHECKSTYLE:OFF ParameterNumberCheck
@@ -183,22 +170,22 @@ public class SjukfallUtil {
     }
     //CHECKSTYLE:ON
 
-    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Function<Sjukfall, Integer> toCount, List<Integer> groups) {
+    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, CounterFunction<Integer> toCount, List<Integer> groups) {
         return calculateSimpleKonResponse(toCount, groups, sjukfallGrupper(from, periods, periodLength, aisle, filter));
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponseUsingOriginalSjukfallStart(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, Function<Sjukfall, Integer> toCount, List<Integer> groups) {
+    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponseUsingOriginalSjukfallStart(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, CounterFunction<Integer> toCount, List<Integer> groups) {
         return calculateSimpleKonResponse(toCount, groups, sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle, filter));
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Function<Sjukfall, Integer> toCount, List<Integer> groups, Iterable<SjukfallGroup> sjukfallGroups) {
+    private SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(CounterFunction<Integer> toCount, List<Integer> groups, Iterable<SjukfallGroup> sjukfallGroups) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         HashMultiset<Integer> maleCounter = HashMultiset.create();
         HashMultiset<Integer> femaleCounter = HashMultiset.create();
         for (SjukfallGroup sjukfallGroup: sjukfallGroups) {
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                 HashMultiset<Integer> counter = Kon.Male.equals(sjukfall.getKon()) ? maleCounter : femaleCounter;
-                counter.add(toCount.apply(sjukfall));
+                toCount.addCount(sjukfall, counter);
             }
         }
         for (Integer group : groups) {

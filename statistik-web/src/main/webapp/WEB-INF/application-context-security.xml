@@ -3,8 +3,8 @@
        xmlns:security="http://www.springframework.org/schema/security"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-              http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+              http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
 
 
     <!-- Enable auto-wiring -->
@@ -13,12 +13,12 @@
 
     <!-- Unsecured pages -->
     <beans>
-      <security:http security="none" pattern="/css/**"/>
-      <security:http security="none" pattern="/bootstrap/**"/>
+      <security:http security="none" pattern="/services/**"/>
+      <security:http security="none" pattern="/app/**"/>
+      <security:http security="none" pattern="/bower_components/**"/>
       <security:http security="none" pattern="/js/**"/>
-      <security:http security="none" pattern="/img/**"/>
+      <security:http security="none" pattern="/assets/**"/>
       <security:http security="none" pattern="/highcharts-export-web/**"/>
-      <security:http security="none" pattern="/favicon.ico"/>
     </beans>
 
     <beans>
@@ -63,11 +63,13 @@
     <!-- Dev profile only supports Fake login                            -->
     <!-- =============================================================== -->
     <beans profile="security-fake">
-        <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
+        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
+            <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
         </security:http>
-        <security:http entry-point-ref="http403ForbiddenEntryPoint" use-expressions="true">
+        <security:http entry-point-ref="http403ForbiddenEntryPoint">
+            <security:csrf disabled="true"/>
             <security:logout logout-url="/saml/logout" logout-success-url="/" invalidate-session="true"/>
             <security:intercept-url pattern="/**" access="permitAll"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
@@ -81,15 +83,15 @@
     <!-- Test and QA profile support both Säkerhetstjänst and Fake login -->
     <!-- =============================================================== -->
     <beans profile="security-both">
-        <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
+        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
+            <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
-            <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
         </security:http>
-        <security:http entry-point-ref="samlEntryPoint" use-expressions="true">
+        <security:http entry-point-ref="samlEntryPoint">
+            <security:csrf disabled="true"/>
             <security:intercept-url pattern="/login.jsp*" access="isAnonymous()"/>
-            <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
         </security:http>
@@ -103,16 +105,21 @@
     <!-- Prod profile only supports Säkerhetstjänst login                -->
     <!-- =============================================================== -->
     <beans profile="security-saml">
-        <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/verksamhet/**">
+
+        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
+            <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
-            <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
+           <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
+       </security:http>
+       <security:http use-expressions="false" entry-point-ref="samlEntryPoint" pattern="/saml/**">
+           <security:csrf disabled="true"/>
+           <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
         </security:http>
-        <security:http entry-point-ref="samlEntryPoint">
-            <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
-            <security:custom-filter before="FIRST" ref="metadataGeneratorFilter"/>
-            <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
-        </security:http>
+      <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/login/**">
+        <security:csrf disabled="true"/>
+        <security:intercept-url pattern="/**" access="permitAll"/>
+      </security:http>
         <security:authentication-manager alias="authenticationManager">
             <security:authentication-provider ref="samlAuthenticationProvider"/>
         </security:authentication-manager>
@@ -136,14 +143,12 @@
 
     <beans profile="security-saml,security-both">
         <bean id="samlFilter" class="org.springframework.security.web.FilterChainProxy">
-            <security:filter-chain-map request-matcher="ant">
-                <security:filter-chain pattern="/saml/login/**" filters="samlEntryPoint"/>
-                <security:filter-chain pattern="/saml/logout/**" filters="samlLogoutFilter"/>
-                <security:filter-chain pattern="/saml/metadata/**" filters="metadataDisplayFilter"/>
-                <security:filter-chain pattern="/saml/SSO/**" filters="samlWebSSOProcessingFilter"/>
-                <security:filter-chain pattern="/saml/SSOHoK/**" filters="samlWebSSOHoKProcessingFilter"/>
-                <security:filter-chain pattern="/saml/SingleLogout/**" filters="samlLogoutProcessingFilter"/>
-            </security:filter-chain-map>
+          <security:filter-chain-map request-matcher="ant">
+            <security:filter-chain pattern="/saml/login/**" filters="samlEntryPoint"/>
+            <security:filter-chain pattern="/saml/logout/**" filters="samlLogoutFilter"/>
+            <security:filter-chain pattern="/saml/SSO/**" filters="samlWebSSOProcessingFilter"/>
+            <security:filter-chain pattern="/saml/SingleLogout/**" filters="samlLogoutProcessingFilter"/>
+          </security:filter-chain-map>
         </bean>
 
         <!-- Handler deciding where to redirect user after successful login -->
@@ -180,53 +185,75 @@
             </property>
         </bean>
 
-        <!-- Filter automatically generates default SP metadata -->
-        <bean id="metadataGeneratorFilter" class="org.springframework.security.saml.metadata.MetadataGeneratorFilter">
-            <constructor-arg>
-                <bean class="org.springframework.security.saml.metadata.MetadataGenerator">
-                    <property name="entityId" value="${saml.entityId}"/>
-                    <property name="entityBaseURL" value="${saml.entityBaseUrl}"/>
-                    <property name="signMetadata" value="false"/>
-                    <property name="includeDiscovery" value="false"/>
-                    <property name="bindingsSSO" value="POST"/>
+      <!-- IDP Metadata configuration - paths to metadata of IDPs in circle of trust is here -->
+      <!-- Do no forget to call initalize method on providers -->
+      <bean id="metadata" class="org.springframework.security.saml.metadata.CachingMetadataManager">
+
+        <constructor-arg>
+          <list>
+
+            <!-- START SERVICE PROVIDER BEAN FOR SITHS -->
+            <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
+              <constructor-arg>
+                <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
+                  <constructor-arg>
+                    <value type="java.io.File">${saml.sp.metadata.file}</value>
+                  </constructor-arg>
+                  <property name="parserPool" ref="parserPool"/>
                 </bean>
-            </constructor-arg>
-        </bean>
+              </constructor-arg>
+              <property name="metadataTrustCheck" value="true"/>
 
-        <!-- The filter is waiting for connections on URL suffixed with filterSuffix and presents SP metadata there -->
-        <bean id="metadataDisplayFilter" class="org.springframework.security.saml.metadata.MetadataDisplayFilter"/>
+              <constructor-arg>
+                <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
+                  <property name="alias" value="defaultAlias"/>
+                  <property name="local" value="true"/>
+                  <property name="securityProfile" value="metaiop"/>
+                  <property name="sslSecurityProfile" value="metaiop"/>
+                  <property name="signMetadata" value="true"/>
+                  <!-- The signingKey and encryptionKey refers to the _aliases_ of the key in the keystore defined in the keyManager bean -->
+                  <property name="signingKey" value="${saml.keystore.alias}"/>          <!-- sakerhetstjanst.saml.keystore.alias -->
+                  <property name="encryptionKey" value="${saml.keystore.alias}"/>       <!-- sakerhetstjanst.saml.keystore.alias -->
+                  <property name="requireArtifactResolveSigned" value="true"/>
+                  <property name="requireLogoutRequestSigned" value="false"/>
+                  <property name="requireLogoutResponseSigned" value="false"/>
+                </bean>
+              </constructor-arg>
+            </bean>
+            <!--  END SERVICE PROVIDER BEAN FOR SITHS -->
 
-        <!-- IDP Metadata configuration - paths to metadata of IDPs in circle of trust is here -->
-        <!-- Do no forget to call initalize method on providers -->
-        <bean id="metadata" class="org.springframework.security.saml.metadata.CachingMetadataManager">
-            <constructor-arg>
-                <list>
-                    <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
-                        <constructor-arg>
-                            <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
-                                <constructor-arg>
-                                    <value type="java.io.File">${saml.idp.metadata.file}</value>
-                                </constructor-arg>
-                                <property name="parserPool" ref="parserPool"/>
-                            </bean>
-                        </constructor-arg>
-                        <constructor-arg>
-                            <bean class="org.springframework.security.saml.metadata.ExtendedMetadata"/>
-                        </constructor-arg>
-                        <property name="metadataTrustCheck" value="false"/>
-                    </bean>
-                </list>
-            </constructor-arg>
-            <property name="refreshCheckInterval" value="86400000"/>
-            <!-- refresh meta data once a day -->
-        </bean>
 
-        <bean id="httpClientFactory" class="se.inera.auth.HttpClientFactory"/>
-        <bean id="httpClient" factory-bean="httpClientFactory" factory-method="createInstance"/>
+            <!-- START IDENTITY PROVIDER BEAN FOR SITHS -->
+            <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
+              <constructor-arg>
+                <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
+                  <constructor-arg>
+                    <value type="java.io.File">${saml.idp.metadata.file}</value>
+                  </constructor-arg>
+                  <property name="parserPool" ref="parserPool"/>
+                </bean>
+              </constructor-arg>
+              <constructor-arg>
+                <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
+                  <property name="alias" value="defaultAlias"/>
+                </bean>
+              </constructor-arg>
+
+              <property name="metadataTrustCheck" value="true"/>
+            </bean>
+            <!-- END IDENTITY PROVIDER BEAN FOR SITHS -->
+
+
+          </list>
+        </constructor-arg>
+        <property name="refreshCheckInterval" value="86400000"/>
+
+      </bean>
 
         <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
         <bean id="samlAuthenticationProvider" class="org.springframework.security.saml.SAMLAuthenticationProvider">
             <property name="userDetails" ref="userDetailsService"/>
+            <property name="forcePrincipalAsString" value="false"/>
         </bean>
 
         <!-- Processing filter for WebSSO profile messages -->
@@ -283,13 +310,14 @@
               class="org.springframework.security.saml.websso.WebSSOProfileConsumerHoKImpl"/>
 
         <!-- SAML 2.0 Web SSO profile -->
-        <bean id="webSSOprofile" class="org.springframework.security.saml.websso.WebSSOProfileImpl"/>
+        <bean id="webSSOprofile" class="se.inera.auth.StatistikWebSSOProfileImpl"/>
 
-        <!-- SAML 2.0 Holder-of-Key Web SSO profile -->
+        <!-- SAML 2.0 Holder-of-Key Web SSO profile  -->
         <bean id="hokWebSSOProfile" class="org.springframework.security.saml.websso.WebSSOProfileConsumerHoKImpl"/>
 
-        <!-- SAML 2.0 ECP profile -->
+        <!-- SAML 2.0 ECP profile
         <bean id="ecpprofile" class="org.springframework.security.saml.websso.WebSSOProfileECPImpl"/>
+        -->
 
         <!-- SAML 2.0 Logout Profile -->
         <bean id="logoutprofile" class="org.springframework.security.saml.websso.SingleLogoutProfileImpl"/>

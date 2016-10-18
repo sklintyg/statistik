@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,8 +18,10 @@
  */
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,12 +29,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
-
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
+import se.inera.statistics.service.hsa.HsaInfo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
@@ -47,21 +47,21 @@ public class LakareManagerTest {
 
     @Test
     public void saveOneLakare() {
-        JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
+        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare"));
 
         lakareManager.saveLakare(hsaInfo);
 
         List<Lakare> allLakares = lakareManager.getAllLakares();
         assertEquals(1, allLakares.size());
         assertEquals("LAKARE", allLakares.get(0).getLakareId().getId());
-        assertEquals("Cecilia", allLakares.get(0).getTilltalsNamn());
-        assertEquals("Juhanen", allLakares.get(0).getEfterNamn());
+        assertEquals("My", allLakares.get(0).getTilltalsNamn());
+        assertEquals("Åsgren", allLakares.get(0).getEfterNamn());
     }
 
     @Test
     public void saveOneLakareWithoutVGFailsWithoutError() {
-        ObjectNode hsaInfo = hsaService.getHSAInfo(new HSAKey(null, "enhet", "lakare"));
-        hsaInfo.remove(HSAService.HSA_INFO_VARDGIVARE);
+        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey(null, "enhet", "lakare"));
+        hsaInfo = new HsaInfo(hsaInfo.getEnhet(), hsaInfo.getHuvudenhet(), null, hsaInfo.getPersonal());
 
         lakareManager.saveLakare(hsaInfo);
 
@@ -71,7 +71,7 @@ public class LakareManagerTest {
 
     @Test
     public void getAllLakares() {
-        JsonNode hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare1"));
+        HsaInfo hsaInfo = hsaService.getHSAInfo(new HSAKey("vg", "enhet", "lakare1"));
         lakareManager.saveLakare(hsaInfo);
         hsaInfo = hsaService.getHSAInfo(new HSAKey("other-vg", "other-enhet", "lakare2"));
         lakareManager.saveLakare(hsaInfo);
@@ -79,11 +79,11 @@ public class LakareManagerTest {
         List<Lakare> allLakares = lakareManager.getAllLakares();
         assertEquals(2, allLakares.size());
         assertEquals("LAKARE1", allLakares.get(0).getLakareId().getId());
-        assertEquals("Fredrika", allLakares.get(0).getTilltalsNamn());
-        assertEquals("En", allLakares.get(0).getEfterNamn());
+        assertEquals("Natasha", allLakares.get(0).getTilltalsNamn());
+        assertEquals("Uddhammar", allLakares.get(0).getEfterNamn());
         assertEquals("LAKARE2", allLakares.get(1).getLakareId().getId());
-        assertEquals("My", allLakares.get(1).getTilltalsNamn());
-        assertEquals("Manard", allLakares.get(1).getEfterNamn());
+        assertEquals("Vieux", allLakares.get(1).getTilltalsNamn());
+        assertEquals("En", allLakares.get(1).getEfterNamn());
     }
 
 }

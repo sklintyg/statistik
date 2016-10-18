@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -33,6 +33,7 @@ import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.processlog.IntygFormat;
 import se.inera.statistics.service.processlog.ProcessLog;
 import se.inera.statistics.service.processlog.Processor;
 import se.inera.statistics.service.processlog.Receiver;

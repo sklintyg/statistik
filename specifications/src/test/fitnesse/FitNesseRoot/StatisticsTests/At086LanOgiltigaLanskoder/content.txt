@@ -1,5 +1,7 @@
 !contents -R2 -g -p -f -h
 
+Utgår och ersätts av At178
+
 !3 Givet att:
 
 Fyra olika sjukfall med olika länskoder. Tre av koderna tillhör inte län utan är ogiltiga.

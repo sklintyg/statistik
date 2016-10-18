@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -20,6 +20,7 @@ package se.inera.statistics.service.report.model;
 
 public class OverviewChartRow {
 
+    private static final int HASH_CODE = 31;
     private final String name;
     private final int quantity;
 
@@ -43,5 +44,30 @@ public class OverviewChartRow {
     @Override
     public String toString() {
         return "{\"OverviewChartRow\":{\"name\":\"" + name + '"' + ", \"quantity\":" + quantity + "}}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        OverviewChartRow that = (OverviewChartRow) o;
+
+        if (quantity != that.quantity) {
+            return false;
+        }
+
+        return name != null ? name.equals(that.name) : that.name == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name != null ? name.hashCode() : 0;
+        result = HASH_CODE * result + quantity;
+        return result;
     }
 }

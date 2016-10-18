@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,92 +18,60 @@
  */
 package se.inera.statistics.web.model;
 
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
-
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+
+import com.google.common.base.Strings;
 
 public class LoginInfo {
 
-    private final String hsaId;
+    private final HsaIdUser hsaId;
     private final String name;
-    private final Verksamhet defaultVerksamhet;
-    private final boolean loggedIn;
     private final List<Verksamhet> businesses;
-    private boolean verksamhetschef;
-    private boolean delprocessledare;
-    private boolean processledare;
-    private LandstingsVardgivareStatus landstingsVardgivareStatus;
+    private final List<LoginInfoVg> loginInfoVgs;
 
     public LoginInfo() {
-        loggedIn = false;
-        hsaId = "";
+        hsaId = new HsaIdUser("");
         name = "";
-        defaultVerksamhet = null;
         businesses = Collections.emptyList();
-        verksamhetschef = false;
-        delprocessledare = false;
-        processledare = false;
-        landstingsVardgivareStatus = LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE;
+        loginInfoVgs = Collections.emptyList();
     }
-
-    // CHECKSTYLE:OFF ParameterNumberCheck
-    public LoginInfo(HsaIdUser hsaId, String name, Verksamhet defaultVerksamhet, boolean verksamhetschef, boolean delprocessledare, boolean processledare, List<Verksamhet> businesses, LandstingsVardgivareStatus landstingsVardgivareStatus) {
-        this.hsaId = hsaId == null ? null : hsaId.getId();
-        this.name = name;
-        this.defaultVerksamhet = defaultVerksamhet;
-        this.verksamhetschef = verksamhetschef;
-        this.delprocessledare = delprocessledare;
-        this.processledare = processledare;
-        this.loggedIn = true;
-        this.businesses = businesses;
-        this.landstingsVardgivareStatus = landstingsVardgivareStatus;
+    public LoginInfo(HsaIdUser userId, String userName, List<Verksamhet> businesses, List<LoginInfoVg> loginInfoVgs) {
+        this.hsaId = userId != null ? userId : new HsaIdUser("");
+        this.name = Strings.nullToEmpty(userName);
+        this.businesses = businesses != null ? Collections.unmodifiableList(businesses) : Collections.emptyList();
+        this.loginInfoVgs = loginInfoVgs != null ? Collections.unmodifiableList(loginInfoVgs) : Collections.emptyList();
     }
-    // CHECKSTYLE:ON ParameterNumberCheck
 
     public HsaIdUser getHsaId() {
-        return new HsaIdUser(hsaId);
+        return hsaId;
     }
 
     public String getName() {
         return name;
     }
 
-    public Verksamhet getDefaultVerksamhet() {
-        return defaultVerksamhet;
-    }
-
     public boolean isLoggedIn() {
-        return loggedIn;
+        return hsaId != null && !hsaId.isEmpty();
     }
 
-    public List<Verksamhet> getBusinesses() {
-        return businesses;
+    public Optional<LoginInfoVg> getLoginInfoForVg(HsaIdVardgivare vgId) {
+        return loginInfoVgs.stream().filter(loginInfoVg -> loginInfoVg.getHsaId().equals(vgId)).findFirst();
     }
 
-    public boolean isVerksamhetschef() {
-        return verksamhetschef;
+    public List<LoginInfoVg> getVgs() {
+        return loginInfoVgs;
     }
 
-    public boolean isDelprocessledare() {
-        return delprocessledare;
-    }
-
-    public boolean isProcessledare() {
-        return processledare;
-    }
-
-    public boolean isLandstingsvardgivare() {
-        return loggedIn && !LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE.equals(landstingsVardgivareStatus);
-    }
-
-    public boolean isLandstingsvardgivareWithUpload() {
-        return loggedIn && LandstingsVardgivareStatus.LANDSTINGSVARDGIVARE_WITH_UPLOAD.equals(landstingsVardgivareStatus);
-    }
-
-    public boolean isLandstingAdmin() {
-        return isLandstingsvardgivare() && processledare;
+    public List<Verksamhet> getBusinessesForVg(HsaIdVardgivare vgId) {
+        return businesses.stream()
+                .filter(verksamhet -> verksamhet.getVardgivarId().equals(vgId))
+                .collect(Collectors.toList());
     }
 
 }

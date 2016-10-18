@@ -3,21 +3,28 @@ plugins {
 }
 
 allprojects {
-    group = 'se.inera.statistik'
-    version = '3.0.9'
+    group = project_group
+    version = project_version
+
+    if (project.hasProperty("buildVersion")) {
+        version = project.getProperty("buildVersion")
+    }
+
+    project.ext.set("buildVersion", version)
 
     repositories {
         mavenLocal()
         mavenCentral()
-        maven { url "https://repository-callistasoftware.forge.cloudbees.com/release/" }
-        maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
-        maven { url "https://repository-callistasoftware.forge.cloudbees.com/3rdparty/" }
+        maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/" }
+        maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/nightly/" }
+        maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/snapshots/" }
+        maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/thirdparty/" }
     }
 
     buildscript {
         repositories {
             mavenLocal()
-            maven { url "https://repository-callistasoftware.forge.cloudbees.com/snapshot/" }
+            maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/snapshots/" }
             jcenter()
         }
     }
@@ -30,17 +37,75 @@ subprojects {
         apply plugin: 'jacoco'
     }
 
-    sourceCompatibility = "1.7"
-    targetCompatibility = "1.7"
+    sourceCompatibility = "1.8"
+    targetCompatibility = "1.8"
 
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
     }
 
-    ext.cxfVersion = '2.7.10'
-    ext.springContextVersion = "4.0.8.RELEASE"
-    ext.springSecurityVersion = "3.2.0.RELEASE"
-    ext.liquibaseVersion = "2.0.5"
+    ext {
+        // >>> Dependency Management
+
+        // External
+        activeMqVersion = "5.13.0"
+
+        commonsLang3Version = "3.2.1"
+        commonCliVersion = "1.2"
+        commonDCHPVersion = "2.0"
+        cxfVersion = '3.1.3'
+
+        googleGuavaVersion = "18.0"
+        groovyAllVersion = "2.3.6"
+        groovyHttpVersion = "0.7"
+        gparsVersion = "1.1.0"
+
+        h2Version = "1.3.171"
+        hibernateVersion = "4.3.1.Final"
+        hibernateJpaVersion = "1.0.0.Final"
+        httpVersion = "4.4.1"
+        httpClientVersion = "4.2.1"
+
+        jacksonJodaTimeVersion = "2.2.3"
+        javaxServletVersion = "3.1.0"
+        jaxb2Version = "0.9.5"
+        jettyJmxVersion = "9.2.10.v20150310"
+        jmsVersion = "1.1.1"
+        jodaTimeVersion = "2.3"
+
+        liquibaseVersion = "2.0.5"
+        logbackVersion = "1.1.1"
+
+        mysqlConnectorVersion = "5.1.32"
+
+        poiVersion = "3.11"
+
+        springContextVersion = "4.2.2.RELEASE"
+        springSecurityVersion = "4.0.3.RELEASE"
+        springSecuritySamlVersion = "1.0.1.RELEASE"
+
+        tomcatVersion = "7.0.57"
+
+        xalanVersion = "2.7.2"
+        xmlApisVersion = "1.4.01"
+
+        zipletVersion = "2.1.2"
+
+        // Internal
+        intygCommonVersion = "3.0.0"
+        intygCommonLoggingVersion = "2.4.0-RC1"
+
+        // Schemas
+        certificateSchemaVersion = "2.0.RC4.2"
+
+        // Test
+        fitnessVersion = "20151230"
+        junitVersion = "4.11"
+        mockitoVersion = "1.9.5"
+        springTestVersion = "4.2.2.RELEASE"
+
+        // <<< Dependency management
+    }
 
     test {
         exclude '**/*FunctionalTest.*'
@@ -54,19 +119,69 @@ subprojects {
         ext.year = Calendar.getInstance().get(Calendar.YEAR)
         strictCheck true
         header rootProject.file("header.txt")
-        includes(["**/*.xml", "**/se/inera/statistics/**/*.java", "**/se/inera/auth/**/*.java", "**/se/inera/ifv/statistics/**/*.java"])
+        includes(["**/*.xml", "**/se/inera/statistics/**/*.java", "**/se/inera/auth/**/*.java", "**/se/inera/ifv/statistics/**/*.java", "**/se/inera/testsupport/**/*.java"])
     }
 
     dependencies {
-        compile 'ch.qos.logback:logback-classic:1.1.1'
-        compile 'com.google.guava:guava:18.0'
-        compile "joda-time:joda-time:2.3"
+        compile "ch.qos.logback:logback-classic:${logbackVersion}"
+        compile "com.google.guava:guava:${googleGuavaVersion}"
+        compile "joda-time:joda-time:${jodaTimeVersion}"
 
-        testCompile 'org.springframework:spring-test:4.0.2.RELEASE'
-        testCompile 'junit:junit:4.11'
-        testCompile 'org.mockito:mockito-core:1.9.5'
+        testCompile "org.springframework:spring-test:${springTestVersion}"
+        testCompile "junit:junit:${junitVersion}"
+        testCompile "org.mockito:mockito-core:${mockitoVersion}"
     }
 }
+
+//Kontroll av personnummer enligt https://sv.wikipedia.org/wiki/Luhn-algoritmen
+def validatePnr(String pnr) {
+    def pnrNumberOnly = pnr.replaceAll(/\D/,"")
+    if (pnrNumberOnly.length() < 10) {
+        return false
+    }
+    def pnrShort = pnrNumberOnly.substring(pnrNumberOnly.length() - 10, pnrNumberOnly.length())
+    if (pnrShort.startsWith("00")) {
+        return false
+    }
+
+    // Kollar att det är ett personnummer och inte ett orgnr, orgnr gar latt att hitta pa internet och kan darfor inte vara skyddat
+    def month = Integer.parseInt(pnrShort.substring(2, 4))
+    def day = Integer.parseInt(pnrShort.substring(4, 6))
+    if (month > 12 || day > 31) {
+        return false
+    }
+
+    def shortPnrChars = pnrShort.toCharArray()
+    int sum = 0;
+    shortPnrChars.eachWithIndex{ num, idx ->
+        def product = Integer.parseInt(new String(num)) * (((idx + 1) % 2) + 1)
+        sum += product / 10 + product % 10;
+    }
+    return sum % 10 == 0
+}
+
+task('breakBuildForValidPersonnummer') << {
+    def testpersonnummer = new File("statistik-service/src/main/resources/personnr/testpersoner.log").text
+    def allowedPnrs = [
+                       "19121212-1212", "191212121212", "121212-1212", "1212121212" //Tolvan Tolvansson, testpersonnummer
+                       ]
+
+    FileTree tree = fileTree(dir: '.').exclude('**/.gradle', '**/.idea', '**/node_modules', '**/bower_components', '**/*.iml', '**/*.jar')
+    tree.each {File file ->
+        if (file.file) {
+            def pnrs = file.text.findAll(/(\d{2})?\d{6}-?\d{4}/)
+            if (!pnrs.isEmpty()) {
+                pnrs.each { pnr ->
+                    if (!allowedPnrs.contains(pnr) && !testpersonnummer.contains(pnr) && validatePnr(pnr)) {
+                        throw new GradleException("Found valid personnummer: " + pnr + " in file: " + file.canonicalPath)
+                    }
+                }
+            }
+        }
+    }
+}
+
+check.dependsOn breakBuildForValidPersonnummer
 
 configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statistik-web'].contains(it.name) }) {
     apply plugin: 'checkstyle'
@@ -77,6 +192,7 @@ configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statis
         ignoreFailures = false
         // This is empty b/c we run checkstyle explicitly in the "testAll" task below
         sourceSets = []
+        toolVersion = "6.1"
     }
     // Make sure we don't run checkstyle on generated source code
     checkstyleMain.source = "src/main/java"
@@ -112,18 +228,18 @@ configure(subprojects.findAll { ['fileservice', 'liquibase-runner', 'statistik-w
         deployerJars "org.apache.maven.wagon:wagon-webdav:1.0-beta-2"
     }
 
-    ext.cloudbeesUsername = System.properties['cloudbeesUsername']
-    ext.cloudbeesPassword = System.properties['cloudbeesPassword']
+    ext.nexusUsername = System.properties['nexusUsername']
+    ext.nexusPassword = System.properties['nexusPassword']
 
     uploadArchives {
         repositories {
             mavenDeployer {
                 configuration = configurations.deployerJars
-                repository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/release/") {
-                    authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+                repository(url: "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases") {
+                    authentication(userName: nexusUsername, password: nexusPassword)
                 }
-                snapshotRepository(url: "dav:https://repository-callistasoftware.forge.cloudbees.com/snapshot/") {
-                    authentication(userName: cloudbeesUsername, password: cloudbeesPassword)
+                snapshotRepository(url: "https://build-inera.nordicmedtest.se/nexus/content/repositories/snapshots") {
+                    authentication(userName: nexusUsername, password: nexusPassword)
                 }
                 uniqueVersion = false
             }
@@ -136,19 +252,26 @@ if (project.hasProperty('runSonar')) {
 
     sonarRunner {
         sonarProperties {
-            property "sonar.host.url", "https://callistasoftware.sonar.cloudbees.com"
-            property "sonar.login", "cloudbees"
-            property "sonar.password", project.sonarPassword
-            property "sonar.jdbc.url", project.sonarJdbcUrl
-            property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
-            property "sonar.jdbc.username", project.sonarUser
-            property "sonar.jdbc.password", project.sonarPassword
-        }
+            property "sonar.jacoco.reportPath", "$buildDir/jacoco/test.exec"
+            property "sonar.projectName", projectName
+            property "sonar.projectKey", projectId
 
-        project(":hsa-integration") {
-            sonarRunner {
-                sonarProperties {
-                    properties["sonar.sources"] -= project(":hsa-integration").generatedJavaDir
+            // Address of SonarQube server
+            property "sonar.host.url", "https://build-inera.nordicmedtest.se/sonar"
+
+            ext.sonarPassword = System.properties['sonarPassword']
+
+            // Database config
+            property "sonar.jdbc.url", "jdbc:mysql://localhost:3306/sonar"
+            property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
+            property "sonar.jdbc.username", "sonar"
+            property "sonar.jdbc.password", sonarPassword
+
+            project(":hsa-integration") {
+                sonarRunner {
+                    sonarProperties {
+                        properties["sonar.sources"] -= project(":hsa-integration").generatedJavaDir
+                    }
                 }
             }
         }

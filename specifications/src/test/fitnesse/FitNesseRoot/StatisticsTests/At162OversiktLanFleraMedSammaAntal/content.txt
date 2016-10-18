@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
 
-Verifierar en buggfix.
-
 Testar att om två län har samma antal sjukfall, så visas båda två på översikten.
 
 !3 Givet att:
@@ -21,11 +19,9 @@ Testar att om två län har samma antal sjukfall, så visas båda två på över
 
 Nationell:
 | Sjukfall i rapporten lan |
-| period       | län          | totalt? | män? | kvinnor? |
-| maj–jul 2013 | Blekinge län | 0       | 0    | 0        |
-| maj–jul 2013 | Dalarnas län | 0       | 0    | 0        |
-| aug–okt 2013 | Blekinge län | 2       | 2    | 0        |
-| aug–okt 2013 | Dalarnas län | 2       | 2    | 0        |
+| län          | kolumngrupp    | totalt? | kvinnor? | män? |
+| Blekinge län | antal sjukfall | 2       | 0    | 2        |
+| Dalarnas län | antal sjukfall | 2       | 0    | 2        |
 
 | Sjukfall i oversikt per lan |
 | grupp        | antal? | förändring? |

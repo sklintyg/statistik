@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -241,12 +241,8 @@ public class SjukfallUtilTest {
 
     public static SjukfallFilter createEnhetFilterFromInternalIntValues(Integer... enhetIds) {
         final HashSet<Integer> availableEnhets = new HashSet<>(Arrays.asList(enhetIds));
-        return new SjukfallFilter(new Predicate<Fact>() {
-            @Override
-            public boolean apply(Fact fact) {
-                return availableEnhets.contains(fact.getEnhet());
-            }
-        }, SjukfallFilter.getHashValueForEnhets(availableEnhets.toArray()));
+        final String hashValue = SjukfallFilter.getHashValueForEnhets(availableEnhets.toArray());
+        return new SjukfallFilter(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue);
     }
 
     private Collection<Sjukfall> calculateSjukfallsHelper() {

@@ -21,45 +21,45 @@ Gäller STATISTIK-936, 943.
 !3 Då gäller:
 Inloggad:
 | Sjukfall i rapporten sjukskrivningsgrad |
-| inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| user2        | 2013 | jun   | 100%                 | 0    | 1        |
-| user2        | 2013 | jul   | 100%                 | 0    | 1        |
-| user2        | 2013 | aug   | 100%                 | 0    | 1        |
-| user2        | 2013 | sep   | 100%                 | 0    | 1        |
-| user2        | 2013 | okt   | 100%                 | 0    | 1        |
-| user2        | 2013 | nov   | 100%                 | 0    | 0        |
-| user2        | 2013 | dec   | 100%                 | 0    | 0        |
-| user2        | 2014 | jan   | 100%                 | 0    | 0        |
-| user2        | 2014 | feb   | 100%                 | 0    | 0        |
-| user2        | 2014 | mar   | 100%                 | 0    | 0        |
-| user2        | 2014 | apr   | 100%                 | 0    | 0        |
-| user2        | 2014 | maj   | 100%                 | 0    | 0        |
-| user2        | 2014 | jun   | 100%                 | 0    | 0        |
-| user2        | 2014 | jul   | 100%                 | 0    | 0        |
-| user2        | 2014 | aug   | 100%                 | 0    | 0        |
-| user2        | 2014 | sep   | 100%                 | 0    | 0        |
-| user2        | 2014 | okt   | 100%                 | 0    | 0        |
-| user2        | 2013 | jun   | 50%                  | 0    | 0        |
-| user2        | 2013 | jul   | 50%                  | 0    | 0        |
-| user2        | 2013 | aug   | 50%                  | 0    | 0        |
-| user2        | 2013 | sep   | 50%                  | 0    | 0        |
-| user2        | 2013 | okt   | 50%                  | 0    | 0        |
-| user2        | 2013 | nov   | 50%                  | 0    | 0        |
-| user2        | 2013 | dec   | 50%                  | 0    | 0        |
-| user2        | 2014 | jan   | 50%                  | 0    | 0        |
-| user2        | 2014 | feb   | 50%                  | 0    | 0        |
-| user2        | 2014 | mar   | 50%                  | 0    | 0        |
-| user2        | 2014 | apr   | 50%                  | 0    | 0        |
-| user2        | 2014 | maj   | 50%                  | 0    | 0        |
-| user2        | 2014 | jun   | 50%                  | 0    | 0        |
-| user2        | 2014 | jul   | 50%                  | 1    | 0        |
-| user2        | 2014 | aug   | 50%                  | 1    | 0        |
-| user2        | 2014 | sep   | 50%                  | 1    | 0        |
-| user2        | 2014 | okt   | 50%                  | 1    | 0        |
+| inloggad som | år   | månad | sjukskrivningsgrad | män? | kvinnor? |
+| user2        | 2013 | jun   | 100 %              | 0    | 1        |
+| user2        | 2013 | jul   | 100 %              | 0    | 1        |
+| user2        | 2013 | aug   | 100 %              | 0    | 1        |
+| user2        | 2013 | sep   | 100 %              | 0    | 1        |
+| user2        | 2013 | okt   | 100 %              | 0    | 1        |
+| user2        | 2013 | nov   | 100 %              | 0    | 0        |
+| user2        | 2013 | dec   | 100 %              | 0    | 0        |
+| user2        | 2014 | jan   | 100 %              | 0    | 0        |
+| user2        | 2014 | feb   | 100 %              | 0    | 0        |
+| user2        | 2014 | mar   | 100 %              | 0    | 0        |
+| user2        | 2014 | apr   | 100 %              | 0    | 0        |
+| user2        | 2014 | maj   | 100 %              | 0    | 0        |
+| user2        | 2014 | jun   | 100 %              | 0    | 0        |
+| user2        | 2014 | jul   | 100 %              | 0    | 0        |
+| user2        | 2014 | aug   | 100 %              | 0    | 0        |
+| user2        | 2014 | sep   | 100 %              | 0    | 0        |
+| user2        | 2014 | okt   | 100 %              | 0    | 0        |
+| user2        | 2013 | jun   | 50 %               | 0    | 0        |
+| user2        | 2013 | jul   | 50 %               | 0    | 0        |
+| user2        | 2013 | aug   | 50 %               | 0    | 0        |
+| user2        | 2013 | sep   | 50 %               | 0    | 0        |
+| user2        | 2013 | okt   | 50 %               | 0    | 0        |
+| user2        | 2013 | nov   | 50 %               | 0    | 0        |
+| user2        | 2013 | dec   | 50 %               | 0    | 0        |
+| user2        | 2014 | jan   | 50 %               | 0    | 0        |
+| user2        | 2014 | feb   | 50 %               | 0    | 0        |
+| user2        | 2014 | mar   | 50 %               | 0    | 0        |
+| user2        | 2014 | apr   | 50 %               | 0    | 0        |
+| user2        | 2014 | maj   | 50 %               | 0    | 0        |
+| user2        | 2014 | jun   | 50 %               | 0    | 0        |
+| user2        | 2014 | jul   | 50 %               | 1    | 0        |
+| user2        | 2014 | aug   | 50 %               | 1    | 0        |
+| user2        | 2014 | sep   | 50 %               | 1    | 0        |
+| user2        | 2014 | okt   | 50 %               | 1    | 0        |
 
 Byte till tvärsnitt gör att stapeldiagram 12 mån visas. Varje grad blir en grupp på x-axeln. Varje grupp visar en stapel för män och en för kvinnor.
 
 | Sjukfall i rapporten sjukskrivningsgrad som tvarsnitt |
 | inloggad som | sjukskrivningsgrad | män? | kvinnor? |
-| user2        | 100%               | 0    | 0        |
-| user2        | 50%                | 1    | 0        |
+| user2        | 100 %              | 0    | 0        |
+| user2        | 50 %               | 1    | 0        |

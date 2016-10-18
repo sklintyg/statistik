@@ -1,5 +1,6 @@
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
   ~ Copyright (C) 2013 - 2014 Inera AB (http://www.inera.se)
@@ -19,17 +20,34 @@
   ~     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
   ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
   --%>
-
 <!DOCTYPE html>
 <html>
 <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
   <title>Application Version</title>
-  <link rel="stylesheet" type="text/css" href="bootstrap/2.3.2/css/bootstrap.min.css">
+
+  <link rel="icon" href="assets/images/favicon.ico" type="image/vnd.microsoft.icon"/>
+
+  <!-- build:css(src/main/webapp) app/vendor.css -->
+  <!-- bower:css -->
+  <link rel="stylesheet" href="bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" />
+  <link rel="stylesheet" href="bower_components/jquery.tablesorter/dist/css/theme.default.min.css" />
+  <link rel="stylesheet" href="bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.css" />
+  <link rel="stylesheet" href="bower_components/dropzone/dist/min/dropzone.min.css" />
+  <!-- endbower -->
+  <!-- endbuild -->
+
+  <!-- build:css({build/.tmp,src/main/webapp}) app/app.css -->
+  <!-- injector:css -->
+  <link rel="stylesheet" href="app/app.css">
+  <!-- endinjector -->
+  <!-- endbuild -->
 </head>
 <body>
 <div style="padding-left:20px">
   <div class="page-header">
-    <h3>Statistiktjänsten</h3>
+    <h1 style="margin-bottom: 10px;">Statistiktjänsten</h1>
   </div>
   <div class="alert alert-block alert-info" style="width:50%">
     <h4 style="padding-bottom:5px;">Configuration info</h4>

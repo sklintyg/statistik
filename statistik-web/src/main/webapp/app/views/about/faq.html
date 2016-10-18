@@ -1,0 +1,24 @@
+<div class="row-fluid">
+	<div id="about-content">
+		<section id="faq">
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+					<h1>Vanliga frågor och svar</h1>
+					<p>Här kan du läsa vanliga frågor och svar om Statistiktjänsten.</p>
+					<p>Om du inte hittar svar på din fråga kan du kontakta Nationell kundservice på Inera.</p>
+					<p><a href="http://www.inera.se/felanmalan" target="_blank">Kontaktinformation till Nationell kundservice (extern länk)</a></p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+					<div class="panel panel-default" data-ng-repeat="q in faq">
+						<div class="panel-heading">
+							<h4 class="panel-title">{{q.title}}</h4>
+						</div>
+						<div class="panel-body" ng-bind-html="q.body"></div>
+					</div>
+        </div>
+			</div>
+		</section>
+	</div>
+</div>

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -29,6 +29,7 @@ import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
+import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 
 import static org.junit.Assert.assertEquals;
 
@@ -51,34 +52,47 @@ import static org.junit.Assert.assertEquals;
 
     @Test
     public void toFactWithDashBefattning() {
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "-", new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), false);
+        final String lakarbefattning = "-";
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), false);
 
         Fact fact = factPopulator.toFact(wideLine);
 
         assertEquals(1, fact.getLakarbefattnings().length);
-        assertEquals(-1, fact.getLakarbefattnings()[0]);
+        assertEquals((long) LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE, fact.getLakarbefattnings()[0]);
+    }
+
+    @Test
+    public void toFactWithEmptyBefattning() {
+        final String lakarbefattning = "";
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), false);
+
+        Fact fact = factPopulator.toFact(wideLine);
+
+        assertEquals(1, fact.getLakarbefattnings().length);
+        assertEquals((long) LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE, fact.getLakarbefattnings()[0]);
     }
 
     @Test
     public void toFactWithFaultyBefattning() {
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "xyz123", new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), false);
+        final String lakarbefattning = "xyz123";
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), false);
 
         Fact fact = factPopulator.toFact(wideLine);
 
         assertEquals(1, fact.getLakarbefattnings().length);
-        assertEquals(-1, fact.getLakarbefattnings()[0]);
+        assertEquals((long) LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE, fact.getLakarbefattnings()[0]);
     }
 
     @Test
-    public void toFactWithFaultyBefattnings() {
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "123,-,456", new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), false);
+    public void toFactWithFaultyAndCorrectBefattnings() {
+        final String lakarbefattning = "123,-,456,abc123";
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), false);
 
         Fact fact = factPopulator.toFact(wideLine);
 
-        assertEquals(3, fact.getLakarbefattnings().length);
+        assertEquals(2, fact.getLakarbefattnings().length);
         assertEquals(123, fact.getLakarbefattnings()[0]);
-        assertEquals(-1, fact.getLakarbefattnings()[1]);
-        assertEquals(456, fact.getLakarbefattnings()[2]);
+        assertEquals(456, fact.getLakarbefattnings()[1]);
     }
 
 }

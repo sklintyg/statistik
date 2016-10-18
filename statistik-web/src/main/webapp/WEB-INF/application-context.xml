@@ -24,15 +24,19 @@
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
     ">
 
-    <beans profile="!dev">
-        <context:property-placeholder location="file:${statistics.credentials.file}, file:${statistics.config.file}"
-                                      order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
+    <context:component-scan base-package="se.inera.statistics.web.service.monitoring" />
+
+    <context:property-placeholder location="file:${statistics.credentials.file}, file:${statistics.config.file}"
+                                  order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
+
+    <beans profile="hsa-stub">
+        <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
+        <bean class="se.inera.statistics.service.hsa.HsaServiceStub"/>
+        <bean class="se.inera.statistics.service.hsa.BootstrapBean"/>
     </beans>
-    <beans profile="dev">
-        <context:property-placeholder location="classpath*:default.dev.properties"
-                                      order="1" ignore-resource-not-found="true" ignore-unresolvable="true"/>
-      <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
-      <bean class="se.inera.statistics.hsa.stub.BootstrapBean"/>
+
+    <beans profile="hsa-stub,wc-hsa-stub">
+        <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
     </beans>
 
     <beans>
@@ -66,16 +70,18 @@
         <bean id="filterHashHandler" class="se.inera.statistics.web.service.FilterHashHandler"/>
         <bean id="resultMessageHandler" class="se.inera.statistics.web.service.ResultMessageHandler"/>
         <bean id="chartDataService" class="se.inera.statistics.web.service.ChartDataService"/>
+        <bean id="pdfService" class="se.inera.statistics.web.service.PdfService"/>
 
         <bean id="protectedChartDataService" class="se.inera.statistics.web.service.ProtectedChartDataService"/>
         <bean id="protectedLandstingService" class="se.inera.statistics.web.service.ProtectedLandstingService"/>
+        <bean class="se.inera.statistics.web.service.ResponseHandler"/>
 
         <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
         <bean id="loginInfoService" class="se.inera.statistics.web.service.LoginInfoService"/>
         <bean id="loggingService" class="se.inera.statistics.web.service.LoggingService"/>
 
         <import resource="classpath*:hsa-services-config.xml"/>
-        <import resource="classpath*:hsa-stub-context.xml"/>
+        <import resource="classpath*:hsaws-services-config.xml"/>
         <import resource="classpath*:icd10.xml"/>
         <import resource="application-context-cxf.xml"/>
         <import resource="application-context-security.xml"/>
@@ -118,11 +124,11 @@
         <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect" />
     </beans>
 
-    <beans profile="db-resetter">
-        <bean class="se.inera.statistics.service.common.CommonPersistenceHandler" id="commonPersistenceHandler"/>
+    <beans profile="dev">
+        <bean class="se.inera.testsupport.RestTemplateStub" />
+    </beans>
+    <beans profile="!dev">
+        <bean class="org.springframework.web.client.RestTemplate" />
     </beans>
 
-    <beans profile="embedded">
-        <bean class="se.inera.statistics.service.demo.InjectUtlatande" lazy-init="false"/>
-    </beans>
 </beans>

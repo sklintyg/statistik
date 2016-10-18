@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -196,6 +196,42 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
         assertEquals("tre", categories.get(0).getName());
         assertEquals("ett", categories.get(1).getName());
         assertEquals("tva", categories.get(2).getName());
+    }
+
+    @Test
+    public void testRoundToTwoDecimalsAndFormatToString() throws Exception {
+        final String result = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimalsAndFormatToString(1.2345F);
+        assertEquals("1,23", result);
+    }
+
+    @Test
+    public void testRoundToTwoDecimalsAndFormatToStringAddDecimal() throws Exception {
+        final String result = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimalsAndFormatToString(1.2F);
+        assertEquals("1,20", result);
+    }
+
+    @Test
+    public void testRoundToTwoDecimalsAndFormatToStringRountUpCorrectly() throws Exception {
+        final String result = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimalsAndFormatToString(1.235F);
+        assertEquals("1,24", result);
+    }
+
+    @Test
+    public void testRoundToTwoDecimals() throws Exception {
+        final double result = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimals(1.2345F);
+        assertEquals(1.23, result, 0.00);
+    }
+
+    @Test
+    public void testRoundToTwoDecimalsAddDecimal() throws Exception {
+        final double result = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimals(1.2F);
+        assertEquals(1.20, result, 0.00);
+    }
+
+    @Test
+    public void testRoundToTwoDecimalsRountUpCorrectly() throws Exception {
+        final double result = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimals(1.235F);
+        assertEquals(1.24, result, 0.00);
     }
 
 }

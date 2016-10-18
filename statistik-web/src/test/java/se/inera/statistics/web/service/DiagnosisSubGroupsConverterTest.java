@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -23,9 +23,10 @@ import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.web.model.DualSexStatisticsData;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -41,13 +42,73 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(2, 1));
         data.add(new KonField(2, 2));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(Arrays.asList(getIcd(1), getIcd(2), getIcd(3)), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
 
         //When
         List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
 
         //Then
         assertEquals(3, result.size());
+    }
+
+    @Test
+    public void testGetTopColumnIndexesShowsSevenGroupsEvenWhenThereExistsMoreAndOneOfTheGroupsThenIsOvrigt() throws Exception {
+        //Given
+        ArrayList<KonDataRow> rows = new ArrayList<>();
+        ArrayList<KonField> data = new ArrayList<>();
+        data.add(new KonField(1, 2));
+        data.add(new KonField(2, 1));
+        data.add(new KonField(2, 2));
+        data.add(new KonField(1, 1));
+        data.add(new KonField(2, 2));
+        data.add(new KonField(2, 2));
+        data.add(new KonField(2, 2));
+        data.add(new KonField(2, 2));
+        data.add(new KonField(2, 2));
+        data.add(new KonField(2, 2));
+        rows.add(new KonDataRow("", data));
+        final List<Icd> icdTyps = getIcds(data.size());
+        DiagnosgruppResponse response = new DiagnosgruppResponse(icdTyps, rows);
+
+        //When
+        List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
+
+        //Then
+        assertEquals(7, result.size());
+        assertEquals(DiagnosisSubGroupsConverter.OTHER_GROUP_INDEX, result.get(6).intValue());
+    }
+
+    private List<Icd> getIcds(int numberOfIcdToCreate) {
+        final List<Icd> icds = new ArrayList<>();
+        for (int i = 1; i <= numberOfIcdToCreate; i++) {
+             icds.add(getIcd(i));
+
+        }
+        return icds;
+    }
+
+    @Test
+    public void testGetTopColumnIndexesAllAreIncludedWhenUpToSevenHasNoneEmptyDataINTYG1877() throws Exception {
+        //Given
+        ArrayList<KonDataRow> rows = new ArrayList<>();
+        ArrayList<KonField> data = new ArrayList<>();
+        data.add(new KonField(1, 2));
+        data.add(new KonField(2, 1));
+        data.add(new KonField(2, 2));
+        data.add(new KonField(0, 0));
+        data.add(new KonField(2, 2));
+        data.add(new KonField(2, 2));
+        data.add(new KonField(2, 2));
+        data.add(new KonField(2, 2));
+        rows.add(new KonDataRow("", data));
+        DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
+
+        //When
+        List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
+
+        //Then
+        assertEquals(7, result.size());
+        assertFalse(result.contains(DiagnosisSubGroupsConverter.OTHER_GROUP_INDEX));
     }
 
     @Test
@@ -59,7 +120,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(2, 0));
         data.add(new KonField(2, 2));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(Arrays.asList(getIcd(1), getIcd(2), getIcd(3)), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
 
         //When
         List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
@@ -83,7 +144,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(0, 0));
         data.add(new KonField(2, 2));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(Arrays.asList(getIcd(1), getIcd(2), getIcd(3)), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
 
         //When
         List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
@@ -92,6 +153,84 @@ public class DiagnosisSubGroupsConverterTest {
         assertEquals(2, result.size());
         assertEquals(2, result.get(0).intValue());
         assertEquals(0, result.get(1).intValue());
+    }
+
+    @Test
+    public void testConvertedResponseDoesNotContainEmptyOvrigtGroupINTYG1821() throws Exception {
+        //Given
+        ArrayList<KonDataRow> rows = new ArrayList<>();
+        ArrayList<KonField> data = new ArrayList<>();
+        data.add(new KonField(1, 0));
+        data.add(new KonField(0, 0));
+        data.add(new KonField(2, 0));
+        data.add(new KonField(1, 2));
+        data.add(new KonField(0, 0));
+        data.add(new KonField(2, 2));
+        data.add(new KonField(5, 0));
+        data.add(new KonField(0, 0));
+        data.add(new KonField(6, 0));
+        data.add(new KonField(0, 0));
+        rows.add(new KonDataRow("", data));
+        DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
+
+        //When
+        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter()));
+
+        //Then
+        assertEquals(6, result.getFemaleChart().getSeries().size());
+        assertTrue(result.getFemaleChart().getSeries().stream().noneMatch(chartSeries -> DiagnosisSubGroupsConverter.OTHER_GROUP_NAME.equals(chartSeries.getName())));
+    }
+
+    @Test
+    public void testConvertedResponseDoesNotContainOvrigtGroupWhenOnly7NoneEmptySeriesExistsINTYG1821() throws Exception {
+        //Given
+        ArrayList<KonDataRow> rows = new ArrayList<>();
+        ArrayList<KonField> data = new ArrayList<>();
+        data.add(new KonField(1, 0));
+        data.add(new KonField(0, 0));
+        data.add(new KonField(2, 0));
+        data.add(new KonField(1, 2));
+        data.add(new KonField(0, 0));
+        data.add(new KonField(2, 2));
+        data.add(new KonField(5, 0));
+        data.add(new KonField(0, 0));
+        data.add(new KonField(6, 0));
+        data.add(new KonField(0, 1));
+        rows.add(new KonDataRow("", data));
+        DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
+
+        //When
+        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter()));
+
+        //Then
+        assertEquals(7, result.getFemaleChart().getSeries().size());
+        assertTrue(result.getFemaleChart().getSeries().stream().noneMatch(chartSeries -> DiagnosisSubGroupsConverter.OTHER_GROUP_NAME.equals(chartSeries.getName())));
+    }
+
+    @Test
+    public void testConvertedResponseDoesContainNoneEmptyOvrigtGroupINTYG1821() throws Exception {
+        //Given
+        ArrayList<KonDataRow> rows = new ArrayList<>();
+        ArrayList<KonField> data = new ArrayList<>();
+        data.add(new KonField(1, 0));
+        data.add(new KonField(0, 0));
+        data.add(new KonField(2, 0));
+        data.add(new KonField(1, 2));
+        data.add(new KonField(0, 0));
+        data.add(new KonField(2, 2));
+        data.add(new KonField(5, 0));
+        data.add(new KonField(0, 2));
+        data.add(new KonField(6, 0));
+        data.add(new KonField(0, 1));
+        rows.add(new KonDataRow("", data));
+        DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
+
+        //When
+        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter()));
+
+        //Then
+        assertEquals(7, result.getFemaleChart().getSeries().size());
+        assertTrue(result.getFemaleChart().getSeries().stream().anyMatch(chartSeries -> DiagnosisSubGroupsConverter.OTHER_GROUP_NAME.equals(chartSeries.getName())));
     }
 
 }

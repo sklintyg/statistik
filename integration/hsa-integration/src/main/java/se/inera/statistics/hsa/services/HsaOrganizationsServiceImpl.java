@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -22,21 +22,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonType;
-import se.inera.ifv.hsawsresponder.v3.MiuInformationType;
-import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
+import se.inera.intyg.common.integration.hsa.client.AuthorizationManagementService;
+import se.inera.intyg.common.support.modules.support.api.exception.ExternalServiceCallException;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
-import se.inera.statistics.hsa.stub.Medarbetaruppdrag;
+import se.riv.infrastructure.directory.v1.CommissionType;
+import se.riv.infrastructure.directory.v1.CredentialInformationType;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * @author andreaskaltenbach
+ * Interfaces with the {@link AuthorizationManagementService} in order to fetch Medarbetaruppdrag for the given
+ * employeeHsaId. Will filter out any non "Statistik"-purposed MiU:s.
+ *
+ * @author erikl
  */
 @Service
 public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
@@ -44,28 +48,47 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
     private static final Logger LOG = LoggerFactory.getLogger(HsaOrganizationsServiceImpl.class);
 
     @Autowired
-    private HSAWebServiceCalls client;
+    private AuthorizationManagementService authorizationManagementService;
+
+    private final VardenhetComparator veComparator = new VardenhetComparator();
+
 
     @Override
-    public List<Vardenhet> getAuthorizedEnheterForHosPerson(HsaIdUser hosPersonHsaId) {
+    public UserAuthorization getAuthorizedEnheterForHosPerson(HsaIdUser hosPersonHsaId) {
         List<Vardenhet> vardenhetList = new ArrayList<>();
+        List<String> systemRoles = new ArrayList<>();
 
-        // Set hos person hsa ID
-        GetMiuForPersonType parameters = new GetMiuForPersonType();
-        parameters.setHsaIdentity(hosPersonHsaId.getId());
-        GetMiuForPersonResponseType response = client.callMiuRights(parameters);
-        if (response != null && response.getMiuInformation() != null) {
-            LOG.debug("User with HSA-Id " + hosPersonHsaId + " has " + response.getMiuInformation().size() + " medarbetaruppdrag");
-
-            for (MiuInformationType info : response.getMiuInformation()) {
-                if (Medarbetaruppdrag.STATISTIK.equalsIgnoreCase(info.getMiuPurpose())) {
-                    vardenhetList.add(new Vardenhet(new HsaIdEnhet(info.getCareUnitHsaIdentity()), info.getCareUnitName(), new HsaIdVardgivare(info.getCareGiver()), info.getCareGiverName()));
-                }
-            }
+        List<CredentialInformationType> response = null;
+        try {
+            response = authorizationManagementService.getAuthorizationsForPerson(hosPersonHsaId.getId(), "", "");
+        } catch (ExternalServiceCallException e) {
+            LOG.error("Error loading authorizations", e);
         }
-        LOG.debug("User with HSA-Id " + hosPersonHsaId + " has active 'Vård och behandling' for " + vardenhetList.size() + " enheter");
 
-        return vardenhetList;
+        if (response != null) {
+            LOG.debug("User with HSA-Id " + hosPersonHsaId + " has " + response.size() + " medarbetaruppdrag");
+
+            for (CredentialInformationType info : response) {
+                for (CommissionType commissionType : info.getCommission()) {
+                    if (Medarbetaruppdrag.STATISTIK.equalsIgnoreCase(commissionType.getCommissionPurpose())) {
+                        vardenhetList.add(new Vardenhet(new HsaIdEnhet(commissionType.getHealthCareUnitHsaId()), commissionType.getHealthCareUnitName(), new HsaIdVardgivare(commissionType.getHealthCareProviderHsaId()), commissionType.getHealthCareProviderName()));
+                    }
+                }
+                systemRoles.addAll(info.getHsaSystemRole().stream().map(sr -> sr.getSystemId() + ";" + sr.getRole()).collect(Collectors.toList()));
+            }
+            vardenhetList = vardenhetList.stream().distinct().sorted(veComparator).collect(Collectors.toList());
+        }
+        LOG.debug("User with HSA-Id " + hosPersonHsaId + " has active 'Statistik' for " + vardenhetList.size() + " enheter");
+
+        return new UserAuthorization(vardenhetList, systemRoles);
+    }
+
+    private final class VardenhetComparator implements Comparator<Vardenhet> {
+
+        @Override
+        public int compare(Vardenhet o1, Vardenhet o2) {
+            return o1.getId().getId().compareTo(o2.getId().getId());
+        }
     }
 
 }

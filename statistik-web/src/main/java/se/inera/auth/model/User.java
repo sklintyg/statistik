@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,35 +18,38 @@
  */
 package se.inera.auth.model;
 
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.Vardenhet;
-
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.hsa.model.Vardenhet;
 
 public class User implements Serializable {
 
     private final HsaIdUser hsaId;
     private final String name;
-    private final boolean processledare;
-    private final Vardenhet vardenhet;
+    private final List<HsaIdVardgivare> vgsWithProcessledarStatus;
     private final List<Vardenhet> vardenhetList;
 
-    public User(HsaIdUser hsaId, String name, boolean processledare, Vardenhet vardenhet, List<Vardenhet> vardenhetsList) {
+    public User(HsaIdUser hsaId, String name, List<HsaIdVardgivare> vgsWithProcessledarStatus, List<Vardenhet> vardenhetsList) {
         this.hsaId = hsaId;
         this.name = name;
-        this.processledare = processledare;
-        this.vardenhet = vardenhet;
-        this.vardenhetList = Collections.unmodifiableList(vardenhetsList);
+        this.vgsWithProcessledarStatus = vgsWithProcessledarStatus != null ? Collections.unmodifiableList(vgsWithProcessledarStatus) : Collections.emptyList();
+        this.vardenhetList = vardenhetsList != null ? Collections.unmodifiableList(vardenhetsList) : Collections.emptyList();
+    }
+
+    public boolean isProcessledareForVg(HsaIdVardgivare vardgivareId) {
+        if (vardgivareId == null) {
+            return false;
+        }
+        return vgsWithProcessledarStatus.contains(vardgivareId);
     }
 
     public HsaIdUser getHsaId() {
         return hsaId;
-    }
-
-    public Vardenhet getValdVardenhet() {
-        return vardenhet;
     }
 
     public String getName() {
@@ -57,16 +60,20 @@ public class User implements Serializable {
         return vardenhetList;
     }
 
-    public boolean isVerksamhetschef() {
-        return !isDelprocessledare() && !isProcessledare();
+    public UserAccessLevel getUserAccessLevelForVg(HsaIdVardgivare vg) {
+        return new UserAccessLevel(isProcessledareForVg(vg), getVardenhetsForVg(vg).size());
     }
 
-    public boolean isDelprocessledare() {
-        return !processledare && vardenhetList.size() > 1;
+    public List<HsaIdVardgivare> getVgsWithProcessledarStatus() {
+        return vgsWithProcessledarStatus;
     }
 
-    public boolean isProcessledare() {
-        return processledare;
+    public List<Vardenhet> getVardenhetsForVg(HsaIdVardgivare vardgivare) {
+        return vardenhetList.stream()
+                .filter(vardenhet -> {
+                    return vardenhet.getVardgivarId().equals(vardgivare);
+                })
+                .collect(Collectors.toList());
     }
 
 }

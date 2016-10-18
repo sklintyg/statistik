@@ -1,4 +1,7 @@
 {
   "hsaId": "test1",
-  "enhetIds": ["SE2321000131-E000000004004", "SE2321000131-E000000000431"]
+  "uppdrag": [
+    {"andamal":["STATISTIK"], "enhet":"SE2321000131-E000000004004"},
+    {"andamal":["STATISTIK"], "enhet":"SE2321000131-E000000000431"}
+  ]
 }

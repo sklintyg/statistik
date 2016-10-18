@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -22,11 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.w3.wsaddressing10.AttributedURIType;
-
 import se.inera.ifv.hsaws.v3.HsaWsFault;
 import se.inera.ifv.hsaws.v3.HsaWsResponderInterface;
-import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
@@ -39,6 +36,10 @@ import se.inera.ifv.hsawsresponder.v3.HsaWsFaultType;
 import se.inera.ifv.hsawsresponder.v3.PingResponseType;
 import se.inera.ifv.hsawsresponder.v3.PingType;
 
+/**
+ * This class interfaces with the "old" Web Service-based HSA, e.g. NOT over NTjP. It is subject to be replaced by
+ * NTjP-based HSA integration (INTYG-2226).
+ */
 public class HSAWebServiceCalls {
 
     @Autowired
@@ -138,21 +139,4 @@ public class HSAWebServiceCalls {
             throw new HsaCommunicationException("Could not call getStatisticsPerson for " + personId, ex);
         }
     }
-
-    /**
-     * Method used to get miuRights for a HoS Person.
-     *
-     * @param parameters
-     * @return
-     * @throws Exception
-     */
-    public GetMiuForPersonResponseType callMiuRights(GetMiuForPersonType parameters) {
-        try {
-            return serverInterface.getMiuForPerson(logicalAddressHeader, messageId, parameters);
-        } catch (Throwable ex) {
-            LOG.error("Failed to call getMiuForPerson", ex);
-            throw new HsaCommunicationException("Failed to call getMiuForPerson", ex);
-        }
-    }
-
 }

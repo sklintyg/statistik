@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -37,7 +37,7 @@ public class SjukfallIteratorTest {
         //Given
         final LocalDate fromDate = new LocalDate(2015, 1, 1);
         final int periodSize = 1;
-        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize, new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER.getFilter(), false){
+        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize, new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER, false){
             @Override
             SjukfallCalculator getSjukfallCalculator(Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart, List<Range> ranges) {
                 return Mockito.mock(SjukfallCalculator.class);

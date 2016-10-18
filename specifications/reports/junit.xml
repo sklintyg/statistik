@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+ <testsuite name="Tester kring inloggning: " timestamp="2016-10-18T14:49:50" hostname="localhost" time="15.382" errors="0" tests="1" skipped="0" disabled="0" failures="0">
+  <testcase classname="Tester kring inloggning: " name="INTYG-3074: Inloggning behålls efter sidomladdning på nationell nivå" time="15.381" />
+ </testsuite>
+</testsuites>

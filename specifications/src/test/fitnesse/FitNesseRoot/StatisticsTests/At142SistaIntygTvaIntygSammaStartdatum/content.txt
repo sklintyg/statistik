@@ -45,23 +45,22 @@ Nationell:
 | 31-35 år    | 0    | 1        |
 
 | Sjukfall i rapporten sjukskrivningsgrad |
-| år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| 2013 | feb   | 100%                 | 0    | 0        |
-| 2013 | feb   | 50%                  | 0    | 1        |
-| 2013 | mar   | 100%                 | 0    | 0        |
-| 2013 | mar   | 50%                  | 0    | 1        |
+| år   | månad | sjukskrivningsgrad | män? | kvinnor? |
+| 2013 | feb   | 100 %              | 0    | 0        |
+| 2013 | feb   | 50 %               | 0    | 1        |
+| 2013 | mar   | 100 %              | 0    | 0        |
+| 2013 | mar   | 50 %               | 0    | 1        |
 
 | Sjukfall i rapporten lan |
-| period       | län            | män? | kvinnor? |
-| jan–mar 2013 | Stockholms län | 0    | 0        |
-| jan–mar 2013 | Uppsala län    | 0    | 1        |
-| jan–mar 2013 | Okänt län      | 0    | 0        |
+| län            | kolumngrupp    | totalt? | kvinnor? | män? |
+| Stockholms län | antal sjukfall | 0    | 0        | 0 |
+| Uppsala län    | antal sjukfall | 1    | 1        | 0 |
 
 | Sjukfall i rapporten andel sjukfall per kon |
-| län            | totalt? | män?     | kvinnor? |
-| Stockholms län | 0       | 0% (0)   | 0% (0)   |
-| Uppsala län    | 1       | 0% (0)   | 100% (1) |
-| Okänt län      | 0       | 0% (0)   | 0% (0)   |
+| län            | totalt? | män?    | kvinnor?  |
+| Stockholms län | 0       | 0 % (0) | 0 % (0)   |
+| Uppsala län    | 1       | 0 % (0) | 100 % (1) |
+| Okänt län      | 0       | 0 % (0) | 0 % (0)   |
 
 Inloggad:
 
@@ -78,11 +77,11 @@ Inloggad:
 | user1        | 31-35 år    | 0    | 1        |
 
 | Sjukfall i rapporten sjukskrivningsgrad |
-| inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| user1        | 2013 | feb   | 100%                 | 0    | 0        |
-| user1        | 2013 | feb   | 50%                  | 0    | 1        |
-| user1        | 2013 | mar   | 100%                 | 0    | 0        |
-| user1        | 2013 | mar   | 50%                  | 0    | 1        |
+| inloggad som | år   | månad | sjukskrivningsgrad | män? | kvinnor? |
+| user1        | 2013 | feb   | 100 %              | 0    | 0        |
+| user1        | 2013 | feb   | 50 %               | 0    | 1        |
+| user1        | 2013 | mar   | 100 %              | 0    | 0        |
+| user1        | 2013 | mar   | 50 %               | 0    | 1        |
 
 | Sjukfall i rapporten sjukfall per lakare |
 | inloggad som | läkare         | män? | kvinnor? |

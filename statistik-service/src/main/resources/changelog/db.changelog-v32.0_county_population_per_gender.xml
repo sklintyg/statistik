@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2016 Inera AB (http://www.inera.se)
+
+    This file is part of statistik (https://github.com/sklintyg/statistik).
+
+    statistik is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    statistik is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+                   logicalFilePath="liquibase/db.changelog-v32.0_county_population_per_gender.xml">
+    <changeSet id="32.0_clear_county_population_table" author="fredrik.engstrom">
+        <delete tableName="CountyPopulation"/>
+    </changeSet>
+    <changeSet id="32.1_populate_county_population_with_gender" author="fredrik.engstrom">
+        <insert tableName="CountyPopulation">
+            <column name="data" value='{"01": {"male": 1110627, "female": 1120812},"03": {"male": 176681, "female": 177483},"04": {"male": 141829, "female": 141883},"05": {"male": 224313, "female": 221348},"06": {"male": 175003, "female": 172834},"07": {"male": 96996, "female": 94373},"08": {"male": 119605, "female": 118074},"09": {"male": 28555, "female": 28836},"10": {"male": 79473, "female": 76780},"12": {"male": 648277, "female": 655350},"13": {"male": 157261, "female": 157523},"14": {"male": 825662, "female": 823020},"17": {"male": 138250, "female": 137654},"18": {"male": 145419, "female": 145593},"19": {"male": 132566, "female": 131710},"20": {"male": 141711, "female": 139317},"21": {"male": 141534, "female": 140281},"22": {"male": 122654, "female": 121243},"23": {"male": 64185, "female": 63191},"24": {"male": 132930, "female": 130448},"25": {"male": 127435, "female": 122298}}'/>
+            <column name="date" value="2015-12-31"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

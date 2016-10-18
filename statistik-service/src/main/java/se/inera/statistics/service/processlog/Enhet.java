@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -21,6 +21,7 @@ package se.inera.statistics.service.processlog;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kommun;
+import se.inera.statistics.service.report.model.VerksamhetsTyp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,8 +37,6 @@ public class Enhet implements Comparable<Enhet> {
     private long id;
 
     private String vardgivareId;
-
-    private String vardgivareNamn;
 
     private String enhetId;
 
@@ -56,9 +55,8 @@ public class Enhet implements Comparable<Enhet> {
         return id;
     }
 
-    public Enhet(HsaIdVardgivare vardgivareId, String vardgivareNamn, HsaIdEnhet enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
+    public Enhet(HsaIdVardgivare vardgivareId, HsaIdEnhet enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
         setVardgivareId(vardgivareId);
-        this.vardgivareNamn = vardgivareNamn;
         setEnhetId(enhetId);
         this.namn = namn;
         this.lansId = lansId;
@@ -76,14 +74,6 @@ public class Enhet implements Comparable<Enhet> {
 
     public void setVardgivareId(HsaIdVardgivare vardgivareId) {
         this.vardgivareId = vardgivareId.getId();
-    }
-
-    public String getVardgivareNamn() {
-        return vardgivareNamn;
-    }
-
-    public void setVardgivareNamn(String namn) {
-        this.vardgivareNamn = namn;
     }
 
     public HsaIdEnhet getEnhetId() {
@@ -119,6 +109,9 @@ public class Enhet implements Comparable<Enhet> {
     }
 
     public String getVerksamhetsTyper() {
+        if (verksamhetsTyper == null || verksamhetsTyper.isEmpty()) {
+            return VerksamhetsTyp.OVRIGT_ID;
+        }
         return verksamhetsTyper;
     }
 

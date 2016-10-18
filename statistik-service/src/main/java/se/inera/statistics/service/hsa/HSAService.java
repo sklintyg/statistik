@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,25 +18,18 @@
  */
 package se.inera.statistics.service.hsa;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
 public interface HSAService {
 
     String ENHETS_TYP = "enhetsTyp";
-    String HSA_INFO_ENHET = "enhet";
-    String HSA_INFO_HUVUDENHET = "huvudenhet";
-    String HSA_INFO_VARDGIVARE = "vardgivare";
-    String HSA_INFO_PERSONAL = "personal";
 
     /**
      * Get HSA info using fields from baseHsaInfo when available.
      */
-    ObjectNode getHSAInfo(HSAKey key, JsonNode baseHsaInfo);
+    HsaInfo getHSAInfo(HSAKey key, HsaInfo baseHsaInfo);
 
     /**
      * Get full HSA info.
      */
-    ObjectNode getHSAInfo(HSAKey key);
+    HsaInfo getHSAInfo(HSAKey key);
 
 }

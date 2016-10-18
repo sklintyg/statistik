@@ -28,11 +28,11 @@ Det blir ett sjukfall som syns för 50% i oktober och 50% i november. Detta bero
 Nationell:
 | Sjukfall i rapporten sjukskrivningsgrad |
 | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| 2014 | okt   | 50%                  | 0    | 1        |
-| 2014 | nov   | 50%                  | 0    | 1        |
+| 2014 | okt   | 50 %                 | 0    | 1        |
+| 2014 | nov   | 50 %                 | 0    | 1        |
 
 Inloggad:
 | Sjukfall i rapporten sjukskrivningsgrad |
 | inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| user1        | 2014 | okt   | 50%                  | 0    | 1        |
-| user1        | 2014 | nov   | 50%                  | 0    | 1        |
+| user1        | 2014 | okt   | 50 %                 | 0    | 1        |
+| user1        | 2014 | nov   | 50 %                 | 0    | 1        |

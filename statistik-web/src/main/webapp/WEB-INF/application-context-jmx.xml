@@ -34,7 +34,6 @@
        <map>
            <entry key="inera-statistics:name=WarehouseManager" value-ref="warehouseManager"/>
            <entry key="inera-statistics:name=LogConsumer" value-ref="logJob"/>
-           <!--<entry key="inera-statistics:name=JmsContainer" value-ref="jmsContainer"/>-->
        </map>
      </property>
      <property name="registrationPolicy" value="REPLACE_EXISTING"/>

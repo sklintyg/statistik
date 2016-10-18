@@ -26,5 +26,5 @@ configurations.runtime {
 dependencies {
     runtime project(":statistik-service")
     runtime "org.liquibase:liquibase-core:${liquibaseVersion}"
-    runtime "mysql:mysql-connector-java:5.1.32"
+    runtime "mysql:mysql-connector-java:${mysqlConnectorVersion}"
 }

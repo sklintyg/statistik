@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -49,14 +49,14 @@ public class LoggingService {
     @Path("log")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getLoginInfo(@Context HttpServletRequest request, LogData logData) {
-        String user = loginServiceUtil.isLoggedIn(request) ? getHsaIdForLoggedInUser(request).getId() : "Anonymous";
+    public Response frontendLogging(@Context HttpServletRequest request, LogData logData) {
+        String user = loginServiceUtil.isLoggedIn() ? getHsaIdForLoggedInUser(request).getId() : "Anonymous";
         LOG.info(user + " : " + logData.getMessage() + " [" + logData.getUrl() + "]");
         return Response.ok().build();
     }
 
     private HsaIdUser getHsaIdForLoggedInUser(@Context HttpServletRequest request) {
-        return loginServiceUtil.getLoginInfo(request).getHsaId();
+        return loginServiceUtil.getLoginInfo().getHsaId();
     }
 
 }

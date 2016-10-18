@@ -1,18 +1,22 @@
 ---
 
 - name: stop tomcat
-  service: name={{ tomcat_service }} state=stopped pattern=org.apache.catalina.startup.Bootstrap
+  service: name={{ tomcat_service }} state=stopped
 
 - name: create release directory
   file: path={{ releases_folder }} state=directory
   
 - name: Make sure liquibase runner file download is forced when using shapshot repo
-  file: state=absent  path={{ releases_folder }}/liquibase-runner-{{ version }}.zip
-  when: repo == "snapshot"
+  file: state=absent path={{ releases_folder }}/liquibase-runner-{{ version }}.zip
+  when: repo == "snapshots"
 
 - name: download liquibase-runner-{{ version }}.zip
-  get_url: url=http://repository-callistasoftware.forge.cloudbees.com/{{ repo }}/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip
+  get_url: url=https://build-inera.nordicmedtest.se/nexus/content/repositories/{{ repo }}/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip
       dest={{ releases_folder }}/liquibase-runner-{{ version }}.zip
+
+- name: Make sure liquibase runner file unzip is forced when using shapshot repo
+  file: state=absent path={{ releases_folder }}/liquibase-runner-{{ version }}
+  when: repo == "snapshots"
 
 - name: Unzip liquibase-runner-{{ version }}.zip
   command: unzip -d {{ releases_folder }} {{ releases_folder }}/liquibase-runner-{{ version }}.zip
@@ -26,16 +30,20 @@
   environment:
       JAVA_HOME: "{{ java_home }}"
 
+- name: Make sure highcharts-export-web-{{ highcharts_version }} file download is forced when using shapshot repo
+  file: state=absent  path={{ releases_folder }}/highcharts-export-web-{{ highcharts_version }}.war
+  when: repo == "snapshots"
+
 - name: Download highcharts-export-web-{{ highcharts_version }}.war
-  get_url: url="http://repository-callistasoftware.forge.cloudbees.com/release/com/highcharts/export/highcharts-export-web/{{ highcharts_version }}/highcharts-export-web-{{ highcharts_version }}.war"
+  get_url: url="https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/com/highcharts/export/highcharts-export-web/{{ highcharts_version }}/highcharts-export-web-{{ highcharts_version }}.war"
       dest={{ releases_folder }}
 
 - name: Make sure statistik-web file download is forced when using shapshot repo
   file: state=absent  path={{ releases_folder }}/statistik-web-{{ version }}.war
-  when: repo == "snapshot"
+  when: repo == "snapshots"
 
 - name: Download statistik-web-{{ version }}.war
-  get_url: url=http://repository-callistasoftware.forge.cloudbees.com/{{ repo }}/se/inera/statistik/statistik-web/{{ version }}/statistik-web-{{ version }}.war
+  get_url: url=https://build-inera.nordicmedtest.se/nexus/content/repositories/{{ repo }}/se/inera/statistik/statistik-web/{{ version }}/statistik-web-{{ version }}.war
       dest={{ releases_folder }}
 
 - name: remove old version of unpacked ROOT war
@@ -62,7 +70,7 @@
   args:
     creates: "{{ tomcat_webapps }}/ROOT"
 
-- name: Deploy highchart-export-web-{{ highchart_version }}.war
+- name: Deploy highchart-export-web-{{ highcharts_version }}.war
   command: cp {{ releases_folder }}/highcharts-export-web-{{ highcharts_version }}.war {{ tomcat_webapps }}/highcharts-export-web.war
 
 - name: Create version file
@@ -86,4 +94,4 @@
     replace='<security:logout logout-url="/saml/logout" logout-success-url="{{ host_url }}/" invalidate-session="true"/>'
 
 - name: start tomcat
-  service: name={{ tomcat_service }} state=started pattern=org.apache.catalina.startup.Bootstrap
+  service: name={{ tomcat_service }} state=started

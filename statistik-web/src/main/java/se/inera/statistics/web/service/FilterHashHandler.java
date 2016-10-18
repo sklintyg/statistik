@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -70,7 +70,7 @@ public class FilterHashHandler {
     FilterData getFilterFromHash(String filterHash) {
         final Optional<String> filterData = getFilterData(filterHash);
         if (!filterData.isPresent()) {
-            throw new RuntimeException("Could not find filter with given hash: " + filterHash);
+            throw new FilterHashMissingException("Could not find filter with given hash: " + filterHash);
         }
         final String filterDataString = filterData.get();
         return parseFilterData(filterDataString);
@@ -84,13 +84,14 @@ public class FilterHashHandler {
             final ArrayList<String> diagnoser = getJsonArray(rootNode.path("diagnoser"));
             final ArrayList<String> enheter = getJsonArray(rootNode.path("enheter"));
             final ArrayList<String> verksamhetstyper = getJsonArray(rootNode.path("verksamhetstyper"));
+            final ArrayList<String> sjukskrivningslangd = getJsonArray(rootNode.path("sjukskrivningslangd"));
             final String fromDate = rootNode.path("fromDate").asText().isEmpty() ? null : rootNode.path("fromDate").asText();
             final String toDate = rootNode.path("toDate").asText().isEmpty() ? null : rootNode.path("toDate").asText();
             final boolean useDefaultPeriod = rootNode.path("useDefaultPeriod").asBoolean(true);
-            return new FilterData(diagnoser, enheter, verksamhetstyper, fromDate, toDate, useDefaultPeriod);
+            return new FilterData(diagnoser, enheter, verksamhetstyper, sjukskrivningslangd, fromDate, toDate, useDefaultPeriod);
         } catch (IOException e) {
             LOG.error("Failed to parse filter data: " + filterDataString, e);
-            throw new RuntimeException("Filter data failed");
+            throw new FilterHashParseException("Filter data failed");
         }
     }
 

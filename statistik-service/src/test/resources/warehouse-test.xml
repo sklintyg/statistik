@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2015 Inera AB (http://www.inera.se)
+    Copyright (C) 2016 Inera AB (http://www.inera.se)
 
     This file is part of statistik (https://github.com/sklintyg/statistik).
 
@@ -31,8 +31,6 @@
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan" />
 
     <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
-
-    <bean id="dataGenerator" class="se.inera.statistics.service.demo.LargeTestDataGenerator" />
 
     <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactPopulator" />
     <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />

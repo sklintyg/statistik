@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -24,6 +24,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "intyghandelse")
@@ -73,6 +74,16 @@ public class IntygEvent {
 
     public long getTimestamp() {
         return timestamp;
+    }
+
+    @Transient
+    public IntygFormat getFormat() {
+        return getIntygFormat(data);
+    }
+
+    public static IntygFormat getIntygFormat(String intyg) {
+        final boolean isRegisterCertificateXmlFormat = intyg != null && intyg.matches("(?s)^.*<[^>]*RegisterCertificate.*>.*$");
+        return isRegisterCertificateXmlFormat ? IntygFormat.REGISTER_CERTIFICATE : IntygFormat.REGISTER_MEDICAL_CERTIFICATE;
     }
 
 }

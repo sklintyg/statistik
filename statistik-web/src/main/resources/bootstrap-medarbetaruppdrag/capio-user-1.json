@@ -1,4 +1,6 @@
 {
 	"hsaId": "capio-user-1",
-	"enhetIds": ["SE162321000255-O16010"]
+	"uppdrag": [
+		{"andamal":["STATISTIK"], "enhet":"SE162321000255-O16010"}
+	]
 }

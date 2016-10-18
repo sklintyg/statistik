@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -35,18 +35,17 @@ import se.inera.statistics.service.report.util.ReportUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 
 @Component
 public class NationellOverviewData {
 
     public static final int KVARTAL = 3;
     public static final int MAX_LAN = 5;
-    public static final int MAX_ALDERSGRUPPER = 5;
     public static final int PERCENT = 100;
 
     @Autowired
@@ -83,16 +82,7 @@ public class NationellOverviewData {
 
         Set<String> include = getTop(MAX_LAN, currentData);
 
-        List<OverviewChartRowExtended> result = new ArrayList<>();
-        for (int i = 0; i < currentData.getRows().size(); i++) {
-            String rowName = previousData.getRows().get(i).getName();
-            if (include.contains(rowName)) {
-                int previous = total(previousData.getRows().get(i));
-                int current = total(currentData.getRows().get(i));
-                result.add(new OverviewChartRowExtended(rowName, current, percentChange(current, previous)));
-            }
-        }
-        return result;
+        return getResult(include, previousData, currentData, null);
     }
 
     private int getForandringLangaSjukskrivningar(Range range) {
@@ -128,7 +118,7 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRowExtended> getSjukskrivningsgrader(Range range) {
-        KonDataResponse periods = data.getSjukskrivningsgrad(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL);
+        KonDataResponse periods = data.getSjukskrivningsgrad(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL, true);
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
         if (periods.getRows().size() >= 2) {
@@ -143,18 +133,54 @@ public class NationellOverviewData {
         return result;
     }
 
+    private void sortByQuantity(List<OverviewChartRowExtended> result) {
+        Collections.sort(result, (o1, o2) -> o2.getQuantity() - o1.getQuantity());
+    }
+
     private List<OverviewChartRowExtended> getAldersgrupper(Range range) {
         SimpleKonResponse<SimpleKonDataRow> previousData = data.getAldersgrupper(ReportUtil.getPreviousPeriod(range).getFrom(), 1, KVARTAL);
         SimpleKonResponse<SimpleKonDataRow> currentData = data.getAldersgrupper(range.getFrom(), 1, KVARTAL);
+
+        List<SimpleKonDataRow> previousDataRows = previousData.getRows();
+        List<SimpleKonDataRow> currentDataRows = currentData.getRows();
+
         List<OverviewChartRowExtended> result = new ArrayList<>();
-        Set<String> include = getTop(MAX_ALDERSGRUPPER, currentData);
+        for (int i = 0; i < currentDataRows.size(); i++) {
+            SimpleKonDataRow previousRow = previousDataRows.get(i);
+            SimpleKonDataRow currentRow = currentDataRows.get(i);
+            int previous = previousRow.getFemale() + previousRow.getMale();
+            int current = currentRow.getFemale() + currentRow.getMale();
+            final String rowName = currentRow.getName();
+            final OverviewChartRowExtended row = new OverviewChartRowExtended(rowName, current, current - previous);
+            result.add(row);
+        }
+
+        return result;
+    }
+
+    private List<OverviewChartRowExtended> getResult(Set<String> include, SimpleKonResponse<SimpleKonDataRow> previousData,  SimpleKonResponse<SimpleKonDataRow> currentData, String rest) {
+        List<OverviewChartRowExtended> result = new ArrayList<>();
+
+        int restCurrent = 0;
+        int restPrevious = 0;
+
         for (int i = 0; i < currentData.getRows().size(); i++) {
             String rowName = previousData.getRows().get(i).getName();
+            int previous = total(previousData.getRows().get(i));
+            int current = total(currentData.getRows().get(i));
+
             if (include.contains(rowName)) {
-                int previous = total(previousData.getRows().get(i));
-                int current = total(currentData.getRows().get(i));
                 result.add(new OverviewChartRowExtended(rowName, current, percentChange(current, previous)));
+            } else {
+                restCurrent += current;
+                restPrevious += previous;
             }
+        }
+
+        sortByQuantity(result);
+
+        if (rest != null) {
+            result.add(new OverviewChartRowExtended(rest, restCurrent, percentChange(restCurrent, restPrevious)));
         }
 
         return result;
@@ -162,13 +188,8 @@ public class NationellOverviewData {
 
     private Set<String> getTop(int size, SimpleKonResponse<SimpleKonDataRow> currentData) {
         List<SimpleKonDataRow> sorted = new ArrayList<>(currentData.getRows());
-        Collections.sort(sorted, new Comparator<SimpleKonDataRow>() {
-            @Override
-            public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {
-                return (total(o2)) - (total(o1));
-            }
-        });
-        sorted.addAll(currentData.getRows());
+        Collections.sort(sorted, (o1, o2) -> total(o2) - total(o1));
+
         Set<String> include = new HashSet<>();
         Iterator<SimpleKonDataRow> iterator = sorted.iterator();
         while (include.size() < size && iterator.hasNext()) {
@@ -186,7 +207,7 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRowExtended> getDiagnosgrupper(Range range) {
-        DiagnosgruppResponse periods = data.getDiagnosgrupper(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL);
+        DiagnosgruppResponse periods = data.getDiagnosgrupper(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL, true);
         List<OverviewChartRowExtended> result = new ArrayList<>();
         if (periods.getRows().size() >= 2) {
             List<KonField> previousData = periods.getRows().get(0).getData();

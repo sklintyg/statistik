@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -24,35 +24,18 @@ import se.inera.statistics.service.report.model.Kon;
 
 public class ChartSeries {
 
-    private static int stackCounter = 0;
-    private static final String STACKED = "stacked";
-
     private final String name;
     private final List<? extends Number> data;
-    private final String stack;
     private final Kon sex;
 
-    public ChartSeries(String name, List<? extends Number> data, String stack, Kon sex) {
+    public ChartSeries(String name, List<? extends Number> data, Kon sex) {
         this.name = name;
         this.data = data;
-        this.stack = stack;
         this.sex = sex;
     }
 
-    public ChartSeries(String name, List<? extends Number> data, boolean stacked) {
-        this(name, data, getStackValue(stacked), null);
-    }
-
-    public ChartSeries(String name, List<? extends Number> data, String stack) {
-        this(name, data, stack, null);
-    }
-
-    public ChartSeries(String name, List<Integer> data, boolean stacked, Kon sex) {
-        this(name, data, getStackValue(stacked), sex);
-    }
-
-    private static String getStackValue(boolean stacked) {
-        return stacked ? STACKED : String.valueOf(stackCounter++);
+    public ChartSeries(String name, List<? extends Number> data) {
+        this(name, data, null);
     }
 
     public String getName() {
@@ -61,10 +44,6 @@ public class ChartSeries {
 
     public List<? extends Number> getData() {
         return data;
-    }
-
-    public String getStack() {
-        return stack;
     }
 
     public Kon getSex() {

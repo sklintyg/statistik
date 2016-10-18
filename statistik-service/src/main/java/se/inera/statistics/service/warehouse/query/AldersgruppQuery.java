@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -43,7 +43,6 @@ import java.util.Map;
 
 public final class AldersgruppQuery {
     private static final Ranges RANGES = AldersgroupUtil.RANGES;
-    private static final int PERCENT = 100;
 
     private AldersgruppQuery() {
     }
@@ -51,32 +50,28 @@ public final class AldersgruppQuery {
     public static List<OverviewChartRowExtended> getOverviewAldersgrupper(Collection<Sjukfall> currentSjukfall, Collection<Sjukfall> previousSjukfall, int noOfRows) {
         Map<Ranges.Range, Counter<Ranges.Range>> previousCount = count(previousSjukfall);
 
-        List<Counter<Ranges.Range>> toKeep = count(currentSjukfall, noOfRows);
+        Map<Ranges.Range, Counter<Ranges.Range>> map = count(currentSjukfall);
+        Collection<Ranges.Range> rowsToKeep = rowsToKeep(map, noOfRows);
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
 
-        for (Counter<Ranges.Range> counter : toKeep) {
+        Counter<Ranges.Range> counter;
+        for (Ranges.Range range : RANGES) {
+            counter = map.get(range);
             int current = counter.getCount();
             int previous = previousCount.get(counter.getKey()).getCount();
-            result.add(new OverviewChartRowExtended(counter.getKey().getName() , current, percentChange(current, previous)));
+
+            if (rowsToKeep.contains(range)) {
+                result.add(new OverviewChartRowExtended(counter.getKey().getName(), current, current - previous));
+            }
         }
 
         return result;
     }
 
-    private static int percentChange(int current, int previous) {
-        if (previous == 0) {
-            return 0;
-        } else {
-            return (current - previous) * PERCENT / previous;
-        }
-    }
-
     private static Collection<Ranges.Range> rowsToKeep(Map<Ranges.Range, Counter<Ranges.Range>> count, int noOfRows) {
         List<Counter<Ranges.Range>> sorted = new ArrayList<>();
-        for (Counter<Ranges.Range> counter : count.values()) {
-            sorted.add(counter);
-        }
+        sorted.addAll(count.values());
         Collections.sort(sorted);
 
         Collection<Ranges.Range> result = new HashSet<>();
@@ -84,20 +79,6 @@ public final class AldersgruppQuery {
             result.add(counter.getKey());
             if (result.size() == noOfRows) {
                 break;
-            }
-        }
-
-        return result;
-    }
-
-    public static List<Counter<Ranges.Range>> count(Collection<Sjukfall> sjukfalls, int noOfRows) {
-        Map<Ranges.Range, Counter<Ranges.Range>> map = count(sjukfalls);
-        List<Counter<Ranges.Range>> result = new ArrayList<>();
-
-        Collection<Ranges.Range> rowsToKeep = rowsToKeep(map, noOfRows);
-        for (Ranges.Range range : RANGES) {
-            if (rowsToKeep.contains(range)) {
-                result.add(map.get(range));
             }
         }
 

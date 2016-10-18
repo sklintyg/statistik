@@ -21,5 +21,21 @@
           <property name="messageListener" ref="jmsReceiver"/>
           <property name="transactionManager" ref="transactionManager"/>
       </bean>
+
+      <bean id="mbeanServerQm" class="org.springframework.jmx.support.MBeanServerFactoryBean">
+        <!-- indicate to first look for a server -->
+        <property name="locateExistingServerIfPossible" value="true"/>
+      </bean>
+
+      <bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
+        <property name="server" ref="mbeanServerQm"/>
+        <property name="beans">
+          <map>
+            <entry key="inera-statistics:name=JmsContainer" value-ref="jmsContainer"/>
+          </map>
+        </property>
+        <property name="registrationPolicy" value="REPLACE_EXISTING"/>
+      </bean>
+
     </beans>
 </beans>

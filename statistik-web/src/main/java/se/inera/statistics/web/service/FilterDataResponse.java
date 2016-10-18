@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -28,15 +28,20 @@ import java.util.Collections;
 import java.util.List;
 
 public class FilterDataResponse {
+
+    private String filterhash;
     private List<String> diagnoser;
     private List<String> enheter;
+    private List<String> sjukskrivningslangd;
 
     //To be used by json converter
-    FilterDataResponse() {
+    private FilterDataResponse() {
     }
 
-    public FilterDataResponse(Collection<String> diagnoser, Collection<HsaIdEnhet> enheter) {
+    public FilterDataResponse(String filterhash, Collection<String> diagnoser, Collection<HsaIdEnhet> enheter, Collection<String> sjukskrivningslangd) {
+        this.filterhash = filterhash;
         this.diagnoser = diagnoser == null ? null : Collections.unmodifiableList(new ArrayList<>(diagnoser));
+        this.sjukskrivningslangd = sjukskrivningslangd == null ? null : Collections.unmodifiableList(new ArrayList<>(sjukskrivningslangd));
         this.enheter = enheter == null ? null : Lists.transform(new ArrayList<>(enheter), new Function<HsaIdEnhet, String>() {
             @Override
             public String apply(HsaIdEnhet hsaId) {
@@ -45,12 +50,28 @@ public class FilterDataResponse {
         });
     }
 
+    public FilterDataResponse(Filter filter) {
+        this(filter.getFilterHash(), filter.getDiagnoser(), filter.getEnheter(), filter.getSjukskrivningslangd());
+    }
+
+    public static FilterDataResponse empty() {
+        return new FilterDataResponse(null, null, null, null);
+    }
+
     public List<String> getDiagnoser() {
         return diagnoser;
     }
 
     public List<String> getEnheter() {
         return enheter;
+    }
+
+    public List<String> getSjukskrivningslangd() {
+        return sjukskrivningslangd;
+    }
+
+    public String getFilterhash() {
+        return filterhash;
     }
 
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -66,7 +66,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
         TableData tableData = convertToTableData(casesPerMonth.getRows());
         ChartData chartData = convertToChartData(casesPerMonth);
         final Filter filter = filterSettings.getFilter();
-        final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
+        final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
         final String combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
         return new SimpleDetailsData(tableData, chartData, range.toString(), filterResponse, combinedMessage);
@@ -96,16 +96,16 @@ public class SjukfallPerPatientsPerEnhetConverter {
         return TableData.createWithSingleHeadersRow(data, Arrays.asList("Vårdenhet", "Antal sjukfall", "Antal listningar", "Antal sjukfall per 1000 listningar"));
     }
 
-    private String roundToTwoDecimalsAndFormatToString(float number) {
+    static String roundToTwoDecimalsAndFormatToString(float number) {
         DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         decimalFormatSymbols.setDecimalSeparator(',');
-        DecimalFormat twoDecimalsFormat = new DecimalFormat("#.##", decimalFormatSymbols);
+        DecimalFormat twoDecimalsFormat = new DecimalFormat("0.00", decimalFormatSymbols);
         return twoDecimalsFormat.format(number);
     }
 
-    private double roundToTwoDecimals(double number) {
+    static double roundToTwoDecimals(double number) {
         DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
-        DecimalFormat twoDecimalsFormat = new DecimalFormat("#.##", decimalFormatSymbols);
+        DecimalFormat twoDecimalsFormat = new DecimalFormat("0.00", decimalFormatSymbols);
         return Double.valueOf(twoDecimalsFormat.format(number));
     }
 
@@ -130,7 +130,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Antal sjukfall per 1000 listningar", filteredSummedData, false));
+        series.add(new ChartSeries("Antal sjukfall per 1000 listningar", filteredSummedData));
 
         return new ChartData(series, categories);
     }

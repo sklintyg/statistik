@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -47,6 +47,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
     private static final Map<String, List<Integer>> DIAGNOSIS_CHART_GROUPS = createDiagnosisGroupsMap(true);
     static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
     private static final int DISPLAYED_DIAGNOSIS_GROUPS = 5;
+    static final String DIAGNOS_REST_NAME = "Andra diagnosgrupper";
 
     private static Map<Integer, String> map(Map<String, List<Integer>> diagnosisChartGroups) {
         Map<Integer, String> result = new HashMap<>();
@@ -85,36 +86,16 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
         ChartData maleChart = convertChart(diagnosisGroups, Kon.Male);
         ChartData femaleChart = convertChart(diagnosisGroups, Kon.Female);
         final Filter filter = filterSettings.getFilter();
-        final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
+        final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse, filterSettings.getMessage());
     }
 
     public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> diagnosisGroups) {
         List<OverviewChartRowExtended> merged = mergeOverviewChartGroups(diagnosisGroups);
-        Collections.sort(merged, new Comparator<OverviewChartRowExtended>() {
-            @Override
-            public int compare(OverviewChartRowExtended o1, OverviewChartRowExtended o2) {
-                return o2.getQuantity() - o1.getQuantity();
-            }
-        });
+        Collections.sort(merged, (o1,  o2) -> o2.getQuantity() - o1.getQuantity());
 
-        List<OverviewChartRowExtended> result = new ArrayList<>();
-        for (OverviewChartRowExtended row : merged.subList(0, DISPLAYED_DIAGNOSIS_GROUPS)) {
-            final int alternation = row.getAlternation();
-            int previous = row.getQuantity() - alternation;
-            int percentChange = calculatePercentage(alternation, previous);
-            result.add(new OverviewChartRowExtended(row.getName(), row.getQuantity(), percentChange));
-        }
-        return result;
-    }
-
-    int calculatePercentage(int part, int whole) {
-        if (whole == 0) {
-            return 0;
-        }
-        final double percentage = 100.0;
-        return (int) Math.round(part * percentage / whole);
+        return Converters.convert(merged, DISPLAYED_DIAGNOSIS_GROUPS, DIAGNOS_REST_NAME);
     }
 
     private List<OverviewChartRowExtended> mergeOverviewChartGroups(List<OverviewChartRowExtended> allGroups) {
@@ -149,7 +130,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
         Map<String, List<Integer>> mergedGroups = mergeChartGroups(allGroups);
         ArrayList<ChartSeries> rows = new ArrayList<>();
         for (Entry<String, List<Integer>> entry : mergedGroups.entrySet()) {
-            rows.add(new ChartSeries(entry.getKey(), entry.getValue(), true));
+            rows.add(new ChartSeries(entry.getKey(), entry.getValue()));
         }
 
         final List<ChartCategory> categories = Lists.transform(resp.getPeriods(), new Function<String, ChartCategory>() {

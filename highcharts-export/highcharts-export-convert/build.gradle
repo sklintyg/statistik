@@ -2,6 +2,4 @@ description = 'highcharts-export-convert'
 
 dependencies {
     compile 'com.google.code.gson:gson:2.2.2'
-    compile 'commons-lang:commons-lang:2.5'
-    compile 'commons-codec:commons-codec:1.7'
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,20 +18,15 @@
  */
 package se.inera.statistics.service.testsupport;
 
-import javax.annotation.PostConstruct;
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.Queue;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
-
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.queue.JmsReceiver;
+
+import javax.annotation.PostConstruct;
+import javax.jms.ConnectionFactory;
+import javax.jms.Queue;
+import javax.jms.TextMessage;
 
 public class QueueSender {
     private JmsTemplate jmsTemplate;
@@ -48,27 +43,21 @@ public class QueueSender {
     }
 
     public void simpleSend(final String intyg, final String correlationId) {
-
-        this.jmsTemplate.send(destination, new MessageCreator() {
-            public Message createMessage(Session session) throws JMSException {
-                TextMessage message = session.createTextMessage(intyg);
-                message.setStringProperty(JmsReceiver.ACTION, JmsReceiver.CREATED);
-                message.setStringProperty(JmsReceiver.CERTIFICATE_ID, correlationId);
-                return message;
-            }
-        });
+        simpleSend(intyg, correlationId, JmsReceiver.CREATED);
     }
 
     public void simpleSend(final String intyg, final String correlationId, final EventType type) {
+        simpleSend(intyg, correlationId, type.name());
+    }
 
-        this.jmsTemplate.send(destination, new MessageCreator() {
-            public Message createMessage(Session session) throws JMSException {
-                TextMessage message = session.createTextMessage(intyg);
-                message.setStringProperty(JmsReceiver.ACTION, type.name());
-                message.setStringProperty(JmsReceiver.CERTIFICATE_ID, correlationId);
-                return message;
-            }
+    private void simpleSend(String intyg, String correlationId, String action) {
+        jmsTemplate.send(destination, session -> {
+            TextMessage message = session.createTextMessage(intyg);
+            message.setStringProperty(JmsReceiver.ACTION, action);
+            message.setStringProperty(JmsReceiver.CERTIFICATE_ID, correlationId);
+            return message;
         });
+
     }
 
 }

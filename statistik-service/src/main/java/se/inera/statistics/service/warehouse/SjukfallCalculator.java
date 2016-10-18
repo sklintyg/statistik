@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -56,7 +56,7 @@ public class SjukfallCalculator {
      */
     public SjukfallCalculator(Aisle aisle, Predicate<Fact> filter, List<Range> ranges, boolean useOriginalSjukfallStart) {
         this.aisle = new ArrayList<>(aisle.getLines());
-        this.extendSjukfall = !SjukfallUtil.ALL_ENHETER.getFilter().equals(filter);
+        this.extendSjukfall = !SjukfallUtil.ALL_ENHETER.getIntygFilter().equals(filter);
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
         final Iterable<Fact> filteredAisle = Iterables.filter(aisle, filter);
         this.ranges = new ArrayList<>(ranges);

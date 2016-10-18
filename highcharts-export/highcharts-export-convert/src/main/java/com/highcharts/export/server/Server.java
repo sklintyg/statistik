@@ -1,7 +1,6 @@
 package com.highcharts.export.server;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -9,17 +8,16 @@ import java.io.OutputStream;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 
 import com.highcharts.export.converter.SVGConverterException;
-import static com.highcharts.export.server.Server.logger;
 import com.highcharts.export.util.TempDir;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Server {
 	private Process process;
@@ -30,7 +28,7 @@ public class Server {
 	private final int maxTimeout;
 	private ServerState state = ServerState.IDLE;
 
-	protected static Logger logger = Logger.getLogger("utils");
+	protected static final Logger logger = Logger.getLogger("server");
 
 	public Server(String exec, String script, String host, int port, int connectTimeout, int readTimeout, int maxTimeout) {
 
@@ -42,23 +40,26 @@ public class Server {
 		this.maxTimeout = maxTimeout;
 
 		try {
-            System.out.println("phantompath: " + exec);
-			ArrayList<String> commands = new ArrayList<String>();
+			ArrayList<String> commands = new ArrayList<>();
 			commands.add(exec);
-			commands.add(TempDir.getTmpDir().toAbsolutePath().toString() + "/phantomjs/" + script);
+			commands.add(script);
 			commands.add("-host");
 			commands.add(host);
 			commands.add("-port");
 			commands.add("" + port);
+			commands.add("-tmpdir");
+			commands.add("" + TempDir.getOutputDir());
 
-			logger.debug(commands.toString());
+			logger.log(Level.FINE, commands.toString());
 
 			process = new ProcessBuilder(commands).start();
 			final BufferedReader bufferedReader = new BufferedReader(
 					new InputStreamReader(process.getInputStream()));
 			String readLine = bufferedReader.readLine();
 			if (readLine == null || !readLine.contains("ready")) {
-				throw new RuntimeException("Error, PhantomJS couldnot start: " + readLine);
+                logger.log(Level.WARNING, "Command starting Phantomjs failed");
+                process.destroy();
+				throw new RuntimeException("Error, PhantomJS couldnot start");                
 			}
 
 			initialize();
@@ -67,13 +68,13 @@ public class Server {
 				@Override
 				public void run() {
 					if (process != null) {
-						logger.error("Shutting down PhantomJS instance, kill process directly, " + this.toString());
+						logger.log(Level.WARNING, "Shutting down PhantomJS instance, kill process directly, {0}", this.toString());
 						try {
 							process.getErrorStream().close();
 							process.getInputStream().close();
 							process.getOutputStream().close();
 						} catch (IOException e) {
-							logger.error("Error while shutting down process: " + e.getMessage());
+							logger.log(Level.WARNING, "Error while shutting down process: {0}", e.getMessage());
 						}
 						process.destroy();
 					}
@@ -85,7 +86,7 @@ public class Server {
 	}
 
 	public void initialize() {
-		logger.debug("Phantom server started on port " + port);
+		logger.log(Level.FINE, "Phantom server started on port {0}", port);
 	}
 
 	public String request(String params) throws SocketTimeoutException, SVGConverterException, TimeoutException {
@@ -94,9 +95,11 @@ public class Server {
 		try {
 			URL url = new URL("http://" + host + ":"
 					+ port + "/");
-
-			// TEST sockettimeout
-			//url = new URL("http://" + host + ":7777/");
+			
+			// TEST with running a local phantom instance
+			// url = new URL("http://" + host + ":7777/");
+			// logger.log(Level.INFO, "requesting url: " + url.toString());
+			// logger.log(Level.INFO, "parameters: " +  params);
 
 			state = ServerState.BUSY;
 
@@ -108,14 +111,12 @@ public class Server {
 			connection.setReadTimeout(readTimeout);
 
 			OutputStream out = connection.getOutputStream();
-			out.write(params.getBytes());
+			out.write(params.getBytes("utf-8"));
 			out.close();
 			InputStream in = connection.getInputStream();
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			IOUtils.copy(in, baos);
-			in.close();
-			response = new String(baos.toByteArray(), Charset.forName("utf-8"));
+			response = IOUtils.toString(in, "utf-8");
 
+			in.close();
 			_timer.cancel();
 			state = ServerState.IDLE;
 		} catch (SocketTimeoutException ste) {
@@ -138,12 +139,12 @@ public class Server {
 			process.getInputStream().close();
 			process.getOutputStream().close();
 		} catch (IOException e) {
-			logger.error("Error while shutting down process: " + e.getMessage());
+			logger.log(Level.SEVERE, "Error while shutting down process: {0}", e.getMessage());
 		}
 
 		process.destroy();
 		process = null;
-		logger.debug("Destroyed phantomJS process running on port " + port);
+		logger.log(Level.FINE, "Destroyed phantomJS process running on port {0}", port);
 	}
 
 	public int getPort() {

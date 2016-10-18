@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -25,9 +25,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
-public final class Sjukfall {
-
+// CHECKSTYLE:OFF FinalClass
+public class Sjukfall {
+    // CHECKSTYLE:ON FinalClass
     public static final int MAX_GAP = 5;
 
     private int start;
@@ -35,13 +37,16 @@ public final class Sjukfall {
     private int end;
     private int kon;
     private int alder;
+    private List<Integer> sjukskrivningsgrader = new ArrayList<>();
     private int sjukskrivningsgrad;
     private Set<Lakare> lakare = new HashSet<>();
+    private Lakare lastLakare;
     private int[] enhets;
     private int realDays;
     private List<Diagnos> diagnoses = new ArrayList<>();
     private Diagnos diagnos;
     private boolean enkelt;
+    private int lastEnhet;
 
     private Sjukfall() {
     }
@@ -56,9 +61,12 @@ public final class Sjukfall {
         sjukfall.kon = extendedSjukfall.getKonInt();
         sjukfall.alder = extendedSjukfall.getAlder();
         sjukfall.sjukskrivningsgrad = extendedSjukfall.getSjukskrivningsgrad();
+        sjukfall.sjukskrivningsgrader = new ArrayList<>(extendedSjukfall.getSjukskrivningsgrads());
         sjukfall.lan = extendedSjukfall.getLan();
         sjukfall.lakare = extendedSjukfall.getLakare();
+        sjukfall.lastLakare = extendedSjukfall.getLastLakare();
         sjukfall.enhets = toArray(extendedSjukfall.getEnhets());
+        sjukfall.lastEnhet = extendedSjukfall.getLastEnhet();
         sjukfall.enkelt = extendedSjukfall.isEnkelt();
         return sjukfall;
     }
@@ -146,6 +154,10 @@ public final class Sjukfall {
         return realDays;
     }
 
+    public int getStart() {
+        return start;
+    }
+
     public int getEnd() {
         return end;
     }
@@ -154,8 +166,16 @@ public final class Sjukfall {
         return diagnos.diagnoskapitel;
     }
 
+    public Stream<Integer> getDiagnoskapitels() {
+        return diagnoses.stream().map(d -> d.diagnoskapitel);
+    }
+
     public int getSjukskrivningsgrad() {
         return sjukskrivningsgrad;
+    }
+
+    public List<Integer> getSjukskrivningsgrader() {
+        return sjukskrivningsgrader;
     }
 
     public int getDiagnosavsnitt() {
@@ -170,8 +190,16 @@ public final class Sjukfall {
         return lakare;
     }
 
+    public Lakare getLastLakare() {
+        return lastLakare;
+    }
+
     public int[] getEnhets() {
         return enhets;
+    }
+
+    public int getLastEnhet() {
+        return lastEnhet;
     }
 
     public boolean isEnkelt() {

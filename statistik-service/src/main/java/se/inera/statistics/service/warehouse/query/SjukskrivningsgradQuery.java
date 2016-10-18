@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,8 +18,6 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import com.google.common.base.Function;
-import com.google.common.collect.HashMultiset;
 import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -34,8 +32,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class SjukskrivningsgradQuery {
     public static final List<String> GRAD_LABEL = Collections.unmodifiableList(Arrays.asList("25", "50", "75", "100"));
@@ -55,7 +55,7 @@ public final class SjukskrivningsgradQuery {
         for (Integer range : GRAD) {
             int current = currentCount.get(range).getCount();
             int previous = previousCount.get(range).getCount();
-            result.add(new OverviewChartRowExtended(range.toString() + "%", current, percentChange(current, previous)));
+            result.add(new OverviewChartRowExtended(range.toString() + " %", current, percentChange(current, previous)));
         }
 
         return result;
@@ -63,20 +63,28 @@ public final class SjukskrivningsgradQuery {
 
     private static Map<Integer, Counter<Integer>> count2(Collection<Sjukfall> sjukfalls) {
         Map<Integer, Counter<Integer>> counters = Counter.mapFor(GRAD);
+
         for (Sjukfall sjukfall : sjukfalls) {
-            Counter counter = counters.get(sjukfall.getSjukskrivningsgrad());
-            counter.increase(sjukfall);
+            sjukfall.getSjukskrivningsgrader().stream().distinct().forEach((g) -> {
+                Counter counter = counters.get(g);
+                counter.increase(sjukfall);
+            });
         }
         return counters;
     }
-
     public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil) {
-        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, GRAD_LABEL, GRAD, new CounterFunction<Integer>() {
-            @Override
-            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
-                counter.add(sjukfall.getSjukskrivningsgrad());
-            }
-        });
+        return getSjukskrivningsgrad(aisle, filter, start, periods, periodSize, sjukfallUtil, false);
+    }
+
+    public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil, boolean all) {
+        CounterFunction<Integer> toCount;
+        if (all) {
+            toCount = (sjukfall, counter) -> counter.addAll(sjukfall.getSjukskrivningsgrader().stream().distinct().collect(Collectors.toSet()));
+        } else {
+            toCount = (sjukfall, counter) -> counter.add(sjukfall.getSjukskrivningsgrad());
+        }
+
+        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, GRAD_LABEL, GRAD, toCount);
     }
 
     private static int percentChange(int current, int previous) {
@@ -88,12 +96,8 @@ public final class SjukskrivningsgradQuery {
     }
 
     public static SimpleKonResponse<SimpleKonDataRow> getSjukskrivningsgradTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
-        final Function<Sjukfall, Integer> toCount = new Function<Sjukfall, Integer>() {
-            @Override
-            public Integer apply(Sjukfall sjukfall) {
-                return sjukfall.getSjukskrivningsgrad();
-            }
-        };
+        final CounterFunction<Integer> toCount = (sjukfall, counter) -> counter.addAll(new HashSet<>(sjukfall.getSjukskrivningsgrader()));
+
         return sjukfallUtil.calculateSimpleKonResponse(aisle, filter, from, periods, periodLength, toCount, GRAD);
     }
 

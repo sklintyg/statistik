@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -19,9 +19,6 @@
 package se.inera.statistics.hsa.services;
 
 import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.Vardenhet;
-
-import java.util.List;
 
 /**
  * @author andreaskaltenbach
@@ -31,5 +28,5 @@ public interface HsaOrganizationsService {
     /**
      * Returns a list of Vardenheter where the HoS person is authorized to get statistics information.
      */
-    List<Vardenhet> getAuthorizedEnheterForHosPerson(HsaIdUser hosPersonHsaId);
+    UserAuthorization getAuthorizedEnheterForHosPerson(HsaIdUser hosPersonHsaId);
 }

@@ -29,7 +29,7 @@ class FoljandeIntygFinns {
     def län
     def exaktintygid
     String händelsetyp
-    String jsonformat
+    String intygformat
     String intygstyp
     String funktionsnedsättning
     String aktivitetsbegränsning
@@ -55,7 +55,7 @@ class FoljandeIntygFinns {
         län = null
         händelsetyp = EventType.CREATED.name()
         exaktintygid = intygIdCounter++
-        jsonformat = "nytt"
+        intygformat = "Xml"
         huvudenhet = null
         intygstyp = "fk7263"
         enhetsnamn = null
@@ -73,17 +73,101 @@ class FoljandeIntygFinns {
     }
 
     Object getIntygDataString() {
-        if ("gammalt".equalsIgnoreCase(jsonformat)) {
-            return executeForOldJsonFormat();
-        } else if ("felaktigt".equalsIgnoreCase(jsonformat)) {
-            return executeForIllegalJsonFormat();
-        } else {
-            return executeForNewJsonFormat();
+        switch (intygformat) {
+            case ~/^(?i)GammaltJson$/:
+                return executeForOldJsonFormat();
+            case ~/^(?i)NyttJson$/:
+                return executeForNewJsonFormat();
+            case ~/^(?i)Xml$/:
+                return executeForLisuXmlFormat();
+            case ~/^(?i)felaktigt.*$/:
+                return executeForIllegalIntygFormat();
+            default:
+                throw new RuntimeException("Unknown intyg format requested")
         }
     }
 
-    private String executeForIllegalJsonFormat() {
-        return "This intyg will not be possible to parse as json"
+    private String executeForIllegalIntygFormat() {
+        return "This intyg will not be possible to parse"
+    }
+
+    private String executeForLisuXmlFormat() {
+        def slurper = new XmlParser(false, true)
+        String intygString = getClass().getResource('/fk7263sit.xml').getText('UTF-8')
+        def result = slurper.parseText(intygString)
+        def intyg = result.value()[0]
+
+        def patientNode = findNode(intyg, "patient")
+
+        def patientPersonIdNode = findNode(patientNode, "person-id")
+        setExtension(patientPersonIdNode, personnr)
+        setLeafValue(findNode(intyg, "typ"), "code", intygstyp)
+
+        def skapadAvNode = findNode(intyg, "skapadAv")
+        setExtension(findNode(skapadAvNode, "personal-id"), läkare)
+
+        def skapadAvEnhetNode = findNode(skapadAvNode, "enhet")
+        setExtension(findNode(skapadAvEnhetNode, "enhets-id"), enhet)
+
+        def skapadAvEnhetVgNode = findNode(skapadAvEnhetNode, "vardgivare")
+        setExtension(findNode(skapadAvEnhetVgNode, "vardgivare-id"), vardgivare)
+
+        def svarNodes = findNodes(intyg, "svar")
+        if ("UTANDIAGNOSKOD".equalsIgnoreCase(diagnoskod)) {
+            intyg.remove(svarNodes.find{it.@id=="6"})
+        } else {
+            def dxCodeSvarNode = svarNodes.find{ it.@id=="6" }
+            def dxCodeNode = dxCodeSvarNode.find{it.@id=="6.2"}.value()[0]
+            setLeafValue(dxCodeNode, "code", diagnoskod)
+        }
+
+        def funktionsnedsattningNode = svarNodes.find{ it.@id=="35" }
+        def funktionsnedsattningCodeNode = funktionsnedsattningNode.value().find{it.@id=="35.1"}
+        funktionsnedsattningCodeNode.setValue(funktionsnedsättning)
+
+        def aktivitetsbegransningNode = svarNodes.find{ it.@id=="17" }
+        def aktivitetsbegransningCodeNode = aktivitetsbegransningNode.value().find{it.@id=="17.1"}
+        aktivitetsbegransningCodeNode.setValue(aktivitetsbegränsning)
+
+        def arbetsformagaNode = svarNodes.find{ it.@id=="32" }
+        def arbetsformagaCodeNode = arbetsformagaNode.value().find{it.@id=="32.1"}.value()[0]
+        setLeafValue(arbetsformagaCodeNode, "code", (Integer.valueOf(arbetsförmåga) / 25) + 1);
+        def arbetsformagaPeriodNode = arbetsformagaNode.value().find{it.@id=="32.2"}.value()[0]
+        setLeafValue(arbetsformagaPeriodNode, "start", start)
+        setLeafValue(arbetsformagaPeriodNode, "end", slut)
+
+        if (!arbetsförmåga2.isEmpty()) {
+            def arbetsformagaNode2 = arbetsformagaNode.clone();
+            intyg.append(arbetsformagaNode2);
+            def arbetsformagaCodeNode2 = arbetsformagaNode2.value().find{it.@id=="32.1"}.value()[0]
+            setLeafValue(arbetsformagaCodeNode2, "code", (Integer.valueOf(arbetsförmåga2) / 25) + 1);
+            def arbetsformagaPeriodNode2 = arbetsformagaNode2.value().find{it.@id=="32.2"}.value()[0]
+            setLeafValue(arbetsformagaPeriodNode2, "start", start2)
+            setLeafValue(arbetsformagaPeriodNode2, "end", slut2)
+        }
+
+        def builder = groovy.xml.XmlUtil.serialize(result)
+        return builder.toString()
+    }
+
+    private Object findNode(parent, String nodeName) {
+        return parent.find { it.name().localPart.equals(nodeName) }
+    }
+
+    private Object findNodes(parent, String nodeName) {
+        return parent.findAll { it.name().localPart.equals(nodeName) }
+    }
+
+    def setLeafValue(Node node, String leafName, def value) {
+        def leafNode = node.value().find {
+            def localpart = it.name().localPart
+            leafName.equalsIgnoreCase(localpart)
+        }
+        leafNode.setValue(value)
+    }
+
+    def setExtension(Node node, def value) {
+        setLeafValue(node, "extension", value)
     }
 
     private String executeForNewJsonFormat() {

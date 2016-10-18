@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2015 Inera AB (http://www.inera.se)
+    Copyright (C) 2016 Inera AB (http://www.inera.se)
 
     This file is part of statistik (https://github.com/sklintyg/statistik).
 
@@ -63,6 +63,8 @@
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
+    <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper"/>
+
     <task:annotation-driven executor="taskExecutor"/>
     <task:executor id="taskExecutor" pool-size="5-10" queue-capacity="25" rejection-policy="CALLER_RUNS" />
 
@@ -70,4 +72,5 @@
     <beans profile="active">
         <context:component-scan base-package="se.inera.statistics.scheduler.active" />
     </beans>
+
 </beans>

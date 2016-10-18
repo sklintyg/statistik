@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -40,7 +40,7 @@ public class SickLeaveLengthConverterTest {
     @Test
     public void convertCasesPerMonthDataTest() {
         //Given
-        SickLeaveLengthConverter converter = new SickLeaveLengthConverter();
+        SimpleDualSexConverter converter = SimpleDualSexConverter.newGenericTvarsnitt();
         ArrayList<SimpleKonDataRow> sjukfallslangdRows = new ArrayList<>();
         sjukfallslangdRows.add(new SimpleKonDataRow("< 20 dagar", 13, 14));
         sjukfallslangdRows.add(new SimpleKonDataRow("20-50 dagar", 24, 15));
@@ -54,7 +54,7 @@ public class SickLeaveLengthConverterTest {
 
         //Then
         TableData tableDataResult = result.getTableData();
-        assertEquals("[[Sjukskrivningslängd;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableDataResult.getHeaders().toString());
+        assertEquals("[[;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableDataResult.getHeaders().toString());
         List<NamedData> rows = tableDataResult.getRows();
         assertEquals(3, rows.size());
         assertEquals("< 20 dagar", rows.get(0).getName());
@@ -68,8 +68,8 @@ public class SickLeaveLengthConverterTest {
         assertEquals("[< 20 dagar, 20-50 dagar, > 50 dagar]", chartDataResult.getCategories().toString());
         List<ChartSeries> series = chartDataResult.getSeries();
         assertEquals(2, series.size());
-        assertEquals("Antal sjukfall för män", series.get(1).getName());
-        assertEquals("Antal sjukfall för kvinnor", series.get(0).getName());
+        assertEquals("Män", series.get(1).getName());
+        assertEquals("Kvinnor", series.get(0).getName());
         assertEquals("[14, 15, 9]", series.get(1).getData().toString());
         assertEquals("[13, 24, 3]", series.get(0).getData().toString());
 

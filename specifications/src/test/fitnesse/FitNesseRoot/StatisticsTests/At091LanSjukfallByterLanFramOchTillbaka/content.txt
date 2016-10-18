@@ -22,12 +22,7 @@ Sjukfall som byter vårdgivare räknas som två separata sjukfall.
 
 Nationell:
 | Sjukfall i rapporten lan |
-| period       | län                  | totalt? | män? | kvinnor? |
-| maj–jul 2013 | Stockholms län       | 1       | 1    | 0        |
-| maj–jul 2013 | Jönköpings län       | 1       | 1    | 0        |
-| maj–jul 2013 | Västra Götalands län | 0       | 0    | 0        |
-| maj–jul 2013 | Okänt län            | 0       | 0    | 0        |
-| aug–okt 2013 | Stockholms län       | 1       | 1    | 0        |
-| aug–okt 2013 | Jönköpings län       | 1       | 1    | 0        |
-| aug–okt 2013 | Västra Götalands län | 1       | 0    | 1        |
-| aug–okt 2013 | Okänt län            | 0       | 0    | 0        |
+| län                  | kolumngrupp    | totalt? | kvinnor? | män? |
+| Stockholms län       | antal sjukfall | 2       | 0    | 2        |
+| Jönköpings län       | antal sjukfall | 1       | 0    | 1        |
+| Västra Götalands län | antal sjukfall | 1       | 1    | 0        |

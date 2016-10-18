@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -20,8 +20,14 @@ package se.inera.statistics.service.report.model;
 
 public class KonField {
 
-    private final int female;
-    private final int male;
+    private int female;
+    private int male;
+
+    /**
+     * Used by json parser.
+     */
+    private KonField() {
+    }
 
     public KonField(int female, int male) {
         this.female = female;

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.hsa.model;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.google.common.base.Objects;
 
 import java.io.IOException;
@@ -29,8 +30,7 @@ public class HsaIdAny implements Serializable {
     private String id;
 
     HsaIdAny(String id) {
-        assert id != null : "HSA id may not be null";
-        this.id = id == null ? "" : id.toUpperCase(Locale.ENGLISH);
+        this.id = id == null ? "" : id.toUpperCase(Locale.ENGLISH).replaceAll("\\s", "");
     }
 
     /**
@@ -44,6 +44,7 @@ public class HsaIdAny implements Serializable {
         return new HsaIdAny("");
     }
 
+    @JsonValue
     public String getId() {
         return id;
     }
@@ -76,6 +77,10 @@ public class HsaIdAny implements Serializable {
 
     private void readObject(java.io.ObjectInputStream stream) throws IOException, ClassNotFoundException {
         id = (String) stream.readObject();
+    }
+
+    public boolean isEmpty() {
+        return id.isEmpty();
     }
 
 }

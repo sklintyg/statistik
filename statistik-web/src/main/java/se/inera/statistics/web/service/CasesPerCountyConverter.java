@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,13 +18,17 @@
  */
 package se.inera.statistics.web.service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
+import se.inera.statistics.service.countypopulation.CountyPopulation;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -36,70 +40,175 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableHeader;
 
+import com.google.common.collect.Lists;
+
 public class CasesPerCountyConverter {
 
-    private final SimpleKonResponse<SimpleKonDataRow> respNewest;
-    private final SimpleKonResponse<SimpleKonDataRow> respOldest;
-    private final Range rangeOld;
-    private final Range rangeNew;
+    public static final float THOUSAND = 1000F;
+    public static final String SAMTLIGA_LAN = "Samtliga län";
+    public static final String LAN = "Län";
+    public static final String H_ANTAL_SJUKFALL = "Antal sjukfall";
+    public static final String H_ANTAL_INVANARE = "Antal invånare";
+    public static final String H_ANTAL_SJUKFALL_PER_1000_INVANARE = "Antal sjukfall per 1000 invånare";
+    public static final String H_TOTALT = "Totalt";
+    public static final String H_KVINNOR = "Kvinnor";
+    public static final String H_MAN = "Män";
+    public static final int COLSPAN = 3;
+    private final SimpleKonResponse<SimpleKonDataRow> resp;
+    private final Range range;
+    private final CountyPopulation countyPopulation;
 
-    public CasesPerCountyConverter(SimpleKonResponse<SimpleKonDataRow> respNewest, SimpleKonResponse<SimpleKonDataRow> respOldest, Range rangeNewest, Range rangeOldest) {
-        assert respNewest.getRows().size() == respOldest.getRows().size();
-        this.respNewest = respNewest;
-        this.respOldest = respOldest;
-        this.rangeNew = rangeNewest;
-        this.rangeOld = rangeOldest;
+    public CasesPerCountyConverter(SimpleKonResponse<SimpleKonDataRow> sjukfallPerLan, CountyPopulation countyPopulation, Range range) {
+        this.resp = sjukfallPerLan;
+        this.range = range;
+        this.countyPopulation = countyPopulation;
     }
 
     private TableData convertToTable() {
         List<NamedData> data = new ArrayList<>();
-        for (int i = 0; i < respNewest.getRows().size(); i++) {
-            SimpleKonDataRow newestRow = respNewest.getRows().get(i);
-            SimpleKonDataRow oldestRow = respOldest.getRows().get(i);
-            assert newestRow.getName().equals(oldestRow.getName());
 
-            int rowSumNewest = newestRow.getFemale() + newestRow.getMale();
-            int rowSumOldest = oldestRow.getFemale() + oldestRow.getMale();
+        final List<Object> samtligaLanRowData = getSamtligaLanRowData();
+        data.add(new NamedData(SAMTLIGA_LAN, samtligaLanRowData));
 
-            final List<Integer> rowData = Arrays.asList(rowSumOldest, oldestRow.getFemale(), oldestRow.getMale(),
-                                                        rowSumNewest, newestRow.getFemale(), newestRow.getMale());
-            data.add(new NamedData(oldestRow.getName(), rowData));
+        for (int i = 0; i < resp.getRows().size(); i++) {
+            SimpleKonDataRow row = resp.getRows().get(i);
+
+            final KonField populationObject = countyPopulation.getPopulationPerCountyCode().get(row.getExtras().toString());
+
+            final int totalNumberOfSjukfall = row.getFemale() + row.getMale();
+            final int totalPopulation = populationObject == null ? 0 : populationObject.getMale() + populationObject.getFemale();
+            final Object totalPopulationValueToShow = populationObject != null ? totalPopulation : "-";
+            final Object totalSjukfallPerKPopulation = calculateSjukfallPerKPopulation(populationObject, totalNumberOfSjukfall, totalPopulation);
+
+            final int femaleNumberOfSjukfall = row.getFemale();
+            final int femalePopulation = populationObject == null ? 0 : populationObject.getFemale();
+            final Object femalePopulationValueToShow = populationObject != null ? femalePopulation : "-";
+            final Object femaleSjukfallPerKPopulation = calculateSjukfallPerKPopulation(populationObject, femaleNumberOfSjukfall, femalePopulation);
+
+            final int maleNumberOfSjukfall = row.getMale();
+            final int malePopulation = populationObject == null ? 0 : populationObject.getMale();
+            final Object malePopulationValueToShow = populationObject != null ? malePopulation : "-";
+            final Object maleSjukfallPerKPopulation = calculateSjukfallPerKPopulation(populationObject, maleNumberOfSjukfall, malePopulation);
+
+            final List<Object> rowData = Arrays.asList(
+                    totalNumberOfSjukfall, femaleNumberOfSjukfall, maleNumberOfSjukfall,
+                    totalPopulationValueToShow, femalePopulationValueToShow, malePopulationValueToShow,
+                    totalSjukfallPerKPopulation, femaleSjukfallPerKPopulation, maleSjukfallPerKPopulation);
+            if (!Lan.OVRIGT_ID.equals(row.getExtras()) || totalNumberOfSjukfall > 0) {
+                data.add(new NamedData(row.getName(), rowData));
+            }
         }
 
-        final int topHeaderSpan = 3;
-        List<TableHeader> topHeaders = Arrays.asList(new TableHeader("", 1), new TableHeader(rangeOld.toStringAbbreviated(), topHeaderSpan), new TableHeader(rangeNew.toStringAbbreviated(), topHeaderSpan));
-        final List<String> subHeaderTexts = Arrays.asList("Län", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män", "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män");
-        List<TableHeader> subHeaders = TableData.toTableHeaderList(subHeaderTexts, 1);
+        List<TableHeader> headers1 = Arrays.asList(new TableHeader(""), new TableHeader(H_ANTAL_SJUKFALL, COLSPAN), new TableHeader(H_ANTAL_INVANARE, COLSPAN), new TableHeader(H_ANTAL_SJUKFALL_PER_1000_INVANARE, COLSPAN));
+        final List<String> headerTexts = Arrays.asList(LAN, H_TOTALT, H_KVINNOR, H_MAN, H_TOTALT, H_KVINNOR, H_MAN, H_TOTALT, H_KVINNOR, H_MAN);
+        List<TableHeader> headers2 = TableData.toTableHeaderList(headerTexts, 1);
         List<List<TableHeader>> headerRows = new ArrayList<>();
-        headerRows.add(topHeaders);
-        headerRows.add(subHeaders);
+        headerRows.add(headers1);
+        headerRows.add(headers2);
         return new TableData(data, headerRows);
     }
 
+    private Object calculateSjukfallPerKPopulation(KonField populationObject, int numberOfSjukfall, int population) {
+        final boolean calculateThisRow = population != 0 || populationObject != null;
+        return calculateThisRow ? SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimalsAndFormatToString(numberOfSjukfall / (population / THOUSAND)) : "-";
+    }
+
+    private List<Object> getSamtligaLanRowData() {
+        final int totalSjukfall = resp.getRows().stream().mapToInt(value -> value.getFemale() + value.getMale()).sum();
+        final int totalPopulation = countyPopulation.getPopulationPerCountyCode().values().stream().mapToInt(value -> value.getFemale() + value.getMale()).sum();
+        final String totalSjukfallPerKPopulationForAllLan = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimalsAndFormatToString(((float) totalSjukfall) / (totalPopulation / THOUSAND));
+
+        final int femaleSjukfall = resp.getRows().stream().mapToInt(value -> value.getFemale()).sum();
+        final int femalePopulation = countyPopulation.getPopulationPerCountyCode().values().stream().mapToInt(value -> value.getFemale()).sum();
+        final String femaleSjukfallPerKPopulationForAllLan = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimalsAndFormatToString(((float) femaleSjukfall) / (femalePopulation / THOUSAND));
+
+        final int maleSjukfall = resp.getRows().stream().mapToInt(value -> value.getMale()).sum();
+        final int malePopulation = countyPopulation.getPopulationPerCountyCode().values().stream().mapToInt(value -> value.getMale()).sum();
+        final String maleSjukfallPerKPopulationForAllLan = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimalsAndFormatToString(((float) maleSjukfall) / (malePopulation / THOUSAND));
+
+        return Arrays.asList(
+                totalSjukfall, femaleSjukfall, maleSjukfall,
+                totalPopulation, femalePopulation, malePopulation,
+                totalSjukfallPerKPopulationForAllLan, femaleSjukfallPerKPopulationForAllLan, maleSjukfallPerKPopulationForAllLan);
+    }
+
     private ChartData convertToChart() {
-        assert respNewest.getGroups().equals(respOldest.getGroups());
-        final List<ChartCategory> groups = Lists.transform(respNewest.getGroups(), new Function<String, ChartCategory>() {
-            @Override
-            public ChartCategory apply(String period) {
-                return new ChartCategory(period);
-            }
-        });
+        final List<String> chartGroups = new ArrayList<>(resp.getGroups());
+        final List<SimpleKonDataRow> chartRows = new ArrayList<>(resp.getRows());
+
+        final int ovrigaLanIndex = getIndexOfLan(resp, Lan.OVRIGT_ID);
+        if (ovrigaLanIndex > -1) {
+            chartGroups.remove(ovrigaLanIndex);
+            chartRows.remove(ovrigaLanIndex);
+        }
+
+        final List<ChartCategory> groups = new ArrayList<>(Lists.transform(chartGroups, ChartCategory::new));
+        groups.add(0, new ChartCategory(SAMTLIGA_LAN));
+        final double sjukfallPerKPopulationForAllLanFemale = getSjukfallPerKPopulationForAllLanFemale(resp.getRows());
+        final double sjukfallPerKPopulationForAllLanMale = getSjukfallPerKPopulationForAllLanMale(resp.getRows());
+
         List<ChartSeries> series = new ArrayList<>();
-        List<Integer> femaleDataOld = respOldest.getDataForSex(Kon.Female);
-        series.add(new ChartSeries("Sjukfall " + rangeOld.toStringAbbreviated() + " kvinnor", femaleDataOld, "old", Kon.Female));
-        List<Integer> maleDataOld = respOldest.getDataForSex(Kon.Male);
-        series.add(new ChartSeries("Sjukfall " + rangeOld.toStringAbbreviated() + " män", maleDataOld, "old", Kon.Male));
-        List<Integer> femaleDataNew = respNewest.getDataForSex(Kon.Female);
-        series.add(new ChartSeries("Sjukfall " + rangeNew.toStringAbbreviated() + " kvinnor", femaleDataNew, "new", Kon.Female));
-        List<Integer> maleDataNew = respNewest.getDataForSex(Kon.Male);
-        series.add(new ChartSeries("Sjukfall " + rangeNew.toStringAbbreviated() + " män", maleDataNew, "new", Kon.Male));
+        final Stream<Number> sjukfallPerKPopulationStreamFemale = chartRows.stream().map(this::getSjukfallPerKPopulationFemale);
+        final List<Number> sjukfallPerPopulationFemale = Stream.concat(Stream.of(sjukfallPerKPopulationForAllLanFemale), sjukfallPerKPopulationStreamFemale).collect(Collectors.toList());
+
+        final Stream<Number> sjukfallPerKPopulationStreamMale = chartRows.stream().map(this::getSjukfallPerKPopulationMale);
+        final List<Number> sjukfallPerPopulationMale = Stream.concat(Stream.of(sjukfallPerKPopulationForAllLanMale), sjukfallPerKPopulationStreamMale).collect(Collectors.toList());
+
+        series.add(new ChartSeries(H_KVINNOR, sjukfallPerPopulationFemale, Kon.Female));
+        series.add(new ChartSeries(H_MAN, sjukfallPerPopulationMale, Kon.Male));
         return new ChartData(series, groups);
+    }
+
+    private int getIndexOfLan(SimpleKonResponse<SimpleKonDataRow> resp, String lanId) {
+        final List<SimpleKonDataRow> rows = resp.getRows();
+        for (int i = 0; i < rows.size(); i++) {
+            SimpleKonDataRow row = rows.get(i);
+            if (lanId.equals(row.getExtras().toString())) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private double getSjukfallPerKPopulationForAllLanFemale(List<SimpleKonDataRow> rows) {
+        final int totalSjukfall = rows.stream().mapToInt(SimpleKonDataRow::getFemale).sum();
+        final int totalPopulation = countyPopulation.getPopulationPerCountyCode().values().stream().mapToInt(KonField::getFemale).sum();
+        return calculateSjukfallPerKPopulation(totalSjukfall, totalPopulation);
+    }
+
+    private double getSjukfallPerKPopulationForAllLanMale(List<SimpleKonDataRow> rows) {
+        final int totalSjukfall = rows.stream().mapToInt(SimpleKonDataRow::getMale).sum();
+        final int totalPopulation = countyPopulation.getPopulationPerCountyCode().values().stream().mapToInt(KonField::getMale).sum();
+        return calculateSjukfallPerKPopulation(totalSjukfall, totalPopulation);
+    }
+
+    private double getSjukfallPerKPopulationFemale(SimpleKonDataRow row) {
+        final int rowSum = row.getFemale();
+        final KonField populationObject = countyPopulation.getPopulationPerCountyCode().get(row.getExtras().toString());
+        final int population = populationObject == null ? 0 : populationObject.getFemale();
+        return calculateSjukfallPerKPopulation(rowSum, population);
+    }
+
+    private double getSjukfallPerKPopulationMale(SimpleKonDataRow row) {
+        final int rowSum = row.getMale();
+        final KonField populationObject = countyPopulation.getPopulationPerCountyCode().get(row.getExtras().toString());
+        final int population = populationObject == null ? 0 : populationObject.getMale();
+        return calculateSjukfallPerKPopulation(rowSum, population);
+    }
+
+    private double calculateSjukfallPerKPopulation(int numberOfSjukfall, int population) {
+        if (population == 0) {
+            return 0D;
+        }
+        return SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimals((float) numberOfSjukfall / (population / THOUSAND));
     }
 
     CasesPerCountyData convert() {
         TableData tableData = convertToTable();
         ChartData chartData = convertToChart();
-        Range fullRange = new Range(rangeOld.getFrom(), rangeNew.getTo());
-        return new CasesPerCountyData(tableData, chartData, fullRange.toString(), new FilterDataResponse(null, null));
+        Range fullRange = new Range(range.getFrom(), range.getTo());
+        final String originDate = countyPopulation.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return new CasesPerCountyData(tableData, chartData, fullRange.toString(), FilterDataResponse.empty(), originDate);
     }
+
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,10 +18,16 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import com.google.common.base.Function;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.joda.time.LocalDate;
+
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -31,16 +37,16 @@ import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallFilter;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.google.common.base.Function;
+import com.google.common.collect.HashMultiset;
+import com.google.common.collect.Lists;
 
 public final class LakarbefattningQuery {
 
     public static final Integer NO_BEFATTNING_CODE = -1;
     private static final String NO_BEFATTNING_TEXT = "Ej läkarbefattning";
+    public static final Integer UNKNOWN_BEFATTNING_CODE = -2;
+    private static final String UNKNOWN_BEFATTNING_TEXT = "Okänd befattning";
 
     private static Map<Integer, String> getAllLakarbefattnings(boolean includeInternalBefattnings) {
         Map<Integer, String> lakarbefattnings = new LinkedHashMap<>();
@@ -56,6 +62,7 @@ public final class LakarbefattningQuery {
         lakarbefattnings.put(204090, "Läkare ej legitimerad, annan");
         if (includeInternalBefattnings) {
             lakarbefattnings.put(NO_BEFATTNING_CODE, NO_BEFATTNING_TEXT);
+            lakarbefattnings.put(UNKNOWN_BEFATTNING_CODE, UNKNOWN_BEFATTNING_TEXT);
         }
         return lakarbefattnings;
         // CHECKSTYLE:ON MagicNumber
@@ -65,14 +72,15 @@ public final class LakarbefattningQuery {
     }
 
      public static SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
-        final KonDataResponse sjukfallSomTidsserie = getSjukfallSomTidsserie(aisle, filter, start, periods, periodLength, sjukfallUtil);
+         final Function<Sjukfall, Collection<Lakare>> getLakare = Sjukfall::getLakare;
+         final KonDataResponse sjukfallSomTidsserie = getSjukfallCommon(aisle, filter, start, periods, periodLength, sjukfallUtil, getLakare);
         return SimpleKonResponse.create(sjukfallSomTidsserie);
     }
 
     private static List<Integer> getLakarbefattnings(Lakare lakare) {
         final List<Integer> lakarbefattnings = new ArrayList<>();
         final int[] allBefattnings = lakare.getBefattnings();
-        final Set<Integer> existingLakarebefattnings = getAllLakarbefattnings(false).keySet();
+        final Set<Integer> existingLakarebefattnings = getAllLakarbefattnings(true).keySet();
         for (int befattning : allBefattnings) {
             if (existingLakarebefattnings.contains(befattning)) {
                 lakarbefattnings.add(befattning);
@@ -82,6 +90,11 @@ public final class LakarbefattningQuery {
     }
 
     public static KonDataResponse getSjukfallSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        final Function<Sjukfall, Collection<Lakare>> getLakare = sjukfall -> Collections.singleton(sjukfall.getLastLakare());
+        return getSjukfallCommon(aisle, filter, start, periods, periodLength, sjukfallUtil, getLakare);
+    }
+
+    private static KonDataResponse getSjukfallCommon(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil, final Function<Sjukfall, Collection<Lakare>> getLakare) {
         final ArrayList<Map.Entry<Integer, String>> ranges = new ArrayList<>(getAllLakarbefattnings(true).entrySet());
         final List<String> names = Lists.transform(ranges, new Function<Map.Entry<Integer, String>, String>() {
             @Override
@@ -98,19 +111,31 @@ public final class LakarbefattningQuery {
         final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
             @Override
             public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
-                for (Lakare lakare : sjukfall.getLakare()) {
+                for (Lakare lakare : getLakare.apply(sjukfall)) {
                     final List<Integer> lakarbefattnings = getLakarbefattnings(lakare);
                     for (Integer befattningId : lakarbefattnings) {
                         counter.add(befattningId);
                     }
                     if (lakarbefattnings.isEmpty()) {
-                        counter.add(NO_BEFATTNING_CODE);
+                        counter.add(getCorrectCodeWhenNoLakarbefattningExists(lakare.getBefattnings()));
                     }
                 }
             }
         };
         final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
         return KonDataResponse.createNewWithoutEmptyGroups(response);
+    }
+
+    private static Integer getCorrectCodeWhenNoLakarbefattningExists(int[] befattnings) {
+        for (int befattning : befattnings) {
+            if (befattning < 0) {
+                return befattning;
+            }
+        }
+        if (befattnings.length == 0) {
+            return UNKNOWN_BEFATTNING_CODE;
+        }
+        return NO_BEFATTNING_CODE;
     }
 
 }

@@ -1,7 +1,12 @@
 {
-    "id" : "verksamhet3",
-    "namn" : "Storstads privatläkare",
-    "vardgivarId" : "vg-verksamhet2",
-    "vardgivarNamn" : "Andraregionen"
-
+    "@class": "se.inera.intyg.common.integration.hsa.model.Vardgivare",
+    "id": "vg-verksamhet2",
+    "namn": "Andraregionen",
+    "vardenheter": [
+        {
+            "@class": "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+            "id": "verksamhet3",
+            "namn": "Storstads privatläkare"
+        }
+    ]
 }

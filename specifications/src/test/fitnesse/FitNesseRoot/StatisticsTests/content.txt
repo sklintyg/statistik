@@ -13,7 +13,7 @@ enhet4: enhet4
 
 Kopplingar:
 vg1 enheter: enhet1, enhet2
-vg3 enheter: enhet3
+vg3 enheter: enhet3, enhet4
 user1 enheter: enhet1
 user1 vårdgivare: vg1
 user2 enheter: enhet1, enhet2
@@ -22,14 +22,14 @@ user3 enheter: enhet3
 user3 vårdgivare: vg3
 user4 enheter: enhet2
 user4 vårdgivare: vg1
-user5 enheter: enhet1, enhet2, enhet3
+user5 enheter: enhet1, enhet2, enhet3, enhet4
 user5 vårdgivare: Ange "user5_vg1" för vg1 eller "user5_vg3" för vg3
 user6 enheter: enhet4
 user6 vårdgivare: vg3
-enhet1 verksamhetstyp: 02, 10
-enhet2 verksamhetstyp: 02, 11
-enhet3 verksamhetstyp: 02, 23
-enhet4 verksamhetstyp: 02, 10
+enhet1 verksamhetstyp: 02, 15
+enhet2 verksamhetstyp: 02, 17, 18
+enhet3 verksamhetstyp: 02
+enhet4 verksamhetstyp: 02, 16
 
 Default:
 Vårdgivarnivå för inloggad användare: false

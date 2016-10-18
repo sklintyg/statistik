@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import se.inera.statistics.service.report.model.Icd;
 
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
@@ -136,7 +137,6 @@ public class Icd10 {
                 while ((line = lr.next()) != null) {
                     Avsnitt avsnitt = Avsnitt.valueOf(line, idToKapitelMap.values());
                     if (avsnitt != null) {
-                        avsnitt.kapitel.avsnitt.add(avsnitt);
                         idToAvsnittMap.put(avsnitt);
                     }
                 }
@@ -147,7 +147,6 @@ public class Icd10 {
                 while ((line = lr.next()) != null) {
                     Kategori kategori = Kategori.valueOf(line, idToAvsnittMap.values());
                     if (kategori != null) {
-                        kategori.avsnitt.kategori.add(kategori);
                         idToKategoriMap.put(kategori);
                     }
                 }
@@ -158,7 +157,6 @@ public class Icd10 {
                 while ((line = lr.next()) != null) {
                     Kod kod = Kod.valueOf(line, idToKategoriMap.values());
                     if (kod != null) {
-                        kod.kategori.kods.add(kod);
                         idToKodMap.put(kod);
                     }
                 }
@@ -169,7 +167,6 @@ public class Icd10 {
                 while ((line = lr.next()) != null) {
                     Kod kod = Kod.valueOf(line, idToKategoriMap.values());
                     if (kod != null) {
-                        kod.kategori.kods.add(kod);
                         idToKodMap.put(kod);
                     }
                 }
@@ -221,6 +218,18 @@ public class Icd10 {
             normalized.setLength(MAX_CODE_LENGTH);
         }
         return normalized.toString();
+    }
+
+    public List<Icd> getIcdStructure() {
+        List<Icd10.Kapitel> kapitel = getKapitel(false);
+        final List<Icd> icds = new ArrayList<>(Lists.transform(kapitel, new Function<Icd10.Kapitel, Icd>() {
+            @Override
+            public Icd apply(Icd10.Kapitel kapitel) {
+                return new Icd(kapitel, Kategori.class);
+            }
+        }));
+        icds.add(new Icd("", "Utan giltig ICD-10 kod", Icd10.icd10ToInt(Icd10.OTHER_KATEGORI, Icd10RangeType.KATEGORI)));
+        return icds;
     }
 
     public Kategori getKategori(String diagnoskategori) {
@@ -436,6 +445,7 @@ public class Icd10 {
             super(range.toUpperCase(), name);
             this.kapitel = kapitel;
             kategori = new ArrayList<>();
+            kapitel.avsnitt.add(this);
         }
 
         public static Avsnitt valueOf(String line, Collection<Kapitel> kapitels) {
@@ -480,6 +490,7 @@ public class Icd10 {
             super(id.toUpperCase(), name);
             this.avsnitt = avsnitt;
             this.kods = new ArrayList<>();
+            avsnitt.kategori.add(this);
         }
 
         public static Kategori valueOf(String line, Collection<Avsnitt> avsnitts) {
@@ -529,6 +540,7 @@ public class Icd10 {
         public Kod(String id, String name, Kategori kategori) {
             super(id.toUpperCase(), name);
             this.kategori = kategori;
+            kategori.kods.add(this);
         }
 
         public static Kod valueOf(String line, Collection<Kategori> kategoris) {
@@ -563,7 +575,7 @@ public class Icd10 {
 
     private static class LineReader implements Closeable {
         private final BufferedReader reader;
-        public LineReader(Resource resource) throws IOException {
+        LineReader(Resource resource) throws IOException {
             reader = new BufferedReader(new InputStreamReader(resource.getInputStream(), "ISO-8859-1"));
         }
 

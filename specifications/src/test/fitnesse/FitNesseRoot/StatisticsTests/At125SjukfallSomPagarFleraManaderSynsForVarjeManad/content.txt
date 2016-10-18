@@ -36,6 +36,6 @@ För rapporter som visar utveckling över tid, visas sjukfallet för alla månad
 
 | Sjukfall i rapporten sjukskrivningsgrad |
 | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| 2013 | jan   | 50%                  | 1    | 0        |
-| 2013 | feb   | 50%                  | 1    | 0        |
-| 2013 | mar   | 50%                  | 1    | 0        |
+| 2013 | jan   | 50 %                 | 1    | 0        |
+| 2013 | feb   | 50 %                 | 1    | 0        |
+| 2013 | mar   | 50 %                 | 1    | 0        |

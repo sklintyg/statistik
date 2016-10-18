@@ -23,15 +23,15 @@ Det blir ett sjukfall som syns för 100% i september, 50% i oktober och 50% i no
 Nationell:
 | Sjukfall i rapporten sjukskrivningsgrad |
 | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| 2013 | sep   | 100%                 | 0    | 1        |
-| 2013 | okt   | 100%                 | 0    | 0        |
-| 2013 | okt   | 50%                  | 0    | 1        |
-| 2013 | nov   | 50%                  | 0    | 1        |
+| 2013 | sep   | 100 %                | 0    | 1        |
+| 2013 | okt   | 100 %                | 0    | 0        |
+| 2013 | okt   | 50 %                 | 0    | 1        |
+| 2013 | nov   | 50 %                 | 0    | 1        |
 
 Inloggad:
 | Sjukfall i rapporten sjukskrivningsgrad |
 | inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| user1        | 2013 | sep   | 100%                 | 0    | 1        |
-| user1        | 2013 | okt   | 100%                 | 0    | 0        |
-| user1        | 2013 | okt   | 50%                  | 0    | 1        |
-| user1        | 2013 | nov   | 50%                  | 0    | 1        |
+| user1        | 2013 | sep   | 100 %                | 0    | 1        |
+| user1        | 2013 | okt   | 100 %                | 0    | 0        |
+| user1        | 2013 | okt   | 50 %                 | 0    | 1        |
+| user1        | 2013 | nov   | 50 %                 | 0    | 1        |

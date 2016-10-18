@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -21,6 +21,7 @@ package se.inera.statistics.web.service;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -28,7 +29,10 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.UserAccessInfo;
 
 @Service("loginService")
 @Path("/login")
@@ -42,8 +46,22 @@ public class LoginInfoService {
     @GET
     @Path("getLoginInfo")
     @Produces({ MediaType.APPLICATION_JSON })
-    public LoginInfo getLoginInfo(@Context HttpServletRequest request) {
-        return loginServiceUtil.getLoginInfo(request);
+    public LoginInfo getLoginInfo() {
+        return loginServiceUtil.getLoginInfo();
+    }
+
+    @GET
+    @Path("getAppSettings")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public AppSettings getAppSettings(@Context HttpServletRequest request) {
+        return loginServiceUtil.getSettings(request);
+    }
+
+    @GET
+    @Path("getUserAccessInfo/{vgId}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public UserAccessInfo getUserAccessInfo(@Context HttpServletRequest request, @PathParam("vgId") String vgId) {
+        return loginServiceUtil.getUserAccessInfoForVg(request, new HsaIdVardgivare(vgId));
     }
 
 }

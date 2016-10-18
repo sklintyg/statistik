@@ -1,4 +1,25 @@
 {
   "hsaId": "HSA-AM",
-  "enhetIds": ["vg1-enhet-1", "vg1-enhet-2", "vg1-enhet-3", "vg1-enhet-4", "vg1-enhet-5", "vg1-enhet-6", "vg1-enhet-7", "vg1-enhet-8", "vg1-enhet-9", "vg1-enhet-10", "vg1-enhet-11", "vg1-enhet-12", "vg1-enhet-13", "vg1-enhet-14", "vg1-enhet-15", "vg1-enhet-16", "vg1-enhet-17", "vg1-enhet-18", "vg1-enhet-19", "vg1-enhet-20"]
+  "uppdrag": [
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-1"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-2"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-3"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-4"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-5"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-6"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-7"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-8"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-9"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-10"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-11"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-12"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-13"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-14"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-15"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-16"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-17"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-18"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-19"},
+    {"andamal":["STATISTIK"], "enhet":"vg1-enhet-20"}
+  ]
 }

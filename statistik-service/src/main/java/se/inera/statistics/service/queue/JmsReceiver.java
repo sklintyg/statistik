@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -26,7 +26,9 @@ import javax.jms.TextMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
+import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;
 
@@ -37,9 +39,14 @@ public class JmsReceiver implements MessageListener {
     public static final String REVOKED = "revoked";
     public static final String ACTION = "action";
     public static final String CERTIFICATE_ID = "certificate-id";
+    private static final String MESSAGE_VERSION = "MsgVersion";
 
     @Autowired
     private Receiver receiver;
+
+    @Autowired
+    @Qualifier("serviceMonitoringLogService")
+    private MonitoringLogService monitoringLogService;
 
     @Override
     public void onMessage(Message rawMessage) {
@@ -51,6 +58,7 @@ public class JmsReceiver implements MessageListener {
                 String certificateId = rawMessage.getStringProperty(CERTIFICATE_ID);
                 receiver.accept(typeEvent(typeName), doc, certificateId, timestamp);
                 LOG.info("Received intyg {}", certificateId);
+                monitoringLogService.logInFromQueue(certificateId);
             } catch (JMSException e) {
                 throw new StatisticsJMSException("JMS error", e);
             }

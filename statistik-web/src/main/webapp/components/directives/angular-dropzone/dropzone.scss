@@ -1,0 +1,45 @@
+/*Styling for filuppladdning*/
+.jumbotron.dropzone {
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+
+/* The postion property of the jumbtron disturbed links in som kind of weird way*/
+.dropzone.jumbotron:after {
+  position: inherit;
+}
+
+div.dropzone a{
+  color:dimgrey !important;
+  text-decoration: underline;
+}
+
+.dropzone {
+  border: dashed grey 2px;
+  border-radius: 6px;
+  background-color: rgb(247, 247, 249);
+}
+
+.dropzone-drag {
+  background-color: rgb(225,225,232) !important;
+}
+
+.dropzone-info-area {
+  text-align: center;
+}
+
+.dropzone-info-area {
+  .glyphicon-plus-sign, .glyphicon-plus-sign-drag, .glyphicon-ok-sign, .glyphicon-warning-sign {
+    font-size: 6em;
+    display: block;
+    color: rgb(191, 191, 207);
+  }
+
+  .glyphicon-plus-sign-drag {
+    color: rgb(2, 2, 3);
+  }
+
+  .glyphicon-ok-sign {
+    color: green;
+  }
+}

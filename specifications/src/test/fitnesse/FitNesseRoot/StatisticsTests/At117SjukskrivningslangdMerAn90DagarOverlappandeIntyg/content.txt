@@ -20,18 +20,21 @@ Dagar då det finns två aktiva intyg i samma sjukfall räknas bara en gång.
 Nationell:
 | Sjukfall i rapporten sjukskrivningslangd |
 | sjukskrivningslängd | män? | kvinnor? |
-| 31-90 dagar         | 0    | 1        |
+| 31-60 dagar         | 0    | 0        |
+| 61-90 dagar         | 0    | 1        |
 | 91-180 dagar        | 0    | 0        |
 
 | Sjukfall i oversikt sjukskrivningslangd |
 | grupp          | antal? |
-| 31-90 dagar    | 1      |
+| 31-60 dagar    | 0      |
+| 61-90 dagar    | 1      |
 | 91-180 dagar   | 0    |
 
 Inloggad:
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | sjukskrivningslängd | män? | kvinnor? |
-| user1        | 31-90 dagar         | 0    | 1        |
+| user1        | 31-60 dagar         | 0    | 0        |
+| user1        | 61-90 dagar         | 0    | 1        |
 | user1        | 91-180 dagar        | 0    | 0        |
 
 | Sjukfall i rapporten langa sjukfall |
@@ -42,5 +45,6 @@ Inloggad:
 
 | Sjukfall i oversikt sjukskrivningslangd |
 |inloggad som | grupp          | antal? |
-| user2       | 31-90 dagar    | 1     |
+| user2       | 31-60 dagar    | 0     |
+| user2       | 61-90 dagar    | 1     |
 | user2       | 91-180 dagar   | 0    |

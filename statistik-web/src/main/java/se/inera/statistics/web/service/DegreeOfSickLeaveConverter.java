@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -24,7 +24,7 @@ import se.inera.statistics.web.model.DualSexStatisticsData;
 public class DegreeOfSickLeaveConverter extends MultiDualSexConverter<KonDataResponse> {
 
     DualSexStatisticsData convert(KonDataResponse degreeOfSickLeave, FilterSettings filterSettings) {
-        return super.convert(degreeOfSickLeave, filterSettings, null, "%1$s%% sjukskrivningsgrad");
+        return super.convert(degreeOfSickLeave, filterSettings, null, "%1$s %% sjukskrivningsgrad");
     }
 
 }

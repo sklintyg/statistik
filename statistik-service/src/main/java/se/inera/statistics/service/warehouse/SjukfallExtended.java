@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,12 +18,8 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Sets;
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.Range;
-
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,6 +28,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.Range;
+
+import com.google.common.base.Predicate;
+import com.google.common.collect.Sets;
 
 public class SjukfallExtended {
 
@@ -60,12 +62,16 @@ public class SjukfallExtended {
         diagnoses.add(new Diagnos(start, end, line.getDiagnoskapitel(), line.getDiagnosavsnitt(), line.getDiagnoskategori(), line.getDiagnoskod()));
         sjukskrivningsgrad.put(new Range(WidelineConverter.toDate(start), WidelineConverter.toDate(end)), line.getSjukskrivningsgrad());
         lan = line.getLan();
+        this.lakare.add(getLakareFromFact(line));
+        this.enhets.add(line.getEnhet());
+    }
+
+    private Lakare getLakareFromFact(Fact line) {
         final int lakarid = line.getLakarid();
         final Kon lakarKon = Kon.byNumberRepresentation(line.getLakarkon());
         final int lakaralder = line.getLakaralder();
         final int[] lakarbefattnings = line.getLakarbefattnings();
-        this.lakare.add(new Lakare(lakarid, lakarKon, lakaralder, lakarbefattnings));
-        this.enhets.add(line.getEnhet());
+        return new Lakare(lakarid, lakarKon, lakaralder, lakarbefattnings);
     }
 
     public SjukfallExtended(SjukfallExtended previous, Fact line) {
@@ -214,6 +220,10 @@ public class SjukfallExtended {
         return getLastFact().getSjukskrivningsgrad();
     }
 
+    public Collection<Integer> getSjukskrivningsgrads() {
+        return sjukskrivningsgrad.values();
+    }
+
     public int getDiagnosavsnitt() {
         return getLastDiagnosis().diagnosavsnitt;
     }
@@ -258,8 +268,16 @@ public class SjukfallExtended {
         return lakare;
     }
 
+    public Lakare getLastLakare() {
+        return getLakareFromFact(getLastFact());
+    }
+
     public Set<Integer> getEnhets() {
         return enhets;
+    }
+
+    public int getLastEnhet() {
+        return getLastFact().getEnhet();
     }
 
     public SjukfallExtended extendWithRealDaysWithinPeriod(SjukfallExtended previous) {

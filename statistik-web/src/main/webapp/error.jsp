@@ -32,11 +32,22 @@
 
     <title>Inera Statistics Servic</title>
 
-    <link rel="icon" href="<c:url value="/favicon.ico" />" type="image/vnd.microsoft.icon"/>
+    <link rel="icon" href="<c:url value="/assets/images/favicon.ico" />" type="image/vnd.microsoft.icon"/>
 
-    <link rel="stylesheet" href="<c:url value="/bootstrap/2.3.2/css/bootstrap.min.css"/>">
-    <link rel="stylesheet" href="<c:url value="/bootstrap/2.3.2/css/bootstrap-responsive.min.css"/>">
-    <link rel="stylesheet" href="<c:url value="/css/inera-statistics.css"/>">
+    <!-- build:css(src/main/webapp) app/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css" />
+    <link rel="stylesheet" href="bower_components/jquery.tablesorter/dist/css/theme.default.min.css" />
+    <link rel="stylesheet" href="bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.css" />
+    <link rel="stylesheet" href="bower_components/dropzone/dist/min/dropzone.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css({build/.tmp,src/main/webapp}) app/app.css -->
+    <!-- injector:css -->
+    <link rel="stylesheet" href="app/app.css">
+    <!-- endinjector -->
+    <!-- endbuild -->
 </head>
 
 <body class="start">
@@ -45,7 +56,7 @@
 
     <div class="row-fluid">
         <div class="span6">
-            <img class="pull-right" src="/img/404.png" style="width: 50%"/>
+            <img class="pull-right" src="/assets/images/404.png" style="width: 50%"/>
         </div>
         <div class="span6">
 

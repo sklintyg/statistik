@@ -35,6 +35,6 @@ Tröskelvärdet appliceras per vårdgivare, kön och län.
 
 Nationell:
 | Sjukfall i rapporten lan |
-| period       | län            | totalt? | män? | kvinnor? |
-| jan–mar 2013 | Stockholms län | 3       | 0    | 3        |
-| jan–mar 2013 | Blekinge län   | 4       | 4    | 0        |
+| län            | kolumngrupp    | totalt? | kvinnor? | män? |
+| Stockholms län | antal sjukfall | 3       | 3        | 0        |
+| Blekinge län   | antal sjukfall | 4       | 0        | 4        |

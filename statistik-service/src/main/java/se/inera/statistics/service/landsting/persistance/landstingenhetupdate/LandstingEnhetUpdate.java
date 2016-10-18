@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -27,6 +27,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 
+/**
+ * Keeps information about last file upload action for landsting.
+ */
 @Entity
 @Table(name = "LandstingEnhetUpdate")
 public class LandstingEnhetUpdate {

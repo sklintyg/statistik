@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,61 +18,56 @@
  */
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.HSAServiceHelper;
-import se.inera.statistics.service.warehouse.WidelineConverter;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.HSAServiceHelper;
+import se.inera.statistics.service.hsa.HsaInfo;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 
 @Component
 public class VardgivareManager {
     private static final Logger LOG = LoggerFactory.getLogger(VardgivareManager.class);
+    public static final HsaIdEnhet UTAN_ENHETSID = new HsaIdEnhet(DocumentHelper.UTANENHETSID);
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
     @Transactional
-    public void saveEnhet(JsonNode hsaInfo, JsonNode document) {
+    public void saveEnhet(HsaInfo hsaInfo, String enhetIdFromIntyg) {
         boolean hsaEnhet = true;
-        String enhet = HSAServiceHelper.getEnhetId(hsaInfo);
-        if (enhet == null) {
+        String enhetIdString = HSAServiceHelper.getEnhetId(hsaInfo);
+        if (enhetIdString == null) {
             hsaEnhet = false;
-            enhet = DocumentHelper.getEnhetId(document, DocumentHelper.getIntygVersion(document));
+            enhetIdString = enhetIdFromIntyg;
         }
-        String vardgivare = HSAServiceHelper.getVardgivarId(hsaInfo);
-        String enhetNamn = HSAServiceHelper.getEnhetNamn(hsaInfo);
-        String vardgivareNamn = HSAServiceHelper.getVardgivarNamn(hsaInfo);
+        final HsaIdEnhet enhet = new HsaIdEnhet(enhetIdString);
+        final HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsaInfo);
+        String enhetNamn = UTAN_ENHETSID.equals(enhet) ? "Utan enhets-id" : enhet.getId();
         String lansId = HSAServiceHelper.getLan(hsaInfo);
         String kommunId = HSAServiceHelper.getKommun(hsaInfo);
         String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(hsaInfo);
 
-        if (enhetNamn == null) {
-            enhetNamn = DocumentHelper.UTANENHETSID.equals(enhet) ? "Utan enhets-id" : enhet;
-        }
-        if (vardgivareNamn == null) {
-            vardgivareNamn = vardgivare;
-        }
-
-        if (validate(vardgivare, enhetNamn, vardgivareNamn, lansId, kommunId, verksamhetsTyper, hsaInfo)) {
+        if (validate(vardgivare, enhetNamn, lansId, kommunId, verksamhetsTyper, hsaInfo)) {
             //Must use 'LIKE' instead of '=' due to STATISTIK-1231
             TypedQuery<Enhet> vardgivareQuery = manager.createQuery("SELECT v FROM Enhet v WHERE v.enhetId LIKE :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
-            List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet).setParameter("vardgivareId", vardgivare).getResultList();
+            List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet.getId()).setParameter("vardgivareId", vardgivare.getId()).getResultList();
 
             if (resultList.isEmpty()) {
-                manager.persist(new Enhet(new HsaIdVardgivare(vardgivare), vardgivareNamn, new HsaIdEnhet(enhet), enhetNamn, lansId, kommunId, verksamhetsTyper));
+                manager.persist(new Enhet(vardgivare, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper));
             } else if (hsaEnhet) {
                 Enhet updatedEnhet = resultList.get(0);
-                updatedEnhet.setVardgivareNamn(vardgivareNamn);
                 updatedEnhet.setLansId(lansId);
                 updatedEnhet.setKommunId(kommunId);
                 updatedEnhet.setVerksamhetsTyper(verksamhetsTyper);
@@ -93,33 +88,26 @@ public class VardgivareManager {
         return query.getResultList();
     }
 
-    @Transactional
-    public List<Vardgivare> getAllVardgivares() {
-        TypedQuery<Vardgivare> query = manager.createQuery("SELECT DISTINCT new se.inera.statistics.service.processlog.Vardgivare(v.vardgivareId, v.vardgivareNamn) FROM Enhet v", Vardgivare.class);
-        return query.getResultList();
-    }
-
-    private boolean validate(String vardgivare, String enhetNamn, String vardgivareNamn, String lansId, String kommunId, String verksamhetsTyper, JsonNode hsaInfo) {
+    private boolean validate(HsaIdVardgivare vardgivare, String enhetNamn, String lansId, String kommunId, String verksamhetsTyper, HsaInfo hsaInfo) {
         // Utan vardgivare har vi inget uppdrag att behandla intyg, avbryt direkt
-        if (vardgivare == null) {
-            LOG.error("Vardgivare saknas: " + hsaInfo.asText());
+        if (vardgivare == null || vardgivare.isEmpty()) {
+            LOG.error("Vardgivare saknas: " + hsaInfo);
             return false;
         }
-        if (vardgivare.length() > WidelineConverter.MAX_LENGTH_VGID) {
-            LOG.error("Vardgivare saknas: " + hsaInfo.asText());
+        if (vardgivare.getId().length() > WidelineConverter.MAX_LENGTH_VGID) {
+            LOG.error("Vardgivare id ogiltigt: " + hsaInfo);
             return false;
         }
         boolean result = checkLength(enhetNamn, "Enhetsnamn", WidelineConverter.MAX_LENGTH_ENHETNAME, hsaInfo);
-        result |= checkLength(vardgivareNamn, "Vardgivarnamn", WidelineConverter.MAX_LENGTH_VARDGIVARE_NAMN, hsaInfo);
         result |= lansId != null && checkLength(lansId, "Lansid", WidelineConverter.MAX_LENGTH_LAN_ID, hsaInfo);
         result |= kommunId != null && checkLength(kommunId, "Kommunid", WidelineConverter.MAX_LENGTH_KOMMUN_ID, hsaInfo);
         result |= verksamhetsTyper != null && checkLength(verksamhetsTyper, "Verksamhetstyper", WidelineConverter.MAX_LENGTH_VERKSAMHET_TYP, hsaInfo);
         return result;
     }
 
-    private boolean checkLength(String field, String name, int max, JsonNode hsaInfo) {
+    private boolean checkLength(String field, String name, int max, HsaInfo hsaInfo) {
         if (field != null && field.length() > max) {
-            LOG.error(name + " saknas: " + hsaInfo.asText());
+            LOG.error(name + " saknas: " + hsaInfo);
             return false;
         }
         return true;

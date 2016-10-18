@@ -35,9 +35,9 @@ Tröskelvärdet appliceras per vårdgivare, kön och län.
 
 Nationell:
 | Sjukfall i rapporten andel sjukfall per kon |
-| län            | totalt? | män?     | kvinnor? |
-| Blekinge län   | 4       | 100% (4) | 0% (0)   |
-| Stockholms län | 3       | 0% (0)   | 100% (3) |
+| län            | totalt? | män?      | kvinnor?  |
+| Blekinge län   | 4       | 100 % (4) | 0 % (0)   |
+| Stockholms län | 3       | 0 % (0)   | 100 % (3) |
 
 | Sjukfall i rapporten andel sjukfall per kon diagram |
 | län            | män? | kvinnor? |

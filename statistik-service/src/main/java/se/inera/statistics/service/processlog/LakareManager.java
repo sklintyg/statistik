@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,24 +18,27 @@
  */
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.hsa.model.HsaIdLakare;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.HSAServiceHelper;
-import se.inera.statistics.service.warehouse.WidelineConverter;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.HSAServiceHelper;
+import se.inera.statistics.service.hsa.HsaInfo;
+import se.inera.statistics.service.warehouse.WidelineConverter;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Collections2;
 
 @Component
 public class LakareManager {
@@ -45,26 +48,30 @@ public class LakareManager {
     private EntityManager manager;
 
     @Transactional
-    public void saveLakare(JsonNode hsaInfo) {
-        String vardgivareId = HSAServiceHelper.getVardgivarId(hsaInfo);
-        String lakareId = HSAServiceHelper.getLakareId(hsaInfo);
+    public void saveLakare(HsaInfo hsaInfo) {
+        HsaIdVardgivare vardgivareId = HSAServiceHelper.getVardgivarId(hsaInfo);
+        HsaIdLakare lakareId = HSAServiceHelper.getLakareId(hsaInfo);
         String tilltalsNamn = HSAServiceHelper.getLakareTilltalsnamn(hsaInfo);
         String efterNamn = HSAServiceHelper.getLakareEfternamn(hsaInfo);
 
-        if (vardgivareId == null) {
+        if (vardgivareId == null || vardgivareId.isEmpty()) {
             LOG.error("Vardgivare saknas: " + hsaInfo.toString());
             return;
         }
+        if (lakareId == null || lakareId.isEmpty()) {
+            LOG.error("Läkare saknas: " + hsaInfo.toString());
+            return;
+        }
         TypedQuery<Lakare> lakareQuery = manager.createQuery("SELECT l FROM Lakare l WHERE l.lakareId = :lakareId", Lakare.class);
-        List<Lakare> resultList = lakareQuery.setParameter("lakareId", lakareId).getResultList();
+        List<Lakare> resultList = lakareQuery.setParameter("lakareId", lakareId.getId()).getResultList();
 
         if (validate(vardgivareId, lakareId, tilltalsNamn, efterNamn)) {
             if (resultList.isEmpty()) {
-                manager.persist(new Lakare(new HsaIdVardgivare(vardgivareId), new HsaIdLakare(lakareId), tilltalsNamn, efterNamn));
+                manager.persist(new Lakare(vardgivareId, lakareId, tilltalsNamn, efterNamn));
             } else {
                 Lakare updatedLakare = resultList.get(0);
-                updatedLakare.setVardgivareId(new HsaIdVardgivare(vardgivareId));
-                updatedLakare.setLakareId(new HsaIdLakare(lakareId));
+                updatedLakare.setVardgivareId(vardgivareId);
+                updatedLakare.setLakareId(lakareId);
                 updatedLakare.setTilltalsNamn(tilltalsNamn);
                 updatedLakare.setEfterNamn(efterNamn);
                 manager.merge(updatedLakare);
@@ -99,17 +106,21 @@ public class LakareManager {
         return query.getResultList();
     }
 
-    private boolean validate(String vardgivare, String lakareId, String tilltalsNamn, String efterNamn) {
+    private boolean validate(HsaIdVardgivare vardgivare, HsaIdLakare lakareId, String tilltalsNamn, String efterNamn) {
         // Utan vardgivare har vi inget uppdrag att behandla intyg, avbryt direkt
-        if (vardgivare == null) {
+        if (vardgivare == null || vardgivare.isEmpty()) {
             LOG.error("Vardgivare saknas for lakare");
             return false;
         }
-        if (vardgivare.length() > WidelineConverter.MAX_LENGTH_VGID) {
-            LOG.error("Vardgivare saknas for lakare");
+        if (vardgivare.getId().length() > WidelineConverter.MAX_LENGTH_VGID) {
+            LOG.error("Vardgivare id ogiltigt for lakare");
             return false;
         }
-        boolean result = checkLength(lakareId, "Lakareid", WidelineConverter.MAX_LENGTH_LAKARE_ID);
+        if (lakareId == null || lakareId.isEmpty()) {
+            LOG.error("LakareId saknas for lakare");
+            return false;
+        }
+        boolean result = checkLength(lakareId.getId(), "Lakareid", WidelineConverter.MAX_LENGTH_LAKARE_ID);
         result |= checkLength(tilltalsNamn, "Tilltalsnamn", WidelineConverter.MAX_LENGTH_TILLTALSNAMN);
         result |= checkLength(efterNamn, "Efternamn", WidelineConverter.MAX_LENGTH_EFTERNAMN);
         return result;
@@ -122,4 +133,5 @@ public class LakareManager {
         }
         return true;
     }
+
 }

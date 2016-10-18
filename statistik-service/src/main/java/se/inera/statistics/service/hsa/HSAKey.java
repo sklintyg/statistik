@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,26 +18,36 @@
  */
 package se.inera.statistics.service.hsa;
 
-public class HSAKey {
-    private final String vardgivareId;
-    private final String enhetId;
-    private final String lakareId;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
-    public HSAKey(String vardgivareId, String enhetId, String lakareId) {
+public class HSAKey {
+    private final HsaIdVardgivare vardgivareId;
+    private final HsaIdEnhet enhetId;
+    private final HsaIdLakare lakareId;
+
+    public HSAKey(HsaIdVardgivare vardgivareId, HsaIdEnhet enhetId, HsaIdLakare lakareId) {
         this.vardgivareId = vardgivareId;
         this.enhetId = enhetId;
         this.lakareId = lakareId;
     }
 
-    public String getLakareId() {
+    public HSAKey(String vardgivareId, String enhetId, String lakareId) {
+        this(vardgivareId != null ? new HsaIdVardgivare(vardgivareId) : null,
+                enhetId != null ? new HsaIdEnhet(enhetId) : null,
+                lakareId != null ? new HsaIdLakare(lakareId) : null);
+    }
+
+    public HsaIdLakare getLakareId() {
         return lakareId;
     }
 
-    public String getVardgivareId() {
+    public HsaIdVardgivare getVardgivareId() {
         return vardgivareId;
     }
 
-    public String getEnhetId() {
+    public HsaIdEnhet getEnhetId() {
         return enhetId;
     }
 

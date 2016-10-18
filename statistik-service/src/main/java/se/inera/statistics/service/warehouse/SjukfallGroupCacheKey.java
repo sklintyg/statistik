@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Predicate;
 import org.joda.time.LocalDate;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
@@ -34,7 +33,7 @@ class SjukfallGroupCacheKey {
     private final boolean useOriginalSjukfallStart;
     private final String key;
 
-    public SjukfallGroupCacheKey(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter filter, boolean useOriginalSjukfallStart) {
+    SjukfallGroupCacheKey(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter filter, boolean useOriginalSjukfallStart) {
         this.from = from;
         this.periods = periods;
         this.periodSize = periodSize;
@@ -104,8 +103,8 @@ class SjukfallGroupCacheKey {
         return aisle;
     }
 
-    public Predicate<Fact> getFilter() {
-        return filter.getFilter();
+    public SjukfallFilter getFilter() {
+        return filter;
     }
 
     public boolean isUseOriginalSjukfallStart() {

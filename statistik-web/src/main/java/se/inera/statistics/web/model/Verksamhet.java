@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -163,6 +163,10 @@ public class Verksamhet implements Serializable {
             return name;
         }
 
+        @Override
+        public String toString() {
+            return id;
+        }
     }
 
 }

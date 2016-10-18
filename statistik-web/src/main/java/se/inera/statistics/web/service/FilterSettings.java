@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -26,11 +26,11 @@ class FilterSettings {
     private final Range range;
     private final String message;
 
-    public FilterSettings(Filter filter, Range range) {
+    FilterSettings(Filter filter, Range range) {
         this(filter, range, null);
     }
 
-    public FilterSettings(Filter filter, Range range, String message) {
+    FilterSettings(Filter filter, Range range, String message) {
         this.filter = filter;
         this.range = range;
         this.message = message;

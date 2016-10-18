@@ -7,7 +7,7 @@ A65-A69Andra spiroketsjukdomar
 A70-A74Andra sjukdomar orsakade av klamydia
 A75-A79Sjukdomar orsakade av rickettsiaarter
 A80-A89Virussjukdomar i centrala nervsystemet
-A90-A99Febersjukdomar orsakade av virus överförda av leddjur och virusorsakade hemorragiska febrar
+A92-A99Febersjukdomar orsakade av virus överförda av leddjur och virusorsakade hemorragiska febrar
 B00-B09Virussjukdomar med hudutslag och slemhinneutslag
 B15-B19Virushepatit
 B20-B24Sjukdom orsakad av humant immunbristvirus [HIV]
@@ -223,24 +223,24 @@ U98-U99Koder för särskilda nationella behov
 UA     UA
 UB     UB
 UP     UP
-W00-W19Fallolyckor
 V01-V09Fotgängare skadad i transportolycka
 V10-V19Cyklist (förare eller passagerare) skadad i transportolycka
 V20-V29Motorcyklist (förare eller passagerare) skadad i transportolycka
-W20-W49Exponering för icke levande mekaniska krafter
 V30-V39Förare av eller passagerare i trehjuligt motorfordon skadad i transportolycka
 V40-V49Förare av eller passagerare i personbil skadad i transportolycka
 V50-V59Förare av eller passagerare i lätt lastbil skadad i transportolycka
-W50-W64Exponering för levande mekaniska krafter
 V60-V69Förare av eller passagerare i tung lastbil skadad i transportolycka
-W65-W74Drunkning och drunkningstillbud genom olyckshändelse
 V70-V79Förare av eller passagerare i buss skadad i transportolycka
-W75-W84Annan kvävning och annat kvävningstillbud genom olyckshändelse
 V80-V89Andra transportolyckor på land
-W85-W99Exponering för elektrisk ström, strålning, extrem lufttemperatur och extremt lufttryck i omgivningen
 V90-V94Transportolyckor på vatten
 V95-V97Transportolyckor i luften och rymden
 V98-V99Andra och icke specificerade transportolyckor
+W00-W19Fallolyckor
+W20-W49Exponering för icke levande mekaniska krafter
+W50-W64Exponering för levande mekaniska krafter
+W65-W74Drunkning och drunkningstillbud genom olyckshändelse
+W75-W84Annan kvävning och annat kvävningstillbud genom olyckshändelse
+W85-W99Exponering för elektrisk ström, strålning, extrem lufttemperatur och extremt lufttryck i omgivningen
 X00-X09Exponering för rök och öppen eld
 X10-X19Kontakt med heta föremål och heta ämnen
 X20-X29Kontakt med giftiga djur och växter

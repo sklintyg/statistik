@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -67,17 +67,16 @@ public class EnhetLoader {
     private Enhet toEnhet(ResultSet resultSet) throws SQLException {
         String vardgivareId = resultSet.getString("vardgivareId");
         String enhetId = resultSet.getString("enhetId");
-        String vardgivareNamn = resultSet.getString("vardgivareNamn");
         String enhetNamn = resultSet.getString("namn");
         String lansId = resultSet.getString("lansId");
         String kommunId = resultSet.getString("kommunId");
         String verksamhetsTyper = resultSet.getString("verksamhetsTyper");
 
-        return new Enhet(new HsaIdVardgivare(vardgivareId), vardgivareNamn, new HsaIdEnhet(enhetId), enhetNamn, lansId, kommunId, verksamhetsTyper);
+        return new Enhet(new HsaIdVardgivare(vardgivareId), new HsaIdEnhet(enhetId), enhetNamn, lansId, kommunId, verksamhetsTyper);
     }
 
     private PreparedStatement prepareStatement(Connection connection) throws SQLException {
-        String sql = "select vardgivareId, enhetId, vardgivareNamn, namn, lansId, kommunid, verksamhetstyper from enhet";
+        String sql = "select vardgivareId, enhetId, namn, lansId, kommunid, verksamhetstyper from enhet";
         PreparedStatement stmt = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(FETCH_SIZE);
         return stmt;

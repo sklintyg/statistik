@@ -27,7 +27,7 @@ class AnonymiseraJsonTest {
     void testaAnonymiseringAvMaximaltIntyg() {
         String json = FileUtils.readFileToString(new ClassPathResource("/fk7263_L_template.json").getFile(), "UTF-8")
         String expected = FileUtils.readFileToString(new ClassPathResource("/fk7263_L_anonymized.json").getFile(), "UTF-8")
-        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-1010")
+        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-2010")
         JSONAssert.assertEquals(expected, actual, true);
     }
 
@@ -43,7 +43,7 @@ class AnonymiseraJsonTest {
 
         String expected = buildJsonIntyg JSON_ANONYMIZED_TEMPLATE_PATH, jsonUpdateClosure
 
-        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-1010")
+        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-2010")
 
         JSONAssert.assertEquals(expected, actual, true);
     }
@@ -59,7 +59,7 @@ class AnonymiseraJsonTest {
             result.funktionsnedsattning = 'Enkelt'
             result.aktivitetsbegransning = 'xxxxx'
         }
-        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-1010")
+        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-2010")
 
         JSONAssert.assertEquals(expected, actual, true);
     }
@@ -75,7 +75,7 @@ class AnonymiseraJsonTest {
             result.funktionsnedsattning = 'xx xxxx xxx xxxxx xx xxxxxx x xxx'
             result.aktivitetsbegransning = 'xx xxxxx xxxx'
         }
-        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-1010")
+        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-2010")
 
         JSONAssert.assertEquals(expected, actual, true);
     }
@@ -86,7 +86,7 @@ class AnonymiseraJsonTest {
 
         String expected = buildJsonIntyg JSON_ANONYMIZED_TEMPLATE_NO_FIELDS_FOR_ENKELT_PATH
 
-        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-1010")
+        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-2010")
 
         JSONAssert.assertEquals(expected, actual, true);
     }
@@ -101,7 +101,7 @@ class AnonymiseraJsonTest {
             result.funktionsnedsattning = [funktionsnedsattning: false, beskrivning: 'xx xxxxx xxxx', ]
         }
 
-        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-1010")
+        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-2010")
 
         JSONAssert.assertEquals(expected, actual, true);
     }
@@ -116,7 +116,7 @@ class AnonymiseraJsonTest {
             result.funktionsnedsattning = null
         }
 
-        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-1010")
+        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-2010")
 
         JSONAssert.assertEquals(expected, actual, true);
     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -40,9 +40,9 @@ public class UtlatandeBuilderTest {
     @Test
     public void getAge() {
         JsonNode result = new UtlatandeBuilder().build("19121212-1212", new LocalDate("2012-12-12"), new LocalDate("2012-12-12"), new HsaIdLakare("lakare"), new HsaIdEnhet("vardenhet1"), new HsaIdVardgivare("vardgivare"), "A01", 50);
-        final ObjectNode prepared = DocumentHelper.prepare(result);
+        final Patientdata patientData = DocumentHelper.getPatientData(result);
 
-        assertEquals(100, DocumentHelper.getAge(prepared));
+        assertEquals(100, patientData.getAlder());
     }
 
 }

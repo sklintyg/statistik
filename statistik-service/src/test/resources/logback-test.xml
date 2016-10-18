@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
 
-    Copyright (C) 2015 Inera AB (http://www.inera.se)
+    Copyright (C) 2016 Inera AB (http://www.inera.se)
 
     This file is part of statistik (https://github.com/sklintyg/statistik).
 
@@ -44,6 +44,7 @@
     <logger name="org.springframework.core.env.PropertySourcesPropertyResolver" level="WARN"/>
     <logger name="org.springframework.web" level="WARN"/>
     <logger name="org.springframework.http" level="WARN"/>
+    <logger name="se.inera.statistics.service.monitoring" level="INFO"/>
 
     <root level="ERROR">
         <appender-ref ref="STDOUT"/>

@@ -18,15 +18,20 @@
        <filter-class>org.apache.catalina.filters.ExpiresFilter</filter-class>
        <init-param>
           <param-name>ExpiresDefault</param-name>
-          <param-value>access plus 1 days</param-value>
+          <param-value>access plus 1 month</param-value>
        </init-param>
     </filter>
+
+    <filter>
+      <filter-name>CompressingFilter</filter-name>
+      <filter-class>com.github.ziplet.filter.compression.CompressingFilter</filter-class>
+    </filter>
+
     <!-- Map cache filter to all static resources -->
     <filter-mapping>
        <filter-name>ExpiresFilter</filter-name>
-       <url-pattern>/bootstrap/*</url-pattern>
-       <url-pattern>/css/*</url-pattern>
-       <url-pattern>/img/*</url-pattern>
+       <url-pattern>/app/*</url-pattern>
+       <url-pattern>/bower_components/*</url-pattern>
        <url-pattern>/js/*</url-pattern>
        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
@@ -34,6 +39,23 @@
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Gzip compression of apis -->
+    <filter-mapping>
+      <filter-name>CompressingFilter</filter-name>
+      <url-pattern>/app/*</url-pattern>
+      <url-pattern>/js/*</url-pattern>
+      <url-pattern>/bower_components/*</url-pattern>
+      <url-pattern>/api/getOverview</url-pattern>
+      <url-pattern>/api/getNumberOfCasesPerMonth</url-pattern>
+      <url-pattern>/api/getDiagnoskapitelstatistik</url-pattern>
+      <url-pattern>/api/getAgeGroupsStatistics</url-pattern>
+      <url-pattern>/api/getDegreeOfSickLeaveStatistics</url-pattern>
+      <url-pattern>/api/getSickLeaveLengthData</url-pattern>
+      <url-pattern>/api/getCountyStatistics</url-pattern>
+      <url-pattern>/api/getSjukfallPerSexStatistics</url-pattern>
+      <url-pattern>/api/getIcd10Structure</url-pattern>
     </filter-mapping>
 
     <context-param>
@@ -51,14 +73,29 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
+  <!-- Integration services (used for new HSA stubs under /services) -->
+  <servlet>
+    <servlet-name>services</servlet-name>
+    <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+    <init-param>
+      <param-name>config-location</param-name>
+      <param-value>/WEB-INF/services-cxf-servlet.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
     <servlet-mapping>
         <servlet-name>cxf</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>services</servlet-name>
+    <url-pattern>/services/*</url-pattern>
+  </servlet-mapping>
 
     <!-- Listener for external logback configuration file -->
     <listener>
-        <listener-class>se.inera.statistics.logging.LogbackConfiguratorContextListener</listener-class>
+        <listener-class>se.inera.intyg.common.util.logging.LogbackConfiguratorContextListener</listener-class>
     </listener>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>

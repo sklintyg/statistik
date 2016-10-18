@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -26,23 +26,32 @@ public class SjukfallFilter {
 
     public static final String HASH_EMPTY_FILTER = "EMPTY_FILTER";
 
-    private Predicate<Fact> filter;
+    private Predicate<Fact> intygFilter;
+    private Predicate<Sjukfall> sjukfallFilter;
     private String hash;
 
-    public SjukfallFilter(Predicate<Fact> filter, String hash) {
-        if (filter == null) {
-            throw new IllegalArgumentException("Filter must not be null");
+    public SjukfallFilter(Predicate<Fact> intygFilter, Predicate<Sjukfall> sjukfallFilter, String hash) {
+        if (intygFilter == null) {
+            throw new IllegalArgumentException("Intygfilter must not be null");
+        }
+        if (sjukfallFilter == null) {
+            throw new IllegalArgumentException("Sjukfallfilter must not be null");
         }
         if (hash == null || hash.isEmpty()) {
             throw new IllegalArgumentException("Hash must not be empty");
         }
 
-        this.filter = filter;
+        this.intygFilter = intygFilter;
+        this.sjukfallFilter = sjukfallFilter;
         this.hash = hash;
     }
 
-    public Predicate<Fact> getFilter() {
-        return filter;
+    public Predicate<Fact> getIntygFilter() {
+        return intygFilter;
+    }
+
+    public Predicate<Sjukfall> getSjukfallFilter() {
+        return sjukfallFilter;
     }
 
     public String getHash() {

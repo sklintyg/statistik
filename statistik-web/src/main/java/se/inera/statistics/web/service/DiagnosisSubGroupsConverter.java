@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,10 +18,13 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
@@ -36,16 +39,16 @@ import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.util.Pair;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 
 public class DiagnosisSubGroupsConverter {
 
     private static final Logger LOG = LoggerFactory.getLogger(DiagnosisSubGroupsConverter.class);
 
-    static final int NUMBER_OF_CHART_SERIES = 6;
+    static final int MAX_NUMBER_OF_CHART_SERIES = 7;
+    static final int OTHER_GROUP_INDEX = -1;
+    static final String OTHER_GROUP_NAME = "Övriga";
 
     private DiagnosisGroupsConverter diagnosisGroupsConverter = new DiagnosisGroupsConverter();
 
@@ -59,7 +62,7 @@ public class DiagnosisSubGroupsConverter {
         ChartData maleChart = extractChartData(diagnosisGroups, topIndexes, Kon.Male);
         ChartData femaleChart = extractChartData(diagnosisGroups, topIndexes, Kon.Female);
         final Filter filter = filterSettings.getFilter();
-        final FilterDataResponse filterResponse = new FilterDataResponse(filter.getDiagnoser(), filter.getEnheter());
+        final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
         final String combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse, combinedMessage);
@@ -79,16 +82,17 @@ public class DiagnosisSubGroupsConverter {
     private List<ChartSeries> getTopColumns(KonDataResponse data, List<Integer> topIndexes, Kon sex) {
         List<ChartSeries> topColumns = new ArrayList<>();
         if (topIndexes.isEmpty()) {
-            topColumns.add(new ChartSeries("Totalt", createList(data.getRows().size(), 0), true));
+            topColumns.add(new ChartSeries("Totalt", createList(data.getRows().size(), 0)));
             return topColumns;
         }
         for (Integer index : topIndexes) {
-            List<Integer> indexData = data.getDataFromIndex(index, sex);
-            topColumns.add(new ChartSeries(data.getGroups().get(index), indexData, true));
-        }
-        if (data.getGroups().size() > NUMBER_OF_CHART_SERIES) {
-            List<Integer> remainingData = sumRemaining(topIndexes, data, sex);
-            topColumns.add(new ChartSeries("Övriga", remainingData, true));
+            if (index == OTHER_GROUP_INDEX) {
+                List<Integer> remainingData = sumRemaining(topIndexes, data, sex);
+                topColumns.add(new ChartSeries(OTHER_GROUP_NAME, remainingData));
+            } else {
+                List<Integer> indexData = data.getDataFromIndex(index, sex);
+                topColumns.add(new ChartSeries(data.getGroups().get(index), indexData));
+            }
         }
         return topColumns;
     }
@@ -118,30 +122,32 @@ public class DiagnosisSubGroupsConverter {
         return remaining;
     }
 
-    List<Integer> getTopColumnIndexes(KonDataResponse diagnosisGroups2) {
-        return getTopColumnIndexes(SimpleKonResponse.create(diagnosisGroups2));
+    List<Integer> getTopColumnIndexes(KonDataResponse diagnosisGroups) {
+        return getTopColumnIndexes(SimpleKonResponse.create(diagnosisGroups));
     }
 
     static List<Integer> getTopColumnIndexes(SimpleKonResponse<SimpleKonDataRow> simpleKonDataRowSimpleKonResponse) {
         if (simpleKonDataRowSimpleKonResponse.getRows().isEmpty()) {
             return new ArrayList<>();
         }
-        final List<Pair<Integer, Integer>> indexedSums = getIndexedSums(simpleKonDataRowSimpleKonResponse);
-        LOG.debug("Columns: " + simpleKonDataRowSimpleKonResponse.getGroups());
-        LOG.debug("TopColumnIndexes: " + indexedSums);
-        Collections.sort(indexedSums, new Comparator<Pair<Integer, Integer>>() {
-            @Override
-            public int compare(Pair<Integer, Integer> o1, Pair<Integer, Integer> o2) {
-                return o2.getValue() - o1.getValue();
-            }
-        });
-        final List<Integer> sortedIndexes = Lists.transform(indexedSums, new Function<Pair<Integer, Integer>, Integer>() {
-            @Override
-            public Integer apply(Pair<Integer, Integer> integerIntegerPair) {
-                return integerIntegerPair.getKey();
-            }
-        });
-        return sortedIndexes.subList(0, Math.min(NUMBER_OF_CHART_SERIES, sortedIndexes.size()));
+        final List<Integer> sortedIndexes = getColumnIndexesSortedBySum(simpleKonDataRowSimpleKonResponse);
+
+        if (sortedIndexes.size() == MAX_NUMBER_OF_CHART_SERIES) {
+            return sortedIndexes.subList(0, MAX_NUMBER_OF_CHART_SERIES);
+        } else if (sortedIndexes.size() > MAX_NUMBER_OF_CHART_SERIES) {
+            final ArrayList<Integer> sortedIndexesSubList = new ArrayList<>(sortedIndexes.subList(0, MAX_NUMBER_OF_CHART_SERIES - 1));
+            sortedIndexesSubList.add(OTHER_GROUP_INDEX);
+            return sortedIndexesSubList;
+        } else {
+            return sortedIndexes;
+        }
+    }
+
+    private static List<Integer> getColumnIndexesSortedBySum(SimpleKonResponse<SimpleKonDataRow> simpleKonDataRowSimpleKonResponse) {
+        return getIndexedSums(simpleKonDataRowSimpleKonResponse).stream()
+                .sorted((o1, o2) -> o2.getValue() - o1.getValue())
+                .map(Pair::getKey)
+                .collect(Collectors.toList());
     }
 
     private static List<Pair<Integer, Integer>> getIndexedSums(SimpleKonResponse<SimpleKonDataRow> simpleKonDataRowSimpleKonResponse) {

@@ -2,7 +2,7 @@
 
 !3 Givet att:
 
-Flera olika sjukfall där samma enhet har olika angivelse om län vid olika tidpunkter.
+Sjukfall där samma enhet har olika angivelse om län vid olika tidpunkter.
 
 | script | dagens datum | 2013-08-06 |
 
@@ -11,11 +11,7 @@ Flera olika sjukfall där samma enhet har olika angivelse om län vid olika tidp
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet  | län |
 | 19800926-9252 | G01 | 2013-05-05 | 2013-06-06 | enhet1 | 01  |
-| 19790717-9191 | G01 | 2013-05-11 | 2013-09-12 | enhet3 | 00  |
-| 19790808-9274 | G01 | 2013-05-13 | 2013-10-12 | enhet1 | 03  |
-| 19790918-9230 | G01 | 2013-05-13 | 2013-11-12 | enhet1 | 48  |
-| 19791020-9290 | G01 | 2013-05-11 | 2013-09-12 | enhet3 | 99  |
-| 19791110-9291 | G01 | 2013-05-13 | 2013-10-12 | enhet2 | 01  |
+| 19790717-9191 | G01 | 2013-05-11 | 2013-09-12 | enhet1 | 06  |
 
 !3 Då gäller:
 
@@ -23,8 +19,6 @@ Sjukfallen visas för det län som finns angivet vid utfärdandetidpunkten, dvs.
 
 Nationell:
 | Sjukfall i rapporten lan |
-| period       | län                  | totalt? | män? | kvinnor? |
-| maj–jul 2013 | Stockholms län       | 2       | 2    | 0        |
-| maj–jul 2013 | Uppsala län          | 1       | 1    | 0        |
-| maj–jul 2013 | Västra Götalands län | 0       | 0    | 0        |
-| maj–jul 2013 | Okänt län            | 3       | 3    | 0        |
+| län                  | kolumngrupp    | totalt? | kvinnor? | män? |
+| Stockholms län       | antal sjukfall | 1       | 0     | 1        |
+| Jönköpings län       | antal sjukfall | 1       | 0     | 1        |

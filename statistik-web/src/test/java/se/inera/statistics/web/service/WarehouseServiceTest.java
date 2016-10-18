@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -103,10 +103,11 @@ public class WarehouseServiceTest {
     public void testGetCasesPerEnhetLandstingIsExtendingNameWithIdIfDuplicateSTATISTIK1121() throws Exception {
         //Given
         final Predicate predicate = Mockito.mock(Predicate.class);
-        final SjukfallFilter predicate1 = new SjukfallFilter(predicate, "testhash");
+        final String testhash = "testhash";
+        final SjukfallFilter predicate1 =  new SjukfallFilter(predicate, sjukfall -> true, testhash);
         final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
         final ArrayList<String> diagnoser = new ArrayList<>();
-        final Filter filter = new Filter(predicate1, enheter, diagnoser);
+        final Filter filter = new Filter(predicate1, enheter, diagnoser, null);
         final Range range = new Range();
         final FilterSettings filterSettings = new FilterSettings(filter, range);
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
@@ -115,7 +116,7 @@ public class WarehouseServiceTest {
         rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
         final SimpleKonResponse<SimpleKonDataRow> simpleKonResponse = new SimpleKonResponse<>(rows);
         Mockito.when(sjukfallQuery.getSjukfallPerEnhet(any(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(), eq(range.getMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_PER_SEX))).thenReturn(simpleKonResponse);
-        Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), "vg1", new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
+        Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
 
         //When
         final SimpleKonResponse<SimpleKonDataRow> result = warehouseService.getCasesPerEnhetLandsting(filterSettings);
@@ -131,10 +132,11 @@ public class WarehouseServiceTest {
     public void testGetCasesPerPatientsPerEnhetLandstingIsExtendingNameWithIdIfDuplicateSTATISTIK1121() throws Exception {
         //Given
         final Predicate predicate = Mockito.mock(Predicate.class);
-        final SjukfallFilter predicate1 = new SjukfallFilter(predicate, "testhash");
+        final String testhash = "testhash";
+        final SjukfallFilter predicate1 = new SjukfallFilter(predicate, sjukfall -> true, testhash);
         final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
         final ArrayList<String> diagnoser = new ArrayList<>();
-        final Filter filter = new Filter(predicate1, enheter, diagnoser);
+        final Filter filter = new Filter(predicate1, enheter, diagnoser, null);
         final Range range = new Range();
         final FilterSettings filterSettings = new FilterSettings(filter, range);
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
@@ -143,7 +145,7 @@ public class WarehouseServiceTest {
         rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
         final SimpleKonResponse<SimpleKonDataRow> simpleKonResponse = new SimpleKonResponse<>(rows);
         Mockito.when(sjukfallQuery.getSjukfallPerEnhet(any(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(), eq(range.getMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_ON_TOTAL))).thenReturn(simpleKonResponse);
-        Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), "vg1", new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
+        Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
 
         //When
         final SimpleKonResponse<SimpleKonDataRow> result = warehouseService.getCasesPerPatientsPerEnhetLandsting(filterSettings);

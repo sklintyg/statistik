@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -34,7 +34,7 @@ public class ResultMessageHandler {
     private Icd10 icd10;
 
     boolean isDxFilterDisableAllSelectedDxs(List<String> selectedDxs, Collection<String> filterDiagnoser) {
-        if (filterDiagnoser == null) {
+        if (filterDiagnoser == null || filterDiagnoser.isEmpty()) {
             return false;
         }
         for (String dx : selectedDxs) {

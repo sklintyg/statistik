@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,11 +18,13 @@
  */
 package se.inera.statistics.service.hsa;
 
+import se.inera.statistics.hsa.model.HsaIdLakare;
+
 import java.util.List;
 
 public interface HsaDataInjectable {
 
-    void addPersonal(String id, String firstName, String lastName, HsaKon kon, int age, List<String> befattning);
+    void addPersonal(HsaIdLakare id, String firstName, String lastName, HsaKon kon, int age, List<String> befattning);
 
     void setCountyForNextIntyg(String countyCode);
 

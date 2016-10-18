@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -44,12 +44,13 @@ public class DiagnosisSubGroupsTvarsnittConverter extends SimpleDualSexConverter
             simpleKonDataRows.add(new SimpleKonDataRow("Totalt", 0, 0));
         } else {
             for (Integer index : topIndexes) {
-                final SimpleKonDataRow row = skr.getRows().get(index);
-                simpleKonDataRows.add(row);
-            }
-            if (skr.getRows().size() > DiagnosisSubGroupsConverter.NUMBER_OF_CHART_SERIES) {
-                final KonField otherData = getDataForOtherGroups(skr, topIndexes);
-                simpleKonDataRows.add(new SimpleKonDataRow("Övriga", otherData));
+                if (index == DiagnosisSubGroupsConverter.OTHER_GROUP_INDEX) {
+                    final KonField otherData = getDataForOtherGroups(skr, topIndexes);
+                    simpleKonDataRows.add(new SimpleKonDataRow(DiagnosisSubGroupsConverter.OTHER_GROUP_NAME, otherData));
+                } else {
+                    final SimpleKonDataRow row = skr.getRows().get(index);
+                    simpleKonDataRows.add(row);
+                }
             }
         }
         return new SimpleKonResponse<>(simpleKonDataRows);

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static se.inera.statistics.service.warehouse.Fact.aFact;
 
@@ -73,15 +74,24 @@ public class SjukskrivningslangdQueryTest {
         fact(4010, 50);
         fact(4010, 50);
         fact(4010, 100);
+        fact(4010, 200);
+        fact(4010, 400);
         warehouse.complete(LocalDateTime.now());
         Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         List<Counter<Ranges.Range>> count = SjukskrivningslangdQuery.count(sjukfall,6);
 
         assertEquals(6, count.size());
-        assertEquals(4, count.get(0).getCount());
-        assertEquals(2, count.get(1).getCount());
-        assertEquals(5, count.get(2).getCount());
-        assertEquals(1, count.get(3).getCount());
+        assertAmountAndName(count.get(0), 4, "Under 15");
+        assertAmountAndName(count.get(1), 2, "15-30");
+        assertAmountAndName(count.get(2), 5, "31-60");
+        assertAmountAndName(count.get(3), 1, "91-180");
+        assertAmountAndName(count.get(4), 1, "181-365");
+        assertAmountAndName(count.get(5), 1, "Över 365");
+    }
+
+    private void assertAmountAndName(Counter<Ranges.Range> rangeCounter, int expectedAmount, String nameContains) {
+        assertEquals(expectedAmount, rangeCounter.getCount());
+        assertTrue(rangeCounter.getKey().getName().contains(nameContains));
     }
 
     private void fact(int startday, int length) {

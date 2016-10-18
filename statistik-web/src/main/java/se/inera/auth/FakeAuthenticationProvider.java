@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -17,20 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package se.inera.auth;
-
-import static se.inera.auth.SakerhetstjanstAssertion.ENHET_HSA_ID_ATTRIBUTE;
-import static se.inera.auth.SakerhetstjanstAssertion.FORNAMN_ATTRIBUTE;
-import static se.inera.auth.SakerhetstjanstAssertion.HSA_ID_ATTRIBUTE;
-import static se.inera.auth.SakerhetstjanstAssertion.MELLAN_OCH_EFTERNAMN_ATTRIBUTE;
-import static se.inera.auth.SakerhetstjanstAssertion.VARDGIVARE_HSA_ID_ATTRIBUTE;
-import static se.inera.auth.SakerhetstjanstAssertion.SYSTEM_ROLE_ATTRIBUTE;
-
-import java.util.ArrayList;
-
-import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.opensaml.saml2.core.Assertion;
 import org.opensaml.saml2.core.Attribute;
@@ -50,6 +36,19 @@ import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import se.inera.auth.model.User;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.hsa.model.Vardenhet;
+
+import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static se.inera.auth.SakerhetstjanstAssertion.HSA_ID_ATTRIBUTE;
 
 /**
  * @author andreaskaltenbach
@@ -76,10 +75,30 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
         SAMLCredential credential = createSamlCredential(token);
         Object details = userDetails.loadUserBySAML(credential);
 
-        ExpiringUsernameAuthenticationToken result = new ExpiringUsernameAuthenticationToken(null, details, credential, new ArrayList<GrantedAuthority>());
-        result.setDetails(details);
+        // As per INTYG-2638 we need to augment the principal with fake properties _after_ the loadUserBySAML.
+        User user = (User) details;
+        FakeCredentials fakeCredentials = (FakeCredentials) token.getCredentials();
+        // Being immutable, we build up a new User principal combining the User from loadUserBySAML and fakes.
+
+        String name = user.getName() != null && user.getName().trim().length() > 0 && !user.getName().startsWith("null") ? user.getName() : fakeCredentials.getFornamn() + " " + fakeCredentials.getEfternamn();
+        final Vardenhet vardenhet = selectVardenhet(user, fakeCredentials.getEnhetId());
+        final HsaIdVardgivare vg = vardenhet.getVardgivarId();
+        final List<HsaIdVardgivare> vgsWithProcessledarStatus = fakeCredentials.isVardgivarniva() ? Collections.singletonList(vg) : Collections.emptyList();
+        User decoratedUser = new User(user.getHsaId(), name, vgsWithProcessledarStatus, user.getVardenhetList());
+
+        ExpiringUsernameAuthenticationToken result = new ExpiringUsernameAuthenticationToken(null, decoratedUser, credential, new ArrayList<GrantedAuthority>());
+        result.setDetails(decoratedUser);
 
         return result;
+    }
+
+    private Vardenhet selectVardenhet(User user, String enhetId) {
+        for (Vardenhet ve : user.getVardenhetList()) {
+            if (ve.getId().getId().equalsIgnoreCase(enhetId)) {
+                return ve;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -95,14 +114,6 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
         assertion.getAttributeStatements().add(attributeStatement);
 
         attributeStatement.getAttributes().add(createAttribute(HSA_ID_ATTRIBUTE, fakeCredentials.getHsaId()));
-        attributeStatement.getAttributes().add(createAttribute(FORNAMN_ATTRIBUTE, fakeCredentials.getFornamn()));
-        attributeStatement.getAttributes().add(createAttribute(MELLAN_OCH_EFTERNAMN_ATTRIBUTE, fakeCredentials.getEfternamn()));
-        attributeStatement.getAttributes().add(createAttribute(ENHET_HSA_ID_ATTRIBUTE, fakeCredentials.getEnhetId()));
-        attributeStatement.getAttributes().add(createAttribute(VARDGIVARE_HSA_ID_ATTRIBUTE, fakeCredentials.getVardgivarId()));
-
-        if (fakeCredentials.isVardgivarniva()) {
-            attributeStatement.getAttributes().add(createAttribute(SYSTEM_ROLE_ATTRIBUTE, "INTYG;Statistik-" + fakeCredentials.getVardgivarId()));
-        }
         NameID nameId = new NameIDBuilder().buildObject();
         nameId.setValue(token.getCredentials().toString());
         return new SAMLCredential(nameId, assertion, "fake-idp", "statistics");

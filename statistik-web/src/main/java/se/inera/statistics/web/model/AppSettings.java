@@ -1,0 +1,71 @@
+/**
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
+ *
+ * This file is part of statistik (https://github.com/sklintyg/statistik).
+ *
+ * statistik is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * statistik is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package se.inera.statistics.web.model;
+
+import java.util.Collections;
+import java.util.Map;
+
+public class AppSettings {
+
+    private String loginUrl;
+    private String highchartsExportUrl;
+    private boolean loginVisible;
+    private boolean isLoggedIn;
+    private Map<String, String> sjukskrivningLengths;
+
+    public String getLoginUrl() {
+        return loginUrl;
+    }
+
+    public void setLoginUrl(String loginUrl) {
+        this.loginUrl = loginUrl;
+    }
+
+    public String getHighchartsExportUrl() {
+        return highchartsExportUrl;
+    }
+
+    public void setHighchartsExportUrl(String highchartsExportUrl) {
+        this.highchartsExportUrl = highchartsExportUrl;
+    }
+
+    public boolean isLoginVisible() {
+        return loginVisible;
+    }
+
+    public void setLoginVisible(boolean loginVisible) {
+        this.loginVisible = loginVisible;
+    }
+
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        isLoggedIn = loggedIn;
+    }
+
+    public Map<String, String> getSjukskrivningLengths() {
+        return sjukskrivningLengths;
+    }
+
+    public void setSjukskrivningLengths(Map<String, String> sjukskrivningLengths) {
+        this.sjukskrivningLengths = Collections.unmodifiableMap(sjukskrivningLengths);
+    }
+}

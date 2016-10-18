@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -23,6 +23,7 @@ import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.warehouse.Aisle;
@@ -77,12 +78,13 @@ public class AldersgruppQueryTest {
         fact(4010, 10, 100);
         warehouse.complete(LocalDateTime.now());
         Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
-        List<Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall, 4);
+        List<OverviewChartRowExtended> count = AldersgruppQuery.getOverviewAldersgrupper(sjukfall, sjukfall, 4);
 
         assertEquals(4, count.size());
-        assertEquals(4, count.get(0).getCount());
-        assertEquals(2, count.get(1).getCount());
-        assertEquals(3, count.get(3).getCount());
+        assertEquals(4, count.get(0).getQuantity());
+        assertEquals(2, count.get(1).getQuantity());
+        assertEquals(2, count.get(2).getQuantity());
+        assertEquals(3, count.get(3).getQuantity());
     }
 
     private void fact(int startday, int length, int alder) {

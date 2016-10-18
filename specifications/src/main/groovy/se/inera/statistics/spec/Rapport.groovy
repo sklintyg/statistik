@@ -2,15 +2,21 @@ package se.inera.statistics.spec
 
 import se.inera.statistics.service.report.util.Icd10
 import se.inera.statistics.service.report.util.Icd10RangeType
+import se.inera.statistics.service.report.util.SjukfallsLangdGroup
+import se.inera.statistics.web.model.LoginInfo
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.statistics.web.service.FilterData
+import se.inera.statistics.web.service.ResponseHandler
 
 abstract class Rapport {
 
     String inloggadSom
+    String valdVg
+    def loginInfo
     boolean inloggad
     def män
     def kvinnor
+    def könTotalt
     def totalt
     Boolean markerad
     boolean vårdgivarnivå
@@ -19,9 +25,15 @@ abstract class Rapport {
     def filterKategorier
     def filterEnheter
     def filterVerksamhetstyper
+    def filterSjukskrivningslängd
     def filterStartdatum
     def filterSlutdatum
     def meddelande
+    def allaDiagnosfilterValda
+    def allaEnhetsfilterValda
+    def allaSjukskrivningslängdfilterValda
+    def enhetsfilterlista
+    def sjukskrivningslangdfilterlista
 
     ReportsUtil reportsUtil = new ReportsUtil()
 
@@ -32,6 +44,11 @@ abstract class Rapport {
 
     public final void executeWithReport(report) {
         meddelande = report.message
+        allaDiagnosfilterValda = report[ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER]
+        allaEnhetsfilterValda = report[ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER]
+        allaSjukskrivningslängdfilterValda = report[ResponseHandler.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER]
+        enhetsfilterlista = report[ResponseHandler.FILTERED_ENHETS]
+        sjukskrivningslangdfilterlista = report.filter.sjukskrivningslangd
     }
 
     abstract void doExecute()
@@ -44,6 +61,10 @@ abstract class Rapport {
         return kvinnor
     }
 
+    def könTotalt() {
+        return könTotalt
+    }
+
     def totalt() {
         return totalt
     }
@@ -52,11 +73,35 @@ abstract class Rapport {
         return meddelande
     }
 
+    def allaDiagnosfilterValda() {
+        return allaDiagnosfilterValda
+    }
+
+    def allaEnhetsfilterValda() {
+        return allaEnhetsfilterValda
+    }
+
+    def allaSjukskrivningslängdfilterValda() {
+        return allaSjukskrivningslängdfilterValda
+    }
+
+    def enhetsfilterlista() {
+        return enhetsfilterlista
+    }
+
+    def sjukskrivningslangdfilterlista() {
+        return sjukskrivningslangdfilterlista
+    }
+
     def markerad() {
         if (markerad == null) {
             return null
         }
         return markerad ? "ja" : "nej"
+    }
+
+    def vårdgivarnamn() {
+        return loginInfo?.vgs?.find{ it.hsaId.equalsIgnoreCase(vg)}?.name
     }
 
     void setVårdgivarnivå(boolean vårdgivarnivå) {
@@ -99,6 +144,15 @@ abstract class Rapport {
         }
     }
 
+    void setFilterSjukskrivningslängd(String sjukskrivningslängdString) {
+        if (sjukskrivningslängdString != null && !sjukskrivningslängdString.trim().isEmpty()) {
+            this.filterSjukskrivningslängd = sjukskrivningslängdString.split(",")*.trim().collect {
+                def optionalGroup = SjukfallsLangdGroup.getByName(it)
+                optionalGroup.present ? optionalGroup.get().name() : it;
+            }
+        }
+    }
+
     def getFilter() {
         def diagnoser = new ArrayList<String>();
         if (filterKapitel != null) {
@@ -110,11 +164,13 @@ abstract class Rapport {
         if (filterKategorier != null) {
             diagnoser.addAll(filterKategorier)
         }
-        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
+        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper, filterSjukskrivningslängd, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
     }
 
     public void reset() {
         inloggadSom = null
+        valdVg = null
+        loginInfo = null
         inloggad = false
         totalt = -1
         män = -1
@@ -125,6 +181,7 @@ abstract class Rapport {
         filterKategorier = null
         filterEnheter = null
         filterVerksamhetstyper = null
+        filterSjukskrivningslängd = null
         filterStartdatum = null
         filterSlutdatum = null
         meddelande = null
@@ -138,16 +195,25 @@ abstract class Rapport {
         this.inloggadSom = inloggadSom
     }
 
+    def getVg() {
+        return valdVg != null ? valdVg : reportsUtil.getVardgivareForUser(inloggadSom)
+    }
+
+    void setVg(String vg) {
+        this.valdVg = vg
+    }
+
     void doLoginIfRequested() {
         if (inloggadSom != null && !inloggadSom.isEmpty()) {
             reportsUtil.login(inloggadSom, vårdgivarnivå)
             inloggad = true
+            loginInfo = reportsUtil.getLoginInfo()
         }
     }
 
     def getVerksamhetsoversikt() {
         if (inloggad) {
-            return reportsUtil.getVerksamhetsoversikt(filter);
+            return reportsUtil.getVerksamhetsoversikt(vg, filter);
         }
         return reportsUtil.getNationalOverview();
     }

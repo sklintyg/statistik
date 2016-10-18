@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -34,5 +34,28 @@ public class OverviewChartRowExtended extends OverviewChartRow {
     @Override
     public String toString() {
         return super.toString() + ", {\"OverviewChartRowExtended\":{\"alternation\":" + alternation + "}}";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof OverviewChartRowExtended)) {
+            return false;
+        }
+
+        OverviewChartRowExtended that = (OverviewChartRowExtended) o;
+
+        if (!super.equals(o)) {
+            return false;
+        }
+
+        return alternation == that.alternation;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode() + alternation;
     }
 }

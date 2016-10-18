@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,11 +18,12 @@
  */
 package se.inera.statistics.web.model.overview;
 
+import se.inera.statistics.web.model.FilteredDataReport;
 import se.inera.statistics.web.service.FilterDataResponse;
 
 import java.util.List;
 
-public class VerksamhetOverviewData {
+public class VerksamhetOverviewData implements FilteredDataReport {
 
     private final String periodText;
     private final VerksamhetNumberOfCasesPerMonthOverview casesPerMonth;

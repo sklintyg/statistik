@@ -247,75 +247,75 @@ JÄMFÖR VALFRIA: Alla grupper som användaren har valt visas.
 
 SJUKSKRIVNINGSGRAD: Alla grupper visas alltid.
 | Sjukfall i rapporten sjukskrivningsgrad |
-| inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| user2        | 2013 | jun   | 100%                 | 0    | 2        |
-| user2        | 2013 | jul   | 100%                 | 0    | 2        |
-| user2        | 2013 | aug   | 100%                 | 0    | 2        |
-| user2        | 2013 | sep   | 100%                 | 0    | 0        |
-| user2        | 2013 | okt   | 100%                 | 0    | 0        |
-| user2        | 2013 | nov   | 100%                 | 0    | 0        |
-| user2        | 2013 | dec   | 100%                 | 0    | 0        |
-| user2        | 2014 | jan   | 100%                 | 0    | 0        |
-| user2        | 2014 | feb   | 100%                 | 0    | 0        |
-| user2        | 2014 | mar   | 100%                 | 0    | 0        |
-| user2        | 2014 | apr   | 100%                 | 0    | 0        |
-| user2        | 2014 | maj   | 100%                 | 0    | 0        |
-| user2        | 2014 | jun   | 100%                 | 0    | 0        |
-| user2        | 2014 | jul   | 100%                 | 0    | 0        |
-| user2        | 2014 | aug   | 100%                 | 0    | 0        |
-| user2        | 2014 | sep   | 100%                 | 0    | 0        |
-| user2        | 2014 | okt   | 100%                 | 0    | 0        |
-| user2        | 2013 | jun   | 50%                  | 0    | 0        |
-| user2        | 2013 | jul   | 50%                  | 0    | 0        |
-| user2        | 2013 | aug   | 50%                  | 0    | 0        |
-| user2        | 2013 | sep   | 50%                  | 0    | 0        |
-| user2        | 2013 | okt   | 50%                  | 0    | 0        |
-| user2        | 2013 | nov   | 50%                  | 0    | 0        |
-| user2        | 2013 | dec   | 50%                  | 0    | 0        |
-| user2        | 2014 | jan   | 50%                  | 0    | 0        |
-| user2        | 2014 | feb   | 50%                  | 0    | 0        |
-| user2        | 2014 | mar   | 50%                  | 0    | 0        |
-| user2        | 2014 | apr   | 50%                  | 0    | 0        |
-| user2        | 2014 | maj   | 50%                  | 0    | 0        |
-| user2        | 2014 | jun   | 50%                  | 0    | 0        |
-| user2        | 2014 | jul   | 50%                  | 1    | 0        |
-| user2        | 2014 | aug   | 50%                  | 1    | 0        |
-| user2        | 2014 | sep   | 50%                  | 1    | 0        |
-| user2        | 2014 | okt   | 50%                  | 1    | 0        |
-| user2        | 2014 | okt   | 25%                  | 0    | 0        |
+| inloggad som | år   | månad | sjukskrivningsgrad | män? | kvinnor? |
+| user2        | 2013 | jun   | 100 %              | 0    | 2        |
+| user2        | 2013 | jul   | 100 %              | 0    | 2        |
+| user2        | 2013 | aug   | 100 %              | 0    | 2        |
+| user2        | 2013 | sep   | 100 %              | 0    | 0        |
+| user2        | 2013 | okt   | 100 %              | 0    | 0        |
+| user2        | 2013 | nov   | 100 %              | 0    | 0        |
+| user2        | 2013 | dec   | 100 %              | 0    | 0        |
+| user2        | 2014 | jan   | 100 %              | 0    | 0        |
+| user2        | 2014 | feb   | 100 %              | 0    | 0        |
+| user2        | 2014 | mar   | 100 %              | 0    | 0        |
+| user2        | 2014 | apr   | 100 %              | 0    | 0        |
+| user2        | 2014 | maj   | 100 %              | 0    | 0        |
+| user2        | 2014 | jun   | 100 %              | 0    | 0        |
+| user2        | 2014 | jul   | 100 %              | 0    | 0        |
+| user2        | 2014 | aug   | 100 %              | 0    | 0        |
+| user2        | 2014 | sep   | 100 %              | 0    | 0        |
+| user2        | 2014 | okt   | 100 %              | 0    | 0        |
+| user2        | 2013 | jun   | 50 %               | 0    | 0        |
+| user2        | 2013 | jul   | 50 %               | 0    | 0        |
+| user2        | 2013 | aug   | 50 %               | 0    | 0        |
+| user2        | 2013 | sep   | 50 %               | 0    | 0        |
+| user2        | 2013 | okt   | 50 %               | 0    | 0        |
+| user2        | 2013 | nov   | 50 %               | 0    | 0        |
+| user2        | 2013 | dec   | 50 %               | 0    | 0        |
+| user2        | 2014 | jan   | 50 %               | 0    | 0        |
+| user2        | 2014 | feb   | 50 %               | 0    | 0        |
+| user2        | 2014 | mar   | 50 %               | 0    | 0        |
+| user2        | 2014 | apr   | 50 %               | 0    | 0        |
+| user2        | 2014 | maj   | 50 %               | 0    | 0        |
+| user2        | 2014 | jun   | 50 %               | 0    | 0        |
+| user2        | 2014 | jul   | 50 %               | 1    | 0        |
+| user2        | 2014 | aug   | 50 %               | 1    | 0        |
+| user2        | 2014 | sep   | 50 %               | 1    | 0        |
+| user2        | 2014 | okt   | 50 %               | 1    | 0        |
+| user2        | 2014 | okt   | 25 %               | 0    | 0        |
 
 | Sjukfall i rapporten sjukskrivningsgrad som tvarsnitt |
 | inloggad som | sjukskrivningsgrad | män? | kvinnor? |
-| user2        | 100%               | 0    | 0        |
-| user2        | 50%                | 1    | 0        |
-| user2        | 25%                | 0    | 0        |
+| user2        | 100 %              | 0    | 0        |
+| user2        | 50 %               | 1    | 0        |
+| user2        | 25 %               | 0    | 0        |
 
 SJUKSKRIVNINGSLANGD: Alla grupper visas alltid.
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | sjukskrivningslängd | män? | kvinnor? |
-| user2        | 31-90 dagar         | 0    | 0        |
+| user2        | 61-90 dagar         | 0    | 0        |
 | user2        | 91-180 dagar        | 1    | 0        |
 | user2        | Över 365 dagar      | 0    | 0        |
 
 | Sjukfall i rapporten sjukskrivningslangd som tidsserie |
 | inloggad som | år   | månad | sjukskrivningslängd | män? | kvinnor? |
-| user2        | 2013 | jun   | 31-90 dagar    | 0    | 2        |
-| user2        | 2013 | jul   | 31-90 dagar    | 0    | 2        |
-| user2        | 2013 | aug   | 31-90 dagar    | 0    | 2        |
-| user2        | 2013 | sep   | 31-90 dagar    | 0    | 0        |
-| user2        | 2013 | okt   | 31-90 dagar    | 0    | 0        |
-| user2        | 2013 | nov   | 31-90 dagar    | 0    | 0        |
-| user2        | 2013 | dec   | 31-90 dagar    | 0    | 0        |
-| user2        | 2014 | jan   | 31-90 dagar    | 0    | 0        |
-| user2        | 2014 | feb   | 31-90 dagar    | 0    | 0        |
-| user2        | 2014 | mar   | 31-90 dagar    | 0    | 0        |
-| user2        | 2014 | apr   | 31-90 dagar    | 0    | 0        |
-| user2        | 2014 | maj   | 31-90 dagar    | 0    | 0        |
-| user2        | 2014 | jun   | 31-90 dagar    | 0    | 0        |
-| user2        | 2014 | jul   | 31-90 dagar    | 0    | 0        |
-| user2        | 2014 | aug   | 31-90 dagar    | 0    | 0        |
-| user2        | 2014 | sep   | 31-90 dagar    | 0    | 0        |
-| user2        | 2014 | okt   | 31-90 dagar    | 0    | 0        |
+| user2        | 2013 | jun   | 61-90 dagar    | 0    | 2        |
+| user2        | 2013 | jul   | 61-90 dagar    | 0    | 2        |
+| user2        | 2013 | aug   | 61-90 dagar    | 0    | 2        |
+| user2        | 2013 | sep   | 61-90 dagar    | 0    | 0        |
+| user2        | 2013 | okt   | 61-90 dagar    | 0    | 0        |
+| user2        | 2013 | nov   | 61-90 dagar    | 0    | 0        |
+| user2        | 2013 | dec   | 61-90 dagar    | 0    | 0        |
+| user2        | 2014 | jan   | 61-90 dagar    | 0    | 0        |
+| user2        | 2014 | feb   | 61-90 dagar    | 0    | 0        |
+| user2        | 2014 | mar   | 61-90 dagar    | 0    | 0        |
+| user2        | 2014 | apr   | 61-90 dagar    | 0    | 0        |
+| user2        | 2014 | maj   | 61-90 dagar    | 0    | 0        |
+| user2        | 2014 | jun   | 61-90 dagar    | 0    | 0        |
+| user2        | 2014 | jul   | 61-90 dagar    | 0    | 0        |
+| user2        | 2014 | aug   | 61-90 dagar    | 0    | 0        |
+| user2        | 2014 | sep   | 61-90 dagar    | 0    | 0        |
+| user2        | 2014 | okt   | 61-90 dagar    | 0    | 0        |
 | user2        | 2013 | jun   | 91-180 dagar   | 0    | 0        |
 | user2        | 2013 | jul   | 91-180 dagar   | 0    | 0        |
 | user2        | 2013 | aug   | 91-180 dagar   | 0    | 0        |
@@ -343,7 +343,7 @@ LÄKARE: Bara de läkare som har data på sig under tidsintervallet visas.
 | user2        | Carl Claesson   | -1   | -1       |
 
 | Sjukfall i rapporten sjukfall per lakare som tidsserie |
-| inloggad som | år   | månad | läkare       | män? | kvinnor? |
+| inloggad som | år   | månad | läkare         | män? | kvinnor? |
 | user2        | 2013 | jun   | Anna Andersson | 0    | 2        |
 | user2        | 2013 | jul   | Anna Andersson | 0    | 2        |
 | user2        | 2013 | aug   | Anna Andersson | 0    | 2        |
@@ -361,24 +361,24 @@ LÄKARE: Bara de läkare som har data på sig under tidsintervallet visas.
 | user2        | 2014 | aug   | Anna Andersson | 0    | 0        |
 | user2        | 2014 | sep   | Anna Andersson | 0    | 0        |
 | user2        | 2014 | okt   | Anna Andersson | 0    | 0        |
-| user2        | 2013 | jun   | Bo Bengtsson | 0    | 0        |
-| user2        | 2013 | jul   | Bo Bengtsson | 0    | 0        |
-| user2        | 2013 | aug   | Bo Bengtsson | 0    | 0        |
-| user2        | 2013 | sep   | Bo Bengtsson | 0    | 0        |
-| user2        | 2013 | okt   | Bo Bengtsson | 0    | 0        |
-| user2        | 2013 | nov   | Bo Bengtsson | 0    | 0        |
-| user2        | 2013 | dec   | Bo Bengtsson | 0    | 0        |
-| user2        | 2014 | jan   | Bo Bengtsson | 0    | 0        |
-| user2        | 2014 | feb   | Bo Bengtsson | 0    | 0        |
-| user2        | 2014 | mar   | Bo Bengtsson | 0    | 0        |
-| user2        | 2014 | apr   | Bo Bengtsson | 0    | 0        |
-| user2        | 2014 | maj   | Bo Bengtsson | 0    | 0        |
-| user2        | 2014 | jun   | Bo Bengtsson | 0    | 0        |
-| user2        | 2014 | jul   | Bo Bengtsson | 1    | 0        |
-| user2        | 2014 | aug   | Bo Bengtsson | 1    | 0        |
-| user2        | 2014 | sep   | Bo Bengtsson | 1    | 0        |
-| user2        | 2014 | okt   | Bo Bengtsson | 1    | 0        |
-| user2        | 2014 | jan   | Carl Claesson | -1  | -1       |
+| user2        | 2013 | jun   | Bo Bengtsson   | 0    | 0        |
+| user2        | 2013 | jul   | Bo Bengtsson   | 0    | 0        |
+| user2        | 2013 | aug   | Bo Bengtsson   | 0    | 0        |
+| user2        | 2013 | sep   | Bo Bengtsson   | 0    | 0        |
+| user2        | 2013 | okt   | Bo Bengtsson   | 0    | 0        |
+| user2        | 2013 | nov   | Bo Bengtsson   | 0    | 0        |
+| user2        | 2013 | dec   | Bo Bengtsson   | 0    | 0        |
+| user2        | 2014 | jan   | Bo Bengtsson   | 0    | 0        |
+| user2        | 2014 | feb   | Bo Bengtsson   | 0    | 0        |
+| user2        | 2014 | mar   | Bo Bengtsson   | 0    | 0        |
+| user2        | 2014 | apr   | Bo Bengtsson   | 0    | 0        |
+| user2        | 2014 | maj   | Bo Bengtsson   | 0    | 0        |
+| user2        | 2014 | jun   | Bo Bengtsson   | 0    | 0        |
+| user2        | 2014 | jul   | Bo Bengtsson   | 1    | 0        |
+| user2        | 2014 | aug   | Bo Bengtsson   | 1    | 0        |
+| user2        | 2014 | sep   | Bo Bengtsson   | 1    | 0        |
+| user2        | 2014 | okt   | Bo Bengtsson   | 1    | 0        |
+| user2        | 2014 | jan   | Carl Claesson  | -1   | -1       |
 
 LÄKARÅLDER- OCH KÖN: Alla grupper visas alltid, UTOM grupper där ålder/kön är okänt.
 | Sjukfall i rapporten lakarkonalder |
@@ -388,7 +388,7 @@ LÄKARÅLDER- OCH KÖN: Alla grupper visas alltid, UTOM grupper där ålder/kön
 | user3        | Okänt kön okänd ålder    | -1   | -1       |
 
 | Sjukfall i rapporten lakarkonalder som tidsserie |
-| inloggad som | år   | månad | läkargrupp  | män? | kvinnor? |
+| inloggad som | år   | månad | läkargrupp               | män? | kvinnor? |
 | user2        | 2013 | jun   | Kvinnlig läkare 30-39 år | 0    | 2        |
 | user2        | 2013 | jul   | Kvinnlig läkare 30-39 år | 0    | 2        |
 | user2        | 2013 | aug   | Kvinnlig läkare 30-39 år | 0    | 2        |
@@ -406,24 +406,24 @@ LÄKARÅLDER- OCH KÖN: Alla grupper visas alltid, UTOM grupper där ålder/kön
 | user2        | 2014 | aug   | Kvinnlig läkare 30-39 år | 0    | 0        |
 | user2        | 2014 | sep   | Kvinnlig läkare 30-39 år | 0    | 0        |
 | user2        | 2014 | okt   | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | 2013 | jun   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2013 | jul   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2013 | aug   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2013 | sep   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2013 | okt   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2013 | nov   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2013 | dec   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | jan   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | feb   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | mar   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | apr   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | maj   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | jun   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | jul   | Manlig läkare 40-49 år | 1    | 0        |
-| user2        | 2014 | aug   | Manlig läkare 40-49 år | 1    | 0        |
-| user2        | 2014 | sep   | Manlig läkare 40-49 år | 1    | 0        |
-| user2        | 2014 | okt   | Manlig läkare 40-49 år | 1    | 0        |
-| user2        | 2014 | okt   | Okänt kön okänd ålder  | -1   | -1       |
+| user2        | 2013 | jun   | Manlig läkare 40-49 år   | 0    | 0        |
+| user2        | 2013 | jul   | Manlig läkare 40-49 år   | 0    | 0        |
+| user2        | 2013 | aug   | Manlig läkare 40-49 år   | 0    | 0        |
+| user2        | 2013 | sep   | Manlig läkare 40-49 år   | 0    | 0        |
+| user2        | 2013 | okt   | Manlig läkare 40-49 år   | 0    | 0        |
+| user2        | 2013 | nov   | Manlig läkare 40-49 år   | 0    | 0        |
+| user2        | 2013 | dec   | Manlig läkare 40-49 år   | 0    | 0        |
+| user2        | 2014 | jan   | Manlig läkare 40-49 år   | 0    | 0        |
+| user2        | 2014 | feb   | Manlig läkare 40-49 år   | 0    | 0        |
+| user2        | 2014 | mar   | Manlig läkare 40-49 år   | 0    | 0        |
+| user2        | 2014 | apr   | Manlig läkare 40-49 år   | 0    | 0        |
+| user2        | 2014 | maj   | Manlig läkare 40-49 år   | 0    | 0        |
+| user2        | 2014 | jun   | Manlig läkare 40-49 år   | 0    | 0        |
+| user2        | 2014 | jul   | Manlig läkare 40-49 år   | 1    | 0        |
+| user2        | 2014 | aug   | Manlig läkare 40-49 år   | 1    | 0        |
+| user2        | 2014 | sep   | Manlig läkare 40-49 år   | 1    | 0        |
+| user2        | 2014 | okt   | Manlig läkare 40-49 år   | 1    | 0        |
+| user2        | 2014 | okt   | Okänt kön okänd ålder    | -1   | -1       |
 
 LÄKARBEFATTNING: Bara de befattningar som har data på sig under tidsintervallet visas.
 | Sjukfall i rapporten lakarbefattning |
@@ -434,38 +434,38 @@ LÄKARBEFATTNING: Bara de befattningar som har data på sig under tidsintervalle
 
 | Sjukfall i rapporten lakarbefattning som tidsserie |
 | inloggad som | år   | månad | läkarbefattning | män? | kvinnor? |
-| user2        | 2013 | jun   | Överläkare     | 0    | 2        |
-| user2        | 2013 | jul   | Överläkare     | 0    | 2        |
-| user2        | 2013 | aug   | Överläkare     | 0    | 2        |
-| user2        | 2013 | sep   | Överläkare     | 0    | 0        |
-| user2        | 2013 | okt   | Överläkare     | 0    | 0        |
-| user2        | 2013 | nov   | Överläkare     | 0    | 0        |
-| user2        | 2013 | dec   | Överläkare     | 0    | 0        |
-| user2        | 2014 | jan   | Överläkare     | 0    | 0        |
-| user2        | 2014 | feb   | Överläkare     | 0    | 0        |
-| user2        | 2014 | mar   | Överläkare     | 0    | 0        |
-| user2        | 2014 | apr   | Överläkare     | 0    | 0        |
-| user2        | 2014 | maj   | Överläkare     | 0    | 0        |
-| user2        | 2014 | jun   | Överläkare     | 0    | 0        |
-| user2        | 2014 | jul   | Överläkare     | 0    | 0        |
-| user2        | 2014 | aug   | Överläkare     | 0    | 0        |
-| user2        | 2014 | sep   | Överläkare     | 0    | 0        |
-| user2        | 2014 | okt   | Överläkare     | 0    | 0        |
-| user2        | 2013 | jun   | Företagsläkare | 0    | 0        |
-| user2        | 2013 | jul   | Företagsläkare | 0    | 0        |
-| user2        | 2013 | aug   | Företagsläkare | 0    | 0        |
-| user2        | 2013 | sep   | Företagsläkare | 0    | 0        |
-| user2        | 2013 | okt   | Företagsläkare | 0    | 0        |
-| user2        | 2013 | nov   | Företagsläkare | 0    | 0        |
-| user2        | 2013 | dec   | Företagsläkare | 0    | 0        |
-| user2        | 2014 | jan   | Företagsläkare | 0    | 0        |
-| user2        | 2014 | feb   | Företagsläkare | 0    | 0        |
-| user2        | 2014 | mar   | Företagsläkare | 0    | 0        |
-| user2        | 2014 | apr   | Företagsläkare | 0    | 0        |
-| user2        | 2014 | maj   | Företagsläkare | 0    | 0        |
-| user2        | 2014 | jun   | Företagsläkare | 0    | 0        |
-| user2        | 2014 | jul   | Företagsläkare | 1    | 0        |
-| user2        | 2014 | aug   | Företagsläkare | 1    | 0        |
-| user2        | 2014 | sep   | Företagsläkare | 1    | 0        |
-| user2        | 2014 | okt   | Företagsläkare | 1    | 0        |
-| user2        | 2014 | jan   | Skolläkare     | -1   | -1       |
+| user2        | 2013 | jun   | Överläkare      | 0    | 2        |
+| user2        | 2013 | jul   | Överläkare      | 0    | 2        |
+| user2        | 2013 | aug   | Överläkare      | 0    | 2        |
+| user2        | 2013 | sep   | Överläkare      | 0    | 0        |
+| user2        | 2013 | okt   | Överläkare      | 0    | 0        |
+| user2        | 2013 | nov   | Överläkare      | 0    | 0        |
+| user2        | 2013 | dec   | Överläkare      | 0    | 0        |
+| user2        | 2014 | jan   | Överläkare      | 0    | 0        |
+| user2        | 2014 | feb   | Överläkare      | 0    | 0        |
+| user2        | 2014 | mar   | Överläkare      | 0    | 0        |
+| user2        | 2014 | apr   | Överläkare      | 0    | 0        |
+| user2        | 2014 | maj   | Överläkare      | 0    | 0        |
+| user2        | 2014 | jun   | Överläkare      | 0    | 0        |
+| user2        | 2014 | jul   | Överläkare      | 0    | 0        |
+| user2        | 2014 | aug   | Överläkare      | 0    | 0        |
+| user2        | 2014 | sep   | Överläkare      | 0    | 0        |
+| user2        | 2014 | okt   | Överläkare      | 0    | 0        |
+| user2        | 2013 | jun   | Företagsläkare  | 0    | 0        |
+| user2        | 2013 | jul   | Företagsläkare  | 0    | 0        |
+| user2        | 2013 | aug   | Företagsläkare  | 0    | 0        |
+| user2        | 2013 | sep   | Företagsläkare  | 0    | 0        |
+| user2        | 2013 | okt   | Företagsläkare  | 0    | 0        |
+| user2        | 2013 | nov   | Företagsläkare  | 0    | 0        |
+| user2        | 2013 | dec   | Företagsläkare  | 0    | 0        |
+| user2        | 2014 | jan   | Företagsläkare  | 0    | 0        |
+| user2        | 2014 | feb   | Företagsläkare  | 0    | 0        |
+| user2        | 2014 | mar   | Företagsläkare  | 0    | 0        |
+| user2        | 2014 | apr   | Företagsläkare  | 0    | 0        |
+| user2        | 2014 | maj   | Företagsläkare  | 0    | 0        |
+| user2        | 2014 | jun   | Företagsläkare  | 0    | 0        |
+| user2        | 2014 | jul   | Företagsläkare  | 1    | 0        |
+| user2        | 2014 | aug   | Företagsläkare  | 1    | 0        |
+| user2        | 2014 | sep   | Företagsläkare  | 1    | 0        |
+| user2        | 2014 | okt   | Företagsläkare  | 1    | 0        |
+| user2        | 2014 | jan   | Skolläkare      | -1   | -1       |

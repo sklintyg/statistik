@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,10 +18,6 @@
  */
 package se.inera.statistics.web.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
@@ -32,6 +28,12 @@ import se.inera.statistics.web.model.overview.OverviewData;
 import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 import se.inera.statistics.web.model.overview.SjukfallPerManadOverview;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 public class OverviewConverter {
 
     OverviewData convert(OverviewResponse resp, Range range) {
@@ -40,20 +42,13 @@ public class OverviewConverter {
                 resp.getCasesPerMonthSexProportion().getMaleProportion(), resp.getCasesPerMonthSexProportion().getFemaleProportion(),
                 resp.getCasesPerMonthAlteration(), previousPeriod.toString());
 
-        ArrayList<DonutChartData> diagnosisGroups = new ArrayList<>();
-        for (OverviewChartRowExtended row : new DiagnosisGroupsConverter().convert(resp.getDiagnosisGroups())) {
-            diagnosisGroups.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
-        }
+        List<DonutChartData> diagnosisGroups = new DiagnosisGroupsConverter().convert(resp.getDiagnosisGroups()).stream().map(mapOverviewRowData()).collect(Collectors.toList());
 
-        ArrayList<DonutChartData> ageGroups = new ArrayList<>();
-        for (OverviewChartRowExtended row : resp.getAgeGroups()) {
-            ageGroups.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
-        }
+        List<DonutChartData> ageGroups = new AldersGroupsConverter().convert(resp.getAgeGroups()).stream().map(mapOverviewRowData()).collect(Collectors.toList());
 
-        ArrayList<DonutChartData> degreeOfSickLeaveGroups = new ArrayList<>();
-        for (OverviewChartRowExtended row : resp.getDegreeOfSickLeaveGroups()) {
-            degreeOfSickLeaveGroups.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
-        }
+        List<DonutChartData> degreeOfSickLeaveGroups = resp.getDegreeOfSickLeaveGroups().stream().map(mapOverviewRowData()).sorted(comp()).collect(Collectors.toList());
+
+        List<DonutChartData> perCounty = resp.getPerCounty().stream().map(mapOverviewRowData()).sorted(comp()).collect(Collectors.toList());
 
         ArrayList<BarChartData> sickLeaveLengthData = new ArrayList<>();
         for (OverviewChartRow row : resp.getSickLeaveLengthGroups()) {
@@ -61,18 +56,14 @@ public class OverviewConverter {
         }
         SickLeaveLengthOverview sickLeaveLength = new SickLeaveLengthOverview(sickLeaveLengthData, resp.getLongSickLeavesTotal(), resp.getLongSickLeavesAlternation());
 
-        ArrayList<DonutChartData> perCounty = new ArrayList<>();
-        for (OverviewChartRowExtended row : resp.getPerCounty()) {
-            perCounty.add(new DonutChartData(row.getName(), row.getQuantity(), row.getAlternation()));
-        }
-        Collections.sort(perCounty, new Comparator<DonutChartData>() {
-            @Override
-            public int compare(DonutChartData o1, DonutChartData o2) {
-                return o2.getQuantity() - o1.getQuantity();
-            }
-        });
-
         return new OverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength, perCounty);
     }
 
+    private Comparator<DonutChartData> comp() {
+        return (o1, o2) -> o2.getQuantity() - o1.getQuantity();
+    }
+
+    private Function<OverviewChartRowExtended, DonutChartData> mapOverviewRowData() {
+        return (r) -> new DonutChartData(r.getName(), r.getQuantity(), r.getAlternation());
+    }
 }

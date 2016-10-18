@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -23,7 +23,7 @@ import se.inera.statistics.web.service.FilterDataResponse;
 
 import java.util.List;
 
-public abstract class TableDataReport {
+public abstract class TableDataReport implements FilteredDataReport {
 
     public abstract TableData getTableData();
     public abstract String getPeriod();
@@ -34,9 +34,15 @@ public abstract class TableDataReport {
     public abstract List<ChartData> getChartDatas();
 
     public boolean isEmpty() {
+        final List<ChartData> chartDatas = getChartDatas();
+        if (chartDatas == null) {
+            return true;
+        }
         double sum = 0;
-        for (ChartData chartData : getChartDatas()) {
-            sum += sum(chartData.getSeries());
+        for (ChartData chartData : chartDatas) {
+            if (chartData != null) {
+                sum += sum(chartData.getSeries());
+            }
         }
         return sum == 0;
     }

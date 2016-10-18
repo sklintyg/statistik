@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,8 +18,6 @@
  */
 package se.inera.statistics.service.hsa;
 
-import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetMiuForPersonType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
@@ -36,8 +34,6 @@ public interface HsaWebService {
     GetStatisticsNamesResponseType getStatisticsNames(String personId);
 
     GetStatisticsPersonResponseType getStatisticsPerson(String personId);
-
-    GetMiuForPersonResponseType callMiuRights(GetMiuForPersonType parameters);
 
     GetStatisticsCareGiverResponseType getStatisticsCareGiver(String careGiverId);
 

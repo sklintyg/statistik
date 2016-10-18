@@ -1,4 +1,25 @@
+/**
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
+ *
+ * This file is part of statistik (https://github.com/sklintyg/statistik).
+ *
+ * statistik is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * statistik is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package se.inera.testsupport;
+
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,6 +35,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.joda.time.DateTimeUtils;
+import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +43,20 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.countypopulation.CountyPopulationManagerForTest;
 import se.inera.statistics.service.hsa.HSAKey;
-import se.inera.statistics.service.hsa.HsaWsResponderMock;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
+import se.inera.statistics.service.hsa.HsaWsResponderMock;
 import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
+import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
@@ -37,6 +65,9 @@ import se.inera.statistics.service.warehouse.WidelineConverter;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.web.service.ChartDataService;
+import se.inera.testsupport.socialstyrelsenspecial.SosCalculatedRow;
+import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
+import se.inera.testsupport.socialstyrelsenspecial.SosRow;
 
 @Service("restSupportService")
 public class RestSupportService {
@@ -75,6 +106,15 @@ public class RestSupportService {
 
     @Autowired
     private SjukfallQuery sjukfallQuery;
+
+    @Autowired
+    private CountyPopulationManagerForTest countyPopulationManager;
+
+    @Autowired
+    private Icd10 icd10;
+
+    @Autowired
+    private CountyPopulationInjector countyPopulationInjector;
 
     @GET
     @Path("converteddate/{internalDate}")
@@ -131,16 +171,21 @@ public class RestSupportService {
     @Transactional
     public Response insertIntyg(Intyg intyg) {
         LOG.info("Insert intyg. id: " + intyg.getDocumentId() + ", data: " + intyg.getData());
+        insertIntygWithoutLogging(intyg);
+        return Response.ok().build();
+    }
+
+    @Transactional
+    public void insertIntygWithoutLogging(Intyg intyg) {
         hsaDataInjectable.setCountyForNextIntyg(intyg.getCounty());
         hsaDataInjectable.setHuvudenhetIdForNextIntyg(intyg.getHuvudenhetId());
         hsaDataInjectable.setHsaKey(new HSAKey(intyg.getVardgivareId(), intyg.getEnhetId(), intyg.getLakareId()));
         receiver.accept(intyg.getType(), intyg.getData(), intyg.getDocumentId(), intyg.getTimestamp());
         setEnhetName(intyg);
-        return Response.ok().build();
     }
 
     private void setEnhetName(Intyg intyg) {
-        if (intyg.getEnhetId() == null || intyg.getEnhetId().isEmpty() || !HsaWsResponderMock.shouldEnhetExistInHsa(intyg.getEnhetId())) {
+        if (intyg.getEnhetId() == null || intyg.getEnhetId().isEmpty() || !HsaWsResponderMock.shouldExistInHsa(intyg.getEnhetId())) {
             return;
         }
         String name = intyg.getEnhetName() != null && !intyg.getEnhetName().isEmpty() ? intyg.getEnhetName() : intyg.getEnhetId();
@@ -149,7 +194,7 @@ public class RestSupportService {
         query.setParameter("enhetId", intyg.getEnhetId());
         int executeUpdate = query.executeUpdate();
         if (executeUpdate < 1) {
-            Enhet enhet = new Enhet(new HsaIdVardgivare(intyg.getVardgivareId()), "", new HsaIdEnhet(intyg.getEnhetId()), name, "", "", "");
+            Enhet enhet = new Enhet(new HsaIdVardgivare(intyg.getVardgivareId()), new HsaIdEnhet(intyg.getEnhetId()), name, "", "", "");
             manager.persist(enhet);
         }
     }
@@ -193,7 +238,7 @@ public class RestSupportService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response insertPersonal(Personal personal) {
         LOG.info("Insert personal: " + personal);
-        hsaDataInjectable.addPersonal(personal.getId(), personal.getFirstName(), personal.getLastName(), personal.getKon(), personal.getAge(), personal.getBefattning());
+        hsaDataInjectable.addPersonal(new HsaIdLakare(personal.getId()), personal.getFirstName(), personal.getLastName(), personal.getKon(), personal.getAge(), personal.getBefattning());
         return Response.ok().build();
     }
 
@@ -207,6 +252,71 @@ public class RestSupportService {
             landstingManager.add(vgId, new HsaIdVardgivare(vgId));
         }
         return Response.ok().build();
+    }
+
+    @POST
+    @Path("clearCountyPopulation")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Transactional
+    public Response clearCountyPopulation() {
+        countyPopulationInjector.clearCountyPopulations();
+        countyPopulationManager.clearCountyPopulation();
+        return Response.ok().build();
+    }
+
+    @PUT
+    @Path("countyPopulation/{date}")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Transactional
+    public Response insertCountyPopulation(Map<String, KonField> countyPopulation, @PathParam("date") String date) {
+        LOG.info("For date: {}, insert county population: {}", date, countyPopulation);
+        countyPopulationInjector.addCountyPopulation(countyPopulation, java.time.LocalDate.parse(date).getYear());
+        final LocalDate nextYear = LocalDate.parse(date).plusYears(1);
+        countyPopulationManager.getCountyPopulation(new Range(nextYear, nextYear)); //Populate the cache in db
+        return Response.ok().build();
+    }
+
+    /**
+     * Get sjukfall information requested by socialstyrelsen (INTYG-2449).
+     */
+    @GET
+    @Path("getSocialstyrelsenReport{dx:(/dx)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public Response getSosStatistics(@PathParam("dx") String dx) {
+        final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx);
+        final List<SosRow> sosReport =  sosReportCreator.getSosReport();
+        return Response.ok(sosReport).build();
+    }
+
+    /**
+     * Get sjukfall mean value information requested by socialstyrelsen (INTYG-2449).
+     */
+    @GET
+    @Path("getSocialstyrelsenMedianReport{dx:(/dx)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public Response getSosMedianStatistics(@PathParam("dx") String dx) {
+        final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx);
+        final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getMedianValuesSosReport();
+        return Response.ok(medianValuesSosReport).build();
+    }
+
+    /**
+     * Get sjukfall standard deviation information requested by socialstyrelsen (INTYG-2449).
+     */
+    @GET
+    @Path("getSocialstyrelsenStdDevReport{dx:(/dx)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public Response getSosStdDevStatistics(@PathParam("dx") String dx) {
+        final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx);
+        final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getStdDevValuesSosReport();
+        return Response.ok(medianValuesSosReport).build();
     }
 
 }

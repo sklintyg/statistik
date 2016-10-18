@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -18,16 +18,18 @@
  */
 package se.inera.statistics.service.helper;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.joda.time.LocalDate;
 import org.joda.time.format.ISODateTimeFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.fasterxml.jackson.databind.JsonNode;
+import se.inera.statistics.service.report.model.Kon;
 
 public final class DocumentHelper {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentHelper.class);
@@ -63,7 +65,7 @@ public final class DocumentHelper {
     private DocumentHelper() {
     }
 
-    public static ObjectNode prepare(JsonNode intyg) {
+    public static Patientdata getPatientData(JsonNode intyg) {
         final IntygVersion version = getIntygVersion(intyg);
         String personId = getPersonId(intyg, version);
         int alder;
@@ -74,15 +76,7 @@ public final class DocumentHelper {
             alder = ConversionHelper.NO_AGE;
         }
         String kon = ConversionHelper.extractKon(personId);
-
-        ObjectNode preparedDoc = intyg.deepCopy();
-        if (version == IntygVersion.VERSION2) {
-            preparedDoc.put(PATIENT, preparedDoc.path("grundData").path("patient"));
-        }
-        ObjectNode patientNode = (ObjectNode) preparedDoc.path(PATIENT);
-        patientNode.put("alder", alder);
-        patientNode.put("kon", kon);
-        return preparedDoc;
+        return new Patientdata(alder, Kon.parse(kon));
     }
 
     public static IntygVersion getIntygVersion(JsonNode document) {
@@ -91,6 +85,10 @@ public final class DocumentHelper {
 
     public static String getPersonId(JsonNode document, IntygVersion version) {
         String personIdRaw = getPersonIdFromIntyg(document, version);
+        return getUnifiedPersonId(personIdRaw);
+    }
+
+    public static String getUnifiedPersonId(String personIdRaw) {
         if (personIdRaw.matches("[0-9]{8}-[0-9]{4}")) {
             return personIdRaw;
         } else if (personIdRaw.matches("[0-9]{12}")) {
@@ -128,11 +126,9 @@ public final class DocumentHelper {
 
     public static String getEnhetNamn(JsonNode document, IntygVersion version) {
         if (IntygVersion.VERSION1 == version) {
-            final String result = document.path("skapadAv").path("vardenhet").path("namn").textValue();
-            return result;
+            return document.path("skapadAv").path("vardenhet").path("namn").textValue();
         } else {
-            final String result = document.path("grundData").path("skapadAv").path("vardenhet").path("enhetsnamn").textValue();
-            return result;
+            return document.path("grundData").path("skapadAv").path("vardenhet").path("enhetsnamn").textValue();
         }
     }
 
@@ -193,12 +189,8 @@ public final class DocumentHelper {
                 LocalDate tom = new LocalDate(document.path("nedsattMed100").path("tom").asText());
                 date = tom.isAfter(date) ? tom : date;
             }
-            return date == null ? "2000-01-01" : date.toString();
+            return date.toString();
         }
-    }
-
-    public static String getKon(JsonNode document) {
-        return document.path(PATIENT).path("kon").textValue();
     }
 
     public static String getDiagnos(JsonNode document, IntygVersion version) {
@@ -251,10 +243,6 @@ public final class DocumentHelper {
         }
     }
 
-    public static int getAge(JsonNode document) {
-        return document.path(PATIENT).path("alder").intValue();
-    }
-
     public static String getIntygId(JsonNode document, IntygVersion version) {
         if (version == IntygVersion.VERSION1) {
             String id = document.path("id").path("root").textValue();
@@ -290,6 +278,9 @@ public final class DocumentHelper {
      * Denna kod implementeras också i AnonymizeJson.groovy och bör hållas i synk med denna
      */
     private static boolean isFieldIndicatingEnkeltIntyg(String field) {
+        if (field == null) {
+            return false;
+        }
         final String cleanedField = field.replaceAll("[^A-Za-zåäöÅÄÖ]", "");
         return "E".equalsIgnoreCase(cleanedField) || "Enkel".equalsIgnoreCase(cleanedField) || "Enkelt".equalsIgnoreCase(cleanedField);
     }

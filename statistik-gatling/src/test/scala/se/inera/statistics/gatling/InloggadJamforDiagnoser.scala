@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Inera AB (http://www.inera.se)
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
  *
  * This file is part of statistik (https://github.com/sklintyg/statistik).
  *
@@ -21,8 +21,8 @@ package se.inera.statistics.gatling
 import io.gatling.core.Predef._
 
 object InloggadJamforDiagnoser {
-  def exec(user: Login.User, diagnoshash: String, filterhash: String) = RestCall.post(
+  def exec(user: Login.User, diagnoshash: String, filterhash: String) = RestCall.get(
     s"getDiagnosavsnittstatistik: ${user.vardgivare}",
-    s"${Conf.uri}/api/verksamhet/${user.vardgivare}" +
+    s"${Conf.uri}/api/verksamhet" +
       s"/getJamforDiagnoserStatistik/$diagnoshash?filter=$filterhash")
 }
