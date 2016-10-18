@@ -15,7 +15,7 @@ filter-chips {
     vertical-align: top;
     text-align: left;
 
-    .remove-filter {
+    .filter-hover {
       position: absolute;
       display: none;
       background: #e0e0e0;
@@ -51,7 +51,7 @@ filter-chips {
         color: #7e7e7f;
       }
 
-      .remove-filter {
+      .remove-filter, .undo-remove-filter {
         background: #f7f7f9;
       }
     }
@@ -61,19 +61,13 @@ filter-chips {
         text-decoration: line-through;
       }
 
-      &:hover, &:active, &:focus {
-        border: solid #e0e0e0 1px;
-      }
-
-      &:active:focus {
-        border-style: solid;
-      }
-
       &:hover {
-        cursor: default;
-
         .remove-filter {
           display: none;
+        }
+
+        .undo-remove-filter {
+          display: block;
         }
       }
     }

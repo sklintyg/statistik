@@ -10,11 +10,11 @@ filter-chips-list {
     font-weight: bold;
   }
 
-  .remove-filter {
-    visibility: hidden;
+  .filter-hover {
     vertical-align: top;
     display: inline-block;
     margin-left: 5px;
+    width: 15px;
   }
 
   .default-text {
@@ -26,6 +26,10 @@ filter-chips-list {
     vertical-align: top;
   }
 
+  .remove-filter, .undo-remove-filter {
+    display: none;
+  }
+
   .inactive, .removed {
     color: #7e7e7f;
   }
@@ -35,7 +39,7 @@ filter-chips-list {
       cursor: pointer;
 
       .remove-filter {
-        visibility: visible;
+        display: block;
       }
     }
 
@@ -45,10 +49,12 @@ filter-chips-list {
       }
 
       &:hover {
-        cursor: default;
-
         .remove-filter {
-          visibility: hidden;
+          display: none;
+        }
+
+        .undo-remove-filter {
+          display: block;
         }
       }
     }

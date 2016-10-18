@@ -92,26 +92,35 @@ angular.module('StatisticsApp')
                 });
 
                 $scope.removeChip = function(chip) {
-                    if (chip.removedFilter) {
-                        return;
-                    }
 
                     switch(chip.type) {
                     case 'sjukskrivningslangd':
-                        _.pull($scope.businessFilter.selectedSjukskrivningslangdIds, chip.id);
+                        if (chip.removedFilter) {
+                            $scope.businessFilter.selectedSjukskrivningslangdIds.push(chip.id);
+                        } else {
+                            _.pull($scope.businessFilter.selectedSjukskrivningslangdIds, chip.id);
+                        }
                         break;
                     case 'aldersgrupp':
-                        _.pull($scope.businessFilter.selectedAldersgruppIds, chip.id);
+                        if (chip.removedFilter) {
+                            $scope.businessFilter.selectedAldersgruppIds.push(chip.id);
+                        } else {
+                            _.pull($scope.businessFilter.selectedAldersgruppIds, chip.id);
+                        }
                         break;
                     case 'diagnos':
-                        _.pull($scope.businessFilter.selectedDiagnoses, chip.id);
-
-                        $scope.businessFilter.setSelectedDiagnoses();
+                        if (chip.removedFilter) {
+                            $scope.businessFilter.selectedDiagnoses.push(chip.id);
+                        } else {
+                            _.pull($scope.businessFilter.selectedDiagnoses, chip.id);
+                        }
                         break;
                     case 'enhet':
-                        _.pull($scope.businessFilter.geographyBusinessIds, chip.id);
-
-                        $scope.businessFilter.setSelectedGeography();
+                        if (chip.removedFilter) {
+                            $scope.businessFilter.geographyBusinessIds.push(chip.id);
+                        } else {
+                            _.pull($scope.businessFilter.geographyBusinessIds, chip.id);
+                        }
                         break;
                     }
                 };
