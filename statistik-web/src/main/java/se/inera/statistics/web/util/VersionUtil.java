@@ -22,13 +22,13 @@ import org.springframework.beans.factory.annotation.Value;
 
 public class VersionUtil {
 
-    @Value("${project.version}")
+    @Value("${statistik.project.version}")
     private String projectVersion;
 
-    @Value("${project.buildtime}")
+    @Value("${statistik.project.buildtime}")
     private String buildTime;
 
-    @Value("${project.buildhost}")
+    @Value("${statistik.project.buildhost}")
     private String buildHost;
 
     public String getProjectVersion() {
