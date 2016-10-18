@@ -119,10 +119,11 @@ angular.module('StatisticsApp')
                 function enhetsFilter() {
                     var filter = $scope.businessFilter.geographyBusinessIds;
 
-                    $scope.chips.enheter.length = 0;
+                    var enheter = [];
+
                     angular.forEach(filter, function(enhet) {
                         var text = _.findWhere($scope.businessFilter.businesses, {id: enhet});
-                        $scope.chips.enheter.push({
+                        enheter.push({
                             type: 'enhet',
                             icon: 'fa-building-o',
                             id: enhet,
@@ -136,7 +137,7 @@ angular.module('StatisticsApp')
 
                     angular.forEach(left, function(enhet) {
                         var text = _.findWhere($scope.businessFilter.businesses, {id: enhet});
-                        $scope.chips.enheter.push({
+                        enheter.push({
                             type: 'enhet',
                             icon: 'fa-building-o',
                             id: enhet,
@@ -144,6 +145,10 @@ angular.module('StatisticsApp')
                             removedFilter: true,
                             text: text ? text.name : enhet
                         });
+                    });
+
+                    $scope.chips.enheter = _.sortBy(enheter, function(n) {
+                        return n.id;
                     });
 
                     setHaveChips();
@@ -156,9 +161,9 @@ angular.module('StatisticsApp')
 
                     filter = ControllerCommons.getDiagnosFilterInformationText(filter, icd10, true);
 
-                    $scope.chips.diagnos.length = 0;
+                    var diagnoser = [];
                     angular.forEach(filter, function(diagnos) {
-                        $scope.chips.diagnos.push({
+                        diagnoser.push({
                             type: 'diagnos',
                             icon: 'fa-stethoscope',
                             id: diagnos.id,
@@ -170,8 +175,10 @@ angular.module('StatisticsApp')
 
                     var left =  _.difference($scope.businessFilter.diagnoserSaved, $scope.businessFilter.selectedDiagnoses);
 
+                    left = ControllerCommons.getDiagnosFilterInformationText(left, icd10, true);
+
                     angular.forEach(left, function(diagnos) {
-                        $scope.chips.diagnos.push({
+                        diagnoser.push({
                             type: 'diagnos',
                             icon: 'fa-stethoscope',
                             id: diagnos.id,
@@ -181,15 +188,19 @@ angular.module('StatisticsApp')
                         });
                     });
 
+                    $scope.chips.diagnos = _.sortBy(diagnoser, function(n) {
+                        return n.id;
+                    });
+
                     setHaveChips();
                 }
 
                 function sjukskrivningsLangdsFilter() {
                     var filter = $scope.businessFilter.selectedSjukskrivningslangdIds;
 
-                    $scope.chips.sjukskrivningslangd.length = 0;
+                    var sjukskrivningslangder = [];
                     angular.forEach(filter, function(sjukskrivningslangd) {
-                        $scope.chips.sjukskrivningslangd.push({
+                        sjukskrivningslangder.push({
                             type: 'sjukskrivningslangd',
                             icon: 'fa-calendar',
                             id: sjukskrivningslangd,
@@ -202,7 +213,7 @@ angular.module('StatisticsApp')
                     var left =  _.difference($scope.businessFilter.sjukskrivningslangdSaved, $scope.businessFilter.selectedSjukskrivningslangdIds);
 
                     angular.forEach(left, function(sjukskrivningslangd) {
-                        $scope.chips.sjukskrivningslangd.push({
+                        sjukskrivningslangder.push({
                             type: 'sjukskrivningslangd',
                             icon: 'fa-calendar',
                             id: sjukskrivningslangd,
@@ -212,15 +223,19 @@ angular.module('StatisticsApp')
                         });
                     });
 
+                    $scope.chips.sjukskrivningslangd = _.sortBy(sjukskrivningslangder, function(n) {
+                        return n.id;
+                    });
+
                     setHaveChips();
                 }
 
                 function aldersGruppsFilter() {
                     var filter = $scope.businessFilter.selectedAldersgruppIds;
 
-                    $scope.chips.aldersgrupp.length = 0;
+                    var aldersgrupper = [];
                     angular.forEach(filter, function(aldersGrupp) {
-                        $scope.chips.aldersgrupp.push({
+                        aldersgrupper.push({
                             type: 'aldersgrupp',
                             id: aldersGrupp,
                             icon: 'fa-users',
@@ -233,7 +248,7 @@ angular.module('StatisticsApp')
                     var left =  _.difference($scope.businessFilter.aldersgruppSaved, $scope.businessFilter.selectedAldersgruppIds);
 
                     angular.forEach(left, function(aldersGrupp) {
-                        $scope.chips.aldersgrupp.push({
+                        aldersgrupper.push({
                             type: 'aldersgrupp',
                             id: aldersGrupp,
                             icon: 'fa-users',
@@ -241,6 +256,10 @@ angular.module('StatisticsApp')
                             removedFilter: true,
                             text: AppModel.get().ageGroups[aldersGrupp]
                         });
+                    });
+
+                    $scope.chips.aldersgrupp = _.sortBy(aldersgrupper, function(n) {
+                        return n.id;
                     });
 
                     setHaveChips();
