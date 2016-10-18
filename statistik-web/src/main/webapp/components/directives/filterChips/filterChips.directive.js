@@ -106,12 +106,12 @@ angular.module('StatisticsApp')
                     case 'diagnos':
                         _.pull($scope.businessFilter.selectedDiagnoses, chip.id);
 
-                        $scope.businessFilter.selectDiagnoses($scope.businessFilter.selectedDiagnoses);
+                        $scope.businessFilter.setSelectedDiagnoses();
                         break;
                     case 'enhet':
                         _.pull($scope.businessFilter.geographyBusinessIds, chip.id);
 
-                        $scope.businessFilter.selectGeographyBusiness($scope.businessFilter.geographyBusinessIds);
+                        $scope.businessFilter.setSelectedGeography();
                         break;
                     }
                 };

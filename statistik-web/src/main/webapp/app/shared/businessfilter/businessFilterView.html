@@ -86,6 +86,7 @@
             hide-label="true"
             button-icon="fa-building-o"
             menu-options="businessFilter.geography"
+            on-open="businessFilter.setSelectedGeography"
             done-clicked="businessFilter.updateGeography"
             data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'"
             text-data="geographyFilterSelectorData">
@@ -113,6 +114,7 @@
             hide-label="true"
             button-icon="fa-stethoscope"
             menu-options="icd10"
+            on-open="businessFilter.setSelectedDiagnoses"
             done-clicked="businessFilter.updateDiagnoses"
             text-data="diagnosisFilterSelectorData">
         </tree-multi-selector>

@@ -88,7 +88,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.selectByAttribute(businessFilter.geography, businessIds, 'id');
         businessFilter.geographyBusinessIds = businessIds;
         treeMultiSelectorUtil.updateSelectionState(businessFilter.geography);
-        //businessFilter.updateSelectionVerksamhetsTyper(businessFilter.verksamhetsTyper);
     };
 
     businessFilter.updateSelectionVerksamhetsTyper = function(verksamhetsTyper) {
@@ -234,7 +233,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     businessFilter.setup = function (businesses, preSelectedFilter) {
         updateIcd10StructureOnce(function () {
             businessFilter.businesses = sortSwedish(businesses, 'name', 'Okän');
-            if (businessFilter.numberOfBusinesses() === 'large') {
+            if (businessFilter.numberOfBusinesses() !== 'small') {
                 businessFilter.populateGeography(businesses);
             }
             businessFilter.populateVerksamhetsTyper(businesses);
@@ -423,6 +422,14 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         });
         var selectedUnitsFromVerksamhetstypsFlattened = _.flatten(selectedUnitsFromVerksamhetstyps);
         return _.pluck(selectedUnitsFromVerksamhetstypsFlattened, 'id');
+    };
+
+    businessFilter.setSelectedGeography = function() {
+        businessFilter.selectGeographyBusiness(businessFilter.geographyBusinessIds);
+    };
+
+    businessFilter.setSelectedDiagnoses = function() {
+        businessFilter.selectDiagnoses(businessFilter.selectedDiagnoses);
     };
 
     return businessFilter;

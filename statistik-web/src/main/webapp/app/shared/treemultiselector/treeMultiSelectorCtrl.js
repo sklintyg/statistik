@@ -22,6 +22,10 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
 
         var self = this;
 
+        $scope.value = {
+            multiMenuFilter: null
+        };
+
         $scope.showLabel = !$scope.hideLabel;
 
         $scope.transitionsSupported = supportsTransitions();
@@ -183,6 +187,10 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
 
         $scope.openDialogClicked = function () {
             $scope.doneLoading = false;
+            if (angular.isFunction($scope.onOpen)) {
+                $scope.onOpen();
+            }
+
             $timeout(function () {
                 if ($scope.dialogOpen) {
                     $scope.doneLoading = true;
@@ -197,13 +205,19 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         };
 
         function resetFilter() {
-            $scope.multiMenuFilter = '';
+            $scope.value.multiMenuFilter = '';
             _.each($scope.menuOptions.subs, function (item) {
                 $scope.updateItemHiddenState(item, function () {
                     return true;
                 });
             });
         }
+
+        $scope.$watch('value.multiMenuFilter', function(value) {
+            if (value !== null) {
+                $scope.filterMenuItems($scope.menuOptions.subs, value);
+            }
+        });
 
         $scope.dialogOpen = false;
 
