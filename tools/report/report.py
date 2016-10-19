@@ -299,7 +299,7 @@ def main(argv):
                 print "Ignorerar intyg: ", intyg.start, intyg.slut
                 continue
 
-            if not re.search('[\d]{8}-[\d]{4}', intyg.id):
+            if not re.search('[\d]{12}', intyg.id):
                 print "Ogiltigt patientid: ", intyg.id
                 continue
 
