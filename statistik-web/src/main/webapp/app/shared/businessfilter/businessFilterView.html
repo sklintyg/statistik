@@ -88,7 +88,7 @@
             menu-options="businessFilter.geography"
             on-open="businessFilter.setSelectedGeography"
             done-clicked="businessFilter.updateGeography"
-            data-ng-if="businessFilter.numberOfBusinesses() === 'medium' || businessFilter.numberOfBusinesses() === 'large'"
+            data-ng-if="businessFilter.showBusinessFilter()"
             text-data="geographyFilterSelectorData">
 
             <button class="btn btn-link btn-link-minimal valj-verksamhetstyp-link" ng-click="isVerksamhetTypeCollapsed = !isVerksamhetTypeCollapsed" ng-switch="isVerksamhetTypeCollapsed">
