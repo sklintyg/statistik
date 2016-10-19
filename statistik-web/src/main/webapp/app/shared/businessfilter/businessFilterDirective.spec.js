@@ -295,7 +295,7 @@ describe('Tests for directive button-filter', function () {
             expect(innerScope.showDateValidationError).toBeTruthy('showDateValidationError wasn\'t true as expected');
         });
 
-        it('will not pass validation if from date is before 2013-10', function() {
+        it('will pass validation if from date is before 2013-10', function() {
             var fromDate = moment('2013-09-01', 'YYYY-MM-DD'),
                 inputToDate = moment('2015-12-01', 'YYYY-MM-DD');
 
@@ -305,7 +305,7 @@ describe('Tests for directive button-filter', function () {
             //when
             innerScope.makeSelection();
             //then
-            expect(innerScope.showDateValidationError).toBeTruthy('showDateValidationError wasn\'t true as expected');
+            expect(innerScope.showDateValidationError).toBeFalsy('showDateValidationError wasn\'t true as expected');
         });
 
         it('will pass validation if from date is variations of 2013-10', function() {
@@ -336,7 +336,7 @@ describe('Tests for directive button-filter', function () {
             expect(innerScope.showDateValidationError).toBeTruthy('showDateValidationError wasn\'t true as expected');
         });
 
-        it('will not pass validation if to date is beyond the current month', function() {
+        it('will pass validation if to date is beyond the current month', function() {
             var fromDate = moment().add(1, 'months').date(1).hours(0).minutes(0).seconds(0),
                 inputToDate = moment().add(2, 'months').date(1).hours(0).minutes(0).seconds(0);
 
@@ -346,7 +346,7 @@ describe('Tests for directive button-filter', function () {
             //when
             innerScope.makeSelection();
             //then
-            expect(innerScope.showDateValidationError).toBeTruthy('showDateValidationError wasn\'t true as expected');
+            expect(innerScope.showDateValidationError).toBeFalsy('showDateValidationError wasn\'t true as expected');
         });
 
         it('will pass validation both dates are empty', function() {

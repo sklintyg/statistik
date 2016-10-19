@@ -18,34 +18,16 @@
  */
 package se.inera.statistics.web.service;
 
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.sun.istack.NotNull;
-import se.inera.statistics.hsa.model.HsaIdAny;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
@@ -60,15 +42,29 @@ import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.LoginInfo;
-import se.inera.statistics.web.model.LoginInfoVg;
+import se.inera.statistics.web.model.RangeMessageDTO;
 import se.inera.statistics.web.model.Verksamhet;
 
-import java.util.Collection;
+import javax.servlet.http.HttpServletRequest;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class FilterHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(FilterHandler.class);
+    private static final LocalDate LOWEST_ACCEPTED_START_DATE = LocalDate.of(2013, 10, 1);
 
     @Autowired
     private LoginServiceUtil loginServiceUtil;
@@ -158,17 +154,11 @@ public class FilterHandler {
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         final List<String> aldersgrupp = inFilter.getAldersgrupp();
         final Predicate<Fact> aldersgruppFilter = getAldersgruppFilter(aldersgrupp);
-        final List<String> sjukskrivningslangds = inFilter.getSjukskrivningslangd();
-        final Predicate<Sjukfall> sjukfallLengthFilter = getSjukfallLengthFilter(sjukskrivningslangds);
-        final String predicatesHash = getHash(filterHash, enhetsIDs);
-        final FilterPredicates sjukfallFilter = new FilterPredicates(Predicates.and(enhetFilter, diagnosFilter, aldersgruppFilter), sjukfallLengthFilter, predicatesHash, !sjukskrivningslangds.isEmpty());
-        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter), toReadableAgeGroupNames(aldersgrupp), filterHash);
-        final Range rangeMessageDTO = getRange(inFilter, defaultRangeValue);
+        final Predicate<Sjukfall> sjukfallLengthFilter = getSjukfallLengthFilter(inFilter.getSjukskrivningslangd());
+        final FilterPredicates sjukfallFilter = new FilterPredicates(Predicates.and(enhetFilter, diagnosFilter, aldersgruppFilter), sjukfallLengthFilter, filterHash);
+        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter), toReadableAgeGroupNames(aldersgrupp));
+        final RangeMessageDTO rangeMessageDTO = getRange(inFilter, defaultRangeValue);
         return new FilterSettings(filter, rangeMessageDTO);
-    }
-
-    private String getHash(String filterHash, Collection<HsaIdEnhet> enhetsIDs) {
-        return filterHash + enhetsIDs.stream().map(HsaIdAny::getId).collect(Collectors.joining());
     }
 
     private List<String> filterDataToReadableSjukskrivningslangdName(FilterData inFilter) {
@@ -201,9 +191,9 @@ public class FilterHandler {
         };
     }
 
-    private Range getRange(@NotNull FilterData inFilter, int defaultRangeValue) throws FilterException {
+    private RangeMessageDTO getRange(@NotNull FilterData inFilter, int defaultRangeValue) throws FilterException {
         if (inFilter.isUseDefaultPeriod()) {
-            return Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock);
+            return new RangeMessageDTO(Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock), null);
         }
         DateTimeFormatter dateStringFormat = DateTimeFormatter.ofPattern(FilterData.DATE_FORMAT);
         final String fromDate = inFilter.getFromDate();
@@ -215,24 +205,45 @@ public class FilterHandler {
         try {
             final LocalDate from = LocalDate.from(dateStringFormat.parse(fromDate));
             final LocalDate to = LocalDate.from(dateStringFormat.parse(toDate));
-            validateFilterRange(from, to);
-            return new Range(from.withDayOfMonth(1), to.plusMonths(1).withDayOfMonth(1).minusDays(1));
+
+            return validateAndGetFilterRangeMessage(from, to);
         } catch (IllegalArgumentException | DateTimeParseException e) {
             throw new FilterException("Could not parse range dates. From: " + fromDate + ", To: " + toDate, e);
         }
     }
 
-    private void validateFilterRange(LocalDate from, LocalDate to) throws FilterException {
-        final LocalDate lowestAcceptedStartDate = LocalDate.of(2013, 10, 1);
-        if (from.isBefore(lowestAcceptedStartDate)) {
-            throw new FilterException("Start date before 2013-10-01 is not allowed");
+    private RangeMessageDTO validateAndGetFilterRangeMessage(LocalDate from, LocalDate to) throws FilterException {
+        String message = null;
+
+        LocalDate highestAcceptedEndDate = LocalDate.now(clock).plusMonths(1).withDayOfMonth(1).minusDays(1);
+
+        boolean isBefore = from.isBefore(LOWEST_ACCEPTED_START_DATE);
+        boolean isAfter = to.isAfter(highestAcceptedEndDate);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+
+        if (isBefore && isAfter) {
+            from = LOWEST_ACCEPTED_START_DATE;
+            to = highestAcceptedEndDate;
+
+            String formattedToDate = highestAcceptedEndDate.format(formatter);
+            String formattedFromDate = LOWEST_ACCEPTED_START_DATE.format(formatter);
+
+            message = String.format("Det finns ingen statistik innan %s och ingen efter %s, visar statistik mellan %s och %s.", formattedFromDate, formattedToDate, formattedFromDate, formattedToDate);
+        } else if (isBefore) {
+            from = LOWEST_ACCEPTED_START_DATE;
+            message = String.format("Det finns ingen statistik innan %s. Visar statistik från tidigast möjliga datum.", LOWEST_ACCEPTED_START_DATE.format(formatter));
+        } else if (isAfter) {
+            to = highestAcceptedEndDate;
+            message = String.format("Det finns ingen statistik efter %s. Visar statistik fram till senast möjliga datum.", highestAcceptedEndDate.format(formatter));
         }
+
         if (to.isBefore(from)) {
             throw new FilterException("Start date must be before end date");
         }
-        if (to.isAfter(LocalDate.now(clock).plusMonths(1).withDayOfMonth(1).minusDays(1))) {
-            throw new FilterException("End date may not be after the last day of current month");
-        }
+
+        Range range = new Range(from.withDayOfMonth(1), to.plusMonths(1).withDayOfMonth(1).minusDays(1));
+
+        return new RangeMessageDTO(range, message);
     }
 
     private Filter getFilterForAllAvailableEnhetsLandsting(HttpServletRequest request) {
