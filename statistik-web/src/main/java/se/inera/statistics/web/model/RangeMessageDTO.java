@@ -16,33 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.service;
+package se.inera.statistics.web.model;
 
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.web.model.RangeMessageDTO;
 
-class FilterSettings {
+public class RangeMessageDTO {
 
-    private final Filter filter;
-    private final Range range;
-    private final String message;
+    private Range range;
+    private String message;
 
-    FilterSettings(Filter filter, Range range) {
-        this(filter, range, null);
-    }
-
-    FilterSettings(Filter filter, RangeMessageDTO rangeMessageDTO) {
-        this(filter, rangeMessageDTO.getRange(), rangeMessageDTO.getMessage());
-    }
-
-    FilterSettings(Filter filter, Range range, String message) {
-        this.filter = filter;
+    public RangeMessageDTO(Range range, String message) {
         this.range = range;
         this.message = message;
-    }
-
-    public Filter getFilter() {
-        return filter;
     }
 
     public Range getRange() {
@@ -52,5 +37,4 @@ class FilterSettings {
     public String getMessage() {
         return message;
     }
-
 }

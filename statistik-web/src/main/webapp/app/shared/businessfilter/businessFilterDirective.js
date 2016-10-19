@@ -142,18 +142,6 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
                 scope.toDateValidationError = true;
                 return true;
             }
-
-            if (moment(scope.businessFilter.fromDate).isBefore(TIME_INTERVAL_MIN_DATE)) {
-                scope.errorMessage = messageService.getProperty('alert.filter.date.before', {date: TIME_INTERVAL_MIN_DATE.format('YYYY-MM')});
-                scope.fromDateValidationError = true;
-                return true;
-            }
-
-            if (moment(scope.businessFilter.toDate).isAfter(TIME_INTERVAL_MAX_DATE)) {
-                scope.errorMessage = messageService.getProperty('alert.filter.date.after');
-                scope.toDateValidationError = true;
-                return true;
-            }
         }
 
         return false;
