@@ -24,6 +24,8 @@ class Intyg:
     def __init__(self, data, wideline):
         values = data.split('\t')
         self.id			= wideline.get(values, 'patientid', True)
+        if self.id.find('-') != -1:
+            self.id = self.id.replace('-', '')
         self.vardgivare = wideline.get(values, 'vardgivareid', True)
         self.start      = int(wideline.get(values, 'startdatum', True))
         self.slut       = int(wideline.get(values, 'slutdatum', True))
