@@ -65,8 +65,11 @@ class RuleLakaralderKon:
 
 
 class RuleLakarbefattning:
-    def __init__(self):
+    def __init__(self, includeinternal=True):
         self.befattningar = { "201010" : "Överläkare", "201011" : "Distriktsläkare/Specialist allmänmedicin", "201012" : "Skolläkare", "201013" : "Företagsläkare", "202010" : "Specialistläkare", "203010" : "Läkare legitimerad, specialiseringstjänstgöring", "203090" : "Läkare legitimerad, annan", "204010" : "Läkare ej legitimerad, allmäntjänstgöring", "204090" : "Läkare ej legitimerad, annan" } 
+        if includeinternal:
+            self.befattningar["-1"] = "Ej läkarbefattning"
+            self.befattningar["-2"] = "Okänd befattning"
 
     def key(self, sjukfall, start, slut):
         befattningar = sjukfall.befattningar(start, slut)
