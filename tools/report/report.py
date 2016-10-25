@@ -170,8 +170,9 @@ def main(argv):
     db_password = None
     db_name = None
     make_dbdump = None
+    internalbefattning = True
 
-    opts, args = getopt.getopt(argv, "tdapglni:ekKL:hsE:Nj:9:v:8:c:w:b:q:",['dump'])
+    opts, args = getopt.getopt(argv, "tdapglni:ekKL:hsE:Nj:9:v:8:c:w:b:q:",['dump', 'nointernalbefattning'])
     for opt, arg in opts:
         if opt == '-t':
             threshold = True
@@ -206,7 +207,7 @@ def main(argv):
         elif opt == '-i':
             interval = arg
         elif opt == '-k':
-            rule = RuleLakarbefattning()
+            rule = RuleLakarbefattning(internalbefattning)
         elif opt == '-K':
             rule = RuleLakaralderKon()
         elif opt == '-L':
@@ -229,6 +230,9 @@ def main(argv):
             lanskod = arg
         elif opt == '-c':
             careunit = arg
+        elif opt == '--nointernalbefattning':
+            internalbefattning = False
+
     if not interval:
         interval = STANDARD_INTERVALL
         print('Intervall saknas. Ange intervall på formen YYYY-MM-DD:YYYY-MM-DD  (%s)' % STANDARD_INTERVALL)
