@@ -183,17 +183,19 @@ class RuleSjuklangd:
     def key(self, sjukfall, start, slut):
         days = sjukfall.days(start, slut)
         if days < 15:
-            return '<15'
+            return '1) <15'
         elif days >= 15 and days <= 30:
-            return '15-30'
-        elif days >= 31 and days <= 90:
-            return '31-90'
+            return '2) 15-30'
+        elif days >= 31 and days <= 60:
+            return '3) 31-60'
+        elif days >= 61 and days <= 90:
+            return '4) 61-90'
         elif days >= 91 and days <= 180:
-            return '91-180'
+            return '5) 91-180'
         elif days >= 181 and days <= 365:
-            return '181-365'
+            return '6) 181-365'
         else:
-            return '>365'
+            return '7) >365'
 
     def check(self, wideline):
         pass
