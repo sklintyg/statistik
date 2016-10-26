@@ -1,0 +1,51 @@
+!contents -R2 -g -p -f -h
+
+TEST #1 - Förstaintyg under 2015
+
+!3 Givet att:
+
+| script | dagens datum | 2016-01-06 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | län | kommentar |
+| 19571109-2112 | F32        | 2014-12-01 | 2014-12-20 | enhet1 | 01  | Förstaintyg ej aktivt under 2015 |
+| 19571109-2112 | F32        | 2014-12-22 | 2015-02-13 | enhet1 | 01  | |
+| 19671109-2681 | F32        | 2014-12-16 | 2015-01-30 | enhet1 | 01  | |
+| 19671109-2681 | P01        | 2015-01-31 | 2015-02-13 | enhet1 | 01  | |
+| 19790219-9295 | F32        | 2015-02-01 | 2015-02-13 | enhet1 | 01  | |
+| 19790219-9295 | F32        | 2015-02-13 | 2015-03-13 | enhet1 | 10  | |
+| 19890219-2466 | F32        | 2015-12-01 | 2016-01-13 | enhet1 | 01  | |
+| 19890219-2466 | F32        | 2016-01-14 | 2016-02-13 | enhet1 | 01  | |
+| 19930219-8655 | F32        | 2016-01-01 | 2016-01-13 | enhet1 | 01  | Förstaintyg ej aktivt under 2015 |
+| 19930219-8655 | F32        | 2016-01-14 | 2016-02-13 | enhet1 | 01  | |
+
+!3 Då gäller:
+
+Bara förstaintyg som varit aktiva någon gång under 2015 tas med i statistiken. Det spelar ingen roll vad de intyg som inte är förstaintyg innehåller för information. Information tas bara från förstaintyg.
+
+| Förstaintyg i rapporten forsakringskassan |
+| diagnos | kön?   | län? | förstaintyglängd? |
+| F32     | FEMALE | 01   | 14             |
+| F32     | MALE   | 01   | 13             |
+| F32     | FEMALE | 01   | 44             |
+
+
+TEST #2 - Förstaintyg med flera sjukskrivningsperioder
+
+!3 Givet att:
+
+| script | dagens datum | 2016-01-06 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | arbetsförmåga | start2     | slut2      | arbetsförmåga2 | enhet  | län | kommentar |
+| 19671109-2681 | F32        | 2015-01-16 | 2015-01-30 | 75            | 2015-02-02 | 2015-03-01 | 25             | enhet1 | 01  | 15+28 dagar |
+| 19790219-9295 | F32        | 2015-02-01 | 2015-02-13 | 0             | 2015-03-01 | 2015-03-10 | 50             | enhet1 | 01  | 13+10 dagar |
+
+!3 Då gäller:
+
+Samtliga sjukskrivningsperioder i förstaintyget räknas med. Eventuella uppehåll mellan sjukskrivningsperioder räknas inte in i längden. 
+
+| Förstaintyg i rapporten forsakringskassan |
+| diagnos | kön?   | län? | förstaintyglängd? |
+| F32     | FEMALE | 01   | 43             |
+| F32     | MALE   | 01   | 23             |
