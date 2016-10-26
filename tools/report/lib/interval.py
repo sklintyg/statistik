@@ -19,6 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # -------------------------------------------------------------------------------
+from period import Period
 
 class Interval:
     def __init__(self, intyg):
