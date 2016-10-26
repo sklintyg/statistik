@@ -24,7 +24,11 @@ import re
 import subprocess
 import sys
 from datetime import datetime, timedelta
-from lib import *
+from lib.rules import *
+from lib.vg import *
+from lib.wideline import Wideline
+from lib.intyg import Intyg
+from lib.group import Group
 
 THRESHOLD = 5
 DBUSER = 'root'

@@ -21,6 +21,7 @@
 # -------------------------------------------------------------------------------
 
 from datetime import datetime, timedelta
+from interval import Interval
 
 class Sjukfall:
     alpha_time = datetime(2000, 1, 1)
