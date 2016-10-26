@@ -39,32 +39,22 @@ class Sjukfall:
     def sjukgrad(self, start, slut):
         """ Get the sjukgrad from the 'last' intyg
         """
-        #slut = self.intyg[0].slut
-        grad = None
-        #self.intyg[0].sjukgrad
-        diff = False
-        latest = None
+        last = None
         for i in self.intyg:
             if i.valid(start, slut):
-                if grad is None:
-                    grad = i.sjukgrad
-                    latest = i.start
-                elif i.start > latest:
-                    grad = i.sjukgrad
-                    latest = i.start
-                elif i.start == latest and grad != i.sjukgrad:
-                    print "collision", i.start,latest,grad,i.sjukgrad
+                if last is None:
+                    last = i
+                elif i.start > last.start:
+                    last = i
+                elif i.start == last.start:
+                    if i.lakarintyg > last.lakarintyg:
+                        last = i
+                    elif i.lakarintyg == last.lakarintyg and i.sjukgrad > last.sjukgrad:
+                        last = i
 
+        assert(last != None)
 
-            #   if i.slut == slut and grad != i.sjukgrad:
-            #   diff = True
-            #if i.slut > slut:
-            #   slut = i.slut
-            #   grad = i.sjukgrad
-
-        assert(grad != None)
-
-        return grad
+        return last.sjukgrad
 
     def kon(self):
         return self.intyg[0].kon

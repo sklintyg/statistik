@@ -48,7 +48,9 @@ class Intyg:
         if self.lkf:
             self.lan = self.lkf[0:2]
         self.diagnoskategori = wideline.get(values, 'diagnoskategori')
-
+        self.lakarintyg   = wideline.get(values, 'lakarintyg')
+        if self.lakarintyg:
+            self.lakarintyg  = int(self.lakarintyg)
         
     def valid(self, start, slut):
         """ Check if this sjukfall is within the interval
