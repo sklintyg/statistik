@@ -74,4 +74,4 @@ class Group:
     def log(self):
         for key in sorted(self.group):
             v = self.group[key]
-            print "{0} (Män: {1}, Kvinnor: {2}) => {3}".format(key,v[0],v[1], v[0] + v[1])
+            print "{0} (Kvinnor: {1}, Män: {2}) => {3}".format(key,v[1],v[0], v[0] + v[1])
