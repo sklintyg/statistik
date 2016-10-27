@@ -42,7 +42,7 @@ describe('Grundläggande tester av statistiktjänsten: ', function() {
         features.user.makeSureNotLoggedIn();
         headerPage.clickLogin();
         fakeloginPage.verifyAt();
-        features.user.loginUser1();
+        features.user.loginUser1(true);
         expect(browser.getTitle()).toEqual('Verksamhetsöversikt | Statistiktjänsten');
     });
 

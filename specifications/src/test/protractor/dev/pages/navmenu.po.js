@@ -35,6 +35,7 @@ var navAboutTjanstLink = element(by.id('navAboutTjanstLink'));
 var navAboutInloggningLink = element(by.id('navAboutInloggningLink'));
 var navAboutFaqLink = element(by.id('navAboutFaqLink'));
 var navAboutContactLink = element(by.id('navAboutContactLink'));
+var pohelper = require('./pohelper.js');
 
 var verifyAt = function() {
     expect(isBusinessStatisticsToggleVisible()).toBeTruthy('Nationell statistik saknas i navigationsmenyn');
@@ -50,6 +51,14 @@ var clickBusinessStatisticsToggle = function() {
     businessStatisticsToggle.click();
 };
 
+var expandBusinessStatisticsToggle = function() {
+    return pohelper.hasClass(businessStatisticsToggle, 'collapsed').then(function(value) {
+        if (value) {
+            clickBusinessStatisticsToggle();
+        }
+    });
+};
+
 var isBusinessStatisticsToggleVisible = function() {
     businessStatisticsToggle.isDisplayed();
 };
@@ -59,9 +68,12 @@ var clickNationalStatisticsToggle = function() {
 };
 
 var expandNationalStatisticsToggle = function() {
-    if (!isNavCasesPerMonthLinkVisible()) {
+    console.log("in page.navmenu.expandNationalStatisticsToggle");
+    return pohelper.hasClass(nationalStatisticsToggle, 'collapsed').then(function(value) {
+        if (value) {
         clickNationalStatisticsToggle();
     }
+    });
 };
 
 var isNationalStatisticsToggleVisible = function() {
@@ -72,8 +84,14 @@ var clickAboutStatisticsToggle = function() {
     aboutStatisticsToggle.click();
 };
 
+var expandAboutStatisticsToggle = function() {
+    if (!isNavAboutTjanstLinkVisible()) {
+        clickAboutStatisticsToggle();
+    }
+};
+
 var isAboutStatisticsToggleVisible = function() {
-    aboutStatisticsToggle.isDisplayed();
+    return aboutStatisticsToggle.isDisplayed();
 };
 
 var clickNavOverviewLink = function() {
@@ -89,7 +107,7 @@ var clickNavCasesPerMonthLink = function() {
 };
 
 var isNavCasesPerMonthLinkVisible = function() {
-    navCasesPerMonthLink.isDisplayed();
+    return pohelper.isElementPresentAndDisplayed(navCasesPerMonthLink);
 };
 
 var clickNavDiagnosisGroupsLink = function() {
@@ -298,6 +316,8 @@ module.exports = {
     'isBusinessStatisticsToggleVisible' : isBusinessStatisticsToggleVisible,
     'clickNationalStatisticsToggle' : clickNationalStatisticsToggle,
     'expandNationalStatisticsToggle' : expandNationalStatisticsToggle,
+    'expandBusinessStatisticsToggle' : expandBusinessStatisticsToggle,
+    'expandAboutStatisticsToggle' : expandAboutStatisticsToggle,
     'isNationalStatisticsToggleVisible' : isNationalStatisticsToggleVisible,
     'clickAboutStatisticsToggle' : clickAboutStatisticsToggle,
     'isAboutStatisticsToggleVisible' : isAboutStatisticsToggleVisible,

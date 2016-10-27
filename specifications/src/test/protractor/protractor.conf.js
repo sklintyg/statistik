@@ -79,7 +79,7 @@ exports.config = {
         // If true, print colors to the terminal.
         showColors: true,
         // Default time to wait in ms before a test fails.
-        defaultTimeoutInterval: 30000,
+        defaultTimeoutInterval: 3 * 60 * 1000
         // Function called to print jasmine results.
         //print: function() {},
         // If set, only execute specs whose names match the pattern, which is

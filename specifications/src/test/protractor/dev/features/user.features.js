@@ -5,9 +5,9 @@
 var fakeloginPo = require('../pages/pages.js').fakeloginPo;
 var headerPo = require('../pages/pages.js').headerPo;
 
-var loginUser1 = function() {
+var loginUser1 = function(processledare) {
     headerPo.clickLogin();
-    fakeloginPo.login('Anna', 'Modig', 'user1', 'enhet1', 'vg1', true);
+    fakeloginPo.login('Anna', 'Modig', 'user1', 'enhet1', 'vg1', processledare);
 };
 
 var isLoggedIn = function() {
@@ -15,6 +15,7 @@ var isLoggedIn = function() {
 };
 
 var makeSureNotLoggedIn = function() {
+    console.log("In user.feature.makeSureNotLoggedIn");
     if (isLoggedIn()) {
         headerPo.clickLogout();
     }

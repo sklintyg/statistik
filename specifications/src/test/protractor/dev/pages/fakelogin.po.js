@@ -6,14 +6,17 @@ var jsonInput = element(by.name('userJsonDisplay'));
 var loginBtn = element(by.id('login_btn'));
 
 var login = function(firstName, lastName, userId, enhetId, vgId, isProcessledare) {
-    jsonInput.sendKeys('{' +
-        '"fornamn":"' + firstName + '",' +
-        '"efternamn":"' + lastName + '",' +
-        '"hsaId":"' + userId + '",' +
-        '"enhetId":"' + enhetId + '",' +
-        '"vardgivarId":"' + vgId + '",' +
-        '"vardgivarniva":"' + isProcessledare + '"}');
-    loginBtn.click();
+    jsonInput.clear().then(function() {
+        jsonInput.sendKeys('{' +
+            '"fornamn":"' + firstName + '",' +
+            '"efternamn":"' + lastName + '",' +
+            '"hsaId":"' + userId + '",' +
+            '"enhetId":"' + enhetId + '",' +
+            '"vardgivarId":"' + vgId + '",' +
+            '"vardgivarniva":"' + isProcessledare + '"}');
+    }).then(function() {
+        loginBtn.click();
+    });
 };
 
 var verifyAt = function() {
