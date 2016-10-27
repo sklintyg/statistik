@@ -39,36 +39,53 @@ describe('Smoketester av statistiktjänsten: ', function() {
 
         function validateAllNationalReports() {
             console.log("In validateAllNationalReports");
-
             return pages.navmenu.expandNationalStatisticsToggle().then(function () {
                 pages.navmenu.clickNavOverviewLink();
-            }).then(function() {
-                pages.navmenu.clickNavCasesPerMonthLink();
-            }).then(function() {
-                pages.navmenu.clickNavDiagnosisGroupsLink();
-            }).then(function() {
-                pages.navmenu.clickNavDiagnosisSubGroupsLink();
-            }).then(function() {
-                pages.navmenu.clickNavAgeGroupsLink();
-            }).then(function() {
-                pages.navmenu.clickNavSickLeaveDegreeLink();
-            }).then(function() {
-                pages.navmenu.clickNavSickLeaveLengthLink();
-            }).then(function() {
-                pages.navmenu.clickNavCountyLink();
-            }).then(function() {
-                pages.navmenu.clickNavCasesPerSexLink();
+                validateDetailReport('clickNavCasesPerMonthLink', 1, 3, 19);
+                validateDetailReport('clickNavDiagnosisGroupsLink', 2, 8, 20);
+                validateDetailReport('clickNavDiagnosisSubGroupsLink', 2, 1, 20);
+                validateDetailReport('clickNavAgeGroupsLink', 1, 2, 11);
+                validateDetailReport('clickNavSickLeaveDegreeLink', 2, 4, 20);
+                validateDetailReport('clickNavSickLeaveLengthLink', 1, 2, 8);
+                validateDetailReport('clickNavCountyLink', 1, 2, 24);
+                validateDetailReport('clickNavCasesPerSexLink', 1, 2, 23);
             });
-
         }
 
         function validateAllAboutViews() {
-            console.log("In validateAllAboutViews, tests to be implemented");
-            // pages.navmenu.expandAboutStatisticsToggle();
-            // pages.navmenu.clickNavAboutTjanstLink();
-            // pages.navmenu.clickNavAboutInloggningLink();
-            // pages.navmenu.clickNavAboutFaqLink();
-            // pages.navmenu.clickNavAboutContactLink();
+            console.log("In validateAllAboutViews");
+            pages.navmenu.expandAboutStatisticsToggle();
+            pages.navmenu.clickNavAboutTjanstLink();
+            pages.navmenu.clickNavAboutInloggningLink();
+            pages.navmenu.clickNavAboutFaqLink();
+            pages.navmenu.clickNavAboutContactLink();
+        }
+
+        function validateAllVerksamhetReportsForProcessledare() {
+            console.log("In validateAllVerksamhetReportsForProcessledare");
+            pages.navmenu.expandBusinessStatisticsToggle().then(function() {
+                pages.navmenu.clickNavVerksamhetOversiktLink();
+                validateDetailReport('clickNavBusinessCasesPerBusinessLink', 1, 2, 20);
+                validateDetailReport('clickNavBusinessCasesPerMonthLink', 1, 3, 19);
+                validateDetailReport('clickNavBusinessDiagnosisGroupsLink', 2, 8, 20);
+                validateDetailReport('clickNavBusinessDiagnosisSubGroupsLink', 2, 2, 20);
+                validateDetailReport('clickNavBusinessCompareDiagnosisLink', 1, 0, 0);
+                validateDetailReport('clickNavBusinessAgeGroupsLink', 1, 2, 11);
+                validateDetailReport('clickNavBusinessSickLeaveDegreeLink', 2, 4, 20);
+                validateDetailReport('clickNavBusinessSickLeaveLengthLink', 1, 2, 8);
+                validateDetailReport('clickNavBusinessMoreNinetyDaysSickLeaveLink', 1, 3, 19);
+                validateDetailReport('clickNavBusinessCasesPerLakaresAlderOchKonLink', 1, 2, 12);
+                validateDetailReport('clickNavBusinessCasesPerLakarbefattningLink', 1, 2, 2);
+                validateDetailReport('clickNavBusinessDifferentieratIntygandeLink', 2, 3, 20);
+            });
+        }
+
+
+        function validateAllSpecificReportsForVerksamhetschef() {
+            console.log("In validateAllSpecificReportsForVerksamhetschef");
+            pages.navmenu.expandBusinessStatisticsToggle().then(function() {
+                validateDetailReport('clickNavBusinessCasesPerLakareLink', 1, 2, 1); //Not visible to processledare
+            });
         }
 
         function validateDetailReport(clickFuncName, expectedNumberOfCharts, expectedNumberOfLegends, expectedRowsInTable) {
@@ -90,39 +107,13 @@ describe('Smoketester av statistiktjänsten: ', function() {
         }).then(function() {
             validateAllAboutViews();
         }).then(function() {
-            pages.navmenu.expandBusinessStatisticsToggle();
-        }).then(function() {
-            pages.navmenu.clickNavVerksamhetOversiktLink();
-        }).then(function() {
-            validateDetailReport('clickNavBusinessCasesPerBusinessLink', 1, 2, 20);
-        }).then(function() {
-            validateDetailReport('clickNavBusinessCasesPerMonthLink', 1, 3, 19);
-        }).then(function() {
-            validateDetailReport('clickNavBusinessDiagnosisGroupsLink', 2, 8, 20);
-        }).then(function() {
-            validateDetailReport('clickNavBusinessDiagnosisSubGroupsLink', 2, 2, 20);
-        }).then(function() {
-            validateDetailReport('clickNavBusinessCompareDiagnosisLink', 1, 0, 0);
-        }).then(function() {
-            validateDetailReport('clickNavBusinessAgeGroupsLink', 1, 2, 11);
-        }).then(function() {
-            validateDetailReport('clickNavBusinessSickLeaveDegreeLink', 2, 4, 20);
-        }).then(function() {
-            validateDetailReport('clickNavBusinessSickLeaveLengthLink', 1, 2, 8);
-        }).then(function() {
-            validateDetailReport('clickNavBusinessMoreNinetyDaysSickLeaveLink', 1, 3, 19);
-        }).then(function() {
-            validateDetailReport('clickNavBusinessCasesPerLakaresAlderOchKonLink', 1, 2, 12);
-        }).then(function() {
-            validateDetailReport('clickNavBusinessCasesPerLakarbefattningLink', 1, 2, 2);
-        }).then(function() {
-            validateDetailReport('clickNavBusinessDifferentieratIntygandeLink', 2, 3, 20);
+            validateAllVerksamhetReportsForProcessledare();
         }).then(function() {
             features.user.makeSureNotLoggedIn();
         }).then(function() {
             features.user.loginUser1(false);
         }).then(function() {
-            validateDetailReport('clickNavBusinessCasesPerLakareLink', 1, 2, 1); //Not for processledare
+            validateAllSpecificReportsForVerksamhetschef();
         });
 
     });
