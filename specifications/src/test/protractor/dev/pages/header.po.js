@@ -8,7 +8,7 @@ var loginBtn = element(by.id('business-login-btn'));
 var logoutLink = element(by.id('logoutLink'));
 
 var clickLogin = function() {
-    loginBtn.click();
+    return loginBtn.click();
 };
 
 var clickLogout = function() {

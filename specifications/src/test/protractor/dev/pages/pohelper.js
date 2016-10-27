@@ -1,6 +1,8 @@
 /* globals browser */
 'use strict';
 
+var elemUtil = require('../utils/utils.js').element;
+
 var clickAndWaitForPageRedirect = function(element) {
     browser.ignoreSynchronization = true;
     browser.actions().mouseMove(element).click().perform().then(function() {
@@ -13,16 +15,8 @@ var clickAndWaitForPageRedirect = function(element) {
     browser.ignoreSynchronization = false;
 };
 
-var isElementPresentAndDisplayed = function(elememt) {
-    return elememt.isPresent().then(function() {
-        return elememt.isDisplayed().then(function() {
-            return true;
-        }, function() {
-            return false;
-        });
-    }, function() {
-        return false;
-    });
+var isElementPresentAndDisplayed = function(element) {
+    return elemUtil.isElementPresentAndDisplayed(element);
 };
 
 var hasClass = function (element, cls) {
