@@ -19,6 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 # -------------------------------------------------------------------------------
+from datetime import datetime, timedelta
 
 class RuleLakare:
     def __init__(self, enhet):
@@ -103,7 +104,6 @@ class RuleLakarbefattning:
 class RuleSjuklangd90:
     def __init__(self, year, month, months, enhet=None):
         self.enhet = enhet
-        print "Enhet=",enhet
         self.periods = self.make_periods(year, month, months)
 
     def make_periods(self, year, month, months):
@@ -111,7 +111,7 @@ class RuleSjuklangd90:
         i = 0
         mlist = []
         prev = 0
-        tag = "2000/1"
+        tag = "2000/01"
         while i < months + 1:
             i += 1
             if month > 12:
@@ -119,13 +119,13 @@ class RuleSjuklangd90:
                 month = 1
             beta  = datetime(year, month, 1)
             delta = beta - alpha
-            mlist.append((prev, delta.days - 1,tag))
-            tag = str(year) + '/' + str(month)
+            mlist.append((prev, delta.days - 1, tag))
+            delim = '/'
+            if month < 10:
+                delim += '0'
+            tag = str(year) + delim + str(month)
             prev = delta.days
             month += 1
-
-        for tup in mlist:
-            print alpha + timedelta(tup[0]),alpha + timedelta(tup[1])
 
         return mlist
 

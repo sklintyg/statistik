@@ -200,11 +200,15 @@ def main(argv):
             rule = RuleLan()
         elif opt == '-N':
             assert(interval != None)
-            data = interval[0].split('-')
+            periods = interval.split(':')
+            data = periods[0].split('-')
+            # 18 is the number of months forward from the start month
             rule = RuleSjuklangd90(int(data[0]),int(data[1]),18)
         elif opt == '-9':
             assert(interval != None)
-            data = interval[0].split('-')
+            periods = interval.split(':')
+            data = periods[0].split('-')
+            # 18 is the number of months forward from the start month
             rule = RuleSjuklangd90(int(data[0]),int(data[1]),18, arg.strip())
         elif opt == '-j':
             rule = RuleJamfor(arg.strip())
