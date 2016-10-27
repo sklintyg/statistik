@@ -60,7 +60,7 @@ var expandBusinessStatisticsToggle = function() {
 };
 
 var isBusinessStatisticsToggleVisible = function() {
-    businessStatisticsToggle.isDisplayed();
+    return businessStatisticsToggle.isDisplayed();
 };
 
 var clickNationalStatisticsToggle = function() {
@@ -68,16 +68,16 @@ var clickNationalStatisticsToggle = function() {
 };
 
 var expandNationalStatisticsToggle = function() {
-    console.log("in page.navmenu.expandNationalStatisticsToggle");
+    console.log("In page.navmenu.expandNationalStatisticsToggle");
     return pohelper.hasClass(nationalStatisticsToggle, 'collapsed').then(function(value) {
         if (value) {
-        clickNationalStatisticsToggle();
-    }
+            clickNationalStatisticsToggle();
+        }
     });
 };
 
 var isNationalStatisticsToggleVisible = function() {
-    nationalStatisticsToggle.isDisplayed();
+    return nationalStatisticsToggle.isDisplayed();
 };
 
 var clickAboutStatisticsToggle = function() {
@@ -85,9 +85,12 @@ var clickAboutStatisticsToggle = function() {
 };
 
 var expandAboutStatisticsToggle = function() {
-    if (!isNavAboutTjanstLinkVisible()) {
-        clickAboutStatisticsToggle();
-    }
+    console.log("In page.navmenu.expandAboutStatisticsToggle");
+    return pohelper.hasClass(aboutStatisticsToggle, 'collapsed').then(function(value) {
+        if (value) {
+            clickAboutStatisticsToggle();
+        }
+    });
 };
 
 var isAboutStatisticsToggleVisible = function() {
@@ -99,7 +102,7 @@ var clickNavOverviewLink = function() {
 };
 
 var isNavOverviewLinkVisible = function() {
-    navOverviewLink.isDisplayed();
+    return navOverviewLink.isDisplayed();
 };
 
 var clickNavCasesPerMonthLink = function() {
@@ -115,7 +118,7 @@ var clickNavDiagnosisGroupsLink = function() {
 };
 
 var isNavDiagnosisGroupsLinkVisible = function() {
-    navDiagnosisGroupsLink.isDisplayed();
+    return navDiagnosisGroupsLink.isDisplayed();
 };
 
 var clickNavDiagnosisSubGroupsLink = function() {
@@ -123,7 +126,7 @@ var clickNavDiagnosisSubGroupsLink = function() {
 };
 
 var isNavDiagnosisSubGroupsLinkVisible = function() {
-    navDiagnosisSubGroupsLink.isDisplayed();
+    return navDiagnosisSubGroupsLink.isDisplayed();
 };
 
 var clickNavAgeGroupsLink = function() {
@@ -131,7 +134,7 @@ var clickNavAgeGroupsLink = function() {
 };
 
 var isNavAgeGroupsLinkVisible = function() {
-    navAgeGroupsLink.isDisplayed();
+    return navAgeGroupsLink.isDisplayed();
 };
 
 var clickNavSickLeaveDegreeLink = function() {
@@ -139,7 +142,7 @@ var clickNavSickLeaveDegreeLink = function() {
 };
 
 var isNavSickLeaveDegreeLinkVisible = function() {
-    navSickLeaveDegreeLink.isDisplayed();
+    return navSickLeaveDegreeLink.isDisplayed();
 };
 
 var clickNavSickLeaveLengthLink = function() {
@@ -147,7 +150,7 @@ var clickNavSickLeaveLengthLink = function() {
 };
 
 var isNavSickLeaveLengthLinkVisible = function() {
-    navSickLeaveLengthLink.isDisplayed();
+    return navSickLeaveLengthLink.isDisplayed();
 };
 
 var clickNavCountyLink = function() {
@@ -155,7 +158,7 @@ var clickNavCountyLink = function() {
 };
 
 var isNavCountyLinkVisible = function() {
-    navCountyLink.isDisplayed();
+    return navCountyLink.isDisplayed();
 };
 
 var clickNavCasesPerSexLink = function() {
@@ -163,7 +166,7 @@ var clickNavCasesPerSexLink = function() {
 };
 
 var isNavCasesPerSexLinkVisible = function() {
-    navCasesPerSexLink.isDisplayed();
+    return navCasesPerSexLink.isDisplayed();
 };
 
 var clickNavVerksamhetOversiktLink = function() {
@@ -171,7 +174,7 @@ var clickNavVerksamhetOversiktLink = function() {
 };
 
 var isNavVerksamhetOversiktLinkVisible = function() {
-    navVerksamhetOversiktLink.isDisplayed();
+    return navVerksamhetOversiktLink.isDisplayed();
 };
 
 var clickNavBusinessCasesPerBusinessLink = function() {
@@ -179,7 +182,7 @@ var clickNavBusinessCasesPerBusinessLink = function() {
 };
 
 var isNavBusinessCasesPerBusinessLinkVisible = function() {
-    navBusinessCasesPerBusinessLink.isDisplayed();
+    return navBusinessCasesPerBusinessLink.isDisplayed();
 };
 
 var clickNavBusinessCasesPerMonthLink = function() {
@@ -187,7 +190,7 @@ var clickNavBusinessCasesPerMonthLink = function() {
 };
 
 var isNavBusinessCasesPerMonthLinkVisible = function() {
-    navBusinessCasesPerMonthLink.isDisplayed();
+    return navBusinessCasesPerMonthLink.isDisplayed();
 };
 
 var clickNavBusinessDiagnosisGroupsLink = function() {
@@ -195,7 +198,7 @@ var clickNavBusinessDiagnosisGroupsLink = function() {
 };
 
 var isNavBusinessDiagnosisGroupsLinkVisible = function() {
-    navBusinessDiagnosisGroupsLink.isDisplayed();
+    return navBusinessDiagnosisGroupsLink.isDisplayed();
 };
 
 var clickNavBusinessDiagnosisSubGroupsLink = function() {
@@ -203,7 +206,7 @@ var clickNavBusinessDiagnosisSubGroupsLink = function() {
 };
 
 var isNavBusinessDiagnosisSubGroupsLinkVisible = function() {
-    navBusinessDiagnosisSubGroupsLink.isDisplayed();
+    return navBusinessDiagnosisSubGroupsLink.isDisplayed();
 };
 
 var clickNavBusinessCompareDiagnosisLink = function() {
@@ -211,7 +214,7 @@ var clickNavBusinessCompareDiagnosisLink = function() {
 };
 
 var isNavBusinessCompareDiagnosisLinkVisible = function() {
-    navBusinessCompareDiagnosisLink.isDisplayed();
+    return navBusinessCompareDiagnosisLink.isDisplayed();
 };
 
 var clickNavBusinessAgeGroupsLink = function() {
@@ -219,7 +222,7 @@ var clickNavBusinessAgeGroupsLink = function() {
 };
 
 var isNavBusinessAgeGroupsLinkVisible = function() {
-    navBusinessAgeGroupsLink.isDisplayed();
+    return navBusinessAgeGroupsLink.isDisplayed();
 };
 
 var clickNavBusinessSickLeaveDegreeLink = function() {
@@ -227,7 +230,7 @@ var clickNavBusinessSickLeaveDegreeLink = function() {
 };
 
 var isNavBusinessSickLeaveDegreeLinkVisible = function() {
-    navBusinessSickLeaveDegreeLink.isDisplayed();
+    return navBusinessSickLeaveDegreeLink.isDisplayed();
 };
 
 var clickNavBusinessSickLeaveLengthLink = function() {
@@ -235,7 +238,7 @@ var clickNavBusinessSickLeaveLengthLink = function() {
 };
 
 var isNavBusinessSickLeaveLengthLinkVisible = function() {
-    navBusinessSickLeaveLengthLink.isDisplayed();
+    return navBusinessSickLeaveLengthLink.isDisplayed();
 };
 
 var clickNavBusinessMoreNinetyDaysSickLeaveLink = function() {
@@ -243,7 +246,7 @@ var clickNavBusinessMoreNinetyDaysSickLeaveLink = function() {
 };
 
 var isNavBusinessMoreNinetyDaysSickLeaveLinkVisible = function() {
-    navBusinessMoreNinetyDaysSickLeaveLink.isDisplayed();
+    return navBusinessMoreNinetyDaysSickLeaveLink.isDisplayed();
 };
 
 var clickNavBusinessCasesPerLakareLink = function() {
@@ -251,7 +254,7 @@ var clickNavBusinessCasesPerLakareLink = function() {
 };
 
 var isNavBusinessCasesPerLakareLinkVisible = function() {
-    navBusinessCasesPerLakareLink.isDisplayed();
+    return navBusinessCasesPerLakareLink.isDisplayed();
 };
 
 var clickNavBusinessCasesPerLakaresAlderOchKonLink = function() {
@@ -259,7 +262,7 @@ var clickNavBusinessCasesPerLakaresAlderOchKonLink = function() {
 };
 
 var isNavBusinessCasesPerLakaresAlderOchKonLinkVisible = function() {
-    navBusinessCasesPerLakaresAlderOchKonLink.isDisplayed();
+    return navBusinessCasesPerLakaresAlderOchKonLink.isDisplayed();
 };
 
 var clickNavBusinessCasesPerLakarbefattningLink = function() {
@@ -267,7 +270,7 @@ var clickNavBusinessCasesPerLakarbefattningLink = function() {
 };
 
 var isNavBusinessCasesPerLakarbefattningLinkVisible = function() {
-    navBusinessCasesPerLakarbefattningLink.isDisplayed();
+    return navBusinessCasesPerLakarbefattningLink.isDisplayed();
 };
 
 var clickNavBusinessDifferentieratIntygandeLink = function() {
@@ -275,7 +278,7 @@ var clickNavBusinessDifferentieratIntygandeLink = function() {
 };
 
 var isNavBusinessDifferentieratIntygandeLinkVisible = function() {
-    navBusinessDifferentieratIntygandeLink.isDisplayed();
+    return navBusinessDifferentieratIntygandeLink.isDisplayed();
 };
 
 var clickNavAboutTjanstLink = function() {
@@ -283,7 +286,7 @@ var clickNavAboutTjanstLink = function() {
 };
 
 var isNavAboutTjanstLinkVisible = function() {
-    navAboutTjanstLink.isDisplayed();
+    return navAboutTjanstLink.isDisplayed();
 };
 
 var clickNavAboutInloggningLink = function() {
@@ -291,7 +294,7 @@ var clickNavAboutInloggningLink = function() {
 };
 
 var isNavAboutInloggningLinkVisible = function() {
-    navAboutInloggningLink.isDisplayed();
+    return navAboutInloggningLink.isDisplayed();
 };
 
 var clickNavAboutFaqLink = function() {
@@ -299,7 +302,7 @@ var clickNavAboutFaqLink = function() {
 };
 
 var isNavAboutFaqLinkVisible = function() {
-    navAboutFaqLink.isDisplayed();
+    return navAboutFaqLink.isDisplayed();
 };
 
 var clickNavAboutContactLink = function() {
@@ -307,7 +310,7 @@ var clickNavAboutContactLink = function() {
 };
 
 var isNavAboutContactLinkVisible = function() {
-    navAboutContactLink.isDisplayed();
+    return navAboutContactLink.isDisplayed();
 };
 
 module.exports = {

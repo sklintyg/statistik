@@ -4,22 +4,28 @@
 
 var fakeloginPo = require('../pages/pages.js').fakeloginPo;
 var headerPo = require('../pages/pages.js').headerPo;
+var elemUtil = require('../utils/utils.js').element;
 
 var loginUser1 = function(processledare) {
-    headerPo.clickLogin();
-    fakeloginPo.login('Anna', 'Modig', 'user1', 'enhet1', 'vg1', processledare);
+    headerPo.clickLogin().then(function() {
+        fakeloginPo.login('Anna', 'Modig', 'user1', 'enhet1', 'vg1', processledare);
+    });
 };
 
 var isLoggedIn = function() {
-    return headerPo.logoutLink.isPresent() && headerPo.logoutLink.isDisplayed();
+    return elemUtil.isElementPresentAndDisplayed(headerPo.logoutLink);
 };
 
 var makeSureNotLoggedIn = function() {
     console.log("In user.feature.makeSureNotLoggedIn");
-    if (isLoggedIn()) {
-        headerPo.clickLogout();
-    }
-    expect(headerPo.loginBtn.isPresent() && headerPo.loginBtn.isDisplayed()).toBeTruthy('Loginknappen syns ej');
+    isLoggedIn().then(function(result) {
+        if (result) {
+            headerPo.clickLogout();
+        }
+    });
+    elemUtil.isElementPresentAndDisplayed(headerPo.loginBtn).then(function(result) {
+        expect(result).toBeTruthy('Loginknappen syns ej');
+    });
 };
 
 module.exports = {
