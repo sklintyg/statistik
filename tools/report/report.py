@@ -323,7 +323,7 @@ def main(argv):
                 if month == 0 or day == 0:
                     print "Ogiltigt personid: " + intyg.id
                     continue
-                if month > 12 or day > 31 or year > 2016:
+                if month > 12 or day > 31 or year > now.year:
                     print "Ogiltigt personid2: " + intyg.id
                     continue
 
