@@ -36,7 +36,7 @@ describe('Tester kring inloggning: ', function() {
 
     it('INTYG-3074: Inloggning behålls efter sidomladdning på nationell nivå', function() {
         features.user.makeSureNotLoggedIn();
-        features.user.loginUser1();
+        features.user.loginUser1(true);
         pages.navmenu.expandNationalStatisticsToggle();
         pages.navmenu.clickNavCasesPerMonthLink();
         browser.refresh();

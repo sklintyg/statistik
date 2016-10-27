@@ -13,6 +13,26 @@ var clickAndWaitForPageRedirect = function(element) {
     browser.ignoreSynchronization = false;
 };
 
+var isElementPresentAndDisplayed = function(elememt) {
+    return elememt.isPresent().then(function() {
+        return elememt.isDisplayed().then(function() {
+            return true;
+        }, function() {
+            return false;
+        });
+    }, function() {
+        return false;
+    });
+};
+
+var hasClass = function (element, cls) {
+    return browser.wait(element.getAttribute('class').then(function(classes) {
+        return classes.split(' ').indexOf(cls) !== -1;
+    }), 500);
+};
+
 module.exports = {
-    'clickAndWaitForPageRedirect': clickAndWaitForPageRedirect
+    'clickAndWaitForPageRedirect': clickAndWaitForPageRedirect,
+    'hasClass': hasClass,
+    'isElementPresentAndDisplayed': isElementPresentAndDisplayed
 };
