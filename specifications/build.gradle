@@ -33,6 +33,7 @@ fitnesse {
     workingDir = "src/test/fitnesse"
 }
 
+npm_install.dependsOn(npm_cache_clean)
 
 task protractorTest(dependsOn: [npmInstall], type: Exec) {
     commandLine nodeBinaryPath, './node_modules/protractor/bin/protractor', 'src/test/protractor/protractor.conf.js'
