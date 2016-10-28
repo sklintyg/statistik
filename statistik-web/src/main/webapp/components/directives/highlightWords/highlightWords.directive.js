@@ -70,6 +70,7 @@ angular.module('StatisticsApp')
             return function(element) {
                 element.setAttribute('data-toggle', 'tooltip');
                 element.setAttribute('data-placement', 'auto right');
+                element.setAttribute('onclick', 'event.preventDefault();');
                 element.setAttribute('title', phrase.text);
             };
         }
