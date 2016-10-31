@@ -40,6 +40,12 @@ class Sjukfall:
     def sjukgrad(self, start, slut):
         """ Get the sjukgrad from the 'last' intyg
         """
+        last = self.last_intyg(start, slut)
+        return last.sjukgrad
+
+    def last_intyg(self, start, slut):
+        """ Get the last (latest) intyg
+        """
         last = None
         for i in self.intyg:
             if i.valid(start, slut):
@@ -52,10 +58,8 @@ class Sjukfall:
                         last = i
                     elif i.lakarintyg == last.lakarintyg and i.sjukgrad > last.sjukgrad:
                         last = i
-
         assert(last != None)
-
-        return last.sjukgrad
+        return last
 
     def kon(self):
         return self.intyg[0].kon
@@ -138,21 +142,20 @@ class Sjukfall:
         return False
 
     def diagnos(self, start,slut):
-        diagnos = None
-        latest = None
+        last = self.last_intyg(start, slut)
+        if last:
+            return last.diagnos
+
+        return None
+
+    def diagnosis(self, start, slut):
+        """ Get all diagnosis for the period """
+        res = {}
         for i in self.intyg:
-            if i.valid(start,slut):
-                if diagnos is None:
-                    diagnos = i.diagnos
-                    latest = i.start
-                elif i.start > start:
-                    latest = i.start
-                    diagnos = i.diagnos
+            if i.valid(start, slut):
+                res[i.diagnos] = 1
 
-        assert(diagnos != None)
-
-        return diagnos
-
+        return res.keys()
 
     def get_intervals(self):
         """ Calculate number of sjukfall days for the given period
