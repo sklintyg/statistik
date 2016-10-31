@@ -112,12 +112,12 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
     var hasDatepickersValidationError = function() {
         scope.errorMessage = messageService.getProperty('alert.filter.date-invalid');
-        scope.fromDateValidationError = false;
-        scope.toDateValidationError = false;
 
         // Fel format
-        if (!scope.myForm.fromDate.$valid || !isValidDate(scope.businessFilter.fromDate) || !scope.myForm.toDate.$valid || !isValidDate(scope.businessFilter.toDate)) {
-            return true;
+        var validate = validateDateFocus();
+
+        if (validate) {
+            return validate;
         }
 
         if (scope.businessFilter.fromDate || scope.businessFilter.toDate) {
@@ -134,17 +134,34 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
                 scope.fromDateValidationError = true;
                 return true;
             }
-
-            // Från är satt till efter till
-            if (moment(scope.businessFilter.toDate).isBefore(scope.businessFilter.fromDate)) {
-                scope.errorMessage = messageService.getProperty('alert.filter.date.wrong-order');
-                scope.fromDateValidationError = true;
-                scope.toDateValidationError = true;
-                return true;
-            }
         }
 
         return false;
+    };
+
+    function validateDateFocus() {
+        scope.fromDateValidationError = false;
+        scope.toDateValidationError = false;
+        scope.errorMessage = messageService.getProperty('alert.filter.date-invalid');
+
+        // Fel format
+        if (!scope.myForm.fromDate.$valid || !isValidDate(scope.businessFilter.fromDate) || !scope.myForm.toDate.$valid || !isValidDate(scope.businessFilter.toDate)) {
+            return true;
+        }
+
+        // Från är satt till efter till
+        if (moment(scope.businessFilter.toDate).isBefore(scope.businessFilter.fromDate)) {
+            scope.errorMessage = messageService.getProperty('alert.filter.date.wrong-order');
+            scope.fromDateValidationError = true;
+            scope.toDateValidationError = true;
+            return true;
+        }
+
+        return false;
+    }
+
+    scope.validateDate = function() {
+        scope.showDateValidationError = validateDateFocus();
     };
 
     scope.makeSelection = function () {
