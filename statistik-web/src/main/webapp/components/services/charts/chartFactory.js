@@ -83,7 +83,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                             whiteSpace: 'pre',
                             width: '200px'
                         },
-                        useHTML: true,
+                        useHTML: false,
                         formatter: labelFormatter(30),
                         step: 1
                     },
