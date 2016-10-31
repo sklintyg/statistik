@@ -62,7 +62,7 @@ angular.module('StatisticsApp')
 
         function initToolTop() {
             $('[data-toggle="tooltip"]').tooltip({
-                container: 'body'
+                container: '#view'
             });
         }
 
@@ -70,7 +70,6 @@ angular.module('StatisticsApp')
             return function(element) {
                 element.setAttribute('data-toggle', 'tooltip');
                 element.setAttribute('data-placement', 'auto right');
-                element.setAttribute('onclick', 'event.preventDefault();');
                 element.setAttribute('title', phrase.text);
             };
         }
