@@ -42,8 +42,8 @@ describe('Smoketester av statistiktjänsten: ', function() {
             return pages.navmenu.expandNationalStatisticsToggle().then(function () {
                 pages.navmenu.clickNavOverviewLink();
                 validateDetailReport('clickNavCasesPerMonthLink', 1, 3, 19);
-                validateDetailReport('clickNavDiagnosisGroupsLink', 2, 8, 20);
-                validateDetailReport('clickNavDiagnosisSubGroupsLink', 2, 1, 20);
+                validateDetailReport('clickNavDiagnosisGroupsLink', 2, 7, 20);
+                validateDetailReport('clickNavDiagnosisSubGroupsLink', 2, 2, 20);
                 validateDetailReport('clickNavAgeGroupsLink', 1, 2, 11);
                 validateDetailReport('clickNavSickLeaveDegreeLink', 2, 4, 20);
                 validateDetailReport('clickNavSickLeaveLengthLink', 1, 2, 8);
@@ -65,10 +65,10 @@ describe('Smoketester av statistiktjänsten: ', function() {
             console.log("In validateAllVerksamhetReportsForProcessledare");
             pages.navmenu.expandBusinessStatisticsToggle().then(function() {
                 pages.navmenu.clickNavVerksamhetOversiktLink();
-                validateDetailReport('clickNavBusinessCasesPerBusinessLink', 1, 2, 20);
+                validateDetailReport('clickNavBusinessCasesPerBusinessLink', 1, 2, 3);
                 validateDetailReport('clickNavBusinessCasesPerMonthLink', 1, 3, 19);
-                validateDetailReport('clickNavBusinessDiagnosisGroupsLink', 2, 8, 20);
-                validateDetailReport('clickNavBusinessDiagnosisSubGroupsLink', 2, 2, 20);
+                validateDetailReport('clickNavBusinessDiagnosisGroupsLink', 2, 7, 20);
+                validateDetailReport('clickNavBusinessDiagnosisSubGroupsLink', 2, 4, 20);
                 validateDetailReport('clickNavBusinessCompareDiagnosisLink', 1, 0, 0);
                 validateDetailReport('clickNavBusinessAgeGroupsLink', 1, 2, 11);
                 validateDetailReport('clickNavBusinessSickLeaveDegreeLink', 2, 4, 20);
@@ -84,7 +84,7 @@ describe('Smoketester av statistiktjänsten: ', function() {
         function validateAllSpecificReportsForVerksamhetschef() {
             console.log("In validateAllSpecificReportsForVerksamhetschef");
             pages.navmenu.expandBusinessStatisticsToggle().then(function() {
-                validateDetailReport('clickNavBusinessCasesPerLakareLink', 1, 2, 1); //Not visible to processledare
+                validateDetailReport('clickNavBusinessCasesPerLakareLink', 1, 2, 2); //Not visible to processledare
             });
         }
 
@@ -92,10 +92,9 @@ describe('Smoketester av statistiktjänsten: ', function() {
             console.log("In validateDetailReport");
             pages.navmenu[clickFuncName]();
             pages.report.verifyAt();
-            // Must fix a way to populate intyg before testing data-dependent results
-            // pages.report.getNumberOfCharts().then(function(result) {expect(result).toBe(expectedNumberOfCharts, 'Number of charts failed: ' +clickFuncName)});
-            // pages.report.getChartLegendLabels().then(function(result) {expect(result.length).toBe(expectedNumberOfLegends, 'Number of legends failed: ' + clickFuncName)});
-            // pages.report.getTableRows().then(function(result) {expect(result.length).toBe(expectedRowsInTable, 'Number of table rows failed: ' + clickFuncName)});
+            pages.report.getNumberOfCharts().then(function(result) {expect(result).toBe(expectedNumberOfCharts, 'Number of charts failed: ' +clickFuncName)});
+            pages.report.getChartLegendLabels().then(function(result) {expect(result.length).toBe(expectedNumberOfLegends, 'Number of legends failed: ' + clickFuncName)});
+            pages.report.getTableRows().then(function(result) {expect(result.length).toBe(expectedRowsInTable, 'Number of table rows failed: ' + clickFuncName)});
         }
 
         features.user.makeSureNotLoggedIn();
