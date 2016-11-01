@@ -35,7 +35,12 @@ fitnesse {
 
 npm_install.dependsOn(npm_cache_clean)
 
-task protractorTest(dependsOn: [npmInstall], type: Exec) {
+task setupIntygForProtractor (dependsOn: 'classes', type: JavaExec) {
+    main = 'se.inera.statistics.InsertIntygHelper'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task protractorTest(dependsOn: [npmInstall, setupIntygForProtractor], type: Exec) {
     commandLine nodeBinaryPath, './node_modules/protractor/bin/protractor', 'src/test/protractor/protractor.conf.js'
 }
 
