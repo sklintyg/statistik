@@ -29,6 +29,7 @@ from lib.vg import *
 from lib.wideline import Wideline
 from lib.intyg import Intyg
 from lib.group import Group
+from lib.ranges import *
 
 THRESHOLD = 5
 DBUSER = 'root'
@@ -51,6 +52,7 @@ Konfiguration:
 Filter:
     -i <start:end>   Intervall för sjukfall, måste vara enligt följande:
                      YYYY-MM-DD:YYYY-MM-DD
+    -m <month-range> Månads intervall, format: YYYY-MM:YYYY-MM
     -v <hsaid>       Vårdgivare ID
     -c <hsaid>       Vårdenhet ID
     -8 <lanskod>     Länskod (2siffror)
@@ -162,8 +164,6 @@ def main(argv):
     now = datetime.now()
     end_limit = datetime(now.year + 5, now.month, now.day) - alpha
     start_limit = datetime(2010, 1, 1) - alpha
-    start_interval = None
-    end_interval = None
     interval = None
     rule = None
     dump_file = DUMP_FILE
@@ -175,11 +175,14 @@ def main(argv):
     db_name = None
     make_dbdump = None
     internalbefattning = True
+    ranges = None
 
-    opts, args = getopt.getopt(argv, "tdapglni:ekKL:hsE:Nj:9:v:8:c:w:b:q:",['dump', 'nointernalbefattning'])
+    opts, args = getopt.getopt(argv, "tdapglni:ekKL:hsE:Nj:9:v:8:c:w:b:q:m:",['dump', 'nointernalbefattning'])
     for opt, arg in opts:
         if opt == '-t':
             threshold = True
+        elif opt == '-m':
+            ranges = month_range(arg)
         elif opt == '-e':
             rule = RuleSjukfallEnheter()
         elif opt == '-E':
@@ -214,6 +217,7 @@ def main(argv):
             rule = RuleJamfor(arg.strip())
         elif opt == '-i':
             interval = arg
+            ranges = interval_range(interval)
         elif opt == '-k':
             rule = RuleLakarbefattning(internalbefattning)
         elif opt == '-K':
@@ -241,22 +245,12 @@ def main(argv):
         elif opt == '--nointernalbefattning':
             internalbefattning = False
 
-    if not interval:
+    if not ranges:
         interval = STANDARD_INTERVALL
         print('Intervall saknas. Ange intervall på formen YYYY-MM-DD:YYYY-MM-DD  (%s)' % STANDARD_INTERVALL)
         given_interval = raw_input()
-        if(given_interval):
-            interval = given_interval
-
-    interval = interval.split(':')
-    assert(len(interval) == 2)
-    start_interval = date2days(interval[0], alpha)
-    end_interval = date2days(interval[1], alpha)
-
-    if start_interval is None or end_interval is None:
-        print "Intervall saknas"
-        usage()
-        return
+        if given_interval:
+            ranges = ranges.interval_range(given_interval)
 
     if make_dbdump:
         if not db_host:
@@ -285,8 +279,8 @@ def main(argv):
                 if not lanskod:
                     print "INFO: Vårdgivare, vårdenhet eller länskod ej angiven"
                     caregiver = get_caregiver_id_from_user(db_host, db_password, db_name)
-
-        get_data(dump_file, start_interval, end_interval, caregiver, careunit,lanskod, db_host, db_password, db_name)
+        
+        get_data(dump_file, ranges.start, ranges.slut, caregiver, careunit,lanskod, db_host, db_password, db_name)
         return
 
     if rule is None:
@@ -347,16 +341,17 @@ def main(argv):
 
             vgmap[intyg.vardgivare] = vg
 
-    tot = 0
-    agg = Group()
-    #print "Threshold {}".format(threshold)
-    # Summarize all data from all vårdgivare
-    for k,v in vgmap.items():
-        tot += v.eval(Group(rule, threshold, agg, start_interval, end_interval))
+    # Apply the rule to all ranges
+    for r in ranges.items():
+        tot = 0
+        # The aggregated result
+        agg = Group()
+        for vg in vgmap.itervalues():
+            tot += vg.eval(Group(rule, threshold, agg, r.start, r.slut))
 
-    print 'Totalt: %d' % tot
+        print "\nTotalt: {0} - {1}".format(tot, r.name)
 
-    agg.log()
+        agg.log()
 
 if __name__ == "__main__":
     main(sys.argv[1:])
