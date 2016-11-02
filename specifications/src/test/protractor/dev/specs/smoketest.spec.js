@@ -27,7 +27,6 @@ var pages = testfw.pages;
 var features = testfw.features;
 var fakeloginPage = pages.fakeloginPo;
 var headerPage = pages.headerPo;
-var wait = require('wait.for');
 
 describe('Smoketester av statistiktjänsten: ', function() {
 
