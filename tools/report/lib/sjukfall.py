@@ -51,13 +51,8 @@ class Sjukfall:
             if i.valid(start, slut):
                 if last is None:
                     last = i
-                elif i.start > last.start:
+                elif i.isnewer(last):
                     last = i
-                elif i.start == last.start:
-                    if i.lakarintyg > last.lakarintyg:
-                        last = i
-                    elif i.lakarintyg == last.lakarintyg and i.sjukgrad > last.sjukgrad:
-                        last = i
         assert(last != None)
         return last
 
@@ -89,7 +84,7 @@ class Sjukfall:
                     lakare[i.lakareid] = i
                 else:
                     intyg = lakare[i.lakareid]
-                    if i.start > intyg.start:
+                    if i.isnewer(intyg):
                         lakare[i.lakareid] = i
         res = {}
         for k,v in lakare.items():

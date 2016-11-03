@@ -60,6 +60,19 @@ class Intyg:
 
         return True
 
+    def isnewer(self, intyg):
+        """ Compare the intyg and return true if this is considered
+        newer than 'intyg' """
+        if self.start > intyg.start:
+            return True
+        elif self.start == intyg.start:
+            if self.lakarintyg > intyg.lakarintyg:
+                return True
+            elif (self.lakarintyg == intyg.lakarintyg and
+                self.sjukgrad > intyg.sjukgrad):
+                return True
+        return False
+
     def tostring(self):
         return "[{0},{1},{2},{3},{4},{5}]".format(self.id,self.start,self.slut,self.alder,self.sjukgrad, self.enhet)
 
