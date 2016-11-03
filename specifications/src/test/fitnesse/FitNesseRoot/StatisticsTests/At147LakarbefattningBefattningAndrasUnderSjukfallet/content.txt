@@ -2,7 +2,7 @@
 
 !3 Givet att:
 
-Ett sjukfall består av 3 intyg. De första två är utfärdade av samma läkare. Mellan intyg 1 och 2 har läkaren blivit av med sin befattning Företagsläkare.
+Ett sjukfall består av 3 intyg. De första två är utfärdade av samma läkare. Mellan intyg 1 och 2 har läkaren blivit av med sin befattning Överläkare.
 
 | script | dagens datum | 2014-11-28 |
 
