@@ -32,18 +32,18 @@ class Ranges:
         self.start = None
         self.slut = None
         if daterange:
-            self.append(daterange)
+            self.add(daterange)
 
-    def append(self, daterange):
-        self.ranges.append(daterange)
+    def put(self, start, slut, name):
+        self.add(DateRange(start, slut, name))
 
-    def add(self, start, slut, name):
-        """ Add a range to the list """
-        if self.start is None or (start < self.start):
-            self.start = start
-        if self.slut is None or (slut > self.slut):
-            self.slut = slut
-        self.append(DateRange(start, slut, name))
+    def add(self, dr):
+        """ Add a date range to the list """
+        if self.start is None or (dr.start < self.start):
+            self.start = dr.start
+        if self.slut is None or (dr.slut > self.slut):
+            self.slut = dr.slut
+        self.ranges.append(dr)
 
     def items(self):
         """ Return all ranges """
@@ -76,7 +76,7 @@ def month_range(ranges):
             (first, last) = calendar.monthrange(year, month)
             start_day = datetime(year, month, 1) - alpha
             end_day = datetime(year, month, last) - alpha
-            months.add(start_day.days, end_day.days,
+            months.put(start_day.days, end_day.days,
                   "{0} ({1})".format(month_names[month-1], year))
 
             if month == 12:
