@@ -349,9 +349,10 @@ def main(argv):
         for vg in vgmap.itervalues():
             tot += vg.eval(Group(rule, threshold, agg, r.start, r.slut))
 
-        print "\nTotalt: {0} - {1}".format(tot, r.name)
+        print "Totalt: {0} - {1}".format(tot, r.name)
 
         agg.log()
+        print "\n"
 
 if __name__ == "__main__":
     main(sys.argv[1:])
