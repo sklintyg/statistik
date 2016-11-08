@@ -53,6 +53,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Component
 public class SjukfallQuery {
@@ -277,6 +279,11 @@ public class SjukfallQuery {
 
     public void setCutoff(int cutoff) {
         this.cutoff = cutoff;
+    }
+
+    public static List<Sjukfall> getSjukfallForBi(Aisle facts, FilterPredicates filter, LocalDate from, int months, int i, SjukfallUtil sjukfallUtil) {
+        final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(SjukfallUtil.START_DATE_OF_DATA_GATHERING, 1, Integer.MAX_VALUE, facts, filter);
+        return StreamSupport.stream(sjukfallGroups.spliterator(), false).flatMap(sg -> sg.getSjukfall().stream()).collect(Collectors.toList());
     }
 
     private class SjukfallPerGender {

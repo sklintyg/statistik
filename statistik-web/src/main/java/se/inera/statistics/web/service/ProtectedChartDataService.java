@@ -52,6 +52,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.LoginInfo;
@@ -60,6 +61,7 @@ import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
+import se.inera.statistics.web.service.converter.SjukfallForBiConverter;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 /**
@@ -592,6 +594,21 @@ public class ProtectedChartDataService {
         SimpleKonResponse<SimpleKonDataRow> statisticsData = warehouse.getDifferentieratIntygandeTvarsnitt(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = new SimpleDualSexConverter("", false, "%1$s").convert(statisticsData, filterSettings);
         return getResponse(data, csv, request);
+    }
+
+    @GET
+    @Path("getSjukfallForBi")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getSjukfallForBi(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, null, Integer.MAX_VALUE);
+        final Filter filter = filterSettings.getFilter();
+        final Range range = filterSettings.getRange();
+        List<Sjukfall> sjukfalls = warehouse.getSjukfallForBi(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        final String resp = new SjukfallForBiConverter(icd10).convert(sjukfalls);
+        return Response.ok(resp).build();
     }
 
     public boolean hasAccessTo(HttpServletRequest request) {

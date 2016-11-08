@@ -39,6 +39,7 @@ import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
+import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
@@ -239,6 +240,10 @@ public class WarehouseService {
 
     public SimpleKonResponse<SimpleKonDataRow> getDifferentieratIntygandeTvarsnitt(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return SjukskrivningslangdQuery.getEnklaSjukfallTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), sjukfallUtil);
+    }
+
+    public List<Sjukfall> getSjukfallForBi(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
+        return SjukfallQuery.getSjukfallForBi(warehouse.get(vardgivarId), filter, range.getFrom(), range.getMonths(), 1, sjukfallUtil);
     }
 
 }
