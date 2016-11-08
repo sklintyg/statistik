@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.report.model;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -56,6 +57,10 @@ public class Lan implements Iterable<String> {
     public String getNamn(String kod) {
         String lan = kodToName.get(kod);
         return lan != null ? lan : OVRIGT;
+    }
+
+    public Map<String, String> getCodeToLanMap() {
+        return Collections.unmodifiableMap(kodToName);
     }
 
     @Override

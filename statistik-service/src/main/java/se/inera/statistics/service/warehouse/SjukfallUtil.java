@@ -55,7 +55,8 @@ public class SjukfallUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallUtil.class);
 
-    public static final FilterPredicates ALL_ENHETER = new FilterPredicates(fact -> true, sjukfall -> true, FilterPredicates.HASH_EMPTY_FILTER, false);
+    public static final LocalDate START_DATE_OF_DATA_GATHERING = LocalDate.of(2013, 10, 1);
+    public static final FilterPredicates ALL_ENHETER = new FilterPredicates(fact -> true, sjukfall -> true, FilterPredicates.HASH_EMPTY_FILTER);
 
     private LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> sjukfallGroupsCache;
 

@@ -129,6 +129,10 @@ public class Warehouse implements Iterable<Aisle> {
         return enhetsMap.getKey(enhetIntId);
     }
 
+    public static Map<HsaIdEnhet, Integer> getEnhetsView() {
+        return enhetsMap.getView();
+    }
+
     public static int getNumLakarIdAndRemember(HsaIdLakare id) {
         return lakareMap.getOrCreateId(id);
     }
@@ -196,6 +200,10 @@ public class Warehouse implements Iterable<Aisle> {
                 return Optional.absent();
             }
             return Optional.of(result);
+        }
+
+        public synchronized Map<T, Integer> getView() {
+            return Collections.unmodifiableMap(map);
         }
 
     }
