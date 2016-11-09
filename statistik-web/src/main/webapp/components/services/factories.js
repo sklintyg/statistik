@@ -99,6 +99,10 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestNational('getNumberOfCasesPerMonth', successCallback, failureCallback);
     };
 
+    factory.getNumberOfMeddelandenPerMonth = function (successCallback, failureCallback) {
+        makeRequestNational('getNumberOfMeddelandenPerMonth', successCallback, failureCallback);
+    };
+
     factory.getNumberOfCasesPerMonthVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet('getNumberOfCasesPerMonth', successCallback, failureCallback);
     };
@@ -225,6 +229,14 @@ angular.module('StatisticsApp').factory('statisticsData',
 
     factory.getSjukfallPerBusinessTimeSeriesVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet('getNumberOfCasesPerEnhetTimeSeries', successCallback, failureCallback);
+    };
+
+    factory.getNumberOfMeddelandenPerMonthVerksamhet  = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getNumberOfMeddelandenPerMonth', successCallback, failureCallback);
+    };
+
+    factory.getNumberOfMeddelandenPerMonthTvarsnittVerksamhet  = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getNumberOfMeddelandenPerMonthTvarsnitt', successCallback, failureCallback);
     };
 
     factory.getSjukfallPerPatientsPerBusinessLandsting = function (successCallback, failureCallback) {

@@ -87,6 +87,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'NationalCasesPerSexCtrl',
                 resolve: { config: app.casesPerSexConfig },
                 title: 'Andel sjukfall per kön'
+            }).when('/nationell/meddelanden', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'singleLineChartCtrl',
+                controllerAs: 'NationalMeddelandenPerMonthCtrl',
+                resolve: { config: app.meddelandenPerMonthConfig },
+                title: 'Andel inkomna meddelanden'
             }).when('/verksamhet', {
                 redirectTo: '/verksamhet/oversikt'
             }).when('/valjVardgivare', {
@@ -288,6 +294,18 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'VerksamhetLakarbefattningCtrl',
                 resolve: { config: app.casesPerLakarbefattningTidsserieConfig },
                 title: 'Sjukfall per läkarbefattning'
+            }).when('/verksamhet/meddelanden', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'singleLineChartCtrl',
+                controllerAs: 'VerksamhetMeddelandenPerMonthCtrl',
+                resolve: { config: app.meddelandenPerMonthConfig },
+                title: 'Andel inkomna meddelanden'
+            }).when('/verksamhet/meddelandenTvarsnitt', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'VerksamhetMeddelandenPerMonthCtrl',
+                resolve: { config: app.meddelandenPerMonthTvarsnittConfig },
+                title: 'Andel inkomna meddelanden'
             }).when('/landsting/filuppladdning', {
                 templateUrl: '/app/views/landsting/fileupload.html',
                 controller: 'landstingFileUploadCtrl',

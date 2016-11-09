@@ -45,6 +45,7 @@ var stMessages = {
         'nav.mobile.trigger.diagnosgrupp-diagnoskapitel': 'Diagnosgrupp, enskilt diagnoskapitel och jämför valfria diagnoser',
         'nav.mobile.trigger.lan-andel-per-kon': 'Län och andel sjukfall per kön',
         'nav.mobile.trigger.sjukskrivningslangd-90-dagar': 'Sjukskrivningslängd och mer än 90 dagar',
+        'nav.meddelanden': 'Meddelanden, totalt',
 
         //labels
         'lbl.mobile-menu': 'Meny',
@@ -155,6 +156,7 @@ var stMessages = {
         'title.lakare-befattning': 'Antal sjukfall fördelat på läkarbefattning',
         'title.differentierat': 'Antal sjukfall inom differentierat intygande',
         'title.vardenhet-listning': 'Antal sjukfall per 1000 listningar fördelat på vårdenhet',
+        'title.meddelanden' : 'Antal inkomna meddelanden',
 
         //help texts
         'help.nationell.overview' : 'Statistiktjänsten är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. Tjänsten visar statistik för alla elektroniska läkarintyg. Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.',
