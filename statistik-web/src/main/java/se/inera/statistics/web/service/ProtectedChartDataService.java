@@ -106,6 +106,9 @@ public class ProtectedChartDataService {
     @Autowired
     private Clock clock;
 
+    @Autowired
+    private SjukfallForBiConverter sjukfallForBiConverter;
+
     /**
      * Gets sjukfall per manad for verksamhetId.
      */
@@ -598,8 +601,7 @@ public class ProtectedChartDataService {
 
     @GET
     @Path("getSjukfallForBi")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.TEXT_PLAIN })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getSjukfallForBi(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
@@ -607,8 +609,8 @@ public class ProtectedChartDataService {
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
         List<Sjukfall> sjukfalls = warehouse.getSjukfallForBi(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        final String resp = new SjukfallForBiConverter(icd10).convert(sjukfalls);
-        return Response.ok(resp).build();
+        final String resp = sjukfallForBiConverter.convert(sjukfalls);
+        return Response.ok(resp, "text/plain; charset=utf-8").build();
     }
 
     public boolean hasAccessTo(HttpServletRequest request) {
