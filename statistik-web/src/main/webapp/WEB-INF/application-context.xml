@@ -25,6 +25,7 @@
     ">
 
     <context:component-scan base-package="se.inera.statistics.web.service.monitoring" />
+    <context:component-scan base-package="se.inera.statistics.web.service.converter" />
 
     <context:property-placeholder location="file:${statistics.credentials.file}, file:${statistics.config.file}, classpath*:version.properties"
                                   order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>

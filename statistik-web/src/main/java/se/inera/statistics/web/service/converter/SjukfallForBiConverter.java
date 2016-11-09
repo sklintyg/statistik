@@ -18,8 +18,12 @@
  */
 package se.inera.statistics.web.service.converter;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.helper.SjukskrivningsGrad;
+import se.inera.statistics.service.processlog.Enhet;
+import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.util.Icd10;
@@ -28,41 +32,44 @@ import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
  * This class is created to handle the GUI-less report used to export data for a BI-tool handled in INTYG-3056.
  */
+@Component
 public class SjukfallForBiConverter {
 
+    @Autowired
     private Icd10 icd10;
-    private int currentMaxDate = 0;
 
-    public SjukfallForBiConverter(Icd10 icd10) {
-        this.icd10 = icd10;
-    }
+    @Autowired
+    private EnhetManager enhetManager;
+
+    private int currentMaxDate = 0;
 
     public String convert(List<Sjukfall> sjukfalls) {
         final StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append("CREATE TABLE date (id INT, date DATE, PRIMARY KEY (id));");
+        stringBuilder.append("CREATE TABLE dim_date (id INT, date DATE, PRIMARY KEY (id));");
         stringBuilder.append(System.lineSeparator());
-        stringBuilder.append("CREATE TABLE dx (id INT, icd10 varchar(7), PRIMARY KEY (id));");
+        stringBuilder.append("CREATE TABLE dim_dx (id INT, icd10 varchar(7), PRIMARY KEY (id));");
         stringBuilder.append(System.lineSeparator());
-        stringBuilder.append("CREATE TABLE sjukskrivningsgrad (id INT, text varchar(20), PRIMARY KEY (id));");
+        stringBuilder.append("CREATE TABLE dim_sjukskrivningsgrad (id INT, text varchar(20), PRIMARY KEY (id));");
         stringBuilder.append(System.lineSeparator());
-        stringBuilder.append("CREATE TABLE age (id INT, text varchar(7), PRIMARY KEY (id));");
+        stringBuilder.append("CREATE TABLE dim_age (id INT, text varchar(7), PRIMARY KEY (id));");
         stringBuilder.append(System.lineSeparator());
-        stringBuilder.append("CREATE TABLE gender (id INT, text varchar(7), PRIMARY KEY (id));");
+        stringBuilder.append("CREATE TABLE dim_gender (id INT, text varchar(7), PRIMARY KEY (id));");
         stringBuilder.append(System.lineSeparator());
-        stringBuilder.append("CREATE TABLE lan (id INT, text varchar(21), PRIMARY KEY (id));");
+        stringBuilder.append("CREATE TABLE dim_lan (id INT, text varchar(21), PRIMARY KEY (id));");
         stringBuilder.append(System.lineSeparator());
-        stringBuilder.append("CREATE TABLE enheter (id INT, hsaid varchar(100), PRIMARY KEY (id));");
+        stringBuilder.append("CREATE TABLE dim_enheter (id INT, hsaid varchar(100), PRIMARY KEY (id));");
         stringBuilder.append(System.lineSeparator());
-        stringBuilder.append("CREATE TABLE sjukfalllakare (id INT, hsaid varchar(100), gender INT, age INT, PRIMARY KEY (id));");
+        stringBuilder.append("CREATE TABLE dim_sjukfalllakare (id INT, hsaid varchar(100), gender INT, age INT, PRIMARY KEY (id));");
         stringBuilder.append(System.lineSeparator());
-        stringBuilder.append("CREATE TABLE sjukfall ("
+        stringBuilder.append("CREATE TABLE fact_sjukfall ("
                 + "startdate INT, "
                 + "enddate INT, "
                 + "length INT, "
@@ -77,58 +84,64 @@ public class SjukfallForBiConverter {
                 + "enhet INT, "
                 + "enkelt BOOLEAN, "
                 + "lakare INT, "
-                + "CONSTRAINT fk_StartDate FOREIGN KEY (startdate) REFERENCES date(id), "
-                + "CONSTRAINT fk_EndDate FOREIGN KEY (enddate) REFERENCES date(id), "
-                + "CONSTRAINT fk_DxKapitel FOREIGN KEY (dxkapitel) REFERENCES dx(id), "
-                + "CONSTRAINT fk_DxAvsnitt FOREIGN KEY (dxavsnitt) REFERENCES dx(id), "
-                + "CONSTRAINT fk_DxKategori FOREIGN KEY (dxkategori) REFERENCES dx(id), "
-                + "CONSTRAINT fk_DxKod FOREIGN KEY (dxkod) REFERENCES dx(id), "
-                + "CONSTRAINT fk_Sjukskrivningsgrad FOREIGN KEY (sjukskrivningsgrad) REFERENCES sjukskrivningsgrad(id), "
-                + "CONSTRAINT fk_Age FOREIGN KEY (age) REFERENCES age(id), "
-                + "CONSTRAINT fk_Gender FOREIGN KEY (gender) REFERENCES gender(id), "
-                + "CONSTRAINT fk_Lan FOREIGN KEY (lan) REFERENCES lan(id), "
-                + "CONSTRAINT fk_Enhet FOREIGN KEY (enhet) REFERENCES enheter(id), "
-                + "CONSTRAINT fk_Lakare FOREIGN KEY (lakare) REFERENCES sjukfalllakare(id)"
+                + "CONSTRAINT fk_StartDate FOREIGN KEY (startdate) REFERENCES dim_date(id), "
+                + "CONSTRAINT fk_EndDate FOREIGN KEY (enddate) REFERENCES dim_date(id), "
+                + "CONSTRAINT fk_DxKapitel FOREIGN KEY (dxkapitel) REFERENCES dim_dx(id), "
+                + "CONSTRAINT fk_DxAvsnitt FOREIGN KEY (dxavsnitt) REFERENCES dim_dx(id), "
+                + "CONSTRAINT fk_DxKategori FOREIGN KEY (dxkategori) REFERENCES dim_dx(id), "
+                + "CONSTRAINT fk_DxKod FOREIGN KEY (dxkod) REFERENCES dim_dx(id), "
+                + "CONSTRAINT fk_Sjukskrivningsgrad FOREIGN KEY (sjukskrivningsgrad) REFERENCES dim_sjukskrivningsgrad(id), "
+                + "CONSTRAINT fk_Age FOREIGN KEY (age) REFERENCES dim_age(id), "
+                + "CONSTRAINT fk_Gender FOREIGN KEY (gender) REFERENCES dim_gender(id), "
+                + "CONSTRAINT fk_Lan FOREIGN KEY (lan) REFERENCES dim_lan(id), "
+                + "CONSTRAINT fk_Enhet FOREIGN KEY (enhet) REFERENCES dim_enheter(id), "
+                + "CONSTRAINT fk_Lakare FOREIGN KEY (lakare) REFERENCES dim_sjukfalllakare(id)"
                 + ");");
         stringBuilder.append(System.lineSeparator());
 
         includeIcdStructure(stringBuilder, icd10.getKapitel(true));
 
         for (SjukskrivningsGrad grad : SjukskrivningsGrad.values()) {
-            stringBuilder.append("INSERT INTO sjukskrivningsgrad(id, text) VALUES (" + grad.getNedsattning() + ", '" + grad.getLabel() + "');");
+            stringBuilder.append("INSERT INTO dim_sjukskrivningsgrad(id, text) VALUES (" + grad.getNedsattning() + ", '" + grad.getLabel() + "');");
             stringBuilder.append(System.lineSeparator());
         }
 
         final int maxAge = 200;
         for (int i = 0; i < maxAge; i++) {
-            stringBuilder.append("INSERT INTO age(id, text) VALUES (" + i + ", '" + i + " år');");
+            stringBuilder.append("INSERT INTO dim_age(id, text) VALUES (" + i + ", '" + i + " år');");
             stringBuilder.append(System.lineSeparator());
         }
 
         for (Kon kon : Kon.values()) {
-            stringBuilder.append("INSERT INTO gender(id, text) VALUES (" + kon.getNumberRepresentation() + ", '" + kon.name() + "');");
+            stringBuilder.append("INSERT INTO dim_gender(id, text) VALUES (" + kon.getNumberRepresentation() + ", '" + kon.name() + "');");
             stringBuilder.append(System.lineSeparator());
         }
 
         for (Map.Entry<String, String> lan : new Lan().getCodeToLanMap().entrySet()) {
-            stringBuilder.append("INSERT INTO lan(id, text) VALUES (" + Integer.parseInt(lan.getKey()) + ", '" + lan.getValue() + "');");
+            stringBuilder.append("INSERT INTO dim_lan(id, text) VALUES (" + Integer.parseInt(lan.getKey()) + ", '" + lan.getValue() + "');");
             stringBuilder.append(System.lineSeparator());
         }
 
-        final Map<HsaIdEnhet, Integer> enhets = Warehouse.getEnhetsView();
-        for (Map.Entry<HsaIdEnhet, Integer> enhet : enhets.entrySet()) {
-            stringBuilder.append("INSERT INTO enheter(id, hsaid) VALUES (" + enhet.getValue() + ", '" + enhet.getKey().toString() + "');");
+        final Map<HsaIdEnhet, Integer> enhetIds = Warehouse.getEnhetsView();
+        final List<Enhet> enhets = enhetManager.getEnhets(enhetIds.keySet());
+        for (Map.Entry<HsaIdEnhet, Integer> enhet : enhetIds.entrySet()) {
+            stringBuilder.append("INSERT INTO dim_enheter(id, hsaid) VALUES (" + enhet.getValue() + ", '" + enhet.getKey().toString() + "');");
             stringBuilder.append(System.lineSeparator());
         }
+
+        List<Integer> addedLakare = new ArrayList<>();
 
         for (Sjukfall sjukfall : sjukfalls) {
             insertDatesUpTo(stringBuilder, Math.max(sjukfall.getStart(), sjukfall.getEnd()));
 
             final Lakare lakare = sjukfall.getLastLakare();
-            stringBuilder.append("INSERT INTO sjukfalllakare(id, hsaid, gender, age) VALUES (" + lakare.getId() + ", '" + Warehouse.getLakarId(lakare.getId()).get().toString() + "', " + lakare.getKon().getNumberRepresentation() + ", " + lakare.getAge() + ");");
-            stringBuilder.append(System.lineSeparator());
+            if (!addedLakare.contains(lakare.getId())) {
+                stringBuilder.append("INSERT INTO dim_sjukfalllakare(id, hsaid, gender, age) VALUES (" + lakare.getId() + ", '" + Warehouse.getLakarId(lakare.getId()).get().toString() + "', " + lakare.getKon().getNumberRepresentation() + ", " + lakare.getAge() + ");");
+                stringBuilder.append(System.lineSeparator());
+                addedLakare.add(lakare.getId());
+            }
 
-            stringBuilder.append("INSERT INTO sjukfall(startdate, enddate, length, dxkapitel, dxavsnitt, dxkategori, dxkod, sjukskrivningsgrad, age, gender, lan, enhet, enkelt, lakare) VALUES ("
+            stringBuilder.append("INSERT INTO fact_sjukfall(startdate, enddate, length, dxkapitel, dxavsnitt, dxkategori, dxkod, sjukskrivningsgrad, age, gender, lan, enhet, enkelt, lakare) VALUES ("
                     + sjukfall.getStart() + ", "
                     + sjukfall.getEnd() + ", "
                     + sjukfall.getRealDays() + ", "
@@ -151,14 +164,14 @@ public class SjukfallForBiConverter {
 
     private void insertDatesUpTo(StringBuilder stringBuilder, int date) {
         for (; currentMaxDate <= date; currentMaxDate++) {
-            stringBuilder.append("INSERT INTO date(id, date) VALUES (" + currentMaxDate + ", '" + WidelineConverter.toDate(currentMaxDate).toString() + "');");
+            stringBuilder.append("INSERT INTO dim_date(id, date) VALUES (" + currentMaxDate + ", '" + WidelineConverter.toDate(currentMaxDate).toString() + "');");
             stringBuilder.append(System.lineSeparator());
         }
     }
 
     private void includeIcdStructure(StringBuilder stringBuilder, List<? extends Icd10.Id> icdStructure) {
         for (Icd10.Id icd : icdStructure) {
-            stringBuilder.append("INSERT INTO dx(id, icd10) VALUES (" + icd.toInt() + ", '" + icd.getId() + "');");
+            stringBuilder.append("INSERT INTO dim_dx(id, icd10) VALUES (" + icd.toInt() + ", '" + icd.getId() + "');");
             stringBuilder.append(System.lineSeparator());
             includeIcdStructure(stringBuilder, icd.getSubItems());
         }
