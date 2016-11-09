@@ -16,57 +16,53 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.processlog;
-
-import java.util.List;
-
-import javax.persistence.TypedQuery;
+package se.inera.statistics.service.processlog.message;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.service.processlog.AbstractProcessLog;
+import se.inera.statistics.service.processlog.ProcessLogImpl;
+
+import javax.persistence.TypedQuery;
+import java.util.List;
 
 @Component
-public class ProcessLogImpl extends AbstractProcessLog implements ProcessLog {
+public class ProcessMessageLogImpl extends AbstractProcessLog implements ProcessMessageLog {
     private static final Logger LOG = LoggerFactory.getLogger(ProcessLogImpl.class);
 
-    public ProcessLogImpl() {
-        super("PROCESSED_HSA");
+    public ProcessMessageLogImpl() {
+        super("PROCESSED_MESSAGE");
     }
 
     @Override
     @Transactional
-    public final long store(EventType type, String data, String correlationId, long timestamp) {
-        TypedQuery<IntygEvent> select = manager.createQuery("SELECT e FROM IntygEvent e WHERE e.correlationId = :correlationId AND e.type = :type", IntygEvent.class);
-        select.setParameter("correlationId", correlationId).setParameter("type", type);
-        List<IntygEvent> result = select.getResultList();
+    public long store(MessageEventType type, String data, String messageId, long timestamp) {
+        TypedQuery<MessageEvent> select = manager.createQuery("SELECT e FROM MessageEvent e WHERE e.correlationId = :correlationId AND e.type = :type", MessageEvent.class);
+        select.setParameter("correlationId", messageId).setParameter("type", type);
+        List<MessageEvent> result = select.getResultList();
         if (result.isEmpty()) {
-            IntygEvent event = new IntygEvent(type, data, correlationId, timestamp);
+            MessageEvent event = new MessageEvent(type, data, messageId, timestamp);
             manager.persist(event);
             return event.getId();
         } else {
-            LOG.info("Intyg already exists, ignoring: " + correlationId);
+            LOG.info("Message already exists, ignoring: " + messageId);
             return result.get(0).getId();
         }
-    }
-
-    @Transactional
-    public IntygEvent get(long id) {
-        return manager.find(IntygEvent.class, id);
-    }
-
-    @Override
-    @Transactional
-    public List<IntygEvent> getPending(int max) {
-        TypedQuery<IntygEvent> allQuery = manager.createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
-        allQuery.setParameter("lastId", getLastId());
-        allQuery.setMaxResults(max);
-        return allQuery.getResultList();
     }
 
     @Override
     public void confirm(long id) {
         confirmId(id);
+    }
+
+    @Override
+    @Transactional
+    public List<MessageEvent> getPending(int max) {
+        TypedQuery<MessageEvent> allQuery = manager.createQuery("SELECT e from MessageEvent e WHERE e.id > :lastId ORDER BY e.id ASC", MessageEvent.class);
+        allQuery.setParameter("lastId", getLastId());
+        allQuery.setMaxResults(max);
+        return allQuery.getResultList();
     }
 }

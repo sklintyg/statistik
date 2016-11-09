@@ -32,10 +32,6 @@ import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.Regi
 public class Receiver  {
     private static final Logger LOG = LoggerFactory.getLogger(Receiver.class);
 
-    public static final String CREATED = "created";
-    public static final String REVOKED = "revoked";
-    public static final String ACTION = "action";
-    public static final String CERTIFICATE_ID = "certificate-id";
     @Autowired
     private ProcessLog processLog;
 

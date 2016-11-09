@@ -25,6 +25,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;
+import se.inera.statistics.service.processlog.message.MessageEventType;
+import se.inera.statistics.service.processlog.message.ProcessMessageLog;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -37,11 +44,14 @@ public class JmsReceiver implements MessageListener {
     public static final String CREATED = "created";
     public static final String REVOKED = "revoked";
     public static final String ACTION = "action";
-    public static final String CERTIFICATE_ID = "certificate-id";
     public static final String MESSAGE_SENT = "message-sent";
+    public static final String CERTIFICATE_ID = "certificate-id";
+    public static final String MESSAGE_ID = "message-id";
 
     @Autowired
     private Receiver receiver;
+    @Autowired
+    private ProcessMessageLog processMessageLog;
 
     @Autowired
     @Qualifier("serviceMonitoringLogService")
@@ -55,12 +65,10 @@ public class JmsReceiver implements MessageListener {
                 long timestamp = rawMessage.getJMSTimestamp();
                 String typeName = rawMessage.getStringProperty(ACTION);
 
-                // INTYG-3515
-                if (!MESSAGE_SENT.equals(typeName)) {
-                    String certificateId = rawMessage.getStringProperty(CERTIFICATE_ID);
-                    receiver.accept(typeEvent(typeName), doc, certificateId, timestamp);
-                    LOG.info("Received intyg {}", certificateId);
-                    monitoringLogService.logInFromQueue(certificateId);
+                if (MESSAGE_SENT.equals(typeName)) {
+                    handleMessage(rawMessage, doc, typeName, timestamp);
+                } else {
+                    handleIntyg(rawMessage, doc, typeName, timestamp);
                 }
             } catch (JMSException e) {
                 throw new StatisticsJMSException("JMS error", e);
@@ -69,6 +77,33 @@ public class JmsReceiver implements MessageListener {
             LOG.error("Unrecognized message type " + rawMessage.getClass().getCanonicalName());
         }
         LOG.debug("Received intyg " + rawMessage + " .");
+    }
+
+    private void handleIntyg(Message rawMessage, String doc, String typeName, long timestamp) throws JMSException {
+        String certificateId = rawMessage.getStringProperty(CERTIFICATE_ID);
+        receiver.accept(typeEvent(typeName), doc, certificateId, timestamp);
+        LOG.info("Received intyg {}", certificateId);
+        monitoringLogService.logInFromQueue(certificateId);
+    }
+
+    private void handleMessage(Message rawMessage, String doc, String typeName, long timestamp) throws JMSException {
+        String messageId = rawMessage.getStringProperty(MESSAGE_ID);
+        processMessageLog.store(typeMessageEvent(typeName), doc, messageId, timestamp);
+        LOG.info("Received message {}", messageId);
+        monitoringLogService.logInFromQueue(messageId);
+    }
+
+    private static MessageEventType typeMessageEvent(String typeName) {
+        if (typeName == null) {
+            LOG.error("Type should not be null for message");
+            return MessageEventType.SENT;
+        }
+        switch (typeName.toLowerCase()) {
+            case MESSAGE_SENT:
+                return MessageEventType.SENT;
+            default:
+                return MessageEventType.SENT;
+        }
     }
 
     private static EventType typeEvent(String typeName) {
