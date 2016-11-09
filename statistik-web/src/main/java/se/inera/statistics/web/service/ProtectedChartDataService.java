@@ -45,12 +45,7 @@ import org.springframework.stereotype.Service;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
@@ -160,6 +155,37 @@ public class ProtectedChartDataService {
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getNumberOfCasesPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
+        final Filter filter = filterSettings.getFilter();
+        final Range range = filterSettings.getRange();
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonthTvarsnitt(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleDetailsData result = SimpleDualSexConverter.newGenericTvarsnitt().convert(casesPerMonth, filterSettings);
+        return getResponse(result, csv, request);
+    }
+
+    /**
+     * Gets meddelanden per manad for verksamhetId.
+     */
+    @GET
+    @Path("getNumberOfMeddelandenPerMonth{csv:(/csv)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfMeddelandenPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(filterSettings.getFilter().getPredicate(), filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleDetailsData result = new PeriodConverter().convert(casesPerMonth, filterSettings);
+        return getResponse(result, csv, request);
+    }
+
+    @GET
+    @Path("getNumberOfMeddelandenPerMonthTvarsnitt{csv:(/csv)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfMeddelandenPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();

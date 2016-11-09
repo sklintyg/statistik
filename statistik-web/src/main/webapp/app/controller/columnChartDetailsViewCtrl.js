@@ -386,6 +386,26 @@ angular.module('StatisticsApp').casesPerMonthTvarsnittConfig =
     return conf;
 };
 
+angular.module('StatisticsApp').meddelandenPerMonthTvarsnittConfig =
+    /** @ngInject */
+    function (messageService) {
+    'use strict';
+
+    var conf = {};
+    conf.dataFetcherVerksamhet = 'getNumberOfMeddelandenPerMonthTvarsnittVerksamhet';
+    conf.exportTableUrlVerksamhet = function () {
+        return 'api/verksamhet/getNumberOfMeddelandenPerMonthTvarsnitt/csv';
+    };
+    conf.title = messageService.getProperty('title.meddelanden');
+    conf.chartXAxisTitle = '';
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '/verksamhet/meddelanden', active: false},
+        {description: 'Tvärsnitt', state: '/verksamhet/meddelandenTvarsnitt', active: true}];
+
+    return conf;
+};
+
 
 angular.module('StatisticsApp').longSickLeavesTvarsnittConfig =
     /** @ngInject */
