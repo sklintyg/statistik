@@ -55,7 +55,13 @@ public class SjukfallForBiConverter {
 
         stringBuilder.append("CREATE TABLE dim_date (id INT, date DATE, PRIMARY KEY (id));");
         stringBuilder.append(System.lineSeparator());
-        stringBuilder.append("CREATE TABLE dim_dx (id INT, icd10 varchar(7), PRIMARY KEY (id));");
+        stringBuilder.append("CREATE TABLE dim_dx_kapitel (id INT, icd10 varchar(7), PRIMARY KEY (id));");
+        stringBuilder.append(System.lineSeparator());
+        stringBuilder.append("CREATE TABLE dim_dx_avsnitt (id INT, icd10 varchar(7), kapitel INT, PRIMARY KEY (id), CONSTRAINT fk_avsnitt_kapitel FOREIGN KEY (kapitel) REFERENCES dim_dx_kapitel(id));");
+        stringBuilder.append(System.lineSeparator());
+        stringBuilder.append("CREATE TABLE dim_dx_kategori (id INT, icd10 varchar(7), kapitel INT, avsnitt INT, PRIMARY KEY (id), CONSTRAINT fk_kategori_kapitel FOREIGN KEY (kapitel) REFERENCES dim_dx_kapitel(id), CONSTRAINT fk_kategori_avsnitt FOREIGN KEY (avsnitt) REFERENCES dim_dx_avsnitt(id));");
+        stringBuilder.append(System.lineSeparator());
+        stringBuilder.append("CREATE TABLE dim_dx_kod (id INT, icd10 varchar(7), kapitel INT, avsnitt INT, kategori INT, PRIMARY KEY (id), CONSTRAINT fk_kod_kapitel FOREIGN KEY (kapitel) REFERENCES dim_dx_kapitel(id), CONSTRAINT fk_kod_avsnitt FOREIGN KEY (avsnitt) REFERENCES dim_dx_avsnitt(id), CONSTRAINT fk_kod_kategori FOREIGN KEY (kategori) REFERENCES dim_dx_kategori(id));");
         stringBuilder.append(System.lineSeparator());
         stringBuilder.append("CREATE TABLE dim_sjukskrivningsgrad (id INT, text varchar(20), PRIMARY KEY (id));");
         stringBuilder.append(System.lineSeparator());
@@ -70,6 +76,7 @@ public class SjukfallForBiConverter {
         stringBuilder.append("CREATE TABLE dim_sjukfalllakare (id INT, hsaid varchar(100), gender INT, age INT, PRIMARY KEY (id));");
         stringBuilder.append(System.lineSeparator());
         stringBuilder.append("CREATE TABLE fact_sjukfall ("
+                + "id INT NOT NULL AUTO_INCREMENT, "
                 + "startdate INT, "
                 + "enddate INT, "
                 + "length INT, "
@@ -84,12 +91,13 @@ public class SjukfallForBiConverter {
                 + "enhet INT, "
                 + "enkelt BOOLEAN, "
                 + "lakare INT, "
+                + "PRIMARY KEY (id), "
                 + "CONSTRAINT fk_StartDate FOREIGN KEY (startdate) REFERENCES dim_date(id), "
                 + "CONSTRAINT fk_EndDate FOREIGN KEY (enddate) REFERENCES dim_date(id), "
-                + "CONSTRAINT fk_DxKapitel FOREIGN KEY (dxkapitel) REFERENCES dim_dx(id), "
-                + "CONSTRAINT fk_DxAvsnitt FOREIGN KEY (dxavsnitt) REFERENCES dim_dx(id), "
-                + "CONSTRAINT fk_DxKategori FOREIGN KEY (dxkategori) REFERENCES dim_dx(id), "
-                + "CONSTRAINT fk_DxKod FOREIGN KEY (dxkod) REFERENCES dim_dx(id), "
+                + "CONSTRAINT fk_DxKapitel FOREIGN KEY (dxkapitel) REFERENCES dim_dx_kapitel(id), "
+                + "CONSTRAINT fk_DxAvsnitt FOREIGN KEY (dxavsnitt) REFERENCES dim_dx_avsnitt(id), "
+                + "CONSTRAINT fk_DxKategori FOREIGN KEY (dxkategori) REFERENCES dim_dx_kategori(id), "
+                + "CONSTRAINT fk_DxKod FOREIGN KEY (dxkod) REFERENCES dim_dx_kod(id), "
                 + "CONSTRAINT fk_Sjukskrivningsgrad FOREIGN KEY (sjukskrivningsgrad) REFERENCES dim_sjukskrivningsgrad(id), "
                 + "CONSTRAINT fk_Age FOREIGN KEY (age) REFERENCES dim_age(id), "
                 + "CONSTRAINT fk_Gender FOREIGN KEY (gender) REFERENCES dim_gender(id), "
@@ -171,8 +179,28 @@ public class SjukfallForBiConverter {
 
     private void includeIcdStructure(StringBuilder stringBuilder, List<? extends Icd10.Id> icdStructure) {
         for (Icd10.Id icd : icdStructure) {
-            stringBuilder.append("INSERT INTO dim_dx(id, icd10) VALUES (" + icd.toInt() + ", '" + icd.getId() + "');");
-            stringBuilder.append(System.lineSeparator());
+            if (icd instanceof Icd10.Kapitel) {
+                stringBuilder.append("INSERT INTO dim_dx_kapitel(id, icd10) VALUES (" + icd.toInt() + ", '" + icd.getId() + "');");
+                stringBuilder.append(System.lineSeparator());
+            } else if (icd instanceof Icd10.Avsnitt) {
+                final Icd10.Id kapitel = icd.getParent().get();
+                stringBuilder.append("INSERT INTO dim_dx_avsnitt(id, icd10, kapitel) VALUES (" + icd.toInt() + ", '" + icd.getId() + "', " + kapitel.toInt() + ");");
+                stringBuilder.append(System.lineSeparator());
+            } else if (icd instanceof Icd10.Kategori) {
+                final Icd10.Id avsnitt = icd.getParent().get();
+                final Icd10.Id kapitel = avsnitt.getParent().get();
+                stringBuilder.append("INSERT INTO dim_dx_kategori(id, icd10, kapitel, avsnitt) VALUES (" + icd.toInt() + ", '" + icd.getId() + "', " + kapitel.toInt() + ", " + avsnitt.toInt() + ");");
+                stringBuilder.append(System.lineSeparator());
+            } else if (icd instanceof Icd10.Kod) {
+                final Icd10.Id kategori = icd.getParent().get();
+                final Icd10.Id avsnitt = kategori.getParent().get();
+                final Icd10.Id kapitel = avsnitt.getParent().get();
+                stringBuilder.append("INSERT INTO dim_dx_kod(id, icd10, kapitel, avsnitt, kategori) VALUES (" + icd.toInt() + ", '" + icd.getId() + "', " + kapitel.toInt() + ", " + avsnitt.toInt() + ", " + kategori.toInt() + ");");
+                stringBuilder.append(System.lineSeparator());
+            } else {
+                throw new RuntimeException("Unknown icd type: " + icd);
+                //Unknown type
+            }
             includeIcdStructure(stringBuilder, icd.getSubItems());
         }
     }
