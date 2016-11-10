@@ -21,6 +21,7 @@ package se.inera.testsupport;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +35,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -67,6 +69,8 @@ import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.time.ChangableClock;
 import se.inera.statistics.web.service.ChartDataService;
+import se.inera.testsupport.fkrapport.FkReportCreator;
+import se.inera.testsupport.fkrapport.FkReportDataRow;
 import se.inera.testsupport.socialstyrelsenspecial.SosCalculatedRow;
 import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
 import se.inera.testsupport.socialstyrelsenspecial.SosRow;
@@ -246,7 +250,8 @@ public class RestSupportService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response insertPersonal(Personal personal) {
         LOG.info("Insert personal: " + personal);
-        hsaDataInjectable.addPersonal(new HsaIdLakare(personal.getId()), personal.getFirstName(), personal.getLastName(), personal.getKon(), personal.getAge(), personal.getBefattning());
+        hsaDataInjectable.addPersonal(new HsaIdLakare(personal.getId()), personal.getFirstName(), personal.getLastName(), personal.getKon(), personal.getAge(),
+                personal.getBefattning());
         return Response.ok().build();
     }
 
@@ -281,7 +286,7 @@ public class RestSupportService {
         LOG.info("For date: {}, insert county population: {}", date, countyPopulation);
         countyPopulationInjector.addCountyPopulation(countyPopulation, java.time.LocalDate.parse(date).getYear());
         final LocalDate nextYear = LocalDate.parse(date).plusYears(1);
-        countyPopulationManager.getCountyPopulation(new Range(nextYear, nextYear)); //Populate the cache in db
+        countyPopulationManager.getCountyPopulation(new Range(nextYear, nextYear)); // Populate the cache in db
         return Response.ok().build();
     }
 
@@ -295,7 +300,7 @@ public class RestSupportService {
     public Response getSosStatistics(@PathParam("dx") String dx) {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
         final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock);
-        final List<SosRow> sosReport =  sosReportCreator.getSosReport();
+        final List<SosRow> sosReport = sosReportCreator.getSosReport();
         return Response.ok(sosReport).build();
     }
 
@@ -325,6 +330,25 @@ public class RestSupportService {
         final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getStdDevValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
+    }
+
+    /**
+     * Get sjukfall year report requested by FK (INTYG-3165).
+     */
+    @GET
+    @Path("getFkYearReport")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public Response getFkYearReport(@QueryParam("dx") final List<String> customDiagnoses) {
+        List<String> dxList = customDiagnoses;
+        if (dxList == null || dxList.size() == 0) {
+            dxList = Arrays.asList("F32", "F43", "M54", "M17");
+        }
+        final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
+
+        final FkReportCreator fkReportCreator = new FkReportCreator(allVardgivare, sjukfallUtil, icd10, dxList, changableClock);
+        final List<FkReportDataRow> reportData = fkReportCreator.getReportData();
+        return Response.ok(reportData).build();
     }
 
 }
