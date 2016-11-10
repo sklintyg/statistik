@@ -69,7 +69,6 @@ class RuleLakarbefattning:
     def __init__(self, includeinternal=True):
         self.befattningar = { "201010" : "Överläkare", "201011" : "Distriktsläkare/Specialist allmänmedicin", "201012" : "Skolläkare", "201013" : "Företagsläkare", "202010" : "Specialistläkare", "203010" : "Läkare legitimerad, specialiseringstjänstgöring", "203090" : "Läkare legitimerad, annan", "204010" : "Läkare ej legitimerad, allmäntjänstgöring", "204090" : "Läkare ej legitimerad, annan" } 
         if includeinternal:
-            self.befattningar["-1"] = "Ej läkarbefattning"
             self.befattningar["-2"] = "Okänd befattning"
 
     def key(self, sjukfall, start, slut):
@@ -158,7 +157,6 @@ class RuleJamfor:
             m = int(data[1])
             i = int(data[0][1:])
             d = data[0][0]
-            print i,m,d
             i += 1
             while i < m:
                 if i < 10:
@@ -166,7 +164,6 @@ class RuleJamfor:
                 else:
                     self.diagnos.append(d + str(i))
                 i += 1
-            print self.diagnos
                 
 
     def key(self, sjukfall, start, slut):
@@ -281,8 +278,13 @@ class RuleSjukfall:
         pass
 
 class RuleDiagnos:
+    def __init__(self, tvarsnitt=False):
+        self.tvarsnitt = tvarsnitt
     def key(self, sjukfall, start, slut):
-        return sjukfall.diagnos(start,slut)
+        if self.tvarsnitt:
+            return sjukfall.diagnosis(start,slut)
+        else:
+            return sjukfall.diagnos(start,slut)
 
     def check(self, wideline):
         assert(wideline.index('diagnoskapitel'))
