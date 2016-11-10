@@ -1,0 +1,168 @@
+/**
+ * Copyright (C) 2016 Inera AB (http://www.inera.se)
+ *
+ * This file is part of statistik (https://github.com/sklintyg/statistik).
+ *
+ * statistik is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * statistik is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package se.inera.testsupport.fkrapport;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.when;
+
+import java.time.Clock;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
+
+/**
+ * Created by marced on 2016-11-08.
+ */
+public class FkReportCreatorTest {
+
+    @Mock
+    private Icd10 icd10 = new Icd10();
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+
+        final Icd10.Kapitel kapitel = new Icd10.Kapitel("F00-F99", "a");
+        final Icd10.Avsnitt avsnitt = new Icd10.Avsnitt("F00-F99", "aa", kapitel);
+        final Icd10.Kategori kategoriF32 = new Icd10.Kategori("F32", "aaa", avsnitt);
+        final Icd10.Kategori kategoriF33 = new Icd10.Kategori("F33", "aaa", avsnitt);
+
+        when(icd10.getKategori(eq("F32"))).thenReturn(kategoriF32);
+        when(icd10.getKategori(eq("F33"))).thenReturn(kategoriF33);
+
+    }
+
+    @Test
+    public void testDistributeFactRows() throws Exception {
+        // Arrange
+        final Clock clock = Clock.fixed(Instant.parse("2016-05-11T10:15:30.00Z"), ZoneId.systemDefault());
+        final Map<HsaIdVardgivare, Aisle> allVardgivare = new HashMap();// getTestData();
+
+        Icd10 icd10 = new Icd10();
+        final FkReportCreator fkReportCreator = new FkReportCreator(allVardgivare, new SjukfallUtil(), new Icd10(), null, clock);
+
+        List<FkFactRow> fkFactRows = new ArrayList<>();
+
+        // Should not be used (no females specified in resultrows
+        fkFactRows.add(new FkFactRow("F32", Kon.FEMALE, "10", 991));
+
+        // should match "Alla", "F32" and "F32+"
+        fkFactRows.add(new FkFactRow("F32", Kon.MALE, "10", 2));
+
+        // should match "Alla", "F32+" and "F320"
+        fkFactRows.add(new FkFactRow("F320", Kon.MALE, "10", 3));
+
+        // should match "Alla", "F32+" and "F321"
+        fkFactRows.add(new FkFactRow("F321", Kon.MALE, "10", 4));
+
+        // should match "Alla", "F32+"
+        fkFactRows.add(new FkFactRow("F3273", Kon.MALE, "10", 5));
+
+        // should only match "Alla" (not F33 with lansId 17)
+        fkFactRows.add(new FkFactRow("F33", Kon.MALE, "10", 10));
+
+        // should match "Alla" since it's a unknown landId
+        fkFactRows.add(new FkFactRow("F33", Kon.MALE, "17", 992));
+
+        List<FkReportDataRow> fkReportDataRows = new ArrayList<>();
+        fkReportDataRows.add(new FkReportDataRow("Alla", "(.*)", Kon.MALE, "10"));
+        fkReportDataRows.add(new FkReportDataRow("F32+", "F32(.*)", Kon.MALE, "10"));
+        fkReportDataRows.add(new FkReportDataRow("F320", "F320", Kon.MALE, "10"));
+        fkReportDataRows.add(new FkReportDataRow("F321", "F321", Kon.MALE, "10"));
+        fkReportDataRows.add(new FkReportDataRow("F33", "F33", Kon.MALE, "17"));
+        fkReportDataRows.add(new FkReportDataRow("F34", "F34", Kon.MALE, "10"));
+
+        // Act
+        final List<FkReportDataRow> result = fkReportCreator.distributeFactRows(fkFactRows, fkReportDataRows);
+
+        // Assert
+        assertEquals(6, result.size());
+        assertEquals("Alla", result.get(0).getDiagnos());
+        assertEquals(5, result.get(0).getAntal());
+        assertEquals(4.8, result.get(0).getMedel());
+        assertEquals(4.0, result.get(0).getMedian());
+
+        assertEquals("F32+", result.get(1).getDiagnos());
+        assertEquals(4, result.get(1).getAntal());
+        assertEquals(3.5, result.get(1).getMedel());
+        assertEquals(3.5, result.get(1).getMedian());
+
+        assertEquals("F320", result.get(2).getDiagnos());
+        assertEquals(1, result.get(2).getAntal());
+        assertEquals(3.0, result.get(2).getMedel());
+        assertEquals(3.0, result.get(2).getMedian());
+
+        assertEquals("F321", result.get(3).getDiagnos());
+        assertEquals(1, result.get(3).getAntal());
+        assertEquals(4.0, result.get(3).getMedel());
+        assertEquals(4.0, result.get(3).getMedian());
+
+        assertEquals("F33", result.get(4).getDiagnos());
+        assertEquals(1, result.get(4).getAntal());
+        assertEquals(992.0, result.get(4).getMedel());
+        assertEquals(992.0, result.get(4).getMedian());
+
+        assertEquals("F34", result.get(5).getDiagnos());
+        assertEquals(0, result.get(5).getAntal());
+        assertEquals(0.0, result.get(5).getMedel());
+        assertEquals(0.0, result.get(5).getMedian());
+
+    }
+
+    @Test
+    public void testCreateResultRowsForDiagnoses() throws Exception {
+        // Arrange
+        final Clock clock = Clock.fixed(Instant.parse("2016-05-11T10:15:30.00Z"), ZoneId.systemDefault());
+        final Map<HsaIdVardgivare, Aisle> allVardgivare = new HashMap();
+
+        List<String> codes = Arrays.asList("F32", "F33");
+        final FkReportCreator fkReportCreator = new FkReportCreator(allVardgivare, new SjukfallUtil(), icd10, codes, clock);
+
+        final List<FkReportDataRow> rows = fkReportCreator.createResultRowsForDiagnoses();
+
+        int nrLan = 22;
+        int nrKon = 2;
+        int rowsPerCode = nrKon * nrLan;
+
+        int expectedNrRows = (1 * nrLan * nrKon) + (codes.size() * 2 * rowsPerCode);
+
+        // Assert
+        assertEquals(expectedNrRows, rows.size());
+        assertEquals("Alla", rows.get(0).getDiagnos());
+        assertEquals("F32", rows.get(rowsPerCode).getDiagnos());
+        assertEquals("F33+", rows.get(expectedNrRows - 1).getDiagnos());
+
+    }
+}
