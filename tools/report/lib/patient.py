@@ -30,6 +30,9 @@ class Patient:
             self.intyg.append(intyg)
 
         def eval(self, res):
+            """Group the intygs for this patient into sjukfall and
+               return all the sjukfall for the patient.
+            """
             from sjukfall import Sjukfall
             tot = 0
             groups = []
