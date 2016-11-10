@@ -23,6 +23,7 @@
 class Group:
     def __init__(self, rule=None, threshold=False, agg=None, start=None, end=None):
         self.group = {}
+        # The aggregated result
         self.agg   = agg
         self.threshold = threshold
         self.rule = rule
@@ -44,11 +45,13 @@ class Group:
             raise Exception('Bad kon number: {} '.format(kon))
 
     def add(self, sjukfall):
+        """Evaluate the sjukfall for the group rule"""
         if self.start and self.end:
             if not sjukfall.valid(self.start, self.end):
                 self.notvalid += 1
                 return
 
+        # Evaluate the rule, a list of values may be returned.
         key = self.rule.key(sjukfall, self.start, self.end)
         if key:
             if isinstance(key, list):
@@ -58,7 +61,7 @@ class Group:
                 self.__add(key, 1, sjukfall.kon())
 
     def sum(self):
-        # print "Not valid: ".format(self.notvalid)
+        """Summarize all the values and possible apply a threshold."""
         tot = 0
         for k, v in self.group.items():
             if self.threshold is False or v[0] >= THRESHOLD:
