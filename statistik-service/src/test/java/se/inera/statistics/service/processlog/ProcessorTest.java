@@ -41,6 +41,10 @@ import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.WidelineManager;
+import se.inera.statistics.service.warehouse.message.MessageWidelineManager;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProcessorTest {
@@ -48,19 +52,21 @@ public class ProcessorTest {
     private JsonNode utlatande;
 
     @Mock
-    private WidelineManager widelineManager = mock(WidelineManager.class);
+    private MessageWidelineManager messageWidelineManager;
+    @Mock
+    private WidelineManager widelineManager;
 
     @Mock
     private IntygCommonManager intygCommonManager = mock(IntygCommonManager.class);
 
     @Mock
-    private VardgivareManager vardgivareManager = mock(VardgivareManager.class);
+    private VardgivareManager vardgivareManager;
 
     @Mock
-    private LakareManager lakareManager = mock(LakareManager.class);
+    private LakareManager lakareManager;
 
     @InjectMocks
-    private Processor processor = new Processor();
+    private Processor processor;
 
     @Before
     public void init() {

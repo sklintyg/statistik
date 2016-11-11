@@ -22,18 +22,20 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
-        logicalFilePath="liquibase/db.changelog-v35.0_create_meddelandehandelse_table.xml">
-    <changeSet id="35_create_event_table" author="martin.hesslund">
-        <createTable tableName="meddelandehandelse">
-            <column name="id" type="bigint" autoIncrement="true">
+        logicalFilePath="liquibase/db.changelog-v36.0_create_messagewideline_table.xml">
+    <changeSet id="36.0_create_messagewideline_table" author="martin.hesslund">
+        <createTable tableName="messsagewideline">
+            <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="type" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="data" type="text"/>
-            <column name="correlationId" type="text"/>
-            <column name="timestamp" type="bigint"/>
+            <column name="logId" type="int"/>
+            <column name="meddelandeId" type="varchar(50)"/>
+            <column name="intygsId" type="varchar(50)"/>
+            <column name="meddelandeTyp" type="varchar(50)"/>
+            <column name="patientid" type="varchar(128)"/>
+            <column name="skickatTidpunkt" type="dateTime"/>
+            <column name="skickatAv" type="varchar(7)"/>
+            <column name="amneCode" type="varchar(10)"/>
         </createTable>
     </changeSet>
 

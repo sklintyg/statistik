@@ -95,6 +95,6 @@ public class ProcessMessageLogImplTest extends ProcessMessageLogImpl {
 
     @Transactional
     private MessageEvent get(long id) {
-        return manager.find(MessageEvent.class, id);
+        return getManager().find(MessageEvent.class, id);
     }
 }

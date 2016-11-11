@@ -92,6 +92,7 @@
     <bean class="se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhetManager"/>
     <bean class="se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateManager"/>
     <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper"/>
+    <bean class="se.inera.statistics.service.helper.SendMessageToCareHelper"/>
 
     <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactPopulator" />
     <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
@@ -99,6 +100,8 @@
     <bean class="se.inera.statistics.service.warehouse.WidelineLoader" />
     <bean class="se.inera.statistics.service.warehouse.EnhetLoader" />
     <bean class="se.inera.statistics.service.warehouse.SjukfallUtil" />
+    <bean class="se.inera.statistics.service.warehouse.message.MessageWidelineManager" />
+    <bean class="se.inera.statistics.service.warehouse.message.MessageWidelineConverter" />
     <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable" />
     <bean class="se.inera.statistics.service.warehouse.IntygCommonManager" />
     <bean class="se.inera.statistics.service.warehouse.IntygCommonConverter" />

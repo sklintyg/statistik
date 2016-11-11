@@ -39,12 +39,12 @@ public class ProcessMessageLogImpl extends AbstractProcessLog implements Process
     @Override
     @Transactional
     public long store(MessageEventType type, String data, String messageId, long timestamp) {
-        TypedQuery<MessageEvent> select = manager.createQuery("SELECT e FROM MessageEvent e WHERE e.correlationId = :correlationId AND e.type = :type", MessageEvent.class);
+        TypedQuery<MessageEvent> select = getManager().createQuery("SELECT e FROM MessageEvent e WHERE e.correlationId = :correlationId AND e.type = :type", MessageEvent.class);
         select.setParameter("correlationId", messageId).setParameter("type", type);
         List<MessageEvent> result = select.getResultList();
         if (result.isEmpty()) {
             MessageEvent event = new MessageEvent(type, data, messageId, timestamp);
-            manager.persist(event);
+            getManager().persist(event);
             return event.getId();
         } else {
             LOG.info("Message already exists, ignoring: " + messageId);
@@ -60,7 +60,7 @@ public class ProcessMessageLogImpl extends AbstractProcessLog implements Process
     @Override
     @Transactional
     public List<MessageEvent> getPending(int max) {
-        TypedQuery<MessageEvent> allQuery = manager.createQuery("SELECT e from MessageEvent e WHERE e.id > :lastId ORDER BY e.id ASC", MessageEvent.class);
+        TypedQuery<MessageEvent> allQuery = getManager().createQuery("SELECT e from MessageEvent e WHERE e.id > :lastId ORDER BY e.id ASC", MessageEvent.class);
         allQuery.setParameter("lastId", getLastId());
         allQuery.setMaxResults(max);
         return allQuery.getResultList();

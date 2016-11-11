@@ -23,14 +23,14 @@ import javax.persistence.PersistenceContext;
 
 public abstract class AbstractProcessLog {
 
-    private final String PROCESSED_ID;
-
-    protected AbstractProcessLog(String processId) {
-        PROCESSED_ID = processId;
-    }
+    private final String processedId;
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
-    protected EntityManager manager;
+    private EntityManager manager;
+
+    protected AbstractProcessLog(String processId) {
+        this.processedId = processId;
+    }
 
     protected long getLastId() {
         EventPointer pointer = getPointerQuery();
@@ -42,17 +42,21 @@ public abstract class AbstractProcessLog {
     }
 
     private EventPointer getPointerQuery() {
-        return manager.find(EventPointer.class, PROCESSED_ID);
+        return manager.find(EventPointer.class, processedId);
     }
 
     protected void confirmId(long id) {
         EventPointer pointer = getPointerQuery();
         if (pointer == null) {
-            pointer = new EventPointer(PROCESSED_ID, id);
+            pointer = new EventPointer(processedId, id);
             manager.persist(pointer);
         } else {
             pointer.setEventId(id);
             manager.merge(pointer);
         }
+    }
+
+    protected EntityManager getManager() {
+        return manager;
     }
 }
