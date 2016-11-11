@@ -127,6 +127,7 @@ angular.module('StatisticsApp')
 
                 function enhetsFilter() {
                     var filter = $scope.businessFilter.geographyBusinessIds;
+                    filter = _.uniq(filter);
 
                     var enheter = [];
 
@@ -206,6 +207,7 @@ angular.module('StatisticsApp')
 
                 function sjukskrivningsLangdsFilter() {
                     var filter = $scope.businessFilter.selectedSjukskrivningslangdIds;
+                    filter = _.uniq(filter);
 
                     var sjukskrivningslangder = [];
                     angular.forEach(filter, function(sjukskrivningslangd) {
@@ -241,6 +243,7 @@ angular.module('StatisticsApp')
 
                 function aldersGruppsFilter() {
                     var filter = $scope.businessFilter.selectedAldersgruppIds;
+                    filter = _.uniq(filter);
 
                     var aldersgrupper = [];
                     angular.forEach(filter, function(aldersGrupp) {
@@ -291,7 +294,7 @@ angular.module('StatisticsApp')
                         var filterElement = element.find('.filter-level .col-xs-12');
                         var width = filterElement.width();
                         var allChips = $scope.allChips.length;
-                        var numberOfChips = Math.floor((width/200) * 2);
+                        var numberOfChips = Math.floor((width/210) * 2);
 
                         if (numberOfChips < allChips) {
                             numberOfChips--;
