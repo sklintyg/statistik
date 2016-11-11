@@ -18,16 +18,9 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -44,10 +37,14 @@ import se.inera.statistics.service.report.util.Icd10.Kategori;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
-public class WidelineConverter {
+public class WidelineConverter extends AbstractWidlineConverter {
 
     private static final LocalDate ERA = LocalDate.parse("2000-01-01");
     public static final int QUARTER = 25;
@@ -223,32 +220,6 @@ public class WidelineConverter {
     private void checkSlutdatum(List<String> errors, int slutdatum) {
         if (slutdatum > toDay(LocalDate.now(clock).plusYears(MAX_YEARS_INTO_FUTURE))) {
             errors.add("Illegal slutdatum: " + slutdatum);
-        }
-    }
-
-    private void checkField(List<String> errors, String field, String fieldName) {
-        if (field == null || field.isEmpty()) {
-            errors.add(fieldName + " not found.");
-        }
-    }
-
-    private void checkField(List<String> errors, HsaIdAny field, String fieldName) {
-        if (field == null || field.getId().isEmpty()) {
-            errors.add(fieldName + " not found.");
-        }
-    }
-
-    private void checkField(List<String> errors, String field, String fieldName, int max) {
-        checkField(errors, field, fieldName);
-        if (field != null && field.length() > max) {
-            errors.add(fieldName + " input too long");
-        }
-    }
-
-    private void checkField(List<String> errors, HsaIdAny field, String fieldName, int max) {
-        checkField(errors, field, fieldName);
-        if (field != null && field.getId().length() > max) {
-            errors.add(fieldName + " input too long");
         }
     }
 

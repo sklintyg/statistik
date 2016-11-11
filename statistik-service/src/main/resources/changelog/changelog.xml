@@ -61,5 +61,6 @@
     <include file="changelog/db.changelog-v33.0_LandstingEnhetUpdateOperationToUpperCase.xml"/>
     <include file="changelog/db.changelog-v34.0_add_intyg_common_table.xml"/>
     <include file="changelog/db.changelog-v35.0_create_meddelandehandelse_table.xml"/>
+    <include file="changelog/db.changelog-v36.0_create_messagewideline_table.xml"/>
 
 </databaseChangeLog>

@@ -38,12 +38,12 @@ public class ProcessLogImpl extends AbstractProcessLog implements ProcessLog {
     @Override
     @Transactional
     public final long store(EventType type, String data, String correlationId, long timestamp) {
-        TypedQuery<IntygEvent> select = manager.createQuery("SELECT e FROM IntygEvent e WHERE e.correlationId = :correlationId AND e.type = :type", IntygEvent.class);
+        TypedQuery<IntygEvent> select = getManager().createQuery("SELECT e FROM IntygEvent e WHERE e.correlationId = :correlationId AND e.type = :type", IntygEvent.class);
         select.setParameter("correlationId", correlationId).setParameter("type", type);
         List<IntygEvent> result = select.getResultList();
         if (result.isEmpty()) {
             IntygEvent event = new IntygEvent(type, data, correlationId, timestamp);
-            manager.persist(event);
+            getManager().persist(event);
             return event.getId();
         } else {
             LOG.info("Intyg already exists, ignoring: " + correlationId);
@@ -53,13 +53,13 @@ public class ProcessLogImpl extends AbstractProcessLog implements ProcessLog {
 
     @Transactional
     public IntygEvent get(long id) {
-        return manager.find(IntygEvent.class, id);
+        return getManager().find(IntygEvent.class, id);
     }
 
     @Override
     @Transactional
     public List<IntygEvent> getPending(int max) {
-        TypedQuery<IntygEvent> allQuery = manager.createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
+        TypedQuery<IntygEvent> allQuery = getManager().createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
         allQuery.setParameter("lastId", getLastId());
         allQuery.setMaxResults(max);
         return allQuery.getResultList();

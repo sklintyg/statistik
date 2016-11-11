@@ -81,6 +81,7 @@
     <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
     <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
     <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper"/>
+    <bean class="se.inera.statistics.service.helper.SendMessageToCareHelper"/>
 
     <bean id="dataGenerator" class="se.inera.statistics.service.demo.LargeTestDataGenerator" />
 
@@ -92,6 +93,8 @@
     <bean class="se.inera.statistics.service.warehouse.WidelineLoader" />
     <bean class="se.inera.statistics.service.warehouse.EnhetLoader" />
     <bean class="se.inera.statistics.service.warehouse.SjukfallUtil" />
+    <bean class="se.inera.statistics.service.warehouse.message.MessageWidelineManager" />
+    <bean class="se.inera.statistics.service.warehouse.message.MessageWidelineConverter" />
     <bean class="java.time.Clock" factory-method="systemDefaultZone"/>
 
 </beans>

@@ -18,17 +18,18 @@
  */
 package se.inera.statistics.service.processlog;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
+import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.WidelineManager;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
+import se.inera.statistics.service.warehouse.message.MessageWidelineManager;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
+import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
 
 public class Processor {
     @Autowired
@@ -36,6 +37,9 @@ public class Processor {
 
     @Autowired
     private IntygCommonManager intygCommonManager;
+
+    @Autowired
+    private MessageWidelineManager messageWidelineManagar;
 
     @Autowired
     private VardgivareManager vardgivareManager;
@@ -92,6 +96,10 @@ public class Processor {
     private void handleWithWidelineManager(RegisterCertificateType utlatande, HsaInfo hsa, long logId, String correlationId, EventType type) {
         final Patientdata patientData = registerCertificateHelper.getPatientData(utlatande);
         widelineManager.accept(utlatande, patientData, hsa, logId, correlationId, type);
+    }
+
+    public void accept(SendMessageToCareType message, long logId, String messageId, MessageEventType type) {
+        messageWidelineManagar.accept(message, logId, messageId, type);
     }
 
     private void saveEnhetAndLakare(HsaInfo hsa, String enhetId) {
