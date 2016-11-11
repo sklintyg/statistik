@@ -1,6 +1,6 @@
 <div data-ng-class="{'inline-block': !showLabel}">
     <label data-ng-if="showLabel" class="dropdown-label" for="select-diagnoses{{$id}}">{{textData.titleText}}</label><br data-ng-if="showLabel"/>
-    <button class="btn btn-default" data-toggle="modal" data-target="#diagnosisModal{{$id}}" id="select-diagnoses{{$id}}" ng-click="openDialogClicked()">
+    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#diagnosisModal{{$id}}" id="select-diagnoses{{$id}}" ng-click="openDialogClicked()">
         <i data-ng-if="buttonIcon" class="fa {{buttonIcon}}"></i>
         {{textData.buttonLabelText}}
     </button>
@@ -35,7 +35,6 @@
                                 <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" />
                             </li>
                         </ul>
-                        <button type="submit" class="hidden"></button>
                     </form>
 
                     <ng-transclude></ng-transclude>
@@ -44,7 +43,7 @@
 
                 <div class="modal-footer">
                     <label class="pull-left">{{textData.firstLevelLabelText}}{{selectedTertiaryCount}} {{textData.secondLevelLabelText}}{{selectedSecondaryCount}} {{textData.thirdLevelLabelText}}{{selectedLeavesCountAll}}</label>
-                    <button class="btn btn-success" data-dismiss="modal" aria-hidden="true" data-ng-click="clickedDone()"><span message key="lbl.filter.modal.spara-stang"></span></button>
+                    <button class="btn btn-success" type="button" data-dismiss="modal" aria-hidden="true" data-ng-click="clickedDone()"><span message key="lbl.filter.modal.spara-stang"></span></button>
                 </div>
 
             </div>
