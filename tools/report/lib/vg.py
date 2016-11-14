@@ -36,8 +36,9 @@ class VG:
             self.patienter[intyg.id] = Patient(intyg)
 
     def eval(self, group):
-        for k,v in self.patienter.items():
-            v.eval(group)
+        """Evaluate the rule to all sjukfall for this VG."""
+        for k,patient in self.patienter.items():
+            patient.eval(group)
         return group.sum()
 
 

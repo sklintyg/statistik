@@ -31,19 +31,21 @@ class Patient:
 
         def eval(self, res):
             """Group the intygs for this patient into sjukfall and
-               return all the sjukfall for the patient.
+               apply the group rule (res).
             """
             from sjukfall import Sjukfall
             tot = 0
             groups = []
         
             intyg = [ i for i in self.intyg ]
-
+            # Split the intygs into sjukfall
             while len(intyg) > 0:
                 sjukfall = Sjukfall(intyg.pop())
                 groups.append(sjukfall)
                 match = True
-                # Keep matching until no matches
+                # For each intyg added to the sjukfall we need to loop
+                # over the remaining intygs, since the sjukfall period
+                # has been extended and may match other intygs.
                 while match:
                     match = False
                     tmp = []
@@ -54,6 +56,7 @@ class Patient:
                             tmp.append(i)
                     intyg = tmp
 
+            # Evaluate the group rule (res) to each sjukfall
             for group in groups:
                 # Add each sjukfall to the result set
                 res.add(group)
