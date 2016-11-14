@@ -144,7 +144,13 @@ class Sjukfall:
         return None
 
     def diagnosis(self, start, slut):
-        """ Get all diagnosis for the period """
+        """Get all diagnosis for the period.
+           According to At175TvarsnittsrapporterSjukfallKanFinnasiMerAn1Grupp:
+           'När en rapport visas som tvärsnitt, kan ett sjukfall förekomma 
+           i flera grupper'
+
+           So we return all diagnosis for the period.
+        """
         res = {}
         for i in self.intyg:
             if i.valid(start, slut):

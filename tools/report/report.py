@@ -57,6 +57,9 @@ Filter:
     -c <hsaid>       Vårdenhet ID
     -8 <lanskod>     Länskod (2siffror)
     -t               Använd tröskelvärde (%s) för vårdgivare and man/kvinna
+    -T               Använd tvärsnitt istället för tidsserie. För vissa
+                     rapporter sker urvalet annorlunda för tvärsnitt, tex
+                     för diagnos.
 
 Gruppera på:
     -s               Sjukfall
@@ -176,8 +179,9 @@ def main(argv):
     make_dbdump = None
     internalbefattning = True
     ranges = None
+    tvarsnitt = False
 
-    opts, args = getopt.getopt(argv, "tdapglni:ekKL:hsE:Nj:9:v:8:c:w:b:q:m:",['dump', 'nointernalbefattning'])
+    opts, args = getopt.getopt(argv, "tdapglni:ekKL:hsE:Nj:9:v:8:c:w:b:q:m:Tf:",['dump', 'nointernalbefattning'])
     for opt, arg in opts:
         if opt == '-t':
             threshold = True
@@ -190,7 +194,7 @@ def main(argv):
         elif opt == '-s':
             rule = RuleSjukfall()
         elif opt == '-d':
-            rule = RuleDiagnos()
+            rule = RuleDiagnos(tvarsnitt)
         elif opt == '-a':
             rule = RuleAlder()
         elif opt == '-p':
@@ -244,6 +248,8 @@ def main(argv):
             careunit = arg
         elif opt == '--nointernalbefattning':
             internalbefattning = False
+        elif opt == '-T':
+            tvarsnitt = True
 
     if not ranges:
         interval = STANDARD_INTERVALL
