@@ -21,6 +21,7 @@ package se.inera.statistics.service.warehouse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,12 +29,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.Range;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
+
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.Range;
 
 public class SjukfallExtended {
 
@@ -51,6 +54,21 @@ public class SjukfallExtended {
     private Set<Integer> enhets = new HashSet<>();
     private SjukfallExtended extending;
     private List<Sjukskrivningsperiod> sjukskrivningsperiods = new ArrayList<>();
+    private static final Comparator<Fact> START_DATUM_SORTER = new Comparator<Fact>() {
+        @Override
+        public int compare(Fact f1, Fact f2) {
+            if (f1.getStartdatum() - f2.getStartdatum() == 0) {
+                final int intygsIdCompare = Long.compare(f1.getLakarintyg(), f2.getLakarintyg());
+                if (intygsIdCompare == 0) {
+                    return f1.getSjukskrivningsgrad() - f2.getSjukskrivningsgrad();
+                } else {
+                    return intygsIdCompare;
+                }
+            } else {
+                return f1.getStartdatum() - f2.getStartdatum();
+            }
+        }
+    };
 
     public SjukfallExtended(Fact line) {
         start = line.getStartdatum();
@@ -128,7 +146,8 @@ public class SjukfallExtended {
      * If so, this sjukfall is updated and return,
      * otherwise a new sjukfall is created.
      *
-     * @param line line
+     * @param line
+     *            line
      * @return join will either return the same, possibly modified (i.e. this), Sjukfall-object, or a new object
      */
     public SjukfallExtended join(Fact line) {
@@ -189,12 +208,16 @@ public class SjukfallExtended {
     }
 
     public int getRealDays() {
-        return getAllDates().size();
+        return getAllDates(sjukskrivningsperiods).size();
     }
 
-    private HashSet<Integer> getAllDates() {
+    public int getRealDays(List<Sjukskrivningsperiod> periods) {
+        return getAllDates(periods).size();
+    }
+
+    private HashSet<Integer> getAllDates(List<Sjukskrivningsperiod> periods) {
         final HashSet<Integer> allDates = new HashSet<>();
-        for (Sjukskrivningsperiod sjukskrivningsperiod : sjukskrivningsperiods) {
+        for (Sjukskrivningsperiod sjukskrivningsperiod : periods) {
             allDates.addAll(sjukskrivningsperiod.getAllDatesInPeriod());
         }
         return allDates;
@@ -233,22 +256,18 @@ public class SjukfallExtended {
     }
 
     private Fact getLastFact() {
-        Fact currentLastFound = null;
-        for (Fact fact : facts) {
-            if (currentLastFound == null) {
-                currentLastFound = fact;
-            } else if (fact.getStartdatum() > currentLastFound.getStartdatum()) {
-                currentLastFound = fact;
-            } else if (fact.getStartdatum() == currentLastFound.getStartdatum()) {
-                if (fact.getLakarintyg() > currentLastFound.getLakarintyg()) {
-                    currentLastFound = fact;
-                } else if (fact.getLakarintyg() == currentLastFound.getLakarintyg()
-                        && fact.getSjukskrivningsgrad() > currentLastFound.getSjukskrivningsgrad()) {
-                    currentLastFound = fact;
-                }
-            }
-        }
-        return currentLastFound;
+        facts.sort(START_DATUM_SORTER);
+        return facts.get(facts.size() - 1);
+    }
+
+    private Stream<Fact> getFirstIntygFacts() {
+        Fact firstFact = getFirstFact();
+        return facts.stream().filter(fact -> firstFact.getLakarintyg() == fact.getLakarintyg());
+    }
+
+    private Fact getFirstFact() {
+        facts.sort(START_DATUM_SORTER);
+        return facts.get(0);
     }
 
     public boolean isExtended() {
@@ -281,7 +300,7 @@ public class SjukfallExtended {
 
     public SjukfallExtended extendWithRealDaysWithinPeriod(SjukfallExtended previous) {
         final SjukfallExtended sjukfall = new SjukfallExtended(this);
-        final Set<Integer> datesWithinPeriod = Sets.filter(previous.getAllDates(), new Predicate<Integer>() {
+        final Set<Integer> datesWithinPeriod = Sets.filter(previous.getAllDates(previous.sjukskrivningsperiods), new Predicate<Integer>() {
             @Override
             public boolean apply(Integer date) {
                 return date >= start && date <= end;
@@ -325,6 +344,12 @@ public class SjukfallExtended {
         return false;
     }
 
+    public int getRealDaysFirstIntyg() {
+        final List<Sjukskrivningsperiod> firstIntygPeriods = getFirstIntygFacts()
+                .map(fact -> new Sjukskrivningsperiod(fact.getStartdatum(), fact.getSjukskrivningslangd())).collect(Collectors.toList());
+        return getRealDays(firstIntygPeriods);
+    }
+
     final class Diagnos {
         private final int diagnoskapitel;
         private final int diagnosavsnitt;
@@ -343,7 +368,8 @@ public class SjukfallExtended {
         }
 
         private Diagnos(Fact fact) {
-            this(fact.getStartdatum(), fact.getSlutdatum(), fact.getDiagnoskapitel(), fact.getDiagnosavsnitt(), fact.getDiagnoskategori(), fact.getDiagnoskod());
+            this(fact.getStartdatum(), fact.getSlutdatum(), fact.getDiagnoskapitel(), fact.getDiagnosavsnitt(), fact.getDiagnoskategori(),
+                    fact.getDiagnoskod());
         }
 
         public int getDiagnoskapitel() {

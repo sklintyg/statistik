@@ -153,7 +153,7 @@ public class FkReportCreatorTest {
         final List<FkReportDataRow> rows = fkReportCreator.createResultRowsForDiagnoses();
 
         int nrLan = 22;
-        int nrKon = 2;
+        int nrKon = 3;
         int rowsPerCode = nrKon * nrLan;
 
         int expectedNrRows = (1 * nrLan * nrKon) + (codes.size() * 2 * rowsPerCode);
