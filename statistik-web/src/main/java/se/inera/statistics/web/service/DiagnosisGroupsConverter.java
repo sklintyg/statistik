@@ -32,15 +32,8 @@ import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
 public class DiagnosisGroupsConverter extends MultiDualSexConverter<DiagnosgruppResponse> {
 
@@ -87,7 +80,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
         final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
-        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse, filterSettings.getMessage());
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse, Arrays.asList(filterSettings.getMessage()));
     }
 
     public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> diagnosisGroups) {

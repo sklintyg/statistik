@@ -18,16 +18,20 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import com.sun.istack.NotNull;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
@@ -41,24 +45,19 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.web.error.ErrorSeverity;
+import se.inera.statistics.web.error.ErrorType;
+import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.RangeMessageDTO;
 import se.inera.statistics.web.model.Verksamhet;
 
-import javax.servlet.http.HttpServletRequest;
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.google.common.base.Function;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.sun.istack.NotNull;
 
 @Component
 public class FilterHandler {
@@ -105,7 +104,9 @@ public class FilterHandler {
         } catch (FilterException e) {
             LOG.warn("Could not use selected landsting filter. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("Could not use selected landsting filter. Falling back to default filter.", e);
-            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
+            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request),
+                    Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
+                    new Message(ErrorType.FILTER, ErrorSeverity.WARN, "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
         }
     }
 
@@ -133,7 +134,9 @@ public class FilterHandler {
         } catch (FilterException | FilterHashException e) {
             LOG.warn("Could not use selected filter. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("Could not use selected filter. Falling back to default filter.", e);
-            return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
+            return new FilterSettings(getFilterForAllAvailableEnhets(request),
+                    Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
+                    new Message(ErrorType.FILTER, ErrorSeverity.WARN, "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
         }
     }
 
@@ -243,7 +246,7 @@ public class FilterHandler {
 
         Range range = new Range(from.withDayOfMonth(1), to.plusMonths(1).withDayOfMonth(1).minusDays(1));
 
-        return new RangeMessageDTO(range, message);
+        return new RangeMessageDTO(range, new Message(ErrorType.FILTER, ErrorSeverity.WARN, message));
     }
 
     private Filter getFilterForAllAvailableEnhetsLandsting(HttpServletRequest request) {

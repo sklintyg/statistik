@@ -18,20 +18,16 @@
  */
 package se.inera.statistics.web.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.web.model.ChartCategory;
-import se.inera.statistics.web.model.ChartData;
-import se.inera.statistics.web.model.ChartSeries;
-import se.inera.statistics.web.model.NamedData;
-import se.inera.statistics.web.model.SimpleDetailsData;
-import se.inera.statistics.web.model.TableData;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import se.inera.statistics.web.error.Message;
+import se.inera.statistics.web.model.*;
 
 public class SimpleDualSexConverter {
 
@@ -53,14 +49,14 @@ public class SimpleDualSexConverter {
         return convert(casesPerMonth, filterSettings, null);
     }
 
-    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonthIn, FilterSettings filterSettings, String message) {
+    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonthIn, FilterSettings filterSettings, Message message) {
         TableData tableData = convertToTableData(casesPerMonthIn.getRows());
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = casesPerMonthIn.getRows().isEmpty() ? new SimpleKonResponse<>(Arrays.asList(new SimpleKonDataRow("Totalt", 0, 0))) : casesPerMonthIn;
         ChartData chartData = convertToChartData(casesPerMonth);
         final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
-        final String combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
+        final List<Message> combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
         return new SimpleDetailsData(tableData, chartData, range.toString(), filterResponse, combinedMessage);
     }
 

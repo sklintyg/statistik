@@ -84,7 +84,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
                 result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets,
                 result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
                 result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter);
-            $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
+            $scope.resultMessageKist = ControllerCommons.getResultMessageList(result, messageService);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;
                 statisticsData.getDiagnosisKapitelAndAvsnittAndKategori(populateDetailsOptions, function() {

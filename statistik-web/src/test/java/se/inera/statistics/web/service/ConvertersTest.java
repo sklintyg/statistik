@@ -18,46 +18,58 @@
  */
 package se.inera.statistics.web.service;
 
-import org.junit.Test;
+import static org.junit.Assert.assertTrue;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import se.inera.statistics.web.error.ErrorSeverity;
+import se.inera.statistics.web.error.ErrorType;
+import se.inera.statistics.web.error.Message;
+
+import java.util.List;
 
 public class ConvertersTest {
 
     @Test
-    public void testCombineMessagesOneNullIsIgnored() throws Exception {
+    public void testCombineMessagesOnlyNullsReturnsEmptyArray() throws Exception {
         //When
-        final String result = Converters.combineMessages("test", null, "testar 2");
+        final List<Message> result = Converters.combineMessages(null, null);
 
         //Then
-        assertEquals("test : testar 2", result);
+        assertTrue(0 == result.size());
     }
 
     @Test
-    public void testCombineMessagesOnlyNullsReturnsNull() throws Exception {
+    public void testCombineMessagesEmptyInputReturnsEmptyArray() throws Exception {
         //When
-        final String result = Converters.combineMessages(null, null);
+        final List<Message> result = Converters.combineMessages();
 
         //Then
-        assertEquals(null, result);
-    }
-
-    @Test
-    public void testCombineMessagesEmptyInputReturnsNull() throws Exception {
-        //When
-        final String result = Converters.combineMessages();
-
-        //Then
-        assertEquals(null, result);
+        assertTrue(0 == result.size());
     }
 
     @Test
     public void testCombineMessagesEmptyInputStringIsIgnored() throws Exception {
+        Message m1 = new Message(ErrorType.FILTER, ErrorSeverity.INFO, "m1");
+        Message m2 = new Message(ErrorType.FILTER, ErrorSeverity.INFO, "");
+        Message m3 = new Message(ErrorType.FILTER, ErrorSeverity.INFO, "m3");
+
         //When
-        final String result = Converters.combineMessages("abc", "", "def");
+        final List<Message> result = Converters.combineMessages(m1, m2, m3);
 
         //Then
-        assertEquals("abc : def", result);
+        assertTrue(2 == result.size());
+    }
+
+    @Test
+    public void testCombineMessagesNullInputIsIgnored() throws Exception {
+        Message m1 = new Message(ErrorType.FILTER, ErrorSeverity.INFO, "m1");
+        Message m2 = new Message(ErrorType.FILTER, ErrorSeverity.INFO, "m2");
+
+        //When
+        final List<Message> result = Converters.combineMessages(m1, null, m2);
+
+        //Then
+        assertTrue(2 == result.size());
     }
 
 }

@@ -19,13 +19,14 @@
 package se.inera.statistics.web.model;
 
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.web.error.Message;
 
 public class RangeMessageDTO {
 
     private Range range;
-    private String message;
+    private Message message;
 
-    public RangeMessageDTO(Range range, String message) {
+    public RangeMessageDTO(Range range, Message message) {
         this.range = range;
         this.message = message;
     }
@@ -34,7 +35,7 @@ public class RangeMessageDTO {
         return range;
     }
 
-    public String getMessage() {
+    public Message getMessage() {
         return message;
     }
 }

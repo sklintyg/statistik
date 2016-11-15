@@ -18,21 +18,21 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.web.error.Message;
 
 public final class Converters {
 
     private Converters() {
     }
 
+    /*
     public static String combineMessages(String... messages) {
         final String message = Joiner.on(" : ").skipNulls().join(Iterables.filter(Arrays.asList(messages), new Predicate<String>() {
             @Override
@@ -44,6 +44,13 @@ public final class Converters {
             return null;
         }
         return message;
+    }
+    */
+
+    public static List<Message> combineMessages(Message... messages) {
+        return Stream.of(messages)
+                .filter(m -> m != null && m.getMessage() != null && m.getMessage().length() > 0)
+                .collect(Collectors.toList());
     }
 
     public static List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> rows, int maxRows, String extraText) {

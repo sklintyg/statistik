@@ -18,12 +18,13 @@
  */
 package se.inera.statistics.web.service;
 
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.web.model.SimpleDetailsData;
-
 import java.util.Collections;
 import java.util.Comparator;
+
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.error.Message;
+import se.inera.statistics.web.model.SimpleDetailsData;
 
 public class GroupedSjukfallConverter extends SimpleDualSexConverter {
 
@@ -32,7 +33,7 @@ public class GroupedSjukfallConverter extends SimpleDualSexConverter {
     }
 
     @Override
-    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings, String message) {
+    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings, Message message) {
         Collections.sort(casesPerMonth.getRows(), new Comparator<SimpleKonDataRow>() {
             @Override
             public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {

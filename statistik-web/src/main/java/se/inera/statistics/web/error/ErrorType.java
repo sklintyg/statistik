@@ -16,16 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.service;
+package se.inera.statistics.web.error;
 
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.web.error.Message;
-import se.inera.statistics.web.model.DualSexStatisticsData;
+/**
+ * @author Magnus Ekstrand on 2016-11-09.
+ */
+public enum ErrorType {
 
-public class CompareDiagnosisTimeSeriesConverter extends MultiDualSexConverter<KonDataResponse> {
-
-    DualSexStatisticsData convert(KonDataResponse data, FilterSettings filterSettings, Message message) {
-        return super.convert(data, filterSettings, message, "%1$s");
-    }
+    UNSET, FILTER
 
 }

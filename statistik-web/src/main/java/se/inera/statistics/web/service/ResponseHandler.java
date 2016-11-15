@@ -36,6 +36,9 @@ import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.web.error.ErrorSeverity;
+import se.inera.statistics.web.error.ErrorType;
+import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.FilteredDataReport;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
@@ -54,7 +57,7 @@ public class ResponseHandler {
     public static final String ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER = "allAvailableAgeGroupsSelectedInFilter";
     public static final String FILTERED_ENHETS = "filteredEnhets";
     public static final int LIMIT_FOR_TOO_MUCH_DATA_MESSAGE = 100;
-    public static final String MESSAGE_KEY = "message";
+    public static final String MESSAGE_KEY = "messages";
 
     @Autowired
     private Icd10 icd10;
@@ -91,7 +94,8 @@ public class ResponseHandler {
         if (result instanceof TableDataReport) {
             final TableDataReport detailReport = (TableDataReport) result;
             if (containsMoreDataThanLimit(detailReport, LIMIT_FOR_TOO_MUCH_DATA_MESSAGE)) {
-                mappedResult.put(MESSAGE_KEY, "Rapporten innehåller mycket data, vilket kan göra diagrammet svårt att läsa. Överväg att filtrera resultatet för att minska mängden data.");
+                Message message = new Message(ErrorType.FILTER, ErrorSeverity.INFO, "Rapporten innehåller mycket data, vilket kan göra diagrammet svårt att läsa. Överväg att filtrera resultatet för att minska mängden data.");
+                mappedResult.put(MESSAGE_KEY, message);
             }
         }
 

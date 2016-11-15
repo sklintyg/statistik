@@ -19,6 +19,7 @@
 package se.inera.statistics.web.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.service.FilterDataResponse;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public abstract class TableDataReport implements FilteredDataReport {
     public abstract TableData getTableData();
     public abstract String getPeriod();
     @Override public abstract FilterDataResponse getFilter();
-    public abstract String getMessage();
+    public abstract List<Message> getMessages();
 
     @JsonIgnore
     public abstract List<ChartData> getChartDatas();

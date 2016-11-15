@@ -1,10 +1,9 @@
 package se.inera.statistics.spec
-
 import se.inera.statistics.service.report.util.AgeGroup
 import se.inera.statistics.service.report.util.Icd10
 import se.inera.statistics.service.report.util.Icd10RangeType
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup
-import se.inera.statistics.web.model.LoginInfo
+import se.inera.statistics.web.error.Message
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.statistics.web.service.FilterData
 import se.inera.statistics.web.service.ResponseHandler
@@ -47,7 +46,7 @@ abstract class Rapport {
     }
 
     public final void executeWithReport(report) {
-        meddelande = report.message
+        setMeddelande(report.messages)
         allaDiagnosfilterValda = report[ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER]
         allaEnhetsfilterValda = report[ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER]
         allaSjukskrivningslängdfilterValda = report[ResponseHandler.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER]
@@ -174,6 +173,28 @@ abstract class Rapport {
                 optionalGroup.present ? optionalGroup.get().name() : it;
             }
         }
+    }
+
+    void setMeddelande(Object meddelanden) {
+        if (meddelanden) {
+            if (meddelanden instanceof Map<String, Message>) {
+                setMeddelandeMap(meddelanden)
+            } else if (meddelanden instanceof List<Message>) {
+                setMeddelandeList(meddelanden)
+            } else {
+                this.meddelande = null;
+            }
+        } else {
+            this.meddelande = null;
+        }
+    }
+
+    void setMeddelandeMap(Map<String, Message> meddelanden) {
+        this.meddelande = meddelanden.get("message", null);
+    }
+
+    void setMeddelandeList(List<Message> meddelanden) {
+        this.meddelande = meddelanden.findAll { it != null }.collect { it.message }.toList().join(',')
     }
 
     def getFilter() {

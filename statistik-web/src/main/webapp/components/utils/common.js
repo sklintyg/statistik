@@ -335,8 +335,8 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return ($routeParams.diagnosHash ? '/' + $routeParams.diagnosHash : getDiagnosPathPart($routeParams));
         };
 
-        this.getResultMessage = function(result, messageService) {
-            return result.message ? result.message : (result.empty ? messageService.getProperty('info.emptyreponse', null, '', null, true) : '');
+        this.getResultMessageList = function(result, messageService) {
+            return result.messages ? result.messages : (result.empty ? messageService.getProperty('info.emptyreponse', null, '', null, true) : []);
         };
 
         this.formatOverViewTablePDF = function(thousandseparatedFilter, data, nameSuffix) {
