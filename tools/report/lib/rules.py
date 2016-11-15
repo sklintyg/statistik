@@ -194,6 +194,21 @@ class RuleSjuklangd:
 
     def check(self, wideline):
         pass
+
+class RuleDifferentierat:
+    def key(self, sjukfall, start, slut):
+        days = sjukfall.days(start, slut)
+        differentierat = sjukfall.isDifferentierat()
+
+        if differentierat is False:
+            return '1) Övrigt'
+        elif days < 60:
+            return '2) Mindre än 60'
+        else:
+            return '3) Mer än 60'
+
+    def check(self, wideline):
+        pass
     
 class RuleLan:
     def key(self, sjukfall, start, slut):

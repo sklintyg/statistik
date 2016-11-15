@@ -143,6 +143,17 @@ class Sjukfall:
 
         return alder
 
+    def isDifferentierat(self):
+        """ Ett sjukfall är differentierat när när det innehåller ett intyg
+            som är märkt som enkelt
+        """
+
+        for i in self.intyg:
+            assert(i.enkelt != None)
+            if i.enkelt == 1:
+                return True
+        return False
+
     def match(self, intyg):
         # Check if intyg belongs in this group
         for i in self.intyg:
