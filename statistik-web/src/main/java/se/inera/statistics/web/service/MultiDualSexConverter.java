@@ -18,20 +18,25 @@
  */
 package se.inera.statistics.web.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.error.Message;
-import se.inera.statistics.web.model.*;
+import se.inera.statistics.web.model.ChartCategory;
+import se.inera.statistics.web.model.ChartData;
+import se.inera.statistics.web.model.ChartSeries;
+import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.model.TableHeader;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class MultiDualSexConverter<T extends KonDataResponse> {
 
