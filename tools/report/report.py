@@ -188,7 +188,7 @@ def main(argv):
         elif opt == '-m':
             ranges = month_range(arg)
         elif opt == '-e':
-            rule = RuleSjukfallEnheter()
+            rule = RuleSjukfallEnheter(tvarsnitt)
         elif opt == '-E':
             rule = RuleSjukfallEnhet(arg.strip())
         elif opt == '-s':
@@ -223,9 +223,9 @@ def main(argv):
             interval = arg
             ranges = interval_range(interval)
         elif opt == '-k':
-            rule = RuleLakarbefattning(internalbefattning)
+            rule = RuleLakarbefattning(internalbefattning, tvarsnitt)
         elif opt == '-K':
-            rule = RuleLakaralderKon()
+            rule = RuleLakaralderKon(tvarsnitt)
         elif opt == '-L':
             rule = RuleLakare(arg.strip())
         elif opt == '-h':

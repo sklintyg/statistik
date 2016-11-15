@@ -33,8 +33,14 @@ class RuleLakare:
         
 
 class RuleLakaralderKon:
+    def __init__(self, tvarsnitt=False):
+        self.tvarsnitt = tvarsnitt
+
     def key(self, sjukfall, start, slut):
-        lakare = sjukfall.lakare_alderkon(start, slut)
+        if self.tvarsnitt:
+            lakare = sjukfall.lakare_alderkon_all(start, slut)
+        else:
+            lakare = sjukfall.lakare_alderkon(start, slut)
         list = []
         for kon,tup in lakare.items():
             list.append(self.alder(tup[0], tup[1]))
@@ -66,13 +72,17 @@ class RuleLakaralderKon:
 
 
 class RuleLakarbefattning:
-    def __init__(self, includeinternal=True):
+    def __init__(self, includeinternal=True, tvarsnitt=False):
+        self.tvarsnitt = tvarsnitt
         self.befattningar = { "201010" : "Överläkare", "201011" : "Distriktsläkare/Specialist allmänmedicin", "201012" : "Skolläkare", "201013" : "Företagsläkare", "202010" : "Specialistläkare", "203010" : "Läkare legitimerad, specialiseringstjänstgöring", "203090" : "Läkare legitimerad, annan", "204010" : "Läkare ej legitimerad, allmäntjänstgöring", "204090" : "Läkare ej legitimerad, annan" } 
         if includeinternal:
             self.befattningar["-2"] = "Okänd befattning"
 
     def key(self, sjukfall, start, slut):
-        befattningar = sjukfall.befattningar(start, slut)
+        if self.tvarsnitt:
+            befattningar = sjukfall.befattningar(start, slut)
+        else:
+            befattningar = sjukfall.befattning(start, slut)
         list = []
         for lakare,befattning in befattningar.items():
             self.befattning(list, befattning)
@@ -130,18 +140,6 @@ class RuleSjuklangd90:
 
     def key(self, sjukfall, start, slut):
         return sjukfall.over_90(self.periods)
-        '''
-        months = sjukfall.days_in_period(self.periods, self.enhet)
-        num = months[0][0]
-        result = []
-        for i in months[1:]:
-            num += i[0]
-            assert(i[0] <= 31)
-            if num > 90 and i[0] > 0:
-                result.append(i[1])
-
-        return result
-        '''
 
     def check(self, wideline):
         pass
@@ -264,8 +262,14 @@ class RuleSjukfallEnhet:
         assert(wideline.index('enhet') != None)
 
 class RuleSjukfallEnheter:
+    def __init__(self, tvarsnitt=False):
+        self.tvarsnitt = tvarsnitt
+
     def key(self, sjukfall, start, slut):
-        return sjukfall.enheter(start, slut)
+        if self.tvarsnitt:
+            return sjukfall.enheter(start, slut)
+        else:
+            return sjukfall.enhet(start, slut)
 
     def check(self, wideline):
         assert(wideline.index('enhet') != None)
