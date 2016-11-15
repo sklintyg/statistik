@@ -21,13 +21,13 @@ package se.inera.statistics.web.model;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
+import se.inera.statistics.web.error.Message;
+import se.inera.statistics.web.service.FilterDataResponse;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.Test;
-
-import se.inera.statistics.web.service.FilterDataResponse;
 
 public class TableDataReportTest {
 
@@ -52,7 +52,7 @@ public class TableDataReportTest {
             }
 
             @Override
-            public String getMessage() {
+            public List<Message> getMessages() {
                 return null;
             }
 
@@ -90,7 +90,7 @@ public class TableDataReportTest {
             }
 
             @Override
-            public String getMessage() {
+            public List<Message> getMessages() {
                 return null;
             }
 
@@ -128,7 +128,7 @@ public class TableDataReportTest {
             }
 
             @Override
-            public String getMessage() {
+            public List<Message> getMessages() {
                 return null;
             }
 

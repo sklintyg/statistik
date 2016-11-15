@@ -25,13 +25,8 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -56,7 +51,7 @@ public class DiagnosisSubGroupsConverter {
         return convert(diagnosisGroups, filterSettings, null);
     }
 
-    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, FilterSettings filterSettings, String message) {
+    DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, FilterSettings filterSettings, Message message) {
         TableData tableData = diagnosisGroupsConverter.convertTable(diagnosisGroups, "%1$s");
         List<Integer> topIndexes = getTopColumnIndexes(diagnosisGroups);
         ChartData maleChart = extractChartData(diagnosisGroups, topIndexes, Kon.MALE);
@@ -64,7 +59,7 @@ public class DiagnosisSubGroupsConverter {
         final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
-        final String combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
+        final List<Message> combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse, combinedMessage);
     }
 

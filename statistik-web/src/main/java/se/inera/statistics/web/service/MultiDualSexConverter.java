@@ -18,31 +18,27 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.web.model.ChartCategory;
-import se.inera.statistics.web.model.ChartData;
-import se.inera.statistics.web.model.ChartSeries;
-import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.NamedData;
-import se.inera.statistics.web.model.TableData;
-import se.inera.statistics.web.model.TableHeader;
+import se.inera.statistics.web.error.Message;
+import se.inera.statistics.web.model.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 
 public abstract class MultiDualSexConverter<T extends KonDataResponse> {
 
     private static final String TOTAL = "Totalt";
     private static final int NUMBER_OF_COLUMNS = 3;
 
-    DualSexStatisticsData convert(T dataIn, FilterSettings filterSettings, String message, String seriesNameTemplate) {
+    DualSexStatisticsData convert(T dataIn, FilterSettings filterSettings, Message message, String seriesNameTemplate) {
         TableData tableData = convertTable(dataIn, seriesNameTemplate);
         T data = dataIn.getGroups().isEmpty() ? createEmptyResponse() : dataIn;
         ChartData maleChart = extractChartData(data, Kon.MALE, seriesNameTemplate);
@@ -50,7 +46,7 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
         final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
-        final String combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
+        final List<Message> combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse, combinedMessage);
     }
 

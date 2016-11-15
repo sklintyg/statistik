@@ -18,10 +18,11 @@
  */
 package se.inera.statistics.web.model;
 
-import se.inera.statistics.web.service.FilterDataResponse;
-
 import java.util.Arrays;
 import java.util.List;
+
+import se.inera.statistics.web.error.Message;
+import se.inera.statistics.web.service.FilterDataResponse;
 
 public class SimpleDetailsData extends TableDataReport {
 
@@ -29,14 +30,14 @@ public class SimpleDetailsData extends TableDataReport {
     private final ChartData chartData;
     private final String period;
     private final FilterDataResponse filter;
-    private final String message;
+    private final List<Message> messages;
 
-    public SimpleDetailsData(TableData tableData, ChartData chartData, String period, FilterDataResponse filter, String message) {
+    public SimpleDetailsData(TableData tableData, ChartData chartData, String period, FilterDataResponse filter, List<Message> messages) {
         this.tableData = tableData;
         this.chartData = chartData;
         this.period = period;
         this.filter = filter;
-        this.message = message;
+        this.messages = messages;
     }
 
     public SimpleDetailsData(TableData tableData, ChartData chartData, String period, FilterDataResponse filter) {
@@ -63,8 +64,8 @@ public class SimpleDetailsData extends TableDataReport {
     }
 
     @Override
-    public String getMessage() {
-        return message;
+    public List<Message> getMessages() {
+        return messages;
     }
 
     @Override
