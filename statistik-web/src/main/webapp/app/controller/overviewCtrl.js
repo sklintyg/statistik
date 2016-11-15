@@ -167,7 +167,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         };
 
         function populatePageWithData(result) {
-            $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
+            $scope.resultMessageList = ControllerCommons.getResultMessageList(result, messageService);
             $timeout(function () {
                 updateCharts(result);
             }, 100);

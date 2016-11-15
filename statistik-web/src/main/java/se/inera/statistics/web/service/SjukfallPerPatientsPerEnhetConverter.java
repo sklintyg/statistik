@@ -18,28 +18,19 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.collect.Maps;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.*;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.web.model.ChartCategory;
-import se.inera.statistics.web.model.ChartData;
-import se.inera.statistics.web.model.ChartSeries;
-import se.inera.statistics.web.model.NamedData;
-import se.inera.statistics.web.model.SimpleDetailsData;
-import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.error.Message;
+import se.inera.statistics.web.model.*;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import com.google.common.collect.Maps;
 
 public class SjukfallPerPatientsPerEnhetConverter {
 
@@ -62,13 +53,13 @@ public class SjukfallPerPatientsPerEnhetConverter {
         }
     }
 
-    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings, String message) {
+    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings, Message message) {
         TableData tableData = convertToTableData(casesPerMonth.getRows());
         ChartData chartData = convertToChartData(casesPerMonth);
         final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
-        final String combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
+        final List<Message> combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
         return new SimpleDetailsData(tableData, chartData, range.toString(), filterResponse, combinedMessage);
     }
 

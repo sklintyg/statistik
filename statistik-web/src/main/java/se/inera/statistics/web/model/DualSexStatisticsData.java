@@ -18,10 +18,11 @@
  */
 package se.inera.statistics.web.model;
 
-import se.inera.statistics.web.service.FilterDataResponse;
-
 import java.util.Arrays;
 import java.util.List;
+
+import se.inera.statistics.web.error.Message;
+import se.inera.statistics.web.service.FilterDataResponse;
 
 public class DualSexStatisticsData extends TableDataReport {
 
@@ -30,15 +31,15 @@ public class DualSexStatisticsData extends TableDataReport {
     private final ChartData femaleChart;
     private final String period;
     private final FilterDataResponse filter;
-    private final String message;
+    private final List<Message> messages;
 
-    public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart, String period, FilterDataResponse filter, String message) {
+    public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart, String period, FilterDataResponse filter, List<Message> messages) {
         this.tableData = tableData;
         this.maleChart = maleChart;
         this.femaleChart = femaleChart;
         this.period = period;
         this.filter = filter;
-        this.message = message;
+        this.messages = messages;
     }
 
     @Override
@@ -65,8 +66,8 @@ public class DualSexStatisticsData extends TableDataReport {
     }
 
     @Override
-    public String getMessage() {
-        return message;
+    public List<Message> getMessages() {
+        return messages;
     }
 
     @Override

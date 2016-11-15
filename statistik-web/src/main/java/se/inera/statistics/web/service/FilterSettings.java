@@ -19,13 +19,14 @@
 package se.inera.statistics.web.service;
 
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.RangeMessageDTO;
 
 class FilterSettings {
 
     private final Filter filter;
     private final Range range;
-    private final String message;
+    private final Message message;
 
     FilterSettings(Filter filter, Range range) {
         this(filter, range, null);
@@ -35,7 +36,7 @@ class FilterSettings {
         this(filter, rangeMessageDTO.getRange(), rangeMessageDTO.getMessage());
     }
 
-    FilterSettings(Filter filter, Range range, String message) {
+    FilterSettings(Filter filter, Range range, Message message) {
         this.filter = filter;
         this.range = range;
         this.message = message;
@@ -49,7 +50,7 @@ class FilterSettings {
         return range;
     }
 
-    public String getMessage() {
+    public Message getMessage() {
         return message;
     }
 
