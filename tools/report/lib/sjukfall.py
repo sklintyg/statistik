@@ -32,10 +32,10 @@ class Sjukfall:
         self.slut = intyg.slut
 
     def __str__(self):
-        s = ''
+        s = '{}'.format(self.intyg[0].id)
         for i in self.intyg:
             s = "{0}:{1}".format(s,i)
-        return i
+        return s
 
     def sjukgrad(self, start, slut):
         """ Get the sjukgrad from the 'last' intyg
@@ -72,6 +72,25 @@ class Sjukfall:
         if intyg.slut > self.slut:
             self.slut = intyg.slut
         return True
+
+    def befattning(self, start, slut):
+        """ Get all lakarbefattningar where intyg is in the period
+        """
+        intyg = self.last_intyg(start, slut)
+        lakare = {}
+        if intyg:
+            lakare[intyg.lakareid] = intyg
+
+        res = {}
+        for k,v in lakare.items():
+            l = []
+            for b in v.befattning.split(','):
+                l.append(b.strip())
+            res[k] = l
+
+        assert(len(res) > 0)
+
+        return res
 
     def befattningar(self, start, slut):
         """ Get all lakarbefattningar where intyg is in the period 
@@ -247,19 +266,28 @@ class Sjukfall:
     def lakare_alderkon(self, start, slut):
         """ Get all unqiue lakare
         """
+        last = self.last_intyg(start, slut)
+        if last:
+            res = { last.lakareid : (last.lakarkon, last.lakaralder) }
+            return res
+
+        return {}
+
+    def lakare_alderkon_all(self, start, slut):
         res = {}
         for i in self.intyg:
             if not i.valid(start, slut):
                 continue
             
             if i.lakareid not in res:
-                res[i.lakareid] = (i.lakarkon, i.lakaralder, i.start)
+                res[i.lakareid] = (i.lakarkon, i.lakaralder, i.start, i)
             else:
                 tup = res[i.lakareid]
                 starttime = tup[2]
-                if i.start > starttime:
-                    res[i.lakareid] = (i.lakarkon, i.lakaralder, i.start)
-            
+                intyg = tup[3]
+                if i.isnewer(intyg):
+                    res[i.lakareid] = (i.lakarkon, i.lakaralder, i.start, i)
+
         return res
 
     def lakare(self, enhet, start, slut):
@@ -278,7 +306,16 @@ class Sjukfall:
                 return True
         return False
 
+    def enhet(self, start, slut):
+        """Return the enhet for the newest intyg"""
+        last = self.last_intyg(start, slut)
+        if last != None:
+            return last.enhet
+
+        return None
+
     def enheter(self, start, slut):
+        """Return all unique enheter for the sjukfall"""
         res = []
         for i in self.intyg:
             if i.valid(start, slut):
