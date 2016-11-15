@@ -33,7 +33,7 @@ from lib.ranges import *
 
 THRESHOLD = 5
 DBUSER = 'root'
-DBNAME = 'statistik'
+DBNAME = 'statistik_ip20'
 DBHOST = 'mysql.ip20.nordicmedtest.se'
 STANDARD_INTERVALL = '2016-01-01:2016-12-31'
 DUMP_FILE = 'statistik_dump.txt'
@@ -67,6 +67,7 @@ Gruppera på:
     -a               Ålder
     -g               Sjukskrivningsgrad
     -l               Sjukskrivningslängd
+    -7               Differentierat intygande
     -n               Län
     -k               Läkarbefattning
     -K               Läkarålder och kön
@@ -181,11 +182,12 @@ def main(argv):
     ranges = None
     tvarsnitt = False
 
-    opts, args = getopt.getopt(argv, "tdapglni:ekKL:hsE:Nj:9:v:8:c:w:b:q:m:Tf:",['dump', 'nointernalbefattning'])
+    opts, args = getopt.getopt(argv, "tdapgl7ni:ekKL:hsE:Nj:9:v:8:c:w:b:q:m:Tf:",['dump', 'nointernalbefattning'])
     for opt, arg in opts:
         if opt == '-t':
             threshold = True
         elif opt == '-m':
+            interval = arg
             ranges = month_range(arg)
         elif opt == '-e':
             rule = RuleSjukfallEnheter(tvarsnitt)
@@ -203,6 +205,8 @@ def main(argv):
             rule = RuleSjukgrad()
         elif opt == '-l':
             rule = RuleSjuklangd()
+        elif opt == '-7':
+            rule = RuleDifferentierat()
         elif opt == '-n':
             rule = RuleLan()
         elif opt == '-N':

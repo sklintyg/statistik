@@ -45,6 +45,9 @@ class Intyg:
             self.lakarkon = int(self.lakarkon)
         self.enhet      = wideline.get(values, 'enhet')
         self.lkf = wideline.get(values, 'lkf')
+        self.enkelt = wideline.get(values, 'enkelt')
+        if self.enkelt:
+            self.enkelt = int(self.enkelt)
         if self.lkf:
             self.lan = self.lkf[0:2]
         self.diagnoskategori = wideline.get(values, 'diagnoskategori')
