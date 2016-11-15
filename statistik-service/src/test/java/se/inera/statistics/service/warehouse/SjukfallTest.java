@@ -18,15 +18,19 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import org.junit.Test;
-import se.inera.statistics.service.report.model.Kon;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+
+import se.inera.statistics.service.report.model.Kon;
 
 public class SjukfallTest {
 
@@ -336,6 +340,29 @@ public class SjukfallTest {
 
         //Then
         assertEquals(1, sjukfall.getDiagnosavsnitt());
+    }
+
+    @Test
+    public void testGetRealDaysFirstIntygConstructExtendingSjukfall() throws Exception {
+        //When
+        final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4));
+        final SjukfallExtended sjukfall2 = new SjukfallExtended(sjukfall1, new SjukfallExtended(createFact(10, 4)));
+        final SjukfallExtended sjukfall3 = new SjukfallExtended(sjukfall2, new SjukfallExtended(createFact(6, 4)));
+
+        //Then
+        assertEquals(12, sjukfall3.getRealDaysFirstIntyg());
+    }
+
+    @Test
+    public void testGetRealDaysFirstIntygOnlyConsidersFactsFromFirstIntyg() throws Exception {
+        //When
+        final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4));
+        //Add a fact in sjukfall which originates from a second intyg
+        Fact factForSecondIntygsId = new Fact(1, 1, 1, 1, 2, 1, 12, 22, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1, false);
+        final SjukfallExtended sjukfall2 = sjukfall1.extendSjukfall(new SjukfallExtended(factForSecondIntygsId));
+
+        //Then
+        assertEquals(4, sjukfall2.getRealDaysFirstIntyg());
     }
 
     private Fact createFact(int lakarintyg, int startdatum, int diagnosavsnitt, int sjukskrivningsgrad) {

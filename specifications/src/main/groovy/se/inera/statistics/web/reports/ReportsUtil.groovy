@@ -435,6 +435,10 @@ class ReportsUtil {
         return get("/api/testsupport/getSocialstyrelsenStdDevReport")
     }
 
+    def getFkReport() {
+        return get("/api/testsupport/getFkYearReport")
+    }
+
     def getReportAntalIntygLandstingInloggad(String vgid, filter) {
         return get("/api/landsting/getNumberOfCasesPerMonthLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }

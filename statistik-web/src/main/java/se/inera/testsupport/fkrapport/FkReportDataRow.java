@@ -29,10 +29,12 @@ import se.inera.testsupport.socialstyrelsenspecial.MathStatistics;
 /**
  * Placeholder for the given combination of diagnos, kon and lan.
  * It will only accept FkFactRow data that fits it's combination.
- * The actual measurements / average, medians etc can be queried at any time, but in reality it's only done when all facts have
+ * The actual measurements / average, medians etc can be queried at any time, but in reality it's only done when all
+ * facts have
  * been distributed.
  */
 public class FkReportDataRow {
+    private static final String KON_BOTH = "BOTH";
     private String diagnos;
     private String regexpMatcher;
     private Kon kon;
@@ -48,9 +50,21 @@ public class FkReportDataRow {
 
     public void ingest(FkFactRow factRow) {
         // If this factrow contains data that is relevant to this resultRow - add the length data
-        if (factRow.getDiagnos().matches(regexpMatcher) && kon.equals(factRow.getKon()) && (lanId.equals(factRow.getLanId()))) {
+        if (matchesDiagnose(factRow.getDiagnos()) && matchesKon(factRow.getKon()) && matchesLan(factRow.getLanId())) {
             lengths.add((double) factRow.getLength());
         }
+    }
+
+    private boolean matchesLan(String candidateLanId) {
+        return lanId.equals(candidateLanId);
+    }
+
+    private boolean matchesKon(Kon candidateKon) {
+        return ((kon == null) || kon.equals(candidateKon));
+    }
+
+    private boolean matchesDiagnose(String diagnos) {
+        return diagnos.matches(regexpMatcher);
     }
 
     public String getDiagnos() {
@@ -58,7 +72,7 @@ public class FkReportDataRow {
     }
 
     public String getKon() {
-        return kon.name();
+        return kon == null ? KON_BOTH : kon.name();
     }
 
     public String getLanId() {

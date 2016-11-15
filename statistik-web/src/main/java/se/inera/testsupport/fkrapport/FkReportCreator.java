@@ -90,6 +90,7 @@ public class FkReportCreator {
         diagnoseEntries.forEach(diagnoseEntry -> lan.forEach(lansId -> {
             rows.add(new FkReportDataRow(diagnoseEntry.getDiagnoseValue(), diagnoseEntry.getDiagnoseMatcher(), Kon.FEMALE, lansId));
             rows.add(new FkReportDataRow(diagnoseEntry.getDiagnoseValue(), diagnoseEntry.getDiagnoseMatcher(), Kon.MALE, lansId));
+            rows.add(new FkReportDataRow(diagnoseEntry.getDiagnoseValue(), diagnoseEntry.getDiagnoseMatcher(), null, lansId));
         }));
 
         return rows;
@@ -142,37 +143,51 @@ public class FkReportCreator {
     private List<FkFactRow> getEffectiveFactRows() {
         final LocalDate from = getFirstDateOfLastYear(); // 2015-01-01
         final Range range = new Range(from, LocalDate.now(clock));
+
         final int fromIntDay = WidelineConverter.toDay(from); // dagnr relativt 2000-01-01
         final int toIntDay = WidelineConverter.toDay(getLastDateOfLastYear()); // dagnr för 2015-12-31 relativt
                                                                                // 2000-01-01
-        // Dagens dagnr - 5
-        final int nowMinusFiveDaysIntDay = WidelineConverter.toDay(LocalDate.now(clock).minusDays(5));
 
         final ArrayList<FkFactRow> fkFactRows = new ArrayList<>();
         // Ingen filtrering på diagnos eller annat
 
         final Predicate<Fact> intygFilter = fact -> true;
         // Ingen filtrering på sjukfall
-        final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true, "fkreport");
 
-        // Loopa igenom ALLA facts
+        final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true, "fkreport" + System.currentTimeMillis());
+
+        // Loopa igenom ALLA facts per VG, dvs ingen sammanslagning sker (viktigt av juridiska skäl)
         for (Map.Entry<HsaIdVardgivare, Aisle> vgEntry : allVardgivare.entrySet()) {
             // Hämta ut dom som hör till detta år
             final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1, range.getMonths(),
                     vgEntry.getValue(), sjukfallFilter);
             for (SjukfallGroup sjukfallGroup : sjukfallGroups) {
                 for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-                    // Om första intyget touchar denna period skall det med (undvik nya där vi kan vara i glappet)
-                    if (sjukfall.getStart() <= toIntDay && sjukfall.getEnd() >= fromIntDay && sjukfall.getEnd() < nowMinusFiveDaysIntDay) {
-                        String clearTextCode = icd10.findIcd10FromNumericId(sjukfall.getDiagnoskod()).getId();
-                        final FkFactRow fkFactRow = new FkFactRow(clearTextCode, sjukfall.getKon(), sjukfall.getLanskod(),
-                                sjukfall.getRealDays());
+                    // Om första intyget touchar denna period skall det med.
+                    if (inPeriod(sjukfall, fromIntDay, toIntDay)) {
+                        final FkFactRow fkFactRow = new FkFactRow(getDiagnoseClearText(sjukfall), sjukfall.getKon(), sjukfall.getLanskod(),
+                                sjukfall.getRealDaysFirstIntyg());
                         fkFactRows.add(fkFactRow);
                     }
                 }
             }
         }
         return fkFactRows;
+    }
+
+    private String getDiagnoseClearText(Sjukfall sjukfall) {
+        String clearTextCode = icd10.findIcd10FromNumericId(sjukfall.getDiagnoskod()).getId();
+        if (icd10.findIcd10FromNumericId(sjukfall.getDiagnoskod()).isInternal()) {
+            clearTextCode = icd10.findIcd10FromNumericId(sjukfall.getDiagnoskategori()).getId();
+        }
+        return clearTextCode;
+    }
+
+    private boolean inPeriod(Sjukfall sjukfall, int from, int to) {
+        boolean startsInPeriod = sjukfall.getStart() <= to && sjukfall.getStart() >= from;
+        boolean endInPeriod = sjukfall.getEnd() <= to && sjukfall.getEnd() >= from;
+        boolean spansPeriod = sjukfall.getStart() < from && sjukfall.getEnd() > to;
+        return startsInPeriod || endInPeriod || spansPeriod;
     }
 
     LocalDate getLastDateOfLastYear() {
