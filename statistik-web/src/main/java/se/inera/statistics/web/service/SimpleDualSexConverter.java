@@ -18,16 +18,21 @@
  */
 package se.inera.statistics.web.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.error.Message;
-import se.inera.statistics.web.model.*;
+import se.inera.statistics.web.model.ChartCategory;
+import se.inera.statistics.web.model.ChartData;
+import se.inera.statistics.web.model.ChartSeries;
+import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.TableData;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class SimpleDualSexConverter {
 
