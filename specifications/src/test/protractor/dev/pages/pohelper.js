@@ -19,10 +19,11 @@ var isElementPresentAndDisplayed = function(element) {
     return elemUtil.isElementPresentAndDisplayed(element);
 };
 
-var hasClass = function (element, cls) {
-    return browser.wait(element.getAttribute('class').then(function(classes) {
-        return classes.split(' ').indexOf(cls) !== -1;
-    }), 500);
+var hasClass = async function (element, cls) {
+    console.log("FORE")
+    var classes = await browser.wait(element.getAttribute('class'), 20000);
+    console.log("EFTER: " + classes)
+    return classes.split(' ').indexOf(cls) !== -1;
 };
 
 module.exports = {
