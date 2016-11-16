@@ -28,7 +28,7 @@ var features = testfw.features;
 var fakeloginPage = pages.fakeloginPo;
 var headerPage = pages.headerPo;
 
-describe('Smoketester av statistiktjänsten: ', function() {
+xdescribe('Smoketester av statistiktjänsten: ', function() {
 
     beforeEach(function() {
         browser.get("http://localhost:8080");

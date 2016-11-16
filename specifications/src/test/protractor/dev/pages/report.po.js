@@ -32,8 +32,9 @@ var getChartLegendLabels = function() {
     });
 };
 
-var getTableRows = function() {
-    return element.all(by.css('#chart-data-table .datatable tr')).then(function(tablerows) {
+var getTableRows = async function() {
+    var all = await element.all(by.css('#chart-data-table .datatable tr'));
+    return all.then(function(tablerows) {
         return tablerows.map(function(tr) {
             return tr.all(by.css('td')).then(function(datafields) {
                 return datafields.map(function(td) {

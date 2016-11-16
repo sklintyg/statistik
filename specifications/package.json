@@ -12,7 +12,9 @@
     "jasmine-spec-reporter": "^2.7.0",
     "protractor": "^4.0.9",
     "protractor-jasmine2-screenshot-reporter": "^0.1.7",
-    "phantomjs-prebuilt": "^2.1.13"
+    "phantomjs-prebuilt": "^2.1.13",
+    "babel-core": "6.18.2",
+    "babel-plugin-transform-async-to-generator": "6.16.0"
   },
   "engine": "node >= 4.2.1",
   "scripts": {

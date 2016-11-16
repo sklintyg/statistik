@@ -69,11 +69,9 @@ var clickNationalStatisticsToggle = function() {
 
 var expandNationalStatisticsToggle = function() {
     console.log("In page.navmenu.expandNationalStatisticsToggle");
-    return pohelper.hasClass(nationalStatisticsToggle, 'collapsed').then(function(value) {
-        if (value) {
+    if (pohelper.hasClass(nationalStatisticsToggle, 'collapsed')) {
             clickNationalStatisticsToggle();
         }
-    });
 };
 
 var isNationalStatisticsToggleVisible = function() {
@@ -105,8 +103,9 @@ var isNavOverviewLinkVisible = function() {
     return navOverviewLink.isDisplayed();
 };
 
-var clickNavCasesPerMonthLink = function() {
-    navCasesPerMonthLink.click();
+var clickNavCasesPerMonthLink = async function() {
+    await navAboutContactLink.isDisplayed();
+    await navCasesPerMonthLink.click();
 };
 
 var isNavCasesPerMonthLinkVisible = function() {
@@ -169,8 +168,9 @@ var isNavCasesPerSexLinkVisible = function() {
     return navCasesPerSexLink.isDisplayed();
 };
 
-var clickNavVerksamhetOversiktLink = function() {
-    navVerksamhetOversiktLink.click();
+var clickNavVerksamhetOversiktLink = async function() {
+    await navVerksamhetOversiktLink.isDisplayed();
+    await navVerksamhetOversiktLink.click();
 };
 
 var isNavVerksamhetOversiktLinkVisible = function() {
