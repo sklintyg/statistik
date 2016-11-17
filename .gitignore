@@ -7,6 +7,7 @@
 *.iml
 .gradletasknamecache
 classes
+fullbuild.out
 
 .DS_Store
 
