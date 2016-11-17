@@ -32,6 +32,7 @@ class Group:
         self.notvalid = 0
 
     def __add(self, key, num, kon):
+        """Internal add for the aggregated result"""
         tup = (0,0)
         if key in self.group:
             tup = self.group[key]

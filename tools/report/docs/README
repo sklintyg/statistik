@@ -9,9 +9,15 @@ För att exekvera report.py scriptet behöver man först extrahera ut de rader s
 
    ssh-copy-id nmt@mysql.ip20.nordicmedtest.se
 
-1. Skapa ett utdrag från databasen för en viss vårdgivare
+1. Skapa ett utdrag från databasen för en viss vårdgivare, intyg innan 2010-01-01
+   ska inte vara med i beräkningarna enligt en regel som statistiktjänsten
+   använder sig av. När man gör databasen frågan så är det rekommenderat att man
+   tar ett riktigt stort tidsintervall och sen när man ska göra en viss beräkning
+   så anger man det tidsintervall man är intresserad av. Anledningen till detta
+   är att när man beräknar ett sjukfall så vill man i vissa rapporter använda
+   sig av intyg som är utanför det aktuella tidsintervallet. 
 
-   ./report.py -i 2015-04-01:2015-04-31 --dump -v SE2321000206-E00001 -w password -b mysql.ip20.nordicmedtest.se
+   ./report.py -i 2010-01-01:2015-04-31 --dump -v SE2321000206-E00001 -w password -b mysql.ip20.nordicmedtest.se
 
    Scriptet kommer att fråga efter de värden som saknas
 
@@ -29,3 +35,41 @@ Noterbart är att man för de flesta rapporter behöver ange olika tidsintervall
 rapporter är indelade i olika typer av perioder. 
 För verksamhetsspecifika rapporter behöver man plocka ut alla rader för en viss vårdgivare.
 
+#------------------------------------------------------------------------------
+# Beräkningsflöde
+#------------------------------------------------------------------------------
+
+1. Det första steget är att sortera alla intyg på vårdgivare (lib/vg.py) och
+   patient (lib/patient.py). Detta innebär alltså att en patient kan existera
+   på olika vårdgivare.
+
+2. Nästa steg är att beräkna sjukfall utifrån patienterna, en patient kan
+   bestå av flera sjukfall. Intyg som är max 5 dagar isär räknas till
+   samma sjukfall.
+
+3. När man har beräknat ett sjukfall så evaluerar man själva beräkningsregeln
+   (lib/rules.py) och adderar resultatet till gruppen/vårdgivare
+   (lib/group.py).
+
+4. Efter man har evaluerat alla sjukfall så har man lagt till resultaten
+   för varje vårdgivare och sedan gör man en aggregering av resultaten.
+   Är det nationell statistik ska man tex applicera ett tröskelvärde dvs
+   att man inte räknar in sjukfall som är under tröskelvärdet och det
+   tröskelvärdet appliceras på vårdgivarnivå.
+
+#------------------------------------------------------------------------------
+# Tvärsnittsrapporter
+#------------------------------------------------------------------------------
+
+Statistiktjänsten har förutom tidsserie diagram även tvärsnitts diagram
+för de flesta rapporter. Den stora skillnaden de emellan är att
+tvärsnittsrapporter inkluderar information från alla intyg för en given
+period medans tidsserie i regel endast använder sig av information från
+det "nyaste" intyget i perioden. Följande rapporter har stöd för tvärsnitt:
+1. Enheter
+2. Diagnos
+3. Läkarbefattning
+4. Läkare ålder och kön
+
+Exempel på diagnos med tvärsnitt (notera -T argumentet):
+./report.py -i 2015-12-01:2016-11-30 -T -d

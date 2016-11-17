@@ -44,7 +44,7 @@ class Sjukfall:
         return last.sjukgrad
 
     def last_intyg(self, start, slut):
-        """ Get the last (latest) intyg
+        """ Get the last (latest) intyg, which really is the 'newest'.
         """
         last = None
         for i in self.intyg:
@@ -57,6 +57,7 @@ class Sjukfall:
         return last
 
     def kon(self):
+        """Return the kön for the sjukfall"""
         return self.intyg[0].kon
 
     def match_diagnos(self, diagnos, start, slut):
@@ -74,7 +75,7 @@ class Sjukfall:
         return True
 
     def befattning(self, start, slut):
-        """ Get all lakarbefattningar where intyg is in the period
+        """ Get the lakarbefattning from the newest intyg
         """
         intyg = self.last_intyg(start, slut)
         lakare = {}
@@ -132,7 +133,6 @@ class Sjukfall:
         """
         alder = None
         for i in self.intyg:
-            #if i.valid(start, slut):
             if True:
                 if alder is None:
                     alder = i.alder
@@ -155,6 +155,7 @@ class Sjukfall:
         return False
 
     def match(self, intyg):
+        """Attempt to match the intyg for this sjukfall"""
         # Check if intyg belongs in this group
         for i in self.intyg:
             if intyg.start >= i.start - 6 and intyg.start <= i.slut + 6:
@@ -167,6 +168,7 @@ class Sjukfall:
         return False
 
     def diagnos(self, start,slut):
+        """Get the diagnos from the newest intyg"""
         last = self.last_intyg(start, slut)
         if last:
             return last.diagnos
@@ -198,7 +200,7 @@ class Sjukfall:
             interval = Interval(intyg.pop())
             intervals.append(interval)
             match = True
-            # Keep matching until no matches
+            # Keep matching until no matches found
             while match:
                 match = False
                 tmp = []
@@ -215,15 +217,13 @@ class Sjukfall:
         """ Calculate number of sjukfall days for the given period
         """
         intyg = [ i for i in self.intyg if i.enhet == enhet ]
-        #for i in intyg:
-        #   print i.enhet
         intervals = []
         # Split the intyg in intervals
         while len(intyg) > 0:
             interval = Interval(intyg.pop())
             intervals.append(interval)
             match = True
-            # Keep matching until no matches
+            # Keep matching until no matches found
             while match:
                 match = False
                 tmp = []
@@ -261,6 +261,7 @@ class Sjukfall:
         return result
 
     def lan(self, start, slut):
+        """Return the län"""
         lan = None
         intyg = None
         for i in self.intyg:
@@ -268,14 +269,14 @@ class Sjukfall:
                 if lan is None or i.start > intyg.start:
                     lan = i.lan
                     intyg = i
-                elif i.start == intyg.start and lan != i.lan:
-                    print "Collision", lan,i.lan,i.enhet,intyg.enhet
-                    #assert(i.enhet != intyg.enhet)
+                elif i.isnewer(intyg):
+                    lan = i.lan
+                    intyg = i
         assert(lan != None)
         return lan
 
     def lakare_alderkon(self, start, slut):
-        """ Get all unqiue lakare
+        """ Get the läkare for the newest intyg
         """
         last = self.last_intyg(start, slut)
         if last:
@@ -285,6 +286,7 @@ class Sjukfall:
         return {}
 
     def lakare_alderkon_all(self, start, slut):
+        """Return all läkare/ålder/kön within the period"""
         res = {}
         for i in self.intyg:
             if not i.valid(start, slut):
@@ -302,6 +304,7 @@ class Sjukfall:
         return res
 
     def lakare(self, enhet, start, slut):
+        """Return a list of all läkare within the period"""
         res = []
         for i in self.intyg:    
             assert(len(i.lakareid) > 0)
