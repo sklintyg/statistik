@@ -1,5 +1,6 @@
 !contents -R2 -g -p -f -h
 
+
 !3 Givet att:
 
 | script | dagens datum | 2016-01-06 |
@@ -47,3 +48,37 @@
 | Alla     | MALE   | 17   | 0              | 0           | 0        |
 | Alla     | FEMALE | 17   | 0              | 0           | 0        |
 | Alla     | BOTH   | 17   | 0              | 0           | 0        |
+
+
+
+!3 Givet vi skall inte få merge felet
+
+| script | dagens datum | 2016-01-06 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start    | slut  | län | enhet | kommentar |
+| 19571109-2112 | F32  | 2014-12-01 | 2014-12-20 | 01  | enhet1 |Förstaintyg men ej aktivt under 2015 |
+| 19571109-2112 | F32  | 2016-02-01 | 2016-02-20 | 01  | enhet1 |Förstaintyg men ej aktivt under 2015 |
+
+!3 Då gäller:
+
+| Rapporten forsakringskassan |
+| diagnos  | kön    | län  | antalsjukfall? | medellängd? | medianlängd? |
+| Alla     | BOTH   | 01   | 0              | 0           | 0       |
+
+
+
+!3 Givet att ett sjukfalls förstaintyg ligger utanför året skall inget inget av sjukfallen med.
+
+| script | dagens datum | 2016-01-06 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start    | slut  | län | enhet | kommentar |
+| 19791110-9294 | F321  | 2014-11-30 | 2015-01-01 | 06  | enhet1 |man 33 dgr, touchar året, men är EJ förstaintyget pga raden efter|
+| 19791110-9294 | F321  | 2014-11-27 | 2014-11-29 | 06  | enhet1 |man 20, förstaintyg i sjukfallen skall ej med eftersom utanför perioden|
+
+!3 Då gäller:
+
+| Rapporten forsakringskassan |
+| diagnos  | kön    | län  | antalsjukfall? | medellängd? | medianlängd? |
+| Alla     | BOTH   | 06   | 0              | 0           | 0       |

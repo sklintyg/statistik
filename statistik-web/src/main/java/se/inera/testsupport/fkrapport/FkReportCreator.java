@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Predicate;
 
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -46,6 +49,8 @@ import se.inera.statistics.service.warehouse.WidelineConverter;
  * Creates a flattened multidimensional report of sjukfalls-lengths per diagnos, sex and county.
  */
 public class FkReportCreator {
+    private static final Logger LOG = LoggerFactory.getLogger(FkReportCreator.class);
+
     private static final String ALL_DIAGNOSES_ENTRY = "Alla";
     private static final String MATCH_ANYTHING_REGEXP = "(.*)";
     private Lan lan = new Lan();
@@ -141,6 +146,7 @@ public class FkReportCreator {
     }
 
     private List<FkFactRow> getEffectiveFactRows() {
+
         final LocalDate from = getFirstDateOfLastYear(); // 2015-01-01
         final Range range = new Range(from, LocalDate.now(clock));
 
@@ -149,19 +155,22 @@ public class FkReportCreator {
                                                                                // 2000-01-01
 
         final ArrayList<FkFactRow> fkFactRows = new ArrayList<>();
-        // Ingen filtrering på diagnos eller annat
 
+        // Bara ta med facts som touchar året vi är intresserade av.
         final Predicate<Fact> intygFilter = fact -> true;
+        // (fact.getSlutdatum() >= fromIntDay) && (fact.getStartdatum() <= toIntDay);
+
         // Ingen filtrering på sjukfall
-
         final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true, "fkreport" + System.currentTimeMillis());
-
+        LOG.info("About to iterate allVardgivare");
         // Loopa igenom ALLA facts per VG, dvs ingen sammanslagning sker (viktigt av juridiska skäl)
         for (Map.Entry<HsaIdVardgivare, Aisle> vgEntry : allVardgivare.entrySet()) {
+            LOG.info("About to get sjukfall for vg  " + vgEntry.getKey().getId());
             // Hämta ut dom som hör till detta år
             final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1, range.getMonths(),
                     vgEntry.getValue(), sjukfallFilter);
             for (SjukfallGroup sjukfallGroup : sjukfallGroups) {
+                LOG.info("Processing a group with  " + sjukfallGroup.getSjukfall().size() + " sjukfall for vg  " + vgEntry.getKey().getId());
                 for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                     // Om första intyget touchar denna period skall det med.
                     if (inPeriod(sjukfall, fromIntDay, toIntDay)) {

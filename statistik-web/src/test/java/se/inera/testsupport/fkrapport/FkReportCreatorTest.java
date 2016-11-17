@@ -68,7 +68,7 @@ public class FkReportCreatorTest {
     public void testDistributeFactRows() throws Exception {
         // Arrange
         final Clock clock = Clock.fixed(Instant.parse("2016-05-11T10:15:30.00Z"), ZoneId.systemDefault());
-        final Map<HsaIdVardgivare, Aisle> allVardgivare = new HashMap();// getTestData();
+        final Map<HsaIdVardgivare, Aisle> allVardgivare = new HashMap();
 
         Icd10 icd10 = new Icd10();
         final FkReportCreator fkReportCreator = new FkReportCreator(allVardgivare, new SjukfallUtil(), new Icd10(), null, clock);
