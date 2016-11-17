@@ -74,5 +74,5 @@ Samtliga sjukskrivningsperioder i förstaintyget räknas med. Uppehåll mellan s
 | Rapporten forsakringskassan |
 | diagnos | kön   | län | antalsjukfall? |  medellängd? | medianlängd? |
 | M54     | MALE   | 01   | 1             | 26 | 26 |
-| F32     | MALE   | 01   | 2             | 11.5 | 11.5 |
+| F32     | MALE   | 01   | 1             | 23 | 23 |
 | F43     | MALE   | 01   | 1             | 28 | 28 |
