@@ -34,8 +34,6 @@ import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicate;
-
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Lan;
@@ -71,13 +69,10 @@ public class FkReportCreator {
         this.icd10 = icd10;
         this.diagnoseCategories = diagnoseCategories;
         this.clock = clock;
-
     }
 
     public List<FkReportDataRow> getReportData() {
-
         List<FkFactRow> facts = getEffectiveFactRows();
-
         List<FkReportDataRow> results = createResultRowsForDiagnoses();
 
         // return resultset with the facts distributed over the rows
@@ -90,7 +85,6 @@ public class FkReportCreator {
     }
 
     protected List<FkReportDataRow> createResultRowsForDiagnoses() {
-
         // Create an expanded list of all possible diagnose entries to distribute statistics for.
         List<DiagnoseEntry> diagnoseEntries = buildDiagnoseEntries();
 
@@ -156,14 +150,10 @@ public class FkReportCreator {
         final int fromIntDay = WidelineConverter.toDay(from); // dagnr relativt 2000-01-01
         final int toIntDay = WidelineConverter.toDay(getLastDateOfLastYear()); // dagnr för 2015-12-31 relativt 2000-01-01
 
-        final Predicate<Fact> intygFilter = fact -> (fact.getSlutdatum() >= fromIntDay) && (fact.getStartdatum() <= toIntDay);
-
-        // Ingen filtrering på sjukfall
-        final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true, "fkreport-" + fromIntDay + "-" + toIntDay);
         LOG.info("About to iterate allVardgivare");
         // Loopa igenom ALLA facts per VG, dvs ingen sammanslagning sker (viktigt av juridiska skäl)
         return allVardgivare.entrySet().parallelStream()
-                .flatMap(vgEntry -> getFkFactRowsPerVg(range, fromIntDay, toIntDay, sjukfallFilter, vgEntry))
+                .flatMap(vgEntry -> getFkFactRowsPerVg(range, fromIntDay, toIntDay, SjukfallUtil.ALL_ENHETER, vgEntry))
                 .collect(Collectors.toList());
     }
 
