@@ -160,7 +160,7 @@ public class FkReportCreator {
         final Predicate<Fact> intygFilter = fact -> (fact.getSlutdatum() >= fromIntDay) && (fact.getStartdatum() <= toIntDay);
 
         // Ingen filtrering på sjukfall
-        final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true, "fkreport" + System.currentTimeMillis());
+        final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true, "fkreport-" + fromIntDay + "-" + toIntDay);
         LOG.info("About to iterate allVardgivare");
         // Loopa igenom ALLA facts per VG, dvs ingen sammanslagning sker (viktigt av juridiska skäl)
         return allVardgivare.entrySet().parallelStream()
