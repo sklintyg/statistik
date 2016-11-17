@@ -343,7 +343,7 @@ public class SjukfallTest {
     }
 
     @Test
-    public void testGetRealDaysFirstIntygConstructExtendingSjukfall() throws Exception {
+    public void testGetRealDaysFirstIntygConstructExtendingSjukfallOnSameIntyg() throws Exception {
         //When
         final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4));
         final SjukfallExtended sjukfall2 = new SjukfallExtended(sjukfall1, new SjukfallExtended(createFact(10, 4)));
@@ -351,18 +351,25 @@ public class SjukfallTest {
 
         //Then
         assertEquals(12, sjukfall3.getRealDaysFirstIntyg());
+        assertEquals(12, sjukfall3.getRealDays());
     }
 
     @Test
-    public void testGetRealDaysFirstIntygOnlyConsidersFactsFromFirstIntyg() throws Exception {
+    public void testGetRealDaysFirstIntygOnlyConsidersFactsFromFirstIntygSameStartDateDifferentIntygsId() throws Exception {
         //When
         final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4));
-        //Add a fact in sjukfall which originates from a second intyg
-        Fact factForSecondIntygsId = new Fact(1, 1, 1, 1, 2, 1, 12, 22, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1, false);
+
+        //Add a sjukfall which originates from a second intyg - 11 days - has the LOWEST startdate
+        Fact factForSecondIntygsId = new Fact(1, 1, 1, 1, 2, 1, 1, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1, false);
         final SjukfallExtended sjukfall2 = sjukfall1.extendSjukfall(new SjukfallExtended(factForSecondIntygsId));
 
+        //Add another sjukfall which originates from a third intyg - 20 days
+        Fact factForThirdIntygsId = new Fact(1, 1, 1, 1, 3, 1, 2, 21, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1, false);
+        final SjukfallExtended sjukfall3 = sjukfall2.extendSjukfall(new SjukfallExtended(factForThirdIntygsId));
+
         //Then
-        assertEquals(4, sjukfall2.getRealDaysFirstIntyg());
+        assertEquals(11, sjukfall3.getRealDaysFirstIntyg()); //only includes length from first intyg
+        assertEquals(21, sjukfall3.getRealDays()); // includes length from all
     }
 
     private Fact createFact(int lakarintyg, int startdatum, int diagnosavsnitt, int sjukskrivningsgrad) {
