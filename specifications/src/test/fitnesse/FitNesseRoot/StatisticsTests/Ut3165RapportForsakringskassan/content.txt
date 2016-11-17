@@ -1,5 +1,6 @@
 !contents -R2 -g -p -f -h
 
+!1 TEST #1
 
 !3 Givet att:
 
@@ -50,6 +51,7 @@
 | Alla     | BOTH   | 17   | 0              | 0           | 0        |
 
 
+!1 TEST #2
 
 !3 Givet vi skall inte få merge felet
 
@@ -67,6 +69,7 @@
 | Alla     | BOTH   | 01   | 0              | 0           | 0       |
 
 
+!1 TEST #3
 
 !3 Givet att ett sjukfalls förstaintyg ligger utanför året skall inget inget av sjukfallen med.
 
@@ -82,3 +85,38 @@
 | Rapporten forsakringskassan |
 | diagnos  | kön    | län  | antalsjukfall? | medellängd? | medianlängd? |
 | Alla     | BOTH   | 06   | 0              | 0           | 0       |
+
+
+!1 TEST #4 - förstaintyg med flera sjukskrivningsperioder som inte kopplas ihop till sjukfall
+
+!3 Givet att:
+
+| script | dagens datum | 2016-01-20 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | arbetsförmåga | start2     | slut2      | arbetsförmåga2 | enhet  | län | kommentar |
+| 19790717-9191 | M54        | 2014-09-10 | 2014-09-19 | 0             | 2015-01-10 | 2015-01-19 | 50             | enhet1 | 01  | 20 dagar totalt |
+
+!3 Då gäller:
+
+| Rapporten forsakringskassan |
+| diagnos | kön   | län | antalsjukfall? |  medellängd? | medianlängd? |
+| M54     | MALE   | 01   | 1             | 20 | 20 |
+
+
+!1 TEST #5 - Intyg med långt mellan perioderna blir flera sjukfall men ska ändå bara räknas med en gång
+
+!3 Givet att:
+
+| script | dagens datum | 2016-01-20 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | arbetsförmåga | start2     | slut2      | arbetsförmåga2 | enhet  | län | kommentar |
+| 19790717-9191 | M54        | 2015-01-15 | 2015-01-19 | 0             | 2015-10-10 | 2015-10-19 | 50             | enhet1 | 01  | 5+10=15 dagar totalt |
+| 19790717-9291 | M54       | 2015-01-17 | 2015-01-19 | 0             | 2015-01-20 | 2015-01-22 | 50             | enhet1 | 01  | 6 dagar totalt |
+
+!3 Då gäller:
+
+| Rapporten forsakringskassan |
+| diagnos | kön   | län | antalsjukfall? |  medellängd? | medianlängd? |
+| M54     | MALE   | 01   | 2             | 10.5 | 10.5 |

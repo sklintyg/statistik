@@ -254,7 +254,7 @@ public class SjukfallTest {
     public void testGetRealDaysExtendingWithNewStart() throws Exception {
         //When
         final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4));
-        final SjukfallExtended sjukfall2 = sjukfall1.extendSjukfallWithNewStart(10, 3);
+        final SjukfallExtended sjukfall2 = sjukfall1.extendSjukfallWithNewStart(createFact(10, 3));
 
         //Then
         assertEquals(7, sjukfall2.getRealDays());
@@ -264,7 +264,7 @@ public class SjukfallTest {
     public void testGetRealDaysExtendingWithNewStartOverlapping() throws Exception {
         //When
         final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4));
-        final SjukfallExtended sjukfall2 = sjukfall1.extendSjukfallWithNewStart(4, 3);
+        final SjukfallExtended sjukfall2 = sjukfall1.extendSjukfallWithNewStart(createFact(4, 3));
 
         //Then
         assertEquals(5, sjukfall2.getRealDays());
@@ -345,12 +345,13 @@ public class SjukfallTest {
     @Test
     public void testGetRealDaysFirstIntygConstructExtendingSjukfallOnSameIntyg() throws Exception {
         //When
-        final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4));
+        final int firstIntygId = 17;
+        final SjukfallExtended sjukfall1 = new SjukfallExtended(new Fact(1, 1, 1, 1, firstIntygId, 1, 2, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1, false));
         final SjukfallExtended sjukfall2 = new SjukfallExtended(sjukfall1, new SjukfallExtended(createFact(10, 4)));
         final SjukfallExtended sjukfall3 = new SjukfallExtended(sjukfall2, new SjukfallExtended(createFact(6, 4)));
 
         //Then
-        assertEquals(12, sjukfall3.getRealDaysFirstIntyg());
+        assertEquals(firstIntygId, sjukfall3.getFirstIntygId());
         assertEquals(12, sjukfall3.getRealDays());
     }
 
@@ -368,7 +369,7 @@ public class SjukfallTest {
         final SjukfallExtended sjukfall3 = sjukfall2.extendSjukfall(new SjukfallExtended(factForThirdIntygsId));
 
         //Then
-        assertEquals(11, sjukfall3.getRealDaysFirstIntyg()); //only includes length from first intyg
+        assertEquals(factForSecondIntygsId.getLakarintyg(), sjukfall3.getFirstIntygId());
         assertEquals(21, sjukfall3.getRealDays()); // includes length from all
     }
 
