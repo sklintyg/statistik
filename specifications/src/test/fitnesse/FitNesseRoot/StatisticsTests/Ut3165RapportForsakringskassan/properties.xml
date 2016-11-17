@@ -7,7 +7,6 @@
 	<Refactor/>
 	<Search/>
 	<Test/>
-	<Prune/>
 	<Versions/>
 	<WhereUsed/>
 </properties>

@@ -26,6 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,42 +151,54 @@ public class FkReportCreator {
     }
 
     private List<FkFactRow> getEffectiveFactRows() {
-
         final LocalDate from = getFirstDateOfLastYear(); // 2015-01-01
         final Range range = new Range(from, LocalDate.now(clock));
 
         final int fromIntDay = WidelineConverter.toDay(from); // dagnr relativt 2000-01-01
-        final int toIntDay = WidelineConverter.toDay(getLastDateOfLastYear()); // dagnr för 2015-12-31 relativt
-                                                                               // 2000-01-01
+        final int toIntDay = WidelineConverter.toDay(getLastDateOfLastYear()); // dagnr för 2015-12-31 relativt 2000-01-01
 
-        final ArrayList<FkFactRow> fkFactRows = new ArrayList<>();
-
-        // Bara ta med facts som touchar året vi är intresserade av.
-        final Predicate<Fact> intygFilter = fact -> true;
-        // (fact.getSlutdatum() >= fromIntDay) && (fact.getStartdatum() <= toIntDay);
+        final Predicate<Fact> intygFilter = fact -> (fact.getSlutdatum() >= fromIntDay) && (fact.getStartdatum() <= toIntDay);
 
         // Ingen filtrering på sjukfall
         final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true, "fkreport" + System.currentTimeMillis());
         LOG.info("About to iterate allVardgivare");
         // Loopa igenom ALLA facts per VG, dvs ingen sammanslagning sker (viktigt av juridiska skäl)
-        for (Map.Entry<HsaIdVardgivare, Aisle> vgEntry : allVardgivare.entrySet()) {
-            LOG.info("About to get sjukfall for vg  " + vgEntry.getKey().getId());
-            // Hämta ut dom som hör till detta år
-            final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1, range.getMonths(),
-                    vgEntry.getValue(), sjukfallFilter);
-            for (SjukfallGroup sjukfallGroup : sjukfallGroups) {
-                LOG.info("Processing a group with  " + sjukfallGroup.getSjukfall().size() + " sjukfall for vg  " + vgEntry.getKey().getId());
-                for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-                    // Om första intyget touchar denna period skall det med.
-                    if (inPeriod(sjukfall, fromIntDay, toIntDay)) {
-                        final FkFactRow fkFactRow = new FkFactRow(getDiagnoseClearText(sjukfall), sjukfall.getKon(), sjukfall.getLanskod(),
-                                sjukfall.getRealDaysFirstIntyg());
-                        fkFactRows.add(fkFactRow);
-                    }
-                }
-            }
-        }
-        return fkFactRows;
+        return allVardgivare.entrySet().parallelStream()
+                .flatMap(vgEntry -> getFkFactRowsPerVg(range, fromIntDay, toIntDay, sjukfallFilter, vgEntry))
+                .collect(Collectors.toList());
+    }
+
+    private Stream<FkFactRow> getFkFactRowsPerVg(Range range, int fromIntDay, int toIntDay, FilterPredicates sjukfallFilter, Map.Entry<HsaIdVardgivare, Aisle> vgEntry) {
+        LOG.info("About to get sjukfall for vg  " + vgEntry.getKey().getId());
+        final Aisle aisle = vgEntry.getValue();
+        // Hämta ut dom som hör till detta år
+        final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1, range.getMonths(), vgEntry.getValue(), sjukfallFilter);
+        return StreamSupport.stream(sjukfallGroups.spliterator(), false)
+                .flatMap(sjukfallGroup -> sjukfallGroup.getSjukfall().stream())
+                .collect(Collectors.toMap(Sjukfall::getFirstIntygId, p -> p, (p, q) -> p)).values().stream() // distinct by property
+                .filter(sjukfall -> inPeriod(getAllFactsInIntyg(sjukfall.getFirstIntygId(), aisle), fromIntDay, toIntDay))
+                .map(sjukfall -> createFkFactRow(sjukfall, aisle));
+    }
+
+    private FkFactRow createFkFactRow(Sjukfall sjukfall, Aisle aisle) {
+        final String diagnoseClearText = getDiagnoseClearText(sjukfall);
+        final Kon kon = sjukfall.getKon();
+        final String lanskod = sjukfall.getLanskod();
+        final int realDaysFirstIntyg = getRealDaysForIntyg(sjukfall.getFirstIntygId(), aisle);
+        return new FkFactRow(diagnoseClearText, kon, lanskod, realDaysFirstIntyg);
+    }
+
+    private int getRealDaysForIntyg(long intygId, Aisle aisle) {
+        final long realDaysInIntyg = getAllFactsInIntyg(intygId, aisle)
+                .flatMap(fact -> IntStream.rangeClosed(fact.getStartdatum(), fact.getSlutdatum()).boxed())
+                .distinct()
+                .count();
+        return Math.toIntExact(realDaysInIntyg);
+    }
+
+    private Stream<Fact> getAllFactsInIntyg(long intygId, Aisle aisle) {
+        return StreamSupport.stream(aisle.spliterator(), false)
+                .filter(fact -> fact.getLakarintyg() == intygId);
     }
 
     private String getDiagnoseClearText(Sjukfall sjukfall) {
@@ -192,18 +209,21 @@ public class FkReportCreator {
         return clearTextCode;
     }
 
-    private boolean inPeriod(Sjukfall sjukfall, int from, int to) {
-        boolean startsInPeriod = sjukfall.getStart() <= to && sjukfall.getStart() >= from;
-        boolean endInPeriod = sjukfall.getEnd() <= to && sjukfall.getEnd() >= from;
-        boolean spansPeriod = sjukfall.getStart() < from && sjukfall.getEnd() > to;
+    private boolean inPeriod(Stream<Fact> intygFacts, int from, int to) {
+        final List<Fact> intyg = intygFacts.collect(Collectors.toList());
+        final int intygStart = intyg.stream().mapToInt(Fact::getStartdatum).min().orElse(Integer.MAX_VALUE);
+        final int intygEnd = intyg.stream().mapToInt(Fact::getSlutdatum).max().orElse(Integer.MIN_VALUE);
+        boolean startsInPeriod = intygStart <= to && intygStart >= from;
+        boolean endInPeriod = intygEnd <= to && intygEnd >= from;
+        boolean spansPeriod = intygStart < from && intygEnd > to;
         return startsInPeriod || endInPeriod || spansPeriod;
     }
 
-    LocalDate getLastDateOfLastYear() {
+    private LocalDate getLastDateOfLastYear() {
         return LocalDate.now(clock).withDayOfYear(1).minusDays(1);
     }
 
-    LocalDate getFirstDateOfLastYear() {
+    private LocalDate getFirstDateOfLastYear() {
         return LocalDate.now(clock).withDayOfYear(1).minusYears(1);
     }
 

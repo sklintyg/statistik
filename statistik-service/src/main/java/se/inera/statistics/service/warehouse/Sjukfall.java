@@ -43,7 +43,7 @@ public class Sjukfall {
     private Lakare lastLakare;
     private int[] enhets;
     private int realDays;
-    private int realDaysFirstIntyg;
+    private long firstIntygId;
     private List<Diagnos> diagnoses = new ArrayList<>();
     private Diagnos diagnos;
     private boolean enkelt;
@@ -69,7 +69,7 @@ public class Sjukfall {
         sjukfall.enhets = toArray(extendedSjukfall.getEnhets());
         sjukfall.lastEnhet = extendedSjukfall.getLastEnhet();
         sjukfall.enkelt = extendedSjukfall.isEnkelt();
-        sjukfall.realDaysFirstIntyg = extendedSjukfall.getRealDaysFirstIntyg();
+        sjukfall.firstIntygId = extendedSjukfall.getFirstIntygId();
         return sjukfall;
     }
 
@@ -208,8 +208,8 @@ public class Sjukfall {
         return enkelt;
     }
 
-    public int getRealDaysFirstIntyg() {
-        return realDaysFirstIntyg;
+    public long getFirstIntygId() {
+        return firstIntygId;
     }
 
     private static final class Diagnos {

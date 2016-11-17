@@ -42,7 +42,7 @@ public class QueueAspect {
 
     @After("aopPointcut()")
     public void afterOnMessage(JoinPoint jp) {
-        if(countDownLatch != null) {
+        if (countDownLatch != null) {
             countDownLatch.countDown();
         }
     }

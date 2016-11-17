@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.common.base.Predicate;
@@ -170,10 +169,13 @@ public class SjukfallExtended {
         return new SjukfallExtended(this, sjukfall);
     }
 
-    public SjukfallExtended extendSjukfallWithNewStart(int start, int sjukskrivningslangd) {
+    public SjukfallExtended extendSjukfallWithNewStart(Fact intygForExtending) {
+        final int startdatum = intygForExtending.getStartdatum();
+        final int sjukskrivningslangd = intygForExtending.getSjukskrivningslangd();
         final SjukfallExtended sjukfall = new SjukfallExtended(this);
-        sjukfall.start = start;
-        sjukfall.sjukskrivningsperiods.add(new Sjukskrivningsperiod(start, sjukskrivningslangd));
+        sjukfall.start = startdatum;
+        sjukfall.sjukskrivningsperiods.add(new Sjukskrivningsperiod(startdatum, sjukskrivningslangd));
+        sjukfall.facts.add(intygForExtending);
         return sjukfall;
     }
 
@@ -209,10 +211,6 @@ public class SjukfallExtended {
 
     public int getRealDays() {
         return getAllDates(sjukskrivningsperiods).size();
-    }
-
-    public int getRealDays(List<Sjukskrivningsperiod> periods) {
-        return getAllDates(periods).size();
     }
 
     private HashSet<Integer> getAllDates(List<Sjukskrivningsperiod> periods) {
@@ -344,10 +342,8 @@ public class SjukfallExtended {
         return false;
     }
 
-    public int getRealDaysFirstIntyg() {
-        final List<Sjukskrivningsperiod> firstIntygPeriods = getFirstIntygFacts()
-                .map(fact -> new Sjukskrivningsperiod(fact.getStartdatum(), fact.getSjukskrivningslangd())).collect(Collectors.toList());
-        return getRealDays(firstIntygPeriods);
+    public long getFirstIntygId() {
+        return getFirstFact().getLakarintyg();
     }
 
     final class Diagnos {

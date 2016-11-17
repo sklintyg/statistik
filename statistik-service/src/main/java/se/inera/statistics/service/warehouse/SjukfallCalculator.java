@@ -320,9 +320,7 @@ public class SjukfallCalculator {
             return mergedSjukfall;
         }
         final Fact intygForExtending = extendableIntyg.iterator().next();
-        final int startdatum = intygForExtending.getStartdatum();
-        final int sjukskrivningslangd = intygForExtending.getSjukskrivningslangd();
-        final SjukfallExtended sjukfall = mergedSjukfall.extendSjukfallWithNewStart(startdatum, sjukskrivningslangd);
+        final SjukfallExtended sjukfall = mergedSjukfall.extendSjukfallWithNewStart(intygForExtending);
 
         return getExtendedSjukfallStart(sjukfall, allIntygForPatient);
     }
