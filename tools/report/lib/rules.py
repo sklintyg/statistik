@@ -116,6 +116,7 @@ class RuleSjuklangd90:
         self.periods = self.make_periods(year, month, months)
 
     def make_periods(self, year, month, months):
+        """Split up the time interval into months periods"""
         alpha = datetime(2000, 1, 1)
         i = 0
         mlist = []
