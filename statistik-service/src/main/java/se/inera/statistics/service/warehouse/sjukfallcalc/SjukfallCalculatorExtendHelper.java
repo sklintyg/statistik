@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.warehouse;
+package se.inera.statistics.service.warehouse.sjukfallcalc;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
@@ -24,6 +24,9 @@ import com.google.common.collect.Collections2;
 import com.google.common.collect.Multimap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -45,30 +48,6 @@ class SjukfallCalculatorExtendHelper {
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
     }
 
-    static ArrayListMultimap<Long, SjukfallExtended> getSjukfallsPerPatient(Iterable<Fact> facts, Collection<Long> patientsFilter) {
-        final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = ArrayListMultimap.create();
-        for (Fact line : facts) {
-            long key = line.getPatient();
-            if (patientsFilter != null && !patientsFilter.contains(key)) {
-                continue;
-            }
-            List<SjukfallExtended> sjukfallsForPatient = sjukfallsPerPatient.get(key);
-
-            if (sjukfallsForPatient.isEmpty()) {
-                SjukfallExtended sjukfall = new SjukfallExtended(line);
-                sjukfallsPerPatient.put(key, sjukfall);
-            } else {
-                final SjukfallExtended sjukfall = sjukfallsForPatient.remove(sjukfallsForPatient.size() - 1);
-                SjukfallExtended nextSjukfall = sjukfall.join(line);
-                if (!nextSjukfall.isExtended()) {
-                    sjukfallsPerPatient.put(key, sjukfall);
-                }
-                sjukfallsPerPatient.put(key, nextSjukfall);
-            }
-        }
-        return sjukfallsPerPatient;
-    }
-
     void extendSjukfallConnectedByIntygOnOtherEnhets(Multimap<Long, SjukfallExtended> sjukfallForAvailableEnhets) {
         final Set<Long> patients = new HashSet<>(sjukfallForAvailableEnhets.keySet());
         final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = getSjukfallsPerPatientInAisle(patients);
@@ -79,14 +58,14 @@ class SjukfallCalculatorExtendHelper {
 
     private ArrayListMultimap<Long, SjukfallExtended> getSjukfallsPerPatientInAisle(Set<Long> patients) {
         if (sjukfallsPerPatientInAisle == null) {
-            sjukfallsPerPatientInAisle = getSjukfallsPerPatient(aisle, patients);
+            sjukfallsPerPatientInAisle = SjukfallCalculatorHelper.getSjukfallsPerPatient(aisle, patients);
             return sjukfallsPerPatientInAisle;
         }
         final Set<Long> cachedPatients = sjukfallsPerPatientInAisle.keySet();
         final HashSet<Long> nonCachedPatients = new HashSet<>(patients);
         nonCachedPatients.removeAll(cachedPatients);
         if (!nonCachedPatients.isEmpty()) {
-            sjukfallsPerPatientInAisle.putAll(getSjukfallsPerPatient(aisle, nonCachedPatients));
+            sjukfallsPerPatientInAisle.putAll(SjukfallCalculatorHelper.getSjukfallsPerPatient(aisle, nonCachedPatients));
         }
         return sjukfallsPerPatientInAisle;
     }
