@@ -284,11 +284,11 @@ def main(argv):
                 'Lösenord saknas!'
                 return 
 
-        if not caregiver:
-            if not careunit:
-                if not lanskod:
-                    print "INFO: Vårdgivare, vårdenhet eller länskod ej angiven"
-                    caregiver = get_caregiver_id_from_user(db_host, db_password, db_name)
+        # if not caregiver:
+        #     if not careunit:
+        #         if not lanskod:
+        #             print "INFO: Vårdgivare, vårdenhet eller länskod ej angiven"
+        #             caregiver = get_caregiver_id_from_user(db_host, db_password, db_name)
         
         get_data(dump_file, ranges.start, ranges.slut, caregiver, careunit,lanskod, db_host, db_password, db_name)
         return
