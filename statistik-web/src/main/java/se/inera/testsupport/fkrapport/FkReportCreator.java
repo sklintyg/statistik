@@ -31,6 +31,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +45,7 @@ import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
+import se.inera.statistics.service.warehouse.SjukfallIterator;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 
@@ -161,8 +163,8 @@ public class FkReportCreator {
         LOG.info("About to get sjukfall for vg  " + vgEntry.getKey().getId());
         final Aisle aisle = vgEntry.getValue();
         // Hämta ut dom som hör till detta år
-        final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1, range.getMonths(), vgEntry.getValue(), sjukfallFilter);
-        return StreamSupport.stream(sjukfallGroups.spliterator(), false)
+        final ArrayList<SjukfallGroup> sjukfallGroups = Lists.newArrayList(new SjukfallIterator(range.getFrom(), 1, range.getMonths(), aisle, sjukfallFilter, true));
+        return sjukfallGroups.stream()
                 .flatMap(sjukfallGroup -> sjukfallGroup.getSjukfall().stream())
                 .collect(Collectors.toMap(Sjukfall::getFirstIntygId, p -> p, (p, q) -> p)).values().stream() // distinct by property
                 .filter(sjukfall -> inPeriod(getAllFactsInIntyg(sjukfall.getFirstIntygId(), aisle), fromIntDay, toIntDay))
