@@ -34,7 +34,7 @@ angular.module('StatisticsApp.filter.directive')
                 linkFunction(_, scope, businessFilterFactory, $location, messageService, statisticsData,
                                 moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
             },
-            templateUrl: 'app/shared/businessfilter/businessFilterView.html'
+            templateUrl: '/app/shared/businessfilter/businessFilterView.html'
         };
     });
 
@@ -53,7 +53,7 @@ angular.module('StatisticsApp.filter.directive')
                 linkFunction(_, scope, landstingFilterFactory, $location, messageService, statisticsData,
                                 moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
             },
-            templateUrl: 'app/shared/businessfilter/businessFilterView.html'
+            templateUrl: '/app/shared/businessfilter/businessFilterView.html'
         };
     });
 
@@ -67,40 +67,11 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.showDateValidationError = false;
     scope.loadingFilter = false;
 
-    function updateGeographyFilterSelectorDataButtonLabelText() {
-        var selected = scope.businessFilter.geographyBusinessIds.length;
-        var total = scope.businessFilter.businesses.length;
-
-        var text;
-        if (selected === 0 || selected === total) {
-            text = 'Alla valda';
-        }
-        else {
-            text = selected + ' av ' + total + ' valda';
-        }
-
-        scope.geographyFilterSelectorData.buttonLabelText = text;
-    }
-
-    scope.$watch('businessFilter.geographyBusinessIds', function() {
-        updateGeographyFilterSelectorDataButtonLabelText();
-    });
-    scope.$watch('businessFilter.businesses', function() {
-        updateGeographyFilterSelectorDataButtonLabelText();
-    });
     scope.$watch('businessFilter', function(newValue,oldValue,scope) {
         scope.icd10 = newValue.icd10;
     });
     scope.$watch('businessFilter.geography', function(newValue,oldValue,scope) {
         scope.geography = newValue.geography;
-    });
-
-    scope.$watch('businessFilter.useDefaultPeriod', function(newValue, oldvalue, scope) {
-        if (!newValue && businessFilter.toDate && businessFilter.fromDate) {
-            scope.timeIntervalChecked = true;
-        } else {
-            scope.timeIntervalChecked = false;
-        }
     });
 
     scope.geographyFilterSelectorData = {
@@ -121,8 +92,8 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
 
     var getVerksamhetstyper = function () {
-        var selectedVerksamhettyps = _.filter(businessFilter.verksamhetsTyper, function(verksamhetstyp) {
-            return _.contains(businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
+        var selectedVerksamhettyps = _.filter(scope.businessFilter.verksamhetsTyper, function(verksamhetstyp) {
+            return _.contains(scope.businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
         });
         var selectedIdsFromVerksamhetstyps = _.map(selectedVerksamhettyps, function (verksamhetstyp) {
             return verksamhetstyp.ids;
@@ -139,36 +110,53 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         return moment(new Date(date)).isValid() || moment(new Date(date).getUTCDate()).isValid();
     };
 
-    var hasFromDateValidationError = function() {
-        return !businessFilter.fromDate ||
-            !isValidDate(businessFilter.fromDate) ||
-            moment(businessFilter.fromDate).isBefore(TIME_INTERVAL_MIN_DATE) ||
-            moment(businessFilter.fromDate).isAfter(moment());
-    };
-
-    var hasToDateValidationError = function() {
-        return !businessFilter.toDate ||
-            !isValidDate(businessFilter.toDate) ||
-            moment(businessFilter.toDate).isBefore(businessFilter.fromDate) ||
-            moment(businessFilter.toDate).isAfter(moment().date(moment().daysInMonth()).toDate());
-    };
-
     var hasDatepickersValidationError = function() {
-        var fromDateValidationError, toDateValidationError;
+        scope.errorMessage = messageService.getProperty('alert.filter.date-invalid');
+        scope.fromDateValidationError = false;
+        scope.toDateValidationError = false;
 
-        if (scope.timeIntervalChecked) {
-            fromDateValidationError = hasFromDateValidationError();
-            toDateValidationError = hasToDateValidationError();
+        // Fel format
+        if (!scope.myForm.fromDate.$valid || !isValidDate(scope.businessFilter.fromDate) || !scope.myForm.toDate.$valid || !isValidDate(scope.businessFilter.toDate)) {
+            return true;
+        }
 
-            if(fromDateValidationError) {
-                scope.fromDateValidationError = true;
-            }
-            if(toDateValidationError) {
+        if (scope.businessFilter.fromDate || scope.businessFilter.toDate) {
+            // Till är tomt men inte från
+            if (scope.businessFilter.fromDate && !scope.businessFilter.toDate || !isValidDate(businessFilter.toDate)) {
+                scope.errorMessage = messageService.getProperty('alert.filter.date.empty');
                 scope.toDateValidationError = true;
+                return true;
+            }
+
+            // Från är tomt men inte till
+            if (!scope.businessFilter.fromDate && scope.businessFilter.toDate || !isValidDate(businessFilter.fromDate)) {
+                scope.errorMessage = messageService.getProperty('alert.filter.date.empty');
+                scope.fromDateValidationError = true;
+                return true;
+            }
+
+            // Från är satt till efter till
+            if (moment(scope.businessFilter.toDate).isBefore(scope.businessFilter.fromDate)) {
+                scope.errorMessage = messageService.getProperty('alert.filter.date.wrong-order');
+                scope.fromDateValidationError = true;
+                scope.toDateValidationError = true;
+                return true;
+            }
+
+            if (moment(scope.businessFilter.fromDate).isBefore(TIME_INTERVAL_MIN_DATE)) {
+                scope.errorMessage = messageService.getProperty('alert.filter.date.before', {date: TIME_INTERVAL_MIN_DATE.format('YYYY-MM')});
+                scope.fromDateValidationError = true;
+                return true;
+            }
+
+            if (moment(scope.businessFilter.toDate).isAfter(TIME_INTERVAL_MAX_DATE)) {
+                scope.errorMessage = messageService.getProperty('alert.filter.date.after');
+                scope.toDateValidationError = true;
+                return true;
             }
         }
 
-        return fromDateValidationError || toDateValidationError ;
+        return false;
     };
 
     scope.makeSelection = function () {
@@ -178,31 +166,30 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
             scope.showDateValidationError = true;
         } else {
             scope.showDateValidationError = false;
-            scope.toDateValidationError = false;
-            scope.fromDateValidationError = false;
             scope.loadingFilter = true;
 
             //Be sure to format the date objects correctly before sending anything to the server
-            if (businessFilter.fromDate && businessFilter.toDate) {
-                formattedFromDate = moment(businessFilter.fromDate).format('YYYY-MM-DD');
-                formattedToDate = moment(businessFilter.toDate);
+            if (scope.businessFilter.fromDate && scope.businessFilter.toDate) {
+                formattedFromDate = moment(scope.businessFilter.fromDate).format('YYYY-MM-DD');
+                formattedToDate = moment(scope.businessFilter.toDate);
                 formattedToDate = formattedToDate.date(formattedToDate.daysInMonth()).format('YYYY-MM-DD');
             }
             //Only use a non default period if everything is set as expected
-            if (scope.timeIntervalChecked && businessFilter.fromDate && businessFilter.toDate) {
-                businessFilter.useDefaultPeriod = false;
+            if (scope.businessFilter.fromDate && scope.businessFilter.toDate) {
+                scope.businessFilter.useDefaultPeriod = false;
             } else {
-                businessFilter.useDefaultPeriod = true;
+                scope.businessFilter.useDefaultPeriod = true;
             }
 
             var params = {
-                diagnoser: businessFilter.selectedDiagnoses,
-                enheter: businessFilter.geographyBusinessIds,
+                diagnoser: scope.businessFilter.selectedDiagnoses,
+                enheter: scope.businessFilter.geographyBusinessIds,
                 verksamhetstyper: getVerksamhetstyper(),
-                sjukskrivningslangd: businessFilter.selectedSjukskrivningslangdIds,
+                sjukskrivningslangd: scope.businessFilter.selectedSjukskrivningslangdIds,
+                aldersgrupp: scope.businessFilter.selectedAldersgruppIds,
                 fromDate: formattedFromDate,
                 toDate: formattedToDate,
-                useDefaultPeriod: businessFilter.useDefaultPeriod
+                useDefaultPeriod: scope.businessFilter.useDefaultPeriod
             };
 
             var success = function (filterHash) {
@@ -211,6 +198,11 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
                 $location.search(queryParams);
                 scope.isFilterCollapsed = !scope.isFilterCollapsed;
                 scope.loadingFilter = false;
+
+                scope.businessFilter.aldersgruppSaved = angular.copy(params.aldersgrupp);
+                scope.businessFilter.sjukskrivningslangdSaved = angular.copy(params.sjukskrivningslangd);
+                scope.businessFilter.diagnoserSaved = angular.copy(params.diagnoser);
+                scope.businessFilter.geographyBusinessIdsSaved = angular.copy(params.enheter);
             };
 
             var error = function () {
@@ -223,44 +215,34 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     };
 
     var resetDatePickers = function() {
-        scope.timeIntervalChecked = false;
         scope.showDateValidationError = false;
         scope.fromDateValidationError = false;
         scope.toDateValidationError = false;
     };
 
-    scope.resetBusinessFilter = function() {
-        businessFilter.resetSelections();
+    scope.resetBusinessFilter = function(form) {
+        if (form) {
+            form.$setPristine();
+            form.$setUntouched();
+        }
+
+        scope.businessFilter.resetSelections();
         resetDatePickers();
-        updateGeographyFilterSelectorDataButtonLabelText();
         var queryParams = $location.search();
         delete queryParams[scope.filterHashParamName];
         $location.search(queryParams);
     };
 
-    //Configuration and scope functions for datepicker
-    scope.minDate = TIME_INTERVAL_MIN_DATE;
-    scope.maxDate = TIME_INTERVAL_MAX_DATE;
+    scope.clearDates = function() {
+        scope.businessFilter.fromDate = null;
+        scope.businessFilter.toDate = null;
 
-    scope.minToDate = businessFilter.fromDate;
+        resetDatePickers();
+    };
 
     //Are the datepicker dialogs open or not
     scope.isFromDateOpen = false;
     scope.isToDateOpen = false;
-
-    scope.openFromDate = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-
-        scope.isFromDateOpen = true;
-    };
-
-    scope.openToDate = function($event) {
-        $event.preventDefault();
-        $event.stopPropagation();
-
-        scope.isToDateOpen = true;
-    };
 
     scope.$on('$routeChangeSuccess', function(){
         scope.filterIsActive = !!$location.search()[scope.filterHashParamName];
@@ -268,33 +250,70 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.filterIsActive = !!$location.search()[scope.filterHashParamName];
 
     scope.$watch('businessFilter.fromDate', function(newValue) {
-        scope.minToDate = newValue;
-        if(businessFilter.toDate < newValue) {
-            businessFilter.toDate = null;
+        scope.dateOptionsTo.minDate = newValue;
+        if(scope.businessFilter.toDate < newValue) {
+            scope.businessFilter.toDate = null;
         }
     });
 
     //The format of dates date we show in the GUI when the user selects something
     scope.format =  'yyyy-MM';
+    scope.dateFormatPlaceholder= 'ÅÅÅÅ-MM';
 
+    //Configuration and scope functions for datepicker
+    scope.dateOptions = {
+        minDate: TIME_INTERVAL_MIN_DATE,
+        maxDate: TIME_INTERVAL_MAX_DATE,
+        showWeeks: false,
+        minMode: 'month',
+        datepickerMode: 'month'
+    };
+
+    scope.dateOptionsTo = angular.copy(scope.dateOptions);
+
+    scope.isVerksamhetTypeCollapsed = true;
+
+    scope.selectVerksamhetsTyp = function(verksamhetsTyp) {
+        var checked = !verksamhetsTyp.checked;
+
+        angular.forEach(verksamhetsTyp.units, function(businesse) {
+            if (checked || businesse.verksamhetsTyper.length === 1) {
+                businesse.allSelected = checked;
+            } else {
+                var shouldUncheck = true;
+                angular.forEach(scope.businessFilter.verksamhetsTyper, function(type) {
+                    if (type !== verksamhetsTyp && type.checked &&
+                        type.units.indexOf(businesse) > -1) {
+                        shouldUncheck = false;
+                    }
+                });
+                if (shouldUncheck) {
+                    businesse.allSelected = false;
+                }
+            }
+        });
+
+        verksamhetsTyp.checked = checked;
+
+        scope.$broadcast('updateSelections');
+    };
+
+    scope.$on('selectionsChanged', function() {
+        scope.businessFilter.updateSelectionVerksamhetsTyper(scope.businessFilter.verksamhetsTyper);
+    });
 }
 
-angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown', function () {
+angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown',
+    /** @ngInject */
+    function () {
     'use strict';
 
-    function multiselectSize($el) {
-        return $('option', $el).length;
-    }
-
     return function(scope, element, attrs) {
-        var bf = scope.$parent.businessFilter;
+        var text = attrs.multiselectDropdown;
+        var icon = attrs.multiselectDropdownIcon;
         element.multiselect({
-            buttonText: function (options, select) {
-                if (options.length === 0 || options.length === multiselectSize(select)) {
-                    return 'Alla valda ';
-                }
-
-                return options.length + ' av ' + multiselectSize(select) + ' valda ';
+            buttonText: function () {
+                return '<span class="fa ' + icon + '"></span> ' + text;
             },
             onChange: function (optionElement, checked) {
                 if (optionElement) {
@@ -303,12 +322,10 @@ angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown'
                         optionElement.prop('selected', 'selected');
                     }
                 }
-                if (bf) {
-                    bf.filterChanged();
-                }
 
                 element.change();
             },
+            enableHTML: true,
             includeSelectAllOption: true,
             selectAllText: 'Markera alla'
         });
@@ -336,7 +353,7 @@ angular.module('StatisticsApp.filter.directive').directive('filterButton', funct
         '<button id="show-hide-filter-btn" type="button" class="btn btn-small center-block" ' +
             'ng-class="{filterbtnactivefilter: filterIsActive}" ng-click="isFilterCollapsed = !isFilterCollapsed">' +
         '<i class="glyphicon" ng-class="{\'glyphicon-chevron-down\': isFilterCollapsed, \'glyphicon-chevron-up\': !isFilterCollapsed}"></i> ' +
-            '{{!isFilterCollapsed ? "Dölj filter" : "Visa filter"}}<span style="font-size: 12px; font-style: italic;"><br/>' +
+            '{{!isFilterCollapsed ? "Stäng filter" : "Öppna filter"}}<span style="font-size: 12px; font-style: italic;"><br/>' +
             '{{filterButtonIdText}}</span><span ng-show="filterIsActive" style="font-size: 12px; font-style: italic;"><br/>Val gjorda</span>' +
         '</button>'
     };

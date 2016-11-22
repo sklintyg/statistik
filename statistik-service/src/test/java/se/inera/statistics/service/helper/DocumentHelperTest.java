@@ -19,12 +19,12 @@
 package se.inera.statistics.service.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.report.model.Kon;
+
+import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -38,18 +38,12 @@ public class DocumentHelperTest {
     private JsonNode documentOldFormat = JSONParser.parse(JSONSource.readTemplateAsString(VERSION1));
     private JsonNode documentVersion2 = JSONParser.parse(JSONSource.readTemplateAsString(VERSION2));
 
-    // CHECKSTYLE:OFF MagicNumber
-    @Before
-    public void setup() {
-        DateTimeUtils.setCurrentMillisFixed(new LocalDate(2015, 3, 30).toDate().getTime());
-    }
-
     @Test
     public void prepareOld() {
         final Patientdata patientData = DocumentHelper.getPatientData(documentOldFormat);
 
         assertEquals(35, patientData.getAlder());
-        assertEquals(Kon.Male, patientData.getKon());
+        assertEquals(Kon.MALE, patientData.getKon());
     }
 
     @Test
@@ -57,7 +51,7 @@ public class DocumentHelperTest {
         final Patientdata patientData = DocumentHelper.getPatientData(documentVersion2);
 
         assertEquals(98, patientData.getAlder());
-        assertEquals(Kon.Male, patientData.getKon());
+        assertEquals(Kon.MALE, patientData.getKon());
     }
 
     @Test
@@ -121,7 +115,7 @@ public class DocumentHelperTest {
     @Test
     public void processorExtractAlderFromIntyg() {
         String personId = "19121212-1212";
-        LocalDate date = new LocalDate(0L); // 1970
+        LocalDate date = LocalDate.ofEpochDay(0L); // 1970
 
         int alder = ConversionHelper.extractAlder(personId, date);
 
@@ -131,7 +125,7 @@ public class DocumentHelperTest {
     @Test
     public void processorExtractAlderFromIntygWithSamordningsnummer() {
         String personId = "19121272-1212";
-        LocalDate date = new LocalDate(0L); // 1970
+        LocalDate date = LocalDate.ofEpochDay(0L); // 1970
 
         int alder = ConversionHelper.extractAlder(personId, date);
 
@@ -141,7 +135,7 @@ public class DocumentHelperTest {
     @Test(expected = IllegalArgumentException.class)
     public void processorExtractAlderFromIntygWithOutOfRangeIdReturnsNoAge() {
         String personId = "19121312-1212";
-        LocalDate date = new LocalDate(0L); // 1970
+        LocalDate date = LocalDate.ofEpochDay(0L); // 1970
 
         ConversionHelper.extractAlder(personId, date);
         fail();
@@ -150,7 +144,7 @@ public class DocumentHelperTest {
     @Test(expected = IllegalArgumentException.class)
     public void processorExtractAlderFromIntygWithEmptyIdReturnsNoAge() {
         String personId = "";
-        LocalDate date = new LocalDate(0L); // 1970
+        LocalDate date = LocalDate.ofEpochDay(0L); // 1970
 
         ConversionHelper.extractAlder(personId, date);
         fail();
@@ -159,7 +153,7 @@ public class DocumentHelperTest {
     @Test(expected = IllegalArgumentException.class)
     public void processorExtractAlderFromIntygWithErrenousIdReturnsNoAge() {
         String personId = "xxxxxxxx";
-        LocalDate date = new LocalDate(0L); // 1970
+        LocalDate date = LocalDate.ofEpochDay(0L); // 1970
 
         ConversionHelper.extractAlder(personId, date);
         fail();
@@ -171,7 +165,7 @@ public class DocumentHelperTest {
 
         String kon = ConversionHelper.extractKon(personId);
 
-        assertEquals(Kon.Male.toString(), kon);
+        assertEquals(Kon.MALE.toString(), kon);
     }
 
     @Test
@@ -180,7 +174,7 @@ public class DocumentHelperTest {
 
         String kon = ConversionHelper.extractKon(personId);
 
-        assertEquals(Kon.Female.toString(), kon);
+        assertEquals(Kon.FEMALE.toString(), kon);
     }
 
     @Test

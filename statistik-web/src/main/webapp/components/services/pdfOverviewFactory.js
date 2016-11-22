@@ -27,12 +27,8 @@ angular.module('StatisticsApp')
             $scope.generatingPdf = true;
             var headers = {
                 header: $scope.viewHeader,
-                subHeader: $scope.subTitle
+                subHeader: $scope.subTitle  + ' ' + $scope.subTitlePeriod
             };
-
-            if ($scope.verksamhetViewShowing) {
-                headers.extraHeader = $scope.headerEnhetInfo;
-            }
 
             var pdfDoneCallback = function() {
                 $timeout(function() {
@@ -40,16 +36,18 @@ angular.module('StatisticsApp')
                 });
             };
 
-            _generateOverview(headers, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, pdfDoneCallback);
+            _generateOverview(headers, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, pdfDoneCallback);
         }
 
-        function _generateOverview(headers, charts, enhetsFilter, diagnosFilter, pdfDoneCallback) {
+        function _generateOverview(headers, charts, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter,  pdfDoneCallback) {
             var content = [];
 
             pdfFactory.factory.header(content, headers);
 
             pdfFactory.factory.filter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
-            pdfFactory.factory.filter(content, 'Sammanställning av enhetsfilter', enhetsFilter);
+            pdfFactory.factory.filter(content, 'Sammanställning av enheter', enhetsFilter);
+            pdfFactory.factory.filter(content, 'Sammanställning av sjukskrivningslängdsfilter', sjukskrivningslangdFilter);
+            pdfFactory.factory.filter(content, 'Sammanställning av åldersgruppfilter', aldersgruppFilter);
 
             angular.forEach(charts, function(chart) {
                 if (angular.isArray(chart)) {

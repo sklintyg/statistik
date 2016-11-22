@@ -24,9 +24,13 @@ angular.module('StatisticsApp.treeMultiSelector.directive', [])
             scope: {
                 menuOptions: '=', //Each item in the array has properties "name (for label) and "subs" (for sub items)
                 doneClicked: '=', //The function to call when the selection is accepted by the user
-                textData: '='
+                onOpen: '=',
+                textData: '=',
+                hideLabel: '=',
+                buttonIcon: '@'
             },
+            transclude: true,
             controller: 'treeMultiSelectorCtrl',
-            templateUrl: 'app/shared/treemultiselector/treeMultiSelectorView.html'
+            templateUrl: '/app/shared/treemultiselector/treeMultiSelectorView.html'
         };
     });

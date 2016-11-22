@@ -1,14 +1,16 @@
 buildscript {
     dependencies {
-        classpath 'com.moowork.gradle:gradle-grunt-plugin:0.10'
         classpath 'org.akhikhl.gretty:gretty:1.2.4' //Will be using springLoadedVersion:1.2.4.RELEASE due to "https://github.com/spring-projects/spring-loaded/issues/122", defined in gradle.properties
     }
 }
 
+plugins {
+    id "com.moowork.grunt" version "0.12"
+    id "com.moowork.node" version "0.12"
+}
 
 apply plugin: 'war'
 apply plugin: 'idea'
-apply plugin: 'com.moowork.grunt'
 apply plugin: 'org.akhikhl.gretty'
 
 description = 'Inera Statistics Service - Web Module'
@@ -54,8 +56,9 @@ grunt {
 }
 
 node {
-    version = '0.12.14'
+    version = '6.6.0'
     download = true
+    distBaseUrl = 'https://build-inera.nordicmedtest.se/node/'
 }
 
 if (project.hasProperty('statistik.useMinifiedJavaScript')) {
@@ -85,9 +88,9 @@ task createVersionPropertyFile(dependsOn: processResources) << {
     def propertyFile = "${buildDir}/resources/main/version.properties"
     ant.touch(file: propertyFile, mkdirs: "true")
     ant.propertyfile(file: propertyFile) {
-        entry(key: 'project.version', default: rootProject.version)
-        entry(key: 'project.buildtime', default: new Date())
-        entry(key: 'project.buildhost', default: InetAddress.localHost.hostName)
+        entry(key: 'statistik.project.version', default: rootProject.version)
+        entry(key: 'statistik.project.buildtime', default: new Date())
+        entry(key: 'statistik.project.buildhost', default: InetAddress.localHost.hostName)
     }
 }
 
@@ -106,6 +109,7 @@ dependencies {
     compile "org.apache.poi:poi-ooxml:${poiVersion}"
     compile "xalan:xalan:${xalanVersion}"
     compile "com.github.ziplet:ziplet:${zipletVersion}"
+    compile "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${monitoringSchemaVersion}"
 
     gretty "com.h2database:h2:${h2Version}"
     gretty "mysql:mysql-connector-java:${mysqlConnectorVersion}"

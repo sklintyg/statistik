@@ -1,5 +1,6 @@
 package se.inera.statistics.spec
 
+import se.inera.statistics.service.report.util.AgeGroup
 import se.inera.statistics.service.report.util.Icd10
 import se.inera.statistics.service.report.util.Icd10RangeType
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup
@@ -26,14 +27,17 @@ abstract class Rapport {
     def filterEnheter
     def filterVerksamhetstyper
     def filterSjukskrivningslängd
+    def filterÅldersgrupp
     def filterStartdatum
     def filterSlutdatum
     def meddelande
     def allaDiagnosfilterValda
     def allaEnhetsfilterValda
     def allaSjukskrivningslängdfilterValda
+    def allaÅldersgruppfilterValda
     def enhetsfilterlista
     def sjukskrivningslangdfilterlista
+    def åldersgruppfilterlista
 
     ReportsUtil reportsUtil = new ReportsUtil()
 
@@ -47,8 +51,10 @@ abstract class Rapport {
         allaDiagnosfilterValda = report[ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER]
         allaEnhetsfilterValda = report[ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER]
         allaSjukskrivningslängdfilterValda = report[ResponseHandler.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER]
+        allaÅldersgruppfilterValda = report[ResponseHandler.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER]
         enhetsfilterlista = report[ResponseHandler.FILTERED_ENHETS]
         sjukskrivningslangdfilterlista = report.filter.sjukskrivningslangd
+        åldersgruppfilterlista = report.filter.aldersgrupp
     }
 
     abstract void doExecute()
@@ -85,12 +91,20 @@ abstract class Rapport {
         return allaSjukskrivningslängdfilterValda
     }
 
+    def allaÅldersgruppfilterValda() {
+        return allaÅldersgruppfilterValda
+    }
+
     def enhetsfilterlista() {
         return enhetsfilterlista
     }
 
     def sjukskrivningslangdfilterlista() {
         return sjukskrivningslangdfilterlista
+    }
+
+    def åldersgruppfilterlista() {
+        return åldersgruppfilterlista
     }
 
     def markerad() {
@@ -153,6 +167,15 @@ abstract class Rapport {
         }
     }
 
+    void setFilterÅldersgrupp(String aldersgruppString) {
+        if (aldersgruppString != null && !aldersgruppString.trim().isEmpty()) {
+            this.filterÅldersgrupp = aldersgruppString.split(",")*.trim().collect {
+                def optionalGroup = AgeGroup.getByName(it)
+                optionalGroup.present ? optionalGroup.get().name() : it;
+            }
+        }
+    }
+
     def getFilter() {
         def diagnoser = new ArrayList<String>();
         if (filterKapitel != null) {
@@ -164,7 +187,7 @@ abstract class Rapport {
         if (filterKategorier != null) {
             diagnoser.addAll(filterKategorier)
         }
-        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper, filterSjukskrivningslängd, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
+        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper, filterSjukskrivningslängd, filterÅldersgrupp, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
     }
 
     public void reset() {
@@ -182,6 +205,7 @@ abstract class Rapport {
         filterEnheter = null
         filterVerksamhetstyper = null
         filterSjukskrivningslängd = null
+        filterÅldersgrupp = null
         filterStartdatum = null
         filterSlutdatum = null
         meddelande = null

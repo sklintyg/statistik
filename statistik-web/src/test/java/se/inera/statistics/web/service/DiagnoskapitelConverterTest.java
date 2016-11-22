@@ -26,6 +26,7 @@ import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,10 +34,12 @@ import static org.junit.Assert.assertEquals;
 
 public class DiagnoskapitelConverterTest {
 
+    private final Clock clock = Clock.systemDefaultZone();
+
     @Test
     public void converterTestEmpty() {
         DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<>(), new ArrayList<>());
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range(clock));
         DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(resp, filterSettings);
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
         assertEquals("[Totalt: []]", data.getFemaleChart().getSeries().toString());
@@ -57,7 +60,7 @@ public class DiagnoskapitelConverterTest {
 
         //When
         DiagnosisSubGroupsConverter converter = new DiagnosisSubGroupsConverter();
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range(clock));
         DualSexStatisticsData data = converter.convert(resp, filterSettings);
 
         //Then
@@ -99,7 +102,7 @@ public class DiagnoskapitelConverterTest {
 
         //When
         DiagnosisSubGroupsConverter converter = new DiagnosisSubGroupsConverter();
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range(clock));
         DualSexStatisticsData data = converter.convert(resp, filterSettings);
 
         //Then

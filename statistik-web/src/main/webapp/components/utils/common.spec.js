@@ -40,7 +40,7 @@ describe('Test of common functions for controllers', function() {
         expect(ControllerCommons.makeThousandSeparated(45321.16)).toBe('45\u00A0321,16');
         expect(ControllerCommons.makeThousandSeparated(0.123456)).toBe('0,123456');
     });
-    
+
     it('getFileName', function() {
         expect(ControllerCommons.getFileName()).toMatch(/_\d{8}_\d{6}/);
         expect(ControllerCommons.getFileName(123456)).toMatch(/^123456_\d{8}_\d{6}$/);
@@ -50,77 +50,44 @@ describe('Test of common functions for controllers', function() {
         expect(ControllerCommons.getFileName('Mitt     Diagram')).toMatch(/^Mitt_Diagram_\d{8}_\d{6}$/);
     });
 
-    it('INTYG-1853: populateActiveEnhetsFilter with all enhets selected shows verksamhet name', function() {
+    it('INTYG-3021: populateActiveEnhetsFilter shows all verksamhet names when not processledare', inject(function(UserModel) {
         //Given
-        var scope = {verksamhetName: 'VerksamhetName'};
+        var scope = {vgName: 'VardgivareTestName'};
         var enhetnames = ['OneEnhet'];
+        UserModel.setUserAccessInfo({vgInfo: {processledare: false}});
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, 'hash', true, enhetnames);
+        ControllerCommons.populateActiveEnhetsFilter(scope, enhetnames, true);
 
         //Then
-        expect(scope.headerEnhetInfo).toMatch('VerksamhetName');
-    });
-    
-    it('INTYG-1853: populateActiveEnhetsFilter without active filter shows verksamhet name', function() {
+        expect(scope.activeEnhetsFilters).toEqual(['OneEnhet']);
+    }));
+
+    it('INTYG-3021: populateActiveEnhetsFilter shows vgname when processledare with enhet-filter', inject(function(UserModel) {
         //Given
-        var scope = {verksamhetName: 'VerksamhetName'};
+        var scope = {vgName: 'VardgivareTestName'};
         var enhetnames = ['OneEnhet'];
+        UserModel.setUserAccessInfo({vgInfo: {processledare: true}});
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, null, false, enhetnames);
+        ControllerCommons.populateActiveEnhetsFilter(scope, enhetnames, false);
 
         //Then
-        expect(scope.headerEnhetInfo).toMatch('VerksamhetName');
-    });
+        expect(scope.activeEnhetsFilters).toEqual(['OneEnhet']);
+    }));
 
-    it('INTYG-1853: populateActiveEnhetsFilter with more than one (but not all) enhetes in filter shows nothing in title', function() {
+    it('INTYG-3021: populateActiveEnhetsFilter shows vgname when processledare without enhet-filter', inject(function(UserModel) {
         //Given
-        var scope = {verksamhetName: 'VerksamhetName'};
-        var enhetnames = ['OneEnhet', 'SecondEnhet'];
-
-        //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, 'hash', false, enhetnames);
-
-        //Then
-        expect(scope.headerEnhetInfo).toMatch('');
-    });
-
-    it('INTYG-1853: populateActiveEnhetsFilter with more than one (but not all) enhetes in filter shows list of filtered enhets', function() {
-        //Given
-        var scope = {verksamhetName: 'VerksamhetName'};
-        var enhetnames = ['OneEnhet', 'SecondEnhet'];
-
-        //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, 'hash', false, enhetnames);
-
-        //Then
-        expect(scope.activeEnhetsFilters).toEqual(['OneEnhet', 'SecondEnhet']);
-    });
-
-    it('INTYG-1854: populateActiveEnhetsFilter with one enhet in filter shows enhet name in title', function() {
-        //Given
-        var scope = {verksamhetName: 'VerksamhetName'};
+        var scope = {vgName: 'VardgivareTestName'};
         var enhetnames = ['OneEnhet'];
+        UserModel.setUserAccessInfo({vgInfo: {processledare: true}});
 
         //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, 'hash', false, enhetnames);
+        ControllerCommons.populateActiveEnhetsFilter(scope, enhetnames, true);
 
         //Then
-        expect(scope.headerEnhetInfo).toMatch('OneEnhet');
-    });
-
-    it('INTYG-1854: populateActiveEnhetsFilter with more than one enhet in filter shows no list of filtered enhets', function() {
-        //Given
-        var scope = {verksamhetName: 'VerksamhetName'};
-        var enhetnames = ['OneEnhet'];
-
-        //When
-        ControllerCommons.populateActiveEnhetsFilter(scope, 'hash', false, enhetnames);
-
-        //Then
-        expect(scope.activeEnhetsFilters).toBeNull();
-    });
+        expect(scope.activeEnhetsFilters).toEqual(['Samtliga enheter inom vårdgivaren VardgivareTestName']);
+    }));
 
     it('isNumber', function() {
         expect(ControllerCommons.isNumber()).toBe(false);
@@ -133,7 +100,7 @@ describe('Test of common functions for controllers', function() {
         expect(ControllerCommons.isNumber('7ett9')).toBe(false);
         expect(ControllerCommons.isNumber({1: 3})).toBe(false);
     });
-    
+
     it('htmlsafe', function() {
         expect(ControllerCommons.htmlsafe('f')).toBe('f');
         expect(ControllerCommons.htmlsafe('f&<')).toBe('f&amp;&lt;');
@@ -182,7 +149,7 @@ describe('Test of common functions for controllers', function() {
         });
 
         it('Nationell and empty result', function() {
-            ControllerCommons.checkNationalResult(scope, result, false, false, successFunction);
+            ControllerCommons.checkNationalResultAndEnableExport(scope, result, false, false, successFunction);
 
             expect(called).toBeFalsy();
             expect(scope.dataLoadingError).toBeTruthy();
@@ -194,28 +161,28 @@ describe('Test of common functions for controllers', function() {
 
             expect($cacheFactory.get('$http').info().size).toBe(1);
 
-            ControllerCommons.checkNationalResult(scope, result, false, false, successFunction);
+            ControllerCommons.checkNationalResultAndEnableExport(scope, result, false, false, successFunction);
 
             expect($cacheFactory.get('$http').info().size).toBe(0);
         }));
 
         it('Nationell and not result', function() {
             result = {test: 'testData'};
-            ControllerCommons.checkNationalResult(scope, result, false, false, successFunction);
+            ControllerCommons.checkNationalResultAndEnableExport(scope, result, false, false, successFunction);
 
             expect(called).toBeTruthy();
             expect(scope.errorPageUrl).toBeNull();
         });
 
         it('Verksamhet and empty result', function() {
-            ControllerCommons.checkNationalResult(scope, result, true, false, successFunction);
+            ControllerCommons.checkNationalResultAndEnableExport(scope, result, true, false, successFunction);
 
             expect(called).toBeTruthy();
             expect(scope.errorPageUrl).toBeNull();
         });
 
         it('Landsting and empty result', function() {
-            ControllerCommons.checkNationalResult(scope, result, false, true, successFunction);
+            ControllerCommons.checkNationalResultAndEnableExport(scope, result, false, true, successFunction);
 
             expect(called).toBeTruthy();
             expect(scope.errorPageUrl).toBeNull();

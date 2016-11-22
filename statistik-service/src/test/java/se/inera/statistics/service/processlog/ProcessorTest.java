@@ -72,7 +72,7 @@ public class ProcessorTest {
         processor.accept(utlatande, null, 1L, "1", EventType.CREATED);
 
         assertEquals(35, patientdataCaptor.getValue().getAlder());
-        assertEquals(Kon.Male, patientdataCaptor.getValue().getKon());
+        assertEquals(Kon.MALE, patientdataCaptor.getValue().getKon());
     }
 
 }

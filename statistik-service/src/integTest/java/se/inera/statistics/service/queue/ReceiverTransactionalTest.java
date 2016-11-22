@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.queue;
 
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,6 +38,7 @@ import javax.jms.ConnectionFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -163,12 +163,12 @@ public class ReceiverTransactionalTest {
     }
 
     private LocalDate getStart(int i) {
-        LocalDate[] dates = {new LocalDate("2012-02-01"), new LocalDate("2011-01-11")};
+        LocalDate[] dates = {LocalDate.parse("2012-02-01"), LocalDate.parse("2011-01-11")};
         return dates[i];
     }
 
     private LocalDate getStop(int i) {
-        LocalDate[] dates = {new LocalDate("2012-01-22"), new LocalDate("2011-02-21"), new LocalDate("2011-03-11"), new LocalDate("2013-11-17")};
+        LocalDate[] dates = {LocalDate.parse("2012-01-22"), LocalDate.parse("2011-02-21"), LocalDate.parse("2011-03-11"), LocalDate.parse("2013-11-17")};
         return dates[i];
     }
 

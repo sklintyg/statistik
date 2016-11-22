@@ -1,0 +1,98 @@
+.business-filter {
+
+  background-color: rgb(247, 247, 249);
+  border-top: 0;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 15px solid #008391;
+  border-radius: 0 0 15px 15px;
+  margin-top: 0;
+  box-shadow: 0 3px 4px 0 rgba(50, 50, 50, 0.2);
+  background-clip: padding-box;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  &.filter-active {
+    border-bottom-color: #EA8025;
+  }
+
+  .alert {
+    margin-bottom: 0;
+    margin-top: 10px;
+  }
+
+  table.table tbody td,
+  table.table tbody td:hover {
+    background-color: #e9eae8;
+    border-bottom: none;
+  }
+
+  .divider {
+    float: left;
+    width: calc(100% - 30px);
+    margin: 10px 15px;
+  }
+
+  .bottom-buttons {
+    padding-top: 0;
+  }
+
+  .margin-right {
+    margin-right: 5px;
+    display: inline-block;
+  }
+
+  .input-wrapper {
+    display: inline-block;
+    vertical-align: middle;
+    width: 135px;
+    margin-right: 10px;
+
+    input {
+      padding-left: 15px;
+    }
+  }
+
+  .ng-invalid.ng-touched {
+    border-width: 2px;
+    border-color: #a94442;
+  }
+
+  .has-error {
+    input {
+      border-width: 2px;
+    }
+  }
+
+  .filter-level {
+    float: left;
+    width: 100%;
+    padding: 0 10px;
+
+    .title {
+      display: inline-block;
+      margin-right: 20px;
+    }
+
+    label {
+      font-size: 12px;
+      font-weight: normal;
+    }
+
+    input[type=checkbox] {
+      position: relative;
+    }
+  }
+
+  .valj-verksamhetstyp-link {
+    padding-left: 0;
+  }
+
+  .verksamhets-typer-list {
+    padding-left: 0;
+
+    li span, li span input{
+      cursor: pointer;
+    }
+  }
+}

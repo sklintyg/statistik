@@ -37,6 +37,7 @@ app.run(
     'use strict';
 
         $rootScope.isLoggedIn = false;
+        $rootScope.pdfFontLoaded = false;
 
         AppService.get().then(function(data) {
             $rootScope.isLoggedIn = data.loggedIn;
@@ -48,6 +49,8 @@ app.run(
             script.type = 'text/javascript';
             script.src = 'js/lib/vfs_fonts.js';
             document.body.appendChild(script);
+
+            $rootScope.pdfFontLoaded = true;
         }, 2500);
     }
 );

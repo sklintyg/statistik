@@ -48,7 +48,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
 
             if (ControllerCommons.isShowingProtectedPage($location)) {
                 var vgid = $location.search().vgid;
-                if (!vgid) {
+                if (!vgid && UserModel.get().vgs.length > 0) {
                     $location.path('valjVardgivare');
                 } else if ($scope.previousVgid !== vgid) {
                     setSelectedVardgivare(vgid);
@@ -60,11 +60,11 @@ angular.module('StatisticsApp').controller('pageCtrl',
         function setupSelectedVardgivare(userAccessInfo) {
             if (userAccessInfo.vgInfo) {
                 UserModel.setUserAccessInfo(userAccessInfo);
-                $scope.verksamhetName = '';
+                $scope.vgName = userAccessInfo.vgInfo.name;
                 if (userAccessInfo.businesses && userAccessInfo.businesses.length === 1) {
-                    $scope.verksamhetName = userAccessInfo.businesses[0].name;
+                    $scope.pageHeaderVerksamhetName = userAccessInfo.businesses[0].name;
                 } else {
-                    $scope.verksamhetName = userAccessInfo.vgInfo.name;
+                    $scope.pageHeaderVerksamhetName = userAccessInfo.vgInfo.name;
                 }
                 $scope.showBusinessesDetails = userAccessInfo.businesses && userAccessInfo.businesses.length > 1;
                 $rootScope.landstingAvailable = userAccessInfo.vgInfo.landstingsvardgivareWithUpload;
@@ -79,7 +79,8 @@ angular.module('StatisticsApp').controller('pageCtrl',
                 UserModel.resetUserAccessInfo();
                 $scope.showBusinessesDetails = false;
                 $rootScope.landstingAvailable = false;
-                $scope.verksamhetName = '';
+                $scope.pageHeaderVerksamhetName = '';
+                $scope.vgName = '';
             }
             businessFilterFactory.setup(userAccessInfo.businesses, $location.$$search.filter);
         }
@@ -108,12 +109,18 @@ angular.module('StatisticsApp').controller('pageCtrl',
 
                         $scope.isLoginInfoFetched = true;
 
-                        if (!$location.search().vgid) {
-                            if (loginInfo.vgs.length === 1) {
+                        var vgid = $location.search().vgid;
+                        if (!vgid) {
+                            if (loginInfo.vgs.length === 0) {
+                                $location.path('/login');
+                            } else if (loginInfo.vgs.length === 1) {
                                 $scope.changeVardgivare(loginInfo.vgs[0].hsaId);
                             } else {
                                 $location.path('/valjVardgivare');
                             }
+                        } else {
+                            setSelectedVardgivare(vgid);
+                            $scope.previousVgid = vgid;
                         }
                     }, function () {
                         $scope.dataLoadingError = true;
@@ -128,7 +135,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
         });
 
         $scope.loginClicked = function () {
-            if ($rootScope.isLoggedIn) {
+            if ($rootScope.isLoggedIn && !$scope.loggedInWithoutStatistikuppdrag) {
                 $location.path('valjVardgivare');
             } else {
                 $location.path(AppModel.get().loginUrl);

@@ -21,24 +21,19 @@
 angular.module('StatisticsApp')
     .factory('pdfFactory',
         /** @ngInject */
-        function($window, $timeout, thousandseparatedFilter, $location, _) {
+        function($window, $timeout, thousandseparatedFilter, $location, _, TABLE_CONFIG, messageService, $rootScope) {
         'use strict';
 
         function _print($scope, charts) {
             if (!charts || angular.equals({}, charts)) {
                 return;
             }
-
             $scope.generatingPdf = true;
 
             var headers = {
                 header: $scope.viewHeader,
-                subHeader: $scope.subTitle
+                subHeader: $scope.subTitle + ' ' + $scope.subTitlePeriod
             };
-
-            if ($scope.verksamhetViewShowing) {
-                headers.extraHeader = $scope.headerEnhetInfo;
-            }
 
             if (!angular.isArray(charts)) {
                 charts = [charts];
@@ -65,29 +60,31 @@ angular.module('StatisticsApp')
                     angular.forEach(tableData, function(t) {
                         table.push({
                             header: t.headers,
-                            data: formatTableData(t.rows)
+                            data: formatTableData(t.rows),
+                            hasMoreThanMaxRows: t.rows.length > TABLE_CONFIG.maxRows
                         });
                     });
 
                     $scope.status.isTableOpen = isTableVisible;
 
-                    _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, pdfDoneCallback);
+                    _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, pdfDoneCallback);
                 });
             }
             else {
                 table = {
                     header: $scope.headerrows,
-                    data: formatTableData($scope.rows)
+                    data: formatTableData($scope.rows),
+                    hasMoreThanMaxRows: $scope.rows.length > TABLE_CONFIG.maxRows
                 };
 
-                _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, pdfDoneCallback);
+                _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, pdfDoneCallback);
             }
         }
 
         function formatTableData(data) {
             var tableData = [];
-
-            angular.forEach(data, function(row) {
+            var tableRows = data.slice(0, TABLE_CONFIG.maxRows);
+            angular.forEach(tableRows, function(row) {
                 var rowData = [];
 
                 angular.forEach(row.data, function(item) {
@@ -98,34 +95,54 @@ angular.module('StatisticsApp')
 
                 tableData.push(row);
             });
-
             return tableData;
         }
 
-        function _generate(headers, table, images, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, pdfDoneCallback) {
+        function _generate(headers, table, images, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter, pdfDoneCallback) {
             var content = [];
 
             _addHeader(content, headers);
             content.push(_getImages(images));
             _addListFilter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
-            _addListFilter(content, 'Sammanställning av enhetsfilter', enhetsFilter);
+            _addListFilter(content, 'Sammanställning av enheter', enhetsFilter);
             _addListFilter(content, 'Sammanställning av sjukskrivningslängdsfilter', sjukskrivningslangdFilter);
+            _addListFilter(content, 'Sammanställning av åldersgruppfilter', aldersgruppFilter);
+
             if (angular.isArray(table)) {
                 angular.forEach(table, function(t) {
+                    if (t.hasMoreThanMaxRows) {
+                        content.push({text: messageService.getProperty('table.warning.text'), style: 'tableWarning'});
+                    }
+
                     var pdfTable = _getTable(t.header, t.data);
                         pdfTable.pageBreak = 'before';
                     content.push(pdfTable);
 
                 });
             } else {
+                if (table.hasMoreThanMaxRows) {
+                    content.push({text: messageService.getProperty('table.warning.text'), style: 'tableWarning'});
+                }
+
                 content.push(_getTable(table.header, table.data));
             }
 
             _create(content, headers.header, pdfDoneCallback);
         }
 
-        function _create(content, fileName, pdfDoneCallback) {
+        function _waitOnFont(content, fileName, pdfDoneCallback) {
+            if (!$rootScope.pdfFontLoaded) {
+                $timeout(_waitOnFont, 500, true, content, fileName, pdfDoneCallback);
+            } else {
+                _createPdf(content, fileName, pdfDoneCallback);
+            }
+        }
 
+        function _create(content, fileName, pdfDoneCallback) {
+            _waitOnFont(content, fileName, pdfDoneCallback);
+        }
+
+        function _createPdf(content, fileName, pdfDoneCallback) {
             pdfMake.fonts = {
                 Lato: {
                     normal: 'Lato-Regular.ttf',
@@ -175,11 +192,6 @@ angular.module('StatisticsApp')
                     bold: true,
                     margin: [0, 0, 0, 0]
                 },
-                extraheader: {
-                    fontSize: 14,
-                    bold: true,
-                    margin: [100, 100, 100, 100]
-                },
                 subheader: {
                     fontSize: 14,
                     bold: true,
@@ -189,6 +201,11 @@ angular.module('StatisticsApp')
                     fontSize: 12,
                     bold: true,
                     margin: [0, 5, 0, 10]
+                },
+                tableWarning: {
+                    fontSize: 12,
+                    bold: true,
+                    margin: [0, 10, 0, 2]
                 },
                 table: {
                     fontSize: 9,
@@ -247,10 +264,6 @@ angular.module('StatisticsApp')
             content.push({ image: _getLogo(), width: 180});
 
             var headerText = [headers.header];
-
-            if (headers.extraHeader) {
-                headerText.push({ text: '  ' + headers.extraHeader, style: 'extraheader' });
-            }
 
             content.push({ text: headerText, style: 'header'});
             content.push({ text: headers.subHeader, style: 'subheader' });

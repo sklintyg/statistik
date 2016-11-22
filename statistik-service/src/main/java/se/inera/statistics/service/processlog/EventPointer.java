@@ -44,6 +44,7 @@ public class EventPointer {
      * Empty constructor (as required by JPA spec).
      */
     public EventPointer() {
+        //Empty constructor (as required by JPA spec).
     }
 
     public String getName() {

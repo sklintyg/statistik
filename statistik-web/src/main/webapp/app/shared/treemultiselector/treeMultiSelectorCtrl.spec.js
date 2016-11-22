@@ -21,7 +21,11 @@ describe('Controller: treeMultiSelectorCtrl', function() {
     });
 
     beforeEach(inject(function($controller, treeMultiSelectorUtil) {
-        scope = {};
+        scope = {
+            '$on' : function() {},
+            '$emit' : function() {},
+            '$watch': function() {}
+        };
         ctrl = $controller('treeMultiSelectorCtrl', {$scope: scope, treeMultiSelectorUtil: treeMultiSelectorUtil});
     }));
 

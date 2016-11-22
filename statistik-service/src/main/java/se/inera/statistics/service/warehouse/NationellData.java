@@ -18,12 +18,22 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import org.joda.time.LocalDate;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
@@ -42,14 +52,6 @@ import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 @Component
 public class NationellData {
     private static final Logger LOG = LoggerFactory.getLogger(NationellData.class);
@@ -60,8 +62,6 @@ public class NationellData {
 
     @Autowired
     private Lan lans;
-
-    private Set<String> okandLans = new HashSet<>();
 
     @Autowired
     private DiagnosgruppQuery query;
@@ -222,7 +222,7 @@ public class NationellData {
                 List<KonField> c = new ArrayList<>();
                 final int maxDataSize = Math.max(a.getData().size(), b.getData().size());
                 for (int i = 0; i < maxDataSize; i++) {
-                    c.add(new KonField(safeSumForIndex(a, b, i, Kon.Female), safeSumForIndex(a, b, i, Kon.Male)));
+                    c.add(new KonField(safeSumForIndex(a, b, i, Kon.FEMALE), safeSumForIndex(a, b, i, Kon.MALE)));
                 }
                 list.add(new KonDataRow(a.getName(), c));
             }
@@ -286,37 +286,43 @@ public class NationellData {
             result.add(new SimpleKonDataRow(lans.getNamn(lanId), 0, 0, lanId));
         }
         for (Aisle aisle : warehouse) {
-            Map<String, Counter<String>> map = new HashMap<>();
-            for (String lanId : lans) {
-                map.put(lanId, new Counter<>(lanId));
-            }
-
-            for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
-                for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-                    Counter counter = map.get(sjukfall.getLanskod());
-                    if (counter != null) {
-                        counter.increase(sjukfall);
-                    } else {
-                        map.get(Lan.OVRIGT_ID).increase(sjukfall);
-                        okandLans.add(sjukfall.getLanskod());
-                    }
-                }
-            }
-            int index = 0;
-            for (String lanId : lans) {
-                Counter<String> counter = map.get(lanId);
-                SimpleKonDataRow previous = result.get(index);
-                result.set(index, new SimpleKonDataRow(previous.getName(), filterCutoff(counter.getCountFemale()) + previous.getFemale(), filterCutoff(counter.getCountMale()) + previous.getMale(), lanId));
-                index++;
-            }
-            if (!okandLans.isEmpty()) {
-                LOG.info("Okända län:");
-            }
-            for (String okandLan : okandLans) {
-                LOG.info("Okänt län: " + okandLan);
-            }
+            addAisleToResult(start, perioder, periodlangd, result, aisle);
         }
         return new SimpleKonResponse<>(result);
+    }
+
+    private void addAisleToResult(LocalDate start, int perioder, int periodlangd, ArrayList<SimpleKonDataRow> result, Aisle aisle) {
+        final Set<String> okandLans = new HashSet<>();
+
+        Map<String, Counter<String>> map = new HashMap<>();
+        for (String lanId : lans) {
+            map.put(lanId, new Counter<>(lanId));
+        }
+
+        for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
+            for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
+                Counter counter = map.get(sjukfall.getLanskod());
+                if (counter != null) {
+                    counter.increase(sjukfall);
+                } else {
+                    map.get(Lan.OVRIGT_ID).increase(sjukfall);
+                    okandLans.add(sjukfall.getLanskod());
+                }
+            }
+        }
+        int index = 0;
+        for (String lanId : lans) {
+            Counter<String> counter = map.get(lanId);
+            SimpleKonDataRow previous = result.get(index);
+            result.set(index, new SimpleKonDataRow(previous.getName(), filterCutoff(counter.getCountFemale()) + previous.getFemale(), filterCutoff(counter.getCountMale()) + previous.getMale(), lanId));
+            index++;
+        }
+        if (!okandLans.isEmpty()) {
+            LOG.info("Okända län:");
+        }
+        for (String okandLan : okandLans) {
+            LOG.info("Okänt län: " + okandLan);
+        }
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(LocalDate start, int perioder, int periodlangd) {
@@ -348,7 +354,7 @@ public class NationellData {
         return actual < cutoff ? 0 : actual;
     }
 
-    public org.joda.time.LocalDateTime getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return warehouse.getLastUpdate();
     }
 

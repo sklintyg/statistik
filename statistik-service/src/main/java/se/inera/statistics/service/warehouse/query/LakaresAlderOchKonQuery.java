@@ -21,7 +21,6 @@ package se.inera.statistics.service.warehouse.query;
 import com.google.common.base.Function;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
-import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -30,9 +29,10 @@ import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Lakare;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -56,26 +56,26 @@ public final class LakaresAlderOchKonQuery {
 
     private String getLakareAlderOchKonTitleKonPart(Kon kon) {
         switch (kon) {
-            case Female: return "Kvinnlig läkare";
-            case Male: return "Manlig läkare";
-            case Unknown: return "Okänt kön";
+            case FEMALE: return "Kvinnlig läkare";
+            case MALE: return "Manlig läkare";
+            case UNKNOWN: return "Okänt kön";
             default: throw new IllegalArgumentException("Unhandled type: " + kon);
         }
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakaresAlderOchKon(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakaresAlderOchKon(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength) {
         final Function<Sjukfall, Collection<Lakare>> getLakaresFunc = Sjukfall::getLakare;
         final KonDataResponse konDataResponse = getSjukfallPerLakaresAlderOchKonCommon(aisle, filter, start, periods, periodLength, getLakaresFunc);
         return SimpleKonResponse.create(konDataResponse);
     }
 
-    public KonDataResponse getSjukfallPerLakaresAlderOchKonSomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength) {
+    public KonDataResponse getSjukfallPerLakaresAlderOchKonSomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength) {
         final Function<Sjukfall, Collection<Lakare>> getLakaresFunc = sjukfall1 -> Collections.singleton(sjukfall1.getLastLakare());
         return getSjukfallPerLakaresAlderOchKonCommon(aisle, filter, start, periods, periodLength, getLakaresFunc);
     }
 
-    private KonDataResponse getSjukfallPerLakaresAlderOchKonCommon(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, final Function<Sjukfall, Collection<Lakare>> getLakaresFunc) {
-        final ArrayList<Ranges.Range> ranges = Lists.newArrayList(RANGES_LAKARES_ALDER_OCH_KON);
+    private KonDataResponse getSjukfallPerLakaresAlderOchKonCommon(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, final Function<Sjukfall, Collection<Lakare>> getLakaresFunc) {
+        final ArrayList<Ranges.Range> rangesList = Lists.newArrayList(RANGES_LAKARES_ALDER_OCH_KON);
         final CounterFunction<String> counterFunction = new CounterFunction<String>() {
             @Override
             public void addCount(Sjukfall sjukfall, HashMultiset<String> counter) {
@@ -87,7 +87,7 @@ public final class LakaresAlderOchKonQuery {
 
             private String getRangeNameForAge(int age) {
                 if (age > 0) {
-                    for (Ranges.Range range: ranges) {
+                    for (Ranges.Range range: rangesList) {
                         if (range.getCutoff() > age) {
                             return range.getName();
                         }
@@ -96,31 +96,30 @@ public final class LakaresAlderOchKonQuery {
                 return UNKNOWN_AGE_NAME;
             }
         };
+        final List<String> names = getRangeNames(rangesList);
+        final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, names, counterFunction);
+        final List<String> groupsThatShouldAlwaysBeRetained = getGroupsThatShouldAlwaysBeRetained(rangesList);
+        return KonDataResponse.createNewWithoutEmptyGroups(response, groupsThatShouldAlwaysBeRetained);
+    }
+
+    private List<String> getRangeNames(ArrayList<Ranges.Range> ranges) {
         final List<String> names = new ArrayList<>();
         for (Ranges.Range range : ranges) {
             for (Kon kon : Kon.values()) {
                 names.add(getLakareAlderOchKonTitle(kon, range.getName()));
             }
         }
-        names.add(getLakareAlderOchKonTitle(Kon.Unknown, UNKNOWN_AGE_NAME));
-        Lists.transform(ranges, new Function<Ranges.Range, String>() {
-            @Override
-            public String apply(Ranges.Range range) {
-                for (Kon kon : Kon.values()) {
-                    getLakareAlderOchKonTitle(kon, range.getName());
-                }
-                return range.getName();
-            }
-        });
+        names.add(getLakareAlderOchKonTitle(Kon.UNKNOWN, UNKNOWN_AGE_NAME));
+        return names;
+    }
 
-
-        final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, names, counterFunction);
+    private List<String> getGroupsThatShouldAlwaysBeRetained(ArrayList<Ranges.Range> ranges) {
         final List<String> groupsThatShouldAlwaysBeRetained = new ArrayList<>();
         for (Ranges.Range range : ranges) {
-            groupsThatShouldAlwaysBeRetained.add(getLakareAlderOchKonTitle(Kon.Male, range.getName()));
-            groupsThatShouldAlwaysBeRetained.add(getLakareAlderOchKonTitle(Kon.Female, range.getName()));
+            groupsThatShouldAlwaysBeRetained.add(getLakareAlderOchKonTitle(Kon.MALE, range.getName()));
+            groupsThatShouldAlwaysBeRetained.add(getLakareAlderOchKonTitle(Kon.FEMALE, range.getName()));
         }
-        return KonDataResponse.createNewWithoutEmptyGroups(response, groupsThatShouldAlwaysBeRetained);
+        return groupsThatShouldAlwaysBeRetained;
     }
 
 }

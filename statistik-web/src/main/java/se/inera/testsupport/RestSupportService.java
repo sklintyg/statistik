@@ -18,6 +18,9 @@
  */
 package se.inera.testsupport;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +37,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.joda.time.DateTimeUtils;
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,7 @@ import se.inera.statistics.service.warehouse.WarehouseManager;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
+import se.inera.statistics.time.ChangableClock;
 import se.inera.statistics.web.service.ChartDataService;
 import se.inera.testsupport.socialstyrelsenspecial.SosCalculatedRow;
 import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
@@ -116,6 +118,9 @@ public class RestSupportService {
     @Autowired
     private CountyPopulationInjector countyPopulationInjector;
 
+    @Autowired
+    private ChangableClock changableClock;
+
     @GET
     @Path("converteddate/{internalDate}")
     @Produces({ MediaType.APPLICATION_JSON })
@@ -136,14 +141,14 @@ public class RestSupportService {
     @Path("now")
     @Produces({ MediaType.APPLICATION_JSON })
     public Response getCurrentDateTime() {
-        return Response.ok(DateTimeUtils.currentTimeMillis()).build();
+        return Response.ok(changableClock.millis()).build();
     }
 
     @POST
     @Path("now")
     @Produces({ MediaType.APPLICATION_JSON })
     public Response setCurrentDateTime(long timeMillis) {
-        DateTimeUtils.setCurrentMillisOffset(timeMillis - System.currentTimeMillis());
+        changableClock.setCurrentClock(Clock.offset(Clock.systemDefaultZone(), Duration.ofMillis(timeMillis - System.currentTimeMillis())));
         return Response.ok().build();
     }
 
@@ -286,7 +291,7 @@ public class RestSupportService {
     @Consumes({ MediaType.APPLICATION_JSON })
     public Response getSosStatistics(@PathParam("dx") String dx) {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx);
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock);
         final List<SosRow> sosReport =  sosReportCreator.getSosReport();
         return Response.ok(sosReport).build();
     }
@@ -300,7 +305,7 @@ public class RestSupportService {
     @Consumes({ MediaType.APPLICATION_JSON })
     public Response getSosMedianStatistics(@PathParam("dx") String dx) {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx);
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getMedianValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
     }
@@ -314,7 +319,7 @@ public class RestSupportService {
     @Consumes({ MediaType.APPLICATION_JSON })
     public Response getSosStdDevStatistics(@PathParam("dx") String dx) {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx);
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getStdDevValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
     }

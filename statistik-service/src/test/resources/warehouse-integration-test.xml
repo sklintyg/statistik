@@ -41,10 +41,6 @@
           destroy-method="stop" lazy-init="false">
         <constructor-arg value="-tcp,-tcpAllowOthers"/>
     </bean>
-    <bean id="h2WebServer" class="org.h2.tools.Server" factory-method="createWebServer" init-method="start"
-          destroy-method="stop">
-        <constructor-arg value="-web,-webAllowOthers"/>
-    </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
@@ -94,5 +90,6 @@
     <bean class="se.inera.statistics.service.warehouse.WidelineLoader" />
     <bean class="se.inera.statistics.service.warehouse.EnhetLoader" />
     <bean class="se.inera.statistics.service.warehouse.SjukfallUtil" />
+    <bean class="java.time.Clock" factory-method="systemDefaultZone"/>
 
 </beans>

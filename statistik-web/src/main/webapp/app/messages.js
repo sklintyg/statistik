@@ -9,7 +9,7 @@ var stMessages = {
         'statistics.hidden-header.landsting-navigering': 'Navigering för landstingsstatistik',
         'statistics.hidden-header.business-navigering': 'Navigering för verksamhetsstatistik',
         'statistics.hidden-header.about-navigering': 'Navigering för information om tjänsten',
-        
+
         //navigation
         'nav.national-header': 'Nationell statistik',
         'nav.landsting-header': 'Landstingsstatistik',
@@ -53,7 +53,8 @@ var stMessages = {
         'lbl.for-verksamhetsstatistik': 'För verksamhetsstatistik: ',
         'lbl.aterstall': 'Återställ',
         'lbl.sok': 'Sök',
-        'lbl.gor-urval': 'Gör urval',
+        'lbl.clear': 'Rensa',
+        'lbl.filtrera': 'Filtrera',
         'lbl.dolj-tabell': 'Dölj tabell',
         'lbl.visa-tabell': 'Visa tabell',
         'lbl.visa-knappgrupp-serier': 'Visa som',
@@ -63,14 +64,13 @@ var stMessages = {
 
 
         //filter
-        'lbl.filter.valj-verksamhetstyper': 'Välj&nbsp;verksamhetstyper:',
-        'lbl.filter.val-av-enheter': 'Välj enheter:',
-        'lbl.filter.val-av-diagnoser': 'Välj diagnoser:',
-        'lbl.filter.val-av-tidsintervall': 'Välj tidsintervall',
-        'lbl.filter.val-av-tidsintervall-fran': 'Från:',
-        'lbl.filter.val-av-tidsintervall-till': 'Till:',
+        'lbl.filter.verksamhet.link': 'Visa snabbval av enheter baserat på verksamhetstyper',
+        'lbl.filter.modal.title': 'Aktiva filter',
+        'lbl.filter.val-av-enheter': 'Välj enheter',
+        'lbl.filter.val-av-diagnoser': 'Välj diagnoser',
+        'lbl.filter.val-av-tidsintervall-fran': 'Från',
+        'lbl.filter.val-av-tidsintervall-till': 'Till',
         'lbl.filter.val-av-diagnoser-knapp': 'Diagnoser',
-        'lbl.filter.valj-sjukskrivningslangd': 'Välj&nbsp;sjukskrivningslängd:',
         'lbl.filter.select-all': 'Markera alla',
         'lbl.filter.modal.lan': 'Län: ',
         'lbl.filter.modal.kommuner': 'Kommuner: ',
@@ -82,7 +82,11 @@ var stMessages = {
         'lbl.filter.sum-progress-1': 'Genom filtreringen visas statistik från ',
         'lbl.filter.sum-progress-2': ' av totalt ',
         'lbl.filter.sum-progress-3': ' vårdenheter.',
-        'alert.filter.date-invalid': 'Felaktigt tidsintervall har angetts',
+        'alert.filter.date-invalid': 'Du har angett en månad som inte finns. Kontrollera att du fyllt i rätt månad.',
+        'alert.filter.date.wrong-order': 'Tidsintervallens fråndatum får inte inträffa senare än tilldatum. Vänligen ändra från- eller tilldatum.',
+        'alert.filter.date.empty': 'Ett datumfält verkar vara tomt. Du behöver fylla i båda datumfälten eller lämna båda tomma.',
+        'alert.filter.date.before': 'Det finns ingen statistik innan ${date}. Vänligen ange ett senare datum.',
+        'alert.filter.date.after': 'Det finns ingen statistik för framtiden. Vänligen ange ett tidigare datum.',
 
         //Multi-select
         'info.multiselect.loading': 'Laddar information, var god vänta.',
@@ -98,7 +102,7 @@ var stMessages = {
         'national.widget.header.fordelning-sjukskrivningsgrad': 'Fördelning sjukskrivningsgrad',
         'national.widget.header.fordelning-sjukskrivningslangd': 'Fördelning sjukskrivningslängd',
         'national.widget.header.fordelning-lan': 'Fördelning per län',
-        
+
         //business statistics overview
         'business.overview-header': 'Verksamhetsstatistik',
         'business.widget.header.total-antal': 'Totalt antal',
@@ -107,9 +111,8 @@ var stMessages = {
         'business.widget.header.fordelning-aldersgrupper': 'Fördelning åldersgrupper',
         'business.widget.header.fordelning-sjukskrivningsgrad': 'Fördelning sjukskrivningsgrad',
         'business.widget.header.fordelning-sjukskrivningslangd': 'Fördelning sjukskrivningslängd',
-        
+
         //general overview
-        'dropdown.val.oversikt': 'Skriv ut',
         'overview.widget.table.column.diagnosgrupp': 'Diagnosgrupp',
         'overview.widget.table.column.aldersgrupp': 'Åldersgrupp',
         'overview.widget.table.column.sjukskrivningsgrad': 'Sjukskrivningsgrad',
@@ -123,39 +126,62 @@ var stMessages = {
         'lbl.valj-annat-diagnoskapitel': 'Välj diagnoskapitel:',
         'lbl.valj-annat-diagnosavsnitt': 'Välj diagnosavsnitt',
         'lbl.valj-annan-diagnoskategori': 'Välj diagnoskategori',
-        'dropdown.val.rapport': 'Spara/Skriv ut',
-        'dropdown.val.skrivut-farg': ' Skriv ut i färg',
-        'dropdown.val.skrivut-pdf': ' Spara som pdf',
-        'dropdown.val.skrivut-svart-vitt': ' Skriv ut i svartvitt',
-        'dropdown.val.spara-diagram-bild-1': ' Spara ',
-        'dropdown.val.spara-diagram-bild-2': ' som bild',
-        'dropdown.val.spara-excel': ' Spara tabell till Excel',
+        'button.label.save-as-pdf': 'Spara som PDF',
+        'dropdown.val.rapport': 'Spara som',
+        'dropdown.val.skrivut-pdf': ' PDF',
+        'dropdown.val.spara-diagram-bild-1': ' Bild (',
+        'dropdown.val.spara-diagram-bild-2': ')',
+        'dropdown.val.spara-excel': ' Excel',
         'alert.diagnosgrupp.information': 'För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen M54 och intyg två efter vidare utredning sätter diagnosen F32, så kommer sjukfallet både räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) och i gruppen för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad.',
         'comparediagnoses.lbl.val-av-diagnoser': 'Välj vilken eller vilka diagnoser som din rapport ska baseras på:',
 
         'table.warning.title' : 'Varning!',
-        'table.warning.text' : 'Tabellen kan inte visas i sin helhet. Spara ner tabellen som PDF eller Excel för att se all data.',
+        'table.warning.text' : 'Tabellen kan inte visas i sin helhet. Spara ner tabellen som Excel för att se all data.',
+
+        // Titles
+        'title.lan': 'Antal sjukfall per 1000 invånare fördelat på län',
+        'title.lan.gender': 'Andel sjukfall per kön fördelat på län',
+        'title.vardenhet': 'Antal sjukfall fördelat på vårdenhet',
+        'title.sickleave': 'Antal sjukfall',
+        'title.diagnosisgroup': 'Antal sjukfall fördelat på diagnosgrupp',
+        'title.diagnosgroup': 'Antal sjukfall för',
+        'title.diagnoscompare': 'Jämförelse av valfria diagnoser',
+        'title.agegroup': 'Antal sjukfall fördelat på åldersgrupp',
+        'title.degreeofsickleave': 'Antal sjukfall fördelat på sjukskrivningsgrad',
+        'title.sickleavelength': 'Antal sjukfall fördelat på sjukskrivningslängd',
+        'title.sickleavelength90': 'Antal sjukfall som är längre än 90 dagar',
+        'title.lakare': 'Antal sjukfall fördelat på läkare',
+        'title.lakaregender': '	Antal sjukfall fördelat på läkares ålder och kön',
+        'title.lakare-befattning': 'Antal sjukfall fördelat på läkarbefattning',
+        'title.differentierat': 'Antal sjukfall inom differentierat intygande',
+        'title.vardenhet-listning': 'Antal sjukfall per 1000 listningar fördelat på vårdenhet',
 
         //help texts
-        'alert.lan-andel-sjukfall-per-kon.questionmark' : 'I tabellen visas andel sjukfall i procent per kön och län. Antal sjukfall anges inom parentes.',
-        'alert.lakarkon-alder.questionmark' : 'Diagrammet visar antalet sjukfall för olika grupper av läkare. Läkarna grupperas utifrån ålder och om de är kvinna eller man. Statistiken visar även antal sjukfall för män respektive kvinnor.',
-        'alert.lakare-befattning.information' : 'Information om befattning hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade och information kan saknas då det inte är obligatoriskt för vårdenheten att ange befattning. Gruppen "Okänd befattning" innehåller sjukfall där läkaren inte går att slå upp i HSA-katalogen eller där läkaren inte har någon befattning alls angiven. Gruppen "Ej läkarbefattning" innehåller sjukfall där läkaren inte har någon läkarbefattning angiven i HSA men däremot andra slags befattningar',
-        'alert.vardenhet.information' : 'Om ett sjukfall har flera intyg som utfärdats på olika vårdenheter räknas det en gång för respektive vårdenhet. Statistiken visas endast för den som har behörighet att följa upp statistik från dessa vårdenheter.',
-        'alert.degreeofsickleave.information' : 'När ett sjukfall har flera intyg under samma månad hämtas uppgift om sjukskrivningsgrad från det senaste intyget. Om detta intyg innehåller flera olika sjukskrivningsgrader hämtas den senaste sjukskrivningsgraden för den månaden. För ett sjukfall som varar flera månader så hämtas sjukskrivningsgrad för varje månad.',
-        'alert.diagnosisgroup.information' : 'När ett sjukfall har flera intyg under samma månad hämtas uppgift om diagnos från det senaste intyget. För ett sjukfall som varar flera månader så hämtas diagnos för varje månad. I tabellen visas statistiken på diagnoskapitelnivå, men i grafen är statistiken aggregerad för att underlätta presentationen.',
-        'alert.diagnosissubgroup.information' : 'När ett sjukfall har flera intyg under samma månad hämtas uppgift om diagnos från det senaste intyget. För ett sjukfall som varar flera månader så hämtas diagnos för varje månad.',
-        'help.sickleavelength' : 'Sjukskrivningslängden räknas fram utifrån de tidsperioder som anges i sjukfallets läkarintyg. Oavsett om det är hel- eller deltidssjukskrivning räknas 1 dag alltid som 1 dag i statistiken.',
-        'help.diagnosisgroup' : 'Diagnoskoder används för att gruppera sjukdomar för att kunna göra översiktliga statistiska sammanställningar och analyser. Statistiktjänsten är uppdelad i sju övergripande diagnosgrupper. I varje grupp ingår olika kapitel med diagnoskoder. Diagnoskoderna finns i klassificeringssystemet ICD-10-SE.',
-        'help.diagnosissubgroup' : 'Ett diagnoskapitel innehåller flera avsnitt med sjukdomar som i sin tur omfattar olika diagnoskoder. Det finns totalt 21 diagnoskapitel. Grafen visar endast de sex vanligaste förekommande avsnitten eller diagnoserna uppdelade på kvinnor respektive män. I tabellen visas samtliga inom valt kapitel eller avsnitt.',
+        'help.nationell.overview' : 'Statistiktjänsten är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. Tjänsten visar statistik för alla elektroniska läkarintyg. Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.',
+        'help.nationell.diagnosisgroup': 'Denna rapport visar statistik uppdelad i sju övergripande diagnosgrupper. I varje grupp ingår olika kapitel med diagnoskoder. Diagnoskoderna kommer från klassificeringssystemet ICD-10-SE som används för att gruppera sjukdomar för att kunna göra översiktliga statistiska sammanställningar och analyser.',
+        'help.nationell.diagnosgroup': 'I denna rapport kan du själv välja vilket diagnoskapitel du vill se statistik för. Klassificeringssystemet ICD-10-SE delar in alla diagnoser i 21 diagnoskapitel.',
+        'help.nationell.degreeofsickleave': 'Denna rapport visar statistik fördelad på sjukskrivningsgrad, vilket motsvarar hur stor del av patientens arbetsförmåga som är nedsatt. Sjukskrivningsgraden anges i procent i förhållande till patientens aktuella arbetstid.',
+        'help.nationell.sickleavelength': 'Denna rapport visar statistik fördelad på sjukfallens längd. Längden räknas fram utifrån de sjukskrivningsperioder som anges i de läkarintyg som sjukfallet består av.',
+        'help.nationell.lan': 'Denna rapport visar statistik fördelad på län. Information om vilket län en enhet som utfärdar intyg ligger i hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade av Statistiktjänsten och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet.',
+        'help.nationell.lan.gender': 'Denna rapport visar statistik över könsfördelningen för sjukfall fördelat på län. Information om vilket län en enhet som utfärdar intyg ligger i hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade av Statistiktjänsten och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet.',
+
+        'help.verksamhet.vardenhet': 'Denna rapport visar statistik för de vårdenheter som du har behörighet till och som utfärdar läkarintyg. Vårdenheternas namn hämtas från HSA-katalogen.',
+        'help.verksamhet.diagnosgroup': 'I denna rapport kan du själv välja vilken typ av diagnoser du vill se statistik för. Klassificeringssystemet ICD-10-SE delar in alla diagnoser i 21 diagnoskapitel. Varje diagnoskapitel innehåller flera diagnosavsnitt som i sin tur omfattar än mer detaljerade diagnoskategorier.',
+        'help.verksamhet.sickleavelength': 'Om ett sjukfall startat på en annan vårdenhet inom samma vårdgivare räknas den totala sjukskrivningslängden ihop.',
+        'help.verksamhet.lakare': '	Denna rapport visar statistik för enskilda intygsskrivande läkare. Namn hämtas från HSA-katalogen. Om läkaren inte går att slå upp i HSA-katalogen eller om läkaren inte har något namn angivet så visas istället läkarens HSA-id.',
+        'help.verksamhet.lakaregender': 'Denna rapport visar statistik uppdelad i olika läkargrupper utifrån den intygsskrivande läkarens ålder och kön. Information om ålder och kön hämtas från HSA-katalogen.',
+        'help.verksamhet.lakare-befattning': 'Denna rapport visar statistik fördelad på befattning hos den intygsskrivande läkaren. Information om befattning hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade av Statistiktjänsten och information kan saknas då det inte är obligatoriskt för vårdenheten att ange befattning. Om en läkare har flera olika läkarbefattningar räknas sjukfallet med i statistiken för var och en av de befattningarna.',
+        'help.verksamhet.differentierat1': 'Differentierat intygande innebär att läkare som bedömer att en sjukskrivning kommer att uppfylla Försäkringskassans kriterier kan göra ett enklare intygande. Rapporten visar i hur många fall ett enklare intygande använts. Ett sjukfall räknas som enkelt om det består av minst ett enkelt intyg.',
+        'help.verksamhet.differentierat2': 'De enkla sjukfallen delas vidare upp i sjukfall som pågått upp till och med 60 dagar och sjukfall som pågått längre än 60 dagar. Sjukskrivningslängden beräknas på samma sätt som i rapporten "Sjukskrivningslängd".',
+        'help.verksamhet.differentierat3': 'Sjukfall som inte består av något enkelt intyg hamnar i gruppen "Övriga".',
+
+        'help.landsting.vardenhet': 'Denna rapport visar statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget rapporteras in av landstinget självt. Vårdenheternas namn hämtas från HSA-katalogen.',
+        'help.landsting.vardenhet-listning1': 'Denna rapport visar statistik för de vårdenheter som tillhör landstinget och för vilka antal listade patienter rapporterats in. Antal sjukfall per 1000 listningar är ett mått som gör att det går att jämföra antalet sjukfall på olika vårdenheter trots att vårdenheterna inte är lika stora. Detta eftersom antalet sjukfall sätts i relation till antalet listade patienter.',
+        'help.landsting.vardenhet-listning2': 'Information om vilka vårdenheter som ingår i landstinget och uppgift om antal listade patienter på respektive vårdenhet rapporteras in av landstinget självt. Vårdenheternas namn hämtas från HSA-katalogen.',
+
         'help.diagnosissubgroup.showdetailoptions' : 'Observera att om du väljer diagnoskategori visas bara de sjukfall som har en diagnos med den lägsta detaljeringsgraden enligt ICD-10-SE.',
-        'help.degreeofsickleave' : 'Sjukskrivningsgrad visar hur stor del av patientens arbetsförmåga som är nedsatt. Sjukskrivningsgraden anges i procent i förhållande till patientens aktuella arbetstid.',
-        'help.differentieratintygande' : 'Ett sjukfall räknas som enkelt om det innehåller minst ett enkelt intyg.',
-        'help.casespermonth' : 'Ett sjukfall innehåller en patients alla läkarintyg om intygen följer varandra med max fem dagars uppehåll. Läkarintygen måste också vara utfärdade av samma vårdgivare. Om det är fler än fem dagar mellan intygen räknas det nya intyget som ett nytt sjukfall.',
-        'help.landsting-enhet-listningar' : 'Antal sjukfall per 1000 listningar är ett mått som gör att det går att jämföra antalet sjukfall på olika vårdenheter trots att vårdenheterna inte är lika stora. Detta eftersom antalet sjukfall sätts i relation till antalet listade patienter. Information om antal listade patienter på respektive vårdenhet har rapporterats in av landstinget.',
 
         //info texts
-        'info.lan.information' : 'Uppgift om vilket län ett sjukfall tillhör är hämtat från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet.',
-        'info.sickleavelength' : 'Om ett sjukfall startat på en annan vårdenhet (inom vårdgivaren) kommer den tiden läggas ihop med tiden som sjukfallet är på din vårdenhet. Däremot kommer inte en fortsättning på ett sjukfall efter att det lämnat din vårdenhet att synas i din statistik.',
         'info.emptyreponse' : 'Ingen data tillgänglig. Det kan bero på att det inte finns någon data för verksamheten eller att du har angivit en alltför restriktiv filtrering.',
 
         //login view

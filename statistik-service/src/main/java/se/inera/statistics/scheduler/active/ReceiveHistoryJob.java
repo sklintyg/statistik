@@ -54,25 +54,25 @@ public class ReceiveHistoryJob {
 
     private static class History {
 
-        private final long[] history;
+        private final long[] jobHistory;
         private int index;
 
         History(int size) {
-            history = new long[size];
+            jobHistory = new long[size];
         }
 
         public void add(long value) {
             index++;
-            index %= history.length;
-            history[index] = value;
+            index %= jobHistory.length;
+            jobHistory[index] = value;
         }
 
         public long getCurrent() {
-            return history[index];
+            return jobHistory[index];
         }
 
         public long getOldest() {
-            return history[(index + 1) % history.length ];
+            return jobHistory[(index + 1) % jobHistory.length ];
         }
     }
 }

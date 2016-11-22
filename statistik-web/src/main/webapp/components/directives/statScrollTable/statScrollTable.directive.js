@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').directive('statScrollTable',
     /** @ngInject */
-    function ($timeout) {
+    function ($timeout, TABLE_CONFIG) {
         'use strict';
 
         return {
@@ -28,11 +28,11 @@ angular.module('StatisticsApp').directive('statScrollTable',
                 rows: '=',
                 headerRows: '='
             },
-            templateUrl: 'components/directives/statScrollTable/statScrollTable.html',
+            templateUrl: '/components/directives/statScrollTable/statScrollTable.html',
             link: function($scope, element) {
                 $scope.$watch('rows', watchRows);
 
-                var maxRows = 499;
+                var maxRows = TABLE_CONFIG.maxRows;
                 $scope.moreThanMax = false;
 
                 function watchRows(rows) {
@@ -43,7 +43,7 @@ angular.module('StatisticsApp').directive('statScrollTable',
                     }
 
                     if (rows.length > maxRows) {
-                        $scope.rowsShown = rows.splice(0, maxRows);
+                        $scope.rowsShown = rows.slice(0, maxRows);
                         $scope.moreThanMax = true;
                     } else {
                         $scope.rowsShown = rows;

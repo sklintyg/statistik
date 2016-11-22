@@ -182,6 +182,7 @@ public class ProtectedLandstingService {
             return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
                     .header("Content-Disposition", "attachment; filename=\"" + vardgivarId + "_landsting.xlsx\"").build();
         } catch (LandstingFileGenerationException e) {
+            LOG.debug("File generation failed", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could not generate excel file").build();
         }
     }
@@ -191,12 +192,13 @@ public class ProtectedLandstingService {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
-    public Response getEmptyLandstingFile(@Context HttpServletRequest request) {
+    public Response getEmptyLandstingFile() {
         try {
             final ByteArrayOutputStream generatedFile = landstingFileWriter.generateExcelFile(Collections.<Enhet>emptyList());
             return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
                     .header("Content-Disposition", "attachment; filename=\"mall_landsting.xlsx\"").build();
         } catch (LandstingFileGenerationException e) {
+            LOG.debug("Empty file generation failed", e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Could generate empty landsting excel file").build();
         }
     }
@@ -232,7 +234,7 @@ public class ProtectedLandstingService {
             final LandstingEnhetUpdate update = lastUpdateInfo.get();
             final LandstingEnhetUpdateOperation operation = update.getOperation();
             String dateTime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date(update.getTimestamp().getTime()));
-            return operation.getMessage() + (LandstingEnhetUpdateOperation.Update.equals(operation) ? " (" + update.getFilename() + ")" : "") + " - " + dateTime + " av " + update.getUpdatedByName() + " (" + update.getUpdatedByHsaid() + ")";
+            return operation.getMessage() + (LandstingEnhetUpdateOperation.UPDATE.equals(operation) ? " (" + update.getFilename() + ")" : "") + " - " + dateTime + " av " + update.getUpdatedByName() + " (" + update.getUpdatedByHsaid() + ")";
         }
         return "Ingen";
     }

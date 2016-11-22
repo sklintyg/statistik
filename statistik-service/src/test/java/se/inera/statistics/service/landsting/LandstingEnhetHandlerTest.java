@@ -106,7 +106,7 @@ public class LandstingEnhetHandlerTest {
 
         //Then
         Mockito.verify(landstingEnhetManager, times(1)).update(landtingsId, rows);
-        Mockito.verify(landstingEnhetUpdateManager, times(1)).update(landtingsId, userName, userHsaId, fileName, LandstingEnhetUpdateOperation.Update);
+        Mockito.verify(landstingEnhetUpdateManager, times(1)).update(landtingsId, userName, userHsaId, fileName, LandstingEnhetUpdateOperation.UPDATE);
     }
 
     @Test
@@ -130,7 +130,7 @@ public class LandstingEnhetHandlerTest {
         final ArgumentCaptor<List> listArgumentCaptor = ArgumentCaptor.forClass(List.class);
         Mockito.verify(landstingEnhetManager, times(1)).update(eq(landtingsId), listArgumentCaptor.capture());
         assertEquals(0, listArgumentCaptor.getValue().size());
-        Mockito.verify(landstingEnhetUpdateManager, times(1)).update(landtingsId, userName, userId, "-", LandstingEnhetUpdateOperation.Remove);
+        Mockito.verify(landstingEnhetUpdateManager, times(1)).update(landtingsId, userName, userId, "-", LandstingEnhetUpdateOperation.REMOVE);
     }
 
     @Test

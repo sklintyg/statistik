@@ -22,6 +22,8 @@ import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
 import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
 import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,7 +32,6 @@ import java.util.Random;
 
 import javax.annotation.PostConstruct;
 
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +75,8 @@ public class LargeTestDataGenerator {
     private static final int MONTHS = 20;
     private int maxIntyg = INTYG_PER_DAY * MONTHS * (SHORT_PERIOD_DAYS + 1);
 
-    private static final LocalDate BASE = new LocalDate("2012-03-01");
-    private static final LocalDate BASE_AGE = new LocalDate("1930-01-01");
+    private static final LocalDate BASE = LocalDate.parse("2012-03-01");
+    private static final LocalDate BASE_AGE = LocalDate.parse("1930-01-01");
 
     private static final int AGE_DAYS = 365 * 80;
 
@@ -162,7 +163,7 @@ public class LargeTestDataGenerator {
 
     private String randomPerson() {
         LocalDate birthDate = BASE_AGE.plusDays(random.nextInt(AGE_DAYS));
-        return birthDate.toString("yyyyMMdd") + String.format("%1$04d", random.nextInt(EXTENSION_LIMIT));
+        return birthDate.format(DateTimeFormatter.ofPattern("yyyyMMdd")) + String.format("%1$04d", random.nextInt(EXTENSION_LIMIT));
     }
 
     public JsonNode permutate(UtlatandeBuilder builder, String patientId, LocalDate start) {

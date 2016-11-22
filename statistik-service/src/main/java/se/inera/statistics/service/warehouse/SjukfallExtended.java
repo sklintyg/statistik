@@ -66,14 +66,6 @@ public class SjukfallExtended {
         this.enhets.add(line.getEnhet());
     }
 
-    private Lakare getLakareFromFact(Fact line) {
-        final int lakarid = line.getLakarid();
-        final Kon lakarKon = Kon.byNumberRepresentation(line.getLakarkon());
-        final int lakaralder = line.getLakaralder();
-        final int[] lakarbefattnings = line.getLakarbefattnings();
-        return new Lakare(lakarid, lakarKon, lakaralder, lakarbefattnings);
-    }
-
     public SjukfallExtended(SjukfallExtended previous, Fact line) {
         this(line);
         start = Math.min(previous.getStart(), start);
@@ -113,6 +105,14 @@ public class SjukfallExtended {
         lakare.addAll(sjukfall.getLakare());
         extending = sjukfall.extending;
         enhets.addAll(sjukfall.getEnhets());
+    }
+
+    private Lakare getLakareFromFact(Fact line) {
+        final int lakarid = line.getLakarid();
+        final Kon lakarKon = Kon.byNumberRepresentation(line.getLakarkon());
+        final int lakaralder = line.getLakaralder();
+        final int[] lakarbefattnings = line.getLakarbefattnings();
+        return new Lakare(lakarid, lakarKon, lakaralder, lakarbefattnings);
     }
 
     public int getKonInt() {
@@ -242,10 +242,9 @@ public class SjukfallExtended {
             } else if (fact.getStartdatum() == currentLastFound.getStartdatum()) {
                 if (fact.getLakarintyg() > currentLastFound.getLakarintyg()) {
                     currentLastFound = fact;
-                } else if (fact.getLakarintyg() == currentLastFound.getLakarintyg()) {
-                    if (fact.getSjukskrivningsgrad() > currentLastFound.getSjukskrivningsgrad()) {
-                        currentLastFound = fact;
-                    }
+                } else if (fact.getLakarintyg() == currentLastFound.getLakarintyg()
+                        && fact.getSjukskrivningsgrad() > currentLastFound.getSjukskrivningsgrad()) {
+                    currentLastFound = fact;
                 }
             }
         }

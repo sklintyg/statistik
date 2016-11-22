@@ -33,7 +33,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     numberOfChars = maxWidth-10;
                 }
 
-                return this.value.length > numberOfChars ? this.value.substring(0, numberOfChars) + '...' : this.value;
+                return this.value.length > numberOfChars ? '<span title="'+this.value +'">' + this.value.substring(0, numberOfChars) + '...</span>' : this.value;
             };
         };
 
@@ -83,6 +83,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                             whiteSpace: 'pre',
                             width: '200px'
                         },
+                        useHTML: false,
                         formatter: labelFormatter(30),
                         step: 1
                     },
@@ -244,11 +245,11 @@ angular.module('StatisticsApp').factory('chartFactory',
 
         function isSexSetOnChartSeries(chartSeries) {
             var maleSeries = _.find(chartSeries, function(series) {
-                return series.sex === 'Male';
+                return series.sex === 'MALE';
             });
 
             var femaleSeries = _.find(chartSeries, function(series) {
-                return series.sex === 'Female';
+                return series.sex === 'FEMALE';
             });
 
             return maleSeries && femaleSeries? true : false;
@@ -274,9 +275,9 @@ angular.module('StatisticsApp').factory('chartFactory',
                 femaleColor = COLORS.female;
 
             _.each(rawData, function (data) {
-                if (data.sex === 'Male') {
+                if (data.sex === 'MALE') {
                     data.color = maleColor[maleColorSelector++];
-                } else if (data.sex === 'Female') {
+                } else if (data.sex === 'FEMALE') {
                     data.color = femaleColor[femaleColorSelector++];
                 } else {
                     if(colorSelector === colors.length) {

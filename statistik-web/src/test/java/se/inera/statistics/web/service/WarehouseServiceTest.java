@@ -25,6 +25,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
@@ -33,13 +34,14 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.CutoffUsage;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 import se.inera.statistics.service.warehouse.query.OverviewQuery;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
+import se.inera.statistics.web.util.SpyableClock;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,6 +72,9 @@ public class WarehouseServiceTest {
     @Mock
     private EnhetManager enhetManager;
 
+    @Spy
+    private SpyableClock clock;
+
     @InjectMocks
     private WarehouseService warehouseService;
 
@@ -86,7 +91,7 @@ public class WarehouseServiceTest {
         rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
         rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
         final SimpleKonResponse<SimpleKonDataRow> response = new SimpleKonResponse<>(rows);
-        final Range range = new Range();
+        final Range range = new Range(clock);
         Mockito.when(sjukfallQuery.getSjukfallPerEnhet(null, null, range.getFrom(), 1, range.getMonths(), null, CutoffUsage.DO_NOT_APPLY_CUTOFF)).thenReturn(response);
 
         //When
@@ -104,11 +109,11 @@ public class WarehouseServiceTest {
         //Given
         final Predicate predicate = Mockito.mock(Predicate.class);
         final String testhash = "testhash";
-        final SjukfallFilter predicate1 =  new SjukfallFilter(predicate, sjukfall -> true, testhash);
+        final FilterPredicates predicate1 =  new FilterPredicates(predicate, sjukfall -> true, testhash);
         final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
         final ArrayList<String> diagnoser = new ArrayList<>();
-        final Filter filter = new Filter(predicate1, enheter, diagnoser, null);
-        final Range range = new Range();
+        final Filter filter = new Filter(predicate1, enheter, diagnoser, null, null);
+        final Range range = new Range(clock);
         final FilterSettings filterSettings = new FilterSettings(filter, range);
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
         rows.add(new SimpleKonDataRow("ABC", 0, 0, 1));
@@ -133,11 +138,11 @@ public class WarehouseServiceTest {
         //Given
         final Predicate predicate = Mockito.mock(Predicate.class);
         final String testhash = "testhash";
-        final SjukfallFilter predicate1 = new SjukfallFilter(predicate, sjukfall -> true, testhash);
+        final FilterPredicates predicate1 = new FilterPredicates(predicate, sjukfall -> true, testhash);
         final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
         final ArrayList<String> diagnoser = new ArrayList<>();
-        final Filter filter = new Filter(predicate1, enheter, diagnoser, null);
-        final Range range = new Range();
+        final Filter filter = new Filter(predicate1, enheter, diagnoser, null, null);
+        final Range range = new Range(clock);
         final FilterSettings filterSettings = new FilterSettings(filter, range);
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
         rows.add(new SimpleKonDataRow("ABC", 0, 0, 1));

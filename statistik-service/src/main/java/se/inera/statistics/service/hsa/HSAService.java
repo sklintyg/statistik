@@ -20,8 +20,6 @@ package se.inera.statistics.service.hsa;
 
 public interface HSAService {
 
-    String ENHETS_TYP = "enhetsTyp";
-
     /**
      * Get HSA info using fields from baseHsaInfo when available.
      */

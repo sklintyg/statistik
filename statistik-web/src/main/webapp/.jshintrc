@@ -20,7 +20,7 @@
     "strict": true,
     "trailing": true,
     "maxstatements": 150,
-    "maxcomplexity": 10,
+    "maxcomplexity": 15,
     "maxlen": 350,
     "maxerr": 10000,
     "browser": false,

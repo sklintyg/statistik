@@ -26,6 +26,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +35,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class SjukskrivningsgradConverterTest {
+
+    private final Clock clock = Clock.systemDefaultZone();
 
     @Test
     public void tableConverterTestEmptyInput() {
@@ -66,7 +69,7 @@ public class SjukskrivningsgradConverterTest {
     @Test
     public void converterTestEmpty() {
         KonDataResponse resp = new KonDataResponse(new ArrayList<>(), new ArrayList<>());
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range(clock));
         DualSexStatisticsData data = new DegreeOfSickLeaveConverter().convert(resp, filterSettings);
         assertEquals("[Totalt]", data.getFemaleChart().getCategories().toString());
         assertEquals("[Totalt % sjukskrivningsgrad: [0]]", data.getFemaleChart().getSeries().toString());
@@ -86,7 +89,7 @@ public class SjukskrivningsgradConverterTest {
 
         //When
         DegreeOfSickLeaveConverter converter = new DegreeOfSickLeaveConverter();
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range());
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range(clock));
         DualSexStatisticsData data = converter.convert(resp, filterSettings);
 
         //Then

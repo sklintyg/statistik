@@ -20,21 +20,22 @@ package se.inera.statistics.service.processlog;
 
 import java.util.List;
 
-import javax.xml.bind.JAXBException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
+import se.inera.ifv.statistics.spi.authorization.impl.HsaCommunicationException;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HsaInfo;
+import se.inera.statistics.service.schemavalidation.SchemaValidator;
+import se.inera.statistics.service.schemavalidation.ValidateXmlResponse;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 @Component
 public class LogConsumerImpl implements LogConsumer {
@@ -53,37 +54,35 @@ public class LogConsumerImpl implements LogConsumer {
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
 
+    @Autowired
+    private SchemaValidator schemaValidator;
+
     private volatile boolean isRunning = false;
 
     @Transactional
+    @Override
     public synchronized int processBatch() {
         try {
             setRunning(true);
             List<IntygEvent> result = processLog.getPending(BATCH_SIZE);
-            int processed = 0;
             if (result.isEmpty()) {
                 return 0;
             }
+            int processed = 0;
             for (IntygEvent event: result) {
                 final IntygFormat format = event.getFormat();
                 try {
-                    switch (format) {
-                        case REGISTER_MEDICAL_CERTIFICATE:
-                            if (!processJsonMedicalCertificate(event)) {
-                                return processed;
-                            }
-                            break;
-                        case REGISTER_CERTIFICATE:
-                            if (!processXmlCertificate(event)) {
-                                return processed;
-                            }
-                            break;
-                        default:
-                            LOG.warn("Unhandled intyg format: " + format);
-                            return processed;
+                    final boolean eventSuccessfullyHandled = handleEvent(event, format);
+                    if (!eventSuccessfullyHandled) {
+                        LOG.error("Failed to process intyg {} ({})", event.getId(), event.getCorrelationId());
                     }
+                } catch (HsaCommunicationException e) {
+                    LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
+                    LOG.debug("Could not process intyg {} ({}).", event.getId(), event.getCorrelationId(), e);
+                    return processed;
                 } catch (Exception e) {
                     LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
+                    LOG.debug("Could not process intyg {} ({}).", event.getId(), event.getCorrelationId(), e);
                 } finally {
                     processLog.confirm(event.getId());
                     processed++;
@@ -94,6 +93,48 @@ public class LogConsumerImpl implements LogConsumer {
         } finally {
             setRunning(false);
         }
+    }
+
+    private boolean handleEvent(IntygEvent event, IntygFormat format) {
+        switch (format) {
+            case REGISTER_MEDICAL_CERTIFICATE:
+                final boolean successfullyProcessedJson = processJsonMedicalCertificate(event);
+                if (!successfullyProcessedJson) {
+                    return false;
+                }
+                break;
+            case REGISTER_CERTIFICATE:
+                final boolean successfullyProcessedRc = processRegisterCertificate(event);
+                if (!successfullyProcessedRc) {
+                    return false;
+                }
+                break;
+            default:
+                LOG.warn("Unhandled intyg format: " + format);
+                return false;
+        }
+        return true;
+    }
+
+    private boolean processRegisterCertificate(IntygEvent event) {
+        try {
+            final RegisterCertificateType rc = registerCertificateHelper.unmarshalRegisterCertificateXml(event.getData());
+            final String intygTyp = rc.getIntyg().getTyp().getCode().toUpperCase().trim();
+            final ValidateXmlResponse validation = schemaValidator.validate(intygTyp, event.getData());
+            if (!validation.isValid()) {
+                LOG.warn("Register certificate validation failed: " + validation.getValidationErrors());
+                return false;
+            }
+            final boolean successfullyProcessedXml = processXmlCertificate(event, rc);
+            if (!successfullyProcessedXml) {
+                return false;
+            }
+        } catch (Exception e) {
+            LOG.warn("Failed to unmarshal intyg xml");
+            LOG.debug("Failed to unmarshal intyg xml", e);
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -114,23 +155,14 @@ public class LogConsumerImpl implements LogConsumer {
     /**
      * @return true for success, otherwise false
      */
-    private boolean processXmlCertificate(IntygEvent event) {
+    private boolean processXmlCertificate(IntygEvent event, RegisterCertificateType rc) {
         EventType type = event.getType();
-        RegisterCertificateType rc = null;
-        try {
-            rc = registerCertificateHelper.unmarshalRegisterCertificateXml(event.getData());
-        } catch (JAXBException e) {
-            LOG.warn("Failed to unmarshal intyg xml");
-            return false;
-        }
         HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
-
         if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
             return false;
         }
         processor.accept(rc, hsaInfo, event.getId(), event.getCorrelationId(), type);
         return true;
-
     }
 
     public synchronized boolean isRunning() {

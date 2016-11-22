@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,7 @@ import se.inera.statistics.service.demo.LargeTestDataGenerator;
 import java.io.FileNotFoundException;
 import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertTrue;
 
+// CHECKSTYLE:OFF MagicNumber
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:warehouse-integration-test.xml", "classpath:icd10.xml"  })
 @DirtiesContext
@@ -47,7 +48,7 @@ public class WarehouseIntegrationTest {
     @Autowired
     private Warehouse warehouse;
 
-    @Autowired 
+    @Autowired
     private LargeTestDataGenerator dataGenerator;
 
     private SjukfallUtil sjukfallUtil = new SjukfallUtil();
@@ -66,7 +67,7 @@ public class WarehouseIntegrationTest {
                 }
             });
         }
-        
+
         pool.shutdown();
         pool.awaitTermination(30, TimeUnit.SECONDS);
         showMem();
@@ -83,7 +84,7 @@ public class WarehouseIntegrationTest {
     }
 
     private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
-        return sjukfallUtil.sjukfallGrupper(new LocalDate(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
+        return sjukfallUtil.sjukfallGrupper(LocalDate.of(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
     }
 
     private void measureSjukfall(Aisle aisle) {
@@ -104,9 +105,10 @@ public class WarehouseIntegrationTest {
             gc.append(bean.getCollectionCount())
             .append(" ").append(bean.getCollectionTime()).append(" ");
         }
-        
+
         Runtime r = Runtime.getRuntime();
         long used = r.totalMemory() - r.freeMemory();
         System.err.format("Memory total %1$s free %2$s used %3$s %4$s%n", r.totalMemory(), r.freeMemory(), used, gc.toString());
     }
 }
+// CHECKSTYLE:ON MagicNumber

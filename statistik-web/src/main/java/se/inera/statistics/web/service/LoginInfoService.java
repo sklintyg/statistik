@@ -38,10 +38,10 @@ import se.inera.statistics.web.model.UserAccessInfo;
 @Path("/login")
 public class LoginInfoService {
 
-    public LoginInfoService() { }
-
     @Autowired
     private LoginServiceUtil loginServiceUtil;
+
+    public LoginInfoService() { }
 
     @GET
     @Path("getLoginInfo")
@@ -54,7 +54,7 @@ public class LoginInfoService {
     @Path("getAppSettings")
     @Produces({ MediaType.APPLICATION_JSON })
     public AppSettings getAppSettings(@Context HttpServletRequest request) {
-        return loginServiceUtil.getSettings(request);
+        return loginServiceUtil.getSettings();
     }
 
     @GET

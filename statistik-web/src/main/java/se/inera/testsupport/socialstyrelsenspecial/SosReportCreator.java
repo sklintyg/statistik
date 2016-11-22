@@ -18,14 +18,14 @@
  */
 package se.inera.testsupport.socialstyrelsenspecial;
 
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import org.joda.time.LocalDate;
 
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
@@ -35,7 +35,7 @@ import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.WidelineConverter;
@@ -46,14 +46,16 @@ public class SosReportCreator {
 
     private final Map<HsaIdVardgivare, Aisle> allVardgivare;
     private final SjukfallUtil sjukfallUtil;
-    private HashMap<String, Integer> dxsToShowInReport = new HashMap<>();;
+    private HashMap<String, Integer> dxsToShowInReport = new HashMap<>();
+    private Clock clock;
 
     /**
      * @param dxString diagnosis to generate report for, if null then use default dxs
      */
-    public SosReportCreator(Map<HsaIdVardgivare, Aisle> allVardgivare, SjukfallUtil sjukfallUtil, Icd10 icd10, String dxString) {
+    public SosReportCreator(Map<HsaIdVardgivare, Aisle> allVardgivare, SjukfallUtil sjukfallUtil, Icd10 icd10, String dxString, Clock clock) {
         this.allVardgivare = allVardgivare;
         this.sjukfallUtil = sjukfallUtil;
+        this.clock = clock;
         if (dxString == null || dxString.isEmpty()) {
             populateDefaultDxs();
         } else {
@@ -76,17 +78,17 @@ public class SosReportCreator {
 
     public List<SosRow> getSosReport() {
         final LocalDate from = getFirstDateOfLastYear();
-        final Range range = new Range(from, LocalDate.now());
+        final Range range = new Range(from, LocalDate.now(clock));
         final int fromIntDay = WidelineConverter.toDay(from);
         final int toIntDay = WidelineConverter.toDay(getLastDateOfLastYear());
-        final int nowMinusFiveDaysIntDay = WidelineConverter.toDay(LocalDate.now().minusDays(5));
+        final int nowMinusFiveDaysIntDay = WidelineConverter.toDay(LocalDate.now(clock).minusDays(5));
 
         final ArrayList<SosRow> sosRows = new ArrayList<>();
         for (Map.Entry<String, Integer> stringIntegerEntry : dxsToShowInReport.entrySet()) {
             final Integer dx = stringIntegerEntry.getValue();
             final String dxString = stringIntegerEntry.getKey();
             final Predicate<Fact> intygFilter = fact -> fact.getDiagnoskod() == dx || fact.getDiagnoskategori() == dx;
-            final SjukfallFilter sjukfallFilter = new SjukfallFilter(intygFilter, sjukfall -> true, "sosspecial" + dx);
+            final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true, "sosspecial" + dx);
 
             for (Map.Entry<HsaIdVardgivare, Aisle> vgEntry : allVardgivare.entrySet()) {
                 final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1, range.getMonths(),
@@ -104,12 +106,12 @@ public class SosReportCreator {
         return sosRows;
     }
 
-    static LocalDate getLastDateOfLastYear() {
-        return LocalDate.now().withDayOfYear(1).minusDays(1);
+    LocalDate getLastDateOfLastYear() {
+        return LocalDate.now(clock).withDayOfYear(1).minusDays(1);
     }
 
-    static LocalDate getFirstDateOfLastYear() {
-        return LocalDate.now().withDayOfYear(1).minusYears(1);
+    LocalDate getFirstDateOfLastYear() {
+        return LocalDate.now(clock).withDayOfYear(1).minusYears(1);
     }
 
     private List<SosCalculatedRow> getCalculatedValuesSosReport(Function<List<SosRow>, Double> calcFunc) {
@@ -121,8 +123,8 @@ public class SosReportCreator {
 
 
             final Double total = calcFunc.apply(dxEntry.getValue());
-            final Double female = calcFunc.apply(dxrowsByKon.get(Kon.Female));
-            final Double male = calcFunc.apply(dxrowsByKon.get(Kon.Male));
+            final Double female = calcFunc.apply(dxrowsByKon.get(Kon.FEMALE));
+            final Double male = calcFunc.apply(dxrowsByKon.get(Kon.MALE));
 
             final Map<String, List<SosRow>> dxrowsByLan = dxEntry.getValue().stream().collect(Collectors.groupingBy(SosRow::getLanId));
             final HashMap<String, Number> lanNumbers = new HashMap<>();

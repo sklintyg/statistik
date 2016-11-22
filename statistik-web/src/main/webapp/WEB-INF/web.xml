@@ -14,27 +14,18 @@
     </filter>
     <!-- Filter for adding expiry (cache) header -->
     <filter>
-       <filter-name>ExpiresFilter</filter-name>
-       <filter-class>org.apache.catalina.filters.ExpiresFilter</filter-class>
-       <init-param>
-          <param-name>ExpiresDefault</param-name>
-          <param-value>access plus 1 month</param-value>
-       </init-param>
-    </filter>
-
-    <filter>
       <filter-name>CompressingFilter</filter-name>
       <filter-class>com.github.ziplet.filter.compression.CompressingFilter</filter-class>
     </filter>
 
-    <!-- Map cache filter to all static resources -->
-    <filter-mapping>
+    <filter>
        <filter-name>ExpiresFilter</filter-name>
-       <url-pattern>/app/*</url-pattern>
-       <url-pattern>/bower_components/*</url-pattern>
-       <url-pattern>/js/*</url-pattern>
-       <dispatcher>REQUEST</dispatcher>
-    </filter-mapping>
+       <filter-class>org.apache.catalina.filters.ExpiresFilter</filter-class>
+       <init-param>
+          <param-name>ExpiresDefault</param-name>
+          <param-value>access plus 1 years</param-value>
+       </init-param>
+    </filter>
 
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
@@ -46,6 +37,7 @@
       <filter-name>CompressingFilter</filter-name>
       <url-pattern>/app/*</url-pattern>
       <url-pattern>/js/*</url-pattern>
+      <url-pattern>/showcase/*</url-pattern>
       <url-pattern>/bower_components/*</url-pattern>
       <url-pattern>/api/getOverview</url-pattern>
       <url-pattern>/api/getNumberOfCasesPerMonth</url-pattern>
@@ -56,6 +48,16 @@
       <url-pattern>/api/getCountyStatistics</url-pattern>
       <url-pattern>/api/getSjukfallPerSexStatistics</url-pattern>
       <url-pattern>/api/getIcd10Structure</url-pattern>
+    </filter-mapping>
+
+    <!-- Map cache filter to all static resources -->
+    <filter-mapping>
+      <filter-name>ExpiresFilter</filter-name>
+      <url-pattern>/app/*</url-pattern>
+      <url-pattern>/assets/*</url-pattern>
+      <url-pattern>/bower_components/*</url-pattern>
+      <url-pattern>/js/*</url-pattern>
+      <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
     <context-param>
@@ -106,6 +108,9 @@
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
+  <listener>
+    <listener-class>se.inera.statistics.web.service.monitoring.SessionCounterListener</listener-class>
+  </listener>
 
     <error-page>
         <error-code>404</error-code>

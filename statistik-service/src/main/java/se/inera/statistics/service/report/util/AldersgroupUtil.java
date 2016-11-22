@@ -18,11 +18,19 @@
  */
 package se.inera.statistics.service.report.util;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import static se.inera.statistics.service.report.util.Ranges.range;
 
 public final class AldersgroupUtil {
-    public static final Ranges RANGES = new Ranges(range("Under 21 år", 21), range("21-25 år", 26), range("26-30 år", 31), range("31-35 år", 36), range("36-40 år", 41), range("41-45 år", 46), range("46-50 år", 51), range("51-55 år", 56), range("56-60 år", 61), range("Över 60 år", Integer.MAX_VALUE));
+
+    public static final Ranges RANGES = new Ranges(Arrays.stream(AgeGroup.values())
+            .map(group -> range(group.getGroupName(), group.getTo() + 1))
+            .collect(Collectors.toList())
+            .toArray(new Ranges.Range[0]));
 
     private AldersgroupUtil() {
     }
+
 }

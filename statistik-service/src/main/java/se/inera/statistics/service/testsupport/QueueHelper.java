@@ -19,7 +19,6 @@
 package se.inera.statistics.service.testsupport;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +48,7 @@ import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +89,7 @@ public class QueueHelper {
     private SjukfallQuery sjukfallQuery;
 
     // CHECKSTYLE:OFF ParameterNumberCheck
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public void enqueue(UtlatandeBuilder builder, String typString, String person, String diagnos, List<LocalDate> start, List<LocalDate> stop, List<String> grad, HsaIdEnhet enhet, HsaIdVardgivare vardgivare, String transId) {
         EventType typ = EventType.valueOf(typString);
         sender.simpleSend(builder.build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), transId, typ);

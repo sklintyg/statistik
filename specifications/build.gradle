@@ -5,10 +5,27 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.moowork.grunt" version "0.13"
+    id "com.moowork.node" version "0.13"
+}
+
 description = 'Inera Statistics Fitnesse specifications'
 
 apply plugin: 'groovy'
 apply plugin: 'inera-fitnesse'
+
+
+node {
+    version = '6.6.0'
+    download = true
+    distBaseUrl = 'https://build-inera.nordicmedtest.se/node/'
+    npmVersion = '3.10.8'
+    workDir = file("${project.buildDir}/nodejs")
+    nodeModulesDir = file("${project.projectDir}")
+}
+
+String nodeBinaryPath = new com.moowork.gradle.node.variant.VariantBuilder(node).build().nodeExec
 
 fitnesse {
     port = 9125
@@ -16,14 +33,23 @@ fitnesse {
     workingDir = "src/test/fitnesse"
 }
 
-if (project.hasProperty('runFitnesse')) {
+
+task protractorTest(dependsOn: [npmInstall], type: Exec) {
+    commandLine nodeBinaryPath, './node_modules/protractor/bin/protractor', 'src/test/protractor/protractor.conf.js'
+}
+
+task allIntegrationTests(dependsOn: [fitnesseTest, protractorTest]) << {
+    println 'running integration tests'
+}
+
+if (project.hasProperty('runFitnesse') || project.hasProperty('runProtractor')) {
     apply plugin: 'org.akhikhl.gretty'
     gretty {
         contextPath = '/'
         contextConfigFile = project(":statistik-web").projectDir.path + "/src/main/webapp/WEB-INF/jetty-context.xml"
         logbackConfigFile = "${projectDir}/src/main/resources/logback-test.xml"
         jvmArgs = [
-                '-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake',
+                '-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake,skipTestIntygInjection',
                 '-Dstatistics.config.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/default.dev.properties',
                 '-Dstatistics.credentials.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/dev-credentials.properties'
         ]
@@ -33,7 +59,13 @@ if (project.hasProperty('runFitnesse')) {
     farm {
         webapp ":statistik-web"
         webapp project
-        integrationTestTask = 'fitnesseTest'
+        if (project.hasProperty('runFitnesse') && project.hasProperty('runProtractor')) {
+            integrationTestTask = 'allIntegrationTests'
+        } else if (project.hasProperty('runFitnesse')) {
+            integrationTestTask = 'fitnesseTest'
+        } else {
+            integrationTestTask = 'protractorTest'
+        }
     }
 
     dependencies {

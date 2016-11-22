@@ -18,10 +18,7 @@
  */
 package se.inera.statistics.service.processlog;
 
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.report.model.Kommun;
-import se.inera.statistics.service.report.model.VerksamhetsTyp;
+import java.util.Comparator;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,9 +26,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.report.model.Kommun;
+import se.inera.statistics.service.report.model.VerksamhetsTyp;
+
 @Entity
 @Table(name = "enhet")
-public class Enhet implements Comparable<Enhet> {
+public class Enhet {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -48,11 +50,8 @@ public class Enhet implements Comparable<Enhet> {
 
     private String verksamhetsTyper;
 
-    public Enhet() {
-    }
-
-    public long getId() {
-        return id;
+    Enhet() {
+        //Not sure why/if this is needed
     }
 
     public Enhet(HsaIdVardgivare vardgivareId, HsaIdEnhet enhetId, String namn, String lansId, String kommunId, String verksamhetsTyper) {
@@ -62,6 +61,10 @@ public class Enhet implements Comparable<Enhet> {
         this.lansId = lansId;
         this.kommunId = kommunId;
         this.verksamhetsTyper = verksamhetsTyper;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public void setId(long id) {
@@ -119,8 +122,8 @@ public class Enhet implements Comparable<Enhet> {
         this.verksamhetsTyper = verksamhetsTyper;
     }
 
-    @Override
-    public int compareTo(Enhet enhet) {
-        return enhetId.compareTo(enhet.enhetId);
+    public static Comparator<Enhet> byEnhetId() {
+        return (enhet1, enhet2) -> enhet1.enhetId.compareTo(enhet2.enhetId);
     }
+
 }

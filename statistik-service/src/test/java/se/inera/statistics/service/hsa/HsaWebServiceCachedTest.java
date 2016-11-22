@@ -29,6 +29,10 @@ import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
+import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -53,8 +57,8 @@ public class HsaWebServiceCachedTest {
         Mockito.doReturn(null).when(service).getStatisticsHsaUnit(unitId);
 
         //When
-        GetStatisticsHsaUnitResponseType result1 = cachedService.getStatisticsHsaUnit(unitId);
-        GetStatisticsHsaUnitResponseType result2 = cachedService.getStatisticsHsaUnit(unitId);
+        GetStatisticsHsaUnitResponseDto result1 = cachedService.getStatisticsHsaUnit(unitId);
+        GetStatisticsHsaUnitResponseDto result2 = cachedService.getStatisticsHsaUnit(unitId);
 
         //Then
         assertNull(result1);
@@ -67,16 +71,16 @@ public class HsaWebServiceCachedTest {
         //Given
         final String unitId1 = "HSAid1";
         final String unitId2 = "HSAid2";
-        final GetStatisticsHsaUnitResponseType mock1 = Mockito.mock(GetStatisticsHsaUnitResponseType.class);
-        final GetStatisticsHsaUnitResponseType mock2 = Mockito.mock(GetStatisticsHsaUnitResponseType.class);
+        final GetStatisticsHsaUnitResponseDto mock1 = Mockito.mock(GetStatisticsHsaUnitResponseDto.class);
+        final GetStatisticsHsaUnitResponseDto mock2 = Mockito.mock(GetStatisticsHsaUnitResponseDto.class);
         Mockito.doReturn(mock1).when(service).getStatisticsHsaUnit(unitId1);
         Mockito.doReturn(mock2).when(service).getStatisticsHsaUnit(unitId2);
 
         //When
-        GetStatisticsHsaUnitResponseType result1 = cachedService.getStatisticsHsaUnit(unitId1);
-        GetStatisticsHsaUnitResponseType result2 = cachedService.getStatisticsHsaUnit(unitId2);
-        GetStatisticsHsaUnitResponseType result3 = cachedService.getStatisticsHsaUnit(unitId1);
-        GetStatisticsHsaUnitResponseType result4 = cachedService.getStatisticsHsaUnit(unitId2);
+        GetStatisticsHsaUnitResponseDto result1 = cachedService.getStatisticsHsaUnit(unitId1);
+        GetStatisticsHsaUnitResponseDto result2 = cachedService.getStatisticsHsaUnit(unitId2);
+        GetStatisticsHsaUnitResponseDto result3 = cachedService.getStatisticsHsaUnit(unitId1);
+        GetStatisticsHsaUnitResponseDto result4 = cachedService.getStatisticsHsaUnit(unitId2);
 
         //Then
         assertEquals(mock1, result1);
@@ -93,8 +97,8 @@ public class HsaWebServiceCachedTest {
         Mockito.doReturn(null).when(service).getStatisticsNames(hsaId);
 
         //When
-        GetStatisticsNamesResponseType result1 = cachedService.getStatisticsNames(hsaId);
-        GetStatisticsNamesResponseType result2 = cachedService.getStatisticsNames(hsaId);
+        GetStatisticsNamesResponseDto result1 = cachedService.getStatisticsNames(hsaId);
+        GetStatisticsNamesResponseDto result2 = cachedService.getStatisticsNames(hsaId);
 
         //Then
         assertNull(result1);
@@ -107,16 +111,16 @@ public class HsaWebServiceCachedTest {
         //Given
         final String hsaId1 = "HSAid1";
         final String hsaId2 = "HSAid2";
-        final GetStatisticsNamesResponseType mock1 = Mockito.mock(GetStatisticsNamesResponseType.class);
-        final GetStatisticsNamesResponseType mock2 = Mockito.mock(GetStatisticsNamesResponseType.class);
+        final GetStatisticsNamesResponseDto mock1 = Mockito.mock(GetStatisticsNamesResponseDto.class);
+        final GetStatisticsNamesResponseDto mock2 = Mockito.mock(GetStatisticsNamesResponseDto.class);
         Mockito.doReturn(mock1).when(service).getStatisticsNames(hsaId1);
         Mockito.doReturn(mock2).when(service).getStatisticsNames(hsaId2);
 
         //When
-        GetStatisticsNamesResponseType result1 = cachedService.getStatisticsNames(hsaId1);
-        GetStatisticsNamesResponseType result2 = cachedService.getStatisticsNames(hsaId2);
-        GetStatisticsNamesResponseType result3 = cachedService.getStatisticsNames(hsaId1);
-        GetStatisticsNamesResponseType result4 = cachedService.getStatisticsNames(hsaId2);
+        GetStatisticsNamesResponseDto result1 = cachedService.getStatisticsNames(hsaId1);
+        GetStatisticsNamesResponseDto result2 = cachedService.getStatisticsNames(hsaId2);
+        GetStatisticsNamesResponseDto result3 = cachedService.getStatisticsNames(hsaId1);
+        GetStatisticsNamesResponseDto result4 = cachedService.getStatisticsNames(hsaId2);
 
         //Then
         assertEquals(mock1, result1);
@@ -133,8 +137,8 @@ public class HsaWebServiceCachedTest {
         Mockito.doReturn(null).when(service).getStatisticsPerson(hsaId);
 
         //When
-        GetStatisticsPersonResponseType result1 = cachedService.getStatisticsPerson(hsaId);
-        GetStatisticsPersonResponseType result2 = cachedService.getStatisticsPerson(hsaId);
+        GetStatisticsPersonResponseDto result1 = cachedService.getStatisticsPerson(hsaId);
+        GetStatisticsPersonResponseDto result2 = cachedService.getStatisticsPerson(hsaId);
 
         //Then
         assertNull(result1);
@@ -147,16 +151,16 @@ public class HsaWebServiceCachedTest {
         //Given
         final String hsaId1 = "HSAid1";
         final String hsaId2 = "HSAid2";
-        final GetStatisticsPersonResponseType mock1 = Mockito.mock(GetStatisticsPersonResponseType.class);
-        final GetStatisticsPersonResponseType mock2 = Mockito.mock(GetStatisticsPersonResponseType.class);
+        final GetStatisticsPersonResponseDto mock1 = Mockito.mock(GetStatisticsPersonResponseDto.class);
+        final GetStatisticsPersonResponseDto mock2 = Mockito.mock(GetStatisticsPersonResponseDto.class);
         Mockito.doReturn(mock1).when(service).getStatisticsPerson(hsaId1);
         Mockito.doReturn(mock2).when(service).getStatisticsPerson(hsaId2);
 
         //When
-        GetStatisticsPersonResponseType result1 = cachedService.getStatisticsPerson(hsaId1);
-        GetStatisticsPersonResponseType result2 = cachedService.getStatisticsPerson(hsaId2);
-        GetStatisticsPersonResponseType result3 = cachedService.getStatisticsPerson(hsaId1);
-        GetStatisticsPersonResponseType result4 = cachedService.getStatisticsPerson(hsaId2);
+        GetStatisticsPersonResponseDto result1 = cachedService.getStatisticsPerson(hsaId1);
+        GetStatisticsPersonResponseDto result2 = cachedService.getStatisticsPerson(hsaId2);
+        GetStatisticsPersonResponseDto result3 = cachedService.getStatisticsPerson(hsaId1);
+        GetStatisticsPersonResponseDto result4 = cachedService.getStatisticsPerson(hsaId2);
 
         //Then
         assertEquals(mock1, result1);
@@ -213,8 +217,8 @@ public class HsaWebServiceCachedTest {
         Mockito.doReturn(null).when(service).getStatisticsCareGiver(hsaId);
 
         //When
-        GetStatisticsCareGiverResponseType result1 = cachedService.getStatisticsCareGiver(hsaId);
-        GetStatisticsCareGiverResponseType result2 = cachedService.getStatisticsCareGiver(hsaId);
+        GetStatisticsCareGiverResponseDto result1 = cachedService.getStatisticsCareGiver(hsaId);
+        GetStatisticsCareGiverResponseDto result2 = cachedService.getStatisticsCareGiver(hsaId);
 
         //Then
         assertNull(result1);
@@ -227,16 +231,16 @@ public class HsaWebServiceCachedTest {
         //Given
         final String hsaId1 = "HSAid1";
         final String hsaId2 = "HSAid2";
-        final GetStatisticsCareGiverResponseType mock1 = Mockito.mock(GetStatisticsCareGiverResponseType.class);
-        final GetStatisticsCareGiverResponseType mock2 = Mockito.mock(GetStatisticsCareGiverResponseType.class);
+        final GetStatisticsCareGiverResponseDto mock1 = Mockito.mock(GetStatisticsCareGiverResponseDto.class);
+        final GetStatisticsCareGiverResponseDto mock2 = Mockito.mock(GetStatisticsCareGiverResponseDto.class);
         Mockito.doReturn(mock1).when(service).getStatisticsCareGiver(hsaId1);
         Mockito.doReturn(mock2).when(service).getStatisticsCareGiver(hsaId2);
 
         //When
-        GetStatisticsCareGiverResponseType result1 = cachedService.getStatisticsCareGiver(hsaId1);
-        GetStatisticsCareGiverResponseType result2 = cachedService.getStatisticsCareGiver(hsaId2);
-        GetStatisticsCareGiverResponseType result3 = cachedService.getStatisticsCareGiver(hsaId1);
-        GetStatisticsCareGiverResponseType result4 = cachedService.getStatisticsCareGiver(hsaId2);
+        GetStatisticsCareGiverResponseDto result1 = cachedService.getStatisticsCareGiver(hsaId1);
+        GetStatisticsCareGiverResponseDto result2 = cachedService.getStatisticsCareGiver(hsaId2);
+        GetStatisticsCareGiverResponseDto result3 = cachedService.getStatisticsCareGiver(hsaId1);
+        GetStatisticsCareGiverResponseDto result4 = cachedService.getStatisticsCareGiver(hsaId2);
 
         //Then
         assertEquals(mock1, result1);

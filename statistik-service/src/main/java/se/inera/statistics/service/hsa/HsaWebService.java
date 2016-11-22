@@ -18,10 +18,10 @@
  */
 package se.inera.statistics.service.hsa;
 
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
+import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
 
 public interface HsaWebService {
 
@@ -29,12 +29,12 @@ public interface HsaWebService {
 
     void callPing();
 
-    GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(String unitId);
+    GetStatisticsHsaUnitResponseDto getStatisticsHsaUnit(String unitId);
 
-    GetStatisticsNamesResponseType getStatisticsNames(String personId);
+    GetStatisticsNamesResponseDto getStatisticsNames(String personId);
 
-    GetStatisticsPersonResponseType getStatisticsPerson(String personId);
+    GetStatisticsPersonResponseDto getStatisticsPerson(String personId);
 
-    GetStatisticsCareGiverResponseType getStatisticsCareGiver(String careGiverId);
+    GetStatisticsCareGiverResponseDto getStatisticsCareGiver(String careGiverId);
 
 }

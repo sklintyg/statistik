@@ -28,6 +28,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 import java.io.InputStream;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.xml.bind.JAXBContext;
@@ -35,7 +38,6 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -43,21 +45,27 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsCareGiverResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsHsaUnitResponseType;
 import se.inera.ifv.hsawsresponder.v3.GetStatisticsNamesResponseType;
-import se.inera.ifv.hsawsresponder.v3.GetStatisticsPersonResponseType;
 import se.inera.ifv.hsawsresponder.v3.StatisticsHsaUnit;
 import se.inera.ifv.hsawsresponder.v3.StatisticsNameInfo;
+import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
+import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
+import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
+import se.inera.statistics.hsa.model.StatisticsHsaUnitDto;
+import se.inera.statistics.hsa.model.StatisticsNameInfoDto;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HSAServiceImplTest {
 
-    public static final GetStatisticsHsaUnitResponseType WS_ENHET = createGetStatisticsHsaUnitResponseType();
+    public static final GetStatisticsHsaUnitResponseDto WS_ENHET = createGetStatisticsHsaUnitResponseDto();
+    private final Clock clock = Clock.systemDefaultZone();
 
-    private static GetStatisticsHsaUnitResponseType createGetStatisticsHsaUnitResponseType() {
-        GetStatisticsHsaUnitResponseType responseType = new GetStatisticsHsaUnitResponseType();
-        StatisticsHsaUnit unit = new StatisticsHsaUnit();
+    private static GetStatisticsHsaUnitResponseDto createGetStatisticsHsaUnitResponseDto() {
+        GetStatisticsHsaUnitResponseDto responseType = new GetStatisticsHsaUnitResponseDto();
+        StatisticsHsaUnitDto unit = new StatisticsHsaUnitDto();
         unit.setHsaIdentity("UnitId");
         unit.setCareGiverHsaIdentity("vgId");
         responseType.setStatisticsCareUnit(unit);
@@ -65,43 +73,43 @@ public class HSAServiceImplTest {
         return responseType;
     }
 
-    private static GetStatisticsHsaUnitResponseType createGetStatisticsHsaUnitResponseTypeWhereHuvudenhetHasVg() {
-        GetStatisticsHsaUnitResponseType responseType = new GetStatisticsHsaUnitResponseType();
-        StatisticsHsaUnit unit = new StatisticsHsaUnit();
+    private static GetStatisticsHsaUnitResponseDto createGetStatisticsHsaUnitResponseTypeWhereHuvudenhetHasVg() {
+        GetStatisticsHsaUnitResponseDto responseType = new GetStatisticsHsaUnitResponseDto();
+        StatisticsHsaUnitDto unit = new StatisticsHsaUnitDto();
         unit.setHsaIdentity("UnitId");
         responseType.setStatisticsUnit(unit);
-        StatisticsHsaUnit careUnit = new StatisticsHsaUnit();
+        StatisticsHsaUnitDto careUnit = new StatisticsHsaUnitDto();
         careUnit.setHsaIdentity("UnitId2");
         careUnit.setCareGiverHsaIdentity("vgId");
         responseType.setStatisticsCareUnit(careUnit);
         return responseType;
     }
 
-    public static final GetStatisticsCareGiverResponseType WS_VG = createGetStatisticsCareGiverResponseType();
+    public static final GetStatisticsCareGiverResponseDto WS_VG = createGetStatisticsCareGiverResponseDto();
 
-    private static GetStatisticsCareGiverResponseType createGetStatisticsCareGiverResponseType() {
-        GetStatisticsCareGiverResponseType response = new GetStatisticsCareGiverResponseType();
+    private static GetStatisticsCareGiverResponseDto createGetStatisticsCareGiverResponseDto() {
+        GetStatisticsCareGiverResponseDto response = new GetStatisticsCareGiverResponseDto();
         response.setHsaIdentity("CareGiverId");
         return response;
     }
 
-    public static final GetStatisticsPersonResponseType WS_PERSON = createGetStatisticsPersonResponseType();
+    public static final GetStatisticsPersonResponseDto WS_PERSON = createGetStatisticsPersonResponseDto();
 
-    private static GetStatisticsPersonResponseType createGetStatisticsPersonResponseType() {
-        GetStatisticsPersonResponseType responseType = new GetStatisticsPersonResponseType();
+    private static GetStatisticsPersonResponseDto createGetStatisticsPersonResponseDto() {
+        GetStatisticsPersonResponseDto responseType = new GetStatisticsPersonResponseDto();
         responseType.setHsaIdentity("PersonId");
         return responseType;
     }
 
-    public static final GetStatisticsNamesResponseType WS_NAME = createGetStatisticsNamesResponseType();
+    public static final GetStatisticsNamesResponseDto WS_NAME = createGetStatisticsNamesResponseDto();
 
-    private static GetStatisticsNamesResponseType createGetStatisticsNamesResponseType() {
-        GetStatisticsNamesResponseType responseType = new GetStatisticsNamesResponseType();
-        GetStatisticsNamesResponseType.StatisticsNameInfos nameInfos = new GetStatisticsNamesResponseType.StatisticsNameInfos();
-        StatisticsNameInfo nameInfo = new StatisticsNameInfo();
+    private static GetStatisticsNamesResponseDto createGetStatisticsNamesResponseDto() {
+        GetStatisticsNamesResponseDto responseType = new GetStatisticsNamesResponseDto();
+        final ArrayList<StatisticsNameInfoDto> statisticsNameInfos = new ArrayList<>();
+        responseType.setStatisticsNameInfos(statisticsNameInfos);
+        StatisticsNameInfoDto nameInfo = new StatisticsNameInfoDto();
         nameInfo.setPersonGivenName("PersonName");
-        nameInfos.getStatisticsNameInfo().add(nameInfo);
-        responseType.setStatisticsNameInfos(nameInfos);
+        statisticsNameInfos.add(nameInfo);
         return responseType;
     }
 
@@ -113,7 +121,7 @@ public class HSAServiceImplTest {
 
     @Test
     public void hsUnitWithMissingGeography() throws Exception {
-        GetStatisticsHsaUnitResponseType response = getHsaUnitResponse("GetStatisticsHsaUnit-small.xml");
+        GetStatisticsHsaUnitResponseDto response = HSAWebServiceCalls.toDto(getHsaUnitResponse("GetStatisticsHsaUnit-small.xml"));
         when(wsCalls.getStatisticsHsaUnit("ENHETID")).thenReturn(response);
 
         HSAKey key = new HSAKey("vardgivareId", "enhetId", "lakareId");
@@ -160,11 +168,11 @@ public class HSAServiceImplTest {
     }
 
     private HsaInfoVg getHsaInfoVg() {
-        return new HsaInfoVg("", "", new LocalDateTime(), new LocalDateTime(), false);
+        return new HsaInfoVg("", "", LocalDateTime.now(clock), LocalDateTime.now(clock), false);
     }
 
     private HsaInfoEnhet getHsaInfoEnhet(String vgid) {
-        return new HsaInfoEnhet("", Arrays.asList(""), Arrays.asList(""), new LocalDateTime(), new LocalDateTime(), false, Arrays.asList(""), Arrays.asList(""), new HsaInfoEnhetGeo(new HsaInfoCoordinate("", "", ""), "", "", "", "", ""), vgid);
+        return new HsaInfoEnhet("", Arrays.asList(""), Arrays.asList(""), LocalDateTime.now(clock), LocalDateTime.now(clock), false, Arrays.asList(""), Arrays.asList(""), new HsaInfoEnhetGeo(new HsaInfoCoordinate("", "", ""), "", "", "", "", ""), vgid);
     }
 
     @Test

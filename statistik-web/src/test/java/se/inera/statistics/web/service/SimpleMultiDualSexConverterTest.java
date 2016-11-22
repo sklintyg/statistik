@@ -20,6 +20,7 @@ package se.inera.statistics.web.service;
 
 import static org.junit.Assert.assertEquals;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class SimpleMultiDualSexConverterTest {
         dualSexRows.add(new SimpleKonDataRow("feb 12", 20, 30));
         dualSexRows.add(new SimpleKonDataRow("mar 12", 5, 25));
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<>(dualSexRows);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(1));
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
         SimpleDetailsData result = converter.convert(casesPerMonth, filterSettings);
         TableData tableData = result.getTableData();
         assertEquals("[[Period;1, Antal sjukfall totalt;1, Antal sjukfall för kvinnor;1, Antal sjukfall för män;1]]", tableData.getHeaders().toString());

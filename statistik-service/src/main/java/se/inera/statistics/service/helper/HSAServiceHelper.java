@@ -21,6 +21,8 @@ package se.inera.statistics.service.helper;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.hsa.HsaInfo;
@@ -37,6 +39,8 @@ import com.google.common.base.Joiner;
 import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 
 public final class HSAServiceHelper {
+
+    private static final Logger LOG = LoggerFactory.getLogger(HSAServiceHelper.class);
 
     private static Joiner joiner = Joiner.on(",").skipNulls();
 
@@ -116,6 +120,7 @@ public final class HSAServiceHelper {
             final String result = hsaData.getPersonal().getAlder();
             return result != null ? Integer.parseInt(result) : 0;
         } catch (NullPointerException | NumberFormatException e) {
+            LOG.debug("Could not parse lakare age", e);
             return 0;
         }
     }
@@ -123,9 +128,10 @@ public final class HSAServiceHelper {
     public static int getLakarkon(HsaInfo hsaData) {
         try {
             final String result = hsaData.getPersonal().getKon();
-            return result != null ? Integer.parseInt(result) : Kon.Unknown.getNumberRepresentation();
+            return result != null ? Integer.parseInt(result) : Kon.UNKNOWN.getNumberRepresentation();
         } catch (NullPointerException | NumberFormatException e) {
-            return Kon.Unknown.getNumberRepresentation();
+            LOG.debug("Could not parse lakare gender", e);
+            return Kon.UNKNOWN.getNumberRepresentation();
         }
     }
 
@@ -149,17 +155,16 @@ public final class HSAServiceHelper {
     }
 
     public static String getVerksamhetsTyper(HsaInfo hsaData) {
-        if (hsaData != null) {
-            String result = getVerksamhetsTyper(hsaData.getEnhet());
-            if (result == null) {
-                result = getVerksamhetsTyper(hsaData.getHuvudenhet());
-            }
-            final boolean isVardcentral = isVardcentral(hsaData.getEnhet()) || isVardcentral(hsaData.getHuvudenhet());
-            result = isVardcentral ? (result != null && !result.isEmpty() ? result + "," : "") + VerksamhetsTyp.VARDCENTRAL_ID : result;
-            return result != null && !result.isEmpty() ? result : VerksamhetsTyp.OVRIGT_ID;
-        } else {
+        if (hsaData == null) {
             return VerksamhetsTyp.OVRIGT_ID;
         }
+        String result = getVerksamhetsTyper(hsaData.getEnhet());
+        if (result == null) {
+            result = getVerksamhetsTyper(hsaData.getHuvudenhet());
+        }
+        final boolean isVardcentral = isVardcentral(hsaData.getEnhet()) || isVardcentral(hsaData.getHuvudenhet());
+        result = isVardcentral ? (result != null && !result.isEmpty() ? result + "," : "") + VerksamhetsTyp.VARDCENTRAL_ID : result;
+        return result != null && !result.isEmpty() ? result : VerksamhetsTyp.OVRIGT_ID;
     }
 
     private static boolean isVardcentral(HsaInfoEnhet hsaData) {

@@ -18,7 +18,7 @@ Tas inte med alls då intygen i sjukfallet har olika diagnoser (inte ens om båd
 
 | Sjukfall i rapporten socialstyrelsen |
 | diagnos | kön?   | län? | sjukskrivningslängd? |
-| F33     | Female | 01   | 13                   |
+| F33     | FEMALE | 01   | 13                   |
 
 
 
@@ -41,7 +41,7 @@ Sjukskrivningslängd blir 382 dagar då längd beräknas för samtliga intyg i s
 
 | Sjukfall i rapporten socialstyrelsen |
 | diagnos | kön?   | län? | sjukskrivningslängd? |
-| F410    | Female | 01   | 382                  |
+| F410    | FEMALE | 01   | 382                  |
 
 
 
@@ -63,7 +63,7 @@ Tas inte med alls få sjukfallet inte är avslutat vid dagens datum.
 
 | Sjukfall i rapporten socialstyrelsen |
 | diagnos | kön?   | län? | sjukskrivningslängd? |
-| F33     | Female | 01   | 13                   |
+| F33     | FEMALE | 01   | 13                   |
 
 
 TEST #4 - Intyg med olika län
@@ -83,7 +83,7 @@ Län blir 06 eftersom det är det senaste länet i sjukfallet.
 
 | Sjukfall i rapporten socialstyrelsen |
 | diagnos | kön?   | län? | sjukskrivningslängd? |
-| F410    | Female | 06   | 28                   |
+| F410    | FEMALE | 06   | 28                   |
 
 TEST #5 - Överlappande intyg
 
@@ -102,7 +102,7 @@ Sjukskrivningslängd blir 44 dagar då dagar med dubbla intyg bara räknas en g�
 
 | Sjukfall i rapporten socialstyrelsen |
 | diagnos | kön?   | län? | sjukskrivningslängd? |
-| F410    | Female | 01   | 44                   |
+| F410    | FEMALE | 01   | 44                   |
 
 
 
@@ -126,7 +126,7 @@ Sjukfall med diagnos F32.1 tas med eftersom F32 tillhör diagnoserna som Socials
 
 | Sjukfall i rapporten socialstyrelsen |
 | diagnos | kön?   | län? | sjukskrivningslängd? |
-| F32     | Female | 01   | 29                   |
+| F32     | FEMALE | 01   | 29                   |
 
 
 
@@ -148,6 +148,6 @@ Sjukfall med diagnos F43.8A tas med eftersom F438 tillhör diagnoserna som Socia
 
 | Sjukfall i rapporten socialstyrelsen |
 | diagnos | kön?   | län? | sjukskrivningslängd? |
-| !-F438-!    | Female | 01   | 28                   |
-| !-F438A-!   | Male   | 01   | 29                   |
-| !-F438W-!   | Female | 01   | 30                   |
+| !-F438-!    | FEMALE | 01   | 28                   |
+| !-F438A-!   | MALE   | 01   | 29                   |
+| !-F438W-!   | FEMALE | 01   | 30                   |

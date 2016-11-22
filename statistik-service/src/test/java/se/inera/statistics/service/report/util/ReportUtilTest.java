@@ -18,73 +18,74 @@
  */
 package se.inera.statistics.service.report.util;
 
-import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.report.model.Range;
 
+import java.time.LocalDate;
+
 public class ReportUtilTest {
     private static final Logger LOG = LoggerFactory.getLogger(ReportUtilTest.class);
 
     @Test
     public void testRangeWithinYear() {
-        final Range testRange = new Range(new LocalDate(2013, 5, 1), new LocalDate(2013, 6, 1));
+        final Range testRange = new Range(LocalDate.of(2013, 5, 1), LocalDate.of(2013, 6, 1));
 
         Range result = ReportUtil.getPreviousPeriod(testRange);
 
         // CHECKSTYLE:OFF MagicNumber
         LOG.info(result.getFrom() + " -- " + result.getTo());
         Assert.assertEquals(2013, result.getFrom().getYear());
-        Assert.assertEquals(3, result.getFrom().getMonthOfYear());
+        Assert.assertEquals(3, result.getFrom().getMonthValue());
         Assert.assertEquals(2013, result.getTo().getYear());
-        Assert.assertEquals(4, result.getTo().getMonthOfYear());
+        Assert.assertEquals(4, result.getTo().getMonthValue());
         // CHECKSTYLE:ON MagicNumber
     }
 
     @Test
     public void testNextRangeWithinYear() {
-        final Range testRange = new Range(new LocalDate(2013, 5, 1), new LocalDate(2013, 5, 1));
+        final Range testRange = new Range(LocalDate.of(2013, 5, 1), LocalDate.of(2013, 5, 1));
 
         Range result = ReportUtil.getNextPeriod(testRange);
         System.err.println(result);
         // CHECKSTYLE:OFF MagicNumber
         LOG.info(result.getFrom() + " -- " + result.getTo());
         Assert.assertEquals(2013, result.getFrom().getYear());
-        Assert.assertEquals(6, result.getFrom().getMonthOfYear());
+        Assert.assertEquals(6, result.getFrom().getMonthValue());
         Assert.assertEquals(2013, result.getTo().getYear());
-        Assert.assertEquals(6, result.getTo().getMonthOfYear());
+        Assert.assertEquals(6, result.getTo().getMonthValue());
         // CHECKSTYLE:ON MagicNumber
     }
 
     @Test
     public void testNextRangeBiggerThanOneYear() {
-        final Range testRange = new Range(new LocalDate(2012, 1, 1), new LocalDate(2013, 6, 1));
+        final Range testRange = new Range(LocalDate.of(2012, 1, 1), LocalDate.of(2013, 6, 1));
 
         Range result = ReportUtil.getNextPeriod(testRange);
 
         // CHECKSTYLE:OFF MagicNumber
         LOG.info(result.getFrom() + " -- " + result.getTo());
         Assert.assertEquals(2013, result.getFrom().getYear());
-        Assert.assertEquals(7, result.getFrom().getMonthOfYear());
+        Assert.assertEquals(7, result.getFrom().getMonthValue());
         Assert.assertEquals(2014, result.getTo().getYear());
-        Assert.assertEquals(12, result.getTo().getMonthOfYear());
+        Assert.assertEquals(12, result.getTo().getMonthValue());
         // CHECKSTYLE:ON MagicNumber
     }
 
     @Test
     public void testRangeBiggerThanOneYear() {
-        final Range testRange = new Range(new LocalDate(2012, 1, 1), new LocalDate(2013, 6, 1));
+        final Range testRange = new Range(LocalDate.of(2012, 1, 1), LocalDate.of(2013, 6, 1));
 
         Range result = ReportUtil.getPreviousPeriod(testRange);
 
         // CHECKSTYLE:OFF MagicNumber
         LOG.info(result.getFrom() + " -- " + result.getTo());
         Assert.assertEquals(2010, result.getFrom().getYear());
-        Assert.assertEquals(7, result.getFrom().getMonthOfYear());
+        Assert.assertEquals(7, result.getFrom().getMonthValue());
         Assert.assertEquals(2011, result.getTo().getYear());
-        Assert.assertEquals(12, result.getTo().getMonthOfYear());
+        Assert.assertEquals(12, result.getTo().getMonthValue());
         // CHECKSTYLE:ON MagicNumber
     }
 }

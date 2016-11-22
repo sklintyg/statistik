@@ -26,12 +26,15 @@ import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class DiagnosisSubGroupsConverterTest {
+
+    private final Clock clock = Clock.systemDefaultZone();
 
     @Test
     public void testGetTopColumnIndexesAllAreIncluded() throws Exception {
@@ -174,7 +177,7 @@ public class DiagnosisSubGroupsConverterTest {
         DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
 
         //When
-        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter()));
+        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));
 
         //Then
         assertEquals(6, result.getFemaleChart().getSeries().size());
@@ -200,7 +203,7 @@ public class DiagnosisSubGroupsConverterTest {
         DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
 
         //When
-        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter()));
+        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));
 
         //Then
         assertEquals(7, result.getFemaleChart().getSeries().size());
@@ -226,7 +229,7 @@ public class DiagnosisSubGroupsConverterTest {
         DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
 
         //When
-        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter()));
+        final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));
 
         //Then
         assertEquals(7, result.getFemaleChart().getSeries().size());

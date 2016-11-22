@@ -41,6 +41,7 @@ public class DualSexStatisticsData extends TableDataReport {
         this.message = message;
     }
 
+    @Override
     public TableData getTableData() {
         return tableData;
     }
@@ -53,14 +54,17 @@ public class DualSexStatisticsData extends TableDataReport {
         return femaleChart;
     }
 
+    @Override
     public String getPeriod() {
         return period;
     }
 
+    @Override
     public FilterDataResponse getFilter() {
         return filter;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }

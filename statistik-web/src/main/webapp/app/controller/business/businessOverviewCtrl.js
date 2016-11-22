@@ -30,14 +30,11 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     $scope.baseUrl = '#/verksamhet';
 
     var dataReceived = function (result) {
-        var enhetsCount = result.filter.enheter ? result.filter.enheter.length : null;
-
         var popoverPreviousMonths = ' jämfört med föregående tre månader.';
         var popoverTextChangeCurrentVSPrevious = '<br><br>Spalten förändring visar skillnaden i antal sjukfall mellan perioden ' +
             result.periodText + popoverPreviousMonths;
 
-        $scope.subTitle = 'Utveckling för verksamheten de senaste tre månaderna' +
-                            ControllerCommons.getEnhetCountText(enhetsCount, false).slice(0, -1) + ', ' + result.periodText;
+        $scope.subTitlePeriod = result.periodText;
         $scope.popoverTextAmount = 'Totala antalet sjukfall under perioden ' + result.periodText;
         $scope.popoverTextChangeProcentage = 'Procentsatsen visar förändringen av antalet sjukfall under perioden ' + result.periodText;
         $scope.popoverTextSexDistribution = 'Könsfördelningen av totala antalet sjukfall under perioden ' + result.periodText + popoverPreviousMonths;
@@ -218,7 +215,8 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
         ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
                                 result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets,
-                                result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter);
+                                result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
+                                result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter);
         $timeout(function () {
             updateCharts(result);
         }, 1);
@@ -275,6 +273,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     }
 
     refresh();
+    $scope.subTitle = 'Utveckling för verksamheten de senaste tre månaderna, ';
     $scope.spinnerText = 'Laddar information...';
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
@@ -361,7 +360,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
                     messageService.getProperty('overview.widget.table.column.antal'),
                     messageService.getProperty('overview.widget.table.column.forandring')
                 ],
-                data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.degreeOfSickLeaveGroups, ' %')
+                data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.degreeOfSickLeaveGroups)
             }
         });
 

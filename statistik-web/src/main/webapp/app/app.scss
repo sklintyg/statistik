@@ -17,11 +17,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+$fa-font-path: '../bower_components/font-awesome/fonts';
+@import '../bower_components/font-awesome/scss/font-awesome.scss';
+
 $icon-font-path: '../bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap/';
 
 @import '../bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss';
 @import '../bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap/_theme.scss';
 @import '../scss_mixins/_retina.scss';
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
 
 /**
  * App-wide Styles
@@ -34,6 +41,7 @@ body {
   position: relative;
   padding-bottom: 40px;
   -webkit-font-smoothing: antialiased;
+  -ms-overflow-style: scrollbar;
 }
 
 a {
@@ -72,6 +80,7 @@ h3 {
   margin-left: 5px;
   color: #008391 !important;
   position: relative;
+  margin-bottom: 0;
 }
 
 p {
@@ -439,6 +448,11 @@ legend {
 .table.table-striped.overview-graph-table td span {
   float: left;
   margin-right: 5px;
+}
+
+.table.table-striped.overview-graph-table td span.highlight-words {
+  float: none;
+  margin-right: 0;
 }
 
 /****** Start: Bootstrap style overrides ******/
@@ -1074,6 +1088,7 @@ a.listheader.collapsed {
   font-weight: bold;
   font-size: 20px;
   margin-bottom: 0;
+  margin-top: 5px;
 }
 
 #overview-content h2, #chart-content h2 {
@@ -1518,6 +1533,10 @@ table.datatable {
   display: none;
 }
 
+.tooltip {
+  z-index: 1100;
+}
+
 .tooltip-inner {
   max-width: 290px;
 }
@@ -1832,7 +1851,7 @@ input[type="radio"], input[type="checkbox"] {
 #page-content-wrapper {
   width: 100%;
   position: absolute;
-  padding: 0 15px 15px 15px;
+  padding: 0 45px 15px 15px;
 }
 
 @media (min-width: 768px) {
@@ -1845,7 +1864,6 @@ input[type="radio"], input[type="checkbox"] {
   }
 
   #page-content-wrapper {
-    padding: 0 15px 15px 15px;
     position: relative;
   }
 }
@@ -1895,7 +1913,7 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
-  .business-filter-time-interval, .business-filter-sjukskrivningslangd {
+  .business-filter-time-interval, .business-filter-sjukskrivningslangd, .business-filter-aldersgrupp {
     margin-top: 15px;
   }
 }
@@ -1953,6 +1971,14 @@ input[type="radio"], input[type="checkbox"] {
   }
 }
 
+.filter-link {
+  display: inline-block;
+  color: #0b0b0b;
+  font-weight: normal;
+  margin-right: 5px;
+  margin-top: 5px;
+}
+
 /** Padding-helpers below **/
 .left-2px-padding {
   padding-left: 2px !important;
@@ -1987,6 +2013,10 @@ input[type="radio"], input[type="checkbox"] {
   margin-left: 5px !important;
 }
 
+.top-10px-margin {
+  margin-top: 10px;
+}
+
 .top-20px-margin {
   margin-top: 20px !important;
 }
@@ -2000,20 +2030,35 @@ input[type="radio"], input[type="checkbox"] {
   margin: 0;
 }
 
+.inline-block {
+  display: inline-block;
+}
+
+.modal-header .close {
+  margin-top: -7px;
+  padding: 5px 10px;
+}
+
 // Component styles are injected through grunt
 // injector
 @import 'css/filter.scss';
 @import 'css/inera-statistics-responsive.scss';
 @import 'css/print.scss';
+@import 'shared/businessfilter/businessFilter.scss';
 @import 'directives/angular-dropzone/dropzone.scss';
 @import 'directives/diagnosSelection/diagnosSelection.scss';
+@import 'directives/filterChips/filterChips.scss';
+@import 'directives/filterChipsList/filterChipsList.scss';
 @import 'directives/filterList/filterList.scss';
+@import 'directives/highlightWords/highlightWords.scss';
 @import 'directives/navigationMenu/navigationMenu.scss';
 @import 'directives/overviewWidget/overviewWidget.scss';
 @import 'directives/selectVardgivare/selectVardgivare.scss';
 @import 'directives/selectVardgivareModal/selectVardgivareModal.scss';
 @import 'directives/sendFeedback/sendFeedback.scss';
 @import 'directives/showBusinesses/showBusinesses.scss';
+@import 'directives/showFilterList/showFilterList.scss';
+@import 'directives/showHelpText/showHelpText.scss';
 @import 'directives/spinner/spinner.scss';
 @import 'directives/statCookieBanner/statCookieBanner.scss';
 @import 'directives/statScrollTable/statScrollTable.scss';

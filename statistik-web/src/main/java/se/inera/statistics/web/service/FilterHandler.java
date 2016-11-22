@@ -18,6 +18,10 @@
  */
 package se.inera.statistics.web.service;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,28 +34,10 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.landsting.LandstingEnhetHandler;
-import se.inera.statistics.service.processlog.Enhet;
-import se.inera.statistics.service.processlog.EnhetManager;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
-import se.inera.statistics.service.warehouse.Fact;
-import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
-import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.web.model.LoginInfo;
-import se.inera.statistics.web.model.Verksamhet;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -59,6 +45,22 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.sun.istack.NotNull;
+
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.landsting.LandstingEnhetHandler;
+import se.inera.statistics.service.processlog.Enhet;
+import se.inera.statistics.service.processlog.EnhetManager;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.AgeGroup;
+import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
+import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.FilterPredicates;
+import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.Verksamhet;
 
 @Component
 public class FilterHandler {
@@ -80,6 +82,9 @@ public class FilterHandler {
     @Autowired
     private EnhetManager enhetManager;
 
+    @Autowired
+    private Clock clock;
+
     List<HsaIdEnhet> getEnhetsFilterIds(String filterHash, HttpServletRequest request) {
         if (filterHash == null || filterHash.isEmpty()) {
             final LoginInfo info = loginServiceUtil.getLoginInfo();
@@ -92,15 +97,16 @@ public class FilterHandler {
 
     FilterSettings getFilterForLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue) {
         if (filterHash == null || filterHash.isEmpty()) {
-            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));
+            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock));
         }
         final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
         final ArrayList<HsaIdEnhet> enhetsIDs = getEnhetsFilteredLandsting(request, inFilter);
         try {
             return getFilterSettingsLandsting(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
         } catch (FilterException e) {
-            LOG.warn("Could not use selected filter. Falling back to default filter", e);
-            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
+            LOG.warn("Could not use selected landsting filter. Falling back to default filter. Msg: " + e.getMessage());
+            LOG.debug("Could not use selected landsting filter. Falling back to default filter.", e);
+            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
         }
     }
 
@@ -120,14 +126,15 @@ public class FilterHandler {
     FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultRangeValue) {
         try {
             if (filterHash == null || filterHash.isEmpty()) {
-                return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue));
+                return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock));
             }
             final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
             final List<HsaIdEnhet> enhetsIDs = getEnhetsFiltered(request, inFilter);
             return getFilterSettings(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
         } catch (FilterException | FilterHashException e) {
-            LOG.warn("Could not use selected filter. Falling back to default filter", e);
-            return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
+            LOG.warn("Could not use selected filter. Falling back to default filter. Msg: " + e.getMessage());
+            LOG.debug("Could not use selected filter. Falling back to default filter.", e);
+            return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock), "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna.");
         }
     }
 
@@ -144,9 +151,11 @@ public class FilterHandler {
     private FilterSettings getFilterSettings(String filterHash, int defaultRangeValue, FilterData inFilter, List<HsaIdEnhet> enhetsIDs, Predicate<Fact> enhetFilter) throws FilterException {
         final List<String> diagnoser = inFilter.getDiagnoser();
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
+        final List<String> aldersgrupp = inFilter.getAldersgrupp();
+        final Predicate<Fact> aldersgruppFilter = getAldersgruppFilter(aldersgrupp);
         final Predicate<Sjukfall> sjukfallLengthFilter = getSjukfallLengthFilter(inFilter.getSjukskrivningslangd());
-        final SjukfallFilter sjukfallFilter = new SjukfallFilter(Predicates.and(enhetFilter, diagnosFilter), sjukfallLengthFilter, filterHash);
-        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter));
+        final FilterPredicates sjukfallFilter = new FilterPredicates(Predicates.and(enhetFilter, diagnosFilter, aldersgruppFilter), sjukfallLengthFilter, filterHash);
+        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter), toReadableAgeGroupNames(aldersgrupp));
         final Range range = getRange(inFilter, defaultRangeValue);
         return new FilterSettings(filter, range);
     }
@@ -183,34 +192,34 @@ public class FilterHandler {
 
     private Range getRange(@NotNull FilterData inFilter, int defaultRangeValue) throws FilterException {
         if (inFilter.isUseDefaultPeriod()) {
-            return Range.createForLastMonthsIncludingCurrent(defaultRangeValue);
+            return Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock);
         }
-        DateTimeFormatter dateStringFormat = DateTimeFormat.forPattern(FilterData.DATE_FORMAT);
+        DateTimeFormatter dateStringFormat = DateTimeFormatter.ofPattern(FilterData.DATE_FORMAT);
         final String fromDate = inFilter.getFromDate();
         final String toDate = inFilter.getToDate();
 
         if (fromDate == null || toDate == null) {
-            throw new FilterException(String.format("Can not parse null range dates. From: {}, To: {}", fromDate, toDate));
+            throw new FilterException("Can not parse null range dates. From: " + fromDate + ", To: " + toDate);
         }
         try {
-            final LocalDate from = dateStringFormat.parseLocalDate(fromDate);
-            final LocalDate to = dateStringFormat.parseLocalDate(toDate);
+            final LocalDate from = LocalDate.from(dateStringFormat.parse(fromDate));
+            final LocalDate to = LocalDate.from(dateStringFormat.parse(toDate));
             validateFilterRange(from, to);
-            return new Range(from.withDayOfMonth(1), to.dayOfMonth().withMaximumValue());
-        } catch (IllegalArgumentException e) {
-            throw new FilterException(String.format("Could not parse range dates. From: {}, To: {}", fromDate, toDate), e);
+            return new Range(from.withDayOfMonth(1), to.plusMonths(1).withDayOfMonth(1).minusDays(1));
+        } catch (IllegalArgumentException | DateTimeParseException e) {
+            throw new FilterException("Could not parse range dates. From: " + fromDate + ", To: " + toDate, e);
         }
     }
 
     private void validateFilterRange(LocalDate from, LocalDate to) throws FilterException {
-        final LocalDate lowestAcceptedStartDate = new LocalDate(2013, 10, 1);
+        final LocalDate lowestAcceptedStartDate = LocalDate.of(2013, 10, 1);
         if (from.isBefore(lowestAcceptedStartDate)) {
             throw new FilterException("Start date before 2013-10-01 is not allowed");
         }
         if (to.isBefore(from)) {
             throw new FilterException("Start date must be before end date");
         }
-        if (to.isAfter(new LocalDate().dayOfMonth().withMaximumValue())) {
+        if (to.isAfter(LocalDate.now(clock).plusMonths(1).withDayOfMonth(1).minusDays(1))) {
             throw new FilterException("End date may not be after the last day of current month");
         }
     }
@@ -228,15 +237,18 @@ public class FilterHandler {
     }
 
     private Filter getFilterForEnhets(final Set<Integer> enhetsIntIds, List<HsaIdEnhet> enhets) {
-        final String hashValue = SjukfallFilter.getHashValueForEnhets(enhetsIntIds.toArray());
-        return new Filter(new SjukfallFilter(fact -> enhetsIntIds.contains(fact.getEnhet()), sjukfall -> true, hashValue), enhets, null, toReadableSjukskrivningslangdName(null));
+        final String hashValue = FilterPredicates.getHashValueForEnhets(enhetsIntIds);
+        final FilterPredicates predicate = new FilterPredicates(fact -> enhetsIntIds.contains(fact.getEnhet()), sjukfall -> true, hashValue);
+        final List<String> sjukskrivningslangd = toReadableSjukskrivningslangdName(null);
+        final List<String> aldersgrupp = toReadableAgeGroupNames(null);
+        return new Filter(predicate, enhets, null, sjukskrivningslangd, aldersgrupp);
     }
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         if (info.getLoginInfoForVg(vgId).map(vgInfo -> vgInfo.isProcessledare()).orElse(false)) {
-            return new Filter(SjukfallUtil.ALL_ENHETER, null, null, toReadableSjukskrivningslangdName(null));
+            return new Filter(SjukfallUtil.ALL_ENHETER, null, null, toReadableSjukskrivningslangdName(null), toReadableAgeGroupNames(null));
         }
         final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(info.getBusinessesForVg(vgId), verksamhet -> Warehouse.getEnhet(verksamhet.getId())));
         return getFilterForEnhets(availableEnhets, null);
@@ -340,6 +352,32 @@ public class FilterHandler {
             }
             String diagnosKategoriString = String.valueOf(fact.getDiagnoskategori());
             return diagnosIds.contains(diagnosKategoriString);
+        };
+    }
+
+    private List<String> toReadableAgeGroupNames(List<String> ageGroups) {
+        if (ageGroups == null) {
+            return Arrays.stream(AgeGroup.values()).map(AgeGroup::getGroupName).collect(Collectors.toList());
+        }
+        return ageGroups.stream()
+                .map(ageGroup -> AgeGroup.parse(ageGroup)
+                        .flatMap(ag -> Optional.of(ag.getGroupName()))
+                        .orElse(ageGroup))
+                .collect(Collectors.toList());
+    }
+
+    private Predicate<Fact> getAldersgruppFilter(List<String> ageGroups) {
+        if (ageGroups == null || ageGroups.isEmpty()) {
+            return fact -> true;
+        }
+        final List<AgeGroup> filteredAgeGroups = ageGroups.stream()
+                .map(AgeGroup::parse)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
+        return fact -> {
+            final int age = fact.getAlder();
+            return filteredAgeGroups.stream().anyMatch(group -> group.getFrom() <= age && group.getTo() >= age);
         };
     }
 

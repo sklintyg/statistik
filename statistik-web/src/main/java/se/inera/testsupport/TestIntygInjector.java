@@ -20,6 +20,8 @@ package se.inera.testsupport;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.time.Clock;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,11 +29,11 @@ import java.util.Random;
 
 import javax.annotation.PostConstruct;
 
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.core.env.Environment;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -45,6 +47,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 
 public class TestIntygInjector {
     private static final int SEED = 1235;
@@ -57,7 +60,7 @@ public class TestIntygInjector {
 
     private static final int MONTHS = 19;
 
-    private static final LocalDate BASE = new LocalDate().minusMonths(MONTHS);
+    private LocalDate base;
 
     private static final List<HsaIdVardgivare> VG = Arrays.asList(new HsaIdVardgivare("vg1"), new HsaIdVardgivare("vg2"), new HsaIdVardgivare("vg3"), new HsaIdVardgivare("vg4"), new HsaIdVardgivare("vg5"));
 
@@ -94,6 +97,12 @@ public class TestIntygInjector {
     @Autowired
     private HsaDataInjectable hsaDataInjectable;
 
+    @Autowired
+    private Clock clock;
+
+    @Autowired
+    private Environment env;
+
     private List<String> getDiagnoser() {
         if (DIAGNOSER.isEmpty()) {
             for (Icd10.Kapitel kapitel : icd10.getKapitel(true)) {
@@ -111,6 +120,10 @@ public class TestIntygInjector {
 
     @PostConstruct
     public void init() {
+        if (env.acceptsProfiles("skipTestIntygInjection")) {
+            return;
+        }
+        base = LocalDate.now(clock).minusMonths(MONTHS);
         restSupportService.clearDatabase();
         publishUtlatanden();
         restSupportService.processIntyg();
@@ -131,7 +144,7 @@ public class TestIntygInjector {
 
     private void createAndInsertIntyg(UtlatandeBuilder builder, String patientId) {
         // CHECKSTYLE:OFF MagicNumber
-        LocalDate start = BASE.plusMonths(random.nextInt(MONTHS)).plusDays(random.nextInt(SHORT_PERIOD_DAYS));
+        LocalDate start = base.plusMonths(random.nextInt(MONTHS)).plusDays(random.nextInt(SHORT_PERIOD_DAYS));
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
         // CHECKSTYLE:ON MagicNumber
 
@@ -143,7 +156,7 @@ public class TestIntygInjector {
 
         String diagnos = random(getDiagnoser());
         if (random.nextFloat() < FEL_DIAGNOS_THRESHOLD) {
-            diagnos = "unknown";
+            diagnos = WidelineConverter.UNKNOWN_DIAGNOS;
         }
 
         int arbetsformaga = random(ARBETSFORMAGOR);

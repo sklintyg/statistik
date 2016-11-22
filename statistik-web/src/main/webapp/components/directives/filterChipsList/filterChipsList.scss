@@ -1,0 +1,73 @@
+filter-chips-list {
+  ul {
+    padding: 0;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 40px;
+  }
+
+  .filter-heading {
+    font-weight: bold;
+  }
+
+  .filter-hover {
+    vertical-align: top;
+    display: inline-block;
+    margin-left: 5px;
+    width: 15px;
+  }
+
+  .default-text {
+    max-width: 280px;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: top;
+  }
+
+  .remove-filter, .undo-remove-filter {
+    display: none;
+  }
+
+  .inactive, .removed {
+    color: #7e7e7f;
+  }
+
+  li.filter-chips {
+    &:hover {
+      cursor: pointer;
+
+      .remove-filter {
+        display: block;
+      }
+    }
+
+    &.removed {
+      .default-text {
+        text-decoration: line-through;
+      }
+
+      &:hover {
+        .remove-filter {
+          display: none;
+        }
+
+        .undo-remove-filter {
+          display: block;
+        }
+      }
+    }
+
+    &.ng-leave {
+      transition: 0.3s;
+      opacity: 1;
+
+      &.ng-leave-active {
+        opacity: 0;
+      }
+    }
+  }
+
+
+}

@@ -21,14 +21,11 @@ package se.inera.statistics.service.userselection;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class UserSelectionManager {
-    private static final Logger LOG = LoggerFactory.getLogger(UserSelectionManager.class);
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;

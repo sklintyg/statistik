@@ -21,7 +21,6 @@ package se.inera.statistics.service.warehouse.query;
 import com.google.common.base.Function;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
-import org.joda.time.LocalDate;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -31,10 +30,11 @@ import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -73,7 +73,7 @@ public final class SjukskrivningslangdQuery {
         for (Counter counter : count.values()) {
             sorted.add(counter);
         }
-        Collections.sort(sorted);
+        Collections.sort(sorted, Counter.byTotalCount());
 
         Collection<Ranges.Range> result = new HashSet<>();
         for (Counter<Ranges.Range> counter : sorted) {
@@ -109,7 +109,7 @@ public final class SjukskrivningslangdQuery {
         return counters;
     }
 
-    public static KonDataResponse getEnklaSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil) {
+    public static KonDataResponse getEnklaSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil) {
         return sjukfallUtil.calculateKonDataResponseUsingOriginalSjukfallStart(aisle, filter, start, periods, periodSize, ENKLA_SJUKFALL_LABELS, ENKLA_SJUKFALL_IDS, new CounterFunction<Integer>() {
             @Override
             public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
@@ -119,7 +119,7 @@ public final class SjukskrivningslangdQuery {
         });
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getEnklaSjukfallTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+    public static SimpleKonResponse<SimpleKonDataRow> getEnklaSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         final CounterFunction<Integer> toCount = new CounterFunction<Integer>() {
             @Override
             public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
@@ -154,7 +154,7 @@ public final class SjukskrivningslangdQuery {
         return GROUP_SIMPLE_LONG;
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+    public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, FilterPredicates filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         final Function<SjukfallGroup, String> rowNameFunction = new Function<SjukfallGroup, String>() {
             @Override
             public String apply(SjukfallGroup sjukfallGroup) {
@@ -164,7 +164,7 @@ public final class SjukskrivningslangdQuery {
         return getLangaSjukfall(aisle, filter, from, periods, periodLength, sjukfallUtil, rowNameFunction);
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfallTvarsnitt(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+    public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         final Function<SjukfallGroup, String> rowNameFunction = new Function<SjukfallGroup, String>() {
             @Override
             public String apply(SjukfallGroup sjukfallGroup) {
@@ -174,7 +174,7 @@ public final class SjukskrivningslangdQuery {
         return getLangaSjukfall(aisle, filter, from, periods, periodLength, sjukfallUtil, rowNameFunction);
     }
 
-    private static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil, Function<SjukfallGroup, String> rowNameFunction) {
+    private static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, FilterPredicates filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil, Function<SjukfallGroup, String> rowNameFunction) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle, filter)) {
             Counter counter = new Counter<>("");
@@ -189,7 +189,7 @@ public final class SjukskrivningslangdQuery {
         return new SimpleKonResponse<>(rows);
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getSjuksrivningslangd(Aisle aisle, SjukfallFilter filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+    public static SimpleKonResponse<SimpleKonDataRow> getSjuksrivningslangd(Aisle aisle, FilterPredicates filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle, filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = SjukskrivningslangdQuery.count(sjukfallGroup.getSjukfall());
@@ -202,40 +202,16 @@ public final class SjukskrivningslangdQuery {
 
     }
 
-    public static KonDataResponse getSjuksrivningslangdomTidsserie(Aisle aisle, SjukfallFilter filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
-        final ArrayList<Ranges.Range> ranges = Lists.newArrayList(SjukfallslangdUtil.RANGES);
-        final List<String> names = Lists.transform(ranges, new Function<Ranges.Range, String>() {
-            @Override
-            public String apply(Ranges.Range range) {
-                return range.getName();
-            }
-        });
-        final List<Integer> ids = Lists.transform(ranges, new Function<Ranges.Range, Integer>() {
-            @Override
-            public Integer apply(Ranges.Range range) {
-                return range.getCutoff();
-            }
-        });
-        final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
-            @Override
-            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
-                final int length = sjukfall.getRealDays();
-                final int rangeId = getRangeIdForLength(length);
-                counter.add(rangeId);
-            }
-
-            private int getRangeIdForLength(int length) {
-                for (Ranges.Range range: ranges) {
-                    final int cutoff = range.getCutoff();
-                    if (cutoff > length) {
-                        return cutoff;
-                    }
-                }
-                throw new IllegalStateException("Ranges have not been defined correctly. No range includes " + length);
-            }
-
+    public static KonDataResponse getSjuksrivningslangdomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+        final Ranges ranges = SjukfallslangdUtil.RANGES;
+        final ArrayList<Ranges.Range> rangesList = Lists.newArrayList(ranges);
+        final List<String> names = Lists.transform(rangesList, Ranges.Range::getName);
+        final List<Integer> ids = Lists.transform(rangesList, Ranges.Range::getCutoff);
+        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
+            final int length = sjukfall.getRealDays();
+            final int rangeId = ranges.getRangeCutoffForValue(length);
+            counter.add(rangeId);
         };
-
         return sjukfallUtil.calculateKonDataResponseUsingOriginalSjukfallStart(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
     }
 

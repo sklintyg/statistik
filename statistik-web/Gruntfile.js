@@ -15,6 +15,8 @@ module.exports = function(grunt) {
         configureProxies: 'grunt-connect-proxy'
     });
 
+    var serveStatic = require('serve-static');
+
     // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
 
@@ -53,7 +55,7 @@ module.exports = function(grunt) {
                         return [
                             enablePost,
                             require('connect-livereload')(),
-                            connect.static('src/main/webapp'),
+                            serveStatic('src/main/webapp'),
                             require('grunt-connect-proxy/lib/utils').proxyRequest
                         ];
                     }
@@ -132,9 +134,9 @@ module.exports = function(grunt) {
                 force: false
             },
             all: [
-                '<%= config.client %>/{app,components}/**/*.js',
-                '!<%= config.client %>/{app,components}/**/*.spec.js',
-                '!<%= config.client %>/{app,components}/**/*.mock.js'
+                '<%= config.client %>/{app,showcase,components}/**/*.js',
+                '!<%= config.client %>/{app,showcase,components}/**/*.spec.js',
+                '!<%= config.client %>/{app,showcase,components}/**/*.mock.js'
             ],
             test: {
                 src: [
@@ -181,12 +183,14 @@ module.exports = function(grunt) {
             target: {
                 src: [
                     '<%= config.client %>/index.html',
+                    '<%= config.client %>/showcase/index.html',
                     '<%= config.client %>/error.jsp',
                     '<%= config.client %>/version.jsp',
+                    '<%= config.client %>/healthcheck.jsp',
                     'karma.conf.js'
                 ],
                 ignorePath: '<%= config.client %>/',
-                exclude: [/bootstrap-sass-official/, '/json3/', '/es5-shim/', '/respond/', 'vfs_fonts.js'],
+                exclude: [/bootstrap-sass-official/, 'vfs_fonts.js'],
                 fileTypes: {
                     js: {
                         block: /(([\s\t]*)\/\/\s*bower:*(\S*))(\n|\r|.)*?(\/\/\s*endbower)/gi,
@@ -237,7 +241,7 @@ module.exports = function(grunt) {
         // concat, minify and revision files. Creates configurations in memory so
         // additional tasks can operate on them
         useminPrepare: {
-            html: ['<%= config.client %>/index.html'],
+            html: ['<%= config.client %>/index.html', '<%= config.client %>/showcase/index.html'],
             options: {
                 dest: '<%= config.dist %>',
                 staging: '<%= config.tmp %>'
@@ -246,7 +250,7 @@ module.exports = function(grunt) {
 
         // Performs rewrites based on rev and the useminPrepare configuration
         usemin: {
-            html: ['<%= config.dist %>/{,*/}*.html', '<%= config.dist %>/{,*/}*.jsp'],
+            html: ['<%= config.dist %>/{,*/}*.html', '<%= config.dist %>/{,*/}*.jsp', '<%= config.dist %>/showcase/index.html'],
             css: ['<%= config.dist %>/{,*/}*.css'],
             js: ['<%= config.dist %>/{,*/}*.js'],
             options: {
@@ -297,18 +301,27 @@ module.exports = function(grunt) {
                     removeScriptTypeAttributes: true,
                     removeStyleLinkTypeAttributes: true
                 },
-                usemin: 'app/app.main.js'
+                usemin: 'app/app.main.js',
+                prefix: '/'
             },
             main: {
                 cwd: '<%= config.client %>',
                 src: ['{app,components}/**/*.html'],
                 dest: '<%= config.tmp %>/templates.js'
             },
-            tmp: {
-                cwd: '<%= config.tmp %>',
+            showcase: {
+                cwd: '<%= config.client %>',
                 src: ['{app,components}/**/*.html'],
-                dest: '<%= config.tmp %>/tmp-templates.js'
+                dest: '<%= config.tmp %>/templates_showcase.js',
+                options: {
+                    usemin: 'app/showcase.js'
+                }
             }
+//            tmp: {
+//                cwd: '<%= config.tmp %>',
+//                src: ['{app,components}/**/*.html'],
+//                dest: '<%= config.tmp %>/tmp-templates.js'
+//            }
         },
 
         // Copies remaining files to places other tasks can use
@@ -323,7 +336,7 @@ module.exports = function(grunt) {
                         src: [
                             'assets/**/*',
                             'bower_components/**/*',
-                            'pubapp/**/*',
+                            'showcase/**/*',
                             'WEB-INF/**/*',
                             'js/**/*',
                             '*.*'
@@ -380,7 +393,7 @@ module.exports = function(grunt) {
                     transform: function(filePath) {
                         filePath = filePath.replace('/src/main/webapp/', '');
                         filePath = filePath.replace('/<%= config.tmp %>/', '');
-                        return '<script src="' + filePath + '"></script>';
+                        return '<script src="/' + filePath + '"></script>';
                     },
                     starttag: '<!-- injector:js -->',
                     endtag: '<!-- endinjector -->'
@@ -421,7 +434,7 @@ module.exports = function(grunt) {
                     transform: function(filePath) {
                         filePath = filePath.replace('/src/main/webapp/', '');
                         filePath = filePath.replace('/<%= config.tmp %>/', '');
-                        return '<link rel="stylesheet" href="' + filePath + '">';
+                        return '<link rel="stylesheet" href="/' + filePath + '">';
                     },
                     starttag: '<!-- injector:css -->',
                     endtag: '<!-- endinjector -->'
@@ -434,6 +447,12 @@ module.exports = function(grunt) {
                         '<%= config.client %>/{app,components}/**/*.css'
                     ],
                     '<%= config.client %>/version.jsp': [
+                        '<%= config.client %>/{app,components}/**/*.css'
+                    ],
+                    '<%= config.client %>/healthcheck.jsp': [
+                        '<%= config.client %>/{app,components}/**/*.css'
+                    ],
+                    '<%= config.client %>/showcase/index.html': [
                         '<%= config.client %>/{app,components}/**/*.css'
                     ]
                 }

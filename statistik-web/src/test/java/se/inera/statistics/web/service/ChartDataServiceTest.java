@@ -33,6 +33,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import se.inera.statistics.service.report.model.Icd;
@@ -42,6 +43,7 @@ import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
+import se.inera.statistics.web.util.SpyableClock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ChartDataServiceTest {
@@ -64,6 +66,9 @@ public class ChartDataServiceTest {
     @Mock
     private Warehouse warehouse;
 
+    @Spy
+    private SpyableClock clock = new SpyableClock();
+
     @InjectMocks
     private ChartDataService chartDataService = new ChartDataService();
 
@@ -75,6 +80,7 @@ public class ChartDataServiceTest {
         try {
             chartDataService.buildOverview();
         } catch (NullPointerException e) {
+            e.printStackTrace();
         }
         Mockito.verify(overviewMock).getOverview(any(Range.class));
     }
@@ -92,7 +98,7 @@ public class ChartDataServiceTest {
     public void getDiagnosisGroupsTest() {
         Mockito.when(icd10.getKapitel(anyBoolean())).thenReturn(Arrays.asList(new Icd10.Kapitel("A00-B99", "Vissa infektionssjukdomar och parasitsjukdomar"), new Icd10.Kapitel("C00-D48", "Tumörer")));
         HttpServletRequest request = null;
-        List<Icd> kapitel = chartDataService.getDiagnoskapitel(request);
+        List<Icd> kapitel = chartDataService.getDiagnoskapitel();
         assertEquals(2, kapitel.size());
     }
 

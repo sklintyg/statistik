@@ -19,8 +19,6 @@
 package se.inera.statistics.service.warehouse.query;
 
 import com.google.common.base.Predicate;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,10 +35,14 @@ import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.MutableAisle;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.SjukfallFilter;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +91,7 @@ public class DiagnosgruppQueryTest {
     }
 
     private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
-        return sjukfallUtil.sjukfallGrupper(new LocalDate(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
+        return sjukfallUtil.sjukfallGrupper(LocalDate.of(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
     }
 
     @Test
@@ -120,10 +122,10 @@ public class DiagnosgruppQueryTest {
     private void fact(int startday, int diagnoskapitel) {
         Fact fact = aFact().withLan(3).withKommun(380).withForsamling(38002).
                 withEnhet(1).withLakarintyg(intyg++).
-                withPatient(patient++).withKon(Kon.Female).withAlder(45).
+                withPatient(patient++).withKon(Kon.FEMALE).withAlder(45).
                 withDiagnoskapitel(diagnoskapitel).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
                 withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + 9).
-                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).withEnkeltIntyg(false).build();
+                withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).withEnkeltIntyg(false).build();
 
         warehouse.accept(fact, VARDGIVARE);
     }
@@ -131,12 +133,12 @@ public class DiagnosgruppQueryTest {
     @Test
     public void testGetUnderdiagnosGrupperForKapitel() throws Exception {
         //When
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(), new SjukfallFilter(new Predicate<Fact>() {
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(), new FilterPredicates(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return false;
             }
-        }, sjukfall -> true, "hash"), new LocalDate(1416223845652L), 1, 1, "A00-B99");
+        }, sjukfall -> true, "hash"), Instant.ofEpochMilli(1416223845652L).atZone(ZoneId.systemDefault()).toLocalDate(), 1, 1, "A00-B99");
 
         //Then
         assertEquals(21, result.getIcdTyps().size());
@@ -146,12 +148,12 @@ public class DiagnosgruppQueryTest {
     @Test
     public void testGetUnderdiagnosGrupperForAvsnitt() throws Exception {
         //When
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(), new SjukfallFilter(new Predicate<Fact>() {
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(), new FilterPredicates(new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {
                 return false;
             }
-        }, sjukfall -> true, "hash"), new LocalDate(1416223845652L), 1, 1, "A00-A09");
+        }, sjukfall -> true, "hash"), Instant.ofEpochMilli(1416223845652L).atZone(ZoneId.systemDefault()).toLocalDate(), 1, 1, "A00-A09");
 
         //Then
         assertEquals(10, result.getIcdTyps().size());

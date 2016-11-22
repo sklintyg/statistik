@@ -35,9 +35,11 @@ public class UnregisterServicesListener implements ServletContextListener {
     public UnregisterServicesListener() {
     }
 
+    @Override
     public void contextInitialized(ServletContextEvent sce) {
     }
 
+    @Override
     public void contextDestroyed(ServletContextEvent sce) {
         // This manually deregisters JDBC driver, which prevents Tomcat 7 from complaining about memory leaks with respect to this class
         Enumeration<Driver> drivers = DriverManager.getDrivers();

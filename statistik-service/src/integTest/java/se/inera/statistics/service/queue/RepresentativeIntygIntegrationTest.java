@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.queue;
 
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,6 +39,7 @@ import se.inera.statistics.service.testsupport.TestData;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -136,12 +136,12 @@ public class RepresentativeIntygIntegrationTest {
         LOG.info("===========INPUT==========");
         List<String> persons = Arrays.asList(getPerson(PERSON_K1950), getPerson(PERSON_K1960), getPerson(PERSON_M1979));
         List<String> diagnosKods = Arrays.asList(G01, L99, A00, "F99", "R00", "Z00", "M00", "P00", "G02");
-        List<LocalDate> start = Arrays.asList(new LocalDate("2012-02-05"), new LocalDate("2012-03-01"), new LocalDate("2012-02-05"),
-                new LocalDate("2012-03-01"), new LocalDate("2013-02-05"), new LocalDate("2013-01-01"), new LocalDate("2013-02-05"),
-                new LocalDate("2013-01-01"), new LocalDate("2013-02-05"));
-        List<LocalDate> stop = Arrays.asList(new LocalDate("2012-02-06"), new LocalDate("2013-03-31"), new LocalDate("2012-02-07"),
-                new LocalDate("2013-01-29"), new LocalDate("2013-02-08"), new LocalDate("2013-01-30"), new LocalDate("2013-02-09"),
-                new LocalDate("2013-01-31"), new LocalDate("2013-02-10"));
+        List<LocalDate> start = Arrays.asList(LocalDate.parse("2012-02-05"), LocalDate.parse("2012-03-01"), LocalDate.parse("2012-02-05"),
+                LocalDate.parse("2012-03-01"), LocalDate.parse("2013-02-05"), LocalDate.parse("2013-01-01"), LocalDate.parse("2013-02-05"),
+                LocalDate.parse("2013-01-01"), LocalDate.parse("2013-02-05"));
+        List<LocalDate> stop = Arrays.asList(LocalDate.parse("2012-02-06"), LocalDate.parse("2013-03-31"), LocalDate.parse("2012-02-07"),
+                LocalDate.parse("2013-01-29"), LocalDate.parse("2013-02-08"), LocalDate.parse("2013-01-30"), LocalDate.parse("2013-02-09"),
+                LocalDate.parse("2013-01-31"), LocalDate.parse("2013-02-10"));
         List<HsaIdVardgivare> vardgivares = Arrays.asList(new HsaIdVardgivare("EnVG"), new HsaIdVardgivare("TvaVG"), new HsaIdVardgivare("EnVG"), new HsaIdVardgivare("TvaVG"), new HsaIdVardgivare("EnVG"), new HsaIdVardgivare("TvaVG"), new HsaIdVardgivare("EnVG"), new HsaIdVardgivare("TvaVG"), new HsaIdVardgivare("EnVG"));
         List<HsaIdEnhet> vardenhet = Arrays.asList(getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE),
                 getVardenhet(TVAVE), getVardenhet(ENVE), getVardenhet(TVAVE), getVardenhet(ENVE));
@@ -214,12 +214,12 @@ public class RepresentativeIntygIntegrationTest {
     }
 
     private LocalDate getStart(int i) {
-        LocalDate[] dates = {new LocalDate("2012-02-01"), new LocalDate("2011-01-11")};
+        LocalDate[] dates = {LocalDate.parse("2012-02-01"), LocalDate.parse("2011-01-11")};
         return dates[i];
     }
 
     private LocalDate getStop(int i) {
-        LocalDate[] dates = {new LocalDate("2012-01-22"), new LocalDate("2011-02-21"), new LocalDate("2011-03-11"), new LocalDate("2013-11-17")};
+        LocalDate[] dates = {LocalDate.parse("2012-01-22"), LocalDate.parse("2011-02-21"), LocalDate.parse("2011-03-11"), LocalDate.parse("2013-11-17")};
         return dates[i];
     }
 

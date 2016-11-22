@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -33,6 +32,7 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -118,6 +118,16 @@ public class WidelineConverterTest {
     }
 
     @Test
+    public void errorOnEndDateBeforeStartDateIntyg2943() throws Exception {
+        wideLine.setStartdatum(7001);
+        wideLine.setSlutdatum(7000);
+        List<String> errors = converter.validate(wideLine);
+
+        LOG.error("Error message: {}", errors);
+        assertEquals("N:o of errors: " +  errors.size(), 1, errors.size());
+    }
+
+    @Test
     public void errorOnLongCorrelationId() throws Exception {
         wideLine.setCorrelationId("012345678901234567890123456789012345678901234567890");
         List<String> errors = converter.validate(wideLine);
@@ -144,7 +154,7 @@ public class WidelineConverterTest {
 
         //Then
         assertEquals(2015, localDate.getYear());
-        assertEquals(3, localDate.getMonthOfYear());
+        assertEquals(3, localDate.getMonthValue());
         assertEquals(1, localDate.getDayOfMonth());
 
         //When

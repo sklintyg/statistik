@@ -31,12 +31,15 @@ import se.inera.statistics.web.model.overview.SjukfallPerManadOverview;
 import se.inera.statistics.web.model.overview.OverviewData;
 import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class OverviewConverterTest {
+
+    private final Clock clock = Clock.systemDefaultZone();
 
     // CHECKSTYLE:OFF MagicNumber
 
@@ -45,7 +48,7 @@ public class OverviewConverterTest {
         //Given
         int casesPerMonthProportionMale = 0;
         int casesPerMonthProportionFemale = 1;
-        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
+        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range(clock));
         int casesPerMonthAlteration = 2;
         List<OverviewChartRowExtended> diagnosisGroups = new ArrayList<>();
         List<OverviewChartRowExtended> ageGroups = new ArrayList<>();
@@ -58,7 +61,7 @@ public class OverviewConverterTest {
         //When
         OverviewResponse resp = new OverviewResponse(overviewKonsfordelning, casesPerMonthAlteration, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, perCounty);
-        OverviewData data = new OverviewConverter().convert(resp, Range.createForLastMonthsExcludingCurrent(3));
+        OverviewData data = new OverviewConverter().convert(resp, Range.createForLastMonthsExcludingCurrent(3, clock));
 
         //Then
         assertEquals("[]", data.getAgeGroups().toString());
@@ -69,7 +72,7 @@ public class OverviewConverterTest {
         //Given
         int casesPerMonthProportionMale = 0;
         int casesPerMonthProportionFemale = 1;
-        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range());
+        OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range(clock));
         int casesPerMonthAlteration = 2;
         List<OverviewChartRowExtended> diagnosisGroups = new ArrayList<>();
         diagnosisGroups.add(new OverviewChartRowExtended(String.valueOf(Icd10.icd10ToInt("A00-B99", Icd10RangeType.KAPITEL)), 1, -2));
@@ -87,7 +90,7 @@ public class OverviewConverterTest {
         //When
         OverviewResponse resp = new OverviewResponse(overviewKonsfordelning, casesPerMonthAlteration, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, perCounty);
-        OverviewData data = new OverviewConverter().convert(resp, Range.createForLastMonthsExcludingCurrent(3));
+        OverviewData data = new OverviewConverter().convert(resp, Range.createForLastMonthsExcludingCurrent(3, clock));
 
         //Then
         SjukfallPerManadOverview casesPerMonth = data.getCasesPerMonth();

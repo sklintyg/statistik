@@ -1,7 +1,7 @@
 <div>
   <div ng-show="showError">
     <div data-ng-if="errorPageUrl" ng-include="errorPageUrl"></div>
-    <div data-ng-if="!errorPageUrl" ng-include="'components/directives/dataerrorview/failedToFetchData.html'"></div>
+    <div data-ng-if="!errorPageUrl" ng-include="'/components/directives/dataerrorview/failedToFetchData.html'"></div>
   </div>
   <div ng-show="!showError">
     <div ng-transclude></div>

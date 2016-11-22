@@ -17,11 +17,20 @@
       <security:http security="none" pattern="/app/**"/>
       <security:http security="none" pattern="/bower_components/**"/>
       <security:http security="none" pattern="/js/**"/>
+      <security:http security="none" pattern="/showcase/**"/>
       <security:http security="none" pattern="/assets/**"/>
       <security:http security="none" pattern="/highcharts-export-web/**"/>
     </beans>
 
     <beans>
+      <!-- SessionRegistry is needed for keeping track of authenticated sessions (i.e users), this impl performs audit logging of login and logouts. -->
+      <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+
+      <!-- Session authentication strategy that registers authenticated sessions with the session registry -->
+      <bean id="registerSessionAuthenticationStrategy" class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
+        <constructor-arg ref="sessionRegistry" />
+      </bean>
+
         <!-- Logger for SAML messages and events -->
         <bean id="samlLogger" class="org.springframework.security.saml.log.SAMLDefaultLogger"/>
 
@@ -68,7 +77,7 @@
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
         </security:http>
-        <security:http entry-point-ref="http403ForbiddenEntryPoint">
+        <security:http create-session="always" entry-point-ref="http403ForbiddenEntryPoint">
             <security:csrf disabled="true"/>
             <security:logout logout-url="/saml/logout" logout-success-url="/" invalidate-session="true"/>
             <security:intercept-url pattern="/**" access="permitAll"/>
@@ -83,7 +92,7 @@
     <!-- Test and QA profile support both Säkerhetstjänst and Fake login -->
     <!-- =============================================================== -->
     <beans profile="security-both">
-        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
+        <security:http create-session="always" use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
             <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
@@ -116,7 +125,7 @@
            <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
         </security:http>
-      <security:http entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/login/**">
+      <security:http create-session="always" entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/login/**">
         <security:csrf disabled="true"/>
         <security:intercept-url pattern="/**" access="permitAll"/>
       </security:http>
@@ -130,6 +139,7 @@
             <property name="authenticationManager" ref="authenticationManager"/>
             <property name="authenticationSuccessHandler" ref="fakeSuccessHandler"/>
             <property name="authenticationFailureHandler" ref="failureHandler"/>
+            <property name="sessionAuthenticationStrategy" ref="registerSessionAuthenticationStrategy"/>
         </bean>
         <bean id="fakeSuccessHandler"
               class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
@@ -261,6 +271,7 @@
             <property name="authenticationManager" ref="authenticationManager"/>
             <property name="authenticationSuccessHandler" ref="successRedirectHandler"/>
             <property name="authenticationFailureHandler" ref="failureHandler"/>
+          <property name="sessionAuthenticationStrategy" ref="registerSessionAuthenticationStrategy"/>
         </bean>
 
         <!-- Processing filter for WebSSO Holder-of-Key profile -->

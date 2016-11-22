@@ -28,6 +28,6 @@ angular.module('StatisticsApp').directive('dataerrorview', function() {
             errorPageUrl: '=',
             showError: '='
         },
-        templateUrl: 'components/directives/dataerrorview/dataerrorview.html'
+        templateUrl: '/components/directives/dataerrorview/dataerrorview.html'
     };
 });

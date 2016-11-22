@@ -28,6 +28,7 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
 
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class SickLeaveLengthConverterTest {
         SimpleKonResponse<SimpleKonDataRow> sjukfallslangdResponse = new SimpleKonResponse<>(sjukfallslangdRows);
 
         //When
-        final Range range = Range.createForLastMonthsExcludingCurrent(7);
+        final Range range = Range.createForLastMonthsExcludingCurrent(7, Clock.systemDefaultZone());
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         SimpleDetailsData result = converter.convert(sjukfallslangdResponse, filterSettings);
 

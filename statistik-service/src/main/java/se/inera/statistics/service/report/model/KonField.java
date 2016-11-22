@@ -43,7 +43,7 @@ public class KonField {
     }
 
     public int getValue(Kon kon) {
-        if (Kon.Female.equals(kon)) {
+        if (Kon.FEMALE.equals(kon)) {
             return female;
         } else {
             return male;

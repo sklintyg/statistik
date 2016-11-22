@@ -23,10 +23,9 @@ angular.module('StatisticsApp')
         return {
             scope: {
                 filters: '=',
-                collapseId: '@'
+                isCollapsed: '='
             },
-            replace: true,
             restrict: 'E',
-            templateUrl: 'components/directives/filterList/filterList.html'
+            templateUrl: '/components/directives/filterList/filterList.html'
         };
     }]);

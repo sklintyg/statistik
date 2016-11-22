@@ -40,7 +40,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                                     'Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, ' +
                                     ' och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.';
             $scope.popoverTextSexDistribution = 'Andel kvinnor och andel män av det totala antalet sjukfall under perioden ' + result.periodText;
-            $scope.popoverTextChangeProcentage = 'Diagrammet visar hur antalet sjukfall förändrats mellan perioden ' + result.periodText + 
+            $scope.popoverTextChangeProcentage = 'Diagrammet visar hur antalet sjukfall förändrats mellan perioden ' + result.periodText +
                                                     ' och föregående period ' + result.casesPerMonth.previousPeriodText;
 
             $scope.popoverTextDiagnosisGroups = 'Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under ' +
@@ -57,7 +57,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         };
 
         var dataReceivedSuccess = function(result) {
-            $scope.subTitle = 'Utvecklingen i Sverige de senaste tre månaderna, ' + result.periodText;
+            $scope.subTitlePeriod = result.periodText;
             setTooltipText(result);
             $scope.statisticNotDone = false;
             $scope.doneLoading = true;
@@ -67,7 +67,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         };
 
         var dataReceived = function (result) {
-            ControllerCommons.checkNationalResult($scope, result, false, false, dataReceivedSuccess);
+            ControllerCommons.checkNationalResultAndEnableExport($scope, result, false, false, dataReceivedSuccess);
         };
 
         function paintPerMonthAlternationChart(alteration) {
@@ -107,7 +107,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             return new Highcharts.Chart(chartOptions);
         }
 
-        var paintDonutChart = function (containerId, chartData, tooltipHeaderPrefix, tooltipHeaderSuffix) {
+        var paintDonutChart = function (containerId, chartData, tooltipHeaderPrefix) {
             var series = [
                 {
                     name: 'Antal',
@@ -127,8 +127,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             chartOptions.chart.height = 180;
             chartOptions.subtitle.text = null;
             chartOptions.chart.plotBorderWidth = 0;
-            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || '') + '{point.key}'  +
-                                                        (tooltipHeaderSuffix || '') + '</span><br/>';
+            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || '') + '{point.key}</span><br/>';
 
             return new Highcharts.Chart(chartOptions);
         };
@@ -153,7 +152,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
 
             var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
             chartFactory.addColor(degreeOfSickLeaveDonutData);
-            degreeOfSickLeaveChart = paintDonutChart('degreeOfSickLeaveChart', degreeOfSickLeaveDonutData, null, ' %');
+            degreeOfSickLeaveChart = paintDonutChart('degreeOfSickLeaveChart', degreeOfSickLeaveDonutData, null);
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
             chartFactory.addColor(result.sickLeaveLength.chartData);
@@ -194,7 +193,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             chartOptions.xAxis.title = { text: 'Sjukskrivningslängd', style : chartOptions.xAxis.title.style };
             chartOptions.subtitle.text = null;
             chartOptions.yAxis.title = {text: 'Antal', style : chartOptions.subtitle.style };
-            
+
             chartOptions.yAxis.tickPixelInterval = 30;
             chartOptions.legend.enabled = false;
 
@@ -291,9 +290,11 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         statisticsData.getOverview(dataReceived, function () {
             $scope.dataLoadingError = true;
         });
+        $scope.subTitle = 'Utvecklingen i Sverige de senaste tre månaderna, ';
         $scope.spinnerText = 'Laddar information...';
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
+        $scope.chartFootnotes = ['help.nationell.overview'];
 
         $scope.printPdf = function () {
             var charts = [];
@@ -363,7 +364,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                         messageService.getProperty('overview.widget.table.column.antal'),
                         messageService.getProperty('overview.widget.table.column.forandring')
                     ],
-                    data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.degreeOfSickLeaveGroups, ' %')
+                    data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.degreeOfSickLeaveGroups)
                 }
             });
 
@@ -430,7 +431,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             if(sickLeaveLengthChart && typeof sickLeaveLengthChart.destroy === 'function') {
                 sickLeaveLengthChart.destroy();
             }
-            
+
             if(sickLeavePerCountyChart && typeof sickLeavePerCountyChart.destroy === 'function') {
                 sickLeavePerCountyChart.destroy();
             }

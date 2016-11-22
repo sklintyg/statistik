@@ -19,6 +19,7 @@
 package se.inera.testsupport;
 
 import java.io.IOException;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,7 +28,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import se.inera.statistics.service.report.model.KonField;
@@ -35,12 +38,18 @@ import se.inera.statistics.service.report.model.KonField;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.annotation.PostConstruct;
+
+@Component
 public class RestTemplateStub extends RestTemplate implements CountyPopulationInjector {
 
     private static final Logger LOG = LoggerFactory.getLogger(RestTemplateStub.class);
 
     @Value("${scb.population.url}")
     private String scbPopulationUrl;
+
+    @Autowired
+    private Clock clock;
 
     private Map<String, Map<String, KonField>> countyPopulationPerYear = new HashMap<>();
 
@@ -70,8 +79,9 @@ public class RestTemplateStub extends RestTemplate implements CountyPopulationIn
         countynamesPerCountyCode.put("25", "25 Norrbottens län");
     }
 
-    public RestTemplateStub() {
-        final int year = LocalDate.now().getYear();
+    @PostConstruct
+    public void restTemplateStubPostConstruct() {
+        final int year = LocalDate.now(clock).getYear();
         final int yearsBackToGenerate = 10;
         for (int i = year - yearsBackToGenerate; i <= year; i++) {
             countyPopulationPerYear.put(String.valueOf(i), createRandomizedPopulation());
@@ -108,6 +118,7 @@ public class RestTemplateStub extends RestTemplate implements CountyPopulationIn
                 }
             } catch (IOException e) {
                 LOG.error("Failed to create mocked population response");
+                LOG.debug("Failed to create mocked population response", e);
             }
         }
         return null;

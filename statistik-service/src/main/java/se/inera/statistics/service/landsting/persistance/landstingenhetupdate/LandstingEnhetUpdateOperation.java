@@ -20,7 +20,7 @@ package se.inera.statistics.service.landsting.persistance.landstingenhetupdate;
 
 public enum LandstingEnhetUpdateOperation {
 
-    Update("Uppdaterat information"), Remove("Tagit bort information");
+    UPDATE("Uppdaterat information"), REMOVE("Tagit bort information");
 
     private final String message;
 

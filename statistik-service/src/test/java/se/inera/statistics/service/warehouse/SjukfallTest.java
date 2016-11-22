@@ -22,7 +22,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.Range;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +44,7 @@ public class SjukfallTest {
         assertEquals(1, result.getRealDays());
         assertEquals(1, result.getSjukskrivningsgrad());
         assertEquals(1, result.getStart());
-        assertEquals(Kon.Male, result.getKon());
+        assertEquals(Kon.MALE, result.getKon());
         assertArrayEquals(new Object[]{1}, Lists.transform(new ArrayList<>(result.getLakare()), new Function<Lakare, Integer>() {
             @Override
             public Integer apply(Lakare lakare) {

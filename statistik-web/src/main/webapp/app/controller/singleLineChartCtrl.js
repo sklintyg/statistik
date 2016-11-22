@@ -20,8 +20,7 @@
 
 /* globals Highcharts */
 angular.module('StatisticsApp').controller('singleLineChartCtrl',
-    [ '$scope', '$rootScope', '$routeParams', '$timeout', '$window', 'statisticsData', 'config', '$location',
-        'messageService', 'chartFactory', 'pdfFactory', '_', 'ControllerCommons',
+    /** @ngInject */
     function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, $location,
         messageService, chartFactory, pdfFactory, _, ControllerCommons) {
         'use strict';
@@ -52,7 +51,6 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             chartOptions.tooltip.text = '#000';
             return new Highcharts.Chart(chartOptions);
         };
-        
 
         var updateChart = function (ajaxResult, doneLoadingCallback) {
             $scope.series = chartFactory.addColor(ajaxResult.series);
@@ -72,10 +70,10 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser,
                 result.allAvailableDxsSelectedInFilter,
                 result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets,
-                result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter);
+                result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
+                result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter);
             $scope.resultMessage = ControllerCommons.getResultMessage(result, messageService);
-            $scope.subTitle =
-                config.title(result.period, result.filter.enheter ? result.filter.enheter.length : null);
+            $scope.subTitlePeriod = angular.isFunction(config.suffixTitle) ? config.suffixTitle(result.period, $routeParams.kapitelId) : result.period;
             $timeout(function() {
                 ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result.chartData, function() {
@@ -88,7 +86,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         };
 
         var populatePageWithData = function (result) {
-            ControllerCommons.checkNationalResult($scope, result, isVerksamhet, isLandsting, populatePageWithDataSuccess);
+            ControllerCommons.checkNationalResultAndEnableExport($scope, result, isVerksamhet, isLandsting, populatePageWithDataSuccess);
         };
 
         $scope.toggleSeriesVisibility = function (index) {
@@ -125,10 +123,11 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             });
         }
 
+        $scope.subTitle = config.title;
+        $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet) : config.chartFootnotes;
         $scope.spinnerText = 'Laddar information...';
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
-        $scope.popoverText = messageService.getProperty(config.pageHelpText, null, '', null, true);
 
         $scope.printPdf = function () {
             pdfFactory.print($scope, chart);
@@ -141,11 +140,11 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         });
 
     }
-]);
+);
 
 angular.module('StatisticsApp').casesPerMonthConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -159,10 +158,7 @@ angular.module('StatisticsApp').casesPerMonthConfig =
     conf.exportTableUrlLandsting = function () {
         return 'api/landsting/getNumberOfCasesPerMonthLandsting/csv';
     };
-    conf.title = function (months, enhetsCount) {
-        return 'Antal sjukfall per månad' + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
-    };
-    conf.pageHelpText = 'help.casespermonth';
+    conf.title = messageService.getProperty('title.sickleave');
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/sjukfallPerManad', active: true},
@@ -173,7 +169,7 @@ angular.module('StatisticsApp').casesPerMonthConfig =
 
 angular.module('StatisticsApp').longSickLeavesConfig =
     /** @ngInject */
-    function (ControllerCommons) {
+    function (messageService) {
     'use strict';
 
     var conf = {};
@@ -181,9 +177,7 @@ angular.module('StatisticsApp').longSickLeavesConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getLongSickLeavesData/csv';
     };
-    conf.title = function (months, enhetsCount) {
-        return 'Antal långa sjukfall - mer än 90 dagar' + ControllerCommons.getEnhetCountText(enhetsCount, false) + months;
-    };
+    conf.title = messageService.getProperty('title.sickleavelength90');
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/langasjukskrivningar', active: true},

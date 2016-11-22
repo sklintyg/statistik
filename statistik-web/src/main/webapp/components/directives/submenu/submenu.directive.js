@@ -30,7 +30,7 @@ angular.module('StatisticsApp').directive('submenu',
                 depth: '=',
                 recursionhelper: '='
             },
-            templateUrl: 'components/directives/submenu/submenu.html',
+            templateUrl: '/components/directives/submenu/submenu.html',
             compile: recursionService.compile
         };
 });

@@ -18,12 +18,11 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import org.joda.time.LocalDate;
+import java.util.Comparator;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import se.inera.statistics.service.report.model.Kon;
 
-import java.util.Comparator;
+import se.inera.statistics.service.report.model.Kon;
 
 public class Fact {
     public static final String HEADING = "lan;kommun;forsamling;enhet;lakarintyg;patient;startdatum;kon;alder;diagnoskapitel;"
@@ -35,8 +34,6 @@ public class Fact {
             return f1.getStartdatum() - f2.getStartdatum();
         }
     };
-
-    private static final LocalDate ERA = new LocalDate("2000-01-01");
 
     private int lan;
     private int kommun;
@@ -60,6 +57,7 @@ public class Fact {
     private boolean enkelt;
 
     // CHECKSTYLE:OFF ParameterNumber
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public Fact(int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int slutdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid, boolean enkeltIntyg) {
         this.lan = lan;
         this.kommun = kommun;
@@ -246,12 +244,13 @@ public class Fact {
         private int lakarid = -1;
         private Boolean enkelt = null;
 
+        @java.lang.SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S1067"}) // I can not tink of a better way to write this method
         public Fact build() {
             if (lan == -1 || kommun == -1 || forsamling == -1 || enhet == -1 || lakarintyg == -1 || patient == -1
                     || startdatum == -1 || slutdatum == -1 || kon == -1 || alder == -1 || diagnoskapitel == -1 || diagnosavsnitt == -1
                     || diagnoskategori == -1 || diagnoskod == -1 || sjukskrivningsgrad == -1 || lakarkon == -1
                     || lakaralder == -1 || lakarbefattnings == null || lakarid == -1 || enkelt == null) {
-                throw new RuntimeException("unitialized values");
+                throw new UninitializedValuesException("unintialized values");
             }
             return new Fact(lan, kommun, forsamling, enhet, lakarintyg, patient, startdatum, slutdatum, kon, alder, diagnoskapitel,
                     diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon,
@@ -299,7 +298,7 @@ public class Fact {
         }
 
         public FactBuilder withKon(Kon kon) {
-            this.kon = kon == null ? Kon.Unknown.getNumberRepresentation() : kon.getNumberRepresentation();
+            this.kon = kon == null ? Kon.UNKNOWN.getNumberRepresentation() : kon.getNumberRepresentation();
             return this;
         }
 
@@ -334,7 +333,7 @@ public class Fact {
         }
 
         public FactBuilder withLakarkon(Kon lakarkon) {
-            this.lakarkon = lakarkon == null ? Kon.Unknown.getNumberRepresentation() : lakarkon.getNumberRepresentation();
+            this.lakarkon = lakarkon == null ? Kon.UNKNOWN.getNumberRepresentation() : lakarkon.getNumberRepresentation();
             return this;
         }
 
@@ -358,6 +357,12 @@ public class Fact {
             return this;
         }
 
+        private class UninitializedValuesException extends RuntimeException {
+
+            UninitializedValuesException(String s) {
+                super(s);
+            }
+        }
     }
 
     public static FactBuilder aFact() {

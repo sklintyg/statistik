@@ -20,7 +20,6 @@ package se.inera.statistics.service.warehouse;
 
 import static org.junit.Assert.assertEquals;
 
-import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +39,9 @@ import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:warehouse-integration-test.xml", "classpath:icd10.xml"  })
 @DirtiesContext
@@ -57,13 +59,16 @@ public class PopulationTest {
     @Autowired
     private FactPopulator factPopulator;
 
+    @Autowired
+    private Clock clock;
+
     @Test
     public void addingIntygAddsToCorrectAisle() {
         final Patientdata patientData = DocumentHelper.getPatientData(rawDocument);
         for (WideLine wideLine : widelineConverter.toWideline(rawDocument, patientData, JSON_NODE, 0, "0", EventType.CREATED)) {
             factPopulator.accept(wideLine);
         }
-        warehouse.complete(LocalDateTime.now());
+        warehouse.complete(LocalDateTime.now(clock));
         Aisle aisle = warehouse.get(new HsaIdVardgivare("VARDGIVARID"));
         assertEquals(1, aisle.getSize());
     }

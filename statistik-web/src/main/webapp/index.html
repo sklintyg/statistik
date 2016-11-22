@@ -20,15 +20,15 @@
 
     <!-- build:css({build/.tmp,src/main/webapp}) app/app.css -->
     <!-- injector:css -->
-    <link rel="stylesheet" href="app/app.css">
+    <link rel="stylesheet" href="/app/app.css">
     <!-- endinjector -->
     <!-- endbuild -->
 </head>
 <body data-ng-controller="pageCtrl">
-
+<highlight-words></highlight-words>
 <!-- Navbar
 ================================================== -->
-<div id="navigation-container">
+<div id="navigation-container" ng-cloak>
   <div class="header clearfix hidden-print">
     <div class="headerbox">
       <span class="headerbox-logo pull-left">
@@ -37,18 +37,19 @@
         </a>
       </span>
       <span class="headerbox-date pull-left">
-        <div id="location" class="location ng-hide" data-ng-show="isLoggedIn">{{verksamhetName}}
+        <div id="location" class="location ng-hide" data-ng-show="isLoggedIn">
+          {{pageHeaderVerksamhetName}}
           <show-businesses
               data-ng-if="showBusinessesDetails"
               businesses="UserModel.get().businesses"
-              verksamhet-name="verksamhetName"></show-businesses>
+              vg-name="vgName"></show-businesses>
           <select-vardgivare-modal
               data-ng-if="UserModel.get().enableVerksamhetMenu && UserModel.get().vgs.length > 1"
               vardgivare="UserModel.get().vgs"
               select-vardgivare="changeVardgivare(vgId)"></select-vardgivare-modal>
         </div>
         <div class="headerbox-info-text"
-             data-ng-class="{'headerbox-info-text-padding': !(isLoggedIn && verksamhetName)}"
+             data-ng-class="{'headerbox-info-text-padding': !(isLoggedIn && pageHeaderVerksamhetName)}"
              message key="statistics.header.extra-text"
         ></div>
       </span>
@@ -83,7 +84,7 @@
 <send-feedback></send-feedback>
 
 <div id="wrapper">
-    <div id="sidebar-wrapper" class="hidden-print hidden-xs">
+    <div id="sidebar-wrapper" class="hidden-print hidden-xs" ng-cloak>
         <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
         <navigation-menu login-visible="AppModel.get().loginVisible" query-string="queryString"></navigation-menu>
     </div>
@@ -92,43 +93,21 @@
 
     <div id="page-content-wrapper">
         <div class="container-fluid">
+          <business-filter data-ng-if="isVerksamhetShowing" ng-cloak></business-filter>
 
-            <!-- Docs nav
-            ================================================== -->
-            <div class="row">
+          <landsting-filter data-ng-if="isLandstingShowing" ng-cloak></landsting-filter>
 
-                <div class="col-xs-12">
-                    <div class="row ng-hide" ng-show="isVerksamhetShowing">
-                        <div class="col-xs-12">
-                            <business-filter></business-filter>
-                        </div>
-                    </div>
-
-                    <div class="row ng-hide" ng-show="isLandstingShowing">
-                        <div class="col-xs-12">
-                            <landsting-filter></landsting-filter>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div id="view" data-ng-view></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          <div class="row" ng-cloak>
+              <div class="col-xs-12">
+                  <div id="view" data-ng-view></div>
+              </div>
+          </div>
         </div>
     </div>
 </div>
 
 <!-- Scripts -->
 <!-- Placed at the end of the document so the pages load faster -->
-  <!--[if lt IE 9]>
-  <script src="bower_components/html5shiv/dist/html5shiv.js"></script>
-  <script src="bower_components/respond/dest/respond.min.js"></script>
-  <script src="bower_components/es5-shim/es5-shim.js"></script>
-  <script src="bower_components/json3/lib/json3.min.js"></script>
-  <![endif]-->
   <!-- build:js({src/main/webapp,node_modules}) app/vendor.js -->
   <!-- bower:js -->
   <script src="bower_components/jquery/dist/jquery.js"></script>
@@ -144,80 +123,96 @@
   <script src="bower_components/lodash/lodash.js"></script>
   <script src="bower_components/jquery.tablesorter/dist/js/jquery.tablesorter.js"></script>
   <script src="bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.js"></script>
-  <script src="bower_components/pdfmake/build/pdfmake.js"></script>
+  <script src="bower_components/pdfmake-dist/build/pdfmake.js"></script>
   <script src="bower_components/momentjs/moment.js"></script>
   <script src="bower_components/dropzone/dist/min/dropzone.min.js"></script>
   <script src="bower_components/ngstorage/ngStorage.js"></script>
   <script src="bower_components/highcharts/highcharts.js"></script>
   <script src="bower_components/highcharts/modules/exporting.js"></script>
   <script src="bower_components/highcharts/highcharts-more.js"></script>
-  <script src="bower_components/rgb-color/rgb-color.js"></script>
-  <script src="bower_components/canvg-gabelerner/canvg.js"></script>
+  <script src="bower_components/mark.js/dist/mark.js"></script>
   <!-- endbower -->
+  <!-- canvg:js -->
+  <!--
+    Beroendet till canvg har lagts till manuellt och inte via Bower för
+    att få med en buggrättning som gör att PDFer skapade i MSEdge fungerar.
+    Beroendet bör ske via Bower igen när canvg släppts i version 1.5 eller högre.
+  -->
+  <script src="js/lib/StackBlur.js"></script>
+  <script src="js/lib/rgbcolor.js"></script>
+  <script src="js/lib/canvg.js"></script>
+  <!-- endcanvg -->
   <!-- endbuild -->
 
   <!-- build:js({build/.tmp,src/main/webapp}) app/app.main.js -->
   <script src="app/app.main.js"></script>
   <!-- injector:js -->
-  <script src="app/app.config.js"></script>
-  <script src="app/app.routes.js"></script>
-  <script src="app/app.run.js"></script>
-  <script src="app/app.underscore.js"></script>
-  <script src="app/controller/about/aboutFaqCtrl.js"></script>
-  <script src="app/controller/business/businessOverviewCtrl.js"></script>
-  <script src="app/controller/business/selectVgCtrl.js"></script>
-  <script src="app/controller/columnChartDetailsViewCtrl.js"></script>
-  <script src="app/controller/doubleAreaChartsCtrl.js"></script>
-  <script src="app/controller/landsting/landstingFileUploadCtrl.js"></script>
-  <script src="app/controller/loginCtrl.js"></script>
-  <script src="app/controller/overviewCtrl.js"></script>
-  <script src="app/controller/pageCtrl.js"></script>
-  <script src="app/controller/singleLineChartCtrl.js"></script>
-  <script src="app/messages.js"></script>
-  <script src="app/shared/businessfilter/businessFilterDirective.js"></script>
-  <script src="app/shared/businessfilter/businessFilterFactory.js"></script>
-  <script src="app/shared/businessfilter/businessFilterModule.js"></script>
-  <script src="app/shared/resources/constantsModule.js"></script>
-  <script src="app/shared/treemultiselector/treeMultiSelectorCtrl.js"></script>
-  <script src="app/shared/treemultiselector/treeMultiSelectorModule.js"></script>
-  <script src="app/shared/treemultiselector/treeMultiSelectorUtil.js"></script>
-  <script src="app/shared/treemultiselector/treemultiselectorDirective.js"></script>
-  <script src="components/directives/angular-dropzone/dropzone.directive.js"></script>
-  <script src="components/directives/confirmClick/confirmClick.directive.js"></script>
-  <script src="components/directives/dataerrorview/dataerrorview.directive.js"></script>
-  <script src="components/directives/diagnosSelection/diagnosSelection.directive.js"></script>
-  <script src="components/directives/filterList/filterList.directive.js"></script>
-  <script src="components/directives/intermediate/intermediate.directive.js"></script>
-  <script src="components/directives/legendHeight/legendHeight.directive.js"></script>
-  <script src="components/directives/message/message.directive.js"></script>
-  <script src="components/directives/navigationMenu/navigationMenu.directive.js"></script>
-  <script src="components/directives/navigationaware/navigationaware.directive.js"></script>
-  <script src="components/directives/onFinishRender/onFinishRender.directive.js"></script>
-  <script src="components/directives/overviewWidget/overviewWidget.directive.js"></script>
-  <script src="components/directives/selectVardgivare/selectVardgivare.directive.js"></script>
-  <script src="components/directives/selectVardgivareModal/modal/modal.controller.js"></script>
-  <script src="components/directives/selectVardgivareModal/selectVardgivareModal.directive.js"></script>
-  <script src="components/directives/sendFeedback/sendFeedback.directive.js"></script>
-  <script src="components/directives/showBusinesses/showBusinesses.directive.js"></script>
-  <script src="components/directives/sortableTable/sortableTable.directive.js"></script>
-  <script src="components/directives/spinner/spinner.directive.js"></script>
-  <script src="components/directives/statCookieBanner/statCookieBanner.directive.js"></script>
-  <script src="components/directives/statScrollTable/statScrollTable.directive.js"></script>
-  <script src="components/directives/submenu/submenu.directive.js"></script>
-  <script src="components/filters/messageFilter/message.filter.js"></script>
-  <script src="components/filters/replaceEmpty/replaceEmpty.filter.js"></script>
-  <script src="components/filters/thousandseparated/thousandseparated.filter.js"></script>
-  <script src="components/models/app.model.js"></script>
-  <script src="components/models/user.model.js"></script>
-  <script src="components/services/app.service.js"></script>
-  <script src="components/services/charts/chartFactory.js"></script>
-  <script src="components/services/diagnosisTreeFilter.js"></script>
-  <script src="components/services/factories.js"></script>
-  <script src="components/services/messageService.js"></script>
-  <script src="components/services/pdfFactory.js"></script>
-  <script src="components/services/pdfOverviewFactory.js"></script>
-  <script src="components/services/recursion/recursion.service.js"></script>
-  <script src="components/utils/common.js"></script>
+  <script src="/app/app.config.js"></script>
+  <script src="/app/app.routes.js"></script>
+  <script src="/app/app.run.js"></script>
+  <script src="/app/app.underscore.js"></script>
+  <script src="/app/app.value.js"></script>
+  <script src="/app/controller/about/aboutFaqCtrl.js"></script>
+  <script src="/app/controller/business/businessOverviewCtrl.js"></script>
+  <script src="/app/controller/business/selectVgCtrl.js"></script>
+  <script src="/app/controller/columnChartDetailsViewCtrl.js"></script>
+  <script src="/app/controller/doubleAreaChartsCtrl.js"></script>
+  <script src="/app/controller/landsting/landstingFileUploadCtrl.js"></script>
+  <script src="/app/controller/loginCtrl.js"></script>
+  <script src="/app/controller/overviewCtrl.js"></script>
+  <script src="/app/controller/pageCtrl.js"></script>
+  <script src="/app/controller/singleLineChartCtrl.js"></script>
+  <script src="/app/messages.js"></script>
+  <script src="/app/shared/businessfilter/businessFilterDirective.js"></script>
+  <script src="/app/shared/businessfilter/businessFilterFactory.js"></script>
+  <script src="/app/shared/businessfilter/businessFilterModule.js"></script>
+  <script src="/app/shared/resources/constantsModule.js"></script>
+  <script src="/app/shared/treemultiselector/treeMultiSelectorCtrl.js"></script>
+  <script src="/app/shared/treemultiselector/treeMultiSelectorModule.js"></script>
+  <script src="/app/shared/treemultiselector/treeMultiSelectorUtil.js"></script>
+  <script src="/app/shared/treemultiselector/treemultiselectorDirective.js"></script>
+  <script src="/components/directives/angular-dropzone/dropzone.directive.js"></script>
+  <script src="/components/directives/confirmClick/confirmClick.directive.js"></script>
+  <script src="/components/directives/dataerrorview/dataerrorview.directive.js"></script>
+  <script src="/components/directives/diagnosSelection/diagnosSelection.directive.js"></script>
+  <script src="/components/directives/filterChips/filterChips.directive.js"></script>
+  <script src="/components/directives/filterChips/modal/modal.controller.js"></script>
+  <script src="/components/directives/filterChipsList/filterChips.directive.js"></script>
+  <script src="/components/directives/filterList/filterList.directive.js"></script>
+  <script src="/components/directives/highlightWords/highlightWords.directive.js"></script>
+  <script src="/components/directives/intermediate/intermediate.directive.js"></script>
+  <script src="/components/directives/legendHeight/legendHeight.directive.js"></script>
+  <script src="/components/directives/message/message.directive.js"></script>
+  <script src="/components/directives/navigationMenu/navigationMenu.directive.js"></script>
+  <script src="/components/directives/navigationaware/navigationaware.directive.js"></script>
+  <script src="/components/directives/onFinishRender/onFinishRender.directive.js"></script>
+  <script src="/components/directives/overviewWidget/overviewWidget.directive.js"></script>
+  <script src="/components/directives/selectVardgivare/selectVardgivare.directive.js"></script>
+  <script src="/components/directives/selectVardgivareModal/modal/modal.controller.js"></script>
+  <script src="/components/directives/selectVardgivareModal/selectVardgivareModal.directive.js"></script>
+  <script src="/components/directives/sendFeedback/sendFeedback.directive.js"></script>
+  <script src="/components/directives/showBusinesses/showBusinesses.directive.js"></script>
+  <script src="/components/directives/showFilterList/showFilterList.directive.js"></script>
+  <script src="/components/directives/showHelpText/showHelpText.directive.js"></script>
+  <script src="/components/directives/sortableTable/sortableTable.directive.js"></script>
+  <script src="/components/directives/spinner/spinner.directive.js"></script>
+  <script src="/components/directives/statCookieBanner/statCookieBanner.directive.js"></script>
+  <script src="/components/directives/statScrollTable/statScrollTable.directive.js"></script>
+  <script src="/components/directives/submenu/submenu.directive.js"></script>
+  <script src="/components/filters/messageFilter/message.filter.js"></script>
+  <script src="/components/filters/replaceEmpty/replaceEmpty.filter.js"></script>
+  <script src="/components/filters/thousandseparated/thousandseparated.filter.js"></script>
+  <script src="/components/models/app.model.js"></script>
+  <script src="/components/models/user.model.js"></script>
+  <script src="/components/services/app.service.js"></script>
+  <script src="/components/services/charts/chartFactory.js"></script>
+  <script src="/components/services/diagnosisTreeFilter.js"></script>
+  <script src="/components/services/factories.js"></script>
+  <script src="/components/services/messageService.js"></script>
+  <script src="/components/services/pdfFactory.js"></script>
+  <script src="/components/services/pdfOverviewFactory.js"></script>
+  <script src="/components/services/recursion/recursion.service.js"></script>
+  <script src="/components/utils/common.js"></script>
   <!-- endinjector -->
   <!-- endbuild -->
 

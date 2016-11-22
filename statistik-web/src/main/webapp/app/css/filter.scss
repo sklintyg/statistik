@@ -7,27 +7,9 @@
 	top: 4px;
 	position: relative;
 }
-.filter-level label {
-	font-size: 12px;
-}
 
 label.btn {
 	font-size: 14px;
-}
-
-.filter-level input[type=checkbox] {
-	position: relative;
-	top: 4px;
-}
-
-#statistics-filter-container {
-	margin-top: 2px;
-}
-
-#statistics-filter-container table.table tbody td,
-#statistics-filter-container table.table tbody td:hover {
-	background-color: #e9eae8;
-	border-bottom: none;
 }
 
 #first-level-filter, #second-level-filter, #third-level-filter { }
@@ -139,22 +121,6 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	padding: 5px;
 }
 
-#statistics-filter-container {
-	background-color: rgb(247, 247, 249);
-	border-top: 0;
-	border-left: 1px solid #ddd;
-	border-right: 1px solid #ddd;
-	border-bottom: 1px solid #ddd;
-	margin-top: 0;
-	box-shadow: 0 3px 4px 0 rgba(50, 50, 50, 0.2);
-}
-
-.filter-level { 
-	float: left;
-	width: 100%;
-	padding: 10px;
-}
-
 .multiselect-container a {
 	padding: 0 !important;
 }
@@ -184,12 +150,28 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	top: 1px;
 }
 
-.modal-body .modal-list li.select-all-items input[type=checkbox] {
-	margin-left: 0;
+.modal-body .modal-list li.select-all-items {
+	label {
+		font-weight: bold;
+		cursor: pointer;
+	}
+
+	span {
+		vertical-align: top;
+		display: inline-block;
+	}
+
+	input[type=checkbox] {
+		margin-left: 0;
+		margin-right: 5px;
+		vertical-align: middle;
+	}
 }
 
 .modal-body .modal-list input[type=checkbox] {
 	margin-left: 10px;
+	margin-top: 2px;
+	margin-bottom: 2px;
 	top: 0;
 	position: relative;
 	cursor: pointer;
@@ -230,5 +212,5 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 }
 
 .multiselect-container>li>a>label input {
-	top: -2px !important;
+	top: -3px !important;
 }

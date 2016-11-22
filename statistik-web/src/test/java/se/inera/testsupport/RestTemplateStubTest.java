@@ -18,15 +18,37 @@
  */
 package se.inera.testsupport;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.web.util.SpyableClock;
 
 import static org.junit.Assert.*;
 
 public class RestTemplateStubTest {
 
+    @Spy
+    private SpyableClock clock = new SpyableClock();
+
+    @InjectMocks
+    private RestTemplateStub restTemplateStub;
+
+    @Before
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        restTemplateStub.restTemplateStubPostConstruct();
+    }
+
     @Test
     public void testCountyPopulationIsPopulatedCorrectlyAtCreation() throws Exception {
-        final RestTemplateStub restTemplateStub = new RestTemplateStub();
         assertEquals(11, restTemplateStub.getCountyPopulationPerYear().size());
     }
+
 }

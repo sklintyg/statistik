@@ -38,5 +38,5 @@ describe('Controller: pageCtrl', function() {
             businessFilter: {}}
         );
     }));
-    
+
 });

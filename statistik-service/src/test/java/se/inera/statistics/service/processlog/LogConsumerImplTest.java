@@ -35,6 +35,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import se.inera.ifv.statistics.spi.authorization.impl.HsaCommunicationException;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HsaInfo;
 
@@ -85,7 +86,7 @@ public class LogConsumerImplTest {
     public void failingHsaSkipsProcessing() {
         IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
-        when(hsa.decorate(any(JsonNode.class), anyString())).thenReturn(null);
+        when(hsa.decorate(any(JsonNode.class), anyString())).thenThrow(new HsaCommunicationException("", null));
         int count = consumer.processBatch();
         assertEquals(0, count);
         verify(processLog).getPending(100);

@@ -20,7 +20,7 @@
 
 angular.module('StatisticsApp').factory('ControllerCommons',
     /** @ngInject */
-    function(_, $cacheFactory) {
+    function(_, $cacheFactory, UserModel) {
         'use strict';
 
         var that = this;
@@ -70,37 +70,37 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return String(chartName).replace(/\s+/g, '_') + '_' + date + '_' + time;
         };
 
-        this.getEnhetCountText = function(enhetsCount, basedOnAlreadyInText) {
-            if (enhetsCount === 1) {
-                return ' ';
-            }
-            if (basedOnAlreadyInText) {
-                return enhetsCount ? ' och ' + enhetsCount + ' enheter' + ' ' : ' ';
-            }
-            return enhetsCount ? ' baserat på ' + enhetsCount + ' enheter' + ' ' : ' ';
-        };
-
         function icdStructureAsArray(icdStructure) {
             return _.map(icdStructure, function (icd) {
                 return icdStructureAsArray(icd.subItems).concat(icd);
             });
         }
 
-        this.getDiagnosFilterInformationText = function(diagnosFilterIds, icdStructure) {
+        this.getDiagnosFilterInformationText = function(diagnosFilterIds, icdStructure, asObject) {
             var icdStructureAsFlatArray = _.compose(_.flattenDeep, icdStructureAsArray)(icdStructure);
             return _.map(diagnosFilterIds, function(diagnosId){
                 var icdItem = _.find(icdStructureAsFlatArray, function(icd){
                     return icd.numericalId === parseInt(diagnosId, 10);
                 });
-                return icdItem.id + ' ' + icdItem.name;
+
+                var text = icdItem.id + ' ' + icdItem.name;
+
+                if (asObject) {
+                    return {
+                        id: diagnosId,
+                        text: text
+                    };
+                }
+                return text;
             });
         };
 
         this.populateActiveFilters = function(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter, filterHash,
-                                                isAllAvailableEnhetsSelectedInFilter, filteredEnhets, filteredSjukskrivningslangd, isAllAvailableSjukskrivningslangdsSelectedInFilter) {
+                                                isAllAvailableEnhetsSelectedInFilter, filteredEnhets, filteredSjukskrivningslangd, isAllAvailableSjukskrivningslangdsSelectedInFilter, filteredAldersgrupp, isAllAvailableAgeGroupsSelectedInFilter) {
             that.populateActiveDiagnosFilter(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter);
-            that.populateActiveEnhetsFilter(scope, filterHash, isAllAvailableEnhetsSelectedInFilter, filteredEnhets);
+            that.populateActiveEnhetsFilter(scope, filteredEnhets, isAllAvailableEnhetsSelectedInFilter);
             that.populateActiveSjukskrivningslangdFilter(scope, filterHash, filteredSjukskrivningslangd, isAllAvailableSjukskrivningslangdsSelectedInFilter);
+            that.populateActiveAldersgruppFilter(scope, filterHash, filteredAldersgrupp, isAllAvailableAgeGroupsSelectedInFilter);
         };
 
         this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter) {
@@ -121,22 +121,11 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             });
         };
 
-        this.populateActiveEnhetsFilter = function(scope, filterHash, isAllAvailableEnhetsSelectedInFilter, enhetNames) {
-            scope.activeEnhetsFilters = null;
-            
-            if (isAllAvailableEnhetsSelectedInFilter) {
-                scope.headerEnhetInfo = scope.verksamhetName;
-                return;
-            }
-            if (!filterHash) {
-                scope.headerEnhetInfo = scope.verksamhetName;
-                return;
-            }
-            if (enhetNames.length === 1) {
-                scope.headerEnhetInfo = enhetNames[0];
+        this.populateActiveEnhetsFilter = function(scope, enhetNames, isAllAvailableEnhetsSelectedInFilter) {
+            if (UserModel.get().isProcessledare && isAllAvailableEnhetsSelectedInFilter) {
+                scope.activeEnhetsFilters = ['Samtliga enheter inom vårdgivaren ' + scope.vgName];
             } else {
-                scope.headerEnhetInfo = '';
-                scope.activeEnhetsFilters = enhetNames.length > 1 ? enhetNames : null;
+                scope.activeEnhetsFilters = enhetNames;
             }
         };
 
@@ -147,6 +136,16 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             }
             if (sjukskrivningslangds && sjukskrivningslangds.length > 0) {
                 scope.activeSjukskrivningslangdsFilters = sjukskrivningslangds;
+            }
+        };
+
+        this.populateActiveAldersgruppFilter = function(scope, filterHash, aldersgrupp, isAllAvailableAgeGroupsSelectedInFilter) {
+            scope.activeAldersgruppFilters = null;
+            if (isAllAvailableAgeGroupsSelectedInFilter) {
+                return;
+            }
+            if (aldersgrupp && aldersgrupp.length > 0) {
+                scope.activeAldersgruppFilters = aldersgrupp;
             }
         };
 
@@ -272,8 +271,8 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 }
             }
 
-            $scope.subTitle = getSubtitle($scope.currentPeriod, $scope.selectedDetailsOption, $scope.selectedDetailsOption2,
-                                            $scope.selectedDetailsOption3, $scope, config);
+            $scope.subTitlePeriod = getSubtitle($scope.currentPeriod, $scope.selectedDetailsOption, $scope.selectedDetailsOption2,
+                                            $scope.selectedDetailsOption3, config);
         };
 
         function setSelectedOptions($scope, $routeParams, kapitels, avsnitts, kategoris) {
@@ -319,15 +318,15 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return path;
         }
 
-        function getSubtitle(period, selectedOption1, selectedOption2, selectedOption3, $scope, config) {
+        function getSubtitle(period, selectedOption1, selectedOption2, selectedOption3, config) {
             if ((selectedOption3 && selectedOption3.name && selectedOption3.id)) {
-                return config.title(period, $scope.enhetsCount, selectedOption3.id + ' ' + selectedOption3.name);
+                return config.suffixTitle(period, selectedOption3.id + ' ' + selectedOption3.name);
             }
             if ((selectedOption2 && selectedOption2.name && selectedOption2.id)) {
-                return config.title(period, $scope.enhetsCount, selectedOption2.id + ' ' + selectedOption2.name);
+                return config.suffixTitle(period, selectedOption2.id + ' ' + selectedOption2.name);
             }
             if (selectedOption1 && selectedOption1.name && selectedOption1.id) {
-                return config.title(period, $scope.enhetsCount, selectedOption1.id + ' ' + selectedOption1.name);
+                return config.suffixTitle(period, selectedOption1.id + ' ' + selectedOption1.name);
             }
             return '';
         }
@@ -353,9 +352,8 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
             return tableData;
         };
-        
-        
-        this.checkNationalResult = function($scope, result, verksamhet, landsting, success) {
+
+        this.checkNationalResultAndEnableExport = function($scope, result, verksamhet, landsting, success) {
             $scope.errorPageUrl = null;
             if (result === '' && !verksamhet && !landsting) {
                 $scope.dataLoadingError = true;
@@ -363,6 +361,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
                 $cacheFactory.get('$http').removeAll();
             } else {
+                $scope.exportEnabled = true;
                 success(result);
             }
         };

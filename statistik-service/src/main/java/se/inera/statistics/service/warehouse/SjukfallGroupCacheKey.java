@@ -18,9 +18,9 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import org.joda.time.LocalDate;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 class SjukfallGroupCacheKey {
@@ -29,11 +29,11 @@ class SjukfallGroupCacheKey {
     private final int periods;
     private final int periodSize;
     private final Aisle aisle;
-    private final SjukfallFilter filter;
+    private final FilterPredicates filter;
     private final boolean useOriginalSjukfallStart;
     private final String key;
 
-    SjukfallGroupCacheKey(LocalDate from, int periods, int periodSize, Aisle aisle, SjukfallFilter filter, boolean useOriginalSjukfallStart) {
+    SjukfallGroupCacheKey(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates filter, boolean useOriginalSjukfallStart) {
         this.from = from;
         this.periods = periods;
         this.periodSize = periodSize;
@@ -43,7 +43,7 @@ class SjukfallGroupCacheKey {
         this.key = getToTimeNullSafe(from) + "_" + periods + "_" + periodSize + "_" + getVardgivareIdNullSafe(aisle) + "_" + useOriginalSjukfallStart + "_" + getHashNullSafe(filter);
     }
 
-    private String getHashNullSafe(SjukfallFilter filter) {
+    private String getHashNullSafe(FilterPredicates filter) {
         if (filter == null) {
             return null;
         }
@@ -61,7 +61,7 @@ class SjukfallGroupCacheKey {
         if (from == null) {
             return -1;
         }
-        final Date date = from.toDate();
+        final Date date = new Date(from.toEpochDay());
         if (date == null) {
             return -1;
         }
@@ -103,7 +103,7 @@ class SjukfallGroupCacheKey {
         return aisle;
     }
 
-    public SjukfallFilter getFilter() {
+    public FilterPredicates getFilter() {
         return filter;
     }
 

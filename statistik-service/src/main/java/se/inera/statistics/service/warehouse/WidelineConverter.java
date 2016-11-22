@@ -18,11 +18,12 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -48,7 +49,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 @Component
 public class WidelineConverter {
 
-    private static final LocalDate ERA = new LocalDate("2000-01-01");
+    private static final LocalDate ERA = LocalDate.parse("2000-01-01");
     public static final int QUARTER = 25;
     public static final int HALF = 50;
     public static final int THREE_QUARTER = 75;
@@ -65,12 +66,16 @@ public class WidelineConverter {
     private static final int DATE20100101 = 3653; // 365*10 + 3
     private static final int MAX_YEARS_INTO_FUTURE = 5;
     private static final int MAX_LENGTH_CORRELATION_ID = 50;
+    public static final String UNKNOWN_DIAGNOS = "unknown";
 
     @Autowired
     private Icd10 icd10;
 
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
+
+    @Autowired
+    private Clock clock;
 
     public List<WideLine> toWideline(JsonNode intyg, Patientdata patientData, HsaInfo hsa, long logId, String correlationId, EventType type) {
         String lkf = getLkf(hsa);
@@ -143,6 +148,7 @@ public class WidelineConverter {
     }
 
     // CHECKSTYLE:OFF ParameterNumberCheck
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     private WideLine createWideLine(long logId, String correlationId, EventType type, String lkf, String enhet, HsaIdVardgivare vardgivare, String patient, int kon, int alder, boolean enkeltIntyg, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning, HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning) {
         WideLine line = new WideLine();
 
@@ -180,7 +186,7 @@ public class WidelineConverter {
     // CHECKSTYLE:ON ParameterNumberCheck
 
     private Diagnos parseDiagnos(String diagnos) {
-        boolean isUnknownDiagnos = diagnos == null || "unknown".equals(diagnos);
+        boolean isUnknownDiagnos = diagnos == null || UNKNOWN_DIAGNOS.equals(diagnos);
         final Icd10.Kod kod = isUnknownDiagnos ? null : icd10.findKod(diagnos);
         final Kategori kategori = kod != null ? kod.getKategori() : isUnknownDiagnos ? null : icd10.findKategori(diagnos);
         final Diagnos dx = new Diagnos();
@@ -190,10 +196,10 @@ public class WidelineConverter {
             dx.diagnoskapitel = kategori.getAvsnitt().getKapitel().getId();
             dx.diagnosavsnitt = kategori.getAvsnitt().getId();
             dx.diagnoskategori = kategori.getId();
-        } else if ("unknown".equals(diagnos)) {
+        } else if (UNKNOWN_DIAGNOS.equals(diagnos)) {
             dx.diagnoskapitel = null;
             dx.diagnosavsnitt = null;
-            dx.diagnoskategori = "unknown";
+            dx.diagnoskategori = UNKNOWN_DIAGNOS;
         } else {
             dx.diagnoskapitel = null;
             dx.diagnosavsnitt = null;
@@ -209,13 +215,13 @@ public class WidelineConverter {
     }
 
     private void checkStartdatum(List<String> errors, int startdatum) {
-        if (startdatum < DATE20100101 || startdatum > toDay(LocalDate.now().plusYears(MAX_YEARS_INTO_FUTURE))) {
+        if (startdatum < DATE20100101 || startdatum > toDay(LocalDate.now(clock).plusYears(MAX_YEARS_INTO_FUTURE))) {
             errors.add("Illegal startdatum: " + startdatum);
         }
     }
 
     private void checkSlutdatum(List<String> errors, int slutdatum) {
-        if (slutdatum > toDay(LocalDate.now().plusYears(MAX_YEARS_INTO_FUTURE))) {
+        if (slutdatum > toDay(LocalDate.now(clock).plusYears(MAX_YEARS_INTO_FUTURE))) {
             errors.add("Illegal slutdatum: " + slutdatum);
         }
     }
@@ -257,7 +263,7 @@ public class WidelineConverter {
     }
 
     public static int toDay(LocalDate dayDate) {
-        return Days.daysBetween(ERA, dayDate).getDays();
+        return (int) ChronoUnit.DAYS.between(ERA, dayDate);
     }
 
     public static LocalDate toDate(int day) {
@@ -273,9 +279,16 @@ public class WidelineConverter {
         checkAge(errors, line.getAlder());
         checkField(errors, line.getCorrelationId(), "CorrelationId", MAX_LENGTH_CORRELATION_ID);
         checkSjukskrivningsgrad(errors, line.getSjukskrivningsgrad());
-        checkStartdatum(errors, line.getStartdatum());
-        checkSlutdatum(errors, line.getSlutdatum());
+        checkDates(errors, line.getStartdatum(), line.getSlutdatum());
         return errors;
+    }
+
+    private void checkDates(List<String> errors, int startdatum, int slutdatum) {
+        checkStartdatum(errors, startdatum);
+        checkSlutdatum(errors, slutdatum);
+        if (startdatum > slutdatum) {
+            errors.add("Illegal dates. Start date (" + startdatum + ") must be before end date (" + slutdatum + ")");
+        }
     }
 
     private void checkAge(List<String> errors, int alder) {

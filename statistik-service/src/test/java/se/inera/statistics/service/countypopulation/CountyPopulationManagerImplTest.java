@@ -24,12 +24,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import se.inera.statistics.service.SpyableClock;
 import se.inera.statistics.service.report.model.Range;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -38,6 +41,9 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.times;
 
 public class CountyPopulationManagerImplTest {
+
+    @Spy
+    private final Clock clock = new SpyableClock(Clock.systemDefaultZone());
 
     @Mock
     private EntityManager manager;
@@ -60,7 +66,7 @@ public class CountyPopulationManagerImplTest {
         final CountyPopulationRow populationRow = new CountyPopulationRow("{\"01\": {\"male\": \"202\", \"female\": \"101\"}}", LocalDate.parse("2016-04-24"));
         Mockito.when(query.getSingleResult()).thenReturn(populationRow);
         Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
-        final Range range = Range.year();
+        final Range range = Range.year(clock);
 
         //When
         final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation(range);
@@ -82,7 +88,7 @@ public class CountyPopulationManagerImplTest {
         final CountyPopulationRow populationRow = new CountyPopulationRow("{\"01\": {\"male\": \"202\", \"female\": \"101\"}}", LocalDate.parse("2016-04-24"));
         Mockito.when(query.getSingleResult()).thenReturn(populationRow);
         Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
-        final Range range = Range.year();
+        final Range range = Range.year(clock);
 
         //When
         countyPopulationManager.getCountyPopulation(range);
@@ -99,7 +105,7 @@ public class CountyPopulationManagerImplTest {
         Mockito.when(query.getSingleResult()).thenThrow(new NoResultException());
         Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
         Mockito.when(countyPopulationFetcher.getPopulationFor(anyInt())).thenReturn(Optional.empty());
-        final Range range = Range.year();
+        final Range range = Range.year(clock);
 
         //When
         final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation(range);

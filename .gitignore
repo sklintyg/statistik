@@ -25,3 +25,7 @@ generatedSource
 catalina.base_IS_UNDEFINED
 statistik-gatling/logs
 statistik-gatling/results
+
+specifications/node_modules
+specifications/reports
+specifications/phantomjsdriver.log

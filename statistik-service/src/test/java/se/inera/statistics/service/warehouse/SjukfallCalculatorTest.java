@@ -20,13 +20,13 @@ package se.inera.statistics.service.warehouse;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.ArrayListMultimap;
-import org.joda.time.LocalDate;
 import org.junit.Test;
 import org.springframework.util.ReflectionUtils;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Range;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -39,8 +39,8 @@ public class SjukfallCalculatorTest {
     public void testGetFactsPerPatientAndPeriod() throws Exception {
         //Given
         final long patient = 1;
-        final List<Fact> facts = Arrays.asList(createFact(patient, new LocalDate(2015, 2, 20)), createFact(patient, new LocalDate(2015, 3, 20)));
-        final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 1, 1), 2, 1);
+        final List<Fact> facts = Arrays.asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 20)));
+        final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 1, 1), 2, 1);
 
         //When
         final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges, false);
@@ -56,8 +56,8 @@ public class SjukfallCalculatorTest {
     public void testGetFactsPerPatientAndPeriod2() throws Exception {
         //Given
         final long patient = 1;
-        final List<Fact> facts = Arrays.asList(createFact(patient, new LocalDate(2015, 2, 20)), createFact(patient, new LocalDate(2015, 3, 20)));
-        final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 2, 1), 2, 1);
+        final List<Fact> facts = Arrays.asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 20)));
+        final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 2, 1), 2, 1);
 
         //When
         final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges, false);
@@ -73,8 +73,8 @@ public class SjukfallCalculatorTest {
     public void testGetFactsPerPatientAndPeriod3() throws Exception {
         //Given
         final long patient = 1;
-        final List<Fact> facts = Arrays.asList(createFact(patient, new LocalDate(2015, 2, 20)), createFact(patient, new LocalDate(2015, 3, 20)));
-        final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 3, 1), 2, 1);
+        final List<Fact> facts = Arrays.asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 20)));
+        final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 3, 1), 2, 1);
 
         //When
         final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges, false);
@@ -90,8 +90,8 @@ public class SjukfallCalculatorTest {
     public void testGetFactsPerPatientAndPeriod4() throws Exception {
         //Given
         final long patient = 1;
-        final List<Fact> facts = Arrays.asList(createFact(patient, new LocalDate(2015, 2, 20)), createFact(patient, new LocalDate(2015, 3, 20)));
-        final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 4, 1), 2, 1);
+        final List<Fact> facts = Arrays.asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 20)));
+        final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 4, 1), 2, 1);
 
         //When
         final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges, false);
@@ -111,7 +111,7 @@ public class SjukfallCalculatorTest {
     @Test
     public void testExtendSjukfallIsCorrectlySetWhenUsingAllEnheterFilterConstant() throws Exception {
         //Given
-        final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 4, 1), 2, 1);
+        final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 4, 1), 2, 1);
 
         //When
         final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER.getIntygFilter(), ranges, false);
@@ -130,7 +130,7 @@ public class SjukfallCalculatorTest {
     @Test
     public void testExtendSjukfallIsCorrectlySetWhenUsingCustomFilter() throws Exception {
         //Given
-        final List<Range> ranges = SjukfallIterator.getRanges(new LocalDate(2015, 4, 1), 2, 1);
+        final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 4, 1), 2, 1);
         final Predicate<Fact> filter = new Predicate<Fact>() {
             @Override
             public boolean apply(Fact fact) {

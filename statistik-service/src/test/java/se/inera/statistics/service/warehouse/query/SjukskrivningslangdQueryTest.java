@@ -18,8 +18,6 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
 import org.junit.Test;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
@@ -31,6 +29,8 @@ import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +57,7 @@ public class SjukskrivningslangdQueryTest {
     }
 
     private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
-        return new SjukfallUtil().sjukfallGrupper(new LocalDate(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
+        return new SjukfallUtil().sjukfallGrupper(LocalDate.of(2000, 1, 1), 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
     }
 
     @Test
@@ -97,10 +97,10 @@ public class SjukskrivningslangdQueryTest {
     private void fact(int startday, int length) {
         Fact fact = aFact().withLan(3).withKommun(380).withForsamling(38002).
                 withEnhet(1).withLakarintyg(intyg++).
-                withPatient(patient++).withKon(Kon.Female).withAlder(45).
+                withPatient(patient++).withKon(Kon.FEMALE).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
                 withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + length - 1).
-                withLakarkon(Kon.Female).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).withEnkeltIntyg(false).build();
+                withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).withEnkeltIntyg(false).build();
         warehouse.accept(fact, VARDGIVARE);
     }
 

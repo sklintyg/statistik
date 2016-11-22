@@ -76,6 +76,7 @@ public class SimpleDualSexConverter {
         return TableData.createWithSingleHeadersRow(data, Arrays.asList(tableGroupTitle, "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
     }
 
+    @java.lang.SuppressWarnings("squid:S1172") // Parameter "row" is used by method in extending class
     protected boolean isMarked(SimpleKonDataRow row) {
         return false;
     }
@@ -91,8 +92,8 @@ public class SimpleDualSexConverter {
         if (totalSeriesInChart) {
             series.add(new ChartSeries("Totalt", casesPerMonth.getSummedData()));
         }
-        series.add(new ChartSeries("Kvinnor", casesPerMonth.getDataForSex(Kon.Female), Kon.Female));
-        series.add(new ChartSeries("Män", casesPerMonth.getDataForSex(Kon.Male), Kon.Male));
+        series.add(new ChartSeries("Kvinnor", casesPerMonth.getDataForSex(Kon.FEMALE), Kon.FEMALE));
+        series.add(new ChartSeries("Män", casesPerMonth.getDataForSex(Kon.MALE), Kon.MALE));
 
         return new ChartData(series, categories);
     }

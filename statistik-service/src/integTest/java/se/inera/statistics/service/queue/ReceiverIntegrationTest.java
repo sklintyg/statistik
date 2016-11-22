@@ -19,8 +19,6 @@
 package se.inera.statistics.service.queue;
 
 import org.apache.activemq.command.ActiveMQQueue;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +40,7 @@ import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WarehouseManager;
 import se.inera.statistics.service.warehouse.WidelineManager;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
+import se.inera.statistics.time.ChangableClock;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -49,6 +48,10 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 import javax.jms.TextMessage;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -86,9 +89,12 @@ public class ReceiverIntegrationTest {
     @Autowired
     private SjukfallQuery sjukfallQuery;
 
+    @Autowired
+    private ChangableClock changableClock;
+
     @Before
     public void setup() {
-        DateTimeUtils.setCurrentMillisFixed(new LocalDate(2014, 3, 30).toDate().getTime());
+        changableClock.setCurrentClock(Clock.fixed(Instant.parse("2014-03-30T10:15:30.00Z"), ZoneId.systemDefault()));
         this.jmsTemplate = new JmsTemplate(connectionFactory);
     }
 
@@ -96,7 +102,7 @@ public class ReceiverIntegrationTest {
     public void deliver_document_from_in_queue_to_statistics_repository() {
         populate();
         load();
-        SimpleKonResponse<SimpleKonDataRow> webData = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("enhetId")), sjukfallUtil.createEnhetFilter(new HsaIdEnhet("ENHETID")), new LocalDate("2011-01"), 12, 1, false);
+        SimpleKonResponse<SimpleKonDataRow> webData = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("enhetId")), sjukfallUtil.createEnhetFilter(new HsaIdEnhet("ENHETID")), LocalDate.parse("2011-01-01"), 12, 1, false);
 
         assertEquals(12, webData.getRows().size());
 
@@ -123,8 +129,8 @@ public class ReceiverIntegrationTest {
         queueAspect.setCountDownLatch(countDownLatch);
 
         UtlatandeBuilder builder = new UtlatandeBuilder();
-        simpleSend(builder.build("19121212-0010", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), new HsaIdEnhet("enhetId"), "A00", 0).toString(), "001");
-        simpleSend(builder.build("19121212-0110", new LocalDate("2011-01-20"), new LocalDate("2011-03-11"), new HsaIdEnhet("enhetId"), "A00", 0).toString(), "002");
+        simpleSend(builder.build("19121212-0010", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("enhetId"), "A00", 0).toString(), "001");
+        simpleSend(builder.build("19121212-0110", LocalDate.parse("2011-01-20"), LocalDate.parse("2011-03-11"), new HsaIdEnhet("enhetId"), "A00", 0).toString(), "002");
 
         try {
             countDownLatch.await(20, TimeUnit.SECONDS);

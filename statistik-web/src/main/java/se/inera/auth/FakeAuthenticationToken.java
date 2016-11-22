@@ -42,4 +42,5 @@ public class FakeAuthenticationToken extends AbstractAuthenticationToken {
     public Object getPrincipal() {
         return null;
     }
+
 }

@@ -33,7 +33,8 @@ public class FakeCredentials implements Serializable {
     private String enhetId;
     private String vardgivarId;
 
-    public FakeCredentials() {
+    FakeCredentials() {
+        //Do nothing but is needed by json mapper
     }
 
     public FakeCredentials(String hsaId, String fornamn, String efternamn) {
@@ -62,27 +63,27 @@ public class FakeCredentials implements Serializable {
         return vardgivarId;
     }
 
-    public void setHsaId(String hsaId) {
+    void setHsaId(String hsaId) {
         this.hsaId = hsaId;
     }
 
-    public void setFornamn(String fornamn) {
+    void setFornamn(String fornamn) {
         this.fornamn = fornamn;
     }
 
-    public void setEfternamn(String efternamn) {
+    void setEfternamn(String efternamn) {
         this.efternamn = efternamn;
     }
 
-    public void setEnhetId(String enhetId) {
+    void setEnhetId(String enhetId) {
         this.enhetId = enhetId;
     }
 
-    public void setVardgivarId(String vardgivarId) {
+    void setVardgivarId(String vardgivarId) {
         this.vardgivarId = vardgivarId;
     }
 
-    public void setVardgivarniva(boolean vardgivarniva) {
+    void setVardgivarniva(boolean vardgivarniva) {
         this.vardgivarniva = vardgivarniva;
     }
 

@@ -24,7 +24,7 @@
     <property name="LOG_BASE" value="${statistics.log.base:-${catalina.base}/logs}"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-      <filter class="se.inera.certificate.logging.MarkerFilter">
+      <filter class="se.inera.intyg.common.util.logging.MarkerFilter">
         <marker>Monitoring</marker>
         <onMatch>DENY</onMatch>
         <onMismatch>ACCEPT</onMismatch>
@@ -36,7 +36,7 @@
 
     <!-- Daily rolling file appender for logging monitoring events -->
     <appender name="MONITORING" class="ch.qos.logback.core.rolling.RollingFileAppender">
-      <filter class="se.inera.certificate.logging.MarkerFilter">
+      <filter class="se.inera.intyg.common.util.logging.MarkerFilter">
         <marker>Monitoring</marker>
         <onMatch>ACCEPT</onMatch>
         <onMismatch>DENY</onMismatch>
@@ -92,7 +92,10 @@
 
     <logger name="se.inera.certificate.web" level="WARN"/>
 
-    <!-- Enable logging of frontend activities -->
+    <logger name="org.springframework.security.saml.log" level="INFO" />
+    <logger name="org.opensaml" level="INFO" />
+
+  <!-- Enable logging of frontend activities -->
     <logger name="se.inera.statistics.web.service.LoggingService" level="INFO">
       <appender-ref ref="FRONTEND_FILE" />
     </logger>
@@ -118,13 +121,16 @@
     <logger name="se.inera.statistics.web.service.ProtectedChartDataService" level="INFO" additivity="false">
       <appender-ref ref="ACCESS_FILE" />
     </logger>
+    <logger name="se.inera.statistics.web.service.ProtectedLandstingService" level="INFO" additivity="false">
+      <appender-ref ref="ACCESS_FILE" />
+    </logger>
 
     <!-- Enable monitoring logging -->
     <logger name="se.inera.statistics.web.service.monitoring" level="INFO" additivity="false">
       <appender-ref ref="MONITORING" />
     </logger>
 
-    <root level="INFO">
+  <root level="INFO">
       <appender-ref ref="STDOUT"/>
     </root>
 

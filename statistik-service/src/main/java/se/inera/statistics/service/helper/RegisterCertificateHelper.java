@@ -19,6 +19,7 @@
 package se.inera.statistics.service.helper;
 
 import java.io.StringReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +30,6 @@ import javax.xml.bind.JAXBIntrospector;
 import javax.xml.bind.Unmarshaller;
 
 import org.apache.neethi.builders.converters.ConverterException;
-import org.joda.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -58,9 +58,6 @@ public class RegisterCertificateHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(RegisterCertificateHelper.class);
 
-    public RegisterCertificateHelper() {
-    }
-
     public String getEnhetId(RegisterCertificateType utlatande) {
         return utlatande.getIntyg().getSkapadAv().getEnhet().getEnhetsId().getExtension();
     }
@@ -82,7 +79,7 @@ public class RegisterCertificateHelper {
     }
 
     public String getIntygtyp(RegisterCertificateType intyg) {
-        return intyg.getIntyg().getTyp().getCode();
+        return intyg.getIntyg().getTyp().getCode().trim();
     }
 
     public boolean isEnkeltIntyg(RegisterCertificateType intyg) {
@@ -99,6 +96,7 @@ public class RegisterCertificateHelper {
         return getDelsvarString(intyg, AKTIVITETSBEGRANSNING_SVAR, AKTIVITETSBEGRANSNING_DELSVAR);
     }
 
+    @java.lang.SuppressWarnings("squid:S134") //I can't see a better way to write this with fewer nested statements
     private String getDelsvarString(RegisterCertificateType intyg, String svarId, String delsvarId) {
         for (Svar svar : intyg.getIntyg().getSvar()) {
             if (svarId.equals(svar.getId())) {
@@ -116,6 +114,7 @@ public class RegisterCertificateHelper {
         return null;
     }
 
+    @java.lang.SuppressWarnings("squid:S134") //I can't see a better way to write this with fewer nested statements
     public String getDx(RegisterCertificateType intyg) {
         for (Svar svar : intyg.getIntyg().getSvar()) {
             if (DIAGNOS_SVAR_ID_6.equals(svar.getId())) {
@@ -130,7 +129,7 @@ public class RegisterCertificateHelper {
         return null;
     }
 
-    private Arbetsnedsattning getArbetsnedsattning(Svar svar) throws ConverterException {
+    private Arbetsnedsattning getArbetsnedsattning(Svar svar) {
         int nedsattning = -1;
         DatePeriodType datePeriod = new DatePeriodType();
 
@@ -138,7 +137,7 @@ public class RegisterCertificateHelper {
             switch (delsvar.getId()) {
             case BEHOV_AV_SJUKSKRIVNING_NIVA_DELSVARSVAR_ID_32:
                 String sjukskrivningsnivaString = getCVSvarContent(delsvar).getCode();
-                final SjukskrivningsGrad sjukskrivningsGrad = SjukskrivningsGrad.fromId(Integer.parseInt(sjukskrivningsnivaString));
+                final SjukskrivningsGrad sjukskrivningsGrad = SjukskrivningsGrad.valueOf(sjukskrivningsnivaString);
                 nedsattning = sjukskrivningsGrad.getNedsattning();
                 break;
             case BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32:
@@ -159,6 +158,7 @@ public class RegisterCertificateHelper {
             alder = ConversionHelper.extractAlder(personId, getSistaNedsattningsdag(intyg));
         } catch (Exception e) {
             LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId);
+            LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId, e);
             alder = ConversionHelper.NO_AGE;
         }
         String kon = ConversionHelper.extractKon(personId);
@@ -166,10 +166,8 @@ public class RegisterCertificateHelper {
         return new Patientdata(alder, Kon.parse(kon));
     }
 
-    public LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {
+    private LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {
         final List<Arbetsnedsattning> arbetsnedsattnings = getArbetsnedsattning(document);
-        final int startYear = 2000;
-        LocalDate date = new LocalDate(startYear, 1, 1);
         LocalDate to = null;
         for (Arbetsnedsattning arbetsnedsattning : arbetsnedsattnings) {
             final LocalDate candidate = arbetsnedsattning.getSlut();
@@ -191,63 +189,11 @@ public class RegisterCertificateHelper {
         return arbetsnedsattnings;
     }
 
-    private enum SjukskrivningsGrad {
-        /**
-         * Helt nedsatt (id 1).
-         */
-        HELT_NEDSATT(1, "Helt nedsatt", 100),
-        /**
-         * Nedsatt till 3/4 (id 2).
-         */
-        NEDSATT_3_4(2, "Nedsatt med 3/4", 75),
-        /**
-         * Nedsatt till hälften (id 3).
-         */
-        NEDSATT_HALFTEN(3, "Nedsatt med hälften", 50),
-        /**
-         * Nedsatt till 1/4 (id 4).
-         */
-        NEDSATT_1_4(4, "Nedsatt med 1/4", 25);
-
-        private final int id;
-        private final String label;
-        private final int nedsattning;
-
-        SjukskrivningsGrad(int id, String label, int nedsattning) {
-            this.id = id;
-            this.label = label;
-            this.nedsattning = nedsattning;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-        public int getNedsattning() {
-            return nedsattning;
-        }
-
-        public static SjukskrivningsGrad fromId(int id) {
-            for (SjukskrivningsGrad typ : values()) {
-                if (typ.id == id) {
-                    return typ;
-                }
-            }
-            throw new IllegalArgumentException();
-        }
-
-    }
-
     public RegisterCertificateType unmarshalRegisterCertificateXml(String data) throws JAXBException {
         Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(RegisterCertificateType.class).createUnmarshaller();
         jaxbUnmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
         final StringReader reader = new StringReader(data);
-        RegisterCertificateType unmarshal = (RegisterCertificateType) JAXBIntrospector.getValue(jaxbUnmarshaller.unmarshal(reader));
-        return (RegisterCertificateType) unmarshal;
+        return (RegisterCertificateType) JAXBIntrospector.getValue(jaxbUnmarshaller.unmarshal(reader));
     }
 
     /**
@@ -257,36 +203,41 @@ public class RegisterCertificateHelper {
      * @return CVType
      * @throws ConverterException
      */
-    public CVType getCVSvarContent(Svar.Delsvar delsvar) throws ConverterException {
+    //This code is copied from intygsprojektet and is best to keep unchanged
+    @java.lang.SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S134", "squid:UselessParenthesesCheck"})
+    public CVType getCVSvarContent(Svar.Delsvar delsvar) {
         for (Object o : delsvar.getContent()) {
             if (o instanceof Node) {
                 CVType cvType = new CVType();
                 Node node = (Node) o;
                 NodeList list = node.getChildNodes();
                 for (int i = 0; i < list.getLength(); i++) {
+                    if (Node.ELEMENT_NODE != list.item(i).getNodeType()) {
+                        continue;
+                    }
                     String textContent = list.item(i).getTextContent();
-                    switch (list.item(i).getNodeName()) {
-                    case "ns3:code":
-                        cvType.setCode(textContent);
-                        break;
-                    case "ns3:codeSystem":
-                        cvType.setCodeSystem(textContent);
-                        break;
-                    case "ns3:codeSystemVersion":
-                        cvType.setCodeSystemVersion(textContent);
-                        break;
-                    case "ns3:codeSystemName":
-                        cvType.setCodeSystemName(textContent);
-                        break;
-                    case "ns3:displayName":
-                        cvType.setDisplayName(textContent);
-                        break;
-                    case "ns3:originalText":
-                        cvType.setOriginalText(textContent);
-                        break;
-                    default:
-                        LOG.debug("Unexpected element found while parsing CVType");
-                        break;
+                    switch (list.item(i).getLocalName()) {
+                        case "code":
+                            cvType.setCode(textContent);
+                            break;
+                        case "codeSystem":
+                            cvType.setCodeSystem(textContent);
+                            break;
+                        case "codeSystemVersion":
+                            cvType.setCodeSystemVersion(textContent);
+                            break;
+                        case "codeSystemName":
+                            cvType.setCodeSystemName(textContent);
+                            break;
+                        case "displayName":
+                            cvType.setDisplayName(textContent);
+                            break;
+                        case "originalText":
+                            cvType.setOriginalText(textContent);
+                            break;
+                        default:
+                            LOG.debug("Unexpected element found while parsing CVType");
+                            break;
                     }
                 }
                 if (cvType.getCode() == null || cvType.getCodeSystem() == null) {
@@ -308,24 +259,29 @@ public class RegisterCertificateHelper {
      * @param delsvar
      * @throws ConverterException
      */
-    public DatePeriodType getDatePeriodTypeContent(Svar.Delsvar delsvar) throws ConverterException {
+    //This code is copied from intygsprojektet and is best to keep unchanged
+    @java.lang.SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S134", "squid:UselessParenthesesCheck"})
+    public DatePeriodType getDatePeriodTypeContent(Svar.Delsvar delsvar) {
         for (Object o : delsvar.getContent()) {
             if (o instanceof Node) {
                 DatePeriodType datePeriodType = new DatePeriodType();
                 Node node = (Node) o;
                 NodeList list = node.getChildNodes();
                 for (int i = 0; i < list.getLength(); i++) {
+                    if (Node.ELEMENT_NODE != list.item(i).getNodeType()) {
+                        continue;
+                    }
                     String textContent = list.item(i).getTextContent();
-                    switch (list.item(i).getNodeName()) {
-                    case "ns3:start":
-                        datePeriodType.setStart(new LocalDate(textContent));
-                        break;
-                    case "ns3:end":
-                        datePeriodType.setEnd(new LocalDate(textContent));
-                        break;
-                    default:
-                        LOG.debug("Unexpected element found while parsing DatePeriodType");
-                        break;
+                    switch (list.item(i).getLocalName()) {
+                        case "start":
+                            datePeriodType.setStart(LocalDate.parse(textContent));
+                            break;
+                        case "end":
+                            datePeriodType.setEnd(LocalDate.parse(textContent));
+                            break;
+                        default:
+                            LOG.debug("Unexpected element found while parsing DatePeriodType");
+                            break;
                     }
                 }
                 if (datePeriodType.getStart() == null || datePeriodType.getEnd() == null) {

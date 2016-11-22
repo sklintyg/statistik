@@ -31,10 +31,11 @@ public class HSAStore {
 
     private String data;
 
-    public HSAStore() {
+    HSAStore() {
+        //Not know why/if this is needed
     }
 
-    public HSAStore(String id, String data) {
+    HSAStore(String id, String data) {
         this.id = id;
         this.data = data;
     }

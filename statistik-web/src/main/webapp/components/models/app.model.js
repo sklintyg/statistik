@@ -25,18 +25,20 @@ angular.module('StatisticsApp').factory('AppModel',
         var data = {};
 
         _reset();
-        
+
         function _reset() {
             data.isLoggedIn = false;
             data.loginUrl = '';
             data.loginVisible = false;
             data.highchartsExportUrl = '';
             data.sjukskrivningLengths = [];
+            data.aldersgrupps = [];
             return data;
         }
 
         function setSjukskrivningslangd(app) {
             data.sjukskrivningLengths.length = 0;
+            data.sjukskrivningLengthsObject = app.sjukskrivningLengths;
 
             angular.forEach(app.sjukskrivningLengths, function(value, key)  {
                 data.sjukskrivningLengths.push({
@@ -46,6 +48,20 @@ angular.module('StatisticsApp').factory('AppModel',
             });
 
             data.sjukskrivningLengths = $filter('orderBy')(data.sjukskrivningLengths, 'id', false);
+        }
+
+        function setAldersgrupps(app) {
+            data.aldersgrupps.length = 0;
+            data.ageGroups = app.ageGroups;
+
+            angular.forEach(app.ageGroups, function(value, key)  {
+                data.aldersgrupps.push({
+                    id: key,
+                    name: value
+                });
+            });
+
+            data.aldersgrupps = $filter('orderBy')(data.aldersgrupps, 'id', false);
         }
 
         return {
@@ -61,6 +77,7 @@ angular.module('StatisticsApp').factory('AppModel',
                 data.highchartsExportUrl = app.highchartsExportUrl;
 
                 setSjukskrivningslangd(app);
+                setAldersgrupps(app);
             },
             get: function() {
                 return data;

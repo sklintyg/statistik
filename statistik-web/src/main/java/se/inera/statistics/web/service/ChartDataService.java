@@ -18,23 +18,22 @@
  */
 package se.inera.statistics.web.service;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +41,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
+
+import com.google.common.base.Optional;
 
 import se.inera.statistics.service.countypopulation.CountyPopulation;
 import se.inera.statistics.service.countypopulation.CountyPopulationManager;
@@ -61,8 +62,6 @@ import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.overview.OverviewData;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
-
-import com.google.common.base.Optional;
 
 /**
  * Statistics services that does not require authentication. Unless otherwise noted, the data returned
@@ -98,6 +97,9 @@ public class ChartDataService {
     @Autowired
     @Qualifier("webMonitoringLogService")
     private MonitoringLogService monitoringLogService;
+
+    @Autowired
+    private Clock clock;
 
     private volatile SimpleDetailsData numberOfCasesPerMonth;
     private volatile DualSexStatisticsData diagnosgrupper;
@@ -158,21 +160,21 @@ public class ChartDataService {
     }
 
     public void buildNumberOfCasesPerMonth() {
-        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
+        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getCasesPerMonth(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         numberOfCasesPerMonth = new PeriodConverter().convert(casesPerMonth, filterSettings);
     }
 
     public void buildDiagnosgrupper() {
-        Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
+        Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
         DiagnosgruppResponse diagnosisGroups = data.getDiagnosgrupper(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         diagnosgrupper = new DiagnosisGroupsConverter().convert(diagnosisGroups, filterSettings);
     }
 
     public void buildDiagnoskapitel() {
-        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
+        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
         for (Icd10.Kapitel kapitel : icd10.getKapitel(false)) {
             String id = kapitel.getId();
             DiagnosgruppResponse diagnosisGroups = data.getDiagnosavsnitt(range, id);
@@ -182,41 +184,41 @@ public class ChartDataService {
     }
 
     public void buildOverview() {
-        Range range = Range.quarter();
+        Range range = Range.quarter(clock);
         OverviewResponse response = overviewData.getOverview(range);
         overview = new OverviewConverter().convert(response, range);
     }
 
     private void buildAldersgrupper() {
-        Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
+        Range range = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
         SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getHistoricalAgeGroups(range);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(range.getMonths()));
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(range.getMonths(), clock));
         aldersgrupper = SimpleDualSexConverter.newGenericTvarsnitt().convert(ageGroups, filterSettings);
     }
 
     private void buildSjukskrivningsgrad() {
-        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS);
+        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
         KonDataResponse degreeOfSickLeaveStatistics = data.getSjukskrivningsgrad(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         sjukskrivningsgrad = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, filterSettings);
     }
 
     private void buildSjukfallslangd() {
-        Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
+        Range range = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
         SimpleKonResponse<SimpleKonDataRow> sickLeaveLength = data.getSjukfallslangd(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         sjukfallslangd = SimpleDualSexConverter.newGenericTvarsnitt().convert(sickLeaveLength, filterSettings);
     }
 
     private void buildSjukfallPerLan() {
-        Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
+        Range range = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
         SimpleKonResponse<SimpleKonDataRow> calculatedSjukfallPerLan = data.getSjukfallPerLan(range);
         final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation(range);
         sjukfallPerLan = new CasesPerCountyConverter(calculatedSjukfallPerLan, countyPopulation, range).convert();
     }
 
     private void buildKonsfordelningPerLan() {
-        final Range range = Range.createForLastMonthsExcludingCurrent(YEAR);
+        final Range range = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getSjukfallPerLan(range);
         konsfordelningPerLan = new SjukfallPerSexConverter().convert(casesPerMonth, range);
     }
@@ -234,7 +236,7 @@ public class ChartDataService {
     @GET
     @Path("getNumberOfCasesPerMonth{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getNumberOfCasesPerMonth(@Context HttpServletRequest request, @PathParam("csv") String csv) {
+    public Response getNumberOfCasesPerMonth(@PathParam("csv") String csv) {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getNumberOfCasesPerMonth");
         return getResponse(numberOfCasesPerMonth, csv);
@@ -246,7 +248,7 @@ public class ChartDataService {
     @GET
     @Path("getDiagnoskapitel")
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<Icd> getDiagnoskapitel(@Context HttpServletRequest request) {
+    public List<Icd> getDiagnoskapitel() {
         LOG.info("Calling getKapitel");
         monitoringLogService.logTrackAccessAnonymousChartData("getKapitel");
         List<Icd> kapitel = new ArrayList<>();
@@ -265,7 +267,7 @@ public class ChartDataService {
     @GET
     @Path("getDiagnosisKapitelAndAvsnittAndKategori")
     @Produces({ MediaType.APPLICATION_JSON })
-    public DiagnosisKapitelAndAvsnittAndKategoriResponse getDiagnosisKapitelAndAvsnittAndKod(@Context HttpServletRequest request) {
+    public DiagnosisKapitelAndAvsnittAndKategoriResponse getDiagnosisKapitelAndAvsnittAndKod() {
         LOG.info("Calling getDiagnosisKapitelAndAvsnittAndKategori");
         monitoringLogService.logTrackAccessAnonymousChartData("getDiagnosisKapitelAndAvsnittAndKategori");
         Map<String, List<Icd>> avsnitts = new LinkedHashMap<>();
@@ -277,7 +279,7 @@ public class ChartDataService {
                 kategoris.put(avsnitt.getId(), convertToIcds(avsnitt.getKategori()));
             }
         }
-        return new DiagnosisKapitelAndAvsnittAndKategoriResponse(kategoris, avsnitts, getDiagnoskapitel(request));
+        return new DiagnosisKapitelAndAvsnittAndKategoriResponse(kategoris, avsnitts, getDiagnoskapitel());
     }
 
     private List<Icd> convertToIcds(List<? extends Icd10.Id> ids) {
@@ -296,7 +298,7 @@ public class ChartDataService {
     @GET
     @Path("getDiagnoskapitelstatistik{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getDiagnoskapitelstatistik(@Context HttpServletRequest request, @PathParam("csv") String csv) {
+    public Response getDiagnoskapitelstatistik(@PathParam("csv") String csv) {
         LOG.info("Calling getDiagnoskapitelstatistik for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getDiagnoskapitelstatistik");
         return getResponse(diagnosgrupper, csv);
@@ -308,7 +310,7 @@ public class ChartDataService {
     @GET
     @Path("getDiagnosavsnittstatistik/{groupId}{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getDiagnosavsnittstatistik(@Context HttpServletRequest request, @PathParam("groupId") String groupId, @PathParam("csv") String csv) {
+    public Response getDiagnosavsnittstatistik(@PathParam("groupId") String groupId, @PathParam("csv") String csv) {
         LOG.info("Calling getDiagnosavsnittstatistik for national with groupId: " + groupId);
         monitoringLogService.logTrackAccessAnonymousChartData("getDiagnosavsnittstatistik");
         return getResponse(diagnoskapitel.get(groupId), csv);
@@ -332,7 +334,7 @@ public class ChartDataService {
     @GET
     @Path("getAgeGroupsStatistics{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getAgeGroupsStatistics(@Context HttpServletRequest request, @PathParam("csv") String csv) {
+    public Response getAgeGroupsStatistics(@PathParam("csv") String csv) {
         LOG.info("Calling getAgeGroupsStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getAgeGroupsStatistics");
         return getResponse(aldersgrupper, csv);
@@ -344,7 +346,7 @@ public class ChartDataService {
     @GET
     @Path("getDegreeOfSickLeaveStatistics{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @PathParam("csv") String csv) {
+    public Response getDegreeOfSickLeaveStatistics(@PathParam("csv") String csv) {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getDegreeOfSickLeaveStatistics");
         return getResponse(sjukskrivningsgrad, csv);
@@ -356,7 +358,7 @@ public class ChartDataService {
     @GET
     @Path("getSickLeaveLengthData{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getSickLeaveLengthData(@Context HttpServletRequest request, @PathParam("csv") String csv) {
+    public Response getSickLeaveLengthData(@PathParam("csv") String csv) {
         LOG.info("Calling getSickLeaveLengthData for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getSickLeaveLengthData");
         return getResponse(sjukfallslangd, csv);
@@ -368,7 +370,7 @@ public class ChartDataService {
     @GET
     @Path("getCountyStatistics{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getCountyStatistics(@Context HttpServletRequest request, @PathParam("csv") String csv) {
+    public Response getCountyStatistics(@PathParam("csv") String csv) {
         return getResponse(sjukfallPerLan, csv);
     }
 
@@ -378,7 +380,7 @@ public class ChartDataService {
     @GET
     @Path("getSjukfallPerSexStatistics{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getSjukfallPerSexStatistics(@Context HttpServletRequest request, @PathParam("csv") String csv) {
+    public Response getSjukfallPerSexStatistics(@PathParam("csv") String csv) {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getSjukfallPerSexStatistics");
         return getResponse(konsfordelningPerLan, csv);
@@ -387,7 +389,7 @@ public class ChartDataService {
     @GET
     @Path("getIcd10Structure")
     @Produces({ MediaType.APPLICATION_JSON })
-    public List<Icd> getIcd10Structure(@Context HttpServletRequest request) {
+    public List<Icd> getIcd10Structure() {
         LOG.info("Calling getIcd10Structure");
         monitoringLogService.logTrackAccessAnonymousChartData("getIcd10Structure");
         return icd10.getIcdStructure();
@@ -396,7 +398,7 @@ public class ChartDataService {
     @POST
     @Path("filter")
     @Produces({ MediaType.TEXT_PLAIN })
-    public Response getFilterHash(@Context HttpServletRequest request, String filterData) {
+    public Response getFilterHash(String filterData) {
         LOG.info("Calling post FilterHash: " + filterData);
         monitoringLogService.logTrackAccessAnonymousChartData("getFilterHash");
         try {
@@ -409,7 +411,7 @@ public class ChartDataService {
 
     @GET
     @Path("filter/{filterHash}")
-    public Response getFilterData(@Context HttpServletRequest request, @PathParam("filterHash") String filterHash) {
+    public Response getFilterData(@PathParam("filterHash") String filterHash) {
         LOG.info("Calling get FilterData: " + filterHash);
         monitoringLogService.logTrackAccessAnonymousChartData("getFilterData");
         final Optional<String> filterData = filterHashHandler.getFilterData(filterHash);

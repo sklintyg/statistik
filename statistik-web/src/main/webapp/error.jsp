@@ -30,7 +30,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="ROBOTS" content="nofollow, noindex"/>
 
-    <title>Inera Statistics Servic</title>
+    <title>Statistiktjänsten</title>
 
     <link rel="icon" href="<c:url value="/assets/images/favicon.ico" />" type="image/vnd.microsoft.icon"/>
 
@@ -45,7 +45,7 @@
 
     <!-- build:css({build/.tmp,src/main/webapp}) app/app.css -->
     <!-- injector:css -->
-    <link rel="stylesheet" href="app/app.css">
+    <link rel="stylesheet" href="/app/app.css">
     <!-- endinjector -->
     <!-- endbuild -->
 </head>

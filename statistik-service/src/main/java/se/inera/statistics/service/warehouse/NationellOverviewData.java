@@ -127,7 +127,7 @@ public class NationellOverviewData {
             for (int i = 0; i < previousData.size(); i++) {
                 int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
                 int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
-                result.add(new OverviewChartRowExtended(periods.getGroups().get(i), current, percentChange(current, previous)));
+                result.add(new OverviewChartRowExtended(periods.getGroups().get(i)  + " %", current, percentChange(current, previous)));
             }
         }
         return result;
@@ -233,7 +233,7 @@ public class NationellOverviewData {
     private OverviewKonsfordelning getSexProportion(Range range) {
         SimpleKonResponse<SimpleKonDataRow> intyg = data.getAntalIntyg(range.getFrom(), 1, KVARTAL);
 
-        if (intyg.getRows().size() == 0) {
+        if (intyg.getRows().isEmpty()) {
             return new OverviewKonsfordelning(0, 0, range);
         }
         SimpleKonDataRow dataRow = intyg.getRows().get(0);

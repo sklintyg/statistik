@@ -18,21 +18,34 @@
  */
 package se.inera.statistics.web.util;
 
-import java.io.IOException;
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.lang3.time.DurationFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.transaction.annotation.Transactional;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.web.service.ChartDataService;
+import se.inera.statistics.web.service.monitoring.SessionCounterListener;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.io.IOException;
+import java.sql.Time;
+import java.util.List;
 
 public class HealthCheckUtil {
 
+    private static final Logger LOG = LoggerFactory.getLogger(HealthCheckUtil.class);
+    private static final long START_TIME = System.currentTimeMillis();
     private static final int NANOS_PER_MS = 1_000_000;
+    private static final String CURR_TIME_SQL = "SELECT CURRENT_TIME()";
 
     @Value("${highcharts.export.url.pingdom}")
     private String highchartsUrl;
@@ -43,6 +56,12 @@ public class HealthCheckUtil {
     @Autowired
     private HSAWebServiceCalls hsaService;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Autowired
+    private SessionRegistry sessionRegistry;
+
     private HttpClient client;
 
     public Status getOverviewStatus() {
@@ -52,6 +71,7 @@ public class HealthCheckUtil {
             chartDataService.getOverviewData();
             ok = true;
         } catch (Exception e) {
+            LOG.debug("Could not get overview data", e);
             ok = false;
         }
         long doneTime = System.nanoTime();
@@ -65,6 +85,7 @@ public class HealthCheckUtil {
             hsaService.callPing();
             ok = true;
         } catch (Exception e) {
+            LOG.debug("Could not call hsa ping", e);
             ok = false;
         }
         long doneTime = System.nanoTime();
@@ -79,8 +100,9 @@ public class HealthCheckUtil {
         }
         long startTime = System.nanoTime();
         try {
-            ok = client.executeMethod(new GetMethod(highchartsUrl)) == HttpStatus.METHOD_NOT_ALLOWED.value();
+            ok = client.executeMethod(new GetMethod(highchartsUrl)) == HttpStatus.OK.value();
         } catch (IOException e) {
+            LOG.debug("Highcharts service not reachable", e);
             // Squelch this as it is quite ok to throw IOException.
             // It simply means that the service is not reachable
             ok = false;
@@ -91,6 +113,62 @@ public class HealthCheckUtil {
 
     public Status getWorkloadStatus() {
         return new Status(CalcCoordinator.getWorkloadPercentage(), true);
+    }
+
+    public Status checkUptime() {
+        long uptime = System.currentTimeMillis() - START_TIME;
+        LOG.debug("Current system uptime is {}", DurationFormatUtils.formatDurationWords(uptime, true, true));
+        return new Status(uptime, true);
+    }
+
+    public String getUptimeAsString() {
+        Status uptime = checkUptime();
+        return DurationFormatUtils.formatDurationWords(uptime.getMeasurement(), true, true);
+    }
+
+    @Transactional
+    public Status checkDB() {
+        boolean ok;
+        long startTime = System.nanoTime();
+        ok = checkTimeFromDb();
+        long doneTime = System.nanoTime();
+        return createStatus(ok, startTime, doneTime);
+    }
+
+    private boolean checkTimeFromDb() {
+        Time timestamp;
+        try {
+            Query query = entityManager.createNativeQuery(CURR_TIME_SQL);
+            timestamp = (Time) query.getSingleResult();
+        } catch (Exception e) {
+            LOG.error("checkTimeFromDb failed with exception: " + e.getMessage());
+            return false;
+        }
+        return timestamp != null;
+    }
+
+    public Status checkNbrOfLoggedInUsers() {
+        boolean ok;
+        long size = -1;
+        try {
+            List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
+            size = allPrincipals.size();
+            ok = true;
+        } catch (Exception e) {
+            LOG.warn("Operation checkNbrOfLoggedInUsers failed", e);
+            ok = false;
+        }
+
+        String result = ok ? "OK" : "FAIL";
+        LOG.debug("Operation checkNbrOfLoggedInUsers completed with result {}, nbr of users is {}", result, size);
+
+        return new Status(size, ok);
+    }
+
+    public Status getNumberOfUsers() {
+        long size = SessionCounterListener.getTotalActiveSession();
+
+        return new Status(size, true);
     }
 
     private Status createStatus(boolean ok, long startTime, long doneTime) {

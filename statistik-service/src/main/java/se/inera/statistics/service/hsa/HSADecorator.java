@@ -23,11 +23,17 @@ import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
 import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.joda.time.LocalDateTime;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +52,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
 
 @Component
 public class HSADecorator {
@@ -91,7 +96,7 @@ public class HSADecorator {
                 .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
                 .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
                 .withCreatorVisibility(JsonAutoDetect.Visibility.ANY));
-        mapper.registerModule(new JodaModule().addSerializer(LocalDateTime.class, new OurLocalDateTimeSerializer()));
+        mapper.registerModule(new JavaTimeModule().addSerializer(LocalDateTime.class, new OurLocalDateTimeSerializer()).addDeserializer(LocalDateTime.class, new OurLocalDateTimeDeserializer()));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return mapper;
     }
@@ -109,6 +114,7 @@ public class HSADecorator {
         return updatedHsaInfo;
     }
 
+    @java.lang.SuppressWarnings("squid:S1067") // Expression complexity check ignored in Sonar
     private boolean missingData(HsaInfo info) {
         return info == null || !info.hasEnhet() || !info.hasHuvudenhet() || !info.hasPersonal() || !info.hasVardgivare();
     }
@@ -128,6 +134,7 @@ public class HSADecorator {
             return hsaInfoMapper.writeValueAsString(info);
         } catch (JsonProcessingException e) {
             LOG.error("Failed to convert HSA object to json. HSA info has not been stored");
+            LOG.debug("Failed to convert HSA object to json. HSA info has not been stored", e);
             return null;
         }
     }
@@ -137,6 +144,7 @@ public class HSADecorator {
             return hsaInfoMapper.readValue(data, HsaInfo.class);
         } catch (IOException e) {
             LOG.error("Failed to parse HSA info json");
+            LOG.debug("Failed to parse HSA info json", e);
             return null;
         }
     }
@@ -172,10 +180,23 @@ public class HSADecorator {
     private static class OurLocalDateTimeSerializer extends com.fasterxml.jackson.databind.JsonSerializer<LocalDateTime> {
 
         @Override
-        public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
-            jsonGenerator.writeString(localDateTime.toString("yyyy-MM-dd"));
+        public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+            jsonGenerator.writeString(localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         }
 
+    }
+
+    private static class OurLocalDateTimeDeserializer extends com.fasterxml.jackson.databind.JsonDeserializer<LocalDateTime> {
+
+        @Override
+        public LocalDateTime deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+            final boolean emptyField = p == null || p.getText() == null || p.getText().isEmpty();
+            try {
+                return emptyField ? null : LocalDate.from(DateTimeFormatter.ofPattern("yyyy-MM-dd").parse(p.getText())).atStartOfDay();
+            } catch (NumberFormatException | DateTimeParseException e) {
+                throw new JsonProcessingException("Failed to parse: " + p.getText(), e) { };
+            }
+        }
     }
 
 }

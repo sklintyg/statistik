@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').directive('selectVardgivare',
     /** @ngInject */
-    function () {
+    function ($location) {
         'use strict';
 
         return {
@@ -29,9 +29,10 @@ angular.module('StatisticsApp').directive('selectVardgivare',
                 isLogin: '=',
                 selectVardgivare: '&'
             },
-            templateUrl: 'components/directives/selectVardgivare/selectVardgivare.html',
+            templateUrl: '/components/directives/selectVardgivare/selectVardgivare.html',
             link: function($scope) {
                 $scope.isCollapsed = true;
+                $scope.currentVgid = $location.search().vgid;
 
                 $scope.setSelectedVardgivare = function(vgId) {
                   $scope.selectVardgivare({vgId: vgId});

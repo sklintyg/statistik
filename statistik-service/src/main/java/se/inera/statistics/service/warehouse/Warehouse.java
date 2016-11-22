@@ -22,7 +22,6 @@ import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.common.collect.Lists;
-import org.joda.time.LocalDateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -30,6 +29,7 @@ import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -50,7 +50,6 @@ public class Warehouse implements Iterable<Aisle> {
     private static IdMap<HsaIdEnhet> enhetsMap = new IdMap<>();
     private static IdMap<HsaIdLakare> lakareMap = new IdMap<>();
     private LocalDateTime lastUpdate = null;
-    private LocalDateTime lastEnhetUpdate = null;
 
     public void accept(Fact fact, HsaIdVardgivare vardgivareId) {
         MutableAisle aisle = getAisle(vardgivareId, loadingAisles, true);
@@ -100,6 +99,7 @@ public class Warehouse implements Iterable<Aisle> {
         return aisle;
     }
 
+    @Override
     public String toString() {
         long total = 0;
         for (Aisle aisle: aisles.values()) {
@@ -157,7 +157,7 @@ public class Warehouse implements Iterable<Aisle> {
 
     public void completeEnhets() {
         for (List<Enhet> enhetList: loadingEnhets.values()) {
-            Collections.sort(enhetList);
+            Collections.sort(enhetList, Enhet.byEnhetId());
         }
         enhets = Collections.unmodifiableMap(loadingEnhets);
         loadingEnhets = new HashMap<>();

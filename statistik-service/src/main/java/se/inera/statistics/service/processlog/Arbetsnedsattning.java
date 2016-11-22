@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.service.processlog;
 
-import org.joda.time.LocalDate;
+import java.time.LocalDate;
 
 public class Arbetsnedsattning {
     private static final int MAX_NEDSATTNING = 100;

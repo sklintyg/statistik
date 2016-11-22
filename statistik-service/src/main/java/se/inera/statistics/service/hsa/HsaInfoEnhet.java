@@ -18,11 +18,10 @@
  */
 package se.inera.statistics.service.hsa;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.joda.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.MoreObjects;
@@ -48,6 +47,7 @@ public class HsaInfoEnhet {
     }
 
     // CHECKSTYLE:OFF ParameterNumberCheck
+    @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
     public HsaInfoEnhet(String id, List<String> enhetsTyp, List<String> agarform, LocalDateTime startdatum, LocalDateTime slutdatum, Boolean arkiverad, List<String> verksamhet, List<String> vardform, HsaInfoEnhetGeo geografi, String vgid) {
         this.id = id;
         this.enhetsTyp = enhetsTyp;

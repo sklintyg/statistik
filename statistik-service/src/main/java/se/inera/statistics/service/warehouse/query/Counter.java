@@ -21,10 +21,11 @@ package se.inera.statistics.service.warehouse.query;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.Sjukfall;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Counter<T> implements Comparable<Counter> {
+public class Counter<T> {
 
     private final T key;
     private int countFemale;
@@ -35,23 +36,10 @@ public class Counter<T> implements Comparable<Counter> {
     }
 
     public void increase(Sjukfall sjukfall) {
-        if (sjukfall.getKon() == Kon.Female) {
+        if (sjukfall.getKon() == Kon.FEMALE) {
             countFemale++;
         } else {
             countMale++;
-        }
-    }
-
-    @Override
-    public int compareTo(Counter other) {
-        int count = countFemale + countMale;
-        int otherCount = other.countFemale + other.countMale;
-        if (count > otherCount) {
-            return -1;
-        } else if (count == otherCount) {
-            return 0;
-        } else {
-            return 1;
         }
     }
 
@@ -81,4 +69,20 @@ public class Counter<T> implements Comparable<Counter> {
         }
         return counters;
     }
+
+    public static Comparator<Counter> byTotalCount() {
+        return (o1, o2) -> {
+            int count = o1.countFemale + o1.countMale;
+            int otherCount = o2.countFemale + o2.countMale;
+            if (count > otherCount) {
+                return -1;
+            } else if (count == otherCount) {
+                return 0;
+            } else {
+                return 1;
+            }
+        };
+    }
+
+
 }

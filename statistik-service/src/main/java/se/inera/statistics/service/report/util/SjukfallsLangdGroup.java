@@ -21,6 +21,9 @@ package se.inera.statistics.service.report.util;
 import java.util.Arrays;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public enum SjukfallsLangdGroup {
 
     GROUP1_0TO14("Under 15 dagar", 0, 14),
@@ -30,6 +33,8 @@ public enum SjukfallsLangdGroup {
     GROUP5_91TO180("91-180 dagar", 91, 180),
     GROUP6_181TO365("181-365 dagar", 181, 365),
     GROUP7_366PLUS("Över 365 dagar", 366, Integer.MAX_VALUE - 1);
+
+    private static final Logger LOG = LoggerFactory.getLogger(SjukfallsLangdGroup.class);
 
     private final String groupName;
     private final int from;
@@ -66,6 +71,7 @@ public enum SjukfallsLangdGroup {
             final SjukfallsLangdGroup sjukfallsLangdGroup = valueOf(name);
             return Optional.of(sjukfallsLangdGroup);
         } catch (IllegalArgumentException e) {
+            LOG.debug("Failed to parse name: {}", name, e);
             return Optional.empty();
         }
     }

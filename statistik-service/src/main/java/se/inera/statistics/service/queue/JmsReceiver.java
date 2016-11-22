@@ -39,7 +39,6 @@ public class JmsReceiver implements MessageListener {
     public static final String REVOKED = "revoked";
     public static final String ACTION = "action";
     public static final String CERTIFICATE_ID = "certificate-id";
-    private static final String MESSAGE_VERSION = "MsgVersion";
 
     @Autowired
     private Receiver receiver;

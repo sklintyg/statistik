@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.model.Icd;
+import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.Warehouse;
@@ -50,6 +51,7 @@ public class ResponseHandler {
     public static final String ALL_AVAILABLE_DXS_SELECTED_IN_FILTER = "allAvailableDxsSelectedInFilter";
     public static final String ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER = "allAvailableEnhetsSelectedInFilter";
     public static final String ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER = "allAvailableSjukskrivningslangdsSelectedInFilter";
+    public static final String ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER = "allAvailableAgeGroupsSelectedInFilter";
     public static final String FILTERED_ENHETS = "filteredEnhets";
     public static final int LIMIT_FOR_TOO_MUCH_DATA_MESSAGE = 100;
     public static final String MESSAGE_KEY = "message";
@@ -79,6 +81,9 @@ public class ResponseHandler {
 
         final boolean allAvailableSjukskrivningslangdsSelectedInFilter = result == null || areAllAvailableSjukskrivningslangdsSelectedInFilter(result.getFilter());
         mappedResult.put(ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER, allAvailableSjukskrivningslangdsSelectedInFilter);
+
+        final boolean allAvailableAgeGroupsSelectedInFilter = result == null || areAllAvailableAgeGroupsSelectedInFilter(result.getFilter());
+        mappedResult.put(ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER, allAvailableAgeGroupsSelectedInFilter);
 
         final List<String> enhetNames = allAvailableEnhetsSelectedInFilter ? getEnhetNames(availableEnhetsForUser) : getEnhetNamesFromFilter(result.getFilter());
         mappedResult.put(FILTERED_ENHETS, enhetNames);
@@ -136,6 +141,20 @@ public class ResponseHandler {
             return false;
         }
         return sjukskrivningslangds.stream().allMatch(s -> SjukfallsLangdGroup.getByName(s).isPresent());
+    }
+
+    private boolean areAllAvailableAgeGroupsSelectedInFilter(FilterDataResponse filter) {
+        if (filter == null) {
+            return true;
+        }
+        final List<String> aldersgrupp = filter.getAldersgrupp();
+        if (aldersgrupp == null) {
+            return true;
+        }
+        if (new HashSet<>(aldersgrupp).size() != AgeGroup.values().length) {
+            return false;
+        }
+        return aldersgrupp.stream().allMatch(s -> AgeGroup.getByName(s).isPresent());
     }
 
     private boolean areAllAvailableDxsSelectedInFilter(FilterDataResponse filter) {

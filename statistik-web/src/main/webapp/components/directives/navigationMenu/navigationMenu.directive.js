@@ -31,7 +31,7 @@
                     loginClicked: '&',
                     queryString: '='
                 },
-                templateUrl: 'components/directives/navigationMenu/navigationMenu.html',
+                templateUrl: '/components/directives/navigationMenu/navigationMenu.html',
                 controller: NavigationMenuCtrl
             };
         }]);
