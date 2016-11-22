@@ -153,7 +153,7 @@ describe('Test of common functions for controllers', function() {
 
             expect(called).toBeFalsy();
             expect(scope.dataLoadingError).toBeTruthy();
-            expect(scope.errorPageUrl).toBe('app/views/error/statisticNotDone.html');
+            expect(scope.errorPageUrl).toBe('/app/views/error/statisticNotDone.html');
         });
 
         it('Nationell and empty result checkCache', inject(function($cacheFactory) {
