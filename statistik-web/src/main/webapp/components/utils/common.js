@@ -357,7 +357,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             $scope.errorPageUrl = null;
             if (result === '' && !verksamhet && !landsting) {
                 $scope.dataLoadingError = true;
-                $scope.errorPageUrl = 'app/views/error/statisticNotDone.html';
+                $scope.errorPageUrl = '/app/views/error/statisticNotDone.html';
 
                 $cacheFactory.get('$http').removeAll();
             } else {
