@@ -17,7 +17,7 @@ description = 'Inera Statistics Service - Web Module'
 
 
 gretty {
-    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,embedded,hsa-stub,wc-hsa-stub,security-fake'
+    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,testapi,embedded,hsa-stub,wc-hsa-stub,security-fake'
 
     servletContainer = 'jetty9'
     contextPath = '/'

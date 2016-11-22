@@ -127,11 +127,11 @@
         <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect" />
     </beans>
 
-    <beans profile="dev">
+    <beans profile="testapi">
         <bean class="se.inera.testsupport.RestTemplateStub" />
         <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable" />
     </beans>
-    <beans profile="!dev">
+    <beans profile="!testapi">
         <bean class="org.springframework.web.client.RestTemplate" />
         <bean class="java.time.Clock" factory-method="systemDefaultZone"/>
     </beans>

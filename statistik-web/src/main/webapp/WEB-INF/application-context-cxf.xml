@@ -55,7 +55,7 @@
 
     </beans>
 
-    <beans profile="dev">
+    <beans profile="testapi">
         <bean id="restSupportService" class="se.inera.testsupport.RestSupportService"/>
         <jaxrs:server id="restSupportContainer" address="/testsupport">
             <jaxrs:serviceBeans>
