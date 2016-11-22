@@ -145,7 +145,17 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         scope.errorMessage = messageService.getProperty('alert.filter.date-invalid');
 
         // Fel format
-        if (!scope.myForm.fromDate.$valid || !isValidDate(scope.businessFilter.fromDate) || !scope.myForm.toDate.$valid || !isValidDate(scope.businessFilter.toDate)) {
+        var inValidFromDate = !scope.myForm.fromDate.$valid || !isValidDate(scope.businessFilter.fromDate);
+        var inValidToDate = !scope.myForm.toDate.$valid || !isValidDate(scope.businessFilter.toDate);
+
+        if (inValidFromDate || inValidToDate) {
+            if (inValidToDate) {
+                scope.toDateValidationError = true;
+            }
+            if (inValidFromDate) {
+                scope.fromDateValidationError = true;
+            }
+
             return true;
         }
 
