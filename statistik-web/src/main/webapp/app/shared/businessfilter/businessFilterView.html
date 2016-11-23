@@ -25,7 +25,8 @@
                 uib-datepicker-popup="{{format}}"
                 datepicker-options="dateOptions"
                 show-button-bar="false"
-                is-open="isFromDateOpen"/>
+                is-open="isFromDateOpen"
+                year-month-input-limiter/>
             <span class="input-group-btn">
                 <button id="fromDatePickerBtn"
                         type="button"
@@ -54,8 +55,9 @@
                 data-ng-blur="validateDate()"
                 uib-datepicker-popup="{{format}}"
                 datepicker-options="dateOptionsTo"
-                  show-button-bar="false"
-                  is-open="isToDateOpen"/>
+                show-button-bar="false"
+                is-open="isToDateOpen"
+                year-month-input-limiter/>
               <span class="input-group-btn">
                   <button id="toDatePickerBtn"
                           type="button"
