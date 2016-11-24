@@ -23,6 +23,7 @@ import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
+import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.overview.BarChartData;
 import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
@@ -30,6 +31,7 @@ import se.inera.statistics.web.model.overview.VerksamhetNumberOfCasesPerMonthOve
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
@@ -37,7 +39,7 @@ import java.util.stream.Collectors;
 
 public class VerksamhetOverviewConverter {
 
-    VerksamhetOverviewData convert(VerksamhetOverviewResponse resp, Range range, Filter filter, String message) {
+    VerksamhetOverviewData convert(VerksamhetOverviewResponse resp, Range range, Filter filter, Message message) {
         final OverviewKonsfordelning casesPerMonthNew = resp.getCasesPerMonthSexProportionPreviousPeriod();
         final OverviewKonsfordelning casesPerMonthOld = resp.getCasesPerMonthSexProportionBeforePreviousPeriod();
 
@@ -58,8 +60,9 @@ public class VerksamhetOverviewConverter {
         SickLeaveLengthOverview sickLeaveLength = new SickLeaveLengthOverview(sickLeaveLengthData, resp.getLongSickLeavesTotal(), resp.getLongSickLeavesAlternation());
 
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
+        List<Message> messages = message == null ? new ArrayList<Message>() : Arrays.asList(message);
 
-        return new VerksamhetOverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength, filterResponse, message);
+        return new VerksamhetOverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength, filterResponse, messages);
     }
 
     private Comparator<DonutChartData> comp() {

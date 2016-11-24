@@ -110,7 +110,7 @@ public class FilterHandler {
             LOG.debug("Could not use selected landsting filter. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request),
                     Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
-                    new Message(ErrorType.FILTER, ErrorSeverity.WARN, "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
         }
     }
 
@@ -140,7 +140,7 @@ public class FilterHandler {
             LOG.debug("Could not use selected filter. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhets(request),
                     Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
-                    new Message(ErrorType.FILTER, ErrorSeverity.WARN, "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
         }
     }
 
@@ -250,7 +250,7 @@ public class FilterHandler {
 
         Range range = new Range(from.withDayOfMonth(1), to.plusMonths(1).withDayOfMonth(1).minusDays(1));
 
-        return new RangeMessageDTO(range, new Message(ErrorType.FILTER, ErrorSeverity.WARN, message));
+        return new RangeMessageDTO(range, Message.create(ErrorType.FILTER, ErrorSeverity.WARN, message));
     }
 
     private Filter getFilterForAllAvailableEnhetsLandsting(HttpServletRequest request) {

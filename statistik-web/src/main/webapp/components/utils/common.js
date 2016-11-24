@@ -336,7 +336,11 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.getResultMessageList = function(result, messageService) {
-            return result.messages ? result.messages : (result.empty ? messageService.getProperty('info.emptyreponse', null, '', null, true) : []);
+            return result.messages ? result.messages : this.getEmptyResponseMessage(messageService);
+        };
+
+        this.getEmptyResponseMessage = function(messageService) {
+            return [ {type: 'UNSET', severity: 'INFO', message: messageService.getProperty('info.emptyreponse', null, '', null, true)} ];
         };
 
         this.formatOverViewTablePDF = function(thousandseparatedFilter, data, nameSuffix) {

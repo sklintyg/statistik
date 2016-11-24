@@ -17,29 +17,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').directive('message',
+angular.module('StatisticsApp')
+    .directive('showMessage',
     /** @ngInject */
-    function($log, $rootScope, $filter) {
+    function() {
         'use strict';
 
         return {
-            restrict: 'EA',
-            replace: true,
-            scope: false,
-            link: function(scope, element, attr) {
-                var result;
-                // observe changes to interpolated attribute
-                function updateMessage(interpolatedKey) {
-                    var params = typeof attr.param !== 'undefined' ? [attr.param] : attr.params;
-                    result = $filter('messageFilter')(interpolatedKey, attr.fallback, attr.fallbackDefaultLang, params, attr.lang);
-                    element.html('<span>' + result + '</span>');
-                }
-
-                attr.$observe('key', function(interpolatedKey) {
-                    updateMessage(interpolatedKey);
-                });
-
-                updateMessage(attr.key);
+            templateUrl: '/components/directives/message/showMessage.html',
+            restrict: 'E',
+            scope: {
+                type: '=',
+                severity: '=',
+                text: '='
+            },
+            link: function($scope) {
+                $scope.isInfo = $scope.severity === 'INFO';
+                $scope.isWarning = $scope.severity === 'WARN';
+                $scope.isDanger = $scope.severity === 'ERROR';
             }
         };
     });

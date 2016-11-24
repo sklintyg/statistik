@@ -28,34 +28,29 @@ public final class Message {
 
     private String message = null;
 
-    public Message(ErrorType type, ErrorSeverity severity, String message) {
+    private Message(ErrorType type, ErrorSeverity severity, String message) {
         this.type = type;
         this.severity = severity;
         this.message = message;
+    }
+
+    public static Message create(ErrorType type, ErrorSeverity severity, String message) {
+        if (message == null) {
+            throw new IllegalArgumentException("Argument message cannot be null");
+        }
+        return new Message(type, severity, message);
     }
 
     public ErrorType getType() {
         return type;
     }
 
-    public void setType(ErrorType type) {
-        this.type = type;
-    }
-
     public ErrorSeverity getSeverity() {
         return severity;
     }
 
-    public void setSeverity(ErrorSeverity severity) {
-        this.severity = severity;
-    }
-
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     @Override
