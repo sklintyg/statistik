@@ -18,17 +18,11 @@
  */
 package se.inera.statistics.web.service;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.ws.rs.core.Response;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.model.Icd;
@@ -44,10 +38,13 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableDataReport;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import javax.ws.rs.core.Response;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ResponseHandler {
 
@@ -94,7 +91,7 @@ public class ResponseHandler {
         if (result instanceof TableDataReport) {
             final TableDataReport detailReport = (TableDataReport) result;
             if (containsMoreDataThanLimit(detailReport, LIMIT_FOR_TOO_MUCH_DATA_MESSAGE)) {
-                Message message = new Message(ErrorType.FILTER, ErrorSeverity.INFO, "Rapporten innehåller mycket data, vilket kan göra diagrammet svårt att läsa. Överväg att filtrera resultatet för att minska mängden data.");
+                Message message = Message.create(ErrorType.UNSET, ErrorSeverity.INFO, "Rapporten innehåller mycket data, vilket kan göra diagrammet svårt att läsa. Överväg att filtrera resultatet för att minska mängden data.");
                 mappedResult.put(MESSAGE_KEY, message);
             }
         }

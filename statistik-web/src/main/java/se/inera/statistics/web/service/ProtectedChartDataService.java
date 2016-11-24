@@ -362,7 +362,8 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 3);
         final Filter filter = filterSettings.getFilter();
         final Range range = Range.quarter(clock);
-        final String message = filterHash == null || filterHash.isEmpty() || filterHashHandler.getFilterFromHash(filterHash).isUseDefaultPeriod() ? null : "Valt tidsintervall i filtret gäller inte för översiktssidan";
+        final String msg = "Valt tidsintervall i filtret gäller inte för översiktssidan";
+        final Message message = filterHash == null || filterHash.isEmpty() || filterHashHandler.getFilterFromHash(filterHash).isUseDefaultPeriod() ? null : Message.create(ErrorType.FILTER, ErrorSeverity.INFO, msg);
         VerksamhetOverviewResponse response = warehouse.getOverview(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final VerksamhetOverviewData overviewData = new VerksamhetOverviewConverter().convert(response, range, filter, message);
 
@@ -643,11 +644,7 @@ public class ProtectedChartDataService {
     }
 
     private Message createMessage(String msg) {
-        return new Message(ErrorType.UNSET, ErrorSeverity.INFO, msg);
-    }
-
-    private Message createMessage(ErrorType type, ErrorSeverity severity, String msg) {
-        return new Message(type, severity, msg);
+        return Message.create(ErrorType.UNSET, ErrorSeverity.INFO, msg);
     }
 
 }

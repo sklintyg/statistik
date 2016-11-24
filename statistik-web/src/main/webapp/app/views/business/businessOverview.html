@@ -31,14 +31,10 @@
 			</div>
 		</show-filter-list>
 
-
-
 		<!-- Alert the user about specific conditions -->
 		<div class="row hidden-print">
-				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-						<div class="ng-binding top-20px-margin alert alert-info" data-ng-show="resultMessage" role="alert">
-								<strong>Observera!</strong> {{resultMessage}}
-						</div>
+				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-repeat="resultMessage in resultMessageList">
+					<show-message type="resultMessage.type" severity="resultMessage.severity" text="resultMessage.message"></show-message>
 				</div>
 		</div>
 

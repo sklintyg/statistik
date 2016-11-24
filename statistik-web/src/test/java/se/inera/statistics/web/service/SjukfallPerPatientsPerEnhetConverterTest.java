@@ -241,6 +241,6 @@ public class SjukfallPerPatientsPerEnhetConverterTest {
     }
 
     private Message createMessage() {
-        return new Message(ErrorType.FILTER, ErrorSeverity.INFO, "");
+        return Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "");
     }
 }

@@ -50,10 +50,8 @@
   <div class="row" data-ng-class="{margin_top_button_group: showDetailsOptions}" style="margin-bottom: 10px;">
     <!-- Button group for viewing different series -->
 
-    <div class="col-md-12 col-lg-7"  data-ng-if="resultMessage">
-      <div class="ng-binding top-20px-margin alert alert-info" role="alert">
-        <strong>Observera!</strong> {{resultMessage}}
-      </div>
+    <div class="col-md-12 col-lg-7" ng-repeat="resultMessage in resultMessageList">
+      <show-message type="resultMessage.type" severity="resultMessage.severity" text="resultMessage.message"></show-message>
     </div>
 
     <div data-ng-if="generatingPdf" class="spinner-detail">
@@ -128,7 +126,7 @@
 
 <!-- Start ingress -->
 <div dataerrorview show-error="dataLoadingError" error-page-url="errorPageUrl">
-  <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading && !resultMessage">
+  <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading && !resultMessageList">
     <!-- Start graph -->
     <div class="row">
       <div data-ng-repeat="chartContainer in chartContainers"

@@ -49,9 +49,9 @@ public class ConvertersTest {
 
     @Test
     public void testCombineMessagesEmptyInputStringIsIgnored() throws Exception {
-        Message m1 = new Message(ErrorType.FILTER, ErrorSeverity.INFO, "m1");
-        Message m2 = new Message(ErrorType.FILTER, ErrorSeverity.INFO, "");
-        Message m3 = new Message(ErrorType.FILTER, ErrorSeverity.INFO, "m3");
+        Message m1 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "m1");
+        Message m2 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "");
+        Message m3 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "m3");
 
         //When
         final List<Message> result = Converters.combineMessages(m1, m2, m3);
@@ -62,8 +62,8 @@ public class ConvertersTest {
 
     @Test
     public void testCombineMessagesNullInputIsIgnored() throws Exception {
-        Message m1 = new Message(ErrorType.FILTER, ErrorSeverity.INFO, "m1");
-        Message m2 = new Message(ErrorType.FILTER, ErrorSeverity.INFO, "m2");
+        Message m1 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "m1");
+        Message m2 = Message.create(ErrorType.FILTER, ErrorSeverity.INFO, "m2");
 
         //When
         final List<Message> result = Converters.combineMessages(m1, null, m2);
