@@ -52,10 +52,6 @@ describe('Tests for directive yearMonthInputLimiter', function() {
             scope.$digest();
             expect(ngModel.$viewValue).toEqual(ORIGINAL_VALUE);
 
-            element.val('0000').trigger('input');
-            scope.$digest();
-            expect(ngModel.$viewValue).toEqual(ORIGINAL_VALUE);
-
             element.val('2016-125').trigger('input');
             scope.$digest();
             expect(ngModel.$viewValue).toEqual(ORIGINAL_VALUE);
