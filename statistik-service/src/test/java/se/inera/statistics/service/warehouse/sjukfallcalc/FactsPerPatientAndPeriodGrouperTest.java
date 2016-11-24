@@ -41,7 +41,7 @@ public class FactsPerPatientAndPeriodGrouperTest {
         final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 1, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = FactsPerPatientAndPeriodGrouper.group(facts, ranges, false);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = FactsPerPatientAndPeriodGrouper.group(facts, ranges);
 
         //Then
         assertEquals(4, factsPerPatientAndPeriod.size());
@@ -58,7 +58,7 @@ public class FactsPerPatientAndPeriodGrouperTest {
         final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 2, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = FactsPerPatientAndPeriodGrouper.group(facts, ranges, false);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = FactsPerPatientAndPeriodGrouper.group(facts, ranges);
 
         //Then
         assertEquals(4, factsPerPatientAndPeriod.size());
@@ -75,7 +75,7 @@ public class FactsPerPatientAndPeriodGrouperTest {
         final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 3, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = FactsPerPatientAndPeriodGrouper.group(facts, ranges, false);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = FactsPerPatientAndPeriodGrouper.group(facts, ranges);
 
         //Then
         assertEquals(4, factsPerPatientAndPeriod.size());
@@ -92,7 +92,7 @@ public class FactsPerPatientAndPeriodGrouperTest {
         final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 4, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = FactsPerPatientAndPeriodGrouper.group(facts, ranges, false);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = FactsPerPatientAndPeriodGrouper.group(facts, ranges);
 
         //Then
         assertEquals(4, factsPerPatientAndPeriod.size());
