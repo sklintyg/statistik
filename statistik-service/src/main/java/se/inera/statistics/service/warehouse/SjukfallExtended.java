@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NavigableSet;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -44,7 +45,7 @@ public class SjukfallExtended {
     private int start;
     private final int lan;
     private int end;
-    private List<Fact> facts = new ArrayList<>();
+    private NavigableSet<Fact> facts = new TreeSet<>(START_DATUM_SORTER);
     private final int kon;
     private int alder;
     private List<Diagnos> diagnoses = new ArrayList<>();
@@ -199,8 +200,8 @@ public class SjukfallExtended {
     @Override
     public String toString() {
         return "Sjukfall{"
-                + "start=" + start
-                + ", end=" + end
+                + "start=" + WidelineConverter.toDate(start) + " (" + start + ")"
+                + ", end=" + WidelineConverter.toDate(end) + " (" + end + ")"
                 + ", realDays=" + getRealDays()
                 + ", intygCount=" + getIntygCount()
                 + '}';
@@ -267,8 +268,7 @@ public class SjukfallExtended {
     }
 
     private Fact getLastFact() {
-        facts.sort(START_DATUM_SORTER);
-        return facts.get(facts.size() - 1);
+        return facts.last();
     }
 
     private Stream<Fact> getFirstIntygFacts() {
@@ -277,8 +277,7 @@ public class SjukfallExtended {
     }
 
     private Fact getFirstFact() {
-        facts.sort(START_DATUM_SORTER);
-        return facts.get(0);
+        return facts.first();
     }
 
     public boolean isExtended() {
@@ -407,6 +406,7 @@ public class SjukfallExtended {
         public int getSlutDatum() {
             return slutDatum;
         }
+
     }
 
 }

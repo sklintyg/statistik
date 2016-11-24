@@ -31,7 +31,7 @@ public final class FactsPerPatientAndPeriodGrouper {
     private FactsPerPatientAndPeriodGrouper() {
     }
 
-    public static List<ArrayListMultimap<Long, Fact>> group(Iterable<Fact> facts, List<Range> ranges, boolean useOriginalSjukfallStart) {
+    public static List<ArrayListMultimap<Long, Fact>> group(Iterable<Fact> facts, List<Range> ranges) {
         final List<Integer> rangeEnds = new ArrayList<>(ranges.size() + 1);
         rangeEnds.add(WidelineConverter.toDay(ranges.get(0).getFrom().minusDays(1)));
         for (Range range : ranges) {
@@ -41,14 +41,10 @@ public final class FactsPerPatientAndPeriodGrouper {
 
         List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = new ArrayList<>(rangeEnds.size());
         for (int i = 0; i < rangeEnds.size(); i++) {
-            factsPerPatientAndPeriod.add(ArrayListMultimap.<Long, Fact> create());
+            factsPerPatientAndPeriod.add(ArrayListMultimap.create());
         }
 
-        if (useOriginalSjukfallStart) {
-            populateFactsPerPatientAndPeriodUsingOriginalSjukfallStart(facts, rangeEnds, factsPerPatientAndPeriod);
-        } else {
-            populateFactsPerPatientAndPeriod(facts, rangeEnds, factsPerPatientAndPeriod);
-        }
+        populateFactsPerPatientAndPeriod(facts, rangeEnds, factsPerPatientAndPeriod);
         return factsPerPatientAndPeriod;
     }
 
@@ -59,15 +55,6 @@ public final class FactsPerPatientAndPeriodGrouper {
                 if (rangeIndex >= 0) {
                     factsPerPatientAndPeriod.get(rangeIndex).put(fact.getPatient(), fact);
                 }
-            }
-        }
-    }
-
-    private static void populateFactsPerPatientAndPeriodUsingOriginalSjukfallStart(Iterable<Fact> facts, List<Integer> rangeEnds, List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod) {
-        for (Fact fact : facts) {
-            final int rangeIndex = getRangeIndex(fact.getStartdatum(), rangeEnds);
-            if (rangeIndex >= 0) {
-                factsPerPatientAndPeriod.get(rangeIndex).put(fact.getPatient(), fact);
             }
         }
     }

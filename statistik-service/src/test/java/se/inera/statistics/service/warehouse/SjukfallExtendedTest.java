@@ -56,7 +56,7 @@ public class SjukfallExtendedTest {
     }
 
     private Fact createFact(boolean enkeltIntyg) {
-        return new Fact(1L, 1,1,1,1, lakarintyg++,1,1,1,1,1,1,1,1,1,1,1,1,new int[]{}, 1, enkeltIntyg);
+        return new Fact(1,1,1,1, lakarintyg++,1,1,1,1,1,1,1,1,1,1,1,1,new int[]{}, 1, enkeltIntyg);
     }
 
 }

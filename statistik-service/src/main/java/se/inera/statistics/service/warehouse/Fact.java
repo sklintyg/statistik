@@ -180,8 +180,8 @@ public class Fact {
                 + ", enhet=" + enhet
                 + ", lakarintyg=" + lakarintyg
                 + ", patient=" + patient
-                + ", startdatum=" + startdatum
-                + ", slutdatum=" + slutdatum
+                + ", startdatum=" + WidelineConverter.toDate(startdatum) + " (" + startdatum + ")"
+                + ", slutdatum=" + WidelineConverter.toDate(slutdatum) + " (" + slutdatum + ")"
                 + ", kon=" + kon
                 + ", alder=" + alder
                 + ", diagnoskapitel=" + diagnoskapitel

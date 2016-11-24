@@ -35,13 +35,11 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
     private final LocalDate from;
     private final FilterPredicates sjukfallFilter;
     private int period = 0;
-    private final int periods;
     private final int periodSize;
     private final SjukfallCalculator sjukfallCalculator;
 
     public SjukfallIterator(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates sjukfallFilter, boolean useOriginalSjukfallStart) {
         this.from = from;
-        this.periods = periods;
         this.periodSize = periodSize;
         this.sjukfallFilter = sjukfallFilter;
         List<Range> ranges = getRanges(from, periods, periodSize);
@@ -64,7 +62,7 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
 
     @Override
     public boolean hasNext() {
-        return period < periods;
+        return sjukfallCalculator.hasNextPeriod();
     }
 
     @Override

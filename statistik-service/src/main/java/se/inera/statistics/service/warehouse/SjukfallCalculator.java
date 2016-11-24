@@ -33,6 +33,7 @@ import se.inera.statistics.service.warehouse.sjukfallcalc.SjukfallPerPeriodCalcu
 class SjukfallCalculator {
 
     private int period = 0;
+    private final int maxPeriods;
     private SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator;
 
     SjukfallCalculator(Aisle aisle, Predicate<Fact> filter, List<Range> ranges, boolean useOriginalSjukfallStart) {
@@ -41,12 +42,17 @@ class SjukfallCalculator {
         final Iterable<Fact> filteredAisle = Iterables.filter(aisle, filter);
         ArrayList<Range> rangeList = new ArrayList<>(ranges);
         sjukfallPerPeriodCalculator = new SjukfallPerPeriodCalculator(extendSjukfall, useOriginalSjukfallStart, rangeList, facts, filteredAisle);
+        maxPeriods = rangeList.size();
     }
 
     Collection<Sjukfall> getSjukfallsForNextPeriod() {
         Multimap<Long, SjukfallExtended> result = sjukfallPerPeriodCalculator.getSjukfallsForPeriod(period);
         period++;
         return result.values().stream().map(Sjukfall::create).collect(Collectors.toList());
+    }
+
+    boolean hasNextPeriod() {
+        return period < maxPeriods;
     }
 
 }
