@@ -77,9 +77,8 @@ class SjukfallCalculatorExtendHelper {
         if (noExtraSjukfallExistsOnOtherEnhet) {
             return; //All intygs for patient are already included
         }
-        SjukfallExtended firstSjukfallOnAvailableEnhetsForPatient = useOriginalSjukfallStart ? getFirstSjukfall(sjukfalls) : null;
         for (SjukfallExtended sjukfallFromAllVgForPatient : sjukfallFromAllIntygForPatient) {
-            mergeAndUpdateSjukfall(patient, sjukfalls, firstSjukfallOnAvailableEnhetsForPatient, sjukfallFromAllVgForPatient);
+            mergeAndUpdateSjukfall(patient, sjukfalls, sjukfallFromAllVgForPatient);
         }
     }
 
@@ -104,13 +103,13 @@ class SjukfallCalculatorExtendHelper {
         return currentFirstSjukfall;
     }
 
-    private void mergeAndUpdateSjukfall(long patient, Collection<SjukfallExtended> sjukfallsFromAvailableEnhetsForPatient, SjukfallExtended firstSjukfallOnAvailableEnhetsForPatient, SjukfallExtended sjukfallFromAllVgForPatient) {
+    private void mergeAndUpdateSjukfall(long patient, Collection<SjukfallExtended> sjukfallsFromAvailableEnhetsForPatient, SjukfallExtended sjukfallFromAllVgForPatient) {
         List<SjukfallExtended> mergableSjukfalls = getSjukfallsFromAvailableEnhetsIncludedInSjukfallFromAllVg(sjukfallsFromAvailableEnhetsForPatient, sjukfallFromAllVgForPatient);
         final SjukfallExtended mergedSjukfall = mergeAllSjukfallInList(mergableSjukfalls);
         if (mergedSjukfall == null) {
             return;
         }
-        updateMergedSjukfall(patient, sjukfallsFromAvailableEnhetsForPatient, firstSjukfallOnAvailableEnhetsForPatient, sjukfallFromAllVgForPatient, mergableSjukfalls, mergedSjukfall);
+        updateMergedSjukfall(patient, sjukfallsFromAvailableEnhetsForPatient, sjukfallFromAllVgForPatient, mergableSjukfalls, mergedSjukfall);
     }
 
     private List<SjukfallExtended> getSjukfallsFromAvailableEnhetsIncludedInSjukfallFromAllVg(Collection<SjukfallExtended> sjukfallsFromAvailableEnhetsForPatient, SjukfallExtended sjukfallFromAllVgForPatient) {
@@ -126,12 +125,13 @@ class SjukfallCalculatorExtendHelper {
                 .collect(Collectors.toList());
     }
 
-    private void updateMergedSjukfall(long patient, Collection<SjukfallExtended> sjukfalls, SjukfallExtended firstSjukfall, SjukfallExtended sjukfall, List<SjukfallExtended> mergableSjukfalls, SjukfallExtended mergedSjukfall) {
+    private void updateMergedSjukfall(long patient, Collection<SjukfallExtended> sjukfalls, SjukfallExtended sjukfall, List<SjukfallExtended> mergableSjukfalls, SjukfallExtended mergedSjukfall) {
         SjukfallExtended mergedSjukfallExtendedWithRealDays = mergedSjukfall.extendWithRealDaysWithinPeriod(sjukfall);
         if (mergedSjukfallExtendedWithRealDays == null) {
-            LOG.error("extendWithRealDaysWithinPeriod should not return null");
+            LOG.info("extendWithRealDaysWithinPeriod should not return null");
             return;
         }
+        SjukfallExtended firstSjukfall = useOriginalSjukfallStart ? getFirstSjukfall(sjukfalls) : null;
         if (firstSjukfall != null && firstSjukfall.getStart() == mergedSjukfallExtendedWithRealDays.getStart()) {
             mergedSjukfallExtendedWithRealDays = getExtendedSjukfallStart(patient, mergedSjukfallExtendedWithRealDays);
         }
