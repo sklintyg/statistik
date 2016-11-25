@@ -24,7 +24,6 @@ import org.junit.Test;
 import org.springframework.util.ReflectionUtils;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.warehouse.sjukfallcalc.FactsPerPatientAndPeriodGrouper;
 import se.inera.statistics.service.warehouse.sjukfallcalc.SjukfallPerPeriodCalculator;
 
 import java.lang.reflect.Field;
