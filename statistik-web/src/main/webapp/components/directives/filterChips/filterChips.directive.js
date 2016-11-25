@@ -294,10 +294,8 @@ angular.module('StatisticsApp')
                         var filterElement = element.find('.filter-level .col-xs-12');
                         var width = filterElement.width();
                         var allChips = $scope.allChips.length;
-                        var numberOfChips = Math.floor((width/210) * 2);
-
+                        var numberOfChips = getNrChipsThatFits2Rows($scope.allChips, width);
                         if (numberOfChips < allChips) {
-                            numberOfChips--;
                             $scope.numberOfChipsNotShown = allChips - numberOfChips;
                         } else {
                             $scope.numberOfChipsNotShown = 0;
@@ -306,6 +304,55 @@ angular.module('StatisticsApp')
                         $scope.shownChips = $scope.allChips.slice(0, numberOfChips);
                     });
                 }
+
+                function getNrChipsThatFits2Rows(chips, availableWidth) {
+
+                    var measureContainer = $('#chip-measureContainer');
+
+                    var chipCount = getNrChipsThatFitsRow(chips, 0, availableWidth);
+                    if (chipCount < chips.length) {
+                        chipCount += getNrChipsThatFitsRow(chips, chipCount, availableWidth);
+                    }
+
+                    if (chipCount<chips.length) {
+                        //Make room for "x fler filter" text that will appear
+                        return chipCount -1;
+                    }
+                    return chipCount;
+                }
+                function getNrChipsThatFitsRow(chips, startFrom, availableWidth) {
+
+                    var usedWidth = 0;
+                    var measureContainer = $('#chip-measureContainer');
+
+                    for (var i = startFrom; i < chips.length; i++) {
+
+                        var chipWidth = getChipWidth(measureContainer, chips[i]);
+                        usedWidth += chipWidth;
+
+                        //Will this chip also fit?
+                        if ((availableWidth - usedWidth) <= 0) {
+                            //No, this chip won't fit. return how many that fits row 1 and at which chip wer'e at.
+                            return i - startFrom;
+                        }
+                    }
+
+                    //If we get this far - all chips requested should fit row.
+                    return chips.length - startFrom;
+                }
+
+                function getChipWidth(container, chip) {
+                    //Temporary add, measure and remove the chip's html equivalent.
+                    var elem = $('<button class="filter-chip">' +
+                        '<span class="default-text"><i class="fa ' + chip.icon + '"></i> ' +
+                        chip.text + '</span>' +
+                        '</button>');
+                    container.append(elem);
+                    var chipWidth = elem.outerWidth(true);
+                    elem.remove();
+                    return chipWidth;
+                }
+
             }
         };
     });
