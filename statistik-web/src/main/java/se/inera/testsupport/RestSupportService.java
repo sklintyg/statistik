@@ -101,7 +101,7 @@ public class RestSupportService {
     @Autowired
     private NationellData nationellData;
 
-    @Autowired
+    @Autowired(required = false)
     private HsaDataInjectable hsaDataInjectable;
 
     @Autowired
@@ -188,7 +188,6 @@ public class RestSupportService {
     public void insertIntygWithoutLogging(Intyg intyg) {
         if (hsaDataInjectable != null) {
             hsaDataInjectable.setCountyForNextIntyg(intyg.getCounty());
-            hsaDataInjectable.setKommunForNextIntyg(intyg.getKommun());
             hsaDataInjectable.setHuvudenhetIdForNextIntyg(intyg.getHuvudenhetId());
             hsaDataInjectable.setHsaKey(new HSAKey(intyg.getVardgivareId(), intyg.getEnhetId(), intyg.getLakareId()));
         }
@@ -249,9 +248,11 @@ public class RestSupportService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     public Response insertPersonal(Personal personal) {
-        LOG.info("Insert personal: " + personal);
-        hsaDataInjectable.addPersonal(new HsaIdLakare(personal.getId()), personal.getFirstName(), personal.getLastName(), personal.getKon(), personal.getAge(),
-                personal.getBefattning());
+        if (hsaDataInjectable != null) {
+            LOG.info("Insert personal: " + personal);
+            hsaDataInjectable.addPersonal(new HsaIdLakare(personal.getId()), personal.getFirstName(), personal.getLastName(), personal.getKon(), personal.getAge(),
+                    personal.getBefattning());
+        }
         return Response.ok().build();
     }
 

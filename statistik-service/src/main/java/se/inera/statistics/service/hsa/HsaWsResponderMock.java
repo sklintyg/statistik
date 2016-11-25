@@ -90,7 +90,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.FluentIterable;
 
 @Component
-@Profile({ "dev", "hsa-stub" })
+@Profile({ "hsa-stub" })
 @Primary
 public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjectable {
 
