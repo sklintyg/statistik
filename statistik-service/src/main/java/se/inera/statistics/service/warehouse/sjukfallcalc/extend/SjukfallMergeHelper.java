@@ -23,6 +23,7 @@ import se.inera.statistics.service.warehouse.SjukfallExtended;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 final class SjukfallMergeHelper {
@@ -30,37 +31,18 @@ final class SjukfallMergeHelper {
     private SjukfallMergeHelper() {
     }
 
-    static SjukfallExtended mergeAllSjukfallInList(List<SjukfallExtended> sjukfalls) {
-        if (sjukfalls == null || sjukfalls.isEmpty()) {
-            return null;
-        }
-        if (sjukfalls.size() == 1) {
-            return sjukfalls.get(0);
-        }
-        sortByEndDate(sjukfalls);
-        SjukfallExtended sjukfall = sjukfalls.get(0);
-        for (int i = 1; i < sjukfalls.size(); i++) {
-            final SjukfallExtended nextSjukfall = sjukfalls.get(i);
-            sjukfall = sjukfall.extendSjukfall(nextSjukfall);
-        }
-        return sjukfall;
-    }
-
-    private static void sortByEndDate(List<SjukfallExtended> sjukfalls) {
-        sjukfalls.sort((o1, o2) -> o1.getEnd() - o2.getEnd());
-    }
-
-    static SjukfallExtended getFirstSjukfall(Collection<SjukfallExtended> sjukfalls) {
+    static Optional<SjukfallExtended> mergeAllSjukfallInList(List<SjukfallExtended> sjukfalls) {
         if (sjukfalls == null) {
-            return null;
+            return Optional.empty();
         }
-        SjukfallExtended currentFirstSjukfall = null;
-        for (SjukfallExtended sjukfall : sjukfalls) {
-            if (currentFirstSjukfall == null || sjukfall.getStart() < currentFirstSjukfall.getStart()) {
-                currentFirstSjukfall = sjukfall;
-            }
+        return sjukfalls.stream().reduce(SjukfallExtended::extendSjukfall);
+    }
+
+    static Optional<SjukfallExtended> getFirstSjukfall(Collection<SjukfallExtended> sjukfalls) {
+        if (sjukfalls == null) {
+            return Optional.empty();
         }
-        return currentFirstSjukfall;
+        return sjukfalls.stream().reduce((se1, se2) -> se1.getStart() < se2.getStart() ? se1 : se2);
     }
 
     static List<SjukfallExtended> filterSjukfallInPeriod(final int start, final int end, Collection<SjukfallExtended> sjukfalls) {
