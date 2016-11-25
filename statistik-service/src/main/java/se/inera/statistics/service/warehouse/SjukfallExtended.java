@@ -102,7 +102,8 @@ public class SjukfallExtended {
 
     SjukfallExtended(SjukfallExtended previous, SjukfallExtended sjukfall) {
         this(sjukfall);
-        start = previous.getStart();
+        start = Math.min(this.start, previous.getStart());
+        end = Math.max(this.end, previous.getEnd());
         sjukskrivningsperiods.addAll(previous.sjukskrivningsperiods);
         facts.addAll(previous.facts);
         lakare.addAll(previous.getLakare());

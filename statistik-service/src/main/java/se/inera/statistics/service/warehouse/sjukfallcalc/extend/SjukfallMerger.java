@@ -25,6 +25,7 @@ import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class SjukfallMerger {
 
@@ -39,11 +40,8 @@ public class SjukfallMerger {
 
     public void mergeAndUpdateSjukfall(long patient, Collection<SjukfallExtended> sjukfallsFromAvailableEnhetsForPatient, SjukfallExtended sjukfallFromAllVgForPatient) {
         List<SjukfallExtended> mergableSjukfalls = getSjukfallsFromAvailableEnhetsIncludedInSjukfallFromAllVg(sjukfallsFromAvailableEnhetsForPatient, sjukfallFromAllVgForPatient);
-        final SjukfallExtended mergedSjukfall = SjukfallMergeHelper.mergeAllSjukfallInList(mergableSjukfalls);
-        if (mergedSjukfall == null) {
-            return;
-        }
-        updateMergedSjukfall(patient, sjukfallsFromAvailableEnhetsForPatient, sjukfallFromAllVgForPatient, mergableSjukfalls, mergedSjukfall);
+        SjukfallMergeHelper.mergeAllSjukfallInList(mergableSjukfalls)
+                .ifPresent(sjukfallExtended -> updateMergedSjukfall(patient, sjukfallsFromAvailableEnhetsForPatient, sjukfallFromAllVgForPatient, mergableSjukfalls, sjukfallExtended));
     }
 
     private List<SjukfallExtended> getSjukfallsFromAvailableEnhetsIncludedInSjukfallFromAllVg(Collection<SjukfallExtended> sjukfallsFromAvailableEnhetsForPatient, SjukfallExtended sjukfallFromAllVgForPatient) {
@@ -56,8 +54,8 @@ public class SjukfallMerger {
             LOG.info("extendWithRealDaysWithinPeriod should not return null");
             return;
         }
-        SjukfallExtended firstSjukfall = useOriginalSjukfallStart ? SjukfallMergeHelper.getFirstSjukfall(sjukfalls) : null;
-        if (firstSjukfall != null && firstSjukfall.getStart() == mergedSjukfallExtendedWithRealDays.getStart()) {
+        Optional<SjukfallExtended> firstSjukfall = useOriginalSjukfallStart ? SjukfallMergeHelper.getFirstSjukfall(sjukfalls) : Optional.empty();
+        if (firstSjukfall.isPresent() && firstSjukfall.get().getStart() == mergedSjukfallExtendedWithRealDays.getStart()) {
             mergedSjukfallExtendedWithRealDays = extendedSjukfallCalculator.getExtendedSjukfallStart(patient, mergedSjukfallExtendedWithRealDays);
         }
         for (SjukfallExtended mergableSjukfall : mergableSjukfalls) {
