@@ -34,11 +34,21 @@ public final class Message {
         this.message = message;
     }
 
-    public static Message create(ErrorType type, ErrorSeverity severity, String message) {
-        if (message == null) {
-            throw new IllegalArgumentException("Argument message cannot be null");
+    /**
+     * Method creates a Message object. If argument text is null or
+     * empty, a null obejct will be returned.
+     *
+     * @param type the type of error
+     * @param severity the severity of the error
+     * @param text the error message, cannot be null or empty string
+     *
+     * @return Returns a Message object if all arguments are set, otherwise null
+     */
+    public static Message create(ErrorType type, ErrorSeverity severity, String text) {
+        if (type == null || severity == null || text == null || text.isEmpty()) {
+            return null;
         }
-        return new Message(type, severity, message);
+        return new Message(type, severity, text);
     }
 
     public ErrorType getType() {
