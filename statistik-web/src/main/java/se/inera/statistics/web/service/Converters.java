@@ -18,34 +18,19 @@
  */
 package se.inera.statistics.web.service;
 
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.web.error.Message;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.web.error.Message;
-
 public final class Converters {
 
     private Converters() {
     }
-
-    /*
-    public static String combineMessages(String... messages) {
-        final String message = Joiner.on(" : ").skipNulls().join(Iterables.filter(Arrays.asList(messages), new Predicate<String>() {
-            @Override
-            public boolean apply(String s) {
-                return s != null && !s.isEmpty();
-            }
-        }));
-        if (message.trim().isEmpty()) {
-            return null;
-        }
-        return message;
-    }
-    */
 
     public static List<Message> combineMessages(Message... messages) {
         return Stream.of(messages)
