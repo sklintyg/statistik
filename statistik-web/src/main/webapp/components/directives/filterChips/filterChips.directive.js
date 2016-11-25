@@ -307,8 +307,6 @@ angular.module('StatisticsApp')
 
                 function getNrChipsThatFits2Rows(chips, availableWidth) {
 
-                    var measureContainer = $('#chip-measureContainer');
-
                     var chipCount = getNrChipsThatFitsRow(chips, 0, availableWidth);
                     if (chipCount < chips.length) {
                         chipCount += getNrChipsThatFitsRow(chips, chipCount, availableWidth);
