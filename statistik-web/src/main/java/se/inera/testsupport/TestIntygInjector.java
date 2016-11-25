@@ -18,17 +18,11 @@
  */
 package se.inera.testsupport;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.time.Clock;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
-import javax.annotation.PostConstruct;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
+import org.apache.cxf.helpers.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +40,22 @@ import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.WidelineConverter;
+
+import javax.annotation.PostConstruct;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 public class TestIntygInjector {
     private static final int SEED = 1235;
@@ -126,6 +134,7 @@ public class TestIntygInjector {
         base = LocalDate.now(clock).minusMonths(MONTHS);
         restSupportService.clearDatabase();
         publishUtlatanden();
+        restSupportService.processMeddelande(false);
         restSupportService.processIntyg();
     }
 
@@ -135,14 +144,23 @@ public class TestIntygInjector {
         int maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.intyg", "0"));
         List<String> personNummers = readList("/personnr/testpersoner.log", maxIntyg);
 
+        String template = null;
+
+        try {
+            template = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("testsupport/sendMessageToCare.xml"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         LOG.info("Inserting " + personNummers.size() + " certificates");
         for (String id : personNummers) {
-            createAndInsertIntyg(builder, id);
+            String intygsId = createAndInsertIntyg(builder, id);
+            creatAndInsertMeddelande(template, id, intygsId);
         }
         LOG.info("Inserting " + personNummers.size() + " certificates completed. Use -Dstatistics.test.max.intyg=<x> to limit inserts.");
     }
 
-    private void createAndInsertIntyg(UtlatandeBuilder builder, String patientId) {
+    private String createAndInsertIntyg(UtlatandeBuilder builder, String patientId) {
         // CHECKSTYLE:OFF MagicNumber
         LocalDate start = base.plusMonths(random.nextInt(MONTHS)).plusDays(random.nextInt(SHORT_PERIOD_DAYS));
         LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
@@ -173,6 +191,26 @@ public class TestIntygInjector {
         final String enhetName = "Enheten " + enhetId;
         final Intyg intyg = new Intyg(type, data.toString(), id, timestamp, null, null, null, enhetName, vgId, enhetId, lakareId);
         restSupportService.insertIntygWithoutLogging(intyg);
+
+        return id;
+    }
+
+    private void creatAndInsertMeddelande(String template, String patientId, String intygsId) {
+        MessageEventType type = MessageEventType.SENT;
+        String id = UUID.randomUUID().toString();
+        LocalDate datum = base.plusMonths(random.nextInt(MONTHS)).plusDays(random.nextInt(SHORT_PERIOD_DAYS));
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_DATE;
+
+        String data = template.replace("#MEDDELANDE_ID#", id);
+        data = data.replace("#PATIENT_ID#", patientId);
+        data = data.replace("#INTYGS_ID#", intygsId);
+        data = data.replace("#DATE#", datum.format(formatter));
+
+        long timestamp = System.currentTimeMillis();
+
+        Meddelande meddelande = new Meddelande(type, data, id, timestamp);
+
+        restSupportService.insertMeddelandeWithoutLogging(meddelande);
     }
 
     private static <T> T random(List<T> list) {

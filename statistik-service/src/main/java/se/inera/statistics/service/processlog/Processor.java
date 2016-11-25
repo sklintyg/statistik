@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
+import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.warehouse.IntygCommonManager;
@@ -49,6 +50,9 @@ public class Processor {
 
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
+
+    @Autowired
+    private SendMessageToCareHelper sendMessageToCareHelper;
 
     public void accept(JsonNode utlatande, HsaInfo hsa, long logId, String correlationId, EventType type) {
         final String enhetId = DocumentHelper.getEnhetId(utlatande, DocumentHelper.getIntygVersion(utlatande));
@@ -99,7 +103,9 @@ public class Processor {
     }
 
     public void accept(SendMessageToCareType message, long logId, String messageId, MessageEventType type) {
-        messageWidelineManagar.accept(message, logId, messageId, type);
+
+        final Patientdata patientData = sendMessageToCareHelper.getPatientData(message);
+        messageWidelineManagar.accept(message, patientData, logId, messageId, type);
     }
 
     private void saveEnhetAndLakare(HsaInfo hsa, String enhetId) {

@@ -60,15 +60,15 @@ public class MessageLogConsumerImpl implements MessageLogConsumer {
                 try {
                     final boolean eventSuccessfullyHandled = handleEvent(event);
                     if (!eventSuccessfullyHandled) {
-                        LOG.error("Failed to process intyg {} ({})", event.getId(), event.getCorrelationId());
+                        LOG.error("Failed to process meddelande {} ({})", event.getId(), event.getCorrelationId());
                     }
                 } catch (HsaCommunicationException e) {
-                    LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
-                    LOG.debug("Could not process intyg {} ({}).", event.getId(), event.getCorrelationId(), e);
+                    LOG.error("Could not process meddelande {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
+                    LOG.debug("Could not process meddelande {} ({}).", event.getId(), event.getCorrelationId(), e);
                     return processed;
                 } catch (Exception e) {
-                    LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
-                    LOG.debug("Could not process intyg {} ({}).", event.getId(), event.getCorrelationId(), e);
+                    LOG.error("Could not process meddelande {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
+                    LOG.debug("Could not process meddelande {} ({}).", event.getId(), event.getCorrelationId(), e);
                 } finally {
                     processLog.confirm(event.getId());
                     processed++;
@@ -87,8 +87,8 @@ public class MessageLogConsumerImpl implements MessageLogConsumer {
 
             processor.accept(rc, event.getId(), event.getCorrelationId(), event.getType());
         } catch (Exception e) {
-            LOG.warn("Failed to unmarshal intyg xml");
-            LOG.debug("Failed to unmarshal intyg xml", e);
+            LOG.warn("Failed to unmarshal meddelande xml");
+            LOG.debug("Failed to unmarshal meddelande xml", e);
             return false;
         }
         return true;

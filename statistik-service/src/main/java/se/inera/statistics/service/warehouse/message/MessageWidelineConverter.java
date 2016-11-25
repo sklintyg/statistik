@@ -20,12 +20,14 @@ package se.inera.statistics.service.warehouse.message;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.warehouse.AbstractWidlineConverter;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
         return errors;
     }
 
-    public MessageWideLine toWideline(SendMessageToCareType meddelande, long logId, String meddelandeId, MessageEventType type) {
+    public MessageWideLine toWideline(SendMessageToCareType meddelande, Patientdata patientdata, long logId, String meddelandeId, MessageEventType type) {
         MessageWideLine line = new MessageWideLine();
 
         line.setMeddelandeId(meddelandeId);
@@ -53,8 +55,12 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
         line.setPatientid(sendMessageToCareHelper.getPatientId(meddelande));
         line.setAmneCode(sendMessageToCareHelper.getAmneCode(meddelande));
         line.setSkickatAv(sendMessageToCareHelper.getSkickatAv(meddelande));
-        line.setSkickatTidpunkt(sendMessageToCareHelper.getSkickatTidpunkt(meddelande));
+        LocalDateTime dateTime = sendMessageToCareHelper.getSkickatTidpunkt(meddelande);
+        line.setSkickatTidpunkt(dateTime.toLocalTime());
+        line.setSkickatDate(dateTime.toLocalDate());
         line.setLogId(logId);
+        line.setKon(patientdata.getKon().getNumberRepresentation());
+        line.setAlder(patientdata.getAlder());
 
         return line;
     }
