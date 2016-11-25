@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.warehouse.sjukfallcalc;
+package se.inera.statistics.service.warehouse.sjukfallcalc.perpatient;
 
 import com.google.common.collect.ArrayListMultimap;
 import se.inera.statistics.service.report.model.Range;
@@ -26,12 +26,12 @@ import se.inera.statistics.service.warehouse.WidelineConverter;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class FactsPerPatientAndPeriodGrouper {
+final class FactsPerPatientAndPeriodGrouper {
 
     private FactsPerPatientAndPeriodGrouper() {
     }
 
-    public static List<ArrayListMultimap<Long, Fact>> group(Iterable<Fact> facts, List<Range> ranges) {
+    static List<ArrayListMultimap<Long, Fact>> group(Iterable<Fact> facts, List<Range> ranges) {
         final List<Integer> rangeEnds = new ArrayList<>(ranges.size() + 1);
         rangeEnds.add(WidelineConverter.toDay(ranges.get(0).getFrom().minusDays(1)));
         for (Range range : ranges) {

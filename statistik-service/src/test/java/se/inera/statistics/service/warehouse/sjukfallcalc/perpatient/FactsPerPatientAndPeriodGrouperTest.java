@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.warehouse.sjukfallcalc;
+package se.inera.statistics.service.warehouse.sjukfallcalc.perpatient;
 
 import com.google.common.collect.ArrayListMultimap;
 import org.junit.Test;

@@ -19,39 +19,30 @@
 package se.inera.statistics.service.warehouse.sjukfallcalc;
 
 import com.google.common.collect.ArrayListMultimap;
-import se.inera.statistics.service.warehouse.Fact;
+import com.google.common.collect.Multimap;
 import se.inera.statistics.service.warehouse.SjukfallExtended;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
 
-public final class SjukfallCalculatorHelper {
+final class SjukfallCalculatorHelper {
 
-    private  SjukfallCalculatorHelper() {
+    private SjukfallCalculatorHelper() {
     }
 
-    static ArrayListMultimap<Long, SjukfallExtended> getSjukfallsPerPatient(Iterable<Fact> facts, Collection<Long> patientsFilter) {
-        final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = ArrayListMultimap.create();
-        for (Fact line : facts) {
-            long key = line.getPatient();
-            if (patientsFilter != null && !patientsFilter.contains(key)) {
-                continue;
-            }
-            List<SjukfallExtended> sjukfallsForPatient = sjukfallsPerPatient.get(key);
-
-            if (sjukfallsForPatient.isEmpty()) {
-                SjukfallExtended sjukfall = new SjukfallExtended(line);
-                sjukfallsPerPatient.put(key, sjukfall);
-            } else {
-                final SjukfallExtended sjukfall = sjukfallsForPatient.remove(sjukfallsForPatient.size() - 1);
-                SjukfallExtended nextSjukfall = sjukfall.join(line);
-                if (!nextSjukfall.isExtended()) {
-                    sjukfallsPerPatient.put(key, sjukfall);
+    static Multimap<Long, SjukfallExtended> filterPersonifiedSjukfallsFromDate(LocalDate from, Multimap<Long, SjukfallExtended> sjukfallsPerPatient) {
+        final int firstday = WidelineConverter.toDay(from);
+        Multimap<Long, SjukfallExtended> result = ArrayListMultimap.create();
+        for (Long patient : sjukfallsPerPatient.keySet()) {
+            final Collection<SjukfallExtended> sjukfalls = sjukfallsPerPatient.get(patient);
+            for (SjukfallExtended sjukfall : sjukfalls) {
+                if (sjukfall.getEnd() >= firstday) {
+                    result.put(patient, sjukfall);
                 }
-                sjukfallsPerPatient.put(key, nextSjukfall);
             }
         }
-        return sjukfallsPerPatient;
+        return result;
     }
 
 }
