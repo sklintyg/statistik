@@ -18,8 +18,11 @@
  */
 package se.inera.statistics.service.helper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import se.inera.intyg.common.support.common.enumerations.PartKod;
+import se.inera.statistics.service.report.model.Kon;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
 
 import javax.xml.bind.JAXBContext;
@@ -27,10 +30,13 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.JAXBIntrospector;
 import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Component
 public class SendMessageToCareHelper {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SendMessageToCareHelper.class);
 
     public SendMessageToCareType unmarshalSendMessageToCareTypeXml(String data) throws JAXBException {
         Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(SendMessageToCareType.class).createUnmarshaller();
@@ -57,5 +63,25 @@ public class SendMessageToCareHelper {
 
     public String getAmneCode(SendMessageToCareType message) {
         return message.getAmne().getCode();
+    }
+
+    public Patientdata getPatientData(SendMessageToCareType message) {
+        final String patientIdRaw = getPatientId(message);
+        final String personId = DocumentHelper.getUnifiedPersonId(patientIdRaw);
+        int alder;
+        try {
+            alder = ConversionHelper.extractAlder(personId, getSkickatDate(message));
+        } catch (Exception e) {
+            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId);
+            LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId, e);
+            alder = ConversionHelper.NO_AGE;
+        }
+        String kon = ConversionHelper.extractKon(personId);
+
+        return new Patientdata(alder, Kon.parse(kon));
+    }
+
+    private LocalDate getSkickatDate(SendMessageToCareType document) {
+        return getSkickatTidpunkt(document).toLocalDate();
     }
 }

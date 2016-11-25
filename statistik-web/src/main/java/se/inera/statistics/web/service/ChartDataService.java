@@ -145,6 +145,10 @@ public class ChartDataService {
             stopWatch.stop();
             LOG.info("National cache buildSjukfallslangd " + stopWatch.getTotalTimeMillis());
             stopWatch.start();
+            buildNumberOfMeddelandenPerMonth();
+            stopWatch.stop();
+            LOG.info("National cache buildNumberOfMeddelandenPerMonth " + stopWatch.getTotalTimeMillis());
+            stopWatch.start();
             buildKonsfordelningPerLan();
             stopWatch.stop();
             LOG.info("National cache buildKonsfordelningPerLan " + stopWatch.getTotalTimeMillis());
@@ -152,10 +156,6 @@ public class ChartDataService {
             buildSjukfallPerLan();
             stopWatch.stop();
             LOG.info("National cache buildSjukfallPerLan " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildNumberOfMeddelandenPerMonth();
-            stopWatch.stop();
-            LOG.info("National cache buildNumberOfMeddelandenPerMonth " + stopWatch.getTotalTimeMillis());
             lastUpdated = last;
             LOG.info("National cache populated");
         }
@@ -227,9 +227,9 @@ public class ChartDataService {
 
     public void buildNumberOfMeddelandenPerMonth() {
         final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getCasesPerMonth(range);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getMeddelandenPerMonth(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
-        numberOfMeddelandenPerMonth = new PeriodConverter().convert(casesPerMonth, filterSettings);
+        numberOfMeddelandenPerMonth = new MessagePeriodConverter().convert(casesPerMonth, filterSettings);
     }
 
     private Response getResponse(TableDataReport result, String csv) {

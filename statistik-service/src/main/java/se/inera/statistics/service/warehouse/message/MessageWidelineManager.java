@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.warehouse.WidelineManager;
@@ -67,10 +68,10 @@ public class MessageWidelineManager {
     }
 
     @Transactional(noRollbackFor = Exception.class)
-    public void accept(SendMessageToCareType message, long logId, String messageId, MessageEventType type) {
+    public void accept(SendMessageToCareType message, Patientdata patientdata, long logId, String messageId, MessageEventType type) {
         final String intygid = sendMessageToCareHelper.getIntygId(message);
 
-        MessageWideLine line = widelineConverter.toWideline(message, logId, messageId, type);
+        MessageWideLine line = widelineConverter.toWideline(message, patientdata, logId, messageId, type);
 
         persistIfValid(logId, intygid, line);
     }

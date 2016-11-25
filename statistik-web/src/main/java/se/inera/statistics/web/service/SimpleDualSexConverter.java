@@ -39,11 +39,23 @@ public class SimpleDualSexConverter {
     private final String tableGroupTitle;
     private final boolean totalSeriesInChart;
     private String seriesNameTemplate;
+    private String totalColumnName = "Antal sjukfall totalt";
+    private String femaleColumnName = "Antal sjukfall för kvinnor";
+    private String maleColumnName = "Antal sjukfall för män";
 
     public SimpleDualSexConverter(String tableGroupTitle, boolean totalSeriesInChart, String seriesNameTemplate) {
         this.tableGroupTitle = tableGroupTitle;
         this.totalSeriesInChart = totalSeriesInChart;
         this.seriesNameTemplate = seriesNameTemplate;
+    }
+
+    public SimpleDualSexConverter(String tableGroupTitle, boolean totalSeriesInChart, String seriesNameTemplate, String totalColumnName, String femaleColumnName, String maleColumnName) {
+        this.tableGroupTitle = tableGroupTitle;
+        this.totalSeriesInChart = totalSeriesInChart;
+        this.seriesNameTemplate = seriesNameTemplate;
+        this.totalColumnName = totalColumnName;
+        this.femaleColumnName = femaleColumnName;
+        this.maleColumnName = maleColumnName;
     }
 
     public static SimpleDualSexConverter newGenericTvarsnitt() {
@@ -74,7 +86,7 @@ public class SimpleDualSexConverter {
             data.add(new NamedData(seriesName, Arrays.asList(female + male, female, male), isMarked(row)));
         }
 
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList(tableGroupTitle, "Antal sjukfall totalt", "Antal sjukfall för kvinnor", "Antal sjukfall för män"));
+        return TableData.createWithSingleHeadersRow(data, Arrays.asList(tableGroupTitle, totalColumnName, femaleColumnName, maleColumnName));
     }
 
     @java.lang.SuppressWarnings("squid:S1172") // Parameter "row" is used by method in extending class

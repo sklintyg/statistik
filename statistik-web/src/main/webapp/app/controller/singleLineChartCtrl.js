@@ -47,6 +47,9 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             chartOptions.legend.enabled = false;
             chartOptions.xAxis.title.text = 'Period';
             chartOptions.subtitle.text = 'Antal sjukfall';
+            if (config.chartYAxisTitle) {
+                chartOptions.subtitle.text = config.chartYAxisTitle;
+            }
             chartOptions.text = '#008391';
             chartOptions.tooltip.text = '#000';
             return new Highcharts.Chart(chartOptions);
@@ -195,6 +198,7 @@ angular.module('StatisticsApp').meddelandenPerMonthConfig =
         conf.dataFetcher = 'getNumberOfMeddelandenPerMonth';
         conf.dataFetcherVerksamhet = 'getNumberOfMeddelandenPerMonthVerksamhet';
         conf.exportTableUrl = 'api/getNumberOfMeddelandenPerMonth/csv';
+        conf.chartYAxisTitle = 'Antal meddelanden';
         conf.exportTableUrlVerksamhet = function () {
             return 'api/verksamhet/getNumberOfMeddelandenPerMonth/csv';
         };

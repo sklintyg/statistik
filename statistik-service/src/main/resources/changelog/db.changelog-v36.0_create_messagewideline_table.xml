@@ -33,9 +33,14 @@
             <column name="intygsId" type="varchar(50)"/>
             <column name="meddelandeTyp" type="varchar(50)"/>
             <column name="patientid" type="varchar(128)"/>
-            <column name="skickatTidpunkt" type="dateTime"/>
+            <column name="skickatDate" type="date"/>
+            <column name="skickatTidpunkt" type="time"/>
             <column name="skickatAv" type="varchar(7)"/>
             <column name="amneCode" type="varchar(10)"/>
+            <column name="kon" type="int"/>
+            <column name="alder" type="int"/>
+            <column name="enhet" type="varchar(128)"/>
+            <column name="vardgivareid" type="varchar(128)"/>
         </createTable>
     </changeSet>
 

@@ -56,6 +56,8 @@ import se.inera.statistics.service.landsting.persistance.landsting.LandstingMana
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
+import se.inera.statistics.service.processlog.message.MessageLogConsumer;
+import se.inera.statistics.service.processlog.message.ProcessMessageLog;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
@@ -88,6 +90,10 @@ public class RestSupportService {
 
     @Autowired
     private Receiver receiver;
+    @Autowired
+    private ProcessMessageLog processMessageLog;
+    @Autowired
+    private MessageLogConsumer messageLogConsumer;
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
@@ -210,6 +216,11 @@ public class RestSupportService {
         }
     }
 
+    @Transactional
+    public void insertMeddelandeWithoutLogging(Meddelande meddelande) {
+        processMessageLog.store(meddelande.getType(), meddelande.getData(), meddelande.getMessageId(), meddelande.getTimestamp());
+    }
+
     @POST
     @Path("processIntyg")
     @Produces({ MediaType.APPLICATION_JSON })
@@ -222,6 +233,22 @@ public class RestSupportService {
         } while (count > 0);
         warehouseManager.loadEnhetAndWideLines();
         nationalChartDataService.buildCache();
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("processMeddelande")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response processMeddelande(@QueryParam("buildCache") boolean buildCache) {
+        LOG.debug("Log Job");
+        int count;
+        do {
+            count = messageLogConsumer.processBatch();
+            LOG.info("Processed batch with {} messages", count);
+        } while (count > 0);
+        if (buildCache) {
+            nationalChartDataService.buildCache();
+        }
         return Response.ok().build();
     }
 

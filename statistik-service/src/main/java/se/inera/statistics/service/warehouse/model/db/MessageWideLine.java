@@ -28,7 +28,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 
 @Entity
@@ -45,14 +47,39 @@ public class MessageWideLine {
     @Enumerated(EnumType.STRING)
     private MessageEventType meddelandeTyp;
     private String patientid;
-    private LocalDateTime skickatTidpunkt;
+    private LocalDate skickatDate;
+    private LocalTime skickatTidpunkt;
     @Enumerated(EnumType.STRING)
     private PartKod skickatAv;
     private String amneCode;
+    private int kon;
+    private int alder;
+    private String enhet;
+    private String vardgivareid;
 
     public MessageWideLine() {
         // Used by WidelineConverter
     }
+
+    // CHECKSTYLE:OFF ParameterNumber
+    @SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
+    public MessageWideLine(long id, long logId, String meddelandeId, String intygsId, MessageEventType meddelandeTyp, String patientid, LocalDateTime skickatTidpunkt, PartKod skickatAv, String amneCode, int kon, int alder, String enhet, String vardgivareid) {
+        this.id = id;
+        this.logId = logId;
+        this.meddelandeId = meddelandeId;
+        this.intygsId = intygsId;
+        this.meddelandeTyp = meddelandeTyp;
+        this.patientid = patientid;
+        this.skickatTidpunkt = skickatTidpunkt.toLocalTime();
+        this.skickatDate = skickatTidpunkt.toLocalDate();
+        this.skickatAv = skickatAv;
+        this.amneCode = amneCode;
+        this.kon = kon;
+        this.alder = alder;
+        this.enhet = enhet;
+        this.vardgivareid = vardgivareid;
+    }
+    // CHECKSTYLE:ON ParameterNumber
 
     public long getId() {
         return id;
@@ -102,11 +129,19 @@ public class MessageWideLine {
         this.patientid = patientid;
     }
 
-    public LocalDateTime getSkickatTidpunkt() {
+    public LocalDate getSkickatDate() {
+        return skickatDate;
+    }
+
+    public void setSkickatDate(LocalDate skickatDate) {
+        this.skickatDate = skickatDate;
+    }
+
+    public LocalTime getSkickatTidpunkt() {
         return skickatTidpunkt;
     }
 
-    public void setSkickatTidpunkt(LocalDateTime skickatTidpunkt) {
+    public void setSkickatTidpunkt(LocalTime skickatTidpunkt) {
         this.skickatTidpunkt = skickatTidpunkt;
     }
 
@@ -124,5 +159,37 @@ public class MessageWideLine {
 
     public void setAmneCode(String amneCode) {
         this.amneCode = amneCode;
+    }
+
+    public int getKon() {
+        return kon;
+    }
+
+    public void setKon(int kon) {
+        this.kon = kon;
+    }
+
+    public int getAlder() {
+        return alder;
+    }
+
+    public void setAlder(int alder) {
+        this.alder = alder;
+    }
+
+    public String getEnhet() {
+        return enhet;
+    }
+
+    public void setEnhet(String enhet) {
+        this.enhet = enhet;
+    }
+
+    public String getVardgivareid() {
+        return vardgivareid;
+    }
+
+    public void setVardgivareid(String vardgivareid) {
+        this.vardgivareid = vardgivareid;
     }
 }
