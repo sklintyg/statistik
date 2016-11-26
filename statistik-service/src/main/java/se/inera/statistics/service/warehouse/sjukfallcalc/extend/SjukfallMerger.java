@@ -30,12 +30,14 @@ import java.util.Optional;
 public class SjukfallMerger {
 
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallMerger.class);
-    private final ExtendedSjukfallCalculator extendedSjukfallCalculator;
+    private ExtendedSjukfallCalculator extendedSjukfallCalculator;
     private final boolean useOriginalSjukfallStart;
 
     public SjukfallMerger(List<Fact> aisle, boolean useOriginalSjukfallStart) {
-        this.extendedSjukfallCalculator = new ExtendedSjukfallCalculator(aisle);
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
+        if (useOriginalSjukfallStart) {
+            this.extendedSjukfallCalculator = new ExtendedSjukfallCalculator(aisle);
+        }
     }
 
     public void mergeAndUpdateSjukfall(long patient, Collection<SjukfallExtended> sjukfallsFromAvailableEnhetsForPatient, SjukfallExtended sjukfallFromAllVgForPatient) {
@@ -54,9 +56,11 @@ public class SjukfallMerger {
             LOG.info("extendWithRealDaysWithinPeriod should not return null");
             return;
         }
-        Optional<SjukfallExtended> firstSjukfall = useOriginalSjukfallStart ? SjukfallMergeHelper.getFirstSjukfall(sjukfalls) : Optional.empty();
-        if (firstSjukfall.isPresent() && firstSjukfall.get().getStart() == mergedSjukfallExtendedWithRealDays.getStart()) {
-            mergedSjukfallExtendedWithRealDays = extendedSjukfallCalculator.getExtendedSjukfallStart(patient, mergedSjukfallExtendedWithRealDays);
+        if (useOriginalSjukfallStart) {
+            Optional<SjukfallExtended> firstSjukfall = SjukfallMergeHelper.getFirstSjukfall(sjukfalls);
+            if (firstSjukfall.isPresent() && firstSjukfall.get().getStart() == mergedSjukfallExtendedWithRealDays.getStart()) {
+                mergedSjukfallExtendedWithRealDays = extendedSjukfallCalculator.getExtendedSjukfallStart(patient, mergedSjukfallExtendedWithRealDays);
+            }
         }
         for (SjukfallExtended mergableSjukfall : mergableSjukfalls) {
             sjukfalls.remove(mergableSjukfall);
