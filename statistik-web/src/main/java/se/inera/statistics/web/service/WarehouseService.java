@@ -55,6 +55,7 @@ import se.inera.statistics.service.warehouse.query.CutoffUsage;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 import se.inera.statistics.service.warehouse.query.LakaresAlderOchKonQuery;
+import se.inera.statistics.service.warehouse.query.MessagesQuery;
 import se.inera.statistics.service.warehouse.query.OverviewQuery;
 import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
@@ -71,6 +72,8 @@ public class WarehouseService {
 
     @Autowired
     private OverviewQuery overviewQuery;
+    @Autowired
+    private MessagesQuery messagesQuery;
 
     @Autowired
     private SjukfallQuery sjukfallQuery;
@@ -105,6 +108,14 @@ public class WarehouseService {
 
     public SimpleKonResponse<SimpleKonDataRow> getIntygPerMonth(Range range, HsaIdVardgivare vardgivarId) {
         return intygCommonManager.getIntyg(vardgivarId, range, range.getMonths());
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getMessagesPerMonth(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
+        return messagesQuery.getMessages(vardgivarId, filter.getEnheter(), range.getFrom(), range.getMonths());
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getMessagesPerMonthTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
+        return messagesQuery.getMessagesTvarsnitt(vardgivarId, filter.getEnheter(), range.getFrom(), range.getMonths());
     }
 
     public DiagnosgruppResponse getDiagnosgrupperPerMonth(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {

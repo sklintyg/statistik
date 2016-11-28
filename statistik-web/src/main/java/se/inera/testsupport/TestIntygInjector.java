@@ -27,12 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -134,8 +128,8 @@ public class TestIntygInjector {
         base = LocalDate.now(clock).minusMonths(MONTHS);
         restSupportService.clearDatabase();
         publishUtlatanden();
-        restSupportService.processMeddelande(false);
         restSupportService.processIntyg();
+        restSupportService.processMeddelande();
     }
 
     private void publishUtlatanden() {
@@ -149,13 +143,16 @@ public class TestIntygInjector {
         try {
             template = IOUtils.toString(getClass().getClassLoader().getResourceAsStream("testsupport/sendMessageToCare.xml"));
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("Couldn't load template", e);
         }
 
         LOG.info("Inserting " + personNummers.size() + " certificates");
-        for (String id : personNummers) {
+        for (int i = 0; i < personNummers.size(); i++) {
+            String id = personNummers.get(i);
             String intygsId = createAndInsertIntyg(builder, id);
-            creatAndInsertMeddelande(template, id, intygsId);
+            if (i%2 == 0) {
+                creatAndInsertMeddelande(template, id, intygsId);
+            }
         }
         LOG.info("Inserting " + personNummers.size() + " certificates completed. Use -Dstatistics.test.max.intyg=<x> to limit inserts.");
     }

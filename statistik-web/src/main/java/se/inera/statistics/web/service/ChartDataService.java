@@ -99,7 +99,7 @@ public class ChartDataService {
     private Clock clock;
 
     private volatile SimpleDetailsData numberOfCasesPerMonth;
-    private volatile SimpleDetailsData numberOfMeddelandenPerMonth;
+    //private volatile SimpleDetailsData numberOfMeddelandenPerMonth;
     private volatile DualSexStatisticsData diagnosgrupper;
     private volatile Map<String, DualSexStatisticsData> diagnoskapitel = new HashMap<>();
     private volatile OverviewData overview;
@@ -144,10 +144,12 @@ public class ChartDataService {
             buildSjukfallslangd();
             stopWatch.stop();
             LOG.info("National cache buildSjukfallslangd " + stopWatch.getTotalTimeMillis());
+            /*
+            Disabled for now
             stopWatch.start();
             buildNumberOfMeddelandenPerMonth();
             stopWatch.stop();
-            LOG.info("National cache buildNumberOfMeddelandenPerMonth " + stopWatch.getTotalTimeMillis());
+            LOG.info("National cache buildNumberOfMeddelandenPerMonth " + stopWatch.getTotalTimeMillis());*/
             stopWatch.start();
             buildKonsfordelningPerLan();
             stopWatch.stop();
@@ -225,12 +227,13 @@ public class ChartDataService {
         konsfordelningPerLan = new SjukfallPerSexConverter().convert(casesPerMonth, range);
     }
 
-    public void buildNumberOfMeddelandenPerMonth() {
+    /*
+    private void buildNumberOfMeddelandenPerMonth() {
         final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getMeddelandenPerMonth(range);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         numberOfMeddelandenPerMonth = new MessagePeriodConverter().convert(casesPerMonth, filterSettings);
-    }
+    }*/
 
     private Response getResponse(TableDataReport result, String csv) {
         if (csv == null || csv.isEmpty()) {
@@ -253,7 +256,7 @@ public class ChartDataService {
 
     /**
      * Get meddelanden per manad.
-     */
+
     @GET
     @Path("getNumberOfMeddelandenPerMonth{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
@@ -261,7 +264,7 @@ public class ChartDataService {
         LOG.info("Calling getNumberOfMeddelandenPerMonth for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getNumberOfMeddelandenPerMonth");
         return getResponse(numberOfMeddelandenPerMonth, csv);
-    }
+    }*/
 
     /**
      * Get the list of diagnoskapitel.

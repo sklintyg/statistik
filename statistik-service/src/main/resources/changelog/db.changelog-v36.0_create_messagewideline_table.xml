@@ -24,7 +24,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
         logicalFilePath="liquibase/db.changelog-v36.0_create_messagewideline_table.xml">
     <changeSet id="36.0_create_messagewideline_table" author="martin.hesslund">
-        <createTable tableName="messsagewideline">
+        <createTable tableName="messagewideline">
             <column name="id" type="int" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

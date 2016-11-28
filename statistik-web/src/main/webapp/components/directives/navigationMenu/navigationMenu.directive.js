@@ -103,12 +103,14 @@
                     name: 'nav.lan-andel-sjukfall-per-kon',
                     ctrl: 'NationalCasesPerSexCtrl'
                 }]
-            },{
+            }
+            /*,{
                 id: 'navMessagesLink',
                 link: '#/nationell/meddelanden',
                 name: 'nav.meddelanden',
                 ctrl: 'NationalMeddelandenPerMonthCtrl'
-            }]
+            }*/
+            ]
         };
 
         var landsting = {

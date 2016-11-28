@@ -50,13 +50,13 @@ public class MessageWidelineManager {
     @Autowired
     private SendMessageToCareHelper sendMessageToCareHelper;
 
-    private void persistIfValid(long logId, String intygid, MessageWideLine line) {
+    private void persistIfValid(long logId, String meddelandeId, MessageWideLine line) {
         List<String> errors = widelineConverter.validate(line);
 
         if (errors.isEmpty()) {
             manager.persist(line);
         } else {
-            String errorString = "Faulty intyg logid " + logId + " id " + intygid + " error count " + errCount;
+            String errorString = "Faulty meddelande logid " + logId + " id " + meddelandeId + " error count " + errCount;
 
             for (String error : errors) {
                 errorString += "\n" + error;
