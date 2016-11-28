@@ -21,7 +21,8 @@ package se.inera.statistics.service.schemavalidation;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LuseValidator extends RegisterCertificateValidator{
+public class LuseValidator extends RegisterCertificateValidator {
+
     LuseValidator() {
         super("luse.sch");
     }

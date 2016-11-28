@@ -88,8 +88,7 @@ public class LogConsumerImpl implements LogConsumer {
                 }
             }
             return processed;
-        }
-        finally {
+        } finally {
             setRunning(false);
         }
         }

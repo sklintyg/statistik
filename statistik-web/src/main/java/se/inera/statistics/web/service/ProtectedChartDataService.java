@@ -147,7 +147,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getNumberOfIntygPerMonth(@Context HttpServletRequest request, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, null, 18);
-        SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerMonth(filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request)); //TODO: fix param i n reportsutil
+        //FIXME: fix param i n reportsutil
+        SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerMonth(filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = new PeriodConverter().convert(intygPerMonth, filterSettings);
         return getResponse(result, csv, request);
     }
