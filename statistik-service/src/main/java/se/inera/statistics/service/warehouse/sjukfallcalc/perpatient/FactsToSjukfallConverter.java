@@ -23,39 +23,19 @@ import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class FactsToSjukfallConverter {
-
-    private final List<Fact> aisle;
-    private ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatientInAisle;
-
-    public FactsToSjukfallConverter(List<Fact> aisle) {
-        this.aisle = aisle;
-    }
-
-    public ArrayListMultimap<Long, SjukfallExtended> getSjukfallsPerPatient(Set<Long> patients) {
-        if (sjukfallsPerPatientInAisle == null) {
-            sjukfallsPerPatientInAisle = getSjukfallsPerPatient(aisle, patients);
-            return sjukfallsPerPatientInAisle;
-        }
-        final Set<Long> cachedPatients = sjukfallsPerPatientInAisle.keySet();
-        final HashSet<Long> nonCachedPatients = new HashSet<>(patients);
-        nonCachedPatients.removeAll(cachedPatients);
-        if (!nonCachedPatients.isEmpty()) {
-            sjukfallsPerPatientInAisle.putAll(getSjukfallsPerPatient(aisle, nonCachedPatients));
-        }
-        return sjukfallsPerPatientInAisle;
-    }
 
     ArrayListMultimap<Long, SjukfallExtended> getSjukfallsPerPatient(Iterable<Fact> facts) {
         return getSjukfallsPerPatient(facts, null);
     }
 
-    private ArrayListMultimap<Long, SjukfallExtended> getSjukfallsPerPatient(Iterable<Fact> facts, Collection<Long> patientsFilter) {
+    ArrayListMultimap<Long, SjukfallExtended> getSjukfallsPerPatient(Iterable<Fact> facts, Collection<Long> patientsFilter) {
         final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = ArrayListMultimap.create();
+        if (facts == null) {
+            return sjukfallsPerPatient;
+        }
         for (Fact line : facts) {
             long key = line.getPatient();
             if (patientsFilter != null && !patientsFilter.contains(key)) {
@@ -67,10 +47,10 @@ public class FactsToSjukfallConverter {
                 SjukfallExtended sjukfall = new SjukfallExtended(line);
                 sjukfallsPerPatient.put(key, sjukfall);
             } else {
-                final SjukfallExtended sjukfall = sjukfallsForPatient.remove(sjukfallsForPatient.size() - 1);
+                final SjukfallExtended sjukfall = sjukfallsForPatient.get(sjukfallsForPatient.size() - 1);
                 SjukfallExtended nextSjukfall = sjukfall.join(line);
-                if (!nextSjukfall.isExtended()) {
-                    sjukfallsPerPatient.put(key, sjukfall);
+                if (nextSjukfall.isExtended()) {
+                    sjukfallsForPatient.remove(sjukfallsForPatient.size() - 1);
                 }
                 sjukfallsPerPatient.put(key, nextSjukfall);
             }

@@ -43,7 +43,7 @@ public class SjukfallPerPeriodCalculator {
     public SjukfallPerPeriodCalculator(boolean extendSjukfall, boolean useOriginalSjukfallStart, List<Range> ranges, List<Fact> aisle, Iterable<Fact> filteredAisle) {
         this.extendSjukfall = extendSjukfall;
         this.ranges = ranges;
-        sjukfallPerPatientCalculator = new SjukfallPerPatientCalculator(useOriginalSjukfallStart, ranges, aisle, filteredAisle);
+        sjukfallPerPatientCalculator = new SjukfallPerPatientCalculator(useOriginalSjukfallStart, ranges, filteredAisle);
         if (this.extendSjukfall) {
             sjukfallCalculatorExtender = new SjukfallCalculatorExtender(useOriginalSjukfallStart, aisle);
         }

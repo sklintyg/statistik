@@ -24,6 +24,7 @@ import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.SjukfallExtended;
 import se.inera.statistics.service.warehouse.sjukfallcalc.extend.SjukfallMerger;
 import se.inera.statistics.service.warehouse.sjukfallcalc.perpatient.FactsToSjukfallConverter;
+import se.inera.statistics.service.warehouse.sjukfallcalc.perpatient.FactsToSjukfallConverterForAisle;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -32,17 +33,17 @@ import java.util.Set;
 
 class SjukfallCalculatorExtender {
 
-    private final FactsToSjukfallConverter factsToSjukfallConverter;
     private final SjukfallMerger sjukfallMerger;
+    private final FactsToSjukfallConverterForAisle factsToSjukfallConverterForAisle;
 
     SjukfallCalculatorExtender(boolean useOriginalSjukfallStart, List<Fact> aisle) {
-        factsToSjukfallConverter = new FactsToSjukfallConverter(aisle);
+        factsToSjukfallConverterForAisle = new FactsToSjukfallConverterForAisle(aisle, new FactsToSjukfallConverter());
         sjukfallMerger = new SjukfallMerger(aisle, useOriginalSjukfallStart);
     }
 
     void extendSjukfallConnectedByIntygOnOtherEnhets(Multimap<Long, SjukfallExtended> sjukfallForAvailableEnhets) {
         final Set<Long> patients = new HashSet<>(sjukfallForAvailableEnhets.keySet());
-        final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = factsToSjukfallConverter.getSjukfallsPerPatient(patients);
+        final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = factsToSjukfallConverterForAisle.getSjukfallsPerPatient(patients);
         for (long patient : patients) {
             extendSjukfallConnectedByIntygOnOtherEnhetsForPatientIfNeeded(sjukfallForAvailableEnhets, sjukfallsPerPatient, patient);
         }
