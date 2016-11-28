@@ -40,6 +40,7 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 /**
@@ -163,6 +164,27 @@ public class FkReportCreatorTest {
         assertEquals("Alla", rows.get(0).getDiagnos());
         assertEquals("F32", rows.get(rowsPerCode).getDiagnos());
         assertEquals("F33+", rows.get(expectedNrRows - 1).getDiagnos());
-
     }
+
+    @Test
+    public void testGetRealDaysForIntyg() throws Exception {
+        //Given
+        final ArrayList<Fact> facts = new ArrayList<>();
+        facts.add(createFact(10, 15, 10));
+        facts.add(createFact(20, 25, 15));
+        facts.add(createFact(30, 35, 10));
+        facts.add(createFact(40, 45, 60));
+
+        //When
+        final Aisle aisle = new Aisle(new HsaIdVardgivare("vg1"), facts);
+        final int realDaysForIntyg = FkReportCreator.getRealDaysForIntyg(10, aisle);
+
+        //Then
+        assertEquals(12, realDaysForIntyg);
+    }
+
+    private Fact createFact(int startdatum, int slutdatum, int lakarintyg) {
+        return new Fact(1,1,1,1, lakarintyg,1, startdatum, slutdatum,1,1,1,1,1,1,1,1,1, new int[0],1,false);
+    }
+
 }
