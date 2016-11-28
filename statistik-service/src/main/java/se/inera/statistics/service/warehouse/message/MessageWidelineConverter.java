@@ -24,7 +24,9 @@ import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.warehouse.AbstractWidlineConverter;
+import se.inera.statistics.service.warehouse.WidelineLoader;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
+import se.inera.statistics.service.warehouse.model.db.WideLine;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
 
 import java.time.LocalDateTime;
@@ -35,14 +37,21 @@ import java.util.List;
 public class MessageWidelineConverter extends AbstractWidlineConverter {
 
     private static final int MAX_LENGTH_MESSAGE_ID = 50;
+    private static final int MAX_LENGTH_INTYG_ID = 50;
+    private static final int MAX_LENGTH_VGID = 50;
 
     @Autowired
     private SendMessageToCareHelper sendMessageToCareHelper;
+    @Autowired
+    private WidelineLoader widelineLoader;
 
     public List<String> validate(MessageWideLine line) {
         List<String> errors = new ArrayList<>();
+        checkField(errors, line.getVardgivareid(), "Vårdgivare", MAX_LENGTH_VGID);
+        checkField(errors, line.getEnhet(), "Enhet");
         checkField(errors, line.getPatientid(), "Patient");
         checkField(errors, line.getMeddelandeId(), "MeddelandeId", MAX_LENGTH_MESSAGE_ID);
+        checkField(errors, line.getIntygsId(), "IntygsId", MAX_LENGTH_INTYG_ID);
         return errors;
     }
 
@@ -61,6 +70,13 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
         line.setLogId(logId);
         line.setKon(patientdata.getKon().getNumberRepresentation());
         line.setAlder(patientdata.getAlder());
+
+        WideLine wideLine = widelineLoader.getOne(line.getIntygsId());
+
+        if (wideLine != null) {
+            line.setEnhet(wideLine.getEnhet().getId());
+            line.setVardgivareid(wideLine.getVardgivareId().getId());
+        }
 
         return line;
     }

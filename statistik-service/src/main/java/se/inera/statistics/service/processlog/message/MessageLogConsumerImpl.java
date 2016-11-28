@@ -72,7 +72,7 @@ public class MessageLogConsumerImpl implements MessageLogConsumer {
                 } finally {
                     processLog.confirm(event.getId());
                     processed++;
-                    LOG.info("Processed log id {}", event.getId());
+                    LOG.info("Processed message log id {}", event.getId());
                 }
             }
             return processed;

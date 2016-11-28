@@ -239,16 +239,13 @@ public class RestSupportService {
     @POST
     @Path("processMeddelande")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response processMeddelande(@QueryParam("buildCache") boolean buildCache) {
+    public Response processMeddelande() {
         LOG.debug("Log Job");
         int count;
         do {
             count = messageLogConsumer.processBatch();
             LOG.info("Processed batch with {} messages", count);
         } while (count > 0);
-        if (buildCache) {
-            nationalChartDataService.buildCache();
-        }
         return Response.ok().build();
     }
 

@@ -34,10 +34,10 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
-import se.inera.statistics.service.warehouse.message.MessageWidelineLoader;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.Counter;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
+import se.inera.statistics.service.warehouse.query.MessagesQuery;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
@@ -51,7 +51,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class NationellData {
@@ -62,7 +61,7 @@ public class NationellData {
     private Warehouse warehouse;
 
     @Autowired
-    private MessageWidelineLoader messageWidelineLoader;
+    private MessagesQuery messagesQuery;
 
     @Autowired
     private Lan lans;
@@ -87,38 +86,7 @@ public class NationellData {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getMeddelandenPerMonth(Range range) {
-        return getAntalMeddelanden(range.getFrom(), range.getMonths());
-    }
-
-    private SimpleKonResponse<SimpleKonDataRow> getAntalMeddelanden(LocalDate start, int perioder) {
-        List<SimpleKonDataRow> result = new ArrayList<>();
-
-        LocalDate to = start.plusMonths(perioder);
-        List<MessageWidelineLoader.CountDTO> rows = messageWidelineLoader.getAntalMeddelandenPerMonth(start, to);
-
-        Map<LocalDate, List<MessageWidelineLoader.CountDTO>> map = rows.stream().collect(Collectors.groupingBy(r -> r.getDate()));
-
-        for (int i = 0; i < perioder; i++) {
-            LocalDate temp = start.plusMonths(i);
-            String displayDate = ReportUtil.toDiagramPeriod(temp);
-            int male = 0;
-            int female = 0;
-
-            List<MessageWidelineLoader.CountDTO> dtos = map.get(temp);
-
-            if (dtos != null) {
-                for (MessageWidelineLoader.CountDTO dto : dtos) {
-                    if (dto.getKon().equals(Kon.FEMALE)) {
-                        female += dto.getCount();
-                    } else {
-                        male += dto.getCount();
-                    }
-                }
-            }
-
-            result.add(new SimpleKonDataRow(displayDate, female, male));
-        }
-        return new SimpleKonResponse<>(result);
+        return messagesQuery.getAntalMeddelanden(range.getFrom(), range.getMonths());
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(Range range) {

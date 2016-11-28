@@ -66,6 +66,24 @@ public class WidelineLoader {
         return -1;
     }
 
+    public WideLine getOne(String intygsId) {
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement stmt = prepareStatementOne(connection)
+        ) {
+            stmt.setString(1, intygsId);
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+                return toWideline(resultSet);
+            }
+        } catch (SQLException e) {
+            LOG.error("Could not fetch wideline", e);
+        }
+
+        return null;
+    }
+
     private WideLine toWideline(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("id");
         String correlationId = resultSet.getString("correlationId");
@@ -96,11 +114,22 @@ public class WidelineLoader {
         String sql = "select id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum,"
                 + " slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder,"
                 + " lakarbefattning, vardgivareid, lakareid, enkelt from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )";
+
         int maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.fact", "0"));
         if (maxIntyg > 0) {
             sql += " limit " + maxIntyg;
             LOG.error("Only reading first " + maxIntyg + " intyg.");
         }
+        PreparedStatement stmt = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        stmt.setFetchSize(FETCH_SIZE);
+        return stmt;
+    }
+
+    private PreparedStatement prepareStatementOne(Connection connection) throws SQLException {
+        String sql = "select id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum,"
+                + " slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder,"
+                + " lakarbefattning, vardgivareid, lakareid, enkelt from wideline w1 where intygtyp != " + EventType.REVOKED.ordinal() + " AND correlationid = ? LIMIT 1";
+
         PreparedStatement stmt = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(FETCH_SIZE);
         return stmt;

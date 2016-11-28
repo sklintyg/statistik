@@ -179,8 +179,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getNumberOfMeddelandenPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(filterSettings.getFilter().getPredicate(), filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData result = new PeriodConverter().convert(casesPerMonth, filterSettings);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getMessagesPerMonth(filterSettings.getFilter(), filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleDetailsData result = new MessagePeriodConverter().convert(casesPerMonth, filterSettings);
         return getResponse(result, csv, request);
     }
 
@@ -194,8 +194,8 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonthTvarsnitt(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData result = SimpleDualSexConverter.newGenericTvarsnitt().convert(casesPerMonth, filterSettings);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getMessagesPerMonthTvarsnitt(filter, range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleDetailsData result = new MessagePeriodConverter().convert(casesPerMonth, filterSettings);
         return getResponse(result, csv, request);
     }
 
