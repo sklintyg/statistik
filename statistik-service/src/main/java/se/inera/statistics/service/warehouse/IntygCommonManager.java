@@ -151,7 +151,8 @@ public class IntygCommonManager {
         return new IntygCommonGroup(range, intygCommons);
     }
 
-    private Predicate getConditions(Range range, HsaIdVardgivare vardgivarId, CriteriaBuilder builder, Root<IntygCommon> root) { //TODO: Implement search conditions
+    private Predicate getConditions(Range range, HsaIdVardgivare vardgivarId, CriteriaBuilder builder, Root<IntygCommon> root) {
+        //FIXME: Implement search conditions
         Predicate pred = builder.conjunction();
         return pred;
     }
@@ -159,7 +160,7 @@ public class IntygCommonManager {
     public static int countMale(Collection<IntygCommon> intygs) {
         int count = 0;
         for (IntygCommon intyg : intygs) {
-            if (intyg.getKon() == 0) { // TODO: 0 or 1 really?
+            if (intyg.getKon() == 0) { // FIXME: 0 or 1 really?
                 count++;
             }
         }

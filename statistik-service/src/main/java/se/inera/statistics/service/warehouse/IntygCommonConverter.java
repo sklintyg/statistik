@@ -84,8 +84,10 @@ public class IntygCommonConverter {
      * @param kon
      * @return
      */
+    // FIXME: Checkstyle warning
+    // CHECKSTYLE:OFF ParameterNumber
     private IntygCommon createIntygCommon(long logId, String correlationId, EventType type, String enhet, HsaIdVardgivare vardgivare, String patient,
-            int kon, String intygTyp, LocalDate signeringsdatum) {
+                                          int kon, String intygTyp, LocalDate signeringsdatum) {
 
         IntygCommon intygCommon = new IntygCommon();
         intygCommon.setIntygid(correlationId);
@@ -96,6 +98,7 @@ public class IntygCommonConverter {
         intygCommon.setSigneringsdatum(toDay(signeringsdatum));
         return intygCommon;
     }
+    // CHECKSTYLE:ON ParameterNumber
 
     public static int toDay(LocalDate dayDate) {
         return (int) ChronoUnit.DAYS.between(ERA, dayDate);

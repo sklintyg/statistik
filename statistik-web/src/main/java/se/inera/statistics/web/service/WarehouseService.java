@@ -76,7 +76,7 @@ public class WarehouseService {
     private SjukfallQuery sjukfallQuery;
 
     @Autowired
-    private IntygCommonManager IntygCommonManager;
+    private IntygCommonManager intygCommonManager;
 
     @Autowired
     private SjukfallUtil sjukfallUtil;
@@ -104,7 +104,7 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getIntygPerMonth(Range range, HsaIdVardgivare vardgivarId) {
-        return IntygCommonManager.getIntyg(vardgivarId, range, range.getMonths());
+        return intygCommonManager.getIntyg(vardgivarId, range, range.getMonths());
     }
 
     public DiagnosgruppResponse getDiagnosgrupperPerMonth(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {

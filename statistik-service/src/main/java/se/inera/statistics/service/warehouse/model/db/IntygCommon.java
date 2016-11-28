@@ -50,6 +50,8 @@ public class IntygCommon {
      * @param enhet
      * @param vardgivareId
      */
+    // FIXME: Checkstyle warning
+    // CHECKSTYLE:OFF ParameterNumber
     public IntygCommon(long id, String intygid, String patientid, int signeringsdatum, String intygtyp, String enhet, String vardgivareId, int kon) {
         this.id = id;
         this.intygid = intygid;
@@ -60,6 +62,7 @@ public class IntygCommon {
         this.enhet = enhet;
         this.vardgivareId = vardgivareId;
     }
+    // CHECKSTYLE:ON ParameterNumber
 
     public IntygCommon() {
         // Used by IntygCommonConverter
