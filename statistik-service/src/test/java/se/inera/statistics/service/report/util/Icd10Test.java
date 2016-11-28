@@ -27,7 +27,7 @@ import se.inera.statistics.service.report.util.Icd10.Avsnitt;
 import se.inera.statistics.service.report.util.Icd10.Kapitel;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -137,4 +137,24 @@ public class Icd10Test {
         return allIntIds;
     }
 
+
+    @Test
+    public void testIcd10ToInt() throws Exception {
+        //Given
+        //When
+        for (int k = 0; k < 100; k++) {
+            final char[] chars1 = "ABCDEFGHIJKLMNOPQRSTUVXYZ".toCharArray();
+            for (int i = 0; i < chars1.length; i++) {
+                char c = chars1[i];
+
+                for (Icd10RangeType icd10RangeType : Icd10RangeType.values()) {
+                    for (int j = 10; j < 10000; j++) {
+                        Icd10.icd10ToInt(c + String.valueOf(j), icd10RangeType);
+                    }
+                }
+            }
+        }
+        //Then
+
+    }
 }

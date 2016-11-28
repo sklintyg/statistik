@@ -62,10 +62,11 @@ public class Icd10 {
     public static final String OTHER_AVSNITT = "Ö00-Ö00";
     public static final String OTHER_KATEGORI = "Ö00";
     public static final String OTHER_KOD = "Ö000";
+    private static final int INTID_OTHER_KATEGORI = Icd10.icd10ToInt(Icd10.OTHER_KATEGORI, Icd10RangeType.KATEGORI);
     private static final List<Integer> INTERNAL_ICD10_INTIDS = Arrays.asList(
                                                                         icd10ToInt(OTHER_KAPITEL, Icd10RangeType.KAPITEL),
                                                                         icd10ToInt(OTHER_AVSNITT, Icd10RangeType.AVSNITT),
-                                                                        icd10ToInt(OTHER_KATEGORI, Icd10RangeType.KATEGORI),
+                                                                        INTID_OTHER_KATEGORI,
                                                                         icd10ToInt(OTHER_KOD, Icd10RangeType.KOD));
     public static final String UNKNOWN_CODE_NAME = "Utan giltig ICD-10 kod";
 
@@ -200,7 +201,7 @@ public class Icd10 {
                 return new Icd(kapitel, Kategori.class);
             }
         }));
-        icds.add(new Icd("", "Utan giltig ICD-10 kod", Icd10.icd10ToInt(Icd10.OTHER_KATEGORI, Icd10RangeType.KATEGORI)));
+        icds.add(new Icd("", "Utan giltig ICD-10 kod", INTID_OTHER_KATEGORI));
         return icds;
     }
 
@@ -337,9 +338,11 @@ public class Icd10 {
     public static class Kapitel extends RangeType {
 
         private final List<Avsnitt> avsnitt = new ArrayList<>();
+        private final int intId;
 
         public Kapitel(String range, String name) {
             super(range.toUpperCase(), name);
+            intId = icd10ToInt(getId(), Icd10RangeType.KAPITEL);
         }
 
         @Override
@@ -362,7 +365,7 @@ public class Icd10 {
 
         @Override
         public int toInt() {
-            return icd10ToInt(getId(), Icd10RangeType.KAPITEL);
+            return intId;
         }
 
     }
@@ -371,12 +374,14 @@ public class Icd10 {
 
         private final Kapitel kapitel;
         private final List<Kategori> kategori;
+        private final int intId;
 
         public Avsnitt(String range, String name, Kapitel kapitel) {
             super(range.toUpperCase(), name);
             this.kapitel = kapitel;
             kategori = new ArrayList<>();
             kapitel.avsnitt.add(this);
+            intId = icd10ToInt(getId(), Icd10RangeType.AVSNITT);
         }
 
         public static Avsnitt valueOf(String line, Collection<Kapitel> kapitels) {
@@ -409,7 +414,7 @@ public class Icd10 {
 
         @Override
         public int toInt() {
-            return icd10ToInt(getId(), Icd10RangeType.AVSNITT);
+            return intId;
         }
 
     }
@@ -418,12 +423,14 @@ public class Icd10 {
 
         private final Avsnitt avsnitt;
         private final List<Kod> kods;
+        private final int intId;
 
         public Kategori(String id, String name, Avsnitt avsnitt) {
             super(id.toUpperCase(), name);
             this.avsnitt = avsnitt;
             this.kods = new ArrayList<>();
             avsnitt.kategori.add(this);
+            intId = icd10ToInt(getId(), Icd10RangeType.KATEGORI);
         }
 
         public static Kategori valueOf(String line, Collection<Avsnitt> avsnitts) {
@@ -455,7 +462,7 @@ public class Icd10 {
 
         @Override
         public int toInt() {
-            return icd10ToInt(getId(), Icd10RangeType.KATEGORI);
+            return intId;
         }
 
         @Override
@@ -469,11 +476,13 @@ public class Icd10 {
     public static class Kod extends Id {
 
         private final Kategori kategori;
+        private final int intId;
 
         public Kod(String id, String name, Kategori kategori) {
             super(id.toUpperCase(), name);
             this.kategori = kategori;
             kategori.kods.add(this);
+            intId = icd10ToInt(getId(), Icd10RangeType.KOD);
         }
 
         public static Kod valueOf(String line, Collection<Kategori> kategoris) {
@@ -501,7 +510,7 @@ public class Icd10 {
 
         @Override
         public int toInt() {
-            return icd10ToInt(getId(), Icd10RangeType.KOD);
+            return intId;
         }
 
     }
