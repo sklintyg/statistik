@@ -1,0 +1,33 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Ett intyg har ett meddelande
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet |
+| 19790717-9191 | G01 | 2013-02-05 | 2013-06-06 | enhet1 |
+
+| Foljande meddelanden finns |
+| personnr | skickat | intygsid |
+| 19790717-9191 | 2013-04-05T10:00:00 | 1 |
+| 19790717-9191 | 2013-06-03T10:00:00 | 1 |
+
+!3 Då gäller:
+
+Sjukfallet visas för alla månader som intyget är giltigt.
+
+Inloggad:
+| Meddelanden i rapporten meddelanden totalt |
+| inloggad som | år | månad | män? | kvinnor? |
+| user1  | 2013 | jan | 0 | 0 |
+| user1  | 2013 | feb | 0 | 0 |
+| user1  | 2013 | mar | 0 | 0 |
+| user1  | 2013 | apr | 1 | 0 |
+| user1  | 2013 | maj | 0 | 0 |
+| user1  | 2013 | jun | 1 | 0 |
+| user1  | 2013 | jul | 0 | 0 |

@@ -173,6 +173,8 @@ public class RestSupportService {
         manager.createQuery("DELETE FROM Enhet").executeUpdate();
         manager.createQuery("DELETE FROM Lakare").executeUpdate();
         manager.createQuery("DELETE FROM HSAStore").executeUpdate();
+        manager.createQuery("DELETE FROM MessageWideLine").executeUpdate();
+        manager.createQuery("DELETE FROM MessageEvent").executeUpdate();
         warehouse.clear();
         sjukfallUtil.clearSjukfallGroupCache();
         nationalChartDataService.buildCache();
@@ -214,6 +216,17 @@ public class RestSupportService {
             Enhet enhet = new Enhet(new HsaIdVardgivare(intyg.getVardgivareId()), new HsaIdEnhet(intyg.getEnhetId()), name, "", "", "");
             manager.persist(enhet);
         }
+    }
+
+    @PUT
+    @Path("meddelande")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Transactional
+    public Response insertIntyg(Meddelande meddelande) {
+        LOG.info("Insert meddelande. id: " + meddelande.getMessageId() + ", data: " + meddelande.getData());
+        insertMeddelandeWithoutLogging(meddelande);
+        return Response.ok().build();
     }
 
     @Transactional

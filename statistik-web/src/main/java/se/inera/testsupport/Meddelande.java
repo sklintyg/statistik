@@ -27,6 +27,9 @@ public class Meddelande {
     private String messageId;
     private long timestamp;
 
+    public Meddelande() {
+    }
+
     public Meddelande(MessageEventType type, String data, String messageId, long timestamp) {
         this.type = type;
         this.data = data;

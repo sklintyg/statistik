@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory
 import se.inera.statistics.service.report.model.KonField
 import se.inera.statistics.web.service.FilterData
 import se.inera.testsupport.Intyg
+import se.inera.testsupport.Meddelande
 import se.inera.testsupport.Personal
 
 import javax.ws.rs.core.MediaType
@@ -84,6 +85,17 @@ class ReportsUtil {
         assert response.status == 200
     }
 
+    def insertMeddelande(Meddelande meddelande) {
+        def builder = new JsonBuilder(meddelande)
+        def response = statistik.put(path: '/api/testsupport/meddelande', body: builder.toString())
+        assert response.status == 200
+    }
+
+    def processMeddelande() {
+        def response = statistik.post(path: '/api/testsupport/processMeddelande')
+        assert response.status == 200
+    }
+
     def denyCalc() {
         def response = statistik.post(path: '/api/testsupport/denyCalc')
         assert response.status == 200
@@ -115,6 +127,10 @@ return get(getVerksamhetUrlPrefix() + "/getNumberOfIntygPerMonth")
 
     def getReportAntalIntygInloggad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonth", filter, "vgid=" + vgid)
+    }
+
+    def getReportAntalMeddelandenInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfMeddelandenPerMonth", filter, "vgid=" + vgid)
     }
 
     def getReportLangaSjukfallInloggad(String vgid, filter) {
