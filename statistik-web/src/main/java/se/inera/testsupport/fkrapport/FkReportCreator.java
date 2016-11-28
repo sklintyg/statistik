@@ -23,11 +23,11 @@ import java.text.DecimalFormatSymbols;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -179,15 +179,20 @@ public class FkReportCreator {
         return new FkFactRow(diagnoseClearText, kon, lanskod, realDaysFirstIntyg);
     }
 
-    private int getRealDaysForIntyg(long intygId, Aisle aisle) {
-        final long realDaysInIntyg = getAllFactsInIntyg(intygId, aisle)
-                .flatMap(fact -> IntStream.rangeClosed(fact.getStartdatum(), fact.getSlutdatum()).boxed())
-                .distinct()
-                .count();
-        return Math.toIntExact(realDaysInIntyg);
+    static int getRealDaysForIntyg(long intygId, Aisle aisle) {
+        final List<Fact> facts = getAllFactsInIntyg(intygId, aisle).collect(Collectors.toList());
+        final HashSet<Integer> dates = new HashSet<>();
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < facts.size(); i++) {
+            final Fact fact = facts.get(i);
+            for (int j = fact.getStartdatum(); j <= fact.getSlutdatum(); j++) {
+                dates.add(j);
+            }
+        }
+        return dates.size();
     }
 
-    private Stream<Fact> getAllFactsInIntyg(long intygId, Aisle aisle) {
+    private static Stream<Fact> getAllFactsInIntyg(long intygId, Aisle aisle) {
         return StreamSupport.stream(aisle.spliterator(), false)
                 .filter(fact -> fact.getLakarintyg() == intygId);
     }
@@ -202,12 +207,27 @@ public class FkReportCreator {
 
     private boolean inPeriod(Stream<Fact> intygFacts, int from, int to) {
         final List<Fact> intyg = intygFacts.collect(Collectors.toList());
-        final int intygStart = intyg.stream().mapToInt(Fact::getStartdatum).min().orElse(Integer.MAX_VALUE);
-        final int intygEnd = intyg.stream().mapToInt(Fact::getSlutdatum).max().orElse(Integer.MIN_VALUE);
-        boolean startsInPeriod = intygStart <= to && intygStart >= from;
-        boolean endInPeriod = intygEnd <= to && intygEnd >= from;
-        boolean spansPeriod = intygStart < from && intygEnd > to;
-        return startsInPeriod || endInPeriod || spansPeriod;
+
+        int intygStart = Integer.MAX_VALUE;
+        int intygEnd = Integer.MIN_VALUE;
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < intyg.size(); i++) {
+            final Fact fact = intyg.get(i);
+
+            final int startCandidate = fact.getStartdatum();
+            if (startCandidate < intygStart) {
+                intygStart = startCandidate;
+            }
+
+            final int endCandidate = fact.getSlutdatum();
+            if (endCandidate > intygEnd) {
+                intygEnd = endCandidate;
+            }
+        }
+
+        return intygStart <= to && intygStart >= from //startsInPeriod
+                || intygEnd <= to && intygEnd >= from //endInPeriod
+                || intygStart < from && intygEnd > to; //spansPeriod
     }
 
     private LocalDate getLastDateOfLastYear() {
