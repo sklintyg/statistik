@@ -18,6 +18,23 @@
  */
 package se.inera.statistics.web.service;
 
+import java.time.Clock;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +42,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
@@ -49,21 +67,6 @@ import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 import se.inera.statistics.web.service.converter.SjukfallForBiConverter;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.time.Clock;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned
@@ -131,6 +134,22 @@ public class ProtectedChartDataService {
         final List<Verksamhet> businesses = loginInfo.getBusinessesForVg(loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final List<HsaIdEnhet> hsaIdEnhets = businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
         return responseHandler.getResponse(result, csv, hsaIdEnhets);
+    }
+
+    /**TODO
+     * Gets intyg per manad for verksamhetId.
+     */
+    @GET
+    @Path("getNumberOfIntygPerMonth{csv:(/csv)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfIntygPerMonth(@Context HttpServletRequest request, @PathParam("csv") String csv) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, null, 18);
+        SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerMonth(filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request)); //TODO: fix param i n reportsutil
+        SimpleDetailsData result = new PeriodConverter().convert(intygPerMonth, filterSettings);
+        return getResponse(result, csv, request);
     }
 
     @GET

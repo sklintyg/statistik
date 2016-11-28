@@ -18,12 +18,19 @@
  */
 package se.inera.statistics.web.service;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
@@ -39,6 +46,7 @@ import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
+import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
@@ -53,11 +61,6 @@ import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class WarehouseService {
 
     @Autowired
@@ -71,6 +74,9 @@ public class WarehouseService {
 
     @Autowired
     private SjukfallQuery sjukfallQuery;
+
+    @Autowired
+    private IntygCommonManager IntygCommonManager;
 
     @Autowired
     private SjukfallUtil sjukfallUtil;
@@ -95,6 +101,10 @@ public class WarehouseService {
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonthTvarsnitt(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return sjukfallQuery.getSjukfallTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), false);
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getIntygPerMonth(Range range, HsaIdVardgivare vardgivarId) {
+        return IntygCommonManager.getIntyg(vardgivarId, range, range.getMonths());
     }
 
     public DiagnosgruppResponse getDiagnosgrupperPerMonth(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {

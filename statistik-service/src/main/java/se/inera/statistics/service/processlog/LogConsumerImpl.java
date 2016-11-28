@@ -78,11 +78,9 @@ public class LogConsumerImpl implements LogConsumer {
                     }
                 } catch (HsaCommunicationException e) {
                     LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
-                    LOG.debug("Could not process intyg {} ({}).", event.getId(), event.getCorrelationId(), e);
                     return processed;
                 } catch (Exception e) {
                     LOG.error("Could not process intyg {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
-                    LOG.debug("Could not process intyg {} ({}).", event.getId(), event.getCorrelationId(), e);
                 } finally {
                     processLog.confirm(event.getId());
                     processed++;
@@ -90,10 +88,12 @@ public class LogConsumerImpl implements LogConsumer {
                 }
             }
             return processed;
-        } finally {
+        }
+        finally {
             setRunning(false);
         }
-    }
+        }
+
 
     private boolean handleEvent(IntygEvent event, IntygFormat format) {
         switch (format) {

@@ -20,18 +20,22 @@ package se.inera.statistics.service.processlog;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
+import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.WidelineManager;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 public class Processor {
     @Autowired
     private WidelineManager widelineManager;
+
+    @Autowired
+    private IntygCommonManager intygCommonManager;
 
     @Autowired
     private VardgivareManager vardgivareManager;
@@ -53,7 +57,39 @@ public class Processor {
     public void accept(RegisterCertificateType utlatande, HsaInfo hsa, long logId, String correlationId, EventType type) {
         final String enhetId = registerCertificateHelper.getEnhetId(utlatande);
         saveEnhetAndLakare(hsa, enhetId);
+        handleWithIntygCommonManager(utlatande, hsa, logId, correlationId, type);
+        String intygTyp = utlatande.getIntyg().getTyp().getCode().toUpperCase();
+        switch (intygTyp) {
+        case "LISU":
+            handleWithWidelineManager(utlatande, hsa, logId, correlationId, type);
+            break;
+        case "LISJP":
+            handleWithWidelineManager(utlatande, hsa, logId, correlationId, type);
+            break;
+        case "FK7263":
+            handleWithWidelineManager(utlatande, hsa, logId, correlationId, type);
+            break;
+        case "LIS":
+            handleWithWidelineManager(utlatande, hsa, logId, correlationId, type);
+            break;
+        default:
+            // do nothing
+        }
+    }
 
+    /**
+     * @param utlatande
+     * @param hsa
+     * @param logId
+     * @param correlationId
+     * @param type
+     */
+    private void handleWithIntygCommonManager(RegisterCertificateType utlatande, HsaInfo hsa, long logId, String correlationId, EventType type) {
+        final Patientdata patientData = registerCertificateHelper.getPatientData(utlatande);
+        intygCommonManager.accept(utlatande, patientData, hsa, logId, correlationId, type);
+    }
+
+    private void handleWithWidelineManager(RegisterCertificateType utlatande, HsaInfo hsa, long logId, String correlationId, EventType type) {
         final Patientdata patientData = registerCertificateHelper.getPatientData(utlatande);
         widelineManager.accept(utlatande, patientData, hsa, logId, correlationId, type);
     }

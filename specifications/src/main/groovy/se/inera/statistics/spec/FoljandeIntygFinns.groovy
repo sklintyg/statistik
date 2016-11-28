@@ -6,6 +6,8 @@ import se.inera.statistics.service.helper.SjukskrivningsGrad
 import se.inera.statistics.service.processlog.EventType
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.testsupport.Intyg
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class FoljandeIntygFinns {
 
@@ -82,6 +84,14 @@ class FoljandeIntygFinns {
                 return executeForNewJsonFormat();
             case ~/^(?i)LISU$/:
                 return executeForXmlFormat('/lisu.xml', "LISU");
+            case ~/^(?i)LUSE$/:
+                return executeForXmlFormatGeneral('/luse.xml', "LUSE");
+            case ~/^(?i)LUAE_NA$/:
+                return executeForXmlFormatGeneral('/luae_na.xml', "LUAE_NA");
+            case ~/^(?i)LUAE_FS$/:
+                return executeForXmlFormatGeneral('/luae_fs.xml', "LUAE_FS");
+            case ~/^(?i)LISJP$/:
+                return executeForXmlFormat('/lisjp.xml', "LISJP");
             case ~/^(?i)FK7263SIT$/:
                 return executeForXmlFormat('/fk7263sit.xml', "fk7263");
             case ~/^(?i)felaktigt.*$/:
@@ -93,6 +103,31 @@ class FoljandeIntygFinns {
 
     private String executeForIllegalIntygFormat() {
         return "This intyg will not be possible to parse"
+    }
+
+    private String executeForXmlFormatGeneral(String filepath, String defaultIntygstyp) {
+        def slurper = new XmlParser(false, true)
+        String intygString = getClass().getResource(filepath).getText('UTF-8')
+        def result = slurper.parseText(intygString)
+        def intyg = result.value()[0]
+
+        def patientNode = findNode(intyg, "patient")
+
+        def patientPersonIdNode = findNode(patientNode, "person-id")
+        setExtension(patientPersonIdNode, personnr)
+        setLeafValue(findNode(intyg, "typ"), "code", intygstyp != null ? intygstyp : defaultIntygstyp)
+
+        def skapadAvNode = findNode(intyg, "skapadAv")
+        setExtension(findNode(skapadAvNode, "personal-id"), läkare)
+
+        def skapadAvEnhetNode = findNode(skapadAvNode, "enhet")
+        setExtension(findNode(skapadAvEnhetNode, "enhets-id"), enhet)
+
+        def skapadAvEnhetVgNode = findNode(skapadAvEnhetNode, "vardgivare")
+        setExtension(findNode(skapadAvEnhetVgNode, "vardgivare-id"), vardgivare)
+
+        def builder = groovy.xml.XmlUtil.serialize(result)
+        return builder.toString()
     }
 
     private String executeForXmlFormat(String filepath, String defaultIntygstyp) {
@@ -134,20 +169,22 @@ class FoljandeIntygFinns {
         aktivitetsbegransningCodeNode.setValue(aktivitetsbegränsning)
 
         def arbetsformagaNode = svarNodes.find{ it.@id=="32" }
-        def arbetsformagaCodeNode = arbetsformagaNode.value().find{it.@id=="32.1"}.value()[0]
-        setLeafValue(arbetsformagaCodeNode, "code", SjukskrivningsGrad.fromId((Integer.valueOf(arbetsförmåga) / 25).intValue() + 1));
-        def arbetsformagaPeriodNode = arbetsformagaNode.value().find{it.@id=="32.2"}.value()[0]
-        setLeafValue(arbetsformagaPeriodNode, "start", start)
-        setLeafValue(arbetsformagaPeriodNode, "end", slut)
+        if(arbetsformagaNode!=null){
+            def arbetsformagaCodeNode = arbetsformagaNode.value().find{it.@id=="32.1"}.value()[0]
+            setLeafValue(arbetsformagaCodeNode, "code", SjukskrivningsGrad.fromId((Integer.valueOf(arbetsförmåga) / 25).intValue() + 1));
+            def arbetsformagaPeriodNode = arbetsformagaNode.value().find{it.@id=="32.2"}.value()[0]
+            setLeafValue(arbetsformagaPeriodNode, "start", start)
+            setLeafValue(arbetsformagaPeriodNode, "end", slut)
 
-        if (!arbetsförmåga2.isEmpty()) {
-            def arbetsformagaNode2 = arbetsformagaNode.clone();
-            intyg.append(arbetsformagaNode2);
-            def arbetsformagaCodeNode2 = arbetsformagaNode2.value().find{it.@id=="32.1"}.value()[0]
-            setLeafValue(arbetsformagaCodeNode2, "code", SjukskrivningsGrad.fromId((Integer.valueOf(arbetsförmåga2) / 25).intValue() + 1));
-            def arbetsformagaPeriodNode2 = arbetsformagaNode2.value().find{it.@id=="32.2"}.value()[0]
-            setLeafValue(arbetsformagaPeriodNode2, "start", start2)
-            setLeafValue(arbetsformagaPeriodNode2, "end", slut2)
+            if (!arbetsförmåga2.isEmpty()) {
+                def arbetsformagaNode2 = arbetsformagaNode.clone();
+                intyg.append(arbetsformagaNode2);
+                def arbetsformagaCodeNode2 = arbetsformagaNode2.value().find{it.@id=="32.1"}.value()[0]
+                setLeafValue(arbetsformagaCodeNode2, "code", SjukskrivningsGrad.fromId((Integer.valueOf(arbetsförmåga2) / 25).intValue() + 1));
+                def arbetsformagaPeriodNode2 = arbetsformagaNode2.value().find{it.@id=="32.2"}.value()[0]
+                setLeafValue(arbetsformagaPeriodNode2, "start", start2)
+                setLeafValue(arbetsformagaPeriodNode2, "end", slut2)
+            }
         }
 
         def builder = groovy.xml.XmlUtil.serialize(result)
@@ -249,5 +286,4 @@ class FoljandeIntygFinns {
     public void endTable() {
         reportsUtil.processIntyg()
     }
-
 }
