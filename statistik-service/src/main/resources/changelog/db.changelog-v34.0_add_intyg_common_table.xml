@@ -22,8 +22,8 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
-                   logicalFilePath="liquibase/db.changelog-v47.0_add_intyg_common_table.xml">
-    <changeSet id="47_add_intyg_common_table" author="katarina.olsson">
+                   logicalFilePath="liquibase/db.changelog-v34.0_add_intyg_common_table.xml">
+    <changeSet id="34_add_intyg_common_table" author="katarina.olsson">
         
         <createTable tableName="intygcommon">
             <column name="id" type="int" autoIncrement="true">
