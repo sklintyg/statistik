@@ -42,6 +42,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -93,6 +94,8 @@ public class Icd10 {
     private IdMap<Avsnitt> idToAvsnittMap = new IdMap<>();
     private IdMap<Kapitel> idToKapitelMap = new IdMap<>();
     private IdMap<Kod> idToKodMap = new IdMap<>();
+    private IdMap<Id> idToInternalMap = new IdMap<>();
+    private Map<Integer, ? extends Id> intIdMap;
 
     public static int icd10ToInt(String id, Icd10RangeType rangeType) {
         final String upperCaseId = id.toUpperCase().trim();
@@ -135,7 +138,9 @@ public class Icd10 {
             populateIdMap(icd10VwxyKodAnsiFile, idToKodMap, s -> Kod.valueOf(s, idToKategoriMap.values()));
             populateInternalIcd10();
             kapitels = new ArrayList<>(idToKapitelMap.values());
-            kapitels.sort(Comparator.comparing(Kapitel::getId));
+            intIdMap = Stream.of(idToKategoriMap.values(), idToAvsnittMap.values(), idToKapitelMap.values(), idToKodMap.values(), internalIcd10)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toMap(Id::toInt, java.util.function.Function.identity()));
         } catch (IOException e) {
             LOG.error("Could not parse ICD10: " + e);
         }
@@ -159,6 +164,9 @@ public class Icd10 {
         final Kategori kategori = new Kategori(OTHER_KATEGORI, UNKNOWN_CODE_NAME, avsnitt);
         internalIcd10.add(kategori);
         internalIcd10.add(new Kod(OTHER_KOD, UNKNOWN_CODE_NAME, kategori));
+        for (Id id : internalIcd10) {
+            idToInternalMap.put(id);
+        }
     }
 
     public List<Kapitel> getKapitel(boolean includeInternalKapitel) {
@@ -236,28 +244,24 @@ public class Icd10 {
     }
 
     public Id findIcd10FromNumericId(int numId) {
-        return Stream
-                .of(idToKategoriMap.values(), idToAvsnittMap.values(), idToKapitelMap.values(), idToKodMap.values(), internalIcd10)
-                .flatMap(Collection::stream)
-                .filter((java.util.function.Predicate<Id>) id -> id.toInt() == numId)
-                .findAny().orElseThrow((Supplier<RuntimeException>) () -> new Icd10NotFoundException("ICD10 with numerical id could not be found: " + numId));
+        final Id id = intIdMap.get(numId);
+        if (id == null) {
+            throw new Icd10NotFoundException("ICD10 with numerical id could not be found: " + numId);
+        }
+        return id;
     }
 
     public static List<Integer> getKapitelIntIds(String... icdIds) {
-        return Lists.transform(Arrays.asList(icdIds), new Function<String, Integer>() {
-            @Override
-            public Integer apply(String icdId) {
-                return icd10ToInt(icdId, Icd10RangeType.KAPITEL);
-            }
-        });
+        return Lists.transform(Arrays.asList(icdIds), icdId -> icd10ToInt(icdId, Icd10RangeType.KAPITEL));
     }
 
     public Id findFromIcd10Code(String icd10) {
         return Stream
-                .of(idToKategoriMap.values(), idToAvsnittMap.values(), idToKapitelMap.values(), idToKodMap.values(), internalIcd10)
-                .flatMap(Collection::stream)
-                .filter((java.util.function.Predicate<Id>) id -> id.getId().equals(icd10))
-                .findAny().orElseThrow((Supplier<RuntimeException>) () -> new Icd10NotFoundException("ICD10 with id could not be found: " + icd10));
+                .of(idToKategoriMap, idToAvsnittMap, idToKapitelMap, idToKodMap, idToInternalMap)
+                .filter(idMap -> idMap.containsKey(icd10))
+                .findAny()
+                .map((java.util.function.Function<IdMap<? extends Id>, Id>) idMap -> idMap.get(icd10))
+                .orElseThrow((Supplier<RuntimeException>) () -> new Icd10NotFoundException("ICD10 with id could not be found: " + icd10));
     }
 
     private static <T extends Range> T find(String id, Collection<T> ranges) {
