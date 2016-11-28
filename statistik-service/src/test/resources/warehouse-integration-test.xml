@@ -86,7 +86,9 @@
 
     <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactPopulator" />
     <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
+    <bean id="intygCommonConverter" class="se.inera.statistics.service.warehouse.IntygCommonConverter" />
     <bean class="se.inera.statistics.service.warehouse.WidelineManager" />
+    <bean class="se.inera.statistics.service.warehouse.IntygCommonManager" />
     <bean class="se.inera.statistics.service.warehouse.WidelineLoader" />
     <bean class="se.inera.statistics.service.warehouse.EnhetLoader" />
     <bean class="se.inera.statistics.service.warehouse.SjukfallUtil" />

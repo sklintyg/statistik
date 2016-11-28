@@ -18,8 +18,26 @@
  */
 package se.inera.statistics.service.warehouse;
 
-public enum IntygType {
+import java.util.ArrayList;
+import java.util.Collection;
 
-    FK7263, LIS, LISU, LUSE, LUAE_NA, LUAE_FS, LISJP;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 
+public class IntygCommonGroup {
+    private final Range range;
+    private final Collection<IntygCommon> intyg;
+
+    public IntygCommonGroup(Range range, Collection<IntygCommon> intyg) {
+        this.range = range;
+        this.intyg = new ArrayList<>(intyg);
+    }
+
+    public Range getRange() {
+        return range;
+    }
+
+    public Collection<IntygCommon> getIntyg() {
+        return intyg;
+    }
 }

@@ -18,7 +18,12 @@
  */
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,17 +32,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.WidelineManager;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ProcessorTest {
@@ -46,6 +49,9 @@ public class ProcessorTest {
 
     @Mock
     private WidelineManager widelineManager = mock(WidelineManager.class);
+
+    @Mock
+    private IntygCommonManager intygCommonManager = mock(IntygCommonManager.class);
 
     @Mock
     private VardgivareManager vardgivareManager = mock(VardgivareManager.class);

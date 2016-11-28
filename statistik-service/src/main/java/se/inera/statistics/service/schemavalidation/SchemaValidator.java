@@ -20,11 +20,16 @@ package se.inera.statistics.service.schemavalidation;
 
 import javax.annotation.Nonnull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SchemaValidator {
+    private static final Logger LOG = LoggerFactory.getLogger(SchemaValidator.class);
+    @Autowired
+    private LuseValidator luseValidator;
 
     @Autowired
     private LisuValidator lisuValidator;
@@ -38,6 +43,8 @@ public class SchemaValidator {
                 return fk7263sitValidator.validateSchematron(data);
             case "LISU":
                 return lisuValidator.validateSchematron(data);
+            case "LUSE":
+                return luseValidator.validateSchematron(data);
             default:
                 return new ValidateXmlResponse("Unknown certificate type");
         }

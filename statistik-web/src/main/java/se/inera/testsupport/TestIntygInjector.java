@@ -32,8 +32,13 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.core.env.Environment;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Multimap;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -42,11 +47,6 @@ import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.report.util.Icd10;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 
 public class TestIntygInjector {

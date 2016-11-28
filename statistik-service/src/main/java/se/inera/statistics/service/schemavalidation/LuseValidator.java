@@ -16,10 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.warehouse;
+package se.inera.statistics.service.schemavalidation;
 
-public enum IntygType {
+import org.springframework.stereotype.Component;
 
-    FK7263, LIS, LISU, LUSE, LUAE_NA, LUAE_FS, LISJP;
+@Component
+public class LuseValidator extends RegisterCertificateValidator{
+    LuseValidator() {
+        super("luse.sch");
+    }
 
 }
