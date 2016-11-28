@@ -32,23 +32,30 @@ final class FactsPerPatientAndPeriodGrouper {
     }
 
     static List<ArrayListMultimap<Long, Fact>> group(Iterable<Fact> facts, List<Range> ranges) {
+        final List<Integer> rangeEnds = toRangeEnds(ranges);
+        return getFactsPerPatientAndPeriod(facts, rangeEnds);
+    }
+
+    private static List<ArrayListMultimap<Long, Fact>> initFactsPerPatientAndPeriod(List<Integer> rangeEnds) {
+        List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = new ArrayList<>(rangeEnds.size());
+        for (int i = 0; i < rangeEnds.size(); i++) {
+            factsPerPatientAndPeriod.add(ArrayListMultimap.create());
+        }
+        return factsPerPatientAndPeriod;
+    }
+
+    private static List<Integer> toRangeEnds(List<Range> ranges) {
         final List<Integer> rangeEnds = new ArrayList<>(ranges.size() + 1);
         rangeEnds.add(WidelineConverter.toDay(ranges.get(0).getFrom().minusDays(1)));
         for (Range range : ranges) {
             rangeEnds.add(WidelineConverter.toDay(range.getTo()));
         }
         rangeEnds.add(Integer.MAX_VALUE);
-
-        List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = new ArrayList<>(rangeEnds.size());
-        for (int i = 0; i < rangeEnds.size(); i++) {
-            factsPerPatientAndPeriod.add(ArrayListMultimap.create());
-        }
-
-        populateFactsPerPatientAndPeriod(facts, rangeEnds, factsPerPatientAndPeriod);
-        return factsPerPatientAndPeriod;
+        return rangeEnds;
     }
 
-    private static void populateFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Integer> rangeEnds, List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod) {
+    private static List<ArrayListMultimap<Long, Fact>> getFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Integer> rangeEnds) {
+        List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = initFactsPerPatientAndPeriod(rangeEnds);
         for (Fact fact : facts) {
             final List<Integer> rangeIndexes = getRangeIndexes(fact.getStartdatum(), fact.getSlutdatum(), rangeEnds);
             for (Integer rangeIndex : rangeIndexes) {
@@ -57,6 +64,7 @@ final class FactsPerPatientAndPeriodGrouper {
                 }
             }
         }
+        return factsPerPatientAndPeriod;
     }
 
     private static List<Integer> getRangeIndexes(int startdatum, int slutdatum, List<Integer> rangeEnds) {

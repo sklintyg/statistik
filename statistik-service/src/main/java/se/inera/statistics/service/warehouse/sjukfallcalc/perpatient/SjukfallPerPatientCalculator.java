@@ -37,11 +37,11 @@ public class SjukfallPerPatientCalculator {
     private List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod;
     private final FactsToSjukfallConverter factsToSjukfallConverter;
 
-    public SjukfallPerPatientCalculator(boolean useOriginalSjukfallStart, List<Range> ranges, List<Fact> aisle, Iterable<Fact> filteredAisle) {
+    public SjukfallPerPatientCalculator(boolean useOriginalSjukfallStart, List<Range> ranges, Iterable<Fact> filteredAisle) {
         this.useOriginalSjukfallStart = useOriginalSjukfallStart;
         this.ranges = ranges;
         this.factsPerPatientAndPeriod = FactsPerPatientAndPeriodGrouper.group(filteredAisle, this.ranges);
-        this.factsToSjukfallConverter = new FactsToSjukfallConverter(aisle);
+        this.factsToSjukfallConverter = new FactsToSjukfallConverter();
     }
 
     public Multimap<Long, SjukfallExtended> getSjukfallsPerPatient(int period) {

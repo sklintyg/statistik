@@ -101,6 +101,23 @@ public class FactsPerPatientAndPeriodGrouperTest {
         assertEquals(0, factsPerPatientAndPeriod.get(2).get(patient).size());
     }
 
+    @Test
+    public void testGetFactsPerPatientAndPeriodFactJustOnRangeBorder() throws Exception {
+        //Given
+        final long patient = 1;
+        final List<Fact> facts = Arrays.asList(createFact(patient, LocalDate.of(2015, 2, 20)), createFact(patient, LocalDate.of(2015, 3, 31)));
+        final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 4, 1), 2, 1);
+
+        //When
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = FactsPerPatientAndPeriodGrouper.group(facts, ranges);
+
+        //Then
+        assertEquals(4, factsPerPatientAndPeriod.size());
+        assertEquals(2, factsPerPatientAndPeriod.get(0).get(patient).size());
+        assertEquals(0, factsPerPatientAndPeriod.get(1).get(patient).size());
+        assertEquals(0, factsPerPatientAndPeriod.get(2).get(patient).size());
+    }
+
     private Fact createFact(long patient, LocalDate startDatum) {
         final int start = WidelineConverter.toDay(startDatum);
         return new Fact(1,1,1,1,1, patient, start,start,1,1,1,1,1,1,1,1,1,new int[0],1,false);
