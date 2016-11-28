@@ -49,6 +49,13 @@ abstract class SimpleDetailsReport extends Rapport {
         return reportsUtil.getReportAntalIntyg();
     }
 
+    def getReportMeddelandenTotalt() {
+        if (inloggad) {
+            return reportsUtil.getReportAntalMeddelandenInloggad(vg, filter)
+        }
+        throw new RuntimeException("Report -Antal meddelanden totalt- is not available on national level");
+    }
+
     def getReportLangaSjukfall() {
         if (inloggad) {
             return reportsUtil.getReportLangaSjukfallInloggad(vg, filter);

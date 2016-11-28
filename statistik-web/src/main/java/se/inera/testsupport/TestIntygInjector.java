@@ -150,7 +150,7 @@ public class TestIntygInjector {
         for (int i = 0; i < personNummers.size(); i++) {
             String id = personNummers.get(i);
             String intygsId = createAndInsertIntyg(builder, id);
-            if (i%2 == 0) {
+            if (i % 2 == 0) {
                 creatAndInsertMeddelande(template, id, intygsId);
             }
         }
