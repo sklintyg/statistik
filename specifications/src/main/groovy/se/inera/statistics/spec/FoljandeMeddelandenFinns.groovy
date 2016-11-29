@@ -1,12 +1,9 @@
 package se.inera.statistics.spec
 
 import se.inera.statistics.service.processlog.message.MessageEventType
-import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.testsupport.Meddelande
 
-class FoljandeMeddelandenFinns {
-
-    protected final ReportsUtil reportsUtil = new ReportsUtil()
+class FoljandeMeddelandenFinns extends FoljandeFinns {
 
     private static int meddelandeIdCounter = 1
 
@@ -49,29 +46,6 @@ class FoljandeMeddelandenFinns {
 
         def builder = groovy.xml.XmlUtil.serialize(result)
         return builder.toString()
-    }
-
-    private Object findNode(parent, String nodeName) {
-        println nodeName
-
-        return parent.find { it.name().localPart.equals(nodeName) }
-    }
-
-    def setLeafValue(Node node, String leafName, def value) {
-        println leafName
-        def leafNode = node.value().find {
-            def localpart = it.name().localPart
-            leafName.equalsIgnoreCase(localpart)
-        }
-        leafNode.setValue(value)
-    }
-
-    def setValue(Node node, def value) {
-        node.setValue(value)
-    }
-
-    def setExtension(Node node, def value) {
-        setLeafValue(node, "extension", value)
     }
 
     public void endTable() {
