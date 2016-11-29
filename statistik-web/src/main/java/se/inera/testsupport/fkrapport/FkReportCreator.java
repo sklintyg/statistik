@@ -60,14 +60,12 @@ public class FkReportCreator {
     private Lan lan = new Lan();
 
     private final Map<HsaIdVardgivare, Aisle> allVardgivare;
-    private final SjukfallUtil sjukfallUtil;
     private Icd10 icd10;
     private List<String> diagnoseCategories;
     private Clock clock;
 
-    public FkReportCreator(Map<HsaIdVardgivare, Aisle> allVardgivare, SjukfallUtil sjukfallUtil, Icd10 icd10, List<String> diagnoseCategories, Clock clock) {
+    public FkReportCreator(Map<HsaIdVardgivare, Aisle> allVardgivare, Icd10 icd10, List<String> diagnoseCategories, Clock clock) {
         this.allVardgivare = allVardgivare;
-        this.sjukfallUtil = sjukfallUtil;
         this.icd10 = icd10;
         this.diagnoseCategories = diagnoseCategories;
         this.clock = clock;
@@ -81,12 +79,12 @@ public class FkReportCreator {
         return distributeFactRows(facts, results);
     }
 
-    protected List<FkReportDataRow> distributeFactRows(List<FkFactRow> facts, List<FkReportDataRow> results) {
+    List<FkReportDataRow> distributeFactRows(List<FkFactRow> facts, List<FkReportDataRow> results) {
         facts.forEach(fkFactRow -> results.forEach(fkResultRow -> fkResultRow.ingest(fkFactRow)));
         return results;
     }
 
-    protected List<FkReportDataRow> createResultRowsForDiagnoses() {
+    List<FkReportDataRow> createResultRowsForDiagnoses() {
         // Create an expanded list of all possible diagnose entries to distribute statistics for.
         List<DiagnoseEntry> diagnoseEntries = buildDiagnoseEntries();
 
@@ -206,28 +204,19 @@ public class FkReportCreator {
     }
 
     private boolean inPeriod(Stream<Fact> intygFacts, int from, int to) {
-        final List<Fact> intyg = intygFacts.collect(Collectors.toList());
+        final StartEnd intyg = intygFacts.reduce(new StartEnd(Integer.MAX_VALUE, Integer.MIN_VALUE), (point, fact) -> {
+            point.setStart(Math.min(point.getStart(), fact.getStartdatum()));
+            point.setEnd(Math.max(point.getEnd(), fact.getSlutdatum()));
+            return point;
+        }, (point, point2) -> {
+            point.setStart(Math.min(point.getStart(), point2.getStart()));
+            point.setEnd(Math.max(point.getEnd(), point2.getEnd()));
+            return point;
+        });
 
-        int intygStart = Integer.MAX_VALUE;
-        int intygEnd = Integer.MIN_VALUE;
-        //noinspection ForLoopReplaceableByForEach
-        for (int i = 0; i < intyg.size(); i++) {
-            final Fact fact = intyg.get(i);
-
-            final int startCandidate = fact.getStartdatum();
-            if (startCandidate < intygStart) {
-                intygStart = startCandidate;
-            }
-
-            final int endCandidate = fact.getSlutdatum();
-            if (endCandidate > intygEnd) {
-                intygEnd = endCandidate;
-            }
-        }
-
-        return intygStart <= to && intygStart >= from //startsInPeriod
-                || intygEnd <= to && intygEnd >= from //endInPeriod
-                || intygStart < from && intygEnd > to; //spansPeriod
+        return intyg.getStart() <= to && intyg.getStart() >= from //startsInPeriod
+                || intyg.getEnd() <= to && intyg.getEnd() >= from //endInPeriod
+                || intyg.getStart() < from && intyg.getEnd() > to; //spansPeriod
     }
 
     private LocalDate getLastDateOfLastYear() {
@@ -242,6 +231,32 @@ public class FkReportCreator {
         DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         DecimalFormat twoDecimalsFormat = new DecimalFormat("0.00", decimalFormatSymbols);
         return Double.valueOf(twoDecimalsFormat.format(number));
+    }
+
+    private class StartEnd {
+        private int start;
+        private int end;
+
+        StartEnd(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+
+        int getStart() {
+            return start;
+        }
+
+        void setStart(int start) {
+            this.start = start;
+        }
+
+        int getEnd() {
+            return end;
+        }
+
+        void setEnd(int end) {
+            this.end = end;
+        }
     }
 
 }

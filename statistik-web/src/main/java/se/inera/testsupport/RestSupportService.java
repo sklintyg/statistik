@@ -347,7 +347,7 @@ public class RestSupportService {
         }
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
 
-        final FkReportCreator fkReportCreator = new FkReportCreator(allVardgivare, sjukfallUtil, icd10, dxList, changableClock);
+        final FkReportCreator fkReportCreator = new FkReportCreator(allVardgivare, icd10, dxList, changableClock);
         final List<FkReportDataRow> reportData = fkReportCreator.getReportData();
         return Response.ok(reportData).build();
     }

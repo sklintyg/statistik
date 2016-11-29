@@ -72,7 +72,7 @@ public class FkReportCreatorTest {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = new HashMap();
 
         Icd10 icd10 = new Icd10();
-        final FkReportCreator fkReportCreator = new FkReportCreator(allVardgivare, new SjukfallUtil(), new Icd10(), null, clock);
+        final FkReportCreator fkReportCreator = new FkReportCreator(allVardgivare, new Icd10(), null, clock);
 
         List<FkFactRow> fkFactRows = new ArrayList<>();
 
@@ -149,7 +149,7 @@ public class FkReportCreatorTest {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = new HashMap();
 
         List<String> codes = Arrays.asList("F32", "F33");
-        final FkReportCreator fkReportCreator = new FkReportCreator(allVardgivare, new SjukfallUtil(), icd10, codes, clock);
+        final FkReportCreator fkReportCreator = new FkReportCreator(allVardgivare, icd10, codes, clock);
 
         final List<FkReportDataRow> rows = fkReportCreator.createResultRowsForDiagnoses();
 
