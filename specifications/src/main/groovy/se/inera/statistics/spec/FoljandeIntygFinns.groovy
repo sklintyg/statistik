@@ -6,8 +6,6 @@ import se.inera.statistics.service.helper.SjukskrivningsGrad
 import se.inera.statistics.service.processlog.EventType
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.testsupport.Intyg
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 class FoljandeIntygFinns {
 
@@ -29,7 +27,7 @@ class FoljandeIntygFinns {
     def slut2
     def läkare
     def län
-    def exaktintygid
+    def intygid
     String händelsetyp
     String intygformat
     String intygstyp
@@ -56,7 +54,7 @@ class FoljandeIntygFinns {
         läkare = "Personal HSA-ID"
         län = null
         händelsetyp = EventType.CREATED.name()
-        exaktintygid = intygIdCounter++
+        intygid = intygIdCounter++
         intygformat = "FK7263SIT"
         huvudenhet = null
         intygstyp = null
@@ -70,7 +68,7 @@ class FoljandeIntygFinns {
             huvudenhet = enhet;
         }
         def finalIntygDataString = getIntygDataString()
-        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(exaktintygid), System.currentTimeMillis(), län, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
+        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(intygid), System.currentTimeMillis(), län, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
         reportsUtil.insertIntyg(intyg)
     }
 
