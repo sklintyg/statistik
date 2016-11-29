@@ -9,7 +9,7 @@ Ett sjukfall består av tre intyg, varav mittenintyget har blivit makulerat.
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| personnr      | händelsetyp | exaktintygid| diagnoskod | start      | slut       | enhet  |
+| personnr      | händelsetyp | intygid| diagnoskod | start      | slut       | enhet  |
 | 19790717-9191 | CREATED   |1000         | G01        | 2013-02-01 | 2013-02-10 | enhet1 |
 | 19790717-9191 | CREATED   |1001         | G01        | 2013-02-11 | 2013-02-20 | enhet1 |
 | 19790717-9191 | REVOKED   |1001         | G01        | 2013-02-11 | 2013-02-20 | enhet1 |
