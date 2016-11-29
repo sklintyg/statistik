@@ -18,29 +18,27 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import static org.junit.Assert.assertEquals;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
-import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
-
-import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:warehouse-integration-test.xml", "classpath:icd10.xml"  })
@@ -64,8 +62,9 @@ public class PopulationTest {
 
     @Test
     public void addingIntygAddsToCorrectAisle() {
-        final Patientdata patientData = DocumentHelper.getPatientData(rawDocument);
-        for (WideLine wideLine : widelineConverter.toWideline(rawDocument, patientData, JSON_NODE, 0, "0", EventType.CREATED)) {
+        IntygDTO dto = DocumentHelper.convertToDTO(rawDocument);
+
+        for (WideLine wideLine : widelineConverter.toWideline(dto, JSON_NODE, 0, "0", EventType.CREATED)) {
             factPopulator.accept(wideLine);
         }
         warehouse.complete(LocalDateTime.now(clock));

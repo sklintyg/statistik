@@ -18,17 +18,14 @@
  */
 package se.inera.statistics.service.processlog;
 
-import java.util.List;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.databind.JsonNode;
-
 import se.inera.ifv.statistics.spi.authorization.impl.HsaCommunicationException;
+import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
@@ -36,6 +33,8 @@ import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.schemavalidation.SchemaValidator;
 import se.inera.statistics.service.schemavalidation.ValidateXmlResponse;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
+
+import java.util.List;
 
 @Component
 public class LogConsumerImpl implements LogConsumer {
@@ -144,11 +143,13 @@ public class LogConsumerImpl implements LogConsumer {
         EventType type = event.getType();
         JsonNode intyg = JSONParser.parse(event.getData());
         HsaInfo hsaInfo = hsa.decorate(intyg, event.getCorrelationId());
-        if (hsaInfo != null || type.equals(EventType.REVOKED)) {
-            processor.accept(intyg, hsaInfo, event.getId(), event.getCorrelationId(), type);
-        } else {
+        if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
             return false;
         }
+
+        IntygDTO dto = DocumentHelper.convertToDTO(intyg);
+        processIntyg(event, dto, hsaInfo);
+
         return true;
     }
 
@@ -161,7 +162,18 @@ public class LogConsumerImpl implements LogConsumer {
         if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
             return false;
         }
-        processor.accept(rc, hsaInfo, event.getId(), event.getCorrelationId(), type);
+
+        IntygDTO dto = registerCertificateHelper.convertToDTO(rc);
+        processIntyg(event, dto, hsaInfo);
+
+        return true;
+    }
+
+    private boolean processIntyg(IntygEvent event, IntygDTO dto, HsaInfo hsaInfo) {
+        EventType type = event.getType();
+
+        processor.accept(dto, hsaInfo, event.getId(), event.getCorrelationId(), type);
+
         return true;
     }
 

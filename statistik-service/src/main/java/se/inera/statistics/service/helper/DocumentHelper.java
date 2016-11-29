@@ -18,19 +18,19 @@
  */
 package se.inera.statistics.service.helper;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import se.inera.statistics.service.processlog.Arbetsnedsattning;
+import se.inera.statistics.service.processlog.IntygDTO;
+import se.inera.statistics.service.report.model.Kon;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import se.inera.statistics.service.processlog.Arbetsnedsattning;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import se.inera.statistics.service.report.model.Kon;
 
 public final class DocumentHelper {
 
@@ -314,6 +314,14 @@ public final class DocumentHelper {
         }
     }
 
+    public static String getSigneringsDatum(JsonNode document, IntygVersion version) {
+        if (IntygVersion.VERSION1 == version) {
+            return document.path("signeringsdatum").textValue();
+        } else {
+            return document.path(GRUND_DATA).path("signeringsdatum").textValue();
+        }
+    }
+
     public static boolean isEnkeltIntyg(JsonNode intyg, IntygVersion version) {
         if (version == IntygVersion.VERSION1) {
             LOG.warn("'Enkelt intyg' parsing has not been implemented for old intyg format. Defaulting to false.");
@@ -342,6 +350,39 @@ public final class DocumentHelper {
         }
         final String cleanedField = field.replaceAll("[^A-Za-zåäöÅÄÖ]", "");
         return "E".equalsIgnoreCase(cleanedField) || "Enkel".equalsIgnoreCase(cleanedField) || "Enkelt".equalsIgnoreCase(cleanedField);
+    }
+
+    public static IntygDTO convertToDTO(JsonNode intyg) {
+        IntygDTO dto = new IntygDTO();
+
+        DocumentHelper.IntygVersion intygVersion = DocumentHelper.getIntygVersion(intyg);
+
+        String enhet = DocumentHelper.getEnhetId(intyg, intygVersion);
+        String patient = DocumentHelper.getPersonId(intyg, intygVersion);
+        Patientdata patientData = DocumentHelper.getPatientData(intyg);
+
+        final boolean enkeltIntyg = DocumentHelper.isEnkeltIntyg(intyg, intygVersion);
+        String diagnos = DocumentHelper.getDiagnos(intyg, intygVersion);
+        String lakareid = DocumentHelper.getLakarId(intyg, intygVersion);
+        String intygsId = DocumentHelper.getIntygId(intyg, intygVersion);
+        String intygTyp = DocumentHelper.getIntygType(intyg);
+        List<Arbetsnedsattning> arbetsnedsattnings = DocumentHelper.getArbetsnedsattning(intyg, intygVersion);
+
+        String dateTime = DocumentHelper.getSigneringsDatum(intyg, intygVersion);
+        LocalDate signeringsDatum = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME).toLocalDate();
+
+        dto.setEnhet(enhet);
+        dto.setDiagnoskod(diagnos);
+        dto.setEnkelt(enkeltIntyg);
+        dto.setIntygid(intygsId);
+        dto.setIntygtyp(intygTyp);
+        dto.setLakareId(lakareid);
+        dto.setPatientid(patient);
+        dto.setPatientData(patientData);
+        dto.setSigneringsdatum(signeringsDatum);
+        dto.setArbetsnedsattnings(arbetsnedsattnings);
+
+        return dto;
     }
 
 }

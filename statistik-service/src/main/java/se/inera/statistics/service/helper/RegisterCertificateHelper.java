@@ -18,31 +18,30 @@
  */
 package se.inera.statistics.service.helper;
 
-import java.io.StringReader;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.JAXBIntrospector;
-import javax.xml.bind.Unmarshaller;
-
 import org.apache.neethi.builders.converters.ConverterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
+import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v3.CVType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v3.DatePeriodType;
 import se.riv.clinicalprocess.healthcond.certificate.v3.Svar;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.JAXBIntrospector;
+import javax.xml.bind.Unmarshaller;
+import java.io.StringReader;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class RegisterCertificateHelper {
@@ -102,6 +101,10 @@ public class RegisterCertificateHelper {
 
     private String getAktivitetsbegransning(RegisterCertificateType intyg) {
         return getDelsvarString(intyg, AKTIVITETSBEGRANSNING_SVAR, AKTIVITETSBEGRANSNING_DELSVAR);
+    }
+
+    public LocalDateTime getSigneringsTidpunkt(RegisterCertificateType intyg) {
+        return intyg.getIntyg().getSigneringstidpunkt();
     }
 
     @java.lang.SuppressWarnings("squid:S134") //I can't see a better way to write this with fewer nested statements
@@ -314,6 +317,35 @@ public class RegisterCertificateHelper {
             }
         }
         throw new ConverterException("Unexpected outcome while converting DatePeriodType");
+    }
+
+    public IntygDTO convertToDTO(RegisterCertificateType intyg) {
+        IntygDTO dto = new IntygDTO();
+
+        String enhet = getEnhetId(intyg);
+        String patient = getPatientId(intyg);
+        Patientdata patientData = getPatientData(intyg);
+
+        final boolean enkeltIntyg = isEnkeltIntyg(intyg);
+        String diagnos = getDx(intyg);
+        String lakareid = getLakareId(intyg);
+        String intygsId = getIntygId(intyg);
+        String intygTyp = getIntygtyp(intyg);
+        List<Arbetsnedsattning> arbetsnedsattnings = getArbetsnedsattning(intyg);
+        LocalDate signeringsDatum = getSigneringsTidpunkt(intyg).toLocalDate();
+
+        dto.setEnhet(enhet);
+        dto.setDiagnoskod(diagnos);
+        dto.setEnkelt(enkeltIntyg);
+        dto.setIntygid(intygsId);
+        dto.setIntygtyp(intygTyp);
+        dto.setLakareId(lakareid);
+        dto.setPatientid(patient);
+        dto.setPatientData(patientData);
+        dto.setSigneringsdatum(signeringsDatum);
+        dto.setArbetsnedsattnings(arbetsnedsattnings);
+
+        return dto;
     }
 
 }

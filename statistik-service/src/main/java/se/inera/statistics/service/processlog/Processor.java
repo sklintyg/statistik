@@ -18,18 +18,14 @@
  */
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.Patientdata;
-import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.WidelineManager;
 import se.inera.statistics.service.warehouse.message.MessageWidelineManager;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
 
 public class Processor {
@@ -49,36 +45,19 @@ public class Processor {
     private LakareManager lakareManager;
 
     @Autowired
-    private RegisterCertificateHelper registerCertificateHelper;
-
-    @Autowired
     private SendMessageToCareHelper sendMessageToCareHelper;
 
-    public void accept(JsonNode utlatande, HsaInfo hsa, long logId, String correlationId, EventType type) {
-        final String enhetId = DocumentHelper.getEnhetId(utlatande, DocumentHelper.getIntygVersion(utlatande));
+    public void accept(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
+        final String enhetId = dto.getEnhet();
         saveEnhetAndLakare(hsa, enhetId);
-
-        final Patientdata patientData = DocumentHelper.getPatientData(utlatande);
-        widelineManager.accept(utlatande, patientData, hsa, logId, correlationId, type);
-    }
-
-    public void accept(RegisterCertificateType utlatande, HsaInfo hsa, long logId, String correlationId, EventType type) {
-        final String enhetId = registerCertificateHelper.getEnhetId(utlatande);
-        saveEnhetAndLakare(hsa, enhetId);
-        handleWithIntygCommonManager(utlatande, hsa, logId, correlationId, type);
-        String intygTyp = utlatande.getIntyg().getTyp().getCode().toUpperCase();
+        handleWithIntygCommonManager(dto, hsa, logId, correlationId, type);
+        String intygTyp = dto.getIntygtyp().toUpperCase();
         switch (intygTyp) {
         case "LISU":
-            handleWithWidelineManager(utlatande, hsa, logId, correlationId, type);
-            break;
         case "LISJP":
-            handleWithWidelineManager(utlatande, hsa, logId, correlationId, type);
-            break;
         case "FK7263":
-            handleWithWidelineManager(utlatande, hsa, logId, correlationId, type);
-            break;
         case "LIS":
-            handleWithWidelineManager(utlatande, hsa, logId, correlationId, type);
+            handleWithWidelineManager(dto, hsa, logId, correlationId, type);
             break;
         default:
             // do nothing
@@ -86,20 +65,18 @@ public class Processor {
     }
 
     /**
-     * @param utlatande
+     * @param dto
      * @param hsa
      * @param logId
      * @param correlationId
      * @param type
      */
-    private void handleWithIntygCommonManager(RegisterCertificateType utlatande, HsaInfo hsa, long logId, String correlationId, EventType type) {
-        final Patientdata patientData = registerCertificateHelper.getPatientData(utlatande);
-        intygCommonManager.accept(utlatande, patientData, hsa, logId, correlationId, type);
+    private void handleWithIntygCommonManager(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
+        intygCommonManager.accept(dto, hsa, logId, correlationId, type);
     }
 
-    private void handleWithWidelineManager(RegisterCertificateType utlatande, HsaInfo hsa, long logId, String correlationId, EventType type) {
-        final Patientdata patientData = registerCertificateHelper.getPatientData(utlatande);
-        widelineManager.accept(utlatande, patientData, hsa, logId, correlationId, type);
+    private void handleWithWidelineManager(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
+        widelineManager.accept(dto, hsa, logId, correlationId, type);
     }
 
     public void accept(SendMessageToCareType message, long logId, String messageId, MessageEventType type) {

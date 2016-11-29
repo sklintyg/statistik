@@ -29,15 +29,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.Patientdata;
-import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
 @Component
 public class WidelineManager {
@@ -51,21 +46,6 @@ public class WidelineManager {
 
     @Autowired
     private WidelineConverter widelineConverter;
-
-    @Autowired
-    private RegisterCertificateHelper registerCertificateHelper;
-
-    @Transactional(noRollbackFor = Exception.class)
-    public void accept(JsonNode intyg, Patientdata patientdata, HsaInfo hsa, long logId, String correlationId, EventType type) {
-        String intygid = DocumentHelper.getIntygId(intyg, DocumentHelper.getIntygVersion(intyg));
-        if (!isSupportedIntygType(DocumentHelper.getIntygType(intyg))) {
-            LOG.info("Intygtype not supported. Ignoring intyg: " + intygid);
-            return;
-        }
-        for (WideLine line : widelineConverter.toWideline(intyg, patientdata, hsa, logId, correlationId, type)) {
-            persistIfValid(logId, intygid, line);
-        }
-    }
 
     private void persistIfValid(long logId, String intygid, WideLine line) {
         List<String> errors = widelineConverter.validate(line);
@@ -82,14 +62,14 @@ public class WidelineManager {
     }
 
     @Transactional(noRollbackFor = Exception.class)
-    public void accept(RegisterCertificateType intyg, Patientdata patientData, HsaInfo hsa, long logId, String correlationId, EventType type) {
-        final String intygid = registerCertificateHelper.getIntygId(intyg);
-        final String intygtyp = registerCertificateHelper.getIntygtyp(intyg);
+    public void accept(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
+        final String intygid = dto.getIntygid();
+        final String intygtyp = dto.getIntygtyp();
         if (!isSupportedIntygType(intygtyp)) {
             LOG.info("Intygtype not supported. Ignoring intyg: " + intygid);
             return;
         }
-        for (WideLine line : widelineConverter.toWideline(intyg, patientData, hsa, logId, correlationId, type)) {
+        for (WideLine line : widelineConverter.toWideline(dto, hsa, logId, correlationId, type)) {
             persistIfValid(logId, intygid, line);
         }
     }

@@ -18,24 +18,21 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
-import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.helper.Patientdata;
-import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10.Kategori;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -69,75 +66,37 @@ public class WidelineConverter extends AbstractWidlineConverter {
     private Icd10 icd10;
 
     @Autowired
-    private RegisterCertificateHelper registerCertificateHelper;
-
-    @Autowired
     private Clock clock;
 
-    public List<WideLine> toWideline(JsonNode intyg, Patientdata patientData, HsaInfo hsa, long logId, String correlationId, EventType type) {
-        String lkf = getLkf(hsa);
-
-        String enhet = HSAServiceHelper.getEnhetId(hsa);
-        HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
-
-        final DocumentHelper.IntygVersion version = DocumentHelper.getIntygVersion(intyg);
-
-        if (enhet == null) {
-            enhet = DocumentHelper.getEnhetId(intyg, version);
-        }
-
-        String patient = DocumentHelper.getPersonId(intyg, version);
-
-        int kon = patientData.getKon().getNumberRepresentation();
-        int alder = patientData.getAlder();
-
-        final boolean enkeltIntyg = DocumentHelper.isEnkeltIntyg(intyg, version);
-
-        String diagnos = DocumentHelper.getDiagnos(intyg, version);
-        final Diagnos dx = parseDiagnos(diagnos);
-
-        int lakarkon = HSAServiceHelper.getLakarkon(hsa);
-        int lakaralder = HSAServiceHelper.getLakaralder(hsa);
-        String lakarbefattning = HSAServiceHelper.getLakarbefattning(hsa);
-        HsaIdLakare lakareid = new HsaIdLakare(DocumentHelper.getLakarId(intyg, version));
-
-        List<WideLine> lines = new ArrayList<>();
-
-        for (Arbetsnedsattning arbetsnedsattning : DocumentHelper.getArbetsnedsattning(intyg, version)) {
-            WideLine line = createWideLine(logId, correlationId, type, lkf, enhet, vardgivare, patient, kon, alder, enkeltIntyg, dx, lakarkon, lakaralder, lakarbefattning, lakareid, arbetsnedsattning);
-            lines.add(line);
-        }
-        return lines;
-    }
-
-    public List<WideLine> toWideline(RegisterCertificateType intyg, Patientdata patientData, HsaInfo hsa, long logId, String correlationId, EventType type) {
+    public List<WideLine> toWideline(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
         String lkf = getLkf(hsa);
 
         String enhet = HSAServiceHelper.getEnhetId(hsa);
         HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
 
         if (enhet == null) {
-            enhet = registerCertificateHelper.getEnhetId(intyg);
+            enhet = dto.getEnhet();
         }
 
-        String patient = registerCertificateHelper.getPatientId(intyg);
+        String patient = dto.getPatientid();
 
+        Patientdata patientData = dto.getPatientData();
         int kon = patientData.getKon().getNumberRepresentation();
         int alder = patientData.getAlder();
 
-        final boolean enkeltIntyg = registerCertificateHelper.isEnkeltIntyg(intyg);
+        final boolean enkeltIntyg = dto.isEnkelt();
 
-        String diagnos = registerCertificateHelper.getDx(intyg);
+        String diagnos = dto.getDiagnoskod();
         final Diagnos dx = parseDiagnos(diagnos);
 
         int lakarkon = HSAServiceHelper.getLakarkon(hsa);
         int lakaralder = HSAServiceHelper.getLakaralder(hsa);
         String lakarbefattning = HSAServiceHelper.getLakarbefattning(hsa);
-        HsaIdLakare lakareid = new HsaIdLakare(registerCertificateHelper.getLakareId(intyg));
+        HsaIdLakare lakareid = new HsaIdLakare(dto.getLakareId());
 
         List<WideLine> lines = new ArrayList<>();
 
-        for (Arbetsnedsattning arbetsnedsattning : registerCertificateHelper.getArbetsnedsattning(intyg)) {
+        for (Arbetsnedsattning arbetsnedsattning : dto.getArbetsnedsattnings()) {
             WideLine line = createWideLine(logId, correlationId, type, lkf, enhet, vardgivare, patient, kon, alder, enkeltIntyg, dx, lakarkon, lakaralder, lakarbefattning, lakareid, arbetsnedsattning);
             lines.add(line);
         }

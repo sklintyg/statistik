@@ -24,16 +24,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -64,22 +63,21 @@ public class IntygCommonManager {
     private EntityManager manager;
 
     /**
-     * @param utlatande
-     * @param patientData
+     * @param dto
      * @param hsa
      * @param logId
      * @param correlationId
      * @param type
      */
-    public void accept(RegisterCertificateType utlatande, Patientdata patientData, HsaInfo hsa, long logId, String correlationId, EventType type) {
+    public void accept(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
         LOG.info("accepting a new entry into table IntygCommon");
-        final String intygid = registerCertificateHelper.getIntygId(utlatande);
-        final String intygtyp = registerCertificateHelper.getIntygtyp(utlatande);
+        final String intygid = dto.getIntygid();
+        final String intygtyp = dto.getIntygtyp();
         if (!isSupportedIntygType(intygtyp)) {
             LOG.info("Intygtype not supported. Ignoring intyg: " + intygid);
             return;
         }
-        IntygCommon line = intygCommonConverter.toIntygCommon(utlatande, patientData, hsa, logId, correlationId, type);
+        IntygCommon line = intygCommonConverter.toIntygCommon(dto, hsa, logId, correlationId, type);
         persistIfValid(logId, intygid, line);
 
     }
