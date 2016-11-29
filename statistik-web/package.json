@@ -7,7 +7,7 @@
   "devDependencies": {
     "bower": "1.7.9",
     "compass-mixins": "0.12.10",
-    "connect-livereload": "0.5.4",
+    "connect-livereload": "0.6.0",
     "grunt": "0.4.5",
     "grunt-angular-templates": "^1.0.3",
     "grunt-autoprefixer": "3.0.4",
@@ -27,7 +27,7 @@
     "grunt-injector": "^1.0.0",
     "grunt-karma": "^2.0.0",
     "grunt-newer": "^1.2.0",
-    "grunt-ng-annotate": "^2.0.2",
+    "grunt-ng-annotate": "^3.0.0",
     "grunt-open": "0.2.3",
     "grunt-sass": "^1.2.0",
     "grunt-usemin": "3.1.1",

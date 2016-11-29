@@ -20,8 +20,6 @@ package se.inera.statistics.service.processlog;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
@@ -30,23 +28,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
-public class ProcessLogImpl implements ProcessLog {
+public class ProcessLogImpl extends AbstractProcessLog implements ProcessLog {
     private static final Logger LOG = LoggerFactory.getLogger(ProcessLogImpl.class);
 
-    private static final String PROCESSED_HSA = "PROCESSED_HSA";
-
-    @PersistenceContext(unitName = "IneraStatisticsLog")
-    private EntityManager manager;
+    public ProcessLogImpl() {
+        super("PROCESSED_HSA");
+    }
 
     @Override
     @Transactional
     public final long store(EventType type, String data, String correlationId, long timestamp) {
-        TypedQuery<IntygEvent> select = manager.createQuery("SELECT e FROM IntygEvent e WHERE e.correlationId = :correlationId AND e.type = :type", IntygEvent.class);
+        TypedQuery<IntygEvent> select = getManager().createQuery("SELECT e FROM IntygEvent e WHERE e.correlationId = :correlationId AND e.type = :type", IntygEvent.class);
         select.setParameter("correlationId", correlationId).setParameter("type", type);
         List<IntygEvent> result = select.getResultList();
         if (result.isEmpty()) {
             IntygEvent event = new IntygEvent(type, data, correlationId, timestamp);
-            manager.persist(event);
+            getManager().persist(event);
             return event.getId();
         } else {
             LOG.info("Intyg already exists, ignoring: " + correlationId);
@@ -56,40 +53,20 @@ public class ProcessLogImpl implements ProcessLog {
 
     @Transactional
     public IntygEvent get(long id) {
-        return manager.find(IntygEvent.class, id);
+        return getManager().find(IntygEvent.class, id);
     }
 
     @Override
     @Transactional
     public List<IntygEvent> getPending(int max) {
-        TypedQuery<IntygEvent> allQuery = manager.createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
+        TypedQuery<IntygEvent> allQuery = getManager().createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
         allQuery.setParameter("lastId", getLastId());
         allQuery.setMaxResults(max);
         return allQuery.getResultList();
     }
 
-    private long getLastId() {
-        EventPointer pointer = getPointerQuery();
-        if (pointer == null) {
-            return Long.MIN_VALUE;
-        } else {
-            return pointer.getEventId();
-        }
-    }
-
     @Override
     public void confirm(long id) {
-        EventPointer pointer = getPointerQuery();
-        if (pointer == null) {
-            pointer = new EventPointer(PROCESSED_HSA, id);
-            manager.persist(pointer);
-        } else {
-            pointer.setEventId(id);
-            manager.merge(pointer);
-        }
-    }
-
-    private EventPointer getPointerQuery() {
-        return manager.find(EventPointer.class, PROCESSED_HSA);
+        confirmId(id);
     }
 }

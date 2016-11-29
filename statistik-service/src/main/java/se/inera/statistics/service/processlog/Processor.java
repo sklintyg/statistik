@@ -18,17 +18,19 @@
  */
 package se.inera.statistics.service.processlog;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.fasterxml.jackson.databind.JsonNode;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
+import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
+import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.WidelineManager;
+import se.inera.statistics.service.warehouse.message.MessageWidelineManager;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
+import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
 
 public class Processor {
     @Autowired
@@ -38,6 +40,9 @@ public class Processor {
     private IntygCommonManager intygCommonManager;
 
     @Autowired
+    private MessageWidelineManager messageWidelineManagar;
+
+    @Autowired
     private VardgivareManager vardgivareManager;
 
     @Autowired
@@ -45,6 +50,9 @@ public class Processor {
 
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
+
+    @Autowired
+    private SendMessageToCareHelper sendMessageToCareHelper;
 
     public void accept(JsonNode utlatande, HsaInfo hsa, long logId, String correlationId, EventType type) {
         final String enhetId = DocumentHelper.getEnhetId(utlatande, DocumentHelper.getIntygVersion(utlatande));
@@ -92,6 +100,12 @@ public class Processor {
     private void handleWithWidelineManager(RegisterCertificateType utlatande, HsaInfo hsa, long logId, String correlationId, EventType type) {
         final Patientdata patientData = registerCertificateHelper.getPatientData(utlatande);
         widelineManager.accept(utlatande, patientData, hsa, logId, correlationId, type);
+    }
+
+    public void accept(SendMessageToCareType message, long logId, String messageId, MessageEventType type) {
+
+        final Patientdata patientData = sendMessageToCareHelper.getPatientData(message);
+        messageWidelineManagar.accept(message, patientData, logId, messageId, type);
     }
 
     private void saveEnhetAndLakare(HsaInfo hsa, String enhetId) {

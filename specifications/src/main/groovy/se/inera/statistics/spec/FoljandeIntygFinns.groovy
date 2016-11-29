@@ -6,12 +6,8 @@ import se.inera.statistics.service.helper.SjukskrivningsGrad
 import se.inera.statistics.service.processlog.EventType
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.testsupport.Intyg
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
-class FoljandeIntygFinns {
-
-    protected final ReportsUtil reportsUtil = new ReportsUtil()
+class FoljandeIntygFinns extends FoljandeFinns {
 
     private static int intygIdCounter = 1;
 
@@ -29,7 +25,7 @@ class FoljandeIntygFinns {
     def slut2
     def läkare
     def län
-    def exaktintygid
+    def intygid
     String händelsetyp
     String intygformat
     String intygstyp
@@ -56,7 +52,7 @@ class FoljandeIntygFinns {
         läkare = "Personal HSA-ID"
         län = null
         händelsetyp = EventType.CREATED.name()
-        exaktintygid = intygIdCounter++
+        intygid = intygIdCounter++
         intygformat = "FK7263SIT"
         huvudenhet = null
         intygstyp = null
@@ -70,7 +66,7 @@ class FoljandeIntygFinns {
             huvudenhet = enhet;
         }
         def finalIntygDataString = getIntygDataString()
-        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(exaktintygid), System.currentTimeMillis(), län, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
+        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(intygid), System.currentTimeMillis(), län, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
         reportsUtil.insertIntyg(intyg)
     }
 
@@ -187,26 +183,6 @@ class FoljandeIntygFinns {
 
         def builder = groovy.xml.XmlUtil.serialize(result)
         return builder.toString()
-    }
-
-    private Object findNode(parent, String nodeName) {
-        return parent.find { it.name().localPart.equals(nodeName) }
-    }
-
-    private Object findNodes(parent, String nodeName) {
-        return parent.findAll { it.name().localPart.equals(nodeName) }
-    }
-
-    def setLeafValue(Node node, String leafName, def value) {
-        def leafNode = node.value().find {
-            def localpart = it.name().localPart
-            leafName.equalsIgnoreCase(localpart)
-        }
-        leafNode.setValue(value)
-    }
-
-    def setExtension(Node node, def value) {
-        setLeafValue(node, "extension", value)
     }
 
     private String executeForNewJsonFormat() {

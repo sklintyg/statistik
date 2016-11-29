@@ -18,22 +18,11 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
@@ -48,9 +37,20 @@ import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.Counter;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
+import se.inera.statistics.service.warehouse.query.MessagesQuery;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 public class NationellData {
@@ -59,6 +59,9 @@ public class NationellData {
 
     @Autowired
     private Warehouse warehouse;
+
+    @Autowired
+    private MessagesQuery messagesQuery;
 
     @Autowired
     private Lan lans;
@@ -80,6 +83,10 @@ public class NationellData {
             return;
         }
         this.cutoff = cutoff;
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getMeddelandenPerMonth(Range range) {
+        return messagesQuery.getAntalMeddelanden(range.getFrom(), range.getMonths());
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(Range range) {

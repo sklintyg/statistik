@@ -104,6 +104,9 @@
     <logger name="se.inera.statistics.service.processlog.LogConsumerImpl" level="INFO" additivity="false">
       <appender-ref ref="PROCESS_FILE" />
     </logger>
+    <logger name="se.inera.statistics.service.processlog.message.MessageLogConsumerImpl" level="INFO" additivity="false">
+      <appender-ref ref="PROCESS_FILE" />
+    </logger>
     <logger name="se.inera.statistics.service.hsa.HSAServiceImpl" level="INFO" additivity="false">
       <appender-ref ref="PROCESS_FILE"/>
     </logger>

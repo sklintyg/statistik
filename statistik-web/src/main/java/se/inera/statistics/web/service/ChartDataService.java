@@ -18,22 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import com.google.common.base.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +26,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
-
-import com.google.common.base.Optional;
-
 import se.inera.statistics.service.countypopulation.CountyPopulation;
 import se.inera.statistics.service.countypopulation.CountyPopulationManager;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
@@ -62,6 +44,21 @@ import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.overview.OverviewData;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Statistics services that does not require authentication. Unless otherwise noted, the data returned
@@ -102,6 +99,7 @@ public class ChartDataService {
     private Clock clock;
 
     private volatile SimpleDetailsData numberOfCasesPerMonth;
+    //private volatile SimpleDetailsData numberOfMeddelandenPerMonth;
     private volatile DualSexStatisticsData diagnosgrupper;
     private volatile Map<String, DualSexStatisticsData> diagnoskapitel = new HashMap<>();
     private volatile OverviewData overview;
@@ -146,6 +144,12 @@ public class ChartDataService {
             buildSjukfallslangd();
             stopWatch.stop();
             LOG.info("National cache buildSjukfallslangd " + stopWatch.getTotalTimeMillis());
+            /*
+            Disabled for now
+            stopWatch.start();
+            buildNumberOfMeddelandenPerMonth();
+            stopWatch.stop();
+            LOG.info("National cache buildNumberOfMeddelandenPerMonth " + stopWatch.getTotalTimeMillis());*/
             stopWatch.start();
             buildKonsfordelningPerLan();
             stopWatch.stop();
@@ -223,6 +227,14 @@ public class ChartDataService {
         konsfordelningPerLan = new SjukfallPerSexConverter().convert(casesPerMonth, range);
     }
 
+    /*
+    private void buildNumberOfMeddelandenPerMonth() {
+        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getMeddelandenPerMonth(range);
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+        numberOfMeddelandenPerMonth = new MessagePeriodConverter().convert(casesPerMonth, filterSettings);
+    }*/
+
     private Response getResponse(TableDataReport result, String csv) {
         if (csv == null || csv.isEmpty()) {
             return Response.ok(result).build();
@@ -241,6 +253,18 @@ public class ChartDataService {
         monitoringLogService.logTrackAccessAnonymousChartData("getNumberOfCasesPerMonth");
         return getResponse(numberOfCasesPerMonth, csv);
     }
+
+    /**
+     * Get meddelanden per manad.
+
+    @GET
+    @Path("getNumberOfMeddelandenPerMonth{csv:(/csv)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response getNumberOfMeddelandenPerMonth(@PathParam("csv") String csv) {
+        LOG.info("Calling getNumberOfMeddelandenPerMonth for national");
+        monitoringLogService.logTrackAccessAnonymousChartData("getNumberOfMeddelandenPerMonth");
+        return getResponse(numberOfMeddelandenPerMonth, csv);
+    }*/
 
     /**
      * Get the list of diagnoskapitel.

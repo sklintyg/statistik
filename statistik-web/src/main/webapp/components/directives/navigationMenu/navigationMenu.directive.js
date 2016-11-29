@@ -103,7 +103,14 @@
                     name: 'nav.lan-andel-sjukfall-per-kon',
                     ctrl: 'NationalCasesPerSexCtrl'
                 }]
-            }]
+            }
+            /*,{
+                id: 'navMessagesLink',
+                link: '#/nationell/meddelanden',
+                name: 'nav.meddelanden',
+                ctrl: 'NationalMeddelandenPerMonthCtrl'
+            }*/
+            ]
         };
 
         var landsting = {
@@ -251,6 +258,11 @@
                 link: '#/verksamhet/differentieratintygande',
                 name: 'nav.differentieratintygande',
                 ctrl: 'VerksamhetDifferentieratIntygandeCtrl'
+            },{
+                id: 'navBusinessMessagesLink',
+                link: '#/verksamhet/meddelanden',
+                name: 'nav.meddelanden',
+                ctrl: 'VerksamhetMeddelandenPerMonthCtrl'
             }]
         };
 
