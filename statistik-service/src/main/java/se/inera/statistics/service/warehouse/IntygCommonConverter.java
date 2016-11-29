@@ -18,23 +18,22 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
+
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class IntygCommonConverter {
@@ -50,28 +49,27 @@ public class IntygCommonConverter {
     private RegisterCertificateHelper registerCertificateHelper;
 
     /**
-     * @param utlatande
-     * @param patientData
+     * @param dto
      * @param hsa
      * @param logId
      * @param correlationId
      * @param type
      * @return
      */
-    public IntygCommon toIntygCommon(RegisterCertificateType utlatande, Patientdata patientData, HsaInfo hsa, long logId, String correlationId,
-            EventType type) {
+    public IntygCommon toIntygCommon(IntygDTO dto, HsaInfo hsa, long logId, String correlationId,
+                                     EventType type) {
         String enhet = HSAServiceHelper.getEnhetId(hsa);
         HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
         if (enhet == null) {
-            enhet = registerCertificateHelper.getEnhetId(utlatande);
+            enhet = dto.getEnhet();
         }
-        String patient = registerCertificateHelper.getPatientId(utlatande);
+        String patient = dto.getPatientid();
+        Patientdata patientData = dto.getPatientData();
         int kon = patientData.getKon().getNumberRepresentation();
-        String intygTyp = utlatande.getIntyg().getTyp().getCode().toUpperCase();
-        LocalDate signeringsDatum = utlatande.getIntyg().getSigneringstidpunkt().toLocalDate();
-        IntygCommon line = createIntygCommon(logId, correlationId, type, enhet, vardgivare, patient, kon, intygTyp, signeringsDatum);
+        String intygTyp = dto.getIntygtyp().toUpperCase();
+        LocalDate signeringsDatum = dto.getSigneringsdatum();
 
-        return line;
+        return createIntygCommon(logId, correlationId, type, enhet, vardgivare, patient, kon, intygTyp, signeringsDatum);
     }
 
     /**

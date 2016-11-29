@@ -18,28 +18,25 @@
  */
 package se.inera.statistics.service.processlog;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Collections;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import se.inera.ifv.statistics.spi.authorization.impl.HsaCommunicationException;
+import se.inera.statistics.service.JSONSource;
+import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HsaInfo;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.util.Collections;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LogConsumerImplTest {
@@ -73,13 +70,14 @@ public class LogConsumerImplTest {
 
     @Test
     public void processingSucceedsForOneEvent() {
-        IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1);
+        String data = JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1);
+        IntygEvent event = new IntygEvent(EventType.CREATED, data, "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
         when(hsa.decorate(any(JsonNode.class), anyString())).thenReturn(new HsaInfo(null, null, null, null));
         int count = consumer.processBatch();
         assertEquals(1, count);
         verify(processLog).getPending(100);
-        verify(processor).accept(any(JsonNode.class), any(HsaInfo.class), Mockito.anyLong(), anyString(), any(EventType.class));
+        verify(processor).accept(any(IntygDTO.class), any(HsaInfo.class), Mockito.anyLong(), anyString(), any(EventType.class));
     }
 
     @Test
@@ -90,7 +88,7 @@ public class LogConsumerImplTest {
         int count = consumer.processBatch();
         assertEquals(0, count);
         verify(processLog).getPending(100);
-        verify(processor, Mockito.never()).accept(any(JsonNode.class), any(HsaInfo.class), Mockito.anyLong(), anyString(), any(EventType.class));
+        verify(processor, Mockito.never()).accept(any(IntygDTO.class), any(HsaInfo.class), Mockito.anyLong(), anyString(), any(EventType.class));
     }
 
     @Test
@@ -98,7 +96,7 @@ public class LogConsumerImplTest {
         IntygEvent event = new IntygEvent(EventType.CREATED, "{}", "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
         when(hsa.decorate(any(JsonNode.class), anyString())).thenReturn(new HsaInfo(null, null, null, null));
-        doThrow(new IllegalArgumentException("Invalid intyg")).when(processor).accept(any(JsonNode.class), any(HsaInfo.class), Mockito.anyLong(), anyString(), any(EventType.class));
+        doThrow(new IllegalArgumentException("Invalid intyg")).when(processor).accept(any(IntygDTO.class), any(HsaInfo.class), Mockito.anyLong(), anyString(), any(EventType.class));
         int count = consumer.processBatch();
         assertEquals(1, count);
         verify(processLog).getPending(100);

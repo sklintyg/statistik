@@ -18,12 +18,7 @@
  */
 package se.inera.statistics.service.processlog;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,16 +27,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import com.fasterxml.jackson.databind.JsonNode;
-
+import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
-import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.WidelineManager;
-import se.inera.statistics.service.warehouse.message.MessageWidelineManager;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.*;
@@ -52,18 +43,13 @@ public class ProcessorTest {
     private JsonNode utlatande;
 
     @Mock
-    private MessageWidelineManager messageWidelineManager;
-    @Mock
     private WidelineManager widelineManager;
-
-    @Mock
-    private IntygCommonManager intygCommonManager = mock(IntygCommonManager.class);
-
-    @Mock
-    private VardgivareManager vardgivareManager;
-
     @Mock
     private LakareManager lakareManager;
+    @Mock
+    private IntygCommonManager intygCommonManager;
+    @Mock
+    private VardgivareManager vardgivareManager;
 
     @InjectMocks
     private Processor processor;
@@ -75,16 +61,17 @@ public class ProcessorTest {
 
     @Test
     public void processorCallsListener() {
-        ArgumentCaptor<JsonNode> utlatandeCaptor = ArgumentCaptor.forClass(JsonNode.class);
+        ArgumentCaptor<IntygDTO> intygDTOCaptor = ArgumentCaptor.forClass(IntygDTO.class);
         ArgumentCaptor<HsaInfo> hsaCaptor = ArgumentCaptor.forClass(HsaInfo.class);
-        ArgumentCaptor<Patientdata> patientdataCaptor = ArgumentCaptor.forClass(Patientdata.class);
-        Mockito.doNothing().when(widelineManager).accept(utlatandeCaptor.capture(), patientdataCaptor.capture(), hsaCaptor.capture(), anyLong(), anyString(), any(EventType.class));
+        Mockito.doNothing().when(widelineManager).accept(intygDTOCaptor.capture(), hsaCaptor.capture(), anyLong(), anyString(), any(EventType.class));
         Mockito.doNothing().when(vardgivareManager).saveEnhet(any(HsaInfo.class), any(String.class));
 
-        processor.accept(utlatande, null, 1L, "1", EventType.CREATED);
+        IntygDTO dto = DocumentHelper.convertToDTO(utlatande);
 
-        assertEquals(35, patientdataCaptor.getValue().getAlder());
-        assertEquals(Kon.MALE, patientdataCaptor.getValue().getKon());
+        processor.accept(dto, null, 1L, "1", EventType.CREATED);
+
+        assertEquals(35, intygDTOCaptor.getValue().getPatientData().getAlder());
+        assertEquals(Kon.MALE, intygDTOCaptor.getValue().getPatientData().getKon());
     }
 
 }
