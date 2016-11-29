@@ -191,7 +191,7 @@ return get(getVerksamhetUrlPrefix() + "/getNumberOfIntygPerMonth")
     }
 
     private boolean isFilterEmpty(FilterData filter) {
-        return filter.diagnoser.isEmpty() && filter.enheter.isEmpty() && filter.verksamhetstyper.isEmpty() && filter.sjukskrivningslangd.isEmpty() && filter.aldersgrupp.isEmpty();
+        return filter.useDefaultPeriod && filter.diagnoser.isEmpty() && filter.enheter.isEmpty() && filter.verksamhetstyper.isEmpty() && filter.sjukskrivningslangd.isEmpty() && filter.aldersgrupp.isEmpty();
     }
 
     private String addFilterToQueryStringIfSet(filterQueryName, FilterData filter, queryString) {

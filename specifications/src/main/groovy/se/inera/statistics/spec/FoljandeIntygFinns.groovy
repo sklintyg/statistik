@@ -7,9 +7,7 @@ import se.inera.statistics.service.processlog.EventType
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.testsupport.Intyg
 
-class FoljandeIntygFinns {
-
-    protected final ReportsUtil reportsUtil = new ReportsUtil()
+class FoljandeIntygFinns extends FoljandeFinns {
 
     private static int intygIdCounter = 1;
 
@@ -186,26 +184,6 @@ class FoljandeIntygFinns {
 
         def builder = groovy.xml.XmlUtil.serialize(result)
         return builder.toString()
-    }
-
-    private Object findNode(parent, String nodeName) {
-        return parent.find { it.name().localPart.equals(nodeName) }
-    }
-
-    private Object findNodes(parent, String nodeName) {
-        return parent.findAll { it.name().localPart.equals(nodeName) }
-    }
-
-    def setLeafValue(Node node, String leafName, def value) {
-        def leafNode = node.value().find {
-            def localpart = it.name().localPart
-            leafName.equalsIgnoreCase(localpart)
-        }
-        leafNode.setValue(value)
-    }
-
-    def setExtension(Node node, def value) {
-        setLeafValue(node, "extension", value)
     }
 
     private String executeForNewJsonFormat() {
