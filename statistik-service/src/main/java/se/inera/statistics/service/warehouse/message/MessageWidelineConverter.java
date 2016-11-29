@@ -24,9 +24,9 @@ import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.warehouse.AbstractWidlineConverter;
-import se.inera.statistics.service.warehouse.WidelineLoader;
+import se.inera.statistics.service.warehouse.IntygCommonManager;
+import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
-import se.inera.statistics.service.warehouse.model.db.WideLine;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
 
 import java.time.LocalDateTime;
@@ -43,7 +43,7 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
     @Autowired
     private SendMessageToCareHelper sendMessageToCareHelper;
     @Autowired
-    private WidelineLoader widelineLoader;
+    private IntygCommonManager intygCommonManager;
 
     public List<String> validate(MessageWideLine line) {
         List<String> errors = new ArrayList<>();
@@ -71,11 +71,11 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
         line.setKon(patientdata.getKon().getNumberRepresentation());
         line.setAlder(patientdata.getAlder());
 
-        WideLine wideLine = widelineLoader.getOne(line.getIntygsId());
+        IntygCommon intygCommon = intygCommonManager.getOne(line.getIntygsId());
 
-        if (wideLine != null) {
-            line.setEnhet(wideLine.getEnhet().getId());
-            line.setVardgivareid(wideLine.getVardgivareId().getId());
+        if (intygCommon != null) {
+            line.setEnhet(intygCommon.getEnhet());
+            line.setVardgivareid(intygCommon.getVardgivareId());
         }
 
         return line;

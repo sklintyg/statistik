@@ -175,6 +175,7 @@ public class RestSupportService {
         manager.createQuery("DELETE FROM HSAStore").executeUpdate();
         manager.createQuery("DELETE FROM MessageWideLine").executeUpdate();
         manager.createQuery("DELETE FROM MessageEvent").executeUpdate();
+        manager.createQuery("DELETE FROM IntygCommon").executeUpdate();
         warehouse.clear();
         sjukfallUtil.clearSjukfallGroupCache();
         nationalChartDataService.buildCache();

@@ -18,26 +18,11 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
+import com.google.common.base.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.google.common.base.Function;
-
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
@@ -49,6 +34,20 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Component
 public class IntygCommonManager {
@@ -165,6 +164,20 @@ public class IntygCommonManager {
             }
         }
         return count;
+    }
+
+    public IntygCommon getOne(String intygsId) {
+        CriteriaBuilder cb = manager.getCriteriaBuilder();
+
+        CriteriaQuery<IntygCommon> q = cb.createQuery(IntygCommon.class);
+        Root<IntygCommon> c = q.from(IntygCommon.class);
+        ParameterExpression<String> p = cb.parameter(String.class);
+        q.select(c).where(cb.equal(c.get("intygid"), p));
+
+        TypedQuery<IntygCommon> query = manager.createQuery(q);
+        query.setParameter(p, intygsId);
+
+        return query.getSingleResult();
     }
 
 }
