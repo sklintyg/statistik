@@ -1,20 +1,20 @@
 {
-    "@class": "se.inera.intyg.common.integration.hsa.model.Vardgivare",
+    "@class": "se.inera.intyg.infra.integration.hsa.model.Vardgivare",
     "id": "vg1",
     "namn": "Fitnessetestvårdgivare1",
     "vardenheter": [
         {
-            "@class": "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+            "@class": "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
             "id" : "enhet1",
             "namn" : "Enhet enhet1"
         },
         {
-            "@class": "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+            "@class": "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
             "id" : "enhet2",
             "namn" : "Enhet enhet2"
         },
         {
-            "@class": "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+            "@class": "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
             "id" : "EJHSA",
             "namn" : "Enhet enhetEjHsa"
         }

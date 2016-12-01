@@ -1,105 +1,105 @@
 {
-  "@class" : "se.inera.intyg.common.integration.hsa.model.Vardgivare",
+  "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardgivare",
   "id" : "vg1",
   "namn" : "Region ett",
   "vardenheter" : [
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-1",
       "namn" : "Verksamhet 1"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-2",
       "namn" : "Verksamhet 2"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-3",
       "namn" : "Verksamhet 3"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-4",
       "namn" : "Verksamhet 4"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-5",
       "namn" : "Verksamhet 5"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-6",
       "namn" : "Verksamhet 6"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-7",
       "namn" : "Verksamhet 7"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-8",
       "namn" : "Verksamhet 8"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-9",
       "namn" : "Verksamhet 9"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-10",
       "namn" : "Verksamhet 10"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-11",
       "namn" : "Verksamhet 11"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-12",
       "namn" : "Verksamhet 12"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-13",
       "namn" : "Verksamhet 13"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-14",
       "namn" : "Verksamhet 14"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-15",
       "namn" : "Verksamhet 15"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-16",
       "namn" : "Verksamhet 16"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-17",
       "namn" : "Verksamhet 17"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-18",
       "namn" : "Verksamhet 18"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-19",
       "namn" : "Verksamhet 19"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.infra.common.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-20",
       "namn" : "Verksamhet 20"
     }

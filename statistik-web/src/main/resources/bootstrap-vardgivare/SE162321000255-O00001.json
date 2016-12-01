@@ -1,70 +1,70 @@
 {
-  "@class" : "se.inera.intyg.common.integration.hsa.model.Vardgivare",
+  "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardgivare",
   "id" : "SE162321000255-O00001",
   "namn" : "Storregionen",
   "vardenheter" : [
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "SE162321000255-O10590",
       "namn" : "SE162321000255-O10590"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "SE162321000255-O11118",
       "namn" : "SE162321000255-O11118"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "SE162321000255-O11156",
       "namn" : "SE162321000255-O11156"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "SE162321000255-O11178",
       "namn" : "SE162321000255-O11178"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "SE162321000255-O11206",
       "namn" : "SE162321000255-O11206"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "SE162321000255-O11632",
       "namn" : "SE162321000255-O11632"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "SE162321000255-O11635",
       "namn" : "SE162321000255-O11635"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "SE162321000255-O15380",
       "namn" : "SE162321000255-O15380"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "SE162321000255-O16287",
       "namn" : "SE162321000255-O16287"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "SE162321000255-O16803",
       "namn" : "SE162321000255-O16803"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "SE162321000255-O17893",
       "namn" : "SE162321000255-O17893"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "SE162321000255-O17894",
       "namn" : "SE162321000255-O17894"
     },
     {
-      "@class" : "se.inera.intyg.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "SE162321000255-O19466",
       "namn" : "SE162321000255-O19466"
     }

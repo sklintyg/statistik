@@ -46,7 +46,7 @@ import org.springframework.security.saml.SAMLCredential;
 import org.xml.sax.SAXException;
 
 import se.inera.auth.model.User;
-import se.inera.intyg.common.integration.hsa.services.HsaPersonService;
+import se.inera.intyg.infra.integration.hsa.services.HsaPersonService;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -68,9 +68,9 @@ public class UserDetailsServiceTest {
 
     @Mock
     private HsaPersonService hsaPersonService;
-    
+
     @Mock
-    private MonitoringLogService monitoringLogService; 
+    private MonitoringLogService monitoringLogService;
 
     @InjectMocks
     private UserDetailsService service = new UserDetailsService();

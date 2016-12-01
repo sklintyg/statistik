@@ -35,7 +35,7 @@ dependencies {
     compile "org.apache.cxf:cxf-rt-frontend-jaxws:${cxfVersion}"
     compile "org.springframework:spring-context:${springContextVersion}"
     compile "org.springframework.security:spring-security-web:${springSecurityVersion}"
-    compile "se.inera.intyg.common:hsa-integration:${intygCommonVersion}"
+    compile "se.inera.intyg.infra:hsa-integration:${intygInfraVersion}"
     compile "joda-time:joda-time:${jodaTimeVersion}"
 
     wsdlgen "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:${cxfVersion}"

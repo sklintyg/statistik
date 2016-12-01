@@ -23,9 +23,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import se.inera.intyg.common.integration.hsa.client.AuthorizationManagementService;
-import se.inera.intyg.common.integration.hsa.stub.Medarbetaruppdrag;
-import se.inera.intyg.common.support.modules.support.api.exception.ExternalServiceCallException;
+import se.inera.intyg.infra.integration.hsa.client.AuthorizationManagementService;
+import se.inera.intyg.infra.integration.hsa.exception.HsaServiceCallException;
+import se.inera.intyg.infra.integration.hsa.stub.Medarbetaruppdrag;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.riv.infrastructure.directory.v1.CommissionType;
@@ -55,35 +55,35 @@ public class HsaOrganizationsServiceImplTest {
     private HsaOrganizationsServiceImpl testee;
     
     @Test
-    public void testWithSingleMiuStatistik() throws ExternalServiceCallException {
+    public void testWithSingleMiuStatistik() throws HsaServiceCallException {
         when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 1, 1));
         List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID).getVardenhetList();
         assertEquals(1, authorizedEnheter.size());
     }
 
     @Test
-    public void testWithSingleMiuVardOchBehandling() throws ExternalServiceCallException {
+    public void testWithSingleMiuVardOchBehandling() throws HsaServiceCallException {
         when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.VARD_OCH_BEHANDLING, 1, 1));
         List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID).getVardenhetList();
         assertEquals(0, authorizedEnheter.size());
     }
 
     @Test
-    public void testThatSingleAuthEnhetIsReturnedWhenHavingTwoMiuOnUnit() throws ExternalServiceCallException {
+    public void testThatSingleAuthEnhetIsReturnedWhenHavingTwoMiuOnUnit() throws HsaServiceCallException {
         when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 2, 0));
         List<Vardenhet> authorizedEnheter = testee.getAuthorizedEnheterForHosPerson(HSA_ID).getVardenhetList();
         assertEquals(1, authorizedEnheter.size());
     }
 
     @Test
-    public void testThatSystemRoleIsSet() throws ExternalServiceCallException {
+    public void testThatSystemRoleIsSet() throws HsaServiceCallException {
         when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(buildCredzResponse(Medarbetaruppdrag.STATISTIK, 1, 1));
         UserAuthorization userAuthorization = testee.getAuthorizedEnheterForHosPerson(HSA_ID);
         assertEquals("Statistik;enhet-123", userAuthorization.getSystemRoles().get(0));
     }
 
     @Test
-    public void testThatVEAreSortedByVEId() throws ExternalServiceCallException {
+    public void testThatVEAreSortedByVEId() throws HsaServiceCallException {
         List<CredentialInformationType> credzResp = buildCredzResponse(Medarbetaruppdrag.STATISTIK, 3, 3);
         when(authorizationManagementService.getAuthorizationsForPerson(anyString(), anyString(), anyString())).thenReturn(credzResp);
         UserAuthorization userAuthorization = testee.getAuthorizedEnheterForHosPerson(HSA_ID);
