@@ -29,7 +29,7 @@ import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 
 import se.inera.auth.model.User;
-import se.inera.intyg.common.integration.hsa.services.HsaPersonService;
+import se.inera.intyg.infra.integration.hsa.services.HsaPersonService;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.services.HsaOrganizationsService;

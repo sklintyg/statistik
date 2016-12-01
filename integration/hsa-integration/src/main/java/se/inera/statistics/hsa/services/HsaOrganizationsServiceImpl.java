@@ -22,8 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import se.inera.intyg.common.integration.hsa.client.AuthorizationManagementService;
-import se.inera.intyg.common.support.modules.support.api.exception.ExternalServiceCallException;
+import se.inera.intyg.infra.integration.hsa.client.AuthorizationManagementService;
+import se.inera.intyg.infra.integration.hsa.exception.HsaServiceCallException;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -61,7 +61,7 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
         List<CredentialInformationType> response = null;
         try {
             response = authorizationManagementService.getAuthorizationsForPerson(hosPersonHsaId.getId(), "", "");
-        } catch (ExternalServiceCallException e) {
+        } catch (HsaServiceCallException e) {
             LOG.error("Error loading authorizations", e);
         }
 
