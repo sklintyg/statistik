@@ -99,7 +99,7 @@
       "namn" : "Verksamhet 19"
     },
     {
-      "@class" : "se.inera.infra.common.integration.hsa.model.Vardenhet",
+      "@class" : "se.inera.intyg.infra.integration.hsa.model.Vardenhet",
       "id" : "vg1-enhet-20",
       "namn" : "Verksamhet 20"
     }
