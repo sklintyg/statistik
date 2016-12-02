@@ -18,35 +18,39 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Function;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import se.inera.statistics.hsa.model.HsaIdAny;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.IntygDTO;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 @Component
 public class IntygCommonManager {
@@ -62,13 +66,6 @@ public class IntygCommonManager {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
-    /**
-     * @param dto
-     * @param hsa
-     * @param logId
-     * @param correlationId
-     * @param type
-     */
     public void accept(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
         LOG.info("accepting a new entry into table IntygCommon");
         final String intygid = dto.getIntygid();
@@ -77,7 +74,7 @@ public class IntygCommonManager {
             LOG.info("Intygtype not supported. Ignoring intyg: " + intygid);
             return;
         }
-        IntygCommon line = intygCommonConverter.toIntygCommon(dto, hsa, logId, correlationId, type);
+        IntygCommon line = intygCommonConverter.toIntygCommon(dto, hsa, correlationId, type);
         persistIfValid(logId, intygid, line);
 
     }
@@ -106,58 +103,64 @@ public class IntygCommonManager {
         }
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getIntyg(HsaIdVardgivare vardgivarId, Range range, int periodlangd) {
-        final Function<IntygCommonGroup, String> rowNameFunction = new Function<IntygCommonGroup, String>() {
-            @Override
-            public String apply(IntygCommonGroup intygCommonGroup) {
-                return ReportUtil.toDiagramPeriod(intygCommonGroup.getRange().getFrom());
-            }
-        };
-        return getIntygCommonMaleFemale(range, vardgivarId, rowNameFunction, periodlangd);
+    public SimpleKonResponse<SimpleKonDataRow> getIntyg(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
+        return getIntygCommonMaleFemale(range, vardgivarId, enheter);
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> getIntygCommonMaleFemale(Range range, HsaIdVardgivare vardgivarId, Function<IntygCommonGroup, String> rowName, int periodLangd) {
+    private SimpleKonResponse<SimpleKonDataRow> getIntygCommonMaleFemale(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
-        for (IntygCommonGroup intygCommonGroup : getIntygCommonGroups(range, vardgivarId, periodLangd)) {
+        for (IntygCommonGroup intygCommonGroup : getIntygCommonGroups(range, vardgivarId, enheter)) {
             int male = countMale(intygCommonGroup.getIntyg());
             int female = intygCommonGroup.getIntyg().size() - male;
-            result.add(new SimpleKonDataRow(rowName.apply(intygCommonGroup), female, male));
+            final String periodName = ReportUtil.toDiagramPeriod(intygCommonGroup.getRange().getFrom());
+            result.add(new SimpleKonDataRow(periodName, female, male));
         }
 
         return new SimpleKonResponse<>(result);
     }
 
-    private List<IntygCommonGroup> getIntygCommonGroups(Range range, HsaIdVardgivare vardgivarId, int periodLangd) {
+    private List<IntygCommonGroup> getIntygCommonGroups(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter) {
         List<IntygCommonGroup> intygCommonGroups = new ArrayList<IntygCommonGroup>();
         for (int i = 0; i < range.getMonths(); i++) {
-            LocalDate periodStart = range.getFrom().plusMonths(i); //1 month
-            Range newRange = new Range(periodStart, periodStart.plusMonths(periodLangd));
-            IntygCommonGroup intygCommonGroup = getIntygCommonGroup(newRange, vardgivarId);
+            LocalDate periodStart = range.getFrom().plusMonths(i);
+            final LocalDate to = periodStart.plusMonths(1);
+            Range newRange = new Range(periodStart, to);
+            IntygCommonGroup intygCommonGroup = getIntygCommonGroup(newRange, vardgivarId, enheter);
             intygCommonGroups.add(intygCommonGroup);
         }
         return intygCommonGroups;
     }
 
-    private IntygCommonGroup getIntygCommonGroup(Range range, HsaIdVardgivare vardgivarId) {
-        CriteriaBuilder builder = manager.getCriteriaBuilder();
-        CriteriaQuery<IntygCommon> cq = builder.createQuery(IntygCommon.class);
-        Root<IntygCommon> root = cq.from(IntygCommon.class);
-        cq.where(getConditions(range, vardgivarId, builder, root));
-        Query query = manager.createQuery(cq);
-        List<IntygCommon> intygCommons = query.getResultList();
-        return new IntygCommonGroup(range, intygCommons);
+    private IntygCommonGroup getIntygCommonGroup(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter) {
+        final StringBuilder ql = new StringBuilder();
+        ql.append("SELECT r FROM IntygCommon r"
+                + " WHERE r.vardgivareId = :vardgivarId"
+                + " AND r.signeringsdatum >= :fromDate"
+                + " AND r.signeringsdatum <= :toDate");
+        if (enheter != null) {
+            ql.append(" AND r.enhet IN :enhetIds");
+        }
+
+        final TypedQuery<IntygCommon> q = manager.createQuery(ql.toString(), IntygCommon.class);
+        q.setParameter("vardgivarId", vardgivarId.getId());
+        final int fromDay = WidelineConverter.toDay(range.getFrom());
+        q.setParameter("fromDate", fromDay);
+        final int toDay = WidelineConverter.toDay(range.getTo());
+        q.setParameter("toDate", toDay);
+        if (enheter != null) {
+            final List<String> enhetIds = enheter.stream().map(HsaIdAny::getId).collect(Collectors.toList());
+            q.setParameter("enhetIds", enhetIds);
+        }
+
+        final List<IntygCommon> results = q.getResultList();
+        return new IntygCommonGroup(range, results);
     }
 
-    private Predicate getConditions(Range range, HsaIdVardgivare vardgivarId, CriteriaBuilder builder, Root<IntygCommon> root) {
-        //FIXME: Implement search conditions
-        Predicate pred = builder.conjunction();
-        return pred;
-    }
-
-    public static int countMale(Collection<IntygCommon> intygs) {
+    private static int countMale(Collection<IntygCommon> intygs) {
         int count = 0;
+        final int maleNumberRepresentation = Kon.MALE.getNumberRepresentation();
         for (IntygCommon intyg : intygs) {
-            if (intyg.getKon() == 0) { // FIXME: 0 or 1 really?
+            if (intyg.getKon() == maleNumberRepresentation) {
                 count++;
             }
         }

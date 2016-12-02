@@ -1,0 +1,20 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+| script | dagens datum | 2013-11-06 |
+
+| Enbart foljande intyg finns |
+| personnr      | signeringstid       | start      | slut       | enhet  | intygformat |
+| 19790219-9285 | 2013-02-10T12:24:15 | 2013-02-01 | 2013-02-14 | enhet1 | LUSE        |
+| 19790429-9281 | 2013-02-10T12:25:15 | 2013-02-01 | 2013-02-14 | enhet1 | LUSE        |
+| 19790429-9272 | 2013-03-10T12:25:15 | 2013-02-01 | 2013-02-14 | enhet1 | fk7263sit   |
+
+!3 Då gäller:
+
+Nationell:
+| Sjukfall i rapporten antal intyg per manad |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user1        | 2013 | jan   | 0    | 0        |
+| user1        | 2013 | feb   | 0    | 2        |
+| user1        | 2013 | mar   | 1    | 0        |

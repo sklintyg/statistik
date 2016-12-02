@@ -41,19 +41,9 @@ public class IntygCommon {
     private String vardgivareId;
     private int kon;
 
-    /**
-     * @param id
-     * @param intygid
-     * @param patientid
-     * @param signeringsdatum
-     * @param intygtyp
-     * @param enhet
-     * @param vardgivareId
-     */
     // FIXME: Checkstyle warning
     // CHECKSTYLE:OFF ParameterNumber
-    public IntygCommon(long id, String intygid, String patientid, int signeringsdatum, String intygtyp, String enhet, String vardgivareId, int kon) {
-        this.id = id;
+    public IntygCommon(String intygid, String patientid, int signeringsdatum, String intygtyp, String enhet, String vardgivareId, int kon) {
         this.intygid = intygid;
         this.patientid = patientid;
         this.kon = kon;
@@ -64,72 +54,40 @@ public class IntygCommon {
     }
     // CHECKSTYLE:ON ParameterNumber
 
-    public IntygCommon() {
-        // Used by IntygCommonConverter
+    private IntygCommon() {
+        // Must exist for an entity
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public String getIntygid() {
         return intygid;
-    }
-
-    public void setIntygid(String intygid) {
-        this.intygid = intygid;
     }
 
     public String getPatientid() {
         return patientid;
     }
 
-    public void setPatientid(String patientid) {
-        this.patientid = patientid;
-    }
-
     public int getSigneringsdatum() {
         return signeringsdatum;
-    }
-
-    public void setSigneringsdatum(int signeringsdatum) {
-        this.signeringsdatum = signeringsdatum;
     }
 
     public String getIntygtyp() {
         return intygtyp;
     }
 
-    public void setIntygtyp(String intygtyp) {
-        this.intygtyp = intygtyp;
-    }
-
     public String getEnhet() {
         return enhet;
-    }
-
-    public void setEnhet(String enhet) {
-        this.enhet = enhet;
     }
 
     public String getVardgivareId() {
         return vardgivareId;
     }
 
-    public void setVardgivareId(String vardgivareId) {
-        this.vardgivareId = vardgivareId;
-    }
-
     public int getKon() {
         return kon;
-    }
-
-    public void setKon(int kon) {
-        this.kon = kon;
     }
 
 }

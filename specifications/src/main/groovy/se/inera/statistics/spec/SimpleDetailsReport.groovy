@@ -42,6 +42,13 @@ abstract class SimpleDetailsReport extends Rapport {
         }
     }
 
+    def getReportAntalIntygPerManad() {
+        if (inloggad) {
+            return reportsUtil.getReportAntalIntygPerManad(vg, filter);
+        }
+        throw new RuntimeException("Report -AntalIntygPerManad- is not available on national level");
+    }
+
     def getReportSjukfallTotalt() {
         if (inloggad) {
             return reportsUtil.getReportAntalIntygInloggad(vg, filter);

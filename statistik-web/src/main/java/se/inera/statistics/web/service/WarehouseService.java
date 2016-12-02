@@ -106,8 +106,8 @@ public class WarehouseService {
         return sjukfallQuery.getSjukfallTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), false);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getIntygPerMonth(Range range, HsaIdVardgivare vardgivarId) {
-        return intygCommonManager.getIntyg(vardgivarId, range, range.getMonths());
+    public SimpleKonResponse<SimpleKonDataRow> getIntygPerMonth(HsaIdVardgivare vardgivarId, FilterSettings filterSettings) {
+        return intygCommonManager.getIntyg(vardgivarId, filterSettings.getRange(), filterSettings.getFilter().getEnheter());
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getMessagesPerMonth(Filter filter, Range range, HsaIdVardgivare vardgivarId) {

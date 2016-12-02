@@ -136,7 +136,7 @@ public class ProtectedChartDataService {
         return responseHandler.getResponse(result, csv, hsaIdEnhets);
     }
 
-    /**TODO
+    /**
      * Gets intyg per manad for verksamhetId.
      */
     @GET
@@ -147,8 +147,8 @@ public class ProtectedChartDataService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getNumberOfIntygPerMonth(@Context HttpServletRequest request, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, null, 18);
-        //FIXME: fix param i n reportsutil
-        SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerMonth(filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerMonth(vg, filterSettings);
         SimpleDetailsData result = new PeriodConverter().convert(intygPerMonth, filterSettings);
         return getResponse(result, csv, request);
     }
