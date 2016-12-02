@@ -7,6 +7,10 @@ import se.inera.statistics.service.processlog.EventType
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.testsupport.Intyg
 
+import java.text.SimpleDateFormat
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+
 class FoljandeIntygFinns extends FoljandeFinns {
 
     private static int intygIdCounter = 1;
@@ -31,6 +35,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
     String intygstyp
     String funktionsnedsättning
     String aktivitetsbegränsning
+    def signeringstid
 
     public void setKommentar(String kommentar) {}
 
@@ -60,6 +65,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
         enhetsnamn = null
         funktionsnedsättning = "Default funktionsnedsattning"
         aktivitetsbegränsning = "Default arbetsbegransning"
+        signeringstid = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
     }
 
     public void execute() {
@@ -101,31 +107,13 @@ class FoljandeIntygFinns extends FoljandeFinns {
     }
 
     private String executeForXmlFormatGeneral(String filepath, String defaultIntygstyp) {
-        def slurper = new XmlParser(false, true)
-        String intygString = getClass().getResource(filepath).getText('UTF-8')
-        def result = slurper.parseText(intygString)
-        def intyg = result.value()[0]
-
-        def patientNode = findNode(intyg, "patient")
-
-        def patientPersonIdNode = findNode(patientNode, "person-id")
-        setExtension(patientPersonIdNode, personnr)
-        setLeafValue(findNode(intyg, "typ"), "code", intygstyp != null ? intygstyp : defaultIntygstyp)
-
-        def skapadAvNode = findNode(intyg, "skapadAv")
-        setExtension(findNode(skapadAvNode, "personal-id"), läkare)
-
-        def skapadAvEnhetNode = findNode(skapadAvNode, "enhet")
-        setExtension(findNode(skapadAvEnhetNode, "enhets-id"), enhet)
-
-        def skapadAvEnhetVgNode = findNode(skapadAvEnhetNode, "vardgivare")
-        setExtension(findNode(skapadAvEnhetVgNode, "vardgivare-id"), vardgivare)
+        Node result = handleGeneralSit(filepath, defaultIntygstyp)
 
         def builder = groovy.xml.XmlUtil.serialize(result)
         return builder.toString()
     }
 
-    private String executeForXmlFormat(String filepath, String defaultIntygstyp) {
+    private Node handleGeneralSit(String filepath, String defaultIntygstyp) {
         def slurper = new XmlParser(false, true)
         String intygString = getClass().getResource(filepath).getText('UTF-8')
         def result = slurper.parseText(intygString)
@@ -137,6 +125,8 @@ class FoljandeIntygFinns extends FoljandeFinns {
         setExtension(patientPersonIdNode, personnr)
         setLeafValue(findNode(intyg, "typ"), "code", intygstyp != null ? intygstyp : defaultIntygstyp)
 
+        setLeafValue(intyg, "signeringstidpunkt", signeringstid)
+
         def skapadAvNode = findNode(intyg, "skapadAv")
         setExtension(findNode(skapadAvNode, "personal-id"), läkare)
 
@@ -145,6 +135,12 @@ class FoljandeIntygFinns extends FoljandeFinns {
 
         def skapadAvEnhetVgNode = findNode(skapadAvEnhetNode, "vardgivare")
         setExtension(findNode(skapadAvEnhetVgNode, "vardgivare-id"), vardgivare)
+        result
+    }
+
+    private String executeForXmlFormat(String filepath, String defaultIntygstyp) {
+        Node result = handleGeneralSit(filepath, defaultIntygstyp)
+        def intyg = result.value()[0]
 
         def svarNodes = findNodes(intyg, "svar")
         if ("UTANDIAGNOSKOD".equalsIgnoreCase(diagnoskod)) {

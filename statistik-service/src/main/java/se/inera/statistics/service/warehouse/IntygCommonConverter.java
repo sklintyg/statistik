@@ -31,7 +31,6 @@ import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 
 import java.time.Clock;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,21 +41,14 @@ public class IntygCommonConverter {
     public static final int MAX_LENGTH_VGID = 50;
     private static final int DATE20100101 = 3653; // 365*10 + 3
     private static final int MAX_YEARS_INTO_FUTURE = 5;
-    private static final LocalDate ERA = LocalDate.parse("2000-01-01");
+
     @Autowired
     private Clock clock;
+
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
 
-    /**
-     * @param dto
-     * @param hsa
-     * @param logId
-     * @param correlationId
-     * @param type
-     * @return
-     */
-    public IntygCommon toIntygCommon(IntygDTO dto, HsaInfo hsa, long logId, String correlationId,
+    public IntygCommon toIntygCommon(IntygDTO dto, HsaInfo hsa, String correlationId,
                                      EventType type) {
         String enhet = HSAServiceHelper.getEnhetId(hsa);
         HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
@@ -69,38 +61,18 @@ public class IntygCommonConverter {
         String intygTyp = dto.getIntygtyp().toUpperCase();
         LocalDate signeringsDatum = dto.getSigneringsdatum();
 
-        return createIntygCommon(logId, correlationId, type, enhet, vardgivare, patient, kon, intygTyp, signeringsDatum);
+        return createIntygCommon(correlationId, type, enhet, vardgivare, patient, kon, intygTyp, signeringsDatum);
     }
 
-    /**
-     * @param logId
-     * @param correlationId
-     * @param type
-     * @param enhet
-     * @param vardgivare
-     * @param patient
-     * @param kon
-     * @return
-     */
+    // FIXME: Add type to table and handle it (e.g. revoked)
     // FIXME: Checkstyle warning
     // CHECKSTYLE:OFF ParameterNumber
-    private IntygCommon createIntygCommon(long logId, String correlationId, EventType type, String enhet, HsaIdVardgivare vardgivare, String patient,
+    private IntygCommon createIntygCommon(String correlationId, EventType type, String enhet, HsaIdVardgivare vardgivare, String patient,
                                           int kon, String intygTyp, LocalDate signeringsdatum) {
-
-        IntygCommon intygCommon = new IntygCommon();
-        intygCommon.setIntygid(correlationId);
-        intygCommon.setIntygtyp(intygTyp);
-        intygCommon.setPatientid(patient);
-        intygCommon.setVardgivareId(vardgivare.getId());
-        intygCommon.setEnhet(enhet);
-        intygCommon.setSigneringsdatum(toDay(signeringsdatum));
-        return intygCommon;
+        final int signeringsdatumDay = WidelineConverter.toDay(signeringsdatum); //FIXME: Varför använda det krangliga int-systemet har?
+        return new IntygCommon(correlationId, patient, signeringsdatumDay, intygTyp, enhet, vardgivare.getId(), kon);
     }
     // CHECKSTYLE:ON ParameterNumber
-
-    public static int toDay(LocalDate dayDate) {
-        return (int) ChronoUnit.DAYS.between(ERA, dayDate);
-    }
 
     public List<String> validate(IntygCommon line) {
         List<String> errors = new ArrayList<>();
@@ -127,7 +99,7 @@ public class IntygCommonConverter {
     }
 
     private void checkSigneringsdatum(List<String> errors, int startdatum) {
-        if (startdatum < DATE20100101 || startdatum > toDay(LocalDate.now(clock).plusYears(MAX_YEARS_INTO_FUTURE))) {
+        if (startdatum < DATE20100101 || startdatum > WidelineConverter.toDay(LocalDate.now(clock).plusYears(MAX_YEARS_INTO_FUTURE))) {
             errors.add("Illegal startdatum: " + startdatum);
         }
     }

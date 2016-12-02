@@ -64,13 +64,6 @@ public class Processor {
         }
     }
 
-    /**
-     * @param dto
-     * @param hsa
-     * @param logId
-     * @param correlationId
-     * @param type
-     */
     private void handleWithIntygCommonManager(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
         intygCommonManager.accept(dto, hsa, logId, correlationId, type);
     }

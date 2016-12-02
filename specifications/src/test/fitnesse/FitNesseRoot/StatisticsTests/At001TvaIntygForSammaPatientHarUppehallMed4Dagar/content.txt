@@ -20,9 +20,9 @@ Det blir ett sjukfall.
 Inloggad:
 | Sjukfall i rapporten sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? |
-| user1  | 2013 | jan   | 0    | 0        |
-| user1  | 2013 | feb   | 1    | 0        |
-| user1  | 2013 | mar   | 0    | 0        |
+| user1        | 2013 | jan   | 0    | 0        |
+| user1        | 2013 | feb   | 1    | 0        |
+| user1        | 2013 | mar   | 0    | 0        |
 
 Nationell:
 | Sjukfall i rapporten sjukfall totalt |

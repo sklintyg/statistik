@@ -121,9 +121,9 @@ class ReportsUtil {
         return get("/api/getNumberOfCasesPerMonth")
     }
 
-def getReportAntalIntygPerManad() {
-return get(getVerksamhetUrlPrefix() + "/getNumberOfIntygPerMonth")
-}
+    def getReportAntalIntygPerManad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getNumberOfIntygPerMonth", filter, "vgid=" + vgid)
+    }
 
     def getReportAntalIntygInloggad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonth", filter, "vgid=" + vgid)
