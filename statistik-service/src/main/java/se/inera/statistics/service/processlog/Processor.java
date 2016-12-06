@@ -24,11 +24,13 @@ import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.warehouse.IntygCommonManager;
+import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.WidelineManager;
 import se.inera.statistics.service.warehouse.message.MessageWidelineManager;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
 
 public class Processor {
+
     @Autowired
     private WidelineManager widelineManager;
 
@@ -50,26 +52,17 @@ public class Processor {
     public void accept(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
         final String enhetId = dto.getEnhet();
         saveEnhetAndLakare(hsa, enhetId);
-        handleWithIntygCommonManager(dto, hsa, logId, correlationId, type);
-        String intygTyp = dto.getIntygtyp().toUpperCase();
-        switch (intygTyp) {
-        case "LISU":
-        case "LISJP":
-        case "FK7263":
-        case "LIS":
-            handleWithWidelineManager(dto, hsa, logId, correlationId, type);
-            break;
-        default:
-            // do nothing
+        intygCommonManager.accept(dto, hsa, logId, correlationId, type);
+        if (isSjukpenningIntyg(dto)) {
+            widelineManager.accept(dto, hsa, logId, correlationId, type);
         }
     }
 
-    private void handleWithIntygCommonManager(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
-        intygCommonManager.accept(dto, hsa, logId, correlationId, type);
-    }
-
-    private void handleWithWidelineManager(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
-        widelineManager.accept(dto, hsa, logId, correlationId, type);
+    private boolean isSjukpenningIntyg(IntygDTO intyg) {
+        if (intyg == null) {
+            return false;
+        }
+        return IntygType.parseString(intyg.getIntygtyp()).isSjukpenningintyg();
     }
 
     public void accept(SendMessageToCareType message, long logId, String messageId, MessageEventType type) {
