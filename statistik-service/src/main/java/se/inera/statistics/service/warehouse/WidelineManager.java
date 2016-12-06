@@ -75,12 +75,7 @@ public class WidelineManager {
     }
 
     private boolean isSupportedIntygType(String intygType) {
-        for (IntygType type : IntygType.values()) {
-            if (type.name().equalsIgnoreCase(intygType)) {
-                return true;
-            }
-        }
-        return false;
+        return IntygType.parseString(intygType).isSjukpenningintyg();
     }
 
     @Transactional

@@ -20,6 +20,38 @@ package se.inera.statistics.service.warehouse;
 
 public enum IntygType {
 
-    FK7263, LIS, LISU, LUSE, LUAE_NA, LUAE_FS, LISJP;
+    FK7263(true, true),
+    LIS(true, true),
+    LISU(true, true),
+    LUSE(true, false),
+    LUAE_NA(true, false),
+    LUAE_FS(true, false),
+    LISJP(true, true),
+    UNKNOWN(false, false);
+
+    private final boolean isSupportedIntyg;
+    private final boolean isSjukpenningintyg;
+
+    IntygType(boolean isSupportedIntyg, boolean isSjukpenningintyg) {
+        this.isSupportedIntyg = isSupportedIntyg;
+        this.isSjukpenningintyg = isSjukpenningintyg;
+    }
+
+    public boolean isSupportedIntyg() {
+        return isSupportedIntyg;
+    }
+
+    public boolean isSjukpenningintyg() {
+        return isSjukpenningintyg;
+    }
+
+    public static IntygType parseString(String stringType) {
+        for (IntygType intygType : values()) {
+            if (intygType.name().equalsIgnoreCase(stringType)) {
+                return intygType;
+            }
+        }
+        return UNKNOWN;
+    }
 
 }

@@ -76,16 +76,10 @@ public class IntygCommonManager {
         }
         IntygCommon line = intygCommonConverter.toIntygCommon(dto, hsa, correlationId, type);
         persistIfValid(logId, intygid, line);
-
     }
 
     private boolean isSupportedIntygType(String intygType) {
-        for (IntygType type : IntygType.values()) {
-            if (type.name().equalsIgnoreCase(intygType)) {
-                return true;
-            }
-        }
-        return false;
+        return IntygType.parseString(intygType).isSupportedIntyg();
     }
 
     private void persistIfValid(long logId, String intygid, IntygCommon line) {
