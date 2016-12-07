@@ -1,0 +1,26 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+| script | dagens datum | 2015-11-06 |
+
+| Enbart foljande intyg finns |
+| personnr      | signeringstid       | enhet  | intygformat | kommentar |
+| 19790219-9285 | 2015-02-10T12:24:15 | enhet1 | LUSE        | |
+| 19790219-9285 | 2015-02-12T12:25:15 | enhet1 | LUSE        | samma patient, nytt intyg |
+| 19790429-9272 | 2015-03-10T12:25:15 | enhet1 | fk7263sit   | |
+| 19790329-9256 | 2015-03-10T12:25:15 | enhet1 | LUAE_NA     | |
+| 19790529-9289 | 2015-03-10T12:25:15 | enhet1 | LUAE_FS     | |
+| 19790629-9234 | 2015-03-10T12:25:15 | enhet1 | LISJP       | |
+
+
+!3 Då gäller:
+
+Statistiken baseras på alla intygstyper och dess signeringstidpunkt. Det spelar ingen roll om det finns flera intyg för samma patient. Varje intyg räknas alltid en gång.
+
+Inloggad:
+| Sjukfall i rapporten antal intyg per manad |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user1        | 2015 | jan   | 0    | 0        |
+| user1        | 2015 | feb   | 0    | 2        |
+| user1        | 2015 | mar   | 3    | 1        |
