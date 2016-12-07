@@ -2,7 +2,7 @@
 
 !3 Givet att:
 
-Ett intyg är utfärdat för en patient som är 113 år gammal.
+Ett intyg är utfärdat för en patient som är 115 år gammal.
 
 | script | dagens datum | 2015-08-06 |
 
@@ -10,7 +10,7 @@ Ett intyg är utfärdat för en patient som är 113 år gammal.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
-| 19790717-9191 | P14 | 2015-05-01 | 2015-08-14 | enhet1 |
+| 19000717-9191 | P14 | 2015-05-01 | 2015-08-14 | enhet1 |
 
 !3 Då gäller:
 
