@@ -1,8 +1,8 @@
 !contents -R2 -g -p -f -h
 
-Följande test visat att intyg med inget eller ogiltigt enhets-id hanteras som förväntat (de visas för användare med vårdgivarbehörighet för den vårdgivare som enheten tillhör, men inte för användare med behörighet på specifika enheter).
-
 !3 Givet att:
+
+Det finns intyg där inget enhets-id angetts och intyg skrivna på enheter som inte går att slå upp i HSA.
 
 | script | dagens datum | 2013-11-06 |
 
@@ -16,6 +16,9 @@ Följande test visat att intyg med inget eller ogiltigt enhets-id hanteras som f
 | 19790316-9261 | G01        | 2013-02-01 | 2013-03-06 | UTANENHETSID | |
 
 !3 Då gäller:
+
+Om enheten inte går att slå upp i HSA och vi därmed inte kan hitta någon vårdgivare, filtreras intyget bort.
+
 Nationell nivå
 | Sjukfall i rapporten sjukfall totalt |
 | år   | månad | män? | kvinnor? |
