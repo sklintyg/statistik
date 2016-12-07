@@ -68,6 +68,7 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl', ['$scope',
 						'<li>Startdatumet för sjukskrivningsperioden måste vara efter 2009-12-31.</li>' +
 						'<li>Start- eller slutdatum för sjukskrivningsperioden måste vara mindre än fem år fram i tiden.</li>' +
 						'<li>Slutdatum för sjukskrivningsperioden måste vara efter startdatumet.</li>' +
+						'<li>Intyget får inte vara makulerat.</li>' +
 						'<li>Den enhet inom hälso- och sjukvården som utfärdar intyget måste finnas i HSA-katalogen.</li>' +
 						'<li>Den enhet inom hälso- och sjukvården som utfärdar intyget måste vara kopplad till en vårdgivare i HSA-katalogen.</li>' +
 					'</ul>'
