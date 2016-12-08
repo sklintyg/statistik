@@ -306,6 +306,18 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'VerksamhetMeddelandenPerMonthCtrl',
                 resolve: { config: app.meddelandenPerMonthTvarsnittConfig },
                 title: 'Andel inkomna meddelanden'
+            }).when('/verksamhet/intyg', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'singleLineChartCtrl',
+                controllerAs: 'VerksamhetIntygPerMonthCtrl',
+                resolve: { config: app.intygPerMonthConfig },
+                title: 'Andel inkomna intyg'
+            }).when('/verksamhet/intygTvarsnitt', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'VerksamhetIntygPerMonthCtrl',
+                resolve: { config: app.intygPerMonthTvarsnittConfig },
+                title: 'Andel inkomna intyg'
             }).when('/landsting/filuppladdning', {
                 templateUrl: '/app/views/landsting/fileupload.html',
                 controller: 'landstingFileUploadCtrl',
