@@ -103,6 +103,14 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestNational('getNumberOfMeddelandenPerMonth', successCallback, failureCallback);
     };
 
+    factory.getNumberOfIntygPerMonthVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getNumberOfIntygPerMonth', successCallback, failureCallback);
+    };
+
+    factory.getNumberOfIntygPerMonthTvarsnittVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getNumberOfIntygPerMonthTvarsnitt', successCallback, failureCallback);
+    };
+
     factory.getNumberOfCasesPerMonthVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet('getNumberOfCasesPerMonth', successCallback, failureCallback);
     };

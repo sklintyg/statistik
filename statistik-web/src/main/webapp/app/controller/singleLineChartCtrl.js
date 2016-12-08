@@ -210,3 +210,23 @@ angular.module('StatisticsApp').meddelandenPerMonthConfig =
 
         return conf;
     };
+
+angular.module('StatisticsApp').intygPerMonthConfig =
+    /** @ngInject */
+        function (messageService) {
+        'use strict';
+
+        var conf = {};
+        conf.dataFetcherVerksamhet = 'getNumberOfIntygPerMonthVerksamhet';
+        conf.chartYAxisTitle = 'Antal intyg';
+        conf.exportTableUrlVerksamhet = function () {
+            return 'api/verksamhet/getNumberOfIntygPerMonth/csv';
+        };
+        conf.title = messageService.getProperty('title.intyg');
+
+        conf.exchangeableViews = [
+            {description: 'Tidsserie', state: '/verksamhet/intyg', active: true},
+            {description: 'Tvärsnitt', state: '/verksamhet/intygTvarsnitt', active: false}];
+
+        return conf;
+    };
