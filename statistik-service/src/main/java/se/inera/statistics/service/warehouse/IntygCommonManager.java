@@ -28,6 +28,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import com.google.common.base.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,26 +99,43 @@ public class IntygCommonManager {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getIntyg(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
-        return getIntygCommonMaleFemale(range, vardgivarId, enheter);
+        final Function<IntygCommonGroup, String> rowNameFunction = new Function<IntygCommonGroup, String>() {
+            @Override
+            public String apply(IntygCommonGroup intygCommonGroup) {
+                return ReportUtil.toDiagramPeriod(intygCommonGroup.getRange().getFrom());
+            }
+        };
+        return getIntygCommonMaleFemale(range, vardgivarId, enheter, rowNameFunction, false);
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> getIntygCommonMaleFemale(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter) {
+    public SimpleKonResponse<SimpleKonDataRow> getIntygTvarsnitt(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
+        final Function<IntygCommonGroup, String> rowNameFunction = new Function<IntygCommonGroup, String>() {
+            @Override
+            public String apply(IntygCommonGroup intygCommonGroup) {
+                return "Totalt";
+            }
+        };
+        return getIntygCommonMaleFemale(range, vardgivarId, enheter, rowNameFunction, true);
+    }
+
+    private SimpleKonResponse<SimpleKonDataRow> getIntygCommonMaleFemale(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter, Function<IntygCommonGroup, String> rowNameFunction, boolean isTvarsnitt) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
-        for (IntygCommonGroup intygCommonGroup : getIntygCommonGroups(range, vardgivarId, enheter)) {
+        for (IntygCommonGroup intygCommonGroup : getIntygCommonGroups(range, vardgivarId, enheter, isTvarsnitt)) {
             int male = countMale(intygCommonGroup.getIntyg());
             int female = intygCommonGroup.getIntyg().size() - male;
-            final String periodName = ReportUtil.toDiagramPeriod(intygCommonGroup.getRange().getFrom());
+            final String periodName = rowNameFunction.apply(intygCommonGroup);
             result.add(new SimpleKonDataRow(periodName, female, male));
         }
-
         return new SimpleKonResponse<>(result);
     }
 
-    private List<IntygCommonGroup> getIntygCommonGroups(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter) {
+    private List<IntygCommonGroup> getIntygCommonGroups(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter, boolean isTvarsnitt) {
         List<IntygCommonGroup> intygCommonGroups = new ArrayList<IntygCommonGroup>();
-        for (int i = 0; i < range.getMonths(); i++) {
-            LocalDate periodStart = range.getFrom().plusMonths(i);
-            final LocalDate to = periodStart.plusMonths(1);
+        int periods = isTvarsnitt ? 1 : range.getMonths();
+        int periodLength = isTvarsnitt ? range.getMonths() : 1;
+        for (int i = 0; i < periods; i++) {
+            LocalDate periodStart = range.getFrom().plusMonths(i * periodLength);
+            final LocalDate to = periodStart.plusMonths(periodLength);
             Range newRange = new Range(periodStart, to);
             IntygCommonGroup intygCommonGroup = getIntygCommonGroup(newRange, vardgivarId, enheter);
             intygCommonGroups.add(intygCommonGroup);

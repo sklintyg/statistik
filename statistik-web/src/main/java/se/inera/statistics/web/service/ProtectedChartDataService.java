@@ -153,6 +153,23 @@ public class ProtectedChartDataService {
         return getResponse(result, csv, request);
     }
 
+    /**
+     * Gets intyg per manad tvärsnitt for verksamhetId.
+     */
+    @GET
+    @Path("getNumberOfIntygPerMonthTvarsnitt{csv:(/csv)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfIntygPerMonthTvarsnitt(@Context HttpServletRequest request, @PathParam("csv") String csv) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, null, 12);
+        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerMonthTvarsnitt(vg, filterSettings);
+        SimpleDetailsData result = SimpleDualSexConverter.newGenericTvarsnitt().convert(intygPerMonth, filterSettings);
+        return getResponse(result, csv, request);
+    }
+
     @GET
     @Path("getNumberOfCasesPerMonthTvarsnitt{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })

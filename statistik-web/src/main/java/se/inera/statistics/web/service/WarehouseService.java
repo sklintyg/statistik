@@ -110,6 +110,10 @@ public class WarehouseService {
         return intygCommonManager.getIntyg(vardgivarId, filterSettings.getRange(), filterSettings.getFilter().getEnheter());
     }
 
+    public SimpleKonResponse<SimpleKonDataRow> getIntygPerMonthTvarsnitt(HsaIdVardgivare vardgivarId, FilterSettings filterSettings) {
+        return intygCommonManager.getIntygTvarsnitt(vardgivarId, filterSettings.getRange(), filterSettings.getFilter().getEnheter());
+    }
+
     public SimpleKonResponse<SimpleKonDataRow> getMessagesPerMonth(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
         return messagesQuery.getMessages(vardgivarId, filter.getEnheter(), range.getFrom(), range.getMonths());
     }
