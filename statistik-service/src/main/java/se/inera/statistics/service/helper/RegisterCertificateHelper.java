@@ -320,6 +320,10 @@ public class RegisterCertificateHelper {
     }
 
     public IntygDTO convertToDTO(RegisterCertificateType intyg) {
+        if (intyg == null) {
+            return null;
+        }
+
         IntygDTO dto = new IntygDTO();
 
         String enhet = getEnhetId(intyg);
