@@ -19,15 +19,16 @@
 package se.inera.statistics.service.helper;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.junit.Before;
 import org.junit.Test;
 import se.inera.statistics.service.JSONSource;
+import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
 
 import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static se.inera.statistics.service.helper.DocumentHelper.IntygVersion.VERSION1;
@@ -267,6 +268,41 @@ public class DocumentHelperTest {
 
         assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("svår", "enkel"));
         assertFalse(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("svår", "medium"));
+    }
+
+    @Test
+    public void testConvertToDTONull() {
+        IntygDTO dto = DocumentHelper.convertToDTO(null);
+
+        assertNull(dto);
+    }
+
+    @Test
+    public void testConvertToDTOVersion2() {
+        IntygDTO dto = DocumentHelper.convertToDTO(documentVersion2);
+
+        LocalDate signeringsdatum = LocalDate.of(2011, 1, 26);
+
+        assertEquals("19121212-1212", dto.getPatientid());
+        assertEquals("VardenhetY", dto.getEnhet());
+        assertEquals("FK7263", dto.getIntygtyp());
+        assertEquals(98, dto.getPatientData().getAlder());
+        assertEquals(Kon.MALE, dto.getPatientData().getKon());
+        assertEquals(signeringsdatum, dto.getSigneringsdatum());
+    }
+
+    @Test
+    public void testConvertToDTOOld() {
+        IntygDTO dto = DocumentHelper.convertToDTO(documentOldFormat);
+
+        LocalDate signeringsdatum = LocalDate.of(2011, 1, 26);
+
+        assertEquals("19750424-9215", dto.getPatientid());
+        assertEquals("enhetId", dto.getEnhet());
+        assertEquals("FK7263", dto.getIntygtyp());
+        assertEquals(35, dto.getPatientData().getAlder());
+        assertEquals(Kon.MALE, dto.getPatientData().getKon());
+        assertEquals(signeringsdatum, dto.getSigneringsdatum());
     }
 
     // CHECKSTYLE:ON MagicNumber

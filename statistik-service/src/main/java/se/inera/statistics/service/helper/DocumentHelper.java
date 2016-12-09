@@ -50,14 +50,14 @@ public final class DocumentHelper {
     private static final int NEDSATT25 = 25;
     private static final int NEDSATT50 = 50;
     private static final int NEDSATT75 = 75;
-    public static final String GRUND_DATA = "grundData";
-    public static final String SKAPAD_AV = "skapadAv";
-    public static final String VARDENHET = "vardenhet";
-    public static final String OBSERVATIONSPERIOD = "observationsperiod";
-    public static final String NEDSATT_MED_25 = "nedsattMed25";
-    public static final String NEDSATT_MED_50 = "nedsattMed50";
-    public static final String NEDSATT_MED_75 = "nedsattMed75";
-    public static final String NEDSATT_MED_100 = "nedsattMed100";
+    private static final String GRUND_DATA = "grundData";
+    private static final String SKAPAD_AV = "skapadAv";
+    private static final String VARDENHET = "vardenhet";
+    private static final String OBSERVATIONSPERIOD = "observationsperiod";
+    private static final String NEDSATT_MED_25 = "nedsattMed25";
+    private static final String NEDSATT_MED_50 = "nedsattMed50";
+    private static final String NEDSATT_MED_75 = "nedsattMed75";
+    private static final String NEDSATT_MED_100 = "nedsattMed100";
 
     private DocumentHelper() {
     }
@@ -259,35 +259,22 @@ public final class DocumentHelper {
             }
             return result;
         } else {
-            if (document.has(NEDSATT_MED_25)) {
-                LocalDate from = parseDate(document.path(NEDSATT_MED_25).path("from").asText());
-                LocalDate tom = parseDate(document.path(NEDSATT_MED_25).path("tom").asText());
-                if (from != null && tom != null) {
-                    result.add(new Arbetsnedsattning(NEDSATT25, from, tom));
-                }
-            }
-            if (document.has(NEDSATT_MED_50)) {
-                LocalDate from = parseDate(document.path(NEDSATT_MED_50).path("from").asText());
-                LocalDate tom = parseDate(document.path(NEDSATT_MED_50).path("tom").asText());
-                if (from != null && tom != null) {
-                    result.add(new Arbetsnedsattning(NEDSATT50, from, tom));
-                }
-            }
-            if (document.has(NEDSATT_MED_75)) {
-                LocalDate from = parseDate(document.path(NEDSATT_MED_75).path("from").asText());
-                LocalDate tom = parseDate(document.path(NEDSATT_MED_75).path("tom").asText());
-                if (from != null && tom != null) {
-                    result.add(new Arbetsnedsattning(NEDSATT75, from, tom));
-                }
-            }
-            if (document.has(NEDSATT_MED_100)) {
-                LocalDate from = parseDate(document.path(NEDSATT_MED_100).path("from").asText());
-                LocalDate tom = parseDate(document.path(NEDSATT_MED_100).path("tom").asText());
-                if (from != null && tom != null) {
-                    result.add(new Arbetsnedsattning(NEDSATT100, from, tom));
-                }
-            }
+            addArbetsnedsattning(document, result, NEDSATT_MED_25, NEDSATT25);
+            addArbetsnedsattning(document, result, NEDSATT_MED_50, NEDSATT50);
+            addArbetsnedsattning(document, result, NEDSATT_MED_75, NEDSATT75);
+            addArbetsnedsattning(document, result, NEDSATT_MED_100, NEDSATT100);
+
             return result;
+        }
+    }
+
+    private static void addArbetsnedsattning(JsonNode document, List<Arbetsnedsattning> result, String nedsattMedString, int nedsattMed) {
+        if (document.has(nedsattMedString)) {
+            LocalDate from = parseDate(document.path(nedsattMedString).path("from").asText());
+            LocalDate tom = parseDate(document.path(nedsattMedString).path("tom").asText());
+            if (from != null && tom != null) {
+                result.add(new Arbetsnedsattning(nedsattMed, from, tom));
+            }
         }
     }
 
@@ -353,6 +340,10 @@ public final class DocumentHelper {
     }
 
     public static IntygDTO convertToDTO(JsonNode intyg) {
+        if (intyg == null) {
+            return null;
+        }
+
         IntygDTO dto = new IntygDTO();
 
         DocumentHelper.IntygVersion intygVersion = DocumentHelper.getIntygVersion(intyg);
@@ -365,7 +356,7 @@ public final class DocumentHelper {
         String diagnos = DocumentHelper.getDiagnos(intyg, intygVersion);
         String lakareid = DocumentHelper.getLakarId(intyg, intygVersion);
         String intygsId = DocumentHelper.getIntygId(intyg, intygVersion);
-        String intygTyp = DocumentHelper.getIntygType(intyg);
+        String intygTyp = DocumentHelper.getIntygType(intyg).toUpperCase().trim();
         List<Arbetsnedsattning> arbetsnedsattnings = DocumentHelper.getArbetsnedsattning(intyg, intygVersion);
 
         String dateTime = DocumentHelper.getSigneringsDatum(intyg, intygVersion);

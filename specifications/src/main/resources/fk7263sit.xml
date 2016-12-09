@@ -125,7 +125,7 @@
       <p2:svar id="32">
          <p2:delsvar id="32.1">
             <p3:cv>
-               <p3:code>1</p3:code>
+               <p3:code>TRE_FJARDEDEL</p3:code>
                <p3:codeSystem>KV_FKMU_0003</p3:codeSystem>
             </p3:cv>
          </p2:delsvar>
