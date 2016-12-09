@@ -66,7 +66,6 @@ public class Processor {
     }
 
     public void accept(SendMessageToCareType message, long logId, String messageId, MessageEventType type) {
-
         final Patientdata patientData = sendMessageToCareHelper.getPatientData(message);
         messageWidelineManagar.accept(message, patientData, logId, messageId, type);
     }

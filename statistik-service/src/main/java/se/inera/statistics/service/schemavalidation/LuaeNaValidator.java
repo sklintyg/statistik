@@ -21,11 +21,10 @@ package se.inera.statistics.service.schemavalidation;
 import org.springframework.stereotype.Component;
 
 @Component
-class LisuValidator extends RegisterCertificateValidator {
+class LuaeNaValidator extends RegisterCertificateValidator {
 
-    //LISU was never used, replaced by LISJP
-    LisuValidator() {
-        super("lisjp.sch");
+    LuaeNaValidator() {
+        super("luae_na.sch");
     }
 
 }

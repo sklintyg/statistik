@@ -32,7 +32,13 @@ public class SchemaValidator {
     private LuseValidator luseValidator;
 
     @Autowired
-    private LisuValidator lisuValidator;
+    private LisjpValidator lisjpValidator;
+
+    @Autowired
+    private LuaeNaValidator luaeNaValidator;
+
+    @Autowired
+    private LuaeFsValidator luaeFsValidator;
 
     @Autowired
     private Fk7263sitValidator fk7263sitValidator;
@@ -41,8 +47,12 @@ public class SchemaValidator {
         switch (typ) {
             case "FK7263":
                 return fk7263sitValidator.validateSchematron(data);
-            case "LISU":
-                return lisuValidator.validateSchematron(data);
+            case "LISJP":
+                return lisjpValidator.validateSchematron(data);
+            case "LUAE_FS":
+                return luaeFsValidator.validateSchematron(data);
+            case "LUAE_NA":
+                return luaeNaValidator.validateSchematron(data);
             case "LUSE":
                 return luseValidator.validateSchematron(data);
             default:

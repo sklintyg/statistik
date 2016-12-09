@@ -10,7 +10,7 @@ Testar samtliga intygs-format som statistiktjänsten hanterar.
 | Enbart foljande intyg finns |
 | personnr      | start      | slut       | enhet  | intygformat     |
 | 19680524-9281 | 2013-02-01 | 2013-02-14 | enhet1 | FK7263SIT       |
-| 19680524-9282 | 2013-02-01 | 2013-02-14 | enhet1 | LISU            |
+| 19680524-9282 | 2013-02-01 | 2013-02-14 | enhet1 | LISJP           |
 | 19680524-9285 | 2013-02-01 | 2013-02-14 | enhet1 | !-felaktigt-!   |
 | 19680524-9283 | 2013-02-01 | 2013-02-14 | enhet1 | !-GammaltJson-! |
 | 19680524-9284 | 2013-02-01 | 2013-02-14 | enhet1 | !-NyttJson-!    |

@@ -66,6 +66,8 @@ class FoljandeIntygFinns extends FoljandeFinns {
         funktionsnedsättning = "Default funktionsnedsattning"
         aktivitetsbegränsning = "Default arbetsbegransning"
         signeringstid = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+        start = "2013-08-20"
+        slut = "2016-12-09"
     }
 
     public void execute() {
@@ -88,7 +90,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
             case ~/^(?i)LUSE$/:
                 return executeForXmlFormatGeneral('/luse.xml', "LUSE");
             case ~/^(?i)LUAE_NA$/:
-                return executeForXmlFormatGeneral('/luae_na.xml', "LUAE_NA");
+                return executeForLuaeNa();
             case ~/^(?i)LUAE_FS$/:
                 return executeForXmlFormatGeneral('/luae_fs.xml', "LUAE_FS");
             case ~/^(?i)LISJP$/:
@@ -100,6 +102,17 @@ class FoljandeIntygFinns extends FoljandeFinns {
             default:
                 throw new RuntimeException("Unknown intyg format requested")
         }
+    }
+
+    private String executeForLuaeNa() {
+        Node result = handleGeneralSit('/luae_na.xml', "LUAE_NA")
+        def intyg = result.value()[0]
+
+        def svarNodes = findNodes(intyg, "svar")
+        setDx(intyg, svarNodes)
+
+        def builder = groovy.xml.XmlUtil.serialize(result)
+        return builder.toString()
     }
 
     private String executeForIllegalIntygFormat() {
@@ -143,13 +156,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
         def intyg = result.value()[0]
 
         def svarNodes = findNodes(intyg, "svar")
-        if ("UTANDIAGNOSKOD".equalsIgnoreCase(diagnoskod)) {
-            intyg.remove(svarNodes.find{it.@id=="6"})
-        } else {
-            def dxCodeSvarNode = svarNodes.find{ it.@id=="6" }
-            def dxCodeNode = dxCodeSvarNode.find{it.@id=="6.2"}.value()[0]
-            setLeafValue(dxCodeNode, "code", diagnoskod)
-        }
+        setDx(intyg, svarNodes)
 
         def funktionsnedsattningNode = svarNodes.find{ it.@id=="35" }
         def funktionsnedsattningCodeNode = funktionsnedsattningNode.value().find{it.@id=="35.1"}
@@ -180,6 +187,16 @@ class FoljandeIntygFinns extends FoljandeFinns {
 
         def builder = groovy.xml.XmlUtil.serialize(result)
         return builder.toString()
+    }
+
+    private void setDx(intyg, svarNodes) {
+        if ("UTANDIAGNOSKOD".equalsIgnoreCase(diagnoskod)) {
+            intyg.remove(svarNodes.find { it.@id == "6" })
+        } else {
+            def dxCodeSvarNode = svarNodes.find { it.@id == "6" }
+            def dxCodeNode = dxCodeSvarNode.find { it.@id == "6.2" }.value()[0]
+            setLeafValue(dxCodeNode, "code", diagnoskod)
+        }
     }
 
     private String executeForNewJsonFormat() {

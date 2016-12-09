@@ -102,7 +102,7 @@ subprojects {
         intygInfraVersion = "3.1.4"
         intygCommonVersion = "3.1.479"
         intygCommonLoggingVersion = "3.0.0"
-        intygSchematronVersion = "1.0.12"
+        intygSchematronVersion = "1.0.8"
 
         // Schemas
         certificateSchemaVersion = "2.0"
