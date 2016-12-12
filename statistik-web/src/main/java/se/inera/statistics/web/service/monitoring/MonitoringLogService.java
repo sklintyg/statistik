@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.web.service.monitoring;
 
-import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
@@ -27,7 +26,7 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
  */
 public interface MonitoringLogService {
 
-    void logUserLogin(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, HsaIdEnhet hsaVardenhet, boolean isVardgivarProcessledare);
+    void logUserLogin(HsaIdUser hsaUser);
 
     void logFileUpload(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String fileName, Integer rows);
 
