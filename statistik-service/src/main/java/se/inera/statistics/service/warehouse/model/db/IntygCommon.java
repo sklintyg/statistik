@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.service.warehouse.model.db;
 
+import se.inera.statistics.service.processlog.EventType;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -40,10 +42,11 @@ public class IntygCommon {
     private String intygtyp;
     private String vardgivareId;
     private int kon;
+    private EventType eventType;
 
     // FIXME: Checkstyle warning
     // CHECKSTYLE:OFF ParameterNumber
-    public IntygCommon(String intygid, String patientid, int signeringsdatum, String intygtyp, String enhet, String vardgivareId, int kon) {
+    public IntygCommon(String intygid, String patientid, int signeringsdatum, String intygtyp, String enhet, String vardgivareId, int kon, EventType eventType) {
         this.intygid = intygid;
         this.patientid = patientid;
         this.kon = kon;
@@ -51,6 +54,7 @@ public class IntygCommon {
         this.intygtyp = intygtyp;
         this.enhet = enhet;
         this.vardgivareId = vardgivareId;
+        this.eventType = eventType;
     }
     // CHECKSTYLE:ON ParameterNumber
 

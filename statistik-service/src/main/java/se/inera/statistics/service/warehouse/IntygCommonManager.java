@@ -148,7 +148,8 @@ public class IntygCommonManager {
         ql.append("SELECT r FROM IntygCommon r"
                 + " WHERE r.vardgivareId = :vardgivarId"
                 + " AND r.signeringsdatum >= :fromDate"
-                + " AND r.signeringsdatum <= :toDate");
+                + " AND r.signeringsdatum <= :toDate"
+                + " AND r.intygid not in (select intygid from IntygCommon where eventType = " + EventType.REVOKED.ordinal() + " )");
         if (enheter != null) {
             ql.append(" AND r.enhet IN :enhetIds");
         }
