@@ -20,6 +20,7 @@ package se.inera.statistics.service.warehouse;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -120,7 +121,8 @@ public class IntygCommonManager {
 
     private SimpleKonResponse<SimpleKonDataRow> getIntygCommonMaleFemale(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter, Function<IntygCommonGroup, String> rowNameFunction, boolean isTvarsnitt) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
-        for (IntygCommonGroup intygCommonGroup : getIntygCommonGroups(range, vardgivarId, enheter, isTvarsnitt)) {
+        final List<IntygType> intygTypes = Arrays.asList(IntygType.FK7263, IntygType.LISJP, IntygType.LUSE, IntygType.LUAE_NA, IntygType.LUAE_FS);
+        for (IntygCommonGroup intygCommonGroup : getIntygCommonGroups(range, vardgivarId, enheter, isTvarsnitt, intygTypes)) {
             int male = countMale(intygCommonGroup.getIntyg());
             int female = intygCommonGroup.getIntyg().size() - male;
             final String periodName = rowNameFunction.apply(intygCommonGroup);
@@ -129,7 +131,7 @@ public class IntygCommonManager {
         return new SimpleKonResponse<>(result);
     }
 
-    private List<IntygCommonGroup> getIntygCommonGroups(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter, boolean isTvarsnitt) {
+    private List<IntygCommonGroup> getIntygCommonGroups(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter, boolean isTvarsnitt, List<IntygType> intygTypes) {
         List<IntygCommonGroup> intygCommonGroups = new ArrayList<IntygCommonGroup>();
         int periods = isTvarsnitt ? 1 : range.getMonths();
         int periodLength = isTvarsnitt ? range.getMonths() : 1;
@@ -137,13 +139,13 @@ public class IntygCommonManager {
             LocalDate periodStart = range.getFrom().plusMonths(i * periodLength);
             final LocalDate to = periodStart.plusMonths(periodLength);
             Range newRange = new Range(periodStart, to);
-            IntygCommonGroup intygCommonGroup = getIntygCommonGroup(newRange, vardgivarId, enheter);
+            IntygCommonGroup intygCommonGroup = getIntygCommonGroup(newRange, vardgivarId, enheter, intygTypes);
             intygCommonGroups.add(intygCommonGroup);
         }
         return intygCommonGroups;
     }
 
-    private IntygCommonGroup getIntygCommonGroup(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter) {
+    private IntygCommonGroup getIntygCommonGroup(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter, List<IntygType> intygTypes) {
         final StringBuilder ql = new StringBuilder();
         ql.append("SELECT r FROM IntygCommon r"
                 + " WHERE r.vardgivareId = :vardgivarId"
@@ -152,6 +154,9 @@ public class IntygCommonManager {
                 + " AND r.intygid not in (select intygid from IntygCommon where eventType = " + EventType.REVOKED.ordinal() + " )");
         if (enheter != null) {
             ql.append(" AND r.enhet IN :enhetIds");
+        }
+        if (intygTypes != null) {
+            ql.append(" AND r.intygtyp IN :intygTypes");
         }
 
         final TypedQuery<IntygCommon> q = manager.createQuery(ql.toString(), IntygCommon.class);
@@ -163,6 +168,10 @@ public class IntygCommonManager {
         if (enheter != null) {
             final List<String> enhetIds = enheter.stream().map(HsaIdAny::getId).collect(Collectors.toList());
             q.setParameter("enhetIds", enhetIds);
+        }
+        if (intygTypes != null) {
+            final List<String> intygTypeStrings = intygTypes.stream().map(Enum::name).collect(Collectors.toList());
+            q.setParameter("intygTypes", intygTypeStrings);
         }
 
         final List<IntygCommon> results = q.getResultList();
