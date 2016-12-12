@@ -19,6 +19,9 @@
 package se.inera.auth;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author andreaskaltenbach
@@ -29,9 +32,7 @@ public class FakeCredentials implements Serializable {
     private String hsaId;
     private String fornamn;
     private String efternamn;
-    private boolean vardgivarniva;
-    private String enhetId;
-    private String vardgivarId;
+    private List<String> vardgivarId = new ArrayList<>();
 
     FakeCredentials() {
         //Do nothing but is needed by json mapper
@@ -55,11 +56,7 @@ public class FakeCredentials implements Serializable {
         return efternamn;
     }
 
-    public String getEnhetId() {
-        return enhetId;
-    }
-
-    public String getVardgivarId() {
+    public List<String> getVardgivarId() {
         return vardgivarId;
     }
 
@@ -75,21 +72,10 @@ public class FakeCredentials implements Serializable {
         this.efternamn = efternamn;
     }
 
-    void setEnhetId(String enhetId) {
-        this.enhetId = enhetId;
-    }
-
-    void setVardgivarId(String vardgivarId) {
+    void setVardgivarId(List<String> vardgivarId) {
         this.vardgivarId = vardgivarId;
     }
 
-    void setVardgivarniva(boolean vardgivarniva) {
-        this.vardgivarniva = vardgivarniva;
-    }
-
-    public boolean isVardgivarniva() {
-        return vardgivarniva;
-    }
 
     @Override
     public String toString() {
@@ -97,9 +83,7 @@ public class FakeCredentials implements Serializable {
                 + "hsaId='" + hsaId + '\''
                 + ", fornamn='" + fornamn + '\''
                 + ", efternamn='" + efternamn + '\''
-                + ", vardgivarniva=" + vardgivarniva
-                + ", enhetId='" + enhetId + '\''
-                + ", vardgivarId='" + vardgivarId + '\''
+                + ", vardgivarId='" + vardgivarId.stream().collect(Collectors.joining()) + '\''
                 + '}';
     }
 

@@ -30,7 +30,6 @@ import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.impl.XSStringBuilder;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.providers.ExpiringUsernameAuthenticationToken;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
@@ -45,8 +44,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.stream.Collectors;
 
 import static se.inera.auth.SakerhetstjanstAssertion.HSA_ID_ATTRIBUTE;
 
@@ -81,12 +79,12 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
         // Being immutable, we build up a new User principal combining the User from loadUserBySAML and fakes.
 
         String name = user.getName() != null && user.getName().trim().length() > 0 && !user.getName().startsWith("null") ? user.getName() : fakeCredentials.getFornamn() + " " + fakeCredentials.getEfternamn();
-        final Vardenhet vardenhet = selectVardenhet(user, fakeCredentials.getEnhetId());
-        final HsaIdVardgivare vg = vardenhet != null ? vardenhet.getVardgivarId() : null;
-        final List<HsaIdVardgivare> vgsWithProcessledarStatus = vg != null && fakeCredentials.isVardgivarniva() ? Collections.singletonList(vg) : Collections.emptyList();
-        User decoratedUser = new User(user.getHsaId(), name, vgsWithProcessledarStatus, user.getVardenhetList());
+       // final Vardenhet vardenhet = selectVardenhet(user, fakeCredentials.getEnhetId());
+       // final HsaIdVardgivare vg = vardenhet != null ? vardenhet.getVardgivarId() : null;
+        //final List<HsaIdVardgivare> vgsWithProcessledarStatus = vg != null && fakeCredentials.isVardgivarniva() ? Collections.singletonList(vg) : Collections.emptyList();
+        User decoratedUser = new User(user.getHsaId(), name, fakeCredentials.getVardgivarId().stream().map(vgId -> new HsaIdVardgivare(vgId)).collect(Collectors.toList()), user.getVardenhetList());
 
-        ExpiringUsernameAuthenticationToken result = new ExpiringUsernameAuthenticationToken(null, decoratedUser, credential, new ArrayList<GrantedAuthority>());
+        ExpiringUsernameAuthenticationToken result = new ExpiringUsernameAuthenticationToken(null, decoratedUser, credential, new ArrayList<>());
         result.setDetails(decoratedUser);
 
         return result;
