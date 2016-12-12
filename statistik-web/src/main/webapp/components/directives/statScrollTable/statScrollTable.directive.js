@@ -42,19 +42,19 @@ angular.module('StatisticsApp').directive('statScrollTable',
                         return;
                     }
 
-                    if (rows.length > maxRows) {
-                        $scope.rowsShown = rows.slice(0, maxRows);
-                        $scope.moreThanMax = true;
-                    } else {
+                    //if (rows.length > maxRows) {
+                    //    $scope.rowsShown = rows.slice(0, maxRows);
+                    //    $scope.moreThanMax = true;
+                    //} else {
                         $scope.rowsShown = rows;
-                    }
+                    //                    }
 
                     // Wait for table to render
                     $timeout(setWidth);
                 }
 
                 function setWidth() {
-                    var columns = element.find('.headcol');
+                    var columns = element.find('.headcol-name');
 
                     var maxWidth = Math.max.apply( null, columns.map( function () {
                         return $( this ).outerWidth( true );
@@ -63,8 +63,8 @@ angular.module('StatisticsApp').directive('statScrollTable',
                     // Add padding
                     maxWidth += 7;
 
-                    columns.css('width', maxWidth + 'px');
-                    element.find('.scrolling').css('margin-left', maxWidth + 'px');
+                    element.find('.table-headers').css('width', maxWidth + 'px');
+                    //element.find('.scrolling').css('margin-left', maxWidth + 'px');
                 }
             }
         };
