@@ -38,7 +38,6 @@ import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.IntygDTO;
@@ -58,9 +57,6 @@ import javax.persistence.criteria.Root;
 public class IntygCommonManager {
     private static final Logger LOG = LoggerFactory.getLogger(IntygCommonManager.class);
     private static int errCount;
-
-    @Autowired
-    private RegisterCertificateHelper registerCertificateHelper;
 
     @Autowired
     private IntygCommonConverter intygCommonConverter;
@@ -161,10 +157,8 @@ public class IntygCommonManager {
 
         final TypedQuery<IntygCommon> q = manager.createQuery(ql.toString(), IntygCommon.class);
         q.setParameter("vardgivarId", vardgivarId.getId());
-        final int fromDay = WidelineConverter.toDay(range.getFrom());
-        q.setParameter("fromDate", fromDay);
-        final int toDay = WidelineConverter.toDay(range.getTo());
-        q.setParameter("toDate", toDay);
+        q.setParameter("fromDate", range.getFrom());
+        q.setParameter("toDate", range.getTo());
         if (enheter != null) {
             final List<String> enhetIds = enheter.stream().map(HsaIdAny::getId).collect(Collectors.toList());
             q.setParameter("enhetIds", enhetIds);

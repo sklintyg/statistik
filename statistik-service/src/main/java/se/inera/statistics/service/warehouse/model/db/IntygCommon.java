@@ -25,11 +25,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = IntygCommon.TABLE)
 public class IntygCommon {
-    public static final String TABLE = "intygcommon";
+    static final String TABLE = "intygcommon";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,15 +39,14 @@ public class IntygCommon {
     private String intygid;
     private String enhet;
     private String patientid;
-    private int signeringsdatum;
+    private LocalDate signeringsdatum;
     private String intygtyp;
     private String vardgivareId;
     private int kon;
     private EventType eventType;
 
-    // FIXME: Checkstyle warning
     // CHECKSTYLE:OFF ParameterNumber
-    public IntygCommon(String intygid, String patientid, int signeringsdatum, String intygtyp, String enhet, String vardgivareId, int kon, EventType eventType) {
+    public IntygCommon(String intygid, String patientid, LocalDate signeringsdatum, String intygtyp, String enhet, String vardgivareId, int kon, EventType eventType) {
         this.intygid = intygid;
         this.patientid = patientid;
         this.kon = kon;
@@ -74,7 +74,7 @@ public class IntygCommon {
         return patientid;
     }
 
-    public int getSigneringsdatum() {
+    public LocalDate getSigneringsdatum() {
         return signeringsdatum;
     }
 
@@ -94,4 +94,7 @@ public class IntygCommon {
         return kon;
     }
 
+    public EventType getEventType() {
+        return eventType;
+    }
 }
