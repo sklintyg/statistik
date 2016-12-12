@@ -27,7 +27,8 @@ var app = angular.module('StatisticsApp')
                 controller: 'loginCtrl',
                 title: 'Inloggning'
             }).when('/fakelogin', {
-                templateUrl: '/app/views/fakelogin.html',
+                templateUrl: '/app/views/fakelogin2.html',
+                controller: 'fakeLoginCtrl',
                 title: 'Fake Login Page'
             }).when('/serverbusy', {
                 templateUrl: '/app/views/error/serverBusy.html',

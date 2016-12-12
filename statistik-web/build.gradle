@@ -41,6 +41,9 @@ gretty {
     reloadOnClassChange = false
     reloadOnConfigChange = false
     reloadOnLibChange = false
+    fastReload = true
+    inplaceMode = 'hard'
+    scanInterval = 0
 
 }
 
