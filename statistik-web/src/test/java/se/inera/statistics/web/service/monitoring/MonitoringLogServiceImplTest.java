@@ -32,14 +32,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.LoggerFactory;
 
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MonitoringLogServiceImplTest {
@@ -50,10 +49,7 @@ public class MonitoringLogServiceImplTest {
     private static final String URI = "URI";
     
     private static final HsaIdUser HSA_USER = new HsaIdUser("HSA_USER");
-    private static final HsaIdEnhet HSA_ENHET = new HsaIdEnhet("HSA_ENHET");
     private static final HsaIdVardgivare HSA_VARDGIVARE = new HsaIdVardgivare("HSA_VARDGIVARE");
-
-    private static final boolean IS_VARDGIVAR_PROCESSLEDARE = true;
 
     @Mock
     private Appender<ILoggingEvent> mockAppender;
@@ -77,8 +73,8 @@ public class MonitoringLogServiceImplTest {
     
     @Test
     public void shouldLogUserLogin() {
-        logService.logUserLogin(HSA_USER, HSA_VARDGIVARE, HSA_ENHET, IS_VARDGIVAR_PROCESSLEDARE);
-        verifyLog(Level.INFO, "USER_LOGIN Login user hsaId 'HSA_USER', vardgivarId 'HSA_VARDGIVARE', vardenhetsId 'HSA_ENHET', isVardgivarProcessledare 'true'");
+        logService.logUserLogin(HSA_USER);
+        verifyLog(Level.INFO, "USER_LOGIN Login user hsaId 'HSA_USER'");
     }
 
     @Test

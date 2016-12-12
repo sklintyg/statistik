@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.monitoring.LogMarkers;
@@ -34,12 +33,9 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     private static final Logger LOG = LoggerFactory.getLogger(MonitoringLogService.class);
 
     @Override
-    public void logUserLogin(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, HsaIdEnhet hsaVardenhet, boolean isVardgivarProcessledare) {
+    public void logUserLogin(HsaIdUser hsaUser) {
       String hsaUserId = hsaUser != null ? hsaUser.getId() : null;
-      String vardgivarId = hsaVardgivare != null ? hsaVardgivare.getId() : null;
-      String vardEnhetsId = hsaVardenhet != null ? hsaVardenhet.getId() : null;
-
-      logEvent(MonitoringEvent.USER_LOGIN, hsaUserId, vardgivarId, vardEnhetsId, isVardgivarProcessledare);
+      logEvent(MonitoringEvent.USER_LOGIN, hsaUserId);
     }
 
     @Override
@@ -74,7 +70,7 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     }
 
     private enum MonitoringEvent {
-        USER_LOGIN("Login user hsaId '{}', vardgivarId '{}', vardenhetsId '{}', isVardgivarProcessledare '{}'"),
+        USER_LOGIN("Login user hsaId '{}'"),
         FILE_UPLOAD("User hsaId '{}', vardgivarId '{}' uploaded file '{}' with '{}' rows"),
         TRACK_ACCESS_PROTECTED_CHART_DATA("User hsaId '{}', vardgivarId '{}' accessed uri '{}'"),
         TRACK_ACCESS_ANONYMOUS_CHART_DATA("Accessed uri '{}'");
