@@ -54,7 +54,7 @@ public class MessageWidelineManager {
         List<String> errors = widelineConverter.validate(line);
 
         if (errors.isEmpty()) {
-            manager.persist(line);
+            saveWideline(line);
         } else {
             String errorString = "Faulty meddelande logid " + logId + " id " + meddelandeId + " error count " + errCount;
 
@@ -79,5 +79,10 @@ public class MessageWidelineManager {
     @Transactional
     public int count() {
         return ((Long) manager.createQuery("SELECT COUNT (wl) FROM MessageWideLine wl").getSingleResult()).intValue();
+    }
+
+    @Transactional
+    public void saveWideline(MessageWideLine line) {
+        manager.persist(line);
     }
 }
