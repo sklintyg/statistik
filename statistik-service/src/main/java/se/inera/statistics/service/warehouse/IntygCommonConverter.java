@@ -64,13 +64,12 @@ public class IntygCommonConverter {
         return createIntygCommon(correlationId, type, enhet, vardgivare, patient, kon, intygTyp, signeringsDatum);
     }
 
-    // FIXME: Add type to table and handle it (e.g. revoked)
     // FIXME: Checkstyle warning
     // CHECKSTYLE:OFF ParameterNumber
-    private IntygCommon createIntygCommon(String correlationId, EventType type, String enhet, HsaIdVardgivare vardgivare, String patient,
+    private IntygCommon createIntygCommon(String correlationId, EventType eventType, String enhet, HsaIdVardgivare vardgivare, String patient,
                                           int kon, String intygTyp, LocalDate signeringsdatum) {
         final int signeringsdatumDay = WidelineConverter.toDay(signeringsdatum); //FIXME: Varför använda det krangliga int-systemet har?
-        return new IntygCommon(correlationId, patient, signeringsdatumDay, intygTyp, enhet, vardgivare.getId(), kon);
+        return new IntygCommon(correlationId, patient, signeringsdatumDay, intygTyp, enhet, vardgivare.getId(), kon, eventType);
     }
     // CHECKSTYLE:ON ParameterNumber
 
