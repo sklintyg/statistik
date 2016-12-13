@@ -187,6 +187,35 @@ describe('Test of common functions for controllers', function() {
             expect(called).toBeTruthy();
             expect(scope.errorPageUrl).toBeNull();
         });
+
+        describe('getResultMessageList', function() {
+
+            it('empty', function() {
+                var result = {empty: true};
+                var messageService = {getProperty: function() {
+                    return 'message';
+                }};
+                var messages = ControllerCommons.getResultMessageList(result, messageService);
+
+                expect(messages).toEqual([ {type: 'UNSET', severity: 'INFO', message: 'message' }]);
+            });
+
+            it('noMessage', function() {
+                var result = {};
+                var messageService = {};
+                var messages = ControllerCommons.getResultMessageList(result, messageService);
+
+                expect(messages).toEqual([]);
+            });
+
+            it('hasMessages', function() {
+                var result = {messages: ['hej']};
+                var messageService = {};
+                var messages = ControllerCommons.getResultMessageList(result, messageService);
+
+                expect(messages).toEqual(['hej']);
+            });
+        });
     });
 
 });
