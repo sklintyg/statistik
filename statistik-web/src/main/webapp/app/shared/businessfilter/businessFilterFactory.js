@@ -76,7 +76,17 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.toDate = null;
 
         businessFilter.useDefaultPeriod = true;
+
+        //Flag that defines if user has selected any filter values or not.
+        businessFilter.hasUserSelection = false;
     }());
+
+    businessFilter.updateHasUserSelection = function() {
+        //If any filter parts have values set by user - filter is considered active.
+        businessFilter.hasUserSelection = !businessFilter.useDefaultPeriod || businessFilter.aldersgruppSaved.length > 0 ||
+            businessFilter.sjukskrivningslangdSaved.length > 0 || businessFilter.diagnoserSaved.length > 0 ||
+            businessFilter.geographyBusinessIdsSaved.length > 0;
+    };
 
     businessFilter.selectDiagnoses = function (diagnoses) {
         businessFilter.selectByAttribute(businessFilter.icd10, diagnoses, 'numericalId');
@@ -129,6 +139,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.fromDate = null;
 
         businessFilter.useDefaultPeriod = true;
+        businessFilter.updateHasUserSelection();
     };
 
     var isSet = function (value) {
@@ -202,6 +213,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.toDate = filterData.toDate ? moment(filterData.toDate).utc().toDate() : null;
         businessFilter.fromDate = filterData.fromDate ? moment(filterData.fromDate).utc().toDate() : null;
         businessFilter.useDefaultPeriod = filterData.useDefaultPeriod;
+        businessFilter.updateHasUserSelection();
     }
 
     function updateIcd10StructureOnce(successCallback) {
