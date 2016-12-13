@@ -24,7 +24,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @author andreaskaltenbach
+ * Per INTYG-2782, the fake login works like this:
+ *
+ * hsaId is the identifier for the person.
+ * vardgivarIdSomProcessLedare is an array of vårdgivare hsaId's that the user shall have role "processledare" for. However,
+ * the boolean 'vardgivarniva' can be used to override this, e.g: If vardgivarniva is false that effectively stops the user
+ * from becoming processledare on any of the hsaId's specified in vardgivarIdSomProcessLedare.
+ *
+ * The reason for the boolean override is to make it possible in the fake login page to list vgIds in the user objects
+ * for easy editing and "flipping" the role assignments by changing the boolean rather than having to add/remove vg hsaId's
+ * manually.
+ *
+ * @author eriklupander
  */
 @SuppressWarnings("serial")
 public class FakeCredentials implements Serializable {
@@ -32,7 +43,8 @@ public class FakeCredentials implements Serializable {
     private String hsaId;
     private String fornamn;
     private String efternamn;
-    private List<String> vardgivarId = new ArrayList<>();
+    private List<String> vardgivarIdSomProcessLedare = new ArrayList<>();
+    private boolean vardgivarniva;
 
     FakeCredentials() {
         //Do nothing but is needed by json mapper
@@ -56,8 +68,12 @@ public class FakeCredentials implements Serializable {
         return efternamn;
     }
 
-    public List<String> getVardgivarId() {
-        return vardgivarId;
+    public List<String> getVardgivarIdSomProcessLedare() {
+        return vardgivarIdSomProcessLedare;
+    }
+
+    public boolean isVardgivarniva() {
+        return vardgivarniva;
     }
 
     void setHsaId(String hsaId) {
@@ -72,9 +88,15 @@ public class FakeCredentials implements Serializable {
         this.efternamn = efternamn;
     }
 
-    void setVardgivarId(List<String> vardgivarId) {
-        this.vardgivarId = vardgivarId;
+    void setVardgivarIdSomProcessLedare(List<String> vardgivarIdSomProcessLedare) {
+        this.vardgivarIdSomProcessLedare = vardgivarIdSomProcessLedare;
     }
+
+    void setVardgivarniva(boolean vardgivarniva) {
+        this.vardgivarniva = vardgivarniva;
+    }
+
+
 
 
     @Override
@@ -83,7 +105,7 @@ public class FakeCredentials implements Serializable {
                 + "hsaId='" + hsaId + '\''
                 + ", fornamn='" + fornamn + '\''
                 + ", efternamn='" + efternamn + '\''
-                + ", vardgivarId='" + vardgivarId.stream().collect(Collectors.joining()) + '\''
+                + ", vardgivarIdSomProcessLedare='" + vardgivarIdSomProcessLedare.stream().collect(Collectors.joining()) + '\''
                 + '}';
     }
 

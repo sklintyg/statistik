@@ -1,219 +1,26 @@
 <div class="container-fluid" style="margin-top: 20px;">
-    <form name='f' method='POST' action='fake'>
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-        	    <legend>Logga in för verksamhetsstatistik - demo</legend>
-			        <textarea name='userJsonDisplay' id='userJsonDisplay' placeholder="Ange JSON struktur" style="height: 200px;" class="col-xs-12 col-sm-12 col-md-8 col-lg-8">{
-    "fornamn":"Anna",
-    "efternamn":"Modig",
-    "hsaId":"HSA-AM",
-    "enhetId":"vg1-enhet-1",
-    "vardgivarId":"vg1",
-    "vardgivarniva":"true"
-}</textarea>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-				<button class="btn btn-success" name="Login" id="login_btn" type="submit">Logga in</button>
-			    <button class="btn" name="Återställ" type="reset">Återställ</button>
-        </div>
+  <form name='f' method='POST' action='fake'>
+    <div class="row">
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <legend>Logga in för verksamhetsstatistik - demo</legend>
+        <select id="jsonSelect" name="jsonSelect" ng-model="selectedPerson"  size="18" style="width: 100%;max-width:100%" class="form-control" ng-change="selectPerson()">
+          <option ng-repeat="person in identities" value="{{ $index }}">{{ person.fornamn + ' ' + person.efternamn + ' - ' + person.description}}</option>
+        </select>
+      </div>
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <legend>Användarkontext</legend>
+        <textarea name='userJsonDisplay' id='userJsonDisplay' placeholder="Ange JSON struktur" style="height: 240px;" class="col-xs-12 col-sm-12 col-md-8 col-lg-8">{{ fakeUserContext }}</textarea>
+      </div>
     </div>
-    </form>
 
-  <a href="/showcase/index.html" target="_blank">Komponentbilbiotek</a><br/>
-
-    <pre>{
-    "fornamn":"Anna",
-    "efternamn":"Urmodig",
-    "hsaId":"HSA-AM1",
-    "enhetId":"SE162321000255-O19466",
-    "vardgivarId":"SE162321000255-O00001",
-    "vardgivarniva":"false"
-}
-          "SE162321000255-O19466",
-          "SE162321000255-O11156",
-          "SE162321000255-O17893",
-          "SE162321000255-O11632",
-          "SE162321000255-O11118",
-          "SE162321000255-O10590",
-          "SE162321000255-O16287",
-          "SE162321000255-O15380",
-          "SE162321000255-O17894",
-          "SE162321000255-O11206",
-          "SE162321000255-O16803",
-          "SE162321000255-O11178",
-    </pre>
-    <pre>{
-    "fornamn":"Anna",
-    "efternamn":"Vemodig",
-    "hsaId":"HSA-AM2",
-    "enhetId":"SE162321000255-O11635",
-    "vardgivarId":"SE162321000255-O00001",
-    "vardgivarniva":"false"
-}
-    </pre>
-    <pre>
-    {
-        "fornamn":"Vgr",
-        "efternamn":"User1",
-        "hsaId":"test1",
-        "enhetId":"SE2321000131-E000000000431",
-        "vardgivarId":"SE2321000131-E000000000001",
-        "vardgivarniva":"true"
-    }
-    </pre>
-  	<pre>
-    {
-        "fornamn":"Capio",
-        "efternamn":"User1",
-        "hsaId":"capio-user-1",
-        "enhetId":"SE162321000255-O16010",
-        "vardgivarId":"SE162321000255-O19774",
-        "vardgivarniva":"true"
-    }
-    </pre>
-
-
-
-  	<pre>
-  {
-  "fornamn": "Leonie",
-  "efternamn": "Koehl",
-  "hsaId": "TSTNMT2321000156-103F",
-  "enhetId": "TSTNMT2321000156-1039",
-  "vardgivarId":"TSTNMT2321000156-1002",
-  "vardgivarniva":"true"
-  }
-    </pre>
-  	<pre>
-  {
-  "fornamn": "Erik",
-  "efternamn": "Nilsson",
-  "hsaId": "TSTNMT2321000156-105H",
-  "enhetId": "TSTNMT2321000156-105F",
-  "vardgivarId":"TSTNMT2321000156-1002",
-  "vardgivarniva":"true"
-  }
-    </pre>
-  	<pre>
-  {
-  "fornamn": "Susanne",
-  "efternamn": "Karlsson",
-  "hsaId": "TSTNMT2321000156-105J",
-  "enhetId": "TSTNMT2321000156-105F",
-  "vardgivarId":"TSTNMT2321000156-1002",
-  "vardgivarniva":"true"
-  }
-    </pre>
-  	<pre>
-  {
-  "fornamn": "Pelle",
-  "efternamn": "Uppdragslös",
-  "hsaId": "pelle-uppdragslos",
-  "enhetId": "TSTNMT2321000156-105F",
-  "vardgivarId":"TSTNMT2321000156-1002",
-  "vardgivarniva":"true"
-  }
-    </pre>
-  	<pre>
-  {
-  "fornamn": "Hans",
-  "efternamn": "Hosplösa",
-  "hsaId": "hans-hosplosa",
-  "enhetId": "TSTNMT2321000156-105F",
-  "vardgivarId":"TSTNMT2321000156-1002",
-  "vardgivarniva":"true"
-  }
-    </pre>
-  	<pre>
-  {
-  "fornamn": "Emma",
-  "efternamn": "Nilsson",
-  "hsaId": "TSTNMT2321000156-105R",
-  "enhetId": "TSTNMT2321000156-105N",
-  "vardgivarId":"TSTNMT2321000156-105M",
-  "vardgivarniva":"true"
-  }
-    </pre>
-  	<pre>
-  {
-  "fornamn": "Anders",
-  "efternamn": "Karlsson",
-  "hsaId": "TSTNMT2321000156-105S",
-  "enhetId": "TSTNMT2321000156-105N",
-  "vardgivarId":"TSTNMT2321000156-105M",
-  "vardgivarniva":"true"
-  }
-    </pre>
-  	<pre>
-  {
-  "fornamn": "Ingrid",
-  "efternamn": "Nilsson Olsson",
-  "hsaId": "TSTNMT2321000156-105T",
-  "enhetId": "TSTNMT2321000156-105P",
-  "vardgivarId":"TSTNMT2321000156-105M",
-  "vardgivarniva":"true"
-  }
-    </pre>
-  	<pre>
-  {
-  "fornamn": "Nils",
-  "efternamn": "Ericsson",
-  "hsaId": "TSTNMT2321000156-105V",
-  "enhetId": "TSTNMT2321000156-105N",
-  "vardgivarId":"TSTNMT2321000156-105M",
-  "vardgivarniva":"true"
-  }
-    </pre>
-  	<pre>
-  {
-  "fornamn": "Kerstin",
-  "efternamn": "Johansson",
-  "hsaId": "TSTNMT2321000156-105W",
-  "enhetId": "TSTNMT2321000156-105P",
-  "vardgivarId":"TSTNMT2321000156-105M",
-  "vardgivarniva":"true"
-  }
-    </pre>
-  	<pre>
-  {
-  "fornamn": "Elin",
-  "efternamn": "Johansson",
-  "hsaId": "TSTNMT2321000156-1067",
-  "enhetId": "TSTNMT2321000156-1062",
-  "vardgivarId":"TSTNMT2321000156-1061",
-  "vardgivarniva":"true"
-  }
-    </pre>
-  	<pre>
-  {
-  "fornamn": "Lars",
-  "efternamn": "Olsson",
-  "hsaId": "TSTNMT2321000156-1066",
-  "enhetId": "TSTNMT2321000156-1062",
-  "vardgivarId":"TSTNMT2321000156-1061",
-  "vardgivarniva":"true"
-  }
-    </pre>
-  	<pre>
-  {
-  "fornamn": "Rolf",
-  "efternamn": "Rollöse",
-  "hsaId": "TSTNMT2321000156-105V",
-  "enhetId": "TSTNMT2321000156-105N",
-  "vardgivarId":"TSTNMT2321000156-105M",
-  "vardgivarniva":"true"
-  }
-    </pre>
-  	<pre>
-  {
-  "fornamn": "Ralf",
-  "efternamn": "Enhetlöse",
-  "hsaId": "TSTNMT2321000156-998V",
-  "enhetId": "TSTNMT2321000156-105N",
-  "vardgivarId":"TSTNMT2321000156-105M",
-  "vardgivarniva":"true"
-  }
-    </pre>
+    <div class="row">
+      <div class="col-sm-12">
+        <br/>
+        <button class="btn btn-success" name="Login" id="login_btn" type="submit">Logga in</button>
+        <button class="btn" name="Återställ" ng-click="reset();" type="reset">Återställ</button>
+      </div>
+    </div>
+  </form>
+  <br/>
+  <a href="/showcase/index.html" target="_blank">Komponentbibliotek</a><br/>
 </div>
