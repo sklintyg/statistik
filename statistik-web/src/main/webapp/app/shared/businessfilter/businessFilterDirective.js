@@ -260,9 +260,8 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.isToDateOpen = false;
 
     scope.$on('$routeChangeSuccess', function(){
-        scope.filterIsActive = !!$location.search()[scope.filterHashParamName];
+       businessFilter.updateHasUserSelection();
     });
-    scope.filterIsActive = !!$location.search()[scope.filterHashParamName];
 
     scope.$watch('businessFilter.fromDate', function(newValue) {
         scope.dateOptionsTo.minDate = newValue;
@@ -366,10 +365,10 @@ angular.module('StatisticsApp.filter.directive').directive('filterButton', funct
         restrict: 'E',
         template:
         '<button id="show-hide-filter-btn" type="button" class="btn btn-small center-block" ' +
-            'ng-class="{filterbtnactivefilter: filterIsActive}" ng-click="isFilterCollapsed = !isFilterCollapsed">' +
+            'ng-class="{filterbtnactivefilter: businessFilter.hasUserSelection}" ng-click="isFilterCollapsed = !isFilterCollapsed">' +
         '<i class="glyphicon" ng-class="{\'glyphicon-chevron-down\': isFilterCollapsed, \'glyphicon-chevron-up\': !isFilterCollapsed}"></i> ' +
             '{{!isFilterCollapsed ? "Stäng filter" : "Öppna filter"}}<span style="font-size: 12px; font-style: italic;"><br/>' +
-            '{{filterButtonIdText}}</span><span ng-show="filterIsActive" style="font-size: 12px; font-style: italic;"><br/>Val gjorda</span>' +
+            '{{filterButtonIdText}}</span><span ng-show="businessFilter.hasUserSelection" style="font-size: 12px; font-style: italic;"><br/>Val gjorda</span>' +
         '</button>'
     };
 });
