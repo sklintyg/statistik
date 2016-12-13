@@ -336,7 +336,16 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.getResultMessageList = function(result, messageService) {
-            return result.messages ? result.messages : this.getEmptyResponseMessage(messageService);
+
+            if (result.messages) {
+                return result.messages;
+            }
+
+            if (result.empty) {
+                return this.getEmptyResponseMessage(messageService);
+            }
+
+            return [];
         };
 
         this.getEmptyResponseMessage = function(messageService) {
