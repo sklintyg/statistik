@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').directive('statScrollTable',
     /** @ngInject */
-    function ($timeout, TABLE_CONFIG) {
+    function ($filter, _) {
         'use strict';
 
         return {
@@ -32,39 +32,101 @@ angular.module('StatisticsApp').directive('statScrollTable',
             link: function($scope, element) {
                 $scope.$watch('rows', watchRows);
 
-                var maxRows = TABLE_CONFIG.maxRows;
-                $scope.moreThanMax = false;
+                $scope.sortIndex = -1;
+                $scope.sortReverse = true;
+                $scope.rowsShown = [];
+                var rows = [];
+
+                $scope.sortByColumn = function(columnIndex, shouldSort) {
+
+                    if (!shouldSort) {
+                        return;
+                    }
+
+                    if ($scope.sortIndex === columnIndex) {
+                        if (!$scope.sortReverse) {
+                            $scope.sortReverse = true;
+                            $scope.sortIndex = -1;
+                        } else {
+                            $scope.sortReverse = false;
+                        }
+                    }
+                    else {
+                        $scope.sortIndex = columnIndex;
+                        $scope.sortReverse = true;
+                    }
+
+                    sortRows();
+                };
 
                 function watchRows(rows) {
-                    $scope.moreThanMax = false;
-
                     if (angular.isUndefined(rows)) {
                         return;
                     }
 
-                    //if (rows.length > maxRows) {
-                    //    $scope.rowsShown = rows.slice(0, maxRows);
-                    //    $scope.moreThanMax = true;
-                    //} else {
-                        $scope.rowsShown = rows;
-                    //                    }
-
-                    // Wait for table to render
-                    $timeout(setWidth);
+                    setWidth();
+                    processData();
+                    sortRows();
                 }
 
                 function setWidth() {
-                    var columns = element.find('.headcol-name');
+                    var container = element.find('#table-column-measureContainer');
+                    var widths = [];
 
-                    var maxWidth = Math.max.apply( null, columns.map( function () {
-                        return $( this ).outerWidth( true );
-                    }).get() );
+                    angular.forEach($scope.rows, function(row) {
+                        widths.push(getColumnWidth(container, row));
+                    });
+
+                    var maxWidth = Math.max.apply( null, widths);
 
                     // Add padding
                     maxWidth += 7;
 
                     element.find('.table-headers').css('width', maxWidth + 'px');
-                    //element.find('.scrolling').css('margin-left', maxWidth + 'px');
+                }
+
+                function getColumnWidth(container, row) {
+
+                    var extraClass = row.marked ? 'bold' : '';
+                    //Temporary add, measure and remove the chip's html equivalent.
+                    var elem = $('<span class="headcol-name ' + extraClass + '">' + row.name + '</span>');
+                    container.append(elem);
+                    var chipWidth = elem.outerWidth(true);
+                    elem.remove();
+                    return chipWidth;
+                }
+
+                function sortRows() {
+                    var sortIndex = $scope.sortIndex - 1;
+                    var reverse = $scope.sortReverse;
+
+                    if (sortIndex < 0) {
+                        $scope.rowsShown = rows;
+                    } else {
+                        $scope.rowsShown = _.sortBy(rows, function(row) {
+                            var x = reverse ? -1 : 1;
+                            return x * row.data[sortIndex].sort;
+                        });
+                    }
+                }
+
+                function processData() {
+                    rows = [];
+                    angular.forEach($scope.rows, function(row) {
+                        var data = [];
+
+                        angular.forEach(row.data, function(d) {
+                            data.push({
+                                value: $filter('thousandseparated')(d),
+                                sort: $filter('replaceEmpty')(d)
+                            });
+                        });
+
+                        rows.push({
+                            name: row.name,
+                            data: data
+                        });
+                    });
                 }
             }
         };

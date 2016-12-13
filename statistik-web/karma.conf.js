@@ -23,7 +23,6 @@ module.exports = function(config) {
             'src/main/webapp/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
             'src/main/webapp/bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js',
             'src/main/webapp/bower_components/lodash/lodash.js',
-            'src/main/webapp/bower_components/jquery.tablesorter/dist/js/jquery.tablesorter.js',
             'src/main/webapp/bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.js',
             'src/main/webapp/bower_components/momentjs/moment.js',
             'src/main/webapp/bower_components/dropzone/dist/min/dropzone.min.js',

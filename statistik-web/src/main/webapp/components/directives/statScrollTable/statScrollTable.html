@@ -1,7 +1,7 @@
 <div class="stat-scroll-table">
   <table class="datatable table table-striped table-headers">
     <thead>
-    <tr data-ng-repeat="headerrow in headerRows track by $index">
+    <tr data-ng-repeat="headerrow in headerRows">
       <td data-ng-if="$first" class="scrollable details-table-data ellipsis details-th sorter-false headcol"
           data-ng-class="{centeralign: headerrow.centerAlign}"
           colspan="{{::header.colspan}}" data-ng-repeat="header in headerrow" title="{{::header.text}}"
@@ -16,31 +16,32 @@
     </tr>
     </tbody>
   </table>
+  <div id="table-column-measureContainer"></div>
 
   <div class="scrolling">
-    <table class="datatable table table-striped" sortable-table>
+    <table class="datatable table table-striped">
       <thead>
-      <tr data-ng-repeat="headerrow in headerRows track by $index">
+      <tr data-ng-repeat="headerrow in headerRows">
         <td data-ng-if="!$first" class="scrollable details-table-data ellipsis details-th"
-            data-ng-class="{centeralign: headerrow.centerAlign}"
-            colspan="{{::header.colspan}}" data-ng-repeat="header in headerrow" title="{{::header.text}}"
+            data-ng-class="{centeralign: headerrow.centerAlign,
+            'sortable-column': $parent.$parent.$last,
+            'sorted-column': ($index === sortIndex),
+            'sorted-reverse': sortReverse}"
+            data-ng-click="sortByColumn($index, $parent.$parent.$last)"
+            colspan="{{::header.colspan}}"
+            data-ng-repeat="header in headerrow" title="{{::header.text}}"
             style="padding-right: 20px; white-space: nowrap;">
           {{::header.text}}
+          <i data-ng-if="$parent.$parent.$last" class="fa fa-sort" aria-hidden="true"></i>
         </td>
       </tr>
       </thead>
       <tbody class="table-condensed">
       <tr data-ng-repeat="row in rowsShown" title="{{::row.name}}">
-        <td class="scrollable" data-text="{{::fieldData | replaceEmpty}}" data-ng-repeat="fieldData in row.data track by $index"
-            >{{::fieldData | thousandseparated}}</td>
+        <td class="scrollable" data-ng-repeat="fieldData in row.data track by $index"
+            >{{::fieldData.value}}</td>
       </tr>
       </tbody>
     </table>
   </div>
-  <div data-ng-if="moreThanMax" class="scroll-table-alert">
-    <div class="alert alert-warning">
-      <strong message key="table.warning.title"></strong> <span message key="table.warning.text"></span>
-    </div>
-  </div>
-
 </div>
