@@ -37,7 +37,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import se.inera.auth.model.User;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.hsa.model.Vardenhet;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
@@ -76,27 +75,20 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
         // As per INTYG-2638 we need to augment the principal with fake properties _after_ the loadUserBySAML.
         User user = (User) details;
         FakeCredentials fakeCredentials = (FakeCredentials) token.getCredentials();
+
         // Being immutable, we build up a new User principal combining the User from loadUserBySAML and fakes.
 
         String name = user.getName() != null && user.getName().trim().length() > 0 && !user.getName().startsWith("null") ? user.getName() : fakeCredentials.getFornamn() + " " + fakeCredentials.getEfternamn();
-       // final Vardenhet vardenhet = selectVardenhet(user, fakeCredentials.getEnhetId());
-       // final HsaIdVardgivare vg = vardenhet != null ? vardenhet.getVardgivarId() : null;
-        //final List<HsaIdVardgivare> vgsWithProcessledarStatus = vg != null && fakeCredentials.isVardgivarniva() ? Collections.singletonList(vg) : Collections.emptyList();
-        User decoratedUser = new User(user.getHsaId(), name, fakeCredentials.getVardgivarId().stream().map(vgId -> new HsaIdVardgivare(vgId)).collect(Collectors.toList()), user.getVardenhetList());
+
+        User decoratedUser = new User(user.getHsaId(), name, fakeCredentials.getVardgivarIdSomProcessLedare().stream()
+                .filter(hsaId -> fakeCredentials.isVardgivarniva())
+                .map(HsaIdVardgivare::new)
+                .collect(Collectors.toList()), user.getVardenhetList());
 
         ExpiringUsernameAuthenticationToken result = new ExpiringUsernameAuthenticationToken(null, decoratedUser, credential, new ArrayList<>());
         result.setDetails(decoratedUser);
 
         return result;
-    }
-
-    private Vardenhet selectVardenhet(User user, String enhetId) {
-        for (Vardenhet ve : user.getVardenhetList()) {
-            if (ve.getId().getId().equalsIgnoreCase(enhetId)) {
-                return ve;
-            }
-        }
-        return null;
     }
 
     @Override

@@ -26,7 +26,9 @@ angular.module('StatisticsApp').controller('fakeLoginCtrl',
         $scope.fakeUserContext = '';
 
         $scope.selectPerson = function() {
-            $scope.fakeUserContext = angular.toJson($scope.identities[$scope.selectedPerson], 2);
+            var copy = angular.copy($scope.identities[$scope.selectedPerson]);
+            delete copy.description;
+            $scope.fakeUserContext = angular.toJson(copy, 2);
         };
 
         $scope.reset = function() {
@@ -34,159 +36,144 @@ angular.module('StatisticsApp').controller('fakeLoginCtrl',
             $scope.selectPerson(0);
         };
 
+        // Add / modify identities here. Note that the 'description' isn't part of the FakeCredentials
+        // and are discarded before sending the user context to the /fake endpoint.
         $scope.identities = [
             {
                 'fornamn': 'Anna',
                 'efternamn': 'Modig',
                 'hsaId': 'HSA-AM',
-                'vardgivarId': ['vg1','TSTNMT2321000156-105M']
+                'vardgivarIdSomProcessLedare': ['vg1', 'TSTNMT2321000156-105M'],
+                'vardgivarniva': 'true', 'description': 'Processledare vg1 och Rehabstöd-Vårdgivare1'
             },
             {
                 'fornamn': 'Anna',
                 'efternamn': 'Urmodig',
                 'hsaId': 'HSA-AM1',
-                'enhetId': 'SE162321000255-O19466',
-                'vardgivarId': 'SE162321000255-O00001',
-                'vardgivarniva': 'false'
+                'vardgivarIdSomProcessLedare': ['SE162321000255-O00001'],
+                'vardgivarniva': 'false', 'description': 'Storregionen - ej processledare'
             },
             {
                 'fornamn': 'Anna',
                 'efternamn': 'Vemodig',
                 'hsaId': 'HSA-AM2',
-                'enhetId': 'SE162321000255-O11635',
-                'vardgivarId': 'SE162321000255-O00001',
-                'vardgivarniva': 'false'
+                'vardgivarIdSomProcessLedare': ['SE162321000255-O00001'],
+                'vardgivarniva': 'false', 'description': 'SE162321000255-O11635 - ej processledare'
             },
             {
                 'fornamn': 'Vgr',
                 'efternamn': 'User1',
                 'hsaId': 'test1',
-                'enhetId': 'SE2321000131-E000000000431',
-                'vardgivarId': 'SE2321000131-E000000000001',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['SE2321000131-E000000000001'],
+                'vardgivarniva': 'true', 'description': 'Storregionen'
             },
             {
                 'fornamn': 'Capio',
                 'efternamn': 'User1',
                 'hsaId': 'capio-user-1',
-                'enhetId': 'SE162321000255-O16010',
-                'vardgivarId': 'SE162321000255-O19774',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['SE162321000255-O19774'],
+                'vardgivarniva': 'true', 'description': 'Capio Citykliniken Lund'
             },
             {
                 'fornamn': 'Leonie',
                 'efternamn': 'Koehl',
                 'hsaId': 'TSTNMT2321000156-103F',
-                'enhetId': 'TSTNMT2321000156-1039',
-                'vardgivarId': 'TSTNMT2321000156-1002',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-1002'],
+                'vardgivarniva': 'true', 'description': 'Enhet 1 nmt_vg1'
             },
             {
                 'fornamn': 'Erik',
                 'efternamn': 'Nilsson',
                 'hsaId': 'TSTNMT2321000156-105H',
-                'enhetId': 'TSTNMT2321000156-105F',
-                'vardgivarId': 'TSTNMT2321000156-1002',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-1002'],
+                'vardgivarniva': 'true', 'description': 'Enhet 2 nmt_vg1'
             },
             {
                 'fornamn': 'Susanne',
                 'efternamn': 'Karlsson',
                 'hsaId': 'TSTNMT2321000156-105J',
-                'enhetId': 'TSTNMT2321000156-105F',
-                'vardgivarId': 'TSTNMT2321000156-1002',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-1002'],
+                'vardgivarniva': 'true', 'description': 'Enhet 2 nmt_vg1'
             },
             {
                 'fornamn': 'Pelle',
                 'efternamn': 'Uppdragslös',
                 'hsaId': 'pelle-uppdragslos',
-                'enhetId': 'TSTNMT2321000156-105F',
-                'vardgivarId': 'TSTNMT2321000156-1002',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-1002'],
+                'vardgivarniva': 'true', 'description': 'Enhet 2 nmt_vg1'
             },
             {
                 'fornamn': 'Hans',
                 'efternamn': 'Hosplösa',
                 'hsaId': 'hans-hosplosa',
-                'enhetId': 'TSTNMT2321000156-105F',
-                'vardgivarId': 'TSTNMT2321000156-1002',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-1002'],
+                'vardgivarniva': 'true', 'description': 'Enhet 2 nmt_vg1'
             },
             {
                 'fornamn': 'Emma',
                 'efternamn': 'Nilsson',
                 'hsaId': 'TSTNMT2321000156-105R',
-                'enhetId': 'TSTNMT2321000156-105N',
-                'vardgivarId': 'TSTNMT2321000156-105M',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-105M'],
+                'vardgivarniva': 'true', 'description': 'Enhet 1 Rehabstöd-Vårdgivare1'
             },
             {
                 'fornamn': 'Anders',
                 'efternamn': 'Karlsson',
                 'hsaId': 'TSTNMT2321000156-105S',
-                'enhetId': 'TSTNMT2321000156-105N',
-                'vardgivarId': 'TSTNMT2321000156-105M',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-105M'],
+                'vardgivarniva': 'true', 'description': 'Enhet 1 Rehabstöd-Vårdgivare1'
             },
             {
                 'fornamn': 'Ingrid',
                 'efternamn': 'Nilsson Olsson',
                 'hsaId': 'TSTNMT2321000156-105T',
-                'enhetId': 'TSTNMT2321000156-105P',
-                'vardgivarId': 'TSTNMT2321000156-105M',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-105M'],
+                'vardgivarniva': 'true', 'description': 'Enhet 1 Rehabstöd-Vårdgivare1'
             },
             {
                 'fornamn': 'Nils',
                 'efternamn': 'Ericsson',
                 'hsaId': 'TSTNMT2321000156-105V',
-                'enhetId': 'TSTNMT2321000156-105N',
-                'vardgivarId': 'TSTNMT2321000156-105M',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-105M'],
+                'vardgivarniva': 'true', 'description': 'Enhet 1 Rehabstöd-Vårdgivare1'
             },
             {
                 'fornamn': 'Kerstin',
                 'efternamn': 'Johansson',
                 'hsaId': 'TSTNMT2321000156-105W',
-                'enhetId': 'TSTNMT2321000156-105P',
-                'vardgivarId': 'TSTNMT2321000156-105M',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-105M'],
+                'vardgivarniva': 'true', 'description': 'Enhet 1 Rehabstöd-Vårdgivare1'
             },
             {
                 'fornamn': 'Elin',
                 'efternamn': 'Johansson',
                 'hsaId': 'TSTNMT2321000156-1067',
-                'enhetId': 'TSTNMT2321000156-1062',
-                'vardgivarId': 'TSTNMT2321000156-1061',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-1061'],
+                'vardgivarniva': 'true', 'description': 'Capio Citykliniken Lund'
             },
             {
                 'fornamn': 'Lars',
                 'efternamn': 'Olsson',
                 'hsaId': 'TSTNMT2321000156-1066',
-                'enhetId': 'TSTNMT2321000156-1062',
-                'vardgivarId': 'TSTNMT2321000156-1061',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-1061'],
+                'vardgivarniva': 'true', 'description': 'Capio Citykliniken Lund'
             },
             {
                 'fornamn': 'Rolf',
                 'efternamn': 'Rollöse',
                 'hsaId': 'TSTNMT2321000156-105V',
-                'enhetId': 'TSTNMT2321000156-105N',
-                'vardgivarId': 'TSTNMT2321000156-105M',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-105M'],
+                'vardgivarniva': 'true', 'description': 'Enhet 1 Rehabstöd-Vårdgivare1'
             },
             {
                 'fornamn': 'Ralf',
                 'efternamn': 'Enhetlöse',
                 'hsaId': 'TSTNMT2321000156-998V',
-                'enhetId': 'TSTNMT2321000156-105N',
-                'vardgivarId': 'TSTNMT2321000156-105M',
-                'vardgivarniva': 'true'
+                'vardgivarIdSomProcessLedare': ['TSTNMT2321000156-105M'],
+                'vardgivarniva': 'true', 'description': 'Enhet 1 Rehabstöd-Vårdgivare1'
             }];
 
-         $scope.selectPerson(0);
+        $scope.selectPerson(0);
 
     }
 );
