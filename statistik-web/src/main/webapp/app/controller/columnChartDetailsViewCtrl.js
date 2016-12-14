@@ -417,6 +417,7 @@ angular.module('StatisticsApp').intygPerMonthTvarsnittConfig =
         return 'api/verksamhet/getNumberOfIntygPerMonthTvarsnitt/csv';
     };
     conf.title = messageService.getProperty('title.intyg');
+    conf.chartYAxisTitle = 'Antal intyg';
     conf.chartXAxisTitle = '';
 
     conf.exchangeableViews = [

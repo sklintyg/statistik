@@ -149,7 +149,7 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerMonth(vg, filterSettings);
-        SimpleDetailsData result = new PeriodConverter().convert(intygPerMonth, filterSettings);
+        SimpleDetailsData result = new PeriodIntygConverter().convert(intygPerMonth, filterSettings);
         return getResponse(result, csv, request);
     }
 
@@ -166,7 +166,7 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerMonthTvarsnitt(vg, filterSettings);
-        SimpleDetailsData result = SimpleDualSexConverter.newGenericTvarsnitt().convert(intygPerMonth, filterSettings);
+        SimpleDetailsData result = SimpleDualSexConverter.newGenericIntygTvarsnitt().convert(intygPerMonth, filterSettings);
         return getResponse(result, csv, request);
     }
 
