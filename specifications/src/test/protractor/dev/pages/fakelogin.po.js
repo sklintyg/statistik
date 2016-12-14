@@ -11,8 +11,7 @@ var login = function(firstName, lastName, userId, enhetId, vgId, isProcessledare
             '"fornamn":"' + firstName + '",' +
             '"efternamn":"' + lastName + '",' +
             '"hsaId":"' + userId + '",' +
-            '"enhetId":"' + enhetId + '",' +
-            '"vardgivarId":"' + vgId + '",' +
+            '"vardgivarIdSomProcessLedare":["' + vgId + '"],' +
             '"vardgivarniva":"' + isProcessledare + '"}');
     }).then(function() {
         loginBtn.click();
