@@ -62,6 +62,15 @@ public class SimpleDualSexConverter {
         return new SimpleDualSexConverter("", false, "%1$s");
     }
 
+    public static SimpleDualSexConverter newGenericIntygTvarsnitt() {
+        return new SimpleDualSexConverter("",
+                false,
+                "%1$s",
+                "Antal intyg totalt",
+                "Antal intyg för kvinnor",
+                "Antal intyg för män");
+    }
+
     public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings) {
         return convert(casesPerMonth, filterSettings, null);
     }

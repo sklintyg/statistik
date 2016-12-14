@@ -16,21 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.service.monitoring;
+package se.inera.statistics.web.service;
 
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+public class PeriodIntygConverter extends SimpleDualSexConverter {
 
-/**
- * Interface used when logging to monitoring file. Used to ensure that the log entries are uniform and easy to parse.
- */
-public interface MonitoringLogService {
+    public PeriodIntygConverter() {
+        super("Period",
+                true,
+                "%1$s",
+                "Antal intyg totalt",
+                "Antal intyg för kvinnor",
+                "Antal intyg för män");
+    }
 
-    void logUserLogin(HsaIdUser hsaUser);
-
-    void logFileUpload(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String fileName, Integer rows);
-
-    void logTrackAccessProtectedChartData(HsaIdUser hsaUser, HsaIdVardgivare hsaVardgivare, String uri);
-
-    void logTrackAccessAnonymousChartData(String uri);
 }

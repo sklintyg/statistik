@@ -62,7 +62,7 @@ public class UserDetailsService implements SAMLUserDetailsService {
         UserAuthorization userAuthorization = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(hsaId);
 
         final List<HsaIdVardgivare> vgsWithProcessledarStatus = getVgsWithProcessledarStatus(userAuthorization.getSystemRoles());
-        monitoringLogService.logUserLogin(hsaId, null, null, false);
+        monitoringLogService.logUserLogin(hsaId);
 
         final String name = extractPersonName(hsaPersonInfo);
         return new User(hsaId, name, vgsWithProcessledarStatus, userAuthorization.getVardenhetList());

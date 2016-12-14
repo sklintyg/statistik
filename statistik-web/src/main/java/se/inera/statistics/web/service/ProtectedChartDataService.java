@@ -145,11 +145,11 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfIntygPerMonth(@Context HttpServletRequest request, @PathParam("csv") String csv) {
-        final FilterSettings filterSettings = filterHandler.getFilter(request, null, 18);
+    public Response getNumberOfIntygPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerMonth(vg, filterSettings);
-        SimpleDetailsData result = new PeriodConverter().convert(intygPerMonth, filterSettings);
+        SimpleDetailsData result = new PeriodIntygConverter().convert(intygPerMonth, filterSettings);
         return getResponse(result, csv, request);
     }
 
@@ -162,11 +162,11 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfIntygPerMonthTvarsnitt(@Context HttpServletRequest request, @PathParam("csv") String csv) {
-        final FilterSettings filterSettings = filterHandler.getFilter(request, null, 12);
+    public Response getNumberOfIntygPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerMonthTvarsnitt(vg, filterSettings);
-        SimpleDetailsData result = SimpleDualSexConverter.newGenericTvarsnitt().convert(intygPerMonth, filterSettings);
+        SimpleDetailsData result = SimpleDualSexConverter.newGenericIntygTvarsnitt().convert(intygPerMonth, filterSettings);
         return getResponse(result, csv, request);
     }
 

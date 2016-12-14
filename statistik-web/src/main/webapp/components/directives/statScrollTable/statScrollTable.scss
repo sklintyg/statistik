@@ -10,8 +10,8 @@
     margin: 0;
   }
 
-  tbody td {
-    height:32px;
+  tbody td, tbody tr {
+    height:33px;
   }
 
   thead tr td {
@@ -19,24 +19,36 @@
     border-bottom-width: 1px !important;
   }
 
+  .table-headers {
+    float: left;
+    max-width: 34em;
+  }
+
   .headcol.scrollable {
-    position: absolute;
-    top: auto;
-    left: 0;
+    //position: absolute;
+    //left: 0;
     text-align: left !important;
-    backface-visibility: hidden;
+  }
+
+  tbody tr:hover td,
+  tbody tr:hover th {
+    background-color: #e9eae8;
+  }
+
+  table.table tbody tr:nth-child(odd):hover td {
+    background-color: #F9F9F9;
   }
 
   .headcol-name {
     display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 34em;
+    max-width: 34rem;
   }
 
   div.scrolling {
     overflow-x: auto;
-    margin-left: 34em;
+    //margin-left: 34em;
     overflow-y: visible;
     padding-bottom: 1px;
     font-size: 12px;
@@ -50,6 +62,24 @@
     .alert-warning {
       margin-top: 10px;
       display: inline-block;
+    }
+  }
+
+  .sortable-column {
+    cursor: pointer;
+
+    &.sorted-column {
+      border-bottom: 1px solid #000000;
+
+      .fa-sort {
+        @extend .fa-sort-asc
+      }
+
+      &.sorted-reverse {
+        .fa-sort {
+          @extend .fa-sort-desc
+        }
+      }
     }
   }
 }
