@@ -253,56 +253,49 @@ class ReportsUtil {
                 "\"fornamn\":\"Anna\"," +
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"user1\"," +
-                "\"enhetId\":\"enhet1\"," +
-                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
+                "\"vardgivarIdSomProcessLedare\":[\"" + getVardgivareForUser(user) + "\"]," +
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
         logins["user2"] = "{" +
                 "\"fornamn\":\"Anna\"," +
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"user2\"," +
-                "\"enhetId\":\"enhet1\"," +
-                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
+                "\"vardgivarIdSomProcessLedare\":[\"" + getVardgivareForUser(user) + "\"]," +
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
         logins["user3"] = "{" +
                 "\"fornamn\":\"Anna\"," +
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"user3\"," +
-                "\"enhetId\":\"enhet3\"," +
-                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
+                "\"vardgivarIdSomProcessLedare\":[\"" + getVardgivareForUser(user) + "\"]," +
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
         logins["user4"] = "{" +
                 "\"fornamn\":\"Anna\"," +
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"user4\"," +
-                "\"enhetId\":\"enhet2\"," +
-                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
+                "\"vardgivarIdSomProcessLedare\":[\"" + getVardgivareForUser(user) + "\"]," +
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
         logins["user5_vg1"] = "{" +
                 "\"fornamn\":\"Anna\"," +
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"user5\"," +
-                "\"enhetId\":\"enhet1\"," +
-                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
+                "\"vardgivarIdSomProcessLedare\":[\"" + getVardgivareForUser(user) + "\"]," +
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
         logins["user5_vg3"] = "{" +
                 "\"fornamn\":\"Anna\"," +
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"user5\"," +
-                "\"enhetId\":\"enhet3\"," +
-                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
+                "\"vardgivarIdSomProcessLedare\":[\"" + getVardgivareForUser(user) + "\"]," +
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
         logins["user6"] = "{" +
                 "\"fornamn\":\"Anna\"," +
                 "\"efternamn\":\"Modig\"," +
                 "\"hsaId\":\"user6\"," +
-                "\"enhetId\":\"enhet4\"," +
-                "\"vardgivarId\":\"" + getVardgivareForUser(user) + "\"," +
+                "\"vardgivarIdSomProcessLedare\":[\"" + getVardgivareForUser(user) + "\"]," +
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
         def loginData = logins[user]
