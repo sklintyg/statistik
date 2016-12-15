@@ -30,6 +30,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.google.common.base.Function;
+import com.google.common.collect.HashMultiset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +43,15 @@ import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
+import se.inera.statistics.service.warehouse.query.CounterFunctionIntyg;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -106,13 +111,50 @@ public class IntygCommonManager {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getIntygTvarsnitt(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
-        final Function<IntygCommonGroup, String> rowNameFunction = new Function<IntygCommonGroup, String>() {
-            @Override
-            public String apply(IntygCommonGroup intygCommonGroup) {
-                return "Totalt";
-            }
-        };
+        final Function<IntygCommonGroup, String> rowNameFunction = intygCommonGroup -> "Totalt";
         return getIntygCommonMaleFemale(range, vardgivarId, enheter, rowNameFunction, true);
+    }
+
+    public KonDataResponse getIntygPerTypeTidsserie(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
+        return getIntygPerType(vardgivarId, range, enheter, false);
+
+    }
+
+    private KonDataResponse getIntygPerType(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter, boolean isTvarsnitt) {
+        final List<IntygType> intygTypes = Arrays.asList(IntygType.FK7263, IntygType.LISJP, IntygType.LUSE, IntygType.LUAE_NA, IntygType.LUAE_FS);
+        final List<String> names = intygTypes.stream().map(Enum::name).collect(Collectors.toList());
+        final List<Integer> ids = intygTypes.stream().map(Enum::ordinal).collect(Collectors.toList());
+        final CounterFunctionIntyg<Integer> counterFunction = (intyg, counter) -> {
+            final IntygType intygType = IntygType.parseString(intyg.getIntygtyp());
+            counter.add(intygType.ordinal());
+        };
+        return calculateKonDataResponse(vardgivarId, range, enheter, isTvarsnitt, names, ids, counterFunction);
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getIntygPerTypeTvarsnitt(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
+        final KonDataResponse intygPerTypeTidsserie = getIntygPerType(vardgivarId, range, enheter, true);
+        return SimpleKonResponse.create(intygPerTypeTidsserie);
+    }
+
+    private <T> KonDataResponse calculateKonDataResponse(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter, boolean isTvarsnitt, List<String> groupNames, List<T> groupIds, CounterFunctionIntyg<T> counterFunction) {
+        List<KonDataRow> rows = new ArrayList<>();
+        final List<IntygCommonGroup> intygCommonGroups = getIntygCommonGroups(range, vardgivarId, enheter, isTvarsnitt, null);
+        for (IntygCommonGroup intygCommonGroup : intygCommonGroups) {
+            final HashMultiset<T> maleCounter = HashMultiset.create();
+            final HashMultiset<T> femaleCounter = HashMultiset.create();
+            for (IntygCommon intyg : intygCommonGroup.getIntyg()) {
+                final boolean isFemale = Kon.FEMALE.getNumberRepresentation() == intyg.getKon();
+                final HashMultiset<T> currentCounter = isFemale ? femaleCounter : maleCounter;
+                counterFunction.addCount(intyg, currentCounter);
+            }
+            List<KonField> list = new ArrayList<>(groupIds.size());
+            for (T id : groupIds) {
+                list.add(new KonField(femaleCounter.count(id), maleCounter.count(id)));
+            }
+            rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(intygCommonGroup.getRange().getFrom()), list));
+        }
+
+        return new KonDataResponse(groupNames, rows);
     }
 
     private SimpleKonResponse<SimpleKonDataRow> getIntygCommonMaleFemale(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter, Function<IntygCommonGroup, String> rowNameFunction, boolean isTvarsnitt) {

@@ -67,11 +67,12 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
 
             var chartSeriesFemale = ajaxResult.femaleChart.series;
             chartFactory.addColor(chartSeriesFemale);
-            that.chart1 = that.paintChart('chart1', 'sjukfall för kvinnor', 118, chartCategories, chartSeriesFemale, -100, doneLoadingCallback);
+            var yAxisTitleUnit = config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall';
+            that.chart1 = that.paintChart('chart1', yAxisTitleUnit + ' för kvinnor', 118, chartCategories, chartSeriesFemale, -100, doneLoadingCallback);
 
             var chartSeriesMale = ajaxResult.maleChart.series;
             chartFactory.addColor(chartSeriesMale);
-            that.chart2 = that.paintChart('chart2', 'sjukfall för män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback);
+            that.chart2 = that.paintChart('chart2', yAxisTitleUnit + ' för män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback);
 
             updateChartsYAxisMaxValue();
 
@@ -477,3 +478,27 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonTidsserieConfig =
         {description: 'Tvärsnitt', state: '/verksamhet/sjukfallperlakaresalderochkon', active: false}];
     return conf;
 };
+
+angular.module('StatisticsApp').intygPerTypePerMonthConfig =
+    /** @ngInject */
+        function (messageService) {
+        'use strict';
+
+        var conf = {};
+        conf.dataFetcherVerksamhet = 'getIntygPerTypePerMonthVerksamhet';
+        conf.chartYAxisTitleUnit = 'intyg';
+        conf.exportTableUrlVerksamhet = function () {
+            return 'api/verksamhet/getIntygPerTypePerMonth/csv';
+        };
+        conf.suffixTitle = function (period) {
+            return period;
+        };
+        conf.title = messageService.getProperty('title.intyg');
+
+        conf.exchangeableViews = [
+            {description: 'Tidsserie', state: '/verksamhet/intygPerTyp', active: true},
+            {description: 'Tvärsnitt', state: '/verksamhet/intygPerTypTvarsnitt', active: false}];
+
+        return conf;
+    };
+

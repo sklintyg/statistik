@@ -20,21 +20,27 @@ package se.inera.statistics.service.warehouse;
 
 public enum IntygType {
 
-    FK7263(true, true),
-    LIS(true, true),
-    LISU(true, true),
-    LUSE(true, false),
-    LUAE_NA(true, false),
-    LUAE_FS(true, false),
-    LISJP(true, true),
-    UNKNOWN(false, false);
+    FK7263("FK7263", true, true),
+    LIS("LIS", true, true),
+    LISU("LISU", true, true),
+    LUSE("Läkarutlåtande för sjukersättning", true, false),
+    LUAE_NA("Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga", true, false),
+    LUAE_FS("Läkarutlåtande för aktivitetsersättning vid förlängd skolgång", true, false),
+    LISJP("Läkarintyg för sjukpenning", true, true),
+    UNKNOWN("Okänt", false, false);
 
+    private final String text;
     private final boolean isSupportedIntyg;
     private final boolean isSjukpenningintyg;
 
-    IntygType(boolean isSupportedIntyg, boolean isSjukpenningintyg) {
+    IntygType(String text, boolean isSupportedIntyg, boolean isSjukpenningintyg) {
+        this.text = text;
         this.isSupportedIntyg = isSupportedIntyg;
         this.isSjukpenningintyg = isSjukpenningintyg;
+    }
+
+    public String getText() {
+        return text;
     }
 
     public boolean isSupportedIntyg() {

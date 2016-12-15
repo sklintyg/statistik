@@ -427,6 +427,26 @@ angular.module('StatisticsApp').intygPerMonthTvarsnittConfig =
     return conf;
 };
 
+angular.module('StatisticsApp').intygPerTypeTvarsnittConfig =
+    /** @ngInject */
+    function (messageService) {
+    'use strict';
+
+    var conf = {};
+    conf.dataFetcherVerksamhet = 'getIntygPerTypeTvarsnittVerksamhet';
+    conf.exportTableUrlVerksamhet = function () {
+        return 'api/verksamhet/getIntygPerTypeTvarsnitt/csv';
+    };
+    conf.title = messageService.getProperty('title.intyg');
+    conf.chartYAxisTitle = 'Antal intyg';
+    conf.chartXAxisTitle = '';
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '/verksamhet/intygPerTyp', active: true},
+        {description: 'Tvärsnitt', state: '/verksamhet/intygPerTypTvarsnitt', active: false}];
+
+    return conf;
+};
 
 angular.module('StatisticsApp').longSickLeavesTvarsnittConfig =
     /** @ngInject */

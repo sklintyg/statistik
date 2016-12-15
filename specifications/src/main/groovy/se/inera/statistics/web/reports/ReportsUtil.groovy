@@ -122,7 +122,7 @@ class ReportsUtil {
     }
 
     def getReportAntalIntygPerManad(String vgid, filter) {
-        return get(getVerksamhetUrlPrefix() + "/getNumberOfIntygPerMonth", filter, "vgid=" + vgid)
+        return get(getVerksamhetUrlPrefix() + "/getTotalNumberOfIntygPerMonth", filter, "vgid=" + vgid)
     }
 
     def getReportAntalIntygInloggad(String vgid, filter) {
