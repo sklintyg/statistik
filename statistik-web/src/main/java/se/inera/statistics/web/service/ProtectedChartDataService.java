@@ -140,15 +140,15 @@ public class ProtectedChartDataService {
      * Gets intyg per manad for verksamhetId.
      */
     @GET
-    @Path("getNumberOfIntygPerMonth{csv:(/csv)?}")
+    @Path("getTotalNumberOfIntygPerMonth{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfIntygPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getTotalNumberOfIntygPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerMonth(vg, filterSettings);
+        SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getTotalIntygPerMonth(vg, filterSettings);
         SimpleDetailsData result = new PeriodIntygConverter().convert(intygPerMonth, filterSettings);
         return getResponse(result, csv, request);
     }
@@ -157,15 +157,49 @@ public class ProtectedChartDataService {
      * Gets intyg per manad tvärsnitt for verksamhetId.
      */
     @GET
-    @Path("getNumberOfIntygPerMonthTvarsnitt{csv:(/csv)?}")
+    @Path("getTotalNumberOfIntygTvarsnitt{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfIntygPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getTotalNumberOfIntygTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerMonthTvarsnitt(vg, filterSettings);
+        SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getTotalIntygTvarsnitt(vg, filterSettings);
+        SimpleDetailsData result = SimpleDualSexConverter.newGenericIntygTvarsnitt().convert(intygPerMonth, filterSettings);
+        return getResponse(result, csv, request);
+    }
+
+    /**
+     * Gets intyg per manad for verksamhetId.
+     */
+    @GET
+    @Path("getIntygPerTypePerMonth{csv:(/csv)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfIntygPerTypePerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
+        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        KonDataResponse intygPerMonth = warehouse.getIntygPerTypePerMonth(vg, filterSettings);
+        final DualSexStatisticsData result = new SimpleMultiDualSexConverter("Antal intyg totalt").convert(intygPerMonth, filterSettings);
+        return getResponse(result, csv, request);
+    }
+
+    /**
+     * Gets intyg per manad tvärsnitt for verksamhetId.
+     */
+    @GET
+    @Path("getIntygPerTypeTvarsnitt{csv:(/csv)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfIntygPerTypeTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
+        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerTypeTvarsnitt(vg, filterSettings);
         SimpleDetailsData result = SimpleDualSexConverter.newGenericIntygTvarsnitt().convert(intygPerMonth, filterSettings);
         return getResponse(result, csv, request);
     }

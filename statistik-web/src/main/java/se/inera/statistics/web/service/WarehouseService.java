@@ -106,12 +106,20 @@ public class WarehouseService {
         return sjukfallQuery.getSjukfallTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getMonths(), false);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getIntygPerMonth(HsaIdVardgivare vardgivarId, FilterSettings filterSettings) {
+    public SimpleKonResponse<SimpleKonDataRow> getTotalIntygPerMonth(HsaIdVardgivare vardgivarId, FilterSettings filterSettings) {
         return intygCommonManager.getIntyg(vardgivarId, filterSettings.getRange(), filterSettings.getFilter().getEnheter());
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getIntygPerMonthTvarsnitt(HsaIdVardgivare vardgivarId, FilterSettings filterSettings) {
+    public SimpleKonResponse<SimpleKonDataRow> getTotalIntygTvarsnitt(HsaIdVardgivare vardgivarId, FilterSettings filterSettings) {
         return intygCommonManager.getIntygTvarsnitt(vardgivarId, filterSettings.getRange(), filterSettings.getFilter().getEnheter());
+    }
+
+    public KonDataResponse getIntygPerTypePerMonth(HsaIdVardgivare vardgivarId, FilterSettings filterSettings) {
+        return intygCommonManager.getIntygPerTypeTidsserie(vardgivarId, filterSettings.getRange(), filterSettings.getFilter().getEnheter());
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getIntygPerTypeTvarsnitt(HsaIdVardgivare vardgivarId, FilterSettings filterSettings) {
+        return intygCommonManager.getIntygPerTypeTvarsnitt(vardgivarId, filterSettings.getRange(), filterSettings.getFilter().getEnheter());
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getMessagesPerMonth(Filter filter, Range range, HsaIdVardgivare vardgivarId) {

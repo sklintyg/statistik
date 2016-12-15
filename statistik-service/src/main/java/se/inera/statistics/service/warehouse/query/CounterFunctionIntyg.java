@@ -16,22 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.service;
+package se.inera.statistics.service.warehouse.query;
 
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.web.model.DualSexStatisticsData;
+import com.google.common.collect.HashMultiset;
+import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 
-public class SimpleMultiDualSexConverter extends MultiDualSexConverter<KonDataResponse> {
+public interface CounterFunctionIntyg<T> {
 
-    SimpleMultiDualSexConverter() {
-    }
-
-    SimpleMultiDualSexConverter(String tableHeader) {
-        super(tableHeader);
-    }
-
-    DualSexStatisticsData convert(KonDataResponse data, FilterSettings filterSettings) {
-        return super.convert(data, filterSettings, null, "%1$s");
-    }
+    void addCount(IntygCommon intyg, HashMultiset<T> counter);
 
 }
