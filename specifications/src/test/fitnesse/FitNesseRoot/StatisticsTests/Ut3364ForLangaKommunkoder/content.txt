@@ -11,11 +11,10 @@ så ska det intyget ignoreras men övriga ska processas korrekt.
 | Enbart foljande intyg finns |
 | personnr      | start      | slut       | enhet  | kommun |
 | 19680524-9282 | 2013-02-01 | 2013-02-14 | enhet1 | 1234   |
-| 19680524-9283 | 2013-02-01 | 2013-02-14 | enhet1 | 1234567|
-| 19680524-9285 | 2013-02-01 | 2013-02-14 | enhet1 | abcd   |
+| 19680524-9285 | 2013-02-01 | 2013-02-14 | enhet1 | 12345  |
 | 19680524-9281 | 2013-02-01 | 2013-02-14 | enhet1 | 12     |
 
 !3 Då gäller:
 | Sjukfall i rapporten sjukfall totalt som tvarsnitt |
 | inloggad som | grupp  | män? | kvinnor? |
-| user2        | Totalt | 0    | 4        |
+| user2        | Totalt | 0    | 2        |

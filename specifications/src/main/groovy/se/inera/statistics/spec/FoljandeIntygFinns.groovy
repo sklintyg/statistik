@@ -29,6 +29,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
     def slut2
     def läkare
     def län
+    def kommun
     def intygid
     String händelsetyp
     String intygformat
@@ -75,7 +76,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
             huvudenhet = enhet;
         }
         def finalIntygDataString = getIntygDataString()
-        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(intygid), System.currentTimeMillis(), län, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
+        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(intygid), System.currentTimeMillis(), län, kommun, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
         reportsUtil.insertIntyg(intyg)
     }
 
