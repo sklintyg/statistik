@@ -186,7 +186,7 @@ public class TestIntygInjector {
         final String enhetId = vardenhet.getId();
         final String lakareId = lakare.getId();
         final String enhetName = "Enheten " + enhetId;
-        final Intyg intyg = new Intyg(type, data.toString(), id, timestamp, null, null, enhetName, vgId, enhetId, lakareId);
+        final Intyg intyg = new Intyg(type, data.toString(), id, timestamp, null, null, null, enhetName, vgId, enhetId, lakareId);
         restSupportService.insertIntygWithoutLogging(intyg);
 
         return id;

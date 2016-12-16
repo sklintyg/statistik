@@ -197,6 +197,7 @@ public class RestSupportService {
     public void insertIntygWithoutLogging(Intyg intyg) {
         if (hsaDataInjectable != null) {
             hsaDataInjectable.setCountyForNextIntyg(intyg.getCounty());
+            hsaDataInjectable.setKommunForNextIntyg(intyg.getKommun());
             hsaDataInjectable.setHuvudenhetIdForNextIntyg(intyg.getHuvudenhetId());
             hsaDataInjectable.setHsaKey(new HSAKey(intyg.getVardgivareId(), intyg.getEnhetId(), intyg.getLakareId()));
         }

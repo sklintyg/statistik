@@ -26,6 +26,7 @@ public class Intyg {
     private String documentId;
     private long timestamp;
     private String county;
+    private String kommun;
     private String huvudenhetId;
     private String enhetName;
     private String vardgivareId;
@@ -34,12 +35,13 @@ public class Intyg {
 
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public Intyg(EventType type, String data, String documentId, long timestamp, String county, String huvudenhetId, String enhetName, String vgId, String enhetId, String lakareId) {
+    public Intyg(EventType type, String data, String documentId, long timestamp, String county, String kommun, String huvudenhetId, String enhetName, String vgId, String enhetId, String lakareId) {
         this.type = type;
         this.data = data;
         this.documentId = documentId;
         this.timestamp = timestamp;
         this.county = county;
+        this.kommun = kommun;
         this.huvudenhetId = huvudenhetId;
         this.enhetName = enhetName;
         this.vardgivareId = vgId;
@@ -71,6 +73,10 @@ public class Intyg {
 
     public String getCounty() {
         return county;
+    }
+
+    public String getKommun() {
+        return kommun;
     }
 
     public String getHuvudenhetId() {
