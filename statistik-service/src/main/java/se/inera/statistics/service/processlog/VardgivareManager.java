@@ -99,9 +99,9 @@ public class VardgivareManager {
             return false;
         }
         boolean result = checkLength(enhetNamn, "Enhetsnamn", WidelineConverter.MAX_LENGTH_ENHETNAME, hsaInfo);
-        result |= lansId != null && checkLength(lansId, "Lansid", WidelineConverter.MAX_LENGTH_LAN_ID, hsaInfo);
-        result |= kommunId != null && checkLength(kommunId, "Kommunid", WidelineConverter.MAX_LENGTH_KOMMUN_ID, hsaInfo);
-        result |= verksamhetsTyper != null && checkLength(verksamhetsTyper, "Verksamhetstyper", WidelineConverter.MAX_LENGTH_VERKSAMHET_TYP, hsaInfo);
+        result &= lansId != null && checkLength(lansId, "Lansid", WidelineConverter.MAX_LENGTH_LAN_ID, hsaInfo);
+        result &= kommunId != null && checkLength(kommunId, "Kommunid", WidelineConverter.MAX_LENGTH_KOMMUN_ID, hsaInfo);
+        result &= verksamhetsTyper != null && checkLength(verksamhetsTyper, "Verksamhetstyper", WidelineConverter.MAX_LENGTH_VERKSAMHET_TYP, hsaInfo);
         return result;
     }
 

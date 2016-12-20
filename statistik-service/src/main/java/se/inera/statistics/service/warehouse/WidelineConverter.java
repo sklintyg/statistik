@@ -58,7 +58,7 @@ public class WidelineConverter {
     public static final int MAX_LENGTH_ENHETNAME = 255;
     public static final int MAX_LENGTH_VARDGIVARE_NAMN = 255;
     public static final int MAX_LENGTH_LAN_ID = 50;
-    public static final int MAX_LENGTH_KOMMUN_ID = 50;
+    public static final int MAX_LENGTH_KOMMUN_ID = 4;
     public static final int MAX_LENGTH_VERKSAMHET_TYP = Integer.MAX_VALUE;
     public static final int MAX_LENGTH_LAKARE_ID = 128;
     public static final int MAX_LENGTH_TILLTALSNAMN = 128;

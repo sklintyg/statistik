@@ -121,8 +121,8 @@ public class LakareManager {
             return false;
         }
         boolean result = checkLength(lakareId.getId(), "Lakareid", WidelineConverter.MAX_LENGTH_LAKARE_ID);
-        result |= checkLength(tilltalsNamn, "Tilltalsnamn", WidelineConverter.MAX_LENGTH_TILLTALSNAMN);
-        result |= checkLength(efterNamn, "Efternamn", WidelineConverter.MAX_LENGTH_EFTERNAMN);
+        result &= checkLength(tilltalsNamn, "Tilltalsnamn", WidelineConverter.MAX_LENGTH_TILLTALSNAMN);
+        result &= checkLength(efterNamn, "Efternamn", WidelineConverter.MAX_LENGTH_EFTERNAMN);
         return result;
     }
 
