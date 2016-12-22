@@ -162,6 +162,13 @@ abstract class SimpleDetailsReport extends Rapport {
         throw new RuntimeException("Report -Diagnosgrupp som tvärsnitt- is not available on national level");
     }
 
+    def getReportIntygstypTvarsnitt() {
+        if (inloggad) {
+            return reportsUtil.getReportIntygstypTvarsnittInloggad(vg, filter);
+        }
+        throw new RuntimeException("Report -Intygstyp som tvärsnitt- is not available on national level");
+    }
+
     def getReportUnderdiagnosgruppTvarsnitt(String valdUnderdiagnos) {
         if (inloggad) {
             return reportsUtil.getReportEnskiltDiagnoskapitelSomTvarsnittInloggad(vg, valdUnderdiagnos, filter);

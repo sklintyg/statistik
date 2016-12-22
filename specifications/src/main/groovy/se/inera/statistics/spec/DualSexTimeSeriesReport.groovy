@@ -59,6 +59,13 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         return reportsUtil.getReportDiagnosgrupp();
     }
 
+    def getReportIntygstyp() {
+        if (inloggad) {
+            return reportsUtil.getReportIntygstypInloggad(vg, filter);
+        }
+        throw new RuntimeException("Report -Intyg per typ- is not available on national level");
+    }
+
     def getReportSjukskrivningsgrad() {
         if (inloggad) {
             return reportsUtil.getReportSjukskrivningsgradInloggad(vg, filter);
