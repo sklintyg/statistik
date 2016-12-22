@@ -205,6 +205,8 @@ class FoljandeIntygFinns extends FoljandeFinns {
         String intygString = getClass().getResource('/maximalt-fk7263-internal.json').getText('UTF-8')
         def result = slurper.parseText(intygString)
 
+        result.grundData.signeringsdatum = signeringstid + ".000"
+
         result.grundData.patient.personId = personnr
         result.typ = intygstyp != null ? intygstyp : "fk7263"
         result.grundData.skapadAv.personId = läkare

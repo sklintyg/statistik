@@ -215,8 +215,16 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getDiagnoskapitelstatistik", filter, "vgid=" + vgid)
     }
 
+    def getReportIntygstypInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getIntygPerTypePerMonth", filter, "vgid=" + vgid)
+    }
+
     def getReportDiagnosgruppSomTvarsnittInloggad(String vgid, FilterData filter) {
         return get(getVerksamhetUrlPrefix() + "/getDiagnosGruppTvarsnitt", filter, "vgid=" + vgid)
+    }
+
+    def getReportIntygstypTvarsnittInloggad(String vgid, FilterData filter) {
+        return get(getVerksamhetUrlPrefix() + "/getIntygPerTypeTvarsnitt", filter, "vgid=" + vgid)
     }
 
     def getReportDiagnosgrupp() {
