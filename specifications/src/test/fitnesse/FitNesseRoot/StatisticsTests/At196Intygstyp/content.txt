@@ -1,0 +1,35 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+| script | dagens datum | 2013-11-06 |
+
+| Enbart foljande intyg finns |
+| personnr      | signeringstid       | enhet  | intygformat | kommentar |
+| 19790219-9285 | 2013-03-10T12:24:15 | enhet1 | nyttjson    | |
+| 19790219-9285 | 2013-03-10T12:24:15 | enhet1 | FK7263SIT   | |
+| 19790429-9272 | 2013-03-10T12:25:15 | enhet1 | LUSE        | |
+| 19790429-9272 | 2013-03-12T12:25:15 | enhet1 | LUSE        | samma patient, nytt intyg |
+| 19790429-9274 | 2013-03-10T12:25:15 | enhet1 | LUAE_NA     | |
+| 19790429-9275 | 2013-03-10T12:25:15 | enhet1 | LUAE_FS     | |
+| 19790429-9276 | 2013-03-10T12:25:15 | enhet1 | LISJP       | |
+
+!3 Då gäller:
+
+Statistiken baseras på alla intygstyper och dess signeringstidpunkt. Det spelar ingen roll om det finns flera intyg för samma patient. Varje intyg räknas alltid en gång.
+
+| Sjukfall i rapporten antal intyg per manad och typ |
+| inloggad som | år   | månad | grupp   | män? | kvinnor? |
+| user1        | 2013 | mar   | FK7263  | 0    | 2        |
+| user1        | 2013 | mar   | LUSE    | 2    | 0        |
+| user1        | 2013 | mar   | LISJP   | 1    | 0        |
+| user1        | 2013 | mar   | LUAE_NA | 1    | 0        |
+| user1        | 2013 | mar   | LUAE_FS | 1    | 0        |
+
+| Sjukfall i rapporten antal intyg per typ som tvarsnitt |
+| inloggad som | grupp   | män? | kvinnor? |
+| user1        | FK7263  | 0    | 2        |
+| user1        | LUSE    | 2    | 0        |
+| user1        | LISJP   | 1    | 0        |
+| user1        | LUAE_NA | 1    | 0        |
+| user1        | LUAE_FS | 1    | 0        |
