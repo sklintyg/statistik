@@ -182,7 +182,7 @@ task('breakBuildForValidPersonnummer') << {
             if (!pnrs.isEmpty()) {
                 pnrs.each { pnr ->
                     if (!allowedPnrs.contains(pnr) && !testpersonnummer.contains(pnr) && validatePnr(pnr)) {
-                        // throw new GradleException("Found valid personnummer: " + pnr + " in file: " + file.canonicalPath)
+                         throw new GradleException("Found valid personnummer: " + pnr + " in file: " + file.canonicalPath)
                     }
                 }
             }
