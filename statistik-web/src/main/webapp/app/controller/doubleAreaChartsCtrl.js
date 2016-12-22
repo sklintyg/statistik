@@ -493,7 +493,7 @@ angular.module('StatisticsApp').intygPerTypePerMonthConfig =
         conf.suffixTitle = function (period) {
             return period;
         };
-        conf.title = messageService.getProperty('title.intyg');
+        conf.title = messageService.getProperty('title.intygstyp');
 
         conf.exchangeableViews = [
             {description: 'Tidsserie', state: '/verksamhet/intygPerTyp', active: true},

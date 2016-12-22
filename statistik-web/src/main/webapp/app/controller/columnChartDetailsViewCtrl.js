@@ -437,7 +437,7 @@ angular.module('StatisticsApp').intygPerTypeTvarsnittConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getIntygPerTypeTvarsnitt/csv';
     };
-    conf.title = messageService.getProperty('title.intyg');
+    conf.title = messageService.getProperty('title.intygstyp');
     conf.chartYAxisTitle = 'Antal intyg';
     conf.chartXAxisTitle = '';
 

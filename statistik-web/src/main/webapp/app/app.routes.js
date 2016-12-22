@@ -312,25 +312,25 @@ var app = angular.module('StatisticsApp')
                 controller: 'singleLineChartCtrl',
                 controllerAs: 'VerksamhetIntygPerMonthCtrl',
                 resolve: { config: app.intygPerMonthConfig },
-                title: 'Antal inkomna intyg'
+                title: 'Antal intyg'
             }).when('/verksamhet/intygTvarsnitt', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
                 controllerAs: 'VerksamhetIntygPerMonthTvarsnittCtrl',
                 resolve: { config: app.intygPerMonthTvarsnittConfig },
-                title: 'Antal inkomna intyg'
+                title: 'Antal intyg'
             }).when('/verksamhet/intygPerTyp', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
                 controllerAs: 'VerksamhetIntygPerTypePerMonthCtrl',
                 resolve: { config: app.intygPerTypePerMonthConfig },
-                title: 'Antal inkomna intyg'
+                title: 'Antal utfärdade intyg fördelat på intygstyp'
             }).when('/verksamhet/intygPerTypTvarsnitt', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
                 controllerAs: 'VerksamhetIntygPerTypeTvarsnttCtrl',
                 resolve: { config: app.intygPerTypeTvarsnittConfig },
-                title: 'Antal inkomna intyg'
+                title: 'Antal utfärdade intyg fördelat på intygstyp'
             }).when('/landsting/filuppladdning', {
                 templateUrl: '/app/views/landsting/fileupload.html',
                 controller: 'landstingFileUploadCtrl',
