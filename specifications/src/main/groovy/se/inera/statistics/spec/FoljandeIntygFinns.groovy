@@ -244,6 +244,8 @@ class FoljandeIntygFinns extends FoljandeFinns {
         String observationKodString = getClass().getResource('/observationMedKod.json').getText('UTF-8')
         def result = slurper.parseText(intygString)
 
+        result.signeringsdatum = signeringstid + ".000"
+
         result.patient.id.extension = personnr
         result.typ.code = intygstyp != null ? intygstyp : "fk7263"
         result.skapadAv.id.extension = läkare
