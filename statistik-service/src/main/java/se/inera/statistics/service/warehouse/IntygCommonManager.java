@@ -122,7 +122,7 @@ public class IntygCommonManager {
 
     private KonDataResponse getIntygPerType(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter, boolean isTvarsnitt) {
         final List<IntygType> intygTypes = Arrays.asList(IntygType.FK7263, IntygType.LISJP, IntygType.LUSE, IntygType.LUAE_NA, IntygType.LUAE_FS);
-        final List<String> names = intygTypes.stream().map(Enum::name).collect(Collectors.toList());
+        final List<String> names = intygTypes.stream().map(IntygType::getText).collect(Collectors.toList());
         final List<Integer> ids = intygTypes.stream().map(Enum::ordinal).collect(Collectors.toList());
         final CounterFunctionIntyg<Integer> counterFunction = (intyg, counter) -> {
             final IntygType intygType = IntygType.parseString(intyg.getIntygtyp());

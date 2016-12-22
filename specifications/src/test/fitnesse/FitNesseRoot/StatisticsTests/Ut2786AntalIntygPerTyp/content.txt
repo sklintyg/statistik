@@ -16,19 +16,19 @@
 !3 Då gäller:
 
 | Sjukfall i rapporten antal intyg per manad och typ |
-| inloggad som | år   | månad | grupp   | män? | kvinnor? |
-| user1        | 2013 | mar   | FK7263  | 0    | 2        |
-| user1        | 2013 | mar   | LUSE    | 1    | 0        |
-| user1        | 2013 | mar   | LISJP   | 1    | 0        |
-| user1        | 2013 | mar   | LUAE_NA | 1    | 0        |
-| user1        | 2013 | mar   | LUAE_FS | 1    | 0        |
+| inloggad som | år   | månad | grupp | män? | kvinnor? |
+| user1        | 2013 | mar   | 7263  | 0    | 2        |
+| user1        | 2013 | mar   | 7800  | 1    | 0        |
+| user1        | 2013 | mar   | 7804  | 1    | 0        |
+| user1        | 2013 | mar   | 7801  | 1    | 0        |
+| user1        | 2013 | mar   | 7802  | 1    | 0        |
 
 | Sjukfall i rapporten antal intyg per typ som tvarsnitt |
-| inloggad som | grupp   | män? | kvinnor? |
-| user1        | FK7263  | 0    | 2        |
-| user1        | LUSE    | 1    | 0        |
-| user1        | LISJP   | 1    | 0        |
-| user1        | LUAE_NA | 1    | 0        |
-| user1        | LUAE_FS | 1    | 0        |
+| inloggad som | grupp | män? | kvinnor? |
+| user1        | 7263  | 0    | 2        |
+| user1        | 7800  | 1    | 0        |
+| user1        | 7804  | 1    | 0        |
+| user1        | 7801  | 1    | 0        |
+| user1        | 7802  | 1    | 0        |
 
 

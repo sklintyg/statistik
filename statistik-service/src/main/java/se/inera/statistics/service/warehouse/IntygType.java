@@ -20,13 +20,13 @@ package se.inera.statistics.service.warehouse;
 
 public enum IntygType {
 
-    FK7263("FK7263", true, true),
+    FK7263("FK 7263 Läkarintyg", true, true),
     LIS("LIS", true, true),
     LISU("LISU", true, true),
-    LUSE("Läkarutlåtande för sjukersättning", true, false),
-    LUAE_NA("Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga", true, false),
-    LUAE_FS("Läkarutlåtande för aktivitetsersättning vid förlängd skolgång", true, false),
-    LISJP("Läkarintyg för sjukpenning", true, true),
+    LUSE("FK 7800 Läkarutlåtande för sjukersättning", true, false),
+    LUAE_NA("FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga", true, false),
+    LUAE_FS("FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång", true, false),
+    LISJP("FK 7804 Läkarintyg för sjukpenning", true, true),
     UNKNOWN("Okänt", false, false);
 
     private final String text;

@@ -158,6 +158,7 @@ var stMessages = {
         'title.vardenhet-listning': 'Antal sjukfall per 1000 listningar fördelat på vårdenhet',
         'title.meddelanden' : 'Antal inkomna meddelanden',
         'title.intyg' : 'Antal intyg',
+        'title.intygstyp' : 'Antal utfärdade intyg fördelat på intygstyp',
 
         //help texts
         'help.nationell.overview' : 'Statistiktjänsten är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. Tjänsten visar statistik för alla elektroniska läkarintyg. Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.',
