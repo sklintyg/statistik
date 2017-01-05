@@ -125,7 +125,7 @@ subprojects {
     license {
         ext.url = 'https://github.com/sklintyg/statistik'
         ext.name = rootProject.name
-        ext.year = Calendar.getInstance().get(Calendar.YEAR)
+        ext.year = 2016
         strictCheck true
         header rootProject.file("header.txt")
         includes(["**/*.xml", "**/se/inera/statistics/**/*.java", "**/se/inera/auth/**/*.java", "**/se/inera/ifv/statistics/**/*.java", "**/se/inera/testsupport/**/*.java"])
