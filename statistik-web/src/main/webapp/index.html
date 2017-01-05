@@ -123,7 +123,6 @@
   <script src="bower_components/lodash/lodash.js"></script>
   <script src="bower_components/jquery.tablesorter/dist/js/jquery.tablesorter.js"></script>
   <script src="bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.js"></script>
-  <script src="bower_components/pdfmake-dist/build/pdfmake.js"></script>
   <script src="bower_components/momentjs/moment.js"></script>
   <script src="bower_components/dropzone/dist/min/dropzone.min.js"></script>
   <script src="bower_components/ngstorage/ngStorage.js"></script>
@@ -142,6 +141,16 @@
   <script src="js/lib/rgbcolor.js"></script>
   <script src="js/lib/canvg.js"></script>
   <!-- endcanvg -->
+  <!-- pdkmakedist:js -->
+  <!--
+    Beroendet till pdfmake-dist har lagts till manuellt och inte via Bower
+    eftersom pdfmake-dist inte längre finns tillgänglig i github. pdfmake
+    (originalet) ska enligt uppgift vara uppdaterad med fixarna från
+    pdfmake-dist, men för att vara på den säkra sidan i hotfix-releasen så
+    används samma version som tidigare på detta manuella sätt.
+  -->
+  <script src="js/lib/pdfmake-dist/pdfmake.min.js"></script>
+  <!-- endpdfmakedist -->
   <!-- endbuild -->
 
   <!-- build:js({build/.tmp,src/main/webapp}) app/app.main.js -->
