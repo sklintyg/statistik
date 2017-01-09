@@ -101,12 +101,8 @@ public class IntygCommonManager {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getIntyg(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
-        final Function<IntygCommonGroup, String> rowNameFunction = new Function<IntygCommonGroup, String>() {
-            @Override
-            public String apply(IntygCommonGroup intygCommonGroup) {
-                return ReportUtil.toDiagramPeriod(intygCommonGroup.getRange().getFrom());
-            }
-        };
+        final Function<IntygCommonGroup, String> rowNameFunction = intygCommonGroup ->
+                ReportUtil.toDiagramPeriod(intygCommonGroup.getRange().getFrom());
         return getIntygCommonMaleFemale(range, vardgivarId, enheter, rowNameFunction, false);
     }
 
@@ -170,9 +166,9 @@ public class IntygCommonManager {
     }
 
     private List<IntygCommonGroup> getIntygCommonGroups(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter, boolean isTvarsnitt, List<IntygType> intygTypes) {
-        List<IntygCommonGroup> intygCommonGroups = new ArrayList<IntygCommonGroup>();
-        int periods = isTvarsnitt ? 1 : range.getMonths();
-        int periodLength = isTvarsnitt ? range.getMonths() : 1;
+        List<IntygCommonGroup> intygCommonGroups = new ArrayList<>();
+        int periods = isTvarsnitt ? 1 : range.getNumberOfMonths();
+        int periodLength = isTvarsnitt ? range.getNumberOfMonths() : 1;
         for (int i = 0; i < periods; i++) {
             LocalDate periodStart = range.getFrom().plusMonths(i * periodLength);
             final LocalDate to = periodStart.plusMonths(periodLength);
@@ -185,11 +181,15 @@ public class IntygCommonManager {
 
     private IntygCommonGroup getIntygCommonGroup(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter, List<IntygType> intygTypes) {
         final StringBuilder ql = new StringBuilder();
-        ql.append("SELECT r FROM IntygCommon r"
-                + " WHERE r.vardgivareId = :vardgivarId"
-                + " AND r.signeringsdatum >= :fromDate"
-                + " AND r.signeringsdatum <= :toDate"
-                + " AND r.intygid not in (select intygid from IntygCommon where eventType = " + EventType.REVOKED.ordinal() + " )");
+        ql.append("SELECT r FROM IntygCommon r ");
+        ql.append("WHERE r.vardgivareId = :vardgivarId ");
+        ql.append("AND r.signeringsdatum >= :fromDate ");
+        ql.append("AND r.signeringsdatum <= :toDate ");
+        ql.append("AND r.intygid not in ");
+        ql.append("(select intygid from IntygCommon where eventType = ");
+        ql.append(EventType.REVOKED.ordinal());
+        ql.append(" )");
+
         if (enheter != null) {
             ql.append(" AND r.enhet IN :enhetIds");
         }

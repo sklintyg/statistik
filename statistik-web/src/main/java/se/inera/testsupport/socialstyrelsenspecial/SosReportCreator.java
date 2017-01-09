@@ -91,7 +91,7 @@ public class SosReportCreator {
             final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true, "sosspecial" + dx, false);
 
             for (Map.Entry<HsaIdVardgivare, Aisle> vgEntry : allVardgivare.entrySet()) {
-                final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1, range.getMonths(),
+                final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1, range.getNumberOfMonths(),
                         vgEntry.getValue(), sjukfallFilter);
                 for (SjukfallGroup sjukfallGroup : sjukfallGroups) {
                     for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {

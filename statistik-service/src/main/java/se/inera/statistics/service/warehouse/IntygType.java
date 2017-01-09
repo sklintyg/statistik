@@ -21,7 +21,6 @@ package se.inera.statistics.service.warehouse;
 public enum IntygType {
 
     FK7263("FK 7263 Läkarintyg", true, true),
-    LIS("LIS", true, true),
     LISU("LISU", true, true),
     LUSE("FK 7800 Läkarutlåtande för sjukersättning", true, false),
     LUAE_NA("FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga", true, false),

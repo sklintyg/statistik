@@ -50,6 +50,6 @@ public final class ReportUtil {
     }
 
     static Range getNextPeriod(Range range) {
-        return new Range(range.getFrom().plusMonths(range.getMonths()), range.getTo().plusMonths(range.getMonths()));
+        return new Range(range.getFrom().plusMonths(range.getNumberOfMonths()), range.getTo().plusMonths(range.getNumberOfMonths()));
     }
 }

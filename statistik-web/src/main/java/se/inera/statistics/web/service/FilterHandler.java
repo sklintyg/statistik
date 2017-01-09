@@ -127,19 +127,19 @@ public class FilterHandler {
     }
 
 
-    FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultRangeValue) {
+    FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultNumberOfMonthsInRange) {
         try {
             if (filterHash == null || filterHash.isEmpty()) {
-                return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock));
+                return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock));
             }
             final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
             final List<HsaIdEnhet> enhetsIDs = getEnhetsFiltered(request, inFilter);
-            return getFilterSettings(request, filterHash, defaultRangeValue, inFilter, enhetsIDs);
+            return getFilterSettings(request, filterHash, defaultNumberOfMonthsInRange, inFilter, enhetsIDs);
         } catch (FilterException | FilterHashException e) {
             LOG.warn("Could not use selected filter. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("Could not use selected filter. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhets(request),
-                    Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
+                    Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock),
                     Message.create(ErrorType.FILTER, ErrorSeverity.WARN, "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
         }
     }

@@ -92,7 +92,7 @@ public class WarehouseServiceTest {
         rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
         final SimpleKonResponse<SimpleKonDataRow> response = new SimpleKonResponse<>(rows);
         final Range range = new Range(clock);
-        Mockito.when(sjukfallQuery.getSjukfallPerEnhet(null, null, range.getFrom(), 1, range.getMonths(), null, CutoffUsage.DO_NOT_APPLY_CUTOFF)).thenReturn(response);
+        Mockito.when(sjukfallQuery.getSjukfallPerEnhet(null, null, range.getFrom(), 1, range.getNumberOfMonths(), null, CutoffUsage.DO_NOT_APPLY_CUTOFF)).thenReturn(response);
 
         //When
         final SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouseService.getCasesPerEnhet(null, null, range, null);
@@ -120,7 +120,7 @@ public class WarehouseServiceTest {
         rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
         rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
         final SimpleKonResponse<SimpleKonDataRow> simpleKonResponse = new SimpleKonResponse<>(rows);
-        Mockito.when(sjukfallQuery.getSjukfallPerEnhet(any(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(), eq(range.getMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_PER_SEX))).thenReturn(simpleKonResponse);
+        Mockito.when(sjukfallQuery.getSjukfallPerEnhet(any(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(), eq(range.getNumberOfMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_PER_SEX))).thenReturn(simpleKonResponse);
         Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
 
         //When
@@ -149,7 +149,7 @@ public class WarehouseServiceTest {
         rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
         rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
         final SimpleKonResponse<SimpleKonDataRow> simpleKonResponse = new SimpleKonResponse<>(rows);
-        Mockito.when(sjukfallQuery.getSjukfallPerEnhet(any(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(), eq(range.getMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_ON_TOTAL))).thenReturn(simpleKonResponse);
+        Mockito.when(sjukfallQuery.getSjukfallPerEnhet(any(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(), eq(range.getNumberOfMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_ON_TOTAL))).thenReturn(simpleKonResponse);
         Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
 
         //When

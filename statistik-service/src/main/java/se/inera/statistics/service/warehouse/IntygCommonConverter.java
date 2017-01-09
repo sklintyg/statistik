@@ -42,7 +42,7 @@ public class IntygCommonConverter {
     @Autowired
     private Clock clock;
 
-    IntygCommon toIntygCommon(IntygDTO dto, HsaInfo hsa, String correlationId, EventType type) {
+    IntygCommon toIntygCommon(IntygDTO dto, HsaInfo hsa, String correlationId, EventType eventType) {
         String enhet = HSAServiceHelper.getEnhetId(hsa);
         HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
         if (enhet == null) {
@@ -54,7 +54,7 @@ public class IntygCommonConverter {
         String intygTyp = dto.getIntygtyp().toUpperCase();
         LocalDate signeringsDatum = dto.getSigneringsdatum();
 
-        return new IntygCommon(correlationId, patient, signeringsDatum, intygTyp, enhet, vardgivare.getId(), kon, type);
+        return new IntygCommon(correlationId, patient, signeringsDatum, intygTyp, enhet, vardgivare.getId(), kon, eventType);
     }
 
     public List<String> validate(IntygCommon line) {

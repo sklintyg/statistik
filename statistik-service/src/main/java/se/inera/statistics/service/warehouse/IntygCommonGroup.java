@@ -25,16 +25,16 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 
 public class IntygCommonGroup {
-    private final Range range;
+    private final Range dateRange;
     private final Collection<IntygCommon> intyg;
 
     public IntygCommonGroup(Range range, Collection<IntygCommon> intyg) {
-        this.range = range;
+        this.dateRange = range;
         this.intyg = new ArrayList<>(intyg);
     }
 
     public Range getRange() {
-        return range;
+        return dateRange;
     }
 
     public Collection<IntygCommon> getIntyg() {
