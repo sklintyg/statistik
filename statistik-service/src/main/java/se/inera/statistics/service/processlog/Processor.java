@@ -29,6 +29,10 @@ import se.inera.statistics.service.warehouse.WidelineManager;
 import se.inera.statistics.service.warehouse.message.MessageWidelineManager;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
 
+/**
+ * Process and save information to database for intyg and messages, i.e. extract and save information
+ * used by statistiktjansten.
+ */
 public class Processor {
 
     @Autowired

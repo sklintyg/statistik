@@ -161,7 +161,7 @@ public class FkReportCreator {
         LOG.info("About to get sjukfall for vg  " + vgEntry.getKey().getId());
         final Aisle aisle = vgEntry.getValue();
         // Hämta ut dom som hör till detta år
-        final ArrayList<SjukfallGroup> sjukfallGroups = Lists.newArrayList(new SjukfallIterator(range.getFrom(), 1, range.getMonths(), aisle, sjukfallFilter, true));
+        final ArrayList<SjukfallGroup> sjukfallGroups = Lists.newArrayList(new SjukfallIterator(range.getFrom(), 1, range.getNumberOfMonths(), aisle, sjukfallFilter, true));
         return sjukfallGroups.stream()
                 .flatMap(sjukfallGroup -> sjukfallGroup.getSjukfall().stream())
                 .collect(Collectors.toMap(Sjukfall::getFirstIntygId, p -> p, (p, q) -> p)).values().stream() // distinct by property

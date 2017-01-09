@@ -86,11 +86,11 @@ public class NationellData {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getMeddelandenPerMonth(Range range) {
-        return messagesQuery.getAntalMeddelanden(range.getFrom(), range.getMonths());
+        return messagesQuery.getAntalMeddelanden(range.getFrom(), range.getNumberOfMonths());
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(Range range) {
-        return getAntalIntyg(range.getFrom(), range.getMonths(), 1);
+        return getAntalIntyg(range.getFrom(), range.getNumberOfMonths(), 1);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getAntalIntyg(LocalDate start, int perioder, int periodlangd) {
@@ -114,7 +114,7 @@ public class NationellData {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getHistoricalAgeGroups(Range range) {
-        return getAldersgrupper(range.getFrom(), 1, range.getMonths());
+        return getAldersgrupper(range.getFrom(), 1, range.getNumberOfMonths());
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(LocalDate start, int perioder, int periodlangd) {
@@ -143,7 +143,7 @@ public class NationellData {
     }
 
     public KonDataResponse getSjukskrivningsgrad(Range range) {
-        return getSjukskrivningsgrad(range.getFrom(), range.getMonths(), 1, false);
+        return getSjukskrivningsgrad(range.getFrom(), range.getNumberOfMonths(), 1, false);
     }
 
     public KonDataResponse getSjukskrivningsgrad(LocalDate start, int perioder, int periodlangd, boolean all) {
@@ -176,7 +176,7 @@ public class NationellData {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallslangd(Range range) {
-        return getSjukfallslangd(range.getFrom(), 1, range.getMonths());
+        return getSjukfallslangd(range.getFrom(), 1, range.getNumberOfMonths());
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallslangd(LocalDate start, int perioder, int periodlangd) {
@@ -205,7 +205,7 @@ public class NationellData {
     }
 
     public DiagnosgruppResponse getDiagnosgrupper(Range range) {
-        return getDiagnosgrupper(range.getFrom(), range.getMonths(), 1);
+        return getDiagnosgrupper(range.getFrom(), range.getNumberOfMonths(), 1);
     }
 
     public DiagnosgruppResponse getDiagnosgrupper(LocalDate start, int perioder, int periodlangd) {
@@ -257,13 +257,13 @@ public class NationellData {
     public DiagnosgruppResponse getDiagnosavsnitt(Range range, String kapitelId) {
         DiagnosgruppResponse result = null;
         for (Aisle aisle : warehouse) {
-            DiagnosgruppResponse diagnosgrupper = query.getDiagnosavsnitts(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), range.getMonths(), 1, kapitelId);
+            DiagnosgruppResponse diagnosgrupper = query.getDiagnosavsnitts(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(), range.getNumberOfMonths(), 1, kapitelId);
             if (result == null) {
                 result = createEmptyDiagnosgruppResponse(diagnosgrupper);
             }
             Iterator<KonDataRow> rowsNew = diagnosgrupper.getRows().iterator();
             Iterator<KonDataRow> rowsOld = result.getRows().iterator();
-            List<KonDataRow> list = new ArrayList<>(range.getMonths());
+            List<KonDataRow> list = new ArrayList<>(range.getNumberOfMonths());
             while (rowsNew.hasNext() && rowsOld.hasNext()) {
                 KonDataRow a = rowsNew.next();
                 KonDataRow b = rowsOld.next();
@@ -284,7 +284,7 @@ public class NationellData {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLan(Range range) {
-        return getSjukfallPerLan(range.getFrom(), 1, range.getMonths());
+        return getSjukfallPerLan(range.getFrom(), 1, range.getNumberOfMonths());
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLan(LocalDate start, int perioder, int periodlangd) {

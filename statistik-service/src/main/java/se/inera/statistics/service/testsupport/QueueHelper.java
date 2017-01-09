@@ -108,9 +108,9 @@ public class QueueHelper {
         printAndGetSjukfallslangdGrupp(vardenhet1, vardenhet2, range, result);
         printAndGetCasesPerCountyNationell(range, result);
 
-        VerksamhetOverviewResponse verksamhetOverview1 = overviewQuery.getOverview(warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet1), ReportUtil.getPreviousPeriod(range).getFrom(), range.getMonths());
+        VerksamhetOverviewResponse verksamhetOverview1 = overviewQuery.getOverview(warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet1), ReportUtil.getPreviousPeriod(range).getFrom(), range.getNumberOfMonths());
         LOG.info("VO data: " + verksamhetOverview1);
-        VerksamhetOverviewResponse verksamhetOverview2 = overviewQuery.getOverview(warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet2), ReportUtil.getPreviousPeriod(range).getFrom(), range.getMonths());
+        VerksamhetOverviewResponse verksamhetOverview2 = overviewQuery.getOverview(warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet2), ReportUtil.getPreviousPeriod(range).getFrom(), range.getNumberOfMonths());
         LOG.info("VO data: " + verksamhetOverview2);
         OverviewResponse overviewNationell = nationellOverview.getOverview(range);
         LOG.info("NO data: " + overviewNationell);
@@ -184,7 +184,7 @@ public class QueueHelper {
         JsonNode diagnosisSubGroups2Node = JSONParser.parse(diagnosisSubGroups2.toString());
         result.put("diagnosisSubGroups2", new TestData(diagnosisSubGroups2, diagnosisSubGroups2Node));
 
-        DiagnosgruppResponse nationellDiagnosgrupper = nationell.getDiagnosgrupper(range.getFrom(), range.getMonths(), 1);
+        DiagnosgruppResponse nationellDiagnosgrupper = nationell.getDiagnosgrupper(range.getFrom(), range.getNumberOfMonths(), 1);
         LOG.info("Nationell DSG data: " + nationellDiagnosgrupper);
         JsonNode diagnosisSubGroupsNationellNode = JSONParser.parse(nationellDiagnosgrupper.toString());
         result.put("diagnosisSubGroupsNationell", new TestData(nationellDiagnosgrupper, diagnosisSubGroupsNationellNode));
@@ -209,15 +209,15 @@ public class QueueHelper {
     }
 
     private void printAndGetCasesPerMonth(HsaIdEnhet vardenhet1, HsaIdEnhet vardenhet2, Range range, Map<String, TestData> result) {
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth1 = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("EnVG")), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), range.getMonths(), 1, false);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth1 = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("EnVG")), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), range.getNumberOfMonths(), 1, false);
         LOG.info("CPM data: " + casesPerMonth1);
         JsonNode casesPerMonth1Node = JSONParser.parse(casesPerMonth1.toString());
         result.put("casesPerMonth1", new TestData(casesPerMonth1, casesPerMonth1Node));
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth2 = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("EnVG")), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), range.getMonths(), 1, false);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth2 = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("EnVG")), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), range.getNumberOfMonths(), 1, false);
         LOG.info("CPM data: " + casesPerMonth2);
         JsonNode casesPerMonth2Node = JSONParser.parse(casesPerMonth2.toString());
         result.put("casesPerMonth2", new TestData(casesPerMonth2, casesPerMonth2Node));
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonthNationell = nationell.getAntalIntyg(range.getFrom(), range.getMonths(), 1);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonthNationell = nationell.getAntalIntyg(range.getFrom(), range.getNumberOfMonths(), 1);
         LOG.info("Nationell CPM data: " + casesPerMonthNationell);
         JsonNode casesPerMonthNationellNode = JSONParser.parse(casesPerMonthNationell.toString());
         result.put("casesPerMonthNationell", new TestData(casesPerMonthNationell, casesPerMonthNationellNode));

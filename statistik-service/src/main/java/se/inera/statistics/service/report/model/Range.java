@@ -79,7 +79,7 @@ public final class Range {
         return ABBREVIATED_MONTH_FORMAT.format(from, to);
     }
 
-    public int getMonths() {
+    public int getNumberOfMonths() {
         return (int) ChronoUnit.MONTHS.between(from, to) + 1;
     }
 

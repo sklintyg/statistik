@@ -196,7 +196,7 @@ public class ChartDataService {
     private void buildAldersgrupper() {
         Range range = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
         SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getHistoricalAgeGroups(range);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(range.getMonths(), clock));
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(range.getNumberOfMonths(), clock));
         aldersgrupper = SimpleDualSexConverter.newGenericTvarsnitt().convert(ageGroups, filterSettings);
     }
 

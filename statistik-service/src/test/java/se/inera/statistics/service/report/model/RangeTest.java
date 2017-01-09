@@ -57,13 +57,13 @@ public class RangeTest {
     @Test
     public void defaultRangeIs18Months() {
         Range range = new Range(clock);
-        assertEquals(18, range.getMonths());
+        assertEquals(18, range.getNumberOfMonths());
     }
 
     @Test
     public void settingRangeMonths() {
         final Range range = Range.createForLastMonthsExcludingCurrent(3, clock);
-        assertEquals(3, range.getMonths());
+        assertEquals(3, range.getNumberOfMonths());
     }
     // CHECKSTYLE:ON MagicNumber
 
