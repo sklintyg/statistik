@@ -11,7 +11,7 @@
     </tr>
     </thead>
     <tbody class="table-condensed">
-    <tr data-ng-repeat="row in rowsShown" title="{{::row.name}}">
+    <tr data-ng-repeat="row in rowsShown" class="stat-table-row" title="{{::row.name}}">
       <td class="scrollable headcol"><span class="headcol-name" ng-class="{bold: row.marked}">{{::row.name}}</span></td>
     </tr>
     </tbody>
@@ -37,7 +37,7 @@
       </tr>
       </thead>
       <tbody class="table-condensed">
-      <tr data-ng-repeat="row in rowsShown" title="{{::row.name}}">
+      <tr data-ng-repeat="row in rowsShown" class="stat-table-row" title="{{::row.name}}">
         <td class="scrollable" data-ng-repeat="fieldData in row.data track by $index"
             >{{::fieldData.value}}</td>
       </tr>

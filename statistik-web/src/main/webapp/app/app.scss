@@ -172,6 +172,15 @@ table.table tfoot td {
   border-bottom: none;
 }
 
+table.table tbody tr:hover td,
+table.table tbody tr:nth-child(odd):hover td {
+  background-color: #b9b9b9;
+}
+
+.tr-hover td {
+  background-color: #b9b9b9 !important;
+}
+
 table.table tbody tr td.col-selected {
   background-color: #FCF8E3;
 }
