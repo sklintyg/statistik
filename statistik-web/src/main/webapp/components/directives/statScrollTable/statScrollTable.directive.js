@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').directive('statScrollTable',
     /** @ngInject */
-    function ($filter, _) {
+    function ($filter, _, $timeout) {
         'use strict';
 
         return {
@@ -97,6 +97,9 @@ angular.module('StatisticsApp').directive('statScrollTable',
                 }
 
                 function sortRows() {
+                    $('.stat-scroll-table .stat-table-row').off( 'mouseenter' );
+                    $('.stat-scroll-table .stat-table-row').off( 'mouseleave' );
+
                     var sortIndex = $scope.sortIndex - 1;
                     var reverse = $scope.sortReverse;
 
@@ -108,6 +111,20 @@ angular.module('StatisticsApp').directive('statScrollTable',
                             return x * row.data[sortIndex].sort;
                         });
                     }
+
+                    $timeout(function() {
+                        $('.stat-scroll-table .stat-table-row').hover( function() {
+                            var el = $(this);
+                            var index = el.index() + 1;
+
+                            $('.stat-scroll-table .stat-table-row:nth-child(' + index + ')').addClass('tr-hover');
+                        }, function() {
+                            var el = $(this);
+                            var index = el.index() + 1;
+
+                            $('.stat-scroll-table .stat-table-row:nth-child(' + index + ')').removeClass('tr-hover');
+                        });
+                    });
                 }
 
                 function processData() {
