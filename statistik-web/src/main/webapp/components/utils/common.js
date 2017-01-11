@@ -20,7 +20,7 @@
 
 angular.module('StatisticsApp').factory('ControllerCommons',
     /** @ngInject */
-    function(_, $cacheFactory, UserModel) {
+    function(_, $cacheFactory, UserModel, $filter) {
         'use strict';
 
         var that = this;
@@ -336,20 +336,30 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.getResultMessageList = function(result, messageService) {
-
-            if (result.messages) {
+            if (angular.isArray(result.messages) && result.messages.length > 0) {
                 return result.messages;
             }
 
             if (result.empty) {
-                return this.getEmptyResponseMessage(messageService);
+                return this.getEmptyResponseMessage(messageService, result);
             }
 
             return [];
         };
 
-        this.getEmptyResponseMessage = function(messageService) {
-            return [ {type: 'UNSET', severity: 'INFO', message: messageService.getProperty('info.emptyreponse', null, '', null, true)} ];
+        this.getEmptyResponseMessage = function(messageService, result) {
+
+            if (!result.filter || !result.filter.filterhash || result.filter.filterhash === 'EMPTY_FILTER') {
+                return [ {type: 'UNSET', severity: 'WARN', message: messageService.getProperty('info.emptyresponse', null, '', null, true)} ];
+            }
+
+            return [ {type: 'FILTER', severity: 'WARN', message: messageService.getProperty('info.emptyresponsefilter', null, '', null, true)} ];
+        };
+
+        this.removeFilterMessages = function(messages) {
+          return $filter('filter')(messages, function(message) {
+              return message.type !== 'FILTER';
+          });
         };
 
         this.formatOverViewTablePDF = function(thousandseparatedFilter, data, nameSuffix) {

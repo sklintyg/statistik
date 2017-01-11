@@ -212,7 +212,10 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     };
 
     function populatePageWithData(result) {
-        $scope.resultMessageList = ControllerCommons.getResultMessageList(result, messageService);
+        var messages = ControllerCommons.getResultMessageList(result, messageService);
+        $scope.resultMessageList = ControllerCommons.removeFilterMessages(messages);
+        $rootScope.$broadcast('resultMessagesChanged',  messages);
+
         ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
                                 result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets,
                                 result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,

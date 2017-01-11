@@ -10,7 +10,6 @@
   box-shadow: 0 3px 4px 0 rgba(50, 50, 50, 0.2);
   background-clip: padding-box;
   padding-top: 10px;
-  padding-bottom: 10px;
 
   &.filter-active {
     border-bottom-color: #EA8025;
@@ -89,5 +88,9 @@
     li span, li span input{
       cursor: pointer;
     }
+  }
+
+  show-message .alert {
+    margin-top: 0 !important;
   }
 }

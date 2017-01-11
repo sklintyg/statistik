@@ -250,7 +250,7 @@ public class FilterHandler {
 
         Range range = new Range(from.withDayOfMonth(1), to.plusMonths(1).withDayOfMonth(1).minusDays(1));
 
-        return new RangeMessageDTO(range, Message.create(ErrorType.FILTER, ErrorSeverity.WARN, message));
+        return new RangeMessageDTO(range, Message.create(ErrorType.FILTER, ErrorSeverity.INFO, message));
     }
 
     private Filter getFilterForAllAvailableEnhetsLandsting(HttpServletRequest request) {

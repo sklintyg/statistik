@@ -24,7 +24,7 @@ angular.module('StatisticsApp')
         'use strict';
 
         return {
-            templateUrl: '/components/directives/message/showMessage.html',
+            templateUrl: '/components/directives/showMessage/showMessage.html',
             restrict: 'E',
             scope: {
                 type: '=',
