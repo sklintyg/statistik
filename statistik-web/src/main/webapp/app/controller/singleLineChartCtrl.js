@@ -75,7 +75,11 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
                 result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets,
                 result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
                 result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter);
-            $scope.resultMessageList = ControllerCommons.getResultMessageList(result, messageService);
+
+            var messages = ControllerCommons.getResultMessageList(result, messageService);
+            $scope.resultMessageList = ControllerCommons.removeFilterMessages(messages);
+            $rootScope.$broadcast('resultMessagesChanged',  messages);
+
             $scope.subTitlePeriod = angular.isFunction(config.suffixTitle) ? config.suffixTitle(result.period, $routeParams.kapitelId) : result.period;
             $timeout(function() {
                 ControllerCommons.updateDataTable($scope, result.tableData);

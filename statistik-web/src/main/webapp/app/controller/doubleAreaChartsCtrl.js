@@ -93,7 +93,10 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
                 result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets,
                 result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
                 result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter);
-            $scope.resultMessageList = ControllerCommons.getResultMessageList(result, messageService);
+            var messages = ControllerCommons.getResultMessageList(result, messageService);
+            $scope.resultMessageList = ControllerCommons.removeFilterMessages(messages);
+            $rootScope.$broadcast('resultMessagesChanged',  messages);
+
             $scope.subTitlePeriod = config.suffixTitle(result.period, $routeParams.kapitelId);
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;

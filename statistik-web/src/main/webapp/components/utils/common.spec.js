@@ -197,7 +197,17 @@ describe('Test of common functions for controllers', function() {
                 }};
                 var messages = ControllerCommons.getResultMessageList(result, messageService);
 
-                expect(messages).toEqual([ {type: 'UNSET', severity: 'INFO', message: 'message' }]);
+                expect(messages).toEqual([ {type: 'UNSET', severity: 'WARN', message: 'message' }]);
+            });
+
+            it('empty filter', function() {
+                var result = {empty: true, filter: { filterhash: '12356'}};
+                var messageService = {getProperty: function() {
+                    return 'message';
+                }};
+                var messages = ControllerCommons.getResultMessageList(result, messageService);
+
+                expect(messages).toEqual([ {type: 'FILTER', severity: 'WARN', message: 'message' }]);
             });
 
             it('noMessage', function() {

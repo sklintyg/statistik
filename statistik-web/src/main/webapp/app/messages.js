@@ -186,7 +186,8 @@ var stMessages = {
         'help.diagnosissubgroup.showdetailoptions' : 'Observera att om du väljer diagnoskategori visas bara de sjukfall som har en diagnos med den lägsta detaljeringsgraden enligt ICD-10-SE.',
 
         //info texts
-        'info.emptyreponse' : 'Ingen data tillgänglig. Det kan bero på att det inte finns någon data för verksamheten eller att du har angivit en alltför restriktiv filtrering.',
+        'info.emptyresponse' : 'Ingen data tillgänglig. Det beror på att det inte finns någon data för verksamheten.',
+        'info.emptyresponsefilter' : 'Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering',
 
         //login view
         'login.header.verksamhet': 'Logga in för verksamhetsstatistik',

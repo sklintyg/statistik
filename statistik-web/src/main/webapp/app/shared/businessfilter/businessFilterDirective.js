@@ -22,7 +22,7 @@ angular.module('StatisticsApp.filter.directive', []);
 angular.module('StatisticsApp.filter.directive')
     .directive('businessFilter',
         /** @ngInject */
-        function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _) {
+        function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter) {
         'use strict';
 
         return {
@@ -32,7 +32,7 @@ angular.module('StatisticsApp.filter.directive')
                 scope.filterButtonIdText = 'Verksamhet';
                 scope.filterHashParamName = 'filter';
                 linkFunction(_, scope, businessFilterFactory, $location, messageService, statisticsData,
-                                moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
+                                moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter);
             },
             templateUrl: '/app/shared/businessfilter/businessFilterView.html'
         };
@@ -41,7 +41,7 @@ angular.module('StatisticsApp.filter.directive')
 angular.module('StatisticsApp.filter.directive')
     .directive('landstingFilter',
         /** @ngInject */
-        function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _) {
+        function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter) {
         'use strict';
 
         return {
@@ -51,13 +51,13 @@ angular.module('StatisticsApp.filter.directive')
                 scope.filterButtonIdText = 'Landsting';
                 scope.filterHashParamName = 'landstingfilter';
                 linkFunction(_, scope, landstingFilterFactory, $location, messageService, statisticsData,
-                                moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE);
+                                moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter);
             },
             templateUrl: '/app/shared/businessfilter/businessFilterView.html'
         };
     });
 
-function linkFunction(_, scope, businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE) {
+function linkFunction(_, scope, businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter) {
     'use strict';
 
     //Initially we don't want to see the filter
@@ -315,6 +315,16 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.$on('selectionsChanged', function() {
         scope.businessFilter.updateSelectionVerksamhetsTyper(scope.businessFilter.verksamhetsTyper);
     });
+
+    var filterMessagesChanged = $rootScope.$on('resultMessagesChanged', function(event, messages) {
+        scope.messages = $filter('filter')(messages, function(message) {
+            return message.type === 'FILTER';
+        });
+
+        scope.hasMessages = scope.messages.length > 0;
+    });
+
+    scope.$on('$destroy', filterMessagesChanged);
 }
 
 angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown',
