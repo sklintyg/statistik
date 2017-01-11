@@ -358,7 +358,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
         this.removeFilterMessages = function(messages) {
           return $filter('filter')(messages, function(message) {
-              return message.type !== 'FILTER';
+              return message && message.type !== 'FILTER';
           });
         };
 
