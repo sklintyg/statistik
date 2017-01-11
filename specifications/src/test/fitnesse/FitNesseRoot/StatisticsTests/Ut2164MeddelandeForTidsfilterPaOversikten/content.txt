@@ -1,0 +1,14 @@
+!contents -R2 -g -p -f -h
+
+Testar INTYG-2164. Hade hellre viljat testa detta i ett enhetstest, men det blev allt för komplicerat
+att skriva jämfört med hur rent, enkelt och smidigt det var att skriva ett fitnesse-test istället.
+
+!3 Givet att:
+
+| script | dagens datum | 2014-12-06 |
+
+!3 Då gäller:
+
+| Sjukfall i oversikt sjukskrivningsgrad |
+| inloggad som | grupp | filter startdatum | filter slutdatum | meddelande? |
+| user1        | 100   | 2014-06-01        | 2014-09-30       | Observera! Översikten visar alltid de senaste tre avslutade kalendermånaderna (sep-nov) oavsett valt tidsintervall. |

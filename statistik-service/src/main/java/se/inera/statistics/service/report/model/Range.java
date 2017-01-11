@@ -21,6 +21,7 @@ package se.inera.statistics.service.report.model;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
@@ -116,5 +117,11 @@ public final class Range {
         private String formatMonth(LocalDate when) {
             return when.format(DateTimeFormatter.ofPattern(monthFormat, SV));
         }
+    }
+
+    public String toStringShortMonths() {
+        String fromStr = from.getMonth().getDisplayName(TextStyle.SHORT, SV);
+        String toStr = to.getMonth().getDisplayName(TextStyle.SHORT, SV);
+        return fromStr + "-" + toStr;
     }
 }

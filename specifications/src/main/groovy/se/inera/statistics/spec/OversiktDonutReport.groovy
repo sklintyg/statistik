@@ -25,6 +25,7 @@ abstract class OversiktDonutReport extends Rapport {
     }
 
     public void executeTabell(report) {
+        executeWithReport(report)
         def row = getData(report).find { item -> item.name.contains(grupp) }
         antal = row != null ? row.quantity : -1
         förändring = row != null ? row.alternation : -1

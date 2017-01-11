@@ -464,8 +464,7 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 3);
         final Filter filter = filterSettings.getFilter();
         final Range range = Range.quarter(clock);
-        final String msg = "Valt tidsintervall i filtret gäller inte för översiktssidan";
-        final Message message = filterHash == null || filterHash.isEmpty() || filterHashHandler.getFilterFromHash(filterHash).isUseDefaultPeriod() ? null : Message.create(ErrorType.FILTER, ErrorSeverity.INFO, msg);
+        final Message message = getOverviewMsg(filterHash, range);
         VerksamhetOverviewResponse response = warehouse.getOverview(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final VerksamhetOverviewData overviewData = new VerksamhetOverviewConverter().convert(response, range, filter, message);
 
@@ -473,6 +472,17 @@ public class ProtectedChartDataService {
         final List<Verksamhet> businesses = loginInfo.getBusinessesForVg(loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final List<HsaIdEnhet> hsaIdEnhets = businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
         return responseHandler.getResponseForDataReport(overviewData, hsaIdEnhets);
+    }
+
+    private Message getOverviewMsg(String filterHash, Range actualRangeUsed) {
+        final boolean noMsg = filterHash == null || filterHash.isEmpty() || filterHashHandler.getFilterFromHash(filterHash).isUseDefaultPeriod();
+        if (noMsg) {
+            return null;
+        }
+        final String msg = "Observera! Översikten visar alltid de senaste tre avslutade kalendermånaderna ("
+                + actualRangeUsed.toStringShortMonths()
+                + ") oavsett valt tidsintervall.";
+        return Message.create(ErrorType.FILTER, ErrorSeverity.INFO, msg);
     }
 
     /**
