@@ -52,8 +52,8 @@ abstract class Rapport {
         allaSjukskrivningslängdfilterValda = report[ResponseHandler.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER]
         allaÅldersgruppfilterValda = report[ResponseHandler.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER]
         enhetsfilterlista = report[ResponseHandler.FILTERED_ENHETS]
-        sjukskrivningslangdfilterlista = report.filter.sjukskrivningslangd
-        åldersgruppfilterlista = report.filter.aldersgrupp
+        sjukskrivningslangdfilterlista = report?.filter?.sjukskrivningslangd
+        åldersgruppfilterlista = report?.filter?.aldersgrupp
     }
 
     abstract void doExecute()
