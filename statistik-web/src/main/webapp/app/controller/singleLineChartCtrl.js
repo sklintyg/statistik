@@ -52,6 +52,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             }
             chartOptions.text = '#008391';
             chartOptions.tooltip.text = '#000';
+            chartOptions.tooltip.split = true;
             return new Highcharts.Chart(chartOptions);
         };
 
