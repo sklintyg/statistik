@@ -115,14 +115,14 @@ angular.module('StatisticsApp').directive('statScrollTable',
                     $timeout(function() {
                         $('.stat-scroll-table .stat-table-row').hover( function() {
                             var el = $(this);
-                            var index = el.index() + 1;
+                            var position = el.index() + 1;
 
-                            $('.stat-scroll-table .stat-table-row:nth-child(' + index + ')').addClass('tr-hover');
+                            $('.stat-scroll-table .stat-table-row:nth-child(' + position + ')').addClass('tr-hover');
                         }, function() {
                             var el = $(this);
-                            var index = el.index() + 1;
+                            var position = el.index() + 1;
 
-                            $('.stat-scroll-table .stat-table-row:nth-child(' + index + ')').removeClass('tr-hover');
+                            $('.stat-scroll-table .stat-table-row:nth-child(' + position + ')').removeClass('tr-hover');
                         });
                     });
                 }
