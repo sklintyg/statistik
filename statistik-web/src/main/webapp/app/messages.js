@@ -121,7 +121,7 @@ var stMessages = {
         'overview.widget.table.column.antal': 'Antal',
         'overview.widget.table.column.forandring': 'Förändring',
         'overview.widget.fordelning-sjukskrivningslangd.overgar-90': 'Antal sjukfall som är 91 dagar eller längre.',
-        'overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader': 'Procentuell förändring av antal sjukfall som är längre än 90 dagar jämfört med föregående tre månader.',
+        'overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader': 'Procentuell förändring av antal sjukfall som är 91 dagar eller längre jämfört med föregående tre månader.',
 
         //detail views
         'lbl.valj-annat-diagnoskapitel': 'Välj diagnoskapitel:',
