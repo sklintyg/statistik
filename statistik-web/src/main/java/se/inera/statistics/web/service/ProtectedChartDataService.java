@@ -479,7 +479,7 @@ public class ProtectedChartDataService {
         if (noMsg) {
             return null;
         }
-        final String msg = "Observera! Översikten visar alltid de senaste tre avslutade kalendermånaderna ("
+        final String msg = "Översikten visar alltid de senaste tre avslutade kalendermånaderna ("
                 + actualRangeUsed.toStringShortMonths()
                 + ") oavsett valt tidsintervall.";
         return Message.create(ErrorType.FILTER, ErrorSeverity.INFO, msg);
