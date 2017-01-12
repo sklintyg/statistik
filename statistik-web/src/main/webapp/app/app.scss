@@ -561,8 +561,8 @@ legend {
     color: #fff;
     font-size: 12px;
     float: left;
-    margin-top: 0px;
-    margin-left: 30px;
+    margin: -16px;
+    padding: 16px;
 
     &.collapsible-panel-min-icon {
       @extend .glyphicon-chevron-up;
@@ -1915,6 +1915,7 @@ input[type="radio"], input[type="checkbox"] {
   .select-chart-type-tvarsnitt {
     display: inline-block;
     margin: 0;
+    padding-right:20px;
   }
 
 
