@@ -318,7 +318,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
     var filterMessagesChanged = $rootScope.$on('resultMessagesChanged', function(event, messages) {
         scope.messages = $filter('filter')(messages, function(message) {
-            return message.type === 'FILTER';
+            return message && message.type === 'FILTER';
         });
 
         scope.hasMessages = scope.messages.length > 0;
