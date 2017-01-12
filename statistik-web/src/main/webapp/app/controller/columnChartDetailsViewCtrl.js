@@ -76,7 +76,9 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         };
 
         var populatePageWithDataSuccess = function(result) {
-            $scope.subTitlePeriod = angular.isFunction(config.suffixTitle) ? config.suffixTitle(result.period, $routeParams.kapitelId) : result.period;
+            $scope.subTitle = angular.isFunction(config.suffixTitle) ? config.suffixTitle($routeParams.kapitelId) : config.title;
+            //Period should be on a separate row (INTYG-3288)
+            $scope.subTitlePeriod = result.period;
             if (angular.isFunction(config.chartFootnotesExtra)) {
                 $scope.chartFootnotes.push(config.chartFootnotesExtra(result));
             }
@@ -548,8 +550,8 @@ angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig =
     conf.showDetailsOptions = true;
     conf.showDetailsOptions2 = true;
     conf.showDetailsOptions3 = true;
-    conf.suffixTitle = function (period, name) {
-        return name + ' ' + period;
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.diagnosgroup');
     conf.pageHelpTextShowDetailOptions = 'help.diagnosissubgroup.showdetailoptions';

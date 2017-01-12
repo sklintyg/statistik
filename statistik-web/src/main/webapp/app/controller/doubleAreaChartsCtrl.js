@@ -99,7 +99,9 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             $scope.resultMessageList = ControllerCommons.removeFilterMessages(messages);
             $rootScope.$broadcast('resultMessagesChanged',  messages);
 
-            $scope.subTitlePeriod = config.suffixTitle(result.period, $routeParams.kapitelId);
+            $scope.subTitle = angular.isFunction(config.suffixTitle) ? config.suffixTitle($routeParams.kapitelId) : config.title;
+            //Period should be on a separate row (INTYG-3288)
+            $scope.subTitlePeriod = result.period;
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;
                 statisticsData.getDiagnosisKapitelAndAvsnittAndKategori(populateDetailsOptions, function() {
@@ -218,8 +220,8 @@ angular.module('StatisticsApp').diagnosisGroupConfig =
         return 'api/verksamhet/getDiagnoskapitelstatistik/csv';
     };
     conf.showDetailsOptions = false;
-    conf.suffixTitle = function (period) {
-        return period;
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.diagnosisgroup');
     conf.chartFootnotes = ['help.nationell.diagnosisgroup'];
@@ -247,8 +249,8 @@ angular.module('StatisticsApp').diagnosisSubGroupConfig =
     conf.showDetailsOptions = true;
     conf.showDetailsOptions2 = true;
     conf.showDetailsOptions3 = true;
-    conf.suffixTitle = function (period, name) {
-        return name + ' ' + period;
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.diagnosgroup');
     conf.pageHelpTextShowDetailOptions = 'help.diagnosissubgroup.showdetailoptions';
@@ -281,8 +283,8 @@ angular.module('StatisticsApp').degreeOfSickLeaveConfig =
         return 'api/verksamhet/getDegreeOfSickLeaveStatistics/csv';
     };
     conf.showDetailsOptions = false;
-    conf.suffixTitle = function (period) {
-        return period;
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.degreeofsickleave');
     conf.chartFootnotes = ['help.nationell.degreeofsickleave'];
@@ -305,8 +307,8 @@ angular.module('StatisticsApp').differentieratIntygandeConfig =
         return 'api/verksamhet/getDifferentieratIntygandeStatistics/csv';
     };
     conf.showDetailsOptions = false;
-    conf.suffixTitle = function (period) {
-        return period;
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.differentierat');
     conf.chartFootnotes = ['help.verksamhet.differentierat1', 'help.verksamhet.differentierat2', 'help.verksamhet.differentierat3'];
@@ -330,8 +332,8 @@ angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getNumberOfCasesPerEnhetTimeSeries/csv';
     };
-    conf.suffixTitle = function (period) {
-        return period;
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.vardenhet');
     conf.chartFootnotes = function(isVerksamhet, isLandsting) {
@@ -359,8 +361,8 @@ angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig =
     conf.exportTableUrlVerksamhet = function (diagnosisHash) {
         return 'api/verksamhet/getJamforDiagnoserStatistikTidsserie/' + diagnosisHash + '/csv';
     };
-    conf.suffixTitle = function (period) {
-        return period;
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.diagnoscompare');
     conf.showDiagnosisSelector = true;
@@ -381,8 +383,8 @@ angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getAgeGroupsStatisticsAsTimeSeries/csv';
     };
-    conf.suffixTitle = function (period) {
-        return period;
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.agegroup');
     conf.exchangeableViews = [
@@ -401,8 +403,8 @@ angular.module('StatisticsApp').sickLeaveLengthTimeSeriesConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getSickLeaveLengthTimeSeries/csv';
     };
-    conf.suffixTitle = function (period) {
-        return period;
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.sickleavelength');
     conf.chartFootnotes = function(isVerksamhet) {
@@ -430,8 +432,8 @@ angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getNumberOfCasesPerLakarbefattningSomTidsserie/csv';
     };
-    conf.suffixTitle = function (period) {
-        return period;
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.lakare-befattning');
     conf.chartFootnotes = ['help.verksamhet.lakare-befattning'];
@@ -451,8 +453,8 @@ angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getSjukfallPerLakareSomTidsserie/csv';
     };
-    conf.suffixTitle = function (period) {
-        return period;
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.lakare');
     conf.chartFootnotes = ['help.verksamhet.lakare'];
@@ -472,8 +474,8 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonTidsserieConfig =
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getCasesPerDoctorAgeAndGenderTimeSeriesStatistics/csv';
     };
-    conf.suffixTitle = function (period) {
-        return period;
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.lakaregender');
     conf.chartFootnotes = ['help.verksamhet.lakaregender'];
@@ -495,8 +497,8 @@ angular.module('StatisticsApp').intygPerTypePerMonthConfig =
         conf.exportTableUrlVerksamhet = function () {
             return 'api/verksamhet/getIntygPerTypePerMonth/csv';
         };
-        conf.suffixTitle = function (period) {
-            return period;
+        conf.suffixTitle = function (suffix) {
+            return this.title + ' ' + (suffix || '');
         };
         conf.title = messageService.getProperty('title.intygstyp');
 
