@@ -528,23 +528,13 @@ legend {
   cursor: pointer;
 }
 
-#chart-data-table i.glyphicon {
-  color: #fff;
-  font-size: 12px;
-  float: left;
-  margin-top: 3px;
-  margin-right: 10px;
-  margin-left: 0;
-
-  &.chart-table-min-icon {
-    @extend .glyphicon-minus-sign;
-  }
-
-  &.chart-table-expand-icon {
-    @extend .glyphicon-plus-sign;
-  }
+#chart-data-table {
+  margin-top: 20px;
 }
 
+#chart-data-table .panel-default {
+  border-color: transparent;
+}
 #chart-data-table .panel-body {
   padding: 0;
 }
@@ -562,36 +552,64 @@ legend {
   padding-right: 0;
 }
 
-#chart-data-table .panel-heading {
-  background: #008391;
-  background: linear-gradient(to bottom, #008391 0%, #00687d 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#008391', endColorstr='#00687d', GradientType=0);
-  color: #fff;
+/* common for collapsible panels */
+
+.collapsible-panel-header {
+
+
+  i.glyphicon {
+    color: #fff;
+    font-size: 12px;
+    float: left;
+    margin-top: 0px;
+    margin-left: 30px;
+
+    &.collapsible-panel-min-icon {
+      @extend .glyphicon-chevron-up;
+      font-size: 1.1em;
+    }
+
+    &.collapsible-panel-expand-icon {
+      @extend .glyphicon-chevron-down;
+      font-size: 1.1em;
+    }
+  }
+
+  .panel-heading {
+    background: #008391;
+    background: linear-gradient(to bottom, #008391 0%, #00687d 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#008391', endColorstr='#00687d', GradientType=0);
+    color: #fff !important;
+    padding: 12px 12px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  h4.panel-title {
+    color: #fff !important;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .accordion-toggle {
+    cursor: pointer;
+    border-radius: 4px;
+    color: #fff !important;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .btn-default {
+    padding: 1px;
+    margin-top: -2px;
+  }
 }
 
-#chart-data-table.collapsed .panel-heading {
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
-  border-bottom-left-radius: 4px !important;
-  border-bottom-right-radius: 4px !important;
-}
-
-#chart-data-table a.accordion-toggle {
-  cursor: pointer;
-  border-radius: 4px;
-  color: #fff;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  line-height: 20px;
-}
-
-#chart-data-table.collapsed .accordion-toggle.disabled,
-#chart-data-table.collapsed .accordion-toggle.disabled:hover {
-  background: #ffffff !important;
-  color: #C7C7C7 !important;
-  border: 1px solid #DDDDDD;
-  cursor: default !important;
-  font-weight: normal !important;
+.collapsible-panel-body {
+  border: 1px solid #f9f9f9;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding-left:15px;
+  padding-right:15px;
+  background-color: #f9f9f9;
 }
 
 .accordion-toggle.active {
@@ -1793,28 +1811,28 @@ input[type="radio"], input[type="checkbox"] {
 .chart-icon {
   background-repeat: no-repeat;
   position: relative;
-  display: inline-block;
-  width: 26px;
-  height: 22px;
+  display: block;
+  width: 21px;
+  height: 18px;
   cursor: pointer;
   padding: 0;
-  margin: 0 !important;
+  margin: 2px 2px !important;
 }
 
 .chart-icon-column {
-  @include at2x("../assets/images/chart-types/stapeldiagram", $ext: "png", $w: 26px, $h: 22px);
+  @include at2x("../assets/images/chart-types/stapeldiagram", $ext: "png", $w: 21px, $h: 18px);
 }
 
 .chart-icon-area {
-  @include at2x("../assets/images/chart-types/ytdiagram", $ext: "png", $w: 26px, $h: 22px);
+  @include at2x("../assets/images/chart-types/ytdiagram", $ext: "png", $w: 21px, $h: 18px);
 }
 
 .chart-icon-line {
-  @include at2x("../assets/images/chart-types/linjediagram", $ext: "png", $w: 26px, $h: 22px);
+  @include at2x("../assets/images/chart-types/linjediagram", $ext: "png", $w: 21px, $h: 18px);
 }
 
 .chart-icon-percentarea {
-  @include at2x("../assets/images/chart-types/ytdiagram_procent", $ext: "png", $w: 26px, $h: 22px);
+  @include at2x("../assets/images/chart-types/ytdiagram_procent", $ext: "png", $w:21px, $h: 18px);
 }
 
 .not-active {
@@ -1882,19 +1900,11 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 .select-chart-type {
-  font-weight: bold;
   padding-left: ($grid-gutter-width);
   padding-right: 0;
 
   span, div {
-    vertical-align: middle;
     margin: 0 5px 0 0;
-  }
-
-  .select-chart-type-description {
-    color: #008391;
-    display: inline-block;
-    margin-right: 40px;
   }
 
   .select-chart-type-tidsserie {
@@ -1907,9 +1917,6 @@ input[type="radio"], input[type="checkbox"] {
     margin: 0;
   }
 
-  .btn-default {
-    padding: 6px;
-  }
 
 }
 

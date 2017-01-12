@@ -28,7 +28,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         var chart1 = {};
         var chart2 = {};
         $scope.status = {
-            isTableOpen: true
+            isTableOpen: true,
+            isChartCollapsed: false
         };
 
         var defaultChartType = 'area';

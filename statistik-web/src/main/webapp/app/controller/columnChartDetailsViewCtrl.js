@@ -35,7 +35,8 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             {id: 'chart1', name: 'diagram'}
         ];
         $scope.status = {
-            isTableOpen: true
+            isTableOpen: true,
+            isChartCollapsed: false
         };
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
