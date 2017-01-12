@@ -31,7 +31,8 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType);
         $scope.activeChartType = chartTypeInfo.activeChartType;
         $scope.status = {
-            isTableOpen: true
+            isTableOpen: true,
+            isChartCollapsed: false
         };
 
         $scope.chartContainers = [

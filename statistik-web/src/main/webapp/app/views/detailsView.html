@@ -6,7 +6,7 @@
   </div>
 
   <div class="clearfix">
-    <div class="pull-left right-2px-padding">
+    <span class="pull-left right-2px-padding">
       <h1 class="national-statistic-h1" id="reportHeader">
         <span>{{subTitle}}</span>
         <span>{{subTitlePeriod}}</span>
@@ -59,48 +59,6 @@
     </div>
 
     <div class="row hidden-print top-20px-margin">
-        <div class="col-md-9 select-chart-type" data-ng-if="isVerksamhetShowing">
-          <span class="select-chart-type-description" message key="lbl.diagramtyp-knappgrupp"></span>
-
-          <div class="select-chart-type-tidsserie">
-            <span message key="lbl.diagramtyp-tidsserie"></span>
-            <button
-                class="btn btn-default"
-                ng-class="{'active': activeChartType === 'line'}"
-                data-ng-click="switchChartType('line')" uib-tooltip="Linjediagram" tooltip-placement="bottom"
-                tooltip-popup-delay="1000">
-              <span class="chart-icon chart-icon-line"></span>
-            </button>
-
-            <button
-                class="btn btn-default"
-                ng-class="{'active': activeChartType === 'area'}"
-                data-ng-click="switchChartType('area')" uib-tooltip="Ytdiagram" tooltip-placement="bottom"
-                tooltip-popup-delay="1000">
-                <span class="chart-icon chart-icon-area"></span>
-            </button>
-
-            <button
-                class="btn btn-default"
-                ng-class="{'active': activeChartType === 'percentarea'}"
-                data-ng-click="switchChartType('percentarea')" uib-tooltip="Procentuellt ytdiagram" tooltip-placement="bottom"
-                tooltip-popup-delay="1000">
-              <span class="chart-icon chart-icon-percentarea"></span>
-            </button>
-          </div>
-
-          <div class="select-chart-type-tvarsnitt">
-            <span message key="lbl.diagramtyp-tvarsnitt"></span>
-            <button
-                class="btn btn-default"
-                ng-class="{'active': activeChartType === 'column'}"
-                data-ng-click="switchChartType('column')" uib-tooltip="Stapeldiagram" tooltip-placement="bottom"
-                tooltip-popup-delay="1000">
-              <span class="chart-icon chart-icon-column"></span>
-            </button>
-          </div>
-        </div>
-
         <!-- PRINT BUTTON GROUP -->
         <div class="col-md-3 print-page-panel pull-right">
           <button class="multiselect dropdown-toggle btn btn-default pull-right" data-ng-disabled="!exportEnabled" data-toggle="dropdown">
@@ -127,27 +85,92 @@
 <!-- Start ingress -->
 <div dataerrorview show-error="dataLoadingError" error-page-url="errorPageUrl">
   <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading && !resultMessageList">
+
     <!-- Start graph -->
-    <div class="row">
-      <div data-ng-repeat="chartContainer in chartContainers"
-           data-ng-class="{'col-xs-12': chartContainers.length == 1, 'col-lg-6': chartContainers.length == 2}"
-           class="left-2px-padding right-2px-padding">
-        <div class="chart-page-chart" id="{{chartContainer.id}}" style="height: 400px; margin: 0 auto"></div>
+    <div class="collapsible-panel-header">
+      <div role="tab" class="panel-heading">
+        <h4 class="panel-title">
+
+            <span message key="lbl.diagram" class="accordion-toggle" ng-click="status.isChartCollapsed = !status.isChartCollapsed"></span>
+
+              <span class="pull-right">
+                        <!-- chart type selection -->
+                          <span class="select-chart-type" data-ng-if="isVerksamhetShowing">
+                            <div class="select-chart-type-tidsserie">
+                              <span message key="lbl.diagramtyp-tidsserie"></span>
+                              <button
+                                  class="btn btn-xs btn-default"
+                                  ng-class="{'active': activeChartType === 'line'}"
+                                  data-ng-click="switchChartType('line')" uib-tooltip="Linjediagram" tooltip-placement="bottom"
+                                  tooltip-popup-delay="1000">
+                                <span class="chart-icon chart-icon-line"></span>
+                              </button>
+
+                              <button
+                                  class="btn btn-xs btn-default"
+                                  ng-class="{'active': activeChartType === 'area'}"
+                                  data-ng-click="switchChartType('area')" uib-tooltip="Ytdiagram" tooltip-placement="bottom"
+                                  tooltip-popup-delay="1000">
+                                <span class="chart-icon chart-icon-area"></span>
+                              </button>
+
+                              <button
+                                  class="btn btn-xs btn-default"
+                                  ng-class="{'active': activeChartType === 'percentarea'}"
+                                  data-ng-click="switchChartType('percentarea')" uib-tooltip="Procentuellt ytdiagram" tooltip-placement="bottom"
+                                  tooltip-popup-delay="1000">
+                                <span class="chart-icon chart-icon-percentarea"></span>
+                              </button>
+                            </div>
+
+                            <div class="select-chart-type-tvarsnitt">
+                              <span message key="lbl.diagramtyp-tvarsnitt"></span>
+                              <button
+                                  class="btn btn-xs btn-default"
+                                  ng-class="{'active': activeChartType === 'column'}"
+                                  data-ng-click="switchChartType('column')" uib-tooltip="Stapeldiagram" tooltip-placement="bottom"
+                                  tooltip-popup-delay="1000">
+                                <span class="chart-icon chart-icon-column"></span>
+                              </button>
+                            </div>
+                          </span>
+
+
+
+                        <i class="glyphicon pull-right accordion-toggle"
+                           ng-click="status.isChartCollapsed = !status.isChartCollapsed"
+                           ng-class="{'collapsible-panel-min-icon': !status.isChartCollapsed, 'collapsible-panel-expand-icon': status.isChartCollapsed}"
+                           uib-tooltip-html="status.isChartCollapsed ? 'lbl.visa-diagram': 'lbl.dolj-diagram' | messageFilter"
+                           tooltip-class="popover-content"
+                           tooltip-append-to-body="true"
+                           tooltip-trigger="mouseenter">
+                        </i>
+                </span>
+        </h4>
       </div>
     </div>
+    <div class="collapsible-panel-body" uib-collapse="status.isChartCollapsed">
+      <div class="row">
+        <div data-ng-repeat="chartContainer in chartContainers"
+             data-ng-class="{'col-xs-12': chartContainers.length == 1, 'col-lg-6': chartContainers.length == 2}"
+        class="col-xs-12">
+          <div class="chart-page-chart" id="{{chartContainer.id}}" style="height: 400px; margin: 0 auto; width:100%"></div>
+        </div>
+      </div>
 
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="btn-group legend-btn-group" id="chartlegends">
-						<span data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
-                  data-ng-show="showInLegend($index)">
-							<label id="legend-label" style="white-space: nowrap;" legend-height>
-                <input type="checkbox" checked="" class="detail-checkbox" data-ng-click="toggleSeriesVisibility($index)"
-                       style="cursor: pointer; cursor: hand;" />
-                <span class="legend-color-square" data-ng-attr-style="background-color: {{seriesData.color}}!important"></span>
-                <span class="legend-name">{{seriesData.name}}</span>
-              </label>
-						</span>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="btn-group legend-btn-group" id="chartlegends">
+              <span data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
+                    data-ng-show="showInLegend($index)">
+                <label id="legend-label" style="white-space: nowrap;" legend-height>
+                  <input type="checkbox" checked="" class="detail-checkbox" data-ng-click="toggleSeriesVisibility($index)"
+                         style="cursor: pointer; cursor: hand;" />
+                  <span class="legend-color-square" data-ng-attr-style="background-color: {{seriesData.color}}!important"></span>
+                  <span class="legend-name">{{seriesData.name}}</span>
+                </label>
+              </span>
+          </div>
         </div>
       </div>
     </div>
@@ -156,11 +179,18 @@
     <div class="rotate-print browserTable">
       <div class="row">
         <div id="chart-data-table" class="col-xs-12 chart-table">
-          <uib-accordion id="accordion2">
+          <uib-accordion id="accordion2" class="collapsible-panel-header">
             <uib-accordion-group is-open="status.isTableOpen">
               <uib-accordion-heading class="hidden-print">
-                <span data-ng-if="status.isTableOpen"><i class="glyphicon chart-table-min-icon"></i> <span message key="lbl.dolj-tabell"></span></span>
-                <span data-ng-if="!status.isTableOpen"><i class="glyphicon chart-table-expand-icon"></i> <span message key="lbl.visa-tabell"></span></span>
+                <span message key="lbl.tabell"></span>
+                <i class="pull-right glyphicon"
+                   ng-class="{'collapsible-panel-min-icon': status.isTableOpen, 'collapsible-panel-expand-icon': !status.isTableOpen}"
+                   uib-tooltip-html="status.isTableOpen ? 'lbl.dolj-tabell': 'lbl.visa-tabell' | messageFilter"
+                   tooltip-class="popover-content"
+                   tooltip-append-to-body="true"
+                   tooltip-trigger="mouseenter">
+                </i>
+
               </uib-accordion-heading>
               <stat-scroll-table header-rows="headerrows" rows="rows"></stat-scroll-table>
             </uib-accordion-group>
