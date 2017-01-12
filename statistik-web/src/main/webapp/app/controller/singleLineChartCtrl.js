@@ -82,7 +82,9 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             $scope.resultMessageList = ControllerCommons.removeFilterMessages(messages);
             $rootScope.$broadcast('resultMessagesChanged',  messages);
 
-            $scope.subTitlePeriod = angular.isFunction(config.suffixTitle) ? config.suffixTitle(result.period, $routeParams.kapitelId) : result.period;
+            $scope.subTitle = angular.isFunction(config.suffixTitle) ? config.suffixTitle($routeParams.kapitelId) : config.title;;
+            //Period should be on a separate row (INTYG-3288)
+            $scope.subTitlePeriod = result.period;
             $timeout(function() {
                 ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result.chartData, function() {

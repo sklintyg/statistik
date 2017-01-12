@@ -271,7 +271,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 }
             }
 
-            $scope.subTitlePeriod = getSubtitle($scope.currentPeriod, $scope.selectedDetailsOption, $scope.selectedDetailsOption2,
+            $scope.subTitle = getSubtitle($scope.selectedDetailsOption, $scope.selectedDetailsOption2,
                                             $scope.selectedDetailsOption3, config);
         };
 
@@ -318,15 +318,15 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return path;
         }
 
-        function getSubtitle(period, selectedOption1, selectedOption2, selectedOption3, config) {
+        function getSubtitle(selectedOption1, selectedOption2, selectedOption3, config) {
             if ((selectedOption3 && selectedOption3.name && selectedOption3.id)) {
-                return config.suffixTitle(period, selectedOption3.id + ' ' + selectedOption3.name);
+                return config.suffixTitle(selectedOption3.id + ' ' + selectedOption3.name);
             }
             if ((selectedOption2 && selectedOption2.name && selectedOption2.id)) {
-                return config.suffixTitle(period, selectedOption2.id + ' ' + selectedOption2.name);
+                return config.suffixTitle(selectedOption2.id + ' ' + selectedOption2.name);
             }
             if (selectedOption1 && selectedOption1.name && selectedOption1.id) {
-                return config.suffixTitle(period, selectedOption1.id + ' ' + selectedOption1.name);
+                return config.suffixTitle(selectedOption1.id + ' ' + selectedOption1.name);
             }
             return '';
         }
