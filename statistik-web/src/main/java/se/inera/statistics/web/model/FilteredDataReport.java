@@ -18,10 +18,16 @@
  */
 package se.inera.statistics.web.model;
 
+import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.service.FilterDataResponse;
+
+import java.util.List;
 
 public interface FilteredDataReport {
 
     FilterDataResponse getFilter();
 
+    List<Message> getMessages();
+
+    boolean isEmpty();
 }

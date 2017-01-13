@@ -18,23 +18,6 @@
  */
 package se.inera.statistics.web.service;
 
-import java.time.Clock;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +25,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
@@ -66,6 +48,22 @@ import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 import se.inera.statistics.web.service.converter.SjukfallForBiConverter;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.time.Clock;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -381,7 +379,8 @@ public class ProtectedChartDataService {
 
     private Message getDiagnosisSubGroupStatisticsMessage(Filter filter, List<String> diagnosis) {
         if (resultMessageHandler.isDxFilterDisableAllSelectedDxs(diagnosis, filter.getDiagnoser())) {
-            return createMessage("Du har gjort ett val av diagnoskapitel eller diagnosavsnitt som inte matchar det val du gjort i diagnosfilter (se Visa filter högst upp på sidan).");
+            String msg = "Du har gjort ett val av diagnoskapitel eller diagnosavsnitt som inte matchar det val du gjort i diagnosfilter (se Visa filter högst upp på sidan).";
+            return Message.create(ErrorType.FILTER, ErrorSeverity.WARN, msg);
         }
         return null;
     }
@@ -427,7 +426,9 @@ public class ProtectedChartDataService {
 
     private Message getCompareDiagnosisMessage(Filter filter, List<String> diagnosis) {
         if (resultMessageHandler.isDxFilterDisableAllSelectedDxs(diagnosis, filter.getDiagnoser())) {
-            return createMessage("Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfilter (se Visa filter högst upp på sidan).");
+
+            String msg = "Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfilter (se Visa filter högst upp på sidan).";
+            return Message.create(ErrorType.FILTER, ErrorSeverity.WARN, msg);
         }
         return null;
     }

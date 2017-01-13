@@ -48,7 +48,12 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             popoverTextChangeCurrentVSPrevious;
         $scope.popoverTextPeriod = result.periodText;
         $scope.doneLoading = true;
-        if (result.casesPerMonth.totalCases === 0) {
+
+        var messages = ControllerCommons.getResultMessageList(result, messageService);
+        $scope.resultMessageList = ControllerCommons.removeFilterMessages(messages);
+        $rootScope.$broadcast('resultMessagesChanged',  messages);
+
+        if (result.empty) {
             $scope.showEmptyDataView = true;
         } else {
             $scope.showEmptyDataView = false;
@@ -212,10 +217,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     };
 
     function populatePageWithData(result) {
-        var messages = ControllerCommons.getResultMessageList(result, messageService);
-        $scope.resultMessageList = ControllerCommons.removeFilterMessages(messages);
-        $rootScope.$broadcast('resultMessagesChanged',  messages);
-
         ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
                                 result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets,
                                 result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,

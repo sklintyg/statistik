@@ -80,8 +80,14 @@ public class VerksamhetOverviewData implements FilteredDataReport {
         return filter;
     }
 
+    @Override
     public List<Message> getMessages() {
         return messages;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return casesPerMonth.getTotalCases() == 0;
     }
 
 }
