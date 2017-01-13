@@ -195,7 +195,6 @@ var stMessages = {
 
         //info texts
         'info.emptyresponse' : 'Ingen data tillgänglig. Det beror på att det inte finns någon data för verksamheten.',
-        'info.emptyresponsefilter' : 'Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering',
 
         //login view
         'login.header.verksamhet': 'Logga in för verksamhetsstatistik',

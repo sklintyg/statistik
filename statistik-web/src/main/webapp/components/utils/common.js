@@ -347,13 +347,8 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return [];
         };
 
-        this.getEmptyResponseMessage = function(messageService, result) {
-
-            if (!result.filter || !result.filter.filterhash || result.filter.filterhash === 'EMPTY_FILTER') {
-                return [ {type: 'UNSET', severity: 'WARN', message: messageService.getProperty('info.emptyresponse', null, '', null, true)} ];
-            }
-
-            return [ {type: 'FILTER', severity: 'WARN', message: messageService.getProperty('info.emptyresponsefilter', null, '', null, true)} ];
+        this.getEmptyResponseMessage = function(messageService) {
+            return [ {type: 'UNSET', severity: 'WARN', message: messageService.getProperty('info.emptyresponse', null, '', null, true)} ];
         };
 
         this.removeFilterMessages = function(messages) {

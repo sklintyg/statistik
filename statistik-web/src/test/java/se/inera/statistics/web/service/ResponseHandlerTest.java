@@ -18,28 +18,12 @@
  */
 package se.inera.statistics.web.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.ws.rs.core.Response;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
@@ -48,8 +32,23 @@ import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.FilteredDataReport;
 import se.inera.statistics.web.model.SimpleDetailsData;
+
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 
 public class ResponseHandlerTest {
 
@@ -178,7 +177,22 @@ public class ResponseHandlerTest {
         final String filterHash = "abc";
         final List<HsaIdEnhet> enhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("2"));
         Mockito.doReturn(Collections.singletonList(createEnhet("1", "ett"))).when(warehouse).getEnhetsWithHsaId(any(Collection.class));
-        final FilteredDataReport report = () -> new FilterDataResponse(filterHash, Collections.emptyList(), enhets, null, null);
+        final FilteredDataReport report = new FilteredDataReport() {
+            @Override
+            public FilterDataResponse getFilter() {
+                return new FilterDataResponse(filterHash, Collections.emptyList(), enhets, null, null);
+            }
+
+            @Override
+            public List<Message> getMessages() {
+                return Collections.emptyList();
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+        };
 
         //When
         final Response response = responseHandler.getResponseForDataReport(report, new ArrayList<>());
@@ -194,10 +208,24 @@ public class ResponseHandlerTest {
     public void testGetFilterEnhetnamnIdIsAddedToNameWhenDuplicate() throws Exception {
         //Given
         final String filterHash = "abc";
-        final Filter filter = Mockito.mock(Filter.class);
         final List<HsaIdEnhet> enhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("2"));
         Mockito.doReturn(Arrays.asList(createEnhet("1", "ett"), createEnhet("2", "ett"))).when(warehouse).getEnhetsWithHsaId(any(Collection.class));
-        final FilteredDataReport report = () -> new FilterDataResponse(filterHash, Collections.emptyList(), enhets, null, null);
+        final FilteredDataReport report = new FilteredDataReport() {
+            @Override
+            public FilterDataResponse getFilter() {
+                return new FilterDataResponse(filterHash, Collections.emptyList(), enhets, null, null);
+            }
+
+            @Override
+            public List<Message> getMessages() {
+                return Collections.emptyList();
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+        };
 
         //When
         final Response response = responseHandler.getResponseForDataReport(report, new ArrayList<>());

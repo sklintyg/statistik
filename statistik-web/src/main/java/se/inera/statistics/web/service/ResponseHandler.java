@@ -41,6 +41,7 @@ import se.inera.statistics.web.model.TableDataReport;
 import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -49,6 +50,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ResponseHandler {
+
+    private static final String NO_DATA_MESSAGE = "Ingen data tillgänglig. Det beror på att det inte finns någon data för verksamheten.";
+    private static final String NO_DATA_FILTER_MESSAGE = "Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering.";
+    private static final String TOO_MUCH_DATA_MESSAGE = "Rapporten innehåller mycket data, vilket kan göra diagrammet svårt att läsa. Överväg att filtrera resultatet för att minska mängden data.";
 
     public static final String ALL_AVAILABLE_DXS_SELECTED_IN_FILTER = "allAvailableDxsSelectedInFilter";
     public static final String ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER = "allAvailableEnhetsSelectedInFilter";
@@ -91,15 +96,45 @@ public class ResponseHandler {
         final List<String> enhetNames = allAvailableEnhetsSelectedInFilter ? getEnhetNames(availableEnhetsForUser) : getEnhetNamesFromFilter(result.getFilter());
         mappedResult.put(FILTERED_ENHETS, enhetNames);
 
+        List<Message> oldMessages = result != null ? result.getMessages() : null;
+
+        List<Message> messages = new ArrayList<>();
+        if (oldMessages != null) {
+            messages.addAll(oldMessages);
+        }
+
         if (result instanceof TableDataReport) {
             final TableDataReport detailReport = (TableDataReport) result;
             if (containsMoreDataThanLimit(detailReport, LIMIT_FOR_TOO_MUCH_DATA_MESSAGE)) {
-                Message message = Message.create(ErrorType.UNSET, ErrorSeverity.INFO, "Rapporten innehåller mycket data, vilket kan göra diagrammet svårt att läsa. Överväg att filtrera resultatet för att minska mängden data.");
-                mappedResult.put(MESSAGE_KEY, message);
+                Message message = Message.create(ErrorType.UNSET, ErrorSeverity.INFO, TOO_MUCH_DATA_MESSAGE);
+                messages.add(message);
             }
         }
 
+        if (messages.isEmpty() && result != null && result.isEmpty()) {
+            if (filterActive(result.getFilter(), allAvailableDxsSelectedInFilter, allAvailableEnhetsSelectedInFilter, allAvailableSjukskrivningslangdsSelectedInFilter, allAvailableAgeGroupsSelectedInFilter)) {
+                messages.add(Message.create(ErrorType.FILTER, ErrorSeverity.WARN, NO_DATA_FILTER_MESSAGE));
+            } else {
+                messages.add(Message.create(ErrorType.UNSET, ErrorSeverity.WARN, NO_DATA_MESSAGE));
+            }
+        }
+
+        mappedResult.put(MESSAGE_KEY, messages);
+
         return Response.ok(mappedResult).build();
+    }
+
+    private boolean filterActive(FilterDataResponse filter, boolean allAvailableDxsSelectedInFilter, boolean allAvailableEnhetsSelectedInFilter, boolean allAvailableSjukskrivningslangdsSelectedInFilter, boolean allAvailableAgeGroupsSelectedInFilter) {
+        if (filter == null) {
+            return false;
+        }
+
+        boolean aldersGrupp = allAvailableAgeGroupsSelectedInFilter || filter.getAldersgrupp().isEmpty();
+        boolean dxs = allAvailableDxsSelectedInFilter || filter.getDiagnoser().isEmpty();
+        boolean enhets = allAvailableEnhetsSelectedInFilter || filter.getEnheter().isEmpty();
+        boolean sjukskrivningslangd = allAvailableSjukskrivningslangdsSelectedInFilter || filter.getSjukskrivningslangd().isEmpty();
+
+        return !(aldersGrupp && dxs && enhets && sjukskrivningslangd);
     }
 
     private boolean containsMoreDataThanLimit(TableDataReport detailReport, int limitForTooMuchDataMessage) {

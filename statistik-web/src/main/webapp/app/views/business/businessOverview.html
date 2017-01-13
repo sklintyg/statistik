@@ -1,4 +1,20 @@
-<div ng-show="showEmptyDataView" ng-include="'/app/views/business/emptyFilterData.html'"></div>
+<div data-ng-if="showEmptyDataView">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="overview-content">
+				<div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
+					<h1 style="margin-bottom: 0">Sökningen resulterade i ett tomt resultat.</h1>
+				</div>
+			</div>
+		</div>
+		<div class="row hidden-print">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-9" data-ng-repeat="resultMessage in resultMessageList">
+				<show-message type="resultMessage.type" severity="resultMessage.severity" text="resultMessage.message"></show-message>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div id="business-overview"  class="highlight-content" ng-show="!showEmptyDataView">
 	<div id="overview-content"> <!-- Start: Overview content -->
 		<div class="row" id="print-logo-display">
