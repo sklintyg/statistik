@@ -142,7 +142,7 @@
             <property name="sessionAuthenticationStrategy" ref="registerSessionAuthenticationStrategy"/>
         </bean>
         <bean id="fakeSuccessHandler"
-              class="org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler">
+            class="se.inera.auth.CookieAuthenticationSuccessHandler">
             <property name="defaultTargetUrl" value="/#/verksamhet"/>
         </bean>
         <bean id="fakeAuthenticationProvider"
@@ -162,10 +162,8 @@
         </bean>
 
         <!-- Handler deciding where to redirect user after successful login -->
-        <bean id="successRedirectHandler"
-              class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+        <bean id="successRedirectHandler" class="se.inera.auth.CookieAuthenticationSuccessHandler">
             <property name="defaultTargetUrl" value="/#/verksamhet"/>
-            <property name="alwaysUseDefaultTargetUrl" value="true"/>
         </bean>
 
         <!-- Central storage of cryptographic keys -->

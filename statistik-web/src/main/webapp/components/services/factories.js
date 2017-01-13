@@ -20,7 +20,7 @@
 angular.module('StatisticsApp').factory('statisticsData',
 
     /** @ngInject */
-    function ($http, $rootScope, $q, $location, _, $log, $cacheFactory, AppModel) {
+    function ($http, $rootScope, $q, $location, _, $log, $cacheFactory, $cookies, AppModel) {
     'use strict';
 
     var factory = {};
@@ -68,6 +68,7 @@ angular.module('StatisticsApp').factory('statisticsData',
         var arg1 = httpMethod === 'get' ? config : {};
 
         $http[httpMethod](url, arg1, config).success(function (result) {
+            $cookies.remove('statUrl');
             try {
                 successCallback(result);
             } catch (e) {
@@ -76,6 +77,7 @@ angular.module('StatisticsApp').factory('statisticsData',
         }).error(function (data, status/*, headers, config*/) {
             if (status === 403) {
                 var url = AppModel.get().loginUrl;
+                $cookies.put('statUrl', '/#' + $location.url());
                 $rootScope.loginTimedOut = $rootScope.isLoggedIn;
                 $rootScope.isLoggedIn = false;
                 $location.path(url ? url : '/login');
