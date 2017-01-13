@@ -552,6 +552,16 @@ legend {
   padding-right: 0;
 }
 
+/* position print button right bottom corner of column */
+#print-button-col {
+  position:absolute;
+  bottom:0;
+  right:0
+}
+/* Last of the dropdowns should not have bottom margin. Entire row instead have margin-bottom class so that both colums have same bottom margin */
+div#detailsOptionsDropdown3 {
+  margin-bottom:0 !important;
+}
 /* common for collapsible panels */
 
 .collapsible-panel-header {
@@ -916,6 +926,7 @@ div.headerbox-user-profile {
 
 .detail-view-choice-dropdown {
   min-width: 200px !important;
+  top: 36px;
 }
 
 .detail-view-choice-dropdown a {
@@ -1907,7 +1918,6 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 .select-chart-type {
-  padding-left: ($grid-gutter-width);
   padding-right: 0;
 
   span, div {
