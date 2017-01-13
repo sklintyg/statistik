@@ -39,6 +39,8 @@ import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableDataReport;
 
 import javax.ws.rs.core.Response;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -62,11 +64,12 @@ public class ResponseHandler {
     @Autowired
     private Warehouse warehouse;
 
-    Response getResponse(TableDataReport result, String csv, List<HsaIdEnhet> availableEnhetsForUser) {
+    Response getResponse(TableDataReport result, String csv, List<HsaIdEnhet> availableEnhetsForUser, String filename) {
         if (csv == null || csv.isEmpty()) {
             return getResponseForDataReport(result, availableEnhetsForUser);
         }
-        return CsvConverter.getCsvResponse(result.getTableData(), "export.csv");
+        return CsvConverter.getCsvResponse(result.getTableData(),
+                filename + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYYMMdd")) + ".csv");
     }
 
     Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser) {

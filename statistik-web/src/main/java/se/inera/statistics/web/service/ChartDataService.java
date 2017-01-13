@@ -54,11 +54,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 /**
  * Statistics services that does not require authentication. Unless otherwise noted, the data returned
@@ -235,11 +232,12 @@ public class ChartDataService {
         numberOfMeddelandenPerMonth = new MessagePeriodConverter().convert(casesPerMonth, filterSettings);
     }*/
 
-    private Response getResponse(TableDataReport result, String csv) {
+    private Response getResponse(TableDataReport result, String csv, String filename) {
         if (csv == null || csv.isEmpty()) {
             return Response.ok(result).build();
         }
-        return CsvConverter.getCsvResponse(result.getTableData(), "export.csv");
+        return CsvConverter.getCsvResponse(result.getTableData(),
+                filename + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYYMMdd"))+ ".csv");
     }
 
     /**
@@ -251,7 +249,7 @@ public class ChartDataService {
     public Response getNumberOfCasesPerMonth(@PathParam("csv") String csv) {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getNumberOfCasesPerMonth");
-        return getResponse(numberOfCasesPerMonth, csv);
+        return getResponse(numberOfCasesPerMonth, csv, "antal_per_manad");
     }
 
     /**
@@ -325,7 +323,7 @@ public class ChartDataService {
     public Response getDiagnoskapitelstatistik(@PathParam("csv") String csv) {
         LOG.info("Calling getDiagnoskapitelstatistik for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getDiagnoskapitelstatistik");
-        return getResponse(diagnosgrupper, csv);
+        return getResponse(diagnosgrupper, csv, "diagnoskapitel");
     }
 
     /**
@@ -337,7 +335,7 @@ public class ChartDataService {
     public Response getDiagnosavsnittstatistik(@PathParam("groupId") String groupId, @PathParam("csv") String csv) {
         LOG.info("Calling getDiagnosavsnittstatistik for national with groupId: " + groupId);
         monitoringLogService.logTrackAccessAnonymousChartData("getDiagnosavsnittstatistik");
-        return getResponse(diagnoskapitel.get(groupId), csv);
+        return getResponse(diagnoskapitel.get(groupId), csv, "diagnosavsnitt");
     }
 
     /**
@@ -361,7 +359,7 @@ public class ChartDataService {
     public Response getAgeGroupsStatistics(@PathParam("csv") String csv) {
         LOG.info("Calling getAgeGroupsStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getAgeGroupsStatistics");
-        return getResponse(aldersgrupper, csv);
+        return getResponse(aldersgrupper, csv, "aldersgrupper");
     }
 
     /**
@@ -373,7 +371,7 @@ public class ChartDataService {
     public Response getDegreeOfSickLeaveStatistics(@PathParam("csv") String csv) {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getDegreeOfSickLeaveStatistics");
-        return getResponse(sjukskrivningsgrad, csv);
+        return getResponse(sjukskrivningsgrad, csv, "sjukskrivningsgrad");
     }
 
     /**
@@ -385,7 +383,7 @@ public class ChartDataService {
     public Response getSickLeaveLengthData(@PathParam("csv") String csv) {
         LOG.info("Calling getSickLeaveLengthData for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getSickLeaveLengthData");
-        return getResponse(sjukfallslangd, csv);
+        return getResponse(sjukfallslangd, csv, "sjukskrivningslangd");
     }
 
     /**
@@ -395,7 +393,7 @@ public class ChartDataService {
     @Path("getCountyStatistics{csv:(/csv)?}")
     @Produces({ MediaType.APPLICATION_JSON })
     public Response getCountyStatistics(@PathParam("csv") String csv) {
-        return getResponse(sjukfallPerLan, csv);
+        return getResponse(sjukfallPerLan, csv, "sjukfall_per_lan");
     }
 
     /**
@@ -407,7 +405,7 @@ public class ChartDataService {
     public Response getSjukfallPerSexStatistics(@PathParam("csv") String csv) {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getSjukfallPerSexStatistics");
-        return getResponse(konsfordelningPerLan, csv);
+        return getResponse(konsfordelningPerLan, csv, "sjukfall_per_kon");
     }
 
     @GET

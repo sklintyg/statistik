@@ -263,7 +263,7 @@ public class ProtectedLandstingService {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonthLandsting(filterSettings);
         SimpleDetailsData result = new PeriodConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, csv, request);
+        return getResponse(result, csv, request, "sjukfall_per_manad_landsting");
     }
 
     @GET
@@ -276,7 +276,7 @@ public class ProtectedLandstingService {
         final List<HsaIdEnhet> connectedEnhetIds = getEnhetIdsToMark(request);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhetLandsting(filterSettings);
         SimpleDetailsData result = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", connectedEnhetIds).convert(casesPerEnhet, filterSettings);
-        return getResponse(result, csv, request);
+        return getResponse(result, csv, request, "sjukfall_per_enhet_landsting");
     }
 
     private List<HsaIdEnhet> getEnhetIdsToMark(@Context HttpServletRequest request) {
@@ -301,7 +301,7 @@ public class ProtectedLandstingService {
         final List<HsaIdEnhet> connectedEnhetIds = getEnhetIdsToMark(request);
         final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vgIdForLoggedInUser);
         SimpleDetailsData result = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, connectedEnhetIds).convert(casesPerEnhet, filterSettings, null);
-        return getResponse(result, csv, request);
+        return getResponse(result, csv, request, "sjukfall_per_patient_per_enhet_landsting");
     }
 
     @GET
@@ -316,10 +316,10 @@ public class ProtectedLandstingService {
         return Response.ok(result).build();
     }
 
-    private Response getResponse(TableDataReport result, String csv, HttpServletRequest request) {
+    private Response getResponse(TableDataReport result, String csv, HttpServletRequest request, String filename) {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final List<HsaIdEnhet> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
-        return responseHandler.getResponse(result, csv, allEnhets);
+        return responseHandler.getResponse(result, csv, allEnhets, filename);
     }
 
     public boolean hasAccessToLandstingAdmin(HttpServletRequest request) {
