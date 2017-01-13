@@ -34,7 +34,7 @@ public final class Converters {
 
     public static List<Message> combineMessages(Message... messages) {
         return Stream.of(messages)
-                .filter(m -> m != null && m.getMessage() != null && m.getMessage().length() > 0)
+                .filter(m -> m != null && m.getMessage() != null && !m.getMessage().isEmpty())
                 .collect(Collectors.toList());
     }
 
