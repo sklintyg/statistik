@@ -70,7 +70,7 @@ public class ResponseHandlerTest {
     @Test
     public void testGetResponseWithNullData() throws Exception {
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null), null, null, "");
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get("empty"));
@@ -81,7 +81,7 @@ public class ResponseHandlerTest {
     @Test
     public void testGetResponseWithNullResult() throws Exception {
         //When
-        final Response response = responseHandler.getResponse(null, null, null);
+        final Response response = responseHandler.getResponse(null, null, null, "");
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));
@@ -94,7 +94,7 @@ public class ResponseHandlerTest {
         Mockito.when(icd10.getIcdStructure()).thenReturn(createIcdList(1, 2, 3));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("1", "2", "3"), null, null, null)), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("1", "2", "3"), null, null, null)), null, null, "");
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));
@@ -106,7 +106,7 @@ public class ResponseHandlerTest {
         Mockito.when(icd10.getIcdStructure()).thenReturn(createIcdList(1, 2, 3));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("2", "1", "3"), null, null, null)), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("2", "1", "3"), null, null, null)), null, null, "");
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));
@@ -118,7 +118,7 @@ public class ResponseHandlerTest {
         Mockito.when(icd10.getIcdStructure()).thenReturn(createIcdList(1, 2, 3));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("1", "2"), null, null, null)), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, Arrays.asList("1", "2"), null, null, null)), null, null, "");
 
         //Then
         assertFalse((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));
@@ -139,7 +139,7 @@ public class ResponseHandlerTest {
         final List<HsaIdEnhet> enhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("2"), new HsaIdEnhet("3"));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, enhets, null, null)), null, enhets);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, enhets, null, null)), null, enhets, "");
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER));
@@ -152,7 +152,7 @@ public class ResponseHandlerTest {
         final List<HsaIdEnhet> filteredEnhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("3"), new HsaIdEnhet("2"));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, filteredEnhets, null, null)), null, availableEnhets);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, filteredEnhets, null, null)), null, availableEnhets, "");
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER));
@@ -165,7 +165,7 @@ public class ResponseHandlerTest {
         final List<HsaIdEnhet> filteredEnhets = Arrays.asList(new HsaIdEnhet("1"), new HsaIdEnhet("2"));
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, filteredEnhets, null, null)), null, availableEnhets);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, filteredEnhets, null, null)), null, availableEnhets, "");
 
         //Then
         assertFalse((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER));
@@ -222,7 +222,7 @@ public class ResponseHandlerTest {
         final List<String> sjukskrivningslangds = Arrays.stream(SjukfallsLangdGroup.values()).map(SjukfallsLangdGroup::getGroupName).collect(Collectors.toList());
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, sjukskrivningslangds, null)), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, sjukskrivningslangds, null)), null, null, "");
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER));
@@ -235,7 +235,7 @@ public class ResponseHandlerTest {
         Collections.shuffle(sjukskrivningslangds);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, sjukskrivningslangds, null)), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, sjukskrivningslangds, null)), null, null, "");
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER));
@@ -247,7 +247,7 @@ public class ResponseHandlerTest {
         final List<String> sjukskrivningslangds = Arrays.stream(SjukfallsLangdGroup.values()).map(SjukfallsLangdGroup::getGroupName).collect(Collectors.toList());
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, sjukskrivningslangds.subList(0, sjukskrivningslangds.size() - 1), null)), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, sjukskrivningslangds.subList(0, sjukskrivningslangds.size() - 1), null)), null, null, "");
 
         //Then
         assertFalse((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER));
@@ -259,7 +259,7 @@ public class ResponseHandlerTest {
         final List<String> ageGroups = Arrays.stream(AgeGroup.values()).map(AgeGroup::getGroupName).collect(Collectors.toList());
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, null, ageGroups)), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, null, ageGroups)), null, null, "");
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER));
@@ -272,7 +272,7 @@ public class ResponseHandlerTest {
         Collections.shuffle(ageGroups);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, null, ageGroups)), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, null, ageGroups)), null, null, "");
 
         //Then
         assertTrue((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER));
@@ -284,7 +284,7 @@ public class ResponseHandlerTest {
         final List<String> ageGroups = Arrays.stream(AgeGroup.values()).map(AgeGroup::getGroupName).collect(Collectors.toList());
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, null, ageGroups.subList(0, ageGroups.size() - 1))), null, null);
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, new FilterDataResponse(null, null, null, null, ageGroups.subList(0, ageGroups.size() - 1))), null, null, "");
 
         //Then
         assertFalse((Boolean)((Map)response.getEntity()).get(ResponseHandler.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER));
