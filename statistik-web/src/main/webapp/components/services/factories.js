@@ -339,7 +339,7 @@ angular.module('StatisticsApp').factory('statisticsData',
         $http.post('api/logging/log', {message: message, url: $location.url()}, {cache: false})
         .success(function (/*result*/) {
         }).error(function (/*data, status, headers, config*/) {
-            $log('Could not log to server: ' + message);
+            $log.log('Could not log to server: ' + message);
         });
     };
 
