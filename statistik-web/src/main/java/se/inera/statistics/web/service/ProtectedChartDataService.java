@@ -231,7 +231,7 @@ public class ProtectedChartDataService {
     public Response getNumberOfMeddelandenPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getMessagesPerMonth(filterSettings.getFilter(), filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData result = new MessagePeriodConverter().convert(casesPerMonth, filterSettings);
+        SimpleDetailsData result = MessagePeriodConverter.newTidsserie().convert(casesPerMonth, filterSettings);
         return getResponse(result, csv, request, "meddelanden_per_manad");
     }
 
@@ -246,7 +246,7 @@ public class ProtectedChartDataService {
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getMessagesPerMonthTvarsnitt(filter, range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData result = new MessagePeriodConverter().convert(casesPerMonth, filterSettings);
+        SimpleDetailsData result = MessagePeriodConverter.newTvarsnitt().convert(casesPerMonth, filterSettings);
         return getResponse(result, csv, request, "meddelanden_per_manad_tvarsnitt");
     }
 
