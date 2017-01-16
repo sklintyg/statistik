@@ -97,7 +97,12 @@ public final class ConversionHelper {
         if (lkf.length() < length) {
             return UNKNOWN;
         } else {
-            return Integer.parseInt(lkf.substring(0, length));
+            try {
+                return Integer.parseInt(lkf.substring(0, length));
+            } catch (NumberFormatException e) {
+                LOG.warn("Could not parse LKF: " + lkf);
+                return UNKNOWN;
+            }
         }
     }
     //CHECKSTYLE:ON MagicNumber

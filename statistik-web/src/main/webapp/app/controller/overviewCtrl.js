@@ -227,6 +227,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                     }
                 }
             };
+            chartOptions.tooltip.pointFormatter = null;
             chartOptions.xAxis = {
                 min: 0,
                 max: 100,

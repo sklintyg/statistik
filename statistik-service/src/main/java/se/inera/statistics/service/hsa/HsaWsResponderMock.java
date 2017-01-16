@@ -114,6 +114,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     private static final List<String> VERKSAMHET_CODES;
     private final Map<String, JsonNode> personals = new HashMap<>();
     private String nextLanCode = null;
+    private String nextKommunCode = null;
     private String nextEnhetName = null;
     private String nextHuvudenhetId = null;
     private HSAKey hsaKey = null;
@@ -257,6 +258,9 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     }
 
     private String createKommun(HSAKey key, final String lan) {
+        if (nextKommunCode != null) {
+            return nextKommunCode;
+        }
         int keyIndex = key != null && key.getEnhetId() != null ? key.getEnhetId().hashCode() & POSITIVE_MASK : 0;
         List<String> relevantKommuns = FluentIterable.from(KOMMUN_CODES).filter(new Predicate<String>() {
             @Override
@@ -301,6 +305,11 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     @Override
     public void setCountyForNextIntyg(String countyCode) {
         nextLanCode = countyCode;
+    }
+
+    @Override
+    public void setKommunForNextIntyg(String kommunCode) {
+        nextKommunCode = kommunCode;
     }
 
     @Override
@@ -463,8 +472,17 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
             GetStatisticsHsaUnitResponseType resp = new GetStatisticsHsaUnitResponseType();
             resp.setStatisticsUnit(createHsaUnit(key, false));
             resp.setStatisticsCareUnit(createHsaUnit(key, true));
+            nextLanCode = null;
+            nextKommunCode = null;
+            nextEnhetName = null;
+            nextHuvudenhetId = null;
             return resp;
         }
+
+        nextLanCode = null;
+        nextKommunCode = null;
+        nextEnhetName = null;
+        nextHuvudenhetId = null;
         return null;
     }
 

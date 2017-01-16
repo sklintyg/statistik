@@ -36,6 +36,7 @@ import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
 
 import com.google.common.base.Joiner;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 
 public final class HSAServiceHelper {
@@ -75,7 +76,11 @@ public final class HSAServiceHelper {
             if (result == null) {
                 result = getLan(hsaData.getHuvudenhet());
             }
-            return result != null ? result : Lan.OVRIGT_ID;
+            try {
+                return result != null && result.length() <= 2 && Integer.parseInt(result) >= 0 ? result : Lan.OVRIGT_ID;
+            } catch (NumberFormatException e) {
+                return Lan.OVRIGT_ID;
+            }
         } else {
             return Lan.OVRIGT_ID;
         }
@@ -98,7 +103,14 @@ public final class HSAServiceHelper {
             if (result == null) {
                 result = getKommun(hsaData.getHuvudenhet());
             }
-            return result != null ? result : Kommun.OVRIGT_ID.substring(2);
+            try {
+                final boolean isValidKommunId = result != null
+                        && result.length() <= WidelineConverter.MAX_LENGTH_KOMMUN_ID
+                        && Integer.parseInt(result) >= 0;
+                return isValidKommunId ? result : Kommun.OVRIGT_ID.substring(2);
+            } catch (NumberFormatException e) {
+                return Kommun.OVRIGT_ID.substring(2);
+            }
         } else {
             return Kommun.OVRIGT_ID.substring(2);
         }

@@ -28,6 +28,7 @@ class FoljandeIntygFinns {
     def läkare
     def län
     def exaktintygid
+    def kommun
     String händelsetyp
     String intygformat
     String intygstyp
@@ -53,6 +54,7 @@ class FoljandeIntygFinns {
         arbetsförmåga2 = ""
         läkare = "Personal HSA-ID"
         län = null
+        kommun = null
         händelsetyp = EventType.CREATED.name()
         exaktintygid = intygIdCounter++
         intygformat = "FK7263SIT"
@@ -68,7 +70,7 @@ class FoljandeIntygFinns {
             huvudenhet = enhet;
         }
         def finalIntygDataString = getIntygDataString()
-        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(exaktintygid), System.currentTimeMillis(), län, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
+        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(exaktintygid), System.currentTimeMillis(), län, kommun, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
         reportsUtil.insertIntyg(intyg)
     }
 
