@@ -26,7 +26,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
             '$emit' : function() {},
             '$watch': function() {}
         };
-        ctrl = $controller('treeMultiSelectorCtrl', {$scope: scope, treeMultiSelectorUtil: treeMultiSelectorUtil});
+        ctrl = $controller('treeMultiSelectorCtrl', {$scope: scope, $element: {}, treeMultiSelectorUtil: treeMultiSelectorUtil});
     }));
 
     var diagnoses;

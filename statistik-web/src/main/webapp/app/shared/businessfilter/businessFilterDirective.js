@@ -285,7 +285,13 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
     scope.dateOptionsTo = angular.copy(scope.dateOptions);
 
-    scope.isVerksamhetTypeCollapsed = true;
+    scope.sidebarState = {
+        collapsed: true
+    };
+    scope.sidebarStateDiagnose = {
+        collapsed: true
+    };
+
 
     scope.selectVerksamhetsTyp = function(verksamhetsTyp) {
         var checked = !verksamhetsTyp.checked;

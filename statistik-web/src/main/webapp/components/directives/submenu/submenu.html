@@ -1,11 +1,16 @@
-<span ng-click="recursionhelper.hideclick(item)" class="ellipsis-text">
-  <span class="submenuicon glyphicon" ng-class="{'glyphicon-minus-sign': item.showChildren, 'glyphicon-plus-sign': !item.showChildren}"></span>
-  <span>{{::item.name}}</span>
-</span>
+<div class="node" ng-class="{'depth0': depth ===0, 'depth1': depth ===1, 'depth2': depth ===2, 'leaf': !(item.subs && item.subs.length >0)}" ng-click="recursionhelper.hideclick(item, $event)">
+    <span class="indenter"></span>
+    <input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="recursionhelper.itemclick(item, $event)"/>
 
-<input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="recursionhelper.itemclick(item)"/>
-<ul data-ng-if="item.subs && item.showChildren" style="list-style-type: none;">
-  <li data-ng-init="depth=depth+1" data-ng-repeat="item in item.subs">
-    <submenu item="item" itemroot="itemroot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" ng-class="{leaf: !item.subs}" class="depth{{depth}}"></submenu>
-  </li>
-</ul>
+    <span ng-click="recursionhelper.itemclick(item, $event)" class="ellipsis-text">
+      {{::item.name}}
+    </span>
+    <span ng-click="recursionhelper.hideclick(item, $event);" class="submenuicon glyphicon" ng-class="{'glyphicon-chevron-up': item.showChildren, 'glyphicon-chevron-down': !item.showChildren}"></span>
+
+</div>
+
+  <div data-ng-if="item.subs && item.showChildren">
+    <div class="node-parent" data-ng-init="depth=depth+1" data-ng-repeat="item in item.subs">
+      <submenu item="item" itemroot="itemroot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" ng-class="{'leaf': !(item.subs && item.subs.length >0)}" class="depth{{depth}}"></submenu>
+    </div>
+  </div>
