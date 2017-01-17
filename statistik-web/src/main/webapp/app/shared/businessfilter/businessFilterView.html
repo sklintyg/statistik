@@ -96,6 +96,7 @@
             done-clicked="businessFilter.updateGeography"
             data-ng-if="businessFilter.showBusinessFilter()"
             text-data="geographyFilterSelectorData"
+            search-hint-text-key="lbl.filter.verksamhet.search.hint"
             sidebar-menu-expand="lbl.filter.verksamhet.link"
             sidebar-menu-collapse="lbl.filter.verksamhet.link.collapse"
             sidebar-state="sidebarState">
@@ -121,6 +122,7 @@
             on-open="businessFilter.setSelectedDiagnoses"
             done-clicked="businessFilter.updateDiagnoses"
             text-data="diagnosisFilterSelectorData"
+            search-hint-text-key="lbl.filter.val-av-diagnoser.search.hint"
             sidebar-state="sidebarStateDiagnose">
         </tree-multi-selector>
 
