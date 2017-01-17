@@ -3,9 +3,11 @@
 	margin-left: 5px;
 }
 
-.modal-body label {
-	top: 4px;
-	position: relative;
+.modal-footer {
+	margin-top:0;
+}
+.modal-footer label>div {
+	text-align: left;
 }
 
 label.btn {
@@ -81,9 +83,6 @@ input[type="radio"], input[type="checkbox"] {
 	border-radius: 4px;
 }
 
-.leaf .glyphicon {
-	display: none;
-}
 
 .modal-body input {
 	vertical-align: bottom;
@@ -133,6 +132,11 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	font-weight: bold;
 }
 
+.modal-body {
+	padding:0 20px 0 20px;
+
+}
+
 .modal-body ul {
 	list-style-type: none;
 }
@@ -141,66 +145,162 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 	padding: 0;
 }
 .search-all-items, .select-all-items {
-	margin-bottom: 10px;
+	text-align: right;
+	line-height: 21px;
 }
 
-.modal-body .modal-list li.search-all-items input[type=search] {
+.modal-body .search-all-items input[type=search] {
 	width: 100%;
 	height: 35px;
 	top: 1px;
 }
 
-.modal-body .modal-list li.select-all-items {
+.modal-body .modal-list .select-all-items {
+
 	label {
 		font-weight: bold;
 		cursor: pointer;
 	}
 
 	span {
-		vertical-align: top;
 		display: inline-block;
+		font-size:14px;
+        padding-right: 4px;
 	}
 
 	input[type=checkbox] {
 		margin-left: 0;
 		margin-right: 5px;
-		vertical-align: middle;
 	}
 }
 
 .modal-body .modal-list input[type=checkbox] {
-	margin-left: 10px;
-	margin-top: 2px;
-	margin-bottom: 2px;
-	top: 0;
-	position: relative;
 	cursor: pointer;
+}
+.modal-body .modal-list.item-body {
+
+
+	max-height: 440px;
+	overflow-y: auto;
+
+	border-radius: 4px;
+	margin-top:10px;
+	border-bottom: 1px solid #eee;
+
+	input[type=checkbox] {
+		margin: 0 0 0 10px;
+	}
+
+	div.node-parent {
+	}
+
+
+	.leaf .glyphicon {
+		display: none;
+	}
+
+	div.node {
+		padding: 4px 0;
+		cursor: pointer;
+		border: 1px solid #eee;
+
+		.indenter {
+			display: inline-block;
+		}
+
+		&.depth0 {
+			background-color: #eee;
+			border-top: 1px solid #fff;
+			&.indenter {
+				width: 0px;
+			}
+
+			>.ellipsis-text {
+				max-width: 440px;
+			}
+		}
+
+		&.depth1 {
+			background-color: #fff;
+			border-top: 0;
+			>.indenter {
+				width: 30px;
+			}
+			>.ellipsis-text {
+				max-width: 400px;
+			}
+
+		}
+
+		&.depth2 {
+			background-color: #fff;
+			border-top: 0;
+			border-bottom: 0;
+
+			>.indenter {
+				width: 54px;
+			}
+
+			>.ellipsis-text {
+				max-width: 380px;
+			}
+
+		}
+	}
+
+
 }
 
 /* STYLES FOR MULTI-MULTI*/
-.depth0, .depth1 { cursor: pointer; }
-.depth2 { cursor: default; }
 .ellipsis-text {
-	max-width: 350px;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	display: block;
+	display: inline-block;
 	white-space: nowrap;
-	float: left;
+	vertical-align: middle;
+	cursor: pointer;
+
 }
 
 .submenuicon {
-	&.glyphicon-minus-sign, &.glyphicon-plus-sign {
+	&.glyphicon-chevron-up, &.glyphicon-chevron-down {
 		cursor: pointer;
 		margin-right: 5px;
 		margin-top: 2px;
 		font-size: 12px;
+		float:right;
 	}
+
 }
 
-.depth2 span.glyphicon-minus-sign, .depth2 span.glyphicon-plus-sign {
-	display: none;
-	cursor: default;
+
+#modal-body-left {
+  	display: inline-block;
+  	vertical-align: top;
+  	width:558px;
+	padding: 10px 10px 10px 0;
+
+}
+
+.border-right {
+	border-right: 1px solid #ddd;
+}
+
+#modal-body-right {
+
+  	display: inline-block;
+  	vertical-align: top;
+
+
+	h2 {
+		padding: 0 0 10px 0;
+		margin:0;
+		font-weight: bold;
+	}
+
+}
+#verksamhet-uib-collapser {
+	padding:10px;
 }
 
 .check-permanent-filter-container {

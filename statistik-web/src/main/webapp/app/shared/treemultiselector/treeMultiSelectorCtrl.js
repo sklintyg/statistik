@@ -17,7 +17,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 angular.module('StatisticsApp.treeMultiSelector.controller', [])
-    .controller('treeMultiSelectorCtrl', ['$scope', 'treeMultiSelectorUtil', '$timeout', '_', function ($scope, treeMultiSelectorUtil, $timeout, _) {
+    .controller('treeMultiSelectorCtrl', ['$scope', '$element', 'treeMultiSelectorUtil', '$timeout', '_', function ($scope, $element, treeMultiSelectorUtil, $timeout, _) {
         'use strict';
 
         var self = this;
@@ -41,12 +41,14 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         };
 
         $scope.recursionhelper = {
-            itemclick: function (item) {
+            itemclick: function (item, $event) {
                 $scope.itemClicked(item);
+                $event.stopPropagation();
             },
 
-            hideclick: function (item) {
+            hideclick: function (item, $event) {
                 $scope.hideClicked(item);
+                $event.stopPropagation();
             }
         };
 
@@ -238,5 +240,16 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             }
 
             return false;
+        }
+        //Manually resize modal window to make room for sidebar (if used)
+        if ($scope.sidebarMenuExpand) {
+                $scope.$watch('sidebarState.collapsed', function(newValue) {
+                    var modalDialog = angular.element($element[0].getElementsByClassName('modal-dialog')[0]);
+                    if (newValue === true) {
+                        modalDialog.css('width', '600px');
+                    } else {
+                        modalDialog.css('width', '900px');
+                    }
+                }, true);
         }
     }]);

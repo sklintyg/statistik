@@ -95,20 +95,18 @@
             on-open="businessFilter.setSelectedGeography"
             done-clicked="businessFilter.updateGeography"
             data-ng-if="businessFilter.showBusinessFilter()"
-            text-data="geographyFilterSelectorData">
+            text-data="geographyFilterSelectorData"
+            sidebar-menu-expand="lbl.filter.verksamhet.link"
+            sidebar-menu-collapse="lbl.filter.verksamhet.link.collapse"
+            sidebar-state="sidebarState">
 
-            <button class="btn btn-link btn-link-minimal valj-verksamhetstyp-link" ng-click="isVerksamhetTypeCollapsed = !isVerksamhetTypeCollapsed" ng-switch="isVerksamhetTypeCollapsed">
-              <span message key="lbl.filter.verksamhet.link"></span>
-              <span ng-switch-when="false" class="fa fa-chevron-up"></span>
-              <span ng-switch-when="true" class="fa fa-chevron-down"></span>
-            </button>
-
-            <div uib-collapse="isVerksamhetTypeCollapsed">
+            <div uib-collapse="sidebarState.collapsed" id="verksamhet-uib-collapser" ng-if="!sidebarState.collapsed">
+              <h2><span message key="lbl.filter.verksamhet.quickselection.title"/></h2>
               <ul class="verksamhets-typer-list">
                 <li data-ng-repeat="verksamhet in businessFilter.verksamhetsTyper">
                   <span data-ng-click="selectVerksamhetsTyp(verksamhet)">
-                    <input type="checkbox" data-ng-checked="verksamhet.checked" />
-                    {{verksamhet.name}}
+                    <input type="checkbox" data-ng-checked="verksamhet.checked" class="hidden"/>
+                    <i class="fa fa-plus"></i> {{verksamhet.name}}
                   </span>
                 </li>
               </ul>
@@ -122,7 +120,8 @@
             menu-options="icd10"
             on-open="businessFilter.setSelectedDiagnoses"
             done-clicked="businessFilter.updateDiagnoses"
-            text-data="diagnosisFilterSelectorData">
+            text-data="diagnosisFilterSelectorData"
+            sidebar-state="sidebarStateDiagnose">
         </tree-multi-selector>
 
         <div class="margin-right top-10px-margin">

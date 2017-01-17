@@ -18,32 +18,47 @@
                     <h2><b><span message key="info.multiselect.loading"></span></b></h2>
                 </div>
 
-                <div class="modal-body">
-                    <form>
-                        <ul ng-if="dialogOpen" class="modal-list">
-                            <li class="search-all-items input-group">
-                                <span class="input-group-addon glyphicon glyphicon-search"></span>
-                                <input type="search" ng-model="value.multiMenuFilter" class="multiMenuFilterSearch form-control" placeholder="Sök"/>
-                            </li>
-                            <li class="select-all-items">
-                                <label>
-                                    <input type="checkbox" ng-checked="menuOptions.allSelected" id="select-all-diagnoses" class="multiMenuSelectAll" ng-click="itemClicked(menuOptions)"></input>
-                                    <span message key="lbl.filter.select-all"></span>
-                                </label>
-                            </li>
-                            <li data-ng-repeat="item in menuOptions.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=menuOptions; depth=0" on-finish-render="doneRenderingDialog()">
-                                <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" />
-                            </li>
-                        </ul>
-                    </form>
+                <div class="modal-body" ng-if="dialogOpen" >
+                    <div id="modal-body-left" ng-class="{'border-right': !sidebarState.collapsed}">
+                        <form>
+                            <div class="modal-list">
+                                <div class="select-all-items">
+                                    <label class="pull-left">
+                                        <input type="checkbox" ng-checked="menuOptions.allSelected" id="select-all-diagnoses" class="multiMenuSelectAll" ng-click="itemClicked(menuOptions)"></input>
+                                        <span message key="lbl.filter.select-all"></span>
+                                    </label>
+                                    <button ng-if="sidebarMenuExpand" class="btn btn-link btn-link-minimal toggle-sidebar-link" ng-click="sidebarState.collapsed = !sidebarState.collapsed" ng-switch="sidebarState.collapsed">
+                                          <span ng-switch-when="true">
+                                              <span message key="{{sidebarMenuExpand}}"></span><i class="fa fa-chevron-right"></i>
+                                          </span>
+                                        <span ng-switch-when="false">
+                                            <span message key="{{sidebarMenuCollapse}}"></span><i class="fa fa-chevron-left"></i>
+                                          </span>
+                                    </button>
 
-                    <ng-transclude></ng-transclude>
+                                </div>
+                                <div class="search-all-items input-group" style="clear:left">
+                                    <span class="input-group-addon glyphicon glyphicon-search"></span>
+                                    <input type="search" ng-model="value.multiMenuFilter" class="multiMenuFilterSearch form-control" placeholder="Sök"/>
+                                </div>
+                            </div>
+                            <div class="modal-list item-body">
+                                <div data-ng-repeat="item in menuOptions.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=menuOptions; depth=0" on-finish-render="doneRenderingDialog()">
+                                    <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" ng-class="{leaf: !(item.subs && item.subs.length >0)}"/>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                    <div id="modal-body-right">
+                        <ng-transclude></ng-transclude>
+                    </div>
                 </div>
 
 
                 <div class="modal-footer">
-                    <label class="pull-left">{{textData.firstLevelLabelText}}{{selectedTertiaryCount}} {{textData.secondLevelLabelText}}{{selectedSecondaryCount}} {{textData.thirdLevelLabelText}}{{selectedLeavesCountAll}}</label>
-                    <button class="btn btn-success" type="button" data-dismiss="modal" aria-hidden="true" data-ng-click="clickedDone()"><span message key="lbl.filter.modal.spara-stang"></span></button>
+                    <label class="pull-left"><div>{{textData.firstLevelLabelText}}{{selectedTertiaryCount}}<br>{{textData.secondLevelLabelText}}{{selectedSecondaryCount}}<br>{{textData.thirdLevelLabelText}}{{selectedLeavesCountAll}}</div></label>
+                    <button class="btn btn-success" type="button" data-dismiss="modal" aria-hidden="true" data-ng-click="clickedDone()" style="margin-top:10px"><span message key="lbl.filter.modal.spara-stang"></span></button>
                 </div>
 
             </div>
