@@ -90,7 +90,7 @@ public class LogConsumerImpl implements LogConsumer {
         } finally {
             setRunning(false);
         }
-        }
+    }
 
 
     private boolean handleEvent(IntygEvent event, IntygFormat format) {
