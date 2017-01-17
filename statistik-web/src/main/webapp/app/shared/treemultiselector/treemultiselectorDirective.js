@@ -28,6 +28,7 @@ angular.module('StatisticsApp.treeMultiSelector.directive', [])
                 textData: '=',
                 hideLabel: '=',
                 buttonIcon: '@',
+                selectAllTextKey: '@',
                 searchHintTextKey: '@',
                 sidebarMenuExpand: '@',
                 sidebarMenuCollapse: '@',
