@@ -25,7 +25,7 @@
                                 <div class="select-all-items">
                                     <label class="pull-left">
                                         <input type="checkbox" ng-checked="menuOptions.allSelected" id="select-all-diagnoses" class="multiMenuSelectAll" ng-click="itemClicked(menuOptions)"></input>
-                                        <span message key="lbl.filter.select-all"></span>
+                                        <span>{{selectAllTextKey | messageFilter}}</span>
                                     </label>
                                     <button ng-if="sidebarMenuExpand" class="btn btn-link btn-link-minimal toggle-sidebar-link" ng-click="sidebarState.collapsed = !sidebarState.collapsed" ng-switch="sidebarState.collapsed">
                                           <span ng-switch-when="true">
