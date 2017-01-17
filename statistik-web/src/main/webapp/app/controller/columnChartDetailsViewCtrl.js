@@ -44,7 +44,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             chartOptions.chart.type = chartTypeInfo.activeHighchartType;
             chartOptions.legend.enabled = false;
             chartOptions.yAxis.allowDecimals = !!config.allowDecimalsYAxis;
-            chartOptions.tooltip.split = true;
             chartOptions.xAxis.title.text = config.chartXAxisTitle;
             if (config.chartYAxisTitle) {
                 chartOptions.subtitle.text = config.chartYAxisTitle;
