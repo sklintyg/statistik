@@ -35,6 +35,7 @@
       "main": [
         "highcharts.js",
         "modules/exporting.js",
+        "modules/offline-exporting.js",
         "highcharts-more.js"
       ]
     },

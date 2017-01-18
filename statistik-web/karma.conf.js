@@ -30,6 +30,7 @@ module.exports = function(config) {
             'src/main/webapp/bower_components/ngstorage/ngStorage.js',
             'src/main/webapp/bower_components/highcharts/highcharts.js',
             'src/main/webapp/bower_components/highcharts/modules/exporting.js',
+            'src/main/webapp/bower_components/highcharts/modules/offline-exporting.js',
             'src/main/webapp/bower_components/highcharts/highcharts-more.js',
             'src/main/webapp/bower_components/mark.js/dist/mark.js',
             // endbower
