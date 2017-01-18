@@ -3,6 +3,14 @@
 	margin-left: 5px;
 }
 
+.modal-dialog {
+	width: 600px;
+	&.side-bar-expanded {
+		width: 920px;
+	}
+}
+
+
 .modal-footer {
 	clear:both;
 	margin-top:0;
@@ -180,8 +188,22 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 }
 .modal-body .modal-list.item-body {
 
+	max-height: 100px;
 
-	max-height: 440px;
+	@media (min-height: 400px) {
+		max-height: 160px;
+	}
+	@media (min-height: 600px) {
+		max-height: 280px;
+	}
+	@media (min-height: 800px) {
+		max-height: 380px;
+	}
+	@media (min-height: 800px) {
+		max-height: 560px;
+	}
+
+
 	overflow-y: auto;
 
 	border-radius: 4px;
@@ -278,8 +300,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 #modal-body-left {
   	display: inline-block;
   	vertical-align: top;
-  	width:580px;
-	padding: 10px 10px 10px 0;
+	padding: 10px;
 
 }
 

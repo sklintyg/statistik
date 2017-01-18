@@ -17,7 +17,7 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 angular.module('StatisticsApp.treeMultiSelector.controller', [])
-    .controller('treeMultiSelectorCtrl', ['$scope', '$element', 'treeMultiSelectorUtil', '$timeout', '_', function ($scope, $element, treeMultiSelectorUtil, $timeout, _) {
+    .controller('treeMultiSelectorCtrl', ['$scope', 'treeMultiSelectorUtil', '$timeout', '_', function ($scope, treeMultiSelectorUtil, $timeout, _) {
         'use strict';
 
         var self = this;
@@ -240,16 +240,5 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             }
 
             return false;
-        }
-        //Manually resize modal window to make room for sidebar (if used)
-        if ($scope.sidebarMenuExpand) {
-                $scope.$watch('sidebarState.collapsed', function(newValue) {
-                    var modalDialog = angular.element($element[0].getElementsByClassName('modal-dialog')[0]);
-                    if (newValue === true) {
-                        modalDialog.css('width', '620px');
-                    } else {
-                        modalDialog.css('width', '900px');
-                    }
-                }, true);
         }
     }]);

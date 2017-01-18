@@ -5,7 +5,7 @@
         {{textData.buttonLabelText}}
     </button>
     <div class="modal" id="diagnosisModal{{$id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog" ng-class="{'side-bar-expanded': !sidebarState.collapsed}">
             <div class="modal-content">
                 <div class="modal-header">
                     <span id="myModalLabel">{{textData.titleText}}</span>
@@ -18,8 +18,8 @@
                     <h2><b><span message key="info.multiselect.loading"></span></b></h2>
                 </div>
 
-                <div class="modal-body" ng-if="dialogOpen" >
-                    <div id="modal-body-left" ng-class="{'border-right': !sidebarState.collapsed}">
+                <div class="modal-body row" ng-if="dialogOpen" >
+                    <div id="modal-body-left"  ng-class="{'border-right col-xs-8 ': !sidebarState.collapsed, 'col-xs-12': sidebarState.collapsed }">
                         <form>
                             <div class="modal-list">
                                 <div class="select-all-items">
@@ -50,7 +50,7 @@
                             </div>
                         </form>
                     </div>
-                    <div id="modal-body-right" class="pull-right">
+                    <div id="modal-body-right" ng-class="{'col-xs-4': !sidebarState.collapsed}">
                         <ng-transclude></ng-transclude>
                     </div>
                 </div>
