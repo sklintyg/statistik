@@ -303,6 +303,7 @@ angular.module('StatisticsApp')
                         width: '600px'
                     }
                 },
+                yAxis: { min: 0, max: chart.yAxis[0].max, endOnTick: false, tickInterval: chart.yAxis[0].tickInterval },
                 chart: {
                     height: height,
                     width: width
