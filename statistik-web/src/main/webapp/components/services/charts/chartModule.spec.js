@@ -71,7 +71,8 @@ describe('Chart services', function() {
                     expect(chartOpt.legend.enabled).toBe(true);
                     expect(chartOpt.title.text).toBe('title text');
                 },
-                series: ['1', '2']
+                series: ['1', '2'],
+                yAxis: [{}]
             };
             chartFactory.exportChart(chart, name, 'title text');
             expect(callTimes).toBe(1);
