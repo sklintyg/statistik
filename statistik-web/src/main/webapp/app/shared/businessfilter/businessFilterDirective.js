@@ -294,7 +294,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
 
     scope.selectVerksamhetsTyp = function(verksamhetsTyp) {
-        var checked = !verksamhetsTyp.checked;
+        var checked = true;
 
         angular.forEach(verksamhetsTyp.units, function(businesse) {
             if (checked || businesse.verksamhetsTyper.length === 1) {

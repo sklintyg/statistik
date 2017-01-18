@@ -246,7 +246,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
                 $scope.$watch('sidebarState.collapsed', function(newValue) {
                     var modalDialog = angular.element($element[0].getElementsByClassName('modal-dialog')[0]);
                     if (newValue === true) {
-                        modalDialog.css('width', '600px');
+                        modalDialog.css('width', '620px');
                     } else {
                         modalDialog.css('width', '900px');
                     }
