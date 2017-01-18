@@ -240,7 +240,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                 extendedChartOptions.chart.backgroundColor = '#FFFFFF';
             }
             try {
-                chart.exportChart(options, extendedChartOptions);
+                chart.exportChartLocal(options, extendedChartOptions);
             } catch (e) {
                 $window.alert('Diagrammet kunde inte exporteras. Testa att applicera ett filter för att minska datamängden och försök igen.');
             }
