@@ -65,7 +65,7 @@ describe('Chart services', function() {
             var callTimes = 0;
             var name = 'testName';
             var chart = {
-                exportChart: function (opt, chartOpt) {
+                exportChartLocal: function (opt, chartOpt) {
                     callTimes++;
                     expect(opt.filename).toMatch(/testName/);
                     expect(chartOpt.legend.enabled).toBe(true);
@@ -82,7 +82,7 @@ describe('Chart services', function() {
             var callTimes = 0;
             var name = 'testName';
             var chart = {
-                exportChart: function (opt, chartOpt) {
+                exportChartLocal: function (opt, chartOpt) {
                     callTimes++;
                     expect(opt.filename).toMatch(/testName/);
                     expect(chartOpt.legend).toBeUndefined();
