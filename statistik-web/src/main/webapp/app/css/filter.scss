@@ -4,6 +4,7 @@
 }
 
 .modal-footer {
+	clear:both;
 	margin-top:0;
 }
 .modal-footer label>div {
@@ -277,7 +278,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 #modal-body-left {
   	display: inline-block;
   	vertical-align: top;
-  	width:558px;
+  	width:580px;
 	padding: 10px 10px 10px 0;
 
 }
@@ -288,9 +289,6 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 
 #modal-body-right {
 
-  	display: inline-block;
-  	vertical-align: top;
-
 
 	h2 {
 		padding: 0 0 10px 0;
@@ -300,7 +298,7 @@ select, textarea, input[type="text"], input[type="password"], input[type="dateti
 
 }
 #verksamhet-uib-collapser {
-	padding:10px;
+	padding-top:10px;
 }
 
 .check-permanent-filter-container {

@@ -106,10 +106,12 @@
               <h2><span message key="lbl.filter.verksamhet.quickselection.title"/></h2>
               <ul class="verksamhets-typer-list">
                 <li data-ng-repeat="verksamhet in businessFilter.verksamhetsTyper">
-                  <span data-ng-click="selectVerksamhetsTyp(verksamhet)">
-                    <input type="checkbox" data-ng-checked="verksamhet.checked" class="hidden"/>
-                    <i class="fa fa-plus"></i> {{verksamhet.name}}
-                  </span>
+                  <button type="button"
+                          class="btn btn-default btn-block"
+                          data-ng-click="selectVerksamhetsTyp(verksamhet)">
+
+                          <i class="fa fa-plus"></i> {{verksamhet.name}}
+                  </button>
                 </li>
               </ul>
             </div>
