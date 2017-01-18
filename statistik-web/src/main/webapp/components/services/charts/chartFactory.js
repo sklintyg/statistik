@@ -218,6 +218,9 @@ angular.module('StatisticsApp').factory('chartFactory',
             var extendedChartOptions = {};
             if (chart.series.length <= 10) {
                 extendedChartOptions.legend = { enabled: true };
+                var yMax = chart.yAxis[0].max;
+                var chartTickInterval = chart.yAxis[0].tickInterval;
+                extendedChartOptions.yAxis = { min: 0, max: yMax, endOnTick: false, tickInterval: chartTickInterval };
             }
             extendedChartOptions.chart = {
                 height: 400,
