@@ -7,16 +7,16 @@ Testar INTYG-3486. Ser till att två anrop efter varandra ej blir samma för anv
 | script | dagens datum | 2014-11-06 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet  |
-| 19790808-9214 | F40 | 2014-02-01 | 2014-03-01 | enhet2 |
-| 19790808-9215 | A00 | 2014-03-02 | 2014-04-15 | enhet1 |
-| 19790808-8225 | F41 | 2014-04-01 | 2014-04-14 | enhet1 |
-| 19790707-1234 | F41 | 2014-04-01 | 2014-04-14 | enhet1 |
+| personnr | diagnoskod | start    | slut       | enhet  | kommentar |
+| 19790808-9215 | F40 | 2013-02-01 | 2014-03-01 | enhet2 | |
+| 19790808-9215 | A00 | 2014-03-02 | 2014-04-15 | enhet1 | Sjukfall 365+ dagar |
+| 19790808-8225 | F41 | 2013-04-01 | 2014-04-14 | enhet1 | Sjukfall 365+ dagar |
+| 19790707-1234 | F41 | 2014-04-01 | 2014-04-14 | enhet1 | Sjukfall 14 dagar |
 
 
 !3 Då gäller:
 
 | Sjukfall i rapporten sjukfall totalt som tvarsnitt |
-| inloggad som | grupp  | filter enheter | män? | kvinnor? | kommentar                           |
-| user2        | Totalt | enhet1, enhet2 | 3    | 1        |                                     |
-| user1        | Totalt | enhet1, enhet2 | 2    | 1        | user1 har inte tillgång till enhet2 |
+| inloggad som | grupp  | filter sjukskrivningslängd | män? | kvinnor? |
+| user2        | Totalt | Över 365 dagar             | 1    | 1        |
+| user1        | Totalt | Över 365 dagar             | 0    | 1        |

@@ -50,6 +50,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -194,5 +196,36 @@ public class FilterHandlerTest {
         assertEquals(expectedToDate, filter.getRange().getTo());
         assertNotNull(filter.getMessage());
     }
+
+    @Test
+    public void testGetFilterPredicatesFilterIncludesEnhetsIntyg3486() {
+        //Given
+        HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+
+        String filterHash = "abc1";
+        FilterData filterData = new FilterData(null, Arrays.asList("E1", "E2", "E3"), null, null, null, "2013-09-01", LocalDate.now().plusMonths(2).toString(), false);
+        Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
+
+        LoginInfo loginInfo = new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList());
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
+        Mockito.when(sjukfallUtil.createEnhetFilter(new HsaIdEnhet[0])).thenReturn(new FilterPredicates(f -> true, s -> true, filterHash));
+
+        //When
+        FilterSettings filter1 = filterHandler.getFilter(request, filterHash, 1);
+
+        //Given
+        FilterData filterData2 = new FilterData(null, Arrays.asList("E1", "E3"), null, null, null, "2013-09-01", LocalDate.now().plusMonths(2).toString(), false);
+        Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData2);
+
+        //When
+        FilterSettings filter2 = filterHandler.getFilter(request, filterHash, 1);
+
+        //Then
+        final String hash1 = filter1.getFilter().getPredicate().getHash();
+        final String hash2 = filter2.getFilter().getPredicate().getHash();
+        assertFalse(hash1.equals(hash2));
+    }
+
+
 
 }
