@@ -1,0 +1,33 @@
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+| script | dagens datum | 2014-11-06 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  | kommentar |
+| 19790808-9215 | F40 | 2013-02-01 | 2014-03-01 | enhet2 | |
+| 19790808-9215 | A00 | 2014-03-02 | 2014-04-15 | enhet1 | Sjukfall 365+ dagar |
+| 19790808-8225 | F41 | 2013-04-01 | 2014-04-14 | enhet1 | Sjukfall 365+ dagar |
+| 19790707-1234 | F41 | 2014-04-01 | 2014-04-14 | enhet1 | Sjukfall 14 dagar |
+
+
+!3 Då gäller:
+
+| Sjukfall i rapporten sjukskrivningslangd |
+| inloggad som | sjukskrivningslängd | filter sjukskrivningslängd                  | män? | kvinnor? |
+| user2        | Under 15 dagar      |                                             | 1    | 0        |
+| user2        | Över 365 dagar      |                                             | 1    | 1        |
+| user2        | Under 15 dagar      | Över 365 dagar                               | 0    | 0        |
+| user2        | Över 365 dagar      | Över 365 dagar                               | 1    | 1        |
+| user1        | Under 15 dagar      |                                             | 1    | 0        |
+| user1        | Över 365 dagar      |                                             | 1    | 1        |
+| user1        | Under 15 dagar      | Över 365 dagar                               | 0    | 0        |
+| user1        | Över 365 dagar      | Över 365 dagar                               | 1    | 1        |
+
+| Sjukfall i rapporten sjukfall totalt som tvarsnitt |
+| inloggad som | grupp  | filter sjukskrivningslängd | män? | kvinnor? |
+| user2        | Totalt |                            | 2    | 1        |
+| user2        | Totalt | Över 365 dagar             | 1    | 1        |
+| user1        | Totalt |                            | 2    | 1        |
+| user1        | Totalt | Över 365 dagar             | 1    | 1        |
