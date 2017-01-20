@@ -555,8 +555,12 @@ legend {
 /* position print button right bottom corner of column */
 #print-button-col {
   position:absolute;
+  @media (max-width: 767px) {
+    position:relative;
+  }
   bottom:0;
   right:0
+
 }
 /* Last of the dropdowns should not have bottom margin. Entire row instead have margin-bottom class so that both colums have same bottom margin */
 div#detailsOptionsDropdown3 {

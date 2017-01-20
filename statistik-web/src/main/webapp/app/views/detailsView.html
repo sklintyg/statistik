@@ -15,7 +15,7 @@
   </div>
 </div>
 <div class="row margin-bottom" style="position:relative">
-  <div class="col-xs-9 col-md-10">
+  <div class="col-xs-12 col-md-10">
 
 
 
@@ -62,7 +62,7 @@
     </div>
 
   </div>
-  <div id="print-button-col" class="col-xs-3 col-md-2">
+  <div id="print-button-col" class="col-xs-12 col-md-2">
     <!-- PRINT BUTTON GROUP -->
     <div class="hidden-print">
       <button class="multiselect dropdown-toggle btn btn-default pull-right" data-ng-disabled="!exportEnabled"
@@ -101,7 +101,7 @@
                         <!-- chart type selection -->
                           <span class="select-chart-type" data-ng-if="isVerksamhetShowing">
                             <div class="select-chart-type-tidsserie">
-                              <span message key="lbl.diagramtyp-tidsserie"></span>
+                              <span message key="lbl.diagramtyp-tidsserie" class="hidden-xs hidden-sm"></span>
                               <button class="btn btn-xs btn-default" ng-class="{'active': activeChartType === 'line'}"
                                       data-ng-click="switchChartType('line')" uib-tooltip="Linjediagram"
                                       tooltip-placement="bottom" tooltip-popup-delay="1000">
@@ -124,7 +124,7 @@
                             </div>
 
                             <div class="select-chart-type-tvarsnitt">
-                              <span message key="lbl.diagramtyp-tvarsnitt"></span>
+                              <span message key="lbl.diagramtyp-tvarsnitt" class="hidden-xs hidden-sm"></span>
                               <button class="btn btn-xs btn-default" ng-class="{'active': activeChartType === 'column'}"
                                       data-ng-click="switchChartType('column')" uib-tooltip="Stapeldiagram"
                                       tooltip-placement="bottom" tooltip-popup-delay="1000">
