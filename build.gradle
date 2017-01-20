@@ -14,11 +14,12 @@ allprojects {
 
     repositories {
         mavenLocal()
-        mavenCentral()
+        maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/central/" }
         maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/" }
         maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/nightly/" }
         maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/snapshots/" }
         maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/thirdparty/" }
+        mavenCentral()
     }
 
     buildscript {

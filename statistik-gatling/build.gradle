@@ -43,9 +43,10 @@ sourceSets {
 version = '1.0'
 
 repositories {
-    mavenCentral()
+    maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/central/" }
     // Gatling libraries
     maven { url 'http://repository.excilys.com/content/groups/public' }
+    mavenCentral()
 }
 
 dependencies {
