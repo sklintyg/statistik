@@ -201,8 +201,8 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     function setPreselectedFilter(filterData) {
         businessFilter.diagnoserSaved = angular.copy(filterData.diagnoser);
         businessFilter.selectDiagnoses(filterData.diagnoser);
-        businessFilter.selectedVerksamhetTypIds = _.uniq(_.map(filterData.verksamhetstyper, function(verksamhetstyp) {
-            return _.find(businessFilter.verksamhetsTyper, function(verksamhet) { return _.contains(verksamhet.ids, verksamhetstyp); }).id;
+        businessFilter.selectedVerksamhetTypIds = _.uniqWith(_.map(filterData.verksamhetstyper, function(verksamhetstyp) {
+            return _.find(businessFilter.verksamhetsTyper, function(verksamhet) { return _.includes(verksamhet.ids, verksamhetstyp); }).id;
         }));
         businessFilter.selectedSjukskrivningslangdIds = filterData.sjukskrivningslangd;
         businessFilter.sjukskrivningslangdSaved = angular.copy(filterData.sjukskrivningslangd);
@@ -265,13 +265,13 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     businessFilter.populateGeography = function (businesses) {
         businessFilter.geography = {subs: []};
         _.each(businesses, function (business) {
-            var county = _.findWhere(businessFilter.geography.subs, {name: business.lansName});
+            var county = _.find(businessFilter.geography.subs, {name: business.lansName});
             if (!county) {
                 county = {id: business.lansId, name: business.lansName, subs: []};
                 businessFilter.geography.subs.push(county);
             }
 
-            var munip = _.findWhere(county.subs, {name: business.kommunName});
+            var munip = _.find(county.subs, {name: business.kommunName});
             if (!munip) {
                 munip = {id: business.kommunId, name: business.kommunName, subs: []};
                 county.subs.push(munip);
@@ -341,7 +341,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     };
 
     businessFilter.selectByAttribute = function (item, listOfIdsToSelect, attribute) {
-        if (_.any(listOfIdsToSelect, function (val) {
+        if (_.some(listOfIdsToSelect, function (val) {
                 return item[attribute] === val;
             })) {
             businessFilter.selectAll(item);
@@ -419,7 +419,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
                 return businessFilter.verksamhetsTyper;
             }
             return _.filter(businessFilter.verksamhetsTyper, function(verksamhetstyp) {
-                return _.contains(businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
+                return _.includes(businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
             });
         }
 
@@ -428,7 +428,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
             return verksamhetstyp.units;
         });
         var selectedUnitsFromVerksamhetstypsFlattened = _.flatten(selectedUnitsFromVerksamhetstyps);
-        return _.pluck(selectedUnitsFromVerksamhetstypsFlattened, 'id');
+        return _.map(selectedUnitsFromVerksamhetstypsFlattened, 'id');
     };
 
     businessFilter.setSelectedGeography = function() {

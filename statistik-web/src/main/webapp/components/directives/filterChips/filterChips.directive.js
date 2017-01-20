@@ -145,7 +145,7 @@ angular.module('StatisticsApp')
                     var enheter = [];
 
                     angular.forEach(filter, function(enhet) {
-                        var text = _.findWhere($scope.businessFilter.businesses, {id: enhet});
+                        var text = _.find($scope.businessFilter.businesses, {id: enhet});
                         enheter.push({
                             type: 'enhet',
                             icon: 'fa-building-o',
@@ -159,7 +159,7 @@ angular.module('StatisticsApp')
                     var left =  _.difference($scope.businessFilter.geographyBusinessIdsSaved, $scope.businessFilter.geographyBusinessIds);
 
                     angular.forEach(left, function(enhet) {
-                        var text = _.findWhere($scope.businessFilter.businesses, {id: enhet});
+                        var text = _.find($scope.businessFilter.businesses, {id: enhet});
                         enheter.push({
                             type: 'enhet',
                             icon: 'fa-building-o',

@@ -77,7 +77,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         }
 
         this.getDiagnosFilterInformationText = function(diagnosFilterIds, icdStructure, asObject) {
-            var icdStructureAsFlatArray = _.compose(_.flattenDeep, icdStructureAsArray)(icdStructure);
+            var icdStructureAsFlatArray = _.flowRight(_.flattenDeep, icdStructureAsArray)(icdStructure);
             return _.map(diagnosFilterIds, function(diagnosId){
                 var icdItem = _.find(icdStructureAsFlatArray, function(icd){
                     return icd.numericalId === parseInt(diagnosId, 10);
