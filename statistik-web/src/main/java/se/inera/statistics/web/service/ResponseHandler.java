@@ -74,7 +74,7 @@ public class ResponseHandler {
             return getResponseForDataReport(result, availableEnhetsForUser);
         }
         return CsvConverter.getCsvResponse(result.getTableData(),
-                filename + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYYMMdd")) + ".csv");
+                filename + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYYMMdd")) + ".csv");
     }
 
     Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser) {
