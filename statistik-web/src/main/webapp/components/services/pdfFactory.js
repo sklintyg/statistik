@@ -390,7 +390,7 @@ angular.module('StatisticsApp')
 
             chartTable.width(maxWidth);
 
-            var topLevelHeaders = _.rest(headers[0]); //Take all headers but the first, the first is handled separately
+            var topLevelHeaders = _.tail(headers[0]); //Take all headers but the first, the first is handled separately
 
             var firstColumnWidth = $('.datatable .headcol').width();
             var remainingWidth = 0;

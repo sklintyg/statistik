@@ -48,7 +48,7 @@ angular.module('StatisticsApp')
             };
 
             diagnosisTreeFilter.selectByAttribute = function (item, listOfIdsToSelect, attribute) {
-                if (_.any(listOfIdsToSelect, function(val) { return item[attribute] === val; })) {
+                if (_.some(listOfIdsToSelect, function(val) { return item[attribute] === val; })) {
                     diagnosisTreeFilter.selectAll(item);
                 } else {
                     item.allSelected = false;

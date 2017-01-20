@@ -93,7 +93,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
     var getVerksamhetstyper = function () {
         var selectedVerksamhettyps = _.filter(scope.businessFilter.verksamhetsTyper, function(verksamhetstyp) {
-            return _.contains(scope.businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
+            return _.includes(scope.businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
         });
         var selectedIdsFromVerksamhetstyps = _.map(selectedVerksamhettyps, function (verksamhetstyp) {
             return verksamhetstyp.ids;
