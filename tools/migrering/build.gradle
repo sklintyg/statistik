@@ -12,6 +12,7 @@ applicationDefaultJvmArgs = ["-Dfile.encoding=utf8"]
 
 repositories {
     mavenLocal()
+    maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/central/" }
     mavenCentral()
 }
 
