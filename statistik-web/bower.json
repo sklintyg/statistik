@@ -44,6 +44,9 @@
         "dist/js/bootstrap.js"
       ]
     },
+    "mark.js": {
+      "main": "dist/jquery.mark.js"
+    },
     "bootstrap-sass": {
       "main": [
         "vendor/assets/stylesheets/bootstrap.scss"
