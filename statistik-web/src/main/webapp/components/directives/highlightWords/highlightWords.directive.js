@@ -17,8 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* global Mark */
-
 angular.module('StatisticsApp')
     .directive('highlightWords',
         /** @ngInject */
@@ -44,13 +42,10 @@ angular.module('StatisticsApp')
         };
         
         function hightlightWords() {
-            var context = document.querySelector('.highlight-content');
-            var instance = new Mark(context);
-
             angular.forEach(getPhrases(), function(phrase) {
-                instance.mark(phrase.phrase, {
+                $('.highlight-content').mark(phrase.phrase, {
                     element: 'span',
-                    exclude: ['svg *'],
+                    exclude: ['svg *', '.highlight-words'],
                     className: 'highlight-words',
                     separateWordSearch: false,
                     accuracy: 'exactly',

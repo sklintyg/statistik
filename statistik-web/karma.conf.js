@@ -32,7 +32,7 @@ module.exports = function(config) {
             'src/main/webapp/bower_components/highcharts/modules/exporting.js',
             'src/main/webapp/bower_components/highcharts/modules/offline-exporting.js',
             'src/main/webapp/bower_components/highcharts/highcharts-more.js',
-            'src/main/webapp/bower_components/mark.js/dist/mark.js',
+            'src/main/webapp/bower_components/mark.js/dist/jquery.mark.js',
             // endbower
             'src/main/webapp/bower_components/angular-mocks/angular-mocks.js',
             'src/main/webapp/app/app.main.test.js',
