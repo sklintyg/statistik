@@ -42,6 +42,8 @@
     <!-- endbower -->
     <!-- endbuild -->
 
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" />
+
     <!-- build:css({build/.tmp,src/main/webapp}) app/app.css -->
     <!-- injector:css -->
     <link rel="stylesheet" href="/app/app.css">
