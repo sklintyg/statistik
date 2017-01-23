@@ -38,14 +38,14 @@ import java.util.stream.Stream;
  */
 public class CookieAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private static final String cookieName = "statUrl";
+    private static final String COOKIE_NAME = "statUrl";
 
     private String defaultTargetUrl;
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        Optional<Cookie> cookie = Stream.of(request.getCookies()).filter(c -> cookieName.equals(c.getName())).findAny();
+        Optional<Cookie> cookie = Stream.of(request.getCookies()).filter(c -> COOKIE_NAME.equals(c.getName())).findAny();
         if (cookie.isPresent()) {
             redirectStrategy.sendRedirect(request, response, URLDecoder.decode(cookie.get().getValue(), StandardCharsets.UTF_8.name()));
         } else {
