@@ -29,10 +29,10 @@
                                     </label>
                                     <button ng-if="sidebarMenuExpand" class="btn btn-link btn-link-minimal toggle-sidebar-link" ng-click="sidebarState.collapsed = !sidebarState.collapsed" ng-switch="sidebarState.collapsed">
                                           <span ng-switch-when="true">
-                                              <span message key="{{sidebarMenuExpand}}"></span><i class="fa fa-chevron-right"></i>
+                                              <span message key="{{sidebarMenuExpand}}" class="ellipsis-text"></span><i class="fa fa-chevron-right"></i>
                                           </span>
                                         <span ng-switch-when="false">
-                                            <span message key="{{sidebarMenuCollapse}}"></span><i class="fa fa-chevron-left"></i>
+                                            <span message key="{{sidebarMenuCollapse}}" class="ellipsis-text"></span><i class="fa fa-chevron-left"></i>
                                           </span>
                                     </button>
 

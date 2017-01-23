@@ -80,6 +80,18 @@
 
   .toggle-sidebar-link {
     padding: 0;
+    @media (max-width: 992px) {
+      span.ellipsis-text span {
+        max-width:120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: inline-block;
+        white-space: nowrap;
+        vertical-align: middle;
+        cursor: pointer;
+      }
+    }
+
   }
 
   .verksamhets-typer-list {

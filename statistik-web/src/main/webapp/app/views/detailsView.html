@@ -30,7 +30,10 @@
     <div data-ng-if="showDiagnosisSelector" class="top-20px-margin">
       <tree-multi-selector menu-options="diagnosisTreeFilter.diagnosisOptionsTree"
                            done-clicked="diagnosisSelected"
-                           text-data="diagnosisSelectorData">
+                           text-data="diagnosisSelectorData"
+                           select-all-text-key="lbl.filter.val-av-diagnoser.select-all"
+                           search-hint-text-key="lbl.filter.val-av-diagnoser.search.hint"
+                           sidebar-state="{collapsed: true}">
       </tree-multi-selector>
     </div>
 
