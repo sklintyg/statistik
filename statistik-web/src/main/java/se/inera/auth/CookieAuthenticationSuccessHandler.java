@@ -45,6 +45,9 @@ public class CookieAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        if (request == null || request.getCookies() == null) {
+            redirectStrategy.sendRedirect(request, response, defaultTargetUrl);
+        }
         Optional<Cookie> cookie = Stream.of(request.getCookies()).filter(c -> COOKIE_NAME.equals(c.getName())).findAny();
         if (cookie.isPresent()) {
             redirectStrategy.sendRedirect(request, response, URLDecoder.decode(cookie.get().getValue(), StandardCharsets.UTF_8.name()));
