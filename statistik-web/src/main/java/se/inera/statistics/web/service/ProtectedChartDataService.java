@@ -148,7 +148,7 @@ public class ProtectedChartDataService {
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getTotalIntygPerMonth(vg, filterSettings);
         SimpleDetailsData result = new PeriodIntygConverter().convert(intygPerMonth, filterSettings);
-        return getResponse(result, csv, request, "antal_intyg_per_manad");
+        return getResponse(result, csv, request, "Verksamhetsstatistik_IntygPerManad");
     }
 
     /**
@@ -165,7 +165,7 @@ public class ProtectedChartDataService {
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getTotalIntygTvarsnitt(vg, filterSettings);
         SimpleDetailsData result = SimpleDualSexConverter.newGenericIntygTvarsnitt().convert(intygPerMonth, filterSettings);
-        return getResponse(result, csv, request, "intyg_tvarsnitt");
+        return getResponse(result, csv, request, "Verksamhetsstatistik_IntygPerManad");
     }
 
     /**
@@ -182,7 +182,7 @@ public class ProtectedChartDataService {
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         KonDataResponse intygPerMonth = warehouse.getIntygPerTypePerMonth(vg, filterSettings);
         final DualSexStatisticsData result = new SimpleMultiDualSexConverter("Antal intyg totalt").convert(intygPerMonth, filterSettings);
-        return getResponse(result, csv, request, "intyg_per_typ_per_manad");
+        return getResponse(result, csv, request, "Verksamhetsstatistik_IntygPerTyp");
     }
 
     /**
@@ -199,7 +199,7 @@ public class ProtectedChartDataService {
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerTypeTvarsnitt(vg, filterSettings);
         SimpleDetailsData result = SimpleDualSexConverter.newGenericIntygTvarsnitt().convert(intygPerMonth, filterSettings);
-        return getResponse(result, csv, request, "intyg_per_typ_tvarsnitt");
+        return getResponse(result, csv, request, "Verksamhetsstatistik_IntygPerTyp");
     }
 
     @GET
@@ -301,7 +301,7 @@ public class ProtectedChartDataService {
         final Range range = filterSettings.getRange();
         SimpleKonResponse<SimpleKonDataRow> casesPerLakare = warehouse.getCasesPerLakare(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final SimpleDetailsData result = new GroupedSjukfallConverter("").convert(casesPerLakare, filterSettings);
-        return getResponse(result, csv, request, "sjukfall_per_lakare");
+        return getResponse(result, csv, request, "Verksamhetsstatistik_SjukfallPerLakare");
     }
 
     @GET
@@ -316,7 +316,7 @@ public class ProtectedChartDataService {
         final Range range = filterSettings.getRange();
         KonDataResponse casesPerLakare = warehouse.getCasesPerLakareSomTidsserie(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final DualSexStatisticsData result = new SimpleMultiDualSexConverter().convert(casesPerLakare, filterSettings);
-        return getResponse(result, csv, request, "sjukfall_per_lakare_tidsserie");
+        return getResponse(result, csv, request, "Verksamhetsstatistik_SjukfallPerLakare");
     }
 
     /**
