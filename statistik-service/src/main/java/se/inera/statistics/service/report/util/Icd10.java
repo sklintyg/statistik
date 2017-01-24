@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -133,6 +134,7 @@ public class Icd10 {
             populateIdMap(icd10VwxyKodAnsiFile, idToKodMap, s -> Kod.valueOf(s, idToKategoriMap.values()));
             populateInternalIcd10();
             kapitels = new ArrayList<>(idToKapitelMap.values());
+            kapitels.sort(Comparator.comparing(Kapitel::getId));
         } catch (IOException e) {
             LOG.error("Could not parse ICD10: " + e);
         }

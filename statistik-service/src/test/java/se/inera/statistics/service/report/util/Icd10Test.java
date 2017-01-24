@@ -27,6 +27,7 @@ import se.inera.statistics.service.report.util.Icd10.Avsnitt;
 import se.inera.statistics.service.report.util.Icd10.Kapitel;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,6 +57,15 @@ public class Icd10Test {
         Kapitel kapitel = icd10.getKapitel(true).get(0);
         assertEquals("A00-B99", kapitel.getId());
         assertEquals("Vissa infektionssjukdomar och parasitsjukdomar", kapitel.getName());
+    }
+
+    @Test
+    public void kapitelsIsSorted() {
+        List<Kapitel> kapitels = icd10.getKapitel(false);
+        List<Kapitel> expected = new ArrayList<>(kapitels);
+        expected.sort(Comparator.comparing(Kapitel::getId));
+
+        assertEquals(expected, kapitels);
     }
 
     @Test
