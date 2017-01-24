@@ -37,7 +37,7 @@ import java.util.List;
 @Component
 public class MessageWidelineManager {
 
-    private static final Logger LOG = LoggerFactory.getLogger(WidelineManager.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MessageWidelineManager.class);
 
     private static int errCount;
 

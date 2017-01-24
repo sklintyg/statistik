@@ -113,7 +113,10 @@
     <logger name="se.inera.statistics.service.helper.DocumentHelper" level="INFO" additivity="false">
         <appender-ref ref="PROCESS_FILE"/>
     </logger>
-    <logger name="se.inera.statistics.scheduler.LogJob" level="INFO"  additivity="false">
+    <logger name="se.inera.statistics.scheduler.active.LogJob" level="INFO"  additivity="false">
+      <appender-ref ref="PROCESS_FILE"/>
+    </logger>
+    <logger name="se.inera.statistics.scheduler.active.MessageJob" level="INFO"  additivity="false">
       <appender-ref ref="PROCESS_FILE"/>
     </logger>
     <logger name="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" level="INFO"  additivity="false">
