@@ -396,11 +396,7 @@ angular.module('StatisticsApp')
             var remainingWidth = 0;
             var printTable;
 
-            $('.datatable thead tr:first td').each(function(index, td) {
-                if (index === 0) {
-                    return;
-                }
-
+            $('.scrolling .datatable thead tr:first td').each(function(index, td) {
                 var columnWidth = $(td).width();
 
                 if (remainingWidth > columnWidth) {
@@ -414,7 +410,7 @@ angular.module('StatisticsApp')
                 }
 
                 // Add columns to table
-                var topHeader = addTopHeader(printTable, index - 1);
+                var topHeader = addTopHeader(printTable, index);
 
                 //Add the sub level headers, the colspan of the top level header
                 //decides how many sub level columns we have.
