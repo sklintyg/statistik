@@ -138,6 +138,7 @@ public class Icd10 {
             populateIdMap(icd10VwxyKodAnsiFile, idToKodMap, s -> Kod.valueOf(s, idToKategoriMap.values()));
             populateInternalIcd10();
             kapitels = new ArrayList<>(idToKapitelMap.values());
+            kapitels.sort(Comparator.comparing(Kapitel::getId));
             intIdMap = Stream.of(idToKategoriMap.values(), idToAvsnittMap.values(), idToKapitelMap.values(), idToKodMap.values(), internalIcd10)
                     .flatMap(Collection::stream)
                     .collect(Collectors.toMap(Id::toInt, java.util.function.Function.identity()));
