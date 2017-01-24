@@ -18,24 +18,12 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-
 import com.google.common.base.Function;
 import com.google.common.collect.HashMultiset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -53,10 +41,19 @@ import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.inera.statistics.service.warehouse.query.CounterFunctionIntyg;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class IntygCommonManager {
@@ -236,7 +233,13 @@ public class IntygCommonManager {
         TypedQuery<IntygCommon> query = manager.createQuery(q);
         query.setParameter(p, intygsId);
 
-        return query.getSingleResult();
+        List<IntygCommon> list = query.getResultList();
+
+        if (list.isEmpty()) {
+            return null;
+        }
+
+        return list.get(0);
     }
 
 }
