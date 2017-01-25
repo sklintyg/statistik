@@ -26,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.processlog.message.MessageEventType;
-import se.inera.statistics.service.warehouse.WidelineManager;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
 
