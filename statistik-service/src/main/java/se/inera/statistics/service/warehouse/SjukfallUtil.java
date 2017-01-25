@@ -56,7 +56,7 @@ public class SjukfallUtil {
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallUtil.class);
 
     public static final LocalDate START_DATE_OF_DATA_GATHERING = LocalDate.of(2013, 10, 1);
-    public static final FilterPredicates ALL_ENHETER = new FilterPredicates(fact -> true, sjukfall -> true, FilterPredicates.HASH_EMPTY_FILTER);
+    public static final FilterPredicates ALL_ENHETER = new FilterPredicates(fact -> true, sjukfall -> true, FilterPredicates.HASH_EMPTY_FILTER, false);
 
     private LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> sjukfallGroupsCache;
 
@@ -87,7 +87,7 @@ public class SjukfallUtil {
     public FilterPredicates createEnhetFilter(HsaIdEnhet... enhetIds) {
         final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(Arrays.asList(enhetIds), enhetId -> Warehouse.getEnhet(enhetId)));
         final String hashValue = FilterPredicates.getHashValueForEnhets(availableEnhets);
-        return new FilterPredicates(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue);
+        return new FilterPredicates(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue, false);
     }
 
     public Iterable<SjukfallGroup> sjukfallGrupperUsingOriginalSjukfallStart(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final FilterPredicates filter) {
@@ -95,7 +95,7 @@ public class SjukfallUtil {
     }
 
     public Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle, final FilterPredicates filter) {
-        return sjukfallGrupper(from, periods, periodSize, aisle, filter, false);
+        return sjukfallGrupper(from, periods, periodSize, aisle, filter, filter.isSjukfallangdfilterActive());
     }
 
     List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates sjukfallFilter, boolean useOriginalSjukfallStart) {

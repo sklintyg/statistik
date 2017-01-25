@@ -138,7 +138,7 @@ public class DiagnosgruppQueryTest {
             public boolean apply(Fact fact) {
                 return false;
             }
-        }, sjukfall -> true, "hash"), Instant.ofEpochMilli(1416223845652L).atZone(ZoneId.systemDefault()).toLocalDate(), 1, 1, "A00-B99");
+        }, sjukfall -> true, "hash", false), Instant.ofEpochMilli(1416223845652L).atZone(ZoneId.systemDefault()).toLocalDate(), 1, 1, "A00-B99");
 
         //Then
         assertEquals(21, result.getIcdTyps().size());
@@ -153,7 +153,7 @@ public class DiagnosgruppQueryTest {
             public boolean apply(Fact fact) {
                 return false;
             }
-        }, sjukfall -> true, "hash"), Instant.ofEpochMilli(1416223845652L).atZone(ZoneId.systemDefault()).toLocalDate(), 1, 1, "A00-A09");
+        }, sjukfall -> true, "hash", false), Instant.ofEpochMilli(1416223845652L).atZone(ZoneId.systemDefault()).toLocalDate(), 1, 1, "A00-A09");
 
         //Then
         assertEquals(10, result.getIcdTyps().size());

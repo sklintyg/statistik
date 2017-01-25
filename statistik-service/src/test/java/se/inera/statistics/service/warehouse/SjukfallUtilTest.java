@@ -243,7 +243,7 @@ public class SjukfallUtilTest {
     public static FilterPredicates createEnhetFilterFromInternalIntValues(Integer... enhetIds) {
         final HashSet<Integer> availableEnhets = new HashSet<>(Arrays.asList(enhetIds));
         final String hashValue = FilterPredicates.getHashValueForEnhets(availableEnhets);
-        return new FilterPredicates(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue);
+        return new FilterPredicates(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue, false);
     }
 
     private Collection<Sjukfall> calculateSjukfallsHelper() {
