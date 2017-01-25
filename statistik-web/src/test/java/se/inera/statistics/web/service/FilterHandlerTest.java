@@ -28,6 +28,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
 import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.util.AgeGroup;
@@ -37,20 +38,22 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.util.SpyableClock;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyVararg;
 
 public class FilterHandlerTest {
 
@@ -198,14 +201,16 @@ public class FilterHandlerTest {
     public void testGetFilterPredicatesFilterIncludesEnhetsIntyg3486() {
         //Given
         HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+        final HsaIdVardgivare vgid = new HsaIdVardgivare("vgid");
 
         String filterHash = "abc1";
         FilterData filterData = new FilterData(null, Arrays.asList("E1", "E2", "E3"), null, null, null, "2013-09-01", LocalDate.now().plusMonths(2).toString(), false);
         Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
 
-        LoginInfo loginInfo = new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList());
+        LoginInfo loginInfo = new LoginInfo(new HsaIdUser(""), "", Arrays.asList(createVerksamhet("E1", vgid), createVerksamhet("E2", vgid), createVerksamhet("E3", vgid)), Lists.newArrayList());
         Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
-        Mockito.when(sjukfallUtil.createEnhetFilter(new HsaIdEnhet[0])).thenReturn(new FilterPredicates(f -> true, s -> true, filterHash));
+        Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(request)).thenReturn(vgid);
+        Mockito.when(sjukfallUtil.createEnhetFilter(anyVararg())).thenReturn(new FilterPredicates(f -> true, s -> true, filterHash));
 
         //When
         FilterSettings filter1 = filterHandler.getFilter(request, filterHash, 1);
@@ -223,6 +228,9 @@ public class FilterHandlerTest {
         assertFalse(hash1.equals(hash2));
     }
 
+    private Verksamhet createVerksamhet(String hsaId, HsaIdVardgivare vgid) {
+        return new Verksamhet(new HsaIdEnhet(hsaId), hsaId, vgid, "", "", "", "", "", Collections.EMPTY_SET);
+    }
 
 
 }

@@ -57,6 +57,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -146,17 +147,19 @@ public class FilterHandler {
         }
     }
 
-    private FilterSettings getFilterSettings(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter, List<HsaIdEnhet> enhetsIDs) throws FilterException {
-        final Predicate<Fact> enhetFilter = getEnhetFilter(request, enhetsIDs);
-        return getFilterSettings(filterHash, defaultRangeValue, inFilter, enhetsIDs, enhetFilter);
+    private FilterSettings getFilterSettings(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter, List<HsaIdEnhet> enhetsInFilter) throws FilterException {
+        Set<HsaIdEnhet> enheter = getEnhetNameMap(request, enhetsInFilter).keySet();
+        final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()])).getIntygFilter();
+        return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter);
     }
 
-    private FilterSettings getFilterSettingsLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter, ArrayList<HsaIdEnhet> enhetsIDs) throws FilterException {
-        final Predicate<Fact> enhetFilter = getEnhetFilterLandsting(request, enhetsIDs);
-        return getFilterSettings(filterHash, defaultRangeValue, inFilter, enhetsIDs, enhetFilter);
+    private FilterSettings getFilterSettingsLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter, ArrayList<HsaIdEnhet> enhetsInFilter) throws FilterException {
+        Set<HsaIdEnhet> enheter = getEnhetNameMapLandsting(request, enhetsInFilter).keySet();
+        final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()])).getIntygFilter();
+        return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter);
     }
 
-    private FilterSettings getFilterSettings(String filterHash, int defaultRangeValue, FilterData inFilter, List<HsaIdEnhet> enhetsIDs, Predicate<Fact> enhetFilter) throws FilterException {
+    private FilterSettings getFilterSettings(String filterHash, int defaultRangeValue, FilterData inFilter, Collection<HsaIdEnhet> enhetsIDs, Predicate<Fact> enhetFilter) throws FilterException {
         final List<String> diagnoser = inFilter.getDiagnoser();
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         final List<String> aldersgrupp = inFilter.getAldersgrupp();
@@ -169,7 +172,7 @@ public class FilterHandler {
         return new FilterSettings(filter, rangeMessageDTO);
     }
 
-    private String getHash(String filterHash, List<HsaIdEnhet> enhetsIDs) {
+    private String getHash(String filterHash, Collection<HsaIdEnhet> enhetsIDs) {
         return filterHash + enhetsIDs.stream().map(HsaIdAny::getId).collect(Collectors.joining());
     }
 
@@ -415,11 +418,6 @@ public class FilterHandler {
         };
     }
 
-    private Predicate<Fact> getEnhetFilter(HttpServletRequest request, List<HsaIdEnhet> enhetsIDs) {
-        Set<HsaIdEnhet> enheter = getEnhetNameMap(request, enhetsIDs).keySet();
-        return sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()])).getIntygFilter();
-    }
-
     Map<HsaIdEnhet, String> getEnhetNameMap(HttpServletRequest request, List<HsaIdEnhet> enhetsIDs) {
         final HsaIdVardgivare vgid = getSelectedVgIdForLoggedInUser(request);
         LoginInfo info = loginServiceUtil.getLoginInfo();
@@ -430,11 +428,6 @@ public class FilterHandler {
             }
         }
         return enheter;
-    }
-
-    private Predicate<Fact> getEnhetFilterLandsting(HttpServletRequest request, List<HsaIdEnhet> enhetsIDs) {
-        Set<HsaIdEnhet> enheter = getEnhetNameMapLandsting(request, enhetsIDs).keySet();
-        return sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()])).getIntygFilter();
     }
 
     private Map<HsaIdEnhet, String> getEnhetNameMapLandsting(HttpServletRequest request, List<HsaIdEnhet> filteredEnhetsIds) {
