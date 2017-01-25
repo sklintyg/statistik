@@ -164,9 +164,10 @@ public class FilterHandler {
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         final List<String> aldersgrupp = inFilter.getAldersgrupp();
         final Predicate<Fact> aldersgruppFilter = getAldersgruppFilter(aldersgrupp);
-        final Predicate<Sjukfall> sjukfallLengthFilter = getSjukfallLengthFilter(inFilter.getSjukskrivningslangd());
+        final List<String> sjukskrivningslangds = inFilter.getSjukskrivningslangd();
+        final Predicate<Sjukfall> sjukfallLengthFilter = getSjukfallLengthFilter(sjukskrivningslangds);
         final String predicatesHash = getHash(filterHash, enhetsIDs);
-        final FilterPredicates sjukfallFilter = new FilterPredicates(Predicates.and(enhetFilter, diagnosFilter, aldersgruppFilter), sjukfallLengthFilter, predicatesHash);
+        final FilterPredicates sjukfallFilter = new FilterPredicates(Predicates.and(enhetFilter, diagnosFilter, aldersgruppFilter), sjukfallLengthFilter, predicatesHash, !sjukskrivningslangds.isEmpty());
         final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter), toReadableAgeGroupNames(aldersgrupp), filterHash);
         final RangeMessageDTO rangeMessageDTO = getRange(inFilter, defaultRangeValue);
         return new FilterSettings(filter, rangeMessageDTO);

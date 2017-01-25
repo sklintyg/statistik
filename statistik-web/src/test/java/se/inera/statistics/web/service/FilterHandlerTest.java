@@ -183,7 +183,7 @@ public class FilterHandlerTest {
         Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
         LoginInfo loginInfo = new LoginInfo(new HsaIdUser(""), "", Lists.newArrayList(), Lists.newArrayList());
         Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
-        Mockito.when(sjukfallUtil.createEnhetFilter(new HsaIdEnhet[0])).thenReturn(new FilterPredicates(f -> true, s -> true, filterHash));
+        Mockito.when(sjukfallUtil.createEnhetFilter(new HsaIdEnhet[0])).thenReturn(new FilterPredicates(f -> true, s -> true, filterHash, false));
 
         //When
         FilterSettings filter = filterHandler.getFilter(request, filterHash, 1);
