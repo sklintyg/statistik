@@ -210,7 +210,7 @@ public class FilterHandlerTest {
         LoginInfo loginInfo = new LoginInfo(new HsaIdUser(""), "", Arrays.asList(createVerksamhet("E1", vgid), createVerksamhet("E2", vgid), createVerksamhet("E3", vgid)), Lists.newArrayList());
         Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(request)).thenReturn(vgid);
-        Mockito.when(sjukfallUtil.createEnhetFilter(anyVararg())).thenReturn(new FilterPredicates(f -> true, s -> true, filterHash));
+        Mockito.when(sjukfallUtil.createEnhetFilter(anyVararg())).thenReturn(new FilterPredicates(f -> true, s -> true, filterHash, false));
 
         //When
         FilterSettings filter1 = filterHandler.getFilter(request, filterHash, 1);
