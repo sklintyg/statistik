@@ -29,9 +29,10 @@ public class FilterPredicates {
 
     private Predicate<Fact> intygFilter;
     private Predicate<Sjukfall> sjukfallFilter;
+    private boolean sjukfallangdfilterActive;
     private String hash;
 
-    public FilterPredicates(Predicate<Fact> intygFilter, Predicate<Sjukfall> sjukfallFilter, String hash) {
+    public FilterPredicates(Predicate<Fact> intygFilter, Predicate<Sjukfall> sjukfallFilter, String hash, boolean sjukfallangdfilterActive) {
         if (intygFilter == null) {
             throw new IllegalArgumentException("Intygfilter must not be null");
         }
@@ -45,6 +46,7 @@ public class FilterPredicates {
         this.intygFilter = intygFilter;
         this.sjukfallFilter = sjukfallFilter;
         this.hash = hash;
+        this.sjukfallangdfilterActive = sjukfallangdfilterActive;
     }
 
     public Predicate<Fact> getIntygFilter() {
@@ -57,6 +59,10 @@ public class FilterPredicates {
 
     public String getHash() {
         return hash;
+    }
+
+    public boolean isSjukfallangdfilterActive() {
+        return sjukfallangdfilterActive;
     }
 
     public static String getHashValueForEnhets(Set<Integer> enhetIds) {
