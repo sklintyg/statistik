@@ -57,6 +57,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -171,7 +172,7 @@ public class FilterHandler {
         return new FilterSettings(filter, rangeMessageDTO);
     }
 
-    private String getHash(String filterHash, List<HsaIdEnhet> enhetsIDs) {
+    private String getHash(String filterHash, Collection<HsaIdEnhet> enhetsIDs) {
         return filterHash + enhetsIDs.stream().map(HsaIdAny::getId).collect(Collectors.joining());
     }
 
