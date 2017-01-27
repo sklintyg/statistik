@@ -120,7 +120,7 @@ public class DiagnosgruppQueryTest {
     }
 
     private void fact(int startday, int diagnoskapitel) {
-        Fact fact = aFact().withLan(3).withKommun(380).withForsamling(38002).
+        Fact fact = aFact().withId(1).withLan(3).withKommun(380).withForsamling(38002).
                 withEnhet(1).withLakarintyg(intyg++).
                 withPatient(patient++).withKon(Kon.FEMALE).withAlder(45).
                 withDiagnoskapitel(diagnoskapitel).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).

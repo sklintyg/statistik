@@ -88,7 +88,7 @@ public class AldersgruppQueryTest {
     }
 
     private void fact(int startday, int length, int alder) {
-        Fact fact = aFact().withLan(3).withKommun(380).withForsamling(38002).
+        Fact fact = aFact().withId(1).withLan(3).withKommun(380).withForsamling(38002).
                 withEnhet(1).withLakarintyg(intyg++).
                 withPatient(patient++).withKon(Kon.FEMALE).withAlder(alder).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
