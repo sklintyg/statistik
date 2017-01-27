@@ -28,12 +28,7 @@ public class Fact {
     public static final String HEADING = "lan;kommun;forsamling;enhet;lakarintyg;patient;startdatum;kon;alder;diagnoskapitel;"
             + "diagnosavsnitt;diagnoskategori;sjukskrivningsgrad;sjukskrivningslangd;lakarkon;lakaralder;lakarbefattning";
 
-    public static final Comparator<Fact> TIME_ORDER = new Comparator<Fact>() {
-        @Override
-        public int compare(Fact f1, Fact f2) {
-            return f1.getStartdatum() - f2.getStartdatum();
-        }
-    };
+    static final Comparator<Fact> TIME_ORDER = Comparator.comparingInt(Fact::getStartdatum);
 
     private long id;
     private int lan;
@@ -251,7 +246,7 @@ public class Fact {
         private int lakarid = -1;
         private Boolean enkelt = null;
 
-        @java.lang.SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S1067"}) // I can not tink of a better way to write this method
+        @java.lang.SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S1067"}) // I can not think of a better way to write this method
         public Fact build() {
             if (id == -1 || lan == -1 || kommun == -1 || forsamling == -1 || enhet == -1 || lakarintyg == -1 || patient == -1
                     || startdatum == -1 || slutdatum == -1 || kon == -1 || alder == -1 || diagnoskapitel == -1 || diagnosavsnitt == -1
