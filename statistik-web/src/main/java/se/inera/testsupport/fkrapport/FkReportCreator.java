@@ -165,6 +165,7 @@ public class FkReportCreator {
         return sjukfallGroups.stream()
                 .flatMap(sjukfallGroup -> sjukfallGroup.getSjukfall().stream())
                 .collect(Collectors.toMap(Sjukfall::getFirstIntygId, p -> p, (p, q) -> p)).values().stream() // distinct by property
+                .filter(sjukfall -> inPeriod(sjukfall, fromIntDay, toIntDay))
                 .filter(sjukfall -> inPeriod(getAllFactsInIntyg(sjukfall.getFirstIntygId(), aisle), fromIntDay, toIntDay))
                 .map(sjukfall -> createFkFactRow(sjukfall, aisle));
     }
@@ -201,6 +202,10 @@ public class FkReportCreator {
             clearTextCode = icd10.findIcd10FromNumericId(sjukfall.getDiagnoskategori()).getId();
         }
         return clearTextCode;
+    }
+
+    private boolean inPeriod(Sjukfall sjukfall, int from, int to) {
+        return sjukfall.getStart() >= from && sjukfall.getStart() <= to;
     }
 
     private boolean inPeriod(Stream<Fact> intygFacts, int from, int to) {

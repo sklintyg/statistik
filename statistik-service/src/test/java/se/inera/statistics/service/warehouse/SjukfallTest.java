@@ -346,7 +346,7 @@ public class SjukfallTest {
     public void testGetRealDaysFirstIntygConstructExtendingSjukfallOnSameIntyg() throws Exception {
         //When
         final int firstIntygId = 17;
-        final SjukfallExtended sjukfall1 = new SjukfallExtended(new Fact(1, 1, 1, 1, firstIntygId, 1, 2, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1, false));
+        final SjukfallExtended sjukfall1 = new SjukfallExtended(new Fact(1L, 1, 1, 1, 1, firstIntygId, 1, 2, 5, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1, false));
         final SjukfallExtended sjukfall2 = new SjukfallExtended(sjukfall1, new SjukfallExtended(createFact(10, 4)));
         final SjukfallExtended sjukfall3 = new SjukfallExtended(sjukfall2, new SjukfallExtended(createFact(6, 4)));
 
@@ -361,11 +361,11 @@ public class SjukfallTest {
         final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4));
 
         //Add a sjukfall which originates from a second intyg - 11 days - has the LOWEST startdate
-        Fact factForSecondIntygsId = new Fact(1, 1, 1, 1, 2, 1, 1, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1, false);
+        Fact factForSecondIntygsId = new Fact(1L, 1, 1, 1, 1, 2, 1, 1, 11, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1, false);
         final SjukfallExtended sjukfall2 = sjukfall1.extendSjukfall(new SjukfallExtended(factForSecondIntygsId));
 
         //Add another sjukfall which originates from a third intyg - 20 days
-        Fact factForThirdIntygsId = new Fact(1, 1, 1, 1, 3, 1, 2, 21, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1, false);
+        Fact factForThirdIntygsId = new Fact(1L, 1, 1, 1, 1, 3, 1, 2, 21, 1, 1, 1, 1, 1, 1, 1, 1, 1, new int[0], 1, false);
         final SjukfallExtended sjukfall3 = sjukfall2.extendSjukfall(new SjukfallExtended(factForThirdIntygsId));
 
         //Then

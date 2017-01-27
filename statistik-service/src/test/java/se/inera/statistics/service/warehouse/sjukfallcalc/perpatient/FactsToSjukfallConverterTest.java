@@ -111,6 +111,6 @@ public class FactsToSjukfallConverterTest {
     }
 
     private Fact createFact(int startdatum, int slutdatum, int patient) {
-        return new Fact(1,1,1,1,1, patient, startdatum, slutdatum,1,1,1,1,1,1,1,1,1, new int[0],1,false);
+        return new Fact(1L, 1,1,1,1,1, patient, startdatum, slutdatum,1,1,1,1,1,1,1,1,1, new int[0],1,false);
     }
 }

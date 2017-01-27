@@ -30,6 +30,7 @@ import java.util.NavigableSet;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.common.base.Predicate;
@@ -190,7 +191,6 @@ public class SjukfallExtended {
         for (Fact fact : sjukfallWithExtendingPeriods.facts) {
             sjukfall.sjukskrivningsperiods.add(new Sjukskrivningsperiod(fact.getStartdatum(), fact.getSjukskrivningslangd()));
         }
-        sjukfall.enkelt |= sjukfallWithExtendingPeriods.isEnkelt();
         return sjukfall;
     }
 
@@ -360,6 +360,14 @@ public class SjukfallExtended {
 
     public long getFirstIntygId() {
         return getFirstFact().getLakarintyg();
+    }
+
+    public boolean containsAllIntygIn(SjukfallExtended sjukfallToCompare) {
+        return getFactIds().containsAll(sjukfallToCompare.getFactIds());
+    }
+
+    private List<Long> getFactIds() {
+        return facts.stream().map(Fact::getId).collect(Collectors.toList());
     }
 
     final class Diagnos {
