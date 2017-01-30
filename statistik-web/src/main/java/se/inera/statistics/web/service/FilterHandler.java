@@ -45,7 +45,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.sun.istack.NotNull;
-
+import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
@@ -60,6 +60,7 @@ import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.Verksamhet;
 
 @Component
@@ -154,10 +155,15 @@ public class FilterHandler {
         final List<String> aldersgrupp = inFilter.getAldersgrupp();
         final Predicate<Fact> aldersgruppFilter = getAldersgruppFilter(aldersgrupp);
         final Predicate<Sjukfall> sjukfallLengthFilter = getSjukfallLengthFilter(inFilter.getSjukskrivningslangd());
-        final FilterPredicates sjukfallFilter = new FilterPredicates(Predicates.and(enhetFilter, diagnosFilter, aldersgruppFilter), sjukfallLengthFilter, filterHash);
-        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter), toReadableAgeGroupNames(aldersgrupp));
-        final Range range = getRange(inFilter, defaultRangeValue);
-        return new FilterSettings(filter, range);
+        final String predicatesHash = getHash(filterHash, enhetsIDs);
+        final FilterPredicates sjukfallFilter = new FilterPredicates(Predicates.and(enhetFilter, diagnosFilter, aldersgruppFilter), sjukfallLengthFilter, predicatesHash);
+        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter), toReadableAgeGroupNames(aldersgrupp), filterHash);
+        final Range rangeMessageDTO = getRange(inFilter, defaultRangeValue);
+        return new FilterSettings(filter, rangeMessageDTO);
+    }
+
+    private String getHash(String filterHash, List<HsaIdEnhet> enhetsIDs) {
+        return filterHash + enhetsIDs.stream().map(HsaIdAny::getId).collect(Collectors.joining());
     }
 
     private List<String> filterDataToReadableSjukskrivningslangdName(FilterData inFilter) {
@@ -241,14 +247,14 @@ public class FilterHandler {
         final FilterPredicates predicate = new FilterPredicates(fact -> enhetsIntIds.contains(fact.getEnhet()), sjukfall -> true, hashValue);
         final List<String> sjukskrivningslangd = toReadableSjukskrivningslangdName(null);
         final List<String> aldersgrupp = toReadableAgeGroupNames(null);
-        return new Filter(predicate, enhets, null, sjukskrivningslangd, aldersgrupp);
+        return new Filter(predicate, enhets, null, sjukskrivningslangd, aldersgrupp, hashValue);
     }
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        if (info.getLoginInfoForVg(vgId).map(vgInfo -> vgInfo.isProcessledare()).orElse(false)) {
-            return new Filter(SjukfallUtil.ALL_ENHETER, null, null, toReadableSjukskrivningslangdName(null), toReadableAgeGroupNames(null));
+        if (info.getLoginInfoForVg(vgId).map(LoginInfoVg::isProcessledare).orElse(false)) {
+            return new Filter(SjukfallUtil.ALL_ENHETER, null, null, toReadableSjukskrivningslangdName(null), toReadableAgeGroupNames(null), FilterPredicates.HASH_EMPTY_FILTER);
         }
         final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(info.getBusinessesForVg(vgId), verksamhet -> Warehouse.getEnhet(verksamhet.getId())));
         return getFilterForEnhets(availableEnhets, null);
