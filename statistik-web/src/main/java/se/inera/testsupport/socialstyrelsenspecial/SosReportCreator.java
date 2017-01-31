@@ -48,11 +48,13 @@ public class SosReportCreator {
     private final SjukfallUtil sjukfallUtil;
     private HashMap<String, Integer> dxsToShowInReport = new HashMap<>();
     private Clock clock;
+    private int year;
 
     /**
      * @param dxString diagnosis to generate report for, if null then use default dxs
+     * @param year Which year to calculate
      */
-    public SosReportCreator(Map<HsaIdVardgivare, Aisle> allVardgivare, SjukfallUtil sjukfallUtil, Icd10 icd10, String dxString, Clock clock) {
+    public SosReportCreator(Map<HsaIdVardgivare, Aisle> allVardgivare, SjukfallUtil sjukfallUtil, Icd10 icd10, String dxString, Clock clock, int year) {
         this.allVardgivare = allVardgivare;
         this.sjukfallUtil = sjukfallUtil;
         this.clock = clock;
@@ -62,6 +64,7 @@ public class SosReportCreator {
             Icd10.Id dx = icd10.findFromIcd10Code(dxString);
             dxsToShowInReport.put(dx.getId(), dx.toInt());
         }
+        this.year = year;
     }
 
     private void populateDefaultDxs() {
@@ -77,10 +80,10 @@ public class SosReportCreator {
     }
 
     public List<SosRow> getSosReport() {
-        final LocalDate from = getFirstDateOfLastYear();
+        final LocalDate from = getFirstDateOfYear();
         final Range range = new Range(from, LocalDate.now(clock));
         final int fromIntDay = WidelineConverter.toDay(from);
-        final int toIntDay = WidelineConverter.toDay(getLastDateOfLastYear());
+        final int toIntDay = WidelineConverter.toDay(getLastDateOfYear());
         final int nowMinusFiveDaysIntDay = WidelineConverter.toDay(LocalDate.now(clock).minusDays(5));
 
         final ArrayList<SosRow> sosRows = new ArrayList<>();
@@ -106,12 +109,12 @@ public class SosReportCreator {
         return sosRows;
     }
 
-    LocalDate getLastDateOfLastYear() {
-        return LocalDate.now(clock).withDayOfYear(1).minusDays(1);
+    LocalDate getLastDateOfYear() {
+        return LocalDate.now(clock).withYear(year + 1).withDayOfYear(1).minusDays(1);
     }
 
-    LocalDate getFirstDateOfLastYear() {
-        return LocalDate.now(clock).withDayOfYear(1).minusYears(1);
+    LocalDate getFirstDateOfYear() {
+        return LocalDate.now(clock).withDayOfYear(1).withYear(year);
     }
 
     private List<SosCalculatedRow> getCalculatedValuesSosReport(Function<List<SosRow>, Double> calcFunc) {
