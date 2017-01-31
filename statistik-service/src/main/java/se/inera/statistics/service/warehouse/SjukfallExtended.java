@@ -28,12 +28,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.Range;
+import java.util.stream.Collectors;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
+
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.Range;
 
 public class SjukfallExtended {
 
@@ -51,6 +52,7 @@ public class SjukfallExtended {
     private Set<Integer> enhets = new HashSet<>();
     private SjukfallExtended extending;
     private List<Sjukskrivningsperiod> sjukskrivningsperiods = new ArrayList<>();
+    private boolean enkelt = false;
 
     public SjukfallExtended(Fact line) {
         start = line.getStartdatum();
@@ -64,6 +66,7 @@ public class SjukfallExtended {
         lan = line.getLan();
         this.lakare.add(getLakareFromFact(line));
         this.enhets.add(line.getEnhet());
+        this.enkelt |= line.isEnkelt();
     }
 
     public SjukfallExtended(SjukfallExtended previous, Fact line) {
@@ -78,6 +81,7 @@ public class SjukfallExtended {
         alder = previous.alder > this.alder ? previous.alder : this.alder;
         enhets.addAll(previous.getEnhets());
         sjukskrivningsgrad.putAll(previous.sjukskrivningsgrad);
+        enkelt |= previous.isEnkelt();
     }
 
     SjukfallExtended(SjukfallExtended previous, SjukfallExtended sjukfall) {
@@ -90,6 +94,7 @@ public class SjukfallExtended {
         alder = previous.alder > this.alder ? previous.alder : this.alder;
         enhets.addAll(previous.getEnhets());
         sjukskrivningsgrad.putAll(previous.sjukskrivningsgrad);
+        enkelt |= previous.isEnkelt();
     }
 
     SjukfallExtended(SjukfallExtended sjukfall) {
@@ -105,6 +110,7 @@ public class SjukfallExtended {
         lakare.addAll(sjukfall.getLakare());
         extending = sjukfall.extending;
         enhets.addAll(sjukfall.getEnhets());
+        enkelt |= sjukfall.isEnkelt();
     }
 
     private Lakare getLakareFromFact(Fact line) {
@@ -155,6 +161,15 @@ public class SjukfallExtended {
         final SjukfallExtended sjukfall = new SjukfallExtended(this);
         sjukfall.start = start;
         sjukfall.sjukskrivningsperiods.add(new Sjukskrivningsperiod(start, sjukskrivningslangd));
+        return sjukfall;
+    }
+
+    public SjukfallExtended extendSjukfallWithPeriods(SjukfallExtended sjukfallWithExtendingPeriods) {
+        final SjukfallExtended sjukfall = new SjukfallExtended(this);
+        for (Fact fact : sjukfallWithExtendingPeriods.facts) {
+            sjukfall.sjukskrivningsperiods.add(new Sjukskrivningsperiod(fact.getStartdatum(), fact.getSjukskrivningslangd()));
+        }
+        sjukfall.enkelt |= sjukfallWithExtendingPeriods.isEnkelt();
         return sjukfall;
     }
 
@@ -317,12 +332,15 @@ public class SjukfallExtended {
     }
 
     public boolean isEnkelt() {
-        for (Fact fact : facts) {
-            if (fact.isEnkelt()) {
-                return true;
-            }
-        }
-        return false;
+        return this.enkelt;
+    }
+
+    public boolean containsAllIntygIn(SjukfallExtended sjukfallToCompare) {
+        return getFactIds().containsAll(sjukfallToCompare.getFactIds());
+    }
+
+    private List<Long> getFactIds() {
+        return facts.stream().map(Fact::getId).collect(Collectors.toList());
     }
 
     final class Diagnos {

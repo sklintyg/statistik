@@ -25,7 +25,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
@@ -64,10 +67,10 @@ public class SjukfallCalculator {
     }
 
     private void populateFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Range> ranges) {
-        factsPerPatientAndPeriod = getFactsPerPatientAndPeriod(facts, ranges, useOriginalSjukfallStart);
+        factsPerPatientAndPeriod = getFactsPerPatientAndPeriod(facts, ranges);
     }
 
-    static List<ArrayListMultimap<Long, Fact>> getFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Range> ranges, boolean useOriginalSjukfallStart) {
+    static List<ArrayListMultimap<Long, Fact>> getFactsPerPatientAndPeriod(Iterable<Fact> facts, List<Range> ranges) {
         final List<Integer> rangeEnds = new ArrayList<>(ranges.size() + 1);
         rangeEnds.add(WidelineConverter.toDay(ranges.get(0).getFrom().minusDays(1)));
         for (Range range : ranges) {
@@ -80,11 +83,7 @@ public class SjukfallCalculator {
             factsPerPatientAndPeriod.add(ArrayListMultimap.<Long, Fact> create());
         }
 
-        if (useOriginalSjukfallStart) {
-            populateFactsPerPatientAndPeriodUsingOriginalSjukfallStart(facts, rangeEnds, factsPerPatientAndPeriod);
-        } else {
-            populateFactsPerPatientAndPeriod(facts, rangeEnds, factsPerPatientAndPeriod);
-        }
+        populateFactsPerPatientAndPeriod(facts, rangeEnds, factsPerPatientAndPeriod);
         return factsPerPatientAndPeriod;
     }
 
@@ -243,18 +242,12 @@ public class SjukfallCalculator {
 
     private Multimap<Long, SjukfallExtended> getSjukfallsPerPatient() {
         if (useOriginalSjukfallStart) {
-            final ArrayListMultimap<Long, Fact> result = ArrayListMultimap.create();
-            for (int i = 0; i <= (period + 1); i++) {
-                result.putAll(factsPerPatientAndPeriod.get(i));
-            }
-            final ArrayListMultimap<Long, SjukfallExtended> sjukfalls = ArrayListMultimap.create(sjukfallsPerPatientInPreviousPeriod);
+            final ArrayListMultimap<Long, SjukfallExtended> sjukfalls = ArrayListMultimap.create();
             final ArrayListMultimap<Long, Fact> factsPerPatientInPeriod = factsPerPatientAndPeriod.get(period + 1);
-            for (Long key : result.keySet()) {
-                if (period == 0 || !factsPerPatientInPeriod.get(key).isEmpty()) {
-                    sjukfalls.removeAll(key);
-                    sjukfalls.putAll(getSjukfallsPerPatient(result.get(key)));
-                }
+            for (Long patientId : factsPerPatientInPeriod.keySet()) {
+                sjukfalls.putAll(getSjukfallsPerPatient(factsPerPatientInPeriod.get(patientId)));
             }
+            extendWithEarlierStart(period, sjukfalls);
             sjukfallsPerPatientInPreviousPeriod = ArrayListMultimap.create(sjukfalls);
             return sjukfalls;
         } else {
@@ -266,6 +259,79 @@ public class SjukfallCalculator {
             return sjukfalls;
         }
     }
+
+    private void extendWithEarlierStart(int period, ArrayListMultimap<Long, SjukfallExtended> currentSjukfallsPerPatient) {
+        Collection<Long> allPatiensWithPossibleEarierStart = getAllPatientWithPossibleEarlierStart(ranges.get(period), currentSjukfallsPerPatient);
+        final ArrayListMultimap<Long, SjukfallExtended> allSjukfallsForEarlyPatient = getAllSjukfallsForPatients(period, allPatiensWithPossibleEarierStart);
+        for (Map.Entry<Long, Collection<SjukfallExtended>> allSjukfallPerPatient : allSjukfallsForEarlyPatient.asMap().entrySet()) {
+            final List<SjukfallExtended> currentSjukfallsForPatient = currentSjukfallsPerPatient.get(allSjukfallPerPatient.getKey());
+            final Collection<SjukfallExtended> allSjukfallsForPatient = allSjukfallPerPatient.getValue();
+            final ArrayList<SjukfallExtended> sjukfallsExtendedWithEarlierPeriods = getSjukfallExtendedWithEarlierPeriods(currentSjukfallsForPatient, allSjukfallsForPatient);
+            currentSjukfallsPerPatient.replaceValues(allSjukfallPerPatient.getKey(), sjukfallsExtendedWithEarlierPeriods);
+        }
+    }
+
+    private ArrayList<SjukfallExtended> getSjukfallExtendedWithEarlierPeriods(List<SjukfallExtended> currentSjukfalls, Collection<SjukfallExtended> allSjukfalls) {
+        final ArrayList<SjukfallExtended> sjukfallsExtendedWithEarlierPeriods = new ArrayList<>();
+        for (SjukfallExtended currentSjukfall : currentSjukfalls) {
+            Optional<SjukfallExtended> matching = getMatchingSjukfall(allSjukfalls, currentSjukfall);
+            sjukfallsExtendedWithEarlierPeriods.add(matching.isPresent()
+                    ? currentSjukfall.extendSjukfallWithPeriods(matching.get())
+                    : currentSjukfall);
+        }
+        return sjukfallsExtendedWithEarlierPeriods;
+    }
+
+    /**
+     * Tries to find a sjukfall from a list (allSjukfalls) that contains all Facts from another Sjukfall (currentSjukfall).
+     *
+     * @param allSjukfalls Sjukfalls where probably one item "contains" the sjukfall in the currentSjukfall param
+     * @param currentSjukfall Base sjukfall to search for
+     * @return The sjukfall from param allSjukfalls that "contains" the same Facts as currentSjukfall param. Empty result if not found.
+     */
+    private Optional<SjukfallExtended> getMatchingSjukfall(Collection<SjukfallExtended> allSjukfalls, SjukfallExtended currentSjukfall) {
+        for (SjukfallExtended potentiallyLongerSjukfall : allSjukfalls) {
+            if (potentiallyLongerSjukfall.containsAllIntygIn(currentSjukfall)) {
+                return Optional.of(potentiallyLongerSjukfall);
+            }
+        }
+        return Optional.empty();
+    }
+
+    private ArrayListMultimap<Long, SjukfallExtended> getAllSjukfallsForPatients(int period, Collection<Long> patientToCalculate) {
+        final ArrayListMultimap<Long, Fact> factsPerPatient = ArrayListMultimap.create();
+        for (int i = 0; i <= (period + 1); i++) {
+            factsPerPatient.putAll(factsPerPatientAndPeriod.get(i));
+        }
+        final ArrayListMultimap<Long, SjukfallExtended> sjukfalls = ArrayListMultimap.create();
+        final ArrayListMultimap<Long, Fact> factsPerPatientInPeriod = factsPerPatientAndPeriod.get(period + 1);
+        for (Long patientId : factsPerPatient.keySet()) {
+            final boolean shouldCalculateForThisPatient = patientToCalculate.contains(patientId);
+            if (shouldCalculateForThisPatient && (period == 0 || !factsPerPatientInPeriod.get(patientId).isEmpty())) {
+                sjukfalls.putAll(getSjukfallsPerPatient(factsPerPatient.get(patientId)));
+            }
+        }
+        return sjukfalls;
+    }
+
+    private Collection<Long> getAllPatientWithPossibleEarlierStart(Range range, ArrayListMultimap<Long, SjukfallExtended> sjukfalls) {
+        final int latestStartDate = WidelineConverter.toDay(range.getFrom()) + SjukfallExtended.MAX_GAP;
+        return sjukfalls.asMap().entrySet().stream()
+                .filter(longCollectionEntry -> longCollectionEntry.getValue().stream()
+                        .anyMatch(sjukfallExtended -> sjukfallExtended.getStart() <= latestStartDate))
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+    }
+
+    private ArrayListMultimap<Long, SjukfallExtended> getSjukfallPerPatientInPeriod(int period) {
+        final ArrayListMultimap<Long, SjukfallExtended> sjukfalls = ArrayListMultimap.create();
+        final ArrayListMultimap<Long, Fact> factsPerPatientInPeriod = factsPerPatientAndPeriod.get(period + 1);
+        for (Long patientId : factsPerPatientInPeriod.keySet()) {
+            sjukfalls.putAll(getSjukfallsPerPatient(factsPerPatientInPeriod.get(patientId)));
+        }
+        return sjukfalls;
+    }
+
 
     private Multimap<Long, SjukfallExtended> filterPersonifiedSjukfallsFromDate(LocalDate from, Multimap<Long, SjukfallExtended> sjukfallsPerPatient) {
         final int firstday = WidelineConverter.toDay(from);

@@ -43,7 +43,7 @@ public class SjukfallCalculatorTest {
         final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 1, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges, false);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
 
         //Then
         assertEquals(4, factsPerPatientAndPeriod.size());
@@ -60,7 +60,7 @@ public class SjukfallCalculatorTest {
         final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 2, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges, false);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
 
         //Then
         assertEquals(4, factsPerPatientAndPeriod.size());
@@ -77,7 +77,7 @@ public class SjukfallCalculatorTest {
         final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 3, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges, false);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
 
         //Then
         assertEquals(4, factsPerPatientAndPeriod.size());
@@ -94,7 +94,7 @@ public class SjukfallCalculatorTest {
         final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 4, 1), 2, 1);
 
         //When
-        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges, false);
+        final List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod = SjukfallCalculator.getFactsPerPatientAndPeriod(facts, ranges);
 
         //Then
         assertEquals(4, factsPerPatientAndPeriod.size());
@@ -105,7 +105,7 @@ public class SjukfallCalculatorTest {
 
     private Fact createFact(long patient, LocalDate startDatum) {
         final int start = WidelineConverter.toDay(startDatum);
-        return new Fact(1,1,1,1,1, patient, start,start,1,1,1,1,1,1,1,1,1,new int[0],1,false);
+        return new Fact(1L,1,1,1,1,1, patient, start,start,1,1,1,1,1,1,1,1,1,new int[0],1,false);
     }
 
     @Test
