@@ -334,12 +334,13 @@ public class RestSupportService {
      * Get sjukfall information requested by socialstyrelsen (INTYG-2449).
      */
     @GET
-    @Path("getSocialstyrelsenReport{dx:(/dx)?}")
+    @Path("getSocialstyrelsenReport")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response getSosStatistics(@PathParam("dx") String dx) {
+    public Response getSosStatistics(@QueryParam("dx") String dx, @QueryParam("year") String yearParam) {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock);
+        int year = yearParam == null ? LocalDate.now(changableClock).minusYears(1).getYear() : Integer.parseInt(yearParam);
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock, year);
         final List<SosRow> sosReport = sosReportCreator.getSosReport();
         return Response.ok(sosReport).build();
     }
@@ -348,12 +349,13 @@ public class RestSupportService {
      * Get sjukfall mean value information requested by socialstyrelsen (INTYG-2449).
      */
     @GET
-    @Path("getSocialstyrelsenMedianReport{dx:(/dx)?}")
+    @Path("getSocialstyrelsenMedianReport")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response getSosMedianStatistics(@PathParam("dx") String dx) {
+    public Response getSosMedianStatistics(@QueryParam("dx") String dx, @QueryParam("year") String yearParam) {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock);
+        int year = yearParam == null ? LocalDate.now(changableClock).minusYears(1).getYear() : Integer.parseInt(yearParam);
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock, year);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getMedianValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
     }
@@ -362,12 +364,13 @@ public class RestSupportService {
      * Get sjukfall standard deviation information requested by socialstyrelsen (INTYG-2449).
      */
     @GET
-    @Path("getSocialstyrelsenStdDevReport{dx:(/dx)?}")
+    @Path("getSocialstyrelsenStdDevReport")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response getSosStdDevStatistics(@PathParam("dx") String dx) {
+    public Response getSosStdDevStatistics(@QueryParam("dx") String dx, @QueryParam("year") String yearParam) {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock);
+        int year = yearParam == null ? LocalDate.now(changableClock).minusYears(1).getYear() : Integer.parseInt(yearParam);
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock, year);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getStdDevValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
     }
