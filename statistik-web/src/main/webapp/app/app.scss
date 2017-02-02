@@ -552,7 +552,7 @@ legend {
 /* position print button right bottom corner of column */
 #print-button-col {
   position:absolute;
-  @media (max-width: 767px) {
+  @media (max-width: $screen-sm-max) {
     position:relative;
   }
   bottom:0;
