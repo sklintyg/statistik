@@ -23,13 +23,13 @@ angular.module('StatisticsApp').factory('chartFactory',
     function(COLORS, _, ControllerCommons, $window, AppModel) {
     'use strict';
 
-        var labelFormatter = function(maxWidth) {
+        var labelFormatter = function(maxWidth, sameLengthOnAll) {
 
             return function() {
                 //If the label is more than 30 characters then cut the text and add ellipsis
                 var numberOfChars = maxWidth;
 
-                if (this.isFirst) {
+                if (!sameLengthOnAll && this.isFirst) {
                     numberOfChars = maxWidth-10;
                 }
 
@@ -37,7 +37,7 @@ angular.module('StatisticsApp').factory('chartFactory',
             };
         };
 
-        var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback, overview, percentChart, stacked) {
+        var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback, overview, percentChart, stacked, verticalLabel, maxLength) {
 
             var hasSexSet = isSexSetOnChartSeries(chartSeries);
 
@@ -77,14 +77,14 @@ angular.module('StatisticsApp').factory('chartFactory',
                 },
                 xAxis : {
                     labels : {
-                        rotation : 320,
+                        rotation : verticalLabel ? -90 : 320,
                         align : 'right',
                         style: {
                             whiteSpace: 'pre',
                             width: '200px'
                         },
                         useHTML: false,
-                        formatter: labelFormatter(30),
+                        formatter: labelFormatter(maxLength ? maxLength : 30, verticalLabel),
                         step: 1
                     },
                     categories : _.map(chartCategories, function(category) {
