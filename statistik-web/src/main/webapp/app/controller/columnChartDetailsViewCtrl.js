@@ -40,7 +40,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         };
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
-            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback, false, chartTypeInfo.usePercentChart, chartTypeInfo.stacked);
+            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback, false, chartTypeInfo.usePercentChart, chartTypeInfo.stacked, config.chartVerticalLabel, config.chartLabelLength);
             chartOptions.chart.type = chartTypeInfo.activeHighchartType;
             chartOptions.legend.enabled = false;
             chartOptions.yAxis.allowDecimals = !!config.allowDecimalsYAxis;
@@ -258,6 +258,8 @@ angular.module('StatisticsApp').casesPerBusinessConfig =
     };
     conf.title = messageService.getProperty('title.vardenhet');
     conf.chartXAxisTitle = 'Vårdenhet';
+    conf.chartVerticalLabel = true;
+    conf.chartLabelLength = 40;
     conf.chartFootnotes = function(isVerksamhet, isLandsting) {
         if (isLandsting) {
             return ['help.landsting.vardenhet'];
@@ -304,6 +306,7 @@ angular.module('StatisticsApp').casesPerLakareConfig =
     conf.title = messageService.getProperty('title.lakare');
     conf.chartFootnotes = ['help.verksamhet.lakare'];
     conf.chartXAxisTitle = 'Läkare';
+    conf.chartVerticalLabel = true;
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/sjukfallperlakaretidsserie', active: false},
@@ -363,6 +366,7 @@ angular.module('StatisticsApp').compareDiagnosis =
     };
     conf.title = messageService.getProperty('title.diagnoscompare');
     conf.chartXAxisTitle = 'Diagnos';
+    conf.chartVerticalLabel = true;
     conf.showDiagnosisSelector = true;
 
     conf.exchangeableViews = [
