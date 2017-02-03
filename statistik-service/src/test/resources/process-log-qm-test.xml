@@ -21,13 +21,18 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
        xmlns:amq="http://activemq.apache.org/schema/core" xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+    http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
         http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd"
         >
 
     <context:component-scan base-package="se.inera.statistics.service.processlog"/>
     <context:component-scan base-package="se.inera.statistics.service.schemavalidation"/>
+    <context:component-scan base-package="se.inera.statistics.service.warehouse, se.inera.statistics.service.monitoring"/>
 
     <bean class="se.inera.statistics.service.hsa.HSADecorator"/>
 
@@ -66,4 +71,67 @@
         <property name="messageListener" ref="jmsreceiver"/>
         <property name="transactionManager" ref="transactionManager"/>
     </bean>
+
+    <tx:annotation-driven/>
+
+    <jdbc:embedded-database id="dataSource" type="H2"/>
+
+    <context:property-placeholder/>
+    <context:property-placeholder location="classpath*:application-context-test.properties" order="2"
+        ignore-resource-not-found="false" ignore-unresolvable="false"/>
+
+    <bean id="org.h2.tools.Server"
+        class="org.h2.tools.Server"
+        factory-method="createTcpServer"
+        init-method="start"
+        destroy-method="stop" lazy-init="false">
+        <constructor-arg value="-tcp,-tcpAllowOthers"/>
+    </bean>
+
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="persistenceUnitName" value="IneraStatisticsLog"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="database" value="H2"/>
+            </bean>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <prop key="hibernate.hbm2ddl.auto">none</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="changeLog" value="classpath:changelog/changelog.xml"/>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <bean class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" id="hsaWebServiceCalls"/>
+    <bean class="se.inera.statistics.service.hsa.HsaServiceStub" id="hsaServiceStub"/>
+    <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
+    <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
+    <bean class="se.inera.statistics.service.processlog.Processor"/>
+    <bean class="se.inera.statistics.service.warehouse.FactPopulator"/>
+    <bean class="se.inera.statistics.service.warehouse.Warehouse"/>
+    <bean class="se.inera.statistics.service.warehouse.WarehouseManager"/>
+    <bean class="se.inera.statistics.service.processlog.VardgivareManager"/>
+    <bean class="se.inera.statistics.service.processlog.LakareManager"/>
+    <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
+    <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
+    <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper"/>
+    <bean class="se.inera.statistics.service.helper.SendMessageToCareHelper"/>
+    <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable"/>
+
+    <!--This profile is used when testing transactional aspects of the application, i.e. when receiving a message on a queue and storing it to the db-->
+    <beans profile="transactional-test-mock">
+        <bean id="processLog" class="se.inera.statistics.service.processlog.ProcessLogMock"/>
+    </beans>
 </beans>

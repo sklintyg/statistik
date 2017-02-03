@@ -77,6 +77,7 @@
     <bean class="se.inera.statistics.service.hsa.HsaServiceStub" id="hsaServiceStub"/>
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
     <bean class="se.inera.statistics.service.processlog.Processor"/>
+    <bean class="se.inera.statistics.service.processlog.message.ProcessMessageLogImpl"/>
     <bean class="se.inera.statistics.service.warehouse.FactPopulator"/>
     <bean class="se.inera.statistics.service.warehouse.Warehouse"/>
     <bean class="se.inera.statistics.service.warehouse.WarehouseManager"/>

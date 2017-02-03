@@ -21,9 +21,9 @@ package se.inera.statistics.service.processlog.message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.ifv.statistics.spi.authorization.impl.HsaCommunicationException;
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.processlog.Processor;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
@@ -35,50 +35,56 @@ public class MessageLogConsumerImpl implements MessageLogConsumer {
     private static final Logger LOG = LoggerFactory.getLogger(MessageLogConsumerImpl.class);
     public static final int BATCH_SIZE = 100;
 
+    @Value("#{'${process.messages.intervals:0,3,9,18,50,100,250,550,1500}'.split(',')}")
+    private List<Integer> tryIntervals;
+
     @Autowired
     private ProcessMessageLog processLog;
-
     @Autowired
     private Processor processor;
-
     @Autowired
     private SendMessageToCareHelper sendMessageToCareHelper;
 
     private volatile boolean isRunning = false;
 
-    @Transactional
+    @Transactional(noRollbackFor = Exception.class)
     @Override
-    public synchronized int processBatch() {
+    public synchronized long processBatch(long firstId) {
         try {
             setRunning(true);
-            List<MessageEvent> result = processLog.getPending(BATCH_SIZE);
+            List<MessageEvent> result = processLog.getPending(BATCH_SIZE, firstId);
             if (result.isEmpty()) {
-                return 0;
+                return firstId;
             }
             int processed = 0;
+            long lastId = firstId;
+
             for (MessageEvent event: result) {
-                try {
+                if (!tryIntervals.contains(event.getTries())) {
+                    increaseTries(event);
+                } else {
                     final boolean eventSuccessfullyHandled = handleEvent(event);
                     if (!eventSuccessfullyHandled) {
                         LOG.error("Failed to process meddelande {} ({})", event.getId(), event.getCorrelationId());
+                        increaseTries(event);
                     }
-                } catch (HsaCommunicationException e) {
-                    LOG.error("Could not process meddelande {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
-                    LOG.debug("Could not process meddelande {} ({}).", event.getId(), event.getCorrelationId(), e);
-                    return processed;
-                } catch (Exception e) {
-                    LOG.error("Could not process meddelande {} ({}). {}", event.getId(), event.getCorrelationId(), e.getMessage());
-                    LOG.debug("Could not process meddelande {} ({}).", event.getId(), event.getCorrelationId(), e);
-                } finally {
-                    processLog.confirm(event.getId());
-                    processed++;
+
                     LOG.info("Processed message log id {}", event.getId());
                 }
+                processed++;
+                lastId = event.getId();
             }
-            return processed;
+            LOG.info("Processed message batch with {} entries", processed);
+
+            return lastId;
         } finally {
             setRunning(false);
         }
+    }
+
+    private void increaseTries(MessageEvent event) {
+        event.setTries(event.getTries() + 1);
+        processLog.update(event);
     }
 
     private boolean handleEvent(MessageEvent event) {

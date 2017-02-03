@@ -38,6 +38,7 @@ public class MessageEvent {
     private MessageEventType type;
     private String data;
     private String correlationId;
+    private int tries;
     private long timestamp;
 
     public MessageEvent() {
@@ -89,5 +90,13 @@ public class MessageEvent {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public int getTries() {
+        return tries;
+    }
+
+    public void setTries(int tries) {
+        this.tries = tries;
     }
 }

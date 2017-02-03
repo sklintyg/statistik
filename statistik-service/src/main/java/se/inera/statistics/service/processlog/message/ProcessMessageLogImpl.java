@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.processlog.AbstractProcessLog;
 import se.inera.statistics.service.processlog.ProcessLogImpl;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -53,15 +54,28 @@ public class ProcessMessageLogImpl extends AbstractProcessLog implements Process
     }
 
     @Override
-    public void confirm(long id) {
-        confirmId(id);
+    @Transactional
+    public long update(MessageEvent event) {
+        getManager().persist(event);
+        return event.getId();
+    }
+
+    @Override
+    @Transactional(noRollbackFor = Exception.class)
+    public long increaseNumberOfTries(String messageId) {
+        Query select = getManager().createQuery("UPDATE MessageEvent e SET e.tries = e.tries + 1 WHERE e.correlationId = :correlationId");
+        select.setParameter("correlationId", messageId);
+        return select.executeUpdate();
     }
 
     @Override
     @Transactional
-    public List<MessageEvent> getPending(int max) {
-        TypedQuery<MessageEvent> allQuery = getManager().createQuery("SELECT e from MessageEvent e WHERE e.id > :lastId ORDER BY e.id ASC", MessageEvent.class);
-        allQuery.setParameter("lastId", getLastId());
+    public List<MessageEvent> getPending(int max, long firstId) {
+        String query = "SELECT e FROM MessageEvent e WHERE e.id > :lastId AND (SELECT count(*) FROM MessageWideLine w WHERE e.correlationId = w.meddelandeId) = 0 ORDER BY e.id ASC";
+
+        TypedQuery<MessageEvent> allQuery = getManager().createQuery(query, MessageEvent.class);
+        allQuery.setParameter("lastId", firstId);
+
         allQuery.setMaxResults(max);
         return allQuery.getResultList();
     }

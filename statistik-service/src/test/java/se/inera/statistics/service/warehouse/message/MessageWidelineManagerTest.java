@@ -70,7 +70,7 @@ public class MessageWidelineManagerTest {
         line1.setSkickatDate(LocalDate.now());
         line1.setSkickatTidpunkt(LocalTime.now());
         line1.setSkickatAv(PartKod.FKASSA);
-        line1.setIntygsId("i-123");
+        line1.setIntygId("i-123");
         line1.setMeddelandeId(correlationId);
 
         messageWidelineManager.saveWideline(line1);

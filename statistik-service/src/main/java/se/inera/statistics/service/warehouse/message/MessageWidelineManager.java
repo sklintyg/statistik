@@ -24,8 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.helper.Patientdata;
-import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.processlog.message.MessageEventType;
+import se.inera.statistics.service.processlog.message.ProcessMessageLog;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
 
@@ -47,7 +47,7 @@ public class MessageWidelineManager {
     private MessageWidelineConverter widelineConverter;
 
     @Autowired
-    private SendMessageToCareHelper sendMessageToCareHelper;
+    private ProcessMessageLog processMessageLog;
 
     private void persistIfValid(long logId, String meddelandeId, MessageWideLine line) {
         List<String> errors = widelineConverter.validate(line);
@@ -55,6 +55,8 @@ public class MessageWidelineManager {
         if (errors.isEmpty()) {
             saveWideline(line);
         } else {
+            processMessageLog.increaseNumberOfTries(meddelandeId);
+
             String errorString = "Faulty meddelande logid " + logId + " id " + meddelandeId + " error count " + errCount;
 
             for (String error : errors) {
@@ -68,11 +70,9 @@ public class MessageWidelineManager {
 
     @Transactional(noRollbackFor = Exception.class)
     public void accept(SendMessageToCareType message, Patientdata patientdata, long logId, String messageId, MessageEventType type) {
-        final String intygid = sendMessageToCareHelper.getIntygId(message);
-
         MessageWideLine line = widelineConverter.toWideline(message, patientdata, logId, messageId, type);
 
-        persistIfValid(logId, intygid, line);
+        persistIfValid(logId, messageId, line);
     }
 
     @Transactional
