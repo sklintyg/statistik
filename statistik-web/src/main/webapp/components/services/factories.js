@@ -50,12 +50,24 @@ angular.module('StatisticsApp').factory('statisticsData',
         });
     };
 
+    function checkQueryStringForVgId() {
+        return $rootScope.queryString.indexOf('vgid=') !== -1;
+    }
+
     var makeRequestVerksamhet = function (restFunctionName, successCallback, failureCallback, httpMethod, notAbortable) {
+        if (!checkQueryStringForVgId()) {
+            return;
+        }
+
         var url = 'api/verksamhet/' + restFunctionName + $rootScope.queryString;
         makeRequest(url, successCallback, failureCallback, httpMethod, notAbortable);
     };
 
     var makeRequestLandsting = function (restFunctionName, successCallback, failureCallback, httpMethod, notAbortable) {
+        if (!checkQueryStringForVgId()) {
+            return;
+        }
+
         var url = 'api/landsting/' + restFunctionName + $rootScope.queryString;
         makeRequest(url, successCallback, failureCallback, httpMethod, notAbortable);
     };

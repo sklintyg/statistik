@@ -23,6 +23,8 @@ import org.springframework.security.access.AccessDeniedException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
+import java.util.HashMap;
+import java.util.Map;
 
 @Provider
 public final class AccessDeniedExceptionHandler implements
@@ -30,8 +32,12 @@ public final class AccessDeniedExceptionHandler implements
 
     @Override
     public Response toResponse(final AccessDeniedException exception) {
+
+        Map<String, Object> mappedResult = new HashMap<>();
+        mappedResult.put("error", exception.getMessage());
+
         return Response.status(Response.Status.FORBIDDEN)
-                .entity(exception.getMessage()).build();
+                .entity(mappedResult).build();
     }
 
 }
