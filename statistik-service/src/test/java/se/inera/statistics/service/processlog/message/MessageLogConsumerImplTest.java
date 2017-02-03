@@ -24,16 +24,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.processlog.Processor;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MessageLogConsumerImplTest {
@@ -50,36 +54,39 @@ public class MessageLogConsumerImplTest {
     // CHECKSTYLE:OFF MagicNumber
     @Test
     public void batchSizeIsUsed() {
-        consumer.processBatch();
-        verify(processLog).getPending(100);
+        consumer.processBatch(0);
+        verify(processLog).getPending(100, 0);
     }
 
     @Test
     public void forNoPendingNoJobIsDoneAnd0IsReturned() {
-        int count = consumer.processBatch();
+        long count = consumer.processBatch(0);
         assertEquals(0, count);
-        verify(processLog, Mockito.never()).confirm(Mockito.anyLong());
     }
-
 
     @Test
     public void processingSucceedsForOneEvent() {
+        ReflectionTestUtils.setField(consumer, "tryIntervals", Arrays.asList(0, 3));
         MessageEvent event = new MessageEvent(MessageEventType.SENT, "<xml>", "correlationId", 1);
-        when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
-        int count = consumer.processBatch();
+        event.setId(1);
+        when(processLog.getPending(100, 0)).thenReturn(Collections.singletonList(event));
+        long count = consumer.processBatch(0);
         assertEquals(1, count);
-        verify(processLog).getPending(100);
+        verify(processLog).getPending(100, 0);
         verify(processor).accept(any(SendMessageToCareType.class), Mockito.anyLong(), anyString(), any(MessageEventType.class));
     }
 
     @Test
     public void failingAcceptContinuesProcessing() {
+        ReflectionTestUtils.setField(consumer, "tryIntervals", Arrays.asList(0, 3));
         MessageEvent event = new MessageEvent(MessageEventType.SENT, "{}", "correlationId", 1);
-        when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
+        event.setId(1);
+        when(processLog.getPending(100, 0)).thenReturn(Collections.singletonList(event));
         doThrow(new IllegalArgumentException("Invalid meddelande")).when(processor).accept(any(SendMessageToCareType.class), Mockito.anyLong(), anyString(), any(MessageEventType.class));
-        int count = consumer.processBatch();
+
+        long count = consumer.processBatch(0);
         assertEquals(1, count);
-        verify(processLog).getPending(100);
+        verify(processLog).getPending(100, 0);
     }
     // CHECKSTYLE:ON MagicNumber
 }

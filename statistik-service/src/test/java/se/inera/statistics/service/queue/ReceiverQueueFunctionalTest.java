@@ -38,7 +38,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/process-log-qm-test.xml", "/process-log-impl-test.xml" })
+@ContextConfiguration(locations = {"classpath:process-log-qm-test.xml", "classpath:icd10.xml"})
 @DirtiesContext
 public class ReceiverQueueFunctionalTest {
 

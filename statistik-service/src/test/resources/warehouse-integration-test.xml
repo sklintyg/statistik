@@ -95,6 +95,7 @@
     <bean class="se.inera.statistics.service.warehouse.SjukfallUtil" />
     <bean class="se.inera.statistics.service.warehouse.message.MessageWidelineManager" />
     <bean class="se.inera.statistics.service.warehouse.message.MessageWidelineConverter" />
+    <bean class="se.inera.statistics.service.processlog.message.ProcessMessageLogImpl"/>
     <bean class="java.time.Clock" factory-method="systemDefaultZone"/>
 
 </beans>

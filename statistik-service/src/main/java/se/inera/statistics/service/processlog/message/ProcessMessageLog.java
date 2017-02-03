@@ -24,7 +24,9 @@ public interface ProcessMessageLog {
 
     long store(MessageEventType type, String string, String messageId, long timestamp);
 
-    void confirm(long id);
+    long update(MessageEvent event);
 
-    List<MessageEvent> getPending(int max);
+    long increaseNumberOfTries(String messageId);
+
+    List<MessageEvent> getPending(int max, long firstId);
 }

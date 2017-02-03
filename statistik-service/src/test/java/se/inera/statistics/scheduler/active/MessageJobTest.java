@@ -19,11 +19,8 @@
 package se.inera.statistics.scheduler.active;
 
 import org.junit.Test;
-import org.mockito.MockingDetails;
 import org.mockito.Mockito;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
-
-import static org.junit.Assert.*;
 
 public class MessageJobTest {
 
@@ -31,14 +28,14 @@ public class MessageJobTest {
     public void testCheckLogContinueProcessingUntilDone() throws Exception {
         //Given
         MessageLogConsumer consumer = Mockito.mock(MessageLogConsumer.class);
-        Mockito.when(consumer.processBatch()).thenReturn(100).thenReturn(1).thenReturn(0);
+        Mockito.when(consumer.processBatch(Mockito.anyLong())).thenReturn(100L).thenReturn(101L).thenReturn(101L);
         final MessageJob messageJob = new MessageJob(consumer);
 
         //When
         messageJob.checkLog();
 
         //Then
-        Mockito.verify(consumer, Mockito.times(3)).processBatch();
+        Mockito.verify(consumer, Mockito.times(3)).processBatch(Mockito.anyLong());
     }
 
 }

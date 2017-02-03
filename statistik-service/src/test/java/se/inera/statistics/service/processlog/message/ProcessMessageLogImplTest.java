@@ -48,7 +48,7 @@ public class ProcessMessageLogImplTest extends ProcessMessageLogImpl {
 
     @Test
     public void withNoNewEventsPollReturnsNothing() {
-        List<MessageEvent> pending = getPending(2);
+        List<MessageEvent> pending = getPending(2, 0);
         assertTrue(pending.isEmpty());
     }
 
@@ -57,39 +57,9 @@ public class ProcessMessageLogImplTest extends ProcessMessageLogImpl {
         store(MessageEventType.SENT, "1", "corr1", 123L);
         store(MessageEventType.SENT, "2", "corr2", 123L);
 
-        List<MessageEvent> pending = getPending(2);
+        List<MessageEvent> pending = getPending(2, 0);
         assertEquals(2, pending.size());
         assertEquals("1", pending.get(0).getData());
-    }
-
-    @Test
-    public void withTwoPendingEventsForSameIntygOnlyStoreFirst() {
-        store(MessageEventType.SENT, "1", "corr", 123L);
-        store(MessageEventType.SENT, "2", "corr", 123L);
-
-        List<MessageEvent> pending = getPending(1);
-        assertEquals("1", pending.get(0).getData());
-        confirm(pending.get(0).getId());
-
-        pending = getPending(2);
-        assertTrue(pending.isEmpty());
-    }
-
-    @Test
-    public void withTwoPendingEventEachEventCanBeGottenInOrderAfterConfirm() {
-        store(MessageEventType.SENT, "1", "corr1", 123L);
-        store(MessageEventType.SENT, "2", "corr2", 123L);
-
-        List<MessageEvent> pending = getPending(1);
-        assertEquals("1", pending.get(0).getData());
-        confirm(pending.get(0).getId());
-
-        pending = getPending(2);
-        assertEquals("2", pending.get(0).getData());
-        confirm(pending.get(0).getId());
-
-        pending = getPending(2);
-        assertTrue(pending.isEmpty());
     }
     // CHECKSTYLE:ON MagicNumber
 

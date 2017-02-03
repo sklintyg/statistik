@@ -43,7 +43,7 @@ public class MessageWideLine {
 
     private long logId;
     private String meddelandeId;
-    private String intygsId;
+    private String intygId;
     @Enumerated(EnumType.STRING)
     private MessageEventType meddelandeTyp;
     private String patientid;
@@ -63,11 +63,11 @@ public class MessageWideLine {
 
     // CHECKSTYLE:OFF ParameterNumber
     @SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public MessageWideLine(long id, long logId, String meddelandeId, String intygsId, MessageEventType meddelandeTyp, String patientid, LocalDateTime skickatTidpunkt, PartKod skickatAv, String amneCode, int kon, int alder, String enhet, String vardgivareid) {
+    public MessageWideLine(long id, long logId, String meddelandeId, String intygId, MessageEventType meddelandeTyp, String patientid, LocalDateTime skickatTidpunkt, PartKod skickatAv, String amneCode, int kon, int alder, String enhet, String vardgivareid) {
         this.id = id;
         this.logId = logId;
         this.meddelandeId = meddelandeId;
-        this.intygsId = intygsId;
+        this.intygId = intygId;
         this.meddelandeTyp = meddelandeTyp;
         this.patientid = patientid;
         this.skickatTidpunkt = skickatTidpunkt.toLocalTime();
@@ -105,12 +105,12 @@ public class MessageWideLine {
         this.meddelandeId = meddelandeId;
     }
 
-    public String getIntygsId() {
-        return intygsId;
+    public String getIntygId() {
+        return intygId;
     }
 
-    public void setIntygsId(String intygsId) {
-        this.intygsId = intygsId;
+    public void setIntygId(String intygId) {
+        this.intygId = intygId;
     }
 
     public MessageEventType getMeddelandeTyp() {

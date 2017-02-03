@@ -51,7 +51,7 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
         checkField(errors, line.getEnhet(), "Enhet");
         checkField(errors, line.getPatientid(), "Patient");
         checkField(errors, line.getMeddelandeId(), "MeddelandeId", MAX_LENGTH_MESSAGE_ID);
-        checkField(errors, line.getIntygsId(), "IntygsId", MAX_LENGTH_INTYG_ID);
+        checkField(errors, line.getIntygId(), "IntygId", MAX_LENGTH_INTYG_ID);
         return errors;
     }
 
@@ -60,7 +60,7 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
 
         line.setMeddelandeId(meddelandeId);
         line.setMeddelandeTyp(type);
-        line.setIntygsId(sendMessageToCareHelper.getIntygId(meddelande));
+        line.setIntygId(sendMessageToCareHelper.getIntygId(meddelande));
         line.setPatientid(sendMessageToCareHelper.getPatientId(meddelande));
         line.setAmneCode(sendMessageToCareHelper.getAmneCode(meddelande));
         line.setSkickatAv(sendMessageToCareHelper.getSkickatAv(meddelande));
@@ -71,7 +71,7 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
         line.setKon(patientdata.getKon().getNumberRepresentation());
         line.setAlder(patientdata.getAlder());
 
-        IntygCommon intygCommon = intygCommonManager.getOne(line.getIntygsId());
+        IntygCommon intygCommon = intygCommonManager.getOne(line.getIntygId());
 
         if (intygCommon != null) {
             line.setEnhet(intygCommon.getEnhet());

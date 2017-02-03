@@ -20,5 +20,5 @@ package se.inera.statistics.service.processlog.message;
 
 public interface MessageLogConsumer {
 
-    int processBatch();
+    long processBatch(long firstId);
 }

@@ -72,7 +72,7 @@ public class MessageWidelineConverterTest {
 
     @Test
     public void errorOnIntygsId() throws Exception {
-        wideLine.setIntygsId("");
+        wideLine.setIntygId("");
         List<String> errors = converter.validate(wideLine);
 
         LOG.error("Error message: {}", errors);

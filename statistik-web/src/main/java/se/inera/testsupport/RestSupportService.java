@@ -256,11 +256,15 @@ public class RestSupportService {
     @Produces({ MediaType.APPLICATION_JSON })
     public Response processMeddelande() {
         LOG.debug("Log Job");
-        int count;
+
+        long firstId;
+        long lastId = 0;
         do {
-            count = messageLogConsumer.processBatch();
-            LOG.info("Processed batch with {} messages", count);
-        } while (count > 0);
+            firstId = lastId;
+            lastId = messageLogConsumer.processBatch(firstId);
+        } while (firstId != lastId);
+        LOG.debug("All messages processed");
+
         return Response.ok().build();
     }
 
