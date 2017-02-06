@@ -1,7 +1,7 @@
 !contents -R2 -g -p -f -h
 
 Testmiljö:
-Existerande användare: user1, user2, user3, user4, user5, user6
+Existerande användare: user1, user2, user3, user4, user5, user6, user8
 Existerande vårdgivare: vg1, vg3
 Existerande enheter: enhet1, enhet2, enhet3, enhet4
 
@@ -26,6 +26,7 @@ user5 enheter: enhet1, enhet2, enhet3, enhet4
 user5 vårdgivare: Ange "user5_vg1" för vg1 eller "user5_vg3" för vg3
 user6 enheter: enhet4
 user6 vårdgivare: vg3
+user8 vårdgivare: (inga, används för att testa behörighet enkom via systemRole)
 enhet1 verksamhetstyp: 02, 15
 enhet2 verksamhetstyp: 02, 17, 18
 enhet3 verksamhetstyp: 02

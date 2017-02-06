@@ -76,4 +76,18 @@ public class LoginInfoVg {
         return isLandstingsvardgivare() && isProcessledare();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof LoginInfoVg)) return false;
+
+        LoginInfoVg that = (LoginInfoVg) o;
+
+        return hsaId.equals(that.hsaId);
+    }
+
+    @Override
+    public int hashCode() {
+        return hsaId.hashCode();
+    }
 }

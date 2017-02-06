@@ -18,17 +18,14 @@
  */
 package se.inera.auth;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
-
 import se.inera.auth.model.User;
+import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
 import se.inera.intyg.infra.integration.hsa.services.HsaPersonService;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -36,6 +33,10 @@ import se.inera.statistics.hsa.services.HsaOrganizationsService;
 import se.inera.statistics.hsa.services.UserAuthorization;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.riv.infrastructure.directory.v1.PersonInformationType;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserDetailsService implements SAMLUserDetailsService {
 
@@ -60,12 +61,14 @@ public class UserDetailsService implements SAMLUserDetailsService {
         final HsaIdUser hsaId = new HsaIdUser(assertion.getHsaId());
         List<PersonInformationType> hsaPersonInfo = hsaPersonService.getHsaPersonInfo(hsaId.getId());
         UserAuthorization userAuthorization = hsaOrganizationsService.getAuthorizedEnheterForHosPerson(hsaId);
+        final List<Vardgivare> vardgivareWithProcessledarStatusList =  getVgsWithProcessledarStatus(userAuthorization.getSystemRoles())
+                .stream().map(vgHsaId -> hsaOrganizationsService.getVardgivare(vgHsaId))
+                .collect(Collectors.toList());
 
-        final List<HsaIdVardgivare> vgsWithProcessledarStatus = getVgsWithProcessledarStatus(userAuthorization.getSystemRoles());
         monitoringLogService.logUserLogin(hsaId);
 
         final String name = extractPersonName(hsaPersonInfo);
-        return new User(hsaId, name, vgsWithProcessledarStatus, userAuthorization.getVardenhetList());
+        return new User(hsaId, name, vardgivareWithProcessledarStatusList, userAuthorization.getVardenhetList());
     }
 
     private String extractPersonName(List<PersonInformationType> hsaPersonInfo) {

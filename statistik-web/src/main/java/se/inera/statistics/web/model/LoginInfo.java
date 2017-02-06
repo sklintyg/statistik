@@ -18,15 +18,14 @@
  */
 package se.inera.statistics.web.model;
 
+import com.google.common.base.Strings;
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-
-import com.google.common.base.Strings;
 
 public class LoginInfo {
 

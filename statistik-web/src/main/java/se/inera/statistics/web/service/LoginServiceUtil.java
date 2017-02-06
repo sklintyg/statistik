@@ -18,20 +18,11 @@
  */
 package se.inera.statistics.web.service;
 
-import static com.google.common.collect.Iterables.tryFind;
-import static com.google.common.collect.Lists.transform;
-import static java.util.stream.Collectors.toMap;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.google.common.base.Function;
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,16 +30,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
-
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
+import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
@@ -66,6 +51,20 @@ import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.UserAccessInfo;
 import se.inera.statistics.web.model.Verksamhet;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static com.google.common.collect.Iterables.tryFind;
+import static com.google.common.collect.Lists.transform;
+import static java.util.stream.Collectors.toMap;
 
 @Component
 public class LoginServiceUtil {
@@ -85,7 +84,6 @@ public class LoginServiceUtil {
     private String higchartsExportUrl;
     @Value("${login.url}")
     private String loginUrl;
-
 
     private Kommun kommun = new Kommun();
 
@@ -113,10 +111,27 @@ public class LoginServiceUtil {
         }
         Map<HsaIdVardgivare, String> allVgNames = realUser.getVardenhetList().stream()
                 .collect(toMap(Vardenhet::getVardgivarId, Vardenhet::getVardgivarNamn, (p, q) -> p));
+
         List<Verksamhet> verksamhets = getVerksamhetsList(realUser);
+
         final List<LoginInfoVg> loginInfoVgs = allVgNames.entrySet().stream()
                 .map(vgidWithName -> toLoginInfoVg(realUser, vgidWithName))
                 .collect(Collectors.toList());
+
+        // INTYG-3446: We create a LoginInfoVg entry for each item in vgWithProcessledarStatus
+        for (Vardgivare vardgivare : realUser.getVgsWithProcessledarStatus()) {
+            HsaIdVardgivare vgHsaId = new HsaIdVardgivare(vardgivare.getId());
+            LandstingsVardgivareStatus landstingsVardgivareStatus = landstingEnhetHandler.getLandstingsVardgivareStatus(vgHsaId);
+
+            LoginInfoVg livg = new LoginInfoVg(vgHsaId, vardgivare.getNamn(), landstingsVardgivareStatus, new UserAccessLevel(true, 0));
+            if (loginInfoVgs.contains(livg)) {
+                loginInfoVgs.remove(livg);
+            }
+            loginInfoVgs.add(livg);
+
+            // TODO - determine if we need to manually add "verksamhets" as well?
+        }
+
         return new LoginInfo(realUser.getHsaId(), realUser.getName(), verksamhets, loginInfoVgs);
     }
 
@@ -143,8 +158,9 @@ public class LoginServiceUtil {
     }
 
     private List<Verksamhet> getVerksamhetsList(User realUser) {
-        return realUser.getVardenhetList().stream()
-                .map(Vardenhet::getVardgivarId)
+        return Stream.concat(realUser.getVardenhetList().stream()
+                .map(Vardenhet::getVardgivarId), realUser.getVgsWithProcessledarStatus().stream()
+                        .map(vg -> new HsaIdVardgivare(vg.getId())))
                 .distinct()
                 .map(hsaIdVardgivare -> {
                     List<Enhet> allEnhetsForVg = warehouse.getEnhets(hsaIdVardgivare);
@@ -162,7 +178,8 @@ public class LoginServiceUtil {
         Kommun kommun = new Kommun();
         Lan lan = new Lan();
         return new Verksamhet(enhet.getEnhetId(), enhet.getNamn(), enhet.getVardgivareId(), null, enhet.getLansId(),
-                lan.getNamn(enhet.getLansId()), enhet.getKommunId(), kommun.getNamn(enhet.getLansId() + enhet.getKommunId()), getVerksamhetsTyper(enhet.getVerksamhetsTyper()));
+                lan.getNamn(enhet.getLansId()), enhet.getKommunId(), kommun.getNamn(enhet.getLansId() + enhet.getKommunId()),
+                getVerksamhetsTyper(enhet.getVerksamhetsTyper()));
     }
 
     private Verksamhet toVerksamhet(final Vardenhet vardEnhet, List<Enhet> enhetsList) {
@@ -177,9 +194,11 @@ public class LoginServiceUtil {
         String lansNamn = lan.getNamn(lansId);
         String kommunId = enhetOpt.isPresent() ? lansId + enhetOpt.get().getKommunId() : Kommun.OVRIGT_ID;
         String kommunNamn = kommun.getNamn(kommunId);
-        Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper = enhetOpt.isPresent() ? getVerksamhetsTyper(enhetOpt.get().getVerksamhetsTyper()) : Collections.<Verksamhet.VerksamhetsTyp>singleton(new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT));
+        Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper = enhetOpt.isPresent() ? getVerksamhetsTyper(enhetOpt.get().getVerksamhetsTyper())
+                : Collections.<Verksamhet.VerksamhetsTyp> singleton(new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT));
 
-        return new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(), lansId, lansNamn, kommunId, kommunNamn, verksamhetsTyper);
+        return new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(), lansId, lansNamn, kommunId,
+                kommunNamn, verksamhetsTyper);
     }
 
     Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(String verksamhetsTyper) {

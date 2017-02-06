@@ -18,7 +18,9 @@
  */
 package se.inera.statistics.hsa.services;
 
+import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
 import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 /**
  * @author andreaskaltenbach
@@ -29,4 +31,6 @@ public interface HsaOrganizationsService {
      * Returns a list of Vardenheter where the HoS person is authorized to get statistics information.
      */
     UserAuthorization getAuthorizedEnheterForHosPerson(HsaIdUser hosPersonHsaId);
+
+    Vardgivare getVardgivare(HsaIdVardgivare hsaIdVardgivare);
 }
