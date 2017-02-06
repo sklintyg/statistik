@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -34,7 +33,6 @@ import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
-import se.inera.statistics.service.landsting.persistance.landsting.Landsting;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.AppSettings;
@@ -123,8 +121,6 @@ public class LoginServiceUtilTest {
             return Arrays.asList(newEnhet(vg), newEnhet(vg), newEnhet(vg), newEnhet(vg));
         });
 
-        Mockito.when(landstingEnhetHandler.getLandsting(any())).thenReturn(buildLandsting());
-
         // When
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
 
@@ -136,11 +132,6 @@ public class LoginServiceUtilTest {
         assertEquals(enhet1.getVardgivarId(), loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().getHsaId());
         assertEquals(false, loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().isProcessledare());
         assertEquals(true, loginInfo.getLoginInfoForVg(enhet3.getVardgivarId()).get().isProcessledare());
-    }
-
-    private Optional<Landsting> buildLandsting() {
-        Landsting landsting = new Landsting(123L, "Landsting 1", new HsaIdVardgivare("vg1"));
-        return Optional.of(landsting);
     }
 
     private Enhet newEnhet(HsaIdVardgivare vg) {
