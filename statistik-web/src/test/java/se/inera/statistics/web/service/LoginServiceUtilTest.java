@@ -18,39 +18,34 @@
  */
 package se.inera.statistics.web.service;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.google.common.base.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import se.inera.auth.AuthUtil;
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
+import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
+import se.inera.statistics.service.landsting.persistance.landsting.Landsting;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 
 public class LoginServiceUtilTest {
 
@@ -79,17 +74,17 @@ public class LoginServiceUtilTest {
 
     @Test
     public void testGetSettings() throws Exception {
-        //When
+        // When
         final AppSettings settings = loginServiceUtil.getSettings();
 
-        //Then
+        // Then
         assertEquals(7, settings.getSjukskrivningLengths().size());
         assertEquals("Under 15 dagar", settings.getSjukskrivningLengths().get("GROUP1_0TO14"));
     }
 
     @Test
     public void testGetLoginInfoSeveralVgsNotProcessledare() throws Exception {
-        //Given
+        // Given
         final HsaIdUser userId = new HsaIdUser("testuserid");
         final Vardenhet enhet1 = newVardenhet("e1", "vg1");
         final Vardenhet enhet2 = newVardenhet("e2", "vg1");
@@ -98,10 +93,10 @@ public class LoginServiceUtilTest {
         final User user = new User(userId, "testname", null, vardenhetsList);
         AuthUtil.setUserToSecurityContext(user);
 
-        //When
+        // When
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
 
-        //Then
+        // Then
         assertEquals(userId, loginInfo.getHsaId());
         assertEquals(2, loginInfo.getBusinessesForVg(enhet1.getVardgivarId()).size());
         assertEquals(1, loginInfo.getBusinessesForVg(enhet3.getVardgivarId()).size());
@@ -114,25 +109,26 @@ public class LoginServiceUtilTest {
 
     @Test
     public void testGetLoginInfoSeveralVgsWhenProcessledare() throws Exception {
-        //Given
+        // Given
         final HsaIdUser userId = new HsaIdUser("testuserid");
         final Vardenhet enhet1 = newVardenhet("e1", "vg1");
         final Vardenhet enhet2 = newVardenhet("e2", "vg1");
         final Vardenhet enhet3 = newVardenhet("e3", "vg2");
         final List<Vardenhet> vardenhetsList = Arrays.asList(enhet1, enhet2, enhet3);
-        final User user = new User(userId, "testname", Arrays.asList(new HsaIdVardgivare("vg2")), vardenhetsList);
+        final User user = new User(userId, "testname", Arrays.asList(new Vardgivare("vg2", "Vårdgivare 2")), vardenhetsList);
         AuthUtil.setUserToSecurityContext(user);
-
 
         Mockito.when(warehouse.getEnhets(any())).thenAnswer(invocationOnMock -> {
             final HsaIdVardgivare vg = (HsaIdVardgivare) invocationOnMock.getArguments()[0];
             return Arrays.asList(newEnhet(vg), newEnhet(vg), newEnhet(vg), newEnhet(vg));
         });
 
-        //When
+        Mockito.when(landstingEnhetHandler.getLandsting(any())).thenReturn(buildLandsting());
+
+        // When
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
 
-        //Then
+        // Then
         assertEquals(userId, loginInfo.getHsaId());
         assertEquals(2, loginInfo.getBusinessesForVg(enhet1.getVardgivarId()).size());
         assertEquals(4, loginInfo.getBusinessesForVg(enhet3.getVardgivarId()).size());
@@ -140,6 +136,11 @@ public class LoginServiceUtilTest {
         assertEquals(enhet1.getVardgivarId(), loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().getHsaId());
         assertEquals(false, loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().isProcessledare());
         assertEquals(true, loginInfo.getLoginInfoForVg(enhet3.getVardgivarId()).get().isProcessledare());
+    }
+
+    private Optional<Landsting> buildLandsting() {
+        Landsting landsting = new Landsting(123L, "Landsting 1", new HsaIdVardgivare("vg1"));
+        return Optional.of(landsting);
     }
 
     private Enhet newEnhet(HsaIdVardgivare vg) {

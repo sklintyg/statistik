@@ -18,23 +18,24 @@
  */
 package se.inera.auth.model;
 
+import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.hsa.model.Vardenhet;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.hsa.model.Vardenhet;
-
 public class User implements Serializable {
 
     private final HsaIdUser hsaId;
     private final String name;
-    private final List<HsaIdVardgivare> vgsWithProcessledarStatus;
+    private final List<Vardgivare> vgsWithProcessledarStatus;
     private final List<Vardenhet> vardenhetList;
 
-    public User(HsaIdUser hsaId, String name, List<HsaIdVardgivare> vgsWithProcessledarStatus, List<Vardenhet> vardenhetsList) {
+    public User(HsaIdUser hsaId, String name, List<Vardgivare> vgsWithProcessledarStatus, List<Vardenhet> vardenhetsList) {
         this.hsaId = hsaId;
         this.name = name;
         this.vgsWithProcessledarStatus = vgsWithProcessledarStatus != null ? Collections.unmodifiableList(vgsWithProcessledarStatus) : Collections.emptyList();
@@ -45,7 +46,7 @@ public class User implements Serializable {
         if (vardgivareId == null) {
             return false;
         }
-        return vgsWithProcessledarStatus.contains(vardgivareId);
+        return vgsWithProcessledarStatus.stream().anyMatch(vg -> vg.getId().equalsIgnoreCase(vardgivareId.getId()));
     }
 
     public HsaIdUser getHsaId() {
@@ -64,7 +65,7 @@ public class User implements Serializable {
         return new UserAccessLevel(isProcessledareForVg(vg), getVardenhetsForVg(vg).size());
     }
 
-    public List<HsaIdVardgivare> getVgsWithProcessledarStatus() {
+    public List<Vardgivare> getVgsWithProcessledarStatus() {
         return vgsWithProcessledarStatus;
     }
 
