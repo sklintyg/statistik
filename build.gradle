@@ -100,7 +100,7 @@ subprojects {
         zipletVersion = "2.1.2"
 
         // Internal
-        intygInfraVersion = "3.1.4"
+        intygInfraVersion = "3.2.16"
         intygCommonVersion = "3.1.479"
         intygCommonLoggingVersion = "3.0.0"
         intygSchematronVersion = "1.0.8"
