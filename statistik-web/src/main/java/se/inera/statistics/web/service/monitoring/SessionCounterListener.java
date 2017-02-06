@@ -18,6 +18,11 @@
  */
 package se.inera.statistics.web.service.monitoring;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.security.web.context.support.SecurityWebApplicationContextUtils;
+import org.springframework.security.web.session.HttpSessionDestroyedEvent;
+
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,6 +30,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SessionCounterListener implements HttpSessionListener {
 
     private static AtomicInteger totalActiveSessions = new AtomicInteger();
+
+    ApplicationContext getContext(ServletContext servletContext) {
+        return SecurityWebApplicationContextUtils.findRequiredWebApplicationContext(servletContext);
+    }
+
 
     public static int getTotalActiveSession() {
         return totalActiveSessions.get();
@@ -35,8 +45,22 @@ public class SessionCounterListener implements HttpSessionListener {
         totalActiveSessions.getAndIncrement();
     }
 
+    /**
+     * Decrements the AtomicInteger of this class that keeps track of the number of total active users.
+     *
+     * Please note that we re-propagate the HttpSessionEvent as a {@link org.springframework.security.web.session.HttpSessionDestroyedEvent}
+     * so the {@link org.springframework.security.core.session.SessionRegistryImpl} can update its internal state.
+     *
+     * For more details about this, see javadoc of {@link org.springframework.security.web.session.HttpSessionEventPublisher}
+     *
+     * @param arg0
+     *      The HttpSessionEvent notifying that a session has been destroyed.
+     */
     @Override
     public void sessionDestroyed(HttpSessionEvent arg0) {
         totalActiveSessions.getAndDecrement();
+
+        HttpSessionDestroyedEvent e = new HttpSessionDestroyedEvent(arg0.getSession());
+        getContext(arg0.getSession().getServletContext()).publishEvent(e);
     }
 }
