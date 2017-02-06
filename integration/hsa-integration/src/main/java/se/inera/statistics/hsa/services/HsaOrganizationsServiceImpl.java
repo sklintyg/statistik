@@ -23,11 +23,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.integration.hsa.client.AuthorizationManagementService;
+import se.inera.intyg.infra.integration.hsa.client.OrganizationUnitService;
 import se.inera.intyg.infra.integration.hsa.exception.HsaServiceCallException;
+import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
+import se.riv.infrastructure.directory.organization.getunitresponder.v1.UnitType;
 import se.riv.infrastructure.directory.v1.CommissionType;
 import se.riv.infrastructure.directory.v1.CredentialInformationType;
 
@@ -49,6 +52,9 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
 
     @Autowired
     private AuthorizationManagementService authorizationManagementService;
+
+    @Autowired
+    private OrganizationUnitService organizationUnitService;
 
     private final VardenhetComparator veComparator = new VardenhetComparator();
 
@@ -77,6 +83,18 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
         LOG.debug("User with HSA-Id " + hosPersonHsaId + " has active 'Statistik' for " + vardenhetList.size() + " enheter");
 
         return new UserAuthorization(vardenhetList, systemRoles);
+    }
+
+    @Override
+    public Vardgivare getVardgivare(HsaIdVardgivare hsaIdVardgivare)  {
+        UnitType unit = null;
+        try {
+            unit = organizationUnitService.getUnit(hsaIdVardgivare.getId());
+            return new Vardgivare(unit.getUnitHsaId(), unit.getUnitName());
+        } catch (HsaServiceCallException e) {
+            LOG.error("Error loading unit details for vardgivare {}", hsaIdVardgivare.getId());
+            return null;
+        }
     }
 
     private List<Vardenhet> getAllVardenhetsWithMuWithStatistikPurpose(CredentialInformationType info) {

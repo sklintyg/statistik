@@ -28,6 +28,7 @@ import org.opensaml.saml2.core.impl.AttributeStatementBuilder;
 import org.opensaml.saml2.core.impl.NameIDBuilder;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.schema.impl.XSStringBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.providers.ExpiringUsernameAuthenticationToken;
@@ -36,13 +37,16 @@ import org.springframework.security.saml.userdetails.SAMLUserDetailsService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import se.inera.auth.model.User;
+import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.hsa.services.HsaOrganizationsService;
 
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import static se.inera.auth.SakerhetstjanstAssertion.HSA_ID_ATTRIBUTE;
@@ -55,6 +59,9 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
     private static DocumentBuilder documentBuilder;
 
     private SAMLUserDetailsService userDetails;
+
+    @Autowired
+    private HsaOrganizationsService hsaOrganizationsService;
 
     static {
         try {
@@ -80,10 +87,12 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
 
         String name = user.getName() != null && user.getName().trim().length() > 0 && !user.getName().startsWith("null") ? user.getName() : fakeCredentials.getFornamn() + " " + fakeCredentials.getEfternamn();
 
-        User decoratedUser = new User(user.getHsaId(), name, fakeCredentials.getVardgivarIdSomProcessLedare().stream()
+        List<Vardgivare> vardgivareSomProcessLedare = fakeCredentials.getVardgivarIdSomProcessLedare().stream()
                 .filter(hsaId -> fakeCredentials.isVardgivarniva())
-                .map(HsaIdVardgivare::new)
-                .collect(Collectors.toList()), user.getVardenhetList());
+                .map(hsaId -> new Vardgivare(hsaId, hsaOrganizationsService.getVardgivare(new HsaIdVardgivare(hsaId)).getNamn()))
+                .collect(Collectors.toList());
+
+        User decoratedUser = new User(user.getHsaId(), name, vardgivareSomProcessLedare, user.getVardenhetList());
 
         ExpiringUsernameAuthenticationToken result = new ExpiringUsernameAuthenticationToken(null, decoratedUser, credential, new ArrayList<>());
         result.setDetails(decoratedUser);

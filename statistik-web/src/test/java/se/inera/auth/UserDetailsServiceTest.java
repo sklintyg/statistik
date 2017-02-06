@@ -18,19 +18,6 @@
  */
 package se.inera.auth;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,8 +31,8 @@ import org.opensaml.xml.ConfigurationException;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.springframework.security.saml.SAMLCredential;
 import org.xml.sax.SAXException;
-
 import se.inera.auth.model.User;
+import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
 import se.inera.intyg.infra.integration.hsa.services.HsaPersonService;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
@@ -55,6 +42,18 @@ import se.inera.statistics.hsa.services.HsaOrganizationsService;
 import se.inera.statistics.hsa.services.UserAuthorization;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.riv.infrastructure.directory.v1.PersonInformationType;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserDetailsServiceTest {
@@ -128,6 +127,7 @@ public class UserDetailsServiceTest {
 
     private void auktoriseradeEnheter(Vardenhet...enheter) {
         when(hsaOrganizationsService.getAuthorizedEnheterForHosPerson(any(HsaIdUser.class))).thenReturn(new UserAuthorization(Arrays.asList(enheter), Arrays.asList("INTYG;Statistik-IFV1239877878-0001")));
+        when(hsaOrganizationsService.getVardgivare(any(HsaIdVardgivare.class))).thenReturn(new Vardgivare("IFV1239877878-0001", "Vårdgivare 1"));
     }
 
     private void setupHsaPersonService() {
