@@ -197,7 +197,7 @@ angular.module('StatisticsApp')
 
         function _getChartContent(config, chart) {
             return {
-                image: pdfFactory.factory.chart(chart, config.width, config.height, config.showLegend || false),
+                image: pdfFactory.factory.chart(chart, config.width, config.height, config.showLegend || false, true),
                 width: config.displayWidth ? config.displayWidth : config.width
             };
         }

@@ -156,7 +156,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         return new Highcharts.Chart(chartOptions);
     };
 
-    var paintDonutChart = function(containerId, chartData, tooltipHeaderPrefix) {
+    var paintDonutChart = function(containerId, chartData) {
         var chartOptions = chartFactory.getHighChartConfigBase([], [], null, true);
         chartOptions.chart.type = 'pie';
         chartOptions.chart.renderTo = containerId;
@@ -176,7 +176,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
                 }
             }
         ];
-        chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || '') + '{point.key}</span><br/>';
+        chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">{point.key}</span><br/>';
         return new Highcharts.Chart(chartOptions);
     };
 
@@ -226,7 +226,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         }, 1);
     }
 
-    function paintBarChart(containerId, chartData, tooltipHeaderPrefix) {
+    function paintBarChart(containerId, chartData) {
         var color = '#57843B', chartOptions;
 
         var series = [
@@ -243,7 +243,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             return {name: e.name};
         });
 
-        chartOptions = chartFactory.getHighChartConfigBase(categories, series, null, true);
+        chartOptions = chartFactory.getHighChartConfigBase(categories, series, null, true, false, false, false, undefined, 'column');
         chartOptions.chart.type = 'column';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 240;
@@ -251,7 +251,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         chartOptions.xAxis.labels.format = '{value}';
         chartOptions.subtitle.text = null;
         chartOptions.yAxis.title = { text: 'Antal', style : chartOptions.subtitle.style  };
-        chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || '') + '{point.key}</span><br/>';
+        chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">{point.key}</span><br/>';
         chartOptions.yAxis.tickPixelInterval = 30;
         chartOptions.legend.enabled = false;
         return new Highcharts.Chart(chartOptions);

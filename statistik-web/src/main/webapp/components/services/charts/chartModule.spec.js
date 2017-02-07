@@ -72,7 +72,8 @@ describe('Chart services', function() {
                     expect(chartOpt.title.text).toBe('title text');
                 },
                 series: ['1', '2'],
-                yAxis: [{}]
+                yAxis: [{}],
+                options: { chart: {}}
             };
             chartFactory.exportChart(chart, name, 'title text');
             expect(callTimes).toBe(1);
@@ -88,12 +89,12 @@ describe('Chart services', function() {
                     expect(chartOpt.legend).toBeUndefined();
                     expect(chartOpt.title.text).toBe('title text');
                 },
-                series: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
+                series: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'],
+                options: { chart: {}}
             };
             chartFactory.exportChart(chart, name, 'title text');
             expect(callTimes).toBe(1);
         });
-        //code goes here
     });
 
 });

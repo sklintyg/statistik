@@ -287,9 +287,17 @@ angular.module('StatisticsApp')
             return content;
         }
 
-        function _getChart(chart, width, height, showLegend) {
+        function _getChart(chart, width, height, showLegend, useHeight) {
+            var chartHeight;
+
+            if (useHeight) {
+                chartHeight = height;
+            } else {
+                chartHeight = chart.options.chart.height ? chart.options.chart.height : height;
+            }
+
             var canvas = document.createElement('CANVAS');
-            canvas.height = height;
+            canvas.height = chartHeight;
             canvas.width = width;
 
             if (!angular.isDefined(showLegend)) {
@@ -305,7 +313,7 @@ angular.module('StatisticsApp')
                 },
                 yAxis: { min: 0, max: chart.yAxis[0].max, endOnTick: false, tickInterval: chart.yAxis[0].tickInterval },
                 chart: {
-                    height: height,
+                    height: chartHeight,
                     width: width
                 }
             }));

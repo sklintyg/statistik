@@ -153,8 +153,7 @@
         <div data-ng-repeat="chartContainer in chartContainers"
              data-ng-class="{'col-xs-12': chartContainers.length == 1, 'col-lg-6': chartContainers.length == 2}"
              class="col-xs-12">
-          <div class="chart-page-chart" id="{{chartContainer.id}}"
-               style="height: 400px; margin: 0 auto; width:100%"></div>
+          <div class="chart-page-chart" id="{{chartContainer.id}}" data-ng-style="chartStyle"></div>
         </div>
       </div>
 
