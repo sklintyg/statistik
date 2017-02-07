@@ -107,7 +107,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             return new Highcharts.Chart(chartOptions);
         }
 
-        var paintDonutChart = function (containerId, chartData, tooltipHeaderPrefix) {
+        var paintDonutChart = function (containerId, chartData) {
             var series = [
                 {
                     name: 'Antal',
@@ -127,7 +127,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             chartOptions.chart.height = 180;
             chartOptions.subtitle.text = null;
             chartOptions.chart.plotBorderWidth = 0;
-            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">' + (tooltipHeaderPrefix || '') + '{point.key}</span><br/>';
+            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">{point.key}</span><br/>';
 
             return new Highcharts.Chart(chartOptions);
         };
@@ -186,7 +186,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             var categories = _.map(chartData, function (e) {
                 return {name: e.name};
             });
-            var chartOptions = chartFactory.getHighChartConfigBase(categories, series, null, true);
+            var chartOptions = chartFactory.getHighChartConfigBase(categories, series, null, true, false, false, false, undefined, 'column');
             chartOptions.chart.type = 'column';
             chartOptions.chart.renderTo = containerId;
             chartOptions.chart.height = 240;

@@ -39,8 +39,10 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             isChartCollapsed: false
         };
 
+        $scope.chartStyle = {};
+
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
-            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback, false, chartTypeInfo.usePercentChart, chartTypeInfo.stacked, config.chartVerticalLabel, config.chartLabelLength);
+            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback, false, chartTypeInfo.usePercentChart, chartTypeInfo.stacked, config.chartVerticalLabel, config.chartLabelLength, chartTypeInfo.activeHighchartType);
             chartOptions.chart.type = chartTypeInfo.activeHighchartType;
             chartOptions.legend.enabled = false;
             chartOptions.yAxis.allowDecimals = !!config.allowDecimalsYAxis;
@@ -48,6 +50,8 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             if (config.chartYAxisTitle) {
                 chartOptions.subtitle.text = config.chartYAxisTitle;
             }
+
+            $scope.chartStyle.height = chartOptions.chart.height + 'px';
             return new Highcharts.Chart(chartOptions);
         };
 

@@ -1438,11 +1438,29 @@ div.box-bottom {
   padding: 0;
 }
 
-.highcharts-tooltip span {
-  white-space: pre-wrap !important;
-  width: 200px;
-  text-overflow: ellipsis;
-  color: #000 !important;
+.chart-page-chart {
+  height: 400px;
+  margin: 0 auto;
+  width:100%
+}
+
+.temp-highcharts-label {
+  font-family: "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  display: inline-block;
+}
+
+.tooltip-style {
+  background: #ffffff;
+  display: block;
+  color: #000;
+  font-size: 12px;
+  padding: 8px;
+  margin: 0;
+
+  .title {
+    font-size: 11px;
+  }
 }
 
 .navbar {

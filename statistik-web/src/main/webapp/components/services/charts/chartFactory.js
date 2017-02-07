@@ -30,14 +30,103 @@ angular.module('StatisticsApp').factory('chartFactory',
                 var numberOfChars = maxWidth;
 
                 if (!sameLengthOnAll && this.isFirst) {
-                    numberOfChars = maxWidth-10;
+                    numberOfChars = maxWidth - 10;
                 }
 
-                return this.value.length > numberOfChars ? '<span title="'+this.value +'">' + this.value.substring(0, numberOfChars) + '...</span>' : this.value;
+                return _formatter(this.value, numberOfChars);
             };
         };
 
-        var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback, overview, percentChart, stacked, verticalLabel, maxLength) {
+        function _formatter(value, numberOfChars) {
+            var text = value.length > numberOfChars ? value.substring(0, numberOfChars) + '...' : value;
+
+            return '<span title="' + value + '">' + text + '</span>';
+        }
+
+        function _getMaxLength(maxLength) {
+            return maxLength ? maxLength : 30;
+        }
+
+        function getTextWidth(container, text) {
+            //Temporary add, measure and remove the chip's html equivalent.
+            var elem = $('<span class="temp-highcharts-label">' + text + '</span>');
+            container.append(elem);
+            var chipWidth = elem.outerWidth(true);
+            elem.remove();
+            return chipWidth;
+        }
+
+        function _getCategoryLength(chartCategories, maxLength) {
+            var categoryLength = 0;
+            var container = $('.collapsible-panel-body');
+            var labelLength = _getMaxLength(maxLength);
+
+            angular.forEach(chartCategories, function(category) {
+                var length = getTextWidth(container, _formatter(category.name, labelLength));
+
+                if (categoryLength < length) {
+                    categoryLength = length;
+                }
+            });
+
+            return categoryLength;
+        }
+
+        function _getChartHeight(chartCategories, verticalLabel, maxLength) {
+            var height = 360;
+
+            if (verticalLabel) {
+                var categoryLength = _getCategoryLength(chartCategories, maxLength);
+                height += categoryLength;
+            } else {
+                height += 40;
+            }
+
+            return height;
+        }
+
+        function _getTooltip(chartType, percentChart) {
+            if (chartType === 'column') {
+                return {
+                    backgroundColor : '#fff',
+                    borderWidth : 2,
+                    padding: 1,
+                    style: {},
+                    useHTML: true,
+                    formatter: function() {
+                        var value = ControllerCommons.makeThousandSeparated(this.y);
+
+                        var title = this.x ? this.x : this.point.name;
+
+                        return '<p class="tooltip-style">' +
+                            '<span class="title">' + title + '</span><br>' +
+                            this.series.name + ': <nobr><b>' + value + '</b></nobr><br/></p>';
+                    }
+                };
+            }
+
+            return {
+                backgroundColor : '#fff',
+                borderWidth : 2,
+                style: {
+                    color: '#000',
+                    fontSize: '12px',
+                    padding: '8px',
+                    width: '200px',
+                    whiteSpace: 'pre-wrap'
+                },
+                pointFormatter: function() {
+                    var value = percentChart ?
+                        Highcharts.numberFormat(this.percentage, 0, ',') + ' %' :
+                        ControllerCommons.makeThousandSeparated(this.y);
+
+                    return this.series.name + ': <nobr><b>' + value + '</b></nobr><br/>';
+                }
+
+            };
+        }
+
+        var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback, overview, percentChart, stacked, verticalLabel, maxLength, chartType) {
 
             var hasSexSet = isSexSetOnChartSeries(chartSeries);
 
@@ -46,7 +135,8 @@ angular.module('StatisticsApp').factory('chartFactory',
                     renderTo : 'chart1',
                     backgroundColor : null, //transparent
                     plotBorderWidth: 1,
-                    marginLeft: overview ? null : 80
+                    marginLeft: overview ? null : 80,
+                    height: _getChartHeight(chartCategories, verticalLabel, maxLength)
                 },
                 title: {
                     text: null,
@@ -83,8 +173,8 @@ angular.module('StatisticsApp').factory('chartFactory',
                             whiteSpace: 'pre',
                             width: '200px'
                         },
-                        useHTML: false,
-                        formatter: labelFormatter(maxLength ? maxLength : 30, verticalLabel),
+                        useHTML: true,
+                        formatter: labelFormatter(_getMaxLength(maxLength), verticalLabel),
                         step: 1
                     },
                     categories : _.map(chartCategories, function(category) {
@@ -163,21 +253,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                         showInLegend : false
                     }
                 },
-                tooltip : {
-                    backgroundColor : '#fff',
-                    borderWidth : 2,
-                    style: {
-                        color: '#333333',
-                        fontSize: '12px',
-                        padding: '8px'
-                    },
-                    pointFormatter: function() {
-                        var value = percentChart ?
-                        Highcharts.numberFormat(this.percentage, 0, ',') + ' %' :
-                            ControllerCommons.makeThousandSeparated(this.y);
-                        return this.series.name + ': <nobr><b>' + value + '</b></nobr><br/>';
-                    }
-                },
+                tooltip : _getTooltip(chartType, percentChart),
                 credits : {
                     enabled : false
                 },
@@ -214,6 +290,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                 return;
             }
 
+            var chartHeight = chart.options.chart.height ? chart.options.chart.height : 400;
             var options = {filename: ControllerCommons.getFileName(chartName)};
             var extendedChartOptions = {};
             if (chart.series.length <= 10) {
@@ -223,14 +300,9 @@ angular.module('StatisticsApp').factory('chartFactory',
                 extendedChartOptions.yAxis = { min: 0, max: yMax, endOnTick: false, tickInterval: chartTickInterval };
             }
             extendedChartOptions.chart = {
-                height: 400,
+                height: chartHeight,
                 width: 600,
-                marginLeft: 90,
-                xAxis : {
-                    labels: {
-                        formatter: labelFormatter(25)
-                    }
-                }
+                marginLeft: 90
             };
 
             if (title) {
@@ -259,7 +331,11 @@ angular.module('StatisticsApp').factory('chartFactory',
         }
 
         var showInLegend = function(series, index) {
-            return series[index].options.showInLegend;
+            if (series && series.length > index) {
+                return series[index].options.showInLegend;
+            }
+
+            return false;
         };
 
         var toggleSeriesVisibility = function toggleSeriesVisibility(series) {
