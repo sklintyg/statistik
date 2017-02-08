@@ -39,8 +39,6 @@ class AnonymiseraStatistikDatabas {
         def bootstrapSql = new Sql(dataSource)
         def certificateIds = bootstrapSql.rows("select correlationId from intyghandelse")
         println "${certificateIds.size()} certificates found to anonymize"
-        def hsaIds = bootstrapSql.rows("select id from hsa")
-        println "${hsaIds.size()} hsa found to anonymize"
         bootstrapSql.close()
         final AtomicInteger count = new AtomicInteger(0)
         final AtomicInteger errorCount = new AtomicInteger(0)
@@ -87,6 +85,7 @@ class AnonymiseraStatistikDatabas {
                 result.toString()
             }
         }
+        certificateIds = null; //Free up some memory
         long end = System.currentTimeMillis()
         output.each {line ->
             if (line) println line
@@ -120,6 +119,11 @@ class AnonymiseraStatistikDatabas {
         count.set(0)
         errorCount.set(0)
         start = System.currentTimeMillis()
+
+        sql = new Sql(dataSource)
+        def hsaIds = sql.rows("select id from hsa")
+        println "${hsaIds.size()} hsa found to anonymize"
+        sql.close()
 
         output = hsaIds.collect {
             StringBuffer result = new StringBuffer()
