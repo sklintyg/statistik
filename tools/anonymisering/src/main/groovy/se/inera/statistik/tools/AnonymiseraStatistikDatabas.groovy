@@ -3,13 +3,15 @@ package se.inera.statistik.tools
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 import groovy.sql.Sql
+import se.inera.statistik.tools.anonymisering.base.AnonymiseraXml
+
 import groovyx.gpars.GParsPool
 import org.apache.commons.dbcp2.BasicDataSource
-import se.inera.certificate.tools.anonymisering.AnonymiseraDatum
-import se.inera.certificate.tools.anonymisering.AnonymiseraHsaId
-import se.inera.statistik.tools.anonymisering.AnonymiseraJson
-import se.inera.certificate.tools.anonymisering.AnonymiseraPersonId
-import se.inera.certificate.tools.anonymisering.AnonymizeString
+import se.inera.statistik.tools.anonymisering.base.AnonymiseraDatum
+import se.inera.statistik.tools.anonymisering.base.AnonymiseraHsaId
+import se.inera.statistik.tools.anonymisering.base.AnonymiseraJson
+import se.inera.statistik.tools.anonymisering.base.AnonymiseraPersonId
+import se.inera.statistik.tools.anonymisering.base.AnonymizeString
 
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -24,6 +26,7 @@ class AnonymiseraStatistikDatabas {
         AnonymiseraHsaId anonymiseraHsaId = new AnonymiseraHsaId()
         AnonymiseraDatum anonymiseraDatum = new AnonymiseraDatum()
         AnonymiseraJson anonymiseraJson = new AnonymiseraJson(anonymiseraHsaId, anonymiseraDatum, anonymiseraPersonId)
+        AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
         def props = new Properties()
         new File("dataSource.properties").withInputStream {
           stream -> props.load(stream)
@@ -51,10 +54,24 @@ class AnonymiseraStatistikDatabas {
                 Sql sql = new Sql(dataSource)
                 try {
                     def intyg = sql.firstRow( 'select data from intyghandelse where correlationId = :id' , [id : id])
-                    String jsonDoc = intyg.data
-                    String anonymiseradJson = anonymiseraJson.anonymiseraIntygsJson(jsonDoc)
-                    sql.executeUpdate('update intyghandelse set data = :document where correlationId = :id',
-                                          [document: anonymiseradJson, id: id])
+                    try {
+
+                        String jsonDoc = intyg.data
+                        String anonymiseradJson = anonymiseraJson.anonymiseraIntygsJson(jsonDoc)
+                        sql.executeUpdate('update intyghandelse set data = :document where correlationId = :id',
+                                              [document: anonymiseradJson, id: id])
+                    } catch (Exception ignored) {
+                        try {
+                            String xmlDoc = intyg?.data
+                            String anonymiseradXml = xmlDoc ? anonymiseraXml.anonymiseraIntygsXml(xmlDoc) : null
+                            if (anonymiseradXml) sql.executeUpdate('update intyghandelse set data = :document where correlationId = :id',
+                                    [document: anonymiseradXml, id: id])
+
+                        } catch (Exception ignore) {
+                            println "Failed to parse intyg ${id}"
+                        }
+                    }
+
                     int current = count.addAndGet(1)
                     if (current % 10000 == 0) {
                         println "${current} certificates anonymized in ${(int)((System.currentTimeMillis()-start) / 1000)} seconds"

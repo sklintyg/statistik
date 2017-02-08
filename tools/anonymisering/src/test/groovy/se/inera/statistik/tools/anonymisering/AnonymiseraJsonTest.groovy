@@ -6,8 +6,12 @@ import org.apache.commons.io.FileUtils
 import org.junit.Test
 import org.skyscreamer.jsonassert.JSONAssert
 import org.springframework.core.io.ClassPathResource
-import se.inera.certificate.tools.anonymisering.AnonymiseraDatum
-import se.inera.certificate.tools.anonymisering.AnonymiseraHsaId
+import se.inera.statistik.tools.anonymisering.base.AnonymiseraDatum
+import se.inera.statistik.tools.anonymisering.base.AnonymiseraHsaId
+import se.inera.statistik.tools.anonymisering.base.AnonymiseraPersonId
+import se.inera.statistik.tools.anonymisering.base.AnonymiseraXml
+
+import static groovy.util.GroovyTestCase.assertEquals
 
 class AnonymiseraJsonTest {
 
@@ -18,6 +22,8 @@ class AnonymiseraJsonTest {
     AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE1010"}] as AnonymiseraHsaId
     AnonymiseraDatum anonymiseraDatum = new AnonymiseraDatum()
     AnonymiseraJson anonymiseraJson = new AnonymiseraJson(anonymiseraHsaId, anonymiseraDatum)
+    AnonymiseraPersonId anonymiseraPersonId = new AnonymiseraPersonId()
+    AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
     AnonymiseraJsonTest() {
         anonymiseraDatum.random = [nextInt: {(AnonymiseraDatum.DATE_RANGE/2)+1}] as Random
@@ -119,6 +125,96 @@ class AnonymiseraJsonTest {
         String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-2010")
 
         JSONAssert.assertEquals(expected, actual, true);
+    }
+
+    @Test
+    void testaAnonymiseringAvFk7263sit() {
+        //Given
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680418-1748"}] as AnonymiseraPersonId
+        AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
+
+        String expected = FileUtils.readFileToString(new ClassPathResource("/fk7263sit_anonymized.xml").getFile(), "UTF-8")
+
+        //When
+        String document = FileUtils.readFileToString(new ClassPathResource("/fk7263sit_not_anonymized.xml").getFile(), "UTF-8")
+        String actual = anonymiseraXml.anonymiseraIntygsXml(document)
+
+        //Then
+        assertEquals(expected.replaceAll("\\s", ""), actual.replaceAll("\\s", ""));
+    }
+
+    @Test
+    void testaAnonymiseringAvLisjp() {
+        //Given
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19670827-2049"}] as AnonymiseraPersonId
+        AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
+
+        String expected = FileUtils.readFileToString(new ClassPathResource("/lisjp_anonymized.xml").getFile(), "UTF-8")
+
+        //When
+        String document = FileUtils.readFileToString(new ClassPathResource("/lisjp_not_anonymized.xml").getFile(), "UTF-8")
+        String actual = anonymiseraXml.anonymiseraIntygsXml(document)
+
+        //Then
+        assertEquals(expected.replaceAll("\\s", ""), actual.replaceAll("\\s", ""));
+    }
+
+    @Test
+    void testaAnonymiseringAvLuaeFs() {
+        //Given
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680803-3002"}] as AnonymiseraPersonId
+        AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
+
+        String expected = FileUtils.readFileToString(new ClassPathResource("/luae_fs_anonymized.xml").getFile(), "UTF-8")
+
+        //When
+        String document = FileUtils.readFileToString(new ClassPathResource("/luae_fs_not_anonymized.xml").getFile(), "UTF-8")
+        String actual = anonymiseraXml.anonymiseraIntygsXml(document)
+
+        //Then
+        assertEquals(expected.replaceAll("\\s", ""), actual.replaceAll("\\s", ""));
+    }
+
+    @Test
+    void testaAnonymiseringAvLuaeNa() {
+        //Given
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19690316-5568"}] as AnonymiseraPersonId
+        AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
+
+        String expected = FileUtils.readFileToString(new ClassPathResource("/luae_na_anonymized.xml").getFile(), "UTF-8")
+
+        //When
+        String document = FileUtils.readFileToString(new ClassPathResource("/luae_na_not_anonymized.xml").getFile(), "UTF-8")
+        String actual = anonymiseraXml.anonymiseraIntygsXml(document)
+
+        //Then
+        assertEquals(expected.replaceAll("\\s", ""), actual.replaceAll("\\s", ""));
+    }
+
+    @Test
+    void testaAnonymiseringAvLuse() {
+        //Given
+        AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
+        AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680725-8824"}] as AnonymiseraPersonId
+        AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
+
+        String expected = FileUtils.readFileToString(new ClassPathResource("/luse_anonymized.xml").getFile(), "UTF-8")
+
+        //When
+        String document = FileUtils.readFileToString(new ClassPathResource("/luse_not_anonymized.xml").getFile(), "UTF-8")
+        String actual = anonymiseraXml.anonymiseraIntygsXml(document)
+
+        //Then
+        assertEquals(expected.replaceAll("\\s", ""), actual.replaceAll("\\s", ""));
     }
 
     def buildJsonIntyg(def file, def clos = null) {

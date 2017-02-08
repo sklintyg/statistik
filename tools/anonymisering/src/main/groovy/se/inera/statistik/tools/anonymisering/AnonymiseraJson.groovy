@@ -1,7 +1,7 @@
 package se.inera.statistik.tools.anonymisering
 
 import groovy.transform.InheritConstructors
-import se.inera.certificate.tools.anonymisering.AnonymiseraJson as IntygJsonAnonymizer
+import se.inera.statistik.tools.anonymisering.base.AnonymiseraJson as IntygJsonAnonymizer
 
 @InheritConstructors
 class AnonymiseraJson extends IntygJsonAnonymizer {
