@@ -755,18 +755,19 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle {
   line-height: 20px;
 }
 
-.national-statistic-h1 {
+.national-statistic-h1, .sub-title-period {
   color: #008391;
   font-weight: bold;
   font-size: 20px;
-  width: auto !important;
   line-height: 20px;
   margin-bottom: 0;
-  .sub-title-period {
-    font-size: 14px;
-  }
+}
 
-  .sub-title-period::first-letter {
+.sub-title-period {
+  font-size: 14px;
+  min-height: 20px;
+  
+  &::first-letter {
     text-transform: capitalize;
   }
 }
