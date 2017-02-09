@@ -28,6 +28,10 @@ angular.module('StatisticsApp.filter.directive')
         return {
             scope: true,
             restrict: 'E',
+            controller: function($scope) {
+                $scope.isFilterCollapsed = true;
+                $scope.hasMessages = false;
+            },
             link: function(scope) {
                 scope.filterButtonIdText = 'Verksamhet';
                 scope.filterHashParamName = 'filter';
@@ -47,6 +51,10 @@ angular.module('StatisticsApp.filter.directive')
         return {
             scope: true,
             restrict: 'E',
+            controller: function($scope) {
+                $scope.isFilterCollapsed = true;
+                $scope.hasMessages = false;
+            },
             link: function(scope) {
                 scope.filterButtonIdText = 'Landsting';
                 scope.filterHashParamName = 'landstingfilter';

@@ -30,8 +30,10 @@ angular.module('StatisticsApp').directive('selectVardgivare',
                 selectVardgivare: '&'
             },
             templateUrl: '/components/directives/selectVardgivare/selectVardgivare.html',
-            link: function($scope) {
+            controller: function($scope) {
                 $scope.isCollapsed = true;
+            },
+            link: function($scope) {
                 $scope.currentVgid = $location.search().vgid;
 
                 $scope.setSelectedVardgivare = function(vgId) {
