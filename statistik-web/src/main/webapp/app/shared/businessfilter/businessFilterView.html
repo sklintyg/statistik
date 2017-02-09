@@ -102,7 +102,7 @@
             sidebar-menu-collapse="lbl.filter.verksamhet.link.collapse"
             sidebar-state="sidebarState">
 
-            <div uib-collapse="sidebarState.collapsed" id="verksamhet-uib-collapser" ng-if="!sidebarState.collapsed">
+            <div id="verksamhet-uib-collapser" data-ng-if="!sidebarState.collapsed">
               <h2><span message key="lbl.filter.verksamhet.quickselection.title"/></h2>
               <ul class="verksamhets-typer-list">
                 <li data-ng-repeat="verksamhet in businessFilter.verksamhetsTyper">
