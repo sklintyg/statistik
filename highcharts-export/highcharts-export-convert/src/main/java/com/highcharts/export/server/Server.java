@@ -1,5 +1,10 @@
 package com.highcharts.export.server;
 
+import com.highcharts.export.converter.SVGConverterException;
+import com.highcharts.export.util.TempDir;
+import org.apache.commons.io.IOUtils;
+
+import javax.annotation.PreDestroy;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,13 +16,10 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.concurrent.TimeoutException;
-
-import org.apache.commons.io.IOUtils;
-
-import com.highcharts.export.converter.SVGConverterException;
-import com.highcharts.export.util.TempDir;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static java.io.File.separator;
 
 public class Server {
 	private Process process;
@@ -38,6 +40,11 @@ public class Server {
 		this.connectTimeout = connectTimeout;
 		this.readTimeout = readTimeout;
 		this.maxTimeout = maxTimeout;
+
+		if (script.isEmpty()) {
+			// use the bundled highcharts-convert.js script
+			script = TempDir.getPhantomJsDir().toAbsolutePath().toString() + separator + "highcharts-convert.js";
+		}
 
 		try {
 			ArrayList<String> commands = new ArrayList<>();
@@ -116,6 +123,12 @@ public class Server {
 			InputStream in = connection.getInputStream();
 			response = IOUtils.toString(in, "utf-8");
 
+			if (response.toUpperCase().startsWith("ERROR")) { // Log errors
+				logger.log(Level.SEVERE, "PhantomJS exited with message '" + response + "'", port);
+			} else if (!response.equals("OK")){ // Filter out simple pings, but log anything else
+				logger.log(Level.INFO, "PhantomJS completed with message '" + response + "'", port);
+			}
+
 			in.close();
 			_timer.cancel();
 			state = ServerState.IDLE;
@@ -166,5 +179,20 @@ public class Server {
 	@Override
 	public String toString() {
 		return this.getClass().getName() + "listening to port: " + port;
+	}
+
+	@PreDestroy
+	public void destroy() {
+		if (process != null) {
+			logger.log(Level.WARNING, "Shutting down PhantomJS instance, kill process directly, {0}", this.toString());
+			try {
+				process.getErrorStream().close();
+				process.getInputStream().close();
+				process.getOutputStream().close();
+			} catch (IOException e) {
+				logger.log(Level.WARNING, "Error while shutting down process: {0}", e.getMessage());
+			}
+			process.destroy();
+		}
 	}
 }

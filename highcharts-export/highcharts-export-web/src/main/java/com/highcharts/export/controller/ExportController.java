@@ -16,6 +16,7 @@ import com.highcharts.export.util.MimeType;
 import com.highcharts.export.util.TempDir;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.log4j.Logger;
@@ -23,13 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletException;
@@ -58,7 +53,7 @@ public class ExportController extends HttpServlet {
 	@Autowired
 	private SVGConverter converter;
 
-	@RequestMapping(method = {RequestMethod.POST})
+	@RequestMapping(method = {RequestMethod.POST, RequestMethod.GET})
 	public HttpEntity<byte[]> exporter(
 		@RequestParam(value = "svg", required = false) String svg,
 		@RequestParam(value = "type", required = false) String type,
@@ -70,6 +65,7 @@ public class ExportController extends HttpServlet {
 		@RequestParam(value = "constr", required = false) String constructor,
 		@RequestParam(value = "callback", required = false) String callback,
 		@RequestParam(value = "callbackHC", required = false) String callbackHC,
+		@RequestParam(value = "resources", required = false) String resources,
 		@RequestParam(value = "async", required = false, defaultValue = "false")  Boolean async,
 		@RequestParam(value = "jsonp", required = false, defaultValue = "false") Boolean jsonp,
 		HttpServletRequest request,
@@ -79,6 +75,22 @@ public class ExportController extends HttpServlet {
 		String randomFilename = null;
 		String jsonpCallback = "";
 		boolean isAndroid = request.getHeader("user-agent") != null && request.getHeader("user-agent").contains("Android");
+
+		if ("GET".equalsIgnoreCase(request.getMethod())) {
+
+			// Handle redirect downloads for Android devices, these come in without request parameters
+			String tempFile = (String) session.getAttribute("tempFile");
+			session.removeAttribute("tempFile");
+
+			if (tempFile != null && !tempFile.isEmpty()) {
+				logger.debug("filename stored in session, read and stream from filesystem");
+				String basename = FilenameUtils.getBaseName(tempFile);
+				String extension = FilenameUtils.getExtension(tempFile);
+
+				return getFile(basename, extension);
+
+			}
+		}
 
 		// check for visitors who don't know this domain is really only for the exporting service ;)
 		if (request.getParameterMap().isEmpty()) {
@@ -111,7 +123,7 @@ public class ExportController extends HttpServlet {
 			session.setAttribute("tempFile", randomFilename);
 		}
 
-		String output = convert(svg, mime, width, scale, options, constructor, callback, globalOptions, randomFilename);
+		String output = convert(svg, mime, width, scale, options, constructor, callback, resources, globalOptions, randomFilename);
 		ByteArrayOutputStream stream;
 
 		HttpHeaders headers = new HttpHeaders();
@@ -151,7 +163,7 @@ public class ExportController extends HttpServlet {
 	@RequestMapping(value = "/files/{name}.{ext}", method = RequestMethod.GET)
 	public HttpEntity<byte[]> getFile(@PathVariable("name") String name, @PathVariable("ext") String extension) throws SVGConverterException, IOException {
 
-		String filename =  name + "." + extension;		
+		String filename =  name + "." + extension;
 		MimeType mime = MimeType.valueOf(extension.toUpperCase());
 
 		ByteArrayOutputStream stream = writeFileToStream(filename);
@@ -215,7 +227,7 @@ public class ExportController extends HttpServlet {
 	 * INSTANCE METHODS
 	 */
 
-	private String convert(String svg, MimeType mime, String width, String scale, String options, String constructor, String callback, String globalOptions, String filename) throws SVGConverterException, PoolException, NoSuchElementException, TimeoutException, ServletException {
+	private String convert(String svg, MimeType mime, String width, String scale, String options, String constructor, String callback, String resources, String globalOptions, String filename) throws SVGConverterException, PoolException, NoSuchElementException, TimeoutException, ServletException {
 
 		Float parsedWidth = widthToFloat(width);
 		Float parsedScale = scaleToFloat(scale);
@@ -229,6 +241,7 @@ public class ExportController extends HttpServlet {
 			// create a svg file out of the options
 			input = options;
 			callback = sanitize(callback);
+			resources = sanitize(resources);
 			globalOptions = sanitize(globalOptions);
 		} else {
 			// assume SVG conversion
@@ -237,7 +250,7 @@ public class ExportController extends HttpServlet {
 				logger.error("The mandatory 'svg' or 'options' POST parameter is undefined.");
 				throw new ServletException(
 						"The mandatory 'svg' or 'options' POST parameter is undefined.");
-			} else {				
+			} else {
 				convertSvg = true;
 				input = svg;
 			}
@@ -246,7 +259,7 @@ public class ExportController extends HttpServlet {
 		if (convertSvg && mime.equals(MimeType.SVG)) {
 				output = converter.redirectSVG(input, filename);
 		} else {
-				output = converter.convert(input, mime, constructor, callback, globalOptions, parsedWidth, parsedScale, filename);
+				output = converter.convert(input, mime, constructor, callback, resources, globalOptions, parsedWidth, parsedScale, filename);
 		}
 
 		return output;
@@ -284,7 +297,7 @@ public class ExportController extends HttpServlet {
 				logger.error("Parameter width is wrong for value: " + width, nfe.fillInStackTrace());
 				throw new SVGConverterException("Parameter width is wrong for value: " + width);
 			}
-			
+
 		}
 		return null;
 	}
