@@ -5,7 +5,7 @@ apply plugin: 'maven'
 description = 'Anonymisering av intyg för statistik'
 
 group = 'se.inera.statistik'
-version = '3.0.8'
+version = '4.0.0'
 
 repositories {
     mavenLocal()
