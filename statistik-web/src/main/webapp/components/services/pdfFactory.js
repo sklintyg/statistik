@@ -21,7 +21,7 @@
 angular.module('StatisticsApp')
     .factory('pdfFactory',
         /** @ngInject */
-        function($window, $timeout, thousandseparatedFilter, $location, _, TABLE_CONFIG, messageService, $rootScope) {
+        function($window, $timeout, thousandseparatedFilter, $location, _, TABLE_CONFIG, messageService, $rootScope, $route) {
         'use strict';
 
         function _print($scope, charts) {
@@ -34,6 +34,7 @@ angular.module('StatisticsApp')
                 header: $scope.viewHeader,
                 subHeader: $scope.subTitle + ' ' + $scope.subTitlePeriod
             };
+            var filename = $scope.viewHeader + '_' + $route.current.title + '_' + moment().format('YYYY-MM-DD') + '.pdf';
 
             if (!angular.isArray(charts)) {
                 charts = [charts];
@@ -67,7 +68,7 @@ angular.module('StatisticsApp')
 
                     $scope.status.isTableOpen = isTableVisible;
 
-                    _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, pdfDoneCallback);
+                    _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, filename, pdfDoneCallback);
                 });
             }
             else {
@@ -77,7 +78,7 @@ angular.module('StatisticsApp')
                     hasMoreThanMaxRows: $scope.rows.length > TABLE_CONFIG.maxRows
                 };
 
-                _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, pdfDoneCallback);
+                _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, filename, pdfDoneCallback);
             }
         }
 
@@ -98,7 +99,7 @@ angular.module('StatisticsApp')
             return tableData;
         }
 
-        function _generate(headers, table, images, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter, pdfDoneCallback) {
+        function _generate(headers, table, images, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter, filename, pdfDoneCallback) {
             var content = [];
 
             _addHeader(content, headers);
@@ -127,7 +128,7 @@ angular.module('StatisticsApp')
                 content.push(_getTable(table.header, table.data));
             }
 
-            _create(content, headers.header, pdfDoneCallback);
+            _create(content, filename, pdfDoneCallback);
         }
 
         function _waitOnFont(content, fileName, pdfDoneCallback) {
@@ -175,7 +176,7 @@ angular.module('StatisticsApp')
                     pdfDoneCallback();
                 }
                 var inputs = '<input type="hidden" name="pdf" value="'+result+'">';
-                inputs += '<input type="hidden" name="name" value="'+fileName + '_' + moment().format('YYYY-MM-DD') + '.pdf">';
+                inputs += '<input type="hidden" name="name" value="' + fileName + '">';
                 inputs += '<input type="hidden" name="url" value="' + $location.url() + '">';
 
                 $window.jQuery('<form action="/api/pdf/create" method="post">'+inputs+'</form>')

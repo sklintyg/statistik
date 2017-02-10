@@ -46,7 +46,9 @@ public class PdfService {
 
         byte[] array = DatatypeConverter.parseBase64Binary(pdf);
 
-        name = name.replaceAll("[^A-Za-z0-9._]", "");
+        name = name.replaceAll("Å", "A").replaceAll("Ä", "A").replaceAll("Ö", "O")
+                .replaceAll("å", "a").replaceAll("ä", "a").replaceAll("ö", "o")
+                .replaceAll("[^A-Za-z0-9._]", "");
 
         Response.ResponseBuilder response = Response.ok()
                 .entity(array)
