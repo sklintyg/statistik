@@ -132,7 +132,7 @@ class AnonymiseraJsonTest {
         //Given
         AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
         AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680418-1748"}] as AnonymiseraPersonId
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680418-1749"}] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/fk7263sit_anonymized.xml").getFile(), "UTF-8")
@@ -150,7 +150,7 @@ class AnonymiseraJsonTest {
         //Given
         AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
         AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19670827-2049"}] as AnonymiseraPersonId
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19670827-2041"}] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/lisjp_anonymized.xml").getFile(), "UTF-8")
@@ -168,7 +168,7 @@ class AnonymiseraJsonTest {
         //Given
         AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
         AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680803-3002"}] as AnonymiseraPersonId
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680803-3000"}] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/luae_fs_anonymized.xml").getFile(), "UTF-8")
@@ -186,7 +186,7 @@ class AnonymiseraJsonTest {
         //Given
         AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
         AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19690316-5568"}] as AnonymiseraPersonId
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19690316-5565"}] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/luae_na_anonymized.xml").getFile(), "UTF-8")
@@ -204,7 +204,7 @@ class AnonymiseraJsonTest {
         //Given
         AnonymiseraHsaId anonymiseraHsaId = [anonymisera:{"SE833377567"}] as AnonymiseraHsaId
         AnonymiseraDatum anonymiseraDatum = [anonymiseraDatum:{"2015-11-28"}] as AnonymiseraDatum
-        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680725-8824"}] as AnonymiseraPersonId
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19680725-8820"}] as AnonymiseraPersonId
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         String expected = FileUtils.readFileToString(new ClassPathResource("/luse_anonymized.xml").getFile(), "UTF-8")
