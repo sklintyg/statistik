@@ -15,7 +15,7 @@
     <p2:patient xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:2'>
       <p2:person-id>
         <p3:root xmlns:p3='urn:riv:clinicalprocess:healthcond:certificate:types:2'>1.2.752.129.2.1.3.1</p3:root>
-        <p3:extension xmlns:p3='urn:riv:clinicalprocess:healthcond:certificate:types:2'>19680725-8824</p3:extension>
+        <p3:extension xmlns:p3='urn:riv:clinicalprocess:healthcond:certificate:types:2'>19680725-8820</p3:extension>
       </p2:person-id>
       <p2:fornamn>xxxxxx</p2:fornamn>
       <p2:efternamn>xxxxxx</p2:efternamn>
