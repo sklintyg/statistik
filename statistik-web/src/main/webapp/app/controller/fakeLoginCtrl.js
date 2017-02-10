@@ -43,7 +43,7 @@ angular.module('StatisticsApp').controller('fakeLoginCtrl',
                 'fornamn': 'Anna',
                 'efternamn': 'Modig',
                 'hsaId': 'HSA-AM',
-                'vardgivarIdSomProcessLedare': ['vg1', 'TSTNMT2321000156-105M'],
+                'vardgivarIdSomProcessLedare': ['vg1'],
                 'vardgivarniva': 'true', 'description': 'Processledare vg1 och Rehabstöd-Vårdgivare1'
             },
             {
