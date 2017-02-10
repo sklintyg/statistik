@@ -78,8 +78,12 @@ public class LoginInfoVg {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof LoginInfoVg)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof LoginInfoVg)) {
+            return false;
+        }
 
         LoginInfoVg that = (LoginInfoVg) o;
 
