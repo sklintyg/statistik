@@ -24,7 +24,12 @@ angular.module('StatisticsApp')
         function($window, $timeout, thousandseparatedFilter, $location, _, TABLE_CONFIG, messageService, $rootScope, $route, $filter) {
         'use strict';
 
-        function _print($scope, charts) {
+            function _getFileName(statisticsLevel) {
+                var reportName = $filter('messageFilter')($route.current.title, $route.current.title);
+                return statisticsLevel + '_' + reportName + '_' + moment().format('YYYY-MM-DD') + '.pdf';
+            }
+
+            function _print($scope, charts) {
             if (!charts || angular.equals({}, charts)) {
                 return;
             }
@@ -34,8 +39,7 @@ angular.module('StatisticsApp')
                 header: $scope.viewHeader,
                 subHeader: $scope.subTitle + ' ' + $scope.subTitlePeriod
             };
-            var reportName = $filter('messageFilter')($route.current.title, $route.current.title);
-            var filename = $scope.viewHeader + '_' + reportName + '_' + moment().format('YYYY-MM-DD') + '.pdf';
+            var filename = _getFileName($scope.viewHeader);
 
             if (!angular.isArray(charts)) {
                 charts = [charts];
@@ -475,6 +479,7 @@ angular.module('StatisticsApp')
         return {
             create: _create,
             print: _print,
+            getFileName: _getFileName,
             factory: {
                 create: _create,
                 footer: _getFooter,

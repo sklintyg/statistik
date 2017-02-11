@@ -66,7 +66,8 @@ angular.module('StatisticsApp')
                 }
             });
 
-            pdfFactory.factory.create(content, 'overview', pdfDoneCallback);
+            var fileName = pdfFactory.getFileName($scope.viewHeader);
+            pdfFactory.factory.create(content, fileName, pdfDoneCallback);
         }
 
         function _addBorder(content, chart) {
