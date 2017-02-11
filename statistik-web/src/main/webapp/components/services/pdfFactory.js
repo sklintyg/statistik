@@ -21,7 +21,7 @@
 angular.module('StatisticsApp')
     .factory('pdfFactory',
         /** @ngInject */
-        function($window, $timeout, thousandseparatedFilter, $location, _, TABLE_CONFIG, messageService, $rootScope, $route) {
+        function($window, $timeout, thousandseparatedFilter, $location, _, TABLE_CONFIG, messageService, $rootScope, $route, $filter) {
         'use strict';
 
         function _print($scope, charts) {
@@ -34,7 +34,8 @@ angular.module('StatisticsApp')
                 header: $scope.viewHeader,
                 subHeader: $scope.subTitle + ' ' + $scope.subTitlePeriod
             };
-            var filename = $scope.viewHeader + '_' + $route.current.title + '_' + moment().format('YYYY-MM-DD') + '.pdf';
+            var reportName = $filter('messageFilter')($route.current.title, $route.current.title);
+            var filename = $scope.viewHeader + '_' + reportName + '_' + moment().format('YYYY-MM-DD') + '.pdf';
 
             if (!angular.isArray(charts)) {
                 charts = [charts];
