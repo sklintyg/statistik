@@ -21,7 +21,7 @@
 angular.module('StatisticsApp').run(
 
     /** @ngInject */
-    function ($rootScope, $route, messageService) {
+    function ($rootScope, $route, $filter, messageService) {
     'use strict';
 
     $rootScope.lang = 'sv';
@@ -44,7 +44,7 @@ angular.module('StatisticsApp').run(
         }
 
         if ($route.current.$$route) {
-            $rootScope.pageName = $route.current.$$route.title;
+            $rootScope.pageName = $filter('messageFilter')($route.current.$$route.title, $route.current.$$route.title);
             $rootScope.pageTitle = ($rootScope.pageName ? $rootScope.pageName + ' | ' : '') + 'Statistiktjänsten';
 
             $rootScope.queryString = '';
