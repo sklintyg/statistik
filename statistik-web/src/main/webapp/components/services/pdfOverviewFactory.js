@@ -66,7 +66,7 @@ angular.module('StatisticsApp')
                 }
             });
 
-            var fileName = pdfFactory.getFileName($scope.viewHeader);
+            var fileName = pdfFactory.getFileName(headers.header);
             pdfFactory.factory.create(content, fileName, pdfDoneCallback);
         }
 
