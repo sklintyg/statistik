@@ -18,6 +18,8 @@ user6 har medarbetaruppdrag på enhet4, som tillhör vg3 men som inte finns med 
 | 19790808-9274 | G01        | 2014-02-05 | 2014-02-06 | enhet2 |           |
 | 19790219-9285 | G01        | 2014-02-05 | 2014-02-06 | enhet3 |           |
 
+| script | Rensa uppladdade landstingsfiler |
+
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx  | Data updated ok   |
@@ -53,8 +55,3 @@ Inloggad:
 | user1        | enhet3 | -1      |
 | user6        | enhet1 | 9,09    |
 | user6        | enhet3 | 0,91    |
-
-!3 Uppstädning efter testet
-| Uppladdade landstingsfiler |
-| användare | filnamn                  | statusmeddelande? |
-| user3     | tomlandstingslista.xlsx  | Data updated ok   |

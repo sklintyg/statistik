@@ -15,6 +15,8 @@ Gäller STATISTIK-1082.
 | 19790808-9274 | G01        | 2013-02-05 | 2013-03-06 | enhet2 |           |
 | 19671109-2681 | G01        | 2013-02-05 | 2013-02-06 | enhet4 |           |
 
+| script | Rensa uppladdade landstingsfiler |
+
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx  | Data updated ok   |
@@ -30,8 +32,3 @@ Inloggad:
 | user3        | 2013 | feb   | 2    | 1        |
 | user3        | 2013 | mar   | 1    | 0        |
 | user3        | 2013 | apr   | 0    | 0        |
-
-!3 Uppstädning efter testet
-| Uppladdade landstingsfiler |
-| användare | filnamn                  | statusmeddelande? |
-| user3     | tomlandstingslista.xlsx  | Data updated ok   |

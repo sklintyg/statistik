@@ -446,6 +446,10 @@ class ReportsUtil {
         }
     }
 
+    def clearLandstingFileUploads() {
+        statistik.delete(path: '/api/testsupport/clearLandstingFileUploads')
+    }
+
     def insertLandsting(vgId) {
         def url = "/api/testsupport/landsting/vgid/" + vgId
         println("insertLandsting: " + url)

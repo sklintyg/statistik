@@ -15,6 +15,8 @@ Gäller STATISTIK-1031.
 | 19790918-9234 | G01        | 2014-10-05 | 2014-10-06 | enhet2 |           |
 | 19790219-9285 | G01        | 2014-02-05 | 2014-02-06 | enhet3 |           |
 
+| script | Rensa uppladdade landstingsfiler |
+
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx  | Data updated ok   |
@@ -61,8 +63,3 @@ Inloggad:
 | user3        | enhet1 | 9,09    |
 | user3        | enhet2 | -1      |
 | user3        | enhet3 | 0,91    |
-
-!3 Uppstädning efter testet
-| Uppladdade landstingsfiler |
-| användare | filnamn                  | statusmeddelande? |
-| user3     | tomlandstingslista.xlsx  | Data updated ok   |

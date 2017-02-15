@@ -15,8 +15,3 @@
 | user1     | vg1lista8text.xlsx        | Rad 3: Kolumn “Antal listade patienter” innehåller inte ett heltal  | Kolumn för listningar innehåller text                     |
 | user1     | vg1lista9dublett.xlsx     | Rad 4: Vårdenheten förekommer mer än en gång                        | HSAid för en enhet förekommer flera ggr                   |
 | user1     | vg1lista10felformat.pdf   | Felaktigt filformat                                                 | Felaktigt filformat                                       |
-
-!3 Uppstädning efter testet
-| Uppladdade landstingsfiler |
-| användare | filnamn                  | statusmeddelande? |
-| user1     | tomlandstingslista.xlsx  | Data updated ok   |

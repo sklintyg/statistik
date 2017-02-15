@@ -14,6 +14,8 @@ Gäller INTYG-1855.
 | 19790219-9285 | C01        | 2014-04-05 | 2014-04-06 | enhet2 |           |
 | 19790918-9231 | F01        | 2014-06-05 | 2014-06-06 | enhet3 |           |
 
+| script | Rensa uppladdade landstingsfiler |
+
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx | Data updated ok   |
@@ -32,8 +34,3 @@ Inloggad:
 | user3        | F00-F99        | enhet1,enhet2,enhet3 | 02                      | 2014 | jun   | 1    | 0        | true                   | [enhet1, enhet2, enhet3] |
 | user3        |                | enhet2               |                         | 2014 | jun   | 0    | 0        | false                  | [enhet2]               |
 | user3        |                |                      | 17                      | 2014 | jun   | 0    | 0        | false                  | [enhet2]               |
-
-!3 Uppstädning efter testet
-| Uppladdade landstingsfiler |
-| användare | filnamn                 | statusmeddelande? |
-| user3     | tomlandstingslista.xlsx | Data updated ok   |

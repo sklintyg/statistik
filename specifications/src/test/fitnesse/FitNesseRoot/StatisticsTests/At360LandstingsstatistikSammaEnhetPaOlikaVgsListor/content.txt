@@ -17,6 +17,8 @@ Båda filerna innehåller enhet2 (som har olika enhetsnamn i listorna).
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
 | 19790219-9285 | G01        | 2014-02-05 | 2014-02-06 | enhet2 |           |
 
+| script | Rensa uppladdade landstingsfiler |
+
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx  | Data updated ok   |
@@ -41,9 +43,3 @@ Inloggad:
 | inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
 | user3        | enhet2 | -1      |
 | user1        | enhet2 | 1,25    |
-
-!3 Uppstädning efter testet
-| Uppladdade landstingsfiler |
-| användare | filnamn                  | statusmeddelande? |
-| user3     | tomlandstingslista.xlsx  | Data updated ok   |
-| user1     | tomlandstingslista.xlsx  | Data updated ok   |

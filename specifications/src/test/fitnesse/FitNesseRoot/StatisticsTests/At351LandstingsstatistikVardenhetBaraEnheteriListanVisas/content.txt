@@ -17,6 +17,8 @@ Det finns fyra sjukfall på fyra olika enheter. Tre av dem ingår i den inskicka
 | 19790808-9274 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
 | 19790429-9281 | G01        | 2013-02-05 | 2013-02-06 | enhet4 |           |
 
+| script | Rensa uppladdade landstingsfiler |
+
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx  | Data updated ok   |
@@ -32,8 +34,3 @@ Inloggad:
 | user3        | enhet2 | 1       | 0    | 1        |
 | user3        | enhet3 | 1       | 1    | 0        |
 | user3        | enhet4 | -1      | -1   | -1       |
-
-!3 Uppstädning efter testet
-| Uppladdade landstingsfiler |
-| användare | filnamn                  | statusmeddelande? |
-| user3     | tomlandstingslista.xlsx  | Data updated ok   |
