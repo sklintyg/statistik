@@ -14,6 +14,8 @@ Ett sjukfall går över tre enheter.
 | 19790808-9274 | G01        | 2013-02-12 | 2013-02-20 | enhet2 |           |
 | 19790808-9274 | G01        | 2013-02-21 | 2013-03-20 | enhet3 |           |
 
+| script | Rensa uppladdade landstingsfiler |
+
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx  | Data updated ok   |
@@ -33,8 +35,3 @@ Sjukfallet visas en gång för var och en av enheterna.
 | user3        | enhet1 | 9,09    |
 | user3        | enhet2 | -1      |
 | user3        | enhet3 | 0,91    |
-
-!3 Uppstädning efter testet
-| Uppladdade landstingsfiler |
-| användare | filnamn                  | statusmeddelande? |
-| user3     | tomlandstingslista.xlsx  | Data updated ok   |

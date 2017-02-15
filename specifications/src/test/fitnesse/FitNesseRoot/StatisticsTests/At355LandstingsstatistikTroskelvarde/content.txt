@@ -23,6 +23,8 @@ Gäller STATISTIK-1028.
 | 19671127-3026 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
 | 19680524-9288 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
 
+| script | Rensa uppladdade landstingsfiler |
+
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx  | Data updated ok   |
@@ -49,8 +51,3 @@ Inloggad:
 | inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
 | user3        | enhet1 | 27,27   |
 | user3        | enhet3 | 2,73    |
-
-!3 Uppstädning efter testet
-| Uppladdade landstingsfiler |
-| användare | filnamn                  | statusmeddelande? |
-| user3     | tomlandstingslista.xlsx  | Data updated ok   |

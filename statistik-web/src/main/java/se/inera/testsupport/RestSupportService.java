@@ -29,6 +29,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -47,12 +48,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.countypopulation.CountyPopulationManagerForTest;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HsaDataInjectable;
 import se.inera.statistics.service.hsa.HsaWsResponderMock;
 import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
+import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
+import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhetManager;
+import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateManager;
+import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
@@ -115,6 +121,12 @@ public class RestSupportService {
 
     @Autowired
     private LandstingManager landstingManager;
+
+    @Autowired
+    private LandstingEnhetManager landstingEnhetManager;
+
+    @Autowired
+    private LandstingEnhetUpdateManager landstingEnhetUpdateManager;
 
     @Autowired
     private SjukfallQuery sjukfallQuery;
@@ -308,6 +320,21 @@ public class RestSupportService {
         if (!landstingManager.getForVg(new HsaIdVardgivare(vgId)).isPresent()) {
             landstingManager.add(vgId, new HsaIdVardgivare(vgId));
         }
+        return Response.ok().build();
+    }
+
+    @DELETE
+    @Path("clearLandstingFileUploads")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response clearLandstingFileUploads() {
+        LOG.info("Clearing all uploaded landsting files");
+        final List<LandstingEnhet> allLandstingEnhets = landstingEnhetManager.getAll();
+        allLandstingEnhets.forEach(landstingEnhet -> {
+                final long landstingId = landstingEnhet.getLandstingId();
+                landstingEnhetManager.removeByLandstingId(landstingId);
+                landstingEnhetUpdateManager.update(landstingId, this.getClass().getSimpleName(), new HsaIdUser(""), "-", LandstingEnhetUpdateOperation.REMOVE);
+            });
         return Response.ok().build();
     }
 

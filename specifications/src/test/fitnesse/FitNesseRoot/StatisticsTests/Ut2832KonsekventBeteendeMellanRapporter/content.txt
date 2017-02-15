@@ -68,6 +68,9 @@ Testar att alla rapporter hanterar sjukfall med flera värden under samma period
 !5 Landsting
 
 !6 Initiering av landstingstestet
+
+| script | Rensa uppladdade landstingsfiler |
+
 | Uppladdade landstingsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user2     | vg1lista12.xlsx  | Data updated ok   |
@@ -90,11 +93,6 @@ Testar att alla rapporter hanterar sjukfall med flera värden under samma period
 | user2        | enhet2    | F32               | -1                                   |
 | user2        | enhet1    |                   | 1,00                                 |
 | user2        | enhet2    |                   | 1,00                                 |
-
-!6 Uppstädning efter landstingstestet
-| Uppladdade landstingsfiler |
-| användare | filnamn                  | statusmeddelande? |
-| user2     | tomlandstingslista.xlsx  | Data updated ok   |
 
 
 !5 Verksamhet
