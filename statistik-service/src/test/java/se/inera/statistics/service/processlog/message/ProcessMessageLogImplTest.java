@@ -48,7 +48,7 @@ public class ProcessMessageLogImplTest extends ProcessMessageLogImpl {
 
     @Test
     public void withNoNewEventsPollReturnsNothing() {
-        List<MessageEvent> pending = getPending(2, 0);
+        List<MessageEvent> pending = getPending(2, 0, 1000);
         assertTrue(pending.isEmpty());
     }
 
@@ -57,10 +57,27 @@ public class ProcessMessageLogImplTest extends ProcessMessageLogImpl {
         store(MessageEventType.SENT, "1", "corr1", 123L);
         store(MessageEventType.SENT, "2", "corr2", 123L);
 
-        List<MessageEvent> pending = getPending(2, 0);
+        List<MessageEvent> pending = getPending(2, 0, 1000);
         assertEquals(2, pending.size());
         assertEquals("1", pending.get(0).getData());
     }
+
+    @Test
+    public void testMaxNumberOfTries() {
+        MessageEvent event = new MessageEvent(MessageEventType.SENT, "1", "corr1", 123L);
+        event.setTries(4);
+        update(event);
+
+        List<MessageEvent> pending = getPending(2, 0, 1000);
+        assertEquals(1, pending.size());
+
+        pending = getPending(2, 0, 4);
+        assertEquals(1, pending.size());
+
+        pending = getPending(2, 0, 3);
+        assertEquals(0, pending.size());
+    }
+
     // CHECKSTYLE:ON MagicNumber
 
     @Transactional

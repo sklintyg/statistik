@@ -52,7 +52,9 @@ public class MessageLogConsumerImpl implements MessageLogConsumer {
     public synchronized long processBatch(long firstId) {
         try {
             setRunning(true);
-            List<MessageEvent> result = processLog.getPending(BATCH_SIZE, firstId);
+            int maxNumberOfTries = tryIntervals.get(tryIntervals.size() - 1);
+
+            List<MessageEvent> result = processLog.getPending(BATCH_SIZE, firstId, maxNumberOfTries);
             if (result.isEmpty()) {
                 return firstId;
             }

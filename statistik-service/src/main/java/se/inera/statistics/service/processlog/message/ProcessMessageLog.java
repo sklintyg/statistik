@@ -28,5 +28,5 @@ public interface ProcessMessageLog {
 
     long increaseNumberOfTries(String messageId);
 
-    List<MessageEvent> getPending(int max, long firstId);
+    List<MessageEvent> getPending(int max, long firstId, int maxNumberOfTries);
 }

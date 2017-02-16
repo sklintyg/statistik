@@ -70,11 +70,12 @@ public class ProcessMessageLogImpl extends AbstractProcessLog implements Process
 
     @Override
     @Transactional
-    public List<MessageEvent> getPending(int max, long firstId) {
-        String query = "SELECT e FROM MessageEvent e WHERE e.id > :lastId AND (SELECT count(*) FROM MessageWideLine w WHERE e.correlationId = w.meddelandeId) = 0 ORDER BY e.id ASC";
+    public List<MessageEvent> getPending(int max, long firstId, int maxNumberOfTries) {
+        String query = "SELECT e FROM MessageEvent e WHERE e.id > :lastId AND e.tries <= :maxTries AND (SELECT count(*) FROM MessageWideLine w WHERE e.correlationId = w.meddelandeId) = 0 ORDER BY e.id ASC";
 
         TypedQuery<MessageEvent> allQuery = getManager().createQuery(query, MessageEvent.class);
         allQuery.setParameter("lastId", firstId);
+        allQuery.setParameter("maxTries", maxNumberOfTries);
 
         allQuery.setMaxResults(max);
         return allQuery.getResultList();
