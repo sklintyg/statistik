@@ -24,6 +24,8 @@ angular.module('StatisticsApp').run(
     function ($rootScope, $route, $filter, messageService) {
     'use strict';
 
+    Highcharts.seriesTypes.line.prototype.drawLegendSymbol = Highcharts.seriesTypes.area.prototype.drawLegendSymbol;
+
     $rootScope.lang = 'sv';
     $rootScope.DEFAULT_LANG = 'sv';
     messageService.addResources(stMessages); // jshint ignore:line
