@@ -94,6 +94,26 @@ Vi använder Gradle för att bygga, test, installera och köra statistiktjänste
 |../gradlew fitnesseWiki |starta fitnesse|[projektrot]/specifications|
 |../gradlew fitnesseTest|kör fitnesse-tester|[projektrot]/specifications|
 
+## Köra med intygstjänsten
+Starta active mq
+
+    activemq console
+
+Starta statistiktjänsten, kommer att starta på port 9101
+
+    ./gradlew appRun -PrunWithIntyg -PrunWithActiveMQ
+    
+### Intygstjänsten
+Öppna jetty-web.xml  
+Ändra jms/Queue till statistik.utlatande.queue  
+Ändra jms/ConnectionFactory till "tcp://localhost:61616"
+
+Starta intygstjänsten
+    
+    ./gradlew appRun
+    
+Nu kommer intygen som skickas till intygstjänsten även gå till statistik, det samma gäller för meddelanden som skickas till sendMessageToCare
+
 ## Licenser
 
 Vi använder en gradle-plugin som kontrollerar att alla relevanta filer har en korrekt licens-header. Om den hittar en fil som inte
