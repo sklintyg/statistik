@@ -157,6 +157,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                 legend : {
                     align : 'left',
                     borderWidth : 0,
+                    symbolRadius: 0,
                     itemStyle: {
                         color: '#008391',
                         fontWeight: 'bold',
