@@ -8,7 +8,7 @@
     <Call name="setAttribute">
         <Arg>org.eclipse.jetty.server.webapp.WebInfIncludeJarPattern</Arg>
         <Arg>
-            .*/.*jsp-api-[^/]\.jar$|./.*jsp-[^/]\.jar$|./.*taglibs[^/]*\.jar$|.*/.*bootstrap-.*\.jar$|.*/.*angularjs-.*\.jar$|.*/.*bootstrap-.*\.jar$|.*/.*underscorejs-.*\.jar$|.*/.*respond-.*\.jar$|.*/.*jquery-.*\.jar$|.*/.*moment.*\.jar$|.*/.*dropzone.*\.jar$
+            .*/.*jsp-api-[^/]\.jar$|./.*jsp-[^/]\.jar$|./.*taglibs[^/]*\.jar$
         </Arg>
     </Call>
 
@@ -39,7 +39,8 @@
             <New class="org.apache.activemq.pool.PooledConnectionFactory">
                 <Arg>
                     <New class="org.apache.activemq.ActiveMQConnectionFactory">
-                        <Arg>vm://localhost?broker.useJmx=true&amp;broker.persistent=false</Arg>
+                        <!--Arg>vm://localhost?broker.useJmx=true&amp;broker.persistent=false</Arg-->
+                        <Arg>tcp://localhost:61616</Arg>
                     </New>
                 </Arg>
             </New>

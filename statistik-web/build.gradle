@@ -17,10 +17,15 @@ description = 'Inera Statistics Service - Web Module'
 
 
 gretty {
+    def baseUrl = 'http://localhost:8080'
     def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,testapi,embedded,hsa-stub,wc-hsa-stub,security-fake'
-
     servletContainer = 'jetty9'
     contextPath = '/'
+
+    if(project.hasProperty('runWithIntyg')) {
+        httpPort = 9101
+        baseUrl = 'http://localhost:9101'
+    }
 
     if(project.hasProperty('runWithActiveMQ')) {
         contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-activemq-context.xml"
@@ -32,6 +37,7 @@ gretty {
     logbackConfigFile = "${projectDir}/src/main/resources/logback.xml"
     jvmArgs = [
             jvmArgSpringProfiles,
+            '-Dstatistics.base.url=' + baseUrl,
             '-Dstatistics.test.max.intyg=500',
             '-Dstatistics.config.file=' + projectDir + '/src/main/resources/default.dev.properties',
             '-Dstatistics.credentials.file=' + projectDir + '/src/main/resources/dev-credentials.properties'

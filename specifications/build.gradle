@@ -51,10 +51,18 @@ task allIntegrationTests(dependsOn: [fitnesseTest, protractorTest]) << {
 if (project.hasProperty('runFitnesse') || project.hasProperty('runProtractor')) {
     apply plugin: 'org.akhikhl.gretty'
     gretty {
+        def baseUrl = 'http://localhost:8080'
+
+        if(project.hasProperty('runWithIntyg')) {
+            httpPort = 9101
+            baseUrl = 'http://localhost:9101'
+        }
+
         contextPath = '/'
         contextConfigFile = project(":statistik-web").projectDir.path + "/src/main/webapp/WEB-INF/jetty-context.xml"
         logbackConfigFile = "${projectDir}/src/main/resources/logback-test.xml"
         jvmArgs = [
+                '-Dstatistics.base.url=' + baseUrl,
                 '-Dspring.profiles.active=dev,testapi,embedded,hsa-stub,security-fake,skipTestIntygInjection',
                 '-Dstatistics.config.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/default.dev.properties',
                 '-Dstatistics.credentials.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/dev-credentials.properties'

@@ -37,16 +37,16 @@
 
     <jdbc:embedded-database id="dataSource" type="H2"><jdbc:script location="classpath:mysqlModeEmbeddedH2StartScript.sql"></jdbc:script></jdbc:embedded-database>
 
-    <bean id="org.h2.tools.Server"
-          class="org.h2.tools.Server"
-          factory-method="createTcpServer"
-          init-method="start"
-          destroy-method="stop" lazy-init="false">
-        <constructor-arg value="-tcp,-tcpAllowOthers,-tcpPort,9092"/>
+    <bean id="org.h2.tools.Server" class="org.h2.tools.Server"
+        factory-method="createTcpServer" init-method="start"
+        destroy-method="stop" lazy-init="false">
+        <constructor-arg value="-tcp,-tcpAllowOthers,-tcpPort,9103" />
     </bean>
-    <bean id="h2WebServer" class="org.h2.tools.Server" factory-method="createWebServer" init-method="start"
-          destroy-method="stop">
-        <constructor-arg value="-web,-webAllowOthers,-webPort,8082"/>
+
+    <bean id="h2WebServer" class="org.h2.tools.Server"
+        factory-method="createWebServer" init-method="start"
+        destroy-method="stop">
+        <constructor-arg value="-web,-webAllowOthers,-webPort,9102,-tcpPort,9103" />
     </bean>
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
