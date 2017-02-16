@@ -33,7 +33,6 @@ angular.module('StatisticsApp')
                 selectedDetailsOption2: '=',
                 selectedDetailsOption3: '=',
                 queryString: '=',
-                popoverText: '=',
                 showDetailOptions3PopoverText: '='
             },
             restrict: 'E',
