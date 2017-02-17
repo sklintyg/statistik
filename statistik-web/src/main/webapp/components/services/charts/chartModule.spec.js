@@ -90,6 +90,7 @@ describe('Chart services', function() {
                     expect(chartOpt.title.text).toBe('title text');
                 },
                 series: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'],
+                yAxis: [{}],
                 options: { chart: {}}
             };
             chartFactory.exportChart(chart, name, 'title text');
