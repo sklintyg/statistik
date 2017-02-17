@@ -1,9 +1,3 @@
-buildscript {
-    dependencies {
-        classpath 'org.akhikhl.gretty:gretty:1.2.4' //Will be using springLoadedVersion:1.2.4.RELEASE due to "https://github.com/spring-projects/spring-loaded/issues/122", defined in gradle.properties
-    }
-}
-
 plugins {
     id "com.moowork.grunt" version "0.12"
     id "com.moowork.node" version "0.12"
