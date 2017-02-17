@@ -1,0 +1,59 @@
+stats-header {
+  .header {
+    background-color: #212633;
+    padding: 5px 0 10px 0; /* don't change this setup. it's needed for IE8 flow on smaller screens to work */
+    color: #fff;
+  }
+
+  .header-logo {
+    width: 242px;
+  }
+
+  .headerbox-logo {
+    padding: 3px 20px 0 30px;
+    border-right: 1px solid #595c66;
+    display: block;
+    margin-top: 10px;
+  }
+
+  .headerbox-date {
+    padding: 15px 0 0 30px;
+    line-height: 17px;
+    display: block;
+  }
+
+  .headerbox-user {
+    font-size: 13px;
+    line-height: 16px;
+    padding: 13px 0 0 0;
+  }
+
+  .headerbox-avatar {
+    padding: 13px 30px 0 0;
+  }
+
+  .headerbox-user-profile {
+    padding-right: 15px;
+    font-size: 13px;
+    line-height: 18px;
+    text-align: left;
+  }
+
+  .headerbox-info-text {
+    font-weight: normal;
+  }
+
+  .headerbox-info-text-padding {
+    margin-top: 6px;
+  }
+
+  .headerbox-login {
+    padding: 10px;
+  }
+
+  @media (max-width: 767px) {
+    div.headerbox-logo img {
+      margin-left: 15px;
+    }
+  }
+}
