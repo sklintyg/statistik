@@ -865,61 +865,6 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle {
   color: #fff;
 }
 
-.col-xs-12 div.headerbox-logo {
-  padding-right: 0;
-  border-right: 0 solid;
-  width: 100% !important;
-  text-align: center;
-}
-
-.header {
-  background-color: #212633;
-  padding: 5px 0 10px 0; /* don't change this setup. it's needed for IE8 flow on smaller screens to work */
-  color: #fff;
-}
-
-.headerbox-info-text {
-  font-weight: normal;
-}
-
-.headerbox-info-text-padding {
-  margin-top: 6px;
-}
-
-.headerbox-login {
-  padding: 10px;
-}
-
-span.headerbox-logo {
-  padding: 3px 20px 0 30px;
-  border-right: 1px solid #595c66;
-  display: block;
-  margin-top: 10px;
-}
-
-span.headerbox-date {
-  padding: 15px 0 0 30px;
-  line-height: 17px;
-  display: block;
-}
-
-div.headerbox-user {
-  font-size: 13px;
-  line-height: 16px;
-  padding: 13px 0 0 0;
-}
-
-div.headerbox-avatar {
-  padding: 13px 30px 0 0;
-}
-
-div.headerbox-user-profile {
-  padding-right: 15px;
-  font-size: 13px;
-  line-height: 18px;
-  text-align: left;
-}
-
 #business-login-container {
   float: right;
   padding-right: 25px;
@@ -2100,6 +2045,7 @@ input[type="radio"], input[type="checkbox"] {
 @import 'directives/filterChips/filterChips.scss';
 @import 'directives/filterChipsList/filterChipsList.scss';
 @import 'directives/filterList/filterList.scss';
+@import 'directives/header/header.scss';
 @import 'directives/highlightWords/highlightWords.scss';
 @import 'directives/navigationMenu/navigationMenu.scss';
 @import 'directives/overviewWidget/overviewWidget.scss';

@@ -26,86 +26,44 @@
     <!-- endbuild -->
 </head>
 <body data-ng-controller="pageCtrl">
-<highlight-words></highlight-words>
-<!-- Navbar
-================================================== -->
-<div id="navigation-container" ng-cloak>
-  <div class="header clearfix hidden-print">
-    <div class="headerbox">
-      <span class="headerbox-logo pull-left">
-        <a ng-href="/#/">
-          <img alt="Till startsidan" src="/assets/images/statistiktjansten-logotype.png"/>
-        </a>
-      </span>
-      <span class="headerbox-date pull-left">
-        <div id="location" class="location ng-hide" data-ng-show="isLoggedIn">
-          {{pageHeaderVerksamhetName}}
-          <show-businesses
-              data-ng-if="showBusinessesDetails"
-              businesses="UserModel.get().businesses"
-              vg-name="vgName"></show-businesses>
-          <select-vardgivare-modal
-              data-ng-if="UserModel.get().enableVerksamhetMenu && UserModel.get().vgs.length > 1"
-              vardgivare="UserModel.get().vgs"
-              select-vardgivare="changeVardgivare(vgId)"></select-vardgivare-modal>
-        </div>
-        <div class="headerbox-info-text"
-             data-ng-class="{'headerbox-info-text-padding': !(isLoggedIn && pageHeaderVerksamhetName)}"
-             message key="statistics.header.extra-text"
-        ></div>
-      </span>
-    </div>
+  <highlight-words></highlight-words>
 
-    <div class="hidden-xs" data-ng-if="AppModel.get().loginVisible">
-      <div class="ng-hide headerbox-login" id="business-login-container" data-ng-show="!UserModel.get().enableVerksamhetMenu">
-        <span id="business-login-span"><span message key="lbl.for-verksamhetsstatistik"></span></span>
-        <button class="btn" data-ng-click="loginClicked()"
-                type="button" id="business-login-btn" value="Logga in"><span message key="lbl.log-in"></span>
-        </button>
+  <!-- Navbar
+  ================================================== -->
+  <stats-header
+      is-logged-in="isLoggedIn"
+      page-header-verksamhet-name="pageHeaderVerksamhetName"
+      show-businesses-details="showBusinessesDetails"
+      vg-name="vgName"
+      login-clicked="loginClicked()"
+    ></stats-header>
+
+  <stat-cookie-banner></stat-cookie-banner>
+
+  <send-feedback></send-feedback>
+
+  <div id="wrapper">
+      <div id="sidebar-wrapper" class="hidden-print hidden-xs" ng-cloak>
+          <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
+          <navigation-menu login-visible="AppModel.get().loginVisible" query-string="queryString"></navigation-menu>
       </div>
-      <div class="ng-hide" data-ng-show="UserModel.get().enableVerksamhetMenu">
-        <div class="headerbox-avatar pull-right">
-          <img src="/assets/images/avatar.png">
-        </div>
-        <div class="headerbox-user pull-right">
-          <div class="headerbox-user-profile">
-            <span class="logged-in">{{UserModel.get().userNameWithAccess}}</span><br>
-            <span class="pull-right">
-              <a id="logoutLink" href="saml/logout"><span message key="lbl.log-out"></span></a>
-            </span>
+
+      <navigation-menu class="hidden-sm hidden-md hidden-lg" is-mobile="true" query-string="queryString" login-visible="AppModel.get().loginVisible" login-clicked="loginClicked()"></navigation-menu>
+
+      <div id="page-content-wrapper">
+          <div class="container-fluid">
+            <business-filter data-ng-if="isVerksamhetShowing" ng-cloak></business-filter>
+
+            <landsting-filter data-ng-if="isLandstingShowing" ng-cloak></landsting-filter>
+
+            <div class="row" ng-cloak>
+                <div class="col-xs-12">
+                    <div id="view" data-ng-view></div>
+                </div>
+            </div>
           </div>
-        </div>
       </div>
-    </div>
   </div>
-</div>
-
-<stat-cookie-banner></stat-cookie-banner>
-
-<send-feedback></send-feedback>
-
-<div id="wrapper">
-    <div id="sidebar-wrapper" class="hidden-print hidden-xs" ng-cloak>
-        <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
-        <navigation-menu login-visible="AppModel.get().loginVisible" query-string="queryString"></navigation-menu>
-    </div>
-
-    <navigation-menu class="hidden-sm hidden-md hidden-lg" is-mobile="true" query-string="queryString" login-visible="AppModel.get().loginVisible" login-clicked="loginClicked()"></navigation-menu>
-
-    <div id="page-content-wrapper">
-        <div class="container-fluid">
-          <business-filter data-ng-if="isVerksamhetShowing" ng-cloak></business-filter>
-
-          <landsting-filter data-ng-if="isLandstingShowing" ng-cloak></landsting-filter>
-
-          <div class="row" ng-cloak>
-              <div class="col-xs-12">
-                  <div id="view" data-ng-view></div>
-              </div>
-          </div>
-        </div>
-    </div>
-</div>
 
 <!-- Scripts -->
 <!-- Placed at the end of the document so the pages load faster -->
@@ -192,6 +150,7 @@
   <script src="/components/directives/filterChips/modal/modal.controller.js"></script>
   <script src="/components/directives/filterChipsList/filterChips.directive.js"></script>
   <script src="/components/directives/filterList/filterList.directive.js"></script>
+  <script src="/components/directives/header/header.directive.js"></script>
   <script src="/components/directives/highlightWords/highlightWords.directive.js"></script>
   <script src="/components/directives/intermediate/intermediate.directive.js"></script>
   <script src="/components/directives/legendHeight/legendHeight.directive.js"></script>
@@ -231,20 +190,20 @@
   <!-- endinjector -->
   <!-- endbuild -->
 
-<script type="text/javascript">
+  <script type="text/javascript">
     $('.dropdown-toggle').dropdown();
-</script>
+  </script>
 
-<!-- This sections will give users of not so modern browsers a message that their browser is too old to run this thing. -->
-<div id="outdated">
+  <!-- This sections will give users of not so modern browsers a message that their browser is too old to run this thing. -->
+  <div id="outdated">
     <h1><b>Din webbläsare stöds inte av Statistiktjänsten och det kan göra att den inte fungerar korrekt.</b></h1>
     <h1><b>Statistiktjänsten stöds av Internet Explorer 9 och nyare, även om andra webbläsare kan fungera.</b></h1>
     <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
     <!-- It seems like a div called btnUpdateBrowser need to exist, otherwise the outdated browser plugin will bug us with console warning messages on every reload -->
     <div id="btnUpdateBrowser" style="display: none;"></div>
-</div>
+  </div>
 
-<script type="text/javascript">
+  <script type="text/javascript">
     function addLoadEvent(func) {
         var oldonload = window.onload;
         if (typeof window.onload != 'function') {
@@ -267,8 +226,6 @@
             languagePath: ''
         })
     });
-</script>
-
-
+  </script>
 </body>
 </html>
