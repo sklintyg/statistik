@@ -193,6 +193,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                 yAxis : {
                     allowDecimals : false,
                     min : 0,
+                    minRange : 0.1,
                     title : {
                         text : null
                     },
@@ -213,6 +214,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                 },
                 plotOptions : {
                     line : {
+                        softThreshold: false,
                         allowPointSelect : false,
                         marker : {
                             enabled : false,
@@ -231,6 +233,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                         stacking: null
                     },
                     column : {
+                        softThreshold: false,
                         showInLegend : true,
                         stacking: percentChart ? 'percent' : (stacked ? 'normal' : null)
                     },
@@ -296,10 +299,11 @@ angular.module('StatisticsApp').factory('chartFactory',
             var extendedChartOptions = {};
             if (chart.series.length <= 10) {
                 extendedChartOptions.legend = { enabled: true };
-                var yMax = chart.yAxis[0].max;
-                var chartTickInterval = chart.yAxis[0].tickInterval;
-                extendedChartOptions.yAxis = { min: 0, max: yMax, endOnTick: false, tickInterval: chartTickInterval };
             }
+            var yMax = chart.yAxis[0].max;
+            var chartTickInterval = chart.yAxis[0].tickInterval;
+            extendedChartOptions.yAxis = { min: 0, max: yMax, endOnTick: false, tickInterval: chartTickInterval };
+
             extendedChartOptions.chart = {
                 height: chartHeight,
                 width: 600,
