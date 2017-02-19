@@ -33,6 +33,7 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
+import se.inera.statistics.service.warehouse.IntygType;
 
 import javax.jms.ConnectionFactory;
 import java.io.BufferedReader;
@@ -95,7 +96,7 @@ public class ReceiverTransactionalTest {
         for (TestIntyg intyg : getIntygWithHelsjukAndSingelmanadAndSingelDiagnos(getPerson(PERSON_K1950))) {
             LOG.info("Intyg: " + intyg);
             queueSender.simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(),
-                    "" + i++);
+                    "" + i++, IntygType.FK7263.getItIntygType());
         }
 
         try {

@@ -27,6 +27,7 @@ import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.processlog.message.ProcessMessageLog;
+import se.inera.statistics.service.warehouse.IntygType;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -47,6 +48,7 @@ public class JmsReceiver implements MessageListener {
     public static final String MESSAGE_SENT = "message-sent";
     public static final String CERTIFICATE_ID = "certificate-id";
     public static final String MESSAGE_ID = "message-id";
+    public static final String CERTIFICATE_TYPE = "certificate-type";
 
     @Autowired
     private Receiver receiver;
@@ -81,9 +83,14 @@ public class JmsReceiver implements MessageListener {
 
     private void handleIntyg(Message rawMessage, String doc, String typeName, long timestamp) throws JMSException {
         String certificateId = rawMessage.getStringProperty(CERTIFICATE_ID);
-        receiver.accept(typeEvent(typeName), doc, certificateId, timestamp);
-        LOG.info("Received intyg {}", certificateId);
-        monitoringLogService.logInFromQueue(certificateId);
+        String certificateType = rawMessage.getStringProperty(CERTIFICATE_TYPE);
+        if (certificateType != null && IntygType.getByItIntygType(certificateType).equals(IntygType.UNKNOWN)) {
+            LOG.warn("Received intyg '{}' was discarded since type '{}' is unknown", certificateId, certificateType);
+        } else {
+            receiver.accept(typeEvent(typeName), doc, certificateId, timestamp);
+            LOG.info("Received intyg {}", certificateId);
+            monitoringLogService.logInFromQueue(certificateId);
+        }
     }
 
     private void handleMessage(Message rawMessage, String doc, String typeName, long timestamp) throws JMSException {

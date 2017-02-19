@@ -42,18 +42,19 @@ public class QueueSender {
         this.jmsTemplate = new JmsTemplate(connectionFactory);
     }
 
-    public void simpleSend(final String intyg, final String correlationId) {
-        simpleSend(intyg, correlationId, JmsReceiver.CREATED);
+    public void simpleSend(final String intyg, final String correlationId, String certificateType) {
+        simpleSend(intyg, correlationId, JmsReceiver.CREATED, certificateType);
     }
 
-    public void simpleSend(final String intyg, final String correlationId, final EventType type) {
-        simpleSend(intyg, correlationId, type.name());
+    public void simpleSend(final String intyg, final String correlationId, final EventType type, String certificateType) {
+        simpleSend(intyg, correlationId, type.name(), certificateType);
     }
 
-    private void simpleSend(String intyg, String correlationId, String action) {
+    private void simpleSend(String intyg, String correlationId, String action, String certificateType) {
         jmsTemplate.send(destination, session -> {
             TextMessage message = session.createTextMessage(intyg);
             message.setStringProperty(JmsReceiver.ACTION, action);
+            message.setStringProperty(JmsReceiver.CERTIFICATE_TYPE, certificateType);
             message.setStringProperty(JmsReceiver.CERTIFICATE_ID, correlationId);
             return message;
         });
