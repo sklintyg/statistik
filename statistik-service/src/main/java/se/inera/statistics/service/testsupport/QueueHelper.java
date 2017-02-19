@@ -36,6 +36,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
@@ -92,7 +93,7 @@ public class QueueHelper {
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public void enqueue(UtlatandeBuilder builder, String typString, String person, String diagnos, List<LocalDate> start, List<LocalDate> stop, List<String> grad, HsaIdEnhet enhet, HsaIdVardgivare vardgivare, String transId) {
         EventType typ = EventType.valueOf(typString);
-        sender.simpleSend(builder.build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), transId, typ);
+        sender.simpleSend(builder.build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), transId, typ, IntygType.FK7263.getItIntygType());
     }
     // CHECKSTYLE:ON ParameterNumberCheck
 

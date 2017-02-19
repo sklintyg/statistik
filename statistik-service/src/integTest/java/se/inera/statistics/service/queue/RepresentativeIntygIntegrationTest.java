@@ -35,6 +35,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.testsupport.QueueHelper;
 import se.inera.statistics.service.testsupport.QueueSender;
 import se.inera.statistics.service.testsupport.TestData;
+import se.inera.statistics.service.warehouse.IntygType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -103,7 +104,7 @@ public class RepresentativeIntygIntegrationTest {
         for (TestIntyg intyg : getIntygWithHelsjukAndSingelmanadAndSingelDiagnos(getPerson(PERSON_K1950), getPerson(PERSON_K1960), getPerson(PERSON_M1979))) {
             LOG.info("Intyg: " + intyg);
             queueSender.simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(),
-                    "" + i++);
+                    "" + i++, IntygType.FK7263.getItIntygType());
         }
 
         try {
@@ -150,7 +151,7 @@ public class RepresentativeIntygIntegrationTest {
         for (TestIntyg intyg : intygs) {
             LOG.info("Intyg: " + intyg);
             queueSender.simpleSend(builder.build(intyg.personNr, intyg.startDate, intyg.endDate, intyg.vardenhet, intyg.vardgivare, intyg.diagnos, intyg.grads).toString(),
-                    "" + i++);
+                    "" + i++, IntygType.FK7263.getItIntygType());
         }
 
         try {
