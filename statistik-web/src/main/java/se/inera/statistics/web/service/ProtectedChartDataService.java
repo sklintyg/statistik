@@ -49,6 +49,7 @@ import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 import se.inera.statistics.web.service.converter.SjukfallForBiConverter;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
