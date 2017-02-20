@@ -30,6 +30,11 @@
         http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd"
         >
 
+    <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="changeLog" value="classpath:changelog/changelog.xml"/>
+    </bean>
+
     <context:component-scan base-package="se.inera.statistics.service.processlog"/>
     <context:component-scan base-package="se.inera.statistics.service.schemavalidation"/>
     <context:component-scan base-package="se.inera.statistics.service.warehouse, se.inera.statistics.service.monitoring"/>
@@ -103,11 +108,6 @@
                 <prop key="hibernate.hbm2ddl.auto">none</prop>
             </props>
         </property>
-    </bean>
-
-    <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="changeLog" value="classpath:changelog/changelog.xml"/>
     </bean>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
