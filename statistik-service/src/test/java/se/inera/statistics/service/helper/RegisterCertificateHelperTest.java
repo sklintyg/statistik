@@ -22,12 +22,19 @@ import org.junit.Test;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
+import se.riv.clinicalprocess.healthcond.certificate.types.v2.DatePeriodType;
+import se.riv.clinicalprocess.healthcond.certificate.types.v2.PersonId;
+import se.riv.clinicalprocess.healthcond.certificate.v2.Intyg;
+import se.riv.clinicalprocess.healthcond.certificate.v2.Patient;
+import se.riv.clinicalprocess.healthcond.certificate.v2.Svar;
 
 import javax.xml.bind.JAXBException;
 import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static se.inera.statistics.service.helper.RegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32;
+import static se.inera.statistics.service.helper.RegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32;
 
 public class RegisterCertificateHelperTest {
 
@@ -207,4 +214,76 @@ public class RegisterCertificateHelperTest {
         assertEquals(signeringsdatum, dto.getSigneringsdatum());
 
     }
+
+    @Test
+    public void testGetPatientDataHappyPath() throws Exception {
+        final Patientdata result = callGetPatientdata("19500910-1824", LocalDate.of(2017, 02, 21));
+        assertEquals(66, result.getAlder());
+    }
+
+    @Test
+    public void testGetPatientDataWithTrailingSpace() throws Exception {
+        final Patientdata result = callGetPatientdata("19500910-1824 ", LocalDate.of(2017, 02, 21));
+        assertEquals(66, result.getAlder());
+    }
+
+    @Test
+    public void testGetPatientDataWithStartingSpace() throws Exception {
+        final Patientdata result = callGetPatientdata(" 19500910-1824", LocalDate.of(2017, 02, 21));
+        assertEquals(66, result.getAlder());
+    }
+
+    @Test
+    public void testGetPatientDataWithNull() throws Exception {
+        final Patientdata result = callGetPatientdata(null, LocalDate.of(2017, 02, 21));
+        assertEquals(ConversionHelper.NO_AGE, result.getAlder());
+    }
+
+    @Test
+    public void testGetPatientDataWithNoDatePeriod() throws Exception {
+        final Patientdata result = callGetPatientdata("19500910-1824", registerCertificateHelper);
+        assertEquals(ConversionHelper.NO_AGE, result.getAlder());
+    }
+
+    private Patientdata callGetPatientdata(String pnr, final LocalDate intygDate) {
+        //Given
+        RegisterCertificateHelper rch = new RegisterCertificateHelper() {
+            @Override
+            public DatePeriodType getDatePeriodTypeContent(Svar.Delsvar delsvar) {
+                final DatePeriodType datePeriodType = new DatePeriodType();
+                datePeriodType.setEnd(intygDate);
+                return datePeriodType;
+            }
+        };
+
+        return callGetPatientdata(pnr, rch);
+    }
+
+    private Patientdata callGetPatientdata(String pnr, RegisterCertificateHelper rch) {
+        RegisterCertificateType registerCertificateType = new RegisterCertificateType();
+        final Intyg intyg = new Intyg();
+        registerCertificateType.setIntyg(intyg);
+
+        final Patient patient = new Patient();
+        intyg.setPatient(patient);
+
+        final PersonId personId = new PersonId();
+        patient.setPersonId(personId);
+
+        personId.setExtension(pnr);
+
+        final Svar svar = new Svar();
+        intyg.getSvar().add(svar);
+
+        svar.setId(BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32);
+
+        final Svar.Delsvar delsvar = new Svar.Delsvar();
+        svar.getDelsvar().add(delsvar);
+
+        delsvar.setId(BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32);
+
+        //When
+        return rch.getPatientData(registerCertificateType);
+    }
+
 }

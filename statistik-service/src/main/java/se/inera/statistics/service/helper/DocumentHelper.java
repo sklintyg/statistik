@@ -105,11 +105,12 @@ public final class DocumentHelper {
         return getUnifiedPersonId(personIdRaw);
     }
 
-    public static String getUnifiedPersonId(String personIdRaw) {
-        if (personIdRaw.matches("[0-9]{8}-[0-9]{4}")) {
-            return personIdRaw;
-        } else if (personIdRaw.matches("[0-9]{12}")) {
-            return personIdRaw.substring(0, ConversionHelper.DATE_PART_OF_PERSON_ID) + "-" + personIdRaw.substring(ConversionHelper.DATE_PART_OF_PERSON_ID);
+    public static String getUnifiedPersonId(String personIdRaw1) {
+        String safePersonId = personIdRaw1 != null ? personIdRaw1.trim() : "";
+        if (safePersonId.matches("[0-9]{8}-[0-9]{4}")) {
+            return safePersonId;
+        } else if (safePersonId.matches("[0-9]{12}")) {
+            return safePersonId.substring(0, ConversionHelper.DATE_PART_OF_PERSON_ID) + "-" + safePersonId.substring(ConversionHelper.DATE_PART_OF_PERSON_ID);
         } else {
             throw new PersonIdParseException("Failed to parse person id");
         }
