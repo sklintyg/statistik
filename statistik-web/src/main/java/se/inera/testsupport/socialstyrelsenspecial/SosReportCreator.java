@@ -48,23 +48,28 @@ public class SosReportCreator {
     private final SjukfallUtil sjukfallUtil;
     private HashMap<String, Integer> dxsToShowInReport = new HashMap<>();
     private Clock clock;
-    private int year;
+    private int fromYear;
+    private int toYear;
 
     /**
-     * @param dxString diagnosis to generate report for, if null then use default dxs
-     * @param year Which year to calculate
+     * @param dxStrings diagnosis to generate report for, if null then use default dxs
+     * @param fromYear From which year to calculate
+     * @param toYear To which year to calculate
      */
-    public SosReportCreator(Map<HsaIdVardgivare, Aisle> allVardgivare, SjukfallUtil sjukfallUtil, Icd10 icd10, String dxString, Clock clock, int year) {
+    public SosReportCreator(Map<HsaIdVardgivare, Aisle> allVardgivare, SjukfallUtil sjukfallUtil, Icd10 icd10, List<String> dxStrings, Clock clock, int fromYear, int toYear) {
         this.allVardgivare = allVardgivare;
         this.sjukfallUtil = sjukfallUtil;
         this.clock = clock;
-        if (dxString == null || dxString.isEmpty()) {
+        if (dxStrings == null || dxStrings.isEmpty()) {
             populateDefaultDxs();
         } else {
-            Icd10.Id dx = icd10.findFromIcd10Code(dxString);
-            dxsToShowInReport.put(dx.getId(), dx.toInt());
+            for (String dxString : dxStrings) {
+                Icd10.Id dx = icd10.findFromIcd10Code(dxString);
+                dxsToShowInReport.put(dx.getId(), dx.toInt());
+            }
         }
-        this.year = year;
+        this.fromYear = fromYear;
+        this.toYear = toYear;
     }
 
     private void populateDefaultDxs() {
@@ -91,7 +96,7 @@ public class SosReportCreator {
             final Integer dx = stringIntegerEntry.getValue();
             final String dxString = stringIntegerEntry.getKey();
             final Predicate<Fact> intygFilter = fact -> fact.getDiagnoskod() == dx || fact.getDiagnoskategori() == dx;
-            final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true, "sosspecial" + dx, false);
+            final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true, "sosspecial" + fromYear + dx + toYear, false);
 
             for (Map.Entry<HsaIdVardgivare, Aisle> vgEntry : allVardgivare.entrySet()) {
                 final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1, range.getNumberOfMonths(),
@@ -110,11 +115,11 @@ public class SosReportCreator {
     }
 
     LocalDate getLastDateOfYear() {
-        return LocalDate.now(clock).withYear(year + 1).withDayOfYear(1).minusDays(1);
+        return LocalDate.now(clock).withYear(toYear + 1).withDayOfYear(1).minusDays(1);
     }
 
     LocalDate getFirstDateOfYear() {
-        return LocalDate.now(clock).withDayOfYear(1).withYear(year);
+        return LocalDate.now(clock).withDayOfYear(1).withYear(fromYear);
     }
 
     private List<SosCalculatedRow> getCalculatedValuesSosReport(Function<List<SosRow>, Double> calcFunc) {

@@ -2,10 +2,28 @@ package se.inera.statistics.spec
 
 class SjukfallIRapportenSocialstyrelsen extends Rapport {
 
+    def startår
+    def slutår
+    def diagnoser
+
     def diagnos
     def kön
     def län
     def sjukskrivningslängd
+
+    void setStartår(startår) {
+        this.startår = Integer.parseInt(startår)
+    }
+
+    void setSlutår(slutår) {
+        this.slutår = Integer.parseInt(slutår)
+    }
+
+    void setDiagnoser(diagnoser) {
+        if (diagnoser != null && !diagnoser.trim().isEmpty()) {
+            this.diagnoser = diagnoser.split(",")*.trim().collect{ it }
+        }
+    }
 
     def diagnos() {
         return diagnos
@@ -31,7 +49,7 @@ class SjukfallIRapportenSocialstyrelsen extends Rapport {
     }
 
     def getReport() {
-        return reportsUtil.getSocialstyrelsenReport();
+        return reportsUtil.getSocialstyrelsenReport(startår, slutår, diagnoser);
     }
 
     public void doExecute() {

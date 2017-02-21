@@ -33,7 +33,7 @@ public class SosReportCreatorTest {
     public void testGetFirstDateOfYear() throws Exception {
         //Given
         final Clock clock = Clock.fixed(Instant.parse("2016-05-11T10:15:30.00Z"), ZoneId.systemDefault());
-        final SosReportCreator sosReportCreator = new SosReportCreator(null, null, null, null, clock, 2015);
+        final SosReportCreator sosReportCreator = new SosReportCreator(null, null, null, null, clock, 2015, 2015);
 
         //When
         final LocalDate firstDateOfLastYear = sosReportCreator.getFirstDateOfYear();
@@ -46,7 +46,7 @@ public class SosReportCreatorTest {
     public void testGetLastDateOfYear() throws Exception {
         //Given
         final Clock clock = Clock.fixed(Instant.parse("2015-05-11T10:15:30.00Z"), ZoneId.systemDefault());
-        final SosReportCreator sosReportCreator = new SosReportCreator(null, null, null, null, clock, 2014);
+        final SosReportCreator sosReportCreator = new SosReportCreator(null, null, null, null, clock, 2014, 2014);
 
         //When
         final LocalDate lastDateOfLastYear = sosReportCreator.getLastDateOfYear();
