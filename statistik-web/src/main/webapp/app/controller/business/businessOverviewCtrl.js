@@ -247,7 +247,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         chartOptions.chart.type = 'column';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 240;
-        chartOptions.xAxis.title = { text: 'Sjukskrivningslängd' , style : chartOptions.xAxis.title.style };
         chartOptions.xAxis.labels.format = '{value}';
         chartOptions.subtitle.text = null;
         chartOptions.yAxis.title = { text: 'Antal', style : chartOptions.subtitle.style  };

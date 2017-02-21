@@ -46,7 +46,6 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback, false, chartTypeInfo.usePercentChart, chartTypeInfo.stacked);
             chartOptions.chart.type = chartTypeInfo.activeHighchartType;
             chartOptions.legend.enabled = false;
-            chartOptions.xAxis.title.text = 'Period';
             chartOptions.subtitle.text = 'Antal sjukfall';
             if (config.chartYAxisTitle) {
                 chartOptions.subtitle.text = config.chartYAxisTitle;
