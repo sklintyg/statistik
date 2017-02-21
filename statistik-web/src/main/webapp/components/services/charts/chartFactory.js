@@ -133,7 +133,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     plotBorderWidth: 1,
                     marginLeft: overview ? null : 80,
                     height: 360 + labelHeight,
-                    marginBottom: verticalLabel ? labelHeight + 15 : null
+                    marginBottom: verticalLabel ? labelHeight + 25 : null
                 },
                 title: {
                     text: null,
@@ -155,6 +155,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     align : 'left',
                     borderWidth : 0,
                     symbolRadius: 0,
+                    y: verticalLabel ? 15 : 0,
                     itemStyle: {
                         color: '#008391',
                         fontWeight: 'bold',
