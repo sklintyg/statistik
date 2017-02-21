@@ -162,19 +162,28 @@ public class RegisterCertificateHelper {
     }
 
     public Patientdata getPatientData(RegisterCertificateType intyg) {
-        final String patientIdRaw = getPatientId(intyg);
-        final String personId = DocumentHelper.getUnifiedPersonId(patientIdRaw);
-        int alder;
+        String patientIdRaw;
         try {
-            alder = ConversionHelper.extractAlder(personId, getSistaNedsattningsdag(intyg));
-        } catch (Exception e) {
-            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId);
-            LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", personId, e);
-            alder = ConversionHelper.NO_AGE;
+            patientIdRaw = getPatientId(intyg);
+        } catch (Exception ignore) {
+            patientIdRaw = "?Unknown?";
         }
-        String kon = ConversionHelper.extractKon(personId);
 
-        return new Patientdata(alder, Kon.parse(kon));
+        int alder = ConversionHelper.NO_AGE;
+        Kon kon = Kon.UNKNOWN;
+        try {
+            final String personId = DocumentHelper.getUnifiedPersonId(patientIdRaw);
+            try {
+                alder = ConversionHelper.extractAlder(personId, getSistaNedsattningsdag(intyg));
+            } finally {
+                kon = Kon.parse(ConversionHelper.extractKon(personId));
+            }
+        } catch (Exception e) {
+            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", patientIdRaw);
+            LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", patientIdRaw, e);
+        }
+        return new Patientdata(alder, kon);
+
     }
 
     private LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {
