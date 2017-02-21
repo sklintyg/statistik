@@ -104,11 +104,11 @@ angular.module('StatisticsApp')
             return tableData;
         }
 
-        function _generate(headers, table, images, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter, filename, pdfDoneCallback) {
+        function _generate(headers, table, charts, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter, filename, pdfDoneCallback) {
             var content = [];
 
             _addHeader(content, headers);
-            content.push(_getImages(images));
+            content.push(_convertChartsToImages(charts));
             _addListFilter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
             _addListFilter(content, 'Sammanställning av enheter', enhetsFilter);
             _addListFilter(content, 'Sammanställning av sjukskrivningslängdsfilter', sjukskrivningslangdFilter);
@@ -275,14 +275,31 @@ angular.module('StatisticsApp')
             content.push({ text: headers.subHeader, style: 'subheader' });
         }
 
-        function _getImages(images) {
+        function _convertChartsToImages(charts) {
             var content = [];
             var width = 510;
             var chartWidth = 680;
             var chartHeight = 400;
+            var boxHeight = 0;
+            var length = charts.length;
 
-            angular.forEach(images, function(chart) {
-                var image = _getChart(chart, chartWidth, chartHeight);
+            // Calculate legend height
+            if (length > 1) {
+                var chart = charts[0];
+                var chartH = chart.options.chart.height;
+
+                var svg = _getSVG(chart, chartWidth, chartH, true);
+
+                var boxPosition = svg.indexOf('highcharts-legend-box');
+                var boxHeightStart = svg.indexOf('height="', boxPosition) + 8;
+                var boxHeightStop = svg.indexOf('"', boxHeightStart);
+                boxHeight = svg.substr(boxHeightStart, boxHeightStop - boxHeightStart);
+            }
+
+            angular.forEach(charts, function(chart, index) {
+                var showLegend = length === (index + 1);
+
+                var image = _getChart(chart, chartWidth, chartHeight, showLegend, false, boxHeight);
 
                 content.push({
                     image: image,
@@ -293,7 +310,23 @@ angular.module('StatisticsApp')
             return content;
         }
 
-        function _getChart(chart, width, height, showLegend, useHeight) {
+        function _getSVG(chart, width, chartHeight, showLegend) {
+            return chart.getSVG({
+                legend: {
+                    enabled: showLegend,
+                    itemStyle: {
+                        width: '600px'
+                    }
+                },
+                yAxis: { min: 0, max: chart.yAxis[0].max, endOnTick: false, tickInterval: chart.yAxis[0].tickInterval },
+                chart: {
+                    height: chartHeight,
+                    width: width
+                }
+            });
+        }
+
+        function _getChart(chart, width, height, showLegend, useHeight, legendHeight) {
             var chartHeight;
 
             if (useHeight) {
@@ -310,19 +343,14 @@ angular.module('StatisticsApp')
                 showLegend = true;
             }
 
-            canvg(canvas, chart.getSVG({
-                legend: {
-                    enabled: showLegend,
-                    itemStyle: {
-                        width: '600px'
-                    }
-                },
-                yAxis: { min: 0, max: chart.yAxis[0].max, endOnTick: false, tickInterval: chart.yAxis[0].tickInterval },
-                chart: {
-                    height: chartHeight,
-                    width: width
-                }
-            }));
+            // remove legend height from chart if not shown
+            if (!showLegend && angular.isDefined(legendHeight)) {
+                chartHeight -= legendHeight;
+            }
+
+            var svg = _getSVG(chart, width, chartHeight, showLegend);
+
+            canvg(canvas, svg);
 
             return canvas.toDataURL('image/png');
         }
