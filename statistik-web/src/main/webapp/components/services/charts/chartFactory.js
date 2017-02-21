@@ -51,9 +51,9 @@ angular.module('StatisticsApp').factory('chartFactory',
             //Temporary add, measure and remove the chip's html equivalent.
             var elem = $('<span class="temp-highcharts-label">' + text + '</span>');
             container.append(elem);
-            var chipWidth = elem.outerWidth(true);
+            var width = elem.outerWidth(true);
             elem.remove();
-            return chipWidth;
+            return width;
         }
 
         function _getCategoryLength(chartCategories, maxLength) {
@@ -72,17 +72,12 @@ angular.module('StatisticsApp').factory('chartFactory',
             return categoryLength;
         }
 
-        function _getChartHeight(chartCategories, verticalLabel, maxLength) {
-            var height = 360;
-
+        function _getLabelHeight(chartCategories, verticalLabel, maxLength) {
             if (verticalLabel) {
-                var categoryLength = _getCategoryLength(chartCategories, maxLength);
-                height += categoryLength;
-            } else {
-                height += 40;
+                return _getCategoryLength(chartCategories, maxLength);
             }
 
-            return height;
+            return 40;
         }
 
         function _getTooltip(chartType, percentChart) {
@@ -129,6 +124,7 @@ angular.module('StatisticsApp').factory('chartFactory',
         var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback, overview, percentChart, stacked, verticalLabel, maxLength, chartType) {
 
             var hasSexSet = isSexSetOnChartSeries(chartSeries);
+            var labelHeight = _getLabelHeight(chartCategories, verticalLabel, maxLength);
 
             var options = {
                 chart : {
@@ -136,7 +132,8 @@ angular.module('StatisticsApp').factory('chartFactory',
                     backgroundColor : null, //transparent
                     plotBorderWidth: 1,
                     marginLeft: overview ? null : 80,
-                    height: _getChartHeight(chartCategories, verticalLabel, maxLength)
+                    height: 360 + labelHeight,
+                    marginBottom: verticalLabel ? labelHeight + 15 : null
                 },
                 title: {
                     text: null,
@@ -181,14 +178,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     categories : _.map(chartCategories, function(category) {
                         var name = ControllerCommons.htmlsafe(category.name);
                         return category.marked ? '<b>' + name + '</b>' : name;
-                    }),
-                    title: {
-                        align: 'high',
-                        style: {
-                            color: '#008391',
-                            fontWeight: 'bold'
-                        }
-                    }
+                    })
                 },
                 yAxis : {
                     allowDecimals : false,

@@ -46,7 +46,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             chartOptions.chart.type = chartTypeInfo.activeHighchartType;
             chartOptions.legend.enabled = false;
             chartOptions.yAxis.allowDecimals = !!config.allowDecimalsYAxis;
-            chartOptions.xAxis.title.text = config.chartXAxisTitle;
             if (config.chartYAxisTitle) {
                 chartOptions.subtitle.text = config.chartYAxisTitle;
             }
@@ -201,7 +200,6 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig =
         }
         return text;
     };
-    conf.chartXAxisTitle = 'Sjukskrivningslängd';
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/sjukskrivningslangdTidsserie', active: false},
@@ -222,7 +220,6 @@ angular.module('StatisticsApp').nationalAgeGroupConfig =
         return 'api/verksamhet/getAgeGroupsStatistics/csv';
     };
     conf.title = messageService.getProperty('title.agegroup');
-    conf.chartXAxisTitle = 'Åldersgrupp';
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/aldersgrupperTidsserie', active: false},
@@ -239,7 +236,6 @@ angular.module('StatisticsApp').casesPerSexConfig =
     conf.dataFetcher = 'getNationalSjukfallPerSexData';
     conf.exportTableUrl = 'api/getSjukfallPerSexStatistics/csv';
     conf.title = messageService.getProperty('title.lan.gender');
-    conf.chartXAxisTitle = 'Län';
     conf.chartFootnotes = ['help.nationell.lan.gender'];
     conf.percentChart = true;
     conf.highchartType = 'column';
@@ -261,7 +257,6 @@ angular.module('StatisticsApp').casesPerBusinessConfig =
         return 'api/landsting/getNumberOfCasesPerEnhetLandsting/csv';
     };
     conf.title = messageService.getProperty('title.vardenhet');
-    conf.chartXAxisTitle = 'Vårdenhet';
     conf.chartVerticalLabel = true;
     conf.chartLabelLength = 40;
     conf.chartFootnotes = function(isVerksamhet, isLandsting) {
@@ -292,7 +287,6 @@ angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig =
     conf.title = messageService.getProperty('title.vardenhet-listning');
     conf.chartFootnotes = ['help.landsting.vardenhet-listning1', 'help.landsting.vardenhet-listning2'];
 
-    conf.chartXAxisTitle = 'Vårdenhet';
     conf.chartYAxisTitle = 'Antal sjukfall per 1000 listningar';
     return conf;
 };
@@ -309,7 +303,6 @@ angular.module('StatisticsApp').casesPerLakareConfig =
     };
     conf.title = messageService.getProperty('title.lakare');
     conf.chartFootnotes = ['help.verksamhet.lakare'];
-    conf.chartXAxisTitle = 'Läkare';
     conf.chartVerticalLabel = true;
 
     conf.exchangeableViews = [
@@ -330,7 +323,6 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig =
     };
     conf.title = messageService.getProperty('title.lakaregender');
     conf.chartFootnotes = ['help.verksamhet.lakaregender'];
-    conf.chartXAxisTitle = 'Läkare';
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/sjukfallperlakaresalderochkontidsserie', active: false},
@@ -349,7 +341,6 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig =
         return 'api/verksamhet/getNumberOfCasesPerLakarbefattning/csv';
     };
     conf.title = messageService.getProperty('title.lakare-befattning');
-    conf.chartXAxisTitle = 'Läkarbefattning';
     conf.chartFootnotes = ['help.verksamhet.lakare-befattning'];
 
     conf.exchangeableViews = [
@@ -369,7 +360,6 @@ angular.module('StatisticsApp').compareDiagnosis =
         return 'api/verksamhet/getJamforDiagnoserStatistik/' + diagnosisHash + '/csv';
     };
     conf.title = messageService.getProperty('title.diagnoscompare');
-    conf.chartXAxisTitle = 'Diagnos';
     conf.chartVerticalLabel = true;
     conf.showDiagnosisSelector = true;
 
@@ -391,7 +381,6 @@ angular.module('StatisticsApp').casesPerMonthTvarsnittConfig =
         return 'api/verksamhet/getNumberOfCasesPerMonthTvarsnitt/csv';
     };
     conf.title = messageService.getProperty('title.sickleave');
-    conf.chartXAxisTitle = '';
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/sjukfallPerManad', active: false},
@@ -411,7 +400,6 @@ angular.module('StatisticsApp').meddelandenPerMonthTvarsnittConfig =
         return 'api/verksamhet/getNumberOfMeddelandenPerMonthTvarsnitt/csv';
     };
     conf.title = messageService.getProperty('title.meddelanden');
-    conf.chartXAxisTitle = '';
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/meddelanden', active: false},
@@ -432,7 +420,6 @@ angular.module('StatisticsApp').intygPerMonthTvarsnittConfig =
     };
     conf.title = messageService.getProperty('title.intyg');
     conf.chartYAxisTitle = 'Antal intyg';
-    conf.chartXAxisTitle = '';
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/intyg', active: true},
@@ -453,7 +440,6 @@ angular.module('StatisticsApp').intygPerTypeTvarsnittConfig =
     };
     conf.title = messageService.getProperty('title.intygstyp');
     conf.chartYAxisTitle = 'Antal intyg';
-    conf.chartXAxisTitle = '';
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/intygPerTyp', active: true},
@@ -473,7 +459,6 @@ angular.module('StatisticsApp').longSickLeavesTvarsnittConfig =
         return 'api/verksamhet/getLongSickLeavesTvarsnitt/csv';
     };
     conf.title = messageService.getProperty('title.sickleavelength90');
-    conf.chartXAxisTitle = '';
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/langasjukskrivningar', active: false},
         {description: 'Tvärsnitt', state: '/verksamhet/langasjukskrivningartvarsnitt', active: true}];
@@ -492,7 +477,6 @@ angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig =
     };
     conf.showDetailsOptions = false;
     conf.title = messageService.getProperty('title.degreeofsickleave');
-    conf.chartXAxisTitle = '';
     conf.chartFootnotes = ['help.nationell.degreeofsickleave'];
 
     conf.exchangeableViews = [
@@ -515,7 +499,6 @@ angular.module('StatisticsApp').differentieratIntygandeTvarsnittConfig =
     conf.showDetailsOptions = false;
     conf.title = messageService.getProperty('title.differentierat');
     conf.chartFootnotes = ['help.verksamhet.differentierat1', 'help.verksamhet.differentierat2', 'help.verksamhet.differentierat3'];
-    conf.chartXAxisTitle = '';
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/differentieratintygande', active: false},
@@ -586,7 +569,6 @@ angular.module('StatisticsApp').casesPerCountyConfig =
     conf.exportTableUrl = 'api/getCountyStatistics/csv';
     conf.allowDecimalsYAxis = true;
     conf.title = messageService.getProperty('title.lan');
-    conf.chartXAxisTitle = 'Län';
     conf.chartYAxisTitle = 'Antal sjukfall per 1000 invånare';
     conf.chartFootnotes = ['help.nationell.lan'];
     conf.chartFootnotesExtra = function(result) {

@@ -45,7 +45,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             chartOptions.plotOptions.area.lineWidth = 1;
             chartOptions.plotOptions.area.lineColor = 'grey';
             chartOptions.legend.enabled = false;
-            chartOptions.xAxis.title.text = 'Period';
             chartOptions.tooltip.useHTML = true;
             chartOptions.subtitle.text = (chartTypeInfo.usePercentChart ? 'Andel ' : 'Antal ') + yAxisTitle;
             return new Highcharts.Chart(chartOptions);
