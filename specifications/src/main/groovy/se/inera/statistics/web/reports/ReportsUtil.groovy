@@ -13,6 +13,7 @@ import se.inera.statistics.web.service.FilterData
 import se.inera.testsupport.Intyg
 import se.inera.testsupport.Meddelande
 import se.inera.testsupport.Personal
+import se.inera.testsupport.RestSupportService
 
 import javax.ws.rs.core.MediaType
 
@@ -456,16 +457,36 @@ class ReportsUtil {
         statistik.put(path: url)
     }
 
-    def getSocialstyrelsenReport() {
-        return get("/api/testsupport/getSocialstyrelsenReport")
+    def getSocialstyrelsenReport(Integer fromYear, Integer toYear, List<String> dxs) {
+        def queryString = getSocialstyrelseQueryString(fromYear, toYear, dxs)
+        return get("/api/testsupport/getSocialstyrelsenReport", FilterData.empty(), queryString, "filter")
     }
 
-    def getSocialstyrelsenMedianReport() {
-        return get("/api/testsupport/getSocialstyrelsenMedianReport")
+    private String getSocialstyrelseQueryString(Integer fromYear, Integer toYear, List<String> dxs) {
+        def qs = new StringBuilder();
+        if (fromYear != null) {
+            qs.append("&" + RestSupportService.SOC_PARAM_FROMYEAR + "=" + fromYear);
+        }
+        if (toYear != null) {
+            qs.append("&" + RestSupportService.SOC_PARAM_TOYEAR + "=" + toYear);
+        }
+        if (dxs != null) {
+            for (String dx : dxs) {
+                qs.append("&" + RestSupportService.SOC_PARAM_DX + "=" + dx);
+            }
+        }
+        def queryString = qs.replaceFirst("&", "")
+        queryString
     }
 
-    def getSocialstyrelsenStdDevReport() {
-        return get("/api/testsupport/getSocialstyrelsenStdDevReport")
+    def getSocialstyrelsenMedianReport(Integer fromYear, Integer toYear, List<String> dxs) {
+        def queryString = getSocialstyrelseQueryString(fromYear, toYear, dxs)
+        return get("/api/testsupport/getSocialstyrelsenMedianReport", FilterData.empty(), queryString, "filter")
+    }
+
+    def getSocialstyrelsenStdDevReport(Integer fromYear, Integer toYear, List<String> dxs) {
+        def queryString = getSocialstyrelseQueryString(fromYear, toYear, dxs)
+        return get("/api/testsupport/getSocialstyrelsenStdDevReport", FilterData.empty(), queryString, "filter")
     }
 
     def getFkReport() {

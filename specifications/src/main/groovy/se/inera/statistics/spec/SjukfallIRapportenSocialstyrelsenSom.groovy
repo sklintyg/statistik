@@ -29,6 +29,35 @@ abstract class SjukfallIRapportenSocialstyrelsenSom extends Rapport {
     def lan05
     def lan00
 
+    def startår
+    def slutår
+    def diagnoser
+
+    void reset() {
+        super.reset()
+        this.startår = null
+        this.slutår = null
+        this.diagnoser = null
+    }
+
+    void setStartår(startår) {
+        if (startår != null && !startår.isEmpty()) {
+            this.startår = Integer.parseInt(startår)
+        }
+    }
+
+    void setSlutår(slutår) {
+        if (slutår != null && !slutår.isEmpty()) {
+            this.slutår = Integer.parseInt(slutår)
+        }
+    }
+
+    void setDiagnoser(diagnoser) {
+        if (diagnoser != null && !diagnoser.trim().isEmpty()) {
+            this.diagnoser = diagnoser.split(",")*.trim().collect{ it }
+        }
+    }
+
     def totalt() { return totalt }
     def kvinnor() { return kvinnor }
     def män() { return män }
