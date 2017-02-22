@@ -26,13 +26,19 @@ angular.module('StatisticsApp')
                 pageHeaderVerksamhetName: '=',
                 showBusinessesDetails: '=',
                 vgName: '=',
-                loginClicked: '&'
+                loginClicked: '&',
+                changeVg: '&'
             },
             restrict: 'E',
             templateUrl: '/components/directives/header/header.html',
             controller: function($scope, AppModel, UserModel) {
                 $scope.AppModel = AppModel;
                 $scope.UserModel = UserModel;
+
+                $scope.changeVardgivare = function(vgId) {
+                    $scope.changeVg({vgId: vgId});
+                };
+
             }
         };
     }]);
