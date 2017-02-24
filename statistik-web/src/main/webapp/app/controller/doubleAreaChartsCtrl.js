@@ -130,8 +130,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         $scope.showDetailOptions3PopoverText = messageService.getProperty(config.pageHelpTextShowDetailOptions, null, '', null, true);
 
         $scope.chartContainers = [
-            {id: 'chart1', name: 'diagram för kvinnor'},
-            {id: 'chart2', name: 'diagram för män'}
+            {id: 'chart1', name: 'diagram för kvinnor', gender: 'kvinnor'},
+            {id: 'chart2', name: 'diagram för män', gender: 'män'}
         ];
 
         $scope.toggleSeriesVisibility = function (index) {
@@ -179,8 +179,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
 
         $scope.useSpecialPrintTable = true;
 
-        $scope.exportChart = function (chartName) {
-            chartFactory.exportChart(that[chartName], $scope.pageName, $scope.subTitle);
+        $scope.exportChart = function (chartName, gender) {
+            chartFactory.exportChart(that[chartName], $scope.viewHeader, $scope.subTitle, gender);
         };
 
         $scope.printPdf = function () {

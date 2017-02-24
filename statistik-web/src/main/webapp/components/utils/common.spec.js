@@ -41,15 +41,6 @@ describe('Test of common functions for controllers', function() {
         expect(ControllerCommons.makeThousandSeparated(0.123456)).toBe('0,123456');
     });
 
-    it('getFileName', function() {
-        expect(ControllerCommons.getFileName()).toMatch(/_\d{8}_\d{6}/);
-        expect(ControllerCommons.getFileName(123456)).toMatch(/^123456_\d{8}_\d{6}$/);
-        expect(ControllerCommons.getFileName('123456')).toMatch(/^123456_\d{8}_\d{6}$/);
-        expect(ControllerCommons.getFileName('MittDiagram')).toMatch(/^MittDiagram_\d{8}_\d{6}$/);
-        expect(ControllerCommons.getFileName('Mitt Diagram')).toMatch(/^Mitt_Diagram_\d{8}_\d{6}$/);
-        expect(ControllerCommons.getFileName('Mitt     Diagram')).toMatch(/^Mitt_Diagram_\d{8}_\d{6}$/);
-    });
-
     it('INTYG-3021: populateActiveEnhetsFilter shows all verksamhet names when not processledare', inject(function(UserModel) {
         //Given
         var scope = {vgName: 'VardgivareTestName'};

@@ -23,6 +23,7 @@ describe('Test of common print services', function() {
     beforeEach(module('StatisticsApp'));
 
     var chartFactory;
+    var route;
     var _;
     var nonFemaleOrMaleColors = [
         '#E11964',
@@ -36,8 +37,9 @@ describe('Test of common print services', function() {
         '#5CC2BC',
         '#704F38'];
 
-    beforeEach(inject(function(_chartFactory_, ___) {
+    beforeEach(inject(function(_chartFactory_, $route, ___) {
         chartFactory = _chartFactory_;
+        route = $route;
         _ = ___;
     }));
 
@@ -121,6 +123,35 @@ describe('Test of common print services', function() {
             //then
             expect(list[2].color).toBe('#5D5D5D');
         });
+
     });
 
-});
+    describe('Generating filename for chart image export', function () {
+
+        it('getFileName', function() {
+            route.current = {title: 'My Report title'};
+            expect(chartFactory.getChartExportFileName('')).toMatch(/_MyReporttitle_\d{8}/);
+
+            route.current = {title: 'My Report title'};
+            expect(chartFactory.getChartExportFileName(123456)).toMatch(/^123456_MyReporttitle_\d{8}$/);
+
+            route.current = {title: 'My Report title'};
+            expect(chartFactory.getChartExportFileName('123456')).toMatch(/^123456_MyReporttitle_\d{8}$/);
+
+            route.current = {title: 'My Report title'};
+            expect(chartFactory.getChartExportFileName('Verksamhetsnivå')).toMatch(/^Verksamhetsniva_MyReporttitle_\d{8}$/);
+
+            route.current = {title: 'My Report title'};
+            expect(chartFactory.getChartExportFileName('Nationell nivå')).toMatch(/^Nationellniva_MyReporttitle_\d{8}$/);
+
+            route.current = {title: 'My Other Report title'};
+            expect(chartFactory.getChartExportFileName('Landstingz   Nivå')).toMatch(/^LandstingzNiva_MyOtherReporttitle_\d{8}$/);
+
+            route.current = {title: 'Title with numbers like 123'};
+            expect(chartFactory.getChartExportFileName('Nationell', 'Män')).toMatch(/^Nationell_Titlewithnumberslike123_Man_\d{8}$/);
+        });
+
+    });
+
+
+    });
