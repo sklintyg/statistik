@@ -20,7 +20,7 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').factory('chartFactory',
     /** @ngInject */
-    function(COLORS, _, ControllerCommons, $window, AppModel) {
+    function(COLORS, _, ControllerCommons, $window, AppModel, $route, $filter) {
     'use strict';
 
         var labelFormatter = function(maxWidth, sameLengthOnAll) {
@@ -280,13 +280,23 @@ angular.module('StatisticsApp').factory('chartFactory',
             return options;
         };
 
-        var exportChart = function(chart, chartName, title) {
+        var getChartExportFileName = function(statisticsLevel, gender) {
+            var reportName = $filter('messageFilter')($route.current.title, $route.current.title);
+            var genderString = gender ? gender + '_' : '';
+            var name = statisticsLevel + '_' + reportName + '_' + genderString + moment().format('YYYY-MM-DD');
+            return name.replace(/Å/g, 'A').replace(/Ä/g, 'A').replace(/Ö/g, 'O')
+                .replace(/å/g, 'a').replace(/ä/g, 'a').replace(/ö/g, 'o')
+                .replace(/[^A-Za-z0-9._]/g, '');
+        };
+
+
+        var exportChart = function(chart, statisticsLevel, title, gender) {
             if (!chart || angular.equals({}, chart)) {
                 return;
             }
 
             var chartHeight = chart.options.chart.height ? chart.options.chart.height : 400;
-            var options = {filename: ControllerCommons.getFileName(chartName)};
+            var options = {filename: getChartExportFileName(statisticsLevel, gender)};
             var extendedChartOptions = {};
             if (chart.series.length <= 10) {
                 extendedChartOptions.legend = { enabled: true };
@@ -382,6 +392,7 @@ angular.module('StatisticsApp').factory('chartFactory',
             getHighChartConfigBase: getHighChartConfigBase,
             exportChart: exportChart,
             showInLegend: showInLegend,
-            toggleSeriesVisibility: toggleSeriesVisibility
+            toggleSeriesVisibility: toggleSeriesVisibility,
+            getChartExportFileName: getChartExportFileName
         };
     });

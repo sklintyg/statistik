@@ -54,22 +54,6 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return input;
         };
 
-        this.getFileName = function(chartName) {
-            var d = new Date();
-
-            var year = '' + d.getFullYear();
-            var month = d.getMonth() < 9 ? '0' + (d.getMonth() + 1) : '' + (d.getMonth() + 1);
-            var day = d.getDate() < 10 ? '0' + d.getDate() : '' + d.getDate();
-            var date = year + month + day;
-
-            var hour = d.getHours() < 10 ? '0' + d.getHours() : '' + d.getHours();
-            var minute = d.getMinutes() < 10 ? '0' + d.getMinutes() : '' + d.getMinutes();
-            var second = d.getSeconds() < 10 ? '0' + d.getSeconds() : '' + d.getSeconds();
-            var time = hour + minute + second;
-
-            return String(chartName).replace(/\s+/g, '_') + '_' + date + '_' + time;
-        };
-
         function icdStructureAsArray(icdStructure) {
             return _.map(icdStructure, function (icd) {
                 return icdStructureAsArray(icd.subItems).concat(icd);

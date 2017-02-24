@@ -23,15 +23,17 @@ describe('Chart services', function() {
     var chartFactory;
     var _;
     var AppModel;
+    var route;
 
     beforeEach(module('StatisticsApp'));
 
-    beforeEach(inject(function(_chartFactory_, ___, _AppModel_) {
+    beforeEach(inject(function(_chartFactory_, ___, _AppModel_, $route) {
         chartFactory = _chartFactory_;
         AppModel = _AppModel_;
         _ = ___; //This set the local underscore variable
+        route = $route;
+        route.current = {title: 'zxcv'};
     }));
-
 
     describe('General configuration of charts', function() {
         it('can setup a basic configuration for a chart', function() {
