@@ -49,17 +49,17 @@ public class MessageLogConsumerImpl implements MessageLogConsumer {
 
     @Transactional(noRollbackFor = Exception.class)
     @Override
-    public synchronized long processBatch(long firstId) {
+    public synchronized long processBatch(long startId) {
         try {
             setRunning(true);
             int maxNumberOfTries = tryIntervals.get(tryIntervals.size() - 1);
 
-            List<MessageEvent> result = processLog.getPending(BATCH_SIZE, firstId, maxNumberOfTries);
+            List<MessageEvent> result = processLog.getPending(BATCH_SIZE, startId, maxNumberOfTries);
             if (result.isEmpty()) {
-                return firstId;
+                return startId;
             }
             int processed = 0;
-            long lastId = firstId;
+            long latestId = startId;
 
             for (MessageEvent event: result) {
                 if (!tryIntervals.contains(event.getTries())) {
@@ -74,11 +74,11 @@ public class MessageLogConsumerImpl implements MessageLogConsumer {
                     LOG.info("Processed message log id {}", event.getId());
                 }
                 processed++;
-                lastId = event.getId();
+                latestId = event.getId();
             }
             LOG.info("Processed message batch with {} entries", processed);
 
-            return lastId;
+            return latestId;
         } finally {
             setRunning(false);
         }

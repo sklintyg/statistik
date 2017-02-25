@@ -40,7 +40,7 @@ Inloggad:
 
 !3 Givet att
 
-Intyget som saknades kommer in och vi har läst igenom meddelande loggen 3 gånger.
+Intyget som saknades kommer in och vi har läst igenom meddelande-loggen 3 gånger.
 
 | Foljande intyg finns |
 | intygid | personnr      | diagnoskod | intygformat | enhet |
