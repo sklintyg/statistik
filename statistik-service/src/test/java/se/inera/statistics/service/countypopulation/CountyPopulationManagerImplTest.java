@@ -34,6 +34,7 @@ import javax.persistence.Query;
 
 import java.time.Clock;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -64,7 +65,7 @@ public class CountyPopulationManagerImplTest {
         //Given
         final Query query = Mockito.mock(Query.class);
         final CountyPopulationRow populationRow = new CountyPopulationRow("{\"01\": {\"male\": \"202\", \"female\": \"101\"}}", LocalDate.parse("2016-04-24"));
-        Mockito.when(query.getSingleResult()).thenReturn(populationRow);
+        Mockito.when(query.getResultList()).thenReturn(Collections.singletonList(populationRow));
         Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
         final Range range = Range.year(clock);
 
@@ -86,7 +87,7 @@ public class CountyPopulationManagerImplTest {
         //Given
         final Query query = Mockito.mock(Query.class);
         final CountyPopulationRow populationRow = new CountyPopulationRow("{\"01\": {\"male\": \"202\", \"female\": \"101\"}}", LocalDate.parse("2016-04-24"));
-        Mockito.when(query.getSingleResult()).thenReturn(populationRow);
+        Mockito.when(query.getResultList()).thenReturn(Collections.singletonList(populationRow));
         Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
         final Range range = Range.year(clock);
 
@@ -95,14 +96,14 @@ public class CountyPopulationManagerImplTest {
 
         //Then
         Mockito.verify(countyPopulationFetcher, times(0)).getPopulationFor(range.getTo().getYear() - 1);
-        Mockito.verify(query, times(1)).getSingleResult();
+        Mockito.verify(query, times(1)).getResultList();
     }
 
     @Test
     public void testGetCountyPopulationUseLastKnowPopulationIfNotPossibleToGetCorrectYear() throws Exception {
         //Given
         final Query query = Mockito.mock(Query.class);
-        Mockito.when(query.getSingleResult()).thenThrow(new NoResultException());
+        Mockito.when(query.getResultList()).thenReturn(Collections.emptyList());
         Mockito.when(manager.createQuery(Mockito.anyString())).thenReturn(query);
         Mockito.when(countyPopulationFetcher.getPopulationFor(anyInt())).thenReturn(Optional.empty());
         final Range range = Range.year(clock);
@@ -112,7 +113,7 @@ public class CountyPopulationManagerImplTest {
 
         //Then
         Mockito.verify(countyPopulationFetcher, times(1)).getPopulationFor(range.getTo().getYear() - 1);
-        Mockito.verify(query, times(2)).getSingleResult();
+        Mockito.verify(query, times(2)).getResultList();
     }
 
 }
