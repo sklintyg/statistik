@@ -281,23 +281,24 @@ angular.module('StatisticsApp')
             var chartWidth = 680;
             var chartHeight = 400;
             var boxHeight = 0;
-            var length = charts.length;
+            var numberOfCharts = charts.length;
 
             // Calculate legend height
-            if (length > 1) {
+            if (numberOfCharts > 1) {
                 var chart = charts[0];
                 var chartH = chart.options.chart.height;
 
                 var svg = _getSVG(chart, chartWidth, chartH, true);
 
                 var boxPosition = svg.indexOf('highcharts-legend-box');
-                var boxHeightStart = svg.indexOf('height="', boxPosition) + 8;
+                var heightSearchString = 'height="';
+                var boxHeightStart = svg.indexOf(heightSearchString, boxPosition) + heightSearchString.length;
                 var boxHeightStop = svg.indexOf('"', boxHeightStart);
                 boxHeight = svg.substr(boxHeightStart, boxHeightStop - boxHeightStart);
             }
 
             angular.forEach(charts, function(chart, index) {
-                var showLegend = length === (index + 1);
+                var showLegend = numberOfCharts === (index + 1);
 
                 var image = _getChart(chart, chartWidth, chartHeight, showLegend, false, boxHeight);
 
