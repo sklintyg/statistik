@@ -39,12 +39,12 @@ public class MessageJob {
     @Scheduled(cron = "${scheduler.logJob.cron}")
     public void checkLog() {
         LOG.debug("Message Job");
-        long firstId;
-        long lastId = 0;
+        long startId;
+        long latestHandledId = 0;
         do {
-            firstId = lastId;
-            lastId = consumer.processBatch(firstId);
-        } while (firstId != lastId);
+            startId = latestHandledId;
+            latestHandledId = consumer.processBatch(startId);
+        } while (startId != latestHandledId);
     }
 
 }
