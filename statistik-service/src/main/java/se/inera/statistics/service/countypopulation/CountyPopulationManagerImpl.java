@@ -40,6 +40,7 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -126,14 +127,12 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
             query.setParameter("fromDate", fromDate);
         }
         query.setMaxResults(1);
-        try {
-            final CountyPopulationRow populationRow = (CountyPopulationRow) query.getSingleResult();
-            return Optional.of(populationRow);
-        } catch (NoResultException e) {
+        final List resultList = query.getResultList();
+        if (resultList .isEmpty()) {
             LOG.error(COUNTY_POPULATION_IS_MISSING);
-            LOG.debug(COUNTY_POPULATION_IS_MISSING, e);
             return Optional.empty();
         }
+        return Optional.of((CountyPopulationRow) resultList.get(0));
     }
 
     private static java.sql.Date localDateToDate(LocalDate ld) {
