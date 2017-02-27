@@ -2034,6 +2034,10 @@ input[type="radio"], input[type="checkbox"] {
   padding: 5px 10px;
 }
 
+#jsonSelect {
+  height: 240px;
+}
+
 // Component styles are injected through grunt
 // injector
 @import 'css/filter.scss';
