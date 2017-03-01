@@ -184,7 +184,12 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
                 avsnitt.subs = avsnitt.subItems;
                 avsnitt.name = avsnitt.id + ' ' + avsnitt.name;
                 _.each(avsnitt.subItems, function (kategori) {
+                    kategori.typ = 'kategori';
+                    kategori.subs = kategori.subItems;
                     kategori.name = kategori.id + ' ' + kategori.name;
+                    _.each(kategori.subItems, function (kod) {
+                        kod.name = kod.id + ' ' + kod.name;
+                    });
                 });
             });
         });
@@ -386,6 +391,10 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
                 if (node.typ === 'kapitel') {
                     acc.push(node.numericalId);
                 } else if (node.typ === 'avsnitt') {
+                    acc.push(node.numericalId);
+                } else if (node.typ === 'kategori') {
+                    acc.push(node.numericalId);
+                } else if (node.typ === 'kod') {
                     acc.push(node.numericalId);
                 } else { // root node
                     _.each(node.subs, function (subItem) {

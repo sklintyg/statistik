@@ -1,4 +1,4 @@
-<div class="node" ng-class="{'depth0': depth ===0, 'depth1': depth ===1, 'depth2': depth ===2, 'leaf': !(item.subs && item.subs.length >0)}" ng-click="recursionhelper.hideclick(item, $event)">
+<div class="node" ng-class="{'depth0': depth ===0, 'depth1': depth ===1, 'depth2': depth ===2, 'depth3': depth ===3, 'leaf': !(item.subs && item.subs.length >0)}" ng-click="recursionhelper.hideclick(item, $event)">
     <span class="indenter"></span>
     <input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="recursionhelper.itemclick(item, $event)"/>
 

@@ -207,8 +207,13 @@ public class Icd10 {
     }
 
     public List<Icd> getIcdStructure() {
-        List<Icd10.Kapitel> kapitel = getKapitel(false);
-        final List<Icd> icds = new ArrayList<>(Lists.transform(kapitel, kapitel1 -> new Icd(kapitel1, Kategori.class)));
+        List<Icd10.Kapitel> kapitels = getKapitel(false);
+        final List<Icd> icds = new ArrayList<>(Lists.transform(kapitels, new Function<Icd10.Kapitel, Icd>() {
+            @Override
+            public Icd apply(Icd10.Kapitel kapitel) {
+                return new Icd(kapitel, Kod.class);
+            }
+        }));
         icds.add(new Icd("", "Utan giltig ICD-10 kod", INTID_OTHER_KATEGORI));
         return icds;
     }

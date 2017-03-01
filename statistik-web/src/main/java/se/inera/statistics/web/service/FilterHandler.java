@@ -407,7 +407,11 @@ public class FilterHandler {
                 return true;
             }
             String diagnosKategoriString = String.valueOf(fact.getDiagnoskategori());
-            return diagnosIds.contains(diagnosKategoriString);
+            if (diagnosIds.contains(diagnosKategoriString)) {
+                return true;
+            }
+            String diagnosKodString = String.valueOf(fact.getDiagnoskod());
+            return diagnosIds.contains(diagnosKodString);
         };
     }
 
