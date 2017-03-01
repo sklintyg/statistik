@@ -140,6 +140,20 @@ tree-multi-selector {
 				}
 
 			}
+
+			&.depth3 {
+				background-color: #fff;
+				border-top: 0;
+				border-bottom: 0;
+
+				> .indenter {
+					width: 75px;
+				}
+
+				> .ellipsis-text {
+					max-width: calc(100% - 130px);
+				}
+			}
 		}
 
 	}

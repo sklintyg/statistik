@@ -23,6 +23,7 @@ abstract class Rapport {
     def filterKapitel
     def filterAvsnitt
     def filterKategorier
+    def filterKod
     def filterEnheter
     def filterVerksamhetstyper
     def filterSjukskrivningslängd
@@ -145,6 +146,14 @@ abstract class Rapport {
         }
     }
 
+    void setFilterKod(String kodString) {
+        if (kodString != null && !kodString.trim().isEmpty()) {
+            this.filterKod = kodString.split(",")*.trim().collect{
+                String.valueOf(Icd10.icd10ToInt(it, Icd10RangeType.KOD))
+            }
+        }
+    }
+
     void setFilterEnheter(String enhetsString) {
         if (enhetsString != null && !enhetsString.trim().isEmpty()) {
             this.filterEnheter = enhetsString.split(",")*.trim()
@@ -208,6 +217,9 @@ abstract class Rapport {
         if (filterKategorier != null) {
             diagnoser.addAll(filterKategorier)
         }
+        if (filterKod != null) {
+            diagnoser.addAll(filterKod)
+        }
         return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper, filterSjukskrivningslängd, filterÅldersgrupp, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
     }
 
@@ -223,6 +235,7 @@ abstract class Rapport {
         filterKapitel = null
         filterAvsnitt = null
         filterKategorier = null
+        filterKod = null
         filterEnheter = null
         filterVerksamhetstyper = null
         filterSjukskrivningslängd = null
