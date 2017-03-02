@@ -5,3 +5,11 @@ profile: dev,testapi,hsa-stub,wc-hsa-stub,security-fake,qm,active,hsacached
 host_url: https://statistik.inera.nordicmedtest.se
 
 activemq_broker_url: "tcp://intygstjanst.inera.nordicmedtest.se:61616"
+
+#Temporary Tomcat overrides
+tomcat_service: inera-tomcat
+inera_tomcat_folder: "/var/lib/{{ tomcat_service }}"
+tomcat_conf: "{{ inera_root }}/tomcat7/conf"
+tomcat_bin: "{{ inera_root }}/tomcat7/bin"
+tomcat_lib: "{{ inera_root }}/tomcat7/lib"
+tomcat_etc: "{{ inera_root }}/tomcat7/etc"

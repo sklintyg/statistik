@@ -2,7 +2,7 @@
 # This playbook provisions the phantomjs installation for Statistik
 
 - hosts: tomcat
-  sudo: yes 
-
+  become: yes
+  serial: 1
   roles:
     - cron

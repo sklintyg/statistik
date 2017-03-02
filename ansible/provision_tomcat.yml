@@ -2,8 +2,10 @@
 # This playbook provisions the Tomcat environment for Statistik
 
 - hosts: tomcat
-  sudo: yes 
-
+  become: yes
+  serial: 1
+  environment:
+    "{{ proxy_env }}"
   roles:
     - statistik-systemvariabler
     - statistik-resurser
