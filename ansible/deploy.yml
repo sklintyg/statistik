@@ -1,13 +1,15 @@
 # This playbook deploys Statistik
 
-- hosts: all
-  sudo: yes
+- hosts: tomcat
+  become: yes
+  serial: 1
+  environment:
+    "{{ proxy_env }}"
   vars:
     # repo - values: snapshots or release
 
     # latest release: XXX
     # latest snapshot: XXX
-    version: 4.0.0-b9
     config_version: master
     highcharts_version: 2.2.0
 

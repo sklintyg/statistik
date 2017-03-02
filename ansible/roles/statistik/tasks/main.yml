@@ -5,14 +5,22 @@
 
 - name: create release directory
   file: path={{ releases_folder }} state=directory
-  
+
 - name: Make sure liquibase runner file download is forced when using shapshot repo
   file: state=absent path={{ releases_folder }}/liquibase-runner-{{ version }}.zip
   when: repo == "snapshots"
 
-- name: download liquibase-runner-{{ version }}.zip
-  get_url: url=https://build-inera.nordicmedtest.se/nexus/content/repositories/{{ repo }}/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip
-      dest={{ releases_folder }}/liquibase-runner-{{ version }}.zip
+- name: Download liquibase-runner-{{ version }}.zip
+  get_url:
+    url: "https://build-inera.nordicmedtest.se/nexus/content/repositories/{{ repo }}/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip"
+    dest: "{{ releases_folder }}/liquibase-runner-{{ version }}.zip"
+  when: deploy_from_repo|bool
+
+- name: Copy liquibase-runner-{{ version }}.zip from THIS machine
+  copy:
+    src: "{{ playbook_dir }}/../tools/liquibase-runner/build/distributions/liquibase-runner-{{ version }}.zip"
+    dest: "{{ releases_folder }}/liquibase-runner-{{ version }}.zip"
+  when: not deploy_from_repo|bool
 
 - name: Make sure liquibase runner file unzip is forced when using shapshot repo
   file: state=absent path={{ releases_folder }}/liquibase-runner-{{ version }}
@@ -35,16 +43,25 @@
   when: repo == "snapshots"
 
 - name: Download highcharts-export-web-{{ highcharts_version }}.war
-  get_url: url="https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/com/highcharts/export/highcharts-export-web/{{ highcharts_version }}/highcharts-export-web-{{ highcharts_version }}.war"
-      dest={{ releases_folder }}
+  get_url:
+    url: "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/com/highcharts/export/highcharts-export-web/{{ highcharts_version }}/highcharts-export-web-{{ highcharts_version }}.war"
+    dest: "{{ releases_folder }}/highcharts-export-web-{{ highcharts_version }}.war"
 
 - name: Make sure statistik-web file download is forced when using shapshot repo
   file: state=absent  path={{ releases_folder }}/statistik-web-{{ version }}.war
   when: repo == "snapshots"
 
 - name: Download statistik-web-{{ version }}.war
-  get_url: url=https://build-inera.nordicmedtest.se/nexus/content/repositories/{{ repo }}/se/inera/statistik/statistik-web/{{ version }}/statistik-web-{{ version }}.war
-      dest={{ releases_folder }}
+  get_url:
+    url: "https://build-inera.nordicmedtest.se/nexus/content/repositories/{{ repo }}/se/inera/statistik/statistik-web/{{ version }}/statistik-web-{{ version }}.war"
+    dest: "{{ releases_folder }}/statistik-web-{{ version }}.war"
+  when: deploy_from_repo|bool
+
+- name: Copy statistik-web-{{ version }}.war from THIS machine
+  copy:
+    src: "{{ playbook_dir }}/../web/build/libs/statistik-web-{{ version }}.war"
+    dest: "{{ releases_folder }}/statistik-web-{{ version }}.war"
+  when: not deploy_from_repo|bool
 
 - name: remove old version of unpacked ROOT war
   file: state=absent

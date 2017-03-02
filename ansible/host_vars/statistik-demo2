@@ -1,13 +1,13 @@
 ---
 # file: host_vars/statistik-demo
+
 environment_name: "demo"
 config_etc_folder: "{{ config_folder }}/{{ environment_name }}"
 profile: hsa-stub,wc-hsa-stub,security-both,qm
+host_url: https://demo.statistik.intygstjanster.se
 
 proxy_env:
   http_proxy: http://bf-proxy.sth:8888
   https_proxy: http://bf-proxy.sth:8888
-
-host_url: https://demo.statistik.intygstjanster.se
 
 activemq_broker_url: "tcp://localhost:61616"

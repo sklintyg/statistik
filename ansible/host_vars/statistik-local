@@ -5,3 +5,11 @@ profile: hsa-stub,wc-hsa-stub,security-both,qm
 host_url: ""
 
 activemq_broker_url: "vm://localhost:61616?broker.persistent=false"
+
+#Temporary Tomcat overrides
+tomcat_service: inera-tomcat
+inera_tomcat_folder: "/var/lib/{{ tomcat_service }}"
+tomcat_conf: "{{ inera_root }}/tomcat7/conf"
+tomcat_bin: "{{ inera_root }}/tomcat7/bin"
+tomcat_lib: "{{ inera_root }}/tomcat7/lib"
+tomcat_etc: "{{ inera_root }}/tomcat7/etc"

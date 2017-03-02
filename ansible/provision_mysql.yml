@@ -2,7 +2,9 @@
 # This playbook provisions the mysql environment for Statistik
 
 - hosts: mysql
-  sudo: yes 
-
+  become: yes
+  serial: 1
+  environment:
+    "{{ proxy_env }}"
   roles:
     - statistik-mysql

@@ -13,7 +13,7 @@
 
 - name: configure tomcat to take down phantomjs
   lineinfile:
-    dest="/etc/init.d/inera-tomcat"
+    dest="/etc/init.d/{{ tomcat_service }}"
     regexp="  killall phantomjs"
     insertafter="stop\(\) {"
     line="  killall phantomjs"
