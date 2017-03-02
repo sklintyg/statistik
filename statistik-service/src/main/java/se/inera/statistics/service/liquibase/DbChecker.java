@@ -35,7 +35,8 @@ import java.util.List;
 public class DbChecker {
     private static final Logger LOG = LoggerFactory.getLogger(DbChecker.class);
 
-    @java.lang.SuppressWarnings("squid:S1118") // Suppress Sonar warning for "Utility classes should not have public constructors" since this contructor is actually invoked by Spring
+    @java.lang.SuppressWarnings("squid:S1118") // Suppress Sonar warning for "Utility classes should not have public
+                                               // constructors" since this contructor is actually invoked by Spring
     public DbChecker(DataSource dataSource, String script) {
         try {
             DatabaseConnection connection = new JdbcConnection(dataSource.getConnection());
@@ -48,7 +49,8 @@ public class DbChecker {
                 for (ChangeSet changeSet : changeSets) {
                     errors.append('>').append(changeSet.toString()).append('\n');
                 }
-                throw new DbCheckError("Database version mismatch. Check liquibase status. Errors:\n" + errors.toString() + database.getDatabaseProductName() + ", " + database);
+                throw new DbCheckError("Database version mismatch. Check liquibase status. Errors:\n" + errors.toString()
+                        + database.getDatabaseProductName() + ", " + database);
             }
         } catch (liquibase.exception.LiquibaseException | SQLException e) {
             throw new DbCheckError("Database not ok, aborting startup.", e);
@@ -56,9 +58,9 @@ public class DbChecker {
         LOG.info("Liquibase ok");
     }
 
-
-    @java.lang.SuppressWarnings("squid:S1194") // I assume there is a reason for throwing and Error and do not dare to change it
-    private class DbCheckError extends Error {
+    @java.lang.SuppressWarnings("squid:S1194") // I assume there is a reason for throwing and Error and do not dare to
+                                               // change it
+    private static class DbCheckError extends Error {
 
         DbCheckError(String s) {
             super(s);

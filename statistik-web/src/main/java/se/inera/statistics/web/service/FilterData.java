@@ -34,17 +34,20 @@ public class FilterData {
     private String toDate;
     private boolean useDefaultPeriod;
 
-    //To be used by json converter
+    // To be used by json converter
     FilterData() {
     }
 
     // CHECKSTYLE:OFF ParameterNumber
-    public FilterData(List<String> diagnoser, List<String> enheter, List<String> verksamhetstyper, List<String> sjukskrivningslangd, List<String> aldersgrupp, String fromDate, String toDate, boolean useDefaultPeriod) {
-        this.diagnoser = diagnoser == null ? Collections.<String>emptyList() : Collections.unmodifiableList(diagnoser);
-        this.enheter = enheter == null ? Collections.<String>emptyList() : Collections.unmodifiableList(enheter);
-        this.verksamhetstyper = verksamhetstyper == null ? Collections.<String>emptyList() : Collections.unmodifiableList(verksamhetstyper);
-        this.sjukskrivningslangd = sjukskrivningslangd == null ? Collections.<String>emptyList() : Collections.unmodifiableList(sjukskrivningslangd);
-        this.aldersgrupp = aldersgrupp == null ? Collections.<String>emptyList() : Collections.unmodifiableList(aldersgrupp);
+    public FilterData(List<String> diagnoser, List<String> enheter, List<String> verksamhetstyper, List<String> sjukskrivningslangd,
+            List<String> aldersgrupp, String fromDate, String toDate, boolean useDefaultPeriod) {
+        this.diagnoser = diagnoser == null ? Collections.<String> emptyList() : Collections.unmodifiableList(diagnoser);
+        this.enheter = enheter == null ? Collections.<String> emptyList() : Collections.unmodifiableList(enheter);
+        this.verksamhetstyper = verksamhetstyper == null ? Collections.<String> emptyList()
+                : Collections.unmodifiableList(verksamhetstyper);
+        this.sjukskrivningslangd = sjukskrivningslangd == null ? Collections.<String> emptyList()
+                : Collections.unmodifiableList(sjukskrivningslangd);
+        this.aldersgrupp = aldersgrupp == null ? Collections.<String> emptyList() : Collections.unmodifiableList(aldersgrupp);
         this.useDefaultPeriod = useDefaultPeriod;
         this.toDate = toDate;
         this.fromDate = fromDate;
@@ -52,11 +55,13 @@ public class FilterData {
     // CHECKSTYLE:ON ParameterNumber
 
     public static FilterData empty() {
-        return new FilterData(Collections.<String>emptyList(), Collections.<String>emptyList(), Collections.<String>emptyList(), Collections.<String>emptyList(), Collections.<String>emptyList(), null, null, true);
+        return new FilterData(Collections.<String> emptyList(), Collections.<String> emptyList(), Collections.<String> emptyList(),
+                Collections.<String> emptyList(), Collections.<String> emptyList(), null, null, true);
     }
 
     public static FilterData createForDxsOnly(List<String> diagnoser) {
-        return new FilterData(diagnoser, Collections.<String>emptyList(), Collections.<String>emptyList(), Collections.<String>emptyList(), Collections.<String>emptyList(), null, null, true);
+        return new FilterData(diagnoser, Collections.<String> emptyList(), Collections.<String> emptyList(),
+                Collections.<String> emptyList(), Collections.<String> emptyList(), null, null, true);
     }
 
     public List<String> getDiagnoser() {

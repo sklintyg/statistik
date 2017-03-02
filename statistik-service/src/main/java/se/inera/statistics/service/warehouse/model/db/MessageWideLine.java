@@ -32,7 +32,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-
 @Entity
 @Table(name = "messagewideline")
 public class MessageWideLine {
@@ -63,7 +62,8 @@ public class MessageWideLine {
 
     // CHECKSTYLE:OFF ParameterNumber
     @SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public MessageWideLine(long id, long logId, String meddelandeId, String intygId, MessageEventType meddelandeTyp, String patientid, LocalDateTime skickatTidpunkt, PartKod skickatAv, String amneCode, int kon, int alder, String enhet, String vardgivareid) {
+    public MessageWideLine(long id, long logId, String meddelandeId, String intygId, MessageEventType meddelandeTyp, String patientid,
+            LocalDateTime skickatTidpunkt, PartKod skickatAv, String amneCode, int kon, int alder, String enhet, String vardgivareid) {
         this.id = id;
         this.logId = logId;
         this.meddelandeId = meddelandeId;

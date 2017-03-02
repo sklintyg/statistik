@@ -16,15 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistik.tools
+package se.inera.intyg.statistik.tools
 
 import groovy.sql.Sql
-
 import org.apache.commons.dbcp2.BasicDataSource
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import groovy.util.CliBuilder
-import org.apache.commons.cli.Option
 
 class UpdateEnhetNamnFromHsaFileService {
     private static final Logger LOG = LoggerFactory.getLogger(UpdateEnhetNamnFromHsaFileService.class);
@@ -39,9 +36,9 @@ class UpdateEnhetNamnFromHsaFileService {
         def options = cli.parse(args)
 
         long start = System.currentTimeMillis()
-        InputStream unitStream;
+        InputStream inputStream;
         if (options.u) {
-            unitStream = new FileInputStream(options.u)
+            inputStream = new FileInputStream(options.u)
         } else {
             def hsaProps = new Properties();
             String hsaPath = options.f ? options.f : System.properties.getProperty("hsafileservice", "hsaFileService.properties")
@@ -49,9 +46,9 @@ class UpdateEnhetNamnFromHsaFileService {
                 hsaProps.load(stream)
             }
             def hsaConf = new ConfigSlurper().parse(hsaProps)
-            unitStream = HsaUnitSource.getUnits(hsaConf.certificate.file, hsaConf.certificate.password, hsaConf.truststore.file, hsaConf.truststore.password, hsaConf.hsaunits.url)
+            inputStream = HsaUnitSource.getUnits(hsaConf.certificate.file, hsaConf.certificate.password, hsaConf.truststore.file, hsaConf.truststore.password, hsaConf.hsaunits.url)
         }
-        def enhetsXml = new XmlSlurper().parse(unitStream)
+        def enhetsXml = new XmlSlurper().parse(inputStream)
 
         def dbProps = new Properties()
         String dbPath = options.d ? options.d : System.properties.getProperty("datasource", "dataSource.properties")

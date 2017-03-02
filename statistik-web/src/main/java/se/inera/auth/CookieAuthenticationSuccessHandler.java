@@ -34,7 +34,8 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
- * Successhandler which redirects to the url specified in a cookie or to a default URL (specified when creating the bean).
+ * Successhandler which redirects to the url specified in a cookie or to a default URL (specified when creating the
+ * bean).
  */
 public class CookieAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
@@ -44,7 +45,8 @@ public class CookieAuthenticationSuccessHandler implements AuthenticationSuccess
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+            throws IOException, ServletException {
         if (request == null || request.getCookies() == null) {
             redirectStrategy.sendRedirect(request, response, defaultTargetUrl);
             return;

@@ -35,7 +35,8 @@ public class Intyg {
 
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public Intyg(EventType type, String data, String documentId, long timestamp, String county, String kommun, String huvudenhetId, String enhetName, String vgId, String enhetId, String lakareId) {
+    public Intyg(EventType type, String data, String documentId, long timestamp, String county, String kommun, String huvudenhetId,
+            String enhetName, String vgId, String enhetId, String lakareId) {
         this.type = type;
         this.data = data;
         this.documentId = documentId;
@@ -53,7 +54,8 @@ public class Intyg {
     /**
      * For json mapper.
      */
-    Intyg() { }
+    Intyg() {
+    }
 
     public EventType getType() {
         return type;

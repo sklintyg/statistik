@@ -51,7 +51,8 @@ public class LandstingEnhetUpdate {
     private LandstingEnhetUpdate() {
     }
 
-    public LandstingEnhetUpdate(long landstingId, String updatedByName, HsaIdUser updatedByHsaid, Timestamp timestamp, String filename, LandstingEnhetUpdateOperation operation) {
+    public LandstingEnhetUpdate(long landstingId, String updatedByName, HsaIdUser updatedByHsaid, Timestamp timestamp, String filename,
+            LandstingEnhetUpdateOperation operation) {
         this.landstingId = landstingId;
         this.updatedByName = updatedByName;
         setUpdatedByHsaid(updatedByHsaid);

@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse.message;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,13 +57,13 @@ public class MessageWidelineLoader {
         return getAntalMeddelandenPerMonth(from, to, null, null);
     }
 
-    public List<CountDTO> getAntalMeddelandenPerMonth(LocalDate from, LocalDate to, HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter) {
+    public List<CountDTO> getAntalMeddelandenPerMonth(LocalDate from, LocalDate to, HsaIdVardgivare vardgivare,
+            Collection<HsaIdEnhet> enheter) {
 
         boolean hasVardgivare = vardgivare != null;
         try (
                 Connection connection = dataSource.getConnection();
-                PreparedStatement stmt = prepareStatement(connection, hasVardgivare, enheter)
-        ) {
+                PreparedStatement stmt = prepareStatement(connection, hasVardgivare, enheter)) {
             stmt.setString(COLUMN_FROM, from.format(FORMATTER));
             stmt.setString(COLUMN_TO, to.format(FORMATTER));
 
@@ -100,7 +101,10 @@ public class MessageWidelineLoader {
         return dto;
     }
 
-    private PreparedStatement prepareStatement(Connection connection, boolean vardgivare, Collection<HsaIdEnhet> enheter) throws SQLException {
+    @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
+            justification = "We know what we're doing. No user supplied data.")
+    private PreparedStatement prepareStatement(Connection connection, boolean vardgivare, Collection<HsaIdEnhet> enheter)
+            throws SQLException {
 
         String sql = "select count(*) as count, YEAR(skickatDate) as `year`, MONTH(skickatDate) as `month`, kon "
                 + " FROM messagewideline "
@@ -125,7 +129,7 @@ public class MessageWidelineLoader {
         return stmt;
     }
 
-    public class CountDTO {
+    public static class CountDTO {
         private int count;
         private LocalDate date;
         private Kon kon;

@@ -60,9 +60,11 @@ public class VardgivareManager {
         String verksamhetsTyper = HSAServiceHelper.getVerksamhetsTyper(hsaInfo);
 
         if (validate(vardgivare, enhetNamn, lansId, kommunId, verksamhetsTyper, hsaInfo)) {
-            //Must use 'LIKE' instead of '=' due to STATISTIK-1231
-            TypedQuery<Enhet> vardgivareQuery = manager.createQuery("SELECT v FROM Enhet v WHERE v.enhetId LIKE :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
-            List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet.getId()).setParameter("vardgivareId", vardgivare.getId()).getResultList();
+            // Must use 'LIKE' instead of '=' due to STATISTIK-1231
+            TypedQuery<Enhet> vardgivareQuery = manager
+                    .createQuery("SELECT v FROM Enhet v WHERE v.enhetId LIKE :enhetId AND v.vardgivareId = :vardgivareId", Enhet.class);
+            List<Enhet> resultList = vardgivareQuery.setParameter("enhetId", enhet.getId()).setParameter("vardgivareId", vardgivare.getId())
+                    .getResultList();
 
             if (resultList.isEmpty()) {
                 manager.persist(new Enhet(vardgivare, enhet, enhetNamn, lansId, kommunId, verksamhetsTyper));
@@ -78,7 +80,8 @@ public class VardgivareManager {
 
     @Transactional
     public List<Enhet> getEnhets(String vardgivare) {
-        TypedQuery<Enhet> query = manager.createQuery("SELECT v FROM Enhet v WHERE v.vardgivareId = :vardgivareId", Enhet.class).setParameter("vardgivareId", vardgivare);
+        TypedQuery<Enhet> query = manager.createQuery("SELECT v FROM Enhet v WHERE v.vardgivareId = :vardgivareId", Enhet.class)
+                .setParameter("vardgivareId", vardgivare);
         return query.getResultList();
     }
 
@@ -88,7 +91,8 @@ public class VardgivareManager {
         return query.getResultList();
     }
 
-    private boolean validate(HsaIdVardgivare vardgivare, String enhetNamn, String lansId, String kommunId, String verksamhetsTyper, HsaInfo hsaInfo) {
+    private boolean validate(HsaIdVardgivare vardgivare, String enhetNamn, String lansId, String kommunId, String verksamhetsTyper,
+            HsaInfo hsaInfo) {
         // Utan vardgivare har vi inget uppdrag att behandla intyg, avbryt direkt
         if (vardgivare == null || vardgivare.isEmpty()) {
             LOG.error("Vardgivare saknas: " + hsaInfo);
@@ -101,7 +105,8 @@ public class VardgivareManager {
         boolean result = checkLength(enhetNamn, "Enhetsnamn", WidelineConverter.MAX_LENGTH_ENHETNAME, hsaInfo);
         result &= lansId != null && checkLength(lansId, "Lansid", WidelineConverter.MAX_LENGTH_LAN_ID, hsaInfo);
         result &= kommunId != null && checkLength(kommunId, "Kommunid", WidelineConverter.MAX_LENGTH_KOMMUN_ID, hsaInfo);
-        result &= verksamhetsTyper != null && checkLength(verksamhetsTyper, "Verksamhetstyper", WidelineConverter.MAX_LENGTH_VERKSAMHET_TYP, hsaInfo);
+        result &= verksamhetsTyper != null
+                && checkLength(verksamhetsTyper, "Verksamhetstyper", WidelineConverter.MAX_LENGTH_VERKSAMHET_TYP, hsaInfo);
         return result;
     }
 

@@ -27,23 +27,33 @@ import java.util.List;
 
 public class HsaInfoPersonal {
 
-    @JsonProperty("id") private String id;
-    @JsonProperty("kon") private String kon;
-    @JsonProperty("alder") private String alder;
-    @JsonProperty("befattning") private List<String> befattning;
-    @JsonProperty("specialitet") private List<String> specialitet;
-    @JsonProperty("yrkesgrupp") private List<String> yrkesgrupp;
-    @JsonProperty("skyddad") private Boolean skyddad;
-    @JsonProperty("tilltalsnamn") private String tilltalsnamn;
-    @JsonProperty("efternamn") private String efternamn;
+    @JsonProperty("id")
+    private String id;
+    @JsonProperty("kon")
+    private String kon;
+    @JsonProperty("alder")
+    private String alder;
+    @JsonProperty("befattning")
+    private List<String> befattning;
+    @JsonProperty("specialitet")
+    private List<String> specialitet;
+    @JsonProperty("yrkesgrupp")
+    private List<String> yrkesgrupp;
+    @JsonProperty("skyddad")
+    private Boolean skyddad;
+    @JsonProperty("tilltalsnamn")
+    private String tilltalsnamn;
+    @JsonProperty("efternamn")
+    private String efternamn;
 
-    //Default constructor required by json mapper
+    // Default constructor required by json mapper
     private HsaInfoPersonal() {
     }
 
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
-    public HsaInfoPersonal(String id, String kon, String alder, List<String> befattning, List<String> specialitet, List<String> yrkesgrupp, Boolean skyddad, String tilltalsnamn, String efternamn) {
+    public HsaInfoPersonal(String id, String kon, String alder, List<String> befattning, List<String> specialitet, List<String> yrkesgrupp,
+            Boolean skyddad, String tilltalsnamn, String efternamn) {
         this.id = id;
         this.kon = kon;
         this.alder = alder;

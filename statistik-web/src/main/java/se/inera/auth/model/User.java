@@ -38,7 +38,8 @@ public class User implements Serializable {
     public User(HsaIdUser hsaId, String name, List<Vardgivare> vgsWithProcessledarStatus, List<Vardenhet> vardenhetsList) {
         this.hsaId = hsaId;
         this.name = name;
-        this.vgsWithProcessledarStatus = vgsWithProcessledarStatus != null ? Collections.unmodifiableList(vgsWithProcessledarStatus) : Collections.emptyList();
+        this.vgsWithProcessledarStatus = vgsWithProcessledarStatus != null ? Collections.unmodifiableList(vgsWithProcessledarStatus)
+                : Collections.emptyList();
         this.vardenhetList = vardenhetsList != null ? Collections.unmodifiableList(vardenhetsList) : Collections.emptyList();
     }
 

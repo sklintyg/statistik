@@ -32,7 +32,8 @@ public class FilterPredicates {
     private boolean sjukfallangdfilterActive;
     private String hash;
 
-    public FilterPredicates(Predicate<Fact> intygFilter, Predicate<Sjukfall> sjukfallFilter, String hash, boolean sjukfallangdfilterActive) {
+    public FilterPredicates(Predicate<Fact> intygFilter, Predicate<Sjukfall> sjukfallFilter, String hash,
+            boolean sjukfallangdfilterActive) {
         if (intygFilter == null) {
             throw new IllegalArgumentException("Intygfilter must not be null");
         }

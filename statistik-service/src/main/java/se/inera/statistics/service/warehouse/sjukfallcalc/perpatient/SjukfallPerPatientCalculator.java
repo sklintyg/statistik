@@ -56,18 +56,22 @@ public class SjukfallPerPatientCalculator {
     }
 
     private void extendWithEarlierStart(int period, ArrayListMultimap<Long, SjukfallExtended> currentSjukfallsPerPatient) {
-        Collection<Long> allPatiensWithPossibleEarierStart = getAllPatientWithPossibleEarlierStart(ranges.get(period), currentSjukfallsPerPatient);
-        final ArrayListMultimap<Long, SjukfallExtended> allSjukfallsForEarlyPatient = getAllSjukfallsForPatients(period, allPatiensWithPossibleEarierStart);
+        Collection<Long> allPatiensWithPossibleEarierStart = getAllPatientWithPossibleEarlierStart(ranges.get(period),
+                currentSjukfallsPerPatient);
+        final ArrayListMultimap<Long, SjukfallExtended> allSjukfallsForEarlyPatient = getAllSjukfallsForPatients(period,
+                allPatiensWithPossibleEarierStart);
         for (Map.Entry<Long, Collection<SjukfallExtended>> allSjukfallPerPatient : allSjukfallsForEarlyPatient.asMap().entrySet()) {
             final List<SjukfallExtended> currentSjukfallsForPatient = currentSjukfallsPerPatient.get(allSjukfallPerPatient.getKey());
             final Collection<SjukfallExtended> allSjukfallsForPatient = allSjukfallPerPatient.getValue();
-            final ArrayList<SjukfallExtended> sjukfallsExtendedWithEarlierPeriods = getSjukfallExtendedWithEarlierPeriods(currentSjukfallsForPatient, allSjukfallsForPatient);
+            final ArrayList<SjukfallExtended> sjukfallsExtendedWithEarlierPeriods = getSjukfallExtendedWithEarlierPeriods(
+                    currentSjukfallsForPatient, allSjukfallsForPatient);
             currentSjukfallsPerPatient.replaceValues(allSjukfallPerPatient.getKey(), sjukfallsExtendedWithEarlierPeriods);
         }
     }
 
     @NotNull
-    private ArrayList<SjukfallExtended> getSjukfallExtendedWithEarlierPeriods(List<SjukfallExtended> currentSjukfalls, Collection<SjukfallExtended> allSjukfalls) {
+    private ArrayList<SjukfallExtended> getSjukfallExtendedWithEarlierPeriods(List<SjukfallExtended> currentSjukfalls,
+            Collection<SjukfallExtended> allSjukfalls) {
         final ArrayList<SjukfallExtended> sjukfallsExtendedWithEarlierPeriods = new ArrayList<>();
         for (SjukfallExtended currentSjukfall : currentSjukfalls) {
             Optional<SjukfallExtended> matching = getMatchingSjukfall(allSjukfalls, currentSjukfall);
@@ -79,11 +83,15 @@ public class SjukfallPerPatientCalculator {
     }
 
     /**
-     * Tries to find a sjukfall from a list (allSjukfalls) that contains all Facts from another Sjukfall (currentSjukfall).
+     * Tries to find a sjukfall from a list (allSjukfalls) that contains all Facts from another Sjukfall
+     * (currentSjukfall).
      *
-     * @param allSjukfalls Sjukfalls where probably one item "contains" the sjukfall in the currentSjukfall param
-     * @param currentSjukfall Base sjukfall to search for
-     * @return The sjukfall from param allSjukfalls that "contains" the same Facts as currentSjukfall param. Empty result if not found.
+     * @param allSjukfalls
+     *            Sjukfalls where probably one item "contains" the sjukfall in the currentSjukfall param
+     * @param currentSjukfall
+     *            Base sjukfall to search for
+     * @return The sjukfall from param allSjukfalls that "contains" the same Facts as currentSjukfall param. Empty
+     *         result if not found.
      */
     private Optional<SjukfallExtended> getMatchingSjukfall(Collection<SjukfallExtended> allSjukfalls, SjukfallExtended currentSjukfall) {
         for (SjukfallExtended potentiallyLongerSjukfall : allSjukfalls) {

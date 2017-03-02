@@ -42,11 +42,14 @@ public class OverviewConverter {
                 resp.getCasesPerMonthSexProportion().getMaleProportion(), resp.getCasesPerMonthSexProportion().getFemaleProportion(),
                 resp.getCasesPerMonthAlteration(), previousPeriod.toString());
 
-        List<DonutChartData> diagnosisGroups = new DiagnosisGroupsConverter().convert(resp.getDiagnosisGroups()).stream().map(mapOverviewRowData()).collect(Collectors.toList());
+        List<DonutChartData> diagnosisGroups = new DiagnosisGroupsConverter().convert(resp.getDiagnosisGroups()).stream()
+                .map(mapOverviewRowData()).collect(Collectors.toList());
 
-        List<DonutChartData> ageGroups = new AldersGroupsConverter().convert(resp.getAgeGroups()).stream().map(mapOverviewRowData()).collect(Collectors.toList());
+        List<DonutChartData> ageGroups = new AldersGroupsConverter().convert(resp.getAgeGroups()).stream().map(mapOverviewRowData())
+                .collect(Collectors.toList());
 
-        List<DonutChartData> degreeOfSickLeaveGroups = resp.getDegreeOfSickLeaveGroups().stream().map(mapOverviewRowData()).sorted(comp()).collect(Collectors.toList());
+        List<DonutChartData> degreeOfSickLeaveGroups = resp.getDegreeOfSickLeaveGroups().stream().map(mapOverviewRowData()).sorted(comp())
+                .collect(Collectors.toList());
 
         List<DonutChartData> perCounty = resp.getPerCounty().stream().map(mapOverviewRowData()).sorted(comp()).collect(Collectors.toList());
 
@@ -54,9 +57,11 @@ public class OverviewConverter {
         for (OverviewChartRow row : resp.getSickLeaveLengthGroups()) {
             sickLeaveLengthData.add(new BarChartData(row.getName(), row.getQuantity()));
         }
-        SickLeaveLengthOverview sickLeaveLength = new SickLeaveLengthOverview(sickLeaveLengthData, resp.getLongSickLeavesTotal(), resp.getLongSickLeavesAlternation());
+        SickLeaveLengthOverview sickLeaveLength = new SickLeaveLengthOverview(sickLeaveLengthData, resp.getLongSickLeavesTotal(),
+                resp.getLongSickLeavesAlternation());
 
-        return new OverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength, perCounty);
+        return new OverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength,
+                perCounty);
     }
 
     private Comparator<DonutChartData> comp() {

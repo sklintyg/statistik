@@ -97,7 +97,8 @@ public class HSAWebServiceCalls {
             return toDto(serverInterface.getStatisticsCareGiver(logicalAddressHeader, messageId, parameters));
         } catch (HsaWsFault hsaWsFault) {
             HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
-            LOG.error("Could not call getStatisticsCareGiver for {} hsaWsFault ({}, {}). {}", careGiverId, faultInfo.getCode(), faultInfo.getMessage(), hsaWsFault.getMessage());
+            LOG.error("Could not call getStatisticsCareGiver for {} hsaWsFault ({}, {}). {}", careGiverId, faultInfo.getCode(),
+                    faultInfo.getMessage(), hsaWsFault.getMessage());
             LOG.debug("getStatisticsCareGiver fault", hsaWsFault);
             return null;
         } catch (Exception ex) {
@@ -127,7 +128,8 @@ public class HSAWebServiceCalls {
             return toDto(serverInterface.getStatisticsHsaUnit(logicalAddressHeader, messageId, parameters));
         } catch (HsaWsFault hsaWsFault) {
             HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
-            LOG.error("Could not call getStatisticsHsaUnit for {} hsaWsFault ({}, {}). {}", unitId, faultInfo.getCode(), faultInfo.getMessage(), hsaWsFault.getMessage());
+            LOG.error("Could not call getStatisticsHsaUnit for {} hsaWsFault ({}, {}). {}", unitId, faultInfo.getCode(),
+                    faultInfo.getMessage(), hsaWsFault.getMessage());
             LOG.debug("getStatisticsHsaUnit fault", hsaWsFault);
             return null;
         } catch (Exception ex) {
@@ -151,15 +153,15 @@ public class HSAWebServiceCalls {
         }
         final StatisticsHsaUnitDto statisticsHsaUnitDto = new StatisticsHsaUnitDto();
         statisticsHsaUnitDto.setArchived(statisticsCareUnit.isIsArchived());
-        if (statisticsCareUnit.getBusinessClassificationCodes() != null
-                && statisticsCareUnit.getBusinessClassificationCodes().getBusinessClassificationCode() != null) {
-            statisticsHsaUnitDto.setBusinessClassificationCodes(statisticsCareUnit.getBusinessClassificationCodes().getBusinessClassificationCode());
+        if (statisticsCareUnit.getBusinessClassificationCodes() != null) {
+            statisticsHsaUnitDto
+                    .setBusinessClassificationCodes(statisticsCareUnit.getBusinessClassificationCodes().getBusinessClassificationCode());
         }
-        if (statisticsCareUnit.getBusinessTypes() != null && statisticsCareUnit.getBusinessTypes().getBusinessType() != null) {
+        if (statisticsCareUnit.getBusinessTypes() != null) {
             statisticsHsaUnitDto.setBusinessTypes(statisticsCareUnit.getBusinessTypes().getBusinessType());
         }
         statisticsHsaUnitDto.setCareGiverHsaIdentity(statisticsCareUnit.getCareGiverHsaIdentity());
-        if (statisticsCareUnit.getCareTypes() != null && statisticsCareUnit.getCareTypes().getCareType() != null) {
+        if (statisticsCareUnit.getCareTypes() != null) {
             statisticsHsaUnitDto.setCareTypes(statisticsCareUnit.getCareTypes().getCareType());
         }
         statisticsHsaUnitDto.setCountyCode(statisticsCareUnit.getCountyCode());
@@ -167,7 +169,7 @@ public class HSAWebServiceCalls {
         statisticsHsaUnitDto.setGeographicalCoordinatesRt90(toDto(statisticsCareUnit.getGeographicalCoordinatesRt90()));
         statisticsHsaUnitDto.setHsaIdentity(statisticsCareUnit.getHsaIdentity());
         statisticsHsaUnitDto.setLocation(statisticsCareUnit.getLocation());
-        if (statisticsCareUnit.getManagements() != null && statisticsCareUnit.getManagements().getManagement() != null) {
+        if (statisticsCareUnit.getManagements() != null) {
             statisticsHsaUnitDto.setManagements(statisticsCareUnit.getManagements().getManagement());
         }
         statisticsHsaUnitDto.setMunicipalityCode(statisticsCareUnit.getMunicipalityCode());
@@ -198,7 +200,8 @@ public class HSAWebServiceCalls {
             return toDto(serverInterface.getStatisticsPerson(logicalAddressHeader, messageId, parameters));
         } catch (HsaWsFault hsaWsFault) {
             HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
-            LOG.error("Could not call getStatisticsPerson for {} hsaWsFault ({}, {}). {}", personId, faultInfo.getCode(), faultInfo.getMessage(), hsaWsFault.getMessage());
+            LOG.error("Could not call getStatisticsPerson for {} hsaWsFault ({}, {}). {}", personId, faultInfo.getCode(),
+                    faultInfo.getMessage(), hsaWsFault.getMessage());
             LOG.debug("getStatisticsPerson fault", hsaWsFault);
             return null;
         } catch (Exception ex) {
@@ -214,14 +217,14 @@ public class HSAWebServiceCalls {
         getStatisticsPersonResponseDto.setHsaIdentity(statisticsPerson.getHsaIdentity());
         getStatisticsPersonResponseDto.setAge(statisticsPerson.getAge());
         getStatisticsPersonResponseDto.setGender(statisticsPerson.getGender());
-        if (statisticsPerson.getHsaTitles() != null && statisticsPerson.getHsaTitles().getHsaTitle() != null) {
+        if (statisticsPerson.getHsaTitles() != null) {
             getStatisticsPersonResponseDto.setHsaTitles(statisticsPerson.getHsaTitles().getHsaTitle());
         }
-        if (statisticsPerson.getPaTitleCodes() != null && statisticsPerson.getPaTitleCodes().getPaTitleCode() != null) {
+        if (statisticsPerson.getPaTitleCodes() != null) {
             getStatisticsPersonResponseDto.setPaTitleCodes(statisticsPerson.getPaTitleCodes().getPaTitleCode());
         }
         getStatisticsPersonResponseDto.setProtectedPerson(statisticsPerson.isIsProtectedPerson());
-        if (statisticsPerson.getSpecialityCodes() != null && statisticsPerson.getSpecialityCodes().getSpecialityCode() != null) {
+        if (statisticsPerson.getSpecialityCodes() != null) {
             getStatisticsPersonResponseDto.setSpecialityCodes(statisticsPerson.getSpecialityCodes().getSpecialityCode());
         }
         return getStatisticsPersonResponseDto;
@@ -237,22 +240,22 @@ public class HSAWebServiceCalls {
             return toDto(serverInterface.getStatisticsNames(logicalAddressHeader, messageId, parameters));
         } catch (HsaWsFault hsaWsFault) {
             HsaWsFaultType faultInfo = hsaWsFault.getFaultInfo();
-            LOG.error("Could not call getStatisticsNames for {} hsaWsFault ({}, {}). {}", personId, faultInfo.getCode(), faultInfo.getMessage(), hsaWsFault.getMessage());
+            LOG.error("Could not call getStatisticsNames for {} hsaWsFault ({}, {}). {}", personId, faultInfo.getCode(),
+                    faultInfo.getMessage(), hsaWsFault.getMessage());
             LOG.debug("getStatisticsNames fault", hsaWsFault);
             return null;
-            } catch (Exception ex) {
+        } catch (Exception ex) {
             throw new HsaCommunicationException("Could not call getStatisticsPerson for " + personId, ex);
         }
     }
 
     private GetStatisticsNamesResponseDto toDto(GetStatisticsNamesResponseType statisticsNames) {
-        if (statisticsNames == null
-                || statisticsNames.getStatisticsNameInfos() == null
-                || statisticsNames.getStatisticsNameInfos().getStatisticsNameInfo() == null) {
+        if (statisticsNames == null || statisticsNames.getStatisticsNameInfos() == null) {
             return null;
         }
         final GetStatisticsNamesResponseDto getStatisticsNamesResponseDto = new GetStatisticsNamesResponseDto();
-        final List<StatisticsNameInfoDto> statisticsNameInfo = statisticsNames.getStatisticsNameInfos().getStatisticsNameInfo().stream().map(this::toDto).collect(Collectors.toList());
+        final List<StatisticsNameInfoDto> statisticsNameInfo = statisticsNames.getStatisticsNameInfos().getStatisticsNameInfo().stream()
+                .map(this::toDto).collect(Collectors.toList());
         getStatisticsNamesResponseDto.setStatisticsNameInfos(statisticsNameInfo);
         return getStatisticsNamesResponseDto;
     }
@@ -272,7 +275,8 @@ public class HSAWebServiceCalls {
         if (joda == null) {
             return null;
         }
-        return LocalDateTime.of(joda.getYear(), joda.getMonthOfYear(), joda.getDayOfMonth(), joda.getHourOfDay(), joda.getMinuteOfHour(), joda.getSecondOfMinute());
+        return LocalDateTime.of(joda.getYear(), joda.getMonthOfYear(), joda.getDayOfMonth(), joda.getHourOfDay(), joda.getMinuteOfHour(),
+                joda.getSecondOfMinute());
     }
 
 }

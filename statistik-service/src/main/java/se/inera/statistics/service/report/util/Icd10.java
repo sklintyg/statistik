@@ -23,6 +23,7 @@ import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,10 +66,10 @@ public class Icd10 {
     public static final String OTHER_KOD = "Ö000";
     private static final int INTID_OTHER_KATEGORI = Icd10.icd10ToInt(Icd10.OTHER_KATEGORI, Icd10RangeType.KATEGORI);
     private static final List<Integer> INTERNAL_ICD10_INTIDS = Arrays.asList(
-                                                                        icd10ToInt(OTHER_KAPITEL, Icd10RangeType.KAPITEL),
-                                                                        icd10ToInt(OTHER_AVSNITT, Icd10RangeType.AVSNITT),
-                                                                        INTID_OTHER_KATEGORI,
-                                                                        icd10ToInt(OTHER_KOD, Icd10RangeType.KOD));
+            icd10ToInt(OTHER_KAPITEL, Icd10RangeType.KAPITEL),
+            icd10ToInt(OTHER_AVSNITT, Icd10RangeType.AVSNITT),
+            INTID_OTHER_KATEGORI,
+            icd10ToInt(OTHER_KOD, Icd10RangeType.KOD));
     public static final String UNKNOWN_CODE_NAME = "Utan giltig ICD-10 kod";
 
     @Autowired
@@ -139,7 +140,8 @@ public class Icd10 {
             populateInternalIcd10();
             kapitels = new ArrayList<>(idToKapitelMap.values());
             kapitels.sort(Comparator.comparing(Kapitel::getId));
-            intIdMap = Stream.of(idToKategoriMap.values(), idToAvsnittMap.values(), idToKapitelMap.values(), idToKodMap.values(), internalIcd10)
+            intIdMap = Stream
+                    .of(idToKategoriMap.values(), idToAvsnittMap.values(), idToKapitelMap.values(), idToKodMap.values(), internalIcd10)
                     .flatMap(Collection::stream)
                     .collect(Collectors.toMap(Id::toInt, java.util.function.Function.identity()));
         } catch (IOException e) {
@@ -147,7 +149,8 @@ public class Icd10 {
         }
     }
 
-    private <T extends Id> void populateIdMap(Resource file, IdMap<T> idMapToPopulate, Function<String, T> parseToRangeFunction) throws IOException {
+    private <T extends Id> void populateIdMap(Resource file, IdMap<T> idMapToPopulate, Function<String, T> parseToRangeFunction)
+            throws IOException {
         try (LineReader lr = new LineReader(file)) {
             String line;
             while ((line = lr.next()) != null) {
@@ -180,6 +183,7 @@ public class Icd10 {
                 }
             }), new Function<Id, Kapitel>() {
                 @Override
+                @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "We know it's a Kapitel")
                 public Kapitel apply(Id id) {
                     return (Kapitel) id;
                 }
@@ -191,7 +195,7 @@ public class Icd10 {
     static String normalize(String icd10Code) {
         StringBuilder normalized = new StringBuilder(icd10Code.length());
         for (char c : icd10Code.toUpperCase().toCharArray()) {
-            if ('A' <= c && c <= 'Z' || '0' <= c && c <= '9') {
+            if (('A' <= c && c <= 'Z') || ('0' <= c && c <= '9')) {
                 normalized.append(c);
             }
         }
@@ -204,12 +208,7 @@ public class Icd10 {
 
     public List<Icd> getIcdStructure() {
         List<Icd10.Kapitel> kapitel = getKapitel(false);
-        final List<Icd> icds = new ArrayList<>(Lists.transform(kapitel, new Function<Icd10.Kapitel, Icd>() {
-            @Override
-            public Icd apply(Icd10.Kapitel kapitel) {
-                return new Icd(kapitel, Kategori.class);
-            }
-        }));
+        final List<Icd> icds = new ArrayList<>(Lists.transform(kapitel, kapitel1 -> new Icd(kapitel1, Kategori.class)));
         icds.add(new Icd("", "Utan giltig ICD-10 kod", INTID_OTHER_KATEGORI));
         return icds;
     }
@@ -266,7 +265,7 @@ public class Icd10 {
     }
 
     private static <T extends Range> T find(String id, Collection<T> ranges) {
-        for (T range: ranges) {
+        for (T range : ranges) {
             if (range.contains(id)) {
                 return range;
             }
@@ -475,7 +474,6 @@ public class Icd10 {
             return this.getId().equals(kodId.substring(0, MAX_CODE_LENGTH));
         }
 
-
     }
 
     public static class Kod extends Id {
@@ -522,6 +520,7 @@ public class Icd10 {
 
     private static class LineReader implements Closeable {
         private final BufferedReader reader;
+
         LineReader(Resource resource) throws IOException {
             reader = new BufferedReader(new InputStreamReader(resource.getInputStream(), "ISO-8859-1"));
         }
@@ -536,7 +535,7 @@ public class Icd10 {
         }
     }
 
-    private class Icd10NotFoundException extends RuntimeException {
+    private static class Icd10NotFoundException extends RuntimeException {
 
         Icd10NotFoundException(String s) {
             super(s);

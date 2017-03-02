@@ -18,11 +18,21 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
+import static com.google.common.collect.Iterables.tryFind;
+import static com.google.common.collect.Lists.transform;
+import static java.util.stream.Collectors.toMap;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +40,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+
+import com.google.common.base.Optional;
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
+
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
@@ -51,20 +66,6 @@ import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.UserAccessInfo;
 import se.inera.statistics.web.model.Verksamhet;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import static com.google.common.collect.Iterables.tryFind;
-import static com.google.common.collect.Lists.transform;
-import static java.util.stream.Collectors.toMap;
 
 @Component
 public class LoginServiceUtil {
@@ -95,7 +96,8 @@ public class LoginServiceUtil {
 
     public boolean isLoggedIn() {
         try {
-            return getCurrentUser() != null;
+            getCurrentUser();
+            return true;
         } catch (Exception ignored) {
             return false;
         }
@@ -128,8 +130,6 @@ public class LoginServiceUtil {
                 loginInfoVgs.remove(livg);
             }
             loginInfoVgs.add(livg);
-
-            // TODO - determine if we need to manually add "verksamhets" as well?
         }
 
         return new LoginInfo(realUser.getHsaId(), realUser.getName(), verksamhets, loginInfoVgs);
@@ -167,7 +167,8 @@ public class LoginServiceUtil {
                     if (realUser.isProcessledareForVg(hsaIdVardgivare) && allEnhetsForVg != null && !allEnhetsForVg.isEmpty()) {
                         return transform(allEnhetsForVg, this::toVerksamhet);
                     } else {
-                        return transform(realUser.getVardenhetsForVg(hsaIdVardgivare), vardEnhet -> toVerksamhet(vardEnhet, allEnhetsForVg));
+                        return transform(realUser.getVardenhetsForVg(hsaIdVardgivare),
+                                vardEnhet -> toVerksamhet(vardEnhet, allEnhetsForVg));
                     }
                 })
                 .flatMap(List::stream)
@@ -183,32 +184,26 @@ public class LoginServiceUtil {
     }
 
     private Verksamhet toVerksamhet(final Vardenhet vardEnhet, List<Enhet> enhetsList) {
-        Optional<Enhet> enhetOpt = tryFind(enhetsList, new Predicate<Enhet>() {
-            @Override
-            public boolean apply(Enhet enhet) {
-                return enhet.getEnhetId().equals(vardEnhet.getId());
-            }
-        });
+        Optional<Enhet> enhetOpt = tryFind(enhetsList, enhet -> enhet.getEnhetId().equals(vardEnhet.getId()));
 
         String lansId = enhetOpt.isPresent() ? enhetOpt.get().getLansId() : Lan.OVRIGT_ID;
         String lansNamn = lan.getNamn(lansId);
         String kommunId = enhetOpt.isPresent() ? lansId + enhetOpt.get().getKommunId() : Kommun.OVRIGT_ID;
         String kommunNamn = kommun.getNamn(kommunId);
         Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper = enhetOpt.isPresent() ? getVerksamhetsTyper(enhetOpt.get().getVerksamhetsTyper())
-                : Collections.<Verksamhet.VerksamhetsTyp> singleton(new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT));
+                : Collections.<Verksamhet.VerksamhetsTyp> singleton(
+                        new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT));
 
-        return new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(), lansId, lansNamn, kommunId,
+        return new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(), lansId,
+                lansNamn, kommunId,
                 kommunNamn, verksamhetsTyper);
     }
 
     Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(String verksamhetsTyper) {
-        return new HashSet<>(Lists.transform(ID_SPLITTER.splitToList(verksamhetsTyper), new Function<String, Verksamhet.VerksamhetsTyp>() {
-            @Override
-            public Verksamhet.VerksamhetsTyp apply(String verksamhetsId) {
-                String groupId = verksamheter.getGruppId(verksamhetsId);
-                String verksamhetsName = verksamheter.getNamn(groupId);
-                return new Verksamhet.VerksamhetsTyp(groupId, verksamhetsName);
-            }
+        return new HashSet<>(Lists.transform(ID_SPLITTER.splitToList(verksamhetsTyper), verksamhetsId -> {
+            String groupId = verksamheter.getGruppId(verksamhetsId);
+            String verksamhetsName = verksamheter.getNamn(groupId);
+            return new Verksamhet.VerksamhetsTyp(groupId, verksamhetsName);
         }));
     }
 
@@ -222,7 +217,8 @@ public class LoginServiceUtil {
         settings.setHighchartsExportUrl(higchartsExportUrl);
         settings.setLoginUrl(loginUrl);
         settings.setLoggedIn(isLoggedIn());
-        settings.setSjukskrivningLengths(Arrays.stream(SjukfallsLangdGroup.values()).collect(toMap(Enum::name, SjukfallsLangdGroup::getGroupName)));
+        settings.setSjukskrivningLengths(
+                Arrays.stream(SjukfallsLangdGroup.values()).collect(toMap(Enum::name, SjukfallsLangdGroup::getGroupName)));
         settings.setAgeGroups(Arrays.stream(AgeGroup.values()).collect(toMap(Enum::name, AgeGroup::getGroupName)));
         return settings;
     }

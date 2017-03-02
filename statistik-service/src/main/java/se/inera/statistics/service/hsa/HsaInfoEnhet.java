@@ -31,24 +31,35 @@ import com.google.common.base.MoreObjects;
  */
 public class HsaInfoEnhet {
 
-    @JsonProperty("id") private String id;
-    @JsonProperty("enhetsTyp") private List<String> enhetsTyp;
-    @JsonProperty("agarform") private List<String> agarform;
-    @JsonProperty("startdatum") private LocalDateTime startdatum;
-    @JsonProperty("slutdatum") private LocalDateTime slutdatum;
-    @JsonProperty("arkiverad") private Boolean arkiverad;
-    @JsonProperty("verksamhet") private List<String> verksamhet;
-    @JsonProperty("vardform") private List<String> vardform;
-    @JsonProperty("geografi") private HsaInfoEnhetGeo geografi;
-    @JsonProperty("vgid") private String vgid;
+    @JsonProperty("id")
+    private String id;
+    @JsonProperty("enhetsTyp")
+    private List<String> enhetsTyp;
+    @JsonProperty("agarform")
+    private List<String> agarform;
+    @JsonProperty("startdatum")
+    private LocalDateTime startdatum;
+    @JsonProperty("slutdatum")
+    private LocalDateTime slutdatum;
+    @JsonProperty("arkiverad")
+    private Boolean arkiverad;
+    @JsonProperty("verksamhet")
+    private List<String> verksamhet;
+    @JsonProperty("vardform")
+    private List<String> vardform;
+    @JsonProperty("geografi")
+    private HsaInfoEnhetGeo geografi;
+    @JsonProperty("vgid")
+    private String vgid;
 
-    //Default constructor required by json mapper
+    // Default constructor required by json mapper
     private HsaInfoEnhet() {
     }
 
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
-    public HsaInfoEnhet(String id, List<String> enhetsTyp, List<String> agarform, LocalDateTime startdatum, LocalDateTime slutdatum, Boolean arkiverad, List<String> verksamhet, List<String> vardform, HsaInfoEnhetGeo geografi, String vgid) {
+    public HsaInfoEnhet(String id, List<String> enhetsTyp, List<String> agarform, LocalDateTime startdatum, LocalDateTime slutdatum,
+            Boolean arkiverad, List<String> verksamhet, List<String> vardform, HsaInfoEnhetGeo geografi, String vgid) {
         this.id = id;
         this.enhetsTyp = enhetsTyp;
         this.agarform = agarform;

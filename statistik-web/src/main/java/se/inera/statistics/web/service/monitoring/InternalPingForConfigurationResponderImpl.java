@@ -50,8 +50,11 @@ public class InternalPingForConfigurationResponderImpl implements InternalPingFo
 
     @Override
     public InternalPingForConfigurationResponseType internalPingForConfiguration(
-            @WebParam(partName = "LogicalAddress", name = "LogicalAddress", targetNamespace = "urn:riv:itintegration:registry:1", header = true) String logicalAddress,
-            @WebParam(partName = "parameters", name = "InternalPingForConfiguration", targetNamespace = "urn:riv:clinicalprocess:healthcond:monitoring:InternalPingForConfigurationResponder:1") InternalPingForConfigurationType parameters) {
+            @WebParam(partName = "LogicalAddress", name = "LogicalAddress", targetNamespace = "urn:riv:itintegration:registry:1",
+                    header = true) String logicalAddress,
+            @WebParam(partName = "parameters", name = "InternalPingForConfiguration",
+                    targetNamespace = "urn:riv:clinicalprocess:healthcond:monitoring:InternalPingForConfigurationResponder:1")
+                    InternalPingForConfigurationType parameters) {
         InternalPingForConfigurationResponseType response = new InternalPingForConfigurationResponseType();
         response.setPingDateTime(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
         LOG.info("Version String: " + versionUtil.getProjectVersion());

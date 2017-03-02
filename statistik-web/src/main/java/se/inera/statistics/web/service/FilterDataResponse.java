@@ -18,14 +18,14 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import com.google.common.collect.Lists;
+
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 
 public class FilterDataResponse {
 
@@ -35,21 +35,17 @@ public class FilterDataResponse {
     private List<String> sjukskrivningslangd;
     private List<String> aldersgrupp;
 
-    //To be used by json converter
+    // To be used by json converter
     private FilterDataResponse() {
     }
 
-    FilterDataResponse(String filterhash, Collection<String> diagnoser, Collection<HsaIdEnhet> enheter, Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp) {
+    FilterDataResponse(String filterhash, Collection<String> diagnoser, Collection<HsaIdEnhet> enheter,
+            Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp) {
         this.filterhash = filterhash;
         this.diagnoser = diagnoser == null ? null : Collections.unmodifiableList(new ArrayList<>(diagnoser));
         this.sjukskrivningslangd = sjukskrivningslangd == null ? null : Collections.unmodifiableList(new ArrayList<>(sjukskrivningslangd));
         this.aldersgrupp = aldersgrupp == null ? null : Collections.unmodifiableList(new ArrayList<>(aldersgrupp));
-        this.enheter = enheter == null ? null : Lists.transform(new ArrayList<>(enheter), new Function<HsaIdEnhet, String>() {
-            @Override
-            public String apply(HsaIdEnhet hsaId) {
-                return hsaId.getId();
-            }
-        });
+        this.enheter = enheter == null ? null : Lists.transform(new ArrayList<>(enheter), hsaId -> hsaId.getId());
     }
 
     public FilterDataResponse(Filter filter) {

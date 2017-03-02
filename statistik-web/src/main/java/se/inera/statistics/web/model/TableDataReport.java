@@ -25,6 +25,8 @@ import java.util.List;
 
 public abstract class TableDataReport implements FilteredDataReport {
 
+    private static final double MAX_DIFF_FOR_EQUALITY = 0.00001D;
+
     public abstract TableData getTableData();
     public abstract String getPeriod();
     @Override public abstract FilterDataResponse getFilter();
@@ -44,8 +46,7 @@ public abstract class TableDataReport implements FilteredDataReport {
                 sum += sum(chartData.getSeries());
             }
         }
-        final double maxDiffForEquality = 0.00001D;
-        return Math.abs(sum) < maxDiffForEquality;
+        return Math.abs(sum) < MAX_DIFF_FOR_EQUALITY;
     }
 
     private double sum(List<ChartSeries> series) {

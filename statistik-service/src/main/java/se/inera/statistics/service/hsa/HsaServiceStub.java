@@ -37,7 +37,7 @@ public class HsaServiceStub {
     public Vardenhet getVardenhet(String hsaIdentity) {
 
         for (Vardenhet vardenhet : vardenheter) {
-            if (vardenhet.getId().equals(hsaIdentity)) {
+            if (vardenhet.getId().getId().equals(hsaIdentity)) {
                 return vardenhet;
             }
         }
@@ -50,7 +50,7 @@ public class HsaServiceStub {
 
     public void deleteEnhet(String id) {
         for (Vardenhet enhet: vardenheter) {
-            if (enhet.getId().equals(id)) {
+            if (enhet.getId().getId().equals(id)) {
                 vardenheter.remove(enhet);
             }
         }

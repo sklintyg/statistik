@@ -43,7 +43,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:warehouse-integration-test.xml", "classpath:icd10.xml"  })
 @DirtiesContext
-public class WarehouseIntegrationTest {
+public class WarehouseIT {
 
     @Autowired
     private Warehouse warehouse;

@@ -18,8 +18,13 @@
  */
 package se.inera.statistics.web.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
+
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -33,10 +38,6 @@ import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableHeader;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public abstract class MultiDualSexConverter<T extends KonDataResponse> {
 
@@ -124,11 +125,11 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
         List<TableHeader> subHeaderRow = new ArrayList<>();
         subHeaderRow.add(new TableHeader("Period"));
         subHeaderRow.add(new TableHeader(tableHeader));
-        for (String s : degreesOfSickLeave) {
+        degreesOfSickLeave.forEach((String s) -> {
             subHeaderRow.add(new TableHeader(TOTAL));
             subHeaderRow.add(new TableHeader("Kvinnor"));
             subHeaderRow.add(new TableHeader("Män"));
-        }
+        });
 
         List<List<TableHeader>> headers = new ArrayList<>();
         headers.add(topHeaderRow);

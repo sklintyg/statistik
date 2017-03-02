@@ -148,7 +148,8 @@ public class FkReportCreator {
         final Range range = new Range(from, LocalDate.now(clock));
 
         final int fromIntDay = WidelineConverter.toDay(from); // dagnr relativt 2000-01-01
-        final int toIntDay = WidelineConverter.toDay(getLastDateOfLastYear()); // dagnr för 2015-12-31 relativt 2000-01-01
+        final int toIntDay = WidelineConverter.toDay(getLastDateOfLastYear()); // dagnr för 2015-12-31 relativt
+                                                                               // 2000-01-01
 
         LOG.info("About to iterate allVardgivare");
         // Loopa igenom ALLA facts per VG, dvs ingen sammanslagning sker (viktigt av juridiska skäl)
@@ -157,14 +158,18 @@ public class FkReportCreator {
                 .collect(Collectors.toList());
     }
 
-    private Stream<FkFactRow> getFkFactRowsPerVg(Range range, int fromIntDay, int toIntDay, FilterPredicates sjukfallFilter, Map.Entry<HsaIdVardgivare, Aisle> vgEntry) {
+    private Stream<FkFactRow> getFkFactRowsPerVg(Range range, int fromIntDay, int toIntDay, FilterPredicates sjukfallFilter,
+            Map.Entry<HsaIdVardgivare, Aisle> vgEntry) {
         LOG.info("About to get sjukfall for vg  " + vgEntry.getKey().getId());
         final Aisle aisle = vgEntry.getValue();
         // Hämta ut dom som hör till detta år
-        final ArrayList<SjukfallGroup> sjukfallGroups = Lists.newArrayList(new SjukfallIterator(range.getFrom(), 1, range.getNumberOfMonths(), aisle, sjukfallFilter, true));
+        final ArrayList<SjukfallGroup> sjukfallGroups = Lists
+                .newArrayList(new SjukfallIterator(range.getFrom(), 1, range.getNumberOfMonths(), aisle, sjukfallFilter, true));
         return sjukfallGroups.stream()
                 .flatMap(sjukfallGroup -> sjukfallGroup.getSjukfall().stream())
-                .collect(Collectors.toMap(Sjukfall::getFirstIntygId, p -> p, (p, q) -> p)).values().stream() // distinct by property
+                .collect(Collectors.toMap(Sjukfall::getFirstIntygId, p -> p, (p, q) -> p)).values().stream() // distinct
+                                                                                                             // by
+                                                                                                             // property
                 .filter(sjukfall -> inPeriod(sjukfall, fromIntDay, toIntDay))
                 .filter(sjukfall -> inPeriod(getAllFactsInIntyg(sjukfall.getFirstIntygId(), aisle), fromIntDay, toIntDay))
                 .map(sjukfall -> createFkFactRow(sjukfall, aisle));
@@ -181,7 +186,7 @@ public class FkReportCreator {
     static int getRealDaysForIntyg(long intygId, Aisle aisle) {
         final List<Fact> facts = getAllFactsInIntyg(intygId, aisle).collect(Collectors.toList());
         final HashSet<Integer> dates = new HashSet<>();
-        //noinspection ForLoopReplaceableByForEach
+        // noinspection ForLoopReplaceableByForEach
         for (int i = 0; i < facts.size(); i++) {
             final Fact fact = facts.get(i);
             for (int j = fact.getStartdatum(); j <= fact.getSlutdatum(); j++) {
@@ -219,9 +224,9 @@ public class FkReportCreator {
             return point;
         });
 
-        return intyg.getStart() <= to && intyg.getStart() >= from //startsInPeriod
-                || intyg.getEnd() <= to && intyg.getEnd() >= from //endInPeriod
-                || intyg.getStart() < from && intyg.getEnd() > to; //spansPeriod
+        return (intyg.getStart() <= to && intyg.getStart() >= from) // startsInPeriod
+                || (intyg.getEnd() <= to && intyg.getEnd() >= from) // endInPeriod
+                || (intyg.getStart() < from && intyg.getEnd() > to); // spansPeriod
     }
 
     private LocalDate getLastDateOfLastYear() {
@@ -238,7 +243,7 @@ public class FkReportCreator {
         return Double.valueOf(twoDecimalsFormat.format(number));
     }
 
-    private class StartEnd {
+    private static class StartEnd {
         private int start;
         private int end;
 

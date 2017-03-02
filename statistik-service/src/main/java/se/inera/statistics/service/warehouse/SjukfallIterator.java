@@ -25,10 +25,10 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import se.inera.statistics.service.report.model.Range;
 
 import com.google.common.base.Predicate;
-
 
 public class SjukfallIterator implements Iterator<SjukfallGroup> {
 
@@ -38,7 +38,8 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
     private final int periodSize;
     private final SjukfallCalculator sjukfallCalculator;
 
-    public SjukfallIterator(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates sjukfallFilter, boolean useOriginalSjukfallStart) {
+    public SjukfallIterator(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates sjukfallFilter,
+            boolean useOriginalSjukfallStart) {
         this.from = from;
         this.periodSize = periodSize;
         this.sjukfallFilter = sjukfallFilter;
@@ -50,6 +51,8 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
         return new SjukfallCalculator(aisle, filter, ranges, useOriginalSjukfallStart);
     }
 
+    @SuppressFBWarnings(value = "ICAST_INTEGER_MULTIPLY_CAST_TO_LONG",
+            justification = "We know what we're doing. No no risk for integer overflow.")
     public static List<Range> getRanges(LocalDate from, int periods, int periodSize) {
         final ArrayList<Range> ranges = new ArrayList<>();
         for (int i = 0; i < periods; i++) {
@@ -66,13 +69,17 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
     }
 
     @Override
+    @SuppressFBWarnings(value = "ICAST_INTEGER_MULTIPLY_CAST_TO_LONG",
+            justification = "We know what we're doing. No no risk for integer overflow.")
     public SjukfallGroup next() {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        List<Sjukfall> result = sjukfallCalculator.getSjukfallsForNextPeriod().stream().filter(t -> sjukfallFilter.getSjukfallFilter().apply(t)).collect(Collectors.toList());
+        List<Sjukfall> result = sjukfallCalculator.getSjukfallsForNextPeriod().stream()
+                .filter(t -> sjukfallFilter.getSjukfallFilter().apply(t)).collect(Collectors.toList());
         final LocalDate fromDate = from.plusMonths(period * periodSize);
-        Range range = new Range(fromDate, from.plusMonths(period * periodSize + periodSize - 1).plusMonths(1).withDayOfMonth(1).minusDays(1));
+        Range range = new Range(fromDate,
+                from.plusMonths(period * periodSize + periodSize - 1).plusMonths(1).withDayOfMonth(1).minusDays(1));
         SjukfallGroup sjukfallGroup = new SjukfallGroup(range, result);
         period++;
         return sjukfallGroup;

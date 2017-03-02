@@ -88,7 +88,8 @@ public class IntygCommonManager {
         if (errors.isEmpty()) {
             manager.persist(line);
         } else {
-            StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid).append(" error count ")
+            StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid)
+                    .append(" error count ")
                     .append(errCount++);
             for (String error : errors) {
                 errorBuilder.append('\n').append(error);
@@ -98,8 +99,8 @@ public class IntygCommonManager {
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getIntyg(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
-        final Function<IntygCommonGroup, String> rowNameFunction = intygCommonGroup ->
-                ReportUtil.toDiagramPeriod(intygCommonGroup.getRange().getFrom());
+        final Function<IntygCommonGroup, String> rowNameFunction = intygCommonGroup -> ReportUtil
+                .toDiagramPeriod(intygCommonGroup.getRange().getFrom());
         return getIntygCommonMaleFemale(range, vardgivarId, enheter, rowNameFunction, false);
     }
 
@@ -114,7 +115,8 @@ public class IntygCommonManager {
     }
 
     private KonDataResponse getIntygPerType(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter, boolean isTvarsnitt) {
-        final List<IntygType> intygTypes = Arrays.asList(IntygType.FK7263, IntygType.LISJP, IntygType.LUSE, IntygType.LUAE_NA, IntygType.LUAE_FS);
+        final List<IntygType> intygTypes = Arrays.asList(IntygType.FK7263, IntygType.LISJP, IntygType.LUSE, IntygType.LUAE_NA,
+                IntygType.LUAE_FS);
         final List<String> names = intygTypes.stream().map(IntygType::getText).collect(Collectors.toList());
         final List<Integer> ids = intygTypes.stream().map(Enum::ordinal).collect(Collectors.toList());
         final CounterFunctionIntyg<Integer> counterFunction = (intyg, counter) -> {
@@ -124,12 +126,14 @@ public class IntygCommonManager {
         return calculateKonDataResponse(vardgivarId, range, enheter, isTvarsnitt, names, ids, counterFunction);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getIntygPerTypeTvarsnitt(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
+    public SimpleKonResponse<SimpleKonDataRow> getIntygPerTypeTvarsnitt(HsaIdVardgivare vardgivarId, Range range,
+            Collection<HsaIdEnhet> enheter) {
         final KonDataResponse intygPerTypeTidsserie = getIntygPerType(vardgivarId, range, enheter, true);
         return SimpleKonResponse.create(intygPerTypeTidsserie);
     }
 
-    private <T> KonDataResponse calculateKonDataResponse(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter, boolean isTvarsnitt, List<String> groupNames, List<T> groupIds, CounterFunctionIntyg<T> counterFunction) {
+    private <T> KonDataResponse calculateKonDataResponse(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter,
+            boolean isTvarsnitt, List<String> groupNames, List<T> groupIds, CounterFunctionIntyg<T> counterFunction) {
         List<KonDataRow> rows = new ArrayList<>();
         final List<IntygCommonGroup> intygCommonGroups = getIntygCommonGroups(range, vardgivarId, enheter, isTvarsnitt, null);
         for (IntygCommonGroup intygCommonGroup : intygCommonGroups) {
@@ -150,9 +154,11 @@ public class IntygCommonManager {
         return new KonDataResponse(groupNames, rows);
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> getIntygCommonMaleFemale(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter, Function<IntygCommonGroup, String> rowNameFunction, boolean isTvarsnitt) {
+    private SimpleKonResponse<SimpleKonDataRow> getIntygCommonMaleFemale(Range range, HsaIdVardgivare vardgivarId,
+            Collection<HsaIdEnhet> enheter, Function<IntygCommonGroup, String> rowNameFunction, boolean isTvarsnitt) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
-        final List<IntygType> intygTypes = Arrays.asList(IntygType.FK7263, IntygType.LISJP, IntygType.LUSE, IntygType.LUAE_NA, IntygType.LUAE_FS);
+        final List<IntygType> intygTypes = Arrays.asList(IntygType.FK7263, IntygType.LISJP, IntygType.LUSE, IntygType.LUAE_NA,
+                IntygType.LUAE_FS);
         for (IntygCommonGroup intygCommonGroup : getIntygCommonGroups(range, vardgivarId, enheter, isTvarsnitt, intygTypes)) {
             int male = countMale(intygCommonGroup.getIntyg());
             int female = intygCommonGroup.getIntyg().size() - male;
@@ -162,7 +168,8 @@ public class IntygCommonManager {
         return new SimpleKonResponse<>(result);
     }
 
-    private List<IntygCommonGroup> getIntygCommonGroups(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter, boolean isTvarsnitt, List<IntygType> intygTypes) {
+    private List<IntygCommonGroup> getIntygCommonGroups(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter,
+            boolean isTvarsnitt, List<IntygType> intygTypes) {
         List<IntygCommonGroup> intygCommonGroups = new ArrayList<>();
         int periods = isTvarsnitt ? 1 : range.getNumberOfMonths();
         int periodLength = isTvarsnitt ? range.getNumberOfMonths() : 1;
@@ -176,7 +183,8 @@ public class IntygCommonManager {
         return intygCommonGroups;
     }
 
-    private IntygCommonGroup getIntygCommonGroup(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter, List<IntygType> intygTypes) {
+    private IntygCommonGroup getIntygCommonGroup(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter,
+            List<IntygType> intygTypes) {
         final StringBuilder ql = new StringBuilder();
         ql.append("SELECT r FROM IntygCommon r ");
         ql.append("WHERE r.vardgivareId = :vardgivarId ");

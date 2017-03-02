@@ -48,11 +48,13 @@ public class Verksamhet implements Serializable {
     private final String kommunName;
     private final Set<VerksamhetsTyp> verksamhetsTyper;
 
-    private static final CharSequenceTranslator ESCAPER = UnicodeEscaper.below('-').with(excludeBetween('-', '0'), excludeBetween('9', 'A'), excludeBetween('Z', 'a'), above('z'));
+    private static final CharSequenceTranslator ESCAPER = UnicodeEscaper.below('-').with(excludeBetween('-', '0'), excludeBetween('9', 'A'),
+            excludeBetween('Z', 'a'), above('z'));
 
     // CHECKSTYLE:OFF ParameterNumber
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public Verksamhet(HsaIdEnhet id, String name, HsaIdVardgivare vardgivarId, String vardgivarName, String lansId, String lansName, String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper) {
+    public Verksamhet(HsaIdEnhet id, String name, HsaIdVardgivare vardgivarId, String vardgivarName, String lansId, String lansName,
+            String kommunId, String kommunName, Set<VerksamhetsTyp> verksamhetsTyper) {
         this.id = id.getId();
         this.name = name;
         this.vardgivarId = vardgivarId.getId();
@@ -65,7 +67,7 @@ public class Verksamhet implements Serializable {
     }
     // CHECKSTYLE:ON ParameterNumber
 
-    private static  UnicodeEscaper excludeBetween(int codepointLow, int codepointHigh) {
+    private static UnicodeEscaper excludeBetween(int codepointLow, int codepointHigh) {
         return between(codepointLow + 1, codepointHigh - 1);
     }
 

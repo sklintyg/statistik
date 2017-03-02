@@ -34,7 +34,8 @@ public final class KonDataResponses {
     private KonDataResponses() {
     }
 
-    public static KonDataResponse changeIdGroupsToNamesAndAddIdsToDuplicates(final KonDataResponse response, Map<? extends HsaIdAny, String> idsToNames) {
+    public static KonDataResponse changeIdGroupsToNamesAndAddIdsToDuplicates(final KonDataResponse response,
+            Map<? extends HsaIdAny, String> idsToNames) {
         final List<HsaIdAny> idsToCompare = Lists.transform(response.getGroups(), new Function<String, HsaIdAny>() {
             @Override
             public HsaIdAny apply(String id) {

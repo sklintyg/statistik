@@ -31,14 +31,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.Collections2;
+
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.warehouse.WidelineConverter;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
 
 @Component
 public class LakareManager {
@@ -91,18 +90,14 @@ public class LakareManager {
             return Collections.emptyList();
         }
         TypedQuery<Lakare> query = manager.createQuery("SELECT l FROM Lakare l WHERE l.lakareId IN :hsaIds", Lakare.class);
-        query.setParameter("hsaIds", Collections2.transform(lakares, new Function<HsaIdLakare, String>() {
-            @Override
-            public String apply(HsaIdLakare hsaId) {
-                return hsaId.getId();
-            }
-        }));
+        query.setParameter("hsaIds", Collections2.transform(lakares, hsaId -> hsaId.getId()));
         return query.getResultList();
     }
 
     @Transactional
     public List<Lakare> getLakares(HsaIdVardgivare vardgivare) {
-        TypedQuery<Lakare> query = manager.createQuery("SELECT l FROM Lakare l WHERE l.vardgivareId = :vardgivareId", Lakare.class).setParameter("vardgivareId", vardgivare.getId());
+        TypedQuery<Lakare> query = manager.createQuery("SELECT l FROM Lakare l WHERE l.vardgivareId = :vardgivareId", Lakare.class)
+                .setParameter("vardgivareId", vardgivare.getId());
         return query.getResultList();
     }
 

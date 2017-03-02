@@ -53,7 +53,8 @@ public class WidelineManager {
         if (errors.isEmpty()) {
             manager.persist(line);
         } else {
-            StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid).append(" error count ").append(errCount++);
+            StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid)
+                    .append(" error count ").append(errCount++);
             for (String error : errors) {
                 errorBuilder.append('\n').append(error);
             }

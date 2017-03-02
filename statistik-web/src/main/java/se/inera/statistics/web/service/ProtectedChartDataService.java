@@ -65,7 +65,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned
  * contains two data sets, one suitable for chart display, and one suited for tables. Csv variants
@@ -120,9 +119,11 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfCasesPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(filterSettings.getFilter().getPredicate(), filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonth(filterSettings.getFilter().getPredicate(),
+                filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = new PeriodConverter().convert(casesPerMonth, filterSettings);
         return getResponse(result, csv, request, "Verksamhetsstatistik_SjukfallTotalt");
     }
@@ -143,7 +144,8 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getTotalNumberOfIntygPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getTotalNumberOfIntygPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getTotalIntygPerMonth(vg, filterSettings);
@@ -160,7 +162,8 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getTotalNumberOfIntygTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getTotalNumberOfIntygTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getTotalIntygTvarsnitt(vg, filterSettings);
@@ -177,7 +180,8 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfIntygPerTypePerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfIntygPerTypePerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         KonDataResponse intygPerMonth = warehouse.getIntygPerTypePerMonth(vg, filterSettings);
@@ -194,7 +198,8 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfIntygPerTypeTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfIntygPerTypeTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerTypeTvarsnitt(vg, filterSettings);
@@ -208,11 +213,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfCasesPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonthTvarsnitt(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonthTvarsnitt(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = SimpleDualSexConverter.newGenericTvarsnitt().convert(casesPerMonth, filterSettings);
         return getResponse(result, csv, request, "Verksamhetsstatistik_SjukfallTotalt");
     }
@@ -226,9 +233,11 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfMeddelandenPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfMeddelandenPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getMessagesPerMonth(filterSettings.getFilter(), filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getMessagesPerMonth(filterSettings.getFilter(),
+                filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = MessagePeriodConverter.newTidsserie().convert(casesPerMonth, filterSettings);
         return getResponse(result, csv, request, "Verksamhetsstatistik_MeddelandenTotalt");
     }
@@ -239,11 +248,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfMeddelandenPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfMeddelandenPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getMessagesPerMonthTvarsnitt(filter, range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getMessagesPerMonthTvarsnitt(filter, range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = MessagePeriodConverter.newTvarsnitt().convert(casesPerMonth, filterSettings);
         return getResponse(result, csv, request, "Verksamhetsstatistik_MeddelandenTotalt");
     }
@@ -257,12 +268,14 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerEnhet(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfCasesPerEnhet(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
         Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, filterHandler.getEnhetsFilterIds(filterHash, request));
-        SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhet(filter.getPredicate(), idToNameMap, range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhet(filter.getPredicate(), idToNameMap, range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = new GroupedSjukfallConverter("").convert(casesPerEnhet, filterSettings);
         return getResponse(result, csv, request, "Verksamhetsstatistik_Vardenhet");
     }
@@ -276,12 +289,14 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerEnhetTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfCasesPerEnhetTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
         Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, filterHandler.getEnhetsFilterIds(filterHash, request));
-        KonDataResponse casesPerEnhet = warehouse.getCasesPerEnhetTimeSeries(filter.getPredicate(), idToNameMap, range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        KonDataResponse casesPerEnhet = warehouse.getCasesPerEnhetTimeSeries(filter.getPredicate(), idToNameMap, range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData result = new SimpleMultiDualSexConverter().convert(casesPerEnhet, filterSettings);
         return getResponse(result, csv, request, "Verksamhetsstatistik_Vardenhet");
     }
@@ -295,11 +310,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerLakare(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfCasesPerLakare(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> casesPerLakare = warehouse.getCasesPerLakare(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleKonResponse<SimpleKonDataRow> casesPerLakare = warehouse.getCasesPerLakare(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final SimpleDetailsData result = new GroupedSjukfallConverter("").convert(casesPerLakare, filterSettings);
         return getResponse(result, csv, request, "Verksamhetsstatistik_SjukfallPerLakare");
     }
@@ -310,11 +327,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerLakareSomTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfCasesPerLakareSomTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        KonDataResponse casesPerLakare = warehouse.getCasesPerLakareSomTidsserie(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        KonDataResponse casesPerLakare = warehouse.getCasesPerLakareSomTidsserie(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final DualSexStatisticsData result = new SimpleMultiDualSexConverter().convert(casesPerLakare, filterSettings);
         return getResponse(result, csv, request, "Verksamhetsstatistik_SjukfallPerLakare");
     }
@@ -329,11 +348,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDiagnosisGroupStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getDiagnosisGroupStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        DiagnosgruppResponse diagnosisGroups = warehouse.getDiagnosgrupperPerMonth(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        DiagnosgruppResponse diagnosisGroups = warehouse.getDiagnosgrupperPerMonth(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData result = new DiagnosisGroupsConverter().convert(diagnosisGroups, filterSettings);
         return getResponse(result, csv, request, "Verksamhetsstatistik_Diagnosgrupp");
     }
@@ -344,11 +365,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDiagnosisGroupTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getDiagnosisGroupTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> diagnosisGroups = warehouse.getDiagnosgrupperTvarsnitt(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleKonResponse<SimpleKonDataRow> diagnosisGroups = warehouse.getDiagnosgrupperTvarsnitt(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = new DiagnosisGroupsTvarsnittConverter().convert(diagnosisGroups, filterSettings);
         return getResponse(result, csv, request, "Verksamhetsstatistik_Diagnosgrupp");
     }
@@ -362,13 +385,16 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam("groupId") String groupId,
+            @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         try {
             final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
             final Filter filter = filterSettings.getFilter();
             final Range range = filterSettings.getRange();
-            final DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter.getPredicate(), range, groupId, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-            final Message message = getDiagnosisSubGroupStatisticsMessage(filter, Collections.singletonList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
+            final DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter.getPredicate(), range, groupId,
+                    loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+            final Message message = getDiagnosisSubGroupStatisticsMessage(filter,
+                    Collections.singletonList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
             final DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, filterSettings, message);
             return getResponse(data, csv, request, "Verksamhetsstatistik_DiagnosgruppEnskiltDiagnoskapitel");
         } catch (RangeNotFoundException e) {
@@ -379,7 +405,8 @@ public class ProtectedChartDataService {
 
     private Message getDiagnosisSubGroupStatisticsMessage(Filter filter, List<String> diagnosis) {
         if (resultMessageHandler.isDxFilterDisableAllSelectedDxs(diagnosis, filter.getDiagnoser())) {
-            String msg = "Du har gjort ett val av diagnoskapitel eller diagnosavsnitt som inte matchar det val du gjort i diagnosfilter (se Visa filter högst upp på sidan).";
+            String msg = "Du har gjort ett val av diagnoskapitel eller diagnosavsnitt som inte matchar det val du gjort i diagnosfilter "
+                    + "(se Visa filter högst upp på sidan).";
             return Message.create(ErrorType.FILTER, ErrorSeverity.WARN, msg);
         }
         return null;
@@ -391,13 +418,16 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDiagnosisSubGroupTvarsnitt(@Context HttpServletRequest request, @PathParam("groupId") String groupId, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getDiagnosisSubGroupTvarsnitt(@Context HttpServletRequest request, @PathParam("groupId") String groupId,
+            @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         try {
             final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
             final Filter filter = filterSettings.getFilter();
             final Range range = filterSettings.getRange();
-            final SimpleKonResponse<SimpleKonDataRow> diagnosavsnitt = warehouse.getUnderdiagnosgrupperTvarsnitt(filter.getPredicate(), range, groupId, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-            final Message message = getDiagnosisSubGroupStatisticsMessage(filter, Collections.singletonList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
+            final SimpleKonResponse<SimpleKonDataRow> diagnosavsnitt = warehouse.getUnderdiagnosgrupperTvarsnitt(filter.getPredicate(),
+                    range, groupId, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+            final Message message = getDiagnosisSubGroupStatisticsMessage(filter,
+                    Collections.singletonList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
             final SimpleDetailsData data = new DiagnosisSubGroupsTvarsnittConverter().convert(diagnosavsnitt, filterSettings, message);
             return getResponse(data, csv, request, "Verksamhetsstatistik_DiagnosgruppEnskiltDiagnoskapitel");
         } catch (RangeNotFoundException e) {
@@ -412,14 +442,17 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getCompareDiagnosisStatistics(@Context HttpServletRequest request, @PathParam("diagnosHash") String diagnosisHash, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getCompareDiagnosisStatistics(@Context HttpServletRequest request, @PathParam("diagnosHash") String diagnosisHash,
+            @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
         final boolean emptyDiagnosisHash = diagnosisHash == null || diagnosisHash.isEmpty();
-        final List<String> diagnosis = emptyDiagnosisHash ? Collections.<String>emptyList() : filterHashHandler.getFilterFromHash(diagnosisHash).getDiagnoser();
+        final List<String> diagnosis = emptyDiagnosisHash ? Collections.<String> emptyList()
+                : filterHashHandler.getFilterFromHash(diagnosisHash).getDiagnoser();
         final Message message = emptyDiagnosisHash ? createMessage("Inga diagnoser valda") : getCompareDiagnosisMessage(filter, diagnosis);
-        SimpleKonResponse<SimpleKonDataRow> resultRows = warehouse.getJamforDiagnoser(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request), diagnosis);
+        SimpleKonResponse<SimpleKonDataRow> resultRows = warehouse.getJamforDiagnoser(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request), diagnosis);
         SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(resultRows, filterSettings, message);
         return getResponse(data, csv, request, "Verksamhetsstatistik_DiagnosgruppJamforValfriaDiagnoser");
     }
@@ -427,7 +460,8 @@ public class ProtectedChartDataService {
     private Message getCompareDiagnosisMessage(Filter filter, List<String> diagnosis) {
         if (resultMessageHandler.isDxFilterDisableAllSelectedDxs(diagnosis, filter.getDiagnoser())) {
 
-            String msg = "Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfilter (se Visa filter högst upp på sidan).";
+            String msg = "Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfilter "
+                    + "(se Visa filter högst upp på sidan).";
             return Message.create(ErrorType.FILTER, ErrorSeverity.WARN, msg);
         }
         return null;
@@ -439,20 +473,24 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getCompareDiagnosisStatisticsTimeSeries(@Context HttpServletRequest request, @PathParam("diagnosHash") String diagnosisHash, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getCompareDiagnosisStatisticsTimeSeries(@Context HttpServletRequest request,
+            @PathParam("diagnosHash") String diagnosisHash, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
         final boolean emptyDiagnosisHash = diagnosisHash == null || diagnosisHash.isEmpty();
-        final List<String> diagnosis = emptyDiagnosisHash ? Collections.<String>emptyList() : filterHashHandler.getFilterFromHash(diagnosisHash).getDiagnoser();
+        final List<String> diagnosis = emptyDiagnosisHash ? Collections.<String> emptyList()
+                : filterHashHandler.getFilterFromHash(diagnosisHash).getDiagnoser();
         final Message message = emptyDiagnosisHash ? createMessage("Inga diagnoser valda") : getCompareDiagnosisMessage(filter, diagnosis);
-        KonDataResponse resultRows = warehouse.getJamforDiagnoserTidsserie(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request), diagnosis);
+        KonDataResponse resultRows = warehouse.getJamforDiagnoserTidsserie(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request), diagnosis);
         DualSexStatisticsData data = new CompareDiagnosisTimeSeriesConverter().convert(resultRows, filterSettings, message);
         return getResponse(data, csv, request, "Verksamhetsstatistik_DiagnosgruppJamforValfriaDiagnoser");
     }
 
     /**
-     * Get overview. Includes total n:o of sjukfall, sex distribution, top lists for diagnosgrupp, aldersgrupp, sjukskrivningslangd,
+     * Get overview. Includes total n:o of sjukfall, sex distribution, top lists for diagnosgrupp, aldersgrupp,
+     * sjukskrivningslangd,
      * sjukskrivningsgrad. Only chart formatted data.
      */
     @GET
@@ -466,7 +504,8 @@ public class ProtectedChartDataService {
         final Filter filter = filterSettings.getFilter();
         final Range range = Range.quarter(clock);
         final Message message = getOverviewMsg(filterHash, range);
-        VerksamhetOverviewResponse response = warehouse.getOverview(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        VerksamhetOverviewResponse response = warehouse.getOverview(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final VerksamhetOverviewData overviewData = new VerksamhetOverviewConverter().convert(response, range, filter, message);
 
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
@@ -476,7 +515,8 @@ public class ProtectedChartDataService {
     }
 
     private Message getOverviewMsg(String filterHash, Range actualRangeUsed) {
-        final boolean noMsg = filterHash == null || filterHash.isEmpty() || filterHashHandler.getFilterFromHash(filterHash).isUseDefaultPeriod();
+        final boolean noMsg = filterHash == null || filterHash.isEmpty()
+                || filterHashHandler.getFilterFromHash(filterHash).isUseDefaultPeriod();
         if (noMsg) {
             return null;
         }
@@ -495,11 +535,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getAgeGroupsStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getAgeGroupsStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getAldersgrupper(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(ageGroups, filterSettings);
         return getResponse(data, csv, request, "Verksamhetsstatistik_Aldersgrupp");
     }
@@ -510,11 +552,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getAgeGroupsStatisticsAsTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getAgeGroupsStatisticsAsTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        KonDataResponse ageGroups = warehouse.getAldersgrupperSomTidsserie(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        KonDataResponse ageGroups = warehouse.getAldersgrupperSomTidsserie(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData data = new SimpleMultiDualSexConverter().convert(ageGroups, filterSettings);
         return getResponse(data, csv, request, "Verksamhetsstatistik_Aldersgrupp");
     }
@@ -524,30 +568,34 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("getCasesPerDoctorAgeAndGenderStatistics{csv:(/csv)?}")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getCasesPerDoctorAgeAndGenderStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getCasesPerDoctorAgeAndGenderStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getCasesPerDoctorAgeAndGender(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getCasesPerDoctorAgeAndGender(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(ageGroups, filterSettings);
         return getResponse(data, csv, request, "Verksamhetsstatistik_LakaralderOchKon");
     }
 
     @GET
     @Path("getCasesPerDoctorAgeAndGenderTimeSeriesStatistics{csv:(/csv)?}")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getCasesPerDoctorAgeAndGenderTimeSeriesStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getCasesPerDoctorAgeAndGenderTimeSeriesStatistics(@Context HttpServletRequest request,
+            @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        KonDataResponse ageGroups = warehouse.getCasesPerDoctorAgeAndGenderTimeSeries(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        KonDataResponse ageGroups = warehouse.getCasesPerDoctorAgeAndGenderTimeSeries(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData data = new SimpleMultiDualSexConverter().convert(ageGroups, filterSettings);
         return getResponse(data, csv, request, "Verksamhetsstatistik_LakaralderOchKon");
     }
@@ -557,30 +605,34 @@ public class ProtectedChartDataService {
      */
     @GET
     @Path("getNumberOfCasesPerLakarbefattning{csv:(/csv)?}")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerLakarbefattning(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfCasesPerLakarbefattning(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getNumberOfCasesPerLakarbefattning(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleKonResponse<SimpleKonDataRow> ageGroups = warehouse.getNumberOfCasesPerLakarbefattning(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(ageGroups, filterSettings);
         return getResponse(data, csv, request, "Verksamhetsstatistik_Lakarbefattning");
     }
 
     @GET
     @Path("getNumberOfCasesPerLakarbefattningSomTidsserie{csv:(/csv)?}")
-    @Produces({MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerLakarbefattningSomTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfCasesPerLakarbefattningSomTidsserie(@Context HttpServletRequest request,
+            @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        KonDataResponse ageGroups = warehouse.getNumberOfCasesPerLakarbefattningSomTidsserie(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        KonDataResponse ageGroups = warehouse.getNumberOfCasesPerLakarbefattningSomTidsserie(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData data = new SimpleMultiDualSexConverter().convert(ageGroups, filterSettings);
         return getResponse(data, csv, request, "Verksamhetsstatistik_Lakarbefattning");
     }
@@ -594,11 +646,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        KonDataResponse degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradPerMonth(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        KonDataResponse degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradPerMonth(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData data = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, filterSettings);
         return getResponse(data, csv, request, "Verksamhetsstatistik_Sjukskrivningsgrad");
     }
@@ -609,12 +663,15 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDegreeOfSickLeaveTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getDegreeOfSickLeaveTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradTvarsnitt(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData data = new SimpleDualSexConverter("", false, "%1$s %% sjukskrivningsgrad").convert(degreeOfSickLeaveStatistics, filterSettings);
+        SimpleKonResponse<SimpleKonDataRow> degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradTvarsnitt(filter.getPredicate(),
+                range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleDetailsData data = new SimpleDualSexConverter("", false, "%1$s %% sjukskrivningsgrad").convert(degreeOfSickLeaveStatistics,
+                filterSettings);
         return getResponse(data, csv, request, "Verksamhetsstatistik_Sjukskrivningsgrad");
     }
 
@@ -627,11 +684,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getSickLeaveLength(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getSickLeaveLength(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleKonResponse<SimpleKonDataRow> sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(sickLeaveLength, filterSettings);
         return getResponse(data, csv, request, "Verksamhetsstatistik_Sjukskrivningslangd");
     }
@@ -642,11 +701,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getSickLeaveLengthTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getSickLeaveLengthTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        KonDataResponse sickLeaveLength = warehouse.getSjukskrivningslangdTidsserie(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        KonDataResponse sickLeaveLength = warehouse.getSjukskrivningslangdTidsserie(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData data = new SimpleMultiDualSexConverter().convert(sickLeaveLength, filterSettings);
         return getResponse(data, csv, request, "Verksamhetsstatistik_Sjukskrivningslangd");
     }
@@ -660,11 +721,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getLongSickLeavesData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getLongSickLeavesData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarPerManad(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarPerManad(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = new PeriodConverter().convert(longSickLeaves, filterSettings);
         return getResponse(data, csv, request, "Verksamhetsstatistik_SjukskrivningslangdMerAn90Dagar");
     }
@@ -675,11 +738,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getLongSickLeavesTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getLongSickLeavesTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarTvarsnitt(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleKonResponse<SimpleKonDataRow> longSickLeaves = warehouse.getLangaSjukskrivningarTvarsnitt(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(longSickLeaves, filterSettings);
         return getResponse(data, csv, request, "Verksamhetsstatistik_SjukskrivningslangdMerAn90Dagar");
     }
@@ -690,11 +755,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDifferentieratIntygandeStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getDifferentieratIntygandeStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        KonDataResponse statisticsData = warehouse.getDifferentieratIntygande(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        KonDataResponse statisticsData = warehouse.getDifferentieratIntygande(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData data = new DifferentieratIntygandeConverter().convert(statisticsData, filterSettings);
         return getResponse(data, csv, request, "Verksamhetsstatistik_DifferentieratIntygande");
     }
@@ -705,11 +772,13 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDifferentieratIntygandeTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash, @PathParam("csv") String csv) {
+    public Response getDifferentieratIntygandeTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> statisticsData = warehouse.getDifferentieratIntygandeTvarsnitt(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleKonResponse<SimpleKonDataRow> statisticsData = warehouse.getDifferentieratIntygandeTvarsnitt(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = new SimpleDualSexConverter("", false, "%1$s").convert(statisticsData, filterSettings);
         return getResponse(data, csv, request, "Verksamhetsstatistik_DifferentieratIntygande");
     }
@@ -723,7 +792,8 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = filterHandler.getFilter(request, null, Integer.MAX_VALUE);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        List<Sjukfall> sjukfalls = warehouse.getSjukfallForBi(filter.getPredicate(), range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        List<Sjukfall> sjukfalls = warehouse.getSjukfallForBi(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final String resp = sjukfallForBiConverter.convert(sjukfalls);
         return Response.ok(resp, "text/plain; charset=utf-8").build();
     }
@@ -734,18 +804,18 @@ public class ProtectedChartDataService {
         }
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgid = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        final boolean userHasAccessToRequestedVg = loginInfo.getVgs().stream().map(LoginInfoVg::getHsaId).anyMatch(userVg -> userVg.equals(vgid));
+        final boolean userHasAccessToRequestedVg = loginInfo.getVgs().stream().map(LoginInfoVg::getHsaId)
+                .anyMatch(userVg -> userVg.equals(vgid));
         return loginInfo.isLoggedIn() && userHasAccessToRequestedVg;
     }
 
     public boolean userAccess(HttpServletRequest request) {
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
-        if (loginInfo != null) {
-            final HsaIdVardgivare hsaIdVardgivare = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-            String sessionId = request.getSession() != null ? request.getSession().getId() : null;
-            LOG.info("User " + loginInfo.getHsaId() + " accessed verksamhet " + hsaIdVardgivare + " (" + getUriSafe(request) + ") session " + sessionId);
-            monitoringLogService.logTrackAccessProtectedChartData(loginInfo.getHsaId(), hsaIdVardgivare, getUriSafe(request));
-        }
+        final HsaIdVardgivare hsaIdVardgivare = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        String sessionId = request.getSession() != null ? request.getSession().getId() : null;
+        LOG.info("User " + loginInfo.getHsaId() + " accessed verksamhet " + hsaIdVardgivare + " (" + getUriSafe(request) + ") session "
+                + sessionId);
+        monitoringLogService.logTrackAccessProtectedChartData(loginInfo.getHsaId(), hsaIdVardgivare, getUriSafe(request));
         return true;
     }
 

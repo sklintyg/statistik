@@ -41,7 +41,7 @@ import java.time.LocalDateTime;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
 @DirtiesContext
-public class WidelineToWarehouseIntegrationTest {
+public class WidelineToWarehouseIT {
 
     @Autowired
     private WidelineLoader widelineLoader;

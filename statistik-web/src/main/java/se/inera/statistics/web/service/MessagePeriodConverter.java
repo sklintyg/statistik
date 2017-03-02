@@ -20,7 +20,8 @@ package se.inera.statistics.web.service;
 
 public final class MessagePeriodConverter extends SimpleDualSexConverter {
 
-    private MessagePeriodConverter(String tableGroupTitle, boolean totalSeriesInChart, String seriesNameTemplate, String totalColumnName, String femaleColumnName, String maleColumnName) {
+    private MessagePeriodConverter(String tableGroupTitle, boolean totalSeriesInChart, String seriesNameTemplate, String totalColumnName,
+            String femaleColumnName, String maleColumnName) {
         super(tableGroupTitle, totalSeriesInChart, seriesNameTemplate, totalColumnName, femaleColumnName, maleColumnName);
     }
 

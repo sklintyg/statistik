@@ -57,32 +57,39 @@ public class UtlatandeBuilder {
         return build(patientId, start, end, vardenhet, new HsaIdVardgivare("vardgivarId"), diagnos, arbetsformaga);
     }
 
-    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos, int arbetsformaga) {
-        return build(patientId, start, end, new HsaIdLakare("Personal HSA-ID"), vardenhet, vardgivare, diagnos, Collections.singletonList(String.valueOf(arbetsformaga)));
+    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare,
+            String diagnos, int arbetsformaga) {
+        return build(patientId, start, end, new HsaIdLakare("Personal HSA-ID"), vardenhet, vardgivare, diagnos,
+                Collections.singletonList(String.valueOf(arbetsformaga)));
     }
 
-    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos, List<String> arbetsformaga) {
+    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare,
+            String diagnos, List<String> arbetsformaga) {
         return build(patientId, start, end, new HsaIdLakare("Personal HSA-ID"), vardenhet, vardgivare, diagnos, arbetsformaga);
     }
 
-
-    //CHECKSTYLE:OFF ParameterNumberCheck
+    // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
-    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdLakare personal, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos, int arbetsformaga) {
-        return build(patientId, start, end, personal, vardenhet, vardgivare, diagnos, Collections.singletonList(String.valueOf(arbetsformaga)));
+    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdLakare personal, HsaIdEnhet vardenhet,
+            HsaIdVardgivare vardgivare, String diagnos, int arbetsformaga) {
+        return build(patientId, start, end, personal, vardenhet, vardgivare, diagnos,
+                Collections.singletonList(String.valueOf(arbetsformaga)));
     }
 
     @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
-    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdLakare personal, HsaIdEnhet vardenhet, HsaIdVardgivare vardgivare, String diagnos, List<String> arbetsformaga) {
+    public JsonNode build(String patientId, LocalDate start, LocalDate end, HsaIdLakare personal, HsaIdEnhet vardenhet,
+            HsaIdVardgivare vardgivare, String diagnos, List<String> arbetsformaga) {
         return build(patientId, list(start), list(end), personal, vardenhet, vardgivare, diagnos, arbetsformaga);
     }
 
-    public JsonNode build(String person, List<LocalDate> starts, List<LocalDate> stops, HsaIdEnhet enhet, HsaIdVardgivare vardgivare, String diagnos, List<String> grads) {
+    public JsonNode build(String person, List<LocalDate> starts, List<LocalDate> stops, HsaIdEnhet enhet, HsaIdVardgivare vardgivare,
+            String diagnos, List<String> grads) {
         return build(person, starts, stops, new HsaIdLakare("personalId"), enhet, vardgivare, diagnos, grads);
     }
 
     @java.lang.SuppressWarnings("squid:S00107") // Parameter number check ignored in Sonar
-    public JsonNode build(String person, List<LocalDate> starts, List<LocalDate> stops, HsaIdLakare personal, HsaIdEnhet enhet, HsaIdVardgivare vardgivare, String diagnos, List<String> grads) {
+    public JsonNode build(String person, List<LocalDate> starts, List<LocalDate> stops, HsaIdLakare personal, HsaIdEnhet enhet,
+            HsaIdVardgivare vardgivare, String diagnos, List<String> grads) {
         ObjectNode intyg = template.deepCopy();
         ObjectNode patientIdNode = (ObjectNode) intyg.path(GRUND_DATA).path("patient");
         patientIdNode.put("personId", person);
@@ -106,20 +113,20 @@ public class UtlatandeBuilder {
 
     private void addGrad(List<LocalDate> starts, List<LocalDate> stops, ObjectNode intyg, String grad) {
         switch (grad) {
-            case "0":
-                createNedsatNode(starts, stops, intyg, "nedsattMed100");
-                break;
-            case "25":
-                createNedsatNode(starts, stops, intyg, "nedsattMed75");
-                break;
-            case "50":
-                createNedsatNode(starts, stops, intyg, "nedsattMed50");
-                break;
-            case "75":
-                createNedsatNode(starts, stops, intyg, "nedsattMed25");
-                break;
-            default:
-                throw new IllegalStateException("Unrecognized sjukskrivningsgrad:  " + grad);
+        case "0":
+            createNedsatNode(starts, stops, intyg, "nedsattMed100");
+            break;
+        case "25":
+            createNedsatNode(starts, stops, intyg, "nedsattMed75");
+            break;
+        case "50":
+            createNedsatNode(starts, stops, intyg, "nedsattMed50");
+            break;
+        case "75":
+            createNedsatNode(starts, stops, intyg, "nedsattMed25");
+            break;
+        default:
+            throw new IllegalStateException("Unrecognized sjukskrivningsgrad:  " + grad);
         }
     }
 
@@ -130,7 +137,7 @@ public class UtlatandeBuilder {
         starts.remove(0);
         stops.remove(0);
     }
-    //CHECKSTYLE:ON ParameterNumberCheck
+    // CHECKSTYLE:ON ParameterNumberCheck
 
     private List<LocalDate> list(LocalDate date) {
         List<LocalDate> list = new ArrayList<>();

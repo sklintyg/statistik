@@ -45,7 +45,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:logininfo-integration-test.xml", "classpath:icd10.xml"  })
 @DirtiesContext
-public class LoginInfoServiceIntegrationTest {
+public class LoginInfoServiceIT {
 
     @Autowired
     private LoginInfoService loginInfoService;

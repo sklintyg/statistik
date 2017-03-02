@@ -77,7 +77,8 @@ public class KeystoreBasedSocketFactory implements SecureProtocolSocketFactory {
     }
 
     @Override
-    public Socket createSocket(String host, int port, InetAddress localAddress, int localPort, HttpConnectionParams params) throws IOException {
+    public Socket createSocket(String host, int port, InetAddress localAddress, int localPort, HttpConnectionParams params)
+            throws IOException {
         int timeout = params.getConnectionTimeout();
         if (timeout == 0) {
             return createSocket(host, port, localAddress, localPort);
@@ -91,7 +92,8 @@ public class KeystoreBasedSocketFactory implements SecureProtocolSocketFactory {
         return sslContext.getSocketFactory().createSocket(host, port);
     }
 
-    private static SSLContext createSSLContext(final KeyStore truststore) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException, KeyManagementException {
+    private static SSLContext createSSLContext(final KeyStore truststore)
+            throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException, KeyManagementException {
         KeyManagerFactory kmfactory = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmfactory.init(null, null);
         KeyManager[] keymanagers = kmfactory.getKeyManagers();

@@ -36,16 +36,18 @@ public class LandstingEnhetUpdateManager {
     @Transactional
     public Optional<LandstingEnhetUpdate> getByLandstingId(long landstingId) {
         final LandstingEnhetUpdate landstingEnhetUpdate = manager.find(LandstingEnhetUpdate.class, landstingId);
-        return landstingEnhetUpdate == null ? Optional.<LandstingEnhetUpdate>absent() : Optional.of(landstingEnhetUpdate);
+        return landstingEnhetUpdate == null ? Optional.<LandstingEnhetUpdate> absent() : Optional.of(landstingEnhetUpdate);
     }
 
     @Transactional
-    public void update(long landstingId, String updatedByName, HsaIdUser updatedByHsaid, String filename, LandstingEnhetUpdateOperation operation) {
+    public void update(long landstingId, String updatedByName, HsaIdUser updatedByHsaid, String filename,
+            LandstingEnhetUpdateOperation operation) {
         final Optional<LandstingEnhetUpdate> existing = getByLandstingId(landstingId);
         if (existing.isPresent()) {
             manager.remove(existing.get());
         }
-        final LandstingEnhetUpdate landstingEnhetUpdate = new LandstingEnhetUpdate(landstingId, updatedByName, updatedByHsaid, new Timestamp(System.currentTimeMillis()), filename, operation);
+        final LandstingEnhetUpdate landstingEnhetUpdate = new LandstingEnhetUpdate(landstingId, updatedByName, updatedByHsaid,
+                new Timestamp(System.currentTimeMillis()), filename, operation);
         manager.persist(landstingEnhetUpdate);
     }
 

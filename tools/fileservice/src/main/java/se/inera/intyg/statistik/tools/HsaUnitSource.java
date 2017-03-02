@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistik.tools;
+package se.inera.intyg.statistik.tools;
 
 import com.google.common.io.ByteStreams;
 import org.apache.http.HttpEntity;
@@ -59,15 +59,14 @@ public final class HsaUnitSource {
     }
 
     public static ByteArrayInputStream getUnits(String certFileName, String certPass, String trustStoreName, String trustPass, String url) {
-        try {
+        try (InputStream keystoreInput = new BufferedInputStream(new FileInputStream(certFileName));
+                InputStream truststoreInput = new BufferedInputStream(new FileInputStream(trustStoreName))) {
             final HttpParams httpParams = new BasicHttpParams();
-            final KeyStore keystore = KeyStore.getInstance("pkcs12");
-            InputStream keystoreInput;
-            keystoreInput = new BufferedInputStream(new FileInputStream(certFileName));
-            keystore.load(keystoreInput, certPass.toCharArray());
-            KeyStore truststore = KeyStore.getInstance("jks");
 
-            InputStream truststoreInput = new BufferedInputStream(new FileInputStream(trustStoreName));
+            final KeyStore keystore = KeyStore.getInstance("pkcs12");
+            keystore.load(keystoreInput, certPass.toCharArray());
+
+            KeyStore truststore = KeyStore.getInstance("jks");
             truststore.load(truststoreInput, trustPass.toCharArray());
 
             final SchemeRegistry schemeRegistry = new SchemeRegistry();
@@ -79,27 +78,31 @@ public final class HsaUnitSource {
             HttpResponse response = httpClient.execute(httpget);
             HttpEntity entity = response.getEntity();
             if (entity != null) {
-                try (InputStream instream = entity.getContent()) {
+                try (InputStream instream = entity.getContent();
+                        OutputStream receivedZipFile = new FileOutputStream("hsazip.zip");
+                        ZipFile zipFile = new ZipFile("hsazip.zip");) {
                     byte[] buffer = new byte[BUFFER_SIZE];
-                    OutputStream receivedZipFile = new FileOutputStream("hsazip.zip");
+
                     int len;
                     while ((len = instream.read(buffer)) != -1) {
                         receivedZipFile.write(buffer, 0, len);
                     }
-                    ZipFile zipFile = new ZipFile("hsazip.zip");
+
                     final ZipEntry entry = zipFile.getEntry("hsaunits.xml");
                     len = (int) entry.getSize();
                     final InputStream stream = new BufferedInputStream(zipFile.getInputStream(entry));
                     byte[] hsaUnitsBytes = ByteStreams.toByteArray(stream);
                     if (hsaUnitsBytes.length != len) {
-                        throw new IOException("Reported file length does not match actual read bytes." + len + " vs. " + hsaUnitsBytes.length);
+                        throw new IOException(
+                                "Reported file length does not match actual read bytes." + len + " vs. " + hsaUnitsBytes.length);
                     } else {
                         return new ByteArrayInputStream(hsaUnitsBytes);
                     }
                 }
             }
-            throw new IOException("Respons entity is null.");
-        } catch (CertificateException | NoSuchAlgorithmException | IOException | UnrecoverableKeyException | KeyStoreException | KeyManagementException e) {
+            throw new IOException("Response entity is null.");
+        } catch (CertificateException | NoSuchAlgorithmException | IOException | UnrecoverableKeyException | KeyStoreException
+                | KeyManagementException e) {
             LOG.debug("Failed to get units", e);
             e.printStackTrace();
         }

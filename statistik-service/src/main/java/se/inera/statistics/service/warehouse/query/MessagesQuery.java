@@ -42,14 +42,16 @@ public class MessagesQuery {
     @Autowired
     private MessageWidelineLoader messageWidelineLoader;
 
-    public SimpleKonResponse<SimpleKonDataRow> getMessages(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter, LocalDate start, int perioder) {
+    public SimpleKonResponse<SimpleKonDataRow> getMessages(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter, LocalDate start,
+            int perioder) {
         LocalDate to = start.plusMonths(perioder);
         List<MessageWidelineLoader.CountDTO> rows = messageWidelineLoader.getAntalMeddelandenPerMonth(start, to, vardgivare, enheter);
 
         return convertToSimpleResponse(rows, start, perioder);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getMessagesTvarsnitt(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter, LocalDate start, int perioder) {
+    public SimpleKonResponse<SimpleKonDataRow> getMessagesTvarsnitt(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter,
+            LocalDate start, int perioder) {
 
         LocalDate to = start.plusMonths(perioder);
         List<MessageWidelineLoader.CountDTO> rows = messageWidelineLoader.getAntalMeddelandenPerMonth(start, to, vardgivare, enheter);
@@ -64,7 +66,8 @@ public class MessagesQuery {
         return convertToSimpleResponse(rows, start, perioder);
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> convertToSimpleResponse(List<MessageWidelineLoader.CountDTO> rows, LocalDate start, int perioder) {
+    private SimpleKonResponse<SimpleKonDataRow> convertToSimpleResponse(List<MessageWidelineLoader.CountDTO> rows, LocalDate start,
+            int perioder) {
         List<SimpleKonDataRow> result = new ArrayList<>();
         Map<LocalDate, List<MessageWidelineLoader.CountDTO>> map;
         if (rows != null) {
@@ -103,7 +106,7 @@ public class MessagesQuery {
         int male = 0;
         int female = 0;
 
-        for (MessageWidelineLoader.CountDTO row: rows) {
+        for (MessageWidelineLoader.CountDTO row : rows) {
             if (row.getKon().equals(Kon.FEMALE)) {
                 female += row.getCount();
             } else {

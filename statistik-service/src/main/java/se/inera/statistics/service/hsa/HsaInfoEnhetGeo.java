@@ -24,18 +24,25 @@ import com.google.common.base.MoreObjects;
 
 public class HsaInfoEnhetGeo {
 
-    @JsonProperty("koordinat") private HsaInfoCoordinate koordinat;
-    @JsonProperty("plats") private String plats;
-    @JsonProperty("kommundelskod") private String kommundelskod;
-    @JsonProperty("kommundelsnamn") private String kommundelsnamn;
-    @JsonProperty("kommun") private String kommun;
-    @JsonProperty("lan") private String lan;
+    @JsonProperty("koordinat")
+    private HsaInfoCoordinate koordinat;
+    @JsonProperty("plats")
+    private String plats;
+    @JsonProperty("kommundelskod")
+    private String kommundelskod;
+    @JsonProperty("kommundelsnamn")
+    private String kommundelsnamn;
+    @JsonProperty("kommun")
+    private String kommun;
+    @JsonProperty("lan")
+    private String lan;
 
-    //Default constructor required by json mapper
+    // Default constructor required by json mapper
     private HsaInfoEnhetGeo() {
     }
 
-    public HsaInfoEnhetGeo(HsaInfoCoordinate koordinat, String plats, String kommundelskod, String kommundelsnamn, String kommun, String lan) {
+    public HsaInfoEnhetGeo(HsaInfoCoordinate koordinat, String plats, String kommundelskod, String kommundelsnamn, String kommun,
+            String lan) {
         this.koordinat = koordinat;
         this.plats = plats;
         this.kommundelskod = kommundelskod;

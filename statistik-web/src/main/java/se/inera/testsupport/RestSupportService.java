@@ -308,7 +308,8 @@ public class RestSupportService {
     public Response insertPersonal(Personal personal) {
         if (hsaDataInjectable != null) {
             LOG.info("Insert personal: " + personal);
-            hsaDataInjectable.addPersonal(new HsaIdLakare(personal.getId()), personal.getFirstName(), personal.getLastName(), personal.getKon(), personal.getAge(),
+            hsaDataInjectable.addPersonal(new HsaIdLakare(personal.getId()), personal.getFirstName(), personal.getLastName(),
+                    personal.getKon(), personal.getAge(),
                     personal.getBefattning());
         }
         return Response.ok().build();
@@ -334,10 +335,11 @@ public class RestSupportService {
         LOG.info("Clearing all uploaded landsting files");
         final List<LandstingEnhet> allLandstingEnhets = landstingEnhetManager.getAll();
         allLandstingEnhets.forEach(landstingEnhet -> {
-                final long landstingId = landstingEnhet.getLandstingId();
-                landstingEnhetManager.removeByLandstingId(landstingId);
-                landstingEnhetUpdateManager.update(landstingId, this.getClass().getSimpleName(), new HsaIdUser(""), "-", LandstingEnhetUpdateOperation.REMOVE);
-            });
+            final long landstingId = landstingEnhet.getLandstingId();
+            landstingEnhetManager.removeByLandstingId(landstingId);
+            landstingEnhetUpdateManager.update(landstingId, this.getClass().getSimpleName(), new HsaIdUser(""), "-",
+                    LandstingEnhetUpdateOperation.REMOVE);
+        });
         return Response.ok().build();
     }
 
@@ -371,11 +373,13 @@ public class RestSupportService {
     @Path("getSocialstyrelsenReport")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response getSosStatistics(@QueryParam(SOC_PARAM_DX) List<String> dx, @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam, @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
+    public Response getSosStatistics(@QueryParam(SOC_PARAM_DX) List<String> dx, @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam,
+            @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
         int fromYear = getYear(fromYearParam);
         int toYear = getYear(toYearParam);
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock, fromYear, toYear);
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock, fromYear,
+                toYear);
         final List<SosRow> sosReport = sosReportCreator.getSosReport();
         return Response.ok(sosReport).build();
     }
@@ -391,11 +395,13 @@ public class RestSupportService {
     @Path("getSocialstyrelsenMedianReport")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response getSosMedianStatistics(@QueryParam("dx") List<String> dx, @QueryParam("fromyear") String fromYearParam, @QueryParam("toyear") String toYearParam) {
+    public Response getSosMedianStatistics(@QueryParam("dx") List<String> dx, @QueryParam("fromyear") String fromYearParam,
+            @QueryParam("toyear") String toYearParam) {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
         int fromYear = getYear(fromYearParam);
         int toYear = getYear(toYearParam);
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock, fromYear, toYear);
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock, fromYear,
+                toYear);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getMedianValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
     }
@@ -407,11 +413,13 @@ public class RestSupportService {
     @Path("getSocialstyrelsenStdDevReport")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response getSosStdDevStatistics(@QueryParam("dx") List<String> dx, @QueryParam("fromyear") String fromYearParam, @QueryParam("toyear") String toYearParam) {
+    public Response getSosStdDevStatistics(@QueryParam("dx") List<String> dx, @QueryParam("fromyear") String fromYearParam,
+            @QueryParam("toyear") String toYearParam) {
         final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
         int fromYear = getYear(fromYearParam);
         int toYear = getYear(toYearParam);
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock, fromYear, toYear);
+        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock, fromYear,
+                toYear);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getStdDevValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
     }

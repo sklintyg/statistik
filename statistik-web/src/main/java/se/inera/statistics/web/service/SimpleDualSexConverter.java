@@ -49,7 +49,8 @@ public class SimpleDualSexConverter {
         this.seriesNameTemplate = seriesNameTemplate;
     }
 
-    public SimpleDualSexConverter(String tableGroupTitle, boolean totalSeriesInChart, String seriesNameTemplate, String totalColumnName, String femaleColumnName, String maleColumnName) {
+    public SimpleDualSexConverter(String tableGroupTitle, boolean totalSeriesInChart, String seriesNameTemplate, String totalColumnName,
+            String femaleColumnName, String maleColumnName) {
         this.tableGroupTitle = tableGroupTitle;
         this.totalSeriesInChart = totalSeriesInChart;
         this.seriesNameTemplate = seriesNameTemplate;
@@ -77,7 +78,8 @@ public class SimpleDualSexConverter {
 
     public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonthIn, FilterSettings filterSettings, Message message) {
         TableData tableData = convertToTableData(casesPerMonthIn.getRows());
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = casesPerMonthIn.getRows().isEmpty() ? new SimpleKonResponse<>(Arrays.asList(new SimpleKonDataRow("Totalt", 0, 0))) : casesPerMonthIn;
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = casesPerMonthIn.getRows().isEmpty()
+                ? new SimpleKonResponse<>(Arrays.asList(new SimpleKonDataRow("Totalt", 0, 0))) : casesPerMonthIn;
         ChartData chartData = convertToChartData(casesPerMonth);
         final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
@@ -95,7 +97,8 @@ public class SimpleDualSexConverter {
             data.add(new NamedData(seriesName, Arrays.asList(female + male, female, male), isMarked(row)));
         }
 
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList(tableGroupTitle, totalColumnName, femaleColumnName, maleColumnName));
+        return TableData.createWithSingleHeadersRow(data,
+                Arrays.asList(tableGroupTitle, totalColumnName, femaleColumnName, maleColumnName));
     }
 
     @java.lang.SuppressWarnings("squid:S1172") // Parameter "row" is used by method in extending class

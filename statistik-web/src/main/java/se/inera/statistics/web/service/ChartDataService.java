@@ -103,7 +103,7 @@ public class ChartDataService {
     private Clock clock;
 
     private volatile SimpleDetailsData numberOfCasesPerMonth;
-    //private volatile SimpleDetailsData numberOfMeddelandenPerMonth;
+    // private volatile SimpleDetailsData numberOfMeddelandenPerMonth;
     private volatile DualSexStatisticsData diagnosgrupper;
     private volatile Map<String, DualSexStatisticsData> diagnoskapitel = new HashMap<>();
     private volatile OverviewData overview;
@@ -149,11 +149,12 @@ public class ChartDataService {
             stopWatch.stop();
             LOG.info("National cache buildSjukfallslangd " + stopWatch.getTotalTimeMillis());
             /*
-            Disabled for now
-            stopWatch.start();
-            buildNumberOfMeddelandenPerMonth();
-            stopWatch.stop();
-            LOG.info("National cache buildNumberOfMeddelandenPerMonth " + stopWatch.getTotalTimeMillis());*/
+             * Disabled for now
+             * stopWatch.start();
+             * buildNumberOfMeddelandenPerMonth();
+             * stopWatch.stop();
+             * LOG.info("National cache buildNumberOfMeddelandenPerMonth " + stopWatch.getTotalTimeMillis());
+             */
             stopWatch.start();
             buildKonsfordelningPerLan();
             stopWatch.stop();
@@ -200,7 +201,8 @@ public class ChartDataService {
     private void buildAldersgrupper() {
         Range range = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
         SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getHistoricalAgeGroups(range);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(range.getNumberOfMonths(), clock));
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(),
+                Range.createForLastMonthsExcludingCurrent(range.getNumberOfMonths(), clock));
         aldersgrupper = SimpleDualSexConverter.newGenericTvarsnitt().convert(ageGroups, filterSettings);
     }
 
@@ -232,12 +234,13 @@ public class ChartDataService {
     }
 
     /*
-    private void buildNumberOfMeddelandenPerMonth() {
-        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getMeddelandenPerMonth(range);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
-        numberOfMeddelandenPerMonth = new MessagePeriodConverter().convert(casesPerMonth, filterSettings);
-    }*/
+     * private void buildNumberOfMeddelandenPerMonth() {
+     * final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
+     * SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getMeddelandenPerMonth(range);
+     * final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+     * numberOfMeddelandenPerMonth = new MessagePeriodConverter().convert(casesPerMonth, filterSettings);
+     * }
+     */
 
     private Response getResponse(TableDataReport result, String csv, String filename) {
         if (csv == null || csv.isEmpty()) {
@@ -261,15 +264,16 @@ public class ChartDataService {
 
     /**
      * Get meddelanden per manad.
-
-    @GET
-    @Path("getNumberOfMeddelandenPerMonth{csv:(/csv)?}")
-    @Produces({ MediaType.APPLICATION_JSON })
-    public Response getNumberOfMeddelandenPerMonth(@PathParam("csv") String csv) {
-        LOG.info("Calling getNumberOfMeddelandenPerMonth for national");
-        monitoringLogService.logTrackAccessAnonymousChartData("getNumberOfMeddelandenPerMonth");
-        return getResponse(numberOfMeddelandenPerMonth, csv);
-    }*/
+     *
+     * @GET
+     *      @Path("getNumberOfMeddelandenPerMonth{csv:(/csv)?}")
+     * @Produces({ MediaType.APPLICATION_JSON })
+     *             public Response getNumberOfMeddelandenPerMonth(@PathParam("csv") String csv) {
+     *             LOG.info("Calling getNumberOfMeddelandenPerMonth for national");
+     *             monitoringLogService.logTrackAccessAnonymousChartData("getNumberOfMeddelandenPerMonth");
+     *             return getResponse(numberOfMeddelandenPerMonth, csv);
+     *             }
+     */
 
     /**
      * Get the list of diagnoskapitel.

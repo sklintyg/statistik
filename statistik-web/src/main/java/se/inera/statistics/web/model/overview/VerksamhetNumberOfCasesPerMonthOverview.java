@@ -28,8 +28,8 @@ public class VerksamhetNumberOfCasesPerMonthOverview {
     private final String oldPeriod;
     private final int totalCases;
 
-    public VerksamhetNumberOfCasesPerMonthOverview(int amountMaleNew, int amountFemaleNew, String newPeriod, int amountMaleOld, int amountFemaleOld,
-            String oldPeriod, int totalCases) {
+    public VerksamhetNumberOfCasesPerMonthOverview(int amountMaleNew, int amountFemaleNew, String newPeriod, int amountMaleOld,
+            int amountFemaleOld, String oldPeriod, int totalCases) {
         this.amountMaleNew = amountMaleNew;
         this.amountFemaleNew = amountFemaleNew;
         this.newPeriod = newPeriod;

@@ -38,15 +38,17 @@ public class PdfService {
     @Autowired
     private LoggingService loggingService;
 
-    public PdfService() { }
+    public PdfService() {
+    }
 
     @POST
     @Path("create")
-    public Response pdf(@Context HttpServletRequest request, @FormParam("pdf") String pdf, @FormParam("name") String name, @FormParam("url") String url) {
+    public Response pdf(@Context HttpServletRequest request, @FormParam("pdf") String pdf, @FormParam("name") String name,
+            @FormParam("url") String url) {
 
         byte[] array = DatatypeConverter.parseBase64Binary(pdf);
 
-        name = name.replaceAll("Å", "A").replaceAll("Ä", "A").replaceAll("Ö", "O")
+        String cleanName = name.replaceAll("Å", "A").replaceAll("Ä", "A").replaceAll("Ö", "O")
                 .replaceAll("å", "a").replaceAll("ä", "a").replaceAll("ö", "o")
                 .replaceAll("[^A-Za-z0-9._]", "");
 
@@ -54,7 +56,7 @@ public class PdfService {
                 .entity(array)
                 .type(MediaType.APPLICATION_OCTET_STREAM_TYPE)
                 .header("Content-Length", array.length)
-                .header("Content-Disposition", "attachment; filename=" + name);
+                .header("Content-Disposition", "attachment; filename=" + cleanName);
 
         LogData logData = new LogData("Printing pdf", url);
         loggingService.frontendLogging(request, logData);
@@ -62,4 +64,3 @@ public class PdfService {
         return response.build();
     }
 }
-

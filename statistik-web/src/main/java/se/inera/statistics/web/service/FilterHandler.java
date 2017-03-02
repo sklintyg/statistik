@@ -18,16 +18,36 @@
  */
 package se.inera.statistics.web.service;
 
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.sun.istack.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -49,23 +69,6 @@ import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.RangeMessageDTO;
 import se.inera.statistics.web.model.Verksamhet;
-
-import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class FilterHandler {
@@ -103,7 +106,8 @@ public class FilterHandler {
 
     FilterSettings getFilterForLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue) {
         if (filterHash == null || filterHash.isEmpty()) {
-            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request), Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock));
+            return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request),
+                    Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock));
         }
         final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
         final ArrayList<HsaIdEnhet> enhetsIDs = getEnhetsFilteredLandsting(request, inFilter);
@@ -114,7 +118,8 @@ public class FilterHandler {
             LOG.debug("Could not use selected landsting filter. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request),
                     Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
-                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN,
+                            "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
         }
     }
 
@@ -122,19 +127,14 @@ public class FilterHandler {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final List<HsaIdEnhet> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
         final List<Enhet> enhets = enhetManager.getEnhets(allEnhets);
-        return Lists.transform(enhets, new Function<Enhet, Verksamhet>() {
-            @Override
-            public Verksamhet apply(Enhet enhet) {
-                return loginServiceUtil.toVerksamhet(enhet);
-            }
-        });
+        return Lists.transform(enhets, enhet -> loginServiceUtil.toVerksamhet(enhet));
     }
-
 
     FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultNumberOfMonthsInRange) {
         try {
             if (filterHash == null || filterHash.isEmpty()) {
-                return new FilterSettings(getFilterForAllAvailableEnhets(request), Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock));
+                return new FilterSettings(getFilterForAllAvailableEnhets(request),
+                        Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock));
             }
             final FilterData inFilter = filterHashHandler.getFilterFromHash(filterHash);
             final List<HsaIdEnhet> enhetsIDs = getEnhetsFiltered(request, inFilter);
@@ -144,23 +144,29 @@ public class FilterHandler {
             LOG.debug("Could not use selected filter. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhets(request),
                     Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock),
-                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN,
+                            "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
         }
     }
 
-    private FilterSettings getFilterSettings(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter, List<HsaIdEnhet> enhetsInFilter) throws FilterException {
+    private FilterSettings getFilterSettings(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter,
+            List<HsaIdEnhet> enhetsInFilter) throws FilterException {
         Set<HsaIdEnhet> enheter = getEnhetNameMap(request, enhetsInFilter).keySet();
-        final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()])).getIntygFilter();
+        final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()]))
+                .getIntygFilter();
         return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter);
     }
 
-    private FilterSettings getFilterSettingsLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter, ArrayList<HsaIdEnhet> enhetsInFilter) throws FilterException {
+    private FilterSettings getFilterSettingsLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue,
+            FilterData inFilter, ArrayList<HsaIdEnhet> enhetsInFilter) throws FilterException {
         Set<HsaIdEnhet> enheter = getEnhetNameMapLandsting(request, enhetsInFilter).keySet();
-        final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()])).getIntygFilter();
+        final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()]))
+                .getIntygFilter();
         return getFilterSettings(filterHash, defaultRangeValue, inFilter, enheter, enhetFilter);
     }
 
-    private FilterSettings getFilterSettings(String filterHash, int defaultRangeValue, FilterData inFilter, Collection<HsaIdEnhet> enhetsIDs, Predicate<Fact> enhetFilter) throws FilterException {
+    private FilterSettings getFilterSettings(String filterHash, int defaultRangeValue, FilterData inFilter,
+            Collection<HsaIdEnhet> enhetsIDs, Predicate<Fact> enhetFilter) throws FilterException {
         final List<String> diagnoser = inFilter.getDiagnoser();
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         final List<String> aldersgrupp = inFilter.getAldersgrupp();
@@ -168,8 +174,10 @@ public class FilterHandler {
         final List<String> sjukskrivningslangds = inFilter.getSjukskrivningslangd();
         final Predicate<Sjukfall> sjukfallLengthFilter = getSjukfallLengthFilter(sjukskrivningslangds);
         final String predicatesHash = getHash(filterHash, enhetsIDs);
-        final FilterPredicates sjukfallFilter = new FilterPredicates(Predicates.and(enhetFilter, diagnosFilter, aldersgruppFilter), sjukfallLengthFilter, predicatesHash, !sjukskrivningslangds.isEmpty());
-        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter), toReadableAgeGroupNames(aldersgrupp), filterHash);
+        final FilterPredicates sjukfallFilter = new FilterPredicates(Predicates.and(enhetFilter, diagnosFilter, aldersgruppFilter),
+                sjukfallLengthFilter, predicatesHash, !sjukskrivningslangds.isEmpty());
+        final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter),
+                toReadableAgeGroupNames(aldersgrupp), filterHash);
         final RangeMessageDTO rangeMessageDTO = getRange(inFilter, defaultRangeValue);
         return new FilterSettings(filter, rangeMessageDTO);
     }
@@ -188,8 +196,8 @@ public class FilterHandler {
         }
         return sjukskrivningslangds.stream()
                 .map(sjukskrivningslangd -> SjukfallsLangdGroup.parse(sjukskrivningslangd)
-                    .flatMap(slg -> Optional.of(slg.getGroupName()))
-                    .orElse(sjukskrivningslangd))
+                        .flatMap(slg -> Optional.of(slg.getGroupName()))
+                        .orElse(sjukskrivningslangd))
                 .collect(Collectors.toList());
     }
 
@@ -229,8 +237,10 @@ public class FilterHandler {
         }
     }
 
-    private RangeMessageDTO validateAndGetFilterRangeMessage(LocalDate from, LocalDate to) throws FilterException {
+    private RangeMessageDTO validateAndGetFilterRangeMessage(LocalDate originalFrom, LocalDate originalTo) throws FilterException {
         String message = null;
+        LocalDate from = originalFrom;
+        LocalDate to = originalTo;
 
         LocalDate highestAcceptedEndDate = LocalDate.now(clock).plusMonths(1).withDayOfMonth(1).minusDays(1);
 
@@ -245,13 +255,16 @@ public class FilterHandler {
             String formattedToDate = highestAcceptedEndDate.format(formatter);
             String formattedFromDate = LOWEST_ACCEPTED_START_DATE.format(formatter);
 
-            message = String.format("Det finns ingen statistik innan %s och ingen efter %s, visar statistik mellan %s och %s.", formattedFromDate, formattedToDate, formattedFromDate, formattedToDate);
+            message = String.format("Det finns ingen statistik innan %s och ingen efter %s, visar statistik mellan %s och %s.",
+                    formattedFromDate, formattedToDate, formattedFromDate, formattedToDate);
         } else if (isBefore) {
             from = LOWEST_ACCEPTED_START_DATE;
-            message = String.format("Det finns ingen statistik innan %s. Visar statistik från tidigast möjliga datum.", LOWEST_ACCEPTED_START_DATE.format(formatter));
+            message = String.format("Det finns ingen statistik innan %s. Visar statistik från tidigast möjliga datum.",
+                    LOWEST_ACCEPTED_START_DATE.format(formatter));
         } else if (isAfter) {
             to = highestAcceptedEndDate;
-            message = String.format("Det finns ingen statistik efter %s. Visar statistik fram till senast möjliga datum.", highestAcceptedEndDate.format(formatter));
+            message = String.format("Det finns ingen statistik efter %s. Visar statistik fram till senast möjliga datum.",
+                    highestAcceptedEndDate.format(formatter));
         }
 
         if (to.isBefore(from)) {
@@ -277,7 +290,8 @@ public class FilterHandler {
 
     private Filter getFilterForEnhets(@Nonnull final Set<Integer> enhetsAsIntIds, @Nonnull List<HsaIdEnhet> enhetsAsHsaIds) {
         final String hashValue = FilterPredicates.getHashValueForEnhets(enhetsAsIntIds);
-        final FilterPredicates predicate = new FilterPredicates(fact -> enhetsAsIntIds.contains(fact.getEnhet()), sjukfall -> true, hashValue, false);
+        final FilterPredicates predicate = new FilterPredicates(fact -> enhetsAsIntIds.contains(fact.getEnhet()), sjukfall -> true,
+                hashValue, false);
         final List<String> sjukskrivningslangd = toReadableSjukskrivningslangdName(null);
         final List<String> aldersgrupp = toReadableAgeGroupNames(null);
         return new Filter(predicate, enhetsAsHsaIds, null, sjukskrivningslangd, aldersgrupp, hashValue);
@@ -287,7 +301,8 @@ public class FilterHandler {
         LoginInfo info = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         if (info.getLoginInfoForVg(vgId).map(LoginInfoVg::isProcessledare).orElse(false)) {
-            return new Filter(SjukfallUtil.ALL_ENHETER, null, null, toReadableSjukskrivningslangdName(null), toReadableAgeGroupNames(null), FilterPredicates.HASH_EMPTY_FILTER);
+            return new Filter(SjukfallUtil.ALL_ENHETER, null, null, toReadableSjukskrivningslangdName(null), toReadableAgeGroupNames(null),
+                    FilterPredicates.HASH_EMPTY_FILTER);
         }
         List<HsaIdEnhet> hsaIds = info.getBusinessesForVg(vgId).stream().map(Verksamhet::getId).collect(Collectors.toList());
         final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(hsaIds, Warehouse::getEnhet));
@@ -300,7 +315,7 @@ public class FilterHandler {
         final List<String> enheter = inFilter.getEnheter();
         final HashSet<HsaIdEnhet> enhets = new HashSet<>(toHsaIds(enheter));
         if (verksamhetstyper.isEmpty() && enheter.isEmpty()) {
-            return new ArrayList<>(enhetsMatchingVerksamhetstyp); //All available enhets for user
+            return new ArrayList<>(enhetsMatchingVerksamhetstyp); // All available enhets for user
         } else if (verksamhetstyper.isEmpty()) {
             return new ArrayList<>(enhets);
         } else if (enheter.isEmpty()) {
@@ -325,7 +340,7 @@ public class FilterHandler {
         final List<String> enheter = inFilter.getEnheter();
         final HashSet<HsaIdEnhet> enhets = new HashSet<>(toHsaIds(enheter));
         if (verksamhetstyper.isEmpty() && enheter.isEmpty()) {
-            return new ArrayList<>(enhetsMatchingVerksamhetstyp); //All available enhets for user
+            return new ArrayList<>(enhetsMatchingVerksamhetstyp); // All available enhets for user
         } else if (verksamhetstyper.isEmpty()) {
             return new ArrayList<>(enhets);
         } else if (enheter.isEmpty()) {
@@ -358,7 +373,8 @@ public class FilterHandler {
     }
 
     private boolean isOfVerksamhetsTyp(List<String> verksamhetstyper, Set<Verksamhet.VerksamhetsTyp> verksamhetstyperForCurrentVerksamhet) {
-        if (verksamhetstyper == null || verksamhetstyper.isEmpty() || verksamhetstyperForCurrentVerksamhet == null || verksamhetstyperForCurrentVerksamhet.isEmpty()) {
+        if (verksamhetstyper == null || verksamhetstyper.isEmpty() || verksamhetstyperForCurrentVerksamhet == null
+                || verksamhetstyperForCurrentVerksamhet.isEmpty()) {
             return true;
         }
         for (Verksamhet.VerksamhetsTyp verksamhetsTyp : verksamhetstyperForCurrentVerksamhet) {

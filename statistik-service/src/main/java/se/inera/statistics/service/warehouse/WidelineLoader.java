@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,8 +51,7 @@ public class WidelineLoader {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement stmt = prepareStatement(connection);
-                ResultSet resultSet = stmt.executeQuery()
-        ) {
+                ResultSet resultSet = stmt.executeQuery()) {
             int lineNo = 0;
             while (resultSet.next()) {
                 lineNo++;
@@ -89,13 +89,18 @@ public class WidelineLoader {
         String lakareId = resultSet.getString("lakareid");
         boolean enkeltIntyg = resultSet.getBoolean("enkelt");
 
-        return new WideLine(id, correlationId, lkf, new HsaIdEnhet(enhet), intyg, EventType.CREATED, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, new HsaIdVardgivare(vardgivare), new HsaIdLakare(lakareId), enkeltIntyg);
+        return new WideLine(id, correlationId, lkf, new HsaIdEnhet(enhet), intyg, EventType.CREATED, patientid, startdatum, slutdatum, kon,
+                alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder,
+                lakarbefattning, new HsaIdVardgivare(vardgivare), new HsaIdLakare(lakareId), enkeltIntyg);
     }
 
+    @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
+            justification = "We know what we're doing. No user supplied data.")
     private PreparedStatement prepareStatement(Connection connection) throws SQLException {
-        String sql = "select id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum,"
-                + " slutdatum, kon, alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder,"
-                + " lakarbefattning, vardgivareid, lakareid, enkelt from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )";
+        String sql = "select id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, "
+                + "diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivareid, "
+                + "lakareid, enkelt from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = "
+                + EventType.REVOKED.ordinal() + " )";
 
         int maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.fact", "0"));
         if (maxIntyg > 0) {
