@@ -22,11 +22,17 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
-                   logicalFilePath="liquibase/db.changelog-v40.0_add_column_meddelandehandelse.xml">
+                   logicalFilePath="liquibase/db.changelog-v40.0_add_column_meddelandehandelse_new.xml">
 
-    <changeSet id="40_add_column_meddelandehandelse" author="martin.hesslund">
+    <changeSet id="40_add_column_meddelandehandelse_new" author="martin.hesslund">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists tableName="meddelandehandelse" columnName="tries"/>
+            </not>
+        </preConditions>
+
         <addColumn tableName="meddelandehandelse">
-            <column name="tries" type="number" defaultValueDate="0">
+            <column name="tries" type="number" defaultValueNumeric="0">
                 <constraints nullable="false" />
             </column>
         </addColumn>
