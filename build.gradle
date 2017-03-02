@@ -1,144 +1,99 @@
+ext {
+    // Internal
+    intygInfraVersion = "3.2.16"
+    intygCommonVersion = "3.1.479"
+    intygCommonLoggingVersion = "3.0.0"
+    intygSchematronVersion = "1.0.8"
+    certificateSchemaVersion = "2.0"
+    monitoringSchemaVersion = "1.0.0.0"
+
+    // External
+    activeMqVersion = "5.13.0"
+
+    commonsLang3Version = "3.2.1"
+    commonCliVersion = "1.2"
+    commonDCHPVersion = "2.0"
+    cxfVersion = '3.1.3'
+
+    googleGuavaVersion = "18.0"
+    groovyAllVersion = "2.3.6"
+    groovyHttpVersion = "0.7"
+    gparsVersion = "1.1.0"
+
+    h2Version = "1.3.171"
+    hibernateVersion = "4.3.1.Final"
+    hibernateJpaVersion = "1.0.0.Final"
+    httpVersion = "4.4.1"
+    httpClientVersion = "4.2.1"
+
+    jacksonJodaTimeVersion = "2.2.3"
+    jacksonJavaTimeVersion = "2.8.3"
+    javaxServletVersion = "3.1.0"
+    jaxb2Version = "0.9.5"
+    jettyJmxVersion = "9.2.10.v20150310"
+    jmsVersion = "1.1.1"
+    jodaTimeVersion = "2.3"
+
+    liquibaseVersion = "2.0.5"
+    logbackVersion = "1.1.1"
+
+    mysqlConnectorVersion = "5.1.39"
+
+    poiVersion = "3.11"
+
+    restAssuredVersion = "2.9.0"
+
+    stringTemplateVersion = "4.0.8"
+
+    schematronVersion = "4.1.0"
+
+    springContextVersion = "4.2.2.RELEASE"
+    springSecurityVersion = "4.0.3.RELEASE"
+    springSecuritySamlVersion = "1.0.1.RELEASE"
+
+    tomcatVersion = "7.0.57"
+
+    xalanVersion = "2.7.2"
+    xmlApisVersion = "1.4.01"
+
+    zipletVersion = "2.1.2"
+
+    // Test
+    fitnessVersion = "20151230"
+    junitVersion = "4.11"
+    mockitoVersion = "1.9.5"
+    springTestVersion = "4.2.2.RELEASE"
+}
+
 buildscript {
+    repositories {
+        mavenLocal()
+        maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/" }
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+
     dependencies {
+        classpath 'se.inera.intyg:gradle-fitnesse-plugin:1.0.+'
+        classpath 'se.inera.intyg:gradle-intyg-plugin:1.1-SNAPSHOT'
         classpath 'org.akhikhl.gretty:gretty:1.4.1'
     }
 }
 
-plugins {
-    id "com.github.hierynomus.license" version "0.11.0"
-}
-
 allprojects {
-    group = project_group
-    version = project_version
-
-    if (project.hasProperty("buildVersion")) {
-        version = project.getProperty("buildVersion")
-    }
-
-    project.ext.set("buildVersion", version)
-
     repositories {
         mavenLocal()
-        maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/central/" }
         maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/" }
-        maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/nightly/" }
-        maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/snapshots/" }
-        maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/thirdparty/" }
         mavenCentral()
     }
 
-    buildscript {
-        repositories {
-            mavenLocal()
-            maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/" }
-            maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/snapshots/" }
-            jcenter()
-        }
-    }
-}
+    // Findbugs does not work very well with groovy code. Hence we exclude groovy projects.
+    ext.findbugsExclude = "(fileservice|.*specifications)\$"
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'license'
-    if (project.hasProperty('runSonar')) {
-        apply plugin: 'jacoco'
-    }
+    // Errorprone has no mechanism (yet) for excluding generated code. We therefore disable it for hsa-integration.
+    ext.errorproneExclude = "hsa-integration"
 
-    sourceCompatibility = "1.8"
-    targetCompatibility = "1.8"
-
-    tasks.withType(JavaCompile) {
-        options.encoding = 'UTF-8'
-    }
-
-    ext {
-        // >>> Dependency Management
-
-        // External
-        activeMqVersion = "5.13.0"
-
-        commonsLang3Version = "3.2.1"
-        commonCliVersion = "1.2"
-        commonDCHPVersion = "2.0"
-        cxfVersion = '3.1.3'
-
-        googleGuavaVersion = "18.0"
-        groovyAllVersion = "2.3.6"
-        groovyHttpVersion = "0.7"
-        gparsVersion = "1.1.0"
-
-        h2Version = "1.3.171"
-        hibernateVersion = "4.3.1.Final"
-        hibernateJpaVersion = "1.0.0.Final"
-        httpVersion = "4.4.1"
-        httpClientVersion = "4.2.1"
-
-        jacksonJodaTimeVersion = "2.2.3"
-        jacksonJavaTimeVersion = "2.8.3"
-        javaxServletVersion = "3.1.0"
-        jaxb2Version = "0.9.5"
-        jettyJmxVersion = "9.2.10.v20150310"
-        jmsVersion = "1.1.1"
-        jodaTimeVersion = "2.3"
-
-        liquibaseVersion = "2.0.5"
-        logbackVersion = "1.1.1"
-
-        mysqlConnectorVersion = "5.1.39"
-
-        poiVersion = "3.11"
-
-        restAssuredVersion = "2.9.0"
-
-        stringTemplateVersion = "4.0.8"
-
-        schematronVersion = "4.1.0"
-
-        springContextVersion = "4.2.2.RELEASE"
-        springSecurityVersion = "4.0.3.RELEASE"
-        springSecuritySamlVersion = "1.0.1.RELEASE"
-
-        tomcatVersion = "7.0.57"
-
-        xalanVersion = "2.7.2"
-        xmlApisVersion = "1.4.01"
-
-        zipletVersion = "2.1.2"
-
-        // Internal
-        intygInfraVersion = "3.2.16"
-        intygCommonVersion = "3.1.479"
-        intygCommonLoggingVersion = "3.0.0"
-        intygSchematronVersion = "1.0.8"
-
-        // Schemas
-        certificateSchemaVersion = "2.0"
-        monitoringSchemaVersion = "1.0.0.0"
-
-        // Test
-        fitnessVersion = "20151230"
-        junitVersion = "4.11"
-        mockitoVersion = "1.9.5"
-        springTestVersion = "4.2.2.RELEASE"
-
-        // <<< Dependency management
-    }
-
-    test {
-        exclude '**/*FunctionalTest.*'
-        reports.html.destination = file("$reports.html.destination/unit")
-        reports.junitXml.destination = file("$reports.junitXml.destination/unit")
-    }
-
-    license {
-        ext.url = 'https://github.com/sklintyg/statistik'
-        ext.name = rootProject.name
-        ext.year = 2016
-        strictCheck true
-        header rootProject.file("header.txt")
-        includes(["**/*.xml", "**/se/inera/statistics/**/*.java", "**/se/inera/auth/**/*.java", "**/se/inera/ifv/statistics/**/*.java", "**/se/inera/testsupport/**/*.java"])
-    }
+    apply plugin: 'maven'
+    apply plugin: 'inera-intyg'
 
     dependencies {
         compile "ch.qos.logback:logback-classic:${logbackVersion}"
@@ -148,9 +103,32 @@ subprojects {
         testCompile "junit:junit:${junitVersion}"
         testCompile "org.mockito:mockito-core:${mockitoVersion}"
     }
+
+    group = project_group
+    version = project_version
+
+    if (project.hasProperty("buildVersion")) {
+        version = project.getProperty("buildVersion")
+    }
+
+    project.ext.set("buildVersion", version)
+
+    sourceCompatibility = "1.8"
+    targetCompatibility = "1.8"
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    test {
+        exclude '**/*FunctionalTest.*'
+        reports.html.destination = file("$reports.html.destination/unit")
+        reports.junitXml.destination = file("$reports.junitXml.destination/unit")
+    }
+
 }
 
-//Kontroll av personnummer enligt https://sv.wikipedia.org/wiki/Luhn-algoritmen
+// Kontroll av personnummer enligt https://sv.wikipedia.org/wiki/Luhn-algoritmen
 def validatePnr(String pnr) {
     def pnrNumberOnly = pnr.replaceAll(/\D/,"")
     if (pnrNumberOnly.length() < 10) {
@@ -177,20 +155,20 @@ def validatePnr(String pnr) {
     return sum % 10 == 0
 }
 
-task('breakBuildForValidPersonnummer') << {
-    def testpersonnummer = new File("statistik-service/src/main/resources/personnr/testpersoner.log").text
-    def allowedPnrs = [
-                       "19121212-1212", "191212121212", "121212-1212", "1212121212" //Tolvan Tolvansson, testpersonnummer
-                       ]
+task('breakBuildForValidPersonnummer') {
+    doLast {
+        def testpersonnummer = new File("statistik-service/src/main/resources/personnr/testpersoner.log").text
+        def allowedPnrs = [ "19121212-1212", "191212121212", "121212-1212", "1212121212" ] //Tolvan Tolvansson, testpersonnummer
 
-    FileTree tree = fileTree(dir: '.').exclude('**/.gradle', '**/.idea', '**/node_modules', '**/bower_components', '**/*.iml', '**/*.jar')
-    tree.each {File file ->
-        if (file.file) {
-            def pnrs = file.text.findAll(/(\d{2})?\d{6}-?\d{4}/)
-            if (!pnrs.isEmpty()) {
-                pnrs.each { pnr ->
-                    if (!allowedPnrs.contains(pnr) && !testpersonnummer.contains(pnr) && validatePnr(pnr)) {
-                         throw new GradleException("Found valid personnummer: " + pnr + " in file: " + file.canonicalPath)
+        FileTree tree = fileTree(dir: '.').exclude('**/.gradle', '**/.idea', '**/node_modules', '**/bower_components', '**/*.iml', '**/*.jar')
+        tree.each {File file ->
+            if (file.file) {
+                def pnrs = file.text.findAll(/(\d{2})?\d{6}-?\d{4}/)
+                if (!pnrs.isEmpty()) {
+                    pnrs.each { pnr ->
+                        if (!allowedPnrs.contains(pnr) && !testpersonnummer.contains(pnr) && validatePnr(pnr)) {
+                            throw new GradleException("Found valid personnummer: " + pnr + " in file: " + file.canonicalPath)
+                        }
                     }
                 }
             }
@@ -198,69 +176,22 @@ task('breakBuildForValidPersonnummer') << {
     }
 }
 
-check.dependsOn breakBuildForValidPersonnummer
+//check.dependsOn breakBuildForValidPersonnummer
 
-configure(subprojects.findAll { ['hsa-integration', 'statistik-service', 'statistik-web'].contains(it.name) }) {
-    apply plugin: 'checkstyle'
-
-    checkstyle {
-        configProperties.checkstyleConfigDir = file("$rootProject.projectDir/build-tools/src/main/resources")
-        config = resources.text.fromFile("${rootProject.projectDir}/build-tools/src/main/resources/checkstyle.xml")
-        ignoreFailures = false
-        // This is empty b/c we run checkstyle explicitly in the "testAll" task below
-        sourceSets = []
-        toolVersion = "7.1"
-    }
-    // Make sure we don't run checkstyle on generated source code
-    checkstyleMain.source = "src/main/java"
-
-    sourceSets {
-        integrationTests {
-            java.srcDir file('src/integTest/java')
-            resources.srcDir file('src/integTest/resources')
-            compileClasspath += sourceSets.main.output + sourceSets.test.output
-            runtimeClasspath += sourceSets.main.output + sourceSets.test.output
-        }
-
-        integrationTest {
-            java.srcDir file('src/integrationTest/java')
-            resources.srcDir file('src/integrationTest/resources')
-            compileClasspath += sourceSets.main.output + sourceSets.test.output
-            runtimeClasspath += sourceSets.main.output + sourceSets.test.output
-        }
-    }
-
-    configurations {
-        integrationTestsCompile.extendsFrom testCompile
-        integrationTestsRuntime.extendsFrom testRuntime
-
-        integrationTestCompile.extendsFrom testCompile
-        integrationTestRuntime.extendsFrom testRuntime
+configure(subprojects.findAll { ['statistik-service', 'statistik-web'].contains(it.name) }) {
+    test {
+        exclude '**/*IT*'
     }
 
     task integrationTest(type: Test) {
-        systemProperties['integration.tests.baseUrl'] =  'http://localhost:8080/'
         outputs.upToDateWhen { false }
-        testClassesDir = sourceSets.integrationTest.output.classesDir
-        classpath = sourceSets.integrationTest.runtimeClasspath
-        reports.html.destination = file("$reports.html.destination/integrationTests")
-        reports.junitXml.destination = file("$reports.junitXml.destination/integrationTests")
-    }
-
-    task integrationTests(type: Test) {
-        outputs.upToDateWhen { false }
-        testClassesDir = sourceSets.integrationTests.output.classesDir
-        classpath = sourceSets.integrationTests.runtimeClasspath
+        include '**/*IT*'
         reports.html.destination = file("$reports.html.destination/integration")
         reports.junitXml.destination = file("$reports.junitXml.destination/integration")
     }
-
-    task testAll(dependsOn: [test, integrationTests, checkstyleMain])
 }
 
 configure(subprojects.findAll { ['fileservice', 'liquibase-runner', 'statistik-web'].contains(it.name) }) {
-    apply plugin: 'maven'
-
     configurations {
         deployerJars
     }
@@ -283,46 +214,6 @@ configure(subprojects.findAll { ['fileservice', 'liquibase-runner', 'statistik-w
                     authentication(userName: nexusUsername, password: nexusPassword)
                 }
                 uniqueVersion = false
-            }
-        }
-    }
-}
-
-if (project.hasProperty('runSonar')) {
-    apply plugin: 'sonar-runner'
-
-    sonarRunner {
-        sonarProperties {
-            property "sonar.jacoco.reportPath", "$buildDir/jacoco/test.exec"
-            property "sonar.projectName", projectName
-            property "sonar.projectKey", projectId
-
-            // Address of SonarQube server
-            property "sonar.host.url", "https://build-inera.nordicmedtest.se/sonar"
-
-            ext.sonarPassword = System.properties['sonarPassword']
-
-            // Database config
-            property "sonar.jdbc.url", "jdbc:mysql://localhost:3306/sonar"
-            property "sonar.jdbc.driverClassName", "com.mysql.jdbc.Driver"
-            property "sonar.jdbc.username", "sonar"
-            property "sonar.jdbc.password", sonarPassword
-
-            project(":hsa-integration") {
-                sonarRunner {
-                    sonarProperties {
-                        properties["sonar.sources"] -= project(":hsa-integration").generatedJavaDir
-                    }
-                }
-            }
-
-            project(":statistik-web") {
-                sonarRunner {
-                    sonarProperties {
-                        property "sonar.javascript.lcov.reportPath", "$buildDir/karma/coverage/lcov/lcov.info"
-                        property "sonar.sources", "${projectDir}/src/main/resources,${projectDir}/src/main/java,${projectDir}/src/main/webapp/app,${projectDir}/src/main/webapp/components"
-                    }
-                }
             }
         }
     }

@@ -57,12 +57,13 @@ public class MessageWidelineManager {
         } else {
             processMessageLog.increaseNumberOfTries(meddelandeId);
 
-            String errorString = "Faulty meddelande logid " + logId + " id " + meddelandeId + " error count " + errCount;
+            StringBuilder errorString = new StringBuilder(
+                    "Faulty meddelande logid " + logId + " id " + meddelandeId + " error count " + errCount);
 
             for (String error : errors) {
-                errorString += "\n" + error;
+                errorString.append("\n").append(error);
             }
-            LOG.error(errorString);
+            LOG.error(errorString.toString());
 
             errCount++;
         }

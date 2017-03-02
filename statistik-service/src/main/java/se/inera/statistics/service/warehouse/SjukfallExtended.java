@@ -33,7 +33,6 @@ import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 
 import se.inera.statistics.service.report.model.Kon;
@@ -78,7 +77,8 @@ public class SjukfallExtended {
         facts.add(line);
         kon = line.getKon();
         alder = line.getAlder();
-        diagnoses.add(new Diagnos(start, end, line.getDiagnoskapitel(), line.getDiagnosavsnitt(), line.getDiagnoskategori(), line.getDiagnoskod()));
+        diagnoses.add(new Diagnos(start, end, line.getDiagnoskapitel(), line.getDiagnosavsnitt(), line.getDiagnoskategori(),
+                line.getDiagnoskod()));
         sjukskrivningsgrad.put(new Range(WidelineConverter.toDate(start), WidelineConverter.toDate(end)), line.getSjukskrivningsgrad());
         lan = line.getLan();
         this.lakare.add(getLakareFromFact(line));
@@ -311,12 +311,8 @@ public class SjukfallExtended {
 
     public SjukfallExtended extendWithRealDaysWithinPeriod(SjukfallExtended previous) {
         final SjukfallExtended sjukfall = new SjukfallExtended(this);
-        final Set<Integer> datesWithinPeriod = Sets.filter(previous.getAllDates(previous.sjukskrivningsperiods), new Predicate<Integer>() {
-            @Override
-            public boolean apply(Integer date) {
-                return date >= start && date <= end;
-            }
-        });
+        final Set<Integer> datesWithinPeriod = Sets.filter(previous.getAllDates(previous.sjukskrivningsperiods),
+                date -> date >= start && date <= end);
         List<Sjukskrivningsperiod> newSjukskrivningsperiods = toSjukskrivningsperiods(datesWithinPeriod);
         sjukfall.sjukskrivningsperiods.addAll(newSjukskrivningsperiods);
         return sjukfall;
@@ -370,7 +366,7 @@ public class SjukfallExtended {
         return facts.stream().map(Fact::getId).collect(Collectors.toList());
     }
 
-    final class Diagnos {
+    static final class Diagnos {
         private final int diagnoskapitel;
         private final int diagnosavsnitt;
         private final int diagnoskategori;

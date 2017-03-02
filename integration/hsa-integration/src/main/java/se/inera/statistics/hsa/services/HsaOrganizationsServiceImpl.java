@@ -58,7 +58,6 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
 
     private final VardenhetComparator veComparator = new VardenhetComparator();
 
-
     @Override
     public UserAuthorization getAuthorizedEnheterForHosPerson(HsaIdUser hosPersonHsaId) {
         List<Vardenhet> vardenhetList = new ArrayList<>();
@@ -76,7 +75,8 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
 
             for (CredentialInformationType info : response) {
                 vardenhetList.addAll(getAllVardenhetsWithMuWithStatistikPurpose(info));
-                systemRoles.addAll(info.getHsaSystemRole().stream().map(sr -> sr.getSystemId() + ";" + sr.getRole()).collect(Collectors.toList()));
+                systemRoles.addAll(
+                        info.getHsaSystemRole().stream().map(sr -> sr.getSystemId() + ";" + sr.getRole()).collect(Collectors.toList()));
             }
             vardenhetList = vardenhetList.stream().distinct().sorted(veComparator).collect(Collectors.toList());
         }
@@ -86,7 +86,7 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
     }
 
     @Override
-    public Vardgivare getVardgivare(HsaIdVardgivare hsaIdVardgivare)  {
+    public Vardgivare getVardgivare(HsaIdVardgivare hsaIdVardgivare) {
         UnitType unit = null;
         try {
             unit = organizationUnitService.getUnit(hsaIdVardgivare.getId());
@@ -101,7 +101,8 @@ public class HsaOrganizationsServiceImpl implements HsaOrganizationsService {
         List<Vardenhet> enhets = new ArrayList<>();
         for (CommissionType commissionType : info.getCommission()) {
             if (Medarbetaruppdrag.STATISTIK.equalsIgnoreCase(commissionType.getCommissionPurpose())) {
-                enhets.add(new Vardenhet(new HsaIdEnhet(commissionType.getHealthCareUnitHsaId()), commissionType.getHealthCareUnitName(), new HsaIdVardgivare(commissionType.getHealthCareProviderHsaId()), commissionType.getHealthCareProviderName()));
+                enhets.add(new Vardenhet(new HsaIdEnhet(commissionType.getHealthCareUnitHsaId()), commissionType.getHealthCareUnitName(),
+                        new HsaIdVardgivare(commissionType.getHealthCareProviderHsaId()), commissionType.getHealthCareProviderName()));
             }
         }
         return enhets;

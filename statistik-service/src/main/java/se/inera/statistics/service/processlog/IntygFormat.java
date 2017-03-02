@@ -30,7 +30,7 @@ public enum IntygFormat {
      */
     REGISTER_CERTIFICATE(1);
 
-    private int intValue;
+    private final int intValue;
 
     IntygFormat(int intValue) {
         this.intValue = intValue;

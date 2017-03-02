@@ -18,18 +18,20 @@
  */
 package se.inera.statistics.service.landsting.persistance.landstingenhet;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.service.landsting.LandstingEnhetFileDataRow;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.List;
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
+
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.service.landsting.LandstingEnhetFileDataRow;
 
 @Component
 public class LandstingEnhetManager {
@@ -46,12 +48,14 @@ public class LandstingEnhetManager {
     @Transactional
     public Optional<LandstingEnhet> get(Long id) {
         final LandstingEnhet landstingEnhet = manager.find(LandstingEnhet.class, id);
-        return landstingEnhet == null ? Optional.<LandstingEnhet>absent() : Optional.of(landstingEnhet);
+        return landstingEnhet == null ? Optional.<LandstingEnhet> absent() : Optional.of(landstingEnhet);
     }
 
     @Transactional
     public List<LandstingEnhet> getByLandstingId(Long landstingId) {
-        TypedQuery<LandstingEnhet> query = manager.createQuery("SELECT l FROM LandstingEnhet l where l.landstingId = :landstingId", LandstingEnhet.class).setParameter("landstingId", landstingId);
+        TypedQuery<LandstingEnhet> query = manager
+                .createQuery("SELECT l FROM LandstingEnhet l where l.landstingId = :landstingId", LandstingEnhet.class)
+                .setParameter("landstingId", landstingId);
         return query.getResultList();
     }
 
@@ -65,19 +69,14 @@ public class LandstingEnhetManager {
 
     @Transactional
     public void update(final Long landstingId, final List<LandstingEnhetFileDataRow> newData) {
-        List<LandstingEnhet> landstingEnhets = Lists.transform(newData, new Function<LandstingEnhetFileDataRow, LandstingEnhet>() {
-            @Override
-            public LandstingEnhet apply(LandstingEnhetFileDataRow data) {
-                final HsaIdEnhet enhetensHsaId = data.getEnhetensHsaId();
-                return new LandstingEnhet(landstingId, enhetensHsaId, data.getListadePatienter());
-            }
+        List<LandstingEnhet> landstingEnhets = Lists.transform(newData, data -> {
+            final HsaIdEnhet enhetensHsaId = data.getEnhetensHsaId();
+            return new LandstingEnhet(landstingId, enhetensHsaId, data.getListadePatienter());
         });
         removeByLandstingId(landstingId);
         for (LandstingEnhet landstingEnhet : landstingEnhets) {
             manager.persist(landstingEnhet);
         }
     }
-
-
 
 }

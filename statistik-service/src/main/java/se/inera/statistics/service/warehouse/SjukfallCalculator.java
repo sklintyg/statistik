@@ -41,7 +41,8 @@ class SjukfallCalculator {
         boolean extendSjukfall = !SjukfallUtil.ALL_ENHETER.getIntygFilter().equals(filter);
         final Iterable<Fact> filteredAisle = Iterables.filter(aisle, filter);
         ArrayList<Range> rangeList = new ArrayList<>(ranges);
-        sjukfallPerPeriodCalculator = new SjukfallPerPeriodCalculator(extendSjukfall, useOriginalSjukfallStart, rangeList, facts, filteredAisle);
+        sjukfallPerPeriodCalculator = new SjukfallPerPeriodCalculator(extendSjukfall, useOriginalSjukfallStart, rangeList, facts,
+                filteredAisle);
         maxPeriods = rangeList.size();
     }
 

@@ -96,7 +96,8 @@ public class HSADecorator {
                 .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
                 .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
                 .withCreatorVisibility(JsonAutoDetect.Visibility.ANY));
-        mapper.registerModule(new JavaTimeModule().addSerializer(LocalDateTime.class, new OurLocalDateTimeSerializer()).addDeserializer(LocalDateTime.class, new OurLocalDateTimeDeserializer()));
+        mapper.registerModule(new JavaTimeModule().addSerializer(LocalDateTime.class, new OurLocalDateTimeSerializer())
+                .addDeserializer(LocalDateTime.class, new OurLocalDateTimeDeserializer()));
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return mapper;
     }
@@ -173,7 +174,8 @@ public class HSADecorator {
     private static class OurLocalDateTimeSerializer extends com.fasterxml.jackson.databind.JsonSerializer<LocalDateTime> {
 
         @Override
-        public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+        public void serialize(LocalDateTime localDateTime, JsonGenerator jsonGenerator, SerializerProvider serializerProvider)
+                throws IOException {
             jsonGenerator.writeString(localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         }
 
@@ -187,7 +189,8 @@ public class HSADecorator {
             try {
                 return emptyField ? null : LocalDate.from(DateTimeFormatter.ofPattern("yyyy-MM-dd").parse(p.getText())).atStartOfDay();
             } catch (NumberFormatException | DateTimeParseException e) {
-                throw new JsonProcessingException("Failed to parse: " + p.getText(), e) { };
+                throw new JsonProcessingException("Failed to parse: " + p.getText(), e) {
+                };
             }
         }
     }

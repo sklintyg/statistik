@@ -18,12 +18,12 @@
  */
 package se.inera.statistics.service.report.model;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 
 public class DiagnosgruppResponse extends KonDataResponse {
 
@@ -42,12 +42,7 @@ public class DiagnosgruppResponse extends KonDataResponse {
         if (icdTyps == null) {
             return new ArrayList<>();
         }
-        return Lists.transform(icdTyps, new Function<Icd, String>() {
-            @Override
-            public String apply(Icd icd) {
-                return icd.asString();
-            }
-        });
+        return Lists.transform(icdTyps, (Function<Icd, String>) icd -> icd.asString());
     }
 
     public List<String> getDiagnosisGroupsAsStrings() {

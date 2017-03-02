@@ -33,7 +33,8 @@ public class DualSexStatisticsData extends TableDataReport {
     private final FilterDataResponse filter;
     private final List<Message> messages;
 
-    public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart, String period, FilterDataResponse filter, List<Message> messages) {
+    public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart, String period, FilterDataResponse filter,
+            List<Message> messages) {
         this.tableData = tableData;
         this.maleChart = maleChart;
         this.femaleChart = femaleChart;

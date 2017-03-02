@@ -75,7 +75,7 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
         TRACK_ACCESS_PROTECTED_CHART_DATA("User hsaId '{}', vardgivarId '{}' accessed uri '{}'"),
         TRACK_ACCESS_ANONYMOUS_CHART_DATA("Accessed uri '{}'");
 
-        private String message;
+        private final String message;
 
         MonitoringEvent(String msg) {
             this.message = msg;

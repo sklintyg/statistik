@@ -122,8 +122,8 @@ public class Sjukfall {
             case AVSNITT: return getDiagnosavsnitt();
             case KATEGORI: return getDiagnoskategori();
             case KOD: return getDiagnoskod();
-            default: throw new UnknownRangeTypeException("Unknown range type: " + rangeType);
         }
+        throw new UnknownRangeTypeException("Unknown range type: " + rangeType);
     }
 
     public List<Integer> getAllIcd10OfType(Icd10RangeType icd10RangeType) {
@@ -226,7 +226,7 @@ public class Sjukfall {
         }
     }
 
-    private class UnknownRangeTypeException extends RuntimeException {
+    private static class UnknownRangeTypeException extends RuntimeException {
 
         UnknownRangeTypeException(String s) {
             super(s);

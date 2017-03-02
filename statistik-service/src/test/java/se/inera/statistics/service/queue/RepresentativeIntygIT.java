@@ -54,12 +54,12 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:application-context-test.xml", "classpath:process-log-qm-test.xml", "classpath:icd10.xml" })
 @DirtiesContext
-public class RepresentativeIntygIntegrationTest {
+public class RepresentativeIntygIT {
     private static final int PERSON_K1950 = 0;
     private static final int PERSON_K1960 = 1;
     private static final int PERSON_M1979 = 2;
 
-    private static final Logger LOG = LoggerFactory.getLogger(RepresentativeIntygIntegrationTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RepresentativeIntygIT.class);
     public static final String G01 = "G01";
     public static final String L99 = "L99";
     public static final String A00 = "A00";

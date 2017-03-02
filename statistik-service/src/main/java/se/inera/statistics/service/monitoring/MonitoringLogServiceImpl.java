@@ -52,7 +52,7 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
         IN_FROM_QUEUE("Received certificateId '{}' from queue"),
         IN_FROM_TABLE("Processed batch with '{}' certificates");
 
-        private String message;
+        private final String message;
 
         MonitoringEvent(String msg) {
             this.message = msg;

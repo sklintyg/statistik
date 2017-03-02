@@ -20,7 +20,8 @@ package se.inera.statistics.service.report.model;
 
 import java.util.List;
 
-@java.lang.SuppressWarnings("common-java:DuplicatedBlocks") // Code will not be cleaner if extracting a common class for OverviewResponse and VerksamhetOverviewResponse.
+@java.lang.SuppressWarnings("common-java:DuplicatedBlocks") // Code will not be cleaner if extracting a common class for
+                                                            // OverviewResponse and VerksamhetOverviewResponse.
 public class VerksamhetOverviewResponse {
 
     private final int totalCases;
@@ -41,7 +42,8 @@ public class VerksamhetOverviewResponse {
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public VerksamhetOverviewResponse(int totalCases, OverviewKonsfordelning casesPerMonthSexProportionPreviousPeriod,
             OverviewKonsfordelning casesPerMonthSexProportionBeforePreviousPeriod, List<OverviewChartRowExtended> diagnosisGroups,
-            List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups, List<OverviewChartRow> sickLeaveLengthGroups,
+            List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
+            List<OverviewChartRow> sickLeaveLengthGroups,
             int longSickLeavesTotal, int longSickLeavesAlternation) {
         this.totalCases = totalCases;
         this.casesPerMonthSexProportionPreviousPeriod = casesPerMonthSexProportionPreviousPeriod;
@@ -95,8 +97,10 @@ public class VerksamhetOverviewResponse {
     public String toString() {
         return "{\"VerksamhetOverviewResponse\":{\"totalCases\":" + totalCases + ", \"casesPerMonthSexProportionPreviousPeriod\":"
                 + casesPerMonthSexProportionPreviousPeriod + ", \"casesPerMonthSexProportionBeforePreviousPeriod\":"
-                + casesPerMonthSexProportionBeforePreviousPeriod + ", \"diagnosisGroups\":" + diagnosisGroups + ", \"ageGroups\":" + ageGroups
-                + ", \"degreeOfSickLeaveGroups\":" + degreeOfSickLeaveGroups + ", \"sickLeaveLengthGroups\":" + sickLeaveLengthGroups + ", \"longSickLeavesTotal\":"
+                + casesPerMonthSexProportionBeforePreviousPeriod + ", \"diagnosisGroups\":" + diagnosisGroups + ", \"ageGroups\":"
+                + ageGroups
+                + ", \"degreeOfSickLeaveGroups\":" + degreeOfSickLeaveGroups + ", \"sickLeaveLengthGroups\":" + sickLeaveLengthGroups
+                + ", \"longSickLeavesTotal\":"
                 + longSickLeavesTotal + ", \"longSickLeavesAlternation\":" + longSickLeavesAlternation + "}}";
     }
 }

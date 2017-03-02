@@ -20,7 +20,8 @@ package se.inera.statistics.service.report.model;
 
 import java.util.List;
 
-@java.lang.SuppressWarnings("common-java:DuplicatedBlocks") // Code will not be cleaner if extracting a common class for OverviewResponse and VerksamhetOverviewResponse.
+@java.lang.SuppressWarnings("common-java:DuplicatedBlocks") // Code will not be cleaner if extracting a common class for
+                                                            // OverviewResponse and VerksamhetOverviewResponse.
 public class OverviewResponse {
 
     private final OverviewKonsfordelning casesPerMonthSexProportion;
@@ -95,9 +96,12 @@ public class OverviewResponse {
 
     @Override
     public String toString() {
-        return "{\"OverviewResponse\":{\"casesPerMonthSexProportion\":" + casesPerMonthSexProportion + ", \"casesPerMonthAlteration\":" + casesPerMonthAlteration
-                + ", \"diagnosisGroups\":" + diagnosisGroups + ", \"ageGroups\":" + ageGroups + ", \"degreeOfSickLeaveGroups\":" + degreeOfSickLeaveGroups
-                + ", \"sickLeaveLengthGroups\":" + sickLeaveLengthGroups + ", \"longSickLeavesTotal\":" + longSickLeavesTotal + ", \"longSickLeavesAlternation\":"
+        return "{\"OverviewResponse\":{\"casesPerMonthSexProportion\":" + casesPerMonthSexProportion + ", \"casesPerMonthAlteration\":"
+                + casesPerMonthAlteration
+                + ", \"diagnosisGroups\":" + diagnosisGroups + ", \"ageGroups\":" + ageGroups + ", \"degreeOfSickLeaveGroups\":"
+                + degreeOfSickLeaveGroups
+                + ", \"sickLeaveLengthGroups\":" + sickLeaveLengthGroups + ", \"longSickLeavesTotal\":" + longSickLeavesTotal
+                + ", \"longSickLeavesAlternation\":"
                 + longSickLeavesAlternation + ", \"perCounty\":" + perCounty + "}}";
     }
 }

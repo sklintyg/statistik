@@ -31,7 +31,8 @@ final class SjukfallCalculatorHelper {
     private SjukfallCalculatorHelper() {
     }
 
-    static Multimap<Long, SjukfallExtended> filterPersonifiedSjukfallsFromDate(LocalDate from, Multimap<Long, SjukfallExtended> sjukfallsPerPatient) {
+    static Multimap<Long, SjukfallExtended> filterPersonifiedSjukfallsFromDate(LocalDate from,
+            Multimap<Long, SjukfallExtended> sjukfallsPerPatient) {
         final int firstday = WidelineConverter.toDay(from);
         Multimap<Long, SjukfallExtended> result = ArrayListMultimap.create();
         for (Long patient : sjukfallsPerPatient.keySet()) {

@@ -43,18 +43,20 @@ class SjukfallCalculatorExtender {
 
     void extendSjukfallConnectedByIntygOnOtherEnhets(Multimap<Long, SjukfallExtended> sjukfallForAvailableEnhets) {
         final Set<Long> patients = new HashSet<>(sjukfallForAvailableEnhets.keySet());
-        final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = factsToSjukfallConverterForAisle.getSjukfallsPerPatient(patients);
+        final ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient = factsToSjukfallConverterForAisle
+                .getSjukfallsPerPatient(patients);
         for (long patient : patients) {
             extendSjukfallConnectedByIntygOnOtherEnhetsForPatientIfNeeded(sjukfallForAvailableEnhets, sjukfallsPerPatient, patient);
         }
     }
 
-    private void extendSjukfallConnectedByIntygOnOtherEnhetsForPatientIfNeeded(Multimap<Long, SjukfallExtended> sjukfallForAvailableEnhets, ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient, long patient) {
+    private void extendSjukfallConnectedByIntygOnOtherEnhetsForPatientIfNeeded(Multimap<Long, SjukfallExtended> sjukfallForAvailableEnhets,
+            ArrayListMultimap<Long, SjukfallExtended> sjukfallsPerPatient, long patient) {
         final Collection<SjukfallExtended> sjukfalls = sjukfallForAvailableEnhets.get(patient);
         Collection<SjukfallExtended> sjukfallFromAllIntygForPatient = sjukfallsPerPatient.get(patient);
         final boolean noExtraSjukfallExistsOnOtherEnhet = countIntyg(sjukfalls) == countIntyg(sjukfallFromAllIntygForPatient);
         if (noExtraSjukfallExistsOnOtherEnhet) {
-            return; //All intygs for patient are already included
+            return; // All intygs for patient are already included
         }
         for (SjukfallExtended sjukfallFromAllVgForPatient : sjukfallFromAllIntygForPatient) {
             sjukfallMerger.mergeAndUpdateSjukfall(patient, sjukfalls, sjukfallFromAllVgForPatient);

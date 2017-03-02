@@ -76,7 +76,7 @@ public class BootstrapBean {
         hsaServiceStub.getVardenhets().add(vardenhet);
     }
 
-    private class GetResourcesException extends RuntimeException {
+    private static class GetResourcesException extends RuntimeException {
 
         GetResourcesException(Exception e) {
             super(e);

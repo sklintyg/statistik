@@ -55,7 +55,8 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
         return errors;
     }
 
-    public MessageWideLine toWideline(SendMessageToCareType meddelande, Patientdata patientdata, long logId, String meddelandeId, MessageEventType type) {
+    public MessageWideLine toWideline(SendMessageToCareType meddelande, Patientdata patientdata, long logId, String meddelandeId,
+            MessageEventType type) {
         MessageWideLine line = new MessageWideLine();
 
         line.setMeddelandeId(meddelandeId);

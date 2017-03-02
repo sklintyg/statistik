@@ -52,11 +52,15 @@ public class SosReportCreator {
     private int toYear;
 
     /**
-     * @param dxStrings diagnosis to generate report for, if null then use default dxs
-     * @param fromYear From which year to calculate
-     * @param toYear To which year to calculate
+     * @param dxStrings
+     *            diagnosis to generate report for, if null then use default dxs
+     * @param fromYear
+     *            From which year to calculate
+     * @param toYear
+     *            To which year to calculate
      */
-    public SosReportCreator(Map<HsaIdVardgivare, Aisle> allVardgivare, SjukfallUtil sjukfallUtil, Icd10 icd10, List<String> dxStrings, Clock clock, int fromYear, int toYear) {
+    public SosReportCreator(Map<HsaIdVardgivare, Aisle> allVardgivare, SjukfallUtil sjukfallUtil, Icd10 icd10, List<String> dxStrings,
+            Clock clock, int fromYear, int toYear) {
         this.allVardgivare = allVardgivare;
         this.sjukfallUtil = sjukfallUtil;
         this.clock = clock;
@@ -96,14 +100,17 @@ public class SosReportCreator {
             final Integer dx = stringIntegerEntry.getValue();
             final String dxString = stringIntegerEntry.getKey();
             final Predicate<Fact> intygFilter = fact -> fact.getDiagnoskod() == dx || fact.getDiagnoskategori() == dx;
-            final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true, "sosspecial" + fromYear + dx + toYear, false);
+            final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true,
+                    "sosspecial" + fromYear + dx + toYear, false);
 
             for (Map.Entry<HsaIdVardgivare, Aisle> vgEntry : allVardgivare.entrySet()) {
-                final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1, range.getNumberOfMonths(),
+                final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1,
+                        range.getNumberOfMonths(),
                         vgEntry.getValue(), sjukfallFilter);
                 for (SjukfallGroup sjukfallGroup : sjukfallGroups) {
                     for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
-                        if (sjukfall.getStart() <= toIntDay && sjukfall.getEnd() >= fromIntDay && sjukfall.getEnd() < nowMinusFiveDaysIntDay) {
+                        if (sjukfall.getStart() <= toIntDay && sjukfall.getEnd() >= fromIntDay
+                                && sjukfall.getEnd() < nowMinusFiveDaysIntDay) {
                             final SosRow sosRow = new SosRow(dxString, sjukfall.getKon(), sjukfall.getLanskod(), sjukfall.getRealDays());
                             sosRows.add(sosRow);
                         }
@@ -128,7 +135,6 @@ public class SosReportCreator {
         final Map<String, List<SosRow>> rowsByDiagnos = sosReport.stream().collect(Collectors.groupingBy(SosRow::getDiagnos));
         for (Map.Entry<String, List<SosRow>> dxEntry : rowsByDiagnos.entrySet()) {
             final Map<Kon, List<SosRow>> dxrowsByKon = dxEntry.getValue().stream().collect(Collectors.groupingBy(SosRow::getKon));
-
 
             final Double total = calcFunc.apply(dxEntry.getValue());
             final Double female = calcFunc.apply(dxrowsByKon.get(Kon.FEMALE));

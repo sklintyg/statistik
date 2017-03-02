@@ -33,7 +33,7 @@ public class ReceiveHistoryJob {
     @Autowired
     private Receiver receiver;
 
-    private History history = new History(HISTORY_ITEMS);
+    private final History history = new History(HISTORY_ITEMS);
 
     @Scheduled(fixedDelay = DELAY_MS)
     public void checkReceived() {

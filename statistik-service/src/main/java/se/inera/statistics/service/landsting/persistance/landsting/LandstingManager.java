@@ -18,18 +18,20 @@
  */
 package se.inera.statistics.service.landsting.persistance.landsting;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import java.util.Collections;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.util.Collections;
-import java.util.List;
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
+
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 @Component
 public class LandstingManager {
@@ -46,18 +48,13 @@ public class LandstingManager {
     @Transactional
     public Optional<Landsting> get(long id) {
         final Landsting landsting = manager.find(Landsting.class, id);
-        return landsting == null ? Optional.<Landsting>absent() : Optional.of(landsting);
+        return landsting == null ? Optional.<Landsting> absent() : Optional.of(landsting);
     }
 
     @Transactional
     public void add(String name, HsaIdVardgivare vgId) {
         final List<Landsting> all = getAll();
-        List<Long> allIds = Lists.transform(all, new Function<Landsting, Long>() {
-            @Override
-            public Long apply(Landsting landsting) {
-                return landsting.getId();
-            }
-        });
+        List<Long> allIds = Lists.transform(all, landsting -> landsting.getId());
         final Long maxId = Collections.max(allIds);
         final Landsting landsting = new Landsting(maxId + 1, name, vgId);
         manager.persist(landsting);
@@ -65,9 +62,10 @@ public class LandstingManager {
 
     @Transactional
     public Optional<Landsting> getForVg(HsaIdVardgivare vgId) {
-        TypedQuery<Landsting> query = manager.createQuery("SELECT l FROM Landsting l where l.vardgivareId = :vgId", Landsting.class).setParameter("vgId", vgId.getId());
+        TypedQuery<Landsting> query = manager.createQuery("SELECT l FROM Landsting l where l.vardgivareId = :vgId", Landsting.class)
+                .setParameter("vgId", vgId.getId());
         final List<Landsting> resultList = query.getResultList();
-        return resultList.isEmpty() ? Optional.<Landsting>absent() : Optional.of(resultList.get(0));
+        return resultList.isEmpty() ? Optional.<Landsting> absent() : Optional.of(resultList.get(0));
     }
 
 }

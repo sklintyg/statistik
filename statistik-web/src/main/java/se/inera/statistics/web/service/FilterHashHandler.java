@@ -66,7 +66,6 @@ public class FilterHashHandler {
         return Optional.of(userSelection.getValue());
     }
 
-
     FilterData getFilterFromHash(String filterHash) {
         final Optional<String> filterData = getFilterData(filterHash);
         if (!filterData.isPresent()) {
@@ -89,7 +88,8 @@ public class FilterHashHandler {
             final String fromDate = rootNode.path("fromDate").asText().isEmpty() ? null : rootNode.path("fromDate").asText();
             final String toDate = rootNode.path("toDate").asText().isEmpty() ? null : rootNode.path("toDate").asText();
             final boolean useDefaultPeriod = rootNode.path("useDefaultPeriod").asBoolean(true);
-            return new FilterData(diagnoser, enheter, verksamhetstyper, sjukskrivningslangd, aldersgrupp, fromDate, toDate, useDefaultPeriod);
+            return new FilterData(diagnoser, enheter, verksamhetstyper, sjukskrivningslangd, aldersgrupp, fromDate, toDate,
+                    useDefaultPeriod);
         } catch (IOException e) {
             LOG.error("Failed to parse filter data: " + filterDataString, e);
             throw new FilterHashParseException("Filter data failed");

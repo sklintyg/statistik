@@ -53,20 +53,26 @@ public class OverviewQuery {
         SjukfallGroup previousSjukfall = groupIterator.next();
         SjukfallGroup currentSjukfall = groupIterator.next();
 
-        Iterator<SjukfallGroup> groupIteratorUsingOriginalSjukfallStart = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(start, 2, periodlangd, aisle, filter).iterator();
+        Iterator<SjukfallGroup> groupIteratorUsingOriginalSjukfallStart = sjukfallUtil
+                .sjukfallGrupperUsingOriginalSjukfallStart(start, 2, periodlangd, aisle, filter).iterator();
         SjukfallGroup previousSjukfallUsingOriginalSjukfallStart = groupIteratorUsingOriginalSjukfallStart.next();
         SjukfallGroup currentSjukfallUsingOriginalSjukfallStart = groupIteratorUsingOriginalSjukfallStart.next();
 
-        OverviewKonsfordelning previousKonsfordelning = getOverviewKonsfordelning(previousSjukfall.getRange(), previousSjukfall.getSjukfall());
+        OverviewKonsfordelning previousKonsfordelning = getOverviewKonsfordelning(previousSjukfall.getRange(),
+                previousSjukfall.getSjukfall());
         OverviewKonsfordelning currentKonsfordelning = getOverviewKonsfordelning(currentSjukfall.getRange(), currentSjukfall.getSjukfall());
 
         int currentLongSjukfall = SjukskrivningslangdQuery.getLong(currentSjukfallUsingOriginalSjukfallStart.getSjukfall());
         int previousLongSjukfall = SjukskrivningslangdQuery.getLong(previousSjukfallUsingOriginalSjukfallStart.getSjukfall());
 
-        List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall(), Integer.MAX_VALUE);
-        List<OverviewChartRowExtended> diagnosgrupper = query.getOverviewDiagnosgrupper(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall(), Integer.MAX_VALUE);
-        List<OverviewChartRowExtended> sjukskrivningsgrad = SjukskrivningsgradQuery.getOverviewSjukskrivningsgrad(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall());
-        List<OverviewChartRow> sjukskrivningslangd = SjukskrivningslangdQuery.getOverviewSjukskrivningslangd(currentSjukfallUsingOriginalSjukfallStart.getSjukfall(), Integer.MAX_VALUE);
+        List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall.getSjukfall(),
+                previousSjukfall.getSjukfall(), Integer.MAX_VALUE);
+        List<OverviewChartRowExtended> diagnosgrupper = query.getOverviewDiagnosgrupper(currentSjukfall.getSjukfall(),
+                previousSjukfall.getSjukfall(), Integer.MAX_VALUE);
+        List<OverviewChartRowExtended> sjukskrivningsgrad = SjukskrivningsgradQuery
+                .getOverviewSjukskrivningsgrad(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall());
+        List<OverviewChartRow> sjukskrivningslangd = SjukskrivningslangdQuery
+                .getOverviewSjukskrivningslangd(currentSjukfallUsingOriginalSjukfallStart.getSjukfall(), Integer.MAX_VALUE);
 
         return new VerksamhetOverviewResponse(currentSjukfall.getSjukfall().size(), currentKonsfordelning, previousKonsfordelning,
                 diagnosgrupper, aldersgrupper, sjukskrivningsgrad, sjukskrivningslangd,

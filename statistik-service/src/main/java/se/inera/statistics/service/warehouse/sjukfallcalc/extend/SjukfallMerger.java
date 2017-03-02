@@ -40,20 +40,26 @@ public class SjukfallMerger {
         }
     }
 
-    public void mergeAndUpdateSjukfall(long patient, Collection<SjukfallExtended> sjukfallsFromAvailableEnhetsForPatient, SjukfallExtended sjukfallFromAllVgForPatient) {
-        List<SjukfallExtended> mergableSjukfalls = findAvailableSjukfallsTouchingSjukfall(sjukfallsFromAvailableEnhetsForPatient, sjukfallFromAllVgForPatient);
+    public void mergeAndUpdateSjukfall(long patient, Collection<SjukfallExtended> sjukfallsFromAvailableEnhetsForPatient,
+            SjukfallExtended sjukfallFromAllVgForPatient) {
+        List<SjukfallExtended> mergableSjukfalls = findAvailableSjukfallsTouchingSjukfall(sjukfallsFromAvailableEnhetsForPatient,
+                sjukfallFromAllVgForPatient);
         SjukfallMergeHelper.mergeAllSjukfallInList(mergableSjukfalls)
-                .ifPresent(sjukfallExtended -> updateMergedSjukfall(patient, sjukfallsFromAvailableEnhetsForPatient, sjukfallFromAllVgForPatient, mergableSjukfalls, sjukfallExtended));
+                .ifPresent(sjukfallExtended -> updateMergedSjukfall(patient, sjukfallsFromAvailableEnhetsForPatient,
+                        sjukfallFromAllVgForPatient, mergableSjukfalls, sjukfallExtended));
     }
 
-    private List<SjukfallExtended> findAvailableSjukfallsTouchingSjukfall(Collection<SjukfallExtended> availableSjukfalls, SjukfallExtended sjukfallToTouch) {
+    private List<SjukfallExtended> findAvailableSjukfallsTouchingSjukfall(Collection<SjukfallExtended> availableSjukfalls,
+            SjukfallExtended sjukfallToTouch) {
         return SjukfallMergeHelper.filterSjukfallInPeriod(sjukfallToTouch.getStart(), sjukfallToTouch.getEnd(), availableSjukfalls);
     }
 
-    private void updateMergedSjukfall(long patient, Collection<SjukfallExtended> sjukfalls, SjukfallExtended sjukfall, List<SjukfallExtended> mergableSjukfalls, SjukfallExtended mergedSjukfall) {
+    private void updateMergedSjukfall(long patient, Collection<SjukfallExtended> sjukfalls, SjukfallExtended sjukfall,
+            List<SjukfallExtended> mergableSjukfalls, SjukfallExtended mergedSjukfall) {
         SjukfallExtended mergedSjukfallExtendedWithRealDays = mergedSjukfall.extendWithRealDaysWithinPeriod(sjukfall);
         if (useOriginalSjukfallStart) {
-            mergedSjukfallExtendedWithRealDays = getSjukfallExtendedToOriginalStartDate(patient, sjukfalls, mergedSjukfallExtendedWithRealDays);
+            mergedSjukfallExtendedWithRealDays = getSjukfallExtendedToOriginalStartDate(patient, sjukfalls,
+                    mergedSjukfallExtendedWithRealDays);
         }
         for (SjukfallExtended mergableSjukfall : mergableSjukfalls) {
             sjukfalls.remove(mergableSjukfall);
@@ -61,12 +67,15 @@ public class SjukfallMerger {
         sjukfalls.add(mergedSjukfallExtendedWithRealDays);
     }
 
-    private SjukfallExtended getSjukfallExtendedToOriginalStartDate(long patient, Collection<SjukfallExtended> sjukfalls, SjukfallExtended mergedSjukfallExtendedWithRealDays) {
+    private SjukfallExtended getSjukfallExtendedToOriginalStartDate(long patient, Collection<SjukfallExtended> sjukfalls,
+            SjukfallExtended mergedSjukfallExtendedWithRealDays) {
+        SjukfallExtended returnSjukfall = mergedSjukfallExtendedWithRealDays;
         Optional<SjukfallExtended> firstSjukfall = SjukfallMergeHelper.getFirstSjukfall(sjukfalls);
         if (firstSjukfall.isPresent() && firstSjukfall.get().getStart() == mergedSjukfallExtendedWithRealDays.getStart()) {
-            mergedSjukfallExtendedWithRealDays = extendedSjukfallCalculator.getExtendedSjukfallStart(patient, mergedSjukfallExtendedWithRealDays);
+            returnSjukfall = extendedSjukfallCalculator.getExtendedSjukfallStart(patient,
+                    mergedSjukfallExtendedWithRealDays);
         }
-        return mergedSjukfallExtendedWithRealDays;
+        return returnSjukfall;
     }
 
 }

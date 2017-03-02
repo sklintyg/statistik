@@ -67,11 +67,11 @@ public class HSAServiceImpl implements HSAService {
 
         if (noEnhetIsDefined(enhet)
                 || enhetHasNoVgAndNoHuvudenhetIsDefined(enhet, huvudenhet)
-                || neitherEnhetOrHuvudenhetHasVg(enhet, huvudenhet)
-                ) {
+                || neitherEnhetOrHuvudenhetHasVg(enhet, huvudenhet)) {
             GetStatisticsHsaUnitResponseDto unit = getStatisticsHsaUnit(key.getEnhetId().getId());
             if (unit != null) {
-                //huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det kopplad/underliggande enhet
+                // huvudenhet=vårdenhet och enhet kan vara vårdenhet, om det inte finns huvudenhet, annars motsvarar det
+                // kopplad/underliggande enhet
                 enhet = createUnit(unit.getStatisticsUnit());
                 huvudenhet = createUnit(unit.getStatisticsCareUnit());
             }
@@ -112,7 +112,8 @@ public class HSAServiceImpl implements HSAService {
         if (vardgivare == null) {
             final HsaIdVardgivare vgId = getVardgivareHsaId(enhet, huvudenhet);
             if (vgId == null || !vgId.equals(key.getVardgivareId())) {
-                LOG.info("VardgivarId mismatch found for enhet: {}. Was {} in HSA but expected {} from intyg", key.getEnhetId(), key.getVardgivareId(), vgId);
+                LOG.info("VardgivarId mismatch found for enhet: {}. Was {} in HSA but expected {} from intyg", key.getEnhetId(),
+                        key.getVardgivareId(), vgId);
             }
             if (vgId != null && !vgId.isEmpty()) {
                 GetStatisticsCareGiverResponseDto caregiver = getStatisticsCareGiver(vgId.getId());
@@ -232,7 +233,8 @@ public class HSAServiceImpl implements HSAService {
         final List<String> vardform = unit.getCareTypes();
         final HsaInfoEnhetGeo geografiskIndelning = createGeografiskIndelning(unit);
         final String careGiverHsaIdentity = unit.getCareGiverHsaIdentity();
-        return new HsaInfoEnhet(hsaIdentity, enhetsTyp, agarTyp, startDate, endDate, isArchived, verksamhet, vardform, geografiskIndelning, careGiverHsaIdentity);
+        return new HsaInfoEnhet(hsaIdentity, enhetsTyp, agarTyp, startDate, endDate, isArchived, verksamhet, vardform, geografiskIndelning,
+                careGiverHsaIdentity);
     }
 
     private HsaInfoEnhetGeo createGeografiskIndelning(StatisticsHsaUnitDto unit) {
@@ -242,7 +244,8 @@ public class HSAServiceImpl implements HSAService {
         final String municipalitySectionName = unit.getMunicipalitySectionName();
         final String municipalityCode = unit.getMunicipalityCode();
         final String countyCode = unit.getCountyCode();
-        final HsaInfoEnhetGeo hsaInfoEnhetGeo = new HsaInfoEnhetGeo(coordinate, location, municipalitySectionCode, municipalitySectionName, municipalityCode, countyCode);
+        final HsaInfoEnhetGeo hsaInfoEnhetGeo = new HsaInfoEnhetGeo(coordinate, location, municipalitySectionCode, municipalitySectionName,
+                municipalityCode, countyCode);
         return hsaInfoEnhetGeo.isEmpty() ? null : hsaInfoEnhetGeo;
     }
 

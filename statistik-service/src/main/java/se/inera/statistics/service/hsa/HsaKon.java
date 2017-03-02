@@ -25,7 +25,7 @@ public enum HsaKon {
 
     MALE(1), FEMALE(2), UNKNOWN(0);
 
-    private int hsaRepresantation;
+    private final int hsaRepresantation;
 
     HsaKon(int hsaRepresantation) {
         this.hsaRepresantation = hsaRepresantation;

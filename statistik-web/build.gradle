@@ -87,13 +87,15 @@ task bowerInstall(type: NodeTask, dependsOn:npmInstall) {
 grunt_build.dependsOn bowerInstall
 grunt_build_no_minify.dependsOn bowerInstall
 
-task createVersionPropertyFile(dependsOn: processResources) << {
-    def propertyFile = "${buildDir}/resources/main/version.properties"
-    ant.touch(file: propertyFile, mkdirs: "true")
-    ant.propertyfile(file: propertyFile) {
-        entry(key: 'statistik.project.version', default: rootProject.version)
-        entry(key: 'statistik.project.buildtime', default: new Date())
-        entry(key: 'statistik.project.buildhost', default: InetAddress.localHost.hostName)
+task createVersionPropertyFile(dependsOn: processResources) {
+    doLast {
+        def propertyFile = "${buildDir}/resources/main/version.properties"
+        ant.touch(file: propertyFile, mkdirs: "true")
+        ant.propertyfile(file: propertyFile) {
+            entry(key: 'statistik.project.version', default: rootProject.version)
+            entry(key: 'statistik.project.buildtime', default: new Date())
+            entry(key: 'statistik.project.buildhost', default: InetAddress.localHost.hostName)
+        }
     }
 }
 

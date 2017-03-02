@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -54,7 +55,9 @@ public class Fact {
 
     // CHECKSTYLE:OFF ParameterNumber
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public Fact(long id, int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int slutdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid, boolean enkeltIntyg) {
+    public Fact(long id, int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int slutdatum,
+            int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad,
+            int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid, boolean enkeltIntyg) {
         this.id = id;
         this.lan = lan;
         this.kommun = kommun;
@@ -185,14 +188,15 @@ public class Fact {
                 + ", sjukskrivningsgrad=" + sjukskrivningsgrad
                 + ", lakarkon=" + lakarkon
                 + ", lakaralder=" + lakaralder
-                + ", lakarbefattnings=" + lakarbefattnings
+                + ", lakarbefattnings=" + Arrays.toString(lakarbefattnings)
                 + ", lakarid=" + lakarid
                 + ", enkelt=" + enkelt
                 + '}';
     }
 
     /**
-     * @param c delimiter
+     * @param c
+     *            delimiter
      * @return CSV line including a terminating newline character
      */
     public String toCSVString(char c) {
@@ -213,7 +217,7 @@ public class Fact {
                 .append(sjukskrivningsgrad).append(c)
                 .append(lakarkon).append(c)
                 .append(lakaralder).append(c)
-                .append(lakarbefattnings).append(c)
+                .append(Arrays.toString(lakarbefattnings)).append(c)
                 .append(lakarid).append(c)
                 .append(enkelt).append('\n');
         return sb.toString();
@@ -246,7 +250,8 @@ public class Fact {
         private int lakarid = -1;
         private Boolean enkelt = null;
 
-        @java.lang.SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S1067"}) // I can not think of a better way to write this method
+        @java.lang.SuppressWarnings({ "squid:MethodCyclomaticComplexity", "squid:S1067" }) // I can't think of a better
+                                                                                           // way to write this
         public Fact build() {
             if (id == -1 || lan == -1 || kommun == -1 || forsamling == -1 || enhet == -1 || lakarintyg == -1 || patient == -1
                     || startdatum == -1 || slutdatum == -1 || kon == -1 || alder == -1 || diagnoskapitel == -1 || diagnosavsnitt == -1
@@ -364,7 +369,7 @@ public class Fact {
             return this;
         }
 
-        private class UninitializedValuesException extends RuntimeException {
+        private static class UninitializedValuesException extends RuntimeException {
 
             UninitializedValuesException(String s) {
                 super(s);

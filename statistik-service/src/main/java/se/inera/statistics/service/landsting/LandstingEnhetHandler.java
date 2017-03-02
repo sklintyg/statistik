@@ -18,13 +18,17 @@
  */
 package se.inera.statistics.service.landsting;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
+import java.util.Collections;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -35,9 +39,6 @@ import se.inera.statistics.service.landsting.persistance.landstingenhet.Landstin
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdate;
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateManager;
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
-
-import java.util.Collections;
-import java.util.List;
 
 @Component
 public class LandstingEnhetHandler {
@@ -61,7 +62,8 @@ public class LandstingEnhetHandler {
         }
         final long landstingId = landstingOptional.get().getId();
         landstingEnhetManager.update(landstingId, data.getRows());
-        landstingEnhetUpdateManager.update(landstingId, data.getUserName(), data.getUserId(), removeInvalidChars(data.getFileName()), LandstingEnhetUpdateOperation.UPDATE);
+        landstingEnhetUpdateManager.update(landstingId, data.getUserName(), data.getUserId(), removeInvalidChars(data.getFileName()),
+                LandstingEnhetUpdateOperation.UPDATE);
     }
 
     public void clear(HsaIdVardgivare vgId, String username, HsaIdUser userId) throws NoLandstingSetForVgException {
@@ -71,7 +73,7 @@ public class LandstingEnhetHandler {
             throw new NoLandstingSetForVgException();
         }
         final long landstingId = landstingOptional.get().getId();
-        landstingEnhetManager.update(landstingId, Collections.<LandstingEnhetFileDataRow>emptyList());
+        landstingEnhetManager.update(landstingId, Collections.<LandstingEnhetFileDataRow> emptyList());
         landstingEnhetUpdateManager.update(landstingId, username, userId, "-", LandstingEnhetUpdateOperation.REMOVE);
     }
 
@@ -102,12 +104,7 @@ public class LandstingEnhetHandler {
 
     public List<HsaIdEnhet> getAllEnhetsForVardgivare(HsaIdVardgivare vgid) {
         final List<LandstingEnhet> allLandstingEnhetsForVardgivare = getAllLandstingEnhetsForVardgivare(vgid);
-        return Lists.transform(allLandstingEnhetsForVardgivare, new Function<LandstingEnhet, HsaIdEnhet>() {
-            @Override
-            public HsaIdEnhet apply(LandstingEnhet landstingEnhet) {
-                return landstingEnhet.getEnhetensHsaId();
-            }
-        });
+        return Lists.transform(allLandstingEnhetsForVardgivare, landstingEnhet -> landstingEnhet.getEnhetensHsaId());
     }
 
     public List<LandstingEnhet> getAllLandstingEnhetsForVardgivare(HsaIdVardgivare vgid) {

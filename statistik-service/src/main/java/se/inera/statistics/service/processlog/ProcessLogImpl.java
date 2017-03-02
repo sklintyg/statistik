@@ -38,7 +38,8 @@ public class ProcessLogImpl extends AbstractProcessLog implements ProcessLog {
     @Override
     @Transactional
     public final long store(EventType type, String data, String correlationId, long timestamp) {
-        TypedQuery<IntygEvent> select = getManager().createQuery("SELECT e FROM IntygEvent e WHERE e.correlationId = :correlationId AND e.type = :type", IntygEvent.class);
+        TypedQuery<IntygEvent> select = getManager()
+                .createQuery("SELECT e FROM IntygEvent e WHERE e.correlationId = :correlationId AND e.type = :type", IntygEvent.class);
         select.setParameter("correlationId", correlationId).setParameter("type", type);
         List<IntygEvent> result = select.getResultList();
         if (result.isEmpty()) {
@@ -59,7 +60,8 @@ public class ProcessLogImpl extends AbstractProcessLog implements ProcessLog {
     @Override
     @Transactional
     public List<IntygEvent> getPending(int max) {
-        TypedQuery<IntygEvent> allQuery = getManager().createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC", IntygEvent.class);
+        TypedQuery<IntygEvent> allQuery = getManager().createQuery("SELECT e from IntygEvent e WHERE e.id > :lastId ORDER BY e.id ASC",
+                IntygEvent.class);
         allQuery.setParameter("lastId", getLastId());
         allQuery.setMaxResults(max);
         return allQuery.getResultList();

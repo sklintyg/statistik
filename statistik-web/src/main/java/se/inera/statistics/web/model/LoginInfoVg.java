@@ -29,7 +29,8 @@ public class LoginInfoVg {
     private final LandstingsVardgivareStatus landstingsVardgivareStatus;
     private final UserAccessLevel userAccessLevel;
 
-    public LoginInfoVg(HsaIdVardgivare hsaId, String name, LandstingsVardgivareStatus landstingsVardgivareStatus, UserAccessLevel userAccessLevel) {
+    public LoginInfoVg(HsaIdVardgivare hsaId, String name, LandstingsVardgivareStatus landstingsVardgivareStatus,
+            UserAccessLevel userAccessLevel) {
         this.hsaId = hsaId;
         this.name = name;
         this.landstingsVardgivareStatus = landstingsVardgivareStatus;
@@ -37,7 +38,8 @@ public class LoginInfoVg {
     }
 
     public static LoginInfoVg empty() {
-        return new LoginInfoVg(HsaIdVardgivare.empty(), "", LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE, new UserAccessLevel(false, 0));
+        return new LoginInfoVg(HsaIdVardgivare.empty(), "", LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE,
+                new UserAccessLevel(false, 0));
     }
 
     public HsaIdVardgivare getHsaId() {

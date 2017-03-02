@@ -72,9 +72,7 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
     }
 
     @Override
-    public Authentication authenticate(Authentication authentication) {
-
-        FakeAuthenticationToken token = (FakeAuthenticationToken) authentication;
+    public Authentication authenticate(Authentication token) {
 
         SAMLCredential credential = createSamlCredential(token);
         Object details = userDetails.loadUserBySAML(credential);
@@ -85,7 +83,8 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
 
         // Being immutable, we build up a new User principal combining the User from loadUserBySAML and fakes.
 
-        String name = user.getName() != null && user.getName().trim().length() > 0 && !user.getName().startsWith("null") ? user.getName() : fakeCredentials.getFornamn() + " " + fakeCredentials.getEfternamn();
+        String name = user.getName() != null && user.getName().trim().length() > 0 && !user.getName().startsWith("null") ? user.getName()
+                : fakeCredentials.getFornamn() + " " + fakeCredentials.getEfternamn();
 
         List<Vardgivare> vardgivareSomProcessLedare = fakeCredentials.getVardgivarIdSomProcessLedare().stream()
                 .filter(hsaId -> fakeCredentials.isVardgivarniva())
@@ -94,7 +93,8 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
 
         User decoratedUser = new User(user.getHsaId(), name, vardgivareSomProcessLedare, user.getVardenhetList());
 
-        ExpiringUsernameAuthenticationToken result = new ExpiringUsernameAuthenticationToken(null, decoratedUser, credential, new ArrayList<>());
+        ExpiringUsernameAuthenticationToken result = new ExpiringUsernameAuthenticationToken(null, decoratedUser, credential,
+                new ArrayList<>());
         result.setDetails(decoratedUser);
 
         return result;
@@ -105,7 +105,7 @@ public class FakeAuthenticationProvider implements AuthenticationProvider {
         return FakeAuthenticationToken.class.isAssignableFrom(authentication);
     }
 
-    private SAMLCredential createSamlCredential(FakeAuthenticationToken token) {
+    private SAMLCredential createSamlCredential(Authentication token) {
         FakeCredentials fakeCredentials = (FakeCredentials) token.getCredentials();
 
         Assertion assertion = new AssertionBuilder().buildObject();

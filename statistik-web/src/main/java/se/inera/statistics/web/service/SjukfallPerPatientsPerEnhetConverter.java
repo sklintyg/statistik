@@ -90,11 +90,14 @@ public class SjukfallPerPatientsPerEnhetConverter {
                 final int antalSjukfall = female + male;
                 final float thousand = 1000F;
                 final float sjukfallPerThousandListadePatienter = antalSjukfall / (listadePatienter / thousand);
-                final String sjukfallPerThousandListadePatienterRounded = roundToTwoDecimalsAndFormatToString(sjukfallPerThousandListadePatienter);
-                data.add(new NamedData(row.getName(), Arrays.asList(antalSjukfall, listadePatienter, sjukfallPerThousandListadePatienterRounded), isMarked(row)));
+                final String sjukfallPerThousandListadePatienterRounded = roundToTwoDecimalsAndFormatToString(
+                        sjukfallPerThousandListadePatienter);
+                data.add(new NamedData(row.getName(),
+                        Arrays.asList(antalSjukfall, listadePatienter, sjukfallPerThousandListadePatienterRounded), isMarked(row)));
             }
         }
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Vårdenhet", "Antal sjukfall", "Antal listningar", "Antal sjukfall per 1000 listningar"));
+        return TableData.createWithSingleHeadersRow(data,
+                Arrays.asList("Vårdenhet", "Antal sjukfall", "Antal listningar", "Antal sjukfall per 1000 listningar"));
     }
 
     static String roundToTwoDecimalsAndFormatToString(float number) {

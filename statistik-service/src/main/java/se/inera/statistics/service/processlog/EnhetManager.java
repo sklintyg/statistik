@@ -18,21 +18,23 @@
  */
 package se.inera.statistics.service.processlog;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import com.google.common.collect.Collections2;
+
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 @Component
 public class EnhetManager {
@@ -47,12 +49,7 @@ public class EnhetManager {
             return Collections.emptyList();
         }
         final Query query = manager.createQuery("SELECT e FROM Enhet e WHERE e.enhetId IN :enhetids");
-        query.setParameter("enhetids", Collections2.transform(enhetIds, new Function<HsaIdEnhet, String>() {
-            @Override
-            public String apply(HsaIdEnhet hsaId) {
-                return hsaId.getId();
-            }
-        }));
+        query.setParameter("enhetids", Collections2.transform(enhetIds, hsaId -> hsaId.getId()));
         final List resultList = query.getResultList();
         return getEnhetsFromResultList(resultList);
     }

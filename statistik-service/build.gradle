@@ -1,25 +1,10 @@
-
-description = 'Inera Statistics Service - Service Module'
-
 apply plugin: 'groovy'
-apply plugin: 'idea'
-
-configurations {
-    provided
-}
 
 sourceSets {
-    main.compileClasspath += configurations.provided
     test {
         // compile everything in src/test with groovy (enables cross-compiling)
         java { srcDirs = [] }
         groovy { srcDirs = ["src/test/groovy", "src/test/java"] }
-    }
-}
-
-afterEvaluate {
-    idea {
-        module.scopes.PROVIDED.plus += [configurations.provided] // Adds the provided configuration to IntelliJs provided scope
     }
 }
 
@@ -44,6 +29,8 @@ dependencies {
     compile "com.helger:ph-schematron:${schematronVersion}"
     compile "se.inera.intyg.clinicalprocess.healthcond.certificate:intyg-clinicalprocess-healthcond-certificate-schematron:${intygSchematronVersion}"
 
+    compileOnly "org.apache.geronimo.specs:geronimo-jms_1.1_spec:${jmsVersion}"
+
     testCompile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     testCompile "org.apache.activemq:activemq-spring:${activeMqVersion}"
 
@@ -52,6 +39,4 @@ dependencies {
     testCompile "org.aspectj:aspectjweaver:1.8.9"
 
     testRuntime "com.h2database:h2:${h2Version}"
-
-    provided "org.apache.geronimo.specs:geronimo-jms_1.1_spec:${jmsVersion}"
 }

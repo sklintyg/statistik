@@ -42,8 +42,10 @@ public final class DocumentHelper {
     static final int SEX_DIGIT = 11;
     private static final int MAX_SJUKSKRIVNING = 100;
 
-    private static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationskategori").add(Matcher.Builder.matcher("code", "439401001")).add(Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1"));
-    private static final Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationskod").add(Matcher.Builder.matcher("code", "302119000")).add(Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1"));
+    private static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationskategori")
+            .add(Matcher.Builder.matcher("code", "439401001")).add(Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1"));
+    private static final Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationskod")
+            .add(Matcher.Builder.matcher("code", "302119000")).add(Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1"));
     private static final String DOCUMENT_ID = "1.2.752.129.2.1.2.1";
     public static final String UTANENHETSID = "UTANENHETSID";
     private static final int NEDSATT100 = 100;
@@ -72,7 +74,8 @@ public final class DocumentHelper {
     }
 
     public enum IntygVersion {
-        VERSION1, VERSION2
+        VERSION1,
+        VERSION2
     }
 
     public static Patientdata getPatientData(JsonNode intyg) {
@@ -110,7 +113,8 @@ public final class DocumentHelper {
         if (safePersonId.matches("[0-9]{8}-[0-9]{4}")) {
             return safePersonId;
         } else if (safePersonId.matches("[0-9]{12}")) {
-            return safePersonId.substring(0, ConversionHelper.DATE_PART_OF_PERSON_ID) + "-" + safePersonId.substring(ConversionHelper.DATE_PART_OF_PERSON_ID);
+            return safePersonId.substring(0, ConversionHelper.DATE_PART_OF_PERSON_ID) + "-"
+                    + safePersonId.substring(ConversionHelper.DATE_PART_OF_PERSON_ID);
         } else {
             throw new PersonIdParseException("Failed to parse person id");
         }

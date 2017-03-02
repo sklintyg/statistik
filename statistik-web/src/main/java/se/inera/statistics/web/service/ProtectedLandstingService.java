@@ -18,9 +18,26 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
+import java.io.ByteArrayOutputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.activation.DataSource;
+import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +46,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+
+import com.google.common.base.Optional;
+import com.google.common.collect.Lists;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.landsting.LandstingEnhetFileData;
@@ -52,25 +73,6 @@ import se.inera.statistics.web.service.landsting.LandstingFileGenerationExceptio
 import se.inera.statistics.web.service.landsting.LandstingFileReader;
 import se.inera.statistics.web.service.landsting.LandstingFileWriter;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
-
-import javax.activation.DataSource;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.ByteArrayOutputStream;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned
@@ -137,10 +139,11 @@ public class ProtectedLandstingService {
         try {
             final List<LandstingEnhetFileDataRow> landstingFileRows = landstingFileReader.readExcelData(dataSource);
             final HsaIdVardgivare vardgivarId = loginInfoVg.getHsaId();
-            final LandstingEnhetFileData fileData = new LandstingEnhetFileData(vardgivarId, landstingFileRows, info.getName(), info.getHsaId(), dataSource.getName());
+            final LandstingEnhetFileData fileData = new LandstingEnhetFileData(vardgivarId, landstingFileRows, info.getName(),
+                    info.getHsaId(), dataSource.getName());
             landstingEnhetHandler.update(fileData);
 
-            monitoringLogService.logFileUpload(info.getHsaId(), vardgivarId, dataSource.getName(), landstingFileRows != null ? landstingFileRows.size() : null);
+            monitoringLogService.logFileUpload(info.getHsaId(), vardgivarId, dataSource.getName(), landstingFileRows.size());
 
             return createFileUploadResponse(Response.Status.OK, "Data updated ok", resultFormat);
         } catch (LandstingEnhetFileParseException e) {
@@ -148,7 +151,8 @@ public class ProtectedLandstingService {
             return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, e.getMessage(), resultFormat);
         } catch (NoLandstingSetForVgException e) {
             LOG.warn("Failed to update landsting settings", e);
-            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR, "Din vårdgivare har inte tillgång till landstingsstatistik", resultFormat);
+            return createFileUploadResponse(Response.Status.INTERNAL_SERVER_ERROR,
+                    "Din vårdgivare har inte tillgång till landstingsstatistik", resultFormat);
         }
     }
 
@@ -165,7 +169,8 @@ public class ProtectedLandstingService {
             return Response.ok().build();
         } catch (NoLandstingSetForVgException e) {
             LOG.warn("Failed to clear landsting settings", e);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Din vårdgivare har inte tillgång till landstingsstatistik").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Din vårdgivare har inte tillgång till landstingsstatistik").build();
         }
     }
 
@@ -194,7 +199,7 @@ public class ProtectedLandstingService {
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getEmptyLandstingFile() {
         try {
-            final ByteArrayOutputStream generatedFile = landstingFileWriter.generateExcelFile(Collections.<Enhet>emptyList());
+            final ByteArrayOutputStream generatedFile = landstingFileWriter.generateExcelFile(Collections.<Enhet> emptyList());
             return Response.ok(generatedFile.toByteArray(), MediaType.APPLICATION_OCTET_STREAM)
                     .header("Content-Disposition", "attachment; filename=\"mall_landsting.xlsx\"").build();
         } catch (LandstingFileGenerationException e) {
@@ -215,13 +220,10 @@ public class ProtectedLandstingService {
         result.put("infoMessage", getLastLandstingUpdateInfoMessage(vardgivarId));
 
         final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vardgivarId);
-        final List<String> parsedRowsStrings = Lists.transform(landstingEnhets, new Function<LandstingEnhet, String>() {
-            @Override
-            public String apply(LandstingEnhet landstingEnhetFileDataRow) {
-                final Integer listadePatienter = landstingEnhetFileDataRow.getListadePatienter();
-                final String listadePatienterString = listadePatienter != null ? String.valueOf(listadePatienter) : "inte angivet";
-                return "HSA-id: " + landstingEnhetFileDataRow.getEnhetensHsaId() + " -> Listade patienter: " + listadePatienterString;
-            }
+        final List<String> parsedRowsStrings = Lists.transform(landstingEnhets, landstingEnhetFileDataRow -> {
+            final Integer listadePatienter = landstingEnhetFileDataRow.getListadePatienter();
+            final String listadePatienterString = listadePatienter != null ? String.valueOf(listadePatienter) : "inte angivet";
+            return "HSA-id: " + landstingEnhetFileDataRow.getEnhetensHsaId() + " -> Listade patienter: " + listadePatienterString;
         });
         result.put("parsedRows", parsedRowsStrings);
 
@@ -233,25 +235,28 @@ public class ProtectedLandstingService {
         if (lastUpdateInfo.isPresent()) {
             final LandstingEnhetUpdate update = lastUpdateInfo.get();
             final LandstingEnhetUpdateOperation operation = update.getOperation();
-            String dateTime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date(update.getTimestamp().getTime()));
-            return operation.getMessage() + (LandstingEnhetUpdateOperation.UPDATE.equals(operation) ? " (" + update.getFilename() + ")" : "") + " - " + dateTime + " av " + update.getUpdatedByName() + " (" + update.getUpdatedByHsaid() + ")";
+            String dateTime = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .format(new java.util.Date(update.getTimestamp().getTime()));
+            return operation.getMessage()
+                    + (LandstingEnhetUpdateOperation.UPDATE.equals(operation) ? " (" + update.getFilename() + ")" : "") + " - " + dateTime
+                    + " av " + update.getUpdatedByName() + " (" + update.getUpdatedByHsaid() + ")";
         }
         return "Ingen";
     }
 
     private Response createFileUploadResponse(Response.Status status, String message, UploadResultFormat format) {
         switch (format) {
-            case HTML:
-                final String statusText = Response.Status.OK.equals(status) ? "Uppladdningen lyckades" : "Uppladdningen misslyckades";
-                String html = "<html><body><h1>" + statusText + "</h1><div>" + message + "</div><br/><input type='button' onclick='history.back();' value='Åter till statistiktjänsten'></body></html>";
-                return Response.status(Response.Status.OK).type(MediaType.TEXT_HTML + "; charset=utf-8").entity(html).build();
-            case JSON:
-                final HashMap<String, Object> map = new HashMap<>();
-                map.put("message", message);
-                return Response.status(status).entity(map).build();
-            default:
-                throw new RuntimeException("Unhandled upload result format: " + format);
+        case HTML:
+            final String statusText = Response.Status.OK.equals(status) ? "Uppladdningen lyckades" : "Uppladdningen misslyckades";
+            String html = "<html><body><h1>" + statusText + "</h1><div>" + message
+                    + "</div><br/><input type='button' onclick='history.back();' value='Åter till statistiktjänsten'></body></html>";
+            return Response.status(Response.Status.OK).type(MediaType.TEXT_HTML + "; charset=utf-8").entity(html).build();
+        case JSON:
+            final HashMap<String, Object> map = new HashMap<>();
+            map.put("message", message);
+            return Response.status(status).entity(map).build();
         }
+        throw new RuntimeException("Unhandled upload result format: " + format);
     }
 
     @GET
@@ -259,7 +264,8 @@ public class ProtectedLandstingService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
-    public Response getNumberOfCasesPerMonthLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfCasesPerMonthLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonthLandsting(filterSettings);
         SimpleDetailsData result = new PeriodConverter().convert(casesPerMonth, filterSettings);
@@ -271,11 +277,13 @@ public class ProtectedLandstingService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
-    public Response getNumberOfCasesPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfCasesPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash,
+            @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
         final List<HsaIdEnhet> connectedEnhetIds = getEnhetIdsToMark(request);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhetLandsting(filterSettings);
-        SimpleDetailsData result = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", connectedEnhetIds).convert(casesPerEnhet, filterSettings);
+        SimpleDetailsData result = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", connectedEnhetIds).convert(casesPerEnhet,
+                filterSettings);
         return getResponse(result, csv, request, "Landstingsstatistik_Vardenhet");
     }
 
@@ -294,13 +302,15 @@ public class ProtectedLandstingService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
-    public Response getNumberOfCasesPerPatientsPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
+    public Response getNumberOfCasesPerPatientsPerEnhetLandsting(@Context HttpServletRequest request,
+            @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerPatientsPerEnhetLandsting(filterSettings);
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final List<HsaIdEnhet> connectedEnhetIds = getEnhetIdsToMark(request);
         final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vgIdForLoggedInUser);
-        SimpleDetailsData result = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, connectedEnhetIds).convert(casesPerEnhet, filterSettings, null);
+        SimpleDetailsData result = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, connectedEnhetIds).convert(casesPerEnhet,
+                filterSettings, null);
         return getResponse(result, csv, request, "Landstingsstatistik_VardenhetListningar");
     }
 
@@ -341,7 +351,8 @@ public class ProtectedLandstingService {
     public boolean userAccess(HttpServletRequest request) {
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
-        LOG.info("User " + loginInfo.getHsaId() + " accessed vg " + vgId + " (" + getUriSafe(request) + ") session " + request.getSession().getId());
+        LOG.info("User " + loginInfo.getHsaId() + " accessed vg " + vgId + " (" + getUriSafe(request) + ") session "
+                + request.getSession().getId());
         return true;
     }
 
@@ -353,7 +364,8 @@ public class ProtectedLandstingService {
     }
 
     private enum UploadResultFormat {
-        HTML, JSON;
+        HTML,
+        JSON;
     }
 
 }

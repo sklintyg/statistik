@@ -91,9 +91,11 @@ public class QueueHelper {
 
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public void enqueue(UtlatandeBuilder builder, String typString, String person, String diagnos, List<LocalDate> start, List<LocalDate> stop, List<String> grad, HsaIdEnhet enhet, HsaIdVardgivare vardgivare, String transId) {
+    public void enqueue(UtlatandeBuilder builder, String typString, String person, String diagnos, List<LocalDate> start,
+            List<LocalDate> stop, List<String> grad, HsaIdEnhet enhet, HsaIdVardgivare vardgivare, String transId) {
         EventType typ = EventType.valueOf(typString);
-        sender.simpleSend(builder.build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), transId, typ, IntygType.FK7263.getItIntygType());
+        sender.simpleSend(builder.build(person, start, stop, enhet, vardgivare, diagnos, grad).toString(), transId, typ,
+                IntygType.FK7263.getItIntygType());
     }
     // CHECKSTYLE:ON ParameterNumberCheck
 
@@ -109,9 +111,11 @@ public class QueueHelper {
         printAndGetSjukfallslangdGrupp(vardenhet1, vardenhet2, range, result);
         printAndGetCasesPerCountyNationell(range, result);
 
-        VerksamhetOverviewResponse verksamhetOverview1 = overviewQuery.getOverview(warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet1), ReportUtil.getPreviousPeriod(range).getFrom(), range.getNumberOfMonths());
+        VerksamhetOverviewResponse verksamhetOverview1 = overviewQuery.getOverview(warehouse.get(new HsaIdVardgivare("vg")),
+                sjukfallUtil.createEnhetFilter(vardenhet1), ReportUtil.getPreviousPeriod(range).getFrom(), range.getNumberOfMonths());
         LOG.info("VO data: " + verksamhetOverview1);
-        VerksamhetOverviewResponse verksamhetOverview2 = overviewQuery.getOverview(warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet2), ReportUtil.getPreviousPeriod(range).getFrom(), range.getNumberOfMonths());
+        VerksamhetOverviewResponse verksamhetOverview2 = overviewQuery.getOverview(warehouse.get(new HsaIdVardgivare("vg")),
+                sjukfallUtil.createEnhetFilter(vardenhet2), ReportUtil.getPreviousPeriod(range).getFrom(), range.getNumberOfMonths());
         LOG.info("VO data: " + verksamhetOverview2);
         OverviewResponse overviewNationell = nationellOverview.getOverview(range);
         LOG.info("NO data: " + overviewNationell);
@@ -127,11 +131,15 @@ public class QueueHelper {
     }
 
     private void printAndGetSjukfallslangdGrupp(HsaIdEnhet vardenhet1, HsaIdEnhet vardenhet2, Range range, Map<String, TestData> result) {
-        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGrupp1 = SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), YEAR, 1, sjukfallUtil);
+        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGrupp1 = SjukskrivningslangdQuery.getSjuksrivningslangd(
+                warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), YEAR, 1,
+                sjukfallUtil);
         LOG.info("SLG data: " + sjukfallslangdGrupp1);
         JsonNode sjukfallslangdGrupp1Node = JSONParser.parse(sjukfallslangdGrupp1.toString());
         result.put("sjukfallslangdGrupp1", new TestData(sjukfallslangdGrupp1, sjukfallslangdGrupp1Node));
-        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGrupp2 = SjukskrivningslangdQuery.getSjuksrivningslangd(warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), YEAR, 1, sjukfallUtil);
+        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGrupp2 = SjukskrivningslangdQuery.getSjuksrivningslangd(
+                warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), YEAR, 1,
+                sjukfallUtil);
         LOG.info("SLG data: " + sjukfallslangdGrupp2);
         JsonNode sjukfallslangdGrupp2Node = JSONParser.parse(sjukfallslangdGrupp2.toString());
         result.put("sjukfallslangdGrupp2", new TestData(sjukfallslangdGrupp2, sjukfallslangdGrupp2Node));
@@ -139,48 +147,59 @@ public class QueueHelper {
         LOG.info("Nationell SLG data: " + sjukfallslangdGruppNationell);
         JsonNode sjukfallslangdGruppNationellNode = JSONParser.parse(sjukfallslangdGruppNationell.toString());
         result.put("sjukfallslangdGruppNationell", new TestData(sjukfallslangdGruppNationell, sjukfallslangdGruppNationellNode));
-        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGruppLong1 = SjukskrivningslangdQuery.getLangaSjukfall(warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), QUARTER, 1, sjukfallUtil);
+        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGruppLong1 = SjukskrivningslangdQuery.getLangaSjukfall(
+                warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), QUARTER, 1,
+                sjukfallUtil);
         LOG.info("SLGL data: " + sjukfallslangdGruppLong1);
         JsonNode sjukfallslangdGruppLong1Node = JSONParser.parse(sjukfallslangdGruppLong1.toString());
         result.put("sjukfallslangdGruppLong1", new TestData(sjukfallslangdGruppLong1, sjukfallslangdGruppLong1Node));
-        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGruppLong2 = SjukskrivningslangdQuery.getLangaSjukfall(warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), QUARTER, 1, sjukfallUtil);
+        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGruppLong2 = SjukskrivningslangdQuery.getLangaSjukfall(
+                warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), QUARTER, 1,
+                sjukfallUtil);
         LOG.info("SLGL data: " + sjukfallslangdGruppLong2);
         JsonNode sjukfallslangdGruppLong2Node = JSONParser.parse(sjukfallslangdGruppLong2.toString());
         result.put("sjukfallslangdGruppLong2", new TestData(sjukfallslangdGruppLong2, sjukfallslangdGruppLong2Node));
         SimpleKonResponse<SimpleKonDataRow> sjukfallslangdGruppLongNationell = nationell.getLangaSjukfall(range.getFrom(), 1, QUARTER);
         LOG.info("Nationell SLGL data: " + sjukfallslangdGruppLongNationell);
         JsonNode sjukfallslangdGruppLongNationellNode = JSONParser.parse(sjukfallslangdGruppLongNationell.toString());
-        result.put("sjukfallslangdGruppLongNationell", new TestData(sjukfallslangdGruppLongNationell, sjukfallslangdGruppLongNationellNode));
+        result.put("sjukfallslangdGruppLongNationell",
+                new TestData(sjukfallslangdGruppLongNationell, sjukfallslangdGruppLongNationellNode));
     }
 
     private void printAndGetDegreeOfSickLeave(HsaIdEnhet vardenhet1, HsaIdEnhet vardenhet2, Range range, Map<String, TestData> result) {
-        KonDataResponse degreeOfSickLeave1 = SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR, sjukfallUtil);
+        KonDataResponse degreeOfSickLeave1 = SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get(new HsaIdVardgivare("vg")),
+                sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR, sjukfallUtil);
         LOG.info("DOSL data: " + degreeOfSickLeave1);
         JsonNode degreeOfSickLeave1Node = JSONParser.parse(degreeOfSickLeave1.toString());
         result.put("degreeOfSickLeave1", new TestData(degreeOfSickLeave1, degreeOfSickLeave1Node));
-        KonDataResponse degreeOfSickLeave2 = SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get(new HsaIdVardgivare("vg")), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR, sjukfallUtil);
+        KonDataResponse degreeOfSickLeave2 = SjukskrivningsgradQuery.getSjukskrivningsgrad(warehouse.get(new HsaIdVardgivare("vg")),
+                sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR, sjukfallUtil);
         LOG.info("DOSL data: " + degreeOfSickLeave2);
         JsonNode degreeOfSickLeave2Node = JSONParser.parse(degreeOfSickLeave2.toString());
         result.put("degreeOfSickLeave2", new TestData(degreeOfSickLeave2, degreeOfSickLeave2Node));
     }
 
     private void printAndGetAgeGroups(HsaIdEnhet vardenhet1, HsaIdEnhet vardenhet2, Range range, Map<String, TestData> result) {
-        SimpleKonResponse<SimpleKonDataRow> ageGroups1 = AldersgruppQuery.getAldersgrupper(warehouse.get(new HsaIdVardgivare("EnVG")), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR, sjukfallUtil);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups1 = AldersgruppQuery.getAldersgrupper(warehouse.get(new HsaIdVardgivare("EnVG")),
+                sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR, sjukfallUtil);
         LOG.info("AG data: " + ageGroups1);
         JsonNode ageGroups1Node = JSONParser.parse(ageGroups1.toString());
         result.put("ageGroups1", new TestData(ageGroups1, ageGroups1Node));
-        SimpleKonResponse<SimpleKonDataRow> ageGroups2 = AldersgruppQuery.getAldersgrupper(warehouse.get(new HsaIdVardgivare("VG2")), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR, sjukfallUtil);
+        SimpleKonResponse<SimpleKonDataRow> ageGroups2 = AldersgruppQuery.getAldersgrupper(warehouse.get(new HsaIdVardgivare("VG2")),
+                sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR, sjukfallUtil);
         LOG.info("AG data: " + ageGroups2);
         JsonNode ageGroups2Node = JSONParser.parse(ageGroups2.toString());
         result.put("ageGroups2", new TestData(ageGroups2, ageGroups2Node));
     }
 
     private void printAndGetDiagnosisSubGroups(HsaIdEnhet vardenhet1, HsaIdEnhet vardenhet2, Range range, Map<String, TestData> result) {
-        DiagnosgruppResponse diagnosisSubGroups1 = diagnosgruppQuery.getDiagnosavsnitts(warehouse.get(new HsaIdVardgivare("EnVG")), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR, "A00-B99");
+        DiagnosgruppResponse diagnosisSubGroups1 = diagnosgruppQuery.getDiagnosavsnitts(warehouse.get(new HsaIdVardgivare("EnVG")),
+                sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR, "A00-B99");
         LOG.info("DSG data: " + diagnosisSubGroups1);
         JsonNode diagnosisSubGroups1Node = JSONParser.parse(diagnosisSubGroups1.toString());
         result.put("diagnosisSubGroups1", new TestData(diagnosisSubGroups1, diagnosisSubGroups1Node));
-        DiagnosgruppResponse diagnosisSubGroups2 = diagnosgruppQuery.getDiagnosavsnitts(warehouse.get(new HsaIdVardgivare("VG2")), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR, "A00-B99");
+        DiagnosgruppResponse diagnosisSubGroups2 = diagnosgruppQuery.getDiagnosavsnitts(warehouse.get(new HsaIdVardgivare("VG2")),
+                sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR, "A00-B99");
         LOG.info("DSG data: " + diagnosisSubGroups2);
         JsonNode diagnosisSubGroups2Node = JSONParser.parse(diagnosisSubGroups2.toString());
         result.put("diagnosisSubGroups2", new TestData(diagnosisSubGroups2, diagnosisSubGroups2Node));
@@ -192,13 +211,15 @@ public class QueueHelper {
     }
 
     private void printAndGetDiagnosisGroups(HsaIdEnhet vardenhet1, HsaIdEnhet vardenhet2, Range range, Map<String, TestData> result) {
-        DiagnosgruppResponse diagnosisGroups1 = diagnosgruppQuery.getDiagnosgrupper(warehouse.get(new HsaIdVardgivare("EnVG")), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR);
+        DiagnosgruppResponse diagnosisGroups1 = diagnosgruppQuery.getDiagnosgrupper(warehouse.get(new HsaIdVardgivare("EnVG")),
+                sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR);
         LOG.info("DG data: " + diagnosisGroups1);
         JsonNode diagnosisGroups1Node = JSONParser.parse(diagnosisGroups1.toString());
         result.put("diagnosisGroups1", new TestData(diagnosisGroups1, diagnosisGroups1Node));
         LOG.info("DG data: " + diagnosisGroups1Node.toString());
 
-        DiagnosgruppResponse diagnosisGroups2 = diagnosgruppQuery.getDiagnosgrupper(warehouse.get(new HsaIdVardgivare("VG2")), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR);
+        DiagnosgruppResponse diagnosisGroups2 = diagnosgruppQuery.getDiagnosgrupper(warehouse.get(new HsaIdVardgivare("VG2")),
+                sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR);
         LOG.info("DG jdata: " + diagnosisGroups2);
         JsonNode diagnosisGroups2Node = JSONParser.parse(diagnosisGroups2.toString());
         result.put("diagnosisGroups1", new TestData(diagnosisGroups2, diagnosisGroups2Node));
@@ -210,11 +231,13 @@ public class QueueHelper {
     }
 
     private void printAndGetCasesPerMonth(HsaIdEnhet vardenhet1, HsaIdEnhet vardenhet2, Range range, Map<String, TestData> result) {
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth1 = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("EnVG")), sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), range.getNumberOfMonths(), 1, false);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth1 = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("EnVG")),
+                sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), range.getNumberOfMonths(), 1, false);
         LOG.info("CPM data: " + casesPerMonth1);
         JsonNode casesPerMonth1Node = JSONParser.parse(casesPerMonth1.toString());
         result.put("casesPerMonth1", new TestData(casesPerMonth1, casesPerMonth1Node));
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth2 = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("EnVG")), sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), range.getNumberOfMonths(), 1, false);
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth2 = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("EnVG")),
+                sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), range.getNumberOfMonths(), 1, false);
         LOG.info("CPM data: " + casesPerMonth2);
         JsonNode casesPerMonth2Node = JSONParser.parse(casesPerMonth2.toString());
         result.put("casesPerMonth2", new TestData(casesPerMonth2, casesPerMonth2Node));

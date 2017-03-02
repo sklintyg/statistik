@@ -46,7 +46,8 @@ public class SjukfallPerSexConverter {
             data.add(new NamedData(row.getName(), Arrays.asList(rowSum, toTableString(female, rowSum), toTableString(male, rowSum))));
         }
 
-        return TableData.createWithSingleHeadersRow(data, Arrays.asList("Län", "Antal sjukfall totalt", "Andel sjukfall för kvinnor", "Andel sjukfall för män"));
+        return TableData.createWithSingleHeadersRow(data,
+                Arrays.asList("Län", "Antal sjukfall totalt", "Andel sjukfall för kvinnor", "Andel sjukfall för män"));
     }
 
     private String toTableString(int value, int rowSum) {

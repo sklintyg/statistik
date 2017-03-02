@@ -33,7 +33,8 @@ class Filter {
     private Collection<String> aldersgrupp;
     private final String hash;
 
-    Filter(FilterPredicates predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser, Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp, String hashValue) {
+    Filter(FilterPredicates predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser, Collection<String> sjukskrivningslangd,
+            Collection<String> aldersgrupp, String hashValue) {
         this.predicate = predicate;
         this.enheter = enheter;
         this.diagnoser = diagnoser;

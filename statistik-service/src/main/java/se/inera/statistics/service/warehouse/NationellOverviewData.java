@@ -40,7 +40,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-
 @Component
 public class NationellOverviewData {
 
@@ -61,7 +60,8 @@ public class NationellOverviewData {
         int langaSjukskrivningar = getLangaSjukskrivningar(range);
         int forandringLangaSjukskrivningar = getForandringLangaSjukskrivningar(range);
         List<OverviewChartRowExtended> intygPerLan = getIntygPerLan(range);
-        return new OverviewResponse(sexProportion, intygForandring, diagnosgrupper, aldersgrupper, sjukskrivningsgrader, sjukskrivningslangdgrupper, langaSjukskrivningar, forandringLangaSjukskrivningar, intygPerLan);
+        return new OverviewResponse(sexProportion, intygForandring, diagnosgrupper, aldersgrupper, sjukskrivningsgrader,
+                sjukskrivningslangdgrupper, langaSjukskrivningar, forandringLangaSjukskrivningar, intygPerLan);
     }
 
     private int getForandring(Range range) {
@@ -77,7 +77,8 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRowExtended> getIntygPerLan(Range range) {
-        SimpleKonResponse<SimpleKonDataRow> previousData = data.getSjukfallPerLan(ReportUtil.getPreviousPeriod(range).getFrom(), 1, KVARTAL);
+        SimpleKonResponse<SimpleKonDataRow> previousData = data.getSjukfallPerLan(ReportUtil.getPreviousPeriod(range).getFrom(), 1,
+                KVARTAL);
         SimpleKonResponse<SimpleKonDataRow> currentData = data.getSjukfallPerLan(range.getFrom(), 1, KVARTAL);
 
         Set<String> include = getTop(MAX_LAN, currentData);
@@ -86,7 +87,8 @@ public class NationellOverviewData {
     }
 
     private int getForandringLangaSjukskrivningar(Range range) {
-        SimpleKonResponse<SimpleKonDataRow> langaSjukfall = data.getLangaSjukfall(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL);
+        SimpleKonResponse<SimpleKonDataRow> langaSjukfall = data.getLangaSjukfall(ReportUtil.getPreviousPeriod(range).getFrom(), 2,
+                KVARTAL);
         if (langaSjukfall.getRows().isEmpty()) {
             return 0;
         }
@@ -104,7 +106,8 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRow> getSjukskrivningsgrupper(Range range) {
-        SimpleKonResponse<SimpleKonDataRow> previousData = data.getSjukfallslangd(ReportUtil.getPreviousPeriod(range).getFrom(), 1, KVARTAL);
+        SimpleKonResponse<SimpleKonDataRow> previousData = data.getSjukfallslangd(ReportUtil.getPreviousPeriod(range).getFrom(), 1,
+                KVARTAL);
         SimpleKonResponse<SimpleKonDataRow> currentData = data.getSjukfallslangd(range.getFrom(), 1, KVARTAL);
 
         List<OverviewChartRow> result = new ArrayList<>();
@@ -127,7 +130,7 @@ public class NationellOverviewData {
             for (int i = 0; i < previousData.size(); i++) {
                 int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
                 int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
-                result.add(new OverviewChartRowExtended(periods.getGroups().get(i)  + " %", current, percentChange(current, previous)));
+                result.add(new OverviewChartRowExtended(periods.getGroups().get(i) + " %", current, percentChange(current, previous)));
             }
         }
         return result;
@@ -158,7 +161,8 @@ public class NationellOverviewData {
         return result;
     }
 
-    private List<OverviewChartRowExtended> getResult(Set<String> include, SimpleKonResponse<SimpleKonDataRow> previousData,  SimpleKonResponse<SimpleKonDataRow> currentData, String rest) {
+    private List<OverviewChartRowExtended> getResult(Set<String> include, SimpleKonResponse<SimpleKonDataRow> previousData,
+            SimpleKonResponse<SimpleKonDataRow> currentData, String rest) {
         List<OverviewChartRowExtended> result = new ArrayList<>();
 
         int restCurrent = 0;

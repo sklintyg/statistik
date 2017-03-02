@@ -41,7 +41,8 @@ public final class ConversionHelper {
 
     private ConversionHelper() {
     }
-    //CHECKSTYLE:OFF MagicNumber
+
+    // CHECKSTYLE:OFF MagicNumber
     public static long patientIdToInt(String id) {
         final String onlyNumbers = id.replaceAll("[\\D]", "");
         return Long.parseLong(onlyNumbers);
@@ -68,7 +69,8 @@ public final class ConversionHelper {
             int month = Integer.parseInt(dateString.substring(MONTH_PART_OF_DATE_PART, DAY_PART_OF_DATE_PART));
 
             if (day > SAMORDNINGSNUMMER_DAY_CONSTANT) {
-                dateString = dateString.substring(0, MONTH_PART_OF_DATE_PART) + (MONTHDAY_FORMATTER.format(MonthDay.of(month, day - SAMORDNINGSNUMMER_DAY_CONSTANT)));
+                dateString = dateString.substring(0, MONTH_PART_OF_DATE_PART)
+                        + (MONTHDAY_FORMATTER.format(MonthDay.of(month, day - SAMORDNINGSNUMMER_DAY_CONSTANT)));
             }
             birthDate = LocalDate.from(DateTimeFormatter.BASIC_ISO_DATE.parse(dateString));
             LocalDate referenceDate = LocalDate.from(start);
@@ -76,13 +78,14 @@ public final class ConversionHelper {
             age = period.getYears();
         } catch (NumberFormatException | DateTimeParseException e) {
             LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help", e);
-            throw new IllegalArgumentException("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: " + personId);
+            throw new IllegalArgumentException(
+                    "Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: " + personId);
         }
         return age;
     }
 
     public static int extractLan(String lkf) {
-            return extractLKF(lkf, 2);
+        return extractLKF(lkf, 2);
     }
 
     public static int extractKommun(String lkf) {
@@ -105,6 +108,6 @@ public final class ConversionHelper {
             }
         }
     }
-    //CHECKSTYLE:ON MagicNumber
+    // CHECKSTYLE:ON MagicNumber
 
 }

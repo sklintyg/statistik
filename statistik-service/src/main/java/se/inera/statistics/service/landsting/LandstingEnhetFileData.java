@@ -32,9 +32,10 @@ public class LandstingEnhetFileData {
     private HsaIdUser userId;
     private String fileName;
 
-    public LandstingEnhetFileData(HsaIdVardgivare vgId, List<LandstingEnhetFileDataRow> rows, String userName, HsaIdUser userId, String fileName) {
+    public LandstingEnhetFileData(HsaIdVardgivare vgId, List<LandstingEnhetFileDataRow> rows, String userName, HsaIdUser userId,
+            String fileName) {
         this.vgId = vgId == null ? new HsaIdVardgivare("") : vgId;
-        this.rows = rows == null ? Collections.<LandstingEnhetFileDataRow>emptyList() : Collections.unmodifiableList(rows);
+        this.rows = rows == null ? Collections.<LandstingEnhetFileDataRow> emptyList() : Collections.unmodifiableList(rows);
         this.userName = userName;
         this.userId = userId;
         this.fileName = fileName;

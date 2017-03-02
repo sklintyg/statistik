@@ -18,16 +18,18 @@
  */
 package se.inera.statistics.service.processlog.message;
 
+import java.util.List;
+
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.service.processlog.AbstractProcessLog;
 import se.inera.statistics.service.processlog.ProcessLogImpl;
-
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import java.util.List;
 
 @Component
 public class ProcessMessageLogImpl extends AbstractProcessLog implements ProcessMessageLog {
@@ -40,7 +42,9 @@ public class ProcessMessageLogImpl extends AbstractProcessLog implements Process
     @Override
     @Transactional
     public long store(MessageEventType type, String data, String messageId, long timestamp) {
-        TypedQuery<MessageEvent> select = getManager().createQuery("SELECT e FROM MessageEvent e WHERE e.correlationId = :correlationId AND e.type = :type", MessageEvent.class);
+        TypedQuery<MessageEvent> select = getManager()
+                .createQuery("SELECT e FROM MessageEvent e WHERE e.correlationId = :correlationId AND e.type = :type",
+                        MessageEvent.class);
         select.setParameter("correlationId", messageId).setParameter("type", type);
         List<MessageEvent> result = select.getResultList();
         if (result.isEmpty()) {
@@ -63,7 +67,8 @@ public class ProcessMessageLogImpl extends AbstractProcessLog implements Process
     @Override
     @Transactional(noRollbackFor = Exception.class)
     public long increaseNumberOfTries(String messageId) {
-        Query select = getManager().createQuery("UPDATE MessageEvent e SET e.tries = e.tries + 1 WHERE e.correlationId = :correlationId");
+        Query select = getManager().createQuery("UPDATE MessageEvent e SET e.tries = e.tries + 1 WHERE e.correlationId = "
+        + ":correlationId");
         select.setParameter("correlationId", messageId);
         return select.executeUpdate();
     }
@@ -71,7 +76,8 @@ public class ProcessMessageLogImpl extends AbstractProcessLog implements Process
     @Override
     @Transactional
     public List<MessageEvent> getPending(int max, long firstId, int maxNumberOfTries) {
-        String query = "SELECT e FROM MessageEvent e WHERE e.id > :lastId AND e.tries <= :maxTries AND (SELECT count(*) FROM MessageWideLine w WHERE e.correlationId = w.meddelandeId) = 0 ORDER BY e.id ASC";
+        String query = "SELECT e FROM MessageEvent e WHERE e.id > :lastId AND e.tries <= :maxTries AND (SELECT count(*) FROM "
+                + "MessageWideLine w WHERE e.correlationId = w.meddelandeId) = 0 ORDER BY e.id ASC";
 
         TypedQuery<MessageEvent> allQuery = getManager().createQuery(query, MessageEvent.class);
         allQuery.setParameter("lastId", firstId);

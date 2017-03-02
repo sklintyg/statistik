@@ -45,7 +45,8 @@ public final class AldersgruppQuery {
     private AldersgruppQuery() {
     }
 
-    public static List<OverviewChartRowExtended> getOverviewAldersgrupper(Collection<Sjukfall> currentSjukfall, Collection<Sjukfall> previousSjukfall, int noOfRows) {
+    public static List<OverviewChartRowExtended> getOverviewAldersgrupper(Collection<Sjukfall> currentSjukfall,
+            Collection<Sjukfall> previousSjukfall, int noOfRows) {
         Map<Ranges.Range, Counter<Ranges.Range>> previousCount = count(previousSjukfall);
 
         Map<Ranges.Range, Counter<Ranges.Range>> map = count(currentSjukfall);
@@ -92,9 +93,10 @@ public final class AldersgruppQuery {
         return counters;
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(Aisle aisle, FilterPredicates filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+    public static SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
+            int periodLength, SjukfallUtil sjukfallUtil) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup: sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
+        for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = AldersgruppQuery.count(sjukfallGroup.getSjukfall());
             for (Ranges.Range i : AldersgroupUtil.RANGES) {
                 Counter<Ranges.Range> counter = counterMap.get(i);
@@ -104,7 +106,8 @@ public final class AldersgruppQuery {
         return new SimpleKonResponse<>(rows);
     }
 
-    public static KonDataResponse getAldersgrupperSomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+    public static KonDataResponse getAldersgrupperSomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
+            int periodLength, SjukfallUtil sjukfallUtil) {
         final Ranges ranges = AldersgroupUtil.RANGES;
         final ArrayList<Ranges.Range> rangesList = Lists.newArrayList(ranges);
         final List<String> names = Lists.transform(rangesList, Ranges.Range::getName);

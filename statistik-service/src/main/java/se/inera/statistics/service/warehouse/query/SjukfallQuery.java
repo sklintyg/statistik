@@ -18,17 +18,29 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.processlog.Lakare;
@@ -40,21 +52,11 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.FilterPredicates;
+import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @Component
 public class SjukfallQuery {
@@ -81,27 +83,21 @@ public class SjukfallQuery {
         this.cutoff = cutoff;
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder, int periodlangd, boolean applyCutoff) {
-        final Function<SjukfallGroup, String> rowNameFunction = new Function<SjukfallGroup, String>() {
-            @Override
-            public String apply(SjukfallGroup sjukfallGroup) {
-                return ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
-            }
-        };
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
+            int periodlangd, boolean applyCutoff) {
+        final Function<SjukfallGroup, String> rowNameFunction = sjukfallGroup -> ReportUtil
+                .toDiagramPeriod(sjukfallGroup.getRange().getFrom());
         return getSjukfall(aisle, filter, start, perioder, periodlangd, rowNameFunction, applyCutoff);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder, int periodlangd, boolean applyCutoff) {
-        final Function<SjukfallGroup, String> rowNameFunction = new Function<SjukfallGroup, String>() {
-            @Override
-            public String apply(SjukfallGroup sjukfallGroup) {
-                return "Totalt";
-            }
-        };
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
+            int periodlangd, boolean applyCutoff) {
+        final Function<SjukfallGroup, String> rowNameFunction = sjukfallGroup -> "Totalt";
         return getSjukfall(aisle, filter, start, perioder, periodlangd, rowNameFunction, applyCutoff);
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder, int periodlangd, Function<SjukfallGroup, String> rowName, boolean applyCutoff) {
+    private SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
+            int periodlangd, Function<SjukfallGroup, String> rowName, boolean applyCutoff) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, filter)) {
             int male = countMale(sjukfallGroup.getSjukfall());
@@ -116,7 +112,8 @@ public class SjukfallQuery {
         return new SimpleKonResponse<>(result);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, FilterPredicates filter, LocalDate from, int periods, int periodLength, Map<HsaIdEnhet, String> idsToNames, CutoffUsage cutoffUsage) {
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
+            int periodLength, Map<HsaIdEnhet, String> idsToNames, CutoffUsage cutoffUsage) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             rows.addAll(getSjukfallForGroup(idsToNames, cutoffUsage, sjukfallGroup));
@@ -124,13 +121,15 @@ public class SjukfallQuery {
         return new SimpleKonResponse<>(rows);
     }
 
-    private List<SimpleKonDataRow> getSjukfallForGroup(Map<HsaIdEnhet, String> idsToNames, CutoffUsage cutoffUsage, SjukfallGroup sjukfallGroup) {
+    private List<SimpleKonDataRow> getSjukfallForGroup(Map<HsaIdEnhet, String> idsToNames, CutoffUsage cutoffUsage,
+            SjukfallGroup sjukfallGroup) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         SjukfallPerGender sjukfallPerGenderPerEnhet = getSjukfallPerGenderPerEnhet(sjukfallGroup);
         for (Map.Entry<HsaIdEnhet, String> enhetIdAndName : idsToNames.entrySet()) {
             final HsaIdEnhet enhetId = enhetIdAndName.getKey();
             final int enhetIntId = Warehouse.getEnhet(enhetId);
-            final Optional<SimpleKonDataRow> dataForEnhet = getDataForEnhet(cutoffUsage, sjukfallPerGenderPerEnhet, enhetIdAndName, enhetId, enhetIntId);
+            final Optional<SimpleKonDataRow> dataForEnhet = getDataForEnhet(cutoffUsage, sjukfallPerGenderPerEnhet, enhetIdAndName, enhetId,
+                    enhetIntId);
             if (dataForEnhet.isPresent()) {
                 rows.add(dataForEnhet.get());
             }
@@ -138,7 +137,8 @@ public class SjukfallQuery {
         return rows;
     }
 
-    private Optional<SimpleKonDataRow> getDataForEnhet(CutoffUsage cutoffUsage, SjukfallPerGender sjukfallPerGenderPerEnhet, Map.Entry<HsaIdEnhet, String> enhetIdAndName, HsaIdEnhet enhetId, int enhetIntId) {
+    private Optional<SimpleKonDataRow> getDataForEnhet(CutoffUsage cutoffUsage, SjukfallPerGender sjukfallPerGenderPerEnhet,
+            Map.Entry<HsaIdEnhet, String> enhetIdAndName, HsaIdEnhet enhetId, int enhetIntId) {
         if (enhetIntId < 0) {
             return Optional.absent();
         }
@@ -177,8 +177,8 @@ public class SjukfallQuery {
         return count;
     }
 
-
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakare(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength) {
+    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakare(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
+            int periodLength) {
         final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
             for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
                 counter.add(lakare.getId());
@@ -218,21 +218,25 @@ public class SjukfallQuery {
         this.lakareManager = lakareManager;
     }
 
-    public KonDataResponse getSjukfallPerEnhetSeries(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize, Map<HsaIdEnhet, String> idsToNames) {
+    public KonDataResponse getSjukfallPerEnhetSeries(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize,
+            Map<HsaIdEnhet, String> idsToNames) {
         final ArrayList<Map.Entry<HsaIdEnhet, String>> groupEntries = new ArrayList<>(idsToNames.entrySet());
         final List<String> names = Lists.transform(groupEntries, entry -> entry.getKey().getId());
         final List<Integer> ids = Lists.transform(groupEntries, entry -> Warehouse.getEnhet(entry.getKey()));
         final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> counter.add(sjukfall.getLastEnhet());
-        final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, names, ids, counterFunction);
+        final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, names, ids,
+                counterFunction);
         return KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);
     }
 
-    public KonDataResponse getSjukfallPerLakareSomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength) {
+    public KonDataResponse getSjukfallPerLakareSomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
+            int periodLength) {
         final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> counter.add(sjukfall.getLastLakare().getId());
         return getSjukfallPerLakareCommon(aisle, filter, start, periods, periodLength, counterFunction);
     }
 
-    private KonDataResponse getSjukfallPerLakareCommon(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength, CounterFunction<Integer> counterFunction) {
+    private KonDataResponse getSjukfallPerLakareCommon(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength,
+            CounterFunction<Integer> counterFunction) {
         final Function<Sjukfall, Collection<Integer>> groupsFunction = sjukfall -> {
             final ArrayList<Integer> integers = new ArrayList<>();
             for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
@@ -241,38 +245,33 @@ public class SjukfallQuery {
             return integers;
         };
 
-        final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, groupsFunction, counterFunction);
+        final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, groupsFunction,
+                counterFunction);
         final KonDataResponse filteredResponse = KonDataResponse.createNewWithoutEmptyGroups(response);
         return changeLakareIdToLakarName(filteredResponse);
     }
 
     private KonDataResponse changeLakareIdToLakarName(final KonDataResponse response) {
-        final List<HsaIdLakare> lakares = Lists.transform(response.getGroups(), new Function<String, HsaIdLakare>() {
-            @Override
-            public HsaIdLakare apply(String group) {
-                final Optional<HsaIdLakare> lakarId = Warehouse.getLakarId(Integer.parseInt(group));
-                if (!lakarId.isPresent()) {
-                    LOG.error("Could not find lakare with internal id: " + group);
-                    return HsaIdLakare.empty();
-                }
-                return lakarId.get();
+        final List<HsaIdLakare> lakares = Lists.transform(response.getGroups(), group -> {
+            final Optional<HsaIdLakare> lakarId = Warehouse.getLakarId(Integer.parseInt(group));
+            if (!lakarId.isPresent()) {
+                LOG.error("Could not find lakare with internal id: " + group);
+                return HsaIdLakare.empty();
             }
+            return lakarId.get();
         });
         final List<Lakare> allLakareInResponse = lakareManager.getAllSpecifiedLakares(lakares);
         final Set<String> nameDuplicates = findDuplicates(allLakareInResponse);
-        final List<String> updatedLakareNames = Lists.transform(response.getGroups(), new Function<String, String>() {
-            @Override
-            public String apply(String lakareIdNum) {
-                for (Lakare lakare : allLakareInResponse) {
-                    if (lakareIdNum.equals(String.valueOf(Warehouse.getNumLakarId(lakare.getLakareId())))) {
-                        final String namn = lakarNamn(lakare);
-                        return namn + (nameDuplicates.contains(namn) ? " " + lakare.getLakareId() : "");
-                    }
+        final List<String> updatedLakareNames = Lists.transform(response.getGroups(), lakareIdNum -> {
+            for (Lakare lakare : allLakareInResponse) {
+                if (lakareIdNum.equals(String.valueOf(Warehouse.getNumLakarId(lakare.getLakareId())))) {
+                    final String namn = lakarNamn(lakare);
+                    return namn + (nameDuplicates.contains(namn) ? " " + lakare.getLakareId() : "");
                 }
-                LOG.warn("Could not find name for lakare: " + lakareIdNum);
-                final Optional<HsaIdLakare> lakarId = Warehouse.getLakarId(Integer.parseInt(lakareIdNum));
-                return lakarId.isPresent() ? lakarId.get().getId() : lakareIdNum;
             }
+            LOG.warn("Could not find name for lakare: " + lakareIdNum);
+            final Optional<HsaIdLakare> lakarId = Warehouse.getLakarId(Integer.parseInt(lakareIdNum));
+            return lakarId.isPresent() ? lakarId.get().getId() : lakareIdNum;
         });
         return new KonDataResponse(updatedLakareNames, response.getRows());
     }
@@ -281,12 +280,15 @@ public class SjukfallQuery {
         this.cutoff = cutoff;
     }
 
-    public static List<Sjukfall> getSjukfallForBi(Aisle facts, FilterPredicates filter, LocalDate from, int months, int i, SjukfallUtil sjukfallUtil) {
-        final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(SjukfallUtil.START_DATE_OF_DATA_GATHERING, 1, Integer.MAX_VALUE, facts, filter);
-        return StreamSupport.stream(sjukfallGroups.spliterator(), false).flatMap(sg -> sg.getSjukfall().stream()).collect(Collectors.toList());
+    public static List<Sjukfall> getSjukfallForBi(Aisle facts, FilterPredicates filter, LocalDate from, int months, int i,
+            SjukfallUtil sjukfallUtil) {
+        final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(SjukfallUtil.START_DATE_OF_DATA_GATHERING, 1,
+                Integer.MAX_VALUE, facts, filter);
+        return StreamSupport.stream(sjukfallGroups.spliterator(), false).flatMap(sg -> sg.getSjukfall().stream())
+                .collect(Collectors.toList());
     }
 
-    private class SjukfallPerGender {
+    private static class SjukfallPerGender {
         private Multiset<Integer> femalePerEnhet = HashMultiset.create();
         private Multiset<Integer> malePerEnhet = HashMultiset.create();
 

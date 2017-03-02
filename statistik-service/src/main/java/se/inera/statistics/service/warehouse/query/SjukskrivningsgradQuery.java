@@ -44,7 +44,8 @@ public final class SjukskrivningsgradQuery {
     private SjukskrivningsgradQuery() {
     }
 
-    static List<OverviewChartRowExtended> getOverviewSjukskrivningsgrad(Collection<Sjukfall> currentSjukfall, Collection<Sjukfall> previousSjukfall) {
+    static List<OverviewChartRowExtended> getOverviewSjukskrivningsgrad(Collection<Sjukfall> currentSjukfall,
+            Collection<Sjukfall> previousSjukfall) {
         Map<Integer, Counter<Integer>> currentCount = count2(currentSjukfall);
         Map<Integer, Counter<Integer>> previousCount = count2(previousSjukfall);
 
@@ -70,11 +71,14 @@ public final class SjukskrivningsgradQuery {
         }
         return counters;
     }
-    public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil) {
+
+    public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize,
+            SjukfallUtil sjukfallUtil) {
         return getSjukskrivningsgrad(aisle, filter, start, periods, periodSize, sjukfallUtil, false);
     }
 
-    public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize, SjukfallUtil sjukfallUtil, boolean all) {
+    public static KonDataResponse getSjukskrivningsgrad(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize,
+            SjukfallUtil sjukfallUtil, boolean all) {
         CounterFunction<Integer> toCount;
         if (all) {
             toCount = (sjukfall, counter) -> counter.addAll(new HashSet<>(sjukfall.getSjukskrivningsgrader()));
@@ -93,7 +97,8 @@ public final class SjukskrivningsgradQuery {
         }
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getSjukskrivningsgradTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from, int periods, int periodLength, SjukfallUtil sjukfallUtil) {
+    public static SimpleKonResponse<SimpleKonDataRow> getSjukskrivningsgradTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from,
+            int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         final CounterFunction<Integer> toCount = (sjukfall, counter) -> counter.addAll(new HashSet<>(sjukfall.getSjukskrivningsgrader()));
 
         return sjukfallUtil.calculateSimpleKonResponse(aisle, filter, from, periods, periodLength, toCount, GRAD);

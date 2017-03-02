@@ -26,12 +26,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.w3.wsaddressing10.AttributedURIType;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import se.inera.ifv.hsaws.v3.HsaWsFault;
 import se.inera.ifv.hsaws.v3.HsaWsResponderInterface;
@@ -82,13 +88,6 @@ import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.base.Predicate;
-import com.google.common.collect.FluentIterable;
-
 @Component
 @Profile({ "hsa-stub" })
 @Primary
@@ -107,8 +106,12 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     private static final Lan LAN = new Lan();
     private static final List<String> LAN_CODES;
     private static final Kommun KOMMUN = new Kommun();
-    private static final String[] TILLTALS_NAMN = new String[] {"Abdullah", "Beata", "Cecilia", "David", "Egil", "Fredrika", "Gustave", "Henning", "Ibrahim", "José", "Kone", "Lazlo", "My", "Natasha", "Orhan", "Pawel", "Rebecca", "Sirkka", "Tuula", "Urban", "Vieux", "Åsa"};
-    private static final String[] EFTER_NAMN = new String[] {"Andersson", "Bardot", "Cohen", "Derrida", "En", "Flod", "Gran", "Holmberg", "Isaac", "Juhanen", "Karlsson", "Lazar", "Manard", "Nadal", "Olrik", "Pettersson", "Rawls", "Sadat", "Tot", "Uddhammar", "Wedén", "Åsgren", "Örn"};
+    private static final String[] TILLTALS_NAMN = new String[] { "Abdullah", "Beata", "Cecilia", "David", "Egil", "Fredrika", "Gustave",
+            "Henning", "Ibrahim", "José", "Kone", "Lazlo", "My", "Natasha", "Orhan", "Pawel", "Rebecca", "Sirkka", "Tuula", "Urban",
+            "Vieux", "Åsa" };
+    private static final String[] EFTER_NAMN = new String[] { "Andersson", "Bardot", "Cohen", "Derrida", "En", "Flod", "Gran", "Holmberg",
+            "Isaac", "Juhanen", "Karlsson", "Lazar", "Manard", "Nadal", "Olrik", "Pettersson", "Rawls", "Sadat", "Tot", "Uddhammar",
+            "Wedén", "Åsgren", "Örn" };
     private static final List<String> KOMMUN_CODES;
     private static final VerksamhetsTyp VERKSAMHET = new VerksamhetsTyp();
     private static final List<String> VERKSAMHET_CODES;
@@ -226,7 +229,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
             return null;
         }
         int index = key.toString().hashCode() & POSITIVE_MASK;
-        return TILLTALS_NAMN[index % TILLTALS_NAMN.length ];
+        return TILLTALS_NAMN[index % TILLTALS_NAMN.length];
     }
 
     private String getEfternamn(Object key) {
@@ -234,7 +237,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
             return null;
         }
         int index = key.toString().hashCode() & POSITIVE_MASK;
-        return EFTER_NAMN[index % EFTER_NAMN.length ];
+        return EFTER_NAMN[index % EFTER_NAMN.length];
     }
 
     private JsonNode createGeografiskIndelning(HSAKey key) {
@@ -262,18 +265,14 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
             return nextKommunCode;
         }
         int keyIndex = key != null && key.getEnhetId() != null ? key.getEnhetId().hashCode() & POSITIVE_MASK : 0;
-        List<String> relevantKommuns = FluentIterable.from(KOMMUN_CODES).filter(new Predicate<String>() {
-            @Override
-            public boolean apply(String s) {
-                return s.startsWith(lan) || s.equals(Kommun.OVRIGT_ID);
-            }
-        }).toList();
+        List<String> relevantKommuns = KOMMUN_CODES.stream().filter(s -> s.startsWith(lan) || s.equals(Kommun.OVRIGT_ID))
+                .collect(Collectors.toList());
         return relevantKommuns.get(keyIndex % relevantKommuns.size()).substring(2);
     }
 
     private String[] createVerksamhet(HSAKey key) {
         if (key == null || key.getVardgivareId() == null) {
-            return new String[] {VerksamhetsTyp.OVRIGT_ID};
+            return new String[] { VerksamhetsTyp.OVRIGT_ID };
         }
         Set<String> returnSet = new HashSet<>();
         int numberOfVerksamhet = (key.getEnhetId().hashCode() & POSITIVE_MASK) % VERKSAMHET_MODULO;
@@ -328,17 +327,20 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     }
 
     @Override
-    public VpwGetPublicUnitsResponseType vpwGetPublicUnits(AttributedURIType logicalAddress, AttributedURIType id, VpwGetPublicUnitsType parameters) throws HsaWsFault {
+    public VpwGetPublicUnitsResponseType vpwGetPublicUnits(AttributedURIType logicalAddress, AttributedURIType id,
+            VpwGetPublicUnitsType parameters) throws HsaWsFault {
         throw new UnusedMethodException();
     }
 
     @Override
-    public GetCareUnitResponseType getCareUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
+    public GetCareUnitResponseType getCareUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters)
+            throws HsaWsFault {
         throw new UnusedMethodException();
     }
 
     @Override
-    public GetStatisticsPersonResponseType getStatisticsPerson(AttributedURIType logicalAddress, AttributedURIType id, GetStatisticsPersonType parameters) throws HsaWsFault {
+    public GetStatisticsPersonResponseType getStatisticsPerson(AttributedURIType logicalAddress, AttributedURIType id,
+            GetStatisticsPersonType parameters) throws HsaWsFault {
         GetStatisticsPersonResponseType resp = new GetStatisticsPersonResponseType();
         String hsaId = parameters.getHsaIdentity();
         if (!shouldExistInHsa(hsaId)) {
@@ -359,37 +361,44 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     }
 
     @Override
-    public IsAuthorizedToSystemResponseType isAuthorizedToSystem(AttributedURIType logicalAddress, AttributedURIType id, IsAuthorizedToSystemType parameters) throws HsaWsFault {
+    public IsAuthorizedToSystemResponseType isAuthorizedToSystem(AttributedURIType logicalAddress, AttributedURIType id,
+            IsAuthorizedToSystemType parameters) throws HsaWsFault {
         throw new UnusedMethodException();
     }
 
     @Override
-    public GetCareUnitListResponseType getCareUnitList(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
+    public GetCareUnitListResponseType getCareUnitList(AttributedURIType logicalAddress, AttributedURIType id,
+            LookupHsaObjectType parameters) throws HsaWsFault {
         throw new UnusedMethodException();
     }
 
     @Override
-    public GetHospLastUpdateResponseType getHospLastUpdate(AttributedURIType logicalAddress, AttributedURIType id, GetHospLastUpdateType parameters) throws HsaWsFault {
+    public GetHospLastUpdateResponseType getHospLastUpdate(AttributedURIType logicalAddress, AttributedURIType id,
+            GetHospLastUpdateType parameters) throws HsaWsFault {
         throw new UnusedMethodException();
     }
 
     @Override
-    public GetHsaUnitResponseType getHsaUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
+    public GetHsaUnitResponseType getHsaUnit(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters)
+            throws HsaWsFault {
         throw new UnusedMethodException();
     }
 
     @Override
-    public GetPriceUnitsForAuthResponseType getPriceUnitsForAuth(AttributedURIType logicalAddress, AttributedURIType id, GetPriceUnitsForAuthType parameters) throws HsaWsFault {
+    public GetPriceUnitsForAuthResponseType getPriceUnitsForAuth(AttributedURIType logicalAddress, AttributedURIType id,
+            GetPriceUnitsForAuthType parameters) throws HsaWsFault {
         throw new UnusedMethodException();
     }
 
     @Override
-    public GetHsaPersonResponseType getHsaPerson(AttributedURIType logicalAddress, AttributedURIType id, GetHsaPersonType parameters) throws HsaWsFault {
+    public GetHsaPersonResponseType getHsaPerson(AttributedURIType logicalAddress, AttributedURIType id, GetHsaPersonType parameters)
+            throws HsaWsFault {
         throw new UnusedMethodException();
     }
 
     @Override
-    public GetStatisticsNamesResponseType getStatisticsNames(AttributedURIType logicalAddress, AttributedURIType id, GetStatisticsNamesType parameters) throws HsaWsFault {
+    public GetStatisticsNamesResponseType getStatisticsNames(AttributedURIType logicalAddress, AttributedURIType id,
+            GetStatisticsNamesType parameters) throws HsaWsFault {
         String hsaid = parameters.getHsaIdentities().getHsaIdentity().get(0);
         if (!shouldExistInHsa(hsaid)) {
             return null;
@@ -420,7 +429,8 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     }
 
     @Override
-    public GetMiuForPersonResponseType getMiuForPerson(AttributedURIType logicalAddress, AttributedURIType id, GetMiuForPersonType parameters) throws HsaWsFault {
+    public GetMiuForPersonResponseType getMiuForPerson(AttributedURIType logicalAddress, AttributedURIType id,
+            GetMiuForPersonType parameters) throws HsaWsFault {
         GetMiuForPersonResponseType response = new GetMiuForPersonResponseType();
 
         for (Medarbetaruppdrag medarbetaruppdrag : hsaServiceStub.getMedarbetaruppdrag()) {
@@ -452,7 +462,8 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     }
 
     @Override
-    public GetStatisticsCareGiverResponseType getStatisticsCareGiver(AttributedURIType logicalAddress, AttributedURIType id, GetStatisticsCareGiverType parameters) throws HsaWsFault {
+    public GetStatisticsCareGiverResponseType getStatisticsCareGiver(AttributedURIType logicalAddress, AttributedURIType id,
+            GetStatisticsCareGiverType parameters) throws HsaWsFault {
         String hsaid = parameters.getHsaIdentity();
         GetStatisticsCareGiverResponseType resp = new GetStatisticsCareGiverResponseType();
         resp.setHsaIdentity(hsaid);
@@ -460,12 +471,14 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     }
 
     @Override
-    public HsawsSimpleLookupResponseType hsawsSimpleLookup(AttributedURIType logicalAddress, AttributedURIType id, HsawsSimpleLookupType parameters) throws HsaWsFault {
+    public HsawsSimpleLookupResponseType hsawsSimpleLookup(AttributedURIType logicalAddress, AttributedURIType id,
+            HsawsSimpleLookupType parameters) throws HsaWsFault {
         throw new UnusedMethodException();
     }
 
     @Override
-    public GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(AttributedURIType logicalAddress, AttributedURIType id, GetStatisticsHsaUnitType parameters) throws HsaWsFault {
+    public GetStatisticsHsaUnitResponseType getStatisticsHsaUnit(AttributedURIType logicalAddress, AttributedURIType id,
+            GetStatisticsHsaUnitType parameters) throws HsaWsFault {
         String hsaid = parameters.getHsaIdentity();
         HSAKey key = getHsaKey(hsaid);
         if (shouldExistInHsa(hsaid)) {
@@ -522,26 +535,30 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     }
 
     @Override
-    public GetCareUnitMembersResponseType getCareUnitMembers(AttributedURIType logicalAddress, AttributedURIType id, LookupHsaObjectType parameters) throws HsaWsFault {
+    public GetCareUnitMembersResponseType getCareUnitMembers(AttributedURIType logicalAddress, AttributedURIType id,
+            LookupHsaObjectType parameters) throws HsaWsFault {
         throw new UnusedMethodException();
     }
 
     @Override
-    public GetHospPersonResponseType getHospPerson(AttributedURIType logicalAddress, AttributedURIType id, GetHospPersonType parameters) throws HsaWsFault {
+    public GetHospPersonResponseType getHospPerson(AttributedURIType logicalAddress, AttributedURIType id, GetHospPersonType parameters)
+            throws HsaWsFault {
         throw new UnusedMethodException();
     }
 
     @Override
-    public GetInformationListResponseType getInformationList(AttributedURIType logicalAddress, AttributedURIType id, GetInformationListType parameters) throws HsaWsFault {
+    public GetInformationListResponseType getInformationList(AttributedURIType logicalAddress, AttributedURIType id,
+            GetInformationListType parameters) throws HsaWsFault {
         throw new UnusedMethodException();
     }
 
     @Override
-    public HandleCertifierResponseType handleCertifier(AttributedURIType logicalAddress, AttributedURIType id, HandleCertifierType parameters) throws HsaWsFault {
+    public HandleCertifierResponseType handleCertifier(AttributedURIType logicalAddress, AttributedURIType id,
+            HandleCertifierType parameters) throws HsaWsFault {
         throw new UnusedMethodException();
     }
 
-    private class UnusedMethodException extends RuntimeException {
+    private static class UnusedMethodException extends RuntimeException {
 
         UnusedMethodException() {
             super("This method is not used by Statistiktjansten and has therefore not been implemented");

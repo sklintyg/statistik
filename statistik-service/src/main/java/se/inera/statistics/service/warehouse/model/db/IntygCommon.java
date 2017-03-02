@@ -46,7 +46,8 @@ public class IntygCommon {
     private EventType eventType;
 
     // CHECKSTYLE:OFF ParameterNumber
-    public IntygCommon(String intygid, String patientid, LocalDate signeringsdatum, String intygtyp, String enhet, String vardgivareId, int kon, EventType eventType) {
+    public IntygCommon(String intygid, String patientid, LocalDate signeringsdatum, String intygtyp, String enhet, String vardgivareId,
+            int kon, EventType eventType) {
         this.intygid = intygid;
         this.patientid = patientid;
         this.kon = kon;
