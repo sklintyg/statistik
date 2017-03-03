@@ -23,6 +23,20 @@ stage('build') {
     }
 }
 
+
+// Right now these tests must run in its own stage, b/c gretty and jacoco don't work together
+stage('integrationTest') {
+    node {
+        try {
+            shgradle "integrationTest testReport -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+        } finally {
+            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/integrationTest', \
+                reportFiles: 'index.html', reportName: 'Integration test results'
+
+        }
+    }
+}
+
 stage('deploy') {
     node {
         util.run {
