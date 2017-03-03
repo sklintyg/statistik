@@ -59,7 +59,7 @@
 
 - name: Copy statistik-web-{{ version }}.war from THIS machine
   copy:
-    src: "{{ playbook_dir }}/../web/build/libs/statistik-web-{{ version }}.war"
+    src: "{{ playbook_dir }}/../statistik-web/build/libs/statistik-web-{{ version }}.war"
     dest: "{{ releases_folder }}/statistik-web-{{ version }}.war"
   when: not deploy_from_repo|bool
 
