@@ -7,7 +7,14 @@
 - name: Download hsa fileservice updater for statistik
   get_url: url=https://build-inera.nordicmedtest.se/nexus/content/repositories/{{ repo }}/se/inera/statistik/fileservice/{{ version }}/fileservice-{{ version }}.zip
            dest={{ archive_dir }}/fileservice-{{ version }}.zip
+  when: deploy_from_repo|bool
 
+- name: Copy fileservice-{{ version }}.zip from THIS machine
+  copy:
+    src: "{{ playbook_dir }}/../tools/fileservice/build/lib/fileservice-{{ version }}.zip"
+    dest: "{{ archive_dir }}/fileservice-{{ version }}.zip"
+  when: not deploy_from_repo|bool
+           
 - name: Remove old fileservice
   file: path={{ inera_root }}/fileservice state=absent
 
@@ -18,12 +25,9 @@
   unarchive: src={{ archive_dir }}/fileservice-{{ version }}.zip
              dest={{ inera_root }}/fileservice copy=no
 
-
-
 # Create file dataSource.properties
 - name: Create datasource properties file
   template: src=dataSource.properties.template dest="{{ dataSource_properties_file }}" mode=644
-
 
 # Create file hsaFileService.properties
 - name: Fetching hsa certificate password
