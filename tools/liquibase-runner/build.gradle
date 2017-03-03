@@ -5,13 +5,21 @@ applicationDefaultJvmArgs = ["-Dfile.encoding=utf8"]
 
 startScripts {
     doLast {
-        // Get hold of the file name of the statistik-service jar file
-        def statistikDependency = configurations.runtime.filter { it.name.startsWith("statistik-service") }.singleFile.name
-        // Insert our default script parameters into the script templates
-        unixScript.text = unixScript.text.replaceAll(/"\$@"$/,
-            "--driver=com.mysql.jdbc.Driver --classpath=lib/${statistikDependency} --changeLogFile=changelog/changelog.xml \"\\\$@\"")
+        def persistenceDependency = configurations.runtime.filter { it.name.startsWith("statistik-service") }.singleFile.name
+
+        def originalScript = unixScript.text
+        unixScript.text = unixScript.text.replaceAll(/save \"\$@\"/,
+            'save --driver=com.mysql.jdbc.Driver --classpath=lib/' + persistenceDependency + ' --changeLogFile=changelog/changelog.xml "\\$@"')
+        if (originalScript.equals(unixScript.text)) {
+                throw new RuntimeException("No replacement seems to have been made to the liquibase script.")
+        }
+
+        def originalWindowsScript = windowsScript.text
         windowsScript.text = windowsScript.text.replaceAll(/%CMD_LINE_ARGS%/,
-            "--driver=com.mysql.jdbc.Driver --classpath=lib/${statistikDependency} --changeLogFile=changelog/changelog.xml %CMD_LINE_ARGS%")
+            "--driver=com.mysql.jdbc.Driver --classpath=lib/${persistenceDependency} --changeLogFile=changelog/changelog.xml %CMD_LINE_ARGS%")
+        if (originalWindowsScript.equals(windowsScript.text)) {
+                throw new RuntimeException("No replacement seems to have been made to the windows liquibase script.")
+        }
     }
 }
 
@@ -23,8 +31,13 @@ configurations.runtime {
     transitive = false
 }
 
+sonarqube {
+    skipProject = true
+}
+
 dependencies {
     runtime project(":statistik-service")
+
     runtime "org.liquibase:liquibase-core:${liquibaseVersion}"
     runtime "mysql:mysql-connector-java:${mysqlConnectorVersion}"
 }

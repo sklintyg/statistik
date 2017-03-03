@@ -2,8 +2,6 @@ apply plugin: 'application'
 apply plugin: 'groovy'
 apply plugin: 'maven'
 
-description = 'Anonymisering av intyg för statistik'
-
 group = 'se.inera.statistik'
 version = '4.0.0'
 
@@ -11,8 +9,6 @@ repositories {
     mavenLocal()
     maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/central/" }
     maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/" }
-    maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/snapshots/" }
-    maven { url "https://build-inera.nordicmedtest.se/nexus/content/repositories/thirdparty/" }
     mavenCentral()
 }
 

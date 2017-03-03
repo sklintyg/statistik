@@ -1,5 +1,3 @@
-description = 'Inera Statistics HSA-Integration module'
-
 ext.wsdlFile = file("src/main/resources/schemas/wsdl/HsaWsInteraction_3.18.wsdl")
 ext.generatedJavaDir = file("generatedSource/java")
 
@@ -35,7 +33,7 @@ dependencies {
     compile "org.apache.cxf:cxf-rt-frontend-jaxws:${cxfVersion}"
     compile "org.springframework:spring-context:${springContextVersion}"
     compile "org.springframework.security:spring-security-web:${springSecurityVersion}"
-    compile "se.inera.intyg.infra:hsa-integration:${intygInfraVersion}"
+    compile "se.inera.intyg.infra:hsa-integration:${infraVersion}"
     compile "joda-time:joda-time:${jodaTimeVersion}"
 
     wsdlgen "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:${cxfVersion}"
