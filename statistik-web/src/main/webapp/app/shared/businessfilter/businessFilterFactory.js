@@ -196,7 +196,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     };
 
     businessFilter.setIcd10Structure = function (diagnoses) {
-        businessFilter.icd10.untuched = angular.copy(diagnoses);
+        businessFilter.icd10.untuched = _.cloneDeep(diagnoses);
         businessFilter.setupDiagnosisTreeForSelectionModal(diagnoses);
         businessFilter.icd10.subs = diagnoses;
 
@@ -204,16 +204,16 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     };
 
     function setPreselectedFilter(filterData) {
-        businessFilter.diagnoserSaved = angular.copy(filterData.diagnoser);
+        businessFilter.diagnoserSaved = _.cloneDeep(filterData.diagnoser);
         businessFilter.selectDiagnoses(filterData.diagnoser);
         businessFilter.selectedVerksamhetTypIds = _.uniqWith(_.map(filterData.verksamhetstyper, function(verksamhetstyp) {
             return _.find(businessFilter.verksamhetsTyper, function(verksamhet) { return _.includes(verksamhet.ids, verksamhetstyp); }).id;
         }));
         businessFilter.selectedSjukskrivningslangdIds = filterData.sjukskrivningslangd;
-        businessFilter.sjukskrivningslangdSaved = angular.copy(filterData.sjukskrivningslangd);
+        businessFilter.sjukskrivningslangdSaved = _.cloneDeep(filterData.sjukskrivningslangd);
         businessFilter.selectedAldersgruppIds = filterData.aldersgrupp;
-        businessFilter.aldersgruppSaved = angular.copy(filterData.aldersgrupp);
-        businessFilter.geographyBusinessIdsSaved = angular.copy(filterData.enheter);
+        businessFilter.aldersgruppSaved = _.cloneDeep(filterData.aldersgrupp);
+        businessFilter.geographyBusinessIdsSaved = _.cloneDeep(filterData.enheter);
         businessFilter.selectGeographyBusiness(filterData.enheter);
         businessFilter.toDate = filterData.toDate ? moment(filterData.toDate).utc().toDate() : null;
         businessFilter.fromDate = filterData.fromDate ? moment(filterData.fromDate).utc().toDate() : null;
