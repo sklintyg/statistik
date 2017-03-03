@@ -11,7 +11,7 @@
 
 - name: Copy fileservice-{{ version }}.zip from THIS machine
   copy:
-    src: "{{ playbook_dir }}/../tools/fileservice/build/lib/fileservice-{{ version }}.zip"
+    src: "{{ playbook_dir }}/../tools/fileservice/build/distributions/fileservice-{{ version }}.zip"
     dest: "{{ archive_dir }}/fileservice-{{ version }}.zip"
   when: not deploy_from_repo|bool
            
