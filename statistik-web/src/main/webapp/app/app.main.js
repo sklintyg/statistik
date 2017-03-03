@@ -33,7 +33,7 @@ var app = angular.module('StatisticsApp',
 
 app.run(
     /** @ngInject */
-    function (AppService, $rootScope, $timeout) {
+    function (AppService, $rootScope) {
     'use strict';
 
         $rootScope.isLoggedIn = false;
@@ -42,15 +42,5 @@ app.run(
         AppService.get().then(function(data) {
             $rootScope.isLoggedIn = data.loggedIn;
         });
-
-        // Append pdf font to page body
-        $timeout(function() {
-            var script = document.createElement( 'script' );
-            script.type = 'text/javascript';
-            script.src = 'js/lib/vfs_fonts.js';
-            document.body.appendChild(script);
-
-            $rootScope.pdfFontLoaded = true;
-        }, 2500);
     }
 );

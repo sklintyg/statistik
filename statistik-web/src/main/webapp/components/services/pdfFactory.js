@@ -135,16 +135,8 @@ angular.module('StatisticsApp')
             _create(content, filename, pdfDoneCallback);
         }
 
-        function _waitOnFont(content, fileName, pdfDoneCallback) {
-            if (!$rootScope.pdfFontLoaded) {
-                $timeout(_waitOnFont, 500, true, content, fileName, pdfDoneCallback);
-            } else {
-                _createPdf(content, fileName, pdfDoneCallback);
-            }
-        }
-
         function _create(content, fileName, pdfDoneCallback) {
-            _waitOnFont(content, fileName, pdfDoneCallback);
+            _createPdf(content, fileName, pdfDoneCallback);
         }
 
         function _createPdf(content, fileName, pdfDoneCallback) {
