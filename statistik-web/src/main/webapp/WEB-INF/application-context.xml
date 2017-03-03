@@ -46,7 +46,6 @@
                 <list>
                     <value>version</value>
                     <value>buildtime</value>
-                    <value>buildhost</value>
                 </list>
             </property>
         </bean>

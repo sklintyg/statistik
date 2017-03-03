@@ -55,7 +55,6 @@
 
     <div>Application version: <span class="label label-info">${versionUtil.projectVersion}</span></div>
     <div>Application build time: <span class="label label-info">${versionUtil.buildTime}</span></div>
-    <div>Application build host: <span class="label label-info">${versionUtil.buildHost}</span></div>
     <div>Spring profiles: <span class="label label-info"><%= System.getProperty("spring.profiles.active") %></span></div>
   </div>
   <div class="muted">Server now time: <%= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) %></div>

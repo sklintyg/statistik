@@ -90,9 +90,6 @@
 - name: Deploy highchart-export-web-{{ highcharts_version }}.war
   command: cp {{ releases_folder }}/highcharts-export-web-{{ highcharts_version }}.war {{ tomcat_webapps }}/highcharts-export-web.war
 
-- name: Create version file
-  template: src=version.txt.j2 dest={{ tomcat_webapps }}/version.txt
-
 - name: update configuration to {{ config_version }}
   git: repo={{ config_repository }}
        dest={{ config_folder }}
