@@ -18,7 +18,6 @@
  */
 
 /*globals browser,protractor */
-/*globals pages */
 /*globals describe,it,helpers */
 'use strict';
 
@@ -30,20 +29,24 @@ var headerPage = pages.headerPo;
 
 describe('Grundläggande tester av statistiktjänsten: ', function() {
 
-    beforeEach(function() {
-        browser.get("http://localhost:8080");
+    beforeAll(function() {
+        browser.get('/');
     });
 
     it('Användaren routas till nationell översikt när man inte anger någon sökväg', function() {
-        expect(browser.getTitle()).toEqual('Översikt | Statistiktjänsten');
+        pages.overview.isAtPage();
     });
 
     it('Inloggning fungerar', function() {
         features.user.makeSureNotLoggedIn();
+
         headerPage.clickLogin();
-        fakeloginPage.verifyAt();
+        fakeloginPage.isAtPage();
         features.user.loginUser1(true);
-        expect(browser.getTitle()).toEqual('Verksamhetsöversikt | Statistiktjänsten');
+
+        pages.verksamhetOverview.isAtPage();
+
+        features.user.makeSureNotLoggedIn();
     });
 
 });

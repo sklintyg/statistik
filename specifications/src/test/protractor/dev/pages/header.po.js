@@ -4,20 +4,17 @@
 
 var pohelper = require('./pohelper.js');
 
-var loginBtn = element(by.id('business-login-btn'));
-var logoutLink = element(by.id('logoutLink'));
+var HeaderPage = function() {
+    this.loginBtn = element(by.id('business-login-btn'));
+    this.logoutLink = element(by.id('logoutLink'));
 
-var clickLogin = function() {
-    return loginBtn.click();
+    this.clickLogin = function() {
+        return this.loginBtn.click();
+    };
+
+    this.clickLogout = function() {
+        pohelper.clickAndWaitForPageRedirect(this.logoutLink);
+    };
 };
 
-var clickLogout = function() {
-    pohelper.clickAndWaitForPageRedirect(logoutLink);
-};
-
-module.exports = {
-    'clickLogin': clickLogin,
-    'clickLogout': clickLogout,
-    'loginBtn': loginBtn,
-    'logoutLink': logoutLink
-};
+module.exports = new HeaderPage();

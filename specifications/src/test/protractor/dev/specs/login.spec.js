@@ -25,24 +25,27 @@
 var testfw = require('../testFramework.js');
 var pages = testfw.pages;
 var features = testfw.features;
-var fakeloginPage = pages.fakeloginPo;
-var headerPage = pages.headerPo;
 
 describe('Tester kring inloggning: ', function() {
 
-    beforeEach(function() {
-        browser.get("http://localhost:8080");
+    beforeAll(function() {
+        browser.get('/');
     });
 
     it('INTYG-3074: Inloggning behålls efter sidomladdning på nationell nivå', function() {
         features.user.makeSureNotLoggedIn();
         features.user.loginUser1(true);
         pages.navmenu.expandNationalStatisticsToggle();
-        pages.navmenu.clickNavCasesPerMonthLink();
+        pages.navmenu.navCasesPerMonthLink.click();
         browser.refresh();
-        pages.navmenu.clickBusinessStatisticsToggle();
-        pages.navmenu.clickNavVerksamhetOversiktLink();
-        expect(browser.getTitle()).toEqual('Verksamhetsöversikt | Statistiktjänsten');
+        pages.navmenu.expandBusinessStatisticsToggle();
+        pages.navmenu.navVerksamhetOversiktLink.click();
+        pages.verksamhetOverview.isAtPage();
+    });
+
+
+    afterAll(function() {
+        features.user.makeSureNotLoggedIn();
     });
 
 });
