@@ -20,8 +20,8 @@ package se.inera.statistics.service.helper;
 
 import org.junit.Before;
 import org.junit.Test;
-import se.inera.intyg.common.support.common.enumerations.PartKod;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.warehouse.PartKod;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
 
 import javax.xml.bind.JAXBException;

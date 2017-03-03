@@ -7,21 +7,18 @@ apply plugin: 'war'
 apply plugin: 'idea'
 apply plugin: 'org.akhikhl.gretty'
 
-description = 'Inera Statistics Service - Web Module'
-
-
 gretty {
     def baseUrl = 'http://localhost:8080'
     def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,testapi,embedded,hsa-stub,wc-hsa-stub,security-fake'
     servletContainer = 'jetty9'
     contextPath = '/'
 
-    if(project.hasProperty('runWithIntyg')) {
+    if (project.hasProperty('runWithIntyg')) {
         httpPort = 9101
         baseUrl = 'http://localhost:9101'
     }
 
-    if(project.hasProperty('runWithActiveMQ')) {
+    if (project.hasProperty('runWithActiveMQ')) {
         contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-activemq-context.xml"
         serverConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty.xml" //Configures the jetty server with an mbean server.
         jvmArgSpringProfiles += ',qm,active' //Add the needed spring profiles to start up an embedded activemq and hook it up to jmx
@@ -44,7 +41,6 @@ gretty {
     fastReload = true
     inplaceMode = 'hard'
     scanInterval = 0
-
 }
 
 idea {
@@ -87,19 +83,7 @@ task bowerInstall(type: NodeTask, dependsOn:npmInstall) {
 grunt_build.dependsOn bowerInstall
 grunt_build_no_minify.dependsOn bowerInstall
 
-task createVersionPropertyFile(dependsOn: processResources) {
-    doLast {
-        def propertyFile = "${buildDir}/resources/main/version.properties"
-        ant.touch(file: propertyFile, mkdirs: "true")
-        ant.propertyfile(file: propertyFile) {
-            entry(key: 'statistik.project.version', default: rootProject.version)
-            entry(key: 'statistik.project.buildtime', default: new Date())
-            entry(key: 'statistik.project.buildhost', default: InetAddress.localHost.hostName)
-        }
-    }
-}
-
-jar.dependsOn createVersionPropertyFile
+war.dependsOn createVersionPropertyFile
 
 dependencies {
     compile project(':statistik-service')
@@ -116,6 +100,8 @@ dependencies {
     compile "com.github.ziplet:ziplet:${zipletVersion}"
     compile "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${monitoringSchemaVersion}"
 
+    compileOnly "javax.servlet:javax.servlet-api:${javaxServletVersion}"
+
     gretty "com.h2database:h2:${h2Version}"
     gretty "mysql:mysql-connector-java:${mysqlConnectorVersion}"
     gretty "org.apache.activemq:activemq-broker:${activeMqVersion}"
@@ -123,6 +109,5 @@ dependencies {
     gretty "org.apache.tomcat:tomcat-catalina:${tomcatVersion}"
     gretty "org.eclipse.jetty:jetty-jmx:${jettyJmxVersion}"
 
-    providedCompile "javax.servlet:javax.servlet-api:${javaxServletVersion}"
     testRuntime "com.h2database:h2:${h2Version}"
 }

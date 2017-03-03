@@ -22,10 +22,7 @@ dependencies {
     compile "org.springframework:spring-jms:${springContextVersion}"
     compile "org.liquibase:liquibase-core:${liquibaseVersion}"
     compile "se.riv.clinicalprocess.healthcond.certificate:clinicalprocess-healthcond-certificate-schemas:${certificateSchemaVersion}"
-    compile "se.inera.intyg.common:logging-util:${intygCommonLoggingVersion}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonJavaTimeVersion}"
-    compile "se.inera.intyg.infra:hsa-integration:${intygInfraVersion}"
-    compile "se.inera.intyg.common:common-support:${intygCommonVersion}"
     compile "com.helger:ph-schematron:${schematronVersion}"
     compile "se.inera.intyg.clinicalprocess.healthcond.certificate:intyg-clinicalprocess-healthcond-certificate-schematron:${intygSchematronVersion}"
 

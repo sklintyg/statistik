@@ -6,6 +6,7 @@ task fixBug(type: Copy) {
     into 'target/test-classes'
     include '**/*.class'
 }
+
 task cleanTargetDir {
     def targetDir = new File('target')
     if (targetDir.exists()) {
@@ -30,7 +31,6 @@ task gatlingStandard(type: JavaExec) {
 // Orchestrate the tasks
 fixBug.dependsOn cleanTargetDir
 gatlingStandard.dependsOn fixBug
-
 
 sourceSets {
     main {

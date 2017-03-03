@@ -21,8 +21,8 @@ package se.inera.statistics.service.warehouse.message;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.inera.intyg.common.support.common.enumerations.PartKod;
 import se.inera.statistics.service.processlog.message.MessageEventType;
+import se.inera.statistics.service.warehouse.PartKod;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
 
 import java.time.LocalDateTime;

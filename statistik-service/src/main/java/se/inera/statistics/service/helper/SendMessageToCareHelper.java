@@ -18,20 +18,22 @@
  */
 package se.inera.statistics.service.helper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import se.inera.intyg.common.support.common.enumerations.PartKod;
-import se.inera.statistics.service.report.model.Kon;
-import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
+import java.io.StringReader;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.JAXBIntrospector;
 import javax.xml.bind.Unmarshaller;
-import java.io.StringReader;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.warehouse.PartKod;
+import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
 
 @Component
 public class SendMessageToCareHelper {

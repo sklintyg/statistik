@@ -8,8 +8,6 @@ apply plugin: 'war'
 apply plugin: 'org.akhikhl.gretty'
 apply plugin: 'maven'
 
-description = 'highcharts-export-web'
-
 gretty {
     httpPort = 8110
     contextPath = '/'

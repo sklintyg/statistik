@@ -18,8 +18,8 @@
  */
 package se.inera.statistics.service.warehouse.model.db;
 
-import se.inera.intyg.common.support.common.enumerations.PartKod;
 import se.inera.statistics.service.processlog.message.MessageEventType;
+import se.inera.statistics.service.warehouse.PartKod;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
