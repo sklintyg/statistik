@@ -18,7 +18,6 @@ class AngivnaInvanarantal {
     def values = [:]
 
     public void beginTable() {
-        reportsUtil.clearCountyPopulation()
     }
 
     public void reset() {
