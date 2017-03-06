@@ -20,7 +20,7 @@
 
 angular.module('StatisticsApp').factory('ControllerCommons',
     /** @ngInject */
-    function(_, $cacheFactory, UserModel, $filter) {
+    function(_, $cacheFactory, UserModel, $filter, $route) {
         'use strict';
 
         var that = this;
@@ -392,6 +392,15 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             var activeHighchartType = config.highchartType ? config.highchartType : (usePercentChart ? 'area' : activeChartType);
             var stacked = activeHighchartType === 'area' || usePercentChart;
             return {activeChartType: activeChartType, usePercentChart: usePercentChart, activeHighchartType: activeHighchartType, stacked: stacked};
+        };
+
+        this.getExportFileName = function(statisticsLevel, gender) {
+            var reportName = $filter('messageFilter')($route.current.title, $route.current.title);
+            var genderString = gender ? gender + '_' : '';
+            var name = statisticsLevel + '_' + reportName + '_' + genderString + moment().format('YYYY-MM-DD');
+            return name.replace(/Å/g, 'A').replace(/Ä/g, 'A').replace(/Ö/g, 'O')
+                .replace(/å/g, 'a').replace(/ä/g, 'a').replace(/ö/g, 'o')
+                .replace(/[^A-Za-z0-9._]/g, '');
         };
 
         return this;
