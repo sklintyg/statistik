@@ -21,12 +21,11 @@
 angular.module('StatisticsApp')
     .factory('pdfFactory',
         /** @ngInject */
-        function($window, $timeout, thousandseparatedFilter, $location, _, TABLE_CONFIG, messageService, $rootScope, $route, $filter) {
+        function($window, $timeout, thousandseparatedFilter, $location, _, TABLE_CONFIG, messageService, $rootScope, ControllerCommons) {
         'use strict';
 
             function _getFileName(statisticsLevel) {
-                var reportName = $filter('messageFilter')($route.current.title, $route.current.title);
-                return statisticsLevel + '_' + reportName + '_' + moment().format('YYYY-MM-DD') + '.pdf';
+                return ControllerCommons.getExportFileName(statisticsLevel) + '.pdf';
             }
 
             function _print($scope, charts) {
