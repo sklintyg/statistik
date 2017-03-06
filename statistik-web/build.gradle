@@ -1,11 +1,7 @@
-plugins {
-    id "com.moowork.grunt" version "0.12"
-    id "com.moowork.node" version "0.12"
-}
-
 apply plugin: 'war'
 apply plugin: 'idea'
 apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'com.moowork.grunt'
 
 gretty {
     def baseUrl = 'http://localhost:8080'
@@ -25,6 +21,7 @@ gretty {
     } else {
         contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
     }
+
     logbackConfigFile = "${projectDir}/src/main/resources/logback.xml"
     jvmArgs = [
             jvmArgSpringProfiles,
@@ -65,8 +62,7 @@ if (project.hasProperty('statistik.useMinifiedJavaScript')) {
         webAppDirName = 'build/webapp'
     }
     war.dependsOn grunt_build
-}
-else {
+} else {
     war.dependsOn grunt_build_no_minify
 }
 
@@ -88,6 +84,8 @@ war.dependsOn createVersionPropertyFile
 dependencies {
     compile project(':statistik-service')
 
+    compile "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${monitoringSchemaVersion}"
+
     compile "org.springframework.security.extensions:spring-security-saml2-core:${springSecuritySamlVersion}"
     compile "xml-apis:xml-apis:${xmlApisVersion}"
     compile "org.springframework:spring-webmvc:${springContextVersion}"
@@ -98,8 +96,7 @@ dependencies {
     compile "org.apache.poi:poi-ooxml:${poiVersion}"
     compile "xalan:xalan:${xalanVersion}"
     compile "com.github.ziplet:ziplet:${zipletVersion}"
-    compile "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${monitoringSchemaVersion}"
-
+ 
     compileOnly "javax.servlet:javax.servlet-api:${javaxServletVersion}"
 
     gretty "com.h2database:h2:${h2Version}"

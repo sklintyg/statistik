@@ -16,24 +16,24 @@ jar.duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 dependencies {
     compile project(':hsa-integration')
 
+    compile "se.riv.clinicalprocess.healthcond.certificate:clinicalprocess-healthcond-certificate-schemas:${certificateSchemaVersion}"
+    compile "se.inera.intyg.clinicalprocess.healthcond.certificate:intyg-clinicalprocess-healthcond-certificate-schematron:${intygSchematronVersion}"
+
     compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:${hibernateJpaVersion}"
     compile "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
     compile "org.springframework:spring-orm:${springContextVersion}"
     compile "org.springframework:spring-jms:${springContextVersion}"
     compile "org.liquibase:liquibase-core:${liquibaseVersion}"
-    compile "se.riv.clinicalprocess.healthcond.certificate:clinicalprocess-healthcond-certificate-schemas:${certificateSchemaVersion}"
-    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonJavaTimeVersion}"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
     compile "com.helger:ph-schematron:${schematronVersion}"
-    compile "se.inera.intyg.clinicalprocess.healthcond.certificate:intyg-clinicalprocess-healthcond-certificate-schematron:${intygSchematronVersion}"
 
     compileOnly "org.apache.geronimo.specs:geronimo-jms_1.1_spec:${jmsVersion}"
 
     testCompile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     testCompile "org.apache.activemq:activemq-spring:${activeMqVersion}"
-
     testCompile "org.springframework:spring-aop:${springContextVersion}"
-    testCompile "org.aspectj:aspectjrt:1.8.9"
-    testCompile "org.aspectj:aspectjweaver:1.8.9"
+    testCompile "org.aspectj:aspectjrt:${aspectJVersion}"
+    testCompile "org.aspectj:aspectjweaver:${aspectJVersion}"
 
     testRuntime "com.h2database:h2:${h2Version}"
 }
