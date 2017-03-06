@@ -6,6 +6,7 @@ ext {
     monitoringSchemaVersion = "1.0.0.0"
 
     activeMqVersion = "5.13.0"
+    aspectJVersion = "1.8.9"
     commonCliVersion = "1.2"
     commonDCHPVersion = "2.0"
     commonsLang3Version = "3.2.1"
@@ -19,8 +20,7 @@ ext {
     hibernateVersion = "4.3.1.Final"
     httpClientVersion = "4.2.1"
     httpVersion = "4.4.1"
-    jacksonJavaTimeVersion = "2.8.3"
-    jacksonJodaTimeVersion = "2.2.3"
+    jacksonVersion = "2.8.3"
     javaxServletVersion = "3.1.0"
     jaxb2Version = "0.9.5"
     jettyJmxVersion = "9.2.10.v20150310"
@@ -57,6 +57,7 @@ buildscript {
     dependencies {
         classpath 'se.inera.intyg:gradle-fitnesse-plugin:1.0.+'
         classpath 'se.inera.intyg:gradle-intyg-plugin:1.0.+'
+        classpath 'com.moowork.gradle:gradle-node-plugin:1.1.1'
         classpath 'org.akhikhl.gretty:gretty:1.4.1'
     }
 }
@@ -115,8 +116,6 @@ allprojects {
     }
 }
 
-apply from: "checkPnr.gradle"
-
 configure(subprojects.findAll { ['statistik-service', 'statistik-web'].contains(it.name) }) {
     test {
         exclude '**/*IT*'
@@ -127,6 +126,8 @@ configure(subprojects.findAll { ['statistik-service', 'statistik-web'].contains(
         include '**/*IT*'
     }
 }
+
+apply from: "checkPnr.gradle"
 
 task tagRelease(type: TagReleaseTask)
 

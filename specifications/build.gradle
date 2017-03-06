@@ -1,10 +1,6 @@
-plugins {
-    id "com.moowork.grunt" version "0.13"
-    id "com.moowork.node" version "0.13"
-}
-
 apply plugin: 'groovy'
 apply plugin: 'inera-fitnesse'
+apply plugin: 'com.moowork.grunt'
 
 node {
     version = '6.6.0'
@@ -95,7 +91,7 @@ dependencies {
     compile project(":statistik-web")
 
     compile "org.fitnesse:fitnesse:${fitnessVersion}"
-    compile "org.codehaus.groovy:groovy-all:2.4.0"
+    compile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     compile "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
     compile "org.apache.httpcomponents:httpmime:${httpVersion}"
     compile "org.apache.httpcomponents:httpcore:${httpVersion}"

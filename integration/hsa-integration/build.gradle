@@ -27,13 +27,14 @@ task wsdl2Java(type: JavaExec) {
 compileJava.dependsOn(wsdl2Java)
 
 dependencies {
+    compile "se.inera.intyg.infra:hsa-integration:${infraVersion}"
+
     compile "org.jvnet.jaxb2_commons:jaxb2-basics:${jaxb2Version}"
-    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.2.3"
+    compile "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:${jacksonVersion}"
     compile "org.apache.cxf:cxf-rt-frontend-jaxrs:${cxfVersion}"
     compile "org.apache.cxf:cxf-rt-frontend-jaxws:${cxfVersion}"
     compile "org.springframework:spring-context:${springContextVersion}"
     compile "org.springframework.security:spring-security-web:${springSecurityVersion}"
-    compile "se.inera.intyg.infra:hsa-integration:${infraVersion}"
     compile "joda-time:joda-time:${jodaTimeVersion}"
 
     wsdlgen "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:${cxfVersion}"
