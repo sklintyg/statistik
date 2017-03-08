@@ -18,11 +18,17 @@ fitnesse {
     root = "FitNesseRoot"
     workingDir = "src/test/fitnesse"
     wikiStartPage = "StatisticsTests"
+
+    if (project.hasProperty('fileOutput')) {
+        outputFormat = project.findProperty('outputFormat') ?: "xml&includehtml"
+    }
+
+    extraProperties = ["statistics.base.url": System.properties['statistics.base.url'] ?: "http://localhost:8080/" ]
 }
 
 npm_install.dependsOn(npm_cache_clean)
 
-task setupIntygForProtractor (dependsOn: 'classes', type: JavaExec) {
+task setupIntygForProtractor(dependsOn: 'classes', type: JavaExec) {
     main = 'se.inera.statistics.InsertIntygHelper'
     classpath = sourceSets.main.runtimeClasspath
 }
@@ -42,21 +48,18 @@ if (project.hasProperty('runFitnesse') || project.hasProperty('runProtractor')) 
     gretty {
         def baseUrl = 'http://localhost:8080'
 
-        if(project.hasProperty('runWithIntyg')) {
+        if (project.hasProperty('runWithIntyg')) {
             httpPort = 9101
             baseUrl = 'http://localhost:9101'
         }
 
         contextPath = '/'
         contextConfigFile = project(":statistik-web").projectDir.path + "/src/main/webapp/WEB-INF/jetty-context.xml"
-        jvmArgs = [
-                "-Dcertificate.logback.file=${projectDir}/src/main/resources/logback-test.xml",
-                '-Dstatistics.base.url=' + baseUrl,
-                '-Dspring.profiles.active=dev,testapi,embedded,hsa-stub,security-fake,skipTestIntygInjection',
-                '-Dstatistics.config.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/default.dev.properties',
-                '-Dstatistics.credentials.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/dev-credentials.properties'
-        ]
-//        jvmArgs = ['-Dspring.profiles.active=dev,embedded,hsa-stub,security-fake', '-Dstatistics.test.max.intyg=1', '-XX:MaxPermSize=256M']
+        jvmArgs = ["-Dcertificate.logback.file=${projectDir}/src/main/resources/logback-test.xml",
+                   '-Dstatistics.base.url=' + baseUrl,
+                   '-Dspring.profiles.active=dev,testapi,embedded,hsa-stub,security-fake,skipTestIntygInjection',
+                   '-Dstatistics.config.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/default.dev.properties',
+                   '-Dstatistics.credentials.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/dev-credentials.properties']
     }
 
     farms {
@@ -78,7 +81,7 @@ if (project.hasProperty('runFitnesse') || project.hasProperty('runProtractor')) 
         gretty "mysql:mysql-connector-java:${mysqlConnectorVersion}"
         gretty "org.apache.activemq:activemq-broker:${activeMqVersion}"
         gretty "org.apache.tomcat:tomcat-catalina:${tomcatVersion}"
-     }
+    }
 }
 
 clean {
@@ -90,9 +93,21 @@ clean {
 dependencies {
     compile project(":statistik-web")
 
-    compile "org.fitnesse:fitnesse:${fitnessVersion}"
+    compile "org.fitnesse:fitnesse:${fitnesseVersion}"
     compile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     compile "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
     compile "org.apache.httpcomponents:httpmime:${httpVersion}"
     compile "org.apache.httpcomponents:httpcore:${httpVersion}"
+
+    fitnesse(project(":statistik-web")) { transitive = false }
+    fitnesse(project(":statistik-service")) { transitive = false }
+    fitnesse(project(":specifications")) { transitive = false }
+
+    fitnesse "org.fitnesse:fitnesse:${fitnesseVersion}"
+    fitnesse "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
+    fitnesse "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
+    fitnesse "org.apache.httpcomponents:httpmime:${httpVersion}"
+    fitnesse "org.apache.httpcomponents:httpcore:${httpVersion}"
+    fitnesse "org.slf4j:slf4j-api:${slf4jVersion}"
+    fitnesse "javax.ws.rs:javax.ws.rs-api:${javaxWsRsApiVersion}"
 }

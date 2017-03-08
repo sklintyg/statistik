@@ -25,12 +25,13 @@ class ReportsUtil {
     private static final Logger LOG = LoggerFactory.getLogger(ReportsUtil.class);
     public static final VARDGIVARE = "vg1"
     public static final VARDGIVARE3 = "vg3"
-    public static final String HOST = 'http://localhost:8080/'
 
     def statistik = createClient()
 
     private RESTClient createClient() {
-        def client = new RESTClient(HOST, JSON)
+        String host = System.getProperty("statistics.base.url")
+        def client = new RESTClient(host, JSON)
+        client.ignoreSSLIssues()
         client.encoder.putAt(MediaType.MULTIPART_FORM_DATA, new MethodClosure(this, 'encodeMultiPart'));
         return client
     }
