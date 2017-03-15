@@ -23,7 +23,6 @@ stage('build') {
     }
 }
 
-
 // Right now these tests must run in its own stage, b/c gretty and jacoco don't work together
 stage('integrationTest') {
     node {
@@ -61,19 +60,19 @@ stage('deploy') {
 //    }
 // }
 
-stage('fitnesse') {
-   node {
-       try {
-           wrap([$class: 'Xvfb']) {
-               shgradle "fitnesseTest -PfileOutput -PoutputFormat=html \
-                     -Dstatistics.base.url=https://fitnesse.inera.nordicmedtest.se/ -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
-           }
-       } finally {
-           publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'specifications/', \
-               reportFiles: 'fitnesse-results.html', reportName: 'Fitnesse results'
-       }
-   }
-}
+// stage('fitnesse') {
+//    node {
+//        try {
+//            wrap([$class: 'Xvfb']) {
+//                shgradle "fitnesseTest -PfileOutput -PoutputFormat=html \
+//                      -Dstatistics.base.url=https://fitnesse.inera.nordicmedtest.se/ -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+//            }
+//        } finally {
+//            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'specifications/', \
+//                reportFiles: 'fitnesse-results.html', reportName: 'Fitnesse results'
+//        }
+//    }
+// }
 
 // stage('tag and upload') {
 //     node {
