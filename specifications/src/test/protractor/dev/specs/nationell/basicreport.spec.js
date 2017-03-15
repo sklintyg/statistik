@@ -31,7 +31,7 @@ describe('Nationell basic: ', function() {
         browser.get('/');
     });
 
-    it('Rätt antal rader', function() {
+    it('Visar rätt rapport', function() {
         navmenu.navOverviewLink.click();
         validateDetailReport('navCasesPerMonthLink', 1, 3, 19);
         validateDetailReport('navDiagnosisGroupsLink', 2, 8, 20);

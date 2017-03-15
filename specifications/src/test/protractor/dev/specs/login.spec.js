@@ -43,6 +43,39 @@ describe('Tester kring inloggning: ', function() {
         pages.verksamhetOverview.isAtPage();
     });
 
+    describe('Flera vårdgivare', function() {
+
+        beforeAll(function() {
+            features.user.makeSureNotLoggedIn();
+            features.user.loginUser5(true);
+        });
+
+        it('Välj vårdgivare', function() {
+            pages.selectVardgivare.isAtPage();
+
+            expect(pages.selectVardgivare.list.count()).toBe(2);
+
+            var link = pages.selectVardgivare.getVardgivareLink(0);
+            var linkname = link.getText();
+
+            link.click();
+            pages.verksamhetOverview.isAtPage();
+
+            expect(pages.headerPo.verksamhetsNameLabel.getText()).toEqual(linkname);
+        });
+
+        it('Byt vårdgivare', function() {
+            pages.headerPo.changeVardgivareBtn.click();
+
+            var link = pages.selectVardgivare.getVardgivareLink(1);
+            var linkname = link.getText();
+
+            link.click();
+
+            expect(pages.headerPo.verksamhetsNameLabel.getText()).toEqual(linkname);
+        });
+
+    });
 
     afterAll(function() {
         features.user.makeSureNotLoggedIn();
