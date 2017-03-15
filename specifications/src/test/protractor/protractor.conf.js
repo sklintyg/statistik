@@ -25,7 +25,8 @@ var HtmlScreenshotReporter = require('protractor-jasmine2-screenshot-reporter');
 exports.config = {
     rootElement: '#ng-app',
 
-    baseUrl: 'http://localhost:8080',
+    seleniumAddress: require('./environment.js').envConfig.SELENIUM_ADDRESS,
+    baseUrl: require('./environment.js').envConfig.ST_URL,
 
     specs: ['./dev/specs/**/*.spec.js'],
 

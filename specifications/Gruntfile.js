@@ -27,14 +27,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-env');
 
     grunt.initConfig({
-        env:    {
-                    "build-server": {
-                        "ST_URL": "https://statistik.inera.nordicmedtest.se/"
-                    },
-                    "dev": {
-                        "ST_URL": "http://localhost:8080/"
-                    }
-                },
+        env: grunt.file.readJSON('./src/test/protractor/envConfig.json'),
         protractor: {
             options: {
                 //configFile: './protractor.cli.conf.js', // Target-specific config file
