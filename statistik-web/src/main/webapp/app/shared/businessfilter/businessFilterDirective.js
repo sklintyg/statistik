@@ -222,10 +222,10 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
                 scope.isFilterCollapsed = !scope.isFilterCollapsed;
                 scope.loadingFilter = false;
 
-                scope.businessFilter.aldersgruppSaved = angular.copy(params.aldersgrupp);
-                scope.businessFilter.sjukskrivningslangdSaved = angular.copy(params.sjukskrivningslangd);
-                scope.businessFilter.diagnoserSaved = angular.copy(params.diagnoser);
-                scope.businessFilter.geographyBusinessIdsSaved = angular.copy(params.enheter);
+                scope.businessFilter.aldersgruppSaved = _.cloneDeep(params.aldersgrupp);
+                scope.businessFilter.sjukskrivningslangdSaved = _.cloneDeep(params.sjukskrivningslangd);
+                scope.businessFilter.diagnoserSaved = _.cloneDeep(params.diagnoser);
+                scope.businessFilter.geographyBusinessIdsSaved = _.cloneDeep(params.enheter);
             };
 
             var error = function () {
@@ -291,7 +291,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         datepickerMode: 'month'
     };
 
-    scope.dateOptionsTo = angular.copy(scope.dateOptions);
+    scope.dateOptionsTo = _.cloneDeep(scope.dateOptions);
 
     scope.sidebarState = {
         collapsed: true

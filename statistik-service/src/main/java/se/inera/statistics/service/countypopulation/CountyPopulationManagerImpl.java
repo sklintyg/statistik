@@ -129,7 +129,7 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
         query.setMaxResults(1);
         final List resultList = query.getResultList();
         if (resultList .isEmpty()) {
-            LOG.error(COUNTY_POPULATION_IS_MISSING);
+            LOG.info("County population has not yet been fetched for " + from);
             return Optional.empty();
         }
         return Optional.of((CountyPopulationRow) resultList.get(0));

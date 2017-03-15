@@ -53,9 +53,9 @@
 
       <div id="page-content-wrapper">
           <div class="container-fluid">
-            <business-filter data-ng-if="isVerksamhetShowing" ng-cloak></business-filter>
+            <business-filter data-ng-if="isVerksamhetShowing" id="businessFilterContainer" ng-cloak></business-filter>
 
-            <landsting-filter data-ng-if="isLandstingShowing" ng-cloak></landsting-filter>
+            <landsting-filter data-ng-if="isLandstingShowing" id="landstingFilterContainer" ng-cloak></landsting-filter>
 
             <div class="row" ng-cloak>
                 <div class="col-xs-12">
@@ -104,6 +104,7 @@
   <!-- endbuild -->
 
   <script src="bower_components/pdfmake/build/pdfmake.min.js"></script>
+  <script defer src="js/lib/vfs_fonts.js"></script>
 
   <!-- build:js({build/.tmp,src/main/webapp}) app/app.main.js -->
   <script src="app/app.main.js"></script>

@@ -65,6 +65,7 @@
     <include file="changelog/db.changelog-v37.0_add_event_type_to_intyg_common_table.xml"/>
     <include file="changelog/db.changelog-v38.0_use_real_date_in_intyg_common_table.xml"/>
     <include file="changelog/db.changelog-v39.0_add_index_to_intygcommon_eventtype.xml"/>
-    <include file="changelog/db.changelog-v40.0_add_column_meddelandehandelse.xml"/>
+    <include file="changelog/db.changelog-v40.0_add_column_meddelandehandelse_new.xml"/>
+    <include file="changelog/db.changelog-v41.0_change_column_meddelandehandelse.xml"/>
 
 </databaseChangeLog>

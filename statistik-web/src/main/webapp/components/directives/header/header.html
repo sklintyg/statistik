@@ -8,7 +8,7 @@
       </span>
       <span class="headerbox-date pull-left">
         <div id="location" class="location ng-hide" data-ng-show="isLoggedIn">
-          {{pageHeaderVerksamhetName}}
+          <span id="verksamhetsNameLabel">{{pageHeaderVerksamhetName}}</span>
           <show-businesses
               data-ng-if="showBusinessesDetails"
               businesses="UserModel.get().businesses"

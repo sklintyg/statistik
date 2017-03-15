@@ -1,23 +1,33 @@
 {
   "name": "protract-tests",
   "description": "Running protractor tests on statistiktjansten",
-  "repository": { "type" : "git", "url" : "https://github.com/sklintyg/statistik.git" },
-  "license" : "SEE LICENSE IN LICENSE.txt",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sklintyg/statistik.git"
+  },
+  "license": "SEE LICENSE IN LICENSE.txt",
   "version": "0.1.0",
   "dependencies": {
     "file-reader": "^1.1.1"
   },
   "devDependencies": {
+    "babel-core": "6.18.2",
+    "babel-plugin-transform-async-to-generator": "6.16.0",
+    "eval": "^0.1.2",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-env": "^0.4.4",
+    "grunt-protractor-runner": "^4.0.0",
+    "grunt-protractor-webdriver": "^0.2.5",
     "jasmine-reporters": "^2.0.7",
     "jasmine-spec-reporter": "^2.7.0",
-    "protractor": "^4.0.9",
-    "protractor-jasmine2-screenshot-reporter": "^0.1.7",
     "phantomjs-prebuilt": "^2.1.13",
-    "babel-core": "6.18.2",
-    "babel-plugin-transform-async-to-generator": "6.16.0"
+    "protractor": "^4.0.9",
+    "protractor-jasmine2-screenshot-reporter": "^0.1.7"
   },
   "engine": "node >= 4.2.1",
   "scripts": {
-    "install": "node node_modules/protractor/bin/webdriver-manager update"
+    "install": "node node_modules/protractor/bin/webdriver-manager update",
+    "test": "grunt"
   }
 }

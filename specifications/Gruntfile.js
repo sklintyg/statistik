@@ -18,7 +18,6 @@
  */
 
 /* global module */
-require('path');
 
 module.exports = function(grunt) {
     'use strict';
@@ -27,7 +26,6 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-protractor-webdriver');
     grunt.loadNpmTasks('grunt-env');
 
-    var devSuite = grunt.option('suite') || 'app';
     grunt.initConfig({
         env:    {
                     "build-server": {
@@ -50,10 +48,7 @@ module.exports = function(grunt) {
             // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
             dev: {
                 options: {
-                    configFile: './src/test/protractor/protractor.conf.js',
-                    args: {
-                        'suite': devSuite
-                    } // Target-specific arguments
+                    configFile: './src/test/protractor/protractor.conf.js'
                 }
             }
         },

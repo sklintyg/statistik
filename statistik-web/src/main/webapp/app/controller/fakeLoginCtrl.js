@@ -19,14 +19,14 @@
 
 angular.module('StatisticsApp').controller('fakeLoginCtrl',
     /** @ngInject */
-    function($scope) {
+    function($scope, _) {
         'use strict';
 
         $scope.selectedPerson = '0';
         $scope.fakeUserContext = '';
 
         $scope.selectPerson = function() {
-            var copy = angular.copy($scope.identities[$scope.selectedPerson]);
+            var copy = _.cloneDeep($scope.identities[$scope.selectedPerson]);
             delete copy.description;
             $scope.fakeUserContext = angular.toJson(copy, 2);
         };

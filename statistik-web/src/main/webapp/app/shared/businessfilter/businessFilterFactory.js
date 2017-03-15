@@ -184,14 +184,19 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
                 avsnitt.subs = avsnitt.subItems;
                 avsnitt.name = avsnitt.id + ' ' + avsnitt.name;
                 _.each(avsnitt.subItems, function (kategori) {
+                    kategori.typ = 'kategori';
+                    kategori.subs = kategori.subItems;
                     kategori.name = kategori.id + ' ' + kategori.name;
+                    _.each(kategori.subItems, function (kod) {
+                        kod.name = kod.id + ' ' + kod.name;
+                    });
                 });
             });
         });
     };
 
     businessFilter.setIcd10Structure = function (diagnoses) {
-        businessFilter.icd10.untuched = angular.copy(diagnoses);
+        businessFilter.icd10.untuched = _.cloneDeep(diagnoses);
         businessFilter.setupDiagnosisTreeForSelectionModal(diagnoses);
         businessFilter.icd10.subs = diagnoses;
 
@@ -199,16 +204,16 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     };
 
     function setPreselectedFilter(filterData) {
-        businessFilter.diagnoserSaved = angular.copy(filterData.diagnoser);
+        businessFilter.diagnoserSaved = _.cloneDeep(filterData.diagnoser);
         businessFilter.selectDiagnoses(filterData.diagnoser);
         businessFilter.selectedVerksamhetTypIds = _.uniqWith(_.map(filterData.verksamhetstyper, function(verksamhetstyp) {
             return _.find(businessFilter.verksamhetsTyper, function(verksamhet) { return _.includes(verksamhet.ids, verksamhetstyp); }).id;
         }));
         businessFilter.selectedSjukskrivningslangdIds = filterData.sjukskrivningslangd;
-        businessFilter.sjukskrivningslangdSaved = angular.copy(filterData.sjukskrivningslangd);
+        businessFilter.sjukskrivningslangdSaved = _.cloneDeep(filterData.sjukskrivningslangd);
         businessFilter.selectedAldersgruppIds = filterData.aldersgrupp;
-        businessFilter.aldersgruppSaved = angular.copy(filterData.aldersgrupp);
-        businessFilter.geographyBusinessIdsSaved = angular.copy(filterData.enheter);
+        businessFilter.aldersgruppSaved = _.cloneDeep(filterData.aldersgrupp);
+        businessFilter.geographyBusinessIdsSaved = _.cloneDeep(filterData.enheter);
         businessFilter.selectGeographyBusiness(filterData.enheter);
         businessFilter.toDate = filterData.toDate ? moment(filterData.toDate).utc().toDate() : null;
         businessFilter.fromDate = filterData.fromDate ? moment(filterData.fromDate).utc().toDate() : null;
@@ -386,6 +391,10 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
                 if (node.typ === 'kapitel') {
                     acc.push(node.numericalId);
                 } else if (node.typ === 'avsnitt') {
+                    acc.push(node.numericalId);
+                } else if (node.typ === 'kategori') {
+                    acc.push(node.numericalId);
+                } else if (node.typ === 'kod') {
                     acc.push(node.numericalId);
                 } else { // root node
                     _.each(node.subs, function (subItem) {

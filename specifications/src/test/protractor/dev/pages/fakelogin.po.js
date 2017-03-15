@@ -2,28 +2,26 @@
 
 'use strict';
 
-var jsonInput = element(by.name('userJsonDisplay'));
-var loginBtn = element(by.id('login_btn'));
+var FakeLoginPage = function() {
+    this.jsonInput = element(by.name('userJsonDisplay'));
+    this.loginBtn = element(by.id('login_btn'));
 
-var login = function(firstName, lastName, userId, enhetId, vgId, isProcessledare) {
-    jsonInput.clear().then(function() {
-        jsonInput.sendKeys('{' +
-            '"fornamn":"' + firstName + '",' +
-            '"efternamn":"' + lastName + '",' +
-            '"hsaId":"' + userId + '",' +
-            '"vardgivarIdSomProcessLedare":["' + vgId + '"],' +
-            '"vardgivarniva":"' + isProcessledare + '"}');
-    }).then(function() {
-        loginBtn.click();
-    });
+    this.login = function(firstName, lastName, userId, enhetId, vgId, isProcessledare) {
+        this.jsonInput.clear();
+        this.jsonInput.sendKeys('{' +
+                '"fornamn":"' + firstName + '",' +
+                '"efternamn":"' + lastName + '",' +
+                '"hsaId":"' + userId + '",' +
+                '"vardgivarIdSomProcessLedare":["' + vgId + '"],' +
+                '"vardgivarniva":"' + isProcessledare + '"}');
+
+        this.loginBtn.click();
+    };
+
+    this.isAtPage = function() {
+        expect(this.jsonInput.isDisplayed()).toBeTruthy('jsoninput-fältet saknas på fakeinloggningssidan');
+        expect(this.loginBtn.isDisplayed()).toBeTruthy('inloggningsknappen saknas på fakeinloggningssidan');
+    };
 };
 
-var verifyAt = function() {
-    expect(jsonInput.isDisplayed()).toBeTruthy('jsoninput-fältet saknas på fakeinloggningssidan');
-    expect(loginBtn.isDisplayed()).toBeTruthy('inloggningsknappen saknas på fakeinloggningssidan');
-};
-
-module.exports = {
-    'login': login,
-    'verifyAt': verifyAt
-};
+module.exports = new FakeLoginPage();
