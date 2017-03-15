@@ -73,9 +73,10 @@
       </div>
 
         <button
-                type="button"
-                class="btn btn-default"
-                data-ng-click="clearDates()">
+            id="filterDateResetBtn"
+            type="button"
+            class="btn btn-default"
+            data-ng-click="clearDates()">
           <span message key="lbl.clear"></span>
         </button>
       </div>
@@ -88,7 +89,7 @@
         <strong class="title">Filter</strong>
 
         <tree-multi-selector
-            class="margin-right top-10px-margin"
+            class="margin-right top-10px-margin select-business"
             hide-label="true"
             button-icon="fa-building-o"
             menu-options="businessFilter.geography"
@@ -118,7 +119,7 @@
         </tree-multi-selector>
 
         <tree-multi-selector
-            class="margin-right top-10px-margin highlight-content"
+            class="margin-right top-10px-margin highlight-content select-diagnoses"
             hide-label="true"
             button-icon="fa-stethoscope"
             menu-options="icd10"
@@ -130,7 +131,7 @@
             sidebar-state="sidebarStateDiagnose">
         </tree-multi-selector>
 
-        <div class="margin-right top-10px-margin">
+        <div class="margin-right top-10px-margin select-sjukskrivningslangd">
           <select
               ng-model="businessFilter.selectedSjukskrivningslangdIds"
               multiple="multiple"
@@ -141,7 +142,7 @@
           </select>
         </div>
 
-        <div class="margin-right top-10px-margin">
+        <div class="margin-right top-10px-margin select-aldersgrupp">
           <select
             ng-model="businessFilter.selectedAldersgruppIds"
             multiple="multiple"
@@ -162,11 +163,11 @@
 
     <div class="filter-level bottom-buttons"  style="margin-bottom: 10px">
         <div class="col-xs-12">
-            <button type="button" class="btn btn-default pull-left" data-ng-click="resetBusinessFilter(myForm)">
+            <button id="filterResetBtn" type="button" class="btn btn-default pull-left" data-ng-click="resetBusinessFilter(myForm)">
                 <span message key="lbl.aterstall"></span>
             </button>
 
-            <button class="btn btn-success pull-right" type="button"
+            <button id="filterApplyBtn" class="btn btn-success pull-right" type="button"
                     ng-click="makeSelection()">
                 <span class="button-loader" ng-show="loadingFilter"></span> <span message key="lbl.filtrera"></span>
             </button>
