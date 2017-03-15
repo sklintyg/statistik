@@ -21,7 +21,7 @@
 angular.module('StatisticsApp').run(
 
     /** @ngInject */
-    function ($rootScope, $route, $filter, messageService) {
+    function ($rootScope, $route, messageService) {
     'use strict';
 
     Highcharts.seriesTypes.line.prototype.drawLegendSymbol = Highcharts.seriesTypes.area.prototype.drawLegendSymbol;
@@ -46,7 +46,12 @@ angular.module('StatisticsApp').run(
         }
 
         if ($route.current.$$route) {
-            $rootScope.pageName = $filter('messageFilter')($route.current.$$route.title, $route.current.$$route.title);
+            if ($route.current.$$route.title) {
+                $rootScope.pageName = messageService.getProperty($route.current.$$route.title, null, $route.current.$$route.title);
+            } else {
+                $rootScope.pageName = null;
+            }
+
             $rootScope.pageTitle = ($rootScope.pageName ? $rootScope.pageName + ' | ' : '') + 'Statistiktjänsten';
 
             $rootScope.queryString = '';
