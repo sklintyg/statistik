@@ -43,11 +43,11 @@ describe('Tester kring inloggning: ', function() {
         pages.verksamhetOverview.isAtPage();
     });
 
-    describe('Flera vårdgivare', function() {
+    xdescribe('Flera vårdgivare', function() {
 
         beforeAll(function() {
-            features.user.makeSureNotLoggedIn();
-            features.user.loginUser5(true);
+            //features.user.makeSureNotLoggedIn();
+            //features.user.loginUser5(true);
         });
 
         it('Välj vårdgivare', function() {
