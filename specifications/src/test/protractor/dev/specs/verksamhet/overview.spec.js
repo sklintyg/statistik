@@ -28,7 +28,7 @@ var navmenu = pages.navmenu;
 var overview = pages.verksamhetOverview;
 var report = pages.report;
 
-describe('Verksamhetsöversikt: ', function() {
+xdescribe('Verksamhetsöversikt: ', function() {
 
     beforeAll(function() {
         browser.get('/');

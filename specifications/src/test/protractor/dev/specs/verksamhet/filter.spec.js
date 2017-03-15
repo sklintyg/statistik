@@ -26,7 +26,7 @@ var pages = testfw.pages;
 var features = testfw.features;
 var filter = pages.filter;
 
-describe('Verksamhetsfilter: ', function() {
+xdescribe('Verksamhetsfilter: ', function() {
     var toDate = new Date().getFullYear() + '-12';
     var fromDate = '2015-12';
 
