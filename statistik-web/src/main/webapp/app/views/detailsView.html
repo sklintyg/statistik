@@ -1,10 +1,4 @@
 <div id="chart-content" class="highlight-content">
-  <div class="row" id="print-logo-display">
-    <div class="col-xs-12">
-      <img src="/assets/images/statistiktjansten-logotype-print.png">
-    </div>
-  </div>
-
   <div class="clearfix">
         <span class="pull-left right-2px-padding">
           <h1 class="national-statistic-h1" id="reportHeader" data-ng-bind="subTitle"></h1>
@@ -64,7 +58,7 @@
   </div>
   <div id="print-button-col" class="col-xs-12 col-md-2">
     <!-- PRINT BUTTON GROUP -->
-    <div class="hidden-print">
+    <div>
       <button class="multiselect dropdown-toggle btn btn-default pull-right" data-ng-disabled="!exportEnabled"
               data-toggle="dropdown">
         <span message key="dropdown.val.rapport"></span>
@@ -173,12 +167,12 @@
     </div>
 
     <!-- Starting data-table -->
-    <div class="rotate-print browserTable">
+    <div class="browserTable">
       <div class="row">
         <div id="chart-data-table" class="col-xs-12 chart-table">
           <uib-accordion id="accordion2" class="collapsible-panel-header">
             <uib-accordion-group is-open="status.isTableOpen">
-              <uib-accordion-heading class="hidden-print">
+              <uib-accordion-heading>
                 <span message key="lbl.tabell"></span>
                 <i class="pull-right glyphicon"
                    ng-class="{'collapsible-panel-min-icon': status.isTableOpen, 'collapsible-panel-expand-icon': !status.isTableOpen}"

@@ -103,6 +103,10 @@ legend {
   display: none;
 }
 
+.visible-print-inline-block {
+  display: none;
+}
+
 div.content {
   background-color: #ffffff;
   padding: 0 30px 30px 30px;
@@ -196,10 +200,6 @@ table.table tfoot:last-child tr:last-child th:first-child {
 
 table.table tfoot:last-child tr:last-child td:last-child {
   border-radius: 0 0 8px 0;
-}
-
-.print-only-no-display {
-  display: none;
 }
 
 #chart-footnote-trigger {
@@ -1535,10 +1535,6 @@ table.datatable {
   cursor: pointer;
 }
 
-#data-table-print-header {
-  display: none;
-}
-
 .tooltip {
   z-index: 1100;
 }
@@ -1552,10 +1548,6 @@ table.datatable {
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: bold;
-}
-
-#print-logo-display {
-  display: none;
 }
 
 a.has-collapse {
@@ -1903,9 +1895,6 @@ input[type="radio"], input[type="checkbox"] {
 
 }
 
-.print-page-panel {
-  padding-right: ($grid-gutter-width);
-}
 
 @media (min-width: 768px) and (max-width: 1199px) {
   .business-filter-time-interval, .business-filter-sjukskrivningslangd, .business-filter-aldersgrupp {
