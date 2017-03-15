@@ -29,7 +29,7 @@ var OverviewPage = function() {
     this.diagnosisChart = this.container.element(by.id('diagnosisChart'));
     this.ageChart = this.container.element(by.id('ageChart'));
     this.degreeOfSickLeaveChart = this.container.element(by.id('degreeOfSickLeaveChart'));
-    this.sicklengthChart = this.container.element(by.id('sicklength-chart-info'));
+    this.sicklengthChart = this.container.element(by.id('sickLeaveLengthChart'));
     this.sickLeavePerCountyChart = this.container.element(by.id('sickLeavePerCountyChart'));
 
     this.isAtPage = function() {

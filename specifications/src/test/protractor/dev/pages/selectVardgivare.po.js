@@ -21,20 +21,18 @@
 
 'use strict';
 
-var VerksamhetOverviewPage = function() {
-    this.container = element(by.id('business-overview'));
-
-    this.distributionPerSexOld = this.container.element(by.id('sexProportionChartOld'));
-    this.distributionPerSexNew = this.container.element(by.id('sexProportionChartNew'));
-    this.alterationChart = this.container.element(by.id('alterationChart'));
-    this.diagnosisChart = this.container.element(by.id('diagnosisChart'));
-    this.ageChart = this.container.element(by.id('ageChart'));
-    this.degreeOfSickLeaveChart = this.container.element(by.id('degreeOfSickLeaveChart'));
-    this.sicklengthChart = this.container.element(by.id('sickLeaveLengthChart'));
+var SelectVardivarePage = function() {
+    this.pageContainer = element(by.css('.valj-vg'));
+    this.container = element(by.css('.select-vardgivare'));
+    this.list = this.container.all(by.repeater('vgInfo in vardgivare'));
 
     this.isAtPage = function() {
-        expect(this.container.isDisplayed()).toBeTruthy('Är inte på översikten');
+        expect(this.pageContainer.isDisplayed()).toBeTruthy();
+    };
+
+    this.getVardgivareLink = function(number) {
+        return this.list.get(number).element(by.css('a'));
     };
 };
 
-module.exports = new VerksamhetOverviewPage();
+module.exports = new SelectVardivarePage();
