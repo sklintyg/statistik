@@ -11,7 +11,13 @@ node {
     nodeModulesDir = file("${project.projectDir}")
 }
 
-String nodeBinaryPath = new com.moowork.gradle.node.variant.VariantBuilder(node).build().nodeExec
+task protractorTests(type: NodeTask, dependsOn: npmInstall) {
+    outputs.upToDateWhen { false }
+    def environment = System.properties['protractor.env'] ?: "dev"
+
+    script = file('node_modules/grunt-cli/bin/grunt')
+    args = ["default:${environment}"]
+}
 
 fitnesse {
     port = 9125
@@ -26,24 +32,19 @@ fitnesse {
     extraProperties = ["statistics.base.url": System.properties['statistics.base.url'] ?: "http://localhost:8080/" ]
 }
 
-npm_install.dependsOn(npm_cache_clean)
 
 task setupIntygForProtractor(dependsOn: 'classes', type: JavaExec) {
     main = 'se.inera.statistics.InsertIntygHelper'
     classpath = sourceSets.main.runtimeClasspath
 }
 
-task protractorTest(dependsOn: [npmInstall, setupIntygForProtractor], type: Exec) {
-    commandLine nodeBinaryPath, './node_modules/protractor/bin/protractor', 'src/test/protractor/protractor.conf.js'
-}
-
-task allIntegrationTests(dependsOn: [fitnesseTest, protractorTest]) {
+task allIntegrationTests(dependsOn: [fitnesseTest]) {
     doLast {
         println 'running integration tests'
     }
 }
 
-if (project.hasProperty('runFitnesse') || project.hasProperty('runProtractor')) {
+if (project.hasProperty('runFitnesse')) {
     apply plugin: 'org.akhikhl.gretty'
     gretty {
         def baseUrl = 'http://localhost:8080'
