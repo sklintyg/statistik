@@ -80,10 +80,8 @@ stage('protractor') {
 //     }
 // }
 
-                 stage('notify') {
-                     node {
-                         util.notifySuccess()
-                     }
-                 }
-
-             }
+stage('notify') {
+    node {
+        util.notifySuccess()
+    }
+}
