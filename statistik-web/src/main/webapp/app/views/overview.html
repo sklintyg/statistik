@@ -1,9 +1,4 @@
 <div id="national-overview">
-	<div class="row" id="print-logo-display">
-	    <div class="col-xs-12">
-	        <img src="/assets/images/statistiktjansten-logotype-print.png"/>
-	    </div>
-	</div>
 	<div id="overview-content"  class="highlight-content">
 		<div dataerrorview show-error="dataLoadingError" error-page-url="errorPageUrl">
 			<div class="row">
@@ -11,7 +6,7 @@
 						<span>{{::subTitle}}</span>
 						<span>{{subTitlePeriod}}</span>
 					</h1>
-					<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-right margin-bottom hidden-print" style="width: auto;">
+					<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-right margin-bottom" style="width: auto;">
 						<!-- PRINT BUTTON -->
 						<button class="btn btn-default" data-ng-click="printPdf()" data-ng-disabled="!exportEnabled">
 							<span message key="button.label.save-as-pdf"></span>
@@ -32,7 +27,7 @@
 								<span class="overview-widget-header">
 									<h2 class="overview-widget-title">
 										<span message key="national.widget.header.konsfordelning"></span>
-										<span class="hidden-print page-help-tool-tip pull-right"><img
+										<span class="page-help-tool-tip pull-right"><img
 															uib-tooltip-html="popoverTextSexDistribution" tooltip-class="popover-content"
 															tooltip-append-to-body="true"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
@@ -54,7 +49,7 @@
 								<span class="overview-widget-header">
 									<h2 class="overview-widget-title">
 										<span message key="national.widget.header.forandring"></span>
-										<span class="hidden-print page-help-tool-tip pull-right"><img
+										<span class="page-help-tool-tip pull-right"><img
 					                    uib-tooltip-html="popoverTextChangeProcentage"
 															tooltip-class="popover-content"
 															tooltip-append-to-body="true"
@@ -114,7 +109,7 @@
 								<span class="overview-widget-header">
 									<h2 class="overview-widget-title">
 										<span message key="national.widget.header.fordelning-sjukskrivningslangd"></span>
-										<span class="hidden-print page-help-tool-tip pull-right"><img
+										<span class="page-help-tool-tip pull-right"><img
 															uib-tooltip-html="popoverTextSickLeaveLength"
 															tooltip-class="popover-content"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
@@ -142,7 +137,7 @@
 								<span class="overview-widget-header">
 									<h2 class="overview-widget-title">
 										<span message key="national.widget.header.fordelning-lan"></span>
-										<span class="hidden-print page-help-tool-tip pull-right"><img
+										<span class="page-help-tool-tip pull-right"><img
 												uib-tooltip-html="popoverTextPerCountyDescription"
 												tooltip-class="popover-content"
 												tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>

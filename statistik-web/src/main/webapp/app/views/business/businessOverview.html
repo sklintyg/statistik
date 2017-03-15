@@ -7,7 +7,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row hidden-print">
+		<div class="row">
 			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-9" data-ng-repeat="resultMessage in resultMessageList">
 				<show-message type="resultMessage.type" severity="resultMessage.severity" text="resultMessage.message"></show-message>
 			</div>
@@ -17,12 +17,6 @@
 
 <div id="business-overview"  class="highlight-content" ng-show="!showEmptyDataView">
 	<div id="overview-content"> <!-- Start: Overview content -->
-		<div class="row" id="print-logo-display">
-		    <div class="col-xs-12">
-		        <img src="/assets/images/statistiktjansten-logotype-print.png">
-		    </div>
-		</div>
-
 		<div class="clearfix">
 			<div class="pull-left right-2px-padding">
 				<h1 class="national-statistic-h1" id="reportHeader">
@@ -35,7 +29,7 @@
 		<show-help-text texts="chartFootnotes"></show-help-text>
 
 		<show-filter-list diagnos-filters="activeDiagnosFilters" enhets-filters="activeEnhetsFilters" sjukskrivningslangds-filters="activeSjukskrivningslangdsFilters" aldersgrupp-filters="activeAldersgruppFilters">
-			<div class="col-xs-12 col-sm-3 pull-right margin-bottom hidden-print" data-ng-class="{margin_top_button_group: showDetailsOptions}"
+			<div class="col-xs-12 col-sm-3 pull-right margin-bottom" data-ng-class="{margin_top_button_group: showDetailsOptions}"
 					 style="width: auto;">
 				<!-- PRINT BUTTON -->
 				<button class="btn btn-default" data-ng-click="printPdf()">
@@ -48,7 +42,7 @@
 		</show-filter-list>
 
 		<!-- Alert the user about specific conditions -->
-		<div class="row hidden-print">
+		<div class="row">
 				<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" ng-repeat="resultMessage in resultMessageList">
 					<show-message type="resultMessage.type" severity="resultMessage.severity" text="resultMessage.message"></show-message>
 				</div>
@@ -65,7 +59,7 @@
 									<h2 class="overview-widget-title pull-left">
 										<span message key="business.widget.header.total-antal"></span>
 									</h2>
-									<span class="hidden-print page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
+									<span class="page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
 					                    uib-tooltip-html="popoverTextAmount"
 															tooltip-class="popover-content"
 															tooltip-append-to-body="true"
@@ -84,7 +78,7 @@
 									<h2 class="overview-widget-title pull-left">
 										<span message key="business.widget.header.konsfordelning-sjukfall"></span>
 									</h2>
-									<span class="hidden-print page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
+									<span class="page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
 					                    uib-tooltip-html="popoverTextSexDistribution"
 															tooltip-class="popover-content"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
@@ -106,7 +100,7 @@
 									<h2 class="overview-widget-title pull-left">
 										<span message key="business.widget.header.fordelning-diagnosgrupper"></span>
 									</h2>
-									<span class="hidden-print page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
+									<span class="page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
 					                    uib-tooltip-html="popoverTextDiagnosisGroups"
 															tooltip-class="popover-content"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
@@ -142,7 +136,7 @@
 									<h2 class="overview-widget-title pull-left">
 										<span message key="business.widget.header.fordelning-aldersgrupper"></span>
 									</h2>
-									<span class="hidden-print page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
+									<span class="page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
 					                    uib-tooltip-html="popoverTextAgeGroups"
 															tooltip-class="popover-content"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
@@ -181,7 +175,7 @@
 									<h2 class="overview-widget-title pull-left">
 										<span message key="business.widget.header.fordelning-sjukskrivningslangd"></span>
 									</h2>
-									<span class="hidden-print page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
+									<span class="page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
 					                    uib-tooltip-html="popoverTextSickLeaveLength"
 															tooltip-class="popover-content"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
@@ -209,7 +203,7 @@
 									<h2 class="overview-widget-title pull-left">
 										<span message key="business.widget.header.fordelning-sjukskrivningsgrad"></span>
 									</h2>
-									<span class="hidden-print page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
+									<span class="page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
 					                    uib-tooltip-html="popoverTextDegreeOfSickLeave"
 															tooltip-class="popover-content"
 					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>

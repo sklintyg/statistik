@@ -1,5 +1,5 @@
 <div uib-collapse="!hasMessages && isFilterCollapsed">
-<div id="statistics-filter-container" class="hidden-print business-filter" data-ng-class="{'filter-active': businessFilter.hasUserSelection}" >
+<div id="statistics-filter-container" class="business-filter" data-ng-class="{'filter-active': businessFilter.hasUserSelection}" >
   <div class="row" style="text-align: center" data-ng-show="!businessFilter.dataInitialized && !isFilterCollapsed">
     <span style="margin: auto">Laddar filterdata</span>
   </div>
@@ -192,4 +192,4 @@
   </div>
 </div>
 </div>
-<filter-button class="hidden-print"></filter-button>
+<filter-button></filter-button>
