@@ -50,7 +50,7 @@ stage('protractor') {
     node {
         try {
             wrap([$class: 'Xvfb']) {
-                shgradle "protractorTests -Dprotractor.env=build-server \
+                shgradle "protractorTests -Dprotractor.env=build-server -Dstatistics.base.url=https://fitnesse.inera.nordicmedtest.se/ \
                       -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
             }
         } finally {
