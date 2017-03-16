@@ -52,8 +52,9 @@ exports.config = {
             console.log(text);
         };
 
-        browser.driver.manage().window().setSize(1600, 1200);
-        browser.driver.manage().window().maximize();
+        browser.driver.manage().window().setSize(1280, 1024);
+        //browser.driver.manage().window().setSize(1600, 1200);
+        //browser.driver.manage().window().maximize();
 
         var reporters = require('jasmine-reporters');
         jasmine.getEnv().addReporter(
