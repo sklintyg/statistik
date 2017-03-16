@@ -46,19 +46,19 @@ stage('deploy') {
     }
 }
 
-stage('protractor') {
-    node {
-        try {
-            wrap([$class: 'Xvfb']) {
-                shgradle "protractorTests -Dprotractor.env=build-server \
-                      -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
-            }
-        } finally {
-            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'specifications/reports', \
-                reportFiles: 'index.html', reportName: 'Protractor results'
-        }
-    }
-}
+// stage('protractor') {
+//     node {
+//         try {
+//             wrap([$class: 'Xvfb']) {
+//                 shgradle "protractorTests -Dprotractor.env=build-server \
+//                       -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+//             }
+//         } finally {
+//             publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'specifications/reports', \
+//                 reportFiles: 'index.html', reportName: 'Protractor results'
+//         }
+//     }
+// }
 
 // stage('fitnesse') {
 //    node {
@@ -74,11 +74,11 @@ stage('protractor') {
 //    }
 // }
 
-// stage('tag and upload') {
-//     node {
-//         shgradle "uploadArchives tagRelease -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
-//     }
-// }
+stage('tag and upload') {
+    node {
+        shgradle "uploadArchives tagRelease -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+    }
+}
 
 stage('notify') {
     node {
