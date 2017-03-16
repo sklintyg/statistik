@@ -11,7 +11,17 @@ node {
     nodeModulesDir = file("${project.projectDir}")
 }
 
-task protractorTests(type: NodeTask, dependsOn: npmInstall) {
+task setupIntygForProtractor(dependsOn: 'classes', type: JavaExec) {
+
+    def baseUrl = System.properties['statistics.base.url'] ?: "http://localhost:8080/"
+
+    jvmArgs = ['-Dstatistics.base.url=' + baseUrl]
+
+    main = 'se.inera.statistics.InsertIntygHelper'
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+task protractorTests(type: NodeTask, dependsOn: [npmInstall, setupIntygForProtractor]) {
     outputs.upToDateWhen { false }
     def environment = System.properties['protractor.env'] ?: "dev"
 
@@ -30,12 +40,6 @@ fitnesse {
     }
 
     extraProperties = ["statistics.base.url": System.properties['statistics.base.url'] ?: "http://localhost:8080/" ]
-}
-
-
-task setupIntygForProtractor(dependsOn: 'classes', type: JavaExec) {
-    main = 'se.inera.statistics.InsertIntygHelper'
-    classpath = sourceSets.main.runtimeClasspath
 }
 
 task allIntegrationTests(dependsOn: [fitnesseTest]) {
