@@ -26,7 +26,7 @@ var pages = testfw.pages;
 var features = testfw.features;
 var filter = pages.filter;
 
-xdescribe('Verksamhetsfilter: ', function() {
+describe('Verksamhetsfilter: ', function() {
     var toDate = new Date().getFullYear() + '-12';
     var fromDate = '2015-12';
 
@@ -101,7 +101,7 @@ xdescribe('Verksamhetsfilter: ', function() {
         });
     });
 
-    describe('Fyll i hela filtert', function() {
+    xdescribe('Fyll i hela filtert', function() {
         var length1, length2, age1, age2, enhet, diagnoses;
         beforeAll(function() {
             // Open filter
