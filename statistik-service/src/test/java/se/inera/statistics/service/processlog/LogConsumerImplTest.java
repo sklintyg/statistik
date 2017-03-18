@@ -27,7 +27,6 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.ifv.statistics.spi.authorization.impl.HsaCommunicationException;
 import se.inera.statistics.service.JSONSource;
-import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HsaInfo;
 
@@ -36,7 +35,10 @@ import java.util.Collections;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LogConsumerImplTest {
@@ -70,7 +72,7 @@ public class LogConsumerImplTest {
 
     @Test
     public void processingSucceedsForOneEvent() {
-        String data = JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1);
+        String data = JSONSource.readTemplateAsString();
         IntygEvent event = new IntygEvent(EventType.CREATED, data, "correlationId", 1);
         when(processLog.getPending(100)).thenReturn(Collections.singletonList(event));
         when(hsa.decorate(any(JsonNode.class), anyString())).thenReturn(new HsaInfo(null, null, null, null));

@@ -56,7 +56,7 @@ public class ProcessorTest {
 
     @Before
     public void init() {
-        utlatande = JSONParser.parse(this.getClass().getResourceAsStream("/json/fk7263_M_template.json"));
+        utlatande = JSONParser.parse(this.getClass().getResourceAsStream("/json/maximalt-fk7263-internal.json"));
     }
 
     @Test
@@ -70,7 +70,7 @@ public class ProcessorTest {
 
         processor.accept(dto, null, 1L, "1", EventType.CREATED);
 
-        assertEquals(35, intygDTOCaptor.getValue().getPatientData().getAlder());
+        assertEquals(98, intygDTOCaptor.getValue().getPatientData().getAlder());
         assertEquals(Kon.MALE, intygDTOCaptor.getValue().getPatientData().getKon());
     }
 

@@ -8,8 +8,6 @@ import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.testsupport.Intyg
 
 import java.text.SimpleDateFormat
-import java.time.ZonedDateTime
-import java.time.format.DateTimeFormatter
 
 class FoljandeIntygFinns extends FoljandeFinns {
 
@@ -82,8 +80,6 @@ class FoljandeIntygFinns extends FoljandeFinns {
 
     Object getIntygDataString() {
         switch (intygformat) {
-            case ~/^(?i)GammaltJson$/:
-                return executeForOldJsonFormat();
             case ~/^(?i)NyttJson$/:
                 return executeForNewJsonFormat();
             case ~/^(?i)LISU$/:
@@ -233,44 +229,6 @@ class FoljandeIntygFinns extends FoljandeFinns {
                 tom: slut2
             ]
         }
-
-        def builder = new JsonBuilder(result)
-        return builder.toString()
-    }
-
-    private String executeForOldJsonFormat() {
-        def slurper = new JsonSlurper()
-        String intygString = getClass().getResource('/intyg1.json').getText('UTF-8')
-        String observationKodString = getClass().getResource('/observationMedKod.json').getText('UTF-8')
-        def result = slurper.parseText(intygString)
-
-        result.signeringsdatum = signeringstid + ".000"
-
-        result.patient.id.extension = personnr
-        result.typ.code = intygstyp != null ? intygstyp : "fk7263"
-        result.skapadAv.id.extension = läkare
-
-        def observation = slurper.parseText(observationKodString)
-        observation.observationskod.code = diagnoskod
-        result.observationer.add(observation)
-
-        String observationFormagaString = getClass().getResource('/observationMedArbetsformaga.json').getText('UTF-8')
-        def observationFormaga = slurper.parseText(observationFormagaString)
-        observationFormaga.observationsperiod.from = start
-        observationFormaga.observationsperiod.tom = slut
-        observationFormaga.varde[0].quantity = arbetsförmåga
-        result.observationer.add(observationFormaga)
-
-        if (!arbetsförmåga2.isEmpty()) {
-            def observationFormaga2 = slurper.parseText(observationFormagaString)
-            observationFormaga2.observationsperiod.from = start2
-            observationFormaga2.observationsperiod.tom = slut2
-            observationFormaga2.varde[0].quantity = arbetsförmåga2
-            result.observationer.add(observationFormaga2)
-        }
-
-        result.skapadAv.vardenhet.id.extension = enhet
-        result.skapadAv.vardenhet.vardgivare.id.extension = vardgivare
 
         def builder = new JsonBuilder(result)
         return builder.toString()

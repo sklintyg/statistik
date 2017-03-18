@@ -2,7 +2,6 @@ package se.inera.statistics.service
 
 import org.junit.Before
 import org.junit.Test
-import se.inera.statistics.service.helper.DocumentHelper
 import se.inera.statistics.service.helper.JSONParser
 import se.inera.statistics.service.hsa.HSADecorator
 import se.inera.statistics.service.hsa.HSAKey
@@ -10,7 +9,8 @@ import se.inera.statistics.service.hsa.HSAService
 import se.inera.statistics.service.hsa.HsaInfo
 import se.inera.statistics.service.hsa.HsaInfoVg
 
-import static org.junit.Assert.*
+import static org.junit.Assert.assertEquals
+import static org.junit.Assert.assertNotNull
 
 class HSADecoratorTest {
     HSADecorator hsaDecorator = new HSADecorator()
@@ -41,11 +41,11 @@ class HSADecoratorTest {
 
     @Test
     void hsa_decorator_extract_key_from_document() {
-        def doc = JSONParser.parse(JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1).toString())
+        def doc = JSONParser.parse(JSONSource.readTemplateAsString())
 
         def key = hsaDecorator.extractHSAKey(doc)
 
-        assertEquals "enhetId".toUpperCase(), key.enhetId.id
+        assertEquals "VardenhetY".toUpperCase(), key.enhetId.id
         assertEquals "Personal HSA-ID".toUpperCase().replaceAll(" ", ""), key.lakareId.id
         assertEquals "VardgivarId".toUpperCase(), key.vardgivareId.id
     }

@@ -149,10 +149,9 @@ public class LargeTestDataGenerator {
     }
 
     protected HSAKey extractHSAKey(JsonNode document) {
-        final DocumentHelper.IntygVersion version = DocumentHelper.getIntygVersion(document);
-        String vardgivareId = getVardgivareId(document, version);
-        String enhetId = getEnhetId(document, version);
-        String lakareId = getLakarId(document, version);
+        String vardgivareId = getVardgivareId(document);
+        String enhetId = getEnhetId(document);
+        String lakareId = getLakarId(document);
         return new HSAKey(vardgivareId, enhetId, lakareId);
     }
 

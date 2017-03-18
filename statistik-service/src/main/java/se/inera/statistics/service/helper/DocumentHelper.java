@@ -65,25 +65,14 @@ public final class DocumentHelper {
     }
 
     public static String getIntygType(JsonNode intyg) {
-        final IntygVersion version = getIntygVersion(intyg);
-        if (IntygVersion.VERSION1 == version) {
-            return intyg.path("typ").path("code").textValue();
-        } else {
-            return intyg.path("typ").textValue();
-        }
-    }
-
-    public enum IntygVersion {
-        VERSION1,
-        VERSION2
+        return intyg.path("typ").textValue();
     }
 
     public static Patientdata getPatientData(JsonNode intyg) {
-        final IntygVersion version = getIntygVersion(intyg);
-        String personId = getPersonId(intyg, version);
+        String personId = getPersonId(intyg);
         int alder;
         try {
-            final LocalDate intygDate = parseDate(getSistaNedsattningsdag(intyg, version));
+            final LocalDate intygDate = parseDate(getSistaNedsattningsdag(intyg));
             if (intygDate != null) {
                 alder = ConversionHelper.extractAlder(personId, intygDate);
             } else {
@@ -99,12 +88,8 @@ public final class DocumentHelper {
         return new Patientdata(alder, Kon.parse(kon));
     }
 
-    public static IntygVersion getIntygVersion(JsonNode document) {
-        return document.has(GRUND_DATA) ? IntygVersion.VERSION2 : IntygVersion.VERSION1;
-    }
-
-    public static String getPersonId(JsonNode document, IntygVersion version) {
-        String personIdRaw = getPersonIdFromIntyg(document, version);
+    public static String getPersonId(JsonNode document) {
+        String personIdRaw = getPersonIdFromIntyg(document);
         return getUnifiedPersonId(personIdRaw);
     }
 
@@ -120,79 +105,32 @@ public final class DocumentHelper {
         }
     }
 
-    private static String getPersonIdFromIntyg(JsonNode document, IntygVersion version) {
-        if (IntygVersion.VERSION1 == version) {
-            return document.path(PATIENT).path("id").path(EXTENSION).textValue();
-        } else {
-            return document.path(GRUND_DATA).path("patient").path("personId").textValue();
-        }
+    private static String getPersonIdFromIntyg(JsonNode document) {
+        return document.path(GRUND_DATA).path("patient").path("personId").textValue();
     }
 
-    public static String getVardgivareId(JsonNode document, IntygVersion version) {
-        if (IntygVersion.VERSION1 == version) {
-            return document.path(SKAPAD_AV).path(VARDENHET).path("vardgivare").path("id").path(EXTENSION).textValue();
-        } else {
-            return document.path(GRUND_DATA).path(SKAPAD_AV).path(VARDENHET).path("vardgivare").path("vardgivarid").textValue();
-        }
+    public static String getVardgivareId(JsonNode document) {
+        return document.path(GRUND_DATA).path(SKAPAD_AV).path(VARDENHET).path("vardgivare").path("vardgivarid").textValue();
     }
 
-    public static String getEnhetId(JsonNode document, IntygVersion version) {
-        if (IntygVersion.VERSION1 == version) {
-            final String result = document.path(SKAPAD_AV).path(VARDENHET).path("id").path(EXTENSION).textValue();
-            return result != null ? result : UTANENHETSID;
-        } else {
-            final String result = document.path(GRUND_DATA).path(SKAPAD_AV).path(VARDENHET).path("enhetsid").textValue();
-            return result != null ? result : UTANENHETSID;
-        }
+    public static String getEnhetId(JsonNode document) {
+        final String result = document.path(GRUND_DATA).path(SKAPAD_AV).path(VARDENHET).path("enhetsid").textValue();
+        return result != null ? result : UTANENHETSID;
     }
 
-    public static String getEnhetNamn(JsonNode document, IntygVersion version) {
-        if (IntygVersion.VERSION1 == version) {
-            return document.path(SKAPAD_AV).path(VARDENHET).path("namn").textValue();
-        } else {
-            return document.path(GRUND_DATA).path(SKAPAD_AV).path(VARDENHET).path("enhetsnamn").textValue();
-        }
+    public static String getEnhetNamn(JsonNode document) {
+        return document.path(GRUND_DATA).path(SKAPAD_AV).path(VARDENHET).path("enhetsnamn").textValue();
     }
 
-    public static String getLakarId(JsonNode document, IntygVersion version) {
-        if (IntygVersion.VERSION1 == version) {
-            return document.path(SKAPAD_AV).path("id").path(EXTENSION).textValue();
-        } else {
-            return document.path(GRUND_DATA).path(SKAPAD_AV).path("personId").textValue();
-        }
+    public static String getLakarId(JsonNode document) {
+        return document.path(GRUND_DATA).path(SKAPAD_AV).path("personId").textValue();
     }
 
-    static String getForstaNedsattningsdag(JsonNode document, IntygVersion version) {
-        if (version == IntygVersion.VERSION1) {
-            return getForstaNedsattningsdagV1(document);
-        } else {
-            return document.path("giltighet").path("from").textValue();
-        }
+    static String getForstaNedsattningsdag(JsonNode document) {
+        return document.path("giltighet").path("from").textValue();
     }
 
-    private static String getForstaNedsattningsdagV1(JsonNode document) {
-        String from = null;
-        for (JsonNode node : document.path(OBSERVATIONER)) {
-            if (ARBETSFORMAGA_MATCHER.match(node)) {
-                JsonNode varde = node.path(OBSERVATIONSPERIOD);
-                String candidate = varde.path("from").asText();
-                if (from == null || from.compareTo(candidate) > 0) {
-                    from = candidate;
-                }
-            }
-        }
-        return from;
-    }
-
-    static String getSistaNedsattningsdag(JsonNode document, IntygVersion version) {
-        if (version == IntygVersion.VERSION1) {
-            return getSistaNedsattningsdagV1(document);
-        } else {
-            return getSistaNedsattningsdagV2(document);
-        }
-    }
-
-    private static String getSistaNedsattningsdagV2(JsonNode document) {
+    static String getSistaNedsattningsdag(JsonNode document) {
         final int startYear = 2000;
         LocalDate date = LocalDate.of(startYear, 1, 1);
         if (document.has(NEDSATT_MED_25)) {
@@ -222,55 +160,19 @@ public final class DocumentHelper {
         return date.toString();
     }
 
-    private static String getSistaNedsattningsdagV1(JsonNode document) {
-        String to = null;
-        for (JsonNode node : document.path(OBSERVATIONER)) {
-            if (ARBETSFORMAGA_MATCHER.match(node)) {
-                JsonNode varde = node.path(OBSERVATIONSPERIOD);
-                String candidate = varde.path("tom").asText();
-                if (to == null || to.compareTo(candidate) < 0) {
-                    to = candidate;
-                }
-            }
-        }
-        return to;
+    public static String getDiagnos(JsonNode document) {
+        return document.path("diagnosKod").textValue();
     }
 
-    public static String getDiagnos(JsonNode document, IntygVersion version) {
-        if (version == IntygVersion.VERSION1) {
-            for (JsonNode node : document.path(OBSERVATIONER)) {
-                if (DIAGNOS_MATCHER.match(node)) {
-                    return node.path("observationskod").path("code").textValue();
-                }
-            }
-            return null;
-        } else {
-            return document.path("diagnosKod").textValue();
-        }
-    }
-
-    public static List<Arbetsnedsattning> getArbetsnedsattning(JsonNode document, IntygVersion version) {
+    public static List<Arbetsnedsattning> getArbetsnedsattning(JsonNode document) {
         List<Arbetsnedsattning> result = new ArrayList<>();
-        if (version == IntygVersion.VERSION1) {
-            for (JsonNode node : document.path(OBSERVATIONER)) {
-                if (ARBETSFORMAGA_MATCHER.match(node)) {
-                    int varde = MAX_SJUKSKRIVNING - node.path("varde").get(0).path("quantity").asInt();
-                    LocalDate from = parseDate(node.path(OBSERVATIONSPERIOD).path("from").asText());
-                    LocalDate tom = parseDate(node.path(OBSERVATIONSPERIOD).path("tom").asText());
-                    if (from != null && tom != null) {
-                        result.add(new Arbetsnedsattning(varde, from, tom));
-                    }
-                }
-            }
-            return result;
-        } else {
+
             addArbetsnedsattning(document, result, NEDSATT_MED_25, NEDSATT25);
             addArbetsnedsattning(document, result, NEDSATT_MED_50, NEDSATT50);
             addArbetsnedsattning(document, result, NEDSATT_MED_75, NEDSATT75);
             addArbetsnedsattning(document, result, NEDSATT_MED_100, NEDSATT100);
 
             return result;
-        }
     }
 
     private static void addArbetsnedsattning(JsonNode document, List<Arbetsnedsattning> result, String nedsattMedString, int nedsattMed) {
@@ -294,31 +196,15 @@ public final class DocumentHelper {
         }
     }
 
-    public static String getIntygId(JsonNode document, IntygVersion version) {
-        if (version == IntygVersion.VERSION1) {
-            String id = document.path("id").path("root").textValue();
-            if (DOCUMENT_ID.equals(id)) {
-                id = document.path("id").path("extension").textValue();
-            }
-            return id;
-        } else {
-            return document.path("id").textValue();
-        }
+    public static String getIntygId(JsonNode document) {
+        return document.path("id").textValue();
     }
 
-    public static String getSigneringsDatum(JsonNode document, IntygVersion version) {
-        if (IntygVersion.VERSION1 == version) {
-            return document.path("signeringsdatum").textValue();
-        } else {
-            return document.path(GRUND_DATA).path("signeringsdatum").textValue();
-        }
+    public static String getSigneringsDatum(JsonNode document) {
+        return document.path(GRUND_DATA).path("signeringsdatum").textValue();
     }
 
-    public static boolean isEnkeltIntyg(JsonNode intyg, IntygVersion version) {
-        if (version == IntygVersion.VERSION1) {
-            LOG.warn("'Enkelt intyg' parsing has not been implemented for old intyg format. Defaulting to false.");
-            return false;
-        }
+    public static boolean isEnkeltIntyg(JsonNode intyg) {
         final String funktionsnedsattning = intyg.path("funktionsnedsattning").toString();
         final String aktivitetsbegransning = intyg.path("aktivitetsbegransning").toString();
         return isAnyFieldIndicatingEnkeltIntyg(funktionsnedsattning, aktivitetsbegransning);
@@ -351,20 +237,18 @@ public final class DocumentHelper {
 
         IntygDTO dto = new IntygDTO();
 
-        DocumentHelper.IntygVersion intygVersion = DocumentHelper.getIntygVersion(intyg);
-
-        String enhet = DocumentHelper.getEnhetId(intyg, intygVersion);
-        String patient = DocumentHelper.getPersonId(intyg, intygVersion);
+        String enhet = DocumentHelper.getEnhetId(intyg);
+        String patient = DocumentHelper.getPersonId(intyg);
         Patientdata patientData = DocumentHelper.getPatientData(intyg);
 
-        final boolean enkeltIntyg = DocumentHelper.isEnkeltIntyg(intyg, intygVersion);
-        String diagnos = DocumentHelper.getDiagnos(intyg, intygVersion);
-        String lakareid = DocumentHelper.getLakarId(intyg, intygVersion);
-        String intygsId = DocumentHelper.getIntygId(intyg, intygVersion);
+        final boolean enkeltIntyg = DocumentHelper.isEnkeltIntyg(intyg);
+        String diagnos = DocumentHelper.getDiagnos(intyg);
+        String lakareid = DocumentHelper.getLakarId(intyg);
+        String intygsId = DocumentHelper.getIntygId(intyg);
         String intygTyp = DocumentHelper.getIntygType(intyg).toUpperCase().trim();
-        List<Arbetsnedsattning> arbetsnedsattnings = DocumentHelper.getArbetsnedsattning(intyg, intygVersion);
+        List<Arbetsnedsattning> arbetsnedsattnings = DocumentHelper.getArbetsnedsattning(intyg);
 
-        String dateTime = DocumentHelper.getSigneringsDatum(intyg, intygVersion);
+        String dateTime = DocumentHelper.getSigneringsDatum(intyg);
         LocalDate signeringsDatum = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME).toLocalDate();
 
         dto.setEnhet(enhet);

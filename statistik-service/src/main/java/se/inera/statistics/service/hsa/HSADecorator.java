@@ -18,40 +18,36 @@
  */
 package se.inera.statistics.service.hsa;
 
-import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
-import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
-import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
-
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializerProvider;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
+import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
+import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
+import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
 
 @Component
 public class HSADecorator {
@@ -161,10 +157,9 @@ public class HSADecorator {
     }
 
     protected HSAKey extractHSAKey(JsonNode document) {
-        final DocumentHelper.IntygVersion version = DocumentHelper.getIntygVersion(document);
-        String vardgivareId = getVardgivareId(document, version);
-        String enhetId = getEnhetId(document, version);
-        String lakareId = getLakarId(document, version);
+        String vardgivareId = getVardgivareId(document);
+        String enhetId = getEnhetId(document);
+        String lakareId = getLakarId(document);
         return new HSAKey(vardgivareId, enhetId, lakareId);
     }
 

@@ -18,27 +18,23 @@
  */
 package se.inera.statistics.service.queue;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.verify;
-
+import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
 import se.inera.statistics.service.JSONSource;
-import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.processlog.IntygFormat;
 import se.inera.statistics.service.processlog.ProcessLog;
 import se.inera.statistics.service.processlog.Processor;
 import se.inera.statistics.service.processlog.Receiver;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReceiverTest {
@@ -56,7 +52,7 @@ public class ReceiverTest {
     // CHECKSTYLE:OFF MagicNumber
     @Test
     public void acceptedEventdataIsStored() {
-        String data = JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1).toString();
+        String data = JSONSource.readTemplateAsString();
 
         receiver.accept(EventType.CREATED, data, "corr", 123L);
 
