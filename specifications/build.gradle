@@ -104,9 +104,9 @@ dependencies {
     compile "org.apache.httpcomponents:httpmime:${httpVersion}"
     compile "org.apache.httpcomponents:httpcore:${httpVersion}"
 
-    fitnesse(project(":statistik-web")) { transitive = false }
-    fitnesse(project(":statistik-service")) { transitive = false }
-    fitnesse(project(":specifications")) { transitive = false }
+    fitnesse(project(":statistik-web")) //{ transitive = false }
+    //fitnesse(project(":statistik-service")) { transitive = false }
+    //fitnesse(project(":specifications")) { transitive = false }
 
     fitnesse "org.fitnesse:fitnesse:${fitnesseVersion}"
     fitnesse "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
