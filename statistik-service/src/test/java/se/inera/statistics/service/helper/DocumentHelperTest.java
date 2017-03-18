@@ -31,84 +31,37 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static se.inera.statistics.service.helper.DocumentHelper.IntygVersion.VERSION1;
-import static se.inera.statistics.service.helper.DocumentHelper.IntygVersion.VERSION2;
 
 public class DocumentHelperTest {
 
-    private JsonNode documentOldFormat = JSONParser.parse(JSONSource.readTemplateAsString(VERSION1));
-    private JsonNode documentVersion2 = JSONParser.parse(JSONSource.readTemplateAsString(VERSION2));
+    private JsonNode document = JSONParser.parse(JSONSource.readTemplateAsString());
 
     @Test
-    public void prepareOld() {
-        final Patientdata patientData = DocumentHelper.getPatientData(documentOldFormat);
-
-        assertEquals(35, patientData.getAlder());
-        assertEquals(Kon.MALE, patientData.getKon());
-    }
-
-    @Test
-    public void prepareVersion2() {
-        final Patientdata patientData = DocumentHelper.getPatientData(documentVersion2);
+    public void prepare() {
+        final Patientdata patientData = DocumentHelper.getPatientData(document);
 
         assertEquals(98, patientData.getAlder());
         assertEquals(Kon.MALE, patientData.getKon());
     }
 
     @Test
-    public void getIntygVersionOld() {
-        final DocumentHelper.IntygVersion version = DocumentHelper.getIntygVersion(documentOldFormat);
-
-        assertEquals(DocumentHelper.IntygVersion.VERSION1, version);
+    public void getEnhet() {
+        assertEquals("VardenhetY", DocumentHelper.getEnhetId(document));
     }
 
     @Test
-    public void getIntygVersionVersion2() {
-        final DocumentHelper.IntygVersion version = DocumentHelper.getIntygVersion(documentVersion2);
-
-        assertEquals(DocumentHelper.IntygVersion.VERSION2, version);
+    public void getDiagnos() {
+        assertEquals("S47", DocumentHelper.getDiagnos(document));
     }
 
     @Test
-    public void getEnhetOld() {
-        assertEquals("enhetId", DocumentHelper.getEnhetId(documentOldFormat, VERSION1));
+    public void getVardgivareId() {
+        assertEquals("VardgivarId", DocumentHelper.getVardgivareId(document));
     }
 
     @Test
-    public void getEnhetVersion2() {
-        assertEquals("VardenhetY", DocumentHelper.getEnhetId(documentVersion2, VERSION2));
-    }
-
-    @Test
-    public void getDiagnosOld() {
-        assertEquals("H81", DocumentHelper.getDiagnos(documentOldFormat, VERSION1));
-    }
-
-    @Test
-    public void getDiagnosVersion2() {
-        assertEquals("S47", DocumentHelper.getDiagnos(documentVersion2, VERSION2));
-    }
-
-    @Test
-    public void getVardgivareIdOld() {
-        assertEquals("VardgivarId", DocumentHelper.getVardgivareId(documentOldFormat, VERSION1));
-    }
-
-    @Test
-    public void getVardgivareIdVersion2() {
-        assertEquals("VardgivarId", DocumentHelper.getVardgivareId(documentVersion2, VERSION2));
-    }
-
-    @Test
-    public void getAgeOld() {
-        final int age = DocumentHelper.getPatientData(documentOldFormat).getAlder();
-
-        assertEquals(35, age);
-    }
-
-    @Test
-    public void getAgeVersion2() {
-        final int age = DocumentHelper.getPatientData(documentVersion2).getAlder();
+    public void getAge() {
+        final int age = DocumentHelper.getPatientData(document).getAlder();
 
         assertEquals(98, age);
     }
@@ -179,74 +132,36 @@ public class DocumentHelperTest {
     }
 
     @Test
-    public void getForstaDagOld() {
-        String date = DocumentHelper.getForstaNedsattningsdag(documentOldFormat, VERSION1);
-
-        assertEquals("2011-01-24", date);
-    }
-
-    @Test
-    public void getSistaDagOld() {
-        String date = DocumentHelper.getSistaNedsattningsdag(documentOldFormat, VERSION1);
-
-        assertEquals("2011-02-20", date);
-    }
-
-    @Test
-    public void getForstaDagVersion2() {
-        String date = DocumentHelper.getForstaNedsattningsdag(documentVersion2, VERSION2);
+    public void getForstaDag() {
+        String date = DocumentHelper.getForstaNedsattningsdag(document);
 
         assertEquals("2011-01-26", date);
     }
 
     @Test
-    public void getSistaDagVersion2() {
-        String date = DocumentHelper.getSistaNedsattningsdag(documentVersion2, VERSION2);
+    public void getSistaDag() {
+        String date = DocumentHelper.getSistaNedsattningsdag(document);
 
         assertEquals("2011-05-31", date);
     }
 
     @Test
-    public void getIntygIdOld() {
-        assertEquals("80832895-5a9c-450a-bd74-08af43750788", DocumentHelper.getIntygId(documentOldFormat, VERSION1));
+    public void getIntygId() {
+        assertEquals("80832895-5a9c-450a-bd74-08af43750788", DocumentHelper.getIntygId(document));
     }
 
     @Test
-    public void getIntygIdVersion2() {
-        assertEquals("80832895-5a9c-450a-bd74-08af43750788", DocumentHelper.getIntygId(documentVersion2, VERSION2));
-    }
-
-    @Test
-    public void getPersonIdOldVersion() {
-        String id = DocumentHelper.getPersonId(documentOldFormat, VERSION1);
-
-        assertEquals("19750424-9215", id);
-    }
-
-    @Test
-    public void getPersonIdVersion2() {
-        String id = DocumentHelper.getPersonId(documentVersion2, VERSION2);
+    public void getPersonId() {
+        String id = DocumentHelper.getPersonId(document);
 
         assertEquals("19121212-1212", id);
     }
 
     @Test
-    public void getLakarIdOld() {
-        String id = DocumentHelper.getLakarId(documentOldFormat, VERSION1);
+    public void getLakarId() {
+        String id = DocumentHelper.getLakarId(document);
 
         assertEquals("Personal HSA-ID", id);
-    }
-
-    @Test
-    public void getLakarIdVersion2() {
-        String id = DocumentHelper.getLakarId(documentVersion2, VERSION2);
-
-        assertEquals("Personal HSA-ID", id);
-    }
-
-    @Test
-    public void getArbetsnedsattning() {
-        assertEquals(50, DocumentHelper.getArbetsnedsattning(documentOldFormat, VERSION1).get(0).getNedsattning());
     }
 
     @Test
@@ -278,8 +193,8 @@ public class DocumentHelperTest {
     }
 
     @Test
-    public void testConvertToDTOVersion2() {
-        IntygDTO dto = DocumentHelper.convertToDTO(documentVersion2);
+    public void testConvertToDTO() {
+        IntygDTO dto = DocumentHelper.convertToDTO(document);
 
         LocalDate signeringsdatum = LocalDate.of(2011, 1, 26);
 
@@ -287,20 +202,6 @@ public class DocumentHelperTest {
         assertEquals("VardenhetY", dto.getEnhet());
         assertEquals("FK7263", dto.getIntygtyp());
         assertEquals(98, dto.getPatientData().getAlder());
-        assertEquals(Kon.MALE, dto.getPatientData().getKon());
-        assertEquals(signeringsdatum, dto.getSigneringsdatum());
-    }
-
-    @Test
-    public void testConvertToDTOOld() {
-        IntygDTO dto = DocumentHelper.convertToDTO(documentOldFormat);
-
-        LocalDate signeringsdatum = LocalDate.of(2011, 1, 26);
-
-        assertEquals("19750424-9215", dto.getPatientid());
-        assertEquals("enhetId", dto.getEnhet());
-        assertEquals("FK7263", dto.getIntygtyp());
-        assertEquals(35, dto.getPatientData().getAlder());
         assertEquals(Kon.MALE, dto.getPatientData().getKon());
         assertEquals(signeringsdatum, dto.getSigneringsdatum());
     }

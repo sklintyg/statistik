@@ -27,7 +27,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.JSONSource;
-import se.inera.statistics.service.helper.DocumentHelper;
 
 import javax.persistence.EntityManager;
 import java.io.IOException;
@@ -36,7 +35,9 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -56,7 +57,7 @@ public class HSADecoratorTest {
 
     @Test
     public void decorate_document() throws IOException {
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1));
+        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
 
         hsaDecorator.decorate(doc, "aaa");
 
@@ -69,7 +70,7 @@ public class HSADecoratorTest {
         HSADecorator hsaDecoratorSpy = Mockito.spy(this.hsaDecorator);
         Mockito.doReturn(null).when(hsaDecoratorSpy).getHSAInfo(anyString());
 
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1));
+        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
 
         //When
         hsaDecoratorSpy.decorate(doc, "aaa");
@@ -97,7 +98,7 @@ public class HSADecoratorTest {
         HsaInfo jsonNode = new HsaInfo(null, fullJsonNode.getHuvudenhet(), fullJsonNode.getVardgivare(), fullJsonNode.getPersonal());
         Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
 
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1));
+        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
 
         //When
         hsaDecoratorSpy.decorate(doc, "aaa");
@@ -115,7 +116,7 @@ public class HSADecoratorTest {
         HsaInfo jsonNode = new HsaInfo(fullJsonNode.getEnhet(), null, fullJsonNode.getVardgivare(), fullJsonNode.getPersonal());
         Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
 
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1));
+        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
 
         //When
         hsaDecoratorSpy.decorate(doc, "aaa");
@@ -133,7 +134,7 @@ public class HSADecoratorTest {
         HsaInfo jsonNode = new HsaInfo(fullJsonNode.getEnhet(), fullJsonNode.getHuvudenhet(), null, fullJsonNode.getPersonal());
         Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
 
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1));
+        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
 
         //When
         hsaDecoratorSpy.decorate(doc, "aaa");
@@ -151,7 +152,7 @@ public class HSADecoratorTest {
         HsaInfo jsonNode = new HsaInfo(fullJsonNode.getEnhet(), fullJsonNode.getHuvudenhet(), fullJsonNode.getVardgivare(), null);
         Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
 
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1));
+        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
 
         //When
         hsaDecoratorSpy.decorate(doc, "aaa");
@@ -169,7 +170,7 @@ public class HSADecoratorTest {
         HsaInfo jsonNode = new HsaInfo(fullJsonNode.getEnhet(), fullJsonNode.getHuvudenhet(), fullJsonNode.getVardgivare(), fullJsonNode.getPersonal());
         Mockito.doReturn(jsonNode).when(hsaDecoratorSpy).getHSAInfo(anyString());
 
-        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1));
+        JsonNode doc = new ObjectMapper().readTree(JSONSource.readTemplateAsString());
 
         //When
         hsaDecoratorSpy.decorate(doc, "aaa");

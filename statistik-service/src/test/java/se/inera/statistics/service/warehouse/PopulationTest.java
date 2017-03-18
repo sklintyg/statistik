@@ -45,7 +45,7 @@ import static org.junit.Assert.assertEquals;
 @DirtiesContext
 public class PopulationTest {
 
-    private JsonNode rawDocument = JSONParser.parse(JSONSource.readTemplateAsString(DocumentHelper.IntygVersion.VERSION1));
+    private JsonNode rawDocument = JSONParser.parse(JSONSource.readTemplateAsString());
     public static final HsaInfo JSON_NODE = HSADecorator.jsonToHsaInfo("{\"enhet\":{\"id\":\"enhetId\",\"namn\":\"Enhet enhetId\",\"enhetsTyp\":[\"02\"],\"agarform\":[\"Landsting/Region\"],\"startdatum\":\"\",\"slutdatum\":\"\",\"arkiverad\":null,\"organisationsnamn\":\"Organisationsnamn\",\"vardform\":null,\"geografi\":{\"koordinat\":{\"typ\":\"testtype\",\"x\":\"1\",\"y\":\"2\"},\"plats\":\"Plats\",\"kommundelskod\":\"0\",\"kommundelsnamn\":\"Centrum\",\"lan\":\"20\",\"kommun\":\"62\"},\"verksamhet\":[\"1217\",\"1218\",\"1219\"],\"vgid\":\"vardgivarid\"},\"huvudenhet\":{\"id\":\"enhetId\",\"namn\":\"Enhet enhetId\",\"enhetsTyp\":[\"02\"],\"agarform\":[\"Landsting/Region\"],\"startdatum\":\"\",\"slutdatum\":\"\",\"arkiverad\":null,\"organisationsnamn\":\"Organisationsnamn\",\"vardform\":null,\"geografi\":{\"koordinat\":{\"typ\":\"testtype\",\"x\":\"1\",\"y\":\"2\"},\"plats\":\"Plats\",\"kommundelskod\":\"0\",\"kommundelsnamn\":\"Centrum\",\"lan\":\"20\",\"kommun\":\"62\"},\"verksamhet\":[\"1217\",\"1218\",\"1219\"],\"vgid\":\"vardgivarid\"},\"vardgivare\":{\"id\":\"vardgivarid\",\"orgnr\":null,\"namn\":\"vardgivarnamn\",\"startdatum\":null,\"slutdatum\":null,\"arkiverad\":null},\"personal\":{\"id\":\"lakareId\",\"initial\":null,\"kon\":null,\"alder\":null,\"befattning\":null,\"specialitet\":null,\"yrkesgrupp\":null,\"skyddad\":null,\"tilltalsnamn\":\"Sirkka\",\"efternamn\":\"Isaac\"}}");
 
     @Autowired
@@ -69,7 +69,7 @@ public class PopulationTest {
         }
         warehouse.complete(LocalDateTime.now(clock));
         Aisle aisle = warehouse.get(new HsaIdVardgivare("VARDGIVARID"));
-        assertEquals(1, aisle.getSize());
+        assertEquals(4, aisle.getSize());
     }
 
 }
