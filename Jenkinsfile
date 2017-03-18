@@ -46,6 +46,20 @@ stage('deploy') {
     }
 }
 
+stage('fitnesse') {
+    node {
+        try {
+            wrap([$class: 'Xvfb']) {
+                shgradle "fitnesseTest -PfileOutput -PoutputFormat=html \
+                     -Dstatistics.base.url=https://fitnesse.inera.nordicmedtest.se/ -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+            }
+        } finally {
+            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'specifications/', \
+               reportFiles: 'fitnesse-results.html', reportName: 'Fitnesse results'
+        }
+    }
+}
+
 stage('protractor') {
     node {
         try {
@@ -58,20 +72,6 @@ stage('protractor') {
                 reportFiles: 'index.html', reportName: 'Protractor results'
         }
     }
-}
-
-stage('fitnesse') {
-   node {
-       try {
-           wrap([$class: 'Xvfb']) {
-               shgradle "fitnesseTest -PfileOutput -PoutputFormat=html \
-                     -Dstatistics.base.url=https://fitnesse.inera.nordicmedtest.se/ -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
-           }
-       } finally {
-           publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'specifications/', \
-               reportFiles: 'fitnesse-results.html', reportName: 'Fitnesse results'
-       }
-   }
 }
 
 stage('tag and upload') {
