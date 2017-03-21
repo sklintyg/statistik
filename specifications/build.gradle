@@ -31,6 +31,7 @@ task protractorTests(type: NodeTask, dependsOn: [npmInstall, setupIntygForProtra
 
 fitnesse {
     port = 9125
+    mainClass = "fitnesseMain.FitNesseMain"
     root = "FitNesseRoot"
     workingDir = "src/test/fitnesse"
     wikiStartPage = "StatisticsTests"
@@ -40,12 +41,6 @@ fitnesse {
     }
 
     extraProperties = ["statistics.base.url": System.properties['statistics.base.url'] ?: "http://localhost:8080/" ]
-}
-
-task allIntegrationTests(dependsOn: [fitnesseTest]) {
-    doLast {
-        println 'running integration tests'
-    }
 }
 
 if (project.hasProperty('runFitnesse')) {
