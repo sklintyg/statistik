@@ -116,7 +116,7 @@ tree-multi-selector {
 
 			&.depth1 {
 				background-color: #fff;
-				border-top: 0;
+				border-bottom: 0;
 				> .indenter {
 					width: 30px;
 				}
@@ -128,7 +128,7 @@ tree-multi-selector {
 
 			&.depth2 {
 				background-color: #fff;
-				border-top: 0;
+				border-bottom: 0;
 
 				> .indenter {
 					width: 54px;
@@ -142,7 +142,6 @@ tree-multi-selector {
 
 			&.depth3 {
 				background-color: #fff;
-				border-top: 0;
 				border-bottom: 0;
 
 				> .indenter {
@@ -152,6 +151,10 @@ tree-multi-selector {
 				> .ellipsis-text {
 					max-width: calc(100% - 130px);
 				}
+			}
+
+			&.leaf {
+				border-top: 0;
 			}
 		}
 
