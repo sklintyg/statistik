@@ -503,17 +503,19 @@ legend {
   padding: 11px 11px;
 }
 
-#about-content a.accordion-toggle:hover {
-  color: #008391 !important;
-  text-decoration: underline;
-}
+#about-content {
+  a.accordion-toggle:hover {
+    color: #008391 !important;
+    text-decoration: underline;
+  }
 
-#about-content .panel-heading {
-  background: #eeeeee;
-}
+  .panel-heading {
+    background: #eeeeee;
+  }
 
-#about-content .panel-heading h4 {
-  font-size: 14px;
+  .panel-heading h4 {
+    font-size: 14px;
+  }
 }
 
 #legend-label {
@@ -766,7 +768,7 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle {
 .sub-title-period {
   font-size: 14px;
   min-height: 20px;
-  
+
   &::first-letter {
     text-transform: capitalize;
   }

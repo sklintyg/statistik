@@ -18,7 +18,7 @@
  */
 
 /*globals browser,protractor */
-/*globals describe,it,helpers */
+/*globals describe,it */
 'use strict';
 
 var testfw = require('../../testFramework.js');
@@ -146,7 +146,7 @@ describe('Verksamhetsfilter: ', function() {
             expect(filter.getChipNames()).toContain(age2);
         });
 
-        xit('Enheter', function() {
+        it('Enheter', function() {
             filter.enhetBtn.click();
 
             filter.enhetDepth1List.first().click();
@@ -174,7 +174,7 @@ describe('Verksamhetsfilter: ', function() {
             expect(filter.getChipNames()).toContain(diagnoses);
         });
 
-        it('Applicera filter', function() {
+        it('Applicera filtret', function() {
             filter.applyBtn.click();
 
             // Validate status
@@ -191,7 +191,7 @@ describe('Verksamhetsfilter: ', function() {
             expect(filter.getChipNames()).toContain(length2);
             expect(filter.getChipNames()).toContain(age1);
             expect(filter.getChipNames()).toContain(age2);
-            //expect(filter.getChipNames()).toContain(enhet);
+            expect(filter.getChipNames()).toContain(enhet);
             expect(filter.getChipNames()).toContain(diagnoses);
         });
 
@@ -201,6 +201,16 @@ describe('Verksamhetsfilter: ', function() {
             // Validate status
             filter.isFilterInactive();
         });
+    });
+
+    it('Enhetsvalet syns inte när man bara har en enhet', function() {
+        features.user.makeSureNotLoggedIn();
+        features.user.loginUser1(false);
+
+        filter.button.click();
+        expect(filter.content.isDisplayed()).toBeTruthy();
+
+        expect(filter.enhetBtn.isPresent()).toBeFalsy();
     });
 
     afterAll(function() {
