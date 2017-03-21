@@ -32,6 +32,8 @@ exports.config = {
 
     // Capabilities to be passed to the webdriver instance.
     capabilities: {
+        //shardTestFiles: true,
+        //maxInstances: 3,
         'browserName': 'firefox',
         marionette: false
     },

@@ -1,12 +1,10 @@
-/* globals browser */
-
 'use strict';
 
 var FakeLoginPage = function() {
     this.jsonInput = element(by.name('userJsonDisplay'));
     this.loginBtn = element(by.id('login_btn'));
 
-    this.login = function(firstName, lastName, userId, enhetId, vgId, isProcessledare) {
+    this.login = function(firstName, lastName, userId, vgId, isProcessledare) {
         this.jsonInput.clear();
         this.jsonInput.sendKeys('{' +
                 '"fornamn":"' + firstName + '",' +

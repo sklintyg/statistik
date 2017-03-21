@@ -9,5 +9,7 @@ module.exports = {
     'selectVardgivare': require('./selectVardgivare.po.js'),
     'headerPo': require('./header.po.js'),
     'navmenu': require('./navmenu.po.js'),
-    'filter': require('./filter.po.js')
+    'filter': require('./filter.po.js'),
+    'landstingAbout': require('./landstingAbout.po.js'),
+    'landstingUpload': require('./landstingUpload.po.js')
 };

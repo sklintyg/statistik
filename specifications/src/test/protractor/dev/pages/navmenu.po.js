@@ -1,5 +1,3 @@
-/* globals browser */
-
 'use strict';
 
 var pohelper = require('./pohelper.js');
@@ -7,6 +5,7 @@ var pohelper = require('./pohelper.js');
 var NavMenu = function() {
     var that = this;
     this.nationalStatisticsToggle = element(by.id('national-statistics-toggle'));
+    this.landstingStatisticsToggle = element(by.id('landsting-statistics-toggle'));
     this.businessStatisticsToggle = element(by.id('business-statistics-toggle'));
     this.aboutStatisticsToggle = element(by.id('about-statistics-toggle'));
 
@@ -19,6 +18,10 @@ var NavMenu = function() {
     this.navSickLeaveLengthLink = element(by.id('navSickLeaveLengthLink'));
     this.navCountyLink = element(by.id('navCountyLink'));
     this.navCasesPerSexLink = element(by.id('navCasesPerSexLink'));
+
+    this.navLandstingAbout = element(by.id('navLandstingAboutLink'));
+    this.navLandstingUpload = element(by.id('navLandstingUploadLink'));
+
 
     this.navVerksamhetOversiktLink = element(by.id('navVerksamhetOversiktLink'));
 
@@ -41,10 +44,12 @@ var NavMenu = function() {
     this.navAboutFaqLink = element(by.id('navAboutFaqLink'));
     this.navAboutContactLink = element(by.id('navAboutContactLink'));
 
-    var verifyAt = function() {
-        expect(isBusinessStatisticsToggleVisible()).toBeTruthy('Nationell statistik saknas i navigationsmenyn');
-        expect(isNationalStatisticsToggleVisible()).toBeTruthy('Verksamhetsstatistik saknas i navigationsmenyn');
-        expect(isAboutStatisticsToggleVisible()).toBeTruthy('Om tjänsten saknas i navigationsmenyn');
+    this.expandLandstingStatisticsToggle = function() {
+        pohelper.hasClass(this.landstingStatisticsToggle, 'collapsed').then(function(value) {
+            if (value) {
+                that.landstingStatisticsToggle.click();
+            }
+        });
     };
 
     var clickBusinessStatisticsToggle = function() {

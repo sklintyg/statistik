@@ -3,6 +3,7 @@ package se.inera.statistics
 import se.inera.statistics.spec.DagensDatum
 import se.inera.statistics.spec.EnbartFoljandeIntygFinns
 import se.inera.statistics.spec.TroskelVarde
+import se.inera.statistics.web.reports.ReportsUtil
 
 
 class InsertIntygHelper {
@@ -10,6 +11,10 @@ class InsertIntygHelper {
     public static void main(String... args) {
         new DagensDatum("2016-11-01"); //Will set the date "fitnesse-style"
         new TroskelVarde(5); //Will set the troskelvarde "fitnesse-style"
+
+        ReportsUtil util = new ReportsUtil();
+
+        util.insertLandsting(ReportsUtil.VARDGIVARE3)
 
         ArrayList<IntygData> intygs = getIntygs()
 
