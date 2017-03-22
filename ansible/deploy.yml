@@ -27,5 +27,6 @@
     - debug: var=repo
 
   roles:
+    - statistik-systemvariabler
     - statistik
     - statistik-hsafileservice
