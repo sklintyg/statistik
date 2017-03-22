@@ -49,8 +49,6 @@ stage('deploy') {
 stage('fitnesse') {
     node {
         try {
-            //shgradle "farmIntegrationTestFitnesse -PrunFitnesse -PfileOutput -PoutputFormat=html \
-            //     -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
             shgradle "fitnesseTest -PfileOutput -PoutputFormat=html \
                  -Dstatistics.base.url=https://fitnesse.inera.nordicmedtest.se/ -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
         } finally {
