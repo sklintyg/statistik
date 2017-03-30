@@ -1,9 +1,9 @@
 filter-chips-list {
   ul {
-    padding: 0;
     display: inline-block;
-    vertical-align: top;
     margin-right: 40px;
+    padding: 0;
+    vertical-align: top;
   }
 
   .filter-heading {
@@ -11,26 +11,28 @@ filter-chips-list {
   }
 
   .filter-hover {
-    vertical-align: top;
     display: inline-block;
     margin-left: 5px;
+    vertical-align: top;
     width: 15px;
   }
 
   .default-text {
-    max-width: 280px;
     display: inline-block;
+    max-width: 280px;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
     vertical-align: top;
+    white-space: nowrap;
   }
 
-  .remove-filter, .undo-remove-filter {
+  .remove-filter,
+  .undo-remove-filter {
     display: none;
   }
 
-  .inactive, .removed {
+  .inactive,
+  .removed {
     color: #7e7e7f;
   }
 
@@ -60,14 +62,12 @@ filter-chips-list {
     }
 
     &.ng-leave {
-      transition: 0.3s;
       opacity: 1;
+      transition: .3s;
 
       &.ng-leave-active {
         opacity: 0;
       }
     }
   }
-
-
 }

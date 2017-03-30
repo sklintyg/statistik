@@ -6,10 +6,10 @@
 
 #statistics-menu-accordion li a,
 #statistics-about-menu-accordion li a {
+  border-bottom: 1px solid #BABABA;
   color: #0b0b0b;
   margin: 0;
   padding: 10px 11px;
-  border-bottom: 1px solid #BABABA;
 }
 
 #statistics-menu-accordion li a:hover,
@@ -27,7 +27,7 @@
   #business-statistic-menu-content li.active a,
   #landsting-statistic-menu-content li.active a,
   #about-statistic-menu-content li.active a {
-    background: #CCCCCC !important;
+    background: #ccc !important;
     color: #0b0b0b !important;
   }
 }
@@ -42,12 +42,12 @@
 i.statistict-left-menu-expand-icon {
   @extend .glyphicon-minus-sign;
 
+  color: #fff;
+  cursor: pointer;
   float: right;
+  font-size: 12px;
   margin-top: 3px;
   margin-right: 0;
-  cursor: pointer;
-  color: #fff;
-  font-size: 12px;
 }
 
 #national-statistic-menu-content i.statistict-left-menu-expand-icon,
@@ -65,8 +65,8 @@ i.statistict-left-menu-expand-icon {
 
 .accordion-toggle.disabled i.statistict-left-menu-expand-icon{
   color: #ccc;
-  opacity: .8;
   cursor: default;
+  opacity: .8;
 }
 
 .mobile-menu-caret {
@@ -78,11 +78,11 @@ i.statistict-left-menu-expand-icon {
 }
 
 .subMenuItem, .subMenuItem a {
-  max-width: 100% !important;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  display: block;
   color: #777;
+  display: block;
+  max-width: 100% !important;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 
 li.subMenuItem.active a {

@@ -1,27 +1,27 @@
-/*Styling for filuppladdning*/
+//Styling for filuppladdning
 .jumbotron.dropzone {
   margin-bottom: 0;
   margin-top: 10px;
+
+  //The postion property of the jumbtron disturbed links in som kind of weird way
+  &:after {
+    position: inherit;
+  }
 }
 
-/* The postion property of the jumbtron disturbed links in som kind of weird way*/
-.dropzone.jumbotron:after {
-  position: inherit;
-}
-
-div.dropzone a{
-  color:dimgrey !important;
+div.dropzone a {
+  color: #696969 !important;
   text-decoration: underline;
 }
 
 .dropzone {
+  background-color: rgb(247, 247, 249);
   border: dashed grey 2px;
   border-radius: 6px;
-  background-color: rgb(247, 247, 249);
 }
 
 .dropzone-drag {
-  background-color: rgb(225,225,232) !important;
+  background-color: rgb(225, 225, 232) !important;
 }
 
 .dropzone-info-area {
@@ -29,10 +29,13 @@ div.dropzone a{
 }
 
 .dropzone-info-area {
-  .glyphicon-plus-sign, .glyphicon-plus-sign-drag, .glyphicon-ok-sign, .glyphicon-warning-sign {
-    font-size: 6em;
-    display: block;
+  .glyphicon-plus-sign,
+  .glyphicon-plus-sign-drag,
+  .glyphicon-ok-sign,
+  .glyphicon-warning-sign {
     color: rgb(191, 191, 207);
+    display: block;
+    font-size: 6em;
   }
 
   .glyphicon-plus-sign-drag {

@@ -1,7 +1,7 @@
 .select-vardgivare {
   .valj-vg-help {
-    padding: 0;
     color: #006280;
+    padding: 0;
 
     .glyphicon {
       font-size: 12px;
@@ -14,14 +14,15 @@
 
   ul {
     list-style-type: none;
-    padding: 10px 0;
     margin-bottom: 5px;
+    padding: 10px 0;
 
     li {
       margin-bottom: 10px;
+
       a {
-        text-decoration: underline;
         font-weight: bold;
+        text-decoration: underline;
       }
     }
   }

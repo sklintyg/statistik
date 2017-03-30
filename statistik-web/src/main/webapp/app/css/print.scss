@@ -18,13 +18,12 @@
 */
 
 @page {
-    size: A4;
-    margin: 30px;
+  margin: 30px;
+  size: A4;
 }
 
 @media print {
-
-    .visible-print-inline-block {
-        display: inline-block !important;
-    }
+  .visible-print-inline-block {
+    display: inline-block !important;
+  }
 }
