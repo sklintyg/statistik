@@ -6,17 +6,18 @@
   }
 
   td.scrollable {
-    white-space: nowrap;
     margin: 0;
+    white-space: nowrap;
   }
 
-  tbody td, tbody tr {
-    height:33px;
+  tbody td,
+  tbody tr {
+    height: 33px;
   }
 
   thead tr td {
-    height: 30px;
     border-bottom-width: 1px !important;
+    height: 30px;
   }
 
   .table-headers {
@@ -25,8 +26,6 @@
   }
 
   .headcol.scrollable {
-    //position: absolute;
-    //left: 0;
     text-align: left !important;
   }
 
@@ -37,27 +36,26 @@
 
   .headcol-name {
     display: inline-block;
+    max-width: 34rem;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 34rem;
   }
 
   div.scrolling {
+    font-size: 12px;
     overflow-x: auto;
-    //margin-left: 34em;
     overflow-y: visible;
     padding-bottom: 1px;
-    font-size: 12px;
   }
 
   .scroll-table-alert {
-    text-align: center;
     box-shadow: 0 0 100px 40px #fff;
     position: relative;
+    text-align: center;
 
     .alert-warning {
-      margin-top: 10px;
       display: inline-block;
+      margin-top: 10px;
     }
   }
 
@@ -65,15 +63,15 @@
     cursor: pointer;
 
     &.sorted-column {
-      border-bottom: 1px solid #000000;
+      border-bottom: 1px solid #000;
 
       .fa-sort:before {
-        content: "\f0de";
+        content: '\f0de';
       }
 
       &.sorted-reverse {
         .fa-sort:before {
-          content: "\f0dd";
+          content: '\f0dd';
         }
       }
     }

@@ -17,129 +17,122 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* Body and structure
--------------------------------------------------- */
+// Body and structure
 
-/* Code in headings */
+// Code in headings
 h3 code {
   font-size: 14px;
   font-weight: normal;
 }
 
 
-
-/* Tweak navbar brand link to be super sleek
--------------------------------------------------- */
+// Tweak navbar brand link to be super sleek
 
 body > .navbar {
   font-size: 13px;
 }
 
-/* Change the docs' brand */
+// Change the docs' brand
 body > .navbar .brand {
-  padding-right: 0;
-  padding-left: 0;
-  margin-left: 20px;
+  color: #000;
   float: right;
   font-weight: bold;
-  color: #000;
-  text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.125);
+  margin-left: 20px;
+  padding-left: 0;
+  padding-right: 0;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .1), 0 0 30px rgba(255, 255, 255, .125);
   transition: all .2s linear;
 }
+
 body > .navbar .brand:hover {
   text-decoration: none;
-  text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .1), 0 0 30px rgba(255, 255, 255, .4);
 }
 
+// Sections
 
-/* Sections
--------------------------------------------------- */
-
-/* padding for in-page bookmarks and fixed navbar */
+// padding for in-page bookmarks and fixed navbar
 section {
   padding-top: 0;
-}
-section > .page-header,
-section > .lead {
-  color: #5a5a5a;
-}
-section > ul li {
-  margin-bottom: 5px;
-}
 
-/* Faded out hr */
-hr.soften {
-  height: 1px;
-  margin: 70px 0;
-  background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
-  border: 0;
-}
-
-
-
-/* Jumbotrons
--------------------------------------------------- */
-
-/* Base class
-------------------------- */
-
-.jumbotron h1 {
-  font-size: 80px;
-  font-weight: bold;
-  letter-spacing: -1px;
-  line-height: 1;
-}
-.jumbotron p {
-  font-size: 24px;
-  font-weight: 300;
-  line-height: 1.25;
-  margin-bottom: 30px;
-}
-
-/* Link styles (used on .masthead-links as well) */
-.jumbotron a {
-  color: #fff;
-  color: rgba(255,255,255,.5);
-  transition: all .2s ease-in-out;
-}
-.jumbotron a:hover {
-  color: #fff;
-  text-shadow: 0 0 10px rgba(255,255,255,.25);
-}
-
-
-/* Pattern overlay
-------------------------- */
-.jumbotron .container {
-  position: relative;
-  z-index: 2;
-}
-.jumbotron:after {
-  content: '';
-  display: block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  opacity: .4;
-}
-@media
-only screen and (-webkit-min-device-pixel-ratio: 2),
-only screen and (   min--moz-device-pixel-ratio: 2),
-only screen and (     -o-min-device-pixel-ratio: 2/1) {
-
-  .jumbotron:after {
-    background-size: 150px 150px;
+  > .page-header,
+  > .lead {
+    color: #5a5a5a;
   }
 
+  > ul li {
+    margin-bottom: 5px;
+  }
 }
 
+// Faded out hr
+hr.soften {
+  border: 0;
+  background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0), rgba(0, 0, 0, .1), rgba(0, 0, 0, 0));
+  height: 1px;
+  margin: 70px 0;
+}
 
-/* Misc
--------------------------------------------------- */
+// Jumbotrons
 
-/* Make tables spaced out a bit more */
+// Base class
+.jumbotron {
+  h1 {
+    font-size: 80px;
+    font-weight: bold;
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  p {
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.25;
+    margin-bottom: 30px;
+  }
+
+  a {
+    color: #fff;
+    color: rgba(255, 255, 255, .5);
+    transition: all .2s ease-in-out;
+
+    &:hover {
+      color: #fff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, .25);
+    }
+  }
+
+  // Pattern overlay
+  .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  &:after {
+    bottom: 0;
+    content: '';
+    display: block;
+    left: 0;
+    opacity: .4;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+@media
+  only screen and (-webkit-min-device-pixel-ratio: 2),
+  only screen and (   min--moz-device-pixel-ratio: 2),
+  only screen and (     -o-min-device-pixel-ratio: 2 / 1) {
+
+    .jumbotron:after {
+      background-size: 150px 150px;
+    }
+}
+
+// Misc
+
+// Make tables spaced out a bit more
 h2 + table,
 h3 + table,
 h4 + table,
@@ -148,29 +141,42 @@ h2 + .row {
 }
 
 
-/* Responsive
--------------------------------------------------- */
-
-/* Desktop large
-------------------------- */
+// Desktop large
 @media (min-width: 1200px) {
-  #national-overview #overview-distribution-of-sick-degree-container { min-height: 230px !important; }
-  #national-overview #overview-distribution-diagnostic-groups-container { min-height: 230px !important; }
-  #overview-distribution-of-sick-degree-container { min-height: 248px !important; }
-  #national-overview #overview-distribution-of-sick-degree-container { min-height: 293px !important; }
-  #overview-distribution-diagnostic-groups-container { min-height: 282px !important;  }
-  #overview-distribution-sick-length-container { min-height: 248px !important; }
+  #national-overview #overview-distribution-of-sick-degree-container {
+    min-height: 230px !important;
+  }
+
+  #national-overview #overview-distribution-diagnostic-groups-container {
+    min-height: 230px !important;
+  }
+
+  #overview-distribution-of-sick-degree-container {
+    min-height: 248px !important;
+  }
+
+  #national-overview #overview-distribution-of-sick-degree-container {
+    min-height: 293px !important;
+  }
+
+  #overview-distribution-diagnostic-groups-container {
+    min-height: 282px !important;
+  }
+
+  #overview-distribution-sick-length-container {
+    min-height: 248px !important;
+  }
 }
 
 @media (max-width: 1200px) {
-	#chart-content .chart-page-chart.span6 {
-  		width: 100%;
-  	}
+  #chart-content .chart-page-chart.span6 {
+    width: 100%;
+  }
 }
-/* Desktop
-------------------------- */
+
+// Desktop
 @media (max-width: 980px) {
-  /* Unfloat brand */
+  // Unfloat brand
   body > .navbar-fixed-top .brand {
     float: left;
     margin-left: 0;
@@ -178,376 +184,428 @@ h2 + .row {
     padding-right: 10px;
   }
 
-  /* Inline-block quick links for more spacing */
+  // Inline-block quick links for more spacing
   .quick-links li {
     display: inline-block;
     margin: 5px;
   }
 }
 
-/* Tablet to desktop
-------------------------- */
+// Tablet to desktop
 @media (min-width: 768px) and (max-width: 979px) {
-  /* Remove any padding from the body */
+  // Remove any padding from the body
   body {
     padding-top: 0;
   }
-  /* Widen masthead and social buttons to fill body padding */
+
+  // Widen masthead and social buttons to fill body padding
   .jumbotron {
-    margin-top: -20px; /* Offset bottom margin on .navbar */
+    margin-top: -20px; // Offset bottom margin on .navbar
   }
+
   #chart-content .chart-page-chart chart-page-chart.span6 {
   	width: 100%;
   }
-  #navigation-container div.row-fluid div.span4 {
-  
-  }
+
   #navigation-container div.row-fluid div.offset4 {
   	margin-left: 10.58011%;
   }
+
   #overview-content table.datatable {
 	width: 100%;
   }
 }
 
-/* Tablet
-------------------------- */
+// Tablet
 @media (max-width: 767px) {
-  /* Remove any padding from the body */
+  // Remove any padding from the body
   body {
     padding-top: 0;
   }
 
-  /* Widen masthead and social buttons to fill body padding */
+  // Widen masthead and social buttons to fill body padding
   .jumbotron {
-    padding: 40px 20px;
-    margin-top:   -20px; /* Offset bottom margin on .navbar */
-    margin-right: -20px;
     margin-left:  -20px;
+    margin-right: -20px;
+    margin-top:   -20px; // Offset bottom margin on .navbar
+    padding: 40px 20px;
   }
 }
 
-/* Landscape phones
-------------------------- */
+// Landscape phones
 @media (max-width: 480px) {
-  /* Remove padding above jumbotron */
+  // Remove padding above jumbotron
   body {
     padding-top: 0;
   }
 
-  /* Change up some type stuff */
+  // Change up some type stuff
   h2 small {
     display: block;
   }
 
-  /* Downsize the jumbotrons */
-  .jumbotron h1 {
-    font-size: 45px;
-  }
-  .jumbotron p,
-  .jumbotron .btn {
-    font-size: 18px;
-  }
-  .jumbotron .btn {
-    display: block;
-    margin: 0 auto;
+  // Downsize the jumbotrons
+  .jumbotron {
+    h1 {
+      font-size: 45px;
+    }
+
+    p,
+    .btn {
+      font-size: 18px;
+    }
+
+    .btn {
+      display: block;
+      margin: 0 auto;
+    }
   }
 
-  /* Do our best to make tables work in narrow viewports */
+  // Do our best to make tables work in narrow viewports
   table code {
     white-space: normal;
-    word-wrap: break-word;
     word-break: break-all;
+    word-wrap: break-word;
   }
 }
 
-/* Large desktop */
+// Large desktop
 @media (min-width: 1200px) {
-	#overview-content table.datatable {
-		width: 61%;
-		border: 1px solid transparent;
-		border-bottom: 1px solid #dddddd;
-	}
+  #overview-content table.datatable {
+    border: 1px solid transparent;
+    border-bottom: 1px solid #ddd;
+    width: 61%;
+  }
 
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
-		margin-left: 26px !important;
-		font-size: 1em !important;
-		margin-top: 5px;
-	}
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl,
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+    font-size: 1em !important;
+    margin-left: 26px !important;
+    margin-top: 5px;
+  }
 
-	.chart-container {
-		width: 38%;
-		margin: 18px 0 0 0;
-		float: left;
-	}
+  .chart-container {
+    float: left;
+    margin: 18px 0 0;
+    width: 38%;
+  }
 
-	#sexProportionChartOld,
-	#sexProportionChartNew {
-		width: 50%;
-	}
+  #sexProportionChartOld,
+  #sexProportionChartNew {
+    width: 50%;
+  }
 
-	.chart-container#sickLeaveLengthChart{
-		width: 100%;
-		margin: 25px 0 0 0;
-	}
+  .chart-container#sickLeaveLengthChart{
+    margin: 25px 0 0;
+    width: 100%;
+  }
 
-	#chart-data-table table.datatable {
-		width: 100%;
-		margin: 0 0 0 0;
-	}
+  #chart-data-table table.datatable {
+    width: 100%;
+    margin: 0;
+  }
 
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
-		padding: 40%;
-		margin: 0;
-		top: 0;
-		right: 0;
-		bottom: 0;
-		left: 0;
-	}
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    padding: 40%;
+    right: 0;
+    top: 0;
+  }
 
-	#overview-content #overview-change-container .overview-change-responsive-circle > div {
-		padding: 26%;
-		margin: 14% 22% 0 22%;
-	}
+  #overview-content #overview-change-container .overview-change-responsive-circle > div {
+    margin: 14% 22% 0;
+    padding: 26%;
+  }
 
-	.overview-chart-info{
-		float: left;
-		width: 30%;
-		margin: 20px 15px 10px 15px;
-	}
+  .overview-chart-info{
+    float: left;
+    margin: 20px 15px 10px;
+    width: 30%;
+  }
 
-	.overview-chart-info#sicklength-chart-info {
-		width: 95%;
-	}
+  .overview-chart-info#sicklength-chart-info {
+    width: 95%;
+  }
 
-	#sicklength-chart-info .overview-chart-info-section {
-		width: 45%;
-	}
-	
+  #sicklength-chart-info .overview-chart-info-section {
+    width: 45%;
+  }
 }
+
 @media (min-width: 979px) and (max-width: 1104px) {
-	#overview-distribution-per-sex-container {
-		padding: 0 3% 0 4%;
-	}
-	#overview-distribution-per-sex-values {
-		top: 60px;
-		font-size: 1.8em;
-	}
+  #overview-distribution-per-sex-container {
+    padding: 0 3% 0 4%;
+  }
+
+  #overview-distribution-per-sex-values {
+    font-size: 1.8em;
+    top: 60px;
+  }
 }
  
-/* Portrait tablet to landscape and desktop */
+// Portrait tablet to landscape and desktop
 @media (min-width: 768px) and (max-width: 979px) { 
-	.row-fluid {
-		width: 100%;
-	}
-	#navigation-container .span2 {
-		width: 25%;
-		float: left;
-		margin-left: 20px;
-	}
-	#navigation-container .span1.offset7 {
-		margin-left: 33.707182% !important;
-	}
-	#wrap {
-		margin-top: 0;
-	}
-	#overview-content, #chart-content {
-		margin: 10px 0 0 0;
-	}
-	#overview-content .span3 {
-		width: 48%;
-	}
-	#business-overview .span3 {
-		width: 100%;
-	}
-	#overview-content .span6 {
-		width: 100%;
-		margin-left: 0;
-	}
-	#overview-content .span9 {
-		width: 100%;
-		margin-left: 0;
-	}
+  .row-fluid {
+    width: 100%;
+  }
 
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
-		position: relative;
-		text-align: center;
-		color: #fff;
-		font-weight: bold;
-		font-size: .7em !important;
-		-webkit-transition: all 0.7s ease;
-		-moz-transition: all 1s ease;
-		cursor: inherit;
-		z-index: 9;
-		margin-left: 35px !important;
-	}
+  #navigation-container .span2 {
+    float: left;
+    margin-left: 20px;
+    width: 25%;
+  }
 
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
-		width: 100%;
-		float: left;
-		position: relative;
-		background-image: url("../assets/images/distribution_per_sex_stat_bg.png");
-		background-repeat: no-repeat;
-		background-position: 50% 25%;
-		background-size: 72%;
-	}
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
-		padding: 25%;
-		margin: 48% 15% 15% 15%;
-	}
-	#business-overview #overview-content #overview-change-container .overview-change-responsive-circle > div {
-		padding: 15%;
-		margin: 3% 9% 0 33%;
-	}
-	#overview-content #overview-change-container .overview-change-responsive-circle > div {
-		padding: 28%;
-		margin: 10% 15% 0 21%;
-	}
-	.chart-container#sickLeaveLengthChart{
-		width: 62%;
-	}
-	.overview-chart-info#sicklength-chart-info {
-		width: 95%;
-	}
-	.overview-chart-info {
-		width: 38%;
-		float: left;
-		margin: 25px 0 0 0;
-	}
-	span.longSickLeavesValue {
-		color: #919191;
-		font-weight: bold;
-		font-size: 2em;
-		margin: 0 10px 10px 0;
-	}
-	#about-content {
-		width: 95%;
-	}
-	
+  #navigation-container .span1.offset7 {
+    margin-left: 33.707182% !important;
+  }
+
+  #wrap {
+    margin-top: 0;
+  }
+
+  #overview-content,
+  #chart-content {
+    margin: 10px 0 0;
+  }
+
+  #business-overview .span3 {
+    width: 100%;
+  }
+
+  #overview-content {
+    .span3 {
+      width: 48%;
+    }
+
+    .span6 {
+      margin-left: 0;
+      width: 100%;
+    }
+
+    .span9 {
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl,
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+    color: #fff;
+    cursor: inherit;
+    font-size: .7em !important;
+    font-weight: bold;
+    margin-left: 35px !important;
+    position: relative;
+    text-align: center;
+    z-index: 9;
+  }
+
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
+    float: left;
+    background-image: url('../assets/images/distribution_per_sex_stat_bg.png');
+    background-position: 50% 25%;
+    background-repeat: no-repeat;
+    background-size: 72%;
+    position: relative;
+    width: 100%;
+  }
+
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
+      padding: 25%;
+      margin: 48% 15% 15% 15%;
+  }
+
+  #business-overview #overview-content #overview-change-container .overview-change-responsive-circle > div {
+    margin: 3% 9% 0 33%;
+    padding: 15%;
+  }
+
+  #overview-content #overview-change-container .overview-change-responsive-circle > div {
+    margin: 10% 15% 0 21%;
+    padding: 28%;
+  }
+
+  .chart-container#sickLeaveLengthChart{
+    width: 62%;
+  }
+
+  .overview-chart-info#sicklength-chart-info {
+    width: 95%;
+  }
+
+  .overview-chart-info {
+    float: left;
+    margin: 25px 0 0;
+    width: 38%;
+  }
+
+  span.longSickLeavesValue {
+    color: #919191;
+    font-size: 2em;
+    font-weight: bold;
+    margin: 0 10px 10px 0;
+  }
+
+  #about-content {
+    width: 95%;
+  }
 }
 
 @media (min-width: 801px) and (max-width: 979px) {
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
-		margin-left: 33px !important;
-		font-size: 1em !important;
-		margin-top: 31px;
-	}
-	table.datatable {
-		width: 100%;
-	}
-	.chart-container#sickLeaveLengthChart{
-		width: 100%;
-		margin: 40px 0 0 0;
-	}
-}
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl,
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+    font-size: 1em !important;
+    margin-left: 33px !important;
+    margin-top: 31px;
+  }
 
+  table.datatable {
+    width: 100%;
+  }
+
+  .chart-container#sickLeaveLengthChart{
+    margin: 40px 0 0 0;
+    width: 100%;
+  }
+}
 
 @media (max-width: 800px) and (min-width: 321px) {
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
-		background-size: 80%;
-		background-position: 50% 35%;
-	}	
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
-		padding: 40%;
-		margin: 24% 13% 0 10%;
-	}
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
-		margin-left: 26px !important;
-		font-size: 1em !important;
-	}
-	.chart-container#sickLeaveLengthChart{
-		width: 100%;
-	}
-	.small-info-box .popover.left.in.fade {
-		left: -50px !important;
-	}
-	.small-info-box.overview-change-box .popover.left.in.fade {
-		top: -46.5px !important;
-	}
-	#business-overview  .small-info-box .popover.left.in.fade {
-		top: -38px !important;
-		left: 236px !important;
-	}
-	#business-login-container {
-		float: none;
-		text-align: center;
-		margin: 0 auto;
-	}
-	#navigation-container div.row-fluid div.span4 {
-		width: 100%;
-	}
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
+    background-position: 50% 35%;
+    background-size: 80%;
+  }
+
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
+    margin: 24% 13% 0 10%;
+    padding: 40%;
+  }
+
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl,
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+    font-size: 1em !important;
+    margin-left: 26px !important;
+  }
+
+  .chart-container#sickLeaveLengthChart{
+    width: 100%;
+  }
+
+  .small-info-box .popover.left.in.fade {
+    left: -50px !important;
+  }
+
+  .small-info-box.overview-change-box .popover.left.in.fade {
+    top: -46.5px !important;
+  }
+
+  #business-overview  .small-info-box .popover.left.in.fade {
+    left: 236px !important;
+    top: -38px !important;
+  }
+
+  #business-login-container {
+    float: none;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  #navigation-container div.row-fluid div.span4 {
+    width: 100%;
+  }
 }
  
-/* Landscape phone to portrait tablet */
+// Landscape phone to portrait tablet
 @media (max-width: 767px) { 
-	#show-hide-filter-btn {
-		margin-right: 30% !important;
-	}
-	.affix{
-		position: relative;
-	}
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
-		background-size: 32%;
-		background-position: 53% 42%;
-	}
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
-		padding: 0;
-		margin: 40% 3% 0 19%;
-	}
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl, 
-	#overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
-		font-size: 1em !important;
-		margin-top: 0;
-		margin-left: 37px !important;
-		display: initial;
-		position: relative;
-	}
-	#overview-content #overview-distribution-per-sex-container p {
-		top: 66px !important;
-	}
-	#overview-content #overview-change-container .overview-change-responsive-circle > div {
-		padding: 13%;
-		margin: 3% 0 0 36%;
-	}
+  #show-hide-filter-btn {
+    margin-right: 30% !important;
+  }
 
-	#navigation-container .span2 {
-		width: 32%;
-		float: left;
-		margin-left: 20px;
-	}
-	.chart-container {
-		width: 100%;
-		float: left;
-	}
-	table.datatable {
-		width: 100%;
-	}
-	#overview-content table.datatable {
-		width: 100%;
-	}
-	.chart-container#sickLeaveLengthChart{
-		width: 100%;
-		margin: 45px 0 0 0;
-	}
-	.overview-chart-info {
-		width: 38%;
-		float: left;
-		margin: 25px 0 0 0;
-	}
-	span.longSickLeavesValue {
-		color: #919191;
-		font-weight: bold;
-		font-size: 2em;
-		margin: 0;
-	}
-	#about-content {
-		width: 100%;
-	}
-	.navbar .span2 { width: 100% !important; }
-	.navbar .span3 { width: 50% !important; }
-	.navbar .span4 { width: 100% !important; }
+  .affix{
+    position: relative;
+  }
+
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive {
+    background-position: 53% 42%;
+    background-size: 32%;
+  }
+
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div {
+    margin: 40% 3% 0 19%;
+    padding: 0;
+  }
+
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-female-lbl,
+  #overview-content #overview-distribution-per-sex-container .overview-sex-distribution-responsive > div > div > div > div #overview-distribution-male-lbl {
+    display: initial;
+    font-size: 1em !important;
+    margin-left: 37px !important;
+    margin-top: 0;
+    position: relative;
+  }
+
+  #overview-content #overview-distribution-per-sex-container p {
+    top: 66px !important;
+  }
+
+  #overview-content #overview-change-container .overview-change-responsive-circle > div {
+    margin: 3% 0 0 36%;
+    padding: 13%;
+  }
+
+  #navigation-container .span2 {
+    float: left;
+    margin-left: 20px;
+    width: 32%;
+  }
+
+  .chart-container {
+    float: left;
+    width: 100%;
+  }
+
+  table.datatable {
+    width: 100%;
+  }
+
+  #overview-content table.datatable {
+    width: 100%;
+  }
+
+  .chart-container#sickLeaveLengthChart{
+    margin: 45px 0 0;
+    width: 100%;
+  }
+
+  .overview-chart-info {
+    float: left;
+    margin: 25px 0 0;
+    width: 38%;
+  }
+
+  span.longSickLeavesValue {
+    color: #919191;
+    font-size: 2em;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  #about-content {
+    width: 100%;
+  }
+
+  .navbar {
+    .span2 {
+      width: 100% !important;
+    }
+
+    .span3 {
+      width: 50% !important;
+    }
+
+    .span4 {
+      width: 100% !important;
+    }
+  }
 }

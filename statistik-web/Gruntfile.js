@@ -12,7 +12,8 @@ module.exports = function(grunt) {
         ngtemplates: 'grunt-angular-templates',
         protractor: 'grunt-protractor-runner',
         injector: 'grunt-injector',
-        configureProxies: 'grunt-connect-proxy'
+        configureProxies: 'grunt-connect-proxy',
+        sasslint: 'grunt-sass-lint'
     });
 
     var serveStatic = require('serve-static');
@@ -105,7 +106,7 @@ module.exports = function(grunt) {
             sass: {
                 files: [
                     '<%= config.client %>/{app,components}/**/*.{scss,sass}'],
-                tasks: ['sass', 'autoprefixer']
+                tasks: ['sass', 'postcss']
             },
             gruntfile: {
                 files: ['Gruntfile.js']
@@ -162,19 +163,16 @@ module.exports = function(grunt) {
         },
 
         // Add vendor prefixed styles
-        autoprefixer: {
+        postcss: {
             options: {
-                browsers: ['last 2 versions', 'ie 9']
+                map: false,
+                processors: [
+                    require('autoprefixer')({browsers: ['last 2 versions', 'ie 9']}), // add vendor prefixes
+                    require('cssnano')() // minify the result
+                ]
             },
             dist: {
-                files: [
-                    {
-                        expand: true,
-                        cwd: '<%= config.client %>/',
-                        src: '{,*/}*.css',
-                        dest: '<%= config.client %>/'
-                    }
-                ]
+                src: '<%= config.client %>/app/*.css'
             }
         },
 
@@ -384,6 +382,13 @@ module.exports = function(grunt) {
             }
         },
 
+        sasslint: {
+            options: {
+                //configFile: 'config/.sass-lint.yml' //For now we use the .sass-lint.yml that is packaged with sass-lint
+            },
+            target: ['<%= config.client %>/{app,components}/**/*.scss']
+        },
+
         injector: {
             options: {
                 lineEnding: grunt.util.linefeed
@@ -482,9 +487,9 @@ module.exports = function(grunt) {
         grunt.task.run([
             'injector:sass',
             'sass',
+            'postcss',
             'injector',
             'wiredep',
-            'autoprefixer',
             'configureProxies:dev',
             'connect:dev',
             'wait',
@@ -499,7 +504,7 @@ module.exports = function(grunt) {
                 'injector:sass',
                 'sass',
                 'injector',
-                'autoprefixer',
+                'postcss',
                 'karma'
             ]);
         }
@@ -527,16 +532,15 @@ module.exports = function(grunt) {
         'copy:dist',
         'injector:sass',
         'sass',
+        'postcss',
         'injector:scripts',
         'injector:css',
         'wiredep',
         'useminPrepare',
-        'autoprefixer',
         'karma',
         'ngtemplates',
         'concat',
         'ngAnnotate',
-        'cssmin',
         'uglify',
         'filerev',
         'usemin'

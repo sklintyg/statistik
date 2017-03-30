@@ -1,8 +1,8 @@
 stats-header {
   .header {
     background-color: #212633;
-    padding: 5px 0 10px 0; /* don't change this setup. it's needed for IE8 flow on smaller screens to work */
     color: #fff;
+    padding: 5px 0 10px; // don't change this setup. it's needed for IE8 flow on smaller screens to work
   }
 
   .header-logo {
@@ -10,22 +10,22 @@ stats-header {
   }
 
   .headerbox-logo {
-    padding: 3px 20px 0 30px;
     border-right: 1px solid #595c66;
     display: block;
     margin-top: 10px;
+    padding: 3px 20px 0 30px;
   }
 
   .headerbox-date {
-    padding: 15px 0 0 30px;
-    line-height: 17px;
     display: block;
+    line-height: 17px;
+    padding: 15px 0 0 30px;
   }
 
   .headerbox-user {
     font-size: 13px;
     line-height: 16px;
-    padding: 13px 0 0 0;
+    padding: 13px 0 0;
   }
 
   .headerbox-avatar {
@@ -33,9 +33,9 @@ stats-header {
   }
 
   .headerbox-user-profile {
-    padding-right: 15px;
     font-size: 13px;
     line-height: 18px;
+    padding-right: 15px;
     text-align: left;
   }
 

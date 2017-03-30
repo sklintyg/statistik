@@ -1,26 +1,26 @@
 .stat-spinner {
   .css-spinner {
-    width: 32px;
-    height: 32px;
-    margin: 20px auto;
-    background-image: url("../assets/images/ajax-loader.gif");
-    animation-name: rotate;
     animation-duration: 1.5s;
     animation-iteration-count: infinite;
+    animation-name: rotate;
     animation-timing-function: linear;
+    background-image: url('../assets/images/ajax-loader.gif');
+    height: 32px;
+    margin: 20px auto;
+    width: 32px;
   }
 
   .spinner {
-    position: absolute;
-    width: 100%;
     left: 0;
-    margin: 5% 0 0 0;
+    margin: 5% 0 0;
+    position: absolute;
     text-align: center;
+    width: 100%;
     z-index: 1;
-  }
 
-  .spinner #loading-message {
-    margin-top: 10px;
-    text-align: center;
+    #loading-message {
+      margin-top: 10px;
+      text-align: center;
+    }
   }
 }

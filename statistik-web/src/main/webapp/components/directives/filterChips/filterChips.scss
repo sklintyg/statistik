@@ -1,35 +1,37 @@
 filter-chips {
   .filter-chip {
-    padding: 5px 10px;
     background: #e0e0e0;
-    display: inline-block;
-    border-radius: 40px;
     border: 1px solid #e0e0e0;
+    border-radius: 40px;
+    display: inline-block;
     margin-right: 10px;
     margin-top: 10px;
     max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    position: relative;
-    vertical-align: top;
-    text-align: left;
     min-width: 85px;
+    overflow: hidden;
+    padding: 5px 10px;
+    position: relative;
+    text-align: left;
+    text-overflow: ellipsis;
+    vertical-align: top;
+    white-space: nowrap;
 
     .filter-hover {
-      position: absolute;
-      display: none;
       background: #e0e0e0;
-      padding: 5px 10px;
-      top: 0;
+      display: none;
       left: 0;
-      width: 100%;
       overflow: hidden;
+      padding: 5px 10px;
+      position: absolute;
+      text-overflow: ellipsis;
+      top: 0;
       white-space: nowrap;
-      text-overflow: ellipsis
+      width: 100%;
     }
 
-    &:hover, &:active, &:focus {
+    &:hover,
+    &:active,
+    &:focus {
       border: dotted #646565 1px;
     }
 
@@ -45,14 +47,16 @@ filter-chips {
       }
     }
 
-    &.inactive, &.removed {
+    &.inactive,
+    &.removed {
       background: none;
 
       .default-text {
         color: #7e7e7f;
       }
 
-      .remove-filter, .undo-remove-filter {
+      .remove-filter,
+      .undo-remove-filter {
         background: #f7f7f9;
       }
     }
@@ -73,9 +77,9 @@ filter-chips {
       }
     }
 
-    &.ng-leave{
-      transition: 0.3s;
+    &.ng-leave {
       opacity: 1;
+      transition: .3s;
 
       &.ng-leave-active {
         opacity: 0;
@@ -84,8 +88,8 @@ filter-chips {
   }
 
   .show-all-filter {
-    vertical-align: top;
     margin-top: 8px;
     padding-left: 0;
+    vertical-align: top;
   }
 }
