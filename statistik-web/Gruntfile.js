@@ -351,9 +351,9 @@ module.exports = function(grunt) {
             },
             styles: {
                 expand: true,
-                cwd: '<%= config.client %>',
-                dest: '<%= config.tmp %>/',
-                src: ['{app,components}/**/*.css']
+                cwd: '<%= config.tmp %>/concat/app',
+                dest: '<%= config.dist %>/app',
+                src: ['*.css']
             }
         },
 
@@ -520,6 +520,7 @@ module.exports = function(grunt) {
         'jshint',
         'injector:sass',
         'sass',
+        'postcss',
         'injector:scripts',
         'injector:css',
         'wiredep',
@@ -540,6 +541,7 @@ module.exports = function(grunt) {
         'karma',
         'ngtemplates',
         'concat',
+        'copy:styles',
         'ngAnnotate',
         'uglify',
         'filerev',
