@@ -167,8 +167,7 @@ module.exports = function(grunt) {
             options: {
                 map: false,
                 processors: [
-                    require('autoprefixer')({browsers: ['last 2 versions', 'ie 9']}), // add vendor prefixes
-                    require('cssnano')() // minify the result
+                    require('autoprefixer')({browsers: ['last 2 versions', 'ie 9']}) // add vendor prefixes
                 ]
             },
             dist: {
@@ -348,12 +347,6 @@ module.exports = function(grunt) {
                         src: ['generated/*']
                     }
                 ]
-            },
-            styles: {
-                expand: true,
-                cwd: '<%= config.tmp %>/concat/app',
-                dest: '<%= config.dist %>/app',
-                src: ['*.css']
             }
         },
 
@@ -541,8 +534,8 @@ module.exports = function(grunt) {
         'karma',
         'ngtemplates',
         'concat',
-        'copy:styles',
         'ngAnnotate',
+        'cssmin',
         'uglify',
         'filerev',
         'usemin'
