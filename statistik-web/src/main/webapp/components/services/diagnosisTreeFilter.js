@@ -26,6 +26,7 @@ angular.module('StatisticsApp')
             var diagnosisTreeFilter = {};
 
             diagnosisTreeFilter.diagnosisOptionsTree = {subs: []};
+            diagnosisTreeFilter.showCodeLevel = false;
 
             diagnosisTreeFilter.selectAll = function (item) {
                 item.allSelected = true;
@@ -71,7 +72,7 @@ angular.module('StatisticsApp')
             };
 
             //This could be a common utility method
-            diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal = function(diagnoses) {
+            diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal = function(diagnoses, showCodeLevel) {
                 _.each(diagnoses, function (kapitel) {
                     kapitel.typ = 'kapitel';
                     kapitel.subs = kapitel.subItems;
@@ -82,6 +83,14 @@ angular.module('StatisticsApp')
                         avsnitt.name = avsnitt.id + ' ' + avsnitt.name;
                         _.each(avsnitt.subItems, function (kategori) {
                             kategori.name = kategori.id + ' ' + kategori.name;
+
+                            if (showCodeLevel) {
+                                kategori.typ = 'kategori';
+                                kategori.subs = kategori.subItems;
+                                _.each(kategori.subItems, function(kod) {
+                                    kod.name = kod.id + ' ' + kod.name;
+                                });
+                            }
                         });
                     });
                 });
@@ -125,10 +134,10 @@ angular.module('StatisticsApp')
                 return diagnosisTreeFilter.diagnosisOptionsTree.subs.length > 0;
             };
 
-            var firstTimeInitiationOfDiagnosisTree = function firstTimeInitiation(routeParams) {
+            var firstTimeInitiationOfDiagnosisTree = function firstTimeInitiation(routeParams, showCodeLevel) {
                 //Get icd10 structure and populate the diagnosisOptionsTree
                 statisticsData.getIcd10Structure(function (diagnosisTree) {
-                    diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal(diagnosisTree);
+                    diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal(diagnosisTree, showCodeLevel);
                     diagnosisTreeFilter.diagnosisOptionsTree = {subs: diagnosisTree};
 
                     //If we do have a filter hash already then we very much want to apply it.
@@ -144,15 +153,17 @@ angular.module('StatisticsApp')
              *   This initiates or resets the treemultiselect with diagnoses
              *    every time it is needed.
              */
-            diagnosisTreeFilter.setup = function(routeParams) {
-                if (!hasDiagnosisOptionsTreeAnySubs()) {
-                    firstTimeInitiationOfDiagnosisTree(routeParams);
+            diagnosisTreeFilter.setup = function(routeParams, showCodeLevel) {
+                if (!hasDiagnosisOptionsTreeAnySubs() || diagnosisTreeFilter.showCodeLevel !== showCodeLevel) {
+                    firstTimeInitiationOfDiagnosisTree(routeParams, showCodeLevel);
                 } else if(hasDiagnosisOptionsTreeAnySubs() && !diagnosHashExists(routeParams)) {
                     diagnosisTreeFilter.resetSelections();
                 } else if(hasDiagnosisOptionsTreeAnySubs() && diagnosHashExists(routeParams)) {
                     diagnosisTreeFilter.resetSelections();
                     populateTreeMultiSelectWithPrefilteredData(routeParams);
                 }
+
+                diagnosisTreeFilter.showCodeLevel = showCodeLevel;
             };
 
             return diagnosisTreeFilter;

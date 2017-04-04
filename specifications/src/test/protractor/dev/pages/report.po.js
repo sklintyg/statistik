@@ -1,4 +1,4 @@
-/* globals browser */
+/* globals Promise */
 
 'use strict';
 
@@ -13,6 +13,16 @@ var ReportPage = function() {
     this.chartlegendsElem = element(by.id('chartlegends'));
     this.chartlegendLabels = element.all(by.css('#chartlegends #legend-label .legend-name'));
 
+    this.compareDiagnosisContainer = element(by.css('.compare-diagnosis'));
+    this.compareDiagnosisLevelCategory = this.compareDiagnosisContainer.element(by.id('comparediagnoses-level-category'));
+    this.compareDiagnosisLevelCode = this.compareDiagnosisContainer.element(by.id('comparediagnoses-level-code'));
+    this.compareDiagnosisBtn = this.compareDiagnosisContainer.element(by.css('button[data-toggle="modal"]'));
+    this.compareDiagnosisCloseBtn = this.compareDiagnosisContainer.element(by.css('button[data-dismiss="modal"]'));
+
+    this.compareDiagnosisDepthList = function(depth) {
+        return this.compareDiagnosisContainer.all(by.css('.depth' + depth));
+    };
+
     this.isAtPage = function(key) {
         expect(this.headerTextElem.isDisplayed()).toBeTruthy('Titel-text saknas för rapporten');
 
@@ -26,7 +36,7 @@ var ReportPage = function() {
         var chart2 = pohelper.isElementPresentAndDisplayed(this.chart2Elem);
         return Promise.all([chart1, chart2]).then(function(results) {
             return results.reduce(function(result, sum) {
-                return sum += result ? 1 : 0
+                return sum + (result ? 1 : 0);
             }, 0);
         });
     };
@@ -55,6 +65,10 @@ var ReportPage = function() {
                 });
             });
         });*/
+    };
+
+    this.getTableRowsLabel = function() {
+        return element.all(by.css('#chart-data-table .datatable tbody .headcol'));
     };
 };
 

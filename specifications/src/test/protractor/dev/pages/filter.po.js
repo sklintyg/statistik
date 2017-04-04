@@ -17,8 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* globals browser */
-
 'use strict';
 
 var Filter = function() {
@@ -42,7 +40,7 @@ var Filter = function() {
     this.dateResetBtn = this.container.element(by.id('filterDateResetBtn'));
 
     this.enhetBtn = this.container.element(by.css('.select-business button[data-toggle="modal"]'));
-    this.enhetDepth1List = this.container.all(by.css('.select-business .depth1 '));
+    this.enhetDepth1List = this.container.all(by.css('.select-business .depth1'));
     this.enhetDepth2List = this.container.all(by.css('.select-business .depth2'));
     this.enhetCloseBtn = this.container.element(by.css('.select-business button[data-dismiss="modal"]'));
 
