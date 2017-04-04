@@ -38,7 +38,7 @@ module.exports = function(config) {
             'src/main/webapp/app/**/*.js',
             'src/main/webapp/components/**/*.js',
             'src/main/webapp/app/**/*.html',
-            'src/main/webapp/components/**/*.html',
+            'src/main/webapp/components/**/*.html'
         ],
 
         // list of files / patterns to exclude
@@ -47,8 +47,13 @@ module.exports = function(config) {
         ],
 
         preprocessors: {
-            '**/*.html': ['ng-html2js'],
-            '**/*.js': ['coverage']
+            'src/main/webapp/!(bower_components)/**/*.html': ['ng-html2js'],
+            'src/main/webapp/!(bower_components)/**/!(*spec).js': ['coverage']
+        },
+
+        coverageReporter: {
+            type : 'html',
+            dir : 'build/karma/coverage/'
         },
 
         ngHtml2JsPreprocessor: {

@@ -133,9 +133,31 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             }
         };
 
+        this.getCompareDiagnosisPath = function(selectionHash) {
+            return '/verksamhet/jamforDiagnoser/' + selectionHash;
+        };
+
         this.setupDiagnosisSelector = function(diagnosisTreeFilter, $routeParams, $scope, messageService, $timeout, statisticsData, $location) {
+            $scope.diagnoses = {
+                code: true,
+                category: false,
+                showCodeLevel: parseInt($location.search().codelevel, 10) === 1
+            };
+
+            $scope.$watch('diagnoses.showCodeLevel', function(newValue, oldValue) {
+                if (newValue === oldValue) {
+                    return;
+                }
+
+                $timeout(function() {
+                    var newPath = that.getCompareDiagnosisPath('-');
+                    $location.search('codelevel', newValue ? 1 : 0);
+                    $location.path(newPath);
+                });
+            });
+
             //Initiate the diagnosisTree if we need to.
-            diagnosisTreeFilter.setup($routeParams);
+            diagnosisTreeFilter.setup($routeParams, $scope.diagnoses.showCodeLevel);
             $scope.diagnosisTreeFilter = diagnosisTreeFilter;
 
             $scope.diagnosisSelectorData = {
@@ -171,7 +193,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
             var success = function (selectionHash) {
                 var path = $location.path();
-                var newPath = path.replace(/\/[^\/]+$/gm, '/' + selectionHash);
+                var newPath = that.getCompareDiagnosisPath(selectionHash);
 
                 if (path === newPath) {
                     $timeout(function () {
