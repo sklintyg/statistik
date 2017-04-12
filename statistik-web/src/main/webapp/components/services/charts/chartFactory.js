@@ -354,6 +354,11 @@ angular.module('StatisticsApp').factory('chartFactory',
                 femaleColor = COLORS.female;
 
             _.each(rawData, function (data) {
+                // continue if color is set
+                if (data.color) {
+                    return;
+                }
+
                 if (data.sex === 'MALE') {
                     data.color = maleColor[maleColorSelector++];
                 } else if (data.sex === 'FEMALE') {

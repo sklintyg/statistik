@@ -140,18 +140,18 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             chartFactory.addColor(result.casesPerMonth.alteration);
             perMonthAlterationChart = paintPerMonthAlternationChart(result.casesPerMonth.alteration);
 
+            chartFactory.addColor(result.diagnosisGroups);
             var diagnosisDonutData = extractDonutData(result.diagnosisGroups);
-            chartFactory.addColor(diagnosisDonutData);
             diagnosisDonutChart = paintDonutChart('diagnosisChart', diagnosisDonutData);
             $scope.diagnosisGroups = result.diagnosisGroups;
 
+            chartFactory.addColor(result.ageGroups);
             var ageGroupsDonutData = extractDonutData(result.ageGroups);
-            chartFactory.addColor(ageGroupsDonutData);
             ageDonutChart = paintDonutChart('ageChart', ageGroupsDonutData);
             $scope.ageGroups = result.ageGroups;
 
+            chartFactory.addColor(result.degreeOfSickLeaveGroups);
             var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
-            chartFactory.addColor(degreeOfSickLeaveDonutData);
             degreeOfSickLeaveChart = paintDonutChart('degreeOfSickLeaveChart', degreeOfSickLeaveDonutData, null);
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
@@ -276,8 +276,6 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         }
 
         function extractDonutData(rawData) {
-            chartFactory.addColor(rawData);
-
             return _.map(rawData, function(data) {
                 return {
                     name: ControllerCommons.htmlsafe(data.name),
