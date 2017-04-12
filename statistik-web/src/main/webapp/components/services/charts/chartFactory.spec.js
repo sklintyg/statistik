@@ -124,6 +124,19 @@ describe('Test of common print services', function() {
             expect(list[2].color).toBe('#5D5D5D');
         });
 
+        it('use color on data', function () {
+            //given
+            var list = [{id: 1, sex: 'MALE', color: '#123123'}, {id: 2, sex: 'FEMALE', color: '#234234'}, {id: 2, sex: null, color: '#567567'}];
+
+            //when
+            chartFactory.addColor(list);
+
+            //then
+            expect(list[0].color).toBe('#123123');
+            expect(list[1].color).toBe('#234234');
+            expect(list[2].color).toBe('#567567');
+        });
+
     });
 
     describe('Generating filename for chart image export', function () {
