@@ -1873,6 +1873,22 @@ input[type="checkbox"] {
   height: 240px;
 }
 
+.compare-diagnosis {
+  .radio {
+    margin-top: 0;
+
+    + .radio {
+      margin-top: -5px;
+      margin-bottom: 15px;
+    }
+
+    .radio-text {
+      padding-top: 2px;
+      display: inline-block;
+    }
+  }
+}
+
 // Component styles are injected through grunt
 // injector
 @import 'css/filter.scss';

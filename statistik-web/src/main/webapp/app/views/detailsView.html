@@ -21,17 +21,17 @@
     <!-- Start detailsOptions if any -->
     <div data-ng-if="showDiagnosisSelector" class="top-20px-margin compare-diagnosis">
 
-      <b><span message key="comparediagnoses.choose-level"></span></b><br>
+      <label class="dropdown-label" message key="comparediagnoses.choose-level"></label><br>
       <div class="radio">
         <label>
           <input id="comparediagnoses-level-category" type="radio" data-ng-model="diagnoses.showCodeLevel" data-ng-value="diagnoses.category" />
-          <span message key="comparediagnoses.level.category"></span>
+          <span class="radio-text" message key="comparediagnoses.level.category"></span>
         </label>
       </div>
       <div class="radio">
         <label>
           <input id="comparediagnoses-level-code" type="radio" data-ng-model="diagnoses.showCodeLevel" data-ng-value="diagnoses.code" />
-          <span message key="comparediagnoses.level.code"></span>
+          <span class="radio-text" message key="comparediagnoses.level.code"></span>
         </label>
       </div>
 
