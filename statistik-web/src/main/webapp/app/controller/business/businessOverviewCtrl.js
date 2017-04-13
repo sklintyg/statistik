@@ -22,7 +22,7 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl',
 
     /** @ngInject */
 function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, chartFactory,
-    messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _) {
+    messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _, COLORS) {
     'use strict';
 
     var perMonthAlterationChart = {}, newSexProportionChart = {}, oldSexProportionChart = {},
@@ -64,7 +64,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     };
 
     var paintPerMonthAlternationChart = function (alteration) {
-        var chartOptions, color = '#57843B';
+        var chartOptions, color = COLORS.overview;
 
         chartOptions = chartFactory.getHighChartConfigBase([], [
             {
@@ -227,7 +227,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     }
 
     function paintBarChart(containerId, chartData) {
-        var color = '#57843B', chartOptions;
+        var color = COLORS.overview, chartOptions;
 
         var series = [
             {

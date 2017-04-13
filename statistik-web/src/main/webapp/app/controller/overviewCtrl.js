@@ -22,7 +22,7 @@
 angular.module('StatisticsApp').controller('overviewCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, COUNTY_COORDS, chartFactory,
-        messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _) {
+        messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _, COLORS) {
         'use strict';
 
         var self = this;
@@ -98,7 +98,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             };
             chartOptions.tooltip = { enabled: false };
             chartOptions.plotOptions.pie = {
-                colors: [ '#57843B' ],
+                colors: [ COLORS.overview ],
                 animation: false,
                 borderWidth: 0,
                 dataLabels: { enabled: false },
@@ -180,7 +180,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                     data: _.map(chartData, function (e) {
                         return e.quantity;
                     }),
-                    color: '#57843B'
+                    color: COLORS.overview
                 }
             ];
             var categories = _.map(chartData, function (e) {
