@@ -22,7 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.PartKod;
-import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
+import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
 
 import javax.xml.bind.JAXBException;
 
@@ -33,7 +33,7 @@ import static org.junit.Assert.assertEquals;
 public class SendMessageToCareHelperTest {
 
     private static final String messageXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            "<SendMessageToCare xmlns=\"urn:riv:clinicalprocess:healthcond:certificate:SendMessageToCareResponder:1\" xmlns:urn2=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">\n" +
+            "<SendMessageToCare xmlns=\"urn:riv:clinicalprocess:healthcond:certificate:SendMessageToCareResponder:2\" xmlns:urn2=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">\n" +
             "  <meddelande-id>fd59cab6-942c-4b5d-a932-ea5117783afa</meddelande-id>\n" +
             "  <!--Optional:-->\n" +
             "  <referens-id>ref1</referens-id>\n" +

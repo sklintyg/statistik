@@ -153,10 +153,6 @@
     <svar id="37">
       <delsvar id="37.1">Överskrider inte FMB</delsvar>
     </svar>
-    <svar id="33">
-      <delsvar id="33.1">true</delsvar>
-      <delsvar id="33.2">Kan bara jobba på nätterna.</delsvar>
-    </svar>
     <svar id="34">
       <delsvar id="34.1">true</delsvar>
     </svar>

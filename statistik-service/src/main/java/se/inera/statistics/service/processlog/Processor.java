@@ -27,7 +27,7 @@ import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.WidelineManager;
 import se.inera.statistics.service.warehouse.message.MessageWidelineManager;
-import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
+import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
 
 /**
  * Process and save information to database for intyg and messages, i.e. extract and save information

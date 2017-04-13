@@ -32,7 +32,7 @@ import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.schemavalidation.SchemaValidator;
 import se.inera.statistics.service.schemavalidation.ValidateXmlResponse;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
 import java.util.List;
 
@@ -118,7 +118,8 @@ public class LogConsumerImpl implements LogConsumer {
         try {
             final RegisterCertificateType rc = registerCertificateHelper.unmarshalRegisterCertificateXml(event.getData());
             final String intygTyp = rc.getIntyg().getTyp().getCode().toUpperCase().trim();
-            final ValidateXmlResponse validation = schemaValidator.validate(intygTyp, event.getData());
+            final String data = RegisterCertificateHelper.convertToV3(event.getData());
+            final ValidateXmlResponse validation = schemaValidator.validate(intygTyp, data);
             if (!validation.isValid()) {
                 LOG.warn("Register certificate validation failed: " + validation.getValidationErrors());
                 return false;

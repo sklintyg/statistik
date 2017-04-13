@@ -19,7 +19,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-<urn1:SendMessageToCare xmlns:urn1="urn:riv:clinicalprocess:healthcond:certificate:SendMessageToCareResponder:1" xmlns:urn2="urn:riv:clinicalprocess:healthcond:certificate:types:2">
+<urn1:SendMessageToCare xmlns:urn1="urn:riv:clinicalprocess:healthcond:certificate:SendMessageToCareResponder:2" xmlns:urn2="urn:riv:clinicalprocess:healthcond:certificate:types:3">
   <urn1:meddelande-id>#MEDDELANDE_ID#</urn1:meddelande-id>
   <!--Optional:-->
   <urn1:referens-id>ref1</urn1:referens-id>

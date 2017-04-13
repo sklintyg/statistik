@@ -27,7 +27,7 @@ import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.processlog.message.ProcessMessageLog;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
-import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
+import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
