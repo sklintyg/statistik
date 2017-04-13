@@ -31,6 +31,7 @@ import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SickLeaveDegree;
 
@@ -157,6 +158,7 @@ public class NationellOverviewData {
 
         List<SimpleKonDataRow> previousDataRows = previousData.getRows();
         List<SimpleKonDataRow> currentDataRows = currentData.getRows();
+        Map<String, String> colors = AgeGroup.getColors();
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
         for (int i = 0; i < currentDataRows.size(); i++) {
@@ -165,7 +167,9 @@ public class NationellOverviewData {
             int previous = previousRow.getFemale() + previousRow.getMale();
             int current = currentRow.getFemale() + currentRow.getMale();
             final String rowName = currentRow.getName();
-            final OverviewChartRowExtended row = new OverviewChartRowExtended(rowName, current, current - previous, null);
+            String color = colors.get(rowName);
+
+            final OverviewChartRowExtended row = new OverviewChartRowExtended(rowName, current, current - previous, color);
             result.add(row);
         }
 

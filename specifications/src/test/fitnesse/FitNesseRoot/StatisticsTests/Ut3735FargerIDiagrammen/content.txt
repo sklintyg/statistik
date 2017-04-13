@@ -11,35 +11,68 @@ Testar INTYG-3735
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | arbetsförmåga | start2     | slut2      | arbetsförmåga2 | enhet  |
 | 19790407-0220 | A00        | 2013-09-01 | 2013-10-15 | 0             | 2013-10-16 | 2013-11-28 | 50             | enhet1 |
+| 19870407-0220 | A00        | 2013-09-01 | 2013-10-15 | 0             | 2013-10-16 | 2013-11-28 | 50             | enhet1 |
+| 19890407-0220 | A00        | 2013-09-01 | 2013-10-15 | 0             | 2013-10-16 | 2013-11-28 | 50             | enhet1 |
+| 19990407-0220 | A00        | 2013-09-01 | 2013-10-15 | 0             | 2013-10-16 | 2013-11-28 | 50             | enhet1 |
 
 !3 Då gäller:
 
 Nationell:
 | Sjukfall i rapporten sjukskrivningsgrad diagram |
-| år   | månad | sjukskrivningsgrad   | män? | kvinnor? | färg? |
-| 2013 | sep   | 100 %                | 0    | 1        | #799745 |
-| 2013 | nov   | 75 %                 | 0    | 0        | #FFBA3E |
-| 2013 | nov   | 50 %                 | 0    | 1        | #032C53 |
-| 2013 | nov   | 25 %                 | 0    | 0        | #E11964 |
+| år   | månad | sjukskrivningsgrad   | färg? |
+| 2013 | sep   | 100 %                | #799745 |
+| 2013 | nov   | 75 %                 | #FFBA3E |
+| 2013 | nov   | 50 %                 | #032C53 |
+| 2013 | nov   | 25 %                 | #E11964 |
 
 | Sjukfall i oversikt sjukskrivningsgrad |
-| grupp                                       | antal?    | förändring? | färg? |
-| 100                                        | 0         | 0       | #799745 |
-| 75                                         | 0         | 0       | #FFBA3E |
-| 50                                         | 0         | 0       | #032C53 |
-| 25                                         | 0         | 0       | #E11964 |
+| grupp    | färg? |
+| 100      | #799745 |
+| 75       | #FFBA3E |
+| 50       | #032C53 |
+| 25       | #E11964 |
+
+| Sjukfall i oversikt aldersgrupp |
+| grupp                   | färg? |
+| 31-35 år               | #799745 |
+| 26-30 år               | #FFBA3E |
+| 21-25 år               | #032C53 |
+| Under 21 år            | #E11964 |
+| Andra åldersgrupper    | #5D5D5D |
 
 Inloggad:
-| Sjukfall i rapporten sjukskrivningsgrad diagram |
-| inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? | färg? |
-| user1        | 2013 | sep   | 100 %                | 0    | 1        | #799745 |
-| user1        | 2013 | nov   | 75 %                 | 0    | 0        | #FFBA3E |
-| user1        | 2013 | nov   | 50 %                 | 0    | 1        | #032C53 |
-| user1        | 2013 | nov   | 25 %                 | 0    | 0        | #E11964 |
-
 | Sjukfall i oversikt sjukskrivningsgrad |
-|inloggad som | grupp                                       | antal?    | förändring? | färg? |
-| user1        | 100                                        | 0         | 0       | #799745 |
-| user1        | 75                                         | 0         | 0       | #FFBA3E |
-| user1        | 50                                         | 0         | 0       | #032C53 |
-| user1        | 25                                         | 0         | 0       | #E11964 |
+|inloggad som | grupp    | färg? |
+| user1        | 100     | #799745 |
+| user1        | 75      | #FFBA3E |
+| user1        | 50      | #032C53 |
+| user1        | 25      | #E11964 |
+
+| Sjukfall i oversikt aldersgrupp |
+|inloggad som | grupp                   | färg? |
+| user1        | 31-35 år               | #799745 |
+| user1        | 26-30 år               | #FFBA3E |
+| user1        | 21-25 år               | #032C53 |
+| user1        | Under 21 år            | #E11964 |
+| user1        | Andra åldersgrupper    | #5D5D5D |
+
+| Sjukfall i rapporten sjukskrivningsgrad diagram |
+| inloggad som | år   | månad | sjukskrivningsgrad   | färg? |
+| user1        | 2013 | sep   | 100 %                | #799745 |
+| user1        | 2013 | nov   | 75 %                 | #FFBA3E |
+| user1        | 2013 | nov   | 50 %                 | #032C53 |
+| user1        | 2013 | nov   | 25 %                 | #E11964 |
+
+| Sjukfall i rapporten aldersgrupp som tidsserie diagram |
+| inloggad som | år   | månad | åldersgrupp              | färg? |
+| user1        | 2013 | sep   | Under 21 år              | #E11964 |
+| user1        | 2013 | nov   | 21-25 år                 | #032C53 |
+| user1        | 2013 | nov   | 26-30 år                 | #FFBA3E |
+| user1        | 2013 | nov   | 31-35 år                 | #799745 |
+| user1        | 2013 | nov   | 36-40 år                 | #3CA3FF |
+| user1        | 2013 | nov   | 41-45 år                 | #C37EB2 |
+| user1        | 2013 | nov   | 46-50 år                 | #2A5152 |
+| user1        | 2013 | nov   | 51-55 år                 | #FB7F4D |
+| user1        | 2013 | nov   | 56-60 år                 | #5CC2BC |
+| user1        | 2013 | nov   | Över 60 år               | #704F38 |
+

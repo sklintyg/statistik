@@ -47,7 +47,8 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
     private static final Map<String, List<Integer>> DIAGNOSIS_CHART_GROUPS = createDiagnosisGroupsMap(true);
     static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
     private static final int DISPLAYED_DIAGNOSIS_GROUPS = 5;
-    static final String DIAGNOS_REST_NAME = "Andra diagnosgrupper";
+    private static final String DIAGNOS_REST_NAME = "Andra diagnosgrupper";
+    private static final String DIAGNOS_REST_COLOR = "#5D5D5D";
     private static final String OVRIGT_CHART_GROUP = "P00-P96, Q00-Q99, S00-Y98 Övrigt";
 
     private static Map<Integer, String> map(Map<String, List<Integer>> diagnosisChartGroups) {
@@ -97,7 +98,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
         List<OverviewChartRowExtended> merged = mergeOverviewChartGroups(diagnosisGroups);
         Collections.sort(merged, (o1, o2) -> o2.getQuantity() - o1.getQuantity());
 
-        return Converters.convert(merged, DISPLAYED_DIAGNOSIS_GROUPS, DIAGNOS_REST_NAME);
+        return Converters.convert(merged, DISPLAYED_DIAGNOSIS_GROUPS, DIAGNOS_REST_NAME, DIAGNOS_REST_COLOR);
     }
 
     private List<OverviewChartRowExtended> mergeOverviewChartGroups(List<OverviewChartRowExtended> allGroups) {
