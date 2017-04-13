@@ -18,6 +18,9 @@
  */
 package se.inera.statistics.service.report.util;
 
+
+import com.google.common.collect.ImmutableList;
+
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,7 +28,8 @@ import java.util.stream.Collectors;
 public enum DiagnosisGroup {
 
     A00_B99("#E11964", "A00-E90, G00-L99, N00-N99 Somatiska sjukdomar",
-           "A00-B99", "C00-D48", "D50-D89", "E00-E90", "G00-G99", "H00-H59", "H00-H59", "H60-H95", "I00-I99", "J00-J99", "K00-K93", "L00-L99", "N00-N99"),
+           "A00-B99", "C00-D48", "D50-D89", "E00-E90", "G00-G99", "H00-H59", "H00-H59", "H60-H95", "I00-I99",
+            "J00-J99", "K00-K93", "L00-L99", "N00-N99"),
     F00_F99("#032C53", "F00-F99 Psykiska sjukdomar", "F00-F99"),
     M00_M99("#FFBA3E", "M00-M99 Muskuloskeletala sjukdomar", "M00-M99"),
     O00_O99("#799745", "O00-O99 Graviditet och förlossning", "O00-O99"),
@@ -36,12 +40,12 @@ public enum DiagnosisGroup {
 
     private final String color;
     private final String name;
-    private final String[] chapters;
+    private final ImmutableList<String> chapters;
 
     DiagnosisGroup(String color, String name, String... chapters) {
         this.color = color;
         this.name = name;
-        this.chapters = chapters;
+        this.chapters = ImmutableList.copyOf(chapters);
     }
 
     public String getColor() {
@@ -53,7 +57,7 @@ public enum DiagnosisGroup {
     }
 
     public String[] getChapters() {
-        return chapters;
+        return chapters.toArray(new String[chapters.size()]);
     }
 
     public static Map<String, String> getColors() {

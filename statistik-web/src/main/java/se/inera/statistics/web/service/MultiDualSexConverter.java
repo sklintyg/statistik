@@ -58,7 +58,8 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
         return convert(dataIn, filterSettings, message, seriesNameTemplate, new HashMap<>());
     }
 
-    DualSexStatisticsData convert(T dataIn, FilterSettings filterSettings, Message message, String seriesNameTemplate, Map<String, String> colors) {
+    DualSexStatisticsData convert(T dataIn, FilterSettings filterSettings, Message message, String seriesNameTemplate,
+                                  Map<String, String> colors) {
         TableData tableData = convertTable(dataIn, seriesNameTemplate);
         T data = dataIn.getGroups().isEmpty() ? createEmptyResponse() : dataIn;
         ChartData maleChart = extractChartData(data, Kon.MALE, seriesNameTemplate, colors);

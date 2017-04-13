@@ -38,7 +38,8 @@ public final class Converters {
                 .collect(Collectors.toList());
     }
 
-    public static List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> rows, int maxRows, String extraText, String extraColor) {
+    public static List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> rows, int maxRows,
+                                                         String extraText, String extraColor) {
         Collections.sort(rows, (o1, o2) -> o2.getQuantity() - o1.getQuantity());
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
