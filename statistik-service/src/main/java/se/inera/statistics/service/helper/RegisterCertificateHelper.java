@@ -225,9 +225,12 @@ public class RegisterCertificateHelper {
      */
     public static String convertToV3(String data) {
         return data.
-                replaceAll("urn:riv:clinicalprocess:healthcond:certificate:2", "urn:riv:clinicalprocess:healthcond:certificate:3").
-                replaceAll("urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2", "urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:3").
-                replaceAll("urn:riv:clinicalprocess:healthcond:certificate:types:2", "urn:riv:clinicalprocess:healthcond:certificate:types:3");
+                replaceAll("urn:riv:clinicalprocess:healthcond:certificate:2",
+                        "urn:riv:clinicalprocess:healthcond:certificate:3").
+                replaceAll("urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2",
+                        "urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:3").
+                replaceAll("urn:riv:clinicalprocess:healthcond:certificate:types:2",
+                        "urn:riv:clinicalprocess:healthcond:certificate:types:3");
     }
 
     /**
