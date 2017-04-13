@@ -1,0 +1,45 @@
+!contents -R2 -g -p -f -h
+
+Testar INTYG-3735
+
+!3 Givet att:
+
+| script | dagens datum | 2014-10-01 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | arbetsförmåga | start2     | slut2      | arbetsförmåga2 | enhet  |
+| 19790407-0220 | A00        | 2013-09-01 | 2013-10-15 | 0             | 2013-10-16 | 2013-11-28 | 50             | enhet1 |
+
+!3 Då gäller:
+
+Nationell:
+| Sjukfall i rapporten sjukskrivningsgrad diagram |
+| år   | månad | sjukskrivningsgrad   | män? | kvinnor? | färg? |
+| 2013 | sep   | 100 %                | 0    | 1        | #799745 |
+| 2013 | nov   | 75 %                 | 0    | 0        | #FFBA3E |
+| 2013 | nov   | 50 %                 | 0    | 1        | #032C53 |
+| 2013 | nov   | 25 %                 | 0    | 0        | #E11964 |
+
+| Sjukfall i oversikt sjukskrivningsgrad |
+| grupp                                       | antal?    | förändring? | färg? |
+| 100                                        | 0         | 0       | #799745 |
+| 75                                         | 0         | 0       | #FFBA3E |
+| 50                                         | 0         | 0       | #032C53 |
+| 25                                         | 0         | 0       | #E11964 |
+
+Inloggad:
+| Sjukfall i rapporten sjukskrivningsgrad diagram |
+| inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? | färg? |
+| user1        | 2013 | sep   | 100 %                | 0    | 1        | #799745 |
+| user1        | 2013 | nov   | 75 %                 | 0    | 0        | #FFBA3E |
+| user1        | 2013 | nov   | 50 %                 | 0    | 1        | #032C53 |
+| user1        | 2013 | nov   | 25 %                 | 0    | 0        | #E11964 |
+
+| Sjukfall i oversikt sjukskrivningsgrad |
+|inloggad som | grupp                                       | antal?    | förändring? | färg? |
+| user1        | 100                                        | 0         | 0       | #799745 |
+| user1        | 75                                         | 0         | 0       | #FFBA3E |
+| user1        | 50                                         | 0         | 0       | #032C53 |
+| user1        | 25                                         | 0         | 0       | #E11964 |

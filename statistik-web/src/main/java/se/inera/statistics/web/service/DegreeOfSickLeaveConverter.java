@@ -19,12 +19,17 @@
 package se.inera.statistics.web.service;
 
 import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.util.SickLeaveDegree;
 import se.inera.statistics.web.model.DualSexStatisticsData;
+
+import java.util.Map;
 
 public class DegreeOfSickLeaveConverter extends MultiDualSexConverter<KonDataResponse> {
 
+    private static final Map<String, String> COLORS = SickLeaveDegree.getColors();
+
     DualSexStatisticsData convert(KonDataResponse degreeOfSickLeave, FilterSettings filterSettings) {
-        return super.convert(degreeOfSickLeave, filterSettings, null, "%1$s %% sjukskrivningsgrad");
+        return super.convert(degreeOfSickLeave, filterSettings, null, "%1$s sjukskrivningsgrad", COLORS);
     }
 
 }

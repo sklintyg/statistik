@@ -61,7 +61,7 @@ public final class AldersgruppQuery {
             int previous = previousCount.get(counter.getKey()).getCount();
 
             if (rowsToKeep.contains(range)) {
-                result.add(new OverviewChartRowExtended(counter.getKey().getName(), current, current - previous));
+                result.add(new OverviewChartRowExtended(counter.getKey().getName(), current, current - previous, counter.getKey().getColor()));
             }
         }
 

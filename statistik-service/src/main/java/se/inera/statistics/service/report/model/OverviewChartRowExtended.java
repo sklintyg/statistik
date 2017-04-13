@@ -21,14 +21,20 @@ package se.inera.statistics.service.report.model;
 public class OverviewChartRowExtended extends OverviewChartRow {
 
     private final int alternation;
+    private final String color;
 
-    public OverviewChartRowExtended(String name, int quantity, int alternation) {
+    public OverviewChartRowExtended(String name, int quantity, int alternation, String color) {
         super(name, quantity);
+        this.color = color;
         this.alternation = alternation;
     }
 
     public int getAlternation() {
         return alternation;
+    }
+
+    public String getColor() {
+        return color;
     }
 
     @Override

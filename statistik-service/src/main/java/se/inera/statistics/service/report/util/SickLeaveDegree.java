@@ -16,53 +16,51 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.model;
+package se.inera.statistics.service.report.util;
 
-import se.inera.statistics.service.report.model.Kon;
-
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-public class ChartSeries {
+public enum SickLeaveDegree {
 
+    D_25(25, "25 %", "#E11964"),
+    D_50(50, "50 %", "#032C53"),
+    D_75(75, "75 %", "#FFBA3E"),
+    D_100(100, "100 %", "#799745");
+
+    private final int degree;
     private final String name;
-    private final List<? extends Number> data;
-    private final Kon sex;
     private final String color;
 
-    public ChartSeries(String name, List<? extends Number> data, Kon sex, String color) {
+    SickLeaveDegree(int degree, String name, String color) {
+        this.degree = degree;
         this.name = name;
-        this.data = data;
-        this.sex = sex;
         this.color = color;
     }
 
-    public ChartSeries(String name, List<? extends Number> data, Kon sex) {
-        this(name, data, sex, null);
-    }
-
-    public ChartSeries(String name, List<? extends Number> data) {
-        this(name, data, null);
+    public int getDegree() {
+        return degree;
     }
 
     public String getName() {
         return name;
     }
 
-    public List<? extends Number> getData() {
-        return data;
-    }
-
-    public Kon getSex() {
-        return sex;
-    }
-
     public String getColor() {
         return color;
     }
 
-    @Override
-    public String toString() {
-        return name + ": " + data.toString();
+    public static List<Integer> getDegrees() {
+        return Arrays.stream(values()).map(SickLeaveDegree::getDegree).collect(Collectors.toList());
     }
 
+    public static List<String> getLabels() {
+        return Arrays.stream(values()).map(SickLeaveDegree::getName).collect(Collectors.toList());
+    }
+
+    public static Map<String, String> getColors() {
+        return Arrays.stream(values()).collect(Collectors.toMap(SickLeaveDegree::getName, SickLeaveDegree::getColor));
+    }
 }

@@ -69,6 +69,6 @@ public class OverviewConverter {
     }
 
     private Function<OverviewChartRowExtended, DonutChartData> mapOverviewRowData() {
-        return (r) -> new DonutChartData(r.getName(), r.getQuantity(), r.getAlternation());
+        return (r) -> new DonutChartData(r.getName(), r.getQuantity(), r.getAlternation(), r.getColor());
     }
 }

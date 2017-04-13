@@ -18,14 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
-import static org.junit.Assert.assertEquals;
-
-import java.time.Clock;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
-
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
@@ -35,6 +28,12 @@ import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.SickLeaveLengthOverview;
 import se.inera.statistics.web.model.overview.VerksamhetNumberOfCasesPerMonthOverview;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
+
+import java.time.Clock;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class VerksamhetOverviewConverterTest {
 
@@ -76,17 +75,17 @@ public class VerksamhetOverviewConverterTest {
         int casesPerMonthProportionFemaleOld = 3;
         OverviewKonsfordelning overviewKonsfordelningOld = new OverviewKonsfordelning(casesPerMonthProportionMaleOld, casesPerMonthProportionFemaleOld, new Range(clock));
         ArrayList<OverviewChartRowExtended> diagnosisGroups = new ArrayList<OverviewChartRowExtended>();
-        diagnosisGroups.add(new OverviewChartRowExtended("diagName", 1, 2));
+        diagnosisGroups.add(new OverviewChartRowExtended("diagName", 1, 2, null));
         ArrayList<OverviewChartRowExtended> ageGroups = new ArrayList<OverviewChartRowExtended>();
-        ageGroups.add(new OverviewChartRowExtended("ageName", 3, 4));
+        ageGroups.add(new OverviewChartRowExtended("ageName", 3, 4, null));
         ArrayList<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<OverviewChartRowExtended>();
-        degreeOfSickLeaveGroups.add(new OverviewChartRowExtended("degName", 5, 6));
+        degreeOfSickLeaveGroups.add(new OverviewChartRowExtended("degName", 5, 6, null));
         ArrayList<OverviewChartRow> sickLeaveLengthGroups = new ArrayList<OverviewChartRow>();
         sickLeaveLengthGroups.add(new OverviewChartRow("sickName", 7));
         int longSickLeavesTotal = 5;
         int longSickLeavesAlternation = 6;
         ArrayList<OverviewChartRowExtended> perCounty = new ArrayList<OverviewChartRowExtended>();
-        perCounty.add(new OverviewChartRowExtended("countyName", 8, 9));
+        perCounty.add(new OverviewChartRowExtended("countyName", 8, 9, null));
 
         int totalCases = 7;
         //When

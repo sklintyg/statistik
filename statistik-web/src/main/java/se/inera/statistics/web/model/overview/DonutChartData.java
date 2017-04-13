@@ -20,14 +20,20 @@ package se.inera.statistics.web.model.overview;
 
 public class DonutChartData {
 
+    private final String color;
     private final String name;
     private final int quantity;
     private final int alternation;
 
-    public DonutChartData(String name, int quantity, int alternation) {
+    public DonutChartData(String name, int quantity, int alternation, String color) {
+        this.color = color;
         this.name = name;
         this.quantity = quantity;
         this.alternation = alternation;
+    }
+
+    public String getColor() {
+        return color;
     }
 
     public String getName() {

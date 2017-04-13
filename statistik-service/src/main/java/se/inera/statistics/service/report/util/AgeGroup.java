@@ -18,39 +18,41 @@
  */
 package se.inera.statistics.service.report.util;
 
-import java.util.Arrays;
-import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public enum AgeGroup {
 
-    GROUP1_0TO20("Under 21 år", 0, 20),
-    GROUP2_21TO25("21-25 år", 21, 25),
-    GROUP3_26TO30("26-30 år", 26, 30),
-    GROUP4_31TO35("31-35 år", 31, 35),
-    GROUP5_36TO40("36-40 år", 36, 40),
-    GROUP5_41TO45("41-45 år", 41, 45),
-    GROUP5_46TO50("46-50 år", 46, 50),
-    GROUP5_51TO55("51-55 år", 51, 55),
-    GROUP5_56TO60("56-60 år", 56, 60),
-    GROUP5_61PLUS("Över 60 år", 61, Integer.MAX_VALUE - 1);
+    GROUP1_0TO20("Under 21 år", 0, 20, "#E11964"),
+    GROUP2_21TO25("21-25 år", 21, 25, "#032C53"),
+    GROUP3_26TO30("26-30 år", 26, 30, "#FFBA3E"),
+    GROUP4_31TO35("31-35 år", 31, 35, "#799745"),
+    GROUP5_36TO40("36-40 år", 36, 40, "#3CA3FF"),
+    GROUP5_41TO45("41-45 år", 41, 45, "#C37EB2"),
+    GROUP5_46TO50("46-50 år", 46, 50, "#2A5152"),
+    GROUP5_51TO55("51-55 år", 51, 55, "#FB7F4D"),
+    GROUP5_56TO60("56-60 år", 56, 60, "#5CC2BC"),
+    GROUP5_61PLUS("Över 60 år", 61, Integer.MAX_VALUE - 1, "#704F38");
 
     private static final Logger LOG = LoggerFactory.getLogger(AgeGroup.class);
 
     private final String groupName;
     private final int from;
     private final int to;
+    private final String color;
 
     /**
      * @param from Range start, inclusive
      * @param to Range end, inclusive
      */
-    AgeGroup(String groupName, int from, int to) {
+    AgeGroup(String groupName, int from, int to, String color) {
         this.groupName = groupName;
         this.from = from;
         this.to = to;
+        this.color = color;
     }
 
     public String getGroupName() {
@@ -63,6 +65,10 @@ public enum AgeGroup {
 
     public int getTo() {
         return to;
+    }
+
+    public String getColor() {
+        return color;
     }
 
     public static Optional<AgeGroup> getByName(String name) {

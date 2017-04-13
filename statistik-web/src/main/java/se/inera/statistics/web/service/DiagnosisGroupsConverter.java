@@ -111,14 +111,14 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
         });
 
         for (String groupName : getDiagnosisChartGroupsAsList(true)) {
-            mergedGroups.put(groupName, new OverviewChartRowExtended(groupName, 0, 0));
+            mergedGroups.put(groupName, new OverviewChartRowExtended(groupName, 0, 0, null));
         }
         for (OverviewChartRowExtended row : allGroups) {
             String grupp = DIAGNOSKAPITEL_TO_DIAGNOSGRUPP.get(Integer.valueOf(row.getName()));
             if (grupp != null) {
                 OverviewChartRowExtended mergedRow = mergedGroups.get(grupp);
                 OverviewChartRowExtended newRow = new OverviewChartRowExtended(mergedRow.getName(),
-                        mergedRow.getQuantity() + row.getQuantity(), mergedRow.getAlternation() + row.getAlternation());
+                        mergedRow.getQuantity() + row.getQuantity(), mergedRow.getAlternation() + row.getAlternation(), mergedRow.getColor());
                 mergedGroups.put(newRow.getName(), newRow);
             }
         }

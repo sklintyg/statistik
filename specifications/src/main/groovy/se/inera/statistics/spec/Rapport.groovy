@@ -18,6 +18,7 @@ abstract class Rapport {
     def kvinnor
     def könTotalt
     def totalt
+    def färg
     Boolean markerad
     boolean vårdgivarnivå
     def filterKapitel
@@ -73,6 +74,10 @@ abstract class Rapport {
 
     def totalt() {
         return totalt
+    }
+
+    def färg() {
+        return färg
     }
 
     def meddelande() {
@@ -229,6 +234,7 @@ abstract class Rapport {
         loginInfo = null
         inloggad = false
         totalt = -1
+        färg = null
         män = -1
         kvinnor = -1
         markerad = null

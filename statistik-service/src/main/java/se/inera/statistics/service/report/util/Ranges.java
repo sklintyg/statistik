@@ -40,6 +40,10 @@ public final class Ranges implements Iterable<Ranges.Range> {
         return new Range(name, cutoff);
     }
 
+    public static Range range(String name, int cutoff, String color) {
+        return new Range(name, cutoff, color);
+    }
+
     public Range rangeFor(String id) {
         Range range = idMap.get(id);
         if (range != null) {
@@ -92,14 +96,24 @@ public final class Ranges implements Iterable<Ranges.Range> {
     public static final class Range {
         private final String name;
         private final int cutoff;
+        private final String color;
 
         private Range(String name, int cutoff) {
+            this(name, cutoff, null);
+        }
+
+        private Range(String name, int cutoff, String color) {
             this.name = name;
             this.cutoff = cutoff;
+            this.color = color;
         }
 
         public String getName() {
             return name;
+        }
+
+        public String getColor() {
+            return color;
         }
 
         public int getCutoff() {

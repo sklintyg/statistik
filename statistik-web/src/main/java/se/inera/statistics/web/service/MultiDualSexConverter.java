@@ -18,13 +18,8 @@
  */
 package se.inera.statistics.web.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
-
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -38,6 +33,12 @@ import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableHeader;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class MultiDualSexConverter<T extends KonDataResponse> {
 
@@ -54,10 +55,14 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
     }
 
     DualSexStatisticsData convert(T dataIn, FilterSettings filterSettings, Message message, String seriesNameTemplate) {
+        return convert(dataIn, filterSettings, message, seriesNameTemplate, new HashMap<>());
+    }
+
+    DualSexStatisticsData convert(T dataIn, FilterSettings filterSettings, Message message, String seriesNameTemplate, Map<String, String> colors) {
         TableData tableData = convertTable(dataIn, seriesNameTemplate);
         T data = dataIn.getGroups().isEmpty() ? createEmptyResponse() : dataIn;
-        ChartData maleChart = extractChartData(data, Kon.MALE, seriesNameTemplate);
-        ChartData femaleChart = extractChartData(data, Kon.FEMALE, seriesNameTemplate);
+        ChartData maleChart = extractChartData(data, Kon.MALE, seriesNameTemplate, colors);
+        ChartData femaleChart = extractChartData(data, Kon.FEMALE, seriesNameTemplate, colors);
         final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
@@ -72,8 +77,8 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
         return (T) (new KonDataResponse(groups, rows));
     }
 
-    private ChartData extractChartData(T data, Kon sex, String seriesNameTemplate) {
-        List<ChartSeries> series = getChartSeries(data, sex, seriesNameTemplate);
+    private ChartData extractChartData(T data, Kon sex, String seriesNameTemplate, Map<String, String> colors) {
+        List<ChartSeries> series = getChartSeries(data, sex, seriesNameTemplate, colors);
         final List<ChartCategory> categories = Lists.transform(data.getPeriods(), new Function<String, ChartCategory>() {
             @Override
             public ChartCategory apply(String period) {
@@ -83,13 +88,14 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
         return new ChartData(series, categories);
     }
 
-    private List<ChartSeries> getChartSeries(T data, Kon sex, String seriesNameTemplate) {
+    private List<ChartSeries> getChartSeries(T data, Kon sex, String seriesNameTemplate, Map<String, String> colors) {
         List<ChartSeries> series = new ArrayList<>();
         for (int i = 0; i < data.getGroups().size(); i++) {
             List<Integer> indexData = data.getDataFromIndex(i, sex);
             final String groupName = data.getGroups().get(i);
             final String seriesName = "%1$s".equals(seriesNameTemplate) ? groupName : String.format(seriesNameTemplate, groupName);
-            series.add(new ChartSeries(seriesName, indexData));
+            String color = colors.get(groupName);
+            series.add(new ChartSeries(seriesName, indexData, null, color));
         }
         return series;
     }
