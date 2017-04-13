@@ -59,7 +59,7 @@ public class KonDataResponse {
 
     @Override
     public String toString() {
-        return "{\"KonDataResponse\":{" + "\"groups\":" + groups + ", \"rows\":" + rows + "}}";
+        return "{\"KonDataResponse\":{" + "\"groups\":" + "[\"" + String.join("\", \"", groups) + "\"]" + ", \"rows\":" + rows + "}}";
     }
 
     public static KonDataResponse createNewWithoutEmptyGroups(KonDataResponse konDataResponse) {
