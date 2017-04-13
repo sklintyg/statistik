@@ -34,7 +34,6 @@ import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -121,8 +120,11 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
             String grupp = DIAGNOSKAPITEL_TO_DIAGNOSGRUPP.get(Integer.valueOf(row.getName()));
             if (grupp != null) {
                 OverviewChartRowExtended mergedRow = mergedGroups.get(grupp);
+                int quantity = mergedRow.getQuantity() + row.getQuantity();
+                int alternation = mergedRow.getAlternation() + row.getAlternation();
+
                 OverviewChartRowExtended newRow = new OverviewChartRowExtended(mergedRow.getName(),
-                        mergedRow.getQuantity() + row.getQuantity(), mergedRow.getAlternation() + row.getAlternation(), mergedRow.getColor());
+                        quantity, alternation, mergedRow.getColor());
                 mergedGroups.put(newRow.getName(), newRow);
             }
         }
