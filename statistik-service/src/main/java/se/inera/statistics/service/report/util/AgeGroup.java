@@ -22,7 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public enum AgeGroup {
 
@@ -83,6 +85,10 @@ public enum AgeGroup {
             LOG.debug("Failed to parse name: {}", name, e);
             return Optional.empty();
         }
+    }
+
+    public static Map<String, String> getColors() {
+        return Arrays.stream(values()).collect(Collectors.toMap(AgeGroup::getGroupName, AgeGroup::getColor));
     }
 
 }
