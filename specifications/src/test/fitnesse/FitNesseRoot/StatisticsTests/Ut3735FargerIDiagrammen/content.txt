@@ -10,10 +10,11 @@ Testar INTYG-3735
 
 | Enbart foljande intyg finns |
 | personnr      | diagnoskod | start      | slut       | arbetsförmåga | start2     | slut2      | arbetsförmåga2 | enhet  |
-| 19790407-0220 | A00        | 2013-09-01 | 2013-10-15 | 0             | 2013-10-16 | 2013-11-28 | 50             | enhet1 |
-| 19870407-0220 | A00        | 2013-09-01 | 2013-10-15 | 0             | 2013-10-16 | 2013-11-28 | 50             | enhet1 |
-| 19890407-0220 | A00        | 2013-09-01 | 2013-10-15 | 0             | 2013-10-16 | 2013-11-28 | 50             | enhet1 |
-| 19990407-0220 | A00        | 2013-09-01 | 2013-10-15 | 0             | 2013-10-16 | 2013-11-28 | 50             | enhet1 |
+| 19790407-0220 | A00        | 2014-09-01 | 2014-10-15 | 0             | 2014-10-16 | 2014-11-28 | 50             | enhet1 |
+| 19870407-0220 | M00        | 2014-09-01 | 2014-10-15 | 0             | 2014-10-16 | 2014-11-28 | 50             | enhet1 |
+| 19890407-0220 | P00        | 2014-09-01 | 2014-10-15 | 0             | 2014-10-16 | 2014-11-28 | 50             | enhet1 |
+| 19990407-0220 | R00        | 2014-09-01 | 2014-10-15 | 0             | 2014-10-16 | 2014-11-28 | 50             | enhet1 |
+| 19980407-0220 | UA5104        | 2014-09-01 | 2014-10-15 | 0             | 2014-10-16 | 2014-11-28 | 50             | enhet1 |
 
 !3 Då gäller:
 
@@ -24,6 +25,17 @@ Nationell:
 | 2013 | nov   | 75 %                 | #FFBA3E |
 | 2013 | nov   | 50 %                 | #032C53 |
 | 2013 | nov   | 25 %                 | #E11964 |
+
+| Sjukfall i rapporten diagnosgrupp diagram |
+| år   | månad | grupp                                                | färg? |
+| 2013 | sep   | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar        | #E11964 |
+| 2013 | nov   | F00-F99 Psykiska sjukdomar                           | #032C53 |
+| 2013 | nov   | M00-M99 Muskuloskeletala sjukdomar                   | #FFBA3E |
+| 2013 | nov   | O00-O99 Graviditet och förlossning                   | #799745 |
+| 2013 | nov   | P00-P96, Q00-Q99, S00-Y98 Övrigt                     | #3CA3FF |
+| 2013 | nov   | R00-R99 Symtomdiagnoser                              | #C37EB2 |
+| 2013 | nov   | Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården                 | #2A5152 |
+| 2013 | nov   | Utan giltig ICD-10 kod                               | #FB7F4D |
 
 | Sjukfall i oversikt sjukskrivningsgrad |
 | grupp    | färg? |
@@ -40,6 +52,14 @@ Nationell:
 | Under 21 år            | #E11964 |
 | Andra åldersgrupper    | #5D5D5D |
 
+| Sjukfall i oversikt diagnos |
+| grupp                                             | färg? |
+| A00-E90, G00-L99, N00-N99 Somatiska sjukdomar    | #E11964 |
+| M00-M99 Muskuloskeletala sjukdomar               | #FFBA3E |
+| P00-P96, Q00-Q99, S00-Y98 Övrigt                 | #3CA3FF |
+| R00-R99 Symtomdiagnoser                          | #C37EB2 |
+| Andra diagnosgrupper                             | #5D5D5D |
+
 Inloggad:
 | Sjukfall i oversikt sjukskrivningsgrad |
 |inloggad som | grupp    | färg? |
@@ -55,6 +75,14 @@ Inloggad:
 | user1        | 21-25 år               | #032C53 |
 | user1        | Under 21 år            | #E11964 |
 | user1        | Andra åldersgrupper    | #5D5D5D |
+
+| Sjukfall i oversikt diagnos |
+|inloggad som | grupp                                             | färg? |
+| user1        | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar    | #E11964 |
+| user1        | M00-M99 Muskuloskeletala sjukdomar               | #FFBA3E |
+| user1        | P00-P96, Q00-Q99, S00-Y98 Övrigt                 | #3CA3FF |
+| user1        | R00-R99 Symtomdiagnoser                          | #C37EB2 |
+| user1        | Andra diagnosgrupper                             | #5D5D5D |
 
 | Sjukfall i rapporten sjukskrivningsgrad diagram |
 | inloggad som | år   | månad | sjukskrivningsgrad   | färg? |
@@ -75,4 +103,16 @@ Inloggad:
 | user1        | 2013 | nov   | 51-55 år                 | #FB7F4D |
 | user1        | 2013 | nov   | 56-60 år                 | #5CC2BC |
 | user1        | 2013 | nov   | Över 60 år               | #704F38 |
+
+| Sjukfall i rapporten diagnosgrupp diagram |
+| inloggad som | år   | månad | grupp                                                | färg? |
+| user1        | 2013 | sep   | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar        | #E11964 |
+| user1        | 2013 | nov   | F00-F99 Psykiska sjukdomar                           | #032C53 |
+| user1        | 2013 | nov   | M00-M99 Muskuloskeletala sjukdomar                   | #FFBA3E |
+| user1        | 2013 | nov   | O00-O99 Graviditet och förlossning                   | #799745 |
+| user1        | 2013 | nov   | P00-P96, Q00-Q99, S00-Y98 Övrigt                     | #3CA3FF |
+| user1        | 2013 | nov   | R00-R99 Symtomdiagnoser                              | #C37EB2 |
+| user1        | 2013 | nov   | Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården                 | #2A5152 |
+| user1        | 2013 | nov   | Utan giltig ICD-10 kod                               | #FB7F4D |
+
 

@@ -25,6 +25,7 @@ import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.DiagnosisGroup;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
@@ -33,6 +34,7 @@ import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -41,46 +43,47 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 public class DiagnosisGroupsConverter extends MultiDualSexConverter<DiagnosgruppResponse> {
 
-    private static final Map<String, List<Integer>> DIAGNOSIS_CHART_GROUPS = createDiagnosisGroupsMap(true);
+    private static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_CHART_GROUPS = createDiagnosisGroupsMap(true);
     static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
     private static final int DISPLAYED_DIAGNOSIS_GROUPS = 5;
-    private static final String DIAGNOS_REST_NAME = "Andra diagnosgrupper";
-    private static final String DIAGNOS_REST_COLOR = "#5D5D5D";
-    private static final String OVRIGT_CHART_GROUP = "P00-P96, Q00-Q99, S00-Y98 Övrigt";
+    static final String DIAGNOS_REST_NAME = "Andra diagnosgrupper";
+    static final String DIAGNOS_REST_COLOR = "#5D5D5D";
 
-    private static Map<Integer, String> map(Map<String, List<Integer>> diagnosisChartGroups) {
+    private static Map<Integer, String> map(Map<DiagnosisGroup, List<Integer>> diagnosisChartGroups) {
         Map<Integer, String> result = new HashMap<>();
-        for (Entry<String, List<Integer>> entry : diagnosisChartGroups.entrySet()) {
+        for (Entry<DiagnosisGroup, List<Integer>> entry : diagnosisChartGroups.entrySet()) {
             for (Integer kapitel : entry.getValue()) {
-                result.put(kapitel, entry.getKey());
+                result.put(kapitel, entry.getKey().getName());
             }
         }
         return result;
     }
 
-    private static Map<String, List<Integer>> createDiagnosisGroupsMap(boolean includeUnknownGroup) {
-        final Map<String, List<Integer>> diagnosisGroups = new LinkedHashMap<>();
-        diagnosisGroups.put("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar",
-                Icd10.getKapitelIntIds("A00-B99", "C00-D48", "D50-D89", "E00-E90", "G00-G99", "H00-H59",
-                        "H00-H59", "H60-H95", "I00-I99", "J00-J99", "K00-K93", "L00-L99", "N00-N99"));
-        diagnosisGroups.put("F00-F99 Psykiska sjukdomar", Icd10.getKapitelIntIds("F00-F99"));
-        diagnosisGroups.put("M00-M99 Muskuloskeletala sjukdomar", Icd10.getKapitelIntIds("M00-M99"));
-        diagnosisGroups.put("O00-O99 Graviditet och förlossning", Icd10.getKapitelIntIds("O00-O99"));
-        diagnosisGroups.put(OVRIGT_CHART_GROUP, Icd10.getKapitelIntIds("P00-P96", "Q00-Q99", "S00-T98", "U00-U99", "V01-Y98"));
-        diagnosisGroups.put("R00-R99 Symtomdiagnoser", Icd10.getKapitelIntIds("R00-R99"));
-        diagnosisGroups.put("Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården",
-                Icd10.getKapitelIntIds("Z00-Z99"));
-        if (includeUnknownGroup) {
-            diagnosisGroups.put(Icd10.UNKNOWN_CODE_NAME, Icd10.getKapitelIntIds(Icd10.OTHER_KAPITEL));
+    private static Map<DiagnosisGroup, List<Integer>> createDiagnosisGroupsMap(boolean includeUnknownGroup) {
+        final Map<DiagnosisGroup, List<Integer>> diagnosisGroups = new LinkedHashMap<>();
+
+        for (DiagnosisGroup group: DiagnosisGroup.values()) {
+            diagnosisGroups.put(group, Icd10.getKapitelIntIds(group.getChapters()));
         }
+
+        if (!includeUnknownGroup) {
+            diagnosisGroups.remove(DiagnosisGroup.NO_GROUP);
+        }
+
         return diagnosisGroups;
     }
 
     static List<String> getDiagnosisChartGroupsAsList(boolean includeUnknownGroup) {
-        return new ArrayList<>(createDiagnosisGroupsMap(includeUnknownGroup).keySet());
+
+        return createDiagnosisGroupsMap(includeUnknownGroup)
+                .keySet()
+                .stream()
+                .map(DiagnosisGroup::getName)
+                .collect(Collectors.toList());
     }
 
     DualSexStatisticsData convert(DiagnosgruppResponse diagnosisGroups, FilterSettings filterSettings) {
@@ -111,8 +114,8 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
 
         });
 
-        for (String groupName : getDiagnosisChartGroupsAsList(true)) {
-            mergedGroups.put(groupName, new OverviewChartRowExtended(groupName, 0, 0, null));
+        for (DiagnosisGroup group : createDiagnosisGroupsMap(true).keySet()) {
+            mergedGroups.put(group.getName(), new OverviewChartRowExtended(group.getName(), 0, 0, group.getColor()));
         }
         for (OverviewChartRowExtended row : allGroups) {
             String grupp = DIAGNOSKAPITEL_TO_DIAGNOSGRUPP.get(Integer.valueOf(row.getName()));
@@ -132,9 +135,12 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
     private ChartData convertChart(DiagnosgruppResponse resp, Kon sex) {
         Map<Integer, List<Integer>> allGroups = extractAllGroups(resp, sex);
         Map<String, List<Integer>> mergedGroups = mergeChartGroups(allGroups);
+
+        Map<String, String> colors = DiagnosisGroup.getColors();
+
         ArrayList<ChartSeries> rows = new ArrayList<>();
         for (Entry<String, List<Integer>> entry : mergedGroups.entrySet()) {
-            rows.add(new ChartSeries(entry.getKey(), entry.getValue()));
+            rows.add(new ChartSeries(entry.getKey(), entry.getValue(), null, colors.get(entry.getKey())));
         }
 
         final List<ChartCategory> categories = Lists.transform(resp.getPeriods(), new Function<String, ChartCategory>() {
@@ -203,9 +209,9 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
     }
 
     private String getMergedChartGroupName(Integer groupId) {
-        for (Entry<String, List<Integer>> entry : DIAGNOSIS_CHART_GROUPS.entrySet()) {
+        for (Entry<DiagnosisGroup, List<Integer>> entry : DIAGNOSIS_CHART_GROUPS.entrySet()) {
             if (entry.getValue().contains(groupId)) {
-                return entry.getKey();
+                return entry.getKey().getName();
             }
         }
         throw new RuntimeException("Unknown groupId: " + groupId);
