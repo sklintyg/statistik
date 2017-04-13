@@ -31,13 +31,16 @@ import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.report.util.SickLeaveDegree;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Component
@@ -112,9 +115,13 @@ public class NationellOverviewData {
 
         List<OverviewChartRow> result = new ArrayList<>();
         for (int i = 0; i < currentData.getRows().size(); i++) {
-            int previous = previousData.getRows().get(i).getFemale() + previousData.getRows().get(i).getMale();
-            int current = currentData.getRows().get(i).getFemale() + currentData.getRows().get(i).getMale();
-            result.add(new OverviewChartRowExtended(previousData.getRows().get(i).getName(), current, current - previous));
+            SimpleKonDataRow previous = previousData.getRows().get(i);
+            SimpleKonDataRow current = currentData.getRows().get(i);
+
+            int previousValue = previous.getFemale() + previous.getMale();
+            int currentValue = current.getFemale() + current.getMale();
+
+            result.add(new OverviewChartRowExtended(current.getName(), currentValue, currentValue - previousValue, null));
         }
 
         return result;
@@ -123,6 +130,8 @@ public class NationellOverviewData {
     private List<OverviewChartRowExtended> getSjukskrivningsgrader(Range range) {
         KonDataResponse periods = data.getSjukskrivningsgrad(ReportUtil.getPreviousPeriod(range).getFrom(), 2, KVARTAL, true);
 
+        Map<String, String> colors = SickLeaveDegree.getColors();
+
         List<OverviewChartRowExtended> result = new ArrayList<>();
         if (periods.getRows().size() >= 2) {
             List<KonField> previousData = periods.getRows().get(0).getData();
@@ -130,7 +139,10 @@ public class NationellOverviewData {
             for (int i = 0; i < previousData.size(); i++) {
                 int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
                 int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
-                result.add(new OverviewChartRowExtended(periods.getGroups().get(i) + " %", current, percentChange(current, previous)));
+                String id = periods.getGroups().get(i);
+                String color = colors.get(id);
+
+                result.add(new OverviewChartRowExtended(id, current, percentChange(current, previous), color));
             }
         }
         return result;
@@ -146,6 +158,7 @@ public class NationellOverviewData {
 
         List<SimpleKonDataRow> previousDataRows = previousData.getRows();
         List<SimpleKonDataRow> currentDataRows = currentData.getRows();
+        Map<String, String> colors = AgeGroup.getColors();
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
         for (int i = 0; i < currentDataRows.size(); i++) {
@@ -154,7 +167,9 @@ public class NationellOverviewData {
             int previous = previousRow.getFemale() + previousRow.getMale();
             int current = currentRow.getFemale() + currentRow.getMale();
             final String rowName = currentRow.getName();
-            final OverviewChartRowExtended row = new OverviewChartRowExtended(rowName, current, current - previous);
+            String color = colors.get(rowName);
+
+            final OverviewChartRowExtended row = new OverviewChartRowExtended(rowName, current, current - previous, color);
             result.add(row);
         }
 
@@ -174,7 +189,7 @@ public class NationellOverviewData {
             int current = total(currentData.getRows().get(i));
 
             if (include.contains(rowName)) {
-                result.add(new OverviewChartRowExtended(rowName, current, percentChange(current, previous)));
+                result.add(new OverviewChartRowExtended(rowName, current, percentChange(current, previous), null));
             } else {
                 restCurrent += current;
                 restPrevious += previous;
@@ -184,7 +199,7 @@ public class NationellOverviewData {
         sortByQuantity(result);
 
         if (rest != null) {
-            result.add(new OverviewChartRowExtended(rest, restCurrent, percentChange(restCurrent, restPrevious)));
+            result.add(new OverviewChartRowExtended(rest, restCurrent, percentChange(restCurrent, restPrevious), null));
         }
 
         return result;
@@ -223,7 +238,7 @@ public class NationellOverviewData {
                 final Icd icd = icdTyps.get(i);
                 final int numericalId = icd.getNumericalId();
                 final String rowName = String.valueOf(numericalId);
-                final OverviewChartRowExtended row = new OverviewChartRowExtended(rowName, current, current - previous);
+                final OverviewChartRowExtended row = new OverviewChartRowExtended(rowName, current, current - previous, null);
                 result.add(row);
             }
         }

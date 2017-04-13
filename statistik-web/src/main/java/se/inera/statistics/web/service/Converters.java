@@ -38,7 +38,7 @@ public final class Converters {
                 .collect(Collectors.toList());
     }
 
-    public static List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> rows, int maxRows, String extraText) {
+    public static List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> rows, int maxRows, String extraText, String extraColor) {
         Collections.sort(rows, (o1, o2) -> o2.getQuantity() - o1.getQuantity());
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
@@ -51,7 +51,7 @@ public final class Converters {
             final int alternation = row.getAlternation();
             int previous = row.getQuantity() - alternation;
             int percentChange = calculatePercentage(alternation, previous);
-            result.add(new OverviewChartRowExtended(row.getName(), row.getQuantity(), percentChange));
+            result.add(new OverviewChartRowExtended(row.getName(), row.getQuantity(), percentChange, row.getColor()));
         }
 
         if (numberOfRows > maxRows) {
@@ -63,7 +63,7 @@ public final class Converters {
                 restAlternation += row.getAlternation();
             }
             int percentChange = calculatePercentage(restAlternation, restQuantity - restAlternation);
-            result.add(new OverviewChartRowExtended(extraText, restQuantity, percentChange));
+            result.add(new OverviewChartRowExtended(extraText, restQuantity, percentChange, extraColor));
         }
 
         return result;

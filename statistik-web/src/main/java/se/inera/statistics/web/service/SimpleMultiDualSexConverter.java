@@ -19,9 +19,14 @@
 package se.inera.statistics.web.service;
 
 import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 
+import java.util.Map;
+
 public class SimpleMultiDualSexConverter extends MultiDualSexConverter<KonDataResponse> {
+
+    private static final Map<String, String> COLORS = AgeGroup.getColors();
 
     SimpleMultiDualSexConverter() {
     }
@@ -31,7 +36,7 @@ public class SimpleMultiDualSexConverter extends MultiDualSexConverter<KonDataRe
     }
 
     DualSexStatisticsData convert(KonDataResponse data, FilterSettings filterSettings) {
-        return super.convert(data, filterSettings, null, "%1$s");
+        return super.convert(data, filterSettings, null, "%1$s", COLORS);
     }
 
 }

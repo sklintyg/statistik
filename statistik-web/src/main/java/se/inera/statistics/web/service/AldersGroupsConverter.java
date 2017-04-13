@@ -23,10 +23,11 @@ import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import java.util.List;
 
 public class AldersGroupsConverter {
-    public static final String ALDERSGRUPPER_REST = "Andra åldersgrupper";
+    private static final String ALDERSGRUPPER_REST = "Andra åldersgrupper";
+    private static final String ALDERSGRUPPER_REST_COLOR = "#5D5D5D";
     private static final int DISPLAYED_AGE_GROUPS = 5;
 
     public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> aldersGroups) {
-        return Converters.convert(aldersGroups, DISPLAYED_AGE_GROUPS, ALDERSGRUPPER_REST);
+        return Converters.convert(aldersGroups, DISPLAYED_AGE_GROUPS, ALDERSGRUPPER_REST, ALDERSGRUPPER_REST_COLOR);
     }
 }

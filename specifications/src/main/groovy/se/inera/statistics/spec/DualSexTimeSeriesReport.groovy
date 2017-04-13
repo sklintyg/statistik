@@ -19,6 +19,7 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         män = index < 0 || male == null ? -1 : male.data[index]
         def female = report.femaleChart.series.find { item -> item.name.contains(grupp) }
         kvinnor = index < 0 || female == null ? -1 : female.data[index]
+        färg = female == null ? null : female.color
     }
 
     public void executeTabell(report) {

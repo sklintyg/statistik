@@ -22,7 +22,7 @@
 angular.module('StatisticsApp').controller('overviewCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, COUNTY_COORDS, chartFactory,
-        messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _) {
+        messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _, COLORS) {
         'use strict';
 
         var self = this;
@@ -98,7 +98,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             };
             chartOptions.tooltip = { enabled: false };
             chartOptions.plotOptions.pie = {
-                colors: [ '#57843B' ],
+                colors: [ COLORS.overview ],
                 animation: false,
                 borderWidth: 0,
                 dataLabels: { enabled: false },
@@ -140,18 +140,18 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             chartFactory.addColor(result.casesPerMonth.alteration);
             perMonthAlterationChart = paintPerMonthAlternationChart(result.casesPerMonth.alteration);
 
+            chartFactory.addColor(result.diagnosisGroups);
             var diagnosisDonutData = extractDonutData(result.diagnosisGroups);
-            chartFactory.addColor(diagnosisDonutData);
             diagnosisDonutChart = paintDonutChart('diagnosisChart', diagnosisDonutData);
             $scope.diagnosisGroups = result.diagnosisGroups;
 
+            chartFactory.addColor(result.ageGroups);
             var ageGroupsDonutData = extractDonutData(result.ageGroups);
-            chartFactory.addColor(ageGroupsDonutData);
             ageDonutChart = paintDonutChart('ageChart', ageGroupsDonutData);
             $scope.ageGroups = result.ageGroups;
 
+            chartFactory.addColor(result.degreeOfSickLeaveGroups);
             var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
-            chartFactory.addColor(degreeOfSickLeaveDonutData);
             degreeOfSickLeaveChart = paintDonutChart('degreeOfSickLeaveChart', degreeOfSickLeaveDonutData, null);
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
@@ -180,7 +180,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                     data: _.map(chartData, function (e) {
                         return e.quantity;
                     }),
-                    color: '#57843B'
+                    color: COLORS.overview
                 }
             ];
             var categories = _.map(chartData, function (e) {
@@ -276,8 +276,6 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         }
 
         function extractDonutData(rawData) {
-            chartFactory.addColor(rawData);
-
             return _.map(rawData, function(data) {
                 return {
                     name: ControllerCommons.htmlsafe(data.name),

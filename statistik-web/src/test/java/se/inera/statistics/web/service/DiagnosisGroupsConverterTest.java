@@ -20,6 +20,7 @@ package se.inera.statistics.web.service;
 
 import org.junit.Test;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.util.DiagnosisGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,21 +32,21 @@ public class DiagnosisGroupsConverterTest {
     @Test
     public void testConvertList() throws Exception {
         List<OverviewChartRowExtended> rows = new ArrayList<>();
-        rows.add(new OverviewChartRowExtended("180108190", 20, 0));
-        rows.add(new OverviewChartRowExtended("230108230", 35, 10));
-        rows.add(new OverviewChartRowExtended("300108300", 10, 0));
-        rows.add(new OverviewChartRowExtended("320108320", 5, 0));
-        rows.add(new OverviewChartRowExtended("360108370", 1, 0));
-        rows.add(new OverviewChartRowExtended("350108350", 1, 10));
-        rows.add(new OverviewChartRowExtended("430108430", 1, 0));
+        rows.add(new OverviewChartRowExtended("180108190", 20, 0, null));
+        rows.add(new OverviewChartRowExtended("230108230", 35, 10, null));
+        rows.add(new OverviewChartRowExtended("300108300", 10, 0, null));
+        rows.add(new OverviewChartRowExtended("320108320", 5, 0, null));
+        rows.add(new OverviewChartRowExtended("360108370", 1, 0, null));
+        rows.add(new OverviewChartRowExtended("350108350", 1, 10, null));
+        rows.add(new OverviewChartRowExtended("430108430", 1, 0, null));
 
 
         List<OverviewChartRowExtended> expectedList = new ArrayList<>();
-        expectedList.add(new OverviewChartRowExtended("F00-F99 Psykiska sjukdomar", 35, 40));
-        expectedList.add(new OverviewChartRowExtended("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar", 20, 0));
-        expectedList.add(new OverviewChartRowExtended("M00-M99 Muskuloskeletala sjukdomar", 10, 0));
-        expectedList.add(new OverviewChartRowExtended("O00-O99 Graviditet och förlossning", 5, 0));
-        expectedList.add(new OverviewChartRowExtended(DiagnosisGroupsConverter.DIAGNOS_REST_NAME, 3, -143));
+        expectedList.add(new OverviewChartRowExtended(DiagnosisGroup.F00_F99.getName(), 35, 40, DiagnosisGroup.F00_F99.getColor()));
+        expectedList.add(new OverviewChartRowExtended(DiagnosisGroup.A00_B99.getName(), 20, 0, DiagnosisGroup.A00_B99.getColor()));
+        expectedList.add(new OverviewChartRowExtended(DiagnosisGroup.M00_M99.getName(), 10, 0, DiagnosisGroup.M00_M99.getColor()));
+        expectedList.add(new OverviewChartRowExtended(DiagnosisGroup.O00_O99.getName(), 5, 0, DiagnosisGroup.O00_O99.getColor()));
+        expectedList.add(new OverviewChartRowExtended(DiagnosisGroupsConverter.DIAGNOS_REST_NAME, 3, -143, DiagnosisGroupsConverter.DIAGNOS_REST_COLOR));
 
         List<OverviewChartRowExtended> convertedList = new DiagnosisGroupsConverter().convert(rows);
 
