@@ -27,7 +27,7 @@ import se.inera.statistics.service.warehouse.AbstractWidlineConverter;
 import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
-import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
+import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

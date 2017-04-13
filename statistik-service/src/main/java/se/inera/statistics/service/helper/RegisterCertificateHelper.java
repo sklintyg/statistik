@@ -18,12 +18,26 @@
  */
 package se.inera.statistics.service.helper;
 
+import java.io.StringReader;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.JAXBIntrospector;
+import javax.xml.bind.Unmarshaller;
+
 import org.apache.neethi.builders.converters.ConverterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
@@ -31,17 +45,6 @@ import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.Regi
 import se.riv.clinicalprocess.healthcond.certificate.types.v3.CVType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v3.DatePeriodType;
 import se.riv.clinicalprocess.healthcond.certificate.v3.Svar;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.JAXBIntrospector;
-import javax.xml.bind.Unmarshaller;
-import java.io.StringReader;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class RegisterCertificateHelper {
@@ -107,7 +110,7 @@ public class RegisterCertificateHelper {
         return intyg.getIntyg().getSigneringstidpunkt();
     }
 
-    @java.lang.SuppressWarnings("squid:S134") //I can't see a better way to write this with fewer nested statements
+    @SuppressWarnings("squid:S134") //I can't see a better way to write this with fewer nested statements
     private String getDelsvarString(RegisterCertificateType intyg, String svarId, String delsvarId) {
         for (Svar svar : intyg.getIntyg().getSvar()) {
             if (svarId.equals(svar.getId())) {
@@ -125,7 +128,7 @@ public class RegisterCertificateHelper {
         return null;
     }
 
-    @java.lang.SuppressWarnings("squid:S134") //I can't see a better way to write this with fewer nested statements
+    @SuppressWarnings("squid:S134") //I can't see a better way to write this with fewer nested statements
     public String getDx(RegisterCertificateType intyg) {
         for (Svar svar : intyg.getIntyg().getSvar()) {
             if (DIAGNOS_SVAR_ID_6.equals(svar.getId())) {
@@ -146,16 +149,16 @@ public class RegisterCertificateHelper {
 
         for (Svar.Delsvar delsvar : svar.getDelsvar()) {
             switch (delsvar.getId()) {
-            case BEHOV_AV_SJUKSKRIVNING_NIVA_DELSVARSVAR_ID_32:
-                String sjukskrivningsnivaString = getCVSvarContent(delsvar).getCode();
-                final SjukskrivningsGrad sjukskrivningsGrad = SjukskrivningsGrad.valueOf(sjukskrivningsnivaString);
-                nedsattning = sjukskrivningsGrad.getNedsattning();
-                break;
-            case BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32:
-                datePeriod = getDatePeriodTypeContent(delsvar);
-                break;
-            default:
-                break;
+                case BEHOV_AV_SJUKSKRIVNING_NIVA_DELSVARSVAR_ID_32:
+                    String sjukskrivningsnivaString = getCVSvarContent(delsvar).getCode();
+                    final SjukskrivningsGrad sjukskrivningsGrad = SjukskrivningsGrad.valueOf(sjukskrivningsnivaString);
+                    nedsattning = sjukskrivningsGrad.getNedsattning();
+                    break;
+                case BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32:
+                    datePeriod = getDatePeriodTypeContent(delsvar);
+                    break;
+                default:
+                    break;
             }
         }
         return new Arbetsnedsattning(nedsattning, datePeriod.getStart(), datePeriod.getEnd());
@@ -235,7 +238,7 @@ public class RegisterCertificateHelper {
      * @throws ConverterException
      */
     //This code is copied from intygsprojektet and is best to keep unchanged
-    @java.lang.SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S134", "squid:UselessParenthesesCheck"})
+    @SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S134", "squid:UselessParenthesesCheck"})
     public CVType getCVSvarContent(Svar.Delsvar delsvar) {
         for (Object o : delsvar.getContent()) {
             if (o instanceof Node) {
@@ -291,7 +294,7 @@ public class RegisterCertificateHelper {
      * @throws ConverterException
      */
     //This code is copied from intygsprojektet and is best to keep unchanged
-    @java.lang.SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S134", "squid:UselessParenthesesCheck"})
+    @SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S134", "squid:UselessParenthesesCheck"})
     public DatePeriodType getDatePeriodTypeContent(Svar.Delsvar delsvar) {
         for (Object o : delsvar.getContent()) {
             if (o instanceof Node) {

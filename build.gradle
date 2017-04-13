@@ -1,8 +1,8 @@
 ext {
     infraVersion = System.properties['infraVersion'] ?: '0-SNAPSHOT'
 
-    intygSchematronVersion = "1.0.8"
-    certificateSchemaVersion = "2.0"
+    intygSchematronVersion = "1.0.12"
+    certificateSchemaVersion = "3.0.0-RC2.1"
     monitoringSchemaVersion = "1.0.0.0"
 
     activeMqVersion = "5.13.0"

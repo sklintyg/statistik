@@ -21,12 +21,12 @@ package se.inera.statistics.service.helper;
 import org.junit.Test;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
-import se.riv.clinicalprocess.healthcond.certificate.types.v2.DatePeriodType;
-import se.riv.clinicalprocess.healthcond.certificate.types.v2.PersonId;
-import se.riv.clinicalprocess.healthcond.certificate.v2.Intyg;
-import se.riv.clinicalprocess.healthcond.certificate.v2.Patient;
-import se.riv.clinicalprocess.healthcond.certificate.v2.Svar;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
+import se.riv.clinicalprocess.healthcond.certificate.types.v3.DatePeriodType;
+import se.riv.clinicalprocess.healthcond.certificate.types.v3.PersonId;
+import se.riv.clinicalprocess.healthcond.certificate.v3.Intyg;
+import se.riv.clinicalprocess.healthcond.certificate.v3.Patient;
+import se.riv.clinicalprocess.healthcond.certificate.v3.Svar;
 
 import javax.xml.bind.JAXBException;
 import java.time.LocalDate;
@@ -41,9 +41,9 @@ public class RegisterCertificateHelperTest {
     private static final String xmlIntyg = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p1:RegisterCertificate xmlns:ns3=\"urn:riv:insuranceprocess:healthreporting:2\"\n" +
             "    xmlns:ns0=\"urn:riv:insuranceprocess:healthreporting:RegisterMedicalCertificateResponder:3\"\n" +
             "    xmlns:ns5=\"urn:riv:insuranceprocess:healthreporting:mu7263:3\"\n" +
-            "    xmlns:p2=\"urn:riv:clinicalprocess:healthcond:certificate:2\"\n" +
-            "    xmlns:p1=\"urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2\"\n" +
-            "    xmlns:p3=\"urn:riv:clinicalprocess:healthcond:certificate:types:2\">\n" +
+            "    xmlns:p2=\"urn:riv:clinicalprocess:healthcond:certificate:3\"\n" +
+            "    xmlns:p1=\"urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:3\"\n" +
+            "    xmlns:p3=\"urn:riv:clinicalprocess:healthcond:certificate:types:3\">\n" +
             "   <p1:intyg>\n" +
             "      <p2:intygs-id>\n" +
             "         <p3:root>6ea04fd0-5fef-4809-823b-efeddf8a4d55</p3:root>\n" +

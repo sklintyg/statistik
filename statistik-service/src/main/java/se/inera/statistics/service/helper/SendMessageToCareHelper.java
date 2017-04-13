@@ -33,7 +33,7 @@ import org.springframework.stereotype.Component;
 
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.PartKod;
-import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v1.SendMessageToCareType;
+import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
 
 @Component
 public class SendMessageToCareHelper {
