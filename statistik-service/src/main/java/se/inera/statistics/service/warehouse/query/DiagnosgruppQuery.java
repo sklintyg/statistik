@@ -18,22 +18,9 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.google.common.collect.Lists;
-
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
@@ -51,6 +38,17 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Component
 public class DiagnosgruppQuery {
@@ -74,7 +72,7 @@ public class DiagnosgruppQuery {
             final Counter<Integer> previousCounter = previousCount.get(counter.getKey());
             int previous = previousCounter == null ? 0 : previousCounter.getCount();
             final Icd10.Id icd10Code = this.icd10.findIcd10FromNumericId(counter.getKey());
-            result.add(new OverviewChartRowExtended(String.valueOf(icd10Code.toInt()), current, current - previous));
+            result.add(new OverviewChartRowExtended(String.valueOf(icd10Code.toInt()), current, current - previous, null));
         }
 
         return result;

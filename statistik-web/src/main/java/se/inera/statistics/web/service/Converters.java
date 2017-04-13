@@ -51,7 +51,7 @@ public final class Converters {
             final int alternation = row.getAlternation();
             int previous = row.getQuantity() - alternation;
             int percentChange = calculatePercentage(alternation, previous);
-            result.add(new OverviewChartRowExtended(row.getName(), row.getQuantity(), percentChange));
+            result.add(new OverviewChartRowExtended(row.getName(), row.getQuantity(), percentChange, null));
         }
 
         if (numberOfRows > maxRows) {
@@ -63,7 +63,7 @@ public final class Converters {
                 restAlternation += row.getAlternation();
             }
             int percentChange = calculatePercentage(restAlternation, restQuantity - restAlternation);
-            result.add(new OverviewChartRowExtended(extraText, restQuantity, percentChange));
+            result.add(new OverviewChartRowExtended(extraText, restQuantity, percentChange, null));
         }
 
         return result;

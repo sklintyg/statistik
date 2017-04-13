@@ -63,7 +63,7 @@ public class VerksamhetOverviewConverter {
                 resp.getLongSickLeavesAlternation());
 
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
-        List<Message> messages = message == null ? new ArrayList<Message>() : Arrays.asList(message);
+        List<Message> messages = message == null ? new ArrayList<>() : Arrays.asList(message);
 
         return new VerksamhetOverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLength, filterResponse, messages);
@@ -74,7 +74,7 @@ public class VerksamhetOverviewConverter {
     }
 
     private Function<OverviewChartRowExtended, DonutChartData> mapOverviewRowData() {
-        return (r) -> new DonutChartData(r.getName(), r.getQuantity(), r.getAlternation());
+        return (r) -> new DonutChartData(r.getName(), r.getQuantity(), r.getAlternation(), r.getColor());
     }
 
 }

@@ -22,6 +22,7 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.util.SickLeaveDegree;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.Sjukfall;
@@ -29,7 +30,6 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -37,8 +37,8 @@ import java.util.List;
 import java.util.Map;
 
 public final class SjukskrivningsgradQuery {
-    static final List<String> GRAD_LABEL = Collections.unmodifiableList(Arrays.asList("25", "50", "75", "100"));
-    static final List<Integer> GRAD = Collections.unmodifiableList(Arrays.asList(25, 50, 75, 100));
+    static final List<String> GRAD_LABEL = Collections.unmodifiableList(SickLeaveDegree.getLabels());
+    static final List<Integer> GRAD = Collections.unmodifiableList(SickLeaveDegree.getDegrees());
     private static final int PERCENT = 100;
 
     private SjukskrivningsgradQuery() {
@@ -51,10 +51,10 @@ public final class SjukskrivningsgradQuery {
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
 
-        for (Integer range : GRAD) {
-            int current = currentCount.get(range).getCount();
-            int previous = previousCount.get(range).getCount();
-            result.add(new OverviewChartRowExtended(range.toString() + " %", current, percentChange(current, previous)));
+        for (SickLeaveDegree degree : SickLeaveDegree.values()) {
+            int current = currentCount.get(degree.getDegree()).getCount();
+            int previous = previousCount.get(degree.getDegree()).getCount();
+            result.add(new OverviewChartRowExtended(degree.getName(), current, percentChange(current, previous), degree.getColor()));
         }
 
         return result;

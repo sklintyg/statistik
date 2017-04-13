@@ -75,17 +75,17 @@ public class OverviewConverterTest {
         OverviewKonsfordelning overviewKonsfordelning = new OverviewKonsfordelning(casesPerMonthProportionMale, casesPerMonthProportionFemale, new Range(clock));
         int casesPerMonthAlteration = 2;
         List<OverviewChartRowExtended> diagnosisGroups = new ArrayList<>();
-        diagnosisGroups.add(new OverviewChartRowExtended(String.valueOf(Icd10.icd10ToInt("A00-B99", Icd10RangeType.KAPITEL)), 1, -2));
+        diagnosisGroups.add(new OverviewChartRowExtended(String.valueOf(Icd10.icd10ToInt("A00-B99", Icd10RangeType.KAPITEL)), 1, -2, null));
         List<OverviewChartRowExtended> ageGroups = new ArrayList<>();
-        ageGroups.add(new OverviewChartRowExtended("ageName", 3, 2));
+        ageGroups.add(new OverviewChartRowExtended("ageName", 3, 2, null));
         List<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<>();
-        degreeOfSickLeaveGroups.add(new OverviewChartRowExtended("degName", 5, 6));
+        degreeOfSickLeaveGroups.add(new OverviewChartRowExtended("degName", 5, 6, null));
         List<OverviewChartRow> sickLeaveLengthGroups = new ArrayList<>();
         sickLeaveLengthGroups.add(new OverviewChartRow("sickName", 7));
         int longSickLeavesTotal = 3;
         int longSickLeavesAlternation = 4;
         List<OverviewChartRowExtended> perCounty = new ArrayList<>();
-        perCounty.add(new OverviewChartRowExtended("countyName", 8, 9));
+        perCounty.add(new OverviewChartRowExtended("countyName", 8, 9, null));
 
         //When
         OverviewResponse resp = new OverviewResponse(overviewKonsfordelning, casesPerMonthAlteration, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
