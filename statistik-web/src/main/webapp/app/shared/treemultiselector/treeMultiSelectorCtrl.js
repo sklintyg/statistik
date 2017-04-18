@@ -145,9 +145,12 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             if (currentFiltering !== null) {
                 $timeout.cancel(currentFiltering);
             }
+
+            var matchFunction = getIsMatchingFilterFunction(text);
+
             currentFiltering = $timeout(function () {
                 _.each(items, function (item) {
-                    $scope.updateItemHiddenState(item, getIsMatchingFilterFunction(text));
+                    $scope.updateItemHiddenState(item, matchFunction);
                 });
                 expandIfOnlyOneVisible(items);
                 $scope.$evalAsync();
@@ -157,6 +160,13 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
 
         function getIsMatchingFilterFunction(searchText) {
             var text = searchText.toLowerCase();
+
+
+            if ($scope.ignoreCharsInSearch) {
+                var re = new RegExp('([' + $scope.ignoreCharsInSearch+ '])', 'g');
+                text = text.replace(re, '');
+            }
+
             return function isMatchingFilter(item) {
                 return item.name.toLowerCase().indexOf(text) >= 0;
             };

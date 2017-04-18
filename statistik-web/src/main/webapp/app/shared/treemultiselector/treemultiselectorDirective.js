@@ -27,6 +27,7 @@ angular.module('StatisticsApp.treeMultiSelector.directive', [])
                 onOpen: '=',
                 textData: '=',
                 hideLabel: '=',
+                ignoreCharsInSearch: '@',
                 buttonIcon: '@',
                 selectAllTextKey: '@',
                 searchHintTextKey: '@',
