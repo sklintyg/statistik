@@ -245,47 +245,47 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         //When
         scope.filterMenuItems(menuItems, 'Enhet1');
 
+        $timeout.flush();
         //Then
-        $timeout(function(){
-            expect(menuItems[0].hide).toBeFalsy();
-            expect(menuItems[1].hide).toBeTruthy();
-        }, 100);
+        expect(menuItems[0].hide).toBeFalsy();
+        expect(menuItems[1].hide).toBeTruthy();
     }));
 
     it('hide items not matching filter ignore "." ', inject(function ($timeout) {
         //Given
         var menuItems = [
-            {name: 'Enhet.1'},
+            {name: 'Enhet1'},
+            {name: 'Enhet11'},
             {name: 'Enhet2'}
+        ];
+
+        //When
+        scope.ignoreCharsInSearch = '.';
+        scope.filterMenuItems(menuItems, 'Enhet.1');
+
+        $timeout.flush();
+        //Then
+        expect(menuItems[0].hide).toBeFalsy();
+        expect(menuItems[1].hide).toBeFalsy();
+        expect(menuItems[2].hide).toBeTruthy();
+    }));
+
+    it('hide items not matching filter', inject(function ($timeout) {
+        //Given
+        var menuItems = [
+            {name: 'Enhet.1'},
+            {name: 'Enhet11'}
         ];
 
         //When
         scope.ignoreCharsInSearch = '';
         scope.filterMenuItems(menuItems, 'Enhet.1');
 
-        //Then
-        $timeout(function(){
-            expect(menuItems[0].hide).toBeTruthy();
-            expect(menuItems[1].hide).toBeTruthy();
-        }, 100);
-    }));
-
-    it('hide items not matching filter', inject(function ($timeout) {
-        //Given
-        var menuItems = [
-            {name: 'Enhet1'},
-            {name: 'Enhet2'}
-        ];
-
-        //When
-        scope.ignoreCharsInSearch = '';
-        scope.filterMenuItems(menuItems, 'sub1.21');
+        $timeout.flush();
 
         //Then
-        $timeout(function(){
-            expect(menuItems[0].hide).toBeTruthy();
-            expect(menuItems[1].hide).toBeTruthy();
-        }, 100);
+        expect(menuItems[0].hide).toBeFalsy();
+        expect(menuItems[1].hide).toBeTruthy();
     }));
 
     it('parent should be visible for matching node', inject(function ($timeout) {
@@ -299,12 +299,11 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         //When
         scope.filterMenuItems(menuItems, 'sub12');
 
+        $timeout.flush();
         //Then
-        $timeout(function(){
-            expect(menuItems[0].hide).toBe(false);
-            expect(sub12.hide).toBe(false);
-            expect(sub11.hide).toBe(true);
-        }, 100);
+        expect(menuItems[0].hide).toBe(false);
+        expect(sub12.hide).toBe(false);
+        expect(sub11.hide).toBe(true);
     }));
 
     it('grandparent should be visible for matching node', inject(function ($timeout) {
@@ -331,14 +330,13 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         //When
         scope.filterMenuItems(menuItems, 'sub122');
 
+        $timeout.flush();
         //Then
-        $timeout(function(){
-            expect(menuItems[0].hide).toBe(false);
-            expect(sub12.hide).toBe(false);
-            expect(sub122.hide).toBe(false);
-            expect(sub121.hide).toBe(true);
-            expect(menuItems[1].hide).toBe(true);
-        }, 100);
+        expect(menuItems[0].hide).toBe(false);
+        expect(sub12.hide).toBe(false);
+        expect(sub122.hide).toBe(false);
+        expect(sub121.hide).toBe(true);
+        expect(menuItems[1].hide).toBe(true);
     }));
 
     it('child items from matching node should be visible', inject(function ($timeout) {
@@ -366,15 +364,14 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         //When
         scope.filterMenuItems(menuItems, 'Enhet1');
 
+        $timeout.flush();
         //Then
-        $timeout(function(){
-            expect(menuItems[0].hide).toBe(false);
-            expect(subs1[1].hide).toBe(false);
-            expect(sub12.hide).toBe(false);
-            expect(sub122.hide).toBe(false);
-            expect(menuItems[1].hide).toBe(true);
-            expect(sub22.hide).toBe(true);
-        }, 100);
+        expect(menuItems[0].hide).toBe(false);
+        expect(subs1[1].hide).toBe(false);
+        expect(sub12.hide).toBe(false);
+        expect(sub122.hide).toBe(false);
+        expect(menuItems[1].hide).toBe(true);
+        expect(sub22.hide).toBe(true);
     }));
 
 
@@ -402,14 +399,14 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         //When
         scope.filterMenuItems(menuItems, 'sub122');
 
+        $timeout.flush();
+
         //Then
-        $timeout(function(){
-            expect(menuItems[0].showChildren).toBe(true);
-            expect(sub12.showChildren).toBe(true);
-            expect(sub122.showChildren).toBe(true);
-            expect(sub121.hide).toBe(true);
-            expect(menuItems[1].hide).toBe(true);
-        }, 100);
+        expect(menuItems[0].showChildren).toBe(true);
+        expect(sub12.showChildren).toBe(true);
+        expect(sub122.showChildren).toBe(true);
+        expect(sub121.hide).toBe(true);
+        expect(menuItems[1].hide).toBe(true);
     }));
 
     it('leaves count is counting correct when 0', inject(function () {

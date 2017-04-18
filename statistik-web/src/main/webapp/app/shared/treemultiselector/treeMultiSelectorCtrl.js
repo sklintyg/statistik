@@ -153,7 +153,6 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
                     $scope.updateItemHiddenState(item, matchFunction);
                 });
                 expandIfOnlyOneVisible(items);
-                $scope.$evalAsync();
                 currentFiltering = null;
             }, 0, false);
         };
