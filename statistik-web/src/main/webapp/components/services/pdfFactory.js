@@ -108,8 +108,8 @@ angular.module('StatisticsApp')
 
             _addHeader(content, headers);
             content.push(_convertChartsToImages(charts));
-            _addListFilter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
             _addListFilter(content, 'Sammanställning av enheter', enhetsFilter);
+            _addListFilter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
             _addListFilter(content, 'Sammanställning av sjukskrivningslängdsfilter', sjukskrivningslangdFilter);
             _addListFilter(content, 'Sammanställning av åldersgruppfilter', aldersgruppFilter);
 
