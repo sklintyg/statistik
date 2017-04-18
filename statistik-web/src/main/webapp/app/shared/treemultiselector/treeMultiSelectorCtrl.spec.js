@@ -24,7 +24,8 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         scope = {
             '$on' : function() {},
             '$emit' : function() {},
-            '$watch': function() {}
+            '$watch': function() {},
+            '$evalAsync': function() {}
         };
         ctrl = $controller('treeMultiSelectorCtrl', {$scope: scope, $element: {}, treeMultiSelectorUtil: treeMultiSelectorUtil});
     }));
