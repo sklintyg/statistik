@@ -247,8 +247,44 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
         //Then
         $timeout(function(){
-            expect(menuItems[0].hide).toBe(false);
-            expect(menuItems[1].hide).toBe(true);
+            expect(menuItems[0].hide).toBeFalsy();
+            expect(menuItems[1].hide).toBeTruthy();
+        }, 100);
+    }));
+
+    it('hide items not matching filter ignore "." ', inject(function ($timeout) {
+        //Given
+        var menuItems = [
+            {name: 'Enhet.1'},
+            {name: 'Enhet2'}
+        ];
+
+        //When
+        scope.ignoreCharsInSearch = '';
+        scope.filterMenuItems(menuItems, 'Enhet.1');
+
+        //Then
+        $timeout(function(){
+            expect(menuItems[0].hide).toBeTruthy();
+            expect(menuItems[1].hide).toBeTruthy();
+        }, 100);
+    }));
+
+    it('hide items not matching filter', inject(function ($timeout) {
+        //Given
+        var menuItems = [
+            {name: 'Enhet1'},
+            {name: 'Enhet2'}
+        ];
+
+        //When
+        scope.ignoreCharsInSearch = '';
+        scope.filterMenuItems(menuItems, 'sub1.21');
+
+        //Then
+        $timeout(function(){
+            expect(menuItems[0].hide).toBeTruthy();
+            expect(menuItems[1].hide).toBeTruthy();
         }, 100);
     }));
 
