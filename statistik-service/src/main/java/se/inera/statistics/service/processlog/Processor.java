@@ -25,7 +25,7 @@ import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.warehouse.WidelineManager;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
 import com.fasterxml.jackson.databind.JsonNode;
 

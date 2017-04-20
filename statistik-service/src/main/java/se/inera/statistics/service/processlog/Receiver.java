@@ -27,7 +27,7 @@ import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
 public class Receiver  {
     private static final Logger LOG = LoggerFactory.getLogger(Receiver.class);

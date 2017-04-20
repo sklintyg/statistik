@@ -42,7 +42,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -82,7 +82,7 @@ public class HSADecorator {
     public HsaInfo populateHsaData(RegisterCertificateType doc, String documentId) {
         final HsaInfo info = getHSAInfo(documentId);
         if (missingData(info)) {
-            HSAKey key = extractHSAKey(doc);
+            HSAKey key = registerCertificateHelper.extractHSAKey(doc);
             return getAndUpdateHsaJson(documentId, info, key);
         }
         return info;
@@ -164,13 +164,6 @@ public class HSADecorator {
         String vardgivareId = getVardgivareId(document, version);
         String enhetId = getEnhetId(document, version);
         String lakareId = getLakarId(document, version);
-        return new HSAKey(vardgivareId, enhetId, lakareId);
-    }
-
-    protected HSAKey extractHSAKey(RegisterCertificateType document) {
-        String vardgivareId = registerCertificateHelper.getVardgivareId(document);
-        String enhetId = registerCertificateHelper.getEnhetId(document);
-        String lakareId = registerCertificateHelper.getLakareId(document);
         return new HSAKey(vardgivareId, enhetId, lakareId);
     }
 

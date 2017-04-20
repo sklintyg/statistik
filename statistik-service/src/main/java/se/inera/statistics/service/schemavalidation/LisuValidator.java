@@ -23,8 +23,9 @@ import org.springframework.stereotype.Component;
 @Component
 class LisuValidator extends RegisterCertificateValidator {
 
+    //LISU was never used, replaced by LISJP
     LisuValidator() {
-        super("lisu.sch");
+        super("lisjp.sch");
     }
 
 }

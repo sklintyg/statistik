@@ -18,4 +18,4 @@ Testar samtliga intygs-format som statistiktjänsten hanterar.
 !3 Då gäller:
 | Sjukfall i rapporten sjukfall totalt som tvarsnitt |
 | inloggad som | grupp  | män? | kvinnor? |
-| user2        | Totalt | 0    | 4        |
+| user2        | Totalt | 0    | 3        |

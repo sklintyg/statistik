@@ -36,12 +36,13 @@ import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 import se.inera.statistics.service.report.model.Kon;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v2.RegisterCertificateType;
-import se.riv.clinicalprocess.healthcond.certificate.types.v2.CVType;
-import se.riv.clinicalprocess.healthcond.certificate.types.v2.DatePeriodType;
-import se.riv.clinicalprocess.healthcond.certificate.v2.Svar;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
+import se.riv.clinicalprocess.healthcond.certificate.types.v3.CVType;
+import se.riv.clinicalprocess.healthcond.certificate.types.v3.DatePeriodType;
+import se.riv.clinicalprocess.healthcond.certificate.v3.Svar;
 
 @Component
 public class RegisterCertificateHelper {
@@ -86,6 +87,13 @@ public class RegisterCertificateHelper {
         final String funktionsnedsattning = getFunktionsnedsattning(intyg);
         final String aktivitetsbegransning = getAktivitetsbegransning(intyg);
         return DocumentHelper.isAnyFieldIndicatingEnkeltIntyg(funktionsnedsattning, aktivitetsbegransning);
+    }
+
+    public HSAKey extractHSAKey(RegisterCertificateType document) {
+        String vardgivareId = getVardgivareId(document);
+        String enhetId = getEnhetId(document);
+        String lakareId = getLakareId(document);
+        return new HSAKey(vardgivareId, enhetId, lakareId);
     }
 
     private String getFunktionsnedsattning(RegisterCertificateType intyg) {
@@ -192,8 +200,19 @@ public class RegisterCertificateHelper {
     public RegisterCertificateType unmarshalRegisterCertificateXml(String data) throws JAXBException {
         Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(RegisterCertificateType.class).createUnmarshaller();
         jaxbUnmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
-        final StringReader reader = new StringReader(data);
+        final StringReader reader = new StringReader(convertToV3(data));
         return (RegisterCertificateType) JAXBIntrospector.getValue(jaxbUnmarshaller.unmarshal(reader));
+    }
+
+    /**
+     * Nothing that ST uses has been changed between v2 and v3 of the schema, therefore it should be enough to use
+     * this simple transformation to make sure no v2 namespaces are still used.
+     */
+    public static String convertToV3(String data) {
+        return data.
+                replaceAll("urn:riv:clinicalprocess:healthcond:certificate:2", "urn:riv:clinicalprocess:healthcond:certificate:3").
+                replaceAll("urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2", "urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:3").
+                replaceAll("urn:riv:clinicalprocess:healthcond:certificate:types:2", "urn:riv:clinicalprocess:healthcond:certificate:types:3");
     }
 
     /**
