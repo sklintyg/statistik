@@ -6,6 +6,7 @@ archive_dir: "{{ inera_root }}/archives"
 releases_folder: "{{ inera_root }}/releases"
 java_home: "{{ inera_root }}/jre8"
 environment_name: "test"
+xmx_memory: "7024m"
 
 config_repository: https://github.com/sklintyg/statistik-konfiguration.git
 config_folder: "{{ inera_root }}/statistik-konfiguration"

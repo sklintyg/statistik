@@ -1,5 +1,5 @@
 ENV_CFG="-Dspring.profiles.active={{ profile }}"
-JVM_CFG="-Xms1024m -Xmx7024m -Dfile.encoding=UTF-8 -XX:-UseGCOverheadLimit"
+JVM_CFG="-Xms1024m -Xmx{{ xmx_memory }} -Dfile.encoding=UTF-8 -XX:-UseGCOverheadLimit"
 DEBUG_CFG="-XX:-HeapDumpOnOutOfMemoryError -XX:HeapDumpPath={{ inera_tomcat_folder }}"
 CREDENTIALS_CFG="-Dstatistics.credentials.file={{ tomcat_etc }}/credentials.properties"
 LOGBACK_CFG="-Dlogback.configurationFile={{ tomcat_etc }}/statistics-logback.xml"
