@@ -5,12 +5,17 @@ import se.inera.statistics.service.report.util.Icd10RangeType
 
 class SjukfallIRapportenJamforDiagnoserDiagram extends SimpleDetailsReport {
 
-    def valdaDiagnoskategorier = ""
+    def valdaDiagnoser = []
     def diagnoskategori
+
+    public void reset() {
+        super.reset()
+        valdaDiagnoser = []
+    }
 
     @Override
     public void doExecute() {
-        def report = getReportJamforDiagnoser(valdaDiagnoskategorier)
+        def report = getReportJamforDiagnoser(valdaDiagnoser)
         executeDiagram(report)
     }
 
@@ -21,9 +26,19 @@ class SjukfallIRapportenJamforDiagnoserDiagram extends SimpleDetailsReport {
 
     void setValdaDiagnoskategorier(String kategoriString) {
         if (kategoriString != null && !kategoriString.trim().isEmpty()) {
-            this.valdaDiagnoskategorier = kategoriString.split(",")*.trim().collect{
-                String.valueOf(Icd10.icd10ToInt(it, Icd10RangeType.KATEGORI))
-            }
+            this.valdaDiagnoser.addAll(kategoriString.split(",")*.trim().collect{
+                def code = it.replaceAll("intern", "")
+                String.valueOf(Icd10.icd10ToInt(code, Icd10RangeType.KATEGORI) * (it.endsWith("intern") ? -1 : 1))
+            })
+        }
+    }
+
+    void setValdaDiagnoskoder(String kodString) {
+        if (kodString != null && !kodString.trim().isEmpty()) {
+            this.valdaDiagnoser.addAll(kodString.split(",")*.trim().collect{
+                def code = it.replaceAll("intern", "")
+                String.valueOf(Icd10.icd10ToInt(code, Icd10RangeType.KOD) * (it.endsWith("intern") ? -1 : 1))
+            })
         }
     }
 

@@ -65,8 +65,7 @@ public class Icd10 {
     public static final String OTHER_KATEGORI = "Ö00";
     public static final String OTHER_KOD = "Ö000";
     private static final int INTID_OTHER_KATEGORI = Icd10.icd10ToInt(Icd10.OTHER_KATEGORI, Icd10RangeType.KATEGORI);
-    private static final List<Integer> INTERNAL_ICD10_INTIDS = Arrays.asList(
-            icd10ToInt(OTHER_KAPITEL, Icd10RangeType.KAPITEL),
+    private static final List<Integer> INTERNAL_ICD10_INTIDS = Arrays.asList(icd10ToInt(OTHER_KAPITEL, Icd10RangeType.KAPITEL),
             icd10ToInt(OTHER_AVSNITT, Icd10RangeType.AVSNITT),
             INTID_OTHER_KATEGORI,
             icd10ToInt(OTHER_KOD, Icd10RangeType.KOD));
@@ -168,6 +167,9 @@ public class Icd10 {
         final Kategori kategori = new Kategori(OTHER_KATEGORI, UNKNOWN_CODE_NAME, avsnitt);
         internalIcd10.add(kategori);
         internalIcd10.add(new Kod(OTHER_KOD, UNKNOWN_CODE_NAME, kategori));
+        for (Kategori kat : idToKategoriMap.values()) {
+            internalIcd10.add(Kod.createUnknown(kat));
+        }
         for (Id id : internalIcd10) {
             idToInternalMap.put(id);
         }
@@ -209,7 +211,9 @@ public class Icd10 {
     public List<Icd> getIcdStructure() {
         List<Icd10.Kapitel> kapitel = getKapitel(false);
         final List<Icd> icds = new ArrayList<>(Lists.transform(kapitel, kapitel1 -> new Icd(kapitel1, Kod.class)));
-        icds.add(new Icd("", "Utan giltig ICD-10 kod", INTID_OTHER_KATEGORI));
+        final String info = "Innehåller sjukfall som inte har någon diagnoskod angiven eller där den "
+                + "angivna diagnoskoden inte finns i klassificeringssystemet för diagnoser, ICD-10-SE";
+        icds.add(new Icd("", "Utan giltig ICD-10 kod", INTID_OTHER_KATEGORI, info));
         return icds;
     }
 
@@ -273,6 +277,13 @@ public class Icd10 {
         return null;
     }
 
+    public java.util.Optional<Kod> getUnknownKodInKatergori(Kategori kategori) {
+        if (kategori == null) {
+            return java.util.Optional.empty();
+        }
+        return kategori.getKods().stream().filter(Kod::isUnknown).findAny();
+    }
+
     public static class IdMap<T extends Id> extends HashMap<String, T> {
         public void put(T id) {
             if (id != null) {
@@ -284,10 +295,16 @@ public class Icd10 {
     public abstract static class Id {
         private final String id;
         private final String name;
+        private final String info;
 
-        public Id(String id, String name) {
+        public Id(String id, String name, String info) {
             this.id = id;
             this.name = name;
+            this.info = info;
+        }
+
+        public Id(String id, String name) {
+            this(id, name, null);
         }
 
         public String getName() {
@@ -311,6 +328,15 @@ public class Icd10 {
         public boolean isInternal() {
             return INTERNAL_ICD10_INTIDS.contains(toInt());
         }
+
+        public boolean isVisible() {
+            return !isInternal();
+        }
+
+        public String getInfo() {
+            return info;
+        }
+
     }
 
     public abstract static class Range extends Id {
@@ -480,12 +506,24 @@ public class Icd10 {
 
         private final Kategori kategori;
         private final int intId;
+        private final boolean unknown;
+
+        private Kod(String id, String name, Kategori kategori, boolean unknownKod) {
+            super(id.toUpperCase(), name, unknownKod ? "Innehåller sjukfall med "
+                    + "diagnosen " + id.toUpperCase() + " där läkaren inte angett "
+                    + "en mer detaljerad diagnoskod" : null);
+            this.kategori = kategori;
+            this.unknown = unknownKod;
+            kategori.kods.add(this);
+            intId = icd10ToInt(getId(), Icd10RangeType.KOD) * (this.unknown ? -1 : 1);
+        }
 
         public Kod(String id, String name, Kategori kategori) {
-            super(id.toUpperCase(), name);
-            this.kategori = kategori;
-            kategori.kods.add(this);
-            intId = icd10ToInt(getId(), Icd10RangeType.KOD);
+            this(id, name, kategori, false);
+        }
+
+        static Kod createUnknown(Kategori kategori) {
+            return new Kod(kategori.getId(), "Okänd kod inom " + kategori.getId(), kategori, true);
         }
 
         public static Kod valueOf(String line, Collection<Kategori> kategoris) {
@@ -514,6 +552,20 @@ public class Icd10 {
         @Override
         public int toInt() {
             return intId;
+        }
+
+        public boolean isUnknown() {
+            return unknown;
+        }
+
+        @Override
+        public boolean isInternal() {
+            return unknown || super.isInternal();
+        }
+
+        @Override
+        public boolean isVisible() {
+            return unknown || super.isVisible();
         }
 
     }

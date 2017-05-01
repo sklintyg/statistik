@@ -22,25 +22,25 @@ angular.module('StatisticsApp.filterFactory.factory', []);
 angular.module('StatisticsApp.filterFactory.factory')
     .factory('businessFilterFactory',
         /** @ngInject */
-        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel) {
+        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons) {
             'use strict';
 
-            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel);
+            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons);
         }
     );
 
 angular.module('StatisticsApp.filterFactory.factory')
     .factory('landstingFilterFactory',
         /** @ngInject */
-        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel) {
+        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons) {
             'use strict';
 
-            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel);
+            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons);
         }
     );
 
 
-function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel) {
+function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons) {
     'use strict';
 
     //The businessFilter object holds all methods and properties that are part of the public API
@@ -175,24 +175,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     }
 
     businessFilter.setupDiagnosisTreeForSelectionModal = function (diagnoses) {
-        _.each(diagnoses, function (kapitel) {
-            kapitel.typ = 'kapitel';
-            kapitel.subs = kapitel.subItems;
-            kapitel.name = kapitel.id + ' ' + kapitel.name;
-            _.each(kapitel.subItems, function (avsnitt) {
-                avsnitt.typ = 'avsnitt';
-                avsnitt.subs = avsnitt.subItems;
-                avsnitt.name = avsnitt.id + ' ' + avsnitt.name;
-                _.each(avsnitt.subItems, function (kategori) {
-                    kategori.typ = 'kategori';
-                    kategori.subs = kategori.subItems;
-                    kategori.name = kategori.id + ' ' + kategori.name;
-                    _.each(kategori.subItems, function (kod) {
-                        kod.name = kod.id + ' ' + kod.name;
-                    });
-                });
-            });
-        });
+        ControllerCommons.setupDiagnosisTreeForSelectionModal(diagnoses, true);
     };
 
     businessFilter.setIcd10Structure = function (diagnoses) {

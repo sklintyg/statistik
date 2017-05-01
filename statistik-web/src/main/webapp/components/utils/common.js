@@ -425,6 +425,35 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 .replace(/[^A-Za-z0-9._]/g, '');
         };
 
+        this.setupDiagnosisTreeForSelectionModal = function(diagnoses, showCodeLevel) {
+            function showIdInName(dx) {
+                var isNumber = angular.isNumber(dx.numericalId);
+                return (isNumber && dx.numericalId > 0) || !isNumber;
+            }
+
+            _.each(diagnoses, function (kapitel) {
+                kapitel.typ = 'kapitel';
+                kapitel.subs = kapitel.subItems;
+                kapitel.name = showIdInName(kapitel) ? kapitel.id + ' ' + kapitel.name : kapitel.name;
+                _.each(kapitel.subItems, function (avsnitt) {
+                    avsnitt.typ = 'avsnitt';
+                    avsnitt.subs = avsnitt.subItems;
+                    avsnitt.name = showIdInName(avsnitt) ? avsnitt.id + ' ' + avsnitt.name : avsnitt.name;
+                    _.each(avsnitt.subItems, function (kategori) {
+                        kategori.name = showIdInName(kategori) ? kategori.id + ' ' + kategori.name : kategori.name;
+
+                        if (showCodeLevel) {
+                            kategori.typ = 'kategori';
+                            kategori.subs = kategori.subItems;
+                            _.each(kategori.subItems, function(kod) {
+                                kod.name = showIdInName(kod) ? kod.id + ' ' + kod.name : kod.name;
+                            });
+                        }
+                    });
+                });
+            });
+        };
+
         return this;
 });
 
