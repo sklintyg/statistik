@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.report.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import se.inera.statistics.service.report.util.Icd10;
 
 import java.util.ArrayList;
@@ -28,13 +29,19 @@ public class Icd implements Comparable<Icd> {
     private final String id;
     private final String name;
     private final int numericalId;
+    private final String info; //Extra information, e.g. for a tooltip
 
     private final List<Icd> subItems = new ArrayList<>();
 
-    public Icd(String id, String name, int numericalId) {
+    public Icd(String id, String name, int numericalId, String info) {
         this.id = id;
         this.name = name;
         this.numericalId = numericalId;
+        this.info = info;
+    }
+
+    public Icd(String id, String name, int numericalId) {
+        this(id, name, numericalId, null);
     }
 
     /**
@@ -47,12 +54,12 @@ public class Icd implements Comparable<Icd> {
      *            kategori or kod.
      */
     public Icd(Icd10.Id source, Class includeAllDownToThisLevel) {
-        this(source.getVisibleId(), source.getName(), source.toInt());
+        this(source.getVisibleId(), source.getName(), source.toInt(), source.getInfo());
         if (includeAllDownToThisLevel != null && includeAllDownToThisLevel.isInstance(source)) {
             return;
         }
         for (Icd10.Id subItem : source.getSubItems()) {
-            if (!subItem.isInternal()) {
+            if (subItem.isVisible()) {
                 subItems.add(new Icd(subItem, includeAllDownToThisLevel));
             }
         }
@@ -72,6 +79,11 @@ public class Icd implements Comparable<Icd> {
 
     public String getId() {
         return id;
+    }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getInfo() {
+        return info;
     }
 
     public String asString() {

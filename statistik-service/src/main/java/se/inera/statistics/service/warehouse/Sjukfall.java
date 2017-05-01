@@ -116,33 +116,47 @@ public class Sjukfall {
         return diagnos.diagnoskod;
     }
 
-    public int getIcd10CodeForType(Icd10RangeType rangeType) {
-        switch (rangeType) {
-            case KAPITEL: return getDiagnoskapitel();
-            case AVSNITT: return getDiagnosavsnitt();
-            case KATEGORI: return getDiagnoskategori();
-            case KOD: return getDiagnoskod();
-        }
-        throw new UnknownRangeTypeException("Unknown range type: " + rangeType);
-    }
-
-    public List<Integer> getAllIcd10OfType(Icd10RangeType icd10RangeType) {
+    public List<Integer> getIcd10CodeForTypes(List<Icd10RangeType> rangeTypes) {
         List<Integer> result = new ArrayList<>();
-        for (Diagnos diagnose : diagnoses) {
-            switch (icd10RangeType) {
-                case KATEGORI:
-                    result.add(diagnose.diagnoskategori);
+        for (Icd10RangeType rangeType : rangeTypes) {
+            switch (rangeType) {
+                case KAPITEL:
+                    result.add(getDiagnoskapitel());
                     break;
                 case AVSNITT:
-                    result.add(diagnose.diagnosavsnitt);
+                    result.add(getDiagnosavsnitt());
                     break;
-                case KAPITEL:
-                    result.add(diagnose.diagnoskapitel);
+                case KATEGORI:
+                    result.add(getDiagnoskategori());
                     break;
                 case KOD:
-                    result.add(diagnose.diagnoskod);
+                    result.add(getDiagnoskod());
                     break;
-                default: throw new UnknownRangeTypeException("Unknown icd range type: " + icd10RangeType);
+                default: throw new UnknownRangeTypeException("Unknown range type: " + rangeTypes);
+            }
+        }
+        return result;
+    }
+
+    public List<Integer> getAllIcd10OfTypes(List<Icd10RangeType> icd10RangeTypes) {
+        List<Integer> result = new ArrayList<>();
+        for (Icd10RangeType icd10RangeType : icd10RangeTypes) {
+            for (Diagnos diagnose : diagnoses) {
+                switch (icd10RangeType) {
+                    case KATEGORI:
+                        result.add(diagnose.diagnoskategori);
+                        break;
+                    case AVSNITT:
+                        result.add(diagnose.diagnosavsnitt);
+                        break;
+                    case KAPITEL:
+                        result.add(diagnose.diagnoskapitel);
+                        break;
+                    case KOD:
+                        result.add(diagnose.diagnoskod);
+                        break;
+                    default: throw new UnknownRangeTypeException("Unknown icd range type: " + icd10RangeType);
+                }
             }
         }
         return result;

@@ -82,7 +82,7 @@ public class DiagnosgruppQuery {
             boolean countAllDxs) {
         List<Icd10.Kapitel> kapitel = icd10.getKapitel(true);
         final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
-        List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel, Icd10RangeType.KAPITEL, countAllDxs);
+        List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel, Collections.singletonList(Icd10RangeType.KAPITEL), countAllDxs);
         removeEmptyInternalIcd10Groups(kapitel, rows);
         List<Icd> avsnitt = new ArrayList<>(kapitel.size());
         for (Icd10.Kapitel k : kapitel) {
@@ -156,7 +156,8 @@ public class DiagnosgruppQuery {
             int periodLength, List<String> diagnosis) {
         final List<Icd10.Id> kategoris = Lists.transform(diagnosis, diagnos -> icd10.findIcd10FromNumericId(Integer.valueOf(diagnos)));
         final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
-        final List<KonDataRow> periodRows = getKonDataRows(sjukfallGroups, kategoris, Icd10RangeType.KATEGORI, true);
+        final List<Icd10RangeType> rangeTypes = Arrays.asList(Icd10RangeType.KATEGORI, Icd10RangeType.KOD);
+        final List<KonDataRow> periodRows = getKonDataRows(sjukfallGroups, kategoris, rangeTypes, true);
         final List<SimpleKonDataRow> rows = new ArrayList<>(kategoris.size());
         final List<KonField> data = periodRows.get(0).getData();
         for (int i = 0; i < data.size(); i++) {
@@ -186,7 +187,8 @@ public class DiagnosgruppQuery {
             icdTyps.add(new Icd(icdItem.getVisibleId(), icdItem.getName(), icdItem.toInt()));
         }
         final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
-        final List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel.getSubItems(), rangeType, countAllDxs);
+        final List<Icd10RangeType> rangeTypes = Collections.singletonList(rangeType);
+        final List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel.getSubItems(), rangeTypes, countAllDxs);
         return new DiagnosgruppResponse(icdTyps, rows);
     }
     // CHECKSTYLE:ON ParameterNumber
@@ -197,14 +199,14 @@ public class DiagnosgruppQuery {
     }
 
     private List<KonDataRow> getKonDataRows(Iterable<SjukfallGroup> sjukfallGroups, List<? extends Icd10.Id> kapitel,
-            Icd10RangeType rangeType, boolean countAllDxs) {
+            List<Icd10RangeType> rangeTypes, boolean countAllDxs) {
         List<KonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallGroups) {
             Map<Integer, Integer> female = new HashMap<>();
             Map<Integer, Integer> male = new HashMap<>();
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                 final Set<Integer> icd10Codes = new HashSet<>(
-                        countAllDxs ? sjukfall.getAllIcd10OfType(rangeType) : Arrays.asList(sjukfall.getIcd10CodeForType(rangeType)));
+                        countAllDxs ? sjukfall.getAllIcd10OfTypes(rangeTypes) : sjukfall.getIcd10CodeForTypes(rangeTypes));
                 final Map<Integer, Integer> genderMap = sjukfall.getKon() == Kon.FEMALE ? female : male;
                 for (Integer icd10Code : icd10Codes) {
                     final int currentCount = getCurrentCount(icd10Code, genderMap);

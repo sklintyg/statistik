@@ -19,6 +19,7 @@
 package se.inera.statistics.service.warehouse;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
@@ -71,8 +72,9 @@ public class FactPopulator {
 
         return new Fact(wideline.getId(), ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf),
                 ConversionHelper.extractForsamling(lkf), enhet, intyg, patientid, startdatum, slutdatum, kon, alder,
-                extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori), extractKod(diagnoskod),
-                sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattnings, lakare, enkelt);
+                extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori),
+                extractKod(diagnoskod, diagnoskategori), sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattnings,
+                lakare, enkelt);
     }
 
     private int[] parseBefattning(WideLine wideline) {
@@ -104,10 +106,13 @@ public class FactPopulator {
         return kategori.toInt();
     }
 
-    private int extractKod(String diagnoskod) {
+    private int extractKod(String diagnoskod, String diagnoskategori) {
         Icd10.Kod kod = icd10.getKod(diagnoskod);
         if (kod == null) {
-            return Icd10.icd10ToInt(Icd10.OTHER_KOD, Icd10RangeType.KOD);
+            Icd10.Kategori kategori = icd10.getKategori(diagnoskategori);
+            final Optional<Icd10.Kod> unknownKodInKatergori = icd10.getUnknownKodInKatergori(kategori);
+            return unknownKodInKatergori.map(Icd10.Kod::toInt)
+                    .orElseGet(() -> Icd10.icd10ToInt(Icd10.OTHER_KOD, Icd10RangeType.KOD));
         }
         return kod.toInt();
     }

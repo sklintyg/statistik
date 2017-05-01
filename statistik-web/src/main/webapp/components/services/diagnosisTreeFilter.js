@@ -20,7 +20,7 @@
 angular.module('StatisticsApp')
     .factory('diagnosisTreeFilter',
         /** @ngInject */
-        function (statisticsData, _, treeMultiSelectorUtil, $window) {
+        function (statisticsData, _, treeMultiSelectorUtil, $window, ControllerCommons) {
             'use strict';
 
             var diagnosisTreeFilter = {};
@@ -71,29 +71,8 @@ angular.module('StatisticsApp')
                 diagnosisTreeFilter.selectDiagnoses(filterData.diagnoser);
             };
 
-            //This could be a common utility method
             diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal = function(diagnoses, showCodeLevel) {
-                _.each(diagnoses, function (kapitel) {
-                    kapitel.typ = 'kapitel';
-                    kapitel.subs = kapitel.subItems;
-                    kapitel.name = kapitel.id + ' ' + kapitel.name;
-                    _.each(kapitel.subItems, function (avsnitt) {
-                        avsnitt.typ = 'avsnitt';
-                        avsnitt.subs = avsnitt.subItems;
-                        avsnitt.name = avsnitt.id + ' ' + avsnitt.name;
-                        _.each(avsnitt.subItems, function (kategori) {
-                            kategori.name = kategori.id + ' ' + kategori.name;
-
-                            if (showCodeLevel) {
-                                kategori.typ = 'kategori';
-                                kategori.subs = kategori.subItems;
-                                _.each(kategori.subItems, function(kod) {
-                                    kod.name = kod.id + ' ' + kod.name;
-                                });
-                            }
-                        });
-                    });
-                });
+                ControllerCommons.setupDiagnosisTreeForSelectionModal(diagnoses, showCodeLevel);
             };
 
             //This should be a utility method
