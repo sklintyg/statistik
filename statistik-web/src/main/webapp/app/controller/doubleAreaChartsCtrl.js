@@ -127,8 +127,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             ControllerCommons.populateDetailsOptions(result, basePath, $scope, $routeParams, messageService, config);
         }
 
-        $scope.showDetailOptions3PopoverText = messageService.getProperty(config.pageHelpTextShowDetailOptions, null, '', null, true);
-
         $scope.chartContainers = [
             {id: 'chart1', name: 'diagram för kvinnor', gender: 'kvinnor'},
             {id: 'chart2', name: 'diagram för män', gender: 'män'}
