@@ -38,7 +38,6 @@ import se.inera.statistics.service.landsting.persistance.landstingenhet.Landstin
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateManager;
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
 import se.inera.statistics.service.processlog.Enhet;
-import se.inera.statistics.service.processlog.EventPointer;
 import se.inera.statistics.service.processlog.IntygEvent;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LogConsumer;
@@ -191,7 +190,7 @@ public class RestSupportService {
 
         manager.createNativeQuery("TRUNCATE TABLE " + IntygEvent.TABLE).executeUpdate();
         manager.createNativeQuery("TRUNCATE TABLE " + WideLine.TABLE).executeUpdate();
-        manager.createNativeQuery("TRUNCATE TABLE " + EventPointer.TABLE).executeUpdate();
+        manager.createQuery("UPDATE EventPointer SET eventId = 0").executeUpdate();
         manager.createNativeQuery("TRUNCATE TABLE " + Enhet.TABLE).executeUpdate();
         manager.createNativeQuery("TRUNCATE TABLE " + Lakare.TABLE).executeUpdate();
         manager.createNativeQuery("TRUNCATE TABLE " + HSAStore.TABLE).executeUpdate();
