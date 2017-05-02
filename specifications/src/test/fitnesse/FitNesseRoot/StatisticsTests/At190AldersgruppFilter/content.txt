@@ -24,7 +24,8 @@ Filter på åldersgrupp appliceras per intyg i sjukfallet.
 
 | Sjukfall i rapporten aldersgrupp |
 | inloggad som | åldersgrupp | filter åldersgrupp   | män? | kvinnor? |
-| user2        | Under 21 år |                      | 0    | 1        |
+| user2        | Under 16 år |                      | 0    | 1        |
+| user2        | 16-20 år    |                      | 0    | 0        |
 | user2        | 21-25 år    |                      | 0    | 0        |
 | user2        | 26-30 år    |                      | 0    | 1        |
 | user2        | 31-35 år    |                      | 0    | 1        |
@@ -33,17 +34,20 @@ Filter på åldersgrupp appliceras per intyg i sjukfallet.
 | user2        | 46-50 år    |                      | 0    | 0        |
 | user2        | 51-55 år    |                      | 0    | 1        |
 | user2        | 56-60 år    |                      | 0    | 0        |
-| user2        | Över 60 år  |                      | 0    | 5        |
-| user2        | Under 21 år | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | 21-25 år    | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | 26-30 år    | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | 31-35 år    | 31-35 år, Över 60 år | 0    | 1        |
-| user2        | 36-40 år    | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | 41-45 år    | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | 46-50 år    | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | 51-55 år    | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | 56-60 år    | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | Över 60 år  | 31-35 år, Över 60 år | 0    | 5        |
+| user2        | 61-65 år    |                      | 0    | 1        |
+| user2        | Över 65 år  |                      | 0    | 4        |
+| user2        | Under 16 år | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 16-20 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 21-25 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 26-30 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 31-35 år    | 31-35 år, Över 65 år | 0    | 1        |
+| user2        | 36-40 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 41-45 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 46-50 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 51-55 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 56-60 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 61-65 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | Över 65 år  | 31-35 år, Över 65 år | 0    | 4        |
 
 | Sjukfall i rapporten aldersgrupp som tidsserie |
 | inloggad som | år   | månad | åldersgrupp | filter åldersgrupp | män? | kvinnor? |

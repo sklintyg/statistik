@@ -21,11 +21,11 @@ Nationell nivå
 | åldersgrupp | män? | kvinnor? |
 | 21-25 år    | 0    | 0        |
 | 26-30 år    | 0    | 0        |
-| Över 60 år  | 1    | 0        |
+| Över 65 år  | 1    | 0        |
 
 Inloggad nivå
 | Sjukfall i rapporten aldersgrupp |
 | inloggad som | åldersgrupp | män? | kvinnor? |
 | user2        | 21-25 år    | 0    | 0        |
 | user2        | 26-30 år    | 0    | 0        |
-| user2        | Över 60 år  | 1    | 0        |
+| user2        | Över 65 år  | 1    | 0        |
