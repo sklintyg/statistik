@@ -46,10 +46,10 @@ Nationell:
 
 | Sjukfall i oversikt aldersgrupp |
 | grupp               | färg?   |
-| 31-35 år            | #799745 |
-| 26-30 år            | #FFBA3E |
-| 21-25 år            | #032C53 |
-| Under 21 år         | #E11964 |
+| 31-35 år            | #3CA3FF |
+| 26-30 år            | #799745 |
+| 21-25 år            | #FFBA3E |
+| Under 16 år         | #E11964 |
 | Andra åldersgrupper | #5D5D5D |
 
 | Sjukfall i oversikt diagnos |
@@ -70,10 +70,10 @@ Inloggad:
 
 | Sjukfall i oversikt aldersgrupp |
 | inloggad som | grupp               | färg?   |
-| user1        | 31-35 år            | #799745 |
-| user1        | 26-30 år            | #FFBA3E |
-| user1        | 21-25 år            | #032C53 |
-| user1        | Under 21 år         | #E11964 |
+| user1        | 31-35 år            | #3CA3FF |
+| user1        | 26-30 år            | #799745 |
+| user1        | 21-25 år            | #FFBA3E |
+| user1        | Under 16 år         | #E11964 |
 | user1        | Andra åldersgrupper | #5D5D5D |
 
 | Sjukfall i oversikt diagnos |
@@ -93,16 +93,18 @@ Inloggad:
 
 | Sjukfall i rapporten aldersgrupp som tidsserie diagram |
 | inloggad som | år   | månad | åldersgrupp | färg?   |
-| user1        | 2013 | sep   | Under 21 år | #E11964 |
-| user1        | 2013 | nov   | 21-25 år    | #032C53 |
-| user1        | 2013 | nov   | 26-30 år    | #FFBA3E |
-| user1        | 2013 | nov   | 31-35 år    | #799745 |
-| user1        | 2013 | nov   | 36-40 år    | #3CA3FF |
-| user1        | 2013 | nov   | 41-45 år    | #C37EB2 |
-| user1        | 2013 | nov   | 46-50 år    | #2A5152 |
-| user1        | 2013 | nov   | 51-55 år    | #FB7F4D |
-| user1        | 2013 | nov   | 56-60 år    | #5CC2BC |
-| user1        | 2013 | nov   | Över 60 år  | #704F38 |
+| user1        | 2013 | sep   | Under 16 år | #E11964 |
+| user1        | 2013 | nov   | 16-20 år    | #032C53 |
+| user1        | 2013 | nov   | 21-25 år    | #FFBA3E |
+| user1        | 2013 | nov   | 26-30 år    | #799745 |
+| user1        | 2013 | nov   | 31-35 år    | #3CA3FF |
+| user1        | 2013 | nov   | 36-40 år    | #C37EB2 |
+| user1        | 2013 | nov   | 41-45 år    | #2A5152 |
+| user1        | 2013 | nov   | 46-50 år    | #FB7F4D |
+| user1        | 2013 | nov   | 51-55 år    | #5CC2BC |
+| user1        | 2013 | nov   | 56-60 år    | #704F38 |
+| user1        | 2013 | nov   | 61-65 år    | #E11964 |
+| user1        | 2013 | nov   | Över 65 år  | #032C53 |
 
 | Sjukfall i rapporten diagnosgrupp diagram |
 | inloggad som | år   | månad | grupp                                                                                          | färg?   |
