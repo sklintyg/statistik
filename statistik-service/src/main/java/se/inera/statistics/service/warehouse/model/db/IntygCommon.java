@@ -30,7 +30,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = IntygCommon.TABLE)
 public class IntygCommon {
-    static final String TABLE = "intygcommon";
+    public static final String TABLE = "intygcommon";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -18,22 +18,24 @@
  */
 package se.inera.statistics.service.processlog;
 
-import java.util.Comparator;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.report.model.Kommun;
+import se.inera.statistics.service.report.model.VerksamhetsTyp;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.report.model.Kommun;
-import se.inera.statistics.service.report.model.VerksamhetsTyp;
+import java.util.Comparator;
 
 @Entity
-@Table(name = "enhet")
+@Table(name = Enhet.TABLE)
 public class Enhet {
+
+    public static final String TABLE = "enhet";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;

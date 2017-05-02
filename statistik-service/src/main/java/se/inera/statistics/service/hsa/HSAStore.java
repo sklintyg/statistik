@@ -23,8 +23,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "hsa")
+@Table(name = HSAStore.TABLE)
 public class HSAStore {
+
+    public static final String TABLE = "hsa";
 
     @Id
     private String id;

@@ -33,8 +33,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "messagewideline")
+@Table(name = MessageWideLine.TABLE)
 public class MessageWideLine {
+
+    public static final String TABLE = "messagewideline";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -27,8 +27,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "intyghandelse")
+@Table(name = IntygEvent.TABLE)
 public class IntygEvent {
+    public static final String TABLE = "intyghandelse";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

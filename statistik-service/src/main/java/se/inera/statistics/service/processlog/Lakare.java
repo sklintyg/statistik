@@ -29,8 +29,10 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "lakare")
+@Table(name = Lakare.TABLE)
 public class Lakare {
+
+    public static final String TABLE = "lakare";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
