@@ -28,5 +28,5 @@ Inloggad:
 
 | Sjukfall i rapporten aldersgrupp |
 | inloggad som | åldersgrupp | män? | kvinnor? |
-| user1        | Under 21 år | 0    | 0        |
+| user1        | Under 16 år | 0    | 0        |
 | user1        | 31-35 år    | 0    | 0        |

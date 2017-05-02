@@ -35,17 +35,17 @@ Flera olika sjukfall med olika åldrar och datum.
 Verksamhetsnivå:
 | Sjukfall i oversikt aldersgrupp |
 |inloggad som | grupp                         | antal? | förändring? |
-| user1       | Under 21 år                   | 2      | 100         |
+| user1       | Under 16 år                   | 2      | 100         |
 | user1       | 21-25 år                      | 2      | 0           |
 | user1       | Andra åldersgrupper           | 2      | 0           |
 | user1       | 56-60 år                      | 4      | 100         |
-| user1       | Över 60 år                    | 2      | -50         |
+| user1       | Över 65 år                    | 2      | -50         |
 
 Nationell:
 | Sjukfall i oversikt aldersgrupp |
 | grupp                         | antal? | förändring? |
-| Under 21 år                   | 2      | 100         |
+| Under 16 år                   | 2      | 100         |
 | 21-25 år                      | 2      | 0           |
 | Andra åldersgrupper           | 2      | 0           |
 | 56-60 år                      | 4      | 100         |
-| Över 60 år                    | 2      | -50         |
+| Över 65 år                    | 2      | -50         |
