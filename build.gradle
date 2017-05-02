@@ -1,5 +1,5 @@
 ext {
-    infraVersion = System.properties['infraVersion'] ?: '0-SNAPSHOT'
+    infraVersion = System.properties['infraVersion'] ?: '3.2+'
 
     intygSchematronVersion = "1.0.12"
     certificateSchemaVersion = "3.0.0-RC2.1"
