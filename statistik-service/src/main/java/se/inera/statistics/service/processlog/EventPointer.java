@@ -24,8 +24,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table (name = "handelsepekare")
+@Table (name = EventPointer.TABLE)
 public class EventPointer {
+    public static final String TABLE = "handelsepekare";
 
     private static final int MAX_NAME_LENGTH = 50;
 

@@ -18,12 +18,55 @@
  */
 package se.inera.testsupport;
 
-import java.time.Clock;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.countypopulation.CountyPopulationManagerForTest;
+import se.inera.statistics.service.hsa.HSAKey;
+import se.inera.statistics.service.hsa.HSAStore;
+import se.inera.statistics.service.hsa.HsaDataInjectable;
+import se.inera.statistics.service.hsa.HsaWsResponderMock;
+import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
+import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
+import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhetManager;
+import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateManager;
+import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
+import se.inera.statistics.service.processlog.Enhet;
+import se.inera.statistics.service.processlog.EventPointer;
+import se.inera.statistics.service.processlog.IntygEvent;
+import se.inera.statistics.service.processlog.Lakare;
+import se.inera.statistics.service.processlog.LogConsumer;
+import se.inera.statistics.service.processlog.Receiver;
+import se.inera.statistics.service.processlog.message.MessageEvent;
+import se.inera.statistics.service.processlog.message.MessageLogConsumer;
+import se.inera.statistics.service.processlog.message.ProcessMessageLog;
+import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.NationellData;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.service.warehouse.WarehouseManager;
+import se.inera.statistics.service.warehouse.WidelineConverter;
+import se.inera.statistics.service.warehouse.model.db.IntygCommon;
+import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
+import se.inera.statistics.service.warehouse.model.db.WideLine;
+import se.inera.statistics.service.warehouse.query.CalcCoordinator;
+import se.inera.statistics.service.warehouse.query.SjukfallQuery;
+import se.inera.statistics.time.ChangableClock;
+import se.inera.statistics.web.service.ChartDataService;
+import se.inera.testsupport.fkrapport.FkReportCreator;
+import se.inera.testsupport.fkrapport.FkReportDataRow;
+import se.inera.testsupport.socialstyrelsenspecial.SosCalculatedRow;
+import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
+import se.inera.testsupport.socialstyrelsenspecial.SosRow;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -39,49 +82,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdLakare;
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.countypopulation.CountyPopulationManagerForTest;
-import se.inera.statistics.service.hsa.HSAKey;
-import se.inera.statistics.service.hsa.HsaDataInjectable;
-import se.inera.statistics.service.hsa.HsaWsResponderMock;
-import se.inera.statistics.service.landsting.persistance.landsting.LandstingManager;
-import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
-import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhetManager;
-import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateManager;
-import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
-import se.inera.statistics.service.processlog.Enhet;
-import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.processlog.Receiver;
-import se.inera.statistics.service.processlog.message.MessageLogConsumer;
-import se.inera.statistics.service.processlog.message.ProcessMessageLog;
-import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.NationellData;
-import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.service.warehouse.WarehouseManager;
-import se.inera.statistics.service.warehouse.WidelineConverter;
-import se.inera.statistics.service.warehouse.query.CalcCoordinator;
-import se.inera.statistics.service.warehouse.query.SjukfallQuery;
-import se.inera.statistics.time.ChangableClock;
-import se.inera.statistics.web.service.ChartDataService;
-import se.inera.testsupport.fkrapport.FkReportCreator;
-import se.inera.testsupport.fkrapport.FkReportDataRow;
-import se.inera.testsupport.socialstyrelsenspecial.SosCalculatedRow;
-import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
-import se.inera.testsupport.socialstyrelsenspecial.SosRow;
+import java.time.Clock;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @Service("restSupportService")
 public class RestSupportService {
@@ -182,15 +188,16 @@ public class RestSupportService {
     @Produces({ MediaType.APPLICATION_JSON })
     @Transactional
     public Response clearDatabase() {
-        manager.createQuery("DELETE FROM IntygEvent").executeUpdate();
-        manager.createQuery("DELETE FROM WideLine").executeUpdate();
-        manager.createQuery("DELETE FROM EventPointer").executeUpdate();
-        manager.createQuery("DELETE FROM Enhet").executeUpdate();
-        manager.createQuery("DELETE FROM Lakare").executeUpdate();
-        manager.createQuery("DELETE FROM HSAStore").executeUpdate();
-        manager.createQuery("DELETE FROM MessageWideLine").executeUpdate();
-        manager.createQuery("DELETE FROM MessageEvent").executeUpdate();
-        manager.createQuery("DELETE FROM IntygCommon").executeUpdate();
+
+        manager.createNativeQuery("TRUNCATE TABLE " + IntygEvent.TABLE).executeUpdate();
+        manager.createNativeQuery("TRUNCATE TABLE " + WideLine.TABLE).executeUpdate();
+        manager.createNativeQuery("TRUNCATE TABLE " + EventPointer.TABLE).executeUpdate();
+        manager.createNativeQuery("TRUNCATE TABLE " + Enhet.TABLE).executeUpdate();
+        manager.createNativeQuery("TRUNCATE TABLE " + Lakare.TABLE).executeUpdate();
+        manager.createNativeQuery("TRUNCATE TABLE " + HSAStore.TABLE).executeUpdate();
+        manager.createNativeQuery("TRUNCATE TABLE " + MessageWideLine.TABLE).executeUpdate();
+        manager.createNativeQuery("TRUNCATE TABLE " + MessageEvent.TABLE).executeUpdate();
+        manager.createNativeQuery("TRUNCATE TABLE " + IntygCommon.TABLE).executeUpdate();
         warehouse.clear();
         sjukfallUtil.clearSjukfallGroupCache();
         nationalChartDataService.buildCache();

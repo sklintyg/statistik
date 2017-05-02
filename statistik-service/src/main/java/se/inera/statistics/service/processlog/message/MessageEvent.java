@@ -28,8 +28,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "meddelandehandelse")
+@Table(name = MessageEvent.TABLE)
 public class MessageEvent {
+
+    public static final String TABLE = "meddelandehandelse";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
