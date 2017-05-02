@@ -17,13 +17,15 @@ Verifierar INTYG-2918
 | 19700101-0000 | 2014-03-02 | 2014-04-15 | enhet1 | 44 år     |
 | 19800101-0000 | 2014-03-02 | 2014-04-15 | enhet1 | 34 år     |
 | 19900101-0000 | 2014-03-02 | 2014-04-15 | enhet1 | 24 år     |
+| 19970101-0000 | 2014-03-02 | 2014-04-15 | enhet1 | 17 år     |
 | 20000101-0000 | 2014-03-02 | 2014-04-15 | enhet1 | 14 år     |
 
 !3 Då gäller:
 
 | Sjukfall i rapporten aldersgrupp |
 | inloggad som | åldersgrupp | filter åldersgrupp   | män? | kvinnor? |
-| user2        | Under 21 år |                      | 0    | 1        |
+| user2        | Under 16 år |                      | 0    | 1        |
+| user2        | 16-20 år    |                      | 0    | 1        |
 | user2        | 21-25 år    |                      | 0    | 1        |
 | user2        | 26-30 år    |                      | 0    | 0        |
 | user2        | 31-35 år    |                      | 0    | 1        |
@@ -32,14 +34,17 @@ Verifierar INTYG-2918
 | user2        | 46-50 år    |                      | 0    | 0        |
 | user2        | 51-55 år    |                      | 0    | 1        |
 | user2        | 56-60 år    |                      | 0    | 0        |
-| user2        | Över 60 år  |                      | 0    | 5        |
-| user2        | Under 21 år | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | 21-25 år    | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | 26-30 år    | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | 31-35 år    | 31-35 år, Över 60 år | 0    | 1        |
-| user2        | 36-40 år    | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | 41-45 år    | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | 46-50 år    | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | 51-55 år    | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | 56-60 år    | 31-35 år, Över 60 år | 0    | 0        |
-| user2        | Över 60 år  | 31-35 år, Över 60 år | 0    | 5        |
+| user2        | 61-65 år    |                      | 0    | 1        |
+| user2        | Över 65 år  |                      | 0    | 4        |
+| user2        | Under 16 år | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 16-20 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 21-25 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 26-30 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 31-35 år    | 31-35 år, Över 65 år | 0    | 1        |
+| user2        | 36-40 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 41-45 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 46-50 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 51-55 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 56-60 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | 61-65 år    | 31-35 år, Över 65 år | 0    | 0        |
+| user2        | Över 65 år  | 31-35 år, Över 65 år | 0    | 4        |

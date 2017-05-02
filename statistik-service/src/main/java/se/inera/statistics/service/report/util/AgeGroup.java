@@ -28,16 +28,18 @@ import java.util.stream.Collectors;
 
 public enum AgeGroup {
 
-    GROUP1_0TO20("Under 21 år", 0, 20, "#E11964"),
-    GROUP2_21TO25("21-25 år", 21, 25, "#032C53"),
-    GROUP3_26TO30("26-30 år", 26, 30, "#FFBA3E"),
-    GROUP4_31TO35("31-35 år", 31, 35, "#799745"),
-    GROUP5_36TO40("36-40 år", 36, 40, "#3CA3FF"),
-    GROUP5_41TO45("41-45 år", 41, 45, "#C37EB2"),
-    GROUP5_46TO50("46-50 år", 46, 50, "#2A5152"),
-    GROUP5_51TO55("51-55 år", 51, 55, "#FB7F4D"),
-    GROUP5_56TO60("56-60 år", 56, 60, "#5CC2BC"),
-    GROUP5_61PLUS("Över 60 år", 61, Integer.MAX_VALUE - 1, "#704F38");
+    GROUP1_0TO16("Under 16 år", 0, 16, "#E11964"),
+    GROUP2_16TO20("16-20 år", 16, 20, "#032C53"),
+    GROUP2_21TO25("21-25 år", 21, 25, "#FFBA3E"),
+    GROUP3_26TO30("26-30 år", 26, 30, "#799745"),
+    GROUP4_31TO35("31-35 år", 31, 35, "#3CA3FF"),
+    GROUP5_36TO40("36-40 år", 36, 40, "#C37EB2"),
+    GROUP5_41TO45("41-45 år", 41, 45, "#2A5152"),
+    GROUP5_46TO50("46-50 år", 46, 50, "#FB7F4D"),
+    GROUP5_51TO55("51-55 år", 51, 55, "#5CC2BC"),
+    GROUP5_56TO60("56-60 år", 56, 60, "#704F38"),
+    GROUP5_61TO65("61-65 år", 61, 65, "#E11964"),
+    GROUP5_65PLUS("Över 65 år", 66, Integer.MAX_VALUE - 1, "#032C53");
 
     private static final Logger LOG = LoggerFactory.getLogger(AgeGroup.class);
 
