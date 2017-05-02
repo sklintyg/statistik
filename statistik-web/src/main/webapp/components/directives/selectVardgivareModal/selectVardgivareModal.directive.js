@@ -36,7 +36,7 @@ angular.module('StatisticsApp').directive('selectVardgivareModal',
                         templateUrl: '/components/directives/selectVardgivareModal/modal/modal.html',
                         controller: 'SelectVardgivareModalCtrl',
                         size: 'lg',
-                        backdrop: 'static',
+                        backdrop: 'true',
                         resolve: {
                             vardgivare: function () {
                                 return $scope.vardgivare;
