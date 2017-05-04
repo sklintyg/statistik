@@ -165,7 +165,8 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 buttonLabelText: messageService.getProperty('lbl.filter.val-av-diagnoser-knapp', null, '', null, true),
                 firstLevelLabelText: messageService.getProperty('lbl.filter.modal.kapitel', null, '', null, true),
                 secondLevelLabelText: messageService.getProperty('lbl.filter.modal.avsnitt', null, '', null, true),
-                thirdLevelLabelText: messageService.getProperty('lbl.filter.modal.kategorier', null, '', null, true)
+                thirdLevelLabelText: messageService.getProperty('lbl.filter.modal.kategorier', null, '', null, true),
+                leavesLevelLabelText: messageService.getProperty('lbl.filter.modal.leaves', null, '', null, true)
             };
 
             $scope.diagnosisSelected = function () {

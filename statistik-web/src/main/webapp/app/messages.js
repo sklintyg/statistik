@@ -87,6 +87,7 @@ var stMessages = {
         'lbl.filter.modal.kapitel': 'Kapitel: ',
         'lbl.filter.modal.avsnitt': 'Avsnitt: ',
         'lbl.filter.modal.kategorier': 'Kategorier: ',
+        'lbl.filter.modal.leaves': 'Diagnoskoder: ',
         'lbl.filter.modal.spara-stang': 'Spara och stäng',
         'lbl.filter.sum-progress-1': 'Genom filtreringen visas statistik från ',
         'lbl.filter.sum-progress-2': ' av totalt ',
