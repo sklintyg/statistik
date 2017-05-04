@@ -78,7 +78,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         function selectedTertiaryCounter() {
             return hasNoMenuOptionsOrSubs() ? 0 : _.reduce($scope.menuOptions.subs, function (acc, item) {
                     var nodeSum = 0;
-                    angular.forEach(item.subs, function(value, key) {
+                    angular.forEach(item.subs, function(value) {
                         nodeSum += _.reduce(value.subs, function (memo, sub) {
                             return memo + (self.selectedLeavesCount(sub) > 0 ? 1 : 0);
                         }, 0);
