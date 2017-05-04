@@ -57,8 +57,15 @@
 
 
                 <div class="modal-footer">
-                    <label class="pull-left"><div>{{textData.firstLevelLabelText}}{{selectedTertiaryCount}}<br>{{textData.secondLevelLabelText}}{{selectedSecondaryCount}}<br>{{textData.thirdLevelLabelText}}{{selectedLeavesCountAll}}</div></label>
-                    <button class="btn btn-success" type="button" data-dismiss="modal" aria-hidden="true" data-ng-click="clickedDone()" style="margin-top:10px"><span message key="lbl.filter.modal.spara-stang"></span></button>
+                  <label class="pull-left">
+                    <div style="font-weight: normal;">
+                      <span>{{textData.firstLevelLabelText}}{{selectedPrimaryCounter}}</span><br>
+                      <span>{{textData.secondLevelLabelText}}{{selectedSecondaryCounter}}</span><br>
+                      <span>{{textData.thirdLevelLabelText}}{{selectedTertiaryCounter}}</span><br>
+                      <span ng-hide="!showCodeLevel">{{textData.leavesLevelLabelText}}{{selectedLeavesCounter}}</span>
+                    </div>
+                  </label>
+                  <button class="btn btn-success" type="button" data-dismiss="modal" aria-hidden="true" data-ng-click="clickedDone()" style="margin-top:10px"><span message key="lbl.filter.modal.spara-stang"></span></button>
                 </div>
 
             </div>

@@ -56,22 +56,39 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             return !$scope.menuOptions || !$scope.menuOptions.subs || $scope.menuOptions.subs.length === 0;
         }
 
-        function selectedTertiaryCount() {
+        // Calculates number of "Kapitel"
+        function selectedPrimaryCounter() {
             return hasNoMenuOptionsOrSubs() ? 0 : _.reduce($scope.menuOptions.subs, function (memo, sub) {
                 return memo + (self.selectedLeavesCount(sub) > 0 ? 1 : 0);
             }, 0);
         }
 
-        function selectedSecondaryCount() {
+
+        // Calculates number of "Avsnitt"
+        function selectedSecondaryCounter() {
             return hasNoMenuOptionsOrSubs() ? 0 : _.reduce($scope.menuOptions.subs, function (acc, item) {
-                var nodeSum = _.reduce(item.subs, function (memo, sub) {
-                    return memo + (self.selectedLeavesCount(sub) > 0 ? 1 : 0);
+                    var nodeSum = _.reduce(item.subs, function (memo, sub) {
+                        return memo + (self.selectedLeavesCount(sub) > 0 ? 1 : 0);
+                    }, 0);
+                    return acc + nodeSum;
                 }, 0);
-                return acc + nodeSum;
-            }, 0);
         }
 
-        function selectedLeavesCountAll() {
+        // Calculates number of "Kategorier"
+        function selectedTertiaryCounter() {
+            return hasNoMenuOptionsOrSubs() ? 0 : _.reduce($scope.menuOptions.subs, function (acc, item) {
+                    var nodeSum = 0;
+                    angular.forEach(item.subs, function(value, key) {
+                        nodeSum += _.reduce(value.subs, function (memo, sub) {
+                            return memo + (self.selectedLeavesCount(sub) > 0 ? 1 : 0);
+                        }, 0);
+                    });
+                    return acc + nodeSum;
+                }, 0);
+        }
+
+        // Calculates number of leaves, i.e., "Diagnoskoder"
+        function selectedLeavesCounter() {
             return !$scope.menuOptions ? 0 : self.selectedLeavesCount($scope.menuOptions);
         }
 
@@ -188,9 +205,10 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         };
 
         $scope.updateCounters = function () {
-            $scope.selectedTertiaryCount = selectedTertiaryCount();
-            $scope.selectedSecondaryCount = selectedSecondaryCount();
-            $scope.selectedLeavesCountAll = selectedLeavesCountAll();
+            $scope.selectedPrimaryCounter = selectedPrimaryCounter();
+            $scope.selectedSecondaryCounter = selectedSecondaryCounter();
+            $scope.selectedTertiaryCounter = selectedTertiaryCounter();
+            $scope.selectedLeavesCounter = selectedLeavesCounter();
         };
 
         $scope.updateState = function (item) {
