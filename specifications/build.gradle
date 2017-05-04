@@ -99,15 +99,22 @@ dependencies {
     compile "org.apache.httpcomponents:httpmime:${httpVersion}"
     compile "org.apache.httpcomponents:httpcore:${httpVersion}"
 
-    fitnesse(project(":statistik-web")) //{ transitive = false }
-    //fitnesse(project(":statistik-service")) { transitive = false }
-    //fitnesse(project(":specifications")) { transitive = false }
+    // The reason why these dependencies are specified with "transitive = false" is that some obsolete
+    // platforms (e.g. Windows) cannot handle a very long command line, and the full, transitive
+    // dependency graph makes these platforms bail out. That means that some dependencies must
+    // be explicitly specified further down.
+    fitnesse(project(":statistik-web")) { transitive = false }
+    fitnesse(project(":statistik-service")) { transitive = false }
+    fitnesse(project(":specifications")) { transitive = false }
 
     fitnesse "org.fitnesse:fitnesse:${fitnesseVersion}"
     fitnesse "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     fitnesse "org.codehaus.groovy.modules.http-builder:http-builder:${groovyHttpVersion}"
     fitnesse "org.apache.httpcomponents:httpmime:${httpVersion}"
     fitnesse "org.apache.httpcomponents:httpcore:${httpVersion}"
+    fitnesse "com.google.guava:guava:${googleGuavaVersion}"
+    fitnesse "org.springframework:spring-core:${springContextVersion}"
+    fitnesse "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:${hibernateJpaVersion}"
     fitnesse "org.slf4j:slf4j-api:${slf4jVersion}"
     fitnesse "javax.ws.rs:javax.ws.rs-api:${javaxWsRsApiVersion}"
 }
