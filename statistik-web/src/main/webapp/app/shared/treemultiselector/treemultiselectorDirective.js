@@ -19,6 +19,7 @@
 angular.module('StatisticsApp.treeMultiSelector.directive', [])
     .directive('treeMultiSelector', function () {
         'use strict';
+
         return {
             restrict: 'EA',
             scope: {
@@ -31,6 +32,7 @@ angular.module('StatisticsApp.treeMultiSelector.directive', [])
                 buttonIcon: '@',
                 selectAllTextKey: '@',
                 searchHintTextKey: '@',
+                showCodeLevel: '=',
                 sidebarMenuExpand: '@',
                 sidebarMenuCollapse: '@',
                 sidebarState: '='
