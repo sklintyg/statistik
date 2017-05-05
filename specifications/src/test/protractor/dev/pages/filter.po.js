@@ -47,6 +47,7 @@ var Filter = function() {
     this.diagnosesBtn = this.container.element(by.css('.select-diagnoses  button[data-toggle="modal"]'));
     this.diagnosesDepth0List = this.container.all(by.css('.select-diagnoses .depth0 '));
     this.diagnosesCloseBtn = this.container.element(by.css('.select-diagnoses button[data-dismiss="modal"]'));
+    this.diagnosesSelectAll = this.container.element(by.id('select-all-diagnoses'));
 
     this.sickLeaveLengthBtn = this.container.element(by.css('.select-sjukskrivningslangd button'));
     this.sickLeaveLengthList = this.container.all(by.css('.select-sjukskrivningslangd .multiselect-container a'));
@@ -56,6 +57,9 @@ var Filter = function() {
 
 
     this.chipsList = this.container.all(by.repeater('chip in shownChips'));
+    this.chipsShowAll = this.container.element(by.id('filter-ships-show-all-btn'));
+    this.chipsShowAllModal = element(by.id('filterChipModel'));
+    this.chipsAllCloseBtn = this.chipsShowAllModal.element(by.css('button[data-dismiss="modal"]'));
 
     this.getChipNames = function() {
         return this.chipsList.map(function(elm) {

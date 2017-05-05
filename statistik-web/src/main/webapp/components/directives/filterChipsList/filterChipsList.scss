@@ -4,6 +4,10 @@ filter-chips-list {
     margin-right: 40px;
     padding: 0;
     vertical-align: top;
+
+    li {
+      list-style-type: none;
+    }
   }
 
   .filter-heading {
