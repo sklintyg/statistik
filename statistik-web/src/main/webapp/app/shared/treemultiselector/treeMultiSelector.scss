@@ -101,6 +101,10 @@ tree-multi-selector {
         > .ellipsis-text {
           max-width: calc(100% - 60px);
         }
+
+        &.leaf {
+          border-top: 1px solid #fff;
+        }
       }
 
       &.depth1 {
