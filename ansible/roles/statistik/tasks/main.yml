@@ -12,7 +12,7 @@
 
 - name: Download liquibase-runner-{{ version }}.zip
   get_url:
-    url: "https://build-inera.nordicmedtest.se/nexus/content/repositories/{{ repo }}/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip"
+    url: "https://build-inera.nordicmedtest.se/nexus/repository/{{ repo }}/se/inera/statistik/liquibase-runner/{{ version }}/liquibase-runner-{{ version }}.zip"
     dest: "{{ releases_folder }}/liquibase-runner-{{ version }}.zip"
   when: deploy_from_repo|bool
 
@@ -44,7 +44,7 @@
 
 - name: Download highcharts-export-web-{{ highcharts_version }}.war
   get_url:
-    url: "https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/com/highcharts/export/highcharts-export-web/{{ highcharts_version }}/highcharts-export-web-{{ highcharts_version }}.war"
+    url: "https://build-inera.nordicmedtest.se/nexus/repository/releases/com/highcharts/export/highcharts-export-web/{{ highcharts_version }}/highcharts-export-web-{{ highcharts_version }}.war"
     dest: "{{ releases_folder }}/highcharts-export-web-{{ highcharts_version }}.war"
 
 - name: Make sure statistik-web file download is forced when using shapshot repo
@@ -53,7 +53,7 @@
 
 - name: Download statistik-web-{{ version }}.war
   get_url:
-    url: "https://build-inera.nordicmedtest.se/nexus/content/repositories/{{ repo }}/se/inera/statistik/statistik-web/{{ version }}/statistik-web-{{ version }}.war"
+    url: "https://build-inera.nordicmedtest.se/nexus/repository/{{ repo }}/se/inera/statistik/statistik-web/{{ version }}/statistik-web-{{ version }}.war"
     dest: "{{ releases_folder }}/statistik-web-{{ version }}.war"
   when: deploy_from_repo|bool
 

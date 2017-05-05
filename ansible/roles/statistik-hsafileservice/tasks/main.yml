@@ -5,7 +5,7 @@
   when: repo == "snapshots"
 
 - name: Download hsa fileservice updater for statistik
-  get_url: url=https://build-inera.nordicmedtest.se/nexus/content/repositories/{{ repo }}/se/inera/statistik/fileservice/{{ version }}/fileservice-{{ version }}.zip
+  get_url: url=https://build-inera.nordicmedtest.se/nexus/repository/{{ repo }}/se/inera/statistik/fileservice/{{ version }}/fileservice-{{ version }}.zip
            dest={{ archive_dir }}/fileservice-{{ version }}.zip
   when: deploy_from_repo|bool
 
