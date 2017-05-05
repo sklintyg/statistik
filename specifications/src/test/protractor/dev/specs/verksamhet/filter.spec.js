@@ -210,6 +210,9 @@ describe('Verksamhetsfilter: ', function() {
 
             // Validate status
             filter.isFilterInactive();
+
+            // Close filter
+            filter.button.click();
         });
 
         function validateActiveFilter() {
@@ -229,6 +232,23 @@ describe('Verksamhetsfilter: ', function() {
             expect(filter.getChipNames()).toContain(enhet);
             expect(filter.getChipNames()).toContain(diagnoses);
         }
+    });
+
+    it ('öppna listan med alla filter om man har mer än två rader', function() {
+        filter.button.click();
+
+        // Select all diagnoses
+        filter.diagnosesBtn.click();
+        filter.diagnosesSelectAll.click();
+        filter.diagnosesCloseBtn.click();
+
+        expect(filter.chipsShowAll.isDisplayed()).toBeTruthy();
+
+        filter.chipsShowAll.click();
+
+        expect(filter.chipsShowAllModal.isDisplayed()).toBeTruthy();
+
+        filter.chipsAllCloseBtn.click();
     });
 
     it('Enhetsvalet syns inte när man bara har en enhet', function() {
