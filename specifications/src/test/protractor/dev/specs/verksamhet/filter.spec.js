@@ -182,8 +182,43 @@ describe('Verksamhetsfilter: ', function() {
         });
 
         it('Validera filtret', function() {
+            validateActiveFilter();
+        });
+
+        it('Gå till en annan rapport och se att filtret är kvar', function() {
+            // close filter
             filter.button.sendKeys(protractor.Key.ENTER);
 
+            // Navigate
+            pages.navmenu.navBusinessCasesPerMonthLink.click();
+            pages.report.isAtPage();
+
+
+            validateActiveFilter();
+        });
+
+
+        it('Ladda om sidan och filtret är hämtat', function() {
+            browser.refresh();
+
+            validateActiveFilter();
+        });
+
+
+        it('Återställ', function() {
+            filter.resetBtn.click();
+
+            // Validate status
+            filter.isFilterInactive();
+        });
+
+        function validateActiveFilter() {
+            // Validate status
+            filter.isFilterActive();
+
+            filter.button.sendKeys(protractor.Key.ENTER);
+
+            // Check values
             expect(filter.getFromDate()).toEqual(fromDate);
             expect(filter.getToDate()).toEqual(toDate);
 
@@ -193,14 +228,7 @@ describe('Verksamhetsfilter: ', function() {
             expect(filter.getChipNames()).toContain(age2);
             expect(filter.getChipNames()).toContain(enhet);
             expect(filter.getChipNames()).toContain(diagnoses);
-        });
-
-        it('Återställ', function() {
-            filter.resetBtn.click();
-
-            // Validate status
-            filter.isFilterInactive();
-        });
+        }
     });
 
     it('Enhetsvalet syns inte när man bara har en enhet', function() {
