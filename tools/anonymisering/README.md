@@ -11,7 +11,7 @@ Anonymiserings-applikationen anonymiserar intygsinnehåll i en statistikdatabas.
 Anonymisering
 Att köra applikationen
 
-    Hämta zip-filen i repot: https://build-inera.nordicmedtest.se/nexus/content/repositories/releases/se/inera/statistik/anonymisering/3.0.8/
+    Hämta zip-filen i repot: https://build-inera.nordicmedtest.se/nexus/repository/releases/se/inera/statistik/anonymisering/3.0.8/
     packa up zip-filen, gå in i katalogen:
     unzip anonymisering-3.0.8.zip
     cd anonymisering-3.0.8
