@@ -22,26 +22,28 @@ angular.module('StatisticsApp.filterFactory.factory', []);
 angular.module('StatisticsApp.filterFactory.factory')
     .factory('businessFilterFactory',
         /** @ngInject */
-        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons) {
+        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons, $q) {
             'use strict';
 
-            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons);
+            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons, $q);
         }
     );
 
 angular.module('StatisticsApp.filterFactory.factory')
     .factory('landstingFilterFactory',
         /** @ngInject */
-        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons) {
+        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons, $q) {
             'use strict';
 
-            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons);
+            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons, $q);
         }
     );
 
 
-function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons) {
+function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons, $q) {
     'use strict';
+
+    var loadingFilter = false;
 
     //The businessFilter object holds all methods and properties that are part of the public API
     var businessFilter = {};
@@ -187,8 +189,10 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     };
 
     function setPreselectedFilter(filterData) {
-        businessFilter.diagnoserSaved = _.cloneDeep(filterData.diagnoser);
-        businessFilter.selectDiagnoses(filterData.diagnoser);
+        if (businessFilter.icd10.subs.length > 0) {
+            businessFilter.diagnoserSaved = _.cloneDeep(filterData.diagnoser);
+            businessFilter.selectDiagnoses(filterData.diagnoser);
+        }
         businessFilter.selectedVerksamhetTypIds = _.uniqWith(_.map(filterData.verksamhetstyper, function(verksamhetstyp) {
             return _.find(businessFilter.verksamhetsTyper, function(verksamhet) { return _.includes(verksamhet.ids, verksamhetstyp); }).id;
         }));
@@ -204,46 +208,84 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.updateHasUserSelection();
     }
 
-    function updateIcd10StructureOnce(successCallback) {
+    function updateIcd10StructureOnce() {
+        var deferred = $q.defer();
+
         if (businessFilter.icd10.subs.length > 0) {
-            successCallback();
+            deferred.resolve();
         } else {
             statisticsData.getIcd10Structure(function (result) {
-                    businessFilter.setIcd10Structure(result);
-                    successCallback();
-                },
-                function () {
-                    throw new Error('Failed to fetch ICD10 structure tree from server');
-                });
+                businessFilter.setIcd10Structure(result);
+                deferred.resolve();
+            },
+            function () {
+                deferred.reject();
+                throw new Error('Failed to fetch ICD10 structure tree from server');
+            });
         }
+
+        return deferred.promise;
     }
 
     businessFilter.selectPreselectedFilter = function(preSelectedFilter) {
+
+        if (loadingFilter) {
+            return;
+        }
+
+        var icd10 = updateIcd10StructureOnce();
+
+        var filterData;
+
+        var loadFilter = loadFilterData(preSelectedFilter).then(function(data) {
+            filterData = data;
+        });
+
+        $q.all([loadFilter, icd10]).then(function() {
+            if (filterData) {
+                setPreselectedFilter(filterData);
+            } else {
+                businessFilter.resetSelections();
+            }
+
+            loadingFilter = false;
+        }, function() {
+            loadingFilter = false;
+        });
+    };
+
+    function loadFilterData(preSelectedFilter) {
+        var deferred = $q.defer();
+
         if (preSelectedFilter) {
+            businessFilter.dataInitialized = false;
+
             statisticsData.getFilterData(preSelectedFilter, function (filterData) {
                 setPreselectedFilter(filterData);
+                businessFilter.dataInitialized = true;
+                deferred.resolve(filterData);
             }, function () {
                 throw new Error('Could not parse filter');
             });
         } else {
-            businessFilter.resetSelections();
+            businessFilter.dataInitialized = true;
+            deferred.resolve(null);
         }
-    };
+
+        return deferred.promise;
+    }
 
     businessFilter.setup = function (businesses, preSelectedFilter) {
-        updateIcd10StructureOnce(function () {
-            businessFilter.businesses = businesses;
-            if (businessFilter.showBusinessFilter()) {
-                businessFilter.populateGeography(businesses);
-                businessFilter.populateVerksamhetsTyper(businesses);
-                businessFilter.businesses = sortSwedish(businesses, 'name', 'Okän');
-            }
-            businessFilter.populateSjukskrivningsLangd();
-            businessFilter.populateAldersgrupp();
-            businessFilter.resetSelections();
-            businessFilter.dataInitialized = true;
-            businessFilter.selectPreselectedFilter(preSelectedFilter);
-        });
+        businessFilter.businesses = businesses;
+        if (businessFilter.showBusinessFilter()) {
+            businessFilter.populateGeography(businesses);
+            businessFilter.populateVerksamhetsTyper(businesses);
+            businessFilter.businesses = sortSwedish(businesses, 'name', 'Okän');
+        }
+        businessFilter.populateSjukskrivningsLangd();
+        businessFilter.populateAldersgrupp();
+
+        businessFilter.selectPreselectedFilter(preSelectedFilter);
     };
 
     businessFilter.showBusinessFilter = function () {
