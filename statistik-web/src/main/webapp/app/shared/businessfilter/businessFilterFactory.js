@@ -265,6 +265,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
                 businessFilter.dataInitialized = true;
                 deferred.resolve(filterData);
             }, function () {
+                businessFilter.dataInitialized = true;
                 throw new Error('Could not parse filter');
             });
         } else {

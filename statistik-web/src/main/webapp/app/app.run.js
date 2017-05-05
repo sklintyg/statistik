@@ -46,8 +46,9 @@ angular.module('StatisticsApp').run(
         }
 
         if ($route.current.$$route) {
-            if ($route.current.$$route.title) {
-                $rootScope.pageName = messageService.getProperty($route.current.$$route.title, null, $route.current.$$route.title);
+            var title = $route.current.$$route.title;
+            if (title) {
+                $rootScope.pageName = messageService.getProperty(title, null, title);
             } else {
                 $rootScope.pageName = null;
             }
