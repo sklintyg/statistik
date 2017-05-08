@@ -110,6 +110,13 @@ public class ProtectedChartDataService {
     @Autowired
     private SjukfallForBiConverter sjukfallForBiConverter;
 
+    private Response getResponse(TableDataReport result, String csv, HttpServletRequest request, String filename) {
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
+        final List<Verksamhet> businesses = loginInfo.getBusinessesForVg(loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        final List<HsaIdEnhet> hsaIdEnhets = businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
+        return responseHandler.getResponse(result, csv, hsaIdEnhets, filename);
+    }
+
     /**
      * Gets sjukfall per manad for verksamhetId.
      */
@@ -128,11 +135,21 @@ public class ProtectedChartDataService {
         return getResponse(result, csv, request, "Verksamhetsstatistik_SjukfallTotalt");
     }
 
-    private Response getResponse(TableDataReport result, String csv, HttpServletRequest request, String filename) {
-        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
-        final List<Verksamhet> businesses = loginInfo.getBusinessesForVg(loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        final List<HsaIdEnhet> hsaIdEnhets = businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
-        return responseHandler.getResponse(result, csv, hsaIdEnhets, filename);
+    @GET
+    @Path("getNumberOfCasesPerMonthTvarsnitt{csv:(/csv)?}")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfCasesPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+                                                      @PathParam("csv") String csv) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
+        final Filter filter = filterSettings.getFilter();
+        final Range range = filterSettings.getRange();
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonthTvarsnitt(filter.getPredicate(), range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleDetailsData result = SimpleDualSexConverter.newGenericTvarsnitt().convert(casesPerMonth, filterSettings);
+        return getResponse(result, csv, request, "Verksamhetsstatistik_SjukfallTotalt");
     }
 
     /**
@@ -205,23 +222,6 @@ public class ProtectedChartDataService {
         SimpleKonResponse<SimpleKonDataRow> intygPerMonth = warehouse.getIntygPerTypeTvarsnitt(vg, filterSettings);
         SimpleDetailsData result = SimpleDualSexConverter.newGenericIntygTvarsnitt().convert(intygPerMonth, filterSettings);
         return getResponse(result, csv, request, "Verksamhetsstatistik_IntygPerTyp");
-    }
-
-    @GET
-    @Path("getNumberOfCasesPerMonthTvarsnitt{csv:(/csv)?}")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfCasesPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
-            @PathParam("csv") String csv) {
-        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
-        final Filter filter = filterSettings.getFilter();
-        final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonthTvarsnitt(filter.getPredicate(), range,
-                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData result = SimpleDualSexConverter.newGenericTvarsnitt().convert(casesPerMonth, filterSettings);
-        return getResponse(result, csv, request, "Verksamhetsstatistik_SjukfallTotalt");
     }
 
     /**
