@@ -3,7 +3,6 @@
     "camelcase": true,
     "curly": true,
     "eqeqeq": true,
-    "es3": true,
     "forin": true,
     "freeze": true,
     "immed": true,
@@ -25,6 +24,7 @@
     "maxerr": 10000,
     "browser": false,
     "devel": false,
+    "esversion": 5,
 
     "globals": {
         "afterEach": false,
