@@ -17,7 +17,6 @@ Om val i rapport och diagnosval i filter INTE överlappar, visas ett information
 | Sjukfall i rapporten jamfor diagnoser diagram |
 |inloggad som | valda diagnoskategorier | filter enheter | filter verksamhetstyper | filter kapitel | meddelande?     | diagnoskategori | män? | kvinnor? |
 | user1       | F32, F40                |                |                         |                | null            | A00             | -1   | -1       |
-| user1       |                         | enhet1         | 02                      | F00-F99        | null            | A00             | -1   | -1       |
 | user1       | F32, F40                | enhet1         | 02                      | F00-F99        | null            | A00             | -1   | -1       |
 | user1       | F32, A00                | enhet1         | 02                      | A00-B99        | Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering.            | A00             | 0    | 0        |
 | user1       | F32, F40                | enhet1         | 02                      | A00-B99        | Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfilter (se Visa filter högst upp på sidan).| A00 | -1 | -1 |
