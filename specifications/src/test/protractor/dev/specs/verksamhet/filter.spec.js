@@ -259,9 +259,58 @@ describe('Verksamhetsfilter: ', function() {
         expect(filter.content.isDisplayed()).toBeTruthy();
 
         expect(filter.enhetBtn.isPresent()).toBeFalsy();
+
+        // Close filter
+        filter.button.click();
+    });
+
+    it('Ändra url för att ladda filtret', function() {
+
+        filter.isFilterInactive();
+
+        filter.button.click();
+
+        filter.sickLeaveLengthBtn.click();
+        var first = filter.sickLeaveLengthList.get(1);
+        first.click();
+
+        filter.applyBtn.click();
+
+        filter.isFilterActive();
+
+        browser.getCurrentUrl().then(function(url) {
+
+            var param = getParam('filter', url);
+
+            browser.setLocation('verksamhet/oversikt?vgid=VG1');
+
+            filter.isFilterInactive();
+
+            browser.setLocation('verksamhet/oversikt?vgid=VG1&'+ param);
+
+            filter.isFilterActive();
+        });
     });
 
     afterAll(function() {
         features.user.makeSureNotLoggedIn();
     });
 });
+
+function getParam(key, sourceURL) {
+    var param,
+        paramsArr = [],
+        queryString = (sourceURL.indexOf('?') !== -1) ? sourceURL.split('?')[1] : '';
+
+    if (queryString !== '') {
+        paramsArr = queryString.split('&');
+        for (var i = paramsArr.length - 1; i >= 0; i -= 1) {
+            param = paramsArr[i].split('=')[0];
+            if (param === key) {
+                return paramsArr.splice(i, 1);
+            }
+        }
+    }
+
+    return null;
+}
