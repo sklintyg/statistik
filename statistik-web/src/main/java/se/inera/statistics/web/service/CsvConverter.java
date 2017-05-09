@@ -27,7 +27,7 @@ import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableHeader;
 
-public final class CsvConverter {
+final class CsvConverter {
 
     private final StringBuilder csv = new StringBuilder();
 

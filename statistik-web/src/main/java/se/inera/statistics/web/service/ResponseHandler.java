@@ -72,12 +72,30 @@ public class ResponseHandler {
     @Autowired
     private Warehouse warehouse;
 
-    Response getResponse(TableDataReport result, String csv, List<HsaIdEnhet> availableEnhetsForUser, String filename) {
-        if (csv == null || csv.isEmpty()) {
-            return getResponseForDataReport(result, availableEnhetsForUser);
+    Response getResponse(TableDataReport result, String format, List<HsaIdEnhet> availableEnhetsForUser, Report report) {
+        if ("xlsx".equalsIgnoreCase(format)) {
+            return getXlsx(result, availableEnhetsForUser, report);
         }
-        return CsvConverter.getCsvResponse(result.getTableData(),
-                filename + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYYMMdd")) + ".csv");
+        if ("csv".equalsIgnoreCase(format)) {
+            return CsvConverter.getCsvResponse(result.getTableData(), getFilename(report, "csv"));
+        }
+        return getResponseForDataReport(result, availableEnhetsForUser);
+    }
+
+    Response getXlsx(TableDataReport result, List<HsaIdEnhet> availableEnhetsForUser, Report report) {
+        return new XlsxConverter(icd10).getXlsxResponse(result,
+                getFilename(report, "xlsx"),
+                getFilterSelections(result, availableEnhetsForUser), report);
+    }
+
+    private String getFilename(Report report, String fileExtension) {
+        return report.getStatisticsLevel().getText()
+                + "_"
+                + report.getShortName()
+                + "_"
+                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYYMMdd"))
+                + "."
+                + fileExtension;
     }
 
     Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser) {
@@ -85,24 +103,10 @@ public class ResponseHandler {
         @SuppressWarnings("unchecked")
         Map<String, Object> mappedResult = result != null ? mapper.convertValue(result, Map.class) : Maps.newHashMap();
 
-        final boolean allAvailableDxsSelectedInFilter = result == null || areAllAvailableDxsSelectedInFilter(result.getFilter());
-        mappedResult.put(ALL_AVAILABLE_DXS_SELECTED_IN_FILTER, allAvailableDxsSelectedInFilter);
-
-        final boolean allAvailableEnhetsSelectedInFilter = result == null
-                || areAllAvailableEnhetsSelectedInFilter(result.getFilter(), availableEnhetsForUser);
-        mappedResult.put(ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER, allAvailableEnhetsSelectedInFilter);
-
-        final boolean allAvailableSjukskrivningslangdsSelectedInFilter = result == null
-                || areAllAvailableSjukskrivningslangdsSelectedInFilter(result.getFilter());
-        mappedResult.put(ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER, allAvailableSjukskrivningslangdsSelectedInFilter);
-
-        final boolean allAvailableAgeGroupsSelectedInFilter = result == null
-                || areAllAvailableAgeGroupsSelectedInFilter(result.getFilter());
-        mappedResult.put(ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER, allAvailableAgeGroupsSelectedInFilter);
-
-        final List<String> enhetNames = allAvailableEnhetsSelectedInFilter ? getEnhetNames(availableEnhetsForUser)
-                : getEnhetNamesFromFilter(result.getFilter());
-        mappedResult.put(FILTERED_ENHETS, enhetNames);
+        FilterSelections filterSelections = getFilterSelections(result, availableEnhetsForUser);
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> filterSelectionMap = mapper.convertValue(filterSelections, Map.class);
+        mappedResult.putAll(filterSelectionMap);
 
         List<Message> oldMessages = result != null ? result.getMessages() : null;
 
@@ -120,8 +124,7 @@ public class ResponseHandler {
         }
 
         if (messages.isEmpty() && result != null && result.isEmpty()) {
-            if (filterActive(result.getFilter(), allAvailableDxsSelectedInFilter, allAvailableEnhetsSelectedInFilter,
-                    allAvailableSjukskrivningslangdsSelectedInFilter, allAvailableAgeGroupsSelectedInFilter)) {
+            if (filterActive(result.getFilter(), filterSelections)) {
                 messages.add(Message.create(ErrorType.FILTER, ErrorSeverity.WARN, NO_DATA_FILTER_MESSAGE));
             } else {
                 messages.add(Message.create(ErrorType.UNSET, ErrorSeverity.WARN, NO_DATA_MESSAGE));
@@ -133,17 +136,35 @@ public class ResponseHandler {
         return Response.ok(mappedResult).build();
     }
 
-    private boolean filterActive(FilterDataResponse filter, boolean allAvailableDxsSelectedInFilter,
-            boolean allAvailableEnhetsSelectedInFilter, boolean allAvailableSjukskrivningslangdsSelectedInFilter,
-            boolean allAvailableAgeGroupsSelectedInFilter) {
-        if (filter == null) {
+    private FilterSelections getFilterSelections(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser) {
+        final boolean allAvailableDxsSelectedInFilter = result == null || areAllAvailableDxsSelectedInFilter(result.getFilter());
+
+        final boolean allAvailableEnhetsSelectedInFilter = result == null
+                || areAllAvailableEnhetsSelectedInFilter(result.getFilter(), availableEnhetsForUser);
+
+        final boolean allAvailableSjukskrivningslangdsSelectedInFilter = result == null
+                || areAllAvailableSjukskrivningslangdsSelectedInFilter(result.getFilter());
+
+        final boolean allAvailableAgeGroupsSelectedInFilter = result == null
+                || areAllAvailableAgeGroupsSelectedInFilter(result.getFilter());
+
+        final List<String> enhetNames = allAvailableEnhetsSelectedInFilter ? getEnhetNames(availableEnhetsForUser)
+                : getEnhetNamesFromFilter(result.getFilter());
+
+        return new FilterSelections(allAvailableDxsSelectedInFilter, allAvailableEnhetsSelectedInFilter,
+                allAvailableSjukskrivningslangdsSelectedInFilter, allAvailableAgeGroupsSelectedInFilter, enhetNames);
+    }
+
+    private boolean filterActive(FilterDataResponse filter, FilterSelections filterSelections) {
+        if (filter == null || filterSelections == null) {
             return false;
         }
 
-        boolean aldersGrupp = allAvailableAgeGroupsSelectedInFilter || filter.getAldersgrupp().isEmpty();
-        boolean dxs = allAvailableDxsSelectedInFilter || filter.getDiagnoser().isEmpty();
-        boolean enhets = allAvailableEnhetsSelectedInFilter || filter.getEnheter().isEmpty();
-        boolean sjukskrivningslangd = allAvailableSjukskrivningslangdsSelectedInFilter || filter.getSjukskrivningslangd().isEmpty();
+        boolean aldersGrupp = filterSelections.isAllAvailableAgeGroupsSelectedInFilter() || filter.getAldersgrupp().isEmpty();
+        boolean dxs = filterSelections.isAllAvailableDxsSelectedInFilter() || filter.getDiagnoser().isEmpty();
+        boolean enhets = filterSelections.isAllAvailableEnhetsSelectedInFilter() || filter.getEnheter().isEmpty();
+        boolean sjukskrivningslangd = filterSelections.isAllAvailableSjukskrivningslangdsSelectedInFilter()
+                || filter.getSjukskrivningslangd().isEmpty();
 
         return !(aldersGrupp && dxs && enhets && sjukskrivningslangd);
     }

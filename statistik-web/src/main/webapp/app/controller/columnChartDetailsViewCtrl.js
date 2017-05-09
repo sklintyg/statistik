@@ -147,6 +147,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
                     $scope.dataLoadingError = true;
                 });
             }
+            $scope.exportTableUrl = ControllerCommons.combineUrl($scope.exportTableUrl, $scope.queryString);
         } else {
             $scope.doneLoading = true;
         }
@@ -186,9 +187,9 @@ angular.module('StatisticsApp').nationalSickLeaveLengthConfig =
     var conf = {};
     conf.dataFetcher = 'getNationalSickLeaveLengthData';
     conf.dataFetcherVerksamhet = 'getSickLeaveLengthDataVerksamhet';
-    conf.exportTableUrl = 'api/getSickLeaveLengthData/csv';
+    conf.exportTableUrl = 'api/getSickLeaveLengthData?format=xlsx';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getSickLeaveLengthData/csv';
+        return 'api/verksamhet/getSickLeaveLengthData?format=xlsx';
     };
     conf.title = messageService.getProperty('title.sickleavelength');
     conf.chartFootnotes = function(isVerksamhet) {
@@ -214,9 +215,9 @@ angular.module('StatisticsApp').nationalAgeGroupConfig =
     var conf = {};
     conf.dataFetcher = 'getAgeGroups';
     conf.dataFetcherVerksamhet = 'getAgeGroupsVerksamhet';
-    conf.exportTableUrl = 'api/getAgeGroupsStatistics/csv';
+    conf.exportTableUrl = 'api/getAgeGroupsStatistics?format=xlsx';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getAgeGroupsStatistics/csv';
+        return 'api/verksamhet/getAgeGroupsStatistics?format=xlsx';
     };
     conf.title = messageService.getProperty('title.agegroup');
 
@@ -233,7 +234,7 @@ angular.module('StatisticsApp').casesPerSexConfig =
 
     var conf = {};
     conf.dataFetcher = 'getNationalSjukfallPerSexData';
-    conf.exportTableUrl = 'api/getSjukfallPerSexStatistics/csv';
+    conf.exportTableUrl = 'api/getSjukfallPerSexStatistics?format=xlsx';
     conf.title = messageService.getProperty('title.lan.gender');
     conf.chartFootnotes = ['help.nationell.lan.gender'];
     conf.percentChart = true;
@@ -250,10 +251,10 @@ angular.module('StatisticsApp').casesPerBusinessConfig =
     conf.dataFetcherVerksamhet = 'getSjukfallPerBusinessVerksamhet';
     conf.dataFetcherLandsting = 'getSjukfallPerBusinessLandsting';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getNumberOfCasesPerEnhet/csv';
+        return 'api/verksamhet/getNumberOfCasesPerEnhet?format=xlsx';
     };
     conf.exportTableUrlLandsting = function () {
-        return 'api/landsting/getNumberOfCasesPerEnhetLandsting/csv';
+        return 'api/landsting/getNumberOfCasesPerEnhetLandsting?format=xlsx';
     };
     conf.title = messageService.getProperty('title.vardenhet');
     conf.chartVerticalLabel = true;
@@ -281,7 +282,7 @@ angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig =
     var conf = {};
     conf.dataFetcherLandsting = 'getSjukfallPerPatientsPerBusinessLandsting';
     conf.exportTableUrlLandsting = function () {
-        return 'api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting/csv';
+        return 'api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting?format=xlsx';
     };
     conf.title = messageService.getProperty('title.vardenhet-listning');
     conf.chartFootnotes = ['help.landsting.vardenhet-listning1', 'help.landsting.vardenhet-listning2'];
@@ -298,7 +299,7 @@ angular.module('StatisticsApp').casesPerLakareConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getSjukfallPerLakareVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getNumberOfCasesPerLakare/csv';
+        return 'api/verksamhet/getNumberOfCasesPerLakare?format=xlsx';
     };
     conf.title = messageService.getProperty('title.lakare');
     conf.chartFootnotes = ['help.verksamhet.lakare'];
@@ -318,7 +319,7 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getSjukfallPerLakaresAlderOchKonVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getCasesPerDoctorAgeAndGenderStatistics/csv';
+        return 'api/verksamhet/getCasesPerDoctorAgeAndGenderStatistics?format=xlsx';
     };
     conf.title = messageService.getProperty('title.lakaregender');
     conf.chartFootnotes = ['help.verksamhet.lakaregender'];
@@ -337,7 +338,7 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getSjukfallPerLakarbefattningVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getNumberOfCasesPerLakarbefattning/csv';
+        return 'api/verksamhet/getNumberOfCasesPerLakarbefattning?format=xlsx';
     };
     conf.title = messageService.getProperty('title.lakare-befattning');
     conf.chartFootnotes = ['help.verksamhet.lakare-befattning'];
@@ -356,7 +357,7 @@ angular.module('StatisticsApp').compareDiagnosis =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getCompareDiagnosisVerksamhet';
     conf.exportTableUrlVerksamhet = function (diagnosisHash) {
-        return 'api/verksamhet/getJamforDiagnoserStatistik/' + diagnosisHash + '/csv';
+        return 'api/verksamhet/getJamforDiagnoserStatistik/' + diagnosisHash + '?format=xlsx';
     };
     conf.title = messageService.getProperty('title.diagnoscompare');
     conf.chartVerticalLabel = true;
@@ -377,7 +378,7 @@ angular.module('StatisticsApp').casesPerMonthTvarsnittConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getNumberOfCasesPerMonthTvarsnittVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getNumberOfCasesPerMonthTvarsnitt/csv';
+        return 'api/verksamhet/getNumberOfCasesPerMonthTvarsnitt?format=xlsx';
     };
     conf.title = messageService.getProperty('title.sickleave');
 
@@ -396,7 +397,7 @@ angular.module('StatisticsApp').meddelandenPerMonthTvarsnittConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getNumberOfMeddelandenPerMonthTvarsnittVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getNumberOfMeddelandenPerMonthTvarsnitt/csv';
+        return 'api/verksamhet/getNumberOfMeddelandenPerMonthTvarsnitt?format=xlsx';
     };
     conf.title = messageService.getProperty('title.meddelanden');
 
@@ -415,7 +416,7 @@ angular.module('StatisticsApp').intygPerMonthTvarsnittConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getNumberOfIntygPerMonthTvarsnittVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getNumberOfIntygPerMonthTvarsnitt/csv';
+        return 'api/verksamhet/getNumberOfIntygPerMonthTvarsnitt?format=xlsx';
     };
     conf.title = messageService.getProperty('title.intyg');
     conf.chartYAxisTitle = 'Antal intyg';
@@ -435,7 +436,7 @@ angular.module('StatisticsApp').intygPerTypeTvarsnittConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getIntygPerTypeTvarsnittVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getIntygPerTypeTvarsnitt/csv';
+        return 'api/verksamhet/getIntygPerTypeTvarsnitt?format=xlsx';
     };
     conf.title = messageService.getProperty('title.intygstyp');
     conf.chartYAxisTitle = 'Antal intyg';
@@ -455,7 +456,7 @@ angular.module('StatisticsApp').longSickLeavesTvarsnittConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getLongSickLeavesTvarsnittVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getLongSickLeavesTvarsnitt/csv';
+        return 'api/verksamhet/getLongSickLeavesTvarsnitt?format=xlsx';
     };
     conf.title = messageService.getProperty('title.sickleavelength90');
     conf.exchangeableViews = [
@@ -472,7 +473,7 @@ angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getDegreeOfSickLeaveTvarsnittVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getDegreeOfSickLeaveTvarsnitt/csv';
+        return 'api/verksamhet/getDegreeOfSickLeaveTvarsnitt?format=xlsx';
     };
     conf.showDetailsOptions = false;
     conf.title = messageService.getProperty('title.degreeofsickleave');
@@ -493,7 +494,7 @@ angular.module('StatisticsApp').differentieratIntygandeTvarsnittConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getDifferentieratIntygandeTvarsnittVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getDifferentieratIntygandeTvarsnitt/csv';
+        return 'api/verksamhet/getDifferentieratIntygandeTvarsnitt?format=xlsx';
     };
     conf.showDetailsOptions = false;
     conf.title = messageService.getProperty('title.differentierat');
@@ -514,7 +515,7 @@ angular.module('StatisticsApp').diagnosisGroupTvarsnittConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getDiagnosisGroupTvarsnittVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getDiagnosGruppTvarsnitt/csv';
+        return 'api/verksamhet/getDiagnosGruppTvarsnitt?format=xlsx';
     };
     conf.showDetailsOptions = false;
     conf.title = messageService.getProperty('title.diagnosisgroup');
@@ -534,7 +535,7 @@ angular.module('StatisticsApp').diagnosisSubGroupTvarsnittConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getSubDiagnosisGroupTvarsnittVerksamhet';
     conf.exportTableUrlVerksamhet = function (subgroupId) {
-        return 'api/verksamhet/getDiagnosavsnittTvarsnitt/' + subgroupId + '/csv';
+        return 'api/verksamhet/getDiagnosavsnittTvarsnitt/' + subgroupId + '?format=xlsx';
     };
     conf.showDetailsOptions = true;
     conf.showDetailsOptions2 = true;
@@ -565,7 +566,7 @@ angular.module('StatisticsApp').casesPerCountyConfig =
 
     var conf = {};
     conf.dataFetcher = 'getNationalCountyData';
-    conf.exportTableUrl = 'api/getCountyStatistics/csv';
+    conf.exportTableUrl = 'api/getCountyStatistics?format=xlsx';
     conf.allowDecimalsYAxis = true;
     conf.title = messageService.getProperty('title.lan');
     conf.chartYAxisTitle = 'Antal sjukfall per 1000 invånare';
