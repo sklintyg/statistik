@@ -247,9 +247,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
             } else {
                 businessFilter.resetSelections();
             }
-
-            loadingFilter = false;
-        }, function() {
+        }).finally(function() {
             loadingFilter = false;
         });
     };
