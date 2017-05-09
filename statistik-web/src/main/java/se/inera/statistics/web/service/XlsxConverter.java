@@ -20,6 +20,7 @@ package se.inera.statistics.web.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -98,7 +100,8 @@ final class XlsxConverter {
         return hlinkStyle;
     }
 
-    private void addData(Workbook workbook, TableDataReport tableData, FilterSelections filterSelections, Report report) {
+    @VisibleForTesting
+    void addData(Workbook workbook, TableDataReport tableData, FilterSelections filterSelections, Report report) {
         Sheet sheet = workbook.createSheet(dataSheetName);
         int currentRow = 0;
         currentRow = addReportHeader(tableData, report, sheet, currentRow);
@@ -127,7 +130,8 @@ final class XlsxConverter {
             addLink(sheet, "Se tabell", currentRow++, "'" + dataSheetName + "'!A1");
             sheet.createRow(currentRow++);
         }
-        currentRow = addFilter(sheet, currentRow, enheter, "Sammanställning av enheter");
+        currentRow = addFilter(sheet, currentRow,
+                enheter.isEmpty() ? Collections.singletonList("") : enheter, "Sammanställning av enheter");
         currentRow = addFilter(sheet, currentRow, getDxNames(dxs), "Sammanställning av diagnosfilter");
         currentRow = addFilter(sheet, currentRow, sjukskrivningslangds, "Sammanställning av sjukskrivningslängdsfilter");
         currentRow = addFilter(sheet, currentRow, aldersgrupps, "Sammanställning av åldersgruppsfilter");
