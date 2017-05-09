@@ -3,6 +3,7 @@ package se.inera.statistics.web.service;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class FilterSelections {
         this.allAvailableEnhetsSelectedInFilter = allAvailableEnhetsSelectedInFilter;
         this.allAvailableSjukskrivningslangdsSelectedInFilter = allAvailableSjukskrivningslangdsSelectedInFilter;
         this.allAvailableAgeGroupsSelectedInFilter = allAvailableAgeGroupsSelectedInFilter;
-        this.enhetNames = new ArrayList<>(enhetNames);
+        this.enhetNames = enhetNames == null ? Collections.emptyList() : new ArrayList<>(enhetNames);
     }
 
     public boolean isAllAvailableDxsSelectedInFilter() {
