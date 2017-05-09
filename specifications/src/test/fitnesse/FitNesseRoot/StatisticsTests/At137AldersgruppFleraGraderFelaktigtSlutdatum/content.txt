@@ -14,7 +14,7 @@ Ett sjukfall består av två intyg som överlappar varandra. Det andra intyget b
 
 !3 Då gäller:
 
-Den andra delen av intyget sorteras bort eftersom slutdatum är mer än 5 år framåt i tiden (se At102). Åldern för hela intyget sätts av den högsta åldern under sjukfallets gång, vilket är 226 år. Sjukfallet hamnar i gruppen "Över 60 år".
+Den andra delen av intyget sorteras bort eftersom slutdatum är mer än 5 år framåt i tiden (se At102). Åldern för hela intyget sätts av den högsta åldern under sjukfallets gång, vilket är 226 år. Sjukfallet hamnar i gruppen "Över 65 år".
 
 Nationell nivå
 | Sjukfall i rapporten aldersgrupp |
