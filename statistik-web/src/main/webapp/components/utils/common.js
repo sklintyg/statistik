@@ -426,6 +426,12 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 .replace(/[^A-Za-z0-9._]/g, '');
         };
 
+        this.combineUrl = function(urlBase, queryString) {
+            //Make sure query params are not started twice with a '?'
+            var fixedQueryString = urlBase.indexOf('?') > 0 ? queryString.replace('?', '&') : queryString;
+            return urlBase + fixedQueryString;
+        };
+
         this.setupDiagnosisTreeForSelectionModal = function(diagnoses, showCodeLevel) {
             function showIdInName(dx) {
                 var isNumber = angular.isNumber(dx.numericalId);

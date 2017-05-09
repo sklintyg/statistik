@@ -131,6 +131,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
                 $scope.dataLoadingError = true;
             });
         }
+        $scope.exportTableUrl = ControllerCommons.combineUrl($scope.exportTableUrl, $scope.queryString);
 
         $scope.subTitle = config.title;
         $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet) : config.chartFootnotes;
@@ -160,12 +161,12 @@ angular.module('StatisticsApp').casesPerMonthConfig =
     conf.dataFetcher = 'getNumberOfCasesPerMonth';
     conf.dataFetcherVerksamhet = 'getNumberOfCasesPerMonthVerksamhet';
     conf.dataFetcherLandsting = 'getNumberOfCasesPerMonthLandsting';
-    conf.exportTableUrl = 'api/getNumberOfCasesPerMonth/csv';
+    conf.exportTableUrl = 'api/getNumberOfCasesPerMonth?format=xlsx';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getNumberOfCasesPerMonth/csv';
+        return 'api/verksamhet/getNumberOfCasesPerMonth?format=xlsx';
     };
     conf.exportTableUrlLandsting = function () {
-        return 'api/landsting/getNumberOfCasesPerMonthLandsting/csv';
+        return 'api/landsting/getNumberOfCasesPerMonthLandsting?format=xlsx';
     };
     conf.title = messageService.getProperty('title.sickleave');
 
@@ -184,7 +185,7 @@ angular.module('StatisticsApp').longSickLeavesConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getLongSickLeavesDataVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getLongSickLeavesData/csv';
+        return 'api/verksamhet/getLongSickLeavesData?format=xlsx';
     };
     conf.title = messageService.getProperty('title.sickleavelength90');
 
@@ -203,10 +204,10 @@ angular.module('StatisticsApp').meddelandenPerMonthConfig =
         var conf = {};
         conf.dataFetcher = 'getNumberOfMeddelandenPerMonth';
         conf.dataFetcherVerksamhet = 'getNumberOfMeddelandenPerMonthVerksamhet';
-        conf.exportTableUrl = 'api/getNumberOfMeddelandenPerMonth/csv';
+        conf.exportTableUrl = 'api/getNumberOfMeddelandenPerMonth?format=xlsx';
         conf.chartYAxisTitle = 'Antal meddelanden';
         conf.exportTableUrlVerksamhet = function () {
-            return 'api/verksamhet/getNumberOfMeddelandenPerMonth/csv';
+            return 'api/verksamhet/getNumberOfMeddelandenPerMonth?format=xlsx';
         };
         conf.title = messageService.getProperty('title.meddelanden');
 
@@ -226,7 +227,7 @@ angular.module('StatisticsApp').intygPerMonthConfig =
         conf.dataFetcherVerksamhet = 'getNumberOfIntygPerMonthVerksamhet';
         conf.chartYAxisTitle = 'Antal intyg';
         conf.exportTableUrlVerksamhet = function () {
-            return 'api/verksamhet/getNumberOfIntygPerMonth/csv';
+            return 'api/verksamhet/getNumberOfIntygPerMonth?format=xlsx';
         };
         conf.title = messageService.getProperty('title.intyg');
 

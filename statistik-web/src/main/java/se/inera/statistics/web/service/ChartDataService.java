@@ -20,8 +20,8 @@ package se.inera.statistics.web.service;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,6 +32,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -66,10 +67,10 @@ import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 /**
  * Statistics services that does not require authentication. Unless otherwise noted, the data returned
- * contains two data sets, one suitable for chart display, and one suited for tables. Csv variants
+ * contains two data sets, one suitable for chart display, and one suited for tables. Csv and xlsx variants
  * only contains one data set.
  *
- * Csv files are semicolon separated, otherwise json is used.
+ * Csv files are semicolon separated, xlsx files can also be requested, otherwise json is used.
  */
 @Service("chartService")
 public class ChartDataService {
@@ -101,6 +102,9 @@ public class ChartDataService {
 
     @Autowired
     private Clock clock;
+
+    @Autowired
+    private ResponseHandler responseHandler;
 
     private volatile SimpleDetailsData numberOfCasesPerMonth;
     // private volatile SimpleDetailsData numberOfMeddelandenPerMonth;
@@ -242,36 +246,35 @@ public class ChartDataService {
      * }
      */
 
-    private Response getResponse(TableDataReport result, String csv, String filename) {
-        if (csv == null || csv.isEmpty()) {
+    private Response getResponse(TableDataReport result, String format, Report report) {
+        if (format == null || format.isEmpty()) {
             return Response.ok(result).build();
         }
-        return CsvConverter.getCsvResponse(result.getTableData(),
-                filename + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYYMMdd")) + ".csv");
+        return responseHandler.getXlsx(result, Collections.emptyList(), report);
     }
 
     /**
      * Get sjukfall per manad.
      */
     @GET
-    @Path("getNumberOfCasesPerMonth{csv:(/csv)?}")
+    @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getNumberOfCasesPerMonth(@PathParam("csv") String csv) {
+    public Response getNumberOfCasesPerMonth(@QueryParam("format") String format) {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getNumberOfCasesPerMonth");
-        return getResponse(numberOfCasesPerMonth, csv, "Nationellstatistik_SjukfallTotalt");
+        return getResponse(numberOfCasesPerMonth, format, Report.N_SJUKFALLTOTALT);
     }
 
     /**
      * Get meddelanden per manad.
      *
      * @GET
-     *      @Path("getNumberOfMeddelandenPerMonth{csv:(/csv)?}")
+     *      @Path("getNumberOfMeddelandenPerMonth")
      * @Produces({ MediaType.APPLICATION_JSON })
-     *             public Response getNumberOfMeddelandenPerMonth(@PathParam("csv") String csv) {
+     *             public Response getNumberOfMeddelandenPerMonth(@QueryParam("format") String format) {
      *             LOG.info("Calling getNumberOfMeddelandenPerMonth for national");
      *             monitoringLogService.logTrackAccessAnonymousChartData("getNumberOfMeddelandenPerMonth");
-     *             return getResponse(numberOfMeddelandenPerMonth, csv);
+     *             return getResponse(numberOfMeddelandenPerMonth, format);
      *             }
      */
 
@@ -326,27 +329,26 @@ public class ChartDataService {
     /**
      * Get sjukfall per diagnoskapitel and per diagnosgrupp. The chart data is grouped by diagnosgrupp,
      * the table data by diagnoskapitel. Diagnosgrupp is a diagnoskapitel or a list of diagnoskapitel.
-     * Csv formatted.
      */
     @GET
-    @Path("getDiagnoskapitelstatistik{csv:(/csv)?}")
+    @Path("getDiagnoskapitelstatistik")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getDiagnoskapitelstatistik(@PathParam("csv") String csv) {
+    public Response getDiagnoskapitelstatistik(@QueryParam("format") String format) {
         LOG.info("Calling getDiagnoskapitelstatistik for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getDiagnoskapitelstatistik");
-        return getResponse(diagnosgrupper, csv, "Nationellstatistik_Diagnosgrupp");
+        return getResponse(diagnosgrupper, format, Report.N_DIAGNOSGRUPP);
     }
 
     /**
      * Get sjukfall per diagnosavsnitt for given diagnoskapitel.
      */
     @GET
-    @Path("getDiagnosavsnittstatistik/{groupId}{csv:(/csv)?}")
+    @Path("getDiagnosavsnittstatistik/{groupId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getDiagnosavsnittstatistik(@PathParam("groupId") String groupId, @PathParam("csv") String csv) {
+    public Response getDiagnosavsnittstatistik(@PathParam("groupId") String groupId, @QueryParam("format") String format) {
         LOG.info("Calling getDiagnosavsnittstatistik for national with groupId: " + groupId);
         monitoringLogService.logTrackAccessAnonymousChartData("getDiagnosavsnittstatistik");
-        return getResponse(diagnoskapitel.get(groupId), csv, "Nationellstatistik_DiagnosgruppEnskiltDiagnoskapitel");
+        return getResponse(diagnoskapitel.get(groupId), format, Report.N_DIAGNOSGRUPPENSKILTDIAGNOSKAPITEL);
     }
 
     /**
@@ -365,58 +367,58 @@ public class ChartDataService {
      * Get sjukfall grouped by age and sex.
      */
     @GET
-    @Path("getAgeGroupsStatistics{csv:(/csv)?}")
+    @Path("getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getAgeGroupsStatistics(@PathParam("csv") String csv) {
+    public Response getAgeGroupsStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getAgeGroupsStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getAgeGroupsStatistics");
-        return getResponse(aldersgrupper, csv, "Nationellstatistik_Aldersgrupp");
+        return getResponse(aldersgrupper, format, Report.N_ALDERSGRUPP);
     }
 
     /**
      * Get sjukskrivningsgrad per calendar month.
      */
     @GET
-    @Path("getDegreeOfSickLeaveStatistics{csv:(/csv)?}")
+    @Path("getDegreeOfSickLeaveStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getDegreeOfSickLeaveStatistics(@PathParam("csv") String csv) {
+    public Response getDegreeOfSickLeaveStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getDegreeOfSickLeaveStatistics");
-        return getResponse(sjukskrivningsgrad, csv, "Nationellstatistik_Sjukskrivningsgrad");
+        return getResponse(sjukskrivningsgrad, format, Report.N_SJUKSKRIVNINGSGRAD);
     }
 
     /**
      * Get sjukfallslangd (grouped).
      */
     @GET
-    @Path("getSickLeaveLengthData{csv:(/csv)?}")
+    @Path("getSickLeaveLengthData")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getSickLeaveLengthData(@PathParam("csv") String csv) {
+    public Response getSickLeaveLengthData(@QueryParam("format") String format) {
         LOG.info("Calling getSickLeaveLengthData for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getSickLeaveLengthData");
-        return getResponse(sjukfallslangd, csv, "Nationellstatistik_Sjukskrivningslangd");
+        return getResponse(sjukfallslangd, format, Report.N_SJUKSKRIVNINGSLANGD);
     }
 
     /**
      * Get sjukfall per lan.
      */
     @GET
-    @Path("getCountyStatistics{csv:(/csv)?}")
+    @Path("getCountyStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getCountyStatistics(@PathParam("csv") String csv) {
-        return getResponse(sjukfallPerLan, csv, "Nationellstatistik_Lan");
+    public Response getCountyStatistics(@QueryParam("format") String format) {
+        return getResponse(sjukfallPerLan, format, Report.N_LAN);
     }
 
     /**
      * Get sjukfall per sex.
      */
     @GET
-    @Path("getSjukfallPerSexStatistics{csv:(/csv)?}")
+    @Path("getSjukfallPerSexStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getSjukfallPerSexStatistics(@PathParam("csv") String csv) {
+    public Response getSjukfallPerSexStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getSjukfallPerSexStatistics");
-        return getResponse(konsfordelningPerLan, csv, "Nationellstatistik_LanAndelSjukfallPerKon");
+        return getResponse(konsfordelningPerLan, format, Report.N_LANANDELSJUKFALLPERKON);
     }
 
     @GET

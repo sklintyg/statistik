@@ -160,6 +160,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
                     $scope.dataLoadingError = true;
                 }, ControllerCommons.getMostSpecificGroupId($routeParams));
             }
+            $scope.exportTableUrl = ControllerCommons.combineUrl($scope.exportTableUrl, $scope.queryString);
         } else {
             $scope.doneLoading = true;
         }
@@ -210,10 +211,10 @@ angular.module('StatisticsApp').diagnosisGroupConfig =
     conf.dataFetcher = 'getDiagnosisGroupData';
     conf.dataFetcherVerksamhet = 'getDiagnosisGroupDataVerksamhet';
     conf.exportTableUrl = function () {
-        return 'api/getDiagnoskapitelstatistik/csv';
+        return 'api/getDiagnoskapitelstatistik?format=xlsx';
     };
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getDiagnoskapitelstatistik/csv';
+        return 'api/verksamhet/getDiagnoskapitelstatistik?format=xlsx';
     };
     conf.showDetailsOptions = false;
     conf.suffixTitle = function (suffix) {
@@ -237,10 +238,10 @@ angular.module('StatisticsApp').diagnosisSubGroupConfig =
     conf.dataFetcher = 'getSubDiagnosisGroupData';
     conf.dataFetcherVerksamhet = 'getSubDiagnosisGroupDataVerksamhet';
     conf.exportTableUrl = function (subgroupId) {
-        return 'api/getDiagnosavsnittstatistik/' + subgroupId + '/csv';
+        return 'api/getDiagnosavsnittstatistik/' + subgroupId + '?format=xlsx';
     };
     conf.exportTableUrlVerksamhet = function (subgroupId) {
-        return 'api/verksamhet/getDiagnosavsnittstatistik/' + subgroupId + '/csv';
+        return 'api/verksamhet/getDiagnosavsnittstatistik/' + subgroupId + '?format=xlsx';
     };
     conf.showDetailsOptions = true;
     conf.showDetailsOptions2 = true;
@@ -273,10 +274,10 @@ angular.module('StatisticsApp').degreeOfSickLeaveConfig =
     conf.dataFetcher = 'getDegreeOfSickLeave';
     conf.dataFetcherVerksamhet = 'getDegreeOfSickLeaveVerksamhet';
     conf.exportTableUrl = function () {
-        return 'api/getDegreeOfSickLeaveStatistics/csv';
+        return 'api/getDegreeOfSickLeaveStatistics?format=xlsx';
     };
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getDegreeOfSickLeaveStatistics/csv';
+        return 'api/verksamhet/getDegreeOfSickLeaveStatistics?format=xlsx';
     };
     conf.showDetailsOptions = false;
     conf.suffixTitle = function (suffix) {
@@ -300,7 +301,7 @@ angular.module('StatisticsApp').differentieratIntygandeConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getDifferentieratIntygandeVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getDifferentieratIntygandeStatistics/csv';
+        return 'api/verksamhet/getDifferentieratIntygandeStatistics?format=xlsx';
     };
     conf.showDetailsOptions = false;
     conf.suffixTitle = function (suffix) {
@@ -326,7 +327,7 @@ angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getSjukfallPerBusinessTimeSeriesVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getNumberOfCasesPerEnhetTimeSeries/csv';
+        return 'api/verksamhet/getNumberOfCasesPerEnhetTimeSeries?format=xlsx';
     };
     conf.suffixTitle = function (suffix) {
         return this.title + ' ' + (suffix || '');
@@ -355,7 +356,7 @@ angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getCompareDiagnosisTimeSeriesVerksamhet';
     conf.exportTableUrlVerksamhet = function (diagnosisHash) {
-        return 'api/verksamhet/getJamforDiagnoserStatistikTidsserie/' + diagnosisHash + '/csv';
+        return 'api/verksamhet/getJamforDiagnoserStatistikTidsserie/' + diagnosisHash + '?format=xlsx';
     };
     conf.suffixTitle = function (suffix) {
         return this.title + ' ' + (suffix || '');
@@ -377,7 +378,7 @@ angular.module('StatisticsApp').nationalAgeGroupTimeSeriesConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getAgeGroupsTimeSeriesVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getAgeGroupsStatisticsAsTimeSeries/csv';
+        return 'api/verksamhet/getAgeGroupsStatisticsAsTimeSeries?format=xlsx';
     };
     conf.suffixTitle = function (suffix) {
         return this.title + ' ' + (suffix || '');
@@ -397,7 +398,7 @@ angular.module('StatisticsApp').sickLeaveLengthTimeSeriesConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getSickLeaveLengthTimeSeriesDataVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getSickLeaveLengthTimeSeries/csv';
+        return 'api/verksamhet/getSickLeaveLengthTimeSeries?format=xlsx';
     };
     conf.suffixTitle = function (suffix) {
         return this.title + ' ' + (suffix || '');
@@ -426,7 +427,7 @@ angular.module('StatisticsApp').casesPerLakarbefattningTidsserieConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getSjukfallPerLakarbefattningTidsserieVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getNumberOfCasesPerLakarbefattningSomTidsserie/csv';
+        return 'api/verksamhet/getNumberOfCasesPerLakarbefattningSomTidsserie?format=xlsx';
     };
     conf.suffixTitle = function (suffix) {
         return this.title + ' ' + (suffix || '');
@@ -447,7 +448,7 @@ angular.module('StatisticsApp').casesPerLakareTimeSeriesConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getSjukfallPerLakareSomTidsserieVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getSjukfallPerLakareSomTidsserie/csv';
+        return 'api/verksamhet/getSjukfallPerLakareSomTidsserie?format=xlsx';
     };
     conf.suffixTitle = function (suffix) {
         return this.title + ' ' + (suffix || '');
@@ -468,7 +469,7 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonTidsserieConfig =
     var conf = {};
     conf.dataFetcherVerksamhet = 'getSjukfallPerLakaresAlderOchKonTidsserieVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getCasesPerDoctorAgeAndGenderTimeSeriesStatistics/csv';
+        return 'api/verksamhet/getCasesPerDoctorAgeAndGenderTimeSeriesStatistics?format=xlsx';
     };
     conf.suffixTitle = function (suffix) {
         return this.title + ' ' + (suffix || '');
@@ -491,7 +492,7 @@ angular.module('StatisticsApp').intygPerTypePerMonthConfig =
         conf.dataFetcherVerksamhet = 'getIntygPerTypePerMonthVerksamhet';
         conf.chartYAxisTitleUnit = 'intyg';
         conf.exportTableUrlVerksamhet = function () {
-            return 'api/verksamhet/getIntygPerTypePerMonth/csv';
+            return 'api/verksamhet/getIntygPerTypePerMonth?format=xlsx';
         };
         conf.suffixTitle = function (suffix) {
             return this.title + ' ' + (suffix || '');

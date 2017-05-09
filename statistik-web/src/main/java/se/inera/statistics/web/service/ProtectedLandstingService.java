@@ -31,7 +31,6 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -76,7 +75,7 @@ import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned
- * contains two data sets, one suitable for chart display, and one suited for tables. Csv variants
+ * contains two data sets, one suitable for chart display, and one suited for tables. Csv and xlsx variants
  * only contains one data set.
  * <p/>
  * They all return 403 if called outside of a session or if authorization fails.
@@ -260,31 +259,31 @@ public class ProtectedLandstingService {
     }
 
     @GET
-    @Path("getNumberOfCasesPerMonthLandsting{csv:(/csv)?}")
+    @Path("getNumberOfCasesPerMonthLandsting")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getNumberOfCasesPerMonthLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash,
-            @PathParam("csv") String csv) {
+            @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonthLandsting(filterSettings);
         SimpleDetailsData result = new PeriodConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, csv, request, "Landstingsstatistik_SjukfallTotalt");
+        return getResponse(result, format, request, Report.L_SJUKFALLTOTALT);
     }
 
     @GET
-    @Path("getNumberOfCasesPerEnhetLandsting{csv:(/csv)?}")
+    @Path("getNumberOfCasesPerEnhetLandsting")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getNumberOfCasesPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash,
-            @PathParam("csv") String csv) {
+            @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
         final List<HsaIdEnhet> connectedEnhetIds = getEnhetIdsToMark(request);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhetLandsting(filterSettings);
         SimpleDetailsData result = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", connectedEnhetIds).convert(casesPerEnhet,
                 filterSettings);
-        return getResponse(result, csv, request, "Landstingsstatistik_Vardenhet");
+        return getResponse(result, format, request, Report.L_VARDENHET);
     }
 
     private List<HsaIdEnhet> getEnhetIdsToMark(@Context HttpServletRequest request) {
@@ -298,12 +297,12 @@ public class ProtectedLandstingService {
     }
 
     @GET
-    @Path("getNumberOfCasesPerPatientsPerEnhetLandsting{csv:(/csv)?}")
+    @Path("getNumberOfCasesPerPatientsPerEnhetLandsting")
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getNumberOfCasesPerPatientsPerEnhetLandsting(@Context HttpServletRequest request,
-            @QueryParam("landstingfilter") String filterHash, @PathParam("csv") String csv) {
+            @QueryParam("landstingfilter") String filterHash, @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerPatientsPerEnhetLandsting(filterSettings);
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
@@ -311,7 +310,7 @@ public class ProtectedLandstingService {
         final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vgIdForLoggedInUser);
         SimpleDetailsData result = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, connectedEnhetIds).convert(casesPerEnhet,
                 filterSettings, null);
-        return getResponse(result, csv, request, "Landstingsstatistik_VardenhetListningar");
+        return getResponse(result, format, request, Report.L_VARDENHETLISTNINGAR);
     }
 
     @GET
@@ -326,10 +325,10 @@ public class ProtectedLandstingService {
         return Response.ok(result).build();
     }
 
-    private Response getResponse(TableDataReport result, String csv, HttpServletRequest request, String filename) {
+    private Response getResponse(TableDataReport result, String format, HttpServletRequest request, Report report) {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final List<HsaIdEnhet> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
-        return responseHandler.getResponse(result, csv, allEnhets, filename);
+        return responseHandler.getResponse(result, format, allEnhets, report);
     }
 
     public boolean hasAccessToLandstingAdmin(HttpServletRequest request) {
