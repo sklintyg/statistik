@@ -99,6 +99,22 @@ angular.module('StatisticsApp').controller('pageCtrl',
             });
         }
 
+        var watchQueryString = $rootScope.$watch('queryString', function() {
+
+            if (AppModel.get().isLoggedIn) {
+                businessFilterFactory.selectPreselectedFilter($location.search().filter);
+                if ($scope.isLandstingInfoFetched) {
+                    landstingFilterFactory.selectPreselectedFilter($location.search().landstingfilter);
+                }
+            }
+        });
+
+        $scope.$on('$destroy', function() {
+            if (watchQueryString && typeof watchQueryString.destroy === 'function') {
+                watchQueryString.destroy();
+            }
+        });
+
         $scope.$watch('AppModel.get().isLoggedIn', function(value){
             if (value) {
                 if (!$scope.isLoginInfoFetched) {
