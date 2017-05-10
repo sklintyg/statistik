@@ -39,6 +39,7 @@ import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
 import se.inera.statistics.web.error.Message;
+import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
@@ -393,10 +394,12 @@ public class ProtectedChartDataService {
             final Range range = filterSettings.getRange();
             final DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter.getPredicate(), range, groupId,
                     loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+            final Icd10.Id icd = icd10.findFromIcd10Code(groupId);
             final Message message = getDiagnosisSubGroupStatisticsMessage(filter,
-                    Collections.singletonList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
+                    Collections.singletonList(String.valueOf(icd.toInt())));
             final DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, filterSettings, message);
-            return getResponse(data, format, request, Report.V_DIAGNOSGRUPPENSKILTDIAGNOSKAPITEL);
+            final DiagnosisSubGroupStatisticsData result = new DiagnosisSubGroupStatisticsData(data, icd);
+            return getResponse(result, format, request, Report.V_DIAGNOSGRUPPENSKILTDIAGNOSKAPITEL);
         } catch (RangeNotFoundException e) {
             LOG.debug("Range not found", e);
             return Response.serverError().entity(e.getMessage()).build();

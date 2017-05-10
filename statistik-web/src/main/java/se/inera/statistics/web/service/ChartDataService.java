@@ -59,6 +59,7 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
 import se.inera.statistics.web.model.CasesPerCountyData;
+import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
@@ -109,7 +110,7 @@ public class ChartDataService {
     private volatile SimpleDetailsData numberOfCasesPerMonth;
     // private volatile SimpleDetailsData numberOfMeddelandenPerMonth;
     private volatile DualSexStatisticsData diagnosgrupper;
-    private volatile Map<String, DualSexStatisticsData> diagnoskapitel = new HashMap<>();
+    private volatile Map<String, DiagnosisSubGroupStatisticsData> diagnoskapitel = new HashMap<>();
     private volatile OverviewData overview;
     private volatile SimpleDetailsData aldersgrupper;
     private volatile DualSexStatisticsData sjukskrivningsgrad;
@@ -192,7 +193,8 @@ public class ChartDataService {
             String id = kapitel.getId();
             DiagnosgruppResponse diagnosisGroups = data.getDiagnosavsnitt(range, id);
             final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
-            diagnoskapitel.put(id, new DiagnosisSubGroupsConverter().convert(diagnosisGroups, filterSettings));
+            final DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(diagnosisGroups, filterSettings);
+            diagnoskapitel.put(id, new DiagnosisSubGroupStatisticsData(data, kapitel));
         }
     }
 

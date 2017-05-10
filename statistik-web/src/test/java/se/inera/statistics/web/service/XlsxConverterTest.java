@@ -29,13 +29,13 @@ public class XlsxConverterTest {
     @Test
     public void testStatisticsLevelAndReportNameAndPeriodAreShownCorrect() throws Exception {
         ArrayList<String> cellTexts = addXlsxData(Report.N_SJUKSKRIVNINGSLANGD, "jan - feb");
-        assertTrue(cellTexts.toString().startsWith("[Nationell statistik, Sjukskrivningslängd jan - feb"));
+        assertTrue(cellTexts.toString().startsWith("[Nationell statistik, Antal sjukfall fördelat på sjukskrivningslängd jan - feb"));
 
         cellTexts = addXlsxData(Report.V_DIAGNOSGRUPP, "2001 till 2003");
-        assertTrue(cellTexts.toString().startsWith("[Verksamhetsstatistik, Diagnosgrupp 2001 till 2003"));
+        assertTrue(cellTexts.toString().startsWith("[Verksamhetsstatistik, Antal sjukfall fördelat på diagnosgrupp 2001 till 2003"));
 
         cellTexts = addXlsxData(Report.L_VARDENHET, "testar");
-        assertTrue(cellTexts.toString().startsWith("[Landstingsstatistik, Vårdenhet testar"));
+        assertTrue(cellTexts.toString().startsWith("[Landstingsstatistik, Antal sjukfall fördelat på vårdenhet testar"));
     }
 
     @NotNull
@@ -56,12 +56,6 @@ public class XlsxConverterTest {
 
         cellTexts = addXlsxDataForEnhetTest(Arrays.asList("TestEnhet"), null);
         assertTrue(cellTexts.toString().contains("Sammanställning av enheter, TestEnhet"));
-
-        cellTexts = addXlsxDataForEnhetTest(Arrays.asList(), null);
-        assertTrue(cellTexts.toString().contains("Sammanställning av enheter"));
-
-        cellTexts = addXlsxDataForEnhetTest(null, null);
-        assertTrue(cellTexts.toString().contains("Sammanställning av enheter"));
     }
 
     @NotNull
