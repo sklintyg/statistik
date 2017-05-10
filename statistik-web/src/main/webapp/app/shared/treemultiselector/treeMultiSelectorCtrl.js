@@ -35,6 +35,14 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             $scope.doneClicked();
         };
 
+        function updateDoneDisabled() {
+            $scope.doneDisabled = $scope.minSelections && ($scope.minSelections > $scope.selectedLeavesCounter);
+        }
+
+        $scope.$on('selectionsChanged', function() {
+            updateDoneDisabled();
+        });
+
         $scope.doneRenderingDialog = function () {
             $scope.$parent.doneLoading = true;
             $scope.doneLoading = true;
@@ -227,6 +235,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
                 }
                 $scope.dialogOpen = true;
                 $scope.updateCounters();
+                updateDoneDisabled();
                 resetFilter();
                 $timeout(function () {
                     $scope.$parent.doneLoading = true;

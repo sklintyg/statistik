@@ -65,7 +65,7 @@
                       <span ng-hide="!showCodeLevel">{{textData.leavesLevelLabelText}}{{selectedLeavesCounter}}</span>
                     </div>
                   </label>
-                  <button class="btn btn-success" type="button" data-dismiss="modal" aria-hidden="true" data-ng-click="clickedDone()" style="margin-top:10px"><span message key="lbl.filter.modal.spara-stang"></span></button>
+                  <button class="btn btn-success" type="button" data-dismiss="modal" aria-hidden="true" ng-disabled="doneDisabled" data-ng-click="clickedDone()" style="margin-top:10px"><span message key="lbl.filter.modal.spara-stang"></span></button>
                 </div>
 
             </div>
