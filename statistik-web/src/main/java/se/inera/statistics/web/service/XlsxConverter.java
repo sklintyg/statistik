@@ -42,6 +42,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableDataReport;
@@ -130,8 +131,7 @@ final class XlsxConverter {
             addLink(sheet, "Se tabell", currentRow++, "'" + dataSheetName + "'!A1");
             sheet.createRow(currentRow++);
         }
-        currentRow = addFilter(sheet, currentRow,
-                enheter.isEmpty() ? Collections.singletonList("") : enheter, "Sammanställning av enheter");
+        currentRow = addFilter(sheet, currentRow, enheter, "Sammanställning av enheter");
         currentRow = addFilter(sheet, currentRow, getDxNames(dxs), "Sammanställning av diagnosfilter");
         currentRow = addFilter(sheet, currentRow, sjukskrivningslangds, "Sammanställning av sjukskrivningslängdsfilter");
         currentRow = addFilter(sheet, currentRow, aldersgrupps, "Sammanställning av åldersgruppsfilter");
@@ -207,7 +207,9 @@ final class XlsxConverter {
     private int addReportHeader(TableDataReport tableData, Report report, Sheet sheet, int startRow) {
         int currentRow = startRow;
         addTitle(sheet, currentRow++, report.getStatisticsLevel().getText());
-        addTitle(sheet, currentRow++, report.getLongName() + " " + tableData.getPeriod());
+        final String titleExtras = tableData instanceof DiagnosisSubGroupStatisticsData
+                ? " " + ((DiagnosisSubGroupStatisticsData) tableData).getDxGroup() : "";
+        addTitle(sheet, currentRow++, report.getLongName() + titleExtras + " " + tableData.getPeriod());
         return currentRow;
     }
 

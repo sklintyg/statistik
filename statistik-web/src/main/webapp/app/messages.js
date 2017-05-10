@@ -165,7 +165,7 @@ var stMessages = {
         'title.sickleavelength': 'Antal sjukfall fördelat på sjukskrivningslängd',
         'title.sickleavelength90': 'Antal sjukfall som är längre än 90 dagar',
         'title.lakare': 'Antal sjukfall fördelat på läkare',
-        'title.lakaregender': '	Antal sjukfall fördelat på läkares ålder och kön',
+        'title.lakaregender': 'Antal sjukfall fördelat på läkares ålder och kön',
         'title.lakare-befattning': 'Antal sjukfall fördelat på läkarbefattning',
         'title.differentierat': 'Antal sjukfall inom differentierat intygande',
         'title.vardenhet-listning': 'Antal sjukfall per 1000 listningar fördelat på vårdenhet',
