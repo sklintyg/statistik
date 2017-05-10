@@ -35,7 +35,8 @@ angular.module('StatisticsApp.treeMultiSelector.directive', [])
                 showCodeLevel: '=',
                 sidebarMenuExpand: '@',
                 sidebarMenuCollapse: '@',
-                sidebarState: '='
+                sidebarState: '=',
+                minSelections: '@'
             },
             transclude: true,
             controller: 'treeMultiSelectorCtrl',
