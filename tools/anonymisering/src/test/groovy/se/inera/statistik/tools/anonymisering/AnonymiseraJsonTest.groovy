@@ -217,6 +217,22 @@ class AnonymiseraJsonTest {
         assertEquals(expected.replaceAll("\\s", ""), actual.replaceAll("\\s", ""));
     }
 
+    @Test
+    void testaAnonymiseringAvSendMessageToCare() {
+        //Given
+        AnonymiseraPersonId anonymiseraPersonId = [anonymisera:{"19810803-3022"}] as AnonymiseraPersonId
+        AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, null, null)
+
+        String expected = FileUtils.readFileToString(new ClassPathResource("/sendmessagetocare_anonymized.xml").getFile(), "UTF-8")
+
+        //When
+        String document = FileUtils.readFileToString(new ClassPathResource("/sendmessagetocare_not_anonymized.xml").getFile(), "UTF-8")
+        String actual = anonymiseraXml.anonymiseraMeddelandeXml(document, "SENT")
+
+        //Then
+        assertEquals(expected.replaceAll("\\s", ""), actual.replaceAll("\\s", ""));
+    }
+
     def buildJsonIntyg(def file, def clos = null) {
         def intygString = getClass().getResource( file ).getText( 'UTF-8' )
         def result = new JsonSlurper().parseText intygString
