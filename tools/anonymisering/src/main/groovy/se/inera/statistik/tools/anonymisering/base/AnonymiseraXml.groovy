@@ -19,6 +19,7 @@
 
 package se.inera.statistik.tools.anonymisering.base
 
+import groovy.util.slurpersupport.GPathResult
 import groovy.xml.StreamingMarkupBuilder
 
 class AnonymiseraXml {
@@ -28,7 +29,7 @@ class AnonymiseraXml {
     AnonymiseraDatum anonymiseraDatum;
 
     AnonymiseraXml(AnonymiseraPersonId anonymiseraPersonId, AnonymiseraHsaId anonymiseraHsaId,
-        AnonymiseraDatum anonymiseraDatum) {
+                   AnonymiseraDatum anonymiseraDatum) {
         this.anonymiseraPersonId = anonymiseraPersonId
         this.anonymiseraHsaId = anonymiseraHsaId
         this.anonymiseraDatum = anonymiseraDatum
@@ -42,17 +43,51 @@ class AnonymiseraXml {
         def slurper = new XmlSlurper()
         slurper.keepIgnorableWhitespace = true
         def intyg = slurper.parseText(s)
-        intyg.declareNamespace(p3: 'urn:riv:clinicalprocess:healthcond:certificate:types:2',
-                p2: 'urn:riv:clinicalprocess:healthcond:certificate:2',
-                                p1: 'urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2')
+        intyg.declareNamespace(
+            p3: 'urn:riv:clinicalprocess:healthcond:certificate:types:2',
+            p2: 'urn:riv:clinicalprocess:healthcond:certificate:2',
+            p1: 'urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2')
 
-        anonymizeXml(intyg, personId)
-        def outputBuilder = new StreamingMarkupBuilder()
-        outputBuilder.encoding = 'UTF-8'
-        return (s.startsWith('<?xml') ? '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' : "") + outputBuilder.bind{  mkp.yield intyg }
+        anonymizeCertificateXml(intyg, personId)
+        return buildOutput(s, intyg)
     }
 
-    private void anonymizeXml(def intyg, String personId) {
+    String anonymiseraMeddelandeXml(String s, String type) {
+        def slurper = new XmlSlurper()
+        slurper.keepIgnorableWhitespace = true
+        def message = slurper.parseText(s)
+
+        // Anonymisera meddelande
+        anonymizeMessageXml(declareNamespaces(message, type))
+        return buildOutput(s, message)
+    }
+
+    private String buildOutput(String s, GPathResult document) {
+        def outputBuilder = new StreamingMarkupBuilder()
+        outputBuilder.encoding = 'UTF-8'
+
+        return (
+            s.startsWith('<?xml') ? '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' : "") +
+            outputBuilder.bind {
+                mkp.yield document
+            }
+    }
+
+    private GPathResult declareNamespaces(GPathResult document, String type) {
+        switch (type) {
+            case "SENT":
+                document.declareNamespace(
+                    p1: 'urn:riv:clinicalprocess:healthcond:certificate:SendMessageToCareResponder:2',
+                    p2: 'urn:riv:clinicalprocess:healthcond:certificate:types:3');
+                break;
+            default:
+                break;
+        }
+
+        return document;
+    }
+
+    private void anonymizeCertificateXml(def intyg, String personId) {
         anonymizePnrNode intyg.'p1:intyg'.'p2:patient'.'p2:person-id'.'p3:extension' //= personId ?: "anonprn" //anonymiseraPersonId.anonymisera((String) intyg.'p1:intyg'.'p2:patient'.'p2:person-id'.'p3:extension')
         anonymizeNode intyg.'p1:intyg'.'p2:patient'.'p2:fornamn'
         anonymizeNode intyg.'p1:intyg'.'p2:patient'.'p2:efternamn'
@@ -95,6 +130,11 @@ class AnonymiseraXml {
         anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "40.2" }
         anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "44.1" }
         anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "45.2" }
+    }
+
+    private void anonymizeMessageXml(def message) {
+        anonymizePnrNode message."p1:patientPerson-id"."p2:extension"
+        anonymizeNode message."p1:meddelande"
     }
 
     private void anonymizeNode(def node) {
