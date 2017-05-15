@@ -17,7 +17,8 @@ var ReportPage = function() {
     this.compareDiagnosisLevelCategory = this.compareDiagnosisContainer.element(by.id('comparediagnoses-level-category'));
     this.compareDiagnosisLevelCode = this.compareDiagnosisContainer.element(by.id('comparediagnoses-level-code'));
     this.compareDiagnosisBtn = this.compareDiagnosisContainer.element(by.css('button[data-toggle="modal"]'));
-    this.compareDiagnosisCloseBtn = this.compareDiagnosisContainer.element(by.css('button[data-dismiss="modal"]'));
+    this.compareDiagnosisCloseBtn = this.compareDiagnosisContainer.element(by.id('treeMultiSelectorCloseBtn'));
+    this.compareDiagnosisSaveAndCloseBtn = this.compareDiagnosisContainer.element(by.id('treeMultiSelectorSaveBtn'));
 
     this.compareDiagnosisDepthList = function(depth) {
         return this.compareDiagnosisContainer.all(by.css('.depth' + depth));

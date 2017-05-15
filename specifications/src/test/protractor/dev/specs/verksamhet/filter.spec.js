@@ -101,7 +101,7 @@ describe('Verksamhetsfilter: ', function() {
         });
     });
 
-    describe('Fyll i hela filtert', function() {
+    describe('Fyll i hela filtret', function() {
         var length1, length2, age1, age2, enhet, diagnoses;
         beforeAll(function() {
             // Open filter
@@ -156,7 +156,7 @@ describe('Verksamhetsfilter: ', function() {
 
             first.element(by.css('input')).click();
 
-            filter.enhetCloseBtn.click();
+            filter.enhetSaveAndCloseBtn.click();
 
             expect(filter.getChipNames()).toContain(enhet);
         });
@@ -169,7 +169,7 @@ describe('Verksamhetsfilter: ', function() {
 
             first.element(by.css('input')).click();
 
-            filter.diagnosesCloseBtn.click();
+            filter.diagnosesSaveAndCloseBtn.click();
 
             expect(filter.getChipNames()).toContain(diagnoses);
         });
@@ -240,7 +240,7 @@ describe('Verksamhetsfilter: ', function() {
         // Select all diagnoses
         filter.diagnosesBtn.click();
         filter.diagnosesSelectAll.click();
-        filter.diagnosesCloseBtn.click();
+        filter.diagnosesSaveAndCloseBtn.click();
 
         expect(filter.chipsShowAll.isDisplayed()).toBeTruthy();
 
