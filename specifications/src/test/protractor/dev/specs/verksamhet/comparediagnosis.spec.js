@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright (C) 2017 Inera AB (http://www.inera.se)
  *
  * This file is part of sklintyg (https://github.com/sklintyg).
@@ -63,7 +63,7 @@ describe('Jämför diagnoser: ', function() {
         var diagnoses = first.getText();
         first.element(by.css('input')).click();
 
-        report.compareDiagnosisCloseBtn.click();
+        report.compareDiagnosisSaveAndCloseBtn.click();
 
         expect(report.getTableRowsLabel().first().getText()).toEqual(diagnoses);
     });
@@ -89,9 +89,31 @@ describe('Jämför diagnoser: ', function() {
 
         expect(report.compareDiagnosisDepthList(3).count()).toEqual(0);
 
-        report.compareDiagnosisCloseBtn.click();
+        report.compareDiagnosisSaveAndCloseBtn.click();
 
         expect(report.getTableRowsLabel().first().getText()).toEqual(diagnoses);
+    });
+
+    it('Det är möjligt att spara valen först när minst en diagnos är vald', function() {
+        //Make sure no selection exists by reloading report
+        pages.navmenu.navBusinessAgeGroupsLink.click();
+        pages.navmenu.navBusinessCompareDiagnosisLink.click();
+
+        //Open dx selection dialog
+        report.compareDiagnosisBtn.click();
+
+        //Save button should only be enabled when at least one diagnosis is selected (INTYG-3922)
+        expect(report.compareDiagnosisSaveAndCloseBtn.isEnabled()).toBe(false);
+
+        report.compareDiagnosisDepthList(0).first().element(by.css('input')).click();
+        expect(report.compareDiagnosisSaveAndCloseBtn.isEnabled()).toBe(true);
+
+        report.compareDiagnosisDepthList(0).first().element(by.css('input')).click();
+        expect(report.compareDiagnosisSaveAndCloseBtn.isEnabled()).toBe(false);
+
+        // Make sure it is possible to close dialog even when save button is disabled (INTYG-3921)
+        report.compareDiagnosisCloseBtn.click();
+        expect(report.compareDiagnosisSaveAndCloseBtn.isDisplayed()).toBe(false); //Dialog closed
     });
 
     afterAll(function() {

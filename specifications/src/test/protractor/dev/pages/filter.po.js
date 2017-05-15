@@ -42,11 +42,13 @@ var Filter = function() {
     this.enhetBtn = this.container.element(by.css('.select-business button[data-toggle="modal"]'));
     this.enhetDepth1List = this.container.all(by.css('.select-business .depth1'));
     this.enhetDepth2List = this.container.all(by.css('.select-business .depth2'));
-    this.enhetCloseBtn = this.container.element(by.css('.select-business button[data-dismiss="modal"]'));
+    this.enhetCloseBtn = this.container.element(by.css('.select-business #treeMultiSelectorCloseBtn'));
+    this.enhetSaveAndCloseBtn = this.container.element(by.css('.select-business #treeMultiSelectorSaveBtn'));
 
     this.diagnosesBtn = this.container.element(by.css('.select-diagnoses  button[data-toggle="modal"]'));
     this.diagnosesDepth0List = this.container.all(by.css('.select-diagnoses .depth0 '));
-    this.diagnosesCloseBtn = this.container.element(by.css('.select-diagnoses button[data-dismiss="modal"]'));
+    this.diagnosesCloseBtn = this.container.element(by.css('.select-diagnoses #treeMultiSelectorCloseBtn'));
+    this.diagnosesSaveAndCloseBtn = this.container.element(by.css('.select-diagnoses #treeMultiSelectorSaveBtn'));
     this.diagnosesSelectAll = this.container.element(by.id('select-all-diagnoses'));
 
     this.sickLeaveLengthBtn = this.container.element(by.css('.select-sjukskrivningslangd button'));
