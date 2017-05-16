@@ -126,7 +126,8 @@ final class XlsxConverter {
         int currentRow = useSeparateSheetForFilters ? 0 : startRow;
 
         if (useSeparateSheetForFilters) {
-            addLink(sheet, "Se tabell", currentRow++, "'" + dataSheetName + "'!A1");
+            final String linkText = "Se tabellen i fliken \"" + dataSheetName + "\"";
+            addLink(sheet, linkText, currentRow++, "'" + dataSheetName + "'!A1");
             sheet.createRow(currentRow++);
         }
         currentRow = addFilter(sheet, currentRow, enheter, "Sammanställning av enheter");
@@ -136,7 +137,8 @@ final class XlsxConverter {
 
         int currentRowDataSheet = useSeparateSheetForFilters ? startRow : currentRow;
         if (useSeparateSheetForFilters) {
-            addLink(dataSheet, "Se urval", currentRowDataSheet++, "'" + urvalSheetName + "'!A1");
+            final String linkText = "Se aktuellt urval i fliken \"" + urvalSheetName + "\"";
+            addLink(dataSheet, linkText, currentRowDataSheet++, "'" + urvalSheetName + "'!A1");
         }
 
         return currentRowDataSheet;
