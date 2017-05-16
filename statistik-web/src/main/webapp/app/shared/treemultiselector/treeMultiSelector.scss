@@ -155,8 +155,12 @@ tree-multi-selector {
   .modal-footer {
     clear: both;
     margin-top: 0;
-  }
-  .modal-footer label > div {
-    text-align: left;
+    label {
+      font-size: 12px;
+    }
+
+    label > div {
+      text-align: left;
+    }
   }
 }
