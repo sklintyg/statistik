@@ -84,15 +84,15 @@
       </button>
 
       <ul class="dropdown-menu detail-view-choice-dropdown dropdown-menu-right">
-        <li><a data-ng-click="printPdf()"><img src="/assets/images/dropdown-icons/pdf1b.png" />
+        <li><a data-ng-click="printPdf()"><img src="/assets/images/dropdown-icons/pdf.png" />
           <span message key="dropdown.val.skrivut-pdf"></span></a>
         </li>
         <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id, chartContainer.gender)"><img
-            src="/assets/images/dropdown-icons/png1b.png" /><span message
+            src="/assets/images/dropdown-icons/png.png" /><span message
                                                                   key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span
             message key="dropdown.val.spara-diagram-bild-2"></span></a></li>
         <li><a data-ng-href="{{exportTableUrl}}" target="_self"><img
-            src="/assets/images/dropdown-icons/csv_icon.png" /><span message key="dropdown.val.spara-excel"></span></a>
+            src="/assets/images/dropdown-icons/xlsx.png" /><span message key="dropdown.val.spara-excel"></span></a>
         </li>
       </ul>
     </div>
