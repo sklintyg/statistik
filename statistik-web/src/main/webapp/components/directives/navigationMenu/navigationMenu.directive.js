@@ -258,11 +258,12 @@
                 link: '#/verksamhet/differentieratintygande',
                 name: 'nav.differentieratintygande',
                 ctrl: 'VerksamhetDifferentieratIntygandeCtrl'
-            },{
-                id: 'navBusinessMessagesLink',
-                link: '#/verksamhet/meddelanden',
-                name: 'nav.meddelanden',
-                ctrl: 'VerksamhetMeddelandenPerMonthCtrl'
+            // },{
+            // Meddelande-rapporten ar utkommenterad eftersom den annu inte ska vara synlig för anvandarna
+            //     id: 'navBusinessMessagesLink',
+            //     link: '#/verksamhet/meddelanden',
+            //     name: 'nav.meddelanden',
+            //     ctrl: 'VerksamhetMeddelandenPerMonthCtrl'
             }]
         };
 
