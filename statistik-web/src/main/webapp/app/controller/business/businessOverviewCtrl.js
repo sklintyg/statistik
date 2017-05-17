@@ -143,7 +143,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             labelFormat: '{name} {percentage:.0f} % (antal: {y})',
             verticalAlign: 'top',
             borderWidth: 0,
-            useHTML: true,
+            useHTML: false,
             layout: 'vertical',
             itemStyle: {
                 color: '#008391',
@@ -152,6 +152,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
 
         };
         chartOptions.tooltip.pointFormat = '{point.percentage:.0f} % (antal: {point.y})';
+        chartOptions.tooltip.backgroundColor = 'rgba(255,255,255,1)';
 
         return new Highcharts.Chart(chartOptions);
     };
