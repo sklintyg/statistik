@@ -256,18 +256,13 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         var deferred = $q.defer();
 
         if (preSelectedFilter) {
-            businessFilter.dataInitialized = false;
 
             statisticsData.getFilterData(preSelectedFilter, function (filterData) {
-                setPreselectedFilter(filterData);
-                businessFilter.dataInitialized = true;
                 deferred.resolve(filterData);
             }, function () {
-                businessFilter.dataInitialized = true;
                 throw new Error('Could not parse filter');
             });
         } else {
-            businessFilter.dataInitialized = true;
             deferred.resolve(null);
         }
 
@@ -283,7 +278,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         }
         businessFilter.populateSjukskrivningsLangd();
         businessFilter.populateAldersgrupp();
-
+        businessFilter.dataInitialized = true;
         businessFilter.selectPreselectedFilter(preSelectedFilter);
     };
 
