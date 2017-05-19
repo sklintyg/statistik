@@ -846,6 +846,14 @@ a.listheader.collapsed {
 .overview-widget-content {
   display: block;
   min-height: 250px;
+
+  .col-sm-6, .col-xs-12 {
+    padding: 0;
+  }
+}
+
+#alterationChart {
+  overflow: hidden;
 }
 
 #overview-widget-content-geo {
@@ -1315,11 +1323,6 @@ Move this below content to right place
   width: 100%;
   margin: 15px 0 0 0;
   float: left;
-}
-
-#sexProportionChartOld,
-#sexProportionChartNew {
-  width: 50%;
 }
 
 .chart-container#sickLeaveLengthChart {

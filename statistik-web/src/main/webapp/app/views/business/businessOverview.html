@@ -55,8 +55,8 @@
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 left-2px-padding right-2px-padding">
 							<a data-ng-href="{{baseUrl}}/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLinkOld" class="overview-widget-link">
-								<span class="overview-widget" >
-									<span class="overview-widget-header">
+								<div class="overview-widget" >
+									<div class="overview-widget-header">
 										<h2 class="overview-widget-title pull-left">
 											<span message key="business.widget.header.total-antal"></span>
 										</h2>
@@ -65,17 +65,17 @@
 																tooltip-class="popover-content"
 																tooltip-append-to-body="true"
 																tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
-									</span>
-									<span class="overview-widget-content">
+									</div>
+									<div class="overview-widget-content">
 										<div id="alterationChart"></div>
-									</span>
-								</span>
+									</div>
+								</div>
 							</a>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 left-2px-padding right-2px-padding">
 							<a data-ng-href="{{baseUrl}}/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLink" class="overview-widget-link">
-								<span class="overview-widget" >
-									<span class="overview-widget-header">
+								<div class="overview-widget" >
+									<div class="overview-widget-header">
 										<h2 class="overview-widget-title pull-left">
 											<span message key="business.widget.header.konsfordelning-sjukfall"></span>
 										</h2>
@@ -83,12 +83,12 @@
 																uib-tooltip-html="popoverTextSexDistribution"
 																tooltip-class="popover-content"
 																tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
-									</span>
-									<span class="overview-widget-content">
-										<div class="chart-container" id="sexProportionChartOld"></div>
-										<div class="chart-container" id="sexProportionChartNew"></div>
-									</span>
-								</span>
+									</div>
+									<div class="overview-widget-content">
+										<div class="col-xs-12 col-sm-6" id="sexProportionChartOld"></div>
+										<div class="col-xs-12 col-sm-6" id="sexProportionChartNew"></div>
+									</div>
+								</div>
 							</a>
 						</div>
 					</div>
