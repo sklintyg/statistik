@@ -17,10 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-$icon-font-path: '../bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap/';
+$icon-font-path: '../bower_components/bootstrap-sass/assets/fonts/bootstrap/';
 
-@import '../bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss';
-@import '../bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap/_theme.scss';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap.scss';
+@import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_theme.scss';
 @import '../scss_mixins/_retina.scss';
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
@@ -152,55 +152,57 @@ div.box {
 
 table.table {
   margin-bottom: 0;
-}
 
-table.table thead th {
-  background-color: #8c8c8c;
-  color: #fff;
-}
+  thead th {
+    background-color: #8c8c8c;
+    color: #fff;
+  }
 
-table.table tfoot th {
-  color: #fff;
-  background-color: #8c8c8c;
-}
+  tfoot {
+    tr {
+      background-color: #e9eae8;
+      border-bottom: none;
+    }
 
-table.table tbody td {
-  background-color: #e9eae8;
-  border-bottom: none;
-}
+    th {
+      background-color: #8c8c8c;
+      color: #fff;
+    }
+  }
 
-table.table tfoot td {
-  background-color: #e9eae8;
-  border-bottom: none;
-}
+  tbody tr {
+    background-color: #e9eae8;
+    border-bottom: none;
 
-table.table tbody tr:hover td,
-table.table tbody tr:nth-child(odd):hover td {
-  background-color: #b9b9b9;
+    td.col-selected {
+      background-color: #FCF8E3;
+    }
+
+    &:hover td,
+    &:nth-child(odd):hover td {
+      background-color: #b9b9b9;
+    }
+  }
+
+  thead:first-child tr:first-child th:first-child {
+    border-radius: 8px 0 0 0;
+  }
+
+  thead:first-child tr:first-child th:last-child {
+    border-radius: 0 8px 0 0;
+  }
+
+  tfoot:last-child tr:last-child th:first-child {
+    border-radius: 0 0 0 8px;
+  }
+
+  tfoot:last-child tr:last-child td:last-child {
+    border-radius: 0 0 8px 0;
+  }
 }
 
 .tr-hover td {
   background-color: #b9b9b9 !important;
-}
-
-table.table tbody tr td.col-selected {
-  background-color: #FCF8E3;
-}
-
-table.table thead:first-child tr:first-child th:first-child {
-  border-radius: 8px 0 0 0;
-}
-
-table.table thead:first-child tr:first-child th:last-child {
-  border-radius: 0 8px 0 0;
-}
-
-table.table tfoot:last-child tr:last-child th:first-child {
-  border-radius: 0 0 0 8px;
-}
-
-table.table tfoot:last-child tr:last-child td:last-child {
-  border-radius: 0 0 8px 0;
 }
 
 #chart-footnote-trigger {
