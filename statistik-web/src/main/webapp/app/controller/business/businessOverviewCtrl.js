@@ -77,7 +77,9 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         chartOptions.chart.renderTo = 'alterationChart';
         chartOptions.chart.type = 'pie';
         chartOptions.chart.height = 210;
-        chartOptions.chart.marginTop = 20;
+        chartOptions.chart.width = 180;
+        chartOptions.chart.margin = [20, 0, 0, 0];
+        chartOptions.chart.spacing = [10, 0, 0, 0];
         chartOptions.chart.plotBorderWidth = 0;
         chartOptions.subtitle = null;
         chartOptions.title = {
@@ -125,6 +127,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         chartOptions.chart.type = 'pie';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 220;
+        chartOptions.chart.width = 220;
         chartOptions.chart.plotBorderWidth = 0;
         chartOptions.subtitle = null;
         chartOptions.title = {
@@ -162,6 +165,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         chartOptions.chart.type = 'pie';
         chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 180;
+        chartOptions.chart.width = 180;
         chartOptions.chart.plotBorderWidth = 0;
         chartOptions.subtitle = null;
         chartOptions.plotOptions.pie.showInLegend = false;

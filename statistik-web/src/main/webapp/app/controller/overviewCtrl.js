@@ -79,7 +79,9 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             chartOptions.chart.renderTo = 'alterationChart';
             chartOptions.chart.type = 'pie';
             chartOptions.chart.height = 210;
-            chartOptions.chart.marginTop = 20;
+            chartOptions.chart.width = 180;
+            chartOptions.chart.margin = [20, 0, 0, 0];
+            chartOptions.chart.spacing = [10, 0, 0, 0];
             chartOptions.chart.plotBorderWidth = 0;
             chartOptions.subtitle = null;
             chartOptions.title = {
@@ -125,6 +127,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             chartOptions.chart.type = 'pie';
             chartOptions.chart.renderTo = containerId;
             chartOptions.chart.height = 180;
+            chartOptions.chart.width = 180;
             chartOptions.subtitle.text = null;
             chartOptions.chart.plotBorderWidth = 0;
             chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">{point.key}</span><br/>';
