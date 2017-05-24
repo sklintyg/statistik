@@ -27,8 +27,12 @@ angular.module('StatisticsApp').controller('overviewCtrl',
 
         var self = this;
 
-        var perMonthAlterationChart = {}, sickLeavePerCountyChart = {},
-            ageDonutChart = {}, diagnosisDonutChart = {}, degreeOfSickLeaveChart = {}, sickLeaveLengthChart = {};
+        $scope.diagnosisDonutChartOptions = null;
+        $scope.ageDonutChartOptions = null;
+        $scope.degreeOfSickLeaveChartOptions = null;
+
+
+        var perMonthAlterationChart = {}, sickLeavePerCountyChart = {}, sickLeaveLengthChart = {};
 
         var setTooltipText = function (result) {
 
@@ -109,7 +113,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             return new Highcharts.Chart(chartOptions);
         }
 
-        var paintDonutChart = function (containerId, chartData) {
+        var paintDonutChart = function (chartData) {
             var series = [
                 {
                     name: 'Antal',
@@ -125,14 +129,13 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             var chartOptions = chartFactory.getHighChartConfigBase([], series, null, true);
 
             chartOptions.chart.type = 'pie';
-            chartOptions.chart.renderTo = containerId;
             chartOptions.chart.height = 180;
             chartOptions.chart.width = 180;
             chartOptions.subtitle.text = null;
             chartOptions.chart.plotBorderWidth = 0;
             chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">{point.key}</span><br/>';
 
-            return new Highcharts.Chart(chartOptions);
+            return chartOptions;
         };
 
         var updateCharts = function (result) {
@@ -145,17 +148,17 @@ angular.module('StatisticsApp').controller('overviewCtrl',
 
             chartFactory.addColor(result.diagnosisGroups);
             var diagnosisDonutData = extractDonutData(result.diagnosisGroups);
-            diagnosisDonutChart = paintDonutChart('diagnosisChart', diagnosisDonutData);
+            $scope.diagnosisDonutChartOptions = paintDonutChart(diagnosisDonutData);
             $scope.diagnosisGroups = result.diagnosisGroups;
 
             chartFactory.addColor(result.ageGroups);
             var ageGroupsDonutData = extractDonutData(result.ageGroups);
-            ageDonutChart = paintDonutChart('ageChart', ageGroupsDonutData);
+            $scope.ageDonutChartOptions = paintDonutChart(ageGroupsDonutData);
             $scope.ageGroups = result.ageGroups;
 
             chartFactory.addColor(result.degreeOfSickLeaveGroups);
             var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
-            degreeOfSickLeaveChart = paintDonutChart('degreeOfSickLeaveChart', degreeOfSickLeaveDonutData, null);
+            $scope.degreeOfSickLeaveChartOptions = paintDonutChart(degreeOfSickLeaveDonutData, null);
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
             chartFactory.addColor(result.sickLeaveLength.chartData);
@@ -301,7 +304,9 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             var charts = [];
 
             var topCharts = [];
-
+            var diagnosisDonutChart = $('#diagnosisChart').highcharts();
+            var ageDonutChart = $('#ageChart').highcharts();
+            var degreeOfSickLeaveChart = $('#degreeOfSickLeaveChart').highcharts();
 
             topCharts.push({
                 title: messageService.getProperty('national.widget.header.konsfordelning'),
@@ -415,18 +420,6 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         $scope.$on('$destroy', function() {
             if(perMonthAlterationChart && typeof perMonthAlterationChart.destroy === 'function') {
                 perMonthAlterationChart.destroy();
-            }
-
-            if(ageDonutChart && typeof ageDonutChart.destroy === 'function') {
-                ageDonutChart.destroy();
-            }
-
-            if(diagnosisDonutChart && typeof diagnosisDonutChart.destroy === 'function') {
-                diagnosisDonutChart.destroy();
-            }
-
-            if(degreeOfSickLeaveChart && typeof degreeOfSickLeaveChart.destroy === 'function') {
-                degreeOfSickLeaveChart.destroy();
             }
 
             if(sickLeaveLengthChart && typeof sickLeaveLengthChart.destroy === 'function') {

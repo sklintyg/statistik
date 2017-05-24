@@ -1,16 +1,23 @@
-<div class="node" ng-class="{'depth0': depth ===0, 'depth1': depth ===1, 'depth2': depth ===2, 'depth3': depth ===3, 'leaf': !(item.subs && item.subs.length >0)}" ng-click="recursionhelper.hideclick(item, $event)">
+<div
+    class="node"
+    ng-class="[depthClass, {'leaf': !(item.subs && item.subs.length >0)}]"
+    ng-click="hideClick({node: item, event: $event})">
     <span class="indenter"></span>
-    <input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="recursionhelper.itemclick(item, $event)"/>
+    <input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="itemClick({node: item, event: $event})" />
 
-    <span ng-click="recursionhelper.itemclick(item, $event)" class="ellipsis-text" data-ng-class="{'highlight-words': item.info}" data-toggle="tooltip" data-placement="auto right" title="" ng-attr-data-original-title="{{item.info}}">
+    <span ng-click="itemClick({node: item, event: $event})" class="ellipsis-text" data-ng-class="{'highlight-words': item.info}" data-toggle="tooltip" data-placement="auto right" title="" ng-attr-data-original-title="{{item.info}}">
       {{::item.name}}
     </span>
-    <span ng-click="recursionhelper.hideclick(item, $event);" class="submenuicon glyphicon" ng-class="{'glyphicon-chevron-up': item.showChildren, 'glyphicon-chevron-down': !item.showChildren}"></span>
+    <span ng-click="hideClick({node: item, event: $event})" class="submenuicon glyphicon" ng-class="{'glyphicon-chevron-up': item.showChildren, 'glyphicon-chevron-down': !item.showChildren}"></span>
 
 </div>
 
-  <div data-ng-if="item.subs && item.showChildren">
-    <div class="node-parent" data-ng-init="depth=depth+1" data-ng-repeat="item in item.subs">
-      <submenu item="item" itemroot="itemroot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" ng-class="{'leaf': !(item.subs && item.subs.length >0)}" class="depth{{depth}}"></submenu>
-    </div>
+  <div data-ng-if="item.showChildren && item.subs">
+    <submenu
+        data-ng-repeat="item in item.subs | filter: {hide: false}"
+        item="item"
+        depth="subDepth"
+        item-click="subItemClick(node, event)"
+        hide-click="subHideClick(node, event)"
+        ></submenu>
   </div>

@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* globals Highcharts */
 angular.module('StatisticsApp').directive('overviewWidget',
     /** @ngInject */
     function () {
@@ -28,6 +29,7 @@ angular.module('StatisticsApp').directive('overviewWidget',
                 titleKey: '@',
                 tooltipContent: '=',
                 chartId: '@',
+                options: '=',
                 groups: '=',
                 columnTitle1: '@',
                 columnTitle2: '@',
@@ -36,9 +38,23 @@ angular.module('StatisticsApp').directive('overviewWidget',
             },
             templateUrl: '/components/directives/overviewWidget/overviewWidget.html',
             link: function($scope) {
+                var chart = null;
+
                 if ($scope.valueSuffix) {
                     $scope.valueSuffixWithSpace = ' ' + $scope.valueSuffix;
                 }
+
+                $scope.$watch('options', function(newValue) {
+                    if (newValue) {
+                        chart = Highcharts.chart($scope.chartId, newValue);
+                    }
+                });
+
+                $scope.$on('$destroy', function() {
+                    if(chart && typeof chart.destroy === 'function') {
+                        chart.destroy();
+                    }
+                });
             }
         };
     });

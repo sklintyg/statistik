@@ -19,18 +19,29 @@
 
 angular.module('StatisticsApp').directive('submenu',
     /** @ngInject */
-    function (recursionService) {
+    function () {
         'use strict';
 
         return {
             restrict: 'E',
             scope: {
                 item: '=',
-                itemroot: '=',
                 depth: '=',
-                recursionhelper: '='
+                hideClick: '&',
+                itemClick: '&'
             },
             templateUrl: '/components/directives/submenu/submenu.html',
-            compile: recursionService.compile
+            link: function($scope) {
+                $scope.depthClass = 'depth' + $scope.depth;
+                $scope.subDepth = $scope.depth + 1;
+
+                $scope.subItemClick = function(node, event) {
+                    $scope.itemClick({node: node, event: event});
+                };
+
+                $scope.subHideClick = function(node, event) {
+                    $scope.hideClick({node: node, event: event});
+                };
+            }
         };
 });
