@@ -12,12 +12,7 @@
                     <span id="myModalLabel">{{textData.titleText}}</span>
                 </div>
 
-                <div class="modal-body" spinner label="{{spinnerText}}" show-spinner="!doneLoading && transitionsSupported" show-content="!doneLoading" data-ng-show="!doneLoading && transitionsSupported">
-                </div>
-
-                <div class="modal-body" data-ng-show="!doneLoading && !transitionsSupported">
-                    <h2><b><span message key="info.multiselect.loading"></span></b></h2>
-                </div>
+                <div class="modal-body" spinner label="{{spinnerText}}" show-spinner="!doneLoading"></div>
 
                 <div class="modal-body row" ng-if="dialogOpen" >
                     <div id="modal-body-left"  ng-class="{'border-right col-xs-8 ': !sidebarState.collapsed, 'col-xs-12': sidebarState.collapsed }">
@@ -25,7 +20,7 @@
                             <div class="modal-list">
                                 <div class="select-all-items">
                                     <label class="pull-left">
-                                        <input type="checkbox" ng-checked="menuOptions.allSelected" id="select-all-diagnoses" class="multiMenuSelectAll" ng-click="itemClicked(menuOptions)"></input>
+                                        <input type="checkbox" ng-checked="menuOptions.allSelected" id="select-all-diagnoses" class="multiMenuSelectAll" ng-click="itemClicked(menuOptions)" />
                                         <span>{{selectAllTextKey | messageFilter}}</span>
                                     </label>
                                     <button ng-if="sidebarMenuExpand" class="btn btn-link btn-link-minimal toggle-sidebar-link" ng-click="sidebarState.collapsed = !sidebarState.collapsed" ng-switch="sidebarState.collapsed">
@@ -47,8 +42,13 @@
                                 </div>
                             </div>
                             <div class="modal-list item-body">
-                                <div data-ng-repeat="item in menuOptions.subs" class="multiMenuSelectKapitel" ng-init="itemRoot=menuOptions; depth=0" on-finish-render="doneRenderingDialog()">
-                                    <submenu item="item" itemroot="itemRoot" depth="depth" recursionhelper="recursionhelper" ng-hide="item.hide" class="depth0" ng-class="{leaf: !(item.subs && item.subs.length >0)}"/>
+                                <div data-ng-repeat="item in menuOptions.subs" class="multiMenuSelectKapitel" on-finish-render="doneRenderingDialog()">
+                                    <submenu
+                                        item="item"
+                                        depth="depth"
+                                        item-click="recursionhelper.itemclick(node, event)"
+                                        hide-click="recursionhelper.hideclick(node, event)"
+                                        ng-hide="item.hide"></submenu>
                                 </div>
 
                             </div>

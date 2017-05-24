@@ -25,6 +25,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         $scope.value = {
             multiMenuFilter: ''
         };
+        $scope.depth = 0;
 
         $scope.showLabel = !$scope.hideLabel;
 
