@@ -27,6 +27,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -48,6 +49,7 @@ import java.util.stream.Collectors;
 
 final class XlsxConverter {
     private static final Logger LOG = LoggerFactory.getLogger(XlsxConverter.class);
+    private static final int LAST_MERGE_COLUMN = 5;
 
     private final Icd10 icd10;
     private final String dataSheetName = "tabell";
@@ -169,6 +171,13 @@ final class XlsxConverter {
         link.setAddress(address);
         cell.setHyperlink(link);
         cell.setCellStyle(getHlinkStyle(sheet.getWorkbook()));
+
+        sheet.addMergedRegion(new CellRangeAddress(
+                row.getRowNum(),
+                row.getRowNum(),
+                0,
+                LAST_MERGE_COLUMN
+        ));
     }
 
     private int addFilter(Sheet sheet, int row, List<String> filters, String title) {
