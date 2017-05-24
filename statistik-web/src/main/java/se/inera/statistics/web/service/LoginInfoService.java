@@ -26,17 +26,22 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.StaticFilterData;
 import se.inera.statistics.web.model.UserAccessInfo;
 
 @Service("loginService")
 @Path("/login")
 public class LoginInfoService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(LoginInfoService.class);
 
     @Autowired
     private LoginServiceUtil loginServiceUtil;
@@ -62,6 +67,14 @@ public class LoginInfoService {
     @Produces({ MediaType.APPLICATION_JSON })
     public UserAccessInfo getUserAccessInfo(@Context HttpServletRequest request, @PathParam("vgId") String vgId) {
         return loginServiceUtil.getUserAccessInfoForVg(request, new HsaIdVardgivare(vgId));
+    }
+
+    @GET
+    @Path("getStaticFilterData")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public StaticFilterData getStaticFilterData() {
+        LOG.info("Calling getStaticFilterData");
+        return loginServiceUtil.getStaticFilterData();
     }
 
 }

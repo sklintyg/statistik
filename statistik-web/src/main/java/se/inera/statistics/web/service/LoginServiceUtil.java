@@ -55,15 +55,18 @@ import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
 import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
 import se.inera.statistics.service.processlog.Enhet;
+import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
 import se.inera.statistics.service.report.util.AgeGroup;
+import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
+import se.inera.statistics.web.model.StaticFilterData;
 import se.inera.statistics.web.model.UserAccessInfo;
 import se.inera.statistics.web.model.Verksamhet;
 
@@ -80,6 +83,9 @@ public class LoginServiceUtil {
 
     @Autowired(required = false)
     private LoginVisibility loginVisibility;
+
+    @Autowired
+    private Icd10 icd10;
 
     @Value("${highcharts.export.url}")
     private String higchartsExportUrl;
@@ -217,10 +223,18 @@ public class LoginServiceUtil {
         settings.setHighchartsExportUrl(higchartsExportUrl);
         settings.setLoginUrl(loginUrl);
         settings.setLoggedIn(isLoggedIn());
-        settings.setSjukskrivningLengths(
-                Arrays.stream(SjukfallsLangdGroup.values()).collect(toMap(Enum::name, SjukfallsLangdGroup::getGroupName)));
-        settings.setAgeGroups(Arrays.stream(AgeGroup.values()).collect(toMap(Enum::name, AgeGroup::getGroupName)));
         return settings;
+    }
+
+    StaticFilterData getStaticFilterData() {
+        final Map<String, String> sjukskrivningLengths = Arrays
+                .stream(SjukfallsLangdGroup.values())
+                .collect(toMap(Enum::name, SjukfallsLangdGroup::getGroupName));
+        final Map<String, String> ageGroups = Arrays
+                .stream(AgeGroup.values())
+                .collect(toMap(Enum::name, AgeGroup::getGroupName));
+        final List<Icd> icdStructure = icd10.getIcdStructure();
+        return new StaticFilterData(sjukskrivningLengths, ageGroups, icdStructure);
     }
 
     public UserAccessInfo getUserAccessInfoForVg(HttpServletRequest request, HsaIdVardgivare vgId) {

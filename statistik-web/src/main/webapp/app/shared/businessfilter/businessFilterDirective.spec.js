@@ -37,7 +37,7 @@ describe('Tests for directive button-filter', function () {
 
     beforeEach(module(function ($provide) {
         var mockStatistics = {
-            getIcd10Structure: function () {
+            getStaticFilterData: function () {
             },
             getFilterHash: function () {
                 return {

@@ -285,6 +285,10 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestNational('getIcd10Structure', successCallback, failureCallback, true, true);
     };
 
+    factory.getStaticFilterData = function (successCallback, failureCallback) {
+        makeRequestNational('login/getStaticFilterData', successCallback, failureCallback, true, true);
+    };
+
     factory.getFilterHash = function (params) {
         var deferred = $q.defer();
 

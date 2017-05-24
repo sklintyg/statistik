@@ -20,7 +20,7 @@
 angular.module('StatisticsApp')
     .directive('filterChips',
     /** @ngInject */
-    function(AppModel, _, ControllerCommons, $uibModal, $timeout, $window) {
+    function(StaticFilterDataService, StaticFilterData, _, ControllerCommons, $uibModal, $timeout, $window) {
         'use strict';
         return {
             scope: {
@@ -59,26 +59,27 @@ angular.module('StatisticsApp')
                     });
                 };
 
-                $scope.$watchCollection('businessFilter.geographyBusinessIds', enhetsFilter);
-                $scope.$watchCollection('businessFilter.geographyBusinessIdsSaved', enhetsFilter);
+                StaticFilterDataService.get().then(function() { //Make sure StaticFilterData is populated
+                    $scope.$watchCollection('businessFilter.geographyBusinessIds', enhetsFilter);
+                    $scope.$watchCollection('businessFilter.geographyBusinessIdsSaved', enhetsFilter);
 
-                $scope.$watchCollection('businessFilter.selectedDiagnoses', diagnosFilter);
-                $scope.$watchCollection('businessFilter.diagnoserSaved', diagnosFilter);
+                    $scope.$watchCollection('businessFilter.selectedDiagnoses', diagnosFilter);
+                    $scope.$watchCollection('businessFilter.diagnoserSaved', diagnosFilter);
 
-                $scope.$watchCollection('businessFilter.selectedAldersgruppIds', aldersGruppsFilter);
-                $scope.$watchCollection('businessFilter.aldersgruppSaved', aldersGruppsFilter);
+                    $scope.$watchCollection('businessFilter.selectedAldersgruppIds', aldersGruppsFilter);
+                    $scope.$watchCollection('businessFilter.aldersgruppSaved', aldersGruppsFilter);
 
-                $scope.$watchCollection('businessFilter.selectedSjukskrivningslangdIds', sjukskrivningsLangdsFilter);
-                $scope.$watchCollection('businessFilter.sjukskrivningslangdSaved', sjukskrivningsLangdsFilter);
+                    $scope.$watchCollection('businessFilter.selectedSjukskrivningslangdIds', sjukskrivningsLangdsFilter);
+                    $scope.$watchCollection('businessFilter.sjukskrivningslangdSaved', sjukskrivningsLangdsFilter);
 
-                $scope.$watchCollection('allChips', calcMaxNumberOfChips);
+                    $scope.$watchCollection('allChips', calcMaxNumberOfChips);
 
-                $scope.$watch('isCollapsed', function(value) {
-                    if (!value) {
-                        calcMaxNumberOfChips();
-                    }
+                    $scope.$watch('isCollapsed', function(value) {
+                        if (!value) {
+                            calcMaxNumberOfChips();
+                        }
+                    });
                 });
-
                 $($window).on('resize.doResize', _.debounce(function () {
                     if (!$scope.isCollapsed) {
                         $scope.$apply(function() {
@@ -230,7 +231,7 @@ angular.module('StatisticsApp')
                             id: sjukskrivningslangd,
                             newFilter: $scope.businessFilter.sjukskrivningslangdSaved.indexOf(sjukskrivningslangd) === -1,
                             removedFilter: false,
-                            text: AppModel.get().sjukskrivningLengthsObject[sjukskrivningslangd]
+                            text: StaticFilterData.get().sjukskrivningLengthsObject[sjukskrivningslangd]
                         });
                     });
 
@@ -243,7 +244,7 @@ angular.module('StatisticsApp')
                             id: sjukskrivningslangd,
                             newFilter: false,
                             removedFilter: true,
-                            text: AppModel.get().sjukskrivningLengthsObject[sjukskrivningslangd]
+                            text: StaticFilterData.get().sjukskrivningLengthsObject[sjukskrivningslangd]
                         });
                     });
 
@@ -266,7 +267,7 @@ angular.module('StatisticsApp')
                             icon: 'fa-users',
                             newFilter: $scope.businessFilter.aldersgruppSaved.indexOf(aldersGrupp) === -1,
                             removedFilter: false,
-                            text: AppModel.get().ageGroups[aldersGrupp]
+                            text: StaticFilterData.get().ageGroups[aldersGrupp]
                         });
                     });
 
@@ -279,7 +280,7 @@ angular.module('StatisticsApp')
                             icon: 'fa-users',
                             newFilter: false,
                             removedFilter: true,
-                            text: AppModel.get().ageGroups[aldersGrupp]
+                            text: StaticFilterData.get().ageGroups[aldersGrupp]
                         });
                     });
 

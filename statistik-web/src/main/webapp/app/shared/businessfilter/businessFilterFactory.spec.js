@@ -31,7 +31,7 @@ describe('Tests for business filter factory', function () {
 
     beforeEach(module(function ($provide) {
         var mockStatistics = {
-            getIcd10Structure: function () { }
+            getStaticFilterData: function () { }
         };
 
         $provide.value('statisticsData', mockStatistics);

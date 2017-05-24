@@ -8,7 +8,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
     beforeEach(function() {
         angular.mock.module(function ($provide) {
                 var mockStatistics = {
-                    getIcd10Structure: function () {
+                    getStaticFilterData: function () {
                     }
                 };
                 $provide.value('statisticsData', mockStatistics);
