@@ -22,25 +22,25 @@ angular.module('StatisticsApp.filterFactory.factory', []);
 angular.module('StatisticsApp.filterFactory.factory')
     .factory('businessFilterFactory',
         /** @ngInject */
-        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons, $q) {
+        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q) {
             'use strict';
 
-            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons, $q);
+            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q);
         }
     );
 
 angular.module('StatisticsApp.filterFactory.factory')
     .factory('landstingFilterFactory',
         /** @ngInject */
-        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons, $q) {
+        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q) {
             'use strict';
 
-            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons, $q);
+            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q);
         }
     );
 
 
-function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, ControllerCommons, $q) {
+function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q) {
     'use strict';
 
     var loadingFilter = false;
@@ -208,24 +208,10 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.updateHasUserSelection();
     }
 
-    function updateIcd10StructureOnce() {
-        var deferred = $q.defer();
-
-        if (businessFilter.icd10.subs.length > 0) {
-            deferred.resolve();
-        } else {
-            statisticsData.getIcd10Structure(function (result) {
-                businessFilter.setIcd10Structure(result);
-                deferred.resolve();
-            },
-            function () {
-                deferred.reject();
-                throw new Error('Failed to fetch ICD10 structure tree from server');
-            });
-        }
-
-        return deferred.promise;
-    }
+    businessFilter.populateIcd10Structure = function() {
+        var icd10Structure = StaticFilterData.get().icd10Structure;
+        businessFilter.setIcd10Structure(icd10Structure);
+    };
 
     businessFilter.selectPreselectedFilter = function(preSelectedFilter) {
 
@@ -233,15 +219,13 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
             return;
         }
 
-        var icd10 = updateIcd10StructureOnce();
-
         var filterData;
 
         var loadFilter = loadFilterData(preSelectedFilter).then(function(data) {
             filterData = data;
         });
 
-        $q.all([loadFilter, icd10]).then(function() {
+        $q.all([loadFilter]).then(function() {
             if (filterData) {
                 setPreselectedFilter(filterData);
             } else {
@@ -269,17 +253,28 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         return deferred.promise;
     }
 
-    businessFilter.setup = function (businesses, preSelectedFilter) {
-        businessFilter.businesses = businesses;
-        if (businessFilter.showBusinessFilter()) {
-            businessFilter.populateGeography(businesses);
-            businessFilter.populateVerksamhetsTyper(businesses);
-            businessFilter.businesses = sortSwedish(businesses, 'name', 'Okän');
+    function populateStaticFilterData() {
+        if (businessFilter.icd10.subs.length > 0) {
+            return $q.defer().resolve().promise;
+        } else {
+            return StaticFilterDataService.get();
         }
-        businessFilter.populateSjukskrivningsLangd();
-        businessFilter.populateAldersgrupp();
-        businessFilter.dataInitialized = true;
-        businessFilter.selectPreselectedFilter(preSelectedFilter);
+    }
+
+    businessFilter.setup = function (businesses, preSelectedFilter) {
+        populateStaticFilterData().then(function() {
+            businessFilter.businesses = businesses;
+            if (businessFilter.showBusinessFilter()) {
+                businessFilter.populateGeography(businesses);
+                businessFilter.populateVerksamhetsTyper(businesses);
+                businessFilter.businesses = sortSwedish(businesses, 'name', 'Okän');
+            }
+            businessFilter.populateSjukskrivningsLangd();
+            businessFilter.populateAldersgrupp();
+            businessFilter.populateIcd10Structure();
+            businessFilter.dataInitialized = true;
+            businessFilter.selectPreselectedFilter(preSelectedFilter);
+        });
     };
 
     businessFilter.showBusinessFilter = function () {
@@ -319,11 +314,11 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     };
 
     businessFilter.populateSjukskrivningsLangd = function() {
-        businessFilter.sjukskrivningslangd = AppModel.get().sjukskrivningLengths;
+        businessFilter.sjukskrivningslangd = StaticFilterData.get().sjukskrivningLengths;
     };
 
     businessFilter.populateAldersgrupp = function() {
-        businessFilter.aldersgrupp = AppModel.get().aldersgrupps;
+        businessFilter.aldersgrupp = StaticFilterData.get().aldersgrupps;
     };
 
     businessFilter.populateVerksamhetsTyper = function (businesses) {

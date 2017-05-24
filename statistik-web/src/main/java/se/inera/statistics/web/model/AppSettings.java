@@ -18,17 +18,12 @@
  */
 package se.inera.statistics.web.model;
 
-import java.util.Collections;
-import java.util.Map;
-
 public class AppSettings {
 
     private String loginUrl;
     private String highchartsExportUrl;
     private boolean loginVisible;
     private boolean isLoggedIn;
-    private Map<String, String> sjukskrivningLengths;
-    private Map<String, String> ageGroups;
 
     public String getLoginUrl() {
         return loginUrl;
@@ -60,22 +55,6 @@ public class AppSettings {
 
     public void setLoggedIn(boolean loggedIn) {
         isLoggedIn = loggedIn;
-    }
-
-    public Map<String, String> getSjukskrivningLengths() {
-        return sjukskrivningLengths;
-    }
-
-    public void setSjukskrivningLengths(Map<String, String> sjukskrivningLengths) {
-        this.sjukskrivningLengths = Collections.unmodifiableMap(sjukskrivningLengths);
-    }
-
-    public Map<String, String> getAgeGroups() {
-        return ageGroups;
-    }
-
-    public void setAgeGroups(Map<String, String> ageGroups) {
-        this.ageGroups = ageGroups;
     }
 
 }

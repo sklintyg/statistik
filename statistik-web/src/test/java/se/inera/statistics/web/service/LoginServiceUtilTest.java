@@ -34,9 +34,11 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
 import se.inera.statistics.service.processlog.Enhet;
+import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.model.StaticFilterData;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,6 +58,9 @@ public class LoginServiceUtilTest {
     @Mock
     private LoginVisibility loginVisibility;
 
+    @Mock
+    private Icd10 icd10;
+
     @InjectMocks
     private LoginServiceUtil loginServiceUtilInjected;
 
@@ -73,11 +78,11 @@ public class LoginServiceUtilTest {
     @Test
     public void testGetSettings() throws Exception {
         // When
-        final AppSettings settings = loginServiceUtil.getSettings();
+        final StaticFilterData staticFilterData = loginServiceUtil.getStaticFilterData();
 
         // Then
-        assertEquals(7, settings.getSjukskrivningLengths().size());
-        assertEquals("Under 15 dagar", settings.getSjukskrivningLengths().get("GROUP1_0TO14"));
+        assertEquals(7, staticFilterData.getSjukskrivningLengths().size());
+        assertEquals("Under 15 dagar", staticFilterData.getSjukskrivningLengths().get("GROUP1_0TO14"));
     }
 
     @Test
