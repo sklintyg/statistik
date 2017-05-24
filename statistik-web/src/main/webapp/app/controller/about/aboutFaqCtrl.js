@@ -49,7 +49,7 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl', ['$scope',
 						'hon arbetar på. Dessa uppgifter hämtas från HSA-katalogen och syftet är att kunna ta fram mer värdefull och intressant statistik.</p>'
         });
 		faq.push({
-            title: '5. Vad är ett sjukfall?',
+            title: '4. Vad är ett sjukfall?',
             body: '<p>I Statistiktjänsten omfattar ett sjukfall alla de elektroniska läkarintyg som utfärdats för en viss patient vid en sjukskrivning ' +
                         'och som följer på varandra med max fem dagars uppehåll. Intygen måste även vara utfärdade av samma vårdgivare för att räknas till ' +
 						'samma sjukfall. Om det är mer än fem dagar mellan två intyg eller om två intyg är utfärdade av olika vårdgivare, så räknas det som ' +
@@ -59,7 +59,7 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl', ['$scope',
                         'Om intyg 2 istället hade varit giltigt från den 21 augusti skulle intygen ha räknats som två skilda sjukfall.</p>'
         });
 		faq.push({
-            title: '4. Vilka intyg filtreras bort från statistiken?',
+            title: '5. Vilka intyg filtreras bort från statistiken?',
             body: '<p>Läkarintyg som inte motsvarar Statistiktjänstens kvalitetskrav filtreras ' +
 						'bort och kommer inte med i några statistikrapporter. Filtreringen görs för att öka kvaliteten i den resulterande statistiken.</p>' +
 					'<p>Kraven som ställs på läkarintyg för att de ska kunna vara del av statistiken är:</p>' +
