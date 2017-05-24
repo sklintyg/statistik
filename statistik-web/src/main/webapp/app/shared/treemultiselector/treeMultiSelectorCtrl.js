@@ -23,7 +23,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         var self = this;
 
         $scope.value = {
-            multiMenuFilter: null
+            multiMenuFilter: ''
         };
 
         $scope.showLabel = !$scope.hideLabel;
@@ -193,7 +193,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             }
 
             return function isMatchingFilter(item) {
-                return item.name.toLowerCase().indexOf(text) >= 0;
+                return item.nameLow.indexOf(text) >= 0;
             };
         }
 
@@ -252,11 +252,15 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             });
         }
 
-        $scope.$watch('value.multiMenuFilter', function(value) {
-            if (value !== null) {
+        $scope.$watch('value.multiMenuFilter', function(value, oldValue) {
+            if (value !== oldValue) {
                 $scope.filterMenuItems($scope.menuOptions.subs, value);
             }
         });
+
+        if ($scope.runFilterMenuOnInit) {
+            $scope.value.multiMenuFilter = null;
+        }
 
         $scope.dialogOpen = false;
 
