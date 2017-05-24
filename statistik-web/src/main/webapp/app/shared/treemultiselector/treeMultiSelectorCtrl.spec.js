@@ -187,21 +187,21 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it('all children should be deselected when a parent is deselected', inject(function () {
         //Given
-        var sub121 = {name: 'sub121'};
-        var sub122 = {name: 'sub122'};
-        var sub12 = {name: 'sub12', subs: [sub121, sub122]};
+        var sub121 = {nameLow: 'sub121'};
+        var sub122 = {nameLow: 'sub122'};
+        var sub12 = {nameLow: 'sub12', subs: [sub121, sub122]};
         var subs1 = [
-            {name: 'sub11'},
+            {nameLow: 'sub11'},
             sub12,
-            {name: 'sub13'}
+            {nameLow: 'sub13'}
         ];
         var menuItems = [
-            {name: 'Enhet1', subs: subs1},
+            {nameLow: 'enhet1', subs: subs1},
             {
-                name: 'Enhet2', subs: [
-                {name: 'sub4'},
-                {name: 'sub5'},
-                {name: 'sub6'}
+                nameLow: 'enhet2', subs: [
+                {nameLow: 'sub4'},
+                {nameLow: 'sub5'},
+                {nameLow: 'sub6'}
             ]
             }
         ];
@@ -224,21 +224,21 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it('hide items not matching filter', inject(function ($timeout) {
         //Given
-        var sub121 = {name: 'sub121'};
-        var sub122 = {name: 'sub122'};
-        var sub12 = {name: 'sub12', subs: [sub121, sub122]};
+        var sub121 = {nameLow: 'sub121'};
+        var sub122 = {nameLow: 'sub122'};
+        var sub12 = {nameLow: 'sub12', subs: [sub121, sub122]};
         var subs1 = [
-            {name: 'sub11'},
+            {nameLow: 'sub11'},
             sub12,
-            {name: 'sub13'}
+            {nameLow: 'sub13'}
         ];
         var menuItems = [
-            {name: 'Enhet1', subs: subs1},
+            {nameLow: 'enhet1', subs: subs1},
             {
-                name: 'Enhet2', subs: [
-                {name: 'sub4'},
-                {name: 'sub5'},
-                {name: 'sub6'}
+                nameLow: 'enhet2', subs: [
+                {nameLow: 'sub4'},
+                {nameLow: 'sub5'},
+                {nameLow: 'sub6'}
             ]
             }
         ];
@@ -255,9 +255,9 @@ describe('Controller: treeMultiSelectorCtrl', function() {
     it('hide items not matching filter ignore "." ', inject(function ($timeout) {
         //Given
         var menuItems = [
-            {name: 'Enhet1'},
-            {name: 'Enhet11'},
-            {name: 'Enhet2'}
+            {nameLow: 'enhet1'},
+            {nameLow: 'enhet11'},
+            {nameLow: 'enhet2'}
         ];
 
         //When
@@ -274,8 +274,8 @@ describe('Controller: treeMultiSelectorCtrl', function() {
     it('hide items not matching filter', inject(function ($timeout) {
         //Given
         var menuItems = [
-            {name: 'Enhet.1'},
-            {name: 'Enhet11'}
+            {nameLow: 'enhet.1'},
+            {nameLow: 'enhet11'}
         ];
 
         //When
@@ -291,10 +291,10 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it('parent should be visible for matching node', inject(function ($timeout) {
         //Given
-        var sub11 = {name: 'sub11'};
-        var sub12 = {name: 'sub12'};
+        var sub11 = {nameLow: 'sub11'};
+        var sub12 = {nameLow: 'sub12'};
         var menuItems = [
-            {name: 'Enhet1', subs: [sub11, sub12]}
+            {nameLow: 'enhet1', subs: [sub11, sub12]}
         ];
 
         //When
@@ -309,21 +309,21 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it('grandparent should be visible for matching node', inject(function ($timeout) {
         //Given
-        var sub121 = {name: 'sub121'};
-        var sub122 = {name: 'sub122'};
-        var sub12 = {name: 'sub12', subs: [sub121, sub122]};
+        var sub121 = {nameLow: 'sub121'};
+        var sub122 = {nameLow: 'sub122'};
+        var sub12 = {nameLow: 'sub12', subs: [sub121, sub122]};
         var subs1 = [
-            {name: 'sub11'},
+            {nameLow: 'sub11'},
             sub12,
-            {name: 'sub13'}
+            {nameLow: 'sub13'}
         ];
         var menuItems = [
-            {name: 'Enhet1', subs: subs1},
+            {nameLow: 'enhet1', subs: subs1},
             {
-                name: 'Enhet2', subs: [
-                {name: 'sub4'},
-                {name: 'sub5'},
-                {name: 'sub6'}
+                nameLow: 'enhet2', subs: [
+                {nameLow: 'sub4'},
+                {nameLow: 'sub5'},
+                {nameLow: 'sub6'}
             ]
             }
         ];
@@ -342,22 +342,22 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it('child items from matching node should be visible', inject(function ($timeout) {
         //Given
-        var sub121 = {name: 'sub121', hide: true};
-        var sub122 = {name: 'sub122', hide: true};
-        var sub12 = {name: 'sub12', hide: true, subs: [sub121, sub122]};
+        var sub121 = {nameLow: 'sub121', hide: true};
+        var sub122 = {nameLow: 'sub122', hide: true};
+        var sub12 = {nameLow: 'sub12', hide: true, subs: [sub121, sub122]};
         var subs1 = [
-            {name: 'sub11', hide: true},
+            {nameLow: 'sub11', hide: true},
             sub12,
-            {name: 'sub13', hide: true}
+            {nameLow: 'sub13', hide: true}
         ];
-        var sub22 = {name: 'sub5', hide: true};
+        var sub22 = {nameLow: 'sub5', hide: true};
         var menuItems = [
-            {name: 'Enhet1', hide: true, subs: subs1},
+            {nameLow: 'enhet1', hide: true, subs: subs1},
             {
-                name: 'Enhet2', hide: true, subs: [
-                {name: 'sub4', hide: true},
+                nameLow: 'enhet2', hide: true, subs: [
+                {nameLow: 'sub4', hide: true},
                 sub22,
-                {name: 'sub6', hide: true}
+                {nameLow: 'sub6', hide: true}
             ]
             }
         ];
@@ -378,21 +378,21 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it('node should be fully expanded if only one match is found', inject(function ($timeout) {
         //Given
-        var sub121 = {name: 'sub121'};
-        var sub122 = {name: 'sub122'};
-        var sub12 = {name: 'sub12', subs: [sub121, sub122]};
+        var sub121 = {name: 'sub121', nameLow: 'sub121'};
+        var sub122 = {name: 'sub122', nameLow: 'sub122'};
+        var sub12 = {name: 'sub12', nameLow: 'sub12', subs: [sub121, sub122]};
         var subs1 = [
-            {name: 'sub11'},
+            {name: 'sub11', nameLow: 'sub11'},
             sub12,
-            {name: 'sub13'}
+            {name: 'sub13', nameLow: 'sub13'}
         ];
         var menuItems = [
-            {name: 'Enhet1', subs: subs1},
+            {name: 'Enhet1', nameLow: 'enhet1', subs: subs1},
             {
-                name: 'Enhet2', subs: [
-                {name: 'sub4'},
-                {name: 'sub5'},
-                {name: 'sub6'}
+                name: 'Enhet2',nameLow: 'enhet2', subs: [
+                {name: 'sub4', nameLow: 'sub4'},
+                {name: 'sub5', nameLow: 'sub5'},
+                {name: 'sub6', nameLow: 'sub6'}
             ]
             }
         ];
