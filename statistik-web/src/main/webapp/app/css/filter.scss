@@ -100,34 +100,6 @@ input[type="checkbox"] {
   display: table-cell;
 }
 
-select,
-textarea,
-input[type="text"],
-input[type="password"],
-input[type="datetime"],
-input[type="datetime-local"],
-input[type="date"],
-input[type="month"],
-input[type="time"],
-input[type="week"],
-input[type="number"],
-input[type="email"],
-input[type="url"],
-input[type="search"],
-input[type="tel"],
-input[type="color"],
-.uneditable-input {
-  border-radius: 4px;
-  color: #555;
-  display: inline-block;
-  font-size: 14px;
-  height: 14px;
-  line-height: 20px;
-  margin-bottom: 0;
-  padding: 10px 7px;
-  vertical-align: middle;
-}
-
 .multiselect-hideshow-list-item {
   cursor: pointer;
 }
