@@ -158,7 +158,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
 
             chartFactory.addColor(result.degreeOfSickLeaveGroups);
             var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
-            $scope.degreeOfSickLeaveChartOptions = paintDonutChart(degreeOfSickLeaveDonutData, null);
+            $scope.degreeOfSickLeaveChartOptions = paintDonutChart(degreeOfSickLeaveDonutData);
             $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
             chartFactory.addColor(result.sickLeaveLength.chartData);
