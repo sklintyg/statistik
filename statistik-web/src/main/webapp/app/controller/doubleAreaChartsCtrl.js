@@ -167,6 +167,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
 
         $scope.subTitle = config.title;
         $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet) : config.chartFootnotes;
+        $scope.chartFootnotes = Array.isArray($scope.chartFootnotes) ? $scope.chartFootnotes : [];
         $scope.showDiagnosisSelector = config.showDiagnosisSelector;
         if ($scope.showDiagnosisSelector) {
             ControllerCommons.setupDiagnosisSelector(diagnosisTreeFilter, $routeParams, $scope, messageService, $timeout, statisticsData, $location);

@@ -192,9 +192,10 @@ var stMessages = {
         'help.verksamhet.differentierat2': 'De enkla sjukfallen delas vidare upp i sjukfall som pågått upp till och med 60 dagar och sjukfall som pågått längre än 60 dagar. Sjukskrivningslängden beräknas på samma sätt som i rapporten "Sjukskrivningslängd".',
         'help.verksamhet.differentierat3': 'Sjukfall som inte består av något enkelt intyg hamnar i gruppen "Övriga".',
 
-        'help.landsting.vardenhet': 'Denna rapport visar statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget rapporteras in av landstinget självt. Vårdenheternas namn hämtas från HSA-katalogen.',
+        'help.landsting.sjukfall-totalt': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporteras in av landstinget självt %0.',
+        'help.landsting.vardenhet': 'Denna rapport visar statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporterats in av landstinget självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',
         'help.landsting.vardenhet-listning1': 'Denna rapport visar statistik för de vårdenheter som tillhör landstinget och för vilka antal listade patienter rapporterats in. Antal sjukfall per 1000 listningar är ett mått som gör att det går att jämföra antalet sjukfall på olika vårdenheter trots att vårdenheterna inte är lika stora. Detta eftersom antalet sjukfall sätts i relation till antalet listade patienter.',
-        'help.landsting.vardenhet-listning2': 'Information om vilka vårdenheter som ingår i landstinget och uppgift om antal listade patienter på respektive vårdenhet rapporteras in av landstinget självt. Vårdenheternas namn hämtas från HSA-katalogen.',
+        'help.landsting.vardenhet-listning2': 'Information om vilka vårdenheter som ingår i landstinget och uppgift om antal listade patienter på respektive vårdenhet har rapporteras in av landstinget självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',
 
         'help.diagnosissubgroup.showdetailoptions' : 'Observera att om du väljer diagnoskategori visas endast de sjukfall som har en diagnos på fyr- eller femställig nivå i ICD-10-SE, t.ex. F430 eller F438A. Sjukfall med en diagnos på treställig nivå, t.ex. F43, visas inte.',
 

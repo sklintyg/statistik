@@ -84,6 +84,7 @@ angular.module('StatisticsApp').factory('statisticsData',
             try {
                 successCallback(result);
             } catch (e) {
+                $log.error(e);
                 failureCallback();
             }
         }).error(function (data, status/*, headers, config*/) {
@@ -97,6 +98,7 @@ angular.module('StatisticsApp').factory('statisticsData',
             if (status === 503) {
                 $location.path('/serverbusy');
             }
+            $log.error('Failed to call server. Status: ' + status);
             failureCallback();
         });
     }
