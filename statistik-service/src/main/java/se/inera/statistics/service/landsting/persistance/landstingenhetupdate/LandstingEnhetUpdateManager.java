@@ -19,6 +19,7 @@
 package se.inera.statistics.service.landsting.persistance.landstingenhetupdate;
 
 import com.google.common.base.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.hsa.model.HsaIdUser;
@@ -26,12 +27,16 @@ import se.inera.statistics.hsa.model.HsaIdUser;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Timestamp;
+import java.time.Clock;
 
 @Component
 public class LandstingEnhetUpdateManager {
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
+
+    @Autowired
+    private Clock clock;
 
     @Transactional
     public Optional<LandstingEnhetUpdate> getByLandstingId(long landstingId) {
@@ -47,7 +52,7 @@ public class LandstingEnhetUpdateManager {
             manager.remove(existing.get());
         }
         final LandstingEnhetUpdate landstingEnhetUpdate = new LandstingEnhetUpdate(landstingId, updatedByName, updatedByHsaid,
-                new Timestamp(System.currentTimeMillis()), filename, operation);
+                new Timestamp(clock.millis()), filename, operation);
         manager.persist(landstingEnhetUpdate);
     }
 
