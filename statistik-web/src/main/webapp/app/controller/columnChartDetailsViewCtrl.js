@@ -20,7 +20,7 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
     /** @ngInject */
-    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, statisticsData, diagnosisTreeFilter,
+    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, $filter, statisticsData, diagnosisTreeFilter,
         config, messageService, chartFactory, pdfFactory, _, ControllerCommons) {
         'use strict';
 
@@ -82,7 +82,10 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             //Period should be on a separate row (INTYG-3288)
             $scope.subTitlePeriod = result.period;
             if (angular.isFunction(config.chartFootnotesExtra)) {
-                $scope.chartFootnotes.push(config.chartFootnotesExtra(result));
+                var footnotesExtra = config.chartFootnotesExtra(result, isVerksamhet, isLandsting, $filter);
+                if (footnotesExtra) {
+                    $scope.chartFootnotes.push(footnotesExtra);
+                }
             }
 
             ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser,
@@ -154,6 +157,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
 
         $scope.subTitle = config.title;
         $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet, isLandsting) : config.chartFootnotes;
+        $scope.chartFootnotes = Array.isArray($scope.chartFootnotes) ? $scope.chartFootnotes : [];
         $scope.showDetailsOptions = config.showDetailsOptions;
         $scope.showDetailsOptions2 = config.showDetailsOptions2 && isVerksamhet;
         $scope.showDetailsOptions3 = config.showDetailsOptions3 && isVerksamhet;
@@ -259,12 +263,12 @@ angular.module('StatisticsApp').casesPerBusinessConfig =
     conf.title = messageService.getProperty('title.vardenhet');
     conf.chartVerticalLabel = true;
     conf.chartLabelLength = 40;
-    conf.chartFootnotes = function(isVerksamhet, isLandsting) {
+    conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
         if (isLandsting) {
-            return ['help.landsting.vardenhet'];
+            return $filter('messageFilter')('help.landsting.vardenhet', '', '', [result.fileUploadDate], '');
         }
 
-        return ['help.verksamhet.vardenhet'];
+        return $filter('messageFilter')('help.verksamhet.vardenhet', '', '', [], '');
     };
 
     conf.exchangeableViews = [
@@ -285,7 +289,10 @@ angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig =
         return 'api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting?format=xlsx';
     };
     conf.title = messageService.getProperty('title.vardenhet-listning');
-    conf.chartFootnotes = ['help.landsting.vardenhet-listning1', 'help.landsting.vardenhet-listning2'];
+    conf.chartFootnotes = ['help.landsting.vardenhet-listning1'];
+    conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
+        return $filter('messageFilter')('help.landsting.vardenhet-listning2', '', '', [result.fileUploadDate], '');
+    };
 
     conf.chartYAxisTitle = 'Antal sjukfall per 1000 listningar';
     return conf;

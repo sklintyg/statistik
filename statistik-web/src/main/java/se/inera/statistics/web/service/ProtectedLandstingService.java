@@ -62,6 +62,7 @@ import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.model.LandstingsData;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.SimpleDetailsData;
@@ -243,6 +244,16 @@ public class ProtectedLandstingService {
         return "Ingen";
     }
 
+    private String getLastLandstingUpdateDate(HsaIdVardgivare vardgivarId) {
+        final Optional<LandstingEnhetUpdate> lastUpdateInfo = landstingEnhetHandler.getLastUpdateInfo(vardgivarId);
+        if (lastUpdateInfo.isPresent()) {
+            final LandstingEnhetUpdate update = lastUpdateInfo.get();
+            return new java.text.SimpleDateFormat("yyyy-MM-dd")
+                    .format(new java.util.Date(update.getTimestamp().getTime()));
+        }
+        return "";
+    }
+
     private Response createFileUploadResponse(Response.Status status, String message, UploadResultFormat format) {
         switch (format) {
         case HTML:
@@ -267,7 +278,9 @@ public class ProtectedLandstingService {
             @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getCasesPerMonthLandsting(filterSettings);
-        SimpleDetailsData result = new PeriodConverter().convert(casesPerMonth, filterSettings);
+        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final SimpleDetailsData data = new PeriodConverter().convert(casesPerMonth, filterSettings);
+        final LandstingsData result = LandstingsData.create(data, getLastLandstingUpdateDate(vgIdForLoggedInUser));
         return getResponse(result, format, request, Report.L_SJUKFALLTOTALT);
     }
 
@@ -281,8 +294,10 @@ public class ProtectedLandstingService {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
         final List<HsaIdEnhet> connectedEnhetIds = getEnhetIdsToMark(request);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhetLandsting(filterSettings);
-        SimpleDetailsData result = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", connectedEnhetIds).convert(casesPerEnhet,
-                filterSettings);
+        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final SimpleDetailsData data = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", connectedEnhetIds)
+                .convert(casesPerEnhet, filterSettings);
+        final LandstingsData result = LandstingsData.create(data, getLastLandstingUpdateDate(vgIdForLoggedInUser));
         return getResponse(result, format, request, Report.L_VARDENHET);
     }
 
@@ -308,8 +323,9 @@ public class ProtectedLandstingService {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final List<HsaIdEnhet> connectedEnhetIds = getEnhetIdsToMark(request);
         final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vgIdForLoggedInUser);
-        SimpleDetailsData result = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, connectedEnhetIds).convert(casesPerEnhet,
-                filterSettings, null);
+        final SimpleDetailsData data = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, connectedEnhetIds)
+                .convert(casesPerEnhet, filterSettings, null);
+        final LandstingsData result = LandstingsData.create(data, getLastLandstingUpdateDate(vgIdForLoggedInUser));
         return getResponse(result, format, request, Report.L_VARDENHETLISTNINGAR);
     }
 

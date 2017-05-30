@@ -21,7 +21,7 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').controller('singleLineChartCtrl',
     /** @ngInject */
-    function ($scope, $rootScope, $routeParams, $timeout, $window, statisticsData, config, $location,
+    function ($scope, $rootScope, $routeParams, $timeout, $window, $filter, statisticsData, config, $location,
         messageService, chartFactory, pdfFactory, _, ControllerCommons) {
         'use strict';
 
@@ -83,6 +83,12 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             $scope.subTitle = angular.isFunction(config.suffixTitle) ? config.suffixTitle($routeParams.kapitelId) : config.title;
             //Period should be on a separate row (INTYG-3288)
             $scope.subTitlePeriod = result.period;
+            if (angular.isFunction(config.chartFootnotesExtra)) {
+                var footnotesExtra = config.chartFootnotesExtra(result, isVerksamhet, isLandsting, $filter);
+                if (footnotesExtra) {
+                    $scope.chartFootnotes.push(footnotesExtra);
+                }
+            }
             $timeout(function() {
                 ControllerCommons.updateDataTable($scope, result.tableData);
                 updateChart(result.chartData, function() {
@@ -135,6 +141,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
 
         $scope.subTitle = config.title;
         $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet) : config.chartFootnotes;
+        $scope.chartFootnotes = Array.isArray($scope.chartFootnotes) ? $scope.chartFootnotes : [];
         $scope.spinnerText = 'Laddar information...';
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
@@ -169,6 +176,11 @@ angular.module('StatisticsApp').casesPerMonthConfig =
         return 'api/landsting/getNumberOfCasesPerMonthLandsting?format=xlsx';
     };
     conf.title = messageService.getProperty('title.sickleave');
+    conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
+        if (isLandsting) {
+            return $filter('messageFilter')('help.landsting.vardenhet-listning2', '', '', [result.fileUploadDate], '');
+        }
+    };
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/sjukfallPerManad', active: true},
