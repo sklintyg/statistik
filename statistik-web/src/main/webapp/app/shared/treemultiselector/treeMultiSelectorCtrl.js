@@ -98,7 +98,11 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
 
         // Calculates number of leaves, i.e., "Diagnoskoder"
         function selectedLeavesCounter() {
-            return !$scope.menuOptions ? 0 : self.selectedLeavesCount($scope.menuOptions);
+            return !$scope.menuOptions ? 0 : self.selectedLeavesCount({subs : _.filter($scope.menuOptions.subs,
+                function(it) {
+                    return it.nameLow !== ' utan giltig icd-10 kod';
+                })}
+            );
         }
 
         self.selectedLeavesCount = function selectedLeavesCount(node) {
