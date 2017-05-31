@@ -209,7 +209,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     }
 
     businessFilter.populateIcd10Structure = function() {
-        var icd10Structure = StaticFilterData.get().icd10Structure;
+        var icd10Structure = _.cloneDeep(StaticFilterData.get().icd10Structure);
         businessFilter.setIcd10Structure(icd10Structure);
     };
 

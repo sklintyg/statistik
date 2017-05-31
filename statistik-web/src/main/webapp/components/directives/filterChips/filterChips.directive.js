@@ -179,7 +179,7 @@ angular.module('StatisticsApp')
                 }
 
                 function diagnosFilter() {
-                    var icd10 = $scope.businessFilter.icd10.untuched;
+                    var icd10 = StaticFilterData.get().icd10Structure;
 
                     var filter = $scope.businessFilter.selectedDiagnoses;
 
