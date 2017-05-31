@@ -1,8 +1,8 @@
 describe('Controller: treeMultiSelectorCtrl', function() {
     'use strict';
     var ctrl, scope;
-    var A00, A01, B07, D50, D70;
-    var A00A09, B00B09, D50D53, D70D77, A00B99, D50D89;
+    var A00, A01, B07, D50, D70, UTAN_SUB;
+    var A00A09, B00B09, D50D53, D70D77, A00B99, D50D89, UTAN;
 
 
     beforeEach(function() {
@@ -38,6 +38,9 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         B07 = {id: 'B07', name: 'Virusvårtor', numericalId: 23};
         D50 = {id: 'D50', name: 'Järnbristanemi', numericalId: 24};
         D70 = {id: 'D70', name: 'Agranulocytos', numericalId: 25};
+
+        // This should never count, as ' utan giltig icd-10 kod' is filtered out.
+        UTAN_SUB = {nameLow: ' utan gilitig icd-10 kod', numericalId: 1234};
 
         A00A09 = {
             id: 'A00-A09',
@@ -75,8 +78,14 @@ describe('Controller: treeMultiSelectorCtrl', function() {
             subItems: [D50D53, D70D77],
             numericalId: 2
         };
+        UTAN = {
+            name: ' Utan gilitig ICD-10 kod',
+            nameLow: ' utan giltig icd-10 kod',
+            numericalId: 123456,
+            subItems: [UTAN_SUB]
+        };
 
-        diagnoses = [A00B99, D50D89];
+        diagnoses = [A00B99, D50D89, UTAN];
     });
 
     it('parents should be intermediate when some child is selected', inject(function () {
@@ -464,6 +473,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
         // When
         scope.itemClicked(A00B99, businessFilterFactory.icd10);
+        scope.itemClicked(UTAN, businessFilterFactory.icd10);
         businessFilterFactory.updateDiagnoses();
 
         //Then
@@ -481,6 +491,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
         // When
         scope.itemClicked(A00A09, businessFilterFactory.icd10);
+        scope.itemClicked(UTAN, businessFilterFactory.icd10);
         businessFilterFactory.updateDiagnoses();
 
         //Then
@@ -499,6 +510,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
         // When
         scope.itemClicked(A01, businessFilterFactory.icd10);
+        scope.itemClicked(UTAN, businessFilterFactory.icd10);
         businessFilterFactory.updateDiagnoses();
 
         //Then
@@ -509,4 +521,21 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         expect(diagnoser).toContain(D50D89.numericalId);
     }));
 
+    it('"Utan gilitig ICD-10 kod" counts as a category only ', inject(function (businessFilterFactory) {
+        // Given
+         var menuItems = {subs: [{
+            name: ' Utan gilitig ICD-10 kod',
+            nameLow: ' utan giltig icd-10 kod',
+            someSelected: false,
+            allSelected: true
+        }]};
+        scope.menuOptions = menuItems;
+
+        // When
+        scope.updateCounters();
+
+        //Then
+        expect(scope.selectedPrimaryCounter).toBe(1);
+        expect(scope.selectedLeavesCounter).toBe(0);
+    }));
 });
