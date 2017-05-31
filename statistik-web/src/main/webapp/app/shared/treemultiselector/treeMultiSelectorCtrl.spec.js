@@ -521,7 +521,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         expect(diagnoser).toContain(D50D89.numericalId);
     }));
 
-    it('"Utan gilitig ICD-10 kod" counts as a category only ', inject(function (businessFilterFactory) {
+    it('"Utan gilitig ICD-10 kod" counts as a category only ', inject(function () {
         // Given
          var menuItems = {subs: [{
             name: ' Utan gilitig ICD-10 kod',
