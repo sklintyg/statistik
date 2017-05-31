@@ -35,6 +35,7 @@ public class Fact {
         }
     };
 
+    private long id;
     private int lan;
     private int kommun;
     private int forsamling;
@@ -58,7 +59,8 @@ public class Fact {
 
     // CHECKSTYLE:OFF ParameterNumber
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public Fact(int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int slutdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid, boolean enkeltIntyg) {
+    public Fact(long id, int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int slutdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid, boolean enkeltIntyg) {
+        this.id = id;
         this.lan = lan;
         this.kommun = kommun;
         this.forsamling = forsamling;
@@ -83,6 +85,10 @@ public class Fact {
     // CHECKSTYLE:ON ParameterNumber
 
     public Fact(JsonNode node) {
+    }
+
+    public long getId() {
+        return id;
     }
 
     public long getLakarintyg() {
@@ -223,6 +229,7 @@ public class Fact {
     }
 
     public static class FactBuilder {
+        private long id = -1;
         private int lan = -1;
         private int kommun = -1;
         private int forsamling = -1;
@@ -246,15 +253,20 @@ public class Fact {
 
         @java.lang.SuppressWarnings({"squid:MethodCyclomaticComplexity", "squid:S1067"}) // I can not tink of a better way to write this method
         public Fact build() {
-            if (lan == -1 || kommun == -1 || forsamling == -1 || enhet == -1 || lakarintyg == -1 || patient == -1
+            if (id == -1 || lan == -1 || kommun == -1 || forsamling == -1 || enhet == -1 || lakarintyg == -1 || patient == -1
                     || startdatum == -1 || slutdatum == -1 || kon == -1 || alder == -1 || diagnoskapitel == -1 || diagnosavsnitt == -1
                     || diagnoskategori == -1 || diagnoskod == -1 || sjukskrivningsgrad == -1 || lakarkon == -1
                     || lakaralder == -1 || lakarbefattnings == null || lakarid == -1 || enkelt == null) {
                 throw new UninitializedValuesException("unintialized values");
             }
-            return new Fact(lan, kommun, forsamling, enhet, lakarintyg, patient, startdatum, slutdatum, kon, alder, diagnoskapitel,
+            return new Fact(id, lan, kommun, forsamling, enhet, lakarintyg, patient, startdatum, slutdatum, kon, alder, diagnoskapitel,
                     diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon,
                     lakaralder, lakarbefattnings, lakarid, enkelt.booleanValue());
+        }
+
+        public FactBuilder withId(long id) {
+            this.id = id;
+            return this;
         }
 
         public FactBuilder withLan(int lan) {

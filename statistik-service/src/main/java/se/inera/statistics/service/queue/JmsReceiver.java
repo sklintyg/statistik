@@ -18,19 +18,18 @@
  */
 package se.inera.statistics.service.queue;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.TextMessage;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.Receiver;
+
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
 
 public class JmsReceiver implements MessageListener {
     private static final Logger LOG = LoggerFactory.getLogger(JmsReceiver.class);
@@ -39,6 +38,7 @@ public class JmsReceiver implements MessageListener {
     public static final String REVOKED = "revoked";
     public static final String ACTION = "action";
     public static final String CERTIFICATE_ID = "certificate-id";
+    public static final String MESSAGE_SENT = "message-sent";
 
     @Autowired
     private Receiver receiver;
@@ -54,10 +54,14 @@ public class JmsReceiver implements MessageListener {
                 String doc = ((TextMessage) rawMessage).getText();
                 long timestamp = rawMessage.getJMSTimestamp();
                 String typeName = rawMessage.getStringProperty(ACTION);
-                String certificateId = rawMessage.getStringProperty(CERTIFICATE_ID);
-                receiver.accept(typeEvent(typeName), doc, certificateId, timestamp);
-                LOG.info("Received intyg {}", certificateId);
-                monitoringLogService.logInFromQueue(certificateId);
+
+                // INTYG-3515
+                if (!MESSAGE_SENT.equals(typeName)) {
+                    String certificateId = rawMessage.getStringProperty(CERTIFICATE_ID);
+                    receiver.accept(typeEvent(typeName), doc, certificateId, timestamp);
+                    LOG.info("Received intyg {}", certificateId);
+                    monitoringLogService.logInFromQueue(certificateId);
+                }
             } catch (JMSException e) {
                 throw new StatisticsJMSException("JMS error", e);
             }

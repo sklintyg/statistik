@@ -94,7 +94,7 @@ Testar att alla rapporter hanterar sjukfall med flera värden under samma period
 !6 Uppstädning efter landstingstestet
 | Uppladdade landstingsfiler |
 | användare | filnamn                  | statusmeddelande? |
-| user3     | tomlandstingslista.xlsx  | Data updated ok   |
+| user2     | tomlandstingslista.xlsx  | Data updated ok   |
 
 
 !5 Verksamhet

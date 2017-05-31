@@ -51,6 +51,7 @@ public class SjukfallUtilTest {
     private MutableAisle aisle;
 
     private SjukfallUtil sjukfallUtil;
+    private int id = 1;
 
     @Before
     public void setup() {
@@ -138,7 +139,7 @@ public class SjukfallUtilTest {
     }
 
     private Fact createFact(int enhet, int patient, int startdatum, int sjukskrivningslangd, int lakarintyg, int lakarId) {
-        return aFact().withLan(3).withKommun(380).withForsamling(38002).withEnhet(enhet).
+        return aFact().withId(id++).withLan(3).withKommun(380).withForsamling(38002).withEnhet(enhet).
                     withLakarintyg(lakarintyg).withPatient(patient).withStartdatum(startdatum).withKon(FEMALE).withAlder(45).
                     withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
                     withSjukskrivningsgrad(100).withSlutdatum(startdatum + sjukskrivningslangd - 1).
@@ -237,13 +238,13 @@ public class SjukfallUtilTest {
     }
 
     private Sjukfall createSjukfall(Kon kon) {
-        return Sjukfall.create(new SjukfallExtended(new Fact(0, 1, 2, 3, 4, 1, 6, 15, kon.getNumberRepresentation(), 30, 0, 0, 0, 0, 100, 1, 30, new int[0], 0, false)));
+        return Sjukfall.create(new SjukfallExtended(new Fact(1L, 0, 1, 2, 3, 4, 1, 6, 15, kon.getNumberRepresentation(), 30, 0, 0, 0, 0, 100, 1, 30, new int[0], 0, false)));
     }
 
     public static FilterPredicates createEnhetFilterFromInternalIntValues(Integer... enhetIds) {
         final HashSet<Integer> availableEnhets = new HashSet<>(Arrays.asList(enhetIds));
         final String hashValue = FilterPredicates.getHashValueForEnhets(availableEnhets);
-        return new FilterPredicates(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue);
+        return new FilterPredicates(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue, false);
     }
 
     private Collection<Sjukfall> calculateSjukfallsHelper() {

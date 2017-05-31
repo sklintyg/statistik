@@ -252,7 +252,7 @@ public class SjukfallQueryTest {
     }
 
     private Fact fact(int patientId, Kon patientKon, HsaIdLakare lakareId) {
-         return aFact().withLan(3).withKommun(380).withForsamling(38002).
+         return aFact().withId(1).withLan(3).withKommun(380).withForsamling(38002).
                 withEnhet(ENHET1_ID).withLakarintyg(lakarIntygCounter++).
                 withPatient(patientId).withKon(patientKon).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).

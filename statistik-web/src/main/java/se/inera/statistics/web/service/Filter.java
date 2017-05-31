@@ -20,6 +20,7 @@ package se.inera.statistics.web.service;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.warehouse.FilterPredicates;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import java.util.Collection;
 
@@ -30,17 +31,19 @@ class Filter {
     private Collection<String> diagnoser;
     private Collection<String> sjukskrivningslangd;
     private Collection<String> aldersgrupp;
+    private final String hash;
 
-    Filter(FilterPredicates predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser, Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp) {
+    Filter(FilterPredicates predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser, Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp, String hashValue) {
         this.predicate = predicate;
         this.enheter = enheter;
         this.diagnoser = diagnoser;
         this.sjukskrivningslangd = sjukskrivningslangd;
         this.aldersgrupp = aldersgrupp;
+        this.hash = hashValue;
     }
 
     static Filter empty() {
-        return new Filter(null, null, null, null, null);
+        return new Filter(SjukfallUtil.ALL_ENHETER, null, null, null, null, null);
     }
 
     FilterPredicates getPredicate() {
@@ -64,7 +67,7 @@ class Filter {
     }
 
     String getFilterHash() {
-        return predicate != null ? predicate.getHash() : null;
+        return hash;
     }
 
 }
