@@ -25,6 +25,7 @@
                 <ref bean="protectedLandstingService"/>
                 <ref bean="loginInfoService"/>
                 <ref bean="loggingService"/>
+                <ref bean="linkService"/>
             </jaxrs:serviceBeans>
             <jaxrs:providers>
                 <ref bean="jacksonJsonProvider"/>

@@ -28,7 +28,8 @@ gretty {
             '-Dstatistics.base.url=' + baseUrl,
             '-Dstatistics.test.max.intyg=500',
             '-Dstatistics.config.file=' + projectDir + '/src/main/resources/default.dev.properties',
-            '-Dstatistics.credentials.file=' + projectDir + '/src/main/resources/dev-credentials.properties'
+            '-Dstatistics.credentials.file=' + projectDir + '/src/main/resources/dev-credentials.properties',
+            '-Dstatistics.resources.folder=' + projectDir + '/../src/main/resources'
     ]
     debugSuspend = false
     recompileOnSourceChange = false
@@ -85,7 +86,8 @@ dependencies {
     compile project(':statistik-service')
 
     compile "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${monitoringSchemaVersion}"
-
+    compile "se.inera.intyg.infra:dynamiclink:${infraVersion}"
+    
     compile "org.springframework.security.extensions:spring-security-saml2-core:${springSecuritySamlVersion}"
     compile "xml-apis:xml-apis:${xmlApisVersion}"
     compile "org.springframework:spring-webmvc:${springContextVersion}"

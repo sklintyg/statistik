@@ -1,0 +1,92 @@
+[
+  {
+    "key": "statistikAnvandarmanual",
+    "url": "http://www.inera.se/TJANSTER--PROJEKT/Statistiktjansten/Dokument/",
+    "text": "användarmanualer (extern länk)",
+    "target": "_blank"
+  },
+  {
+    "key": "highcharts",
+    "url": "http://www.highcharts.com/",
+    "text": "Highsoft AS (extern länk)",
+    "target": "_blank"
+  },
+  {
+    "key": "patientdatalagen",
+    "url": "http://www.riksdagen.se/sv/Dokument-Lagar/Lagar/Svenskforfattningssamling/Patientdatalag-2008355_sfs-2008-355/?bet=2008:355",
+    "text": "Patientdatalagen (extern länk)",
+    "target": "_blank"
+  },
+  {
+    "key": "personuppgiftslagen",
+    "url": "http://www.riksdagen.se/sv/Dokument-Lagar/Lagar/Svenskforfattningssamling/Personuppgiftslag-1998204_sfs-1998-204/?bet=1998:204",
+    "text": "Personuppgiftslagen (extern länk)",
+    "target": "_blank"
+  },
+  {
+    "key": "ptsCookies",
+    "url": "https://www.pts.se/sv/Privat/Internet/Skydd-av-uppgifter/Fragor-och-svar-om-kakor-for-anvandare1/",
+    "text": "Post- och telestyrelsens webbplats (extern länk).",
+    "target": "_blank"
+  },
+  {
+    "key": "creativeCommons",
+    "url": "http://creativecommons.org/licenses/by-nc/3.0/legalcode",
+    "text": "fri licens för icke-kommersiella utövare (extern länk)",
+    "target": "_blank"
+  },
+  {
+    "key": "ptsCookiesBanner",
+    "url": "https://www.pts.se/sv/Privat/Internet/Skydd-av-uppgifter/Fragor-och-svar-om-kakor-for-anvandare1/",
+    "text": "Post- och telestyrelsens webbplats",
+    "target": "_blank"
+  },
+  {
+    "key": "ptsCookiesMerOm",
+    "url": "https://www.pts.se/sv/Privat/Internet/Skydd-av-uppgifter/Fragor-och-svar-om-kakor-for-anvandare1/",
+    "text": "Mer om kakor (cookies) på Post- och telestyrelsens webbplats",
+    "target": "_blank"
+  },
+  {
+    "key": "testSiths",
+    "url": "https://test.siths.se/",
+    "text": "test.siths.se",
+    "target": "_blank"
+  },
+  {
+    "key": "sarskildBehorighetStatistik",
+    "url": "http://www.inera.se/globalassets/tjanster/intygstjanster/statistiktjansten/dokument/stodmaterial/behorigheter-och-medarbetaruppdrag.pdf",
+    "text": "Mer information om behörighet för Statistiktjänsten (extern länk)",
+    "target": "_blank"
+  },
+  {
+    "key": "sarskildBehorighetStatistikClickHere",
+    "url": "http://www.inera.se/globalassets/tjanster/intygstjanster/statistiktjansten/dokument/stodmaterial/behorigheter-och-medarbetaruppdrag.pdf",
+    "text": "klicka här",
+    "target": "_blank"
+  },
+  {
+    "key": "ineraStartsida",
+    "url": "http://www.inera.se",
+    "text": "Inera AB (extern länk)",
+    "target": "_blank"
+  },
+  {
+    "key": "ineraKundserviceFelanmalan",
+    "url": "http://www.inera.se/felanmalan",
+    "text": "Kontaktinformation till kundservice (extern länk)",
+    "target": "_blank"
+  },
+  {
+    "key": "ineraKundserviceAnmalFel",
+    "url": "http://www.inera.se/felanmalan",
+    "text": "Ineras kundservice",
+    "target": "_blank"
+  },
+  {
+    "key": "administrationAvLandsting",
+    "url": "http://www.inera.se/Documents/TJANSTER_PROJEKT/Statistiktjansten/administration_av_landsting.pdf",
+    "text": "Instruktioner",
+    "target": "_blank"
+  }
+]

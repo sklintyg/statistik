@@ -18,7 +18,7 @@
  */
 
 /* App Module */
-angular.module('StatisticsApp',
+angular.module('StatisticsApp',                                                                                                                                          
     ['ngRoute',
      'ngCookies',
      'ngSanitize',
@@ -28,4 +28,12 @@ angular.module('StatisticsApp',
      'StatisticsApp.treeMultiSelector',
      'StatisticsApp.businessFilter',
      'dropzone',
-     'ngStorage']);
+     'ngStorage',
+     'ngMockE2E']).run(
+
+    /** @ngInject */
+    function ($httpBackend) {
+        'use strict';
+        $httpBackend.whenGET(/^\/api\/links/).respond(200);
+        $httpBackend.whenGET(/^.+\.html/).passThrough();
+    });

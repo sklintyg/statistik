@@ -6,7 +6,7 @@
 					<h1>Vanliga frågor och svar</h1>
 					<p>Här kan du läsa vanliga frågor och svar om Statistiktjänsten.</p>
 					<p>Om du inte hittar svar på din fråga kan du kontakta Ineras kundservice.</p>
-					<p><a href="http://www.inera.se/felanmalan" target="_blank">Kontaktinformation till kundservice (extern länk)</a></p>
+					<p><span dynamiclink key="ineraKundserviceFelanmalan"></span></p>
 				</div>
 			</div>
 			<div class="row">
@@ -15,7 +15,7 @@
 						<div class="panel-heading">
 							<h4 class="panel-title">{{q.title}}</h4>
 						</div>
-						<div class="panel-body" ng-bind-html="q.body"></div>
+						<div class="panel-body" compile="q.body"></div>
 					</div>
         </div>
 			</div>

@@ -21,7 +21,7 @@
 angular.module('StatisticsApp').run(
 
     /** @ngInject */
-    function ($rootScope, $route, messageService) {
+    function ($rootScope, $route, $http, messageService, dynamicLinkService) {
     'use strict';
 
     Highcharts.seriesTypes.line.prototype.drawLegendSymbol = Highcharts.seriesTypes.area.prototype.drawLegendSymbol;
@@ -29,6 +29,11 @@ angular.module('StatisticsApp').run(
     $rootScope.lang = 'sv';
     $rootScope.DEFAULT_LANG = 'sv';
     messageService.addResources(stMessages); // jshint ignore:line
+        
+    $http.get('/api/links').then(function(links) {
+        dynamicLinkService.addLinks(links.data);
+        messageService.addLinks(links);
+    });
 
     Highcharts.setOptions({
         lang: { thousandsSep: ' ' }
