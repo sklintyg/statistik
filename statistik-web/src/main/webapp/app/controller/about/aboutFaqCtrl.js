@@ -102,8 +102,8 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl', ['$scope',
                         '<li>en kortläsare med tillhörande programvara, NetID</li>' +
                         '<li>ett medarbetaruppdrag i HSA som ger dig rätt att ta del av statistik</li>' +
                     '</ul>' +
-					'<p><a href="http://www.inera.se/sarskild_behorighet" target="_blank">' +
-                        'Mer information om behörighet för Statistiktjänsten (extern länk)</a></p>'
+					'<p><span dynamiclink key="sarskildBehorighetStatistik"></span></p>'
+
         });
 		faq.push({
             title: '9. Hur skriver jag ut en rapport?',

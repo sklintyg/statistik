@@ -79,6 +79,9 @@
         <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
         <bean id="loginInfoService" class="se.inera.statistics.web.service.LoginInfoService"/>
         <bean id="loggingService" class="se.inera.statistics.web.service.LoggingService"/>
+        <bean id="dynamicLinkRepository" class="se.inera.intyg.infra.dynamiclink.repository.DynamicLinkRepositoryImpl" />
+        <bean id="dynamicLinkService" class="se.inera.intyg.infra.dynamiclink.service.DynamicLinkServiceImpl"/>
+        <bean id="linkService" class="se.inera.statistics.web.service.links.LinkService"/>
 
         <import resource="classpath*:hsa-services-config.xml"/>
         <import resource="classpath*:hsaws-services-config.xml"/>
