@@ -67,9 +67,10 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
 
         // Calculates number of "Kapitel"
         function selectedPrimaryCounter() {
-            return hasNoMenuOptionsOrSubs() ? 0 : _.reduce($scope.menuOptions.subs, function (memo, sub) {
-                return memo + (self.selectedLeavesCount(sub) > 0 ? 1 : 0);
+            var res = hasNoMenuOptionsOrSubs() ? 0 : _.reduce($scope.menuOptions.subs, function (acc, sub) {
+                return acc + (sub.allSelected ? 1 : 0);
             }, 0);
+            return res;
         }
 
 
@@ -77,7 +78,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         function selectedSecondaryCounter() {
             return hasNoMenuOptionsOrSubs() ? 0 : _.reduce($scope.menuOptions.subs, function (acc, item) {
                     var nodeSum = _.reduce(item.subs, function (memo, sub) {
-                        return memo + (self.selectedLeavesCount(sub) > 0 ? 1 : 0);
+                        return memo + (sub.allSelected ? 1 : 0);
                     }, 0);
                     return acc + nodeSum;
                 }, 0);
@@ -89,7 +90,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
                     var nodeSum = 0;
                     angular.forEach(item.subs, function(value) {
                         nodeSum += _.reduce(value.subs, function (memo, sub) {
-                            return memo + (self.selectedLeavesCount(sub) > 0 ? 1 : 0);
+                            return memo + (sub.allSelected ? 1 : 0);
                         }, 0);
                     });
                     return acc + nodeSum;
@@ -126,8 +127,8 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         };
 
         function updateSelections() {
-            $scope.updateCounters();
             $scope.updateState($scope.menuOptions);
+            $scope.updateCounters();
             $scope.$emit('selectionsChanged');
         }
 
