@@ -515,6 +515,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
             subs: [{
                 name: ' Utan gilitig ICD-10 kod',
                 nameLow: ' utan giltig icd-10 kod',
+                numericalId: 1670110002,
                 someSelected: false,
                 allSelected: true
             }]};

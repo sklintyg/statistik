@@ -101,7 +101,8 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         function selectedLeavesCounter() {
             return !$scope.menuOptions ? 0 : self.selectedLeavesCount({subs : _.filter($scope.menuOptions.subs,
                 function(it) {
-                    return it.nameLow !== ' utan giltig icd-10 kod';
+                    // 1670110002 = 'Utan giltig ICD-10 kod'
+                    return it.numericalId !== 1670110002;
                 })}
             );
         }
