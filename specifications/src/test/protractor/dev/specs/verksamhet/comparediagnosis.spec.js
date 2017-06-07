@@ -116,6 +116,33 @@ describe('Jämför diagnoser: ', function() {
         expect(report.compareDiagnosisSaveAndCloseBtn.isDisplayed()).toBe(false); //Dialog closed
     });
 
+    it('Valen återställs när dialogen stängts utan att spara enligt INTYG-3993', function() {
+        //Make sure no selection exists by reloading report
+        pages.navmenu.navBusinessAgeGroupsLink.click();
+        pages.navmenu.navBusinessCompareDiagnosisLink.click();
+
+        //Open dx selection dialog
+        report.compareDiagnosisBtn.click();
+
+        // No selections are made when dialog is first opened
+        expect(report.compareDiagnosisDepthList(0).first().element(by.css('input')).isSelected()).toBe(false);
+
+        //Check first and verify that is actually checked
+        report.compareDiagnosisDepthList(0).first().element(by.css('input')).click();
+        expect(report.compareDiagnosisDepthList(0).first().element(by.css('input')).isSelected()).toBe(true);
+
+        // Close (without saving) and reopen dialog
+        report.compareDiagnosisCloseBtn.click();
+        report.compareDiagnosisBtn.click();
+
+        //The first checkbox was selected before but should now have been resetted to deselected (INTYG-3993)
+        expect(report.compareDiagnosisDepthList(0).first().element(by.css('input')).isSelected()).toBe(false);
+
+        //Clean up by closing dialog
+        report.compareDiagnosisCloseBtn.click();
+        expect(report.compareDiagnosisSaveAndCloseBtn.isDisplayed()).toBe(false); //Dialog closed
+    });
+
     afterAll(function() {
         features.user.makeSureNotLoggedIn();
     });

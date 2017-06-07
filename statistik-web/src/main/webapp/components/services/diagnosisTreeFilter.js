@@ -24,6 +24,7 @@ angular.module('StatisticsApp')
             'use strict';
 
             var diagnosisTreeFilter = {};
+            var preselectedFilter = {diagnoser: []};
 
             diagnosisTreeFilter.diagnosisOptionsTree = {subs: []};
             diagnosisTreeFilter.showCodeLevel = false;
@@ -67,8 +68,8 @@ angular.module('StatisticsApp')
                 treeMultiSelectorUtil.updateSelectionState(diagnosisTreeFilter.diagnosisOptionsTree);
             };
 
-            diagnosisTreeFilter.setPreselectedFilter = function(filterData) {
-                diagnosisTreeFilter.selectDiagnoses(filterData.diagnoser);
+            diagnosisTreeFilter.setPreselectedFilter = function() {
+                diagnosisTreeFilter.selectDiagnoses(preselectedFilter.diagnoser);
             };
 
             diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal = function(diagnoses, showCodeLevel) {
@@ -97,6 +98,7 @@ angular.module('StatisticsApp')
 
             diagnosisTreeFilter.resetSelections = function() {
                 diagnosisTreeFilter.deselectAll(diagnosisTreeFilter.diagnosisOptionsTree);
+                preselectedFilter = {diagnoser: []};
             };
 
             var diagnosHashExists = function diagnosHashExists(routeParams) {
@@ -105,7 +107,8 @@ angular.module('StatisticsApp')
 
             var populateTreeMultiSelectWithPrefilteredData = function populateTreeMultiSelectWithPrefilteredData(routeParams) {
                 statisticsData.getFilterData(routeParams.diagnosHash, function(filterData) {
-                    diagnosisTreeFilter.setPreselectedFilter(filterData);
+                    preselectedFilter = filterData;
+                    diagnosisTreeFilter.setPreselectedFilter();
                 }, function(){ throw new Error('Could not parse filter'); });
             };
 
