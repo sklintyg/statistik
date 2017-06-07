@@ -99,6 +99,7 @@
   copy:
     src: "{{ releases_folder }}/statistik-web-{{ version }}.war"
     dest: "{{ tomcat_webapps }}/ROOT.war"
+    remote_src: True
 
 - name: Extract ROOT.war
   command: unzip -d {{ tomcat_webapps }}/ROOT {{ tomcat_webapps }}/ROOT.war
@@ -109,6 +110,7 @@
   copy:
     src: "{{ releases_folder }}/highcharts-export-web-{{ highcharts_version }}.war"
     dest: "{{ tomcat_webapps }}/highcharts-export-web.war"
+    remote_src: True
 
 - name: Remove statistik-web-{{ version }}.war from releases
   file:
