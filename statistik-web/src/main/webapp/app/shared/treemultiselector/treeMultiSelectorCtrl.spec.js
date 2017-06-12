@@ -418,11 +418,14 @@ describe('Controller: treeMultiSelectorCtrl', function() {
             {name: 'Enhet1', subs: [sub11, sub12], someSelected: false, allSelected: false}
         ];
 
+        scope.menuOptions = {subs: menuItems};
+
         //When
-        var leavesCount = ctrl.selectedLeavesCount({subs: menuItems});
+        var selectedCount = scope.countSelectedByLevel();
 
         //Then
-        expect(leavesCount).toBe(0);
+        expect(selectedCount[1]).toBe(undefined);
+        expect(selectedCount[2]).toBe(undefined);
     }));
 
     it('leaves count is counting correct when 1', inject(function () {
@@ -433,11 +436,14 @@ describe('Controller: treeMultiSelectorCtrl', function() {
             {name: 'Enhet1', subs: [sub11, sub12], someSelected: true, allSelected: false}
         ];
 
+        scope.menuOptions = {subs: menuItems};
+
         //When
-        var leavesCount = ctrl.selectedLeavesCount({subs: menuItems});
+        var selectedCount = scope.countSelectedByLevel();
 
         //Then
-        expect(leavesCount).toBe(1);
+        expect(selectedCount[1]).toBe(0);
+        expect(selectedCount[2]).toBe(1);
     }));
 
     it('leaves count is counting correct when all', inject(function () {
@@ -448,11 +454,14 @@ describe('Controller: treeMultiSelectorCtrl', function() {
             {name: 'Enhet1', subs: [sub11, sub12], someSelected: false, allSelected: true}
         ];
 
+        scope.menuOptions = {subs: menuItems};
+
         //When
-        var leavesCount = ctrl.selectedLeavesCount({subs: menuItems});
+        var selectedCount = scope.countSelectedByLevel();
 
         //Then
-        expect(leavesCount).toBe(2);
+        expect(selectedCount[1]).toBe(1);
+        expect(selectedCount[2]).toBe(2);
     }));
 
     it('deselect all levels when kapitel is deselected', inject(function (businessFilterFactory) {
@@ -522,11 +531,11 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         scope.menuOptions = menuItems;
 
         // When
-        scope.updateCounters();
+        scope.updateCountersNow();
 
         //Then
         expect(scope.selectedPrimaryCounter).toBe(1);
-        expect(scope.selectedLeavesCounter).toBe(0);
+        expect(scope.selectedQuaternaryCounter).toBe(0);
     }));
 
     it('should only count nodes which are marked as allSelected', inject(function (businessFilterFactory) {
@@ -534,26 +543,25 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         businessFilterFactory.dataInitialized = true;
         scope.menuOptions = businessFilterFactory.icd10;
 
-        scope.updateCounters();
+        scope.updateCountersNow();
 
         expect(scope.selectedPrimaryCounter).toBe(0);
         expect(scope.selectedSecondaryCounter).toBe(0);
         expect(scope.selectedTertiaryCounter).toBe(0);
-        expect(scope.selectedLeavesCounter).toBe(0);
 
         scope.itemClicked(A00B99, businessFilterFactory.icd10);
+        scope.updateCountersNow();
 
         expect(scope.selectedPrimaryCounter).toBe(1);
         expect(scope.selectedSecondaryCounter).toBe(2);
         expect(scope.selectedTertiaryCounter).toBe(3);
-        expect(scope.selectedLeavesCounter).toBe(3);
 
         scope.itemClicked(A01, businessFilterFactory.icd10);
+        scope.updateCountersNow();
 
         expect(scope.selectedPrimaryCounter).toBe(0);
         expect(scope.selectedSecondaryCounter).toBe(1);
         expect(scope.selectedTertiaryCounter).toBe(2);
-        expect(scope.selectedLeavesCounter).toBe(2);
 
     }));
 });
