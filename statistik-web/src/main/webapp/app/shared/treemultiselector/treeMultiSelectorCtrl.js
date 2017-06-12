@@ -20,8 +20,6 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
     .controller('treeMultiSelectorCtrl', ['$scope', 'treeMultiSelectorUtil', '$timeout', '_', function ($scope, treeMultiSelectorUtil, $timeout, _) {
         'use strict';
 
-        var self = this;
-
         $scope.value = {
             multiMenuFilter: ''
         };
@@ -37,7 +35,9 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         };
 
         function updateDoneDisabled() {
-            $scope.doneDisabled = $scope.minSelections && ($scope.minSelections > $scope.selectedLeavesCounter);
+            var totalSelections = $scope.selectedPrimaryCounter + $scope.selectedSecondaryCounter +
+                $scope.selectedTertiaryCounter + $scope.selectedQuaternaryCounter;
+            $scope.doneDisabled = $scope.minSelections && ($scope.minSelections > totalSelections);
         }
 
         $scope.$on('selectionsChanged', function() {
@@ -65,57 +65,38 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             return !$scope.menuOptions || !$scope.menuOptions.subs || $scope.menuOptions.subs.length === 0;
         }
 
-        // Calculates number of "Kapitel"
-        function selectedPrimaryCounter() {
-            var res = hasNoMenuOptionsOrSubs() ? 0 : _.reduce($scope.menuOptions.subs, function (acc, sub) {
-                return acc + (sub.allSelected ? 1 : 0);
-            }, 0);
-            return res;
-        }
-
-
-        // Calculates number of "Avsnitt"
-        function selectedSecondaryCounter() {
-            return hasNoMenuOptionsOrSubs() ? 0 : _.reduce($scope.menuOptions.subs, function (acc, item) {
-                    var nodeSum = _.reduce(item.subs, function (memo, sub) {
-                        return memo + (sub.allSelected ? 1 : 0);
-                    }, 0);
-                    return acc + nodeSum;
-                }, 0);
-        }
-
-        // Calculates number of "Kategorier"
-        function selectedTertiaryCounter() {
-            return hasNoMenuOptionsOrSubs() ? 0 : _.reduce($scope.menuOptions.subs, function (acc, item) {
-                    var nodeSum = 0;
-                    angular.forEach(item.subs, function(value) {
-                        nodeSum += _.reduce(value.subs, function (memo, sub) {
-                            return memo + (sub.allSelected ? 1 : 0);
-                        }, 0);
-                    });
-                    return acc + nodeSum;
-                }, 0);
-        }
-
-        // Calculates number of leaves, i.e., "Diagnoskoder"
-        function selectedLeavesCounter() {
-            return !$scope.menuOptions ? 0 : self.selectedLeavesCount({subs : _.filter($scope.menuOptions.subs,
-                function(it) {
-                    // 1670110002 = 'Utan giltig ICD-10 kod'
-                    return it.numericalId !== 1670110002;
-                })}
-            );
-        }
-
-        self.selectedLeavesCount = function selectedLeavesCount(node) {
-            if (node.subs && node.subs.length > 0) {
-                return _.reduce(node.subs, function (acc, item) {
-                    return acc + self.selectedLeavesCount(item);
-                }, 0);
-            } else {
-                return node.allSelected ? 1 : 0;
-            }
+        $scope.countSelectedByLevel = function() {
+            return countSelectedLevels($scope.menuOptions, 0);
         };
+
+        function sumSelectedLevels(selectedLevels1, selectedLevels2) {
+            for (var key in selectedLevels2) {
+                if (Object.prototype.hasOwnProperty.call(selectedLevels2, key)) {
+                    var val = selectedLevels2[key];
+                    selectedLevels1[key] = selectedLevels1[key] ? selectedLevels1[key] + val : val;
+                }
+            }
+            return selectedLevels1;
+        }
+
+        function countSelectedLevels(menuOptions, level) {
+            if (!menuOptions) {
+                return {};
+            }
+            if (!menuOptions.subs || menuOptions.subs.length === 0) {
+                var resp = {};
+                resp[level] = menuOptions.allSelected ? 1 : 0;
+                return resp;
+            }
+            var startVal = {};
+            startVal[level] = menuOptions.allSelected ? 1 : 0;
+            return hasNoMenuOptionsOrSubs() ? 0 : _.reduce(menuOptions.subs, function(acc, sub) {
+                if (!(sub.allSelected || sub.someSelected)) {
+                    return acc;
+                }
+                return sumSelectedLevels(acc, countSelectedLevels(sub, level + 1));
+            }, startVal);
+        }
 
         $scope.itemClicked = function (item) {
             if (item.allSelected) {
@@ -130,7 +111,6 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         function updateSelections() {
             $scope.updateState($scope.menuOptions);
             $scope.updateCounters();
-            $scope.$emit('selectionsChanged');
         }
 
         $scope.$on('updateSelections', function() {
@@ -219,11 +199,24 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             return item.hide;
         };
 
+        function valueOr(val, orElse) {
+            return val ? val : orElse;
+        }
+
         $scope.updateCounters = function () {
-            $scope.selectedPrimaryCounter = selectedPrimaryCounter();
-            $scope.selectedSecondaryCounter = selectedSecondaryCounter();
-            $scope.selectedTertiaryCounter = selectedTertiaryCounter();
-            $scope.selectedLeavesCounter = selectedLeavesCounter();
+            $timeout(function() {
+                $scope.updateCountersNow();
+            }, 1);
+        };
+
+        //The actual update without the delay. Extracted from 'updateCounters' for testing.
+        $scope.updateCountersNow = function () {
+            var levelCount = $scope.countSelectedByLevel();
+            $scope.selectedPrimaryCounter = valueOr(levelCount[1], 0);
+            $scope.selectedSecondaryCounter = valueOr(levelCount[2], 0);
+            $scope.selectedTertiaryCounter = valueOr(levelCount[3], 0);
+            $scope.selectedQuaternaryCounter = valueOr(levelCount[4], 0);
+            $scope.$emit('selectionsChanged');
         };
 
         $scope.updateState = function (item) {
