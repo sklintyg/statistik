@@ -34,7 +34,6 @@ describe('Model: AppModel', function () {
         expect(AppModel.get().loginUrl).toEqual('');
         expect(AppModel.get().loginVisible).toBeFalsy();
         expect(AppModel.get().highchartsExportUrl).toEqual('');
-        expect(AppModel.get().sjukskrivningLengths).toEqual([]);
     });
 
     it('payload', function() {
@@ -44,20 +43,12 @@ describe('Model: AppModel', function () {
             loginUrl: 'loginUrl',
             loginVisible: true,
             highchartsExportUrl: 'highcharts',
-            sjukskrivningLengths: {
-                'id': 'text',
-                'ad': 'text2'
-            }
         });
 
         expect(AppModel.get().isLoggedIn).toBeTruthy();
         expect(AppModel.get().loginUrl).toEqual('loginUrl');
         expect(AppModel.get().loginVisible).toBeTruthy();
         expect(AppModel.get().highchartsExportUrl).toEqual('highcharts');
-        expect(AppModel.get().sjukskrivningLengths).toEqual([
-            {id: 'ad', name: 'text2'},
-            {id: 'id', name: 'text'}
-        ]);
     });
 
 });
