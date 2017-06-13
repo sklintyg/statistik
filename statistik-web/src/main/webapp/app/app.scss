@@ -578,6 +578,14 @@ div.accordion-body.in.collapse > div.accordion-heading a.accordion-toggle {
   text-decoration: none;
 }
 
+.accordion-toggle:focus {
+  outline: none;
+}
+
+uib-accordion a:focus {
+  text-decoration: none;
+}
+
 .accordion-toggle.collapsed {
   background: #212633;
   background: linear-gradient(to bottom, #666666 0%, #212633 57%);
