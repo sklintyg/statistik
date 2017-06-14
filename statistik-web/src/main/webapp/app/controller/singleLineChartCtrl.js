@@ -178,7 +178,7 @@ angular.module('StatisticsApp').casesPerMonthConfig =
     conf.title = messageService.getProperty('title.sickleave');
     conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
         if (isLandsting) {
-            return $filter('messageFilter')('help.landsting.vardenhet-listning2', '', '', [result.fileUploadDate], '');
+            return $filter('messageFilter')('help.landsting.sjukfall-totalt', '', '', [result.fileUploadDate], '');
         }
     };
 
