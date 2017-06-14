@@ -7,6 +7,10 @@ profile: hsa-stub,wc-hsa-stub,security-both,qm
 host_url: https://demo.statistik.intygstjanster.se
 xmx_memory: "14048m"
 
+#tomcat
+tomcat7_user: ine-app
+tomcat7_group: ine-app
+
 proxy_env:
   http_proxy: http://bf-proxy.sth:8888
   https_proxy: http://bf-proxy.sth:8888
