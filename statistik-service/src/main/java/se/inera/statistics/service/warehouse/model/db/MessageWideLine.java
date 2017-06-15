@@ -19,7 +19,6 @@
 package se.inera.statistics.service.warehouse.model.db;
 
 import se.inera.statistics.service.processlog.message.MessageEventType;
-import se.inera.statistics.service.warehouse.PartKod;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -50,8 +49,6 @@ public class MessageWideLine {
     private String patientid;
     private LocalDate skickatDate;
     private LocalTime skickatTidpunkt;
-    @Enumerated(EnumType.STRING)
-    private PartKod skickatAv;
     private String amneCode;
     private int kon;
     private int alder;
@@ -65,7 +62,7 @@ public class MessageWideLine {
     // CHECKSTYLE:OFF ParameterNumber
     @SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public MessageWideLine(long id, long logId, String meddelandeId, String intygId, MessageEventType meddelandeTyp, String patientid,
-            LocalDateTime skickatTidpunkt, PartKod skickatAv, String amneCode, int kon, int alder, String enhet, String vardgivareid) {
+            LocalDateTime skickatTidpunkt, String amneCode, int kon, int alder, String enhet, String vardgivareid) {
         this.id = id;
         this.logId = logId;
         this.meddelandeId = meddelandeId;
@@ -74,7 +71,6 @@ public class MessageWideLine {
         this.patientid = patientid;
         this.skickatTidpunkt = skickatTidpunkt.toLocalTime();
         this.skickatDate = skickatTidpunkt.toLocalDate();
-        this.skickatAv = skickatAv;
         this.amneCode = amneCode;
         this.kon = kon;
         this.alder = alder;
@@ -145,14 +141,6 @@ public class MessageWideLine {
 
     public void setSkickatTidpunkt(LocalTime skickatTidpunkt) {
         this.skickatTidpunkt = skickatTidpunkt;
-    }
-
-    public PartKod getSkickatAv() {
-        return skickatAv;
-    }
-
-    public void setSkickatAv(PartKod skickatAv) {
-        this.skickatAv = skickatAv;
     }
 
     public String getAmneCode() {

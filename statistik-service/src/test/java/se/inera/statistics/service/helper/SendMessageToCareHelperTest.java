@@ -21,11 +21,9 @@ package se.inera.statistics.service.helper;
 import org.junit.Before;
 import org.junit.Test;
 import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.warehouse.PartKod;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
 
 import javax.xml.bind.JAXBException;
-
 import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
@@ -76,11 +74,6 @@ public class SendMessageToCareHelperTest {
     @Test
     public void testGetIntygsId() {
         assertEquals("fd59cab6-942c-4b5d-a932-ea5117783af7", helper.getIntygId(message));
-    }
-
-    @Test
-    public void testGetSkickatAv() {
-        assertEquals(PartKod.FKASSA, helper.getSkickatAv(message));
     }
 
     @Test

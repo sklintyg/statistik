@@ -18,22 +18,19 @@
  */
 package se.inera.statistics.service.helper;
 
-import java.io.StringReader;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import se.inera.statistics.service.report.model.Kon;
+import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.JAXBIntrospector;
 import javax.xml.bind.Unmarshaller;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.warehouse.PartKod;
-import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
+import java.io.StringReader;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Component
 public class SendMessageToCareHelper {
@@ -49,10 +46,6 @@ public class SendMessageToCareHelper {
 
     public String getIntygId(SendMessageToCareType message) {
         return message.getIntygsId().getExtension();
-    }
-
-    public PartKod getSkickatAv(SendMessageToCareType message) {
-        return PartKod.valueOf(message.getSkickatAv().getPart().getCode());
     }
 
     public LocalDateTime getSkickatTidpunkt(SendMessageToCareType message) {
