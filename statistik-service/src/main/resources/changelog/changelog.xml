@@ -67,5 +67,6 @@
     <include file="changelog/db.changelog-v39.0_add_index_to_intygcommon_eventtype.xml"/>
     <include file="changelog/db.changelog-v40.0_add_column_meddelandehandelse_new.xml"/>
     <include file="changelog/db.changelog-v41.0_change_column_meddelandehandelse.xml"/>
+    <include file="changelog/db.changelog-v42.0_removed_column_skickatav_messagewideline.xml" />
 
 </databaseChangeLog>

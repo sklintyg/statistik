@@ -64,7 +64,6 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
         line.setIntygId(sendMessageToCareHelper.getIntygId(meddelande));
         line.setPatientid(sendMessageToCareHelper.getPatientId(meddelande));
         line.setAmneCode(sendMessageToCareHelper.getAmneCode(meddelande));
-        line.setSkickatAv(sendMessageToCareHelper.getSkickatAv(meddelande));
         LocalDateTime dateTime = sendMessageToCareHelper.getSkickatTidpunkt(meddelande);
         line.setSkickatTidpunkt(dateTime.toLocalTime());
         line.setSkickatDate(dateTime.toLocalDate());
