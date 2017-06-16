@@ -181,7 +181,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     };
 
     businessFilter.setIcd10Structure = function (diagnoses) {
-        businessFilter.icd10.untuched = _.cloneDeep(diagnoses);
         businessFilter.setupDiagnosisTreeForSelectionModal(diagnoses);
         businessFilter.icd10.subs = diagnoses;
 
@@ -289,7 +288,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
                 county = {
                     id: business.lansId,
                     name: business.lansName,
-                    nameLow: business.lansName.toLowerCase(),
                     subs: []};
                 businessFilter.geography.subs.push(county);
             }
@@ -299,12 +297,10 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
                 munip = {
                     id: business.kommunId,
                     name: business.kommunName,
-                    nameLow: business.kommunName.toLowerCase(),
                     subs: []};
                 county.subs.push(munip);
             }
 
-            business.nameLow = business.name.toLowerCase();
             munip.subs.push(business);
         });
         businessFilter.geography.subs = sortSwedish(businessFilter.geography.subs, 'name', 'Okän');

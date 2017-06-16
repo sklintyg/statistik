@@ -442,21 +442,17 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 kapitel.typ = 'kapitel';
                 kapitel.subs = kapitel.subItems;
                 kapitel.name = showIdInName(kapitel) ? kapitel.id + ' ' + kapitel.name : kapitel.name;
-                kapitel.nameLow = kapitel.name.toLowerCase();
                 _.each(kapitel.subItems, function (avsnitt) {
                     avsnitt.typ = 'avsnitt';
                     avsnitt.subs = avsnitt.subItems;
                     avsnitt.name = showIdInName(avsnitt) ? avsnitt.id + ' ' + avsnitt.name : avsnitt.name;
-                    avsnitt.nameLow = avsnitt.name.toLowerCase();
                     _.each(avsnitt.subItems, function (kategori) {
                         kategori.name = showIdInName(kategori) ? kategori.id + ' ' + kategori.name : kategori.name;
-                        kategori.nameLow = kategori.name.toLowerCase();
                         if (showCodeLevel) {
                             kategori.typ = 'kategori';
                             kategori.subs = kategori.subItems;
                             _.each(kategori.subItems, function(kod) {
                                 kod.name = showIdInName(kod) ? kod.id + ' ' + kod.name : kod.name;
-                                kod.nameLow = kod.name.toLowerCase();
                             });
                         }
                     });

@@ -267,16 +267,13 @@ describe('Test of diagnosisTreeFilter', function() {
                 id: '1',
                 typ: 'kapitel',
                 name: '1 Kapitel',
-                nameLow: '1 kapitel',
                 subs: [{
                     id: '2',
                     typ: 'avsnitt',
                     name: '2 Avsnitt',
-                    nameLow: '2 avsnitt',
                     subs: [{
                         id: '3',
                         name: '3 Kategori',
-                        nameLow: '3 kategori',
                         subItems: [{
                             id: '4',
                             name: 'code'
@@ -285,7 +282,6 @@ describe('Test of diagnosisTreeFilter', function() {
                     subItems: [{
                         id: '3',
                         name: '3 Kategori',
-                        nameLow: '3 kategori',
                         subItems: [{
                             id: '4',
                             name: 'code'
@@ -296,11 +292,9 @@ describe('Test of diagnosisTreeFilter', function() {
                     id: '2',
                     typ: 'avsnitt',
                     name: '2 Avsnitt',
-                    nameLow: '2 avsnitt',
                     subs: [{
                         id: '3',
                         name: '3 Kategori',
-                        nameLow: '3 kategori',
                         subItems: [{
                             id: '4',
                             name: 'code'
@@ -309,7 +303,6 @@ describe('Test of diagnosisTreeFilter', function() {
                     subItems: [{
                         id: '3',
                         name: '3 Kategori',
-                        nameLow: '3 kategori',
                         subItems: [{
                             id: '4',
                             name: 'code'
@@ -328,42 +321,34 @@ describe('Test of diagnosisTreeFilter', function() {
                 id: '1',
                 typ: 'kapitel',
                 name: '1 Kapitel',
-                nameLow: '1 kapitel',
                 subs: [{
                     id: '2',
                     typ: 'avsnitt',
                     name: '2 Avsnitt',
-                    nameLow: '2 avsnitt',
                     subs: [{
                         id: '3',
                         typ: 'kategori',
                         name: '3 Kategori',
-                        nameLow: '3 kategori',
                         subs: [{
                             id: '4',
                             name: '4 code',
-                            nameLow: '4 code'
                         }],
                         subItems: [{
                             id: '4',
                             name: '4 code',
-                            nameLow: '4 code'
                         }]
                     }],
                     subItems: [{
                         id: '3',
                         typ: 'kategori',
                         name: '3 Kategori',
-                        nameLow: '3 kategori',
                         subs: [{
                             id: '4',
                             name: '4 code',
-                            nameLow: '4 code'
                         }],
                         subItems: [{
                             id: '4',
                             name: '4 code',
-                            nameLow: '4 code'
                         }]
                     }]
                 }],
@@ -371,37 +356,30 @@ describe('Test of diagnosisTreeFilter', function() {
                     id: '2',
                     typ: 'avsnitt',
                     name: '2 Avsnitt',
-                    nameLow: '2 avsnitt',
                     subs: [{
                         id: '3',
                         typ: 'kategori',
                         name: '3 Kategori',
-                        nameLow: '3 kategori',
                         subs: [{
                             id: '4',
                             name: '4 code',
-                            nameLow: '4 code'
                         }],
                         subItems: [{
                             id: '4',
                             name: '4 code',
-                            nameLow: '4 code'
                         }]
                     }],
                     subItems: [{
                         id: '3',
                         typ: 'kategori',
                         name: '3 Kategori',
-                        nameLow: '3 kategori',
                         subs: [{
                             id: '4',
                             name: '4 code',
-                            nameLow: '4 code'
                         }],
                         subItems: [{
                             id: '4',
                             name: '4 code',
-                            nameLow: '4 code'
                         }]
                     }]
                 }]

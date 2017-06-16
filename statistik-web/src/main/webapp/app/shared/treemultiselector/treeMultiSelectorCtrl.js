@@ -29,6 +29,15 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
 
         $scope.transitionsSupported = supportsTransitions();
 
+        $scope.setupVisibleSubs = function(menuOption) {
+            if (menuOption.subs) {
+                menuOption.visibleSubs = menuOption.subs;
+                _.each(menuOption.subs, function(sub) {
+                    $scope.setupVisibleSubs(sub);
+                });
+            }
+        };
+
         $scope.clickedDone = function () {
             $scope.dialogOpen = false;
             $scope.doneClicked();
@@ -141,62 +150,65 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             }
         };
 
-        function expandIfOnlyOneVisible(items) {
-            var visibleItems = _.reject(items, function (item) {
-                return item.hide;
-            });
-            if (visibleItems.length === 1) {
-                var item = visibleItems[0];
-                item.showChildren = true;
-                expandIfOnlyOneVisible(item.subs);
+        function expandIfOnlyOneVisible(item) {
+            if (item.visibleSubs && item.visibleSubs.length === 1) {
+                var itemSub = item.visibleSubs[0];
+                itemSub.showChildren = true;
+                expandIfOnlyOneVisible(itemSub);
             }
         }
 
-        var currentFiltering = null;
-        $scope.filterMenuItems = function (items, text) {
-            if (currentFiltering !== null) {
-                $timeout.cancel(currentFiltering);
-            }
-
+        $scope.filterMenuItems = function (items, text, restartFiltering) {
             var matchFunction = getIsMatchingFilterFunction(text);
-
-            currentFiltering = $timeout(function () {
-                _.each(items, function (item) {
-                    $scope.updateItemHiddenState(item, matchFunction);
-                });
-                expandIfOnlyOneVisible(items);
-                $scope.$evalAsync();
-                currentFiltering = null;
-            }, 0, false);
+            var filteredItems = $scope.filterItems(items, matchFunction, restartFiltering);
+            expandIfOnlyOneVisible(filteredItems);
+            return filteredItems;
         };
 
+        function escapeRegExp(str) {
+            return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+        }
+
         function getIsMatchingFilterFunction(searchText) {
+            if (!searchText || searchText.length === 0) {
+                return function() {
+                    return true;
+                };
+            }
+
             var text = searchText.toLowerCase();
-
-
             if ($scope.ignoreCharsInSearch) {
                 var re = new RegExp('([' + $scope.ignoreCharsInSearch+ '])', 'g');
                 text = text.replace(re, '');
             }
+            text = escapeRegExp(text);
+
+            var regExp = new RegExp(text, 'i');
 
             return function isMatchingFilter(item) {
-                return item.nameLow.indexOf(text) >= 0;
+                return regExp.test(item.name);
             };
         }
 
-        $scope.updateItemHiddenState = function (item, shouldItemBeVisibleFunction) {
-            var childVisibilityFunction = shouldItemBeVisibleFunction;
-            var hide = true;
-            if (shouldItemBeVisibleFunction(item)) {
-                hide = false;
-                childVisibilityFunction = function () {
-                    return true;
-                };
+        $scope.filterItems = function (item, shouldItemBeVisibleFunction, restartFiltering) {
+            var isItemVisible = shouldItemBeVisibleFunction(item);
+            var visibleFunction = isItemVisible ? function() { return true; } : shouldItemBeVisibleFunction;
+            var subs = restartFiltering ? item.subs : item.visibleSubs;
+            if (subs && subs.length > 0) {
+                var filteredSubs = _.reduce(subs, function(mem, sub) {
+                    var filteredSub = $scope.filterItems(sub, visibleFunction, restartFiltering);
+                    if (filteredSub !== null) {
+                        mem.push(filteredSub);
+                    }
+                    return mem;
+                }, []);
+                item.visibleSubs = filteredSubs;
+                if (filteredSubs.length > 0) {
+                    return item;
+                }
             }
-            item.hide = !!_.reduce(item.subs, function (mem, sub) {
-                return $scope.updateItemHiddenState(sub, childVisibilityFunction) && mem;
-            }, hide);
-            return item.hide;
+
+            return isItemVisible ? item : null;
         };
 
         function valueOr(val, orElse) {
@@ -237,6 +249,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
                 $scope.updateCounters();
                 updateDoneDisabled();
                 resetFilter();
+                $scope.setupVisibleSubs($scope.menuOptions); //TODO Can this be removed?
                 $timeout(function () {
                     $scope.$parent.doneLoading = true;
                 }, 1, false);
@@ -245,16 +258,18 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
 
         function resetFilter() {
             $scope.value.multiMenuFilter = '';
+            // $scope.visibleMenuOptions = $scope.menuOptions;
             _.each($scope.menuOptions.subs, function (item) {
-                $scope.updateItemHiddenState(item, function () {
+                $scope.filterItems(item, function () {
                     return true;
-                });
+                }, true);
             });
         }
 
         $scope.$watch('value.multiMenuFilter', function(value, oldValue) {
             if (value !== oldValue) {
-                $scope.filterMenuItems($scope.menuOptions.subs, value);
+                var restartFiltering = value.indexOf(oldValue) < 0; //Continue with existing filtering or restart using all items
+                $scope.menuOptions = $scope.filterMenuItems($scope.menuOptions, value, restartFiltering);
             }
         });
 
