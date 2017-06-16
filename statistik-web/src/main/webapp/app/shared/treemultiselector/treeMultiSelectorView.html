@@ -37,12 +37,12 @@
                                     <span class="input-group-addon glyphicon glyphicon-search"></span>
                                     <input type="search"
                                            ng-model="value.multiMenuFilter"
-                                           ng-model-options="{ debounce: 200 }"
+                                           ng-model-options="{ debounce: 50 }"
                                            class="multiMenuFilterSearch form-control" placeholder="{{searchHintTextKey | messageFilter}}"/>
                                 </div>
                             </div>
                             <div class="modal-list item-body">
-                                <div data-ng-repeat="item in menuOptions.subs" class="multiMenuSelectKapitel" on-finish-render="doneRenderingDialog()">
+                                <div data-ng-repeat="item in menuOptions.visibleSubs" class="multiMenuSelectKapitel" on-finish-render="doneRenderingDialog()">
                                     <submenu
                                         item="item"
                                         depth="depth"

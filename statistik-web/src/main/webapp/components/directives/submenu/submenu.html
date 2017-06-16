@@ -1,6 +1,6 @@
 <div
     class="node"
-    ng-class="[depthClass, {'leaf': !(item.subs && item.subs.length >0)}]"
+    ng-class="[depthClass, {'leaf': !(item.visibleSubs && item.visibleSubs.length > 0)}]"
     ng-click="hideClick({node: item, event: $event})">
     <span class="indenter"></span>
     <input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="itemClick({node: item, event: $event})" />
@@ -12,9 +12,9 @@
 
 </div>
 
-  <div data-ng-if="item.showChildren && item.subs">
+  <div data-ng-if="item.showChildren && item.visibleSubs && item.visibleSubs.length > 0">
     <submenu
-        data-ng-repeat="item in item.subs | filter: {hide: false}"
+        data-ng-repeat="item in item.visibleSubs"
         item="item"
         depth="subDepth"
         item-click="subItemClick(node, event)"

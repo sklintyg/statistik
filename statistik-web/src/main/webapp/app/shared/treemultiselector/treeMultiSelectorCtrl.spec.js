@@ -187,21 +187,21 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it('all children should be deselected when a parent is deselected', inject(function () {
         //Given
-        var sub121 = {nameLow: 'sub121'};
-        var sub122 = {nameLow: 'sub122'};
-        var sub12 = {nameLow: 'sub12', subs: [sub121, sub122]};
+        var sub121 = {name: 'sub121'};
+        var sub122 = {name: 'sub122'};
+        var sub12 = {name: 'sub12', subs: [sub121, sub122]};
         var subs1 = [
-            {nameLow: 'sub11'},
+            {name: 'sub11'},
             sub12,
-            {nameLow: 'sub13'}
+            {name: 'sub13'}
         ];
         var menuItems = [
-            {nameLow: 'enhet1', subs: subs1},
+            {name: 'enhet1', subs: subs1},
             {
-                nameLow: 'enhet2', subs: [
-                {nameLow: 'sub4'},
-                {nameLow: 'sub5'},
-                {nameLow: 'sub6'}
+                name: 'enhet2', subs: [
+                {name: 'sub4'},
+                {name: 'sub5'},
+                {name: 'sub6'}
             ]
             }
         ];
@@ -222,192 +222,193 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         expect(sub122.someSelected).toBe(false);
     }));
 
-    it('hide items not matching filter', inject(function ($timeout) {
+    it('hide items not matching filter', inject(function () {
         //Given
-        var sub121 = {nameLow: 'sub121'};
-        var sub122 = {nameLow: 'sub122'};
-        var sub12 = {nameLow: 'sub12', subs: [sub121, sub122]};
-        var subs1 = [
-            {nameLow: 'sub11'},
-            sub12,
-            {nameLow: 'sub13'}
-        ];
-        var menuItems = [
-            {nameLow: 'enhet1', subs: subs1},
+        var menuItems = {subs: [
+                {name: 'enhet1', subs: [
+                {name: 'sub11'},
+                {name: 'sub12', subs: [{name: 'sub121'}, {name: 'sub122'}]},
+                {name: 'sub13'}
+            ]},
             {
-                nameLow: 'enhet2', subs: [
-                {nameLow: 'sub4'},
-                {nameLow: 'sub5'},
-                {nameLow: 'sub6'}
+                name: 'enhet2', subs: [
+                {name: 'sub4'},
+                {name: 'sub5'},
+                {name: 'sub6'}
             ]
             }
-        ];
+        ]};
+        scope.setupVisibleSubs(menuItems);
 
         //When
         scope.filterMenuItems(menuItems, 'Enhet1');
 
-        $timeout.flush();
         //Then
-        expect(menuItems[0].hide).toBeFalsy();
-        expect(menuItems[1].hide).toBeTruthy();
+        var joc = jasmine.objectContaining;
+        var expectedResult = joc({visibleSubs: [
+            joc({name: 'enhet1', visibleSubs: [
+                joc({name: 'sub11'}),
+                joc({name: 'sub12', visibleSubs: [joc({name: 'sub121'}), joc({name: 'sub122'})]}),
+                joc({name: 'sub13'})
+            ]})
+        ]});
+        expect(menuItems).toEqual(expectedResult);
     }));
 
-    it('hide items not matching filter ignore "." ', inject(function ($timeout) {
+    it('hide items not matching filter ignore "." ', inject(function () {
         //Given
-        var menuItems = [
-            {nameLow: 'enhet1'},
-            {nameLow: 'enhet11'},
-            {nameLow: 'enhet2'}
-        ];
+        var menuItems = {subs: [
+            {name: 'enhet1'},
+            {name: 'enhet11'},
+            {name: 'enhet2'}
+        ]};
+        scope.setupVisibleSubs(menuItems);
 
         //When
         scope.ignoreCharsInSearch = '.';
         scope.filterMenuItems(menuItems, 'Enhet.1');
 
-        $timeout.flush();
         //Then
-        expect(menuItems[0].hide).toBeFalsy();
-        expect(menuItems[1].hide).toBeFalsy();
-        expect(menuItems[2].hide).toBeTruthy();
+        var joc = jasmine.objectContaining;
+        var expectedResult = joc({visibleSubs: [
+            joc({name: 'enhet1'}),
+            joc({name: 'enhet11'})
+        ]});
+        expect(menuItems).toEqual(expectedResult);
     }));
 
-    it('hide items not matching filter', inject(function ($timeout) {
+    it('hide items not matching filter', inject(function () {
         //Given
-        var menuItems = [
-            {nameLow: 'enhet.1'},
-            {nameLow: 'enhet11'}
-        ];
+        var menuItems = {subs: [
+            {name: 'enhet.1'},
+            {name: 'enhet11'}
+        ]};
+        scope.setupVisibleSubs(menuItems);
 
         //When
         scope.ignoreCharsInSearch = '';
         scope.filterMenuItems(menuItems, 'Enhet.1');
 
-        $timeout.flush();
-
         //Then
-        expect(menuItems[0].hide).toBeFalsy();
-        expect(menuItems[1].hide).toBeTruthy();
+        expect(menuItems).toEqual(expectedResult);
+        var joc = jasmine.objectContaining;
+        var expectedResult = joc({visibleSubs: [
+            joc({name: 'enhet.1'})
+        ]});
     }));
 
-    it('parent should be visible for matching node', inject(function ($timeout) {
+    it('parent should be visible for matching node', inject(function () {
         //Given
-        var sub11 = {nameLow: 'sub11'};
-        var sub12 = {nameLow: 'sub12'};
-        var menuItems = [
-            {nameLow: 'enhet1', subs: [sub11, sub12]}
-        ];
+        var menuItems = {subs: [
+            {name: 'enhet1', subs: [{name: 'sub11'}, {name: 'sub12'}]}
+        ]};
+        scope.setupVisibleSubs(menuItems);
 
         //When
         scope.filterMenuItems(menuItems, 'sub12');
 
-        $timeout.flush();
         //Then
-        expect(menuItems[0].hide).toBe(false);
-        expect(sub12.hide).toBe(false);
-        expect(sub11.hide).toBe(true);
+        var joc = jasmine.objectContaining;
+        var expectedResult = joc({visibleSubs: [
+            joc({name: 'enhet1', visibleSubs: [joc({name: 'sub12'})]})
+        ]});
+        expect(menuItems).toEqual(expectedResult);
     }));
 
-    it('grandparent should be visible for matching node', inject(function ($timeout) {
+    it('grandparent should be visible for matching node', inject(function () {
         //Given
-        var sub121 = {nameLow: 'sub121'};
-        var sub122 = {nameLow: 'sub122'};
-        var sub12 = {nameLow: 'sub12', subs: [sub121, sub122]};
-        var subs1 = [
-            {nameLow: 'sub11'},
-            sub12,
-            {nameLow: 'sub13'}
-        ];
-        var menuItems = [
-            {nameLow: 'enhet1', subs: subs1},
+        var menuItems = {subs: [
+            {name: 'enhet1', subs: [
+                {name: 'sub11'},
+                {name: 'sub12', subs: [{name: 'sub121'}, {name: 'sub122'}]},
+                {name: 'sub13'}
+            ]},
             {
-                nameLow: 'enhet2', subs: [
-                {nameLow: 'sub4'},
-                {nameLow: 'sub5'},
-                {nameLow: 'sub6'}
+                name: 'enhet2', subs: [
+                {name: 'sub4'},
+                {name: 'sub5'},
+                {name: 'sub6'}
             ]
             }
-        ];
+        ]};
+        scope.setupVisibleSubs(menuItems);
 
         //When
         scope.filterMenuItems(menuItems, 'sub122');
 
-        $timeout.flush();
         //Then
-        expect(menuItems[0].hide).toBe(false);
-        expect(sub12.hide).toBe(false);
-        expect(sub122.hide).toBe(false);
-        expect(sub121.hide).toBe(true);
-        expect(menuItems[1].hide).toBe(true);
+        var joc = jasmine.objectContaining;
+        var expectedResult = joc({visibleSubs: [
+            joc({name: 'enhet1', visibleSubs: [
+                joc({name: 'sub12', visibleSubs: [joc({name: 'sub122'})]})
+            ]})
+        ]});
+        expect(menuItems).toEqual(expectedResult);
     }));
 
-    it('child items from matching node should be visible', inject(function ($timeout) {
+    it('child items from matching node should be visible', inject(function () {
         //Given
-        var sub121 = {nameLow: 'sub121', hide: true};
-        var sub122 = {nameLow: 'sub122', hide: true};
-        var sub12 = {nameLow: 'sub12', hide: true, subs: [sub121, sub122]};
-        var subs1 = [
-            {nameLow: 'sub11', hide: true},
-            sub12,
-            {nameLow: 'sub13', hide: true}
-        ];
-        var sub22 = {nameLow: 'sub5', hide: true};
-        var menuItems = [
-            {nameLow: 'enhet1', hide: true, subs: subs1},
+        var menuItems = {subs: [
+            {name: 'enhet1', subs: [
+                {name: 'sub11'},
+                {name: 'sub12', subs: [{name: 'sub121'}, {name: 'sub122'}]},
+                {name: 'sub13'}
+            ]},
             {
-                nameLow: 'enhet2', hide: true, subs: [
-                {nameLow: 'sub4', hide: true},
-                sub22,
-                {nameLow: 'sub6', hide: true}
+                name: 'enhet2', subs: [
+                {name: 'sub4'},
+                {name: 'sub5'},
+                {name: 'sub6'}
             ]
             }
-        ];
+        ]};
+        scope.setupVisibleSubs(menuItems);
 
         //When
         scope.filterMenuItems(menuItems, 'Enhet1');
 
-        $timeout.flush();
         //Then
-        expect(menuItems[0].hide).toBe(false);
-        expect(subs1[1].hide).toBe(false);
-        expect(sub12.hide).toBe(false);
-        expect(sub122.hide).toBe(false);
-        expect(menuItems[1].hide).toBe(true);
-        expect(sub22.hide).toBe(true);
+        var joc = jasmine.objectContaining;
+        var expectedResult = joc({visibleSubs: [
+            joc({name: 'enhet1', visibleSubs: [
+                joc({name: 'sub11'}),
+                joc({name: 'sub12', visibleSubs: [joc({name: 'sub121'}), joc({name: 'sub122'})]}),
+                joc({name: 'sub13'})
+            ]})
+        ]});
+        expect(menuItems).toEqual(expectedResult);
     }));
 
 
-    it('node should be fully expanded if only one match is found', inject(function ($timeout) {
+    it('node should be fully expanded if only one match is found', inject(function () {
         //Given
-        var sub121 = {name: 'sub121', nameLow: 'sub121'};
-        var sub122 = {name: 'sub122', nameLow: 'sub122'};
-        var sub12 = {name: 'sub12', nameLow: 'sub12', subs: [sub121, sub122]};
-        var subs1 = [
-            {name: 'sub11', nameLow: 'sub11'},
-            sub12,
-            {name: 'sub13', nameLow: 'sub13'}
-        ];
-        var menuItems = [
-            {name: 'Enhet1', nameLow: 'enhet1', subs: subs1},
+        var menuItems = {subs: [
+            {name: 'Enhet1', subs: [
+                {name: 'sub11'},
+                {name: 'sub12', subs: [{name: 'sub121'}, {name: 'sub122'}]},
+                {name: 'sub13'}
+            ]},
             {
-                name: 'Enhet2',nameLow: 'enhet2', subs: [
-                {name: 'sub4', nameLow: 'sub4'},
-                {name: 'sub5', nameLow: 'sub5'},
-                {name: 'sub6', nameLow: 'sub6'}
+                name: 'Enhet2', subs: [
+                {name: 'sub4'},
+                {name: 'sub5'},
+                {name: 'sub6'}
             ]
             }
-        ];
+        ]};
+        scope.setupVisibleSubs(menuItems);
 
         //When
-        scope.filterMenuItems(menuItems, 'sub122');
-
-        $timeout.flush();
+        scope.filterMenuItems(menuItems, 'sub122', true);
 
         //Then
-        expect(menuItems[0].showChildren).toBe(true);
-        expect(sub12.showChildren).toBe(true);
-        expect(sub122.showChildren).toBe(true);
-        expect(sub121.hide).toBe(true);
-        expect(menuItems[1].hide).toBe(true);
+        var joc = jasmine.objectContaining;
+        var expectedResult = joc({visibleSubs: [
+            joc({name: 'Enhet1', visibleSubs: [
+                joc({name: 'sub12', visibleSubs: [joc({name: 'sub122'})]})
+            ]})
+        ]});
+        expect(menuItems).toEqual(expectedResult);
     }));
 
     it('leaves count is counting correct when 0', inject(function () {
@@ -523,7 +524,6 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         var menuItems = {
             subs: [{
                 name: ' Utan gilitig ICD-10 kod',
-                nameLow: ' utan giltig icd-10 kod',
                 numericalId: 1670110002,
                 someSelected: false,
                 allSelected: true
