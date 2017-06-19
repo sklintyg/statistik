@@ -14,7 +14,7 @@
 
   <div data-ng-if="item.showChildren && item.visibleSubs && item.visibleSubs.length > 0">
     <submenu
-        data-ng-repeat="item in item.visibleSubs"
+        data-ng-repeat="item in item.visibleSubs track by item.numericalId"
         item="item"
         depth="subDepth"
         item-click="subItemClick(node, event)"
