@@ -287,6 +287,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
             if (!county) {
                 county = {
                     id: business.lansId,
+                    numericalId: business.lansId + 'county',
                     name: business.lansName,
                     subs: []};
                 businessFilter.geography.subs.push(county);
@@ -296,11 +297,13 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
             if (!munip) {
                 munip = {
                     id: business.kommunId,
+                    numericalId: business.kommunId + 'munip',
                     name: business.kommunName,
                     subs: []};
                 county.subs.push(munip);
             }
 
+            business.numericalId = business.id;
             munip.subs.push(business);
         });
         businessFilter.geography.subs = sortSwedish(businessFilter.geography.subs, 'name', 'Okän');
