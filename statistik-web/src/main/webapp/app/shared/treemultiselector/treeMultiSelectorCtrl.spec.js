@@ -290,11 +290,11 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         scope.filterMenuItems(menuItems, 'Enhet.1');
 
         //Then
-        expect(menuItems).toEqual(expectedResult);
         var joc = jasmine.objectContaining;
         var expectedResult = joc({visibleSubs: [
             joc({name: 'enhet.1'})
         ]});
+        expect(menuItems).toEqual(expectedResult);
     }));
 
     it('parent should be visible for matching node', inject(function () {
