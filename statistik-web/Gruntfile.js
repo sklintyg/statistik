@@ -135,9 +135,9 @@ module.exports = function(grunt) {
                 force: false
             },
             all: [
-                '<%= config.client %>/{app,showcase,components}/**/*.js',
-                '!<%= config.client %>/{app,showcase,components}/**/*.spec.js',
-                '!<%= config.client %>/{app,showcase,components}/**/*.mock.js'
+                '<%= config.client %>/{app,components}/**/*.js',
+                '!<%= config.client %>/{app,components}/**/*.spec.js',
+                '!<%= config.client %>/{app,components}/**/*.mock.js'
             ],
             test: {
                 src: [
@@ -180,7 +180,6 @@ module.exports = function(grunt) {
             target: {
                 src: [
                     '<%= config.client %>/index.html',
-                    '<%= config.client %>/showcase/index.html',
                     '<%= config.client %>/error.jsp',
                     '<%= config.client %>/version.jsp',
                     '<%= config.client %>/healthcheck.jsp',
@@ -238,7 +237,7 @@ module.exports = function(grunt) {
         // concat, minify and revision files. Creates configurations in memory so
         // additional tasks can operate on them
         useminPrepare: {
-            html: ['<%= config.client %>/index.html', '<%= config.client %>/showcase/index.html'],
+            html: ['<%= config.client %>/index.html'],
             options: {
                 dest: '<%= config.dist %>',
                 staging: '<%= config.tmp %>'
@@ -247,7 +246,7 @@ module.exports = function(grunt) {
 
         // Performs rewrites based on rev and the useminPrepare configuration
         usemin: {
-            html: ['<%= config.dist %>/{,*/}*.html', '<%= config.dist %>/{,*/}*.jsp', '<%= config.dist %>/showcase/index.html'],
+            html: ['<%= config.dist %>/{,*/}*.html', '<%= config.dist %>/{,*/}*.jsp'],
             css: ['<%= config.dist %>/{,*/}*.css'],
             js: ['<%= config.dist %>/{,*/}*.js'],
             options: {
@@ -306,14 +305,6 @@ module.exports = function(grunt) {
                 cwd: '<%= config.client %>',
                 src: ['{app,components}/**/*.html'],
                 dest: '<%= config.tmp %>/templates.js'
-            },
-            showcase: {
-                cwd: '<%= config.client %>',
-                src: ['{app,components}/**/*.html'],
-                dest: '<%= config.tmp %>/templates_showcase.js',
-                options: {
-                    usemin: 'app/showcase.js'
-                }
             }
 //            tmp: {
 //                cwd: '<%= config.tmp %>',
@@ -334,7 +325,6 @@ module.exports = function(grunt) {
                         src: [
                             'assets/**/*',
                             'bower_components/**/*',
-                            'showcase/**/*',
                             'WEB-INF/**/*',
                             'js/**/*',
                             '*.*'
@@ -449,9 +439,6 @@ module.exports = function(grunt) {
                         '<%= config.client %>/{app,components}/**/*.css'
                     ],
                     '<%= config.client %>/healthcheck.jsp': [
-                        '<%= config.client %>/{app,components}/**/*.css'
-                    ],
-                    '<%= config.client %>/showcase/index.html': [
                         '<%= config.client %>/{app,components}/**/*.css'
                     ]
                 }
