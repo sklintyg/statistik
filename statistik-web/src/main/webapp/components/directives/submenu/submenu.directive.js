@@ -27,6 +27,7 @@ angular.module('StatisticsApp').directive('submenu',
             scope: {
                 item: '=',
                 depth: '=',
+                maxDepth: '=',
                 hideClick: '&',
                 itemClick: '&'
             },
@@ -34,6 +35,8 @@ angular.module('StatisticsApp').directive('submenu',
             link: function($scope) {
                 $scope.depthClass = 'depth' + $scope.depth;
                 $scope.subDepth = $scope.depth + 1;
+                $scope.maxDepthReached = $scope.maxDepth > 0 && $scope.maxDepth <= $scope.subDepth;
+                $scope.isLeaf = $scope.maxDepthReached || !($scope.item.visibleSubs && $scope.item.visibleSubs.length > 0);
 
                 $scope.subItemClick = function(node, event) {
                     $scope.itemClick({node: node, event: event});

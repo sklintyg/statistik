@@ -1,22 +1,23 @@
 <div
     class="node"
-    ng-class="[depthClass, {'leaf': !(item.visibleSubs && item.visibleSubs.length > 0)}]"
+    ng-class="[depthClass, {'leaf': isLeaf}]"
     ng-click="hideClick({node: item, event: $event})">
     <span class="indenter"></span>
     <input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="itemClick({node: item, event: $event})" />
 
     <span ng-click="itemClick({node: item, event: $event})" class="ellipsis-text" data-ng-class="{'highlight-words': item.info}" data-toggle="tooltip" data-placement="auto right" title="" ng-attr-data-original-title="{{item.info}}">
-      {{::item.name}}
+      {{::item.visibleName}}
     </span>
     <span ng-click="hideClick({node: item, event: $event})" class="submenuicon glyphicon" ng-class="{'glyphicon-chevron-up': item.showChildren, 'glyphicon-chevron-down': !item.showChildren}"></span>
 
 </div>
 
-  <div data-ng-if="item.showChildren && item.visibleSubs && item.visibleSubs.length > 0">
+  <div data-ng-if="!maxDepthReached && item.showChildren && item.visibleSubs && item.visibleSubs.length > 0">
     <submenu
         data-ng-repeat="item in item.visibleSubs track by item.numericalId"
         item="item"
         depth="subDepth"
+        max-depth="maxDepth"
         item-click="subItemClick(node, event)"
         hide-click="subHideClick(node, event)"
         ></submenu>

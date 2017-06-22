@@ -20,7 +20,7 @@
 angular.module('StatisticsApp')
     .factory('diagnosisTreeFilter',
         /** @ngInject */
-        function (statisticsData, _, treeMultiSelectorUtil, $window, ControllerCommons) {
+        function (statisticsData, _, treeMultiSelectorUtil, StaticFilterData, StaticFilterDataService) {
             'use strict';
 
             var diagnosisTreeFilter = {};
@@ -72,13 +72,9 @@ angular.module('StatisticsApp')
                 diagnosisTreeFilter.selectDiagnoses(preselectedFilter.diagnoser);
             };
 
-            diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal = function(diagnoses, showCodeLevel) {
-                ControllerCommons.setupDiagnosisTreeForSelectionModal(diagnoses, showCodeLevel);
-            };
-
             //This should be a utility method
             diagnosisTreeFilter.getSelectedLeaves = function(node) {
-                if (node.subs && node.subs.length !== 0) {
+                if (node.subs && node.subs.length !== 0 && (diagnosisTreeFilter.showCodeLevel || node.subs[0].typ !== 'kod')) {
                     return _.reduce(node.subs, function (memo, item) {
                         return memo.concat(diagnosisTreeFilter.getSelectedLeaves(item));
                     }, []);
@@ -116,18 +112,15 @@ angular.module('StatisticsApp')
                 return diagnosisTreeFilter.diagnosisOptionsTree.subs.length > 0;
             };
 
-            var firstTimeInitiationOfDiagnosisTree = function firstTimeInitiation(routeParams, showCodeLevel) {
-                //Get icd10 structure and populate the diagnosisOptionsTree
-                statisticsData.getIcd10Structure(function (diagnosisTree) {
-                    diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal(diagnosisTree, showCodeLevel);
+            var firstTimeInitiationOfDiagnosisTree = function firstTimeInitiation(routeParams) {
+                StaticFilterDataService.get().then(function() {
+                    var diagnosisTree = StaticFilterData.get().icd10Structure;
                     diagnosisTreeFilter.diagnosisOptionsTree = {subs: diagnosisTree};
 
                     //If we do have a filter hash already then we very much want to apply it.
                     if(diagnosHashExists(routeParams)) {
                         populateTreeMultiSelectWithPrefilteredData(routeParams);
                     }
-                }, function () {
-                    $window.alert('Failed to fetch ICD10 structure tree from server');
                 });
             };
 
@@ -136,8 +129,8 @@ angular.module('StatisticsApp')
              *    every time it is needed.
              */
             diagnosisTreeFilter.setup = function(routeParams, showCodeLevel) {
-                if (!hasDiagnosisOptionsTreeAnySubs() || diagnosisTreeFilter.showCodeLevel !== showCodeLevel) {
-                    firstTimeInitiationOfDiagnosisTree(routeParams, showCodeLevel);
+                if (!hasDiagnosisOptionsTreeAnySubs()) {
+                    firstTimeInitiationOfDiagnosisTree(routeParams);
                 } else if(hasDiagnosisOptionsTreeAnySubs() && !diagnosHashExists(routeParams)) {
                     diagnosisTreeFilter.resetSelections();
                 } else if(hasDiagnosisOptionsTreeAnySubs() && diagnosHashExists(routeParams)) {

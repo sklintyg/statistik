@@ -39,7 +39,7 @@
                            done-clicked="diagnosisSelected"
                            on-open="diagnosisTreeFilter.setPreselectedFilter"
                            button-icon="fa-stethoscope"
-                           show-code-level="diagnoses.showCodeLevel"
+                           max-depth="diagnoses.showCodeLevel ? 0 : 3"
                            text-data="diagnosisSelectorData"
                            select-all-text-key="lbl.filter.val-av-diagnoser.select-all"
                            search-hint-text-key="lbl.filter.val-av-diagnoser.search.hint"

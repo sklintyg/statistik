@@ -20,12 +20,13 @@
 describe('Test of diagnosisTreeFilter', function() {
     'use strict';
 
-    var diagnosisTreeFilter;
+    var diagnosisTreeFilter, StaticFilterData;
 
     beforeEach(module('StatisticsApp'));
 
-    beforeEach(inject(function(_diagnosisTreeFilter_) {
+    beforeEach(inject(function(_diagnosisTreeFilter_, _StaticFilterData_) {
         diagnosisTreeFilter = _diagnosisTreeFilter_;
+        StaticFilterData = _StaticFilterData_;
     }));
 
     describe('selectAll', function () {
@@ -262,133 +263,6 @@ describe('Test of diagnosisTreeFilter', function() {
             }];
         });
 
-        it('hideCodeLevel', function() {
-            var expected = [{
-                id: '1',
-                typ: 'kapitel',
-                name: '1 Kapitel',
-                subs: [{
-                    id: '2',
-                    typ: 'avsnitt',
-                    name: '2 Avsnitt',
-                    subs: [{
-                        id: '3',
-                        name: '3 Kategori',
-                        subItems: [{
-                            id: '4',
-                            name: 'code'
-                        }]
-                    }],
-                    subItems: [{
-                        id: '3',
-                        name: '3 Kategori',
-                        subItems: [{
-                            id: '4',
-                            name: 'code'
-                        }]
-                    }]
-                }],
-                subItems: [{
-                    id: '2',
-                    typ: 'avsnitt',
-                    name: '2 Avsnitt',
-                    subs: [{
-                        id: '3',
-                        name: '3 Kategori',
-                        subItems: [{
-                            id: '4',
-                            name: 'code'
-                        }]
-                    }],
-                    subItems: [{
-                        id: '3',
-                        name: '3 Kategori',
-                        subItems: [{
-                            id: '4',
-                            name: 'code'
-                        }]
-                    }]
-                }]
-            }];
-
-            diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal(diagnosis, false);
-
-            expect(diagnosis).toEqual(expected);
-        });
-
-        it('showCodeLevel', function() {
-            var expected = [{
-                id: '1',
-                typ: 'kapitel',
-                name: '1 Kapitel',
-                subs: [{
-                    id: '2',
-                    typ: 'avsnitt',
-                    name: '2 Avsnitt',
-                    subs: [{
-                        id: '3',
-                        typ: 'kategori',
-                        name: '3 Kategori',
-                        subs: [{
-                            id: '4',
-                            name: '4 code',
-                        }],
-                        subItems: [{
-                            id: '4',
-                            name: '4 code',
-                        }]
-                    }],
-                    subItems: [{
-                        id: '3',
-                        typ: 'kategori',
-                        name: '3 Kategori',
-                        subs: [{
-                            id: '4',
-                            name: '4 code',
-                        }],
-                        subItems: [{
-                            id: '4',
-                            name: '4 code',
-                        }]
-                    }]
-                }],
-                subItems: [{
-                    id: '2',
-                    typ: 'avsnitt',
-                    name: '2 Avsnitt',
-                    subs: [{
-                        id: '3',
-                        typ: 'kategori',
-                        name: '3 Kategori',
-                        subs: [{
-                            id: '4',
-                            name: '4 code',
-                        }],
-                        subItems: [{
-                            id: '4',
-                            name: '4 code',
-                        }]
-                    }],
-                    subItems: [{
-                        id: '3',
-                        typ: 'kategori',
-                        name: '3 Kategori',
-                        subs: [{
-                            id: '4',
-                            name: '4 code',
-                        }],
-                        subItems: [{
-                            id: '4',
-                            name: '4 code',
-                        }]
-                    }]
-                }]
-            }];
-
-            diagnosisTreeFilter.setupDiagnosisTreeForSelectionModal(diagnosis, true);
-
-            expect(diagnosis).toEqual(expected);
-        });
     });
 
     describe('getSelectedLeaves', function() {

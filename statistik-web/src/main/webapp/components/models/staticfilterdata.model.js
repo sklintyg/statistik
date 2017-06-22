@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').factory('StaticFilterData',
     /** @ngInject */
-    function($filter) {
+    function($filter, _) {
         'use strict';
 
         var data = {};
@@ -63,7 +63,63 @@ angular.module('StatisticsApp').factory('StaticFilterData',
 
         function setIcd10Structure(app) {
             data.icd10Structure = app.dxs;
+
+            function showIdInName(dx) {
+                var isNumber = angular.isNumber(dx.numericalId);
+                return (isNumber && dx.numericalId > 0) || !isNumber;
+            }
+
+            function getVisibleName(dx) {
+                return showIdInName(dx) ? dx.id + ' ' + dx.name : dx.name;
+            }
+
+            _.each(data.icd10Structure, function (kapitel) {
+                kapitel.typ = 'kapitel';
+                kapitel.subs = kapitel.subItems;
+                delete kapitel.subItems;
+                kapitel.visibleName = getVisibleName(kapitel);
+                _.each(kapitel.subs, function (avsnitt) {
+                    avsnitt.typ = 'avsnitt';
+                    avsnitt.subs = avsnitt.subItems;
+                    delete avsnitt.subItems;
+                    avsnitt.visibleName = getVisibleName(avsnitt);
+                    _.each(avsnitt.subs, function (kategori) {
+                        kategori.visibleName = getVisibleName(kategori);
+                        kategori.typ = 'kategori';
+                        kategori.subs = kategori.subItems;
+                        delete kategori.subItems;
+                        _.each(kategori.subs, function(kod) {
+                            kod.typ = 'kod';
+                            kod.visibleName = getVisibleName(kod);
+                            });
+                    });
+                });
+            });
         }
+
+        function icdStructureAsArray(icdStructure) {
+            return _.map(icdStructure, function (icd) {
+                return icdStructureAsArray(icd.subs).concat(icd);
+            });
+        }
+
+        function getDiagnosFilterInformationText(diagnosFilterIds, asObject) {
+            var icdStructureAsFlatArray = _.flowRight(_.flattenDeep, icdStructureAsArray)(data.icd10Structure);
+            return _.map(diagnosFilterIds, function(diagnosId){
+                var icdItem = _.find(icdStructureAsFlatArray, function(icd){
+                    return icd.numericalId === parseInt(diagnosId, 10);
+                });
+
+                if (asObject) {
+                    return {
+                        id: diagnosId,
+                        text: icdItem.visibleName
+                    };
+                }
+                return icdItem.visibleName;
+            });
+        }
+
 
         return {
             reset: _reset,
@@ -78,7 +134,8 @@ angular.module('StatisticsApp').factory('StaticFilterData',
             },
             get: function() {
                 return data;
-            }
+            },
+            getDiagnosFilterInformationText: getDiagnosFilterInformationText
         };
     }
 );

@@ -32,7 +32,7 @@ angular.module('StatisticsApp.treeMultiSelector.directive', [])
                 buttonIcon: '@',
                 selectAllTextKey: '@',
                 searchHintTextKey: '@',
-                showCodeLevel: '=',
+                maxDepth: '=',
                 sidebarMenuExpand: '@',
                 sidebarMenuCollapse: '@',
                 sidebarState: '=',
