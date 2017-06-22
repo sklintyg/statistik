@@ -20,7 +20,7 @@
 angular.module('StatisticsApp')
     .directive('filterChips',
     /** @ngInject */
-    function(StaticFilterDataService, StaticFilterData, _, ControllerCommons, $uibModal, $timeout, $window) {
+    function(StaticFilterDataService, StaticFilterData, _, $uibModal, $timeout, $window) {
         'use strict';
         return {
             scope: {
@@ -179,11 +179,9 @@ angular.module('StatisticsApp')
                 }
 
                 function diagnosFilter() {
-                    var icd10 = StaticFilterData.get().icd10Structure;
-
                     var filter = $scope.businessFilter.selectedDiagnoses;
 
-                    filter = ControllerCommons.getDiagnosFilterInformationText(filter, icd10, true);
+                    filter = StaticFilterData.getDiagnosFilterInformationText(filter, true);
 
                     var diagnoser = [];
                     angular.forEach(filter, function(diagnos) {
@@ -199,7 +197,7 @@ angular.module('StatisticsApp')
 
                     var left =  _.difference($scope.businessFilter.diagnoserSaved, $scope.businessFilter.selectedDiagnoses);
 
-                    left = ControllerCommons.getDiagnosFilterInformationText(left, icd10, true);
+                    left = StaticFilterData.getDiagnosFilterInformationText(left, true);
 
                     angular.forEach(left, function(diagnos) {
                         diagnoser.push({

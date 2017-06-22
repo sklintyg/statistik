@@ -482,9 +482,10 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         expect(diagnoser).toContain(D50D89.numericalId);
     }));
 
-    it('deselect all kategorier below unselected avsnitt', inject(function (businessFilterFactory) {
+    it('deselect all kategorier below unselected avsnitt', inject(function (businessFilterFactory, StaticFilterData) {
         // Given
-        businessFilterFactory.setIcd10Structure(diagnoses);
+        StaticFilterData.set({dxs: diagnoses});
+        businessFilterFactory.setIcd10Structure(StaticFilterData.get().icd10Structure);
         businessFilterFactory.dataInitialized = true;
         scope.menuOptions = businessFilterFactory.icd10;
         businessFilterFactory.selectAll(businessFilterFactory.icd10);
@@ -500,9 +501,10 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         expect(diagnoser).toContain(D50D89.numericalId);
     }));
 
-    it('report selected kategoris', inject(function (businessFilterFactory) {
+    it('report selected kategoris', inject(function (businessFilterFactory, StaticFilterData) {
         // Given
-        businessFilterFactory.setIcd10Structure(diagnoses);
+        StaticFilterData.set({dxs: diagnoses});
+        businessFilterFactory.setIcd10Structure(StaticFilterData.get().icd10Structure);
         businessFilterFactory.dataInitialized = true;
         scope.menuOptions = businessFilterFactory.icd10;
         businessFilterFactory.selectAll(businessFilterFactory.icd10);
@@ -538,8 +540,9 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         expect(scope.selectedQuaternaryCounter).toBe(0);
     }));
 
-    it('should only count nodes which are marked as allSelected', inject(function (businessFilterFactory) {
-        businessFilterFactory.setIcd10Structure(diagnoses);
+    it('should only count nodes which are marked as allSelected', inject(function (businessFilterFactory, StaticFilterData) {
+        StaticFilterData.set({dxs: diagnoses});
+        businessFilterFactory.setIcd10Structure(StaticFilterData.get().icd10Structure);
         businessFilterFactory.dataInitialized = true;
         scope.menuOptions = businessFilterFactory.icd10;
 

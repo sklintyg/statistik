@@ -22,7 +22,7 @@ describe('Tests for business filter factory', function () {
 
     var A00, A01, B07, D50, D70;
     var A00A09, B00B09, D50D53, D70D77, A00B99, D50D89;
-    var diagnoses, businessFilter, _;
+    var diagnoses, businessFilter, _, StaticFilterData;
 
     beforeEach(module('StatisticsApp.businessFilter'));
 
@@ -37,9 +37,10 @@ describe('Tests for business filter factory', function () {
         $provide.value('statisticsData', mockStatistics);
     }));
 
-    beforeEach(inject(function(_businessFilterFactory_, ___) {
+    beforeEach(inject(function(_businessFilterFactory_, ___, _StaticFilterData_) {
         businessFilter = _businessFilterFactory_;
         _ = ___; //This set the local underscore variable
+        StaticFilterData = _StaticFilterData_;
     }));
 
     beforeEach(function () {
@@ -170,7 +171,8 @@ describe('Tests for business filter factory', function () {
 
         it('can select diagnoses by id attribute', function () {
             // Given
-            businessFilter.setIcd10Structure(diagnoses);
+            StaticFilterData.set({dxs: diagnoses});
+            businessFilter.setIcd10Structure(StaticFilterData.get().icd10Structure);
 
             // When
             businessFilter.selectByAttribute(businessFilter.icd10, ['D50-D89', 'B07'], 'id');
@@ -188,7 +190,8 @@ describe('Tests for business filter factory', function () {
 
         it('can select diagnoses by numericalId attribute', function () {
             // Given
-            businessFilter.setIcd10Structure(diagnoses);
+            StaticFilterData.set({dxs: diagnoses});
+            businessFilter.setIcd10Structure(StaticFilterData.get().icd10Structure);
 
             // When
             businessFilter.selectByAttribute(businessFilter.icd10, [2, 23], 'numericalId');

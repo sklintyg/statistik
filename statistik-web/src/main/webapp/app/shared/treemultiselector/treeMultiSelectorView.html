@@ -46,6 +46,7 @@
                                     <submenu
                                         item="item"
                                         depth="depth"
+                                        max-depth="maxDepth"
                                         item-click="recursionhelper.itemclick(node, event)"
                                         hide-click="recursionhelper.hideclick(node, event)"
                                         ng-hide="item.hide"></submenu>
@@ -63,10 +64,10 @@
                 <div class="modal-footer">
                   <label class="pull-left">
                     <div style="font-weight: normal;">
-                      <span>{{textData.firstLevelLabelText}}{{selectedPrimaryCounter}}</span><br>
-                      <span>{{textData.secondLevelLabelText}}{{selectedSecondaryCounter}}</span><br>
-                      <span>{{textData.thirdLevelLabelText}}{{selectedTertiaryCounter}}</span><br>
-                      <span ng-hide="!showCodeLevel">{{textData.leavesLevelLabelText}}{{selectedQuaternaryCounter}}</span>
+                      <span ng-hide="maxDepth > 0 && maxDepth < 1">{{textData.firstLevelLabelText}}{{selectedPrimaryCounter}}</span><br>
+                      <span ng-hide="maxDepth > 0 && maxDepth < 2">{{textData.secondLevelLabelText}}{{selectedSecondaryCounter}}</span><br>
+                      <span ng-hide="maxDepth > 0 && maxDepth < 3">{{textData.thirdLevelLabelText}}{{selectedTertiaryCounter}}</span><br>
+                      <span ng-hide="maxDepth > 0 && maxDepth < 4">{{textData.leavesLevelLabelText}}{{selectedQuaternaryCounter}}</span>
                     </div>
                   </label>
                   <button id="treeMultiSelectorSaveBtn" class="btn btn-success" type="button" data-dismiss="modal" aria-hidden="true" ng-disabled="doneDisabled" data-ng-click="clickedDone()" style="margin-top:10px"><span message key="lbl.filter.modal.spara-stang"></span></button>

@@ -176,14 +176,8 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         });
     }
 
-    businessFilter.setupDiagnosisTreeForSelectionModal = function (diagnoses) {
-        ControllerCommons.setupDiagnosisTreeForSelectionModal(diagnoses, true);
-    };
-
     businessFilter.setIcd10Structure = function (diagnoses) {
-        businessFilter.setupDiagnosisTreeForSelectionModal(diagnoses);
         businessFilter.icd10.subs = diagnoses;
-
         businessFilter.updateDiagnoses();
     };
 
@@ -208,8 +202,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     }
 
     businessFilter.populateIcd10Structure = function() {
-        var icd10Structure = _.cloneDeep(StaticFilterData.get().icd10Structure);
-        businessFilter.setIcd10Structure(icd10Structure);
+        businessFilter.setIcd10Structure(StaticFilterData.get().icd10Structure);
     };
 
     businessFilter.selectPreselectedFilter = function(preSelectedFilter) {
@@ -289,6 +282,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
                     id: business.lansId,
                     numericalId: business.lansId + 'county',
                     name: business.lansName,
+                    visibleName: business.lansName,
                     subs: []};
                 businessFilter.geography.subs.push(county);
             }
@@ -299,11 +293,13 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
                     id: business.kommunId,
                     numericalId: business.kommunId + 'munip',
                     name: business.kommunName,
+                    visibleName: business.kommunName,
                     subs: []};
                 county.subs.push(munip);
             }
 
             business.numericalId = business.id;
+            business.visibleName = business.name;
             munip.subs.push(business);
         });
         businessFilter.geography.subs = sortSwedish(businessFilter.geography.subs, 'name', 'Okän');

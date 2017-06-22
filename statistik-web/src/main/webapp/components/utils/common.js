@@ -20,7 +20,7 @@
 
 angular.module('StatisticsApp').factory('ControllerCommons',
     /** @ngInject */
-    function(_, $cacheFactory, UserModel, $filter, $route) {
+    function(_, $cacheFactory, UserModel, $filter, $route, StaticFilterData) {
         'use strict';
 
         var that = this;
@@ -54,31 +54,6 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return input;
         };
 
-        function icdStructureAsArray(icdStructure) {
-            return _.map(icdStructure, function (icd) {
-                return icdStructureAsArray(icd.subItems).concat(icd);
-            });
-        }
-
-        this.getDiagnosFilterInformationText = function(diagnosFilterIds, icdStructure, asObject) {
-            var icdStructureAsFlatArray = _.flowRight(_.flattenDeep, icdStructureAsArray)(icdStructure);
-            return _.map(diagnosFilterIds, function(diagnosId){
-                var icdItem = _.find(icdStructureAsFlatArray, function(icd){
-                    return icd.numericalId === parseInt(diagnosId, 10);
-                });
-
-                var text = icdItem.id + ' ' + icdItem.name;
-
-                if (asObject) {
-                    return {
-                        id: diagnosId,
-                        text: text
-                    };
-                }
-                return text;
-            });
-        };
-
         this.populateActiveFilters = function(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter, filterHash,
                                                 isAllAvailableEnhetsSelectedInFilter, filteredEnhets, filteredSjukskrivningslangd, isAllAvailableSjukskrivningslangdsSelectedInFilter, filteredAldersgrupp, isAllAvailableAgeGroupsSelectedInFilter) {
             that.populateActiveDiagnosFilter(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter);
@@ -98,11 +73,9 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 scope.activeDiagnosFilters = null;
                 return;
             }
-            statisticsData.getIcd10Structure(function (diagnoses) {
-                scope.activeDiagnosFilters = diagnoses ? that.getDiagnosFilterInformationText(diagnosIds, diagnoses) : null;
-            }, function () {
-                scope.activeDiagnosFilters = diagnosIds;
-            });
+            var dxsTexts = StaticFilterData.getDiagnosFilterInformationText(diagnosIds);
+            var foundInfoTextForAllDxs = dxsTexts && diagnosIds && dxsTexts.length === diagnosIds.length;
+            scope.activeDiagnosFilters = foundInfoTextForAllDxs ? dxsTexts : diagnosIds;
         };
 
         this.populateActiveEnhetsFilter = function(scope, enhetNames, isAllAvailableEnhetsSelectedInFilter) {
@@ -430,34 +403,6 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             //Make sure query params are not started twice with a '?'
             var fixedQueryString = urlBase.indexOf('?') > 0 ? queryString.replace('?', '&') : queryString;
             return urlBase + fixedQueryString;
-        };
-
-        this.setupDiagnosisTreeForSelectionModal = function(diagnoses, showCodeLevel) {
-            function showIdInName(dx) {
-                var isNumber = angular.isNumber(dx.numericalId);
-                return (isNumber && dx.numericalId > 0) || !isNumber;
-            }
-
-            _.each(diagnoses, function (kapitel) {
-                kapitel.typ = 'kapitel';
-                kapitel.subs = kapitel.subItems;
-                kapitel.name = showIdInName(kapitel) ? kapitel.id + ' ' + kapitel.name : kapitel.name;
-                _.each(kapitel.subItems, function (avsnitt) {
-                    avsnitt.typ = 'avsnitt';
-                    avsnitt.subs = avsnitt.subItems;
-                    avsnitt.name = showIdInName(avsnitt) ? avsnitt.id + ' ' + avsnitt.name : avsnitt.name;
-                    _.each(avsnitt.subItems, function (kategori) {
-                        kategori.name = showIdInName(kategori) ? kategori.id + ' ' + kategori.name : kategori.name;
-                        if (showCodeLevel) {
-                            kategori.typ = 'kategori';
-                            kategori.subs = kategori.subItems;
-                            _.each(kategori.subItems, function(kod) {
-                                kod.name = showIdInName(kod) ? kod.id + ' ' + kod.name : kod.name;
-                            });
-                        }
-                    });
-                });
-            });
         };
 
         return this;

@@ -32,6 +32,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
         $scope.setupVisibleSubs = function(menuOption) {
             if (menuOption.subs) {
                 menuOption.visibleSubs = menuOption.subs;
+                menuOption.showChildren = false;
                 _.each(menuOption.subs, function(sub) {
                     $scope.setupVisibleSubs(sub);
                 });
@@ -249,7 +250,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
                 $scope.updateCounters();
                 updateDoneDisabled();
                 resetFilter();
-                $scope.setupVisibleSubs($scope.menuOptions); //TODO Can this be removed?
+                $scope.setupVisibleSubs($scope.menuOptions);
                 $timeout(function () {
                     $scope.$parent.doneLoading = true;
                 }, 1, false);
