@@ -82,6 +82,7 @@
         <bean id="dynamicLinkRepository" class="se.inera.intyg.infra.dynamiclink.repository.DynamicLinkRepositoryImpl" />
         <bean id="dynamicLinkService" class="se.inera.intyg.infra.dynamiclink.service.DynamicLinkServiceImpl"/>
         <bean id="linkService" class="se.inera.statistics.web.service.links.LinkService"/>
+        <bean id="pingService" class="se.inera.statistics.web.service.monitoring.PingService"/>
 
         <import resource="classpath*:hsa-services-config.xml"/>
         <import resource="classpath*:hsaws-services-config.xml"/>
