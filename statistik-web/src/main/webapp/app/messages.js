@@ -28,7 +28,7 @@ var stMessages = {
         'nav.sjukskrivningslangd':'Sjukskrivningslängd',
         'nav.lan':'Län',
         'nav.andel-per-kon': 'Andel per kön',
-        'nav.lan-andel-sjukfall-per-kon':'Andel sjukfall per kön',
+        'nav.lan-andel-sjukfall-per-kon':'Könsfördelning per län',
         'nav.vardenhet':'Vårdenhet',
         'nav.lakare':'Läkare',
         'nav.lakarbefattning':'Läkarbefattning',
@@ -154,7 +154,7 @@ var stMessages = {
 
         // Titles
         'title.lan': 'Antal sjukfall per 1000 invånare fördelat på län',
-        'title.lan.gender': 'Könsfördelning per län',
+        'title.lan.gender': 'Andel sjukfall per kön fördelat på län',
         'title.vardenhet': 'Antal sjukfall fördelat på vårdenhet',
         'title.sickleave': 'Antal sjukfall',
         'title.diagnosisgroup': 'Antal sjukfall fördelat på diagnosgrupp',
