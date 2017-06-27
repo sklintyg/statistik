@@ -18,9 +18,14 @@
  */
 
 // conf.js
-/*globals browser,global,exports*/
+/*globals browser,global,exports,Promise*/
  'use strict';
 var HtmlScreenshotReporter = require('protractor-jasmine2-screenshot-reporter');
+
+var screenshotReporter = new HtmlScreenshotReporter({
+    dest: 'reports',
+    filename: 'index.html'
+});
 
 exports.config = {
     rootElement: '#ng-app',
@@ -45,6 +50,14 @@ exports.config = {
         // Default time to wait in ms before a test fails.
         defaultTimeoutInterval: 3 * 60 * 1000
     },
+
+    // Setup the report before any tests start
+    beforeLaunch: function() {
+        return new Promise(function(resolve){
+            screenshotReporter.beforeLaunch(resolve);
+        });
+    },
+
     onPrepare: function() {
         global.isAngularSite = function(flag){
             browser.ignoreSynchronization = !flag;
@@ -66,16 +79,7 @@ exports.config = {
                 consolidateAll:true})
         );
 
-        jasmine.getEnv().addReporter(
-            new HtmlScreenshotReporter({
-                dest: 'reports',
-                filename: 'index.html',
-                cleanDestination: false,
-                showSummary: false,
-                showConfiguration: false,
-                reportTitle: null
-            })
-        );
+        jasmine.getEnv().addReporter(screenshotReporter);
 
         var SpecReporter = require('jasmine-spec-reporter');
         jasmine.getEnv().addReporter(new SpecReporter({
@@ -104,10 +108,36 @@ exports.config = {
         // Disable animations so e2e tests run more quickly
         var disableNgAnimate = function() {
             angular.module('disableNgAnimate', []).run(['$animate', function($animate) {
+                console.log('Animations are disabled');
                 $animate.enabled(false);
             }]);
         };
 
+        var disableCssAnimate = function() {
+            angular
+                .module('disableCssAnimate', [])
+                .run(function() {
+                    var style = document.createElement('style');
+                    style.type = 'text/css';
+                    style.innerHTML = '* {' +
+                        '-webkit-transition: none !important;' +
+                        '-moz-transition: none !important' +
+                        '-o-transition: none !important' +
+                        '-ms-transition: none !important' +
+                        'transition: none !important' +
+                        '}';
+                    document.getElementsByTagName('head')[0].appendChild(style);
+                });
+        };
+
         browser.addMockModule('disableNgAnimate', disableNgAnimate);
+        browser.addMockModule('disableCssAnimate', disableCssAnimate);
+    },
+
+    // Close the report after all tests finish
+    afterLaunch: function(exitCode) {
+        return new Promise(function(resolve){
+            screenshotReporter.afterLaunch(resolve.bind(this, exitCode));
+        });
     }
 };
