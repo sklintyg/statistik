@@ -18,7 +18,6 @@
     "grunt-protractor-runner": "^4.0.0",
     "grunt-protractor-webdriver": "^0.2.5",
     "jasmine-reporters": "^2.1.1",
-    "jasmine-spec-reporter": "^2.7.0",
     "protractor-jasmine2-screenshot-reporter": "^0.3.5"
   },
   "engine": "node >= 4.2.1",
