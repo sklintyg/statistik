@@ -1,5 +1,7 @@
 'use strict';
 
+/*globals browser*/
+
 var FakeLoginPage = function() {
     this.jsonInput = element(by.name('userJsonDisplay'));
     this.loginBtn = element(by.id('login_btn'));
@@ -14,6 +16,12 @@ var FakeLoginPage = function() {
                 '"vardgivarniva":"' + isProcessledare + '"}');
 
         this.loginBtn.click();
+
+        // Reload to trigger addMockModule after login.
+        browser.waitForAngular();
+
+        browser.refresh();
+
     };
 
     this.isAtPage = function() {
