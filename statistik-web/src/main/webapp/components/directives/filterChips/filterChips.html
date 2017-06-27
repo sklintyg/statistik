@@ -3,6 +3,7 @@
 <div data-ng-if="haveChips" class="filter-level">
   <div class="col-xs-12">
     <button
+        type="button"
         data-ng-repeat="chip in shownChips track by chip.id"
         data-ng-click="removeChip(chip)"
         class="filter-chip"
@@ -20,6 +21,7 @@
     </button>
 
     <button
+        type="button"
         data-ng-if="numberOfChipsNotShown > 0"
         id="filter-ships-show-all-btn"
         class="btn btn-link show-all-filter"
