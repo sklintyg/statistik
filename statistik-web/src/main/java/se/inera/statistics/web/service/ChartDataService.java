@@ -261,7 +261,7 @@ public class ChartDataService {
     @GET
     @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
-    public Response getNumberOfCasesPerMonth(@QueryParam("format") String format) {
+    public Response getNumberOfCasesPerMonth (@QueryParam("format") String format) {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getNumberOfCasesPerMonth");
         return getResponse(numberOfCasesPerMonth, format, Report.N_SJUKFALLTOTALT);
