@@ -3,7 +3,7 @@
 environment_name: "demo"
 config_etc_folder: "{{ config_folder }}/{{ environment_name }}"
 profile: hsa-stub,wc-hsa-stub,security-both,qm
-xmx_memory: "14048m"
+xmx_memory: "12048m"
 
 proxy_env:
   http_proxy: http://bf-proxy.sth:8888
