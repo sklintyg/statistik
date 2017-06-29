@@ -132,5 +132,3 @@ configure(subprojects.findAll { ['statistik-service', 'statistik-web'].contains(
 apply from: "checkPnr.gradle"
 
 task tagRelease(type: TagReleaseTask)
-
-task testReport(type: SharedTestReportTask)
