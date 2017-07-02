@@ -92,7 +92,7 @@ public class LogConsumerImpl implements LogConsumer {
         }
     }
 
-
+    @SuppressWarnings("UnnecessaryDefaultInEnumSwitch")
     private boolean handleEvent(IntygEvent event, IntygFormat format) {
         switch (format) {
             case REGISTER_MEDICAL_CERTIFICATE:
