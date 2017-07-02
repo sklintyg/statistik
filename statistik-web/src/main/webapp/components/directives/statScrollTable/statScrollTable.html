@@ -37,11 +37,12 @@
       </tr>
       </thead>
       <tbody class="table-condensed">
-      <tr data-ng-repeat="row in rowsShown" class="stat-table-row" title="{{::row.name}}">
-        <td class="scrollable" data-ng-repeat="fieldData in row.data track by $index"
-            >{{::fieldData.value}}</td>
-      </tr>
+        <tr data-ng-repeat="row in rowsShown" class="stat-table-row" title="{{::row.name}}">
+          <td class="scrollable" data-ng-repeat="fieldData in row.data track by $index"
+              >{{::fieldData.value}}</td>
+        </tr>
       </tbody>
     </table>
+    <a ng-show="rowsHidden.length > 0" ng-click="showAllRows()">Visa alla rader</a>
   </div>
 </div>

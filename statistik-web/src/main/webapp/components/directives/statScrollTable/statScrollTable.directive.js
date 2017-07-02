@@ -35,7 +35,9 @@ angular.module('StatisticsApp').directive('statScrollTable',
                 $scope.sortIndex = -1;
                 $scope.sortReverse = true;
                 $scope.rowsShown = [];
+                $scope.rowsHidden = [];
                 var rows = [];
+                var showAll = false;
 
                 $scope.sortByColumn = function(columnIndex, shouldSort) {
 
@@ -59,6 +61,12 @@ angular.module('StatisticsApp').directive('statScrollTable',
                     sortRows();
                 };
 
+                $scope.showAllRows = function() {
+                    $scope.rowsShown = $scope.rowsShown.concat($scope.rowsHidden);
+                    $scope.rowsHidden = [];
+                    showAll = true;
+                };
+
                 function watchRows(rows) {
                     if (angular.isUndefined(rows)) {
                         return;
@@ -67,6 +75,9 @@ angular.module('StatisticsApp').directive('statScrollTable',
                     setWidth();
                     processData();
                     sortRows();
+                    if (!showAll) {
+                        $scope.rowsHidden = $scope.rowsShown.splice(100);
+                    }
                 }
 
                 function setWidth() {
