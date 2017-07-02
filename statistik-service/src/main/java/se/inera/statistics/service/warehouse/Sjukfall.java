@@ -116,6 +116,7 @@ public class Sjukfall {
         return diagnos.diagnoskod;
     }
 
+    @SuppressWarnings("UnnecessaryDefaultInEnumSwitch")
     public List<Integer> getIcd10CodeForTypes(List<Icd10RangeType> rangeTypes) {
         List<Integer> result = new ArrayList<>();
         for (Icd10RangeType rangeType : rangeTypes) {
@@ -138,6 +139,7 @@ public class Sjukfall {
         return result;
     }
 
+    @SuppressWarnings("UnnecessaryDefaultInEnumSwitch")
     public List<Integer> getAllIcd10OfTypes(List<Icd10RangeType> icd10RangeTypes) {
         List<Integer> result = new ArrayList<>();
         for (Icd10RangeType icd10RangeType : icd10RangeTypes) {

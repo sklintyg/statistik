@@ -53,6 +53,7 @@ public class Receiver  {
         return accepted;
     }
 
+    @SuppressWarnings("UnnecessaryDefaultInEnumSwitch")
     private void hsa(String documentId, String data) {
         final IntygFormat intygFormat = IntygEvent.getIntygFormat(data);
         switch (intygFormat) {
