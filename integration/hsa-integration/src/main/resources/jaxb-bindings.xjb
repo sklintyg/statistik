@@ -7,11 +7,11 @@
     <jaxb:globalBindings
             collectionType="java.util.ArrayList"
             generateValueClass="true">
-      <jaxb:javaType name="org.joda.time.LocalDate" xmlType="xs:date"
+      <jaxb:javaType name="java.time.LocalDate" xmlType="xs:date"
                      parseMethod="se.inera.statistics.hsa.adapter.LocalDateAdapter.parseDate"
                      printMethod="se.inera.statistics.hsa.adapter.LocalDateAdapter.printDate"/>
 
-      <jaxb:javaType name="org.joda.time.LocalDateTime" xmlType="xs:dateTime"
+      <jaxb:javaType name="java.time.LocalDateTime" xmlType="xs:dateTime"
                      parseMethod="se.inera.statistics.hsa.adapter.LocalDateAdapter.parseDateTime"
                      printMethod="se.inera.statistics.hsa.adapter.LocalDateAdapter.printDateTime"/>
     </jaxb:globalBindings>

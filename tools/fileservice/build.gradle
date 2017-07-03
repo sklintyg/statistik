@@ -32,7 +32,6 @@ dependencies {
     compile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     compile "org.apache.commons:commons-dbcp2:${commonDCHPVersion}"
     compile "org.codehaus.gpars:gpars:${gparsVersion}"
-    compile "joda-time:joda-time:${jodaTimeVersion}"
     compile "org.apache.httpcomponents:httpclient:${httpClientVersion}"
     compile "commons-cli:commons-cli:${commonCliVersion}"
 
