@@ -47,7 +47,6 @@ import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
 import se.inera.statistics.hsa.model.StatisticsHsaUnitDto;
 import se.inera.statistics.hsa.model.StatisticsNameInfoDto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,10 +110,10 @@ public class HSAWebServiceCalls {
             return null;
         }
         final GetStatisticsCareGiverResponseDto getStatisticsCareGiverResponseDto = new GetStatisticsCareGiverResponseDto();
-        getStatisticsCareGiverResponseDto.setStartDate(toJavaTime(statisticsCareGiver.getStartDate()));
+        getStatisticsCareGiverResponseDto.setStartDate(statisticsCareGiver.getStartDate());
         getStatisticsCareGiverResponseDto.setArchived(statisticsCareGiver.isIsArchived());
         getStatisticsCareGiverResponseDto.setCareGiverOrgNo(statisticsCareGiver.getCareGiverOrgNo());
-        getStatisticsCareGiverResponseDto.setEndDate(toJavaTime(statisticsCareGiver.getEndDate()));
+        getStatisticsCareGiverResponseDto.setEndDate(statisticsCareGiver.getEndDate());
         getStatisticsCareGiverResponseDto.setHsaIdentity(statisticsCareGiver.getHsaIdentity());
         return getStatisticsCareGiverResponseDto;
     }
@@ -165,7 +164,7 @@ public class HSAWebServiceCalls {
             statisticsHsaUnitDto.setCareTypes(statisticsCareUnit.getCareTypes().getCareType());
         }
         statisticsHsaUnitDto.setCountyCode(statisticsCareUnit.getCountyCode());
-        statisticsHsaUnitDto.setEndDate(toJavaTime(statisticsCareUnit.getEndDate()));
+        statisticsHsaUnitDto.setEndDate(statisticsCareUnit.getEndDate());
         statisticsHsaUnitDto.setGeographicalCoordinatesRt90(toDto(statisticsCareUnit.getGeographicalCoordinatesRt90()));
         statisticsHsaUnitDto.setHsaIdentity(statisticsCareUnit.getHsaIdentity());
         statisticsHsaUnitDto.setLocation(statisticsCareUnit.getLocation());
@@ -174,7 +173,7 @@ public class HSAWebServiceCalls {
         }
         statisticsHsaUnitDto.setMunicipalityCode(statisticsCareUnit.getMunicipalityCode());
         statisticsHsaUnitDto.setMunicipalitySectionName(statisticsCareUnit.getMunicipalitySectionName());
-        statisticsHsaUnitDto.setStartDate(toJavaTime(statisticsCareUnit.getStartDate()));
+        statisticsHsaUnitDto.setStartDate(statisticsCareUnit.getStartDate());
         statisticsHsaUnitDto.setMunicipalitySectionCode(statisticsCareUnit.getMunicipalitySectionCode());
         return statisticsHsaUnitDto;
     }
@@ -269,14 +268,6 @@ public class HSAWebServiceCalls {
         statisticsNameInfoDto.setPersonGivenName(sni.getPersonGivenName());
         statisticsNameInfoDto.setPersonMiddleAndSurName(sni.getPersonMiddleAndSurName());
         return statisticsNameInfoDto;
-    }
-
-    private static LocalDateTime toJavaTime(org.joda.time.LocalDateTime joda) {
-        if (joda == null) {
-            return null;
-        }
-        return LocalDateTime.of(joda.getYear(), joda.getMonthOfYear(), joda.getDayOfMonth(), joda.getHourOfDay(), joda.getMinuteOfHour(),
-                joda.getSecondOfMinute());
     }
 
 }

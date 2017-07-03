@@ -35,7 +35,6 @@ dependencies {
     compile "org.apache.cxf:cxf-rt-frontend-jaxws:${cxfVersion}"
     compile "org.springframework:spring-context:${springContextVersion}"
     compile "org.springframework.security:spring-security-web:${springSecurityVersion}"
-    compile "joda-time:joda-time:${jodaTimeVersion}"
 
     wsdlgen "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:${cxfVersion}"
     wsdlgen "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:${cxfVersion}"

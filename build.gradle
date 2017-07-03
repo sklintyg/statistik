@@ -26,7 +26,6 @@ ext {
     jaxb2Version = "0.9.5"
     jettyJmxVersion = "9.2.10.v20150310"
     jmsVersion = "1.1.1"
-    jodaTimeVersion = "2.3"
     liquibaseVersion = "2.0.5"
     logbackVersion = "1.1.1"
     mysqlConnectorVersion = "5.1.39"
