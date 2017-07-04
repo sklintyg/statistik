@@ -499,8 +499,8 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         return null;
     }
 
-    public static boolean shouldExistInHsa(String enhetId) {
-        return enhetId != null && !enhetId.startsWith("EJHSA") && !"UTANENHETSID".equals(enhetId);
+    public static boolean shouldExistInHsa(String hsaId) {
+        return hsaId != null && !hsaId.startsWith("EJHSA") && !"UTANENHETSID".equals(hsaId);
     }
 
     private StatisticsHsaUnit createHsaUnit(HSAKey key, boolean isHuvudenhet) {

@@ -1,0 +1,19 @@
+!contents -R2 -g -p -f -h
+
+Testar hur hantering av län fungerar vid null-svar från HSA enligt INTYG-1881.
+
+!3 Givet att:
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  | län    | kommentar |
+| 19790717-9191 | G01 | 2013-09-05 | 2013-09-06 | enhet1 | EJHSA  |           |
+
+!3 Då gäller:
+
+| Sjukfall i rapporten lan |
+| län               | kolumngrupp                | totalt? | kvinnor? | män? |
+| Okänt län         | antal sjukfall             | 1       | 0        | 1    |
