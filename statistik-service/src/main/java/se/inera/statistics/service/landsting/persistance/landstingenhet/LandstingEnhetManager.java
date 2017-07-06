@@ -19,6 +19,8 @@
 package se.inera.statistics.service.landsting.persistance.landstingenhet;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,9 +28,6 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.landsting.LandstingEnhetFileDataRow;
@@ -48,7 +47,7 @@ public class LandstingEnhetManager {
     @Transactional
     public Optional<LandstingEnhet> get(Long id) {
         final LandstingEnhet landstingEnhet = manager.find(LandstingEnhet.class, id);
-        return landstingEnhet == null ? Optional.<LandstingEnhet> absent() : Optional.of(landstingEnhet);
+        return landstingEnhet == null ? Optional.<LandstingEnhet> empty() : Optional.of(landstingEnhet);
     }
 
     @Transactional
@@ -69,10 +68,10 @@ public class LandstingEnhetManager {
 
     @Transactional
     public void update(final Long landstingId, final List<LandstingEnhetFileDataRow> newData) {
-        List<LandstingEnhet> landstingEnhets = Lists.transform(newData, data -> {
+        List<LandstingEnhet> landstingEnhets = newData.stream().map(data -> {
             final HsaIdEnhet enhetensHsaId = data.getEnhetensHsaId();
             return new LandstingEnhet(landstingId, enhetensHsaId, data.getListadePatienter());
-        });
+        }).collect(Collectors.toList());
         removeByLandstingId(landstingId);
         for (LandstingEnhet landstingEnhet : landstingEnhets) {
             manager.persist(landstingEnhet);

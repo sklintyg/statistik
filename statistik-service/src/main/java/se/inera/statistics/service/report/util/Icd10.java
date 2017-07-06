@@ -18,12 +18,6 @@
  */
 package se.inera.statistics.service.report.util;
 
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -178,18 +174,10 @@ public class Icd10 {
     public List<Kapitel> getKapitel(boolean includeInternalKapitel) {
         final ArrayList<Kapitel> allKapitels = new ArrayList<>(kapitels);
         if (includeInternalKapitel) {
-            allKapitels.addAll(Collections2.transform(Collections2.filter(internalIcd10, new Predicate<Id>() {
-                @Override
-                public boolean apply(Id id) {
-                    return id instanceof Kapitel;
-                }
-            }), new Function<Id, Kapitel>() {
-                @Override
-                @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "We know it's a Kapitel")
-                public Kapitel apply(Id id) {
-                    return (Kapitel) id;
-                }
-            }));
+            final List<Kapitel> kapitels = internalIcd10.stream()
+                    .filter(id -> id instanceof Kapitel)
+                    .map(id -> (Kapitel) id).collect(Collectors.toList());
+            allKapitels.addAll(kapitels);
         }
         return allKapitels;
     }
@@ -210,7 +198,7 @@ public class Icd10 {
 
     public List<Icd> getIcdStructure() {
         List<Icd10.Kapitel> kapitel = getKapitel(false);
-        final List<Icd> icds = new ArrayList<>(Lists.transform(kapitel, kapitel1 -> new Icd(kapitel1, Kod.class)));
+        final List<Icd> icds = kapitel.stream().map(id -> new Icd(id, Kod.class)).collect(Collectors.toList());
         final String info = "Innehåller sjukfall som inte har någon diagnoskod angiven eller där den "
                 + "angivna diagnoskoden inte finns i klassificeringssystemet för diagnoser, ICD-10-SE";
         icds.add(new Icd("", "Utan giltig ICD-10 kod", INTID_OTHER_KATEGORI, info));
@@ -256,7 +244,9 @@ public class Icd10 {
     }
 
     public static List<Integer> getKapitelIntIds(String... icdIds) {
-        return Lists.transform(Arrays.asList(icdIds), icdId -> icd10ToInt(icdId, Icd10RangeType.KAPITEL));
+        return Arrays.stream(icdIds)
+                .map(icdId -> icd10ToInt(icdId, Icd10RangeType.KAPITEL))
+                .collect(Collectors.toList());
     }
 
     public Id findFromIcd10Code(String icd10) {
@@ -382,7 +372,7 @@ public class Icd10 {
 
         @Override
         public Optional<Id> getParent() {
-            return Optional.absent();
+            return Optional.empty();
         }
 
         public static Kapitel valueOf(String line) {

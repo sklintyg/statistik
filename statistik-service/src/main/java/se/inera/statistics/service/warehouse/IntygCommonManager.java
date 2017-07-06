@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Function;
 import com.google.common.collect.HashMultiset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component

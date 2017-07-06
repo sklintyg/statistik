@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
@@ -45,9 +47,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -220,11 +219,11 @@ public class ProtectedLandstingService {
         result.put("infoMessage", getLastLandstingUpdateInfoMessage(vardgivarId));
 
         final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vardgivarId);
-        final List<String> parsedRowsStrings = Lists.transform(landstingEnhets, landstingEnhetFileDataRow -> {
+        final List<String> parsedRowsStrings = landstingEnhets.stream().map(landstingEnhetFileDataRow -> {
             final Integer listadePatienter = landstingEnhetFileDataRow.getListadePatienter();
             final String listadePatienterString = listadePatienter != null ? String.valueOf(listadePatienter) : "inte angivet";
             return "HSA-id: " + landstingEnhetFileDataRow.getEnhetensHsaId() + " -> Listade patienter: " + listadePatienterString;
-        });
+        }).collect(Collectors.toList());
         result.put("parsedRows", parsedRowsStrings);
 
         return Response.ok(result).build();
@@ -265,8 +264,9 @@ public class ProtectedLandstingService {
             final HashMap<String, Object> map = new HashMap<>();
             map.put("message", message);
             return Response.status(status).entity(map).build();
+        default:
+            throw new RuntimeException("Unhandled upload result format: " + format);
         }
-        throw new RuntimeException("Unhandled upload result format: " + format);
     }
 
     @GET
@@ -308,7 +308,7 @@ public class ProtectedLandstingService {
             return Collections.emptyList();
         }
         final List<Verksamhet> businesses = loginInfo.getBusinessesForVg(loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        return Lists.transform(businesses, Verksamhet::getId);
+        return businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
     }
 
     @GET

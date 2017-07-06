@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.hsa;
 
-import com.google.common.base.Optional;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -32,6 +31,7 @@ import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
 import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
 import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -51,7 +51,7 @@ public class HsaWebServiceCached implements HsaWebService {
                         @Override
                         public Optional<GetStatisticsHsaUnitResponseDto> load(String key) throws Exception {
                             LOG.info("HSA call was not cached. Making remote call getStatisticsHsaUnit for: " + key);
-                            return Optional.fromNullable(service.getStatisticsHsaUnit(key));
+                            return Optional.ofNullable(service.getStatisticsHsaUnit(key));
                         }
                     });
 
@@ -63,7 +63,7 @@ public class HsaWebServiceCached implements HsaWebService {
                         @Override
                         public Optional<GetStatisticsNamesResponseDto> load(String key) throws Exception {
                             LOG.info("HSA call was not cached. Making remote call getStatisticsNames for: " + key);
-                            return Optional.fromNullable(service.getStatisticsNames(key));
+                            return Optional.ofNullable(service.getStatisticsNames(key));
                         }
                     });
 
@@ -75,7 +75,7 @@ public class HsaWebServiceCached implements HsaWebService {
                         @Override
                         public Optional<GetStatisticsPersonResponseDto> load(String key) throws Exception {
                             LOG.info("HSA call was not cached. Making remote call getStatisticsPerson for: " + key);
-                            return Optional.fromNullable(service.getStatisticsPerson(key));
+                            return Optional.ofNullable(service.getStatisticsPerson(key));
                         }
                     });
 
@@ -87,7 +87,7 @@ public class HsaWebServiceCached implements HsaWebService {
                         @Override
                         public Optional<GetStatisticsCareGiverResponseDto> load(String key) throws Exception {
                             LOG.info("HSA call was not cached. Making remote call getStatisticsCareGiver for: " + key);
-                            return Optional.fromNullable(service.getStatisticsCareGiver(key));
+                            return Optional.ofNullable(service.getStatisticsCareGiver(key));
                         }
                     });
 
@@ -110,7 +110,7 @@ public class HsaWebServiceCached implements HsaWebService {
     @Override
     public GetStatisticsHsaUnitResponseDto getStatisticsHsaUnit(String unitId) {
         try {
-            return units.get(unitId).orNull();
+            return units.get(unitId).orElse(null);
         } catch (Exception e) {
             LOG.error("Failed to use cache for HSA unit call", e);
             return service.getStatisticsHsaUnit(unitId);
@@ -120,7 +120,7 @@ public class HsaWebServiceCached implements HsaWebService {
     @Override
     public GetStatisticsNamesResponseDto getStatisticsNames(String personId) {
         try {
-            return names.get(personId).orNull();
+            return names.get(personId).orElse(null);
         } catch (Exception e) {
             LOG.error("Failed to use cache for HSA statisticsNames call", e);
             return service.getStatisticsNames(personId);
@@ -130,7 +130,7 @@ public class HsaWebServiceCached implements HsaWebService {
     @Override
     public GetStatisticsPersonResponseDto getStatisticsPerson(String personId) {
         try {
-            return persons.get(personId).orNull();
+            return persons.get(personId).orElse(null);
         } catch (Exception e) {
             LOG.error("Failed to use cache for HSA statisticsPerson call", e);
             return service.getStatisticsPerson(personId);
@@ -140,7 +140,7 @@ public class HsaWebServiceCached implements HsaWebService {
     @Override
     public GetStatisticsCareGiverResponseDto getStatisticsCareGiver(String careGiverId) {
         try {
-            return careGivers.get(careGiverId).orNull();
+            return careGivers.get(careGiverId).orElse(null);
         } catch (Exception e) {
             LOG.error("Failed to use cache for HSA caregiver call", e);
             return service.getStatisticsCareGiver(careGiverId);

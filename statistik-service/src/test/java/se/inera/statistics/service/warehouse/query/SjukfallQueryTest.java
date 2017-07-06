@@ -18,10 +18,8 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import com.google.common.base.Function;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -58,6 +56,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
@@ -227,19 +227,16 @@ public class SjukfallQueryTest {
             public List<Lakare> answer(InvocationOnMock invocationOnMock) throws Throwable {
                 final Object[] arguments = invocationOnMock.getArguments();
                 final List<HsaIdLakare> hsaIds = (List<HsaIdLakare>) arguments[0];
-                return Lists.transform(hsaIds, new Function<HsaIdLakare, Lakare>() {
-                    @Override
-                    public Lakare apply(HsaIdLakare hsaId) {
-                        if (LAKARE1_ID.equals(hsaId)) {
-                            return lakare1;
-                        } else if (LAKARE2_ID.equals(hsaId)) {
-                            return lakare2;
-                        } else if (LAKARE3_ID.equals(hsaId)) {
-                            return lakare3;
-                        }
-                        throw new RuntimeException("Lakare does not exist: " + hsaId);
+                return hsaIds.stream().map(hsaId -> {
+                    if (LAKARE1_ID.equals(hsaId)) {
+                        return lakare1;
+                    } else if (LAKARE2_ID.equals(hsaId)) {
+                        return lakare2;
+                    } else if (LAKARE3_ID.equals(hsaId)) {
+                        return lakare3;
                     }
-                });
+                    throw new RuntimeException("Lakare does not exist: " + hsaId);
+                }).collect(Collectors.toList());
             }
         });
         return lakareManager;

@@ -18,9 +18,7 @@
  */
 package se.inera.statistics.service.report.model;
 
-import com.google.common.base.Function;
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Lists;
 import se.inera.statistics.hsa.model.HsaIdAny;
 
 import java.util.ArrayList;
@@ -28,6 +26,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class KonDataResponses {
 
@@ -36,12 +35,9 @@ public final class KonDataResponses {
 
     public static KonDataResponse changeIdGroupsToNamesAndAddIdsToDuplicates(final KonDataResponse response,
             Map<? extends HsaIdAny, String> idsToNames) {
-        final List<HsaIdAny> idsToCompare = Lists.transform(response.getGroups(), new Function<String, HsaIdAny>() {
-            @Override
-            public HsaIdAny apply(String id) {
-                return HsaIdAny.createEvenThoughSubclassesArePreferred(id);
-            }
-        });
+        final List<HsaIdAny> idsToCompare = response.getGroups().stream()
+                .map(HsaIdAny::createEvenThoughSubclassesArePreferred)
+                .collect(Collectors.toList());
         final Map<HsaIdAny, String> hsaIdsToNames = new HashMap<>();
         for (Map.Entry<? extends HsaIdAny, String> entry : idsToNames.entrySet()) {
             hsaIdsToNames.put(HsaIdAny.createEvenThoughSubclassesArePreferred(entry.getKey().getId()), entry.getValue());

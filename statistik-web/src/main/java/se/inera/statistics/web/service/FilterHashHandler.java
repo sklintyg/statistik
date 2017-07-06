@@ -23,7 +23,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +32,7 @@ import se.inera.statistics.service.userselection.UserSelectionManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class FilterHashHandler {
     private static final Logger LOG = LoggerFactory.getLogger(FilterHashHandler.class);
@@ -61,7 +61,7 @@ public class FilterHashHandler {
     Optional<String> getFilterData(String hash) {
         final UserSelection userSelection = userSelectionManager.find(hash);
         if (userSelection == null) {
-            return Optional.absent();
+            return Optional.empty();
         }
         return Optional.of(userSelection.getValue());
     }

@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import com.google.common.base.Function;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.model.KonDataResponse;
@@ -42,6 +41,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public final class SjukskrivningslangdQuery {
     private static Ranges ranges = SjukfallslangdUtil.RANGES;
@@ -71,11 +72,8 @@ public final class SjukskrivningslangdQuery {
     }
 
     private static Collection<Ranges.Range> rowsToKeep(Map<Ranges.Range, Counter<Ranges.Range>> count, int noOfRows) {
-        List<Counter<Ranges.Range>> sorted = new ArrayList<>();
-        for (Counter counter : count.values()) {
-            sorted.add(counter);
-        }
-        Collections.sort(sorted, Counter.byTotalCount());
+        List<Counter<Ranges.Range>> sorted = new ArrayList<>(count.values());
+        sorted.sort(Counter.byTotalCount());
 
         Collection<Ranges.Range> result = new HashSet<>();
         for (Counter<Ranges.Range> counter : sorted) {
@@ -212,8 +210,8 @@ public final class SjukskrivningslangdQuery {
             int periodLength, SjukfallUtil sjukfallUtil) {
         final Ranges ranges = SjukfallslangdUtil.RANGES;
         final ArrayList<Ranges.Range> rangesList = Lists.newArrayList(ranges);
-        final List<String> names = Lists.transform(rangesList, Ranges.Range::getName);
-        final List<Integer> ids = Lists.transform(rangesList, Ranges.Range::getCutoff);
+        final List<String> names = rangesList.stream().map(Ranges.Range::getName).collect(Collectors.toList());
+        final List<Integer> ids = rangesList.stream().map(Ranges.Range::getCutoff).collect(Collectors.toList());
         final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
             final int length = sjukfall.getRealDays();
             final int rangeId = ranges.getRangeCutoffForValue(length);

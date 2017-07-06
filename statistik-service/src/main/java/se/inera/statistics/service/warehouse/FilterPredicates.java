@@ -18,10 +18,9 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Predicate;
-
 import java.util.Arrays;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public class FilterPredicates {
 

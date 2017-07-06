@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import com.google.common.base.Predicate;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,6 +45,7 @@ import java.time.ZoneId;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
 import static se.inera.statistics.service.warehouse.Fact.aFact;
@@ -135,7 +135,7 @@ public class DiagnosgruppQueryTest {
         //When
         DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(), new FilterPredicates(new Predicate<Fact>() {
             @Override
-            public boolean apply(Fact fact) {
+            public boolean test(Fact fact) {
                 return false;
             }
         }, sjukfall -> true, "hash", false), Instant.ofEpochMilli(1416223845652L).atZone(ZoneId.systemDefault()).toLocalDate(), 1, 1, "A00-B99");
@@ -148,12 +148,13 @@ public class DiagnosgruppQueryTest {
     @Test
     public void testGetUnderdiagnosGrupperForAvsnitt() throws Exception {
         //When
-        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(new MutableAisle(new HsaIdVardgivare("vgid")).createAisle(), new FilterPredicates(new Predicate<Fact>() {
-            @Override
-            public boolean apply(Fact fact) {
-                return false;
-            }
-        }, sjukfall -> true, "hash", false), Instant.ofEpochMilli(1416223845652L).atZone(ZoneId.systemDefault()).toLocalDate(), 1, 1, "A00-A09");
+        final Aisle aisle = new MutableAisle(new HsaIdVardgivare("vgid")).createAisle();
+        final FilterPredicates filter = new FilterPredicates(fact -> false, sjukfall -> true, "hash", false);
+        final LocalDate start = Instant.ofEpochMilli(1416223845652L).atZone(ZoneId.systemDefault()).toLocalDate();
+        final int periods = 1;
+        final int periodLength = 1;
+        final String rangeId = "A00-A09";
+        DiagnosgruppResponse result = query.getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, rangeId);
 
         //Then
         assertEquals(10, result.getIcdTyps().size());

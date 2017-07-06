@@ -18,10 +18,8 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -37,6 +35,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Warehouse implements Iterable<Aisle> {
@@ -82,7 +81,7 @@ public class Warehouse implements Iterable<Aisle> {
         if (enhets == null || enhetIds == null) {
             return new ArrayList<>();
         }
-        return enhets.values().stream().reduce(Lists.newArrayList(), (a, b) -> {
+        return enhets.values().stream().reduce(new ArrayList<>(), (a, b) -> {
             a.addAll(b);
             return a;
         }).stream().filter(enhet -> enhetIds.contains(enhet.getEnhetId())).collect(Collectors.toList());
@@ -197,7 +196,7 @@ public class Warehouse implements Iterable<Aisle> {
         public synchronized Optional<T> getKey(int id) {
             final T result = map.inverse().get(id);
             if (result == null) {
-                return Optional.absent();
+                return Optional.empty();
             }
             return Optional.of(result);
         }

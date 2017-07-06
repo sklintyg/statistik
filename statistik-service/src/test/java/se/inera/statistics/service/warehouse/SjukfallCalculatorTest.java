@@ -18,8 +18,6 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.ArrayListMultimap;
 import org.junit.Test;
 import org.springframework.util.ReflectionUtils;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -31,6 +29,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
 
@@ -42,7 +41,9 @@ public class SjukfallCalculatorTest {
         final List<Range> ranges = SjukfallIterator.getRanges(LocalDate.of(2015, 4, 1), 2, 1);
 
         //When
-        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER.getIntygFilter(), ranges, false);
+        final Aisle aisle = new Aisle(new HsaIdVardgivare(""), Collections.emptyList());
+        final Predicate<Fact> intygFilter = SjukfallUtil.ALL_ENHETER.getIntygFilter();
+        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(aisle, intygFilter, ranges, false);
 
         //Then
         final SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator = (SjukfallPerPeriodCalculator) getField("sjukfallPerPeriodCalculator", SjukfallCalculator.class, sjukfallCalculator);

@@ -22,9 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
-
 public class DiagnosgruppResponse extends KonDataResponse {
 
     private final List<? extends Icd> icdTyps;
@@ -42,7 +39,7 @@ public class DiagnosgruppResponse extends KonDataResponse {
         if (icdTyps == null) {
             return new ArrayList<>();
         }
-        return Lists.transform(icdTyps, (Function<Icd, String>) icd -> icd.asString());
+        return icdTyps.stream().map(Icd::asString).collect(Collectors.toList());
     }
 
     public List<String> getDiagnosisGroupsAsStrings() {

@@ -23,12 +23,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import se.inera.statistics.service.report.model.Range;
-
-import com.google.common.base.Predicate;
 
 public class SjukfallIterator implements Iterator<SjukfallGroup> {
 
@@ -76,7 +75,7 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
             throw new NoSuchElementException();
         }
         List<Sjukfall> result = sjukfallCalculator.getSjukfallsForNextPeriod().stream()
-                .filter(t -> sjukfallFilter.getSjukfallFilter().apply(t)).collect(Collectors.toList());
+                .filter(t -> sjukfallFilter.getSjukfallFilter().test(t)).collect(Collectors.toList());
         final LocalDate fromDate = from.plusMonths(period * periodSize);
         Range range = new Range(fromDate,
                 from.plusMonths(period * periodSize + periodSize - 1).plusMonths(1).withDayOfMonth(1).minusDays(1));

@@ -18,8 +18,6 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
@@ -69,12 +67,7 @@ public class DiagnosisSubGroupsConverter {
 
     private ChartData extractChartData(DiagnosgruppResponse data, List<Integer> topIndexes, Kon sex) {
         List<ChartSeries> topColumns = getTopColumns(data, topIndexes, sex);
-        final List<ChartCategory> categories = Lists.transform(data.getPeriods(), new Function<String, ChartCategory>() {
-            @Override
-            public ChartCategory apply(String period) {
-                return new ChartCategory(period);
-            }
-        });
+        final List<ChartCategory> categories = data.getPeriods().stream().map(ChartCategory::new).collect(Collectors.toList());
         return new ChartData(topColumns, categories);
     }
 

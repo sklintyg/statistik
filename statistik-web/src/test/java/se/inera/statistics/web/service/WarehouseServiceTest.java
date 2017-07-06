@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Predicate;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -46,6 +45,7 @@ import se.inera.statistics.web.util.SpyableClock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
