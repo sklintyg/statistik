@@ -18,15 +18,11 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Predicate;
 import org.junit.Test;
-import org.mockito.Mockito;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.report.model.Range;
 
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;

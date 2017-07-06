@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import com.google.common.base.Function;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.model.Kon;
@@ -37,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 
 import static se.inera.statistics.service.report.util.Ranges.range;
 
@@ -63,8 +63,9 @@ public final class LakaresAlderOchKonQuery {
             return "Manlig läkare";
         case UNKNOWN:
             return "Okänt kön";
+        default:
+            throw new IllegalArgumentException("Unhandled type: " + kon);
         }
-        throw new IllegalArgumentException("Unhandled type: " + kon);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakaresAlderOchKon(Aisle aisle, FilterPredicates filter, LocalDate start,

@@ -20,14 +20,13 @@ package se.inera.statistics.service.landsting;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdUser;
@@ -73,7 +72,7 @@ public class LandstingEnhetHandler {
             throw new NoLandstingSetForVgException();
         }
         final long landstingId = landstingOptional.get().getId();
-        landstingEnhetManager.update(landstingId, Collections.<LandstingEnhetFileDataRow> emptyList());
+        landstingEnhetManager.update(landstingId, Collections.emptyList());
         landstingEnhetUpdateManager.update(landstingId, username, userId, "-", LandstingEnhetUpdateOperation.REMOVE);
     }
 
@@ -83,10 +82,7 @@ public class LandstingEnhetHandler {
 
     public Optional<LandstingEnhetUpdate> getLastUpdateInfo(HsaIdVardgivare vardgivarId) {
         final Optional<Landsting> landstingOptional = landstingManager.getForVg(vardgivarId);
-        if (landstingOptional.isPresent()) {
-            return landstingEnhetUpdateManager.getByLandstingId(landstingOptional.get().getId());
-        }
-        return Optional.absent();
+        return landstingOptional.flatMap(landsting -> landstingEnhetUpdateManager.getByLandstingId(landsting.getId()));
     }
 
     public LandstingsVardgivareStatus getLandstingsVardgivareStatus(HsaIdVardgivare vardgivarId) {
@@ -104,7 +100,7 @@ public class LandstingEnhetHandler {
 
     public List<HsaIdEnhet> getAllEnhetsForVardgivare(HsaIdVardgivare vgid) {
         final List<LandstingEnhet> allLandstingEnhetsForVardgivare = getAllLandstingEnhetsForVardgivare(vgid);
-        return Lists.transform(allLandstingEnhetsForVardgivare, landstingEnhet -> landstingEnhet.getEnhetensHsaId());
+        return allLandstingEnhetsForVardgivare.stream().map(LandstingEnhet::getEnhetensHsaId).collect(Collectors.toList());
     }
 
     public List<LandstingEnhet> getAllLandstingEnhetsForVardgivare(HsaIdVardgivare vgid) {

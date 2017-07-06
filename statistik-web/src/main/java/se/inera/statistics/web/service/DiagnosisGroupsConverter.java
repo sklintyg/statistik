@@ -18,8 +18,6 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
@@ -145,12 +143,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
             rows.add(new ChartSeries(entry.getKey(), entry.getValue(), null, colors.get(entry.getKey())));
         }
 
-        final List<ChartCategory> categories = Lists.transform(resp.getPeriods(), new Function<String, ChartCategory>() {
-            @Override
-            public ChartCategory apply(String period) {
-                return new ChartCategory(period);
-            }
-        });
+        final List<ChartCategory> categories = resp.getPeriods().stream().map(ChartCategory::new).collect(Collectors.toList());
         return new ChartData(rows, categories);
     }
 

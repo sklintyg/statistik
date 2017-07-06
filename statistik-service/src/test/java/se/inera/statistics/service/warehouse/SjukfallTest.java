@@ -22,13 +22,10 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 
 import se.inera.statistics.service.report.model.Kon;
 
@@ -49,12 +46,7 @@ public class SjukfallTest {
         assertEquals(1, result.getSjukskrivningsgrad());
         assertEquals(1, result.getStart());
         assertEquals(Kon.MALE, result.getKon());
-        assertArrayEquals(new Object[]{1}, Lists.transform(new ArrayList<>(result.getLakare()), new Function<Lakare, Integer>() {
-            @Override
-            public Integer apply(Lakare lakare) {
-                return lakare.getId();
-            }
-        }).toArray());
+        assertArrayEquals(new Object[]{1}, result.getLakare().stream().map(lakare -> lakare.getId()).toArray());
 
         assertEquals("01", result.getLanskod());
         assertEquals(false, result.isExtended());
@@ -79,12 +71,7 @@ public class SjukfallTest {
         assertEquals(2, result.getSjukskrivningsgrad());
         assertEquals(1, result.getStart());
         assertEquals(Kon.byNumberRepresentation(2), result.getKon());
-        final List<Integer> lakare = Lists.transform(new ArrayList<>(result.getLakare()), new Function<Lakare, Integer>() {
-            @Override
-            public Integer apply(Lakare lakare) {
-                return lakare.getId();
-            }
-        });
+        final List<Integer> lakare = result.getLakare().stream().map(lakare1 -> lakare1.getId()).collect(Collectors.toList());
         assertEquals(2, lakare.size());
         assertTrue(lakare.contains(1));
         assertTrue(lakare.contains(2));

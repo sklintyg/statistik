@@ -26,10 +26,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.google.common.base.Function;
-import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Lists;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -99,19 +97,14 @@ public final class LakarbefattningQuery {
     private static KonDataResponse getSjukfallCommon(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength,
             SjukfallUtil sjukfallUtil, final Function<Sjukfall, Collection<Lakare>> getLakare) {
         final ArrayList<Map.Entry<Integer, String>> ranges = new ArrayList<>(getAllLakarbefattnings(true).entrySet());
-        final List<String> names = Lists.transform(ranges, entry -> entry.getValue());
-        final List<Integer> ids = Lists.transform(ranges, entry -> entry.getKey());
-        final CounterFunction<Integer> counterFunction = new CounterFunction<Integer>() {
-            @Override
-            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
-                for (Lakare lakare : getLakare.apply(sjukfall)) {
-                    final List<Integer> lakarbefattnings = getLakarbefattnings(lakare);
-                    for (Integer befattningId : lakarbefattnings) {
-                        counter.add(befattningId);
-                    }
-                    if (lakarbefattnings.isEmpty()) {
-                        counter.add(getCorrectCodeWhenNoLakarbefattningExists(lakare.getBefattnings()));
-                    }
+        final List<String> names = ranges.stream().map(Map.Entry::getValue).collect(Collectors.toList());
+        final List<Integer> ids = ranges.stream().map(Map.Entry::getKey).collect(Collectors.toList());
+        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
+            for (Lakare lakare : getLakare.apply(sjukfall)) {
+                final List<Integer> lakarbefattnings = getLakarbefattnings(lakare);
+                counter.addAll(lakarbefattnings);
+                if (lakarbefattnings.isEmpty()) {
+                    counter.add(getCorrectCodeWhenNoLakarbefattningExists(lakare.getBefattnings()));
                 }
             }
         };

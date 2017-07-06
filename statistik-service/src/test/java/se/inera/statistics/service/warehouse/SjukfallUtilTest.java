@@ -18,9 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.base.Function;
 import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Lists;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -38,6 +36,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -75,12 +74,7 @@ public class SjukfallUtilTest {
 
         Sjukfall sjukfall = sjukfalls.iterator().next();
         assertEquals(20, sjukfall.getRealDays());
-        final List<Integer> lakare = Lists.transform(new ArrayList<>(sjukfall.getLakare()), new Function<Lakare, Integer>() {
-            @Override
-            public Integer apply(Lakare lakare) {
-                return lakare.getId();
-            }
-        });
+        final List<Integer> lakare = sjukfall.getLakare().stream().map(lakare1 -> lakare1.getId()).collect(Collectors.toList());
         assertEquals(2, lakare.size());
         assertTrue(lakare.contains(1));
         assertTrue(lakare.contains(2));

@@ -24,7 +24,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -35,12 +37,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Function;
-import com.google.common.base.Optional;
 import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Multiset;
 
+import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.processlog.Lakare;
@@ -97,7 +97,7 @@ public class SjukfallQuery {
     }
 
     private SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
-            int periodlangd, Function<SjukfallGroup, String> rowName, boolean applyCutoff) {
+                                                            int periodlangd, Function<SjukfallGroup, String> rowName, boolean applyCutoff) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, filter)) {
             int male = countMale(sjukfallGroup.getSjukfall());
@@ -140,7 +140,7 @@ public class SjukfallQuery {
     private Optional<SimpleKonDataRow> getDataForEnhet(CutoffUsage cutoffUsage, SjukfallPerGender sjukfallPerGenderPerEnhet,
             Map.Entry<HsaIdEnhet, String> enhetIdAndName, HsaIdEnhet enhetId, int enhetIntId) {
         if (enhetIntId < 0) {
-            return Optional.absent();
+            return Optional.empty();
         }
         final String enhetName = enhetIdAndName.getValue();
         int female = sjukfallPerGenderPerEnhet.femalePerEnhet.count(enhetIntId);
@@ -156,7 +156,7 @@ public class SjukfallQuery {
         if (male + female > 0) {
             return Optional.of(new SimpleKonDataRow(enhetName, female, male, enhetId));
         }
-        return Optional.absent();
+        return Optional.empty();
     }
 
     private SjukfallPerGender getSjukfallPerGenderPerEnhet(SjukfallGroup sjukfallGroup) {
@@ -221,8 +221,8 @@ public class SjukfallQuery {
     public KonDataResponse getSjukfallPerEnhetSeries(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize,
             Map<HsaIdEnhet, String> idsToNames) {
         final ArrayList<Map.Entry<HsaIdEnhet, String>> groupEntries = new ArrayList<>(idsToNames.entrySet());
-        final List<String> names = Lists.transform(groupEntries, entry -> entry.getKey().getId());
-        final List<Integer> ids = Lists.transform(groupEntries, entry -> Warehouse.getEnhet(entry.getKey()));
+        final List<String> names = groupEntries.stream().map(entry -> entry.getKey().getId()).collect(Collectors.toList());
+        final List<Integer> ids = groupEntries.stream().map(entry -> Warehouse.getEnhet(entry.getKey())).collect(Collectors.toList());
         final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> counter.add(sjukfall.getLastEnhet());
         final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, names, ids,
                 counterFunction);
@@ -252,17 +252,17 @@ public class SjukfallQuery {
     }
 
     private KonDataResponse changeLakareIdToLakarName(final KonDataResponse response) {
-        final List<HsaIdLakare> lakares = Lists.transform(response.getGroups(), group -> {
+        final List<HsaIdLakare> lakares = response.getGroups().stream().map(group -> {
             final Optional<HsaIdLakare> lakarId = Warehouse.getLakarId(Integer.parseInt(group));
             if (!lakarId.isPresent()) {
                 LOG.error("Could not find lakare with internal id: " + group);
                 return HsaIdLakare.empty();
             }
             return lakarId.get();
-        });
+        }).collect(Collectors.toList());
         final List<Lakare> allLakareInResponse = lakareManager.getAllSpecifiedLakares(lakares);
         final Set<String> nameDuplicates = findDuplicates(allLakareInResponse);
-        final List<String> updatedLakareNames = Lists.transform(response.getGroups(), lakareIdNum -> {
+        final List<String> updatedLakareNames = response.getGroups().stream().map(lakareIdNum -> {
             for (Lakare lakare : allLakareInResponse) {
                 if (lakareIdNum.equals(String.valueOf(Warehouse.getNumLakarId(lakare.getLakareId())))) {
                     final String namn = lakarNamn(lakare);
@@ -271,8 +271,8 @@ public class SjukfallQuery {
             }
             LOG.warn("Could not find name for lakare: " + lakareIdNum);
             final Optional<HsaIdLakare> lakarId = Warehouse.getLakarId(Integer.parseInt(lakareIdNum));
-            return lakarId.isPresent() ? lakarId.get().getId() : lakareIdNum;
-        });
+            return lakarId.map(HsaIdAny::getId).orElse(lakareIdNum);
+        }).collect(Collectors.toList());
         return new KonDataResponse(updatedLakareNames, response.getRows());
     }
 

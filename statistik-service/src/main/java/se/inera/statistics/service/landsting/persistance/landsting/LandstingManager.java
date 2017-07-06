@@ -20,6 +20,7 @@ package se.inera.statistics.service.landsting.persistance.landsting;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,7 +29,6 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -48,7 +48,7 @@ public class LandstingManager {
     @Transactional
     public Optional<Landsting> get(long id) {
         final Landsting landsting = manager.find(Landsting.class, id);
-        return landsting == null ? Optional.<Landsting> absent() : Optional.of(landsting);
+        return landsting == null ? Optional.<Landsting> empty() : Optional.of(landsting);
     }
 
     @Transactional
@@ -65,7 +65,7 @@ public class LandstingManager {
         TypedQuery<Landsting> query = manager.createQuery("SELECT l FROM Landsting l where l.vardgivareId = :vgId", Landsting.class)
                 .setParameter("vgId", vgId.getId());
         final List<Landsting> resultList = query.getResultList();
-        return resultList.isEmpty() ? Optional.<Landsting> absent() : Optional.of(resultList.get(0));
+        return resultList.isEmpty() ? Optional.<Landsting> empty() : Optional.of(resultList.get(0));
     }
 
 }

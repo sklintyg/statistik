@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.landsting.persistance.landstingenhetupdate;
 
-import com.google.common.base.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +27,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.sql.Timestamp;
 import java.time.Clock;
+import java.util.Optional;
 
 @Component
 public class LandstingEnhetUpdateManager {
@@ -41,16 +41,14 @@ public class LandstingEnhetUpdateManager {
     @Transactional
     public Optional<LandstingEnhetUpdate> getByLandstingId(long landstingId) {
         final LandstingEnhetUpdate landstingEnhetUpdate = manager.find(LandstingEnhetUpdate.class, landstingId);
-        return landstingEnhetUpdate == null ? Optional.<LandstingEnhetUpdate> absent() : Optional.of(landstingEnhetUpdate);
+        return landstingEnhetUpdate == null ? Optional.<LandstingEnhetUpdate> empty() : Optional.of(landstingEnhetUpdate);
     }
 
     @Transactional
     public void update(long landstingId, String updatedByName, HsaIdUser updatedByHsaid, String filename,
             LandstingEnhetUpdateOperation operation) {
         final Optional<LandstingEnhetUpdate> existing = getByLandstingId(landstingId);
-        if (existing.isPresent()) {
-            manager.remove(existing.get());
-        }
+        existing.ifPresent(landstingEnhetUpdate -> manager.remove(landstingEnhetUpdate));
         final LandstingEnhetUpdate landstingEnhetUpdate = new LandstingEnhetUpdate(landstingId, updatedByName, updatedByHsaid,
                 new Timestamp(clock.millis()), filename, operation);
         manager.persist(landstingEnhetUpdate);

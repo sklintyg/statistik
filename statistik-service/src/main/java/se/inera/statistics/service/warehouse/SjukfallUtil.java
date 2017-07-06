@@ -28,6 +28,10 @@ import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 import java.time.LocalDate;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -42,13 +46,10 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.CounterFunction;
 
-import com.google.common.base.Function;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.HashMultiset;
-import com.google.common.collect.Lists;
 
 @Component
 public class SjukfallUtil {
@@ -87,10 +88,9 @@ public class SjukfallUtil {
     }
 
     public FilterPredicates createEnhetFilter(HsaIdEnhet... enhetIds) {
-        final Set<Integer> availableEnhets = new HashSet<>(
-                Lists.transform(Arrays.asList(enhetIds), enhetId -> Warehouse.getEnhet(enhetId)));
+        final Set<Integer> availableEnhets = Arrays.stream(enhetIds).map(Warehouse::getEnhet).collect(Collectors.toSet());
         final String hashValue = FilterPredicates.getHashValueForEnhets(availableEnhets);
-        return new FilterPredicates(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue, false);
+        return new FilterPredicates(fact -> fact != null && availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue, false);
     }
 
     public Iterable<SjukfallGroup> sjukfallGrupperUsingOriginalSjukfallStart(final LocalDate from, final int periods, final int periodSize,
@@ -177,13 +177,8 @@ public class SjukfallUtil {
             rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
         }
 
-        final Collection<String> groupNames = Collections2.transform(hashSet, new Function<T, String>() {
-            @Override
-            public String apply(T integer) {
-                return String.valueOf(integer);
-            }
-        });
-        return new KonDataResponse(new ArrayList<>(groupNames), rows);
+        final List<String> groupNames = hashSet.stream().map(String::valueOf).collect(Collectors.toList());
+        return new KonDataResponse(groupNames, rows);
     }
     // CHECKSTYLE:ON
 

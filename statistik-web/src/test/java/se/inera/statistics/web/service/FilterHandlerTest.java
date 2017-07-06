@@ -102,7 +102,7 @@ public class FilterHandlerTest {
         for (int days = 0; days < 1000; days++) {
             final Sjukfall sjukfall = Mockito.mock(Sjukfall.class);
             Mockito.when(sjukfall.getRealDays()).thenReturn(days);
-            assertTrue(days + " days is not matching", filter.getFilter().getPredicate().getSjukfallFilter().apply(sjukfall));
+            assertTrue(days + " days is not matching", filter.getFilter().getPredicate().getSjukfallFilter().test(sjukfall));
         }
     }
 
@@ -125,7 +125,7 @@ public class FilterHandlerTest {
         for (int days = 0; days < 200; days++) {
             final Fact fact = Mockito.mock(Fact.class);
             Mockito.when(fact.getAlder()).thenReturn(days);
-            assertTrue(days + " days is not matching", filter.getFilter().getPredicate().getIntygFilter().apply(fact));
+            assertTrue(days + " days is not matching", filter.getFilter().getPredicate().getIntygFilter().test(fact));
         }
     }
 
@@ -147,7 +147,7 @@ public class FilterHandlerTest {
         for (int days = 0; days < 1000; days++) {
             final Sjukfall sjukfall = Mockito.mock(Sjukfall.class);
             Mockito.when(sjukfall.getRealDays()).thenReturn(days);
-            assertTrue(days + " days is not matching", filter.getFilter().getPredicate().getSjukfallFilter().apply(sjukfall));
+            assertTrue(days + " days is not matching", filter.getFilter().getPredicate().getSjukfallFilter().test(sjukfall));
         }
     }
 
@@ -170,7 +170,7 @@ public class FilterHandlerTest {
         for (int days = 0; days < 1000; days++) {
             final Sjukfall sjukfall = Mockito.mock(Sjukfall.class);
             Mockito.when(sjukfall.getRealDays()).thenReturn(days);
-            assertTrue(days + " days is not matching", filter.getFilter().getPredicate().getSjukfallFilter().apply(sjukfall));
+            assertTrue(days + " days is not matching", filter.getFilter().getPredicate().getSjukfallFilter().test(sjukfall));
         }
     }
 

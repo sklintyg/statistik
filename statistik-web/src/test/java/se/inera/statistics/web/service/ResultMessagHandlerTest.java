@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Optional;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +28,7 @@ import se.inera.statistics.service.report.util.Icd10;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -58,7 +58,7 @@ public class ResultMessagHandlerTest {
 
             @Override
             public Optional<Icd10.Id> getParent() {
-                return Optional.absent();
+                return Optional.empty();
             }
         });
     }

@@ -18,21 +18,18 @@
  */
 package se.inera.statistics.web.service;
 
-import static com.google.common.collect.Iterables.tryFind;
-import static com.google.common.collect.Lists.transform;
-import static java.util.stream.Collectors.toMap;
-
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.common.base.Splitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +37,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import com.google.common.base.Optional;
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
 
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
@@ -69,6 +62,8 @@ import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.StaticFilterData;
 import se.inera.statistics.web.model.UserAccessInfo;
 import se.inera.statistics.web.model.Verksamhet;
+
+import static java.util.stream.Collectors.toMap;
 
 @Component
 public class LoginServiceUtil {
@@ -171,13 +166,13 @@ public class LoginServiceUtil {
                 .map(hsaIdVardgivare -> {
                     List<Enhet> allEnhetsForVg = warehouse.getEnhets(hsaIdVardgivare);
                     if (realUser.isProcessledareForVg(hsaIdVardgivare) && allEnhetsForVg != null && !allEnhetsForVg.isEmpty()) {
-                        return transform(allEnhetsForVg, this::toVerksamhet);
+                        return allEnhetsForVg.stream().map(this::toVerksamhet);
                     } else {
-                        return transform(realUser.getVardenhetsForVg(hsaIdVardgivare),
-                                vardEnhet -> toVerksamhet(vardEnhet, allEnhetsForVg));
+                        final List<Vardenhet> vardenhetsForVg = realUser.getVardenhetsForVg(hsaIdVardgivare);
+                        return vardenhetsForVg.stream().map(vardEnhet -> toVerksamhet(vardEnhet, allEnhetsForVg));
                     }
                 })
-                .flatMap(List::stream)
+                .flatMap(i -> i)
                 .collect(Collectors.toList());
     }
 
@@ -190,34 +185,36 @@ public class LoginServiceUtil {
     }
 
     private Verksamhet toVerksamhet(final Vardenhet vardEnhet, List<Enhet> enhetsList) {
-        Optional<Enhet> enhetOpt = tryFind(enhetsList, enhet -> enhet.getEnhetId().equals(vardEnhet.getId()));
+        Optional<Enhet> enhetOpt = enhetsList.stream()
+                .filter(enhet -> enhet.getEnhetId().equals(vardEnhet.getId()))
+                .findAny();
 
-        String lansId = enhetOpt.isPresent() ? enhetOpt.get().getLansId() : Lan.OVRIGT_ID;
+        String lansId = enhetOpt.map(Enhet::getLansId).orElse(Lan.OVRIGT_ID);
         String lansNamn = lan.getNamn(lansId);
-        String kommunId = enhetOpt.isPresent() ? lansId + enhetOpt.get().getKommunId() : Kommun.OVRIGT_ID;
+        String kommunId = enhetOpt.map(enhet -> lansId + enhet.getKommunId()).orElse(Kommun.OVRIGT_ID);
         String kommunNamn = kommun.getNamn(kommunId);
-        Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper = enhetOpt.isPresent() ? getVerksamhetsTyper(enhetOpt.get().getVerksamhetsTyper())
-                : Collections.<Verksamhet.VerksamhetsTyp> singleton(
-                        new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT));
+        Set<Verksamhet.VerksamhetsTyp> verksamhetsTyper = enhetOpt
+                .map(enhet -> getVerksamhetsTyper(enhet.getVerksamhetsTyper()))
+                .orElseGet(() -> Collections.singleton(new Verksamhet.VerksamhetsTyp(VerksamhetsTyp.OVRIGT_ID, VerksamhetsTyp.OVRIGT)));
 
         return new Verksamhet(vardEnhet.getId(), vardEnhet.getNamn(), vardEnhet.getVardgivarId(), vardEnhet.getVardgivarNamn(), lansId,
                 lansNamn, kommunId,
                 kommunNamn, verksamhetsTyper);
     }
 
-    Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(String verksamhetsTyper) {
-        return new HashSet<>(Lists.transform(ID_SPLITTER.splitToList(verksamhetsTyper), verksamhetsId -> {
+    private Set<Verksamhet.VerksamhetsTyp> getVerksamhetsTyper(String verksamhetsTyper) {
+        return ID_SPLITTER.splitToList(verksamhetsTyper).stream().map(verksamhetsId -> {
             String groupId = verksamheter.getGruppId(verksamhetsId);
             String verksamhetsName = verksamheter.getNamn(groupId);
             return new Verksamhet.VerksamhetsTyp(groupId, verksamhetsName);
-        }));
+        }).collect(Collectors.toSet());
     }
 
     HsaIdVardgivare getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
         return new HsaIdVardgivare(request.getParameter("vgid"));
     }
 
-    public AppSettings getSettings() {
+    AppSettings getSettings() {
         AppSettings settings = new AppSettings();
         settings.setLoginVisible(loginVisibility.isLoginVisible());
         settings.setHighchartsExportUrl(higchartsExportUrl);
@@ -237,7 +234,7 @@ public class LoginServiceUtil {
         return new StaticFilterData(sjukskrivningLengths, ageGroups, icdStructure);
     }
 
-    public UserAccessInfo getUserAccessInfoForVg(HttpServletRequest request, HsaIdVardgivare vgId) {
+    UserAccessInfo getUserAccessInfoForVg(HttpServletRequest request, HsaIdVardgivare vgId) {
         final LoginInfo loginInfo = getLoginInfo();
         final HsaIdUser hsaId = loginInfo.getHsaId();
         final LoginInfoVg vgInfo = loginInfo.getLoginInfoForVg(vgId).orElse(null);

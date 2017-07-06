@@ -18,8 +18,6 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -39,18 +37,19 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-public abstract class MultiDualSexConverter<T extends KonDataResponse> {
+abstract class MultiDualSexConverter<T extends KonDataResponse> {
 
     private static final String TOTAL = "Totalt";
     private static final int NUMBER_OF_COLUMNS = 3;
     private final String tableHeader;
 
-    public MultiDualSexConverter() {
+    MultiDualSexConverter() {
         this.tableHeader = "Antal sjukfall totalt";
     }
 
-    public MultiDualSexConverter(String tableHeader) {
+    MultiDualSexConverter(String tableHeader) {
         this.tableHeader = tableHeader;
     }
 
@@ -80,12 +79,7 @@ public abstract class MultiDualSexConverter<T extends KonDataResponse> {
 
     private ChartData extractChartData(T data, Kon sex, String seriesNameTemplate, Map<String, String> colors) {
         List<ChartSeries> series = getChartSeries(data, sex, seriesNameTemplate, colors);
-        final List<ChartCategory> categories = Lists.transform(data.getPeriods(), new Function<String, ChartCategory>() {
-            @Override
-            public ChartCategory apply(String period) {
-                return new ChartCategory(period);
-            }
-        });
+        final List<ChartCategory> categories = data.getPeriods().stream().map(ChartCategory::new).collect(Collectors.toList());
         return new ChartData(series, categories);
     }
 

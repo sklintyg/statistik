@@ -21,10 +21,10 @@ package se.inera.statistics.service.warehouse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
 
 import se.inera.statistics.service.report.model.Range;
@@ -39,7 +39,8 @@ class SjukfallCalculator {
     SjukfallCalculator(Aisle aisle, Predicate<Fact> filter, List<Range> ranges, boolean useOriginalSjukfallStart) {
         final ArrayList<Fact> facts = new ArrayList<>(aisle.getLines());
         boolean extendSjukfall = !SjukfallUtil.ALL_ENHETER.getIntygFilter().equals(filter);
-        final Iterable<Fact> filteredAisle = Iterables.filter(aisle, filter);
+        final Iterable<Fact> filteredAisle = StreamSupport.stream(aisle.spliterator(), true)
+                .filter(filter).collect(Collectors.toList());
         ArrayList<Range> rangeList = new ArrayList<>(ranges);
         sjukfallPerPeriodCalculator = new SjukfallPerPeriodCalculator(extendSjukfall, useOriginalSjukfallStart, rangeList, facts,
                 filteredAisle);

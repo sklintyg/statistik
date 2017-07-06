@@ -31,21 +31,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.sun.istack.NotNull;
 
 import se.inera.statistics.hsa.model.HsaIdAny;
@@ -98,7 +95,7 @@ public class FilterHandler {
         if (filterHash == null || filterHash.isEmpty()) {
             final LoginInfo info = loginServiceUtil.getLoginInfo();
             final List<Verksamhet> businesses = info.getBusinessesForVg(getSelectedVgIdForLoggedInUser(request));
-            return Lists.transform(businesses, Verksamhet::getId);
+            return businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
         }
         final FilterData filterData = filterHashHandler.getFilterFromHash(filterHash);
         return getEnhetsFiltered(request, filterData);
@@ -127,7 +124,7 @@ public class FilterHandler {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final List<HsaIdEnhet> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
         final List<Enhet> enhets = enhetManager.getEnhets(allEnhets);
-        return Lists.transform(enhets, enhet -> loginServiceUtil.toVerksamhet(enhet));
+        return enhets.stream().map(enhet -> loginServiceUtil.toVerksamhet(enhet)).collect(Collectors.toList());
     }
 
     FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultNumberOfMonthsInRange) {
@@ -173,9 +170,10 @@ public class FilterHandler {
         final Predicate<Fact> aldersgruppFilter = getAldersgruppFilter(aldersgrupp);
         final List<String> sjukskrivningslangds = inFilter.getSjukskrivningslangd();
         final Predicate<Sjukfall> sjukfallLengthFilter = getSjukfallLengthFilter(sjukskrivningslangds);
-        final String predicatesHash = getHash(filterHash, enhetsIDs);
-        final FilterPredicates sjukfallFilter = new FilterPredicates(Predicates.and(enhetFilter, diagnosFilter, aldersgruppFilter),
-                sjukfallLengthFilter, predicatesHash, !sjukskrivningslangds.isEmpty());
+        final String hash = getHash(filterHash, enhetsIDs);
+        final Predicate<Fact> predicate = enhetFilter.and(diagnosFilter).and(aldersgruppFilter);
+        final boolean sjukfallangdfilterActive = !sjukskrivningslangds.isEmpty();
+        final FilterPredicates sjukfallFilter = new FilterPredicates(predicate, sjukfallLengthFilter, hash, sjukfallangdfilterActive);
         final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter),
                 toReadableAgeGroupNames(aldersgrupp), filterHash);
         final RangeMessageDTO rangeMessageDTO = getRange(inFilter, defaultRangeValue);
@@ -279,12 +277,7 @@ public class FilterHandler {
     private Filter getFilterForAllAvailableEnhetsLandsting(HttpServletRequest request) {
         final HsaIdVardgivare vardgivarId = getSelectedVgIdForLoggedInUser(request);
         final List<HsaIdEnhet> enhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vardgivarId);
-        final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(enhets, new Function<HsaIdEnhet, Integer>() {
-            @Override
-            public Integer apply(HsaIdEnhet enhetid) {
-                return Warehouse.getEnhet(enhetid);
-            }
-        }));
+        final Set<Integer> availableEnhets = enhets.stream().map(Warehouse::getEnhet).collect(Collectors.toSet());
         return getFilterForEnhets(availableEnhets, enhets);
     }
 
@@ -305,7 +298,7 @@ public class FilterHandler {
                     FilterPredicates.HASH_EMPTY_FILTER);
         }
         List<HsaIdEnhet> hsaIds = info.getBusinessesForVg(vgId).stream().map(Verksamhet::getId).collect(Collectors.toList());
-        final Set<Integer> availableEnhets = new HashSet<>(Lists.transform(hsaIds, Warehouse::getEnhet));
+        final Set<Integer> availableEnhets = hsaIds.stream().map(Warehouse::getEnhet).collect(Collectors.toSet());
         return getFilterForEnhets(availableEnhets, hsaIds);
     }
 
@@ -326,12 +319,7 @@ public class FilterHandler {
     }
 
     private List<HsaIdEnhet> toHsaIds(List<String> enheter) {
-        return Lists.transform(enheter, new Function<String, HsaIdEnhet>() {
-            @Override
-            public HsaIdEnhet apply(String id) {
-                return new HsaIdEnhet(id);
-            }
-        });
+        return enheter.stream().map(HsaIdEnhet::new).collect(Collectors.toList());
     }
 
     private List<HsaIdEnhet> getEnhetsFiltered(HttpServletRequest request, FilterData inFilter) {
