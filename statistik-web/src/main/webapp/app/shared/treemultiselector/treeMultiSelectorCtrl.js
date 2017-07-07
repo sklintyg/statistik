@@ -187,7 +187,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             var regExp = new RegExp(text, 'i');
 
             return function isMatchingFilter(item) {
-                return regExp.test(item.name);
+                return regExp.test(item.visibleName);
             };
         }
 
