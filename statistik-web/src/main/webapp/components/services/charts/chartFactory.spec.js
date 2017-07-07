@@ -143,25 +143,25 @@ describe('Test of common print services', function() {
 
         it('getFileName', function() {
             route.current = {title: 'My Report title'};
-            expect(chartFactory.getChartExportFileName('')).toMatch(/_MyReporttitle_\d{8}/);
+            expect(chartFactory.getChartExportFileName('')).toMatch(/_MyReporttitle_\d{6}_\d{6}/);
 
             route.current = {title: 'My Report title'};
-            expect(chartFactory.getChartExportFileName(123456)).toMatch(/^123456_MyReporttitle_\d{8}$/);
+            expect(chartFactory.getChartExportFileName(123456)).toMatch(/^123456_MyReporttitle_\d{6}_\d{6}$/);
 
             route.current = {title: 'My Report title'};
-            expect(chartFactory.getChartExportFileName('123456')).toMatch(/^123456_MyReporttitle_\d{8}$/);
+            expect(chartFactory.getChartExportFileName('123456')).toMatch(/^123456_MyReporttitle_\d{6}_\d{6}$/);
 
             route.current = {title: 'My Report title'};
-            expect(chartFactory.getChartExportFileName('Verksamhetsnivå')).toMatch(/^Verksamhetsniva_MyReporttitle_\d{8}$/);
+            expect(chartFactory.getChartExportFileName('Verksamhetsnivå')).toMatch(/^Verksamhetsniva_MyReporttitle_\d{6}_\d{6}$/);
 
             route.current = {title: 'My Report title'};
-            expect(chartFactory.getChartExportFileName('Nationell nivå')).toMatch(/^Nationellniva_MyReporttitle_\d{8}$/);
+            expect(chartFactory.getChartExportFileName('Nationell nivå')).toMatch(/^Nationellniva_MyReporttitle_\d{6}_\d{6}$/);
 
             route.current = {title: 'My Other Report title'};
-            expect(chartFactory.getChartExportFileName('Landstingz   Nivå')).toMatch(/^LandstingzNiva_MyOtherReporttitle_\d{8}$/);
+            expect(chartFactory.getChartExportFileName('Landstingz   Nivå')).toMatch(/^LandstingzNiva_MyOtherReporttitle_\d{6}_\d{6}$/);
 
             route.current = {title: 'Title with numbers like 123'};
-            expect(chartFactory.getChartExportFileName('Nationell', 'Män')).toMatch(/^Nationell_Titlewithnumberslike123_Man_\d{8}$/);
+            expect(chartFactory.getChartExportFileName('Nationell', 'Män')).toMatch(/^Nationell_Titlewithnumberslike123_Man_\d{6}_\d{6}$/);
         });
 
     });
