@@ -33,45 +33,45 @@ describe('Controller: treeMultiSelectorCtrl', function() {
     var diagnoses;
 
     beforeEach(function () {
-        A00 = {id: 'A00', name: 'Kolera', numericalId: 21};
-        A01 = {id: 'A01', name: 'Tyfoidfeber och paratyfoidfeber', numericalId: 22};
-        B07 = {id: 'B07', name: 'Virusvårtor', numericalId: 23};
-        D50 = {id: 'D50', name: 'Järnbristanemi', numericalId: 24};
-        D70 = {id: 'D70', name: 'Agranulocytos', numericalId: 25};
+        A00 = {id: 'A00', visibleName: 'Kolera', numericalId: 21};
+        A01 = {id: 'A01', visibleName: 'Tyfoidfeber och paratyfoidfeber', numericalId: 22};
+        B07 = {id: 'B07', visibleName: 'Virusvårtor', numericalId: 23};
+        D50 = {id: 'D50', visibleName: 'Järnbristanemi', numericalId: 24};
+        D70 = {id: 'D70', visibleName: 'Agranulocytos', numericalId: 25};
 
         A00A09 = {
             id: 'A00-A09',
-            name: 'Infektionssjukdomar utgående från mag-tarmkanalen',
+            visibleName: 'Infektionssjukdomar utgående från mag-tarmkanalen',
             subItems: [A00, A01],
             numericalId: 11
         };
         B00B09 = {
             id: 'B00-B09',
-            name: 'Virussjukdomar med hudutslag och slemhinneutslag',
+            visibleName: 'Virussjukdomar med hudutslag och slemhinneutslag',
             subItems: [B07],
             numericalId: 12
         };
         D50D53 = {
             id: 'D50-D53',
-            name: 'Nutritionsanemier',
+            visibleName: 'Nutritionsanemier',
             subItems: [D50],
             numericalId: 3};
         D70D77 = {
             id: 'D70-D77',
-            name: 'Andra sjukdomar i blod och blodbildande organ',
+            visibleName: 'Andra sjukdomar i blod och blodbildande organ',
             subItems: [D70],
             numericalId: 14
         };
 
         A00B99 = {
             id: 'A00-B99',
-            name: 'Vissa infektionssjukdomar och parasitsjukdomar',
+            visibleName: 'Vissa infektionssjukdomar och parasitsjukdomar',
             subItems: [A00A09, B00B09],
             numericalId: 1
         };
         D50D89 = {
             id: 'D50-D89',
-            name: 'Sjukdomar i blod och blodbildande organ samt vissa rubbningar i immunsystemet',
+            visibleName: 'Sjukdomar i blod och blodbildande organ samt vissa rubbningar i immunsystemet',
             subItems: [D50D53, D70D77],
             numericalId: 2
         };
@@ -81,20 +81,20 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it('parents should be intermediate when some child is selected', inject(function () {
         //Given
-        var sub121 = {name: 'sub121'};
-        var sub12 = {name: 'sub12', subs: [sub121, {name: 'sub122'}]};
+        var sub121 = {visibleName: 'sub121'};
+        var sub12 = {visibleName: 'sub12', subs: [sub121, {visibleName: 'sub122'}]};
         var subs1 = [
-            {name: 'sub11'},
+            {visibleName: 'sub11'},
             sub12,
-            {name: 'sub13'}
+            {visibleName: 'sub13'}
         ];
         var menuItems = [
-            {name: 'Enhet1', subs: subs1},
+            {visibleName: 'Enhet1', subs: subs1},
             {
-                name: 'Enhet2', subs: [
-                {name: 'sub4'},
-                {name: 'sub5'},
-                {name: 'sub6'}
+                visibleName: 'Enhet2', subs: [
+                {visibleName: 'sub4'},
+                {visibleName: 'sub5'},
+                {visibleName: 'sub6'}
             ]
             }
         ];
@@ -114,21 +114,21 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it('parents should be marked as allSelected when all children are selected', inject(function () {
         //Given
-        var sub121 = {name: 'sub121'};
-        var sub122 = {name: 'sub122'};
-        var sub12 = {name: 'sub12', subs: [sub121, sub122]};
+        var sub121 = {visibleName: 'sub121'};
+        var sub122 = {visibleName: 'sub122'};
+        var sub12 = {visibleName: 'sub12', subs: [sub121, sub122]};
         var subs1 = [
-            {name: 'sub11'},
+            {visibleName: 'sub11'},
             sub12,
-            {name: 'sub13'}
+            {visibleName: 'sub13'}
         ];
         var menuItems = [
-            {name: 'Enhet1', subs: subs1},
+            {visibleName: 'Enhet1', subs: subs1},
             {
-                name: 'Enhet2', subs: [
-                {name: 'sub4'},
-                {name: 'sub5'},
-                {name: 'sub6'}
+                visibleName: 'Enhet2', subs: [
+                {visibleName: 'sub4'},
+                {visibleName: 'sub5'},
+                {visibleName: 'sub6'}
             ]
             }
         ];
@@ -151,21 +151,21 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it('all children should be selected when a parent is selected', inject(function () {
         //Given
-        var sub121 = {name: 'sub121'};
-        var sub122 = {name: 'sub122'};
-        var sub12 = {name: 'sub12', subs: [sub121, sub122]};
+        var sub121 = {visibleName: 'sub121'};
+        var sub122 = {visibleName: 'sub122'};
+        var sub12 = {visibleName: 'sub12', subs: [sub121, sub122]};
         var subs1 = [
-            {name: 'sub11'},
+            {visibleName: 'sub11'},
             sub12,
-            {name: 'sub13'}
+            {visibleName: 'sub13'}
         ];
         var menuItems = [
-            {name: 'Enhet1', subs: subs1},
+            {visibleName: 'Enhet1', subs: subs1},
             {
-                name: 'Enhet2', subs: [
-                {name: 'sub4'},
-                {name: 'sub5'},
-                {name: 'sub6'}
+                visibleName: 'Enhet2', subs: [
+                {visibleName: 'sub4'},
+                {visibleName: 'sub5'},
+                {visibleName: 'sub6'}
             ]
             }
         ];
@@ -187,21 +187,21 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it('all children should be deselected when a parent is deselected', inject(function () {
         //Given
-        var sub121 = {name: 'sub121'};
-        var sub122 = {name: 'sub122'};
-        var sub12 = {name: 'sub12', subs: [sub121, sub122]};
+        var sub121 = {visibleName: 'sub121'};
+        var sub122 = {visibleName: 'sub122'};
+        var sub12 = {visibleName: 'sub12', subs: [sub121, sub122]};
         var subs1 = [
-            {name: 'sub11'},
+            {visibleName: 'sub11'},
             sub12,
-            {name: 'sub13'}
+            {visibleName: 'sub13'}
         ];
         var menuItems = [
-            {name: 'enhet1', subs: subs1},
+            {visibleName: 'enhet1', subs: subs1},
             {
-                name: 'enhet2', subs: [
-                {name: 'sub4'},
-                {name: 'sub5'},
-                {name: 'sub6'}
+                visibleName: 'enhet2', subs: [
+                {visibleName: 'sub4'},
+                {visibleName: 'sub5'},
+                {visibleName: 'sub6'}
             ]
             }
         ];
@@ -225,16 +225,16 @@ describe('Controller: treeMultiSelectorCtrl', function() {
     it('hide items not matching filter', inject(function () {
         //Given
         var menuItems = {subs: [
-                {name: 'enhet1', subs: [
-                {name: 'sub11'},
-                {name: 'sub12', subs: [{name: 'sub121'}, {name: 'sub122'}]},
-                {name: 'sub13'}
+                {visibleName: 'enhet1', subs: [
+                {visibleName: 'sub11'},
+                {visibleName: 'sub12', subs: [{visibleName: 'sub121'}, {visibleName: 'sub122'}]},
+                {visibleName: 'sub13'}
             ]},
             {
-                name: 'enhet2', subs: [
-                {name: 'sub4'},
-                {name: 'sub5'},
-                {name: 'sub6'}
+                visibleName: 'enhet2', subs: [
+                {visibleName: 'sub4'},
+                {visibleName: 'sub5'},
+                {visibleName: 'sub6'}
             ]
             }
         ]};
@@ -246,10 +246,10 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         //Then
         var joc = jasmine.objectContaining;
         var expectedResult = joc({visibleSubs: [
-            joc({name: 'enhet1', visibleSubs: [
-                joc({name: 'sub11'}),
-                joc({name: 'sub12', visibleSubs: [joc({name: 'sub121'}), joc({name: 'sub122'})]}),
-                joc({name: 'sub13'})
+            joc({visibleName: 'enhet1', visibleSubs: [
+                joc({visibleName: 'sub11'}),
+                joc({visibleName: 'sub12', visibleSubs: [joc({visibleName: 'sub121'}), joc({visibleName: 'sub122'})]}),
+                joc({visibleName: 'sub13'})
             ]})
         ]});
         expect(menuItems).toEqual(expectedResult);
@@ -258,9 +258,9 @@ describe('Controller: treeMultiSelectorCtrl', function() {
     it('hide items not matching filter ignore "." ', inject(function () {
         //Given
         var menuItems = {subs: [
-            {name: 'enhet1'},
-            {name: 'enhet11'},
-            {name: 'enhet2'}
+            {visibleName: 'enhet1'},
+            {visibleName: 'enhet11'},
+            {visibleName: 'enhet2'}
         ]};
         scope.setupVisibleSubs(menuItems);
 
@@ -271,8 +271,8 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         //Then
         var joc = jasmine.objectContaining;
         var expectedResult = joc({visibleSubs: [
-            joc({name: 'enhet1'}),
-            joc({name: 'enhet11'})
+            joc({visibleName: 'enhet1'}),
+            joc({visibleName: 'enhet11'})
         ]});
         expect(menuItems).toEqual(expectedResult);
     }));
@@ -280,8 +280,8 @@ describe('Controller: treeMultiSelectorCtrl', function() {
     it('hide items not matching filter', inject(function () {
         //Given
         var menuItems = {subs: [
-            {name: 'enhet.1'},
-            {name: 'enhet11'}
+            {visibleName: 'enhet.1'},
+            {visibleName: 'enhet11'}
         ]};
         scope.setupVisibleSubs(menuItems);
 
@@ -292,7 +292,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         //Then
         var joc = jasmine.objectContaining;
         var expectedResult = joc({visibleSubs: [
-            joc({name: 'enhet.1'})
+            joc({visibleName: 'enhet.1'})
         ]});
         expect(menuItems).toEqual(expectedResult);
     }));
@@ -300,7 +300,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
     it('parent should be visible for matching node', inject(function () {
         //Given
         var menuItems = {subs: [
-            {name: 'enhet1', subs: [{name: 'sub11'}, {name: 'sub12'}]}
+            {visibleName: 'enhet1', subs: [{visibleName: 'sub11'}, {visibleName: 'sub12'}]}
         ]};
         scope.setupVisibleSubs(menuItems);
 
@@ -310,7 +310,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         //Then
         var joc = jasmine.objectContaining;
         var expectedResult = joc({visibleSubs: [
-            joc({name: 'enhet1', visibleSubs: [joc({name: 'sub12'})]})
+            joc({visibleName: 'enhet1', visibleSubs: [joc({visibleName: 'sub12'})]})
         ]});
         expect(menuItems).toEqual(expectedResult);
     }));
@@ -318,16 +318,16 @@ describe('Controller: treeMultiSelectorCtrl', function() {
     it('grandparent should be visible for matching node', inject(function () {
         //Given
         var menuItems = {subs: [
-            {name: 'enhet1', subs: [
-                {name: 'sub11'},
-                {name: 'sub12', subs: [{name: 'sub121'}, {name: 'sub122'}]},
-                {name: 'sub13'}
+            {visibleName: 'enhet1', subs: [
+                {visibleName: 'sub11'},
+                {visibleName: 'sub12', subs: [{visibleName: 'sub121'}, {visibleName: 'sub122'}]},
+                {visibleName: 'sub13'}
             ]},
             {
-                name: 'enhet2', subs: [
-                {name: 'sub4'},
-                {name: 'sub5'},
-                {name: 'sub6'}
+                visibleName: 'enhet2', subs: [
+                {visibleName: 'sub4'},
+                {visibleName: 'sub5'},
+                {visibleName: 'sub6'}
             ]
             }
         ]};
@@ -339,8 +339,8 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         //Then
         var joc = jasmine.objectContaining;
         var expectedResult = joc({visibleSubs: [
-            joc({name: 'enhet1', visibleSubs: [
-                joc({name: 'sub12', visibleSubs: [joc({name: 'sub122'})]})
+            joc({visibleName: 'enhet1', visibleSubs: [
+                joc({visibleName: 'sub12', visibleSubs: [joc({visibleName: 'sub122'})]})
             ]})
         ]});
         expect(menuItems).toEqual(expectedResult);
@@ -349,16 +349,16 @@ describe('Controller: treeMultiSelectorCtrl', function() {
     it('child items from matching node should be visible', inject(function () {
         //Given
         var menuItems = {subs: [
-            {name: 'enhet1', subs: [
-                {name: 'sub11'},
-                {name: 'sub12', subs: [{name: 'sub121'}, {name: 'sub122'}]},
-                {name: 'sub13'}
+            {visibleName: 'enhet1', subs: [
+                {visibleName: 'sub11'},
+                {visibleName: 'sub12', subs: [{visibleName: 'sub121'}, {visibleName: 'sub122'}]},
+                {visibleName: 'sub13'}
             ]},
             {
-                name: 'enhet2', subs: [
-                {name: 'sub4'},
-                {name: 'sub5'},
-                {name: 'sub6'}
+                visibleName: 'enhet2', subs: [
+                {visibleName: 'sub4'},
+                {visibleName: 'sub5'},
+                {visibleName: 'sub6'}
             ]
             }
         ]};
@@ -370,10 +370,10 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         //Then
         var joc = jasmine.objectContaining;
         var expectedResult = joc({visibleSubs: [
-            joc({name: 'enhet1', visibleSubs: [
-                joc({name: 'sub11'}),
-                joc({name: 'sub12', visibleSubs: [joc({name: 'sub121'}), joc({name: 'sub122'})]}),
-                joc({name: 'sub13'})
+            joc({visibleName: 'enhet1', visibleSubs: [
+                joc({visibleName: 'sub11'}),
+                joc({visibleName: 'sub12', visibleSubs: [joc({visibleName: 'sub121'}), joc({visibleName: 'sub122'})]}),
+                joc({visibleName: 'sub13'})
             ]})
         ]});
         expect(menuItems).toEqual(expectedResult);
@@ -383,16 +383,16 @@ describe('Controller: treeMultiSelectorCtrl', function() {
     it('node should be fully expanded if only one match is found', inject(function () {
         //Given
         var menuItems = {subs: [
-            {name: 'Enhet1', subs: [
-                {name: 'sub11'},
-                {name: 'sub12', subs: [{name: 'sub121'}, {name: 'sub122'}]},
-                {name: 'sub13'}
+            {visibleName: 'Enhet1', subs: [
+                {visibleName: 'sub11'},
+                {visibleName: 'sub12', subs: [{visibleName: 'sub121'}, {visibleName: 'sub122'}]},
+                {visibleName: 'sub13'}
             ]},
             {
-                name: 'Enhet2', subs: [
-                {name: 'sub4'},
-                {name: 'sub5'},
-                {name: 'sub6'}
+                visibleName: 'Enhet2', subs: [
+                {visibleName: 'sub4'},
+                {visibleName: 'sub5'},
+                {visibleName: 'sub6'}
             ]
             }
         ]};
@@ -404,8 +404,8 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         //Then
         var joc = jasmine.objectContaining;
         var expectedResult = joc({visibleSubs: [
-            joc({name: 'Enhet1', visibleSubs: [
-                joc({name: 'sub12', visibleSubs: [joc({name: 'sub122'})]})
+            joc({visibleName: 'Enhet1', visibleSubs: [
+                joc({visibleName: 'sub12', visibleSubs: [joc({visibleName: 'sub122'})]})
             ]})
         ]});
         expect(menuItems).toEqual(expectedResult);
@@ -413,10 +413,10 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it('leaves count is counting correct when 0', inject(function () {
         //Given
-        var sub11 = {name: 'sub11', allSelected: false, someSelected: false};
-        var sub12 = {name: 'sub12', allSelected: false, someSelected: false};
+        var sub11 = {visibleName: 'sub11', allSelected: false, someSelected: false};
+        var sub12 = {visibleName: 'sub12', allSelected: false, someSelected: false};
         var menuItems = [
-            {name: 'Enhet1', subs: [sub11, sub12], someSelected: false, allSelected: false}
+            {visibleName: 'Enhet1', subs: [sub11, sub12], someSelected: false, allSelected: false}
         ];
 
         scope.menuOptions = {subs: menuItems};
@@ -431,10 +431,10 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it('leaves count is counting correct when 1', inject(function () {
         //Given
-        var sub11 = {name: 'sub11', allSelected: false, someSelected: false};
-        var sub12 = {name: 'sub12', allSelected: true, someSelected: false};
+        var sub11 = {visibleName: 'sub11', allSelected: false, someSelected: false};
+        var sub12 = {visibleName: 'sub12', allSelected: true, someSelected: false};
         var menuItems = [
-            {name: 'Enhet1', subs: [sub11, sub12], someSelected: true, allSelected: false}
+            {visibleName: 'Enhet1', subs: [sub11, sub12], someSelected: true, allSelected: false}
         ];
 
         scope.menuOptions = {subs: menuItems};
@@ -449,10 +449,10 @@ describe('Controller: treeMultiSelectorCtrl', function() {
 
     it('leaves count is counting correct when all', inject(function () {
         //Given
-        var sub11 = {name: 'sub11', allSelected: true, someSelected: false};
-        var sub12 = {name: 'sub12', allSelected: true, someSelected: false};
+        var sub11 = {visibleName: 'sub11', allSelected: true, someSelected: false};
+        var sub12 = {visibleName: 'sub12', allSelected: true, someSelected: false};
         var menuItems = [
-            {name: 'Enhet1', subs: [sub11, sub12], someSelected: false, allSelected: true}
+            {visibleName: 'Enhet1', subs: [sub11, sub12], someSelected: false, allSelected: true}
         ];
 
         scope.menuOptions = {subs: menuItems};
@@ -525,7 +525,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         // Given
         var menuItems = {
             subs: [{
-                name: ' Utan gilitig ICD-10 kod',
+                visibleName: ' Utan gilitig ICD-10 kod',
                 numericalId: 1670110002,
                 someSelected: false,
                 allSelected: true
