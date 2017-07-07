@@ -93,7 +93,7 @@ public class ResponseHandler {
                 + "_"
                 + report.getShortName()
                 + "_"
-                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYYYMMdd"))
+                + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYMMdd_HHmmss"))
                 + "."
                 + fileExtension;
     }
