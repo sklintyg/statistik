@@ -211,7 +211,6 @@ angular.module('StatisticsApp').factory('chartFactory',
                             enabled : false,
                             symbol : 'circle'
                         },
-                        cursor : 'pointer',
                         dataLabels : {
                             enabled : false
                         },
@@ -241,7 +240,6 @@ angular.module('StatisticsApp').factory('chartFactory',
                         stacking: percentChart ? 'percent' : 'normal'
                     },
                     pie : {
-                        cursor : 'pointer',
                         dataLabels : {
                             enabled : false
                         },
