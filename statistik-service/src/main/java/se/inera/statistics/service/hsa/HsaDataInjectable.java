@@ -24,7 +24,7 @@ import java.util.List;
 
 public interface HsaDataInjectable {
 
-    void addPersonal(HsaIdLakare id, String firstName, String lastName, HsaKon kon, int age, List<String> befattning);
+    void addPersonal(HsaIdLakare id, String firstName, String lastName, HsaKon kon, int age, List<String> befattning, boolean skyddad);
 
     void setCountyForNextIntyg(String countyCode);
 

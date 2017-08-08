@@ -100,6 +100,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     public static final String BEFATTNING = "befattning";
     public static final String TILLTALSNAMN = "tilltalsnamn";
     public static final String EFTERNAMN = "efternamn";
+    public static final String SKYDDAD = "skyddad";
 
     private JsonNodeFactory factory = JsonNodeFactory.instance;
 
@@ -195,13 +196,14 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         root.put(BEFATTNING, (JsonNode) null);
         root.put("specialitet", (JsonNode) null);
         root.put("yrkesgrupp", (JsonNode) null);
-        root.put("skyddad", (JsonNode) null);
+        root.put(SKYDDAD, (JsonNode) null);
         root.put(TILLTALSNAMN, getTilltalsnamn(key));
         root.put(EFTERNAMN, getEfternamn(key));
         return root;
     }
 
-    public ObjectNode createPersonal(HsaIdLakare id, String firstName, String lastName, HsaKon kon, int age, List<String> befattnings) {
+    public ObjectNode createPersonal(HsaIdLakare id, String firstName, String lastName, HsaKon kon, int age,
+                                     List<String> befattnings, boolean skyddad) {
         ObjectNode root = factory.objectNode();
         root.put("id", id.getId());
         root.put("initial", (JsonNode) null);
@@ -210,7 +212,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         root.put(BEFATTNING, toArrayNode(befattnings));
         root.put("specialitet", (JsonNode) null);
         root.put("yrkesgrupp", (JsonNode) null);
-        root.put("skyddad", (JsonNode) null);
+        root.put(SKYDDAD, skyddad);
         root.put("tilltalsnamn", firstName);
         root.put(EFTERNAMN, lastName);
         return root;
@@ -296,8 +298,9 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     }
 
     @Override
-    public void addPersonal(HsaIdLakare id, String firstName, String lastName, HsaKon kon, int age, List<String> befattning) {
-        final ObjectNode personal = createPersonal(id, firstName, lastName, kon, age, befattning);
+    public void addPersonal(HsaIdLakare id, String firstName, String lastName, HsaKon kon, int age,
+                            List<String> befattning, boolean skyddad) {
+        final ObjectNode personal = createPersonal(id, firstName, lastName, kon, age, befattning, skyddad);
         personals.put(id.getId(), personal);
     }
 
@@ -350,6 +353,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         JsonNode personal = getOrCreatePersonal(getHsaKey(hsaId));
         resp.setGender(personal.get("kon").textValue());
         resp.setAge(personal.get(ALDER).textValue());
+        resp.setIsProtectedPerson(personal.get(SKYDDAD).asBoolean(false));
         GetStatisticsPersonResponseType.PaTitleCodes titleCodes = new GetStatisticsPersonResponseType.PaTitleCodes();
         Iterator<JsonNode> befattnings = personal.get(BEFATTNING).iterator();
         while (befattnings.hasNext()) {

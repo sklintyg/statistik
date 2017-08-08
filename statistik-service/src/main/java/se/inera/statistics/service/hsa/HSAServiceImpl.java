@@ -38,8 +38,8 @@ import se.inera.statistics.hsa.model.StatisticsHsaUnitDto;
 @Component
 public class HSAServiceImpl implements HSAService {
     private static final Logger LOG = LoggerFactory.getLogger(HSAServiceImpl.class);
-    private static final String SKYDDAD = "Skyddad";
-    private static final String IDENTITET = "Identitet";
+    private static final String SKYDDAD_IDENTITET_FORNAMN = "Sekretessmarkerad";
+    private static final String SKYDDAD_IDENTITET_EFTERNAMN = "läkare";
 
     @Autowired
     private HsaWebService service;
@@ -188,7 +188,7 @@ public class HSAServiceImpl implements HSAService {
 
     private String getFornamn(GetStatisticsNamesResponseDto names, boolean isProtected) {
         if (isProtected) {
-            return SKYDDAD;
+            return SKYDDAD_IDENTITET_FORNAMN;
         }
         if (names == null) {
             return null;
@@ -198,7 +198,7 @@ public class HSAServiceImpl implements HSAService {
 
     private String getMellanOchEfternamn(GetStatisticsNamesResponseDto names, boolean isProtected) {
         if (isProtected) {
-            return IDENTITET;
+            return SKYDDAD_IDENTITET_EFTERNAMN;
         }
         if (names == null) {
             return null;

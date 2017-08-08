@@ -1,0 +1,26 @@
+!contents -R2 -g -p -f -h
+
+Verifierar INTYG-4262
+
+!3 Givet att:
+| script | dagens datum | 2013-10-06 |
+
+| script | troskel varde | 1 |
+
+| Foljande lakare finns |
+| id      | förnamn | efternamn | skyddad |
+| lakare1 | Anna    | Andersson | true    |
+| lakare2 | Bo      | Bengtsson | false   |
+
+| Enbart foljande intyg finns |
+| personnr      | start      | slut       | enhet  | läkare  |
+| 19671127-3026 | 2013-06-01 | 2013-10-30 | enhet2 | lakare1 |
+| 19790717-9191 | 2013-06-01 | 2013-10-30 | enhet2 | lakare2 |
+
+
+!3 Då gäller:
+| Sjukfall i rapporten sjukfall per lakare |
+| inloggad som | läkare                   | män? | kvinnor? |
+| user2        | Anna Andersson           | -1   | -1       |
+| user2        | Sekretessmarkerad läkare | 0    | 1        |
+| user2        | Bo Bengtsson             | 1    | 0        |
