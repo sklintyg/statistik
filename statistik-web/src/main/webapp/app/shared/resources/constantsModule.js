@@ -67,8 +67,10 @@
             '#2A5152',
             '#FB7F4D',
             '#5CC2BC',
-            '#704F38']
-    };
+            '#704F38',
+            '#600030',
+            '#006697']
+};
 
     constantModule.constant('COLORS', colors);
 

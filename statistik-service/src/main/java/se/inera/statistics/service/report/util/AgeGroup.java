@@ -38,8 +38,8 @@ public enum AgeGroup {
     GROUP5_46TO50("46-50 år", 46, 50, "#FB7F4D"),
     GROUP5_51TO55("51-55 år", 51, 55, "#5CC2BC"),
     GROUP5_56TO60("56-60 år", 56, 60, "#704F38"),
-    GROUP5_61TO65("61-65 år", 61, 65, "#E11964"),
-    GROUP5_65PLUS("Över 65 år", 66, Integer.MAX_VALUE - 1, "#032C53");
+    GROUP5_61TO65("61-65 år", 61, 65, "#600030"),
+    GROUP5_65PLUS("Över 65 år", 66, Integer.MAX_VALUE - 1, "#006697");
 
     private static final Logger LOG = LoggerFactory.getLogger(AgeGroup.class);
 

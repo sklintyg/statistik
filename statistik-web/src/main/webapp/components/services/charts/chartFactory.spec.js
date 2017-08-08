@@ -35,7 +35,9 @@ describe('Test of common print services', function() {
         '#2A5152',
         '#FB7F4D',
         '#5CC2BC',
-        '#704F38'];
+        '#704F38',
+        '#600030',
+        '#006697'];
 
     beforeEach(inject(function(_chartFactory_, $route, ___) {
         chartFactory = _chartFactory_;
@@ -66,10 +68,10 @@ describe('Test of common print services', function() {
             expect(listOfSeries[9].color).toBe(nonFemaleOrMaleColors[9]);
         });
 
-        it('will start over from the beginning when more than 10 colors are needed', function () {
+        it('will start over from the beginning when more than 12 colors are needed', function () {
             //given
             //Create a demand for mor than 10 colors
-            var listOfSeries = _.map(_.range(1, 13), function (item) {
+            var listOfSeries = _.map(_.range(1, 15), function (item) {
                 return {id: item};
             });
 
@@ -77,8 +79,8 @@ describe('Test of common print services', function() {
             chartFactory.addColor(listOfSeries);
 
             //then
-            expect(listOfSeries[10].color).toBe(nonFemaleOrMaleColors[0]);
-            expect(listOfSeries[11].color).toBe(nonFemaleOrMaleColors[1]);
+            expect(listOfSeries[12].color).toBe(nonFemaleOrMaleColors[0]);
+            expect(listOfSeries[13].color).toBe(nonFemaleOrMaleColors[1]);
         });
 
         it('can add 2 different male colors', function () {

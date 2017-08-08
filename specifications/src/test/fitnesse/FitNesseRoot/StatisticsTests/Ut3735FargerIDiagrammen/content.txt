@@ -103,8 +103,8 @@ Inloggad:
 | user1        | 2013 | nov   | 46-50 år    | #FB7F4D |
 | user1        | 2013 | nov   | 51-55 år    | #5CC2BC |
 | user1        | 2013 | nov   | 56-60 år    | #704F38 |
-| user1        | 2013 | nov   | 61-65 år    | #E11964 |
-| user1        | 2013 | nov   | Över 65 år  | #032C53 |
+| user1        | 2013 | nov   | 61-65 år    | #600030 |
+| user1        | 2013 | nov   | Över 65 år  | #006697 |
 
 | Sjukfall i rapporten diagnosgrupp diagram |
 | inloggad som | år   | månad | grupp                                                                                          | färg?   |
