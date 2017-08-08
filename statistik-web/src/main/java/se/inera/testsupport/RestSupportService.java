@@ -316,7 +316,7 @@ public class RestSupportService {
             LOG.info("Insert personal: " + personal);
             hsaDataInjectable.addPersonal(new HsaIdLakare(personal.getId()), personal.getFirstName(), personal.getLastName(),
                     personal.getKon(), personal.getAge(),
-                    personal.getBefattning());
+                    personal.getBefattning(), personal.isSkyddad());
         }
         return Response.ok().build();
     }

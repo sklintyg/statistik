@@ -30,14 +30,16 @@ public class Personal {
     private HsaKon kon;
     private int age;
     private List<String> befattning;
+    private boolean skyddad;
 
-    public Personal(String id, String firstName, String lastName, HsaKon kon, int age, List<String> befattning) {
+    public Personal(String id, String firstName, String lastName, HsaKon kon, int age, List<String> befattning, boolean skyddad) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.kon = kon;
         this.age = age;
         this.befattning = befattning;
+        this.skyddad = skyddad;
     }
 
     /**
@@ -67,6 +69,10 @@ public class Personal {
 
     public List<String> getBefattning() {
         return befattning;
+    }
+
+    public boolean isSkyddad() {
+        return skyddad;
     }
 
 }
