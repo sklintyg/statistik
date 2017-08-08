@@ -123,7 +123,7 @@ public class ResponseHandler {
             }
         }
 
-        if (messages.isEmpty() && result != null && result.isEmpty()) {
+        if (result != null && result.isEmpty()) {
             if (filterActive(result.getFilter(), filterSelections)) {
                 messages.add(Message.create(ErrorType.FILTER, ErrorSeverity.WARN, NO_DATA_FILTER_MESSAGE));
             } else {
