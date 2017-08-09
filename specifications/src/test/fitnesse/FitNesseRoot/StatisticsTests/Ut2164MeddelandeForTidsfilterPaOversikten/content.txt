@@ -11,4 +11,4 @@ att skriva jämfört med hur rent, enkelt och smidigt det var att skriva ett fit
 
 | Sjukfall i oversikt sjukskrivningsgrad |
 | inloggad som | grupp | filter startdatum | filter slutdatum | meddelande? |
-| user1        | 100   | 2014-06-01        | 2014-09-30       | Översikten visar alltid de senaste tre avslutade kalendermånaderna (sep-nov) oavsett valt tidsintervall. |
+| user1        | 100   | 2014-06-01        | 2014-09-30       | Översikten visar alltid de senaste tre avslutade kalendermånaderna (sep-nov) oavsett valt tidsintervall.,Ingen data tillgänglig. Det beror på att det inte finns någon data för verksamheten. |
