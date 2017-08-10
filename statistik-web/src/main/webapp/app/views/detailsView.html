@@ -69,9 +69,6 @@
                       text="resultMessage.message"></show-message>
       </div>
 
-      <div data-ng-if="generatingPdf" class="spinner-detail">
-        <div class="col-md-12 col-lg-5" spinner label="Skapar pdf" show-spinner="generatingPdf"></div>
-      </div>
     </div>
 
   </div>
@@ -97,6 +94,9 @@
         </li>
       </ul>
     </div>
+  </div>
+  <div data-ng-if="generatingPdf" class="spinner-detail row">
+    <div class="col-md-12 col-lg-4 col-md-offset-4" spinner label="Skapar pdf" show-spinner="generatingPdf"></div>
   </div>
 </div><!-- Start ingress -->
 <div dataerrorview show-error="dataLoadingError" error-page-url="errorPageUrl">
