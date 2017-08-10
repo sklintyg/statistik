@@ -19,11 +19,11 @@ Om val i rapport och diagnosval i filter INTE överlappar, visas ett information
 | user1       | F32, F40                |                |                         |                | null            | A00             | -1   | -1       |
 | user1       | F32, F40                | enhet1         | 02                      | F00-F99        | null            | A00             | -1   | -1       |
 | user1       | F32, A00                | enhet1         | 02                      | A00-B99        | Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering.            | A00             | 0    | 0        |
-| user1       | F32, F40                | enhet1         | 02                      | A00-B99        | Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfilter (se Visa filter högst upp på sidan).| A00 | -1 | -1 |
+| user1       | F32, F40                | enhet1         | 02                      | A00-B99        | Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfilter (se Visa filter högst upp på sidan).,Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering. | A00 | -1 | -1 |
 
 | Sjukfall i rapporten enskilt diagnoskapitel diagram |
 |inloggad som | filter enheter | filter verksamhetstyper | filter kapitel   | filter avsnitt | meddelande?     | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
 | user1       |                |                         |                  | | null           | F00-F99             | 2013 | feb   | F40-F48 | 0    | 1        |
 | user1       | enhet1         | 02                      | F00-F99,A00-B99 | | null           | F00-F99             | 2013 | feb   | F40-F48 | 0    | 1        |
 | user1       | enhet1         | 02                      |  | F40-F48,A00-A09 | null | F00-F99 | 2013 | feb   | F40-F48 | 0    | 1        |
-| user1       | enhet1         | 02                      |  | F40-F48 | Du har gjort ett val av diagnoskapitel eller diagnosavsnitt som inte matchar det val du gjort i diagnosfilter (se Visa filter högst upp på sidan). | A00-B99 | 2013 | feb   | A00-A09 | -1   | -1       |
+| user1       | enhet1         | 02                      |  | F40-F48 | Du har gjort ett val av diagnoskapitel eller diagnosavsnitt som inte matchar det val du gjort i diagnosfilter (se Visa filter högst upp på sidan).,Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering. | A00-B99 | 2013 | feb   | A00-A09 | -1   | -1       |
