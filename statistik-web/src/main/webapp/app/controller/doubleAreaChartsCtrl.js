@@ -65,6 +65,10 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         var updateChart = function (ajaxResult, doneLoadingCallback) {
             var chartCategories = ajaxResult.femaleChart.categories;
 
+            destroyChart(that.chart1);
+            destroyChart(that.chart2);
+
+
             var chartSeriesFemale = ajaxResult.femaleChart.series;
             chartFactory.addColor(chartSeriesFemale);
             var yAxisTitleUnit = config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall';
@@ -187,14 +191,15 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             pdfFactory.print($scope, [that.chart1, that.chart2]);
         };
 
-        $scope.$on('$destroy', function() {
-            if(chart1 && typeof chart1.destroy === 'function') {
-                chart1.destroy();
+        function destroyChart(chartToDestroy) {
+            if (chartToDestroy && typeof chartToDestroy.destroy === 'function') {
+                chartToDestroy.destroy();
             }
+        }
 
-            if(chart2 && typeof chart2.destroy === 'function') {
-                chart2.destroy();
-            }
+        $scope.$on('$destroy', function() {
+            destroyChart(chart1);
+            destroyChart(chart2);
         });
 
         return this;
