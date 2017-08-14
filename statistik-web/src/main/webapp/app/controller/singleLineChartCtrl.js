@@ -58,6 +58,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         var updateChart = function (ajaxResult, doneLoadingCallback) {
             $scope.series = chartFactory.addColor(ajaxResult.series);
             chartFactory.setColorToTotalCasesSeries($scope.series);
+            destroyChart(chart);
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
         };
 
@@ -150,10 +151,14 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             pdfFactory.print($scope, chart);
         };
 
-        $scope.$on('$destroy', function() {
-            if(chart && typeof chart.destroy === 'function') {
-                chart.destroy();
+        function destroyChart(chartToDestroy) {
+            if (chartToDestroy && typeof chartToDestroy.destroy === 'function') {
+                chartToDestroy.destroy();
             }
+        }
+
+        $scope.$on('$destroy', function() {
+            destroyChart(chart);
         });
 
     }
