@@ -50,7 +50,7 @@ angular.module('StatisticsApp')
             };
 
             diagnosisTreeFilter.selectByAttribute = function (item, listOfIdsToSelect, attribute) {
-                if (_.some(listOfIdsToSelect, function(val) { return item[attribute] === val; })) {
+                if (listOfIdsToSelect.indexOf(item[attribute]) > -1) {
                     diagnosisTreeFilter.selectAll(item);
                 } else {
                     item.allSelected = false;
