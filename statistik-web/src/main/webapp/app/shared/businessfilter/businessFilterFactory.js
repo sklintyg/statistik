@@ -247,7 +247,9 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
     function populateStaticFilterData() {
         if (businessFilter.icd10.subs.length > 0) {
-            return $q.defer().resolve().promise;
+            var deferred = $q.defer();
+            deferred.resolve(true);
+            return deferred.promise;
         } else {
             return StaticFilterDataService.get();
         }
