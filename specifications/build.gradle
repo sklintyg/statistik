@@ -1,5 +1,5 @@
 apply plugin: 'groovy'
-apply plugin: 'inera-fitnesse'
+apply plugin: 'se.inera.intyg.plugin.fitnesse'
 apply plugin: 'com.moowork.grunt'
 
 node {
