@@ -85,5 +85,7 @@
     /* Use momentjs http://momentjs.com/ This is a MIT license */
     constantModule.constant('moment', moment);
 
+    constantModule.constant('MAX_SELECTED_DXS', 75);
+
 })();
 
