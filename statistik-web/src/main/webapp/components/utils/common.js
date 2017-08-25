@@ -163,7 +163,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 };
 
                 $scope.modalInstance = $uibModal.open({
-                    templateUrl: 'app/views/error/tooManyDxsSelected.html',
+                    templateUrl: '/app/views/error/tooManyDxsSelected.html',
                     scope: $scope,
                     size: 'lg',
                     windowClass: 'login-modal'
