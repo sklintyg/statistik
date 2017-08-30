@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
-
 !3 Givet att:
-
 Det finns två sjukfall.
 
 | script | dagens datum | 2014-12-06 |
@@ -9,38 +7,40 @@ Det finns två sjukfall.
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet  |
+| personnr | diagnoskod | start | slut | enhet |
 | 19671122-2940 | G01 | 2014-04-01 | 2014-06-28 | enhet1 |
 | 19790717-9191 | G01 | 2014-10-01 | 2014-11-28 | enhet1 |
 | 19671109-2681 | G01 | 2013-09-01 | 2013-10-28 | enhet1 |
 | 19791230-9296 | G01 | 2014-12-01 | 2014-12-28 | enhet1 |
 
 !3 Då gäller:
-
 Ogiltigt tidsintervall:
-- utanför perioden okt 13-nov 14 (i detta fall)
-- slut före start
-- fattas start eller slut
-- annat format än XXXX-XX-XX
-- andra tecken än siffror
-- månad är inte 1-12
+
+ * utanför perioden okt 13-nov 14 (i detta fall)
+ * slut före start
+ * fattas start eller slut
+ * annat format än XXXX-XX-XX
+ * andra tecken än siffror
+ * månad är inte 1-12
+ * innan okt 13
 
 Vid ogiltigt tidsintervall i backendkontroll (vilket kan "undslippa" GUI-kontrollen om man t.ex. sparat ett bokmärke med en tidsintervallinställning som inte längre är giltig) visas meddelande och rapportens standard tidsintervall (i detta fall jan-dec 2014) används.
 
 | Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet    | vårdgivarnivå | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | meddelande? | män? | kvinnor? |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | null        | 0    | 1        |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2013-10-01        | 2014-12-30       | null        | 2    | 2        |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2013-10-01        | 2013-10-30       | null        | 0    | 1        |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2014-12-01        | 2014-12-30       | null        | 1    | 0        |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2013-10-30       | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2    | 1        |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2013-09-01        | 2014-09-30       | Det finns ingen statistik innan 2013-10. Visar statistik från tidigast möjliga datum. | 0    | 2        |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2013-26-01        | 2014-09-30       | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2    | 1        |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2013-10-01        | 2014-13-30       | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2    | 1        |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2013-06-01        |                  | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2    | 1        |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      |                   | 2014-09-30       | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2    | 1        |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 20013-10-01       | 2014-09-30       | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2    | 1        |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2013-100-01       | 2014-09-30       | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2    | 1        |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2015-10-01        | 2015-10-30       | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2    | 1        |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2014-10-01        | 2015-09-30       | Det finns ingen statistik efter 2014-12. Visar statistik fram till senast möjliga datum. | 2    | 0        |
-| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 20xx-10-01        | 201/-09-30       | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2    | 1        |
+| inloggad som | vårdenhet | vårdgivarnivå | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | meddelande? | män? | kvinnor? |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2014-06-01 | 2014-09-30 | null | 0 | 1 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-12-30 | null | 2 | 2 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2013-10-30 | null | 0 | 1 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2014-12-01 | 2014-12-30 | null | 1 | 0 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2014-06-01 | 2013-10-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2 | 1 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2013-09-01 | 2014-09-30 | Det finns ingen statistik innan 2013-10. Visar statistik från tidigast möjliga datum. | 0 | 2 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2013-26-01 | 2014-09-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2 | 1 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-13-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2 | 1 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2013-06-01 | | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2 | 1 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | | 2014-09-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2 | 1 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 20013-10-01 | 2014-09-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2 | 1 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2013-100-01 | 2014-09-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2 | 1 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2015-10-01 | 2015-10-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2 | 1 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2014-10-01 | 2015-09-30 | Det finns ingen statistik efter 2014-12. Visar statistik fram till senast möjliga datum. | 2 | 0 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 20xx-10-01 | 201/-09-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2 | 1 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2011-01-01 | 2012-01-01 | Varning! Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering. | 2 | 1 |
