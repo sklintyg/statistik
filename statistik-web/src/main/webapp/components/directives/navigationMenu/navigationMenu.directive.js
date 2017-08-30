@@ -254,11 +254,6 @@
                 link: '#/verksamhet/sjukfallperlakarbefattning',
                 name: 'nav.lakarbefattning',
                 ctrl: 'VerksamhetLakarbefattningCtrl'
-            },{
-                id: 'navBusinessDifferentieratIntygandeLink',
-                link: '#/verksamhet/differentieratintygande',
-                name: 'nav.differentieratintygande',
-                ctrl: 'VerksamhetDifferentieratIntygandeCtrl'
             // },{
             // Meddelande-rapporten ar utkommenterad eftersom den annu inte ska vara synlig för anvandarna
             //     id: 'navBusinessMessagesLink',

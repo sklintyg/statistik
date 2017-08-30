@@ -96,7 +96,6 @@ describe('Navigering i statistiktjänsten: ', function() {
             validateDetailReport('navBusinessMoreNinetyDaysSickLeaveLink', 1);
             validateDetailReport('navBusinessCasesPerLakaresAlderOchKonLink', 1);
             validateDetailReport('navBusinessCasesPerLakarbefattningLink', 1);
-            validateDetailReport('navBusinessDifferentieratIntygandeLink', 2);
         }
     });
 
