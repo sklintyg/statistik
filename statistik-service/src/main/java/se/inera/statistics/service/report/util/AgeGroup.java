@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 
 public enum AgeGroup {
 
-    GROUP1_0TO16("Under 16 år", 0, 16, "#E11964"),
+    GROUP1_0TO16("Under 16 år", 0, 15, "#E11964"),
     GROUP2_16TO20("16-20 år", 16, 20, "#032C53"),
     GROUP2_21TO25("21-25 år", 21, 25, "#FFBA3E"),
     GROUP3_26TO30("26-30 år", 26, 30, "#799745"),
