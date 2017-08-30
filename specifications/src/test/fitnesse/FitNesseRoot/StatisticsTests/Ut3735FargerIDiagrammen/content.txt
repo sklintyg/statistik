@@ -46,7 +46,7 @@ Nationell:
 
 | Sjukfall i oversikt aldersgrupp |
 | grupp               | färg?   |
-| 31-35 år            | #3CA3FF |
+| 16-20 år            | #032C53 |
 | 26-30 år            | #799745 |
 | 21-25 år            | #FFBA3E |
 | Under 16 år         | #E11964 |
@@ -70,7 +70,7 @@ Inloggad:
 
 | Sjukfall i oversikt aldersgrupp |
 | inloggad som | grupp               | färg?   |
-| user1        | 31-35 år            | #3CA3FF |
+| user1        | 16-20 år            | #032C53 |
 | user1        | 26-30 år            | #799745 |
 | user1        | 21-25 år            | #FFBA3E |
 | user1        | Under 16 år         | #E11964 |
