@@ -43,4 +43,4 @@ Vid ogiltigt tidsintervall i backendkontroll (vilket kan "undslippa" GUI-kontrol
 | user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2015-10-01 | 2015-10-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2 | 1 |
 | user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2014-10-01 | 2015-09-30 | Det finns ingen statistik efter 2014-12. Visar statistik fram till senast möjliga datum. | 2 | 0 |
 | user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 20xx-10-01 | 201/-09-30 | Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna. | 2 | 1 |
-| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2011-01-01 | 2012-01-01 | Varning! Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering. | 2 | 1 |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2011-01-01 | 2012-01-01 | Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering. | 2 | 1 |

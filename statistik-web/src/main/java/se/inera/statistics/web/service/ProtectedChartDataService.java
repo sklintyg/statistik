@@ -274,7 +274,8 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, filterHandler.getEnhetsFilterIds(filterHash, request));
+        final List<HsaIdEnhet> enhetsFilterIds = filterHandler.getEnhetsFilterIds(filter.getEnheter(), request);
+        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds);
         SimpleKonResponse<SimpleKonDataRow> casesPerEnhet = warehouse.getCasesPerEnhet(filter.getPredicate(), idToNameMap, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = new GroupedSjukfallConverter("").convert(casesPerEnhet, filterSettings);
@@ -295,7 +296,8 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
-        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, filterHandler.getEnhetsFilterIds(filterHash, request));
+        final List<HsaIdEnhet> enhetsFilterIds = filterHandler.getEnhetsFilterIds(filter.getEnheter(), request);
+        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds);
         KonDataResponse casesPerEnhet = warehouse.getCasesPerEnhetTimeSeries(filter.getPredicate(), idToNameMap, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData result = new SimpleMultiDualSexConverter().convert(casesPerEnhet, filterSettings);
