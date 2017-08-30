@@ -91,14 +91,13 @@ public class FilterHandler {
     @Autowired
     private Clock clock;
 
-    List<HsaIdEnhet> getEnhetsFilterIds(String filterHash, HttpServletRequest request) {
-        if (filterHash == null || filterHash.isEmpty()) {
+    List<HsaIdEnhet> getEnhetsFilterIds(Collection<HsaIdEnhet> filteredEnhets, HttpServletRequest request) {
+        if (filteredEnhets == null) {
             final LoginInfo info = loginServiceUtil.getLoginInfo();
             final List<Verksamhet> businesses = info.getBusinessesForVg(getSelectedVgIdForLoggedInUser(request));
             return businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
         }
-        final FilterData filterData = filterHashHandler.getFilterFromHash(filterHash);
-        return getEnhetsFiltered(request, filterData);
+        return new ArrayList<>(filteredEnhets);
     }
 
     FilterSettings getFilterForLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue) {
@@ -117,6 +116,14 @@ public class FilterHandler {
                     Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
                     Message.create(ErrorType.FILTER, ErrorSeverity.WARN,
                             "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
+        } catch (TooEarlyEndDateException e) {
+            LOG.warn("End date too early. Falling back to default filter. Msg: " + e.getMessage());
+            LOG.debug("End date too early. Falling back to default filter.", e);
+            return new FilterSettings(getFilterForAllAvailableEnhets(request),
+                    Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN,
+                            "Det finns ingen statistik att visa för den angivna filtreringen. "
+                                    + "Överväg en mindre restriktiv filtrering."));
         }
     }
 
@@ -143,11 +150,19 @@ public class FilterHandler {
                     Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock),
                     Message.create(ErrorType.FILTER, ErrorSeverity.WARN,
                             "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
+        } catch (TooEarlyEndDateException e) {
+            LOG.warn("End date too early. Falling back to default filter. Msg: " + e.getMessage());
+            LOG.debug("End date too early. Falling back to default filter.", e);
+            return new FilterSettings(getFilterForAllAvailableEnhets(request),
+                    Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock),
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN,
+                            "Det finns ingen statistik att visa för den angivna filtreringen. "
+                                    + "Överväg en mindre restriktiv filtrering."));
         }
     }
 
     private FilterSettings getFilterSettings(HttpServletRequest request, String filterHash, int defaultRangeValue, FilterData inFilter,
-            List<HsaIdEnhet> enhetsInFilter) throws FilterException {
+            List<HsaIdEnhet> enhetsInFilter) throws FilterException, TooEarlyEndDateException {
         Set<HsaIdEnhet> enheter = getEnhetNameMap(request, enhetsInFilter).keySet();
         final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()]))
                 .getIntygFilter();
@@ -155,7 +170,7 @@ public class FilterHandler {
     }
 
     private FilterSettings getFilterSettingsLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue,
-            FilterData inFilter, ArrayList<HsaIdEnhet> enhetsInFilter) throws FilterException {
+            FilterData inFilter, ArrayList<HsaIdEnhet> enhetsInFilter) throws FilterException, TooEarlyEndDateException {
         Set<HsaIdEnhet> enheter = getEnhetNameMapLandsting(request, enhetsInFilter).keySet();
         final Predicate<Fact> enhetFilter = sjukfallUtil.createEnhetFilter(enheter.toArray(new HsaIdEnhet[enheter.size()]))
                 .getIntygFilter();
@@ -163,7 +178,8 @@ public class FilterHandler {
     }
 
     private FilterSettings getFilterSettings(String filterHash, int defaultRangeValue, FilterData inFilter,
-            Collection<HsaIdEnhet> enhetsIDs, Predicate<Fact> enhetFilter) throws FilterException {
+            Collection<HsaIdEnhet> enhetsIDs, Predicate<Fact> enhetFilter)
+            throws FilterException, TooEarlyEndDateException {
         final List<String> diagnoser = inFilter.getDiagnoser();
         final Predicate<Fact> diagnosFilter = getDiagnosFilter(diagnoser);
         final List<String> aldersgrupp = inFilter.getAldersgrupp();
@@ -214,7 +230,8 @@ public class FilterHandler {
         };
     }
 
-    private RangeMessageDTO getRange(@NotNull FilterData inFilter, int defaultRangeValue) throws FilterException {
+    private RangeMessageDTO getRange(@NotNull FilterData inFilter, int defaultRangeValue)
+            throws FilterException, TooEarlyEndDateException {
         if (inFilter.isUseDefaultPeriod()) {
             return new RangeMessageDTO(Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock), null);
         }
@@ -235,7 +252,8 @@ public class FilterHandler {
         }
     }
 
-    private RangeMessageDTO validateAndGetFilterRangeMessage(LocalDate originalFrom, LocalDate originalTo) throws FilterException {
+    private RangeMessageDTO validateAndGetFilterRangeMessage(LocalDate originalFrom, LocalDate originalTo)
+            throws FilterException, TooEarlyEndDateException {
         String message = null;
         LocalDate from = originalFrom;
         LocalDate to = originalTo;
@@ -256,9 +274,13 @@ public class FilterHandler {
             message = String.format("Det finns ingen statistik innan %s och ingen efter %s, visar statistik mellan %s och %s.",
                     formattedFromDate, formattedToDate, formattedFromDate, formattedToDate);
         } else if (isBefore) {
-            from = LOWEST_ACCEPTED_START_DATE;
-            message = String.format("Det finns ingen statistik innan %s. Visar statistik från tidigast möjliga datum.",
-                    LOWEST_ACCEPTED_START_DATE.format(formatter));
+            if (to.isBefore(LOWEST_ACCEPTED_START_DATE)) {
+                throw new TooEarlyEndDateException();
+            } else {
+                from = LOWEST_ACCEPTED_START_DATE;
+                message = String.format("Det finns ingen statistik innan %s. Visar statistik från tidigast möjliga datum.",
+                        LOWEST_ACCEPTED_START_DATE.format(formatter));
+            }
         } else if (isAfter) {
             to = highestAcceptedEndDate;
             message = String.format("Det finns ingen statistik efter %s. Visar statistik fram till senast möjliga datum.",
@@ -429,7 +451,7 @@ public class FilterHandler {
         };
     }
 
-    Map<HsaIdEnhet, String> getEnhetNameMap(HttpServletRequest request, List<HsaIdEnhet> enhetsIDs) {
+    Map<HsaIdEnhet, String> getEnhetNameMap(HttpServletRequest request, Collection<HsaIdEnhet> enhetsIDs) {
         final HsaIdVardgivare vgid = getSelectedVgIdForLoggedInUser(request);
         LoginInfo info = loginServiceUtil.getLoginInfo();
         Map<HsaIdEnhet, String> enheter = new HashMap<>();
