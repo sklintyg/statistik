@@ -82,13 +82,21 @@ angular.module('StatisticsApp').directive('statScrollTable',
 
                 function setWidth() {
                     var container = element.find('#table-column-measureContainer');
-                    var widths = [];
 
-                    angular.forEach($scope.rows, function(row) {
-                        widths.push(getColumnWidth(container, row));
-                    });
-
-                    var maxWidth = Math.max.apply( null, widths);
+                    var maxWidth = _.chain($scope.rows)
+                        .map(function(row) {
+                            return {
+                                row: row,
+                                length: row.name.length
+                            };
+                        })
+                        .sortBy('length')
+                        .takeRight(5)
+                        .map(function(row) {
+                            return getColumnWidth(container, row.row);
+                        })
+                        .max()
+                        .value();
 
                     // Add padding
                     maxWidth += 7;
@@ -140,10 +148,10 @@ angular.module('StatisticsApp').directive('statScrollTable',
 
                 function processData() {
                     rows = [];
-                    angular.forEach($scope.rows, function(row) {
+                    _.each($scope.rows, function(row) {
                         var data = [];
 
-                        angular.forEach(row.data, function(d) {
+                        _.each(row.data, function(d) {
                             data.push({
                                 value: $filter('thousandseparated')(d),
                                 sort: $filter('replaceEmpty')(d)
