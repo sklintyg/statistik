@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').directive('showBusinesses',
     /** @ngInject */
-    function () {
+    function ($uibModal) {
         'use strict';
 
         return {
@@ -28,6 +28,25 @@ angular.module('StatisticsApp').directive('showBusinesses',
                 vgName: '=',
                 businesses: '='
             },
-            templateUrl: '/components/directives/showBusinesses/showBusinesses.html'
+            templateUrl: '/components/directives/showBusinesses/showBusinesses.html',
+            link: function($scope) {
+                $scope.openModal = function() {
+                    $uibModal.open({
+                        animation: true,
+                        templateUrl: '/components/directives/showBusinesses/modal/modal.html',
+                        controller: 'ShowBusinessesModalCtrl',
+                        size: 'md',
+                        backdrop: 'true',
+                        resolve: {
+                            businesses: function () {
+                                return $scope.businesses;
+                            },
+                            vgName: function () {
+                                return $scope.vgName;
+                            }
+                        }
+                    });
+                };
+            }
         };
     });
