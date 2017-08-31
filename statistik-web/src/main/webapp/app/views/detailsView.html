@@ -74,14 +74,14 @@
   </div>
   <div id="print-button-col" class="col-xs-12 col-md-2">
     <!-- PRINT BUTTON GROUP -->
-    <div>
+    <div uib-dropdown>
       <button class="multiselect dropdown-toggle btn btn-default pull-right" data-ng-disabled="!exportEnabled"
-              data-toggle="dropdown">
+              uib-dropdown-toggle>
         <span message key="dropdown.val.rapport"></span>
         <span class="caret"></span>
       </button>
 
-      <ul class="dropdown-menu detail-view-choice-dropdown dropdown-menu-right">
+      <ul class="dropdown-menu detail-view-choice-dropdown dropdown-menu-right" uib-dropdown-menu role="menu">
         <li><a data-ng-click="printPdf()"><img src="/assets/images/dropdown-icons/pdf.png" />
           <span message key="dropdown.val.skrivut-pdf"></span></a>
         </li>
