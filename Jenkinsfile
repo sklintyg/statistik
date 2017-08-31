@@ -46,17 +46,17 @@ stage('deploy') {
     }
 }
 
-stage('fitnesse') {
-    node {
-        try {
-            shgradle "fitnesseTest -PfileOutput -PoutputFormat=html \
-                 -Dstatistics.base.url=https://fitnesse.inera.nordicmedtest.se/ -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
-        } finally {
-            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'specifications/', \
-               reportFiles: 'fitnesse-results.html', reportName: 'Fitnesse results'
-        }
-    }
-}
+//stage('fitnesse') {
+//    node {
+//        try {
+//            shgradle "fitnesseTest -PfileOutput -PoutputFormat=html \
+//                 -Dstatistics.base.url=https://fitnesse.inera.nordicmedtest.se/ -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+//        } finally {
+//            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'specifications/', \
+//               reportFiles: 'fitnesse-results.html', reportName: 'Fitnesse results'
+//        }
+//    }
+//}
 
 stage('protractor') {
     node {
