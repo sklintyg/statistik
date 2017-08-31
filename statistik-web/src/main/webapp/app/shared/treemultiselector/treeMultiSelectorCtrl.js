@@ -17,285 +17,31 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 angular.module('StatisticsApp.treeMultiSelector.controller', [])
-    .controller('treeMultiSelectorCtrl', ['$scope', 'treeMultiSelectorUtil', '$timeout', '_', function ($scope, treeMultiSelectorUtil, $timeout, _) {
+    .controller('treeMultiSelectorCtrl', ['$scope', '$uibModal',
+        function ($scope, $uibModal) {
         'use strict';
 
-        $scope.value = {
-            multiMenuFilter: ''
-        };
-        $scope.depth = 0;
-
-        $scope.showLabel = !$scope.hideLabel;
-
-        $scope.transitionsSupported = supportsTransitions();
-
-        $scope.setupVisibleSubs = function(menuOption) {
-            if (menuOption.subs) {
-                menuOption.visibleSubs = menuOption.subs;
-                menuOption.showChildren = false;
-                _.each(menuOption.subs, function(sub) {
-                    $scope.setupVisibleSubs(sub);
-                });
-            }
-        };
-
-        $scope.clickedDone = function () {
-            $scope.dialogOpen = false;
-            $scope.doneClicked();
-        };
-
-        function updateDoneDisabled() {
-            var totalSelections = $scope.selectedPrimaryCounter + $scope.selectedSecondaryCounter +
-                $scope.selectedTertiaryCounter + $scope.selectedQuaternaryCounter;
-            $scope.doneDisabled = $scope.minSelections && ($scope.minSelections > totalSelections);
-        }
-
-        $scope.$on('selectionsChanged', function() {
-            updateDoneDisabled();
-        });
-
-        $scope.doneRenderingDialog = function () {
-            $scope.$parent.doneLoading = true;
-            $scope.doneLoading = true;
-        };
-
-        $scope.recursionhelper = {
-            itemclick: function (item, $event) {
-                $scope.itemClicked(item);
-                $event.stopPropagation();
-            },
-
-            hideclick: function (item, $event) {
-                $scope.hideClicked(item);
-                $event.stopPropagation();
-            }
-        };
-
-        function hasNoMenuOptionsOrSubs() {
-            return !$scope.menuOptions || !$scope.menuOptions.subs || $scope.menuOptions.subs.length === 0;
-        }
-
-        $scope.countSelectedByLevel = function() {
-            return countSelectedLevels($scope.menuOptions, 0);
-        };
-
-        function sumSelectedLevels(selectedLevels1, selectedLevels2) {
-            for (var key in selectedLevels2) {
-                if (Object.prototype.hasOwnProperty.call(selectedLevels2, key)) {
-                    var val = selectedLevels2[key];
-                    selectedLevels1[key] = selectedLevels1[key] ? selectedLevels1[key] + val : val;
-                }
-            }
-            return selectedLevels1;
-        }
-
-        function countSelectedLevels(menuOptions, level) {
-            if (!menuOptions) {
-                return {};
-            }
-            if (!menuOptions.subs || menuOptions.subs.length === 0) {
-                var resp = {};
-                resp[level] = menuOptions.allSelected ? 1 : 0;
-                return resp;
-            }
-            var startVal = {};
-            startVal[level] = menuOptions.allSelected ? 1 : 0;
-            return hasNoMenuOptionsOrSubs() ? 0 : _.reduce(menuOptions.subs, function(acc, sub) {
-                if (!(sub.allSelected || sub.someSelected)) {
-                    return acc;
-                }
-                return sumSelectedLevels(acc, countSelectedLevels(sub, level + 1));
-            }, startVal);
-        }
-
-        $scope.itemClicked = function (item) {
-            if (item.allSelected) {
-                $scope.deselectAll(item);
-            } else {
-                $scope.selectAll(item);
-            }
-
-            updateSelections();
-        };
-
-        function updateSelections() {
-            $scope.updateState($scope.menuOptions);
-            $scope.updateCounters();
-        }
-
-        $scope.$on('updateSelections', function() {
-            updateSelections();
-        });
-
-        $scope.hideClicked = function (item) {
-            item.showChildren = !item.showChildren;
-        };
-
-        $scope.deselectAll = function (item) {
-            item.allSelected = false;
-            item.someSelected = false;
-            if (item.subs) {
-                _.each(item.subs, function (sub) {
-                    $scope.deselectAll(sub);
-                });
-            }
-        };
-
-        $scope.selectAll = function (item) {
-            item.allSelected = true;
-            item.someSelected = false;
-            if (item.subs) {
-                _.each(item.subs, function (sub) {
-                    $scope.selectAll(sub);
-                });
-            }
-        };
-
-        function expandIfOnlyOneVisible(item) {
-            if (item.visibleSubs && item.visibleSubs.length === 1) {
-                var itemSub = item.visibleSubs[0];
-                itemSub.showChildren = true;
-                expandIfOnlyOneVisible(itemSub);
-            }
-        }
-
-        $scope.filterMenuItems = function (items, text, restartFiltering) {
-            var matchFunction = getIsMatchingFilterFunction(text);
-            var filteredItems = $scope.filterItems(items, matchFunction, restartFiltering);
-            expandIfOnlyOneVisible(filteredItems);
-            return filteredItems;
-        };
-
-        function escapeRegExp(str) {
-            return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
-        }
-
-        function getIsMatchingFilterFunction(searchText) {
-            if (!searchText || searchText.length === 0) {
-                return function() {
-                    return true;
-                };
-            }
-
-            var text = searchText.toLowerCase();
-            if ($scope.ignoreCharsInSearch) {
-                var re = new RegExp('([' + $scope.ignoreCharsInSearch+ '])', 'g');
-                text = text.replace(re, '');
-            }
-            text = escapeRegExp(text);
-
-            var regExp = new RegExp(text, 'i');
-
-            return function isMatchingFilter(item) {
-                return regExp.test(item.visibleName);
-            };
-        }
-
-        $scope.filterItems = function (item, shouldItemBeVisibleFunction, restartFiltering) {
-            var isItemVisible = shouldItemBeVisibleFunction(item);
-            var visibleFunction = isItemVisible ? function() { return true; } : shouldItemBeVisibleFunction;
-            var subs = restartFiltering ? item.subs : item.visibleSubs;
-            if (subs && subs.length > 0) {
-                var filteredSubs = _.reduce(subs, function(mem, sub) {
-                    var filteredSub = $scope.filterItems(sub, visibleFunction, restartFiltering);
-                    if (filteredSub !== null) {
-                        mem.push(filteredSub);
-                    }
-                    return mem;
-                }, []);
-                item.visibleSubs = filteredSubs;
-                if (filteredSubs.length > 0) {
-                    return item;
-                }
-            }
-
-            return isItemVisible ? item : null;
-        };
-
-        function valueOr(val, orElse) {
-            return val ? val : orElse;
-        }
-
-        $scope.updateCounters = function () {
-            $timeout(function() {
-                $scope.updateCountersNow();
-            }, 1);
-        };
-
-        //The actual update without the delay. Extracted from 'updateCounters' for testing.
-        $scope.updateCountersNow = function () {
-            var levelCount = $scope.countSelectedByLevel();
-            $scope.selectedPrimaryCounter = valueOr(levelCount[1], 0);
-            $scope.selectedSecondaryCounter = valueOr(levelCount[2], 0);
-            $scope.selectedTertiaryCounter = valueOr(levelCount[3], 0);
-            $scope.selectedQuaternaryCounter = valueOr(levelCount[4], 0);
-            $scope.$emit('selectionsChanged');
-        };
-
-        $scope.updateState = function (item) {
-            treeMultiSelectorUtil.updateSelectionState(item);
-        };
-
         $scope.openDialogClicked = function () {
-            $scope.doneLoading = false;
+
             if (angular.isFunction($scope.onOpen)) {
                 $scope.onOpen();
             }
 
-            $timeout(function () {
-                if ($scope.dialogOpen) {
-                    $scope.doneLoading = true;
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: '/app/shared/treemultiselector/modal/modal.html',
+                controller: 'TreeMultiSelectorModalCtrl',
+                windowTopClass: 'tree-multi-selector',
+                size: 'lg',
+                backdrop: 'true',
+                resolve: {
+                    directiveScope: $scope
                 }
-                $scope.dialogOpen = true;
-                $scope.updateCounters();
-                updateDoneDisabled();
-                resetFilter();
-                $scope.setupVisibleSubs($scope.menuOptions);
-                $timeout(function () {
-                    $scope.$parent.doneLoading = true;
-                }, 1, false);
-            }, 1);
-        };
-
-        function resetFilter() {
-            $scope.value.multiMenuFilter = '';
-            // $scope.visibleMenuOptions = $scope.menuOptions;
-            _.each($scope.menuOptions.subs, function (item) {
-                $scope.filterItems(item, function () {
-                    return true;
-                }, true);
             });
-        }
 
-        $scope.$watch('value.multiMenuFilter', function(value, oldValue) {
-            if (value !== oldValue) {
-                var restartFiltering = value.indexOf(oldValue) < 0; //Continue with existing filtering or restart using all items
-                $scope.menuOptions = $scope.filterMenuItems($scope.menuOptions, value, restartFiltering);
-            }
-        });
-
-        if ($scope.runFilterMenuOnInit) {
-            $scope.value.multiMenuFilter = null;
-        }
-
-        $scope.dialogOpen = false;
-
-        //http://stackoverflow.com/questions/7264899/detect-css-transitions-using-javascript-and-without-modernizr
-        function supportsTransitions() {
-            var b = document.body || document.documentElement,
-                s = b.style,
-                p = 'transition';
-
-            if (typeof s[p] === 'string') { return true; }
-
-            // Tests for vendor specific prop
-            var v = ['Moz', 'webkit', 'Webkit', 'Khtml', 'O', 'ms'];
-            p = p.charAt(0).toUpperCase() + p.substr(1);
-
-            for (var i=0; i<v.length; i++) {
-                if (typeof s[v[i] + p] === 'string') { return true; }
-            }
-
-            return false;
-        }
+            modalInstance.result.then(function() {
+                $scope.doneClicked();
+            }, function() {
+            });
+        };
     }]);

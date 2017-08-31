@@ -1,6 +1,6 @@
-describe('Controller: treeMultiSelectorCtrl', function() {
+describe('Controller: TreeMultiSelectorModalCtrl', function() {
     'use strict';
-    var ctrl, scope;
+    var ctrl, scope, directiveScope;
     var A00, A01, B07, D50, D70;
     var A00A09, B00B09, D50D53, D70D77, A00B99, D50D89;
 
@@ -27,7 +27,14 @@ describe('Controller: treeMultiSelectorCtrl', function() {
             '$watch': function() {},
             '$evalAsync': function() {}
         };
-        ctrl = $controller('treeMultiSelectorCtrl', {$scope: scope, $element: {}, treeMultiSelectorUtil: treeMultiSelectorUtil});
+        directiveScope = {
+            '$on' : function() {},
+            '$emit' : function() {},
+            '$watch': function() {},
+            '$evalAsync': function() {}
+        };
+
+        ctrl = $controller('TreeMultiSelectorModalCtrl', {$scope: scope, directiveScope: directiveScope, $element: {}, $uibModalInstance: {}, treeMultiSelectorUtil: treeMultiSelectorUtil});
     }));
 
     var diagnoses;
@@ -98,7 +105,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
             ]
             }
         ];
-        scope.menuOptions = {subs: menuItems};
+        directiveScope.menuOptions = {subs: menuItems};
 
         //When
         scope.itemClicked(sub121);
@@ -132,7 +139,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
             ]
             }
         ];
-        scope.menuOptions = {subs: menuItems};
+        directiveScope.menuOptions = {subs: menuItems};
 
         //When
         scope.itemClicked(sub121, {subs: menuItems});
@@ -169,7 +176,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
             ]
             }
         ];
-        scope.menuOptions = {subs: menuItems};
+        directiveScope.menuOptions = {subs: menuItems};
 
         //When
         scope.itemClicked(sub12, {subs: menuItems});
@@ -205,7 +212,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
             ]
             }
         ];
-        scope.menuOptions = {subs: menuItems};
+        directiveScope.menuOptions = {subs: menuItems};
 
         //When
         scope.itemClicked(sub12, {subs: menuItems});
@@ -265,7 +272,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         scope.setupVisibleSubs(menuItems);
 
         //When
-        scope.ignoreCharsInSearch = '.';
+        directiveScope.ignoreCharsInSearch = '.';
         scope.filterMenuItems(menuItems, 'Enhet.1');
 
         //Then
@@ -286,7 +293,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         scope.setupVisibleSubs(menuItems);
 
         //When
-        scope.ignoreCharsInSearch = '';
+        directiveScope.ignoreCharsInSearch = '';
         scope.filterMenuItems(menuItems, 'Enhet.1');
 
         //Then
@@ -419,7 +426,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
             {visibleName: 'Enhet1', subs: [sub11, sub12], someSelected: false, allSelected: false}
         ];
 
-        scope.menuOptions = {subs: menuItems};
+        directiveScope.menuOptions = {subs: menuItems};
 
         //When
         var selectedCount = scope.countSelectedByLevel();
@@ -437,7 +444,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
             {visibleName: 'Enhet1', subs: [sub11, sub12], someSelected: true, allSelected: false}
         ];
 
-        scope.menuOptions = {subs: menuItems};
+        directiveScope.menuOptions = {subs: menuItems};
 
         //When
         var selectedCount = scope.countSelectedByLevel();
@@ -455,7 +462,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
             {visibleName: 'Enhet1', subs: [sub11, sub12], someSelected: false, allSelected: true}
         ];
 
-        scope.menuOptions = {subs: menuItems};
+        directiveScope.menuOptions = {subs: menuItems};
 
         //When
         var selectedCount = scope.countSelectedByLevel();
@@ -469,7 +476,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         // Given
         businessFilterFactory.setIcd10Structure(diagnoses);
         businessFilterFactory.dataInitialized = true;
-        scope.menuOptions = businessFilterFactory.icd10;
+        directiveScope.menuOptions = businessFilterFactory.icd10;
         businessFilterFactory.selectAll(businessFilterFactory.icd10);
 
         // When
@@ -487,7 +494,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         StaticFilterData.set({dxs: diagnoses});
         businessFilterFactory.setIcd10Structure(StaticFilterData.get().icd10Structure);
         businessFilterFactory.dataInitialized = true;
-        scope.menuOptions = businessFilterFactory.icd10;
+        directiveScope.menuOptions = businessFilterFactory.icd10;
         businessFilterFactory.selectAll(businessFilterFactory.icd10);
 
         // When
@@ -506,7 +513,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         StaticFilterData.set({dxs: diagnoses});
         businessFilterFactory.setIcd10Structure(StaticFilterData.get().icd10Structure);
         businessFilterFactory.dataInitialized = true;
-        scope.menuOptions = businessFilterFactory.icd10;
+        directiveScope.menuOptions = businessFilterFactory.icd10;
         businessFilterFactory.selectAll(businessFilterFactory.icd10);
 
         // When
@@ -530,7 +537,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
                 someSelected: false,
                 allSelected: true
             }]};
-        scope.menuOptions = menuItems;
+        directiveScope.menuOptions = menuItems;
 
         // When
         scope.updateCountersNow();
@@ -544,7 +551,7 @@ describe('Controller: treeMultiSelectorCtrl', function() {
         StaticFilterData.set({dxs: diagnoses});
         businessFilterFactory.setIcd10Structure(StaticFilterData.get().icd10Structure);
         businessFilterFactory.dataInitialized = true;
-        scope.menuOptions = businessFilterFactory.icd10;
+        directiveScope.menuOptions = businessFilterFactory.icd10;
 
         scope.updateCountersNow();
 
