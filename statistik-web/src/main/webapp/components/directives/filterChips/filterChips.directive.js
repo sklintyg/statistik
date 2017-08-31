@@ -92,19 +92,6 @@ angular.module('StatisticsApp')
                     $($window).off('resize.doResize'); //remove the handler added earlier
                 });
 
-                //Watch width of potential window scrollbar
-                $scope.$watch(
-                    function() {
-                        return $window.innerWidth - $window.document.body.clientWidth;
-                    },
-                    function(newVal, oldVal) {
-                        if (newVal > oldVal) {
-                            //Scollbar must just have appeared - recalculate to compensate for this
-                            calcMaxNumberOfChips();
-                        }
-                });
-
-
                 $scope.removeChip = function(chip) {
 
                     switch(chip.type) {
