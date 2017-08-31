@@ -4,13 +4,13 @@
       <span message key="lbl.valj-annat-diagnoskapitel"></span>
     </label><br />
 
-    <div class="btn-group margin-bottom" id="detailsOptionsDropdown">
-      <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticChapter" data-toggle="dropdown"
+    <div class="btn-group margin-bottom" id="detailsOptionsDropdown" uib-dropdown>
+      <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticChapter" uib-dropdown-toggle
               style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
         <span class="caret pull-right" style="margin-top: 9px;"></span>
         <span>{{selectedDetailsOption.id}} {{selectedDetailsOption.name}}</span>
       </button>
-      <ul class="dropdown-menu left overflow-menu-options">
+      <ul class="dropdown-menu left overflow-menu-options" uib-dropdown-menu>
         <li data-ng-repeat="detailsOption in detailsOptions">
           <a href="{{detailsOption.url}}{{queryString}}">{{::detailsOption.id}} {{::detailsOption.name}}</a>
         </li>
@@ -25,13 +25,13 @@
       <span message key="lbl.valj-annat-diagnosavsnitt"></span>:
     </label><br />
 
-    <div class="btn-group margin-bottom" id="detailsOptionsDropdown2">
-      <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticCategory" data-toggle="dropdown"
+    <div class="btn-group margin-bottom" id="detailsOptionsDropdown2" uib-dropdown>
+      <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticCategory" uib-dropdown-toggle
               style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
         <span class="caret pull-right" style="margin-top: 9px;"></span>
         <span>{{selectedDetailsOption2.id}} {{selectedDetailsOption2.name}}</span>
       </button>
-      <ul class="dropdown-menu left overflow-menu-options">
+      <ul class="dropdown-menu left overflow-menu-options" uib-dropdown-menu>
         <li data-ng-repeat="detailsOption2 in detailsOptions2">
           <a href="{{detailsOption2.url}}{{queryString}}">{{::detailsOption2.id}} {{::detailsOption2.name}}</a>
         </li>
@@ -56,13 +56,13 @@
       </button>
     </div>
 
-    <div class="btn-group margin-bottom" data-ng-if="!hideDiagnosCategorySelection" id="detailsOptionsDropdown3">
-      <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticKategori" data-toggle="dropdown"
+    <div class="btn-group margin-bottom" data-ng-if="!hideDiagnosCategorySelection" id="detailsOptionsDropdown3" uib-dropdown>
+      <button class="multiselect dropdown-toggle btn btn-default" id="selectDiagnosticKategori" uib-dropdown-toggle
               style="overflow: hidden; text-overflow: ellipsis; max-width: 350px;">
         <span class="caret pull-right" style="margin-top: 9px;"></span>
         <span>{{selectedDetailsOption3.id}} {{selectedDetailsOption3.name}}</span>
       </button>
-      <ul class="dropdown-menu left overflow-menu-options">
+      <ul class="dropdown-menu left overflow-menu-options" uib-dropdown-menu>
         <li data-ng-repeat="detailsOption3 in detailsOptions3">
           <a href="{{detailsOption3.url}}{{queryString}}">{{::detailsOption3.id}} {{::detailsOption3.name}}</a>
         </li>
