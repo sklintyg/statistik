@@ -113,7 +113,7 @@ describe('Jämför diagnoser: ', function() {
 
         // Make sure it is possible to close dialog even when save button is disabled (INTYG-3921)
         report.compareDiagnosisCloseBtn.click();
-        expect(report.compareDiagnosisSaveAndCloseBtn.isDisplayed()).toBe(false); //Dialog closed
+        expect(report.compareDiagnosisSaveAndCloseBtn.isPresent()).toBe(false); //Dialog closed
     });
 
     it('Valen återställs när dialogen stängts utan att spara enligt INTYG-3993', function() {
@@ -140,7 +140,7 @@ describe('Jämför diagnoser: ', function() {
 
         //Clean up by closing dialog
         report.compareDiagnosisCloseBtn.click();
-        expect(report.compareDiagnosisSaveAndCloseBtn.isDisplayed()).toBe(false); //Dialog closed
+        expect(report.compareDiagnosisSaveAndCloseBtn.isPresent()).toBe(false); //Dialog closed
     });
 
     afterAll(function() {

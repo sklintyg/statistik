@@ -1,0 +1,64 @@
+<div class="modal-header">
+  <button id="treeMultiSelectorCloseBtn" type="button" class="close" data-dismiss="modal" data-ng-click="cancel()">&times;</button>
+  <span id="myModalLabel">{{directiveScope.textData.titleText}}</span>
+</div>
+
+<div class="modal-body" spinner label="{{directiveScope.spinnerText}}" show-spinner="!doneLoading"></div>
+
+<div class="modal-body row">
+  <div id="modal-body-left"  ng-class="{'border-right col-xs-8 ': !directiveScope.sidebarState.collapsed, 'col-xs-12': directiveScope.sidebarState.collapsed }">
+    <form>
+      <div class="modal-list">
+        <div class="select-all-items">
+          <label class="pull-left">
+            <input type="checkbox" ng-checked="directiveScope.menuOptions.allSelected" id="select-all-diagnoses" class="multiMenuSelectAll" ng-click="itemClicked(directiveScope.menuOptions)" />
+            <span>{{directiveScope.selectAllTextKey | messageFilter}}</span>
+          </label>
+          <button ng-if="directiveScope.sidebarMenuExpand" class="btn btn-link btn-link-minimal toggle-sidebar-link" ng-click="directiveScope.sidebarState.collapsed = !directiveScope.sidebarState.collapsed" ng-switch="directiveScope.sidebarState.collapsed">
+                                    <span ng-switch-when="true">
+                                        <span message key="{{directiveScope.sidebarMenuExpand}}" class="ellipsis-text"></span><i class="fa fa-chevron-right"></i>
+                                    </span>
+            <span ng-switch-when="false">
+                                      <span message key="{{directiveScope.sidebarMenuCollapse}}" class="ellipsis-text"></span><i class="fa fa-chevron-left"></i>
+                                    </span>
+          </button>
+
+        </div>
+        <div class="search-all-items input-group" style="clear:left">
+          <span class="input-group-addon glyphicon glyphicon-search"></span>
+          <input type="search"
+                 ng-model="value.multiMenuFilter"
+                 ng-model-options="{ debounce: 50 }"
+                 class="multiMenuFilterSearch form-control" placeholder="{{directiveScope.searchHintTextKey | messageFilter}}"/>
+        </div>
+      </div>
+      <div class="modal-list item-body">
+        <div data-ng-repeat="item in directiveScope.menuOptions.visibleSubs" class="multiMenuSelectKapitel" on-finish-render="doneRenderingDialog()">
+          <submenu
+              item="item"
+              depth="depth"
+              max-depth="directiveScope.maxDepth"
+              item-click="recursionhelper.itemclick(node, event)"
+              hide-click="recursionhelper.hideclick(node, event)"
+              ng-hide="item.hide"></submenu>
+        </div>
+
+      </div>
+    </form>
+  </div>
+  <div id="modal-body-right" ng-class="{'col-xs-4': !directiveScope.sidebarState.collapsed}">
+    <!--ng-transclude></ng-transclude -->
+  </div>
+</div>
+
+<div class="modal-footer">
+  <label class="pull-left">
+    <div style="font-weight: normal;">
+      <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 1">{{directiveScope.textData.firstLevelLabelText}}{{selectedPrimaryCounter}}</span><br>
+      <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 2">{{directiveScope.textData.secondLevelLabelText}}{{selectedSecondaryCounter}}</span><br>
+      <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 3">{{directiveScope.textData.thirdLevelLabelText}}{{selectedTertiaryCounter}}</span><br>
+      <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 4">{{directiveScope.textData.leavesLevelLabelText}}{{selectedQuaternaryCounter}}</span>
+    </div>
+  </label>
+  <button id="treeMultiSelectorSaveBtn" class="btn btn-success" type="button" data-dismiss="modal" aria-hidden="true" ng-disabled="doneDisabled" data-ng-click="clickedDone()" style="margin-top:10px"><span message key="lbl.filter.modal.spara-stang"></span></button>
+</div>

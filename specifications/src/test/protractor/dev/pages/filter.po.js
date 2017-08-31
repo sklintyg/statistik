@@ -39,17 +39,20 @@ var Filter = function() {
     };
     this.dateResetBtn = this.container.element(by.id('filterDateResetBtn'));
 
-    this.enhetBtn = this.container.element(by.css('.select-business button[data-toggle="modal"]'));
-    this.enhetDepth1List = this.container.all(by.css('.select-business .depth1'));
-    this.enhetDepth2List = this.container.all(by.css('.select-business .depth2'));
-    this.enhetCloseBtn = this.container.element(by.css('.select-business #treeMultiSelectorCloseBtn'));
-    this.enhetSaveAndCloseBtn = this.container.element(by.css('.select-business #treeMultiSelectorSaveBtn'));
+    this.dialog = element(by.css('.tree-multi-selector'));
+    this.enhetBtn = this.container.element(by.css('.select-business button'));
+    this.enhetDepth1List = this.dialog.all(by.css('.depth1'));
+    this.enhetDepth2List = this.dialog.all(by.css('.depth2'));
+    this.enhetCloseBtn = element(by.id('treeMultiSelectorCloseBtn'));
+    this.enhetSaveAndCloseBtn = element(by.id('treeMultiSelectorSaveBtn'));
 
-    this.diagnosesBtn = this.container.element(by.css('.select-diagnoses  button[data-toggle="modal"]'));
-    this.diagnosesDepth0List = this.container.all(by.css('.select-diagnoses .depth0 '));
-    this.diagnosesCloseBtn = this.container.element(by.css('.select-diagnoses #treeMultiSelectorCloseBtn'));
-    this.diagnosesSaveAndCloseBtn = this.container.element(by.css('.select-diagnoses #treeMultiSelectorSaveBtn'));
-    this.diagnosesSelectAll = this.container.element(by.id('select-all-diagnoses'));
+    this.diagnosesBtn = this.container.element(by.css('.select-diagnoses  button'));
+
+
+    this.diagnosesDepth0List = this.dialog.all(by.css('.depth0'));
+    this.diagnosesCloseBtn = this.dialog.element(by.id('treeMultiSelectorCloseBtn'));
+    this.diagnosesSaveAndCloseBtn = this.dialog.element(by.id('treeMultiSelectorSaveBtn'));
+    this.diagnosesSelectAll = this.dialog.element(by.id('select-all-diagnoses'));
 
     this.sickLeaveLengthBtn = this.container.element(by.css('.select-sjukskrivningslangd button'));
     this.sickLeaveLengthList = this.container.all(by.css('.select-sjukskrivningslangd .multiselect-container a'));

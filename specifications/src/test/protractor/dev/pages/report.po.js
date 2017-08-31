@@ -16,12 +16,14 @@ var ReportPage = function() {
     this.compareDiagnosisContainer = element(by.css('.compare-diagnosis'));
     this.compareDiagnosisLevelCategory = this.compareDiagnosisContainer.element(by.id('comparediagnoses-level-category'));
     this.compareDiagnosisLevelCode = this.compareDiagnosisContainer.element(by.id('comparediagnoses-level-code'));
-    this.compareDiagnosisBtn = this.compareDiagnosisContainer.element(by.css('button[data-toggle="modal"]'));
-    this.compareDiagnosisCloseBtn = this.compareDiagnosisContainer.element(by.id('treeMultiSelectorCloseBtn'));
-    this.compareDiagnosisSaveAndCloseBtn = this.compareDiagnosisContainer.element(by.id('treeMultiSelectorSaveBtn'));
+    this.compareDiagnosisBtn = this.compareDiagnosisContainer.element(by.css('button'));
+    this.dialog = element(by.css('.tree-multi-selector'));
+    this.compareDiagnosisCloseBtn = this.dialog.element(by.id('treeMultiSelectorCloseBtn'));
+    this.compareDiagnosisSaveAndCloseBtn = this.dialog.element(by.id('treeMultiSelectorSaveBtn'));
+
 
     this.compareDiagnosisDepthList = function(depth) {
-        return this.compareDiagnosisContainer.all(by.css('.depth' + depth));
+        return this.dialog.all(by.css('.depth' + depth));
     };
 
     this.isAtPage = function(key) {
