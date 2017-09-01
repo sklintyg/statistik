@@ -17,7 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').config(['$httpProvider', function($httpProvider) {
+angular.module('StatisticsApp').config(['$httpProvider', '$compileProvider', 'debugInfoState',
+    function($httpProvider, $compileProvider, debugInfoState) {
     'use strict';
 
     if (!$httpProvider.defaults.headers.get) {
@@ -29,4 +30,9 @@ angular.module('StatisticsApp').config(['$httpProvider', function($httpProvider)
 
     $httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
     $httpProvider.defaults.headers.get.Pragma = 'no-cache';
+
+    $compileProvider.commentDirectivesEnabled(false);
+    $compileProvider.cssClassDirectivesEnabled(false);
+
+    $compileProvider.debugInfoEnabled(debugInfoState);
 }]);
