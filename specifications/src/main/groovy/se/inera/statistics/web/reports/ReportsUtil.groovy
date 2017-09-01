@@ -358,14 +358,6 @@ class ReportsUtil {
         return get("/api/getDegreeOfSickLeaveStatistics")
     }
 
-    def getReportDifferentieratIntygandeSomTidsserieInloggad(String vgid, FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getDifferentieratIntygandeStatistics", filter, "vgid=" + vgid)
-    }
-
-    def getReportDifferentieratIntygandeTvarsnittSomTvarsnittInloggad(String vgid, FilterData filter) {
-        return get(getVerksamhetUrlPrefix() + "/getDifferentieratIntygandeTvarsnitt", filter, "vgid=" + vgid)
-    }
-
     def getReportLakareAlderOchKonInloggad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getCasesPerDoctorAgeAndGenderStatistics", filter, "vgid=" + vgid)
     }

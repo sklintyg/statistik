@@ -98,7 +98,6 @@ public class WidelineLoaderTest {
         line1.setVardgivareId(new HsaIdVardgivare("vg1"));
         line1.setLakareId(new HsaIdLakare("lakare"));
         line1.setCorrelationId(correlationId);
-        line1.setEnkelt(false);
         widelineManager.saveWideline(line1);
     }
 }

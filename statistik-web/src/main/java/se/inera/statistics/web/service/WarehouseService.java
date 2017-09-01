@@ -298,17 +298,6 @@ public class WarehouseService {
         return map.asMap();
     }
 
-    public KonDataResponse getDifferentieratIntygande(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
-        return SjukskrivningslangdQuery.getEnklaSjukfall(warehouse.get(vardgivarId), filter, range.getFrom(), range.getNumberOfMonths(), 1,
-                sjukfallUtil);
-    }
-
-    public SimpleKonResponse<SimpleKonDataRow> getDifferentieratIntygandeTvarsnitt(FilterPredicates filter, Range range,
-            HsaIdVardgivare vardgivarId) {
-        return SjukskrivningslangdQuery.getEnklaSjukfallTvarsnitt(warehouse.get(vardgivarId), filter, range.getFrom(), 1,
-                range.getNumberOfMonths(), sjukfallUtil);
-    }
-
     public List<Sjukfall> getSjukfallForBi(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return SjukfallQuery.getSjukfallForBi(warehouse.get(vardgivarId), filter, range.getFrom(), range.getNumberOfMonths(), 1,
                 sjukfallUtil);

@@ -38,14 +38,14 @@ public class AisleTest {
                 withPatient(1).withKon(Kon.FEMALE).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
                 withSjukskrivningsgrad(100).withStartdatum(4010).withSlutdatum(4056).
-                withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).withEnkeltIntyg(false).build();
+                withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact1);
         Fact fact2 = aFact().withId(2).withLan(3).withKommun(380).withForsamling(38002).
                 withEnhet(1).withLakarintyg(2).
                 withPatient(1).withKon(Kon.FEMALE).withAlder(45).
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
                 withSjukskrivningsgrad(100).withStartdatum(4000).withSlutdatum(4046).
-                withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).withEnkeltIntyg(false).build();
+                withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
         aisle.addLine(fact2);
         Iterator<Fact> iterator = aisle.createAisle().iterator();
         assertEquals(2, iterator.next().getLakarintyg());

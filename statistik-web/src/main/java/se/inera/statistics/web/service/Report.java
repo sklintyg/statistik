@@ -29,7 +29,6 @@ public enum Report {
     V_SJUKSKRIVNINGSLANGD(StatisticsLevel.VERKSAMHET, "Sjukskrivningslangd", "Antal sjukfall fördelat på sjukskrivningslängd"),
     V_SJUKSKRIVNINGSLANGDMERAN90DAGAR(StatisticsLevel.VERKSAMHET,
             "SjukskrivningslangdMerAn90Dagar", "Antal sjukfall som är längre än 90 dagar"),
-    V_DIFFERENTIERATINTYGANDE(StatisticsLevel.VERKSAMHET, "DifferentieratIntygande", "Antal sjukfall inom differentierat intygande"),
     L_SJUKFALLTOTALT(StatisticsLevel.LANDSTING, "SjukfallTotalt", "Antal sjukfall"),
     L_VARDENHET(StatisticsLevel.LANDSTING, "Vardenhet", "Antal sjukfall fördelat på vårdenhet"),
     L_VARDENHETLISTNINGAR(StatisticsLevel.LANDSTING, "VardenhetListningar", "Antal sjukfall per 1000 listningar fördelat på vårdenhet");

@@ -25,22 +25,11 @@ class AnonymiseraJson extends IntygJsonAnonymizer {
         intyg.anonymize('sjukdomsforlopp')
         intyg.anonymize('nuvarandeArbetsuppgifter')
 
-        intyg.funktionsnedsattning && (intyg.funktionsnedsattning instanceof String) && isFieldIndicatingEnkeltIntyg(intyg.funktionsnedsattning)?:intyg.anonymize('funktionsnedsattning')
-        intyg.aktivitetsbegransning && (intyg.aktivitetsbegransning instanceof String) && isFieldIndicatingEnkeltIntyg(intyg.aktivitetsbegransning)?:intyg.anonymize('aktivitetsbegransning')
+        intyg.anonymize('funktionsnedsattning')
+        intyg.anonymize('aktivitetsbegransning')
 
         intyg.anonymize('arbetsformagaPrognos')
         intyg.anonymize('namnfortydligandeOchAdress')
-    }
-
-    /*
-     * Denna kod implementeras också i DocumentHelper.java och bör hållas i synk med denna
-     */
-    private static boolean isFieldIndicatingEnkeltIntyg(String field) {
-        if(field == null) {
-            return false
-        }
-        final String cleanedField = field.replaceAll("[^A-Za-zåäöÅÄÖ]", "");
-        return "E".equalsIgnoreCase(cleanedField) || "Enkel".equalsIgnoreCase(cleanedField) || "Enkelt".equalsIgnoreCase(cleanedField);
     }
 
 }

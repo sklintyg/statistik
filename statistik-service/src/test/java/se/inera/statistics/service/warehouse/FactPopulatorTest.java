@@ -43,7 +43,7 @@ import static org.junit.Assert.assertEquals;
 
     @Test
     public void toFactWithBasicWideline() {
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "", new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), false);
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "", new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"));
 
         Fact fact = factPopulator.toFact(wideLine);
 
@@ -53,7 +53,7 @@ import static org.junit.Assert.assertEquals;
     @Test
     public void toFactWithDashBefattning() {
         final String lakarbefattning = "-";
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), false);
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"));
 
         Fact fact = factPopulator.toFact(wideLine);
 
@@ -64,7 +64,7 @@ import static org.junit.Assert.assertEquals;
     @Test
     public void toFactWithEmptyBefattning() {
         final String lakarbefattning = "";
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), false);
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"));
 
         Fact fact = factPopulator.toFact(wideLine);
 
@@ -75,7 +75,7 @@ import static org.junit.Assert.assertEquals;
     @Test
     public void toFactWithFaultyBefattning() {
         final String lakarbefattning = "xyz123";
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), false);
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"));
 
         Fact fact = factPopulator.toFact(wideLine);
 
@@ -86,7 +86,7 @@ import static org.junit.Assert.assertEquals;
     @Test
     public void toFactWithFaultyAndCorrectBefattnings() {
         final String lakarbefattning = "123,-,456,abc123";
-        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"), false);
+        WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"));
 
         Fact fact = factPopulator.toFact(wideLine);
 

@@ -84,8 +84,6 @@ public class WidelineConverter extends AbstractWidlineConverter {
         int kon = patientData.getKon().getNumberRepresentation();
         int alder = patientData.getAlder();
 
-        final boolean enkeltIntyg = dto.isEnkelt();
-
         String diagnos = dto.getDiagnoskod();
         final Diagnos dx = parseDiagnos(diagnos);
 
@@ -97,7 +95,7 @@ public class WidelineConverter extends AbstractWidlineConverter {
         List<WideLine> lines = new ArrayList<>();
 
         for (Arbetsnedsattning arbetsnedsattning : dto.getArbetsnedsattnings()) {
-            WideLine line = createWideLine(logId, correlationId, type, lkf, enhet, vardgivare, patient, kon, alder, enkeltIntyg, dx,
+            WideLine line = createWideLine(logId, correlationId, type, lkf, enhet, vardgivare, patient, kon, alder, dx,
                     lakarkon, lakaralder, lakarbefattning, lakareid, arbetsnedsattning);
             lines.add(line);
         }
@@ -107,7 +105,7 @@ public class WidelineConverter extends AbstractWidlineConverter {
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     private WideLine createWideLine(long logId, String correlationId, EventType type, String lkf, String enhet, HsaIdVardgivare vardgivare,
-            String patient, int kon, int alder, boolean enkeltIntyg, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning,
+            String patient, int kon, int alder, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning,
             HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning) {
         WideLine line = new WideLine();
 
@@ -130,7 +128,6 @@ public class WidelineConverter extends AbstractWidlineConverter {
         line.setDiagnoskategori(dx.diagnoskategori);
         line.setDiagnoskod(dx.diagnoskod);
         line.setSjukskrivningsgrad(sjukskrivningsgrad);
-        line.setEnkelt(enkeltIntyg);
 
         line.setPatientid(patient);
         line.setAlder(alder);

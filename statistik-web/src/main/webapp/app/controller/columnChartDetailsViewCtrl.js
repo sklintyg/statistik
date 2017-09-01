@@ -499,27 +499,6 @@ angular.module('StatisticsApp').degreeOfSickLeaveTvarsnittConfig =
     return conf;
 };
 
-angular.module('StatisticsApp').differentieratIntygandeTvarsnittConfig =
-    /** @ngInject */
-    function (messageService) {
-    'use strict';
-
-    var conf = {};
-    conf.dataFetcherVerksamhet = 'getDifferentieratIntygandeTvarsnittVerksamhet';
-    conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getDifferentieratIntygandeTvarsnitt?format=xlsx';
-    };
-    conf.showDetailsOptions = false;
-    conf.title = messageService.getProperty('title.differentierat');
-    conf.chartFootnotes = ['help.verksamhet.differentierat1', 'help.verksamhet.differentierat2', 'help.verksamhet.differentierat3'];
-
-    conf.exchangeableViews = [
-        {description: 'Tidsserie', state: '/verksamhet/differentieratintygande', active: false},
-        {description: 'Tvärsnitt', state: '/verksamhet/differentieratintygandetvarsnitt', active: true}];
-
-    return conf;
-};
-
 angular.module('StatisticsApp').diagnosisGroupTvarsnittConfig =
     /** @ngInject */
     function (messageService) {

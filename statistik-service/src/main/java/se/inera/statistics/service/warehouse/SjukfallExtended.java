@@ -342,18 +342,6 @@ public class SjukfallExtended {
         return diagnoses;
     }
 
-    public boolean isEnkelt() {
-        return this.enkelt;
-    }
-
-    public boolean containsAllIntygIn(SjukfallExtended sjukfallToCompare) {
-        return getFactIds().containsAll(sjukfallToCompare.getFactIds());
-    }
-
-    private List<Long> getFactIds() {
-        return facts.stream().map(Fact::getId).collect(Collectors.toList());
-    }
-
     public long getFirstIntygId() {
         return getFirstFact().getLakarintyg();
     }

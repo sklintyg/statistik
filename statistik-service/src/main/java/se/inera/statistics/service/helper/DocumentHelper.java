@@ -204,32 +204,6 @@ public final class DocumentHelper {
         return document.path(GRUND_DATA).path("signeringsdatum").textValue();
     }
 
-    public static boolean isEnkeltIntyg(JsonNode intyg) {
-        final String funktionsnedsattning = intyg.path("funktionsnedsattning").toString();
-        final String aktivitetsbegransning = intyg.path("aktivitetsbegransning").toString();
-        return isAnyFieldIndicatingEnkeltIntyg(funktionsnedsattning, aktivitetsbegransning);
-    }
-
-    static boolean isAnyFieldIndicatingEnkeltIntyg(String... fields) {
-        for (String field : fields) {
-            if (isFieldIndicatingEnkeltIntyg(field)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /*
-     * Denna kod implementeras också i AnonymizeJson.groovy och bör hållas i synk med denna
-     */
-    private static boolean isFieldIndicatingEnkeltIntyg(String field) {
-        if (field == null) {
-            return false;
-        }
-        final String cleanedField = field.replaceAll("[^A-Za-zåäöÅÄÖ]", "");
-        return "E".equalsIgnoreCase(cleanedField) || "Enkel".equalsIgnoreCase(cleanedField) || "Enkelt".equalsIgnoreCase(cleanedField);
-    }
-
     public static IntygDTO convertToDTO(JsonNode intyg) {
         if (intyg == null) {
             return null;
@@ -241,7 +215,6 @@ public final class DocumentHelper {
         String patient = DocumentHelper.getPersonId(intyg);
         Patientdata patientData = DocumentHelper.getPatientData(intyg);
 
-        final boolean enkeltIntyg = DocumentHelper.isEnkeltIntyg(intyg);
         String diagnos = DocumentHelper.getDiagnos(intyg);
         String lakareid = DocumentHelper.getLakarId(intyg);
         String intygsId = DocumentHelper.getIntygId(intyg);
@@ -253,7 +226,6 @@ public final class DocumentHelper {
 
         dto.setEnhet(enhet);
         dto.setDiagnoskod(diagnos);
-        dto.setEnkelt(enkeltIntyg);
         dto.setIntygid(intygsId);
         dto.setIntygtyp(intygTyp);
         dto.setLakareId(lakareid);
