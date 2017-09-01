@@ -19,7 +19,7 @@
 
 			<show-help-text texts="chartFootnotes"></show-help-text>
 
-			<div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
+			<div spinner label="{{::spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 left-2px-padding right-2px-padding">
 						<a data-ng-href="#/nationell/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLink" class="overview-widget-link">
@@ -125,7 +125,7 @@
                         <span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90"></span></span>
                       </div>
                       <div class="overview-chart-info-section pull-right">
-                        <span class="longSickLeavesValue">{{longSickLeavesAlteration}} %</span><br/>
+                        <span class="longSickLeavesValue">{{::longSickLeavesAlteration}} %</span><br/>
                         <span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader"></span></span>
                       </div>
                   </div>
@@ -160,9 +160,9 @@
 												<tbody>
                           <tr data-ng-repeat="group in sickLeavePerCountyGroups">
                               <td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-                              <td class="diagnostics-group-name">{{group.name}}</td>
-                              <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-                              <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
+                              <td class="diagnostics-group-name">{{::group.name}}</td>
+                              <td class="diagnostics-group-quantity">{{::group.quantity | thousandseparated}}</td>
+                              <td class="diagnostics-group-alternation">{{::group.alternation}} %</td>
                           </tr>
 												</tbody>
 										</table>

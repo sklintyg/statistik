@@ -50,11 +50,11 @@
 			</div>
 
 			<div dataerrorview show-error="dataLoadingError">
-				<div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
+				<div spinner label="{{::spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
 					<!-- Start business overview boxes -->
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 left-2px-padding right-2px-padding">
-							<a data-ng-href="{{baseUrl}}/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLinkOld" class="overview-widget-link">
+							<a data-ng-href="{{::baseUrl}}/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLinkOld" class="overview-widget-link">
 								<div class="overview-widget" >
 									<div class="overview-widget-header">
 										<h2 class="overview-widget-title pull-left">
@@ -73,7 +73,7 @@
 							</a>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 left-2px-padding right-2px-padding">
-							<a data-ng-href="{{baseUrl}}/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLink" class="overview-widget-link">
+							<a data-ng-href="{{::baseUrl}}/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLink" class="overview-widget-link">
 								<div class="overview-widget" >
 									<div class="overview-widget-header">
 										<h2 class="overview-widget-title pull-left">
@@ -95,7 +95,7 @@
 
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
-							<a data-ng-href="{{baseUrl}}/diagnosgrupp{{queryString}}" id="diagnosisGroupsHeaderLink" class="overview-widget-link">
+							<a data-ng-href="{{::baseUrl}}/diagnosgrupp{{queryString}}" id="diagnosisGroupsHeaderLink" class="overview-widget-link">
 								<span class="overview-widget" >
 									<span class="overview-widget-header">
 										<h2 class="overview-widget-title pull-left">
@@ -131,7 +131,7 @@
 							</a>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
-							<a data-ng-href="{{baseUrl}}/aldersgrupper{{queryString}}" id="ageGroupsHeaderLink" class="overview-widget-link">
+							<a data-ng-href="{{::baseUrl}}/aldersgrupper{{queryString}}" id="ageGroupsHeaderLink" class="overview-widget-link">
 								<span class="overview-widget" >
 									<span class="overview-widget-header">
 										<h2 class="overview-widget-title pull-left">
@@ -170,7 +170,7 @@
 
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
-							<a data-ng-href="{{baseUrl}}/sjukskrivningslangd{{queryString}}" id="sickLeaveLengthHeaderLink" class="overview-widget-link">
+							<a data-ng-href="{{::baseUrl}}/sjukskrivningslangd{{queryString}}" id="sickLeaveLengthHeaderLink" class="overview-widget-link">
 								<span class="overview-widget" >
 									<span class="overview-widget-header">
 										<h2 class="overview-widget-title pull-left">
@@ -198,7 +198,7 @@
 							</a>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
-							<a data-ng-href="{{baseUrl}}/sjukskrivningsgrad{{queryString}}" id="degreeOfSickLeaveHeaderLink" class="overview-widget-link">
+							<a data-ng-href="{{::baseUrl}}/sjukskrivningsgrad{{queryString}}" id="degreeOfSickLeaveHeaderLink" class="overview-widget-link">
 								<span class="overview-widget" >
 									<span class="overview-widget-header">
 										<h2 class="overview-widget-title pull-left">
@@ -223,9 +223,9 @@
 												<tbody>
 												<tr data-ng-repeat="group in degreeOfSickLeaveGroups">
 														<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-														<td class="diagnostics-group-name">{{group.name}}</td>
-														<td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-														<td class="diagnostics-group-alternation">{{group.alternation}} %</td>
+														<td class="diagnostics-group-name">{{::group.name}}</td>
+														<td class="diagnostics-group-quantity">{{::group.quantity | thousandseparated}}</td>
+														<td class="diagnostics-group-alternation">{{::group.alternation}} %</td>
 												</tr>
 												</tbody>
 										</table>
