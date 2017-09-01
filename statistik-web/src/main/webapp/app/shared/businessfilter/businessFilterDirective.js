@@ -301,32 +301,6 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         collapsed: true
     };
 
-
-    scope.selectVerksamhetsTyp = function(verksamhetsTyp) {
-        var checked = true;
-
-        angular.forEach(verksamhetsTyp.units, function(businesse) {
-            if (checked || businesse.verksamhetsTyper.length === 1) {
-                businesse.allSelected = checked;
-            } else {
-                var shouldUncheck = true;
-                angular.forEach(scope.businessFilter.verksamhetsTyper, function(type) {
-                    if (type !== verksamhetsTyp && type.checked &&
-                        type.units.indexOf(businesse) > -1) {
-                        shouldUncheck = false;
-                    }
-                });
-                if (shouldUncheck) {
-                    businesse.allSelected = false;
-                }
-            }
-        });
-
-        verksamhetsTyp.checked = checked;
-
-        scope.$broadcast('updateSelections');
-    };
-
     scope.$on('selectionsChanged', function() {
         scope.businessFilter.updateSelectionVerksamhetsTyper(scope.businessFilter.verksamhetsTyper);
     });

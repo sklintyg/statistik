@@ -46,8 +46,20 @@
       </div>
     </form>
   </div>
-  <div id="modal-body-right" ng-class="{'col-xs-4': !directiveScope.sidebarState.collapsed}">
-    <!--ng-transclude></ng-transclude -->
+  <div id="modal-body-right" class="col-xs-4" data-ng-if="!directiveScope.sidebarState.collapsed">
+    <div id="verksamhet-uib-collapser">
+      <h2><span message key="lbl.filter.verksamhet.quickselection.title"/></h2>
+      <ul class="verksamhets-typer-list">
+        <li data-ng-repeat="verksamhet in directiveScope.verksamhetsTyper">
+          <button type="button"
+                  class="btn btn-default btn-block"
+                  data-ng-click="selectVerksamhetsTyp(verksamhet)">
+
+            <i class="fa fa-plus"></i> {{::verksamhet.name}}
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 

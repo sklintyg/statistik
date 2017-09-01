@@ -37,7 +37,8 @@ angular.module('StatisticsApp.treeMultiSelector.directive', [])
                 sidebarMenuCollapse: '@',
                 sidebarState: '=',
                 minSelections: '@',
-                runFilterMenuOnInit: '='
+                runFilterMenuOnInit: '=',
+                verksamhetsTyper: '='
             },
             controller: 'treeMultiSelectorCtrl',
             templateUrl: '/app/shared/treemultiselector/treeMultiSelectorView.html'
