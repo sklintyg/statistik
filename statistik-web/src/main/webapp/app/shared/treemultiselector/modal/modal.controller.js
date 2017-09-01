@@ -142,10 +142,6 @@ angular.module('StatisticsApp.treeMultiSelector.modal', ['ui.bootstrap', 'unders
             $scope.updateCounters();
         }
 
-        $scope.$on('updateSelections', function() {
-            updateSelections();
-        });
-
         $scope.hideClicked = function (item) {
             item.showChildren = !item.showChildren;
         };
@@ -274,6 +270,31 @@ angular.module('StatisticsApp.treeMultiSelector.modal', ['ui.bootstrap', 'unders
                 directiveScope.menuOptions = $scope.filterMenuItems(directiveScope.menuOptions, value, restartFiltering);
             }
         });
+
+        $scope.selectVerksamhetsTyp = function(verksamhetsTyp) {
+            var checked = true;
+
+            _.each(verksamhetsTyp.units, function(businesse) {
+                if (checked || businesse.verksamhetsTyper.length === 1) {
+                    businesse.allSelected = checked;
+                } else {
+                    var shouldUncheck = true;
+                    _.each(directiveScope.verksamhetsTyper, function(type) {
+                        if (type !== verksamhetsTyp && type.checked &&
+                            type.units.indexOf(businesse) > -1) {
+                            shouldUncheck = false;
+                        }
+                    });
+                    if (shouldUncheck) {
+                        businesse.allSelected = false;
+                    }
+                }
+            });
+
+            verksamhetsTyp.checked = checked;
+
+            updateSelections();
+        };
 
         init();
     }
