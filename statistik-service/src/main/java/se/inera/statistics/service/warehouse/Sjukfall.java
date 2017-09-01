@@ -68,7 +68,6 @@ public class Sjukfall {
         sjukfall.lastLakare = extendedSjukfall.getLastLakare();
         sjukfall.enhets = toArray(extendedSjukfall.getEnhets());
         sjukfall.lastEnhet = extendedSjukfall.getLastEnhet();
-        sjukfall.enkelt = extendedSjukfall.isEnkelt();
         sjukfall.firstIntygId = extendedSjukfall.getFirstIntygId();
         return sjukfall;
     }
@@ -218,10 +217,6 @@ public class Sjukfall {
 
     public int getLastEnhet() {
         return lastEnhet;
-    }
-
-    public boolean isEnkelt() {
-        return enkelt;
     }
 
     public long getFirstIntygId() {

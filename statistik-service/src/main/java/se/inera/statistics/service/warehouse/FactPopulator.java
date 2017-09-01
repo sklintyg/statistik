@@ -68,13 +68,12 @@ public class FactPopulator {
         int lakaralder = wideline.getLakaralder();
         int[] lakarbefattnings = parseBefattning(wideline);
         int lakare = Warehouse.getNumLakarIdAndRemember(wideline.getLakareId());
-        boolean enkelt = wideline.isEnkelt();
 
         return new Fact(wideline.getId(), ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf),
                 ConversionHelper.extractForsamling(lkf), enhet, intyg, patientid, startdatum, slutdatum, kon, alder,
                 extractKapitel(diagnoskapitel), extractAvsnitt(diagnosavsnitt), extractKategori(diagnoskategori),
                 extractKod(diagnoskod, diagnoskategori), sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattnings,
-                lakare, enkelt);
+                lakare);
     }
 
     private int[] parseBefattning(WideLine wideline) {

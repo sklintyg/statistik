@@ -18,7 +18,7 @@ Ett sjukfall består av två intyg. De två intygen har olika vårdenhet, diagno
 
 !3 Då gäller:
 
-När en rapport visas som tvärsnitt, kan ett sjukfall förekomma i flera grupper. Det gäller dock INTE rapporterna Sjukfall totalt (man är antingen man eller kvinna), Åldersgrupp (ett sjukfall kan bara ha en ålder, se At040), Sjukskrivningslängd (ett sjukfall har bara en längd), Län (ett sjukfall begränsas av vårdgivargränsen, i praktiken är en vårdgivare aldrig i flera län, se At139), Mer än 90 dagar och Differentierat intygande (ett sjukfall är antingen enkelt eller inte).
+När en rapport visas som tvärsnitt, kan ett sjukfall förekomma i flera grupper. Det gäller dock INTE rapporterna Sjukfall totalt (man är antingen man eller kvinna), Åldersgrupp (ett sjukfall kan bara ha en ålder, se At040), Sjukskrivningslängd (ett sjukfall har bara en längd), Län (ett sjukfall begränsas av vårdgivargränsen, i praktiken är en vårdgivare aldrig i flera län, se At139) och Mer än 90 dagar.
 
 Inloggad:
 | Sjukfall i rapporten sjukfall per enhet |
