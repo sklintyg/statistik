@@ -113,10 +113,10 @@ angular.module('StatisticsApp').factory('StaticFilterData',
                 if (asObject) {
                     return {
                         id: diagnosId,
-                        text: icdItem.visibleName
+                        text: icdItem ? icdItem.visibleName : ''
                     };
                 }
-                return icdItem.visibleName;
+                return icdItem ? icdItem.visibleName : '';
             });
         }
 
