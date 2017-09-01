@@ -24,7 +24,9 @@ var HtmlScreenshotReporter = require('protractor-jasmine2-screenshot-reporter');
 
 var screenshotReporter = new HtmlScreenshotReporter({
     dest: 'reports',
-    filename: 'index.html'
+    filename: 'index.html',
+    ignoreSkippedSpecs: true,
+    captureOnlyFailedSpecs: true
 });
 
 exports.config = {
