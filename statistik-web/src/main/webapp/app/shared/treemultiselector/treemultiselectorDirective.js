@@ -39,7 +39,6 @@ angular.module('StatisticsApp.treeMultiSelector.directive', [])
                 minSelections: '@',
                 runFilterMenuOnInit: '='
             },
-            transclude: true,
             controller: 'treeMultiSelectorCtrl',
             templateUrl: '/app/shared/treemultiselector/treeMultiSelectorView.html'
         };
