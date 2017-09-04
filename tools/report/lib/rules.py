@@ -323,9 +323,10 @@ class RuleSjukgrad:
 class RuleAlder:
     def key(self, sjukfall, start, slut):
         age = sjukfall.age(start, slut)
-
-        if age < 21:
-            return '<21'
+        if age < 16:
+            return '<16'
+        elif age >= 16 and age <= 20:
+            return '16-20'
         elif age >= 21 and age <= 25:
             return '21-25'
         elif age >= 26 and age <= 30:
@@ -342,8 +343,10 @@ class RuleAlder:
             return '51-55'
         elif age >= 56 and age <= 60:
             return '56-60'
+        elif age >= 61 and age <= 65:
+            return '61-65'
         else:
-            return '>60'
+            return '>65'
 
     def check(self, wideline):
         assert(wideline.index('alder') != None)

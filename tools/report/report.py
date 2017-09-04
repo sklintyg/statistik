@@ -62,9 +62,9 @@ Filter:
                      för diagnos.
 
 Gruppera på:
-    -s               Sjukfall
-    -d               Diagnos (kapitel)
-    -a               Ålder
+    -s               Sjukfall, totalt
+    -d               Diagnos (Enskilt diagnoskapitel)
+    -a               ÅldersGrupp
     -g               Sjukskrivningsgrad
     -l               Sjukskrivningslängd
     -7               Differentierat intygande
@@ -76,8 +76,8 @@ Gruppera på:
     -e               Sjukfall och enheter
     -N               Sjukfall längre än 90 dagar
     -9 <enhet>       Sjukfall längre än 90 dagar för enhet
-''' % THRESHOLD
 
+    ''' % THRESHOLD
 
 def get_enheter(filename): 
     """Return all vårdenheter, key is vårdgivare+vårdenhet"""
