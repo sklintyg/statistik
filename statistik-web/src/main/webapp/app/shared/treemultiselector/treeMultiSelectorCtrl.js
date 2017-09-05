@@ -28,7 +28,7 @@ angular.module('StatisticsApp.treeMultiSelector.controller', [])
             }
 
             var modalInstance = $uibModal.open({
-                animation: true,
+                animation: false,
                 templateUrl: '/app/shared/treemultiselector/modal/modal.html',
                 controller: 'TreeMultiSelectorModalCtrl',
                 windowTopClass: 'tree-multi-selector',
