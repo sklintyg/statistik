@@ -3,8 +3,6 @@
   <span id="myModalLabel">{{directiveScope.textData.titleText}}</span>
 </div>
 
-<div class="modal-body" spinner label="{{directiveScope.spinnerText}}" show-spinner="!doneLoading"></div>
-
 <div class="modal-body row">
   <div id="modal-body-left"  ng-class="{'border-right col-xs-8 ': !directiveScope.sidebarState.collapsed, 'col-xs-12': directiveScope.sidebarState.collapsed }">
     <form>
@@ -32,6 +30,9 @@
                  class="multiMenuFilterSearch form-control" placeholder="{{directiveScope.searchHintTextKey | messageFilter}}"/>
         </div>
       </div>
+
+      <div class="modal-list" spinner label="{{directiveScope.spinnerText}}" show-spinner="!doneLoading"></div>
+
       <div class="modal-list item-body">
         <div data-ng-repeat="item in directiveScope.menuOptions.visibleSubs" class="multiMenuSelectKapitel" on-finish-render="doneRenderingDialog()">
           <submenu
