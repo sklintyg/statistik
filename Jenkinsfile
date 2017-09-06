@@ -1,6 +1,6 @@
 #!groovy
 
-def buildVersion = "5.0.${BUILD_NUMBER}"
+def buildVersion = "6.0.${BUILD_NUMBER}"
 def infraVersion = "3.3.+"
 
 stage('checkout') {
