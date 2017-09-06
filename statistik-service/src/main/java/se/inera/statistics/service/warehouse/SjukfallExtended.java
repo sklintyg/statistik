@@ -338,15 +338,6 @@ public class SjukfallExtended {
         return diagnoses;
     }
 
-    public boolean isEnkelt() {
-        for (Fact fact : facts) {
-            if (fact.isEnkelt()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public long getFirstIntygId() {
         return getFirstFact().getLakarintyg();
     }

@@ -85,12 +85,6 @@ public class RegisterCertificateHelper {
         return intyg.getIntyg().getTyp().getCode().trim();
     }
 
-    public boolean isEnkeltIntyg(RegisterCertificateType intyg) {
-        final String funktionsnedsattning = getFunktionsnedsattning(intyg);
-        final String aktivitetsbegransning = getAktivitetsbegransning(intyg);
-        return DocumentHelper.isAnyFieldIndicatingEnkeltIntyg(funktionsnedsattning, aktivitetsbegransning);
-    }
-
     public HSAKey extractHSAKey(RegisterCertificateType document) {
         String vardgivareId = getVardgivareId(document);
         String enhetId = getEnhetId(document);
@@ -345,7 +339,6 @@ public class RegisterCertificateHelper {
         String patient = getPatientId(intyg);
         Patientdata patientData = getPatientData(intyg);
 
-        final boolean enkeltIntyg = isEnkeltIntyg(intyg);
         String diagnos = getDx(intyg);
         String lakareid = getLakareId(intyg);
         String intygsId = getIntygId(intyg);
@@ -355,7 +348,6 @@ public class RegisterCertificateHelper {
 
         dto.setEnhet(enhet);
         dto.setDiagnoskod(diagnos);
-        dto.setEnkelt(enkeltIntyg);
         dto.setIntygid(intygsId);
         dto.setIntygtyp(intygTyp);
         dto.setLakareId(lakareid);

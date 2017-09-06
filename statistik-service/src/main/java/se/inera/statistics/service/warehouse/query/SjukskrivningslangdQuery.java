@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRow;
@@ -35,9 +34,7 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -47,13 +44,6 @@ import java.util.stream.Collectors;
 public final class SjukskrivningslangdQuery {
     private static Ranges ranges = SjukfallslangdUtil.RANGES;
     private static final int LONG_SJUKFALL = 90;
-    public static final List<String> ENKLA_SJUKFALL_LABELS = Collections
-            .unmodifiableList(Arrays.asList("Övriga", "Enkla upp till 60 dagar", "Enkla över 60 dagar"));
-    public static final int GROUP_OVRIGA = 1;
-    public static final int GROUP_SIMPLE_SHORT = 2;
-    public static final int GROUP_SIMPLE_LONG = 3;
-    private static final List<Integer> ENKLA_SJUKFALL_IDS = Collections
-            .unmodifiableList(Arrays.asList(GROUP_OVRIGA, GROUP_SIMPLE_SHORT, GROUP_SIMPLE_LONG));
 
     private SjukskrivningslangdQuery() {
     }
@@ -107,59 +97,6 @@ public final class SjukskrivningslangdQuery {
             counter.increase(sjukfall);
         }
         return counters;
-    }
-
-    public static KonDataResponse getEnklaSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize,
-            SjukfallUtil sjukfallUtil) {
-        return sjukfallUtil.calculateKonDataResponseUsingOriginalSjukfallStart(aisle, filter, start, periods, periodSize,
-                ENKLA_SJUKFALL_LABELS, ENKLA_SJUKFALL_IDS, new CounterFunction<Integer>() {
-                    @Override
-                    public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
-                        counter.add(getEnkelSjukfallGroup(sjukfall));
-
-                    }
-                });
-    }
-
-    public static SimpleKonResponse<SimpleKonDataRow> getEnklaSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from,
-            int periods, int periodLength, SjukfallUtil sjukfallUtil) {
-        final CounterFunction<Integer> toCount = new CounterFunction<Integer>() {
-            @Override
-            public void addCount(Sjukfall sjukfall, HashMultiset<Integer> counter) {
-                counter.add(getEnkelSjukfallGroup(sjukfall));
-            }
-        };
-        SimpleKonResponse<SimpleKonDataRow> response = sjukfallUtil.calculateSimpleKonResponseUsingOriginalSjukfallStart(aisle, filter,
-                from, periods, periodLength, toCount, ENKLA_SJUKFALL_IDS);
-        ArrayList<SimpleKonDataRow> rowsWithCorrectNames = new ArrayList<>();
-        for (SimpleKonDataRow row : response.getRows()) {
-            rowsWithCorrectNames.add(new SimpleKonDataRow(getEnklaSjukfallGroupNameFromId(row.getName()), row.getData()));
-        }
-        return new SimpleKonResponse<>(rowsWithCorrectNames);
-    }
-
-    private static String getEnklaSjukfallGroupNameFromId(String id) {
-        switch (Integer.parseInt(id)) {
-        case GROUP_OVRIGA:
-            return ENKLA_SJUKFALL_LABELS.get(0);
-        case GROUP_SIMPLE_SHORT:
-            return ENKLA_SJUKFALL_LABELS.get(1);
-        case GROUP_SIMPLE_LONG:
-            return ENKLA_SJUKFALL_LABELS.get(2);
-        default:
-            return "Okänd grupp";
-        }
-    }
-
-    private static Integer getEnkelSjukfallGroup(Sjukfall sjukfall) {
-        if (!sjukfall.isEnkelt()) {
-            return GROUP_OVRIGA;
-        }
-        final int longSjukfallDays = 60;
-        if (sjukfall.getRealDays() <= longSjukfallDays) {
-            return GROUP_SIMPLE_SHORT;
-        }
-        return GROUP_SIMPLE_LONG;
     }
 
     public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,

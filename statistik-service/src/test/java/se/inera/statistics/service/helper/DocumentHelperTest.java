@@ -165,27 +165,6 @@ public class DocumentHelperTest {
     }
 
     @Test
-    public void testIsAnyFieldIndicatingEnkeltIntyg() throws Exception {
-        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("e"));
-        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("E"));
-        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("Enkel"));
-        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("ENKEL"));
-        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("enkel"));
-        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("Enkelt"));
-        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("ENKELT"));
-        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("enkelt"));
-
-        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("enkøelt"));
-        assertFalse(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("enköelt"));
-        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("Ée"));
-        assertFalse(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("enkla"));
-        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("en-kel"));
-
-        assertTrue(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("svår", "enkel"));
-        assertFalse(DocumentHelper.isAnyFieldIndicatingEnkeltIntyg("svår", "medium"));
-    }
-
-    @Test
     public void testConvertToDTONull() {
         IntygDTO dto = DocumentHelper.convertToDTO(null);
 

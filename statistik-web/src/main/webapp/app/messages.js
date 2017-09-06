@@ -29,7 +29,6 @@ var stMessages = {
         'nav.vardenhet':'Vårdenhet',
         'nav.lakare':'Läkare',
         'nav.lakarbefattning':'Läkarbefattning',
-        'nav.differentieratintygande':'Differentierat intygande',
         'nav.lakaralder-kon':'Läkarålder och -kön',
         'nav.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',
         'nav.allmant-om-tjansten': 'Allmänt om tjänsten',
@@ -177,9 +176,6 @@ var stMessages = {
         'help.verksamhet.lakare': '	Denna rapport visar statistik för enskilda intygsskrivande läkare. Namn hämtas från HSA-katalogen. Om läkaren inte går att slå upp i HSA-katalogen eller om läkaren inte har något namn angivet så visas istället läkarens HSA-id.',
         'help.verksamhet.lakaregender': 'Denna rapport visar statistik uppdelad i olika läkargrupper utifrån den intygsskrivande läkarens ålder och kön. Information om ålder och kön hämtas från HSA-katalogen.',
         'help.verksamhet.lakare-befattning': 'Denna rapport visar statistik fördelad på befattning hos den intygsskrivande läkaren. Information om befattning hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade av Statistiktjänsten och information kan saknas då det inte är obligatoriskt för vårdenheten att ange befattning. Om en läkare har flera olika läkarbefattningar räknas sjukfallet med i statistiken för var och en av de befattningarna.',
-        'help.verksamhet.differentierat1': 'Differentierat intygande innebär att läkare som bedömer att en sjukskrivning kommer att uppfylla Försäkringskassans kriterier kan göra ett enklare intygande. Rapporten visar i hur många fall ett enklare intygande använts. Ett sjukfall räknas som enkelt om det består av minst ett enkelt intyg.',
-        'help.verksamhet.differentierat2': 'De enkla sjukfallen delas vidare upp i sjukfall som pågått upp till och med 60 dagar och sjukfall som pågått längre än 60 dagar. Sjukskrivningslängden beräknas på samma sätt som i rapporten "Sjukskrivningslängd".',
-        'help.verksamhet.differentierat3': 'Sjukfall som inte består av något enkelt intyg hamnar i gruppen "Övriga".',
 
         'help.landsting.sjukfall-totalt': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporteras in av landstinget självt %0.',
         'help.landsting.vardenhet': 'Denna rapport visar statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporterats in av landstinget självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',

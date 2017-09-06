@@ -98,7 +98,6 @@ public class SjukfallForBiConverter {
                 + "gender INT, "
                 + "lan INT, "
                 + "enhet INT, "
-                + "enkelt BOOLEAN, "
                 + "lakare INT, "
                 + "PRIMARY KEY (id), "
                 + "CONSTRAINT fk_StartDate FOREIGN KEY (startdate) REFERENCES dim_date(id), "
@@ -164,7 +163,7 @@ public class SjukfallForBiConverter {
 
             stringBuilder.append(
                     "INSERT INTO fact_sjukfall(startdate, enddate, length, dxkapitel, dxavsnitt, dxkategori, dxkod, sjukskrivningsgrad, "
-                            + "age, gender, lan, enhet, enkelt, lakare) VALUES ("
+                            + "age, gender, lan, enhet, lakare) VALUES ("
                             + sjukfall.getStart() + ", "
                             + sjukfall.getEnd() + ", "
                             + sjukfall.getRealDays() + ", "
@@ -177,7 +176,6 @@ public class SjukfallForBiConverter {
                             + sjukfall.getKon().getNumberRepresentation() + ", "
                             + sjukfall.getLanskod() + ", "
                             + sjukfall.getLastEnhet() + ", "
-                            + sjukfall.isEnkelt() + ", "
                             + sjukfall.getLastLakare().getId()
                             + ");");
             stringBuilder.append(System.lineSeparator());

@@ -124,10 +124,4 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         throw new RuntimeException("Report -läkareålder och kön som tidsserie- is not available on national level");
     }
 
-    def getReportDifferentieratIntygande() {
-        if (inloggad) {
-            return reportsUtil.getReportDifferentieratIntygandeSomTidsserieInloggad(vg, filter);
-        }
-        throw new RuntimeException("Report -Differentierat Intygande- is not available on national level");
-    }
 }

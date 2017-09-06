@@ -190,10 +190,4 @@ abstract class SimpleDetailsReport extends Rapport {
         throw new RuntimeException("Report -Landsting Sjukfall per enhet- is not available on national level");
     }
 
-    def getReportDifferentieratIntygandeTvarsnitt() {
-        if (inloggad) {
-            return reportsUtil.getReportDifferentieratIntygandeTvarsnittSomTvarsnittInloggad(vg, filter);
-        }
-        throw new RuntimeException("Report -Differentierat Intygande som tvärsnitt- is not available on national level");
-    }
 }

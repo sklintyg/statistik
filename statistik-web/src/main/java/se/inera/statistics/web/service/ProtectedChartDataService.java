@@ -755,40 +755,6 @@ public class ProtectedChartDataService {
     }
 
     @GET
-    @Path("getDifferentieratIntygandeStatistics")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDifferentieratIntygandeStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
-            @QueryParam("format") String format) {
-        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
-        final Filter filter = filterSettings.getFilter();
-        final Range range = filterSettings.getRange();
-        KonDataResponse statisticsData = warehouse.getDifferentieratIntygande(filter.getPredicate(), range,
-                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        DualSexStatisticsData data = new DifferentieratIntygandeConverter().convert(statisticsData, filterSettings);
-        return getResponse(data, format, request, Report.V_DIFFERENTIERATINTYGANDE);
-    }
-
-    @GET
-    @Path("getDifferentieratIntygandeTvarsnitt")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getDifferentieratIntygandeTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
-            @QueryParam("format") String format) {
-        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
-        final Filter filter = filterSettings.getFilter();
-        final Range range = filterSettings.getRange();
-        SimpleKonResponse<SimpleKonDataRow> statisticsData = warehouse.getDifferentieratIntygandeTvarsnitt(filter.getPredicate(), range,
-                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData data = new SimpleDualSexConverter("", false, "%1$s").convert(statisticsData, filterSettings);
-        return getResponse(data, format, request, Report.V_DIFFERENTIERATINTYGANDE);
-    }
-
-    @GET
     @Path("getSjukfallForBi")
     @Produces({ MediaType.TEXT_PLAIN })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")

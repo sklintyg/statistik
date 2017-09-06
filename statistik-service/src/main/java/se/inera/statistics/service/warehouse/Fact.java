@@ -51,13 +51,12 @@ public class Fact {
     private int lakaralder;
     private int[] lakarbefattnings;
     private int lakarid;
-    private boolean enkelt;
 
     // CHECKSTYLE:OFF ParameterNumber
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public Fact(long id, int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int slutdatum,
             int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad,
-            int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid, boolean enkeltIntyg) {
+            int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid) {
         this.id = id;
         this.lan = lan;
         this.kommun = kommun;
@@ -78,7 +77,6 @@ public class Fact {
         this.lakaralder = lakaralder;
         this.lakarbefattnings = lakarbefattnings;
         this.lakarid = lakarid;
-        this.enkelt = enkeltIntyg;
     }
     // CHECKSTYLE:ON ParameterNumber
 
@@ -165,10 +163,6 @@ public class Fact {
         return lakarid;
     }
 
-    public boolean isEnkelt() {
-        return enkelt;
-    }
-
     @Override
     public String toString() {
         return "Fact{"
@@ -190,7 +184,6 @@ public class Fact {
                 + ", lakaralder=" + lakaralder
                 + ", lakarbefattnings=" + Arrays.toString(lakarbefattnings)
                 + ", lakarid=" + lakarid
-                + ", enkelt=" + enkelt
                 + '}';
     }
 
@@ -218,8 +211,7 @@ public class Fact {
                 .append(lakarkon).append(c)
                 .append(lakaralder).append(c)
                 .append(Arrays.toString(lakarbefattnings)).append(c)
-                .append(lakarid).append(c)
-                .append(enkelt).append('\n');
+                .append(lakarid).append('\n');
         return sb.toString();
     }
 
@@ -248,7 +240,7 @@ public class Fact {
         private int lakaralder = -1;
         private int[] lakarbefattnings = null;
         private int lakarid = -1;
-        private Boolean enkelt = null;
+        private Boolean enkelt = false;
 
         @java.lang.SuppressWarnings({ "squid:MethodCyclomaticComplexity", "squid:S1067" }) // I can't think of a better
                                                                                            // way to write this
@@ -261,7 +253,7 @@ public class Fact {
             }
             return new Fact(id, lan, kommun, forsamling, enhet, lakarintyg, patient, startdatum, slutdatum, kon, alder, diagnoskapitel,
                     diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon,
-                    lakaralder, lakarbefattnings, lakarid, enkelt.booleanValue());
+                    lakaralder, lakarbefattnings, lakarid);
         }
 
         public FactBuilder withId(long id) {
@@ -361,11 +353,6 @@ public class Fact {
 
         public FactBuilder withLakarid(int lakarid) {
             this.lakarid = lakarid;
-            return this;
-        }
-
-        public FactBuilder withEnkeltIntyg(boolean enkeltIntyg) {
-            this.enkelt = enkeltIntyg;
             return this;
         }
 

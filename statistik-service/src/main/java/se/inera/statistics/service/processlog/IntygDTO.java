@@ -38,7 +38,6 @@ public class IntygDTO {
     private int slutdatum;
     private String diagnoskod;
     private String lakareId;
-    private boolean enkelt;
     private List<Arbetsnedsattning> arbetsnedsattnings;
 
 
@@ -120,14 +119,6 @@ public class IntygDTO {
 
     public void setLakareId(String lakareId) {
         this.lakareId = lakareId;
-    }
-
-    public boolean isEnkelt() {
-        return enkelt;
-    }
-
-    public void setEnkelt(boolean enkelt) {
-        this.enkelt = enkelt;
     }
 
     public List<Arbetsnedsattning> getArbetsnedsattnings() {

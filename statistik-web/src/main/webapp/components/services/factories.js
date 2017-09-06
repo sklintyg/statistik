@@ -207,14 +207,6 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestVerksamhet('getDegreeOfSickLeaveTvarsnitt', successCallback, failureCallback);
     };
 
-    factory.getDifferentieratIntygandeVerksamhet = function (successCallback, failureCallback) {
-        makeRequestVerksamhet('getDifferentieratIntygandeStatistics', successCallback, failureCallback);
-    };
-
-    factory.getDifferentieratIntygandeTvarsnittVerksamhet = function (successCallback, failureCallback) {
-        makeRequestVerksamhet('getDifferentieratIntygandeTvarsnitt', successCallback, failureCallback);
-    };
-
     factory.getNationalSickLeaveLengthData = function (successCallback, failureCallback) {
         makeRequestNational('getSickLeaveLengthData', successCallback, failureCallback);
     };
