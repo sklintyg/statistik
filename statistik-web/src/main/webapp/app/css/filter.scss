@@ -45,11 +45,6 @@ label.btn {
   background-color: #0195a5;
 }
 
-[data-toggle="buttons"] > .btn > input[type="radio"],
-[data-toggle="buttons"] > .btn > input[type="checkbox"] {
-  display: none;
-}
-
 input[type="radio"],
 input[type="checkbox"] {
   line-height: normal;

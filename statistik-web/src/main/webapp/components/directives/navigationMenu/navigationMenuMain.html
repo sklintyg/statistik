@@ -25,13 +25,14 @@
                 id="{{submenu.id}}" ctrlname="{{submenu.ctrl}}" navigationaware>
               <span message key="{{submenu.name}}"></span>
 
-              <i data-ng-if="submenu.subMenu" class="glyphicon statistict-left-menu-expand-icon" data-toggle="collapse" href="{{submenu.subMenuIdLink}}"></i>
+              <i data-ng-if="submenu.subMenu" class="glyphicon statistict-left-menu-expand-icon" data-ng-class="{collapsed: submenu.isCollapsed}" ng-click="submenu.isCollapsed = !submenu.isCollapsed"></i>
             </a>
           </li>
           <ul data-ng-repeat-end
               data-ng-if="submenu.subMenu"
               id="{{submenu.subMenuId}}"
-              class="nav nav-list sub-nav-list accordion-body in collapse">
+              uib-collapse="submenu.isCollapsed"
+              class="nav nav-list sub-nav-list accordion-body">
             <li data-ng-repeat="subsubmenu in submenu.subMenu">
               <a
                   data-ng-href="{{subsubmenu.link}}{{queryString}}" id="{{subsubmenu.id}}"

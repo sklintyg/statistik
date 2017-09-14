@@ -100,25 +100,11 @@
             text-data="geographyFilterSelectorData"
             select-all-text-key="lbl.filter.verksamhet.select-all"
             search-hint-text-key="lbl.filter.verksamhet.search.hint"
-            show-code-level="false"
             max-depth="3"
             sidebar-menu-expand="lbl.filter.verksamhet.link"
             sidebar-menu-collapse="lbl.filter.verksamhet.link.collapse"
-            sidebar-state="sidebarState">
-
-            <div id="verksamhet-uib-collapser" data-ng-if="!sidebarState.collapsed">
-              <h2><span message key="lbl.filter.verksamhet.quickselection.title"/></h2>
-              <ul class="verksamhets-typer-list">
-                <li data-ng-repeat="verksamhet in businessFilter.verksamhetsTyper">
-                  <button type="button"
-                          class="btn btn-default btn-block"
-                          data-ng-click="selectVerksamhetsTyp(verksamhet)">
-
-                          <i class="fa fa-plus"></i> {{verksamhet.name}}
-                  </button>
-                </li>
-              </ul>
-            </div>
+            sidebar-state="sidebarState"
+            verksamhets-typer="businessFilter.verksamhetsTyper">
         </tree-multi-selector>
 
         <tree-multi-selector
@@ -132,7 +118,6 @@
             text-data="diagnosisFilterSelectorData"
             select-all-text-key="lbl.filter.val-av-diagnoser.select-all"
             search-hint-text-key="lbl.filter.val-av-diagnoser.search.hint"
-            show-code-level="true"
             sidebar-state="sidebarStateDiagnose">
         </tree-multi-selector>
 

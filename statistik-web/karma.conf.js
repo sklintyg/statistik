@@ -19,7 +19,7 @@ module.exports = function(config) {
             'src/main/webapp/bower_components/angular-sanitize/angular-sanitize.js',
             'src/main/webapp/bower_components/angular-animate/angular-animate.js',
             'src/main/webapp/bower_components/angular-i18n/angular-locale_sv-se.js',
-            'src/main/webapp/bower_components/bootstrap/dist/js/bootstrap.js',
+            'src/main/webapp/bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
             'src/main/webapp/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
             'src/main/webapp/bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js',
             'src/main/webapp/bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.js',

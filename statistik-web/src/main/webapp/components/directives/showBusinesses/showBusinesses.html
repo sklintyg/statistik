@@ -1,20 +1,3 @@
 <span class="show-businesses">
-  (<a class="btn-link" data-toggle="modal" href data-target="#ViewEnhetsModal" data-keyboard="true">se enheter</a>)
-
-  <div id="ViewEnhetsModal" class="modal fade enhets-modal" role="dialog" tabindex='-1'>
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Enheter på {{vgName}}</h4>
-        </div>
-        <div class="modal-body">
-          <p>Inom vårdgivaren <b>{{vgName}}</b> har du behörighet att se statistik för följande vårdenheter:</p>
-          <ul>
-            <li data-ng-repeat="business in businesses | orderBy:'name'">{{::business.name}}</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
+  (<a class="btn-link" data-ng-click="openModal()" href >se enheter</a>)
 </span>
