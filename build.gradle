@@ -104,7 +104,7 @@ allprojects {
 
     [install.repositories.mavenInstaller, uploadArchives.repositories.mavenDeployer]*.pom*.whenConfigured { pom ->
         pom.dependencies.findAll {dep -> dep.groupId == 'se.inera.intyg.infra'}.each {
-            it.version = findResolvedVersion(project, 'se.inera.intyg.infra')
+            it.version = se.inera.intyg.IntygPluginKt.findResolvedVersion(project, 'se.inera.intyg.infra')
         }
     }
 }
