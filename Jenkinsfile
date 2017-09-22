@@ -24,54 +24,54 @@ stage('build') {
 }
 
 // Right now these tests must run in its own stage, b/c gretty and jacoco don't work together
-stage('integrationTest') {
-    node {
-        try {
-            shgradle "integrationTest testReport -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
-        } finally {
-            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/integrationTest', \
-                reportFiles: 'index.html', reportName: 'Integration test results'
+// stage('integrationTest') {
+//     node {
+//         try {
+//             shgradle "integrationTest testReport -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+//         } finally {
+//             publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/integrationTest', \
+//                 reportFiles: 'index.html', reportName: 'Integration test results'
 
-        }
-    }
-}
+//         }
+//     }
+// }
 
-stage('deploy') {
-    node {
-        util.run {
-            ansiblePlaybook extraVars: [version: buildVersion, ansible_ssh_port: "22", deploy_from_repo: "false"], \
-                installation: 'ansible-yum', inventory: 'ansible/inventory/statistik/fitnesse', playbook: 'ansible/deploy.yml'
-            util.waitForServer('https://fitnesse.inera.nordicmedtest.se/version.jsp')
-        }
-    }
-}
+// stage('deploy') {
+//     node {
+//         util.run {
+//             ansiblePlaybook extraVars: [version: buildVersion, ansible_ssh_port: "22", deploy_from_repo: "false"], \
+//                 installation: 'ansible-yum', inventory: 'ansible/inventory/statistik/fitnesse', playbook: 'ansible/deploy.yml'
+//             util.waitForServer('https://fitnesse.inera.nordicmedtest.se/version.jsp')
+//         }
+//     }
+// }
 
-stage('fitnesse') {
-    node {
-        try {
-            shgradle "fitnesseTest -PfileOutput -PoutputFormat=html \
-                 -Dstatistics.base.url=https://fitnesse.inera.nordicmedtest.se/ -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
-        } finally {
-            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'specifications/', \
-               reportFiles: 'fitnesse-results.html', reportName: 'Fitnesse results'
-        }
-    }
-}
+// stage('fitnesse') {
+//     node {
+//         try {
+//             shgradle "fitnesseTest -PfileOutput -PoutputFormat=html \
+//                  -Dstatistics.base.url=https://fitnesse.inera.nordicmedtest.se/ -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+//         } finally {
+//             publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'specifications/', \
+//                reportFiles: 'fitnesse-results.html', reportName: 'Fitnesse results'
+//         }
+//     }
+// }
 
-stage('protractor') {
-    node {
-        try {
-            sh(script: 'sed -i -r "s,(e.code === \'ECONNRESET\'),e.code === \'ECONNRESET\' || e.code === \'ETIMEDOUT\'," specifications/node_modules/selenium-webdriver/http/index.js')// NMT magic
-            wrap([$class: 'Xvfb']) {
-                shgradle "protractorTests -Dprotractor.env=build-server -Dstatistics.base.url=https://fitnesse.inera.nordicmedtest.se/ \
-                      -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
-            }
-        } finally {
-            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'specifications/reports', \
-                reportFiles: 'index.html', reportName: 'Protractor results'
-        }
-    }
-}
+// stage('protractor') {
+//     node {
+//         try {
+//             sh(script: 'sed -i -r "s,(e.code === \'ECONNRESET\'),e.code === \'ECONNRESET\' || e.code === \'ETIMEDOUT\'," specifications/node_modules/selenium-webdriver/http/index.js')// NMT magic
+//             wrap([$class: 'Xvfb']) {
+//                 shgradle "protractorTests -Dprotractor.env=build-server -Dstatistics.base.url=https://fitnesse.inera.nordicmedtest.se/ \
+//                       -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+//             }
+//         } finally {
+//             publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'specifications/reports', \
+//                 reportFiles: 'index.html', reportName: 'Protractor results'
+//         }
+//     }
+// }
 
 stage('tag and upload') {
     node {
