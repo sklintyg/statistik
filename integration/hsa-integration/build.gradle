@@ -11,6 +11,12 @@ configurations {
     wsdlgen
 }
 
+if (project.hasProperty("codeQuality")) {
+    license {
+        exclude "**/*.java" // This excludes too many files, but "generatedSource/**/*.java" does not work for some reason.
+    }
+}
+
 task wsdl2Java(type: JavaExec) {
     inputs.files wsdlFile
     outputs.dir generatedJavaDir
