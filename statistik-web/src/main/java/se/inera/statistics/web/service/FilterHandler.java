@@ -268,11 +268,12 @@ public class FilterHandler {
             from = LOWEST_ACCEPTED_START_DATE;
             to = highestAcceptedEndDate;
 
-            String formattedToDate = highestAcceptedEndDate.format(formatter);
-            String formattedFromDate = LOWEST_ACCEPTED_START_DATE.format(formatter);
-
+            final String formattedFromDate = originalFrom.format(formatter);
+            final String formattedToDate = originalTo.format(formatter);
+            final String formattedLowestStartDate = LOWEST_ACCEPTED_START_DATE.format(formatter);
+            final String formattedHighestEndDate = highestAcceptedEndDate.format(formatter);
             message = String.format("Det finns ingen statistik innan %s och ingen efter %s, visar statistik mellan %s och %s.",
-                    formattedFromDate, formattedToDate, formattedFromDate, formattedToDate);
+                    formattedFromDate, formattedToDate, formattedLowestStartDate, formattedHighestEndDate);
         } else if (isBefore) {
             if (to.isBefore(LOWEST_ACCEPTED_START_DATE)) {
                 throw new TooEarlyEndDateException();
