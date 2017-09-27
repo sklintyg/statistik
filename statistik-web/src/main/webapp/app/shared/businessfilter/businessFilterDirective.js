@@ -82,6 +82,20 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         scope.geography = newValue.geography;
     });
 
+    // Not very elegant (but working) way of solving INTYG-4505
+    scope.$watch('isFilterCollapsed', function(isCollapsed) {
+        if (isCollapsed) {
+            scope.businessFilter.cachedFromDate = scope.businessFilter.fromDate;
+            scope.businessFilter.cachedToDate = scope.businessFilter.toDate;
+
+            scope.businessFilter.fromDate = null;
+            scope.businessFilter.toDate = null;
+        } else {
+            scope.businessFilter.fromDate = scope.businessFilter.cachedFromDate || scope.businessFilter.fromDate;
+            scope.businessFilter.toDate = scope.businessFilter.cachedToDate || scope.businessFilter.toDate;
+        }
+    });
+
     scope.geographyFilterSelectorData = {
         titleText: messageService.getProperty('lbl.filter.val-av-enheter', null, '', null, true),
         buttonLabelText: 'Enheter',
