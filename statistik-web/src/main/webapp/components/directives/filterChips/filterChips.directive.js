@@ -290,7 +290,7 @@ angular.module('StatisticsApp')
 
                 function calcMaxNumberOfChips() {
                     $timeout(function() {
-                        var filterElement = element.find('.filter-level .col-xs-12');
+                        var filterElement = element.find('.filter-level');
                         var width = filterElement.width();
                         var allChips = $scope.allChips.length;
                         var numberOfChips = getNrChipsThatFits2Rows($scope.allChips, width);

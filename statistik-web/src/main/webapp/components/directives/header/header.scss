@@ -3,6 +3,14 @@ stats-header {
     background-color: #212633;
     color: #fff;
     padding: 5px 0 10px; // don't change this setup. it's needed for IE8 flow on smaller screens to work
+
+    a {
+      color: $stat-header-link-color;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   .header-logo {
@@ -20,6 +28,10 @@ stats-header {
     display: block;
     line-height: 17px;
     padding: 15px 0 0 30px;
+
+    .location {
+      font-weight: bold;
+    }
   }
 
   .headerbox-user {
@@ -37,6 +49,7 @@ stats-header {
     line-height: 18px;
     padding-right: 15px;
     text-align: left;
+    font-weight: bold;
   }
 
   .headerbox-info-text {
