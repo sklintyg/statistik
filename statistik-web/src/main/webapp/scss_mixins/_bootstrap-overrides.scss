@@ -10,8 +10,16 @@ h1, h2, h3 {
   font-weight: 700;
 }
 
+h1 {
+  margin-top: 5px;
+}
+
 h4 {
   color: $stat-header-color;
+}
+
+a {
+  cursor: pointer;
 }
 
 .panel-default .panel-heading {

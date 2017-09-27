@@ -14,9 +14,82 @@ body {
 }
 
 .page-content-wrapper {
+
   @media (min-width: $screen-sm-min) {
     margin-left: 250px;
+    padding-left: 30px;
   }
 }
 
+.content-wrapper {
+  margin-top: 20px;
+}
 
+
+.top-10px-margin {
+  margin-top: 10px;
+}
+
+.filter-link {
+  color: #0b0b0b;
+}
+
+// Adjust the inputbox size and font size for the datepicker
+.input-group-sm.datepicker > .form-control,
+.input-group-sm.datepicker > .input-group-addon,
+.input-group-sm.datepicker > .input-group-btn > .btn {
+  font-size: 14px;
+  height: 34px;
+}
+
+// Change the way the buttons look in the ui.bootstrap.datepicker
+.input-group.datepicker {
+
+  .btn-info.active {
+    background-color: rgb(153, 153, 158);
+    border-color: rgb(153, 153, 158);
+  }
+
+  td .btn-default,
+  th .btn-default {
+    background-image: none;
+    border-color: #fff;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .dropdown-menu {
+    margin-top: 8px;
+
+    &:before,
+    &:after {
+      -webkit-transform: rotate(360deg);
+      border-color: transparent;
+      border-style: solid;
+      content: '';
+      display: inline-block;
+      height: 0;
+      position: absolute;
+      width: 0;
+    }
+
+    &:before {
+      border-bottom-color: #ccc;
+      border-bottom-color: rgba(0, 0, 0, 0.15);
+      border-width: 0 7px 7px;
+      left: 9px;
+      top: -7px;
+    }
+
+    &:after {
+      border-bottom-color: #fff;
+      border-width: 0 6px 6px;
+      left: 10px;
+      top: -6px;
+    }
+  }
+
+  &:focus, .uib-datepicker:focus, .uib-monthpicker:focus {
+    outline: 0;
+  }
+}

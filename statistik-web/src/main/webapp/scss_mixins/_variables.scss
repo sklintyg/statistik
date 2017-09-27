@@ -1,9 +1,13 @@
 // Inera variables
 
+$stat-btn-color: #008391;
 $stat-header-color: #008391;
 $stat-link-color: #006280;
 $stat-link-color-hover: #23527c;
 
+$stat-header-link-color: #28b4c4;
+
+$stat-filter-active: #EA8025;
 
 // Bootstrap variables (Here we override bootstraps default values with MI custom variables defined above)
 $icon-font-path: '../bower_components/bootstrap-sass/assets/fonts/bootstrap/';
@@ -15,8 +19,8 @@ $font-size-h2: 14px;
 
 // Btn
 $btn-info-color:                 #fff;
-$btn-info-bg:                    #008391;
-$btn-info-border:                #008391;
+$btn-info-bg:                    $stat-btn-color;
+$btn-info-border:                $stat-btn-color;
 
 // Link
 $link-color: $stat-link-color;

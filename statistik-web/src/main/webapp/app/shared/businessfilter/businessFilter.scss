@@ -2,7 +2,7 @@
 
   background-clip: padding-box;
   background-color: rgb(247, 247, 249);
-  border-bottom: 15px solid #008391;
+  border-bottom: 15px solid $stat-btn-color;
   border-left: 1px solid #ddd;
   border-radius: 0 0 15px 15px;
   border-right: 1px solid #ddd;
@@ -12,7 +12,7 @@
   padding-top: 10px;
 
   &.filter-active {
-    border-bottom-color: #EA8025;
+    border-bottom-color: $stat-filter-active;
   }
 
   .alert {
@@ -27,9 +27,10 @@
   }
 
   .divider {
-    float: left;
-    margin: 10px 15px;
-    width: calc(100% - 30px);
+    margin: 10px 0;
+    width: 100%;
+    background-color: #e5e5e5;
+    height: 1px;
   }
 
   .bottom-buttons {
@@ -59,7 +60,6 @@
   }
 
   .filter-level {
-    float: left;
     padding: 0 10px;
     width: 100%;
 
@@ -97,5 +97,22 @@
 
   show-message .alert {
     margin-top: 0 !important;
+  }
+}
+
+#show-hide-filter-btn {
+  background-color: $stat-btn-color;
+  border-radius: 0 0 5px 5px;
+  border-top: 0;
+  box-shadow: 0 3px 4px 0 rgba(50, 50, 50, 0.2);
+  color: #fff;
+  padding: 5px 20px 5px 15px;
+
+  &.filterbtnactivefilter {
+    background-color: $stat-filter-active;
+
+    &:hover {
+      background-color: rgba(234, 128, 37, 0.80);
+    }
   }
 }
