@@ -51,7 +51,6 @@
             menuId: 'national-statistic-menu-content',
             navigationId: 'national-statistics-collapse',
             name: 'nav.national-header',
-            hiddenTitle: 'statistics.hidden-header.nationell-navigering',
             show: true,
             subMenu: [{
                 id: 'navOverviewLink',
@@ -122,7 +121,6 @@
             menuId: 'landsting-statistic-menu-content',
             navigationId: 'landsting-statistics-collapse',
             name: 'nav.landsting-header',
-            hiddenTitle: 'statistics.hidden-header.landsting-navigering',
             show: false,
             subMenu: [{
                 checkEnable: function() {
@@ -175,7 +173,6 @@
             menuId: 'business-statistic-menu-content',
             navigationId: 'business-statistics-collapse',
             name: 'nav.business-header',
-            hiddenTitle: 'statistics.hidden-header.business-navigering',
             show: false,
             subMenu: [{
                 id: 'navVerksamhetOversiktLink',
@@ -268,7 +265,6 @@
             menuId: 'about-statistic-menu-content',
             navigationId: 'about-statistics-collapse',
             name: 'nav.about-header',
-            hiddenTitle: 'statistics.hidden-header.about-navigering',
             show: false,
             subMenu: [{
                 id: 'navAboutTjanstLink',

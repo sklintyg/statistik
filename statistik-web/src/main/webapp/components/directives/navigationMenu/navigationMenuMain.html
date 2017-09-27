@@ -1,7 +1,5 @@
 <div class="statistics accordion" id="statistics-menu-accordion">
   <div class="accordion-group" data-ng-repeat="menu in menus" data-ng-if="showMenu(menu)">
-    <h2 class="hidden-header"><span message key="{{menu.hiddenTitle}}"></span></h2>
-
     <div class="accordion-heading statistics-menu"
          tooltip-enable="menu.tooltip"
          uib-tooltip-html="menu.tooltip | messageFilter"
