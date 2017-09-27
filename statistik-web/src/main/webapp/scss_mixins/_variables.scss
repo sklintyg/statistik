@@ -1,5 +1,8 @@
 // Inera variables
 
+$stat-header-color: #008391;
+$stat-link-color: #006280;
+$stat-link-color-hover: #23527c;
 
 
 // Bootstrap variables (Here we override bootstraps default values with MI custom variables defined above)
@@ -14,3 +17,11 @@ $font-size-h2: 14px;
 $btn-info-color:                 #fff;
 $btn-info-bg:                    #008391;
 $btn-info-border:                #008391;
+
+// Link
+$link-color: $stat-link-color;
+$link-hover-color: $stat-link-color-hover;
+$link-hover-decoration: none;
+
+
+$panel-default-heading-bg: #eee;
