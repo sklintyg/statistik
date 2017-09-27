@@ -8,3 +8,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+#sidebar-wrapper {
+  width: 250px;
+  padding-left: 15px;
+}
+
+.page-content-wrapper {
+  @media (min-width: $screen-sm-min) {
+    margin-left: 250px;
+  }
+}
+
+
