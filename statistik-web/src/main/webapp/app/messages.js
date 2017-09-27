@@ -4,11 +4,6 @@ var stMessages = {
     	//generals
         'statistics.header': 'Statistiktjänsten',
         'statistics.header.extra-text': 'Statistiktjänst för ordinerad sjukskrivning',
-        'statistics.hidden-header.sidans-huvudnavigering': 'Sidans huvudnavigering',
-        'statistics.hidden-header.nationell-navigering': 'Navigering för nationell statistik',
-        'statistics.hidden-header.landsting-navigering': 'Navigering för landstingsstatistik',
-        'statistics.hidden-header.business-navigering': 'Navigering för verksamhetsstatistik',
-        'statistics.hidden-header.about-navigering': 'Navigering för information om tjänsten',
 
         //navigation
         'nav.national-header': 'Nationell statistik',
