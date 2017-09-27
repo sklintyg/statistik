@@ -157,4 +157,21 @@ public class Icd10Test {
         //Then
 
     }
+
+
+    @Test
+    public void testNumberOfKapitel() throws Exception {
+        // In INTYG-4512 it was noticed that he number of kapitels mentioned in the information text with
+        // key "help.nationell.diagnosgroup" did not match the actual number of kapitels. I have added this
+        // unit test so that it will be noticed automatically if the number of kapitels changes, and the text
+        // therefore should be updated again. In other words, if this test fails, please update the number in
+        // the info text with key "help.nationell.diagnosgroup" (in messages.js) and then also update this
+        // test to make it pass again.
+
+        //When
+        final List<Kapitel> kapitels = icd10.getKapitel(false);
+
+        //Then
+        assertEquals(22, kapitels.size());
+    }
 }
