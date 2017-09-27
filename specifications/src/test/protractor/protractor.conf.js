@@ -30,6 +30,7 @@ var screenshotReporter = new HtmlScreenshotReporter({
 });
 
 exports.config = {
+    directConnect: true,
     rootElement: '#ng-app',
 
     seleniumAddress: require('./environment.js').envConfig.SELENIUM_ADDRESS,
@@ -41,7 +42,7 @@ exports.config = {
     capabilities: {
         //shardTestFiles: true,
         //maxInstances: 3,
-        'browserName': 'firefox',
+        'browserName': 'chrome',
         marionette: false
     },
 
