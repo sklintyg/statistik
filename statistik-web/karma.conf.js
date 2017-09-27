@@ -35,6 +35,7 @@ module.exports = function(config) {
             // endbower
             'src/main/webapp/bower_components/angular-mocks/angular-mocks.js',
             'src/main/webapp/app/app.main.test.js',
+            'src/main/webapp/app/app.constant.test.js',
             'src/main/webapp/app/**/*.js',
             'src/main/webapp/components/**/*.js',
             'src/main/webapp/app/**/*.html',
@@ -43,7 +44,8 @@ module.exports = function(config) {
 
         // list of files / patterns to exclude
         exclude: [
-            'src/main/webapp/app/app.main.js'
+            'src/main/webapp/app/app.main.js',
+            'src/main/webapp/app/app.constant.js'
         ],
 
         preprocessors: {

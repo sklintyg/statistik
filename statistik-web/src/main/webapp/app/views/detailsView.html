@@ -1,212 +1,209 @@
 <div id="chart-content" class="highlight-content">
   <div class="clearfix">
-        <span class="pull-left right-2px-padding">
-          <h1 class="national-statistic-h1" id="reportHeader" data-ng-bind="subTitle"></h1>
-          <div class="sub-title-period">{{subTitlePeriod}}</div>
-        </span>
+    <span class="pull-left right-2px-padding">
+      <h1 class="national-statistic-h1" id="reportHeader" data-ng-bind="subTitle"></h1>
+      <div class="sub-title-period">{{subTitlePeriod}}</div>
+    </span>
   </div>
 
-<div class="row margin-bottom" style="position:relative">
-  <div class="col-xs-12 col-md-10">
+  <div class="row margin-bottom" style="position:relative">
+    <div class="col-xs-12 col-md-10">
 
+      <show-help-text texts="chartFootnotes"></show-help-text>
 
+      <show-filter-list diagnos-filters="activeDiagnosFilters"
+                        enhets-filters="activeEnhetsFilters"
+                        sjukskrivningslangds-filters="activeSjukskrivningslangdsFilters"
+                        aldersgrupp-filters="activeAldersgruppFilters"></show-filter-list>
 
-    <show-help-text texts="chartFootnotes"></show-help-text>
+      <!-- Start detailsOptions if any -->
+      <div data-ng-if="showDiagnosisSelector" class="top-20px-margin compare-diagnosis">
 
-    <show-filter-list diagnos-filters="activeDiagnosFilters"
-                      enhets-filters="activeEnhetsFilters"
-                      sjukskrivningslangds-filters="activeSjukskrivningslangdsFilters"
-                      aldersgrupp-filters="activeAldersgruppFilters"></show-filter-list>
+        <label class="dropdown-label" message key="comparediagnoses.choose-level"></label><br>
+        <div class="radio">
+          <label>
+            <input id="comparediagnoses-level-category" type="radio" data-ng-model="diagnoses.showCodeLevel" data-ng-value="diagnoses.category" />
+            <span class="radio-text" message key="comparediagnoses.level.category"></span>
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input id="comparediagnoses-level-code" type="radio" data-ng-model="diagnoses.showCodeLevel" data-ng-value="diagnoses.code" />
+            <span class="radio-text" message key="comparediagnoses.level.code"></span>
+          </label>
+        </div>
 
-    <!-- Start detailsOptions if any -->
-    <div data-ng-if="showDiagnosisSelector" class="top-20px-margin compare-diagnosis">
-
-      <label class="dropdown-label" message key="comparediagnoses.choose-level"></label><br>
-      <div class="radio">
-        <label>
-          <input id="comparediagnoses-level-category" type="radio" data-ng-model="diagnoses.showCodeLevel" data-ng-value="diagnoses.category" />
-          <span class="radio-text" message key="comparediagnoses.level.category"></span>
-        </label>
+        <tree-multi-selector menu-options="diagnosisTreeFilter.diagnosisOptionsTree"
+                             done-clicked="diagnosisSelected"
+                             on-open="diagnosisTreeFilter.setPreselectedFilter"
+                             button-icon="fa-stethoscope"
+                             max-depth="diagnoses.showCodeLevel ? 0 : 3"
+                             text-data="diagnosisSelectorData"
+                             select-all-text-key="lbl.filter.val-av-diagnoser.select-all"
+                             search-hint-text-key="lbl.filter.val-av-diagnoser.search.hint"
+                             ignore-chars-in-search="."
+                             sidebar-state="{collapsed: true}"
+                             min-selections="1">
+        </tree-multi-selector>
       </div>
-      <div class="radio">
-        <label>
-          <input id="comparediagnoses-level-code" type="radio" data-ng-model="diagnoses.showCodeLevel" data-ng-value="diagnoses.code" />
-          <span class="radio-text" message key="comparediagnoses.level.code"></span>
-        </label>
+
+      <diagnos-selection show-details-options="showDetailsOptions"
+                         details-options="detailsOptions"
+                         selected-details-option="selectedDetailsOption"
+                         show-details-options2="showDetailsOptions2"
+                         details-options2="detailsOptions2"
+                         selected-details-option2="selectedDetailsOption2"
+                         show-details-options3="showDetailsOptions3"
+                         details-options3="detailsOptions3"
+                         selected-details-option3="selectedDetailsOption3"
+                         query-string="queryString">
+      </diagnos-selection>
+
+
+      <div class="row" data-ng-class="{margin_top_button_group: showDetailsOptions}">
+        <!-- Button group for viewing different series -->
+        <div class="col-md-12 col-lg-9" ng-repeat="resultMessage in resultMessageList">
+          <show-message type="resultMessage.type" severity="resultMessage.severity"
+                        text="resultMessage.message"></show-message>
+        </div>
+
       </div>
 
-      <tree-multi-selector menu-options="diagnosisTreeFilter.diagnosisOptionsTree"
-                           done-clicked="diagnosisSelected"
-                           on-open="diagnosisTreeFilter.setPreselectedFilter"
-                           button-icon="fa-stethoscope"
-                           max-depth="diagnoses.showCodeLevel ? 0 : 3"
-                           text-data="diagnosisSelectorData"
-                           select-all-text-key="lbl.filter.val-av-diagnoser.select-all"
-                           search-hint-text-key="lbl.filter.val-av-diagnoser.search.hint"
-                           ignore-chars-in-search="."
-                           sidebar-state="{collapsed: true}"
-                           min-selections="1">
-      </tree-multi-selector>
     </div>
 
-    <diagnos-selection show-details-options="showDetailsOptions"
-                       details-options="detailsOptions"
-                       selected-details-option="selectedDetailsOption"
-                       show-details-options2="showDetailsOptions2"
-                       details-options2="detailsOptions2"
-                       selected-details-option2="selectedDetailsOption2"
-                       show-details-options3="showDetailsOptions3"
-                       details-options3="detailsOptions3"
-                       selected-details-option3="selectedDetailsOption3"
-                       query-string="queryString">
-    </diagnos-selection>
+    <div id="print-button-col" class="col-xs-12 col-md-2">
+      <!-- PRINT BUTTON GROUP -->
+      <div uib-dropdown>
+        <button class="multiselect dropdown-toggle btn btn-default pull-right" data-ng-disabled="!exportEnabled"
+                uib-dropdown-toggle>
+          <span message key="dropdown.val.rapport"></span>
+          <span class="caret"></span>
+        </button>
 
-
-    <div class="row" data-ng-class="{margin_top_button_group: showDetailsOptions}">
-      <!-- Button group for viewing different series -->
-      <div class="col-md-12 col-lg-9" ng-repeat="resultMessage in resultMessageList">
-        <show-message type="resultMessage.type" severity="resultMessage.severity"
-                      text="resultMessage.message"></show-message>
-      </div>
-
-    </div>
-
-  </div>
-  <div id="print-button-col" class="col-xs-12 col-md-2">
-    <!-- PRINT BUTTON GROUP -->
-    <div uib-dropdown>
-      <button class="multiselect dropdown-toggle btn btn-default pull-right" data-ng-disabled="!exportEnabled"
-              uib-dropdown-toggle>
-        <span message key="dropdown.val.rapport"></span>
-        <span class="caret"></span>
-      </button>
-
-      <ul class="dropdown-menu detail-view-choice-dropdown dropdown-menu-right" uib-dropdown-menu role="menu">
-        <li><a data-ng-click="printPdf()"><img src="/assets/images/dropdown-icons/pdf.png" />
-          <span message key="dropdown.val.skrivut-pdf"></span></a>
-        </li>
-        <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id, chartContainer.gender)"><img
-            src="/assets/images/dropdown-icons/png.png" /><span message
+        <ul class="dropdown-menu detail-view-choice-dropdown dropdown-menu-right" uib-dropdown-menu role="menu">
+          <li><a data-ng-click="printPdf()"><img src="/assets/images/dropdown-icons/pdf.png" />
+            <span message key="dropdown.val.skrivut-pdf"></span></a>
+          </li>
+          <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id, chartContainer.gender)"><img
+              src="/assets/images/dropdown-icons/png.png" /><span message
                                                                   key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span
-            message key="dropdown.val.spara-diagram-bild-2"></span></a></li>
-        <li><a data-ng-href="{{exportTableUrl}}" target="_self"><img
-            src="/assets/images/dropdown-icons/xlsx.png" /><span message key="dropdown.val.spara-excel"></span></a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div data-ng-if="generatingPdf" class="spinner-detail row">
-    <div class="col-md-12 col-lg-4 col-md-offset-4" spinner label="Skapar pdf" show-spinner="generatingPdf"></div>
-  </div>
-</div><!-- Start ingress -->
-<div dataerrorview show-error="dataLoadingError" error-page-url="errorPageUrl">
-  <div spinner label="{{spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading && !resultMessageList">
-
-    <!-- Start graph -->
-    <div class="collapsible-panel-header">
-      <div role="tab" class="panel-heading">
-        <h4 class="panel-title">
-
-          <span message key="lbl.diagram" class="accordion-toggle"
-                ng-click="status.isChartCollapsed = !status.isChartCollapsed"></span>
-
-          <span class="pull-right">
-                        <!-- chart type selection -->
-                          <span class="select-chart-type" data-ng-if="isVerksamhetShowing">
-                            <div class="select-chart-type-tidsserie">
-                              <span message key="lbl.diagramtyp-tidsserie" class="hidden-xs hidden-sm"></span>
-                              <button class="btn btn-xs btn-default" ng-class="{'active': activeChartType === 'line'}"
-                                      data-ng-click="switchChartType('line')" uib-tooltip="Linjediagram"
-                                      tooltip-placement="bottom" tooltip-popup-delay="1000">
-                                <span class="chart-icon chart-icon-line"></span>
-                              </button>
-
-                              <button class="btn btn-xs btn-default" ng-class="{'active': activeChartType === 'area'}"
-                                      data-ng-click="switchChartType('area')" uib-tooltip="Ytdiagram"
-                                      tooltip-placement="bottom" tooltip-popup-delay="1000">
-                                <span class="chart-icon chart-icon-area"></span>
-                              </button>
-
-                              <button class="btn btn-xs btn-default"
-                                      ng-class="{'active': activeChartType === 'percentarea'}"
-                                      data-ng-click="switchChartType('percentarea')"
-                                      uib-tooltip="Procentuellt ytdiagram" tooltip-placement="bottom"
-                                      tooltip-popup-delay="1000">
-                                <span class="chart-icon chart-icon-percentarea"></span>
-                              </button>
-                            </div>
-
-                            <div class="select-chart-type-tvarsnitt">
-                              <span message key="lbl.diagramtyp-tvarsnitt" class="hidden-xs hidden-sm"></span>
-                              <button class="btn btn-xs btn-default" ng-class="{'active': activeChartType === 'column'}"
-                                      data-ng-click="switchChartType('column')" uib-tooltip="Stapeldiagram"
-                                      tooltip-placement="bottom" tooltip-popup-delay="1000">
-                                <span class="chart-icon chart-icon-column"></span>
-                              </button>
-                            </div>
-                          </span>
-
-
-
-                        <i class="glyphicon pull-right accordion-toggle"
-                           ng-click="status.isChartCollapsed = !status.isChartCollapsed"
-                           ng-class="{'collapsible-panel-min-icon': !status.isChartCollapsed, 'collapsible-panel-expand-icon': status.isChartCollapsed}"
-                           uib-tooltip-html="status.isChartCollapsed ? 'lbl.visa-diagram': 'lbl.dolj-diagram' | messageFilter"
-                           tooltip-class="popover-content" tooltip-append-to-body="true" tooltip-trigger="mouseenter">
-                        </i>
-                </span>
-        </h4>
+              message key="dropdown.val.spara-diagram-bild-2"></span></a></li>
+          <li><a data-ng-href="{{exportTableUrl}}" target="_self"><img
+              src="/assets/images/dropdown-icons/xlsx.png" /><span message key="dropdown.val.spara-excel"></span></a>
+          </li>
+        </ul>
       </div>
     </div>
-    <div class="collapsible-panel-body" uib-collapse="status.isChartCollapsed">
-      <div class="row">
-        <div data-ng-repeat="chartContainer in chartContainers"
-             data-ng-class="{'col-xs-12': chartContainers.length == 1, 'col-lg-6': chartContainers.length == 2}"
-             class="col-xs-12">
-          <div class="chart-page-chart" id="{{chartContainer.id}}" data-ng-style="chartStyle"></div>
+    <div data-ng-if="generatingPdf" class="spinner-detail row">
+      <div class="col-md-12 col-lg-4 col-md-offset-4" spinner label="Skapar pdf" show-spinner="generatingPdf"></div>
+    </div>
+  </div>
+
+  <div dataerrorview show-error="dataLoadingError" error-page-url="errorPageUrl">
+    <div spinner label="{{::spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading && !resultMessageList">
+
+      <div class="collapsible-panel-header">
+        <div role="tab" class="panel-heading">
+          <h4 class="panel-title">
+
+            <span message key="lbl.diagram" class="accordion-toggle"
+                  ng-click="status.isChartCollapsed = !status.isChartCollapsed"></span>
+
+            <span class="pull-right">
+              <!-- chart type selection -->
+              <span class="select-chart-type" data-ng-if="isVerksamhetShowing">
+                <div class="select-chart-type-tidsserie">
+                  <span message key="lbl.diagramtyp-tidsserie" class="hidden-xs hidden-sm"></span>
+                  <button class="btn btn-xs btn-default" ng-class="{'active': activeChartType === 'line'}"
+                          data-ng-click="switchChartType('line')" uib-tooltip="Linjediagram"
+                          tooltip-placement="bottom" tooltip-popup-delay="1000">
+                    <span class="chart-icon chart-icon-line"></span>
+                  </button>
+
+                  <button class="btn btn-xs btn-default" ng-class="{'active': activeChartType === 'area'}"
+                          data-ng-click="switchChartType('area')" uib-tooltip="Ytdiagram"
+                          tooltip-placement="bottom" tooltip-popup-delay="1000">
+                    <span class="chart-icon chart-icon-area"></span>
+                  </button>
+
+                  <button class="btn btn-xs btn-default"
+                          ng-class="{'active': activeChartType === 'percentarea'}"
+                          data-ng-click="switchChartType('percentarea')"
+                          uib-tooltip="Procentuellt ytdiagram" tooltip-placement="bottom"
+                          tooltip-popup-delay="1000">
+                    <span class="chart-icon chart-icon-percentarea"></span>
+                  </button>
+                </div>
+
+                <div class="select-chart-type-tvarsnitt">
+                  <span message key="lbl.diagramtyp-tvarsnitt" class="hidden-xs hidden-sm"></span>
+                  <button class="btn btn-xs btn-default" ng-class="{'active': activeChartType === 'column'}"
+                          data-ng-click="switchChartType('column')" uib-tooltip="Stapeldiagram"
+                          tooltip-placement="bottom" tooltip-popup-delay="1000">
+                    <span class="chart-icon chart-icon-column"></span>
+                  </button>
+                </div>
+              </span>
+
+              <i class="glyphicon pull-right accordion-toggle"
+                 ng-click="status.isChartCollapsed = !status.isChartCollapsed"
+                 ng-class="{'collapsible-panel-min-icon': !status.isChartCollapsed, 'collapsible-panel-expand-icon': status.isChartCollapsed}"
+                 uib-tooltip-html="status.isChartCollapsed ? 'lbl.visa-diagram': 'lbl.dolj-diagram' | messageFilter"
+                 tooltip-class="popover-content" tooltip-append-to-body="true" tooltip-trigger="mouseenter">
+              </i>
+            </span>
+          </h4>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="btn-group legend-btn-group" id="chartlegends">
-              <span data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"
-                    data-ng-show="showInLegend($index)">
-                <label id="legend-label" style="white-space: nowrap;" legend-height>
-                  <input type="checkbox" checked="" class="detail-checkbox"
-                         data-ng-click="toggleSeriesVisibility($index)" style="cursor: pointer; cursor: hand;" />
-                  <span class="legend-color-square"
-                        data-ng-attr-style="background-color: {{seriesData.color}}!important"></span>
-                  <span class="legend-name">{{seriesData.name}}</span>
-                </label>
-              </span>
+      <div class="collapsible-panel-body" uib-collapse="status.isChartCollapsed">
+        <div class="row">
+          <div data-ng-repeat="chartContainer in chartContainers"
+               data-ng-class="{'col-lg-6': chartContainers.length == 2}"
+               class="col-xs-12">
+            <div class="chart-page-chart" id="{{::chartContainer.id}}" data-ng-style="chartStyle"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="btn-group legend-btn-group" id="chartlegends">
+                <span data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6"
+                      data-ng-if="showInLegend($index)">
+                  <label id="legend-label" style="white-space: nowrap;" legend-height>
+                    <input type="checkbox" checked="" class="detail-checkbox"
+                           data-ng-click="toggleSeriesVisibility($index)" style="cursor: pointer;" />
+                    <span class="legend-color-square"
+                          data-ng-attr-style="background-color: {{::seriesData.color}}!important"></span>
+                    <span class="legend-name">{{::seriesData.name}}</span>
+                  </label>
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Starting data-table -->
+      <div class="browserTable">
+        <div class="row">
+          <div id="chart-data-table" class="col-xs-12 chart-table">
+            <uib-accordion id="accordion2" class="collapsible-panel-header">
+              <uib-accordion-group is-open="status.isTableOpen">
+                <uib-accordion-heading>
+                  <span message key="lbl.tabell"></span>
+                  <i class="pull-right glyphicon"
+                     ng-class="{'collapsible-panel-min-icon': status.isTableOpen, 'collapsible-panel-expand-icon': !status.isTableOpen}"
+                     uib-tooltip-html="status.isTableOpen ? 'lbl.dolj-tabell': 'lbl.visa-tabell' | messageFilter"
+                     tooltip-class="popover-content" tooltip-append-to-body="true" tooltip-trigger="mouseenter">
+                  </i>
+
+                </uib-accordion-heading>
+                <stat-scroll-table header-rows="headerrows" rows="rows"></stat-scroll-table>
+              </uib-accordion-group>
+            </uib-accordion>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- Starting data-table -->
-    <div class="browserTable">
-      <div class="row">
-        <div id="chart-data-table" class="col-xs-12 chart-table">
-          <uib-accordion id="accordion2" class="collapsible-panel-header">
-            <uib-accordion-group is-open="status.isTableOpen">
-              <uib-accordion-heading>
-                <span message key="lbl.tabell"></span>
-                <i class="pull-right glyphicon"
-                   ng-class="{'collapsible-panel-min-icon': status.isTableOpen, 'collapsible-panel-expand-icon': !status.isTableOpen}"
-                   uib-tooltip-html="status.isTableOpen ? 'lbl.dolj-tabell': 'lbl.visa-tabell' | messageFilter"
-                   tooltip-class="popover-content" tooltip-append-to-body="true" tooltip-trigger="mouseenter">
-                </i>
-
-              </uib-accordion-heading>
-              <stat-scroll-table header-rows="headerrows" rows="rows"></stat-scroll-table>
-            </uib-accordion-group>
-          </uib-accordion>
-        </div>
-      </div>
-    </div>
   </div>
-</div></div>
-
 </div>
