@@ -1,5 +1,4 @@
 apply plugin: 'war'
-apply plugin: 'idea'
 apply plugin: 'org.akhikhl.gretty'
 apply plugin: 'com.moowork.grunt'
 
@@ -87,7 +86,7 @@ dependencies {
 
     compile "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${monitoringSchemaVersion}"
     compile "se.inera.intyg.infra:dynamiclink:${infraVersion}"
-    
+
     compile "org.springframework.security.extensions:spring-security-saml2-core:${springSecuritySamlVersion}"
     compile "xml-apis:xml-apis:${xmlApisVersion}"
     compile "org.springframework:spring-webmvc:${springContextVersion}"
@@ -98,7 +97,7 @@ dependencies {
     compile "org.apache.poi:poi-ooxml:${poiVersion}"
     compile "xalan:xalan:${xalanVersion}"
     compile "com.github.ziplet:ziplet:${zipletVersion}"
- 
+
     compileOnly "javax.servlet:javax.servlet-api:${javaxServletVersion}"
 
     gretty "com.h2database:h2:${h2Version}"
