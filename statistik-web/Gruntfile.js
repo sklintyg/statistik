@@ -106,7 +106,7 @@ module.exports = function(grunt) {
             },
             sass: {
                 files: [
-                    '<%= config.client %>/{app,components}/**/*.{scss,sass}'],
+                    '<%= config.client %>/{app,components,scss_mixins}/**/*.{scss,sass}'],
                 tasks: ['sass', 'postcss']
             },
             gruntfile: {

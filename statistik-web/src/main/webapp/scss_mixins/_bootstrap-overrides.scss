@@ -4,3 +4,22 @@
   box-shadow: none;
   border-color: $btn-info-bg;
 }
+
+h1, h2, h3 {
+  color: $stat-header-color;
+  font-weight: 700;
+}
+
+h4 {
+  color: $stat-header-color;
+}
+
+.panel-default .panel-heading {
+  background-image: none;
+  filter: none;
+
+  .panel-title {
+    color: $stat-header-color;
+    font-size: 14px;
+  }
+}
