@@ -4,7 +4,7 @@
 </div>
 
 <div class="modal-body row">
-  <div id="modal-body-left"  ng-class="{'border-right col-xs-8 ': !directiveScope.sidebarState.collapsed, 'col-xs-12': directiveScope.sidebarState.collapsed }">
+  <div class="modal-body-left"  ng-class="{'border-right col-xs-8 ': !directiveScope.sidebarState.collapsed, 'col-xs-12': directiveScope.sidebarState.collapsed }">
     <form>
       <div class="modal-list">
         <div class="select-all-items">
@@ -47,7 +47,7 @@
       </div>
     </form>
   </div>
-  <div id="modal-body-right" class="col-xs-4" data-ng-if="!directiveScope.sidebarState.collapsed">
+  <div class="col-xs-4 modal-body-right" data-ng-if="!directiveScope.sidebarState.collapsed">
     <div id="verksamhet-uib-collapser">
       <h2><span message key="lbl.filter.verksamhet.quickselection.title"/></h2>
       <ul class="verksamhets-typer-list">
