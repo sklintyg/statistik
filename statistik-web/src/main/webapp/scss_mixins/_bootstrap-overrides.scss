@@ -5,6 +5,14 @@
   border-color: $btn-info-bg;
 }
 
+.btn-link:focus, .btn-link:hover {
+  text-decoration: underline;
+}
+
+.btn span.caret {
+  margin-left: 10px;
+}
+
 h1, h2, h3 {
   color: $stat-header-color;
   font-weight: 700;
@@ -31,3 +39,35 @@ a {
     font-size: 14px;
   }
 }
+
+.dropdown-menu > li >a {
+  max-width: 490px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.overflow-menu-options {
+  max-height: 255px;
+  max-width: 600px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.dropdown-menu > .active > a {
+  background: $dropdown-link-active-bg;
+}
+
+.dropdown-menu li a:hover {
+  background: $dropdown-link-hover-bg;
+}
+
+.multiselect-container > li > a {
+
+  padding-top: 0;
+  padding-bottom: 0;
+
+  > label.checkbox {
+    padding: 5px 20px;
+  }
+}
+

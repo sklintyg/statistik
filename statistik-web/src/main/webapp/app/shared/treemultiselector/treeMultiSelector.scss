@@ -17,14 +17,32 @@
       list-style-type: none;
     }
 
+    .modal-body-left {
+      padding: 10px;
+    }
+
+    .modal-body-right {
+      h2 {
+        color: #333;
+      }
+    }
+
+    .border-right {
+      border-right: 1px solid #ddd;
+    }
+
     .modal-list {
       padding: 0;
 
       input[type=checkbox] {
         cursor: pointer;
+        width: 18px;
+        height: 18px;
       }
 
       .select-all-items {
+        text-align: right;
+
         label {
           cursor: pointer;
           font-weight: bold;
