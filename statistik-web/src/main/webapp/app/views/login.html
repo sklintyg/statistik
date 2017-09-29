@@ -8,7 +8,7 @@
   <p data-ng-if="loggedInWithoutStatistikuppdrag" class="alert alert-danger">
     <strong message key="login.alert-danger"></strong> <span message key="login.alert-info.behorighet"></span>
   </p>
-  <p data-ng-if="loginTimedOut" class="alert alert-info">
+  <p data-ng-if="loginTimedOut && !loggedInWithoutStatistikuppdrag" class="alert alert-info">
     <strong message key="login.alert-info"></strong> <span message key="login.alert-inaktivitet"></span>
   </p>
 
