@@ -1,4 +1,4 @@
-<div id="chart-content" class="highlight-content">
+<div id="chart-content" class="highlight-content details-view">
   <div class="clearfix">
     <span class="pull-left right-2px-padding">
       <h1 class="national-statistic-h1" id="reportHeader" data-ng-bind="subTitle"></h1>
@@ -6,7 +6,7 @@
     </span>
   </div>
 
-  <div class="row margin-bottom" style="position:relative">
+  <div class="row detail-toolbar">
     <div class="col-xs-12 col-md-10">
 
       <show-help-text texts="chartFootnotes"></show-help-text>
@@ -17,9 +17,9 @@
                         aldersgrupp-filters="activeAldersgruppFilters"></show-filter-list>
 
       <!-- Start detailsOptions if any -->
-      <div data-ng-if="showDiagnosisSelector" class="top-20px-margin compare-diagnosis">
+      <div data-ng-if="showDiagnosisSelector" class="compare-diagnosis">
 
-        <label class="dropdown-label" message key="comparediagnoses.choose-level"></label><br>
+        <label message key="comparediagnoses.choose-level"></label><br>
         <div class="radio">
           <label>
             <input id="comparediagnoses-level-category" type="radio" data-ng-model="diagnoses.showCodeLevel" data-ng-value="diagnoses.category" />
@@ -166,42 +166,37 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12">
-            <div class="btn-group legend-btn-group" id="chartlegends">
-                <span data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6"
-                      data-ng-if="showInLegend($index)">
-                  <label id="legend-label" style="white-space: nowrap;" legend-height>
-                    <input type="checkbox" checked="" class="detail-checkbox"
-                           data-ng-click="toggleSeriesVisibility($index)" style="cursor: pointer;" />
-                    <span class="legend-color-square"
-                          data-ng-attr-style="background-color: {{::seriesData.color}}!important"></span>
-                    <span class="legend-name">{{::seriesData.name}}</span>
-                  </label>
-                </span>
+          <div class="col-xs-12"  id="chartlegends">
+            <div data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6" data-ng-if="showInLegend($index)">
+              <label class="legend-label" legend-height>
+                <input type="checkbox" checked="" class="detail-checkbox"
+                       data-ng-click="toggleSeriesVisibility($index)" style="cursor: pointer;" />
+                <span class="legend-color-square"
+                      data-ng-attr-style="background-color: {{::seriesData.color}}!important"></span>
+                <span class="legend-name">{{::seriesData.name}}</span>
+              </label>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Starting data-table -->
-      <div class="browserTable">
-        <div class="row">
-          <div id="chart-data-table" class="col-xs-12 chart-table">
-            <uib-accordion id="accordion2" class="collapsible-panel-header">
-              <uib-accordion-group is-open="status.isTableOpen">
-                <uib-accordion-heading>
-                  <span message key="lbl.tabell"></span>
-                  <i class="pull-right glyphicon"
-                     ng-class="{'collapsible-panel-min-icon': status.isTableOpen, 'collapsible-panel-expand-icon': !status.isTableOpen}"
-                     uib-tooltip-html="status.isTableOpen ? 'lbl.dolj-tabell': 'lbl.visa-tabell' | messageFilter"
-                     tooltip-class="popover-content" tooltip-append-to-body="true" tooltip-trigger="mouseenter">
-                  </i>
+      <div class="row">
+        <div id="chart-data-table" class="col-xs-12 chart-table">
+          <uib-accordion class="collapsible-panel-header">
+            <uib-accordion-group is-open="status.isTableOpen">
+              <uib-accordion-heading>
+                <span message key="lbl.tabell"></span>
+                <i class="pull-right glyphicon"
+                   ng-class="{'collapsible-panel-min-icon': status.isTableOpen, 'collapsible-panel-expand-icon': !status.isTableOpen}"
+                   uib-tooltip-html="status.isTableOpen ? 'lbl.dolj-tabell': 'lbl.visa-tabell' | messageFilter"
+                   tooltip-class="popover-content" tooltip-append-to-body="true" tooltip-trigger="mouseenter">
+                </i>
 
-                </uib-accordion-heading>
-                <stat-scroll-table header-rows="headerrows" rows="rows"></stat-scroll-table>
-              </uib-accordion-group>
-            </uib-accordion>
-          </div>
+              </uib-accordion-heading>
+              <stat-scroll-table header-rows="headerrows" rows="rows"></stat-scroll-table>
+            </uib-accordion-group>
+          </uib-accordion>
         </div>
       </div>
     </div>

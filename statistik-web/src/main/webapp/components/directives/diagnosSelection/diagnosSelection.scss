@@ -1,3 +1,17 @@
 diagnos-selection {
   display: block;
+
+  .dropdown-label {
+    font-size: 12px;
+  }
+
+  .btn-group {
+    margin-bottom: 15px;
+  }
+
+  .row:last-child {
+    .btn-group {
+      margin-bottom: 0;
+    }
+  }
 }

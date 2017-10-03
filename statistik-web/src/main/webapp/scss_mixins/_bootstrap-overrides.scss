@@ -30,6 +30,11 @@ a {
   cursor: pointer;
 }
 
+p {
+  line-height: 1.2;
+  text-align: justify;
+}
+
 .panel-default .panel-heading {
   background-image: none;
   filter: none;
@@ -71,3 +76,29 @@ a {
   }
 }
 
+.table-striped {
+  > tbody > tr:nth-of-type(even) {
+    background-color: $table-bg-even;
+  }
+}
+
+.table-hover {
+  > tbody {
+    > tr:hover,
+    > tr.tr-hover {
+      background-color: $table-bg-hover;
+    }
+  }
+}
+
+.tooltip.popover-content .tooltip-inner {
+  padding: 15px 20px;
+}
+
+.popover-content,
+.tooltip.popover-content .tooltip-inner {
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 20px;
+  text-align: left;
+}
