@@ -57,7 +57,7 @@ var ReportPage = function() {
     };
 
     this.getTableRows = function() {
-        return element.all(by.css('#chart-data-table .scrolling .datatable tr'));
+        return element.all(by.css('#chart-data-table .scrolling tr'));
 
         /*return all.then(function(tablerows) {
             return tablerows.map(function(tr) {
@@ -71,7 +71,7 @@ var ReportPage = function() {
     };
 
     this.getTableRowsLabel = function() {
-        return element.all(by.css('#chart-data-table .datatable tbody .headcol'));
+        return element.all(by.css('#chart-data-table tbody .headcol'));
     };
 };
 

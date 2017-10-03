@@ -27,9 +27,11 @@
 // Component styles are injected through grunt
 // injector
 @import 'css/global-modifiers.scss';
+@import 'css/highcharts.scss';
 @import 'shared/businessfilter/businessFilter.scss';
 @import 'shared/treemultiselector/treeMultiSelector.scss';
 @import 'views/about/about.scss';
+@import 'views/detailsView.scss';
 @import 'directives/angular-dropzone/dropzone.scss';
 @import 'directives/diagnosSelection/diagnosSelection.scss';
 @import 'directives/filterChips/filterChips.scss';
