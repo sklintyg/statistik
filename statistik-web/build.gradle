@@ -1,6 +1,7 @@
 apply plugin: 'war'
 apply plugin: 'org.akhikhl.gretty'
 apply plugin: 'com.moowork.grunt'
+apply plugin: 'idea'
 
 gretty {
     def baseUrl = 'http://localhost:8080'
@@ -22,6 +23,16 @@ gretty {
     }
 
     logbackConfigFile = "${projectDir}/src/main/resources/logback.xml"
+    scanInterval = 0
+    debugPort = 5011
+    debugSuspend = false
+    fastReload = true
+    inplaceMode = 'hard'
+    recompileOnSourceChange = false
+    reloadOnClassChange = false
+    reloadOnConfigChange = false
+    reloadOnLibChange = false
+
     jvmArgs = [
             jvmArgSpringProfiles,
             '-Dstatistics.base.url=' + baseUrl,
@@ -30,14 +41,6 @@ gretty {
             '-Dstatistics.credentials.file=' + projectDir + '/src/main/resources/dev-credentials.properties',
             '-Dstatistics.resources.folder=' + projectDir + '/../src/main/resources'
     ]
-    debugSuspend = false
-    recompileOnSourceChange = false
-    reloadOnClassChange = false
-    reloadOnConfigChange = false
-    reloadOnLibChange = false
-    fastReload = true
-    inplaceMode = 'hard'
-    scanInterval = 0
 }
 
 idea {
