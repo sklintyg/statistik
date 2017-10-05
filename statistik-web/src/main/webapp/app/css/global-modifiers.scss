@@ -191,3 +191,10 @@ input[type=radio] {
 .left-2px-padding {
   padding-left: 2px;
 }
+
+.spinner-overview .stat-spinner .spinner,
+.modal-dialog .stat-spinner .spinner,
+.spinner-detail .stat-spinner .spinner {
+  margin: 0;
+  position: static;
+}
