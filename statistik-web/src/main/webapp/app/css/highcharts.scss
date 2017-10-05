@@ -1,5 +1,6 @@
 .highcharts-container {
   margin: 0 auto;
+  overflow: visible !important;
 
   .tooltip-style {
     background: #fff;
@@ -12,5 +13,9 @@
     .title {
       font-size: 11px;
     }
+  }
+
+  svg {
+    overflow: visible !important;
   }
 }

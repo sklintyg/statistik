@@ -2,7 +2,7 @@
   <div class="statistics-menu-group" data-ng-repeat="menu in menus" data-ng-if="showMenu(menu)">
     <div class="statistics-menu-list"
          id="{{::menu.id}}"
-         data-ng-class="{active: menu.show, disabled: !menu.subMenu}"
+         data-ng-class="{active: menu.show, collapsed: !menu.show, disabled: !menu.subMenu}"
          data-ng-click="toggleMenu(menu)"
 
          uib-tooltip-html="menu.tooltip | messageFilter"
