@@ -1,3 +1,195 @@
 overview-widget {
   display: block;
 }
+
+.overview-widget {
+  background: $stat-panel-bg;
+  border: 1px solid #ddd;
+  color: #333;
+  font-size: 12px;
+  margin-bottom: 20px;
+  padding: 0 0 5px;
+
+  .overview-widget-header {
+    background-color: $stat-panel-header-from;
+    background-image: linear-gradient(to bottom, $stat-panel-header-from 0%, $stat-panel-header-to 100%);
+    padding: 5px;
+    position: relative;
+    vertical-align: middle;
+  }
+
+  .chart-container {
+    @media (min-width: $screen-lg-min) {
+      float: left;
+      margin: 18px 0 0;
+      width: 38%;
+    }
+
+    &#alterationChart {
+      float: none;
+      margin: 0;
+      width: 100%;
+    }
+  }
+
+  .overview-widget-content {
+    min-height: 250px;
+
+    .col-sm-6,
+    .col-xs-12 {
+      padding: 0;
+    }
+  }
+
+  &:hover {
+    background: $stat-panel-bg-hover;
+
+    .overview-widget-header {
+      background: $stat-panel-header-hover;
+      cursor: pointer;
+    }
+
+    .overview-chart-info-section {
+      border: 1px solid #ddd;
+    }
+  }
+
+  .overview-widget-title {
+    margin: 10px;
+    color: $stat-panel-header-color;
+  }
+
+  .page-help-tool-tip {
+    margin-top: -3px;
+  }
+
+  .overview-widget-header-text,
+  .overview-widget-header-info {
+    display: inline-block;
+    margin-bottom: 0;
+    font-weight: 400;
+    vertical-align: middle;
+    cursor: pointer;
+    background-image: none;
+    border: 1px solid transparent;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .overview-widget-header-text {
+    text-align: center;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .overview-widget-header-info {
+    border-left: 1px solid #fff;
+    height: 39px;
+    padding-left: 0;
+    padding-right: 0;
+    width: 39px;
+  }
+
+  .table {
+    &.overview-graph-table {
+      width: 100%;
+      border: 1px solid transparent;
+      border-bottom: 1px solid #ddd;
+      text-align: right;
+      margin-bottom: 0;
+
+      @media (min-width: $screen-lg-min) {
+        width: 61%;
+      }
+
+      tbody {
+        td {
+          border-right: 1px solid #ddd;
+          border-left: 1px solid #ddd;
+          line-height: 11px;
+          font-size: 11px;
+          margin-left: 0;
+        }
+      }
+
+      .diagnostics-group-quantity {
+        width: 50px;
+      }
+
+      .diagnostics-group-alternation {
+        width: 75px;
+      }
+    }
+  }
+
+  .overview-widget-table-legend {
+    width: 20px;
+  }
+
+  .overview-distribution-per-sex-values {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 2.4rem;
+    font-weight: bold;
+    color: #fff;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    top: 64px;
+
+    span {
+      width: 85px;
+      display: inline-block;
+    }
+  }
+
+  .overview-chart-info-section {
+    width: 45%;
+    display: block;
+    background-color: #fff;
+    padding: 10px;
+    min-height: 108px;
+    border: 1px solid #fff;
+    text-align: center;
+
+    .long-sick-leaves-value {
+      color: #919191;
+      font-weight: bold;
+      font-size: 2em;
+      position: relative;
+      display: inline-block;
+    }
+  }
+
+  #sicklength-chart-info {
+    width: 95%;
+    margin: 15px 0 0 15px;
+  }
+}
+
+#perCountyHeaderLink {
+  .table {
+    &.overview-graph-table {
+      top: 65px;
+      position: relative;
+    }
+  }
+
+  .overview-widget-content {
+
+    @media (min-width: $screen-lg-min) {
+      min-height: 405px;
+    }
+
+    @media (min-width: 1360px) {
+      min-height: 388px;
+    }
+  }
+}
+
+#sickLeaveLengthChart {
+  margin: 25px 0 0;
+  width: 100%;
+  float: none;
+}

@@ -6,7 +6,7 @@
     width: calc(100% - 100px);
   }
 
-  .modal-header span {
+  .modal-header {
     font-weight: bold;
   }
 
@@ -17,14 +17,30 @@
       list-style-type: none;
     }
 
+    .modal-body-left {
+      padding: 10px;
+    }
+
+    .modal-body-right {
+      h2 {
+        color: #333;
+      }
+    }
+
+    .border-right {
+      border-right: 1px solid #ddd;
+    }
+
     .modal-list {
       padding: 0;
 
-      input[type=checkbox] {
+      input[type='checkbox'] {
         cursor: pointer;
       }
 
       .select-all-items {
+        text-align: right;
+
         label {
           cursor: pointer;
           font-weight: bold;
@@ -36,10 +52,108 @@
           padding-right: 4px;
         }
 
-        input[type=checkbox] {
+        input[type='checkbox'] {
           margin-left: 0;
           margin-right: 5px;
           margin-top: 0;
+        }
+      }
+
+      &.item-body {
+        @media (min-height: 400px) {
+          max-height: 160px;
+        }
+        @media (min-height: 600px) {
+          max-height: 280px;
+        }
+        @media (min-height: 800px) {
+          max-height: 380px;
+        }
+        @media (min-height: 800px) {
+          max-height: 560px;
+        }
+
+        border-bottom: 1px solid #eee;
+        border-radius: 4px;
+        margin-top: 10px;
+        overflow-y: auto;
+
+        input[type='checkbox'] {
+          margin: 4px 0 0 10px;
+        }
+
+        .leaf .glyphicon {
+          display: none;
+        }
+
+        .node {
+          border: 1px solid #eee;
+          cursor: pointer;
+          padding: 4px 0;
+
+          .indenter {
+            display: inline-block;
+          }
+
+          &.depth0 {
+            background-color: #eee;
+            border-top: 1px solid #fff;
+
+            &.indenter {
+              width: 0;
+            }
+
+            > .ellipsis-text {
+              max-width: calc(100% - 60px);
+            }
+
+            &.leaf {
+              border-top: 1px solid #fff;
+            }
+          }
+
+          &.depth1 {
+            background-color: #fff;
+            border-bottom: 0;
+
+            > .indenter {
+              width: 30px;
+            }
+
+            > .ellipsis-text {
+              max-width: calc(100% - 90px);
+            }
+          }
+
+          &.depth2 {
+            background-color: #fff;
+            border-bottom: 0;
+
+            > .indenter {
+              width: 54px;
+            }
+
+            > .ellipsis-text {
+              max-width: calc(100% - 130px);
+            }
+          }
+
+          &.depth3 {
+            background-color: #fff;
+            border-bottom: 0;
+
+            > .indenter {
+              width: 75px;
+            }
+
+            > .ellipsis-text {
+              max-width: calc(100% - 130px);
+            }
+          }
+
+          &.leaf {
+            border-top: 0;
+          }
         }
       }
     }
@@ -48,107 +162,11 @@
       vertical-align: bottom;
     }
 
-    .search-all-items input[type=search] {
-      height: 35px;
-      top: 1px;
-      width: 100%;
-    }
-  }
-
-  .modal-body .modal-list.item-body {
-    @media (min-height: 400px) {
-      max-height: 160px;
-    }
-    @media (min-height: 600px) {
-      max-height: 280px;
-    }
-    @media (min-height: 800px) {
-      max-height: 380px;
-    }
-    @media (min-height: 800px) {
-      max-height: 560px;
-    }
-
-    border-bottom: 1px solid #eee;
-    border-radius: 4px;
-    margin-top: 10px;
-    overflow-y: auto;
-
-    input[type=checkbox] {
-      margin: 4px 0 0 10px;
-    }
-
-    .leaf .glyphicon {
-      display: none;
-    }
-
-    div.node {
-      border: 1px solid #eee;
-      cursor: pointer;
-      padding: 4px 0;
-
-      .indenter {
-        display: inline-block;
-      }
-
-      &.depth0 {
-        background-color: #eee;
-        border-top: 1px solid #fff;
-
-        &.indenter {
-          width: 0;
-        }
-
-        > .ellipsis-text {
-          max-width: calc(100% - 60px);
-        }
-
-        &.leaf {
-          border-top: 1px solid #fff;
-        }
-      }
-
-      &.depth1 {
-        background-color: #fff;
-        border-bottom: 0;
-
-        > .indenter {
-          width: 30px;
-        }
-
-        > .ellipsis-text {
-          max-width: calc(100% - 90px);
-        }
-      }
-
-      &.depth2 {
-        background-color: #fff;
-        border-bottom: 0;
-
-        > .indenter {
-          width: 54px;
-        }
-
-        > .ellipsis-text {
-          max-width: calc(100% - 130px);
-        }
-      }
-
-      &.depth3 {
-        background-color: #fff;
-        border-bottom: 0;
-
-        > .indenter {
-          width: 75px;
-        }
-
-        > .ellipsis-text {
-          max-width: calc(100% - 130px);
-        }
-      }
-
-      &.leaf {
-        border-top: 0;
+    .search-all-items {
+      input[type='search'] {
+        height: 35px;
+        top: 1px;
+        width: 100%;
       }
     }
   }
@@ -156,18 +174,19 @@
   .modal-footer {
     clear: both;
     margin-top: 0;
+
     label {
       font-size: 12px;
-    }
 
-    label > div {
-      text-align: left;
+      > div {
+        text-align: left;
+      }
     }
   }
 
   .verksamhets-typer-list {
     overflow-y: auto;
-    padding:0;
+    padding: 0;
 
     @media (max-height: 400px) {
       max-height: 140px;

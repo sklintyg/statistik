@@ -1,0 +1,61 @@
+// Inera variables
+
+$stat-btn-color: #008391;
+$stat-header-color: #008391;
+$stat-link-color: #006280;
+$stat-link-color-hover: #23527c;
+
+$stat-link-color-filter: #0b0b0b;
+
+$stat-collapse-panel-bg: #f9f9f9;
+
+$stat-panel-header-from: #008391;
+$stat-panel-header-to: #00687d;
+$stat-panel-header-hover: #28b4c4;
+$stat-panel-header-color: #fff;
+$stat-panel-bg: #ebebeb;
+$stat-panel-bg-hover: #f0f0f0;
+
+$stat-header-link-color: #28b4c4;
+
+$stat-filter-active: #EA8025;
+
+$stat-menu-header-bg: #212633;
+$stat-menu-header-bg-from: #666;
+$stat-menu-header-disabled-bg: #eee;
+
+$stat-highcharts-tooltip-bg: #fff;
+$stat-highcharts-tooltip-color: #000;
+
+// Bootstrap variables (Here we override bootstraps default values with MI custom variables defined above)
+$icon-font-path: '../bower_components/bootstrap-sass/assets/fonts/bootstrap/';
+
+
+// Headers
+$font-size-h1: 20px;
+$font-size-h2: 14px;
+
+// Btn
+$btn-info-color:                 #fff;
+$btn-info-bg:                    $stat-btn-color;
+$btn-info-border:                $stat-btn-color;
+
+// Link
+$link-color: $stat-link-color;
+$link-hover-color: $stat-link-color-hover;
+$link-hover-decoration: none;
+
+
+$panel-default-heading-bg: #eee;
+
+$dropdown-link-hover-color: #0b0b0b;
+$dropdown-link-hover-bg: #ccc;
+
+$dropdown-link-active-color: #000;
+$dropdown-link-active-bg: #e7e7e7;
+
+
+$table-bg-accent: #f9f9f9;
+$table-bg-even: #e9eae8;
+
+$table-bg-hover: #b9b9b9;

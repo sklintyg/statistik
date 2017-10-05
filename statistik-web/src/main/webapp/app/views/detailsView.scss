@@ -1,0 +1,154 @@
+.details-view {
+  .detail-view-choice-dropdown {
+    min-width: 200px;
+    top: 36px;
+
+    img {
+      height: 1.9em;
+    }
+
+    a {
+      font-size: 12px;
+    }
+  }
+
+  .sub-title-period {
+    color: #008391;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    min-height: 20px;
+
+    &::first-letter {
+      text-transform: capitalize;
+    }
+  }
+
+  .national-statistic-h1 {
+    margin-bottom: 0;
+  }
+
+  .detail-toolbar {
+    position: relative;
+
+    #print-button-col {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+
+      @media (max-width: $screen-sm-max) {
+        position: relative;
+      }
+    }
+  }
+
+  .legend-label {
+    font-size: 12px;
+    margin-bottom: 10px;
+    white-space: nowrap;
+  }
+
+  .legend-color-square {
+    border-radius: 4px;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    top: 4px;
+    position: relative;
+    vertical-align: top;
+  }
+
+  .legend-name {
+    display: inline-block;
+    max-width: 402px;
+    padding-left: 2px;
+    padding-right: 6px;
+    padding-top: 2px;
+    vertical-align: top;
+    white-space: normal;
+  }
+
+  .select-chart-type {
+    padding-right: 0;
+
+    span,
+    div {
+      margin: 0 5px 0 0;
+    }
+
+    .select-chart-type-tidsserie {
+      display: inline-block;
+      margin-right: $grid-gutter-width;
+    }
+
+    .select-chart-type-tvarsnitt {
+      display: inline-block;
+      margin: 0;
+      padding-right: 20px;
+    }
+
+    .chart-icon {
+      background-repeat: no-repeat;
+      cursor: pointer;
+      display: block;
+      height: 18px;
+      margin: 2px;
+      padding: 0;
+      position: relative;
+      width: 21px;
+    }
+  }
+
+  .chart-page-chart {
+    height: 400px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .chart-icon-column {
+    @include at2x('../assets/images/chart-types/stapeldiagram', $ext: 'png', $w: 21px, $h: 18px);
+  }
+
+  .chart-icon-area {
+    @include at2x('../assets/images/chart-types/ytdiagram', $ext: 'png', $w: 21px, $h: 18px);
+  }
+
+  .chart-icon-line {
+    @include at2x('../assets/images/chart-types/linjediagram', $ext: 'png', $w: 21px, $h: 18px);
+  }
+
+  .chart-icon-percentarea {
+    @include at2x('../assets/images/chart-types/ytdiagram_procent', $ext: 'png', $w: 21px, $h: 18px);
+  }
+
+  .compare-diagnosis {
+    margin-top: 20px;
+
+    label {
+      font-size: 13px;
+    }
+
+    .radio {
+      margin-top: 0;
+
+      + .radio {
+        margin-top: -5px;
+        margin-bottom: 15px;
+      }
+
+      .radio-text {
+        padding-top: 2px;
+        display: inline-block;
+      }
+    }
+  }
+
+  .collapsible-panel-body {
+    border: 1px solid $stat-collapse-panel-bg;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: $stat-collapse-panel-bg;
+  }
+}

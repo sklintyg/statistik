@@ -3,9 +3,8 @@
   <div class="row" style="text-align: center" data-ng-show="!businessFilter.dataInitialized && !isFilterCollapsed">
     <span style="margin: auto">Laddar filterdata</span>
   </div>
-  <form uib-collapse="hasMessages && isFilterCollapsed" name="myForm" novalidate class="row" data-ng-show="businessFilter.dataInitialized">
+  <form uib-collapse="hasMessages && isFilterCollapsed" name="myForm" novalidate data-ng-show="businessFilter.dataInitialized">
     <div class="filter-level">
-      <div class="col-xs-12">
       <strong class="title">Tidsintervall</strong>
 
       <div class="margin-right">
@@ -72,76 +71,73 @@
         </div>
       </div>
 
-        <button
-            id="filterDateResetBtn"
-            type="button"
-            class="btn btn-default"
-            data-ng-click="clearDates()">
-          <span message key="lbl.clear"></span>
-        </button>
-      </div>
+      <button
+          id="filterDateResetBtn"
+          type="button"
+          class="btn btn-default"
+          data-ng-click="clearDates()">
+        <span message key="lbl.clear"></span>
+      </button>
     </div>
 
     <div class="divider" style="margin-bottom: 0"></div>
 
     <div class="filter-level">
-      <div class="col-xs-12">
-        <strong class="title">Filter</strong>
+      <strong class="title">Filter</strong>
 
-        <tree-multi-selector
-            class="margin-right top-10px-margin select-business"
-            hide-label="true"
-            button-icon="fa-building-o"
-            menu-options="businessFilter.geography"
-            run-filter-menu-on-init="true"
-            on-open="businessFilter.setSelectedGeography"
-            done-clicked="businessFilter.updateGeography"
-            data-ng-if="businessFilter.showBusinessFilter()"
-            text-data="geographyFilterSelectorData"
-            select-all-text-key="lbl.filter.verksamhet.select-all"
-            search-hint-text-key="lbl.filter.verksamhet.search.hint"
-            max-depth="3"
-            sidebar-menu-expand="lbl.filter.verksamhet.link"
-            sidebar-menu-collapse="lbl.filter.verksamhet.link.collapse"
-            sidebar-state="sidebarState"
-            verksamhets-typer="businessFilter.verksamhetsTyper">
-        </tree-multi-selector>
+      <tree-multi-selector
+          class="margin-right top-10px-margin select-business"
+          hide-label="true"
+          button-icon="fa-building-o"
+          menu-options="businessFilter.geography"
+          run-filter-menu-on-init="true"
+          on-open="businessFilter.setSelectedGeography"
+          done-clicked="businessFilter.updateGeography"
+          data-ng-if="businessFilter.showBusinessFilter()"
+          text-data="geographyFilterSelectorData"
+          select-all-text-key="lbl.filter.verksamhet.select-all"
+          search-hint-text-key="lbl.filter.verksamhet.search.hint"
+          max-depth="3"
+          sidebar-menu-expand="lbl.filter.verksamhet.link"
+          sidebar-menu-collapse="lbl.filter.verksamhet.link.collapse"
+          sidebar-state="sidebarState"
+          verksamhets-typer="businessFilter.verksamhetsTyper">
+      </tree-multi-selector>
 
-        <tree-multi-selector
-            class="margin-right top-10px-margin highlight-content select-diagnoses"
-            hide-label="true"
-            button-icon="fa-stethoscope"
-            ignore-chars-in-search="."
-            menu-options="icd10"
-            on-open="businessFilter.setSelectedDiagnoses"
-            done-clicked="businessFilter.updateDiagnoses"
-            text-data="diagnosisFilterSelectorData"
-            select-all-text-key="lbl.filter.val-av-diagnoser.select-all"
-            search-hint-text-key="lbl.filter.val-av-diagnoser.search.hint"
-            sidebar-state="sidebarStateDiagnose">
-        </tree-multi-selector>
+      <tree-multi-selector
+          class="margin-right top-10px-margin highlight-content select-diagnoses"
+          hide-label="true"
+          button-icon="fa-stethoscope"
+          ignore-chars-in-search="."
+          menu-options="icd10"
+          on-open="businessFilter.setSelectedDiagnoses"
+          done-clicked="businessFilter.updateDiagnoses"
+          text-data="diagnosisFilterSelectorData"
+          select-all-text-key="lbl.filter.val-av-diagnoser.select-all"
+          search-hint-text-key="lbl.filter.val-av-diagnoser.search.hint"
+          sidebar-state="sidebarStateDiagnose">
+      </tree-multi-selector>
 
-        <div class="margin-right top-10px-margin select-sjukskrivningslangd">
-          <select
-              ng-model="businessFilter.selectedSjukskrivningslangdIds"
-              multiple="multiple"
-              ng-options="sjukskrivningslangd.id as sjukskrivningslangd.name for sjukskrivningslangd in businessFilter.sjukskrivningslangd"
-              multiselect-dropdown="Sjukskrivningslängder"
-              multiselect-dropdown-icon="fa-calendar"
-              id="select-sjukskrivningslangd">
-          </select>
-        </div>
-
-        <div class="margin-right top-10px-margin select-aldersgrupp">
-          <select
-            ng-model="businessFilter.selectedAldersgruppIds"
+      <div class="margin-right top-10px-margin select-sjukskrivningslangd">
+        <select
+            ng-model="businessFilter.selectedSjukskrivningslangdIds"
             multiple="multiple"
-            ng-options="aldersgrupp.id as aldersgrupp.name for aldersgrupp in businessFilter.aldersgrupp"
-            multiselect-dropdown="Åldersgrupper"
-            multiselect-dropdown-icon="fa-users"
-            id="select-aldersgrupp">
-          </select>
-        </div>
+            ng-options="sjukskrivningslangd.id as sjukskrivningslangd.name for sjukskrivningslangd in businessFilter.sjukskrivningslangd"
+            multiselect-dropdown="Sjukskrivningslängder"
+            multiselect-dropdown-icon="fa-calendar"
+            id="select-sjukskrivningslangd">
+        </select>
+      </div>
+
+      <div class="margin-right top-10px-margin select-aldersgrupp">
+        <select
+          ng-model="businessFilter.selectedAldersgruppIds"
+          multiple="multiple"
+          ng-options="aldersgrupp.id as aldersgrupp.name for aldersgrupp in businessFilter.aldersgrupp"
+          multiselect-dropdown="Åldersgrupper"
+          multiselect-dropdown-icon="fa-users"
+          id="select-aldersgrupp">
+        </select>
       </div>
     </div>
 
@@ -152,32 +148,29 @@
     <div class="divider"></div>
 
     <div class="filter-level bottom-buttons"  style="margin-bottom: 10px">
-        <div class="col-xs-12">
-            <button id="filterResetBtn" type="button" class="btn btn-default pull-left" data-ng-click="resetBusinessFilter(myForm)">
-                <span message key="lbl.aterstall"></span>
-            </button>
+      <div>
+        <button id="filterResetBtn" type="button" class="btn btn-default" data-ng-click="resetBusinessFilter(myForm)">
+          <span message key="lbl.aterstall"></span>
+        </button>
 
-            <button id="filterApplyBtn" class="btn btn-success pull-right" type="button"
-                    ng-click="makeSelection()">
-                <span class="button-loader" ng-show="loadingFilter"></span> <span message key="lbl.filtrera"></span>
-            </button>
+        <button id="filterApplyBtn" class="btn btn-success pull-right" type="button"
+                ng-click="makeSelection()">
+          <span class="button-loader" ng-show="loadingFilter"></span> <span message key="lbl.filtrera"></span>
+        </button>
+      </div>
+
+      <div data-ng-if="showDateValidationError">
+        <div class="alert alert-danger" role="alert">
+          <strong message key="login.alert-danger"></strong>
+          {{errorMessage}}
         </div>
-        <div class="col-xs-12" data-ng-if="showDateValidationError">
-          <div class="alert alert-danger" role="alert">
-            <strong message key="login.alert-danger"></strong>
-            {{errorMessage}}
-          </div>
-        </div>
+      </div>
     </div>
   </form>
 
-  <div class="row" data-ng-if="hasMessages">
-    <div class="filter-level">
-      <div class="col-xs-12" style="margin-bottom: 10px">
-        <div ng-repeat="resultMessage in messages">
-          <show-message type="resultMessage.type" severity="resultMessage.severity" text="resultMessage.message"></show-message>
-        </div>
-      </div>
+  <div class="filter-level" data-ng-if="hasMessages" style="margin-bottom: 10px">
+    <div ng-repeat="resultMessage in messages">
+      <show-message type="resultMessage.type" severity="resultMessage.severity" text="resultMessage.message"></show-message>
     </div>
   </div>
 </div>

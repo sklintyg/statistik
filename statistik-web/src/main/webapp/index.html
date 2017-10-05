@@ -28,8 +28,6 @@
 <body data-ng-controller="pageCtrl">
   <highlight-words></highlight-words>
 
-  <!-- Navbar
-  ================================================== -->
   <stats-header
       is-logged-in="isLoggedIn"
       page-header-verksamhet-name="pageHeaderVerksamhetName"
@@ -41,27 +39,22 @@
 
   <stat-cookie-banner></stat-cookie-banner>
 
-  <div id="wrapper">
-      <div id="sidebar-wrapper" class="hidden-xs" ng-cloak>
-          <h1 class="hidden-header"><span message key="statistics.hidden-header.sidans-huvudnavigering"></span></h1>
-          <navigation-menu login-visible="AppModel.get().loginVisible" query-string="queryString"></navigation-menu>
+  <div id="sidebar-wrapper" class="sidebar-wrapper hidden-xs pull-left" ng-cloak>
+    <navigation-menu login-visible="AppModel.get().loginVisible" query-string="queryString"></navigation-menu>
+  </div>
+
+  <navigation-menu class="hidden-sm hidden-md hidden-lg" is-mobile="true" query-string="queryString" login-visible="AppModel.get().loginVisible" login-clicked="loginClicked()"></navigation-menu>
+
+  <div class="container-fluid page-content-wrapper">
+    <business-filter data-ng-if="isVerksamhetShowing" id="businessFilterContainer" ng-cloak></business-filter>
+
+    <landsting-filter data-ng-if="isLandstingShowing" id="landstingFilterContainer" ng-cloak></landsting-filter>
+
+    <div class="row content-wrapper" ng-cloak>
+      <div class="col-xs-12">
+        <div id="view" data-ng-view></div>
       </div>
-
-      <navigation-menu class="hidden-sm hidden-md hidden-lg" is-mobile="true" query-string="queryString" login-visible="AppModel.get().loginVisible" login-clicked="loginClicked()"></navigation-menu>
-
-      <div id="page-content-wrapper">
-          <div class="container-fluid">
-            <business-filter data-ng-if="isVerksamhetShowing" id="businessFilterContainer" ng-cloak></business-filter>
-
-            <landsting-filter data-ng-if="isLandstingShowing" id="landstingFilterContainer" ng-cloak></landsting-filter>
-
-            <div class="row" ng-cloak>
-                <div class="col-xs-12">
-                    <div id="view" data-ng-view></div>
-                </div>
-            </div>
-          </div>
-      </div>
+    </div>
   </div>
 
 <!-- Scripts -->

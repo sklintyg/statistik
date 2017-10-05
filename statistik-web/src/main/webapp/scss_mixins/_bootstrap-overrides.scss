@@ -1,0 +1,108 @@
+
+.btn-info {
+  background-image: none;
+  box-shadow: none;
+  border-color: $btn-info-bg;
+}
+
+.btn-link:focus, .btn-link:hover {
+  text-decoration: underline;
+}
+
+.btn span.caret {
+  margin-left: 10px;
+}
+
+h1, h2, h3 {
+  color: $stat-header-color;
+  font-weight: 700;
+}
+
+h1 {
+  margin-top: 5px;
+}
+
+h4 {
+  color: $stat-header-color;
+}
+
+a {
+  cursor: pointer;
+}
+
+p {
+  line-height: 1.2;
+  text-align: justify;
+}
+
+.panel-default .panel-heading {
+  background-image: none;
+  filter: none;
+
+  .panel-title {
+    color: $stat-header-color;
+    font-size: 14px;
+  }
+}
+
+.dropdown-menu > li >a {
+  max-width: 490px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.overflow-menu-options {
+  max-height: 255px;
+  max-width: 600px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.dropdown-menu > .active > a {
+  background: $dropdown-link-active-bg;
+}
+
+.dropdown-menu li a:hover {
+  background: $dropdown-link-hover-bg;
+}
+
+.multiselect-container > li > a {
+
+  padding-top: 0;
+  padding-bottom: 0;
+
+  > label.checkbox {
+    padding: 5px 20px;
+  }
+}
+
+.table-striped {
+  > tbody > tr:nth-of-type(even) {
+    background-color: $table-bg-even;
+  }
+}
+
+.table-hover {
+  > tbody {
+    > tr:hover,
+    > tr.tr-hover {
+      background-color: $table-bg-hover;
+    }
+  }
+}
+
+.tooltip.popover-content .tooltip-inner {
+  padding: 15px 20px;
+}
+
+.popover-content,
+.tooltip.popover-content .tooltip-inner {
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 20px;
+  text-align: left;
+}
+
+.tooltip-inner {
+  max-width: 290px;
+}

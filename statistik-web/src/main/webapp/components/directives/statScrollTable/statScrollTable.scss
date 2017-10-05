@@ -3,21 +3,37 @@
 
   table {
     border-collapse: separate;
-  }
 
-  td.scrollable {
-    margin: 0;
-    white-space: nowrap;
-  }
+    tr {
+      td {
+        border-right: 1px solid #ddd;
+        font-size: 12px;
+        line-height: 14px;
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
 
-  tbody td,
-  tbody tr {
-    height: 33px;
-  }
+        &.scrollable {
+          margin: 0;
+          white-space: nowrap;
+        }
+      }
+    }
 
-  thead tr td {
-    border-bottom-width: 1px !important;
-    height: 30px;
+    thead {
+      td {
+        border-bottom-width: 1px;
+        height: 30px;
+        font-weight: 700;
+      }
+    }
+
+    tbody {
+      td,
+      tr {
+        height: 33px;
+      }
+    }
   }
 
   .table-headers {
@@ -25,13 +41,8 @@
     max-width: 34em;
   }
 
-  .headcol.scrollable {
-    text-align: left !important;
-  }
-
-  tbody tr:hover td,
-  tbody tr:hover th {
-    background-color: #e9eae8;
+  .headcol {
+    text-align: left;
   }
 
   .headcol-name {
@@ -41,7 +52,7 @@
     text-overflow: ellipsis;
   }
 
-  div.scrolling {
+  .scrolling {
     font-size: 12px;
     overflow-x: auto;
     overflow-y: visible;
@@ -65,12 +76,12 @@
     &.sorted-column {
       border-bottom: 1px solid #000;
 
-      .fa-sort:before {
+      .fa-sort::before {
         content: '\f0de';
       }
 
       &.sorted-reverse {
-        .fa-sort:before {
+        .fa-sort::before {
           content: '\f0dd';
         }
       }

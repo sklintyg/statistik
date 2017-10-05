@@ -2,19 +2,21 @@
   font-weight: normal;
 
   a:hover {
-    text-decoration: underline !important;
+    text-decoration: underline;
   }
 
   .enhets-modal {
     color: #333;
 
     ul {
-      list-style-type: disc !important;
+      list-style-type: disc;
       margin-bottom: 2px;
     }
 
-    .modal-body p {
-      text-align: left;
+    .modal-body {
+      p {
+        text-align: left;
+      }
     }
   }
 }

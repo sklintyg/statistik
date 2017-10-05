@@ -30,8 +30,7 @@
 			<show-help-text texts="chartFootnotes"></show-help-text>
 
 			<show-filter-list diagnos-filters="activeDiagnosFilters" enhets-filters="activeEnhetsFilters" sjukskrivningslangds-filters="activeSjukskrivningslangdsFilters" aldersgrupp-filters="activeAldersgruppFilters">
-				<div class="col-xs-12 col-sm-3 pull-right margin-bottom" data-ng-class="{margin_top_button_group: showDetailsOptions}"
-						 style="width: auto;">
+				<div class="pull-right print-button">
 					<!-- PRINT BUTTON -->
 					<button class="btn btn-default" data-ng-click="printPdf()">
 						<span message key="button.label.save-as-pdf"></span>
@@ -55,34 +54,24 @@
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 left-2px-padding right-2px-padding">
 							<a data-ng-href="{{::baseUrl}}/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLinkOld" class="overview-widget-link">
-								<div class="overview-widget" >
-									<div class="overview-widget-header">
-										<h2 class="overview-widget-title pull-left">
-											<span message key="business.widget.header.total-antal"></span>
-										</h2>
-										<span class="page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
-																uib-tooltip-html="popoverTextAmount"
-																tooltip-class="popover-content"
-																tooltip-append-to-body="true"
-																tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
-									</div>
-									<div class="overview-widget-content">
-										<div id="alterationChart"></div>
-									</div>
-								</div>
+								<overview-widget title-key="business.widget.header.total-antal"
+																 tooltip-content="popoverTextAmount"
+																 chart-id="alterationChart"
+																 options="alterationChartOptions">
+								</overview-widget>
 							</a>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 left-2px-padding right-2px-padding">
 							<a data-ng-href="{{::baseUrl}}/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLink" class="overview-widget-link">
 								<div class="overview-widget" >
 									<div class="overview-widget-header">
-										<h2 class="overview-widget-title pull-left">
+										<h2 class="overview-widget-title">
 											<span message key="business.widget.header.konsfordelning-sjukfall"></span>
+											<span class="page-help-tool-tip pull-right"><img
+													uib-tooltip-html="popoverTextSexDistribution"
+													tooltip-class="popover-content"
+													tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
 										</h2>
-										<span class="page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
-																uib-tooltip-html="popoverTextSexDistribution"
-																tooltip-class="popover-content"
-																tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
 									</div>
 									<div class="overview-widget-content">
 										<div class="col-xs-12 col-sm-6" id="sexProportionChartOld"></div>
@@ -96,74 +85,28 @@
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
 							<a data-ng-href="{{::baseUrl}}/diagnosgrupp{{queryString}}" id="diagnosisGroupsHeaderLink" class="overview-widget-link">
-								<span class="overview-widget" >
-									<span class="overview-widget-header">
-										<h2 class="overview-widget-title pull-left">
-											<span message key="business.widget.header.fordelning-diagnosgrupper"></span>
-										</h2>
-										<span class="page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
-																uib-tooltip-html="popoverTextDiagnosisGroups"
-																tooltip-class="popover-content"
-																tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
-									</span>
-									<span class="overview-widget-content">
-										<span class="chart-container" id="diagnosisChart"></span>
-										<table class="datatable table table-striped overview-graph-table">
-												<thead>
-												<tr>
-													<td>&nbsp;</td>
-														<td><span message key="overview.widget.table.column.diagnosgrupp"></span></td>
-														<td><span message key="overview.widget.table.column.antal"></span></td>
-														<td><span message key="overview.widget.table.column.forandring"></span></td>
-												</tr>
-												</thead>
-												<tbody>
-												<tr data-ng-repeat="group in diagnosisGroups">
-													<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-														<td class="diagnostics-group-name">{{group.name}}</td>
-														<td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-														<td class="diagnostics-group-alternation">{{group.alternation}} %</td>
-												</tr>
-												</tbody>
-										</table>
-									</span>
-								</span>
+								<overview-widget title-key="national.widget.header.fordelning-diagnosgrupper"
+																 tooltip-content="popoverTextDiagnosisGroups"
+																 chart-id="diagnosisChart"
+																 options="diagnosisDonutChartOptions"
+																 groups="diagnosisGroups"
+																 column-title1="overview.widget.table.column.diagnosgrupp"
+																 column-title2="overview.widget.table.column.antal"
+																 column-title3="overview.widget.table.column.forandring">
+								</overview-widget>
 							</a>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
 							<a data-ng-href="{{::baseUrl}}/aldersgrupper{{queryString}}" id="ageGroupsHeaderLink" class="overview-widget-link">
-								<span class="overview-widget" >
-									<span class="overview-widget-header">
-										<h2 class="overview-widget-title pull-left">
-											<span message key="business.widget.header.fordelning-aldersgrupper"></span>
-										</h2>
-										<span class="page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
-																uib-tooltip-html="popoverTextAgeGroups"
-																tooltip-class="popover-content"
-																tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
-									</span>
-									<span class="overview-widget-content">
-										<span class="chart-container" id="ageChart"></span>
-										<table class="datatable table table-striped overview-graph-table">
-												<thead>
-												<tr>
-													<td>&nbsp;</td>
-														<td><span message key="overview.widget.table.column.aldersgrupp"></span></td>
-														<td><span message key="overview.widget.table.column.antal"></span></td>
-														<td><span message key="overview.widget.table.column.forandring"></span></td>
-												</tr>
-												</thead>
-												<tbody>
-												<tr data-ng-repeat="group in ageGroups">
-														<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-														<td class="diagnostics-group-name">{{group.name}}</td>
-														<td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-														<td class="diagnostics-group-alternation">{{group.alternation}} %</td>
-												</tr>
-												</tbody>
-										</table>
-									</span>
-								</span>
+								<overview-widget title-key="national.widget.header.fordelning-aldersgrupper"
+																 tooltip-content="popoverTextAgeGroups"
+																 chart-id="ageChart"
+																 options="ageChartOptions"
+																 groups="ageGroups"
+																 column-title1="overview.widget.table.column.aldersgrupp"
+																 column-title2="overview.widget.table.column.antal"
+																 column-title3="overview.widget.table.column.forandring">
+								</overview-widget>
 							</a>
 						</div>
 					</div>
@@ -171,66 +114,43 @@
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
 							<a data-ng-href="{{::baseUrl}}/sjukskrivningslangd{{queryString}}" id="sickLeaveLengthHeaderLink" class="overview-widget-link">
-								<span class="overview-widget" >
-									<span class="overview-widget-header">
-										<h2 class="overview-widget-title pull-left">
+								<div class="overview-widget">
+									<div class="overview-widget-header">
+										<h2 class="overview-widget-title">
 											<span message key="business.widget.header.fordelning-sjukskrivningslangd"></span>
+											<span class="page-help-tool-tip pull-right"><img
+													uib-tooltip-html="popoverTextSickLeaveLength"
+													tooltip-class="popover-content"
+													tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
 										</h2>
-										<span class="page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
-																uib-tooltip-html="popoverTextSickLeaveLength"
-																tooltip-class="popover-content"
-																tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
-									</span>
+									</div>
 									<div class="overview-widget-content">
-										<div class="overview-chart-info" id="sicklength-chart-info">
+										<div class="overview-chart-info row" id="sicklength-chart-info">
 												<div class="overview-chart-info-section pull-left">
-													<span class="longSickLeavesValue">{{longSickLeavesTotal | thousandseparated}}</span><br/>
+													<span class="long-sick-leaves-value">{{::longSickLeavesTotal | thousandseparated}}</span><br/>
 													<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90"></span></span>
 												</div>
 												<div class="overview-chart-info-section pull-right">
-													<span class="longSickLeavesValue">{{longSickLeavesAlteration}} %</span><br/>
+													<span class="long-sick-leaves-value">{{::longSickLeavesAlteration}} %</span><br/>
 													<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader"></span></span>
 												</div>
 										</div>
 										<div class="chart-container" id="sickLeaveLengthChart"></div>
 									</div>
-								</span>
+								</div>
 							</a>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
 							<a data-ng-href="{{::baseUrl}}/sjukskrivningsgrad{{queryString}}" id="degreeOfSickLeaveHeaderLink" class="overview-widget-link">
-								<span class="overview-widget" >
-									<span class="overview-widget-header">
-										<h2 class="overview-widget-title pull-left">
-											<span message key="business.widget.header.fordelning-sjukskrivningsgrad"></span>
-										</h2>
-										<span class="page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
-																uib-tooltip-html="popoverTextDegreeOfSickLeave"
-																tooltip-class="popover-content"
-																tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
-									</span>
-									<span class="overview-widget-content">
-										<div class="chart-container" id="degreeOfSickLeaveChart"></div>
-										<table class="datatable table table-striped overview-graph-table">
-												<thead>
-												<tr>
-													<td>&nbsp;</td>
-														<td><span message key="overview.widget.table.column.sjukskrivningsgrad"></span></td>
-														<td><span message key="overview.widget.table.column.antal"></span></td>
-														<td><span message key="overview.widget.table.column.forandring"></span></td>
-												</tr>
-												</thead>
-												<tbody>
-												<tr data-ng-repeat="group in degreeOfSickLeaveGroups">
-														<td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-														<td class="diagnostics-group-name">{{::group.name}}</td>
-														<td class="diagnostics-group-quantity">{{::group.quantity | thousandseparated}}</td>
-														<td class="diagnostics-group-alternation">{{::group.alternation}} %</td>
-												</tr>
-												</tbody>
-										</table>
-									</span>
-								</span>
+								<overview-widget title-key="national.widget.header.fordelning-sjukskrivningsgrad"
+																 tooltip-content="popoverTextDegreeOfSickLeave"
+																 chart-id="degreeOfSickLeaveChart"
+																 options="degreeOfSickLeaveChartOptions"
+																 groups="degreeOfSickLeaveGroups"
+																 column-title1="overview.widget.table.column.sjukskrivningsgrad"
+																 column-title2="overview.widget.table.column.antal"
+																 column-title3="overview.widget.table.column.forandring">
+								</overview-widget>
 							</a>
 						</div>
 					</div>

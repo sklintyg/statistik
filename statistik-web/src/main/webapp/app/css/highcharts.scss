@@ -1,0 +1,21 @@
+.highcharts-container {
+  margin: 0 auto;
+  overflow: visible !important;
+
+  .tooltip-style {
+    background: $stat-highcharts-tooltip-bg;
+    color: $stat-highcharts-tooltip-color;
+    display: block;
+    font-size: 12px;
+    margin: 0;
+    padding: 8px;
+
+    .title {
+      font-size: 11px;
+    }
+  }
+
+  svg {
+    overflow: visible !important;
+  }
+}

@@ -25,8 +25,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _, COLORS) {
     'use strict';
 
-    var perMonthAlterationChart = {}, newSexProportionChart = {}, oldSexProportionChart = {},
-        ageDonutChart = {}, diagnosisDonutChart = {}, degreeOfSickLeaveChart = {}, sickLeaveLengthChart = {};
+    var newSexProportionChart = {}, oldSexProportionChart = {}, sickLeaveLengthChart = {};
     $scope.baseUrl = '#/verksamhet';
 
     var dataReceived = function (result) {
@@ -74,7 +73,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             }
         ], null, true);
 
-        chartOptions.chart.renderTo = 'alterationChart';
         chartOptions.chart.type = 'pie';
         chartOptions.chart.height = 210;
         chartOptions.chart.width = 180;
@@ -105,7 +103,9 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             states: {hover: {enabled: false}}
         };
 
-        return new Highcharts.Chart(chartOptions);
+        return {
+            options: chartOptions
+        };
     };
 
     var paintSexProportionChart = function(containerId, male, female, period) {
@@ -160,10 +160,9 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         return new Highcharts.Chart(chartOptions);
     };
 
-    var paintDonutChart = function(containerId, chartData) {
+    var paintDonutChart = function(chartData) {
         var chartOptions = chartFactory.getHighChartConfigBase([], [], null, true);
         chartOptions.chart.type = 'pie';
-        chartOptions.chart.renderTo = containerId;
         chartOptions.chart.height = 180;
         chartOptions.chart.width = 180;
         chartOptions.chart.plotBorderWidth = 0;
@@ -182,13 +181,16 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             }
         ];
         chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">{point.key}</span><br/>';
-        return new Highcharts.Chart(chartOptions);
+
+        return {
+            options: chartOptions
+        };
     };
 
     var updateCharts = function (result) {
 
         chartFactory.addColor(result.casesPerMonth.totalCases);
-        perMonthAlterationChart = paintPerMonthAlternationChart(result.casesPerMonth.totalCases);
+        $scope.alterationChartOptions = paintPerMonthAlternationChart(result.casesPerMonth.totalCases);
 
         chartFactory.addColor(result.casesPerMonth.amountMaleOld);
         oldSexProportionChart = paintSexProportionChart('sexProportionChartOld', result.casesPerMonth.amountMaleOld,
@@ -200,18 +202,17 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
 
         chartFactory.addColor(result.diagnosisGroups);
         var diagnosisDonutData = extractDonutData(result.diagnosisGroups);
-        diagnosisDonutChart = paintDonutChart('diagnosisChart', diagnosisDonutData);
+        $scope.diagnosisDonutChartOptions = paintDonutChart(diagnosisDonutData);
         $scope.diagnosisGroups = result.diagnosisGroups;
 
         chartFactory.addColor(result.ageGroups);
         var ageGroupsDonutData = extractDonutData(result.ageGroups);
-        ageDonutChart = paintDonutChart('ageChart', ageGroupsDonutData);
+        $scope.ageChartOptions = paintDonutChart(ageGroupsDonutData);
         $scope.ageGroups = result.ageGroups;
 
         chartFactory.addColor(result.degreeOfSickLeaveGroups);
         var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);
-        degreeOfSickLeaveChart = paintDonutChart('degreeOfSickLeaveChart', degreeOfSickLeaveDonutData);
-
+        $scope.degreeOfSickLeaveChartOptions = paintDonutChart(degreeOfSickLeaveDonutData);
         $scope.degreeOfSickLeaveGroups = result.degreeOfSickLeaveGroups;
 
         chartFactory.addColor(result.sickLeaveLength.chartData);
@@ -285,6 +286,11 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
 
     $scope.printPdf = function () {
         var charts = [];
+
+        var diagnosisDonutChart = $('#diagnosisChart').highcharts();
+        var ageDonutChart = $('#ageChart').highcharts();
+        var degreeOfSickLeaveChart = $('#degreeOfSickLeaveChart').highcharts();
+        var perMonthAlterationChart = $('#alterationChart').highcharts();
 
         charts.push([{
                 chart: perMonthAlterationChart,
@@ -374,28 +380,12 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     };
 
     $scope.$on('$destroy', function() {
-        if(perMonthAlterationChart && typeof perMonthAlterationChart.destroy === 'function') {
-            perMonthAlterationChart.destroy();
-        }
-
         if(newSexProportionChart && typeof newSexProportionChart.destroy === 'function') {
             newSexProportionChart.destroy();
         }
 
         if(oldSexProportionChart && typeof oldSexProportionChart.destroy === 'function') {
             oldSexProportionChart.destroy();
-        }
-
-        if(ageDonutChart && typeof ageDonutChart.destroy === 'function') {
-            ageDonutChart.destroy();
-        }
-
-        if(diagnosisDonutChart && typeof diagnosisDonutChart.destroy === 'function') {
-            diagnosisDonutChart.destroy();
-        }
-
-        if(degreeOfSickLeaveChart && typeof degreeOfSickLeaveChart.destroy === 'function') {
-            degreeOfSickLeaveChart.destroy();
         }
 
         if(sickLeaveLengthChart && typeof sickLeaveLengthChart.destroy === 'function') {
