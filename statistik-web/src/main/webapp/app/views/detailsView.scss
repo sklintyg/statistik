@@ -86,23 +86,23 @@
       margin: 0;
       padding-right: 20px;
     }
+
+    .chart-icon {
+      background-repeat: no-repeat;
+      cursor: pointer;
+      display: block;
+      height: 18px;
+      margin: 2px;
+      padding: 0;
+      position: relative;
+      width: 21px;
+    }
   }
 
   .chart-page-chart {
     height: 400px;
     margin: 0 auto;
     width: 100%;
-  }
-
-  .chart-icon {
-    background-repeat: no-repeat;
-    cursor: pointer;
-    display: block;
-    height: 18px;
-    margin: 2px;
-    padding: 0;
-    position: relative;
-    width: 21px;
   }
 
   .chart-icon-column {

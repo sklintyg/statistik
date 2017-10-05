@@ -33,25 +33,26 @@
         <li class="divider" data-ng-repeat-start="menu in menus | filter: showMenu"></li>
         <li data-ng-repeat-end>
           <a class="mobile-menu-header-item" data-ng-click="toggleMenu(menu)">
-            <span message key="{{menu.name}}"></span><span class="glyphicon pull-right mobile-menu-caret" data-ng-class="{'glyphicon-chevron-up': menu.show, 'glyphicon-chevron-down': !menu.show}"></span>
+            <span message key="{{::menu.name}}"></span>
+            <span class="glyphicon pull-right mobile-menu-caret" data-ng-class="{'glyphicon-chevron-up': menu.show, 'glyphicon-chevron-down': !menu.show}"></span>
           </a>
 
           <ul data-ng-if="menu.show">
-            <li class="subMenuItem"  data-ng-repeat="submenu in menu.subMenu | filter: showMenu">
-              <a data-ng-href="{{submenu.link}}{{queryString}}"
+            <li class="sub-menu-item" data-ng-repeat="submenu in menu.subMenu | filter: showMenu">
+              <a data-ng-href="{{::submenu.link}}{{queryString}}"
                  data-ng-click="toggleMobileMenu()"
                  data-ng-class="{'not-active': !menuEnabled(submenu)}"
-                 ctrlname="{{submenu.ctrl}}"
+                 ctrlname="{{::submenu.ctrl}}"
                  role="menuitem" navigationaware>
-                <span message key="{{submenu.name}}"></span>
+                <span message key="{{::submenu.name}}"></span>
               </a>
 
-              <ul data-ng-if="submenu.subMenu">
+              <ul data-ng-if="submenu.subMenu" class="sub-sub-menu-item">
                 <li class="subMenuItem" data-ng-repeat="subsubmenu in submenu.subMenu">
-                  <a data-ng-href="{{subsubmenu.link}}{{queryString}}"
-                     ctrlname="{{subsubmenu.ctrl}}" role="menuitem"
+                  <a data-ng-href="{{::subsubmenu.link}}{{queryString}}"
+                     ctrlname="{{::subsubmenu.ctrl}}" role="menuitem"
                      data-ng-click="toggleMobileMenu()" navigationaware>
-                    <span message key="{{subsubmenu.name}}"></span></a>
+                    <span message key="{{::subsubmenu.name}}"></span></a>
                 </li>
               </ul>
             </li>
