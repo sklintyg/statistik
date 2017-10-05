@@ -65,13 +65,13 @@
 							<a data-ng-href="{{::baseUrl}}/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLink" class="overview-widget-link">
 								<div class="overview-widget" >
 									<div class="overview-widget-header">
-										<h2 class="overview-widget-title pull-left">
+										<h2 class="overview-widget-title">
 											<span message key="business.widget.header.konsfordelning-sjukfall"></span>
+											<span class="page-help-tool-tip pull-right"><img
+													uib-tooltip-html="popoverTextSexDistribution"
+													tooltip-class="popover-content"
+													tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
 										</h2>
-										<span class="page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
-																uib-tooltip-html="popoverTextSexDistribution"
-																tooltip-class="popover-content"
-																tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
 									</div>
 									<div class="overview-widget-content">
 										<div class="col-xs-12 col-sm-6" id="sexProportionChartOld"></div>
@@ -114,18 +114,18 @@
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
 							<a data-ng-href="{{::baseUrl}}/sjukskrivningslangd{{queryString}}" id="sickLeaveLengthHeaderLink" class="overview-widget-link">
-								<span class="overview-widget" >
-									<span class="overview-widget-header">
-										<h2 class="overview-widget-title pull-left">
+								<div class="overview-widget">
+									<div class="overview-widget-header">
+										<h2 class="overview-widget-title">
 											<span message key="business.widget.header.fordelning-sjukskrivningslangd"></span>
+											<span class="page-help-tool-tip pull-right"><img
+													uib-tooltip-html="popoverTextSickLeaveLength"
+													tooltip-class="popover-content"
+													tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
 										</h2>
-										<span class="page-help-tool-tip pull-right" style="padding: 8px 7px 7px 5px;"><img
-																uib-tooltip-html="popoverTextSickLeaveLength"
-																tooltip-class="popover-content"
-																tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
-									</span>
+									</div>
 									<div class="overview-widget-content">
-										<div class="overview-chart-info" id="sicklength-chart-info">
+										<div class="overview-chart-info row" id="sicklength-chart-info">
 												<div class="overview-chart-info-section pull-left">
 													<span class="long-sick-leaves-value">{{::longSickLeavesTotal | thousandseparated}}</span><br/>
 													<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90"></span></span>
@@ -137,7 +137,7 @@
 										</div>
 										<div class="chart-container" id="sickLeaveLengthChart"></div>
 									</div>
-								</span>
+								</div>
 							</a>
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">

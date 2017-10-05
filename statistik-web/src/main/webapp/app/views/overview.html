@@ -22,8 +22,8 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 left-2px-padding right-2px-padding">
 					<a data-ng-href="#/nationell/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLink" class="overview-widget-link">
-						<span class="overview-widget" >
-							<span class="overview-widget-header">
+						<div class="overview-widget" >
+							<div class="overview-widget-header">
 								<h2 class="overview-widget-title">
 									<span message key="national.widget.header.konsfordelning"></span>
 									<span class="page-help-tool-tip pull-right"><img
@@ -31,15 +31,15 @@
 														tooltip-append-to-body="true"
 														tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
 								</h2>
-							</span>
-							<span class="overview-widget-content img-responsive">
+							</div>
+							<div class="overview-widget-content img-responsive">
 								<p class="overview-distribution-per-sex-values">
 										<span>{{casesPerMonthFemaleProportion}} % </span>
 										<span>{{casesPerMonthMaleProportion}} % </span>
 								</p>
 								<img id="overview-distribution-per-sex-image" class="center-block" src="/assets/images/distribution_sex_stat.png"/>
-							</span>
-						</span>
+							</div>
+						</div>
 					</a>
 				</div>
 				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 left-2px-padding right-2px-padding">
@@ -97,8 +97,8 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
 					<a data-ng-href="#/nationell/sjukskrivningslangd{{queryString}}" id="sickLeaveLengthHeaderLink" class="overview-widget-link">
-						<span class="overview-widget">
-							<span class="overview-widget-header">
+						<div class="overview-widget">
+							<div class="overview-widget-header">
 								<h2 class="overview-widget-title">
 									<span message key="national.widget.header.fordelning-sjukskrivningslangd"></span>
 									<span class="page-help-tool-tip pull-right"><img
@@ -106,7 +106,7 @@
 														tooltip-class="popover-content"
 														tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
 												</h2>
-							</span>
+							</div>
 							<div class="overview-widget-content">
 								<div class="overview-chart-info row" id="sicklength-chart-info">
 										<div class="overview-chart-info-section pull-left">
@@ -120,7 +120,7 @@
 								</div>
 								<div class="chart-container" id="sickLeaveLengthChart"></div>
 							</div>
-						</span>
+						</div>
 					</a>
 				</div>
 				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
