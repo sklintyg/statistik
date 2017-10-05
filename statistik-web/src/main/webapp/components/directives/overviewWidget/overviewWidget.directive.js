@@ -27,10 +27,10 @@ angular.module('StatisticsApp').directive('overviewWidget',
             restrict: 'E',
             scope: {
                 titleKey: '@',
-                tooltipContent: '=',
+                tooltipContent: '<',
                 chartId: '@',
-                options: '=',
-                groups: '=',
+                options: '<',
+                groups: '<',
                 columnTitle1: '@',
                 columnTitle2: '@',
                 columnTitle3: '@',
@@ -46,7 +46,7 @@ angular.module('StatisticsApp').directive('overviewWidget',
 
                 $scope.$watch('options', function(newValue) {
                     if (newValue) {
-                        chart = Highcharts.chart($scope.chartId, newValue);
+                        chart = Highcharts.chart($scope.chartId, newValue.options, newValue.onComplete);
                     }
                 });
 
