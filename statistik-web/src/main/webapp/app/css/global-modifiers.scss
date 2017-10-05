@@ -13,19 +13,20 @@ body {
   overflow-y: scroll;
 }
 
-input[type=checkbox],
-input[type=radio] {
-  height: 18px;
-  width: 18px;
+input {
+  &[type='checkbox'],
+  &[type='radio'] {
+    height: 18px;
+    width: 18px;
+  }
 }
 
-#sidebar-wrapper {
+.sidebar-wrapper {
   width: 250px;
   padding-left: 15px;
 }
 
 .page-content-wrapper {
-
   @media (min-width: $screen-sm-min) {
     margin-left: 250px;
     padding-left: 30px;
@@ -36,37 +37,40 @@ input[type=radio] {
   margin: 20px 0 15px;
 }
 
-
 .top-10px-margin {
   margin-top: 10px;
 }
 
 .filter-link {
-  color: #0b0b0b;
+  color: $stat-link-color-filter;
 }
 
-// Adjust the inputbox size and font size for the datepicker
-.input-group-sm.datepicker > .form-control,
-.input-group-sm.datepicker > .input-group-addon,
-.input-group-sm.datepicker > .input-group-btn > .btn {
-  font-size: 14px;
-  height: 34px;
-}
+
 
 // Change the way the buttons look in the ui.bootstrap.datepicker
 .input-group.datepicker {
+
+  // Adjust the inputbox size and font size for the datepicker
+  & > .form-control,
+  & > .input-group-addon,
+  & > .input-group-btn > .btn {
+    font-size: 14px;
+    height: 34px;
+  }
 
   .btn-info.active {
     background-color: rgb(153, 153, 158);
     border-color: rgb(153, 153, 158);
   }
 
-  td .btn-default,
-  th .btn-default {
-    background-image: none;
-    border-color: #fff;
-    border-radius: 0;
-    box-shadow: none;
+  td,
+  th {
+    .btn-default {
+      background-image: none;
+      border-color: #fff;
+      border-radius: 0;
+      box-shadow: none;
+    }
   }
 
   .dropdown-menu {
@@ -86,7 +90,6 @@ input[type=radio] {
 
     &::before {
       border-bottom-color: #ccc;
-      border-bottom-color: rgba(0, 0, 0, .15);
       border-width: 0 7px 7px;
       left: 9px;
       top: -7px;
@@ -111,7 +114,7 @@ input[type=radio] {
   margin-top: 15px;
   display: block;
 
-  i.glyphicon {
+  .glyphicon {
     color: #fff;
     font-size: 12px;
     float: left;
@@ -130,15 +133,15 @@ input[type=radio] {
   }
 
   .panel-heading {
-    background: $stat-panel-header-from;
-    background: linear-gradient(to bottom, $stat-panel-header-from 0%, $stat-panel-header-to 100%);
-    color: #fff;
+    background-color: $stat-panel-header-from;
+    background-image: linear-gradient(to bottom, $stat-panel-header-from 0%, $stat-panel-header-to 100%);
+    color: $stat-panel-header-color;
     padding: 12px;
     font-size: 14px;
     line-height: 20px;
   }
 
-  h4.panel-title {
+  .panel-title {
     font-weight: bold;
     font-size: 14px;
   }
@@ -159,15 +162,6 @@ input[type=radio] {
     padding: 1px;
     margin-top: -2px;
   }
-}
-
-.collapsible-panel-body {
-  border: 1px solid #f9f9f9;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: 4px;
-  padding-left: 15px;
-  padding-right: 15px;
-  background-color: #f9f9f9;
 }
 
 .chart-table {

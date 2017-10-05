@@ -22,12 +22,6 @@
     margin-top: 10px;
   }
 
-  table.table tbody td,
-  table.table tbody td:hover {
-    background-color: #e9eae8;
-    border-bottom: 0;
-  }
-
   .divider {
     margin: 10px 0;
     width: 100%;
@@ -75,11 +69,9 @@
       font-weight: normal;
     }
 
-    input[type=checkbox] {
+    input[type='checkbox'] {
       position: relative;
       vertical-align: middle;
-      width: 18px;
-      height: 18px;
       margin-bottom: 4px;
     }
   }
@@ -117,7 +109,7 @@
     background-color: $stat-filter-active;
 
     &:hover {
-      background-color: rgba(234, 128, 37, .80);
+      background-color: rgba(234, 128, 37, .8);
     }
   }
 }

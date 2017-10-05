@@ -1,14 +1,3 @@
-//Styling for filuppladdning
-.jumbotron.dropzone {
-  margin-bottom: 0;
-  margin-top: 10px;
-
-  //The postion property of the jumbtron disturbed links in som kind of weird way
-  &::after {
-    position: inherit;
-  }
-}
-
 .dropzone {
   background-color: rgb(247, 247, 249);
   border: dashed #808080 2px;
@@ -17,6 +6,16 @@
   a {
     color: #696969 !important;
     text-decoration: underline;
+  }
+
+  &.jumbotron {
+    margin-bottom: 0;
+    margin-top: 10px;
+
+    //The postion property of the jumbtron disturbed links in som kind of weird way
+    &::after {
+      position: inherit;
+    }
   }
 }
 

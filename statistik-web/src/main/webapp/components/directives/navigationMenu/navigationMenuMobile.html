@@ -27,7 +27,7 @@
       </div>
     </div>
     <!-- Start mobile navigation menu -->
-    <div class="collapse navbar-collapse-navigation" id="navbar-mobile-menu-national" uib-collapse="isCollapsed">
+    <div class="collapse navbar-collapse-navigation mobile-menu" uib-collapse="isCollapsed">
       <ul class="nav navbar-nav" style="margin-top: 0">
 
         <li class="divider" data-ng-repeat-start="menu in menus | filter: showMenu"></li>
@@ -37,7 +37,7 @@
             <span class="glyphicon pull-right mobile-menu-caret" data-ng-class="{'glyphicon-chevron-up': menu.show, 'glyphicon-chevron-down': !menu.show}"></span>
           </a>
 
-          <ul data-ng-if="menu.show">
+          <ul data-ng-if="menu.show" class="mobile-menu-part">
             <li class="sub-menu-item" data-ng-repeat="submenu in menu.subMenu | filter: showMenu">
               <a data-ng-href="{{::submenu.link}}{{queryString}}"
                  data-ng-click="toggleMobileMenu()"

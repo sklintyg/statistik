@@ -19,15 +19,15 @@ navigation-menu {
 }
 
 .statistics-menu-list {
-  background: #212633;
-  background: linear-gradient(to bottom,#666 0,#212633 57%);
+  background-color: $stat-menu-header-bg;
+  background-image: linear-gradient(to bottom, $stat-menu-header-bg-from 0, $stat-menu-header-bg 57%);
   border-radius: 4px;
   color: #fff;
   cursor: pointer;
   padding: 8px 9px;
 
   &.disabled {
-    background: #eee;
+    background: $stat-menu-header-disabled-bg;
     cursor: initial;
 
     span {
@@ -96,9 +96,11 @@ navigation-menu {
     list-style-type: none;
   }
 
-  .sub-nav-list li a {
-    font-size: 0.9em;
-    padding-left: 20px;
+  .sub-nav-list {
+    a {
+      font-size: .9em;
+      padding-left: 20px;
+    }
   }
 }
 
@@ -115,11 +117,22 @@ navigation-menu {
   font-weight: 700;
 }
 
-.sub-menu-item,
-.sub-menu-item a {
-  color: #777;
-  display: block;
-  max-width: 100%;
-  padding-bottom: 5px;
-  padding-top: 5px;
+.mobile-menu {
+  ul {
+    list-style-type: none;
+  }
+
+  .mobile-menu-part {
+    li {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+
+    a {
+      color: #777;
+      display: block;
+      padding-bottom: 5px;
+      padding-top: 5px;
+    }
+  }
 }

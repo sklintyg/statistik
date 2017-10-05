@@ -3,23 +3,19 @@ overview-widget {
 }
 
 .overview-widget {
-  background: #ebebeb;
+  background: $stat-panel-bg;
   border: 1px solid #ddd;
   color: #333;
-  display: inline-block;
   font-size: 12px;
   margin-bottom: 20px;
   padding: 0 0 5px;
-  width: 100%;
 
   .overview-widget-header {
-    background: #008391;
-    background: linear-gradient(to bottom, #008391 0%, #00687d 100%);
-    display: inline-block;
+    background-color: $stat-panel-header-from;
+    background-image: linear-gradient(to bottom, $stat-panel-header-from 0%, $stat-panel-header-to 100%);
     padding: 5px;
     position: relative;
     vertical-align: middle;
-    width: 100%;
   }
 
   .chart-container {
@@ -37,7 +33,6 @@ overview-widget {
   }
 
   .overview-widget-content {
-    display: block;
     min-height: 250px;
 
     .col-sm-6,
@@ -47,13 +42,11 @@ overview-widget {
   }
 
   &:hover {
-    .overview-widget-header {
-      background: #28b4c4;
-      cursor: pointer;
-    }
+    background: $stat-panel-bg-hover;
 
-    .overview-widget {
-      background: #f0f0f0;
+    .overview-widget-header {
+      background: $stat-panel-header-hover;
+      cursor: pointer;
     }
 
     .overview-chart-info-section {
@@ -63,7 +56,7 @@ overview-widget {
 
   .overview-widget-title {
     margin: 10px;
-    color: #fff;
+    color: $stat-panel-header-color;
   }
 
   .page-help-tool-tip {
@@ -110,12 +103,14 @@ overview-widget {
         width: 61%;
       }
 
-      tbody tr td {
-        border-right: 1px solid #ddd;
-        border-left: 1px solid #ddd;
-        line-height: 11px;
-        font-size: 11px;
-        margin-left: 0;
+      tbody {
+        td {
+          border-right: 1px solid #ddd;
+          border-left: 1px solid #ddd;
+          line-height: 11px;
+          font-size: 11px;
+          margin-left: 0;
+        }
       }
 
       .diagnostics-group-quantity {
@@ -196,4 +191,5 @@ overview-widget {
 #sickLeaveLengthChart {
   margin: 25px 0 0;
   width: 100%;
+  float: none;
 }

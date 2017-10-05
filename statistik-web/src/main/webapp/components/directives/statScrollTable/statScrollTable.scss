@@ -4,30 +4,36 @@
   table {
     border-collapse: separate;
 
-    tr td {
-      border-right: 1px solid #ddd;
-      font-size: 12px;
-      line-height: 14px;
-      padding: 7px;
-      text-align: right;
-      vertical-align: top;
+    tr {
+      td {
+        border-right: 1px solid #ddd;
+        font-size: 12px;
+        line-height: 14px;
+        padding: 7px;
+        text-align: right;
+        vertical-align: top;
+
+        &.scrollable {
+          margin: 0;
+          white-space: nowrap;
+        }
+      }
     }
-  }
 
-  td.scrollable {
-    margin: 0;
-    white-space: nowrap;
-  }
+    thead {
+      td {
+        border-bottom-width: 1px;
+        height: 30px;
+        font-weight: 700;
+      }
+    }
 
-  tbody td,
-  tbody tr {
-    height: 33px;
-  }
-
-  thead tr td {
-    border-bottom-width: 1px !important;
-    height: 30px;
-    font-weight: 700;
+    tbody {
+      td,
+      tr {
+        height: 33px;
+      }
+    }
   }
 
   .table-headers {
@@ -35,8 +41,8 @@
     max-width: 34em;
   }
 
-  .headcol.scrollable {
-    text-align: left !important;
+  .headcol {
+    text-align: left;
   }
 
   .headcol-name {

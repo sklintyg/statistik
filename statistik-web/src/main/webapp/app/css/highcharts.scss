@@ -3,8 +3,8 @@
   overflow: visible !important;
 
   .tooltip-style {
-    background: #fff;
-    color: #000;
+    background: $stat-highcharts-tooltip-bg;
+    color: $stat-highcharts-tooltip-color;
     display: block;
     font-size: 12px;
     margin: 0;
