@@ -32,7 +32,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         $scope.degreeOfSickLeaveChartOptions = null;
 
 
-        var perMonthAlterationChart = {}, sickLeavePerCountyChart = {}, sickLeaveLengthChart = {};
+        var sickLeaveLengthChart = {};
 
         var setTooltipText = function (result) {
 
@@ -80,7 +80,6 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                     [ 1 ]
                 ] }
             ], null, true);
-            chartOptions.chart.renderTo = 'alterationChart';
             chartOptions.chart.type = 'pie';
             chartOptions.chart.height = 210;
             chartOptions.chart.width = 180;
@@ -110,7 +109,9 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                 dataLabels: { enabled: false },
                 states: { hover: {enabled: false} }
             };
-            return new Highcharts.Chart(chartOptions);
+            return {
+                options: chartOptions
+            };
         }
 
         var paintDonutChart = function (chartData) {
@@ -135,7 +136,9 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             chartOptions.chart.plotBorderWidth = 0;
             chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">{point.key}</span><br/>';
 
-            return chartOptions;
+            return {
+                options: chartOptions
+            };
         };
 
         var updateCharts = function (result) {
@@ -144,7 +147,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
 
             chartFactory.addColor(result.casesPerMonth.alteration);
-            perMonthAlterationChart = paintPerMonthAlternationChart(result.casesPerMonth.alteration);
+            $scope.alterationChartOptions = paintPerMonthAlternationChart(result.casesPerMonth.alteration);
 
             chartFactory.addColor(result.diagnosisGroups);
             var diagnosisDonutData = extractDonutData(result.diagnosisGroups);
@@ -168,7 +171,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             $scope.longSickLeavesAlteration = result.sickLeaveLength.longSickLeavesAlternation;
 
             chartFactory.addColor(result.perCounty);
-            sickLeavePerCountyChart = paintSickLeavePerCountyChart('sickLeavePerCountyChart', result.perCounty);
+            $scope.sickLeavePerCountyChartOptions = paintSickLeavePerCountyChart(result.perCounty);
             $scope.sickLeavePerCountyGroups = result.perCounty;
         };
 
@@ -205,7 +208,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             return new Highcharts.Chart(chartOptions);
         }
 
-        function paintSickLeavePerCountyChart(containerId, chartData, hideImage) {
+        function paintSickLeavePerCountyChart(chartData, hideImage) {
             var series = _.map(chartData, function (e) {
                 var coords = self.getCoordinates(e);
                 return {'data': [
@@ -215,7 +218,6 @@ angular.module('StatisticsApp').controller('overviewCtrl',
 
             var chartOptions = chartFactory.getHighChartConfigBase([], series, null, true);
             chartOptions.chart = {
-                renderTo: containerId,
                 height: 350,
                 width: 188,
                 type: 'bubble',
@@ -260,11 +262,14 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                 visible: false
             };
 
-            return new Highcharts.Chart(chartOptions, function (chart) { // on complete
-                if (!hideImage) {
-                    chart.renderer.image('assets/images/sverige.png', 20, 10, 127, 300).add();
+            return {
+                options: chartOptions,
+                onComplete: function (chart) { // on complete
+                    if (!hideImage) {
+                        chart.renderer.image('assets/images/sverige.png', 20, 10, 127, 300).add();
+                    }
                 }
-            });
+            };
         }
 
         self.getCoordinates = function getCoordinates(perCountyObject) {
@@ -307,6 +312,8 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             var diagnosisDonutChart = $('#diagnosisChart').highcharts();
             var ageDonutChart = $('#ageChart').highcharts();
             var degreeOfSickLeaveChart = $('#degreeOfSickLeaveChart').highcharts();
+            var alterationChart = $('#alterationChart').highcharts();
+            //var sickLeavePerCountyChart = $('#sickLeavePerCountyChart').highcharts();
 
             topCharts.push({
                 title: messageService.getProperty('national.widget.header.konsfordelning'),
@@ -316,7 +323,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             });
 
             topCharts.push({
-                chart: perMonthAlterationChart,
+                chart: alterationChart,
                 title: messageService.getProperty('national.widget.header.forandring'),
                 width: 300,
                 height: 300,
@@ -392,7 +399,8 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                 ]
             });
 
-            var sickLeavePerCountyChart2 = paintSickLeavePerCountyChart('sickLeavePerCountyChartPrint', $scope.sickLeavePerCountyGroups, true);
+            var options = paintSickLeavePerCountyChart($scope.sickLeavePerCountyGroups, true);
+            var sickLeavePerCountyChart2 =Highcharts.chart('sickLeavePerCountyChartPrint', options.options);
 
             charts.push({
                 countryChart: sickLeavePerCountyChart2,
@@ -418,16 +426,8 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         };
 
         $scope.$on('$destroy', function() {
-            if(perMonthAlterationChart && typeof perMonthAlterationChart.destroy === 'function') {
-                perMonthAlterationChart.destroy();
-            }
-
             if(sickLeaveLengthChart && typeof sickLeaveLengthChart.destroy === 'function') {
                 sickLeaveLengthChart.destroy();
-            }
-
-            if(sickLeavePerCountyChart && typeof sickLeavePerCountyChart.destroy === 'function') {
-                sickLeavePerCountyChart.destroy();
             }
         });
     }

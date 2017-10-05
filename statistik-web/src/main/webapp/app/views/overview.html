@@ -1,181 +1,146 @@
-<div id="national-overview">
-	<div id="overview-content"  class="highlight-content">
-		<div dataerrorview show-error="dataLoadingError" error-page-url="errorPageUrl">
+<div id="national-overview" class="highlight-content">
+	<div dataerrorview show-error="dataLoadingError" error-page-url="errorPageUrl">
+		<div class="row">
+				<h1 class="col-xs-12 col-sm-9">
+					<span>{{::subTitle}}</span>
+					<span>{{subTitlePeriod}}</span>
+				</h1>
+				<div class="pull-right">
+					<!-- PRINT BUTTON -->
+					<button class="btn btn-default" data-ng-click="printPdf()" data-ng-disabled="!exportEnabled">
+						<span message key="button.label.save-as-pdf"></span>
+					</button>
+				</div>
+		</div>
+		<div class="spinner-overview" data-ng-if="generatingPdf">
+			<div spinner label="Skapar pdf" show-spinner="generatingPdf"></div>
+		</div>
+
+		<show-help-text texts="chartFootnotes"></show-help-text>
+
+		<div spinner label="{{::spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
 			<div class="row">
-					<h1 class="col-xs-12 col-sm-9">
-						<span>{{::subTitle}}</span>
-						<span>{{subTitlePeriod}}</span>
-					</h1>
-					<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 pull-right margin-bottom" style="width: auto;">
-						<!-- PRINT BUTTON -->
-						<button class="btn btn-default" data-ng-click="printPdf()" data-ng-disabled="!exportEnabled">
-							<span message key="button.label.save-as-pdf"></span>
-						</button>
-					</div>
-			</div>
-			<div class="spinner-overview" data-ng-if="generatingPdf">
-				<div spinner label="Skapar pdf" show-spinner="generatingPdf"></div>
-			</div>
-
-			<show-help-text texts="chartFootnotes"></show-help-text>
-
-			<div spinner label="{{::spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
-				<div class="row">
-					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 left-2px-padding right-2px-padding">
-						<a data-ng-href="#/nationell/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLink" class="overview-widget-link">
-							<span class="overview-widget" >
-								<span class="overview-widget-header">
-									<h2 class="overview-widget-title">
-										<span message key="national.widget.header.konsfordelning"></span>
-										<span class="page-help-tool-tip pull-right"><img
-															uib-tooltip-html="popoverTextSexDistribution" tooltip-class="popover-content"
-															tooltip-append-to-body="true"
-					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
-                  </h2>
-								</span>
-								<span class="overview-widget-content img-responsive">
-									<p id="overview-distribution-per-sex-values">
-                      <span style="position: relative; right: 11px;" id="overview-distribution-female-lbl">{{casesPerMonthFemaleProportion}} % </span>
-                      <span style="position: relative; left: 16px;" id="overview-distribution-male-lbl">{{casesPerMonthMaleProportion}} % </span>
-                  </p>
-                  <img id="overview-distribution-per-sex-image" class="center-block" src="/assets/images/distribution_sex_stat.png"/>
-								</span>
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 left-2px-padding right-2px-padding">
+					<a data-ng-href="#/nationell/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLink" class="overview-widget-link">
+						<span class="overview-widget" >
+							<span class="overview-widget-header">
+								<h2 class="overview-widget-title">
+									<span message key="national.widget.header.konsfordelning"></span>
+									<span class="page-help-tool-tip pull-right"><img
+														uib-tooltip-html="popoverTextSexDistribution" tooltip-class="popover-content"
+														tooltip-append-to-body="true"
+														tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
+								</h2>
 							</span>
-						</a>
-					</div>
-					<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 left-2px-padding right-2px-padding">
-						<a data-ng-href="#/nationell/sjukfallPerManad{{queryString}}" id="casesPerMonthAlterationLink" class="overview-widget-link">
-							<span class="overview-widget">
-								<span class="overview-widget-header">
-									<h2 class="overview-widget-title">
-										<span message key="national.widget.header.forandring"></span>
-										<span class="page-help-tool-tip pull-right"><img
-					                    uib-tooltip-html="popoverTextChangeProcentage"
-															tooltip-class="popover-content"
-															tooltip-append-to-body="true"
-					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
-									</h2>
-								</span>
-								<span class="overview-widget-content img-responsive">
-									<div id="alterationChart"></div>
-								</span>
+							<span class="overview-widget-content img-responsive">
+								<p class="overview-distribution-per-sex-values">
+										<span style="right: 11px;">{{casesPerMonthFemaleProportion}} % </span>
+										<span style="left: 16px;">{{casesPerMonthMaleProportion}} % </span>
+								</p>
+								<img id="overview-distribution-per-sex-image" class="center-block" src="/assets/images/distribution_sex_stat.png"/>
 							</span>
-						</a>
-					</div>
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
-						<a data-ng-href="#/nationell/diagnosgrupp{{queryString}}" id="diagnosisGroupsHeaderLink" class="overview-widget-link">
-							<overview-widget title-key="national.widget.header.fordelning-diagnosgrupper"
-															 tooltip-content="popoverTextDiagnosisGroups"
-															 chart-id="diagnosisChart"
-															 options="diagnosisDonutChartOptions"
-															 groups="diagnosisGroups"
-															 column-title1="overview.widget.table.column.diagnosgrupp"
-															 column-title2="overview.widget.table.column.antal"
-															 column-title3="overview.widget.table.column.forandring">
-							</overview-widget>
-						</a>
-					</div>
+						</span>
+					</a>
 				</div>
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
-						<a data-ng-href="#/nationell/aldersgrupper{{queryString}}" id="ageGroupsHeaderLink" class="overview-widget-link">
-							<overview-widget title-key="national.widget.header.fordelning-aldersgrupper"
-															 tooltip-content="popoverTextAgeGroups"
-															 chart-id="ageChart"
-															 options="ageDonutChartOptions"
-															 groups="ageGroups"
-															 column-title1="overview.widget.table.column.aldersgrupp"
-															 column-title2="overview.widget.table.column.antal"
-															 column-title3="overview.widget.table.column.forandring">
-							</overview-widget>
-						</a>
-					</div>
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
-						<a data-ng-href="#/nationell/sjukskrivningsgrad{{queryString}}" id="degreeOfSickLeaveHeaderLink" class="overview-widget-link">
-							<overview-widget title-key="national.widget.header.fordelning-sjukskrivningsgrad"
-															 tooltip-content="popoverTextDegreeOfSickLeave"
-															 chart-id="degreeOfSickLeaveChart"
-															 options="degreeOfSickLeaveChartOptions"
-															 groups="degreeOfSickLeaveGroups"
-															 column-title1="overview.widget.table.column.sjukskrivningsgrad"
-															 column-title2="overview.widget.table.column.antal"
-															 column-title3="overview.widget.table.column.forandring"
-															 >
-							</overview-widget>
-						</a>
-					</div>
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 left-2px-padding right-2px-padding">
+					<a data-ng-href="#/nationell/sjukfallPerManad{{queryString}}" id="casesPerMonthAlterationLink" class="overview-widget-link">
+						<overview-widget title-key="national.widget.header.forandring"
+														 tooltip-content="popoverTextChangeProcentage"
+														 chart-id="alterationChart"
+														 options="alterationChartOptions">
+						</overview-widget>
+					</a>
 				</div>
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
-						<a data-ng-href="#/nationell/sjukskrivningslangd{{queryString}}" id="sickLeaveLengthHeaderLink" class="overview-widget-link">
-							<span class="overview-widget">
-								<span class="overview-widget-header">
-									<h2 class="overview-widget-title">
-										<span message key="national.widget.header.fordelning-sjukskrivningslangd"></span>
-										<span class="page-help-tool-tip pull-right"><img
-															uib-tooltip-html="popoverTextSickLeaveLength"
-															tooltip-class="popover-content"
-					                    tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
-					                </h2>
-								</span>
-								<div class="overview-widget-content">
-									<div class="overview-chart-info" id="sicklength-chart-info">
-                      <div class="overview-chart-info-section pull-left">
-                        <span class="longSickLeavesValue">{{longSickLeavesTotal | thousandseparated}}</span><br/>
-                        <span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90"></span></span>
-                      </div>
-                      <div class="overview-chart-info-section pull-right">
-                        <span class="longSickLeavesValue">{{::longSickLeavesAlteration}} %</span><br/>
-                        <span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader"></span></span>
-                      </div>
-                  </div>
-                  <div class="chart-container" id="sickLeaveLengthChart"></div>
-								</div>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
+					<a data-ng-href="#/nationell/diagnosgrupp{{queryString}}" id="diagnosisGroupsHeaderLink" class="overview-widget-link">
+						<overview-widget title-key="national.widget.header.fordelning-diagnosgrupper"
+														 tooltip-content="popoverTextDiagnosisGroups"
+														 chart-id="diagnosisChart"
+														 options="diagnosisDonutChartOptions"
+														 groups="diagnosisGroups"
+														 column-title1="overview.widget.table.column.diagnosgrupp"
+														 column-title2="overview.widget.table.column.antal"
+														 column-title3="overview.widget.table.column.forandring">
+						</overview-widget>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
+					<a data-ng-href="#/nationell/aldersgrupper{{queryString}}" id="ageGroupsHeaderLink" class="overview-widget-link">
+						<overview-widget title-key="national.widget.header.fordelning-aldersgrupper"
+														 tooltip-content="popoverTextAgeGroups"
+														 chart-id="ageChart"
+														 options="ageDonutChartOptions"
+														 groups="ageGroups"
+														 column-title1="overview.widget.table.column.aldersgrupp"
+														 column-title2="overview.widget.table.column.antal"
+														 column-title3="overview.widget.table.column.forandring">
+						</overview-widget>
+					</a>
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
+					<a data-ng-href="#/nationell/sjukskrivningsgrad{{queryString}}" id="degreeOfSickLeaveHeaderLink" class="overview-widget-link">
+						<overview-widget title-key="national.widget.header.fordelning-sjukskrivningsgrad"
+														 tooltip-content="popoverTextDegreeOfSickLeave"
+														 chart-id="degreeOfSickLeaveChart"
+														 options="degreeOfSickLeaveChartOptions"
+														 groups="degreeOfSickLeaveGroups"
+														 column-title1="overview.widget.table.column.sjukskrivningsgrad"
+														 column-title2="overview.widget.table.column.antal"
+														 column-title3="overview.widget.table.column.forandring"
+														 >
+						</overview-widget>
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
+					<a data-ng-href="#/nationell/sjukskrivningslangd{{queryString}}" id="sickLeaveLengthHeaderLink" class="overview-widget-link">
+						<span class="overview-widget">
+							<span class="overview-widget-header">
+								<h2 class="overview-widget-title">
+									<span message key="national.widget.header.fordelning-sjukskrivningslangd"></span>
+									<span class="page-help-tool-tip pull-right"><img
+														uib-tooltip-html="popoverTextSickLeaveLength"
+														tooltip-class="popover-content"
+														tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
+												</h2>
 							</span>
-						</a>
-					</div>
-					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
-						<a data-ng-href="#/nationell/lan{{queryString}}" id="perCountyHeaderLink" class="overview-widget-link">
-							<span class="overview-widget">
-								<span class="overview-widget-header">
-									<h2 class="overview-widget-title">
-										<span message key="national.widget.header.fordelning-lan"></span>
-										<span class="page-help-tool-tip pull-right"><img
-												uib-tooltip-html="popoverTextPerCountyDescription"
-												tooltip-class="popover-content"
-												tooltip-trigger="mouseenter" tooltip-placement="left" src="/assets/images/question_white.png" alt=""></span>
-									</h2>
-								</span>
-								<div class="overview-widget-content" id="overview-widget-content-geo">
-									<div class="chart-container" id="sickLeavePerCountyChart"></div>
-										<table class="datatable table table-striped overview-graph-table sickLeaveByCountyTable">
-												<thead>
-                          <tr>
-                            <td>&nbsp;</td>
-                              <td><span message key="overview.widget.table.column.lan"></span></td>
-                              <td><span message key="overview.widget.table.column.antal"></span></td>
-                              <td><span message key="overview.widget.table.column.forandring"></span></td>
-                          </tr>
-												</thead>
-												<tbody>
-                          <tr data-ng-repeat="group in sickLeavePerCountyGroups">
-                              <td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-                              <td class="diagnostics-group-name">{{::group.name}}</td>
-                              <td class="diagnostics-group-quantity">{{::group.quantity | thousandseparated}}</td>
-                              <td class="diagnostics-group-alternation">{{::group.alternation}} %</td>
-                          </tr>
-												</tbody>
-										</table>
+							<div class="overview-widget-content">
+								<div class="overview-chart-info row" id="sicklength-chart-info">
+										<div class="overview-chart-info-section pull-left">
+											<span class="longSickLeavesValue">{{::longSickLeavesTotal | thousandseparated}}</span><br/>
+											<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90"></span></span>
+										</div>
+										<div class="overview-chart-info-section pull-right">
+											<span class="longSickLeavesValue">{{::longSickLeavesAlteration}} %</span><br/>
+											<span class="longSickLeavesText"><span message key="overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader"></span></span>
+										</div>
 								</div>
-							</span>
-						</a>
-					</div>
+								<div class="chart-container" id="sickLeaveLengthChart"></div>
+							</div>
+						</span>
+					</a>
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
+					<a data-ng-href="#/nationell/lan{{queryString}}" id="perCountyHeaderLink" class="overview-widget-link">
+						<overview-widget title-key="national.widget.header.fordelning-lan"
+														 tooltip-content="popoverTextPerCountyDescription"
+														 chart-id="sickLeavePerCountyChart"
+														 options="sickLeavePerCountyChartOptions"
+														 groups="sickLeavePerCountyGroups"
+														 column-title1="overview.widget.table.column.lan"
+														 column-title2="overview.widget.table.column.antal"
+														 column-title3="overview.widget.table.column.forandring"
+						>
+						</overview-widget>
+					</a>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- End: Overview content -->
-</div> <!-- /container -->
+</div>
 
 <div class="chart-container" id="sickLeavePerCountyChartPrint"></div>
     

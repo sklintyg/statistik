@@ -1,7 +1,7 @@
 <div class="overview-widget">
   <div class="overview-widget-header">
     <h2 class="overview-widget-title">
-      <span message key="{{titleKey}}"></span>
+      <span message key="{{::titleKey}}"></span>
       <span class="page-help-tool-tip pull-right"><img
           uib-tooltip-html="tooltipContent"
           tooltip-class="popover-content"
@@ -12,22 +12,22 @@
     </h2>
   </div>
   <div class="overview-widget-content">
-    <div class="chart-container" id="{{chartId}}"></div>
-    <table class="datatable table table-striped overview-graph-table">
+    <div class="chart-container" data-ng-attr-id="{{::chartId}}"></div>
+    <table class="table table-striped overview-graph-table table-hover" data-ng-if="groups">
         <thead>
           <tr>
               <td>&nbsp;</td>
-              <td><span message key="{{columnTitle1}}"></span></td>
-              <td><span message key="{{columnTitle2}}"></span></td>
-              <td><span message key="{{columnTitle3}}"></span></td>
+              <td><span message key="{{::columnTitle1}}"></span></td>
+              <td><span message key="{{::columnTitle2}}"></span></td>
+              <td><span message key="{{::columnTitle3}}"></span></td>
           </tr>
         </thead>
         <tbody>
           <tr data-ng-repeat="group in groups">
               <td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-              <td class="diagnostics-group-name">{{group.name}}{{valueSuffixWithSpace}}</td>
-              <td class="diagnostics-group-quantity">{{group.quantity | thousandseparated}}</td>
-              <td class="diagnostics-group-alternation">{{group.alternation}} %</td>
+              <td class="diagnostics-group-name">{{::group.name}}{{valueSuffixWithSpace}}</td>
+              <td class="diagnostics-group-quantity">{{::group.quantity | thousandseparated}}</td>
+              <td class="diagnostics-group-alternation">{{::group.alternation}} %</td>
           </tr>
         </tbody>
     </table>

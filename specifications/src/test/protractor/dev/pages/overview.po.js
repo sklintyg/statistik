@@ -22,7 +22,7 @@
 var OverviewPage = function() {
     this.container = element(by.id('national-overview'));
 
-    this.distributionPerSex = this.container.element(by.id('overview-distribution-per-sex-values'));
+    this.distributionPerSex = this.container.element(by.id('overview-distribution-per-sex-image'));
     this.alterationChart = this.container.element(by.id('alterationChart'));
     this.diagnosisChart = this.container.element(by.id('diagnosisChart'));
     this.ageChart = this.container.element(by.id('ageChart'));
