@@ -144,7 +144,8 @@ overview-widget {
     top: 64px;
 
     span {
-      position: relative;
+      width: 85px;
+      display: inline-block;
     }
   }
 
@@ -153,7 +154,7 @@ overview-widget {
     display: block;
     background-color: #fff;
     padding: 10px;
-    min-height: 105px;
+    min-height: 108px;
     border: 1px solid #fff;
     text-align: center;
 
