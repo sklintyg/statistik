@@ -22,43 +22,46 @@
 angular.module('StatisticsApp')
     .directive('highlightWords',
         /** @ngInject */
-        function() {
+        function(_) {
         'use strict';
+
+        var hightlightWords = _.debounce(function() {
+            console.log('Startar highlight');
+            var phrases = getPhrases();
+            var keys = [];
+            phrases.forEach(function(item, key) {
+                keys.push(key);
+            });
+            $('.highlight-content').mark(keys, {
+                element: 'span',
+                exclude: ['svg *', '.highlight-words', 'datatable-body'],
+                className: 'highlight-words',
+                separateWordSearch: false,
+                diacritics: false,
+                accuracy: 'exactly',
+                each: addTooltip(phrases),
+                done: initToolTop
+            });
+        }, 300);
+
         return {
             scope: {
             },
             restrict: 'E',
             link: function($scope) {
-                var hasRegistered = false;
+                $scope.hasRegistered = false;
                 $scope.$watch(function() {
-                    if (hasRegistered) {
+                    if ($scope.hasRegistered) {
                         return;
                     }
-                    hasRegistered = true;
+                    $scope.hasRegistered = true;
                     $scope.$$postDigest(function() {
-                        hasRegistered = false;
+                        $scope.hasRegistered = false;
                         hightlightWords();
                     });
                 });
             }
         };
-        
-        function hightlightWords() {
-            var phrases = getPhrases();
-            var keys = [];
-            phrases.forEach(function (item, key) {
-                keys.push(key);
-            });
-            $('.highlight-content').mark(keys, {
-                element: 'span',
-                exclude: ['svg', '.highlight-words'],
-                className: 'highlight-words',
-                separateWordSearch: false,
-                accuracy: 'exactly',
-                each: addTooltip(phrases),
-                done: initToolTop
-            });
-        }
 
         function initToolTop() {
             $('[data-toggle="tooltip"]').tooltip({
