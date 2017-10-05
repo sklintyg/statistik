@@ -46,10 +46,10 @@ stats-header {
 
   .headerbox-user-profile {
     font-size: 13px;
+    font-weight: bold;
     line-height: 18px;
     padding-right: 15px;
     text-align: left;
-    font-weight: bold;
   }
 
   .headerbox-info-text {
@@ -62,17 +62,11 @@ stats-header {
 
   .headerbox-login {
     padding: 10px;
-    margin-top: 7px;
     padding-right: 25px;
+    margin-top: 7px;
   }
 
   .business-login-span {
     font-weight: bold;
-  }
-
-  @media (max-width: 767px) {
-    div.headerbox-logo img {
-      margin-left: 15px;
-    }
   }
 }

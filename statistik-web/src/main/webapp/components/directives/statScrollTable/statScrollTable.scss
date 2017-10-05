@@ -46,7 +46,7 @@
     text-overflow: ellipsis;
   }
 
-  div.scrolling {
+  .scrolling {
     font-size: 12px;
     overflow-x: auto;
     overflow-y: visible;
@@ -70,12 +70,12 @@
     &.sorted-column {
       border-bottom: 1px solid #000;
 
-      .fa-sort:before {
+      .fa-sort::before {
         content: '\f0de';
       }
 
       &.sorted-reverse {
-        .fa-sort:before {
+        .fa-sort::before {
           content: '\f0dd';
         }
       }

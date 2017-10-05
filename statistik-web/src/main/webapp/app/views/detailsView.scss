@@ -13,11 +13,11 @@
   }
 
   .sub-title-period {
-    font-size: 14px;
-    min-height: 20px;
     color: #008391;
+    font-size: 14px;
     font-weight: 700;
     line-height: 20px;
+    min-height: 20px;
 
     &::first-letter {
       text-transform: capitalize;
@@ -37,7 +37,7 @@
       bottom: 0;
 
       @media (max-width: $screen-sm-max) {
-        position:relative;
+        position: relative;
       }
     }
   }
@@ -49,35 +49,36 @@
   }
 
   .legend-color-square {
+    border-radius: 4px;
     display: inline-block;
     width: 15px;
     height: 15px;
     top: 4px;
     position: relative;
-    border-radius: 4px;
     vertical-align: top;
   }
 
   .legend-name {
     display: inline-block;
+    max-width: 402px;
     padding-left: 2px;
     padding-right: 6px;
     padding-top: 2px;
     vertical-align: top;
     white-space: normal;
-    max-width: 402px;
   }
 
   .select-chart-type {
     padding-right: 0;
 
-    span, div {
+    span,
+    div {
       margin: 0 5px 0 0;
     }
 
     .select-chart-type-tidsserie {
       display: inline-block;
-      margin-right: ($grid-gutter-width);
+      margin-right: $grid-gutter-width;
     }
 
     .select-chart-type-tvarsnitt {
@@ -90,7 +91,7 @@
   .chart-page-chart {
     height: 400px;
     margin: 0 auto;
-    width: 100%
+    width: 100%;
   }
 
   .chart-icon {
@@ -98,7 +99,7 @@
     cursor: pointer;
     display: block;
     height: 18px;
-    margin: 2px !important;
+    margin: 2px;
     padding: 0;
     position: relative;
     width: 21px;

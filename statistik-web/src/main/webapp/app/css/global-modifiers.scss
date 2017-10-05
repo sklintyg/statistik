@@ -1,5 +1,10 @@
 
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak {
   display: none !important;
 }
 
@@ -67,8 +72,8 @@ input[type=radio] {
   .dropdown-menu {
     margin-top: 8px;
 
-    &:before,
-    &:after {
+    &::before,
+    &::after {
       -webkit-transform: rotate(360deg);
       border-color: transparent;
       border-style: solid;
@@ -79,15 +84,15 @@ input[type=radio] {
       width: 0;
     }
 
-    &:before {
+    &::before {
       border-bottom-color: #ccc;
-      border-bottom-color: rgba(0, 0, 0, 0.15);
+      border-bottom-color: rgba(0, 0, 0, .15);
       border-width: 0 7px 7px;
       left: 9px;
       top: -7px;
     }
 
-    &:after {
+    &::after {
       border-bottom-color: #fff;
       border-width: 0 6px 6px;
       left: 10px;
@@ -95,7 +100,9 @@ input[type=radio] {
     }
   }
 
-  &:focus, .uib-datepicker:focus, .uib-monthpicker:focus {
+  &:focus,
+  .uib-datepicker:focus,
+  .uib-monthpicker:focus {
     outline: 0;
   }
 }
@@ -126,7 +133,7 @@ input[type=radio] {
     background: $stat-panel-header-from;
     background: linear-gradient(to bottom, $stat-panel-header-from 0%, $stat-panel-header-to 100%);
     color: #fff;
-    padding: 12px 12px;
+    padding: 12px;
     font-size: 14px;
     line-height: 20px;
   }
@@ -147,6 +154,7 @@ input[type=radio] {
       outline: 0;
     }
   }
+
   .btn-default {
     padding: 1px;
     margin-top: -2px;

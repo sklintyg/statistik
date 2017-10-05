@@ -40,7 +40,8 @@ overview-widget {
     display: block;
     min-height: 250px;
 
-    .col-sm-6, .col-xs-12 {
+    .col-sm-6,
+    .col-xs-12 {
       padding: 0;
     }
   }
@@ -52,10 +53,10 @@ overview-widget {
     }
 
     .overview-widget {
-      background: #F0F0F0;
+      background: #f0f0f0;
     }
 
-    #sicklength-chart-info .overview-chart-info-section {
+    .overview-chart-info-section {
       border: 1px solid #ddd;
     }
   }
@@ -97,31 +98,33 @@ overview-widget {
     width: 39px;
   }
 
-  .table.overview-graph-table {
-    width: 100%;
-    border: 1px solid transparent;
-    border-bottom: 1px solid #dddddd;
-    text-align: right;
-    margin-bottom: 0;
+  .table {
+    &.overview-graph-table {
+      width: 100%;
+      border: 1px solid transparent;
+      border-bottom: 1px solid #ddd;
+      text-align: right;
+      margin-bottom: 0;
 
-    @media (min-width: $screen-lg-min) {
-      width: 61%;
-    }
+      @media (min-width: $screen-lg-min) {
+        width: 61%;
+      }
 
-    tbody tr td {
-      border-right: 1px solid #dddddd;
-      border-left: 1px solid #dddddd;
-      line-height: 11px;
-      font-size: 11px;
-      margin-left: 0;
-    }
+      tbody tr td {
+        border-right: 1px solid #ddd;
+        border-left: 1px solid #ddd;
+        line-height: 11px;
+        font-size: 11px;
+        margin-left: 0;
+      }
 
-    .diagnostics-group-quantity {
-      width: 50px;
-    }
+      .diagnostics-group-quantity {
+        width: 50px;
+      }
 
-    .diagnostics-group-alternation {
-      width: 75px;
+      .diagnostics-group-alternation {
+        width: 75px;
+      }
     }
   }
 
@@ -154,7 +157,7 @@ overview-widget {
     border: 1px solid #fff;
     text-align: center;
 
-    .longSickLeavesValue {
+    .long-sick-leaves-value {
       color: #919191;
       font-weight: bold;
       font-size: 2em;
@@ -170,9 +173,11 @@ overview-widget {
 }
 
 #perCountyHeaderLink {
-  .table.overview-graph-table {
-    top: 65px;
-    position: relative;
+  .table {
+    &.overview-graph-table {
+      top: 65px;
+      position: relative;
+    }
   }
 
   .overview-widget-content {
@@ -189,5 +194,5 @@ overview-widget {
 
 #sickLeaveLengthChart {
   margin: 25px 0 0;
-  width: 100%
+  width: 100%;
 }
