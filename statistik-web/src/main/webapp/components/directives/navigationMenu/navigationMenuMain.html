@@ -1,45 +1,48 @@
-<div class="statistics accordion" id="statistics-menu-accordion">
-  <div class="accordion-group" data-ng-repeat="menu in menus" data-ng-if="showMenu(menu)">
-    <div class="accordion-heading statistics-menu"
-         tooltip-enable="menu.tooltip"
+<div class="statistics-menu" id="statistics-menu-accordion">
+  <div class="statistics-menu-group" data-ng-repeat="menu in menus" data-ng-if="showMenu(menu)">
+    <div class="statistics-menu-list"
+         id="{{::menu.id}}"
+         data-ng-class="{active: menu.show, disabled: !menu.subMenu}"
+         data-ng-click="toggleMenu(menu)"
+
          uib-tooltip-html="menu.tooltip | messageFilter"
+         tooltip-enable="menu.tooltip"
          tooltip-class="popover-content"
          tooltip-append-to-body="true"
          tooltip-trigger="mouseenter"
          tooltip-placement="right">
-      <div class="accordion-toggle first-level-menu" id="{{menu.id}}"
-           data-ng-class="{active: menu.show, collapsed: !menu.show, disabled: !menu.subMenu}"
-           data-ng-click="toggleMenu(menu)">
-        <span class="statistics-menu-heading" message key="{{menu.name}}"></span><i class="glyphicon statistict-left-menu-expand-icon"></i>
-      </div>
+      <span class="statistics-menu-heading" message key="{{::menu.name}}"></span>
+      <i class="glyphicon statistict-left-menu-expand-icon" data-ng-class="{collapsed: !menu.show}"></i>
     </div>
-    <div class="accordion-body collapse navigation-group" id="{{menu.navigationId}}" data-ng-class="{in: menu.show}">
-      <div class="accordion-inner">
-        <ul class="nav nav-list" id="{{menu.menuId}}">
-          <li data-ng-repeat-start="submenu in menu.subMenu | filter: showMenu">
-            <a
-                data-ng-class="{'menu-item-has-childs': submenu.subMenu, 'not-active': !menuEnabled(submenu)}"
-                data-ng-href="{{submenu.link}}{{queryString}}"
-                id="{{submenu.id}}" ctrlname="{{submenu.ctrl}}" navigationaware>
-              <span message key="{{submenu.name}}"></span>
+    <div class="menu-body collapse navigation-group" id="{{::menu.navigationId}}" data-ng-class="{in: menu.show}">
+      <ul class="nav nav-list" id="{{::menu.menuId}}">
+        <li data-ng-repeat-start="submenu in menu.subMenu | filter: showMenu">
+          <a
+              data-ng-class="{'menu-item-has-childs': submenu.subMenu, 'not-active': !menuEnabled(submenu)}"
+              data-ng-href="{{::submenu.link}}{{queryString}}"
+              id="{{::submenu.id}}"
+              ctrlname="{{::submenu.ctrl}}" navigationaware>
+            <span message key="{{::submenu.name}}"></span>
 
-              <i data-ng-if="submenu.subMenu" class="glyphicon statistict-left-menu-expand-icon" data-ng-class="{collapsed: submenu.isCollapsed}" ng-click="submenu.isCollapsed = !submenu.isCollapsed"></i>
+            <i data-ng-if="submenu.subMenu"
+               class="glyphicon statistict-left-menu-expand-icon"
+               data-ng-class="{collapsed: submenu.isCollapsed}"
+               ng-click="submenu.isCollapsed = !submenu.isCollapsed"></i>
+          </a>
+        </li>
+        <ul data-ng-repeat-end
+            data-ng-if="submenu.subMenu"
+            id="{{::submenu.subMenuId}}"
+            uib-collapse="submenu.isCollapsed"
+            class="nav nav-list sub-nav-list">
+          <li data-ng-repeat="subsubmenu in submenu.subMenu">
+            <a
+                data-ng-href="{{::subsubmenu.link}}{{queryString}}" id="{{::subsubmenu.id}}"
+                ctrlname="{{::subsubmenu.ctrl}}" navigationaware><span message key="{{::subsubmenu.name}}"></span>
             </a>
           </li>
-          <ul data-ng-repeat-end
-              data-ng-if="submenu.subMenu"
-              id="{{submenu.subMenuId}}"
-              uib-collapse="submenu.isCollapsed"
-              class="nav nav-list sub-nav-list accordion-body">
-            <li data-ng-repeat="subsubmenu in submenu.subMenu">
-              <a
-                  data-ng-href="{{subsubmenu.link}}{{queryString}}" id="{{subsubmenu.id}}"
-                  ctrlname="{{subsubmenu.ctrl}}" navigationaware><span message key="{{subsubmenu.name}}"></span>
-              </a>
-            </li>
-          </ul>
         </ul>
-      </div>
+      </ul>
     </div>
   </div>
 </div>
