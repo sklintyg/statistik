@@ -128,6 +128,7 @@ angular.module('StatisticsApp').factory('chartFactory',
 
             var options = {
                 chart : {
+                    animation: false,
                     renderTo : 'chart1',
                     backgroundColor : null, //transparent
                     plotBorderWidth: 1,
