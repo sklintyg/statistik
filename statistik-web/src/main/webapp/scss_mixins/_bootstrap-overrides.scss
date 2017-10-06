@@ -106,3 +106,10 @@ p {
 .tooltip-inner {
   max-width: 290px;
 }
+
+.nav,
+.pagination,
+.carousel,
+.panel-title a {
+  cursor: pointer;
+}
