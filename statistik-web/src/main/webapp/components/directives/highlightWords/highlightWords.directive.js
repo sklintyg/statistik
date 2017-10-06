@@ -26,7 +26,6 @@ angular.module('StatisticsApp')
         'use strict';
 
         var hightlightWords = _.debounce(function() {
-            console.log('Startar highlight');
             var phrases = getPhrases();
             var keys = [];
             phrases.forEach(function(item, key) {
