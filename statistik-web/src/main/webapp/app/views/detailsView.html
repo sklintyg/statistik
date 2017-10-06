@@ -166,11 +166,10 @@
         </div>
 
         <div class="row">
-          <div class="col-xs-12"  id="chartlegends">
+          <div class="col-xs-12" id="chartlegends">
             <div data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6" data-ng-if="showInLegend($index)">
               <label class="legend-label" legend-height>
-                <input type="checkbox" checked="" class="detail-checkbox"
-                       data-ng-click="toggleSeriesVisibility($index)" style="cursor: pointer;" />
+                <input type="checkbox" checked="" class="detail-checkbox" data-ng-click="toggleSeriesVisibility($index)" />
                 <span class="legend-color-square"
                       data-ng-attr-style="background-color: {{::seriesData.color}}!important"></span>
                 <span class="legend-name">{{::seriesData.name}}</span>
@@ -184,7 +183,7 @@
       <div class="row">
         <div id="chart-data-table" class="col-xs-12 chart-table">
           <uib-accordion class="collapsible-panel-header">
-            <uib-accordion-group is-open="status.isTableOpen">
+            <div uib-accordion-group is-open="status.isTableOpen">
               <uib-accordion-heading>
                 <span message key="lbl.tabell"></span>
                 <i class="pull-right glyphicon"
@@ -195,7 +194,7 @@
 
               </uib-accordion-heading>
               <stat-scroll-table header-rows="headerrows" rows="rows"></stat-scroll-table>
-            </uib-accordion-group>
+            </div>
           </uib-accordion>
         </div>
       </div>
