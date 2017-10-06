@@ -227,6 +227,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             chartOptions.legend.enabled = false;
             chartOptions.plotOptions = {
                 bubble: {
+                    animation: false,
                     tooltip: {
                         headerFormat: '{series.name}<br/>',
                         pointFormat: 'Antal: <b>{point.z}</b>',

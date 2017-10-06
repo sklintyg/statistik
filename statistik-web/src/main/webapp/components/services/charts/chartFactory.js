@@ -206,6 +206,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                 },
                 plotOptions : {
                     line : {
+                        animation: false,
                         softThreshold: false,
                         allowPointSelect : false,
                         marker : {
@@ -224,6 +225,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                         stacking: null
                     },
                     column : {
+                        animation: false,
                         softThreshold: false,
                         showInLegend : true,
                         stacking: percentChart ? 'percent' : (stacked ? 'normal' : null)
@@ -231,6 +233,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     series: {
                     },
                     area : {
+                        animation: false,
                         lineColor : '#666666',
                         lineWidth : 1,
                         marker : {
@@ -241,6 +244,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                         stacking: percentChart ? 'percent' : 'normal'
                     },
                     pie : {
+                        animation: false,
                         dataLabels : {
                             enabled : false
                         },
