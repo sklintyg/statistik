@@ -74,7 +74,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         };
 
         var populateDetailsOptions = function (result) {
-            var basePath = isVerksamhet ? '#/verksamhet/diagnosavsnitttvarsnitt' : '#/nationell/diagnosavsnitttvarsnitt';
+            var basePath = isVerksamhet ? '#!/verksamhet/diagnosavsnitttvarsnitt' : '#!/nationell/diagnosavsnitttvarsnitt';
             ControllerCommons.populateDetailsOptions(result, basePath, $scope, $routeParams, messageService, config);
         };
 

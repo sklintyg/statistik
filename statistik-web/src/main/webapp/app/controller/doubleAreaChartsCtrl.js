@@ -127,7 +127,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         };
 
         function populateDetailsOptions(result) {
-            var basePath = isVerksamhet ? '#/verksamhet/diagnosavsnitt' : '#/nationell/diagnosavsnitt';
+            var basePath = isVerksamhet ? '#!/verksamhet/diagnosavsnitt' : '#!/nationell/diagnosavsnitt';
             ControllerCommons.populateDetailsOptions(result, basePath, $scope, $routeParams, messageService, config);
         }
 
