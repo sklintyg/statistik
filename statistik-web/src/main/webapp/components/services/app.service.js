@@ -28,10 +28,11 @@ angular.module('StatisticsApp').factory('AppService',
             var promise = $q.defer();
 
             var restPath = '/api/login/getAppSettings';
-            $http.get(restPath).success(function(data) {
+            $http.get(restPath).then(function(result) {
+                var data = result.data;
                 AppModel.set(data);
                 promise.resolve(data);
-            }).error(function(data, status) {
+            }, function(data, status) {
                 $log.error('error ' + status);
                 // Let calling code handle the error of no data response
                 if (data === null) {

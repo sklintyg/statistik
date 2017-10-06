@@ -38,14 +38,15 @@ angular.module('StatisticsApp').factory('statisticsData',
     var makeRequestNational = function (restFunctionName, successCallback, failureCallback, cached, notAbortable) {
         var finalCached = (typeof cached !== 'undefined') ? cached : true;
         var timeoutFunction = notAbortable ? null : newAbortable();
-        $http.get('api/' + restFunctionName, {cache: finalCached, timeout: timeoutFunction}).success(function (result) {
+        $http.get('api/' + restFunctionName, {cache: finalCached, timeout: timeoutFunction}).then(function (result) {
             try {
-                successCallback(result);
+                successCallback(result.data);
             } catch (e) {
+                $log.error(e);
                 $cacheFactory.get('$http').removeAll();
                 failureCallback();
             }
-        }).error(function (/*data, status, headers, config*/) {
+        }, function (/*response*/) {
             failureCallback();
         });
     };
@@ -79,26 +80,26 @@ angular.module('StatisticsApp').factory('statisticsData',
         var config = {cache: false, timeout: timeoutFunction};
         var arg1 = httpMethod === 'get' ? config : {};
 
-        $http[httpMethod](url, arg1, config).success(function (result) {
+        $http[httpMethod](url, arg1, config).then(function (result) {
             $cookies.remove('statUrl');
             try {
-                successCallback(result);
+                successCallback(result.data);
             } catch (e) {
                 $log.error(e);
                 failureCallback();
             }
-        }).error(function (data, status/*, headers, config*/) {
-            if (status === 403) {
+        }, function (response) {
+            if (response.status === 403) {
                 var url = AppModel.get().loginUrl;
                 $cookies.put('statUrl', '/#' + $location.url());
                 $rootScope.loginTimedOut = $rootScope.isLoggedIn;
                 $rootScope.isLoggedIn = false;
                 $location.path(url ? url : '/login');
             }
-            if (status === 503) {
+            if (response.status === 503) {
                 $location.path('/serverbusy');
             }
-            $log.error('Failed to call server. Status: ' + status);
+            $log.error('Failed to call server. Status: ' + response.status);
             failureCallback();
         });
     }
@@ -306,10 +307,10 @@ angular.module('StatisticsApp').factory('statisticsData',
         $http.post('api/filter', param,
             {
                 cache: true
-            }).success(function (data) {
-                deferred.resolve(data);
-            }).error(function (data/*, status, headers*/) {
-                deferred.reject(data);
+            }).then(function (result) {
+                deferred.resolve(result.data);
+            }, function (response) {
+                deferred.reject(response.data);
             });
 
         return deferred.promise;
@@ -349,8 +350,8 @@ angular.module('StatisticsApp').factory('statisticsData',
 
     factory.logOnServer = function (message) {
         $http.post('api/logging/log', {message: message, url: $location.url()}, {cache: false})
-        .success(function (/*result*/) {
-        }).error(function (/*data, status, headers, config*/) {
+        .then(function (/*result*/) {
+        }, function (/*response*/) {
             $log.log('Could not log to server: ' + message);
         });
     };
