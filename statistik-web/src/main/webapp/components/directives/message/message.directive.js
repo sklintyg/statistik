@@ -31,7 +31,7 @@ angular.module('StatisticsApp').directive('message',
                 // observe changes to interpolated attribute
                 function updateMessage(interpolatedKey) {
                     var params = typeof attr.param !== 'undefined' ? [attr.param] : attr.params;
-                    result = $filter('messageFilter')(interpolatedKey, attr.fallback, attr.fallbackDefaultLang, params, attr.lang);
+                    result = $filter('messageFilter')(interpolatedKey, attr.fallback, attr.fallbackDefaultLang, params, attr.lang, attr.disableHighlightWords);
                     element.html('<span>' + result + '</span>');
                 }
 

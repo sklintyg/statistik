@@ -20,7 +20,7 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').factory('chartFactory',
     /** @ngInject */
-    function(COLORS, _, ControllerCommons, $window, AppModel) {
+    function(COLORS, _, ControllerCommons, $window, AppModel, $filter) {
     'use strict';
 
         var labelFormatter = function(maxWidth, sameLengthOnAll) {
@@ -40,7 +40,7 @@ angular.module('StatisticsApp').factory('chartFactory',
         function _formatter(value, numberOfChars) {
             var text = value.length > numberOfChars ? value.substring(0, numberOfChars) + '...' : value;
 
-            return '<span title="' + value + '">' + text + '</span>';
+            return '<span title="' + value + '">' + $filter('highlightWords')(text) + '</span>';
         }
 
         function _getMaxLength(maxLength) {

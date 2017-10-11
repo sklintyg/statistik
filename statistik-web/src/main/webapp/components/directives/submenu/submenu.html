@@ -5,9 +5,8 @@
     <span class="indenter"></span>
     <input type="checkbox" ng-checked="item.allSelected" intermediate="item.someSelected" ng-click="itemClick({node: item, event: $event})" />
 
-    <span ng-click="itemClick({node: item, event: $event})" class="ellipsis-text" data-ng-class="{'highlight-words': item.info}" title="">
-      {{::item.visibleName}}
-    </span>
+    <span ng-click="itemClick({node: item, event: $event})" data-ng-class="{'highlight-words': item.info}"
+          class="ellipsis-text" title="" ng-bind-html="::item.visibleName | highlightWords"></span>
     <span ng-click="hideClick({node: item, event: $event})" class="submenuicon glyphicon" ng-class="{'glyphicon-chevron-up': item.showChildren, 'glyphicon-chevron-down': !item.showChildren}"></span>
 
 </div>

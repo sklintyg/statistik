@@ -87,5 +87,17 @@
 
     constantModule.constant('MAX_SELECTED_DXS', 75);
 
+    var phrasesToHighlight = {
+        'sjukfall': 'Ett sjukfall omfattar en patients alla elektroniska läkarintyg som följer på varandra med max fem dagars uppehåll. Intygen måste även vara utfärdade av samma vårdgivare. Om det är mer än fem dagar mellan två intyg eller om två intyg är utfärdade av olika vårdgivare räknas det som två sjukfall.',
+        'inkomna meddelanden': 'Meddelanden som skickats elektroniskt från Försäkringskassan till hälso- och sjukvården. Ett meddelande rör alltid ett visst elektroniskt intyg som utfärdats av hälso- och sjukvården och som skickats till Försäkringskassan.',
+        'utfärdade intyg': 'Elektroniska intyg som har utfärdats och signerats av hälso- och sjukvården.',
+        'Okänd befattning': 'Innehåller sjukfall där läkaren inte går att slå upp i HSA-katalogen eller där läkaren inte har någon befattning angiven.',
+        'Ej läkarbefattning': 'Innehåller sjukfall där läkaren inte har någon läkarbefattning angiven i HSA men däremot andra slags befattningar.',
+        'Utan giltig ICD-10 kod': 'Innehåller sjukfall som inte har någon diagnoskod angiven eller där den angivna diagnoskoden inte finns i klassificeringssystemet för diagnoser, ICD-10-SE.',
+        'Okänt län': 'Innehåller de sjukfall där enheten som utfärdat intygen inte har något län angivet i HSA-katalogen.'
+    };
+    constantModule.constant('PHRASES_TO_HIGHLIGHT', phrasesToHighlight);
+
+
 })();
 

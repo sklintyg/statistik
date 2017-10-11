@@ -11,7 +11,7 @@
          tooltip-append-to-body="true"
          tooltip-trigger="mouseenter"
          tooltip-placement="right">
-      <span class="statistics-menu-heading" message key="{{::menu.name}}"></span>
+      <span class="statistics-menu-heading" message key="{{::menu.name}}" disable-highlight-words="true"></span>
       <i class="glyphicon statistict-left-menu-expand-icon" data-ng-class="{collapsed: !menu.show}"></i>
     </div>
     <div class="menu-body collapse navigation-group" id="{{::menu.navigationId}}" data-ng-class="{in: menu.show}">
@@ -22,7 +22,7 @@
               data-ng-href="{{::submenu.link}}{{queryString}}"
               id="{{::submenu.id}}"
               ctrlname="{{::submenu.ctrl}}" navigationaware>
-            <span message key="{{::submenu.name}}"></span>
+            <span message key="{{::submenu.name}}" disable-highlight-words="true"></span>
 
             <i data-ng-if="submenu.subMenu"
                class="glyphicon statistict-left-menu-expand-icon"
@@ -38,7 +38,7 @@
           <li data-ng-repeat="subsubmenu in submenu.subMenu">
             <a
                 data-ng-href="{{::subsubmenu.link}}{{queryString}}" id="{{::subsubmenu.id}}"
-                ctrlname="{{::subsubmenu.ctrl}}" navigationaware><span message key="{{::subsubmenu.name}}"></span>
+                ctrlname="{{::subsubmenu.ctrl}}" navigationaware><span message key="{{::subsubmenu.name}}" disable-highlight-words="true"></span>
             </a>
           </li>
         </ul>

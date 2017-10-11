@@ -22,10 +22,10 @@
  */
 angular.module('StatisticsApp').filter('messageFilter',
     /** @ngInject */
-    function($log, $rootScope, messageService) {
+    function($log, $rootScope, $filter, messageService) {
         'use strict';
 
-        return function(interpolatedKey, fallback, fallbackDefaultLang, params, lang) {
+        return function(interpolatedKey, fallback, fallbackDefaultLang, params, lang, disableHighlightWords) {
             var result;
             var normalizedKey = angular.lowercase(interpolatedKey);
             var useLanguage;
@@ -45,6 +45,10 @@ angular.module('StatisticsApp').filter('messageFilter',
                 }
             }
 
-            return result;
+            if (disableHighlightWords) {
+                return result;
+            } else {
+                return $filter('highlightWords')(result);
+            }
         };
     });

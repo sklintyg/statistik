@@ -1,7 +1,7 @@
-<div id="chart-content" class="highlight-content details-view">
+<div id="chart-content" class="details-view">
   <div class="clearfix">
     <span class="pull-left right-2px-padding">
-      <h1 class="national-statistic-h1" id="reportHeader" data-ng-bind="subTitle"></h1>
+      <h1 class="national-statistic-h1" id="reportHeader" data-ng-bind-html="subTitle | highlightWords"></h1>
       <div class="sub-title-period">{{subTitlePeriod}}</div>
     </span>
   </div>
@@ -172,7 +172,7 @@
                 <input type="checkbox" checked="" class="detail-checkbox" data-ng-click="toggleSeriesVisibility($index)" />
                 <span class="legend-color-square"
                       data-ng-attr-style="background-color: {{::seriesData.color}}!important"></span>
-                <span class="legend-name">{{::seriesData.name}}</span>
+                <span class="legend-name" ng-bind-html="::seriesData.name | highlightWords"></span>
               </label>
             </div>
           </div>

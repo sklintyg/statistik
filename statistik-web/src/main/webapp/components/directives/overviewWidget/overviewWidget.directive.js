@@ -33,16 +33,11 @@ angular.module('StatisticsApp').directive('overviewWidget',
                 groups: '<',
                 columnTitle1: '@',
                 columnTitle2: '@',
-                columnTitle3: '@',
-                valueSuffix: '@'
+                columnTitle3: '@'
             },
             templateUrl: '/components/directives/overviewWidget/overviewWidget.html',
             link: function($scope) {
                 var chart = null;
-
-                if ($scope.valueSuffix) {
-                    $scope.valueSuffixWithSpace = ' ' + $scope.valueSuffix;
-                }
 
                 $scope.$watch('options', function(newValue) {
                     if (newValue) {
