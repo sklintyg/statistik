@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/* This filter will tag words (or phrases) that will later be marked by the highlightWords directive.*/
 angular.module('StatisticsApp').filter('highlightWords',
     /** @ngInject */
     function(PHRASES_TO_HIGHLIGHT) {
