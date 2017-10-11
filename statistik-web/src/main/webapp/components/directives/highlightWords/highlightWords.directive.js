@@ -17,6 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*
+* This directive will add the actual highlight of words and the matching tooltip.
+* The words to highlight should already be tagged from the highlightWords filter.
+* This directive is required since angular will not process the html added from a
+* filter and it must therefore be added from this directive instead.
+*/
 angular.module('StatisticsApp')
     .directive('highlightWords',
         /** @ngInject */
@@ -24,24 +30,14 @@ angular.module('StatisticsApp')
         'use strict';
 
         var hightlightWords = _.debounce(function() {
-            var keys = [];
-            for (var key in PHRASES_TO_HIGHLIGHT) {
-                if (PHRASES_TO_HIGHLIGHT.hasOwnProperty(key)) {
-                    keys.push(key);
-                }
-            }
-
-            $('.highlight-this-content').mark(keys, {
-                element: 'span',
-                exclude: ['svg *', '.highlight-words', 'datatable-body'],
-                className: 'highlight-words',
-                separateWordSearch: false,
-                diacritics: false,
-                accuracy: 'exactly',
-                each: addTooltip(PHRASES_TO_HIGHLIGHT),
-                done: initToolTop
+            $('.highlight-this-content').each(function(index, element){
+                $(element).addClass('highlight-words');
+                element.setAttribute('data-toggle', 'tooltip');
+                element.setAttribute('data-placement', 'auto right');
+                element.setAttribute('title', PHRASES_TO_HIGHLIGHT[element.innerText]);
             });
-        }, 300);
+            initToolTip();
+        }, 200);
 
         return {
             scope: {
@@ -62,18 +58,10 @@ angular.module('StatisticsApp')
             }
         };
 
-        function initToolTop() {
+        function initToolTip() {
             $('[data-toggle="tooltip"]').tooltip({
                 container: '#view'
             });
-        }
-
-        function addTooltip(phrases) {
-            return function(element) {
-                element.setAttribute('data-toggle', 'tooltip');
-                element.setAttribute('data-placement', 'auto right');
-                element.setAttribute('title', phrases[element.innerText]);
-            };
         }
 
     });

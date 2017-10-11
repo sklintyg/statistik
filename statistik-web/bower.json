@@ -19,7 +19,6 @@
     "dropzone": "4.3.0",
     "ngstorage": "0.3.11",
     "highcharts": "6.0.1",
-    "mark.js": "^8.11.0",
     "font-awesome": "fontawesome#^4.7.0"
   },
   "devDependencies": {
@@ -37,9 +36,6 @@
         "modules/offline-exporting.js",
         "highcharts-more.js"
       ]
-    },
-    "mark.js": {
-      "main": "dist/jquery.mark.js"
     },
     "pdfmake": {
       "main": []
