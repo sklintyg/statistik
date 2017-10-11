@@ -12,7 +12,7 @@
     </thead>
     <tbody class="table-condensed">
     <tr data-ng-repeat="row in rowsShown" class="stat-table-row" title="{{::row.name}}">
-      <td class="scrollable headcol"><span class="headcol-name" ng-class="{bold: row.marked}">{{::row.name}}</span></td>
+      <td class="scrollable headcol"><span class="headcol-name" ng-class="{bold: row.marked}" ng-bind-html="::row.name | highlightWords"></span></td>
     </tr>
     </tbody>
   </table>
@@ -31,7 +31,7 @@
             colspan="{{::header.colspan}}"
             data-ng-repeat="header in headerrow" title="{{::header.text}}"
             style="padding-right: 20px; white-space: nowrap;">
-          {{::header.text}}
+          <span ng-bind-html="::header.text | highlightWords"></span>
           <i data-ng-if="$parent.$parent.$last" class="fa fa-sort" aria-hidden="true"></i>
         </td>
       </tr>

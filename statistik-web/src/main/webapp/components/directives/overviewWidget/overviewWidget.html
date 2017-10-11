@@ -25,7 +25,7 @@
         <tbody>
           <tr data-ng-repeat="group in groups">
               <td class="overview-widget-table-legend" ng-style="{backgroundColor: group.color}"></td>
-              <td class="diagnostics-group-name">{{::group.name}}{{valueSuffixWithSpace}}</td>
+              <td class="diagnostics-group-name" ng-bind-html="::group.name | highlightWords"></td>
               <td class="diagnostics-group-quantity">{{::group.quantity | thousandseparated}}</td>
               <td class="diagnostics-group-alternation">{{::group.alternation}} %</td>
           </tr>
