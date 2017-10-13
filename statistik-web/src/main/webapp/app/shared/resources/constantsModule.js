@@ -86,6 +86,10 @@
     constantModule.constant('moment', moment);
 
     constantModule.constant('MAX_SELECTED_DXS', 75);
+    constantModule.constant('MAX_INIT_ROWS_TABLE', 100);
+    constantModule.constant('MAX_INIT_COLUMNS_TABLE', 33*3 + 1);
+    constantModule.constant('MAX_ROWS_TABLE_PDF', 499);
+
 
     var phrasesToHighlight = {
         'sjukfall': 'Ett sjukfall omfattar en patients alla elektroniska läkarintyg som följer på varandra med max fem dagars uppehåll. Intygen måste även vara utfärdade av samma vårdgivare. Om det är mer än fem dagar mellan två intyg eller om två intyg är utfärdade av olika vårdgivare räknas det som två sjukfall.',

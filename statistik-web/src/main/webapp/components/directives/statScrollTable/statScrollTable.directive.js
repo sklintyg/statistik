@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').directive('statScrollTable',
     /** @ngInject */
-    function ($filter, _, $timeout) {
+    function ($filter, _, $timeout, MAX_INIT_ROWS_TABLE, MAX_INIT_COLUMNS_TABLE) {
         'use strict';
 
         return {
@@ -31,13 +31,22 @@ angular.module('StatisticsApp').directive('statScrollTable',
             templateUrl: '/components/directives/statScrollTable/statScrollTable.html',
             link: function($scope, element) {
                 $scope.$watch('rows', watchRows);
+                $scope.$watch('headerRows', watchHeader);
 
                 $scope.sortIndex = -1;
                 $scope.sortReverse = true;
                 $scope.rowsShown = [];
-                $scope.rowsHidden = [];
+                $scope.fixedHeader = [];
+                $scope.scrollHeader = [];
+                $scope.tableVisible = true;
+                $scope.doneLoading = true;
+                $scope.message = 'Rapporten innehåller mycket data, vilket kan göra tabellen svår att läsa och långsam att ladda, därför är den dold.' +
+                    'Klicka på visa tabellen i fall du vill se den.';
+                $scope.messageSeverity = 'INFO';
+
                 var rows = [];
-                var showAll = false;
+                var maxRows = MAX_INIT_ROWS_TABLE;
+                var maxColumns = MAX_INIT_COLUMNS_TABLE;
 
                 $scope.sortByColumn = function(columnIndex, shouldSort) {
 
@@ -61,23 +70,56 @@ angular.module('StatisticsApp').directive('statScrollTable',
                     sortRows();
                 };
 
-                $scope.showAllRows = function() {
-                    $scope.rowsShown = $scope.rowsShown.concat($scope.rowsHidden);
-                    $scope.rowsHidden = [];
-                    showAll = true;
+                $scope.showTable = function() {
+                    $scope.tableVisible = true;
+                    $scope.doneLoading = false;
+                    maxRows = null;
+                    maxColumns = null;
+
+                    $timeout(function() {
+                        watchHeader($scope.headerRows);
+                        watchRows($scope.rows);
+                    });
                 };
 
+                $scope.doneRendering = function() {
+                    $scope.doneLoading = true;
+                };
+
+                function checkHeaderAndRowLength(rows, headers) {
+                    if (!angular.isArray(headers) || !angular.isArray(rows)) {
+                        return false;
+                    }
+
+                    if (maxRows !== null && rows.length > maxRows) {
+                        $scope.tableVisible = false;
+                        return false;
+                    }
+
+                    if (maxColumns !== null && headers[0].length > (maxColumns/3) + 1) {
+                        $scope.tableVisible = false;
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                function watchHeader(headerRows) {
+                    if (!checkHeaderAndRowLength($scope.rows, headerRows)) {
+                        return;
+                    }
+
+                    $scope.headers = headerRows;
+                }
+
                 function watchRows(rows) {
-                    if (angular.isUndefined(rows)) {
+                    if (!checkHeaderAndRowLength(rows, $scope.headerRows)) {
                         return;
                     }
 
                     setWidth();
                     processData();
                     sortRows();
-                    if (!showAll) {
-                        $scope.rowsHidden = $scope.rowsShown.splice(100);
-                    }
                 }
 
                 function setWidth() {
