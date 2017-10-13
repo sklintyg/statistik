@@ -27,9 +27,9 @@ angular.module('StatisticsApp')
             templateUrl: '/components/directives/showMessage/showMessage.html',
             restrict: 'E',
             scope: {
-                type: '=',
-                severity: '=',
-                text: '='
+                type: '<',
+                severity: '<',
+                text: '<'
             },
             link: function($scope) {
                 $scope.isInfo = $scope.severity === 'INFO';

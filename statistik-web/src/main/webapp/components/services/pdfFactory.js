@@ -21,7 +21,7 @@
 angular.module('StatisticsApp')
     .factory('pdfFactory',
         /** @ngInject */
-        function($window, $timeout, thousandseparatedFilter, $location, _, TABLE_CONFIG, messageService, $rootScope, ControllerCommons) {
+        function($window, $timeout, thousandseparatedFilter, $location, _, MAX_ROWS_TABLE_PDF, messageService, $rootScope, ControllerCommons) {
         'use strict';
 
             function _getFileName(statisticsLevel) {
@@ -66,7 +66,7 @@ angular.module('StatisticsApp')
                         table.push({
                             header: t.headers,
                             data: formatTableData(t.rows),
-                            hasMoreThanMaxRows: t.rows.length > TABLE_CONFIG.maxRows
+                            hasMoreThanMaxRows: t.rows.length > MAX_ROWS_TABLE_PDF
                         });
                     });
 
@@ -79,7 +79,7 @@ angular.module('StatisticsApp')
                 table = {
                     header: $scope.headerrows,
                     data: formatTableData($scope.rows),
-                    hasMoreThanMaxRows: $scope.rows.length > TABLE_CONFIG.maxRows
+                    hasMoreThanMaxRows: $scope.rows.length > MAX_ROWS_TABLE_PDF
                 };
 
                 _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, filename, pdfDoneCallback);
@@ -88,7 +88,7 @@ angular.module('StatisticsApp')
 
         function formatTableData(data) {
             var tableData = [];
-            var tableRows = data.slice(0, TABLE_CONFIG.maxRows);
+            var tableRows = data.slice(0, MAX_ROWS_TABLE_PDF);
             angular.forEach(tableRows, function(row) {
                 var rowData = [];
 

@@ -1,48 +1,70 @@
 <div class="stat-scroll-table">
-  <table class="table table-striped table-headers table-hover">
-    <thead>
-    <tr data-ng-repeat="headerrow in headerRows">
-      <td data-ng-if="$first" class="scrollable details-table-data ellipsis details-th sorter-false headcol"
-          data-ng-class="{centeralign: headerrow.centerAlign}"
-          colspan="{{::header.colspan}}" data-ng-repeat="header in headerrow" title="{{::header.text}}"
-          style="padding-right: 20px;">
-        {{::header.text}}
-      </td>
-    </tr>
-    </thead>
-    <tbody class="table-condensed">
-    <tr data-ng-repeat="row in rowsShown" class="stat-table-row" title="{{::row.name}}">
-      <td class="scrollable headcol"><span class="headcol-name" ng-class="{bold: row.marked}" ng-bind-html="::row.name | highlightWords"></span></td>
-    </tr>
-    </tbody>
-  </table>
+
   <div id="table-column-measureContainer"></div>
 
-  <div class="scrolling">
-    <table class="table table-striped table-hover">
+  <show-message data-ng-if="!tableVisible" severity="messageSeverity" text="message"></show-message>
+
+  <div data-ng-if="!tableVisible" class="show-table">
+    <a ng-click="showTable()">Visa tabellen</a>
+  </div>
+
+  <div data-ng-if="tableVisible" spinner label="Laddar" show-spinner="!doneLoading"></div>
+
+  <div data-ng-if="tableVisible">
+    <table class="table table-striped table-headers table-hover">
       <thead>
-      <tr data-ng-repeat="headerrow in headerRows">
-        <td data-ng-if="!$first" class="scrollable details-table-data ellipsis details-th"
-            data-ng-class="{centeralign: headerrow.centerAlign,
-            'sortable-column': $parent.$parent.$last,
-            'sorted-column': ($index === sortIndex),
-            'sorted-reverse': sortReverse}"
-            data-ng-click="sortByColumn($index, $parent.$parent.$last)"
+      <tr data-ng-repeat="headerrow in headers">
+        <td
+            data-ng-repeat="header in headerrow | limitTo: 1"
+            class="scrollable details-table-data ellipsis sorter-false headcol"
+            data-ng-class="{centeralign: headerrow.centerAlign}"
             colspan="{{::header.colspan}}"
-            data-ng-repeat="header in headerrow" title="{{::header.text}}"
-            style="padding-right: 20px; white-space: nowrap;">
-          <span ng-bind-html="::header.text | highlightWords"></span>
-          <i data-ng-if="$parent.$parent.$last" class="fa fa-sort" aria-hidden="true"></i>
+            title="{{::header.text}}">
+          {{::header.text}}
         </td>
       </tr>
       </thead>
-      <tbody class="table-condensed datatable-body">
-        <tr data-ng-repeat="row in rowsShown" class="stat-table-row" title="{{::row.name}}">
-          <td class="scrollable" data-ng-repeat="fieldData in row.data track by $index"
-              >{{::fieldData.value}}</td>
-        </tr>
+      <tbody class="table-condensed">
+      <tr data-ng-repeat="row in rowsShown" class="stat-table-row" title="{{::row.name}}">
+        <td class="scrollable headcol"><span class="headcol-name" ng-class="{bold: row.marked}" ng-bind-html="::row.name | highlightWords"></span></td>
+      </tr>
       </tbody>
     </table>
-    <a ng-show="rowsHidden.length > 0" ng-click="showAllRows()">Visa alla rader</a>
+
+    <div class="scrolling">
+      <table class="table table-striped table-hover">
+        <thead>
+        <tr data-ng-repeat="headerrow in headers track by $index">
+          <td
+              data-ng-repeat="header in headerrow"
+              data-ng-if="!$first"
+              class="scrollable details-table-data ellipsis"
+              data-ng-class="{centeralign: headerrow.centerAlign,
+              'sortable-column': $parent.$parent.$last,
+              'sorted-column': ($index === sortIndex),
+              'sorted-reverse': sortReverse}"
+              data-ng-click="sortByColumn($index, $parent.$parent.$last)"
+              colspan="{{::header.colspan}}"
+              title="{{::header.text}}"
+              style="white-space: nowrap;">
+            <span ng-bind-html="::header.text | highlightWords"></span>
+            <i data-ng-if="$parent.$parent.$last" class="fa fa-sort" aria-hidden="true"></i>
+          </td>
+        </tr>
+        </thead>
+        <tbody class="table-condensed datatable-body">
+          <tr
+              data-ng-repeat="row in rowsShown"
+              on-finish-render="doneRendering()"
+              class="stat-table-row"
+              title="{{::row.name}}">
+            <td
+                data-ng-repeat="fieldData in row.data"
+                class="scrollable"
+                >{{::fieldData.value}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
