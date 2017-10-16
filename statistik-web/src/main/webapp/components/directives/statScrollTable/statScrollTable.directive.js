@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').directive('statScrollTable',
     /** @ngInject */
-    function ($filter, _, $timeout, MAX_INIT_ROWS_TABLE, MAX_INIT_COLUMNS_TABLE) {
+    function ($filter, _, $timeout, messageService, MAX_INIT_ROWS_TABLE, MAX_INIT_COLUMNS_TABLE) {
         'use strict';
 
         return {
@@ -40,8 +40,7 @@ angular.module('StatisticsApp').directive('statScrollTable',
                 $scope.scrollHeader = [];
                 $scope.tableVisible = true;
                 $scope.doneLoading = true;
-                $scope.message = 'Rapporten innehåller mycket data, vilket kan göra tabellen svår att läsa och långsam att ladda, därför är den dold.' +
-                    'Klicka på visa tabellen i fall du vill se den.';
+                $scope.message = messageService.getProperty('info.hidden-table');
                 $scope.messageSeverity = 'INFO';
 
                 var rows = [];
