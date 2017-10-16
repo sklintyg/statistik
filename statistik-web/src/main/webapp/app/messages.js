@@ -181,6 +181,7 @@ var stMessages = {
 
         //info texts
         'info.emptyresponse' : 'Ingen data tillgänglig. Det beror på att det inte finns någon data för verksamheten.',
+        'info.hidden-table': 'Rapporten innehåller mycket data, vilket kan göra tabellen svår att läsa och långsam att ladda, därför är den dold. Filtrera för att minska mängden data och öka läsbarheten eller klicka nedan för att visa tabellen.',
 
         //login view
         'login.header.verksamhet': 'Logga in för verksamhetsstatistik',
