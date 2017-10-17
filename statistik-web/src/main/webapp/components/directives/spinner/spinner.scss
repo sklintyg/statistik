@@ -1,13 +1,11 @@
 .stat-spinner {
   .css-spinner {
-    animation-duration: 1.5s;
-    animation-iteration-count: infinite;
-    animation-name: rotate;
-    animation-timing-function: linear;
-    background-image: url('../assets/images/ajax-loader.gif');
-    height: 32px;
     margin: 20px auto;
-    width: 32px;
+
+    img {
+      width: 32px;
+      height: 32px;
+    }
   }
 
   .spinner {
