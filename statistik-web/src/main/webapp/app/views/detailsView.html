@@ -167,8 +167,11 @@
 
         <div class="row">
           <div class="col-xs-12" id="chartlegends">
-            <div data-ng-repeat="seriesData in series" class="col-xs-12 col-sm-6" data-ng-if="showInLegend($index)">
-              <label class="legend-label" legend-height>
+            <div data-ng-repeat="seriesData in series"
+                 data-ng-if="showInLegend($index)"
+                 data-ng-class="{'clear-both': $index%2 == 0}"
+                 class="col-xs-12 col-sm-6">
+              <label class="legend-label">
                 <input type="checkbox" checked="" class="detail-checkbox" data-ng-click="toggleSeriesVisibility($index)" />
                 <span class="legend-color-square"
                       data-ng-attr-style="background-color: {{::seriesData.color}}!important"></span>
