@@ -39,6 +39,7 @@ import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.StaticFilterData;
+import se.inera.statistics.web.util.VersionUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -60,6 +61,9 @@ public class LoginServiceUtilTest {
 
     @Mock
     private Icd10 icd10;
+
+    @Mock
+    private VersionUtil versionUtil;
 
     @InjectMocks
     private LoginServiceUtil loginServiceUtilInjected;
@@ -145,6 +149,19 @@ public class LoginServiceUtilTest {
 
     private Vardenhet newVardenhet(String enhetId, String vgId) {
         return new Vardenhet(new HsaIdEnhet(enhetId), enhetId + "name", new HsaIdVardgivare(vgId));
+    }
+
+    @Test
+    public void testGetAppSettingsContainsCorrectProjectVersion() {
+        // Given
+        String projectVersion = "TestversionXXX";
+        Mockito.when(versionUtil.getProjectVersion()).thenReturn(projectVersion);
+
+        // When
+        AppSettings settings = loginServiceUtil.getSettings();
+
+        // Then
+        assertEquals(projectVersion, settings.getProjectVersion());
     }
 
 }
