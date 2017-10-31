@@ -24,6 +24,7 @@ public class AppSettings {
     private String highchartsExportUrl;
     private boolean loginVisible;
     private boolean isLoggedIn;
+    private String projectVersion;
 
     public String getLoginUrl() {
         return loginUrl;
@@ -55,6 +56,14 @@ public class AppSettings {
 
     public void setLoggedIn(boolean loggedIn) {
         isLoggedIn = loggedIn;
+    }
+
+    public String getProjectVersion() {
+        return projectVersion;
+    }
+
+    public void setProjectVersion(String projectVersion) {
+        this.projectVersion = projectVersion;
     }
 
 }

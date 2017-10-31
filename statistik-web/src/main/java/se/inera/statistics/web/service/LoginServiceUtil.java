@@ -62,6 +62,7 @@ import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.StaticFilterData;
 import se.inera.statistics.web.model.UserAccessInfo;
 import se.inera.statistics.web.model.Verksamhet;
+import se.inera.statistics.web.util.VersionUtil;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -81,6 +82,9 @@ public class LoginServiceUtil {
 
     @Autowired
     private Icd10 icd10;
+
+    @Autowired
+    private VersionUtil versionUtil;
 
     @Value("${highcharts.export.url}")
     private String higchartsExportUrl;
@@ -220,6 +224,7 @@ public class LoginServiceUtil {
         settings.setHighchartsExportUrl(higchartsExportUrl);
         settings.setLoginUrl(loginUrl);
         settings.setLoggedIn(isLoggedIn());
+        settings.setProjectVersion(versionUtil.getProjectVersion());
         return settings;
     }
 
