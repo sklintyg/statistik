@@ -407,6 +407,8 @@ public class ChartDataService {
     @Path("getCountyStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
     public Response getCountyStatistics(@QueryParam("format") String format) {
+        LOG.info("Calling getCountyStatistics for national");
+        monitoringLogService.logTrackAccessAnonymousChartData("getCountyStatistics");
         return getResponse(sjukfallPerLan, format, Report.N_LAN);
     }
 
