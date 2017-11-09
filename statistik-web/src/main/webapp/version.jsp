@@ -27,7 +27,7 @@
 
   <title>Application Version</title>
 
-  <link rel="icon" href="assets/images/favicon.ico" type="image/vnd.microsoft.icon"/>
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
   <!-- build:css(src/main/webapp) app/vendor.css -->
   <!-- bower:css -->
