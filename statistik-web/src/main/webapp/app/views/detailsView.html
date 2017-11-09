@@ -81,15 +81,23 @@
         </button>
 
         <ul class="dropdown-menu detail-view-choice-dropdown dropdown-menu-right" uib-dropdown-menu role="menu">
-          <li><a data-ng-click="printPdf()"><img src="/assets/images/dropdown-icons/pdf.png" />
-            <span message key="dropdown.val.skrivut-pdf"></span></a>
+          <li>
+            <a data-ng-click="printPdf()">
+              <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+              <span message key="dropdown.val.skrivut-pdf"></span>
+            </a>
           </li>
-          <li data-ng-repeat="chartContainer in chartContainers"><a data-ng-click="exportChart(chartContainer.id, chartContainer.gender)"><img
-              src="/assets/images/dropdown-icons/png.png" /><span message
-                                                                  key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span
-              message key="dropdown.val.spara-diagram-bild-2"></span></a></li>
-          <li><a data-ng-href="{{exportTableUrl}}" target="_self"><img
-              src="/assets/images/dropdown-icons/xlsx.png" /><span message key="dropdown.val.spara-excel"></span></a>
+          <li data-ng-repeat="chartContainer in chartContainers">
+            <a data-ng-click="exportChart(chartContainer.id, chartContainer.gender)">
+              <i class="fa fa-file-image-o" aria-hidden="true"></i>
+              <span message key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span message key="dropdown.val.spara-diagram-bild-2"></span>
+            </a>
+          </li>
+          <li>
+            <a data-ng-href="{{exportTableUrl}}" target="_self">
+              <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+              <span message key="dropdown.val.spara-excel"></span>
+            </a>
           </li>
         </ul>
       </div>
