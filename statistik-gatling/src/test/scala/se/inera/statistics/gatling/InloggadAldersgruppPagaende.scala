@@ -23,5 +23,5 @@ import io.gatling.core.Predef._
 object InloggadAldersgruppPagaende {
   def exec(user: Login.User) = RestCall.get(
     s"getAgeGroupsCurrentStatistics: ${user.vardgivare}",
-    s"${Conf.uri}/api/verksamhet/getAgeGroupsCurrentStatistics")
+    s"${Conf.uri}/api/verksamhet/getAgeGroupsCurrentStatistics?vgid=${user.vardgivare}")
 }

@@ -23,5 +23,5 @@ import io.gatling.core.Predef._
 object InloggadOversikt {
   def exec(user: Login.User) = RestCall.get(
     s"getOverview: ${user.vardgivare}",
-    s"${Conf.uri}/api/verksamhet/getOverview")
+    s"${Conf.uri}/api/verksamhet/getOverview?vgid=${user.vardgivare}")
 }

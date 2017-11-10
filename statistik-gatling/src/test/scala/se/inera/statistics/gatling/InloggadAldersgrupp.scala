@@ -23,7 +23,7 @@ import io.gatling.core.Predef._
 object InloggadAldersgruppReport {
   def exec(user: Login.User) = RestCall.get(
     s"getAgeGroupsStatistics: ${user.vardgivare}",
-    s"${Conf.uri}/api/verksamhet/getAgeGroupsStatistics")
+    s"${Conf.uri}/api/verksamhet/getAgeGroupsStatistics?vgid=${user.vardgivare}")
 }
 
 class InloggadAldersgrupp extends Simulation {

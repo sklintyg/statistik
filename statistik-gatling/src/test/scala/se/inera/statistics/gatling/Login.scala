@@ -30,8 +30,7 @@ object Login {
     "fornamn":"Anna",
     "efternamn":"Urmodig",
     "hsaId":"HSA-AM1",
-    "enhetId":"SE162321000255-O19466",
-    "vardgivarId":"SE162321000255-O00001",
+    "vardgivarIdSomProcessLedare":["SE162321000255-O00001"],
     "vardgivarniva":"true"
 }""", "SE162321000255-O00001")
 
@@ -39,8 +38,7 @@ object Login {
     "fornamn":"Anna",
     "efternamn":"Urmodig",
     "hsaId":"HSA-AM1",
-    "enhetId":"SE162321000255-O19466",
-    "vardgivarId":"SE162321000255-O00001",
+    "vardgivarIdSomProcessLedare":["SE162321000255-O00001"],
     "vardgivarniva":"false"
 }""", "SE162321000255-O00001")
 
@@ -48,8 +46,7 @@ object Login {
     "fornamn":"Anna",
     "efternamn":"Vemodig",
     "hsaId":"HSA-AM2",
-    "enhetId":"SE162321000255-O11635",
-    "vardgivarId":"SE162321000255-O00001",
+    "vardgivarIdSomProcessLedare":["SE162321000255-O00001"],
     "vardgivarniva":"false"
 }""", "SE162321000255-O00001")
 
