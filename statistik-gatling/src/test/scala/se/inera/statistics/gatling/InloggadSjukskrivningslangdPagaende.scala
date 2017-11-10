@@ -23,5 +23,5 @@ import io.gatling.core.Predef._
 object InloggadSjukskrivningslangdPagaende {
   def exec(user: Login.User) = RestCall.get(
     s"getSickLeaveLengthCurrentData: ${user}",
-    s"${Conf.uri}/api/verksamhet/getSickLeaveLengthCurrentData")
+    s"${Conf.uri}/api/verksamhet/getSickLeaveLengthCurrentData?vgid=${user.vardgivare}")
 }
