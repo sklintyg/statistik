@@ -44,16 +44,10 @@ import java.time.LocalDateTime;
 public class WidelineToWarehouseIT {
 
     @Autowired
-    private WidelineLoader widelineLoader;
-
-    @Autowired
     private WidelineManager widelineManager;
 
     @Autowired
     private Warehouse warehouse;
-
-    @Autowired
-    private Clock clock;
 
     @Test
     public void testPopulateWarehouse() throws Exception {
@@ -80,9 +74,6 @@ public class WidelineToWarehouseIT {
         line1.setVardgivareId(new HsaIdVardgivare("vg1"));
         line1.setCorrelationId("{1}");
         widelineManager.saveWideline(line1);
-
-        widelineLoader.populateWarehouse();
-        warehouse.complete(LocalDateTime.now(clock));
 
         Aisle a = warehouse.get(new HsaIdVardgivare("VG1"));
         Assert.assertEquals(1, a.getSize());

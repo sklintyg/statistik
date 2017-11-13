@@ -30,12 +30,16 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class WidelineLoaderTest {
+
+    public static final HsaIdVardgivare VG = new HsaIdVardgivare("vg1");
     @Autowired
     WidelineLoader widelineLoader;
 
@@ -51,9 +55,9 @@ public class WidelineLoaderTest {
         insertLine(EventType.REVOKED, "2");
         insertLine(EventType.CREATED, "3");
 
-        int result = widelineLoader.populateWarehouse();
+        final List<Fact> factsForVg = widelineLoader.getFactsForVg(VG);
 
-        assertEquals(2, result);
+        assertEquals(2, factsForVg.size());
     }
 
     @Test
@@ -61,9 +65,9 @@ public class WidelineLoaderTest {
         insertLine(EventType.CREATED, "1");
         insertLine(EventType.REVOKED, "1");
 
-        int result = widelineLoader.populateWarehouse();
+        final List<Fact> factsForVg = widelineLoader.getFactsForVg(VG);
 
-        assertEquals(0, result);
+        assertEquals(0, factsForVg.size());
     }
 
     @Test
@@ -71,9 +75,9 @@ public class WidelineLoaderTest {
         insertLine(EventType.REVOKED, "1");
         insertLine(EventType.CREATED, "1");
 
-        int result = widelineLoader.populateWarehouse();
+        final List<Fact> factsForVg = widelineLoader.getFactsForVg(VG);
 
-        assertEquals(0, result);
+        assertEquals(0, factsForVg.size());
     }
 
     private void insertLine(EventType event, String correlationId) {
@@ -95,7 +99,7 @@ public class WidelineLoaderTest {
         line1.setSjukskrivningsgrad(100);
         line1.setSlutdatum(4999);
         line1.setStartdatum(4997);
-        line1.setVardgivareId(new HsaIdVardgivare("vg1"));
+        line1.setVardgivareId(VG);
         line1.setLakareId(new HsaIdLakare("lakare"));
         line1.setCorrelationId(correlationId);
         widelineManager.saveWideline(line1);

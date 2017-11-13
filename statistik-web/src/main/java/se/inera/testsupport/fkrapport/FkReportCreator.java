@@ -24,9 +24,9 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -35,7 +35,6 @@ import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.Range;
@@ -59,13 +58,13 @@ public class FkReportCreator {
     private static final String MATCH_ANYTHING_REGEXP = "(.*)";
     private Lan lan = new Lan();
 
-    private final Map<HsaIdVardgivare, Aisle> allVardgivare;
+    private final Iterator<Aisle> aisles;
     private Icd10 icd10;
     private List<String> diagnoseCategories;
     private Clock clock;
 
-    public FkReportCreator(Map<HsaIdVardgivare, Aisle> allVardgivare, Icd10 icd10, List<String> diagnoseCategories, Clock clock) {
-        this.allVardgivare = allVardgivare;
+    public FkReportCreator(Iterator<Aisle> aisles, Icd10 icd10, List<String> diagnoseCategories, Clock clock) {
+        this.aisles = aisles;
         this.icd10 = icd10;
         this.diagnoseCategories = diagnoseCategories;
         this.clock = clock;
@@ -151,25 +150,23 @@ public class FkReportCreator {
         final int toIntDay = WidelineConverter.toDay(getLastDateOfLastYear()); // dagnr för 2015-12-31 relativt
                                                                                // 2000-01-01
 
-        LOG.info("About to iterate allVardgivare");
+        LOG.info("About to iterate aisles");
         // Loopa igenom ALLA facts per VG, dvs ingen sammanslagning sker (viktigt av juridiska skäl)
-        return allVardgivare.entrySet().parallelStream()
-                .flatMap(vgEntry -> getFkFactRowsPerVg(range, fromIntDay, toIntDay, SjukfallUtil.ALL_ENHETER, vgEntry))
+        Iterable<Aisle> iterableAisles = () -> aisles;
+        return StreamSupport.stream(iterableAisles.spliterator(), true)
+                .flatMap(aisle -> getFkFactRowsPerVg(range, fromIntDay, toIntDay, SjukfallUtil.ALL_ENHETER, aisle))
                 .collect(Collectors.toList());
     }
 
     private Stream<FkFactRow> getFkFactRowsPerVg(Range range, int fromIntDay, int toIntDay, FilterPredicates sjukfallFilter,
-            Map.Entry<HsaIdVardgivare, Aisle> vgEntry) {
-        LOG.info("About to get sjukfall for vg  " + vgEntry.getKey().getId());
-        final Aisle aisle = vgEntry.getValue();
+                                                 Aisle aisle) {
+        LOG.info("About to get sjukfall for vg  " + aisle.getVardgivareId());
         // Hämta ut dom som hör till detta år
         final ArrayList<SjukfallGroup> sjukfallGroups = Lists
                 .newArrayList(new SjukfallIterator(range.getFrom(), 1, range.getNumberOfMonths(), aisle, sjukfallFilter, true));
         return sjukfallGroups.stream()
                 .flatMap(sjukfallGroup -> sjukfallGroup.getSjukfall().stream())
-                .collect(Collectors.toMap(Sjukfall::getFirstIntygId, p -> p, (p, q) -> p)).values().stream() // distinct
-                                                                                                             // by
-                                                                                                             // property
+                .collect(Collectors.toMap(Sjukfall::getFirstIntygId, p -> p, (p, q) -> p)).values().stream() // distinct by property
                 .filter(sjukfall -> inPeriod(sjukfall, fromIntDay, toIntDay))
                 .filter(sjukfall -> inPeriod(getAllFactsInIntyg(sjukfall.getFirstIntygId(), aisle), fromIntDay, toIntDay))
                 .map(sjukfall -> createFkFactRow(sjukfall, aisle));

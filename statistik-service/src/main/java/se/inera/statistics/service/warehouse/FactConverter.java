@@ -27,7 +27,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
@@ -35,22 +34,13 @@ import se.inera.statistics.service.warehouse.model.db.WideLine;
 import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 
 @Component
-public class FactPopulator {
-    private static final Logger LOG = LoggerFactory.getLogger(FactPopulator.class);
-
-    @Autowired
-    private Warehouse warehouse;
+class FactConverter {
+    private static final Logger LOG = LoggerFactory.getLogger(FactConverter.class);
 
     @Autowired
     private Icd10 icd10;
 
-    public void accept(WideLine wideline) {
-        Fact fact = toFact(wideline);
-        HsaIdVardgivare vardgivare = wideline.getVardgivareId();
-        warehouse.accept(fact, vardgivare);
-    }
-
-    public Fact toFact(WideLine wideline) {
+    Fact toFact(WideLine wideline) {
         String lkf = wideline.getLkf();
         int enhet = Warehouse.getEnhetAndRemember(wideline.getEnhet());
         long intyg = wideline.getLakarintyg();
@@ -90,11 +80,11 @@ public class FactPopulator {
                 }
             }
             if (befattnings.isEmpty()) {
-                return new int[] { LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE };
+                return new int[] {LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
             }
             return ArrayUtils.toPrimitive(befattnings.toArray(new Integer[0]));
         }
-        return new int[] { LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE };
+        return new int[] {LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
     }
 
     private int extractKategori(String diagnoskategori) {

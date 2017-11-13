@@ -34,9 +34,11 @@ import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
-import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.LoginInfo;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -50,18 +52,18 @@ public class LoginInfoServiceIT {
     @Autowired
     private LoginInfoService loginInfoService;
 
-    @Autowired
-    private Warehouse warehouse;
+    @PersistenceContext(unitName = "IneraStatisticsLog")
+    private EntityManager manager;
 
     @Test
+    @Transactional
     public void getLoginInfoTestThatEnhetNotFoundInWarehouseGetsUnknownVerksamhetstypAssigned() {
         //Given
         final Vardenhet vardenhet = new Vardenhet(new HsaIdEnhet("ENHETID"), "e1namn", new HsaIdVardgivare("VG1"));
         final User user = new User(new HsaIdUser("USERID"), "UserName", Collections.emptyList(), Arrays.asList(vardenhet));
         AuthUtil.setUserToSecurityContext(user);
 
-        warehouse.accept(new Enhet(new HsaIdVardgivare("VG2"), new HsaIdEnhet("ENHETID"), "EnhetNamn", Lan.OVRIGT_ID, Kommun.OVRIGT_ID, VerksamhetsTyp.OVRIGT_ID));
-        warehouse.completeEnhets();
+        manager.persist(new Enhet(new HsaIdVardgivare("VG2"), new HsaIdEnhet("ENHETID"), "EnhetNamn", Lan.OVRIGT_ID, Kommun.OVRIGT_ID, VerksamhetsTyp.OVRIGT_ID));
 
         //When
         final LoginInfo loginInfo = loginInfoService.getLoginInfo();

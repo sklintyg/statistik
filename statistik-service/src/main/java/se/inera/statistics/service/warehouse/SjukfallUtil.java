@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -62,6 +63,7 @@ public class SjukfallUtil {
 
     private LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> sjukfallGroupsCache;
 
+    @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     public void clearSjukfallGroupCache() {
         getSjukfallGroupsCache().invalidateAll();
     }
