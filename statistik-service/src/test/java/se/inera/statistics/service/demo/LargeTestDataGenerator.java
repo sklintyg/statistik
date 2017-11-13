@@ -105,6 +105,10 @@ public class LargeTestDataGenerator {
         LOG.info("Max intyg to insert: " + maxIntyg);
     }
 
+    public void setMaxIntyg(int maxIntyg) {
+        this.maxIntyg = maxIntyg;
+    }
+
     public void publishUtlatanden() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
         int count = 0;
