@@ -22,13 +22,13 @@ import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
@@ -43,7 +43,7 @@ import se.inera.statistics.service.warehouse.WidelineConverter;
 
 public class SosReportCreator {
 
-    private final Map<HsaIdVardgivare, Aisle> allVardgivare;
+    private final Iterator<Aisle> aisles;
     private final SjukfallUtil sjukfallUtil;
     private HashMap<String, Integer> dxsToShowInReport = new HashMap<>();
     private Clock clock;
@@ -58,9 +58,9 @@ public class SosReportCreator {
      * @param toYear
      *            To which year to calculate
      */
-    public SosReportCreator(Map<HsaIdVardgivare, Aisle> allVardgivare, SjukfallUtil sjukfallUtil, Icd10 icd10, List<String> dxStrings,
-            Clock clock, int fromYear, int toYear) {
-        this.allVardgivare = allVardgivare;
+    public SosReportCreator(Iterator<Aisle> aisles, SjukfallUtil sjukfallUtil, Icd10 icd10, List<String> dxStrings,
+                            Clock clock, int fromYear, int toYear) {
+        this.aisles = aisles;
         this.sjukfallUtil = sjukfallUtil;
         this.clock = clock;
         if (dxStrings == null || dxStrings.isEmpty()) {
@@ -95,17 +95,18 @@ public class SosReportCreator {
         final int nowMinusFiveDaysIntDay = WidelineConverter.toDay(LocalDate.now(clock).minusDays(5));
 
         final ArrayList<SosRow> sosRows = new ArrayList<>();
-        for (Map.Entry<String, Integer> stringIntegerEntry : dxsToShowInReport.entrySet()) {
-            final Integer dx = stringIntegerEntry.getValue();
-            final String dxString = stringIntegerEntry.getKey();
-            final Predicate<Fact> intygFilter = fact -> fact.getDiagnoskod() == dx || fact.getDiagnoskategori() == dx;
-            final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true,
-                    "sosspecial" + fromYear + dx + toYear, false);
+        for (Iterator<Aisle> it = aisles; it.hasNext();) {
+            Aisle aisle = it.next();
+            for (Map.Entry<String, Integer> stringIntegerEntry : dxsToShowInReport.entrySet()) {
+                final Integer dx = stringIntegerEntry.getValue();
+                final String dxString = stringIntegerEntry.getKey();
+                final Predicate<Fact> intygFilter = fact -> fact.getDiagnoskod() == dx || fact.getDiagnoskategori() == dx;
+                final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true,
+                        "sosspecial" + fromYear + dx + toYear, false);
 
-            for (Map.Entry<HsaIdVardgivare, Aisle> vgEntry : allVardgivare.entrySet()) {
                 final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1,
                         range.getNumberOfMonths(),
-                        vgEntry.getValue(), sjukfallFilter);
+                        aisle, sjukfallFilter);
                 for (SjukfallGroup sjukfallGroup : sjukfallGroups) {
                     for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                         if (sjukfall.getStart() <= toIntDay && sjukfall.getEnd() >= fromIntDay

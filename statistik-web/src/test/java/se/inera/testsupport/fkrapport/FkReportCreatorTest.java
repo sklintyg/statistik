@@ -27,7 +27,9 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -69,10 +71,9 @@ public class FkReportCreatorTest {
     public void testDistributeFactRows() throws Exception {
         // Arrange
         final Clock clock = Clock.fixed(Instant.parse("2016-05-11T10:15:30.00Z"), ZoneId.systemDefault());
-        final Map<HsaIdVardgivare, Aisle> allVardgivare = new HashMap();
+        final Iterator<Aisle> aisles = Collections.emptyIterator();
 
-        Icd10 icd10 = new Icd10();
-        final FkReportCreator fkReportCreator = new FkReportCreator(allVardgivare, new Icd10(), null, clock);
+        final FkReportCreator fkReportCreator = new FkReportCreator(aisles, new Icd10(), null, clock);
 
         List<FkFactRow> fkFactRows = new ArrayList<>();
 
@@ -146,10 +147,10 @@ public class FkReportCreatorTest {
     public void testCreateResultRowsForDiagnoses() throws Exception {
         // Arrange
         final Clock clock = Clock.fixed(Instant.parse("2016-05-11T10:15:30.00Z"), ZoneId.systemDefault());
-        final Map<HsaIdVardgivare, Aisle> allVardgivare = new HashMap();
+        final Iterator<Aisle> aisles = Collections.emptyIterator();
 
         List<String> codes = Arrays.asList("F32", "F33");
-        final FkReportCreator fkReportCreator = new FkReportCreator(allVardgivare, icd10, codes, clock);
+        final FkReportCreator fkReportCreator = new FkReportCreator(aisles, icd10, codes, clock);
 
         final List<FkReportDataRow> rows = fkReportCreator.createResultRowsForDiagnoses();
 

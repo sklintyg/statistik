@@ -19,7 +19,6 @@
 package se.inera.statistics.web.service;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -78,7 +77,6 @@ public class ChartDataService {
     private static final Logger LOG = LoggerFactory.getLogger(ChartDataService.class);
     private static final int YEAR = 12;
     public static final String TEXT_CP1252 = "text/plain; charset=cp1252";
-    private static final int DELAY_BETWEEN_RELOADS = 30 * 60 * 1000;
     private static final int EIGHTEEN_MONTHS = 18;
 
     @Autowired
@@ -116,60 +114,55 @@ public class ChartDataService {
     private volatile SimpleDetailsData sjukfallslangd;
     private volatile CasesPerCountyData sjukfallPerLan;
     private volatile SimpleDetailsData konsfordelningPerLan;
-    private LocalDateTime lastUpdated;
 
-    @Scheduled(fixedDelay = DELAY_BETWEEN_RELOADS)
+    @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     public synchronized void buildCache() {
-        LocalDateTime last = data.getLastUpdate();
-        if (last != null && !last.equals(lastUpdated)) {
-            LOG.info("New warehouse timestamp '{}', populating national cache", last);
-            StopWatch stopWatch = new StopWatch();
-            stopWatch.start();
-            buildOverview();
-            stopWatch.stop();
-            LOG.info("National cache buildOverview  " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildNumberOfCasesPerMonth();
-            stopWatch.stop();
-            LOG.info("National cache buildNumberOfCasesPerMonth " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildDiagnosgrupper();
-            stopWatch.stop();
-            LOG.info("National cache buildDiagnosgrupper " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildDiagnoskapitel();
-            stopWatch.stop();
-            LOG.info("National cache buildDiagnoskapitel " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildAldersgrupper();
-            stopWatch.stop();
-            LOG.info("National cache buildAldersgrupper " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildSjukskrivningsgrad();
-            stopWatch.stop();
-            LOG.info("National cache buildSjukskrivningsgrad " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildSjukfallslangd();
-            stopWatch.stop();
-            LOG.info("National cache buildSjukfallslangd " + stopWatch.getTotalTimeMillis());
-            /*
-             * Disabled for now
-             * stopWatch.start();
-             * buildNumberOfMeddelandenPerMonth();
-             * stopWatch.stop();
-             * LOG.info("National cache buildNumberOfMeddelandenPerMonth " + stopWatch.getTotalTimeMillis());
-             */
-            stopWatch.start();
-            buildKonsfordelningPerLan();
-            stopWatch.stop();
-            LOG.info("National cache buildKonsfordelningPerLan " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildSjukfallPerLan();
-            stopWatch.stop();
-            LOG.info("National cache buildSjukfallPerLan " + stopWatch.getTotalTimeMillis());
-            lastUpdated = last;
-            LOG.info("National cache populated");
-        }
+        LOG.info("New warehouse timestamp '{}', populating national cache", "-");
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        buildOverview();
+        stopWatch.stop();
+        LOG.info("National cache buildOverview  " + stopWatch.getTotalTimeMillis());
+        stopWatch.start();
+        buildNumberOfCasesPerMonth();
+        stopWatch.stop();
+        LOG.info("National cache buildNumberOfCasesPerMonth " + stopWatch.getTotalTimeMillis());
+        stopWatch.start();
+        buildDiagnosgrupper();
+        stopWatch.stop();
+        LOG.info("National cache buildDiagnosgrupper " + stopWatch.getTotalTimeMillis());
+        stopWatch.start();
+        buildDiagnoskapitel();
+        stopWatch.stop();
+        LOG.info("National cache buildDiagnoskapitel " + stopWatch.getTotalTimeMillis());
+        stopWatch.start();
+        buildAldersgrupper();
+        stopWatch.stop();
+        LOG.info("National cache buildAldersgrupper " + stopWatch.getTotalTimeMillis());
+        stopWatch.start();
+        buildSjukskrivningsgrad();
+        stopWatch.stop();
+        LOG.info("National cache buildSjukskrivningsgrad " + stopWatch.getTotalTimeMillis());
+        stopWatch.start();
+        buildSjukfallslangd();
+        stopWatch.stop();
+        LOG.info("National cache buildSjukfallslangd " + stopWatch.getTotalTimeMillis());
+        /*
+         * Disabled for now
+         * stopWatch.start();
+         * buildNumberOfMeddelandenPerMonth();
+         * stopWatch.stop();
+         * LOG.info("National cache buildNumberOfMeddelandenPerMonth " + stopWatch.getTotalTimeMillis());
+         */
+        stopWatch.start();
+        buildKonsfordelningPerLan();
+        stopWatch.stop();
+        LOG.info("National cache buildKonsfordelningPerLan " + stopWatch.getTotalTimeMillis());
+        stopWatch.start();
+        buildSjukfallPerLan();
+        stopWatch.stop();
+        LOG.info("National cache buildSjukfallPerLan " + stopWatch.getTotalTimeMillis());
+        LOG.info("National cache populated");
     }
 
     public void buildNumberOfCasesPerMonth() {

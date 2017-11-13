@@ -32,9 +32,9 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.testsupport.QueueHelper;
-import se.inera.statistics.service.testsupport.QueueSender;
-import se.inera.statistics.service.testsupport.TestData;
+import se.inera.statistics.testsupport.QueueHelper;
+import se.inera.statistics.testsupport.QueueSender;
+import se.inera.statistics.testsupport.TestData;
 import se.inera.statistics.service.warehouse.IntygType;
 
 import java.io.BufferedReader;

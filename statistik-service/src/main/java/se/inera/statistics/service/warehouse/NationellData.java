@@ -43,7 +43,6 @@ import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -55,7 +54,7 @@ import java.util.Set;
 @Component
 public class NationellData {
     private static final Logger LOG = LoggerFactory.getLogger(NationellData.class);
-    public static final int DEFAULT_CUTOFF = 5;
+    private static final int DEFAULT_CUTOFF = 5;
 
     @Autowired
     private Warehouse warehouse;
@@ -119,7 +118,7 @@ public class NationellData {
         return getAldersgrupper(range.getFrom(), 1, range.getNumberOfMonths());
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(LocalDate start, int perioder, int periodlangd) {
+    SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(LocalDate start, int perioder, int periodlangd) {
         SimpleKonResponse<SimpleKonDataRow> result = null;
         for (Aisle aisle : warehouse) {
             SimpleKonResponse<SimpleKonDataRow> aldersgrupper = AldersgruppQuery.getAldersgrupper(aisle, SjukfallUtil.ALL_ENHETER, start,
@@ -220,7 +219,7 @@ public class NationellData {
         return getDiagnosgrupper(start, perioder, periodlangd, false);
     }
 
-    public DiagnosgruppResponse getDiagnosgrupper(LocalDate start, int perioder, int periodlangd, boolean all) {
+    DiagnosgruppResponse getDiagnosgrupper(LocalDate start, int perioder, int periodlangd, boolean all) {
         DiagnosgruppResponse result = null;
         for (Aisle aisle : warehouse) {
             DiagnosgruppResponse diagnosgrupper = query.getDiagnosgrupper(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd,
@@ -299,7 +298,7 @@ public class NationellData {
         return getSjukfallPerLan(range.getFrom(), 1, range.getNumberOfMonths());
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLan(LocalDate start, int perioder, int periodlangd) {
+    SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLan(LocalDate start, int perioder, int periodlangd) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (String lanId : lans) {
             result.add(new SimpleKonDataRow(lans.getNamn(lanId), 0, 0, lanId));
@@ -374,10 +373,6 @@ public class NationellData {
 
     private int filterCutoff(int actual) {
         return actual < cutoff ? 0 : actual;
-    }
-
-    public LocalDateTime getLastUpdate() {
-        return warehouse.getLastUpdate();
     }
 
     public void setCutoff(int cutoff) {

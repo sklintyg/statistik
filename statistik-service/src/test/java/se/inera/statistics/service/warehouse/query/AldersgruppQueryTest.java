@@ -18,7 +18,12 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -29,9 +34,11 @@ import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.service.warehouse.WidelineLoader;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -42,17 +49,29 @@ import static se.inera.statistics.service.warehouse.Fact.aFact;
 public class AldersgruppQueryTest {
 
     private static final HsaIdVardgivare VARDGIVARE = new HsaIdVardgivare("vardgivare");
-    private final Warehouse warehouse = new Warehouse();
+
+    private final SjukfallUtil sjukfallUtil = new SjukfallUtil();
+
+    @InjectMocks
+    private Warehouse warehouse = new Warehouse();
+
+    @Mock
+    private WidelineLoader widelineLoader;
 
     private int intyg;
     private int patient;
+    private ArrayList<Fact> facts = new ArrayList<>();
 
-    private final SjukfallUtil sjukfallUtil = new SjukfallUtil();
+    @Before
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+        Mockito.when(widelineLoader.getFactsForVg(VARDGIVARE)).thenReturn(facts);
+        facts.clear();
+    }
 
     @Test
     public void one() {
         fact(4010, 10, 45);
-        warehouse.complete(LocalDateTime.now());
         Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         Map<Ranges.Range,Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall);
         assertEquals(1, count.get(AldersgroupUtil.RANGES.rangeFor("41-45 år")).getCount());
@@ -76,7 +95,6 @@ public class AldersgruppQueryTest {
         fact(4010, 10, 50);
         fact(4010, 10, 50);
         fact(4010, 10, 100);
-        warehouse.complete(LocalDateTime.now());
         Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         List<OverviewChartRowExtended> count = AldersgruppQuery.getOverviewAldersgrupper(sjukfall, sjukfall, 4);
 
@@ -94,6 +112,7 @@ public class AldersgruppQueryTest {
                 withDiagnoskapitel(0).withDiagnosavsnitt(14).withDiagnoskategori(16).withDiagnoskod(18).
                 withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + length - 1).
                 withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
-        warehouse.accept(fact, VARDGIVARE);
+        facts.add(fact);
     }
+
 }

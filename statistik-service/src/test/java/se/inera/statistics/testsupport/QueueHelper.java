@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.testsupport;
+package se.inera.statistics.testsupport;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
@@ -41,7 +41,6 @@ import se.inera.statistics.service.warehouse.NationellData;
 import se.inera.statistics.service.warehouse.NationellOverviewData;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.service.warehouse.WarehouseManager;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 import se.inera.statistics.service.warehouse.query.OverviewQuery;
@@ -56,8 +55,8 @@ import java.util.Map;
 
 public class QueueHelper {
     private static final Logger LOG = LoggerFactory.getLogger(QueueHelper.class);
-    public static final int YEAR = 12;
-    public static final int QUARTER = 3;
+    private static final int YEAR = 12;
+    private static final int QUARTER = 3;
 
     @Autowired
     private LogConsumer consumer;
@@ -67,9 +66,6 @@ public class QueueHelper {
 
     @Autowired
     private Warehouse warehouse;
-
-    @Autowired
-    private WarehouseManager warehouseManager;
 
     @Autowired
     private OverviewQuery overviewQuery;
@@ -101,7 +97,6 @@ public class QueueHelper {
 
     public Map<String, TestData> printAndGetPersistedData(HsaIdEnhet vardenhet1, HsaIdEnhet vardenhet2, Range range) {
         consumer.processBatch();
-        warehouseManager.loadEnhetAndWideLines();
         Map<String, TestData> result = new HashMap<>();
         printAndGetCasesPerMonth(vardenhet1, vardenhet2, range, result);
         printAndGetDiagnosisGroups(vardenhet1, vardenhet2, range, result);

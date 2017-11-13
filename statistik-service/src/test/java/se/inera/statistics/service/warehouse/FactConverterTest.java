@@ -36,16 +36,16 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
 @DirtiesContext
-    public class FactPopulatorTest {
+    public class FactConverterTest {
 
     @Autowired
-    FactPopulator factPopulator;
+    FactConverter factConverter;
 
     @Test
     public void toFactWithBasicWideline() {
         WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, "", new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"));
 
-        Fact fact = factPopulator.toFact(wideLine);
+        Fact fact = factConverter.toFact(wideLine);
 
         assertEquals(fact.getAlder(), 20);
     }
@@ -55,7 +55,7 @@ import static org.junit.Assert.assertEquals;
         final String lakarbefattning = "-";
         WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"));
 
-        Fact fact = factPopulator.toFact(wideLine);
+        Fact fact = factConverter.toFact(wideLine);
 
         assertEquals(1, fact.getLakarbefattnings().length);
         assertEquals((long) LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE, fact.getLakarbefattnings()[0]);
@@ -66,7 +66,7 @@ import static org.junit.Assert.assertEquals;
         final String lakarbefattning = "";
         WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"));
 
-        Fact fact = factPopulator.toFact(wideLine);
+        Fact fact = factConverter.toFact(wideLine);
 
         assertEquals(1, fact.getLakarbefattnings().length);
         assertEquals((long) LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE, fact.getLakarbefattnings()[0]);
@@ -77,7 +77,7 @@ import static org.junit.Assert.assertEquals;
         final String lakarbefattning = "xyz123";
         WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"));
 
-        Fact fact = factPopulator.toFact(wideLine);
+        Fact fact = factConverter.toFact(wideLine);
 
         assertEquals(1, fact.getLakarbefattnings().length);
         assertEquals((long) LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE, fact.getLakarbefattnings()[0]);
@@ -88,7 +88,7 @@ import static org.junit.Assert.assertEquals;
         final String lakarbefattning = "123,-,456,abc123";
         WideLine wideLine = new WideLine(1L, "correlationId", "088080", new HsaIdEnhet("enhet"), 2L, EventType.CREATED, "19121212-1212", 1000, 1002, 1, 20, "diagnoskapitel", "diagnosavsnitt", "diagnoskategori", "diagnoskod", 100, 1, 50, lakarbefattning, new HsaIdVardgivare("vardgivareId"), new HsaIdLakare("lakareId"));
 
-        Fact fact = factPopulator.toFact(wideLine);
+        Fact fact = factConverter.toFact(wideLine);
 
         assertEquals(2, fact.getLakarbefattnings().length);
         assertEquals(123, fact.getLakarbefattnings()[0]);

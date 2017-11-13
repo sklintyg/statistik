@@ -27,11 +27,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import java.util.Comparator;
 
 @Entity
 @Table(name = Enhet.TABLE)
+@NamedQueries({
+        @NamedQuery(name = "Enhet.getByVg", query = "SELECT e FROM Enhet e WHERE e.vardgivareId = :vgid"),
+        @NamedQuery(name = "Enhet.getByEnhetids", query = "SELECT e FROM Enhet e WHERE e.enhetId IN :enhetids")
+})
 public class Enhet {
 
     public static final String TABLE = "enhet";

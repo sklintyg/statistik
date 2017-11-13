@@ -34,6 +34,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class WidelineLoader {
@@ -41,29 +43,27 @@ public class WidelineLoader {
     private static final Logger LOG = LoggerFactory.getLogger(WidelineLoader.class);
 
     private static final int FETCH_SIZE = 10000;
+
     @Autowired
     private DataSource dataSource;
 
     @Autowired
-    private FactPopulator factPopulator;
+    private FactConverter factConverter;
 
-    public int populateWarehouse() {
+    public List<Fact> getFactsForVg(HsaIdVardgivare vgid) {
+        final ArrayList<Fact> facts = new ArrayList<>();
         try (
                 Connection connection = dataSource.getConnection();
-                PreparedStatement stmt = prepareStatement(connection);
+                PreparedStatement stmt = prepareStatementForVg(connection, vgid);
                 ResultSet resultSet = stmt.executeQuery()) {
-            int lineNo = 0;
             while (resultSet.next()) {
-                lineNo++;
                 WideLine wideline = toWideline(resultSet);
-                factPopulator.accept(wideline);
+                facts.add(factConverter.toFact(wideline));
             }
-            return lineNo;
         } catch (SQLException e) {
             LOG.error("Could not populate warehouse", e);
         }
-
-        return -1;
+        return facts;
     }
 
     private WideLine toWideline(ResultSet resultSet) throws SQLException {
@@ -95,11 +95,11 @@ public class WidelineLoader {
 
     @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
             justification = "We know what we're doing. No user supplied data.")
-    private PreparedStatement prepareStatement(Connection connection) throws SQLException {
+    private PreparedStatement prepareStatementForVg(Connection connection, HsaIdVardgivare vgid) throws SQLException {
         String sql = "select id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, "
                 + "diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivareid, "
                 + "lakareid from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = "
-                + EventType.REVOKED.ordinal() + " )";
+                + EventType.REVOKED.ordinal() + " ) AND w1.vardgivareid = '" + vgid.getId() + "'";
 
         int maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.fact", "0"));
         if (maxIntyg > 0) {
@@ -110,4 +110,23 @@ public class WidelineLoader {
         stmt.setFetchSize(FETCH_SIZE);
         return stmt;
     }
+
+    public List<HsaIdVardgivare> getAllVgs() {
+        final ArrayList<HsaIdVardgivare> vgs = new ArrayList<>();
+        final String sql = "SELECT distinct vardgivareid from wideline w1 where w1.correlationid not in "
+                + "(select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )";
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+             ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    final String vardgivareid = resultSet.getString("vardgivareid");
+                    final HsaIdVardgivare vgId = new HsaIdVardgivare(vardgivareid);
+                    vgs.add(vgId);
+                }
+        } catch (SQLException e) {
+            LOG.error("Could not get all vgs from DB", e);
+        }
+        return vgs;
+    }
+
 }

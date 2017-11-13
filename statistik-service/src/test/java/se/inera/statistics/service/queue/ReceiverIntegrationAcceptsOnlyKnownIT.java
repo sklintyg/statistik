@@ -55,7 +55,6 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.service.warehouse.WarehouseManager;
 import se.inera.statistics.service.warehouse.WidelineManager;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.time.ChangableClock;
@@ -82,9 +81,6 @@ public class ReceiverIntegrationAcceptsOnlyKnownIT {
     private WidelineManager wideLine;
 
     @Autowired
-    private WarehouseManager warehouseManager;
-
-    @Autowired
     private Warehouse warehouse;
 
     private SjukfallUtil sjukfallUtil = new SjukfallUtil();
@@ -104,7 +100,6 @@ public class ReceiverIntegrationAcceptsOnlyKnownIT {
     @Test
     public void onlyKnownAndUnsetIntygTypesAreAcceptedINTYG2734() {
         populate();
-        load();
         SimpleKonResponse<SimpleKonDataRow> webData = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("enhetId")), sjukfallUtil.createEnhetFilter(new HsaIdEnhet("ENHETID")), LocalDate.parse("2011-01-01"), 12, 1, false);
 
         assertEquals(12, webData.getRows().size());
@@ -119,11 +114,6 @@ public class ReceiverIntegrationAcceptsOnlyKnownIT {
         }
 
         assertEquals(6, wideLine.count());
-    }
-
-    @Transactional
-    public void load() {
-        warehouseManager.loadEnhetAndWideLines();
     }
 
     @Transactional
