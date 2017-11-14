@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2017 Inera AB (http://www.inera.se)
+
+    This file is part of statistik (https://github.com/sklintyg/statistik).
+
+    statistik is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    statistik is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+        logicalFilePath="liquibase/db.changelog-v44.0_add_indexes.xml">
+    <changeSet id="44_0_add_indexes_1" author="fredrik.engstrom">
+        <createIndex unique="false" tableName="wideline" indexName="wideline_vgid_idx">
+            <column name="vardgivareid"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="44_0_add_indexes_2" author="fredrik.engstrom">
+        <createIndex unique="false" tableName="wideline" indexName="wideline_intygtyp_idx">
+            <column name="intygtyp"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="44_0_add_indexes_3" author="fredrik.engstrom">
+        <createIndex unique="false" tableName="enhet" indexName="enhet_enhetid_idx">
+            <column name="enhetId"/>
+        </createIndex>
+    </changeSet>
+    <changeSet id="44_0_add_indexes_4" author="fredrik.engstrom">
+        <createIndex unique="false" tableName="enhet" indexName="enhet_vgid_idx">
+            <column name="vardgivareId"/>
+        </createIndex>
+    </changeSet>
+</databaseChangeLog>
