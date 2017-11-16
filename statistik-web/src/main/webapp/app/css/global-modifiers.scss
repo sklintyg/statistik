@@ -138,9 +138,8 @@ input {
   }
 
   .panel-heading {
-    background-color: $stat-panel-header-from;
-    background-image: linear-gradient(to bottom, $stat-panel-header-from 0%, $stat-panel-header-to 100%);
-    color: $stat-panel-header-color;
+    @extend %chartContainerHeading;
+
     padding: 12px;
     font-size: 14px;
     line-height: 20px;
