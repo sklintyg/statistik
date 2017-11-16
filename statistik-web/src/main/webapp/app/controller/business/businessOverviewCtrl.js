@@ -137,7 +137,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             series: series,
             type: 'pie',
             overview: true,
-            percentChart: true,
             renderTo: containerId,
             unit: 'sjukfall'
         };

@@ -46,7 +46,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
                 type: chartTypeInfo.activeHighchartType,
                 doneLoadingCallback: doneLoadingCallback,
                 overview: false,
-                percentChart: chartTypeInfo.usePercentChart,
+                precentChart: chartTypeInfo.usePercentChart,
                 stacked: chartTypeInfo.stacked,
                 verticalLabel: false,
                 labelMaxLength: null,
@@ -94,7 +94,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
 
             chartFactory.addColor(chartSeriesFemale);
             var yAxisTitleUnit = config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall';
-            that.chart1 = that.paintChart('chart1', yAxisTitleUnit + ' för kvinnor', 118, chartCategories, chartSeriesFemale, -100, function() {}, yAxisTitleUnit);
+            that.chart1 = that.paintChart('chart1', yAxisTitleUnit + ' för kvinnor', 118, chartCategories, chartSeriesFemale, -100, doneLoadingCallback, yAxisTitleUnit);
 
             chartFactory.addColor(chartSeriesMale);
             that.chart2 = that.paintChart('chart2', yAxisTitleUnit + ' för män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback, yAxisTitleUnit);
