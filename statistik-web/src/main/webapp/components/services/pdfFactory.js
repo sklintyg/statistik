@@ -153,7 +153,7 @@ angular.module('StatisticsApp')
 
         function _createPdf(content, fileName, pdfDoneCallback) {
             pdfMake.fonts = {
-                Lato: {
+                LiberationSans: {
                     normal: 'LiberationSans-Regular.ttf',
                     bold: 'LiberationSans-Bold.ttf',
                     italics: 'LiberationSans-Italic.ttf',
@@ -161,7 +161,16 @@ angular.module('StatisticsApp')
                 }
             };
 
-                pdfMake.createPdf(docDefinition).getBase64(function(result) {
+            var docDefinition = {
+                content: content,
+                footer: _getFooter,
+                pageSize: 'A4',
+                //pageOrientation: 'landscape',
+                styles: _getPdfStyle(),
+                defaultStyle: {
+                    font: 'LiberationSans'
+                }
+            };
 
                     if (pdfDoneCallback) {
                         pdfDoneCallback();
