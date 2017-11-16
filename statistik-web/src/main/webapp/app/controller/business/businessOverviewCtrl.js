@@ -63,17 +63,26 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     };
 
     var paintPerMonthAlternationChart = function (alteration) {
-        var chartOptions, color = COLORS.overview;
+        var color = COLORS.overview;
 
-        chartOptions = chartFactory.getHighChartConfigBase([], [
+        var chartSeries = [
             {
                 data: [
                     [1]
                 ]
             }
-        ], null, true);
+        ];
 
-        chartOptions.chart.type = 'pie';
+        var chartConfigOptions = {
+            categories: [],
+            series: chartSeries,
+            type: 'pie',
+            overview: true,
+            unit: 'sjukfall'
+        };
+
+        var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
+
         chartOptions.chart.height = 210;
         chartOptions.chart.width = 180;
         chartOptions.chart.margin = [20, 0, 0, 0];
@@ -109,7 +118,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     };
 
     var paintSexProportionChart = function(containerId, male, female, period) {
-        var femaleColor = '#EA8025', maleColor = '#008391', chartOptions;
+        var femaleColor = '#EA8025', maleColor = '#008391';
 
         var series = [
             {
@@ -123,9 +132,16 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             }
         ];
 
-        chartOptions = chartFactory.getHighChartConfigBase([], series, null, true);
-        chartOptions.chart.type = 'pie';
-        chartOptions.chart.renderTo = containerId;
+        var chartConfigOptions = {
+            categories: [],
+            series: series,
+            type: 'pie',
+            overview: true,
+            renderTo: containerId,
+            unit: 'sjukfall'
+        };
+
+        var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
         chartOptions.chart.height = 220;
         chartOptions.chart.width = 220;
         chartOptions.chart.plotBorderWidth = 0;
@@ -161,8 +177,16 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     };
 
     var paintDonutChart = function(chartData) {
-        var chartOptions = chartFactory.getHighChartConfigBase([], [], null, true);
-        chartOptions.chart.type = 'pie';
+
+        var chartConfigOptions = {
+            categories: [],
+            series: [],
+            type: 'pie',
+            overview: true,
+            unit: 'sjukfall'
+        };
+
+        var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
         chartOptions.chart.height = 180;
         chartOptions.chart.width = 180;
         chartOptions.chart.plotBorderWidth = 0;
@@ -249,9 +273,16 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             return {name: e.name};
         });
 
-        chartOptions = chartFactory.getHighChartConfigBase(categories, series, null, true, false, false, false, undefined, 'column');
-        chartOptions.chart.type = 'column';
-        chartOptions.chart.renderTo = containerId;
+        var chartConfigOptions = {
+            categories: categories,
+            series: series,
+            type: 'column',
+            overview: true,
+            renderTo: containerId,
+            unit: 'sjukfall'
+        };
+
+        chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
         chartOptions.chart.height = 240;
         chartOptions.xAxis.labels.format = '{value}';
         chartOptions.subtitle.text = null;
