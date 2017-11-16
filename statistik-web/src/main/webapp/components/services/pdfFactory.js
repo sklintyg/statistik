@@ -151,16 +151,15 @@ angular.module('StatisticsApp')
                     }
                 };
 
-                var docDefinition = {
-                    content: content,
-                    footer: _getFooter,
-                    pageSize: 'A4',
-                    //pageOrientation: 'landscape',
-                    styles: _getPdfStyle(),
-                    defaultStyle: {
-                        font: 'LiberationSans'
-                    }
-                };
+        function _createPdf(content, fileName, pdfDoneCallback) {
+            pdfMake.fonts = {
+                Lato: {
+                    normal: 'LiberationSans-Regular.ttf',
+                    bold: 'LiberationSans-Bold.ttf',
+                    italics: 'LiberationSans-Italic.ttf',
+                    bolditalics: 'LiberationSans-BoldItalic.ttf'
+                }
+            };
 
                 pdfMake.createPdf(docDefinition).getBase64(function(result) {
 
