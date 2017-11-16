@@ -18,7 +18,7 @@
     "momentjs": "2.18.1",
     "dropzone": "4.3.0",
     "ngstorage": "0.3.11",
-    "highcharts": "6.0.1",
+    "highcharts": "6.0.3",
     "font-awesome": "fontawesome#^4.7.0"
   },
   "devDependencies": {
