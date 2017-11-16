@@ -142,16 +142,10 @@ angular.module('StatisticsApp')
         function _createPdf(content, fileName, pdfDoneCallback) {
             pdfMake.fonts = {
                 Lato: {
-                    normal: 'Lato-Regular.ttf',
-                    bold: 'Lato-Bold.ttf',
-                    italics: 'Lato-Regular.ttf',
-                    bolditalics: 'Lato-Regular.ttf'
-                },
-                Roboto: {
-                    normal: 'Roboto-Regular.ttf',
-                    bold: 'Roboto-Medium.ttf',
-                    italics: 'Roboto-Italic.ttf',
-                    bolditalics: 'Roboto-Italic.ttf'
+                    normal: 'LiberationSans-Regular.ttf',
+                    bold: 'LiberationSans-Bold.ttf',
+                    italics: 'LiberationSans-Italic.ttf',
+                    bolditalics: 'LiberationSans-BoldItalic.ttf'
                 }
             };
 
