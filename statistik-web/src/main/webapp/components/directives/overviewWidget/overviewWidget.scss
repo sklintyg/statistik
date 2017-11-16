@@ -3,16 +3,16 @@ overview-widget {
 }
 
 .overview-widget {
-  background: $stat-panel-bg;
-  border: 1px solid #ddd;
+  @extend %chartContainer;
+
   color: #333;
   font-size: 12px;
   margin-bottom: 20px;
   padding: 0 0 5px;
 
   .overview-widget-header {
-    background-color: $stat-panel-header-from;
-    background-image: linear-gradient(to bottom, $stat-panel-header-from 0%, $stat-panel-header-to 100%);
+    @extend %chartContainerHeading;
+
     padding: 5px;
     position: relative;
     vertical-align: middle;
