@@ -80,25 +80,30 @@ angular.module('StatisticsApp').factory('chartFactory',
             return 40;
         }
 
-        function _getTooltip(chartType, percentChart) {
+        function _getTooltip(chartType, percentChart, unit) {
             if (chartType === 'column') {
-                return {
-                    backgroundColor : '#fff',
-                    borderWidth : 2,
-                    padding: 1,
-                    style: {},
-                    useHTML: true,
-                    formatter: function() {
-                        var value = ControllerCommons.makeThousandSeparated(this.y);
 
-                        var title = this.x ? this.x : this.point.name;
 
-                        return '<p class="tooltip-style">' +
-                            '<span class="title">' + title + '</span><br>' +
-                            this.series.name + ': <nobr><b>' + value + '</b></nobr><br/></p>';
-                    }
-                };
             }
+
+            return {
+                backgroundColor : '#fff',
+                borderWidth : 2,
+                padding: 1,
+                style: {},
+                useHTML: true,
+                formatter: function() {
+                    var value = ControllerCommons.makeThousandSeparated(this.y);
+
+                    var title = this.x ? this.x : this.point.name;
+
+                    return '<p class="tooltip-style">' +
+                                '<span class="title">' + title + ':</span><br>' +
+                                '<nobr><b>' + value + '</b></nobr> ' + unit + ' för ' + this.series.name +
+                            '</p>';
+                }
+            };
+            /*}
 
             return {
                 backgroundColor : '#fff',
@@ -118,23 +123,38 @@ angular.module('StatisticsApp').factory('chartFactory',
                     return this.series.name + ': <nobr><b>' + value + '</b></nobr><br/>';
                 }
 
-            };
+            };*/
         }
 
-        var getHighChartConfigBase = function(chartCategories, chartSeries, doneLoadingCallback, overview, percentChart, stacked, verticalLabel, maxLength, chartType) {
+        /*
+            Possible options:
+            categories: chartCategories,
+            series: chartSeries,
+            type: chartTypeInfo.activeHighchartType,
+            doneLoadingCallback: Optional,
+            precentChart: Optional,
+            stacked: Optional,
+            verticalLabel: Optional,
+            labelMaxLength: Optional,
+            overview: false,
+            renderTo: Optional
+            unit: 'sjukfall'
+         */
+        var getHighChartConfigBase = function(options) {
 
-            var hasSexSet = isSexSetOnChartSeries(chartSeries);
-            var labelHeight = _getLabelHeight(chartCategories, verticalLabel, maxLength);
+            var hasSexSet = isSexSetOnChartSeries(options.series);
+            var labelHeight = _getLabelHeight(options.categories, options.verticalLabel, options.labelMaxLength);
 
-            var options = {
+            var config = {
                 chart : {
                     animation: false,
-                    renderTo : 'chart1',
+                    renderTo : options.renderTo ? options.renderTo : 'chart1',
+                    type: options.type,
                     backgroundColor : null, //transparent
                     plotBorderWidth: 1,
-                    marginLeft: overview ? null : 80,
+                    marginLeft: options.overview ? null : 80,
                     height: 360 + labelHeight,
-                    marginBottom: verticalLabel ? labelHeight + 25 : null
+                    marginBottom: options.verticalLabel ? labelHeight + 25 : null
                 },
                 title: {
                     text: null,
@@ -143,7 +163,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     }
                 },
                 subtitle : {
-                    text : (percentChart ? 'Andel sjukfall' : 'Antal sjukfall'),
+                    text : (options.percentChart ? 'Andel ' + options.unit : 'Antal ' + options.unit),
                     align: 'left',
                     style: {
                         color: '#008391',
@@ -156,7 +176,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     align : 'left',
                     borderWidth : 0,
                     symbolRadius: 0,
-                    y: verticalLabel ? 15 : 0,
+                    y: options.verticalLabel ? 15 : 0,
                     itemStyle: {
                         color: '#008391',
                         fontWeight: 'bold',
@@ -167,17 +187,17 @@ angular.module('StatisticsApp').factory('chartFactory',
                 },
                 xAxis : {
                     labels : {
-                        rotation : verticalLabel ? -90 : 320,
+                        rotation : options.verticalLabel ? -90 : 320,
                         align : 'right',
                         style: {
                             whiteSpace: 'pre',
                             width: '200px'
                         },
                         useHTML: true,
-                        formatter: labelFormatter(_getMaxLength(maxLength), verticalLabel),
+                        formatter: labelFormatter(_getMaxLength(options.labelMaxLength), options.verticalLabel),
                         step: 1
                     },
-                    categories : _.map(chartCategories, function(category) {
+                    categories : _.map(options.categories, function(category) {
                         var name = ControllerCommons.htmlsafe(category.name);
                         return category.marked ? '<b>' + name + '</b>' : name;
                     })
@@ -191,7 +211,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     },
                     labels : {
                         formatter : function() {
-                            return ControllerCommons.makeThousandSeparated(this.value) + (percentChart ? ' %' : '');
+                            return ControllerCommons.makeThousandSeparated(this.value) + (options.percentChart ? ' %' : '');
                         }
                     },
                     plotLines : [ {
@@ -228,7 +248,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                         animation: false,
                         softThreshold: false,
                         showInLegend : true,
-                        stacking: percentChart ? 'percent' : (stacked ? 'normal' : null)
+                        stacking: options.percentChart ? 'percent' : (options.stacked ? 'normal' : null)
                     },
                     series: {
                     },
@@ -241,7 +261,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                             symbol : 'circle'
                         },
                         showInLegend : true,
-                        stacking: percentChart ? 'percent' : 'normal'
+                        stacking: options.percentChart ? 'percent' : 'normal'
                     },
                     pie : {
                         animation: false,
@@ -251,11 +271,11 @@ angular.module('StatisticsApp').factory('chartFactory',
                         showInLegend : false
                     }
                 },
-                tooltip : _getTooltip(chartType, percentChart),
+                tooltip : _getTooltip(options.type, options.percentChart, options.unit),
                 credits : {
                     enabled : false
                 },
-                series : _.map(chartSeries, function (series) {
+                series : _.map(options.series, function (series) {
                     //This enables the marker for series with single data points
                     if (series.data.length === 1) {
                         if (series.marker) {
@@ -265,7 +285,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                         }
                     }
 
-                    if (stacked && hasSexSet) {
+                    if (options.stacked && hasSexSet) {
                         if(series.sex === null) {
                             series.showInLegend = false;
                             series.visible = false;
@@ -276,11 +296,11 @@ angular.module('StatisticsApp').factory('chartFactory',
                 })
             };
 
-            if (doneLoadingCallback) {
-                options.chart.events = { load: doneLoadingCallback };
+            if (options.doneLoadingCallback) {
+                config.chart.events = { load: options.doneLoadingCallback };
             }
 
-            return options;
+            return config;
         };
 
         var getChartExportFileName = function(statisticsLevel, gender) {
