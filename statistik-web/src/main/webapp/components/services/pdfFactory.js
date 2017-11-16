@@ -141,7 +141,7 @@ angular.module('StatisticsApp')
 
         function _createPdf(content, fileName, pdfDoneCallback) {
             pdfMake.fonts = {
-                Lato: {
+                LiberationSans: {
                     normal: 'LiberationSans-Regular.ttf',
                     bold: 'LiberationSans-Bold.ttf',
                     italics: 'LiberationSans-Italic.ttf',
@@ -156,7 +156,7 @@ angular.module('StatisticsApp')
                 //pageOrientation: 'landscape',
                 styles: _getPdfStyle(),
                 defaultStyle: {
-                    font: 'Lato'
+                    font: 'LiberationSans'
                 }
             };
 
