@@ -80,11 +80,41 @@ angular.module('StatisticsApp').factory('chartFactory',
             return 40;
         }
 
-        function _getTooltip(chartType, percentChart, unit) {
-            if (chartType === 'column') {
+        function _getTooltip(overview, percentChart, unit, chartType) {
 
+            var formatter;
 
+            if (chartType === 'bubble') {
+                formatter = function() {
+                    var value = percentChart ?
+                        Highcharts.numberFormat(this.percentage, 0, ',') + ' %' :
+                        ControllerCommons.makeThousandSeparated(this.point.z);
+
+                    return '<p class="tooltip-style">' +
+                        '<nobr><b>' + value + '</b></nobr> ' + unit + ' för ' + this.series.name  +
+                        '</p>';
+                };
+            } else {
+                formatter = function() {
+                    var value = percentChart ?
+                        Highcharts.numberFormat(this.percentage, 0, ',') + ' %' :
+                        ControllerCommons.makeThousandSeparated(this.y);
+
+                    var title = this.x ? this.x : this.point.name;
+
+                    if (overview) {
+                        return '<p class="tooltip-style">' +
+                            '<nobr><b>' + value + '</b></nobr> ' + unit + ' för ' + title +
+                            '</p>';
+                    }
+
+                    return '<p class="tooltip-style">' +
+                        '<span class="title">' + title + ':</span><br>' +
+                        '<nobr><b>' + value + '</b></nobr> ' + unit + ' för ' + this.series.name +
+                        '</p>';
+                };
             }
+
 
             return {
                 backgroundColor : '#fff',
@@ -92,53 +122,31 @@ angular.module('StatisticsApp').factory('chartFactory',
                 padding: 1,
                 style: {},
                 useHTML: true,
-                formatter: function() {
-                    var value = ControllerCommons.makeThousandSeparated(this.y);
-
-                    var title = this.x ? this.x : this.point.name;
-
-                    return '<p class="tooltip-style">' +
-                                '<span class="title">' + title + ':</span><br>' +
-                                '<nobr><b>' + value + '</b></nobr> ' + unit + ' för ' + this.series.name +
-                            '</p>';
-                }
+                formatter: formatter
             };
-            /*}
-
-            return {
-                backgroundColor : '#fff',
-                borderWidth : 2,
-                style: {
-                    color: '#000',
-                    fontSize: '12px',
-                    padding: '8px',
-                    width: '200px',
-                    whiteSpace: 'pre-wrap'
-                },
-                pointFormatter: function() {
-                    var value = percentChart ?
-                        Highcharts.numberFormat(this.percentage, 0, ',') + ' %' :
-                        ControllerCommons.makeThousandSeparated(this.y);
-
-                    return this.series.name + ': <nobr><b>' + value + '</b></nobr><br/>';
-                }
-
-            };*/
         }
 
-        /*
-            Possible options:
-            categories: chartCategories,
-            series: chartSeries,
-            type: chartTypeInfo.activeHighchartType,
-            doneLoadingCallback: Optional,
-            precentChart: Optional,
-            stacked: Optional,
-            verticalLabel: Optional,
-            labelMaxLength: Optional,
-            overview: false,
-            renderTo: Optional
-            unit: 'sjukfall'
+        /**
+         * Hämtar en config för ett highcharts diagram
+         *
+         *
+         * Options består av:
+         *
+         * categories: array,
+         * series: array,
+         * type: string,
+         * doneLoadingCallback: function,
+         * percentChart: boolean,
+         * stacked: boolean,
+         * verticalLabel: boolean,
+         * labelMaxLength: number,
+         * overview: boolean,
+         * renderTo: string
+         * unit: string
+         *
+         *
+         * @param options
+         * @returns {}  // chart object
          */
         var getHighChartConfigBase = function(options) {
 
@@ -271,7 +279,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                         showInLegend : false
                     }
                 },
-                tooltip : _getTooltip(options.type, options.percentChart, options.unit),
+                tooltip : _getTooltip(options.overview, options.percentChart, options.unit, options.type),
                 credits : {
                     enabled : false
                 },

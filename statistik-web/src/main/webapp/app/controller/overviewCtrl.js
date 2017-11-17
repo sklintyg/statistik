@@ -152,7 +152,6 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             chartOptions.chart.width = 180;
             chartOptions.subtitle.text = null;
             chartOptions.chart.plotBorderWidth = 0;
-            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">{point.key}</span><br/>';
 
             return {
                 options: chartOptions
@@ -260,13 +259,11 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                 bubble: {
                     animation: false,
                     tooltip: {
-                        headerFormat: '{series.name}<br/>',
-                        pointFormat: 'Antal: <b>{point.z}</b>',
                         shared: true
                     }
                 }
             };
-            chartOptions.tooltip.pointFormatter = null;
+
             chartOptions.xAxis = {
                 min: 0,
                 max: 100,
