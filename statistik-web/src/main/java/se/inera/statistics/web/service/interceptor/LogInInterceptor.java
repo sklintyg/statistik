@@ -29,8 +29,8 @@ import static java.util.stream.Stream.of;
 
 public class LogInInterceptor extends LoggingInInterceptor {
 
-    private final static String LOOKUP_CONTENTTYPE = "Content-Type:";
-    private final static String LOOKUP_PDF = "pdf=";
+    private static final String LOOKUP_CONTENTTYPE = "Content-Type:";
+    private static final String LOOKUP_PDF = "pdf=";
 
     @Override
     protected String formatLoggingMessage(LoggingMessage loggingMessage) {
