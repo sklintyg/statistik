@@ -1,0 +1,24 @@
+#about-faq-page {
+
+  .toggle {
+    display: inline-block;
+    margin-left: 20px;
+    color: #333;
+    font-size: 14px;
+  }
+
+
+  h2 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .panel-title {
+    cursor: pointer;
+  }
+
+  .panel-heading {
+    border-bottom: 0;
+  }
+
+}
