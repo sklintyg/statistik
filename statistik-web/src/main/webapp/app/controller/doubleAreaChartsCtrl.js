@@ -46,7 +46,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
                 type: chartTypeInfo.activeHighchartType,
                 doneLoadingCallback: doneLoadingCallback,
                 overview: false,
-                precentChart: chartTypeInfo.usePercentChart,
+                percentChart: chartTypeInfo.usePercentChart,
                 stacked: chartTypeInfo.stacked,
                 verticalLabel: false,
                 labelMaxLength: null,
@@ -58,7 +58,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             chartOptions.plotOptions.area.lineWidth = 1;
             chartOptions.plotOptions.area.lineColor = 'grey';
             chartOptions.legend.enabled = false;
-            chartOptions.tooltip.useHTML = true;
             chartOptions.subtitle.text = (chartTypeInfo.usePercentChart ? 'Andel ' : 'Antal ') + yAxisTitle;
             return new Highcharts.Chart(chartOptions);
         };

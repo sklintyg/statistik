@@ -137,6 +137,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             series: series,
             type: 'pie',
             overview: true,
+            percentChart: true,
             renderTo: containerId,
             unit: 'sjukfall'
         };
@@ -170,8 +171,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             }
 
         };
-        chartOptions.tooltip.pointFormat = '{point.percentage:.0f} % (antal: {point.y})';
-        chartOptions.tooltip.backgroundColor = 'rgba(255,255,255,1)';
 
         return new Highcharts.Chart(chartOptions);
     };
@@ -204,7 +203,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
                 }
             }
         ];
-        chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">{point.key}</span><br/>';
 
         return {
             options: chartOptions
@@ -287,7 +285,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         chartOptions.xAxis.labels.format = '{value}';
         chartOptions.subtitle.text = null;
         chartOptions.yAxis.title = { text: 'Antal', style : chartOptions.subtitle.style  };
-        chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">{point.key}</span><br/>';
         chartOptions.yAxis.tickPixelInterval = 30;
         chartOptions.legend.enabled = false;
         return new Highcharts.Chart(chartOptions);
