@@ -22,7 +22,15 @@ import com.google.common.base.Strings;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingMessage;
 
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Stream.of;
+
 public class LogInInterceptor extends LoggingInInterceptor {
+
+    private final String LOOKUP_CONTENTTYPE = "Content-Type:";
+    private final String LOOKUP_PDF = "pdf=";
 
     @Override
     protected String formatLoggingMessage(LoggingMessage loggingMessage) {
@@ -31,15 +39,32 @@ public class LogInInterceptor extends LoggingInInterceptor {
 
     private String removePayload(String str) {
         StringBuilder builder = new StringBuilder(str);
-        final int payloadIndex = str.indexOf("Payload:");
-        final int contentTypeIndex = str.indexOf("Content-Type:", payloadIndex);
-        if (payloadIndex >= 0 && contentTypeIndex >= 0) {
-            builder.setLength(contentTypeIndex);
-            builder.append(" <rest of content skipped>\n");
+
+        int lookupIndex = lookupContentIndex(str);
+        if (lookupIndex > -1) {
+            builder.setLength(lookupIndex);
+            builder.append("<rest of content skipped>\n");
             final int repeatTimes = 25;
             builder.append(Strings.repeat("-", repeatTimes));
         }
         return builder.toString();
+    }
+
+    private int lookupContentIndex(String payload) {
+        final int payloadIndex = payload.indexOf("Payload:");
+
+        int index = -1;
+        if (payloadIndex > -1) {
+            List<String> lookupList = of(LOOKUP_CONTENTTYPE, LOOKUP_PDF).collect(toList());
+            for (String s : lookupList) {
+                index = payload.indexOf(s, payloadIndex);
+                if (index > -1) {
+                    return index;
+                }
+            }
+        }
+
+        return index;
     }
 
 }
