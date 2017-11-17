@@ -11,28 +11,14 @@
   h2 {
     color: #333;
     margin-bottom: 10px;
-    font-size: 14px;
   }
 
-  .panel {
-    margin-bottom: 10px;
-    border-color: #E4E4E4;
+  .panel-title {
+    cursor: pointer;
+  }
 
-    .panel-title {
-      cursor: pointer;
-    }
-
-    .panel-heading {
-      border-bottom: 0;
-    }
-
-    .panel-body {
-      padding: 0;
-    }
-
-    .panel-content {
-      padding: 5px 15px 15px;
-    }
+  .panel-heading {
+    border-bottom: 0;
   }
 
 }
