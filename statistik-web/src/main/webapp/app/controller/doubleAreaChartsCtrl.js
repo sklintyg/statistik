@@ -38,14 +38,26 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
 
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
 
-        this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft, doneLoadingCallback) {
-            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback, false, chartTypeInfo.usePercentChart, chartTypeInfo.stacked);
-            chartOptions.chart.type = chartTypeInfo.activeHighchartType;
+        this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft, doneLoadingCallback, yAxisTitleUnit) {
+
+            var chartConfigOptions = {
+                categories: chartCategories,
+                series: chartSeries,
+                type: chartTypeInfo.activeHighchartType,
+                doneLoadingCallback: doneLoadingCallback,
+                overview: false,
+                percentChart: chartTypeInfo.usePercentChart,
+                stacked: chartTypeInfo.stacked,
+                verticalLabel: false,
+                labelMaxLength: null,
+                unit: yAxisTitleUnit
+            };
+
+            var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
             chartOptions.chart.renderTo = containerId;
             chartOptions.plotOptions.area.lineWidth = 1;
             chartOptions.plotOptions.area.lineColor = 'grey';
             chartOptions.legend.enabled = false;
-            chartOptions.tooltip.useHTML = true;
             chartOptions.subtitle.text = (chartTypeInfo.usePercentChart ? 'Andel ' : 'Antal ') + yAxisTitle;
             return new Highcharts.Chart(chartOptions);
         };
@@ -72,11 +84,11 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             var chartSeriesFemale = ajaxResult.femaleChart.series;
             chartFactory.addColor(chartSeriesFemale);
             var yAxisTitleUnit = config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall';
-            that.chart1 = that.paintChart('chart1', yAxisTitleUnit + ' för kvinnor', 118, chartCategories, chartSeriesFemale, -100, doneLoadingCallback);
+            that.chart1 = that.paintChart('chart1', yAxisTitleUnit + ' för kvinnor', 118, chartCategories, chartSeriesFemale, -100, doneLoadingCallback, yAxisTitleUnit);
 
             var chartSeriesMale = ajaxResult.maleChart.series;
             chartFactory.addColor(chartSeriesMale);
-            that.chart2 = that.paintChart('chart2', yAxisTitleUnit + ' för män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback);
+            that.chart2 = that.paintChart('chart2', yAxisTitleUnit + ' för män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback, yAxisTitleUnit);
 
             updateChartsYAxisMaxValue();
 

@@ -75,12 +75,22 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         };
 
         function paintPerMonthAlternationChart(alteration) {
-            var chartOptions = chartFactory.getHighChartConfigBase([], [
+
+            var series = [
                 { data: [
                     [ 1 ]
                 ] }
-            ], null, true);
-            chartOptions.chart.type = 'pie';
+            ];
+
+            var chartConfigOptions = {
+                categories: [],
+                series: series,
+                type: 'pie',
+                overview: true,
+                unit: 'sjukfall'
+            };
+
+            var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
             chartOptions.chart.height = 210;
             chartOptions.chart.width = 180;
             chartOptions.chart.margin = [20, 0, 0, 0];
@@ -127,14 +137,21 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                     }
                 }
             ];
-            var chartOptions = chartFactory.getHighChartConfigBase([], series, null, true);
 
-            chartOptions.chart.type = 'pie';
+            var chartConfigOptions = {
+                categories: [],
+                series: series,
+                type: 'pie',
+                overview: true,
+                unit: 'sjukfall'
+            };
+
+            var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
+
             chartOptions.chart.height = 180;
             chartOptions.chart.width = 180;
             chartOptions.subtitle.text = null;
             chartOptions.chart.plotBorderWidth = 0;
-            chartOptions.tooltip.headerFormat = '<span style="font-size: 10px">{point.key}</span><br/>';
 
             return {
                 options: chartOptions
@@ -195,9 +212,17 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             var categories = _.map(chartData, function (e) {
                 return {name: e.name};
             });
-            var chartOptions = chartFactory.getHighChartConfigBase(categories, series, null, true, false, false, false, undefined, 'column');
-            chartOptions.chart.type = 'column';
-            chartOptions.chart.renderTo = containerId;
+
+            var chartConfigOptions = {
+                categories: categories,
+                series: series,
+                type: 'column',
+                overview: true,
+                renderTo: containerId,
+                unit: 'sjukfall'
+            };
+
+            var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
             chartOptions.chart.height = 240;
             chartOptions.subtitle.text = null;
             chartOptions.yAxis.title = {text: 'Antal', style : chartOptions.subtitle.style };
@@ -216,26 +241,29 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                 ], color: e.color, name: ControllerCommons.htmlsafe(e.name) };
             });
 
-            var chartOptions = chartFactory.getHighChartConfigBase([], series, null, true);
-            chartOptions.chart = {
-                height: 350,
-                width: 188,
+            var chartConfigOptions = {
+                categories: [],
+                series: series,
                 type: 'bubble',
-                backgroundColor: null //Transparent
+                overview: true,
+                unit: 'sjukfall'
             };
+
+            var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
+            chartOptions.chart.height = 350;
+            chartOptions.chart.width = 180;
+            chartOptions.chart.plotBorderWidth = 0;
 
             chartOptions.legend.enabled = false;
             chartOptions.plotOptions = {
                 bubble: {
                     animation: false,
                     tooltip: {
-                        headerFormat: '{series.name}<br/>',
-                        pointFormat: 'Antal: <b>{point.z}</b>',
                         shared: true
                     }
                 }
             };
-            chartOptions.tooltip.pointFormatter = null;
+
             chartOptions.xAxis = {
                 min: 0,
                 max: 100,

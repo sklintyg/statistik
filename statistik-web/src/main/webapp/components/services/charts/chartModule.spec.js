@@ -42,7 +42,13 @@ describe('Chart services', function() {
             });
             var categories = [{name:'Namn 1'}, {name:'Namn < 1'}];
             var series = [{b: 4, data: []}];
-            var result = chartFactory.getHighChartConfigBase(categories, series);
+
+            var options = {
+                categories: categories,
+                series: series
+            };
+
+            var result = chartFactory.getHighChartConfigBase(options);
             expect(result.xAxis.categories.length).toBe(2);
             expect(result.xAxis.categories[0]).toBe('Namn 1');
             expect(result.xAxis.categories[1]).toBe('Namn &lt; 1');
@@ -56,7 +62,13 @@ describe('Chart services', function() {
             });
             var categories = [{name:'Namn 1'}, {name:'Namn < 1'}];
             var seriesWithOneDataPoint = [{b: 4, data: [1]}];
-            var result = chartFactory.getHighChartConfigBase(categories, seriesWithOneDataPoint);
+
+            var options = {
+                categories: categories,
+                series: seriesWithOneDataPoint
+            };
+
+            var result = chartFactory.getHighChartConfigBase(options);
 
             expect(result.series[0].marker.enabled).toBeTruthy();
         });

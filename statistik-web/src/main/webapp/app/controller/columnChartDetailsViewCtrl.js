@@ -42,8 +42,21 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         $scope.chartStyle = {};
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
-            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback, false, chartTypeInfo.usePercentChart, chartTypeInfo.stacked, config.chartVerticalLabel, config.chartLabelLength, chartTypeInfo.activeHighchartType);
-            chartOptions.chart.type = chartTypeInfo.activeHighchartType;
+            var chartConfigOptions = {
+                categories: chartCategories,
+                series: chartSeries,
+                type: chartTypeInfo.activeHighchartType,
+                doneLoadingCallback: doneLoadingCallback,
+                overview: false,
+                percentChart: chartTypeInfo.usePercentChart,
+                stacked: chartTypeInfo.stacked,
+                verticalLabel: config.chartVerticalLabel,
+                labelMaxLength: config.chartLabelLength,
+                unit: 'sjukfall'
+            };
+
+
+            var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
             chartOptions.legend.enabled = false;
             chartOptions.yAxis.allowDecimals = !!config.allowDecimalsYAxis;
             if (config.chartYAxisTitle) {

@@ -9,9 +9,11 @@
     font-size: 12px;
     margin: 0;
     padding: 8px;
+    text-align: left;
 
     .title {
-      font-size: 11px;
+      display: inline-block;
+      margin-bottom: 3px;
     }
   }
 

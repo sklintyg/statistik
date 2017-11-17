@@ -43,10 +43,21 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         var isLandsting = ControllerCommons.isShowingLandsting($location);
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
-            var chartOptions = chartFactory.getHighChartConfigBase(chartCategories, chartSeries, doneLoadingCallback, false, chartTypeInfo.usePercentChart, chartTypeInfo.stacked);
-            chartOptions.chart.type = chartTypeInfo.activeHighchartType;
+            var chartConfigOptions = {
+                categories: chartCategories,
+                series: chartSeries,
+                type: chartTypeInfo.activeHighchartType,
+                doneLoadingCallback: doneLoadingCallback,
+                overview: false,
+                percentChart: chartTypeInfo.usePercentChart,
+                stacked: chartTypeInfo.stacked,
+                verticalLabel: false,
+                labelMaxLength: null,
+                unit: 'sjukfall'
+            };
+
+            var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
             chartOptions.legend.enabled = false;
-            chartOptions.subtitle.text = 'Antal sjukfall';
             if (config.chartYAxisTitle) {
                 chartOptions.subtitle.text = config.chartYAxisTitle;
             }
