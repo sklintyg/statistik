@@ -49,7 +49,7 @@ import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.NationellData;
+import se.inera.statistics.service.warehouse.NationellDataInvoker;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WidelineConverter;
@@ -116,7 +116,7 @@ public class RestSupportService {
     private LogConsumer consumer;
 
     @Autowired
-    private NationellData nationellData;
+    private NationellDataInvoker nationellData;
 
     @Autowired(required = false)
     private HsaDataInjectable hsaDataInjectable;

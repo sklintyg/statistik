@@ -20,9 +20,6 @@ package se.inera.statistics.service.warehouse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
@@ -33,6 +30,7 @@ import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.Counter;
@@ -51,205 +49,169 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@Component
-public class NationellData {
+/**
+ * Contains calculations for each report on national statistics.
+ */
+//CHECKSTYLE:OFF ParameterAssignment
+class NationellData {
     private static final Logger LOG = LoggerFactory.getLogger(NationellData.class);
-    private static final int DEFAULT_CUTOFF = 5;
 
-    @Autowired
-    private Warehouse warehouse;
-
-    @Autowired
     private MessagesQuery messagesQuery;
 
-    @Autowired
     private Lan lans;
 
-    @Autowired
     private DiagnosgruppQuery query;
 
-    @Autowired
     private SjukfallUtil sjukfallUtil;
 
-    private int cutoff = DEFAULT_CUTOFF;
+    private int cutoff;
 
-    @Autowired
-    public void initProperty(@Value("${reports.nationell.cutoff}") int cutoff) {
-        final int minimumCutoffValue = 3;
-        if (cutoff < minimumCutoffValue) {
-            LOG.warn("National cutoff value is too low. Using minimum value: " + minimumCutoffValue);
-            this.cutoff = minimumCutoffValue;
-            return;
-        }
+    NationellData(MessagesQuery messagesQuery, Lan lans, DiagnosgruppQuery query, SjukfallUtil sjukfallUtil, int cutoff) {
+        this.messagesQuery = messagesQuery;
+        this.query = query;
+        this.lans = lans;
+        this.sjukfallUtil = sjukfallUtil;
         this.cutoff = cutoff;
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getMeddelandenPerMonth(Range range) {
+    private SimpleKonResponse<SimpleKonDataRow> getMeddelandenPerMonth(Range range) {
         return messagesQuery.getAntalMeddelanden(range.getFrom(), range.getNumberOfMonths());
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getCasesPerMonth(Range range) {
-        return getAntalIntyg(range.getFrom(), range.getNumberOfMonths(), 1);
+    void getCasesPerMonth(Aisle aisle, Range range, ArrayList<SimpleKonDataRow> antalIntygResult) {
+        getAntalIntyg(aisle, range.getFrom(), range.getNumberOfMonths(), 1, antalIntygResult);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getAntalIntyg(LocalDate start, int perioder, int periodlangd) {
-        ArrayList<SimpleKonDataRow> result = new ArrayList<>();
-        for (Aisle aisle : warehouse) {
-            int index = 0;
-            for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle,
-                    SjukfallUtil.ALL_ENHETER)) {
-                int male = SjukfallQuery.countMale(sjukfallGroup.getSjukfall());
-                int female = sjukfallGroup.getSjukfall().size() - male;
-                String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
-                if (index >= result.size()) {
-                    result.add(new SimpleKonDataRow(displayDate, filterCutoff(female), filterCutoff(male)));
-                } else {
-                    SimpleKonDataRow previous = result.get(index);
-                    result.set(index, new SimpleKonDataRow(previous.getName(), filterCutoff(female) + previous.getFemale(),
-                            filterCutoff(male) + previous.getMale()));
-                }
-                index++;
+    void getAntalIntyg(Aisle aisle, LocalDate start, int perioder, int periodlangd, ArrayList<SimpleKonDataRow> antalIntygResult) {
+        int index = 0;
+        for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle,
+                SjukfallUtil.ALL_ENHETER)) {
+            int male = SjukfallQuery.countMale(sjukfallGroup.getSjukfall());
+            int female = sjukfallGroup.getSjukfall().size() - male;
+            String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
+            if (index >= antalIntygResult.size()) {
+                antalIntygResult.add(new SimpleKonDataRow(displayDate, filterCutoff(female), filterCutoff(male)));
+            } else {
+                SimpleKonDataRow previous = antalIntygResult.get(index);
+                antalIntygResult.set(index, new SimpleKonDataRow(previous.getName(),
+                        filterCutoff(female) + previous.getFemale(),
+                        filterCutoff(male) + previous.getMale()));
             }
-        }
-        return new SimpleKonResponse<>(result);
-    }
-
-    public SimpleKonResponse<SimpleKonDataRow> getHistoricalAgeGroups(Range range) {
-        return getAldersgrupper(range.getFrom(), 1, range.getNumberOfMonths());
-    }
-
-    SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(LocalDate start, int perioder, int periodlangd) {
-        SimpleKonResponse<SimpleKonDataRow> result = null;
-        for (Aisle aisle : warehouse) {
-            SimpleKonResponse<SimpleKonDataRow> aldersgrupper = AldersgruppQuery.getAldersgrupper(aisle, SjukfallUtil.ALL_ENHETER, start,
-                    perioder, periodlangd, sjukfallUtil);
-            if (result == null) {
-                result = createEmptySimpleKonResponse(aldersgrupper);
-            }
-            Iterator<SimpleKonDataRow> rowsNew = aldersgrupper.getRows().iterator();
-            Iterator<SimpleKonDataRow> rowsOld = result.getRows().iterator();
-            List<SimpleKonDataRow> list = new ArrayList<>(perioder);
-            while (rowsNew.hasNext() && rowsOld.hasNext()) {
-                SimpleKonDataRow a = rowsNew.next();
-                SimpleKonDataRow b = rowsOld.next();
-
-                list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale()) + b.getFemale(),
-                        filterCutoff(a.getMale()) + b.getMale()));
-            }
-            result = new SimpleKonResponse<>(list);
-        }
-        if (result == null) {
-            return new SimpleKonResponse<>(new ArrayList<>());
-        } else {
-            return result;
+            index++;
         }
     }
 
-    public KonDataResponse getSjukskrivningsgrad(Range range) {
-        return getSjukskrivningsgrad(range.getFrom(), range.getNumberOfMonths(), 1, false);
+    SimpleKonResponse<SimpleKonDataRow> getHistoricalAgeGroups(Aisle aisle, Range range,
+                                                               SimpleKonResponse<SimpleKonDataRow> aldersgrupperResult) {
+        return getAldersgrupper(aisle, range.getFrom(), 1, range.getNumberOfMonths(), aldersgrupperResult);
     }
 
-    public KonDataResponse getSjukskrivningsgrad(LocalDate start, int perioder, int periodlangd, boolean all) {
-        KonDataResponse result = null;
-        for (Aisle aisle : warehouse) {
-            KonDataResponse grader = SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle, SjukfallUtil.ALL_ENHETER, start, perioder,
-                    periodlangd, sjukfallUtil, all);
-            if (result == null) {
-                result = createEmptyKonDataResponse(grader);
-            }
-            Iterator<KonDataRow> rowsNew = grader.getRows().iterator();
-            Iterator<KonDataRow> rowsOld = result.getRows().iterator();
-            List<KonDataRow> list = new ArrayList<>(perioder);
-            while (rowsNew.hasNext() && rowsOld.hasNext()) {
-                KonDataRow a = rowsNew.next();
-                KonDataRow b = rowsOld.next();
+    SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(Aisle aisle, LocalDate start, int perioder, int periodlangd,
+                                                         SimpleKonResponse<SimpleKonDataRow> aldersgrupperResult) {
+        SimpleKonResponse<SimpleKonDataRow> aldersgrupper = AldersgruppQuery.getAldersgrupper(aisle,
+                SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
+        if (aldersgrupperResult == null) {
+            aldersgrupperResult = createEmptySimpleKonResponse(aldersgrupper);
+        }
+        Iterator<SimpleKonDataRow> rowsNew = aldersgrupper.getRows().iterator();
+        Iterator<SimpleKonDataRow> rowsOld = aldersgrupperResult.getRows().iterator();
+        List<SimpleKonDataRow> list = new ArrayList<>(perioder);
+        while (rowsNew.hasNext() && rowsOld.hasNext()) {
+            SimpleKonDataRow a = rowsNew.next();
+            SimpleKonDataRow b = rowsOld.next();
 
-                List<KonField> c = new ArrayList<>();
-                for (int i = 0; i < a.getData().size(); i++) {
-                    c.add(new KonField(filterCutoff(a.getData().get(i).getFemale()) + b.getData().get(i).getFemale(),
-                            filterCutoff(a.getData().get(i).getMale()) + b.getData().get(i).getMale()));
-                }
-                list.add(new KonDataRow(a.getName(), c));
-            }
-            result = new KonDataResponse(result.getGroups(), list);
+            list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale()) + b.getFemale(),
+                    filterCutoff(a.getMale()) + b.getMale()));
         }
-        if (result == null) {
-            return new KonDataResponse(new ArrayList<>(), new ArrayList<>());
-        } else {
-            return result;
-        }
+        return new SimpleKonResponse<>(list);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallslangd(Range range) {
-        return getSjukfallslangd(range.getFrom(), 1, range.getNumberOfMonths());
+    KonDataResponse getSjukskrivningsgrad(Aisle aisle, Range range, KonDataResponse sjukskrivningsgradResult) {
+        return getSjukskrivningsgrad(aisle, range.getFrom(), range.getNumberOfMonths(), 1, false, sjukskrivningsgradResult);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallslangd(LocalDate start, int perioder, int periodlangd) {
-        SimpleKonResponse<SimpleKonDataRow> result = null;
-        for (Aisle aisle : warehouse) {
-            SimpleKonResponse<SimpleKonDataRow> langder = SjukskrivningslangdQuery.getSjuksrivningslangd(aisle, SjukfallUtil.ALL_ENHETER,
-                    start, perioder, periodlangd, sjukfallUtil);
-            if (result == null) {
-                result = createEmptySimpleKonResponse(langder);
-            }
-            Iterator<SimpleKonDataRow> rowsNew = langder.getRows().iterator();
-            Iterator<SimpleKonDataRow> rowsOld = result.getRows().iterator();
-            List<SimpleKonDataRow> list = new ArrayList<>(perioder);
-            while (rowsNew.hasNext() && rowsOld.hasNext()) {
-                SimpleKonDataRow a = rowsNew.next();
-                SimpleKonDataRow b = rowsOld.next();
+    KonDataResponse getSjukskrivningsgrad(Aisle aisle, LocalDate start, int perioder, int periodlangd,
+                                          boolean all, KonDataResponse sjukskrivningsgradResult) {
+        KonDataResponse grader = SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle,
+                SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil, all);
+        if (sjukskrivningsgradResult == null) {
+            sjukskrivningsgradResult = createEmptyKonDataResponse(grader);
+        }
+        Iterator<KonDataRow> rowsNew = grader.getRows().iterator();
+        Iterator<KonDataRow> rowsOld = sjukskrivningsgradResult.getRows().iterator();
+        List<KonDataRow> list = new ArrayList<>(perioder);
+        while (rowsNew.hasNext() && rowsOld.hasNext()) {
+            KonDataRow a = rowsNew.next();
+            KonDataRow b = rowsOld.next();
 
-                list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale()) + b.getFemale(),
-                        filterCutoff(a.getMale()) + b.getMale()));
+            List<KonField> c = new ArrayList<>();
+            for (int i = 0; i < a.getData().size(); i++) {
+                c.add(new KonField(filterCutoff(a.getData().get(i).getFemale()) + b.getData().get(i).getFemale(),
+                        filterCutoff(a.getData().get(i).getMale()) + b.getData().get(i).getMale()));
             }
-            result = new SimpleKonResponse<>(list);
+            list.add(new KonDataRow(a.getName(), c));
         }
-        if (result == null) {
-            return new SimpleKonResponse<>(new ArrayList<>());
-        } else {
-            return result;
-        }
+        return new KonDataResponse(sjukskrivningsgradResult.getGroups(), list);
     }
 
-    public DiagnosgruppResponse getDiagnosgrupper(Range range) {
-        return getDiagnosgrupper(range.getFrom(), range.getNumberOfMonths(), 1);
+    SimpleKonResponse<SimpleKonDataRow> getSjukfallslangd(Aisle aisle, Range range,
+                                                          SimpleKonResponse<SimpleKonDataRow> sjukfallslangdResult) {
+        return getSjukfallslangd(aisle, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallslangdResult);
     }
 
-    public DiagnosgruppResponse getDiagnosgrupper(LocalDate start, int perioder, int periodlangd) {
-        return getDiagnosgrupper(start, perioder, periodlangd, false);
+    SimpleKonResponse<SimpleKonDataRow> getSjukfallslangd(Aisle aisle, LocalDate start, int perioder, int periodlangd,
+                                                          SimpleKonResponse<SimpleKonDataRow> sjukfallslangdResult) {
+        SimpleKonResponse<SimpleKonDataRow> langder = SjukskrivningslangdQuery.getSjuksrivningslangd(
+                aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
+        if (sjukfallslangdResult == null) {
+            sjukfallslangdResult = createEmptySimpleKonResponse(langder);
+        }
+        Iterator<SimpleKonDataRow> rowsNew = langder.getRows().iterator();
+        Iterator<SimpleKonDataRow> rowsOld = sjukfallslangdResult.getRows().iterator();
+        List<SimpleKonDataRow> list = new ArrayList<>(perioder);
+        while (rowsNew.hasNext() && rowsOld.hasNext()) {
+            SimpleKonDataRow a = rowsNew.next();
+            SimpleKonDataRow b = rowsOld.next();
+            final int female = filterCutoff(a.getFemale()) + b.getFemale();
+            final int male = filterCutoff(a.getMale()) + b.getMale();
+            list.add(new SimpleKonDataRow(a.getName(), female, male));
+        }
+        return new SimpleKonResponse<>(list);
     }
 
-    DiagnosgruppResponse getDiagnosgrupper(LocalDate start, int perioder, int periodlangd, boolean all) {
-        DiagnosgruppResponse result = null;
-        for (Aisle aisle : warehouse) {
-            DiagnosgruppResponse diagnosgrupper = query.getDiagnosgrupper(aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd,
-                    all);
-            if (result == null) {
-                result = createEmptyDiagnosgruppResponse(diagnosgrupper);
-            }
-            Iterator<KonDataRow> rowsNew = diagnosgrupper.getRows().iterator();
-            Iterator<KonDataRow> rowsOld = result.getRows().iterator();
-            List<KonDataRow> list = new ArrayList<>(perioder);
-            while (rowsNew.hasNext() && rowsOld.hasNext()) {
-                KonDataRow a = rowsNew.next();
-                KonDataRow b = rowsOld.next();
+    DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, Range range, DiagnosgruppResponse diagnosgrupperResult) {
+        return getDiagnosgrupper(aisle, range.getFrom(), range.getNumberOfMonths(), diagnosgrupperResult);
+    }
 
-                List<KonField> c = new ArrayList<>();
-                final int maxDataSize = Math.max(a.getData().size(), b.getData().size());
-                for (int i = 0; i < maxDataSize; i++) {
-                    c.add(new KonField(safeSumForIndex(a, b, i, Kon.FEMALE), safeSumForIndex(a, b, i, Kon.MALE)));
-                }
-                list.add(new KonDataRow(a.getName(), c));
+    private DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, LocalDate start, int perioder,
+                                                   DiagnosgruppResponse diagnosgrupperResult) {
+        return getDiagnosgrupper(aisle, start, perioder, 1, false, diagnosgrupperResult);
+    }
+
+    DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, LocalDate start, int perioder, int periodlangd,
+                                           boolean all, DiagnosgruppResponse diagnosgrupperResult) {
+        final FilterPredicates filter = SjukfallUtil.ALL_ENHETER;
+        DiagnosgruppResponse diagnosgrupper = query.getDiagnosgrupper(aisle, filter, start, perioder, periodlangd, all);
+        if (diagnosgrupperResult == null) {
+            diagnosgrupperResult = createEmptyDiagnosgruppResponse(diagnosgrupper);
+        }
+        Iterator<KonDataRow> rowsNew = diagnosgrupper.getRows().iterator();
+        Iterator<KonDataRow> rowsOld = diagnosgrupperResult.getRows().iterator();
+        List<KonDataRow> list = new ArrayList<>(perioder);
+        while (rowsNew.hasNext() && rowsOld.hasNext()) {
+            KonDataRow a = rowsNew.next();
+            KonDataRow b = rowsOld.next();
+
+            List<KonField> c = new ArrayList<>();
+            final int maxDataSize = Math.max(a.getData().size(), b.getData().size());
+            for (int i = 0; i < maxDataSize; i++) {
+                c.add(new KonField(safeSumForIndex(a, b, i, Kon.FEMALE), safeSumForIndex(a, b, i, Kon.MALE)));
             }
-            final List<? extends Icd> icdTyps = result.getIcdTyps().size() < diagnosgrupper.getIcdTyps().size()
-                    ? diagnosgrupper.getIcdTyps() : result.getIcdTyps();
-            result = new DiagnosgruppResponse(icdTyps, list);
+            list.add(new KonDataRow(a.getName(), c));
         }
-        if (result == null) {
-            return new DiagnosgruppResponse(new ArrayList<>(), new ArrayList<>());
-        } else {
-            return result;
-        }
+        final List<? extends Icd> icdTyps = diagnosgrupperResult.getIcdTyps().size() < diagnosgrupper.getIcdTyps().size()
+                ? diagnosgrupper.getIcdTyps() : diagnosgrupperResult.getIcdTyps();
+        return new DiagnosgruppResponse(icdTyps, list);
     }
 
     private int safeSumForIndex(KonDataRow newRow, KonDataRow existingRow, int index, Kon kon) {
@@ -263,50 +225,36 @@ public class NationellData {
         return a.getData().get(index).getValue(kon);
     }
 
-    public DiagnosgruppResponse getDiagnosavsnitt(Range range, String kapitelId) {
-        DiagnosgruppResponse result = null;
-        for (Aisle aisle : warehouse) {
-            DiagnosgruppResponse diagnosgrupper = query.getDiagnosavsnitts(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(),
-                    range.getNumberOfMonths(), 1, kapitelId);
-            if (result == null) {
-                result = createEmptyDiagnosgruppResponse(diagnosgrupper);
-            }
-            Iterator<KonDataRow> rowsNew = diagnosgrupper.getRows().iterator();
-            Iterator<KonDataRow> rowsOld = result.getRows().iterator();
-            List<KonDataRow> list = new ArrayList<>(range.getNumberOfMonths());
-            while (rowsNew.hasNext() && rowsOld.hasNext()) {
-                KonDataRow a = rowsNew.next();
-                KonDataRow b = rowsOld.next();
+    void getDiagnosavsnitt(Aisle aisle, Range range, Icd10.Kapitel kapitel, Map<Icd10.Kapitel, DiagnosgruppResponse> diagnosavsnitts) {
+        DiagnosgruppResponse diagnosgrupper = query.getDiagnosavsnitts(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(),
+                range.getNumberOfMonths(), 1, kapitel.getId());
+        if (!diagnosavsnitts.containsKey(kapitel)) {
+            diagnosavsnitts.put(kapitel, createEmptyDiagnosgruppResponse(diagnosgrupper));
+        }
+        Iterator<KonDataRow> rowsNew = diagnosgrupper.getRows().iterator();
+        Iterator<KonDataRow> rowsOld = diagnosavsnitts.get(kapitel).getRows().iterator();
+        List<KonDataRow> list = new ArrayList<>(range.getNumberOfMonths());
+        while (rowsNew.hasNext() && rowsOld.hasNext()) {
+            KonDataRow a = rowsNew.next();
+            KonDataRow b = rowsOld.next();
 
-                List<KonField> c = new ArrayList<>();
-                for (int i = 0; i < a.getData().size(); i++) {
-                    c.add(new KonField(filterCutoff(a.getData().get(i).getFemale()) + b.getData().get(i).getFemale(),
-                            filterCutoff(a.getData().get(i).getMale()) + b.getData().get(i).getMale()));
-                }
-                list.add(new KonDataRow(a.getName(), c));
+            List<KonField> c = new ArrayList<>();
+            for (int i = 0; i < a.getData().size(); i++) {
+                final int female = filterCutoff(a.getData().get(i).getFemale()) + b.getData().get(i).getFemale();
+                final int male = filterCutoff(a.getData().get(i).getMale()) + b.getData().get(i).getMale();
+                c.add(new KonField(female, male));
             }
-            result = new DiagnosgruppResponse(result.getIcdTyps(), list);
+            list.add(new KonDataRow(a.getName(), c));
         }
-        if (result == null) {
-            return new DiagnosgruppResponse(new ArrayList<>(), new ArrayList<>());
-        } else {
-            return result;
-        }
+        diagnosavsnitts.put(kapitel, new DiagnosgruppResponse(diagnosavsnitts.get(kapitel).getIcdTyps(), list));
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLan(Range range) {
-        return getSjukfallPerLan(range.getFrom(), 1, range.getNumberOfMonths());
+    void getSjukfallPerLan(Aisle aisle, Range range, ArrayList<SimpleKonDataRow> lanResult) {
+        getSjukfallPerLan(aisle, range.getFrom(), 1, range.getNumberOfMonths(), lanResult);
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLan(LocalDate start, int perioder, int periodlangd) {
-        ArrayList<SimpleKonDataRow> result = new ArrayList<>();
-        for (String lanId : lans) {
-            result.add(new SimpleKonDataRow(lans.getNamn(lanId), 0, 0, lanId));
-        }
-        for (Aisle aisle : warehouse) {
-            addAisleToResult(start, perioder, periodlangd, result, aisle);
-        }
-        return new SimpleKonResponse<>(result);
+    void getSjukfallPerLan(Aisle aisle, LocalDate start, int perioder, int periodlangd, ArrayList<SimpleKonDataRow> lanResult) {
+        addAisleToResult(start, perioder, periodlangd, lanResult, aisle);
     }
 
     private void addAisleToResult(LocalDate start, int perioder, int periodlangd, ArrayList<SimpleKonDataRow> result, Aisle aisle) {
@@ -317,7 +265,8 @@ public class NationellData {
             map.put(lanId, new Counter<>(lanId));
         }
 
-        for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, SjukfallUtil.ALL_ENHETER)) {
+        final FilterPredicates filter = SjukfallUtil.ALL_ENHETER;
+        for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, filter)) {
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                 Counter counter = map.get(sjukfall.getLanskod());
                 if (counter != null) {
@@ -332,8 +281,9 @@ public class NationellData {
         for (String lanId : lans) {
             Counter<String> counter = map.get(lanId);
             SimpleKonDataRow previous = result.get(index);
-            result.set(index, new SimpleKonDataRow(previous.getName(), filterCutoff(counter.getCountFemale()) + previous.getFemale(),
-                    filterCutoff(counter.getCountMale()) + previous.getMale(), lanId));
+            final int female = filterCutoff(counter.getCountFemale()) + previous.getFemale();
+            final int male = filterCutoff(counter.getCountMale()) + previous.getMale();
+            result.set(index, new SimpleKonDataRow(previous.getName(), female, male, lanId));
             index++;
         }
         if (!okandLans.isEmpty()) {
@@ -344,39 +294,28 @@ public class NationellData {
         }
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(LocalDate start, int perioder, int periodlangd) {
-        SimpleKonResponse<SimpleKonDataRow> result = null;
-        for (Aisle aisle : warehouse) {
-            SimpleKonResponse<SimpleKonDataRow> langder = SjukskrivningslangdQuery.getLangaSjukfall(aisle, SjukfallUtil.ALL_ENHETER, start,
-                    perioder, periodlangd, sjukfallUtil);
-            if (result == null) {
-                result = createEmptySimpleKonResponse(langder);
-            }
-            Iterator<SimpleKonDataRow> rowsNew = langder.getRows().iterator();
-            Iterator<SimpleKonDataRow> rowsOld = result.getRows().iterator();
-            List<SimpleKonDataRow> list = new ArrayList<>(perioder);
-            while (rowsNew.hasNext() && rowsOld.hasNext()) {
-                SimpleKonDataRow a = rowsNew.next();
-                SimpleKonDataRow b = rowsOld.next();
+    SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, LocalDate start, int perioder, int periodlangd,
+                                                         SimpleKonResponse<SimpleKonDataRow> langaResult) {
+        SimpleKonResponse<SimpleKonDataRow> langder = SjukskrivningslangdQuery.getLangaSjukfall(aisle,
+                SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
+        if (langaResult == null) {
+            langaResult = createEmptySimpleKonResponse(langder);
+        }
+        Iterator<SimpleKonDataRow> rowsNew = langder.getRows().iterator();
+        Iterator<SimpleKonDataRow> rowsOld = langaResult.getRows().iterator();
+        List<SimpleKonDataRow> list = new ArrayList<>(perioder);
+        while (rowsNew.hasNext() && rowsOld.hasNext()) {
+            SimpleKonDataRow a = rowsNew.next();
+            SimpleKonDataRow b = rowsOld.next();
 
-                list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale()) + b.getFemale(),
-                        filterCutoff(a.getMale()) + b.getMale()));
-            }
-            result = new SimpleKonResponse<>(list);
+            list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale()) + b.getFemale(),
+                    filterCutoff(a.getMale()) + b.getMale()));
         }
-        if (result == null) {
-            return new SimpleKonResponse<>(new ArrayList<>());
-        } else {
-            return result;
-        }
+        return new SimpleKonResponse<>(list);
     }
 
     private int filterCutoff(int actual) {
         return actual < cutoff ? 0 : actual;
-    }
-
-    public void setCutoff(int cutoff) {
-        this.cutoff = cutoff;
     }
 
     private KonDataResponse createEmptyKonDataResponse(KonDataResponse kdr) {

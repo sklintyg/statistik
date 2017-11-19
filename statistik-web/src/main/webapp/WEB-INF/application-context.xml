@@ -70,6 +70,7 @@
         <bean id="filterHashHandler" class="se.inera.statistics.web.service.FilterHashHandler"/>
         <bean id="resultMessageHandler" class="se.inera.statistics.web.service.ResultMessageHandler"/>
         <bean id="chartDataService" class="se.inera.statistics.web.service.ChartDataService"/>
+        <bean id="nationellDataCalculator" class="se.inera.statistics.web.service.NationellDataCalculator"/>
         <bean id="pdfService" class="se.inera.statistics.web.service.PdfService"/>
 
         <bean id="protectedChartDataService" class="se.inera.statistics.web.service.ProtectedChartDataService"/>
