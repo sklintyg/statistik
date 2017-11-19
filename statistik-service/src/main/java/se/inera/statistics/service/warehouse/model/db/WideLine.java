@@ -36,7 +36,7 @@ import javax.persistence.Table;
 @NamedQueries({
         @NamedQuery(name = "WideLine.getByVg", query = "SELECT w FROM WideLine w WHERE w.vardgivareId = :vgid AND "
                 + "w.correlationId not in (SELECT w2.correlationId FROM WideLine w2 where w2.intygTyp = :intygTyp)"),
-        @NamedQuery(name = "WideLine.getAllVgids", query = "SELECT DISTINCT e.vardgivareId FROM Enhet e")
+        @NamedQuery(name = "WideLine.getAllVgids", query = "SELECT DISTINCT w.vardgivareId FROM WideLine w")
 })
 public class WideLine {
     public static final String TABLE = "wideline";

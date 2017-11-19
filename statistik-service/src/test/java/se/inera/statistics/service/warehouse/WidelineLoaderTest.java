@@ -24,12 +24,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -39,7 +41,10 @@ import static org.junit.Assert.assertEquals;
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class WidelineLoaderTest {
 
-    public static final HsaIdVardgivare VG = new HsaIdVardgivare("vg1");
+    public static final HsaIdVardgivare VG1 = new HsaIdVardgivare("vg1");
+    public static final HsaIdVardgivare VG2 = new HsaIdVardgivare("vg2");
+    public static final HsaIdVardgivare VG3 = new HsaIdVardgivare("vg3");
+
     @Autowired
     WidelineLoader widelineLoader;
 
@@ -51,36 +56,54 @@ public class WidelineLoaderTest {
 
     @Test
     public void loadPopulatesOnlyWithCreatedLines() {
-        insertLine(EventType.CREATED, "1");
-        insertLine(EventType.REVOKED, "2");
-        insertLine(EventType.CREATED, "3");
+        insertLine(EventType.CREATED, "1", VG1);
+        insertLine(EventType.REVOKED, "2", VG1);
+        insertLine(EventType.CREATED, "3", VG1);
 
-        final List<Fact> factsForVg = widelineLoader.getFactsForVg(VG);
+        final List<Fact> factsForVg = widelineLoader.getFactsForVg(VG1);
 
         assertEquals(2, factsForVg.size());
     }
 
     @Test
     public void doNotLoadCreatedThenRevokedLines() {
-        insertLine(EventType.CREATED, "1");
-        insertLine(EventType.REVOKED, "1");
+        insertLine(EventType.CREATED, "1", VG1);
+        insertLine(EventType.REVOKED, "1", VG1);
 
-        final List<Fact> factsForVg = widelineLoader.getFactsForVg(VG);
+        final List<Fact> factsForVg = widelineLoader.getFactsForVg(VG1);
 
         assertEquals(0, factsForVg.size());
     }
 
     @Test
     public void doNotLoadRevokedThenCreatedLines() {
-        insertLine(EventType.REVOKED, "1");
-        insertLine(EventType.CREATED, "1");
+        insertLine(EventType.REVOKED, "1", VG1);
+        insertLine(EventType.CREATED, "1", VG1);
 
-        final List<Fact> factsForVg = widelineLoader.getFactsForVg(VG);
+        final List<Fact> factsForVg = widelineLoader.getFactsForVg(VG1);
 
         assertEquals(0, factsForVg.size());
     }
 
-    private void insertLine(EventType event, String correlationId) {
+    @Test
+    public void testGetAllVgsIsDistinct() {
+        insertLine(EventType.CREATED, "1", VG1);
+        insertLine(EventType.CREATED, "2", VG1);
+        insertLine(EventType.CREATED, "3", VG2);
+        insertLine(EventType.CREATED, "4", VG3);
+        insertLine(EventType.CREATED, "5", VG1);
+        insertLine(EventType.CREATED, "6", VG2);
+
+        final List<HsaIdVardgivare> allVgs = widelineLoader.getAllVgs();
+
+        allVgs.sort(Comparator.comparing(HsaIdAny::getId));
+        assertEquals(3, allVgs.size());
+        assertEquals(VG1, allVgs.get(0));
+        assertEquals(VG2, allVgs.get(1));
+        assertEquals(VG3, allVgs.get(2));
+    }
+
+    private void insertLine(EventType event, String correlationId, HsaIdVardgivare vg) {
         WideLine line1 = new WideLine();
         String patientId = "19121212-1212";
         line1.setAlder(23);
@@ -99,7 +122,7 @@ public class WidelineLoaderTest {
         line1.setSjukskrivningsgrad(100);
         line1.setSlutdatum(4999);
         line1.setStartdatum(4997);
-        line1.setVardgivareId(VG);
+        line1.setVardgivareId(vg);
         line1.setLakareId(new HsaIdLakare("lakare"));
         line1.setCorrelationId(correlationId);
         widelineManager.saveWideline(line1);

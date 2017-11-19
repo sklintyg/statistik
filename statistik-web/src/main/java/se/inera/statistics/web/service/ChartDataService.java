@@ -81,9 +81,9 @@ public class ChartDataService {
     @Autowired
     private NationellDataCalculator nationellDataCalculator;
 
-    private NationellDataResult nationellDataResult;
+    private volatile NationellDataResult nationellDataResult;
 
-    private NationellDataResult getNationellDataResult() {
+    private synchronized NationellDataResult getNationellDataResult() {
         if (nationellDataResult == null) {
             nationellDataResult = nationellDataCalculator.getData();
         }
