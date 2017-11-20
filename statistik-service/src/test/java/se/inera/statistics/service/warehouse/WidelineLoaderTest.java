@@ -20,10 +20,13 @@ package se.inera.statistics.service.warehouse;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.StopWatch;
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
@@ -40,6 +43,7 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class WidelineLoaderTest {
+    private static final Logger LOG = LoggerFactory.getLogger(WidelineLoaderTest.class);
 
     public static final HsaIdVardgivare VG1 = new HsaIdVardgivare("vg1");
     public static final HsaIdVardgivare VG2 = new HsaIdVardgivare("vg2");
@@ -101,6 +105,25 @@ public class WidelineLoaderTest {
         assertEquals(VG1, allVgs.get(0));
         assertEquals(VG2, allVgs.get(1));
         assertEquals(VG3, allVgs.get(2));
+    }
+
+    @Test
+    public void testGetFactsForVg() {
+        for (int i = 1; i < 1000; i++) {
+            insertLine(EventType.CREATED, "" + i, VG1);
+        }
+        for (int i = 1; i < 1000; i+=3) {
+            insertLine(EventType.REVOKED, "" + i, VG1);
+        }
+
+        StopWatch stopWatch = new StopWatch();
+        LOG.error("Starting getFacts");
+        stopWatch.start();
+        final List<Fact> facts = widelineLoader.getFactsForVg(VG1);
+        stopWatch.stop();
+        LOG.error("getFacts done in: " + stopWatch.getTotalTimeMillis());
+
+        assertEquals(666, facts.size());
     }
 
     private void insertLine(EventType event, String correlationId, HsaIdVardgivare vg) {
