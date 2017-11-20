@@ -17,111 +17,159 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').controller('aboutFaqCtrl', ['$scope',
-    function ($scope) {
+angular.module('StatisticsApp').controller('aboutFaqCtrl',
+    function ($scope, _) {
         'use strict';
 
-        var faq = [];
+        function getStatsQuestions() {
+            var questions = [];
 
-        faq.push({
-            title: '1. Vad är Statistiktjänsten?',
-            body: '<p>Statistiktjänsten för ordinerad sjukskrivning är en webbtjänst som gör det möjligt att se ' +
-                        'samlad statistik för ordinerad sjukskrivning från hela landet.</p>' +
-                    '<p>Statistiken baseras på de läkarintyg (FK 7263) som skickas elektroniskt från hälso- och sjukvårdens journalsystem. ' +
-                            'Tjänsten består av två delar:</p>' +
-                    '<ul>' +
-                        '<li>nationell statistik som är tillgänglig för alla</li>' +
-                        '<li>statistik för verksamhetsuppföljning som kräver särskild behörighet</li>' +
-                    '</ul>'
-        });
-        faq.push({
-            title: '2. Vem står bakom Statistiktjänsten?',
-            body: '<p>Det landstingsägda bolaget Inera AB har tagit fram tjänsten och ' +
-                        'förvaltar den på uppdrag av Sveriges kommuner och landsting (SKL).</p>'
-        });
-        faq.push({
-            title: '3. Vad innehåller Statistiktjänsten?',
-            body: '<p>Innehållet i Statistiktjänsten baseras på det elektroniska läkarintyg som utfärdas när en läkare bedömer att en individ behöver sjukskrivas. ' +
-						'Tjänsten innehåller information från samtliga elektroniska läkarintyg som utfärdats inom hälso- och sjukvården sedan oktober 2013.</p>' +
-                    '<p>Statistiktjänsten registrerar inte om intyget används för ansökan om sjukpenning hos Försäkringskassan, ' +
-                        'eller vilken bedömning Försäkringskassan gör.</p>' +
-					'<p>Utifrån intygsinformationen hämtar Statistiktjänsten dessutom mer information om läkaren som skrivit intyget och om vårdenheten som han eller ' +
-						'hon arbetar på. Dessa uppgifter hämtas från HSA-katalogen och syftet är att kunna ta fram mer värdefull och intressant statistik.</p>'
-        });
-		faq.push({
-            title: '4. Vad är ett sjukfall?',
-            body: '<p>I Statistiktjänsten omfattar ett sjukfall alla de elektroniska läkarintyg som utfärdats för en viss patient vid en sjukskrivning ' +
-                        'och som följer på varandra med max fem dagars uppehåll. Intygen måste även vara utfärdade av samma vårdgivare för att räknas till ' +
-						'samma sjukfall. Om det är mer än fem dagar mellan två intyg eller om två intyg är utfärdade av olika vårdgivare, så räknas det som ' +
-						'två sjukfall.</p>' +
-                    '<p>Exempel: Om intyg 1 gäller till den 14 augusti och intyg 2 gäller från den 17 augusti ' +
-                        'räknas de båda intygen till samma sjukfall. ' +
-                        'Om intyg 2 istället hade varit giltigt från den 21 augusti skulle intygen ha räknats som två skilda sjukfall.</p>'
-        });
-		faq.push({
-            title: '5. Vilka intyg filtreras bort från statistiken?',
-            body: '<p>Läkarintyg som inte motsvarar Statistiktjänstens kvalitetskrav filtreras ' +
-						'bort och kommer inte med i några statistikrapporter. Filtreringen görs för att öka kvaliteten i den resulterande statistiken.</p>' +
-					'<p>Kraven som ställs på läkarintyg för att de ska kunna vara del av statistiken är:</p>' +
-					'<ul>' +
-						'<li>Patientens födelsedatum i läkarintyget (utifrån personnummer eller samordningsnummer) måste motsvara ett riktigt datum.</li>' +
-						'<li>Startdatumet för sjukskrivningsperioden måste vara efter 2009-12-31.</li>' +
-						'<li>Start- eller slutdatum för sjukskrivningsperioden måste vara mindre än fem år fram i tiden.</li>' +
-						'<li>Slutdatum för sjukskrivningsperioden måste vara efter startdatumet.</li>' +
-						'<li>Intyget får inte vara makulerat.</li>' +
-						'<li>Den enhet inom hälso- och sjukvården som utfärdar intyget måste finnas i den nationella HSA-katalogen (en elektronisk katalog som innehåller kvalitetssäkrade uppgifter om bland annat enheter och personer i hälso- och sjukvården).</li>' +
-						'<li>Den enhet inom hälso- och sjukvården som utfärdar intyget måste vara kopplad till en vårdgivare i den nationella HSA-katalogen.</li>' +
-					'</ul>'
-        });
-        faq.push({
-            title: '6. Vad är nationell statistik?',
-            body: '<p>Nationell statistik är statistik för alla elektroniska läkarintyg som utfärdats av landets olika vårdgivare. ' +
-                        'Statistiken avidentifieras och lämnas ut från respektive vårdgivare för att sammanställas på nationell nivå.</p>' +
-                    '<p>För att statistiken inte ska kunna kopplas till enskilda personer så appliceras tröskelvärden i den nationella statistiken. ' +
-						'Tröskelvärden innebär att om en vårdgivare har färre än fem sjukfall i en viss grupp räknas inte dessa sjukfall in i statistiken. ' +
-                        'Det kan leda till en liten felmarginal i statistiken då det presenterade antalet sjukfall ' +
-                        'kan vara något lägre än det faktiska antalet på grund av att vissa sjukfall kan ha filtrerats bort.</p>'
-        });
-        faq.push({
-            title: '7. Hur ofta uppdateras Statistiktjänsten?',
-            body: '<p>Statistiktjänsten uppdateras löpande med nya läkarintyg. Den nationella statistiken uppdateras vid varje månadsskifte. ' +
-						'Statistiken för verksamhetsuppföljning som kräver inloggning uppdateras en gång per dygn.</p>'
-        });
-        faq.push({
-            title: '8. Vilken behörighet krävs för att logga in i Statistiktjänsten?',
-            body: '<p>Den allmänna delen av Statistiktjänsten som visar nationell statistik kräver inte någon registrering eller behörighet.</p>' +
-                    '<p>Om du har ansvar för verksamhetsuppföljning inom hälso- och sjukvården kan du ta del av statistik ' +
-                        'som är särskilt riktad till ditt uppföljningsområde.</p>' +
-                    '<p>Uppföljningsområde kan vara en eller flera vårdenheter, eller ' +
-                        'hela vårdgivaren om du har ett övergripande uppföljningsansvar. ' +
-                        'Det krävs att du har ett medarbetaruppdrag för statistik som delas ut av din verksamhetschef och ' +
-                        'sätts av din HSA-administratör.</p>' +
-                    '<p>För att kunna logga in och se statistik krävs:</p>' +
+            questions.push({
+                title: 'Vad innehåller Intygsstatistik?',
+                closed: true,
+                body: '<p>Innehållet i Intygsstatistik baseras främst på de elektroniska läkarintyg som utfärdas när en läkare ' +
+                'bedömer att en individ behöver exempelvis sjukskrivas eller är i behov av aktivitetsersättning. ' +
+                'Tjänsten innehåller information från samtliga elektroniska läkarintyg som utfärdats inom hälso- och sjukvården efter oktober 2013. ' +
+                'Intygsstatistik registrerar inte utfallet av intyget, det vill säga vilken bedömning Försäkringskassan gör.</p>' +
+                '<p>Utöver läkarintygen innehåller Intygsstatistik dessutom statistik över den ärendekommunikation som sker mellan intygsutförare och Försäkringskassan. ' +
+                'Tjänsten innehåller information från samtliga meddelanden som har skickats elektroniskt som ett ärende från Försäkringskassan till intygsutföraren.</p>' +
+                '<p>Utifrån intygsinformationen hämtar Intygsstatistik därtill mer information om läkaren som skrivit intyget och om vårdenheten som han eller hon arbetar på. ' +
+                'Dessa uppgifter hämtas från HSA-katalogen och syftet är att kunna ta fram mer värdefull och intressant statistik.</p>'
+            });
+
+            questions.push({
+                title: 'Vilka intyg filtreras bort från statistiken?',
+                closed: true,
+                body: '<p>Läkarintyg som inte motsvarar Intygsstatistiks kvalitetskrav filtreras bort och kommer inte med i några statistikrapporter. ' +
+                        'Filtreringen görs för att öka kvaliteten i den resulterande statistiken.</p>' +
+                '<p>Kraven som ställs på läkarintyg för att de ska kunna vara del av statistiken är:</p>' +
+                '<ul>' +
+                    '<li>Patientens födelsedatum i läkarintyget (utifrån personnummer eller samordningsnummer) måste motsvara ett riktigt datum.</li>' +
+                    '<li>Intyget får inte vara makulerat.</li>' +
+                    '<li>Den enhet inom hälso- och sjukvården som utfärdar intyget måste finnas i den nationella HSA-katalogen ' +
+                        '(en elektronisk katalog som innehåller kvalitetssäkrade uppgifter om bland annat enheter och personer i hälso- och sjukvården).</li>' +
+                    '<li>Den enhet inom hälso- och sjukvården som utfärdar intyget måste vara kopplad till en vårdgivare i den nationella HSA-katalogen.</li>' +
+                '</ul>' +
+                '<p>Ytterligare krav som ställs endast på Läkarintyg för sjukpenning är:</p>' +
+                '<ul>' +
+                    '<li>Startdatumet för sjukskrivningsperioden måste vara efter 2009-12-31.</li>' +
+                    '<li>Start- eller slutdatum för sjukskrivningsperioden måste vara mindre än fem år fram i tiden.</li>' +
+                    '<li>Slutdatum för sjukskrivningsperioden måste vara efter startdatumet.</li>' +
+                '</ul>'
+            });
+
+            return questions;
+        }
+
+        function getReportQuestions() {
+            var questions = [];
+
+            questions.push({
+                title: 'Hur skriver jag ut en rapport?',
+                closed: true,
+                body: '<p>På varje rapportsida finns en knapp med texten ”Spara som” ovanför diagrammet. ' +
+                'När du väljer "PDF" laddas ett pdf-dokument ner till din dator. Dokumentet innehåller rapportens diagram, tabell och uppgifter om eventuella filtreringar. ' +
+                'När dokumentet laddats ner kan du öppna det och skriva ut det.</p>'
+            });
+
+            questions.push({
+                title: 'Hur exporterar jag tabellen till Excel?',
+                closed: true,
+                body: '<p>På varje rapportsida finns en knapp med texten ”Spara som” ovanför diagrammet. ' +
+                'När du väljer ”Excel” laddas tabellen ner till din dator och går sedan att öppna i Excel.</p>'
+            });
+
+            return questions;
+        }
+
+        function getSicknessQuestions() {
+            var questions = [];
+
+            questions.push({
+                title: 'Vad är ett sjukfall?',
+                closed: true,
+                body: '<p>Intygsstatistik omfattar ett sjukfall de elektroniska läkarintyg (FK 7263 och FK 7804) som utfärdats för en viss patient vid en ' +
+                    'sjukskrivning och som följer på varandra med max fem dagars uppehåll. ' +
+                    'Intygen måste även vara utfärdade av samma vårdgivare för att räknas till samma sjukfall. ' +
+                    'Om det är mer än fem dagar mellan två intyg eller om två intyg är utfärdade av olika vårdgivare, så räknas det som två sjukfall.</p>' +
+                    '<p>Exempel: Om intyg 1 gäller till den 14 augusti och intyg 2 gäller från den 17 augusti räknas de båda intygen till samma sjukfall. ' +
+                    'Om intyg 2 istället hade varit giltigt från den 21 augusti skulle intygen ha räknats som två skilda sjukfall.</p>'
+            });
+
+            return questions;
+        }
+
+        function getTechnicalQuestions() {
+            var questions = [];
+
+            questions.push({
+                title: 'Hur ofta uppdateras Intygsstatistik?',
+                closed: true,
+                body: '<p>Intygsstatistik uppdateras löpande med nya läkarintyg och meddelanden. Den nationella statistiken uppdateras vid varje månadsskifte. ' +
+                'Statistiken för verksamhetsuppföljning som kräver inloggning uppdateras en gång per dygn.</p>'
+            });
+
+            questions.push({
+                title: 'Vilka olika typer av behörighet finns för att logga in i Intygsstatistik?',
+                closed: true,
+                body: '<p>Den allmänna delen av Intygsstatistik som visar nationell statistik kräver inte någon registrering eller behörighet. ' +
+                    'Om du har ansvar för verksamhetsuppföljning inom hälso- och sjukvården kan du ta del av statistik som är särskilt riktad till ditt uppföljningsområde. ' +
+                    'Uppföljningsområde kan vara en eller flera vårdenheter, eller hela vårdgivaren om du har ett övergripande uppföljningsansvar. ' +
+                    'Det krävs att du har ett medarbetaruppdrag för statistik som delas ut av din verksamhetschef och sätts av din HSA-administratör. För att kunna logga in och se statistik krävs:</p>' +
                     '<ul>' +
                         '<li>ett SITHS-kort med pinkod</li>' +
                         '<li>en kortläsare med tillhörande programvara, NetID</li>' +
                         '<li>ett medarbetaruppdrag i HSA som ger dig rätt att ta del av statistik</li>' +
                     '</ul>' +
-					'<p><span dynamiclink key="sarskildBehorighetStatistik"></span></p>'
+                    '<p><span dynamiclink key="sarskildBehorighetStatistik"></span></p>'
+            });
 
-        });
-		faq.push({
-            title: '9. Hur skriver jag ut en rapport?',
-            body: '<p>På varje rapportsida finns en knapp med texten ”Spara som” ovanför diagrammet. ' +
-                    'När du väljer "PDF" laddas ett pdf-dokument ner till din dator. Dokumentet innehåller rapportens diagram, tabell och ' +
-					'uppgifter om eventuella filtreringar. När dokumentet laddats ner kan du öppna det och skriva ut det.</p>'
-        });
+            return questions;
+        }
+
+        var faq = [];
+
         faq.push({
-            title: '10. Hur exporterar jag tabellen till Excel?',
-            body: '<p>På varje rapportsida finns en knapp med texten ”Spara som” ovanför diagrammet. ' +
-                    'När du väljer ”Excel” laddas tabellen ner till din dator och går sedan att öppna i Excel.</p>'
+            title: 'Statistik',
+            icon: 'fa-area-chart',
+            questions: getStatsQuestions()
         });
+
         faq.push({
-            title: '11. Varför ser jag ingen statistik för den valda verksamheten?',
-            body: '<p>Det beror på att det i dagsläget inte finns inrapporterad data för verksamheten eller ' +
-                    'att du gjort ett för begränsat filterval.</p>'
+            title: 'Rapporter',
+            icon: 'fa-file-text-o',
+            questions: getReportQuestions()
         });
+
+        faq.push({
+            title: 'Sjukfall',
+            icon: 'fa-stethoscope',
+            questions: getSicknessQuestions()
+        });
+
+        faq.push({
+            title: 'Tekniska frågor',
+            icon: 'fa-wrench',
+            questions: getTechnicalQuestions()
+        });
+
 
         $scope.faq = faq;
+
+        $scope.openAll = function() {
+            toggleQuestions(false);
+        };
+
+        $scope.closeAll = function() {
+            toggleQuestions(true);
+        };
+
+        function toggleQuestions(closed) {
+            _.each(faq, function(category) {
+                _.each(category.questions, function(question) {
+                    question.closed = closed;
+                });
+            });
+        }
     }
-]);
+);
