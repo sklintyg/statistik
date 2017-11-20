@@ -3,39 +3,19 @@
 		<section>
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-					<h1>
-						Vanliga frågor och svar
-
-						<span class="toggle">
-							<a href ng-click="openAll()">Öppna alla</a>
-							<span class="divider">|</span>
-							<a href ng-click="closeAll()">Stäng alla</a>
-						</span>
-					</h1>
-
-					<p>Här kan du läsa vanliga frågor och svar om Intygsstatistik.</p>
+					<h1>Vanliga frågor och svar</h1>
+					<p>Här kan du läsa vanliga frågor och svar om Statistiktjänsten.</p>
 					<p>Om du inte hittar svar på din fråga kan du kontakta Ineras kundservice.</p>
 					<p><span dynamiclink key="ineraKundserviceFelanmalan"></span></p>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-
-					<div data-ng-repeat="c in faq">
-						<h2><i class="fa {{::c.icon}}"></i> {{::c.title}}</h2>
-						<div class="panel panel-default"  data-ng-repeat="q in c.questions">
-							<div class="panel-heading" ng-click="q.closed = !q.closed">
-								<h4 class="panel-title">
-									{{q.title}}
-
-									<i class="glyphicon pull-right"
-										 ng-class="{'glyphicon-chevron-up': !q.closed, 'glyphicon-chevron-down': q.closed}"
-										 tooltip-class="popover-content" tooltip-append-to-body="true" tooltip-trigger="mouseenter">
-									</i>
-								</h4>
-							</div>
-							<div class="panel-body" uib-collapse="q.closed" compile="q.body"></div>
+					<div class="panel panel-default" data-ng-repeat="q in faq">
+						<div class="panel-heading">
+							<h4 class="panel-title">{{q.title}}</h4>
 						</div>
+						<div class="panel-body" compile="q.body"></div>
 					</div>
         </div>
 			</div>
