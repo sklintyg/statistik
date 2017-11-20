@@ -27,17 +27,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = WideLine.TABLE)
-@NamedQueries({
-        @NamedQuery(name = "WideLine.getByVg", query = "SELECT w FROM WideLine w WHERE w.vardgivareId = :vgid AND "
-                + "w.correlationId not in (SELECT w2.correlationId FROM WideLine w2 where w2.intygTyp = :intygTyp)"),
-        @NamedQuery(name = "WideLine.getAllVgids", query = "SELECT DISTINCT w.vardgivareId FROM WideLine w")
-})
 public class WideLine {
     public static final String TABLE = "wideline";
 
