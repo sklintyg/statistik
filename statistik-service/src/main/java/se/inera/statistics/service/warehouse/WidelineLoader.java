@@ -19,10 +19,12 @@
 package se.inera.statistics.service.warehouse;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -35,7 +37,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class WidelineLoader {
@@ -50,21 +55,35 @@ public class WidelineLoader {
     @Autowired
     private FactConverter factConverter;
 
-    public List<Fact> getFactsForVg(HsaIdVardgivare vgid) {
-        LOG.info("Get facts for vg: " + vgid);
-        final ArrayList<Fact> facts = new ArrayList<>();
+    public List<Aisle> getAilesForVgs(List<HsaIdVardgivare> vgids) {
+        LOG.info("Get facts for vgs: " + String.join(", ", vgids.stream().map(HsaIdAny::getId).collect(Collectors.toList())));
+        final Map<HsaIdVardgivare, List<Fact>> facts = new HashMap<>(vgids.size());
+        for (HsaIdVardgivare vgid : vgids) {
+            facts.put(vgid, new ArrayList<>());
+        }
         try (
                 Connection connection = dataSource.getConnection();
-                PreparedStatement stmt = prepareStatementForVg(connection, vgid);
+                PreparedStatement stmt = prepareStatementForVg(connection, vgids);
                 ResultSet resultSet = stmt.executeQuery()) {
             while (resultSet.next()) {
                 WideLine wideline = toWideline(resultSet);
-                facts.add(factConverter.toFact(wideline));
+                final Fact fact = factConverter.toFact(wideline);
+                facts.get(wideline.getVardgivareId()).add(fact);
             }
         } catch (SQLException e) {
             LOG.error("Could not populate warehouse", e);
         }
-        return facts;
+        return toAisles(facts);
+    }
+
+    @NotNull
+    private List<Aisle> toAisles(Map<HsaIdVardgivare, List<Fact>> facts) {
+        List<Aisle> aisles = new ArrayList<>();
+        for (Map.Entry<HsaIdVardgivare, List<Fact>> entry : facts.entrySet()) {
+            final Aisle aisle = new Aisle(entry.getKey(), entry.getValue());
+            aisles.add(aisle);
+        }
+        return aisles;
     }
 
     private WideLine toWideline(ResultSet resultSet) throws SQLException {
@@ -96,11 +115,12 @@ public class WidelineLoader {
 
     @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
             justification = "We know what we're doing. No user supplied data.")
-    private PreparedStatement prepareStatementForVg(Connection connection, HsaIdVardgivare vgid) throws SQLException {
+    private PreparedStatement prepareStatementForVg(Connection connection, List<HsaIdVardgivare> vgids) throws SQLException {
+        final String vgidsJoined = String.join("', '", vgids.stream().map(HsaIdAny::getId).collect(Collectors.toList()));
         String sql = "select id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, "
                 + "diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivareid, "
                 + "lakareid from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = "
-                + EventType.REVOKED.ordinal() + " ) AND w1.vardgivareid = '" + vgid.getId() + "'";
+                + EventType.REVOKED.ordinal() + " ) AND w1.vardgivareid IN ('" + vgidsJoined + "')";
 
         int maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.fact", "0"));
         if (maxIntyg > 0) {

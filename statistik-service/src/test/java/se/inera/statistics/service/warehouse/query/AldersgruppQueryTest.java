@@ -40,10 +40,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 public class AldersgruppQueryTest {
@@ -65,13 +67,13 @@ public class AldersgruppQueryTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        Mockito.when(widelineLoader.getFactsForVg(VARDGIVARE)).thenReturn(facts);
         facts.clear();
     }
 
     @Test
     public void one() {
         fact(4010, 10, 45);
+        Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
         Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         Map<Ranges.Range,Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall);
         assertEquals(1, count.get(AldersgroupUtil.RANGES.rangeFor("41-45 år")).getCount());
@@ -95,6 +97,7 @@ public class AldersgruppQueryTest {
         fact(4010, 10, 50);
         fact(4010, 10, 50);
         fact(4010, 10, 100);
+        Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
         Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         List<OverviewChartRowExtended> count = AldersgruppQuery.getOverviewAldersgrupper(sjukfall, sjukfall, 4);
 

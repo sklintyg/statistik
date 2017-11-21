@@ -39,11 +39,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 public class SjukskrivningslangdQueryTest {
@@ -63,13 +65,13 @@ public class SjukskrivningslangdQueryTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        Mockito.when(widelineLoader.getFactsForVg(VARDGIVARE)).thenReturn(facts);
         facts.clear();
     }
 
     @Test
     public void one() {
         fact(4010, 45);
+        Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
         Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         Map<Ranges.Range,Counter<Ranges.Range>> count = SjukskrivningslangdQuery.count(sjukfall);
         assertEquals(1, count.get(SjukfallslangdUtil.RANGES.rangeFor(45)).getCount());
@@ -96,6 +98,7 @@ public class SjukskrivningslangdQueryTest {
         fact(4010, 100);
         fact(4010, 200);
         fact(4010, 400);
+        Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
         Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         List<Counter<Ranges.Range>> count = SjukskrivningslangdQuery.count(sjukfall,6);
 

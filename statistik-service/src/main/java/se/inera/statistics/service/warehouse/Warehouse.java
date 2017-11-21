@@ -20,6 +20,7 @@ package se.inera.statistics.service.warehouse;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,8 @@ public class Warehouse implements Iterable<Aisle> {
     private static IdMap<HsaIdLakare> lakareMap = new IdMap<>();
 
     public Aisle get(HsaIdVardgivare vardgivarId) {
-        final List<Fact> factsForVg = widelineLoader.getFactsForVg(vardgivarId);
-        return new Aisle(vardgivarId, factsForVg);
+        final List<Aisle> ailesForVgs = widelineLoader.getAilesForVgs(Collections.singletonList(vardgivarId));
+        return ailesForVgs.isEmpty() ? new Aisle(vardgivarId, Collections.emptyList()) : ailesForVgs.get(0);
     }
 
     public List<Enhet> getEnhets(HsaIdVardgivare vardgivareId) {
@@ -65,11 +66,14 @@ public class Warehouse implements Iterable<Aisle> {
         return widelineLoader.getAllVgs();
     }
 
+    @NotNull
     @Override
     public Iterator<Aisle> iterator() {
-        final Iterator<Aisle> aisleIterator = new Iterator<Aisle>() {
-            private List<HsaIdVardgivare> allVardgivare = getAllVardgivare();
+        return new Iterator<Aisle>() {
+            private static final int BATCH_SIZE = 10;
             private int nextIndex = 0;
+            private List<HsaIdVardgivare> allVardgivare = getAllVardgivare();
+            private Iterator<Aisle> batchedAisles = Collections.emptyIterator();
 
             @Override
             public boolean hasNext() {
@@ -78,10 +82,20 @@ public class Warehouse implements Iterable<Aisle> {
 
             @Override
             public Aisle next() {
-                return get(allVardgivare.get(nextIndex++));
+                if (!batchedAisles.hasNext()) {
+                    batchedAisles = getNextBatch();
+                }
+                nextIndex++;
+                return batchedAisles.next();
+            }
+
+            private Iterator<Aisle> getNextBatch() {
+                final int fromIndex = this.nextIndex;
+                final int toIndex = Math.min(fromIndex + BATCH_SIZE, allVardgivare.size());
+                final List<HsaIdVardgivare> vgids = allVardgivare.subList(fromIndex, toIndex);
+                return widelineLoader.getAilesForVgs(vgids).iterator();
             }
         };
-        return aisleIterator;
     }
 
     static int getEnhetAndRemember(HsaIdEnhet id) {
