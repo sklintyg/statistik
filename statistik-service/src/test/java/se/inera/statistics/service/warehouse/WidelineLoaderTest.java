@@ -34,6 +34,7 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -64,7 +65,7 @@ public class WidelineLoaderTest {
         insertLine(EventType.REVOKED, "2", VG1);
         insertLine(EventType.CREATED, "3", VG1);
 
-        final List<Fact> factsForVg = widelineLoader.getFactsForVg(VG1);
+        final List<Fact> factsForVg = widelineLoader.getAilesForVgs(Collections.singletonList(VG1)).get(0).getLines();
 
         assertEquals(2, factsForVg.size());
     }
@@ -74,7 +75,7 @@ public class WidelineLoaderTest {
         insertLine(EventType.CREATED, "1", VG1);
         insertLine(EventType.REVOKED, "1", VG1);
 
-        final List<Fact> factsForVg = widelineLoader.getFactsForVg(VG1);
+        final List<Fact> factsForVg = widelineLoader.getAilesForVgs(Collections.singletonList(VG1)).get(0).getLines();
 
         assertEquals(0, factsForVg.size());
     }
@@ -84,7 +85,7 @@ public class WidelineLoaderTest {
         insertLine(EventType.REVOKED, "1", VG1);
         insertLine(EventType.CREATED, "1", VG1);
 
-        final List<Fact> factsForVg = widelineLoader.getFactsForVg(VG1);
+        final List<Fact> factsForVg = widelineLoader.getAilesForVgs(Collections.singletonList(VG1)).get(0).getLines();
 
         assertEquals(0, factsForVg.size());
     }
@@ -119,7 +120,7 @@ public class WidelineLoaderTest {
         StopWatch stopWatch = new StopWatch();
         LOG.error("Starting getFacts");
         stopWatch.start();
-        final List<Fact> facts = widelineLoader.getFactsForVg(VG1);
+        final List<Fact> facts = widelineLoader.getAilesForVgs(Collections.singletonList(VG1)).get(0).getLines();
         stopWatch.stop();
         LOG.error("getFacts done in: " + stopWatch.getTotalTimeMillis());
 

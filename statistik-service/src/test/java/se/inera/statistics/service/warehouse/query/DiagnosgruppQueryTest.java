@@ -49,11 +49,13 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -85,15 +87,14 @@ public class DiagnosgruppQueryTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        Mockito.when(widelineLoader.getFactsForVg(VARDGIVARE)).thenReturn(facts);
         facts.clear();
     }
-
 
     @Test
     public void one() {
         final String kapitelCode = "A00-B99";
         fact(4010, Icd10.icd10ToInt(kapitelCode, Icd10RangeType.KAPITEL));
+        Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
         final Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         final Map<Integer,Counter<Integer>> count = query.count(sjukfall);
         final Icd10.Kapitel kapitel = icd10.getKapitel(kapitelCode);
@@ -122,6 +123,7 @@ public class DiagnosgruppQueryTest {
         fact(4010, 500);
         fact(4010, 500);
         fact(4010, 600);
+        Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
         Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
         List<Counter<Integer>> count = query.count(sjukfall, 4);
 
