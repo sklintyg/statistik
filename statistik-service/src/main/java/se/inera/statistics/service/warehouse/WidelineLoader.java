@@ -28,8 +28,8 @@ import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -66,9 +66,8 @@ public class WidelineLoader {
                 PreparedStatement stmt = prepareStatementForVg(connection, vgids);
                 ResultSet resultSet = stmt.executeQuery()) {
             while (resultSet.next()) {
-                WideLine wideline = toWideline(resultSet);
-                final Fact fact = factConverter.toFact(wideline);
-                facts.get(wideline.getVardgivareId()).add(fact);
+                final FactConvertResult factResult = toFact(resultSet);
+                facts.get(factResult.hsaIdVardgivare).add(factResult.fact);
             }
         } catch (SQLException e) {
             LOG.error("Could not populate warehouse", e);
@@ -76,17 +75,7 @@ public class WidelineLoader {
         return toAisles(facts);
     }
 
-    @NotNull
-    private List<Aisle> toAisles(Map<HsaIdVardgivare, List<Fact>> facts) {
-        List<Aisle> aisles = new ArrayList<>();
-        for (Map.Entry<HsaIdVardgivare, List<Fact>> entry : facts.entrySet()) {
-            final Aisle aisle = new Aisle(entry.getKey(), entry.getValue());
-            aisles.add(aisle);
-        }
-        return aisles;
-    }
-
-    private WideLine toWideline(ResultSet resultSet) throws SQLException {
+    private FactConvertResult toFact(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("id");
         String correlationId = resultSet.getString("correlationId");
         String lkf = resultSet.getString("lkf");
@@ -108,9 +97,24 @@ public class WidelineLoader {
         String vardgivare = resultSet.getString("vardgivareid");
         String lakareId = resultSet.getString("lakareid");
 
-        return new WideLine(id, correlationId, lkf, new HsaIdEnhet(enhet), intyg, EventType.CREATED, patientid, startdatum, slutdatum, kon,
-                alder, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder,
-                lakarbefattning, new HsaIdVardgivare(vardgivare), new HsaIdLakare(lakareId));
+        final Fact fact = new Fact(id, ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf),
+                ConversionHelper.extractForsamling(lkf), Warehouse.getEnhetAndRemember(new HsaIdEnhet(enhet)), intyg,
+                ConversionHelper.patientIdToInt(patientid), startdatum, slutdatum, kon, alder,
+                factConverter.extractKapitel(diagnoskapitel), factConverter.extractAvsnitt(diagnosavsnitt),
+                factConverter.extractKategori(diagnoskategori), factConverter.extractKod(diagnoskod, diagnoskategori),
+                sjukskrivningsgrad, lakarkon, lakaralder, factConverter.parseBefattning(lakarbefattning, correlationId),
+                Warehouse.getNumLakarIdAndRemember(new HsaIdLakare(lakareId)));
+        return new FactConvertResult(new HsaIdVardgivare(vardgivare), fact);
+    }
+
+    @NotNull
+    private List<Aisle> toAisles(Map<HsaIdVardgivare, List<Fact>> facts) {
+        List<Aisle> aisles = new ArrayList<>();
+        for (Map.Entry<HsaIdVardgivare, List<Fact>> entry : facts.entrySet()) {
+            final Aisle aisle = new Aisle(entry.getKey(), entry.getValue());
+            aisles.add(aisle);
+        }
+        return aisles;
     }
 
     @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
@@ -132,7 +136,7 @@ public class WidelineLoader {
         return stmt;
     }
 
-    public List<HsaIdVardgivare> getAllVgs() {
+    List<HsaIdVardgivare> getAllVgs() {
         LOG.info("Get all vgs from db");
         final ArrayList<HsaIdVardgivare> vgs = new ArrayList<>();
         final String sql = "SELECT distinct vardgivareid from wideline w1 where w1.correlationid not in "
@@ -149,6 +153,18 @@ public class WidelineLoader {
             LOG.error("Could not get all vgs from DB", e);
         }
         return vgs;
+    }
+
+    private static final class FactConvertResult {
+
+        private HsaIdVardgivare hsaIdVardgivare;
+        private Fact fact;
+
+        private FactConvertResult(HsaIdVardgivare hsaIdVardgivare, Fact fact) {
+            this.hsaIdVardgivare = hsaIdVardgivare;
+            this.fact = fact;
+        }
+
     }
 
 }

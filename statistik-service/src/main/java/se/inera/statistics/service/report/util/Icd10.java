@@ -444,6 +444,7 @@ public class Icd10 {
         private final Avsnitt avsnitt;
         private final List<Kod> kods;
         private final int intId;
+        private Kod unknownKod;
 
         public Kategori(String id, String name, Avsnitt avsnitt) {
             super(id.toUpperCase(), name);
@@ -490,6 +491,10 @@ public class Icd10 {
             return this.getId().equals(kodId.substring(0, MAX_CODE_LENGTH));
         }
 
+        public Optional<Kod> getUnknownKod() {
+            return Optional.ofNullable(unknownKod);
+        }
+
     }
 
     public static class Kod extends Id {
@@ -505,6 +510,9 @@ public class Icd10 {
             this.kategori = kategori;
             this.unknown = unknownKod;
             kategori.kods.add(this);
+            if (unknownKod) {
+                kategori.unknownKod = this;
+            }
             intId = icd10ToInt(getId(), Icd10RangeType.KOD) * (this.unknown ? -1 : 1);
         }
 
