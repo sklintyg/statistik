@@ -98,7 +98,7 @@ class FactConverter {
         Icd10.Kod kod = icd10.getKod(diagnoskod);
         if (kod == null) {
             Icd10.Kategori kategori = icd10.getKategori(diagnoskategori);
-            final Optional<Icd10.Kod> unknownKodInKatergori = kategori.getUnknownKod();
+            final Optional<Icd10.Kod> unknownKodInKatergori = kategori != null ? kategori.getUnknownKod() : Optional.empty();
             return unknownKodInKatergori.map(Icd10.Kod::toInt)
                     .orElseGet(() -> Icd10.icd10ToInt(Icd10.OTHER_KOD, Icd10RangeType.KOD));
         }
