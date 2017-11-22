@@ -56,7 +56,7 @@ class FactConverter {
         int sjukskrivningsgrad = wideline.getSjukskrivningsgrad();
         int lakarkon = wideline.getLakarkon();
         int lakaralder = wideline.getLakaralder();
-        int[] lakarbefattnings = parseBefattning(wideline);
+        int[] lakarbefattnings = parseBefattning(wideline.getLakarbefattning(), wideline.getCorrelationId());
         int lakare = Warehouse.getNumLakarIdAndRemember(wideline.getLakareId());
 
         return new Fact(wideline.getId(), ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf),
@@ -66,8 +66,7 @@ class FactConverter {
                 lakare);
     }
 
-    private int[] parseBefattning(WideLine wideline) {
-        String lakarbefattningString = wideline.getLakarbefattning();
+    int[] parseBefattning(String lakarbefattningString, String correlationId) {
         if (lakarbefattningString != null && lakarbefattningString.length() > 0) {
             final String[] befattningStrings = lakarbefattningString.split(",");
             final ArrayList<Integer> befattnings = new ArrayList<>();
@@ -76,7 +75,7 @@ class FactConverter {
                 try {
                     befattnings.add(Integer.parseInt(befattning));
                 } catch (NumberFormatException nfe) {
-                    LOG.info("Unknown befattning: '" + befattning + "' for doctor in intyg: " + wideline.getCorrelationId());
+                    LOG.info("Unknown befattning: '" + befattning + "' for doctor in intyg: " + correlationId);
                 }
             }
             if (befattnings.isEmpty()) {
@@ -87,7 +86,7 @@ class FactConverter {
         return new int[] {LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
     }
 
-    private int extractKategori(String diagnoskategori) {
+    int extractKategori(String diagnoskategori) {
         Icd10.Kategori kategori = icd10.getKategori(diagnoskategori);
         if (kategori == null) {
             return Icd10.icd10ToInt(Icd10.OTHER_KATEGORI, Icd10RangeType.KATEGORI);
@@ -95,18 +94,18 @@ class FactConverter {
         return kategori.toInt();
     }
 
-    private int extractKod(String diagnoskod, String diagnoskategori) {
+    int extractKod(String diagnoskod, String diagnoskategori) {
         Icd10.Kod kod = icd10.getKod(diagnoskod);
         if (kod == null) {
             Icd10.Kategori kategori = icd10.getKategori(diagnoskategori);
-            final Optional<Icd10.Kod> unknownKodInKatergori = icd10.getUnknownKodInKatergori(kategori);
+            final Optional<Icd10.Kod> unknownKodInKatergori = kategori.getUnknownKod();
             return unknownKodInKatergori.map(Icd10.Kod::toInt)
                     .orElseGet(() -> Icd10.icd10ToInt(Icd10.OTHER_KOD, Icd10RangeType.KOD));
         }
         return kod.toInt();
     }
 
-    private int extractAvsnitt(String diagnosavsnitt) {
+    int extractAvsnitt(String diagnosavsnitt) {
         Icd10.Avsnitt avsnitt = icd10.getAvsnitt(diagnosavsnitt);
         if (avsnitt == null) {
             return Icd10.icd10ToInt(Icd10.OTHER_AVSNITT, Icd10RangeType.AVSNITT);
@@ -114,7 +113,7 @@ class FactConverter {
         return avsnitt.toInt();
     }
 
-    private int extractKapitel(String diagnoskapitel) {
+    int extractKapitel(String diagnoskapitel) {
         Icd10.Kapitel kapitel = icd10.getKapitel(diagnoskapitel);
         if (kapitel == null) {
             return Icd10.icd10ToInt(Icd10.OTHER_KAPITEL, Icd10RangeType.KAPITEL);
