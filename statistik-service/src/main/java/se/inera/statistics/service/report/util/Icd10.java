@@ -267,13 +267,6 @@ public class Icd10 {
         return null;
     }
 
-    public java.util.Optional<Kod> getUnknownKodInKatergori(Kategori kategori) {
-        if (kategori == null) {
-            return java.util.Optional.empty();
-        }
-        return kategori.getKods().stream().filter(Kod::isUnknown).findAny();
-    }
-
     public static class IdMap<T extends Id> extends HashMap<String, T> {
         public void put(T id) {
             if (id != null) {
