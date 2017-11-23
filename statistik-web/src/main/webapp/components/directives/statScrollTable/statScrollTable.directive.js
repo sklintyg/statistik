@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').directive('statScrollTable',
     /** @ngInject */
-    function ($filter, _, $timeout, messageService, sortableTableViewState, MAX_INIT_ROWS_TABLE, MAX_INIT_COLUMNS_TABLE) {
+    function ($filter, _, $timeout, messageService, sortableTableViewstate, MAX_INIT_ROWS_TABLE, MAX_INIT_COLUMNS_TABLE) {
         'use strict';
 
         return {
@@ -30,15 +30,13 @@ angular.module('StatisticsApp').directive('statScrollTable',
             },
             templateUrl: '/components/directives/statScrollTable/statScrollTable.html',
             link: function($scope, element) {
-
-                $scope.sortableTableVS = sortableTableViewState;
-                $scope.sortableTableVS.reset();
-
+                sortableTableViewstate.reset();
 
                 $scope.$watch('rows', watchRows);
                 $scope.$watch('headerRows', watchHeader);
 
-
+                //$scope.sortIndex = -1;
+                //$scope.sortReverse = true;
                 $scope.rowsShown = [];
                 $scope.fixedHeader = [];
                 $scope.scrollHeader = [];
@@ -58,7 +56,7 @@ angular.module('StatisticsApp').directive('statScrollTable',
                     }
 
                     // Update viewstate
-                    sortableTableViewState.updateSortIndex(columnIndex);
+                    sortableTableViewstate.updateSortIndex(columnIndex);
 
                     // Do sort
                     sortRows();
@@ -157,8 +155,8 @@ angular.module('StatisticsApp').directive('statScrollTable',
                     $('.stat-scroll-table .stat-table-row').off( 'mouseenter' );
                     $('.stat-scroll-table .stat-table-row').off( 'mouseleave' );
 
-                    var sortIndex = sortableTableViewState.getSortIndex() - 1;
-                    var reverse = sortableTableViewState.getSortReverse();
+                    var sortIndex = sortableTableViewstate.getSortIndex() - 1;
+                    var reverse = sortableTableViewstate.getSortReverse();
 
                     if (sortIndex < 0) {
                         $scope.rowsShown = rows;
@@ -170,7 +168,7 @@ angular.module('StatisticsApp').directive('statScrollTable',
                     }
 
                     // Update viewstate
-                    $scope.sortableTableVS.updateSortedRows($scope.rowsShown);
+                    sortableTableViewstate.updateSortedRows($scope.rowsShown);
 
                     $timeout(function() {
                         $('.stat-scroll-table .stat-table-row').hover( function() {
