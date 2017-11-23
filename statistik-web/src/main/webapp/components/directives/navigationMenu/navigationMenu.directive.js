@@ -54,59 +54,59 @@
             show: true,
             subMenu: [{
                 id: 'navOverviewLink',
-                link: '#!/nationell/oversikt',
+                link: '#/nationell/oversikt',
                 name: 'nav.oversikt',
                 ctrl: 'NationalOverviewCtrl'
             },{
                 id: 'navCasesPerMonthLink',
-                link: '#!/nationell/sjukfallPerManad',
+                link: '#/nationell/sjukfallPerManad',
                 name: 'nav.sjukfall-totalt',
                 ctrl: 'NationalCasesPerMonthCtrl'
             },{
                 id: 'navDiagnosisGroupsLink',
-                link: '#!/nationell/diagnosgrupp',
+                link: '#/nationell/diagnosgrupp',
                 name: 'nav.diagnosgrupp',
                 ctrl: 'NationalDiagnosgruppCtrl',
                 subMenuId: 'sub-menu-diagnostics',
                 subMenuIdLink: '#sub-menu-diagnostics',
                 subMenu: [{
                     id: 'navDiagnosisSubGroupsLink',
-                    link: '#!/nationell/diagnosavsnitt',
+                    link: '#/nationell/diagnosavsnitt',
                     name: 'nav.enskilt-diagnoskapitel',
                     ctrl: 'NationalDiagnosavsnittCtrl'
                 }]
             },{
                 id: 'navAgeGroupsLink',
-                link: '#!/nationell/aldersgrupper',
+                link: '#/nationell/aldersgrupper',
                 name: 'nav.aldersgrupp',
                 ctrl: 'NationalAgeGroupCtrl'
             },{
                 id: 'navSickLeaveDegreeLink',
-                link: '#!/nationell/sjukskrivningsgrad',
+                link: '#/nationell/sjukskrivningsgrad',
                 name: 'nav.sjukskrivningsgrad',
                 ctrl: 'NationalDegreeOfSickLeaveCtrl'
             },{
                 id: 'navSickLeaveLengthLink',
-                link: '#!/nationell/sjukskrivningslangd',
+                link: '#/nationell/sjukskrivningslangd',
                 name: 'nav.sjukskrivningslangd',
                 ctrl: 'NationalSickLeaveLengthCtrl'
             },{
                 id: 'navCountyLink',
-                link: '#!/nationell/lan',
+                link: '#/nationell/lan',
                 name: 'nav.lan',
                 ctrl: 'NationalCasesPerCountyCtrl',
                 subMenuId: 'sub-menu-cases-per-county',
                 subMenuIdLink: '#sub-menu-cases-per-county',
                 subMenu: [{
                     id: 'navCasesPerSexLink',
-                    link: '#!/nationell/andelSjukfallPerKon',
+                    link: '#/nationell/andelSjukfallPerKon',
                     name: 'nav.lan-andel-sjukfall-per-kon',
                     ctrl: 'NationalCasesPerSexCtrl'
                 }]
             }
             /*,{
                 id: 'navMessagesLink',
-                link: '#!/nationell/meddelanden',
+                link: '#/nationell/meddelanden',
                 name: 'nav.meddelanden',
                 ctrl: 'NationalMeddelandenPerMonthCtrl'
             }*/
@@ -127,7 +127,7 @@
                     return UserModel.get().landstingAvailable;
                 },
                 id: 'navLandstingCasesPerMonthLink',
-                link: '#!/landsting/sjukfallPerManad',
+                link: '#/landsting/sjukfallPerManad',
                 name: 'nav.sjukfall-totalt',
                 ctrl: 'LandstingCasesPerMonthCtrl'
             },{
@@ -135,7 +135,7 @@
                     return UserModel.get().landstingAvailable;
                 },
                 id: 'navLandstingCasesPerEnhetLink',
-                link: '#!/landsting/sjukfallPerEnhet',
+                link: '#/landsting/sjukfallPerEnhet',
                 name: 'nav.vardenhet',
                 ctrl: 'LandstingCasesPerBusinessCtrl'
             },{
@@ -143,12 +143,12 @@
                     return UserModel.get().landstingAvailable;
                 },
                 id: 'navLandstingCasesPerPatientsPerEnhetLink',
-                link: '#!/landsting/sjukfallPerListningarPerEnhet',
+                link: '#/landsting/sjukfallPerListningarPerEnhet',
                 name: 'nav.landsting.listningsjamforelse',
                 ctrl: 'LandstingCasesPerPatientsPerBusinessCtrl'
             },{
                 id: 'navLandstingAboutLink',
-                link: '#!/landsting/om',
+                link: '#/landsting/om',
                 name: 'nav.landsting.om',
                 ctrl: 'LandstingAboutCtrl'
             },{
@@ -156,7 +156,7 @@
                     return UserModel.get().isLandstingAdmin;
                 },
                 id: 'navLandstingUploadLink',
-                link: '#!/landsting/filuppladdning',
+                link: '#/landsting/filuppladdning',
                 name: 'nav.landsting.filuppladdning',
                 ctrl: 'LandstingFileUploadCtrl'
             }]
@@ -176,7 +176,7 @@
             show: false,
             subMenu: [{
                 id: 'navVerksamhetOversiktLink',
-                link: '#!/verksamhet/oversikt',
+                link: '#/verksamhet/oversikt',
                 name: 'nav.oversikt',
                 ctrl: 'businessOverviewCtrl'
             },{
@@ -184,52 +184,52 @@
                     return UserModel.get().isProcessledare || UserModel.get().isDelprocessledare;
                 },
                 id: 'navBusinessCasesPerBusinessLink',
-                link: '#!/verksamhet/sjukfallperenhet',
+                link: '#/verksamhet/sjukfallperenhet',
                 name: 'nav.vardenhet',
                 ctrl: 'VerksamhetCasesPerBusinessCtrl'
             },{
                 id: 'navBusinessCasesPerMonthLink',
-                link: '#!/verksamhet/sjukfallPerManad',
+                link: '#/verksamhet/sjukfallPerManad',
                 name: 'nav.sjukfall-totalt',
                 ctrl: 'VerksamhetCasesPerMonthCtrl'
             },{
                 id: 'navBusinessDiagnosisGroupsLink',
-                link: '#!/verksamhet/diagnosgrupp',
+                link: '#/verksamhet/diagnosgrupp',
                 name: 'nav.diagnosgrupp',
                 ctrl: 'VerksamhetDiagnosgruppCtrl',
                 subMenuId: 'sub-menu-business-diagnostics',
                 subMenuIdLink: '#sub-menu-business-diagnostics',
                 subMenu: [{
                     id: 'navBusinessDiagnosisSubGroupsLink',
-                    link: '#!/verksamhet/diagnosavsnitt',
+                    link: '#/verksamhet/diagnosavsnitt',
                     name: 'nav.enskilt-diagnoskapitel',
                     ctrl: 'VerksamhetDiagnosavsnittCtrl'
                 },{
                     id: 'navBusinessCompareDiagnosisLink',
-                    link: '#!/verksamhet/jamforDiagnoser',
+                    link: '#/verksamhet/jamforDiagnoser',
                     name: 'nav.jamfor-diagnoser',
                     ctrl: 'VerksamhetCompareDiagnosisCtrl'
                 }]
             },{
                 id: 'navBusinessAgeGroupsLink',
-                link: '#!/verksamhet/aldersgrupper',
+                link: '#/verksamhet/aldersgrupper',
                 name: 'nav.aldersgrupp',
                 ctrl: 'VerksamhetAgeGroupCtrl'
             },{
                 id: 'navBusinessSickLeaveDegreeLink',
-                link: '#!/verksamhet/sjukskrivningsgrad',
+                link: '#/verksamhet/sjukskrivningsgrad',
                 name: 'nav.sjukskrivningsgrad',
                 ctrl: 'VerksamhetDegreeOfSickLeaveCtrl'
             },{
                 id: 'navBusinessSickLeaveLengthLink',
-                link: '#!/verksamhet/sjukskrivningslangd',
+                link: '#/verksamhet/sjukskrivningslangd',
                 name: 'nav.sjukskrivningslangd',
                 ctrl: 'VerksamhetSickLeaveLengthCtrl',
                 subMenuId: 'sub-menu-business-sick-leave-length',
                 subMenuIdLink: '#sub-menu-business-sick-leave-length',
                 subMenu: [{
                     id: 'navBusinessMoreNinetyDaysSickLeaveLink',
-                    link: '#!/verksamhet/langasjukskrivningar',
+                    link: '#/verksamhet/langasjukskrivningar',
                     name: 'nav.sjukskrivningslangd-mer-an-90-dagar',
                     ctrl: 'VerksamhetLongSickLeavesCtrl'
                 }]
@@ -238,23 +238,23 @@
                     return !UserModel.get().isProcessledare;
                 },
                 id: 'navBusinessCasesPerLakareLink',
-                link: '#!/verksamhet/sjukfallperlakare',
+                link: '#/verksamhet/sjukfallperlakare',
                 name: 'nav.lakare',
                 ctrl: 'VerksamhetCasesPerLakareCtrl'
             },{
                 id: 'navBusinessCasesPerLakaresAlderOchKonLink',
-                link: '#!/verksamhet/sjukfallperlakaresalderochkon',
+                link: '#/verksamhet/sjukfallperlakaresalderochkon',
                 name: 'nav.lakaralder-kon',
                 ctrl: 'VerksamhetLakaresAlderOchKonCtrl'
             },{
                 id: 'navBusinessCasesPerLakarbefattningLink',
-                link: '#!/verksamhet/sjukfallperlakarbefattning',
+                link: '#/verksamhet/sjukfallperlakarbefattning',
                 name: 'nav.lakarbefattning',
                 ctrl: 'VerksamhetLakarbefattningCtrl'
             // },{
             // Meddelande-rapporten ar utkommenterad eftersom den annu inte ska vara synlig för anvandarna
             //     id: 'navBusinessMessagesLink',
-            //     link: '#!/verksamhet/meddelanden',
+            //     link: '#/verksamhet/meddelanden',
             //     name: 'nav.meddelanden',
             //     ctrl: 'VerksamhetMeddelandenPerMonthCtrl'
             }]
@@ -268,22 +268,22 @@
             show: false,
             subMenu: [{
                 id: 'navAboutTjanstLink',
-                link: '#!/om/tjansten',
+                link: '#/om/tjansten',
                 name: 'nav.allmant-om-tjansten',
                 ctrl: 'AboutServiceCtrl'
             },{
                 id: 'navAboutInloggningLink',
-                link: '#!/om/inloggning',
+                link: '#/om/inloggning',
                 name: 'nav.inloggning-behorighet',
                 ctrl: 'AboutLoginCtrl'
             },{
                 id: 'navAboutFaqLink',
-                link: '#!/om/vanligafragor',
+                link: '#/om/vanligafragor',
                 name: 'nav.faq',
                 ctrl: 'AboutFaqCtrl'
             },{
                 id: 'navAboutContactLink',
-                link: '#!/om/kontakt',
+                link: '#/om/kontakt',
                 name: 'nav.kontakt-support',
                 ctrl: 'AboutContactCtrl'
             }]

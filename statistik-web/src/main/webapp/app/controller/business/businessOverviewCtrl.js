@@ -26,7 +26,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     'use strict';
 
     var newSexProportionChart = {}, oldSexProportionChart = {}, sickLeaveLengthChart = {};
-    $scope.baseUrl = '#!/verksamhet';
+    $scope.baseUrl = '#/verksamhet';
 
     var dataReceived = function (result) {
         var popoverPreviousMonths = ' jämfört med föregående tre månader.';
