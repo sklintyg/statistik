@@ -27,7 +27,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StopWatch;
-import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -99,13 +98,13 @@ public class WidelineLoaderTest {
         insertLine(EventType.CREATED, "5", VG1);
         insertLine(EventType.CREATED, "6", VG2);
 
-        final List<HsaIdVardgivare> allVgs = widelineLoader.getAllVgs();
+        final List<VgNumber> allVgs = widelineLoader.getAllVgs();
 
-        allVgs.sort(Comparator.comparing(HsaIdAny::getId));
+        allVgs.sort(Comparator.comparing(vgNumber -> vgNumber.getVgid().getId()));
         assertEquals(3, allVgs.size());
-        assertEquals(VG1, allVgs.get(0));
-        assertEquals(VG2, allVgs.get(1));
-        assertEquals(VG3, allVgs.get(2));
+        assertEquals(VG1, allVgs.get(0).getVgid());
+        assertEquals(VG2, allVgs.get(1).getVgid());
+        assertEquals(VG3, allVgs.get(2).getVgid());
     }
 
     @Test

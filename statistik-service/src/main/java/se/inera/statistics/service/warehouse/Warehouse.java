@@ -18,12 +18,16 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -35,6 +39,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public class Warehouse implements Iterable<Aisle> {
 
@@ -49,12 +55,62 @@ public class Warehouse implements Iterable<Aisle> {
     private static IdMap<HsaIdEnhet> enhetsMap = new IdMap<>();
     private static IdMap<HsaIdLakare> lakareMap = new IdMap<>();
 
-    public Aisle get(HsaIdVardgivare vardgivarId) {
+    private LoadingCache<HsaIdVardgivare, Aisle> aisleCache;
+    private LoadingCache<HsaIdVardgivare, List<Enhet>> enhetsCache;
+
+    @Scheduled(cron = "${scheduler.factReloadJob.cron}")
+    public void clearAisleCache() {
+        getAisleCache().invalidateAll();
+    }
+
+    private LoadingCache<HsaIdVardgivare, Aisle> getAisleCache() {
+        if (aisleCache == null) {
+            aisleCache = CacheBuilder.newBuilder()
+                    .softValues()
+                    .build(new CacheLoader<HsaIdVardgivare, Aisle>() {
+                        @Override
+                        public Aisle load(@NotNull HsaIdVardgivare vardgivarId) {
+                            return getAisle(vardgivarId);
+                        }
+                    });
+        }
+        return aisleCache;
+    }
+
+    private LoadingCache<HsaIdVardgivare, List<Enhet>> getEnhetsCache() {
+        if (enhetsCache == null) {
+            enhetsCache = CacheBuilder.newBuilder()
+                    .softValues()
+                    .build(new CacheLoader<HsaIdVardgivare, List<Enhet>>() {
+                        @Override
+                        public List<Enhet> load(@NotNull HsaIdVardgivare vardgivareId) {
+                            return enhetLoader.getAllEnhetsForVg(vardgivareId);
+                        }
+                    });
+        }
+        return enhetsCache;
+    }
+
+    private Aisle getAisle(HsaIdVardgivare vardgivarId) {
         final List<Aisle> ailesForVgs = widelineLoader.getAilesForVgs(Collections.singletonList(vardgivarId));
         return ailesForVgs.isEmpty() ? new Aisle(vardgivarId, Collections.emptyList()) : ailesForVgs.get(0);
     }
 
+    public Aisle get(HsaIdVardgivare vardgivarId) {
+        try {
+            return getAisleCache().get(vardgivarId);
+        } catch (ExecutionException e) {
+            LOG.warn("Failed to get aisle from cache for vg: " + vardgivarId);
+        }
+        return getAisle(vardgivarId);
+    }
+
     public List<Enhet> getEnhets(HsaIdVardgivare vardgivareId) {
+        try {
+            return getEnhetsCache().get(vardgivareId);
+        } catch (ExecutionException e) {
+            LOG.warn("Could not get enhets from cache for vg: " + vardgivareId);
+        }
         return enhetLoader.getAllEnhetsForVg(vardgivareId);
     }
 
@@ -62,7 +118,7 @@ public class Warehouse implements Iterable<Aisle> {
         return enhetLoader.getEnhets(enhetIds);
     }
 
-    public List<HsaIdVardgivare> getAllVardgivare() {
+    public List<VgNumber> getAllVardgivare() {
         return widelineLoader.getAllVgs();
     }
 
@@ -70,9 +126,9 @@ public class Warehouse implements Iterable<Aisle> {
     @Override
     public Iterator<Aisle> iterator() {
         return new Iterator<Aisle>() {
-            private static final int BATCH_SIZE = 10;
+            private static final int BATCH_SIZE = 25000; //At which number of intyg to stop adding vgs and query the db
             private int nextIndex = 0;
-            private List<HsaIdVardgivare> allVardgivare = getAllVardgivare();
+            private List<VgNumber> allVardgivare = getAllVardgivare();
             private Iterator<Aisle> batchedAisles = Collections.emptyIterator();
 
             @Override
@@ -91,9 +147,29 @@ public class Warehouse implements Iterable<Aisle> {
 
             private Iterator<Aisle> getNextBatch() {
                 final int fromIndex = this.nextIndex;
-                final int toIndex = Math.min(fromIndex + BATCH_SIZE, allVardgivare.size());
-                final List<HsaIdVardgivare> vgids = allVardgivare.subList(fromIndex, toIndex);
+                final int toIndex = getToIndex(fromIndex);
+                final List<VgNumber> vgNumbers = allVardgivare.subList(fromIndex, toIndex);
+                final List<HsaIdVardgivare> vgids = vgNumbers.stream().map(VgNumber::getVgid).collect(Collectors.toList());
                 return widelineLoader.getAilesForVgs(vgids).iterator();
+            }
+
+            /**
+             * Return the index in allVardgivare where a sublist will get at least BATCH_SIZE of intyg, but will
+             * also not add any more vgs as soon as BATCH_SIZE has been reached.
+             * @param fromIndex The start index
+             * @return The end index
+             */
+            private int getToIndex(int fromIndex) {
+                int toIndex = fromIndex;
+                final int size = allVardgivare.size();
+                for (int nrOfIntyg = 0; nrOfIntyg < BATCH_SIZE;) {
+                    if (size <= toIndex) {
+                        break;
+                    }
+                    nrOfIntyg += allVardgivare.get(toIndex).getNumber();
+                    toIndex++;
+                }
+                return toIndex;
             }
         };
     }
