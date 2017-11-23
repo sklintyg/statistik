@@ -59,7 +59,7 @@
               class="stat-table-row"
               title="{{::row.name}}">
             <td
-                data-ng-repeat="fieldData in row.data"
+                data-ng-repeat="fieldData in row.data track by $index"
                 class="scrollable"
                 >{{::fieldData.value}}</td>
           </tr>

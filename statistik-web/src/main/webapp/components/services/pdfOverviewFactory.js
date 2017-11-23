@@ -19,6 +19,7 @@
 
 angular.module('StatisticsApp')
     .factory('pdfOverviewFactory',
+
         /** @ngInject */
         function($window, pdfFactory, $timeout) {
         'use strict';
