@@ -26,7 +26,11 @@
     }
 
     .panel-body {
-      padding-top: 5px;
+      padding: 0;
+    }
+
+    .panel-content {
+      padding: 5px 15px 15px;
     }
   }
 
