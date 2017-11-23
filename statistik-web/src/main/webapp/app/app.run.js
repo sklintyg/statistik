@@ -32,7 +32,7 @@ angular.module('StatisticsApp').run(
         
     $http.get('/api/links').then(function(links) {
         dynamicLinkService.addLinks(links.data);
-        messageService.addLinks(links);
+        messageService.addLinks(links.data);
     });
 
     Highcharts.setOptions({
