@@ -195,6 +195,7 @@ public class RestSupportService {
         manager.createNativeQuery("TRUNCATE TABLE " + MessageEvent.TABLE).executeUpdate();
         manager.createNativeQuery("TRUNCATE TABLE " + IntygCommon.TABLE).executeUpdate();
         sjukfallUtil.clearSjukfallGroupCache();
+        warehouse.clearAisleCache();
         nationalChartDataService.buildCache();
         return Response.ok().build();
     }
@@ -264,6 +265,7 @@ public class RestSupportService {
             LOG.info("Processed batch with {} entries", count);
         } while (count > 0);
         sjukfallUtil.clearSjukfallGroupCache();
+        warehouse.clearAisleCache();
         nationalChartDataService.buildCache();
         return Response.ok().build();
     }
