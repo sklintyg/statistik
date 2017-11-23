@@ -61,6 +61,7 @@ public class Warehouse implements Iterable<Aisle> {
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     public void clearAisleCache() {
         getAisleCache().invalidateAll();
+        getEnhetsCache().invalidateAll();
     }
 
     private LoadingCache<HsaIdVardgivare, Aisle> getAisleCache() {
