@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').service('sortableTableViewstate',
+angular.module('StatisticsApp').service('sortableTableViewState',
 
     function() {
         'use strict';
