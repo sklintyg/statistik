@@ -36,6 +36,7 @@ import se.inera.statistics.service.report.util.Icd10.Avsnitt;
 import se.inera.statistics.service.report.util.Icd10.Kapitel;
 import se.inera.statistics.service.report.util.Icd10.Kategori;
 import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.VgNumber;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 import se.inera.statistics.service.warehouse.WidelineManager;
@@ -135,10 +136,10 @@ public class LargeTestDataGenerator {
     }
 
     public String exportUtlatanden() {
-        List<HsaIdVardgivare> allVardgivare = warehouse.getAllVardgivare();
+        List<VgNumber> allVardgivare = warehouse.getAllVardgivare();
         StringBuilder result = new StringBuilder("vg;").append(Fact.HEADING).append('\n');
-        for (HsaIdVardgivare vg : allVardgivare) {
-            for (Fact line : warehouse.get(vg)) {
+        for (VgNumber vg : allVardgivare) {
+            for (Fact line : warehouse.get(vg.getVgid())) {
                 result.append(vg).append(line.toCSVString(';'));
             }
         }

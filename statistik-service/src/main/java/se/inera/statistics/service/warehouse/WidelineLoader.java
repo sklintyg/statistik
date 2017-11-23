@@ -66,8 +66,9 @@ public class WidelineLoader {
                 PreparedStatement stmt = prepareStatementForVg(connection, vgids);
                 ResultSet resultSet = stmt.executeQuery()) {
             while (resultSet.next()) {
-                final FactConvertResult factResult = toFact(resultSet);
-                facts.get(factResult.hsaIdVardgivare).add(factResult.fact);
+                String vardgivare = resultSet.getString("vardgivareid");
+                final Fact fact = toFact(resultSet);
+                facts.get(new HsaIdVardgivare(vardgivare)).add(fact);
             }
         } catch (SQLException e) {
             LOG.error("Could not populate warehouse", e);
@@ -75,7 +76,7 @@ public class WidelineLoader {
         return toAisles(facts);
     }
 
-    private FactConvertResult toFact(ResultSet resultSet) throws SQLException {
+    private Fact toFact(ResultSet resultSet) throws SQLException {
         long id = resultSet.getLong("id");
         String correlationId = resultSet.getString("correlationId");
         String lkf = resultSet.getString("lkf");
@@ -94,17 +95,15 @@ public class WidelineLoader {
         int lakarkon = resultSet.getInt("lakarkon");
         int lakaralder = resultSet.getInt("lakaralder");
         String lakarbefattning = resultSet.getString("lakarbefattning");
-        String vardgivare = resultSet.getString("vardgivareid");
         String lakareId = resultSet.getString("lakareid");
 
-        final Fact fact = new Fact(id, ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf),
+        return new Fact(id, ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf),
                 ConversionHelper.extractForsamling(lkf), Warehouse.getEnhetAndRemember(new HsaIdEnhet(enhet)), intyg,
                 ConversionHelper.patientIdToInt(patientid), startdatum, slutdatum, kon, alder,
                 factConverter.extractKapitel(diagnoskapitel), factConverter.extractAvsnitt(diagnosavsnitt),
                 factConverter.extractKategori(diagnoskategori), factConverter.extractKod(diagnoskod, diagnoskategori),
                 sjukskrivningsgrad, lakarkon, lakaralder, factConverter.parseBefattning(lakarbefattning, correlationId),
                 Warehouse.getNumLakarIdAndRemember(new HsaIdLakare(lakareId)));
-        return new FactConvertResult(new HsaIdVardgivare(vardgivare), fact);
     }
 
     @NotNull
@@ -136,35 +135,26 @@ public class WidelineLoader {
         return stmt;
     }
 
-    List<HsaIdVardgivare> getAllVgs() {
+    List<VgNumber> getAllVgs() {
         LOG.info("Get all vgs from db");
-        final ArrayList<HsaIdVardgivare> vgs = new ArrayList<>();
-        final String sql = "SELECT distinct vardgivareid from wideline w1 where w1.correlationid not in "
-                + "(select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )";
+        final ArrayList<VgNumber> vgs = new ArrayList<>();
+
+        final String sql = "SELECT vardgivareid, count(vardgivareid) as antal from wideline w1 where w1.correlationid "
+                + "not in (select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )"
+                + " GROUP BY vardgivareid ORDER BY antal ASC;";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
              ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 final String vardgivareid = resultSet.getString("vardgivareid");
+                final int antal = resultSet.getInt("antal");
                 final HsaIdVardgivare vgId = new HsaIdVardgivare(vardgivareid);
-                vgs.add(vgId);
+                vgs.add(new VgNumber(vgId, antal));
             }
         } catch (SQLException e) {
             LOG.error("Could not get all vgs from DB", e);
         }
         return vgs;
-    }
-
-    private static final class FactConvertResult {
-
-        private HsaIdVardgivare hsaIdVardgivare;
-        private Fact fact;
-
-        private FactConvertResult(HsaIdVardgivare hsaIdVardgivare, Fact fact) {
-            this.hsaIdVardgivare = hsaIdVardgivare;
-            this.fact = fact;
-        }
-
     }
 
 }
