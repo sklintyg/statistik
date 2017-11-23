@@ -41,8 +41,8 @@
               class="scrollable details-table-data ellipsis"
               data-ng-class="{centeralign: headerrow.centerAlign,
               'sortable-column': $parent.$parent.$last,
-              'sorted-column': ($index === sortIndex),
-              'sorted-reverse': sortReverse}"
+              'sorted-column': ($index === sortableTableVS.getSortIndex()),
+              'sorted-reverse': sortableTableVS.getSortReverse()}"
               data-ng-click="sortByColumn($index, $parent.$parent.$last)"
               colspan="{{::header.colspan}}"
               title="{{::header.text}}"

@@ -22,7 +22,7 @@ angular.module('StatisticsApp')
     .factory('pdfFactory',
         /** @ngInject */
         function($window, $timeout, thousandseparatedFilter, $location, _, MAX_ROWS_TABLE_PDF, messageService, $rootScope,
-            ControllerCommons, sortableTableViewstate) {
+            ControllerCommons, sortableTableViewState) {
 
             'use strict';
 
@@ -62,7 +62,7 @@ angular.module('StatisticsApp')
                     $timeout(function() {
                         table = [];
 
-                        var tableData = _updatePrintDataTable($scope.headerrows, sortableTableViewstate.getSortedRows());
+                        var tableData = _updatePrintDataTable($scope.headerrows, sortableTableViewState.getSortedRows());
 
                         angular.forEach(tableData, function(t) {
                             table.push({
@@ -80,8 +80,8 @@ angular.module('StatisticsApp')
                 else {
                     table = {
                         header: $scope.headerrows,
-                        data: formatTableData(sortableTableViewstate.getSortedRows()),
-                        hasMoreThanMaxRows: sortableTableViewstate.getSortedRows().length > MAX_ROWS_TABLE_PDF
+                        data: formatTableData(sortableTableViewState.getSortedRows()),
+                        hasMoreThanMaxRows: sortableTableViewState.getSortedRows().length > MAX_ROWS_TABLE_PDF
                     };
 
                     _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, filename, pdfDoneCallback);
