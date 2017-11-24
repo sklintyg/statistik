@@ -1,4 +1,4 @@
-## Statistiktjänsten anonymisering
+## Intygsstatistik anonymisering
 
 Anonymiserings-applikationen anonymiserar intygsinnehåll i en statistikdatabas. Den används för att skapa anonymiserade kopior av produktions-databasen för Statistik enligt följande flöde:
 

@@ -39,7 +39,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             var popoverTextChangeCurrentVSPrevious = '<br><br>Spalten förändring visar skillnaden i antal sjukfall mellan perioden ' +
                 result.periodText + '  och föregående period ' + result.casesPerMonth.previousPeriodText;
 
-            $scope.popoverText = 'Statistiktjänsten är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. ' +
+            $scope.popoverText = 'Intygsstatistik är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. ' +
                                     'Tjänsten visar statistik för alla elektroniska läkarintyg. ' +
                                     'Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, ' +
                                     ' och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.';

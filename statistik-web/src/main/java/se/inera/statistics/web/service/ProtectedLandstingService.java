@@ -18,14 +18,6 @@
  */
 package se.inera.statistics.web.service;
 
-import java.io.ByteArrayOutputStream;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -38,6 +30,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.ByteArrayOutputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.slf4j.Logger;
@@ -258,7 +257,7 @@ public class ProtectedLandstingService {
         case HTML:
             final String statusText = Response.Status.OK.equals(status) ? "Uppladdningen lyckades" : "Uppladdningen misslyckades";
             String html = "<html><body><h1>" + statusText + "</h1><div>" + message
-                    + "</div><br/><input type='button' onclick='history.back();' value='Åter till statistiktjänsten'></body></html>";
+                    + "</div><br/><input type='button' onclick='history.back();' value='Åter till intygsstatistik'></body></html>";
             return Response.status(Response.Status.OK).type(MediaType.TEXT_HTML + "; charset=utf-8").entity(html).build();
         case JSON:
             final HashMap<String, Object> map = new HashMap<>();

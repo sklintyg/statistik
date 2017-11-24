@@ -126,7 +126,7 @@ def get_caregiver_id_from_user(host, password, dbname):
 def get_data(file_name, start, end, caregiver, careunit,lanskod, host, password, dbname):
     ''' Extracts data from the database and stores it to file_name '''
 
-    # Start nedan är antalet dagar efter 2000 som är en tidräkning som statistiktjänsten använder sig av i databasen.
+    # Start nedan är antalet dagar efter 2000 som är en tidräkning som intygsstatistik använder sig av i databasen.
     # Villkoret "correlationid not in ..." är viktigt för det plockar bort intyg som blivit annulerade.
 
     sql_cmd = 'mysql --user %s --password=%s %s -e "select * from wideline w where ((startdatum >= %s and startdatum <= %s) or '  % (DBUSER,password,dbname, start, end)

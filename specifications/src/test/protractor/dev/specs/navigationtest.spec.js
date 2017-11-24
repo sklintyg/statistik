@@ -26,7 +26,7 @@ var pages = testfw.pages;
 var features = testfw.features;
 var navmenu = pages.navmenu;
 
-describe('Navigering i statistiktjänsten: ', function() {
+describe('Navigering i intygsstatistik: ', function() {
 
     beforeAll(function() {
         browser.get('/');
