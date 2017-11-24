@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -27,9 +28,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.servlet.http.HttpServletRequest;
-
-import com.google.common.base.Splitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +36,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.Splitter;
 import se.inera.auth.LoginVisibility;
 import se.inera.auth.model.User;
 import se.inera.auth.model.UserAccessLevel;
@@ -86,8 +85,6 @@ public class LoginServiceUtil {
     @Autowired
     private VersionUtil versionUtil;
 
-    @Value("${highcharts.export.url}")
-    private String higchartsExportUrl;
     @Value("${login.url}")
     private String loginUrl;
 
@@ -221,7 +218,6 @@ public class LoginServiceUtil {
     AppSettings getSettings() {
         AppSettings settings = new AppSettings();
         settings.setLoginVisible(loginVisibility.isLoginVisible());
-        settings.setHighchartsExportUrl(higchartsExportUrl);
         settings.setLoginUrl(loginUrl);
         settings.setLoggedIn(isLoggedIn());
         settings.setProjectVersion(versionUtil.getProjectVersion());

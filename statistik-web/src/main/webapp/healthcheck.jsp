@@ -32,7 +32,6 @@
 		</div>
 
 		<c:set var="overview" value="${healthcheckUtil.overviewStatus}" />
-		<c:set var="highchart" value="${healthcheckUtil.highchartsExportStatus}" />
 		<c:set var="workloadStatus" value="${healthcheckUtil.workloadStatus}" />
 		<c:set var="db" value="${healthcheckUtil.checkDB()}" />
 		<c:set var="uptime" value="${healthcheckUtil.uptimeAsString}" />
@@ -58,11 +57,6 @@
 						<td>Hämta översikt nationell statstik</td>
 						<td id="overviewMeasurement">${overview.measurement}ms</td>
 						<td id="overviewStatus" class="${overview.ok ? "text-success" : "text-danger"}">${overview.ok ? "OK" : "FAIL"}</td>
-					</tr>
-					<tr>
-						<td>Highcharts</td>
-						<td id="highchartMeasurement">${highchart.measurement}ms</td>
-						<td id="highchartStatus" class="${highchart.ok ? "text-success" : "text-danger"}">${highchart.ok ? "OK" : "FAIL"}</td>
 					</tr>
 					<tr>
 						<td>WorkloadStatus</td>

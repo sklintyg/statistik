@@ -49,17 +49,6 @@
   environment:
       JAVA_HOME: "{{ java_home }}"
 
-- name: Make sure highcharts-export-web-{{ highcharts_version }} file download is forced when using shapshot repo
-  file:
-    state: absent
-    path: "{{ releases_folder }}/highcharts-export-web-{{ highcharts_version }}.war"
-  when: repo == "snapshots"
-
-- name: Download highcharts-export-web-{{ highcharts_version }}.war
-  get_url:
-    url: "https://build-inera.nordicmedtest.se/nexus/repository/releases/com/highcharts/export/highcharts-export-web/{{ highcharts_version }}/highcharts-export-web-{{ highcharts_version }}.war"
-    dest: "{{ releases_folder }}/highcharts-export-web-{{ highcharts_version }}.war"
-
 - name: Make sure statistik-web file download is forced when using shapshot repo
   file:
     state: absent
@@ -88,16 +77,6 @@
     state: absent
     path: "{{ tomcat_webapps }}/ROOT.war"
 
-- name: remove old version of unpacked highchart war
-  file:
-    state: absent
-    path: "{{ tomcat_webapps }}/highcharts-export-web"
-
-- name: remove old version of highchart war
-  file:
-    state: absent
-    path: "{{ tomcat_webapps }}/highcharts-export-web.war"
-
 - name: Deploy statistik-web-{{ version }}.war as ROOT.war
   copy:
     src: "{{ releases_folder }}/statistik-web-{{ version }}.war"
@@ -109,21 +88,10 @@
   args:
     creates: "{{ tomcat_webapps }}/ROOT"
 
-- name: Deploy highchart-export-web-{{ highcharts_version }}.war
-  copy:
-    src: "{{ releases_folder }}/highcharts-export-web-{{ highcharts_version }}.war"
-    dest: "{{ tomcat_webapps }}/highcharts-export-web.war"
-    remote_src: True
-
 - name: Remove statistik-web-{{ version }}.war from releases
   file:
     state: absent
     path: "{{ releases_folder }}/statistik-web-{{ version }}.war"
-
-- name: Remove highchart-export-web-{{ highcharts_version }}.war from releases
-  file:
-    state: absent
-    path: "{{ releases_folder }}/highcharts-export-web-{{ highcharts_version }}.war"
 
 - name: Remove liquibase-runner-{{ version }}.zip from releases
   file:

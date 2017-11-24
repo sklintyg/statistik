@@ -22,14 +22,12 @@ describe('Chart services', function() {
 
     var chartFactory;
     var _;
-    var AppModel;
     var route;
 
     beforeEach(module('StatisticsApp'));
 
-    beforeEach(inject(function(_chartFactory_, ___, _AppModel_, $route) {
+    beforeEach(inject(function(_chartFactory_, ___, $route) {
         chartFactory = _chartFactory_;
-        AppModel = _AppModel_;
         _ = ___; //This set the local underscore variable
         route = $route;
         route.current = {title: 'zxcv'};
@@ -37,9 +35,6 @@ describe('Chart services', function() {
 
     describe('General configuration of charts', function() {
         it('can setup a basic configuration for a chart', function() {
-            AppModel.set({
-                highchartsExportUrl: 'http://www.testurl.com:1234/exporttest'
-            });
             var categories = [{name:'Namn 1'}, {name:'Namn < 1'}];
             var series = [{b: 4, data: []}];
 
@@ -57,9 +52,6 @@ describe('Chart services', function() {
         });
 
         it('will enable markers on specific series if there is only one data point for the series', function() {
-            AppModel.set({
-                highchartsExportUrl: 'http://www.testurl.com:1234/exporttest'
-            });
             var categories = [{name:'Namn 1'}, {name:'Namn < 1'}];
             var seriesWithOneDataPoint = [{b: 4, data: [1]}];
 

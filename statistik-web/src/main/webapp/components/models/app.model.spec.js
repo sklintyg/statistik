@@ -33,7 +33,6 @@ describe('Model: AppModel', function () {
         expect(AppModel.get().isLoggedIn).toBeFalsy();
         expect(AppModel.get().loginUrl).toEqual('');
         expect(AppModel.get().loginVisible).toBeFalsy();
-        expect(AppModel.get().highchartsExportUrl).toEqual('');
     });
 
     it('payload', function() {
@@ -41,14 +40,12 @@ describe('Model: AppModel', function () {
         AppModel.set({
             loggedIn: true,
             loginUrl: 'loginUrl',
-            loginVisible: true,
-            highchartsExportUrl: 'highcharts',
+            loginVisible: true
         });
 
         expect(AppModel.get().isLoggedIn).toBeTruthy();
         expect(AppModel.get().loginUrl).toEqual('loginUrl');
         expect(AppModel.get().loginVisible).toBeTruthy();
-        expect(AppModel.get().highchartsExportUrl).toEqual('highcharts');
     });
 
 });
