@@ -18,7 +18,6 @@
       <security:http security="none" pattern="/bower_components/**"/>
       <security:http security="none" pattern="/js/**"/>
       <security:http security="none" pattern="/assets/**"/>
-      <security:http security="none" pattern="/highcharts-export-web/**"/>
     </beans>
 
     <beans>

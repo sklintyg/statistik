@@ -101,7 +101,6 @@
             <property name="attributes">
                 <map>
                     <entry key="loginUrl" value="${login.url}"/>
-                    <entry key="highchartsExportUrl" value="${highcharts.export.url}"/>
                     <entry key="healthcheckUtil" value-ref="healthcheckUtil"/>
                     <entry key="versionUtil" value-ref="versionUtil"/>
                 </map>

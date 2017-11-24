@@ -20,7 +20,7 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').factory('chartFactory',
     /** @ngInject */
-    function(COLORS, _, ControllerCommons, $window, AppModel, $filter) {
+    function(COLORS, _, ControllerCommons, $window, $filter) {
     'use strict';
 
         var labelFormatter = function(maxWidth, sameLengthOnAll) {
@@ -230,7 +230,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                 },
                 exporting : {
                     enabled : false,
-                    url: AppModel.get().highchartsExportUrl
+                    fallbackToExportServer: false
                 },
                 plotOptions : {
                     line : {
