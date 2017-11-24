@@ -2,7 +2,7 @@
 
 !3 Givet att:
 
-Det finns ett meddelande vars intyg inte har kommit fram till statistiktjänsten
+Det finns ett meddelande vars intyg inte har kommit fram till intygsstatistik
 
 | script | dagens datum | 2014-11-06 |
 

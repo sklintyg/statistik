@@ -27,7 +27,7 @@ var features = testfw.features;
 var fakeloginPage = pages.fakeloginPo;
 var headerPage = pages.headerPo;
 
-describe('Grundläggande tester av statistiktjänsten: ', function() {
+describe('Grundläggande tester av intygsstatistik: ', function() {
 
     beforeAll(function() {
         browser.get('/');

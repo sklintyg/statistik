@@ -48,7 +48,7 @@
 <body>
 <div style="padding-left:20px">
   <div class="page-header">
-    <h1 style="margin-bottom: 10px;">Statistiktjänsten</h1>
+    <h1 style="margin-bottom: 10px;">Intygsstatistik</h1>
   </div>
   <div class="alert alert-block alert-info" style="width:50%">
     <h4 style="padding-bottom:5px;">Configuration info</h4>

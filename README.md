@@ -1,23 +1,23 @@
-#Statistik
+# Statistik
 
-##Introduktion
-Systemet är logiskt uppdelat på två delsystem: Statistiktjänsten och Statistikapplikationen. Därutöver finns mindra applikationer och stödsystem, t ex statistik-gatling för att göra lasttester och HSA fileservice för att hämta filer från HSA.
+## Introduktion
+Systemet är logiskt uppdelat på två delsystem: Intygsstatistik och Statistikapplikationen. Därutöver finns mindra applikationer och stödsystem, t ex statistik-gatling för att göra lasttester och HSA fileservice för att hämta filer från HSA.
 
-###Statistiktjänsten
-Statistiktjänsten beräknar statistik utifrån given rådata och gör denna statistik tillgängligt via ett api.
+### Intygsstatistik
+Intygsstatistik beräknar statistik utifrån given rådata och gör denna statistik tillgängligt via ett api.
 
-###Statistikapplikationen
-Statistikapplikationen hanterar GUI och inloggning. Kommunicerar med statistiktjänsten för att hämta aktuell statistik.
+### Statistikapplikationen
+Statistikapplikationen hanterar GUI och inloggning. Kommunicerar med intygsstatistik för att hämta aktuell statistik.
 
 Det finns två olika typer av användare på statistikapplikationen:
 
 + Ej inloggad användare som får tillgång till statistik på nationell nivå.
 + Inloggad användare från vårdenhet som både har tillgång till statistiken för sin enhet samt den övergripande på nationell nivå. 
 
-###HSA fileservice
-HSA fileservice hämta en lista över sjukvårdsenheter från HSA och uppdaterar statistiktjänsten med aktuella enhatsnamn. Listan som hämtas uppdateras varje dygn, så det finns ingen anledning att köra applikationen oftare än så.
+### HSA fileservice
+HSA fileservice hämta en lista över sjukvårdsenheter från HSA och uppdaterar intygsstatistik med aktuella enhatsnamn. Listan som hämtas uppdateras varje dygn, så det finns ingen anledning att köra applikationen oftare än så.
 
-##Komma igång med lokal installation
+## Komma igång med lokal installation
 
 Den här sektionen beskriver hur man bygger Inera Statistics för att kunna köras helt fristående.
 
@@ -50,7 +50,7 @@ För att starta applikationen i debugläge används:
 Applikationen kommer då att starta upp med debugPort = **5011**. Det är denna port du ska använda när du sätter upp din 
 debug-konfiguration i din utvecklingsmiljö.
 
-###Uppgradera från node 0.12
+### Uppgradera från node 0.12
 Installera nodjs 6.6.0 tex med NVM, https://github.com/creationix/nvm
 
 Har du nvm så kan du skriva 
@@ -62,7 +62,7 @@ Ta bort `statistik-web/node_modules` och `statistik-web/src/main/webapp/bower_co
 
 Följ anvisningarna i "Bygga klienten utanför gradle"
 
-###Bygga klienten utanför gradle
+### Bygga klienten utanför gradle
 Installera nodjs 6.5.0 tex med NVM, https://github.com/creationix/nvm
 
 Installera grunt och bower
@@ -89,14 +89,14 @@ För att testa applikationen i ett mer prodlikt läge kan man även starta med e
 
     ./gradlew clean appRunWar -Pstatistik.useMinifiedJavaScript
 
-##Protractor
+## Protractor
 Köra protractor tester lokalt. Du behöver ha firefox version 46 eller äldre för att testerna ska fungera.
 
- * Starta statistiktjänsten med `./gradlew appRun`
+ * Starta intygsstatistik med `./gradlew appRun`
  * Starta testerna med `./gradlew protractorTests`
 
-##Gradle
-Vi använder Gradle för att bygga, test, installera och köra statistiktjänsten. Gradle spottar ur sig ganska mycket text, generellt sett har det gått bra om det sista som skrivs ut är något i stil med:
+## Gradle
+Vi använder Gradle för att bygga, test, installera och köra intygsstatistik. Gradle spottar ur sig ganska mycket text, generellt sett har det gått bra om det sista som skrivs ut är något i stil med:
 
     BUILD SUCCESSFUL
 
@@ -115,7 +115,7 @@ Starta active mq
 
     activemq console
 
-Starta statistiktjänsten, kommer att starta på port 9101
+Starta intygsstatistik, kommer att starta på port 9101
 
     ./gradlew appRun -PrunWithIntyg -PrunWithActiveMQ
     
@@ -137,17 +137,17 @@ uppfyller detta krav så fallerar bygget. För att lägga till licens-header kö
 
     ./gradlew licenseFormatMain licenseFormatTest
 
-##Releasebyggen
+## Releasebyggen
 
-##Liquibase
+## Liquibase
 Liquibase används för att skapa och underhålla underliggande databas. Alla ändringar av databasen måste reflekteras i liquibase-script. Vi använder H2 under utveckling och MySql i andra sammanhang, så scripten måste fungera för båda dessa alternativ.
 
-###MySql
+### MySql
 Liquibase kontrollerar databasen varje gång applikationen startas, och startar inte om databasversionen inte stämmer med applikationen.
 
 Skapa/Uppdatera databasen görs med en separat liquibase-runner. Se DatabasUppdatering.
 
-###H2 embedded
+### H2 embedded
 Liquibase kör, och modifierar vid behov databasen, varje gång applikationen startas.
 
 ## Liquibase för externa miljöer
@@ -164,28 +164,28 @@ katalog som skapats, och kör:
   
 Självklart behöver parametrarna "url", "username" och "password" ändras för att passa den aktuella miljön.
 
-##Köhanterare
+## Köhanterare
 ActiveMQ används för att ta emot sjukintyg. I koden är köhanteringen inte bunden till ActiveMQ, utan det bör gå att byta till någon annan köhanterare genom konfigurationsändringar.
 
-##Test
+## Test
 Vi använder tre typer av tester, Fitnesse/Slim, JUnit, Jasmine.
 
-###JUnit
+### JUnit
 JUnit används för enhetstester, funktionestester samt integrationstester. Normalt anses en testklass innehålla vanliga
 enhetstester, Gradle kör dessa tester per default. Avslutas klassnamnet med IntegrationTest? så är det ett integrationstest, och
 Gradle kör bara dessa tester om man specifikt säger till (integrationTests). Funktionella tester, dvs klasser som avslutas med FunctionalTest? körs aldrig från Gradle, utan måste körast manuellt från en IDE eller dylikt.
 
-###Fitnesse/Slim
+### Fitnesse/Slim
 Det finns en separat modul som använder Fitnesse, specifications. Fitnesse kan antingen köras som automattest eller som en wiki. I wikiläge startas en webserver på http://localhost:9125/StatisticsTests , och surfar man dit kan man skapa, redigera och köra individuella tester. I automatläge körs alla tester igenom och en rapport skapas (ungefär som motsvarande för JUnit-tester).
 
-####statistics-specification
+#### statistics-specification
 Den här modulen testar end-to-end-scenarior, där man kontrollerar att instoppade intyg ger korrekt statistik. Innan man kör måste
 man ha en webserver som snurrar.
 
-###Jasmine/Karma
+### Jasmine/Karma
 Används för Javascripttester
 
-##Spring
+## Spring
 Spring-konfigurationen är lite utspridd, men det går att nysta upp om man utgår från web.xml, leta efter:
 
     <context-param>
@@ -214,10 +214,10 @@ De profiler som finns är:
 |hsacached      |Cachar hsa-anrop för att ej överlasta hsa vid omprocessning|
 |testapi        |Aktiverar REST-interface som enbart används för testning, tex möjlighet att sätta klockan eller rensa intyg |
 
-##Deployment
+## Deployment
 Vi använder ansible för att enkelt sätta upp servrar. Följande stämmer för min lokala miljö (Mac, Homebrew), komplettera gärna med andra miljöer.
 
-###Installera ansible
+### Installera ansible
 
     brew install ansible
 
@@ -226,10 +226,10 @@ Installera ansible-plugin:er
     ansible-galaxy install geerlingguy.apache
     ansible-galaxy install geerlingguy.mysql
 
-###Tools
+### Tools
 Checka ut tools (och statistik härifrån, om du inte har det redan) från github, https://github.com/sklintyg/tools (och statistik härifrån, om du inte har det redan).
 
-###Deploy
+### Deploy
 Följande beskriver hur man deployar till fitnesse-servern, https://fitnesse.inera.nordicmedtest.se
 Det är den enda servern som i skrivandes stund är definierad.
 
@@ -246,32 +246,32 @@ Deploya själva applikationen:
     ansible-playbook -i hosts_test deploy.yml -l statistik-fitnesse
 
 
-##Namngivning av klasser och metoder
+## Namngivning av klasser och metoder
 I projektets inledning användes engelska vid namngivning, men vi har sedan dess gått över till svengelska (enligt nedanstående förklaring). Det kan finnas kvar rester av engelska, men det byts ut när vi upptäcker det.
 
 Att översätta facktermer är inte lätt, subtila betydelseskiftningar påverkar tolkningen, och det är lätt hänt att man vid kommunikation översätter tillbaka till en annan benämning än den ursprungliga.
 
 Vi försöker därför använda samma konsekventa terminologi inom ett område, för hela spektrat av intressenter. Det betyder att vi behöver använda svenska för verksamhetsspecifika termer, men också att engelska bör användas för tekniska termer. Vi har också bestämt oss för att pidginisera koden, dvs inte försöka blanda korrekt svensk och engelsk grammatik utan använda väldefinierade pluralformer (sjukfalls för flera sjukfall t ex) osv. Vi använder endast ASCII i koden, ä och å blir a, och ö blir o.
 
-##JMX
+## JMX
 Vi exponerar vissa klasser via JMX.
 
 Vi använder Springs jmx-stöd, konfigurationen finns i application-context-jmx.
 
 Det har inte gjorts något särskilt anpassningsarbete, utan bara helt rått exponerat klasser med metoder som vi vill komma åt. Om vi ska fortsätta använda JMX bör vi städa upp här och skapa särskilda klasser/interface där vi enbart exponerar de metoder vi vill, på ett format som vi vill ha.
 
-##Web services felsvar
+## Web services felsvar
 Det enda ställena som accepterar indata, är när man hämtar diagnosinformation (diagnoskapitel) samt när man vill se verksamhetsspecifik infromation (verksamhetsid).
 
-###Diagnoskapitel
+### Diagnoskapitel
 Skickar man in ett icke existerande diagnoskapitel får man tillbaka ett tomt dataset. Svaret har http status 200 OK.
 
-###Verksamhetsid
+### Verksamhetsid
 Försöker man komma åt en verksamhet som man saknar behörighet till, så returneras http status 403 Access Denied. Detta oavsett om verksamhetsid:t existerar eller inte.
 
-###Icke existerande URL:er
+### Icke existerande URL:er
 404 Not Found 
 
-##Övrigt
-###Söka i json-dokument i databasen
+## Övrigt
+### Söka i json-dokument i databasen
 Det finns inbyggt stöd för json i PostgreSQL 9.3 och senare, och det har vi använt när vi behövt göra adhoc-analyser. D v s, för att analysera innehåll i json-objekt lagrade i en tabell så har vi exporterat tabellen till PostgreSQL. Det finns ett exempelskript incheckat under tools/dbscripts/postgresql .

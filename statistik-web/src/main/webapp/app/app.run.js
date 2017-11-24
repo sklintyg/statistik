@@ -39,7 +39,7 @@ angular.module('StatisticsApp').run(
         lang: { thousandsSep: ' ' }
     });
 
-    $rootScope.pageTitle = 'Statistiktjänsten';
+    $rootScope.pageTitle = 'Intygsstatistik';
     $rootScope.pageName = '';
 
     $rootScope.$on('$routeChangeSuccess', function (e, current) {
@@ -58,7 +58,7 @@ angular.module('StatisticsApp').run(
                 $rootScope.pageName = null;
             }
 
-            $rootScope.pageTitle = ($rootScope.pageName ? $rootScope.pageName + ' | ' : '') + 'Statistiktjänsten';
+            $rootScope.pageTitle = ($rootScope.pageName ? $rootScope.pageName + ' | ' : '') + 'Intygsstatistik';
 
             $rootScope.queryString = '';
             addToQueryString('vgid', current.params.vgid);

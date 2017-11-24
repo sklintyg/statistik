@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html lang="sv">
 <head>
-<title>Statistiktjänsten - Health Check</title>
+<title>Intygsstatistik - Health Check</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 <meta name="ROBOTS" content="nofollow, noindex" />
@@ -28,7 +28,7 @@
 <body>
 	<div class="container">
 		<div class="page-header">
-			<h1>Statistiktjänsten - HealthCheck</h1>
+			<h1>Intygsstatistik - HealthCheck</h1>
 		</div>
 
 		<c:set var="overview" value="${healthcheckUtil.overviewStatus}" />
