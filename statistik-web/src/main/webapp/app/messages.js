@@ -2,7 +2,7 @@
 var stMessages = {
     'sv': {
     	//generals
-        'statistics.header': 'Statistiktjänsten',
+        'statistics.header': 'Intygsstatistik',
         'statistics.header.extra-text': 'Statistiktjänst för ordinerad sjukskrivning',
 
         //navigation
@@ -157,20 +157,20 @@ var stMessages = {
         'title.intygstyp' : 'Antal utfärdade intyg fördelat på intygstyp',
 
         //help texts
-        'help.nationell.overview' : 'Statistiktjänsten är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. Tjänsten visar statistik för alla elektroniska läkarintyg. Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.',
+        'help.nationell.overview' : 'Intygsstatistik är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. Tjänsten visar statistik för alla elektroniska läkarintyg. Statistiken är uppdelad i nationell statistik som är tillgänglig för alla, och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.',
         'help.nationell.diagnosisgroup': 'Denna rapport visar statistik uppdelad i sju övergripande diagnosgrupper. I varje grupp ingår olika kapitel med diagnoskoder. Diagnoskoderna kommer från klassificeringssystemet ICD-10-SE som används för att gruppera sjukdomar för att kunna göra översiktliga statistiska sammanställningar och analyser.',
         'help.nationell.diagnosgroup': 'I denna rapport kan du själv välja vilket diagnoskapitel du vill se statistik för. Klassificeringssystemet ICD-10-SE delar in alla diagnoser i 22 diagnoskapitel.',
         'help.nationell.degreeofsickleave': 'Denna rapport visar statistik fördelad på sjukskrivningsgrad, vilket motsvarar hur stor del av patientens arbetsförmåga som är nedsatt. Sjukskrivningsgraden anges i procent i förhållande till patientens aktuella arbetstid.',
         'help.nationell.sickleavelength': 'Denna rapport visar statistik fördelad på sjukfallens längd. Längden räknas fram utifrån de sjukskrivningsperioder som anges i de läkarintyg som sjukfallet består av.',
-        'help.nationell.lan': 'Denna rapport visar statistik fördelad på län. Information om vilket län en enhet som utfärdar intyg ligger i hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade av Statistiktjänsten och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet.',
-        'help.nationell.lan.gender': 'Denna rapport visar statistik över könsfördelningen för sjukfall fördelat på län. Information om vilket län en enhet som utfärdar intyg ligger i hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade av Statistiktjänsten och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet.',
+        'help.nationell.lan': 'Denna rapport visar statistik fördelad på län. Information om vilket län en enhet som utfärdar intyg ligger i hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade av Intygsstatistik och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet.',
+        'help.nationell.lan.gender': 'Denna rapport visar statistik över könsfördelningen för sjukfall fördelat på län. Information om vilket län en enhet som utfärdar intyg ligger i hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade av Intygsstatistik och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet.',
 
         'help.verksamhet.vardenhet': 'Denna rapport visar statistik för de vårdenheter som du har behörighet till och som utfärdar läkarintyg. Vårdenheternas namn hämtas från HSA-katalogen.',
         'help.verksamhet.diagnosgroup': 'I denna rapport kan du själv välja vilken typ av diagnoser du vill se statistik för. Klassificeringssystemet ICD-10-SE delar in alla diagnoser i 22 diagnoskapitel. Varje diagnoskapitel innehåller flera diagnosavsnitt som i sin tur omfattar än mer detaljerade diagnoskategorier.',
         'help.verksamhet.sickleavelength': 'Om ett sjukfall startat på en annan vårdenhet inom samma vårdgivare räknas den totala sjukskrivningslängden ihop.',
         'help.verksamhet.lakare': '	Denna rapport visar statistik för enskilda intygsskrivande läkare. Namn hämtas från HSA-katalogen. Om läkaren inte går att slå upp i HSA-katalogen eller om läkaren inte har något namn angivet så visas istället läkarens HSA-id.',
         'help.verksamhet.lakaregender': 'Denna rapport visar statistik uppdelad i olika läkargrupper utifrån den intygsskrivande läkarens ålder och kön. Information om ålder och kön hämtas från HSA-katalogen.',
-        'help.verksamhet.lakare-befattning': 'Denna rapport visar statistik fördelad på befattning hos den intygsskrivande läkaren. Information om befattning hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade av Statistiktjänsten och information kan saknas då det inte är obligatoriskt för vårdenheten att ange befattning. Om en läkare har flera olika läkarbefattningar räknas sjukfallet med i statistiken för var och en av de befattningarna.',
+        'help.verksamhet.lakare-befattning': 'Denna rapport visar statistik fördelad på befattning hos den intygsskrivande läkaren. Information om befattning hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade av Intygsstatistik och information kan saknas då det inte är obligatoriskt för vårdenheten att ange befattning. Om en läkare har flera olika läkarbefattningar räknas sjukfallet med i statistiken för var och en av de befattningarna.',
 
         'help.landsting.sjukfall-totalt': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporteras in av landstinget självt %0.',
         'help.landsting.vardenhet': 'Denna rapport visar statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporterats in av landstinget självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',
@@ -196,14 +196,14 @@ var stMessages = {
         'login.siths.problem-link': 'Läs mer om hur du kan felsöka.',
 
         'login.instruktioner-for-valj-vg': 'Du har behörighet till vårdenheter som tillhör flera olika vårdgivare. Välj den vårdgivare som du vill se verksamhetsstatistik för. <br> Observera att du bara kan se statistik för de vårdenheter som du har behörighet till inom vald vårdgivare.',
-        'login.valj-vg.help.text' : 'Beräkningen av statistik baseras på personuppgifter i de elektroniska intyg som hälso- och sjukvården utfärdar. Med beaktande av sekretessen inom hälso- och sjukvården är det i huvudregel förbjudet att lämna ut och samköra personuppgifter från olika vårdgivare. Lagregler möjliggör inte utlämnande av personuppgifter mellan vårdgivare vilket resulterar i att användare av Statistiktjänsten inte kan få tillgång till uppgifter från olika vårdgivare utan att genomföra separata val.',
+        'login.valj-vg.help.text' : 'Beräkningen av statistik baseras på personuppgifter i de elektroniska intyg som hälso- och sjukvården utfärdar. Med beaktande av sekretessen inom hälso- och sjukvården är det i huvudregel förbjudet att lämna ut och samköra personuppgifter från olika vårdgivare. Lagregler möjliggör inte utlämnande av personuppgifter mellan vårdgivare vilket resulterar i att användare av Intygsstatistik inte kan få tillgång till uppgifter från olika vårdgivare utan att genomföra separata val.',
         'login.valj-vg.help.link': 'Varför behöver jag välja vårdgivare?',
         'login.valj-vg.change-after-login' : 'Du kan byta mellan olika vårdgivare även efter inloggning.',
         'login.valj-vg.title' : 'Välj vårdgivare',
         'login.valj-vg.change': 'Byt vårdgivare',
 
         //about texts
-        'about.service': 'Om Statistiktjänsten',
+        'about.service': 'Om Intygsstatistik',
         'about.cookies': '<h3>Om kakor (cookies)</h3><p>Så kallade kakor (cookies) används för att underlätta för besökaren på webbplatsen. En kaka är en textfil som lagras på din dator och som innehåller information. Denna webbplats använder så kallade sessionskakor. Sessionskakor lagras temporärt i din dators minne under tiden du är inne på en webbsida. Sessionskakor försvinner när du stänger din webbläsare. Ingen personlig information om dig sparas vid användning av sessionskakor.</p><p>Om du inte accepterar användandet av kakor kan du stänga av det via din webbläsares säkerhetsinställningar. Du kan även ställa in webbläsaren så att du får en varning varje gång webbplatsen försöker sätta en kaka på din dator.</p><p><strong>Observera!</strong> Om du stänger av kakor i din webbläsare kan du inte logga in i Webcert.</p><p>Allmän information om kakor (cookies) och lagen om elektronisk kommunikation finns på Post- och telestyrelsens webbplats.</p><p><LINK:ptsCookiesMerOm></p>',
 
         //error messages

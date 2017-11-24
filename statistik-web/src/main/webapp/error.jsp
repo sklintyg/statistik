@@ -30,7 +30,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="ROBOTS" content="nofollow, noindex"/>
 
-    <title>Statistiktjänsten</title>
+    <title>Intygsstatistik</title>
 
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 

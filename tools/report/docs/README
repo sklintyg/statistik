@@ -10,7 +10,7 @@ För att exekvera report.py scriptet behöver man först extrahera ut de rader s
    ssh-copy-id nmt@mysql.ip20.nordicmedtest.se
 
 1. Skapa ett utdrag från databasen för en viss vårdgivare, intyg innan 2010-01-01
-   ska inte vara med i beräkningarna enligt en regel som statistiktjänsten
+   ska inte vara med i beräkningarna enligt en regel som intygsstatistik
    använder sig av. När man gör databasen frågan så är det rekommenderat att man
    tar ett riktigt stort tidsintervall och sen när man ska göra en viss beräkning
    så anger man det tidsintervall man är intresserad av. Anledningen till detta
@@ -61,7 +61,7 @@ För verksamhetsspecifika rapporter behöver man plocka ut alla rader för en vi
 # Tvärsnittsrapporter
 #------------------------------------------------------------------------------
 
-Statistiktjänsten har förutom tidsserie diagram även tvärsnitts diagram
+Intygsstatistik har förutom tidsserie diagram även tvärsnitts diagram
 för de flesta rapporter. Den stora skillnaden de emellan är att
 tvärsnittsrapporter inkluderar information från alla intyg för en given
 period medans tidsserie i regel endast använder sig av information från

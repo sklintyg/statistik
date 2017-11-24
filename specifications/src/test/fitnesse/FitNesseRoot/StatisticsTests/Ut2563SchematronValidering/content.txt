@@ -1,6 +1,6 @@
 !contents -R2 -g -p -f -h
 
-Testar samtliga intygs-format som statistiktjänsten hanterar.
+Testar samtliga intygs-format som intygsstatistik hanterar.
 
 !1 FK7263SIT
 
