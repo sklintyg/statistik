@@ -21,7 +21,7 @@
 angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, config, messageService, diagnosisTreeFilter,
-            $location ,chartFactory, _, pdfFactory, ControllerCommons) {
+            $location ,chartFactory, _, pdfFactory, ControllerCommons, MAX_SELECTED_DXS) {
         'use strict';
 
         var that = this;
@@ -181,6 +181,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             $scope.doneLoading = true;
         }
 
+        $scope.maxSelectedDxs = MAX_SELECTED_DXS;
         $scope.subTitle = config.title;
         $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet) : config.chartFootnotes;
         $scope.chartFootnotes = Array.isArray($scope.chartFootnotes) ? $scope.chartFootnotes : [];
