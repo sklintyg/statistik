@@ -65,13 +65,18 @@
 </div>
 
 <div class="modal-footer">
-  <label class="pull-left">
-    <div style="font-weight: normal;">
-      <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 1">{{directiveScope.textData.firstLevelLabelText}}{{selectedPrimaryCounter}}</span><br>
-      <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 2">{{directiveScope.textData.secondLevelLabelText}}{{selectedSecondaryCounter}}</span><br>
-      <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 3">{{directiveScope.textData.thirdLevelLabelText}}{{selectedTertiaryCounter}}</span><br>
-      <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 4">{{directiveScope.textData.leavesLevelLabelText}}{{selectedQuaternaryCounter}}</span>
+  <div class="col-sm-2 label-text">
+    <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 1">{{directiveScope.textData.firstLevelLabelText}}{{selectedPrimaryCounter}}</span><br>
+    <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 2">{{directiveScope.textData.secondLevelLabelText}}{{selectedSecondaryCounter}}</span><br>
+    <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 3">{{directiveScope.textData.thirdLevelLabelText}}{{selectedTertiaryCounter}}</span><br>
+    <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 4">{{directiveScope.textData.leavesLevelLabelText}}{{selectedQuaternaryCounter}}</span>
+  </div>
+
+  <div class="col-sm-8">
+    <div data-ng-if="showMaxWarning" class="alert alert-warning pull-left">
+      <strong>Varning!</strong> Du har valt för många diagnoser för att diagrammet ska kunna visas. Överväg att filtrera ytterligare eller välj en annan indelning för att minska mängden data.
     </div>
-  </label>
+  </div>
+
   <button id="treeMultiSelectorSaveBtn" class="btn btn-success" type="button" data-dismiss="modal" aria-hidden="true" ng-disabled="doneDisabled" data-ng-click="clickedDone()" style="margin-top:10px"><span message key="lbl.filter.modal.spara-stang"></span></button>
 </div>

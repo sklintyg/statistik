@@ -21,7 +21,7 @@
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $routeParams, $window, $location, $timeout, $filter, statisticsData, diagnosisTreeFilter,
-        config, messageService, chartFactory, pdfFactory, _, ControllerCommons) {
+        config, messageService, chartFactory, pdfFactory, _, ControllerCommons, MAX_SELECTED_DXS) {
         'use strict';
 
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
@@ -169,6 +169,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             $scope.doneLoading = true;
         }
 
+        $scope.maxSelectedDxs = MAX_SELECTED_DXS;
         $scope.subTitle = config.title;
         $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet, isLandsting) : config.chartFootnotes;
         $scope.chartFootnotes = Array.isArray($scope.chartFootnotes) ? $scope.chartFootnotes : [];
