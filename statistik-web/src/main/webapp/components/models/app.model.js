@@ -30,7 +30,6 @@ angular.module('StatisticsApp').factory('AppModel',
             data.isLoggedIn = false;
             data.loginUrl = '';
             data.loginVisible = false;
-            data.highchartsExportUrl = '';
             data.projectVersion = '';
             return data;
         }
@@ -45,7 +44,6 @@ angular.module('StatisticsApp').factory('AppModel',
                 data.isLoggedIn = app.loggedIn;
                 data.loginUrl = app.loginUrl;
                 data.loginVisible = app.loginVisible;
-                data.highchartsExportUrl = app.highchartsExportUrl;
                 data.projectVersion = app.projectVersion;
             },
             get: function() {

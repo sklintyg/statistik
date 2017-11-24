@@ -18,22 +18,23 @@
  */
 package se.inera.statistics.web.service.monitoring;
 
+import javax.annotation.PostConstruct;
+import javax.jws.WebParam;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+
 import se.inera.statistics.web.util.HealthCheckUtil;
 import se.inera.statistics.web.util.VersionUtil;
 import se.riv.clinicalprocess.healthcond.monitoring.rivtabp21.v1.InternalPingForConfigurationResponderInterface;
 import se.riv.clinicalprocess.healthcond.monitoring.v1.ConfigurationType;
 import se.riv.clinicalprocess.healthcond.monitoring.v1.InternalPingForConfigurationResponseType;
 import se.riv.clinicalprocess.healthcond.monitoring.v1.InternalPingForConfigurationType;
-
-import javax.annotation.PostConstruct;
-import javax.jws.WebParam;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Implements PingForConfiguration and returns various statuses about the health of the application.
@@ -61,13 +62,11 @@ public class InternalPingForConfigurationResponderImpl implements InternalPingFo
         response.setVersion(versionUtil.getProjectVersion());
 
         HealthCheckUtil.Status db = healthCheck.checkDB();
-        HealthCheckUtil.Status highchartsExport = healthCheck.getHighchartsExportStatus();
         String uptime = healthCheck.getUptimeAsString();
         HealthCheckUtil.Status nbrOfLoggedInUsers = healthCheck.checkNbrOfLoggedInUsers();
         HealthCheckUtil.Status nbrOfUsers = healthCheck.getNumberOfUsers();
 
         addConfiguration(response, "dbStatus", db.isOk() ? "ok" : "error");
-        addConfiguration(response, "highchartExportStatus", highchartsExport.isOk() ? "ok" : "error");
         addConfiguration(response, "buildTime", versionUtil.getBuildTime());
         addConfiguration(response, "systemUptime", uptime);
         addConfiguration(response, "nbrOfLoggedInUsers", "" + Long.toString(nbrOfLoggedInUsers.getMeasurement()));

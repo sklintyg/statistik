@@ -21,7 +21,6 @@ package se.inera.statistics.web.model;
 public class AppSettings {
 
     private String loginUrl;
-    private String highchartsExportUrl;
     private boolean loginVisible;
     private boolean isLoggedIn;
     private String projectVersion;
@@ -32,14 +31,6 @@ public class AppSettings {
 
     public void setLoginUrl(String loginUrl) {
         this.loginUrl = loginUrl;
-    }
-
-    public String getHighchartsExportUrl() {
-        return highchartsExportUrl;
-    }
-
-    public void setHighchartsExportUrl(String highchartsExportUrl) {
-        this.highchartsExportUrl = highchartsExportUrl;
     }
 
     public boolean isLoginVisible() {
