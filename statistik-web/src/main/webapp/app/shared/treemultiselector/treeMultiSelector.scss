@@ -175,12 +175,15 @@
     clear: both;
     margin-top: 0;
 
-    label {
+    .label-text {
       font-size: 12px;
+      text-align: left;
+      padding: 0;
+    }
 
-      > div {
-        text-align: left;
-      }
+    .alert {
+      margin-bottom: 0;
+      text-align: left;
     }
   }
 

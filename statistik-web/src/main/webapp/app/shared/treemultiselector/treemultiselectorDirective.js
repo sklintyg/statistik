@@ -37,6 +37,7 @@ angular.module('StatisticsApp.treeMultiSelector.directive', [])
                 sidebarMenuCollapse: '@',
                 sidebarState: '=',
                 minSelections: '@',
+                maxSelections: '@',
                 runFilterMenuOnInit: '=',
                 verksamhetsTyper: '='
             },

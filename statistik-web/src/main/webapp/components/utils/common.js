@@ -20,7 +20,7 @@
 
 angular.module('StatisticsApp').factory('ControllerCommons',
     /** @ngInject */
-    function(_, $cacheFactory, UserModel, $filter, $route, StaticFilterData, $uibModal, MAX_SELECTED_DXS) {
+    function(_, $cacheFactory, UserModel, $filter, $route, StaticFilterData) {
         'use strict';
 
         var that = this;
@@ -156,20 +156,6 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 $('.modal-backdrop').remove();
                 $('body').removeClass('modal-open');
             }, 1);
-
-            if (diagnoses.length > MAX_SELECTED_DXS) {
-                $scope.ok = function () {
-                    $scope.modalInstance.close();
-                };
-
-                $scope.modalInstance = $uibModal.open({
-                    templateUrl: '/app/views/error/tooManyDxsSelected.html',
-                    scope: $scope,
-                    size: 'lg',
-                    windowClass: 'login-modal'
-                });
-                return;
-            }
 
             $timeout(function () {
                 $scope.doneLoading = false;

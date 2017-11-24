@@ -245,6 +245,20 @@ angular.module('StatisticsApp.treeMultiSelector.modal', ['ui.bootstrap', 'unders
             $scope.selectedTertiaryCounter = valueOr(levelCount[3], 0);
             $scope.selectedQuaternaryCounter = valueOr(levelCount[4], 0);
             $scope.$emit('selectionsChanged');
+
+            var compareValue;
+
+            if (directiveScope.maxDepth === 1) {
+                compareValue = $scope.selectedPrimaryCounter;
+            } else if (directiveScope.maxDepth === 2) {
+                compareValue = $scope.selectedSecondaryCounter;
+            } else if (directiveScope.maxDepth === 3) {
+                compareValue = $scope.selectedTertiaryCounter;
+            } else {
+                compareValue = $scope.selectedQuaternaryCounter;
+            }
+
+            $scope.showMaxWarning = compareValue > directiveScope.maxSelections;
         };
 
         $scope.updateState = function (item) {
