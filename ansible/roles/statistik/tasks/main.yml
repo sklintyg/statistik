@@ -10,6 +10,9 @@
     path: "{{ releases_folder }}"
     state: directory
 
+- name: Remove old liquibase runner files
+  shell: rm -rf "{{ releases_folder }}/liquibase-runner-*"
+
 - name: Make sure liquibase runner file download is forced when using shapshot repo
   file:
     state: absent
