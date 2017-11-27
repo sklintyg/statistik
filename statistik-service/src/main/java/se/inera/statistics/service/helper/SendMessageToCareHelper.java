@@ -37,11 +37,20 @@ public class SendMessageToCareHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(SendMessageToCareHelper.class);
 
+    private Unmarshaller unmarshaller;
+
+    private Unmarshaller getUnmarshaller() throws JAXBException {
+        if (unmarshaller == null) {
+            Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(SendMessageToCareType.class).createUnmarshaller();
+            jaxbUnmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
+            unmarshaller = jaxbUnmarshaller;
+        }
+        return unmarshaller;
+    }
+
     public SendMessageToCareType unmarshalSendMessageToCareTypeXml(String data) throws JAXBException {
-        Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(SendMessageToCareType.class).createUnmarshaller();
-        jaxbUnmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
         final StringReader reader = new StringReader(data);
-        return (SendMessageToCareType) JAXBIntrospector.getValue(jaxbUnmarshaller.unmarshal(reader));
+        return (SendMessageToCareType) JAXBIntrospector.getValue(getUnmarshaller().unmarshal(reader));
     }
 
     public String getIntygId(SendMessageToCareType message) {

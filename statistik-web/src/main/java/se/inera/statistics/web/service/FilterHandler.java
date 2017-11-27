@@ -131,7 +131,7 @@ public class FilterHandler {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final List<HsaIdEnhet> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
         final List<Enhet> enhets = enhetManager.getEnhets(allEnhets);
-        return enhets.stream().map(enhet -> loginServiceUtil.toVerksamhet(enhet)).collect(Collectors.toList());
+        return enhets.stream().map(enhet -> loginServiceUtil.enhetToVerksamhet(enhet)).collect(Collectors.toList());
     }
 
     FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultNumberOfMonthsInRange) {

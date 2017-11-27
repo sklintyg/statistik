@@ -170,17 +170,17 @@ public class LoginServiceUtil {
                 .map(hsaIdVardgivare -> {
                     List<Enhet> allEnhetsForVg = warehouse.getEnhets(hsaIdVardgivare);
                     if (realUser.isProcessledareForVg(hsaIdVardgivare) && allEnhetsForVg != null && !allEnhetsForVg.isEmpty()) {
-                        return allEnhetsForVg.stream().map(this::toVerksamhet);
+                        return allEnhetsForVg.stream().map(this::enhetToVerksamhet);
                     } else {
                         final List<Vardenhet> vardenhetsForVg = realUser.getVardenhetsForVg(hsaIdVardgivare);
-                        return vardenhetsForVg.stream().map(vardEnhet -> toVerksamhet(vardEnhet, allEnhetsForVg));
+                        return vardenhetsForVg.stream().map(vardEnhet -> vardenhetToVerksamhet(vardEnhet, allEnhetsForVg));
                     }
                 })
                 .flatMap(i -> i)
                 .collect(Collectors.toList());
     }
 
-    Verksamhet toVerksamhet(Enhet enhet) {
+    Verksamhet enhetToVerksamhet(Enhet enhet) {
         Kommun kommun = new Kommun();
         Lan lan = new Lan();
         return new Verksamhet(enhet.getEnhetId(), enhet.getNamn(), enhet.getVardgivareId(), null, enhet.getLansId(),
@@ -188,7 +188,7 @@ public class LoginServiceUtil {
                 getVerksamhetsTyper(enhet.getVerksamhetsTyper()));
     }
 
-    private Verksamhet toVerksamhet(final Vardenhet vardEnhet, List<Enhet> enhetsList) {
+    private Verksamhet vardenhetToVerksamhet(final Vardenhet vardEnhet, List<Enhet> enhetsList) {
         Optional<Enhet> enhetOpt = enhetsList.stream()
                 .filter(enhet -> enhet.getEnhetId().equals(vardEnhet.getId()))
                 .findAny();
