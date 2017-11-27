@@ -25,6 +25,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -82,22 +83,29 @@ public class ChartDataService {
     private NationellDataCalculator nationellDataCalculator;
 
     private volatile NationellDataResult nationellDataResult;
+    private AtomicBoolean dataCalculationOngoing = new AtomicBoolean(false);
 
-    private synchronized NationellDataResult getNationellDataResult() {
+    private NationellDataResult getNationellDataResult() {
         if (nationellDataResult == null) {
-            nationellDataResult = nationellDataCalculator.getData();
+            LOG.info("National cache is not set. Requesting population.");
+            buildCache();
         }
         return nationellDataResult;
     }
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
-    public synchronized void buildCache() {
-        LOG.info("New warehouse timestamp '{}', populating national cache", "-");
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        nationellDataResult = nationellDataCalculator.getData();
-        stopWatch.stop();
-        LOG.info("National cache populated  " + stopWatch.getTotalTimeMillis());
+    public void buildCache() {
+        LOG.info("National cache population requested");
+        if (!dataCalculationOngoing.getAndSet(true)) {
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+            nationellDataResult = nationellDataCalculator.getData();
+            stopWatch.stop();
+            LOG.info("National cache populated  " + stopWatch.getTotalTimeMillis());
+            dataCalculationOngoing.set(false);
+        } else {
+            LOG.info("National cache population is already ongoing. This population request is therefore skipped.");
+        }
     }
 
     /*

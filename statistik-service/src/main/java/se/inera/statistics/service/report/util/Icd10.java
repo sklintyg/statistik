@@ -300,7 +300,7 @@ public class Icd10 {
 
         public abstract int toInt();
 
-        public abstract List<Id> getSubItems();
+        public abstract List<? extends Id> getSubItems();
 
         public abstract Optional<Id> getParent();
 
@@ -359,8 +359,8 @@ public class Icd10 {
         }
 
         @Override
-        public List<Id> getSubItems() {
-            return getAvsnitt().stream().map(avs -> (Id) avs).collect(Collectors.toList());
+        public List<? extends Id> getSubItems() {
+            return avsnitt;
         }
 
         @Override
@@ -421,8 +421,8 @@ public class Icd10 {
         }
 
         @Override
-        public List<Id> getSubItems() {
-            return getKategori().stream().map(kat -> (Id) kat).collect(Collectors.toList());
+        public List<? extends Id> getSubItems() {
+            return kategori;
         }
 
         @Override
@@ -465,8 +465,8 @@ public class Icd10 {
         }
 
         @Override
-        public List<Id> getSubItems() {
-            return getKods().stream().map(kod -> (Id) kod).collect(Collectors.toList());
+        public List<? extends Id> getSubItems() {
+            return kods;
         }
 
         @Override
@@ -536,7 +536,7 @@ public class Icd10 {
         }
 
         @Override
-        public List<Id> getSubItems() {
+        public List<? extends Id> getSubItems() {
             return Collections.emptyList();
         }
 

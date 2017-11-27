@@ -25,7 +25,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
-import se.inera.intyg.infra.integration.hsa.client.AuthorizationManagementService;
 import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
 import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
 import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
@@ -93,9 +92,6 @@ public class HsaWebServiceCached implements HsaWebService {
 
     @Autowired
     private HSAWebServiceCalls service;
-
-    @Autowired
-    private AuthorizationManagementService authorizationManagementService;
 
     @Override
     public void setHsaLogicalAddress(String hsaLogicalAddress) {

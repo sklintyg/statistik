@@ -46,6 +46,8 @@ public class SjukfallPerPatientsPerEnhetConverter {
 
     private final Map<HsaIdEnhet, Integer> listningarPerEnhet;
     private final List<HsaIdEnhet> connectedEnhetIds;
+    public static final DecimalFormat TWO_DECIMALS_FORMAT_FOR_STRING = getDecimalFormatForString();
+    public static final DecimalFormat TWO_DECIMALS_FORMAT_FOR_DOUBLE = getDecimalFormatForDouble();
 
     public SjukfallPerPatientsPerEnhetConverter(List<LandstingEnhet> landstingEnhets, List<HsaIdEnhet> connectedEnhetIds) {
         this.connectedEnhetIds = connectedEnhetIds;
@@ -101,16 +103,22 @@ public class SjukfallPerPatientsPerEnhetConverter {
     }
 
     static String roundToTwoDecimalsAndFormatToString(float number) {
+        return TWO_DECIMALS_FORMAT_FOR_STRING.format(number);
+    }
+
+    private static DecimalFormat getDecimalFormatForString() {
         DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
         decimalFormatSymbols.setDecimalSeparator(',');
-        DecimalFormat twoDecimalsFormat = new DecimalFormat("0.00", decimalFormatSymbols);
-        return twoDecimalsFormat.format(number);
+        return new DecimalFormat("0.00", decimalFormatSymbols);
+    }
+
+    private static DecimalFormat getDecimalFormatForDouble() {
+        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+        return new DecimalFormat("0.00", decimalFormatSymbols);
     }
 
     static double roundToTwoDecimals(double number) {
-        DecimalFormatSymbols decimalFormatSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
-        DecimalFormat twoDecimalsFormat = new DecimalFormat("0.00", decimalFormatSymbols);
-        return Double.valueOf(twoDecimalsFormat.format(number));
+        return Double.valueOf(TWO_DECIMALS_FORMAT_FOR_DOUBLE.format(number));
     }
 
     private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
