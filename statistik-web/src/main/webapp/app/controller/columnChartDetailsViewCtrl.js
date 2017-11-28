@@ -68,9 +68,19 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         };
 
         var updateChart = function (ajaxResult, doneLoadingCallback) {
+            destroyChart(chart);
+
+            if (angular.isFunction(config.hideChart) && config.hideChart(ajaxResult)) {
+                $scope.series = [];
+                $scope.doneLoading = true;
+                $scope.hideChart = true;
+
+                return;
+            }
+
+            $scope.hideChart = false;
             $scope.series = chartFactory.addColor(ajaxResult.series);
             chartFactory.setColorToTotalCasesSeries($scope.series);
-            destroyChart(chart);
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
         };
 
@@ -378,7 +388,7 @@ angular.module('StatisticsApp').casesPerLakarbefattningConfig =
 
 angular.module('StatisticsApp').compareDiagnosis =
     /** @ngInject */
-    function (messageService) {
+    function (messageService, MAX_SELECTED_DXS) {
     'use strict';
 
     var conf = {};
@@ -389,6 +399,9 @@ angular.module('StatisticsApp').compareDiagnosis =
     conf.title = messageService.getProperty('title.diagnoscompare');
     conf.chartVerticalLabel = true;
     conf.showDiagnosisSelector = true;
+    conf.hideChart = function(data) {
+        return data.categories.length > MAX_SELECTED_DXS;
+    };
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/jamforDiagnoserTidsserie', active: false},

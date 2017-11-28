@@ -75,24 +75,31 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         }
 
         var updateChart = function (ajaxResult, doneLoadingCallback) {
-            var chartCategories = ajaxResult.femaleChart.categories;
-
             destroyChart(that.chart1);
             destroyChart(that.chart2);
 
+            if (angular.isFunction(config.hideChart) && config.hideChart(ajaxResult)) {
+                $scope.series = [];
+                $scope.doneLoading = true;
+                $scope.hideChart = true;
 
+                return;
+            }
+
+            var chartCategories = ajaxResult.femaleChart.categories;
+            var chartSeriesMale = ajaxResult.maleChart.series;
             var chartSeriesFemale = ajaxResult.femaleChart.series;
+            $scope.series = chartSeriesMale;
+            $scope.hideChart = false;
+
             chartFactory.addColor(chartSeriesFemale);
             var yAxisTitleUnit = config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall';
-            that.chart1 = that.paintChart('chart1', yAxisTitleUnit + ' för kvinnor', 118, chartCategories, chartSeriesFemale, -100, doneLoadingCallback, yAxisTitleUnit);
+            that.chart1 = that.paintChart('chart1', yAxisTitleUnit + ' för kvinnor', 118, chartCategories, chartSeriesFemale, -100, function() {}, yAxisTitleUnit);
 
-            var chartSeriesMale = ajaxResult.maleChart.series;
             chartFactory.addColor(chartSeriesMale);
             that.chart2 = that.paintChart('chart2', yAxisTitleUnit + ' för män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback, yAxisTitleUnit);
 
             updateChartsYAxisMaxValue();
-
-            $scope.series = chartSeriesMale;
         };
 
         $scope.switchChartType = function (chartType) {
@@ -343,7 +350,7 @@ angular.module('StatisticsApp').casesPerBusinessTimeSeriesConfig =
 
 angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig =
     /** @ngInject */
-    function (messageService) {
+    function (messageService, MAX_SELECTED_DXS) {
     'use strict';
 
     var conf = {};
@@ -356,6 +363,9 @@ angular.module('StatisticsApp').compareDiagnosisTimeSeriesConfig =
     };
     conf.title = messageService.getProperty('title.diagnoscompare');
     conf.showDiagnosisSelector = true;
+    conf.hideChart = function(data) {
+        return data.maleChart.series.length > MAX_SELECTED_DXS;
+    };
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/jamforDiagnoserTidsserie', active: true},

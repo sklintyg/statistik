@@ -82,13 +82,13 @@
         </button>
 
         <ul class="dropdown-menu detail-view-choice-dropdown dropdown-menu-right" uib-dropdown-menu role="menu">
-          <li>
+          <li data-ng-if="!hideChart">
             <a data-ng-click="printPdf()">
               <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
               <span message key="dropdown.val.skrivut-pdf"></span>
             </a>
           </li>
-          <li data-ng-repeat="chartContainer in chartContainers">
+          <li data-ng-if="!hideChart" data-ng-repeat="chartContainer in chartContainers">
             <a data-ng-click="exportChart(chartContainer.id, chartContainer.gender)">
               <i class="fa fa-file-image-o" aria-hidden="true"></i>
               <span message key="dropdown.val.spara-diagram-bild-1"></span>{{chartContainer.name}}<span message key="dropdown.val.spara-diagram-bild-2"></span>
@@ -166,26 +166,34 @@
       </div>
 
       <div class="collapsible-panel-body" uib-collapse="status.isChartCollapsed">
-        <div class="row">
-          <div data-ng-repeat="chartContainer in chartContainers"
-               data-ng-class="{'col-lg-6': chartContainers.length == 2}"
-               class="col-xs-12">
-            <div class="chart-page-chart" id="{{::chartContainer.id}}" data-ng-style="chartStyle"></div>
+        <div data-ng-if="hideChart">
+          <div class="alert alert-warning">
+            <strong>Varning!</strong> {{'alert.dxs.max.selected' | messageFilter}}
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-xs-12" id="chartlegends">
-            <div data-ng-repeat="seriesData in series"
-                 data-ng-if="showInLegend($index)"
-                 data-ng-class="{'clear-both': $index%2 == 0}"
-                 class="col-xs-12 col-sm-6">
-              <label class="legend-label">
-                <input type="checkbox" checked="" class="detail-checkbox" data-ng-click="toggleSeriesVisibility($index)" />
-                <span class="legend-color-square"
-                      data-ng-attr-style="background-color: {{::seriesData.color}}!important"></span>
-                <span class="legend-name" ng-bind-html="::seriesData.name | highlightWords"></span>
-              </label>
+        <div data-ng-if="!hideChart">
+          <div class="row">
+            <div data-ng-repeat="chartContainer in chartContainers"
+                 data-ng-class="{'col-lg-6': chartContainers.length == 2}"
+                 class="col-xs-12">
+              <div class="chart-page-chart" id="{{::chartContainer.id}}" data-ng-style="chartStyle"></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12" id="chartlegends">
+              <div data-ng-repeat="seriesData in series"
+                   data-ng-if="showInLegend($index)"
+                   data-ng-class="{'clear-both': $index%2 == 0}"
+                   class="col-xs-12 col-sm-6">
+                <label class="legend-label">
+                  <input type="checkbox" checked="" class="detail-checkbox" data-ng-click="toggleSeriesVisibility($index)" />
+                  <span class="legend-color-square"
+                        data-ng-attr-style="background-color: {{::seriesData.color}}!important"></span>
+                  <span class="legend-name" ng-bind-html="::seriesData.name | highlightWords"></span>
+                </label>
+              </div>
             </div>
           </div>
         </div>
