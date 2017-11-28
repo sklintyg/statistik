@@ -245,6 +245,16 @@ var stMessages = {
             '<li>Start- eller slutdatum för sjukskrivningsperioden måste vara mindre än fem år fram i tiden.</li>' +
             '<li>Slutdatum för sjukskrivningsperioden måste vara efter startdatumet.</li>' +
             '</ul>',
+        'faq.stats.3.title': 'Vad är nationell statistik?',
+        'faq.stats.3.body': '<p>Nationell statistik är statistik för alla elektroniska läkarintyg som utfärdats samt alla elektroniska meddelanden som har mottagits av landets olika vårdgivare. ' +
+                'Statistiken avidentifieras och lämnas ut från respektive vårdgivare för att sammanställas på nationell nivå. ' +
+                'För att statistiken inte ska kunna kopplas till enskilda personer så appliceras tröskelvärden i den nationella statistiken.</p>' +
+            '<p>Tröskelvärden innebär att om en vårdgivare har färre än fem sjukfall/intyg/meddelanden i en viss grupp räknas inte dessa in i statistiken. ' +
+            'Det kan leda till en liten felmarginal i statistiken då det presenterade antalet kan vara något lägre än det faktiska antalet på grund av att vissa sjukfall/intyg/meddelanden kan ha filtrerats bort.</p>',
+
+        'faq.stats.4.title': 'Varför ser jag ingen statistik för den valda verksamheten?',
+        'faq.stats.4.body': '<p>Det beror på att det i dagsläget inte finns inrapporterad data för verksamheten eller att du gjort ett för begränsat filterval.</p>',
+
 
         'faq.report.1.title': 'Hur skriver jag ut en rapport?',
         'faq.report.1.body': '<p>På varje rapportsida finns en knapp med texten ”Spara som” ovanför diagrammet. ' +
