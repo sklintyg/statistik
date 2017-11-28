@@ -94,7 +94,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
 
             chartFactory.addColor(chartSeriesFemale);
             var yAxisTitleUnit = config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall';
-            that.chart1 = that.paintChart('chart1', yAxisTitleUnit + ' för kvinnor', 118, chartCategories, chartSeriesFemale, -100, doneLoadingCallback, yAxisTitleUnit);
+            that.chart1 = that.paintChart('chart1', yAxisTitleUnit + ' för kvinnor', 118, chartCategories, chartSeriesFemale, -100, function() {}, yAxisTitleUnit);
 
             chartFactory.addColor(chartSeriesMale);
             that.chart2 = that.paintChart('chart2', yAxisTitleUnit + ' för män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback, yAxisTitleUnit);

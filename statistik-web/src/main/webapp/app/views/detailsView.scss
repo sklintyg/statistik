@@ -154,6 +154,10 @@
     border: 1px solid $stat-collapse-panel-bg;
     padding-left: 15px;
     padding-right: 15px;
+
+    .alert {
+      margin: 20px 0;
+    }
   }
 
   .clear-both {
