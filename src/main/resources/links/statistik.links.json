@@ -55,13 +55,13 @@
   },
   {
     "key": "sarskildBehorighetStatistik",
-    "url": "https://www.inera.se/globalassets/tjanster/intygstjanster/statistiktjansten/dokument/stodmaterial/behorigheter-och-medarbetaruppdrag.pdf",
+    "url": "https://www.inera.se/kundservice/dokument-och-lankar/tjanster/statistiktjanst-for-ordinerad-sjukskrivning/",
     "text": "Mer information om behörighet för Intygsstatistik (extern länk)",
     "target": "_blank"
   },
   {
     "key": "sarskildBehorighetStatistikClickHere",
-    "url": "http://www.inera.se/globalassets/tjanster/intygstjanster/statistiktjansten/dokument/stodmaterial/behorigheter-och-medarbetaruppdrag.pdf",
+    "url": "https://www.inera.se/kundservice/dokument-och-lankar/tjanster/statistiktjanst-for-ordinerad-sjukskrivning/",
     "text": "klicka här",
     "target": "_blank"
   },
@@ -85,7 +85,7 @@
   },
   {
     "key": "administrationAvLandsting",
-    "url": "https://www.inera.se/globalassets/tjanster/intygstjanster/statistiktjansten/dokument/stodmaterial/administration_av_landsting.pdf",
+    "url": "https://www.inera.se/kundservice/dokument-och-lankar/tjanster/statistiktjanst-for-ordinerad-sjukskrivning/",
     "text": "Instruktioner",
     "target": "_blank"
   }
