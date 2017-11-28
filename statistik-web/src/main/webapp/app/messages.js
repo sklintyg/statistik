@@ -126,6 +126,7 @@ var stMessages = {
         'dropdown.val.spara-diagram-bild-2': ')',
         'dropdown.val.spara-excel': ' Excel',
         'alert.diagnosgrupp.information': 'För en given månad kan samma sjukfall visas fler än en gång i graf och tabell. Om ett sjukfall innehåller flera intyg under samma månad så hämtas diagnos från varje intyg. Om intygen har olika diagnosgrupper kommer sjukfallet finnas med en gång för varje diagnosgrupp för respektive månad. Exempel: Om ett sjukfall innehåller två intyg för maj månad, där intyg ett sätter diagnosen M54 och intyg två efter vidare utredning sätter diagnosen F32, så kommer sjukfallet både räknas med i gruppen för Muskuloskeleta sjukdomar (M00-M99) och i gruppen för Psykiska sjukdomar (F00-F99) i graf och tabell för maj månad.',
+        'alert.dxs.max.selected': 'Du har valt för många diagnoser för att diagrammet ska kunna visas. Överväg att filtrera ytterligare eller välj en annan indelning för att minska mängden data.',
 
         'comparediagnoses.choose-level': 'Välj indelning:',
         'comparediagnoses.level.category': 'Diagnoskategorier',
