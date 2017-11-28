@@ -151,13 +151,6 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             var diagnoses = diagnosisTreeFilter.getSelectedDiagnosis();
 
             $timeout(function () {
-                //Ugly fix from http://stackoverflow.com/questions/20827282/cant-dismiss-modal-and-change-page-location
-                $('#cancelModal').modal('hide');
-                $('.modal-backdrop').remove();
-                $('body').removeClass('modal-open');
-            }, 1);
-
-            $timeout(function () {
                 $scope.doneLoading = false;
             }, 1);
 
@@ -167,6 +160,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
             var success = function (selectionHash) {
                 var path = $location.path();
+                var search = $location.search();
                 var newPath = that.getCompareDiagnosisPath(selectionHash);
 
                 if (path === newPath) {
@@ -174,7 +168,10 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                         $scope.doneLoading = true;
                     }, 1);
                 } else {
+                    delete search.chartType;
+
                     $location.path(newPath);
+                    $location.search(search);
                 }
             };
 
