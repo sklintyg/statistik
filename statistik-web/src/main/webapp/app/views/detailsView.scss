@@ -126,28 +126,6 @@
     @include at2x('../assets/images/chart-types/ytdiagram_procent', $ext: 'png', $w: 21px, $h: 18px);
   }
 
-  .compare-diagnosis {
-    margin-top: 20px;
-
-    label {
-      font-size: 13px;
-    }
-
-    .radio {
-      margin-top: 0;
-
-      + .radio {
-        margin-top: -5px;
-        margin-bottom: 15px;
-      }
-
-      .radio-text {
-        padding-top: 2px;
-        display: inline-block;
-      }
-    }
-  }
-
   .collapsible-panel-body {
     @extend %chartContainer;
 
