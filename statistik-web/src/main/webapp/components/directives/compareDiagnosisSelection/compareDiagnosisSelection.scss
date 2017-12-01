@@ -8,13 +8,13 @@ compare-diagnosis-selection {
   .radio {
     margin-top: 0;
 
-    + .radio {
-      margin-bottom: 15px;
-    }
-
     .radio-text {
       padding-top: 2px;
       display: inline-block;
     }
+  }
+
+  .radio-button-group {
+    margin-bottom: 15px;
   }
 }

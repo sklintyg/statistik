@@ -32,81 +32,51 @@ angular.module('StatisticsApp')
             controller: function($scope, MAX_SELECTED_DXS, messageService, $timeout, $location, ControllerCommons, diagnosisTreeFilter, statisticsData) {
                 var vm = this;
 
-                vm.maxSelectedDxs = MAX_SELECTED_DXS;
+                _init();
 
-                vm.diagnosisSelectorData = {
-                    titleText: messageService.getProperty('comparediagnoses.lbl.val-av-diagnoser', null, '', null, true),
-                    buttonLabelText: messageService.getProperty('lbl.filter.val-av-diagnoser-knapp', null, '', null, true),
-                    firstLevelLabelText: messageService.getProperty('lbl.filter.modal.kapitel', null, '', null, true),
-                    secondLevelLabelText: messageService.getProperty('lbl.filter.modal.avsnitt', null, '', null, true),
-                    thirdLevelLabelText: messageService.getProperty('lbl.filter.modal.kategorier', null, '', null, true),
-                    leavesLevelLabelText: messageService.getProperty('lbl.filter.modal.leaves', null, '', null, true)
-                };
-
-                vm.diagnoses = {
-                    section: 2,
-                    chapter: 3,
-                    category: 0,
-                    code: 1
-                };
-
-                if ($location.search().codelevel) {
-                    vm.codeLevel = parseInt($location.search().codelevel, 10);
-                } else {
-                    vm.codeLevel = 0;
-                }
-                setMaxDepth();
-
-                $scope.$watch('vm.codeLevel', function(newValue, oldValue) {
+                $scope.$watch('vm.level', function(newValue, oldValue) {
                     if (newValue === oldValue) {
                         return;
                     }
 
-                    setMaxDepth();
+                    var urlLevel = diagnosisTreeFilter.levelToUrlLevel(newValue);
 
                     $timeout(function() {
                         var newPath = getCompareDiagnosisPath('-');
-                        $location.search('codelevel', newValue);
+                        $location.search('codelevel', urlLevel);
                         $location.path(newPath);
                     });
                 });
 
-                diagnosisTreeFilter.setup(vm.routeParams, vm.codeLevel);
-                vm.diagnosisTreeFilter = diagnosisTreeFilter;
+                function _init() {
+                    vm.maxSelectedDxs = MAX_SELECTED_DXS;
 
-                vm.diagnosisSelected = function () {
-                    diagnosisToCompareSelected(diagnosisTreeFilter, $timeout, $scope, statisticsData, $location);
-                };
+                    vm.diagnosisSelectorData = {
+                        titleText: messageService.getProperty('comparediagnoses.lbl.val-av-diagnoser', null, '', null, true),
+                        buttonLabelText: messageService.getProperty('lbl.filter.val-av-diagnoser-knapp', null, '', null, true),
+                        firstLevelLabelText: messageService.getProperty('lbl.filter.modal.kapitel', null, '', null, true),
+                        secondLevelLabelText: messageService.getProperty('lbl.filter.modal.avsnitt', null, '', null, true),
+                        thirdLevelLabelText: messageService.getProperty('lbl.filter.modal.kategorier', null, '', null, true),
+                        leavesLevelLabelText: messageService.getProperty('lbl.filter.modal.leaves', null, '', null, true)
+                    };
 
-                function setMaxDepth() {
-                    var depth;
+                    vm.diagnoses = diagnosisTreeFilter.levels;
 
-                    console.log(vm.codeLevel);
-
-                    switch (vm.codeLevel) {
-                    case 1:
-                        depth = 4;
-                        break;
-                    case 2:
-                        depth = 1;
-                        break;
-                    case 3:
-                        depth = 2;
-                        break;
-                    default:
-                        depth = 3;
+                    if ($location.search().codelevel) {
+                        vm.urlLevel = parseInt($location.search().codelevel, 10);
+                    } else {
+                        vm.urlLevel = 0;
                     }
 
-                    vm.maxDepth = depth;
+                    vm.level = diagnosisTreeFilter.urlLevelToCorrectLevel(vm.urlLevel);
+
+                    diagnosisTreeFilter.setup(vm.routeParams.diagnosHash, vm.level);
+                    vm.diagnosisTreeFilter = diagnosisTreeFilter;
+                    vm.diagnosisSelected = diagnosisToCompareSelected;
                 }
 
-
-                function diagnosisToCompareSelected(diagnosisTreeFilter, $timeout, $scope, statisticsData, $location) {
+                function diagnosisToCompareSelected() {
                     var diagnoses = diagnosisTreeFilter.getSelectedDiagnosis();
-
-                    $timeout(function () {
-                        $scope.doneLoading = false;
-                    }, 1);
 
                     var params = {
                         diagnoser: diagnoses
@@ -117,11 +87,7 @@ angular.module('StatisticsApp')
                         var search = $location.search();
                         var newPath = getCompareDiagnosisPath(selectionHash);
 
-                        if (path === newPath) {
-                            $timeout(function () {
-                                $scope.doneLoading = true;
-                            }, 1);
-                        } else {
+                        if (path !== newPath) {
                             delete search.chartType;
 
                             $location.path(newPath);

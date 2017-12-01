@@ -27,9 +27,16 @@ angular.module('StatisticsApp')
             var preselectedFilter = {diagnoser: []};
 
             diagnosisTreeFilter.diagnosisOptionsTree = {subs: []};
-            diagnosisTreeFilter.showCodeLevel = false;
+            diagnosisTreeFilter.level = 3;
 
-            diagnosisTreeFilter.selectAll = function (item) {
+            diagnosisTreeFilter.levels = {
+                chapter: 1,
+                section: 2,
+                category: 3,
+                code: 4
+            };
+
+            diagnosisTreeFilter.selectAll = function(item) {
                 item.allSelected = true;
                 item.someSelected = false;
                 if (item.subs) {
@@ -39,7 +46,7 @@ angular.module('StatisticsApp')
                 }
             };
 
-            diagnosisTreeFilter.deselectAll = function (item) {
+            diagnosisTreeFilter.deselectAll = function(item) {
                 item.allSelected = false;
                 item.someSelected = false;
                 if (item.subs) {
@@ -49,7 +56,7 @@ angular.module('StatisticsApp')
                 }
             };
 
-            diagnosisTreeFilter.selectByAttribute = function (item, listOfIdsToSelect, attribute) {
+            diagnosisTreeFilter.selectByAttribute = function(item, listOfIdsToSelect, attribute) {
                 if (listOfIdsToSelect.indexOf(item[attribute]) > -1) {
                     diagnosisTreeFilter.selectAll(item);
                 } else {
@@ -63,7 +70,7 @@ angular.module('StatisticsApp')
                 }
             };
 
-           diagnosisTreeFilter.selectDiagnoses = function selectDiagnoses(diagnoses) {
+            diagnosisTreeFilter.selectDiagnoses = function(diagnoses) {
                 diagnosisTreeFilter.selectByAttribute(diagnosisTreeFilter.diagnosisOptionsTree, diagnoses, 'numericalId');
                 treeMultiSelectorUtil.updateSelectionState(diagnosisTreeFilter.diagnosisOptionsTree);
             };
@@ -73,13 +80,13 @@ angular.module('StatisticsApp')
             };
 
             //This should be a utility method
-            diagnosisTreeFilter.getSelectedLeaves = function(node) {
-                if (node.subs && node.subs.length !== 0 && (diagnosisTreeFilter.showCodeLevel || node.subs[0].typ !== 'kod')) {
-                    return _.reduce(node.subs, function (memo, item) {
-                        return memo.concat(diagnosisTreeFilter.getSelectedLeaves(item));
-                    }, []);
-                } else {
+            diagnosisTreeFilter.getSelectedLeaves = function(node, level) {
+                if (!node.subs || node.subs.length === 0 || level > diagnosisTreeFilter.level) {
                     return node.allSelected ? [node] : [];
+                } else {
+                    return _.reduce(node.subs, function (memo, item) {
+                        return memo.concat(diagnosisTreeFilter.getSelectedLeaves(item, level + 1));
+                    }, []);
                 }
             };
 
@@ -87,7 +94,7 @@ angular.module('StatisticsApp')
                 if (!diagnosisTreeFilter.diagnosisOptionsTree) {
                     return null;
                 }
-                return _.map(diagnosisTreeFilter.getSelectedLeaves(diagnosisTreeFilter.diagnosisOptionsTree), function(it){
+                return _.map(diagnosisTreeFilter.getSelectedLeaves(diagnosisTreeFilter.diagnosisOptionsTree, 1), function(it){
                     return it.numericalId;
                 });
             };
@@ -97,29 +104,31 @@ angular.module('StatisticsApp')
                 preselectedFilter = {diagnoser: []};
             };
 
-            var diagnosHashExists = function diagnosHashExists(routeParams) {
-                return routeParams.diagnosHash !== '-';
+            var diagnosHashExists = function(diagnosHash) {
+                return diagnosHash !== '-';
             };
 
-            var populateTreeMultiSelectWithPrefilteredData = function populateTreeMultiSelectWithPrefilteredData(routeParams) {
-                statisticsData.getFilterData(routeParams.diagnosHash, function(filterData) {
+            var populateTreeMultiSelectWithPrefilteredData = function(diagnosHash) {
+                statisticsData.getFilterData(diagnosHash, function(filterData) {
                     preselectedFilter = filterData;
                     diagnosisTreeFilter.setPreselectedFilter();
-                }, function(){ throw new Error('Could not parse filter'); });
+                }, function() {
+                    throw new Error('Could not parse filter');
+                });
             };
 
-            var hasDiagnosisOptionsTreeAnySubs = function hasDiagnosisOptionsTreeAnySubs() {
+            var hasDiagnosisOptionsTreeAnySubs = function() {
                 return diagnosisTreeFilter.diagnosisOptionsTree.subs.length > 0;
             };
 
-            var firstTimeInitiationOfDiagnosisTree = function firstTimeInitiation(routeParams) {
+            var firstTimeInitiationOfDiagnosisTree = function(diagnosHash) {
                 StaticFilterDataService.get().then(function() {
                     var diagnosisTree = StaticFilterData.get().icd10Structure;
                     diagnosisTreeFilter.diagnosisOptionsTree = {subs: diagnosisTree};
 
                     //If we do have a filter hash already then we very much want to apply it.
-                    if(diagnosHashExists(routeParams)) {
-                        populateTreeMultiSelectWithPrefilteredData(routeParams);
+                    if(diagnosHashExists(diagnosHash)) {
+                        populateTreeMultiSelectWithPrefilteredData(diagnosHash);
                     }
                 });
             };
@@ -128,17 +137,57 @@ angular.module('StatisticsApp')
              *   This initiates or resets the treemultiselect with diagnoses
              *    every time it is needed.
              */
-            diagnosisTreeFilter.setup = function(routeParams, showCodeLevel) {
+            diagnosisTreeFilter.setup = function(diagnosHash, level) {
+                diagnosisTreeFilter.level = level;
+
                 if (!hasDiagnosisOptionsTreeAnySubs()) {
-                    firstTimeInitiationOfDiagnosisTree(routeParams);
-                } else if(hasDiagnosisOptionsTreeAnySubs() && !diagnosHashExists(routeParams)) {
+                    firstTimeInitiationOfDiagnosisTree(diagnosHash);
+                } else if(!diagnosHashExists(diagnosHash)) {
                     diagnosisTreeFilter.resetSelections();
-                } else if(hasDiagnosisOptionsTreeAnySubs() && diagnosHashExists(routeParams)) {
+                } else {
                     diagnosisTreeFilter.resetSelections();
-                    populateTreeMultiSelectWithPrefilteredData(routeParams);
+                    populateTreeMultiSelectWithPrefilteredData(diagnosHash);
+                }
+            };
+
+            diagnosisTreeFilter.urlLevelToCorrectLevel = function(urlLevel) {
+                var level;
+
+                switch (urlLevel) {
+                case 1:
+                    level = diagnosisTreeFilter.levels.code;
+                    break;
+                case 2:
+                    level = diagnosisTreeFilter.levels.section;
+                    break;
+                case 3:
+                    level = diagnosisTreeFilter.levels.chapter;
+                    break;
+                default:
+                    level = diagnosisTreeFilter.levels.category;
                 }
 
-                diagnosisTreeFilter.showCodeLevel = showCodeLevel;
+                return level;
+            };
+
+            diagnosisTreeFilter.levelToUrlLevel = function(level) {
+                var urlLevel;
+
+                switch (level) {
+                case diagnosisTreeFilter.levels.code:
+                    urlLevel = 1;
+                    break;
+                case diagnosisTreeFilter.levels.section:
+                    urlLevel = 2;
+                    break;
+                case diagnosisTreeFilter.levels.chapter:
+                    urlLevel = 3;
+                    break;
+                default:
+                    urlLevel = 0;
+                }
+
+                return urlLevel;
             };
 
             return diagnosisTreeFilter;
