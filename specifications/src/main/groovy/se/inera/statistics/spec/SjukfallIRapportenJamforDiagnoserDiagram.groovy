@@ -24,6 +24,24 @@ class SjukfallIRapportenJamforDiagnoserDiagram extends SimpleDetailsReport {
         return diagnoskategori
     }
 
+    void setValdaDiagnoskapitel(String kapitelString) {
+        if (kapitelString != null && !kapitelString.trim().isEmpty()) {
+            this.valdaDiagnoser.addAll(kapitelString.split(",")*.trim().collect{
+                def code = it.replaceAll("intern", "")
+                String.valueOf(Icd10.icd10ToInt(code, Icd10RangeType.KAPITEL) * (it.endsWith("intern") ? -1 : 1))
+            })
+        }
+    }
+
+    void setValdaDiagnosavsnitt(String avsnittString) {
+        if (avsnittString != null && !avsnittString.trim().isEmpty()) {
+            this.valdaDiagnoser.addAll(avsnittString.split(",")*.trim().collect{
+                def code = it.replaceAll("intern", "")
+                String.valueOf(Icd10.icd10ToInt(code, Icd10RangeType.AVSNITT) * (it.endsWith("intern") ? -1 : 1))
+            })
+        }
+    }
+
     void setValdaDiagnoskategorier(String kategoriString) {
         if (kategoriString != null && !kategoriString.trim().isEmpty()) {
             this.valdaDiagnoser.addAll(kategoriString.split(",")*.trim().collect{

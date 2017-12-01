@@ -156,7 +156,7 @@ public class DiagnosgruppQuery {
             int periodLength, List<String> diagnosis) {
         final List<Icd10.Id> kategoris = Lists.transform(diagnosis, diagnos -> icd10.findIcd10FromNumericId(Integer.valueOf(diagnos)));
         final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
-        final List<Icd10RangeType> rangeTypes = Arrays.asList(Icd10RangeType.KATEGORI, Icd10RangeType.KOD);
+        final List<Icd10RangeType> rangeTypes = Arrays.asList(Icd10RangeType.AVSNITT, Icd10RangeType.KAPITEL, Icd10RangeType.KATEGORI, Icd10RangeType.KOD);
         final List<KonDataRow> periodRows = getKonDataRows(sjukfallGroups, kategoris, rangeTypes, true);
         final List<SimpleKonDataRow> rows = new ArrayList<>(kategoris.size());
         final List<KonField> data = periodRows.get(0).getData();
