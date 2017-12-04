@@ -52,10 +52,7 @@ public class PopulationTest {
     private Warehouse warehouse;
 
     @Autowired
-    private WidelineConverter widelineConverter;
-
-    @Autowired
-    private FactPopulator factPopulator;
+    private WidelineManager widelineManager;
 
     @Autowired
     private Clock clock;
@@ -63,11 +60,7 @@ public class PopulationTest {
     @Test
     public void addingIntygAddsToCorrectAisle() {
         IntygDTO dto = DocumentHelper.convertToDTO(rawDocument);
-
-        for (WideLine wideLine : widelineConverter.toWideline(dto, JSON_NODE, 0, "0", EventType.CREATED)) {
-            factPopulator.accept(wideLine);
-        }
-        warehouse.complete(LocalDateTime.now(clock));
+        widelineManager.accept(dto, JSON_NODE, 0, "0", EventType.CREATED);
         Aisle aisle = warehouse.get(new HsaIdVardgivare("VARDGIVARID"));
         assertEquals(4, aisle.getSize());
     }

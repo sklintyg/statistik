@@ -73,7 +73,7 @@ public class ReceiverTransactionalIT {
 
 
     @Autowired
-    private se.inera.statistics.service.testsupport.QueueSender queueSender;
+    private se.inera.statistics.testsupport.QueueSender queueSender;
 
     @Before
     public void setup() {

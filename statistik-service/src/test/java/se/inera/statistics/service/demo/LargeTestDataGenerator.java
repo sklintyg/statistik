@@ -35,12 +35,11 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10.Avsnitt;
 import se.inera.statistics.service.report.util.Icd10.Kapitel;
 import se.inera.statistics.service.report.util.Icd10.Kategori;
-import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
-import se.inera.statistics.service.warehouse.FactPopulator;
+import se.inera.statistics.service.warehouse.VgNumber;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WidelineConverter;
-import se.inera.statistics.service.warehouse.model.db.WideLine;
+import se.inera.statistics.service.warehouse.WidelineManager;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
@@ -48,7 +47,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import static se.inera.statistics.service.helper.DocumentHelper.*;
@@ -90,7 +88,7 @@ public class LargeTestDataGenerator {
     private WidelineConverter widelineConverter;
 
     @Autowired
-    private FactPopulator factPopulator;
+    private WidelineManager widelineManager;
 
     @Autowired
     private Icd10 icd10;
@@ -108,6 +106,10 @@ public class LargeTestDataGenerator {
         LOG.info("Max intyg to insert: " + maxIntyg);
     }
 
+    public void setMaxIntyg(int maxIntyg) {
+        this.maxIntyg = maxIntyg;
+    }
+
     public void publishUtlatanden() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
         int count = 0;
@@ -121,12 +123,9 @@ public class LargeTestDataGenerator {
                 HsaInfo hsaInfo = hsaService.getHSAInfo(hsaKey);
                 try {
                     IntygDTO dto = DocumentHelper.convertToDTO(utlatande);
-
-                    for (WideLine wideLine : widelineConverter.toWideline(dto, hsaInfo, count++, "" + count, EventType.CREATED)) {
-                        factPopulator.accept(wideLine);
-                        if (count > maxIntyg) {
-                            break maxIntyg;
-                        }
+                    widelineManager.accept(dto, hsaInfo, count++, "" + count, EventType.CREATED);
+                    if (count > maxIntyg) {
+                        break maxIntyg;
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -137,11 +136,10 @@ public class LargeTestDataGenerator {
     }
 
     public String exportUtlatanden() {
-        Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
+        List<VgNumber> allVardgivare = warehouse.getAllVardgivare();
         StringBuilder result = new StringBuilder("vg;").append(Fact.HEADING).append('\n');
-        for (Map.Entry<HsaIdVardgivare, Aisle> entry : allVardgivare.entrySet()) {
-            HsaIdVardgivare vg = entry.getKey();
-            for (Fact line : entry.getValue()) {
+        for (VgNumber vg : allVardgivare) {
+            for (Fact line : warehouse.get(vg.getVgid())) {
                 result.append(vg).append(line.toCSVString(';'));
             }
         }
@@ -162,7 +160,9 @@ public class LargeTestDataGenerator {
 
     public JsonNode permutate(UtlatandeBuilder builder, String patientId, LocalDate start) {
         // CHECKSTYLE:OFF MagicNumber
-        LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ? start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) : start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
+        LocalDate end = random.nextFloat() < LONG_PERIOD_FRACTION ?
+                start.plusDays(random.nextInt(LONG_PERIOD_DAYS) + 7) :
+                start.plusDays(random.nextInt(SHORT_PERIOD_DAYS) + 7);
         // CHECKSTYLE:ON MagicNumber
 
         int vardId = random.nextInt(NUMBER_OF_UNITS);

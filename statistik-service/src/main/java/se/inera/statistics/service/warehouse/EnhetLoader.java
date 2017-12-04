@@ -20,66 +20,45 @@ package se.inera.statistics.service.warehouse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class EnhetLoader {
 
     private static final Logger LOG = LoggerFactory.getLogger(EnhetLoader.class);
 
-    private static final int FETCH_SIZE = 10000;
-    @Autowired
-    private DataSource dataSource;
+    @PersistenceContext(unitName = "IneraStatisticsLog")
+    private EntityManager manager;
 
-    @Autowired
-    private Warehouse warehouse;
+    public List<Enhet> getAllEnhetsForVg(HsaIdVardgivare vg) {
+        LOG.info("Getting enhets for vg: " + vg);
+        final TypedQuery<Enhet> query = manager.createNamedQuery("Enhet.getByVg", Enhet.class);
+        query.setParameter("vgid", vg.getId());
+        return query.getResultList();
+    }
 
-    public int populateWarehouse() {
-        try (
-                Connection connection = dataSource.getConnection();
-                PreparedStatement stmt = prepareStatement(connection);
-                ResultSet resultSet = stmt.executeQuery()
-        ) {
-            int lineNo = 0;
-            while (resultSet.next()) {
-                lineNo++;
-                Enhet enhet = toEnhet(resultSet);
-                warehouse.accept(enhet);
-            }
-            return lineNo;
-        } catch (SQLException e) {
-            LOG.error("Could not populate warehouse", e);
+    public List<Enhet> getEnhets(Collection<HsaIdEnhet> enhetIds) {
+        if (enhetIds == null || enhetIds.isEmpty()) {
+            return Collections.emptyList();
         }
 
-        return -1;
-    }
-
-    private Enhet toEnhet(ResultSet resultSet) throws SQLException {
-        String vardgivareId = resultSet.getString("vardgivareId");
-        String enhetId = resultSet.getString("enhetId");
-        String enhetNamn = resultSet.getString("namn");
-        String lansId = resultSet.getString("lansId");
-        String kommunId = resultSet.getString("kommunId");
-        String verksamhetsTyper = resultSet.getString("verksamhetsTyper");
-
-        return new Enhet(new HsaIdVardgivare(vardgivareId), new HsaIdEnhet(enhetId), enhetNamn, lansId, kommunId, verksamhetsTyper);
-    }
-
-    private PreparedStatement prepareStatement(Connection connection) throws SQLException {
-        String sql = "select vardgivareId, enhetId, namn, lansId, kommunid, verksamhetstyper from enhet";
-        PreparedStatement stmt = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-        stmt.setFetchSize(FETCH_SIZE);
-        return stmt;
+        final TypedQuery<Enhet> query = manager.createNamedQuery("Enhet.getByEnhetids", Enhet.class);
+        final List<String> stringEnhetids = enhetIds.stream().map(HsaIdAny::getId).collect(Collectors.toList());
+        LOG.info("Getting enhets for ids: " + String.join(", ", stringEnhetids));
+        query.setParameter("enhetids", stringEnhetids);
+        return query.getResultList();
     }
 
 }

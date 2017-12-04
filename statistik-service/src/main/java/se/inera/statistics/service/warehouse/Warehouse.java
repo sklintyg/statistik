@@ -18,105 +18,164 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class Warehouse implements Iterable<Aisle> {
 
     private static final Logger LOG = LoggerFactory.getLogger(Warehouse.class);
 
-    private volatile Map<HsaIdVardgivare, Aisle> aisles = new HashMap<>();
-    private Map<HsaIdVardgivare, MutableAisle> loadingAisles = new HashMap<>();
-    private volatile Map<HsaIdVardgivare, List<Enhet>> enhets;
-    private Map<HsaIdVardgivare, List<Enhet>> loadingEnhets = new HashMap<>();
+    @Autowired
+    private WidelineLoader widelineLoader;
+
+    @Autowired
+    private EnhetLoader enhetLoader;
+
     private static IdMap<HsaIdEnhet> enhetsMap = new IdMap<>();
     private static IdMap<HsaIdLakare> lakareMap = new IdMap<>();
-    private LocalDateTime lastUpdate = null;
 
-    public void accept(Fact fact, HsaIdVardgivare vardgivareId) {
-        MutableAisle aisle = getAisle(vardgivareId, loadingAisles, true);
-        aisle.addLine(fact);
+    private LoadingCache<HsaIdVardgivare, Aisle> aisleCache;
+    private LoadingCache<HsaIdVardgivare, List<Enhet>> enhetsCache;
+
+    @Scheduled(cron = "${scheduler.factReloadJob.cron}")
+    public void clearAisleCache() {
+        getAisleCache().invalidateAll();
+        getEnhetsCache().invalidateAll();
     }
 
-    public void accept(Enhet enhet) {
-        List<Enhet> list = loadingEnhets.get(enhet.getVardgivareId());
-        if (list == null) {
-            list = new ArrayList<>();
+    private LoadingCache<HsaIdVardgivare, Aisle> getAisleCache() {
+        if (aisleCache == null) {
+            aisleCache = CacheBuilder.newBuilder()
+                    .softValues()
+                    .build(new CacheLoader<HsaIdVardgivare, Aisle>() {
+                        @Override
+                        public Aisle load(@NotNull HsaIdVardgivare vardgivarId) {
+                            return getAisle(vardgivarId);
+                        }
+                    });
         }
-        list.add(enhet);
-        loadingEnhets.put(enhet.getVardgivareId(), list);
+        return aisleCache;
+    }
+
+    private LoadingCache<HsaIdVardgivare, List<Enhet>> getEnhetsCache() {
+        if (enhetsCache == null) {
+            enhetsCache = CacheBuilder.newBuilder()
+                    .softValues()
+                    .build(new CacheLoader<HsaIdVardgivare, List<Enhet>>() {
+                        @Override
+                        public List<Enhet> load(@NotNull HsaIdVardgivare vardgivareId) {
+                            return enhetLoader.getAllEnhetsForVg(vardgivareId);
+                        }
+                    });
+        }
+        return enhetsCache;
+    }
+
+    private Aisle getAisle(HsaIdVardgivare vardgivarId) {
+        final List<Aisle> ailesForVgs = widelineLoader.getAilesForVgs(Collections.singletonList(vardgivarId));
+        return ailesForVgs.isEmpty() ? new Aisle(vardgivarId, Collections.emptyList()) : ailesForVgs.get(0);
     }
 
     public Aisle get(HsaIdVardgivare vardgivarId) {
-        final Aisle aisle = aisles.get(vardgivarId);
-        if (aisle == null) {
-            return new MutableAisle(vardgivarId).createAisle();
+        try {
+            return getAisleCache().get(vardgivarId);
+        } catch (ExecutionException e) {
+            LOG.warn("Failed to get aisle from cache for vg: " + vardgivarId);
         }
-        return aisle;
+        return getAisle(vardgivarId);
     }
 
     public List<Enhet> getEnhets(HsaIdVardgivare vardgivareId) {
-        List<Enhet> result = enhets.get(vardgivareId);
-        return result == null ? new ArrayList<Enhet>() : result;
+        try {
+            return getEnhetsCache().get(vardgivareId);
+        } catch (ExecutionException e) {
+            LOG.warn("Could not get enhets from cache for vg: " + vardgivareId);
+        }
+        return enhetLoader.getAllEnhetsForVg(vardgivareId);
     }
 
     public List<Enhet> getEnhetsWithHsaId(Collection<HsaIdEnhet> enhetIds) {
-        if (enhets == null || enhetIds == null) {
-            return new ArrayList<>();
-        }
-        return enhets.values().stream().reduce(new ArrayList<>(), (a, b) -> {
-            a.addAll(b);
-            return a;
-        }).stream().filter(enhet -> enhetIds.contains(enhet.getEnhetId())).collect(Collectors.toList());
+        return enhetLoader.getEnhets(enhetIds);
     }
 
-    private MutableAisle getAisle(HsaIdVardgivare vardgivareId, Map<HsaIdVardgivare, MutableAisle> aisles, boolean add) {
-        MutableAisle aisle = aisles.get(vardgivareId);
-        if (aisle == null) {
-            aisle = new MutableAisle(vardgivareId);
-            if (add) {
-                aisles.put(vardgivareId, aisle);
-            }
-        }
-        return aisle;
+    public List<VgNumber> getAllVardgivare() {
+        return widelineLoader.getAllVgs();
     }
 
-    @Override
-    public String toString() {
-        long total = 0;
-        for (Aisle aisle: aisles.values()) {
-            total += aisle.getSize();
-        }
-        return "Warehouse [" + aisles.size() + " aisles, " + total + " lines]";
-    }
-
-    public Map<HsaIdVardgivare, Aisle> getAllVardgivare() {
-        return aisles;
-    }
-
+    @NotNull
     @Override
     public Iterator<Aisle> iterator() {
-        return aisles.values().iterator();
+        return new Iterator<Aisle>() {
+            private static final int BATCH_SIZE = 25000; //At which number of intyg to stop adding vgs and query the db
+            private int nextIndex = 0;
+            private List<VgNumber> allVardgivare = getAllVardgivare();
+            private Iterator<Aisle> batchedAisles = Collections.emptyIterator();
+
+            @Override
+            public boolean hasNext() {
+                return allVardgivare.size() > nextIndex;
+            }
+
+            @Override
+            public Aisle next() {
+                if (!batchedAisles.hasNext()) {
+                    batchedAisles = getNextBatch();
+                }
+                nextIndex++;
+                return batchedAisles.next();
+            }
+
+            private Iterator<Aisle> getNextBatch() {
+                final int fromIndex = this.nextIndex;
+                final int toIndex = getToIndex(fromIndex);
+                final List<VgNumber> vgNumbers = allVardgivare.subList(fromIndex, toIndex);
+                final List<HsaIdVardgivare> vgids = vgNumbers.stream().map(VgNumber::getVgid).collect(Collectors.toList());
+                return widelineLoader.getAilesForVgs(vgids).iterator();
+            }
+
+            /**
+             * Return the index in allVardgivare where a sublist will get at least BATCH_SIZE of intyg, but will
+             * also not add any more vgs as soon as BATCH_SIZE has been reached.
+             * @param fromIndex The start index
+             * @return The end index
+             */
+            private int getToIndex(int fromIndex) {
+                int toIndex = fromIndex;
+                final int size = allVardgivare.size();
+                for (int nrOfIntyg = 0; nrOfIntyg < BATCH_SIZE;) {
+                    if (size <= toIndex) {
+                        break;
+                    }
+                    nrOfIntyg += allVardgivare.get(toIndex).getNumber();
+                    toIndex++;
+                }
+                return toIndex;
+            }
+        };
     }
 
-    public static int getEnhetAndRemember(HsaIdEnhet id) {
+    static int getEnhetAndRemember(HsaIdEnhet id) {
         return enhetsMap.getOrCreateId(id);
     }
 
@@ -144,38 +203,10 @@ public class Warehouse implements Iterable<Aisle> {
         return lakareMap.getKey(lakarIntId);
     }
 
-    public LocalDateTime getLastUpdate() {
-        return lastUpdate;
-    }
-
-    public void complete(LocalDateTime lastUpdate) {
-        Map<HsaIdVardgivare, Aisle> newAisles = new HashMap<>();
-        for (Map.Entry<HsaIdVardgivare, MutableAisle> entry : loadingAisles.entrySet()) {
-            newAisles.put(entry.getKey(), entry.getValue().createAisle());
-        }
-        aisles = Collections.unmodifiableMap(newAisles);
-        this.lastUpdate = lastUpdate;
-        loadingAisles = new HashMap<>();
-    }
-
-    public void completeEnhets() {
-        for (List<Enhet> enhetList: loadingEnhets.values()) {
-            Collections.sort(enhetList, Enhet.byEnhetId());
-        }
-        enhets = Collections.unmodifiableMap(loadingEnhets);
-        loadingEnhets = new HashMap<>();
-    }
-
-    public void clear() {
-        LOG.warn("Clearing warehouse ailes");
-        loadingAisles.clear();
-        complete(LocalDateTime.now());
-    }
-
     private static class IdMap<T> {
         private final BiMap<T, Integer> map = HashBiMap.create();
 
-        public synchronized Integer getOrCreateId(T key) {
+        synchronized Integer getOrCreateId(T key) {
             Integer id = map.get(key);
             if (id == null) {
                 id = map.size() + 1;
@@ -184,7 +215,7 @@ public class Warehouse implements Iterable<Aisle> {
             return id;
         }
 
-        public synchronized Integer maybeGetId(T key) {
+        synchronized Integer maybeGetId(T key) {
             Integer id = map.get(key);
             if (id == null) {
                 return -1;

@@ -19,14 +19,13 @@
 package se.inera.statistics.web.service;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -45,22 +44,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
 
-import se.inera.statistics.service.countypopulation.CountyPopulation;
-import se.inera.statistics.service.countypopulation.CountyPopulationManager;
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.OverviewResponse;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.warehouse.NationellData;
-import se.inera.statistics.service.warehouse.NationellOverviewData;
-import se.inera.statistics.web.model.CasesPerCountyData;
-import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
-import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.overview.OverviewData;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
@@ -76,25 +61,13 @@ import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 public class ChartDataService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ChartDataService.class);
-    private static final int YEAR = 12;
-    public static final String TEXT_CP1252 = "text/plain; charset=cp1252";
-    private static final int DELAY_BETWEEN_RELOADS = 30 * 60 * 1000;
-    private static final int EIGHTEEN_MONTHS = 18;
-
-    @Autowired
-    private NationellData data;
+    static final String TEXT_CP1252 = "text/plain; charset=cp1252";
 
     @Autowired
     private Icd10 icd10;
 
     @Autowired
-    private NationellOverviewData overviewData;
-
-    @Autowired
     private FilterHashHandler filterHashHandler;
-
-    @Autowired
-    private CountyPopulationManager countyPopulationManager;
 
     @Autowired
     @Qualifier("webMonitoringLogService")
@@ -106,136 +79,33 @@ public class ChartDataService {
     @Autowired
     private ResponseHandler responseHandler;
 
-    private volatile SimpleDetailsData numberOfCasesPerMonth;
-    // private volatile SimpleDetailsData numberOfMeddelandenPerMonth;
-    private volatile DualSexStatisticsData diagnosgrupper;
-    private volatile Map<String, DiagnosisSubGroupStatisticsData> diagnoskapitel = new HashMap<>();
-    private volatile OverviewData overview;
-    private volatile SimpleDetailsData aldersgrupper;
-    private volatile DualSexStatisticsData sjukskrivningsgrad;
-    private volatile SimpleDetailsData sjukfallslangd;
-    private volatile CasesPerCountyData sjukfallPerLan;
-    private volatile SimpleDetailsData konsfordelningPerLan;
-    private LocalDateTime lastUpdated;
+    @Autowired
+    private NationellDataCalculator nationellDataCalculator;
 
-    @Scheduled(fixedDelay = DELAY_BETWEEN_RELOADS)
-    public synchronized void buildCache() {
-        LocalDateTime last = data.getLastUpdate();
-        if (last != null && !last.equals(lastUpdated)) {
-            LOG.info("New warehouse timestamp '{}', populating national cache", last);
+    private volatile NationellDataResult nationellDataResult;
+    private AtomicBoolean dataCalculationOngoing = new AtomicBoolean(false);
+
+    private NationellDataResult getNationellDataResult() {
+        if (nationellDataResult == null) {
+            LOG.info("National cache is not set. Requesting population.");
+            buildCache();
+        }
+        return nationellDataResult;
+    }
+
+    @Scheduled(cron = "${scheduler.factReloadJob.cron}")
+    public void buildCache() {
+        LOG.info("National cache population requested");
+        if (!dataCalculationOngoing.getAndSet(true)) {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
-            buildOverview();
+            nationellDataResult = nationellDataCalculator.getData();
             stopWatch.stop();
-            LOG.info("National cache buildOverview  " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildNumberOfCasesPerMonth();
-            stopWatch.stop();
-            LOG.info("National cache buildNumberOfCasesPerMonth " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildDiagnosgrupper();
-            stopWatch.stop();
-            LOG.info("National cache buildDiagnosgrupper " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildDiagnoskapitel();
-            stopWatch.stop();
-            LOG.info("National cache buildDiagnoskapitel " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildAldersgrupper();
-            stopWatch.stop();
-            LOG.info("National cache buildAldersgrupper " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildSjukskrivningsgrad();
-            stopWatch.stop();
-            LOG.info("National cache buildSjukskrivningsgrad " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildSjukfallslangd();
-            stopWatch.stop();
-            LOG.info("National cache buildSjukfallslangd " + stopWatch.getTotalTimeMillis());
-            /*
-             * Disabled for now
-             * stopWatch.start();
-             * buildNumberOfMeddelandenPerMonth();
-             * stopWatch.stop();
-             * LOG.info("National cache buildNumberOfMeddelandenPerMonth " + stopWatch.getTotalTimeMillis());
-             */
-            stopWatch.start();
-            buildKonsfordelningPerLan();
-            stopWatch.stop();
-            LOG.info("National cache buildKonsfordelningPerLan " + stopWatch.getTotalTimeMillis());
-            stopWatch.start();
-            buildSjukfallPerLan();
-            stopWatch.stop();
-            LOG.info("National cache buildSjukfallPerLan " + stopWatch.getTotalTimeMillis());
-            lastUpdated = last;
-            LOG.info("National cache populated");
+            LOG.info("National cache populated  " + stopWatch.getTotalTimeMillis());
+            dataCalculationOngoing.set(false);
+        } else {
+            LOG.info("National cache population is already ongoing. This population request is therefore skipped.");
         }
-    }
-
-    public void buildNumberOfCasesPerMonth() {
-        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getCasesPerMonth(range);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
-        numberOfCasesPerMonth = new PeriodConverter().convert(casesPerMonth, filterSettings);
-    }
-
-    public void buildDiagnosgrupper() {
-        Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
-        DiagnosgruppResponse diagnosisGroups = data.getDiagnosgrupper(range);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
-        diagnosgrupper = new DiagnosisGroupsConverter().convert(diagnosisGroups, filterSettings);
-    }
-
-    public void buildDiagnoskapitel() {
-        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
-        for (Icd10.Kapitel kapitel : icd10.getKapitel(false)) {
-            String id = kapitel.getId();
-            DiagnosgruppResponse diagnosisGroups = data.getDiagnosavsnitt(range, id);
-            final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
-            final DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(diagnosisGroups, filterSettings);
-            diagnoskapitel.put(id, new DiagnosisSubGroupStatisticsData(data, kapitel));
-        }
-    }
-
-    public void buildOverview() {
-        Range range = Range.quarter(clock);
-        OverviewResponse response = overviewData.getOverview(range);
-        overview = new OverviewConverter().convert(response, range);
-    }
-
-    private void buildAldersgrupper() {
-        Range range = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getHistoricalAgeGroups(range);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(),
-                Range.createForLastMonthsExcludingCurrent(range.getNumberOfMonths(), clock));
-        aldersgrupper = SimpleDualSexConverter.newGenericTvarsnitt().convert(ageGroups, filterSettings);
-    }
-
-    private void buildSjukskrivningsgrad() {
-        final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
-        KonDataResponse degreeOfSickLeaveStatistics = data.getSjukskrivningsgrad(range);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
-        sjukskrivningsgrad = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, filterSettings);
-    }
-
-    private void buildSjukfallslangd() {
-        Range range = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
-        SimpleKonResponse<SimpleKonDataRow> sickLeaveLength = data.getSjukfallslangd(range);
-        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
-        sjukfallslangd = SimpleDualSexConverter.newGenericTvarsnitt().convert(sickLeaveLength, filterSettings);
-    }
-
-    private void buildSjukfallPerLan() {
-        Range range = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
-        SimpleKonResponse<SimpleKonDataRow> calculatedSjukfallPerLan = data.getSjukfallPerLan(range);
-        final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation(range);
-        sjukfallPerLan = new CasesPerCountyConverter(calculatedSjukfallPerLan, countyPopulation, range).convert();
-    }
-
-    private void buildKonsfordelningPerLan() {
-        final Range range = Range.createForLastMonthsExcludingCurrent(YEAR, clock);
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getSjukfallPerLan(range);
-        konsfordelningPerLan = new SjukfallPerSexConverter().convert(casesPerMonth, range);
     }
 
     /*
@@ -263,7 +133,7 @@ public class ChartDataService {
     public Response getNumberOfCasesPerMonth(@QueryParam("format") String format) {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getNumberOfCasesPerMonth");
-        return getResponse(numberOfCasesPerMonth, format, Report.N_SJUKFALLTOTALT);
+        return getResponse(getNationellDataResult().getNumberOfCasesPerMonth(), format, Report.N_SJUKFALLTOTALT);
     }
 
     /**
@@ -337,7 +207,7 @@ public class ChartDataService {
     public Response getDiagnoskapitelstatistik(@QueryParam("format") String format) {
         LOG.info("Calling getDiagnoskapitelstatistik for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getDiagnoskapitelstatistik");
-        return getResponse(diagnosgrupper, format, Report.N_DIAGNOSGRUPP);
+        return getResponse(getNationellDataResult().getDiagnosgrupper(), format, Report.N_DIAGNOSGRUPP);
     }
 
     /**
@@ -349,7 +219,7 @@ public class ChartDataService {
     public Response getDiagnosavsnittstatistik(@PathParam("groupId") String groupId, @QueryParam("format") String format) {
         LOG.info("Calling getDiagnosavsnittstatistik for national with groupId: " + groupId);
         monitoringLogService.logTrackAccessAnonymousChartData("getDiagnosavsnittstatistik");
-        return getResponse(diagnoskapitel.get(groupId), format, Report.N_DIAGNOSGRUPPENSKILTDIAGNOSKAPITEL);
+        return getResponse(getNationellDataResult().getDiagnoskapitel().get(groupId), format, Report.N_DIAGNOSGRUPPENSKILTDIAGNOSKAPITEL);
     }
 
     /**
@@ -361,7 +231,7 @@ public class ChartDataService {
     @Path("getOverview")
     @Produces({ MediaType.APPLICATION_JSON })
     public OverviewData getOverviewData() {
-        return overview;
+        return getNationellDataResult().getOverview();
     }
 
     /**
@@ -373,7 +243,7 @@ public class ChartDataService {
     public Response getAgeGroupsStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getAgeGroupsStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getAgeGroupsStatistics");
-        return getResponse(aldersgrupper, format, Report.N_ALDERSGRUPP);
+        return getResponse(getNationellDataResult().getAldersgrupper(), format, Report.N_ALDERSGRUPP);
     }
 
     /**
@@ -385,7 +255,7 @@ public class ChartDataService {
     public Response getDegreeOfSickLeaveStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getDegreeOfSickLeaveStatistics");
-        return getResponse(sjukskrivningsgrad, format, Report.N_SJUKSKRIVNINGSGRAD);
+        return getResponse(getNationellDataResult().getSjukskrivningsgrad(), format, Report.N_SJUKSKRIVNINGSGRAD);
     }
 
     /**
@@ -397,7 +267,7 @@ public class ChartDataService {
     public Response getSickLeaveLengthData(@QueryParam("format") String format) {
         LOG.info("Calling getSickLeaveLengthData for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getSickLeaveLengthData");
-        return getResponse(sjukfallslangd, format, Report.N_SJUKSKRIVNINGSLANGD);
+        return getResponse(getNationellDataResult().getSjukfallslangd(), format, Report.N_SJUKSKRIVNINGSLANGD);
     }
 
     /**
@@ -409,7 +279,7 @@ public class ChartDataService {
     public Response getCountyStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getCountyStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getCountyStatistics");
-        return getResponse(sjukfallPerLan, format, Report.N_LAN);
+        return getResponse(getNationellDataResult().getSjukfallPerLan(), format, Report.N_LAN);
     }
 
     /**
@@ -421,7 +291,7 @@ public class ChartDataService {
     public Response getSjukfallPerSexStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getSjukfallPerSexStatistics");
-        return getResponse(konsfordelningPerLan, format, Report.N_LANANDELSJUKFALLPERKON);
+        return getResponse(getNationellDataResult().getKonsfordelningPerLan(), format, Report.N_LANANDELSJUKFALLPERKON);
     }
 
     @GET

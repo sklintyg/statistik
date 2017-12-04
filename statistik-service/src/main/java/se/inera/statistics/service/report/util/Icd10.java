@@ -267,13 +267,6 @@ public class Icd10 {
         return null;
     }
 
-    public java.util.Optional<Kod> getUnknownKodInKatergori(Kategori kategori) {
-        if (kategori == null) {
-            return java.util.Optional.empty();
-        }
-        return kategori.getKods().stream().filter(Kod::isUnknown).findAny();
-    }
-
     public static class IdMap<T extends Id> extends HashMap<String, T> {
         public void put(T id) {
             if (id != null) {
@@ -307,7 +300,7 @@ public class Icd10 {
 
         public abstract int toInt();
 
-        public abstract List<Id> getSubItems();
+        public abstract List<? extends Id> getSubItems();
 
         public abstract Optional<Id> getParent();
 
@@ -366,8 +359,8 @@ public class Icd10 {
         }
 
         @Override
-        public List<Id> getSubItems() {
-            return getAvsnitt().stream().map(avs -> (Id) avs).collect(Collectors.toList());
+        public List<? extends Id> getSubItems() {
+            return avsnitt;
         }
 
         @Override
@@ -428,8 +421,8 @@ public class Icd10 {
         }
 
         @Override
-        public List<Id> getSubItems() {
-            return getKategori().stream().map(kat -> (Id) kat).collect(Collectors.toList());
+        public List<? extends Id> getSubItems() {
+            return kategori;
         }
 
         @Override
@@ -444,6 +437,7 @@ public class Icd10 {
         private final Avsnitt avsnitt;
         private final List<Kod> kods;
         private final int intId;
+        private Kod unknownKod;
 
         public Kategori(String id, String name, Avsnitt avsnitt) {
             super(id.toUpperCase(), name);
@@ -471,8 +465,8 @@ public class Icd10 {
         }
 
         @Override
-        public List<Id> getSubItems() {
-            return getKods().stream().map(kod -> (Id) kod).collect(Collectors.toList());
+        public List<? extends Id> getSubItems() {
+            return kods;
         }
 
         @Override
@@ -490,6 +484,10 @@ public class Icd10 {
             return this.getId().equals(kodId.substring(0, MAX_CODE_LENGTH));
         }
 
+        public Optional<Kod> getUnknownKod() {
+            return Optional.ofNullable(unknownKod);
+        }
+
     }
 
     public static class Kod extends Id {
@@ -505,6 +503,9 @@ public class Icd10 {
             this.kategori = kategori;
             this.unknown = unknownKod;
             kategori.kods.add(this);
+            if (unknownKod) {
+                kategori.unknownKod = this;
+            }
             intId = icd10ToInt(getId(), Icd10RangeType.KOD) * (this.unknown ? -1 : 1);
         }
 
@@ -535,7 +536,7 @@ public class Icd10 {
         }
 
         @Override
-        public List<Id> getSubItems() {
+        public List<? extends Id> getSubItems() {
             return Collections.emptyList();
         }
 

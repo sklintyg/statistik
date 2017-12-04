@@ -79,9 +79,7 @@
     <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
     <bean class="se.inera.statistics.service.processlog.Processor"/>
     <bean class="se.inera.statistics.service.processlog.message.ProcessMessageLogImpl"/>
-    <bean class="se.inera.statistics.service.warehouse.FactPopulator"/>
     <bean class="se.inera.statistics.service.warehouse.Warehouse"/>
-    <bean class="se.inera.statistics.service.warehouse.WarehouseManager"/>
     <bean class="se.inera.statistics.service.processlog.VardgivareManager"/>
     <bean class="se.inera.statistics.service.processlog.LakareManager"/>
     <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
@@ -96,7 +94,7 @@
     <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper"/>
     <bean class="se.inera.statistics.service.helper.SendMessageToCareHelper"/>
 
-    <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactPopulator" />
+    <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactConverter" />
     <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
     <bean class="se.inera.statistics.service.warehouse.WidelineManager" />
     <bean class="se.inera.statistics.service.warehouse.WidelineLoader" />

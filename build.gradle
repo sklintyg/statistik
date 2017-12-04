@@ -65,6 +65,14 @@ allprojects {
     // Findbugs does not work very well with groovy code. Hence we exclude groovy projects.
     ext.findbugsExclude = "(fileservice|.*specifications)\$"
 
+    project.afterEvaluate {
+        tasks.withType(FindBugs.class).forEach { task ->
+            task.classes = task.classes.filter { clazz ->
+                !clazz.path.matches(".*\\.(xml|sql|json|log|txt|ANS|properties)")
+            }
+        }
+    }
+
     // Errorprone has no mechanism (yet) for excluding generated code. We therefore disable it for hsa-integration.
     ext.errorproneExclude = "hsa-integration"
 

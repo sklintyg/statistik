@@ -20,15 +20,22 @@ package se.inera.statistics.service.warehouse;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.StopWatch;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,6 +43,12 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
 @DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class WidelineLoaderTest {
+    private static final Logger LOG = LoggerFactory.getLogger(WidelineLoaderTest.class);
+
+    public static final HsaIdVardgivare VG1 = new HsaIdVardgivare("vg1");
+    public static final HsaIdVardgivare VG2 = new HsaIdVardgivare("vg2");
+    public static final HsaIdVardgivare VG3 = new HsaIdVardgivare("vg3");
+
     @Autowired
     WidelineLoader widelineLoader;
 
@@ -47,36 +60,73 @@ public class WidelineLoaderTest {
 
     @Test
     public void loadPopulatesOnlyWithCreatedLines() {
-        insertLine(EventType.CREATED, "1");
-        insertLine(EventType.REVOKED, "2");
-        insertLine(EventType.CREATED, "3");
+        insertLine(EventType.CREATED, "1", VG1);
+        insertLine(EventType.REVOKED, "2", VG1);
+        insertLine(EventType.CREATED, "3", VG1);
 
-        int result = widelineLoader.populateWarehouse();
+        final List<Fact> factsForVg = widelineLoader.getAilesForVgs(Collections.singletonList(VG1)).get(0).getLines();
 
-        assertEquals(2, result);
+        assertEquals(2, factsForVg.size());
     }
 
     @Test
     public void doNotLoadCreatedThenRevokedLines() {
-        insertLine(EventType.CREATED, "1");
-        insertLine(EventType.REVOKED, "1");
+        insertLine(EventType.CREATED, "1", VG1);
+        insertLine(EventType.REVOKED, "1", VG1);
 
-        int result = widelineLoader.populateWarehouse();
+        final List<Fact> factsForVg = widelineLoader.getAilesForVgs(Collections.singletonList(VG1)).get(0).getLines();
 
-        assertEquals(0, result);
+        assertEquals(0, factsForVg.size());
     }
 
     @Test
     public void doNotLoadRevokedThenCreatedLines() {
-        insertLine(EventType.REVOKED, "1");
-        insertLine(EventType.CREATED, "1");
+        insertLine(EventType.REVOKED, "1", VG1);
+        insertLine(EventType.CREATED, "1", VG1);
 
-        int result = widelineLoader.populateWarehouse();
+        final List<Fact> factsForVg = widelineLoader.getAilesForVgs(Collections.singletonList(VG1)).get(0).getLines();
 
-        assertEquals(0, result);
+        assertEquals(0, factsForVg.size());
     }
 
-    private void insertLine(EventType event, String correlationId) {
+    @Test
+    public void testGetAllVgsIsDistinct() {
+        insertLine(EventType.CREATED, "1", VG1);
+        insertLine(EventType.CREATED, "2", VG1);
+        insertLine(EventType.CREATED, "3", VG2);
+        insertLine(EventType.CREATED, "4", VG3);
+        insertLine(EventType.CREATED, "5", VG1);
+        insertLine(EventType.CREATED, "6", VG2);
+
+        final List<VgNumber> allVgs = widelineLoader.getAllVgs();
+
+        allVgs.sort(Comparator.comparing(vgNumber -> vgNumber.getVgid().getId()));
+        assertEquals(3, allVgs.size());
+        assertEquals(VG1, allVgs.get(0).getVgid());
+        assertEquals(VG2, allVgs.get(1).getVgid());
+        assertEquals(VG3, allVgs.get(2).getVgid());
+    }
+
+    @Test
+    public void testGetFactsForVg() {
+        for (int i = 1; i < 1000; i++) {
+            insertLine(EventType.CREATED, "" + i, VG1);
+        }
+        for (int i = 1; i < 1000; i+=3) {
+            insertLine(EventType.REVOKED, "" + i, VG1);
+        }
+
+        StopWatch stopWatch = new StopWatch();
+        LOG.error("Starting getFacts");
+        stopWatch.start();
+        final List<Fact> facts = widelineLoader.getAilesForVgs(Collections.singletonList(VG1)).get(0).getLines();
+        stopWatch.stop();
+        LOG.error("getFacts done in: " + stopWatch.getTotalTimeMillis());
+
+        assertEquals(666, facts.size());
+    }
+
+    private void insertLine(EventType event, String correlationId, HsaIdVardgivare vg) {
         WideLine line1 = new WideLine();
         String patientId = "19121212-1212";
         line1.setAlder(23);
@@ -95,7 +145,7 @@ public class WidelineLoaderTest {
         line1.setSjukskrivningsgrad(100);
         line1.setSlutdatum(4999);
         line1.setStartdatum(4997);
-        line1.setVardgivareId(new HsaIdVardgivare("vg1"));
+        line1.setVardgivareId(vg);
         line1.setLakareId(new HsaIdLakare("lakare"));
         line1.setCorrelationId(correlationId);
         widelineManager.saveWideline(line1);

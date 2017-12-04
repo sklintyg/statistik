@@ -27,7 +27,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
@@ -35,22 +34,13 @@ import se.inera.statistics.service.warehouse.model.db.WideLine;
 import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 
 @Component
-public class FactPopulator {
-    private static final Logger LOG = LoggerFactory.getLogger(FactPopulator.class);
-
-    @Autowired
-    private Warehouse warehouse;
+class FactConverter {
+    private static final Logger LOG = LoggerFactory.getLogger(FactConverter.class);
 
     @Autowired
     private Icd10 icd10;
 
-    public void accept(WideLine wideline) {
-        Fact fact = toFact(wideline);
-        HsaIdVardgivare vardgivare = wideline.getVardgivareId();
-        warehouse.accept(fact, vardgivare);
-    }
-
-    public Fact toFact(WideLine wideline) {
+    Fact toFact(WideLine wideline) {
         String lkf = wideline.getLkf();
         int enhet = Warehouse.getEnhetAndRemember(wideline.getEnhet());
         long intyg = wideline.getLakarintyg();
@@ -66,7 +56,7 @@ public class FactPopulator {
         int sjukskrivningsgrad = wideline.getSjukskrivningsgrad();
         int lakarkon = wideline.getLakarkon();
         int lakaralder = wideline.getLakaralder();
-        int[] lakarbefattnings = parseBefattning(wideline);
+        int[] lakarbefattnings = parseBefattning(wideline.getLakarbefattning(), wideline.getCorrelationId());
         int lakare = Warehouse.getNumLakarIdAndRemember(wideline.getLakareId());
 
         return new Fact(wideline.getId(), ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf),
@@ -76,8 +66,7 @@ public class FactPopulator {
                 lakare);
     }
 
-    private int[] parseBefattning(WideLine wideline) {
-        String lakarbefattningString = wideline.getLakarbefattning();
+    int[] parseBefattning(String lakarbefattningString, String correlationId) {
         if (lakarbefattningString != null && lakarbefattningString.length() > 0) {
             final String[] befattningStrings = lakarbefattningString.split(",");
             final ArrayList<Integer> befattnings = new ArrayList<>();
@@ -86,18 +75,18 @@ public class FactPopulator {
                 try {
                     befattnings.add(Integer.parseInt(befattning));
                 } catch (NumberFormatException nfe) {
-                    LOG.info("Unknown befattning: '" + befattning + "' for doctor in intyg: " + wideline.getCorrelationId());
+                    LOG.info("Unknown befattning: '" + befattning + "' for doctor in intyg: " + correlationId);
                 }
             }
             if (befattnings.isEmpty()) {
-                return new int[] { LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE };
+                return new int[] {LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
             }
             return ArrayUtils.toPrimitive(befattnings.toArray(new Integer[0]));
         }
-        return new int[] { LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE };
+        return new int[] {LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
     }
 
-    private int extractKategori(String diagnoskategori) {
+    int extractKategori(String diagnoskategori) {
         Icd10.Kategori kategori = icd10.getKategori(diagnoskategori);
         if (kategori == null) {
             return Icd10.icd10ToInt(Icd10.OTHER_KATEGORI, Icd10RangeType.KATEGORI);
@@ -105,18 +94,18 @@ public class FactPopulator {
         return kategori.toInt();
     }
 
-    private int extractKod(String diagnoskod, String diagnoskategori) {
+    int extractKod(String diagnoskod, String diagnoskategori) {
         Icd10.Kod kod = icd10.getKod(diagnoskod);
         if (kod == null) {
             Icd10.Kategori kategori = icd10.getKategori(diagnoskategori);
-            final Optional<Icd10.Kod> unknownKodInKatergori = icd10.getUnknownKodInKatergori(kategori);
+            final Optional<Icd10.Kod> unknownKodInKatergori = kategori != null ? kategori.getUnknownKod() : Optional.empty();
             return unknownKodInKatergori.map(Icd10.Kod::toInt)
                     .orElseGet(() -> Icd10.icd10ToInt(Icd10.OTHER_KOD, Icd10RangeType.KOD));
         }
         return kod.toInt();
     }
 
-    private int extractAvsnitt(String diagnosavsnitt) {
+    int extractAvsnitt(String diagnosavsnitt) {
         Icd10.Avsnitt avsnitt = icd10.getAvsnitt(diagnosavsnitt);
         if (avsnitt == null) {
             return Icd10.icd10ToInt(Icd10.OTHER_AVSNITT, Icd10RangeType.AVSNITT);
@@ -124,7 +113,7 @@ public class FactPopulator {
         return avsnitt.toInt();
     }
 
-    private int extractKapitel(String diagnoskapitel) {
+    int extractKapitel(String diagnoskapitel) {
         Icd10.Kapitel kapitel = icd10.getKapitel(diagnoskapitel);
         if (kapitel == null) {
             return Icd10.icd10ToInt(Icd10.OTHER_KAPITEL, Icd10RangeType.KAPITEL);

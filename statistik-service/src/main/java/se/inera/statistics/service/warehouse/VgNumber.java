@@ -16,24 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.testsupport;
+package se.inera.statistics.service.warehouse;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
-public final class TestData {
-    private Object replyObject;
-    private JsonNode jsonNode;
+public class VgNumber {
 
-    TestData(Object replyObject, JsonNode jsonNode) {
-        this.replyObject = replyObject;
-        this.jsonNode = jsonNode;
+    private HsaIdVardgivare vgid;
+    private int number;
+
+    public VgNumber(HsaIdVardgivare vgid, int number) {
+        this.vgid = vgid;
+        this.number = number;
     }
 
-    public Object getReplyObject() {
-        return replyObject;
+    public HsaIdVardgivare getVgid() {
+        return vgid;
     }
 
-    public JsonNode getJsonNode() {
-        return jsonNode;
+    public int getNumber() {
+        return number;
     }
+
 }

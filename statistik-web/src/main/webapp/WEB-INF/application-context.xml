@@ -70,6 +70,7 @@
         <bean id="filterHashHandler" class="se.inera.statistics.web.service.FilterHashHandler"/>
         <bean id="resultMessageHandler" class="se.inera.statistics.web.service.ResultMessageHandler"/>
         <bean id="chartDataService" class="se.inera.statistics.web.service.ChartDataService"/>
+        <bean id="nationellDataCalculator" class="se.inera.statistics.web.service.NationellDataCalculator"/>
         <bean id="pdfService" class="se.inera.statistics.web.service.PdfService"/>
 
         <bean id="protectedChartDataService" class="se.inera.statistics.web.service.ProtectedChartDataService"/>
@@ -111,10 +112,9 @@
         <bean id="versionUtil" class="se.inera.statistics.web.util.VersionUtil"/>
 
         <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
-        <bean id="warehouseManager" class="se.inera.statistics.service.warehouse.WarehouseManager" />
         <bean id="warehouseService" class="se.inera.statistics.web.service.WarehouseService" />
 
-        <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactPopulator" />
+        <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactConverter" />
         <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
 
         <bean class="se.inera.statistics.service.processlog.Processor" />

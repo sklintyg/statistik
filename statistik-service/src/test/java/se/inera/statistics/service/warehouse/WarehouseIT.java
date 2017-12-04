@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,11 @@ public class WarehouseIT {
     private LargeTestDataGenerator dataGenerator;
 
     private SjukfallUtil sjukfallUtil = new SjukfallUtil();
+
+    @Before
+    public void setUp() throws Exception {
+        dataGenerator.setMaxIntyg(15);
+    }
 
     @Test
     public void addingManyIntyg() throws InterruptedException {

@@ -49,10 +49,9 @@ import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.NationellData;
+import se.inera.statistics.service.warehouse.NationellDataInvoker;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
-import se.inera.statistics.service.warehouse.WarehouseManager;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
@@ -85,6 +84,7 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -113,13 +113,10 @@ public class RestSupportService {
     private EntityManager manager;
 
     @Autowired
-    private WarehouseManager warehouseManager;
-
-    @Autowired
     private LogConsumer consumer;
 
     @Autowired
-    private NationellData nationellData;
+    private NationellDataInvoker nationellData;
 
     @Autowired(required = false)
     private HsaDataInjectable hsaDataInjectable;
@@ -197,8 +194,8 @@ public class RestSupportService {
         manager.createNativeQuery("TRUNCATE TABLE " + MessageWideLine.TABLE).executeUpdate();
         manager.createNativeQuery("TRUNCATE TABLE " + MessageEvent.TABLE).executeUpdate();
         manager.createNativeQuery("TRUNCATE TABLE " + IntygCommon.TABLE).executeUpdate();
-        warehouse.clear();
         sjukfallUtil.clearSjukfallGroupCache();
+        warehouse.clearAisleCache();
         nationalChartDataService.buildCache();
         return Response.ok().build();
     }
@@ -267,7 +264,8 @@ public class RestSupportService {
             count = consumer.processBatch();
             LOG.info("Processed batch with {} entries", count);
         } while (count > 0);
-        warehouseManager.loadEnhetAndWideLines();
+        sjukfallUtil.clearSjukfallGroupCache();
+        warehouse.clearAisleCache();
         nationalChartDataService.buildCache();
         return Response.ok().build();
     }
@@ -381,11 +379,10 @@ public class RestSupportService {
     @Consumes({ MediaType.APPLICATION_JSON })
     public Response getSosStatistics(@QueryParam(SOC_PARAM_DX) List<String> dx, @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam,
             @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
-        final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
+        final Iterator<Aisle> aisles = warehouse.iterator();
         int fromYear = getYear(fromYearParam);
         int toYear = getYear(toYearParam);
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock, fromYear,
-                toYear);
+        final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx, changableClock, fromYear, toYear);
         final List<SosRow> sosReport = sosReportCreator.getSosReport();
         return Response.ok(sosReport).build();
     }
@@ -403,11 +400,10 @@ public class RestSupportService {
     @Consumes({ MediaType.APPLICATION_JSON })
     public Response getSosMedianStatistics(@QueryParam("dx") List<String> dx, @QueryParam("fromyear") String fromYearParam,
             @QueryParam("toyear") String toYearParam) {
-        final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
+        final Iterator<Aisle> aisles = warehouse.iterator();
         int fromYear = getYear(fromYearParam);
         int toYear = getYear(toYearParam);
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock, fromYear,
-                toYear);
+        final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx, changableClock, fromYear, toYear);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getMedianValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
     }
@@ -421,11 +417,10 @@ public class RestSupportService {
     @Consumes({ MediaType.APPLICATION_JSON })
     public Response getSosStdDevStatistics(@QueryParam("dx") List<String> dx, @QueryParam("fromyear") String fromYearParam,
             @QueryParam("toyear") String toYearParam) {
-        final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
+        final Iterator<Aisle> aisles = warehouse.iterator();
         int fromYear = getYear(fromYearParam);
         int toYear = getYear(toYearParam);
-        final SosReportCreator sosReportCreator = new SosReportCreator(allVardgivare, sjukfallUtil, icd10, dx, changableClock, fromYear,
-                toYear);
+        final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx, changableClock, fromYear, toYear);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getStdDevValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
     }
@@ -442,9 +437,9 @@ public class RestSupportService {
         if (dxList == null || dxList.size() == 0) {
             dxList = Arrays.asList("F32", "F43", "M54", "M17");
         }
-        final Map<HsaIdVardgivare, Aisle> allVardgivare = warehouse.getAllVardgivare();
+        final Iterator<Aisle> aisles = warehouse.iterator();
 
-        final FkReportCreator fkReportCreator = new FkReportCreator(allVardgivare, icd10, dxList, changableClock);
+        final FkReportCreator fkReportCreator = new FkReportCreator(aisles, icd10, dxList, changableClock);
         final List<FkReportDataRow> reportData = fkReportCreator.getReportData();
         return Response.ok(reportData).build();
     }

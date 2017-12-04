@@ -44,7 +44,9 @@ import java.util.stream.Collectors;
 
 public class DiagnosisGroupsConverter extends MultiDualSexConverter<DiagnosgruppResponse> {
 
-    private static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_CHART_GROUPS = createDiagnosisGroupsMap(true);
+    public static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_GROUPS_WITH_UNKNOWN = createDiagnosisGroupsMap(true);
+    public static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_GROUPS_WITHOUT_UNKNOWN = createDiagnosisGroupsMap(false);
+    private static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_CHART_GROUPS = DIAGNOSIS_GROUPS_WITH_UNKNOWN;
     static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
     private static final int DISPLAYED_DIAGNOSIS_GROUPS = 5;
     static final String DIAGNOS_REST_NAME = "Andra diagnosgrupper";
@@ -75,8 +77,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
     }
 
     static List<String> getDiagnosisChartGroupsAsList(boolean includeUnknownGroup) {
-
-        return createDiagnosisGroupsMap(includeUnknownGroup)
+        return (includeUnknownGroup ? DIAGNOSIS_GROUPS_WITH_UNKNOWN : DIAGNOSIS_GROUPS_WITHOUT_UNKNOWN)
                 .keySet()
                 .stream()
                 .map(DiagnosisGroup::getName)
@@ -111,7 +112,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter<Diagnosgrupp
 
         });
 
-        for (DiagnosisGroup group : createDiagnosisGroupsMap(true).keySet()) {
+        for (DiagnosisGroup group : DIAGNOSIS_GROUPS_WITH_UNKNOWN.keySet()) {
             mergedGroups.put(group.getName(), new OverviewChartRowExtended(group.getName(), 0, 0, group.getColor()));
         }
         for (OverviewChartRowExtended row : allGroups) {
