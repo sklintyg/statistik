@@ -189,12 +189,6 @@ public class SjukfallUtil {
         return calculateSimpleKonResponse(toCount, groups, sjukfallGrupper(from, periods, periodLength, aisle, filter));
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponseUsingOriginalSjukfallStart(Aisle aisle, FilterPredicates filter,
-            LocalDate from, int periods, int periodLength, CounterFunction<Integer> toCount, List<Integer> groups) {
-        return calculateSimpleKonResponse(toCount, groups,
-                sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle, filter));
-    }
-
     private SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(CounterFunction<Integer> toCount, List<Integer> groups,
             Iterable<SjukfallGroup> sjukfallGroups) {
         List<SimpleKonDataRow> rows = new ArrayList<>();

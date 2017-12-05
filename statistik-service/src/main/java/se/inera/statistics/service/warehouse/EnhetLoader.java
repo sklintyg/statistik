@@ -42,14 +42,14 @@ public class EnhetLoader {
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
-    public List<Enhet> getAllEnhetsForVg(HsaIdVardgivare vg) {
+    List<Enhet> getAllEnhetsForVg(HsaIdVardgivare vg) {
         LOG.info("Getting enhets for vg: " + vg);
         final TypedQuery<Enhet> query = manager.createNamedQuery("Enhet.getByVg", Enhet.class);
         query.setParameter("vgid", vg.getId());
         return query.getResultList();
     }
 
-    public List<Enhet> getEnhets(Collection<HsaIdEnhet> enhetIds) {
+    List<Enhet> getEnhets(Collection<HsaIdEnhet> enhetIds) {
         if (enhetIds == null || enhetIds.isEmpty()) {
             return Collections.emptyList();
         }

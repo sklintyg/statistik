@@ -20,6 +20,7 @@ package se.inera.statistics.web.service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -165,7 +166,7 @@ public class LoginServiceUtil {
                         .map(vg -> new HsaIdVardgivare(vg.getId())))
                 .distinct()
                 .map(hsaIdVardgivare -> {
-                    List<Enhet> allEnhetsForVg = warehouse.getEnhets(hsaIdVardgivare);
+                    Collection<Enhet> allEnhetsForVg = warehouse.getEnhets(hsaIdVardgivare);
                     if (realUser.isProcessledareForVg(hsaIdVardgivare) && allEnhetsForVg != null && !allEnhetsForVg.isEmpty()) {
                         return allEnhetsForVg.stream().map(this::enhetToVerksamhet);
                     } else {
@@ -185,7 +186,7 @@ public class LoginServiceUtil {
                 getVerksamhetsTyper(enhet.getVerksamhetsTyper()));
     }
 
-    private Verksamhet vardenhetToVerksamhet(final Vardenhet vardEnhet, List<Enhet> enhetsList) {
+    private Verksamhet vardenhetToVerksamhet(final Vardenhet vardEnhet, Collection<Enhet> enhetsList) {
         Optional<Enhet> enhetOpt = enhetsList.stream()
                 .filter(enhet -> enhet.getEnhetId().equals(vardEnhet.getId()))
                 .findAny();
