@@ -90,7 +90,7 @@ public class ChartDataService {
             LOG.info("National cache is not set. Requesting population.");
             buildCache();
         }
-        return nationellDataResult;
+        return nationellDataResult != null ? nationellDataResult : new NationellDataResult();
     }
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
