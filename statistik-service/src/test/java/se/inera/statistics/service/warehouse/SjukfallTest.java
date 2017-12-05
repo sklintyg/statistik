@@ -270,7 +270,6 @@ public class SjukfallTest {
 
     @Test
     public void testExtendWithRealDaysWithinPeriodPeriodAlreadyCovered() throws Exception {
-        for (int i = 0; i < 100000; i++) {
         //When
         final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4));
         final SjukfallExtended sjukfall2 = new SjukfallExtended(sjukfall1, createFact(20, 4));
@@ -278,7 +277,6 @@ public class SjukfallTest {
 
         //Then
         assertEquals(18, sjukfall3.getRealDays());
-        }
     }
 
     @Test
