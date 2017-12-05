@@ -254,7 +254,7 @@ public class ResponseHandler {
     }
 
     private List<String> getEnhetNames(Collection<HsaIdEnhet> enhetIds) {
-        final List<Enhet> enhets = warehouse.getEnhetsWithHsaId(enhetIds);
+        final Collection<Enhet> enhets = warehouse.getEnhetsWithHsaId(enhetIds);
         final Map<String, List<Enhet>> enhetsByName = enhets.stream().collect(Collectors.groupingBy(Enhet::getNamn));
         return enhetsByName.entrySet().stream()
                 .map(entry -> entry.getValue().size() > 1
