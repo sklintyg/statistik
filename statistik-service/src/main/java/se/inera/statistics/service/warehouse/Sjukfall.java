@@ -46,7 +46,6 @@ public class Sjukfall {
     private long firstIntygId;
     private List<Diagnos> diagnoses = new ArrayList<>();
     private Diagnos diagnos;
-    private boolean enkelt;
     private int lastEnhet;
 
     private Sjukfall() {
@@ -238,7 +237,6 @@ public class Sjukfall {
     }
 
     private static class UnknownRangeTypeException extends RuntimeException {
-
         UnknownRangeTypeException(String s) {
             super(s);
         }

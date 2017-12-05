@@ -21,33 +21,22 @@ package se.inera.statistics.service.warehouse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.Range;
 
 public class SjukfallExtended {
 
     public static final int MAX_GAP = 5;
 
     private int start;
-    private final int lan;
     private int end;
     private NavigableSet<Fact> facts = new TreeSet<>(START_DATUM_SORTER);
-    private final int kon;
-    private int alder;
-    private List<Diagnos> diagnoses = new ArrayList<>();
-    private Map<Range, Integer> sjukskrivningsgrad = new HashMap<>();
-    private Set<Lakare> lakare = new HashSet<>();
-    private Set<Integer> enhets = new HashSet<>();
     private SjukfallExtended extending;
     private List<Sjukskrivningsperiod> sjukskrivningsperiods = new ArrayList<>();
     private static final Comparator<Fact> START_DATUM_SORTER = (f1, f2) -> {
@@ -68,14 +57,6 @@ public class SjukfallExtended {
         end = line.getSlutdatum();
         sjukskrivningsperiods.add(new Sjukskrivningsperiod(start, line.getSjukskrivningslangd()));
         facts.add(line);
-        kon = line.getKon();
-        alder = line.getAlder();
-        diagnoses.add(new Diagnos(start, end, line.getDiagnoskapitel(), line.getDiagnosavsnitt(), line.getDiagnoskategori(),
-                line.getDiagnoskod()));
-        sjukskrivningsgrad.put(new Range(WidelineConverter.toDate(start), WidelineConverter.toDate(end)), line.getSjukskrivningsgrad());
-        lan = line.getLan();
-        this.lakare.add(getLakareFromFact(line));
-        this.enhets.add(line.getEnhet());
     }
 
     public SjukfallExtended(SjukfallExtended previous, Fact line) {
@@ -85,11 +66,6 @@ public class SjukfallExtended {
         sjukskrivningsperiods.addAll(previous.sjukskrivningsperiods);
         facts.addAll(previous.facts);
         extending = previous;
-        lakare.addAll(previous.getLakare());
-        diagnoses.addAll(0, previous.diagnoses);
-        alder = previous.alder > this.alder ? previous.alder : this.alder;
-        enhets.addAll(previous.getEnhets());
-        sjukskrivningsgrad.putAll(previous.sjukskrivningsgrad);
     }
 
     SjukfallExtended(SjukfallExtended previous, SjukfallExtended sjukfall) {
@@ -98,11 +74,6 @@ public class SjukfallExtended {
         end = Math.max(this.end, previous.getEnd());
         sjukskrivningsperiods.addAll(previous.sjukskrivningsperiods);
         facts.addAll(previous.facts);
-        lakare.addAll(previous.getLakare());
-        diagnoses.addAll(0, previous.diagnoses);
-        alder = previous.alder > this.alder ? previous.alder : this.alder;
-        enhets.addAll(previous.getEnhets());
-        sjukskrivningsgrad.putAll(previous.sjukskrivningsgrad);
     }
 
     private SjukfallExtended(SjukfallExtended sjukfall) {
@@ -110,14 +81,7 @@ public class SjukfallExtended {
         end = sjukfall.getEnd();
         sjukskrivningsperiods.addAll(sjukfall.sjukskrivningsperiods);
         facts.addAll(sjukfall.facts);
-        kon = sjukfall.kon;
-        alder = sjukfall.getAlder();
-        diagnoses.addAll(sjukfall.diagnoses);
-        sjukskrivningsgrad.putAll(sjukfall.sjukskrivningsgrad);
-        lan = sjukfall.lan;
-        lakare.addAll(sjukfall.getLakare());
         extending = sjukfall.extending;
-        enhets.addAll(sjukfall.getEnhets());
     }
 
     private Lakare getLakareFromFact(Fact line) {
@@ -129,7 +93,7 @@ public class SjukfallExtended {
     }
 
     int getKonInt() {
-        return kon;
+        return facts.last().getKon();
     }
 
     /**
@@ -137,8 +101,6 @@ public class SjukfallExtended {
      * If so, this sjukfall is updated and return,
      * otherwise a new sjukfall is created.
      *
-     * @param line
-     *            line
      * @return join will either return the same, possibly modified (i.e. this), Sjukfall-object, or a new object
      */
     public SjukfallExtended join(Fact line) {
@@ -167,7 +129,6 @@ public class SjukfallExtended {
         final SjukfallExtended sjukfall = new SjukfallExtended(this);
         sjukfall.start = startdatum;
         sjukfall.sjukskrivningsperiods.add(new Sjukskrivningsperiod(startdatum, sjukskrivningslangd));
-        sjukfall.facts.add(intygForExtending);
         return sjukfall;
     }
 
@@ -206,7 +167,7 @@ public class SjukfallExtended {
     }
 
     public int getAlder() {
-        return alder;
+        return facts.stream().map(Fact::getAlder).max(Comparator.comparingInt(v -> v)).orElse(0);
     }
 
     public int getRealDays() {
@@ -242,7 +203,7 @@ public class SjukfallExtended {
     }
 
     Collection<Integer> getSjukskrivningsgrads() {
-        return sjukskrivningsgrad.values();
+        return facts.stream().map(Fact::getSjukskrivningsgrad).collect(Collectors.toList());
     }
 
     public int getDiagnosavsnitt() {
@@ -257,11 +218,6 @@ public class SjukfallExtended {
         return facts.last();
     }
 
-    private Stream<Fact> getFirstIntygFacts() {
-        Fact firstFact = getFirstFact();
-        return facts.stream().filter(fact -> firstFact.getLakarintyg() == fact.getLakarintyg());
-    }
-
     private Fact getFirstFact() {
         return facts.first();
     }
@@ -271,15 +227,15 @@ public class SjukfallExtended {
     }
 
     String getLanskod() {
-        return String.format("%1$02d", lan);
+        return String.format("%1$02d", getLan());
     }
 
     public int getLan() {
-        return lan;
+        return facts.last().getLan();
     }
 
     public Set<Lakare> getLakare() {
-        return lakare;
+        return facts.stream().sorted(START_DATUM_SORTER.reversed()).map(this::getLakareFromFact).collect(Collectors.toSet());
     }
 
     Lakare getLastLakare() {
@@ -287,7 +243,7 @@ public class SjukfallExtended {
     }
 
     public Set<Integer> getEnhets() {
-        return enhets;
+        return facts.stream().map(Fact::getEnhet).collect(Collectors.toSet());
     }
 
     int getLastEnhet() {
@@ -314,7 +270,10 @@ public class SjukfallExtended {
     }
 
     List<Diagnos> getAllDxs() {
-        return diagnoses;
+        return facts.stream().map(line ->
+                new Diagnos(start, end, line.getDiagnoskapitel(), line.getDiagnosavsnitt(),
+                        line.getDiagnoskategori(), line.getDiagnoskod()))
+                .collect(Collectors.toList());
     }
 
     long getFirstIntygId() {
@@ -365,14 +324,6 @@ public class SjukfallExtended {
 
         public int getDiagnoskod() {
             return diagnoskod;
-        }
-
-        public int getStartDatum() {
-            return startDatum;
-        }
-
-        public int getSlutDatum() {
-            return slutDatum;
         }
 
     }
