@@ -20,7 +20,6 @@ package se.inera.statistics.service.warehouse;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,12 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.google.common.collect.Sets;
 
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
@@ -54,19 +50,16 @@ public class SjukfallExtended {
     private Set<Integer> enhets = new HashSet<>();
     private SjukfallExtended extending;
     private List<Sjukskrivningsperiod> sjukskrivningsperiods = new ArrayList<>();
-    private static final Comparator<Fact> START_DATUM_SORTER = new Comparator<Fact>() {
-        @Override
-        public int compare(Fact f1, Fact f2) {
-            if (f1.getStartdatum() - f2.getStartdatum() == 0) {
-                final int intygsIdCompare = Long.compare(f1.getLakarintyg(), f2.getLakarintyg());
-                if (intygsIdCompare == 0) {
-                    return f1.getSjukskrivningsgrad() - f2.getSjukskrivningsgrad();
-                } else {
-                    return intygsIdCompare;
-                }
+    private static final Comparator<Fact> START_DATUM_SORTER = (f1, f2) -> {
+        if (f1.getStartdatum() - f2.getStartdatum() == 0) {
+            final int intygsIdCompare = Long.compare(f1.getLakarintyg(), f2.getLakarintyg());
+            if (intygsIdCompare == 0) {
+                return f1.getSjukskrivningsgrad() - f2.getSjukskrivningsgrad();
             } else {
-                return f1.getStartdatum() - f2.getStartdatum();
+                return intygsIdCompare;
             }
+        } else {
+            return f1.getStartdatum() - f2.getStartdatum();
         }
     };
 
@@ -115,7 +108,7 @@ public class SjukfallExtended {
         enkelt |= previous.isEnkelt();
     }
 
-    SjukfallExtended(SjukfallExtended sjukfall) {
+    private SjukfallExtended(SjukfallExtended sjukfall) {
         start = sjukfall.getStart();
         end = sjukfall.getEnd();
         sjukskrivningsperiods.addAll(sjukfall.sjukskrivningsperiods);
@@ -139,12 +132,8 @@ public class SjukfallExtended {
         return new Lakare(lakarid, lakarKon, lakaralder, lakarbefattnings);
     }
 
-    public int getKonInt() {
+    int getKonInt() {
         return kon;
-    }
-
-    public Kon getKon() {
-        return Kon.byNumberRepresentation(kon);
     }
 
     /**
@@ -164,11 +153,11 @@ public class SjukfallExtended {
         }
     }
 
-    public SjukfallExtended newSjukfall(Fact line) {
+    private SjukfallExtended newSjukfall(Fact line) {
         return new SjukfallExtended(line);
     }
 
-    public SjukfallExtended extendSjukfall(Fact line) {
+    SjukfallExtended extendSjukfall(Fact line) {
         return new SjukfallExtended(this, line);
     }
 
@@ -256,7 +245,7 @@ public class SjukfallExtended {
         return getLastFact().getSjukskrivningsgrad();
     }
 
-    public Collection<Integer> getSjukskrivningsgrads() {
+    Collection<Integer> getSjukskrivningsgrads() {
         return sjukskrivningsgrad.values();
     }
 
@@ -285,7 +274,7 @@ public class SjukfallExtended {
         return extending != null;
     }
 
-    public String getLanskod() {
+    String getLanskod() {
         return String.format("%1$02d", lan);
     }
 
@@ -297,7 +286,7 @@ public class SjukfallExtended {
         return lakare;
     }
 
-    public Lakare getLastLakare() {
+    Lakare getLastLakare() {
         return getLakareFromFact(getLastFact());
     }
 
@@ -305,44 +294,34 @@ public class SjukfallExtended {
         return enhets;
     }
 
-    public int getLastEnhet() {
+    int getLastEnhet() {
         return getLastFact().getEnhet();
     }
 
     public SjukfallExtended extendWithRealDaysWithinPeriod(SjukfallExtended previous) {
         final SjukfallExtended sjukfall = new SjukfallExtended(this);
-        final Set<Integer> datesWithinPeriod = Sets.filter(previous.getAllDates(previous.sjukskrivningsperiods),
-                date -> date >= start && date <= end);
-        List<Sjukskrivningsperiod> newSjukskrivningsperiods = toSjukskrivningsperiods(datesWithinPeriod);
-        sjukfall.sjukskrivningsperiods.addAll(newSjukskrivningsperiods);
+        for (Sjukskrivningsperiod sjukskrivningsperiod : previous.sjukskrivningsperiods) {
+            final int prevStart = sjukskrivningsperiod.getStart();
+            final int prevEnd = prevStart + sjukskrivningsperiod.getLength();
+            final boolean startIsInPeriod = prevStart > this.start && prevStart < this.end;
+            final boolean endIsInPeriod = prevEnd < this.end && prevEnd > this.start;
+            if (startIsInPeriod && endIsInPeriod) {
+                sjukfall.sjukskrivningsperiods.add(sjukskrivningsperiod);
+            } else if (startIsInPeriod || endIsInPeriod) {
+                final int startInPeriod = Math.max(prevStart, this.start);
+                final int endInPeriod = Math.min(prevEnd, this.end);
+                final int newPeriodLength = endInPeriod - startInPeriod;
+                sjukfall.sjukskrivningsperiods.add(new Sjukskrivningsperiod(startInPeriod, newPeriodLength));
+            }
+        }
         return sjukfall;
     }
 
-    private List<Sjukskrivningsperiod> toSjukskrivningsperiods(Set<Integer> dates) {
-        if (dates.isEmpty()) {
-            return Collections.emptyList();
-        }
-        final ArrayList<Sjukskrivningsperiod> result = new ArrayList<>();
-        final SortedSet<Integer> sortedDates = new TreeSet<>(dates);
-        final List<Integer> currentPeriodDates = new ArrayList<>(sortedDates.size());
-        for (Integer date : sortedDates) {
-            if (!currentPeriodDates.isEmpty() && date > currentPeriodDates.get(currentPeriodDates.size() - 1) + 1) {
-                result.add(new Sjukskrivningsperiod(currentPeriodDates.get(0), currentPeriodDates.size()));
-                currentPeriodDates.clear();
-            }
-            currentPeriodDates.add(date);
-        }
-        if (!currentPeriodDates.isEmpty()) {
-            result.add(new Sjukskrivningsperiod(currentPeriodDates.get(0), currentPeriodDates.size()));
-        }
-        return result;
-    }
-
-    public List<Diagnos> getAllDxs() {
+    List<Diagnos> getAllDxs() {
         return diagnoses;
     }
 
-    public long getFirstIntygId() {
+    long getFirstIntygId() {
         return getFirstFact().getLakarintyg();
     }
 
