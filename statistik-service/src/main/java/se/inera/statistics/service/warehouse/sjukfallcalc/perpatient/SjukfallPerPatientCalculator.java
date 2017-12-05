@@ -124,7 +124,7 @@ public class SjukfallPerPatientCalculator {
                 .filter(longCollectionEntry -> longCollectionEntry.getValue().stream()
                         .anyMatch(sjukfallExtended -> sjukfallExtended.getStart() <= latestStartDate))
                 .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     private ArrayListMultimap<Long, SjukfallExtended> getSjukfallPerPatientInPeriod(int period) {

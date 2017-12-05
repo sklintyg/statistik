@@ -45,7 +45,7 @@ public class SjukfallTest {
         assertEquals(1, result.getRealDays());
         assertEquals(1, result.getSjukskrivningsgrad());
         assertEquals(1, result.getStart());
-        assertEquals(Kon.MALE, result.getKon());
+        assertEquals(Kon.MALE, Kon.byNumberRepresentation(result.getKonInt()));
         assertArrayEquals(new Object[]{1}, result.getLakare().stream().map(lakare -> lakare.getId()).toArray());
 
         assertEquals("01", result.getLanskod());
@@ -70,7 +70,7 @@ public class SjukfallTest {
         assertEquals(3, result.getRealDays());
         assertEquals(2, result.getSjukskrivningsgrad());
         assertEquals(1, result.getStart());
-        assertEquals(Kon.byNumberRepresentation(2), result.getKon());
+        assertEquals(Kon.byNumberRepresentation(2), Kon.byNumberRepresentation(result.getKonInt()));
         final List<Integer> lakare = result.getLakare().stream().map(lakare1 -> lakare1.getId()).collect(Collectors.toList());
         assertEquals(2, lakare.size());
         assertTrue(lakare.contains(1));
@@ -266,6 +266,19 @@ public class SjukfallTest {
 
         //Then
         assertEquals(10, sjukfall3.getRealDays());
+    }
+
+    @Test
+    public void testExtendWithRealDaysWithinPeriodPeriodAlreadyCovered() throws Exception {
+        for (int i = 0; i < 100000; i++) {
+        //When
+        final SjukfallExtended sjukfall1 = new SjukfallExtended(createFact(2, 4));
+        final SjukfallExtended sjukfall2 = new SjukfallExtended(sjukfall1, createFact(20, 4));
+        final SjukfallExtended sjukfall3 = sjukfall2.extendWithRealDaysWithinPeriod(new SjukfallExtended(createFact(10, 12)));
+
+        //Then
+        assertEquals(18, sjukfall3.getRealDays());
+        }
     }
 
     @Test
