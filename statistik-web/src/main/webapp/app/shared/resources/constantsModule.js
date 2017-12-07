@@ -46,8 +46,8 @@
         {name: 'västmanland', xy: {'x': 42, 'y': 40}},
         {name: 'västra götaland', xy: {'x': 12, 'y': 25}},
         {name: 'örebro', xy: {'x': 32, 'y': 36}},
-        {name: 'östergötland', xy: {'x': 39, 'y': 29}},
-        {name: 'DEFAULT', xy: {'x': 12, 'y': 94}}];
+        {name: 'östergötland', xy: {'x': 39, 'y': 29}}
+    ];
 
     constantModule.constant('COUNTY_COORDS',countyCoordinates);
 
