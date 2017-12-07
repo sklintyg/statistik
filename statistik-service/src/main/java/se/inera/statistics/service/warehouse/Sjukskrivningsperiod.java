@@ -20,14 +20,16 @@ package se.inera.statistics.service.warehouse;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Sjukskrivningsperiod {
 
     private int start;
     private int length;
 
-    public Sjukskrivningsperiod(int start, int length) {
+    Sjukskrivningsperiod(int start, int length) {
         this.start = start;
         this.length = length;
     }
@@ -40,16 +42,46 @@ public class Sjukskrivningsperiod {
         return length;
     }
 
-    public Collection<Integer> getAllDatesInPeriod() {
-        if (length < 1) {
-            return Collections.emptyList();
-        }
-        final ArrayList<Integer> dates = new ArrayList<>();
-        final int endDate = start + length;
-        for (int i = start; i < endDate; i++) {
-            dates.add(i);
-        }
-        return dates;
+    public int getEnd() {
+        return start + length;
     }
+
+    static int getLengthOfJoinedPeriods(Collection<Sjukskrivningsperiod> periods) {
+        List<Sjukskrivningsperiod> mergedPeriods = mergePeriods(periods);
+        int sum = 0;
+        final int size = mergedPeriods.size();
+        //noinspection ForLoopReplaceableByForEach
+        for (int i = 0; i < size; i++) {
+            final int length = mergedPeriods.get(i).length;
+            sum += length > 0 ? length : 0;
+
+        }
+        return sum;
+    }
+
+    private static List<Sjukskrivningsperiod> mergePeriods(Collection<Sjukskrivningsperiod> periodsIn) {
+        if (periodsIn.size() < 2) {
+            return new ArrayList<>(periodsIn);
+        }
+        final LinkedList<Sjukskrivningsperiod> periods = new LinkedList<>(periodsIn);
+        periods.sort(Comparator.comparingInt(Sjukskrivningsperiod::getStart));
+        for (int i = 1; i < periods.size(); i++) {
+            final Sjukskrivningsperiod p1 = periods.get(i - 1);
+            final Sjukskrivningsperiod p2 = periods.get(i);
+            if (p1.getEnd() >= p2.getStart() - 1) {
+                final int mergedLength = Math.max(p1.getEnd(), p2.getEnd()) - p1.getStart();
+                final Sjukskrivningsperiod mergedPeriod = new Sjukskrivningsperiod(p1.getStart(), mergedLength);
+                periods.remove(i);
+                periods.remove(i - 1);
+                periods.add(i - 1, mergedPeriod);
+                i--;
+            }
+            if (periods.size() == 1) {
+                break;
+            }
+        }
+        return periods;
+    }
+
 
 }

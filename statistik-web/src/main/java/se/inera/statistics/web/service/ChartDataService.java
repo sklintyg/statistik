@@ -93,6 +93,10 @@ public class ChartDataService {
         return nationellDataResult != null ? nationellDataResult : new NationellDataResult();
     }
 
+    public void clearNationellDataCache() {
+        nationellDataResult = null;
+    }
+
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     public void buildCache() {
         LOG.info("National cache population requested");

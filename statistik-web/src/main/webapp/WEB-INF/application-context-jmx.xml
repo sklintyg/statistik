@@ -32,7 +32,6 @@
      <property name="server" ref="mbeanServer"/>
      <property name="beans">
        <map>
-           <entry key="inera-statistics:name=WarehouseManager" value-ref="warehouseManager"/>
            <entry key="inera-statistics:name=LogConsumer" value-ref="logJob"/>
        </map>
      </property>

@@ -21,7 +21,6 @@ package se.inera.statistics.service.warehouse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
 import java.util.NavigableSet;
 import java.util.Set;
@@ -37,6 +36,7 @@ public class SjukfallExtended {
     private int start;
     private int end;
     private NavigableSet<Fact> facts = new TreeSet<>(START_DATUM_SORTER);
+    private List<Long> factIds;
     private SjukfallExtended extending;
     private List<Sjukskrivningsperiod> sjukskrivningsperiods = new ArrayList<>();
     private static final Comparator<Fact> START_DATUM_SORTER = (f1, f2) -> {
@@ -159,11 +159,11 @@ public class SjukfallExtended {
     }
 
     public int getDiagnoskategori() {
-        return getLastDiagnosis().diagnoskategori;
+        return getLastDiagnosis().getDiagnoskategori();
     }
 
     public int getDiagnoskod() {
-        return getLastDiagnosis().diagnoskod;
+        return getLastDiagnosis().getDiagnoskod();
     }
 
     public int getAlder() {
@@ -171,15 +171,7 @@ public class SjukfallExtended {
     }
 
     public int getRealDays() {
-        return getAllDates(sjukskrivningsperiods).size();
-    }
-
-    private HashSet<Integer> getAllDates(List<Sjukskrivningsperiod> periods) {
-        final HashSet<Integer> allDates = new HashSet<>();
-        for (Sjukskrivningsperiod sjukskrivningsperiod : periods) {
-            allDates.addAll(sjukskrivningsperiod.getAllDatesInPeriod());
-        }
-        return allDates;
+        return Sjukskrivningsperiod.getLengthOfJoinedPeriods(sjukskrivningsperiods);
     }
 
     public int getIntygCount() {
@@ -195,7 +187,7 @@ public class SjukfallExtended {
     }
 
     public int getDiagnoskapitel() {
-        return getLastDiagnosis().diagnoskapitel;
+        return getLastDiagnosis().getDiagnoskapitel();
     }
 
     public int getSjukskrivningsgrad() {
@@ -207,7 +199,7 @@ public class SjukfallExtended {
     }
 
     public int getDiagnosavsnitt() {
-        return getLastDiagnosis().diagnosavsnitt;
+        return getLastDiagnosis().getDiagnosavsnitt();
     }
 
     Diagnos getLastDiagnosis() {
@@ -270,10 +262,7 @@ public class SjukfallExtended {
     }
 
     List<Diagnos> getAllDxs() {
-        return facts.stream().map(line ->
-                new Diagnos(start, end, line.getDiagnoskapitel(), line.getDiagnosavsnitt(),
-                        line.getDiagnoskategori(), line.getDiagnoskod()))
-                .collect(Collectors.toList());
+        return facts.stream().map(Diagnos::new).collect(Collectors.toList());
     }
 
     long getFirstIntygId() {
@@ -285,47 +274,10 @@ public class SjukfallExtended {
     }
 
     private List<Long> getFactIds() {
-        return facts.stream().map(Fact::getId).collect(Collectors.toList());
-    }
-
-    static final class Diagnos {
-        private final int diagnoskapitel;
-        private final int diagnosavsnitt;
-        private final int diagnoskategori;
-        private final int diagnoskod;
-        private final int startDatum;
-        private final int slutDatum;
-
-        private Diagnos(int startDatum, int slutDatum, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod) {
-            this.startDatum = startDatum;
-            this.slutDatum = slutDatum;
-            this.diagnoskapitel = diagnoskapitel;
-            this.diagnosavsnitt = diagnosavsnitt;
-            this.diagnoskategori = diagnoskategori;
-            this.diagnoskod = diagnoskod;
+        if (factIds == null) {
+            factIds = facts.stream().map(Fact::getId).collect(Collectors.toList());
         }
-
-        private Diagnos(Fact fact) {
-            this(fact.getStartdatum(), fact.getSlutdatum(), fact.getDiagnoskapitel(), fact.getDiagnosavsnitt(), fact.getDiagnoskategori(),
-                    fact.getDiagnoskod());
-        }
-
-        public int getDiagnoskapitel() {
-            return diagnoskapitel;
-        }
-
-        public int getDiagnosavsnitt() {
-            return diagnosavsnitt;
-        }
-
-        public int getDiagnoskategori() {
-            return diagnoskategori;
-        }
-
-        public int getDiagnoskod() {
-            return diagnoskod;
-        }
-
+        return factIds;
     }
 
 }

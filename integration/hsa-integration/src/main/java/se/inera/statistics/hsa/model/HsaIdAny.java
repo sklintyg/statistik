@@ -23,14 +23,25 @@ import com.google.common.base.Objects;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Locale;
 
 public class HsaIdAny implements Serializable {
 
     private String id;
 
     HsaIdAny(String id) {
-        this.id = id == null ? "" : id.toUpperCase(Locale.ENGLISH).replaceAll("\\s", "");
+        this.id = id == null ? "" : toUpperCaseAndRemoveBlanks(id);
+    }
+
+    private static String toUpperCaseAndRemoveBlanks(String s) {
+        final char[] chars = new char[s.length()];
+        int j = 0;
+        for (int i = 0; i < s.length(); i++) {
+            final char ch = s.charAt(i);
+            if (!Character.isWhitespace(ch)) {
+                chars[j++] = Character.toUpperCase(ch);
+            }
+        }
+        return new String(chars, 0, j);
     }
 
     /**

@@ -40,6 +40,18 @@ public class ConversionHelperTest {
     }
 
     @Test
+    public void testPatientIdToInt() throws Exception {
+        //Given
+        final String patientIdString = "10001783-82 80";
+
+        //When
+        final long patientIdLong = ConversionHelper.patientIdToInt(patientIdString);
+
+        //Then
+        assertEquals(100017838280L, patientIdLong);
+    }
+
+    @Test
     public void testExtractAlder() throws Exception {
         //When
         final int alder = ConversionHelper.extractAlder("19750325-8280", LocalDate.of(2015, 3, 5));
