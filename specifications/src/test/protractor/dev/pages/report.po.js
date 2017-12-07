@@ -13,7 +13,9 @@ var ReportPage = function() {
     this.chartlegendsElem = element(by.id('chartlegends'));
     this.chartlegendLabels = element.all(by.css('#chartlegends #legend-label .legend-name'));
 
-    this.compareDiagnosisContainer = element(by.css('.compare-diagnosis'));
+    this.compareDiagnosisContainer = element(by.css('compare-diagnosis-selection'));
+    this.compareDiagnosisLevelChapter = this.compareDiagnosisContainer.element(by.id('comparediagnoses-level-chapter'));
+    this.compareDiagnosisLevelSection = this.compareDiagnosisContainer.element(by.id('comparediagnoses-level-section'));
     this.compareDiagnosisLevelCategory = this.compareDiagnosisContainer.element(by.id('comparediagnoses-level-category'));
     this.compareDiagnosisLevelCode = this.compareDiagnosisContainer.element(by.id('comparediagnoses-level-code'));
     this.compareDiagnosisBtn = this.compareDiagnosisContainer.element(by.css('button'));

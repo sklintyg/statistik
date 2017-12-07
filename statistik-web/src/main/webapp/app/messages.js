@@ -129,6 +129,8 @@ var stMessages = {
         'alert.dxs.max.selected': 'Du har valt för många diagnoser för att diagrammet ska kunna visas. Överväg att filtrera ytterligare eller välj en annan indelning för att minska mängden data.',
 
         'comparediagnoses.choose-level': 'Välj indelning:',
+        'comparediagnoses.level.section': 'Diagnosavsnitt',
+        'comparediagnoses.level.chapter': 'Diagnoskapitel',
         'comparediagnoses.level.category': 'Diagnoskategorier',
         'comparediagnoses.level.code': 'Diagnoskoder',
         'comparediagnoses.lbl.val-av-diagnoser': 'Välj diagnoser som din rapport ska baseras på:',

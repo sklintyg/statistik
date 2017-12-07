@@ -16,37 +16,10 @@
                         sjukskrivningslangds-filters="activeSjukskrivningslangdsFilters"
                         aldersgrupp-filters="activeAldersgruppFilters"></show-filter-list>
 
-      <!-- Start detailsOptions if any -->
-      <div data-ng-if="showDiagnosisSelector" class="compare-diagnosis">
-
-        <label message key="comparediagnoses.choose-level"></label><br>
-        <div class="radio">
-          <label>
-            <input id="comparediagnoses-level-category" type="radio" data-ng-model="diagnoses.showCodeLevel" data-ng-value="diagnoses.category" />
-            <span class="radio-text" message key="comparediagnoses.level.category"></span>
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input id="comparediagnoses-level-code" type="radio" data-ng-model="diagnoses.showCodeLevel" data-ng-value="diagnoses.code" />
-            <span class="radio-text" message key="comparediagnoses.level.code"></span>
-          </label>
-        </div>
-
-        <tree-multi-selector menu-options="diagnosisTreeFilter.diagnosisOptionsTree"
-                             done-clicked="diagnosisSelected"
-                             on-open="diagnosisTreeFilter.setPreselectedFilter"
-                             button-icon="fa-stethoscope"
-                             max-depth="diagnoses.showCodeLevel ? 0 : 3"
-                             text-data="diagnosisSelectorData"
-                             select-all-text-key="lbl.filter.val-av-diagnoser.select-all"
-                             search-hint-text-key="lbl.filter.val-av-diagnoser.search.hint"
-                             ignore-chars-in-search="."
-                             sidebar-state="{collapsed: true}"
-                             min-selections="1"
-                             max-selections="{{maxSelectedDxs}}">
-        </tree-multi-selector>
-      </div>
+      <compare-diagnosis-selection
+          data-ng-if="showDiagnosisSelector"
+          route-params="routeParams"
+          ></compare-diagnosis-selection>
 
       <diagnos-selection show-details-options="showDetailsOptions"
                          details-options="detailsOptions"

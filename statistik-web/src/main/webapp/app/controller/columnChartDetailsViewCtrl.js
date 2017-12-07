@@ -20,8 +20,8 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
     /** @ngInject */
-    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, $filter, statisticsData, diagnosisTreeFilter,
-        config, messageService, chartFactory, pdfFactory, _, ControllerCommons, MAX_SELECTED_DXS) {
+    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, $filter, statisticsData,
+        config, messageService, chartFactory, pdfFactory, _, ControllerCommons) {
         'use strict';
 
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
@@ -179,7 +179,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             $scope.doneLoading = true;
         }
 
-        $scope.maxSelectedDxs = MAX_SELECTED_DXS;
+        $scope.routeParams = $routeParams;
         $scope.subTitle = config.title;
         $scope.chartFootnotes = angular.isFunction(config.chartFootnotes) ? config.chartFootnotes(isVerksamhet, isLandsting) : config.chartFootnotes;
         $scope.chartFootnotes = Array.isArray($scope.chartFootnotes) ? $scope.chartFootnotes : [];
@@ -188,9 +188,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         $scope.showDetailsOptions3 = config.showDetailsOptions3 && isVerksamhet;
 
         $scope.showDiagnosisSelector = config.showDiagnosisSelector;
-        if ($scope.showDiagnosisSelector) {
-            ControllerCommons.setupDiagnosisSelector(diagnosisTreeFilter, $routeParams, $scope, messageService, $timeout, statisticsData, $location);
-        }
 
         $scope.exportChart = function () {
             chartFactory.exportChart(chart, $scope.viewHeader, $scope.subTitle);

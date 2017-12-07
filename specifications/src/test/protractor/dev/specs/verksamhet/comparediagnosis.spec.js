@@ -75,7 +75,7 @@ describe('Jämför diagnoser: ', function() {
         expect(report.getTableRowsLabel().count()).toEqual(0);
     });
 
-    it('Finns 3 nivåer i dialogen när man har valt category', function() {
+    it('Finns 3 nivåer i dialogen när man har valt kategori', function() {
         report.compareDiagnosisLevelCategory.click();
 
         report.compareDiagnosisBtn.click();
@@ -88,6 +88,43 @@ describe('Jämför diagnoser: ', function() {
         first.element(by.css('input')).click();
 
         expect(report.compareDiagnosisDepthList(3).count()).toEqual(0);
+
+        report.compareDiagnosisSaveAndCloseBtn.click();
+
+        expect(report.getTableRowsLabel().first().getText()).toEqual(diagnoses);
+    });
+
+    it('Finns 2 nivåer i dialogen när man har valt avsnitt', function() {
+        report.compareDiagnosisLevelSection.click();
+
+        report.compareDiagnosisBtn.click();
+
+        report.compareDiagnosisDepthList(0).first().click();
+        report.compareDiagnosisDepthList(1).first().click();
+
+        var first = report.compareDiagnosisDepthList(1).first();
+        var diagnoses = first.getText();
+        first.element(by.css('input')).click();
+
+        expect(report.compareDiagnosisDepthList(2).count()).toEqual(0);
+
+        report.compareDiagnosisSaveAndCloseBtn.click();
+
+        expect(report.getTableRowsLabel().first().getText()).toEqual(diagnoses);
+    });
+
+    it('Finns 1 nivåer i dialogen när man har valt avsnitt', function() {
+        report.compareDiagnosisLevelChapter.click();
+
+        report.compareDiagnosisBtn.click();
+
+        report.compareDiagnosisDepthList(0).first().click();
+
+        var first = report.compareDiagnosisDepthList(0).first();
+        var diagnoses = first.getText();
+        first.element(by.css('input')).click();
+
+        expect(report.compareDiagnosisDepthList(1).count()).toEqual(0);
 
         report.compareDiagnosisSaveAndCloseBtn.click();
 
