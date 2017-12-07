@@ -55,8 +55,8 @@ public class Sjukfall {
         final Sjukfall sjukfall = new Sjukfall();
         sjukfall.start = extendedSjukfall.getStart();
         sjukfall.end = extendedSjukfall.getEnd();
-        sjukfall.diagnoses = toDiagnoses(extendedSjukfall.getAllDxs());
-        sjukfall.diagnos = toDiagnos(extendedSjukfall.getLastDiagnosis());
+        sjukfall.diagnoses = extendedSjukfall.getAllDxs();
+        sjukfall.diagnos = extendedSjukfall.getLastDiagnosis();
         sjukfall.realDays = extendedSjukfall.getRealDays();
         sjukfall.kon = extendedSjukfall.getKonInt();
         sjukfall.alder = extendedSjukfall.getAlder();
@@ -81,18 +81,6 @@ public class Sjukfall {
         return ints;
     }
 
-    private static List<Diagnos> toDiagnoses(List<SjukfallExtended.Diagnos> dxs) {
-        final ArrayList<Diagnos> newDxs = new ArrayList<>();
-        for (SjukfallExtended.Diagnos dx : dxs) {
-            newDxs.add(toDiagnos(dx));
-        }
-        return newDxs;
-    }
-
-    private static Diagnos toDiagnos(SjukfallExtended.Diagnos dx) {
-        return new Diagnos(dx.getDiagnoskapitel(), dx.getDiagnosavsnitt(), dx.getDiagnoskategori(), dx.getDiagnoskod());
-    }
-
     public Kon getKon() {
         return Kon.byNumberRepresentation(kon);
     }
@@ -107,11 +95,11 @@ public class Sjukfall {
     }
 
     public int getDiagnoskategori() {
-        return diagnos.diagnoskategori;
+        return diagnos.getDiagnoskategori();
     }
 
     public int getDiagnoskod() {
-        return diagnos.diagnoskod;
+        return diagnos.getDiagnoskod();
     }
 
     @SuppressWarnings("UnnecessaryDefaultInEnumSwitch")
@@ -144,16 +132,16 @@ public class Sjukfall {
             for (Diagnos diagnose : diagnoses) {
                 switch (icd10RangeType) {
                     case KATEGORI:
-                        result.add(diagnose.diagnoskategori);
+                        result.add(diagnose.getDiagnoskategori());
                         break;
                     case AVSNITT:
-                        result.add(diagnose.diagnosavsnitt);
+                        result.add(diagnose.getDiagnosavsnitt());
                         break;
                     case KAPITEL:
-                        result.add(diagnose.diagnoskapitel);
+                        result.add(diagnose.getDiagnoskapitel());
                         break;
                     case KOD:
-                        result.add(diagnose.diagnoskod);
+                        result.add(diagnose.getDiagnoskod());
                         break;
                     default: throw new UnknownRangeTypeException("Unknown icd range type: " + icd10RangeType);
                 }
@@ -179,11 +167,11 @@ public class Sjukfall {
     }
 
     public int getDiagnoskapitel() {
-        return diagnos.diagnoskapitel;
+        return diagnos.getDiagnoskapitel();
     }
 
     public Stream<Integer> getDiagnoskapitels() {
-        return diagnoses.stream().map(d -> d.diagnoskapitel);
+        return diagnoses.stream().map(d -> d.getDiagnoskapitel());
     }
 
     public int getSjukskrivningsgrad() {
@@ -195,7 +183,7 @@ public class Sjukfall {
     }
 
     public int getDiagnosavsnitt() {
-        return diagnos.diagnosavsnitt;
+        return diagnos.getDiagnosavsnitt();
     }
 
     public String getLanskod() {
@@ -220,20 +208,6 @@ public class Sjukfall {
 
     public long getFirstIntygId() {
         return firstIntygId;
-    }
-
-    private static final class Diagnos {
-        private final int diagnoskapitel;
-        private final int diagnosavsnitt;
-        private final int diagnoskategori;
-        private final int diagnoskod;
-
-        private Diagnos(int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod) {
-            this.diagnoskapitel = diagnoskapitel;
-            this.diagnosavsnitt = diagnosavsnitt;
-            this.diagnoskategori = diagnoskategori;
-            this.diagnoskod = diagnoskod;
-        }
     }
 
     private static class UnknownRangeTypeException extends RuntimeException {

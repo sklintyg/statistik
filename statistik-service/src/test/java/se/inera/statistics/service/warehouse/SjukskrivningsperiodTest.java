@@ -20,17 +20,22 @@ package se.inera.statistics.service.warehouse;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class SjukskrivningsperiodTest {
 
     @Test
-    public void testGetAllDatesInPeriod() throws Exception {
+    public void testGetLengthOfJoinedPeriodsSingle() throws Exception {
         //When
         final Sjukskrivningsperiod sjukskrivningsperiod = new Sjukskrivningsperiod(4, 3);
 
         //Then
-        assertArrayEquals(new Integer[]{4, 5, 6}, sjukskrivningsperiod.getAllDatesInPeriod().toArray(new Integer[0]));
+        final List<Sjukskrivningsperiod> periods = Collections.singletonList(sjukskrivningsperiod);
+        assertEquals(3, Sjukskrivningsperiod.getLengthOfJoinedPeriods(periods));
     }
 
     @Test
@@ -39,7 +44,9 @@ public class SjukskrivningsperiodTest {
         final Sjukskrivningsperiod sjukskrivningsperiod = new Sjukskrivningsperiod(4, -1);
 
         //Then
-        assertArrayEquals(new Integer[]{}, sjukskrivningsperiod.getAllDatesInPeriod().toArray(new Integer[0]));
+        final List<Sjukskrivningsperiod> periods = Collections.singletonList(sjukskrivningsperiod);
+        assertEquals(0, Sjukskrivningsperiod.getLengthOfJoinedPeriods(periods));
+
     }
 
     @Test
@@ -48,7 +55,28 @@ public class SjukskrivningsperiodTest {
         final Sjukskrivningsperiod sjukskrivningsperiod = new Sjukskrivningsperiod(4, 0);
 
         //Then
-        assertArrayEquals(new Integer[]{}, sjukskrivningsperiod.getAllDatesInPeriod().toArray(new Integer[0]));
+        final List<Sjukskrivningsperiod> periods = Collections.singletonList(sjukskrivningsperiod);
+        assertEquals(0, Sjukskrivningsperiod.getLengthOfJoinedPeriods(periods));
     }
+
+    @Test
+    public void testGetLengthOfJoinedPeriods() throws Exception {
+        //Given
+        final ArrayList<Sjukskrivningsperiod> periods = new ArrayList<>();
+        periods.add(new Sjukskrivningsperiod(10, 15));
+        periods.add(new Sjukskrivningsperiod(20, 30));
+        periods.add(new Sjukskrivningsperiod(12, 17));
+        periods.add(new Sjukskrivningsperiod(11, 13));
+        periods.add(new Sjukskrivningsperiod(20, 300));
+        periods.add(new Sjukskrivningsperiod(350, 1));
+
+        //When
+        final int length = Sjukskrivningsperiod.getLengthOfJoinedPeriods(periods);
+
+        //Then
+        assertEquals(311, length);
+    }
+
+
 
 }

@@ -44,8 +44,22 @@ public final class ConversionHelper {
 
     // CHECKSTYLE:OFF MagicNumber
     public static long patientIdToInt(String id) {
-        final String onlyNumbers = id.replaceAll("[\\D]", "");
-        return Long.parseLong(onlyNumbers);
+        return patientIdToLong(id);
+    }
+
+    private static long patientIdToLong(String id) {
+        final char from = '0';
+        final char to = '9';
+        long nr = 0;
+        long j = 1;
+        for (int i = id.length() - 1; i >= 0; i--) {
+            final char ch = id.charAt(i);
+            if (ch >= from && ch <= to) {
+                nr += (ch - from) * j;
+                j = j * 10;
+            }
+        }
+        return nr;
     }
 
     public static String patientIdToString(long id) {

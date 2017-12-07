@@ -184,7 +184,6 @@ public class RestSupportService {
     @Produces({ MediaType.APPLICATION_JSON })
     @Transactional
     public Response clearDatabase() {
-
         manager.createNativeQuery("TRUNCATE TABLE " + IntygEvent.TABLE).executeUpdate();
         manager.createNativeQuery("TRUNCATE TABLE " + WideLine.TABLE).executeUpdate();
         manager.createQuery("UPDATE EventPointer SET eventId = 0").executeUpdate();
@@ -195,8 +194,19 @@ public class RestSupportService {
         manager.createNativeQuery("TRUNCATE TABLE " + MessageEvent.TABLE).executeUpdate();
         manager.createNativeQuery("TRUNCATE TABLE " + IntygCommon.TABLE).executeUpdate();
         sjukfallUtil.clearSjukfallGroupCache();
-        warehouse.clearAisleCache();
+        warehouse.clearCaches();
         nationalChartDataService.buildCache();
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("clearCaches")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Transactional
+    public Response clearCaches() {
+        sjukfallUtil.clearSjukfallGroupCache();
+        warehouse.clearCaches();
+        nationalChartDataService.clearNationellDataCache();
         return Response.ok().build();
     }
 
@@ -265,7 +275,7 @@ public class RestSupportService {
             LOG.info("Processed batch with {} entries", count);
         } while (count > 0);
         sjukfallUtil.clearSjukfallGroupCache();
-        warehouse.clearAisleCache();
+        warehouse.clearCaches();
         nationalChartDataService.buildCache();
         return Response.ok().build();
     }
