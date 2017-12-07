@@ -18,9 +18,21 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import com.google.common.collect.Lists;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
@@ -38,17 +50,6 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Component
 public class DiagnosgruppQuery {
@@ -156,7 +157,8 @@ public class DiagnosgruppQuery {
             int periodLength, List<String> diagnosis) {
         final List<Icd10.Id> kategoris = Lists.transform(diagnosis, diagnos -> icd10.findIcd10FromNumericId(Integer.valueOf(diagnos)));
         final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
-        final List<Icd10RangeType> rangeTypes = Arrays.asList(Icd10RangeType.AVSNITT, Icd10RangeType.KAPITEL, Icd10RangeType.KATEGORI, Icd10RangeType.KOD);
+        final List<Icd10RangeType> rangeTypes = Arrays.asList(Icd10RangeType.AVSNITT, Icd10RangeType.KAPITEL,
+                Icd10RangeType.KATEGORI, Icd10RangeType.KOD);
         final List<KonDataRow> periodRows = getKonDataRows(sjukfallGroups, kategoris, rangeTypes, true);
         final List<SimpleKonDataRow> rows = new ArrayList<>(kategoris.size());
         final List<KonField> data = periodRows.get(0).getData();
