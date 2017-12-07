@@ -21,11 +21,9 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').controller('overviewCtrl',
     /** @ngInject */
-    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, COUNTY_COORDS, chartFactory,
+    function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, CoordinateService, chartFactory,
         messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _, COLORS) {
         'use strict';
-
-        var self = this;
 
         $scope.diagnosisDonutChartOptions = null;
         $scope.ageDonutChartOptions = null;
@@ -235,10 +233,21 @@ angular.module('StatisticsApp').controller('overviewCtrl',
 
         function paintSickLeavePerCountyChart(chartData, hideImage) {
             var series = _.map(chartData, function (e) {
-                var coords = self.getCoordinates(e);
-                return {'data': [
-                    [coords.x, coords.y, e.quantity]
-                ], color: e.color, name: ControllerCommons.htmlsafe(e.name) };
+                var coords = CoordinateService.getCoordinates(e);
+
+                if (!coords) {
+                    return {
+                        data: []
+                    };
+                }
+
+                return {
+                    'data': [
+                        [coords.x, coords.y, e.quantity]
+                    ],
+                    color: e.color,
+                    name: ControllerCommons.htmlsafe(e.name)
+                };
             });
 
             var chartConfigOptions = {
@@ -299,20 +308,6 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                     }
                 }
             };
-        }
-
-        self.getCoordinates = function getCoordinates(perCountyObject) {
-            var result = _.find(COUNTY_COORDS, function(c) {
-                if(contains(perCountyObject.name.toLowerCase(), c.name)) {
-                    return c;
-                }
-            });
-
-            return result ? result.xy : _.find(COUNTY_COORDS, function(c) { return c.name === 'DEFAULT';}).xy;
-        };
-
-        function contains(master, substring) {
-            return master.indexOf(substring) !== -1;
         }
 
         function extractDonutData(rawData) {
