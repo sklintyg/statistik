@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,7 @@ public class WidelineManager {
         List<String> errors = widelineConverter.validate(line);
 
         if (errors.isEmpty()) {
-            manager.persist(line);
+            saveWideline(line);
         } else {
             StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid)
                     .append(" error count ").append(errCount++);
@@ -82,11 +83,32 @@ public class WidelineManager {
     @Transactional
     public void saveWideline(WideLine line) {
         manager.persist(line);
+        if (revokeCorrelationId(line)) {
+            inactivateIntyg(line.getCorrelationId());
+        }
+    }
+
+    private boolean revokeCorrelationId(WideLine line) {
+        return EventType.REVOKED.equals(line.getIntygTyp()) || isCorrelationIdAlreadyRevoked(line.getCorrelationId());
+    }
+
+    private boolean isCorrelationIdAlreadyRevoked(String correlationId) {
+        final int revokedOrdinal = EventType.REVOKED.ordinal();
+        final Query query = manager.createQuery("SELECT intygTyp, correlationId FROM WideLine "
+                + "WHERE intygTyp = " + revokedOrdinal + " AND correlationId = :corrId");
+        query.setParameter("corrId", correlationId);
+        return !query.getResultList().isEmpty();
     }
 
     @Transactional
     public int count() {
         return ((Long) manager.createQuery("SELECT COUNT (wl) FROM WideLine wl").getSingleResult()).intValue();
+    }
+
+    private void inactivateIntyg(String correlationId) {
+        final Query query = manager.createQuery("UPDATE WideLine SET active = false WHERE correlationId = :corrId");
+        query.setParameter("corrId", correlationId);
+        query.executeUpdate();
     }
 
 }

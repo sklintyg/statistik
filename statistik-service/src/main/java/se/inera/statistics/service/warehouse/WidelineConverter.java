@@ -91,12 +91,12 @@ public class WidelineConverter extends AbstractWidlineConverter {
         int lakaralder = HSAServiceHelper.getLakaralder(hsa);
         String lakarbefattning = HSAServiceHelper.getLakarbefattning(hsa);
         HsaIdLakare lakareid = new HsaIdLakare(dto.getLakareId());
+        final boolean active = !EventType.REVOKED.equals(type);
 
         List<WideLine> lines = new ArrayList<>();
-
         for (Arbetsnedsattning arbetsnedsattning : dto.getArbetsnedsattnings()) {
             WideLine line = createWideLine(logId, correlationId, type, lkf, enhet, vardgivare, patient, kon, alder, dx,
-                    lakarkon, lakaralder, lakarbefattning, lakareid, arbetsnedsattning);
+                    lakarkon, lakaralder, lakarbefattning, lakareid, arbetsnedsattning, active);
             lines.add(line);
         }
         return lines;
@@ -106,7 +106,7 @@ public class WidelineConverter extends AbstractWidlineConverter {
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     private WideLine createWideLine(long logId, String correlationId, EventType type, String lkf, String enhet, HsaIdVardgivare vardgivare,
             String patient, int kon, int alder, Diagnos dx, int lakarkon, int lakaralder, String lakarbefattning,
-            HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning) {
+            HsaIdLakare lakareid, Arbetsnedsattning arbetsnedsattning, boolean active) {
         WideLine line = new WideLine();
 
         int sjukskrivningsgrad = arbetsnedsattning.getNedsattning();
@@ -117,6 +117,7 @@ public class WidelineConverter extends AbstractWidlineConverter {
         line.setCorrelationId(correlationId);
         line.setLakarintyg(logId);
         line.setIntygTyp(type);
+        line.setActive(active);
         line.setLkf(lkf);
         line.setEnhet(new HsaIdEnhet(enhet));
         line.setVardgivareId(vardgivare);

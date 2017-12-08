@@ -140,6 +140,7 @@ public class WidelineLoaderTest {
         line1.setLakarbefattning("201010");
         line1.setLakarintyg(1L);
         line1.setIntygTyp(event);
+        line1.setActive(!EventType.REVOKED.equals(event));
         line1.setLakarkon(2);
         line1.setPatientid(patientId);
         line1.setSjukskrivningsgrad(100);

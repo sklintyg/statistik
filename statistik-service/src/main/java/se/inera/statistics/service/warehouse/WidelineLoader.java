@@ -29,7 +29,6 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
-import se.inera.statistics.service.processlog.EventType;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -120,10 +119,9 @@ public class WidelineLoader {
             justification = "We know what we're doing. No user supplied data.")
     private PreparedStatement prepareStatementForVg(Connection connection, List<HsaIdVardgivare> vgids) throws SQLException {
         final String vgidsJoined = String.join("', '", vgids.stream().map(HsaIdAny::getId).collect(Collectors.toList()));
-        String sql = "select id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, "
+        String sql = "SELECT id, correlationid, lkf, enhet, lakarintyg, patientid, startdatum, slutdatum, kon, alder, diagnoskapitel, "
                 + "diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon, lakaralder, lakarbefattning, vardgivareid, "
-                + "lakareid from wideline w1 where w1.correlationid not in (select correlationid from wideline where intygtyp = "
-                + EventType.REVOKED.ordinal() + " ) AND w1.vardgivareid IN ('" + vgidsJoined + "')";
+                + "lakareid, active FROM wideline WHERE active AND vardgivareid IN ('" + vgidsJoined + "')";
 
         int maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.fact", "0"));
         if (maxIntyg > 0) {
@@ -139,9 +137,8 @@ public class WidelineLoader {
         LOG.info("Get all vgs from db");
         final ArrayList<VgNumber> vgs = new ArrayList<>();
 
-        final String sql = "SELECT vardgivareid, count(vardgivareid) as antal from wideline w1 where w1.correlationid "
-                + "not in (select correlationid from wideline where intygtyp = " + EventType.REVOKED.ordinal() + " )"
-                + " GROUP BY vardgivareid ORDER BY antal ASC;";
+        final String sql = "SELECT vardgivareid, count(vardgivareid) AS antal FROM wideline w1 "
+                + "WHERE w1.active = true GROUP BY vardgivareid ORDER BY antal ASC;";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
              ResultSet resultSet = statement.executeQuery()) {

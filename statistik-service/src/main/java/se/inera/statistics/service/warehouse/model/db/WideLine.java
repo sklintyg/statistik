@@ -58,6 +58,7 @@ public class WideLine {
     private String lakarbefattning;
     private String vardgivareId;
     private String lakareId;
+    private boolean active;
 
     public WideLine() {
         // Used by WidelineConverter
@@ -68,7 +69,7 @@ public class WideLine {
     public WideLine(long id, String correlationId, String lkf, HsaIdEnhet enhet, long lakarintyg, EventType intygTyp, String patientid,
             int startdatum, int slutdatum, int kon, int alder, String diagnoskapitel, String diagnosavsnitt, String diagnoskategori,
             String diagnoskod, int sjukskrivningsgrad, int lakarkon, int lakaralder, String lakarbefattning, HsaIdVardgivare vardgivareId,
-            HsaIdLakare lakareId) {
+            HsaIdLakare lakareId, boolean active) {
         this.id = id;
         this.correlationId = correlationId;
         this.lkf = lkf;
@@ -88,6 +89,7 @@ public class WideLine {
         this.lakarkon = lakarkon;
         this.lakaralder = lakaralder;
         this.lakarbefattning = lakarbefattning;
+        this.active = active;
         setVardgivareId(vardgivareId);
         setLakareId(lakareId);
     }
@@ -259,6 +261,14 @@ public class WideLine {
 
     public void setLakareId(HsaIdLakare lakareId) {
         this.lakareId = lakareId == null ? null : lakareId.getId();
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
 }

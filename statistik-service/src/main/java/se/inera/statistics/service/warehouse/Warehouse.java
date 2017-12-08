@@ -160,7 +160,7 @@ public class Warehouse implements Iterable<Aisle> {
     @Override
     public Iterator<Aisle> iterator() {
         return new Iterator<Aisle>() {
-            private static final int BATCH_SIZE = 25000; //At which number of intyg to stop adding vgs and query the db
+            private static final int BATCH_SIZE = 50000; //At which number of intyg to stop adding vgs and query the db
             private int nextIndex = 0;
             private List<VgNumber> allVardgivare = getAllVardgivare();
             private Iterator<Aisle> batchedAisles = Collections.emptyIterator();

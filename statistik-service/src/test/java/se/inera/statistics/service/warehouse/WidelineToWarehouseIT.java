@@ -73,6 +73,7 @@ public class WidelineToWarehouseIT {
         line1.setStartdatum(4997);
         line1.setVardgivareId(new HsaIdVardgivare("vg1"));
         line1.setCorrelationId("{1}");
+        line1.setActive(true);
         widelineManager.saveWideline(line1);
 
         Aisle a = warehouse.get(new HsaIdVardgivare("VG1"));

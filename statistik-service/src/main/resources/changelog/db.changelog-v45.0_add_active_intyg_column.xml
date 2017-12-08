@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2017 Inera AB (http://www.inera.se)
+
+    This file is part of statistik (https://github.com/sklintyg/statistik).
+
+    statistik is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    statistik is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+        logicalFilePath="liquibase/db.changelog-v45.0_add_active_intyg_column.xml">
+    <changeSet id="45_add_column_wideline_active" author="fredrik.engstrom">
+        <addColumn tableName="wideline">
+            <column name="active" type="boolean" defaultValueBoolean="true">
+                <constraints nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="45_add_index_wideline_active" author="fredrik.engstrom">
+        <createIndex unique="false" tableName="wideline" indexName="wideline_active_idx">
+            <column name="active"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="45_update_wideline_active_column" author="fredrik.engstrom">
+        <sql>UPDATE wideline SET active = false WHERE correlationid IN (SELECT correlationid FROM (SELECT correlationId FROM wideline WHERE intygtyp = 1) AS ci)</sql>
+    </changeSet>
+
+</databaseChangeLog>
