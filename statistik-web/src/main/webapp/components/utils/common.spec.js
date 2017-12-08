@@ -209,4 +209,33 @@ describe('Test of common functions for controllers', function() {
         });
     });
 
+    describe('removeMessages', function() {
+
+        it('empty', function() {
+            var message = [];
+            var result = ControllerCommons.removeFilterMessages(message);
+
+            expect(result).toEqual([]);
+        });
+
+        it('remove one message', function() {
+            var message = [{
+                message: 'test',
+                type: 'UNSET'
+            }, {
+                message: 'filter',
+                type: 'FILTER'
+            }];
+
+            var expected = [{
+                message: 'test',
+                type: 'UNSET'
+            }];
+
+            var result = ControllerCommons.removeFilterMessages(message);
+
+            expect(result).toEqual(expected);
+        });
+    });
+
 });

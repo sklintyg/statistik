@@ -253,10 +253,18 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.removeFilterMessages = function(messages) {
-          return $filter('filter')(messages, function(message) {
-              return message && message.type !== 'FILTER';
-          });
+            return filterMessages(messages, 'FILTER');
         };
+
+        this.removeChartMessages= function(messages) {
+            return filterMessages(messages, 'CHART');
+        };
+
+        function filterMessages(messages, type) {
+            return $filter('filter')(messages, function(message) {
+                return message && message.type !== type;
+            });
+        }
 
         this.formatOverViewTablePDF = function(thousandseparatedFilter, data, nameSuffix) {
             var tableData = [];

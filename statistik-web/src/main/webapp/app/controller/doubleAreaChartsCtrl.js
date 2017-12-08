@@ -82,6 +82,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
                 $scope.series = [];
                 $scope.doneLoading = true;
                 $scope.hideChart = true;
+                $scope.resultMessageList = ControllerCommons.removeChartMessages($scope.resultMessageList);
 
                 return;
             }

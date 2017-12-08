@@ -23,6 +23,6 @@ package se.inera.statistics.web.error;
  */
 public enum ErrorType {
 
-    UNSET, FILTER
+    UNSET, FILTER, CHART
 
 }

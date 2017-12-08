@@ -74,6 +74,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
                 $scope.series = [];
                 $scope.doneLoading = true;
                 $scope.hideChart = true;
+                $scope.resultMessageList = ControllerCommons.removeChartMessages($scope.resultMessageList);
 
                 return;
             }
