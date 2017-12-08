@@ -29,10 +29,3 @@ Inloggad:
 | user1 | 2015 | mar | 7801 | 1 | 0 |
 | user1 | 2015 | mar | 7802 | 0 | 1 |
 | user1 | 2015 | mar | 7804,7263 | 2 | 0 |
-
-| Sjukfall i rapporten antal intyg per typ som tvarsnitt |
-| Inloggad som | grupp | män? | kvinnor? |
-| user1 | 7804, 7263 | 2 | 0 |
-| user1 | 7800 | 0 | 2 |
-| user1 | 7801 | 1 | 0 |
-| user1 | 7802 | 0 | 1 |
