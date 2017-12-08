@@ -1,3 +1,8 @@
+---
+Help: Kan tas med nar Intyg,totalt rapporten ar implementerad
+Prune
+Test
+---
 !contents -R2 -g -p -f -h
 !3 Givet att:
 | script | dagens datum | 2015-11-06 |
@@ -13,11 +18,10 @@ Statistiken baseras på signeringstidpunkt, inte intygets giltighetsperiod.
 Inloggad:
 
 | Sjukfall i rapporten antal intyg per manad |
-| inloggad som | år | månad | intygformat | män? | kvinnor? |
-| user1 | 2014 | okt | LISJP, fk7263sit | 0 | 0 |
-| user1 | 2014 | nov | LISJP, fk7263sit | 0 | 0 |
-| user1 | 2014 | dec | LISJP, fk7263sit | 0 | 0 |
-| user1 | 2015 | jan | LISJP, fk7263sit | 0 | 0 |
-| user1 | 2015 | feb | LISJP, fk7263sit | 0 | 1 |
-| user1 | 2015 | mar | LISJP, fk7263sit | 1 | 0 |
-| user1 | 2015 | apr | LISJP, fk7263sit | 0 | 0 |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user1 | 2014 | nov | 7804, 7263 | 0 | 0 |
+| user1 | 2014 | dec | 7804, 7263 | 0 | 0 |
+| user1 | 2015 | jan | 7804, 7263 | 0 | 0 |
+| user1 | 2015 | feb | 7804, 7263 | 0 | 1 |
+| user1 | 2015 | mar | 7804, 7263 | 1 | 0 |
+| user1 | 2015 | apr | 7804, 7263 | 0 | 0 |
