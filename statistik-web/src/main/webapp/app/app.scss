@@ -20,6 +20,8 @@
 @import '../scss_mixins/variables';
 @import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap.scss';
 @import '../bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_theme.scss';
+@import '../bower_components/font-awesome/scss/font-awesome';
+@import '../scss_mixins/st-typo';
 @import '../scss_mixins/bootstrap-overrides';
 @import '../scss_mixins/retina';
 @import '../scss_mixins/chartdesign';
@@ -29,6 +31,7 @@
 // injector
 @import 'css/global-modifiers.scss';
 @import 'css/highcharts.scss';
+@import 'css/index.scss';
 @import 'shared/businessfilter/businessFilter.scss';
 @import 'shared/treemultiselector/treeMultiSelector.scss';
 @import 'views/about/about.scss';
@@ -42,7 +45,6 @@
 @import 'directives/filterChips/filterChips.scss';
 @import 'directives/filterChipsList/filterChipsList.scss';
 @import 'directives/filterList/filterList.scss';
-@import 'directives/header/header.scss';
 @import 'directives/highlightWords/highlightWords.scss';
 @import 'directives/navigationMenu/navigationMenu.scss';
 @import 'directives/overviewWidget/overviewWidget.scss';
@@ -54,5 +56,6 @@
 @import 'directives/spinner/spinner.scss';
 @import 'directives/statCookieBanner/statCookieBanner.scss';
 @import 'directives/statScrollTable/statScrollTable.scss';
+@import 'directives/statsHeader/statsHeader.scss';
 @import 'directives/submenu/submenu.scss';
 // endinjector

@@ -22,18 +22,6 @@ input {
   }
 }
 
-.sidebar-wrapper {
-  width: 250px;
-  padding-left: 15px;
-}
-
-.page-content-wrapper {
-  @media (min-width: $screen-sm-min) {
-    margin-left: 250px;
-    padding-left: 30px;
-  }
-}
-
 .content-wrapper {
   margin: 20px 0 15px;
 }
@@ -49,8 +37,6 @@ input {
 .filter-link {
   color: $stat-link-color-filter;
 }
-
-
 
 // Change the way the buttons look in the ui.bootstrap.datepicker
 .input-group.datepicker {
@@ -178,7 +164,7 @@ input {
   }
 
   .panel {
-    border-color: transparent;
+    border: 0;
   }
 }
 

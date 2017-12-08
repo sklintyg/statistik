@@ -1,2 +1,51 @@
-<div data-ng-if="!isMobile" ng-include="'/components/directives/navigationMenu/navigationMenuMain.html'"></div>
-<div data-ng-if="isMobile" ng-include="'/components/directives/navigationMenu/navigationMenuMobile.html'"></div>
+<div class="statistics-menu" id="statistics-menu-accordion"  uib-dropdown on-toggle="toggled(open)">
+  <div class="visible-xs" uib-dropdown-toggle>
+    Meny
+    <button type="button" aria-expanded="false">
+      <span class="sr-only">Toggle navigation</span>
+      <i class="fa fa-bars"></i>
+    </button>
+  </div>
+
+  <ul class="statistics-menu-list" uib-dropdown-menu>
+    <li data-ng-repeat="menu in menus">
+      <a data-ng-click="toggleMenu(menu, $event)">
+        <span class="statistics-menu-heading" message key="{{::menu.name}}" disable-highlight-words="true"></span>
+        <i class="fa statistict-left-menu-expand-icon" data-ng-class="{collapsed: !menu.show}"></i>
+      </a>
+
+      <ul uib-collapse="!menu.show" class="navigation-group" id="{{::menu.navigationId}}">
+        <li data-ng-repeat="submenu in menu.subMenu | filter: showMenu">
+          <a
+              id="{{::submenu.id}}"
+              data-ng-class="{'menu-item-has-childs': submenu.subMenu, 'not-active': !menuEnabled(submenu)}"
+              data-ng-href="{{::submenu.link}}{{queryString}}"
+              ctrlname="{{::submenu.ctrl}}"
+              navigationaware>
+            <span message key="{{::submenu.name}}" disable-highlight-words="true"></span>
+
+            <i data-ng-if="submenu.subMenu"
+               class="fa statistict-left-menu-expand-icon"
+               data-ng-class="{collapsed: !submenu.show}"
+               data-ng-click="toggleMenu(submenu, $event)"></i>
+          </a>
+
+          <ul
+              uib-collapse="!submenu.show"
+              data-ng-if="submenu.subMenu"
+              id="{{::submenu.subMenuId}}">
+            <li data-ng-repeat="subsubmenu in submenu.subMenu">
+              <a
+                  data-ng-href="{{::subsubmenu.link}}{{queryString}}"
+                  id="{{::subsubmenu.id}}"
+                  ctrlname="{{::subsubmenu.ctrl}}"
+                  navigationaware>
+                <span message key="{{::subsubmenu.name}}" disable-highlight-words="true"></span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

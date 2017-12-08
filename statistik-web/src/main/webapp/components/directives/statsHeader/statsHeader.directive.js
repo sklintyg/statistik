@@ -30,7 +30,7 @@ angular.module('StatisticsApp')
                 changeVg: '&'
             },
             restrict: 'E',
-            templateUrl: '/components/directives/header/header.html',
+            templateUrl: '/components/directives/statsHeader/statsHeader.html',
             controller: function($scope, AppModel, UserModel) {
                 $scope.AppModel = AppModel;
                 $scope.UserModel = UserModel;
