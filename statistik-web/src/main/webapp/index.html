@@ -17,8 +17,6 @@
     <!-- endbower -->
     <!-- endbuild -->
 
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css" />
-
     <!-- build:css({build/.tmp,src/main/webapp}) app/app.css -->
     <!-- injector:css -->
     <link rel="stylesheet" href="/app/app.css">
@@ -28,31 +26,34 @@
 <body data-ng-controller="pageCtrl">
   <highlight-words></highlight-words>
 
-  <stats-header
-      is-logged-in="isLoggedIn"
-      page-header-verksamhet-name="pageHeaderVerksamhetName"
-      show-businesses-details="showBusinessesDetails"
-      vg-name="vgName"
-      login-clicked="loginClicked()"
-      change-vg="changeVardgivare(vgId)"
+  <div class="header">
+    <stats-header
+        is-logged-in="isLoggedIn"
+        page-header-verksamhet-name="pageHeaderVerksamhetName"
+        show-businesses-details="showBusinessesDetails"
+        vg-name="vgName"
+        login-clicked="loginClicked()"
+        change-vg="changeVardgivare(vgId)"
     ></stats-header>
-
-  <stat-cookie-banner></stat-cookie-banner>
-
-  <div id="sidebar-wrapper" class="sidebar-wrapper hidden-xs pull-left" ng-cloak>
-    <navigation-menu login-visible="AppModel.get().loginVisible" query-string="queryString"></navigation-menu>
   </div>
 
-  <navigation-menu class="hidden-sm hidden-md hidden-lg" is-mobile="true" query-string="queryString" login-visible="AppModel.get().loginVisible" login-clicked="loginClicked()"></navigation-menu>
+  <div class="main-container">
+    <div class="left-container">
+      <navigation-menu login-visible="AppModel.get().loginVisible" query-string="queryString"></navigation-menu>
+    </div>
+    <div class="right-container">
+      <stat-cookie-banner></stat-cookie-banner>
 
-  <div class="container-fluid page-content-wrapper">
-    <business-filter data-ng-if="isVerksamhetShowing" id="businessFilterContainer" ng-cloak></business-filter>
+      <div class="container-fluid page-content-wrapper">
+        <business-filter data-ng-if="isVerksamhetShowing" id="businessFilterContainer" ng-cloak></business-filter>
 
-    <landsting-filter data-ng-if="isLandstingShowing" id="landstingFilterContainer" ng-cloak></landsting-filter>
+        <landsting-filter data-ng-if="isLandstingShowing" id="landstingFilterContainer" ng-cloak></landsting-filter>
 
-    <div class="row content-wrapper" ng-cloak>
-      <div class="col-xs-12">
-        <div id="view" data-ng-view></div>
+        <div class="row content-wrapper" ng-cloak>
+          <div class="col-xs-12">
+            <div id="view" data-ng-view></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -146,7 +147,6 @@
   <script src="/components/directives/filterChips/modal/modal.controller.js"></script>
   <script src="/components/directives/filterChipsList/filterChips.directive.js"></script>
   <script src="/components/directives/filterList/filterList.directive.js"></script>
-  <script src="/components/directives/header/header.directive.js"></script>
   <script src="/components/directives/highlightWords/highlightWords.directive.js"></script>
   <script src="/components/directives/intermediate/intermediate.directive.js"></script>
   <script src="/components/directives/message/message.directive.js"></script>
@@ -165,6 +165,7 @@
   <script src="/components/directives/spinner/spinner.directive.js"></script>
   <script src="/components/directives/statCookieBanner/statCookieBanner.directive.js"></script>
   <script src="/components/directives/statScrollTable/statScrollTable.directive.js"></script>
+  <script src="/components/directives/statsHeader/statsHeader.directive.js"></script>
   <script src="/components/directives/submenu/submenu.directive.js"></script>
   <script src="/components/directives/yearMonthInputLimiter/yearMonthInputLimiter.js"></script>
   <script src="/components/filters/highlightWordsFilter/highlightWords.filter.js"></script>
@@ -188,10 +189,6 @@
   <script src="/components/viewstates/sortableTableViewState.service.js"></script>
   <!-- endinjector -->
   <!-- endbuild -->
-
-  <script type="text/javascript">
-    $('.dropdown-toggle').dropdown();
-  </script>
 
   <!-- This sections will give users of not so modern browsers a message that their browser is too old to run this thing. -->
   <div id="outdated" class="outdated-browser">
