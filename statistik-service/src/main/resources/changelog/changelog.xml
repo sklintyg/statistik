@@ -70,5 +70,6 @@
     <include file="changelog/db.changelog-v42.0_removed_column_skickatav_messagewideline.xml" />
     <include file="changelog/db.changelog-v43.0_removed_column_enkelt_wideline.xml" />
     <include file="changelog/db.changelog-v44.0_add_indexes.xml" />
+    <include file="changelog/db.changelog-v45.0_add_active_intyg_column.xml" />
 
 </databaseChangeLog>
