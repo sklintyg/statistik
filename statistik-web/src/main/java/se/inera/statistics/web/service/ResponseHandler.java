@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
+import javax.ws.rs.core.Response;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -28,14 +29,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.ws.rs.core.Response;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.util.AgeGroup;
@@ -118,7 +116,7 @@ public class ResponseHandler {
         if (result instanceof TableDataReport) {
             final TableDataReport detailReport = (TableDataReport) result;
             if (containsMoreDataThanLimit(detailReport, LIMIT_FOR_TOO_MUCH_DATA_MESSAGE)) {
-                Message message = Message.create(ErrorType.UNSET, ErrorSeverity.INFO, TOO_MUCH_DATA_MESSAGE);
+                Message message = Message.create(ErrorType.CHART, ErrorSeverity.INFO, TOO_MUCH_DATA_MESSAGE);
                 messages.add(message);
             }
         }
