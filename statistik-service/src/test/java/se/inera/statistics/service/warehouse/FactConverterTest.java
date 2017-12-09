@@ -18,8 +18,12 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -28,18 +32,25 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
-@DirtiesContext
 public class FactConverterTest {
 
-    @Autowired
-    FactConverter factConverter;
+    @InjectMocks
+    private FactConverter factConverter;
+
+    @Mock
+    private Icd10 icd10;
+
+    @Before
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void toFactWithBasicWideline() {
@@ -93,6 +104,19 @@ public class FactConverterTest {
         assertEquals(2, fact.getLakarbefattnings().length);
         assertEquals(123, fact.getLakarbefattnings()[0]);
         assertEquals(456, fact.getLakarbefattnings()[1]);
+    }
+
+    @Test
+    public void testParseBefattning() throws Exception {
+        //Given
+        final String lakarbefattningString = "1234,4321, 45, 43 ,f5,3t,   6 ,åt, å9, 5";
+        final String correlationId = "TestCorrId";
+
+        //When
+        final int[] testCorrIds = factConverter.parseBefattning(lakarbefattningString, correlationId);
+
+        //Then
+        assertArrayEquals(new int[]{1234, 4321, 45, 43, 6, 5}, testCorrIds);
     }
 
 }

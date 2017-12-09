@@ -179,8 +179,6 @@ public class LoginServiceUtil {
     }
 
     Verksamhet enhetToVerksamhet(Enhet enhet) {
-        Kommun kommun = new Kommun();
-        Lan lan = new Lan();
         return new Verksamhet(enhet.getEnhetId(), enhet.getNamn(), enhet.getVardgivareId(), null, enhet.getLansId(),
                 lan.getNamn(enhet.getLansId()), enhet.getKommunId(), kommun.getNamn(enhet.getLansId() + enhet.getKommunId()),
                 getVerksamhetsTyper(enhet.getVerksamhetsTyper()));
