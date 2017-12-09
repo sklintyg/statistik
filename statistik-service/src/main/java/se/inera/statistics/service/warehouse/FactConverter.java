@@ -18,10 +18,9 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,23 +66,26 @@ class FactConverter {
     }
 
     int[] parseBefattning(String lakarbefattningString, String correlationId) {
-        if (lakarbefattningString != null && lakarbefattningString.length() > 0) {
-            final String[] befattningStrings = lakarbefattningString.split(",");
-            final ArrayList<Integer> befattnings = new ArrayList<>();
-            for (String befattningString : befattningStrings) {
-                String befattning = befattningString.trim();
-                try {
-                    befattnings.add(Integer.parseInt(befattning));
-                } catch (NumberFormatException nfe) {
-                    LOG.info("Unknown befattning: '" + befattning + "' for doctor in intyg: " + correlationId);
-                }
-            }
-            if (befattnings.isEmpty()) {
-                return new int[] {LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
-            }
-            return ArrayUtils.toPrimitive(befattnings.toArray(new Integer[0]));
+        if (lakarbefattningString == null || lakarbefattningString.isEmpty()) {
+            return new int[] {LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
         }
-        return new int[] {LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
+        final String[] befattningStrings = lakarbefattningString.split(",");
+        final int[] befattnings = new int[befattningStrings.length];
+        int parsedBefattningsAdded = 0;
+        for (String befattningString : befattningStrings) {
+            String befattning = befattningString.trim();
+            final Integer parsed = ConversionHelper.parseInt(befattning);
+            if (parsed != null) {
+                befattnings[parsedBefattningsAdded] = parsed;
+                parsedBefattningsAdded++;
+            } else {
+                LOG.info("Unknown befattning: '" + befattning + "' for doctor in intyg: " + correlationId);
+            }
+        }
+        if (parsedBefattningsAdded == 0) {
+            return new int[] {LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
+        }
+        return Arrays.copyOfRange(befattnings, 0, parsedBefattningsAdded); //ArrayUtils.toPrimitive(befattnings.toArray(new Integer[0]));
     }
 
     int extractKategori(String diagnoskategori) {

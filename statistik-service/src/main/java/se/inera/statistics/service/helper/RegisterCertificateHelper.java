@@ -60,6 +60,7 @@ public class RegisterCertificateHelper {
     public static final String BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32 = "32.2";
 
     private static final Logger LOG = LoggerFactory.getLogger(RegisterCertificateHelper.class);
+    private Unmarshaller jaxbUnmarshaller;
 
     public String getEnhetId(RegisterCertificateType utlatande) {
         return utlatande.getIntyg().getSkapadAv().getEnhet().getEnhetsId().getExtension();
@@ -207,10 +208,16 @@ public class RegisterCertificateHelper {
     }
 
     public RegisterCertificateType unmarshalRegisterCertificateXml(String data) throws JAXBException {
-        Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(RegisterCertificateType.class).createUnmarshaller();
-        jaxbUnmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
         final StringReader reader = new StringReader(convertToV3(data));
-        return (RegisterCertificateType) JAXBIntrospector.getValue(jaxbUnmarshaller.unmarshal(reader));
+        return (RegisterCertificateType) JAXBIntrospector.getValue(getUnmarshaller().unmarshal(reader));
+    }
+
+    private Unmarshaller getUnmarshaller() throws JAXBException {
+        if (jaxbUnmarshaller == null) {
+            jaxbUnmarshaller = JAXBContext.newInstance(RegisterCertificateType.class).createUnmarshaller();
+            jaxbUnmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
+        }
+        return jaxbUnmarshaller;
     }
 
     /**
