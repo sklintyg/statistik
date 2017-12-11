@@ -1,5 +1,4 @@
 !contents -R2 -g -p -f -h
-
 Gäller STATISTIK-935, 942.
 
 !3 Givet att:
@@ -8,57 +7,56 @@ Gäller STATISTIK-935, 942.
 | script | troskel varde | 1 |
 
 | Foljande lakare finns |
-| id      | förnamn | efternamn | kön    | ålder | befattningar |
-| lakare1 | Anna    | Andersson | FEMALE | 30    | 201010       |
-| lakare2 | Bo      | Bengtsson | MALE   | 40    | 201013       |
+| id | förnamn | efternamn | kön | ålder | befattningar |
+| lakare1 | Anna | Andersson | FEMALE | 30 | 201010 |
+| lakare2 | Bo | Bengtsson | MALE | 40 | 201013 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
-| 19671109-2681 | G01 | 2013-06-01 | 2013-10-30 | 0             | enhet1 | lakare1 |
-| 19790717-9191 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet2 | lakare2 |
-
+| personnr | diagnoskod | start | slut | arbetsförmåga | enhet | läkare |
+| 19671109-2681 | G01 | 2013-06-01 | 2013-10-30 | 0 | enhet1 | lakare1 |
+| 19790717-9191 | G02 | 2014-07-01 | 2014-10-30 | 50 | enhet2 | lakare2 |
 
 !3 Då gäller:
-| Sjukfall i rapporten lakarkonalder |
-| inloggad som | läkargrupp               | män? | kvinnor? |
-| user2        | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | Manlig läkare 40-49 år   | 1    | 0        |
+| Sjukfall i rapporten lakarkonalder diagram |
+| inloggad som | läkargrupp | totalt? | män? | kvinnor? |
+| user2 | Kvinnlig läkare 30-39 år | 0 | 0 | 0 |
+| user2 | Manlig läkare 40-49 år | 1 | 1 | 0 |
 
 Byte till tidsserie gör att ytdiagram 18 mån visas. Varje läkargrupp blir en legend. Kvinnor och män visas i separata diagram.
 
 | Sjukfall i rapporten lakarkonalder som tidsserie |
-| inloggad som | år   | månad | läkargrupp  | män? | kvinnor? |
-| user2        | 2013 | jun   | Kvinnlig läkare 30-39 år | 0    | 1        |
-| user2        | 2013 | jul   | Kvinnlig läkare 30-39 år | 0    | 1        |
-| user2        | 2013 | aug   | Kvinnlig läkare 30-39 år | 0    | 1        |
-| user2        | 2013 | sep   | Kvinnlig läkare 30-39 år | 0    | 1        |
-| user2        | 2013 | okt   | Kvinnlig läkare 30-39 år | 0    | 1        |
-| user2        | 2013 | nov   | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | 2013 | dec   | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | 2014 | jan   | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | 2014 | feb   | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | 2014 | mar   | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | 2014 | apr   | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | 2014 | maj   | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | 2014 | jun   | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | 2014 | jul   | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | 2014 | aug   | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | 2014 | sep   | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | 2014 | okt   | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | 2013 | jun   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2013 | jul   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2013 | aug   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2013 | sep   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2013 | okt   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2013 | nov   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2013 | dec   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | jan   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | feb   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | mar   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | apr   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | maj   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | jun   | Manlig läkare 40-49 år | 0    | 0        |
-| user2        | 2014 | jul   | Manlig läkare 40-49 år | 1    | 0        |
-| user2        | 2014 | aug   | Manlig läkare 40-49 år | 1    | 0        |
-| user2        | 2014 | sep   | Manlig läkare 40-49 år | 1    | 0        |
-| user2        | 2014 | okt   | Manlig läkare 40-49 år | 1    | 0        |
+| inloggad som | år | månad | läkargrupp | män? | kvinnor? |
+| user2 | 2013 | jun | Kvinnlig läkare 30-39 år | 0 | 1 |
+| user2 | 2013 | jul | Kvinnlig läkare 30-39 år | 0 | 1 |
+| user2 | 2013 | aug | Kvinnlig läkare 30-39 år | 0 | 1 |
+| user2 | 2013 | sep | Kvinnlig läkare 30-39 år | 0 | 1 |
+| user2 | 2013 | okt | Kvinnlig läkare 30-39 år | 0 | 1 |
+| user2 | 2013 | nov | Kvinnlig läkare 30-39 år | 0 | 0 |
+| user2 | 2013 | dec | Kvinnlig läkare 30-39 år | 0 | 0 |
+| user2 | 2014 | jan | Kvinnlig läkare 30-39 år | 0 | 0 |
+| user2 | 2014 | feb | Kvinnlig läkare 30-39 år | 0 | 0 |
+| user2 | 2014 | mar | Kvinnlig läkare 30-39 år | 0 | 0 |
+| user2 | 2014 | apr | Kvinnlig läkare 30-39 år | 0 | 0 |
+| user2 | 2014 | maj | Kvinnlig läkare 30-39 år | 0 | 0 |
+| user2 | 2014 | jun | Kvinnlig läkare 30-39 år | 0 | 0 |
+| user2 | 2014 | jul | Kvinnlig läkare 30-39 år | 0 | 0 |
+| user2 | 2014 | aug | Kvinnlig läkare 30-39 år | 0 | 0 |
+| user2 | 2014 | sep | Kvinnlig läkare 30-39 år | 0 | 0 |
+| user2 | 2014 | okt | Kvinnlig läkare 30-39 år | 0 | 0 |
+| user2 | 2013 | jun | Manlig läkare 40-49 år | 0 | 0 |
+| user2 | 2013 | jul | Manlig läkare 40-49 år | 0 | 0 |
+| user2 | 2013 | aug | Manlig läkare 40-49 år | 0 | 0 |
+| user2 | 2013 | sep | Manlig läkare 40-49 år | 0 | 0 |
+| user2 | 2013 | okt | Manlig läkare 40-49 år | 0 | 0 |
+| user2 | 2013 | nov | Manlig läkare 40-49 år | 0 | 0 |
+| user2 | 2013 | dec | Manlig läkare 40-49 år | 0 | 0 |
+| user2 | 2014 | jan | Manlig läkare 40-49 år | 0 | 0 |
+| user2 | 2014 | feb | Manlig läkare 40-49 år | 0 | 0 |
+| user2 | 2014 | mar | Manlig läkare 40-49 år | 0 | 0 |
+| user2 | 2014 | apr | Manlig läkare 40-49 år | 0 | 0 |
+| user2 | 2014 | maj | Manlig läkare 40-49 år | 0 | 0 |
+| user2 | 2014 | jun | Manlig läkare 40-49 år | 0 | 0 |
+| user2 | 2014 | jul | Manlig läkare 40-49 år | 1 | 0 |
+| user2 | 2014 | aug | Manlig läkare 40-49 år | 1 | 0 |
+| user2 | 2014 | sep | Manlig läkare 40-49 år | 1 | 0 |
+| user2 | 2014 | okt | Manlig läkare 40-49 år | 1 | 0 |

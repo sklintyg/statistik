@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
-
 !3 Givet att:
-
 Ett sjukfall består av tre intyg på två olika enheter. En enhet byter län mellan intygen.
 
 | script | dagens datum | 2013-08-06 |
@@ -9,24 +7,24 @@ Ett sjukfall består av tre intyg på två olika enheter. En enhet byter län me
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet  | län |
-| 19790717-9191 | G01 | 2013-05-05 | 2013-06-06 | enhet1 | 01  |
-| 19790717-9191 | G01 | 2013-06-07 | 2013-06-30 | enhet2 | 06  |
-| 19790717-9191 | G01 | 2013-07-01 | 2013-07-30 | enhet1 | 10  |
+| personnr | diagnoskod | start | slut | enhet | län |
+| 19790717-9191 | G01 | 2013-05-05 | 2013-06-06 | enhet1 | 01 |
+| 19790717-9191 | G01 | 2013-06-07 | 2013-06-30 | enhet2 | 06 |
+| 19790717-9191 | G01 | 2013-07-01 | 2013-07-30 | enhet1 | 10 |
 
 !3 Då gäller:
-
 Ett sjukfall kan bara tillhöra ett län. Sjukfallet visas för länet i det senaste intyget.
 
 Nationell:
-| Sjukfall i rapporten lan |
-| län            | kolumngrupp    | totalt? | kvinnor? | män? |
-| Stockholms län | antal sjukfall | 0    | 0        | 0 | 
-| Jönköpings län | antal sjukfall | 0    | 0        | 0 |
-| Blekinge län   | antal sjukfall | 1    | 0        | 1 |
+
+| Sjukfall i rapporten lan diagram |
+| län | kolumngrupp | totalt? | kvinnor? | män? |
+| Stockholms län | antal sjukfall | 0 | 0 | 0 |
+| Jönköpings län | antal sjukfall | 0 | 0 | 0 |
+| Blekinge län | antal sjukfall | 1 | 0 | 1 |
 
 | Sjukfall i rapporten andel sjukfall per kon |
-| län            | totalt? | män?      | kvinnor? |
-| Stockholms län | 0       | 0 % (0)   | 0 % (0)  |
-| Jönköpings län    | 0       | 0 % (0)   | 0 % (0)  |
-| Blekinge län      | 1       | 100 % (1) | 0 % (0)  |
+| län | totalt? | män? | kvinnor? |
+| Stockholms län | 0 | 0 % (0) | 0 % (0) |
+| Jönköpings län | 0 | 0 % (0) | 0 % (0) |
+| Blekinge län | 1 | 100 % (1) | 0 % (0) |

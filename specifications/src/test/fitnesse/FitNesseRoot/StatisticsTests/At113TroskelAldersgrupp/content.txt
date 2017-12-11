@@ -1,23 +1,23 @@
 !contents -R2 -g -p -f -h
-
 !3 Givet att:
-
 Följande sjukfall finns:
 
 vg1
-3 kvinnor 51-55 år
-2 män 31-35 år
+
+ 1 kvinnor 51-55 år
+ 1 män 31-35 år
 
 vg2
-1 kvinna 51-55 år
-4 män 31-35 år
+
+ 1 kvinna 51-55 år
+ 1 män 31-35 år
 
 | script | dagens datum | 2013-11-06 |
 
 | script | troskel varde | 3 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet  |
+| personnr | diagnoskod | start | slut | enhet |
 | 19610312-3227 | G40 | 2013-02-01 | 2013-02-14 | enhet1 |
 | 19610415-3488 | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
 | 19610527-3269 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
@@ -30,11 +30,11 @@ vg2
 | 19810217-9291 | G41 | 2013-02-01 | 2013-02-14 | enhet3 |
 
 !3 Då gäller:
-
 Tröskelvärdet appliceras per vårdgivare, kön och åldersgrupp.
 
 Nationell:
+
 | Sjukfall i rapporten aldersgrupp |
-| åldersgrupp | män? | kvinnor? |
-| 31-35 år    | 4    | 0        |
-| 51-55 år    | 0    | 3        |
+| åldersgrupp | totalt? | män? | kvinnor? |
+| 31-35 år | 4 | 4 | 0 |
+| 51-55 år | 3 | 0 | 3 |

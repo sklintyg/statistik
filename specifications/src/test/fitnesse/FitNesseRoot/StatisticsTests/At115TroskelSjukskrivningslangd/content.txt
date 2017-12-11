@@ -1,23 +1,23 @@
 !contents -R2 -g -p -f -h
-
 !3 Givet att:
-
 Följande sjukfall finns:
 
 vg1
-3 kvinnor under 15 dagar
-2 män 15-30 dagar
+
+ 1 kvinnor under 15 dagar
+ 1 män 15-30 dagar
 
 vg2
-1 kvinna under 15 dagar
-4 män 15-30 dagar
+
+ 1 kvinna under 15 dagar
+ 1 män 15-30 dagar
 
 | script | dagens datum | 2013-04-06 |
 
 | script | troskel varde | 3 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet  |
+| personnr | diagnoskod | start | slut | enhet |
 | 19790219-9285 | G40 | 2013-02-01 | 2013-02-14 | enhet1 |
 | 19790429-9281 | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
 | 19790709-9282 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
@@ -30,17 +30,16 @@ vg2
 | 19791230-9296 | G41 | 2013-02-01 | 2013-02-16 | enhet3 |
 
 !3 Då gäller:
-
 Tröskelvärdet appliceras per vårdgivare, kön och sjukskrivningslängdsgrupp.
 
 Nationell:
+
 | Sjukfall i rapporten sjukskrivningslangd |
-| sjukskrivningslängd | män? | kvinnor? |
-| Under 15 dagar      | 0    | 3        |
-| 15-30 dagar         | 4    | 0        |
+| sjukskrivningslängd | totalt? | män? | kvinnor? |
+| Under 15 dagar | 3 | 0 | 3 |
+| 15-30 dagar | 4 | 4 | 0 |
 
 | Sjukfall i oversikt sjukskrivningslangd |
-| grupp          | antal? |
-| Under 15 dagar | 3      |
-| 15-30 dagar    | 4      |
-
+| grupp | antal? |
+| Under 15 dagar | 3 |
+| 15-30 dagar | 4 |

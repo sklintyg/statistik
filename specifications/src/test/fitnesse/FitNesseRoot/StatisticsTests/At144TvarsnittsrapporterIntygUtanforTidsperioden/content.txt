@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
-
 !3 Givet att:
-
 Ett sjukfall består av två intyg. Det ena intyget har inte varit aktivt de senaste 12 månaderna, och det andra har varit det.
 
 | script | dagens datum | 2015-01-28 |
@@ -11,60 +9,59 @@ Ett sjukfall består av två intyg. Det ena intyget har inte varit aktivt de sen
 | script | ta bort existerande intyg |
 
 | Foljande lakare finns |
-| id      | förnamn | efternamn | kön    | ålder | befattningar |
-| lakare1 | Anna    | Andersson | FEMALE | 37    | 201010       |
-| lakare2 | Bo      | Bengtsson | MALE   | 47    | 201013       |
+| id | förnamn | efternamn | kön | ålder | befattningar |
+| lakare1 | Anna | Andersson | FEMALE | 37 | 201010 |
+| lakare2 | Bo | Bengtsson | MALE | 47 | 201013 |
 
 | Foljande intyg finns |
-| personnr      | diagnoskod | start      | slut       | enhet  | läkare  | kommentar |
-| 19880713-2397 | F32        | 2013-10-16 | 2013-12-30 | enhet1 | lakare1 |           |
-| 19880713-2397| M54        | 2014-01-01 | 2014-03-30 | enhet2 | lakare2 |           |
+| personnr | diagnoskod | start | slut | enhet | läkare | kommentar |
+| 19880713-2397 | F32 | 2013-10-16 | 2013-12-30 | enhet1 | lakare1 | |
+| 19880713-2397 | M54 | 2014-01-01 | 2014-03-30 | enhet2 | lakare2 | |
 
 !3 Då gäller:
-
 Tvärsnittsrapporter visar bara information från intyg som varit aktiva under rapportens tidsperiod, förutom för rapporten Sjukskrivningslängd (där alla intyg bakåt i tiden räknas med) och Åldersgrupp (där högsta åldern som förekommer i något intyg visas).
 
 Nationell:
 
 | Sjukfall i rapporten aldersgrupp |
-| inloggad som | åldersgrupp | män? | kvinnor? |
-| user2        | 21-25 år    | 1    | 0        |
+| inloggad som | åldersgrupp | totalt? | män? | kvinnor? |
+| user2 | 21-25 år | 1 | 1 | 0 |
 
 | Sjukfall i rapporten sjukskrivningslangd |
-| inloggad som | sjukskrivningslängd | män? | kvinnor? |
-| user2        | 91-180 dagar        | 1    | 0        |
+| inloggad som | sjukskrivningslängd | totalt? | män? | kvinnor? |
+| user2 | 91-180 dagar | 1 | 1 | 0 |
 
 Inloggad:
 
 | Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet    | män? | kvinnor? |
-| user2        | enhet1 | -1   | -1       |
-| user2        | enhet2 | 1    | 0        |
+| inloggad som | vårdenhet | totalt? | män? | kvinnor? |
+| user2 | enhet1 | -1 | -1 | -1 |
+| user2 | enhet2 | 1 | 1 | 0 |
 
 | Sjukfall i rapporten jamfor diagnoser diagram |
-|inloggad som | valda diagnoskategorier | diagnoskategori | män? | kvinnor? |
-| user2       | F32, M54                | F32             | 0    | 0        |
-| user2       | F32, M54                | M54             | 1    | 0        |
+| inloggad som | valda diagnoskategorier | diagnoskategori | totalt? | män? | kvinnor? |
+| user2 | F32, M54 | F32 | 0 | 0 | 0 |
+| user2 | F32, M54 | M54 | 1 | 1 | 0 |
 
 | Sjukfall i rapporten aldersgrupp |
-| inloggad som | åldersgrupp | män? | kvinnor? |
-| user2        | 21-25 år    | 1    | 0        |
+| inloggad som | åldersgrupp | totalt? | män? | kvinnor? |
+| user2 | 21-25 år | 1 | 1 | 0 |
 
 | Sjukfall i rapporten sjukskrivningslangd |
-| inloggad som | sjukskrivningslängd | män? | kvinnor? |
-| user2        | 91-180 dagar        | 1    | 0        |
+| inloggad som | sjukskrivningslängd | totalt? | män? | kvinnor? |
+| user2 | 91-180 dagar | 1 | 1 | 0 |
 
 | Sjukfall i rapporten sjukfall per lakare |
-| inloggad som | läkare         | män? | kvinnor? |
-| user2        | Anna Andersson | -1   | -1       |
-| user2        | Bo Bengtsson   | 1    | 0        |
+| inloggad som | läkare | totalt? | män? | kvinnor? |
+| user2 | Anna Andersson | -1 | -1 | -1 |
+| user2 | Bo Bengtsson | 1 | 1 | 0 |
 
 | Sjukfall i rapporten lakarkonalder |
-| inloggad som | läkargrupp               | män? | kvinnor? |
-| user2        | Kvinnlig läkare 30-39 år | 0    | 0        |
-| user2        | Manlig läkare 40-49 år   | 1    | 0        |
+| inloggad som | läkargrupp | totalt? | män? | kvinnor? |
+| user2 | Kvinnlig läkare 30-39 år | 0 | 0 | 0 |
+| user2 | Manlig läkare 40-49 år | 1 | 1 | 0 |
 
 | Sjukfall i rapporten lakarbefattning |
-| inloggad som | läkarbefattning | män? | kvinnor? |
-| user2        | Överläkare      | -1   | -1       |
-| user2        | Företagsläkare  | 1    | 0        |
+| inloggad som | läkarbefattning | totalt? | män? | kvinnor? |
+| user2 | Överläkare | -1 | -1 | -1 |
+| user2 | Företagsläkare | 1 | 1 | 0 |

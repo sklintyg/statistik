@@ -54,3 +54,13 @@ Byte till tvärsnitt gör att ett stapeldiagram med bara två grupper, i det hä
 | user1 | KNTKT | -1 | -1 | -1 |
 | user1 | PAMINN | -1 | -1 | -1 |
 | user1 | OVRIGT | -1 | -1 | -1 |
+
+
+
+| Meddelanden i rapporten meddelanden totalt som tvarsnitt diagram |
+| inloggad som | grupp | totalt? | män? | kvinnor? |
+| user1 | AVSTMN | 4 | 4 | 0 |
+| user1 | KOMPLT | 1 | 0 | 1 |
+| user1 | KNTKT | -1 | -1 | -1 |
+| user1 | PAMINN | -1 | -1 | -1 |
+| user1 | OVRIGT | -1 | -1 | -1 |

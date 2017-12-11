@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
-
 !3 Givet att:
-
 Ett intyg är skrivet av en läkare med två olika läkarbefattningar.
 
 | script | dagens datum | 2014-11-06 |
@@ -9,54 +7,54 @@ Ett intyg är skrivet av en läkare med två olika läkarbefattningar.
 | script | troskel varde | 1 |
 
 | Foljande lakare finns |
-| id      | förnamn | efternamn | kön    | ålder | befattningar | kommentar |
-| lakare1 | Anna    | Andersson | FEMALE | 30    | 201010,201013 | Överläkare, Företagsläkare |
+| id | förnamn | efternamn | kön | ålder | befattningar | kommentar |
+| lakare1 | Anna | Andersson | FEMALE | 30 | 201010,201013 | Överläkare, Företagsläkare |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
-| 19671109-2691 | G01 | 2014-06-01 | 2014-10-30 | 0             | enhet1 | lakare1 |
+| personnr | diagnoskod | start | slut | arbetsförmåga | enhet | läkare |
+| 19671109-2691 | G01 | 2014-06-01 | 2014-10-30 | 0 | enhet1 | lakare1 |
 
 !3 Då gäller:
 | Sjukfall i rapporten lakarbefattning |
-| inloggad som | läkarbefattning    | män? | kvinnor? |
-| user2        | Överläkare         | 1    | 0        |
-| user2        | Företagsläkare     | 1    | 0        |
+| inloggad som | läkarbefattning | totalt? | män? | kvinnor? |
+| user2 | Överläkare | 1 | 1 | 0 |
+| user2 | Företagsläkare | 1 | 1 | 0 |
 
 Om rapporten visas som tidsserie, så kan ett sjukfall förekomma i flera läkarbefattningsgrupper en viss månad. Detta skiljer denna rapport från övriga.
 
 | Sjukfall i rapporten lakarbefattning som tidsserie |
-| inloggad som | år   | månad | läkarbefattning| män? | kvinnor? |
-| user2        | 2013 | jun   | Överläkare     | 0    | 0        |
-| user2        | 2013 | jul   | Överläkare     | 0    | 0        |
-| user2        | 2013 | aug   | Överläkare     | 0    | 0        |
-| user2        | 2013 | sep   | Överläkare     | 0    | 0        |
-| user2        | 2013 | okt   | Överläkare     | 0    | 0        |
-| user2        | 2013 | nov   | Överläkare     | 0    | 0        |
-| user2        | 2013 | dec   | Överläkare     | 0    | 0        |
-| user2        | 2014 | jan   | Överläkare     | 0    | 0        |
-| user2        | 2014 | feb   | Överläkare     | 0    | 0        |
-| user2        | 2014 | mar   | Överläkare     | 0    | 0        |
-| user2        | 2014 | apr   | Överläkare     | 0    | 0        |
-| user2        | 2014 | maj   | Överläkare     | 0    | 0        |
-| user2        | 2014 | jun   | Överläkare     | 1    | 0        |
-| user2        | 2014 | jul   | Överläkare     | 1    | 0        |
-| user2        | 2014 | aug   | Överläkare     | 1    | 0        |
-| user2        | 2014 | sep   | Överläkare     | 1    | 0        |
-| user2        | 2014 | okt   | Överläkare     | 1    | 0        |
-| user2        | 2013 | jun   | Företagsläkare | 0    | 0        |
-| user2        | 2013 | jul   | Företagsläkare | 0    | 0        |
-| user2        | 2013 | aug   | Företagsläkare | 0    | 0        |
-| user2        | 2013 | sep   | Företagsläkare | 0    | 0        |
-| user2        | 2013 | okt   | Företagsläkare | 0    | 0        |
-| user2        | 2013 | nov   | Företagsläkare | 0    | 0        |
-| user2        | 2013 | dec   | Företagsläkare | 0    | 0        |
-| user2        | 2014 | jan   | Företagsläkare | 0    | 0        |
-| user2        | 2014 | feb   | Företagsläkare | 0    | 0        |
-| user2        | 2014 | mar   | Företagsläkare | 0    | 0        |
-| user2        | 2014 | apr   | Företagsläkare | 0    | 0        |
-| user2        | 2014 | maj   | Företagsläkare | 0    | 0        |
-| user2        | 2014 | jun   | Företagsläkare | 1    | 0        |
-| user2        | 2014 | jul   | Företagsläkare | 1    | 0        |
-| user2        | 2014 | aug   | Företagsläkare | 1    | 0        |
-| user2        | 2014 | sep   | Företagsläkare | 1    | 0        |
-| user2        | 2014 | okt   | Företagsläkare | 1    | 0        |
+| inloggad som | år | månad | läkarbefattning | män? | kvinnor? |
+| user2 | 2013 | jun | Överläkare | 0 | 0 |
+| user2 | 2013 | jul | Överläkare | 0 | 0 |
+| user2 | 2013 | aug | Överläkare | 0 | 0 |
+| user2 | 2013 | sep | Överläkare | 0 | 0 |
+| user2 | 2013 | okt | Överläkare | 0 | 0 |
+| user2 | 2013 | nov | Överläkare | 0 | 0 |
+| user2 | 2013 | dec | Överläkare | 0 | 0 |
+| user2 | 2014 | jan | Överläkare | 0 | 0 |
+| user2 | 2014 | feb | Överläkare | 0 | 0 |
+| user2 | 2014 | mar | Överläkare | 0 | 0 |
+| user2 | 2014 | apr | Överläkare | 0 | 0 |
+| user2 | 2014 | maj | Överläkare | 0 | 0 |
+| user2 | 2014 | jun | Överläkare | 1 | 0 |
+| user2 | 2014 | jul | Överläkare | 1 | 0 |
+| user2 | 2014 | aug | Överläkare | 1 | 0 |
+| user2 | 2014 | sep | Överläkare | 1 | 0 |
+| user2 | 2014 | okt | Överläkare | 1 | 0 |
+| user2 | 2013 | jun | Företagsläkare | 0 | 0 |
+| user2 | 2013 | jul | Företagsläkare | 0 | 0 |
+| user2 | 2013 | aug | Företagsläkare | 0 | 0 |
+| user2 | 2013 | sep | Företagsläkare | 0 | 0 |
+| user2 | 2013 | okt | Företagsläkare | 0 | 0 |
+| user2 | 2013 | nov | Företagsläkare | 0 | 0 |
+| user2 | 2013 | dec | Företagsläkare | 0 | 0 |
+| user2 | 2014 | jan | Företagsläkare | 0 | 0 |
+| user2 | 2014 | feb | Företagsläkare | 0 | 0 |
+| user2 | 2014 | mar | Företagsläkare | 0 | 0 |
+| user2 | 2014 | apr | Företagsläkare | 0 | 0 |
+| user2 | 2014 | maj | Företagsläkare | 0 | 0 |
+| user2 | 2014 | jun | Företagsläkare | 1 | 0 |
+| user2 | 2014 | jul | Företagsläkare | 1 | 0 |
+| user2 | 2014 | aug | Företagsläkare | 1 | 0 |
+| user2 | 2014 | sep | Företagsläkare | 1 | 0 |
+| user2 | 2014 | okt | Företagsläkare | 1 | 0 |

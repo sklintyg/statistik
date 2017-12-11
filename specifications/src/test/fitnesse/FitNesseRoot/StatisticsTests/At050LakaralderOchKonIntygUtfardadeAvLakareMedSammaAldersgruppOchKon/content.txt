@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
-
 !3 Givet att:
-
 Ett sjukfall består av tre intyg utfärdade av tre olika läkare på samma enhet. Två av läkarna är i samma åldersgrupp och har samma kön.
 
 | script | dagens datum | 2014-11-28 |
@@ -9,23 +7,23 @@ Ett sjukfall består av tre intyg utfärdade av tre olika läkare på samma enhe
 | script | troskel varde | 1 |
 
 | Foljande lakare finns |
-| id      | kön    | ålder |
-| lakare1 | MALE   | 40    |
-| lakare2 | FEMALE | 39    |
-| lakare3 | MALE   | 40    |
+| id | kön | ålder |
+| lakare1 | MALE | 40 |
+| lakare2 | FEMALE | 39 |
+| lakare3 | MALE | 40 |
 
 | Enbart foljande intyg finns |
-| personnr      | start      | slut       | enhet  | läkare  | kommentar |
-| 19800820-9275 | 2014-06-01 | 2014-06-15 | enhet1 | lakare1 |           |
-| 19800820-9275 | 2014-06-16 | 2014-07-30 | enhet1 | lakare2 |           |
-| 19800820-9275 | 2014-08-01 | 2014-08-15 | enhet1 | lakare3 |           |
+| personnr | start | slut | enhet | läkare | kommentar |
+| 19800820-9275 | 2014-06-01 | 2014-06-15 | enhet1 | lakare1 | |
+| 19800820-9275 | 2014-06-16 | 2014-07-30 | enhet1 | lakare2 | |
+| 19800820-9275 | 2014-08-01 | 2014-08-15 | enhet1 | lakare3 | |
 
 !3 Då gäller:
-
 Sjukfallet räknas två gånger "Manlig läkare 40-49 år" och en gång i "Kvinnlig läkare 30-39".
 
 Inloggad:
+
 | Sjukfall i rapporten lakarkonalder |
-| inloggad som | vårdgivarnivå | läkargrupp               | män? | kvinnor? |
-| user1        | false         | Manlig läkare 40-49 år   | 2    | 0        |
-| user1        | false         | Kvinnlig läkare 30-39 år | 1    | 0        |
+| inloggad som | vårdgivarnivå | läkargrupp | totalt? | män? | kvinnor? |
+| user1 | false | Manlig läkare 40-49 år | 2 | 2 | 0 |
+| user1 | false | Kvinnlig läkare 30-39 år | 1 | 1 | 0 |

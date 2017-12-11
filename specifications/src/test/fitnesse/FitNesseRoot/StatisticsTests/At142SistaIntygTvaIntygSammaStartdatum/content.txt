@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
-
 !3 Givet att:
-
 Ett sjukfall består av två intyg med samma startdatum.
 
 | script | dagens datum | 2013-04-06 |
@@ -11,89 +9,92 @@ Ett sjukfall består av två intyg med samma startdatum.
 | script | ta bort existerande intyg |
 
 | Foljande lakare finns |
-| id      | förnamn | efternamn | kön | ålder | befattningar   | kommentar |
-| lakare1 | Bo      | Bengtsson | MALE | 50   | 201010, 201013 | Överläkare, Företagsläkare |
+| id | förnamn | efternamn | kön | ålder | befattningar | kommentar |
+| lakare1 | Bo | Bengtsson | MALE | 50 | 201010, 201013 | Överläkare, Företagsläkare |
 
 | Foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare | län |
-| 19790810-9288 | A00 | 2013-02-15 | 2013-03-16 | 0             | enhet1 | lakare1 | 01 |
+| personnr | diagnoskod | start | slut | arbetsförmåga | enhet | läkare | län |
+| 19790810-9288 | A00 | 2013-02-15 | 2013-03-16 | 0 | enhet1 | lakare1 | 01 |
 
 | Foljande lakare finns |
-| id      | förnamn | efternamn | kön | ålder | befattningar | kommentar |
-| lakare1 | Bo      | B         | MALE | 49   | 201013       | Företagsläkare | 
+| id | förnamn | efternamn | kön | ålder | befattningar | kommentar |
+| lakare1 | Bo | B | MALE | 49 | 201013 | Företagsläkare |
 
 | Foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare | län |
-| 19790810-9288 | F40 | 2013-02-15 | 2013-03-02 | 50            | enhet1 | lakare1 | 03 |
+| personnr | diagnoskod | start | slut | arbetsförmåga | enhet | läkare | län |
+| 19790810-9288 | F40 | 2013-02-15 | 2013-03-02 | 50 | enhet1 | lakare1 | 03 |
 
 !3 Då gäller:
-
 Intyget med högst värde i kolumnen "lakarintyg" (dvs. det som inkommit senast) anses vara sjukfallets senaste.
 
 Nationell:
 
 | Sjukfall i rapporten diagnosgrupp |
-| år   | månad | grupp   | män? | kvinnor? |
-| 2013 | feb   | A00-B99 | 0    | 0        |
-| 2013 | feb   | F00-F99 | 0    | 1        |
-| 2013 | mar   | A00-B99 | 0    | 0        |
-| 2013 | mar   | F00-F99 | 0    | 1        |
+| år | månad | grupp | män? | kvinnor? |
+| 2013 | feb | A00-B99 | 0 | 0 |
+| 2013 | feb | F00-F99 | 0 | 1 |
+| 2013 | mar | A00-B99 | 0 | 0 |
+| 2013 | mar | F00-F99 | 0 | 1 |
 
 | Sjukfall i rapporten aldersgrupp |
-| åldersgrupp | män? | kvinnor? |
-| 26-30 år    | 0    | 0        |
-| 31-35 år    | 0    | 1        |
+| åldersgrupp | totalt? | män? | kvinnor? |
+| 26-30 år | 0 | 0 | 0 |
+| 31-35 år | 1 | 0 | 1 |
 
 | Sjukfall i rapporten sjukskrivningsgrad |
-| år   | månad | sjukskrivningsgrad | män? | kvinnor? |
-| 2013 | feb   | 100 %              | 0    | 0        |
-| 2013 | feb   | 50 %               | 0    | 1        |
-| 2013 | mar   | 100 %              | 0    | 0        |
-| 2013 | mar   | 50 %               | 0    | 1        |
+| år | månad | sjukskrivningsgrad | män? | kvinnor? |
+| 2013 | feb | 100 % | 0 | 0 |
+| 2013 | feb | 50 % | 0 | 1 |
+| 2013 | mar | 100 % | 0 | 0 |
+| 2013 | mar | 50 % | 0 | 1 |
 
 | Sjukfall i rapporten lan |
-| län            | kolumngrupp    | totalt? | kvinnor? | män? |
-| Stockholms län | antal sjukfall | 0    | 0        | 0 |
-| Uppsala län    | antal sjukfall | 1    | 1        | 0 |
+| län | kolumngrupp | totalt? | kvinnor? | män? |
+| Stockholms län | antal sjukfall | 0 | 0 | 0 |
+| Uppsala län | antal sjukfall | 1 | 1 | 0 |
 
 | Sjukfall i rapporten andel sjukfall per kon |
-| län            | totalt? | män?    | kvinnor?  |
-| Stockholms län | 0       | 0 % (0) | 0 % (0)   |
-| Uppsala län    | 1       | 0 % (0) | 100 % (1) |
-| Okänt län      | 0       | 0 % (0) | 0 % (0)   |
+| län | totalt? | män? | kvinnor? |
+| Stockholms län | 0 | 0 % (0) | 0 % (0) |
+| Uppsala län | 1 | 0 % (0) | 100 % (1) |
+| Okänt län | 0 | 0 % (0) | 0 % (0) |
 
 Inloggad:
 
 | Sjukfall i rapporten diagnosgrupp |
-|inloggad som | år   | månad | grupp   | män? | kvinnor? |
-| user1       | 2013 | feb   | A00-B99 | 0    | 0        |
-| user1       | 2013 | feb   | F00-F99 | 0    | 1        |
-| user1       | 2013 | mar   | A00-B99 | 0    | 0        |
-| user1       | 2013 | mar   | F00-F99 | 0    | 1        |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user1 | 2013 | feb | A00-B99 | 0 | 0 |
+| user1 | 2013 | feb | F00-F99 | 0 | 1 |
+| user1 | 2013 | mar | A00-B99 | 0 | 0 |
+| user1 | 2013 | mar | F00-F99 | 0 | 1 |
 
 | Sjukfall i rapporten aldersgrupp |
-| inloggad som | åldersgrupp | män? | kvinnor? |
-| user1        | 26-30 år    | 0    | 0        |
-| user1        | 31-35 år    | 0    | 1        |
+| inloggad som | åldersgrupp | totalt? | män? | kvinnor? |
+| user1 | 26-30 år | 0 | 0 | 0 |
+| user1 | 31-35 år | 1 | 0 | 1 |
 
 | Sjukfall i rapporten sjukskrivningsgrad |
-| inloggad som | år   | månad | sjukskrivningsgrad | män? | kvinnor? |
-| user1        | 2013 | feb   | 100 %              | 0    | 0        |
-| user1        | 2013 | feb   | 50 %               | 0    | 1        |
-| user1        | 2013 | mar   | 100 %              | 0    | 0        |
-| user1        | 2013 | mar   | 50 %               | 0    | 1        |
+| inloggad som | år | månad | sjukskrivningsgrad | män? | kvinnor? |
+| user1 | 2013 | feb | 100 % | 0 | 0 |
+| user1 | 2013 | feb | 50 % | 0 | 1 |
+| user1 | 2013 | mar | 100 % | 0 | 0 |
+| user1 | 2013 | mar | 50 % | 0 | 1 |
+
+
 
 | Sjukfall i rapporten sjukfall per lakare |
-| inloggad som | läkare         | män? | kvinnor? |
-| user1        | Bo B           | 0    | 1        |
-| user1        | Bo Bengtsson   | -1   | -1       |
+| inloggad som | läkare | totalt? | män? | kvinnor? |
+| user1 | Bo B | 1 | 0 | 1 |
+| user1 | Bo Bengtsson | -1 | -1 | -1 |
+
+
 
 | Sjukfall i rapporten lakarkonalder |
-| inloggad som | läkargrupp                  | män? | kvinnor? |
-| user1        | Manlig läkare 40-49 år      | 0    | 1        |
-| user1        | Manlig läkare 50-59 år      | 0    | 0        |
+| inloggad som | läkargrupp | totalt? | män? | kvinnor? |
+| user1 | Manlig läkare 40-49 år | 1 | 0 | 1 |
+| user1 | Manlig läkare 50-59 år | 0 | 0 | 0 |
 
 | Sjukfall i rapporten lakarbefattning |
-| inloggad som | läkarbefattning  | män? | kvinnor? |
-| user1        | Överläkare       | -1   | -1       |
-| user1        | Företagsläkare   | 0    | 1        |
+| inloggad som | läkarbefattning | totalt? | män? | kvinnor? |
+| user1 | Överläkare | -1 | -1 | -1 |
+| user1 | Företagsläkare | 1 | 0 | 1 |

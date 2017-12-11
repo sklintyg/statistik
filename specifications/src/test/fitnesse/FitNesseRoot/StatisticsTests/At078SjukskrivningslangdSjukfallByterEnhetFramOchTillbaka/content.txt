@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
-
 !3 Givet att:
-
 Ett sjukfall består av 3 intyg, det första utfärdat på enhet1 (43 dagar), det andra av på enhet2 (31 dagar) och det tredje på enhet1 (17 dagar).
 
 | script | dagens datum | 2014-07-06 |
@@ -15,39 +13,41 @@ Ett sjukfall består av 3 intyg, det första utfärdat på enhet1 (43 dagar), de
 | 19671122-2940 | G01 | 2014-04-16 | 2014-05-02 | enhet1 | 17 dagar |
 
 !3 Då gäller:
-
 Som inloggad med behörighet till bara enhet1 syns sjukfallet EN GÅNG i grupp "91-180 dagar", dvs. det blir bara ett sjukfall och totala längden räknas.
 Som inloggad med behörighet till bara enhet2 syns sjukfallet i grupp "61-90 dagar".
 
 Nationell:
+
 | Sjukfall i rapporten sjukskrivningslangd |
-| sjukskrivningslängd | män? | kvinnor? |
-| 31-60 dagar         | 0    | 0        |
-| 61-90 dagar         | 0    | 0        |
-| 91-180 dagar        | 0    | 1        |
+| sjukskrivningslängd | totalt? | män? | kvinnor? |
+| 31-60 dagar | 0 | 0 | 0 |
+| 61-90 dagar | 0 | 0 | 0 |
+| 91-180 dagar | 1 | 0 | 1 |
 
 Nationell:
+
 | Sjukfall i oversikt sjukskrivningslangd |
-| grupp          | antal? |
-| 31-60 dagar    | 0      |
-| 61-90 dagar    | 0      |
-| 91-180 dagar   | 1    |
+| grupp | antal? |
+| 31-60 dagar | 0 |
+| 61-90 dagar | 0 |
+| 91-180 dagar | 1 |
 
 Inloggad:
+
 | Sjukfall i rapporten sjukskrivningslangd |
-| inloggad som | sjukskrivningslängd | män? | kvinnor? |
-| user1        | 31-60 dagar         | 0    | 0        |
-| user1        | 61-90 dagar         | 0    | 0        |
-| user1        | 91-180 dagar        | 0    | 1        |
-| user4        | 31-60 dagar         | 0    | 0        |
-| user4        | 61-90 dagar         | 0    | 1        |
-| user4        | 91-180 dagar        | 0    | 0        |
+| inloggad som | sjukskrivningslängd | totalt? | män? | kvinnor? |
+| user1 | 31-60 dagar | 0 | 0 | 0 |
+| user1 | 61-90 dagar | 0 | 0 | 0 |
+| user1 | 91-180 dagar | 1 | 0 | 1 |
+| user4 | 31-60 dagar | 0 | 0 | 0 |
+| user4 | 61-90 dagar | 1 | 0 | 1 |
+| user4 | 91-180 dagar | 0 | 0 | 0 |
 
 | Sjukfall i oversikt sjukskrivningslangd |
-|inloggad som | grupp          | antal? |
-| user1       | 31-60 dagar    | 0     |
-| user1       | 61-90 dagar    | 0     |
-| user1       | 91-180 dagar   | 1    |
-| user4       | 31-60 dagar    | 0     |
-| user4       | 61-90 dagar    | 1     |
-| user4       | 91-180 dagar   | 0    |
+| inloggad som | grupp | antal? |
+| user1 | 31-60 dagar | 0 |
+| user1 | 61-90 dagar | 0 |
+| user1 | 91-180 dagar | 1 |
+| user4 | 31-60 dagar | 0 |
+| user4 | 61-90 dagar | 1 |
+| user4 | 91-180 dagar | 0 |
