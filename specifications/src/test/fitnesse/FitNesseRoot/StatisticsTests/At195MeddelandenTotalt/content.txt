@@ -25,6 +25,23 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 !3 Då gäller:
 Statistiken baseras på meddelanden för alla intygstyper som har ärendekommunikation. Statistiken presenteras utifrån datum då meddelandet skickades. Varje meddelande räknas en gång oavsett om det finns flera meddelanden för samma intyg.
 
+Nationell:
+
+| Meddelanden i rapporten meddelanden totalt |
+| år | månad | meddelandeamne | män? | kvinnor? |
+| 2014 | feb | KOMPLT | 0 | 0 |
+| 2014 | feb | AVSTMN | 0 | 0 |
+| 2014 | mar | KOMPLT | 0 | 0 |
+| 2014 | mar | AVSTMN | 0 | 1 |
+| 2014 | apr | KOMPLT | 1 | 0 |
+| 2014 | apr | AVSTMN | 0 | 0 |
+| 2014 | maj | KOMPLT | 0 | 0 |
+| 2014 | maj | AVSTMN | 0 | 0 |
+| 2014 | jun | KOMPLT | 2 | 0 |
+| 2014 | jun | AVSTMN | 1 | 0 |
+| 2014 | jul | KOMPLT | 0 | 0 |
+| 2014 | jul | AVSTMN | 0 | 0 |
+
 Inloggad:
 
 | Meddelanden i rapporten meddelanden totalt |
