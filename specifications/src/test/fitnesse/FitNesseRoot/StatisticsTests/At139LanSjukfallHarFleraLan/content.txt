@@ -17,7 +17,7 @@ Ett sjukfall kan bara tillhöra ett län. Sjukfallet visas för länet i det sen
 
 Nationell:
 
-| Sjukfall i rapporten lan diagram |
+| Sjukfall i rapporten lan |
 | län | kolumngrupp | totalt? | kvinnor? | män? |
 | Stockholms län | antal sjukfall | 0 | 0 | 0 |
 | Jönköpings län | antal sjukfall | 0 | 0 | 0 |
