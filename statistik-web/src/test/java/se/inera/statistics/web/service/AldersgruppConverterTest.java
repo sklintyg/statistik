@@ -69,11 +69,13 @@ public class AldersgruppConverterTest {
         ChartData chartDataResult = result.getChartData();
         assertEquals("[<20, 20-50, >50]", chartDataResult.getCategories().toString());
         List<ChartSeries> series = chartDataResult.getSeries();
-        assertEquals(2, series.size());
-        assertEquals("Kvinnor", series.get(0).getName());
-        assertEquals("Män", series.get(1).getName());
-        assertEquals("[14, 15, 9]", series.get(1).getData().toString());
-        assertEquals("[13, 24, 3]", series.get(0).getData().toString());
+        assertEquals(3, series.size());
+        assertEquals("Totalt", series.get(0).getName());
+        assertEquals("Kvinnor", series.get(1).getName());
+        assertEquals("Män", series.get(2).getName());
+        assertEquals("[27, 39, 12]", series.get(0).getData().toString());
+        assertEquals("[13, 24, 3]", series.get(1).getData().toString());
+        assertEquals("[14, 15, 9]", series.get(2).getData().toString());
 
         assertEquals(range.toString(), result.getPeriod());
     }

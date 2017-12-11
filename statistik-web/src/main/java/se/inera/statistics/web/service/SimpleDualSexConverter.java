@@ -37,35 +37,31 @@ import java.util.List;
 public class SimpleDualSexConverter {
 
     private final String tableGroupTitle;
-    private final boolean totalSeriesInChart;
     private String seriesNameTemplate;
     private String totalColumnName = "Antal sjukfall totalt";
     private String femaleColumnName = "Antal sjukfall för kvinnor";
     private String maleColumnName = "Antal sjukfall för män";
 
-    public SimpleDualSexConverter(String tableGroupTitle, boolean totalSeriesInChart, String seriesNameTemplate) {
+    public SimpleDualSexConverter(String tableGroupTitle, String seriesNameTemplate) {
         this.tableGroupTitle = tableGroupTitle;
-        this.totalSeriesInChart = totalSeriesInChart;
         this.seriesNameTemplate = seriesNameTemplate;
     }
 
-    public SimpleDualSexConverter(String tableGroupTitle, boolean totalSeriesInChart, String seriesNameTemplate, String totalColumnName,
+    public SimpleDualSexConverter(String tableGroupTitle, String seriesNameTemplate, String totalColumnName,
             String femaleColumnName, String maleColumnName) {
         this.tableGroupTitle = tableGroupTitle;
-        this.totalSeriesInChart = totalSeriesInChart;
         this.seriesNameTemplate = seriesNameTemplate;
         this.totalColumnName = totalColumnName;
         this.femaleColumnName = femaleColumnName;
         this.maleColumnName = maleColumnName;
     }
 
-    public static SimpleDualSexConverter newGenericTvarsnitt() {
-        return new SimpleDualSexConverter("", false, "%1$s");
+    static SimpleDualSexConverter newGenericTvarsnitt() {
+        return new SimpleDualSexConverter("", "%1$s");
     }
 
-    public static SimpleDualSexConverter newGenericIntygTvarsnitt() {
+    static SimpleDualSexConverter newGenericIntygTvarsnitt() {
         return new SimpleDualSexConverter("",
-                false,
                 "%1$s",
                 "Antal intyg totalt",
                 "Antal intyg för kvinnor",
@@ -114,9 +110,7 @@ public class SimpleDualSexConverter {
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
-        if (totalSeriesInChart) {
-            series.add(new ChartSeries("Totalt", casesPerMonth.getSummedData()));
-        }
+        series.add(new ChartSeries("Totalt", casesPerMonth.getSummedData()));
         series.add(new ChartSeries("Kvinnor", casesPerMonth.getDataForSex(Kon.FEMALE), Kon.FEMALE));
         series.add(new ChartSeries("Män", casesPerMonth.getDataForSex(Kon.MALE), Kon.MALE));
 
@@ -127,11 +121,8 @@ public class SimpleDualSexConverter {
         return tableGroupTitle;
     }
 
-    boolean isTotalSeriesInChart() {
-        return totalSeriesInChart;
-    }
-
     String getSeriesNameTemplate() {
         return seriesNameTemplate;
     }
+
 }

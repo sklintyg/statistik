@@ -29,7 +29,7 @@ import se.inera.statistics.web.model.SimpleDetailsData;
 public class GroupedSjukfallConverter extends SimpleDualSexConverter {
 
     public GroupedSjukfallConverter(String tableGroupTitle) {
-        super(tableGroupTitle, false, "%1$s");
+        super(tableGroupTitle, "%1$s");
     }
 
     @Override

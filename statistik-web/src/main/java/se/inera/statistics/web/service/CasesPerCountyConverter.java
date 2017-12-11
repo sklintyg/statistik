@@ -168,6 +168,16 @@ public class CasesPerCountyConverter {
         final List<Number> sjukfallPerPopulationMale = Stream
                 .concat(Stream.of(sjukfallPerKPopulationForAllLanMale), sjukfallPerKPopulationStreamMale).collect(Collectors.toList());
 
+        final int size = groups.size();
+        final ArrayList<Number> totals = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            final double fValue = sjukfallPerPopulationFemale.get(i).doubleValue();
+            final double mValue = sjukfallPerPopulationMale.get(i).doubleValue();
+            final double tot = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimals(fValue + mValue);
+            totals.add(tot);
+        }
+
+        series.add(new ChartSeries(H_TOTALT, totals));
         series.add(new ChartSeries(H_KVINNOR, sjukfallPerPopulationFemale, Kon.FEMALE));
         series.add(new ChartSeries(H_MAN, sjukfallPerPopulationMale, Kon.MALE));
         return new ChartData(series, groups);

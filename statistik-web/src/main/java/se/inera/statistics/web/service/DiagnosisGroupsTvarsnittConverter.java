@@ -34,7 +34,7 @@ import java.util.Set;
 public class DiagnosisGroupsTvarsnittConverter extends SimpleDualSexConverter {
 
     public DiagnosisGroupsTvarsnittConverter() {
-        super("", false, "%1$s");
+        super("", "%1$s");
     }
 
     @Override

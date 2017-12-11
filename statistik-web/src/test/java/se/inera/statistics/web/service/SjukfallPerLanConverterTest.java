@@ -85,11 +85,13 @@ public class SjukfallPerLanConverterTest {
         ChartData chartDataResult = result.getChartData();
         assertEquals("[Samtliga län, <20, 20-50, >50]", chartDataResult.getCategories().toString());
         List<ChartSeries> series = chartDataResult.getSeries();
-        assertEquals(2, series.size());
-        assertEquals("Kvinnor", series.get(0).getName());
-        assertEquals("[66.67, 65.0, 120.0, 15.0]", series.get(0).getData().toString());
-        assertEquals("Män", series.get(1).getName());
-        assertEquals("[15.83, 17.5, 18.75, 11.25]", series.get(1).getData().toString());
+        assertEquals(3, series.size());
+        assertEquals("Totalt", series.get(0).getName());
+        assertEquals("[82.5, 82.5, 138.75, 26.25]", series.get(0).getData().toString());
+        assertEquals("Kvinnor", series.get(1).getName());
+        assertEquals("[66.67, 65.0, 120.0, 15.0]", series.get(1).getData().toString());
+        assertEquals("Män", series.get(2).getName());
+        assertEquals("[15.83, 17.5, 18.75, 11.25]", series.get(2).getData().toString());
 
         assertEquals(new Range(fromNew, toNew).toString(), result.getPeriod());
     }

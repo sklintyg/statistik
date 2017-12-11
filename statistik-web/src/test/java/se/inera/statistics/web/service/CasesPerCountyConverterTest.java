@@ -57,8 +57,12 @@ public class CasesPerCountyConverterTest {
         //Then
         assertEquals("Samtliga län", result.getChartData().getCategories().get(0).getName());
         assertEquals(name, result.getChartData().getCategories().get(1).getName());
-        assertEquals("Kvinnor", result.getChartData().getSeries().get(0).getName());
-        assertEquals(3.33, result.getChartData().getSeries().get(0).getData().get(0));
+        assertEquals("Totalt", result.getChartData().getSeries().get(0).getName());
+        assertEquals("Kvinnor", result.getChartData().getSeries().get(1).getName());
+        assertEquals("Män", result.getChartData().getSeries().get(2).getName());
+        assertEquals(13.33, result.getChartData().getSeries().get(0).getData().get(0));
+        assertEquals(3.33, result.getChartData().getSeries().get(1).getData().get(0));
+        assertEquals(10.00, result.getChartData().getSeries().get(2).getData().get(0));
 
         assertEquals("Samtliga län", result.getTableData().getRows().get(0).getName());
         assertEquals(3, result.getTableData().getRows().get(0).getData().get(0));

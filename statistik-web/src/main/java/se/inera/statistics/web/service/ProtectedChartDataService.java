@@ -675,7 +675,7 @@ public class ProtectedChartDataService {
         final Range range = filterSettings.getRange();
         SimpleKonResponse<SimpleKonDataRow> degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradTvarsnitt(filter.getPredicate(),
                 range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData data = new SimpleDualSexConverter("", false, "%1$s %% sjukskrivningsgrad").convert(degreeOfSickLeaveStatistics,
+        SimpleDetailsData data = new SimpleDualSexConverter("", "%1$s %% sjukskrivningsgrad").convert(degreeOfSickLeaveStatistics,
                 filterSettings);
         return getResponse(data, format, request, Report.V_SJUKSKRIVNINGSGRAD);
     }
