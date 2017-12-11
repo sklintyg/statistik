@@ -16,8 +16,9 @@ abstract class LanRapport extends Rapport {
     public void executeDiagram(report) {
         def index = report.chartData.categories.findIndexOf { item -> item.name.equals(län) }
         markerad = report.chartData.categories[index].marked
-        kvinnor = index < 0 ? -1 : report.chartData.series[0].data[index]
-        män = index < 0 ? -1 : report.chartData.series[1].data[index]
+        totalt = index < 0 ? -1 : report.chartData.series[0].data[index]
+        kvinnor = index < 0 ? -1 : report.chartData.series[1].data[index]
+        män = index < 0 ? -1 : report.chartData.series[2].data[index]
     }
 
     public void executeTabell(report) {
