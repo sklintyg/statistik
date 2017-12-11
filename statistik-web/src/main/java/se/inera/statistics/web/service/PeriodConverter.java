@@ -21,7 +21,7 @@ package se.inera.statistics.web.service;
 public class PeriodConverter extends SimpleDualSexConverter {
 
     public PeriodConverter() {
-        super("Period", true, "%1$s");
+        super("Period", "%1$s");
     }
 
 }

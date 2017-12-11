@@ -22,7 +22,6 @@ public class PeriodIntygConverter extends SimpleDualSexConverter {
 
     public PeriodIntygConverter() {
         super("Period",
-                true,
                 "%1$s",
                 "Antal intyg totalt",
                 "Antal intyg för kvinnor",

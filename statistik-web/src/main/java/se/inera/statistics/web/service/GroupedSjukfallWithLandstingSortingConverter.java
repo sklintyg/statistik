@@ -34,7 +34,7 @@ public class GroupedSjukfallWithLandstingSortingConverter extends SimpleDualSexC
     private final List<HsaIdEnhet> connectedEnhetIds;
 
     public GroupedSjukfallWithLandstingSortingConverter(String tableGroupTitle, List<HsaIdEnhet> connectedEnhetIds) {
-        super(tableGroupTitle, false, "%1$s");
+        super(tableGroupTitle, "%1$s");
         this.connectedEnhetIds = connectedEnhetIds;
     }
 

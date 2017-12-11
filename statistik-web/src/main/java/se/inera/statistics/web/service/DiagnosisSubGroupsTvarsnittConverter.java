@@ -29,7 +29,7 @@ import java.util.List;
 public class DiagnosisSubGroupsTvarsnittConverter extends SimpleDualSexConverter {
 
     public DiagnosisSubGroupsTvarsnittConverter() {
-        super("", false, "%1$s");
+        super("", "%1$s");
     }
 
     @Override
