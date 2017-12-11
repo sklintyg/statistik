@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
-
 !3 Givet att:
-
 Tre intyg för samma patient. Patienten fyller år under sjukfallets gång.
 
 | script | dagens datum | 2014-11-28 |
@@ -9,26 +7,26 @@ Tre intyg för samma patient. Patienten fyller år under sjukfallets gång.
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| personnr      | start      | slut       | enhet  | kommentar |
+| personnr | start | slut | enhet | kommentar |
 | 19870109-2390 | 2012-06-01 | 2012-06-15 | enhet2 | |
 | 19870109-2390 | 2012-06-17 | 2014-06-15 | enhet2 | |
 | 19870109-2390 | 2014-06-16 | 2014-06-30 | enhet2 | |
 
-
 !3 Då gäller:
-
 Ett sjukfall kan bara ha en patientålder. Sjukfallet hamnar i åldersgruppen för patientens ålder vid sjukfallets slut.
 
 Nationell nivå
+
 | Sjukfall i rapporten aldersgrupp |
-| åldersgrupp | män? | kvinnor? |
-| 21-25 år    | 0    | 0        |
-| 26-30 år    | 1    | 0        |
-| 31-35 år    | 0    | 0        |
+| åldersgrupp | totalt? | män? | kvinnor? |
+| 21-25 år | 0 | 0 | 0 |
+| 26-30 år | 1 | 1 | 0 |
+| 31-35 år | 0 | 0 | 0 |
 
 Inloggad nivå
+
 | Sjukfall i rapporten aldersgrupp |
-| inloggad som | vårdgivarnivå | åldersgrupp | män? | kvinnor? |
-| user2        | false         | 21-25 år    | 0    | 0        |
-| user2        | false         | 26-30 år    | 1    | 0        |
-| user2        | false         | 31-35 år    | 0    | 0        |
+| inloggad som | vårdgivarnivå | åldersgrupp | totalt? | män? | kvinnor? |
+| user2 | false | 21-25 år | 0 | 0 | 0 |
+| user2 | false | 26-30 år | 1 | 1 | 0 |
+| user2 | false | 31-35 år | 0 | 0 | 0 |

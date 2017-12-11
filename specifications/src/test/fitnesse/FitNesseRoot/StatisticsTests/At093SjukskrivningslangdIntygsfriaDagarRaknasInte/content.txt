@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
-
 !3 Givet att:
-
 Ett sjukfall består av två intyg med fyra dagars uppehåll. Det första intyget är 10 dagar och det andra 3 dagar.
 
 | script | dagens datum | 2013-04-06 |
@@ -14,27 +12,28 @@ Ett sjukfall består av två intyg med fyra dagars uppehåll. Det första intyge
 | 19790316-9261 | G01 | 2013-02-15 | 2013-02-17 | enhet1 | |
 
 !3 Då gäller:
-
 Sjukfallet hamnar i gruppen "Under 15 dagar" eftersom dagar utan intyg i sjukfall inte räknas.
 
 Nationell:
+
 | Sjukfall i rapporten sjukskrivningslangd |
-| sjukskrivningslängd | män? | kvinnor? |
-| Under 15 dagar      | 0    | 1        |
-| 15-30 dagar         | 0    | 0        |
+| sjukskrivningslängd | totalt? | män? | kvinnor? |
+| Under 15 dagar | 1 | 0 | 1 |
+| 15-30 dagar | 0 | 0 | 0 |
 
 | Sjukfall i oversikt sjukskrivningslangd |
-| grupp          | antal? |
-| Under 15 dagar | 1      |
-| 15-30 dagar    | 0      |
+| grupp | antal? |
+| Under 15 dagar | 1 |
+| 15-30 dagar | 0 |
 
 Inloggad:
+
 | Sjukfall i rapporten sjukskrivningslangd |
-| inloggad som | sjukskrivningslängd | män? | kvinnor? |
-| user1        | Under 15 dagar      | 0    | 1        |
-| user1        | 15-30 dagar         | 0    | 0        |
+| inloggad som | sjukskrivningslängd | totalt? | män? | kvinnor? |
+| user1 | Under 15 dagar | 1 | 0 | 1 |
+| user1 | 15-30 dagar | 0 | 0 | 0 |
 
 | Sjukfall i oversikt sjukskrivningslangd |
-|inloggad som | grupp          | antal? |
-| user1       | Under 15 dagar | 1      |
-| user1       | 15-30 dagar    | 0      |
+| inloggad som | grupp | antal? |
+| user1 | Under 15 dagar | 1 |
+| user1 | 15-30 dagar | 0 |

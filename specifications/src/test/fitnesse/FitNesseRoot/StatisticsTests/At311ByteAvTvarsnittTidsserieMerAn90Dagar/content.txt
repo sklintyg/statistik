@@ -1,5 +1,4 @@
 !contents -R2 -g -p -f -h
-
 Gäller STATISTIK-936, 943.
 
 !3 Givet att:
@@ -8,39 +7,38 @@ Gäller STATISTIK-936, 943.
 | script | troskel varde | 1 |
 
 | Foljande lakare finns |
-| id      | förnamn | efternamn | kön    | ålder | befattningar |
-| lakare1 | Anna    | Andersson | FEMALE | 30    | 201010       |
-| lakare2 | Bo      | Bengtsson | MALE   | 40    | 201013       |
+| id | förnamn | efternamn | kön | ålder | befattningar |
+| lakare1 | Anna | Andersson | FEMALE | 30 | 201010 |
+| lakare2 | Bo | Bengtsson | MALE | 40 | 201013 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
-| 19671127-3026 | G01 | 2013-06-01 | 2013-10-30 | 0             | enhet1 | lakare1 |
-| 19790717-9191 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet2 | lakare2 |
-
+| personnr | diagnoskod | start | slut | arbetsförmåga | enhet | läkare |
+| 19671127-3026 | G01 | 2013-06-01 | 2013-10-30 | 0 | enhet1 | lakare1 |
+| 19790717-9191 | G02 | 2014-07-01 | 2014-10-30 | 50 | enhet2 | lakare2 |
 
 !3 Då gäller:
 | Sjukfall i rapporten langa sjukfall |
-| inloggad som | år   | månad | män? | kvinnor? |
-| user2        | 2013 | jun   | 0    | 1        |
-| user2        | 2013 | jul   | 0    | 1        |
-| user2        | 2013 | aug   | 0    | 1        |
-| user2        | 2013 | sep   | 0    | 1        |
-| user2        | 2013 | okt   | 0    | 1        |
-| user2        | 2013 | nov   | 0    | 0        |
-| user2        | 2013 | dec   | 0    | 0        |
-| user2        | 2014 | jan   | 0    | 0        |
-| user2        | 2014 | feb   | 0    | 0        |
-| user2        | 2014 | mar   | 0    | 0        |
-| user2        | 2014 | apr   | 0    | 0        |
-| user2        | 2014 | maj   | 0    | 0        |
-| user2        | 2014 | jun   | 0    | 0        |
-| user2        | 2014 | jul   | 1    | 0        |
-| user2        | 2014 | aug   | 1    | 0        |
-| user2        | 2014 | sep   | 1    | 0        |
-| user2        | 2014 | okt   | 1    | 0        |
+| inloggad som | år | månad | män? | kvinnor? |
+| user2 | 2013 | jun | 0 | 1 |
+| user2 | 2013 | jul | 0 | 1 |
+| user2 | 2013 | aug | 0 | 1 |
+| user2 | 2013 | sep | 0 | 1 |
+| user2 | 2013 | okt | 0 | 1 |
+| user2 | 2013 | nov | 0 | 0 |
+| user2 | 2013 | dec | 0 | 0 |
+| user2 | 2014 | jan | 0 | 0 |
+| user2 | 2014 | feb | 0 | 0 |
+| user2 | 2014 | mar | 0 | 0 |
+| user2 | 2014 | apr | 0 | 0 |
+| user2 | 2014 | maj | 0 | 0 |
+| user2 | 2014 | jun | 0 | 0 |
+| user2 | 2014 | jul | 1 | 0 |
+| user2 | 2014 | aug | 1 | 0 |
+| user2 | 2014 | sep | 1 | 0 |
+| user2 | 2014 | okt | 1 | 0 |
 
-Byte till tvärsnitt gör att ett stapeldiagram 12 mån med bara en grupp (som heter "Mer än 90 dagar" på x-axeln) visas. Gruppen har som vanligt en stapel för män och en för kvinnor. Totalt-legenden försvinner.
+Byte till tvärsnitt gör att ett stapeldiagram 12 mån med bara en grupp (som heter "Mer än 90 dagar" på x-axeln) visas.
 
-| Sjukfall i rapporten langa sjukfall som tvarsnitt |
-| inloggad som | grupp           | män? | kvinnor? |
-| user2        | Mer än 90 dagar | 1    | 0        |
+| Sjukfall i rapporten langa sjukfall som tvarsnitt diagram |
+| inloggad som | grupp | totalt? | män? | kvinnor? |
+| user2 | Mer än 90 dagar | 1 | 1 | 0 |

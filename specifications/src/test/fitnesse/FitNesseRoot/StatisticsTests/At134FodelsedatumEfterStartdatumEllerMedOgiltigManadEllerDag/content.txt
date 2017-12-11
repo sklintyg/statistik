@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
-
 !3 Givet att:
-
 Det finns intyg som har personnummer med födelsedatum som inte motsvarar ett riktigt datum eller med födelsedatum som infaller efter intygets startdatum.
 
 | script | dagens datum | 2003-11-06 |
@@ -9,7 +7,7 @@ Det finns intyg som har personnummer med födelsedatum som inte motsvarar ett ri
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet |
+| personnr | diagnoskod | start | slut | enhet |
 | 19990017-2383 | G01 | 2003-02-05 | 2003-02-06 | enhet1 |
 | 19991317-2383 | G01 | 2003-02-11 | 2003-02-12 | enhet1 |
 | 19990600-2383 | G01 | 2003-02-11 | 2003-02-12 | enhet1 |
@@ -18,15 +16,15 @@ Det finns intyg som har personnummer med födelsedatum som inte motsvarar ett ri
 | 20051231-3398 | G01 | 2003-02-11 | 2003-02-12 | enhet1 |
 
 !3 Då gäller:
-
 Intygen tas inte med.
 
 Inloggad:
+
 | Sjukfall i rapporten sjukfall totalt |
-| inloggad som | år   | månad | män? | kvinnor? |
-| user1  | 2003 | feb   | 0    | 0        |
+| inloggad som | år | månad | män? | kvinnor? |
+| user1 | 2003 | feb | 0 | 0 |
 
 | Sjukfall i rapporten aldersgrupp |
-| inloggad som | åldersgrupp | män? | kvinnor? |
-| user1        | Under 16 år | 0    | 0        |
-| user1        | 31-35 år    | 0    | 0        |
+| inloggad som | åldersgrupp | totalt? | män? | kvinnor? |
+| user1 | Under 16 år | 0 | 0 | 0 |
+| user1 | 31-35 år | 0 | 0 | 0 |

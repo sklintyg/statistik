@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
-
 Testar att sjukskrivningslängd räknar med andra intyg mellan intyg som användaren har tillgång till.
-
 
 !3 Givet att:
 | script | dagens datum | 2014-11-06 |
@@ -14,17 +12,17 @@ Testar att sjukskrivningslängd räknar med andra intyg mellan intyg som använd
 | 19671122-2940 | G01 | 2014-03-11 | 2014-03-16 | enhet2 | |
 | 19671122-2940 | G01 | 2014-03-21 | 2014-03-26 | enhet1 | |
 
-
 !3 Då gäller:
 Nationell nivå
-| Sjukfall i rapporten sjukskrivningslangd |
-| sjukskrivningslängd | män? | kvinnor? |
-| 15-30 dagar         | 0    | 1        |
 
+| Sjukfall i rapporten sjukskrivningslangd |
+| sjukskrivningslängd | totalt? | män? | kvinnor? |
+| 15-30 dagar | 1 | 0 | 1 |
 
 Inloggad nivå
+
 | Sjukfall i rapporten sjukskrivningslangd |
-| inloggad som | sjukskrivningslängd | män? | kvinnor? |
-| user1        | 15-30 dagar         | 0    | 1        |
-| user2        | 15-30 dagar         | 0    | 1        |
-| user4        | Under 15 dagar      | 0    | 1        |
+| inloggad som | sjukskrivningslängd | totalt? | män? | kvinnor? |
+| user1 | 15-30 dagar | 1 | 0 | 1 |
+| user2 | 15-30 dagar | 1 | 0 | 1 |
+| user4 | Under 15 dagar | 1 | 0 | 1 |

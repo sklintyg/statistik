@@ -1,7 +1,5 @@
 !contents -R2 -g -p -f -h
-
 !3 Givet att:
-
 Ett sjukfall består av 1 intyg, utfärdat av en person med båda befattningarna Överläkare och Företagsläkare.
 
 | script | dagens datum | 2014-11-28 |
@@ -9,19 +7,19 @@ Ett sjukfall består av 1 intyg, utfärdat av en person med båda befattningarna
 | script | troskel varde | 1 |
 
 | Foljande lakare finns |
-| id      | kön    | ålder | befattningar  | kommentar                     |
-| lakare1 | MALE   | 44    | 201010, 201013 | Överläkare och Företagsläkare |
+| id | kön | ålder | befattningar | kommentar |
+| lakare1 | MALE | 44 | 201010, 201013 | Överläkare och Företagsläkare |
 
 | Enbart foljande intyg finns |
-| personnr      | start      | slut       | enhet  | läkare  | kommentar |
-| 19800820-9275 | 2014-06-01 | 2014-06-15 | enhet1 | lakare1 |           |
+| personnr | start | slut | enhet | läkare | kommentar |
+| 19800820-9275 | 2014-06-01 | 2014-06-15 | enhet1 | lakare1 | |
 
 !3 Då gäller:
-
 Det visas 1 sjukfall för gruppen Överläkare och 1 sjukfall för gruppen Företagsläkare.
 
 Inloggad:
+
 | Sjukfall i rapporten lakarbefattning |
-| inloggad som | vårdgivarnivå | läkarbefattning | män? | kvinnor? |
-| user1        | false         | Överläkare      | 1    | 0        |
-| user1        | false         | Företagsläkare  | 1    | 0        |
+| inloggad som | vårdgivarnivå | läkarbefattning | totalt? | män? | kvinnor? |
+| user1 | false | Överläkare | 1 | 1 | 0 |
+| user1 | false | Företagsläkare | 1 | 1 | 0 |
