@@ -45,6 +45,7 @@
         $scope.StaticFilterData = StaticFilterData;
         $scope.isLoggedIn = AppModel.get().isLoggedIn;
         $scope.isCollapsed = true;
+        $scope.isMenuOpen = false;
         var oldValue = $scope.isLoggedIn;
 
         var sjukfall = {
@@ -381,6 +382,9 @@
         };
 
         $scope.$on('navigationUpdate', function (event, navigationGroupId) {
+
+            $scope.hideDropDown();
+
             switch(navigationGroupId) {
             case about.navigationId:
                 about.show = true;
@@ -423,6 +427,10 @@
             } else {
                 return true;
             }
+        };
+
+        $scope.hideDropDown = function() {
+            $scope.isMenuOpen = false;
         };
 
         $scope.menuEnabled = function(menu) {

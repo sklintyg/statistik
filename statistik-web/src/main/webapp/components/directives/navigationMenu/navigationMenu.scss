@@ -2,10 +2,17 @@ navigation-menu {
   display: block;
 }
 
-
-
-
 .statistics-menu {
+
+  .dropdown-toggle {
+    @extend %st-typo-08;
+    padding: 10px;
+
+    button {
+      margin-top: -6px;
+      background: transparent;
+    }
+  }
 
   .dropdown-menu {
     padding: 0;
