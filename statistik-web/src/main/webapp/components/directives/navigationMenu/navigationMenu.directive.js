@@ -385,14 +385,14 @@
             case about.navigationId:
                 about.show = true;
                 break;
-            case sjukfall.navigationId:
-                sjukfall.show = true;
+            case national.navigationId:
+                national.show = true;
                 break;
-            case intyg.navigationId:
-                intyg.show = true;
+            case landsting.navigationId:
+                landsting.show = true;
                 break;
-            case kommunikation.navigationId:
-                kommunikation.show = true;
+            case operation.navigationId:
+                operation.show = true;
                 break;
             }
         });
@@ -435,9 +435,26 @@
 
         function initMenu() {
             $scope.menus.length = 0;
-            $scope.menus.push(sjukfall);
-            $scope.menus.push(intyg);
-            $scope.menus.push(kommunikation);
+            $scope.menus.push(national);
+
+            if (UserModel.get().hasLandstingAccess) {
+                $scope.menus.push(landsting);
+            }
+
+            if (UserModel.get().enableVerksamhetMenu) {
+                $scope.menus.push(operation);
+            }
+            else {
+                $scope.menus.push({
+                    id: operation.id,
+                    name: 'nav.business-header',
+                    tooltip: 'login.header.verksamhet',
+                    show: false,
+                    disabled: true,
+                    checkVisible: operation.checkVisible
+                });
+            }
+
             $scope.menus.push(about);
         }
 
