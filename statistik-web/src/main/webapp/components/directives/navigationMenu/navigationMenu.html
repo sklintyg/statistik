@@ -1,13 +1,13 @@
-<div class="statistics-menu" id="statistics-menu-accordion"  uib-dropdown on-toggle="toggled(open)">
-  <div class="visible-xs" uib-dropdown-toggle>
+<div class="statistics-menu" id="statistics-menu-accordion"  uib-dropdown auto-close="outsideClick" is-open="isMenuOpen">
+  <div class="visible-xs dropdown-toggle" uib-dropdown-toggle>
     Meny
-    <button type="button" aria-expanded="false">
+    <button type="button" class="btn pull-right" aria-expanded="false">
       <span class="sr-only">Toggle navigation</span>
       <i class="fa fa-bars"></i>
     </button>
   </div>
 
-  <ul class="statistics-menu-list" uib-dropdown-menu>
+  <ul class="statistics-menu-list" uib-dropdown-menu >
     <li data-ng-repeat="menu in menus">
       <a data-ng-click="toggleMenu(menu, $event)">
         <span class="statistics-menu-heading" message key="{{::menu.name}}" disable-highlight-words="true"></span>
@@ -18,7 +18,6 @@
         <li data-ng-repeat="submenu in menu.subMenu | filter: showMenu">
           <a
               id="{{::submenu.id}}"
-              data-ng-class="{'menu-item-has-childs': submenu.subMenu, 'not-active': !menuEnabled(submenu)}"
               data-ng-href="{{::submenu.link}}{{queryString}}"
               ctrlname="{{::submenu.ctrl}}"
               navigationaware>
