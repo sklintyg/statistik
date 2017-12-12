@@ -46,7 +46,6 @@ import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.IntygCommonManager;
-import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
@@ -296,11 +295,6 @@ public class WarehouseService {
             map.put(enhet.getVardgivareId(), enhet);
         }
         return map.asMap();
-    }
-
-    public List<Sjukfall> getSjukfallForBi(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
-        return SjukfallQuery.getSjukfallForBi(warehouse.get(vardgivarId), filter, range.getFrom(), range.getNumberOfMonths(), 1,
-                sjukfallUtil);
     }
 
 }

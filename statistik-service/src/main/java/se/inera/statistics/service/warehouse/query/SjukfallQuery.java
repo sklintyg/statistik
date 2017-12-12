@@ -28,7 +28,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -278,14 +277,6 @@ public class SjukfallQuery {
 
     public void setCutoff(int cutoff) {
         this.cutoff = cutoff;
-    }
-
-    public static List<Sjukfall> getSjukfallForBi(Aisle facts, FilterPredicates filter, LocalDate from, int months, int i,
-            SjukfallUtil sjukfallUtil) {
-        final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(SjukfallUtil.START_DATE_OF_DATA_GATHERING, 1,
-                Integer.MAX_VALUE, facts, filter);
-        return StreamSupport.stream(sjukfallGroups.spliterator(), false).flatMap(sg -> sg.getSjukfall().stream())
-                .collect(Collectors.toList());
     }
 
     private static class SjukfallPerGender {
