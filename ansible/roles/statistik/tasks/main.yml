@@ -77,6 +77,16 @@
     state: absent
     path: "{{ tomcat_webapps }}/ROOT.war"
 
+- name: remove old version of unpacked highchart war
+  file:
+    state: absent
+    path: "{{ tomcat_webapps }}/highcharts-export-web"
+
+- name: remove old version of highchart war
+  file:
+    state: absent
+    path: "{{ tomcat_webapps }}/highcharts-export-web.war"
+
 - name: Deploy statistik-web-{{ version }}.war as ROOT.war
   copy:
     src: "{{ releases_folder }}/statistik-web-{{ version }}.war"
@@ -92,6 +102,11 @@
   file:
     state: absent
     path: "{{ releases_folder }}/statistik-web-{{ version }}.war"
+
+- name: Remove highchart-export-web-{{ highcharts_version }}.war from releases
+  file:
+    state: absent
+    path: "{{ releases_folder }}/highcharts-export-web-{{ highcharts_version }}.war"
 
 - name: Remove liquibase-runner-{{ version }}.zip from releases
   file:
