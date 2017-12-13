@@ -1,0 +1,46 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Flera olika sjukfall med olika diagnoser.
+
+| script | dagens datum | 2013-11-06 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  |
+| 19671109-2681 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19680102-9288 | A00 | 2013-02-02 | 2013-02-28 | enhet1 |
+| 19790918-9230 | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19800504-9294 | J01 | 2013-01-01 | 2013-02-13 | enhet1 |
+| 19800504-9294 | F41 | 2013-02-14 | 2013-02-26 | enhet1 |
+| 19800504-9294 | F40 | 2013-02-27 | 2013-03-14 | enhet1 |
+
+
+!3 Då gäller:
+
+Bara de sjukfall/delar av sjukfall vars diagnos matchar val i diagnosfiltret visas.
+
+| Sjukfall i rapporten sjukfall totalt |
+|inloggad som | filter enheter | filter verksamhetstyper | filter kapitel          | filter avsnitt | filter kategorier | år   | månad | män? | kvinnor? |
+| user1       |                |                         |                         |                |                   | 2013 | jan   | 1    | 0        |
+| user1       | enhet1         | 02                      | F00-F99                 |                |                   | 2013 | jan   | 0    | 0        |
+| user1       | enhet1         | 02                      | F00-F99,A00-B99         |                |                   | 2013 | jan   | 0    | 0        |
+| user1       | enhet1         | 02                      | F00-F99,A00-B99,J00-J99 |                |                   | 2013 | jan   | 1    | 0        |
+| user1       | enhet1         | 02                      |                         | J00-J06        |                   | 2013 | jan   | 1    | 0        |
+| user1       | enhet1         | 02                      |                         |                | F41               | 2013 | jan   | 0    | 0        |
+| user1       |                |                         |                         |                |                   | 2013 | feb   | 2    | 2        |
+| user1       | enhet1         | 02                      | F00-F99                 |                |                   | 2013 | feb   | 2    | 1        |
+| user1       | enhet1         | 02                      | F00-F99,A00-B99         |                |                   | 2013 | feb   | 2    | 2        |
+| user1       | enhet1         | 02                      | F00-F99,A00-B99,J00-J99 |                |                   | 2013 | feb   | 2    | 2        |
+| user1       | enhet1         | 02                      |                         | J00-J06        |                   | 2013 | feb   | 1    | 0        |
+| user1       | enhet1         | 02                      |                         |                | F41               | 2013 | feb   | 2    | 0        |
+| user1       |                |                         |                         |                |                   | 2013 | mar   | 1    | 0        |
+| user1       | enhet1         | 02                      | F00-F99                 |                |                   | 2013 | mar   | 1    | 0        |
+| user1       | enhet1         | 02                      | F00-F99,A00-B99         |                |                   | 2013 | mar   | 1    | 0        |
+| user1       | enhet1         | 02                      | F00-F99,A00-B99,J00-J99 |                |                   | 2013 | mar   | 1    | 0        |
+| user1       | enhet1         | 02                      |                         | J00-J06        |                   | 2013 | mar   | 0    | 0        |
+| user1       | enhet1         | 02                      |                         |                | F41               | 2013 | mar   | 0    | 0        |
+

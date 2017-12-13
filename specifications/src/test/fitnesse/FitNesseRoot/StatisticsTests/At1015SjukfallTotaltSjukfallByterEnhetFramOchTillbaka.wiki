@@ -1,0 +1,35 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+Ett sjukfall består av tre intyg under mars. Det första är utfärdat på enhet1, det andra på enhet2 och det tredje på enhet1. 
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet |
+| 19790717-9191 | G01 | 2013-03-01 | 2013-03-10 | enhet1 |
+| 19790717-9191 | G01 | 2013-03-11 | 2013-03-20 | enhet2 |
+| 19790717-9191 | G01 | 2013-03-21 | 2013-03-30 | enhet1 |
+
+!3 Då gäller:
+
+Som inloggad med behörighet till bara enhet1 syns endast ett sjukfall för mars (trots att det är mer än 5 dagars uppehåll på den enheten, men sjukfallet pågick på annan enhet då).
+Som inloggad med behörighet till bara enhet2 syns ett sjukfall för mars.
+Som inloggad med behörighet till både enhet1 och enhet2 syns ett sjukfall för mars.
+
+Nationell:
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2013 | mar   | 1    | 0        |
+
+Inloggad:
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user1  | 2013 | mar   | 1    | 0        |
+| user4  | 2013 | mar   | 1    | 0        |
+| user2  | 2013 | mar   | 1    | 0        |

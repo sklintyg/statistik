@@ -36,12 +36,16 @@ Inloggad:
 | inloggad som | vårdenhet | meddelandeamne | totalt? | män? | kvinnor? |
 | user2 | enhet1 | KOMPLT | 1 | 1 | 0 |
 | user2 | enhet1 | AVSTMN | 1 | 1 | 0 |
+| user2 | enhet1 | OVRIGT | -1 | -1 | -1 |
 | user2 | enhet2 | KOMPLT | 1 | 1 | 0 |
 | user2 | enhet2 | AVSTMN | 0 | 0 | 0 |
+| user2 | enhet2 | OVRIGT | -1 | -1 | -1 |
 
 | Meddelanden i rapporten meddelanden vardenhet diagram |
 | inloggad som | vårdenhet | meddelandeamne | totalt? | män? | kvinnor? |
 | user2 | enhet1 | KOMPLT | 1 | 1 | 0 |
 | user2 | enhet1 | AVSTMN | 1 | 1 | 0 |
+| user2 | enhet1 | OVRIGT | -1 | -1 | -1 |
 | user2 | enhet2 | KOMPLT | 1 | 1 | 0 |
 | user2 | enhet2 | AVSTMN | 0 | 0 | 0 |
+| user2 | enhet2 | OVRIGT | -1 | -1 | -1 |

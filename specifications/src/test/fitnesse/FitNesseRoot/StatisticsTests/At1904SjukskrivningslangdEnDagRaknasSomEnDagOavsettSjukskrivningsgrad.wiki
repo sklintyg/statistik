@@ -1,0 +1,51 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+!3 Givet att:
+Ett sjukfall består av två intyg, utfärdade på två olika enheter inom samma vårdgivare. Sjukskrivningsgraden är 75% i det första intyget (74 dagar) och 50% i det andra (31 dagar).
+
+| script | dagens datum | 2014-05-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | arbetsförmåga | enhet | kommentar |
+| 19671122-2940 | G01 | 2014-01-01 | 2014-03-15 | 25 | enhet1 | |
+| 19671122-2940 | G01 | 2014-03-16 | 2014-04-15 | 50 | enhet2 | |
+
+!3 Då gäller:
+Som inloggad med behörighet till endast enhet1 syns sjukfallet i gruppen "61-90 dagar", eftersom det är så länge sjukfallet pågått fram till och med att det kom till min enhet.
+Som inloggad med behörighet till endast enhet2 syns sjukfallet i gruppen "91-180 dagar", eftersom det är så länge sjukfallet pågått fram till och med att det kom till min enhet.
+
+Oavsett sjukskrivningsgrad räknas en dag med intyg som 1 dag i statistiken.
+ 
+Nationell:
+
+| Sjukfall i rapporten sjukskrivningslangd |
+| sjukskrivningslängd | totalt? | män? | kvinnor? |
+| 91-180 dagar | 1 | 0 | 1 |
+
+| Sjukfall i oversikt sjukskrivningslangd |
+| grupp | antal? |
+| 91-180 dagar | 1 |
+
+Inloggad:
+
+| Sjukfall i rapporten sjukskrivningslangd |
+| inloggad som | sjukskrivningslängd | totalt? | män? | kvinnor? |
+| user1 | 31-60 dagar | 0 | 0 | 0 |
+| user1 | 61-90 dagar | 1 | 0 | 1 |
+| user1 | 91-180 dagar | 0 | 0 | 0 |
+| user4 | 31-60 dagar | 0 | 0 | 0 |
+| user4 | 61-90 dagar | 0 | 0 | 0 |
+| user4 | 91-180 dagar | 1 | 0 | 1 |
+
+| Sjukfall i oversikt sjukskrivningslangd |
+| inloggad som | grupp | antal? |
+| user1 | 31-60 dagar | 0 |
+| user1 | 61-90 dagar | 1 |
+| user1 | 91-180 dagar | 0 |
+| user4 | 31-60 dagar | 0 |
+| user4 | 61-90 dagar | 0 |
+| user4 | 91-180 dagar | 1 |

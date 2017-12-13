@@ -28,7 +28,7 @@ Statistiken baseras på meddelanden för alla intygstyper som har ärendekommuni
 Nationell:
 
 | Meddelanden i rapporten meddelanden totalt |
-| år | månad | meddelandeamne | män? | kvinnor? |
+| år | månad | grupp | män? | kvinnor? |
 | 2014 | feb | KOMPLT | 0 | 0 |
 | 2014 | feb | AVSTMN | 0 | 0 |
 | 2014 | mar | KOMPLT | 0 | 0 |
@@ -45,7 +45,7 @@ Nationell:
 Inloggad:
 
 | Meddelanden i rapporten meddelanden totalt |
-| inloggad som | år | månad | meddelandeamne | män? | kvinnor? |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
 | user1 | 2014 | feb | KOMPLT | 0 | 0 |
 | user1 | 2014 | feb | AVSTMN | 0 | 0 |
 | user1 | 2014 | mar | KOMPLT | 0 | 0 |

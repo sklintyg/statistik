@@ -1,0 +1,40 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Ett  sjukfall består av 1 intyg med två olika sjukskrivningsgrader.
+2014-10-01 – 2014-10-15 100%
+2014-10-16 – 2014-11-28 50%
+
+För oktober finns alltså två grader.
+
+| script | dagens datum | 2014-10-01 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | arbetsförmåga | start2     | slut2      | arbetsförmåga2 | enhet  |
+| 19790407-0220 | A00        | 2013-09-01 | 2013-10-15 | 0             | 2013-10-16 | 2013-11-28 | 50             | enhet1 |
+
+!3 Då gäller:
+
+Det blir ett sjukfall som syns för 100% i september, 50% i oktober och 50% i november. Om det finns två grader en viss månad, så väljs den senaste graden den månaden.
+
+Nationell:
+| Sjukfall i rapporten sjukskrivningsgrad |
+| år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
+| 2013 | sep   | 100 %                | 0    | 1        |
+| 2013 | okt   | 100 %                | 0    | 0        |
+| 2013 | okt   | 50 %                 | 0    | 1        |
+| 2013 | nov   | 50 %                 | 0    | 1        |
+
+Inloggad:
+| Sjukfall i rapporten sjukskrivningsgrad |
+| inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
+| user1        | 2013 | sep   | 100 %                | 0    | 1        |
+| user1        | 2013 | okt   | 100 %                | 0    | 0        |
+| user1        | 2013 | okt   | 50 %                 | 0    | 1        |
+| user1        | 2013 | nov   | 50 %                 | 0    | 1        |

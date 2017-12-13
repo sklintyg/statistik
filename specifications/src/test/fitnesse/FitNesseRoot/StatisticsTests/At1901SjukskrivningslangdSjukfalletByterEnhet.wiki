@@ -1,0 +1,54 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+!3 Givet att:
+Ett sjukfall består av 2 intyg, det första utfärdat på enhet1 och det andra av på enhet2.
+Det första intyget pågår i 74 dagar och det andra i 31 dagar.
+
+| script | dagens datum | 2013-05-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | kommentar |
+| 19680524-9288 | G01 | 2013-01-01 | 2013-03-15 | enhet1 | |
+| 19680524-9288 | G01 | 2013-03-16 | 2013-04-15 | enhet2 | |
+
+!3 Då gäller:
+Som inloggad med behörighet till endast enhet1 syns sjukfallet i gruppen "61-90 dagar", eftersom det är så länge sjukfallet pågått fram till och med att det kom till min enhet.
+Som inloggad med behörighet till endast enhet2 syns sjukfallet i gruppen "91-180 dagar", eftersom det är så länge sjukfallet pågått fram till och med att det kom till min enhet.
+
+Nationell:
+
+| Sjukfall i rapporten sjukskrivningslangd |
+| sjukskrivningslängd | totalt? | män? | kvinnor? |
+| 31-60 dagar | 0 | 0 | 0 |
+| 61-90 dagar | 0 | 0 | 0 |
+| 91-180 dagar | 1 | 0 | 1 |
+
+| Sjukfall i oversikt sjukskrivningslangd |
+| grupp | antal? |
+| 31-60 dagar | 0 |
+| 61-90 dagar | 0 |
+| 91-180 dagar | 1 |
+
+Inloggad:
+
+| Sjukfall i rapporten sjukskrivningslangd |
+| inloggad som | sjukskrivningslängd | totalt? | män? | kvinnor? |
+| user1 | 31-60 dagar | 0 | 0 | 0 |
+| user1 | 61-90 dagar | 1 | 0 | 1 |
+| user1 | 91-180 dagar | 0 | 0 | 0 |
+| user4 | 31-60 dagar | 0 | 0 | 0 |
+| user4 | 61-90 dagar | 0 | 0 | 0 |
+| user4 | 91-180 dagar | 1 | 0 | 1 |
+
+| Sjukfall i oversikt sjukskrivningslangd |
+| inloggad som | grupp | antal? |
+| user1 | 31-60 dagar | 0 |
+| user1 | 61-90 dagar | 1 |
+| user1 | 91-180 dagar | 0 |
+| user4 | 31-60 dagar | 0 |
+| user4 | 61-90 dagar | 0 |
+| user4 | 91-180 dagar | 1 |

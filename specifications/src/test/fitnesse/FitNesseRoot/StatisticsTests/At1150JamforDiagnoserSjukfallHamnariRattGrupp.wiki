@@ -1,0 +1,23 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+!3 Givet att:
+Ett sjukfall består av tre intyg med olika diagnoskategorier.
+
+| script | dagens datum | 2013-11-06 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet |
+| 19790219-9285 | F40 | 2013-02-01 | 2013-03-14 | enhet1 |
+| 19790219-9285 | A00 | 2013-03-17 | 2013-04-01 | enhet1 |
+| 19790219-9285 | F42 | 2013-04-02 | 2013-04-15 | enhet1 |
+
+!3 Då gäller:
+Alla valda diagnoskategorier visas. Sjukfallet visas i alla kategorier som det har diagnoser i.
+
+| Sjukfall i rapporten jamfor diagnoser diagram |
+| inloggad som | valda diagnoskategorier | diagnoskategori | totalt? | män? | kvinnor? |
+| user1 | A00, F32, F40 | A00 | 1 | 0 | 1 |
+| user1 | A00, F32, F40 | F32 | 0 | 0 | 0 |
+| user1 | A00, F32, F40 | F40 | 1 | 0 | 1 |

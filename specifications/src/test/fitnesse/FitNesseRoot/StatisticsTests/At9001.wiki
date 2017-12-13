@@ -1,0 +1,35 @@
+---
+Help: UTGÅR!
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+
+Test ignorerat pga att det inte längre gäller. 
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 4 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  |
+| 19790219-9285 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790429-9281 | A00 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790717-9191 | F41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790808-9274 | J01 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790709-9282 | J01 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790810-9288 | F40 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790316-9261 | A00 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790918-9230 | F41 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19791020-9290 | J01 | 2013-02-01 | 2013-02-14 | enhet3 |
+| 19790316-9261 | J01 | 2013-02-01 | 2013-02-14 | enhet3 |
+
+
+!3 Då gäller:
+Nationell:
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2013 | jan   | 0    | 0        |
+| 2013 | feb   | 4    | 6        |
+| 2013 | mar   | 0    | 0        |

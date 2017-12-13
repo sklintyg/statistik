@@ -1,0 +1,33 @@
+---
+Help: IGNORERAD EFTERSOM DENNA RAPPORT UTGÅTT, STATISTIK-952
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+
+IGNORERAD EFTERSOM DENNA RAPPORT UTGÅTT, STATISTIK-952
+
+Två sjukfall för enhet1. Det ena tar slut i oktober, det andra tar slut i november
+
+User1 - väljer pågående fall och månaden är november, ser endast 1 fall
+
+
+!3 Givet att:
+| script | dagens datum | 2014-11-15 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19671122-2940 | G01        | 2014-10-01 | 2014-10-10 | enhet1 | slut i okt |
+| 19680102-9288 | G01        | 2014-09-01 | 2014-11-10 | enhet1 | slut i nov |
+
+
+!3 Då gäller:
+| Sjukfall i rapporten aldersgrupp pagaende |
+| inloggad som | vårdgivarnivå | åldersgrupp | män? | kvinnor? |
+| user1        | false         | 31-35 år    | 0    | 0        |
+| user1        | false         | 21-25 år    | 0    | 1        |
+
+| Sjukfall i rapporten sjukskrivningslangd pagaende |
+| inloggad som | sjukskrivningslängd | män? | kvinnor? |
+| user1        | Under 15 dagar      | 0    | 0        |
+| user1        | 31-90 dagar         | 0    | 1        |

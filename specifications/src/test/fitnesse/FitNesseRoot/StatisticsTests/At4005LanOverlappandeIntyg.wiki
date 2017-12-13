@@ -1,0 +1,32 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Ett sjukfall består av två intyg, där det andra börjar efter det första och slutar innan det första. Månadsbrytning mellan intygens slutdatum.
+
+| script | dagens datum | 2016-03-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  | län |
+| 19790717-9191 | G01 | 2015-02-15 | 2015-03-15 | enhet1 | 01  |
+| 19790717-9191 | G01 | 2015-02-20 | 2015-02-27 | enhet2 | 03  |
+
+!3 Då gäller:
+
+Rapporten Län som har perioden mars 15-feb 16, visar sjukfallet i Stockholm (eftersom Uppsala var innan perioden). 
+
+Nationell:
+| Sjukfall i rapporten lan |
+| län            | kolumngrupp    | totalt? | kvinnor? | män? |
+| Stockholms län | antal sjukfall | 1    | 0        | 1 |
+| Uppsala län    | antal sjukfall | 0    | 0        | 0 |
+
+| Sjukfall i rapporten andel sjukfall per kon |
+| län            | totalt? | män?      | kvinnor? |
+| Stockholms län | 1       | 100 % (1)   | 0 % (0)  |
+| Uppsala län    | 0       | 0 % (0) | 0 % (0)  |

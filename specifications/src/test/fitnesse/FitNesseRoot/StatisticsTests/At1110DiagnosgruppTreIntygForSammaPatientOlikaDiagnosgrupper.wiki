@@ -1,0 +1,60 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Tre intyg för samma patient. Två månader finns det intyg med diagnoser som faller inom olika diagnosgrupper.
+
+| script | dagens datum | 2014-03-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet |
+| 19680524-9288 | B23 | 2013-02-01 | 2013-03-14 | enhet1 |
+| 19680524-9288 | P10 | 2013-03-17 | 2013-04-01 | enhet1 |
+| 19680524-9288 | M12 | 2013-04-03 | 2013-05-03 | enhet1 |
+
+!3 Då gäller:
+
+Det blir ett sjukfall. I de fall det finns två diagnoser en månad, är det diagnosen i intyget med senast startdatum den månaden som avgör diagnosgruppen.
+
+Nationell:
+| Sjukfall i rapporten diagnosgrupp diagram |
+| år   | månad | grupp                     | män? | kvinnor? |
+| 2013 | feb   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| 2013 | mar   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| 2013 | mar   | P00-P96, Q00-Q99, S00-Y98 | 0    | 1        |
+| 2013 | apr   | P00-P96, Q00-Q99, S00-Y98 | 0    | 0        |
+| 2013 | apr   | M00-M99                   | 0    | 1        |
+| 2013 | maj   | M00-M99                   | 0    | 1        |
+
+| Sjukfall i rapporten diagnosgrupp |
+| år   | månad | grupp   | män? | kvinnor? |
+| 2013 | feb   | A00-B99 | 0    | 1        |
+| 2013 | mar   | A00-B99 | 0    | 0        |
+| 2013 | mar   | P00-P96 | 0    | 1        |
+| 2013 | apr   | P00-P96 | 0    | 0        |
+| 2013 | apr   | M00-M99 | 0    | 1        |
+| 2013 | maj   | M00-M99 | 0    | 1        |
+
+Inloggad:
+| Sjukfall i rapporten diagnosgrupp diagram |
+|inloggad som | år   | månad | grupp                     | män? | kvinnor? |
+| user1       | 2013 | feb   | A00-E90, G00-L99, N00-N99 | 0    | 1        |
+| user1       | 2013 | mar   | A00-E90, G00-L99, N00-N99 | 0    | 0        |
+| user1       | 2013 | mar   | P00-P96, Q00-Q99, S00-Y98 | 0    | 1        |
+| user1       | 2013 | apr   | P00-P96, Q00-Q99, S00-Y98 | 0    | 0        |
+| user1       | 2013 | apr   | M00-M99                   | 0    | 1        |
+| user1       | 2013 | maj   | M00-M99                   | 0    | 1        |
+
+| Sjukfall i rapporten diagnosgrupp |
+|inloggad som | år   | månad | grupp   | män? | kvinnor? |
+| user1       | 2013 | feb   | A00-B99 | 0    | 1        |
+| user1       | 2013 | mar   | A00-B99 | 0    | 0        |
+| user1       | 2013 | mar   | P00-P96 | 0    | 1        |
+| user1       | 2013 | apr   | P00-P96 | 0    | 0        |
+| user1       | 2013 | apr   | M00-M99 | 0    | 1        |
+| user1       | 2013 | maj   | M00-M99 | 0    | 1        |

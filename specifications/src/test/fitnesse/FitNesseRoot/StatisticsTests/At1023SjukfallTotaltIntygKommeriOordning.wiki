@@ -1,0 +1,38 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Ett sjukfall består av tre intyg som inte kommer i kronologisk ordning.
+
+| script | dagens datum | 2015-01-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet |
+| 19790717-9191 | G01 | 2014-02-05 | 2014-02-06 | enhet1 |
+| 19790717-9191 | G01 | 2014-02-25 | 2014-03-01 | enhet1 |
+| 19790717-9191 | G01 | 2014-02-07 | 2014-03-08 | enhet1 |
+
+!3 Då gäller:
+
+Sjukfallet visas för alla månader då det gäller, oavsett ordning på intyg.
+
+Nationell:
+| Sjukfall i rapporten sjukfall totalt |
+| år | månad | män? | kvinnor? |
+| 2014 | jan | 0 | 0 |
+| 2014 | feb | 1 | 0 |
+| 2014 | mar | 1 | 0 |
+| 2014 | apr | 0 | 0 |
+
+Inloggad:
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år | månad | män? | kvinnor? |
+| user1  | 2014 | jan | 0 | 0 |
+| user1  | 2014 | feb | 1 | 0 |
+| user1  | 2014 | mar | 1 | 0 |
+| user1  | 2014 | apr | 0 | 0 |

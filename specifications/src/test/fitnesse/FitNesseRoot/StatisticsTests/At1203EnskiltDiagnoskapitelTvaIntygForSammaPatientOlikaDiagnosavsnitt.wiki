@@ -1,0 +1,29 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Två intyg för samma patient under samma månad. Intygens giltighetsdatum överlappar varandra. Intygens diagnos faller inom olika diagnosavsnitt.
+
+| script | dagens datum | 2013-11-06 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  |
+| 19790219-9285 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790219-9285 | A00 | 2013-02-02 | 2013-02-28 | enhet1 |
+
+!3 Då gäller:
+
+Det blir ett sjukfall. Diagnosgruppen avgörs av diagnosen i intyget med senast startdatum den månaden (A00), så kapitlet blir A00-B99 och avsnittet A00-A09.
+
+Nationell:
+| Sjukfall i rapporten enskilt diagnoskapitel diagram |
+| valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
+| A00-B99             | 2013 | feb   | A00-A09 | 0    | 1        |
+
+Inloggad:
+| Sjukfall i rapporten enskilt diagnoskapitel diagram |
+|inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
+| user1       | A00-B99             | 2013 | feb   | A00-A09 | 0    | 1        |

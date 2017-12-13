@@ -1,0 +1,37 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Ett sjukfall består av två intyg, där det andra börjar efter det första och slutar innan det första. Månadsbrytning mellan det andra intygets start- och slutdatum.
+
+| script | dagens datum | 2014-10-01 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | arbetsförmåga | enhet  |
+| 19790429-9281 | A00        | 2014-03-15 | 2014-04-15 | 0             | enhet1 |
+| 19790429-9281 | A00        | 2014-03-20 | 2014-04-10 | 50            | enhet1 |
+
+!3 Då gäller:
+
+Graden väljs från det intyg som är aktivt minst en dag i perioden och som har det senaste startdatumet.
+
+Nationell:
+| Sjukfall i rapporten sjukskrivningsgrad |
+| år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
+| 2014 | mar   | 100 %                | 0    | 0        |
+| 2014 | mar   | 50 %                 | 0    | 1        |
+| 2014 | apr   | 100 %                | 0    | 0        |
+| 2014 | apr   | 50 %                 | 0    | 1        |
+
+Inloggad:
+| Sjukfall i rapporten sjukskrivningsgrad |
+| inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
+| user1        | 2014 | mar   | 100 %                | 0    | 0        |
+| user1        | 2014 | mar   | 50 %                 | 0    | 1        |
+| user1        | 2014 | apr   | 100 %                | 0    | 0        |
+| user1        | 2014 | apr   | 50 %                 | 0    | 1        |
