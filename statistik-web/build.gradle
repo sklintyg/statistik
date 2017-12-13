@@ -109,7 +109,6 @@ dependencies {
     gretty "org.apache.activemq:activemq-broker:${activeMqVersion}"
     gretty "org.apache.activemq:activemq-pool:${activeMqVersion}"
     gretty "org.apache.tomcat:tomcat-catalina:${tomcatVersion}"
-    gretty "org.eclipse.jetty:jetty-jmx:${jettyJmxVersion}"
 
     testRuntime "com.h2database:h2:${h2Version}"
 }
