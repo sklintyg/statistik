@@ -24,12 +24,12 @@ body {
 .left-container {
   width: $left-container-width;
   background: $st-color-19;
+  box-shadow: 3px 0 5px 0 rgba(0, 0, 0, 0.35);
 }
 
 .right-container {
   flex: 1;
   max-width: calc(100% - #{$left-container-width});
-  box-shadow: inset 1px -1px 4px 0 rgba(0, 0, 0, 0.24);
 }
 
 @media (max-width: $screen-xs-max) {
@@ -39,6 +39,10 @@ body {
 
   .right-container {
     max-width: 100%;
+  }
+
+  .left-container {
+    width: 100%;
   }
 }
 
