@@ -9,7 +9,7 @@
 
   <ul class="statistics-menu-list" uib-dropdown-menu >
     <li data-ng-repeat="menu in menus">
-      <a data-ng-click="toggleMenu(menu, $event)">
+      <a data-ng-click="toggleMenu(menu, $event)" id="{{::menu.id}}">
         <span class="statistics-menu-heading" message key="{{::menu.name}}" disable-highlight-words="true"></span>
         <i class="fa statistict-left-menu-expand-icon" data-ng-class="{collapsed: !menu.show}"></i>
       </a>

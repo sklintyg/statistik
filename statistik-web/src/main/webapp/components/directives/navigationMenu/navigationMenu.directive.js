@@ -48,6 +48,7 @@
         $scope.isMenuOpen = false;
         var oldValue = $scope.isLoggedIn;
 
+        /*
         var sjukfall = {
             id: 'sjukfall-statistics-toggle',
             name: 'nav.sjukfall-header',
@@ -134,7 +135,7 @@
                 ctrl: 'NationalMeddelandenPerMonthCtrl'
             }]
         };
-
+*/
 
         var national = {
             id: 'national-statistics-toggle',
@@ -291,6 +292,7 @@
                 ctrl: 'VerksamhetDiagnosgruppCtrl',
                 subMenuId: 'sub-menu-business-diagnostics',
                 subMenuIdLink: '#sub-menu-business-diagnostics',
+                show: true,
                 subMenu: [{
                     id: 'navBusinessDiagnosisSubGroupsLink',
                     link: '#/verksamhet/diagnosavsnitt',
@@ -319,6 +321,7 @@
                 ctrl: 'VerksamhetSickLeaveLengthCtrl',
                 subMenuId: 'sub-menu-business-sick-leave-length',
                 subMenuIdLink: '#sub-menu-business-sick-leave-length',
+                show: true,
                 subMenu: [{
                     id: 'navBusinessMoreNinetyDaysSickLeaveLink',
                     link: '#/verksamhet/langasjukskrivningar',
