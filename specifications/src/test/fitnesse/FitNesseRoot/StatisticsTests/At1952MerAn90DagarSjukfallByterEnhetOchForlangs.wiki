@@ -1,0 +1,38 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Ett sjukfall består av två intyg, det första utfärdat på enhet1 (74 dagar) och det andra på enhet2 (31 dagar).
+
+| script | dagens datum | 2014-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19790219-9285 | G01        | 2014-01-01 | 2014-03-15 | enhet1 | 74 dagar |
+| 19790219-9285 | G01        | 2014-03-16 | 2014-04-15 | enhet2 | 31 dagar |
+
+!3 Då gäller:
+
+Som inloggad med behörighet till bara enhet1 syns inte sjukfallet (eftersom sjukskrivningslängden t.om. den enheten inte är över 90 dagar).
+Som inloggad med behörighet till bara enhet2 syns sjukfallet för mars och april.
+Som inloggad med behörighet till både enhet1 och enhet2 syns sjukfallet bara för mars och april (det är först då det finns ett intyg som förlänger totala längden till över 90 dagar).
+
+| Sjukfall i rapporten langa sjukfall |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user1  | 2014 | jan   | 0    | 0        |
+| user1  | 2014 | feb   | 0    | 0        |
+| user1  | 2014 | mar   | 0    | 0        |
+| user1  | 2014 | apr   | 0    | 0        |
+| user4  | 2014 | jan   | 0    | 0        |
+| user4  | 2014 | feb   | 0    | 0        |
+| user4  | 2014 | mar   | 0    | 1        |
+| user4  | 2014 | apr   | 0    | 1        |
+| user2  | 2014 | jan   | 0    | 0        |
+| user2  | 2014 | feb   | 0    | 0        |
+| user2  | 2014 | mar   | 0    | 1        |
+| user2  | 2014 | apr   | 0    | 1        |

@@ -1,0 +1,29 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+!3 Givet att:
+Ett sjukfall består av två intyg, det första utfärdat av en Överläkare och det andra av en annan Överläkare.
+
+| script | dagens datum | 2014-11-28 |
+
+| script | troskel varde | 1 |
+
+| Foljande lakare finns |
+| id | kön | ålder | befattningar | kommentar |
+| lakare1 | MALE | 44 | 201010 | Överläkare |
+| lakare2 | FEMALE | 34 | 201010 | Överläkare |
+
+| Enbart foljande intyg finns |
+| personnr | start | slut | enhet | läkare | kommentar |
+| 19790717-9191 | 2014-06-01 | 2014-06-15 | enhet1 | lakare1 | |
+| 19790717-9191 | 2014-06-16 | 2014-06-30 | enhet1 | lakare2 | |
+
+!3 Då gäller:
+Det visas två sjukfall för gruppen Överläkare.
+
+Inloggad:
+
+| Sjukfall i rapporten lakarbefattning |
+| inloggad som | läkarbefattning | totalt? | män? | kvinnor? |
+| user1 | Överläkare | 2 | 2 | 0 |

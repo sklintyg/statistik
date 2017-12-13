@@ -1,0 +1,28 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+!3 Givet att:
+Ett sjukfall består av 1 intyg, utfärdat av en person med båda befattningarna Överläkare och Ledning, personal (vilket inte är en läkarbefattning).
+
+| script | dagens datum | 2014-11-28 |
+
+| script | troskel varde | 1 |
+
+| Foljande lakare finns |
+| id | kön | ålder | befattningar | kommentar |
+| lakare1 | MALE | 44 | 201010,101012 | Överläkare och Ledning, personal |
+
+| Enbart foljande intyg finns |
+| personnr | start | slut | enhet | läkare | kommentar |
+| 19790717-9191 | 2014-06-01 | 2014-06-15 | enhet1 | lakare1 | |
+
+!3 Då gäller:
+Det visas ett sjukfall i gruppen för Överläkare. Det visas inga sjukfall i gruppen Ej läkarbefattning. Ytterligare befattningar, utöver läkarbefattningar, ignoreras.
+
+Inloggad nivå
+
+| Sjukfall i rapporten lakarbefattning |
+| inloggad som | vårdgivarnivå | läkarbefattning | totalt? | män? | kvinnor? |
+| user1 | false | Överläkare | 1 | 1 | 0 |
+| user1 | false | Ej läkarbefattning | -1 | -1 | -1 |

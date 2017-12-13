@@ -1,0 +1,32 @@
+---
+Help: UTGÅR!
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+
+Ersatt av At142 och At145.
+
+!3 Givet att:
+
+Det finns två intyg med samma datum men olika arbetsförmåga för en patient.
+
+| script | dagens datum | 2014-11-28 |
+
+| script | troskel varde | 0 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet |
+| 19790316-9261 | G01 | 2014-04-04 | 2014-05-16 | 0             | enhet1 |
+| 19790316-9261 | G01 | 2014-04-04 | 2014-05-16 | 50            | enhet1 |
+
+!3 Då gäller:
+
+Sjukskrivningsgraden baseras på arbetsförmågan i intyget som står sist i listan.
+
+| Sjukfall i rapporten sjukskrivningsgrad |
+| inloggad som | år   | månad | sjukskrivningsgrad | män? | kvinnor? | kommentar |
+| user1        | 2014 | apr   | 100                | 0    | 0        | |
+| user1        | 2014 | maj   | 100                | 0    | 0        | |
+| user1        | 2014 | apr   | 50                 | 1    | 0        | |
+| user1        | 2014 | maj   | 50                 | 1    | 0        | |

@@ -1,0 +1,38 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+!3 Givet att:
+Ett sjukfall består av fem intyg med olika diagnoser utfärdade på olika enheter.
+
+| script | dagens datum | 2013-11-06 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet |
+| 19790219-9285 | F40 | 2013-02-01 | 2013-03-11 | enhet1 |
+| 19790219-9285 | F32 | 2013-03-12 | 2013-03-16 | enhet1 |
+| 19790219-9285 | A00 | 2013-03-17 | 2013-04-01 | enhet2 |
+| 19790219-9285 | F50 | 2013-04-02 | 2013-04-30 | enhet1 |
+| 19790219-9285 | F34 | 2013-05-01 | 2013-05-15 | enhet3 |
+
+!3 Då gäller:
+Beroende på vilka enheter som användaren har behörighet till, visas sjukfallet i olika kategorier. Bara det som hör till enheter användaren har behörighet till visas.
+
+| Sjukfall i rapporten jamfor diagnoser diagram |
+| inloggad som | valda diagnoskategorier | diagnoskategori | totalt? | män? | kvinnor? |
+| user1 | A00, F32, F34, F40 | A00 | 0 | 0 | 0 |
+| user1 | A00, F32, F34, F40 | F32 | 1 | 0 | 1 |
+| user1 | A00, F32, F34, F40 | F34 | 0 | 0 | 0 |
+| user1 | A00, F32, F34, F40 | F40 | 1 | 0 | 1 |
+| user2 | A00, F32, F34, F40 | A00 | 1 | 0 | 1 |
+| user2 | A00, F32, F34, F40 | F32 | 1 | 0 | 1 |
+| user2 | A00, F32, F34, F40 | F34 | 0 | 0 | 0 |
+| user2 | A00, F32, F34, F40 | F40 | 1 | 0 | 1 |
+| user4 | A00, F32, F34, F40 | A00 | 1 | 0 | 1 |
+| user4 | A00, F32, F34, F40 | F32 | 0 | 0 | 0 |
+| user4 | A00, F32, F34, F40 | F34 | 0 | 0 | 0 |
+| user4 | A00, F32, F34, F40 | F40 | 0 | 0 | 0 |
+| user3 | A00, F32, F34, F40 | A00 | 0 | 0 | 0 |
+| user3 | A00, F32, F34, F40 | F32 | 0 | 0 | 0 |
+| user3 | A00, F32, F34, F40 | F34 | 1 | 0 | 1 |
+| user3 | A00, F32, F34, F40 | F40 | 0 | 0 | 0 |

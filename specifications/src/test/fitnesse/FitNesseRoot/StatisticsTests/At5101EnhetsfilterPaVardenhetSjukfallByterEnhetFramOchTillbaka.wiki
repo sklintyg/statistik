@@ -1,0 +1,31 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Ett sjukfall består av tre intyg där det första och sista är utfärdat på enhet1 och det andra på enhet2.
+
+| script | dagens datum | 2013-11-06 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  |
+| 19790808-9274 | F40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790808-9274 | A00 | 2013-02-15 | 2013-03-28 | enhet2 |
+| 19790808-9274 | F41 | 2013-04-01 | 2013-04-14 | enhet1 |
+
+!3 Då gäller:
+
+Bara de sjukfall/delar av sjukfall vars enhet matchar val i enhetsfiltret visas. Bara enheter som användaren har behörighet till visas.
+
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | vårdenhet    | filter enheter | filter verksamhetstyper | filter kategorier | totalt? | män? | kvinnor? |
+| user2        | enhet1 |                |                         |                   | 1       | 1    | 0        |
+| user2        | enhet1 | enhet1         | 15                      | F40, A00, F41     | 1       | 1    | 0        |
+| user2        | enhet1 | enhet2         | 02                      | F40, A00, F41     | -1      | -1   | -1       |
+| user2        | enhet1 | enhet1,enhet2  | 15                      | F40, A00, F41     | 1       | 1    | 0        |
+| user2        | enhet2 |                |                         |                   | 1       | 1    | 0        |
+| user2        | enhet2 | enhet1         | 15                      | F40, A00, F41     | -1      | -1   | -1       |
+| user2        | enhet2 | enhet2         | 02                      | F40, A00, F41     | 1       | 1    | 0        |
+| user2        | enhet2 | enhet1,enhet2  | 02                      | F40, A00, F41     | 1       | 1    | 0        |

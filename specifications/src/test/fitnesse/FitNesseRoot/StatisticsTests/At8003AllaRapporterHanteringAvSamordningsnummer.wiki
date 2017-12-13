@@ -1,0 +1,28 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+!3 Givet att:
+Det finns två sjukfall, ett med godkänt samordningsnummer och ett med samordnings/personnummer som liknar samordningsnummer men inte motsvarar ett riktigt datum.
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | kommentar |
+| 19540187-6769 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | Födelsedatum motsvarar 19540127 - giltigt datum |
+| 19540192-5769 | G01 | 2013-02-11 | 2013-02-12 | enhet1 | Födelsedatum motsvarar 19540132 - ogiltigt datum |
+
+!3 Då gäller:
+Det visas ett sjukfall.
+
+Inloggad:
+
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år | månad | män? | kvinnor? |
+| user1 | 2013 | feb | 0 | 1 |
+
+| Sjukfall i rapporten aldersgrupp |
+| inloggad som | åldersgrupp | totalt? | män? | kvinnor? |
+| user1 | 56-60 år | 1 | 0 | 1 |

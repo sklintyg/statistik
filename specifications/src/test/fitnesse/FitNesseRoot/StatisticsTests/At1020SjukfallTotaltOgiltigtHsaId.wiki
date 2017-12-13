@@ -1,0 +1,36 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+!3 Givet att:
+Det finns intyg där inget enhets-id angetts och intyg skrivna på enheter som inte går att slå upp i HSA.
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | kommentar |
+| 19791020-9290 | G01 | 2013-02-01 | 2013-02-06 | enhet1 | |
+| 19790810-9288 | G01 | 2013-02-01 | 2013-02-06 | EJHSA | |
+| 19791110-9291 | G01 | 2013-02-01 | 2013-03-06 | EJHSANR2 | |
+| 19790316-9261 | G01 | 2013-02-01 | 2013-03-06 | UTANENHETSID | |
+
+!3 Då gäller:
+Om enheten inte går att slå upp i HSA och vi därmed inte kan hitta någon vårdgivare, filtreras intyget bort.
+
+Nationell nivå
+
+| Sjukfall i rapporten sjukfall totalt |
+| år | månad | män? | kvinnor? |
+| 2013 | feb | 1 | 0 |
+| 2013 | mar | 0 | 0 |
+
+Inloggad nivå
+
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | vårdgivarnivå | år | månad | män? | kvinnor? |
+| user1 | false | 2013 | feb | 1 | 0 |
+| user2 | true | 2013 | feb | 1 | 0 |
+| user1 | false | 2013 | mar | 0 | 0 |
+| user2 | true | 2013 | mar | 0 | 0 |

@@ -1,0 +1,34 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Ett intyg utfärdat på en vårdenhet. Inloggad med behörighet för en annan vårdgivare än den som den utfärdande enheten tillhör.
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19790330-9230| G01        | 2013-02-01 | 2013-02-06 | enhet2 | user1 har inte behörighet till enhet2 |
+
+!3 Då gäller:
+
+Det blir noll sjukfall.
+
+Nationell nivå
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2013 | jan   | 0    | 0        |
+| 2013 | feb   | 1    | 0        |
+| 2013 | mar   | 0    | 0        |
+
+Inloggad nivå
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | vårdgivarnivå | år   | månad | män? | kvinnor? |
+| user1        | false         | 2013 | jan   | 0    | 0        |
+| user1        | false         | 2013 | feb   | 0    | 0        |
+| user1        | false         | 2013 | mar   | 0    | 0        |
