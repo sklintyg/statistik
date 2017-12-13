@@ -1,0 +1,32 @@
+navigation-tabs {
+  display: block;
+  padding-top: 10px;
+
+  .tabset {
+    border: 1px solid $st-color-23;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .nav-tabs.nav-justified {
+    .nav-item {
+      background: $st-color-20;
+      box-shadow: inset 1px -1px 4px 0 rgba(0, 0, 0, 0.24);
+
+      > a {
+        @extend %st-typo-11;
+        border-radius: 0;
+        border-color: transparent;
+
+        &:hover {
+          border-color: transparent;
+        }
+      }
+
+      &.active {
+        > a {
+          @extend %st-typo-12;
+        }
+      }
+    }
+  }
+}

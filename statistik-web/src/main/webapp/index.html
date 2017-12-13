@@ -45,9 +45,7 @@
       <stat-cookie-banner></stat-cookie-banner>
 
       <div class="container-fluid page-content-wrapper">
-        <business-filter data-ng-if="isVerksamhetShowing" id="businessFilterContainer" ng-cloak></business-filter>
-
-        <landsting-filter data-ng-if="isLandstingShowing" id="landstingFilterContainer" ng-cloak></landsting-filter>
+        <navigation-tabs></navigation-tabs>
 
         <div class="row content-wrapper" ng-cloak>
           <div class="col-xs-12">
@@ -151,6 +149,7 @@
   <script src="/components/directives/intermediate/intermediate.directive.js"></script>
   <script src="/components/directives/message/message.directive.js"></script>
   <script src="/components/directives/navigationMenu/navigationMenu.directive.js"></script>
+  <script src="/components/directives/navigationTabs/navigationTabs.directive.js"></script>
   <script src="/components/directives/navigationaware/navigationaware.directive.js"></script>
   <script src="/components/directives/onFinishRender/onFinishRender.directive.js"></script>
   <script src="/components/directives/overviewWidget/overviewWidget.directive.js"></script>
