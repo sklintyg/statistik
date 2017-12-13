@@ -43,12 +43,12 @@ var NavMenu = function() {
     this.navAboutFaqLink = element(by.id('navAboutFaqLink'));
     this.navAboutContactLink = element(by.id('navAboutContactLink'));
 
+    var clickLandstingStatisticsToggle = function() {
+        that.landstingStatisticsToggle.click();
+    };
+
     this.expandLandstingStatisticsToggle = function() {
-        pohelper.hasClass(this.landstingStatisticsToggle, 'collapsed').then(function(value) {
-            if (value) {
-                that.landstingStatisticsToggle.click();
-            }
-        });
+        expandMenu(this.landstingStatisticsToggle, clickLandstingStatisticsToggle);
     };
 
     var clickBusinessStatisticsToggle = function() {
@@ -56,11 +56,7 @@ var NavMenu = function() {
     };
 
     this.expandBusinessStatisticsToggle = function() {
-        pohelper.hasClass(this.businessStatisticsToggle, 'collapsed').then(function(value) {
-            if (value) {
-                clickBusinessStatisticsToggle();
-            }
-        });
+        expandMenu(this.businessStatisticsToggle, clickBusinessStatisticsToggle);
     };
 
     var clickNationalStatisticsToggle = function() {
@@ -68,9 +64,7 @@ var NavMenu = function() {
     };
 
     this.expandNationalStatisticsToggle = function() {
-        if (pohelper.hasClass(this.nationalStatisticsToggle, 'collapsed')) {
-            clickNationalStatisticsToggle();
-        }
+        expandMenu(this.nationalStatisticsToggle, clickNationalStatisticsToggle);
     };
 
     var clickAboutStatisticsToggle = function() {
@@ -78,12 +72,18 @@ var NavMenu = function() {
     };
 
     this.expandAboutStatisticsToggle = function() {
-        pohelper.hasClass(this.aboutStatisticsToggle, 'collapsed').then(function(value) {
+        expandMenu(this.aboutStatisticsToggle, clickAboutStatisticsToggle);
+    };
+
+    function expandMenu(menu, openFunction) {
+        var icon = menu.element(by.css('.statistict-left-menu-expand-icon'));
+
+        pohelper.hasClass(icon, 'collapsed').then(function(value) {
             if (value) {
-                clickAboutStatisticsToggle();
+                openFunction();
             }
         });
-    };
+    }
 };
 
 module.exports = new NavMenu();
