@@ -10,6 +10,11 @@ var stMessages = {
         'nav.landsting-header': 'Landstingsstatistik',
         'nav.business-header': 'Verksamhetsstatistik',
         'nav.about-header': 'Om tjänsten',
+
+        'nav.sjukfall-header': 'Sjukfall',
+        'nav.intyg-header': 'Intyg',
+        'nav.kommunikation-header': 'Ärendekommunikation',
+
         'nav.oversikt': 'Översikt',
         'nav.sjukfall-totalt':'Sjukfall, totalt',
         'nav.diagnosgrupp':'Diagnosgrupp',

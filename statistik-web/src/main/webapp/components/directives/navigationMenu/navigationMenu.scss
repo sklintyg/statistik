@@ -1,138 +1,98 @@
 navigation-menu {
-  .divider {
-    background-color: #e5e5e5;
-    height: 1px;
-    margin: 9px 0;
-    overflow: hidden;
-  }
+  display: block;
 }
 
 .statistics-menu {
-  margin-bottom: 20px;
-  margin-top: 15px;
-}
 
-.statistics-menu-group {
-  border: 1px solid transparent;
-  border-radius: 4px;
-  margin-bottom: 2px;
-}
+  .dropdown-toggle {
+    @extend %st-typo-08;
+    padding: 10px;
 
-.statistics-menu-list {
-  background-color: $stat-menu-header-bg;
-  background-image: linear-gradient(to bottom, $stat-menu-header-bg-from 0, $stat-menu-header-bg 57%);
-  border-radius: 4px;
-  color: #fff;
-  cursor: pointer;
-  padding: 8px 9px;
-
-  &.disabled {
-    background: $stat-menu-header-disabled-bg;
-    cursor: initial;
-
-    span {
-      color: #ccc;
-    }
-
-    i {
-      color: #ccc;
-      cursor: default;
-      opacity: .8;
+    button {
+      margin-top: -6px;
+      background: transparent;
     }
   }
 
-  .statistict-left-menu-expand-icon {
-    color: #fff;
+  .dropdown-menu {
+    padding: 0;
+    border-radius: 0;
+    min-width: 250px;
   }
 
-  &.active {
-    border-radius: 4px 4px 0 0;
+  @media (min-width: $screen-sm-min) {
+    .dropdown-menu {
+      display: block;
+      padding: 0;
+      margin: 0;
+      float: none;
+      position: initial;
+      top: 100%;
+      left: 0;
+      min-width: 200px;
+      z-index: 1;
+      border: 0;
+      box-shadow: none;
+      border-radius: 0;
+    }
+  }
+
+  .statistics-menu-list {
+    margin-bottom: 20px;
+  }
+
+  ul {
+    background: $st-color-19;
+    list-style-type: none;
+    padding-left: 0;
+
+    a {
+      @extend %st-typo-08;
+
+      display: block;
+      margin-top: 8px;
+      padding: 8px 2px 8px 10px;
+
+      &:hover {
+        background: $st-color-17;
+      }
+    }
+
+    .active {
+      > a {
+        background: $st-color-26;
+
+        &:hover {
+          background: $st-color-17;
+        }
+      }
+    }
+
+    ul {
+      a {
+        @extend %st-typo-09;
+        padding-left: 25px;
+        margin-top: 0;
+      }
+
+      ul {
+        a {
+          @extend %st-typo-10;
+          padding-left: 40px;
+        }
+      }
+    }
   }
 }
 
 .statistict-left-menu-expand-icon {
-  @extend .glyphicon-minus-sign;
+  @extend .fa-chevron-up;
 
-  color: #000;
   cursor: pointer;
   float: right;
-  font-size: 12px;
-  margin-top: 3px;
-  margin-right: 0;
+  margin-right: 5px;
 
   &.collapsed {
-    @extend .glyphicon-plus-sign;
-  }
-}
-
-.menu-body {
-  border: 1px solid #bababa;
-  padding: 0;
-  background-color: #f5f5f5;
-  border-bottom-right-radius: 4px;
-  border-bottom-left-radius: 4px;
-
-  li {
-    a {
-      border-bottom: 1px solid #bababa;
-      color: #0b0b0b;
-      margin: 0;
-      padding: 10px 11px;
-
-      &:hover {
-        background: #e8e8e8;
-      }
-    }
-
-    &.active {
-      a {
-        background: #ccc;
-        font-weight: 700;
-      }
-    }
-  }
-
-  ul {
-    list-style-type: none;
-  }
-
-  .sub-nav-list {
-    a {
-      font-size: .9em;
-      padding-left: 20px;
-    }
-  }
-}
-
-.sub-sub-menu-item {
-  list-style-type: none;
-  padding-left: 15px;
-}
-
-.mobile-menu-caret {
-  margin-top: 3px;
-}
-
-.mobile-menu-header-item {
-  font-weight: 700;
-}
-
-.mobile-menu {
-  ul {
-    list-style-type: none;
-  }
-
-  .mobile-menu-part {
-    li {
-      padding-top: 5px;
-      padding-bottom: 5px;
-    }
-
-    a {
-      color: #777;
-      display: block;
-      padding-bottom: 5px;
-      padding-top: 5px;
-    }
+    @extend .fa-chevron-down;
   }
 }

@@ -45,6 +45,96 @@
         $scope.StaticFilterData = StaticFilterData;
         $scope.isLoggedIn = AppModel.get().isLoggedIn;
         $scope.isCollapsed = true;
+        $scope.isMenuOpen = false;
+        var oldValue = $scope.isLoggedIn;
+
+        var sjukfall = {
+            id: 'sjukfall-statistics-toggle',
+            name: 'nav.sjukfall-header',
+            navigationId: 'sjukfall-statistics-collapse',
+            show: true,
+            subMenu: [{
+                id: 'navOverviewLink',
+                link: '#/nationell/oversikt',
+                name: 'nav.oversikt',
+                ctrl: 'NationalOverviewCtrl'
+            }, {
+                id: 'navCasesPerMonthLink',
+                link: '#/nationell/sjukfallPerManad',
+                name: 'nav.sjukfall-totalt',
+                ctrl: 'NationalCasesPerMonthCtrl'
+            }, {
+                id: 'navDiagnosisGroupsLink',
+                link: '#/nationell/diagnosgrupp',
+                name: 'nav.diagnosgrupp',
+                ctrl: 'NationalDiagnosgruppCtrl',
+                subMenuId: 'sub-menu-diagnostics',
+                subMenuIdLink: '#sub-menu-diagnostics',
+                show: true,
+                subMenu: [{
+                    id: 'navDiagnosisSubGroupsLink',
+                    link: '#/nationell/diagnosavsnitt',
+                    name: 'nav.enskilt-diagnoskapitel',
+                    ctrl: 'NationalDiagnosavsnittCtrl'
+                }]
+            }, {
+                id: 'navAgeGroupsLink',
+                link: '#/nationell/aldersgrupper',
+                name: 'nav.aldersgrupp',
+                ctrl: 'NationalAgeGroupCtrl'
+            }, {
+                id: 'navSickLeaveDegreeLink',
+                link: '#/nationell/sjukskrivningsgrad',
+                name: 'nav.sjukskrivningsgrad',
+                ctrl: 'NationalDegreeOfSickLeaveCtrl'
+            }, {
+                id: 'navSickLeaveLengthLink',
+                link: '#/nationell/sjukskrivningslangd',
+                name: 'nav.sjukskrivningslangd',
+                ctrl: 'NationalSickLeaveLengthCtrl'
+            }, {
+                id: 'navCountyLink',
+                link: '#/nationell/lan',
+                name: 'nav.lan',
+                ctrl: 'NationalCasesPerCountyCtrl',
+                subMenuId: 'sub-menu-cases-per-county',
+                subMenuIdLink: '#sub-menu-cases-per-county',
+                show: true,
+                subMenu: [{
+                    id: 'navCasesPerSexLink',
+                    link: '#/nationell/andelSjukfallPerKon',
+                    name: 'nav.lan-andel-sjukfall-per-kon',
+                    ctrl: 'NationalCasesPerSexCtrl'
+                }]
+            }]
+        };
+
+        var intyg = {
+            id: 'intyg-statistics-toggle',
+            name: 'nav.intyg-header',
+            navigationId: 'intyg-statistics-collapse',
+            show: true,
+            subMenu: [{
+                id: 'navMessagesLink',
+                link: '#/nationell/meddelanden',
+                name: 'nav.meddelanden',
+                ctrl: 'NationalMeddelandenPerMonthCtrl'
+            }]
+        };
+
+        var kommunikation = {
+            id: 'kommunikation-statistics-toggle',
+            name: 'nav.kommunikation-header',
+            navigationId: 'kommunikation-statistics-collapse',
+            show: true,
+            subMenu: [{
+                id: 'navMessagesLink',
+                link: '#/nationell/meddelanden',
+                name: 'nav.meddelanden',
+                ctrl: 'NationalMeddelandenPerMonthCtrl'
+            }]
+        };
+
 
         var national = {
             id: 'national-statistics-toggle',
@@ -69,6 +159,7 @@
                 ctrl: 'NationalDiagnosgruppCtrl',
                 subMenuId: 'sub-menu-diagnostics',
                 subMenuIdLink: '#sub-menu-diagnostics',
+                show: true,
                 subMenu: [{
                     id: 'navDiagnosisSubGroupsLink',
                     link: '#/nationell/diagnosavsnitt',
@@ -97,6 +188,7 @@
                 ctrl: 'NationalCasesPerCountyCtrl',
                 subMenuId: 'sub-menu-cases-per-county',
                 subMenuIdLink: '#sub-menu-cases-per-county',
+                show: true,
                 subMenu: [{
                     id: 'navCasesPerSexLink',
                     link: '#/nationell/andelSjukfallPerKon',
@@ -121,7 +213,7 @@
             menuId: 'landsting-statistic-menu-content',
             navigationId: 'landsting-statistics-collapse',
             name: 'nav.landsting-header',
-            show: false,
+            show: true,
             subMenu: [{
                 checkEnable: function() {
                     return UserModel.get().landstingAvailable;
@@ -173,7 +265,7 @@
             menuId: 'business-statistic-menu-content',
             navigationId: 'business-statistics-collapse',
             name: 'nav.business-header',
-            show: false,
+            show: true,
             subMenu: [{
                 id: 'navVerksamhetOversiktLink',
                 link: '#/verksamhet/oversikt',
@@ -290,29 +382,24 @@
         };
 
         $scope.$on('navigationUpdate', function (event, navigationGroupId) {
-            angular.forEach($scope.menus, function(m) {
-                m.show = false;
-            });
+
+            $scope.hideDropDown();
 
             switch(navigationGroupId) {
-            case 'about-statistics-collapse':
+            case about.navigationId:
                 about.show = true;
                 break;
-            case 'landsting-statistics-collapse':
+            case national.navigationId:
+                national.show = true;
+                break;
+            case landsting.navigationId:
                 landsting.show = true;
                 break;
-            case 'business-statistics-collapse':
+            case operation.navigationId:
                 operation.show = true;
                 break;
-                //case 'national-statistics-collapse':
-            default:
-                national.show = true;
             }
         });
-
-        initMenu();
-
-        var oldValue = $scope.isLoggedIn;
 
         $scope.$watch('AppModel.get()', function() {
             $scope.isLoggedIn = AppModel.get().isLoggedIn;
@@ -327,10 +414,40 @@
             initMenu();
         });
 
+        $scope.toggleMenu = function(menu, $event) {
+            $event.preventDefault();
+            if (!menu.disabled) {
+                menu.show = !menu.show;
+            }
+        };
+
+        $scope.showMenu = function(menu) {
+            if (angular.isFunction(menu.checkVisible)) {
+                return menu.checkVisible();
+            } else {
+                return true;
+            }
+        };
+
+        $scope.hideDropDown = function() {
+            $scope.isMenuOpen = false;
+        };
+
+        $scope.menuEnabled = function(menu) {
+            if (angular.isFunction(menu.checkEnable)) {
+                return menu.checkEnable();
+            } else {
+                return true;
+            }
+        };
+
         function initMenu() {
             $scope.menus.length = 0;
             $scope.menus.push(national);
-            $scope.menus.push(landsting);
+
+            if (UserModel.get().hasLandstingAccess) {
+                $scope.menus.push(landsting);
+            }
 
             if (UserModel.get().enableVerksamhetMenu) {
                 $scope.menus.push(operation);
@@ -347,44 +464,8 @@
             }
 
             $scope.menus.push(about);
-
-            if ($scope.isMobile) {
-                angular.forEach($scope.menus, function(m) {
-                    m.show = false;
-                });
-            }
         }
 
-        $scope.toggleMobileMenu = function() {
-            $scope.isCollapsed = !$scope.isCollapsed;
-        };
-
-        $scope.toggleMenu = function(menu) {
-            if (!menu.disabled) {
-                var temp = menu.show;
-                angular.forEach($scope.menus, function(m) {
-                    m.show = false;
-                });
-
-                menu.show = !temp;
-            }
-        };
-
-        $scope.showMenu = function(menu) {
-            if (angular.isFunction(menu.checkVisible)) {
-                return menu.checkVisible();
-            } else {
-                return true;
-            }
-        };
-
-        $scope.menuEnabled = function(menu) {
-            if (angular.isFunction(menu.checkEnable)) {
-                return menu.checkEnable();
-            }
-            else {
-                return true;
-            }
-        };
+        initMenu();
     }
 })();

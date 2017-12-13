@@ -1,0 +1,48 @@
+$left-container-width: 240px;
+
+html,
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-width: 0;
+  min-height: 100vh;
+}
+
+.header {
+  flex: 0;
+}
+
+.main-container {
+  min-width: 0;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  width: 100%;
+}
+
+.left-container {
+  width: $left-container-width;
+  background: $st-color-19;
+  box-shadow: 3px 0 5px 0 rgba(0, 0, 0, 0.35);
+}
+
+.right-container {
+  flex: 1;
+  max-width: calc(100% - #{$left-container-width});
+}
+
+@media (max-width: $screen-xs-max) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .right-container {
+    max-width: 100%;
+  }
+
+  .left-container {
+    width: 100%;
+  }
+}
+

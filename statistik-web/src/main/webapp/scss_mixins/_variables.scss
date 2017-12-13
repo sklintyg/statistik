@@ -1,5 +1,28 @@
 // Inera variables
 
+$st-color-17: #fff;
+$st-color-18: #f9f9f9;
+$st-color-19: #f5f5f5;
+$st-color-20: #e6e9ed;
+$st-color-21: #e4e4e4;
+$st-color-22: #d4d4d4;
+$st-color-23: #ccc;
+$st-color-24: #bcbcbc;
+$st-color-25-top: #fff;
+$st-color-25-bottom: #E0E0E0;
+$st-color-26: #D2E7F4;
+$st-color-27: #28B4C4;
+$st-color-28-top: #008291;
+$st-color-28-bottom: #00697E;
+$st-color-29: #0F6B76;
+$st-color-30-top: #5CB85C;
+$st-color-30-bottom: #398439;
+$st-color-31: #5CB85C;
+$st-color-32: #398439;
+$st-color-33: #3E8F3E;
+$st-color-34: #333333;
+$st-color-35: #212633;
+
 $stat-btn-color: #008391;
 $stat-header-color: #008391;
 $stat-link-color: #006280;
@@ -29,7 +52,9 @@ $stat-highcharts-tooltip-color: #000;
 
 // Bootstrap variables (Here we override bootstraps default values with MI custom variables defined above)
 $icon-font-path: '../bower_components/bootstrap-sass/assets/fonts/bootstrap/';
+$fa-font-path: '../bower_components/font-awesome/fonts';
 
+$font-family-sans-serif: Helvetica, Arial, sans-serif;
 
 // Headers
 $font-size-h1: 20px;
