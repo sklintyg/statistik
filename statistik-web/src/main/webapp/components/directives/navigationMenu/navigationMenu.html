@@ -18,6 +18,7 @@
         <li data-ng-repeat="submenu in menu.subMenu | filter: showMenu">
           <a
               id="{{::submenu.id}}"
+              ng-disabled="{{!menuEnabled(submenu)}}"
               data-ng-href="{{::submenu.link}}{{queryString}}"
               ctrlname="{{::submenu.ctrl}}"
               navigationaware>

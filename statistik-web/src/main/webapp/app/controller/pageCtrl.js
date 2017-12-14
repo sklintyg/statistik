@@ -39,7 +39,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
             if ($scope.isVerksamhetShowing) {
                 $scope.viewHeader = 'Verksamhetsstatistik';
             }
-            else if (ControllerCommons.isShowingLandsting($location)) {
+            else if ($scope.isLandstingShowing) {
                 $scope.viewHeader = 'Landstingsstatistik';
             }
             else {
