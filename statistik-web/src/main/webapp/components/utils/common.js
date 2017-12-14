@@ -107,11 +107,19 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.isShowingVerksamhet = function($location) {
-            return $location.path().indexOf('/verksamhet/') === 0;
+            return this.isShowing($location, 'verksamhet');
         };
 
         this.isShowingLandsting = function($location) {
-            return $location.path().indexOf('/landsting/') === 0;
+            return this.isShowing($location, 'landsting');
+        };
+
+        this.isShowingNationell = function($location) {
+            return this.isShowing($location, 'nationell');
+        };
+
+        this.isShowing = function($location, prefix) {
+            return $location.path().indexOf('/' + prefix + '/') === 0;
         };
 
         this.isShowingProtectedPage = function(location) {

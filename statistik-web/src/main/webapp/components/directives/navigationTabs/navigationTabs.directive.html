@@ -1,5 +1,10 @@
-<uib-tabset active="activeJustified" justified="true"  data-ng-if="vm.tabs.length" class="tabset">
-  <uib-tab index="$index" ng-repeat="tab in vm.tabs" heading="{{tab.title | messageFilter}}">
+<uib-tabset active="vm.activeTab" justified="true"  data-ng-if="vm.tabs.length" class="tabset">
+  <uib-tab
+      index="tab.id"
+      ng-repeat="tab in vm.tabs"
+      heading="{{tab.title | messageFilter}}"
+      select="vm.tabActivated(tab)"
+      deselect="vm.tabDeselect(tab)">
     <ng-include ng-if="tab.content" src="tab.content"></ng-include>
   </uib-tab>
 </uib-tabset>

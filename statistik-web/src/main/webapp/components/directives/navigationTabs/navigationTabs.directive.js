@@ -41,27 +41,34 @@
         }]);
 
     /** @ngInject */
-    function Ctrl($scope, UserModel, AppModel) {
+    function Ctrl($scope, $rootScope, $location, UserModel, AppModel, ControllerCommons) {
         var vm = this;
         vm.AppModel = AppModel;
         vm.UserModel = UserModel;
+        vm.activeTab = 0;
 
         var isLoggedIn = AppModel.get().isLoggedIn;
 
         var nationellTab = {
             id: 'nationell',
-            title: 'nav.national-header'
+            title: 'nav.national-header',
+            url: 'nationell/oversikt',
+            urlPrefix: 'nationell'
         };
 
         var verksamhetTab = {
             id: 'verksamhet',
             title: 'nav.business-header',
+            url: 'verksamhet/oversikt',
+            urlPrefix: 'verksamhet',
             content: baseTemplateUrl + 'navigationTabs.verksamhet.html'
         };
 
         var landstingTab = {
             id: 'landsting',
             title: 'nav.landsting-header',
+            url: 'landsting/om',
+            urlPrefix: 'landsting',
             content: baseTemplateUrl + 'navigationTabs.landsting.html'
         };
 
@@ -75,6 +82,22 @@
         $scope.$watch('vm.UserModel.get().enableVerksamhetMenu', function() {
             initTabs();
         });
+
+        $rootScope.$on('$routeChangeSuccess', function () {
+            setActiveTab();
+        });
+
+        vm.tabActivated = function(tab) {
+            if (!ControllerCommons.isShowing($location, tab.urlPrefix) && !ControllerCommons.isShowing($location, 'om')) {
+                $location.path(tab.url);
+            }
+        };
+
+        vm.tabDeselect = function(tab) {
+            if (ControllerCommons.isShowing($location, tab.urlPrefix)) {
+                tab.url = $location.path();
+            }
+        };
 
         function initTabs() {
             var tabs = [];
@@ -95,6 +118,24 @@
             }
 
             vm.tabs = tabs;
+
+            setActiveTab();
+        }
+
+        function setActiveTab() {
+            var isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
+            var isLandstingShowing = ControllerCommons.isShowingLandsting($location);
+            var isShowingNationell = ControllerCommons.isShowingNationell($location);
+
+            if (isVerksamhetShowing) {
+                vm.activeTab = verksamhetTab.id;
+            } else if (isLandstingShowing) {
+                vm.activeTab = landstingTab.id;
+            } else if (isShowingNationell) {
+                vm.activeTab = nationellTab.id;
+            } else if (vm.activeTab === 0) {
+                vm.activeTab = vm.tabs.length ? vm.tabs[0].id : 0;
+            }
         }
 
         initTabs();
