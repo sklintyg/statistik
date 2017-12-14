@@ -37,7 +37,7 @@
         }]);
 
     /** @ngInject */
-    function NavigationMenuCtrl($scope, AppModel, UserModel, StaticFilterData) {
+    function NavigationMenuCtrl($rootScope, $scope, $location, AppModel, UserModel, StaticFilterData, _, ControllerCommons) {
         $scope.mobile = $scope.isMobile;
         $scope.menus = [];
         $scope.AppModel = AppModel;
@@ -48,8 +48,8 @@
         $scope.isMenuOpen = false;
         var oldValue = $scope.isLoggedIn;
 
-        /*
-        var sjukfall = {
+        // Nationell
+        var sjukfallNationell = {
             id: 'sjukfall-statistics-toggle',
             name: 'nav.sjukfall-header',
             navigationId: 'sjukfall-statistics-collapse',
@@ -110,7 +110,7 @@
             }]
         };
 
-        var intyg = {
+        var intygNationell = {
             id: 'intyg-statistics-toggle',
             name: 'nav.intyg-header',
             navigationId: 'intyg-statistics-collapse',
@@ -123,7 +123,7 @@
             }]
         };
 
-        var kommunikation = {
+        var kommunikationNationell = {
             id: 'kommunikation-statistics-toggle',
             name: 'nav.kommunikation-header',
             navigationId: 'kommunikation-statistics-collapse',
@@ -135,137 +135,12 @@
                 ctrl: 'NationalMeddelandenPerMonthCtrl'
             }]
         };
-*/
 
-        var national = {
-            id: 'national-statistics-toggle',
-            menuId: 'national-statistic-menu-content',
-            navigationId: 'national-statistics-collapse',
-            name: 'nav.national-header',
-            show: true,
-            subMenu: [{
-                id: 'navOverviewLink',
-                link: '#/nationell/oversikt',
-                name: 'nav.oversikt',
-                ctrl: 'NationalOverviewCtrl'
-            },{
-                id: 'navCasesPerMonthLink',
-                link: '#/nationell/sjukfallPerManad',
-                name: 'nav.sjukfall-totalt',
-                ctrl: 'NationalCasesPerMonthCtrl'
-            },{
-                id: 'navDiagnosisGroupsLink',
-                link: '#/nationell/diagnosgrupp',
-                name: 'nav.diagnosgrupp',
-                ctrl: 'NationalDiagnosgruppCtrl',
-                subMenuId: 'sub-menu-diagnostics',
-                subMenuIdLink: '#sub-menu-diagnostics',
-                show: true,
-                subMenu: [{
-                    id: 'navDiagnosisSubGroupsLink',
-                    link: '#/nationell/diagnosavsnitt',
-                    name: 'nav.enskilt-diagnoskapitel',
-                    ctrl: 'NationalDiagnosavsnittCtrl'
-                }]
-            },{
-                id: 'navAgeGroupsLink',
-                link: '#/nationell/aldersgrupper',
-                name: 'nav.aldersgrupp',
-                ctrl: 'NationalAgeGroupCtrl'
-            },{
-                id: 'navSickLeaveDegreeLink',
-                link: '#/nationell/sjukskrivningsgrad',
-                name: 'nav.sjukskrivningsgrad',
-                ctrl: 'NationalDegreeOfSickLeaveCtrl'
-            },{
-                id: 'navSickLeaveLengthLink',
-                link: '#/nationell/sjukskrivningslangd',
-                name: 'nav.sjukskrivningslangd',
-                ctrl: 'NationalSickLeaveLengthCtrl'
-            },{
-                id: 'navCountyLink',
-                link: '#/nationell/lan',
-                name: 'nav.lan',
-                ctrl: 'NationalCasesPerCountyCtrl',
-                subMenuId: 'sub-menu-cases-per-county',
-                subMenuIdLink: '#sub-menu-cases-per-county',
-                show: true,
-                subMenu: [{
-                    id: 'navCasesPerSexLink',
-                    link: '#/nationell/andelSjukfallPerKon',
-                    name: 'nav.lan-andel-sjukfall-per-kon',
-                    ctrl: 'NationalCasesPerSexCtrl'
-                }]
-            }
-            /*,{
-                id: 'navMessagesLink',
-                link: '#/nationell/meddelanden',
-                name: 'nav.meddelanden',
-                ctrl: 'NationalMeddelandenPerMonthCtrl'
-            }*/
-            ]
-        };
-
-        var landsting = {
-            checkVisible: function() {
-                return UserModel.get().hasLandstingAccess;
-            },
-            id: 'landsting-statistics-toggle',
-            menuId: 'landsting-statistic-menu-content',
-            navigationId: 'landsting-statistics-collapse',
-            name: 'nav.landsting-header',
-            show: true,
-            subMenu: [{
-                checkEnable: function() {
-                    return UserModel.get().landstingAvailable;
-                },
-                id: 'navLandstingCasesPerMonthLink',
-                link: '#/landsting/sjukfallPerManad',
-                name: 'nav.sjukfall-totalt',
-                ctrl: 'LandstingCasesPerMonthCtrl'
-            },{
-                checkEnable: function() {
-                    return UserModel.get().landstingAvailable;
-                },
-                id: 'navLandstingCasesPerEnhetLink',
-                link: '#/landsting/sjukfallPerEnhet',
-                name: 'nav.vardenhet',
-                ctrl: 'LandstingCasesPerBusinessCtrl'
-            },{
-                checkEnable: function() {
-                    return UserModel.get().landstingAvailable;
-                },
-                id: 'navLandstingCasesPerPatientsPerEnhetLink',
-                link: '#/landsting/sjukfallPerListningarPerEnhet',
-                name: 'nav.landsting.listningsjamforelse',
-                ctrl: 'LandstingCasesPerPatientsPerBusinessCtrl'
-            },{
-                id: 'navLandstingAboutLink',
-                link: '#/landsting/om',
-                name: 'nav.landsting.om',
-                ctrl: 'LandstingAboutCtrl'
-            },{
-                checkVisible: function() {
-                    return UserModel.get().isLandstingAdmin;
-                },
-                id: 'navLandstingUploadLink',
-                link: '#/landsting/filuppladdning',
-                name: 'nav.landsting.filuppladdning',
-                ctrl: 'LandstingFileUploadCtrl'
-            }]
-        };
-
-        var operation = {
-            checkVisible: function() {
-                if ($scope.isMobile) {
-                    return UserModel.get().enableVerksamhetMenu;
-                }
-                return $scope.loginVisible;
-            },
-            id: 'business-statistics-toggle',
-            menuId: 'business-statistic-menu-content',
-            navigationId: 'business-statistics-collapse',
-            name: 'nav.business-header',
+        // Verksamhet
+        var sjukfallVerksamhet = {
+            id: 'sjukfall-statistics-toggle',
+            name: 'nav.sjukfall-header',
+            navigationId: 'sjukfall-statistics-collapse',
             show: true,
             subMenu: [{
                 id: 'navVerksamhetOversiktLink',
@@ -341,18 +216,98 @@
                 link: '#/verksamhet/sjukfallperlakaresalderochkon',
                 name: 'nav.lakaralder-kon',
                 ctrl: 'VerksamhetLakaresAlderOchKonCtrl'
-            },{
+            }, {
                 id: 'navBusinessCasesPerLakarbefattningLink',
                 link: '#/verksamhet/sjukfallperlakarbefattning',
                 name: 'nav.lakarbefattning',
                 ctrl: 'VerksamhetLakarbefattningCtrl'
-            // },{
-            // Meddelande-rapporten ar utkommenterad eftersom den annu inte ska vara synlig för anvandarna
-            //     id: 'navBusinessMessagesLink',
-            //     link: '#/verksamhet/meddelanden',
-            //     name: 'nav.meddelanden',
-            //     ctrl: 'VerksamhetMeddelandenPerMonthCtrl'
+            }
+            ]
+        };
+
+        var intygVerksamhet = {
+            id: 'intyg-statistics-toggle',
+            name: 'nav.intyg-header',
+            navigationId: 'intyg-statistics-collapse',
+            show: true,
+            subMenu: []
+        };
+
+        var kommunikationVerksamhet = {
+            id: 'kommunikation-statistics-toggle',
+            name: 'nav.kommunikation-header',
+            navigationId: 'kommunikation-statistics-collapse',
+            show: true,
+            subMenu: [{
+                id: 'navBusinessMessagesLink',
+                link: '#/verksamhet/meddelanden',
+                name: 'nav.meddelanden',
+                ctrl: 'VerksamhetMeddelandenPerMonthCtrl'
             }]
+        };
+
+        // Landsting
+        var sjukfallLandsting = {
+            id: 'sjukfall-statistics-toggle',
+            name: 'nav.sjukfall-header',
+            navigationId: 'sjukfall-statistics-collapse',
+            show: true,
+            subMenu: [
+                {
+                    checkEnable: function() {
+                        return UserModel.get().landstingAvailable;
+                    },
+                    id: 'navLandstingCasesPerMonthLink',
+                    link: '#/landsting/sjukfallPerManad',
+                    name: 'nav.sjukfall-totalt',
+                    ctrl: 'LandstingCasesPerMonthCtrl'
+                },{
+                    checkEnable: function() {
+                        return UserModel.get().landstingAvailable;
+                    },
+                    id: 'navLandstingCasesPerEnhetLink',
+                    link: '#/landsting/sjukfallPerEnhet',
+                    name: 'nav.vardenhet',
+                    ctrl: 'LandstingCasesPerBusinessCtrl'
+                },{
+                    checkEnable: function() {
+                        return UserModel.get().landstingAvailable;
+                    },
+                    id: 'navLandstingCasesPerPatientsPerEnhetLink',
+                    link: '#/landsting/sjukfallPerListningarPerEnhet',
+                    name: 'nav.landsting.listningsjamforelse',
+                    ctrl: 'LandstingCasesPerPatientsPerBusinessCtrl'
+                },{
+                    id: 'navLandstingAboutLink',
+                    link: '#/landsting/om',
+                    name: 'nav.landsting.om',
+                    ctrl: 'LandstingAboutCtrl'
+                },{
+                    checkVisible: function() {
+                        return UserModel.get().isLandstingAdmin;
+                    },
+                    id: 'navLandstingUploadLink',
+                    link: '#/landsting/filuppladdning',
+                    name: 'nav.landsting.filuppladdning',
+                    ctrl: 'LandstingFileUploadCtrl'
+                }
+            ]
+        };
+
+        var intygLandsting = {
+            id: 'intyg-statistics-toggle',
+            name: 'nav.intyg-header',
+            navigationId: 'intyg-statistics-collapse',
+            show: true,
+            subMenu: []
+        };
+
+        var kommunikationLandsting = {
+            id: 'kommunikation-statistics-toggle',
+            name: 'nav.kommunikation-header',
+            navigationId: 'kommunikation-statistics-collapse',
+            show: true,
+            subMenu: []
         };
 
         var about = {
@@ -384,24 +339,19 @@
             }]
         };
 
+        var nationell = [sjukfallNationell, intygNationell, kommunikationNationell, about];
+        var verksamhet = [sjukfallVerksamhet, intygVerksamhet, kommunikationVerksamhet, about];
+        var landsting = [sjukfallLandsting, intygLandsting, kommunikationLandsting, about];
+
         $scope.$on('navigationUpdate', function (event, navigationGroupId) {
 
             $scope.hideDropDown();
 
-            switch(navigationGroupId) {
-            case about.navigationId:
-                about.show = true;
-                break;
-            case national.navigationId:
-                national.show = true;
-                break;
-            case landsting.navigationId:
-                landsting.show = true;
-                break;
-            case operation.navigationId:
-                operation.show = true;
-                break;
-            }
+            _.each($scope.menus, function(item) {
+                if (navigationGroupId === item.navigationId) {
+                    item.show = true;
+                }
+            });
         });
 
         $scope.$watch('AppModel.get()', function() {
@@ -414,6 +364,10 @@
         }, true);
 
         $scope.$watch('UserModel.get().enableVerksamhetMenu', function() {
+            initMenu();
+        });
+
+        $rootScope.$on('$routeChangeSuccess', function () {
             initMenu();
         });
 
@@ -445,28 +399,17 @@
         };
 
         function initMenu() {
-            $scope.menus.length = 0;
-            $scope.menus.push(national);
+            var isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
+            var isLandstingShowing = ControllerCommons.isShowingLandsting($location);
+            var isShowingNationell = ControllerCommons.isShowingNationell($location);
 
-            if (UserModel.get().hasLandstingAccess) {
-                $scope.menus.push(landsting);
+            if (isVerksamhetShowing) {
+                $scope.menus = verksamhet;
+            } else if (isLandstingShowing) {
+                $scope.menus = landsting;
+            } else if (isShowingNationell || $scope.menus.length === 0) {
+                $scope.menus = nationell;
             }
-
-            if (UserModel.get().enableVerksamhetMenu) {
-                $scope.menus.push(operation);
-            }
-            else {
-                $scope.menus.push({
-                    id: operation.id,
-                    name: 'nav.business-header',
-                    tooltip: 'login.header.verksamhet',
-                    show: false,
-                    disabled: true,
-                    checkVisible: operation.checkVisible
-                });
-            }
-
-            $scope.menus.push(about);
         }
 
         initMenu();

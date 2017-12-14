@@ -82,8 +82,6 @@ describe('Navigering i intygsstatistik: ', function() {
 
 
         function verksamhetsNiva() {
-            navmenu.expandBusinessStatisticsToggle();
-
             navmenu.navVerksamhetOversiktLink.click();
 
             validateDetailReport('navBusinessCasesPerMonthLink', 1);
