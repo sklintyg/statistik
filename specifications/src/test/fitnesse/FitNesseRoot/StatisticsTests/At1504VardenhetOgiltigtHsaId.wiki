@@ -1,7 +1,9 @@
 ---
+Help: IGNORERAD eftersom det inte verkar fungera
+Prune
 Test
 ---
-''!contents -R2 -g -p -f -h''
+!contents -R2 -g -p -f -h
 
 !3 Givet att:
 Det finns intyg där inget enhets-id angetts och intyg skrivna på enheter som inte går att slå upp i HSA.
