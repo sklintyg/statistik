@@ -55,7 +55,7 @@ describe('Navigering landsting: ', function() {
 
 
         function landstingsNiva() {
-            navmenu.expandLandstingStatisticsToggle();
+            navmenu.landstingTab.click();
 
             navmenu.navLandstingAbout.click();
             pages.landstingAbout.isAtPage();

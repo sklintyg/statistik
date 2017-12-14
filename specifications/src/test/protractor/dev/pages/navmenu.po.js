@@ -4,6 +4,10 @@ var pohelper = require('./pohelper.js');
 
 var NavMenu = function() {
     var that = this;
+    this.nationalTab = element(by.id('tab-nationell'));
+    this.verksamhetTab = element(by.id('tab-verksamhet'));
+    this.landstingTab = element(by.id('tab-landsting'));
+
     this.nationalStatisticsToggle = element(by.id('national-statistics-toggle'));
     this.landstingStatisticsToggle = element(by.id('landsting-statistics-toggle'));
     this.businessStatisticsToggle = element(by.id('business-statistics-toggle'));
