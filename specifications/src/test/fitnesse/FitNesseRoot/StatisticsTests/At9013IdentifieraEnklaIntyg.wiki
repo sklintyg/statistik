@@ -1,0 +1,50 @@
+---
+Help: Rapporten finns inte längre
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Det finns flera olika intyg, med olika innehåll i fält 4 och 5.
+
+| script | dagens datum | 2015-07-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet  | funktionsnedsättning         | aktivitetsbegränsning |
+| 19790219-9285 | F32 | 2015-02-01 | 2015-02-28 | enhet2 | Patienten har smärta i benet | Patienten kan inte gå |
+| 19790429-9281 | F32 | 2015-03-01 | 2015-03-28 | enhet2 | E                            | E                     |
+| 19790709-9282 | F32 | 2015-04-01 | 2015-04-28 | enhet2 |                              | enkel                 |
+| 19790810-9288 | F32 | 2015-05-01 | 2015-05-28 | enhet2 | e                            |                       |
+| 19790316-9261 | F32 | 2015-06-01 | 2015-07-15 | enhet2 | Enkelt                       | E                     |
+| 19790717-9191 | F32 | 2015-05-01 | 2015-05-28 | enhet2 | e.                           | E!                    |
+| 19790808-9274 | F32 | 2015-06-01 | 2015-07-15 | enhet2 | Enkelt-                      | E??                   |
+| 19680524-9288 | F32 | 2015-07-01 | 2015-07-28 | enhet2 | Patienten har smärta i benet | E                     |
+
+!3 Då gäller:
+
+Om det i fält 4 och/eller 5 står något av följande (och endast detta), räknas intyget som "enkelt":
+* E
+* Enkel
+* Enkelt
+
+Eventuella mellanslag/punkter/andra tecken som inte är bokstäver spelar ingen roll. Case spelar ingen roll.
+Det räcker att det räcker att ett av fält 4 och 5 är ifyllt på detta sätt för att intyget ska räknas som enkelt.
+
+| Sjukfall i rapporten differentierat intygande |
+| inloggad som | år   | månad | typ                     | totalt? | män?     | kvinnor? |
+| user2        | 2015 | feb   | Övriga                  | 1       | 0        | 1        |
+| user2        | 2015 | feb   | Enkla upp till 60 dagar | 1       | 0        | 0        |
+| user2        | 2015 | mar   | Övriga                  | 1       | 0        | 0        |
+| user2        | 2015 | mar   | Enkla upp till 60 dagar | 1       | 0        | 1        |
+| user2        | 2015 | apr   | Övriga                  | 1       | 0        | 0        |
+| user2        | 2015 | apr   | Enkla upp till 60 dagar | 1       | 0        | 1        |
+| user2        | 2015 | maj   | Övriga                  | 2       | 0        | 0        |
+| user2        | 2015 | maj   | Enkla upp till 60 dagar | 2       | 1        | 1        |
+| user2        | 2015 | jun   | Övriga                  | 2       | 0        | 0        |
+| user2        | 2015 | jun   | Enkla upp till 60 dagar | 2       | 1        | 1        |
+| user2        | 2015 | jul   | Övriga                  | 3       | 0        | 0        |
+| user2        | 2015 | jul   | Enkla upp till 60 dagar | 3       | 1        | 2        |

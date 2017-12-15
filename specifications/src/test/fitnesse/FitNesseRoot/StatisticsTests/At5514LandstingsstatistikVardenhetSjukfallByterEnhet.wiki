@@ -1,0 +1,40 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Ett sjukfall går över tre enheter.
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19790808-9274 | G01        | 2013-02-05 | 2013-02-10 | enhet1 |           |
+| 19790808-9274 | G01        | 2013-02-12 | 2013-02-20 | enhet2 |           |
+| 19790808-9274 | G01        | 2013-02-21 | 2013-03-20 | enhet3 |           |
+
+| script | Rensa uppladdade landstingsfiler |
+
+| Uppladdade landstingsfiler |
+| användare | filnamn        | statusmeddelande? |
+| user3     | vg3lista1.xlsx  | Data updated ok   |
+
+!3 Då gäller:
+
+Sjukfallet visas en gång för var och en av enheterna.
+
+| Sjukfall i rapporten landsting sjukfall per enhet |
+| inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
+| user3        | enhet1 | 1       | 1    | 0        |
+| user3        | enhet2 | 1       | 1    | 0        |
+| user3        | enhet3 | 1       | 1    | 0        |
+
+| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
+| user3        | enhet1 | 9,09    |
+| user3        | enhet2 | -1      |
+| user3        | enhet3 | 0,91    |

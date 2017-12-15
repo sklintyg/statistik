@@ -1,0 +1,38 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+Om tidsintervall väljs och sedan byte av tvärsnitt/tidsserie gäller fortsatt det av användaren valda tidsintervallet. 
+
+!3 Givet att:
+| script | dagens datum | 2014-11-06 |
+
+| script | troskel varde | 1 |
+
+| Foljande lakare finns |
+| id      | förnamn | efternamn | kön    | ålder | befattningar |
+| lakare1 | Anna    | Andersson | FEMALE | 30    | 201010       |
+| lakare2 | Bo      | Bengtsson | MALE   | 40    | 201013       |
+| lakare3 | Carl    | Claesson  | MALE   | 50    | 101012       |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
+| 19790429-9281 | G01 | 2013-05-01 | 2013-11-30 | 0             | enhet1 | lakare1 |
+| 19790709-9282 | G02 | 2014-07-01 | 2014-10-30 | 50            | enhet1 | lakare2 |
+| 19790717-9191 | G03 | 2014-11-01 | 2014-11-30 | 75            | enhet2 | lakare3 |
+
+!3 Då gäller:
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | vårdenhet    | vårdgivarnivå | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
+| user2        | enhet1 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | 1       | 0    | 1        |
+| user2        | enhet2 | true          | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | -1      | -1   | -1       |
+
+| Sjukfall i rapporten sjukfall per enhet som tidsserie |
+| inloggad som | år   | månad | vårdenhet    | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | män? | kvinnor? |
+| user2        | 2014 | maj   | enhet1 | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | -1   | -1       |
+| user2        | 2014 | jun   | enhet1 | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | 0    | 0        |
+| user2        | 2014 | jul   | enhet1 | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | 0    | 1        |
+| user2        | 2014 | aug   | enhet1 | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | 0    | 1        |
+| user2        | 2014 | sep   | enhet1 | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | 0    | 1        |
+| user2        | 2014 | okt   | enhet1 | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | -1   | -1        |

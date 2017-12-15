@@ -1,0 +1,42 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Tre sjukfall tillhör enhet1, men på intygen har man skrivit enhets-is och vårdgivar-id med både stora och små bokstäver.
+
+I databasen finns bara enhet1 lagrad.
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet | vardgivare |
+| 19700123-9297 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | vg1 |
+| 19680102-9288 | G01 | 2013-02-05 | 2013-02-06 | ENHET1 | VG1 |
+| 19791020-9290 | G01 | 2013-02-11 | 2013-02-12 | enHEt1 | vG1 |
+
+!3 Då gäller:
+
+Det spelar ingen roll om enhets-id och/eller vårdgivar-id är skrivet med stora eller små bokstäver, det är ändå samma enhet/vårdgivare.
+
+Inloggad:
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user1  | 2013 | jan   | 0    | 0        |
+| user1  | 2013 | feb   | 2    | 1        |
+| user1  | 2013 | mar   | 0    | 0        |
+
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
+| user1        | enhet1 | 3       | 2    | 1        |
+
+Nationell:
+| Sjukfall i rapporten sjukfall totalt |
+| år   | månad | män? | kvinnor? |
+| 2013 | jan   | 0    | 0        |
+| 2013 | feb   | 2    | 1        |
+| 2013 | mar   | 0    | 0        |

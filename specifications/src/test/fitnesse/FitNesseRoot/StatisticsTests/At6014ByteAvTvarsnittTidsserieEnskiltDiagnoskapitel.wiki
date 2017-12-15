@@ -1,0 +1,64 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+Testar STATISTIK-1007.
+
+Det finns två sjukfall med diagnos som faller inom avsnitt:
+
+ * C00-C14 Maligna tumörer i läpp, munhåla och svalg
+ * C15-C26 Maligna tumörer i matsmältningsorganen
+ * C30-C39 Maligna tumörer i andningsorganen och brösthålans organ
+ * C40-C41 Maligna tumörer i ben och ledbrosk
+ * C43-C44 Melanom och andra maligna tumörer i huden
+ * C45-C49 Maligna tumörer i mesotelial (kroppshåletäckande) vävnad och mjukvävnad
+
+Det finns ett sjukfall med diagnos som faller inom avsnitt:
+
+ * C50-C50 Malign tumör i bröstkörtel
+ * C51-C58 Maligna tumörer i de kvinnliga könsorganen
+
+Det två sistnämnda ska hamna under "Övriga", oavsett visning som tvärsnitt eller tidsserie.
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet |
+| 19790219-9285 | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790429-9281 | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790709-9282 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790810-9288 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790316-9261 | C33 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19790618-9282 | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19680102-9288 | C40 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19671122-2940 | C41 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19671127-3026 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19671109-2681 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19680524-9288 | C45 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19840228-9287 | C45 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19831231-9281 | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
+| 19840127-9289 | C55 | 2013-02-01 | 2013-02-14 | enhet1 |
+
+!3 Då gäller:
+| Sjukfall i rapporten enskilt diagnoskapitel diagram |
+| inloggad som | valt diagnoskapitel | år | månad | grupp | män? | kvinnor? |
+| user1 | C00-D48 | 2013 | feb | C00-C14 | 0 | 2 |
+| user1 | C00-D48 | 2013 | feb | C15-C26 | 0 | 2 |
+| user1 | C00-D48 | 2013 | feb | C30-C39 | 0 | 2 |
+| user1 | C00-D48 | 2013 | feb | C40-C41 | 0 | 2 |
+| user1 | C00-D48 | 2013 | feb | C43-C44 | 0 | 2 |
+| user1 | C00-D48 | 2013 | feb | C45-C49 | 0 | 2 |
+| user1 | C00-D48 | 2013 | feb | Övriga | 0 | 2 |
+
+| Sjukfall i rapporten enskilt diagnoskapitel som tvarsnitt diagram |
+| inloggad som | valt diagnoskapitel | grupp | totalt? | män? | kvinnor? |
+| user1 | C00-D48 | C00-C14 | 2 | 0 | 2 |
+| user1 | C00-D48 | C15-C26 | 2 | 0 | 2 |
+| user1 | C00-D48 | C30-C39 | 2 | 0 | 2 |
+| user1 | C00-D48 | C40-C41 | 2 | 0 | 2 |
+| user1 | C00-D48 | C43-C44 | 2 | 0 | 2 |
+| user1 | C00-D48 | C45-C49 | 2 | 0 | 2 |
+| user1 | C00-D48 | C50-C50 | -1 | -1 | -1 |
+| user1 | C00-D48 | C51-C58 | -1 | -1 | -1 |
+| user1 | C00-D48 | Övriga | 2 | 0 | 2 |

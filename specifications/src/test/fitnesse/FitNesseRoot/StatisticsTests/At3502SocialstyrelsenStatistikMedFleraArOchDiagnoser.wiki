@@ -1,0 +1,29 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+Detta test verifierar INTYG-3635, dvs att det är möjgligt att själv ange årsintervall samt flera valfria diagnoser.
+
+!3 Givet att:
+
+| script | dagens datum | 2016-01-06 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut        | enhet  | län | kommentar |
+| 19790219-9285 | F33   | 2015-02-01 | 2015-02-13 | enhet1 | 01  | 13 dagar |
+| 19790219-9286 | F33   | 2014-02-01 | 2014-02-15 | enhet1 | 01  | 15 dagar |
+| 19790219-8285 | B01   | 2015-02-01 | 2015-02-10 | enhet1 | 01  | 13 dagar |
+| 19790219-8286 | B01   | 2014-02-01 | 2014-02-12 | enhet1 | 01  | 15 dagar |
+
+!3 Då gäller:
+
+Möjligt att ange start- och slut-år. Om års-intervall ej anges kommer föregående år att användas (som tidigare).
+Möjligt att ange flera valfria diagnoser som visas i samma rapport.
+
+| Sjukfall i rapporten socialstyrelsen som median |
+| diagnos | startår | slutår | diagnoser | kvinnor? |
+| F33     | 2014    | 2015   |           | 14       |
+| F33     |         |        | B01,F33   | 13       |
+| B01     |         |        | B01,F33   | 10       |
+| B01     | 2014    | 2015   | B01,F33   | 11       |

@@ -1,0 +1,65 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+Gäller STATISTIK-935, 942.
+
+!3 Givet att:
+| script | dagens datum | 2014-11-06 |
+
+| script | troskel varde | 1 |
+
+| Foljande lakare finns |
+| id | förnamn | efternamn | kön | ålder | befattningar |
+| lakare1 | Anna | Andersson | FEMALE | 30 | 201010 |
+| lakare2 | Bo | Bengtsson | MALE | 40 | 201013 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | arbetsförmåga | enhet | läkare |
+| 19790618-9282 | G01 | 2013-06-01 | 2013-08-20 | 0 | enhet1 | lakare1 |
+| 19790717-9191 | G02 | 2014-07-01 | 2014-10-30 | 50 | enhet2 | lakare2 |
+
+!3 Då gäller:
+| Sjukfall i rapporten sjukskrivningslangd diagram |
+| inloggad som | sjukskrivningslängd | totalt? | män? | kvinnor? |
+| user2 | 61-90 dagar | 0 | 0 | 0 |
+| user2 | 91-180 dagar | 1 | 1 | 0 |
+
+Byte till tidsserie gör att ytdiagram 18 mån visas. Varje sjukskrivningslängdsgrupp blir en legend. Kvinnor och män visas i separata diagram.
+
+| Sjukfall i rapporten sjukskrivningslangd som tidsserie |
+| inloggad som | år | månad | sjukskrivningslängd | män? | kvinnor? |
+| user2 | 2013 | jun | 61-90 dagar | 0 | 1 |
+| user2 | 2013 | jul | 61-90 dagar | 0 | 1 |
+| user2 | 2013 | aug | 61-90 dagar | 0 | 1 |
+| user2 | 2013 | sep | 61-90 dagar | 0 | 0 |
+| user2 | 2013 | okt | 61-90 dagar | 0 | 0 |
+| user2 | 2013 | nov | 61-90 dagar | 0 | 0 |
+| user2 | 2013 | dec | 61-90 dagar | 0 | 0 |
+| user2 | 2014 | jan | 61-90 dagar | 0 | 0 |
+| user2 | 2014 | feb | 61-90 dagar | 0 | 0 |
+| user2 | 2014 | mar | 61-90 dagar | 0 | 0 |
+| user2 | 2014 | apr | 61-90 dagar | 0 | 0 |
+| user2 | 2014 | maj | 61-90 dagar | 0 | 0 |
+| user2 | 2014 | jun | 61-90 dagar | 0 | 0 |
+| user2 | 2014 | jul | 61-90 dagar | 0 | 0 |
+| user2 | 2014 | aug | 61-90 dagar | 0 | 0 |
+| user2 | 2014 | sep | 61-90 dagar | 0 | 0 |
+| user2 | 2014 | okt | 61-90 dagar | 0 | 0 |
+| user2 | 2013 | jun | 91-180 dagar | 0 | 0 |
+| user2 | 2013 | jul | 91-180 dagar | 0 | 0 |
+| user2 | 2013 | aug | 91-180 dagar | 0 | 0 |
+| user2 | 2013 | sep | 91-180 dagar | 0 | 0 |
+| user2 | 2013 | okt | 91-180 dagar | 0 | 0 |
+| user2 | 2013 | nov | 91-180 dagar | 0 | 0 |
+| user2 | 2013 | dec | 91-180 dagar | 0 | 0 |
+| user2 | 2014 | jan | 91-180 dagar | 0 | 0 |
+| user2 | 2014 | feb | 91-180 dagar | 0 | 0 |
+| user2 | 2014 | mar | 91-180 dagar | 0 | 0 |
+| user2 | 2014 | apr | 91-180 dagar | 0 | 0 |
+| user2 | 2014 | maj | 91-180 dagar | 0 | 0 |
+| user2 | 2014 | jun | 91-180 dagar | 0 | 0 |
+| user2 | 2014 | jul | 91-180 dagar | 1 | 0 |
+| user2 | 2014 | aug | 91-180 dagar | 1 | 0 |
+| user2 | 2014 | sep | 91-180 dagar | 1 | 0 |
+| user2 | 2014 | okt | 91-180 dagar | 1 | 0 |

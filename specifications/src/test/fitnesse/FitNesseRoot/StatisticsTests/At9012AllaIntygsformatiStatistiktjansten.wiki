@@ -1,0 +1,38 @@
+---
+Help: UTGÅR
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+
+Testar samtliga intygs-format som intygsstatistik hanterar.
+
+!3 Givet att:
+| script | dagens datum | 2015-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | signeringstid       | start      | slut       | enhet  | intygformat     |
+| 19680524-9281 | 2015-02-10T12:24:15 | 2015-02-01 | 2015-02-20 | enhet1 | FK7263SIT       |
+| 19680524-9282 | 2015-02-10T12:24:15 | 2015-02-01 | 2015-02-20 | enhet1 | LISJP           |
+| 19680524-9283 | 2015-02-10T12:24:15 | 2015-02-01 | 2015-02-20 | enhet1 | !-felaktigt-!   |
+| 19680524-9285 | 2015-02-10T12:24:15 | 2015-02-01 | 2015-02-20| enhet1 | !-NyttJson-!    |
+| 19680524-9286 | 2015-02-10T12:24:15 | | | enhet1 | LUSE    |
+| 19680524-9287 | 2015-02-10T12:24:15 | | | enhet1 | LUAE_NA    |
+| 19680524-9288 | 2015-02-10T12:24:15 | | | enhet1 | LUAE_FS    |
+
+
+!3 Då gäller:
+
+Alla format (förutom felaktigt) ska hanteras i de rapporter som visar alla intygstyper.
+
+| Sjukfall i rapporten antal intyg per manad |
+| inloggad som | år | månad | män? | kvinnor? |
+| user2        | 2015 | feb | 0    | 6        |
+
+Bara format för sjukpenningintyg (tre format av FK 7263; FK7263SIT, GammaltJson och NyttJsn, samt LISJP) ska hanteras i de rapporter som visar sjukskrivning.
+
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user1        | 2015 | feb   | 0    | 3        |
