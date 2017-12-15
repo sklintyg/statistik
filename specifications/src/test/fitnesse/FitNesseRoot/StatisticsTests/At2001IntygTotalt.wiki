@@ -24,7 +24,7 @@ Intyg som antingen har formatet fk7263sit eller LISJP ska hamna i samma grupp. I
 
 Nationell:
 
-| Sjukfall i rapporten antal intyg per manad och typ |
+| Intyg i rapporten intyg totalt |
 | år | månad | grupp | män? | kvinnor? |
 | 2015 | feb | 7800 | 0 | 2 |
 | 2015 | feb | 7801 | 0 | 0 |
@@ -37,7 +37,7 @@ Nationell:
 
 Inloggad:
 
-| Sjukfall i rapporten antal intyg per manad och typ |
+| Intyg i rapporten intyg totalt |
 | inloggad som | år | månad | grupp | män? | kvinnor? |
 | user1 | 2015 | feb | 7800 | 0 | 2 |
 | user1 | 2015 | feb | 7801 | 0 | 0 |

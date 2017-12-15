@@ -15,9 +15,11 @@ Test
 !3 Då gäller:
 Statistiken baseras på signeringstidpunkt, inte intygets giltighetsperiod.
 
+Intyg som skrevs i formatet fk7263 och fk7804 slås samman i statistiken eftersom det ena har ersatt det andra.
+
 Inloggad:
 
-| Sjukfall i rapporten antal intyg per manad |
+| Intyg i rapporten intyg totalt |
 | inloggad som | år | månad | grupp | män? | kvinnor? |
 | user1 | 2014 | nov | 7804, 7263 | 0 | 0 |
 | user1 | 2014 | dec | 7804, 7263 | 0 | 0 |

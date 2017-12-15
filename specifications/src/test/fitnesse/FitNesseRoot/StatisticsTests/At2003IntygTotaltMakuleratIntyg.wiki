@@ -1,0 +1,45 @@
+---
+Help: Kan tas med nar Intyg,totalt rapporten ar implementerad
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+Vi har två intyg, ett blir makulerat.
+
+!3 Givet att:
+| script | dagens datum | 2015-11-06 |
+
+| Enbart foljande intyg finns |
+| personnr | händelsetyp | intygid | enhet | signeringstid | intygformat |
+| 19790219-9285 | CREATED | 1001 | enhet1 | 2015-02-10T12:24:15 | LISJP |
+| 19790429-9272 | CREATED | 1002 | enhet1 | 2015-02-12T12:25:15 | LISJP |
+| 19790429-9272 | REVOKED | 1002 | enhet1 | 2015-03-10T12:25:15 | LISJP |
+
+!3 Då gäller:
+Makulerade intyg tas inte med i statistiken.
+
+Nationell:
+
+| Intyg i rapporten intyg totalt |
+| år | månad | grupp | män? | kvinnor? |
+| 2015 | feb | 7800 | 0 | 0 |
+| 2015 | feb | 7801 | 0 | 0 |
+| 2015 | feb | 7802 | 0 | 0 |
+| 2015 | feb | 7804,7263 | 0 | 1 |
+| 2015 | mar | 7800 | 0 | 0 |
+| 2015 | mar | 7801 | 0 | 0 |
+| 2015 | mar | 7802 | 0 | 0 |
+| 2015 | mar | 7804,7263 | 0 | 0 |
+
+Inloggad:
+
+| Intyg i rapporten intyg totalt |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user1 | 2015 | feb | 7800 | 0 | 0 |
+| user1 | 2015 | feb | 7801 | 0 | 0 |
+| user1 | 2015 | feb | 7802 | 0 | 0 |
+| user1 | 2015 | feb | 7804,7263 | 0 | 1 |
+| user1 | 2015 | mar | 7800 | 0 | 0 |
+| user1 | 2015 | mar | 7801 | 0 | 0 |
+| user1 | 2015 | mar | 7802 | 0 | 0 |
+| user1 | 2015 | mar | 7804,7263 | 0 | 0 |
