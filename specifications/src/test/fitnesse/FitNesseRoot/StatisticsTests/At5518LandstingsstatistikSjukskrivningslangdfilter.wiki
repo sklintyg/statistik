@@ -1,0 +1,42 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+Detta test visar beteendet i INTYG-3637 för att visa på hur det är tänkt att fungera.
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet | kommentar |
+| 19790429-9281 | F40 | 2013-02-15 | 2013-03-15 | enhet4 | Enheten är ej med i uppladdade landstingsfilen |
+| 19790429-9281 | A00 | 2013-02-20 | 2013-02-27 | enhet3 | Enheten är med i uppladdade landstingsfilen |
+
+| script | Rensa uppladdade landstingsfiler |
+
+| Uppladdade landstingsfiler |
+| användare | filnamn        | statusmeddelande? |
+| user1     | vg3lista1.xlsx  | Data updated ok   |
+
+
+Med aktivt sjukskrivningslängdsfilter så kommer sjukfallet att bli längre än 15 dagar, trots att den
+uppladdade landstingsfilen inte innehåller enhet4.
+
+
+| Sjukfall i rapporten landsting sjukfall totalt |
+| inloggad som | år   | månad | filter sjukskrivningslängd | män? | kvinnor? |
+| user1        | 2013 | jan   |                            | 0    | 0        |
+| user1        | 2013 | feb   |                            | 0    | 1        |
+| user1        | 2013 | mar   |                            | 0    | 0        |
+| user1        | 2013 | apr   |                            | 0    | 0        |
+| user1        | 2013 | jan   | Under 15 dagar             | 0    | 0        |
+| user1        | 2013 | feb   | Under 15 dagar             | 0    | 0        |
+| user1        | 2013 | mar   | Under 15 dagar             | 0    | 0        |
+| user1        | 2013 | apr   | Under 15 dagar             | 0    | 0        |
+| user1        | 2013 | jan   | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 0        |
+| user1        | 2013 | feb   | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 1        |
+| user1        | 2013 | mar   | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 0        |
+| user1        | 2013 | apr   | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 0        |
+

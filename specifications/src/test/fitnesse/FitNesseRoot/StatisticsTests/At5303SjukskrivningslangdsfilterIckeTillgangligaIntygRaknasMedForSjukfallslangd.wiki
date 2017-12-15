@@ -1,0 +1,253 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+Denna fitnesse-specifikation kontrollerar att resultatet blir rätt efter att förändring gjorts så att intyg som ligger
+före tidsperioden eller på enheter (på vårdgivaren) som inte är tillgängliga för aktiv användare ändå räknas med i
+sjukskrivningslängden för sjukfallet. Detta är enbart av intresse när antingen ett sjuksskrivningslängdsfilter är
+aktivt eller när en sjukskrivningslängdsrapport tas fram.
+
+Testerna här i är kopior från andra fitnesse-specar med tillägg av att sjukskrivningslängdsfiltret här är aktiverat.
+
+
+!1 Från AT130
+!3 Givet att:
+
+Ett sjukfall består av två intyg, där det andra börjar efter det första och slutar innan det första. Månadsbrytning mellan intygens slutdatum.
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | enhet |
+| 19790429-9281 | F40 | 2013-02-15 | 2013-03-15 | enhet1 |
+| 19790429-9281 | A00 | 2013-02-20 | 2013-02-27 | enhet1 |
+
+!3 Då gäller:
+
+Diagnosen väljs från det intyg som är aktivt minst en dag i perioden och som har det senaste startdatumet.
+
+Inloggad:
+| Sjukfall i rapporten diagnosgrupp diagram |
+|inloggad som | år   | månad | grupp                     | filter sjukskrivningslängd                                                                         | män? | kvinnor? |
+| user1       | 2013 | feb   | A00-E90, G00-L99, N00-N99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 1        |
+| user1       | 2013 | feb   | F00-F99                   | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 0        |
+| user1       | 2013 | mar   | A00-E90, G00-L99, N00-N99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 0        |
+| user1       | 2013 | mar   | F00-F99                   | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 1        |
+
+| Sjukfall i rapporten diagnosgrupp |
+|inloggad som | år   | månad | grupp   | filter sjukskrivningslängd                                                                         | män? | kvinnor? |
+| user1       | 2013 | feb   | A00-B99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 1        |
+| user1       | 2013 | feb   | F00-F99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 0        |
+| user1       | 2013 | mar   | A00-B99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 0        |
+| user1       | 2013 | mar   | F00-F99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 1        |
+
+
+
+
+!1 Från AT132
+!3 Givet att:
+
+Ett sjukfall består av två intyg, där det andra börjar efter det första och slutar innan det första. Månadsbrytning mellan intygens slutdatum.
+
+| script | dagens datum | 2014-10-01 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | arbetsförmåga | enhet  |
+| 19790429-9281 | A00        | 2014-03-15 | 2014-04-15 | 0             | enhet1 |
+| 19790429-9281 | A00        | 2014-03-20 | 2014-03-30 | 50            | enhet1 |
+
+!3 Då gäller:
+
+Graden väljs från det intyg som är aktivt minst en dag i perioden och som har det senaste startdatumet.
+
+Inloggad:
+| Sjukfall i rapporten sjukskrivningsgrad |
+| inloggad som | år   | månad | sjukskrivningsgrad | filter sjukskrivningslängd                                                                         | män? | kvinnor? |
+| user1        | 2014 | mar   | 100 %              | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 0        |
+| user1        | 2014 | mar   | 50 %               | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 1        |
+| user1        | 2014 | apr   | 100 %              | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 1        |
+| user1        | 2014 | apr   | 50 %               | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | 0    | 0        |
+
+
+
+!1 Från AT144
+
+!3 Givet att:
+
+Ett sjukfall består av två intyg. Det ena intyget har inte varit aktivt de senaste 12 månaderna, och det andra har varit det.
+
+| script | dagens datum | 2015-01-28 |
+
+| script | troskel varde | 1 |
+
+| script | ta bort existerande intyg |
+
+| Foljande lakare finns |
+| id      | förnamn | efternamn | kön    | ålder | befattningar |
+| lakare1 | Anna    | Andersson | FEMALE | 37    | 201010       |
+| lakare2 | Bo      | Bengtsson | MALE   | 47    | 201013       |
+
+| Foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | läkare  | kommentar |
+| 19880713-2397 | F32        | 2013-10-16 | 2013-12-30 | enhet1 | lakare1 |           |
+| 19880713-2397| M54        | 2014-01-01 | 2014-03-30 | enhet2 | lakare2 |           |
+
+!3 Då gäller:
+
+Tvärsnittsrapporter visar bara information från intyg som varit aktiva under rapportens tidsperiod, förutom för rapporten Sjukskrivningslängd (där alla intyg bakåt i tiden räknas med) och Åldersgrupp (där högsta åldern som förekommer i något intyg visas).
+
+
+Inloggad:
+
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | filter sjukskrivningslängd                                                                          | vårdenhet    | män? | kvinnor? |
+| user2        | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | enhet1 | -1   | -1       |
+| user2        | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | enhet2 | 1    | 0        |
+
+
+
+
+| Sjukfall i rapporten jamfor diagnoser diagram |
+|inloggad som | filter sjukskrivningslängd                                                                          | valda diagnoskategorier | diagnoskategori | män? | kvinnor? |
+| user2       | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | F32, M54                | F32             | 0    | 0        |
+| user2       | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | F32, M54                | M54             | 1    | 0        |
+
+
+
+| Sjukfall i rapporten aldersgrupp |
+| inloggad som | filter sjukskrivningslängd                                                                          | åldersgrupp | män? | kvinnor? |
+| user2        | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | 21-25 år    | 1    | 0        |
+
+
+
+
+
+| Sjukfall i rapporten sjukskrivningslangd |
+| inloggad som | filter sjukskrivningslängd                                                                          | sjukskrivningslängd | män? | kvinnor? |
+| user2        | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | 91-180 dagar        | 1    | 0        |
+
+
+
+
+
+| Sjukfall i rapporten sjukfall per lakare |
+| inloggad som | filter sjukskrivningslängd                                                                          | läkare         | män? | kvinnor? |
+| user2        | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | Anna Andersson | -1   | -1       |
+| user2        | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | Bo Bengtsson   | 1    | 0        |
+
+
+
+
+
+
+| Sjukfall i rapporten lakarkonalder |
+| inloggad som | filter sjukskrivningslängd                                                                          | läkargrupp               | män? | kvinnor? |
+| user2        | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | Kvinnlig läkare 30-39 år | 0    | 0        |
+| user2        | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | Manlig läkare 40-49 år   | 1    | 0        |
+
+
+
+
+| Sjukfall i rapporten lakarbefattning |
+| inloggad som | filter sjukskrivningslängd                                                                          | läkarbefattning | män? | kvinnor? |
+| user2        | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | Överläkare      | -1   | -1       |
+| user2        | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | Företagsläkare  | 1    | 0        |
+
+
+
+!1 Från AT151
+
+!3 Givet att:
+
+Ett sjukfall består av två intyg, varav det första är inte giltigt under 2014.
+
+| script | dagens datum | 2014-12-28 |
+
+| script | troskel varde | 1 |
+
+| Foljande lakare finns |
+| id      | befattningar | kommentar |
+| lakare1 | 201013       | Företagsläkare |
+| lakare2 | 202010, 201012 | Specialistläkare, Skolläkare |
+
+| Foljande intyg finns |
+| personnr      | start      | slut       | enhet  | läkare  | kommentar |
+| 19881224-2397 | 2013-09-16 | 2013-12-30 | enhet1 | lakare1 |           |
+| 19881224-2397 | 2014-01-01 | 2014-03-30 | enhet1 | lakare2 |           |
+
+!3 Då gäller:
+
+I rapporten Läkarbefattning som visar 1 år bakåt i tiden syns bara befattningarna för lakare2.
+
+Inloggad:
+| Sjukfall i rapporten lakarbefattning |
+| inloggad som | läkarbefattning  | filter sjukskrivningslängd                                                                          | män? | kvinnor? |
+| user1        | Företagsläkare   | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | -1   | -1       |
+| user1        | Specialistläkare | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | 1    | 0        |
+| user1        | Skolläkare       | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | 1    | 0        |
+
+
+
+
+!1 Från AT152
+
+!3 Givet att:
+
+Ett sjukfall består av två intyg. Det första är utfärdat av en läkare och det andra och tredje av en annan läkare. Det första intyget är inte aktivt under 2014.
+
+| script | dagens datum | 2014-12-28 |
+
+| script | troskel varde | 1 |
+
+| Foljande lakare finns |
+| id      | förnamn | efternamn |
+| lakare1 | Anna    | Andersson |
+| lakare2 | Bo      | Bengtsson |
+
+| Enbart foljande intyg finns |
+| personnr      | start      | slut       | enhet  | läkare  | kommentar |
+| 19790808-9274 | 2013-06-01 | 2013-09-15 | enhet1 | lakare1 |           |
+| 19790808-9274 | 2013-09-16 | 2014-03-30 | enhet1 | lakare2 |           |
+| 19790808-9274 | 2014-03-31 | 2014-07-30 | enhet1 | lakare2 |           |
+
+!3 Då gäller:
+
+Sjukfallet syns inte för läkaren som utfärdat det första intyget (utanför perioden).
+
+Inloggad:
+| Sjukfall i rapporten sjukfall per lakare |
+| inloggad som | läkare         | filter sjukskrivningslängd                                                                          | män? | kvinnor? |
+| user1        | Anna Andersson | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | -1   | -1       |
+| user1        | Bo Bengtsson   | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | 1    | 0        |
+
+
+
+
+!1 Från AT154
+
+!3 Givet att:
+
+| script | dagens datum | 2014-12-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19791230-9296 | G01        | 2013-09-05 | 2013-12-30 | enhet1 |           |
+| 19791230-9296 | G01        | 2014-01-01 | 2014-02-20 | enhet2 |           |
+
+!3 Då gäller:
+
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | vårdenhet | filter enheter | filter verksamhetstyper | filter kategorier | filter sjukskrivningslängd                                                                          | totalt? | män? | kvinnor? |
+| user2        | enhet1    |                |                         |                   | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | -1      | -1   | -1       |
+| user2        | enhet1    | enhet1         | 10                      | G01               | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | -1      | -1   | -1       |
+| user2        | enhet1    | enhet2         | 02                      | G01               | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | -1      | -1   | -1       |
+| user2        | enhet2    |                |                         |                   | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | 1       | 1    | 0        |
+| user2        | enhet2    | enhet1         | 10                      | G01               | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | -1      | -1   | -1       |
+| user2        | enhet2    | enhet2         | 02                      | G01               | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | 1       | 1    | 0        |

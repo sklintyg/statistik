@@ -1,0 +1,20 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| Uppladdade landstingsfiler |
+| användare | filnamn                   | statusmeddelande?                                                   | kommentar                                                 |
+| user1     | vg1lista1.xlsx            | Data updated ok                                                     | Lista innehåller bara tillåtna tecken i respektive kolumn |
+| user1     | vg1lista2streck.xlsx      | Rad 2: Kolumn “Antal listade patienter” innehåller inte ett heltal  | Kolumn för listningar innehåller otillåtet tecken         |
+| user1     | vg1lista3negativ.xlsx     | Rad 3: Kolumn “Antal listade patienter” innehåller ett negativt tal | Kolumn för listningar innehåller negativt heltal          |
+| user1     | vg1lista4tomthsaid.xlsx   | Data updated ok                                                     | Lista innehåller rad utan hsa-id                          |
+| user1     | vg1lista5noll.xlsx        | Data updated ok                                                     | Kolumn för listningar innehåller siffran 0                |
+| user1     | vg1lista6hsaidtecken.xlsx | Rad 2: Kolumn “HSA-id” innehåller otillåtna tecken                  | Kolumn för HSA-id innehåller otillåtet tecken             |
+| user1     | vg1lista7tvafel.xlsx      | Rad 2: Kolumn “HSA-id” innehåller otillåtna tecken                  | Lista innehåller fel på två olika rader                   |
+| user1     | vg1lista8text.xlsx        | Rad 3: Kolumn “Antal listade patienter” innehåller inte ett heltal  | Kolumn för listningar innehåller text                     |
+| user1     | vg1lista9dublett.xlsx     | Rad 4: Vårdenheten förekommer mer än en gång                        | HSAid för en enhet förekommer flera ggr                   |
+| user1     | vg1lista10felformat.pdf   | Felaktigt filformat                                                 | Felaktigt filformat                                       |

@@ -1,0 +1,30 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+Verifierar STATISTIK-930.
+
+Testar att användare med behörighet till fler än en vårdgivare, bara får se det som tillhör den vårdgivare som de väljer vid inloggning.
+
+!3 Givet att:
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19790717-9191 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19671109-2681 | G02        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19671127-3026 | G03        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+
+
+!3 Då gäller:
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | vårdenhet   | vårdgivarnivå | totalt? | män? | kvinnor? |
+| user5_vg1        | enhet1      | true          | 1       | 1    | 0        |
+| user5_vg1        | enhet2      | true          | 1       | 0    | 1        |
+| user5_vg1        | enhet3      | true          | -1       | -1    | -1        |
+| user5_vg3        | enhet1      | true          | -1       | -1    | -1        |
+| user5_vg3        | enhet2      | true          | -1       | -1    | -1        |
+| user5_vg3        | enhet3      | true          | 1       | 0    | 1        |

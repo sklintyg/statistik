@@ -1,0 +1,115 @@
+---
+Help: UTGÅR OCH ERSÄTTS AV AT183
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+
+TEST #1 - Intyg från 2014
+
+!3 Givet att:
+
+| script | dagens datum | 2016-01-06 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut        | enhet  | län | kommentar |
+| 19671109-2681 | M54   | 2014-12-16 | 2014-12-30 | enhet1 | 01  | 15 dagar |
+| 19671109-2681 | F410  | 2015-01-01 | 2015-01-13 | enhet1 | 01  | 13 dagar |
+
+!3 Då gäller:
+
+Sjukfall tas med en gång i listan då F410 ingår bland diagnoserna som Sos vill ha.
+Sjukskrivningslängd blir 28 dagar då längd räknas bakåt i tiden även från intyg före tidsintervallet som valts (dvs här även innan 2015 och även andra diagnoser). (se At180)
+
+| Sjukfall i rapporten socialstyrelsen |
+| diagnos | kön? | län? | sjukskrivningslängd? |
+| F410    | Female   | 01  | 28 |
+
+
+
+TEST #2 - Intyg från 2016
+
+!3 Givet att:
+
+| script | dagens datum | 2016-06-06 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut        | enhet  | län | kommentar |
+| 19671109-2681 | F410 | 2015-12-17 | 2015-12-29 | enhet1 | 01 | 13 dagar |
+| 19671109-2681 | F410 | 2016-01-01 | 2016-01-15 | enhet1 | 01 | 15 dagar |
+
+!3 Då gäller:
+
+Tas med en gång i listan då F410 ingår bland diagnoserna som Sos vill ha.
+Sjukskrivningslängd blir 13 dagar då längd inte räknas framåt från intyg efter tidsintervallet som valts (dvs här från 2016, även om det är "rätt" diagnos). (se At180)
+
+| Sjukfall i rapporten socialstyrelsen |
+| diagnos | kön?   | län? | sjukskrivningslängd? |
+| F410    | Female | 01   | 13                   |
+
+
+
+TEST #3 - Intyg med olika diagnoser
+
+!3 Givet att:
+
+| script | dagens datum | 2016-01-06 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start      | slut       | enhet  | län | kommentar |
+| 19671109-2681 | J20   | 2015-01-01 | 2015-01-13 | enhet1 | 01  | 13 dagar  |
+| 19671109-2681 | F410  | 2015-01-14 | 2015-01-28 | enhet1 | 01  | 15 dagar  |
+| 19671109-2681 | M54   | 2015-02-01 | 2015-03-01 | enhet1 | 01  | 30 dagar  |
+
+!3 Då gäller:
+
+Tas med en gång i listan då F410 ingår bland diagnoserna som Sos vill ha.
+Sjukskrivningslängd blir 28 dagar då längd bara räknas från "rätt" diagnos och bakåt i tiden. (se At181)
+
+| Sjukfall i rapporten socialstyrelsen |
+| diagnos | kön?   | län? | sjukskrivningslängd? |
+| F410    | Female | 01   | 28                   |
+
+
+
+TEST #4 - Intyg med olika diagnoser som Sos är intresserad av
+
+!3 Givet att:
+
+| script | dagens datum | 2016-01-06 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | län | kommentar |
+| 19671109-2681 | F32        | 2015-01-01 | 2015-01-13 | enhet1 | 01  | 13 dagar  |
+| 19671109-2681 | F410       | 2015-01-14 | 2015-01-28 | enhet1 | 01  | 15 dagar  |
+
+!3 Då gäller:
+
+Tas med två gånger i listan då både F32 och F410 ingår bland diagnoserna som Sos vill ha.
+Sjukskrivningslängd blir 13 respektive 28 dagar då längd bara räknas från "rätt" diagnos och bakåt i tiden. (se At181)
+
+| Sjukfall i rapporten socialstyrelsen |
+| diagnos | kön?     | län? | sjukskrivningslängd? |
+| F32     | Female   | 01   | 13                   |
+| F410    | Female   | 01   | 28                   |
+
+
+
+TEST #5 - Intyg med olika län
+
+!3 Givet att:
+
+| script | dagens datum | 2016-01-06 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut        | enhet  | län | kommentar |
+| 19671109-2681 | F410       | 2015-01-01 | 2015-01-13  | enhet1 | 01  | 13 dagar  |
+| 19671109-2681 | F410       | 2015-01-14 | 2015-01-28  | enhet2 | 06  | 15 dagar  |
+
+!3 Då gäller:
+
+Län blir 06 eftersom det är det senaste länet i sjukfallet.
+
+| Sjukfall i rapporten socialstyrelsen |
+| diagnos | kön?   | län? | sjukskrivningslängd? |
+| F410    | Female | 06   | 28                   |

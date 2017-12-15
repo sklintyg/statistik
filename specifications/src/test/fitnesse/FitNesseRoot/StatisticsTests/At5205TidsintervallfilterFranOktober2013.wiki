@@ -1,0 +1,121 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+Gäller STATISTIK-954.
+
+!3 Givet att:
+Det finns tre sjukfall med olika start- och sluttider.
+
+| script | dagens datum | 2015-02-06 |
+
+| script | troskel varde | 1 |
+
+| Foljande lakare finns |
+| id | förnamn | efternamn | kön | ålder | befattningar |
+| lakare1 | Anna | Andersson | FEMALE | 30 | 201010 |
+| lakare2 | Bo | Bengtsson | MALE | 40 | 201013 |
+| lakare3 | Carl | Claesson | MALE | 50 | 101012 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | arbetsförmåga | enhet | läkare | kommentar |
+| 19890308-2389 | G01 | 2013-05-01 | 2013-10-15 | 0 | enhet1 | lakare1 | 168 dagar |
+| 19790429-9281 | G02 | 2014-01-01 | 2014-10-30 | 50 | enhet1 | lakare2 | 10 mån, ca 300 dagar |
+| 19700123-9297 | G03 | 2014-11-01 | 2014-11-30 | 75 | enhet2 | lakare3 | 30 dagar |
+
+!3 Då gäller:
+Vid val i filter att visa sjukfall från oktober 2013 (då insamling av intyg startade) till januari 2014, visas bara sjukfall som pågår under denna period.
+
+Inloggad:
+
+| Sjukfall i rapporten sjukfall per enhet |
+| inloggad som | vårdenhet | vårdgivarnivå | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
+| user2 | enhet1 | true | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 2 | 0 | 2 |
+| user2 | enhet2 | true | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 | -1 |
+
+| Sjukfall i rapporten sjukfall totalt |
+| inloggad som | år | månad | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | män? | kvinnor? |
+| user2 | 2013 | sep | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 |
+| user2 | 2013 | okt | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 1 |
+| user2 | 2013 | nov | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 |
+| user2 | 2013 | dec | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 |
+| user2 | 2014 | jan | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 1 |
+| user2 | 2014 | feb | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 |
+
+| Sjukfall i rapporten diagnosgrupp diagram |
+| inloggad som | år | månad | grupp | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | män? | kvinnor? |
+| user2 | 2013 | sep | A00-E90, G00-L99, N00-N99 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 |
+| user2 | 2013 | okt | A00-E90, G00-L99, N00-N99 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 1 |
+| user2 | 2013 | nov | A00-E90, G00-L99, N00-N99 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 |
+| user2 | 2013 | dec | A00-E90, G00-L99, N00-N99 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 |
+| user2 | 2014 | jan | A00-E90, G00-L99, N00-N99 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 1 |
+| user2 | 2014 | feb | A00-E90, G00-L99, N00-N99 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 |
+
+| Sjukfall i rapporten enskilt diagnoskapitel diagram |
+| inloggad som | valt diagnoskapitel | år | månad | grupp | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | män? | kvinnor? |
+| user2 | G00-G99 | 2013 | sep | G00-G09 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 |
+| user2 | G00-G99 | 2013 | okt | G00-G09 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 1 |
+| user2 | G00-G99 | 2013 | nov | G00-G09 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 |
+| user2 | G00-G99 | 2013 | dec | G00-G09 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 |
+| user2 | G00-G99 | 2014 | jan | G00-G09 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 1 |
+| user2 | G00-G99 | 2014 | feb | G00-G09 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 |
+
+| Sjukfall i rapporten jamfor diagnoser diagram |
+| inloggad som | valda diagnoskategorier | diagnoskategori | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
+| user2 | G01, G02, G03 | G01 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+| user2 | G01, G02, G03 | G02 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+| user2 | G01, G02, G03 | G03 | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 | 0 |
+
+| Sjukfall i rapporten aldersgrupp |
+| inloggad som | åldersgrupp | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
+| user2 | 21-25 år | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+| user2 | 31-35 år | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+| user2 | 41-45 år | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 | 0 |
+
+| Sjukfall i rapporten sjukskrivningsgrad |
+| inloggad som | år | månad | sjukskrivningsgrad | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | män? | kvinnor? |
+| user2 | 2013 | sep | 100 % | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 |
+| user2 | 2013 | okt | 100 % | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 1 |
+| user2 | 2013 | nov | 100 % | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 |
+| user2 | 2013 | dec | 100 % | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 |
+| user2 | 2014 | jan | 100 % | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 |
+| user2 | 2014 | feb | 100 % | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 |
+| user2 | 2013 | sep | 50 % | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 |
+| user2 | 2013 | okt | 50 % | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 |
+| user2 | 2013 | nov | 50 % | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 |
+| user2 | 2013 | dec | 50 % | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 |
+| user2 | 2014 | jan | 50 % | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 1 |
+| user2 | 2014 | feb | 50 % | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 |
+
+| Sjukfall i rapporten sjukskrivningslangd |
+| inloggad som | sjukskrivningslängd | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
+| user2 | 15-30 dagar | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 | 0 |
+| user2 | 91-180 dagar | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+| user2 | 181-365 dagar | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+
+| Sjukfall i rapporten langa sjukfall |
+| inloggad som | år | månad | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
+| user2 | 2013 | sep | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 | -1 |
+| user2 | 2013 | okt | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+| user2 | 2013 | nov | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 | 0 |
+| user2 | 2013 | dec | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 | 0 |
+| user2 | 2014 | jan | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+| user2 | 2014 | feb | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 | -1 |
+
+| Sjukfall i rapporten sjukfall per lakare |
+| inloggad som | läkare | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
+| user2 | Anna Andersson | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+| user2 | Bo Bengtsson | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+| user2 | Carl Claesson | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 | -1 |
+
+| Sjukfall i rapporten lakarkonalder |
+| inloggad som | läkargrupp | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
+| user2 | Kvinnlig läkare 30-39 år | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+| user2 | Manlig läkare 40-49 år | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+| user2 | Manlig läkare 50-59 år | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 0 | 0 | 0 |
+
+| Sjukfall i rapporten lakarbefattning |
+| inloggad som | läkarbefattning | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
+| user2 | Överläkare | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+| user2 | Företagsläkare | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+| user2 | Ej läkarbefattning | G00-G99 | enhet1,enhet2 | 02 | 2013-10-01 | 2014-01-30 | -1 | -1 | -1 |

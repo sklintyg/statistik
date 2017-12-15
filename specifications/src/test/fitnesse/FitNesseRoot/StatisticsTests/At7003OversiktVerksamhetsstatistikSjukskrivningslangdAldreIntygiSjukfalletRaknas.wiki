@@ -1,0 +1,40 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+| script | dagens datum | 2014-05-05 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | kommentar |
+| 19671109-2681 | G01 | 2014-01-15 | 2014-01-31 | enhet1 | |
+| 19671109-2681 | G01 | 2014-02-05 | 2014-02-16 | enhet1 | |
+
+!3 Då gäller:
+
+Även intyg före perioden feb-mar räknas med.
+
+Inloggad:
+| Sjukfall i oversikt sjukskrivningslangd |
+|inloggad som | grupp          | antal? |
+| user2       | Under 15 dagar | 0      |
+| user2       | 15-30 dagar    | 1      |
+| user2       | 31-60 dagar    | 0     |
+| user2       | 61-90 dagar    | 0     |
+| user2       | 91-180 dagar   | 0    |
+| user2       | 181-365 dagar  | 0    |
+| user2       | Över 365 dagar | 0   |
+
+Nationell:
+| Sjukfall i oversikt sjukskrivningslangd |
+| grupp          | antal? |
+| Under 15 dagar | 0      |
+| 15-30 dagar    | 1      |
+| 31-60 dagar    | 0      |
+| 61-90 dagar    | 0      |
+| 91-180 dagar   | 0    |
+| 181-365 dagar  | 0    |
+| Över 365 dagar | 0    |

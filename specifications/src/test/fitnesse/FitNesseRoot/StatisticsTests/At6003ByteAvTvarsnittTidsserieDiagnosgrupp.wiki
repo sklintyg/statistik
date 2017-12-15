@@ -1,0 +1,109 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+Gäller STATISTIK-936, 943.
+
+!3 Givet att:
+| script | dagens datum | 2014-11-06 |
+
+| script | troskel varde | 1 |
+
+| Foljande lakare finns |
+| id | förnamn | efternamn | kön | ålder | befattningar |
+| lakare1 | Anna | Andersson | FEMALE | 30 | 201010 |
+| lakare2 | Bo | Bengtsson | MALE | 40 | 201013 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | arbetsförmåga | enhet | läkare |
+| 19790219-9285 | P99 | 2013-06-01 | 2013-10-30 | 0 | enhet1 | lakare1 |
+| 19790717-9191 | G02 | 2014-07-01 | 2014-10-30 | 50 | enhet2 | lakare2 |
+
+!3 Då gäller:
+Inloggad:
+
+| Sjukfall i rapporten diagnosgrupp diagram |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user2 | 2013 | jun | Utan giltig ICD-10 kod | 0 | 1 |
+| user2 | 2013 | jul | Utan giltig ICD-10 kod | 0 | 1 |
+| user2 | 2013 | aug | Utan giltig ICD-10 kod | 0 | 1 |
+| user2 | 2013 | sep | Utan giltig ICD-10 kod | 0 | 1 |
+| user2 | 2013 | okt | Utan giltig ICD-10 kod | 0 | 1 |
+| user2 | 2013 | nov | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2013 | dec | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | jan | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | feb | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | mar | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | apr | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | maj | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | jun | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | jul | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | aug | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | sep | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | okt | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2013 | jun | A00-E90, G00-L99, N00-N99 | 0 | 0 |
+| user2 | 2013 | jul | A00-E90, G00-L99, N00-N99 | 0 | 0 |
+| user2 | 2013 | aug | A00-E90, G00-L99, N00-N99 | 0 | 0 |
+| user2 | 2013 | sep | A00-E90, G00-L99, N00-N99 | 0 | 0 |
+| user2 | 2013 | okt | A00-E90, G00-L99, N00-N99 | 0 | 0 |
+| user2 | 2013 | nov | A00-E90, G00-L99, N00-N99 | 0 | 0 |
+| user2 | 2013 | dec | A00-E90, G00-L99, N00-N99 | 0 | 0 |
+| user2 | 2014 | jan | A00-E90, G00-L99, N00-N99 | 0 | 0 |
+| user2 | 2014 | feb | A00-E90, G00-L99, N00-N99 | 0 | 0 |
+| user2 | 2014 | mar | A00-E90, G00-L99, N00-N99 | 0 | 0 |
+| user2 | 2014 | apr | A00-E90, G00-L99, N00-N99 | 0 | 0 |
+| user2 | 2014 | maj | A00-E90, G00-L99, N00-N99 | 0 | 0 |
+| user2 | 2014 | jun | A00-E90, G00-L99, N00-N99 | 0 | 0 |
+| user2 | 2014 | jul | A00-E90, G00-L99, N00-N99 | 1 | 0 |
+| user2 | 2014 | aug | A00-E90, G00-L99, N00-N99 | 1 | 0 |
+| user2 | 2014 | sep | A00-E90, G00-L99, N00-N99 | 1 | 0 |
+| user2 | 2014 | okt | A00-E90, G00-L99, N00-N99 | 1 | 0 |
+
+| Sjukfall i rapporten diagnosgrupp |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user2 | 2013 | jun | Utan giltig ICD-10 kod | 0 | 1 |
+| user2 | 2013 | jul | Utan giltig ICD-10 kod | 0 | 1 |
+| user2 | 2013 | aug | Utan giltig ICD-10 kod | 0 | 1 |
+| user2 | 2013 | sep | Utan giltig ICD-10 kod | 0 | 1 |
+| user2 | 2013 | okt | Utan giltig ICD-10 kod | 0 | 1 |
+| user2 | 2013 | nov | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2013 | dec | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | jan | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | feb | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | mar | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | apr | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | maj | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | jun | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | jul | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | aug | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | sep | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2014 | okt | Utan giltig ICD-10 kod | 0 | 0 |
+| user2 | 2013 | jun | G00-G99 | 0 | 0 |
+| user2 | 2013 | jul | G00-G99 | 0 | 0 |
+| user2 | 2013 | aug | G00-G99 | 0 | 0 |
+| user2 | 2013 | sep | G00-G99 | 0 | 0 |
+| user2 | 2013 | okt | G00-G99 | 0 | 0 |
+| user2 | 2013 | nov | G00-G99 | 0 | 0 |
+| user2 | 2013 | dec | G00-G99 | 0 | 0 |
+| user2 | 2014 | jan | G00-G99 | 0 | 0 |
+| user2 | 2014 | feb | G00-G99 | 0 | 0 |
+| user2 | 2014 | mar | G00-G99 | 0 | 0 |
+| user2 | 2014 | apr | G00-G99 | 0 | 0 |
+| user2 | 2014 | maj | G00-G99 | 0 | 0 |
+| user2 | 2014 | jun | G00-G99 | 0 | 0 |
+| user2 | 2014 | jul | G00-G99 | 1 | 0 |
+| user2 | 2014 | aug | G00-G99 | 1 | 0 |
+| user2 | 2014 | sep | G00-G99 | 1 | 0 |
+| user2 | 2014 | okt | G00-G99 | 1 | 0 |
+
+Byte till tvärsnitt gör att stapeldiagram 12 mån visas. Varje diagnosgrupp blir en grupp på x-axeln.
+
+| Sjukfall i rapporten diagnosgrupp som tvarsnitt diagram |
+| inloggad som | grupp | totalt? | män? | kvinnor? |
+| user2 | Utan giltig ICD-10 kod | -1 | -1 | -1 |
+| user2 | A00-E90, G00-L99, N00-N99 | 1 | 1 | 0 |
+
+| Sjukfall i rapporten diagnosgrupp som tvarsnitt |
+| inloggad som | grupp | totalt? | män? | kvinnor? |
+| user2 | Utan giltig ICD-10 kod | -1 | -1 | -1 |
+| user2 | G00-G99 | 1 | 1 | 0 |

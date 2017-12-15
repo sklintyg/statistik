@@ -1,0 +1,57 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+Gäller STATISTIK-1027.
+
+!3 Givet att:
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 3 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19790717-9191 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790219-9285 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790808-9274 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790918-9230 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790918-9231 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790918-9232 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790429-9281 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790918-9233 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790918-9234 | G01        | 2013-03-05 | 2013-03-06 | enhet3 |           |
+| 19790709-9282 | G01        | 2013-03-05 | 2013-03-06 | enhet3 |           |
+| 19790810-9288 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790316-9261 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+
+| script | Rensa uppladdade landstingsfiler |
+
+| Uppladdade landstingsfiler |
+| användare | filnamn        | statusmeddelande? |
+| user3     | vg3lista1.xlsx  | Data updated ok   |
+
+!3 Då gäller:
+
+Bara enheter som har sjukfall efter att tröskelvärde applicerats visas.
+
+Inloggad:
+| Sjukfall i rapporten landsting sjukfall totalt |
+| inloggad som | år   | månad | män? | kvinnor? |
+| user3 | 2013 | jan   | 0    | 0        |
+| user3 | 2013 | feb   | 5    | 0        |
+| user3 | 2013 | mar   | 0    | 0        |
+| user3 | 2013 | apr   | 0    | 0        |
+
+| Sjukfall i rapporten landsting sjukfall per enhet |
+| inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
+| user3        | enhet1 | -1      | -1   | -1       |
+| user3        | enhet2 | 4       | 4    | 0        |
+| user3        | enhet3 | 3       | 0    | 3        |
+
+| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
+| user3        | enhet1 | -1      |
+| user3        | enhet2 | -1      |
+| user3        | enhet3 | 4,55    |

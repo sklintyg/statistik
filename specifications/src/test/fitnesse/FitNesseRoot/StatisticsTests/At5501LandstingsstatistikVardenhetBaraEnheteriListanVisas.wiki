@@ -1,0 +1,39 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+Gäller STATISTIK-1081.
+
+!3 Givet att:
+
+Det finns fyra sjukfall på fyra olika enheter. Tre av dem ingår i den inskickade listan.
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
+| 19790717-9191 | G01        | 2013-02-05 | 2013-02-06 | enhet1 |           |
+| 19790219-9285 | G01        | 2013-02-05 | 2013-02-06 | enhet2 |           |
+| 19790808-9274 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
+| 19790429-9281 | G01        | 2013-02-05 | 2013-02-06 | enhet4 |           |
+
+| script | Rensa uppladdade landstingsfiler |
+
+| Uppladdade landstingsfiler |
+| användare | filnamn        | statusmeddelande? |
+| user3     | vg3lista1.xlsx  | Data updated ok   |
+
+!3 Då gäller:
+
+Bara enheter som ingår i listan visas med sina respektive sjukfall.
+
+Inloggad:
+| Sjukfall i rapporten landsting sjukfall per enhet |
+| inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
+| user3        | enhet1 | 1       | 1    | 0        |
+| user3        | enhet2 | 1       | 0    | 1        |
+| user3        | enhet3 | 1       | 1    | 0        |
+| user3        | enhet4 | -1      | -1   | -1       |

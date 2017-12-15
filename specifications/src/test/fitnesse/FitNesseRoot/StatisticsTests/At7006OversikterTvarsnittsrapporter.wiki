@@ -1,0 +1,161 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+
+!3 Givet att:
+
+Sjukfall byter diagnos och grad mitt i.
+
+| script | dagens datum | 2014-07-01 |
+
+| script | troskel varde | 0 |
+
+| Foljande lakare finns |
+| id      | förnamn | efternamn | kön    | ålder | befattningar |
+| lakare1 | Anna    | Andersson | FEMALE | 30    | 201010       |
+
+
+!1 TEST1
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
+| 19830621-9299 | F32 | 2014-05-01 | 2014-05-10 | 0             | enhet1 | lakare1 |
+| 19830621-9299 | M54 | 2014-05-11 | 2014-05-20 | 75            | enhet1 | lakare1 |
+| 19830621-9299 | F32 | 2014-05-21 | 2014-05-30 | 0             | enhet1 | lakare1 |
+
+
+!3 Då gäller:
+
+Ett sjukfall kan tillhöra flera diagnosgrupper och sjukskrivningsgrader på översikten på samma sätt som i rapporterna Diagnosgrupp och Sjukskrivningsgrad som tvärsnitt. På det sättet dyker det inte "mystiskt" upp sjukfall i grupper som tidigare hade färre/inga sjukfall om den senaste diagnosen/graden filtreras bort. Översikten bör betraktas som ett tvärsnitt på 3 månader.
+
+Verksamhetsnivå:
+| Sjukfall i oversikt diagnos |
+|inloggad som | grupp                                  | antal?    | förändring? |
+| user1        | F00-F99 Psykiska sjukdomar            | 1         | 0       |
+| user1        | M00-M99 Muskuloskeletala sjukdomar    | 1         | 0       |
+
+| Sjukfall i oversikt sjukskrivningsgrad |
+|inloggad som | grupp                                       | antal?    | förändring? |
+| user1        | 100                                        | 1         | 0       |
+| user1        | 25                                         | 1         | 0       |
+
+Nationell:
+| Sjukfall i oversikt diagnos |
+| grupp                                          | antal? | förändring? |
+| F00-F99 Psykiska sjukdomar                     | 1         | 0       |
+| M00-M99 Muskuloskeletala sjukdomar             | 1         | 0       |
+
+| Sjukfall i oversikt sjukskrivningsgrad |
+| grupp                                      | antal? | förändring? |
+| 100                                        | 1         | 0       |
+| 25                                         | 1         | 0       |
+
+
+!1 TEST2
+
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
+| 19830621-9299 | F32 | 2014-05-01 | 2014-05-10 | 0             | enhet1 | lakare1 |
+| 19830621-9299 | M54 | 2014-05-11 | 2014-05-20 | 0             | enhet1 | lakare1 |
+| 19830621-9299 | F32 | 2014-05-21 | 2014-05-30 | 0             | enhet1 | lakare1 |
+
+
+!3 Då gäller:
+
+Ett sjukfall kan tillhöra flera diagnosgrupper och sjukskrivningsgrader på översikten på samma sätt som i rapporterna Diagnosgrupp och Sjukskrivningsgrad som tvärsnitt. På det sättet dyker det inte "mystiskt" upp sjukfall i grupper som tidigare hade färre/inga sjukfall om den senaste diagnosen/graden filtreras bort. Översikten bör betraktas som ett tvärsnitt på 3 månader.
+
+Verksamhetsnivå:
+| Sjukfall i oversikt diagnos |
+|inloggad som | grupp                                  | antal?    | förändring? |
+| user1        | F00-F99 Psykiska sjukdomar            | 1         | 0       |
+| user1        | M00-M99 Muskuloskeletala sjukdomar    | 1         | 0       |
+
+| Sjukfall i oversikt sjukskrivningsgrad |
+|inloggad som | grupp                                       | antal?    | förändring? |
+| user1        | 100                                        | 1         | 0       |
+| user1        | 25                                         | 0         | 0       |
+
+Nationell:
+| Sjukfall i oversikt diagnos |
+| grupp                                          | antal? | förändring? |
+| F00-F99 Psykiska sjukdomar                     | 1         | 0       |
+| M00-M99 Muskuloskeletala sjukdomar             | 1         | 0       |
+
+| Sjukfall i oversikt sjukskrivningsgrad |
+| grupp                                      | antal? | förändring? |
+| 100                                        | 1         | 0       |
+| 25                                         | 0         | 0       |
+
+
+
+!1 TEST3
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
+| 19830621-9299 | F32 | 2014-05-01 | 2014-05-10 | 0             | enhet1 | lakare1 |
+| 19830621-9299 | F32 | 2014-05-21 | 2014-05-30 | 0             | enhet1 | lakare1 |
+
+
+!3 Då gäller:
+
+Ett sjukfall kan tillhöra flera diagnosgrupper och sjukskrivningsgrader på översikten på samma sätt som i rapporterna Diagnosgrupp och Sjukskrivningsgrad som tvärsnitt. På det sättet dyker det inte "mystiskt" upp sjukfall i grupper som tidigare hade färre/inga sjukfall om den senaste diagnosen/graden filtreras bort. Översikten bör betraktas som ett tvärsnitt på 3 månader.
+
+Verksamhetsnivå:
+| Sjukfall i oversikt diagnos |
+|inloggad som | grupp                                  | antal?    | förändring? |
+| user1        | F00-F99 Psykiska sjukdomar            | 2         | 0       |
+| user1        | M00-M99 Muskuloskeletala sjukdomar    | 0         | 0       |
+
+| Sjukfall i oversikt sjukskrivningsgrad |
+|inloggad som | grupp                                       | antal?    | förändring? |
+| user1        | 100                                        | 2         | 0       |
+| user1        | 25                                         | 0         | 0       |
+
+Nationell:
+| Sjukfall i oversikt diagnos |
+| grupp                                          | antal? | förändring? |
+| F00-F99 Psykiska sjukdomar                     | 2         | 0       |
+| M00-M99 Muskuloskeletala sjukdomar             | 0         | 0       |
+
+| Sjukfall i oversikt sjukskrivningsgrad |
+| grupp                                      | antal? | förändring? |
+| 100                                        | 2         | 0       |
+| 25                                         | 0         | 0       |
+
+
+!1 TEST4
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  | läkare |
+| 19830621-9299 | F32 | 2014-05-01 | 2014-05-10 | 0             | enhet1 | lakare1 |
+| 19830621-9299 | M54 | 2014-05-11 | 2014-05-20 | 75             | enhet1 | lakare1 |
+| 19830621-9299 | F32 | 2014-05-21 | 2014-05-30 | 0             | enhet1 | lakare1 |
+
+
+!3 Då gäller:
+
+Ett sjukfall kan tillhöra flera diagnosgrupper och sjukskrivningsgrader på översikten på samma sätt som i rapporterna Diagnosgrupp och Sjukskrivningsgrad som tvärsnitt. På det sättet dyker det inte "mystiskt" upp sjukfall i grupper som tidigare hade färre/inga sjukfall om den senaste diagnosen/graden filtreras bort. Översikten bör betraktas som ett tvärsnitt på 3 månader.
+
+Verksamhetsnivå:
+| Sjukfall i oversikt diagnos |
+|inloggad som  | grupp                              | filter kategorier | antal?    | förändring? |
+| user1        | F00-F99 Psykiska sjukdomar         | F32               | 1         | 0           |
+| user1        | M00-M99 Muskuloskeletala sjukdomar | F32               | 0         | 0           |
+
+| Sjukfall i oversikt sjukskrivningsgrad |
+|inloggad som | grupp | filter kategorier | antal?    | förändring? |
+| user1        | 100  | F32               | 1         | 0       |
+| user1        | 25   | F32               | 0         | 0       |
+
+Nationell:
+| Sjukfall i oversikt diagnos |
+| grupp                              | antal? | förändring? |
+| F00-F99 Psykiska sjukdomar         | 1         | 0        |
+| M00-M99 Muskuloskeletala sjukdomar | 1         | 0        |
+
+| Sjukfall i oversikt sjukskrivningsgrad |
+| grupp | antal? | förändring? |
+| 100   | 1      | 0           |
+| 25    | 1      | 0           |
