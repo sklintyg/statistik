@@ -1,0 +1,50 @@
+---
+Help: Kan tas med när Komplettering, andel intyg har implementerats
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+Det finns ett antal intyg med ett antal tillhörande meddelanden.
+
+Alla intyg har skickats vidare till Försäkringskassan.
+
+!3 Givet att:
+| script | dagens datum | 2015-11-06 |
+
+Endast 4 intyg har signerats och skickats till Försäkringskassan under de senaste 18 månaderna.
+
+| Enbart foljande intyg finns |
+| intygid | personnr | signeringstid | skickattidpunkt | enhet | intygformat |
+| 1001 | 19790219-9285 | 2015-02-10T12:24:15 | 2015-02-10T12:24:30 | enhet1 | LISJP |
+| 1002 | 19790429-9272 | 2015-03-10T12:25:15 | 2015-03-10T12:25:30 | enhet1 | LISJP |
+| 1003 | 19790429-9272 | 2015-04-10T12:25:15 | 2015-04-10T12:25:30 | enhet1 | LISJP |
+| 1004 | 19791212-1212 | 2015-04-10T12:25:15 | 2015-04-10T12:25:30 | enhet1 | LISJP |
+
+Av dessa 4 har 3st fått kompletteringar.
+
+| Foljande meddelanden finns |
+| personnr | skickat | intygsid | meddelandeamne |
+| 19790219-9285 | 2015-03-12T10:00:00 | 1001 | KOMPLT |
+| 19790429-9272 | 2015-04-03T10:00:00 | 1002 | KOMPLT |
+| 19790429-9272 | 2015-05-03T10:00:00 | 1003 | KOMPLT |
+
+!3 Då gäller:
+För att se hur statistiken beräknas, se At2301KompletteringAndelIntyg
+
+Inloggad:
+
+| Andel i rapporten komplettering andel intyg |
+| inloggad som | år | månad | grupp | totalt? | män? | kvinnor? |
+| user1 | 2015 | feb | 7800 | -1 | -1 | -1 |
+| user1 | 2015 | feb | 7804,7263 | 1 | 0 | 1 |
+| user1 | 2015 | mar | 7800 | -1 | -1 | -1 |
+| user1 | 2015 | mar | 7804,7263 | 1 | 1 | 0 |
+| user1 | 2015 | apr | 7800 | -1 | -1 | -1 |
+| user1 | 2015 | apr | 7804,7263 | 0,5 | 0,5 | 0 |
+
+Byte till tvärsnitt visar de senaste 12 månaderna och i det här fallet blir visas endast gruppen 7804,7263 då alla intyg var av typen LISJP.
+
+| Andel i rapporten komplettering andel intyg som tvarsnitt |
+| inloggad som | grupp | totalt? | män? | kvinnor? |
+| user1 | 7800 | -1 | -1 | -1 |
+| user1 | 7804,7263 | 0,75 | 0,66 | 1 |
