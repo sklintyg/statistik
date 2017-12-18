@@ -27,4 +27,10 @@ dependencies {
 
     runtime project(":statistik-service")
     runtime "mysql:mysql-connector-java:${mysqlConnectorVersion}"
+
+    testCompile project(":statistik-service")
+    testCompile "junit:junit:${junitVersion}"
+    testCompile "org.springframework:spring-test:${springTestVersion}"
+    testCompile "org.mockito:mockito-core:${mockitoVersion}"
+    testRuntime "com.h2database:h2:${h2Version}"
 }

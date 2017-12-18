@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<FileGetHsaUnitsResponse xmlns="urn:riv:hsa:HsaWsResponder:3">
+    <startDate>2017-12-12T01:04:02.873+01:00</startDate>
+    <endDate>2017-12-12T01:28:36.546+01:00</endDate>
+    <hsaUnits>
+        <hsaUnit>
+            <hsaIdentity>SE2120001231-01F8KO</hsaIdentity>
+            <DN>ou=Hjortsberg,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>
+            <orgNo>556334-1659</orgNo>
+            <name>Hjortsberg</name>
+            <publicName>Hjortsberg</publicName>
+        </hsaUnit>
+        <hsaUnit>
+            <hsaIdentity>SE2120001231-01BEKO</hsaIdentity>
+            <DN>ou=Hjortsberg - Havsviken,ou=Hjortsberg,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>
+            <orgNo>556334-1659</orgNo>
+            <name>Hjortsberg - Havsviken</name>
+            <publicName>Hjortsberg - Havsviken</publicName>
+        </hsaUnit>
+        <hsaUnit>
+            <hsaIdentity>SE2120001231-00FBKO</hsaIdentity>
+            <DN>ou=Hjortsberg - Lerbäcken,ou=Hjortsberg,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>
+            <orgNo>556334-1659</orgNo>
+            <name>Hjortsberg - Lerbäcken</name>
+            <publicName>Hjortsberg - Lerbäcken</publicName>
+        </hsaUnit>
+        <hsaUnit>
+            <hsaIdentity>SE2120001231-0090KO</hsaIdentity>
+            <DN>ou=Hjortsberg - Ljungheden,ou=Hjortsberg,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>
+            <name>Hjortsberg - Ljungheden</name>
+            <publicName>Hjortsberg - Ljungheden</publicName>
+        </hsaUnit>
+        <hsaUnit>
+            <hsaIdentity>SE2120001231-00F1KO</hsaIdentity>
+            <DN>ou=Furugården,ou=Aleris Omsorg AB,ou=Entreprenader,o=Falkenbergs kommun,l=Hallands län,c=SE</DN>
+            <orgNo>556334-1659</orgNo>
+            <name>Furugården</name>
+            <publicName>Furugården</publicName>
+        </hsaUnit>
+    </hsaUnits>
+</FileGetHsaUnitsResponse>

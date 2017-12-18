@@ -74,13 +74,15 @@ public final class HsaUnitSource {
 
             final DefaultHttpClient httpClient = new DefaultHttpClient(new PoolingClientConnectionManager(schemeRegistry), httpParams);
 
+            final String zipFileName = "hsazip.zip";
+            LOG.info("Fetching data from: " + url + " and saving into file: " + zipFileName);
             HttpGet httpget = new HttpGet(url);
             HttpResponse response = httpClient.execute(httpget);
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 try (InputStream instream = entity.getContent();
-                        OutputStream receivedZipFile = new FileOutputStream("hsazip.zip");
-                        ZipFile zipFile = new ZipFile("hsazip.zip");) {
+                     OutputStream receivedZipFile = new FileOutputStream(zipFileName);
+                     ZipFile zipFile = new ZipFile(zipFileName);) {
                     byte[] buffer = new byte[BUFFER_SIZE];
 
                     int len;
@@ -103,9 +105,10 @@ public final class HsaUnitSource {
             throw new IOException("Response entity is null.");
         } catch (CertificateException | NoSuchAlgorithmException | IOException | UnrecoverableKeyException | KeyStoreException
                 | KeyManagementException e) {
-            LOG.debug("Failed to get units", e);
+            LOG.error("Failed to get units", e);
             e.printStackTrace();
         }
+        LOG.error("Error while fetching unit names from HSA");
         return null;
     }
 }
