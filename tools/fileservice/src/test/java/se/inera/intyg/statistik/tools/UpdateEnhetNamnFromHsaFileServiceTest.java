@@ -82,8 +82,10 @@ public class UpdateEnhetNamnFromHsaFileServiceTest {
 
         //When
         final URL hsaUnitFile = getClass().getClassLoader().getResource("hsaUnitsTest.xml");
+        final String hsaUnitFilePath = hsaUnitFile.getPath();
         final URL datasourceFile = getClass().getClassLoader().getResource("dataSourceTest.properties");
-        UpdateEnhetNamnFromHsaFileService.main(new String[]{"-d", datasourceFile.getPath(), "-u", hsaUnitFile.getPath()});
+        final String datasourceFilePath = datasourceFile.getPath();
+        UpdateEnhetNamnFromHsaFileService.main(new String[]{"-d", datasourceFilePath, "-u", hsaUnitFilePath});
 
         //Then
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
