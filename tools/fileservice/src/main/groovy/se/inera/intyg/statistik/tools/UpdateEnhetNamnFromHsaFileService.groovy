@@ -35,13 +35,17 @@ class UpdateEnhetNamnFromHsaFileService {
         cli.u(longOpt:"units", args:1, argName:'file', 'path to hsa unit names xml file (use this or "-f" option)')
         def options = cli.parse(args)
 
+        LOG.info("Starting UpdateEnhetNamnFromHsaFileService")
         long start = System.currentTimeMillis()
         InputStream inputStream;
         if (options.u) {
+            LOG.info("Reading unit names from file: " + options.u)
             inputStream = new FileInputStream(options.u)
         } else {
+            LOG.info("Fetching unit names from HSA fileservice")
             def hsaProps = new Properties();
             String hsaPath = options.f ? options.f : System.properties.getProperty("hsafileservice", "hsaFileService.properties")
+            LOG.info("Using HSA fileservice connection settings from file: " + hsaPath)
             new File(hsaPath).withInputStream { stream ->
                 hsaProps.load(stream)
             }
@@ -52,10 +56,12 @@ class UpdateEnhetNamnFromHsaFileService {
 
         def dbProps = new Properties()
         String dbPath = options.d ? options.d : System.properties.getProperty("datasource", "dataSource.properties")
+        LOG.info("Connecting to database using settings in: " + dbPath)
         new File(dbPath).withInputStream { stream ->
             dbProps.load(stream)
         }
         def dbConf = new ConfigSlurper().parse(dbProps)
+        LOG.info("Connecting to database with url: " + dbConf.dataSource.url)
         BasicDataSource dataSource =
             new BasicDataSource(driverClassName: dbConf.dataSource.driver, url: dbConf.dataSource.url,
                                 username: dbConf.dataSource.username, password: dbConf.dataSource.password,
@@ -65,6 +71,7 @@ class UpdateEnhetNamnFromHsaFileService {
         Sql sql = new Sql(dataSource)
         def count = 0
         def totalEnheter = 0
+        LOG.info("Updating enhet names")
         enhetsXml.hsaUnits.hsaUnit.each {
             def id = it.hsaIdentity.text()
             def namn = it.name.text()
