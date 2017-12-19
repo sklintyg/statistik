@@ -10,6 +10,8 @@ att skriva jämfört med hur rent, enkelt och smidigt det var att skriva ett fit
 
 | script | dagens datum | 2014-12-06 |
 
+| script | Ta bort existerande intyg |
+
 !3 Då gäller:
 
 | Sjukfall i oversikt sjukskrivningsgrad |

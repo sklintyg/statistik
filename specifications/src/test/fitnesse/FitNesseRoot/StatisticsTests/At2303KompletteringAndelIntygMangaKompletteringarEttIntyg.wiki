@@ -1,5 +1,6 @@
 ---
 Help: Kan tas med när rapporten Komplettering, Andel intyg har implementerats
+Prune
 Test
 ---
 ''!contents -R2 -g -p -f -h''
