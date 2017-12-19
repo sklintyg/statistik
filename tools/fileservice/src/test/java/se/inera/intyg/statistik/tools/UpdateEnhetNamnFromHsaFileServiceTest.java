@@ -81,9 +81,9 @@ public class UpdateEnhetNamnFromHsaFileServiceTest {
         });
 
         //When
-        final URL hsaUnitFile = getClass().getClassLoader().getResource("hsaUnitsTest.xml");
+        final URL hsaUnitFile = getClass().getResource("/hsaUnitsTest.xml");
         final String hsaUnitFilePath = hsaUnitFile.getPath();
-        final URL datasourceFile = getClass().getClassLoader().getResource("dataSourceTest.properties");
+        final URL datasourceFile = getClass().getResource("/dataSourceTest.properties");
         final String datasourceFilePath = datasourceFile.getPath();
         UpdateEnhetNamnFromHsaFileService.main(new String[]{"-d", datasourceFilePath, "-u", hsaUnitFilePath});
 
