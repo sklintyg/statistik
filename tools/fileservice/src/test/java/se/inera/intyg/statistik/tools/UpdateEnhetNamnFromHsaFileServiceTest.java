@@ -81,7 +81,7 @@ public class UpdateEnhetNamnFromHsaFileServiceTest {
         });
 
         //When
-        final URL hsaUnitFile = getClass().getResource("/hsaUnitsTest.xml");
+        final URL hsaUnitFile = getClass().getResource("/hsaunitsTest.xml");
         final String hsaUnitFilePath = hsaUnitFile.getPath();
         final URL datasourceFile = getClass().getResource("/dataSourceTest.properties");
         final String datasourceFilePath = datasourceFile.getPath();
