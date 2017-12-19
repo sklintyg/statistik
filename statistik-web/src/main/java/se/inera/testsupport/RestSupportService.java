@@ -276,7 +276,7 @@ public class RestSupportService {
         } while (count > 0);
         sjukfallUtil.clearSjukfallGroupCache();
         warehouse.clearCaches();
-        nationalChartDataService.buildCache();
+        nationalChartDataService.buildCache(true);
         return Response.ok().build();
     }
 
