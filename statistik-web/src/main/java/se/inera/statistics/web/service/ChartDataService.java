@@ -99,7 +99,19 @@ public class ChartDataService {
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     public void buildCache() {
-        LOG.info("National cache population requested");
+        buildCache(false);
+    }
+
+    public void buildCache(boolean forceRebuild) {
+        LOG.info("National cache population requested. Forced rebuild: " + forceRebuild);
+        final int sleepTime = 100;
+        while (forceRebuild && dataCalculationOngoing.get()) {
+            try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                LOG.warn("Sleep was interrupted");
+            }
+        }
         if (!dataCalculationOngoing.getAndSet(true)) {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
