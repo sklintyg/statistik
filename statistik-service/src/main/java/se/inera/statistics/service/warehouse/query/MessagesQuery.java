@@ -23,10 +23,15 @@ import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.warehouse.message.CountDTOAmne;
 import se.inera.statistics.service.warehouse.message.MessageWidelineLoader;
+import se.inera.statistics.service.warehouse.message.MsgAmne;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -46,17 +51,28 @@ public class MessagesQuery {
             int perioder) {
         LocalDate to = start.plusMonths(perioder);
         List<MessageWidelineLoader.CountDTO> rows = messageWidelineLoader.getAntalMeddelandenPerMonth(start, to, vardgivare, enheter);
-
         return convertToSimpleResponse(rows, start, perioder);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getMessagesTvarsnitt(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter,
             LocalDate start, int perioder) {
-
         LocalDate to = start.plusMonths(perioder);
         List<MessageWidelineLoader.CountDTO> rows = messageWidelineLoader.getAntalMeddelandenPerMonth(start, to, vardgivare, enheter);
-
         return convertToSimpleResponseTvarsnitt(rows);
+    }
+
+    public KonDataResponse getMessagesPerAmne(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter, LocalDate start,
+                                                                int perioder) {
+        LocalDate to = start.plusMonths(perioder);
+        List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(start, to, vardgivare, enheter);
+        return convertToMessagesPerAmne(rows, start, perioder);
+    }
+
+    public SimpleKonResponse<SimpleKonDataRow> getMessagesTvarsnittPerAmne(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter,
+            LocalDate start, int perioder) {
+        LocalDate to = start.plusMonths(perioder);
+        List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(start, to, vardgivare, enheter);
+        return convertToSimpleResponseTvarsnittPerAmne(rows);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getAntalMeddelanden(LocalDate start, int perioder) {
@@ -64,6 +80,51 @@ public class MessagesQuery {
         List<MessageWidelineLoader.CountDTO> rows = messageWidelineLoader.getAntalMeddelandenPerMonth(start, to);
 
         return convertToSimpleResponse(rows, start, perioder);
+    }
+
+    private KonDataResponse convertToMessagesPerAmne(List<CountDTOAmne> rows, LocalDate start, int perioder) {
+        List<KonDataRow> result = new ArrayList<>();
+        Map<LocalDate, List<CountDTOAmne>> map;
+        if (rows != null) {
+            map = rows.stream().collect(Collectors.groupingBy(CountDTOAmne::getDate));
+        } else {
+            map = new HashMap<>();
+        }
+
+        final MsgAmne[] msgAmnes = MsgAmne.values();
+        final int seriesLength = msgAmnes.length;
+
+        for (int i = 0; i < perioder; i++) {
+            int[] maleSeries = new int[seriesLength];
+            int[] femaleSeries = new int[seriesLength];
+
+            LocalDate temp = start.plusMonths(i);
+            String displayDate = ReportUtil.toDiagramPeriod(temp);
+
+            List<CountDTOAmne> dtos = map.get(temp);
+
+            if (dtos != null) {
+                for (CountDTOAmne dto : dtos) {
+                    if (dto.getKon().equals(Kon.FEMALE)) {
+                        femaleSeries[dto.getAmne().ordinal()] += dto.getCount();
+                    } else {
+                        maleSeries[dto.getAmne().ordinal()] += dto.getCount();
+                    }
+                }
+            }
+
+            final ArrayList<KonField> data = new ArrayList<>();
+            for (int j = 0; j < seriesLength; j++) {
+                data.add(new KonField(femaleSeries[j], maleSeries[j]));
+            }
+            result.add(new KonDataRow(displayDate, data));
+        }
+
+        final ArrayList<String> groups = new ArrayList<>();
+        for (MsgAmne msgAmne : msgAmnes) {
+            groups.add(msgAmne.getText());
+        }
+        return new KonDataResponse(groups, result);
     }
 
     private SimpleKonResponse<SimpleKonDataRow> convertToSimpleResponse(List<MessageWidelineLoader.CountDTO> rows, LocalDate start,
@@ -118,4 +179,30 @@ public class MessagesQuery {
 
         return new SimpleKonResponse<>(result);
     }
+
+    private SimpleKonResponse<SimpleKonDataRow> convertToSimpleResponseTvarsnittPerAmne(List<CountDTOAmne> rows) {
+        List<SimpleKonDataRow> result = new ArrayList<>();
+
+        final MsgAmne[] msgAmnes = MsgAmne.values();
+        final int seriesLength = msgAmnes.length;
+        int[] maleSeries = new int[seriesLength];
+        int[] femaleSeries = new int[seriesLength];
+
+        for (CountDTOAmne dto : rows) {
+            if (dto.getKon().equals(Kon.FEMALE)) {
+                femaleSeries[dto.getAmne().ordinal()] += dto.getCount();
+            } else {
+                maleSeries[dto.getAmne().ordinal()] += dto.getCount();
+            }
+        }
+
+        for (int i = 0; i < seriesLength; i++) {
+            final MsgAmne msgAmne = msgAmnes[i];
+            final String text = msgAmne.getText();
+            result.add(new SimpleKonDataRow(text, femaleSeries[i], maleSeries[i]));
+        }
+
+        return new SimpleKonResponse<>(result);
+    }
+
 }

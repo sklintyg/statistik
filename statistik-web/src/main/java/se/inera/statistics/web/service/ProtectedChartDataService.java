@@ -255,6 +255,38 @@ public class ProtectedChartDataService {
         return getResponse(result, format, request, Report.V_MEDDELANDENTOTALT);
     }
 
+    @GET
+    @Path("getMeddelandenPerAmne")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getMeddelandenPerAmne(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @QueryParam("format") String format) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
+        KonDataResponse casesPerMonth = warehouse.getMessagesPerAmne(filterSettings.getFilter(),
+                filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        DualSexStatisticsData result = new MessageAmneConverter().convert(casesPerMonth, filterSettings);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
+    }
+
+    @GET
+    @Path("getMeddelandenPerAmneTvarsnitt")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getMeddelandenPerAmneTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @QueryParam("format") String format) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
+        final Filter filter = filterSettings.getFilter();
+        final Range range = filterSettings.getRange();
+        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getMessagesPerAmneTvarsnitt(filter, range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleDetailsData result = MessagePeriodConverter.newTvarsnitt().convert(casesPerMonth, filterSettings);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
+    }
+
     /**
      * Gets sjukfall per enhet for verksamhetId.
      */

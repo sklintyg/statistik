@@ -12,11 +12,13 @@ class FoljandeMeddelandenFinns extends FoljandeFinns {
     def exaktmeddelandeid
     def händelsetyp
     def intygsid
+    def ämne
 
     public void reset() {
         personnr = "19790407-1295"
         händelsetyp = MessageEventType.SENT.name()
         exaktmeddelandeid = meddelandeIdCounter++
+        ämne = "KOMPLT"
     }
 
     public void execute() {
@@ -43,6 +45,7 @@ class FoljandeMeddelandenFinns extends FoljandeFinns {
 
         setValue(findNode(meddelande, "skickatTidpunkt"), skickat)
         setValue(findNode(meddelande, "meddelande-id"), exaktmeddelandeid)
+        setLeafValue(findNode(meddelande, "amne"), "code", ämne)
 
         def builder = groovy.xml.XmlUtil.serialize(result)
         return builder.toString()

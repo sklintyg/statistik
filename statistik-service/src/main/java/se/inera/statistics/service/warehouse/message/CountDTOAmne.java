@@ -16,41 +16,48 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.testsupport;
+package se.inera.statistics.service.warehouse.message;
 
-import se.inera.statistics.service.processlog.message.MessageEventType;
+import se.inera.statistics.service.report.model.Kon;
 
-public class Meddelande {
+import java.time.LocalDate;
 
-    private MessageEventType type;
-    private String data;
-    private String messageId;
-    private long timestamp;
+public class CountDTOAmne {
+    private int count;
+    private LocalDate date;
+    private Kon kon;
+    private MsgAmne amne;
 
-    public Meddelande() {
+    public int getCount() {
+        return count;
     }
 
-    public Meddelande(MessageEventType type, String data, String messageId, long timestamp) {
-        this.type = type;
-        this.data = data;
-        this.messageId = messageId;
-        this.timestamp = timestamp;
+    public void setCount(int count) {
+        this.count = count;
     }
 
-    public MessageEventType getType() {
-        return type;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public String getData() {
-        return data;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
-    public String getMessageId() {
-        return messageId;
+    public Kon getKon() {
+        return kon;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public void setKon(Kon kon) {
+        this.kon = kon;
+    }
+
+    public MsgAmne getAmne() {
+        return amne;
+    }
+
+    public void setAmne(MsgAmne amne) {
+        this.amne = amne;
     }
 
 }

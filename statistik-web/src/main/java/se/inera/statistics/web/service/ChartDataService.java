@@ -311,6 +311,15 @@ public class ChartDataService {
     }
 
     @GET
+    @Path("getMeddelandenPerAmne")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response getMeddelandenPerAmne(@QueryParam("format") String format) {
+        LOG.info("Calling getMeddelandenPerAmne for national");
+        monitoringLogService.logTrackAccessAnonymousChartData("getMeddelandenPerAmne");
+        return getResponse(getNationellDataResult().getMeddelandenPerAmne(), format, Report.N_MEDDELANDENPERAMNE);
+    }
+
+    @GET
     @Path("getIcd10Structure")
     @Produces({ MediaType.APPLICATION_JSON })
     public List<Icd> getIcd10Structure() {

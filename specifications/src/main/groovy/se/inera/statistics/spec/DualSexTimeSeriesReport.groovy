@@ -124,4 +124,11 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         throw new RuntimeException("Report -läkareålder och kön som tidsserie- is not available on national level");
     }
 
+    def getReportMeddelandenTotalt() {
+        if (inloggad) {
+            return reportsUtil.getReportAntalMeddelandenInloggad(vg, filter)
+        }
+        return reportsUtil.getReportAntalMeddelanden()
+    }
+
 }

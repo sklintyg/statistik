@@ -18,8 +18,10 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
@@ -139,18 +141,7 @@ class NationellData {
         }
         Iterator<KonDataRow> rowsNew = grader.getRows().iterator();
         Iterator<KonDataRow> rowsOld = sjukskrivningsgradResult.getRows().iterator();
-        List<KonDataRow> list = new ArrayList<>(perioder);
-        while (rowsNew.hasNext() && rowsOld.hasNext()) {
-            KonDataRow a = rowsNew.next();
-            KonDataRow b = rowsOld.next();
-
-            List<KonField> c = new ArrayList<>();
-            for (int i = 0; i < a.getData().size(); i++) {
-                c.add(new KonField(filterCutoff(a.getData().get(i).getFemale()) + b.getData().get(i).getFemale(),
-                        filterCutoff(a.getData().get(i).getMale()) + b.getData().get(i).getMale()));
-            }
-            list.add(new KonDataRow(a.getName(), c));
-        }
+        List<KonDataRow> list = getKonDataRows(perioder, rowsNew, rowsOld);
         return new KonDataResponse(sjukskrivningsgradResult.getGroups(), list);
     }
 
@@ -347,5 +338,37 @@ class NationellData {
         }
         return new SimpleKonResponse<>(rows);
     }
+
+    KonDataResponse getMeddelandenPerAmne(HsaIdVardgivare vgid, NationellDataInfo result, NationellDataHolder data) {
+        KonDataResponse oldMeddelandenPerAmneResult = result.getMeddelandenPerAmneResult();
+        final int perioder = result.getMeddelandenPerAmneRange().getNumberOfMonths();
+        final LocalDate from = result.getMeddelandenPerAmneRange().getFrom();
+        final KonDataResponse messagesTvarsnittPerAmne = messagesQuery.getMessagesPerAmne(vgid, null, from, perioder);
+        if (oldMeddelandenPerAmneResult == null) {
+            oldMeddelandenPerAmneResult = createEmptyKonDataResponse(messagesTvarsnittPerAmne);
+        }
+        Iterator<KonDataRow> rowsNew = messagesTvarsnittPerAmne.getRows().iterator();
+        Iterator<KonDataRow> rowsOld = oldMeddelandenPerAmneResult.getRows().iterator();
+        List<KonDataRow> list = getKonDataRows(perioder, rowsNew, rowsOld);
+        return new KonDataResponse(messagesTvarsnittPerAmne.getGroups(), list);
+    }
+
+    @NotNull
+    private List<KonDataRow> getKonDataRows(int perioder, Iterator<KonDataRow> rowsNew, Iterator<KonDataRow> rowsOld) {
+        List<KonDataRow> list = new ArrayList<>(perioder);
+        while (rowsNew.hasNext() && rowsOld.hasNext()) {
+            KonDataRow a = rowsNew.next();
+            KonDataRow b = rowsOld.next();
+
+            List<KonField> c = new ArrayList<>();
+            for (int i = 0; i < a.getData().size(); i++) {
+                c.add(new KonField(filterCutoff(a.getData().get(i).getFemale()) + b.getData().get(i).getFemale(),
+                        filterCutoff(a.getData().get(i).getMale()) + b.getData().get(i).getMale()));
+            }
+            list.add(new KonDataRow(a.getName(), c));
+        }
+        return list;
+    }
+
 
 }

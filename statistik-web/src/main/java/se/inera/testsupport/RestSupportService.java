@@ -293,7 +293,7 @@ public class RestSupportService {
             lastId = messageLogConsumer.processBatch(firstId);
         } while (firstId != lastId);
         LOG.debug("All messages processed");
-
+        nationalChartDataService.buildCache(true);
         return Response.ok().build();
     }
 
