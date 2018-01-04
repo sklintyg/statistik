@@ -16,41 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.testsupport;
+package se.inera.statistics.web.service;
 
-import se.inera.statistics.service.processlog.message.MessageEventType;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.warehouse.message.MsgAmne;
+import se.inera.statistics.web.model.DualSexStatisticsData;
 
-public class Meddelande {
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-    private MessageEventType type;
-    private String data;
-    private String messageId;
-    private long timestamp;
+public class MessageAmneConverter extends MultiDualSexConverter<KonDataResponse> {
 
-    public Meddelande() {
-    }
+    private static final Map<String, String> COLORS = Arrays.stream(MsgAmne.values())
+            .collect(Collectors.toMap(Enum::name, msgAmne -> msgAmne.getColor().getColor()));
 
-    public Meddelande(MessageEventType type, String data, String messageId, long timestamp) {
-        this.type = type;
-        this.data = data;
-        this.messageId = messageId;
-        this.timestamp = timestamp;
-    }
-
-    public MessageEventType getType() {
-        return type;
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public String getMessageId() {
-        return messageId;
-    }
-
-    public long getTimestamp() {
-        return timestamp;
+    DualSexStatisticsData convert(KonDataResponse data, FilterSettings filterSettings) {
+        return super.convert(data, filterSettings, null, "%1$s", COLORS);
     }
 
 }

@@ -42,6 +42,7 @@ public class NationellDataResult {
     private SimpleDetailsData sjukfallslangd;
     private CasesPerCountyData sjukfallPerLan;
     private SimpleDetailsData konsfordelningPerLan;
+    private DualSexStatisticsData meddelandenPerAmne;
 
     SimpleDetailsData getNumberOfCasesPerMonth() {
         return numberOfCasesPerMonth;
@@ -113,6 +114,14 @@ public class NationellDataResult {
 
     void setKonsfordelningPerLan(SimpleDetailsData konsfordelningPerLan) {
         this.konsfordelningPerLan = konsfordelningPerLan;
+    }
+
+    void setMeddelandenPerAmne(DualSexStatisticsData meddelandenPerAmne) {
+        this.meddelandenPerAmne = meddelandenPerAmne;
+    }
+
+    DualSexStatisticsData getMeddelandenPerAmne() {
+        return meddelandenPerAmne;
     }
 
 }

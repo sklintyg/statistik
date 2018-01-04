@@ -41,6 +41,7 @@ public class NationellDataInfo {
     private Range lanRange;
     private Range langaSjukfallRange;
     private Range overviewRange;
+    private Range meddelandenPerAmneRange;
 
     private SimpleKonResponse<SimpleKonDataRow> antalIntygResult;
     private DiagnosgruppResponse diagnosgrupperResult;
@@ -64,6 +65,8 @@ public class NationellDataInfo {
     private SimpleKonResponse<SimpleKonDataRow> overviewLangaSjukfallDiffResult;
     private SimpleKonResponse<SimpleKonDataRow> overviewLanPreviousResult;
     private SimpleKonResponse<SimpleKonDataRow> overviewLanCurrentResult;
+
+    private KonDataResponse meddelandenPerAmneResult;
 
     public SimpleKonResponse<SimpleKonDataRow> getAntalIntygResult() {
         return antalIntygResult;
@@ -303,6 +306,22 @@ public class NationellDataInfo {
 
     void setOverviewLanCurrentResult(SimpleKonResponse<SimpleKonDataRow> overviewLanCurrentResult) {
         this.overviewLanCurrentResult = overviewLanCurrentResult;
+    }
+
+    public void setMeddelandenPerAmneRange(Range meddelandenPerAmneRange) {
+        this.meddelandenPerAmneRange = meddelandenPerAmneRange;
+    }
+
+    public Range getMeddelandenPerAmneRange() {
+        return meddelandenPerAmneRange;
+    }
+
+    public KonDataResponse getMeddelandenPerAmneResult() {
+        return meddelandenPerAmneResult;
+    }
+
+    public void setMeddelandenPerAmneResult(KonDataResponse meddelandenPerAmneResult) {
+        this.meddelandenPerAmneResult = meddelandenPerAmneResult;
     }
 
 }

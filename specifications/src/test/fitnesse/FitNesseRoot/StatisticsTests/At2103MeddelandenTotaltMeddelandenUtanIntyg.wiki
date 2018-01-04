@@ -12,7 +12,7 @@ Det finns ett meddelande vars intyg inte har kommit fram till intygsstatistik
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| intygid | personnr      | diagnoskod | intygformat | enhet |
+| intygid | personnr      | diagnoskod | intygformat | enhet  |
 | 1001    | 19790717-9191 | G01        | LUSE        | enhet1 |
 | 1002    | 19491230-1264 | G01        | LUSE        | enhet1 |
 
@@ -30,14 +30,14 @@ Meddelanden som kommer efteråt läses fortfarande in och finns med i statistike
 
 Inloggad:
 | Meddelanden i rapporten meddelanden totalt |
-| inloggad som | år   | månad | män? | kvinnor? |
-| user1        | 2014 | jan | 0 | 0 |
-| user1        | 2014 | feb | 0 | 0 |
-| user1        | 2014 | mar | 0 | 0 |
-| user1        | 2014 | apr | 1 | 0 |
-| user1        | 2014 | maj | 0 | 0 |
-| user1        | 2014 | jun | 1 | 1 |
-| user1        | 2014 | jul | 0 | 0 |
+| inloggad som | år   | månad | grupp         | män? | kvinnor? |
+| user1        | 2014 | jan   | Komplettering | 0    | 0        |
+| user1        | 2014 | feb   | Komplettering | 0    | 0        |
+| user1        | 2014 | mar   | Komplettering | 0    | 0        |
+| user1        | 2014 | apr   | Komplettering | 1    | 0        |
+| user1        | 2014 | maj   | Komplettering | 0    | 0        |
+| user1        | 2014 | jun   | Komplettering | 1    | 1        |
+| user1        | 2014 | jul   | Komplettering | 0    | 0        |
 
 
 
@@ -46,7 +46,7 @@ Inloggad:
 Intyget som saknades kommer in och vi har läst igenom meddelande-loggen 3 gånger.
 
 | Foljande intyg finns |
-| intygid | personnr      | diagnoskod | intygformat | enhet |
+| intygid | personnr      | diagnoskod | intygformat | enhet  |
 | 1003    | 19591230-1254 | G01        | LUSE        | enhet1 |
 
 | script | process meddelanden | 3 |
@@ -58,11 +58,11 @@ Meddelandet finns nu med i statistiken.
 
 Inloggad:
 | Meddelanden i rapporten meddelanden totalt |
-| inloggad som | år   | månad | män? | kvinnor? |
-| user1        | 2014 | jan | 0 | 0 |
-| user1        | 2014 | feb | 0 | 0 |
-| user1        | 2014 | mar | 0 | 0 |
-| user1        | 2014 | apr | 1 | 0 |
-| user1        | 2014 | maj | 0 | 0 |
-| user1        | 2014 | jun | 2 | 1 |
-| user1        | 2014 | jul | 0 | 0 |
+| inloggad som | år   | månad | grupp         | män? | kvinnor? |
+| user1        | 2014 | jan   | Komplettering | 0    | 0        |
+| user1        | 2014 | feb   | Komplettering | 0    | 0        |
+| user1        | 2014 | mar   | Komplettering | 0    | 0        |
+| user1        | 2014 | apr   | Komplettering | 1    | 0        |
+| user1        | 2014 | maj   | Komplettering | 0    | 0        |
+| user1        | 2014 | jun   | Komplettering | 2    | 1        |
+| user1        | 2014 | jul   | Komplettering | 0    | 0        |

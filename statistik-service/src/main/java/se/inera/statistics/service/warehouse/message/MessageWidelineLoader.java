@@ -87,6 +87,52 @@ public class MessageWidelineLoader {
         return null;
     }
 
+    public List<CountDTOAmne> getAntalMeddelandenPerAmne(LocalDate from, LocalDate to, HsaIdVardgivare vardgivare,
+            Collection<HsaIdEnhet> enheter) {
+
+        boolean hasVardgivare = vardgivare != null;
+        try (
+            Connection connection = dataSource.getConnection();
+            PreparedStatement stmt = prepareStatementAmne(connection, hasVardgivare, enheter)) {
+            stmt.setString(COLUMN_FROM, from.format(FORMATTER));
+            stmt.setString(COLUMN_TO, to.format(FORMATTER));
+
+            if (hasVardgivare) {
+                stmt.setString(COLUMN_VARDGIVARE, vardgivare.getId());
+            }
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            List<CountDTOAmne> dtos = new ArrayList<>();
+
+            while (resultSet.next()) {
+                dtos.add(toCountAmne(resultSet));
+            }
+
+            return dtos;
+        } catch (SQLException e) {
+            LOG.error("Could not populate warehouse", e);
+        }
+
+        return null;
+    }
+
+    private CountDTOAmne toCountAmne(ResultSet resultSet) throws SQLException {
+        CountDTOAmne dto = new CountDTOAmne();
+
+        int year = resultSet.getInt("year");
+        int month = resultSet.getInt("month");
+
+        dto.setCount(resultSet.getInt("count"));
+        dto.setDate(LocalDate.of(year, month, 1));
+
+        dto.setKon(Kon.byNumberRepresentation(resultSet.getInt("kon")));
+
+        dto.setAmne(MsgAmne.parse(resultSet.getString("amneCode")));
+
+        return dto;
+    }
+
     private CountDTO toCount(ResultSet resultSet) throws SQLException {
         CountDTO dto = new CountDTO();
 
@@ -116,11 +162,37 @@ public class MessageWidelineLoader {
 
         if (enheter != null && !enheter.isEmpty()) {
             String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
-
             sql += " AND `enhet` IN ('" + enhetSql + "')";
         }
 
         sql += " GROUP BY `year`, `month`, kon";
+
+        LOG.debug("sql: {}", sql);
+
+        PreparedStatement stmt = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        stmt.setFetchSize(FETCH_SIZE);
+        return stmt;
+    }
+
+    @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
+            justification = "We know what we're doing. No user supplied data.")
+    private PreparedStatement prepareStatementAmne(Connection connection, boolean vardgivare, Collection<HsaIdEnhet> enheter)
+            throws SQLException {
+
+        String sql = "select count(*) as count, YEAR(skickatDate) as `year`, MONTH(skickatDate) as `month`, kon, amneCode "
+                + " FROM messagewideline "
+                + " WHERE (skickatDate between ? AND ?)  ";
+
+        if (vardgivare) {
+            sql += " AND vardgivareid = ? ";
+        }
+
+        if (enheter != null && !enheter.isEmpty()) {
+            String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
+            sql += " AND `enhet` IN ('" + enhetSql + "')";
+        }
+
+        sql += " GROUP BY `year`, `month`, kon, amneCode";
 
         LOG.debug("sql: {}", sql);
 

@@ -132,7 +132,15 @@ class ReportsUtil {
     }
 
     def getReportAntalMeddelandenInloggad(String vgid, filter) {
-        return get(getVerksamhetUrlPrefix() + "/getNumberOfMeddelandenPerMonth", filter, "vgid=" + vgid)
+        return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmne", filter, "vgid=" + vgid)
+    }
+
+    def getReportAntalMeddelandenTvarsnittInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmneTvarsnitt", filter, "vgid=" + vgid)
+    }
+
+    def getReportAntalMeddelanden() {
+        return get("/api/getMeddelandenPerAmne")
     }
 
     def getReportLangaSjukfallInloggad(String vgid, filter) {

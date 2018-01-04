@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Lan;
@@ -94,8 +95,13 @@ public class NationellDataInvoker {
 
         for (Aisle aisle : warehouse) {
             calculatePerAisle(nationellData, result, data, aisle);
+            calculateMeddelandenPerVg(aisle.getVardgivareId(), result, data, nationellData);
         }
         return populateResults(result, data);
+    }
+
+    private void calculateMeddelandenPerVg(HsaIdVardgivare vardgivareId, NationellDataInfo result, NationellDataHolder data, NationellData nationellData) {
+        result.setMeddelandenPerAmneResult(nationellData.getMeddelandenPerAmne(vardgivareId, result, data));
     }
 
     private void calculatePerAisle(NationellData nationellData, NationellDataInfo result, NationellDataHolder data, Aisle aisle) {
@@ -180,6 +186,7 @@ public class NationellDataInvoker {
         result.setLanRange(yearRange);
         result.setLangaSjukfallRange(quarterRange);
         result.setOverviewRange(quarterRange);
+        result.setMeddelandenPerAmneRange(longRange);
     }
 
     private NationellDataInfo populateResults(NationellDataInfo result, NationellDataHolder data) {
@@ -237,6 +244,10 @@ public class NationellDataInvoker {
         result.setOverviewLangaSjukfallDiffResult(data.getOverviewLangaSjukfallDiffResult());
         result.setOverviewLanPreviousResult(new SimpleKonResponse<>(data.getOverviewLanPreviousResult()));
         result.setOverviewLanCurrentResult(new SimpleKonResponse<>(data.getOverviewLanCurrentResult()));
+
+        if (result.getMeddelandenPerAmneResult() == null) {
+            result.setMeddelandenPerAmneResult(new KonDataResponse(new ArrayList<>(), new ArrayList<>()));
+        }
 
         return result;
     }

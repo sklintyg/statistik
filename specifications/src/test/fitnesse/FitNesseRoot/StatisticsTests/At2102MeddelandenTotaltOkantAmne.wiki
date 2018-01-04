@@ -1,6 +1,5 @@
 ---
 Help: Kan tas med när rapporten Meddelanden, Totalt har implementerats
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h
@@ -17,7 +16,7 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 | 1002 | 19790717-9161 | G01 | LUSE | enhet1 |
 
 | Foljande meddelanden finns |
-| personnr | skickat | intygsid | meddelandeamne |
+| personnr | skickat | intygsid | ämne |
 | 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT |
 | 19790717-9161 | 2014-06-03T10:00:00 | 1002 | TEST |
 
@@ -27,13 +26,13 @@ Statistiken baseras på meddelanden för alla intygstyper som har ärendekommuni
 Inloggad:
 
 | Meddelanden i rapporten meddelanden totalt |
-| inloggad som | år | månad | grupp | män? | kvinnor? |
-| user1 | 2014 | apr | KOMPLT | 1 | 0 |
-| user1 | 2014 | apr | AVSTMN | 0 | 0 |
-| user1 | 2014 | apr | OKANT | 0 | 0 |
-| user1 | 2014 | maj | KOMPLT | 0 | 0 |
-| user1 | 2014 | maj | AVSTMN | 0 | 0 |
-| user1 | 2014 | maj | OKANT | 0 | 0 |
-| user1 | 2014 | jun | KOMPLT | 0 | 0 |
-| user1 | 2014 | jun | AVSTMN | 0 | 0 |
-| user1 | 2014 | jun | OKANT | 0 | 1 |
+| inloggad som | år   | månad | grupp           | män? | kvinnor? |
+| user1        | 2014 | apr   | Komplettering   | 1    | 0        |
+| user1        | 2014 | apr   | Avstämningsmöte | 0    | 0        |
+| user1        | 2014 | apr   | Okänt           | 0    | 0        |
+| user1        | 2014 | maj   | Komplettering   | 0    | 0        |
+| user1        | 2014 | maj   | Avstämningsmöte | 0    | 0        |
+| user1        | 2014 | maj   | Okänt           | 0    | 0        |
+| user1        | 2014 | jun   | Komplettering   | 0    | 0        |
+| user1        | 2014 | jun   | Avstämningsmöte | 0    | 0        |
+| user1        | 2014 | jun   | Okänt           | 0    | 1        |

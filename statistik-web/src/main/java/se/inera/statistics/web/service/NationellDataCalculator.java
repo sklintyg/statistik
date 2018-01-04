@@ -54,9 +54,6 @@ public class NationellDataCalculator {
     private static final Logger LOG = LoggerFactory.getLogger(NationellDataCalculator.class);
 
     @Autowired
-    private Icd10 icd10;
-
-    @Autowired
     private NationellOverviewData overviewData;
 
     @Autowired
@@ -80,6 +77,7 @@ public class NationellDataCalculator {
         result.setSjukfallPerLan(buildSjukfallPerLan(data));
         result.setKonsfordelningPerLan(buildKonsfordelningPerLan(data));
         result.setOverview(buildOverview(data));
+        result.setMeddelandenPerAmne(buildNumberOfMeddelandenPerAmne(data));
         return result;
     }
 
@@ -144,13 +142,11 @@ public class NationellDataCalculator {
         return new SjukfallPerSexConverter().convert(casesPerMonth, data.getLanRange());
     }
 
-    /*
-     * private void buildNumberOfMeddelandenPerMonth() {
-     * final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
-     * SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getMeddelandenPerMonth(range);
-     * final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
-     * numberOfMeddelandenPerMonth = new MessagePeriodConverter().convert(casesPerMonth, filterSettings);
-     * }
-     */
+    private DualSexStatisticsData buildNumberOfMeddelandenPerAmne(NationellDataInfo data) {
+        KonDataResponse casesPerMonth = data.getMeddelandenPerAmneResult();
+        final Range range = data.getMeddelandenPerAmneRange();
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+        return new MessageAmneConverter().convert(casesPerMonth, filterSettings);
+    }
 
 }
