@@ -100,7 +100,8 @@ public class NationellDataInvoker {
         return populateResults(result, data);
     }
 
-    private void calculateMeddelandenPerVg(HsaIdVardgivare vardgivareId, NationellDataInfo result, NationellDataHolder data, NationellData nationellData) {
+    private void calculateMeddelandenPerVg(HsaIdVardgivare vardgivareId, NationellDataInfo result,
+                                           NationellDataHolder data, NationellData nationellData) {
         result.setMeddelandenPerAmneResult(nationellData.getMeddelandenPerAmne(vardgivareId, result, data));
     }
 
