@@ -12,7 +12,7 @@ Statistikapplikationen hanterar GUI och inloggning. Kommunicerar med intygsstati
 Det finns två olika typer av användare på statistikapplikationen:
 
 + Ej inloggad användare som får tillgång till statistik på nationell nivå.
-+ Inloggad användare från vårdenhet som både har tillgång till statistiken för sin enhet samt den övergripande på nationell nivå. 
++ Inloggad användare från vårdenhet som både har tillgång till statistiken för sin enhet samt den övergripande på nationell nivå.
 
 ### HSA fileservice
 HSA fileservice hämta en lista över sjukvårdsenheter från HSA och uppdaterar intygsstatistik med aktuella enhatsnamn. Listan som hämtas uppdateras varje dygn, så det finns ingen anledning att köra applikationen oftare än så.
@@ -46,18 +46,18 @@ inte klar" förrän du stoppar servern med ^c, och applikationen är bara igång
 För att starta applikationen i debugläge används:
 
     ./gradlew appRunDebug
-    
-Applikationen kommer då att starta upp med debugPort = **5011**. Det är denna port du ska använda när du sätter upp din 
+
+Applikationen kommer då att starta upp med debugPort = **5011**. Det är denna port du ska använda när du sätter upp din
 debug-konfiguration i din utvecklingsmiljö.
 
 ### Uppgradera från node 0.12
 Installera nodjs 6.6.0 tex med NVM, https://github.com/creationix/nvm
 
-Har du nvm så kan du skriva 
+Har du nvm så kan du skriva
 
     nvm install 6.6
     nvm alias default 6.6
-    
+
 Ta bort `statistik-web/node_modules` och `statistik-web/src/main/webapp/bower_components`
 
 Följ anvisningarna i "Bygga klienten utanför gradle"
@@ -105,7 +105,7 @@ Vi använder Gradle för att bygga, test, installera och köra intygsstatistik. 
 |Några vanliga gradlekommandon|||
 |--------------|---------|---------|
 |./gradlew clean build integrationTests|bygg om hela projektet inklusive integrationstester|[projektrot]|
-|./gradlew licenseFormatMain licenseFormatTest|Lägg till licens-header till alla filer som saknar header|[projektrot]|
+|./gradlew licenseFormat -PcodeQuality|Lägg till licens-header till alla java-filer som saknar header|[projektrot]|
 |../gradlew appRunDebug|kör webbservern i debugläge|[projektrot]/statistik-web|
 |../gradlew fitnesseWiki |starta fitnesse|[projektrot]/specifications|
 |../gradlew fitnesseTest|kör fitnesse-tester|[projektrot]/specifications|
@@ -118,24 +118,24 @@ Starta active mq
 Starta intygsstatistik, kommer att starta på port 9101
 
     ./gradlew appRun -PrunWithIntyg -PrunWithActiveMQ
-    
+
 ### Intygstjänsten
-Öppna jetty-web.xml  
-Ändra jms/Queue till statistik.utlatande.queue  
+Öppna jetty-web.xml
+Ändra jms/Queue till statistik.utlatande.queue
 Ändra jms/ConnectionFactory till "tcp://localhost:61616"
 
 Starta intygstjänsten
-    
+
     ./gradlew appRun
-    
+
 Nu kommer intygen som skickas till intygstjänsten även gå till statistik, det samma gäller för meddelanden som skickas till sendMessageToCare
 
 ## Licenser
 
-Vi använder en gradle-plugin som kontrollerar att alla relevanta filer har en korrekt licens-header. Om den hittar en fil som inte
+Vi använder en gradle-plugin som kontrollerar att alla java-filer har en korrekt licens-header. Om den hittar en fil som inte
 uppfyller detta krav så fallerar bygget. För att lägga till licens-header kör man
 
-    ./gradlew licenseFormatMain licenseFormatTest
+    ./gradlew licenseFormat -PcodeQuality
 
 ## Releasebyggen
 
@@ -161,7 +161,7 @@ Då skapas en zip-fil i [projektrot]/tools/liquibase-runner/build/distributions.
 katalog som skapats, och kör:
 
     ./bin/liquibase-runner --url=jdbc:mysql://localhost/statistik --username=statistik --password=statistik update
-  
+
 Självklart behöver parametrarna "url", "username" och "password" ändras för att passa den aktuella miljön.
 
 ## Köhanterare
@@ -270,7 +270,7 @@ Skickar man in ett icke existerande diagnoskapitel får man tillbaka ett tomt da
 Försöker man komma åt en verksamhet som man saknar behörighet till, så returneras http status 403 Access Denied. Detta oavsett om verksamhetsid:t existerar eller inte.
 
 ### Icke existerande URL:er
-404 Not Found 
+404 Not Found
 
 ## Övrigt
 ### Söka i json-dokument i databasen
