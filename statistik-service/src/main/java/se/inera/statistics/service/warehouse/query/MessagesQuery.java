@@ -26,9 +26,11 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.warehouse.ResponseUtil;
 import se.inera.statistics.service.warehouse.message.CountDTOAmne;
 import se.inera.statistics.service.warehouse.message.MessageWidelineLoader;
 import se.inera.statistics.service.warehouse.message.MsgAmne;
@@ -37,6 +39,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -46,6 +49,19 @@ public class MessagesQuery {
 
     @Autowired
     private MessageWidelineLoader messageWidelineLoader;
+
+    public KonDataResponse getMeddelandenPerAmneAggregated(HsaIdVardgivare vgid, KonDataResponse resultToAggregateIn,
+                                                           Range range, int cutoff, Collection<HsaIdEnhet> enheter) {
+        final int perioder = range.getNumberOfMonths();
+        final LocalDate from = range.getFrom();
+        final KonDataResponse messagesTvarsnittPerAmne = getMessagesPerAmne(vgid, enheter, from, perioder);
+        final KonDataResponse resultToAggregate = resultToAggregateIn != null
+                ? resultToAggregateIn : ResponseUtil.createEmptyKonDataResponse(messagesTvarsnittPerAmne);
+        Iterator<KonDataRow> rowsNew = messagesTvarsnittPerAmne.getRows().iterator();
+        Iterator<KonDataRow> rowsOld = resultToAggregate.getRows().iterator();
+        List<KonDataRow> list = ResponseUtil.getKonDataRows(perioder, rowsNew, rowsOld, cutoff);
+        return new KonDataResponse(messagesTvarsnittPerAmne.getGroups(), list);
+    }
 
     public SimpleKonResponse<SimpleKonDataRow> getMessages(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter, LocalDate start,
             int perioder) {

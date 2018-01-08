@@ -39,6 +39,7 @@ var stMessages = {
         'nav.landsting.listningsjamforelse': 'Vårdenhet, listningar',
         'nav.landsting.om': 'Om landstingsstatistik',
         'nav.meddelanden': 'Meddelanden, totalt',
+        'nav.meddelandenPerAmne': 'Meddelanden, totalt',
 
         //labels
         'lbl.mobile-menu': 'Meny',
@@ -161,6 +162,7 @@ var stMessages = {
         'title.differentierat': 'Antal sjukfall inom differentierat intygande',
         'title.vardenhet-listning': 'Antal sjukfall per 1000 listningar fördelat på vårdenhet',
         'title.meddelanden' : 'Antal inkomna meddelanden',
+        'title.meddelandenperamne' : 'Antal inkomna meddelanden fördelat på ämne',
         'title.intyg' : 'Antal intyg',
         'title.intygstyp' : 'Antal utfärdade intyg fördelat på intygstyp',
 
@@ -172,6 +174,7 @@ var stMessages = {
         'help.nationell.sickleavelength': 'Denna rapport visar statistik fördelad på sjukfallens längd. Längden räknas fram utifrån de sjukskrivningsperioder som anges i de läkarintyg som sjukfallet består av.',
         'help.nationell.lan': 'Denna rapport visar statistik fördelad på län. Information om vilket län en enhet som utfärdar intyg ligger i hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade av Intygsstatistik och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet.',
         'help.nationell.lan.gender': 'Denna rapport visar statistik över könsfördelningen för sjukfall fördelat på län. Information om vilket län en enhet som utfärdar intyg ligger i hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade av Intygsstatistik och information kan saknas då det inte är obligatoriskt för vårdenheten att ange länstillhörighet.',
+        'help.nationell.meddelandenperamne': 'Denna rapport visar statistik fördelad på meddelandens ämne. Ämnet indikerar syftet med meddelandet och sätts av Försäkringskassan.',
 
         'help.verksamhet.vardenhet': 'Denna rapport visar statistik för de vårdenheter som du har behörighet till och som utfärdar läkarintyg. Vårdenheternas namn hämtas från HSA-katalogen.',
         'help.verksamhet.diagnosgroup': 'I denna rapport kan du själv välja vilken typ av diagnoser du vill se statistik för. Klassificeringssystemet ICD-10-SE delar in alla diagnoser i 22 diagnoskapitel. Varje diagnoskapitel innehåller flera diagnosavsnitt som i sin tur omfattar än mer detaljerade diagnoskategorier.',
@@ -184,6 +187,7 @@ var stMessages = {
         'help.landsting.vardenhet': 'Denna rapport visar statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporterats in av landstinget självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',
         'help.landsting.vardenhet-listning1': 'Denna rapport visar statistik för de vårdenheter som tillhör landstinget och för vilka antal listade patienter rapporterats in. Antal sjukfall per 1000 listningar är ett mått som gör att det går att jämföra antalet sjukfall på olika vårdenheter trots att vårdenheterna inte är lika stora. Detta eftersom antalet sjukfall sätts i relation till antalet listade patienter.',
         'help.landsting.vardenhet-listning2': 'Information om vilka vårdenheter som ingår i landstinget och uppgift om antal listade patienter på respektive vårdenhet har rapporteras in av landstinget självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',
+        'help.landsting.meddelandenperamne': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporteras in av landstinget självt %0. Ämnet på meddelanden sätts av Försäkringskassan.',
 
         'help.diagnosissubgroup.showdetailoptions' : 'Observera att om du väljer diagnoskategori visas endast de sjukfall som har en diagnos på fyr- eller femställig nivå i ICD-10-SE, t.ex. F430 eller F438A. Sjukfall med en diagnos på treställig nivå, t.ex. F43, visas inte.',
 

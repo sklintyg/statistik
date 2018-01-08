@@ -95,14 +95,14 @@ public class NationellDataInvoker {
 
         for (Aisle aisle : warehouse) {
             calculatePerAisle(nationellData, result, data, aisle);
-            calculateMeddelandenPerVg(aisle.getVardgivareId(), result, data, nationellData);
+            calculateMeddelandenPerVg(aisle.getVardgivareId(), result);
         }
         return populateResults(result, data);
     }
 
-    private void calculateMeddelandenPerVg(HsaIdVardgivare vardgivareId, NationellDataInfo result,
-                                           NationellDataHolder data, NationellData nationellData) {
-        result.setMeddelandenPerAmneResult(nationellData.getMeddelandenPerAmne(vardgivareId, result, data));
+    private void calculateMeddelandenPerVg(HsaIdVardgivare vardgivareId, NationellDataInfo result) {
+        result.setMeddelandenPerAmneResult(messagesQuery.getMeddelandenPerAmneAggregated(
+                vardgivareId, result.getMeddelandenPerAmneResult(), result.getMeddelandenPerAmneRange(), cutoff, null));
     }
 
     private void calculatePerAisle(NationellData nationellData, NationellDataInfo result, NationellDataHolder data, Aisle aisle) {

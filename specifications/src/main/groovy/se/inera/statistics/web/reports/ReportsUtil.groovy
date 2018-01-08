@@ -139,6 +139,10 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmneTvarsnitt", filter, "vgid=" + vgid)
     }
 
+    def getReportAntalMeddelandenLandsting(String vgid, filter) {
+        return get("/api/landsting/getMeddelandenPerAmneLandsting", filter, "vgid=" + vgid, "landstingfilter")
+    }
+
     def getReportAntalMeddelanden() {
         return get("/api/getMeddelandenPerAmne")
     }
