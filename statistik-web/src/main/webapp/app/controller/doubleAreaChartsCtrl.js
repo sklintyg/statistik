@@ -20,7 +20,7 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
     /** @ngInject */
-    function ($scope, $rootScope, $routeParams, $window, $timeout, statisticsData, config, messageService,
+    function ($scope, $rootScope, $routeParams, $window, $timeout, $filter, statisticsData, config, messageService,
             $location, chartFactory, _, pdfFactory, ControllerCommons) {
         'use strict';
 
@@ -37,6 +37,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         $scope.activeChartType = chartTypeInfo.activeChartType;
 
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
+        var isLandsting = ControllerCommons.isShowingLandsting($location);
 
         this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft, doneLoadingCallback, yAxisTitleUnit) {
 
@@ -118,6 +119,12 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
                 result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
                 result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter);
             var messages = ControllerCommons.getResultMessageList(result, messageService);
+            if (angular.isFunction(config.chartFootnotesExtra)) {
+                var footnotesExtra = config.chartFootnotesExtra(result, isVerksamhet, isLandsting, $filter);
+                if (footnotesExtra) {
+                    $scope.chartFootnotes.push(footnotesExtra);
+                }
+            }
             $scope.resultMessageList = ControllerCommons.removeFilterMessages(messages);
             $rootScope.$broadcast('resultMessagesChanged',  messages);
 
@@ -485,24 +492,92 @@ angular.module('StatisticsApp').casesPerLakaresAlderOchKonTidsserieConfig =
 
 angular.module('StatisticsApp').intygPerTypePerMonthConfig =
     /** @ngInject */
-        function (messageService) {
-        'use strict';
+    function (messageService) {
+    'use strict';
 
-        var conf = {};
-        conf.dataFetcherVerksamhet = 'getIntygPerTypePerMonthVerksamhet';
-        conf.chartYAxisTitleUnit = 'intyg';
-        conf.exportTableUrlVerksamhet = function () {
-            return 'api/verksamhet/getIntygPerTypePerMonth?format=xlsx';
-        };
-        conf.suffixTitle = function (suffix) {
-            return this.title + ' ' + (suffix || '');
-        };
-        conf.title = messageService.getProperty('title.intygstyp');
-
-        conf.exchangeableViews = [
-            {description: 'Tidsserie', state: '/verksamhet/intygPerTyp', active: true},
-            {description: 'Tvärsnitt', state: '/verksamhet/intygPerTypTvarsnitt', active: false}];
-
-        return conf;
+    var conf = {};
+    conf.dataFetcherVerksamhet = 'getIntygPerTypePerMonthVerksamhet';
+    conf.chartYAxisTitleUnit = 'intyg';
+    conf.exportTableUrlVerksamhet = function () {
+        return 'api/verksamhet/getIntygPerTypePerMonth?format=xlsx';
     };
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
+    };
+    conf.title = messageService.getProperty('title.intygstyp');
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '/verksamhet/intygPerTyp', active: true},
+        {description: 'Tvärsnitt', state: '/verksamhet/intygPerTypTvarsnitt', active: false}];
+
+    return conf;
+};
+
+angular.module('StatisticsApp').meddelandenPerAmneConfig =
+    /** @ngInject */
+    function (messageService) {
+    'use strict';
+
+    var conf = {};
+    conf.dataFetcher = 'getMeddelandenPerAmne';
+    conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneVerksamhet';
+    conf.dataFetcherLandsting = 'getSjukfallPerBusinessLandsting';
+    conf.chartYAxisTitleUnit = 'meddelanden';
+    conf.exportTableUrl = function () {
+        return 'api/getMeddelandenPerAmne?format=xlsx';
+    };
+    conf.exportTableUrlVerksamhet = function () {
+        return 'api/verksamhet/getMeddelandenPerAmneVerksamhet?format=xlsx';
+    };
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
+    };
+    conf.title = messageService.getProperty('title.meddelandenperamne');
+    conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
+        if (isLandsting) {
+            return $filter('messageFilter')('help.landsting.meddelandenperamne', '', '', [result.fileUploadDate], '');
+        }
+    };
+    conf.chartFootnotes = function(isVerksamhet, isLandsting) {
+        if (isLandsting) {
+            return [];
+        }
+        return ['help.nationell.meddelandenperamne'];
+    };
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmne', active: true},
+        {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneTvarsnitt', active: false}];
+
+    return conf;
+};
+
+angular.module('StatisticsApp').meddelandenPerAmneLandstingConfig =
+    /** @ngInject */
+    function (messageService) {
+    'use strict';
+
+    var conf = {};
+    conf.dataFetcher = 'getMeddelandenPerAmneLandsting';
+    conf.chartYAxisTitleUnit = 'meddelanden';
+    conf.exportTableUrl = function () {
+        return 'api/landsting/getSjukfallPerBusinessLandsting?format=xlsx';
+    };
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
+    };
+    conf.title = messageService.getProperty('title.meddelandenperamne');
+    conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
+        return $filter('messageFilter')('help.landsting.meddelandenperamne', '', '', [result.fileUploadDate], '');
+    };
+    conf.chartFootnotes = function() {
+        return [];
+    };
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '/landsting/meddelandenPerAmne', active: true},
+        {description: 'Tvärsnitt', state: '/landsting/meddelandenPerAmneTvarsnitt', active: false}];
+
+    return conf;
+};
 

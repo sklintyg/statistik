@@ -115,12 +115,15 @@
             name: 'nav.intyg-header',
             navigationId: 'intyg-statistics-collapse',
             show: true,
-            subMenu: [{
-                id: 'navMessagesLink',
-                link: '#/nationell/meddelanden',
-                name: 'nav.meddelanden',
-                ctrl: 'NationalMeddelandenPerMonthCtrl'
-            }]
+            subMenu: [
+            //Not yet available on nationel level
+            //     {
+            //     id: 'navIntygLink',
+            //     link: '#/nationell/intyg',
+            //     name: 'title.intygstyp',
+            //     ctrl: 'NationalIntygCtrl'
+            // }
+            ]
         };
 
         var kommunikationNationell = {
@@ -130,9 +133,9 @@
             show: true,
             subMenu: [{
                 id: 'navMessagesLink',
-                link: '#/nationell/meddelanden',
+                link: '#/nationell/meddelandenPerAmne',
                 name: 'nav.meddelanden',
-                ctrl: 'NationalMeddelandenPerMonthCtrl'
+                ctrl: 'NationalMeddelandenPerAmneCtrl'
             }]
         };
 
@@ -240,9 +243,9 @@
             show: true,
             subMenu: [{
                 id: 'navBusinessMessagesLink',
-                link: '#/verksamhet/meddelanden',
+                link: '#/verksamhet/meddelandenPerAmne',
                 name: 'nav.meddelanden',
-                ctrl: 'VerksamhetMeddelandenPerMonthCtrl'
+                ctrl: 'VerksamhetMeddelandenPerAmneCtrl'
             }]
         };
 
@@ -307,7 +310,12 @@
             name: 'nav.kommunikation-header',
             navigationId: 'kommunikation-statistics-collapse',
             show: true,
-            subMenu: []
+            subMenu: [{
+                    id: 'navLandstingMessagesLink',
+                    link: '#/landsting/meddelandenPerAmne',
+                    name: 'nav.meddelanden',
+                    ctrl: 'LandstingMeddelandenPerAmneCtrl'
+            }]
         };
 
         var about = {

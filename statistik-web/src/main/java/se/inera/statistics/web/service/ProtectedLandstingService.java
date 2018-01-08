@@ -58,8 +58,10 @@ import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.La
 import se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateOperation;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EnhetManager;
+import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.LandstingsData;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
@@ -326,6 +328,20 @@ public class ProtectedLandstingService {
                 .convert(casesPerEnhet, filterSettings, null);
         final LandstingsData result = LandstingsData.create(data, getLastLandstingUpdateDate(vgIdForLoggedInUser));
         return getResponse(result, format, request, Report.L_VARDENHETLISTNINGAR);
+    }
+
+    @GET
+    @Path("getMeddelandenPerAmneLandsting")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getMeddelandenPerAmneLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash,
+                                          @QueryParam("format") String format) {
+        final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
+        KonDataResponse casesPerMonth = warehouse.getMessagesPerAmneLandsting(filterSettings);
+        DualSexStatisticsData result = new MessageAmneConverter().convert(casesPerMonth, filterSettings);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
     }
 
     @GET

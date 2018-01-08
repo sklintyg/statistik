@@ -594,3 +594,24 @@ angular.module('StatisticsApp').casesPerCountyConfig =
     conf.exchangeableViews = null;
     return conf;
 };
+
+angular.module('StatisticsApp').meddelandenPerAmneTvarsnittConfig =
+    /** @ngInject */
+        function (messageService) {
+        'use strict';
+
+        var conf = {};
+        conf.chartYAxisTitleUnit = 'meddelanden';
+        conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneTvarsnittVerksamhet';
+        conf.exportTableUrlVerksamhet = function () {
+            return 'api/verksamhet/getMeddelandenPerAmneTvarsnitt?format=xlsx';
+        };
+        conf.title = messageService.getProperty('title.meddelandenperamne');
+        conf.chartFootnotes = ['help.nationell.degreeofsickleave'];
+
+        conf.exchangeableViews = [
+            {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmne', active: false},
+            {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneTvarsnitt', active: true}];
+
+        return conf;
+    };

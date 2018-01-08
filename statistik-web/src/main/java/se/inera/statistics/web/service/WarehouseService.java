@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -129,6 +130,19 @@ public class WarehouseService {
 
     public SimpleKonResponse<SimpleKonDataRow> getMessagesPerMonthTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
         return messagesQuery.getMessagesTvarsnitt(vardgivarId, filter.getEnheter(), range.getFrom(), range.getNumberOfMonths());
+    }
+
+    public KonDataResponse getMessagesPerAmneLandsting(final FilterSettings filterSettings) {
+        return getMeddelandenPerAmneLandsting(filterSettings, CutoffUsage.APPLY_CUTOFF_ON_TOTAL);
+    }
+
+    private KonDataResponse getMeddelandenPerAmneLandsting(final FilterSettings filterSettings, final CutoffUsage cutoffUsage) {
+        Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
+        final Range range = filterSettings.getRange();
+        return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
+            final List<HsaIdEnhet> enhetIds = entry.getValue().stream().map(Enhet::getEnhetId).collect(Collectors.toList());
+            return messagesQuery.getMeddelandenPerAmneAggregated(entry.getKey(), null, range, 0, enhetIds);
+        }, (konDataResponse, konDataResponse2) -> konDataResponse2);
     }
 
     public KonDataResponse getMessagesPerAmne(Filter filter, Range range, HsaIdVardgivare vardgivarId) {

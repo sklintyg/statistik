@@ -94,6 +94,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'NationalMeddelandenPerMonthCtrl',
                 resolve: { config: app.meddelandenPerMonthConfig },
                 title: 'nav.meddelanden'
+            }).when('/nationell/meddelandenPerAmne', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'doubleAreaChartsCtrl',
+                controllerAs: 'NationalMeddelandenPerAmneCtrl',
+                resolve: { config: app.meddelandenPerAmneConfig },
+                title: 'nav.meddelandenPerAmne'
             }).when('/verksamhet', {
                 redirectTo: '/verksamhet/oversikt'
             }).when('/valjVardgivare', {
@@ -295,6 +301,18 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'VerksamhetMeddelandenPerMonthCtrl',
                 resolve: { config: app.meddelandenPerMonthTvarsnittConfig },
                 title: 'nav.meddelanden'
+            }).when('/verksamhet/meddelandenPerAmne', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'doubleAreaChartsCtrl',
+                controllerAs: 'VerksamhetMeddelandenPerAmneCtrl',
+                resolve: { config: app.meddelandenPerAmneConfig },
+                title: 'nav.meddelandenPerAmne'
+            }).when('/verksamhet/meddelandenPerAmneTvarsnitt', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'VerksamhetMeddelandenPerAmneCtrl',
+                resolve: { config: app.meddelandenPerAmneTvarsnittConfig },
+                title: 'nav.meddelandenPerAmne'
             }).when('/verksamhet/intyg', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'singleLineChartCtrl',
@@ -342,6 +360,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'LandstingCasesPerPatientsPerBusinessCtrl',
                 resolve: { config: app.casesPerPatientsPerBusinessConfig },
                 title: 'nav.landsting.listningsjamforelse'
+            }).when('/landsting/meddelandenPerAmne', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'doubleAreaChartsCtrl',
+                controllerAs: 'LandstingMeddelandenPerAmneCtrl',
+                resolve: { config: app.meddelandenPerAmneLandstingConfig },
+                title: 'nav.meddelandenPerAmne'
             }).when('/landsting/om', {
                 templateUrl: '/app/views/landsting/aboutlandsting.html',
                 controllerAs: 'LandstingAboutCtrl',

@@ -18,10 +18,8 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
@@ -50,6 +48,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static se.inera.statistics.service.warehouse.ResponseUtil.filterCutoff;
 
 /**
  * Contains calculations for each report on national statistics.
@@ -92,12 +92,12 @@ class NationellData {
             int female = sjukfallGroup.getSjukfall().size() - male;
             String displayDate = ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom());
             if (index >= antalIntygResult.size()) {
-                antalIntygResult.add(new SimpleKonDataRow(displayDate, filterCutoff(female), filterCutoff(male)));
+                antalIntygResult.add(new SimpleKonDataRow(displayDate, filterCutoff(female, cutoff), filterCutoff(male, cutoff)));
             } else {
                 SimpleKonDataRow previous = antalIntygResult.get(index);
                 antalIntygResult.set(index, new SimpleKonDataRow(previous.getName(),
-                        filterCutoff(female) + previous.getFemale(),
-                        filterCutoff(male) + previous.getMale()));
+                        filterCutoff(female, cutoff) + previous.getFemale(),
+                        filterCutoff(male, cutoff) + previous.getMale()));
             }
             index++;
         }
@@ -122,8 +122,8 @@ class NationellData {
             SimpleKonDataRow a = rowsNew.next();
             SimpleKonDataRow b = rowsOld.next();
 
-            list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale()) + b.getFemale(),
-                    filterCutoff(a.getMale()) + b.getMale()));
+            list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale(), cutoff) + b.getFemale(),
+                    filterCutoff(a.getMale(), cutoff) + b.getMale()));
         }
         return new SimpleKonResponse<>(list);
     }
@@ -137,11 +137,11 @@ class NationellData {
         KonDataResponse grader = SjukskrivningsgradQuery.getSjukskrivningsgrad(aisle,
                 SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil, all);
         if (sjukskrivningsgradResult == null) {
-            sjukskrivningsgradResult = createEmptyKonDataResponse(grader);
+            sjukskrivningsgradResult = ResponseUtil.createEmptyKonDataResponse(grader);
         }
         Iterator<KonDataRow> rowsNew = grader.getRows().iterator();
         Iterator<KonDataRow> rowsOld = sjukskrivningsgradResult.getRows().iterator();
-        List<KonDataRow> list = getKonDataRows(perioder, rowsNew, rowsOld);
+        List<KonDataRow> list = ResponseUtil.getKonDataRows(perioder, rowsNew, rowsOld, cutoff);
         return new KonDataResponse(sjukskrivningsgradResult.getGroups(), list);
     }
 
@@ -163,8 +163,8 @@ class NationellData {
         while (rowsNew.hasNext() && rowsOld.hasNext()) {
             SimpleKonDataRow a = rowsNew.next();
             SimpleKonDataRow b = rowsOld.next();
-            final int female = filterCutoff(a.getFemale()) + b.getFemale();
-            final int male = filterCutoff(a.getMale()) + b.getMale();
+            final int female = filterCutoff(a.getFemale(), cutoff) + b.getFemale();
+            final int male = filterCutoff(a.getMale(), cutoff) + b.getMale();
             list.add(new SimpleKonDataRow(a.getName(), female, male));
         }
         return new SimpleKonResponse<>(list);
@@ -184,7 +184,7 @@ class NationellData {
         final FilterPredicates filter = SjukfallUtil.ALL_ENHETER;
         DiagnosgruppResponse diagnosgrupper = query.getDiagnosgrupper(aisle, filter, start, perioder, periodlangd, all);
         if (diagnosgrupperResult == null) {
-            diagnosgrupperResult = createEmptyDiagnosgruppResponse(diagnosgrupper);
+            diagnosgrupperResult = ResponseUtil.createEmptyDiagnosgruppResponse(diagnosgrupper);
         }
         Iterator<KonDataRow> rowsNew = diagnosgrupper.getRows().iterator();
         Iterator<KonDataRow> rowsOld = diagnosgrupperResult.getRows().iterator();
@@ -206,7 +206,7 @@ class NationellData {
     }
 
     private int safeSumForIndex(KonDataRow newRow, KonDataRow existingRow, int index, Kon kon) {
-        return filterCutoff(getValueSafe(newRow, index, kon)) + getValueSafe(existingRow, index, kon);
+        return filterCutoff(getValueSafe(newRow, index, kon), cutoff) + getValueSafe(existingRow, index, kon);
     }
 
     private int getValueSafe(KonDataRow a, int index, Kon kon) {
@@ -220,7 +220,7 @@ class NationellData {
         DiagnosgruppResponse diagnosgrupper = query.getDiagnosavsnitts(aisle, SjukfallUtil.ALL_ENHETER, range.getFrom(),
                 range.getNumberOfMonths(), 1, kapitel.getId());
         if (!diagnosavsnitts.containsKey(kapitel)) {
-            diagnosavsnitts.put(kapitel, createEmptyDiagnosgruppResponse(diagnosgrupper));
+            diagnosavsnitts.put(kapitel, ResponseUtil.createEmptyDiagnosgruppResponse(diagnosgrupper));
         }
         Iterator<KonDataRow> rowsNew = diagnosgrupper.getRows().iterator();
         Iterator<KonDataRow> rowsOld = diagnosavsnitts.get(kapitel).getRows().iterator();
@@ -231,8 +231,8 @@ class NationellData {
 
             List<KonField> c = new ArrayList<>();
             for (int i = 0; i < a.getData().size(); i++) {
-                final int female = filterCutoff(a.getData().get(i).getFemale()) + b.getData().get(i).getFemale();
-                final int male = filterCutoff(a.getData().get(i).getMale()) + b.getData().get(i).getMale();
+                final int female = filterCutoff(a.getData().get(i).getFemale(), cutoff) + b.getData().get(i).getFemale();
+                final int male = filterCutoff(a.getData().get(i).getMale(), cutoff) + b.getData().get(i).getMale();
                 c.add(new KonField(female, male));
             }
             list.add(new KonDataRow(a.getName(), c));
@@ -272,8 +272,8 @@ class NationellData {
         for (String lanId : lans) {
             Counter<String> counter = map.get(lanId);
             SimpleKonDataRow previous = result.get(index);
-            final int female = filterCutoff(counter.getCountFemale()) + previous.getFemale();
-            final int male = filterCutoff(counter.getCountMale()) + previous.getMale();
+            final int female = filterCutoff(counter.getCountFemale(), cutoff) + previous.getFemale();
+            final int male = filterCutoff(counter.getCountMale(), cutoff) + previous.getMale();
             result.set(index, new SimpleKonDataRow(previous.getName(), female, male, lanId));
             index++;
         }
@@ -299,37 +299,13 @@ class NationellData {
             SimpleKonDataRow a = rowsNew.next();
             SimpleKonDataRow b = rowsOld.next();
 
-            list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale()) + b.getFemale(),
-                    filterCutoff(a.getMale()) + b.getMale()));
+            list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale(), cutoff) + b.getFemale(),
+                    filterCutoff(a.getMale(), cutoff) + b.getMale()));
         }
         return new SimpleKonResponse<>(list);
     }
 
-    private int filterCutoff(int actual) {
-        return actual < cutoff ? 0 : actual;
-    }
 
-    private KonDataResponse createEmptyKonDataResponse(KonDataResponse kdr) {
-        final ArrayList<KonDataRow> rows = getKonDataRows(kdr);
-        return new KonDataResponse(kdr.getGroups(), rows);
-    }
-
-    private DiagnosgruppResponse createEmptyDiagnosgruppResponse(DiagnosgruppResponse kdr) {
-        final ArrayList<KonDataRow> rows = getKonDataRows(kdr);
-        return new DiagnosgruppResponse(kdr.getIcdTyps(), rows);
-    }
-
-    private <T extends KonDataResponse> ArrayList<KonDataRow> getKonDataRows(T kdr) {
-        final ArrayList<KonDataRow> rows = new ArrayList<>();
-        for (KonDataRow row : kdr.getRows()) {
-            final ArrayList<KonField> data = new ArrayList<>();
-            for (int i = 0; i < row.getData().size(); i++) {
-                data.add(new KonField(0, 0));
-            }
-            rows.add(new KonDataRow(row.getName(), data));
-        }
-        return rows;
-    }
 
     private SimpleKonResponse<SimpleKonDataRow> createEmptySimpleKonResponse(SimpleKonResponse<SimpleKonDataRow> base) {
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
@@ -339,36 +315,6 @@ class NationellData {
         return new SimpleKonResponse<>(rows);
     }
 
-    KonDataResponse getMeddelandenPerAmne(HsaIdVardgivare vgid, NationellDataInfo result, NationellDataHolder data) {
-        KonDataResponse oldMeddelandenPerAmneResult = result.getMeddelandenPerAmneResult();
-        final int perioder = result.getMeddelandenPerAmneRange().getNumberOfMonths();
-        final LocalDate from = result.getMeddelandenPerAmneRange().getFrom();
-        final KonDataResponse messagesTvarsnittPerAmne = messagesQuery.getMessagesPerAmne(vgid, null, from, perioder);
-        if (oldMeddelandenPerAmneResult == null) {
-            oldMeddelandenPerAmneResult = createEmptyKonDataResponse(messagesTvarsnittPerAmne);
-        }
-        Iterator<KonDataRow> rowsNew = messagesTvarsnittPerAmne.getRows().iterator();
-        Iterator<KonDataRow> rowsOld = oldMeddelandenPerAmneResult.getRows().iterator();
-        List<KonDataRow> list = getKonDataRows(perioder, rowsNew, rowsOld);
-        return new KonDataResponse(messagesTvarsnittPerAmne.getGroups(), list);
-    }
-
-    @NotNull
-    private List<KonDataRow> getKonDataRows(int perioder, Iterator<KonDataRow> rowsNew, Iterator<KonDataRow> rowsOld) {
-        List<KonDataRow> list = new ArrayList<>(perioder);
-        while (rowsNew.hasNext() && rowsOld.hasNext()) {
-            KonDataRow a = rowsNew.next();
-            KonDataRow b = rowsOld.next();
-
-            List<KonField> c = new ArrayList<>();
-            for (int i = 0; i < a.getData().size(); i++) {
-                c.add(new KonField(filterCutoff(a.getData().get(i).getFemale()) + b.getData().get(i).getFemale(),
-                        filterCutoff(a.getData().get(i).getMale()) + b.getData().get(i).getMale()));
-            }
-            list.add(new KonDataRow(a.getName(), c));
-        }
-        return list;
-    }
 
 
 }
