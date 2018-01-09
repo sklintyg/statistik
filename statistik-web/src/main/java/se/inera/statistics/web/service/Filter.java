@@ -24,7 +24,7 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import java.util.Collection;
 
-class Filter {
+public class Filter {
 
     private FilterPredicates predicate;
     private Collection<HsaIdEnhet> enheter;
@@ -43,7 +43,7 @@ class Filter {
         this.hash = hashValue;
     }
 
-    static Filter empty() {
+    public static Filter empty() {
         return new Filter(SjukfallUtil.ALL_ENHETER, null, null, null, null, null);
     }
 

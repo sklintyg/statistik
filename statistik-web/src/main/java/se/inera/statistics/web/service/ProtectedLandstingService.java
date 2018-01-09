@@ -73,6 +73,10 @@ import se.inera.statistics.web.service.landsting.LandstingFileGenerationExceptio
 import se.inera.statistics.web.service.landsting.LandstingFileReader;
 import se.inera.statistics.web.service.landsting.LandstingFileWriter;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
+import se.inera.statistics.web.service.responseconverter.GroupedSjukfallWithLandstingSortingConverter;
+import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
+import se.inera.statistics.web.service.responseconverter.PeriodConverter;
+import se.inera.statistics.web.service.responseconverter.SjukfallPerPatientsPerEnhetConverter;
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned

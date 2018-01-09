@@ -22,13 +22,13 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.RangeMessageDTO;
 
-class FilterSettings {
+public class FilterSettings {
 
     private final Filter filter;
     private final Range range;
     private final Message message;
 
-    FilterSettings(Filter filter, Range range) {
+    public FilterSettings(Filter filter, Range range) {
         this(filter, range, null);
     }
 

@@ -44,6 +44,15 @@ import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.overview.OverviewData;
+import se.inera.statistics.web.service.responseconverter.CasesPerCountyConverter;
+import se.inera.statistics.web.service.responseconverter.DegreeOfSickLeaveConverter;
+import se.inera.statistics.web.service.responseconverter.DiagnosisGroupsConverter;
+import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsConverter;
+import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
+import se.inera.statistics.web.service.responseconverter.OverviewConverter;
+import se.inera.statistics.web.service.responseconverter.PeriodConverter;
+import se.inera.statistics.web.service.responseconverter.SimpleDualSexConverter;
+import se.inera.statistics.web.service.responseconverter.SjukfallPerSexConverter;
 
 /**
  * Invokes calculation of national statistics and converts the results into the correct format for the reports.
