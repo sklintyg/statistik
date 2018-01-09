@@ -55,6 +55,7 @@ import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsConve
 import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.GroupedSjukfallConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
+import se.inera.statistics.web.service.responseconverter.MessageAmneTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.MessagePeriodConverter;
 import se.inera.statistics.web.service.responseconverter.PeriodConverter;
 import se.inera.statistics.web.service.responseconverter.PeriodIntygConverter;
@@ -297,7 +298,7 @@ public class ProtectedChartDataService {
         final Range range = filterSettings.getRange();
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getMessagesPerAmneTvarsnitt(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData result = MessagePeriodConverter.newTvarsnitt().convert(casesPerMonth, filterSettings);
+        SimpleDetailsData result = MessageAmneTvarsnittConverter.newTvarsnitt().convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
     }
 

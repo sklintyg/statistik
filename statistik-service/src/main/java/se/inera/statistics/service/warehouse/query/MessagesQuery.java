@@ -138,7 +138,7 @@ public class MessagesQuery {
 
         final ArrayList<String> groups = new ArrayList<>();
         for (MsgAmne msgAmne : msgAmnes) {
-            groups.add(msgAmne.getText());
+            groups.add(msgAmne.name());
         }
         return new KonDataResponse(groups, result);
     }
@@ -215,7 +215,7 @@ public class MessagesQuery {
         for (int i = 0; i < seriesLength; i++) {
             final MsgAmne msgAmne = msgAmnes[i];
             final String text = msgAmne.getText();
-            result.add(new SimpleKonDataRow(text, femaleSeries[i], maleSeries[i]));
+            result.add(new SimpleKonDataRow(text, femaleSeries[i], maleSeries[i], msgAmne));
         }
 
         return new SimpleKonResponse<>(result);
