@@ -22,19 +22,21 @@ import se.inera.statistics.service.report.common.ReportColor;
 
 public enum MsgAmne {
 
-    KOMPLT("Komplettering", ReportColor.ST_COLOR_02),
-    AVSTMN("Avstämningsmöte", ReportColor.ST_COLOR_01),
-    KONTKT("Kontakt", ReportColor.ST_COLOR_03),
-    OVRIGT("Övrigt", ReportColor.ST_COLOR_05),
-    PAMINN("Påminnelse", ReportColor.ST_COLOR_04),
-    OKANT("Okänt", ReportColor.ST_COLOR_13);
+    KOMPLT("Komplettering", ReportColor.ST_COLOR_02, true),
+    AVSTMN("Avstämningsmöte", ReportColor.ST_COLOR_01, true),
+    KONTKT("Kontakt", ReportColor.ST_COLOR_03, true),
+    OVRIGT("Övrigt", ReportColor.ST_COLOR_05, true),
+    PAMINN("Påminnelse", ReportColor.ST_COLOR_04, true),
+    OKANT("Okänt", ReportColor.ST_COLOR_13, false);
 
     private final String text;
     private final ReportColor color;
+    private final boolean showEmpty; //Should the data series be shown in the result if the result is empty
 
-    MsgAmne(String text, ReportColor color) {
+    MsgAmne(String text, ReportColor color, boolean showEmpty) {
         this.text = text;
         this.color = color;
+        this.showEmpty = showEmpty;
     }
 
     public String getText() {
@@ -43,6 +45,10 @@ public enum MsgAmne {
 
     public ReportColor getColor() {
         return color;
+    }
+
+    public boolean isShowEmpty() {
+        return showEmpty;
     }
 
     public static MsgAmne parse(String amneCode) {
