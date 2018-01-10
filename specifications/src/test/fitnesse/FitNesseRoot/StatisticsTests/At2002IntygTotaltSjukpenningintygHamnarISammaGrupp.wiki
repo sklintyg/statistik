@@ -21,9 +21,9 @@ Inloggad:
 
 | Intyg i rapporten intyg totalt |
 | inloggad som | år | månad | grupp | män? | kvinnor? |
-| user1 | 2014 | nov | 7804, 7263 | 0 | 0 |
-| user1 | 2014 | dec | 7804, 7263 | 0 | 0 |
-| user1 | 2015 | jan | 7804, 7263 | 0 | 0 |
-| user1 | 2015 | feb | 7804, 7263 | 0 | 1 |
-| user1 | 2015 | mar | 7804, 7263 | 1 | 0 |
-| user1 | 2015 | apr | 7804, 7263 | 0 | 0 |
+| user1 | 2014 | nov | FK 7263/7804 Läkarintyg för sjukpenning  | 0 | 0 |
+| user1 | 2014 | dec | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |
+| user1 | 2015 | jan | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |
+| user1 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 1 |
+| user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 1 | 0 |
+| user1 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |

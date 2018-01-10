@@ -22,24 +22,24 @@ Nationell:
 
 | Intyg i rapporten intyg totalt |
 | år | månad | grupp | män? | kvinnor? |
-| 2015 | feb | 7800 | 0 | 0 |
-| 2015 | feb | 7801 | 0 | 0 |
-| 2015 | feb | 7802 | 0 | 0 |
-| 2015 | feb | 7804,7263 | 0 | 1 |
-| 2015 | mar | 7800 | 0 | 0 |
-| 2015 | mar | 7801 | 0 | 0 |
-| 2015 | mar | 7802 | 0 | 0 |
-| 2015 | mar | 7804,7263 | 0 | 0 |
+| 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 |
+| 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0 | 0 |
+| 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 0 |
+| 2015 | feb | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 1 |
+| 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 |
+| 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0 | 0 |
+| 2015 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 0 |
+| 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 |
 
 Inloggad:
 
 | Intyg i rapporten intyg totalt |
 | inloggad som | år | månad | grupp | män? | kvinnor? |
-| user1 | 2015 | feb | 7800 | 0 | 0 |
-| user1 | 2015 | feb | 7801 | 0 | 0 |
-| user1 | 2015 | feb | 7802 | 0 | 0 |
-| user1 | 2015 | feb | 7804,7263 | 0 | 1 |
-| user1 | 2015 | mar | 7800 | 0 | 0 |
-| user1 | 2015 | mar | 7801 | 0 | 0 |
-| user1 | 2015 | mar | 7802 | 0 | 0 |
-| user1 | 2015 | mar | 7804,7263 | 0 | 0 |
+| user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 |
+| user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0 | 0 |
+| user1 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 0 |
+| user1 | 2015 | feb | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 1 |
+| user1 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 |
+| user1 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0 | 0 |
+| user1 | 2015 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 0 |
+| user1 | 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 |

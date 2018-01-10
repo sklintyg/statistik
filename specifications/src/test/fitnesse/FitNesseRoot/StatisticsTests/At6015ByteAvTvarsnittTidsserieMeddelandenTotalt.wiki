@@ -1,8 +1,11 @@
 ---
-Help: Kan tas med när rapporten Meddelanden, totalt har implementerats
-Prune
 Test
 ---
+---
+Help: Kan tas med när rapporten Meddelanden, totalt har implementerats
+Prune
+Test-----------
+
 !contents -R2 -g -p -f -h
 !3 Givet att:
 Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
@@ -12,55 +15,53 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| intygid | personnr      | diagnoskod | intygformat | enhet  |
-| 1001    | 19790717-9191 | G01        | LUSE        | enhet1 |
-| 1002    | 19790717-9191 | G01        | LUSE        | enhet1 |
-| 1003    | 19691230-1234 | G01        | LISJP       | enhet1 |
-| 1004    | 19591230-1254 | G01        | LUAE_NA     | enhet1 |
-| 1005    | 19491230-1264 | G01        | LUAE_FS     | enhet1 |
+| intygid | personnr | diagnoskod | intygformat | enhet |
+| 1001 | 19790717-9191 | G01 | LUSE | enhet1 |
+| 1002 | 19790717-9191 | G01 | LUSE | enhet1 |
+| 1003 | 19691230-1234 | G01 | LISJP | enhet1 |
+| 1004 | 19591230-1254 | G01 | LUAE_NA | enhet1 |
+| 1005 | 19491230-1264 | G01 | LUAE_FS | enhet1 |
 
 | Foljande meddelanden finns |
-| personnr      | skickat             | intygsid | ämne   |
-| 19790717-9191 | 2014-04-05T10:00:00 | 1001     | KOMPLT |
-| 19790717-9191 | 2014-06-03T10:00:00 | 1001     | KOMPLT |
-| 19691230-1234 | 2014-06-03T10:00:00 | 1003     | KOMPLT |
-| 19591230-1254 | 2014-06-03T10:00:00 | 1004     | AVSTMN |
-| 19491230-1264 | 2014-03-03T10:00:00 | 1005     | AVSTMN |
+| personnr | skickat | intygsid | ämne |
+| 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT |
+| 19790717-9191 | 2014-06-03T10:00:00 | 1001 | KOMPLT |
+| 19691230-1234 | 2014-06-03T10:00:00 | 1003 | KOMPLT |
+| 19591230-1254 | 2014-06-03T10:00:00 | 1004 | AVSTMN |
+| 19491230-1264 | 2014-03-03T10:00:00 | 1005 | AVSTMN |
 
 !3 Då gäller:
 Statistiken baseras på meddelanden för alla intygstyper som har ärendekommunikation. Statistiken presenteras utifrån datum då meddelandet skickades. Varje meddelande räknas en gång oavsett om det finns flera meddelanden för samma intyg.
 
 | Meddelanden i rapporten meddelanden totalt |
-| inloggad som | år   | månad | grupp           | män? | kvinnor? |
-| user1        | 2014 | feb   | Komplettering   | 0    | 0        |
-| user1        | 2014 | feb   | Avstämningsmöte | 0    | 0        |
-| user1        | 2014 | mar   | Komplettering   | 0    | 0        |
-| user1        | 2014 | mar   | Avstämningsmöte | 0    | 1        |
-| user1        | 2014 | apr   | Komplettering   | 1    | 0        |
-| user1        | 2014 | apr   | Avstämningsmöte | 0    | 0        |
-| user1        | 2014 | maj   | Komplettering   | 0    | 0        |
-| user1        | 2014 | maj   | Avstämningsmöte | 0    | 0        |
-| user1        | 2014 | jun   | Komplettering   | 2    | 0        |
-| user1        | 2014 | jun   | Avstämningsmöte | 1    | 0        |
-| user1        | 2014 | jul   | Komplettering   | 0    | 0        |
-| user1        | 2014 | jul   | Avstämningsmöte | 0    | 0        |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user1 | 2014 | feb | Komplettering | 0 | 0 |
+| user1 | 2014 | feb | Avstämningsmöte | 0 | 0 |
+| user1 | 2014 | mar | Komplettering | 0 | 0 |
+| user1 | 2014 | mar | Avstämningsmöte | 0 | 1 |
+| user1 | 2014 | apr | Komplettering | 1 | 0 |
+| user1 | 2014 | apr | Avstämningsmöte | 0 | 0 |
+| user1 | 2014 | maj | Komplettering | 0 | 0 |
+| user1 | 2014 | maj | Avstämningsmöte | 0 | 0 |
+| user1 | 2014 | jun | Komplettering | 2 | 0 |
+| user1 | 2014 | jun | Avstämningsmöte | 1 | 0 |
+| user1 | 2014 | jul | Komplettering | 0 | 0 |
+| user1 | 2014 | jul | Avstämningsmöte | 0 | 0 |
 
 Byte till tvärsnitt gör att ett stapeldiagram med bara två grupper, i det här fallet, visas. Gruppen består av tre staplar, en vardera för totalt, män och kvinnor.
 
 | Meddelanden i rapporten meddelanden totalt som tvarsnitt |
-| inloggad som | ämne            | totalt? | män? | kvinnor? |
-| user1        | Avstämningsmöte | 4       | 4    | 0        |
-| user1        | Komplettering   | 1       | 0    | 1        |
-| user1        | Kontakt         | -1      | -1   | -1       |
-| user1        | Påminnelse      | -1      | -1   | -1       |
-| user1        | Övrigt          | -1      | -1   | -1       |
+| inloggad som | ämne | totalt? | män? | kvinnor? |
+| user1 | Avstämningsmöte | 2 | 1 | 1 |
+| user1 | Komplettering | 3 | 3 | 0 |
+| user1 | Kontakt | 0 | 0 | 0 |
+| user1 | Påminnelse | 0 | 0 | 0 |
+| user1 | Övrigt | 0 | 0 | 0 |
 
-
-
-| Meddelanden i rapporten meddelanden totalt som tvarsnitt diagram |
-| inloggad som | ämne            | totalt? | män? | kvinnor? |
-| user1        | Avstämningsmöte | 4       | 4    | 0        |
-| user1        | Komplettering   | 1       | 0    | 1        |
-| user1        | Kontakt         | -1      | -1   | -1       |
-| user1        | Påminnelse      | -1      | -1   | -1       |
-| user1        | Övrigt          | -1      | -1   | -1       |
+| Meddelanden i rapporten meddelanden totalt som tvarsnitt diagram |
+| inloggad som | ämne | totalt? | män? | kvinnor? |
+| user1 | Avstämningsmöte | 2 | 1 | 1 |
+| user1 | Komplettering | 3 | 3 | 0 |
+| user1 | Kontakt | 0 | 0 | 0 |
+| user1 | Påminnelse | 0 | 0 | 0 |
+| user1 | Övrigt | 0 | 0 | 0 |
