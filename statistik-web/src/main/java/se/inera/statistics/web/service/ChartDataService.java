@@ -94,6 +94,15 @@ public class ChartDataService {
     }
 
     public void clearNationellDataCache() {
+        LOG.info("Clear national cache requested");
+        final int sleepTime = 1000;
+        while (dataCalculationOngoing.get()) {
+            try {
+                Thread.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                LOG.warn("Sleep was interrupted");
+            }
+        }
         nationellDataResult = null;
     }
 
