@@ -193,10 +193,7 @@ public class RestSupportService {
         manager.createNativeQuery("TRUNCATE TABLE " + MessageWideLine.TABLE).executeUpdate();
         manager.createNativeQuery("TRUNCATE TABLE " + MessageEvent.TABLE).executeUpdate();
         manager.createNativeQuery("TRUNCATE TABLE " + IntygCommon.TABLE).executeUpdate();
-        sjukfallUtil.clearSjukfallGroupCache();
-        warehouse.clearCaches();
-        nationalChartDataService.buildCache();
-        return Response.ok().build();
+        return clearCaches();
     }
 
     @POST
@@ -274,10 +271,7 @@ public class RestSupportService {
             count = consumer.processBatch();
             LOG.info("Processed batch with {} entries", count);
         } while (count > 0);
-        sjukfallUtil.clearSjukfallGroupCache();
-        warehouse.clearCaches();
-        nationalChartDataService.buildCache(true);
-        return Response.ok().build();
+        return clearCaches();
     }
 
     @POST
@@ -293,8 +287,7 @@ public class RestSupportService {
             lastId = messageLogConsumer.processBatch(firstId);
         } while (firstId != lastId);
         LOG.debug("All messages processed");
-        nationalChartDataService.buildCache(true);
-        return Response.ok().build();
+        return clearCaches();
     }
 
     @POST
