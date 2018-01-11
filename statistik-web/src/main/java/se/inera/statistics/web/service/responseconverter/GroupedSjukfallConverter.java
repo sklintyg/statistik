@@ -34,7 +34,7 @@ public class GroupedSjukfallConverter extends SimpleDualSexConverter {
     }
 
     @Override
-    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings, Message message) {
+    public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, FilterSettings filterSettings, Message message) {
         Collections.sort(casesPerMonth.getRows(), new Comparator<SimpleKonDataRow>() {
             @Override
             public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {

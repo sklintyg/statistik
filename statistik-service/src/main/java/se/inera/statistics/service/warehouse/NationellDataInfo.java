@@ -21,7 +21,6 @@ package se.inera.statistics.service.warehouse;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
 
@@ -43,36 +42,36 @@ public class NationellDataInfo {
     private Range overviewRange;
     private Range meddelandenPerAmneRange;
 
-    private SimpleKonResponse<SimpleKonDataRow> antalIntygResult;
+    private SimpleKonResponse antalIntygResult;
     private DiagnosgruppResponse diagnosgrupperResult;
     private Map<Icd10.Kapitel, DiagnosgruppResponse> diagnosavsnittResult;
-    private SimpleKonResponse<SimpleKonDataRow> aldersgrupperResult;
+    private SimpleKonResponse aldersgrupperResult;
     private KonDataResponse sjukskrivningsgradResult;
-    private SimpleKonResponse<SimpleKonDataRow> sjukfallslangdResult;
-    private SimpleKonResponse<SimpleKonDataRow> lanResult;
-    private SimpleKonResponse<SimpleKonDataRow> langaSjukfallPreviousResult;
-    private SimpleKonResponse<SimpleKonDataRow> langaSjukfallCurrentResult;
+    private SimpleKonResponse sjukfallslangdResult;
+    private SimpleKonResponse lanResult;
+    private SimpleKonResponse langaSjukfallPreviousResult;
+    private SimpleKonResponse langaSjukfallCurrentResult;
 
-    private SimpleKonResponse<SimpleKonDataRow> overviewGenderResult;
-    private SimpleKonResponse<SimpleKonDataRow> overviewForandringResult;
+    private SimpleKonResponse overviewGenderResult;
+    private SimpleKonResponse overviewForandringResult;
     private DiagnosgruppResponse overviewDiagnosgrupperResult;
-    private SimpleKonResponse<SimpleKonDataRow> overviewPreviousAldersgruppResult;
-    private SimpleKonResponse<SimpleKonDataRow> overviewCurrentAldersgruppResult;
+    private SimpleKonResponse overviewPreviousAldersgruppResult;
+    private SimpleKonResponse overviewCurrentAldersgruppResult;
     private KonDataResponse overviewSjukskrivningsgrader;
-    private SimpleKonResponse<SimpleKonDataRow> overviewSjukskrivningslangdPreviousResult;
-    private SimpleKonResponse<SimpleKonDataRow> overviewSjukskrivningslangdCurrentResult;
-    private SimpleKonResponse<SimpleKonDataRow> overviewLangaSjukfallResult;
-    private SimpleKonResponse<SimpleKonDataRow> overviewLangaSjukfallDiffResult;
-    private SimpleKonResponse<SimpleKonDataRow> overviewLanPreviousResult;
-    private SimpleKonResponse<SimpleKonDataRow> overviewLanCurrentResult;
+    private SimpleKonResponse overviewSjukskrivningslangdPreviousResult;
+    private SimpleKonResponse overviewSjukskrivningslangdCurrentResult;
+    private SimpleKonResponse overviewLangaSjukfallResult;
+    private SimpleKonResponse overviewLangaSjukfallDiffResult;
+    private SimpleKonResponse overviewLanPreviousResult;
+    private SimpleKonResponse overviewLanCurrentResult;
 
     private KonDataResponse meddelandenPerAmneResult;
 
-    public SimpleKonResponse<SimpleKonDataRow> getAntalIntygResult() {
+    public SimpleKonResponse getAntalIntygResult() {
         return antalIntygResult;
     }
 
-    void setAntalIntygResult(SimpleKonResponse<SimpleKonDataRow> antalIntygResult) {
+    void setAntalIntygResult(SimpleKonResponse antalIntygResult) {
         this.antalIntygResult = antalIntygResult;
     }
 
@@ -92,11 +91,11 @@ public class NationellDataInfo {
         this.diagnosavsnittResult = diagnosavsnittResult;
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getAldersgrupperResult() {
+    public SimpleKonResponse getAldersgrupperResult() {
         return aldersgrupperResult;
     }
 
-    void setAldersgrupperResult(SimpleKonResponse<SimpleKonDataRow> aldersgrupperResult) {
+    void setAldersgrupperResult(SimpleKonResponse aldersgrupperResult) {
         this.aldersgrupperResult = aldersgrupperResult;
     }
 
@@ -108,35 +107,35 @@ public class NationellDataInfo {
         this.sjukskrivningsgradResult = sjukskrivningsgradResult;
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallslangdResult() {
+    public SimpleKonResponse getSjukfallslangdResult() {
         return sjukfallslangdResult;
     }
 
-    void setSjukfallslangdResult(SimpleKonResponse<SimpleKonDataRow> sjukfallslangdResult) {
+    void setSjukfallslangdResult(SimpleKonResponse sjukfallslangdResult) {
         this.sjukfallslangdResult = sjukfallslangdResult;
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getLanResult() {
+    public SimpleKonResponse getLanResult() {
         return lanResult;
     }
 
-    void setLanResult(SimpleKonResponse<SimpleKonDataRow> lanResult) {
+    void setLanResult(SimpleKonResponse lanResult) {
         this.lanResult = lanResult;
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getLangaSjukfallPreviousResult() {
+    public SimpleKonResponse getLangaSjukfallPreviousResult() {
         return langaSjukfallPreviousResult;
     }
 
-    void setLangaSjukfallPreviousResult(SimpleKonResponse<SimpleKonDataRow> langaSjukfallPreviousResult) {
+    void setLangaSjukfallPreviousResult(SimpleKonResponse langaSjukfallPreviousResult) {
         this.langaSjukfallPreviousResult = langaSjukfallPreviousResult;
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getLangaSjukfallCurrentResult() {
+    public SimpleKonResponse getLangaSjukfallCurrentResult() {
         return langaSjukfallCurrentResult;
     }
 
-    void setLangaSjukfallCurrentResult(SimpleKonResponse<SimpleKonDataRow> langaSjukfallCurrentResult) {
+    void setLangaSjukfallCurrentResult(SimpleKonResponse langaSjukfallCurrentResult) {
         this.langaSjukfallCurrentResult = langaSjukfallCurrentResult;
     }
 
@@ -212,19 +211,19 @@ public class NationellDataInfo {
         return overviewRange;
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getOverviewGenderResult() {
+    SimpleKonResponse getOverviewGenderResult() {
         return overviewGenderResult;
     }
 
-    void setOverviewGenderResult(SimpleKonResponse<SimpleKonDataRow> overviewGenderResult) {
+    void setOverviewGenderResult(SimpleKonResponse overviewGenderResult) {
         this.overviewGenderResult = overviewGenderResult;
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getOverviewForandringResult() {
+    SimpleKonResponse getOverviewForandringResult() {
         return overviewForandringResult;
     }
 
-    void setOverviewForandringResult(SimpleKonResponse<SimpleKonDataRow> overviewForandringResult) {
+    void setOverviewForandringResult(SimpleKonResponse overviewForandringResult) {
         this.overviewForandringResult = overviewForandringResult;
     }
 
@@ -236,19 +235,19 @@ public class NationellDataInfo {
         this.overviewDiagnosgrupperResult = overviewDiagnosgrupperResult;
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getOverviewPreviousAldersgruppResult() {
+    SimpleKonResponse getOverviewPreviousAldersgruppResult() {
         return overviewPreviousAldersgruppResult;
     }
 
-    void setOverviewPreviousAldersgruppResult(SimpleKonResponse<SimpleKonDataRow> overviewPreviousAldersgruppResult) {
+    void setOverviewPreviousAldersgruppResult(SimpleKonResponse overviewPreviousAldersgruppResult) {
         this.overviewPreviousAldersgruppResult = overviewPreviousAldersgruppResult;
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getOverviewCurrentAldersgruppResult() {
+    SimpleKonResponse getOverviewCurrentAldersgruppResult() {
         return overviewCurrentAldersgruppResult;
     }
 
-    void setOverviewCurrentAldersgruppResult(SimpleKonResponse<SimpleKonDataRow> overviewCurrentAldersgruppResult) {
+    void setOverviewCurrentAldersgruppResult(SimpleKonResponse overviewCurrentAldersgruppResult) {
         this.overviewCurrentAldersgruppResult = overviewCurrentAldersgruppResult;
     }
 
@@ -260,51 +259,51 @@ public class NationellDataInfo {
         this.overviewSjukskrivningsgrader = overviewSjukskrivningsgrader;
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getOverviewSjukskrivningslangdPreviousResult() {
+    SimpleKonResponse getOverviewSjukskrivningslangdPreviousResult() {
         return overviewSjukskrivningslangdPreviousResult;
     }
 
-    void setOverviewSjukskrivningslangdPreviousResult(SimpleKonResponse<SimpleKonDataRow> overviewSjukskrivningslangdPreviousResult) {
+    void setOverviewSjukskrivningslangdPreviousResult(SimpleKonResponse overviewSjukskrivningslangdPreviousResult) {
         this.overviewSjukskrivningslangdPreviousResult = overviewSjukskrivningslangdPreviousResult;
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getOverviewSjukskrivningslangdCurrentResult() {
+    SimpleKonResponse getOverviewSjukskrivningslangdCurrentResult() {
         return overviewSjukskrivningslangdCurrentResult;
     }
 
-    void setOverviewSjukskrivningslangdCurrentResult(SimpleKonResponse<SimpleKonDataRow> overviewSjukskrivningslangdCurrentResult) {
+    void setOverviewSjukskrivningslangdCurrentResult(SimpleKonResponse overviewSjukskrivningslangdCurrentResult) {
         this.overviewSjukskrivningslangdCurrentResult = overviewSjukskrivningslangdCurrentResult;
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getOverviewLangaSjukfallResult() {
+    SimpleKonResponse getOverviewLangaSjukfallResult() {
         return overviewLangaSjukfallResult;
     }
 
-    void setOverviewLangaSjukfallResult(SimpleKonResponse<SimpleKonDataRow> overviewLangaSjukfallResult) {
+    void setOverviewLangaSjukfallResult(SimpleKonResponse overviewLangaSjukfallResult) {
         this.overviewLangaSjukfallResult = overviewLangaSjukfallResult;
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getOverviewLangaSjukfallDiffResult() {
+    SimpleKonResponse getOverviewLangaSjukfallDiffResult() {
         return overviewLangaSjukfallDiffResult;
     }
 
-    void setOverviewLangaSjukfallDiffResult(SimpleKonResponse<SimpleKonDataRow> overviewLangaSjukfallDiffResult) {
+    void setOverviewLangaSjukfallDiffResult(SimpleKonResponse overviewLangaSjukfallDiffResult) {
         this.overviewLangaSjukfallDiffResult = overviewLangaSjukfallDiffResult;
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getOverviewLanPreviousResult() {
+    SimpleKonResponse getOverviewLanPreviousResult() {
         return overviewLanPreviousResult;
     }
 
-    void setOverviewLanPreviousResult(SimpleKonResponse<SimpleKonDataRow> overviewLanPreviousResult) {
+    void setOverviewLanPreviousResult(SimpleKonResponse overviewLanPreviousResult) {
         this.overviewLanPreviousResult = overviewLanPreviousResult;
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getOverviewLanCurrentResult() {
+    SimpleKonResponse getOverviewLanCurrentResult() {
         return overviewLanCurrentResult;
     }
 
-    void setOverviewLanCurrentResult(SimpleKonResponse<SimpleKonDataRow> overviewLanCurrentResult) {
+    void setOverviewLanCurrentResult(SimpleKonResponse overviewLanCurrentResult) {
         this.overviewLanCurrentResult = overviewLanCurrentResult;
     }
 

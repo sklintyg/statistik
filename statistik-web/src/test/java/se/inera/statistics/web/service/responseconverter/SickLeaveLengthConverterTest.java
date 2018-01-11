@@ -49,7 +49,7 @@ public class SickLeaveLengthConverterTest {
         sjukfallslangdRows.add(new SimpleKonDataRow("< 20 dagar", 13, 14));
         sjukfallslangdRows.add(new SimpleKonDataRow("20-50 dagar", 24, 15));
         sjukfallslangdRows.add(new SimpleKonDataRow("> 50 dagar", 3, 9));
-        SimpleKonResponse<SimpleKonDataRow> sjukfallslangdResponse = new SimpleKonResponse<>(sjukfallslangdRows);
+        SimpleKonResponse sjukfallslangdResponse = new SimpleKonResponse(sjukfallslangdRows);
 
         //When
         final Range range = Range.createForLastMonthsExcludingCurrent(7, Clock.systemDefaultZone());

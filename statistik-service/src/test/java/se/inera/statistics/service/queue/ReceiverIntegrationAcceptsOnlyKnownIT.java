@@ -100,7 +100,7 @@ public class ReceiverIntegrationAcceptsOnlyKnownIT {
     @Test
     public void onlyKnownAndUnsetIntygTypesAreAcceptedINTYG2734() {
         populate();
-        SimpleKonResponse<SimpleKonDataRow> webData = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("enhetId")), sjukfallUtil.createEnhetFilter(new HsaIdEnhet("ENHETID")), LocalDate.parse("2011-01-01"), 12, 1, false);
+        SimpleKonResponse webData = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("enhetId")), sjukfallUtil.createEnhetFilter(new HsaIdEnhet("ENHETID")), LocalDate.parse("2011-01-01"), 12, 1, false);
 
         assertEquals(12, webData.getRows().size());
 

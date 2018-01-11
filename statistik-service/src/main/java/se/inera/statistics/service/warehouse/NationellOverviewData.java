@@ -66,7 +66,7 @@ public class NationellOverviewData {
     }
 
     private int getForandring(NationellDataInfo data) {
-        SimpleKonResponse<SimpleKonDataRow> intyg = data.getOverviewForandringResult();
+        SimpleKonResponse intyg = data.getOverviewForandringResult();
 
         if (intyg.getRows().size() >= 2) {
             SimpleKonDataRow previous = intyg.getRows().get(0);
@@ -78,8 +78,8 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRowExtended> getIntygPerLan(NationellDataInfo data) {
-        SimpleKonResponse<SimpleKonDataRow> previousData = data.getOverviewLanPreviousResult();
-        SimpleKonResponse<SimpleKonDataRow> currentData = data.getOverviewLanCurrentResult();
+        SimpleKonResponse previousData = data.getOverviewLanPreviousResult();
+        SimpleKonResponse currentData = data.getOverviewLanCurrentResult();
 
         Set<String> include = getTop(MAX_LAN, currentData);
 
@@ -87,7 +87,7 @@ public class NationellOverviewData {
     }
 
     private int getForandringLangaSjukskrivningar(NationellDataInfo data) {
-        SimpleKonResponse<SimpleKonDataRow> langaSjukfall = data.getOverviewLangaSjukfallDiffResult();
+        SimpleKonResponse langaSjukfall = data.getOverviewLangaSjukfallDiffResult();
         if (langaSjukfall == null || langaSjukfall.getRows().isEmpty()) {
             return 0;
         }
@@ -97,7 +97,7 @@ public class NationellOverviewData {
     }
 
     private int getLangaSjukskrivningar(NationellDataInfo data) {
-        SimpleKonResponse<SimpleKonDataRow> langaSjukfall = data.getOverviewLangaSjukfallResult();
+        SimpleKonResponse langaSjukfall = data.getOverviewLangaSjukfallResult();
         if (langaSjukfall == null) {
             return 0;
         }
@@ -109,8 +109,8 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRow> getSjukskrivningslangdgrupper(NationellDataInfo data) {
-        SimpleKonResponse<SimpleKonDataRow> previousData = data.getOverviewSjukskrivningslangdPreviousResult();
-        SimpleKonResponse<SimpleKonDataRow> currentData = data.getOverviewSjukskrivningslangdCurrentResult();
+        SimpleKonResponse previousData = data.getOverviewSjukskrivningslangdPreviousResult();
+        SimpleKonResponse currentData = data.getOverviewSjukskrivningslangdCurrentResult();
 
         List<OverviewChartRow> result = new ArrayList<>();
         if (previousData == null || currentData == null) {
@@ -159,8 +159,8 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRowExtended> getAldersgrupper(NationellDataInfo data) {
-        SimpleKonResponse<SimpleKonDataRow> previousData = data.getOverviewPreviousAldersgruppResult();
-        SimpleKonResponse<SimpleKonDataRow> currentData = data.getOverviewCurrentAldersgruppResult();
+        SimpleKonResponse previousData = data.getOverviewPreviousAldersgruppResult();
+        SimpleKonResponse currentData = data.getOverviewCurrentAldersgruppResult();
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
         if (previousData == null || currentData == null) {
@@ -186,8 +186,8 @@ public class NationellOverviewData {
         return result;
     }
 
-    private List<OverviewChartRowExtended> getResult(Set<String> include, SimpleKonResponse<SimpleKonDataRow> previousData,
-            SimpleKonResponse<SimpleKonDataRow> currentData, String rest) {
+    private List<OverviewChartRowExtended> getResult(Set<String> include, SimpleKonResponse previousData,
+            SimpleKonResponse currentData, String rest) {
         List<OverviewChartRowExtended> result = new ArrayList<>();
 
         int restCurrent = 0;
@@ -215,7 +215,7 @@ public class NationellOverviewData {
         return result;
     }
 
-    private Set<String> getTop(int size, SimpleKonResponse<SimpleKonDataRow> currentData) {
+    private Set<String> getTop(int size, SimpleKonResponse currentData) {
         List<SimpleKonDataRow> sorted = new ArrayList<>(currentData.getRows());
         Collections.sort(sorted, (o1, o2) -> total(o2) - total(o1));
 
@@ -264,7 +264,7 @@ public class NationellOverviewData {
     }
 
     private OverviewKonsfordelning getSexProportion(NationellDataInfo data) {
-        final SimpleKonResponse<SimpleKonDataRow> intyg = data.getOverviewGenderResult();
+        final SimpleKonResponse intyg = data.getOverviewGenderResult();
         final Range range = data.getOverviewRange();
         if (intyg.getRows().isEmpty()) {
             return new OverviewKonsfordelning(0, 0, range);

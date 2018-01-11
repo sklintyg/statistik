@@ -136,7 +136,7 @@ public class ChartDataService {
     /*
      * private void buildNumberOfMeddelandenPerMonth() {
      * final Range range = Range.createForLastMonthsExcludingCurrent(EIGHTEEN_MONTHS, clock);
-     * SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getMeddelandenPerMonth(range);
+     * SimpleKonResponse casesPerMonth = data.getMeddelandenPerMonth(range);
      * final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
      * numberOfMeddelandenPerMonth = new MessagePeriodConverter().convert(casesPerMonth, filterSettings);
      * }

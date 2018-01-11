@@ -44,7 +44,7 @@ public final class MessageAmneTvarsnittConverter extends SimpleDualSexConverter 
     }
 
     @Override
-    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings, Message message) {
+    public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, FilterSettings filterSettings, Message message) {
         List<SimpleKonDataRow> rowsToShow = casesPerMonth.getRows().stream().filter(simpleKonDataRow -> {
             if (simpleKonDataRow.getFemale() + simpleKonDataRow.getMale() <= 0) {
                 final Object amne = simpleKonDataRow.getExtras();
@@ -55,7 +55,7 @@ public final class MessageAmneTvarsnittConverter extends SimpleDualSexConverter 
             return true;
         }).collect(Collectors.toList());
 
-        return super.convert(new SimpleKonResponse<>(rowsToShow), filterSettings, message);
+        return super.convert(new SimpleKonResponse(rowsToShow), filterSettings, message);
     }
 
 }

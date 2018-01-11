@@ -184,12 +184,12 @@ public class SjukfallUtil {
     }
     // CHECKSTYLE:ON
 
-    public SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
+    public SimpleKonResponse calculateSimpleKonResponse(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
             int periodLength, CounterFunction<Integer> toCount, List<Integer> groups) {
         return calculateSimpleKonResponse(toCount, groups, sjukfallGrupper(from, periods, periodLength, aisle, filter));
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> calculateSimpleKonResponse(CounterFunction<Integer> toCount, List<Integer> groups,
+    private SimpleKonResponse calculateSimpleKonResponse(CounterFunction<Integer> toCount, List<Integer> groups,
             Iterable<SjukfallGroup> sjukfallGroups) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         HashMultiset<Integer> maleCounter = HashMultiset.create();
@@ -203,7 +203,7 @@ public class SjukfallUtil {
         for (Integer group : groups) {
             rows.add(new SimpleKonDataRow(String.valueOf(group), femaleCounter.count(group), maleCounter.count(group)));
         }
-        return new SimpleKonResponse<>(rows);
+        return new SimpleKonResponse(rows);
     }
 
 }

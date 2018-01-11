@@ -99,19 +99,19 @@ public final class SjukskrivningslangdQuery {
         return counters;
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
+    public static SimpleKonResponse getLangaSjukfall(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
             int periodLength, SjukfallUtil sjukfallUtil) {
         final Function<SjukfallGroup, String> rowNameFunction = sjukfallGroup -> ReportUtil.toPeriod(sjukfallGroup.getRange().getFrom());
         return getLangaSjukfall(aisle, filter, from, periods, periodLength, sjukfallUtil, rowNameFunction);
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from,
+    public static SimpleKonResponse getLangaSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from,
             int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         final Function<SjukfallGroup, String> rowNameFunction = sjukfallGroup -> "Mer än 90 dagar";
         return getLangaSjukfall(aisle, filter, from, periods, periodLength, sjukfallUtil, rowNameFunction);
     }
 
-    private static SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
+    private static SimpleKonResponse getLangaSjukfall(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
             int periodLength, SjukfallUtil sjukfallUtil, Function<SjukfallGroup, String> rowNameFunction) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle,
@@ -125,10 +125,10 @@ public final class SjukskrivningslangdQuery {
             rows.add(new SimpleKonDataRow(rowNameFunction.apply(sjukfallGroup), counter.getCountFemale(), counter.getCountMale()));
         }
 
-        return new SimpleKonResponse<>(rows);
+        return new SimpleKonResponse(rows);
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getSjuksrivningslangd(Aisle aisle, FilterPredicates filter, LocalDate from,
+    public static SimpleKonResponse getSjuksrivningslangd(Aisle aisle, FilterPredicates filter, LocalDate from,
             int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle,
@@ -139,7 +139,7 @@ public final class SjukskrivningslangdQuery {
                 rows.add(new SimpleKonDataRow(i.getName(), counter.getCountFemale(), counter.getCountMale()));
             }
         }
-        return new SimpleKonResponse<>(rows);
+        return new SimpleKonResponse(rows);
 
     }
 

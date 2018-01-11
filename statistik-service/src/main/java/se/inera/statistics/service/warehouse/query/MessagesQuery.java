@@ -66,14 +66,14 @@ public class MessagesQuery {
         return new KonDataResponse(messagesTvarsnittPerAmne.getGroups(), list);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getMessages(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter, LocalDate start,
+    public SimpleKonResponse getMessages(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter, LocalDate start,
             int perioder) {
         LocalDate to = start.plusMonths(perioder);
         List<MessageWidelineLoader.CountDTO> rows = messageWidelineLoader.getAntalMeddelandenPerMonth(start, to, vardgivare, enheter);
         return convertToSimpleResponse(rows, start, perioder);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getMessagesTvarsnitt(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter,
+    public SimpleKonResponse getMessagesTvarsnitt(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter,
             LocalDate start, int perioder) {
         LocalDate to = start.plusMonths(perioder);
         List<MessageWidelineLoader.CountDTO> rows = messageWidelineLoader.getAntalMeddelandenPerMonth(start, to, vardgivare, enheter);
@@ -87,7 +87,7 @@ public class MessagesQuery {
         return convertToMessagesPerAmne(rows, start, perioder);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getMessagesTvarsnittPerAmne(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter,
+    public SimpleKonResponse getMessagesTvarsnittPerAmne(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter,
             LocalDate start, int perioder) {
         LocalDate to = start.plusMonths(perioder);
         List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(start, to, vardgivare, enheter);
@@ -108,7 +108,7 @@ public class MessagesQuery {
         return convertToSimpleResponseTvarsnittPerAmnePerEnhet(rows);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getAntalMeddelanden(LocalDate start, int perioder) {
+    public SimpleKonResponse getAntalMeddelanden(LocalDate start, int perioder) {
         LocalDate to = start.plusMonths(perioder);
         List<MessageWidelineLoader.CountDTO> rows = messageWidelineLoader.getAntalMeddelandenPerMonth(start, to);
 
@@ -220,7 +220,7 @@ public class MessagesQuery {
                     : Collections.emptyList();
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> convertToSimpleResponse(List<MessageWidelineLoader.CountDTO> rows, LocalDate start,
+    private SimpleKonResponse convertToSimpleResponse(List<MessageWidelineLoader.CountDTO> rows, LocalDate start,
             int perioder) {
         List<SimpleKonDataRow> result = new ArrayList<>();
         Map<LocalDate, List<MessageWidelineLoader.CountDTO>> map;
@@ -251,10 +251,10 @@ public class MessagesQuery {
             result.add(new SimpleKonDataRow(displayDate, female, male));
         }
 
-        return new SimpleKonResponse<>(result);
+        return new SimpleKonResponse(result);
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> convertToSimpleResponseTvarsnitt(List<MessageWidelineLoader.CountDTO> rows) {
+    private SimpleKonResponse convertToSimpleResponseTvarsnitt(List<MessageWidelineLoader.CountDTO> rows) {
         List<SimpleKonDataRow> result = new ArrayList<>();
 
         int male = 0;
@@ -270,10 +270,10 @@ public class MessagesQuery {
 
         result.add(new SimpleKonDataRow("Totalt", female, male));
 
-        return new SimpleKonResponse<>(result);
+        return new SimpleKonResponse(result);
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> convertToSimpleResponseTvarsnittPerAmne(List<CountDTOAmne> rows) {
+    private SimpleKonResponse convertToSimpleResponseTvarsnittPerAmne(List<CountDTOAmne> rows) {
         List<SimpleKonDataRow> result = new ArrayList<>();
 
         final MsgAmne[] msgAmnes = MsgAmne.values();
@@ -295,7 +295,7 @@ public class MessagesQuery {
             result.add(new SimpleKonDataRow(text, femaleSeries[i], maleSeries[i], msgAmne));
         }
 
-        return new SimpleKonResponse<>(result);
+        return new SimpleKonResponse(result);
     }
 
     private KonDataResponse convertToSimpleResponseTvarsnittPerAmnePerEnhet(List<CountDTOAmne> rows) {

@@ -50,7 +50,7 @@ public class GroupedSjukfallWithLandstingSortingConverter extends SimpleDualSexC
     }
 
     @Override
-    protected ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
+    protected ChartData convertToChartData(SimpleKonResponse casesPerMonth) {
         Collections.sort(casesPerMonth.getRows(), new Comparator<SimpleKonDataRow>() {
             @Override
             public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {

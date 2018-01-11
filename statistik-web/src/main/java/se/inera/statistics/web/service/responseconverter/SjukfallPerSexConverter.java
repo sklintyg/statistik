@@ -59,7 +59,7 @@ public class SjukfallPerSexConverter {
         return Math.round(toPercentFactor * value / rowSum) + " % (" + formatter.format(value) + ")";
     }
 
-    private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
+    private ChartData convertToChartData(SimpleKonResponse casesPerMonth) {
         final ArrayList<ChartCategory> categories = new ArrayList<>();
         categories.add(new ChartCategory("Samtliga län"));
         for (SimpleKonDataRow casesPerMonthRow : casesPerMonth.getRows()) {
@@ -73,14 +73,14 @@ public class SjukfallPerSexConverter {
         return new ChartData(series, categories);
     }
 
-    private List<Integer> getSeriesForSexWithTotal(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, final Kon kon) {
+    private List<Integer> getSeriesForSexWithTotal(SimpleKonResponse casesPerMonth, final Kon kon) {
         ArrayList<Integer> series = new ArrayList<>();
         series.add(getSumForSex(casesPerMonth, kon));
         series.addAll(casesPerMonth.getDataForSex(kon));
         return series;
     }
 
-    private Integer getSumForSex(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, Kon kon) {
+    private Integer getSumForSex(SimpleKonResponse casesPerMonth, Kon kon) {
         int sum = 0;
         List<Integer> data = casesPerMonth.getDataForSex(kon);
         for (Integer value : data) {
@@ -89,7 +89,7 @@ public class SjukfallPerSexConverter {
         return sum;
     }
 
-    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, Range range) {
+    public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, Range range) {
         TableData tableData = convertToTableData(casesPerMonth.getRows());
         ChartData chartData = convertToChartData(casesPerMonth);
         return new SimpleDetailsData(tableData, chartData, range.toString(), FilterDataResponse.empty());

@@ -82,20 +82,20 @@ public class SjukfallQuery {
         this.cutoff = cutoff;
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
+    public SimpleKonResponse getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
             int periodlangd, boolean applyCutoff) {
         final Function<SjukfallGroup, String> rowNameFunction = sjukfallGroup -> ReportUtil
                 .toDiagramPeriod(sjukfallGroup.getRange().getFrom());
         return getSjukfall(aisle, filter, start, perioder, periodlangd, rowNameFunction, applyCutoff);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
+    public SimpleKonResponse getSjukfallTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
             int periodlangd, boolean applyCutoff) {
         final Function<SjukfallGroup, String> rowNameFunction = sjukfallGroup -> "Totalt";
         return getSjukfall(aisle, filter, start, perioder, periodlangd, rowNameFunction, applyCutoff);
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
+    private SimpleKonResponse getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
                                                             int periodlangd, Function<SjukfallGroup, String> rowName, boolean applyCutoff) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(start, perioder, periodlangd, aisle, filter)) {
@@ -108,16 +108,16 @@ public class SjukfallQuery {
             result.add(new SimpleKonDataRow(rowName.apply(sjukfallGroup), female, male));
         }
 
-        return new SimpleKonResponse<>(result);
+        return new SimpleKonResponse(result);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerEnhet(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
+    public SimpleKonResponse getSjukfallPerEnhet(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
             int periodLength, Map<HsaIdEnhet, String> idsToNames, CutoffUsage cutoffUsage) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             rows.addAll(getSjukfallForGroup(idsToNames, cutoffUsage, sjukfallGroup));
         }
-        return new SimpleKonResponse<>(rows);
+        return new SimpleKonResponse(rows);
     }
 
     private List<SimpleKonDataRow> getSjukfallForGroup(Map<HsaIdEnhet, String> idsToNames, CutoffUsage cutoffUsage,
@@ -176,7 +176,7 @@ public class SjukfallQuery {
         return count;
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakare(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
+    public SimpleKonResponse getSjukfallPerLakare(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
             int periodLength) {
         final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
             for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {

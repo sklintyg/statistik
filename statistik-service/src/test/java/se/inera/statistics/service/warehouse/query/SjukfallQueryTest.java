@@ -125,7 +125,7 @@ public class SjukfallQueryTest {
 
         // When
         enhetFilter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle.createAisle(), enhetFilter, range.getFrom(), 1, 12);
+        SimpleKonResponse result = sjukfallQuery.getSjukfallPerLakare(aisle.createAisle(), enhetFilter, range.getFrom(), 1, 12);
 
         // Then
         assertEquals(2, result.getRows().size());
@@ -158,7 +158,7 @@ public class SjukfallQueryTest {
         aisle.addLine(fact(PATIENT1_ID, PATIENT1_KON, LAKARE2_ID));
 
         // When
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle.createAisle(), enhetFilter, range.getFrom(), 1, 12);
+        SimpleKonResponse result = sjukfallQuery.getSjukfallPerLakare(aisle.createAisle(), enhetFilter, range.getFrom(), 1, 12);
 
         // Then
         assertEquals(2, result.getRows().size());
@@ -190,7 +190,7 @@ public class SjukfallQueryTest {
         aisle.addLine(fact(PATIENT1_ID, PATIENT1_KON, LAKARE3_ID));
 
         // When
-        SimpleKonResponse<SimpleKonDataRow> result = sjukfallQuery.getSjukfallPerLakare(aisle.createAisle(), SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID), range.getFrom(), 1, 12);
+        SimpleKonResponse result = sjukfallQuery.getSjukfallPerLakare(aisle.createAisle(), SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID), range.getFrom(), 1, 12);
 
         // Then
         assertEquals(2, result.getRows().size());

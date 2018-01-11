@@ -32,7 +32,7 @@ public final class SimpleKonResponses {
     private SimpleKonResponses() {
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> addExtrasToNameDuplicates(SimpleKonResponse<SimpleKonDataRow> input) {
+    public static SimpleKonResponse addExtrasToNameDuplicates(SimpleKonResponse input) {
         final List<SimpleKonDataRow> rows = input.getRows();
         final Map<Object, String> namePerExtras = getNamePerExtrasWhereExtrasIsAddedToDuplicates(rows);
         final List<SimpleKonDataRow> updatedRows = new ArrayList<>(rows.size());

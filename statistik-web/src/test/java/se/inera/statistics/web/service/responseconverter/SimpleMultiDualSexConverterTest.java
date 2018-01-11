@@ -47,7 +47,7 @@ public class SimpleMultiDualSexConverterTest {
         dualSexRows.add(new SimpleKonDataRow("jan 12", 12, 13));
         dualSexRows.add(new SimpleKonDataRow("feb 12", 20, 30));
         dualSexRows.add(new SimpleKonDataRow("mar 12", 5, 25));
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<>(dualSexRows);
+        SimpleKonResponse casesPerMonth = new SimpleKonResponse(dualSexRows);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
         SimpleDetailsData result = converter.convert(casesPerMonth, filterSettings);
         TableData tableData = result.getTableData();

@@ -33,7 +33,6 @@ import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.NationellDataInfo;
@@ -91,7 +90,7 @@ public class NationellDataCalculator {
     }
 
     private SimpleDetailsData buildNumberOfCasesPerMonth(NationellDataInfo data) {
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getAntalIntygResult();
+        SimpleKonResponse casesPerMonth = data.getAntalIntygResult();
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), data.getAntalIntygRange());
         return new PeriodConverter().convert(casesPerMonth, filterSettings);
     }
@@ -122,7 +121,7 @@ public class NationellDataCalculator {
     }
 
     private SimpleDetailsData buildAldersgrupper(NationellDataInfo data) {
-        SimpleKonResponse<SimpleKonDataRow> ageGroups = data.getAldersgrupperResult();
+        SimpleKonResponse ageGroups = data.getAldersgrupperResult();
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), data.getAldersgrupperRange());
         return SimpleDualSexConverter.newGenericTvarsnitt().convert(ageGroups, filterSettings);
     }
@@ -134,20 +133,20 @@ public class NationellDataCalculator {
     }
 
     private SimpleDetailsData buildSjukfallslangd(NationellDataInfo data) {
-        SimpleKonResponse<SimpleKonDataRow> sickLeaveLength = data.getSjukfallslangdResult();
+        SimpleKonResponse sickLeaveLength = data.getSjukfallslangdResult();
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), data.getSjukfallslangdRange());
         return SimpleDualSexConverter.newGenericTvarsnitt().convert(sickLeaveLength, filterSettings);
     }
 
     private CasesPerCountyData buildSjukfallPerLan(NationellDataInfo data) {
-        SimpleKonResponse<SimpleKonDataRow> calculatedSjukfallPerLan = data.getLanResult();
+        SimpleKonResponse calculatedSjukfallPerLan = data.getLanResult();
         final Range range = data.getLanRange();
         final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation(range);
         return new CasesPerCountyConverter(calculatedSjukfallPerLan, countyPopulation, range).convert();
     }
 
     private SimpleDetailsData buildKonsfordelningPerLan(NationellDataInfo data) {
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = data.getLanResult();
+        SimpleKonResponse casesPerMonth = data.getLanResult();
         return new SjukfallPerSexConverter().convert(casesPerMonth, data.getLanRange());
     }
 

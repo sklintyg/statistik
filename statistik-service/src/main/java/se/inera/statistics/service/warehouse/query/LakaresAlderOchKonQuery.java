@@ -22,7 +22,6 @@ import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.warehouse.Aisle;
@@ -68,7 +67,7 @@ public final class LakaresAlderOchKonQuery {
         }
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getSjukfallPerLakaresAlderOchKon(Aisle aisle, FilterPredicates filter, LocalDate start,
+    public SimpleKonResponse getSjukfallPerLakaresAlderOchKon(Aisle aisle, FilterPredicates filter, LocalDate start,
             int periods, int periodLength) {
         final Function<Sjukfall, Collection<Lakare>> getLakaresFunc = Sjukfall::getLakare;
         final KonDataResponse konDataResponse = getSjukfallPerLakaresAlderOchKonCommon(aisle, filter, start, periods, periodLength,

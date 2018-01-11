@@ -26,15 +26,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class SimpleKonResponse<T extends SimpleKonDataRow> {
+public class SimpleKonResponse {
 
-    private final List<T> rows;
+    private final List<SimpleKonDataRow> rows;
 
-    public SimpleKonResponse(List<T> rows) {
+    public SimpleKonResponse(List<SimpleKonDataRow> rows) {
         this.rows = rows;
     }
 
-    public List<T> getRows() {
+    public List<SimpleKonDataRow> getRows() {
         return rows;
     }
 
@@ -67,15 +67,15 @@ public class SimpleKonResponse<T extends SimpleKonDataRow> {
         return "{\"SimpleKonResponse\":{" + "\"rows\":" + rows + "}}";
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> create(KonDataResponse konDataResponse) {
+    public static SimpleKonResponse create(KonDataResponse konDataResponse) {
         if (konDataResponse == null) {
-            return new SimpleKonResponse<>(Collections.<SimpleKonDataRow>emptyList());
+            return new SimpleKonResponse(Collections.<SimpleKonDataRow>emptyList());
         }
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         for (int i = 0; i < konDataResponse.getGroups().size(); i++) {
             simpleKonDataRows.add(createRowFromDataIndex(konDataResponse, i));
         }
-        return new SimpleKonResponse<>(simpleKonDataRows);
+        return new SimpleKonResponse(simpleKonDataRows);
     }
 
     private static SimpleKonDataRow createRowFromDataIndex(KonDataResponse diagnosgruppResponse, int index) {
@@ -90,11 +90,11 @@ public class SimpleKonResponse<T extends SimpleKonDataRow> {
         return new SimpleKonDataRow(groupName, sumFemale, sumMale);
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> merge(Collection<SimpleKonResponse<SimpleKonDataRow>> resps, boolean mergeEqualRows) {
+    public static SimpleKonResponse merge(Collection<SimpleKonResponse> resps, boolean mergeEqualRows) {
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
         if (mergeEqualRows) {
             Multimap<String, SimpleKonDataRow> mappedResps = LinkedHashMultimap.create();
-            for (SimpleKonResponse<SimpleKonDataRow> resp : resps) {
+            for (SimpleKonResponse resp : resps) {
                 for (SimpleKonDataRow row : resp.getRows()) {
                     mappedResps.put(row.getName(), row);
                 }
@@ -103,11 +103,11 @@ public class SimpleKonResponse<T extends SimpleKonDataRow> {
                 rows.add(mergeRows(sameRows));
             }
         } else {
-            for (SimpleKonResponse<SimpleKonDataRow> resp : resps) {
+            for (SimpleKonResponse resp : resps) {
                 rows.addAll(resp.getRows());
             }
         }
-        return new SimpleKonResponse<>(rows);
+        return new SimpleKonResponse(rows);
     }
 
     private static SimpleKonDataRow mergeRows(Collection<SimpleKonDataRow> rows) {

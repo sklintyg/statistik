@@ -30,10 +30,10 @@ public class SimpleKonResponsesTest {
     public void testAddExtrasToNameDuplicatesEmptyInput() throws Exception {
         //Given
         final ArrayList<SimpleKonDataRow> skdr = new ArrayList<>();
-        final SimpleKonResponse<SimpleKonDataRow> skr = new SimpleKonResponse<>(skdr);
+        final SimpleKonResponse skr = new SimpleKonResponse(skdr);
 
         //When
-        final SimpleKonResponse<SimpleKonDataRow> result = SimpleKonResponses.addExtrasToNameDuplicates(skr);
+        final SimpleKonResponse result = SimpleKonResponses.addExtrasToNameDuplicates(skr);
 
         //Then
         assertEquals(0, result.getGroups().size());
@@ -46,10 +46,10 @@ public class SimpleKonResponsesTest {
         skdr.add(new SimpleKonDataRow("ABC", 0, 0, 1));
         skdr.add(new SimpleKonDataRow("abc", 0, 0, 2));
         skdr.add(new SimpleKonDataRow("CBA", 0, 0, 3));
-        final SimpleKonResponse<SimpleKonDataRow> skr = new SimpleKonResponse<>(skdr);
+        final SimpleKonResponse skr = new SimpleKonResponse(skdr);
 
         //When
-        final SimpleKonResponse<SimpleKonDataRow> result = SimpleKonResponses.addExtrasToNameDuplicates(skr);
+        final SimpleKonResponse result = SimpleKonResponses.addExtrasToNameDuplicates(skr);
 
         //Then
         assertEquals(3, result.getGroups().size());

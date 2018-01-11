@@ -71,14 +71,14 @@ public class SimpleDualSexConverter {
                 "Antal intyg för män");
     }
 
-    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings) {
+    public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, FilterSettings filterSettings) {
         return convert(casesPerMonth, filterSettings, null);
     }
 
-    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonthIn, FilterSettings filterSettings, Message message) {
+    public SimpleDetailsData convert(SimpleKonResponse casesPerMonthIn, FilterSettings filterSettings, Message message) {
         TableData tableData = convertToTableData(casesPerMonthIn.getRows());
-        SimpleKonResponse<SimpleKonDataRow> casesPerMonth = casesPerMonthIn.getRows().isEmpty()
-                ? new SimpleKonResponse<>(Arrays.asList(new SimpleKonDataRow("Totalt", 0, 0))) : casesPerMonthIn;
+        SimpleKonResponse casesPerMonth = casesPerMonthIn.getRows().isEmpty()
+                ? new SimpleKonResponse(Arrays.asList(new SimpleKonDataRow("Totalt", 0, 0))) : casesPerMonthIn;
         ChartData chartData = convertToChartData(casesPerMonth);
         final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
@@ -105,7 +105,7 @@ public class SimpleDualSexConverter {
         return false;
     }
 
-    protected ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
+    protected ChartData convertToChartData(SimpleKonResponse casesPerMonth) {
         final ArrayList<ChartCategory> categories = new ArrayList<>();
         for (SimpleKonDataRow casesPerMonthRow : casesPerMonth.getRows()) {
             final String seriesName = String.format(seriesNameTemplate, casesPerMonthRow.getName());

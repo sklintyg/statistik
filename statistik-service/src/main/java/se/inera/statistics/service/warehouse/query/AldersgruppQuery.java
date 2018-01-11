@@ -95,7 +95,7 @@ public final class AldersgruppQuery {
         return counters;
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
+    public static SimpleKonResponse getAldersgrupper(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
             int periodLength, SjukfallUtil sjukfallUtil) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
@@ -105,7 +105,7 @@ public final class AldersgruppQuery {
                 rows.add(new SimpleKonDataRow(i.getName(), counter.getCountFemale(), counter.getCountMale()));
             }
         }
-        return new SimpleKonResponse<>(rows);
+        return new SimpleKonResponse(rows);
     }
 
     public static KonDataResponse getAldersgrupperSomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,

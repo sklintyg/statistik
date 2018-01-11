@@ -25,7 +25,6 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.ChartCategory;
@@ -121,7 +120,7 @@ public class DiagnosisSubGroupsConverter {
         return getTopColumnIndexes(SimpleKonResponse.create(diagnosisGroups));
     }
 
-    static List<Integer> getTopColumnIndexes(SimpleKonResponse<SimpleKonDataRow> simpleKonDataRowSimpleKonResponse) {
+    static List<Integer> getTopColumnIndexes(SimpleKonResponse simpleKonDataRowSimpleKonResponse) {
         if (simpleKonDataRowSimpleKonResponse.getRows().isEmpty()) {
             return new ArrayList<>();
         }
@@ -138,14 +137,14 @@ public class DiagnosisSubGroupsConverter {
         }
     }
 
-    private static List<Integer> getColumnIndexesSortedBySum(SimpleKonResponse<SimpleKonDataRow> simpleKonDataRowSimpleKonResponse) {
+    private static List<Integer> getColumnIndexesSortedBySum(SimpleKonResponse simpleKonDataRowSimpleKonResponse) {
         return getIndexedSums(simpleKonDataRowSimpleKonResponse).stream()
                 .sorted((o1, o2) -> o2.getValue() - o1.getValue())
                 .map(Pair::getKey)
                 .collect(Collectors.toList());
     }
 
-    private static List<Pair<Integer, Integer>> getIndexedSums(SimpleKonResponse<SimpleKonDataRow> simpleKonDataRowSimpleKonResponse) {
+    private static List<Pair<Integer, Integer>> getIndexedSums(SimpleKonResponse simpleKonDataRowSimpleKonResponse) {
         final List<Pair<Integer, Integer>> indexedSums = new ArrayList<>();
         final List<Integer> rowSums = simpleKonDataRowSimpleKonResponse.getSummedData();
         for (int i = 0; i < rowSums.size(); i++) {
