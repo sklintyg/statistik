@@ -1,0 +1,39 @@
+---
+Test
+---
+''!contents -R2 -g -p -f -h''
+
+!3 Givet att:
+| script | dagens datum | 2014-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| intygid | personnr | diagnoskod | intygformat | enhet |
+| 1001 | 19790717-9191 | G01 | LUSE | enhet1 |
+| 1002 | 19790717-9191 | G01 | LUSE | enhet1 |
+| 1003 | 19691230-1234 | G01 | LISJP | enhet2 |
+| 1004 | 19591230-1254 | G01 | LUAE_NA | enhet1 |
+| 1005 | 19491230-1264 | G01 | LUAE_FS | enhet2 |
+
+| Foljande meddelanden finns |
+| personnr | skickat | intygsid | ämne |
+| 19790717-9191 | 2014-06-05T10:00:00 | 1001 | KOMPLT |
+| 19790717-9191 | 2014-06-03T10:00:00 | 1002 | KOMPLT |
+| 19691230-1234 | 2014-06-03T10:00:00 | 1003 | KOMPLT |
+| 19591230-1254 | 2014-06-03T10:00:00 | 1004 | AVSTMN |
+| 19491230-1264 | 2014-06-03T10:00:00 | 1005 | AVSTMN |
+
+!3 Då gäller:
+Om användaren inte gjort något val, eller om användaren valt alla, så visas statistik för alla enheter.
+
+Inloggad:
+
+| Meddelanden i rapporten meddelanden totalt |
+| inloggad som | år | månad | grupp | filter enheter | allaEnhetsfilterValda? | enhetsfilterlista? | män? | kvinnor? |
+| user2 | 2014 | jun | Komplettering | | true | [enhet1, enhet2] | 3 | 0 |
+| user2 | 2014 | jun | Komplettering | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 3 | 0 |
+| user2 | 2014 | jun | Komplettering | enhet1 | false | [enhet1] | 2 | 0 |
+| user2 | 2014 | jun | Avstämningsmöte | | true | [enhet1, enhet2] | 1 | 1 |
+| user2 | 2014 | jun | Avstämningsmöte | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 1 | 1 |
+| user2 | 2014 | jun | Avstämningsmöte | enhet2 | false | [enhet2] | 0 | 1 |

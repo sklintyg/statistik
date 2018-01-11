@@ -1,0 +1,51 @@
+---
+Help: Kan tas med när rapporten Komplettering, Andel intyg har implementerats
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+Det finns ett antal intyg med ett antal tillhörande meddelanden.
+
+Alla intyg har skickats vidare till Försäkringskassan.
+
+!3 Givet att:
+| script | dagens datum  | 2015-11-06  |
+
+Endast 5 intyg har signerats och skickats till Försäkringskassan under de senaste 18 månaderna.
+
+| Enbart foljande intyg finns |
+| intygid | personnr | signeringstid | skickattidpunkt | enhet | intygformat |
+| 1001 | 19790219-9285  | 2015-02-10T12:24:15  | 2015-02-10T12:24:30  | enhet1 | LISJP |
+| 1002 | 19790429-9272  | 2015-03-10T12:25:15  | 2015-03-10T12:25:30  | enhet1 | LISJP |
+| 1003 | 19790429-9282  | 2015-04-10T12:25:15  | 2015-04-10T12:25:30  | enhet1 | LISJP |
+| 1004 | 19791212-1212  | 2015-04-10T12:25:15  | 2015-04-10T12:25:30  | enhet1 | LUSE |
+| 1005 | 19791212-1212  | 2015-04-20T12:25:15  | 2015-04-20T12:25:30  | enhet1 | LISJP |
+
+Av dessa 5 har 3st fått kompletteringar och 1 har fått ett avstämningsmöte.
+
+| Foljande meddelanden finns |
+| personnr | skickat | intygsid | meddelandeamne |
+| 19790219-9285  | 2015-03-12T10:00:00  | 1001 | KOMPLT |
+| 19790429-9272  | 2015-04-03T10:00:00  | 1002 | AVSTMN |
+| 19790429-9272  | 2015-05-03T10:00:00  | 1003 | KOMPLT |
+| 19791212-1212  | 2015-05-10T10:00:00  | 1004 | KOMPLT |
+
+!3 Då gäller:
+Detta filter ska inte ha någon effekt på denna rapport eftersom vissa intyg inte har start och slutdatum
+
+Inloggad:
+
+| Andel i rapporten komplettering andel intyg |
+| inloggad som  | månad | grupp | totalt? | män? | kvinnor? |
+| user1 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 | 0 |
+| user1 | feb | FK 7801 Läkarutlåtande vid aktivite | -1 | -1 | -1 |
+| user1 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | -1 | -1 | -1 |
+| user1 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 1 | 0 | 1 |
+| user1 | mar | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 | 0 |
+| user1 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | -1 | -1 | -1 |
+| user1 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | -1 | -1 | -1 |
+| user1 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |
+| user1 | apr | FK 7800 Läkarutlåtande för sjukersättning | 1 | 1 | 0 |
+| user1 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | -1 | -1 | -1 |
+| user1 | apr | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | -1 | -1 | -1 |
+| user1 | apr | FK 7263/7804 Läkarintyg för sjukpenning | 0,5 | 0 | 1 |
