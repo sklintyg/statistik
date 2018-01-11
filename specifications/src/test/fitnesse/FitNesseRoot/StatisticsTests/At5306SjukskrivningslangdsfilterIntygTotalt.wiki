@@ -1,0 +1,33 @@
+---
+Help: Kan tas med när Intyg,totalt har implementerats
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+!3 Givet att:
+| script | dagens datum  | 2015-11-06  |
+
+| Enbart foljande intyg finns |
+| personnr | signeringstid | enhet | intygformat | start | slut |
+| 19790219-9285  | 2015-02-10T12:24:15  | enhet1 | LUSE | | |
+| 19790219-9285  | 2015-02-12T12:25:15  | enhet1 | LUSE | | |
+| 19790429-9272  | 2015-03-10T12:25:15  | enhet1 | fk7263sit | 2015-03-10 | 2015-10-01 |
+| 19790329-9256  | 2015-03-10T12:25:15  | enhet1 | LUAE_NA | | |
+| 19790529-9289  | 2015-03-10T12:25:15  | enhet1 | LUAE_FS | | |
+| 19790629-9234  | 2015-03-10T12:25:15  | enhet1 | LISJP | 2015-03-10 | 2015-10-01 |
+
+!3 Då gäller:
+Sjukskrivningslängdsfiltret har ingen effekt på denna rapport då vissa intygstyper inte har något slut och startdatum
+
+Inloggad:
+
+| Intyg i rapporten intyg totalt |
+| inloggad som  | år | månad | grupp | filter sjukskrivningslängd | män? | kvinnor? |
+| user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar | 0 | 2 |
+| user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga  | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar | 0 | 0 |
+| user1 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar | 0 | 0 |
+| user1 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar | 0 | 0 |
+| user1 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar | 0 | 0 |
+| user1 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga  | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar | 1 | 0 |
+| user1 | 2015 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar | 0 | 1 |
+| user1 | 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar | 2 | 0 |

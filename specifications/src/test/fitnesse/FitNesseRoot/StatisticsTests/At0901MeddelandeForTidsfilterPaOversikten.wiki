@@ -1,6 +1,9 @@
 ---
 Test
 ---
+---
+Test
+---
 !contents -R2 -g -p -f -h
 
 Testar INTYG-2164. Hade hellre viljat testa detta i ett enhetstest, men det blev allt för komplicerat

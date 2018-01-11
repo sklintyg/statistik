@@ -1,4 +1,9 @@
 ---
+Help: Kan tas med när komplettering, andel intyg har implementerats
+Prune
+Test
+---
+---
 Help: Kan tas med när rapporten Komplettering, Andel intyg har implementerats
 Prune
 Test

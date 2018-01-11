@@ -1,0 +1,47 @@
+---
+Help: Kan tas med när detta är utvecklat
+Prune
+Test
+---
+''!contents -R2 -g -p -f -h''
+
+!3 Givet att:
+| script | dagens datum | 2014-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| intygid | personnr | diagnoskod | intygformat | enhet |
+| 1001 | 19790717-9191 | G01 | LUSE | enhet1 |
+| 1002 | 19790717-9191 | G01 | LUSE | enhet1 |
+| 1003 | 19691230-1234 | G01 | LISJP | enhet1 |
+| 1004 | 19591230-1254 | F41 | LUAE_NA | enhet1 |
+| 1005 | 19491230-1264 | F41 | LUAE_FS | enhet1 |
+
+| Foljande meddelanden finns |
+| personnr | skickat | intygsid | ämne |
+| 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT |
+| 19790717-9191 | 2014-06-03T10:00:00 | 1002 | KOMPLT |
+| 19691230-1234 | 2014-06-03T10:00:00 | 1003 | KOMPLT |
+| 19591230-1254 | 2014-06-03T10:00:00 | 1004 | KOMPLT |
+| 19491230-1264 | 2014-03-03T10:00:00 | 1005 | KOMPLT |
+
+!3 Då gäller:
+Inloggad:
+
+Diagnosen tas från det intyg som meddelandet tillhör.
+
+| Meddelanden i rapporten meddelanden totalt |
+| inloggad som | år | månad | grupp | filter kapitel | filter avsnitt | filter kategorier | män? | kvinnor? |
+| user1 | 2014 | mar | Komplettering | F00-F99 | | | 0 | 1 |
+| user1 | 2014 | mar | Komplettering | | F00-F09 | | 0 | 0 |
+| user1 | 2014 | mar | Komplettering | | | F41 | 0 | 1 |
+| user1 | 2014 | apr | Komplettering | G00-G99 | | | 1 | 0 |
+| user1 | 2014 | apr | Komplettering | | G00-G09 | | 0 | 0 |
+| user1 | 2014 | apr | Komplettering | | | G41 | 1 | 0 |
+| user1 | 2014 | maj | Komplettering | | | | 0 | 0 |
+| user1 | 2014 | maj | Komplettering | | | | 0 | 0 |
+| user1 | 2014 | maj | Komplettering | | | | 0 | 0 |
+| user1 | 2014 | jun | Komplettering | F00-F99 | | | 1 | 0 |
+| user1 | 2014 | jun | Komplettering | | G00-G09 | | 0 | 0 |
+| user1 | 2014 | jun | Komplettering | | | G41 | 2 | 0 |

@@ -1,9 +1,8 @@
 ---
-Help: Kan tas med när rapporten Meddelanden, Vårdenhet har implementerats
-Prune
-Test
+Static
 ---
-!contents -R2 -g -p -f -h
+''!contents -R2 -g -p -f -h''
+
 !3 Givet att:
 Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
 
