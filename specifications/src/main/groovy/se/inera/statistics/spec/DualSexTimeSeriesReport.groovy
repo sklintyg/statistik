@@ -10,7 +10,7 @@ abstract class DualSexTimeSeriesReport extends Rapport {
 
     public void executeDiagram(report) {
         executeWithReport(report)
-        def index = report.maleChart.categories.findIndexOf { item -> item.name == (månad + " " + år) }
+        def index = report.maleChart.categories.findIndexOf { item -> item.name == getKategoriName() }
         markerad = index < 0 ? null : report.maleChart.categories[index].marked
         def male = report.maleChart.series.find { item ->
             println("item" + item + " : grupp: " + grupp)
@@ -22,13 +22,17 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         färg = female == null ? null : female.color
     }
 
+    protected String getKategoriName() {
+        månad + " " + år
+    }
+
     public void executeTabell(report) {
         executeWithReport(report)
         def index = report.tableData.headers[0].findIndexOf { item ->
             println("item" + item + " : grupp: " + grupp)
             item.text != null && item.text.contains(grupp)
         }
-        def row = report.tableData.rows.find { currentRow -> currentRow.name == (månad + " " + år)  }
+        def row = report.tableData.rows.find { currentRow -> currentRow.name == getKategoriName()  }
         if (index < 0 || row == null) {
             totalt = -1
             könTotalt = -1;
@@ -136,6 +140,27 @@ abstract class DualSexTimeSeriesReport extends Rapport {
             return reportsUtil.getReportAntalMeddelandenLandsting(vg, filter)
         }
         throw new RuntimeException("Report -Meddelanden per ämne landsting- is not available on national level");
+    }
+
+    def getReportMeddelandenVardenhet() {
+        if (inloggad) {
+            return reportsUtil.getReportAntalMeddelandenVardenhetInloggad(vg, filter)
+        }
+        return reportsUtil.getReportAntalMeddelanden()
+    }
+
+    def getReportMeddelandenVardenhetLandsting() {
+        if (inloggad) {
+            return reportsUtil.getReportAntalMeddelandenLandsting(vg, filter)
+        }
+        throw new RuntimeException("Report -Meddelanden per ämne landsting- is not available on national level");
+    }
+
+    def getReportMeddelandenVardenhetTvarsnitt() {
+        if (inloggad) {
+            return reportsUtil.getReportAntalMeddelandenVardenhetTvarsnittInloggad(vg, filter)
+        }
+        return new RuntimeException("Report -Meddelanden per ämne per enhet- is not available on national level");
     }
 
 }

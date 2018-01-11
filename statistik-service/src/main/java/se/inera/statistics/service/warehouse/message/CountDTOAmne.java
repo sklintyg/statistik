@@ -27,6 +27,7 @@ public class CountDTOAmne {
     private LocalDate date;
     private Kon kon;
     private MsgAmne amne;
+    private String enhet;
 
     public int getCount() {
         return count;
@@ -58,6 +59,14 @@ public class CountDTOAmne {
 
     public void setAmne(MsgAmne amne) {
         this.amne = amne;
+    }
+
+    public void setEnhet(String enhet) {
+        this.enhet = enhet;
+    }
+
+    public String getEnhet() {
+        return enhet;
     }
 
 }

@@ -155,6 +155,16 @@ public class WarehouseService {
         return messagesQuery.getMessagesTvarsnittPerAmne(vardgivarId, filter.getEnheter(), range.getFrom(), range.getNumberOfMonths());
     }
 
+    public KonDataResponse getMessagesPerAmnePerEnhet(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
+        return messagesQuery.getMessagesPerAmnePerEnhet(vardgivarId, filter.getEnheter(), range.getFrom(),
+                range.getNumberOfMonths());
+    }
+
+    public KonDataResponse getMessagesPerAmnePerEnhetTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
+        return messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(vardgivarId, filter.getEnheter(), range.getFrom(),
+                range.getNumberOfMonths());
+    }
+
     public DiagnosgruppResponse getDiagnosgrupperPerMonth(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return query.getDiagnosgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), range.getNumberOfMonths(), 1);
     }
