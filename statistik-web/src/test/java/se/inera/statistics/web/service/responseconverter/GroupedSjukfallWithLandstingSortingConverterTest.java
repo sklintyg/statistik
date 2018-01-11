@@ -50,7 +50,7 @@ public class GroupedSjukfallWithLandstingSortingConverterTest {
         businessRows.add(new SimpleKonDataRow("enhet1", 12, 13));
         businessRows.add(new SimpleKonDataRow("enhet2", 20, 30));
         businessRows.add(new SimpleKonDataRow("enhet3", 5, 25));
-        SimpleKonResponse<SimpleKonDataRow> casesPerUnit = new SimpleKonResponse<>(businessRows);
+        SimpleKonResponse casesPerUnit = new SimpleKonResponse(businessRows);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
 
         //When

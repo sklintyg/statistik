@@ -30,7 +30,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
@@ -68,7 +67,7 @@ public final class LakarbefattningQuery {
         // CHECKSTYLE:ON MagicNumber
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
+    public static SimpleKonResponse getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
             int periodLength, SjukfallUtil sjukfallUtil) {
         final Function<Sjukfall, Collection<Lakare>> getLakare = Sjukfall::getLakare;
         final KonDataResponse sjukfallSomTidsserie = getSjukfallCommon(aisle, filter, start, periods, periodLength, sjukfallUtil,

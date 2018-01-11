@@ -153,7 +153,7 @@ public class DiagnosgruppQuery {
         throw new RangeNotFoundException("Could not find ICD10 range: " + rangeId);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getJamforDiagnoser(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
+    public SimpleKonResponse getJamforDiagnoser(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
             int periodLength, List<String> diagnosis) {
         final List<Icd10.Id> kategoris = Lists.transform(diagnosis, diagnos -> icd10.findIcd10FromNumericId(Integer.valueOf(diagnos)));
         final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
@@ -167,7 +167,7 @@ public class DiagnosgruppQuery {
             final Icd10.Id kategori = kategoris.get(i);
             rows.add(new SimpleKonDataRow((kategori.getVisibleId() + " " + kategori.getName()).trim(), row));
         }
-        return new SimpleKonResponse<>(rows);
+        return new SimpleKonResponse(rows);
     }
 
     public KonDataResponse getJamforDiagnoserTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength,
@@ -281,13 +281,13 @@ public class DiagnosgruppQuery {
         return counters;
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getDiagnosgrupperTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate start,
+    public SimpleKonResponse getDiagnosgrupperTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate start,
             int periods, int periodLength) {
         final DiagnosgruppResponse diagnosgruppResponse = getDiagnosgrupper(aisle, filter, start, periods, periodLength, true);
         return SimpleKonResponse.create(diagnosgruppResponse);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getUnderdiagnosgrupperTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate start,
+    public SimpleKonResponse getUnderdiagnosgrupperTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate start,
             int periods, int periodLength, String rangeId) throws RangeNotFoundException {
         final DiagnosgruppResponse underdiagnosgrupper = getUnderdiagnosgrupper(aisle, filter, start, periods, periodLength, rangeId, true);
         return SimpleKonResponse.create(underdiagnosgrupper);

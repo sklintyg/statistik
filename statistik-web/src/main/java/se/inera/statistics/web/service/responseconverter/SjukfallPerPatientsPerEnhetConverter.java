@@ -69,7 +69,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
         }
     }
 
-    public SimpleDetailsData convert(SimpleKonResponse<SimpleKonDataRow> casesPerMonth, FilterSettings filterSettings, Message message) {
+    public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, FilterSettings filterSettings, Message message) {
         TableData tableData = convertToTableData(casesPerMonth.getRows());
         ChartData chartData = convertToChartData(casesPerMonth);
         final Filter filter = filterSettings.getFilter();
@@ -125,7 +125,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
         return Double.valueOf(TWO_DECIMALS_FORMAT_FOR_DOUBLE.format(number));
     }
 
-    private ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
+    private ChartData convertToChartData(SimpleKonResponse casesPerMonth) {
         final ArrayList<ChartCategory> categories = new ArrayList<>();
         final List<Number> filteredSummedData = new ArrayList<>();
 
@@ -151,7 +151,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
         return new ChartData(series, categories);
     }
 
-    private ArrayList<EnhetWithPatients> toSortedEnhetsWithPatients(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
+    private ArrayList<EnhetWithPatients> toSortedEnhetsWithPatients(SimpleKonResponse casesPerMonth) {
         final ArrayList<EnhetWithPatients> enhetsWithPatients = toEnhetsWithPatients(casesPerMonth);
         Collections.sort(enhetsWithPatients, new Comparator<EnhetWithPatients>() {
             @Override
@@ -162,7 +162,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
         return enhetsWithPatients;
     }
 
-    private ArrayList<EnhetWithPatients> toEnhetsWithPatients(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
+    private ArrayList<EnhetWithPatients> toEnhetsWithPatients(SimpleKonResponse casesPerMonth) {
         final ArrayList<EnhetWithPatients> enhetsWithPatients = new ArrayList<>();
         final List<Integer> summedData = casesPerMonth.getSummedData();
         for (int i = 0; i < casesPerMonth.getRows().size(); i++) {

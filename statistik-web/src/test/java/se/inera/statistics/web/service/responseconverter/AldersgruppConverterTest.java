@@ -50,7 +50,7 @@ public class AldersgruppConverterTest {
         ageGroupsRows.add(new SimpleKonDataRow("<20", 13, 14));
         ageGroupsRows.add(new SimpleKonDataRow("20-50", 24, 15));
         ageGroupsRows.add(new SimpleKonDataRow(">50", 3, 9));
-        SimpleKonResponse<SimpleKonDataRow> ageGroupsResponse = new SimpleKonResponse<>(ageGroupsRows);
+        SimpleKonResponse ageGroupsResponse = new SimpleKonResponse(ageGroupsRows);
 
         //When
         final Range range = Range.createForLastMonthsExcludingCurrent(7, Clock.systemDefaultZone());

@@ -55,11 +55,11 @@ public class CasesPerCountyConverter {
     public static final String H_KVINNOR = "Kvinnor";
     public static final String H_MAN = "Män";
     public static final int COLSPAN = 3;
-    private final SimpleKonResponse<SimpleKonDataRow> resp;
+    private final SimpleKonResponse resp;
     private final Range range;
     private final CountyPopulation countyPopulation;
 
-    public CasesPerCountyConverter(SimpleKonResponse<SimpleKonDataRow> sjukfallPerLan, CountyPopulation countyPopulation, Range range) {
+    public CasesPerCountyConverter(SimpleKonResponse sjukfallPerLan, CountyPopulation countyPopulation, Range range) {
         this.resp = sjukfallPerLan;
         this.range = range;
         this.countyPopulation = countyPopulation;
@@ -184,7 +184,7 @@ public class CasesPerCountyConverter {
         return new ChartData(series, groups);
     }
 
-    private int getIndexOfLan(SimpleKonResponse<SimpleKonDataRow> resp, String lanId) {
+    private int getIndexOfLan(SimpleKonResponse resp, String lanId) {
         final List<SimpleKonDataRow> rows = resp.getRows();
         for (int i = 0; i < rows.size(); i++) {
             SimpleKonDataRow row = rows.get(i);

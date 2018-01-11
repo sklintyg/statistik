@@ -76,7 +76,7 @@ class NationellData {
         this.cutoff = cutoff;
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> getMeddelandenPerMonth(Range range) {
+    private SimpleKonResponse getMeddelandenPerMonth(Range range) {
         return messagesQuery.getAntalMeddelanden(range.getFrom(), range.getNumberOfMonths());
     }
 
@@ -103,14 +103,14 @@ class NationellData {
         }
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getHistoricalAgeGroups(Aisle aisle, Range range,
-                                                               SimpleKonResponse<SimpleKonDataRow> aldersgrupperResult) {
+    SimpleKonResponse getHistoricalAgeGroups(Aisle aisle, Range range,
+                                                               SimpleKonResponse aldersgrupperResult) {
         return getAldersgrupper(aisle, range.getFrom(), 1, range.getNumberOfMonths(), aldersgrupperResult);
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getAldersgrupper(Aisle aisle, LocalDate start, int perioder, int periodlangd,
-                                                         SimpleKonResponse<SimpleKonDataRow> aldersgrupperResult) {
-        SimpleKonResponse<SimpleKonDataRow> aldersgrupper = AldersgruppQuery.getAldersgrupper(aisle,
+    SimpleKonResponse getAldersgrupper(Aisle aisle, LocalDate start, int perioder, int periodlangd,
+                                                         SimpleKonResponse aldersgrupperResult) {
+        SimpleKonResponse aldersgrupper = AldersgruppQuery.getAldersgrupper(aisle,
                 SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
         if (aldersgrupperResult == null) {
             aldersgrupperResult = createEmptySimpleKonResponse(aldersgrupper);
@@ -125,7 +125,7 @@ class NationellData {
             list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale(), cutoff) + b.getFemale(),
                     filterCutoff(a.getMale(), cutoff) + b.getMale()));
         }
-        return new SimpleKonResponse<>(list);
+        return new SimpleKonResponse(list);
     }
 
     KonDataResponse getSjukskrivningsgrad(Aisle aisle, Range range, KonDataResponse sjukskrivningsgradResult) {
@@ -145,14 +145,14 @@ class NationellData {
         return new KonDataResponse(sjukskrivningsgradResult.getGroups(), list);
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getSjukfallslangd(Aisle aisle, Range range,
-                                                          SimpleKonResponse<SimpleKonDataRow> sjukfallslangdResult) {
+    SimpleKonResponse getSjukfallslangd(Aisle aisle, Range range,
+                                                          SimpleKonResponse sjukfallslangdResult) {
         return getSjukfallslangd(aisle, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallslangdResult);
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getSjukfallslangd(Aisle aisle, LocalDate start, int perioder, int periodlangd,
-                                                          SimpleKonResponse<SimpleKonDataRow> sjukfallslangdResult) {
-        SimpleKonResponse<SimpleKonDataRow> langder = SjukskrivningslangdQuery.getSjuksrivningslangd(
+    SimpleKonResponse getSjukfallslangd(Aisle aisle, LocalDate start, int perioder, int periodlangd,
+                                                          SimpleKonResponse sjukfallslangdResult) {
+        SimpleKonResponse langder = SjukskrivningslangdQuery.getSjuksrivningslangd(
                 aisle, SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
         if (sjukfallslangdResult == null) {
             sjukfallslangdResult = createEmptySimpleKonResponse(langder);
@@ -167,7 +167,7 @@ class NationellData {
             final int male = filterCutoff(a.getMale(), cutoff) + b.getMale();
             list.add(new SimpleKonDataRow(a.getName(), female, male));
         }
-        return new SimpleKonResponse<>(list);
+        return new SimpleKonResponse(list);
     }
 
     DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, Range range, DiagnosgruppResponse diagnosgrupperResult) {
@@ -285,9 +285,9 @@ class NationellData {
         }
     }
 
-    SimpleKonResponse<SimpleKonDataRow> getLangaSjukfall(Aisle aisle, LocalDate start, int perioder, int periodlangd,
-                                                         SimpleKonResponse<SimpleKonDataRow> langaResult) {
-        SimpleKonResponse<SimpleKonDataRow> langder = SjukskrivningslangdQuery.getLangaSjukfall(aisle,
+    SimpleKonResponse getLangaSjukfall(Aisle aisle, LocalDate start, int perioder, int periodlangd,
+                                                         SimpleKonResponse langaResult) {
+        SimpleKonResponse langder = SjukskrivningslangdQuery.getLangaSjukfall(aisle,
                 SjukfallUtil.ALL_ENHETER, start, perioder, periodlangd, sjukfallUtil);
         if (langaResult == null) {
             langaResult = createEmptySimpleKonResponse(langder);
@@ -302,17 +302,17 @@ class NationellData {
             list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale(), cutoff) + b.getFemale(),
                     filterCutoff(a.getMale(), cutoff) + b.getMale()));
         }
-        return new SimpleKonResponse<>(list);
+        return new SimpleKonResponse(list);
     }
 
 
 
-    private SimpleKonResponse<SimpleKonDataRow> createEmptySimpleKonResponse(SimpleKonResponse<SimpleKonDataRow> base) {
+    private SimpleKonResponse createEmptySimpleKonResponse(SimpleKonResponse base) {
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
         for (SimpleKonDataRow existingRow : base.getRows()) {
             rows.add(new SimpleKonDataRow(existingRow.getName(), 0, 0));
         }
-        return new SimpleKonResponse<>(rows);
+        return new SimpleKonResponse(rows);
     }
 
 

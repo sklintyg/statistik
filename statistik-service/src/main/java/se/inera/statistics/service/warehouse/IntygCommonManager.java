@@ -98,13 +98,13 @@ public class IntygCommonManager {
         }
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getIntyg(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
+    public SimpleKonResponse getIntyg(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
         final Function<IntygCommonGroup, String> rowNameFunction = intygCommonGroup -> ReportUtil
                 .toDiagramPeriod(intygCommonGroup.getRange().getFrom());
         return getIntygCommonMaleFemale(range, vardgivarId, enheter, rowNameFunction, false);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getIntygTvarsnitt(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
+    public SimpleKonResponse getIntygTvarsnitt(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
         final Function<IntygCommonGroup, String> rowNameFunction = intygCommonGroup -> "Totalt";
         return getIntygCommonMaleFemale(range, vardgivarId, enheter, rowNameFunction, true);
     }
@@ -126,7 +126,7 @@ public class IntygCommonManager {
         return calculateKonDataResponse(vardgivarId, range, enheter, isTvarsnitt, names, ids, counterFunction);
     }
 
-    public SimpleKonResponse<SimpleKonDataRow> getIntygPerTypeTvarsnitt(HsaIdVardgivare vardgivarId, Range range,
+    public SimpleKonResponse getIntygPerTypeTvarsnitt(HsaIdVardgivare vardgivarId, Range range,
             Collection<HsaIdEnhet> enheter) {
         final KonDataResponse intygPerTypeTidsserie = getIntygPerType(vardgivarId, range, enheter, true);
         return SimpleKonResponse.create(intygPerTypeTidsserie);
@@ -154,7 +154,7 @@ public class IntygCommonManager {
         return new KonDataResponse(groupNames, rows);
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> getIntygCommonMaleFemale(Range range, HsaIdVardgivare vardgivarId,
+    private SimpleKonResponse getIntygCommonMaleFemale(Range range, HsaIdVardgivare vardgivarId,
             Collection<HsaIdEnhet> enheter, Function<IntygCommonGroup, String> rowNameFunction, boolean isTvarsnitt) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         final List<IntygType> intygTypes = Arrays.asList(IntygType.FK7263, IntygType.LISJP, IntygType.LUSE, IntygType.LUAE_NA,
@@ -165,7 +165,7 @@ public class IntygCommonManager {
             final String periodName = rowNameFunction.apply(intygCommonGroup);
             result.add(new SimpleKonDataRow(periodName, female, male));
         }
-        return new SimpleKonResponse<>(result);
+        return new SimpleKonResponse(result);
     }
 
     private List<IntygCommonGroup> getIntygCommonGroups(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter,

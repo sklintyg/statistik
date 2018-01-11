@@ -33,12 +33,12 @@ public class DiagnosisSubGroupsTvarsnittConverter extends SimpleDualSexConverter
     }
 
     @Override
-    protected ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> casesPerMonth) {
+    protected ChartData convertToChartData(SimpleKonResponse casesPerMonth) {
         final List<Integer> topColumnIndexes = DiagnosisSubGroupsConverter.getTopColumnIndexes(casesPerMonth);
         return super.convertToChartData(getTopColumns(casesPerMonth, topColumnIndexes));
     }
 
-    private SimpleKonResponse<SimpleKonDataRow> getTopColumns(SimpleKonResponse<SimpleKonDataRow> skr, List<Integer> topIndexes) {
+    private SimpleKonResponse getTopColumns(SimpleKonResponse skr, List<Integer> topIndexes) {
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         if (topIndexes.isEmpty()) {
             simpleKonDataRows.add(new SimpleKonDataRow("Totalt", 0, 0));
@@ -53,10 +53,10 @@ public class DiagnosisSubGroupsTvarsnittConverter extends SimpleDualSexConverter
                 }
             }
         }
-        return new SimpleKonResponse<>(simpleKonDataRows);
+        return new SimpleKonResponse(simpleKonDataRows);
     }
 
-    private KonField getDataForOtherGroups(SimpleKonResponse<SimpleKonDataRow> skr, List<Integer> topIndexes) {
+    private KonField getDataForOtherGroups(SimpleKonResponse skr, List<Integer> topIndexes) {
         int female = 0;
         int male = 0;
         for (int i = 0; i < skr.getRows().size(); i++) {

@@ -38,10 +38,10 @@ public class DiagnosisGroupsTvarsnittConverter extends SimpleDualSexConverter {
     }
 
     @Override
-    protected ChartData convertToChartData(SimpleKonResponse<SimpleKonDataRow> inputData) {
+    protected ChartData convertToChartData(SimpleKonResponse inputData) {
         HashMultimap<String, KonField> mergedGroups = getMergedGroups(inputData);
         final ArrayList<SimpleKonDataRow> mergedGroupSums = calculateMergedGroupSums(mergedGroups);
-        final SimpleKonResponse<SimpleKonDataRow> merged = new SimpleKonResponse<>(mergedGroupSums);
+        final SimpleKonResponse merged = new SimpleKonResponse(mergedGroupSums);
         return super.convertToChartData(merged);
     }
 
@@ -57,7 +57,7 @@ public class DiagnosisGroupsTvarsnittConverter extends SimpleDualSexConverter {
         return simpleKonDataRows;
     }
 
-    private HashMultimap<String, KonField> getMergedGroups(SimpleKonResponse<SimpleKonDataRow> inputData) {
+    private HashMultimap<String, KonField> getMergedGroups(SimpleKonResponse inputData) {
         HashMultimap<String, KonField> mergedGroups = HashMultimap.create();
         final Map<Integer, String> mergeGroupMapping = DiagnosisGroupsConverter.DIAGNOSKAPITEL_TO_DIAGNOSGRUPP;
         for (SimpleKonDataRow row : inputData.getRows()) {

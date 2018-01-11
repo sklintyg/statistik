@@ -45,7 +45,7 @@ public class MessageAmneTvarsnittConverterTest {
         final List<SimpleKonDataRow> simpleKonDataRows = Arrays.stream(MsgAmne.values())
                 .map(msgAmne -> new SimpleKonDataRow(msgAmne.name(), 0, 0, msgAmne))
                 .collect(Collectors.toList());
-        final SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<>(simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(simpleKonDataRows);
 
         //When
         final MessageAmneTvarsnittConverter converter = MessageAmneTvarsnittConverter.newTvarsnitt();
@@ -62,7 +62,7 @@ public class MessageAmneTvarsnittConverterTest {
         final List<SimpleKonDataRow> simpleKonDataRows = Arrays.stream(MsgAmne.values())
                 .map(msgAmne -> new SimpleKonDataRow(msgAmne.name(), 1, 0, msgAmne))
                 .collect(Collectors.toList());
-        final SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<>(simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(simpleKonDataRows);
 
         //When
         final MessageAmneTvarsnittConverter converter = MessageAmneTvarsnittConverter.newTvarsnitt();

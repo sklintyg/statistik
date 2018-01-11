@@ -192,7 +192,7 @@ public class NationellDataInvoker {
 
     private NationellDataInfo populateResults(NationellDataInfo result, NationellDataHolder data) {
 
-        result.setAntalIntygResult(new SimpleKonResponse<>(data.getAntalIntygResult()));
+        result.setAntalIntygResult(new SimpleKonResponse(data.getAntalIntygResult()));
 
         if (data.getDiagnosgrupperResult() == null) {
             data.setDiagnosgrupperResult(new DiagnosgruppResponse(new ArrayList<>(), new ArrayList<>()));
@@ -207,7 +207,7 @@ public class NationellDataInvoker {
         result.setDiagnosavsnittResult(data.getDiagnosavsnittResult());
 
         if (data.getAldersgrupperResult() == null) {
-            data.setAldersgrupperResult(new SimpleKonResponse<>(new ArrayList<>()));
+            data.setAldersgrupperResult(new SimpleKonResponse(new ArrayList<>()));
         }
         result.setAldersgrupperResult(data.getAldersgrupperResult());
 
@@ -217,24 +217,24 @@ public class NationellDataInvoker {
         result.setSjukskrivningsgradResult(data.getSjukskrivningsgradResult());
 
         if (data.getSjukfallslangdResult() == null) {
-            data.setSjukfallslangdResult(new SimpleKonResponse<>(new ArrayList<>()));
+            data.setSjukfallslangdResult(new SimpleKonResponse(new ArrayList<>()));
         }
         result.setSjukfallslangdResult(data.getSjukfallslangdResult());
 
-        result.setLanResult(new SimpleKonResponse<>(data.getLanResult()));
+        result.setLanResult(new SimpleKonResponse(data.getLanResult()));
 
         if (data.getLangaSjukfallPreviousResult() == null) {
-            data.setLangaSjukfallPreviousResult(new SimpleKonResponse<>(new ArrayList<>()));
+            data.setLangaSjukfallPreviousResult(new SimpleKonResponse(new ArrayList<>()));
         }
         result.setLangaSjukfallPreviousResult(data.getLangaSjukfallPreviousResult());
 
         if (data.getLangaSjukfallCurrentResult() == null) {
-            data.setLangaSjukfallCurrentResult(new SimpleKonResponse<>(new ArrayList<>()));
+            data.setLangaSjukfallCurrentResult(new SimpleKonResponse(new ArrayList<>()));
         }
         result.setLangaSjukfallCurrentResult(data.getLangaSjukfallCurrentResult());
 
-        result.setOverviewGenderResult(new SimpleKonResponse<>(data.getOverviewAntalIntygResult()));
-        result.setOverviewForandringResult(new SimpleKonResponse<>(data.getOverviewForandringResult()));
+        result.setOverviewGenderResult(new SimpleKonResponse(data.getOverviewAntalIntygResult()));
+        result.setOverviewForandringResult(new SimpleKonResponse(data.getOverviewForandringResult()));
         result.setOverviewDiagnosgrupperResult(data.getOverviewDiagnosgrupperResult());
         result.setOverviewPreviousAldersgruppResult(data.getOverviewPreviousAldersgrupperResult());
         result.setOverviewCurrentAldersgruppResult(data.getOverviewCurrentAldersgrupperResult());
@@ -243,8 +243,8 @@ public class NationellDataInvoker {
         result.setOverviewSjukskrivningslangdCurrentResult(data.getOverviewSjukfallslangdCurrentResult());
         result.setOverviewLangaSjukfallResult(data.getOverviewLangaSjukfallResult());
         result.setOverviewLangaSjukfallDiffResult(data.getOverviewLangaSjukfallDiffResult());
-        result.setOverviewLanPreviousResult(new SimpleKonResponse<>(data.getOverviewLanPreviousResult()));
-        result.setOverviewLanCurrentResult(new SimpleKonResponse<>(data.getOverviewLanCurrentResult()));
+        result.setOverviewLanPreviousResult(new SimpleKonResponse(data.getOverviewLanPreviousResult()));
+        result.setOverviewLanCurrentResult(new SimpleKonResponse(data.getOverviewLanCurrentResult()));
 
         if (result.getMeddelandenPerAmneResult() == null) {
             result.setMeddelandenPerAmneResult(new KonDataResponse(new ArrayList<>(), new ArrayList<>()));

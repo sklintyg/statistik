@@ -49,7 +49,7 @@ public class DiagnosisSubGroupsTvarsnittConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 0));
         final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
-        final SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<>(simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(simpleKonDataRows);
 
         //When
         final ChartData result = new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);
@@ -83,7 +83,7 @@ public class DiagnosisSubGroupsTvarsnittConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 1));
         final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
-        final SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<>(simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(simpleKonDataRows);
 
         //When
         final ChartData result = new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);
@@ -109,7 +109,7 @@ public class DiagnosisSubGroupsTvarsnittConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 1));
         final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
-        final SimpleKonResponse<SimpleKonDataRow> casesPerMonth = new SimpleKonResponse<>(simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(simpleKonDataRows);
 
         //When
         final ChartData result = new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);

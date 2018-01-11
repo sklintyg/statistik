@@ -44,7 +44,7 @@ public class CasesPerCountyConverterTest {
         final String name = "Rad1";
         final String lanCode = "01";
         simpleKonDataRows.add(new SimpleKonDataRow(name, 1, 2, lanCode));
-        final SimpleKonResponse<SimpleKonDataRow> sjukfallPerLan = new SimpleKonResponse<>(simpleKonDataRows);
+        final SimpleKonResponse sjukfallPerLan = new SimpleKonResponse(simpleKonDataRows);
         final HashMap<String, KonField> populationPerCounty = new HashMap<>();
         populationPerCounty.put(lanCode, new KonField(300, 200));
         final Range range = Range.year(clock);

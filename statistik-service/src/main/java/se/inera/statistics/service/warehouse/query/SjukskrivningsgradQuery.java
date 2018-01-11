@@ -20,7 +20,6 @@ package se.inera.statistics.service.warehouse.query;
 
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.SickLeaveDegree;
 import se.inera.statistics.service.warehouse.Aisle;
@@ -97,7 +96,7 @@ public final class SjukskrivningsgradQuery {
         }
     }
 
-    public static SimpleKonResponse<SimpleKonDataRow> getSjukskrivningsgradTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from,
+    public static SimpleKonResponse getSjukskrivningsgradTvarsnitt(Aisle aisle, FilterPredicates filter, LocalDate from,
             int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         final CounterFunction<Integer> toCount = (sjukfall, counter) -> counter.addAll(new HashSet<>(sjukfall.getSjukskrivningsgrader()));
 
