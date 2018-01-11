@@ -177,8 +177,8 @@ public class RegisterCertificateHelper {
                 kon = Kon.parse(ConversionHelper.extractKon(personId));
             }
         } catch (Exception e) {
-            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", patientIdRaw);
-            LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: {}", patientIdRaw, e);
+            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: '{}'", patientIdRaw);
+            LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: '{}'", patientIdRaw, e);
         }
         return new Patientdata(alder, kon);
 

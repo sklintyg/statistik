@@ -185,5 +185,11 @@ public class DocumentHelperTest {
         assertEquals(signeringsdatum, dto.getSigneringsdatum());
     }
 
+    @Test
+    public void testGetUnifiedPersonIdTrimsNonBreakingSpace() throws Exception {
+        final String unifiedPersonId = DocumentHelper.getUnifiedPersonId("19790717-9191 ");
+        assertEquals("19790717-9191", unifiedPersonId);
+    }
+
     // CHECKSTYLE:ON MagicNumber
 }

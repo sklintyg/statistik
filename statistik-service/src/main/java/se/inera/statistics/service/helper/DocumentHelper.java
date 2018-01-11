@@ -94,7 +94,8 @@ public final class DocumentHelper {
     }
 
     public static String getUnifiedPersonId(String personIdRaw1) {
-        String safePersonId = personIdRaw1 != null ? personIdRaw1.trim() : "";
+        // "replaceAll" below is a fance "trim" that will also remove non breaking spaces
+        String safePersonId = personIdRaw1 != null ? personIdRaw1.replaceAll("(^\\h*)|(\\h*$)", "") : "";
         if (safePersonId.matches("[0-9]{8}-[0-9]{4}")) {
             return safePersonId;
         } else if (safePersonId.matches("[0-9]{12}")) {
