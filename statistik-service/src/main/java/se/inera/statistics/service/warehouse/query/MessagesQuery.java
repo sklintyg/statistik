@@ -38,6 +38,7 @@ import se.inera.statistics.service.warehouse.message.MsgAmne;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -46,6 +47,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class MessagesQuery {
+
+    public static final String GROUP_NAME_SEPARATOR = " : ";
 
     @Autowired
     private MessageWidelineLoader messageWidelineLoader;
@@ -89,6 +92,20 @@ public class MessagesQuery {
         LocalDate to = start.plusMonths(perioder);
         List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(start, to, vardgivare, enheter);
         return convertToSimpleResponseTvarsnittPerAmne(rows);
+    }
+
+    public KonDataResponse getMessagesPerAmnePerEnhet(HsaIdVardgivare vardgivare,
+                                                      Collection<HsaIdEnhet> enheter, LocalDate start, int perioder) {
+        LocalDate to = start.plusMonths(perioder);
+        List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(start, to, vardgivare, enheter);
+        return convertToMessagesPerAmnePerEnhet(rows, start, perioder);
+    }
+
+    public KonDataResponse getMessagesTvarsnittPerAmnePerEnhet(
+            HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter, LocalDate start, int perioder) {
+        LocalDate to = start.plusMonths(perioder);
+        List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(start, to, vardgivare, enheter);
+        return convertToSimpleResponseTvarsnittPerAmnePerEnhet(rows);
     }
 
     public SimpleKonResponse<SimpleKonDataRow> getAntalMeddelanden(LocalDate start, int perioder) {
@@ -141,6 +158,66 @@ public class MessagesQuery {
             groups.add(msgAmne.name());
         }
         return new KonDataResponse(groups, result);
+    }
+
+    private KonDataResponse convertToMessagesPerAmnePerEnhet(List<CountDTOAmne> rows, LocalDate start, int perioder) {
+        Map<LocalDate, List<CountDTOAmne>> map;
+        if (rows != null) {
+            map = rows.stream().collect(Collectors.groupingBy(CountDTOAmne::getDate));
+        } else {
+            map = new HashMap<>();
+        }
+
+        List<String> enhets = getEnhets(rows);
+
+        final MsgAmne[] msgAmnes = MsgAmne.values();
+        final int seriesLength = msgAmnes.length;
+
+
+        List<KonDataRow> result = new ArrayList<>();
+        for (int i = 0; i < perioder; i++) {
+            int[][][] series = new int[2][][]; //First order is gender, second is enhet and third is amne
+            series[0] = new int[enhets.size()][];
+            series[1] = new int[enhets.size()][];
+            for (int j = 0; j < enhets.size(); j++) {
+                series[0][j] = new int[seriesLength];
+                series[1][j] = new int[seriesLength];
+            }
+
+            LocalDate temp = start.plusMonths(i);
+            String displayDate = ReportUtil.toDiagramPeriod(temp);
+
+            List<CountDTOAmne> dtos = map.get(temp);
+
+            if (dtos != null) {
+                for (CountDTOAmne dto : dtos) {
+                    final int enhetIndex = enhets.indexOf(dto.getEnhet());
+                    series[dto.getKon().equals(Kon.FEMALE) ? 0 : 1][enhetIndex][dto.getAmne().ordinal()] += dto.getCount();
+                }
+            }
+
+            final ArrayList<KonField> data = new ArrayList<>();
+            for (int k = 0; k < enhets.size(); k++) {
+                for (int j = 0; j < seriesLength; j++) {
+                    data.add(new KonField(series[0][k][j], series[1][k][j]));
+                }
+            }
+            result.add(new KonDataRow(displayDate, data));
+        }
+
+        final ArrayList<String> groups = new ArrayList<>();
+        for (String enhet : enhets) {
+            for (MsgAmne msgAmne : msgAmnes) {
+                groups.add(enhet + GROUP_NAME_SEPARATOR + msgAmne.name());
+            }
+        }
+        return new KonDataResponse(groups, result);
+    }
+
+    private List<String> getEnhets(List<CountDTOAmne> rows) {
+        return rows != null
+                    ? rows.stream().map(CountDTOAmne::getEnhet).distinct().collect(Collectors.toList())
+                    : Collections.emptyList();
     }
 
     private SimpleKonResponse<SimpleKonDataRow> convertToSimpleResponse(List<MessageWidelineLoader.CountDTO> rows, LocalDate start,
@@ -219,6 +296,39 @@ public class MessagesQuery {
         }
 
         return new SimpleKonResponse<>(result);
+    }
+
+    private KonDataResponse convertToSimpleResponseTvarsnittPerAmnePerEnhet(List<CountDTOAmne> rows) {
+        final MsgAmne[] msgAmnes = MsgAmne.values();
+        final int seriesLength = msgAmnes.length;
+        List<String> enhets = getEnhets(rows);
+        List<KonDataRow> result = new ArrayList<>();
+        final int enhetsSize = enhets.size();
+        int[][][] series = new int[2][][]; //First order is gender, second is enhet and third is amne
+        series[0] = new int[enhetsSize][];
+        series[1] = new int[enhetsSize][];
+        for (int j = 0; j < enhetsSize; j++) {
+            series[0][j] = new int[seriesLength];
+            series[1][j] = new int[seriesLength];
+        }
+        for (CountDTOAmne dto : rows) {
+            final int enhetIndex = enhets.indexOf(dto.getEnhet());
+                series[dto.getKon().equals(Kon.FEMALE) ? 0 : 1][enhetIndex][dto.getAmne().ordinal()] += dto.getCount();
+        }
+
+        for (int k = 0; k < enhetsSize; k++) {
+            final ArrayList<KonField> data = new ArrayList<>();
+            for (int j = 0; j < seriesLength; j++) {
+                data.add(new KonField(series[0][k][j], series[1][k][j]));
+            }
+            result.add(new KonDataRow(enhets.get(k), data));
+        }
+
+        final ArrayList<String> groups = new ArrayList<>();
+        for (MsgAmne msgAmne : msgAmnes) {
+            groups.add(msgAmne.name());
+        }
+        return new KonDataResponse(groups, result);
     }
 
 }

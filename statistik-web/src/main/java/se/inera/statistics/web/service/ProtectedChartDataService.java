@@ -55,6 +55,8 @@ import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsConve
 import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.GroupedSjukfallConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
+import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetConverter;
+import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmneTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.MessagePeriodConverter;
 import se.inera.statistics.web.service.responseconverter.PeriodConverter;
@@ -299,6 +301,38 @@ public class ProtectedChartDataService {
         SimpleKonResponse<SimpleKonDataRow> casesPerMonth = warehouse.getMessagesPerAmneTvarsnitt(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = MessageAmneTvarsnittConverter.newTvarsnitt().convert(casesPerMonth, filterSettings);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
+    }
+
+    @GET
+    @Path("getMeddelandenPerAmnePerEnhet")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getMeddelandenPerAmnePerEnhet(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @QueryParam("format") String format) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
+        KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhet(filterSettings.getFilter(),
+                filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        DualSexStatisticsData result = new MessageAmnePerEnhetConverter().convert(casesPerMonth, filterSettings);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
+    }
+
+    @GET
+    @Path("getMeddelandenPerAmnePerEnhetTvarsnitt")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getMeddelandenPerAmnePerEnhetTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+            @QueryParam("format") String format) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
+        final Filter filter = filterSettings.getFilter();
+        final Range range = filterSettings.getRange();
+        KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhetTvarsnitt(filter, range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        DualSexStatisticsData result = new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
     }
 

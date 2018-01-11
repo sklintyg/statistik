@@ -22,7 +22,7 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 | 1002 | 19790717-9191 | G01 | LUSE | enhet2 | lakare2 |
 
 | Foljande meddelanden finns |
-| personnr | skickat | intygsid | meddelandeamne |
+| personnr | skickat | intygsid | ämne |
 | 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT |
 | 19790717-9191 | 2014-06-03T10:00:00 | 1001 | AVSTMN |
 | 19691230-1234 | 2014-06-03T10:00:00 | 1002 | KOMPLT |
@@ -32,26 +32,26 @@ Statistiken baseras på meddelanden för alla intygstyper som har ärendekommuni
 
 Inloggad:
 
-| Meddelanden i rapporten meddelanden vardenhet |
+| Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
 | inloggad som | vårdenhet | grupp | totalt? | män? | kvinnor? |
-| user2 | enhet1 | KOMPLT | 1 | 1 | 0 |
-| user2 | enhet1 | AVSTMN | 1 | 1 | 0 |
-| user2 | enhet2 | KOMPLT | 1 | 1 | 0 |
-| user2 | enhet2 | AVSTMN | 0 | 0 | 0 |
+| user2 | enhet1 | Komplettering | 1 | 1 | 0 |
+| user2 | enhet1 | Avstämningsmöte | 1 | 1 | 0 |
+| user2 | enhet2 | Komplettering | 1 | 1 | 0 |
+| user2 | enhet2 | Avstämningsmöte | 0 | 0 | 0 |
 
 Byte till tidsserie gör att ytdiagram 18 mån visas. Varje enhet får en legend för varje grupp (meddelandeämne) som ska tas med. Kvinnor och män visas i separata diagram.
 
-| Meddelanden i rapporten meddelanden vardenhet tidsserie |
-| inloggad som | år | månad | vårdenhet | grupp | män | kvinnor |
-| user2 | 2014 | apr | enhet1 | KOMPLT | 1 | 0 |
-| user2 | 2014 | apr | enhet1 | AVSTMN | 0 | 0 |
-| user2 | 2014 | apr | enhet2 | KOMPLT | 0 | 0 |
-| user2 | 2014 | apr | enhet2 | AVSTMN | 0 | 0 |
-| user2 | 2014 | maj | enhet1 | KOMPLT | 0 | 0 |
-| user2 | 2014 | maj | enhet1 | AVSTMN | 0 | 0 |
-| user2 | 2014 | maj | enhet2 | KOMPLT | 0 | 0 |
-| user2 | 2014 | maj | enhet2 | AVSTMN | 0 | 0 |
-| user2 | 2014 | jun | enhet1 | KOMPLT | 0 | 0 |
-| user2 | 2014 | jun | enhet1 | AVSTMN | 1 | 0 |
-| user2 | 2014 | jun | enhet2 | KOMPLT | 1 | 0 |
-| user2 | 2014 | jun | enhet2 | AVSTMN | 0 | 0 |
+| Meddelanden i rapporten meddelanden vardenhet som tidsserie |
+| inloggad som | år   | månad | grupp                    | män? | kvinnor? |
+| user2        | 2014 | apr   | enhet1 : Komplettering   | 1    | 0        |
+| user2        | 2014 | apr   | enhet1 : Avstämningsmöte | 0    | 0        |
+| user2        | 2014 | apr   | enhet2 : Komplettering   | 0    | 0        |
+| user2        | 2014 | apr   | enhet2 : Avstämningsmöte | 0    | 0        |
+| user2        | 2014 | maj   | enhet1 : Komplettering   | 0    | 0        |
+| user2        | 2014 | maj   | enhet1 : Avstämningsmöte | 0    | 0        |
+| user2        | 2014 | maj   | enhet2 : Komplettering   | 0    | 0        |
+| user2        | 2014 | maj   | enhet2 : Avstämningsmöte | 0    | 0        |
+| user2        | 2014 | jun   | enhet1 : Komplettering   | 0    | 0        |
+| user2        | 2014 | jun   | enhet1 : Avstämningsmöte | 1    | 0        |
+| user2        | 2014 | jun   | enhet2 : Komplettering   | 1    | 0        |
+| user2        | 2014 | jun   | enhet2 : Avstämningsmöte | 0    | 0        |

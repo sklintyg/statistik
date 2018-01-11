@@ -131,6 +131,19 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonth", filter, "vgid=" + vgid)
     }
 
+    def getReportAntalMeddelandenVardenhetInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerEnhet", filter, "vgid=" + vgid)
+    }
+
+    def getReportAntalMeddelandenVardenhetTvarsnittInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerEnhetTvarsnitt", filter, "vgid=" + vgid)
+    }
+
+    def getReportAntalMeddelandenVardenhetLandsting(String vgid, filter) {
+        throw new RuntimeException("Ej implementerat an!")
+//        return get("/api/landsting/getMeddelandenPerAmneLandsting", filter, "vgid=" + vgid, "landstingfilter")
+    }
+
     def getReportAntalMeddelandenInloggad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmne", filter, "vgid=" + vgid)
     }

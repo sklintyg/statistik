@@ -122,14 +122,11 @@ public class MessageWidelineLoader {
 
         int year = resultSet.getInt("year");
         int month = resultSet.getInt("month");
-
         dto.setCount(resultSet.getInt("count"));
         dto.setDate(LocalDate.of(year, month, 1));
-
         dto.setKon(Kon.byNumberRepresentation(resultSet.getInt("kon")));
-
         dto.setAmne(MsgAmne.parse(resultSet.getString("amneCode")));
-
+        dto.setEnhet(resultSet.getString("enhet"));
         return dto;
     }
 
@@ -179,7 +176,7 @@ public class MessageWidelineLoader {
     private PreparedStatement prepareStatementAmne(Connection connection, boolean vardgivare, Collection<HsaIdEnhet> enheter)
             throws SQLException {
 
-        String sql = "select count(*) as count, YEAR(skickatDate) as `year`, MONTH(skickatDate) as `month`, kon, amneCode "
+        String sql = "select count(*) as count, YEAR(skickatDate) as `year`, MONTH(skickatDate) as `month`, kon, amneCode, enhet "
                 + " FROM messagewideline "
                 + " WHERE (skickatDate between ? AND ?)  ";
 
@@ -192,7 +189,7 @@ public class MessageWidelineLoader {
             sql += " AND `enhet` IN ('" + enhetSql + "')";
         }
 
-        sql += " GROUP BY `year`, `month`, kon, amneCode";
+        sql += " GROUP BY `year`, `month`, kon, amneCode, enhet";
 
         LOG.debug("sql: {}", sql);
 

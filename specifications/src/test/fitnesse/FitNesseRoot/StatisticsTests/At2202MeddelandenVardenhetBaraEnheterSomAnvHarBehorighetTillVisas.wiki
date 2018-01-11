@@ -18,11 +18,10 @@ Två intyg för två olika patienter utfärdade på två olika enheter inom samm
 | 1002 | 19790717-9191  | enhet2 |
 
 | Foljande meddelanden finns |
-| personnr | skickat | intygsid | meddelandeamne |
-| 19790717-9191  | 2014-04-05T10:00:00  | 1001 | KOMPLT |
-| 19790717-9191  | 2014-06-03T10:00:00  | 1001 | KOMPLT |
-| 19691230-1234  | 2014-06-03T10:00:00  | 1002 | KOMPLT!-
--! |
+| personnr | skickat | intygsid | ämne |
+| 19790717-9191  | 2014-04-05T10:00:00 | 1001 | KOMPLT |
+| 19790717-9191  | 2014-06-03T10:00:00 | 1001 | KOMPLT |
+| 19691230-1234  | 2014-06-03T10:00:00 | 1002 | KOMPLT |
 
 
 
@@ -30,13 +29,13 @@ Två intyg för två olika patienter utfärdade på två olika enheter inom samm
 Inloggad:
 En användare (user1) med behörighet till bara enhet1 ser inte enhet2 och dess sjukfall. En användare med behörighet till båda enheterna (user2) eller med vårdgivarbehörighet ser båda enheterna och dess sjukfall.
 
-| Meddelanden i rapporten meddelanden vardenhet |
+| Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
 | inloggad som | vårdenhet | vårdgivarnivå | grupp | totalt? | män? | kvinnor? |
-| user2 | enhet1 | false | KOMPLT | 1 | 2 | 0 |
-| user2 | enhet2 | false | KOMPLT | 1 | 1 | 0 |
-| user2 | enhet1 | true | KOMPLT | 1 | 2 | 0 |
-| user2 | enhet2 | true | KOMPLT | 1 | 1 | 0 |
-| user1 | enhet1 | false | KOMPLT | 1 | 2 | 0 |
-| user1 | enhet2 | false | KOMPLT | -1 | -1 | -1 |
-| user1 | enhet1 | true | KOMPLT | 1 | 2 | 0 |
-| user1 | enhet2 | true | KOMPLT | 1 | 1 | 0 |
+| user2 | enhet1 | false | Komplettering | 1 | 2 | 0 |
+| user2 | enhet2 | false | Komplettering | 1 | 1 | 0 |
+| user2 | enhet1 | true | Komplettering | 1 | 2 | 0 |
+| user2 | enhet2 | true | Komplettering | 1 | 1 | 0 |
+| user1 | enhet1 | false | Komplettering | 1 | 2 | 0 |
+| user1 | enhet2 | false | Komplettering | -1 | -1 | -1 |
+| user1 | enhet1 | true | Komplettering | 1 | 2 | 0 |
+| user1 | enhet2 | true | Komplettering | 1 | 1 | 0 |
