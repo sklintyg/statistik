@@ -25,12 +25,16 @@ angular.module('StatisticsApp').directive('message',
         return {
             restrict: 'EA',
             replace: true,
-            scope: false,
+            scope: {
+                'key': '@',
+                'param': '=',
+                'params': '='
+            },
             link: function(scope, element, attr) {
                 var result;
                 // observe changes to interpolated attribute
                 function updateMessage(interpolatedKey) {
-                    var params = typeof attr.param !== 'undefined' ? [attr.param] : attr.params;
+                    var params = typeof scope.param !== 'undefined' ? [scope.param] : scope.params;
                     result = $filter('messageFilter')(interpolatedKey, attr.fallback, attr.fallbackDefaultLang, params, attr.lang, attr.disableHighlightWords);
                     element.html('<span>' + result + '</span>');
                 }

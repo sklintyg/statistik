@@ -31,7 +31,13 @@ describe('Controller: TreeMultiSelectorModalCtrl', function() {
             '$on' : function() {},
             '$emit' : function() {},
             '$watch': function() {},
-            '$evalAsync': function() {}
+            '$evalAsync': function() {},
+            'textData': {
+                firstLevelLabelText: '',
+                secondLevelLabelText: '',
+                thirdLevelLabelText: '',
+                leavesLevelLabelText: ''
+            }
         };
 
         ctrl = $controller('TreeMultiSelectorModalCtrl', {$scope: scope, directiveScope: directiveScope, $element: {}, $uibModalInstance: {}, treeMultiSelectorUtil: treeMultiSelectorUtil});
