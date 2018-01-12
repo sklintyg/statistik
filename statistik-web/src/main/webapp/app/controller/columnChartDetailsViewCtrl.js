@@ -615,3 +615,24 @@ angular.module('StatisticsApp').meddelandenPerAmneTvarsnittConfig =
 
         return conf;
     };
+
+angular.module('StatisticsApp').meddelandenPerAmnOchEnhetTvarsnittConfig =
+    /** @ngInject */
+        function (messageService) {
+        'use strict';
+
+        var conf = {};
+        conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneOchEnhetTvarsnittVerksamhet';
+        conf.chartYAxisTitleUnit = 'meddelanden';
+        conf.exportTableUrlVerksamhet = function () {
+            return 'api/verksamhet/getMeddelandenPerAmnePerEnhetTvarsnitt?format=xlsx';
+        };
+        conf.title = messageService.getProperty('title.meddelandenperamneochenhet');
+        conf.chartFootnotes = ['help.verksamhet.meddelandenperamneochenhet'];
+
+        conf.exchangeableViews = [
+            {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchEnhet', active: false},
+            {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchEnhetTvarsnitt', active: true}];
+
+        return conf;
+    };

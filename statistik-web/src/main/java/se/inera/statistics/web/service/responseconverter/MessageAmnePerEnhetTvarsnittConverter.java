@@ -27,15 +27,21 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.warehouse.message.MsgAmne;
+import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.service.FilterSettings;
 
 public class MessageAmnePerEnhetTvarsnittConverter extends MultiDualSexConverter {
 
+    public MessageAmnePerEnhetTvarsnittConverter() {
+        super("Antal meddelanden totalt", "Enhet");
+    }
+
     private static final Map<String, String> COLORS = Arrays.stream(MsgAmne.values())
             .collect(Collectors.toMap(Enum::name, msgAmne -> msgAmne.getColor().getColor()));
 
-    public DualSexStatisticsData convert(KonDataResponse data, FilterSettings filterSettings) {
+    public SimpleDetailsData convert(KonDataResponse data, FilterSettings filterSettings) {
         final List<MsgAmne> groups = data.getGroups().stream().map(MsgAmne::parse).collect(Collectors.toList());
         final List<KonDataRow> rows = data.getRows();
         int indexOfEmptyInternalIcd10Group = getIndexOfGroupToRemove(groups, rows);
@@ -44,7 +50,9 @@ public class MessageAmnePerEnhetTvarsnittConverter extends MultiDualSexConverter
             indexOfEmptyInternalIcd10Group = getIndexOfGroupToRemove(groups, rows);
         }
         final KonDataResponse konDataResponse = new KonDataResponse(convertGroupNamesToText(groups), rows);
-        return super.convert(konDataResponse, filterSettings, null, "%1$s", COLORS);
+        final DualSexStatisticsData dssd = super.convert(konDataResponse, filterSettings, null, "%1$s", COLORS);
+        final ChartData chartData = MessageAmnePerEnhetConverter.merge(dssd.getFemaleChart(), dssd.getMaleChart());
+        return new SimpleDetailsData(dssd.getTableData(), chartData, dssd.getPeriod(), dssd.getFilter(), dssd.getMessages());
     }
 
     private List<String> convertGroupNamesToText(List<MsgAmne> groups) {
