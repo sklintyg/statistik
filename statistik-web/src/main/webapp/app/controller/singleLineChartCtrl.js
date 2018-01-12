@@ -246,6 +246,27 @@ angular.module('StatisticsApp').meddelandenPerMonthConfig =
         return conf;
     };
 
+angular.module('StatisticsApp').meddelandenPerAmneOchEnhetConfig =
+    /** @ngInject */
+        function (messageService) {
+        'use strict';
+
+        var conf = {};
+        conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneOchEnhetVerksamhet';
+        conf.chartYAxisTitle = 'Antal meddelanden';
+        conf.exportTableUrlVerksamhet = function () {
+            return 'api/verksamhet/getTotalNumberOfIntygPerMonth?format=xlsx';
+        };
+        conf.title = messageService.getProperty('title.meddelandenperamneochenhet');
+        conf.chartFootnotes = ['help.verksamhet.meddelandenperamneochenhet'];
+
+        conf.exchangeableViews = [
+            {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchEnhet', active: true},
+            {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchEnhetTvarsnitt', active: false}];
+
+        return conf;
+    };
+
 angular.module('StatisticsApp').intygPerMonthConfig =
     /** @ngInject */
         function (messageService) {

@@ -314,7 +314,7 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhet(filterSettings.getFilter(),
                 filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        DualSexStatisticsData result = new MessageAmnePerEnhetConverter().convert(casesPerMonth, filterSettings);
+        SimpleDetailsData result = new MessageAmnePerEnhetConverter().convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
     }
 
@@ -331,7 +331,7 @@ public class ProtectedChartDataService {
         final Range range = filterSettings.getRange();
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhetTvarsnitt(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        DualSexStatisticsData result = new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
+        SimpleDetailsData result = new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
     }
 

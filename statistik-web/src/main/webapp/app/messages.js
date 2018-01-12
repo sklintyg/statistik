@@ -39,7 +39,8 @@ var stMessages = {
         'nav.landsting.listningsjamforelse': 'Vårdenhet, listningar',
         'nav.landsting.om': 'Om landstingsstatistik',
         'nav.meddelanden': 'Meddelanden, totalt',
-        'nav.meddelandenPerAmne': 'Meddelanden, totalt',
+        'nav.meddelandenperamne': 'Meddelanden, totalt',
+        'nav.meddelandenperamneochenhet': 'Meddelanden, vårdenhet',
 
         //labels
         'lbl.mobile-menu': 'Meny',
@@ -163,6 +164,7 @@ var stMessages = {
         'title.vardenhet-listning': 'Antal sjukfall per 1000 listningar fördelat på vårdenhet',
         'title.meddelanden' : 'Antal inkomna meddelanden',
         'title.meddelandenperamne' : 'Antal inkomna meddelanden fördelat på ämne',
+        'title.meddelandenperamneochenhet' : 'Antal meddelanden fördelat på vårdenhet',
         'title.intyg' : 'Antal intyg',
         'title.intygstyp' : 'Antal utfärdade intyg fördelat på intygstyp',
 
@@ -182,6 +184,7 @@ var stMessages = {
         'help.verksamhet.lakare': '	Denna rapport visar statistik för enskilda intygsskrivande läkare. Namn hämtas från HSA-katalogen. Om läkaren inte går att slå upp i HSA-katalogen eller om läkaren inte har något namn angivet så visas istället läkarens HSA-id.',
         'help.verksamhet.lakaregender': 'Denna rapport visar statistik uppdelad i olika läkargrupper utifrån den intygsskrivande läkarens ålder och kön. Information om ålder och kön hämtas från HSA-katalogen.',
         'help.verksamhet.lakare-befattning': 'Denna rapport visar statistik fördelad på befattning hos den intygsskrivande läkaren. Information om befattning hämtas från HSA-katalogen. Uppgifterna i HSA är inte kvalitetssäkrade av Intygsstatistik och information kan saknas då det inte är obligatoriskt för vårdenheten att ange befattning. Om en läkare har flera olika läkarbefattningar räknas sjukfallet med i statistiken för var och en av de befattningarna.',
+        'help.verksamhet.meddelandenperamneochenhet': 'Denna rapport visar statistik för de vårdenheter som du har behörighet till och som utfärdar läkarintyg och läkarutlåtanden. Vårdenheternas namn hämtas från HSA-katalogen.',
 
         'help.landsting.sjukfall-totalt': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporteras in av landstinget självt %0.',
         'help.landsting.vardenhet': 'Denna rapport visar statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporterats in av landstinget självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',

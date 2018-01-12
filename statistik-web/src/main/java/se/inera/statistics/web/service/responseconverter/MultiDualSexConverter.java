@@ -47,13 +47,21 @@ abstract class MultiDualSexConverter {
     private static final String TOTAL = "Totalt";
     private static final int NUMBER_OF_COLUMNS = 3;
     private final String tableHeader;
+    private final String tableSeriesHeader;
 
     MultiDualSexConverter() {
         this.tableHeader = "Antal sjukfall totalt";
+        this.tableSeriesHeader = "Period";
     }
 
     MultiDualSexConverter(String tableHeader) {
         this.tableHeader = tableHeader;
+        this.tableSeriesHeader = "Period";
+    }
+
+    MultiDualSexConverter(String tableHeader, String tableSeriesHeader) {
+        this.tableHeader = tableHeader;
+        this.tableSeriesHeader = tableSeriesHeader;
     }
 
     DualSexStatisticsData convert(KonDataResponse dataIn, FilterSettings filterSettings, Message message, String seriesNameTemplate) {
@@ -127,7 +135,7 @@ abstract class MultiDualSexConverter {
         }
 
         List<TableHeader> subHeaderRow = new ArrayList<>();
-        subHeaderRow.add(new TableHeader("Period"));
+        subHeaderRow.add(new TableHeader(tableSeriesHeader));
         subHeaderRow.add(new TableHeader(tableHeader));
         degreesOfSickLeave.forEach((String s) -> {
             subHeaderRow.add(new TableHeader(TOTAL));

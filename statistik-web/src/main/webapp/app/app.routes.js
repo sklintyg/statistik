@@ -306,13 +306,25 @@ var app = angular.module('StatisticsApp')
                 controller: 'doubleAreaChartsCtrl',
                 controllerAs: 'VerksamhetMeddelandenPerAmneCtrl',
                 resolve: { config: app.meddelandenPerAmneConfig },
-                title: 'nav.meddelandenPerAmne'
+                title: 'nav.meddelandenperamne'
             }).when('/verksamhet/meddelandenPerAmneTvarsnitt', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
                 controllerAs: 'VerksamhetMeddelandenPerAmneCtrl',
                 resolve: { config: app.meddelandenPerAmneTvarsnittConfig },
-                title: 'nav.meddelandenPerAmne'
+                title: 'nav.meddelandenperamne'
+            }).when('/verksamhet/meddelandenPerAmneOchEnhet', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'singleLineChartCtrl',
+                controllerAs: 'VerksamhetMeddelandenPerAmneOchEnhetCtrl',
+                resolve: { config: app.meddelandenPerAmneOchEnhetConfig },
+                title: 'nav.meddelandenperamneochenhet'
+            }).when('/verksamhet/meddelandenPerAmneOchEnhetTvarsnitt', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'VerksamhetMeddelandenPerAmneOchEnhetCtrl',
+                resolve: { config: app.meddelandenPerAmnOchEnhetTvarsnittConfig },
+                title: 'nav.meddelandenperamneochenhet'
             }).when('/verksamhet/intyg', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'singleLineChartCtrl',

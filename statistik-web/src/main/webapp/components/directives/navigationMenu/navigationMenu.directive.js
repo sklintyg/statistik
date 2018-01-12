@@ -244,8 +244,13 @@
             subMenu: [{
                 id: 'navBusinessMessagesLink',
                 link: '#/verksamhet/meddelandenPerAmne',
-                name: 'nav.meddelanden',
+                name: 'nav.meddelandenperamne',
                 ctrl: 'VerksamhetMeddelandenPerAmneCtrl'
+            }, {
+                id: 'navBusinessMessagesEnhetLink',
+                link: '#/verksamhet/meddelandenPerAmneOchEnhetTvarsnitt',
+                name: 'nav.meddelandenperamneochenhet',
+                ctrl: 'VerksamhetMeddelandenPerAmneOchEnhetCtrl'
             }]
         };
 
