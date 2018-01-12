@@ -1,8 +1,8 @@
 ---
-Static
+Help: Behöver korrigeras
+Prune
+Test
 ---
-''!contents -R2 -g -p -f -h''
-
 !3 Givet att:
 Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
 
@@ -10,15 +10,10 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 
 | script | troskel varde | 1 |
 
-| Foljande lakare finns |
-| id | förnamn | efternamn | kön | ålder | befattningar |
-| lakare1 | Anna | Andersson | FEMALE | 30 | 201010 |
-| lakare2 | Bo | Bengtsson | MALE | 40 | 201013 |
-
 | Enbart foljande intyg finns |
-| intygid | personnr | diagnoskod | intygformat | enhet | läkare |
-| 1001 | 19790717-9191 | G01 | LUSE | enhet1 | lakare1 |
-| 1002 | 19790717-9191 | G01 | LUSE | enhet2 | lakare2 |
+| intygid | personnr | diagnoskod | intygformat | enhet |
+| 1001 | 19790717-9191 | G01 | LUSE | enhet1 |
+| 1002 | 19691230-1234 | G01 | LUSE | enhet2 |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
@@ -32,19 +27,19 @@ Statistiken baseras på meddelanden för alla intygstyper som har ärendekommuni
 Inloggad:
 
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
-| inloggad som | vårdenhet | grupp | totalt? | män? | kvinnor? |
-| user2 | enhet1 | Komplettering | 1 | 1 | 0 |
-| user2 | enhet1 | Avstämningsmöte | 1 | 1 | 0 |
-| user2 | enhet1 | Övrigt | -1 | -1 | -1 |
-| user2 | enhet2 | Komplettering | 1 | 1 | 0 |
-| user2 | enhet2 | Avstämningsmöte | 0 | 0 | 0 |
-| user2 | enhet2 | Övrigt | -1 | -1 | -1 |
+| inloggad som | vårdenhet | vårdgivarnivå | grupp | totalt? | män? | kvinnor? |
+| user2 | enhet1 | false | Komplettering | 1 | 1 | 0 |
+| user2 | enhet1 | false | Avstämningsmöte | 1 | 1 | 0 |
+| user2 | enhet1 | false | Övrigt | -1 | -1 | -1 |
+| user2 | enhet2 | false | Komplettering | 1 | 1 | 0 |
+| user2 | enhet2 | false | Avstämningsmöte | 0 | 0 | 0 |
+| user2 | enhet2 | false | Övrigt | -1 | -1 | -1 |
 
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt diagram |
-| inloggad som | vårdenhet | grupp | totalt? | män? | kvinnor? |
-| user2 | enhet1 | Komplettering | 1 | 1 | 0 |
-| user2 | enhet1 | Avstämningsmöte | 1 | 1 | 0 |
-| user2 | enhet1 | Övrigt | -1 | -1 | -1 |
-| user2 | enhet2 | Komplettering | 1 | 1 | 0 |
-| user2 | enhet2 | Avstämningsmöte | 0 | 0 | 0 |
-| user2 | enhet2 | Övrigt | -1 | -1 | -1 |
+| inloggad som | vårdenhet | vårdgivarnivå | grupp | totalt? | män? | kvinnor? |
+| user2 | enhet1 | false | Komplettering | 1 | 1 | 0 |
+| user2 | enhet1 | false | Avstämningsmöte | 1 | 1 | 0 |
+| user2 | enhet1 | false | Övrigt | -1 | -1 | -1 |
+| user2 | enhet2 | false | Komplettering | 1 | 1 | 0 |
+| user2 | enhet2 | false | Avstämningsmöte | 0 | 0 | 0 |
+| user2 | enhet2 | false | Övrigt | -1 | -1 | -1 |
