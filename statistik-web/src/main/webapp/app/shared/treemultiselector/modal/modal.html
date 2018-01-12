@@ -66,15 +66,15 @@
 
 <div class="modal-footer">
   <div class="col-sm-2 label-text">
-    <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 1">{{directiveScope.textData.firstLevelLabelText}}{{selectedPrimaryCounter}}</span><br>
-    <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 2">{{directiveScope.textData.secondLevelLabelText}}{{selectedSecondaryCounter}}</span><br>
-    <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 3">{{directiveScope.textData.thirdLevelLabelText}}{{selectedTertiaryCounter}}</span><br>
-    <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 4">{{directiveScope.textData.leavesLevelLabelText}}{{selectedQuaternaryCounter}}</span>
+    <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 1">{{directiveScope.textData.firstLevelLabelText}}: {{selectedPrimaryCounter}}</span><br>
+    <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 2">{{directiveScope.textData.secondLevelLabelText}}: {{selectedSecondaryCounter}}</span><br>
+    <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 3">{{directiveScope.textData.thirdLevelLabelText}}: {{selectedTertiaryCounter}}</span><br>
+    <span ng-hide="directiveScope.maxDepth > 0 && directiveScope.maxDepth < 4">{{directiveScope.textData.leavesLevelLabelText}}: {{selectedQuaternaryCounter}}</span>
   </div>
 
   <div class="col-sm-8">
     <div data-ng-if="showMaxWarning" class="alert alert-warning pull-left">
-      <strong>Varning!</strong> {{'alert.dxs.max.selected' | messageFilter}}
+      <strong>Varning!</strong> <span message key="alert.dxs.max.selected" params="[directiveScope.maxSelections, depthLabel]"></span>
     </div>
   </div>
 

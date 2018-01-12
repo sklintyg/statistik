@@ -247,18 +247,24 @@ angular.module('StatisticsApp.treeMultiSelector.modal', ['ui.bootstrap', 'unders
             $scope.$emit('selectionsChanged');
 
             var compareValue;
+            var depthLabel;
 
             if (directiveScope.maxDepth === 1) {
                 compareValue = $scope.selectedPrimaryCounter;
+                depthLabel = directiveScope.textData.firstLevelLabelText;
             } else if (directiveScope.maxDepth === 2) {
                 compareValue = $scope.selectedSecondaryCounter;
+                depthLabel = directiveScope.textData.secondLevelLabelText;
             } else if (directiveScope.maxDepth === 3) {
                 compareValue = $scope.selectedTertiaryCounter;
+                depthLabel = directiveScope.textData.thirdLevelLabelText;
             } else {
                 compareValue = $scope.selectedQuaternaryCounter;
+                depthLabel = directiveScope.textData.leavesLevelLabelText;
             }
 
             $scope.showMaxWarning = compareValue > directiveScope.maxSelections;
+            $scope.depthLabel = depthLabel.toLowerCase();
         };
 
         $scope.updateState = function (item) {
