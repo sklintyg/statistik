@@ -1,0 +1,38 @@
+---
+Test
+---
+''!contents -R2 -g -p -f -h''
+
+!3 Givet att:
+Två intyg för två olika patienter utfärdade på två olika enheter inom samma vårdgivare.
+
+| script | dagens datum | 2014-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| intygid | personnr | enhet |
+| 1001 | 19790717-9191 | enhet1 |
+| 1002 | 19691230-1234 | enhet2 |
+
+| Foljande meddelanden finns |
+| personnr | skickat | intygsid | ämne |
+| 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT |
+| 19790717-9191 | 2014-06-03T10:00:00 | 1001 | KOMPLT |
+| 19691230-1234 | 2014-06-03T10:00:00 | 1002 | KOMPLT |
+
+!3 Då gäller:
+Inloggad:
+
+Användare har behörighet till både enhet1 och enhet 2. Om ingen filtrering görs så visas allt, precis som när man filtrerar på allt.
+
+| Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
+| inloggad som | vårdenhet | grupp | filter enheter | totalt? | män? | kvinnor? |
+| user2 | enhet1 | Komplettering | | 2 | 2 | 0 |
+| user2 | enhet1 | Komplettering | enhet1 | 2 | 2 | 0 |
+| user2 | enhet1 | Komplettering | enhet2 | -1 | -1 | -1 |
+| user2 | enhet1 | Komplettering | enhet1,enhet2 | 2 | 2 | 0 |
+| user2 | enhet2 | Komplettering | | 1 | 1 | 0 |
+| user2 | enhet2 | Komplettering | enhet1 | -1 | -1 | -1 |
+| user2 | enhet2 | Komplettering | enhet2 | 1 | 1 | 0 |
+| user2 | enhet2 | Komplettering | enhet1,enhet2 | 1 | 1 | 0 |
