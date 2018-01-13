@@ -24,11 +24,18 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         config, messageService, chartFactory, pdfFactory, _, ControllerCommons) {
         'use strict';
 
+        function ensureHighchartTypeIsSet(config) {
+            if (!config.hasOwnProperty('highchartType')) {
+                config.highchartType = 'column';
+            }
+            return config;
+        }
+
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
         var isLandsting = ControllerCommons.isShowingLandsting($location);
         var chart = {};
         var defaultChartType = 'column';
-        var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType);
+        var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, ensureHighchartTypeIsSet(config), defaultChartType);
         $scope.activeChartType = chartTypeInfo.activeChartType;
 
         $scope.chartContainers = [
@@ -622,6 +629,8 @@ angular.module('StatisticsApp').meddelandenPerAmnOchEnhetTvarsnittConfig =
         'use strict';
 
         var conf = {};
+        conf.highchartType = 'column';
+        conf.defaultChartType = 'stackedcolumn';
         conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneOchEnhetTvarsnittVerksamhet';
         conf.chartYAxisTitleUnit = 'meddelanden';
         conf.exportTableUrlVerksamhet = function () {
@@ -643,6 +652,8 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetLandstingConfig =
         'use strict';
 
         var conf = {};
+        conf.highchartType = 'column';
+        conf.defaultChartType = 'stackedcolumn';
         conf.dataFetcherLandsting = 'getMeddelandenPerAmneOchEnhetLandsting';
         conf.chartYAxisTitleUnit = 'meddelanden';
         conf.exportTableUrlLandsting = function () {

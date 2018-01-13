@@ -123,6 +123,11 @@
                           tooltip-placement="bottom" tooltip-popup-delay="1000">
                     <span class="chart-icon chart-icon-column"></span>
                   </button>
+                  <button class="btn btn-xs btn-default" ng-class="{'active': activeChartType === 'stackedcolumn'}"
+                          data-ng-click="switchChartType('stackedcolumn')" uib-tooltip="Staplat stapeldiagram"
+                          tooltip-placement="bottom" tooltip-popup-delay="1000">
+                    <span class="chart-icon chart-icon-column"></span>
+                  </button>
                 </div>
               </span>
 
