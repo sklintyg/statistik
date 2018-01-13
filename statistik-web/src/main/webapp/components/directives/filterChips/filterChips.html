@@ -1,32 +1,6 @@
-<div data-ng-if="haveChips" class="divider" style="margin-bottom: 0"></div>
-
-<div data-ng-if="haveChips" class="filter-level">
-  <button
-      type="button"
-      data-ng-repeat="chip in shownChips track by chip.id"
-      data-ng-click="removeChip(chip)"
-      class="filter-chip"
-      data-ng-class="{inactive: chip.newFilter, removed: chip.removedFilter}"
-      title="{{::chip.text}}">
-    <span class="default-text">
-      <i class="fa {{::chip.icon}}"></i> {{::chip.text}}
-    </span>
-    <span class="filter-hover remove-filter">
-      <i class="fa fa-times"></i> Ta bort
-    </span>
-    <span class="filter-hover undo-remove-filter">
-      <i class="fa fa-undo"></i> Ångra
-    </span>
-  </button>
-
-  <button
-      type="button"
-      data-ng-if="numberOfChipsNotShown > 0"
-      id="filter-ships-show-all-btn"
-      class="btn btn-link show-all-filter"
-      data-ng-click="showAll()">{{numberOfChipsNotShown}} filter till</button>
-  <!-- we put the measurecontainter here, so all relevant styles are applied to measured element -->
-  <div id="chip-measureContainer"></div>
-</div>
-
-
+<button
+    data-ng-if="haveChips"
+    type="button"
+    id="filter-ships-show-all-btn"
+    class="btn btn-link show-all-filter"
+    data-ng-click="showAll()">Visa alla aktiva filter</button>
