@@ -29,7 +29,6 @@ angular.module('StatisticsApp.filter.directive')
             scope: true,
             restrict: 'E',
             controller: function($scope) {
-                $scope.isFilterCollapsed = true;
                 $scope.hasMessages = false;
             },
             link: function(scope) {
@@ -52,7 +51,6 @@ angular.module('StatisticsApp.filter.directive')
             scope: true,
             restrict: 'E',
             controller: function($scope) {
-                $scope.isFilterCollapsed = true;
                 $scope.hasMessages = false;
             },
             link: function(scope) {
@@ -69,7 +67,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     'use strict';
 
     //Initially we don't want to see the filter
-    scope.isFilterCollapsed = true;
+    scope.filterToApply = false;
     scope.businessFilter = businessFilter;
     scope.useDefaultPeriod = true;
     scope.showDateValidationError = false;
@@ -368,21 +366,6 @@ angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown'
         scope.$watchCollection(attrs.ngModel, function () {
             element.multiselect('refresh');
         });
-    };
-});
-
-angular.module('StatisticsApp.filter.directive').directive('filterButton', function () {
-    'use strict';
-
-    return {
-        restrict: 'E',
-        template:
-        '<button id="show-hide-filter-btn" type="button" class="btn btn-small center-block" ' +
-            'ng-class="{filterbtnactivefilter: businessFilter.hasUserSelection}" ng-click="isFilterCollapsed = !isFilterCollapsed">' +
-        '<i class="glyphicon" ng-class="{\'glyphicon-chevron-down\': isFilterCollapsed, \'glyphicon-chevron-up\': !isFilterCollapsed}"></i> ' +
-            '{{!isFilterCollapsed ? "Stäng filter" : "Öppna filter"}}<span style="font-size: 12px; font-style: italic;"><br/>' +
-            '{{filterButtonIdText}}</span><span ng-show="businessFilter.hasUserSelection" style="font-size: 12px; font-style: italic;"><br/>Val gjorda</span>' +
-        '</button>'
     };
 });
 
