@@ -302,7 +302,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         function getStatisticsTypeForChartType(chartType) {
-            if (chartType === 'column') {
+            if (chartType === 'column' || chartType === 'stackedcolumn') {
                 return 'Tvärsnitt';
             }
             return 'Tidsserie';
@@ -323,7 +323,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             var activeChartType = $routeParams.chartType || config.defaultChartType || defaultChartType;
             var usePercentChart = activeChartType === 'percentarea' || config.percentChart;
             var activeHighchartType = config.highchartType ? config.highchartType : (usePercentChart ? 'area' : activeChartType);
-            var stacked = activeHighchartType === 'area' || usePercentChart;
+            var stacked = activeHighchartType === 'area' || activeChartType === 'stackedcolumn' || usePercentChart;
             return {activeChartType: activeChartType, usePercentChart: usePercentChart, activeHighchartType: activeHighchartType, stacked: stacked};
         };
 
