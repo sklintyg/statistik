@@ -66,6 +66,19 @@ public class MessagesQuery {
         return new KonDataResponse(messagesTvarsnittPerAmne.getGroups(), list);
     }
 
+    public KonDataResponse getMeddelandenPerAmneOchEnhetAggregated(HsaIdVardgivare vgid, KonDataResponse resultToAggregateIn,
+                                                           Range range, int cutoff, Collection<HsaIdEnhet> enheter) {
+        final int perioder = range.getNumberOfMonths();
+        final LocalDate from = range.getFrom();
+        final KonDataResponse messagesTvarsnittPerAmne = getMessagesTvarsnittPerAmnePerEnhet(vgid, enheter, from, perioder);
+        final KonDataResponse resultToAggregate = resultToAggregateIn != null
+                ? resultToAggregateIn : ResponseUtil.createEmptyKonDataResponse(messagesTvarsnittPerAmne);
+        Iterator<KonDataRow> rowsNew = messagesTvarsnittPerAmne.getRows().iterator();
+        Iterator<KonDataRow> rowsOld = resultToAggregate.getRows().iterator();
+        List<KonDataRow> list = ResponseUtil.getKonDataRows(perioder, rowsNew, rowsOld, cutoff);
+        return new KonDataResponse(messagesTvarsnittPerAmne.getGroups(), list);
+    }
+
     public SimpleKonResponse getMessages(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter, LocalDate start,
             int perioder) {
         LocalDate to = start.plusMonths(perioder);

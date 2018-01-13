@@ -71,13 +71,18 @@ public class ResponseHandler {
     private Warehouse warehouse;
 
     Response getResponse(TableDataReport result, String format, List<HsaIdEnhet> availableEnhetsForUser, Report report) {
+        return getResponse(result, format, availableEnhetsForUser, report, null);
+    }
+
+    Response getResponse(TableDataReport result, String format, List<HsaIdEnhet> availableEnhetsForUser,
+                         Report report, Map<String, Object> extras) {
         if ("xlsx".equalsIgnoreCase(format)) {
             return getXlsx(result, availableEnhetsForUser, report);
         }
         if ("csv".equalsIgnoreCase(format)) {
             return CsvConverter.getCsvResponse(result.getTableData(), getFilename(report, "csv"));
         }
-        return getResponseForDataReport(result, availableEnhetsForUser);
+        return getResponseForDataReport(result, availableEnhetsForUser, extras);
     }
 
     Response getXlsx(TableDataReport result, List<HsaIdEnhet> availableEnhetsForUser, Report report) {
@@ -97,6 +102,10 @@ public class ResponseHandler {
     }
 
     Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser) {
+        return getResponseForDataReport(result, availableEnhetsForUser, null);
+    }
+
+    Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser, Map<String, Object> extras) {
         ObjectMapper mapper = new ObjectMapper();
         @SuppressWarnings("unchecked")
         Map<String, Object> mappedResult = result != null ? mapper.convertValue(result, Map.class) : Maps.newHashMap();
@@ -130,6 +139,10 @@ public class ResponseHandler {
         }
 
         mappedResult.put(MESSAGE_KEY, messages);
+
+        if (extras != null) {
+            mappedResult.putAll(extras);
+        }
 
         return Response.ok(mappedResult).build();
     }

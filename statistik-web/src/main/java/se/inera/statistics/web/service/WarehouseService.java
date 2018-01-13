@@ -142,7 +142,7 @@ public class WarehouseService {
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
             final List<HsaIdEnhet> enhetIds = entry.getValue().stream().map(Enhet::getEnhetId).collect(Collectors.toList());
-            return messagesQuery.getMeddelandenPerAmneAggregated(entry.getKey(), null, range, 0, enhetIds);
+            return messagesQuery.getMeddelandenPerAmneAggregated(entry.getKey(), konDataResponse, range, 0, enhetIds);
         }, (konDataResponse, konDataResponse2) -> konDataResponse2);
     }
 
@@ -162,6 +162,19 @@ public class WarehouseService {
     public KonDataResponse getMessagesPerAmnePerEnhetTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
         return messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(vardgivarId, filter.getEnheter(), range.getFrom(),
                 range.getNumberOfMonths());
+    }
+
+    public KonDataResponse getMessagesPerAmnePerEnhetLandsting(FilterSettings filterSettings) {
+        return getMeddelandenPerAmneOchEnhetLandsting(filterSettings, CutoffUsage.APPLY_CUTOFF_ON_TOTAL);
+    }
+
+    private KonDataResponse getMeddelandenPerAmneOchEnhetLandsting(final FilterSettings filterSettings, final CutoffUsage cutoffUsage) {
+        Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
+        final Range range = filterSettings.getRange();
+        return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
+            final List<HsaIdEnhet> enhetIds = entry.getValue().stream().map(Enhet::getEnhetId).collect(Collectors.toList());
+            return messagesQuery.getMeddelandenPerAmneOchEnhetAggregated(entry.getKey(), konDataResponse, range, 0, enhetIds);
+        }, (konDataResponse, konDataResponse2) -> konDataResponse2);
     }
 
     public DiagnosgruppResponse getDiagnosgrupperPerMonth(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
