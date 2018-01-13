@@ -636,3 +636,22 @@ angular.module('StatisticsApp').meddelandenPerAmnOchEnhetTvarsnittConfig =
 
         return conf;
     };
+
+angular.module('StatisticsApp').meddelandenPerAmneOchEnhetLandstingConfig =
+    /** @ngInject */
+        function (messageService) {
+        'use strict';
+
+        var conf = {};
+        conf.dataFetcherLandsting = 'getMeddelandenPerAmneOchEnhetLandsting';
+        conf.chartYAxisTitleUnit = 'meddelanden';
+        conf.exportTableUrlLandsting = function () {
+            return 'api/landsting/getMeddelandenPerAmneOchEnhetLandsting?format=xlsx';
+        };
+        conf.title = messageService.getProperty('title.meddelandenperamneochenhet');
+        conf.chartFootnotes = [];
+        conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
+            return $filter('messageFilter')('help.landsting.meddelandenperamneochenhet', '', '', [result.fileUploadDate], '');
+        };
+        return conf;
+    };

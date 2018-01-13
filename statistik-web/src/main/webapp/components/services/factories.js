@@ -284,8 +284,12 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestVerksamhet('getMeddelandenPerAmnePerEnhetTvarsnitt', successCallback, failureCallback);
     };
 
-    factory.getMeddelandenPerAmneOchEnhetLandsting = function (successCallback, failureCallback) {
+    factory.getMeddelandenPerAmneLandsting = function (successCallback, failureCallback) {
         makeRequestLandsting('getMeddelandenPerAmneLandsting', successCallback, failureCallback);
+    };
+
+    factory.getMeddelandenPerAmneOchEnhetLandsting = function (successCallback, failureCallback) {
+        makeRequestLandsting('getMeddelandenPerAmnePerEnhetLandsting', successCallback, failureCallback);
     };
 
     factory.getSjukfallPerPatientsPerBusinessLandsting = function (successCallback, failureCallback) {

@@ -378,6 +378,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'LandstingMeddelandenPerAmneCtrl',
                 resolve: { config: app.meddelandenPerAmneLandstingConfig },
                 title: 'nav.meddelandenPerAmne'
+            }).when('/landsting/meddelandenPerAmneOchEnhet', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'LandstingMeddelandenPerAmneOchEnhetCtrl',
+                resolve: { config: app.meddelandenPerAmneOchEnhetLandstingConfig },
+                title: 'nav.meddelandenperamneochenhet'
             }).when('/landsting/om', {
                 templateUrl: '/app/views/landsting/aboutlandsting.html',
                 controllerAs: 'LandstingAboutCtrl',

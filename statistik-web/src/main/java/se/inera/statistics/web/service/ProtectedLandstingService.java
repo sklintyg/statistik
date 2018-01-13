@@ -61,7 +61,6 @@ import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.LandstingsData;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.SimpleDetailsData;
@@ -74,6 +73,7 @@ import se.inera.statistics.web.service.landsting.LandstingFileWriter;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.inera.statistics.web.service.responseconverter.GroupedSjukfallWithLandstingSortingConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
+import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.PeriodConverter;
 import se.inera.statistics.web.service.responseconverter.SjukfallPerPatientsPerEnhetConverter;
 
@@ -284,8 +284,7 @@ public class ProtectedLandstingService {
         SimpleKonResponse casesPerMonth = warehouse.getCasesPerMonthLandsting(filterSettings);
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final SimpleDetailsData data = new PeriodConverter().convert(casesPerMonth, filterSettings);
-        final LandstingsData result = LandstingsData.create(data, getLastLandstingUpdateDate(vgIdForLoggedInUser));
-        return getResponse(result, format, request, Report.L_SJUKFALLTOTALT);
+        return getResponse(data, format, request, Report.L_SJUKFALLTOTALT, getLastLandstingUpdateDate(vgIdForLoggedInUser));
     }
 
     @GET
@@ -301,8 +300,7 @@ public class ProtectedLandstingService {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final SimpleDetailsData data = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", connectedEnhetIds)
                 .convert(casesPerEnhet, filterSettings);
-        final LandstingsData result = LandstingsData.create(data, getLastLandstingUpdateDate(vgIdForLoggedInUser));
-        return getResponse(result, format, request, Report.L_VARDENHET);
+        return getResponse(data, format, request, Report.L_VARDENHET, getLastLandstingUpdateDate(vgIdForLoggedInUser));
     }
 
     private List<HsaIdEnhet> getEnhetIdsToMark(@Context HttpServletRequest request) {
@@ -329,8 +327,7 @@ public class ProtectedLandstingService {
         final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vgIdForLoggedInUser);
         final SimpleDetailsData data = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, connectedEnhetIds)
                 .convert(casesPerEnhet, filterSettings, null);
-        final LandstingsData result = LandstingsData.create(data, getLastLandstingUpdateDate(vgIdForLoggedInUser));
-        return getResponse(result, format, request, Report.L_VARDENHETLISTNINGAR);
+        return getResponse(data, format, request, Report.L_VARDENHETLISTNINGAR, getLastLandstingUpdateDate(vgIdForLoggedInUser));
     }
 
     @GET
@@ -341,10 +338,26 @@ public class ProtectedLandstingService {
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getMeddelandenPerAmneLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash,
                                           @QueryParam("format") String format) {
+        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmneLandsting(filterSettings);
         DualSexStatisticsData result = new MessageAmneConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, getLastLandstingUpdateDate(vgIdForLoggedInUser));
+    }
+
+    @GET
+    @Path("getMeddelandenPerAmnePerEnhetLandsting")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getMeddelandenPerAmnePerEnhetTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+                                                           @QueryParam("format") String format) {
+        final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
+        KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhetLandsting(filterSettings);
+        SimpleDetailsData result = new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, getLastLandstingUpdateDate(vgIdForLoggedInUser));
     }
 
     @GET
@@ -359,10 +372,12 @@ public class ProtectedLandstingService {
         return Response.ok(result).build();
     }
 
-    private Response getResponse(TableDataReport result, String format, HttpServletRequest request, Report report) {
+    private Response getResponse(TableDataReport result, String format, HttpServletRequest request, Report report, String fileUploadDate) {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final List<HsaIdEnhet> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
-        return responseHandler.getResponse(result, format, allEnhets, report);
+        Map<String, Object> extras = new HashMap<>();
+        extras.put("fileUploadDate", fileUploadDate);
+        return responseHandler.getResponse(result, format, allEnhets, report, extras);
     }
 
     public boolean hasAccessToLandstingAdmin(HttpServletRequest request) {

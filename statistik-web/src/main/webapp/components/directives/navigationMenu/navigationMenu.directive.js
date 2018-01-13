@@ -316,11 +316,16 @@
             navigationId: 'kommunikation-statistics-collapse',
             show: true,
             subMenu: [{
-                    id: 'navLandstingMessagesLink',
-                    link: '#/landsting/meddelandenPerAmne',
-                    name: 'nav.meddelanden',
-                    ctrl: 'LandstingMeddelandenPerAmneCtrl'
-            }]
+                        id: 'navLandstingMessagesLink',
+                        link: '#/landsting/meddelandenPerAmne',
+                        name: 'nav.meddelanden',
+                        ctrl: 'LandstingMeddelandenPerAmneCtrl'
+                    },{
+                        id: 'navLandstingMessagesEnhetLink',
+                        link: '#/landsting/meddelandenPerAmneOchEnhet',
+                        name: 'nav.meddelandenperamneochenhet',
+                        ctrl: 'LandstingMeddelandenPerAmneOchEnhetCtrl'
+                    }]
         };
 
         var about = {
