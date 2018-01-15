@@ -36,7 +36,7 @@ Inloggad:
 | user2 | enhet2 | Övrigt | 1 | 0 | 0 |
 
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt diagram |
-| inloggad som | vårdenhet | grupp | totalt? | män? | kvinnor? |
+| inloggad som | vårdenhet | ämne | totalt? | män? | kvinnor? |
 | user2 | enhet1 | Komplettering | 2 | 1 | 0 |
 | user2 | enhet1 | Avstämningsmöte | 2 | 1 | 0 |
 | user2 | enhet1 | Övrigt | 2 | 0 | 0 |
