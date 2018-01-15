@@ -27,19 +27,19 @@ Statistiken baseras på meddelanden för alla intygstyper som har ärendekommuni
 Inloggad:
 
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
-| inloggad som | vårdenhet | vårdgivarnivå | grupp | totalt? | män? | kvinnor? |
-| user2 | enhet1 | false | Komplettering | 1 | 1 | 0 |
-| user2 | enhet1 | false | Avstämningsmöte | 1 | 1 | 0 |
-| user2 | enhet1 | false | Övrigt | -1 | -1 | -1 |
-| user2 | enhet2 | false | Komplettering | 1 | 1 | 0 |
-| user2 | enhet2 | false | Avstämningsmöte | 0 | 0 | 0 |
-| user2 | enhet2 | false | Övrigt | -1 | -1 | -1 |
+| inloggad som | vårdenhet | grupp | totalt? | män? | kvinnor? |
+| user2 | enhet1 | Komplettering | 2 | 1 | 0 |
+| user2 | enhet1 | Avstämningsmöte | 2 | 1 | 0 |
+| user2 | enhet1 | Övrigt | 2 | 0 | 0 |
+| user2 | enhet2 | Komplettering | 1 | 1 | 0 |
+| user2 | enhet2 | Avstämningsmöte | 1 | 0 | 0 |
+| user2 | enhet2 | Övrigt | 1 | 0 | 0 |
 
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt diagram |
-| inloggad som | vårdenhet | vårdgivarnivå | grupp | totalt? | män? | kvinnor? |
-| user2 | enhet1 | false | Komplettering | 1 | 1 | 0 |
-| user2 | enhet1 | false | Avstämningsmöte | 1 | 1 | 0 |
-| user2 | enhet1 | false | Övrigt | -1 | -1 | -1 |
-| user2 | enhet2 | false | Komplettering | 1 | 1 | 0 |
-| user2 | enhet2 | false | Avstämningsmöte | 0 | 0 | 0 |
-| user2 | enhet2 | false | Övrigt | -1 | -1 | -1 |
+| inloggad som | vårdenhet | grupp | totalt? | män? | kvinnor? |
+| user2 | enhet1 | Komplettering | 2 | 1 | 0 |
+| user2 | enhet1 | Avstämningsmöte | 2 | 1 | 0 |
+| user2 | enhet1 | Övrigt | 2 | 0 | 0 |
+| user2 | enhet2 | Komplettering | 1 | 1 | 0 |
+| user2 | enhet2 | Avstämningsmöte | 1 | 0 | 0 |
+| user2 | enhet2 | Övrigt | 1 | 0 | 0 |

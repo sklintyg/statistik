@@ -1,37 +1,38 @@
 ---
-Help: Kan tas med när rapporten Meddelanden, Vårdenhet har implementerats
-Prune
 Test
 ---
-!contents -R2 -g -p -f -h
+''!contents -R2 -g -p -f -h''
+
 !3 Givet att:
 Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
 
-| script | dagens datum  | 2014-11-06  |
+| script | dagens datum | 2014-11-06 |
 
-| script | troskel varde  | 1 |
+| script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
 | intygid | personnr | diagnoskod | intygformat | enhet | läkare |
-| 1001 | 19790717-9191  | G01 | LUSE | enhet1 | lakare1 |
-| 1002 | 19790717-9191  | G01 | LUSE | enhet2 | lakare2 |
+| 1001 | 19790717-9191 | G01 | LUSE | enhet1 | lakare1 |
+| 1002 | 19691230-1234 | G01 | LUSE | enhet2 | lakare2 |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
-| 19790717-9191  | 2014-04-05T10:00:00  | 1001 | KOMPLT |
-| 19790717-9191  | 2014-06-03T10:00:00  | 1001 | AVSTMN |
-| 19691230-1234  | 2014-06-03T10:00:00  | 1002 | KOMPLT |
+| 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT |
+| 19790717-9191 | 2014-06-03T10:00:00 | 1001 | AVSTMN |
+| 19691230-1234 | 2014-06-03T10:00:00 | 1002 | KOMPLT |
 
 !3 Då gäller:
 Sjukskrivningslängd-filtret ger ingen effekt på denna rapport. Eftersom vi kan inte titta på start- och sluttider eftersom en del intyg inte innehåller dessa.
 
+Denna rapport visas som ett staplat stapeldiagram. Därför motsvarar totalen alltså totalt antal meddelanden oavsett grupp.
+
 Inloggad:
 
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
-| inloggad som  | vårdenhet | grupp | filter sjukskrivningslängd | totalt? | män? | kvinnor? |
-| user2 | enhet1 | Komplettering | Under 15 dagar | 1 | 1 | 0 |
-| user2 | enhet1 | Avstämning | Under 15 dagar | 1 | 1 | 0 |
-| user2 | enhet1 | Övrigt | Under 15 dagar | 0 | 0 | 0 |
+| inloggad som | vårdenhet | grupp | filter sjukskrivningslängd | totalt? | män? | kvinnor? |
+| user2 | enhet1 | Komplettering | Under 15 dagar | 2 | 1 | 0 |
+| user2 | enhet1 | Avstämning | Under 15 dagar | 2 | 1 | 0 |
+| user2 | enhet1 | Övrigt | Under 15 dagar | 2 | 0 | 0 |
 | user2 | enhet2 | Komplettering | Under 15 dagar | 1 | 1 | 0 |
-| user2 | enhet2 | Avstämning | Under 15 dagar | 0 | 0 | 0 |
-| user2 | enhet2 | Övrigt | Under 15 dagar | 0 | 0 | 0 |
+| user2 | enhet2 | Avstämning | Under 15 dagar | 1 | 0 | 0 |
+| user2 | enhet2 | Övrigt | Under 15 dagar | 1 | 0 | 0 |

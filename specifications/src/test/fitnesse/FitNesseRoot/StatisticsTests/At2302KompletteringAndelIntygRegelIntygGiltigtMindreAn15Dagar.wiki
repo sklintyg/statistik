@@ -33,28 +33,28 @@ Nationell:
 
 | Andel i rapporten komplettering andel intyg |
 | år | månad | grupp | totalt? | män? | kvinnor? |
-| 2015 | feb | 7804,7263 | 1 | 0 | 1 |
-| 2015 | mar | 7804,7263 | 1 | 1 | 0 |
-| 2015 | apr | 7804,7263 | 1 | 1 | 0 |
-| 2015 | maj | 7804,7263 | 0 | 0 | 0 |
-| 2015 | jun | 7804,7263 | 0 | 0 | 0 |
-| 2015 | jul | 7804,7263 | 0 | 0 | 0 |
-| 2015 | aug | 7804,7263 | 0 | 0 | 0 |
-| 2015 | sep | 7804,7263 | 0 | 0 | 0 |
-| 2015 | okt | 7804,7263 | 0 | 0 | 0 |
-| 2015 | nov | 7804,7263 | 0 | 0 | 0 |
+| 2015 | feb | FK 7863/7804 Läkarintyg för sjukpenning | 1 | 0 | 1 |
+| 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | 1 | 1 | 0 |
+| 2015 | apr | FK 7863/7804 Läkarintyg för sjukpenning | 1 | 1 | 0 |
+| 2015 | maj | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |
+| 2015 | jun | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |
+| 2015 | jul | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |
+| 2015 | aug | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |
+| 2015 | sep | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |
+| 2015 | okt | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |
+| 2015 | nov | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |
 
 Inloggad:
 
 | Andel i rapporten komplettering andel intyg |
 | inloggad som | år | månad | grupp | totalt? | män? | kvinnor? |
-| user1 | 2015 | feb | 7804,7263 | 1 | 0 | 1 |
-| user1 | 2015 | mar | 7804,7263 | 1 | 1 | 0 |
-| user1 | 2015 | apr | 7804,7263 | 1 | 1 | 0 |
-| user1 | 2015 | maj | 7804,7263 | 0 | 0 | 0 |
-| user1 | 2015 | jun | 7804,7263 | 0 | 0 | 0 |
-| user1 | 2015 | jul | 7804,7263 | 0 | 0 | 0 |
-| user1 | 2015 | aug | 7804,7263 | 0 | 0 | 0 |
-| user1 | 2015 | sep | 7804,7263 | 0 | 0 | 0 |
-| user1 | 2015 | okt | 7804,7263 | 0 | 0 | 0 |
-| user1 | 2015 | nov | 7804,7263 | 0 | 0 | 0 |
+| user1 | 2015 | feb | FK 7863/7804 Läkarintyg för sjukpenning | 1 | 0 | 1 |
+| user1 | 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | 1 | 1 | 0 |
+| user1 | 2015 | apr | FK 7863/7804 Läkarintyg för sjukpenning | 1 | 1 | 0 |
+| user1 | 2015 | maj | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |
+| user1 | 2015 | jun | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |
+| user1 | 2015 | jul | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |
+| user1 | 2015 | aug | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |
+| user1 | 2015 | sep | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |
+| user1 | 2015 | okt | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |
+| user1 | 2015 | nov | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 | 0 |

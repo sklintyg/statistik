@@ -1,12 +1,10 @@
 ---
-Prune
-Test
+Static
 ---
----
-Prune
-Test---''!contents -R2 -g -p -f -h''----
+''!contents -R2 -g -p -f -h''
 
-!3 Givet att:
+Givet att:
+
 Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
 
 | script | dagens datum | 2014-11-06 |
@@ -22,8 +20,10 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
 | 19730717-9191 | 2014-06-03T10:00:00 | 1001 | KOMPLT |
-| 19621030-1234 | 2014-06-03T10:00:00 | 1002 | KOMPLT |
+| 19621030-1234 | 2014-05-03T10:00:00 | 1002 | KOMPLT |
 | 19951030-1254 | 2014-06-03T10:00:00 | 1003 | AVSTMN |
+
+
 
 !3 Då gäller:
 Ålder på patienten räknas fram utifrån den tidpunkt då meddelandet skickades.
@@ -32,7 +32,7 @@ Inloggad:
 
 | Meddelanden i rapporten meddelanden totalt |
 | inloggad som | år | månad | grupp | filter åldersgrupp | män? | kvinnor? |
-| user1 | 2014 | maj | Komplettering | | 0 | 0 |
+| user1 | 2014 | maj | Komplettering | | 1 | 0 |
 | user1 | 2014 | maj | Avstämningsmöte | | 0 | 0 |
 | user1 | 2014 | jun | Komplettering | 41-45 år | 1 | 0 |
 | user1 | 2014 | jun | Avstämningsmöte | 41-45 år | 0 | 0 |
