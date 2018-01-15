@@ -27,7 +27,7 @@ Sjukskrivningslängd-filtret ger ingen effekt på denna rapport. Eftersom vi kan
 
 Inloggad:
 
-| Meddelanden i rapporten meddelanden vardenhet |
+| Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
 | inloggad som  | vårdenhet | grupp | filter sjukskrivningslängd | totalt? | män? | kvinnor? |
 | user2 | enhet1 | Komplettering | Under 15 dagar | 1 | 1 | 0 |
 | user2 | enhet1 | Avstämning | Under 15 dagar | 1 | 1 | 0 |

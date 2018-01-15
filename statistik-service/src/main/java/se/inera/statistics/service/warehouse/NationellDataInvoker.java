@@ -38,6 +38,7 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
+import se.inera.statistics.service.warehouse.query.MessagesFilter;
 import se.inera.statistics.service.warehouse.query.MessagesQuery;
 
 /**
@@ -101,8 +102,12 @@ public class NationellDataInvoker {
     }
 
     private void calculateMeddelandenPerVg(HsaIdVardgivare vardgivareId, NationellDataInfo result) {
-        result.setMeddelandenPerAmneResult(messagesQuery.getMeddelandenPerAmneAggregated(
-                vardgivareId, result.getMeddelandenPerAmneResult(), result.getMeddelandenPerAmneRange(), cutoff, null));
+        final Range range = result.getMeddelandenPerAmneRange();
+        final MessagesFilter messagesFilter = new MessagesFilter(vardgivareId, range.getFrom(),
+                range.getNumberOfMonths(), null, null, null, null);
+        final KonDataResponse meddelandenPerAmne = result.getMeddelandenPerAmneResult();
+        final KonDataResponse resp = messagesQuery.getMeddelandenPerAmneAggregated(meddelandenPerAmne, messagesFilter, cutoff);
+        result.setMeddelandenPerAmneResult(resp);
     }
 
     private void calculatePerAisle(NationellData nationellData, NationellDataInfo result, NationellDataHolder data, Aisle aisle) {

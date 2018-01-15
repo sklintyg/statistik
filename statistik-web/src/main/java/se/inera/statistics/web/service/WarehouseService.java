@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -53,6 +52,7 @@ import se.inera.statistics.service.warehouse.query.CutoffUsage;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 import se.inera.statistics.service.warehouse.query.LakarbefattningQuery;
 import se.inera.statistics.service.warehouse.query.LakaresAlderOchKonQuery;
+import se.inera.statistics.service.warehouse.query.MessagesFilter;
 import se.inera.statistics.service.warehouse.query.MessagesQuery;
 import se.inera.statistics.service.warehouse.query.OverviewQuery;
 import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
@@ -141,27 +141,30 @@ public class WarehouseService {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
-            final List<HsaIdEnhet> enhetIds = entry.getValue().stream().map(Enhet::getEnhetId).collect(Collectors.toList());
-            return messagesQuery.getMeddelandenPerAmneAggregated(entry.getKey(), konDataResponse, range, 0, enhetIds);
+            final MessagesFilter meddelandeFilter = getMeddelandeFilter(entry.getKey(), filterSettings.getFilter(), range);
+            return messagesQuery.getMeddelandenPerAmneAggregated(konDataResponse, meddelandeFilter, 0);
         }, (konDataResponse, konDataResponse2) -> konDataResponse2);
     }
 
     public KonDataResponse getMessagesPerAmne(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
-        return messagesQuery.getMessagesPerAmne(vardgivarId, filter.getEnheter(), range.getFrom(), range.getNumberOfMonths());
+        return messagesQuery.getMessagesPerAmne(getMeddelandeFilter(vardgivarId, filter, range));
     }
 
     public SimpleKonResponse getMessagesPerAmneTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
-        return messagesQuery.getMessagesTvarsnittPerAmne(vardgivarId, filter.getEnheter(), range.getFrom(), range.getNumberOfMonths());
+        return messagesQuery.getMessagesTvarsnittPerAmne(getMeddelandeFilter(vardgivarId, filter, range));
     }
 
     public KonDataResponse getMessagesPerAmnePerEnhet(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
-        return messagesQuery.getMessagesPerAmnePerEnhet(vardgivarId, filter.getEnheter(), range.getFrom(),
-                range.getNumberOfMonths());
+        return messagesQuery.getMessagesPerAmnePerEnhet(getMeddelandeFilter(vardgivarId, filter, range));
+    }
+
+    private MessagesFilter getMeddelandeFilter(HsaIdVardgivare vardgivarId, Filter filter, Range range) {
+        return new MessagesFilter(vardgivarId, range.getFrom(), range.getNumberOfMonths(), filter.getEnheter(),
+                filter.getAldersgrupp(), filter.getDiagnoser(), filter.getIntygstyper());
     }
 
     public KonDataResponse getMessagesPerAmnePerEnhetTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
-        return messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(vardgivarId, filter.getEnheter(), range.getFrom(),
-                range.getNumberOfMonths());
+        return messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(getMeddelandeFilter(vardgivarId, filter, range));
     }
 
     public KonDataResponse getMessagesPerAmnePerEnhetLandsting(FilterSettings filterSettings) {
@@ -172,8 +175,8 @@ public class WarehouseService {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
-            final List<HsaIdEnhet> enhetIds = entry.getValue().stream().map(Enhet::getEnhetId).collect(Collectors.toList());
-            return messagesQuery.getMeddelandenPerAmneOchEnhetAggregated(entry.getKey(), konDataResponse, range, 0, enhetIds);
+            final MessagesFilter meddelandeFilter = getMeddelandeFilter(entry.getKey(), filterSettings.getFilter(), range);
+            return messagesQuery.getMeddelandenPerAmneOchEnhetAggregated(konDataResponse, meddelandeFilter, 0);
         }, (konDataResponse, konDataResponse2) -> konDataResponse2);
     }
 

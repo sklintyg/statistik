@@ -70,6 +70,7 @@ public class MessageWidelineManagerTest {
         line1.setSkickatTidpunkt(LocalTime.now());
         line1.setIntygId("i-123");
         line1.setMeddelandeId(correlationId);
+        line1.setIntygstyp("LISJP");
 
         messageWidelineManager.saveWideline(line1);
     }

@@ -33,7 +33,7 @@ public class MessageWidelineConverterTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(MessageWidelineConverterTest.class);
 
-    private MessageWideLine wideLine = new MessageWideLine(1, 1, "1231", "123-123-123", MessageEventType.SENT, "19121212-1212", LocalDateTime.now(), "AMNE", 1, 103, "e1", "v1");
+    private MessageWideLine wideLine = new MessageWideLine(1, 1, "1231", "123-123-123", MessageEventType.SENT, "19121212-1212", LocalDateTime.now(), "AMNE", 1, 103, "e1", "v1", "LISJP");
     private MessageWidelineConverter converter = new MessageWidelineConverter();
 
     @Test
@@ -92,7 +92,7 @@ public class MessageWidelineConverterTest {
         List<String> errors = converter.validate(new MessageWideLine());
 
         LOG.error("Error message: {}", errors);
-        assertEquals(5, errors.size());
+        assertEquals(6, errors.size());
     }
 
 }

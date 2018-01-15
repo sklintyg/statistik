@@ -26,7 +26,9 @@ import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.warehouse.WidelineLoader;
+import se.inera.statistics.service.warehouse.query.MessagesFilter;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -38,6 +40,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -87,19 +90,10 @@ public class MessageWidelineLoader {
         return null;
     }
 
-    public List<CountDTOAmne> getAntalMeddelandenPerAmne(LocalDate from, LocalDate to, HsaIdVardgivare vardgivare,
-            Collection<HsaIdEnhet> enheter) {
-
-        boolean hasVardgivare = vardgivare != null;
+    public List<CountDTOAmne> getAntalMeddelandenPerAmne(MessagesFilter filter) {
         try (
             Connection connection = dataSource.getConnection();
-            PreparedStatement stmt = prepareStatementAmne(connection, hasVardgivare, enheter)) {
-            stmt.setString(COLUMN_FROM, from.format(FORMATTER));
-            stmt.setString(COLUMN_TO, to.format(FORMATTER));
-
-            if (hasVardgivare) {
-                stmt.setString(COLUMN_VARDGIVARE, vardgivare.getId());
-            }
+            PreparedStatement stmt = prepareStatementAmne(connection, filter)) {
 
             ResultSet resultSet = stmt.executeQuery();
 
@@ -122,11 +116,13 @@ public class MessageWidelineLoader {
 
         int year = resultSet.getInt("year");
         int month = resultSet.getInt("month");
-        dto.setCount(resultSet.getInt("count"));
+        dto.setCount(1);
         dto.setDate(LocalDate.of(year, month, 1));
         dto.setKon(Kon.byNumberRepresentation(resultSet.getInt("kon")));
         dto.setAmne(MsgAmne.parse(resultSet.getString("amneCode")));
         dto.setEnhet(resultSet.getString("enhet"));
+        dto.setPatientAge(resultSet.getInt("alder"));
+        dto.setIntygTyp(resultSet.getString("intygstyp"));
         return dto;
     }
 
@@ -173,28 +169,68 @@ public class MessageWidelineLoader {
 
     @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
             justification = "We know what we're doing. No user supplied data.")
-    private PreparedStatement prepareStatementAmne(Connection connection, boolean vardgivare, Collection<HsaIdEnhet> enheter)
+    private PreparedStatement prepareStatementAmne(Connection connection, MessagesFilter filter)
             throws SQLException {
 
-        String sql = "select count(*) as count, YEAR(skickatDate) as `year`, MONTH(skickatDate) as `month`, kon, amneCode, enhet "
+        StringBuffer sql = new StringBuffer("select YEAR(skickatDate) as `year`, MONTH(skickatDate) as `month`"
+                + ", kon, amneCode, enhet, alder, intygstyp "
                 + " FROM messagewideline "
-                + " WHERE (skickatDate between ? AND ?)  ";
+                + " WHERE (skickatDate between ? AND ?)  ");
 
-        if (vardgivare) {
-            sql += " AND vardgivareid = ? ";
+        boolean hasVardgivare = filter.getVardgivarId() != null;
+        if (hasVardgivare) {
+            sql.append(" AND vardgivareid = ? ");
         }
 
+        final Collection<HsaIdEnhet> enheter = filter.getEnheter();
         if (enheter != null && !enheter.isEmpty()) {
             String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
-            sql += " AND `enhet` IN ('" + enhetSql + "')";
+            sql.append(" AND `enhet` IN ('").append(enhetSql).append("')");
         }
 
-        sql += " GROUP BY `year`, `month`, kon, amneCode, enhet";
+        final Collection<String> aldersgrupper = filter.getAldersgrupp();
+        if (aldersgrupper != null) {
+            boolean alderAdded = false;
+            for (String aldersgruppName : aldersgrupper) {
+                final Optional<AgeGroup> aldersgrupp = AgeGroup.getByName(aldersgruppName);
+                if (aldersgrupp.isPresent()) {
+                    if (!alderAdded) {
+                        sql.append(" AND (");
+                    } else {
+                        sql.append(" OR ");
+                    }
+                    sql.append("(alder >= ")
+                            .append(aldersgrupp.get().getFrom())
+                            .append(" AND ")
+                            .append("alder < ")
+                            .append(aldersgrupp.get().getTo())
+                            .append(")");
+                    alderAdded = true;
+                }
+            }
+            if (alderAdded) {
+                sql.append(")");
+            }
+        }
+
+        final Collection<String> intygstyper = filter.getIntygstyper();
+        if (intygstyper != null && !intygstyper.isEmpty()) {
+            String intygstyperSql = intygstyper.stream().map(String::toUpperCase).collect(Collectors.joining("' , '"));
+            sql.append(" AND `intygstyp` IN ('").append(intygstyperSql).append("')");
+        }
 
         LOG.debug("sql: {}", sql);
 
-        PreparedStatement stmt = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        PreparedStatement stmt = connection.prepareStatement(sql.toString(), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(FETCH_SIZE);
+
+        stmt.setString(COLUMN_FROM, filter.getFrom().format(FORMATTER));
+        stmt.setString(COLUMN_TO, filter.getTo().format(FORMATTER));
+
+        if (hasVardgivare) {
+            stmt.setString(COLUMN_VARDGIVARE, filter.getVardgivarId().getId());
+        }
+
         return stmt;
     }
 

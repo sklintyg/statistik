@@ -28,6 +28,8 @@ public class CountDTOAmne {
     private Kon kon;
     private MsgAmne amne;
     private String enhet;
+    private int patientAge;
+    private String intygTyp;
 
     public int getCount() {
         return count;
@@ -67,6 +69,22 @@ public class CountDTOAmne {
 
     public String getEnhet() {
         return enhet;
+    }
+
+    public void setPatientAge(int patientAge) {
+        this.patientAge = patientAge;
+    }
+
+    public int getPatientAge() {
+        return patientAge;
+    }
+
+    public void setIntygTyp(String intygTyp) {
+        this.intygTyp = intygTyp;
+    }
+
+    public String getIntygTyp() {
+        return intygTyp;
     }
 
 }
