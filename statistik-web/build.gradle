@@ -85,6 +85,16 @@ grunt_build_no_minify.dependsOn bowerInstall
 
 war.dependsOn createVersionPropertyFile
 
+license {
+    sourceSets {
+        main {
+            resources {
+                srcDirs  = ["src/main/webapp/app", "src/main/webapp/components"]
+            }
+        }
+    }
+}
+
 dependencies {
     compile project(':statistik-service')
 
