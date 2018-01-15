@@ -29,4 +29,18 @@ abstract class FoljandeFinns {
     def setExtension(Node node, def value) {
         setLeafValue(node, "extension", value)
     }
+
+    Map simpleMap(Object key, Object value) {
+        def map = new HashMap()
+        map.put(key, value);
+        return map;
+    }
+
+    Map simpleMap(Object key, Object value, Object key2, Object value2) {
+        def map = new HashMap()
+        map.put(key, value);
+        map.put(key2, value2);
+        return map;
+    }
+
 }
