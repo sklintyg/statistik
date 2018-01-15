@@ -54,6 +54,7 @@ public class MessageWideLine {
     private int alder;
     private String enhet;
     private String vardgivareid;
+    private String intygstyp;
 
     public MessageWideLine() {
         // Used by WidelineConverter
@@ -61,8 +62,9 @@ public class MessageWideLine {
 
     // CHECKSTYLE:OFF ParameterNumber
     @SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public MessageWideLine(long id, long logId, String meddelandeId, String intygId, MessageEventType meddelandeTyp, String patientid,
-            LocalDateTime skickatTidpunkt, String amneCode, int kon, int alder, String enhet, String vardgivareid) {
+    public MessageWideLine(long id, long logId, String meddelandeId, String intygId, MessageEventType meddelandeTyp,
+                           String patientid, LocalDateTime skickatTidpunkt, String amneCode, int kon, int alder,
+                           String enhet, String vardgivareid, String intygstyp) {
         this.id = id;
         this.logId = logId;
         this.meddelandeId = meddelandeId;
@@ -76,6 +78,7 @@ public class MessageWideLine {
         this.alder = alder;
         this.enhet = enhet;
         this.vardgivareid = vardgivareid;
+        this.intygstyp = intygstyp;
     }
     // CHECKSTYLE:ON ParameterNumber
 
@@ -182,4 +185,13 @@ public class MessageWideLine {
     public void setVardgivareid(String vardgivareid) {
         this.vardgivareid = vardgivareid;
     }
+
+    public String getIntygstyp() {
+        return intygstyp;
+    }
+
+    public void setIntygstyp(String intygstyp) {
+        this.intygstyp = intygstyp;
+    }
+
 }

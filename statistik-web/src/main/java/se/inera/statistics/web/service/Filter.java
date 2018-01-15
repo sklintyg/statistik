@@ -32,6 +32,7 @@ public class Filter {
     private Collection<String> sjukskrivningslangd;
     private Collection<String> aldersgrupp;
     private final String hash;
+    private Collection<String> intygstyper;
 
     Filter(FilterPredicates predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser, Collection<String> sjukskrivningslangd,
             Collection<String> aldersgrupp, String hashValue) {
@@ -71,4 +72,11 @@ public class Filter {
         return hash;
     }
 
+    public Collection<String> getIntygstyper() {
+        return intygstyper;
+    }
+
+    public void setIntygstyper(Collection<String> intygstyper) {
+        this.intygstyper = intygstyper;
+    }
 }

@@ -71,5 +71,6 @@
     <include file="changelog/db.changelog-v43.0_removed_column_enkelt_wideline.xml" />
     <include file="changelog/db.changelog-v44.0_add_indexes.xml" />
     <include file="changelog/db.changelog-v45.0_add_active_intyg_column.xml" />
+    <include file="changelog/db.changelog-v46.0_add_columns_for_meddelandefilter.xml" />
 
 </databaseChangeLog>

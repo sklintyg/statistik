@@ -38,6 +38,7 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
 
     private static final int MAX_LENGTH_MESSAGE_ID = 50;
     private static final int MAX_LENGTH_INTYG_ID = 50;
+    private static final int MAX_LENGTH_INTYGSTYPE = 20;
     private static final int MAX_LENGTH_VGID = 50;
 
     @Autowired
@@ -52,6 +53,7 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
         checkField(errors, line.getPatientid(), "Patient");
         checkField(errors, line.getMeddelandeId(), "MeddelandeId", MAX_LENGTH_MESSAGE_ID);
         checkField(errors, line.getIntygId(), "IntygId", MAX_LENGTH_INTYG_ID);
+        checkField(errors, line.getIntygstyp(), "intygstyp", MAX_LENGTH_INTYGSTYPE);
         return errors;
     }
 
@@ -76,6 +78,7 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
         if (intygCommon != null) {
             line.setEnhet(intygCommon.getEnhet());
             line.setVardgivareid(intygCommon.getVardgivareId());
+            line.setIntygstyp(intygCommon.getIntygtyp());
         }
 
         return line;
