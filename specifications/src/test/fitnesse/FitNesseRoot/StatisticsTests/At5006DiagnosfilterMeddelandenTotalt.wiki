@@ -1,5 +1,4 @@
 ---
-Help: Kan tas med när detta är utvecklat
 Prune
 Test
 ---
@@ -37,11 +36,11 @@ Diagnosen tas från det intyg som meddelandet tillhör.
 | user1 | 2014 | mar | Komplettering | | F00-F09 | | 0 | 0 |
 | user1 | 2014 | mar | Komplettering | | | F41 | 0 | 1 |
 | user1 | 2014 | apr | Komplettering | G00-G99 | | | 1 | 0 |
-| user1 | 2014 | apr | Komplettering | | G00-G09 | | 0 | 0 |
-| user1 | 2014 | apr | Komplettering | | | G41 | 1 | 0 |
+| user1 | 2014 | apr | Komplettering | | G00-G09 | | 1 | 0 |
+| user1 | 2014 | apr | Komplettering | | | G41 | 0 | 0 |
 | user1 | 2014 | maj | Komplettering | | | | 0 | 0 |
 | user1 | 2014 | maj | Komplettering | | | | 0 | 0 |
 | user1 | 2014 | maj | Komplettering | | | | 0 | 0 |
 | user1 | 2014 | jun | Komplettering | F00-F99 | | | 1 | 0 |
-| user1 | 2014 | jun | Komplettering | | G00-G09 | | 0 | 0 |
-| user1 | 2014 | jun | Komplettering | | | G41 | 2 | 0 |
+| user1 | 2014 | jun | Komplettering | | G00-G09 | | 2 | 0 |
+| user1 | 2014 | jun | Komplettering | | | G01 | 2 | 0 |

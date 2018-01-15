@@ -1,9 +1,8 @@
 ---
-Help: Kan tas med när rapporten Meddelanden, Vårdenhet har implementerats
-Prune
 Test
 ---
-!contents -R2 -g -p -f -h
+''!contents -R2 -g -p -f -h''
+
 !3 Givet att:
 Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
 
@@ -11,47 +10,44 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 
 | script | troskel varde | 1 |
 
-| Foljande lakare finns |
-| id | förnamn | efternamn | kön | ålder | befattningar |
-| lakare1 | Anna | Andersson | FEMALE | 30 | 201010 |
-| lakare2 | Bo | Bengtsson | MALE | 40 | 201013 |
-
 | Enbart foljande intyg finns |
-| intygid | personnr | diagnoskod | intygformat | enhet | läkare |
-| 1001 | 19790717-9191 | G01 | LUSE | enhet1 | lakare1 |
-| 1002 | 19790717-9191 | G01 | LUSE | enhet2 | lakare2 |
+| intygid | personnr | diagnoskod | intygformat | enhet |
+| 1001 | 19790717-9191 | G01 | LUSE | enhet1 |
+| 1002 | 19550717-9111 | G01 | LUSE | enhet2 |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
 | 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT |
 | 19790717-9191 | 2014-06-03T10:00:00 | 1001 | AVSTMN |
-| 19691230-1234 | 2014-06-03T10:00:00 | 1002 | KOMPLT |
+| 19550717-9111 | 2014-06-03T10:00:00 | 1002 | KOMPLT |
 
 !3 Då gäller:
 Statistiken baseras på meddelanden för alla intygstyper som har ärendekommunikation. Statistiken presenteras utifrån datum då meddelandet skickades. Varje meddelande räknas en gång oavsett om det finns flera meddelanden för samma intyg.
+
+"Meddelanden, vårdenhet" visas som ett staplat stapeldiagram vilket gör att totalen avspeglar den totala mängden meddelanden, oavsett grupp, som en enhet fått.
 
 Inloggad:
 
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
 | inloggad som | vårdenhet | grupp | totalt? | män? | kvinnor? |
-| user2 | enhet1 | Komplettering | 1 | 1 | 0 |
-| user2 | enhet1 | Avstämningsmöte | 1 | 1 | 0 |
+| user2 | enhet1 | Komplettering | 2 | 1 | 0 |
+| user2 | enhet1 | Avstämningsmöte | 2 | 1 | 0 |
 | user2 | enhet2 | Komplettering | 1 | 1 | 0 |
-| user2 | enhet2 | Avstämningsmöte | 0 | 0 | 0 |
+| user2 | enhet2 | Avstämningsmöte | 1 | 0 | 0 |
 
 Byte till tidsserie gör att ytdiagram 18 mån visas. Varje enhet får en legend för varje grupp (meddelandeämne) som ska tas med. Kvinnor och män visas i separata diagram.
 
 | Meddelanden i rapporten meddelanden vardenhet som tidsserie |
-| inloggad som | år   | månad | grupp                    | män? | kvinnor? |
-| user2        | 2014 | apr   | enhet1 : Komplettering   | 1    | 0        |
-| user2        | 2014 | apr   | enhet1 : Avstämningsmöte | 0    | 0        |
-| user2        | 2014 | apr   | enhet2 : Komplettering   | 0    | 0        |
-| user2        | 2014 | apr   | enhet2 : Avstämningsmöte | 0    | 0        |
-| user2        | 2014 | maj   | enhet1 : Komplettering   | 0    | 0        |
-| user2        | 2014 | maj   | enhet1 : Avstämningsmöte | 0    | 0        |
-| user2        | 2014 | maj   | enhet2 : Komplettering   | 0    | 0        |
-| user2        | 2014 | maj   | enhet2 : Avstämningsmöte | 0    | 0        |
-| user2        | 2014 | jun   | enhet1 : Komplettering   | 0    | 0        |
-| user2        | 2014 | jun   | enhet1 : Avstämningsmöte | 1    | 0        |
-| user2        | 2014 | jun   | enhet2 : Komplettering   | 1    | 0        |
-| user2        | 2014 | jun   | enhet2 : Avstämningsmöte | 0    | 0        |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user2 | 2014 | apr | enhet1 : Komplettering | 1 | 0 |
+| user2 | 2014 | apr | enhet1 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | apr | enhet2 : Komplettering | 0 | 0 |
+| user2 | 2014 | apr | enhet2 : Avstämningsmöte | -1 | -1 |
+| user2 | 2014 | maj | enhet1 : Komplettering | 0 | 0 |
+| user2 | 2014 | maj | enhet1 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | maj | enhet2 : Komplettering | 0 | 0 |
+| user2 | 2014 | maj | enhet2 : Avstämningsmöte | -1 | -1 |
+| user2 | 2014 | jun | enhet1 : Komplettering | 0 | 0 |
+| user2 | 2014 | jun | enhet1 : Avstämningsmöte | 1 | 0 |
+| user2 | 2014 | jun | enhet2 : Komplettering | 1 | 0 |
+| user2 | 2014 | jun | enhet2 : Avstämningsmöte | -1 | -1 |

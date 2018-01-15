@@ -1,0 +1,40 @@
+---
+Help: Kan tas med när Intyg,totalt har implementerats
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+!3 Givet att:
+| script | dagens datum  | 2015-11-06  |
+
+| Enbart foljande intyg finns |
+| personnr | signeringstid | enhet | intygformat |
+| 19790219-9285  | 2015-02-10T12:24:15  | enhet1 | LISJP |
+| 19790219-9285  | 2015-02-12T12:25:15  | enhet1 | LUSE |
+| 19790429-9272  | 2015-03-10T12:25:15  | enhet1 | LISJP |
+| 19790329-9256  | 2015-03-10T12:25:15  | enhet2 | LUSE |
+| 19790529-9289  | 2015-03-10T12:25:15  | enhet2 | LISJP |
+| 19790629-9234  | 2015-03-10T12:25:15  | enhet2 | LISJP |
+| 19790629-9234  | 2015-03-29T12:25:15  | enhet2 | LISJP |
+
+!3 Då gäller:
+Statistiken baseras på alla intygstyper och dess signeringstidpunkt. Det spelar ingen roll om det finns flera intyg för samma patient. Varje intyg räknas alltid en gång.
+
+Intyg som antingen har formatet fk7263sit eller LISJP ska hamna i samma grupp. Intyg med "felaktigt" format tas inte med alls
+
+Inloggad:
+
+| Intyg i rapporten intyg totalt |
+| inloggad som  | år | månad | grupp | filter enheter | allaEnhetsfilterValda? | enhetsfilterlista? | män? | kvinnor? |
+| user2 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | | true | [enhet1, enhet2] | 0 | 1 |
+| user2 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 0 | 1 |
+| user2 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | enhet1 | false | [enhet1] | 0 | 1 |
+| user2 | 2015 | feb | FK 7863/7804 Läkarintyg för sjukpenning | | true | [enhet1, enhet2] | 0 | 1 |
+| user2 | 2015 | feb | FK 7863/7804 Läkarintyg för sjukpenning | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 0 | 1 |
+| user2 | 2015 | feb | FK 7863/7804 Läkarintyg för sjukpenning | enhet2 | false | [enhet2] | 0 | 0 |
+| user2 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | | true | [enhet1, enhet2] | 1 | 0 |
+| user2 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 1 | 0 |
+| user2 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | enhet1 | false | [enhet1] | 0 | 0 |
+| user2 | 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | | true | [enhet1, enhet2] | 3 | 1 |
+| user2 | 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 3 | 1 |
+| user2 | 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | enhet2 | false | [enhet2] | 2 | 1 |
