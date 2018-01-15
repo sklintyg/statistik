@@ -164,7 +164,12 @@ class FoljandeIntygFinns extends FoljandeFinns {
         aktivitetsbegransningCodeNode.setValue(aktivitetsbegränsning)
 
         def arbetsformagaNode = svarNodes.find{ it.@id=="32" }
-        if(arbetsformagaNode!=null){
+        if (arbetsformagaNode != null){
+            if (Integer.valueOf(arbetsförmåga) > 0 || (!arbetsförmåga2.isEmpty() && Integer.valueOf(arbetsförmåga2) > 0)) {
+                Node node33 = intyg.appendNode("svar", simpleMap("id", "33", "xmlns", "urn:riv:clinicalprocess:healthcond:certificate:2"));
+                node33.appendNode("delsvar", simpleMap("id", "33.1"), "false");
+            }
+
             def arbetsformagaCodeNode = arbetsformagaNode.value().find{it.@id=="32.1"}.value()[0]
             setLeafValue(arbetsformagaCodeNode, "code", SjukskrivningsGrad.fromId((Integer.valueOf(arbetsförmåga) / 25).intValue() + 1));
             def arbetsformagaPeriodNode = arbetsformagaNode.value().find{it.@id=="32.2"}.value()[0]
