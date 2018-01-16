@@ -5,9 +5,21 @@ navigation-tabs {
   .tabset {
     border: 1px solid $st-color-23;
     border-radius: 4px 4px 0 0;
+    border-bottom: 0;
   }
 
-  .nav-tabs.nav-justified {
+  .nav-tabs {
+    border-bottom: 0;
+
+    > li {
+      width: 33.333333%;
+      text-align: center;
+
+      > a {
+        margin-right: 0;
+      }
+    }
+
     .nav-item {
       background: $st-color-20;
       box-shadow: inset 1px -1px 4px 0 rgba(0, 0, 0, 0.24);
@@ -15,16 +27,15 @@ navigation-tabs {
       > a {
         @extend %st-typo-11;
         border-radius: 0;
-        border-color: transparent;
-
-        &:hover {
-          border-color: transparent;
-        }
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       &.active {
         > a {
           @extend %st-typo-12;
+          line-height: 1.3;
         }
       }
     }
