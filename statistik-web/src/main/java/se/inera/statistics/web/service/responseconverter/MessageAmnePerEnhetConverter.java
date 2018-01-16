@@ -52,7 +52,7 @@ public class MessageAmnePerEnhetConverter extends MultiDualSexConverter {
         final List<KonDataRow> rows = data.getRows();
         int indexOfEmptyInternalIcd10Group = getIndexOfGroupToRemove(amnes, rows);
         while (indexOfEmptyInternalIcd10Group >= 0) {
-            removeGroupWithIndex(indexOfEmptyInternalIcd10Group, amnes, rows);
+            removeGroupWithIndex(indexOfEmptyInternalIcd10Group, amnes, rows, separatedGroups);
             indexOfEmptyInternalIcd10Group = getIndexOfGroupToRemove(amnes, rows);
         }
         final KonDataResponse konDataResponse = new KonDataResponse(convertGroupNamesToText(amnes, separatedGroups), rows);
@@ -106,8 +106,9 @@ public class MessageAmnePerEnhetConverter extends MultiDualSexConverter {
         return count;
     }
 
-    private void removeGroupWithIndex(int index, List<MsgAmne> groupNames, List<KonDataRow> rows) {
+    private void removeGroupWithIndex(int index, List<MsgAmne> groupNames, List<KonDataRow> rows, List<String[]> separatedGroups) {
         groupNames.remove(index);
+        separatedGroups.remove(index);
         for (KonDataRow row : rows) {
             row.getData().remove(index);
         }

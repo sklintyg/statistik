@@ -1,7 +1,10 @@
 ---
+Prune
 Test
 ---
 ''!contents -R2 -g -p -f -h''
+
+Är ignorerad då specen anger att ämnet "avstämingsmöte" inte borde synas alls i diagramet, är det verkligen rätt?
 
 !3 Givet att:
 Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
