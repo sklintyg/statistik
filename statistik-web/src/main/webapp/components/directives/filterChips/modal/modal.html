@@ -16,12 +16,22 @@
       chips="chips.diagnos"></filter-chips-list>
 
   <filter-chips-list
-      title="Valda sjukskrivningslängder"
-      icon="fa-calendar"
-      chips="chips.sjukskrivningslangd"></filter-chips-list>
-
-  <filter-chips-list
       title="Valda åldersgrupper"
       icon="fa-users"
-      chips="chips.aldersgrupp"></filter-chips-list>
+      chips="chips.aldersgrupp"
+      ></filter-chips-list>
+
+  <filter-chips-list
+      title="Valda sjukskrivningslängder"
+      icon="fa-calendar"
+      chips="chips.sjukskrivningslangd"
+      type-disabled="!filterViewState.sjukskrivningslangd"
+  ></filter-chips-list>
+
+  <filter-chips-list
+      title="Valda intygstyper"
+      icon="fa-file-text-o"
+      chips="chips.intygstyper"
+      type-disabled="!filterViewState.sjukskrivningslangd"
+  ></filter-chips-list>
 </div>

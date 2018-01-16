@@ -26,7 +26,8 @@ angular.module('StatisticsApp')
             scope: {
                 chips: '=',
                 title: '@',
-                icon: '@'
+                icon: '@',
+                typeDisabled: '='
             },
             restrict: 'E',
             templateUrl: '/components/directives/filterChipsList/filterChipsList.html'

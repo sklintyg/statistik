@@ -22,7 +22,7 @@ angular.module('StatisticsApp.filter.directive', []);
 angular.module('StatisticsApp.filter.directive')
     .directive('businessFilter',
         /** @ngInject */
-        function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter) {
+        function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter, filterViewState) {
         'use strict';
 
         return {
@@ -35,7 +35,7 @@ angular.module('StatisticsApp.filter.directive')
                 scope.filterButtonIdText = 'Verksamhet';
                 scope.filterHashParamName = 'filter';
                 linkFunction(_, scope, businessFilterFactory, $location, messageService, statisticsData,
-                                moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter);
+                                moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState);
             },
             templateUrl: '/app/shared/businessfilter/businessFilterView.html'
         };
@@ -44,7 +44,7 @@ angular.module('StatisticsApp.filter.directive')
 angular.module('StatisticsApp.filter.directive')
     .directive('landstingFilter',
         /** @ngInject */
-        function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter) {
+        function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter, filterViewState) {
         'use strict';
 
         return {
@@ -57,19 +57,18 @@ angular.module('StatisticsApp.filter.directive')
                 scope.filterButtonIdText = 'Landsting';
                 scope.filterHashParamName = 'landstingfilter';
                 linkFunction(_, scope, landstingFilterFactory, $location, messageService, statisticsData,
-                                moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter);
+                                moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState);
             },
             templateUrl: '/app/shared/businessfilter/businessFilterView.html'
         };
     });
 
-function linkFunction(_, scope, businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter) {
+function linkFunction(_, scope, businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState) {
     'use strict';
 
     //Initially we don't want to see the filter
     scope.filterToApply = true;
-    scope.sjukskrivningslangdEnabled = true;
-    scope.intygstyperEnabled = false;
+    scope.filterViewState = filterViewState.get();
     scope.businessFilter = businessFilter;
     scope.useDefaultPeriod = true;
     scope.showDateValidationError = false;

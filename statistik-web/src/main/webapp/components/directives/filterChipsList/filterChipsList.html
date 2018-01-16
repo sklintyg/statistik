@@ -1,11 +1,12 @@
-<ul data-ng-if="chips.length > 0">
+<ul
+    data-ng-if="chips.length > 0"
+    data-ng-class="{inactive: typeDisabled}"
+  >
   <li class="filter-heading">
     <i class="fa {{icon}}"></i> {{title}}
   </li>
   <li
       data-ng-repeat="chip in chips track by chip.id"
-      data-ng-click="removeChip({chip: chip})"
-      data-ng-class="{inactive: chip.newFilter, removed: chip.removedFilter}"
       class="filter-chips"
       title="{{::chip.text}}">
       <span class="default-text">

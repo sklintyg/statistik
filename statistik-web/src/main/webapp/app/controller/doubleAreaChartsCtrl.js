@@ -21,7 +21,7 @@
 angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $routeParams, $window, $timeout, $filter, statisticsData, config, messageService,
-            $location, chartFactory, _, pdfFactory, ControllerCommons) {
+            $location, chartFactory, _, pdfFactory, ControllerCommons, filterViewState) {
         'use strict';
 
         var that = this;
@@ -226,8 +226,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             destroyChart(chart2);
         });
 
-        return this;
-
+        // Set filter state
+        filterViewState.set(config.filter);
     }
 );
 
@@ -496,6 +496,10 @@ angular.module('StatisticsApp').intygPerTypePerMonthConfig =
     'use strict';
 
     var conf = {};
+    conf.filter = {
+        intygstyper: true,
+        sjukskrivningslangd: false
+    };
     conf.dataFetcherVerksamhet = 'getIntygPerTypePerMonthVerksamhet';
     conf.chartYAxisTitleUnit = 'intyg';
     conf.exportTableUrlVerksamhet = function () {
@@ -519,6 +523,10 @@ angular.module('StatisticsApp').meddelandenPerAmneConfig =
     'use strict';
 
     var conf = {};
+    conf.filter = {
+        intygstyper: true,
+        sjukskrivningslangd: false
+    };
     conf.dataFetcher = 'getMeddelandenPerAmne';
     conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneVerksamhet';
     conf.dataFetcherLandsting = 'getSjukfallPerBusinessLandsting';
@@ -558,6 +566,10 @@ angular.module('StatisticsApp').meddelandenPerAmneLandstingConfig =
     'use strict';
 
     var conf = {};
+    conf.filter = {
+        intygstyper: true,
+        sjukskrivningslangd: false
+    };
     conf.dataFetcher = 'getMeddelandenPerAmneLandsting';
     conf.chartYAxisTitleUnit = 'meddelanden';
     conf.exportTableUrl = function () {

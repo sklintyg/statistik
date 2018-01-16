@@ -37,7 +37,8 @@ angular.module('StatisticsApp')
                     enheter: [],
                     diagnos: [],
                     sjukskrivningslangd: [],
-                    aldersgrupp: []
+                    aldersgrupp: [],
+                    intygstyper: []
                 };
 
                 $scope.showAll = function() {
@@ -49,9 +50,6 @@ angular.module('StatisticsApp')
                         resolve: {
                             chips: function () {
                                 return $scope.chips;
-                            },
-                            removeChip: function() {
-                                return $scope.removeChip;
                             }
                         }
                     });

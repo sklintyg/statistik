@@ -22,7 +22,7 @@
 angular.module('StatisticsApp').controller('singleLineChartCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $routeParams, $timeout, $window, $filter, statisticsData, config, $location,
-        messageService, chartFactory, pdfFactory, _, ControllerCommons) {
+        messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState) {
         'use strict';
 
         var chart;
@@ -172,6 +172,8 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             destroyChart(chart);
         });
 
+        // Set filter state
+        filterViewState.set(config.filter);
     }
 );
 
@@ -230,6 +232,10 @@ angular.module('StatisticsApp').meddelandenPerMonthConfig =
         'use strict';
 
         var conf = {};
+        conf.filter = {
+            intygstyper: true,
+            sjukskrivningslangd: false
+        };
         conf.dataFetcher = 'getNumberOfMeddelandenPerMonth';
         conf.dataFetcherVerksamhet = 'getNumberOfMeddelandenPerMonthVerksamhet';
         conf.exportTableUrl = 'api/getNumberOfMeddelandenPerMonth?format=xlsx';
@@ -252,6 +258,10 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetConfig =
         'use strict';
 
         var conf = {};
+        conf.filter = {
+            intygstyper: true,
+            sjukskrivningslangd: false
+        };
         conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneOchEnhetVerksamhet';
         conf.chartYAxisTitle = 'Antal meddelanden';
         conf.exportTableUrlVerksamhet = function () {
@@ -273,6 +283,10 @@ angular.module('StatisticsApp').intygPerMonthConfig =
         'use strict';
 
         var conf = {};
+        conf.filter = {
+            intygstyper: true,
+            sjukskrivningslangd: false
+        };
         conf.dataFetcherVerksamhet = 'getNumberOfIntygPerMonthVerksamhet';
         conf.chartYAxisTitle = 'Antal intyg';
         conf.exportTableUrlVerksamhet = function () {

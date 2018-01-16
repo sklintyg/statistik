@@ -29,4 +29,8 @@ filter-chips-list {
     vertical-align: top;
     white-space: nowrap;
   }
+
+  .inactive {
+    color: $st-color-21;
+  }
 }

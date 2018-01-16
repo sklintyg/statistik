@@ -141,7 +141,7 @@
         ng-options="sjukskrivningslangd.id as sjukskrivningslangd.name for sjukskrivningslangd in businessFilter.sjukskrivningslangd"
         multiselect-dropdown="Sjukskrivningslängder"
         multiselect-dropdown-icon="fa-calendar"
-        multiselect-disabled="{{!sjukskrivningslangdEnabled}}"
+        multiselect-disabled="{{!filterViewState.sjukskrivningslangd}}"
         id="select-sjukskrivningslangd">
     </select>
   </div>
@@ -153,7 +153,7 @@
         ng-options="sjukskrivningslangd.id as sjukskrivningslangd.name for sjukskrivningslangd in businessFilter.sjukskrivningslangd"
         multiselect-dropdown="Intygstyper"
         multiselect-dropdown-icon="fa-file-text-o"
-        multiselect-disabled="{{!intygstyperEnabled}}"
+        multiselect-disabled="{{!filterViewState.intygstyper}}"
         id="select-intygstyper">
     </select>
   </div>

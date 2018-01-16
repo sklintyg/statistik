@@ -21,7 +21,7 @@
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $routeParams, $window, $location, $timeout, $filter, statisticsData,
-        config, messageService, chartFactory, pdfFactory, _, ControllerCommons) {
+        config, messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState) {
         'use strict';
 
         function ensureHighchartTypeIsSet(config) {
@@ -214,6 +214,9 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         $scope.$on('$destroy', function() {
             destroyChart(chart);
         });
+
+        // Set filter state
+        filterViewState.set(config.filter);
     }
 );
 
@@ -459,6 +462,10 @@ angular.module('StatisticsApp').intygPerMonthTvarsnittConfig =
     'use strict';
 
     var conf = {};
+    conf.filter = {
+        intygstyper: true,
+        sjukskrivningslangd: false
+    };
     conf.dataFetcherVerksamhet = 'getNumberOfIntygPerMonthTvarsnittVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getNumberOfIntygPerMonthTvarsnitt?format=xlsx';
@@ -479,6 +486,10 @@ angular.module('StatisticsApp').intygPerTypeTvarsnittConfig =
     'use strict';
 
     var conf = {};
+    conf.filter = {
+        intygstyper: true,
+        sjukskrivningslangd: false
+    };
     conf.dataFetcherVerksamhet = 'getIntygPerTypeTvarsnittVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getIntygPerTypeTvarsnitt?format=xlsx';
@@ -608,6 +619,10 @@ angular.module('StatisticsApp').meddelandenPerAmneTvarsnittConfig =
         'use strict';
 
         var conf = {};
+        conf.filter = {
+            intygstyper: true,
+            sjukskrivningslangd: false
+        };
         conf.chartYAxisTitleUnit = 'meddelanden';
         conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneTvarsnittVerksamhet';
         conf.exportTableUrlVerksamhet = function () {
@@ -629,6 +644,10 @@ angular.module('StatisticsApp').meddelandenPerAmnOchEnhetTvarsnittConfig =
         'use strict';
 
         var conf = {};
+        conf.filter = {
+            intygstyper: true,
+            sjukskrivningslangd: false
+        };
         conf.highchartType = 'column';
         conf.defaultChartType = 'stackedcolumn';
         conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneOchEnhetTvarsnittVerksamhet';
@@ -652,6 +671,10 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetLandstingConfig =
         'use strict';
 
         var conf = {};
+        conf.filter = {
+            intygstyper: true,
+            sjukskrivningslangd: false
+        };
         conf.highchartType = 'column';
         conf.defaultChartType = 'stackedcolumn';
         conf.dataFetcherLandsting = 'getMeddelandenPerAmneOchEnhetLandsting';
