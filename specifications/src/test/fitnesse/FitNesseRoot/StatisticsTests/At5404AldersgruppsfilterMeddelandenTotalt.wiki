@@ -1,10 +1,10 @@
 ---
-Static
+Prune
+Test
 ---
 ''!contents -R2 -g -p -f -h''
 
-Givet att:
-
+!3 Givet att:
 Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
 
 | script | dagens datum | 2014-11-06 |
@@ -12,21 +12,19 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| intygid | personnr | diagnoskod | intygformat | enhet |
-| 1001 | 19730717-9191 | G01 | LUSE | enhet1 |
-| 1002 | 19621230-1234 | G01 | LISJP | enhet1 |
-| 1003 | 19951030-1254 | G01 | LUAE_NA | enhet1 |
+| intygid | personnr | signeringstid | diagnoskod | intygformat | kommentar |
+| 1001 | 19730717-9191 | 2014-06-03T10:00:00 | G01 | LUSE | 41år |
+| 1002 | 19621230-1234 | 2014-05-03T10:00:00 | G01 | LISJP | 52år |
+| 1003 | 19951030-1254 | 2014-06-03T10:00:00 | G01 | LUAE_NA | 19år |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
 | 19730717-9191 | 2014-06-03T10:00:00 | 1001 | KOMPLT |
 | 19621030-1234 | 2014-05-03T10:00:00 | 1002 | KOMPLT |
-| 19951030-1254 | 2014-06-03T10:00:00 | 1003 | AVSTMN |
-
-
+| 19951030-1254 | 2014-11-03T10:00:00 | 1003 | AVSTMN |
 
 !3 Då gäller:
-Ålder på patienten räknas fram utifrån den tidpunkt då meddelandet skickades.
+Ålder på patienten räknas fram utifrån den tidpunkt då intyget signerades.
 
 Inloggad:
 

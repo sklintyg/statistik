@@ -1,4 +1,5 @@
 ---
+Prune
 Test
 ---
 ''!contents -R2 -g -p -f -h''
@@ -9,12 +10,12 @@ Test
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| intygid | personnr | diagnoskod | intygformat | enhet |
-| 1001 | 19790717-9191 | G01 | LUSE | enhet1 |
-| 1002 | 19790717-9191 | G01 | LUSE | enhet1 |
-| 1003 | 19691230-1234 | G01 | LISJP | enhet2 |
-| 1004 | 19591230-1254 | G01 | LUAE_NA | enhet1 |
-| 1005 | 19491230-1264 | G01 | LUAE_FS | enhet2 |
+| intygid | personnr | signeringstid | diagnoskod | intygformat | enhet |
+| 1001 | 19790717-9191 | 2014-06-05T10:00:00 | G01 | LUSE | enhet1 |
+| 1002 | 19790717-9191 | 2014-06-03T10:00:00 | G01 | LUSE | enhet1 |
+| 1003 | 19691230-1234 | 2014-06-03T10:00:00 | G01 | LISJP | enhet2 |
+| 1004 | 19591230-1254 | 2014-06-03T10:00:00 | G01 | LUAE_NA | enhet1 |
+| 1005 | 19491230-1264 | 2014-06-03T10:00:00  | G01 | LUAE_FS | enhet2 |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |

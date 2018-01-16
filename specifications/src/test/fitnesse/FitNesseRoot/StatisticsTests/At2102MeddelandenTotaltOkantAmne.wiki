@@ -1,11 +1,8 @@
 ---
 Test
 ---
----
-Help: Kan tas med när rapporten Meddelanden, Totalt har implementerats
-Test
----
-!contents -R2 -g -p -f -h
+''!contents -R2 -g -p -f -h''
+
 !3 Givet att:
 Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
 
@@ -14,9 +11,9 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| intygid | personnr | diagnoskod | intygformat | enhet |
-| 1001 | 19790717-9191 | G01 | LUSE | enhet1 |
-| 1002 | 19790717-9161 | G01 | LUSE | enhet1 |
+| intygid | personnr | signeringstid | diagnoskod | intygformat | enhet |
+| 1001 | 19790717-9191 | 2014-04-05T10:00:00 | G01 | LUSE | enhet1 |
+| 1002 | 19790717-9161 | 2014-06-03T10:00:00 | G01 | LUSE | enhet1 |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
@@ -29,13 +26,13 @@ Statistiken baseras på meddelanden för alla intygstyper som har ärendekommuni
 Inloggad:
 
 | Meddelanden i rapporten meddelanden totalt |
-| inloggad som | år   | månad | grupp           | män? | kvinnor? |
-| user1        | 2014 | apr   | Komplettering   | 1    | 0        |
-| user1        | 2014 | apr   | Avstämningsmöte | 0    | 0        |
-| user1        | 2014 | apr   | Okänt           | 0    | 0        |
-| user1        | 2014 | maj   | Komplettering   | 0    | 0        |
-| user1        | 2014 | maj   | Avstämningsmöte | 0    | 0        |
-| user1        | 2014 | maj   | Okänt           | 0    | 0        |
-| user1        | 2014 | jun   | Komplettering   | 0    | 0        |
-| user1        | 2014 | jun   | Avstämningsmöte | 0    | 0        |
-| user1        | 2014 | jun   | Okänt           | 0    | 1        |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user1 | 2014 | apr | Komplettering | 1 | 0 |
+| user1 | 2014 | apr | Avstämningsmöte | 0 | 0 |
+| user1 | 2014 | apr | Okänt | 0 | 0 |
+| user1 | 2014 | maj | Komplettering | 0 | 0 |
+| user1 | 2014 | maj | Avstämningsmöte | 0 | 0 |
+| user1 | 2014 | maj | Okänt | 0 | 0 |
+| user1 | 2014 | jun | Komplettering | 0 | 0 |
+| user1 | 2014 | jun | Avstämningsmöte | 0 | 0 |
+| user1 | 2014 | jun | Okänt | 0 | 1 |
