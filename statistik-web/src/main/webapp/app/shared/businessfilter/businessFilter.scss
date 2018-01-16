@@ -1,6 +1,10 @@
-.business-filter {
+business-filter, landsting-filter {
   border-bottom: 1px solid $st-color-23;
   padding: 10px;
+  display: block;
+}
+
+.business-filter {
 
   &.filter-active {
     border-bottom-color: $stat-filter-active;
