@@ -18,7 +18,7 @@ Test
 | 19790629-9234 | 2015-03-29T12:25:15 | enhet1 | felaktigt | |
 
 !3 Då gäller:
-Statistiken baseras på alla intygstyper och dess signeringstidpunkt. Det spelar ingen roll om det finns flera intyg för samma patient. Varje intyg räknas alltid en gång.
+Statistiken baseras på alla intygstyper och dess signeringstidpunkt. Det spelar ingen roll om det finns flera intyg för samma patient. Varje intyg räknas alltid en gång även om de tillhör samma sjukfall.
 
 Intyg som antingen har formatet fk7263sit eller LISJP ska hamna i samma grupp. Intyg med "felaktigt" format tas inte med alls
 
