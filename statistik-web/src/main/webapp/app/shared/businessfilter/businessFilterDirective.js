@@ -67,7 +67,9 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     'use strict';
 
     //Initially we don't want to see the filter
-    scope.filterToApply = false;
+    scope.filterToApply = true;
+    scope.sjukskrivningslangdEnabled = true;
+    scope.intygstyperEnabled = false;
     scope.businessFilter = businessFilter;
     scope.useDefaultPeriod = true;
     scope.showDateValidationError = false;
@@ -360,12 +362,28 @@ angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown'
             return element[0].length;
         }, function () {
             element.multiselect('rebuild');
+            checkDisabled();
         });
 
         // Watch for any changes from outside the directive and refresh
         scope.$watchCollection(attrs.ngModel, function () {
             element.multiselect('refresh');
+            checkDisabled();
         });
+
+        scope.$watch(function() {
+            return attrs.multiselectDisabled;
+        }, function() {
+            checkDisabled();
+        });
+
+        function checkDisabled() {
+            if (attrs.multiselectDisabled === 'true') {
+                element.multiselect('disable');
+            } else {
+                element.multiselect('enable');
+            }
+        }
     };
 });
 

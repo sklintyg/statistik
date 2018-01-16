@@ -113,3 +113,18 @@ p {
 .panel-title a {
   cursor: pointer;
 }
+
+.btn-default {
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus,
+    &.focus {
+      background-color: $st-color-21;
+      color: $st-color-24;
+      border-color: $st-color-23;
+    }
+  }
+}
