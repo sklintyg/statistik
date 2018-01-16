@@ -6,8 +6,23 @@ business-filter, landsting-filter {
 
 .business-filter {
 
-  &.filter-active {
-    border-bottom-color: $stat-filter-active;
+  .filter-active-btn.btn-default,
+  .filter-active .btn-default {
+      &,
+      &:focus {
+        background: $st-color-29;
+        color: $st-color-17;
+        text-shadow: none;
+        box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.24)
+      }
+
+      &.disabled,
+      &:disabled {
+        background-color: $st-color-21;
+        color: $st-color-24;
+        border-color: $st-color-23;
+        box-shadow: none;
+      }
   }
 
   .alert {
