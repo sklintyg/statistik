@@ -35,16 +35,16 @@ Inloggad:
 
 | Andel i rapporten komplettering andel intyg |
 | inloggad som | år | månad | grupp | totalt? | män? | kvinnor? |
-| user1 | 2015 | feb | 7800 | -1 | -1 | -1 |
-| user1 | 2015 | feb | 7804,7263 | 1 | 0 | 1 |
-| user1 | 2015 | mar | 7800 | -1 | -1 | -1 |
-| user1 | 2015 | mar | 7804,7263 | 1 | 1 | 0 |
-| user1 | 2015 | apr | 7800 | -1 | -1 | -1 |
-| user1 | 2015 | apr | 7804,7263 | 0,5 | 0,5 | 0 |
+| user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
+| user1 | 2015 | feb | FK 7863/7804 Läkarintyg för sjukpenning | 100% | 0% | 100% |
+| user1 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
+| user1 | 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | 100% | 100% | 0% |
+| user1 | 2015 | apr | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
+| user1 | 2015 | apr | FK 7863/7804 Läkarintyg för sjukpenning | 50% | 50% | 0% |
 
-Byte till tvärsnitt visar de senaste 12 månaderna och i det här fallet blir visas endast gruppen 7804,7263 då alla intyg var av typen LISJP.
+Byte till tvärsnitt visar de senaste 12 månaderna.
 
 | Andel i rapporten komplettering andel intyg som tvarsnitt |
 | inloggad som | grupp | totalt? | män? | kvinnor? |
-| user1 | 7800 | -1 | -1 | -1 |
-| user1 | 7804,7263 | 0,75 | 0,66 | 1 |
+| user1 | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
+| user1 | FK 7863/7804 Läkarintyg för sjukpenning | 75% | 66% | 100% |
