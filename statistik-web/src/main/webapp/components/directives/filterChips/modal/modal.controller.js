@@ -18,17 +18,14 @@
  */
 
 angular.module('StatisticsApp').controller('FilterChipsModalCtrl',
-    function($scope, $uibModalInstance, chips, removeChip) {
+    function($scope, $uibModalInstance, chips, filterViewState) {
         'use strict';
 
         $scope.chips = chips;
+        $scope.filterViewState = filterViewState.get();
 
         $scope.cancel = function() {
             $uibModalInstance.dismiss();
-        };
-
-        $scope.removeChip = function(chip) {
-            removeChip(chip);
         };
     }
 );
