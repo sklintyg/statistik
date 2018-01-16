@@ -9,43 +9,45 @@ Det finns ett antal intyg med ett antal tillhörande meddelanden.
 Alla intyg har skickats vidare till Försäkringskassan.
 
 !3 Givet att:
-| script | dagens datum | 2015-11-06 |
+| script | dagens datum  | 2015-11-06  |
 
 Endast 5 intyg har signerats och skickats till Försäkringskassan under de senaste 18 månaderna.
 
 | Enbart foljande intyg finns |
 | intygid | personnr | signeringstid | skickattidpunkt | enhet | intygformat |
-| 1001 | 19790219-9285 | 2015-02-10T12:24:15 | 2015-02-10T12:24:30 | enhet1 | LISJP |
-| 1002 | 19790429-9272 | 2015-03-10T12:25:15 | 2015-03-10T12:25:30 | enhet1 | LISJP |
-| 1003 | 19790429-9282 | 2015-04-10T12:25:15 | 2015-04-10T12:25:30 | enhet1 | LISJP |
-| 1004 | 19791212-1212 | 2015-04-10T12:25:15 | 2015-04-10T12:25:30 | enhet1 | LUSE |
-| 1005 | 19791212-1212 | 2015-04-20T12:25:15 | 2015-04-20T12:25:30 | enhet1 | LISJP |
+| 1001 | 19790219-9285  | 2015-02-10T12:24:15  | 2015-02-10T12:24:15  | enhet1 | LISJP |
+| 1002 | 19790429-9272  | 2015-03-10T12:25:15  | 2015-03-10T12:25:15  | enhet1 | LISJP |
+| 1003 | 19790429-9282  | 2015-04-10T12:25:15  | 2015-04-10T12:25:15  | enhet1 | LISJP |
+| 1004 | 19791212-1212  | 2015-04-10T12:25:15  | 2015-04-10T12:25:15   | enhet1 | LUSE |
+| 1005 | 19791212-1212  | 2015-04-20T12:25:15  | 2015-04-20T12:25:15  | enhet1 | LISJP |
 
 Av dessa 5 har 3st fått kompletteringar och 1 har fått ett avstämningsmöte.
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | meddelandeamne |
-| 19790219-9285 | 2015-03-12T10:00:00 | 1001 | KOMPLT |
-| 19790429-9272 | 2015-04-03T10:00:00 | 1002 | AVSTMN |
-| 19790429-9272 | 2015-05-03T10:00:00 | 1003 | KOMPLT |
-| 19791212-1212 | 2015-05-10T10:00:00 | 1004 | KOMPLT |
+| 19790219-9285  | 2015-02-12T10:00:00  | 1001 | KOMPLT |
+| 19790429-9272  | 2015-03-03T10:00:00  | 1002 | AVSTMN |
+| 19790429-9272  | 2015-04-03T10:00:00  | 1003 | KOMPLT |
+| 19791212-1212  | 2015-04-10T10:00:00  | 1004 | KOMPLT |
 
 !3 Då gäller:
-Detta filter ska inte ha någon effekt på denna rapport eftersom vissa intyg inte har start och slutdatum. För att se hur statistiken beräknas se: [[At2301KompletteringAndelIntyg][http://localhost:9125/StatisticsTests.At2301KompletteringAndelIntyg]]
+Detta filter har ingen effekt på denna rapport.
+
+För att se hur statistiken beräknas se: [[At2301KompletteringAndelIntyg][http://localhost:9125/StatisticsTests.At2301KompletteringAndelIntyg]]
 
 Inloggad:
 
 | Andel i rapporten komplettering andel intyg |
-| inloggad som | månad | grupp | filter sjukskrivningslängd | totalt? | män? | kvinnor? |
+| inloggad som  | månad | grupp | filter sjukskrivningslängd | totalt? | män? | kvinnor? |
 | user1 | feb | FK 7800 Läkarutlåtande för sjukersättning | Över 365 dagar | 0% | 0% | 0% |
-| user1 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | Över 365 dagar | 0% | 0% | 0% |
+| user1 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga  | Över 365 dagar | 0% | 0% | 0% |
 | user1 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | Över 365 dagar | 0% | 0% | 0% |
-| user1 | feb | FK 7263/7804 Läkarintyg för sjukpenning | Över 365 dagar | 100% | 0% | 100% |
+| user1 | feb | FK 7863/7804 Läkarintyg för sjukpenning | Över 365 dagar | 100% | 0% | 100% |
 | user1 | mar | FK 7800 Läkarutlåtande för sjukersättning | Över 365 dagar | 0% | 0% | 0% |
-| user1 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | Över 365 dagar | 0% | 0% | 0% |
+| user1 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga  | Över 365 dagar | 0% | 0% | 0% |
 | user1 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | Över 365 dagar | 0% | 0% | 0% |
-| user1 | mar | FK 7263/7804 Läkarintyg för sjukpenning | Över 365 dagar | 0% | 0% | 0% |
+| user1 | mar | FK 7863/7804 Läkarintyg för sjukpenning | Över 365 dagar | 0% | 0% | 0% |
 | user1 | apr | FK 7800 Läkarutlåtande för sjukersättning | Över 365 dagar | 100% | 100% | 0% |
-| user1 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | Över 365 dagar | 0% | 0% | 0% |
+| user1 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga  | Över 365 dagar | 0% | 0% | 0% |
 | user1 | apr | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | Över 365 dagar | 0% | 0% | 0% |
-| user1 | apr | FK 7263/7804 Läkarintyg för sjukpenning | Över 365 dagar | 50% | 0% | 100% |
+| user1 | apr | FK 7863/7804 Läkarintyg för sjukpenning | Över 365 dagar | 50% | 0% | 100% |

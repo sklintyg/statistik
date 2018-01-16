@@ -1,6 +1,4 @@
 ---
-Help: Behöver korrigeras
-Prune
 Test
 ---
 !3 Givet att:
@@ -10,17 +8,11 @@ Det finns tre sjukfall med olika start- och sluttider.
 
 | script | troskel varde | 1 |
 
-| Foljande lakare finns |
-| id | förnamn | efternamn | kön | ålder | befattningar |
-| lakare1 | Anna | Andersson | FEMALE | 30 | 201010 |
-| lakare2 | Bo | Bengtsson | MALE | 40 | 201013 |
-| lakare3 | Carl | Claesson | MALE | 50 | 101012 |
-
 | Enbart foljande intyg finns |
-| intygid | personnr | diagnoskod | signeringstid | intygformat | start | slut | arbetsförmåga | enhet | läkare |
-| 1001 | 19890425-2387 | G01 | 2013-01-01T10:00:00 | LISJP | 2013-01-01 | 2013-02-28 | 0 | enhet1 | lakare1 |
-| 1002 | 19790429-9281 | G02 | 2014-07-01T10:00:00 | LISJP | 2014-07-01 | 2014-10-30 | 50 | enhet1 | lakare2 |
-| 1003 | 19670927-2691 | G03 | 2014-10-01T10:00:00 | LISJP | 2014-10-01 | 2014-11-30 | 75 | enhet2 | lakare3 |
+| intygid | personnr | diagnoskod | signeringstid | intygformat | enhet |
+| 1001 | 19890425-2387 | G01 | 2013-01-01T10:00:00 | LISJP | enhet1 |
+| 1002 | 19790429-9281 | G02 | 2014-07-01T10:00:00 | LISJP | enhet1 |
+| 1003 | 19670927-2691 | G03 | 2014-10-01T10:00:00 | LISJP | enhet2 |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
@@ -31,7 +23,7 @@ Det finns tre sjukfall med olika start- och sluttider.
 !3 Då gäller:
 Inloggad:
 
-I rapporten "Meddelande, totalt" o slår tidsintervallsfiltret på när ett meddelande var skickat. Alltså filtreras de meddelanden bort som har en skickat tidpunkt utanför det valda tidsintervallet.
+I rapporten "Meddelande, totalt" slår tidsintervallsfiltret på när det tillhörande intyget var signerat. Alltså filtreras de meddelanden bort som har en skickat tidpunkt utanför det valda tidsintervallet.
 
 !(| Meddelanden i rapporten meddelanden totalt |
 | inloggad som | år | månad | grupp | filter startdatum | filter slutdatum | män? | kvinnor? |
@@ -42,6 +34,6 @@ I rapporten "Meddelande, totalt" o slår tidsintervallsfiltret på när ett medd
 | user2 | 2014 | sep | Komplettering | 2014-08-01 | 2014-11-30 | 0 | 0 |
 | user2 | 2014 | sep | Övrigt | 2014-08-01 | 2014-11-30 | 0 | 0 |
 | user2 | 2014 | okt | Komplettering | 2014-08-01 | 2014-11-30 | 0 | 0 |
-| user2 | 2014 | okt | Övrigt | 2014-08-01 | 2014-11-30 | 0 | 0 |
+| user2 | 2014 | okt | Övrigt | 2014-08-01 | 2014-11-30 | 1 | 0 |
 | user2 | 2014 | nov | Komplettering | 2014-08-01 | 2014-11-30 | 0 | 0 |
-| user2 | 2014 | nov | Övrigt | 2014-08-01 | 2014-11-30 | 1 | 0 |)!
+| user2 | 2014 | nov | Övrigt | 2014-08-01 | 2014-11-30 | 0 | 0 |)!

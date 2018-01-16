@@ -11,10 +11,10 @@ Alla intyg har skickats vidare till Försäkringskassan.
 | script | dagens datum | 2015-11-14 |
 
 | Enbart foljande intyg finns |
-| intygid | personnr | signeringstid | skickattidpunkt | enhet | intygformat |
-| 1001 | 19790219-9285 | 2015-02-10T12:24:15 | 2015-02-10T12:24:30 | enhet1 | LISJP |
-| 1002 | 19790429-9272 | 2015-02-10T12:25:15 | 2015-02-10T12:25:30 | enhet1 | LISJP |
-| 1003 | 19790429-9272 | 2015-02-10T12:25:15 | 2015-02-10T12:25:30 | enhet1 | LISJP |
+| intygid | personnr | signeringstid | enhet | intygformat |
+| 1001 | 19790219-9285 | 2015-02-10T12:24:15 | enhet1 | LISJP |
+| 1002 | 19790429-9272 | 2015-02-10T12:25:15 | enhet1 | LISJP |
+| 1003 | 19790429-9272 | 2015-02-10T12:25:15 | enhet1 | LISJP |
 
 | Foljande meddelanden finns |
 | personnr | intygsid | meddelandeamne |
@@ -24,9 +24,9 @@ Alla intyg har skickats vidare till Försäkringskassan.
 | 19790429-9272 | 1002 | KOMPLT |
 
 !3 Då gäller:
-Det spelar ingen roll hur många kompletteringar ett intyg har fått. 
+Det spelar ingen roll hur många kompletteringar ett intyg har fått. Det räknas som en komplettering.
 
-För att se hur statistiken beräknas se: [[At2301KompletteringAndelIntyg][http://localhost:9125/StatisticsTests.At2301KompletteringAndelIntyg]]
+För att se hur statistiken beräknas se: [[At2301KompletteringAndelIntyg][http://localhost:9125/StatisticsTests.At2301KompletteringAndelIntyg]]
 
 Nationell:
 

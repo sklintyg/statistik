@@ -39,9 +39,9 @@ Av dessa 5 har 3st fått kompletteringar och 1 har fått ett avstämningsmöte.
 !3 Då gäller:
 Denna rapport kollar endast efter vilka intyg som har fått kompletteringar, och struntar alltså i och ett intyg har fått en avstämning.
 
-Var ett intyg hamnar i tidsserien är beroende av när meddelandet skickades, inte intyget.
+Var ett intyg och tillhörande komplettering hamnar i tidsserien är beroende av intygets signeringstidpunkt.
 
-För att se hur statistiken beräknas se: [[At2301KompletteringAndelIntyg][http://localhost:9125/StatisticsTests.At2301KompletteringAndelIntyg]]
+För att se hur statistiken beräknas se: [[At2301KompletteringAndelIntyg][http://localhost:9125/StatisticsTests.At2301KompletteringAndelIntyg]]
 
 Inloggad:
 
