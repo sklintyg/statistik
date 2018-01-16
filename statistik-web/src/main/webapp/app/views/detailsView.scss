@@ -113,6 +113,10 @@
     @include at2x('../assets/images/chart-types/stapeldiagram', $ext: 'png', $w: 21px, $h: 18px);
   }
 
+  .chart-icon-stackedcolumn {
+    @include at2x('../assets/images/chart-types/Staplat_stapeldiagram', $ext: 'png', $w: 21px, $h: 18px);
+  }
+
   .chart-icon-area {
     @include at2x('../assets/images/chart-types/ytdiagram', $ext: 'png', $w: 21px, $h: 18px);
   }
