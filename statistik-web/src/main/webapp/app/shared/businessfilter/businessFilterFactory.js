@@ -69,6 +69,10 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.aldersgruppSaved = [];
         businessFilter.selectedAldersgruppIds = [];
 
+        businessFilter.intygstyper = [];
+        businessFilter.intygstyperSaved = [];
+        businessFilter.selectedIntygstyperIds = [];
+
         businessFilter.diagnoserSaved = [];
         businessFilter.selectedDiagnoses = [];
         businessFilter.icd10 = {subs: []};
@@ -87,7 +91,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         //If any filter parts have values set by user - filter is considered active.
         businessFilter.hasUserSelection = !businessFilter.useDefaultPeriod || businessFilter.aldersgruppSaved.length > 0 ||
             businessFilter.sjukskrivningslangdSaved.length > 0 || businessFilter.diagnoserSaved.length > 0 ||
-            businessFilter.geographyBusinessIdsSaved.length > 0;
+            businessFilter.geographyBusinessIdsSaved.length > 0 || businessFilter.intygstyperSaved.length > 0;
     };
 
     businessFilter.selectDiagnoses = function (diagnoses) {
@@ -128,6 +132,8 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.selectedVerksamhetTypIds.length = 0;
         businessFilter.selectedSjukskrivningslangdIds.length = 0;
         businessFilter.sjukskrivningslangdSaved.length = 0;
+        businessFilter.selectedIntygstyperIds.length = 0;
+        businessFilter.intygstyperSaved.length = 0;
         businessFilter.selectedAldersgruppIds.length = 0;
         businessFilter.aldersgruppSaved.length = 0;
         businessFilter.selectedDiagnoses.length = 0;
@@ -191,6 +197,8 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         }));
         businessFilter.selectedSjukskrivningslangdIds = filterData.sjukskrivningslangd;
         businessFilter.sjukskrivningslangdSaved = _.cloneDeep(filterData.sjukskrivningslangd);
+        businessFilter.selectedIntygstyperIds = filterData.intygstyper;
+        businessFilter.intygstyperSaved = _.cloneDeep(filterData.intygstyper);
         businessFilter.selectedAldersgruppIds = filterData.aldersgrupp;
         businessFilter.aldersgruppSaved = _.cloneDeep(filterData.aldersgrupp);
         businessFilter.geographyBusinessIdsSaved = _.cloneDeep(filterData.enheter);
@@ -264,6 +272,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
                 businessFilter.businesses = sortSwedish(businesses, 'name', 'Okän');
             }
             businessFilter.populateSjukskrivningsLangd();
+            businessFilter.populateIntygstyper();
             businessFilter.populateAldersgrupp();
             businessFilter.populateIcd10Structure();
             businessFilter.dataInitialized = true;
@@ -312,6 +321,10 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
     businessFilter.populateSjukskrivningsLangd = function() {
         businessFilter.sjukskrivningslangd = StaticFilterData.get().sjukskrivningLengths;
+    };
+
+    businessFilter.populateIntygstyper = function() {
+        businessFilter.intygstyper = StaticFilterData.get().intygTypes;
     };
 
     businessFilter.populateAldersgrupp = function() {

@@ -30,7 +30,6 @@ angular.module('StatisticsApp')
             templateUrl: '/components/directives/filterChips/filterChips.html',
             link: function($scope) {
                 $scope.haveChips = false;
-                $scope.allChips = [];
                 $scope.numberOfChipsNotShown = 0;
 
                 $scope.chips = {
@@ -63,6 +62,9 @@ angular.module('StatisticsApp')
                     $scope.$watchCollection('businessFilter.aldersgruppSaved', aldersGruppsFilter);
 
                     $scope.$watchCollection('businessFilter.sjukskrivningslangdSaved', sjukskrivningsLangdsFilter);
+
+                    $scope.$watchCollection('businessFilter.intygstyperSaved', intygstyperFilter);
+
                 });
 
                 function enhetsFilter() {
@@ -74,8 +76,6 @@ angular.module('StatisticsApp')
                     _.each(filter, function(enhet) {
                         var text = _.find($scope.businessFilter.businesses, {id: enhet});
                         enheter.push({
-                            type: 'enhet',
-                            icon: 'fa-building-o',
                             id: enhet,
                             text: text ? text.name : enhet
                         });
@@ -96,8 +96,6 @@ angular.module('StatisticsApp')
                     var diagnoser = [];
                     _.each(filter, function(diagnos) {
                         diagnoser.push({
-                            type: 'diagnos',
-                            icon: 'fa-stethoscope',
                             id: diagnos.id,
                             text: diagnos.text
                         });
@@ -117,8 +115,6 @@ angular.module('StatisticsApp')
                     var sjukskrivningslangder = [];
                     _.each(filter, function(sjukskrivningslangd) {
                         sjukskrivningslangder.push({
-                            type: 'sjukskrivningslangd',
-                            icon: 'fa-calendar',
                             id: sjukskrivningslangd,
                             text: StaticFilterData.get().sjukskrivningLengthsObject[sjukskrivningslangd]
                         });
@@ -138,9 +134,7 @@ angular.module('StatisticsApp')
                     var aldersgrupper = [];
                     _.each(filter, function(aldersGrupp) {
                         aldersgrupper.push({
-                            type: 'aldersgrupp',
                             id: aldersGrupp,
-                            icon: 'fa-users',
                             text: StaticFilterData.get().ageGroups[aldersGrupp]
                         });
                     });
@@ -152,16 +146,35 @@ angular.module('StatisticsApp')
                     setHaveChips();
                 }
 
-                function setHaveChips() {
-                    $scope.allChips.length = 0;
+                function intygstyperFilter() {
+                    var filter = $scope.businessFilter.intygstyperSaved;
+                    filter = _.uniq(filter);
 
-                    _.each($scope.chips, function(type) {
-                        _.each(type, function(chip) {
-                            $scope.allChips.push(chip);
+                    var intygstyper = [];
+                    _.each(filter, function(intygstyp) {
+                        intygstyper.push({
+                            id: intygstyp,
+                            text: StaticFilterData.get().intygTypesObject[intygstyp]
                         });
                     });
 
-                    $scope.haveChips = $scope.allChips.length > 0;
+                    $scope.chips.intygstyper = _.sortBy(intygstyper, function(n) {
+                        return n.id;
+                    });
+
+                    setHaveChips();
+                }
+
+                function setHaveChips() {
+                    var haveChips = false;
+
+                    _.each($scope.chips, function(type) {
+                        if (type.length > 0) {
+                            haveChips = true;
+                        }
+                    });
+
+                    $scope.haveChips = haveChips;
                 }
             }
         };
