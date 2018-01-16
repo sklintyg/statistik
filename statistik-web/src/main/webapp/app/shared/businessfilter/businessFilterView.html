@@ -4,8 +4,10 @@
 </div>
 
 <form name="myForm" novalidate class="business-filter" data-ng-show="businessFilter.dataInitialized">
-  <div class="btn-group margin-right" uib-dropdown auto-close="outsideClick">
-    <button id="select-dateintervall" type="button" class="btn btn-default" uib-dropdown-toggle>
+  <div
+      class="btn-group margin-right"
+      uib-dropdown auto-close="outsideClick" is-open="isDateSelectOpen">
+    <button id="select-dateintervall" data-ng-class="{'filter-active-btn': businessFilter.cachedFromDate != null && businessFilter.cachedToDate != null }" type="button" class="btn btn-default" uib-dropdown-toggle>
       <i class="fa fa-clock-o"></i> Tidsintervall
     </button>
     <div class="dropdown-menu dateintervall-dropdown" uib-dropdown-menu>
@@ -92,6 +94,7 @@
 
   <tree-multi-selector
       class="margin-right select-business"
+      data-ng-class="{'filter-active': businessFilter.geographyBusinessIds.length > 0}"
       hide-label="true"
       button-icon="fa-building-o"
       menu-options="businessFilter.geography"
@@ -111,6 +114,7 @@
 
   <tree-multi-selector
       class="margin-right select-diagnoses"
+      data-ng-class="{'filter-active': businessFilter.selectedDiagnoses.length > 0}"
       hide-label="true"
       button-icon="fa-stethoscope"
       ignore-chars-in-search="."
@@ -123,7 +127,9 @@
       sidebar-state="sidebarStateDiagnose">
   </tree-multi-selector>
 
-  <div class="margin-right select-aldersgrupp">
+  <div
+      class="margin-right select-aldersgrupp"
+      data-ng-class="{'filter-active': businessFilter.selectedAldersgruppIds.length > 0}">
     <select
         ng-model="businessFilter.selectedAldersgruppIds"
         multiple="multiple"
@@ -134,7 +140,9 @@
     </select>
   </div>
 
-  <div class="margin-right select-sjukskrivningslangd">
+  <div
+      class="margin-right select-sjukskrivningslangd"
+      data-ng-class="{'filter-active': businessFilter.selectedSjukskrivningslangdIds.length > 0}">
     <select
         ng-model="businessFilter.selectedSjukskrivningslangdIds"
         multiple="multiple"
@@ -146,7 +154,9 @@
     </select>
   </div>
 
-  <div class="margin-right select-intygstyper">
+  <div
+      class="margin-right select-intygstyper"
+      data-ng-class="{'filter-active': businessFilter.selectedIntygstyperIds.length > 0}">
     <select
         ng-model="businessFilter.selectedIntygstyperIds"
         multiple="multiple"

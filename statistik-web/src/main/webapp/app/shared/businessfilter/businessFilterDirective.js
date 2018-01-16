@@ -73,6 +73,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.useDefaultPeriod = true;
     scope.showDateValidationError = false;
     scope.loadingFilter = false;
+    scope.isDateSelectOpen = false;
 
     scope.$watch('businessFilter', function(newValue,oldValue,scope) {
         scope.icd10 = newValue.icd10;
@@ -82,16 +83,16 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     });
 
     // Not very elegant (but working) way of solving INTYG-4505
-    scope.$watch('isFilterCollapsed', function(isCollapsed) {
-        if (isCollapsed) {
+    scope.$watch('isDateSelectOpen', function(isOpen) {
+        if (isOpen) {
+            scope.businessFilter.fromDate = scope.businessFilter.cachedFromDate || scope.businessFilter.fromDate;
+            scope.businessFilter.toDate = scope.businessFilter.cachedToDate || scope.businessFilter.toDate;
+        } else {
             scope.businessFilter.cachedFromDate = scope.businessFilter.fromDate;
             scope.businessFilter.cachedToDate = scope.businessFilter.toDate;
 
             scope.businessFilter.fromDate = null;
             scope.businessFilter.toDate = null;
-        } else {
-            scope.businessFilter.fromDate = scope.businessFilter.cachedFromDate || scope.businessFilter.fromDate;
-            scope.businessFilter.toDate = scope.businessFilter.cachedToDate || scope.businessFilter.toDate;
         }
     });
 
