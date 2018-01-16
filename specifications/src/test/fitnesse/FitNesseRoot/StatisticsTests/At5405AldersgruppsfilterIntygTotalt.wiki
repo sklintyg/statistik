@@ -1,0 +1,36 @@
+---
+Help: Kan tas med när Intyg,totalt har implementerats
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+!3 Givet att:
+| script | dagens datum  | 2014-11-06  |
+
+| Enbart foljande intyg finns |
+| personnr | signeringstid | enhet | intygformat | kommentar |
+| 19100101-0000  | 2015-02-12T12:25:15  | enhet1 | LISJP | 104 år |
+| 19200101-0000  | 2015-02-12T12:25:15  | enhet1 | LISJP | 94 år |
+| 19300101-0000  | 2015-02-12T12:25:15  | enhet1 | LISJP | 84 år |
+| 19400101-1000  | 2015-02-12T12:25:15  | enhet1 | LISJP | 74 år |
+| 19500101-0000  | 2015-02-12T12:25:15  | enhet1 | LUAE_NA | 64 år |
+| 19600101-0000  | 2015-02-12T12:25:15  | enhet1 | LUAE_NA | 54 år |
+| 19700101-0000  | 2015-02-12T12:25:15  | enhet1 | LUAE_NA | 44 år |
+| 19800101-0000  | 2015-02-12T12:25:15 | enhet1 | LUAE_NA | 34 år |
+| 19900101-0000  | 2015-02-12T12:25:15 | enhet1 | LUAE_NA | 24 år |
+| 19970101-0000  | 2015-02-12T12:25:15 | enhet1 | LISJP | 17 år |
+| 20000101-0000  | 2015-02-12T12:25:15 | enhet1 | LISJP | 14 år |
+
+
+
+!3 Då gäller:
+Inloggad:
+
+| Intyg i rapporten intyg totalt |
+| inloggad som  | år | månad | grupp | filter åldersgrupp | män? | kvinnor? |
+| user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | | 0 | 6 |
+| user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | Under 15 år | 0 | 1 |
+| user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning  | 31-35 år, Över 65 år | 0 | 4 |
+| user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | | 0 | 5 |
+| user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | Under 15 år | 0 | 0 |
+| user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 31-35 år, Över 65 år | 0 | 1 |

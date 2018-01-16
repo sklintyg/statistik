@@ -8,9 +8,9 @@ Test
 | script | dagens datum | 2015-11-06 |
 
 | Enbart foljande intyg finns |
-| personnr | signeringstid | start | slut | enhet | intygformat | kommentar |
-| 19790429-9272 | 2015-03-10T12:25:15 | 2015-03-10 | 2015-04-30 | enhet1 | fk7263sit | |
-| 19790629-9284 | 2015-02-10T12:25:15 | 2014-10-01 | 2015-01-15 | enhet1 | LISJP | |
+| personnr | signeringstid | start | slut | enhet | intygformat |
+| 19790429-9272 | 2015-03-10T12:25:15 | 2015-03-10 | 2015-04-30 | enhet1 | fk7263sit |
+| 19790629-9284 | 2015-02-10T12:25:15 | 2014-10-01 | 2015-01-15 | enhet1 | LISJP |
 
 !3 Då gäller:
 Statistiken baseras på signeringstidpunkt, inte intygets giltighetsperiod.
@@ -21,9 +21,9 @@ Inloggad:
 
 | Intyg i rapporten intyg totalt |
 | inloggad som | år | månad | grupp | män? | kvinnor? |
-| user1 | 2014 | nov | FK 7263/7804 Läkarintyg för sjukpenning  | 0 | 0 |
-| user1 | 2014 | dec | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |
-| user1 | 2015 | jan | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |
-| user1 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 1 |
-| user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 1 | 0 |
-| user1 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |
+| user1 | 2014 | nov | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |
+| user1 | 2014 | dec | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |
+| user1 | 2015 | jan | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |
+| user1 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 1 |
+| user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 1 | 0 |
+| user1 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |
