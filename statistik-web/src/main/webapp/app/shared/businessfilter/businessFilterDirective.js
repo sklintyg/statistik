@@ -223,6 +223,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
                 enheter: scope.businessFilter.geographyBusinessIds,
                 verksamhetstyper: getVerksamhetstyper(),
                 sjukskrivningslangd: scope.businessFilter.selectedSjukskrivningslangdIds,
+                intygstyper: scope.businessFilter.selectedIntygstyperIds,
                 aldersgrupp: scope.businessFilter.selectedAldersgruppIds,
                 fromDate: formattedFromDate,
                 toDate: formattedToDate,
@@ -238,6 +239,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
                 scope.businessFilter.aldersgruppSaved = _.cloneDeep(params.aldersgrupp);
                 scope.businessFilter.sjukskrivningslangdSaved = _.cloneDeep(params.sjukskrivningslangd);
+                scope.businessFilter.intygstyperSaved = _.cloneDeep(params.intygstyper);
                 scope.businessFilter.diagnoserSaved = _.cloneDeep(params.diagnoser);
                 scope.businessFilter.geographyBusinessIdsSaved = _.cloneDeep(params.enheter);
             };

@@ -252,7 +252,7 @@ public class FilterHandlerTest {
     }
 
     private void setupFilterHashHandlerMock(String fromDate, String toDate, String filterHash, List<String> diagnoser, List<String> enheter, List<String> sjukskrivningslangd, boolean useDefaultPeriod, List<String> aldersgrupp) {
-        FilterData filterData = new FilterData(diagnoser, enheter, null, sjukskrivningslangd, aldersgrupp, fromDate, toDate, useDefaultPeriod);
+        FilterData filterData = new FilterData(diagnoser, enheter, null, sjukskrivningslangd, aldersgrupp, null, fromDate, toDate, useDefaultPeriod);
         Mockito.when(filterHashHandler.getFilterFromHash(filterHash)).thenReturn(filterData);
     }
 

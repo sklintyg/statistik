@@ -148,9 +148,9 @@
 
   <div class="margin-right select-intygstyper">
     <select
-        ng-model="businessFilter.selectedSjukskrivningslangdIds"
+        ng-model="businessFilter.selectedIntygstyperIds"
         multiple="multiple"
-        ng-options="sjukskrivningslangd.id as sjukskrivningslangd.name for sjukskrivningslangd in businessFilter.sjukskrivningslangd"
+        ng-options="intygstyper.id as intygstyper.name for intygstyper in businessFilter.intygstyper"
         multiselect-dropdown="Intygstyper"
         multiselect-dropdown-icon="fa-file-text-o"
         multiselect-disabled="{{!filterViewState.intygstyper}}"
