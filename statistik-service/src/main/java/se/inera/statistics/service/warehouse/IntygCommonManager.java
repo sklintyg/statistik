@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.IntygDTO;
@@ -36,6 +37,7 @@ import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.inera.statistics.service.warehouse.query.CounterFunctionIntyg;
@@ -52,7 +54,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Component
@@ -98,44 +102,50 @@ public class IntygCommonManager {
         }
     }
 
-    public SimpleKonResponse getIntyg(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
+    public SimpleKonResponse getIntyg(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter) {
         final Function<IntygCommonGroup, String> rowNameFunction = intygCommonGroup -> ReportUtil
                 .toDiagramPeriod(intygCommonGroup.getRange().getFrom());
-        return getIntygCommonMaleFemale(range, vardgivarId, enheter, rowNameFunction, false);
+        return getIntygCommonMaleFemale(vardgivarId, intygFilter, rowNameFunction, false);
     }
 
-    public SimpleKonResponse getIntygTvarsnitt(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
+    public SimpleKonResponse getIntygTvarsnitt(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter) {
         final Function<IntygCommonGroup, String> rowNameFunction = intygCommonGroup -> "Totalt";
-        return getIntygCommonMaleFemale(range, vardgivarId, enheter, rowNameFunction, true);
+        return getIntygCommonMaleFemale(vardgivarId, intygFilter, rowNameFunction, true);
     }
 
-    public KonDataResponse getIntygPerTypeTidsserie(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter) {
-        return getIntygPerType(vardgivarId, range, enheter, false);
+    public KonDataResponse getIntygPerTypeTidsserie(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter) {
+        return getIntygPerType(vardgivarId, intygFilter, false);
 
     }
 
-    private KonDataResponse getIntygPerType(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter, boolean isTvarsnitt) {
-        final List<IntygType> intygTypes = Arrays.asList(IntygType.FK7263, IntygType.LISJP, IntygType.LUSE, IntygType.LUAE_NA,
+    private KonDataResponse getIntygPerType(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter, boolean isTvarsnitt) {
+        final List<IntygType> intygTypes = Arrays.asList(IntygType.LISJP, IntygType.LUSE, IntygType.LUAE_NA,
                 IntygType.LUAE_FS);
-        final List<String> names = intygTypes.stream().map(IntygType::getText).collect(Collectors.toList());
+        final List<String> names = intygTypes.stream().map(intygType -> {
+            //AT2002: FK7263 and LISJP should be combined in one group
+            if (IntygType.LISJP.equals(intygType)) {
+                return "FK 7263/7804 Läkarintyg för sjukpenning";
+            }
+            return intygType.getText();
+        }).collect(Collectors.toList());
         final List<Integer> ids = intygTypes.stream().map(Enum::ordinal).collect(Collectors.toList());
         final CounterFunctionIntyg<Integer> counterFunction = (intyg, counter) -> {
             final IntygType intygType = IntygType.parseString(intyg.getIntygtyp());
-            counter.add(intygType.ordinal());
+            final int id = IntygType.FK7263.equals(intygType) ? IntygType.LISJP.ordinal() : intygType.ordinal();
+            counter.add(id);
         };
-        return calculateKonDataResponse(vardgivarId, range, enheter, isTvarsnitt, names, ids, counterFunction);
+        return calculateKonDataResponse(vardgivarId, intygFilter, isTvarsnitt, names, ids, counterFunction);
     }
 
-    public SimpleKonResponse getIntygPerTypeTvarsnitt(HsaIdVardgivare vardgivarId, Range range,
-            Collection<HsaIdEnhet> enheter) {
-        final KonDataResponse intygPerTypeTidsserie = getIntygPerType(vardgivarId, range, enheter, true);
+    public SimpleKonResponse getIntygPerTypeTvarsnitt(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter) {
+        final KonDataResponse intygPerTypeTidsserie = getIntygPerType(vardgivarId, intygFilter, true);
         return SimpleKonResponse.create(intygPerTypeTidsserie);
     }
 
-    private <T> KonDataResponse calculateKonDataResponse(HsaIdVardgivare vardgivarId, Range range, Collection<HsaIdEnhet> enheter,
+    private <T> KonDataResponse calculateKonDataResponse(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter,
             boolean isTvarsnitt, List<String> groupNames, List<T> groupIds, CounterFunctionIntyg<T> counterFunction) {
         List<KonDataRow> rows = new ArrayList<>();
-        final List<IntygCommonGroup> intygCommonGroups = getIntygCommonGroups(range, vardgivarId, enheter, isTvarsnitt, null);
+        final List<IntygCommonGroup> intygCommonGroups = getIntygCommonGroups(vardgivarId, intygFilter, isTvarsnitt, null);
         for (IntygCommonGroup intygCommonGroup : intygCommonGroups) {
             final HashMultiset<T> maleCounter = HashMultiset.create();
             final HashMultiset<T> femaleCounter = HashMultiset.create();
@@ -154,12 +164,12 @@ public class IntygCommonManager {
         return new KonDataResponse(groupNames, rows);
     }
 
-    private SimpleKonResponse getIntygCommonMaleFemale(Range range, HsaIdVardgivare vardgivarId,
-            Collection<HsaIdEnhet> enheter, Function<IntygCommonGroup, String> rowNameFunction, boolean isTvarsnitt) {
+    private SimpleKonResponse getIntygCommonMaleFemale(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter,
+                                                       Function<IntygCommonGroup, String> rowNameFunction, boolean isTvarsnitt) {
         ArrayList<SimpleKonDataRow> result = new ArrayList<>();
         final List<IntygType> intygTypes = Arrays.asList(IntygType.FK7263, IntygType.LISJP, IntygType.LUSE, IntygType.LUAE_NA,
                 IntygType.LUAE_FS);
-        for (IntygCommonGroup intygCommonGroup : getIntygCommonGroups(range, vardgivarId, enheter, isTvarsnitt, intygTypes)) {
+        for (IntygCommonGroup intygCommonGroup : getIntygCommonGroups(vardgivarId, intygFilter, isTvarsnitt, intygTypes)) {
             int male = countMale(intygCommonGroup.getIntyg());
             int female = intygCommonGroup.getIntyg().size() - male;
             final String periodName = rowNameFunction.apply(intygCommonGroup);
@@ -168,22 +178,23 @@ public class IntygCommonManager {
         return new SimpleKonResponse(result);
     }
 
-    private List<IntygCommonGroup> getIntygCommonGroups(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter,
+    private List<IntygCommonGroup> getIntygCommonGroups(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter,
             boolean isTvarsnitt, List<IntygType> intygTypes) {
         List<IntygCommonGroup> intygCommonGroups = new ArrayList<>();
+        final Range range = intygFilter.getRange();
         int periods = isTvarsnitt ? 1 : range.getNumberOfMonths();
         int periodLength = isTvarsnitt ? range.getNumberOfMonths() : 1;
         for (int i = 0; i < periods; i++) {
-            LocalDate periodStart = range.getFrom().plusMonths(i * periodLength);
-            final LocalDate to = periodStart.plusMonths(periodLength);
+            LocalDate periodStart = range.getFrom().plusMonths(i * periodLength).withDayOfMonth(1);
+            final LocalDate to = periodStart.plusMonths(periodLength).minusDays(1);
             Range newRange = new Range(periodStart, to);
-            IntygCommonGroup intygCommonGroup = getIntygCommonGroup(newRange, vardgivarId, enheter, intygTypes);
+            IntygCommonGroup intygCommonGroup = getIntygCommonGroup(newRange, vardgivarId, intygFilter, intygTypes);
             intygCommonGroups.add(intygCommonGroup);
         }
         return intygCommonGroups;
     }
 
-    private IntygCommonGroup getIntygCommonGroup(Range range, HsaIdVardgivare vardgivarId, Collection<HsaIdEnhet> enheter,
+    private IntygCommonGroup getIntygCommonGroup(Range range, HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter,
             List<IntygType> intygTypes) {
         final StringBuilder ql = new StringBuilder();
         ql.append("SELECT r FROM IntygCommon r ");
@@ -195,6 +206,7 @@ public class IntygCommonManager {
         ql.append(EventType.REVOKED.ordinal());
         ql.append(" )");
 
+        final Collection<HsaIdEnhet> enheter = intygFilter.getEnheter();
         if (enheter != null) {
             ql.append(" AND r.enhet IN :enhetIds");
         }
@@ -215,8 +227,24 @@ public class IntygCommonManager {
             q.setParameter("intygTypes", intygTypeStrings);
         }
 
-        final List<IntygCommon> results = q.getResultList();
-        return new IntygCommonGroup(range, results);
+        final List<IntygCommon> resultList = q.getResultList();
+
+        final Collection<String> aldersgrupp = intygFilter.getAldersgrupp();
+        final boolean isAgeFilterActive = aldersgrupp != null && !aldersgrupp.isEmpty() && aldersgrupp.size() != AgeGroup.values().length;
+        final List<IntygCommon> filteredResult = isAgeFilterActive ? applyAgeFilter(resultList, aldersgrupp) : resultList;
+
+        return new IntygCommonGroup(range, filteredResult);
+    }
+
+    private List<IntygCommon> applyAgeFilter(List<IntygCommon> resultList, Collection<String> aldersgrupp) {
+        final List<AgeGroup> ageGroupFilters = aldersgrupp.stream()
+                .map(AgeGroup::getByName).filter(Optional::isPresent).map(Optional::get)
+                .collect(Collectors.toList());
+        return resultList.stream().filter(intygCommon -> {
+            final String patientid = intygCommon.getPatientid();
+            final int alder = ConversionHelper.extractAlder(patientid, intygCommon.getSigneringsdatum());
+            return ageGroupFilters.contains(AgeGroup.getGroupForAge(alder).orElse(null));
+        }).collect(Collectors.toList());
     }
 
     private static int countMale(Collection<IntygCommon> intygs) {

@@ -1,6 +1,5 @@
 ---
 Help: Kan tas med när Intyg,totalt har implementerats
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h
@@ -37,5 +36,4 @@ Vilka intyg som tas med bestäms av intygets signeringstidpunkt och filtret i de
 | user2 | 2014 | okt | FK 7263/7804 Läkarintyg för sjukpenning | 2014-08-01 | 2014-11-30 | 0 | 0 |
 | user2 | 2014 | okt | FK 7800 Läkarutlåtande för sjukersättning | 2014-08-01 | 2014-11-30 | 0 | 0 |
 | user2 | 2014 | nov | FK 7263/7804 Läkarintyg för sjukpenning | 2014-08-01 | 2014-11-30 | 1 | 0 |
-| user2 | 2014 | nov | FK 7800 Läkarutlåtande för sjukersättning | 2014-08-01 | 2014-11-30 | 0 | 0!-
--! |
+| user2 | 2014 | nov | FK 7800 Läkarutlåtande för sjukersättning | 2014-08-01 | 2014-11-30 | 0 | 0 |

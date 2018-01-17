@@ -1,6 +1,5 @@
 ---
 Help: Kan tas med nar Intyg,totalt rapporten ar implementerad
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h

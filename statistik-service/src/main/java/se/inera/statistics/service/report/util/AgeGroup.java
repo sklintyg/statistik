@@ -93,4 +93,13 @@ public enum AgeGroup {
         return Arrays.stream(values()).collect(Collectors.toMap(AgeGroup::getGroupName, AgeGroup::getColor));
     }
 
+    public static Optional<AgeGroup> getGroupForAge(int age) {
+        for (AgeGroup ageGroup : values()) {
+            if (age >= ageGroup.getFrom() && age <= ageGroup.getTo()) {
+                return Optional.of(ageGroup);
+            }
+        }
+        return Optional.empty();
+    }
+
 }

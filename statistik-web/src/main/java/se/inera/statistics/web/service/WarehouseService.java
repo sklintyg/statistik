@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.common.collect.Collections2;
@@ -44,6 +45,7 @@ import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
+import se.inera.statistics.service.warehouse.IntygCommonFilter;
 import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
@@ -110,19 +112,26 @@ public class WarehouseService {
     }
 
     public SimpleKonResponse getTotalIntygPerMonth(HsaIdVardgivare vardgivarId, FilterSettings filterSettings) {
-        return intygCommonManager.getIntyg(vardgivarId, filterSettings.getRange(), filterSettings.getFilter().getEnheter());
+        return intygCommonManager.getIntyg(vardgivarId, getIntygCommonFilter(filterSettings));
     }
 
     public SimpleKonResponse getTotalIntygTvarsnitt(HsaIdVardgivare vardgivarId, FilterSettings filterSettings) {
-        return intygCommonManager.getIntygTvarsnitt(vardgivarId, filterSettings.getRange(), filterSettings.getFilter().getEnheter());
+        return intygCommonManager.getIntygTvarsnitt(vardgivarId, getIntygCommonFilter(filterSettings));
     }
 
     public KonDataResponse getIntygPerTypePerMonth(HsaIdVardgivare vardgivarId, FilterSettings filterSettings) {
-        return intygCommonManager.getIntygPerTypeTidsserie(vardgivarId, filterSettings.getRange(), filterSettings.getFilter().getEnheter());
+        return intygCommonManager.getIntygPerTypeTidsserie(vardgivarId, getIntygCommonFilter(filterSettings));
+    }
+
+    @NotNull
+    private IntygCommonFilter getIntygCommonFilter(FilterSettings filterSettings) {
+        final Filter filter = filterSettings.getFilter();
+        return new IntygCommonFilter(filterSettings.getRange(), filter.getEnheter(),
+                filter.getDiagnoser(), filter.getAldersgrupp(), filter.getIntygstyper());
     }
 
     public SimpleKonResponse getIntygPerTypeTvarsnitt(HsaIdVardgivare vardgivarId, FilterSettings filterSettings) {
-        return intygCommonManager.getIntygPerTypeTvarsnitt(vardgivarId, filterSettings.getRange(), filterSettings.getFilter().getEnheter());
+        return intygCommonManager.getIntygPerTypeTvarsnitt(vardgivarId, getIntygCommonFilter(filterSettings));
     }
 
     public SimpleKonResponse getMessagesPerMonth(Filter filter, Range range, HsaIdVardgivare vardgivarId) {

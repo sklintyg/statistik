@@ -163,4 +163,11 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         return new RuntimeException("Report -Meddelanden per ämne per enhet- is not available on national level");
     }
 
+    def getReportIntygTotalt() {
+        if (inloggad) {
+            return reportsUtil.getReportAntalIntygInloggad(vg, filter);
+        }
+        return reportsUtil.getReportAntalIntyg();
+    }
+
 }

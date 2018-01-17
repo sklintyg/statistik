@@ -1,6 +1,5 @@
 ---
 Help: Kan tas med när Intyg,totalt har implementerats
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h
@@ -30,4 +29,4 @@ Inloggad:
 | user1 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | Under 15 dagar | 0 | 0 |
 | user1 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | Under 15 dagar | 1 | 0 |
 | user1 | 2015 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | Under 15 dagar | 0 | 1 |
-| user1 | 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | Under 15 dagar | 2 | 0 |
+| user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | Under 15 dagar | 2 | 0 |

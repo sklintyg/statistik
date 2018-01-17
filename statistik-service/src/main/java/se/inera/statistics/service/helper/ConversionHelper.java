@@ -71,7 +71,7 @@ public final class ConversionHelper {
         return personId.charAt(DocumentHelper.SEX_DIGIT) % 2 == 0 ? Kon.FEMALE.toString() : Kon.MALE.toString();
     }
 
-    protected static int extractAlder(String personId, LocalDate start) {
+    public static int extractAlder(String personId, LocalDate start) {
         LocalDate birthDate = null;
         int age;
         if (personId == null || personId.length() < DATE_PART_OF_PERSON_ID) {
