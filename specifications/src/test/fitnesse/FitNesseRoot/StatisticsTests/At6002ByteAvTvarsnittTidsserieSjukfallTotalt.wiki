@@ -48,6 +48,6 @@ Byte till tvärsnitt gör att ett stapeldiagram med bara en grupp (som heter Tot
 
 
 
-| Sjukfall i rapporten sjukfall totalt som tvarsnitt diagram |
-| inloggad som  | grupp | totalt? | män? | kvinnor? |
+| Sjukfall i rapporten sjukfall totalt som tvarsnittdiagram |
+| inloggad som | grupp | totalt? | män? | kvinnor? |
 | user2 | Totalt | 1 | 1 | 0 |
