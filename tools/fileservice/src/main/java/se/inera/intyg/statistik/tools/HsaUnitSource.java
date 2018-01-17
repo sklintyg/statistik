@@ -22,6 +22,7 @@ import com.google.common.io.ByteStreams;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.scheme.PlainSocketFactory;
 import org.apache.http.conn.scheme.Scheme;
 import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
@@ -52,7 +53,8 @@ public final class HsaUnitSource {
 
     private static final Logger LOG = LoggerFactory.getLogger(HsaUnitSource.class);
 
-    public static final int SSL_PORT = 443;
+    private static final int SSL_PORT = 443;
+    private static final int HTTP_PORT = 8000;
     private static final int BUFFER_SIZE = 10000;
 
     private HsaUnitSource() {
@@ -70,6 +72,7 @@ public final class HsaUnitSource {
             truststore.load(truststoreInput, trustPass.toCharArray());
 
             final SchemeRegistry schemeRegistry = new SchemeRegistry();
+            schemeRegistry.register(new Scheme("http", HTTP_PORT, PlainSocketFactory.getSocketFactory()));
             schemeRegistry.register(new Scheme("https", SSL_PORT, new SSLSocketFactory(keystore, certPass, truststore)));
 
             final DefaultHttpClient httpClient = new DefaultHttpClient(new PoolingClientConnectionManager(schemeRegistry), httpParams);
@@ -81,17 +84,17 @@ public final class HsaUnitSource {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 try (InputStream instream = entity.getContent();
-                     OutputStream receivedZipFile = new FileOutputStream(zipFileName);
-                     ZipFile zipFile = new ZipFile(zipFileName);) {
+                     OutputStream receivedZipFile = new FileOutputStream(zipFileName);) {
                     byte[] buffer = new byte[BUFFER_SIZE];
 
                     int len;
                     while ((len = instream.read(buffer)) != -1) {
                         receivedZipFile.write(buffer, 0, len);
                     }
-
+                }
+                try (ZipFile zipFile = new ZipFile(zipFileName)) {
                     final ZipEntry entry = zipFile.getEntry("hsaunits.xml");
-                    len = (int) entry.getSize();
+                    int len = (int) entry.getSize();
                     final InputStream stream = new BufferedInputStream(zipFile.getInputStream(entry));
                     byte[] hsaUnitsBytes = ByteStreams.toByteArray(stream);
                     if (hsaUnitsBytes.length != len) {
