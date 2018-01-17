@@ -18,7 +18,7 @@ Endast 5 intyg har signerats och skickats till Försäkringskassan under de sena
 | 1001 | 19790219-9285 | 2015-02-10T12:24:15 | 2015-02-10T12:24:15 | enhet1 | LISJP |
 | 1002 | 19790429-9272 | 2015-03-10T12:25:15 | 2015-03-10T12:25:15 | enhet1 | LISJP |
 | 1003 | 19790429-9282 | 2015-04-10T12:25:15 | 2015-04-10T12:25:15 | enhet1 | LISJP |
-| 1004 | 19791212-1212 | 2015-04-10T12:25:15 | 2015-04-10T12:25:15  | enhet1 | LUSE |
+| 1004 | 19791212-1212 | 2015-04-10T12:25:15 | 2015-04-10T12:25:15 | enhet1 | LUSE |
 | 1005 | 19791212-1212 | 2015-04-20T12:25:15 | 2015-04-20T12:25:15 | enhet1 | LISJP |
 
 Av dessa 5 har 3st fått kompletteringar och 1 har fått ett avstämningsmöte.

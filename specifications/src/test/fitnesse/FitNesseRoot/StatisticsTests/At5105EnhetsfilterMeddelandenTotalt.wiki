@@ -15,7 +15,7 @@ Test
 | 1002 | 19790717-9191 | 2014-06-03T10:00:00 | G01 | LUSE | enhet1 |
 | 1003 | 19691230-1234 | 2014-06-03T10:00:00 | G01 | LISJP | enhet2 |
 | 1004 | 19591230-1254 | 2014-06-03T10:00:00 | G01 | LUAE_NA | enhet1 |
-| 1005 | 19491230-1264 | 2014-06-03T10:00:00  | G01 | LUAE_FS | enhet2 |
+| 1005 | 19491230-1264 | 2014-06-03T10:00:00 | G01 | LUAE_FS | enhet2 |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |

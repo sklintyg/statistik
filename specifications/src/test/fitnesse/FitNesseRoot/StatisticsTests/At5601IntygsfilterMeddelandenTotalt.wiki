@@ -36,10 +36,10 @@ Inloggad:
 | inloggad som | år | månad | grupp | filter intygstyp | män? | kvinnor? |
 | user1 | 2014 | mar | Komplettering | | 0 | 1 |
 | user1 | 2014 | mar | Komplettering | FK 7800 Läkarintyg för sjukersättning | 0 | 0 |
-| user1 | 2014 | mar | Komplettering | FK 7263/7804 Läkarintyg för sjukpenning, FK 7800 Läkarintyg för sjukersättning, FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga, FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 1 |
+| user1 | 2014 | mar | Komplettering | FK 7263/7804 Läkarintyg för sjukpenning,FK 7800 Läkarintyg för sjukersättning,FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga,FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 1 |
 | user1 | 2014 | apr | Komplettering | | 1 | 0 |
 | user1 | 2014 | apr | Komplettering | FK 7800 Läkarintyg för sjukersättning | 1 | 0 |
-| user1 | 2014 | apr | Komplettering | FK 7263/7804 Läkarintyg för sjukpenning, FK 7800 Läkarintyg för sjukersättning, FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga, FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 1 | 0 |
+| user1 | 2014 | apr | Komplettering | FK 7263/7804 Läkarintyg för sjukpenning,FK 7800 Läkarintyg för sjukersättning,FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga,FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 1 | 0 |
 | user1 | 2014 | maj | Komplettering | | 0 | 0 |
 | user1 | 2014 | maj | Komplettering | | 0 | 0 |
 | user1 | 2014 | maj | Komplettering | | 0 | 0 |

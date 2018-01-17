@@ -62,7 +62,7 @@ Inloggad:
 | user2 | G00-G99 | 2014 | sep | G00-G09 | 1 | 0 |
 | user2 | G00-G99 | 2014 | okt | G00-G09 | 1 | 0 |
 
-Byte till tvärsnitt gör att stapeldiagram 12 mån visas. Varje avsnitt/kategori blir en grupp på x-axeln. 
+Byte till tvärsnitt gör att stapeldiagram 12 mån visas. Varje avsnitt/kategori blir en grupp på x-axeln.
 
 | Sjukfall i rapporten enskilt diagnoskapitel som tvarsnitt diagram |
 | inloggad som | valt diagnoskapitel | grupp | totalt? | män? | kvinnor? |
