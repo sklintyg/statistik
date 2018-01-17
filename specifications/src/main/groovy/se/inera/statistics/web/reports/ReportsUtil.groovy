@@ -119,16 +119,28 @@ class ReportsUtil {
         assert response.status == 200
     }
 
-    def getReportAntalIntyg() {
+    def getReportAntalSjukfall() {
         return get("/api/getNumberOfCasesPerMonth")
+    }
+
+    def getReportAntalIntyg() {
+        return get("/api/getNumberOfIntygPerMonth")
     }
 
     def getReportAntalIntygPerManad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getTotalNumberOfIntygPerMonth", filter, "vgid=" + vgid)
     }
 
-    def getReportAntalIntygInloggad(String vgid, filter) {
+    def getReportAntalSjukfallInloggad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonth", filter, "vgid=" + vgid)
+    }
+
+    def getReportAntalIntygInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getIntygPerTypePerMonth", filter, "vgid=" + vgid)
+    }
+
+    def getReportAntalIntygTvarsnittInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getIntygPerTypeTvarsnitt", filter, "vgid=" + vgid)
     }
 
     def getReportAntalMeddelandenVardenhetInloggad(String vgid, filter) {
@@ -451,7 +463,7 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getCasesPerDoctorAgeAndGenderTimeSeriesStatistics", filter, "vgid=" + vgid)
     }
 
-    def getReportAntalIntygSomTvarsnittInloggad(String vgid, FilterData filter) {
+    def getReportAntalSjukfallSomTvarsnittInloggad(String vgid, FilterData filter) {
         return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonthTvarsnitt", filter, "vgid=" + vgid)
     }
 
@@ -511,7 +523,7 @@ class ReportsUtil {
         return get("/api/testsupport/getFkYearReport")
     }
 
-    def getReportAntalIntygLandstingInloggad(String vgid, filter) {
+    def getReportAntalSjukfallLandstingInloggad(String vgid, filter) {
         return get("/api/landsting/getNumberOfCasesPerMonthLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 

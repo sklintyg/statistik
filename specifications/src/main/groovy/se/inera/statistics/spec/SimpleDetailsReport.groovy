@@ -51,9 +51,9 @@ abstract class SimpleDetailsReport extends Rapport {
 
     def getReportSjukfallTotalt() {
         if (inloggad) {
-            return reportsUtil.getReportAntalIntygInloggad(vg, filter);
+            return reportsUtil.getReportAntalSjukfallInloggad(vg, filter);
         }
-        return reportsUtil.getReportAntalIntyg();
+        return reportsUtil.getReportAntalSjukfall();
     }
 
     def getReportLangaSjukfall() {
@@ -129,7 +129,7 @@ abstract class SimpleDetailsReport extends Rapport {
 
     def getReportSjukfallTotaltTvarsnitt() {
         if (inloggad) {
-            return reportsUtil.getReportAntalIntygSomTvarsnittInloggad(vg, filter);
+            return reportsUtil.getReportAntalSjukfallSomTvarsnittInloggad(vg, filter);
         }
         throw new RuntimeException("Report -Sjukfall totalt som tvärsnitt- is not available on national level");
     }
@@ -171,7 +171,7 @@ abstract class SimpleDetailsReport extends Rapport {
 
     def getReportSjukfallTotaltLandsting() {
         if (inloggad) {
-            return reportsUtil.getReportAntalIntygLandstingInloggad(vg, filter);
+            return reportsUtil.getReportAntalSjukfallLandstingInloggad(vg, filter);
         }
         throw new RuntimeException("Report -Landsting Sjukfall totalt- is not available on national level");
     }
@@ -188,6 +188,13 @@ abstract class SimpleDetailsReport extends Rapport {
             return reportsUtil.getReportAntalMeddelandenTvarsnittInloggad(vg, filter)
         }
         throw new RuntimeException("Report -Meddelanden per ämne som tvärsnitt- is not available on national level");
+    }
+
+    def getReportIntygTotaltTvarsnitt() {
+        if (inloggad) {
+            return reportsUtil.getReportAntalIntygTvarsnittInloggad(vg, filter);
+        }
+        throw new RuntimeException("Report -Intyg totalt som tvärsnitt- is not available on national level");
     }
 
 }
