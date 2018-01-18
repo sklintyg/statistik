@@ -28,6 +28,7 @@ abstract class Rapport {
     def filterEnheter
     def filterVerksamhetstyper
     def filterSjukskrivningslängd
+    def filterIntygstyp
     def filterÅldersgrupp
     def filterStartdatum
     def filterSlutdatum
@@ -189,6 +190,15 @@ abstract class Rapport {
         }
     }
 
+    void setFilterIntygstyp(String intygstypString) {
+        if (intygstypString != null && !intygstypString.trim().isEmpty()) {
+            this.filterIntygstyp = intygstypString.split(",")*.trim().collect {
+                //def optionalGroup = SjukfallsLangdGroup.getByName(it)
+                //optionalGroup.present ? optionalGroup.get().name() : it;
+            }
+        }
+    }
+
     void setMeddelande(Object meddelanden) {
         if (meddelanden) {
             if (meddelanden instanceof Map<String, Message>) {
@@ -225,7 +235,7 @@ abstract class Rapport {
         if (filterKod != null) {
             diagnoser.addAll(filterKod)
         }
-        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper, filterSjukskrivningslängd, filterÅldersgrupp, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
+        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper, filterSjukskrivningslängd, filterÅldersgrupp, filterIntygstyp, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
     }
 
     public void reset() {
@@ -245,6 +255,7 @@ abstract class Rapport {
         filterEnheter = null
         filterVerksamhetstyper = null
         filterSjukskrivningslängd = null
+        filterIntygstyp = null
         filterÅldersgrupp = null
         filterStartdatum = null
         filterSlutdatum = null
