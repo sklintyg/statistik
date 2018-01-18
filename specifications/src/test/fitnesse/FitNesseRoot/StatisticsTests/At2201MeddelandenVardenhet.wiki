@@ -1,9 +1,8 @@
 ---
-Help: Behöver korrigeras
-Prune
-Test
+Static
 ---
-!3 Givet att:
+Givet att:
+
 Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
 
 | script | dagens datum | 2014-11-06 |
@@ -22,7 +21,7 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 | 19691230-1234 | 2014-06-03T10:00:00 | 1002 | KOMPLT |
 
 !3 Då gäller:
-Statistiken baseras på meddelanden för alla intygstyper som har ärendekommunikation. Statistiken presenteras utifrån datum då meddelandet skickades. Varje meddelande räknas en gång oavsett om det finns flera meddelanden för samma intyg.
+Statistiken baseras på meddelanden för alla intygstyper som har ärendekommunikation. Statistiken presenteras utifrån datum då meddelandet skickades. Varje meddelande räknas en gång oavsett om det finns flera meddelanden för samma intyg. Eftersom denna rapport visas upp som ett staplat stapeldiagram, visar totalen antalet meddelanden totalt på den enheten, oavsett vilken typ av meddelande det är.
 
 Inloggad:
 

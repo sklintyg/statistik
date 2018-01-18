@@ -1,7 +1,8 @@
 ---
 Test
 ---
-!contents -R2 -g -p -f -h
+''!contents -R2 -g -p -f -h''
+
 Gäller STATISTIK-936, 943.
 
 !3 Givet att:

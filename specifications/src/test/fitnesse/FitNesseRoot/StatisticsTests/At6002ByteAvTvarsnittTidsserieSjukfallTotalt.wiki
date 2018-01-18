@@ -1,7 +1,8 @@
 ---
 Test
 ---
-!contents -R2 -g -p -f -h
+''!contents -R2 -g -p -f -h''
+
 Gäller STATISTIK-936, 943.
 
 !3 Givet att:
@@ -46,8 +47,6 @@ Byte till tvärsnitt gör att ett stapeldiagram med bara en grupp (som heter Tot
 | inloggad som | grupp | totalt? | män? | kvinnor? |
 | user2 | Totalt | 1 | 1 | 0 |
 
-
-
-| Sjukfall i rapporten sjukfall totalt som tvarsnittdiagram |
+| Sjukfall i rapporten sjukfall totalt som tvarsnitt diagram |
 | inloggad som | grupp | totalt? | män? | kvinnor? |
 | user2 | Totalt | 1 | 1 | 0 |
