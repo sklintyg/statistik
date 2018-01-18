@@ -1,7 +1,8 @@
 ---
 Test
 ---
-!contents -R2 -g -p -f -h
+''!contents -R2 -g -p -f -h''
+
 !3 Givet att:
 | script | dagens datum | 2014-11-06 |
 
@@ -22,8 +23,6 @@ Test
 | inloggad som | vårdenhet | vårdgivarnivå | totalt? | män? | kvinnor? |
 | user2 | enhet1 | true | -1 | -1 | -1 |
 | user2 | enhet2 | true | 1 | 1 | 0 |
-
-
 
 | Sjukfall i rapporten sjukfall per enhet diagram |
 | inloggad som | vårdenhet | vårdgivarnivå | totalt? | män? | kvinnor? |

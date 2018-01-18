@@ -1,12 +1,8 @@
 ---
-Prune
 Test
 ---
-''!contents -R2 -g -p -f -h''
+Givet att:
 
-Är ignorerad då specen anger att ämnet "avstämingsmöte" inte borde synas alls i diagramet, är det verkligen rätt?
-
-!3 Givet att:
 Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
 
 | script | dagens datum | 2014-11-06 |
@@ -45,12 +41,12 @@ Byte till tidsserie gör att ytdiagram 18 mån visas. Varje enhet får en legend
 | user2 | 2014 | apr | enhet1 : Komplettering | 1 | 0 |
 | user2 | 2014 | apr | enhet1 : Avstämningsmöte | 0 | 0 |
 | user2 | 2014 | apr | enhet2 : Komplettering | 0 | 0 |
-| user2 | 2014 | apr | enhet2 : Avstämningsmöte | -1 | -1 |
+| user2 | 2014 | apr | enhet2 : Avstämningsmöte | 0 | 0 |
 | user2 | 2014 | maj | enhet1 : Komplettering | 0 | 0 |
 | user2 | 2014 | maj | enhet1 : Avstämningsmöte | 0 | 0 |
 | user2 | 2014 | maj | enhet2 : Komplettering | 0 | 0 |
-| user2 | 2014 | maj | enhet2 : Avstämningsmöte | -1 | -1 |
+| user2 | 2014 | maj | enhet2 : Avstämningsmöte | 0 | 0 |
 | user2 | 2014 | jun | enhet1 : Komplettering | 0 | 0 |
 | user2 | 2014 | jun | enhet1 : Avstämningsmöte | 1 | 0 |
 | user2 | 2014 | jun | enhet2 : Komplettering | 1 | 0 |
-| user2 | 2014 | jun | enhet2 : Avstämningsmöte | -1 | -1 |
+| user2 | 2014 | jun | enhet2 : Avstämningsmöte | 0 | 0 |
