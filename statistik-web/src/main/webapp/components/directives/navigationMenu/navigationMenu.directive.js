@@ -37,7 +37,7 @@
         }]);
 
     /** @ngInject */
-    function NavigationMenuCtrl($rootScope, $scope, $location, AppModel, UserModel, StaticFilterData, _, ControllerCommons) {
+    function NavigationMenuCtrl($rootScope, $scope, $location, AppModel, UserModel, StaticFilterData, _, ControllerCommons, navigationViewState) {
         $scope.mobile = $scope.isMobile;
         $scope.menus = [];
         $scope.AppModel = AppModel;
@@ -397,9 +397,11 @@
             initMenu();
         });
 
-        $rootScope.$on('$routeChangeSuccess', function () {
-            initMenu();
-        });
+        $scope.$watch(
+            navigationViewState.get,
+            initMenu,
+            true
+        );
 
         $scope.toggleMenu = function(menu, $event) {
             $event.preventDefault();
@@ -429,9 +431,9 @@
         };
 
         function initMenu() {
-            var isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
-            var isLandstingShowing = ControllerCommons.isShowingLandsting($location);
-            var isShowingNationell = ControllerCommons.isShowingNationell($location);
+            var isVerksamhetShowing = navigationViewState.get().active === navigationViewState.ids.verksamhet;
+            var isLandstingShowing = navigationViewState.get().active === navigationViewState.ids.landsting;
+            var isShowingNationell = navigationViewState.get().active === navigationViewState.ids.nationell;
 
             if (isVerksamhetShowing) {
                 $scope.menus = verksamhet;
