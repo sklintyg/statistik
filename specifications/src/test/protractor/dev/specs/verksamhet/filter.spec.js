@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*globals browser,protractor */
+/*globals browser */
 /*globals describe,it */
 'use strict';
 
@@ -36,38 +36,25 @@ describe('Verksamhetsfilter: ', function() {
         pages.verksamhetOverview.isAtPage();
     });
 
-    it('Filterknappen syns', function() {
-        expect(filter.button.isDisplayed()).toBeTruthy();
-    });
-
-    it('Öppna och stäng filtret', function() {
-        filter.button.click();
-        expect(filter.content.isDisplayed()).toBeTruthy();
-
-        filter.button.click();
-        expect(filter.content.isDisplayed()).toBeFalsy();
+    it('Filtert syns', function() {
+        expect(filter.applyBtn.isDisplayed()).toBeTruthy();
     });
 
     describe('Datum', function() {
-        beforeAll(function() {
-            // Open filter
-            filter.button.click();
-            expect(filter.content.isDisplayed()).toBeTruthy();
-        });
-
         it('Fyll i', function() {
             // set date
+            filter.dateSelectBtn.click();
             filter.fromDate.sendKeys(fromDate);
             filter.toDate.sendKeys(toDate);
             filter.applyBtn.click();
 
             // Validate status
-            filter.isFilterActive();
+            //filter.isFilterActive();
         });
 
         it('Kolla så de stämmer', function() {
             // Check values
-            filter.button.click();
+            filter.dateSelectBtn.click();
             expect(filter.getFromDate()).toEqual(fromDate);
             expect(filter.getToDate()).toEqual(toDate);
         });
@@ -80,15 +67,18 @@ describe('Verksamhetsfilter: ', function() {
             browser.refresh();
 
             // Validate status
-            filter.isFilterActive();
+            // filter.isFilterActive();
 
             // Check values
-            filter.button.click();
+            filter.dateSelectBtn.click();
             expect(filter.getFromDate()).toEqual(fromDate);
             expect(filter.getToDate()).toEqual(toDate);
+
+            filter.dateSelectBtn.click();
         });
 
         it('Töm filtret', function() {
+            filter.dateSelectBtn.click();
             // Clear fields
             filter.dateResetBtn.click();
             expect(filter.getFromDate()).toEqual('');
@@ -97,21 +87,17 @@ describe('Verksamhetsfilter: ', function() {
             filter.applyBtn.click();
 
             // Validate status
-            filter.isFilterInactive();
+            //filter.isFilterInactive();
         });
     });
 
     describe('Fyll i hela filtret', function() {
         var length1, length2, age1, age2, enhet, diagnoses;
-        beforeAll(function() {
-            // Open filter
-            filter.button.click();
-            expect(filter.content.isDisplayed()).toBeTruthy();
-        });
-
         it('Datum', function() {
+            filter.dateSelectBtn.click();
             filter.fromDate.sendKeys(fromDate);
             filter.toDate.sendKeys(toDate);
+            filter.dateSelectBtn.click();
         });
 
         it('Sjukskrivningslängd', function() {
@@ -125,9 +111,6 @@ describe('Verksamhetsfilter: ', function() {
 
             first.click();
             second.click();
-
-            expect(filter.getChipNames()).toContain(length1);
-            expect(filter.getChipNames()).toContain(length2);
         });
 
         it('Åldersgrupp', function() {
@@ -141,9 +124,6 @@ describe('Verksamhetsfilter: ', function() {
 
             first.click();
             second.click();
-
-            expect(filter.getChipNames()).toContain(age1);
-            expect(filter.getChipNames()).toContain(age2);
         });
 
         it('Enheter', function() {
@@ -157,8 +137,6 @@ describe('Verksamhetsfilter: ', function() {
             first.element(by.css('input')).click();
 
             filter.enhetSaveAndCloseBtn.click();
-
-            expect(filter.getChipNames()).toContain(enhet);
         });
 
         it('Diagnoser', function() {
@@ -170,8 +148,6 @@ describe('Verksamhetsfilter: ', function() {
             first.element(by.css('input')).click();
 
             filter.diagnosesSaveAndCloseBtn.click();
-
-            expect(filter.getChipNames()).toContain(diagnoses);
         });
 
         it('Applicera filtret', function() {
@@ -186,13 +162,9 @@ describe('Verksamhetsfilter: ', function() {
         });
 
         it('Gå till en annan rapport och se att filtret är kvar', function() {
-            // close filter
-            filter.button.sendKeys(protractor.Key.ENTER);
-
             // Navigate
             pages.navmenu.navBusinessCasesPerMonthLink.click();
             pages.report.isAtPage();
-
 
             validateActiveFilter();
         });
@@ -210,65 +182,72 @@ describe('Verksamhetsfilter: ', function() {
 
             // Validate status
             filter.isFilterInactive();
-
-            // Close filter
-            filter.button.click();
         });
 
         function validateActiveFilter() {
             // Validate status
             filter.isFilterActive();
 
-            filter.button.sendKeys(protractor.Key.ENTER);
-
             // Check values
+            filter.dateSelectBtn.click();
             expect(filter.getFromDate()).toEqual(fromDate);
             expect(filter.getToDate()).toEqual(toDate);
+            filter.dateSelectBtn.click();
 
-            expect(filter.getChipNames()).toContain(length1);
-            expect(filter.getChipNames()).toContain(length2);
-            expect(filter.getChipNames()).toContain(age1);
-            expect(filter.getChipNames()).toContain(age2);
-            expect(filter.getChipNames()).toContain(enhet);
-            expect(filter.getChipNames()).toContain(diagnoses);
+            filter.showAllActiveBtn.click();
+
+            expect(filter.getNames(filter.activeDiganoser)).toContain(diagnoses);
+            expect(filter.getNames(filter.activeEnheter)).toContain(enhet);
+            expect(filter.getNames(filter.activeSjukskrivningslangd)).toContain(length1);
+            expect(filter.getNames(filter.activeSjukskrivningslangd)).toContain(length2);
+            expect(filter.getNames(filter.activeAldersgrupper)).toContain(age1);
+            expect(filter.getNames(filter.activeAldersgrupper)).toContain(age2);
+
+            filter.chipsAllCloseBtn.click();
         }
     });
 
-    it ('öppna listan med alla filter om man har mer än två rader', function() {
-        filter.button.click();
+    describe('Visa alla aktiva val', function() {
+        beforeAll(function() {
+            filter.resetBtn.click();
+        });
 
-        // Select all diagnoses
-        filter.diagnosesBtn.click();
-        filter.diagnosesSelectAll.click();
-        filter.diagnosesSaveAndCloseBtn.click();
+        it ('Syns inte innan filtret är sparat', function() {
+            // Select all diagnoses
+            filter.diagnosesBtn.click();
+            filter.diagnosesSelectAll.click();
+            filter.diagnosesSaveAndCloseBtn.click();
 
-        expect(filter.chipsShowAll.isDisplayed()).toBeTruthy();
+            filter.isFilterInactive();
+        });
 
-        filter.chipsShowAll.click();
+        it('Syns efter man har sparat', function() {
+            filter.applyBtn.click();
 
-        expect(filter.chipsShowAllModal.isDisplayed()).toBeTruthy();
+            filter.isFilterActive();
+        });
 
-        filter.chipsAllCloseBtn.click();
+        it('Visa modalen', function() {
+            filter.showAllActiveBtn.click();
+
+            expect(filter.chipsShowAllModal.isDisplayed()).toBeTruthy();
+
+            filter.chipsAllCloseBtn.click();
+        });
     });
 
     it('Enhetsvalet syns inte när man bara har en enhet', function() {
         features.user.makeSureNotLoggedIn();
         features.user.loginUser1(false);
 
-        filter.button.click();
-        expect(filter.content.isDisplayed()).toBeTruthy();
+        expect(filter.applyBtn.isDisplayed()).toBeTruthy();
 
         expect(filter.enhetBtn.isPresent()).toBeFalsy();
-
-        // Close filter
-        filter.button.click();
     });
 
     it('Ändra url för att ladda filtret', function() {
 
         filter.isFilterInactive();
-
-        filter.button.click();
 
         filter.sickLeaveLengthBtn.click();
         var first = filter.sickLeaveLengthList.get(1);

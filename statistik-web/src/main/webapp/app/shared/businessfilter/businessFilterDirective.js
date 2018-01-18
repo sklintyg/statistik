@@ -83,7 +83,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     });
 
     // Not very elegant (but working) way of solving INTYG-4505
-    scope.$watch('isDateSelectOpen', function(isOpen) {
+    /*scope.$watch('isDateSelectOpen', function(isOpen) {
         if (isOpen) {
             scope.businessFilter.fromDate = scope.businessFilter.cachedFromDate || scope.businessFilter.fromDate;
             scope.businessFilter.toDate = scope.businessFilter.cachedToDate || scope.businessFilter.toDate;
@@ -94,7 +94,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
             scope.businessFilter.fromDate = null;
             scope.businessFilter.toDate = null;
         }
-    });
+    });*/
 
     scope.geographyFilterSelectorData = {
         titleText: messageService.getProperty('lbl.filter.val-av-enheter', null, '', null, true),
@@ -200,6 +200,8 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.makeSelection = function () {
         var formattedFromDate, formattedToDate;
 
+        scope.isDateSelectOpen = false;
+
         if (hasDatepickersValidationError()) {
             scope.showDateValidationError = true;
         } else {
@@ -261,6 +263,8 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     };
 
     scope.resetBusinessFilter = function(form) {
+        scope.isDateSelectOpen = false;
+
         if (form) {
             form.$setPristine();
             form.$setUntouched();

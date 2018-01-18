@@ -7,7 +7,7 @@
   <div
       class="btn-group margin-right"
       uib-dropdown auto-close="outsideClick" is-open="isDateSelectOpen">
-    <button id="select-dateintervall" data-ng-class="{'filter-active-btn': businessFilter.cachedFromDate != null && businessFilter.cachedToDate != null }" type="button" class="btn btn-default" uib-dropdown-toggle>
+    <button id="select-dateintervall" data-ng-class="{'filter-active-btn': businessFilter.fromDate != null && businessFilter.toDate != null }" type="button" class="btn btn-default" uib-dropdown-toggle>
       <i class="fa fa-clock-o"></i> Tidsintervall
     </button>
     <div class="dropdown-menu dateintervall-dropdown" uib-dropdown-menu>
