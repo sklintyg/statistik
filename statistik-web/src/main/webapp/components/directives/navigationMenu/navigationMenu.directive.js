@@ -289,19 +289,6 @@
                     link: '#/landsting/sjukfallPerListningarPerEnhet',
                     name: 'nav.landsting.listningsjamforelse',
                     ctrl: 'LandstingCasesPerPatientsPerBusinessCtrl'
-                },{
-                    id: 'navLandstingAboutLink',
-                    link: '#/landsting/om',
-                    name: 'nav.landsting.om',
-                    ctrl: 'LandstingAboutCtrl'
-                },{
-                    checkVisible: function() {
-                        return UserModel.get().isLandstingAdmin;
-                    },
-                    id: 'navLandstingUploadLink',
-                    link: '#/landsting/filuppladdning',
-                    name: 'nav.landsting.filuppladdning',
-                    ctrl: 'LandstingFileUploadCtrl'
                 }
             ]
         };
@@ -348,6 +335,22 @@
                 link: '#/om/tjansten',
                 name: 'nav.allmant-om-tjansten',
                 ctrl: 'AboutServiceCtrl'
+            },{
+                checkVisible: function() {
+                    return UserModel.get().hasLandstingAccess;
+                },
+                id: 'navLandstingAboutLink',
+                link: '#/landsting/om',
+                name: 'nav.landsting.om',
+                ctrl: 'LandstingAboutCtrl'
+            },{
+                checkVisible: function() {
+                    return UserModel.get().isLandstingAdmin;
+                },
+                id: 'navLandstingUploadLink',
+                link: '#/landsting/filuppladdning',
+                name: 'nav.landsting.filuppladdning',
+                ctrl: 'LandstingFileUploadCtrl'
             },{
                 id: 'navAboutInloggningLink',
                 link: '#/om/inloggning',
