@@ -32,7 +32,8 @@ public class StaticFilterData {
     private final Map<String, String> intygTypes;
     private final List<Icd> dxs;
 
-    public StaticFilterData(Map<String, String> sjukskrivningLengths, Map<String, String> ageGroups, Map<String, String> intygTypes, List<Icd> dxs) {
+    public StaticFilterData(Map<String, String> sjukskrivningLengths, Map<String, String> ageGroups, Map<String,
+            String> intygTypes, List<Icd> dxs) {
         this.sjukskrivningLengths = new HashMap<>(sjukskrivningLengths);
         this.ageGroups = new HashMap<>(ageGroups);
         this.intygTypes = new HashMap<>(intygTypes);
