@@ -41,6 +41,8 @@ var stMessages = {
         'nav.meddelanden': 'Meddelanden, totalt',
         'nav.meddelandenperamne': 'Meddelanden, totalt',
         'nav.meddelandenperamneochenhet': 'Meddelanden, vårdenhet',
+        'nav.intygpertyp': 'Intyg, totalt',
+        'nav.intygpertyp.nationell': 'Intygstyp',
 
         //labels
         'lbl.mobile-menu': 'Meny',
@@ -192,6 +194,7 @@ var stMessages = {
         'help.landsting.vardenhet-listning2': 'Information om vilka vårdenheter som ingår i landstinget och uppgift om antal listade patienter på respektive vårdenhet har rapporteras in av landstinget självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',
         'help.landsting.meddelandenperamne': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporteras in av landstinget självt %0. Ämnet på meddelanden sätts av Försäkringskassan.',
         'help.landsting.meddelandenperamneochenhet': 'Denna rapport visar statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg och läkarutlåtanden. Information om vilka vårdenheter som ingår i landstinget har rapporterats in av landstinget självt %0. Vårdenheternas namn hämtas från HSA-katalogen.',
+        'help.landsting.intygpertyp': 'Denna rapport visar sammanlagd statistik för de vårdenheter som tillhör landstinget och som utfärdar läkarintyg. Information om vilka vårdenheter som ingår i landstinget har rapporteras in av landstinget självt %0.',
 
         'help.diagnosissubgroup.showdetailoptions' : 'Observera att om du väljer diagnoskategori visas endast de sjukfall som har en diagnos på fyr- eller femställig nivå i ICD-10-SE, t.ex. F430 eller F438A. Sjukfall med en diagnos på treställig nivå, t.ex. F43, visas inte.',
 

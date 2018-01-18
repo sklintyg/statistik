@@ -517,6 +517,32 @@ angular.module('StatisticsApp').intygPerTypePerMonthConfig =
     return conf;
 };
 
+angular.module('StatisticsApp').intygPerTypePerMonthLandstingConfig =
+    /** @ngInject */
+    function (messageService) {
+    'use strict';
+
+    var conf = {};
+    conf.dataFetcher = 'getIntygPerTypePerMonthLandsting';
+    conf.chartYAxisTitleUnit = 'intyg';
+    conf.exportTableUrl = function () {
+        return 'api/landsting/getIntygPerTypePerMonthLandsting?format=xlsx';
+    };
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
+    };
+    conf.title = messageService.getProperty('title.intygstyp');
+
+    conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
+        return $filter('messageFilter')('help.landsting.intygpertyp', '', '', [result.fileUploadDate], '');
+    };
+    conf.chartFootnotes = function() {
+        return [];
+    };
+
+    return conf;
+};
+
 angular.module('StatisticsApp').meddelandenPerAmneConfig =
     /** @ngInject */
     function (messageService) {
