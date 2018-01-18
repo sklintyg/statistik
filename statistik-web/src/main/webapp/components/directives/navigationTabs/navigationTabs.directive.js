@@ -115,6 +115,8 @@
                 }
 
                 tabs.push(nationellTab);
+
+                vm.tabClass = tabs.length > 2 ? 'navigation-three-tabs' : 'navigation-two-tabs';
             }
 
             vm.tabs = tabs;
