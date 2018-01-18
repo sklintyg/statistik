@@ -54,12 +54,14 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             return input;
         };
 
-        this.populateActiveFilters = function(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter, filterHash,
-                                                isAllAvailableEnhetsSelectedInFilter, filteredEnhets, filteredSjukskrivningslangd, isAllAvailableSjukskrivningslangdsSelectedInFilter, filteredAldersgrupp, isAllAvailableAgeGroupsSelectedInFilter) {
+        this.populateActiveFilters = function(scope, statisticsData, filterHash, diagnosIds, isAllAvailableDxsSelectedInFilter,
+                                                filteredEnhets, isAllAvailableEnhetsSelectedInFilter, filteredSjukskrivningslangd, isAllAvailableSjukskrivningslangdsSelectedInFilter,
+                                                filteredAldersgrupp, isAllAvailableAgeGroupsSelectedInFilter, filteredIntygstyp, isAllAvailableIntygTypesSelectedInFilter) {
             that.populateActiveDiagnosFilter(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter);
             that.populateActiveEnhetsFilter(scope, filteredEnhets, isAllAvailableEnhetsSelectedInFilter);
             that.populateActiveSjukskrivningslangdFilter(scope, filterHash, filteredSjukskrivningslangd, isAllAvailableSjukskrivningslangdsSelectedInFilter);
             that.populateActiveAldersgruppFilter(scope, filterHash, filteredAldersgrupp, isAllAvailableAgeGroupsSelectedInFilter);
+            that.populateActiveIntygstypFilter(scope, filterHash, filteredIntygstyp, isAllAvailableIntygTypesSelectedInFilter);
         };
 
         this.populateActiveDiagnosFilter = function(scope, statisticsData, diagnosIds, isAllAvailableDxsSelectedInFilter) {
@@ -103,6 +105,16 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             }
             if (aldersgrupp && aldersgrupp.length > 0) {
                 scope.activeAldersgruppFilters = aldersgrupp;
+            }
+        };
+
+        this.populateActiveIntygstypFilter = function(scope, filterHash, intygstyp, isAllAvailableIntygsTypesSelectedInFilter) {
+            scope.activeIntygstypFilter = null;
+            if (isAllAvailableIntygsTypesSelectedInFilter) {
+                return;
+            }
+            if (intygstyp && intygstyp.length > 0) {
+                scope.activeIntygstypFilter = intygstyp;
             }
         };
 
