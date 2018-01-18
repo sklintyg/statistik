@@ -398,6 +398,7 @@ var app = angular.module('StatisticsApp')
                 title: 'title.intygstyp'
             }).when('/landsting/om', {
                 templateUrl: '/app/views/landsting/aboutlandsting.html',
+                controller: 'landstingAboutCtrl',
                 controllerAs: 'LandstingAboutCtrl',
                 title: 'Om Landstingsstatistik'
             }).when('/om/tjansten', {

@@ -127,7 +127,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
                 result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter);
             var messages = ControllerCommons.getResultMessageList(result, messageService);
             $scope.resultMessageList = ControllerCommons.removeFilterMessages(messages);
-            $rootScope.$broadcast('resultMessagesChanged',  messages);
+            filterViewState.setMessages(messages);
 
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;

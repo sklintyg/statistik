@@ -179,8 +179,8 @@
   <filter-chips business-filter="businessFilter"></filter-chips>
 </form>
 
-<div class="filter-level" data-ng-if="hasMessages" style="margin-bottom: 10px">
-  <div ng-repeat="resultMessage in messages">
+<div class="filter-level" data-ng-if="filterViewState.messages.length > 0" style="margin-bottom: 10px">
+  <div ng-repeat="resultMessage in filterViewState.messages">
     <show-message type="resultMessage.type" severity="resultMessage.severity" text="resultMessage.message"></show-message>
   </div>
 </div>

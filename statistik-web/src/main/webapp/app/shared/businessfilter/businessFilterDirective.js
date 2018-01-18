@@ -324,14 +324,4 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.$on('selectionsChanged', function() {
         scope.businessFilter.updateSelectionVerksamhetsTyper(scope.businessFilter.verksamhetsTyper);
     });
-
-    var filterMessagesChanged = $rootScope.$on('resultMessagesChanged', function(event, messages) {
-        scope.messages = $filter('filter')(messages, function(message) {
-            return message && message.type === 'FILTER';
-        });
-
-        scope.hasMessages = scope.messages.length > 0;
-    });
-
-    scope.$on('$destroy', filterMessagesChanged);
 }
