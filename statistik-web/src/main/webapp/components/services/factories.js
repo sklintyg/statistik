@@ -132,6 +132,10 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestVerksamhet('getTotalNumberOfIntygTvarsnitt', successCallback, failureCallback);
     };
 
+    factory.getIntygPerTypePerMonthLandsting = function (successCallback, failureCallback) {
+        makeRequestLandsting('getIntygPerTypePerMonthLandsting', successCallback, failureCallback);
+    };
+
     factory.getIntygPerTypePerMonthVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet('getIntygPerTypePerMonth', successCallback, failureCallback);
     };

@@ -116,12 +116,11 @@
             navigationId: 'intyg-statistics-collapse',
             show: true,
             subMenu: [
-            //Not yet available on nationel level
             //     {
-            //     id: 'navIntygLink',
-            //     link: '#/nationell/intyg',
-            //     name: 'title.intygstyp',
-            //     ctrl: 'NationalIntygCtrl'
+            //     id: 'navNationalIntygPerTypeLink',
+            //     link: '#/nationell/intygPerTyp',
+            //     name: 'nav.intygpertyp.nationell',
+            //     ctrl: 'NationalIntygPerTypCtrl'
             // }
             ]
         };
@@ -233,7 +232,12 @@
             name: 'nav.intyg-header',
             navigationId: 'intyg-statistics-collapse',
             show: true,
-            subMenu: []
+            subMenu: [{
+                id: 'navBusinessIntygPerTypeLink',
+                link: '#/verksamhet/intygPerTyp',
+                name: 'nav.intygpertyp',
+                ctrl: 'VerksamhetIntygPerTypCtrl'
+            }]
         };
 
         var kommunikationVerksamhet = {
@@ -307,7 +311,12 @@
             name: 'nav.intyg-header',
             navigationId: 'intyg-statistics-collapse',
             show: true,
-            subMenu: []
+            subMenu: [{
+                id: 'navLandstingIntygPerTypeLink',
+                link: '#/landsting/intygPerTyp',
+                name: 'nav.intygpertyp',
+                ctrl: 'LandstingIntygPerTypCtrl'
+            }]
         };
 
         var kommunikationLandsting = {

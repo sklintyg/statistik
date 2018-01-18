@@ -384,6 +384,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'LandstingMeddelandenPerAmneOchEnhetCtrl',
                 resolve: { config: app.meddelandenPerAmneOchEnhetLandstingConfig },
                 title: 'nav.meddelandenperamneochenhet'
+            }).when('/landsting/intygPerTyp', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'doubleAreaChartsCtrl',
+                controllerAs: 'LandstingIntygPerTypePerMonthCtrl',
+                resolve: { config: app.intygPerTypePerMonthLandstingConfig },
+                title: 'title.intygstyp'
             }).when('/landsting/om', {
                 templateUrl: '/app/views/landsting/aboutlandsting.html',
                 controllerAs: 'LandstingAboutCtrl',
