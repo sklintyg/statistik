@@ -85,6 +85,8 @@ class ReportsUtil {
     def processIntyg() {
         def response = statistik.post(path: '/api/testsupport/processIntyg')
         assert response.status == 200
+
+        sleep(1000)
     }
 
     def insertMeddelande(Meddelande meddelande) {
