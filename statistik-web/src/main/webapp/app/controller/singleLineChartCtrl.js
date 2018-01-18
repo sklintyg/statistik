@@ -90,7 +90,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
 
             var messages = ControllerCommons.getResultMessageList(result, messageService);
             $scope.resultMessageList = ControllerCommons.removeFilterMessages(messages);
-            $rootScope.$broadcast('resultMessagesChanged',  messages);
+            filterViewState.setMessages(messages);
 
             $scope.subTitle = angular.isFunction(config.suffixTitle) ? config.suffixTitle($routeParams.kapitelId) : config.title;
             //Period should be on a separate row (INTYG-3288)

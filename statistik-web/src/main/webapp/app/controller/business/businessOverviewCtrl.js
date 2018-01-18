@@ -22,7 +22,7 @@ angular.module('StatisticsApp').controller('businessOverviewCtrl',
 
     /** @ngInject */
 function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, chartFactory,
-    messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _, COLORS) {
+    messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _, COLORS, filterViewState) {
     'use strict';
 
     var newSexProportionChart = {}, oldSexProportionChart = {}, sickLeaveLengthChart = {};
@@ -50,7 +50,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
 
         var messages = ControllerCommons.getResultMessageList(result, messageService);
         $scope.resultMessageList = ControllerCommons.removeFilterMessages(messages);
-        $rootScope.$broadcast('resultMessagesChanged',  messages);
+        filterViewState.setMessages(messages);
 
         if (result.empty) {
             $scope.showEmptyDataView = true;
@@ -311,6 +311,9 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     $scope.spinnerText = 'Laddar information...';
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
+
+    // Set filter state
+    filterViewState.set();
 
     $scope.printPdf = function () {
         var charts = [];

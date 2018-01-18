@@ -18,8 +18,8 @@
  */
 
 angular.module('StatisticsApp').controller('landstingFileUploadCtrl',
-    [ '$scope', '$rootScope', '$timeout', '$window', 'statisticsData', 'messageService', '$location',
-    function ($scope, $rootScope, $timeout, $window, statisticsData, messageService, $location) {
+    /** @ngInject */
+    function ($scope, $rootScope, $timeout, $window, statisticsData, messageService, $location, filterViewState) {
         'use strict';
 
         $scope.prepopulatedLandstingFileUrl = '/api/landsting/prepopulatedLandstingFile?vgid=' + $location.search().vgid;
@@ -39,6 +39,8 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl',
         var updateStatus = function (response) {
             $scope.uploadResultMessage = response.message ? response.message : response;
         };
+
+        filterViewState.setMessages([]);
 
         $scope.uploadUrl = 'api/landsting/fileupload?vgid=' + $location.search().vgid;
 
@@ -139,4 +141,4 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl',
         updateLastUpdateMessage();
 
     }
-]);
+);
