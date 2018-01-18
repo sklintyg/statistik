@@ -27,7 +27,7 @@ angular.module('StatisticsApp')
                 chips: '=',
                 title: '@',
                 icon: '@',
-                removeChip: '&'
+                typeDisabled: '='
             },
             restrict: 'E',
             templateUrl: '/components/directives/filterChipsList/filterChipsList.html'

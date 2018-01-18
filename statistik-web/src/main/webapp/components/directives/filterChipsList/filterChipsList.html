@@ -1,23 +1,16 @@
-<ul data-ng-if="chips.length > 0">
+<ul
+    data-ng-if="chips.length > 0"
+    data-ng-class="{inactive: typeDisabled}"
+  >
   <li class="filter-heading">
     <i class="fa {{icon}}"></i> {{title}}
   </li>
   <li
       data-ng-repeat="chip in chips track by chip.id"
-      data-ng-click="removeChip({chip: chip})"
-      data-ng-class="{inactive: chip.newFilter, removed: chip.removedFilter}"
       class="filter-chips"
       title="{{::chip.text}}">
       <span class="default-text">
         {{::chip.text}}
-      </span>
-      <span class="filter-hover">
-        <span class="remove-filter">
-          <i class="fa fa-times-circle" aria-hidden="true"></i>
-        </span>
-        <span class="undo-remove-filter">
-          <i class="fa fa-undo" aria-hidden="true"></i>
-        </span>
       </span>
   </li>
 </ul>

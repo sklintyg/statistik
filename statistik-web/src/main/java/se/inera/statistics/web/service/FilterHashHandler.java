@@ -18,21 +18,22 @@
  */
 package se.inera.statistics.web.service;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.service.userselection.UserSelection;
 import se.inera.statistics.service.userselection.UserSelectionManager;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Optional;
 
 public class FilterHashHandler {
     private static final Logger LOG = LoggerFactory.getLogger(FilterHashHandler.class);
@@ -85,10 +86,11 @@ public class FilterHashHandler {
             final ArrayList<String> verksamhetstyper = getJsonArray(rootNode.path("verksamhetstyper"));
             final ArrayList<String> sjukskrivningslangd = getJsonArray(rootNode.path("sjukskrivningslangd"));
             final ArrayList<String> aldersgrupp = getJsonArray(rootNode.path("aldersgrupp"));
+            final ArrayList<String> intygstyper = getJsonArray(rootNode.path("intygstyper"));
             final String fromDate = rootNode.path("fromDate").asText().isEmpty() ? null : rootNode.path("fromDate").asText();
             final String toDate = rootNode.path("toDate").asText().isEmpty() ? null : rootNode.path("toDate").asText();
             final boolean useDefaultPeriod = rootNode.path("useDefaultPeriod").asBoolean(true);
-            return new FilterData(diagnoser, enheter, verksamhetstyper, sjukskrivningslangd, aldersgrupp, fromDate, toDate,
+            return new FilterData(diagnoser, enheter, verksamhetstyper, sjukskrivningslangd, aldersgrupp, intygstyper, fromDate, toDate,
                     useDefaultPeriod);
         } catch (IOException e) {
             LOG.error("Failed to parse filter data: " + filterDataString, e);

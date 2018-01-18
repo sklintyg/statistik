@@ -28,6 +28,7 @@ angular.module('StatisticsApp').factory('StaticFilterData',
 
         function _reset() {
             data.sjukskrivningLengths = [];
+            data.intygTypes = [];
             data.aldersgrupps = [];
             data.icd10Structure = [];
             return data;
@@ -59,6 +60,20 @@ angular.module('StatisticsApp').factory('StaticFilterData',
             });
 
             data.aldersgrupps = $filter('orderBy')(data.aldersgrupps, 'id', false);
+        }
+
+        function setIntygTypes(app) {
+            data.intygTypes.length = 0;
+            data.intygTypesObject = app.intygTypes;
+
+            angular.forEach(app.intygTypes, function(value, key)  {
+                data.intygTypes.push({
+                    id: key,
+                    name: value
+                });
+            });
+
+            data.intygTypes = $filter('orderBy')(data.intygTypes, 'id', false);
         }
 
         function setIcd10Structure(app) {
@@ -131,6 +146,7 @@ angular.module('StatisticsApp').factory('StaticFilterData',
                 setSjukskrivningslangd(app);
                 setAldersgrupps(app);
                 setIcd10Structure(app);
+                setIntygTypes(app);
             },
             get: function() {
                 return data;

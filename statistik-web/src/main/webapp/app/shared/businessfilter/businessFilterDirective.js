@@ -22,21 +22,20 @@ angular.module('StatisticsApp.filter.directive', []);
 angular.module('StatisticsApp.filter.directive')
     .directive('businessFilter',
         /** @ngInject */
-        function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter) {
+        function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter, filterViewState) {
         'use strict';
 
         return {
             scope: true,
             restrict: 'E',
             controller: function($scope) {
-                $scope.isFilterCollapsed = true;
                 $scope.hasMessages = false;
             },
             link: function(scope) {
                 scope.filterButtonIdText = 'Verksamhet';
                 scope.filterHashParamName = 'filter';
                 linkFunction(_, scope, businessFilterFactory, $location, messageService, statisticsData,
-                                moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter);
+                                moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState);
             },
             templateUrl: '/app/shared/businessfilter/businessFilterView.html'
         };
@@ -45,35 +44,36 @@ angular.module('StatisticsApp.filter.directive')
 angular.module('StatisticsApp.filter.directive')
     .directive('landstingFilter',
         /** @ngInject */
-        function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter) {
+        function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter, filterViewState) {
         'use strict';
 
         return {
             scope: true,
             restrict: 'E',
             controller: function($scope) {
-                $scope.isFilterCollapsed = true;
                 $scope.hasMessages = false;
             },
             link: function(scope) {
                 scope.filterButtonIdText = 'Landsting';
                 scope.filterHashParamName = 'landstingfilter';
                 linkFunction(_, scope, landstingFilterFactory, $location, messageService, statisticsData,
-                                moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter);
+                                moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState);
             },
             templateUrl: '/app/shared/businessfilter/businessFilterView.html'
         };
     });
 
-function linkFunction(_, scope, businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter) {
+function linkFunction(_, scope, businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState) {
     'use strict';
 
     //Initially we don't want to see the filter
-    scope.isFilterCollapsed = true;
+    scope.filterToApply = true;
+    scope.filterViewState = filterViewState.get();
     scope.businessFilter = businessFilter;
     scope.useDefaultPeriod = true;
     scope.showDateValidationError = false;
     scope.loadingFilter = false;
+    scope.isDateSelectOpen = false;
 
     scope.$watch('businessFilter', function(newValue,oldValue,scope) {
         scope.icd10 = newValue.icd10;
@@ -83,18 +83,18 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     });
 
     // Not very elegant (but working) way of solving INTYG-4505
-    scope.$watch('isFilterCollapsed', function(isCollapsed) {
-        if (isCollapsed) {
+    /*scope.$watch('isDateSelectOpen', function(isOpen) {
+        if (isOpen) {
+            scope.businessFilter.fromDate = scope.businessFilter.cachedFromDate || scope.businessFilter.fromDate;
+            scope.businessFilter.toDate = scope.businessFilter.cachedToDate || scope.businessFilter.toDate;
+        } else {
             scope.businessFilter.cachedFromDate = scope.businessFilter.fromDate;
             scope.businessFilter.cachedToDate = scope.businessFilter.toDate;
 
             scope.businessFilter.fromDate = null;
             scope.businessFilter.toDate = null;
-        } else {
-            scope.businessFilter.fromDate = scope.businessFilter.cachedFromDate || scope.businessFilter.fromDate;
-            scope.businessFilter.toDate = scope.businessFilter.cachedToDate || scope.businessFilter.toDate;
         }
-    });
+    });*/
 
     scope.geographyFilterSelectorData = {
         titleText: messageService.getProperty('lbl.filter.val-av-enheter', null, '', null, true),
@@ -200,6 +200,8 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.makeSelection = function () {
         var formattedFromDate, formattedToDate;
 
+        scope.isDateSelectOpen = false;
+
         if (hasDatepickersValidationError()) {
             scope.showDateValidationError = true;
         } else {
@@ -224,6 +226,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
                 enheter: scope.businessFilter.geographyBusinessIds,
                 verksamhetstyper: getVerksamhetstyper(),
                 sjukskrivningslangd: scope.businessFilter.selectedSjukskrivningslangdIds,
+                intygstyper: scope.businessFilter.selectedIntygstyperIds,
                 aldersgrupp: scope.businessFilter.selectedAldersgruppIds,
                 fromDate: formattedFromDate,
                 toDate: formattedToDate,
@@ -239,6 +242,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
                 scope.businessFilter.aldersgruppSaved = _.cloneDeep(params.aldersgrupp);
                 scope.businessFilter.sjukskrivningslangdSaved = _.cloneDeep(params.sjukskrivningslangd);
+                scope.businessFilter.intygstyperSaved = _.cloneDeep(params.intygstyper);
                 scope.businessFilter.diagnoserSaved = _.cloneDeep(params.diagnoser);
                 scope.businessFilter.geographyBusinessIdsSaved = _.cloneDeep(params.enheter);
             };
@@ -259,6 +263,8 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     };
 
     scope.resetBusinessFilter = function(form) {
+        scope.isDateSelectOpen = false;
+
         if (form) {
             form.$setPristine();
             form.$setUntouched();
@@ -329,60 +335,3 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
     scope.$on('$destroy', filterMessagesChanged);
 }
-
-angular.module('StatisticsApp.filter.directive').directive('multiselectDropdown',
-    /** @ngInject */
-    function () {
-    'use strict';
-
-    return function(scope, element, attrs) {
-        var text = attrs.multiselectDropdown;
-        var icon = attrs.multiselectDropdownIcon;
-        element.multiselect({
-            buttonText: function () {
-                return '<span class="fa ' + icon + '"></span> ' + text;
-            },
-            onChange: function (optionElement, checked) {
-                if (optionElement) {
-                    optionElement.removeAttr('selected');
-                    if (checked) {
-                        optionElement.prop('selected', 'selected');
-                    }
-                }
-
-                element.change();
-            },
-            enableHTML: true,
-            includeSelectAllOption: true,
-            selectAllText: 'Markera alla'
-        });
-
-        // Watch for any changes to the length of our select element
-        scope.$watch(function () {
-            return element[0].length;
-        }, function () {
-            element.multiselect('rebuild');
-        });
-
-        // Watch for any changes from outside the directive and refresh
-        scope.$watchCollection(attrs.ngModel, function () {
-            element.multiselect('refresh');
-        });
-    };
-});
-
-angular.module('StatisticsApp.filter.directive').directive('filterButton', function () {
-    'use strict';
-
-    return {
-        restrict: 'E',
-        template:
-        '<button id="show-hide-filter-btn" type="button" class="btn btn-small center-block" ' +
-            'ng-class="{filterbtnactivefilter: businessFilter.hasUserSelection}" ng-click="isFilterCollapsed = !isFilterCollapsed">' +
-        '<i class="glyphicon" ng-class="{\'glyphicon-chevron-down\': isFilterCollapsed, \'glyphicon-chevron-up\': !isFilterCollapsed}"></i> ' +
-            '{{!isFilterCollapsed ? "Stäng filter" : "Öppna filter"}}<span style="font-size: 12px; font-style: italic;"><br/>' +
-            '{{filterButtonIdText}}</span><span ng-show="businessFilter.hasUserSelection" style="font-size: 12px; font-style: italic;"><br/>Val gjorda</span>' +
-        '</button>'
-    };
-});
-

@@ -1,12 +1,16 @@
-<div uib-collapse="!hasMessages && isFilterCollapsed">
-<div id="statistics-filter-container" class="business-filter" data-ng-class="{'filter-active': businessFilter.hasUserSelection}" >
-  <div class="row" style="text-align: center" data-ng-show="!businessFilter.dataInitialized && !isFilterCollapsed">
-    <span style="margin: auto">Laddar filterdata</span>
-  </div>
-  <form uib-collapse="hasMessages && isFilterCollapsed" name="myForm" novalidate data-ng-show="businessFilter.dataInitialized">
-    <div class="filter-level">
-      <strong class="title">Tidsintervall</strong>
 
+<div class="business-filter" style="text-align: center" data-ng-show="!businessFilter.dataInitialized">
+  Laddar filterdata
+</div>
+
+<form name="myForm" novalidate class="business-filter" data-ng-show="businessFilter.dataInitialized">
+  <div
+      class="btn-group margin-right"
+      uib-dropdown auto-close="outsideClick" is-open="isDateSelectOpen">
+    <button id="select-dateintervall" data-ng-class="{'filter-active-btn': businessFilter.fromDate != null && businessFilter.toDate != null }" type="button" class="btn btn-default" uib-dropdown-toggle>
+      <i class="fa fa-clock-o"></i> Tidsintervall
+    </button>
+    <div class="dropdown-menu dateintervall-dropdown" uib-dropdown-menu>
       <div class="margin-right">
         <label for="filterFromDate">
           <span message key="lbl.filter.val-av-tidsintervall-fran"></span>
@@ -78,86 +82,6 @@
           data-ng-click="clearDates()">
         <span message key="lbl.clear"></span>
       </button>
-    </div>
-
-    <div class="divider" style="margin-bottom: 0"></div>
-
-    <div class="filter-level">
-      <strong class="title">Filter</strong>
-
-      <tree-multi-selector
-          class="margin-right top-10px-margin select-business"
-          hide-label="true"
-          button-icon="fa-building-o"
-          menu-options="businessFilter.geography"
-          run-filter-menu-on-init="true"
-          on-open="businessFilter.setSelectedGeography"
-          done-clicked="businessFilter.updateGeography"
-          data-ng-if="businessFilter.showBusinessFilter()"
-          text-data="geographyFilterSelectorData"
-          select-all-text-key="lbl.filter.verksamhet.select-all"
-          search-hint-text-key="lbl.filter.verksamhet.search.hint"
-          max-depth="3"
-          sidebar-menu-expand="lbl.filter.verksamhet.link"
-          sidebar-menu-collapse="lbl.filter.verksamhet.link.collapse"
-          sidebar-state="sidebarState"
-          verksamhets-typer="businessFilter.verksamhetsTyper">
-      </tree-multi-selector>
-
-      <tree-multi-selector
-          class="margin-right top-10px-margin select-diagnoses"
-          hide-label="true"
-          button-icon="fa-stethoscope"
-          ignore-chars-in-search="."
-          menu-options="icd10"
-          on-open="businessFilter.setSelectedDiagnoses"
-          done-clicked="businessFilter.updateDiagnoses"
-          text-data="diagnosisFilterSelectorData"
-          select-all-text-key="lbl.filter.val-av-diagnoser.select-all"
-          search-hint-text-key="lbl.filter.val-av-diagnoser.search.hint"
-          sidebar-state="sidebarStateDiagnose">
-      </tree-multi-selector>
-
-      <div class="margin-right top-10px-margin select-sjukskrivningslangd">
-        <select
-            ng-model="businessFilter.selectedSjukskrivningslangdIds"
-            multiple="multiple"
-            ng-options="sjukskrivningslangd.id as sjukskrivningslangd.name for sjukskrivningslangd in businessFilter.sjukskrivningslangd"
-            multiselect-dropdown="Sjukskrivningslängder"
-            multiselect-dropdown-icon="fa-calendar"
-            id="select-sjukskrivningslangd">
-        </select>
-      </div>
-
-      <div class="margin-right top-10px-margin select-aldersgrupp">
-        <select
-          ng-model="businessFilter.selectedAldersgruppIds"
-          multiple="multiple"
-          ng-options="aldersgrupp.id as aldersgrupp.name for aldersgrupp in businessFilter.aldersgrupp"
-          multiselect-dropdown="Åldersgrupper"
-          multiselect-dropdown-icon="fa-users"
-          id="select-aldersgrupp">
-        </select>
-      </div>
-    </div>
-
-    <filter-chips
-        business-filter="businessFilter"
-        is-collapsed="isFilterCollapsed"></filter-chips>
-
-    <div class="divider"></div>
-
-    <div class="filter-level bottom-buttons"  style="margin-bottom: 10px">
-      <div>
-        <button id="filterResetBtn" type="button" class="btn btn-default" data-ng-click="resetBusinessFilter(myForm)">
-          <span message key="lbl.aterstall"></span>
-        </button>
-
-        <button id="filterApplyBtn" class="btn btn-success pull-right" type="button"
-                ng-click="makeSelection()">
-          <i class="fa fa-spin fa-spinner" ng-if="loadingFilter"></i> <span message key="lbl.filtrera"></span>
-        </button>
-      </div>
 
       <div data-ng-if="showDateValidationError">
         <div class="alert alert-danger" role="alert">
@@ -166,13 +90,97 @@
         </div>
       </div>
     </div>
-  </form>
+  </div>
 
-  <div class="filter-level" data-ng-if="hasMessages" style="margin-bottom: 10px">
-    <div ng-repeat="resultMessage in messages">
-      <show-message type="resultMessage.type" severity="resultMessage.severity" text="resultMessage.message"></show-message>
-    </div>
+  <tree-multi-selector
+      class="margin-right select-business"
+      data-ng-class="{'filter-active': businessFilter.geographyBusinessIds.length > 0}"
+      hide-label="true"
+      button-icon="fa-building-o"
+      menu-options="businessFilter.geography"
+      run-filter-menu-on-init="true"
+      on-open="businessFilter.setSelectedGeography"
+      done-clicked="businessFilter.updateGeography"
+      data-ng-if="businessFilter.showBusinessFilter()"
+      text-data="geographyFilterSelectorData"
+      select-all-text-key="lbl.filter.verksamhet.select-all"
+      search-hint-text-key="lbl.filter.verksamhet.search.hint"
+      max-depth="3"
+      sidebar-menu-expand="lbl.filter.verksamhet.link"
+      sidebar-menu-collapse="lbl.filter.verksamhet.link.collapse"
+      sidebar-state="sidebarState"
+      verksamhets-typer="businessFilter.verksamhetsTyper">
+  </tree-multi-selector>
+
+  <tree-multi-selector
+      class="margin-right select-diagnoses"
+      data-ng-class="{'filter-active': businessFilter.selectedDiagnoses.length > 0}"
+      hide-label="true"
+      button-icon="fa-stethoscope"
+      ignore-chars-in-search="."
+      menu-options="icd10"
+      on-open="businessFilter.setSelectedDiagnoses"
+      done-clicked="businessFilter.updateDiagnoses"
+      text-data="diagnosisFilterSelectorData"
+      select-all-text-key="lbl.filter.val-av-diagnoser.select-all"
+      search-hint-text-key="lbl.filter.val-av-diagnoser.search.hint"
+      sidebar-state="sidebarStateDiagnose">
+  </tree-multi-selector>
+
+  <div
+      class="margin-right select-aldersgrupp"
+      data-ng-class="{'filter-active': businessFilter.selectedAldersgruppIds.length > 0}">
+    <select
+        ng-model="businessFilter.selectedAldersgruppIds"
+        multiple="multiple"
+        ng-options="aldersgrupp.id as aldersgrupp.name for aldersgrupp in businessFilter.aldersgrupp"
+        multiselect-dropdown="Åldersgrupper"
+        multiselect-dropdown-icon="fa-users"
+        id="select-aldersgrupp">
+    </select>
+  </div>
+
+  <div
+      class="margin-right select-sjukskrivningslangd"
+      data-ng-class="{'filter-active': businessFilter.selectedSjukskrivningslangdIds.length > 0}">
+    <select
+        ng-model="businessFilter.selectedSjukskrivningslangdIds"
+        multiple="multiple"
+        ng-options="sjukskrivningslangd.id as sjukskrivningslangd.name for sjukskrivningslangd in businessFilter.sjukskrivningslangd"
+        multiselect-dropdown="Sjukskrivningslängder"
+        multiselect-dropdown-icon="fa-calendar"
+        multiselect-disabled="{{!filterViewState.sjukskrivningslangd}}"
+        id="select-sjukskrivningslangd">
+    </select>
+  </div>
+
+  <div
+      class="margin-right select-intygstyper"
+      data-ng-class="{'filter-active': businessFilter.selectedIntygstyperIds.length > 0}">
+    <select
+        ng-model="businessFilter.selectedIntygstyperIds"
+        multiple="multiple"
+        ng-options="intygstyper.id as intygstyper.name for intygstyper in businessFilter.intygstyper"
+        multiselect-dropdown="Intygstyper"
+        multiselect-dropdown-icon="fa-file-text-o"
+        multiselect-disabled="{{!filterViewState.intygstyper}}"
+        id="select-intygstyper">
+    </select>
+  </div>
+
+  <button id="filterApplyBtn" class="btn btn-success" type="button" ng-click="makeSelection()" data-ng-disabled="!filterToApply">
+    <i class="fa fa-spin fa-spinner" ng-if="loadingFilter"></i> <span message key="lbl.filtrera"></span>
+  </button>
+
+  <button id="filterResetBtn" type="button" class="btn btn-default" data-ng-click="resetBusinessFilter(myForm)">
+    <span message key="lbl.aterstall"></span>
+  </button>
+
+  <filter-chips business-filter="businessFilter"></filter-chips>
+</form>
+
+<div class="filter-level" data-ng-if="hasMessages" style="margin-bottom: 10px">
+  <div ng-repeat="resultMessage in messages">
+    <show-message type="resultMessage.type" severity="resultMessage.severity" text="resultMessage.message"></show-message>
   </div>
 </div>
-</div>
-<filter-button></filter-button>

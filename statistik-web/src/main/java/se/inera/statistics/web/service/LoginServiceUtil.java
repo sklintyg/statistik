@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -230,8 +231,10 @@ public class LoginServiceUtil {
         final Map<String, String> ageGroups = Arrays
                 .stream(AgeGroup.values())
                 .collect(toMap(Enum::name, AgeGroup::getGroupName));
+        Map<String, String> intygTypes = new HashMap<>();
+
         final List<Icd> icdStructure = icd10.getIcdStructure();
-        return new StaticFilterData(sjukskrivningLengths, ageGroups, icdStructure);
+        return new StaticFilterData(sjukskrivningLengths, ageGroups, intygTypes, icdStructure);
     }
 
     UserAccessInfo getUserAccessInfoForVg(HttpServletRequest request, HsaIdVardgivare vgId) {

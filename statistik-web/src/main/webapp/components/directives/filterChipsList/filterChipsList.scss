@@ -30,48 +30,7 @@ filter-chips-list {
     white-space: nowrap;
   }
 
-  .remove-filter,
-  .undo-remove-filter {
-    display: none;
-  }
-
-  .inactive,
-  .removed {
-    color: #7e7e7f;
-  }
-
-  .filter-chips {
-    &:hover {
-      cursor: pointer;
-
-      .remove-filter {
-        display: block;
-      }
-    }
-
-    &.removed {
-      .default-text {
-        text-decoration: line-through;
-      }
-
-      &:hover {
-        .remove-filter {
-          display: none;
-        }
-
-        .undo-remove-filter {
-          display: block;
-        }
-      }
-    }
-
-    &.ng-leave {
-      opacity: 1;
-      transition: .3s;
-
-      &.ng-leave-active {
-        opacity: 0;
-      }
-    }
+  .inactive {
+    color: $st-color-21;
   }
 }
