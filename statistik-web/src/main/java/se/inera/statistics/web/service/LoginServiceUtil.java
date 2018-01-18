@@ -231,7 +231,7 @@ public class LoginServiceUtil {
         final Map<String, String> ageGroups = Arrays
                 .stream(AgeGroup.values())
                 .collect(toMap(Enum::name, AgeGroup::getGroupName));
-        Map<String, String> intygTypes = new HashMap<>(); // TODO: Populate with intygstyper
+        Map<String, String> intygTypes = new HashMap<>();
 
         final List<Icd> icdStructure = icd10.getIcdStructure();
         return new StaticFilterData(sjukskrivningLengths, ageGroups, intygTypes, icdStructure);
