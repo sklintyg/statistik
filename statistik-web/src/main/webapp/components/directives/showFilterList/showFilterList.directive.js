@@ -22,19 +22,13 @@ angular.module('StatisticsApp')
         'use strict';
         return {
             scope: {
-                diagnosFilters: '=',
                 enhetsFilters: '=',
-                sjukskrivningslangdsFilters: '=',
-                aldersgruppFilters: '='
             },
             transclude: true,
             restrict: 'E',
             templateUrl: '/components/directives/showFilterList/showFilterList.html',
             link: function($scope) {
-                $scope.diagnosfilterShown = false;
                 $scope.enhetsfilterShown = false;
-                $scope.sjukskrivningslangdsfilterShown = false;
-                $scope.aldergruppsfilterShown = false;
             }
         };
     }]);

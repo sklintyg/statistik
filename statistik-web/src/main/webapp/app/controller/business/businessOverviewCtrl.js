@@ -245,10 +245,13 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     };
 
     function populatePageWithData(result) {
-        ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
-                                result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets,
-                                result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
-                                result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter);
+        ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.filterhash,
+            result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
+            result.filteredEnhets, result.allAvailableEnhetsSelectedInFilter,
+            result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
+            result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter,
+            result.filter.intygstyp, result.allAvailableIntygTypesSelectedInFilter);
+
         $timeout(function () {
             updateCharts(result);
         }, 1);

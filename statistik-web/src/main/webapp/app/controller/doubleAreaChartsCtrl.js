@@ -113,11 +113,13 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         };
 
         var populatePageWithDataSuccess = function(result) {
-            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.diagnoser,
-                result.allAvailableDxsSelectedInFilter,
-                result.filter.filterhash, result.allAvailableEnhetsSelectedInFilter, result.filteredEnhets,
+            ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.filterhash,
+                result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,
+                result.filteredEnhets, result.allAvailableEnhetsSelectedInFilter,
                 result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
-                result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter);
+                result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter,
+                result.filter.intygstyp, result.allAvailableIntygTypesSelectedInFilter);
+
             var messages = ControllerCommons.getResultMessageList(result, messageService);
             if (angular.isFunction(config.chartFootnotesExtra)) {
                 var footnotesExtra = config.chartFootnotesExtra(result, isVerksamhet, isLandsting, $filter);
