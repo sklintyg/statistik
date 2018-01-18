@@ -100,6 +100,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'NationalMeddelandenPerAmneCtrl',
                 resolve: { config: app.meddelandenPerAmneConfig },
                 title: 'nav.meddelandenPerAmne'
+            }).when('/nationell/intygPerTyp', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'doubleAreaChartsCtrl',
+                controllerAs: 'NationalIntygPerTypePerMonthCtrl',
+                resolve: { config: app.intygPerTypePerMonthConfig },
+                title: 'title.intygstyp'
             }).when('/verksamhet', {
                 redirectTo: '/verksamhet/oversikt'
             }).when('/valjVardgivare', {

@@ -329,6 +329,15 @@ public class ChartDataService {
     }
 
     @GET
+    @Path("getIntygPerTyp")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response getIntygPerTyp(@QueryParam("format") String format) {
+        LOG.info("Calling getIntygPerTyp for national");
+        monitoringLogService.logTrackAccessAnonymousChartData("getIntygPerTyp");
+        return getResponse(getNationellDataResult().getIntygPerTyp(), format, Report.N_INTYGPERTYP);
+    }
+
+    @GET
     @Path("getIcd10Structure")
     @Produces({ MediaType.APPLICATION_JSON })
     public List<Icd> getIcd10Structure() {

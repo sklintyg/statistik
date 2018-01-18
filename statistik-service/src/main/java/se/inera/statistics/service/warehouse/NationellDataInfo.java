@@ -66,6 +66,8 @@ public class NationellDataInfo {
     private SimpleKonResponse overviewLanCurrentResult;
 
     private KonDataResponse meddelandenPerAmneResult;
+    private KonDataResponse intygPerTypResult;
+    private Range intygPerTypeRange;
 
     public SimpleKonResponse getAntalIntygResult() {
         return antalIntygResult;
@@ -323,4 +325,19 @@ public class NationellDataInfo {
         this.meddelandenPerAmneResult = meddelandenPerAmneResult;
     }
 
+    public KonDataResponse getIntygPerTypResult() {
+        return intygPerTypResult;
+    }
+
+    public void setIntygPerTypResult(KonDataResponse intygPerTypResult) {
+        this.intygPerTypResult = intygPerTypResult;
+    }
+
+    public Range getIntygPerTypeRange() {
+        return intygPerTypeRange;
+    }
+
+    public void setIntygPerTypeRange(Range intygPerTypeRange) {
+        this.intygPerTypeRange = intygPerTypeRange;
+    }
 }

@@ -59,6 +59,9 @@ public class NationellDataInvoker {
     private MessagesQuery messagesQuery;
 
     @Autowired
+    private IntygCommonManager intygCommonManager;
+
+    @Autowired
     private Lan lans;
 
     @Autowired
@@ -97,6 +100,7 @@ public class NationellDataInvoker {
         for (Aisle aisle : warehouse) {
             calculatePerAisle(nationellData, result, data, aisle);
             calculateMeddelandenPerVg(aisle.getVardgivareId(), result);
+            calculateIntygPerVg(aisle.getVardgivareId(), result);
         }
         return populateResults(result, data);
     }
@@ -108,6 +112,15 @@ public class NationellDataInvoker {
         final KonDataResponse meddelandenPerAmne = result.getMeddelandenPerAmneResult();
         final KonDataResponse resp = messagesQuery.getMeddelandenPerAmneAggregated(meddelandenPerAmne, messagesFilter, cutoff);
         result.setMeddelandenPerAmneResult(resp);
+    }
+
+    private void calculateIntygPerVg(HsaIdVardgivare vardgivareId, NationellDataInfo result) {
+        final Range range = result.getIntygPerTypeRange();
+        final IntygCommonFilter intygCommonFilter = new IntygCommonFilter(range, null, null, null, null);
+        final KonDataResponse konDataResponse = result.getIntygPerTypResult();
+        final KonDataResponse response = intygCommonManager.getIntygPerTypeTidsserieAggregated(konDataResponse,
+                vardgivareId, intygCommonFilter, cutoff);
+        result.setIntygPerTypResult(response);
     }
 
     private void calculatePerAisle(NationellData nationellData, NationellDataInfo result, NationellDataHolder data, Aisle aisle) {
@@ -193,6 +206,7 @@ public class NationellDataInvoker {
         result.setLangaSjukfallRange(quarterRange);
         result.setOverviewRange(quarterRange);
         result.setMeddelandenPerAmneRange(longRange);
+        result.setIntygPerTypeRange(longRange);
     }
 
     private NationellDataInfo populateResults(NationellDataInfo result, NationellDataHolder data) {
@@ -253,6 +267,10 @@ public class NationellDataInvoker {
 
         if (result.getMeddelandenPerAmneResult() == null) {
             result.setMeddelandenPerAmneResult(new KonDataResponse(new ArrayList<>(), new ArrayList<>()));
+        }
+
+        if (result.getIntygPerTypResult() == null) {
+            result.setIntygPerTypResult(new KonDataResponse(new ArrayList<>(), new ArrayList<>()));
         }
 
         return result;
