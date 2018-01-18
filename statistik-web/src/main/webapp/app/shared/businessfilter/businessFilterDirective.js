@@ -29,13 +29,10 @@ angular.module('StatisticsApp.filter.directive')
             scope: true,
             restrict: 'E',
             controller: function($scope) {
-                $scope.hasMessages = false;
-            },
-            link: function(scope) {
-                scope.filterButtonIdText = 'Verksamhet';
-                scope.filterHashParamName = 'filter';
-                linkFunction(_, scope, businessFilterFactory, $location, messageService, statisticsData,
-                                moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState);
+                $scope.filterButtonIdText = 'Verksamhet';
+                $scope.filterHashParamName = 'filter';
+                linkFunction(_, $scope, businessFilterFactory, $location, messageService, statisticsData,
+                    moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState);
             },
             templateUrl: '/app/shared/businessfilter/businessFilterView.html'
         };
@@ -51,13 +48,10 @@ angular.module('StatisticsApp.filter.directive')
             scope: true,
             restrict: 'E',
             controller: function($scope) {
-                $scope.hasMessages = false;
-            },
-            link: function(scope) {
-                scope.filterButtonIdText = 'Landsting';
-                scope.filterHashParamName = 'landstingfilter';
-                linkFunction(_, scope, landstingFilterFactory, $location, messageService, statisticsData,
-                                moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState);
+                $scope.filterButtonIdText = 'Landsting';
+                $scope.filterHashParamName = 'landstingfilter';
+                linkFunction(_, $scope, landstingFilterFactory, $location, messageService, statisticsData,
+                    moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState);
             },
             templateUrl: '/app/shared/businessfilter/businessFilterView.html'
         };
@@ -67,6 +61,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     'use strict';
 
     //Initially we don't want to see the filter
+    scope.hasMessages = false;
     scope.filterToApply = true;
     scope.filterViewState = filterViewState.get();
     scope.businessFilter = businessFilter;
@@ -75,26 +70,32 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.loadingFilter = false;
     scope.isDateSelectOpen = false;
 
-    scope.$watch('businessFilter', function(newValue,oldValue,scope) {
-        scope.icd10 = newValue.icd10;
-    });
-    scope.$watch('businessFilter.geography', function(newValue,oldValue,scope) {
-        scope.geography = newValue.geography;
-    });
+    //Are the datepicker dialogs open or not
+    scope.isFromDateOpen = false;
+    scope.isToDateOpen = false;
 
-    // Not very elegant (but working) way of solving INTYG-4505
-    /*scope.$watch('isDateSelectOpen', function(isOpen) {
-        if (isOpen) {
-            scope.businessFilter.fromDate = scope.businessFilter.cachedFromDate || scope.businessFilter.fromDate;
-            scope.businessFilter.toDate = scope.businessFilter.cachedToDate || scope.businessFilter.toDate;
-        } else {
-            scope.businessFilter.cachedFromDate = scope.businessFilter.fromDate;
-            scope.businessFilter.cachedToDate = scope.businessFilter.toDate;
+    //The format of dates date we show in the GUI when the user selects something
+    scope.format =  'yyyy-MM';
+    scope.dateFormatPlaceholder= 'ÅÅÅÅ-MM';
 
-            scope.businessFilter.fromDate = null;
-            scope.businessFilter.toDate = null;
-        }
-    });*/
+    //Configuration and scope functions for datepicker
+    scope.dateOptions = {
+        minDate: TIME_INTERVAL_MIN_DATE,
+        maxDate: TIME_INTERVAL_MAX_DATE,
+        showWeeks: false,
+        minMode: 'month',
+        datepickerMode: 'month'
+    };
+
+    scope.dateOptionsTo = _.cloneDeep(scope.dateOptions);
+
+    scope.sidebarState = {
+        collapsed: true
+    };
+
+    scope.sidebarStateDiagnose = {
+        collapsed: true
+    };
 
     scope.geographyFilterSelectorData = {
         titleText: messageService.getProperty('lbl.filter.val-av-enheter', null, '', null, true),
@@ -113,8 +114,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         leavesLevelLabelText: messageService.getProperty('lbl.filter.modal.leaves', null, '', null, true)
     };
 
-
-    var getVerksamhetstyper = function () {
+    var getVerksamhetstyper = function() {
         var selectedVerksamhettyps = _.filter(scope.businessFilter.verksamhetsTyper, function(verksamhetstyp) {
             return _.includes(scope.businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
         });
@@ -125,7 +125,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         return _.uniq(selectedIdsFromVerksamhetstypsFlattened);
     };
 
-    var isValidDate = function isValidDate(date) {
+    var isValidDate = function(date) {
         if(date === 'undefined') {
             return false;
         }
@@ -197,7 +197,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         scope.showDateValidationError = validateDateFocus();
     };
 
-    scope.makeSelection = function () {
+    scope.makeSelection = function() {
         var formattedFromDate, formattedToDate;
 
         scope.isDateSelectOpen = false;
@@ -284,12 +284,12 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         resetDatePickers();
     };
 
-    //Are the datepicker dialogs open or not
-    scope.isFromDateOpen = false;
-    scope.isToDateOpen = false;
-
-    scope.$on('$routeChangeSuccess', function(){
+    scope.$on('$routeChangeSuccess', function() {
        businessFilter.updateHasUserSelection();
+    });
+
+    scope.$on('selectionsChanged', function() {
+        scope.businessFilter.updateSelectionVerksamhetsTyper(scope.businessFilter.verksamhetsTyper);
     });
 
     scope.$watch('businessFilter.fromDate', function(newValue) {
@@ -299,29 +299,25 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         }
     });
 
-    //The format of dates date we show in the GUI when the user selects something
-    scope.format =  'yyyy-MM';
-    scope.dateFormatPlaceholder= 'ÅÅÅÅ-MM';
-
-    //Configuration and scope functions for datepicker
-    scope.dateOptions = {
-        minDate: TIME_INTERVAL_MIN_DATE,
-        maxDate: TIME_INTERVAL_MAX_DATE,
-        showWeeks: false,
-        minMode: 'month',
-        datepickerMode: 'month'
-    };
-
-    scope.dateOptionsTo = _.cloneDeep(scope.dateOptions);
-
-    scope.sidebarState = {
-        collapsed: true
-    };
-    scope.sidebarStateDiagnose = {
-        collapsed: true
-    };
-
-    scope.$on('selectionsChanged', function() {
-        scope.businessFilter.updateSelectionVerksamhetsTyper(scope.businessFilter.verksamhetsTyper);
+    scope.$watch('businessFilter', function(newValue,oldValue,scope) {
+        scope.icd10 = newValue.icd10;
     });
+
+    scope.$watch('businessFilter.geography', function(newValue,oldValue,scope) {
+        scope.geography = newValue.geography;
+    });
+
+    // Not very elegant (but working) way of solving INTYG-4505
+    /*scope.$watch('isDateSelectOpen', function(isOpen) {
+        if (isOpen) {
+            scope.businessFilter.fromDate = scope.businessFilter.cachedFromDate || scope.businessFilter.fromDate;
+            scope.businessFilter.toDate = scope.businessFilter.cachedToDate || scope.businessFilter.toDate;
+        } else {
+            scope.businessFilter.cachedFromDate = scope.businessFilter.fromDate;
+            scope.businessFilter.cachedToDate = scope.businessFilter.toDate;
+
+            scope.businessFilter.fromDate = null;
+            scope.businessFilter.toDate = null;
+        }
+    });*/
 }
