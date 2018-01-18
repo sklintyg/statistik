@@ -124,7 +124,7 @@ class ReportsUtil {
     }
 
     def getReportAntalIntyg() {
-        return get("/api/getNumberOfIntygPerMonth")
+        return get("/api/getIntygPerTyp")
     }
 
     def getReportAntalIntygPerManad(String vgid, filter) {

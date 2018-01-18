@@ -22,6 +22,7 @@ import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.overview.OverviewData;
 
 import java.util.HashMap;
@@ -43,6 +44,7 @@ public class NationellDataResult {
     private CasesPerCountyData sjukfallPerLan;
     private SimpleDetailsData konsfordelningPerLan;
     private DualSexStatisticsData meddelandenPerAmne;
+    private TableDataReport intygPerTyp;
 
     SimpleDetailsData getNumberOfCasesPerMonth() {
         return numberOfCasesPerMonth;
@@ -124,4 +126,11 @@ public class NationellDataResult {
         return meddelandenPerAmne;
     }
 
+    public TableDataReport getIntygPerTyp() {
+        return intygPerTyp;
+    }
+
+    public void setIntygPerTyp(TableDataReport intygPerTyp) {
+        this.intygPerTyp = intygPerTyp;
+    }
 }

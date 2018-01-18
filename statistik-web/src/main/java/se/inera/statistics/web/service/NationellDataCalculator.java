@@ -42,6 +42,7 @@ import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.overview.OverviewData;
 import se.inera.statistics.web.service.responseconverter.CasesPerCountyConverter;
 import se.inera.statistics.web.service.responseconverter.DegreeOfSickLeaveConverter;
@@ -51,6 +52,7 @@ import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
 import se.inera.statistics.web.service.responseconverter.OverviewConverter;
 import se.inera.statistics.web.service.responseconverter.PeriodConverter;
 import se.inera.statistics.web.service.responseconverter.SimpleDualSexConverter;
+import se.inera.statistics.web.service.responseconverter.SimpleMultiDualSexConverter;
 import se.inera.statistics.web.service.responseconverter.SjukfallPerSexConverter;
 
 /**
@@ -86,6 +88,7 @@ public class NationellDataCalculator {
         result.setKonsfordelningPerLan(buildKonsfordelningPerLan(data));
         result.setOverview(buildOverview(data));
         result.setMeddelandenPerAmne(buildNumberOfMeddelandenPerAmne(data));
+        result.setIntygPerTyp(buildIntygPerTyp(data));
         return result;
     }
 
@@ -155,6 +158,13 @@ public class NationellDataCalculator {
         final Range range = data.getMeddelandenPerAmneRange();
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         return new MessageAmneConverter().convert(casesPerMonth, filterSettings);
+    }
+
+    private TableDataReport buildIntygPerTyp(NationellDataInfo data) {
+        final KonDataResponse intygPerTyp = data.getIntygPerTypResult();
+        final Range range = data.getIntygPerTypeRange();
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+        return new SimpleMultiDualSexConverter("Antal intyg totalt").convert(intygPerTyp, filterSettings);
     }
 
 }

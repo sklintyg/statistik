@@ -115,14 +115,12 @@
             name: 'nav.intyg-header',
             navigationId: 'intyg-statistics-collapse',
             show: true,
-            subMenu: [
-            //     {
-            //     id: 'navNationalIntygPerTypeLink',
-            //     link: '#/nationell/intygPerTyp',
-            //     name: 'nav.intygpertyp.nationell',
-            //     ctrl: 'NationalIntygPerTypCtrl'
-            // }
-            ]
+            subMenu: [{
+                id: 'navNationalIntygPerTypeLink',
+                link: '#/nationell/intygPerTyp',
+                name: 'nav.intygpertyp.nationell',
+                ctrl: 'NationalIntygPerTypCtrl'
+            }]
         };
 
         var kommunikationNationell = {

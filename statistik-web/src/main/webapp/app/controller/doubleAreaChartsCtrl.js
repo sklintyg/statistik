@@ -500,6 +500,10 @@ angular.module('StatisticsApp').intygPerTypePerMonthConfig =
         intygstyper: true,
         sjukskrivningslangd: false
     };
+    conf.dataFetcher = 'getIntygPerTypePerMonthNationell';
+    conf.exportTableUrl = function () {
+        return 'api/getIntygPerTyp?format=xlsx';
+    };
     conf.dataFetcherVerksamhet = 'getIntygPerTypePerMonthVerksamhet';
     conf.chartYAxisTitleUnit = 'intyg';
     conf.exportTableUrlVerksamhet = function () {
