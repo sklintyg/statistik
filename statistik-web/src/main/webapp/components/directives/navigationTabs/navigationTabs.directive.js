@@ -41,7 +41,7 @@
         }]);
 
     /** @ngInject */
-    function Ctrl($scope, $rootScope, $location, UserModel, AppModel, ControllerCommons) {
+    function Ctrl($scope, $rootScope, $location, UserModel, AppModel, ControllerCommons, navigationViewState) {
         var vm = this;
         vm.AppModel = AppModel;
         vm.UserModel = UserModel;
@@ -50,14 +50,14 @@
         var isLoggedIn = AppModel.get().isLoggedIn;
 
         var nationellTab = {
-            id: 'nationell',
+            id: navigationViewState.ids.nationell,
             title: 'nav.national-header',
             url: 'nationell/oversikt',
             urlPrefix: 'nationell'
         };
 
         var verksamhetTab = {
-            id: 'verksamhet',
+            id: navigationViewState.ids.verksamhet,
             title: 'nav.business-header',
             url: 'verksamhet/oversikt',
             urlPrefix: 'verksamhet',
@@ -65,7 +65,7 @@
         };
 
         var landstingTab = {
-            id: 'landsting',
+            id: navigationViewState.ids.landsting,
             title: 'nav.landsting-header',
             url: 'landsting/om',
             urlPrefix: 'landsting',
@@ -91,6 +91,10 @@
             if (!ControllerCommons.isShowing($location, tab.urlPrefix) && !ControllerCommons.isShowing($location, 'om')) {
                 $location.path(tab.url);
             }
+
+            navigationViewState.set({
+                active: tab.id
+            });
         };
 
         vm.tabDeselect = function(tab) {

@@ -17,16 +17,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').factory('filterViewState',
+angular.module('StatisticsApp').factory('navigationViewState',
     /** @ngInject */
     function() {
         'use strict';
 
+        var ids = {
+            nationell: 'nationell',
+            verksamhet: 'verksamhet',
+            landsting: 'landsting'
+        };
+
         var state = {};
 
         function _reset() {
-            state.intygstyper = false;
-            state.sjukskrivningslangd = true;
+            state.active = 'nationell';
         }
 
         function _get() {
@@ -36,17 +41,7 @@ angular.module('StatisticsApp').factory('filterViewState',
         function _set(newState) {
             _reset();
 
-            if (!angular.isDefined(newState)) {
-                return;
-            }
-
-            if (angular.isDefined(newState.intygstyper)) {
-                state.intygstyper = newState.intygstyper;
-            }
-
-            if (angular.isDefined(newState.sjukskrivningslangd)) {
-                state.sjukskrivningslangd = newState.sjukskrivningslangd;
-            }
+            state.active = newState.active;
         }
 
         _reset();
@@ -54,7 +49,8 @@ angular.module('StatisticsApp').factory('filterViewState',
         // Return public API for the service
         return {
             get: _get,
-            set: _set
+            set: _set,
+            ids: ids
         };
     }
 );
