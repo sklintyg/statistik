@@ -170,4 +170,11 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         return reportsUtil.getReportAntalIntyg();
     }
 
+    def getReportIntygTotaltLandsting() {
+        if (inloggad) {
+            return reportsUtil.getReportAntalIntygLandsting(vg, filter);
+        }
+        return new RuntimeException("Report -Intyg totalt Landsting- is not available on national level");
+    }
+
 }

@@ -75,6 +75,7 @@ import se.inera.statistics.web.service.responseconverter.GroupedSjukfallWithLand
 import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.PeriodConverter;
+import se.inera.statistics.web.service.responseconverter.SimpleMultiDualSexConverter;
 import se.inera.statistics.web.service.responseconverter.SjukfallPerPatientsPerEnhetConverter;
 
 /**
@@ -358,6 +359,21 @@ public class ProtectedLandstingService {
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhetLandsting(filterSettings);
         SimpleDetailsData result = new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, getLastLandstingUpdateDate(vgIdForLoggedInUser));
+    }
+
+    @GET
+    @Path("getIntygPerTypePerMonthLandsting")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getNumberOfIntygPerTypePerMonthLandsting(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+                                                    @QueryParam("format") String format) {
+        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
+        KonDataResponse intygPerMonth = warehouse.getIntygPerTypeLandsting(filterSettings);
+        final DualSexStatisticsData result = new SimpleMultiDualSexConverter("Antal intyg totalt").convert(intygPerMonth, filterSettings);
+        return getResponse(result, format, request, Report.V_INTYGPERTYP, getLastLandstingUpdateDate(vg));
     }
 
     @GET
