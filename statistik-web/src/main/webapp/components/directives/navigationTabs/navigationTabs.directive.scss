@@ -12,7 +12,14 @@ navigation-tabs {
     border-bottom: 0;
 
     > li {
-      width: 33.333333%;
+      &.navigation-two-tabs {
+        width: 50%;
+      }
+
+      &.navigation-three-tabs {
+        width: 33.333333%;
+      }
+
       text-align: center;
 
       > a {

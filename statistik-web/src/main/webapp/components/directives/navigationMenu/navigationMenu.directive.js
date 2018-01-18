@@ -37,7 +37,7 @@
         }]);
 
     /** @ngInject */
-    function NavigationMenuCtrl($rootScope, $scope, $location, AppModel, UserModel, StaticFilterData, _, ControllerCommons) {
+    function NavigationMenuCtrl($rootScope, $scope, $location, AppModel, UserModel, StaticFilterData, _, ControllerCommons, navigationViewState) {
         $scope.mobile = $scope.isMobile;
         $scope.menus = [];
         $scope.AppModel = AppModel;
@@ -289,19 +289,6 @@
                     link: '#/landsting/sjukfallPerListningarPerEnhet',
                     name: 'nav.landsting.listningsjamforelse',
                     ctrl: 'LandstingCasesPerPatientsPerBusinessCtrl'
-                },{
-                    id: 'navLandstingAboutLink',
-                    link: '#/landsting/om',
-                    name: 'nav.landsting.om',
-                    ctrl: 'LandstingAboutCtrl'
-                },{
-                    checkVisible: function() {
-                        return UserModel.get().isLandstingAdmin;
-                    },
-                    id: 'navLandstingUploadLink',
-                    link: '#/landsting/filuppladdning',
-                    name: 'nav.landsting.filuppladdning',
-                    ctrl: 'LandstingFileUploadCtrl'
                 }
             ]
         };
@@ -349,6 +336,22 @@
                 name: 'nav.allmant-om-tjansten',
                 ctrl: 'AboutServiceCtrl'
             },{
+                checkVisible: function() {
+                    return UserModel.get().hasLandstingAccess;
+                },
+                id: 'navLandstingAboutLink',
+                link: '#/landsting/om',
+                name: 'nav.landsting.om',
+                ctrl: 'LandstingAboutCtrl'
+            },{
+                checkVisible: function() {
+                    return UserModel.get().isLandstingAdmin;
+                },
+                id: 'navLandstingUploadLink',
+                link: '#/landsting/filuppladdning',
+                name: 'nav.landsting.filuppladdning',
+                ctrl: 'LandstingFileUploadCtrl'
+            },{
                 id: 'navAboutInloggningLink',
                 link: '#/om/inloggning',
                 name: 'nav.inloggning-behorighet',
@@ -394,9 +397,11 @@
             initMenu();
         });
 
-        $rootScope.$on('$routeChangeSuccess', function () {
-            initMenu();
-        });
+        $scope.$watch(
+            navigationViewState.get,
+            initMenu,
+            true
+        );
 
         $scope.toggleMenu = function(menu, $event) {
             $event.preventDefault();
@@ -426,9 +431,9 @@
         };
 
         function initMenu() {
-            var isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
-            var isLandstingShowing = ControllerCommons.isShowingLandsting($location);
-            var isShowingNationell = ControllerCommons.isShowingNationell($location);
+            var isVerksamhetShowing = navigationViewState.get().active === navigationViewState.ids.verksamhet;
+            var isLandstingShowing = navigationViewState.get().active === navigationViewState.ids.landsting;
+            var isShowingNationell = navigationViewState.get().active === navigationViewState.ids.nationell;
 
             if (isVerksamhetShowing) {
                 $scope.menus = verksamhet;

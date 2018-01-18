@@ -2,6 +2,7 @@
   <uib-tab
       id="tab-{{::tab.id}}"
       index="tab.id"
+      classes="{{::vm.tabClass}}"
       ng-repeat="tab in vm.tabs"
       heading="{{tab.title | messageFilter}}"
       select="vm.tabActivated(tab)"
