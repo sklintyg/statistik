@@ -53,10 +53,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Component
@@ -115,7 +115,17 @@ public class IntygCommonManager {
 
     public KonDataResponse getIntygPerTypeTidsserie(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter) {
         return getIntygPerType(vardgivarId, intygFilter, false);
+    }
 
+    public KonDataResponse getIntygPerTypeTidsserieAggregated(KonDataResponse resultToAggregateIn, HsaIdVardgivare vardgivarId,
+                                                              IntygCommonFilter intygFilter, int cutoff) {
+        final KonDataResponse messagesTvarsnittPerAmne = getIntygPerType(vardgivarId, intygFilter, false);
+        final KonDataResponse resultToAggregate = resultToAggregateIn != null
+                ? resultToAggregateIn : ResponseUtil.createEmptyKonDataResponse(messagesTvarsnittPerAmne);
+        Iterator<KonDataRow> rowsNew = messagesTvarsnittPerAmne.getRows().iterator();
+        Iterator<KonDataRow> rowsOld = resultToAggregate.getRows().iterator();
+        List<KonDataRow> list = ResponseUtil.getKonDataRows(intygFilter.getRange().getNumberOfMonths(), rowsNew, rowsOld, cutoff);
+        return new KonDataResponse(messagesTvarsnittPerAmne.getGroups(), list);
     }
 
     private KonDataResponse getIntygPerType(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter, boolean isTvarsnitt) {

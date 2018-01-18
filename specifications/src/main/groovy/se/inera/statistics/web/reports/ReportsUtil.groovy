@@ -139,6 +139,10 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getIntygPerTypePerMonth", filter, "vgid=" + vgid)
     }
 
+    def getReportAntalIntygLandsting(String vgid, filter) {
+        return get("/api/landsting/getIntygPerTypePerMonthLandsting", filter, "vgid=" + vgid)
+    }
+
     def getReportAntalIntygTvarsnittInloggad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getIntygPerTypeTvarsnitt", filter, "vgid=" + vgid)
     }
