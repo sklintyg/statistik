@@ -1,0 +1,38 @@
+---
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+!3 Givet att:
+Det finns 5 sjukfall för vg1; 3 kvinnor och 2 män.
+Det finns 6 sjukfall för vg3; 1 kvinna och 5 män.
+
+| script | dagens datum | 2013-11-06 |
+
+| script | troskel varde | 5 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | signeringstid | intygformat | enhet |
+| 19790219-9285 | F40 | 2013-02-01T10:00:00 | LISJP | enhet1 |
+| 19790429-9281 | F41 | 2013-02-01T10:00:00 | LISJP | enhet1 |
+| 19790709-9282 | F40 | 2013-02-01T10:00:00 | LISJP | enhet1 |
+| 19790717-9191 | F41 | 2013-02-01T10:00:00 | LISJP | enhet1 |
+| 19790808-9274 | F40 | 2013-02-01T10:00:00 | LISJP | enhet1 |
+| 19790316-9261 | F40 | 2013-02-01T10:00:00 | LISJP | enhet3 |
+| 19790918-9230 | A00 | 2013-02-01T10:00:00 | LISJP | enhet3 |
+| 19791020-9290 | F41 | 2013-02-01T10:00:00 | LISJP | enhet3 |
+| 19791110-9291 | F41 | 2013-02-01T10:00:00 | LISJP | enhet3 |
+| 19791110-9010 | F41 | 2013-02-01T10:00:00 | LISJP | enhet3 |
+| 19791110-9030 | F41 | 2013-02-01T10:00:00 | LISJP | enhet3 |
+
+!3 Då gäller:
+För vg1 visas inga sjukfall för män och kvinnor. För vg3 visas inga sjukfall för kvinnor.
+Tröskelvärdet appliceras per vårdgivare, kön, månad och grupp.
+
+Nationell:
+
+| Intyg i rapporten intyg totalt |
+| år | månad | grupp | män? | kvinnor? |
+| 2013 | jan | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |
+| 2013 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 5 | 0 |
+| 2013 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |

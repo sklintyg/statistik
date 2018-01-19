@@ -1,10 +1,14 @@
 ---
-Help: Kan tas med när Intyg,totalt har implementerats
 Test
 ---
-!contents -R2 -g -p -f -h
+''!contents -R2 -g -p -f -h''
+
 !3 Givet att:
 | script | dagens datum | 2015-11-06 |
+
+
+
+| script | troskel varde   | 1 |
 
 | Enbart foljande intyg finns |
 | personnr | signeringstid | enhet | intygformat | start | slut |

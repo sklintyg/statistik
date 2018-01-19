@@ -1,8 +1,8 @@
 ---
-Help: Kan tas med när Intyg,totalt har implementerats
 Test
 ---
-!contents -R2 -g -p -f -h
+''!contents -R2 -g -p -f -h''
+
 !3 Givet att:
 Det finns tre sjukfall med olika start- och sluttider.
 

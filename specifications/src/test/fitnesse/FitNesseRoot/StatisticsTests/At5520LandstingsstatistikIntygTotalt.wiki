@@ -1,6 +1,4 @@
 ---
-Help: Kan tas med när Intyg,totalt har implementerats
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h
@@ -11,10 +9,10 @@ Test
 
 | Enbart foljande intyg finns |
 | intygid | personnr | diagnoskod | signeringstid | intygformat | enhet |
-| 1001 | 19790717-9191 | G01 | 2013-04-02T12:24:15 | LUSE | enhet1 |
-| 1002 | 19790717-9191 | G01 | 2013-05-02T12:24:15 | LUSE | enhet2 |
-| 1003 | 19691230-1234 | G01 | 2013-04-02T12:24:15 | LUAE_NA | enhet1 |
-| 1004 | 19591230-1254 | G01 | 2013-05-02T12:24:15 | LUAE_NA | enhet1 |
+| 1001 | 19790717-9191 | G01 | 2014-04-02T12:24:15 | LUSE | enhet1 |
+| 1002 | 19790717-9191 | G01 | 2014-05-02T12:24:15 | LUSE | enhet2 |
+| 1003 | 19691230-1234 | G01 | 2014-04-02T12:24:15 | LUAE_NA | enhet1 |
+| 1004 | 19591230-1254 | G01 | 2014-05-02T12:24:15 | LUAE_NA | enhet1 |
 
 | script | Rensa uppladdade landstingsfiler |
 
@@ -27,7 +25,7 @@ Inloggad:
 
 | Intyg i rapporten intyg totalt landsting |
 | inloggad som | år | månad | grupp | män? | kvinnor? |
-| user3 | 2014 | mar | FK 7800 Läkarutlåtande för sjukersättning | 1 | 0 |
-| user3 | 2014 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 1 | 0 |
 | user3 | 2014 | apr | FK 7800 Läkarutlåtande för sjukersättning | 1 | 0 |
 | user3 | 2014 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 1 | 0 |
+| user3 | 2014 | maj | FK 7800 Läkarutlåtande för sjukersättning | 1 | 0 |
+| user3 | 2014 | maj | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 1 | 0 |
