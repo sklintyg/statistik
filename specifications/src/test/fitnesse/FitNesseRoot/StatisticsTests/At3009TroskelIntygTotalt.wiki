@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h
@@ -13,17 +12,17 @@ Det finns 6 sjukfall för vg3; 1 kvinna och 5 män.
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | signeringstid | intygformat | enhet |
-| 19790219-9285 | F40 | 2013-02-01T10:00:00 | LISJP | enhet1 |
-| 19790429-9281 | F41 | 2013-02-01T10:00:00 | LISJP | enhet1 |
-| 19790709-9282 | F40 | 2013-02-01T10:00:00 | LISJP | enhet1 |
-| 19790717-9191 | F41 | 2013-02-01T10:00:00 | LISJP | enhet1 |
-| 19790808-9274 | F40 | 2013-02-01T10:00:00 | LISJP | enhet1 |
-| 19790316-9261 | F40 | 2013-02-01T10:00:00 | LISJP | enhet3 |
+| 19790219-9285 | A40 | 2013-02-01T10:00:00 | LISJP | enhet1 |
+| 19790429-9281 | A41 | 2013-02-01T10:00:00 | LISJP | enhet1 |
+| 19790709-9282 | A40 | 2013-02-01T10:00:00 | LISJP | enhet1 |
+| 19790717-9191 | A41 | 2013-02-01T10:00:00 | LISJP | enhet1 |
+| 19790808-9274 | A40 | 2013-02-01T10:00:00 | LISJP | enhet1 |
+| 19790316-9261 | A40 | 2013-02-01T10:00:00 | LISJP | enhet3 |
 | 19790918-9230 | A00 | 2013-02-01T10:00:00 | LISJP | enhet3 |
-| 19791020-9290 | F41 | 2013-02-01T10:00:00 | LISJP | enhet3 |
-| 19791110-9291 | F41 | 2013-02-01T10:00:00 | LISJP | enhet3 |
-| 19791110-9010 | F41 | 2013-02-01T10:00:00 | LISJP | enhet3 |
-| 19791110-9030 | F41 | 2013-02-01T10:00:00 | LISJP | enhet3 |
+| 19791020-9290 | A41 | 2013-02-01T10:00:00 | LISJP | enhet3 |
+| 19791110-9291 | A41 | 2013-02-01T10:00:00 | LISJP | enhet3 |
+| 19791110-9010 | A41 | 2013-02-01T10:00:00 | LISJP | enhet3 |
+| 19791110-9030 | A41 | 2013-02-01T10:00:00 | LISJP | enhet3 |
 
 !3 Då gäller:
 För vg1 visas inga sjukfall för män och kvinnor. För vg3 visas inga sjukfall för kvinnor.
