@@ -22,7 +22,7 @@
 var Filter = function() {
     this.container = element(by.id('businessFilterContainer'));
 
-    this.messages = this.container.all(by.repeater('resultMessage in messages'));
+    this.messages = this.container.all(by.repeater('resultMessage in filterViewState.messages'));
 
     this.applyBtn = this.container.element(by.id('filterApplyBtn'));
     this.resetBtn = this.container.element(by.id('filterResetBtn'));
@@ -61,6 +61,7 @@ var Filter = function() {
 
     this.showAllActiveBtn = this.container.element(by.id('filter-show-all-btn'));
 
+    this.activeIntervall = element(by.id('filter-active-intervall')).all(by.css('li'));
     this.activeDiganoser = element(by.id('filter-active-dignoser')).all(by.css('li'));
     this.activeEnheter = element(by.id('filter-active-enheter')).all(by.css('li'));
     this.activeAldersgrupper = element(by.id('filter-active-aldersgrupper')).all(by.css('li'));

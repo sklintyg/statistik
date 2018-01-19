@@ -75,7 +75,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.isToDateOpen = false;
 
     //The format of dates date we show in the GUI when the user selects something
-    scope.format =  'yyyy-MM';
+    scope.dateFormat =  'yyyy-MM';
     scope.dateFormatPlaceholder= 'ÅÅÅÅ-MM';
 
     //Configuration and scope functions for datepicker
@@ -306,18 +306,4 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.$watch('businessFilter.geography', function(newValue,oldValue,scope) {
         scope.geography = newValue.geography;
     });
-
-    // Not very elegant (but working) way of solving INTYG-4505
-    /*scope.$watch('isDateSelectOpen', function(isOpen) {
-        if (isOpen) {
-            scope.businessFilter.fromDate = scope.businessFilter.cachedFromDate || scope.businessFilter.fromDate;
-            scope.businessFilter.toDate = scope.businessFilter.cachedToDate || scope.businessFilter.toDate;
-        } else {
-            scope.businessFilter.cachedFromDate = scope.businessFilter.fromDate;
-            scope.businessFilter.cachedToDate = scope.businessFilter.toDate;
-
-            scope.businessFilter.fromDate = null;
-            scope.businessFilter.toDate = null;
-        }
-    });*/
 }
