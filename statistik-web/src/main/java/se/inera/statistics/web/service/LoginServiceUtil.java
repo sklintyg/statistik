@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,6 +55,7 @@ import se.inera.statistics.service.report.model.VerksamhetsTyp;
 import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
+import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
@@ -231,7 +231,9 @@ public class LoginServiceUtil {
         final Map<String, String> ageGroups = Arrays
                 .stream(AgeGroup.values())
                 .collect(toMap(Enum::name, AgeGroup::getGroupName));
-        Map<String, String> intygTypes = new HashMap<>();
+        final Map<String, String> intygTypes = Arrays.stream(IntygType.values())
+                .filter(IntygType::isIncludeInIntygtypFilter)
+                .collect(toMap(Enum::name, IntygType::getText));
 
         final List<Icd> icdStructure = icd10.getIcdStructure();
         return new StaticFilterData(sjukskrivningLengths, ageGroups, intygTypes, icdStructure);

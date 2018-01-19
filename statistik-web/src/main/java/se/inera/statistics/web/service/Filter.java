@@ -35,17 +35,18 @@ public class Filter {
     private Collection<String> intygstyper;
 
     Filter(FilterPredicates predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser, Collection<String> sjukskrivningslangd,
-            Collection<String> aldersgrupp, String hashValue) {
+            Collection<String> aldersgrupp, String hashValue, Collection<String> intygstyper) {
         this.predicate = predicate;
         this.enheter = enheter;
         this.diagnoser = diagnoser;
         this.sjukskrivningslangd = sjukskrivningslangd;
         this.aldersgrupp = aldersgrupp;
         this.hash = hashValue;
+        this.intygstyper = intygstyper;
     }
 
     public static Filter empty() {
-        return new Filter(SjukfallUtil.ALL_ENHETER, null, null, null, null, null);
+        return new Filter(SjukfallUtil.ALL_ENHETER, null, null, null, null, null, null);
     }
 
     FilterPredicates getPredicate() {

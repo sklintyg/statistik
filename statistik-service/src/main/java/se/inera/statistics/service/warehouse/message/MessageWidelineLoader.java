@@ -172,7 +172,7 @@ public class MessageWidelineLoader {
     private PreparedStatement prepareStatementAmne(Connection connection, MessagesFilter filter)
             throws SQLException {
 
-        StringBuffer sql = new StringBuffer("select YEAR(skickatDate) as `year`, MONTH(skickatDate) as `month`"
+        StringBuilder sql = new StringBuilder("select YEAR(skickatDate) as `year`, MONTH(skickatDate) as `month`"
                 + ", kon, amneCode, enhet, alder, intygstyp "
                 + " FROM messagewideline "
                 + " WHERE (skickatDate between ? AND ?)  ");

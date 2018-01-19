@@ -24,11 +24,11 @@ Om man i denna rapport filtrerar fram endast en rapport, så ska övriga inte vi
 
 | Intyg i rapporten intyg totalt |
 | inloggad som | år | månad | grupp | filter intygstyp | män? | kvinnor? |
-| user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | FK 7800 Läkarutlåtande för sjukersättning | 0 | 2 |
-| user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | FK 7800 Läkarutlåtande för sjukersättning | -1 | -1 |
-| user1 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | FK 7263/7804 Läkarintyg för sjukpenning, FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga, FK 7800 Läkarutlåtande för sjukersättning | -1 | -1 |
+| user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | LUSE | 0 | 2 |
+| user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | LUSE | -1 | -1 |
+| user1 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | SJUKPENNING, LUAE_NA, LUSE | -1 | -1 |
 | user1 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | | 0 | 0 |
 | user1 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | | 0 | 0 |
-| user1 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0 | 0 |
+| user1 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | LUAE_NA | 0 | 0 |
 | user1 | 2015 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | | 0 | 1 |
-| user1 | 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | | 2 | 0 |
+| user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | | 2 | 0 |

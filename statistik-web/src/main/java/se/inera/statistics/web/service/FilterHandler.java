@@ -191,7 +191,7 @@ public class FilterHandler {
         final boolean sjukfallangdfilterActive = !sjukskrivningslangds.isEmpty();
         final FilterPredicates sjukfallFilter = new FilterPredicates(predicate, sjukfallLengthFilter, hash, sjukfallangdfilterActive);
         final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter),
-                toReadableAgeGroupNames(aldersgrupp), filterHash);
+                toReadableAgeGroupNames(aldersgrupp), filterHash, inFilter.getIntygstyper());
         final RangeMessageDTO rangeMessageDTO = getRange(inFilter, defaultRangeValue);
         return new FilterSettings(filter, rangeMessageDTO);
     }
@@ -310,7 +310,7 @@ public class FilterHandler {
                 hashValue, false);
         final List<String> sjukskrivningslangd = toReadableSjukskrivningslangdName(null);
         final List<String> aldersgrupp = toReadableAgeGroupNames(null);
-        return new Filter(predicate, enhetsAsHsaIds, null, sjukskrivningslangd, aldersgrupp, hashValue);
+        return new Filter(predicate, enhetsAsHsaIds, null, sjukskrivningslangd, aldersgrupp, hashValue, null);
     }
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
@@ -318,7 +318,7 @@ public class FilterHandler {
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         if (info.getLoginInfoForVg(vgId).map(LoginInfoVg::isProcessledare).orElse(false)) {
             return new Filter(SjukfallUtil.ALL_ENHETER, null, null, toReadableSjukskrivningslangdName(null), toReadableAgeGroupNames(null),
-                    FilterPredicates.HASH_EMPTY_FILTER);
+                    FilterPredicates.HASH_EMPTY_FILTER, null);
         }
         List<HsaIdEnhet> hsaIds = info.getBusinessesForVg(vgId).stream().map(Verksamhet::getId).collect(Collectors.toList());
         final Set<Integer> availableEnhets = hsaIds.stream().map(Warehouse::getEnhet).collect(Collectors.toSet());

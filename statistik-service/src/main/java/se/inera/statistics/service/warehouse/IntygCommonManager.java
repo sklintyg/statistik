@@ -206,6 +206,17 @@ public class IntygCommonManager {
 
     private IntygCommonGroup getIntygCommonGroup(Range range, HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter,
             List<IntygType> intygTypes) {
+
+        final List<IntygType> allIntygTypes = Arrays.asList(IntygType.values());
+        List<IntygType> intygTypeFilter = intygFilter.getIntygstyper() != null && !intygFilter.getIntygstyper().isEmpty()
+                ? intygFilter.getIntygstyper().stream()
+                    .map(IntygType::parseStringOptional).filter(Optional::isPresent).map(Optional::get)
+                    .flatMap(intygType -> intygType.getUnmappedTypes().stream())
+                    .collect(Collectors.toList())
+                : allIntygTypes;
+        final List<IntygType> intygTypesToQuery = (intygTypes != null ? intygTypes : allIntygTypes).stream()
+                .filter(intygTypeFilter::contains).collect(Collectors.toList());
+
         final StringBuilder ql = new StringBuilder();
         ql.append("SELECT r FROM IntygCommon r ");
         ql.append("WHERE r.vardgivareId = :vardgivarId ");
@@ -220,7 +231,7 @@ public class IntygCommonManager {
         if (enheter != null) {
             ql.append(" AND r.enhet IN :enhetIds");
         }
-        if (intygTypes != null) {
+        if (intygTypesToQuery != null) {
             ql.append(" AND r.intygtyp IN :intygTypes");
         }
 
@@ -232,8 +243,8 @@ public class IntygCommonManager {
             final List<String> enhetIds = enheter.stream().map(HsaIdAny::getId).collect(Collectors.toList());
             q.setParameter("enhetIds", enhetIds);
         }
-        if (intygTypes != null) {
-            final List<String> intygTypeStrings = intygTypes.stream().map(Enum::name).collect(Collectors.toList());
+        if (intygTypesToQuery != null) {
+            final List<String> intygTypeStrings = intygTypesToQuery.stream().map(Enum::name).collect(Collectors.toList());
             q.setParameter("intygTypes", intygTypeStrings);
         }
 
