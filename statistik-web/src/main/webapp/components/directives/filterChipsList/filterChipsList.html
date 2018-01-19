@@ -3,10 +3,10 @@
     data-ng-class="{inactive: typeDisabled}"
   >
   <li class="filter-heading">
-    <i class="fa {{icon}}"></i> {{title}}
+    <i class="fa {{::icon}}"></i> {{::title}}
   </li>
   <li
-      data-ng-repeat="chip in chips track by chip.id"
+      data-ng-repeat="chip in chips"
       class="filter-chips"
       title="{{::chip.text}}">
       <span class="default-text">
