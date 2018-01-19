@@ -1,12 +1,14 @@
 ---
-Help: Kan tas med när Intyg,totalt har implementerats
-Prune
 Test
 ---
-''!contents -R2 -g -p -f -h''
+Test-''!contents -R2 -g -p -f -h''
 
 !3 Givet att:
 | script | dagens datum | 2015-11-06 |
+
+
+
+| script | troskel varde   | 1 |
 
 | Enbart foljande intyg finns |
 | personnr | signeringstid | enhet | intygformat |
@@ -20,15 +22,13 @@ Test
 !3 Då gäller:
 Inloggad:
 
-Om man i denna rapport filtrerar fram endast en rapport, så ska övriga inte visas alls (alltså -1).
-
 | Intyg i rapporten intyg totalt |
 | inloggad som | år | månad | grupp | filter intygstyp | män? | kvinnor? |
 | user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | LUSE | 0 | 2 |
-| user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | LUSE | -1 | -1 |
-| user1 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | SJUKPENNING, LUAE_NA, LUSE | -1 | -1 |
+| user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | LUSE | 0 | 0 |
+| user1 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | SJUKPENNING, LUAE_NA, LUSE | 0 | 0 |
 | user1 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | | 0 | 0 |
 | user1 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | | 0 | 0 |
-| user1 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | LUAE_NA | 0 | 0 |
+| user1 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | LUAE_NA | 1 | 0 |
 | user1 | 2015 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | | 0 | 1 |
 | user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | | 2 | 0 |

@@ -1,13 +1,14 @@
 ---
-Help: Kan tas med nar Intyg,totalt rapporten ar implementerad
-Prune
 Test
 ---
-!contents -R2 -g -p -f -h
+''!contents -R2 -g -p -f -h''
+
 Vi har två intyg, ett blir makulerat.
 
 !3 Givet att:
 | script | dagens datum | 2015-11-06 |
+
+| script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
 | personnr | händelsetyp | intygid | enhet | signeringstid | intygformat |
@@ -25,11 +26,11 @@ Nationell:
 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 |
 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0 | 0 |
 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 0 |
-| 2015 | feb | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 1 |
+| 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 1 |
 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 |
 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0 | 0 |
 | 2015 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 0 |
-| 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | 0 | 0 |
+| 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |
 
 Inloggad:
 

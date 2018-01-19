@@ -1,11 +1,13 @@
 ---
-Help: Kan tas med nar Intyg,totalt rapporten ar implementerad
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h
 !3 Givet att:
 | script | dagens datum | 2015-11-06 |
+
+
+
+| script | troskel varde   | 1 |
 
 | Enbart foljande intyg finns |
 | personnr | signeringstid | enhet | intygformat | kommentar |
@@ -21,8 +23,8 @@ Inloggad:
 
 | Intyg i rapporten intyg totalt |
 | inloggad som | år | månad | grupp | män? | kvinnor? |
-| user1 | 2014 | okt | FK 7800 Läkarutlåtande för sjukersättning | 1 | 0 |
-| user1 | 2014 | okt | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 0 |
+| user1 | 2014 | okt | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 |
+| user1 | 2014 | okt | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 1 | 0 |
 | user1 | 2014 | nov | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 |
 | user1 | 2014 | nov | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 0 |
 | user1 | 2014 | dec | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 |
