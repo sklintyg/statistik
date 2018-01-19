@@ -61,8 +61,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     'use strict';
 
     //Initially we don't want to see the filter
-    scope.hasMessages = false;
-    scope.filterToApply = true;
+    scope.filterToApply = false;
     scope.filterViewState = filterViewState.get();
     scope.businessFilter = businessFilter;
     scope.useDefaultPeriod = true;
@@ -114,7 +113,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         leavesLevelLabelText: messageService.getProperty('lbl.filter.modal.leaves', null, '', null, true)
     };
 
-    var getVerksamhetstyper = function() {
+    function getVerksamhetstyper() {
         var selectedVerksamhettyps = _.filter(scope.businessFilter.verksamhetsTyper, function(verksamhetstyp) {
             return _.includes(scope.businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
         });
@@ -123,17 +122,17 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         });
         var selectedIdsFromVerksamhetstypsFlattened = _.flatten(selectedIdsFromVerksamhetstyps);
         return _.uniq(selectedIdsFromVerksamhetstypsFlattened);
-    };
+    }
 
-    var isValidDate = function(date) {
+    function isValidDate(date) {
         if(date === 'undefined') {
             return false;
         }
 
         return moment(new Date(date)).isValid() || moment(new Date(date).getUTCDate()).isValid();
-    };
+    }
 
-    var hasDatepickersValidationError = function() {
+    function hasDatepickersValidationError() {
         scope.errorMessage = messageService.getProperty('alert.filter.date-invalid');
 
         // Fel format
@@ -160,7 +159,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         }
 
         return false;
-    };
+    }
 
     function validateDateFocus() {
         scope.fromDateValidationError = false;
@@ -193,6 +192,12 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         return false;
     }
 
+    function resetDatePickers() {
+        scope.showDateValidationError = false;
+        scope.fromDateValidationError = false;
+        scope.toDateValidationError = false;
+    }
+
     scope.validateDate = function() {
         scope.showDateValidationError = validateDateFocus();
     };
@@ -200,11 +205,11 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     scope.makeSelection = function() {
         var formattedFromDate, formattedToDate;
 
-        scope.isDateSelectOpen = false;
-
         if (hasDatepickersValidationError()) {
             scope.showDateValidationError = true;
+            scope.isDateSelectOpen = true;
         } else {
+            scope.isDateSelectOpen = false;
             scope.showDateValidationError = false;
             scope.loadingFilter = true;
 
@@ -245,6 +250,10 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
                 scope.businessFilter.intygstyperSaved = _.cloneDeep(params.intygstyper);
                 scope.businessFilter.diagnoserSaved = _.cloneDeep(params.diagnoser);
                 scope.businessFilter.geographyBusinessIdsSaved = _.cloneDeep(params.enheter);
+                scope.businessFilter.fromDateSaved = scope.businessFilter.fromDate;
+                scope.businessFilter.toDateSaved = scope.businessFilter.toDate;
+
+                scope.filterToApply = scope.businessFilter.filterChanged();
             };
 
             var error = function () {
@@ -254,12 +263,6 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
             statisticsData.getFilterHash(params).then(success, error);
         }
-    };
-
-    var resetDatePickers = function() {
-        scope.showDateValidationError = false;
-        scope.fromDateValidationError = false;
-        scope.toDateValidationError = false;
     };
 
     scope.resetBusinessFilter = function(form) {
@@ -294,16 +297,42 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
     scope.$watch('businessFilter.fromDate', function(newValue) {
         scope.dateOptionsTo.minDate = newValue;
-        if(scope.businessFilter.toDate < newValue) {
+        if (scope.businessFilter.toDate < newValue) {
             scope.businessFilter.toDate = null;
         }
+
+        scope.filterToApply = scope.businessFilter.filterChanged();
     });
 
-    scope.$watch('businessFilter', function(newValue,oldValue,scope) {
+    scope.$watch('businessFilter', function(newValue, oldValue, scope) {
         scope.icd10 = newValue.icd10;
     });
 
     scope.$watch('businessFilter.geography', function(newValue,oldValue,scope) {
         scope.geography = newValue.geography;
+    });
+
+    scope.$watch('businessFilter.selectedDiagnoses', function() {
+        scope.filterToApply = scope.businessFilter.filterChanged();
+    });
+
+    scope.$watch('businessFilter.geographyBusinessIds', function() {
+        scope.filterToApply = scope.businessFilter.filterChanged();
+    });
+
+    scope.$watch('businessFilter.selectedSjukskrivningslangdIds', function() {
+        scope.filterToApply = scope.businessFilter.filterChanged();
+    });
+
+    scope.$watch('businessFilter.selectedIntygstyperIds', function() {
+        scope.filterToApply = scope.businessFilter.filterChanged();
+    });
+
+    scope.$watch('businessFilter.selectedAldersgruppIds', function() {
+        scope.filterToApply = scope.businessFilter.filterChanged();
+    });
+
+    scope.$watch('businessFilter.toDate', function() {
+        scope.filterToApply = scope.businessFilter.filterChanged();
     });
 }
