@@ -1,9 +1,5 @@
-
-<div class="business-filter" style="text-align: center" data-ng-show="!businessFilter.dataInitialized">
-  Laddar filterdata
-</div>
-
-<form name="myForm" novalidate class="business-filter" data-ng-show="businessFilter.dataInitialized">
+<form name="myForm" novalidate class="business-filter">
+  <fieldset data-ng-disabled="!businessFilter.dataInitialized">
   <div
       class="btn-group margin-right"
       uib-dropdown auto-close="outsideClick" is-open="isDateSelectOpen">
@@ -177,6 +173,7 @@
   </button>
 
   <filter-chips business-filter="businessFilter" data-ng-if="businessFilter.hasUserSelection"></filter-chips>
+  </fieldset>
 </form>
 
 <div class="filter-level" data-ng-if="filterViewState.messages.length > 0" style="margin-bottom: 10px">

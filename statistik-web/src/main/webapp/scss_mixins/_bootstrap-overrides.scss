@@ -114,7 +114,8 @@ p {
   cursor: pointer;
 }
 
-.btn-default {
+.btn-default,
+.btn-success {
   &.disabled,
   &[disabled],
   fieldset[disabled] & {
@@ -125,6 +126,7 @@ p {
       background-color: $st-color-21;
       color: $st-color-24;
       border-color: $st-color-23;
+      text-shadow: none;
     }
   }
 }
