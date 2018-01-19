@@ -1,5 +1,5 @@
 ---
-Static
+Test
 ---
 Givet att:
 
@@ -21,7 +21,7 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 | 19691230-1234 | 2014-06-03T10:00:00 | 1002 | KOMPLT |
 
 !3 Då gäller:
-Statistiken baseras på meddelanden för alla intygstyper som har ärendekommunikation. Statistiken presenteras utifrån datum då meddelandet skickades. Varje meddelande räknas en gång oavsett om det finns flera meddelanden för samma intyg. Eftersom denna rapport visas upp som ett staplat stapeldiagram, visar totalen antalet meddelanden totalt på den enheten, oavsett vilken typ av meddelande det är.
+Statistiken baseras på meddelanden för alla intygstyper som har ärendekommunikation. Statistiken presenteras utifrån datum då meddelandet skickades. Varje meddelande räknas en gång oavsett om det finns flera meddelanden för samma intyg. Eftersom denna rapport visas upp som ett staplat stapeldiagram, visar totalen (i tabellen) antalet meddelanden totalt på den enheten, oavsett vilken typ av meddelande det är.
 
 Inloggad:
 
@@ -35,10 +35,10 @@ Inloggad:
 | user2 | enhet2 | Övrigt | 1 | 0 | 0 |
 
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt diagram |
-| inloggad som | vårdenhet | ämne | totalt? | män? | kvinnor? |
-| user2 | enhet1 | Komplettering | 2 | 1 | 0 |
-| user2 | enhet1 | Avstämningsmöte | 2 | 1 | 0 |
-| user2 | enhet1 | Övrigt | 2 | 0 | 0 |
-| user2 | enhet2 | Komplettering | 1 | 1 | 0 |
-| user2 | enhet2 | Avstämningsmöte | 1 | 0 | 0 |
-| user2 | enhet2 | Övrigt | 1 | 0 | 0 |
+| inloggad som | vårdenhet | ämne | totalt? |
+| user2 | enhet1 | Komplettering | 1 |
+| user2 | enhet1 | Avstämningsmöte | 1 |
+| user2 | enhet1 | Övrigt | 0 |
+| user2 | enhet2 | Komplettering | 1 |
+| user2 | enhet2 | Avstämningsmöte | 0 |
+| user2 | enhet2 | Övrigt | 0 |
