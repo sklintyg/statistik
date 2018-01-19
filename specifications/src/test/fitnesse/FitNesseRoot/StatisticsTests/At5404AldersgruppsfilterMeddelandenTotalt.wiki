@@ -13,14 +13,14 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 
 | Enbart foljande intyg finns |
 | intygid | personnr | signeringstid | diagnoskod | intygformat | kommentar |
-| 1001 | 19730717-9191 | 2014-06-03T10:00:00 | G01 | LUSE | 41år |
-| 1002 | 19621230-1234 | 2014-05-03T10:00:00 | G01 | LISJP | 52år |
-| 1003 | 19951030-1254 | 2014-06-03T10:00:00 | G01 | LUAE_NA | 19år |
+| 1001 | 19730517-9191 | 2014-06-03T10:00:00 | G01 | LUSE | 41år |
+| 1002 | 19621230-1234 | 2014-05-03T10:00:00 | G01 | LISJP | 51år |
+| 1003 | 19951030-1254 | 2014-06-03T10:00:00 | G01 | LUAE_NA | 18år |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
-| 19730717-9191 | 2014-06-03T10:00:00 | 1001 | KOMPLT |
-| 19621030-1234 | 2014-05-03T10:00:00 | 1002 | KOMPLT |
+| 19730517-9191 | 2014-06-03T10:00:00 | 1001 | KOMPLT |
+| 19621230-1234 | 2014-05-03T10:00:00 | 1002 | KOMPLT |
 | 19951030-1254 | 2014-11-03T10:00:00 | 1003 | AVSTMN |
 
 !3 Då gäller:
