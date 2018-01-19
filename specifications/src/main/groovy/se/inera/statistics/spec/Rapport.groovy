@@ -3,6 +3,7 @@ import se.inera.statistics.service.report.util.AgeGroup
 import se.inera.statistics.service.report.util.Icd10
 import se.inera.statistics.service.report.util.Icd10RangeType
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup
+import se.inera.statistics.service.warehouse.IntygType
 import se.inera.statistics.web.error.Message
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.statistics.web.service.FilterData
@@ -193,8 +194,8 @@ abstract class Rapport {
     void setFilterIntygstyp(String intygstypString) {
         if (intygstypString != null && !intygstypString.trim().isEmpty()) {
             this.filterIntygstyp = intygstypString.split(",")*.trim().collect {
-                //def optionalGroup = SjukfallsLangdGroup.getByName(it)
-                //optionalGroup.present ? optionalGroup.get().name() : it;
+                def optionalType = IntygType.parseStringOptional(it);
+                optionalType.present ? optionalType.get().name() : it;
             }
         }
     }
