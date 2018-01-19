@@ -67,7 +67,9 @@
         var landstingTab = {
             id: navigationViewState.ids.landsting,
             title: 'nav.landsting-header',
-            url: 'landsting/om',
+            url: function() {
+                return UserModel.get().landstingAvailable ? 'landsting/sjukfallPerManad' : 'landsting/om';
+            },
             urlPrefix: 'landsting',
             content: baseTemplateUrl + 'navigationTabs.landsting.html'
         };
@@ -89,7 +91,11 @@
 
         vm.tabActivated = function(tab) {
             if (!ControllerCommons.isShowing($location, tab.urlPrefix) && !ControllerCommons.isShowing($location, 'om')) {
-                $location.path(tab.url);
+                if (angular.isFunction(tab.url)) {
+                    $location.path(tab.url());
+                } else {
+                    $location.path(tab.url);
+                }
             }
 
             navigationViewState.set({
