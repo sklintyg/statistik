@@ -36,15 +36,15 @@ Inloggad:
 | Andel i rapporten komplettering andel intyg |
 | inloggad som | år | månad | grupp | totalt? | män? | kvinnor? |
 | user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
-| user1 | 2015 | feb | FK 7863/7804 Läkarintyg för sjukpenning | 100% | 0% | 100% |
+| user1 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 100% | 0% | 100% |
 | user1 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
-| user1 | 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | 100% | 100% | 0% |
+| user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 100% | 100% | 0% |
 | user1 | 2015 | apr | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
-| user1 | 2015 | apr | FK 7863/7804 Läkarintyg för sjukpenning | 50% | 50% | 0% |
+| user1 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | 50% | 50% | 0% |
 
 Byte till tvärsnitt visar de senaste 12 månaderna.
 
 | Andel i rapporten komplettering andel intyg som tvarsnitt |
 | inloggad som | grupp | totalt? | män? | kvinnor? |
 | user1 | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
-| user1 | FK 7863/7804 Läkarintyg för sjukpenning | 75% | 66% | 100% |
+| user1 | FK 7263/7804 Läkarintyg för sjukpenning | 75% | 66% | 100% |
