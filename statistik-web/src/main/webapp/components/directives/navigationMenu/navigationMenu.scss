@@ -41,6 +41,11 @@ navigation-menu {
     margin-bottom: 20px;
   }
 
+  .menu-disabled {
+    color: $st-color-23;
+    cursor: not-allowed;
+  }
+
   ul {
     background: $st-color-19;
     list-style-type: none;

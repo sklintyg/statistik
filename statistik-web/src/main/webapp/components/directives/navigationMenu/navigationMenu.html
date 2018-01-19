@@ -17,8 +17,13 @@
       <ul uib-collapse="!menu.show" class="navigation-group" id="{{::menu.navigationId}}">
         <li data-ng-repeat="submenu in menu.subMenu | filter: showMenu">
           <a
+              class="menu-disabled"
+              data-ng-if="!menuEnabled(submenu)">
+            <span message key="{{::submenu.name}}" disable-highlight-words="true"></span>
+          </a>
+          <a
               id="{{::submenu.id}}"
-              ng-disabled="{{!menuEnabled(submenu)}}"
+              data-ng-if="menuEnabled(submenu)"
               data-ng-href="{{::submenu.link}}{{queryString}}"
               ctrlname="{{::submenu.ctrl}}"
               navigationaware>

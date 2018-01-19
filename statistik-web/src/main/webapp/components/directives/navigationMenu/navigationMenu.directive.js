@@ -297,6 +297,9 @@
             navigationId: 'intyg-statistics-collapse',
             show: true,
             subMenu: [{
+                checkEnable: function() {
+                    return UserModel.get().landstingAvailable;
+                },
                 id: 'navLandstingIntygPerTypeLink',
                 link: '#/landsting/intygPerTyp',
                 name: 'nav.intygpertyp',
@@ -310,16 +313,22 @@
             navigationId: 'kommunikation-statistics-collapse',
             show: true,
             subMenu: [{
-                        id: 'navLandstingMessagesLink',
-                        link: '#/landsting/meddelandenPerAmne',
-                        name: 'nav.meddelanden',
-                        ctrl: 'LandstingMeddelandenPerAmneCtrl'
-                    },{
-                        id: 'navLandstingMessagesEnhetLink',
-                        link: '#/landsting/meddelandenPerAmneOchEnhet',
-                        name: 'nav.meddelandenperamneochenhet',
-                        ctrl: 'LandstingMeddelandenPerAmneOchEnhetCtrl'
-                    }]
+                checkEnable: function() {
+                    return UserModel.get().landstingAvailable;
+                },
+                id: 'navLandstingMessagesLink',
+                link: '#/landsting/meddelandenPerAmne',
+                name: 'nav.meddelanden',
+                ctrl: 'LandstingMeddelandenPerAmneCtrl'
+            },{
+                checkEnable: function() {
+                    return UserModel.get().landstingAvailable;
+                },
+                id: 'navLandstingMessagesEnhetLink',
+                link: '#/landsting/meddelandenPerAmneOchEnhet',
+                name: 'nav.meddelandenperamneochenhet',
+                ctrl: 'LandstingMeddelandenPerAmneOchEnhetCtrl'
+            }]
         };
 
         var about = {
