@@ -87,13 +87,12 @@ angular.module('StatisticsApp')
                     _.each(filter, function(enhet) {
                         var text = _.find($scope.businessFilter.businesses, {id: enhet});
                         enheter.push({
+                            id: enhet,
                             text: text ? text.name : enhet
                         });
                     });
 
-                    $scope.chips.enheter = _.sortBy(enheter, function(n) {
-                        return n.id;
-                    });
+                    $scope.chips.enheter = _.sortBy(enheter, 'id');
                 }
 
                 function diagnosFilter() {
@@ -104,13 +103,12 @@ angular.module('StatisticsApp')
                     var diagnoser = [];
                     _.each(filter, function(diagnos) {
                         diagnoser.push({
+                            id: diagnos.id,
                             text: diagnos.text
                         });
                     });
 
-                    $scope.chips.diagnos = _.sortBy(diagnoser, function(n) {
-                        return n.id;
-                    });
+                    $scope.chips.diagnos = _.sortBy(diagnoser, 'id');
                 }
 
                 function sjukskrivningsLangdsFilter() {
@@ -120,13 +118,12 @@ angular.module('StatisticsApp')
                     var sjukskrivningslangder = [];
                     _.each(filter, function(sjukskrivningslangd) {
                         sjukskrivningslangder.push({
+                            id: sjukskrivningslangd,
                             text: StaticFilterData.get().sjukskrivningLengthsObject[sjukskrivningslangd]
                         });
                     });
 
-                    $scope.chips.sjukskrivningslangd = _.sortBy(sjukskrivningslangder, function(n) {
-                        return n.id;
-                    });
+                    $scope.chips.sjukskrivningslangd = _.sortBy(sjukskrivningslangder, 'id');
                 }
 
                 function aldersGruppsFilter() {
@@ -136,13 +133,12 @@ angular.module('StatisticsApp')
                     var aldersgrupper = [];
                     _.each(filter, function(aldersGrupp) {
                         aldersgrupper.push({
+                            id: aldersGrupp,
                             text: StaticFilterData.get().ageGroups[aldersGrupp]
                         });
                     });
 
-                    $scope.chips.aldersgrupp = _.sortBy(aldersgrupper, function(n) {
-                        return n.id;
-                    });
+                    $scope.chips.aldersgrupp = _.sortBy(aldersgrupper, 'id');
                 }
 
                 function intygstyperFilter() {
@@ -152,13 +148,12 @@ angular.module('StatisticsApp')
                     var intygstyper = [];
                     _.each(filter, function(intygstyp) {
                         intygstyper.push({
+                            id: intygstyp,
                             text: StaticFilterData.get().intygTypesObject[intygstyp]
                         });
                     });
 
-                    $scope.chips.intygstyper = _.sortBy(intygstyper, function(n) {
-                        return n.id;
-                    });
+                    $scope.chips.intygstyper = _.sortBy(intygstyper, 'id');
                 }
             }
         };
