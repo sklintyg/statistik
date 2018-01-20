@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.warehouse.IntygType;
@@ -40,6 +41,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -104,6 +106,20 @@ public class MessageWidelineLoader {
                 dtos.add(toCountAmne(resultSet));
             }
 
+            final Collection<String> aldersgrupp = filter.getAldersgrupp();
+            if (aldersgrupp != null && !aldersgrupp.isEmpty() && new HashSet<>(aldersgrupp).size() != AgeGroup.values().length) {
+                final List<AgeGroup> ageGroups = aldersgrupp.stream()
+                        .map(AgeGroup::getByName)
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .collect(Collectors.toList());
+                return dtos.stream().filter(countDTOAmne -> {
+                    final int patientAge = countDTOAmne.getPatientAge();
+                    final Optional<AgeGroup> groupForAge = AgeGroup.getGroupForAge(patientAge);
+                    return ageGroups.contains(groupForAge.orElse(null));
+                }).collect(Collectors.toList());
+            }
+
             return dtos;
         } catch (SQLException e) {
             LOG.error("Could not populate warehouse", e);
@@ -115,14 +131,17 @@ public class MessageWidelineLoader {
     private CountDTOAmne toCountAmne(ResultSet resultSet) throws SQLException {
         CountDTOAmne dto = new CountDTOAmne();
 
-        int year = resultSet.getInt("year");
-        int month = resultSet.getInt("month");
+
+        final String signeringsdatumStr = resultSet.getString("signeringsdatum");
+        final LocalDate signDate = LocalDate.parse(signeringsdatumStr).withDayOfMonth(1);
         dto.setCount(1);
-        dto.setDate(LocalDate.of(year, month, 1));
+        dto.setDate(signDate);
         dto.setKon(Kon.byNumberRepresentation(resultSet.getInt("kon")));
         dto.setAmne(MsgAmne.parse(resultSet.getString("amneCode")));
         dto.setEnhet(resultSet.getString("enhet"));
-        dto.setPatientAge(resultSet.getInt("alder"));
+        final String patientid = resultSet.getString("patientid");
+        final int alder = ConversionHelper.extractAlder(patientid, signDate);
+        dto.setPatientAge(alder);
         dto.setIntygTyp(resultSet.getString("intygstyp"));
         return dto;
     }
@@ -173,45 +192,23 @@ public class MessageWidelineLoader {
     private PreparedStatement prepareStatementAmne(Connection connection, MessagesFilter filter)
             throws SQLException {
 
-        StringBuilder sql = new StringBuilder("select YEAR(skickatDate) as `year`, MONTH(skickatDate) as `month`"
-                + ", kon, amneCode, enhet, alder, intygstyp "
-                + " FROM messagewideline "
-                + " WHERE (skickatDate between ? AND ?)  ");
+        StringBuilder sql = new StringBuilder("SELECT "
+                + "mwl.amnecode, mwl.kon, mwl.amneCode, mwl.enhet AS enhet, mwl.alder, "
+                + "mwl.intygstyp, mwl.patientid, ic.signeringsdatum "
+                + "FROM messagewideline AS mwl "
+                + "INNER JOIN intygcommon AS ic "
+                + "ON mwl.intygid = ic.intygid "
+                + "WHERE (ic.signeringsdatum between ? AND ?)  ");
 
         boolean hasVardgivare = filter.getVardgivarId() != null;
         if (hasVardgivare) {
-            sql.append(" AND vardgivareid = ? ");
+            sql.append(" AND mwl.vardgivareid = ? ");
         }
 
         final Collection<HsaIdEnhet> enheter = filter.getEnheter();
         if (enheter != null && !enheter.isEmpty()) {
             String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
-            sql.append(" AND `enhet` IN ('").append(enhetSql).append("')");
-        }
-
-        final Collection<String> aldersgrupper = filter.getAldersgrupp();
-        if (aldersgrupper != null) {
-            boolean alderAdded = false;
-            for (String aldersgruppName : aldersgrupper) {
-                final Optional<AgeGroup> aldersgrupp = AgeGroup.getByName(aldersgruppName);
-                if (aldersgrupp.isPresent()) {
-                    if (!alderAdded) {
-                        sql.append(" AND (");
-                    } else {
-                        sql.append(" OR ");
-                    }
-                    sql.append("(alder >= ")
-                            .append(aldersgrupp.get().getFrom())
-                            .append(" AND ")
-                            .append("alder < ")
-                            .append(aldersgrupp.get().getTo())
-                            .append(")");
-                    alderAdded = true;
-                }
-            }
-            if (alderAdded) {
-                sql.append(")");
-            }
+            sql.append(" AND mwl.enhet IN ('").append(enhetSql).append("')");
         }
 
         final Collection<String> intygstyper = filter.getIntygstyper();
@@ -229,8 +226,8 @@ public class MessageWidelineLoader {
         PreparedStatement stmt = connection.prepareStatement(sql.toString(), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(FETCH_SIZE);
 
-        stmt.setString(COLUMN_FROM, filter.getFrom().format(FORMATTER));
-        stmt.setString(COLUMN_TO, filter.getTo().format(FORMATTER));
+        stmt.setDate(COLUMN_FROM, java.sql.Date.valueOf(filter.getFrom()));
+        stmt.setDate(COLUMN_TO, java.sql.Date.valueOf(filter.getTo()));
 
         if (hasVardgivare) {
             stmt.setString(COLUMN_VARDGIVARE, filter.getVardgivarId().getId());
