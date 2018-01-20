@@ -27,6 +27,7 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.AgeGroup;
+import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.WidelineLoader;
 import se.inera.statistics.service.warehouse.query.MessagesFilter;
 
@@ -215,7 +216,11 @@ public class MessageWidelineLoader {
 
         final Collection<String> intygstyper = filter.getIntygstyper();
         if (intygstyper != null && !intygstyper.isEmpty()) {
-            String intygstyperSql = intygstyper.stream().map(String::toUpperCase).collect(Collectors.joining("' , '"));
+            List<IntygType> intygTypeFilter =  filter.getIntygstyper().stream()
+                    .map(IntygType::parseStringOptional).filter(Optional::isPresent).map(Optional::get)
+                    .flatMap(intygType -> intygType.getUnmappedTypes().stream())
+                    .collect(Collectors.toList());
+            String intygstyperSql = intygTypeFilter.stream().map(Enum::name).collect(Collectors.joining("' , '"));
             sql.append(" AND `intygstyp` IN ('").append(intygstyperSql).append("')");
         }
 
