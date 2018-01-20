@@ -32,12 +32,12 @@ Nationell:
 
 | Andel i rapporten komplettering andel intyg |
 | år | månad | grupp | totalt? | män? | kvinnor? |
-| 2015 | feb | FK 7863/7804 Läkarintyg för sjukpenning | 66% | 100% | 100% |
-| 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | 0% | 0% | 0% |
+| 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 66% | 100% | 100% |
+| 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 0% | 0% | 0% |
 
 Inloggad:
 
 | Andel i rapporten komplettering andel intyg |
 | inloggad som | år | månad | grupp | totalt? | män? | kvinnor? |
-| user1 | 2015 | feb | FK 7863/7804 Läkarintyg för sjukpenning | 66% | 100% | 100% |
-| user1 | 2015 | mar | FK 7863/7804 Läkarintyg för sjukpenning | 0% | 0% | 0% |
+| user1 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 66% | 100% | 100% |
+| user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 0% | 0% | 0% |

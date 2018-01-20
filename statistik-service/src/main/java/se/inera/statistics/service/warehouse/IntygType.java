@@ -32,7 +32,7 @@ public enum IntygType {
     LUAE_FS("luae_fs", "FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång", true, false, true),
     LISJP("lisjp", "FK 7804 Läkarintyg för sjukpenning", true, true, false),
     UNKNOWN(null, "Okänt", false, false, false),
-    SJUKPENNING(null, "FK 7263/7804 Läkarintyg för sjukpenning", false, false, false);
+    SJUKPENNING(null, "FK 7263/7804 Läkarintyg för sjukpenning", false, false, true);
 
     private final String itIntygType; //The type name Intygtjansten is using and sends as metadata with all intyg
     private final String text;

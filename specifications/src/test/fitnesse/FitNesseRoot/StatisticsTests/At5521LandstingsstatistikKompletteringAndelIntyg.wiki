@@ -50,12 +50,12 @@ Inloggad:
 | user3 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
 | user3 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0% | 0% | 0% |
 | user3 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0% | 0% | 0% |
-| user3 | feb | FK 7863/7804 Läkarintyg för sjukpenning | 100% | 0% | 100% |
+| user3 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 100% | 0% | 100% |
 | user3 | mar | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
 | user3 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0% | 0% | 0% |
 | user3 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0% | 0% | 0% |
-| user3 | mar | FK 7863/7804 Läkarintyg för sjukpenning | 0% | 0% | 0% |
+| user3 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 0% | 0% | 0% |
 | user3 | apr | FK 7800 Läkarutlåtande för sjukersättning | 100% | 100% | 0% |
 | user3 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0% | 0% | 0% |
 | user3 | apr | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0% | 0% | 0% |
-| user3 | apr | FK 7863/7804 Läkarintyg för sjukpenning | 50% | 0% | 100% |
+| user3 | apr | FK 7263/7804 Läkarintyg för sjukpenning | 50% | 0% | 100% |
