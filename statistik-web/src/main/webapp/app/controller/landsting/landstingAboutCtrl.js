@@ -17,10 +17,11 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').controller('aboutServiceCtrl',
+angular.module('StatisticsApp').controller('landstingAboutCtrl',
     /** @ngInject */
-    function ($scope, AppModel) {
+    function (filterViewState) {
         'use strict';
-        $scope.projectVersion = AppModel.get().projectVersion;
+
+        filterViewState.setMessages([]);
     }
 );

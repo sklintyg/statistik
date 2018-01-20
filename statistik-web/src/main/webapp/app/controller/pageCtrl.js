@@ -20,7 +20,7 @@
 angular.module('StatisticsApp').controller('pageCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $window, $location, statisticsData, businessFilterFactory, landstingFilterFactory,
-        _, ControllerCommons, AppModel, UserModel) {
+        _, ControllerCommons, AppModel, UserModel, filterViewState) {
         'use strict';
 
         $scope.AppModel = AppModel;
@@ -44,6 +44,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
             }
             else {
                 $scope.viewHeader = 'Nationell statistik';
+                filterViewState.setMessages([]);
             }
 
             if (ControllerCommons.isShowingProtectedPage($location)) {

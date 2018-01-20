@@ -1,9 +1,5 @@
-
-<div class="business-filter" style="text-align: center" data-ng-show="!businessFilter.dataInitialized">
-  Laddar filterdata
-</div>
-
-<form name="myForm" novalidate class="business-filter" data-ng-show="businessFilter.dataInitialized">
+<form name="myForm" novalidate class="business-filter">
+  <fieldset data-ng-disabled="!businessFilter.dataInitialized">
   <div
       class="btn-group margin-right"
       uib-dropdown auto-close="outsideClick" is-open="isDateSelectOpen">
@@ -22,10 +18,10 @@
                 name="fromDate"
                 type="text"
                 class="form-control"
-                ng-attr-placeholder="{{dateFormatPlaceholder}}"
+                ng-attr-placeholder="{{::dateFormatPlaceholder}}"
                 data-ng-model="businessFilter.fromDate"
                 data-ng-blur="validateDate()"
-                uib-datepicker-popup="{{format}}"
+                uib-datepicker-popup="{{::dateFormat}}"
                 datepicker-options="dateOptions"
                 show-button-bar="false"
                 is-open="isFromDateOpen"
@@ -54,10 +50,10 @@
                 name="toDate"
                 type="text"
                 class="form-control"
-                ng-attr-placeholder="{{dateFormatPlaceholder}}"
+                ng-attr-placeholder="{{::dateFormatPlaceholder}}"
                 data-ng-model="businessFilter.toDate"
                 data-ng-blur="validateDate()"
-                uib-datepicker-popup="{{format}}"
+                uib-datepicker-popup="{{::dateFormat}}"
                 datepicker-options="dateOptionsTo"
                 show-button-bar="false"
                 is-open="isToDateOpen"
@@ -176,11 +172,12 @@
     <span message key="lbl.aterstall"></span>
   </button>
 
-  <filter-chips business-filter="businessFilter"></filter-chips>
+  <filter-chips business-filter="businessFilter" data-ng-if="businessFilter.hasUserSelection"></filter-chips>
+  </fieldset>
 </form>
 
-<div class="filter-level" data-ng-if="hasMessages" style="margin-bottom: 10px">
-  <div ng-repeat="resultMessage in messages">
+<div class="filter-level" data-ng-if="filterViewState.messages.length > 0" style="margin-bottom: 10px">
+  <div ng-repeat="resultMessage in filterViewState.messages">
     <show-message type="resultMessage.type" severity="resultMessage.severity" text="resultMessage.message"></show-message>
   </div>
 </div>

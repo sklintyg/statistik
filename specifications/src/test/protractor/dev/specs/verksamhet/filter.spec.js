@@ -49,7 +49,7 @@ describe('Verksamhetsfilter: ', function() {
             filter.applyBtn.click();
 
             // Validate status
-            //filter.isFilterActive();
+            filter.isFilterActive();
         });
 
         it('Kolla så de stämmer', function() {
@@ -67,7 +67,7 @@ describe('Verksamhetsfilter: ', function() {
             browser.refresh();
 
             // Validate status
-            // filter.isFilterActive();
+            filter.isFilterActive();
 
             // Check values
             filter.dateSelectBtn.click();
@@ -87,7 +87,7 @@ describe('Verksamhetsfilter: ', function() {
             filter.applyBtn.click();
 
             // Validate status
-            //filter.isFilterInactive();
+            filter.isFilterInactive();
         });
     });
 
@@ -196,6 +196,7 @@ describe('Verksamhetsfilter: ', function() {
 
             filter.showAllActiveBtn.click();
 
+            expect(filter.getNames(filter.activeIntervall)).toContain(fromDate + ' - ' + toDate);
             expect(filter.getNames(filter.activeDiganoser)).toContain(diagnoses);
             expect(filter.getNames(filter.activeEnheter)).toContain(enhet);
             expect(filter.getNames(filter.activeSjukskrivningslangd)).toContain(length1);

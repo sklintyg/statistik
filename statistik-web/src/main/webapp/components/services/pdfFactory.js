@@ -74,7 +74,7 @@ angular.module('StatisticsApp')
 
                         $scope.status.isTableOpen = isTableVisible;
 
-                        _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, filename, pdfDoneCallback);
+                        _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, $scope.activeIntygstypFilters, filename, pdfDoneCallback);
                     });
                 }
                 else {
@@ -84,7 +84,7 @@ angular.module('StatisticsApp')
                         hasMoreThanMaxRows: sortableTableViewState.getSortedRows().length > MAX_ROWS_TABLE_PDF
                     };
 
-                    _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, filename, pdfDoneCallback);
+                    _generate(headers, table, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, $scope.activeIntygstypFilters, filename, pdfDoneCallback);
                 }
             }
 
@@ -105,7 +105,7 @@ angular.module('StatisticsApp')
                 return tableData;
             }
 
-            function _generate(headers, table, charts, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter, filename, pdfDoneCallback) {
+            function _generate(headers, table, charts, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter, intygstyperFilter, filename, pdfDoneCallback) {
                 var content = [];
 
                 _addHeader(content, headers);
@@ -114,6 +114,7 @@ angular.module('StatisticsApp')
                 _addListFilter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
                 _addListFilter(content, 'Sammanställning av sjukskrivningslängdsfilter', sjukskrivningslangdFilter);
                 _addListFilter(content, 'Sammanställning av åldersgruppfilter', aldersgruppFilter);
+                _addListFilter(content, 'Sammanställning av intygstyperfiltret', intygstyperFilter);
 
                 if (angular.isArray(table)) {
                     angular.forEach(table, function(t) {

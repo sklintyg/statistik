@@ -19,10 +19,12 @@
 
 angular.module('StatisticsApp').factory('filterViewState',
     /** @ngInject */
-    function() {
+    function($filter) {
         'use strict';
 
-        var state = {};
+        var state = {
+            messages: []
+        };
 
         function _reset() {
             state.intygstyper = false;
@@ -49,12 +51,19 @@ angular.module('StatisticsApp').factory('filterViewState',
             }
         }
 
+        function _setMessages(messages) {
+            state.messages = $filter('filter')(messages, function(message) {
+                return message && message.type === 'FILTER';
+            });
+        }
+
         _reset();
 
         // Return public API for the service
         return {
             get: _get,
-            set: _set
+            set: _set,
+            setMessages: _setMessages
         };
     }
 );

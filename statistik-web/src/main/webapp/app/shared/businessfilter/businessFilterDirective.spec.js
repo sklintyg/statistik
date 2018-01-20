@@ -96,8 +96,8 @@ describe('Tests for directive button-filter', function () {
             var dateFormat = 'yyyy-MM';
 
             //Assert that the scope has the format function
-            expect(innerScope.format).toBeDefined();
-            expect(innerScope.format).toMatch(dateFormat);
+            expect(innerScope.dateFormat).toBeDefined();
+            expect(innerScope.dateFormat).toMatch(dateFormat);
 
             //Assert that the format is reflected in the view
             expect(element.find('#filterFromDate').attr('uib-datepicker-popup')).toMatch(dateFormat);

@@ -22,25 +22,25 @@ angular.module('StatisticsApp.filterFactory.factory', []);
 angular.module('StatisticsApp.filterFactory.factory')
     .factory('businessFilterFactory',
         /** @ngInject */
-        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper) {
+        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper, ArrayHelper) {
             'use strict';
 
-            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper);
+            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper, ArrayHelper);
         }
     );
 
 angular.module('StatisticsApp.filterFactory.factory')
     .factory('landstingFilterFactory',
         /** @ngInject */
-        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper) {
+        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper, ArrayHelper) {
             'use strict';
 
-            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper);
+            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper, ArrayHelper);
         }
     );
 
 
-function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper) {
+function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper, ArrayHelper) {
     'use strict';
 
     var loadingFilter = false;
@@ -79,7 +79,9 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
         //Init the datepicker components
         businessFilter.fromDate = null;
+        businessFilter.fromDateSaved = null;
         businessFilter.toDate = null;
+        businessFilter.toDateSaved = null;
 
         businessFilter.useDefaultPeriod = true;
 
@@ -106,6 +108,18 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         treeMultiSelectorUtil.updateSelectionState(businessFilter.geography);
     };
 
+    businessFilter.filterChanged = function() {
+        var fromDateChanged = businessFilter.fromDateSaved !== businessFilter.fromDate;
+        var toDateChanged = businessFilter.toDateSaved !== businessFilter.toDate;
+        var aldersGruppChanged = ArrayHelper.isDifferent(businessFilter.aldersgruppSaved, businessFilter.selectedAldersgruppIds);
+        var sjukskrivningslangdChanged = ArrayHelper.isDifferent(businessFilter.sjukskrivningslangdSaved, businessFilter.selectedSjukskrivningslangdIds);
+        var diagnoserChanged = ArrayHelper.isDifferent(businessFilter.diagnoserSaved, businessFilter.selectedDiagnoses);
+        var geographyBusinessChanged = ArrayHelper.isDifferent(businessFilter.geographyBusinessIdsSaved, businessFilter.geographyBusinessIds);
+        var intygstyperChanged = ArrayHelper.isDifferent(businessFilter.intygstyperSaved, businessFilter.selectedIntygstyperIds);
+
+        return fromDateChanged || toDateChanged || aldersGruppChanged || sjukskrivningslangdChanged || diagnoserChanged || geographyBusinessChanged || intygstyperChanged;
+    };
+
     businessFilter.updateSelectionVerksamhetsTyper = function(verksamhetsTyper) {
         angular.forEach(verksamhetsTyper, function(verksamhetsTyp) {
             var selected = true;
@@ -117,12 +131,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
             if (!selected) {
                 verksamhetsTyp.checked = selected;
             }
-        });
-    };
-
-    businessFilter.deselectVerksamhetsTyper = function(verksamhetsTyper) {
-        angular.forEach(verksamhetsTyper, function(verksamhetsTyp) {
-            verksamhetsTyp.checked = false;
         });
     };
 
@@ -144,43 +152,13 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
 
         //Reset datepickers
         businessFilter.toDate = null;
+        businessFilter.toDateSaved = null;
         businessFilter.fromDate = null;
+        businessFilter.fromDateSaved = null;
 
         businessFilter.useDefaultPeriod = true;
         businessFilter.updateHasUserSelection();
     };
-
-    var isSet = function (value) {
-        return typeof value !== 'undefined' && value !== null;
-    };
-
-    function sortSwedish(arrayToSort, propertyName, alwaysLast) {
-        var swedishAlphabet = '0123456789AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzÅåÄäÖö';
-        return arrayToSort.sort(function (first, second) {
-            if (first[propertyName] === second[propertyName]) {
-                return 0;
-            }
-            if (ObjectHelper.isEmpty(first[propertyName]) || (isSet(alwaysLast) && first[propertyName].indexOf(alwaysLast) > -1)) {
-                return 1;
-            }
-            if (ObjectHelper.isEmpty(second[propertyName]) || (isSet(alwaysLast) && second[propertyName].indexOf(alwaysLast) > -1)) {
-                return -1;
-            }
-            for (var i = 0; true; i++) {
-                if (first[propertyName].length <= i) {
-                    return -1;
-                }
-                if (second[propertyName].length <= i) {
-                    return 1;
-                }
-                var posFirst = swedishAlphabet.indexOf(first[propertyName][i]);
-                var posSecond = swedishAlphabet.indexOf(second[propertyName][i]);
-                if (posFirst !== posSecond) {
-                    return posFirst - posSecond;
-                }
-            }
-        });
-    }
 
     businessFilter.setIcd10Structure = function (diagnoses) {
         businessFilter.icd10.subs = diagnoses;
@@ -204,7 +182,9 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.geographyBusinessIdsSaved = _.cloneDeep(filterData.enheter);
         businessFilter.selectGeographyBusiness(filterData.enheter);
         businessFilter.toDate = filterData.toDate ? moment(filterData.toDate).utc().toDate() : null;
+        businessFilter.toDateSaved = businessFilter.toDate;
         businessFilter.fromDate = filterData.fromDate ? moment(filterData.fromDate).utc().toDate() : null;
+        businessFilter.fromDateSaved = businessFilter.fromDate;
         businessFilter.useDefaultPeriod = filterData.useDefaultPeriod;
         businessFilter.updateHasUserSelection();
     }
@@ -269,7 +249,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
             if (businessFilter.showBusinessFilter()) {
                 businessFilter.populateGeography(businesses);
                 businessFilter.populateVerksamhetsTyper(businesses);
-                businessFilter.businesses = sortSwedish(businesses, 'name', 'Okän');
+                businessFilter.businesses = ArrayHelper.sortSwedish(businesses, 'name', 'Okän');
             }
             businessFilter.populateSjukskrivningsLangd();
             businessFilter.populateIntygstyper();
@@ -313,9 +293,9 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
             business.visibleName = business.name;
             munip.subs.push(business);
         });
-        businessFilter.geography.subs = sortSwedish(businessFilter.geography.subs, 'name', 'Okän');
+        businessFilter.geography.subs = ArrayHelper.sortSwedish(businessFilter.geography.subs, 'name', 'Okän');
         _.each(businessFilter.geography.subs, function (county) {
-            county.subs = sortSwedish(county.subs, 'name', 'Okän');
+            county.subs = ArrayHelper.sortSwedish(county.subs, 'name', 'Okän');
         });
     };
 
@@ -357,7 +337,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
                 }
             });
         });
-        businessFilter.verksamhetsTyper = sortSwedish(_.values(verksamhetsTypSet), 'name', 'Okän');
+        businessFilter.verksamhetsTyper = ArrayHelper.sortSwedish(_.values(verksamhetsTypSet), 'name', 'Okän');
     };
 
     businessFilter.selectAll = function (item) {

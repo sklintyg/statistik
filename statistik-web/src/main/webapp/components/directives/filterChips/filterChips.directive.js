@@ -20,7 +20,7 @@
 angular.module('StatisticsApp')
     .directive('filterChips',
     /** @ngInject */
-    function(StaticFilterDataService, StaticFilterData, _, $uibModal) {
+    function(StaticFilterData, _, $uibModal, moment) {
         'use strict';
         return {
             scope: {
@@ -29,10 +29,9 @@ angular.module('StatisticsApp')
             restrict: 'E',
             templateUrl: '/components/directives/filterChips/filterChips.html',
             link: function($scope) {
-                $scope.haveChips = false;
-                $scope.numberOfChipsNotShown = 0;
 
                 $scope.chips = {
+                    date: [],
                     enheter: [],
                     diagnos: [],
                     sjukskrivningslangd: [],
@@ -41,6 +40,8 @@ angular.module('StatisticsApp')
                 };
 
                 $scope.showAll = function() {
+                    createChips();
+
                     $uibModal.open({
                         animation: true,
                         templateUrl: '/components/directives/filterChips/modal/modal.html',
@@ -54,18 +55,28 @@ angular.module('StatisticsApp')
                     });
                 };
 
-                StaticFilterDataService.get().then(function() { //Make sure StaticFilterData is populated
-                    $scope.$watchCollection('businessFilter.geographyBusinessIdsSaved', enhetsFilter);
+                function createChips() {
+                    dateFilter();
+                    enhetsFilter();
+                    diagnosFilter();
+                    aldersGruppsFilter();
+                    sjukskrivningsLangdsFilter();
+                    intygstyperFilter();
+                }
 
-                    $scope.$watchCollection('businessFilter.diagnoserSaved', diagnosFilter);
+                function dateFilter() {
+                    $scope.chips.date = [];
 
-                    $scope.$watchCollection('businessFilter.aldersgruppSaved', aldersGruppsFilter);
+                    if (!$scope.businessFilter.useDefaultPeriod) {
 
-                    $scope.$watchCollection('businessFilter.sjukskrivningslangdSaved', sjukskrivningsLangdsFilter);
+                        var fromDate = moment($scope.businessFilter.fromDate).format('YYYY-MM');
+                        var toDate = moment($scope.businessFilter.toDate).format('YYYY-MM');
 
-                    $scope.$watchCollection('businessFilter.intygstyperSaved', intygstyperFilter);
-
-                });
+                        $scope.chips.date.push({
+                            text: fromDate + ' - ' + toDate
+                        });
+                    }
+                }
 
                 function enhetsFilter() {
                     var filter = $scope.businessFilter.geographyBusinessIdsSaved;
@@ -81,11 +92,7 @@ angular.module('StatisticsApp')
                         });
                     });
 
-                    $scope.chips.enheter = _.sortBy(enheter, function(n) {
-                        return n.id;
-                    });
-
-                    setHaveChips();
+                    $scope.chips.enheter = _.sortBy(enheter, 'id');
                 }
 
                 function diagnosFilter() {
@@ -101,11 +108,7 @@ angular.module('StatisticsApp')
                         });
                     });
 
-                    $scope.chips.diagnos = _.sortBy(diagnoser, function(n) {
-                        return n.id;
-                    });
-
-                    setHaveChips();
+                    $scope.chips.diagnos = _.sortBy(diagnoser, 'id');
                 }
 
                 function sjukskrivningsLangdsFilter() {
@@ -120,11 +123,7 @@ angular.module('StatisticsApp')
                         });
                     });
 
-                    $scope.chips.sjukskrivningslangd = _.sortBy(sjukskrivningslangder, function(n) {
-                        return n.id;
-                    });
-
-                    setHaveChips();
+                    $scope.chips.sjukskrivningslangd = _.sortBy(sjukskrivningslangder, 'id');
                 }
 
                 function aldersGruppsFilter() {
@@ -139,11 +138,7 @@ angular.module('StatisticsApp')
                         });
                     });
 
-                    $scope.chips.aldersgrupp = _.sortBy(aldersgrupper, function(n) {
-                        return n.id;
-                    });
-
-                    setHaveChips();
+                    $scope.chips.aldersgrupp = _.sortBy(aldersgrupper, 'id');
                 }
 
                 function intygstyperFilter() {
@@ -158,23 +153,7 @@ angular.module('StatisticsApp')
                         });
                     });
 
-                    $scope.chips.intygstyper = _.sortBy(intygstyper, function(n) {
-                        return n.id;
-                    });
-
-                    setHaveChips();
-                }
-
-                function setHaveChips() {
-                    var haveChips = false;
-
-                    _.each($scope.chips, function(type) {
-                        if (type.length > 0) {
-                            haveChips = true;
-                        }
-                    });
-
-                    $scope.haveChips = haveChips;
+                    $scope.chips.intygstyper = _.sortBy(intygstyper, 'id');
                 }
             }
         };
