@@ -44,10 +44,11 @@ public class IntygCommon {
     private String vardgivareId;
     private int kon;
     private EventType eventType;
+    private String dx;
 
     // CHECKSTYLE:OFF ParameterNumber
     public IntygCommon(String intygid, String patientid, LocalDate signeringsdatum, String intygtyp, String enhet, String vardgivareId,
-            int kon, EventType eventType) {
+            int kon, EventType eventType, String dx) {
         this.intygid = intygid;
         this.patientid = patientid;
         this.kon = kon;
@@ -56,6 +57,7 @@ public class IntygCommon {
         this.enhet = enhet;
         this.vardgivareId = vardgivareId;
         this.eventType = eventType;
+        this.dx = dx;
     }
     // CHECKSTYLE:ON ParameterNumber
 
@@ -98,4 +100,9 @@ public class IntygCommon {
     public EventType getEventType() {
         return eventType;
     }
+
+    public String getDx() {
+        return dx;
+    }
+
 }

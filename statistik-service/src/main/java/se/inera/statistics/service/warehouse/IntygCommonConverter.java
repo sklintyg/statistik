@@ -53,8 +53,9 @@ public class IntygCommonConverter {
         int kon = patientData.getKon().getNumberRepresentation();
         String intygTyp = dto.getIntygtyp().toUpperCase();
         LocalDate signeringsDatum = dto.getSigneringsdatum();
+        final String diagnoskod = dto.getDiagnoskod();
 
-        return new IntygCommon(correlationId, patient, signeringsDatum, intygTyp, enhet, vardgivare.getId(), kon, eventType);
+        return new IntygCommon(correlationId, patient, signeringsDatum, intygTyp, enhet, vardgivare.getId(), kon, eventType, diagnoskod);
     }
 
     public List<String> validate(IntygCommon line) {

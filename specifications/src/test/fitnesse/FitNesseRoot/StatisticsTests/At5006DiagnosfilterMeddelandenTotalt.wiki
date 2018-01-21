@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 ''!contents -R2 -g -p -f -h''
@@ -14,8 +13,8 @@ Test
 | 1001 | 19790717-9191 | 2014-04-05T10:00:00 | G01 | LUSE | enhet1 |
 | 1002 | 19790717-9191 | 2014-06-03T10:00:00 | G01 | LUSE | enhet1 |
 | 1003 | 19691230-1234 | 2014-06-03T10:00:00 | G01 | LISJP | enhet1 |
-| 1004 | 19591230-1254 | 2014-06-03T10:00:00 | F41 | LUAE_NA | enhet1 |
-| 1005 | 19491230-1264 | 2014-03-03T10:00:00 | F41 | LUAE_FS | enhet1 |
+| 1004 | 19591230-1254 | 2014-06-03T10:00:00 | A41 | LUAE_NA | enhet1 |
+| 1005 | 19491230-1264 | 2014-03-03T10:00:00 | A41 | LUAE_FS | enhet1 |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
@@ -32,15 +31,15 @@ Diagnosen tas från det intyg som meddelandet tillhör.
 
 | Meddelanden i rapporten meddelanden totalt |
 | inloggad som | år | månad | grupp | filter kapitel | filter avsnitt | filter kategorier | män? | kvinnor? |
-| user1 | 2014 | mar | Komplettering | F00-F99 | | | 0 | 1 |
-| user1 | 2014 | mar | Komplettering | | F00-F09 | | 0 | 0 |
-| user1 | 2014 | mar | Komplettering | | | F41 | 0 | 1 |
+| user1 | 2014 | mar | Komplettering | A00-B99 | | | 0 | 1 |
+| user1 | 2014 | mar | Komplettering | | A00-A09 | | 0 | 0 |
+| user1 | 2014 | mar | Komplettering | | | A41 | 0 | 1 |
 | user1 | 2014 | apr | Komplettering | G00-G99 | | | 1 | 0 |
 | user1 | 2014 | apr | Komplettering | | G00-G09 | | 1 | 0 |
 | user1 | 2014 | apr | Komplettering | | | G41 | 0 | 0 |
 | user1 | 2014 | maj | Komplettering | | | | 0 | 0 |
 | user1 | 2014 | maj | Komplettering | | | | 0 | 0 |
 | user1 | 2014 | maj | Komplettering | | | | 0 | 0 |
-| user1 | 2014 | jun | Komplettering | F00-F99 | | | 1 | 0 |
+| user1 | 2014 | jun | Komplettering | A00-B99 | | | 1 | 0 |
 | user1 | 2014 | jun | Komplettering | | G00-G09 | | 2 | 0 |
 | user1 | 2014 | jun | Komplettering | | | G01 | 2 | 0 |

@@ -30,6 +30,7 @@ public class CountDTOAmne {
     private String enhet;
     private int patientAge;
     private String intygTyp;
+    private String dx;
 
     public int getCount() {
         return count;
@@ -85,6 +86,14 @@ public class CountDTOAmne {
 
     public String getIntygTyp() {
         return intygTyp;
+    }
+
+    public String getDx() {
+        return dx;
+    }
+
+    public void setDx(String dx) {
+        this.dx = dx;
     }
 
 }

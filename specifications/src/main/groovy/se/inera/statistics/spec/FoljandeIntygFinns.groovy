@@ -87,7 +87,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
             case ~/^(?i)LUSE$/:
                 return executeForXmlFormatGeneral('/luse.xml', "LUSE");
             case ~/^(?i)LUAE_NA$/:
-                return executeForLuaeNa();
+                return executeForXmlFormatGeneral('/luae_na.xml', "LUAE_NA")
             case ~/^(?i)LUAE_FS$/:
                 return executeForXmlFormatGeneral('/luae_fs.xml', "LUAE_FS");
             case ~/^(?i)LISJP$/:
@@ -99,17 +99,6 @@ class FoljandeIntygFinns extends FoljandeFinns {
             default:
                 throw new RuntimeException("Unknown intyg format requested")
         }
-    }
-
-    private String executeForLuaeNa() {
-        Node result = handleGeneralSit('/luae_na.xml', "LUAE_NA")
-        def intyg = result.value()[0]
-
-        def svarNodes = findNodes(intyg, "svar")
-        setDx(intyg, svarNodes)
-
-        def builder = groovy.xml.XmlUtil.serialize(result)
-        return builder.toString()
     }
 
     private String executeForIllegalIntygFormat() {
@@ -128,6 +117,9 @@ class FoljandeIntygFinns extends FoljandeFinns {
         String intygString = getClass().getResource(filepath).getText('UTF-8')
         def result = slurper.parseText(intygString)
         def intyg = result.value()[0]
+
+        def svarNodes = findNodes(intyg, "svar")
+        setDx(intyg, svarNodes)
 
         def patientNode = findNode(intyg, "patient")
 

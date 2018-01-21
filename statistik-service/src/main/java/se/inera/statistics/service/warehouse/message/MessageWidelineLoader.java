@@ -43,6 +43,7 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.AgeGroup;
+import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.WidelineLoader;
 import se.inera.statistics.service.warehouse.query.MessagesFilter;
@@ -57,8 +58,12 @@ public class MessageWidelineLoader {
     private static final int COLUMN_VARDGIVARE = 3;
 
     private static final int FETCH_SIZE = 10000;
+
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private Icd10 icd10;
 
     public List<CountDTO> getAntalMeddelandenPerMonth(LocalDate from, LocalDate to) {
         return getAntalMeddelandenPerMonth(from, to, null, null);
@@ -107,19 +112,8 @@ public class MessageWidelineLoader {
                 dtos.add(toCountAmne(resultSet));
             }
 
-            final Collection<String> aldersgrupp = filter.getAldersgrupp();
-            if (aldersgrupp != null && !aldersgrupp.isEmpty() && new HashSet<>(aldersgrupp).size() != AgeGroup.values().length) {
-                final List<AgeGroup> ageGroups = aldersgrupp.stream()
-                        .map(AgeGroup::getByName)
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .collect(Collectors.toList());
-                return dtos.stream().filter(countDTOAmne -> {
-                    final int patientAge = countDTOAmne.getPatientAge();
-                    final Optional<AgeGroup> groupForAge = AgeGroup.getGroupForAge(patientAge);
-                    return ageGroups.contains(groupForAge.orElse(null));
-                }).collect(Collectors.toList());
-            }
+            dtos = applyAgeGroupFilter(filter, dtos);
+            dtos = applyDxFilter(filter, dtos);
 
             return dtos;
         } catch (SQLException e) {
@@ -128,6 +122,49 @@ public class MessageWidelineLoader {
 
         return null;
     }
+
+    private List<CountDTOAmne> applyAgeGroupFilter(MessagesFilter filter, List<CountDTOAmne> dtos) {
+        final Collection<String> aldersgrupp = filter.getAldersgrupp();
+        if (aldersgrupp != null && !aldersgrupp.isEmpty() && new HashSet<>(aldersgrupp).size() != AgeGroup.values().length) {
+            final List<AgeGroup> ageGroups = aldersgrupp.stream()
+                    .map(AgeGroup::getByName)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toList());
+            return dtos.stream().filter(countDTOAmne -> {
+                final int patientAge = countDTOAmne.getPatientAge();
+                final Optional<AgeGroup> groupForAge = AgeGroup.getGroupForAge(patientAge);
+                return ageGroups.contains(groupForAge.orElse(null));
+            }).collect(Collectors.toList());
+        }
+        return dtos;
+    }
+
+    private List<CountDTOAmne> applyDxFilter(MessagesFilter filter, List<CountDTOAmne> dtos) {
+        final boolean applyDiagnosFilter = filter.getDiagnoser() != null && !filter.getDiagnoser().isEmpty();
+        if (applyDiagnosFilter) {
+            return dtos.stream().filter(countDTOAmne -> {
+                final String dxString = countDTOAmne.getDx();
+                final Icd10.Id dx = icd10.findFromIcd10Code(dxString);
+                return isDxMatchInCollection(dx, filter.getDiagnoser());
+                }).collect(Collectors.toList());
+            }
+        return dtos;
+    }
+
+    private boolean isDxMatchInCollection(Icd10.Id dx, Collection<String> diagnoser) {
+        Optional<Icd10.Id> dxlevel = Optional.ofNullable(dx);
+        while (dxlevel.isPresent()) {
+            final Icd10.Id currentDx = dxlevel.get();
+            final boolean contains = diagnoser.contains(String.valueOf(currentDx.toInt()));
+            if (contains) {
+                return true;
+            }
+            dxlevel = currentDx.getParent();
+        }
+        return false;
+    }
+
 
     private CountDTOAmne toCountAmne(ResultSet resultSet) throws SQLException {
         CountDTOAmne dto = new CountDTOAmne();
@@ -144,6 +181,7 @@ public class MessageWidelineLoader {
         final int alder = ConversionHelper.extractAlder(patientid, signDate);
         dto.setPatientAge(alder);
         dto.setIntygTyp(resultSet.getString("intygstyp"));
+        dto.setDx(resultSet.getString("dx"));
         return dto;
     }
 
@@ -195,7 +233,7 @@ public class MessageWidelineLoader {
 
         StringBuilder sql = new StringBuilder("SELECT "
                 + "mwl.amnecode, mwl.kon, mwl.amneCode, mwl.enhet AS enhet, mwl.alder, "
-                + "mwl.intygstyp, mwl.patientid, ic.signeringsdatum "
+                + "mwl.intygstyp, mwl.patientid, ic.signeringsdatum, ic.dx "
                 + "FROM messagewideline AS mwl "
                 + "INNER JOIN intygcommon AS ic "
                 + "ON mwl.intygid = ic.intygid "
