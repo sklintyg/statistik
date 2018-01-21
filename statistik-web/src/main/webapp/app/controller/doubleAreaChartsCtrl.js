@@ -118,7 +118,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
                 result.filteredEnhets, result.allAvailableEnhetsSelectedInFilter,
                 result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
                 result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter,
-                result.filter.intygstyp, result.allAvailableIntygTypesSelectedInFilter);
+                result.filter.intygstyper, result.allAvailableIntygTypesSelectedInFilter);
 
             var messages = ControllerCommons.getResultMessageList(result, messageService);
             if (angular.isFunction(config.chartFootnotesExtra)) {

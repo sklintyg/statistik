@@ -18,7 +18,14 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.annotations.VisibleForTesting;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
@@ -32,20 +39,14 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.annotations.VisibleForTesting;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.TableHeader;
-
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 final class XlsxConverter {
     private static final Logger LOG = LoggerFactory.getLogger(XlsxConverter.class);
@@ -121,8 +122,11 @@ final class XlsxConverter {
                 ? Collections.emptyList() : filter.getSjukskrivningslangd();
         final List<String> aldersgrupps = filterSelections.isAllAvailableAgeGroupsSelectedInFilter()
                 ? Collections.emptyList() : filter.getAldersgrupp();
+        final List<String> intygstyper = filterSelections.isAllAvailableIntygTypesSelectedInFilter()
+                ? Collections.emptyList() : filter.getIntygstyper();
 
-        final boolean useSeparateSheetForFilters = isUseSeparateSheetForFilters(enheter, dxs, sjukskrivningslangds, aldersgrupps);
+        final boolean useSeparateSheetForFilters = isUseSeparateSheetForFilters(enheter, dxs, sjukskrivningslangds,
+                aldersgrupps, intygstyper);
         String urvalSheetName = "urval";
         final Sheet sheet = useSeparateSheetForFilters ? dataSheet.getWorkbook().createSheet(urvalSheetName) : dataSheet;
         int currentRow = useSeparateSheetForFilters ? 0 : startRow;
@@ -136,6 +140,7 @@ final class XlsxConverter {
         currentRow = addFilter(sheet, currentRow, getDxNames(dxs), "Sammanställning av diagnosfilter");
         currentRow = addFilter(sheet, currentRow, sjukskrivningslangds, "Sammanställning av sjukskrivningslängdsfilter");
         currentRow = addFilter(sheet, currentRow, aldersgrupps, "Sammanställning av åldersgruppsfilter");
+        currentRow = addFilter(sheet, currentRow, intygstyper, "Sammanställning av intygstyperfilter");
 
         int currentRowDataSheet = useSeparateSheetForFilters ? startRow : currentRow;
         if (useSeparateSheetForFilters) {
@@ -154,11 +159,12 @@ final class XlsxConverter {
     }
 
     private boolean isUseSeparateSheetForFilters(List<String> enheter, List<String> dxs,
-                                                 List<String> sjukskrivningslangds, List<String> aldersgrupps) {
+                                                 List<String> sjukskrivningslangds, List<String> aldersgrupps, List<String> intygstyper) {
         final int totalFilters = (enheter == null ? 0 : enheter.size())
                 + (dxs == null ? 0 : dxs.size())
                 + (sjukskrivningslangds == null ? 0 : sjukskrivningslangds.size())
-                + (aldersgrupps == null ? 0 : aldersgrupps.size());
+                + (aldersgrupps == null ? 0 : aldersgrupps.size())
+                + (intygstyper == null ? 0 : intygstyper.size());
         final int maxFiltersOnDataSheet = 8;
         return totalFilters > maxFiltersOnDataSheet;
     }

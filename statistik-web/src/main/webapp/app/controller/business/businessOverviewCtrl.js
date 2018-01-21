@@ -250,7 +250,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             result.filteredEnhets, result.allAvailableEnhetsSelectedInFilter,
             result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
             result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter,
-            result.filter.intygstyp, result.allAvailableIntygTypesSelectedInFilter);
+            result.filter.intygstyper, result.allAvailableIntygTypesSelectedInFilter);
 
         $timeout(function () {
             updateCharts(result);

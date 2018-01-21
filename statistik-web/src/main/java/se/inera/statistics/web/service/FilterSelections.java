@@ -18,11 +18,11 @@
  */
 package se.inera.statistics.web.service;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class FilterSelections {
 
@@ -38,6 +38,9 @@ public class FilterSelections {
     @JsonProperty(ResponseHandler.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER)
     private boolean allAvailableAgeGroupsSelectedInFilter;
 
+    @JsonProperty(ResponseHandler.ALL_AVAILABLE_INTYGTYPES_SELECTED_IN_FILTER)
+    private boolean allAvailableIntygTypesSelectedInFilter;
+
     @JsonProperty(ResponseHandler.FILTERED_ENHETS)
     private List<String> enhetNames;
 
@@ -45,11 +48,13 @@ public class FilterSelections {
                      boolean allAvailableEnhetsSelectedInFilter,
                      boolean allAvailableSjukskrivningslangdsSelectedInFilter,
                      boolean allAvailableAgeGroupsSelectedInFilter,
+                     boolean allAvailableIntygTypesSelectedInFilter,
                      List<String> enhetNames) {
         this.allAvailableDxsSelectedInFilter = allAvailableDxsSelectedInFilter;
         this.allAvailableEnhetsSelectedInFilter = allAvailableEnhetsSelectedInFilter;
         this.allAvailableSjukskrivningslangdsSelectedInFilter = allAvailableSjukskrivningslangdsSelectedInFilter;
         this.allAvailableAgeGroupsSelectedInFilter = allAvailableAgeGroupsSelectedInFilter;
+        this.allAvailableIntygTypesSelectedInFilter = allAvailableIntygTypesSelectedInFilter;
         this.enhetNames = enhetNames == null ? Collections.emptyList() : new ArrayList<>(enhetNames);
     }
 
@@ -67,6 +72,10 @@ public class FilterSelections {
 
     public boolean isAllAvailableAgeGroupsSelectedInFilter() {
         return allAvailableAgeGroupsSelectedInFilter;
+    }
+
+    public boolean isAllAvailableIntygTypesSelectedInFilter() {
+        return allAvailableIntygTypesSelectedInFilter;
     }
 
     public List<String> getEnhetNames() {

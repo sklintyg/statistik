@@ -109,12 +109,12 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.populateActiveIntygstypFilter = function(scope, filterHash, intygstyp, isAllAvailableIntygsTypesSelectedInFilter) {
-            scope.activeIntygstypFilter = null;
+            scope.activeIntygstypFilters = null;
             if (isAllAvailableIntygsTypesSelectedInFilter) {
                 return;
             }
             if (intygstyp && intygstyp.length > 0) {
-                scope.activeIntygstypFilter = intygstyp;
+                scope.activeIntygstypFilters = intygstyp;
             }
         };
 
