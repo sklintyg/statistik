@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public enum IntygType {
 
@@ -69,6 +70,10 @@ public enum IntygType {
         return includeInIntygtypFilter;
     }
 
+    public static Optional<IntygType> getByName(String name) {
+        return Arrays.stream(values()).filter(group -> group.text.equalsIgnoreCase(name)).findFirst();
+    }
+
     public static IntygType parseString(String stringType) {
         for (IntygType intygType : values()) {
             if (intygType.name().equalsIgnoreCase(stringType)) {
@@ -111,6 +116,12 @@ public enum IntygType {
             return Arrays.asList(IntygType.FK7263, IntygType.LISJP);
         }
         return Collections.singleton(this);
+    }
+
+    public static Collection<IntygType> getInIntygtypFilter() {
+        return Arrays.stream(IntygType.values())
+                .filter(IntygType::isIncludeInIntygtypFilter)
+                .collect(Collectors.toList());
     }
 
 }

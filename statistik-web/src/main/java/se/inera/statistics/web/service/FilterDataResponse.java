@@ -34,26 +34,29 @@ public class FilterDataResponse {
     private List<String> enheter;
     private List<String> sjukskrivningslangd;
     private List<String> aldersgrupp;
+    private List<String> intygstyper;
 
     // To be used by json converter
     private FilterDataResponse() {
     }
 
     FilterDataResponse(String filterhash, Collection<String> diagnoser, Collection<HsaIdEnhet> enheter,
-            Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp) {
+            Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp, Collection<String> intygstyper) {
         this.filterhash = filterhash;
         this.diagnoser = diagnoser == null ? null : Collections.unmodifiableList(new ArrayList<>(diagnoser));
         this.sjukskrivningslangd = sjukskrivningslangd == null ? null : Collections.unmodifiableList(new ArrayList<>(sjukskrivningslangd));
         this.aldersgrupp = aldersgrupp == null ? null : Collections.unmodifiableList(new ArrayList<>(aldersgrupp));
+        this.intygstyper = intygstyper == null ? null : Collections.unmodifiableList(new ArrayList<>(intygstyper));
         this.enheter = enheter == null ? null : Lists.transform(new ArrayList<>(enheter), hsaId -> hsaId.getId());
     }
 
     public FilterDataResponse(Filter filter) {
-        this(filter.getFilterHash(), filter.getDiagnoser(), filter.getEnheter(), filter.getSjukskrivningslangd(), filter.getAldersgrupp());
+        this(filter.getFilterHash(), filter.getDiagnoser(), filter.getEnheter(), filter.getSjukskrivningslangd(),
+                filter.getAldersgrupp(), filter.getIntygstyper());
     }
 
     public static FilterDataResponse empty() {
-        return new FilterDataResponse(null, null, null, null, null);
+        return new FilterDataResponse(null, null, null, null, null, null);
     }
 
     public List<String> getDiagnoser() {
@@ -70,6 +73,10 @@ public class FilterDataResponse {
 
     public List<String> getAldersgrupp() {
         return aldersgrupp;
+    }
+
+    public List<String> getIntygstyper() {
+        return intygstyper;
     }
 
     public String getFilterhash() {

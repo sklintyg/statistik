@@ -18,20 +18,6 @@
  */
 package se.inera.statistics.service.warehouse.message;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.ConversionHelper;
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.util.AgeGroup;
-import se.inera.statistics.service.warehouse.IntygType;
-import se.inera.statistics.service.warehouse.WidelineLoader;
-import se.inera.statistics.service.warehouse.query.MessagesFilter;
-
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,6 +31,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.ConversionHelper;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.util.AgeGroup;
+import se.inera.statistics.service.warehouse.IntygType;
+import se.inera.statistics.service.warehouse.WidelineLoader;
+import se.inera.statistics.service.warehouse.query.MessagesFilter;
 
 @Component
 public class MessageWidelineLoader {
@@ -214,7 +215,7 @@ public class MessageWidelineLoader {
         final Collection<String> intygstyper = filter.getIntygstyper();
         if (intygstyper != null && !intygstyper.isEmpty()) {
             List<IntygType> intygTypeFilter =  filter.getIntygstyper().stream()
-                    .map(IntygType::parseStringOptional).filter(Optional::isPresent).map(Optional::get)
+                    .map(IntygType::getByName).filter(Optional::isPresent).map(Optional::get)
                     .flatMap(intygType -> intygType.getUnmappedTypes().stream())
                     .collect(Collectors.toList());
             String intygstyperSql = intygTypeFilter.stream().map(Enum::name).collect(Collectors.joining("' , '"));

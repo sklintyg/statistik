@@ -132,10 +132,10 @@ public class XlsxConverterTest {
         final TableDataReport tableData = Mockito.mock(TableDataReport.class);
         final TableData data = new TableData(dataList, Arrays.asList(Arrays.asList(new TableHeader("th"))));
         Mockito.when(tableData.getTableData()).thenReturn(data);
-        Mockito.when(tableData.getFilter()).thenReturn(new FilterDataResponse("", null, enhetsfilter, null, null));
+        Mockito.when(tableData.getFilter()).thenReturn(new FilterDataResponse("", null, enhetsfilter, null, null, null));
         Mockito.when(tableData.getPeriod()).thenReturn(period);
 
-        final FilterSelections filterSelections = new FilterSelections(false, false, false, false, testEnhet);
+        final FilterSelections filterSelections = new FilterSelections(false, false, false, false, false, testEnhet);
         xlsxConverter.addData(workbook, tableData, filterSelections, report);
         return cellTexts;
     }

@@ -39,6 +39,7 @@ import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
+import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
@@ -60,6 +61,7 @@ public class ResponseHandler {
     public static final String ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER = "allAvailableEnhetsSelectedInFilter";
     public static final String ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER = "allAvailableSjukskrivningslangdsSelectedInFilter";
     public static final String ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER = "allAvailableAgeGroupsSelectedInFilter";
+    public static final String ALL_AVAILABLE_INTYGTYPES_SELECTED_IN_FILTER = "allAvailableIntygTypesSelectedInFilter";
     public static final String FILTERED_ENHETS = "filteredEnhets";
     public static final int LIMIT_FOR_TOO_MUCH_DATA_MESSAGE = 100;
     public static final String MESSAGE_KEY = "messages";
@@ -159,11 +161,15 @@ public class ResponseHandler {
         final boolean allAvailableAgeGroupsSelectedInFilter = result == null
                 || areAllAvailableAgeGroupsSelectedInFilter(result.getFilter());
 
+        final boolean allAvailableIntygTypesSelectedInFilter = result == null
+                || areAllAvailableIntygTypesSelectedInFilter(result.getFilter());
+
         final List<String> enhetNames = allAvailableEnhetsSelectedInFilter ? getEnhetNames(availableEnhetsForUser)
                 : getEnhetNamesFromFilter(result.getFilter());
 
         return new FilterSelections(allAvailableDxsSelectedInFilter, allAvailableEnhetsSelectedInFilter,
-                allAvailableSjukskrivningslangdsSelectedInFilter, allAvailableAgeGroupsSelectedInFilter, enhetNames);
+                allAvailableSjukskrivningslangdsSelectedInFilter, allAvailableAgeGroupsSelectedInFilter,
+                allAvailableIntygTypesSelectedInFilter, enhetNames);
     }
 
     private boolean filterActive(FilterDataResponse filter, FilterSelections filterSelections) {
@@ -176,8 +182,10 @@ public class ResponseHandler {
         boolean enhets = filterSelections.isAllAvailableEnhetsSelectedInFilter() || filter.getEnheter().isEmpty();
         boolean sjukskrivningslangd = filterSelections.isAllAvailableSjukskrivningslangdsSelectedInFilter()
                 || filter.getSjukskrivningslangd().isEmpty();
+        boolean intystyper = filterSelections.isAllAvailableIntygTypesSelectedInFilter()
+                || filter.getIntygstyper().isEmpty();
 
-        return !(aldersGrupp && dxs && enhets && sjukskrivningslangd);
+        return !(aldersGrupp && dxs && enhets && sjukskrivningslangd && intystyper);
     }
 
     private boolean containsMoreDataThanLimit(TableDataReport detailReport, int limitForTooMuchDataMessage) {
@@ -237,6 +245,20 @@ public class ResponseHandler {
             return false;
         }
         return aldersgrupp.stream().allMatch(s -> AgeGroup.getByName(s).isPresent());
+    }
+
+    private boolean areAllAvailableIntygTypesSelectedInFilter(FilterDataResponse filter) {
+        if (filter == null) {
+            return true;
+        }
+        final List<String> intygstyper = filter.getIntygstyper();
+        if (intygstyper == null) {
+            return true;
+        }
+        if (new HashSet<>(intygstyper).size() != IntygType.getInIntygtypFilter().size()) {
+            return false;
+        }
+        return intygstyper.stream().allMatch(s -> IntygType.getByName(s).isPresent());
     }
 
     private boolean areAllAvailableDxsSelectedInFilter(FilterDataResponse filter) {

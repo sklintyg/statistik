@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.web.service;
 
+import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -34,17 +36,13 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
-
-import com.google.common.collect.Sets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Sets;
 import com.sun.istack.NotNull;
-
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -56,6 +54,7 @@ import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.FilterPredicates;
+import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
@@ -191,13 +190,28 @@ public class FilterHandler {
         final boolean sjukfallangdfilterActive = !sjukskrivningslangds.isEmpty();
         final FilterPredicates sjukfallFilter = new FilterPredicates(predicate, sjukfallLengthFilter, hash, sjukfallangdfilterActive);
         final Filter filter = new Filter(sjukfallFilter, enhetsIDs, diagnoser, filterDataToReadableSjukskrivningslangdName(inFilter),
-                toReadableAgeGroupNames(aldersgrupp), filterHash, inFilter.getIntygstyper());
+                toReadableAgeGroupNames(aldersgrupp), filterHash, filterDataToReadableIntygTypeName(inFilter));
         final RangeMessageDTO rangeMessageDTO = getRange(inFilter, defaultRangeValue);
         return new FilterSettings(filter, rangeMessageDTO);
     }
 
     private String getHash(String filterHash, Collection<HsaIdEnhet> enhetsIDs) {
         return filterHash + enhetsIDs.stream().map(HsaIdAny::getId).collect(Collectors.joining());
+    }
+
+    private List<String> filterDataToReadableIntygTypeName(FilterData inFilter) {
+        return toReadableIntygTypeName(inFilter.getIntygstyper());
+    }
+
+    private List<String> toReadableIntygTypeName(List<String> intygstyper) {
+        if (intygstyper == null) {
+            return IntygType.getInIntygtypFilter().stream().map(IntygType::getText).collect(Collectors.toList());
+        }
+        return intygstyper.stream()
+                .map(intygstyp -> IntygType.parseStringOptional(intygstyp)
+                        .flatMap(slg -> Optional.of(slg.getText()))
+                        .orElse(intygstyp))
+                .collect(Collectors.toList());
     }
 
     private List<String> filterDataToReadableSjukskrivningslangdName(FilterData inFilter) {
@@ -310,7 +324,8 @@ public class FilterHandler {
                 hashValue, false);
         final List<String> sjukskrivningslangd = toReadableSjukskrivningslangdName(null);
         final List<String> aldersgrupp = toReadableAgeGroupNames(null);
-        return new Filter(predicate, enhetsAsHsaIds, null, sjukskrivningslangd, aldersgrupp, hashValue, null);
+        final List<String> intygstyper = toReadableIntygTypeName(null);
+        return new Filter(predicate, enhetsAsHsaIds, null, sjukskrivningslangd, aldersgrupp, hashValue, intygstyper);
     }
 
     private Filter getFilterForAllAvailableEnhets(HttpServletRequest request) {
@@ -318,7 +333,7 @@ public class FilterHandler {
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         if (info.getLoginInfoForVg(vgId).map(LoginInfoVg::isProcessledare).orElse(false)) {
             return new Filter(SjukfallUtil.ALL_ENHETER, null, null, toReadableSjukskrivningslangdName(null), toReadableAgeGroupNames(null),
-                    FilterPredicates.HASH_EMPTY_FILTER, null);
+                    FilterPredicates.HASH_EMPTY_FILTER, toReadableIntygTypeName(null));
         }
         List<HsaIdEnhet> hsaIds = info.getBusinessesForVg(vgId).stream().map(Verksamhet::getId).collect(Collectors.toList());
         final Set<Integer> availableEnhets = hsaIds.stream().map(Warehouse::getEnhet).collect(Collectors.toSet());

@@ -231,8 +231,7 @@ public class LoginServiceUtil {
         final Map<String, String> ageGroups = Arrays
                 .stream(AgeGroup.values())
                 .collect(toMap(Enum::name, AgeGroup::getGroupName));
-        final Map<String, String> intygTypes = Arrays.stream(IntygType.values())
-                .filter(IntygType::isIncludeInIntygtypFilter)
+        final Map<String, String> intygTypes = IntygType.getInIntygtypFilter().stream()
                 .collect(toMap(Enum::name, IntygType::getText));
 
         final List<Icd> icdStructure = icd10.getIcdStructure();

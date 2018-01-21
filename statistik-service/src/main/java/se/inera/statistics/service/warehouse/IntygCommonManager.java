@@ -18,11 +18,29 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.collect.HashMultiset;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.google.common.collect.HashMultiset;
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -41,23 +59,6 @@ import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.inera.statistics.service.warehouse.query.CounterFunctionIntyg;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.Root;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 public class IntygCommonManager {
@@ -210,7 +211,7 @@ public class IntygCommonManager {
         final List<IntygType> allIntygTypes = Arrays.asList(IntygType.values());
         List<IntygType> intygTypeFilter = intygFilter.getIntygstyper() != null && !intygFilter.getIntygstyper().isEmpty()
                 ? intygFilter.getIntygstyper().stream()
-                    .map(IntygType::parseStringOptional).filter(Optional::isPresent).map(Optional::get)
+                    .map(IntygType::getByName).filter(Optional::isPresent).map(Optional::get)
                     .flatMap(intygType -> intygType.getUnmappedTypes().stream())
                     .collect(Collectors.toList())
                 : allIntygTypes;
