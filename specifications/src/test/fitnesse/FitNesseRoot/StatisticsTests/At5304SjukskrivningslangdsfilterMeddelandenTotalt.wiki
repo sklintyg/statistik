@@ -1,10 +1,8 @@
 ---
-Prune
 Test
 ---
-''!contents -R2 -g -p -f -h''
+Givet att:
 
-!3 Givet att:
 Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
 
 | script | dagens datum | 2014-11-06 |
@@ -38,11 +36,11 @@ Inloggad:
 | user1 | 2014 | feb | Avstämningsmöte | Under 15 dagar, Över 365 dagar | 0 | 0 |
 | user1 | 2014 | mar | Komplettering | Under 15 dagar, Över 365 dagar | 0 | 0 |
 | user1 | 2014 | mar | Avstämningsmöte | Under 15 dagar, Över 365 dagar | 0 | 1 |
-| user1 | 2014 | apr | Komplettering | Under 15 dagar, Över 365 dagar | 1 | 0 |
+| user1 | 2014 | apr | Komplettering | Under 15 dagar, Över 365 dagar | 2 | 0 |
 | user1 | 2014 | apr | Avstämningsmöte | Under 15 dagar, Över 365 dagar | 0 | 0 |
 | user1 | 2014 | maj | Komplettering | Under 15 dagar, Över 365 dagar | 0 | 0 |
 | user1 | 2014 | maj | Avstämningsmöte | Under 15 dagar, Över 365 dagar | 0 | 0 |
-| user1 | 2014 | jun | Komplettering | Under 15 dagar, Över 365 dagar | 2 | 0 |
+| user1 | 2014 | jun | Komplettering | Under 15 dagar, Över 365 dagar | 1 | 0 |
 | user1 | 2014 | jun | Avstämningsmöte | Under 15 dagar, Över 365 dagar | 1 | 0 |
 | user1 | 2014 | jul | Komplettering | Under 15 dagar, Över 365 dagar | 0 | 0 |
 | user1 | 2014 | jul | Avstämningsmöte | Under 15 dagar, Över 365 dagar | 0 | 0 |

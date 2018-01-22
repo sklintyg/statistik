@@ -2,8 +2,7 @@
 Prune
 Test
 ---
-Givet att:
-
+!3 Givet att:
 Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
 
 | script | dagens datum | 2014-11-06 |
@@ -11,9 +10,9 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| intygid | personnr | diagnoskod | intygformat | enhet |
-| 1001 | 19790717-9191 | G01 | LUSE | enhet1 |
-| 1002 | 19550717-9111 | G01 | LUSE | enhet2 |
+| intygid | personnr | signeringstid | diagnoskod | intygformat | enhet |
+| 1001 | 19790717-9191 | 2014-04-05T10:00:00  | G01 | LUSE | enhet1 |
+| 1002 | 19550717-9111 | 2014-06-03T10:00:00 | G01 | LUSE | enhet2 |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |

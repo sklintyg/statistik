@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 Givet att:
@@ -24,11 +23,10 @@ Två intyg för två olika patienter utfärdade på två olika enheter inom samm
 !3 Då gäller:
 Inloggad:
 
-
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
 | inloggad som | vårdenhet | grupp | filter intygstyp | totalt? | män? | kvinnor? |
 | user2 | enhet1 | Komplettering | | 2 | 2 | 0 |
-| user2 | enhet1 | Komplettering | LUSE | 0 | 0 | 0 |
+| user2 | enhet1 | Komplettering | LUSE | -1 | -1 | -1 |
 | user2 | enhet1 | Komplettering | SJUKPENNING, LUAE_NA, LUSE, LUAE_FS | 2 | 2 | 0 |
 | user2 | enhet2 | Komplettering | | 1 | 1 | 0 |
 | user2 | enhet2 | Komplettering | LUSE | 1 | 1 | 0 |
