@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 ''!contents -R2 -g -p -f -h''
@@ -38,11 +37,11 @@ Nationell:
 | 2014 | feb | Avstämningsmöte | 0 | 0 |
 | 2014 | mar | Komplettering | 0 | 0 |
 | 2014 | mar | Avstämningsmöte | 0 | 1 |
-| 2014 | apr | Komplettering | 1 | 0 |
+| 2014 | apr | Komplettering | 2 | 0 |
 | 2014 | apr | Avstämningsmöte | 0 | 0 |
 | 2014 | maj | Komplettering | 0 | 0 |
 | 2014 | maj | Avstämningsmöte | 0 | 0 |
-| 2014 | jun | Komplettering | 2 | 0 |
+| 2014 | jun | Komplettering | 1 | 0 |
 | 2014 | jun | Avstämningsmöte | 1 | 0 |
 | 2014 | jul | Komplettering | 0 | 0 |
 | 2014 | jul | Avstämningsmöte | 0 | 0 |
@@ -55,11 +54,11 @@ Inloggad:
 | user1 | 2014 | feb | Avstämningsmöte | 0 | 0 |
 | user1 | 2014 | mar | Komplettering | 0 | 0 |
 | user1 | 2014 | mar | Avstämningsmöte | 0 | 1 |
-| user1 | 2014 | apr | Komplettering | 1 | 0 |
+| user1 | 2014 | apr | Komplettering | 2 | 0 |
 | user1 | 2014 | apr | Avstämningsmöte | 0 | 0 |
 | user1 | 2014 | maj | Komplettering | 0 | 0 |
 | user1 | 2014 | maj | Avstämningsmöte | 0 | 0 |
-| user1 | 2014 | jun | Komplettering | 2 | 0 |
+| user1 | 2014 | jun | Komplettering | 1 | 0 |
 | user1 | 2014 | jun | Avstämningsmöte | 1 | 0 |
 | user1 | 2014 | jul | Komplettering | 0 | 0 |
 | user1 | 2014 | jul | Avstämningsmöte | 0 | 0 |

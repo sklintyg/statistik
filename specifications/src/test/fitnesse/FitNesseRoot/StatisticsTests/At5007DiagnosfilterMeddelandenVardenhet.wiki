@@ -1,8 +1,8 @@
 ---
-Prune
 Test
 ---
-!3 Givet att:
+Givet att:
+
 Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
 
 | script | dagens datum | 2014-11-06 |
@@ -28,7 +28,7 @@ Inloggad:
 
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
 | inloggad som | vårdenhet | grupp | filter kapitel | filter avsnitt | filter kategorier | totalt? | män? | kvinnor? |
-| user2 | enhet1 | Komplettering | G00-G99 | | | -1 | -1 | -1 |
+| user2 | enhet1 | Komplettering | G00-G99 | | | 1 | 1 | 0 |
 | user2 | enhet1 | Komplettering | | G00-G09 | | 1 | 1 | 0 |
 | user2 | enhet1 | Komplettering | | | G09 | -1 | -1 | -1 |
 | user2 | enhet1 | Avstämningsmöte | A00-B99, G00-G99 | | | 2 | 1 | 0 |

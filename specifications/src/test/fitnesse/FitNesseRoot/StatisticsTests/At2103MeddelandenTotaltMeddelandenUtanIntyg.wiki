@@ -1,10 +1,8 @@
 ---
-Prune
 Test
 ---
-''!contents -R2 -g -p -f -h''
+Givet att:
 
-!3 Givet att:
 Det finns ett meddelande vars intyg inte har kommit fram till intygsstatistik
 
 | script | dagens datum | 2014-11-06 |
@@ -42,8 +40,8 @@ Inloggad:
 Intyget som saknades kommer in och vi har läst igenom meddelande-loggen 3 gånger.
 
 | Foljande intyg finns |
-| intygid | personnr | diagnoskod | intygformat | enhet |
-| 1003 | 19591230-1254 | G01 | LUSE | enhet1 |
+| intygid | personnr | signeringstid | diagnoskod | intygformat | enhet |
+| 1003 | 19591230-1254 | 2014-06-03T10:00:00 | G01 | LUSE | enhet1 |
 
 | script | process meddelanden | 3 |
 
