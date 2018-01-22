@@ -184,10 +184,13 @@ class FoljandeIntygFinns extends FoljandeFinns {
     }
 
     private void setDx(intyg, svarNodes) {
+        def svar6 = svarNodes.find { it.@id == "6" }
         if ("UTANDIAGNOSKOD".equalsIgnoreCase(diagnoskod)) {
-            intyg.remove(svarNodes.find { it.@id == "6" })
+            if (svar6 != null) {
+                intyg.remove(svar6)
+            }
         } else {
-            def dxCodeSvarNode = svarNodes.find { it.@id == "6" }
+            def dxCodeSvarNode = svar6
             def dxCodeNode = dxCodeSvarNode.find { it.@id == "6.2" }.value()[0]
             setLeafValue(dxCodeNode, "code", diagnoskod)
         }
