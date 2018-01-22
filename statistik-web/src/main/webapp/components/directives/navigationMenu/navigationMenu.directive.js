@@ -234,7 +234,7 @@
                 id: 'navBusinessIntygPerTypeLink',
                 link: '#/verksamhet/intygPerTyp',
                 name: 'nav.intygpertyp',
-                ctrl: 'VerksamhetIntygPerTypCtrl'
+                ctrl: 'VerksamhetIntygPerTypePerMonthCtrl'
             }]
         };
 
