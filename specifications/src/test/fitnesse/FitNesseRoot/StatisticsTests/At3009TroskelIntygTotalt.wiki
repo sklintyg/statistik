@@ -1,7 +1,8 @@
 ---
 Test
 ---
-!contents -R2 -g -p -f -h
+''!contents -R2 -g -p -f -h''
+
 !3 Givet att:
 Det finns 5 sjukfall för vg1; 3 kvinnor och 2 män.
 Det finns 6 sjukfall för vg3; 1 kvinna och 5 män.

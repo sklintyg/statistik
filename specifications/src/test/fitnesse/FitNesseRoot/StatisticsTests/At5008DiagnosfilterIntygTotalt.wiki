@@ -1,0 +1,32 @@
+---
+Test
+---
+!3 Givet att:
+| script | dagens datum | 2015-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | signeringstid | diagnoskod | enhet | intygformat |
+| 19790219-9285 | 2015-02-10T12:24:15 | G01 | enhet1 | LISJP |
+| 19790219-9285 | 2015-02-12T12:25:15 | A41 | enhet1 | LISJP |
+| 19790429-9272 | 2015-03-10T12:25:15 | G01 | enhet1 | LISJP |
+| 19790329-9256 | 2015-03-10T12:25:15 | A41 | enhet1 | LISJP |
+| 19790529-9289 | 2015-03-10T12:25:15 | A41 | enhet1 | LISJP |
+| 19790629-9234 | 2015-03-10T12:25:15 | A41 | enhet1 | LISJP |
+
+!3 Då gäller:
+Statistiken baseras på alla intygstyper och dess signeringstidpunkt. Det spelar ingen roll om det finns flera intyg för samma patient. Varje intyg räknas alltid en gång även om de tillhör samma sjukfall.
+
+Inloggad:
+
+| Intyg i rapporten intyg totalt |
+| inloggad som | år | månad | grupp | filter kapitel | filter avsnitt | filter kategorier | män? | kvinnor? |
+| user1 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | | | | 0 | 2 |
+| user1 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | G00-G99 | | | 0 | 1 |
+| user1 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | | G90-G99 | | 0 | 0 |
+| user1 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | | | G01 | 0 | 1 |
+| user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | | | | 3 | 1 |
+| user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | G00-G99 | | | 1 | 0 |
+| user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | | G90-G99 | | 0 | 0 |
+| user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | | | G01, A41 | 3 | 1 |
