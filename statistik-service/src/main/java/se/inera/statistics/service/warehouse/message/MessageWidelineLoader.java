@@ -165,7 +165,6 @@ public class MessageWidelineLoader {
         return false;
     }
 
-
     private CountDTOAmne toCountAmne(ResultSet resultSet) throws SQLException {
         CountDTOAmne dto = new CountDTOAmne();
 
