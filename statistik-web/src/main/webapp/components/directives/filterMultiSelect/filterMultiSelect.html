@@ -1,0 +1,23 @@
+<div
+    class="margin-right {{::vm.styleClass}}"
+    data-ng-if="vm.isDisabled">
+  <button
+      type="button"
+      class="btn btn-default disabled"
+      uib-tooltip="{{::'lbl.filter.inactive' | messageFilter}}">
+    <i class="fa {{::vm.icon}}"></i> {{::vm.label | messageFilter}}
+  </button>
+</div>
+
+<div
+    class="margin-right {{::vm.styleClass}}"
+    data-ng-class="{'filter-active': vm.model.length > 0}"
+    data-ng-if="!vm.isDisabled">
+  <select
+      ng-model="vm.model"
+      multiple="multiple"
+      ng-options="value.id as value.name for value in vm.options"
+      multiselect-dropdown="{{::vm.label | messageFilter}}"
+      multiselect-dropdown-icon="{{::vm.icon}}">
+  </select>
+</div>
