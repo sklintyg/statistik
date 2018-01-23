@@ -352,7 +352,7 @@ public class ProtectedLandstingService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getMeddelandenPerAmnePerEnhetTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+    public Response getMeddelandenPerAmnePerEnhetTvarsnitt(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash,
                                                            @QueryParam("format") String format) {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
@@ -367,7 +367,7 @@ public class ProtectedLandstingService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    public Response getNumberOfIntygPerTypePerMonthLandsting(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+    public Response getNumberOfIntygPerTypePerMonthLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash,
                                                     @QueryParam("format") String format) {
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
