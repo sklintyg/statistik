@@ -118,7 +118,7 @@
             subMenu: [{
                 id: 'navNationalIntygPerTypeLink',
                 link: '#/nationell/intygPerTyp',
-                name: 'nav.intygpertyp.nationell',
+                name: 'nav.intygpertyp',
                 ctrl: 'NationalIntygPerTypCtrl'
             }]
         };
