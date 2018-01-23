@@ -109,7 +109,9 @@ describe('Test of common print services', function() {
 
         it('set grey color on none sex series', function () {
             //given
-            var list = [{id: 1, sex: 'MALE'}, {id: 2, sex: 'FEMALE'}, {id: 2, sex: null}];
+            var list = [{id: 1, name: 'Män', sex: 'MALE'},
+                {id: 2, name: 'Kvinnor', sex: 'FEMALE'},
+                {id: 3, name: 'Totalt', sex: null}];
 
             //when
             chartFactory.addColor(list);

@@ -78,7 +78,9 @@ public class MessageAmnePerEnhetConverter extends MultiDualSexConverter {
     private Map<String, String> convertGroupNamesToTextAndColorMap(List<MsgAmne> groups, List<String[]> separatedGroups) {
         final Map<String, String> colors = new LinkedHashMap<>();
         for (int i = 0; i < groups.size(); i++) {
-            colors.put(separatedGroups.get(i)[0] + MessagesQuery.GROUP_NAME_SEPARATOR + groups.get(i).getText(), groups.get(i).getColor().getColor());
+            final String name = separatedGroups.get(i)[0] + MessagesQuery.GROUP_NAME_SEPARATOR + groups.get(i).getText();
+            final String color = groups.get(i).getColor().getColor();
+            colors.put(name, color);
         }
         return colors;
     }
