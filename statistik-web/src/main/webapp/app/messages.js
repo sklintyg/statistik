@@ -42,7 +42,6 @@ var stMessages = {
         'nav.meddelandenperamne': 'Meddelanden, totalt',
         'nav.meddelandenperamneochenhet': 'Meddelanden, vårdenhet',
         'nav.intygpertyp': 'Intyg, totalt',
-        'nav.intygpertyp.nationell': 'Intygstyp',
 
         //labels
         'lbl.mobile-menu': 'Meny',
