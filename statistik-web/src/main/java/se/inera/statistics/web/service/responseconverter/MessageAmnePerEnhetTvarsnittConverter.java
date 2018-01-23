@@ -39,7 +39,7 @@ public class MessageAmnePerEnhetTvarsnittConverter extends MultiDualSexConverter
     }
 
     private static final Map<String, String> COLORS = Arrays.stream(MsgAmne.values())
-            .collect(Collectors.toMap(Enum::name, msgAmne -> msgAmne.getColor().getColor()));
+            .collect(Collectors.toMap(MsgAmne::getText, msgAmne -> msgAmne.getColor().getColor()));
 
     public SimpleDetailsData convert(KonDataResponse data, FilterSettings filterSettings) {
         final List<MsgAmne> groups = data.getGroups().stream().map(MsgAmne::parse).collect(Collectors.toList());

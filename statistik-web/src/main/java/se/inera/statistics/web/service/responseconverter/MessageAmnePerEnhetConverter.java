@@ -19,12 +19,11 @@
 package se.inera.statistics.web.service.responseconverter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
@@ -42,9 +41,6 @@ public class MessageAmnePerEnhetConverter extends MultiDualSexConverter {
         super("Antal meddelanden totalt", "Enhet");
     }
 
-    private static final Map<String, String> COLORS = Arrays.stream(MsgAmne.values())
-            .collect(Collectors.toMap(Enum::name, msgAmne -> msgAmne.getColor().getColor()));
-
     public SimpleDetailsData convert(KonDataResponse data, FilterSettings filterSettings) {
         final List<String[]> separatedGroups = data.getGroups().stream()
                 .map(s -> s.split(MessagesQuery.GROUP_NAME_SEPARATOR)).collect(Collectors.toList());
@@ -55,8 +51,10 @@ public class MessageAmnePerEnhetConverter extends MultiDualSexConverter {
             removeGroupWithIndex(indexOfEmptyInternalIcd10Group, amnes, rows, separatedGroups);
             indexOfEmptyInternalIcd10Group = getIndexOfGroupToRemove(amnes, rows);
         }
-        final KonDataResponse konDataResponse = new KonDataResponse(convertGroupNamesToText(amnes, separatedGroups), rows);
-        final DualSexStatisticsData dssd = super.convert(konDataResponse, filterSettings, null, "%1$s", COLORS);
+        final Map<String, String> groupsAndColors = convertGroupNamesToTextAndColorMap(amnes, separatedGroups);
+        final ArrayList<String> groups = new ArrayList<>(groupsAndColors.keySet());
+        final KonDataResponse konDataResponse = new KonDataResponse(groups, rows);
+        final DualSexStatisticsData dssd = super.convert(konDataResponse, filterSettings, null, "%1$s", groupsAndColors);
         final ChartData chartData = merge(dssd.getFemaleChart(), dssd.getMaleChart());
         return new SimpleDetailsData(dssd.getTableData(), chartData, dssd.getPeriod(), dssd.getFilter(), dssd.getMessages());
     }
@@ -77,12 +75,12 @@ public class MessageAmnePerEnhetConverter extends MultiDualSexConverter {
         return new ChartData(series, femaleChart.getCategories());
     }
 
-    private List<String> convertGroupNamesToText(List<MsgAmne> groups, List<String[]> separatedGroups) {
-        final List<String> groupNames = Lists.newArrayListWithCapacity(groups.size());
+    private Map<String, String> convertGroupNamesToTextAndColorMap(List<MsgAmne> groups, List<String[]> separatedGroups) {
+        final Map<String, String> colors = new LinkedHashMap<>();
         for (int i = 0; i < groups.size(); i++) {
-             groupNames.add(separatedGroups.get(i)[0] + MessagesQuery.GROUP_NAME_SEPARATOR + groups.get(i).getText());
+            colors.put(separatedGroups.get(i)[0] + MessagesQuery.GROUP_NAME_SEPARATOR + groups.get(i).getText(), groups.get(i).getColor().getColor());
         }
-        return groupNames;
+        return colors;
     }
 
     private int getIndexOfGroupToRemove(List<MsgAmne> data, List<KonDataRow> rows) {
