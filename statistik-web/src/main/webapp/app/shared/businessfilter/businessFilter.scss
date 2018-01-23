@@ -36,6 +36,10 @@ business-filter, landsting-filter {
   .dateintervall-dropdown {
     min-width: 470px;
     padding: 10px;
+
+    button {
+      margin-top: 0;
+    }
   }
 
   .bottom-buttons {
