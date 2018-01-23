@@ -59,7 +59,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
                 stacked: chartTypeInfo.stacked,
                 verticalLabel: config.chartVerticalLabel,
                 labelMaxLength: config.chartLabelLength,
-                unit: 'sjukfall'
+                unit: config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall'
             };
 
 
