@@ -99,7 +99,7 @@ var app = angular.module('StatisticsApp')
                 controller: 'doubleAreaChartsCtrl',
                 controllerAs: 'NationalMeddelandenPerAmneCtrl',
                 resolve: { config: app.meddelandenPerAmneConfig },
-                title: 'nav.meddelandenPerAmne'
+                title: 'nav.meddelandenperamne'
             }).when('/nationell/intygPerTyp', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
@@ -383,7 +383,7 @@ var app = angular.module('StatisticsApp')
                 controller: 'doubleAreaChartsCtrl',
                 controllerAs: 'LandstingMeddelandenPerAmneCtrl',
                 resolve: { config: app.meddelandenPerAmneLandstingConfig },
-                title: 'nav.meddelandenPerAmne'
+                title: 'nav.meddelandenperamne'
             }).when('/landsting/meddelandenPerAmneOchEnhet', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
