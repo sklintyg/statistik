@@ -4,7 +4,7 @@
       class="btn-group margin-right"
       uib-dropdown auto-close="outsideClick" is-open="isDateSelectOpen">
     <button id="select-dateintervall" data-ng-class="{'filter-active-btn': businessFilter.fromDate != null && businessFilter.toDate != null }" type="button" class="btn btn-default" uib-dropdown-toggle>
-      <i class="fa fa-clock-o"></i> Tidsintervall
+      <i class="fa fa-clock-o"></i> {{::'lbl.filter.btn.datumintervall' | messageFilter}}
     </button>
     <div class="dropdown-menu dateintervall-dropdown" uib-dropdown-menu>
       <div class="margin-right">
@@ -123,46 +123,31 @@
       sidebar-state="sidebarStateDiagnose">
   </tree-multi-selector>
 
-  <div
-      class="margin-right select-aldersgrupp"
-      data-ng-class="{'filter-active': businessFilter.selectedAldersgruppIds.length > 0}">
-    <select
-        ng-model="businessFilter.selectedAldersgruppIds"
-        multiple="multiple"
-        ng-options="aldersgrupp.id as aldersgrupp.name for aldersgrupp in businessFilter.aldersgrupp"
-        multiselect-dropdown="Åldersgrupper"
-        multiselect-dropdown-icon="fa-users"
-        id="select-aldersgrupp">
-    </select>
-  </div>
+  <filter-multi-select
+      style-class="select-aldersgrupp"
+      label="lbl.filter.btn.aldersgrupp"
+      icon="fa-users"
+      model="businessFilter.selectedAldersgruppIds"
+      options="businessFilter.aldersgrupp">
+  </filter-multi-select>
 
-  <div
-      class="margin-right select-sjukskrivningslangd"
-      data-ng-class="{'filter-active': businessFilter.selectedSjukskrivningslangdIds.length > 0}">
-    <select
-        ng-model="businessFilter.selectedSjukskrivningslangdIds"
-        multiple="multiple"
-        ng-options="sjukskrivningslangd.id as sjukskrivningslangd.name for sjukskrivningslangd in businessFilter.sjukskrivningslangd"
-        multiselect-dropdown="Sjukskrivningslängder"
-        multiselect-dropdown-icon="fa-calendar"
-        multiselect-disabled="{{!filterViewState.sjukskrivningslangd}}"
-        id="select-sjukskrivningslangd">
-    </select>
-  </div>
+  <filter-multi-select
+      style-class="select-sjukskrivningslangd"
+      label="lbl.filter.btn.sjukskrivningslangd"
+      icon="fa-calendar"
+      model="businessFilter.selectedSjukskrivningslangdIds"
+      is-disabled="!filterViewState.sjukskrivningslangd"
+      options="businessFilter.sjukskrivningslangd">
+  </filter-multi-select>
 
-  <div
-      class="margin-right select-intygstyper"
-      data-ng-class="{'filter-active': businessFilter.selectedIntygstyperIds.length > 0}">
-    <select
-        ng-model="businessFilter.selectedIntygstyperIds"
-        multiple="multiple"
-        ng-options="intygstyper.id as intygstyper.name for intygstyper in businessFilter.intygstyper"
-        multiselect-dropdown="Intygstyper"
-        multiselect-dropdown-icon="fa-file-text-o"
-        multiselect-disabled="{{!filterViewState.intygstyper}}"
-        id="select-intygstyper">
-    </select>
-  </div>
+  <filter-multi-select
+      style-class="select-intygstyper"
+      label="lbl.filter.btn.intygstyper"
+      icon="fa-file-text-o"
+      model="businessFilter.selectedIntygstyperIds"
+      is-disabled="!filterViewState.intygstyper"
+      options="businessFilter.intygstyper">
+  </filter-multi-select>
 
   <button id="filterApplyBtn" class="btn btn-success" type="button" ng-click="makeSelection()" data-ng-disabled="!filterToApply">
     <i class="fa fa-spin fa-spinner" ng-if="loadingFilter"></i> <span message key="lbl.filtrera"></span>

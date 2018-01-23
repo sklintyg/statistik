@@ -62,6 +62,13 @@ var stMessages = {
 
 
         //filter
+        'lbl.filter.btn.intygstyper': 'Intyg',
+        'lbl.filter.btn.sjukskrivningslangd': 'Sjukskrivningslängder',
+        'lbl.filter.btn.aldersgrupp': 'Åldersgrupper',
+        'lbl.filter.btn.datumintervall': 'Tidsintervall',
+        'lbl.filter.btn.showall': 'Visa alla aktiva filter',
+        'lbl.filter.inactive': 'Detta filter går inte att applicera på vald rapport.',
+
         'lbl.filter.verksamhet.link': 'Visa snabbval av enheter baserat på verksamhetstyper',
         'lbl.filter.verksamhet.link.collapse': 'Dölj snabbval av enheter baserat på verksamhetstyper',
         'lbl.filter.verksamhet.search.hint': 'Sök efter län, kommun eller enhet...',

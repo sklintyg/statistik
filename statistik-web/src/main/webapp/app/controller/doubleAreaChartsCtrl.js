@@ -529,6 +529,10 @@ angular.module('StatisticsApp').intygPerTypePerMonthLandstingConfig =
     'use strict';
 
     var conf = {};
+    conf.filter = {
+        intygstyper: true,
+        sjukskrivningslangd: false
+    };
     conf.dataFetcher = 'getIntygPerTypePerMonthLandsting';
     conf.chartYAxisTitleUnit = 'intyg';
     conf.exportTableUrl = function () {
