@@ -1,10 +1,13 @@
 business-filter, landsting-filter {
   border-bottom: 1px solid $st-color-23;
-  padding: 10px;
+  padding: 0 10px 10px;
   display: block;
 }
 
 .business-filter {
+  button {
+    margin-top: 10px;
+  }
 
   .filter-active-btn.btn-default,
   .filter-active .btn-default {

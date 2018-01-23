@@ -11,7 +11,36 @@ navigation-tabs {
   .nav-tabs {
     border-bottom: 0;
 
-    > li {
+    .nav-item {
+      background: $st-color-20;
+      box-shadow: inset 1px -1px 4px 0 rgba(0, 0, 0, 0.24);
+      border-left: 1px solid $st-color-23;
+      text-align: center;
+
+      > a {
+        @extend %st-typo-11;
+        border-radius: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-right: 0;
+
+        &:hover {
+          background: transparent;
+        }
+      }
+
+      &.active {
+        > a {
+          @extend %st-typo-12;
+          line-height: 1.3;
+        }
+
+        a:hover {
+          background: $st-color-17;
+        }
+      }
+
       &.navigation-two-tabs {
         width: 50%;
       }
@@ -20,30 +49,12 @@ navigation-tabs {
         width: 33.333333%;
       }
 
-      text-align: center;
-
-      > a {
-        margin-right: 0;
-      }
-    }
-
-    .nav-item {
-      background: $st-color-20;
-      box-shadow: inset 1px -1px 4px 0 rgba(0, 0, 0, 0.24);
-
-      > a {
-        @extend %st-typo-11;
-        border-radius: 0;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      &:first-of-type {
+        border-left: 0;
       }
 
-      &.active {
-        > a {
-          @extend %st-typo-12;
-          line-height: 1.3;
-        }
+      &:hover {
+        background: $st-color-17;
       }
     }
   }

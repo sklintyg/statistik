@@ -150,7 +150,7 @@
   </filter-multi-select>
 
   <button id="filterApplyBtn" class="btn btn-success" type="button" ng-click="makeSelection()" data-ng-disabled="!filterToApply">
-    <i class="fa fa-spin fa-spinner" ng-if="loadingFilter"></i> <span message key="lbl.filtrera"></span>
+    <i class="fa fa-spinner" data-ng-class="{'fa-spin': loadingFilter}" data-ng-show="loadingFilter"></i> <span message key="lbl.filtrera"></span>
   </button>
 
   <button id="filterResetBtn" type="button" class="btn btn-default" data-ng-click="resetBusinessFilter(myForm)">
