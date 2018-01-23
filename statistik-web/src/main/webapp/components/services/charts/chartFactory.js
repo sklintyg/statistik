@@ -408,7 +408,7 @@ angular.module('StatisticsApp').factory('chartFactory',
 
         var setColorToTotalCasesSeries = function (series) {
             for (var i = 0; i < series.length; i++) {
-                if (series[i].sex === null && series[i].name === "Totalt") {
+                if (series[i].sex === null && series[i].name === 'Totalt') {
                     series[i].color = COLORS.total;
                     break;
                 }
