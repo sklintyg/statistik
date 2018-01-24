@@ -86,6 +86,8 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             } else {
                 scope.activeEnhetsFilters = enhetNames;
             }
+
+            scope.activeEnhetsFiltersAllSelected = isAllAvailableEnhetsSelectedInFilter;
         };
 
         this.populateActiveSjukskrivningslangdFilter = function(scope, filterHash, sjukskrivningslangds, isAllAvailableSjukskrivningslangdsSelectedInFilter) {

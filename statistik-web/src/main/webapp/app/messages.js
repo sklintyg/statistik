@@ -62,9 +62,15 @@ var stMessages = {
 
 
         //filter
-        'lbl.filter.btn.intygstyper': 'Intyg',
+        'lbl.filter.btn.intygstyper': 'Intygstyper',
+        'lbl.filter.pdf.intygstyper': 'Valda intygstyper',
         'lbl.filter.btn.sjukskrivningslangd': 'Sjukskrivningslängder',
+        'lbl.filter.pdf.sjukskrivningslangd': 'Valda sjukskrivningslängder',
         'lbl.filter.btn.aldersgrupp': 'Åldersgrupper',
+        'lbl.filter.pdf.aldersgrupp': 'Valda åldersgrupper',
+        'lbl.filter.pdf.diagnoser': 'Valda diagnoser',
+        'lbl.filter.pdf.enheter': 'Valda enheter',
+        'lbl.filter.pdf.enheteralla': 'Enheter',
         'lbl.filter.btn.datumintervall': 'Tidsintervall',
         'lbl.filter.btn.showall': 'Visa alla aktiva filter',
         'lbl.filter.inactive': 'Detta filter går inte att applicera på vald rapport.',
