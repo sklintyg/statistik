@@ -136,11 +136,16 @@ final class XlsxConverter {
             addLink(sheet, linkText, currentRow++, "'" + dataSheetName + "'!A1");
             sheet.createRow(currentRow++);
         }
-        currentRow = addFilter(sheet, currentRow, enheter, "Sammanställning av enheter");
-        currentRow = addFilter(sheet, currentRow, getDxNames(dxs), "Sammanställning av diagnosfilter");
-        currentRow = addFilter(sheet, currentRow, sjukskrivningslangds, "Sammanställning av sjukskrivningslängdsfilter");
-        currentRow = addFilter(sheet, currentRow, aldersgrupps, "Sammanställning av åldersgruppsfilter");
-        currentRow = addFilter(sheet, currentRow, intygstyper, "Sammanställning av intygstyperfilter");
+
+        if (filterSelections.isAllAvailableEnhetsSelectedInFilter()) {
+            currentRow = addFilter(sheet, currentRow, enheter, "Enheter");
+        } else {
+            currentRow = addFilter(sheet, currentRow, enheter, "Valda enheter");
+        }
+        currentRow = addFilter(sheet, currentRow, getDxNames(dxs), "Valda diagnoser");
+        currentRow = addFilter(sheet, currentRow, aldersgrupps, "Valda åldersgrupper");
+        currentRow = addFilter(sheet, currentRow, sjukskrivningslangds, "Valda sjukskrivningslängder");
+        currentRow = addFilter(sheet, currentRow, intygstyper, "Valda intygstyper");
 
         int currentRowDataSheet = useSeparateSheetForFilters ? startRow : currentRow;
         if (useSeparateSheetForFilters) {

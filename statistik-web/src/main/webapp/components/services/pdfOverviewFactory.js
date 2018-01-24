@@ -21,7 +21,7 @@ angular.module('StatisticsApp')
     .factory('pdfOverviewFactory',
 
         /** @ngInject */
-        function($window, pdfFactory, $timeout) {
+        function($window, pdfFactory, $timeout, messageService) {
         'use strict';
 
         function _printOverview($scope, charts) {
@@ -37,19 +37,24 @@ angular.module('StatisticsApp')
                 });
             };
 
-            _generateOverview(headers, charts, $scope.activeEnhetsFilters, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, $scope.activeIntygstypFilters, pdfDoneCallback);
+            _generateOverview(headers, charts, $scope.activeEnhetsFilters, $scope.activeEnhetsFiltersAllSelected, $scope.activeDiagnosFilters, $scope.activeSjukskrivningslangdsFilters, $scope.activeAldersgruppFilters, $scope.activeIntygstypFilters, pdfDoneCallback);
         }
 
-        function _generateOverview(headers, charts, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter, intygstyperFilter, pdfDoneCallback) {
+        function _generateOverview(headers, charts, enhetsFilter, enhetsFilterAllSelected, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter, intygstyperFilter, pdfDoneCallback) {
             var content = [];
 
             pdfFactory.factory.header(content, headers);
 
-            pdfFactory.factory.filter(content, 'Sammanställning av diagnosfilter', diagnosFilter);
-            pdfFactory.factory.filter(content, 'Sammanställning av enheter', enhetsFilter);
-            pdfFactory.factory.filter(content, 'Sammanställning av sjukskrivningslängdsfilter', sjukskrivningslangdFilter);
-            pdfFactory.factory.filter(content, 'Sammanställning av åldersgruppfilter', aldersgruppFilter);
-            pdfFactory.factory.filter(content, 'Sammanställning av intygstyperfiltret', intygstyperFilter);
+            if (enhetsFilterAllSelected) {
+                pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.enheteralla'), enhetsFilter);
+            } else {
+                pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.enheter'), enhetsFilter);
+            }
+
+            pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.diagnoser'), diagnosFilter);
+            pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.aldersgrupp'), aldersgruppFilter);
+            pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.sjukskrivningslangd'), sjukskrivningslangdFilter);
+            pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.intygstyper'), intygstyperFilter);
 
             angular.forEach(charts, function(chart) {
                 if (angular.isArray(chart)) {

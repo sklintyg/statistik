@@ -67,13 +67,13 @@ public class XlsxConverterTest {
         ArrayList<String> cellTexts = addXlsxDataForEnhetTest(
                 Arrays.asList("TestEnhet"),
                 Arrays.asList(new HsaIdEnhet("enhet1")));
-        assertTrue(cellTexts.toString().contains("Sammanställning av enheter, TestEnhet"));
+        assertTrue(cellTexts.toString().contains("Valda enheter, TestEnhet"));
 
         cellTexts = addXlsxDataForEnhetTest(Arrays.asList("TestEnhet"), Arrays.asList());
-        assertTrue(cellTexts.toString().contains("Sammanställning av enheter, TestEnhet"));
+        assertTrue(cellTexts.toString().contains("Valda enheter, TestEnhet"));
 
         cellTexts = addXlsxDataForEnhetTest(Arrays.asList("TestEnhet"), null);
-        assertTrue(cellTexts.toString().contains("Sammanställning av enheter, TestEnhet"));
+        assertTrue(cellTexts.toString().contains("Valda enheter, TestEnhet"));
     }
 
     @NotNull
