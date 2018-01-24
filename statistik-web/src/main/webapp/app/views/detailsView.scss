@@ -114,7 +114,7 @@
   }
 
   .chart-icon-stackedcolumn {
-    @include at2x('../assets/images/chart-types/Staplat_stapeldiagram', $ext: 'png', $w: 21px, $h: 18px);
+    @include at2x('../assets/images/chart-types/staplat_stapeldiagram', $ext: 'png', $w: 21px, $h: 18px);
   }
 
   .chart-icon-area {
