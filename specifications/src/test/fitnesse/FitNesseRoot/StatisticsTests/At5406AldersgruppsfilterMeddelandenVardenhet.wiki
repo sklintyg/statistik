@@ -1,0 +1,30 @@
+---
+Test
+---
+!3 Givet att:
+| script | dagens datum  | 2014-11-06  |
+
+| script | troskel varde  | 1 |
+
+| Enbart foljande intyg finns |
+| intygid | personnr | signeringstid | diagnoskod | intygformat | enhet | kommentar |
+| 1001 | 19790717-9191  | 2014-04-05T10:00:00  | G01 | LUSE | enhet1 | 35år |
+| 1002 | 19690130-1234  | 2014-06-03T10:00:00  | G01 | LUSE | enhet2 | 45år |
+
+| Foljande meddelanden finns |
+| personnr | skickat | intygsid | ämne |
+| 19790717-9191  | 2014-04-05T10:00:00  | 1001 | KOMPLT |
+| 19790717-9191  | 2014-06-03T10:00:00  | 1001 | KOMPLT |
+| 19690130-1234  | 2014-06-03T10:00:00  | 1002 | KOMPLT |
+
+!3 Då gäller:
+Inloggad:
+
+| Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
+| inloggad som  | vårdenhet | grupp | filter åldersgrupp | totalt? | män? | kvinnor? |
+| user2 | enhet1 | Komplettering | | 2 | 2 | 0 |
+| user2 | enhet1 | Komplettering | 31-35 år, 36-40 år | 2 | 2 | 0 |
+| user2 | enhet1 | Komplettering | Under 16 år | 0 | 0 | 0 |
+| user2 | enhet2 | Komplettering | | 1 | 1 | 0 |
+| user2 | enhet2 | Komplettering | 41-45 år, 46-50 år | 1 | 1 | 0 |
+| user2 | enhet2 | Komplettering | Över 65 år | 0 | 0 | 0 |
