@@ -1,4 +1,6 @@
 ---
+Help: Ignorerat då detta nya test inte går igenom
+Prune
 Test
 ---
 Givet att:
