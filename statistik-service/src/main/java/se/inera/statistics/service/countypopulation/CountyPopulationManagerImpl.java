@@ -72,7 +72,7 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
                         LocalDate.of(date.getYear(), date.getMonthValue(), date.getDayOfMonth()));
     }
 
-    private LocalDate getPopulationFromDate(Range range) {
+    LocalDate getPopulationFromDate(Range range) {
         return range.getTo().withDayOfYear(1).minusDays(1);
     }
 
@@ -139,7 +139,7 @@ public class CountyPopulationManagerImpl implements CountyPopulationManagerForTe
         if (ld == null) {
             return null;
         }
-        return new Date(ld.toEpochDay());
+        return Date.valueOf(ld);
     }
 
     private boolean insertCountyPopulation(Map<String, KonField> countyPopulation, LocalDate date) {
