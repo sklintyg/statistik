@@ -88,7 +88,7 @@ public class SjukfallPerLanConverterTest {
         List<ChartSeries> series = chartDataResult.getSeries();
         assertEquals(3, series.size());
         assertEquals("Totalt", series.get(0).getName());
-        assertEquals("[82.5, 82.5, 138.75, 26.25]", series.get(0).getData().toString());
+        assertEquals("[26.0, 27.0, 39.0, 12.0]", series.get(0).getData().toString());
         assertEquals("Kvinnor", series.get(1).getName());
         assertEquals("[66.67, 65.0, 120.0, 15.0]", series.get(1).getData().toString());
         assertEquals("Män", series.get(2).getName());

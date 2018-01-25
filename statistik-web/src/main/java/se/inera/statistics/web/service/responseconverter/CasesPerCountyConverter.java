@@ -159,6 +159,7 @@ public class CasesPerCountyConverter {
         groups.add(0, new ChartCategory(SAMTLIGA_LAN));
         final double sjukfallPerKPopulationForAllLanFemale = getSjukfallPerKPopulationForAllLanFemale(resp.getRows());
         final double sjukfallPerKPopulationForAllLanMale = getSjukfallPerKPopulationForAllLanMale(resp.getRows());
+        final double sjukfallPerKPopulationForAllLanTotal = getSjukfallPerKPopulationForAllLanTotal(resp.getRows());
 
         List<ChartSeries> series = new ArrayList<>();
         final Stream<Number> sjukfallPerKPopulationStreamFemale = chartRows.stream().map(this::getSjukfallPerKPopulationFemale);
@@ -169,16 +170,11 @@ public class CasesPerCountyConverter {
         final List<Number> sjukfallPerPopulationMale = Stream
                 .concat(Stream.of(sjukfallPerKPopulationForAllLanMale), sjukfallPerKPopulationStreamMale).collect(Collectors.toList());
 
-        final int size = groups.size();
-        final ArrayList<Number> totals = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            final double fValue = sjukfallPerPopulationFemale.get(i).doubleValue();
-            final double mValue = sjukfallPerPopulationMale.get(i).doubleValue();
-            final double tot = SjukfallPerPatientsPerEnhetConverter.roundToTwoDecimals(fValue + mValue);
-            totals.add(tot);
-        }
+        final Stream<Number> sjukfallPerKPopulationStreamTotal = chartRows.stream().map(this::getSjukfallPerKPopulationTotal);
+        final List<Number> sjukfallPerPopulationTotal = Stream
+                .concat(Stream.of(sjukfallPerKPopulationForAllLanTotal), sjukfallPerKPopulationStreamTotal).collect(Collectors.toList());
 
-        series.add(new ChartSeries(H_TOTALT, totals));
+        series.add(new ChartSeries(H_TOTALT, sjukfallPerPopulationTotal));
         series.add(new ChartSeries(H_KVINNOR, sjukfallPerPopulationFemale, Kon.FEMALE));
         series.add(new ChartSeries(H_MAN, sjukfallPerPopulationMale, Kon.MALE));
         return new ChartData(series, groups);
@@ -195,6 +191,13 @@ public class CasesPerCountyConverter {
         return -1;
     }
 
+    private double getSjukfallPerKPopulationForAllLanTotal(List<SimpleKonDataRow> rows) {
+        final int totalSjukfall = rows.stream().mapToInt(row -> row.getMale() + row.getFemale()).sum();
+        final int totalPopulation = countyPopulation.getPopulationPerCountyCode().values().stream()
+                .mapToInt(field -> field.getMale() + field.getFemale()).sum();
+        return calculateSjukfallPerKPopulation(totalSjukfall, totalPopulation);
+    }
+
     private double getSjukfallPerKPopulationForAllLanFemale(List<SimpleKonDataRow> rows) {
         final int totalSjukfall = rows.stream().mapToInt(SimpleKonDataRow::getFemale).sum();
         final int totalPopulation = countyPopulation.getPopulationPerCountyCode().values().stream().mapToInt(KonField::getFemale).sum();
@@ -205,6 +208,13 @@ public class CasesPerCountyConverter {
         final int totalSjukfall = rows.stream().mapToInt(SimpleKonDataRow::getMale).sum();
         final int totalPopulation = countyPopulation.getPopulationPerCountyCode().values().stream().mapToInt(KonField::getMale).sum();
         return calculateSjukfallPerKPopulation(totalSjukfall, totalPopulation);
+    }
+
+    private double getSjukfallPerKPopulationTotal(SimpleKonDataRow row) {
+        final int rowSum = row.getFemale() + row.getMale();
+        final KonField populationObject = countyPopulation.getPopulationPerCountyCode().get(row.getExtras().toString());
+        final int population = populationObject == null ? 0 : populationObject.getFemale() + populationObject.getMale();
+        return calculateSjukfallPerKPopulation(rowSum, population);
     }
 
     private double getSjukfallPerKPopulationFemale(SimpleKonDataRow row) {
