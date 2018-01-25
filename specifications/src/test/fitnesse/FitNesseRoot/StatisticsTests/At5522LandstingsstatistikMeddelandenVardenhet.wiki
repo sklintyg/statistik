@@ -1,0 +1,42 @@
+---
+Test
+---
+!3 Givet att:
+Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelanden som gäller FK7263 passerar Intygstjänsten och därmed inte heller når Intygsstatistik.
+
+| script | dagens datum  | 2014-11-06  |
+
+| script | troskel varde  | 1 |
+
+| Enbart foljande intyg finns |
+| intygid | personnr | signeringstid | diagnoskod | intygformat | enhet |
+| 1001 | 19790717-9191  | 2014-04-05T10:00:00  | G01 | LUSE | enhet1 |
+| 1002 | 19691230-1234  | 2014-06-03T10:00:00  | G01 | LUSE | enhet2 |
+
+| Foljande meddelanden finns |
+| personnr | skickat | intygsid | ämne |
+| 19790717-9191  | 2014-04-05T10:00:00  | 1001 | KOMPLT |
+| 19790717-9191  | 2014-06-03T10:00:00  | 1001 | AVSTMN |
+| 19691230-1234  | 2014-06-03T10:00:00  | 1002 | KOMPLT |
+
+
+
+| script | Rensa uppladdade landstingsfiler  |
+
+| Uppladdade landstingsfiler |
+| användare | filnamn | statusmeddelande? |
+| user3 | vg3lista1.xlsx | Data updated ok |
+
+!3 Då gäller:
+Statistiken baseras på meddelanden för alla intygstyper som har ärendekommunikation. Statistiken presenteras utifrån datum då meddelandet skickades. Varje meddelande räknas en gång oavsett om det finns flera meddelanden för samma intyg. Eftersom denna rapport visas upp som ett staplat stapeldiagram, visar totalen (i tabellen) antalet meddelanden totalt på den enheten, oavsett vilken typ av meddelande det är.
+
+Inloggad:
+
+| Meddelanden i rapporten meddelanden vardenhet som tvarsnitt landsting |
+| inloggad som  | vårdenhet | grupp | totalt? | män? | kvinnor? |
+| user2 | enhet1 | Komplettering | 2 | 1 | 0 |
+| user2 | enhet1 | Avstämningsmöte | 2 | 1 | 0 |
+| user2 | enhet1 | Övrigt | 2 | 0 | 0 |
+| user2 | enhet2 | Komplettering | 1 | 1 | 0 |
+| user2 | enhet2 | Avstämningsmöte | 1 | 0 | 0 |
+| user2 | enhet2 | Övrigt | 1 | 0 | 0 |
