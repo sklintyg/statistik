@@ -20,6 +20,7 @@ package se.inera.statistics.service.countypopulation;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -32,13 +33,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import java.sql.Date;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
 
 public class CountyPopulationManagerImplTest {
@@ -114,6 +119,27 @@ public class CountyPopulationManagerImplTest {
         //Then
         Mockito.verify(countyPopulationFetcher, times(1)).getPopulationFor(range.getTo().getYear() - 1);
         Mockito.verify(query, times(2)).getResultList();
+    }
+
+    @Test
+    public void testGetCountyPopulationUseTheCorrectDateWhenLookingForPrefetchedData() throws Exception {
+        //Given
+        final Query query = Mockito.mock(Query.class);
+        Mockito.when(query.getResultList()).thenReturn(Collections.emptyList());
+        Mockito.when(countyPopulationFetcher.getPopulationFor(anyInt())).thenReturn(Optional.empty());
+        final Range range = Range.year(clock);
+
+        final ArgumentCaptor<Date> argumentCaptor = ArgumentCaptor.forClass(Date.class);
+        Mockito.when(manager.createQuery(anyString())).thenReturn(query);
+        Mockito.when(query.setParameter(eq("fromDate"), argumentCaptor.capture())).thenReturn(query);
+
+        //When
+        countyPopulationManager.getCountyPopulation(range);
+
+        //Then
+        final Date actualDate = argumentCaptor.getValue();
+        final Date expectedDate = Date.valueOf(countyPopulationManager.getPopulationFromDate(range));
+        assertEquals(expectedDate, actualDate);
     }
 
 }
