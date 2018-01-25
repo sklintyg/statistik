@@ -12,14 +12,14 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 | Enbart foljande intyg finns |
 | intygid | enhet | personnr | signeringstid | diagnoskod | intygformat | kommentar |
 | 1001 | enhet1 | 19730517-9191 | 2014-06-03T10:00:00 | G01 | LUSE | 41år |
-| 1002 | enhet1 | 19621230-1234 | 2014-05-03T10:00:00 | G01 | LISJP | 51år |
-| 1003 | enhet1 | 19951030-1254 | 2014-06-03T10:00:00 | G01 | LUAE_NA | 18år |
+| 1002 | enhet1 | 19620430-1234 | 2014-05-03T10:00:00 | G01 | LISJP | 52år |
+| 1003 | enhet1 | 19950430-1254 | 2014-06-03T10:00:00 | G01 | LUAE_NA | 19år |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
 | 19730517-9191 | 2014-06-03T10:00:00 | 1001 | KOMPLT |
-| 19621230-1234 | 2014-05-03T10:00:00 | 1002 | KOMPLT |
-| 19951030-1254 | 2014-11-03T10:00:00 | 1003 | AVSTMN |
+| 19620430-1234 | 2014-05-03T10:00:00 | 1002 | KOMPLT |
+| 19950430-1254 | 2014-11-03T10:00:00 | 1003 | AVSTMN |
 
 !3 Då gäller:
 Ålder på patienten räknas fram utifrån den tidpunkt då intyget signerades.
