@@ -1,9 +1,5 @@
----
-Help: Kan tas med när rapporten Komplettering, Andel intyg har implementerats
-Prune
-Test
----
-!contents -R2 -g -p -f -h
+''!contents -R2 -g -p -f -h''
+
 Det finns ett antal intyg med ett antal tillhörande meddelanden.
 
 Alla intyg har skickats vidare till Försäkringskassan.
