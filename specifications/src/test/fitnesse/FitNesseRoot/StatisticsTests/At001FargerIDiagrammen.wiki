@@ -1,123 +1,165 @@
 ---
+Prune
 Test
 ---
 !contents -R2 -g -p -f -h
-
 Testar INTYG-3735
 
 !3 Givet att:
-
 | script | dagens datum | 2014-10-01 |
 
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| personnr      | diagnoskod | start      | slut       | arbetsförmåga | start2     | slut2      | arbetsförmåga2 | enhet  |
-| 19790407-0220 | A00        | 2014-09-01 | 2014-10-15 | 0             | 2014-10-16 | 2014-11-28 | 50             | enhet1 |
-| 19870407-0220 | M00        | 2014-09-01 | 2014-10-15 | 0             | 2014-10-16 | 2014-11-28 | 50             | enhet1 |
-| 19890407-0220 | P00        | 2014-09-01 | 2014-10-15 | 0             | 2014-10-16 | 2014-11-28 | 50             | enhet1 |
-| 19990407-0220 | R00        | 2014-09-01 | 2014-10-15 | 0             | 2014-10-16 | 2014-11-28 | 50             | enhet1 |
-| 19980407-0220 | UA5104     | 2014-09-01 | 2014-10-15 | 0             | 2014-10-16 | 2014-11-28 | 50             | enhet1 |
+| personnr | diagnoskod | signeringstid | start | slut | arbetsförmåga | start2 | slut2 | arbetsförmåga2 | enhet |
+| 19790407-0220 | A00 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 |
+| 19870407-0220 | M00 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 |
+| 19890407-0220 | P00 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 |
+| 19990407-0220 | R00 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 |
+| 19980407-0220 | UA5104 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 |
+
+| Foljande meddelanden finns |
+| personnr | intygsid |
+| 19790407-0220 | 1001 |
+| 19870407-0220 | 1002 |
+| 19890407-0220 | 1003 |
+| 19990407-0220 | 1004 |
+| 19980407-0220 | 1005 |
 
 !3 Då gäller:
-
 Nationell:
+
 | Sjukfall i rapporten sjukskrivningsgrad diagram |
-| år   | månad | sjukskrivningsgrad | färg? |
-| 2013 | sep   | 100 %              | #799745 |
-| 2013 | nov   | 75 %               | #FFBA3E |
-| 2013 | nov   | 50 %               | #032C53 |
-| 2013 | nov   | 25 %               | #E11964 |
+| år | månad | sjukskrivningsgrad | färg? |
+| 2013 | sep | 100 % | #799745 |
+| 2013 | nov | 75 % | #FFBA3E |
+| 2013 | nov | 50 % | #032C53 |
+| 2013 | nov | 25 % | #E11964 |
 
 | Sjukfall i rapporten diagnosgrupp diagram |
-| år   | månad | grupp                                                                                          | färg? |
-| 2013 | sep   | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar                                                  | #E11964 |
-| 2013 | nov   | F00-F99 Psykiska sjukdomar                                                                     | #032C53 |
-| 2013 | nov   | M00-M99 Muskuloskeletala sjukdomar                                                             | #FFBA3E |
-| 2013 | nov   | O00-O99 Graviditet och förlossning                                                             | #799745 |
-| 2013 | nov   | P00-P96, Q00-Q99, S00-Y98 Övrigt                                                               | #3CA3FF |
-| 2013 | nov   | R00-R99 Symtomdiagnoser                                                                        | #C37EB2 |
-| 2013 | nov   | Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården | #2A5152 |
-| 2013 | nov   | Utan giltig ICD-10 kod                                                                         | #FB7F4D |
+| år | månad | grupp | färg? |
+| 2013 | sep | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | #E11964 |
+| 2013 | nov | F00-F99 Psykiska sjukdomar | #032C53 |
+| 2013 | nov | M00-M99 Muskuloskeletala sjukdomar | #FFBA3E |
+| 2013 | nov | O00-O99 Graviditet och förlossning | #799745 |
+| 2013 | nov | P00-P96, Q00-Q99, S00-Y98 Övrigt | #3CA3FF |
+| 2013 | nov | R00-R99 Symtomdiagnoser | #C37EB2 |
+| 2013 | nov | Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården | #2A5152 |
+| 2013 | nov | Utan giltig ICD-10 kod | #FB7F4D |
 
 | Sjukfall i oversikt sjukskrivningsgrad |
-| grupp | färg?   |
-| 100   | #799745 |
-| 75    | #FFBA3E |
-| 50    | #032C53 |
-| 25    | #E11964 |
+| grupp | färg? |
+| 100 | #799745 |
+| 75 | #FFBA3E |
+| 50 | #032C53 |
+| 25 | #E11964 |
 
 | Sjukfall i oversikt aldersgrupp |
-| grupp               | färg?   |
-| 16-20 år            | #032C53 |
-| 26-30 år            | #799745 |
-| 21-25 år            | #FFBA3E |
-| Under 16 år         | #E11964 |
+| grupp | färg? |
+| 16-20 år | #032C53 |
+| 26-30 år | #799745 |
+| 21-25 år | #FFBA3E |
+| Under 16 år | #E11964 |
 | Andra åldersgrupper | #5D5D5D |
 
 | Sjukfall i oversikt diagnos |
-| grupp                                         | färg?   |
+| grupp | färg? |
 | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | #E11964 |
-| M00-M99 Muskuloskeletala sjukdomar            | #FFBA3E |
-| P00-P96, Q00-Q99, S00-Y98 Övrigt              | #3CA3FF |
-| R00-R99 Symtomdiagnoser                       | #C37EB2 |
-| Andra diagnosgrupper                          | #5D5D5D |
+| M00-M99 Muskuloskeletala sjukdomar | #FFBA3E |
+| P00-P96, Q00-Q99, S00-Y98 Övrigt | #3CA3FF |
+| R00-R99 Symtomdiagnoser | #C37EB2 |
+| Andra diagnosgrupper | #5D5D5D |
 
 Inloggad:
+
 | Sjukfall i oversikt sjukskrivningsgrad |
-|inloggad som | grupp | färg?   |
-| user1       | 100   | #799745 |
-| user1       | 75    | #FFBA3E |
-| user1       | 50    | #032C53 |
-| user1       | 25    | #E11964 |
+| inloggad som | grupp | färg? |
+| user1 | 100 | #799745 |
+| user1 | 75 | #FFBA3E |
+| user1 | 50 | #032C53 |
+| user1 | 25 | #E11964 |
 
 | Sjukfall i oversikt aldersgrupp |
-| inloggad som | grupp               | färg?   |
-| user1        | 16-20 år            | #032C53 |
-| user1        | 26-30 år            | #799745 |
-| user1        | 21-25 år            | #FFBA3E |
-| user1        | Under 16 år         | #E11964 |
-| user1        | Andra åldersgrupper | #5D5D5D |
+| inloggad som | grupp | färg? |
+| user1 | 16-20 år | #032C53 |
+| user1 | 26-30 år | #799745 |
+| user1 | 21-25 år | #FFBA3E |
+| user1 | Under 16 år | #E11964 |
+| user1 | Andra åldersgrupper | #5D5D5D |
 
 | Sjukfall i oversikt diagnos |
-| inloggad som | grupp                                         | färg?   |
-| user1        | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | #E11964 |
-| user1        | M00-M99 Muskuloskeletala sjukdomar            | #FFBA3E |
-| user1        | P00-P96, Q00-Q99, S00-Y98 Övrigt              | #3CA3FF |
-| user1        | R00-R99 Symtomdiagnoser                       | #C37EB2 |
-| user1        | Andra diagnosgrupper                          | #5D5D5D |
+| inloggad som | grupp | färg? |
+| user1 | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | #E11964 |
+| user1 | M00-M99 Muskuloskeletala sjukdomar | #FFBA3E |
+| user1 | P00-P96, Q00-Q99, S00-Y98 Övrigt | #3CA3FF |
+| user1 | R00-R99 Symtomdiagnoser | #C37EB2 |
+| user1 | Andra diagnosgrupper | #5D5D5D |
 
 | Sjukfall i rapporten sjukskrivningsgrad diagram |
-| inloggad som | år   | månad | sjukskrivningsgrad | färg?   |
-| user1        | 2013 | sep   | 100 %              | #799745 |
-| user1        | 2013 | nov   | 75 %               | #FFBA3E |
-| user1        | 2013 | nov   | 50 %               | #032C53 |
-| user1        | 2013 | nov   | 25 %               | #E11964 |
+| inloggad som | år | månad | sjukskrivningsgrad | färg? |
+| user1 | 2013 | sep | 100 % | #799745 |
+| user1 | 2013 | nov | 75 % | #FFBA3E |
+| user1 | 2013 | nov | 50 % | #032C53 |
+| user1 | 2013 | nov | 25 % | #E11964 |
 
 | Sjukfall i rapporten aldersgrupp som tidsserie diagram |
-| inloggad som | år   | månad | åldersgrupp | färg?   |
-| user1        | 2013 | sep   | Under 16 år | #E11964 |
-| user1        | 2013 | nov   | 16-20 år    | #032C53 |
-| user1        | 2013 | nov   | 21-25 år    | #FFBA3E |
-| user1        | 2013 | nov   | 26-30 år    | #799745 |
-| user1        | 2013 | nov   | 31-35 år    | #3CA3FF |
-| user1        | 2013 | nov   | 36-40 år    | #C37EB2 |
-| user1        | 2013 | nov   | 41-45 år    | #2A5152 |
-| user1        | 2013 | nov   | 46-50 år    | #FB7F4D |
-| user1        | 2013 | nov   | 51-55 år    | #5CC2BC |
-| user1        | 2013 | nov   | 56-60 år    | #704F38 |
-| user1        | 2013 | nov   | 61-65 år    | #600030 |
-| user1        | 2013 | nov   | Över 65 år  | #006697 |
+| inloggad som | år | månad | åldersgrupp | färg? |
+| user1 | 2013 | sep | Under 16 år | #E11964 |
+| user1 | 2013 | nov | 16-20 år | #032C53 |
+| user1 | 2013 | nov | 21-25 år | #FFBA3E |
+| user1 | 2013 | nov | 26-30 år | #799745 |
+| user1 | 2013 | nov | 31-35 år | #3CA3FF |
+| user1 | 2013 | nov | 36-40 år | #C37EB2 |
+| user1 | 2013 | nov | 41-45 år | #2A5152 |
+| user1 | 2013 | nov | 46-50 år | #FB7F4D |
+| user1 | 2013 | nov | 51-55 år | #5CC2BC |
+| user1 | 2013 | nov | 56-60 år | #704F38 |
+| user1 | 2013 | nov | 61-65 år | #600030 |
+| user1 | 2013 | nov | Över 65 år | #006697 |
 
 | Sjukfall i rapporten diagnosgrupp diagram |
-| inloggad som | år   | månad | grupp                                                                                          | färg?   |
-| user1        | 2013 | sep   | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar                                                  | #E11964 |
-| user1        | 2013 | nov   | F00-F99 Psykiska sjukdomar                                                                     | #032C53 |
-| user1        | 2013 | nov   | M00-M99 Muskuloskeletala sjukdomar                                                             | #FFBA3E |
-| user1        | 2013 | nov   | O00-O99 Graviditet och förlossning                                                             | #799745 |
-| user1        | 2013 | nov   | P00-P96, Q00-Q99, S00-Y98 Övrigt                                                               | #3CA3FF |
-| user1        | 2013 | nov   | R00-R99 Symtomdiagnoser                                                                        | #C37EB2 |
-| user1        | 2013 | nov   | Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården | #2A5152 |
-| user1        | 2013 | nov   | Utan giltig ICD-10 kod                                                                         | #FB7F4D |
+| inloggad som | år | månad | grupp | färg? |
+| user1 | 2013 | sep | A00-E90, G00-L99, N00-N99 Somatiska sjukdomar | #E11964 |
+| user1 | 2013 | nov | F00-F99 Psykiska sjukdomar | #032C53 |
+| user1 | 2013 | nov | M00-M99 Muskuloskeletala sjukdomar | #FFBA3E |
+| user1 | 2013 | nov | O00-O99 Graviditet och förlossning | #799745 |
+| user1 | 2013 | nov | P00-P96, Q00-Q99, S00-Y98 Övrigt | #3CA3FF |
+| user1 | 2013 | nov | R00-R99 Symtomdiagnoser | #C37EB2 |
+| user1 | 2013 | nov | Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården | #2A5152 |
+| user1 | 2013 | nov | Utan giltig ICD-10 kod | #FB7F4D |
 
+!(| Meddelanden i rapporten meddelanden totalt diagram |
+| inloggad som | år | månad | grupp | färg? |
+| user1 | 2013 | sep | Avstämningsmöte | #E11964 |
+| user1 | 2013 | sep | Komplettering | #032C53 |
+| user1 | 2013 | sep | Kontakt | #FFBA3E |
+| user1 | 2013 | sep | Påminnelse | #799745 |
+| user1 | 2013 | sep | Övrigt | #3CA3FF |
+| user1 | 2013 | sep | Okänt | #FB7F4D |)!
 
+| Meddelanden i rapporten meddelanden vardenhet som tvarsnitt diagram |
+| inloggad som | vårdenhet | ämne | färg? |
+| user1 | enhet1 | Avstämningsmöte | #E11964 |
+| user1 | enhet1 | Komplettering | #032C53 |
+| user1 | enhet1 | Kontakt | #FFBA3E |
+| user1 | enhet1 | Påminnelse | #799745 |
+| user1 | enhet1 | Övrigt | #3CA3FF |
+| user1 | enhet1 | Okänt | #FB7F4D |
+
+!(| Intyg i rapporten intyg totalt diagram |
+| inloggad som | år | månad | grupp | färg? |
+| user1 | 2013 | sep | FK 7263/FK 7804 Läkarintyg för sjukpenning | #E11964 |
+| user1 | 2013 | sep | FK 7800 Läkarutlåtande för sjukersättning | #032C53 |
+| user1 | 2013 | sep | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | #FFBA3E |
+| user1 | 2013 | sep | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | #799745 |
+
+)!
+
+!(| Andel i rapporten komplettering andel intyg diagram |
+| inloggad som | år | månad | grupp | färg? |
+| user1 | 2013 | sep | FK 7263/FK 7804 Läkarintyg för sjukpenning | #E11964 |
+| user1 | 2013 | sep | FK 7800 Läkarutlåtande för sjukersättning | #032C53 |
+| user1 | 2013 | sep | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | #FFBA3E |
+| user1 | 2013 | sep | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | #799745 |
+
+)!
