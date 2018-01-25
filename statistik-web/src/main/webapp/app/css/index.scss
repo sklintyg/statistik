@@ -3,21 +3,23 @@ $left-container-width: 240px;
 html,
 body {
   display: flex;
+  flex: 1;
   flex-direction: column;
-  align-items: stretch;
-  min-width: 0;
   min-height: 100vh;
 }
 
+.header-container {
+  flex: 0 0 auto;
+}
+
 .main-container {
-  min-width: 0;
   display: flex;
   flex-direction: row;
-  flex: 1;
-  width: 100%;
+  flex: 1 1 auto;
 }
 
 .left-container {
+  flex: 0 0 auto;
   width: $left-container-width;
   background: $st-color-19;
   box-shadow: 3px 0 5px 0 rgba(0, 0, 0, 0.35);

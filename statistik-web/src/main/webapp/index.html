@@ -26,7 +26,7 @@
 <body data-ng-controller="pageCtrl">
   <highlight-words></highlight-words>
 
-  <div>
+  <div class="header-container">
     <stats-header
         is-logged-in="isLoggedIn"
         page-header-verksamhet-name="pageHeaderVerksamhetName"
@@ -48,9 +48,7 @@
         <navigation-tabs></navigation-tabs>
 
         <div class="row content-wrapper" ng-cloak>
-          <div class="col-xs-12">
-            <div id="view" data-ng-view></div>
-          </div>
+          <div class="col-xs-12" id="view" data-ng-view></div>
         </div>
       </div>
     </div>
