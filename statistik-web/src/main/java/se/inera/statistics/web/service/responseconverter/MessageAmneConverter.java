@@ -32,6 +32,10 @@ import java.util.stream.Collectors;
 
 public class MessageAmneConverter extends MultiDualSexConverter {
 
+    public MessageAmneConverter() {
+        super("Antal meddelanden totalt");
+    }
+
     private static final Map<String, String> COLORS = Arrays.stream(MsgAmne.values())
             .collect(Collectors.toMap(MsgAmne::getText, msgAmne -> msgAmne.getColor().getColor()));
 
