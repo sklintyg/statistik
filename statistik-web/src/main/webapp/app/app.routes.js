@@ -346,13 +346,13 @@ var app = angular.module('StatisticsApp')
             }).when('/verksamhet/intygPerTyp', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
-                controllerAs: 'VerksamhetIntygPerTypePerMonthCtrl',
+                controllerAs: 'VerksamhetIntygPerTypeCtrl',
                 resolve: { config: app.intygPerTypePerMonthConfig },
                 title: 'title.intygstyp'
             }).when('/verksamhet/intygPerTypTvarsnitt', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
-                controllerAs: 'VerksamhetIntygPerTypeTvarsnttCtrl',
+                controllerAs: 'VerksamhetIntygPerTypeCtrl',
                 resolve: { config: app.intygPerTypeTvarsnittConfig },
                 title: 'title.intygstyp'
             }).when('/landsting/filuppladdning', {
