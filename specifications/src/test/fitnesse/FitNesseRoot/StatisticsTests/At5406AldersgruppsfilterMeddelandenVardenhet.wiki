@@ -1,10 +1,7 @@
 ---
-Help: Ignorerat då detta nya test inte går igenom
-Prune
 Test
 ---
-Givet att:
-
+!3 Givet att:
 | script | dagens datum | 2014-11-06 |
 
 | script | troskel varde | 1 |

@@ -10,13 +10,20 @@ Testar INTYG-3735
 
 | script | troskel varde | 1 |
 
+
+
+| Foljande lakare finns |
+| id | förnamn | efternamn |
+| lakare1 | Anna | Andersson |
+| lakare2 | Bo | Bengtsson |
+
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | signeringstid | start | slut | arbetsförmåga | start2 | slut2 | arbetsförmåga2 | enhet |
-| 19790407-0220 | A00 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 |
-| 19870407-0220 | M00 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 |
-| 19890407-0220 | P00 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 |
-| 19990407-0220 | R00 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 |
-| 19980407-0220 | UA5104 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 |
+| personnr | diagnoskod | signeringstid | start | slut | arbetsförmåga | start2 | slut2 | arbetsförmåga2 | enhet | läkare |
+| 19790407-0220 | A00 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 | lakare1 |
+| 19870407-0220 | M00 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 | lakare1 |
+| 19890407-0220 | P00 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 | lakare1 |
+| 19990407-0220 | R00 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 | lakare2 |
+| 19980407-0220 | UA5104 | 2014-09-01T10:00:00 | 2014-09-01 | 2014-10-15 | 0 | 2014-10-16 | 2014-11-28 | 50 | enhet1 | lakare2 |
 
 | Foljande meddelanden finns |
 | personnr | intygsid |
@@ -163,3 +170,17 @@ Inloggad:
 | user1 | 2013 | sep | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | #799745 |
 
 )!
+
+| Meddelanden i rapporten meddelanden per lakare diagram |
+| inloggad som  | vårdgivarnivå | läkare | grupp | färg? |
+| user1 | false | Anna Andersson  | Avstämningsmöte | #E11964 |
+| user1 | false | Anna Andersson  | Komplettering | #032C53 |
+| user1 | false | Anna Andersson | Kontakt | #FFBA3E |
+| user1 | false | Anna Andersson | Påminnelse | #799745 |
+| user1 | false | Anna Andersson | Övrigt | #3CA3FF |
+| user1 | false | Bo Bengtsson | Avstämningsmöte | #E11964 |
+| user1 | false | Bo Bengtsson | Komplettering | #032C53 |
+| user1 | false | Bo Bengtsson | Kontakt | #FFBA3E |
+| user1 | false | Bo Bengtsson | Påminnelse | #799745 |
+| user1 | false | Bo Bengtsson | Övrigt | #3CA3FF |
+| user1 | false | Bo Bengtsson | Okänt | #FB7F4D |

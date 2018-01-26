@@ -1,0 +1,50 @@
+---
+Prune
+Test
+---
+''!contents -R2 -g -p -f -h''
+
+!3 Givet att:
+Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
+
+| script | dagens datum | 2014-11-28 |
+
+| script | troskel varde | 1 |
+
+| Foljande lakare finns |
+| id | förnamn | efternamn |
+| lakare1 | Anna | Andersson |
+| lakare2 | Bo | Bengtsson |
+
+| Enbart foljande intyg finns |
+| intygid | personnr | signeringstid | enhet | läkare |
+| 1001 | 19800820-9275 | 2014-06-01T10:00:00 | enhet1 | lakare1 |
+| 1002 | 19800820-9265 | 2014-06-01T10:00:00 | enhet1 | lakare2 |
+
+| Foljande meddelanden finns |
+| personnr | skickat | intygsid | ämne |
+| 19800820-9275 | 2014-07-01T10:00:00 | 1001 | KOMPLT |
+| 19800820-9275 | 2014-07-01T10:00:00 | 1001 | KOMPLT |
+| 19800820-9265 | 2014-07-01T10:00:00 | 1002 | KOMPLT |
+| 19800820-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
+| 19800820-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
+
+!3 Då gäller:
+Läkaren som har signerat intyget får också tillhörande meddelanden. Varje meddelande räknas, oavsett om de tillhör samma intyg.
+
+Inloggad:
+
+| Meddelanden i rapporten meddelanden per lakare |
+| inloggad som | vårdgivarnivå | läkare | grupp | totalt? | män? | kvinnor? |
+| user1 | false | Anna Andersson | Avstämningsmöte | 0 | 0 | 0 |
+| user1 | false | Anna Andersson | Komplettering | 2 | 2 | 0 |
+| user1 | false | Bo Bengtsson | Avstämningsmöte | 3 | 0 | 2 |
+| user1 | false | Bo Bengtsson | Komplettering | 3 | 0 | 1 |
+
+| Meddelanden i rapporten meddelanden per lakare diagram |
+| inloggad som | vårdgivarnivå | läkare | grupp | män? | kvinnor? |
+| user1 | false | Anna Andersson | Avstämningsmöte | 0 | 0 |
+| user1 | false | Anna Andersson | Komplettering | 2 | 0 |
+| user1 | false | Bo Bengtsson | Avstämningsmöte | 0 | 2 |
+| user1 | false | Bo Bengtsson | Komplettering | 0 | 1!-
+-! |
