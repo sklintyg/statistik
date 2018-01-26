@@ -31,6 +31,7 @@ public class CountDTOAmne {
     private int patientAge;
     private String intygTyp;
     private String dx;
+    private String intygid;
 
     public int getCount() {
         return count;
@@ -96,4 +97,11 @@ public class CountDTOAmne {
         this.dx = dx;
     }
 
+    public void setIntygid(String intygid) {
+        this.intygid = intygid;
+    }
+
+    public String getIntygid() {
+        return intygid;
+    }
 }

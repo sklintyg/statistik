@@ -235,6 +235,11 @@
                 link: '#/verksamhet/intygPerTyp',
                 name: 'nav.intygpertyp',
                 ctrl: 'VerksamhetIntygPerTypeCtrl'
+            }, {
+                id: 'navBusinessAndelKompletteringarLink',
+                link: '#/verksamhet/andelkompletteringar',
+                name: 'nav.andelkompletteringar',
+                ctrl: 'VerksamhetAndelKompletteringarCtrl'
             }]
         };
 

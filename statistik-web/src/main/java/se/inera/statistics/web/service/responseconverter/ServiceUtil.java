@@ -29,8 +29,8 @@ public final class ServiceUtil {
 
     private ServiceUtil() { }
 
-    static List<Integer> getMergedSexData(KonDataRow row) {
-        List<Integer> data = new ArrayList<>();
+    static List<Object> getMergedSexData(KonDataRow row) {
+        List<Object> data = new ArrayList<>();
         for (KonField konField : row.getData()) {
             data.add(konField.getFemale() + konField.getMale());
             data.add(konField.getFemale());

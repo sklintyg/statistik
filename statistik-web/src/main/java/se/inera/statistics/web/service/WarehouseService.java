@@ -163,6 +163,14 @@ public class WarehouseService {
         return messagesQuery.getMessagesTvarsnittPerAmne(getMeddelandeFilter(vardgivarId, filter, range));
     }
 
+    public KonDataResponse getAndelKompletteringar(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
+        return messagesQuery.getAndelKompletteringar(getMeddelandeFilter(vardgivarId, filter, range));
+    }
+
+    public SimpleKonResponse getAndelKompletteringarTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
+        return messagesQuery.getAndelKompletteringarTvarsnitt(getMeddelandeFilter(vardgivarId, filter, range));
+    }
+
     public KonDataResponse getMessagesPerAmnePerEnhet(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
         return messagesQuery.getMessagesPerAmnePerEnhet(getMeddelandeFilter(vardgivarId, filter, range));
     }

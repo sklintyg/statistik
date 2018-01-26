@@ -115,13 +115,21 @@ abstract class MultiDualSexConverter {
     private List<NamedData> getTableRows(KonDataResponse resp) {
         List<NamedData> rows = new ArrayList<>();
         for (KonDataRow row : resp.getRows()) {
-            List<Integer> mergedSexData = ServiceUtil.getMergedSexData(row);
-            int sum = ServiceUtil.getRowSum(row);
+            List<Object> mergedSexData = getMergedSexData(row);
+            Object sum = getRowSum(row);
 
             mergedSexData.add(0, sum);
             rows.add(new NamedData(row.getName(), mergedSexData));
         }
         return rows;
+    }
+
+    protected Object getRowSum(KonDataRow row) {
+        return ServiceUtil.getRowSum(row);
+    }
+
+    protected List<Object> getMergedSexData(KonDataRow row) {
+        return ServiceUtil.getMergedSexData(row);
     }
 
     private List<List<TableHeader>> getTableHeaders(KonDataResponse resp, String seriesNameTemplate) {

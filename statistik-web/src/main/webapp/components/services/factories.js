@@ -375,6 +375,14 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestVerksamhet('getNumberOfCasesPerLakarbefattningSomTidsserie', successCallback, failureCallback);
     };
 
+    factory.getAndelKompletteringarVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getAndelKompletteringar', successCallback, failureCallback);
+    };
+
+    factory.getAndelKompletteringarTvarsnittVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getAndelKompletteringarTvarsnitt', successCallback, failureCallback);
+    };
+
     factory.getCompareDiagnosisVerksamhet = function (successCallback, failureCallback, diagnosisToCompare) {
         makeRequestVerksamhet('getJamforDiagnoserStatistik/' + diagnosisToCompare, successCallback, failureCallback);
     };

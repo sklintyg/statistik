@@ -22,6 +22,7 @@ public class KonField {
 
     private int female;
     private int male;
+    private Object extras;
 
     /**
      * Used by json parser.
@@ -34,12 +35,22 @@ public class KonField {
         this.male = male;
     }
 
+    public KonField(int female, int male, Object extras) {
+        this.female = female;
+        this.male = male;
+        this.extras = extras;
+    }
+
     public int getFemale() {
         return female;
     }
 
     public int getMale() {
         return male;
+    }
+
+    public Object getExtras() {
+        return extras;
     }
 
     public int getValue(Kon kon) {

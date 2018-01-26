@@ -33,6 +33,7 @@ public class MessagesFilter {
     private final Collection<String> aldersgrupp;
     private final Collection<String> diagnoser;
     private Collection<String> intygstyper;
+    private Collection<String> amne;
 
     public MessagesFilter(HsaIdVardgivare vardgivarId, LocalDate from, int numberOfMonths, Collection<HsaIdEnhet> enheter,
                           Collection<String> aldersgrupp, Collection<String> diagnoser, Collection<String> intygstyper) {
@@ -43,6 +44,17 @@ public class MessagesFilter {
         this.aldersgrupp = aldersgrupp;
         this.diagnoser = diagnoser;
         this.intygstyper = intygstyper;
+    }
+
+    public MessagesFilter(MessagesFilter messagesFilter, Collection<String> amne) {
+        this.vardgivarId = messagesFilter.vardgivarId;
+        this.from = messagesFilter.from;
+        this.numberOfMonths = messagesFilter.numberOfMonths;
+        this.enheter = messagesFilter.enheter;
+        this.aldersgrupp = messagesFilter.aldersgrupp;
+        this.diagnoser = messagesFilter.diagnoser;
+        this.intygstyper = messagesFilter.intygstyper;
+        this.amne = amne;
     }
 
     public HsaIdVardgivare getVardgivarId() {
@@ -75,6 +87,10 @@ public class MessagesFilter {
 
     public Collection<String> getIntygstyper() {
         return intygstyper;
+    }
+
+    public Collection<String> getAmne() {
+        return amne;
     }
 
 }

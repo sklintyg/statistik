@@ -629,3 +629,31 @@ angular.module('StatisticsApp').meddelandenPerAmneLandstingConfig =
     return conf;
 };
 
+angular.module('StatisticsApp').andelKompletteringarConfig =
+    /** @ngInject */
+    function (messageService) {
+    'use strict';
+
+    var conf = {};
+    conf.defaultChartType = 'line';
+    conf.dataFetcher = 'getAndelKompletteringarNational';
+    conf.dataFetcherVerksamhet = 'getAndelKompletteringarVerksamhet';
+    conf.exportTableUrl = function () {
+        return 'api/getAndelKompletteringar?format=xlsx';
+    };
+    conf.exportTableUrlVerksamhet = function () {
+        return 'api/verksamhet/getAndelKompletteringar?format=xlsx';
+    };
+    conf.showDetailsOptions = false;
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
+    };
+    conf.title = messageService.getProperty('title.andelkompletteringar');
+
+    conf.exchangeableViews = [
+        {description: 'Tidsserie', state: '/verksamhet/andelkompletteringar', active: true},
+        {description: 'Tvärsnitt', state: '/verksamhet/andelkompletteringartvarsnitt', active: false}];
+
+    return conf;
+};
+

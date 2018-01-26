@@ -692,3 +692,23 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetLandstingConfig =
         };
         return conf;
     };
+
+angular.module('StatisticsApp').andelKompletteringarTvarsnittConfig =
+    /** @ngInject */
+        function (messageService) {
+        'use strict';
+
+        var conf = {};
+        conf.dataFetcherVerksamhet = 'getAndelKompletteringarTvarsnittVerksamhet';
+        conf.exportTableUrlVerksamhet = function () {
+            return 'api/verksamhet/getAndelKompletteringarTvarsnitt?format=xlsx';
+        };
+        conf.showDetailsOptions = false;
+        conf.title = messageService.getProperty('title.andelkompletteringar');
+
+        conf.exchangeableViews = [
+            {description: 'Tidsserie', state: '/verksamhet/andelkompletteringar', active: false},
+            {description: 'Tvärsnitt', state: '/verksamhet/andelkompletteringartvarsnitt', active: true}];
+
+        return conf;
+    };

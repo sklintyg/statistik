@@ -123,6 +123,30 @@ public class MessageWidelineLoader {
         return null;
     }
 
+    public List<CountDTOAmne> getKompletteringarPerIntyg(MessagesFilter filter) {
+        try (
+            Connection connection = dataSource.getConnection();
+            PreparedStatement stmt = prepareStatementKompletteringarPerIntyg(connection, filter)) {
+
+            ResultSet resultSet = stmt.executeQuery();
+
+            List<CountDTOAmne> dtos = new ArrayList<>();
+
+            while (resultSet.next()) {
+                dtos.add(toCountAmne(resultSet));
+            }
+
+            dtos = applyAgeGroupFilter(filter, dtos);
+            dtos = applyDxFilter(filter, dtos);
+
+            return dtos;
+        } catch (SQLException e) {
+            LOG.error("Could not populate warehouse", e);
+        }
+
+        return null;
+    }
+
     private List<CountDTOAmne> applyAgeGroupFilter(MessagesFilter filter, List<CountDTOAmne> dtos) {
         final Collection<String> aldersgrupp = filter.getAldersgrupp();
         if (aldersgrupp != null && !aldersgrupp.isEmpty() && new HashSet<>(aldersgrupp).size() != AgeGroup.values().length) {
@@ -168,19 +192,20 @@ public class MessageWidelineLoader {
     private CountDTOAmne toCountAmne(ResultSet resultSet) throws SQLException {
         CountDTOAmne dto = new CountDTOAmne();
 
-
         final String signeringsdatumStr = resultSet.getString("signeringsdatum");
         final LocalDate signDate = LocalDate.parse(signeringsdatumStr).withDayOfMonth(1);
         dto.setCount(1);
         dto.setDate(signDate);
         dto.setKon(Kon.byNumberRepresentation(resultSet.getInt("kon")));
-        dto.setAmne(MsgAmne.parse(resultSet.getString("amneCode")));
+        final String amneCode = resultSet.getString("amneCode");
+        dto.setAmne(amneCode != null ? MsgAmne.parse(amneCode) : null);
         dto.setEnhet(resultSet.getString("enhet"));
         final String patientid = resultSet.getString("patientid");
         final int alder = ConversionHelper.extractAlder(patientid, signDate);
         dto.setPatientAge(alder);
         dto.setIntygTyp(resultSet.getString("intygstyp"));
         dto.setDx(resultSet.getString("dx"));
+        dto.setIntygid(resultSet.getString("intygid"));
         return dto;
     }
 
@@ -231,7 +256,7 @@ public class MessageWidelineLoader {
             throws SQLException {
 
         StringBuilder sql = new StringBuilder("SELECT "
-                + "mwl.amnecode, mwl.kon, mwl.amneCode, mwl.enhet AS enhet, mwl.alder, "
+                + "mwl.intygid, mwl.amnecode, mwl.kon, mwl.amneCode, mwl.enhet AS enhet, mwl.alder, "
                 + "mwl.intygstyp, mwl.patientid, ic.signeringsdatum, ic.dx "
                 + "FROM messagewideline AS mwl "
                 + "INNER JOIN intygcommon AS ic "
@@ -258,6 +283,63 @@ public class MessageWidelineLoader {
             String intygstyperSql = intygTypeFilter.stream().map(Enum::name).collect(Collectors.joining("' , '"));
             sql.append(" AND `intygstyp` IN ('").append(intygstyperSql).append("')");
         }
+
+        LOG.debug("sql: {}", sql);
+
+        PreparedStatement stmt = connection.prepareStatement(sql.toString(), ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        stmt.setFetchSize(FETCH_SIZE);
+
+        stmt.setDate(COLUMN_FROM, java.sql.Date.valueOf(filter.getFrom()));
+        stmt.setDate(COLUMN_TO, java.sql.Date.valueOf(filter.getTo()));
+
+        if (hasVardgivare) {
+            stmt.setString(COLUMN_VARDGIVARE, filter.getVardgivarId().getId());
+        }
+
+        return stmt;
+    }
+
+    @SuppressFBWarnings(value = "SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING",
+            justification = "We know what we're doing. No user supplied data.")
+    private PreparedStatement prepareStatementKompletteringarPerIntyg(Connection connection, MessagesFilter filter)
+            throws SQLException {
+
+        StringBuilder sql = new StringBuilder("SELECT "
+                + "ic.intygid, ic.kon, ic.intygtyp as intygstyp, ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, "
+                + "mwl.amneCode "
+                + "FROM intygcommon ic "
+                + "LEFT JOIN messagewideline mwl "
+                + "ON ic.intygid = mwl.intygid "
+                + "WHERE (ic.signeringsdatum between ? AND ?) ");
+
+        boolean hasVardgivare = filter.getVardgivarId() != null;
+        if (hasVardgivare) {
+            sql.append(" AND ic.vardgivareid = ? ");
+        }
+
+        final Collection<HsaIdEnhet> enheter = filter.getEnheter();
+        if (enheter != null && !enheter.isEmpty()) {
+            String enhetSql = enheter.stream().map(HsaIdEnhet::getId).collect(Collectors.joining("' , '"));
+            sql.append(" AND ic.enhet IN ('").append(enhetSql).append("')");
+        }
+
+        final Collection<String> intygstyper = filter.getIntygstyper();
+        if (intygstyper != null && !intygstyper.isEmpty()) {
+            List<IntygType> intygTypeFilter =  filter.getIntygstyper().stream()
+                    .map(IntygType::getByName).filter(Optional::isPresent).map(Optional::get)
+                    .flatMap(intygType -> intygType.getUnmappedTypes().stream())
+                    .collect(Collectors.toList());
+            String intygstyperSql = intygTypeFilter.stream().map(Enum::name).collect(Collectors.joining("' , '"));
+            sql.append(" AND ic.intygtyp IN ('").append(intygstyperSql).append("')");
+        }
+
+        final Collection<String> amne = filter.getAmne();
+        if (amne != null && !amne.isEmpty()) {
+            String amneSql = amne.stream().collect(Collectors.joining("' , '"));
+            sql.append(" AND (amneCode IN ('").append(amneSql).append("') OR amneCode IS NULL) ");
+        }
+
+        sql.append(" GROUP BY ic.intygid, mwl.amneCode");
 
         LOG.debug("sql: {}", sql);
 

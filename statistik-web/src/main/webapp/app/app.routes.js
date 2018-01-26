@@ -355,6 +355,18 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'VerksamhetIntygPerTypeCtrl',
                 resolve: { config: app.intygPerTypeTvarsnittConfig },
                 title: 'title.intygstyp'
+            }).when('/verksamhet/andelkompletteringar', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'doubleAreaChartsCtrl',
+                controllerAs: 'VerksamhetAndelKompletteringarCtrl',
+                resolve: { config: app.andelKompletteringarConfig },
+                title: 'nav.andelkompletteringar'
+            }).when('/verksamhet/andelkompletteringartvarsnitt', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'VerksamhetAndelKompletteringarCtrl',
+                resolve: { config: app.andelKompletteringarTvarsnittConfig },
+                title: 'nav.andelkompletteringar'
             }).when('/landsting/filuppladdning', {
                 templateUrl: '/app/views/landsting/fileupload.html',
                 controller: 'landstingFileUploadCtrl',

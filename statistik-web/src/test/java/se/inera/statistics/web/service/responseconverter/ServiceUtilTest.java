@@ -74,7 +74,7 @@ public class ServiceUtilTest {
         List<Integer> expected = Arrays.asList(6, 1, 5, 0, 0, 0, 10, 10, 0);
 
         // Act
-        List<Integer> rows = ServiceUtil.getMergedSexData(row);
+        List<Object> rows = ServiceUtil.getMergedSexData(row);
 
         // Assert
         assertEquals(expected, rows);

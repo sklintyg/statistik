@@ -21,6 +21,8 @@ package se.inera.statistics.spec
 import se.inera.statistics.service.processlog.message.MessageEventType
 import se.inera.testsupport.Meddelande
 
+import java.text.SimpleDateFormat
+
 class FoljandeMeddelandenFinns extends FoljandeFinns {
 
     private static int meddelandeIdCounter = 1
@@ -37,6 +39,7 @@ class FoljandeMeddelandenFinns extends FoljandeFinns {
         händelsetyp = MessageEventType.SENT.name()
         exaktmeddelandeid = meddelandeIdCounter++
         ämne = "KOMPLT"
+        skickat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
     }
 
     public void execute() {
