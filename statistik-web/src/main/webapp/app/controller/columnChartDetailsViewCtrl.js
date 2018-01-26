@@ -290,6 +290,8 @@ angular.module('StatisticsApp').casesPerBusinessConfig =
     'use strict';
 
     var conf = {};
+    conf.highchartType = 'column';
+    conf.defaultChartType = 'stackedcolumn';
     conf.dataFetcherVerksamhet = 'getSjukfallPerBusinessVerksamhet';
     conf.dataFetcherLandsting = 'getSjukfallPerBusinessLandsting';
     conf.exportTableUrlVerksamhet = function () {
