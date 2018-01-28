@@ -25,7 +25,6 @@
     ">
 
     <context:component-scan base-package="se.inera.statistics.web.service.monitoring" />
-    <context:component-scan base-package="se.inera.statistics.web.service.converter" />
 
     <context:property-placeholder location="file:${statistics.credentials.file}, file:${statistics.config.file}, classpath*:version.properties"
                                   order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
@@ -136,6 +135,10 @@
     <beans profile="!testapi">
         <bean class="org.springframework.web.client.RestTemplate" />
         <bean class="java.time.Clock" factory-method="systemDefaultZone"/>
+    </beans>
+
+    <beans profile="populate-intygcommon-dx">
+        <bean id="intygCommonDxPopulator" class="se.inera.statistics.service.warehouse.IntygCommonDxPopulator" />
     </beans>
 
 </beans>

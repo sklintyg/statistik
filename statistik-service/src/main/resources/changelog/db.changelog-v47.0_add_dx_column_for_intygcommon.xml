@@ -30,4 +30,12 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="47_populate_known_dxs_from_wideline" author="fredrik.engstrom">
+        <sql>UPDATE intygcommon
+            SET dx = COALESCE(
+            (SELECT diagnoskod FROM wideline WHERE wideline.correlationid = intygcommon.intygid),
+            (SELECT diagnoskategori FROM wideline WHERE wideline.correlationid = intygcommon.intygid))
+            WHERE dx IS NULL</sql>
+    </changeSet>
+
 </databaseChangeLog>
