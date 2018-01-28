@@ -105,4 +105,8 @@ public class IntygCommon {
         return dx;
     }
 
+    public void setDx(String dx) {
+        this.dx = dx;
+    }
+
 }
