@@ -33,7 +33,7 @@ Läkaren som har signerat intyget får också tillhörande meddelanden. Varje me
 
 Inloggad:
 
-| Meddelanden i rapporten meddelanden per lakare |
+| Meddelanden i rapporten meddelanden per lakare som tvarsnitt |
 | inloggad som | vårdgivarnivå | läkare | grupp | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
 | user1 | false | Anna Andersson | Komplettering | 2014-03-01 | 2014-06-30 | 2 | 2 | 0 |
 | user1 | false | Anna Andersson | Komplettering | | | 5 | 2 | 3 |
