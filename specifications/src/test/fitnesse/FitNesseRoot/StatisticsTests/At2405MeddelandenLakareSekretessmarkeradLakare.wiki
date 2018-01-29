@@ -12,9 +12,9 @@ Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 | script | troskel varde | 1 |
 
 | Foljande lakare finns |
-| id | förnamn | efternamn |
-| lakare1 | Anna | Andersson |
-| lakare2 | Anna | Andersson |
+| id | förnamn | efternamn | skyddad |
+| lakare1 | Anna | Andersson | true |
+| lakare2 | Bo | Bengtsson | false |
 
 | Enbart foljande intyg finns |
 | intygid | personnr | signeringstid | enhet | läkare |
@@ -30,15 +30,13 @@ Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 | 19800820-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
 
 !3 Då gäller:
-Läkaren som har signerat intyget får också tillhörande meddelanden. Varje meddelande räknas, oavsett om de tillhör samma intyg.
-
-Läkarna presenteras med namn och HSA-id för att kunna skilja dem åt.
-
 Inloggad:
 
 | Meddelanden i rapporten meddelanden per lakare som tvarsnitt |
 | inloggad som | vårdgivarnivå | läkare | grupp | totalt? | män? | kvinnor? |
-| user1 | false | Anna Andersson LAKARE1 | Avstämningsmöte | 0 | 0 | 0 |
-| user1 | false | Anna Andersson LAKARE1 | Komplettering | 2 | 2 | 0 |
-| user1 | false | Anna Andersson LAKARE2 | Avstämningsmöte | 3 | 0 | 2 |
-| user1 | false | Anna Andersson LAKARE2 | Komplettering | 3 | 0 | 1 |
+| user1 | false | Anna Andersson | Avstämningsmöte | -1 | -1 | -1 |
+| user1 | false | Anna Andersson | Komplettering | -1 | -1 | -1 |
+| user1 | false | Sekretessmarkerad läkare | Avstämning | 0 | 0 | 0 |
+| user1 | false | Sekretessmarkerad läkare | Komplettering | 2 | 2 | 0 |
+| user1 | false | Bo Bengtsson | Avstämningsmöte | 3 | 0 | 2 |
+| user1 | false | Bo Bengtsson | Komplettering | 3 | 0 | 1 |

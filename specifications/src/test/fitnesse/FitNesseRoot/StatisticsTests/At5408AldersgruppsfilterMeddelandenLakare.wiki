@@ -1,0 +1,41 @@
+---
+Prune
+Test
+---
+''!contents -R2 -g -p -f -h''
+
+!3 Givet att:
+Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
+
+| script | dagens datum | 2014-11-28 |
+
+| script | troskel varde | 1 |
+
+| Foljande lakare finns |
+| id | förnamn | efternamn |
+| lakare1 | Anna | Andersson |
+
+| Enbart foljande intyg finns |
+| intygid | personnr | signeringstid | enhet | läkare | kommentar |
+| 1001 | 19800120-9275 | 2014-06-01T10:00:00 | enhet1 | lakare1 | 34år |
+| 1002 | 19700120-9265 | 2014-06-01T10:00:00 | enhet1 | lakare1 | 44år |
+
+| Foljande meddelanden finns |
+| personnr | skickat | intygsid | ämne |
+| 19800820-9275 | 2014-07-01T10:00:00 | 1001 | KOMPLT |
+| 19800820-9275 | 2014-07-01T10:00:00 | 1001 | KOMPLT |
+| 19700120-9265 | 2014-07-01T10:00:00 | 1002 | KOMPLT |
+| 19700120-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
+| 19700120-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
+
+!3 Då gäller:
+Åldern avgörs av signeringstiden på intyget.
+
+Inloggad:
+
+| Meddelanden i rapporten meddelanden per lakare som tvarsnitt |
+| inloggad som | vårdgivarnivå | läkare | grupp | filter åldersgrupp | totalt? | män? | kvinnor? |
+| user1 | false | Anna Andersson | Avstämningsmöte | | 2 | 0 | 2 |
+| user1 | false | Anna Andersson | Avstämningsmöte | 41-45år | 2 | 0 | 2 |
+| user1 | false | Anna Andersson | Komplettering | | 3 | 2 | 1 |
+| user1 | false | Anna Andersson | Komplettering | Under 16 år, 16-20år, 21-25år, 26-30år, 36-40år, 41-45år, 46-50år, 51-55år, 56-60år | 1 | 0 | 1 |

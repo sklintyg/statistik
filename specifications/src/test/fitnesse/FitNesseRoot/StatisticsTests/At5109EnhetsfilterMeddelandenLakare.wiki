@@ -14,17 +14,16 @@ Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 | Foljande lakare finns |
 | id | förnamn | efternamn |
 | lakare1 | Anna | Andersson |
-| lakare2 | Anna | Andersson |
 
 | Enbart foljande intyg finns |
 | intygid | personnr | signeringstid | enhet | läkare |
 | 1001 | 19800820-9275 | 2014-06-01T10:00:00 | enhet1 | lakare1 |
-| 1002 | 19800820-9265 | 2014-06-01T10:00:00 | enhet1 | lakare2 |
+| 1002 | 19800820-9265 | 2014-06-01T10:00:00 | enhet2 | lakare1 |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
 | 19800820-9275 | 2014-07-01T10:00:00 | 1001 | KOMPLT |
-| 19800820-9275 | 2014-07-01T10:00:00 | 1001 | KOMPLT |
+| 19800820-9275 | 2014-07-01T10:00:00 | 1001 | AVSTMN |
 | 19800820-9265 | 2014-07-01T10:00:00 | 1002 | KOMPLT |
 | 19800820-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
 | 19800820-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
@@ -32,13 +31,13 @@ Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 !3 Då gäller:
 Läkaren som har signerat intyget får också tillhörande meddelanden. Varje meddelande räknas, oavsett om de tillhör samma intyg.
 
-Läkarna presenteras med namn och HSA-id för att kunna skilja dem åt.
-
 Inloggad:
 
 | Meddelanden i rapporten meddelanden per lakare som tvarsnitt |
-| inloggad som | vårdgivarnivå | läkare | grupp | totalt? | män? | kvinnor? |
-| user1 | false | Anna Andersson LAKARE1 | Avstämningsmöte | 0 | 0 | 0 |
-| user1 | false | Anna Andersson LAKARE1 | Komplettering | 2 | 2 | 0 |
-| user1 | false | Anna Andersson LAKARE2 | Avstämningsmöte | 3 | 0 | 2 |
-| user1 | false | Anna Andersson LAKARE2 | Komplettering | 3 | 0 | 1 |
+| inloggad som | vårdgivarnivå | läkare | grupp | filtler enheter | allaEnhetsfilterValda? | enhetsfilterlista? | totalt? | män? | kvinnor? |
+| user2 | false | Anna Andersson | Avstämningsmöte | | true | [enhet1, enhet2] | 3 | 1 | 2 |
+| user2 | false | Anna Andersson | Avstämningsmöte | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 2 | 1 | 2 |
+| user2 | false | Anna Andersson | Avstämningsmöte | enhet1 | false | [enhet1] | 1 | 1 | 0 |
+| user2 | false | Anna Andersson | Komplettering | | true | [enhet1, enhet2] | 2 | 1 | 1 |
+| user2 | false | Anna Andersson | Komplettering | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 2 | 1 | 1 |
+| user2 | false | Anna Andersson | Komplettering | enhet2 | false | [enhet2] | 1 | 0 | 1 |

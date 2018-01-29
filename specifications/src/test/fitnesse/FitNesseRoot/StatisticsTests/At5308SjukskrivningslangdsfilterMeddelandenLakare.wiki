@@ -5,11 +5,11 @@ Test
 ''!contents -R2 -g -p -f -h''
 
 !3 Givet att:
-Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
+Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 
-| script | dagens datum  | 2014-11-28  |
+| script | dagens datum | 2014-11-28 |
 
-| script | troskel varde  | 1 |
+| script | troskel varde | 1 |
 
 | Foljande lakare finns |
 | id | förnamn | efternamn |
@@ -18,25 +18,25 @@ Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 
 | Enbart foljande intyg finns |
 | intygid | personnr | signeringstid | start | slut | enhet | läkare |
-| 1001 | 19800820-9275  | 2014-06-01T10:00:00  | 2014-06-01 | 2014-07-01 | enhet1 | lakare1 |
-| 1002 | 19800820-9265  | 2014-06-01T10:00:00  | 2014-06-01 | 2014-07-01 | enhet1 | lakare2 |
+| 1001 | 19800820-9275 | 2014-06-01T10:00:00 | 2014-06-01 | 2014-07-01 | enhet1 | lakare1 |
+| 1002 | 19800820-9265 | 2014-06-01T10:00:00 | 2014-06-01 | 2014-07-01 | enhet1 | lakare2 |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
-| 19800820-9275  | 2014-07-01T10:00:00  | 1001 | KOMPLT |
-| 19800820-9275  | 2014-07-01T10:00:00  | 1001 | KOMPLT |
-| 19800820-9265  | 2014-07-01T10:00:00  | 1002 | KOMPLT |
-| 19800820-9265  | 2014-07-01T10:00:00  | 1002 | AVSTMN |
-| 19800820-9265  | 2014-07-01T10:00:00  | 1002 | AVSTMN |
+| 19800820-9275 | 2014-07-01T10:00:00 | 1001 | KOMPLT |
+| 19800820-9275 | 2014-07-01T10:00:00 | 1001 | KOMPLT |
+| 19800820-9265 | 2014-07-01T10:00:00 | 1002 | KOMPLT |
+| 19800820-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
+| 19800820-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
 
 !3 Då gäller:
 Sjukskrivningslängdfiltret har ingen effekt på denna rapport.
 
 Inloggad:
 
-| Meddelanden i rapporten meddelanden per lakare |
-| inloggad som  | vårdgivarnivå | läkare | grupp | filter sjukskrivningslängd | totalt? | män? | kvinnor? |
-| user1 | false | Anna Andersson  | Avstämningsmöte | Över 365 dagar | 0 | 0 | 0 |
-| user1 | false | Anna Andersson  | Komplettering | Över 365 dagar | 2 | 2 | 0 |
+| Meddelanden i rapporten meddelanden per lakare som tvarsnitt |
+| inloggad som | vårdgivarnivå | läkare | grupp | filter sjukskrivningslängd | totalt? | män? | kvinnor? |
+| user1 | false | Anna Andersson | Avstämningsmöte | Över 365 dagar | 0 | 0 | 0 |
+| user1 | false | Anna Andersson | Komplettering | Över 365 dagar | 2 | 2 | 0 |
 | user1 | false | Bo Bengtsson | Avstämningsmöte | Över 365 dagar | 3 | 0 | 2 |
 | user1 | false | Bo Bengtsson | Komplettering | Över 365 dagar | 3 | 0 | 1 |
