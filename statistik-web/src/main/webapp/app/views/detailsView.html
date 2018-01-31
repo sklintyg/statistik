@@ -140,12 +140,6 @@
       </div>
 
       <div class="collapsible-panel-body" uib-collapse="status.isChartCollapsed">
-        <div data-ng-if="hideChart">
-          <div class="alert alert-warning">
-            <strong>Varning!</strong> {{'alert.dxs.max.selected' | messageFilter}}
-          </div>
-        </div>
-
         <div data-ng-if="!hideChart">
           <div class="row">
             <div data-ng-repeat="chartContainer in chartContainers"
