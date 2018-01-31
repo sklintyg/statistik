@@ -271,7 +271,11 @@ public class RestSupportService {
             count = consumer.processBatch();
             LOG.info("Processed batch with {} entries", count);
         } while (count > 0);
-        return clearCaches();
+        clearCaches();
+
+        nationalChartDataService.buildCache();
+
+        return Response.ok().build();
     }
 
     @POST
