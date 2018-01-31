@@ -18,6 +18,20 @@
  */
 package se.inera.statistics.service.hsa;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -29,21 +43,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
 import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
@@ -120,7 +121,14 @@ public class HSADecorator {
         if (info != null) {
             String infoJson = hsaInfoToJson(info);
             if (infoJson != null) {
-                final HSAStore entity = new HSAStore(documentId, infoJson);
+                HSAStore entity = manager.find(HSAStore.class, documentId);
+
+                if (entity == null) {
+                    entity = new HSAStore(documentId, infoJson);
+                } else {
+                    entity.setData(infoJson);
+                }
+
                 manager.merge(entity);
             }
         }
