@@ -288,15 +288,11 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             });
         }
 
-        this.formatOverViewTablePDF = function(thousandseparatedFilter, data, nameSuffix) {
+        this.formatOverViewTablePDF = function(thousandseparatedFilter, data) {
             var tableData = [];
 
-            if (!nameSuffix) {
-                nameSuffix = '';
-            }
-
-            angular.forEach(data, function(row) {
-                tableData.push([row.color, row.name + nameSuffix, thousandseparatedFilter(row.quantity), row.alternation + ' %']);
+            _.each(data, function(row) {
+                tableData.push([row.color, row.name, thousandseparatedFilter(row.quantity), row.alternation + ' %']);
             });
 
             return tableData;

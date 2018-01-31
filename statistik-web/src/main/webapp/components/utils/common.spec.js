@@ -238,4 +238,161 @@ describe('Test of common functions for controllers', function() {
         });
     });
 
+    describe('removeChartMessages', function() {
+
+        it('empty', function() {
+            var message = [];
+            var result = ControllerCommons.removeChartMessages(message);
+
+            expect(result).toEqual([]);
+        });
+
+        it('remove one message', function() {
+            var message = [{
+                message: 'test',
+                type: 'CHART'
+            }, {
+                message: 'filter',
+                type: 'FILTER'
+            }];
+
+            var expected = [{
+                message: 'filter',
+                type: 'FILTER'
+            }];
+
+            var result = ControllerCommons.removeChartMessages(message);
+
+            expect(result).toEqual(expected);
+        });
+    });
+
+    describe('isShowing', function() {
+
+        var path = '';
+        var location = {
+            path: function() {
+                return path;
+            }
+        };
+
+        it('showing', function() {
+            path = '/om/about';
+
+            expect(ControllerCommons.isShowing(location, 'om')).toBeTruthy();
+        });
+
+        it('showing', function() {
+            path = '/about';
+
+            expect(ControllerCommons.isShowing(location, 'om')).toBeFalsy();
+        });
+
+        it('landsting', function() {
+            path = '/landsting/';
+
+            expect(ControllerCommons.isShowingLandsting(location)).toBeTruthy();
+        });
+
+        it('landsting false', function() {
+            path = '/nationell/';
+
+            expect(ControllerCommons.isShowingLandsting(location)).toBeFalsy();
+        });
+
+        it('verksamhet', function() {
+            path = '/verksamhet/sjukfall?vgid=1';
+
+            expect(ControllerCommons.isShowingVerksamhet(location)).toBeTruthy();
+        });
+
+        it('nationell', function() {
+            path = '/nationell/';
+
+            expect(ControllerCommons.isShowingNationell(location)).toBeTruthy();
+        });
+
+        it('not protected', function() {
+            path = '/nationell/oversikt';
+
+            expect(ControllerCommons.isShowingProtectedPage(location)).toBeFalsy();
+        });
+
+        it('protected', function() {
+            path = '/verksamhet/sjukfall';
+
+            expect(ControllerCommons.isShowingProtectedPage(location)).toBeTruthy();
+        });
+    });
+
+    describe('combineUrl', function() {
+        it('empty query', function() {
+            var urlBase = 'http://test.com';
+            var queryString = '';
+
+            var expected = 'http://test.com';
+
+            expect(ControllerCommons.combineUrl(urlBase, queryString)).toEqual(expected);
+        });
+
+        it('query with ?', function() {
+            var urlBase = 'http://test.com';
+            var queryString = '?hej=hej';
+
+            var expected = 'http://test.com?hej=hej';
+
+            expect(ControllerCommons.combineUrl(urlBase, queryString)).toEqual(expected);
+        });
+
+        it('base with ?', function() {
+            var urlBase = 'http://test.com?';
+            var queryString = 'hej=hej';
+
+            var expected = 'http://test.com?hej=hej';
+
+            expect(ControllerCommons.combineUrl(urlBase, queryString)).toEqual(expected);
+        });
+
+        it('both with ?', function() {
+            var urlBase = 'http://test.com?old=old';
+            var queryString = '?hej=hej';
+
+            var expected = 'http://test.com?old=old&hej=hej';
+
+            expect(ControllerCommons.combineUrl(urlBase, queryString)).toEqual(expected);
+        });
+    });
+
+    describe('formatOverViewTablePDF', function() {
+
+        var filter = function(value) {
+            return value;
+        };
+
+        it('empty', function() {
+            var rows = [];
+
+            var tableData = ControllerCommons.formatOverViewTablePDF(filter, rows);
+
+            var expected = [];
+
+            expect(tableData).toEqual(expected);
+        });
+
+        it('one row', function() {
+            var rows = [{
+                color: '#fff',
+                name: 'test',
+                quantity: '1',
+                alternation: '50'
+            }];
+
+            var tableData = ControllerCommons.formatOverViewTablePDF(filter, rows);
+
+            var expected = [['#fff', 'test', '1', '50 %']];
+
+            expect(tableData).toEqual(expected);
+        });
+    });
+
 });

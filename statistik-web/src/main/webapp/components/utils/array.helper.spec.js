@@ -82,6 +82,23 @@ describe('helper: ArrayHelper', function() {
             expect(sortedArray).toEqual(expectedArray);
         });
 
+        it('same value', function() {
+            var unsortedArray = [{
+                text: 'hej'
+            }, {
+                text: 'hej'
+            }];
+            var sortedArray = ArrayHelper.sortSwedish(unsortedArray, 'text');
+
+            var expectedArray = [{
+                text: 'hej'
+            }, {
+                text: 'hej'
+            }];
+
+            expect(sortedArray).toEqual(expectedArray);
+        });
+
         it('sorted', function() {
             var unsortedArray = [{
                 text: 'Ä'
@@ -111,6 +128,40 @@ describe('helper: ArrayHelper', function() {
                 text: 'ÅÄÖ'
             },{
                 text: 'ÅÄö'
+            }];
+
+            expect(sortedArray).toEqual(expectedArray);
+        });
+
+        it('sorted different length', function() {
+            var unsortedArray = [{
+                text: 'aaaa'
+            }, {
+                text: 'aaa'
+            }];
+            var sortedArray = ArrayHelper.sortSwedish(unsortedArray, 'text');
+
+            var expectedArray = [{
+                text: 'aaa'
+            },{
+                text: 'aaaa'
+            }];
+
+            expect(sortedArray).toEqual(expectedArray);
+        });
+
+        it('empty text', function() {
+            var unsortedArray = [{
+                text: 'a'
+            }, {
+                text: ''
+            }];
+            var sortedArray = ArrayHelper.sortSwedish(unsortedArray, 'text');
+
+            var expectedArray = [{
+                text: ''
+            },{
+                text: 'a'
             }];
 
             expect(sortedArray).toEqual(expectedArray);
