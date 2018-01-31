@@ -47,6 +47,8 @@ module.exports = function(config) {
             'src/main/webapp/app/app.constant.js'
         ],
 
+        reporters: ['progress', 'coverage'],
+
         preprocessors: {
             'src/main/webapp/!(bower_components)/**/*.html': ['ng-html2js'],
             'src/main/webapp/!(bower_components)/**/!(*spec).js': ['coverage']

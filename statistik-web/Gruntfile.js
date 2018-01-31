@@ -97,7 +97,7 @@ module.exports = function(grunt) {
                     '<%= config.client %>/{app,components}/**/*.spec.js',
                     '<%= config.client %>/{app,components}/**/*.mock.js'
                 ],
-                tasks: ['newer:jshint:all', 'karma']
+                tasks: ['newer:jshint:all', 'karma:unit']
             },
             injectSass: {
                 files: [
@@ -343,8 +343,12 @@ module.exports = function(grunt) {
 
         // Test settings
         karma: {
-            unit: {
+            ci: {
                 configFile: 'karma.conf.ci.js',
+                singleRun: true
+            },
+            unit: {
+                configFile: 'karma.conf.js',
                 singleRun: true
             }
         },
@@ -483,7 +487,7 @@ module.exports = function(grunt) {
     grunt.registerTask('test', function() {
         return grunt.task.run([
             'injector:scripts',
-            'karma'
+            'karma:unit'
         ]);
     });
 
@@ -496,7 +500,7 @@ module.exports = function(grunt) {
         'injector:scripts',
         'injector:css',
         'wiredep',
-        'karma'
+        'karma:ci'
     ]);
 
     grunt.registerTask('build', [
@@ -510,7 +514,7 @@ module.exports = function(grunt) {
         'injector:css',
         'wiredep',
         'useminPrepare',
-        'karma',
+        'karma:ci',
         'ngtemplates',
         'concat',
         'ngAnnotate',
