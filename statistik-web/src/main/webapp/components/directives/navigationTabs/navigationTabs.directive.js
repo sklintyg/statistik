@@ -74,7 +74,7 @@
             content: baseTemplateUrl + 'navigationTabs.landsting.html'
         };
 
-        $scope.$watch('vm.AppModel.get().isLoggedIn', function(newValue, oldValue) {
+        $scope.$watch('vm.UserModel.get().businesses', function(newValue, oldValue) {
             if (oldValue !== newValue) {
                 isLoggedIn = AppModel.get().isLoggedIn;
                 initTabs();
