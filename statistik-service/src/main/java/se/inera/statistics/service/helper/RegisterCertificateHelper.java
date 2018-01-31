@@ -172,13 +172,16 @@ public class RegisterCertificateHelper {
         try {
             final String personId = DocumentHelper.getUnifiedPersonId(patientIdRaw);
             try {
-                alder = ConversionHelper.extractAlder(personId, getSistaNedsattningsdag(intyg));
+                final LocalDate sistaNedsattningsdag = getSistaNedsattningsdag(intyg);
+                if (sistaNedsattningsdag != null) {
+                    alder = ConversionHelper.extractAlder(personId, sistaNedsattningsdag);
+                }
             } finally {
                 kon = Kon.parse(ConversionHelper.extractKon(personId));
             }
         } catch (Exception e) {
-            LOG.error("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: '{}'", patientIdRaw);
-            LOG.debug("Personnummer cannot be parsed as a date, adjusting for samordningsnummer did not help: '{}'", patientIdRaw, e);
+            LOG.error("Could not extract age and/or gender: '{}'", patientIdRaw);
+            LOG.debug("Could not extract age and/or gender: '{}'", patientIdRaw, e);
         }
         return new Patientdata(alder, kon);
 
