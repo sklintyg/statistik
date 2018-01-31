@@ -1,0 +1,269 @@
+---
+Test
+---
+!contents -R2 -g -p -f -h
+!3 Givet att:
+
+Testar att skicka in ett intyg med "konstiga" specialtecken.
+Visar även hur man kan skicka in ett intyg med specifikt intygsdata direkt in till ST via Fitnesse.
+
+| script | dagens datum | 2018-03-01 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| enhet | intygdata |
+| enhet1 | !-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <ns2:RegisterCertificate xmlns="urn:riv:clinicalprocess:healthcond:certificate:3" xmlns:ns2="urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:3" xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:3">
+  	<ns2:intyg>
+  		<intygs-id>
+  			<ns3:root>TSTNMT2321000156-102R</ns3:root>
+  			<ns3:extension>2be3f734-692f-4d30-aba7-2be998f41697</ns3:extension>
+  		</intygs-id>
+  		<typ>
+  			<ns3:code>LUSE</ns3:code>
+  			<ns3:codeSystem>b64ea353-e8f6-4832-b563-fc7d46f29548</ns3:codeSystem>
+  			<ns3:displayName>LÃ¤karutlÃ¥tande fÃ¶r sjukersÃ¤ttning</ns3:displayName>
+  		</typ>
+  		<version>1.0</version>
+  		<signeringstidpunkt>2018-01-30T07:43:33</signeringstidpunkt>
+  		<skickatTidpunkt>2018-01-30T07:43:33</skickatTidpunkt>
+  		<patient>
+  			<person-id>
+  				<ns3:root>1.2.752.129.2.1.3.1</ns3:root>
+  				<ns3:extension>200007312382</ns3:extension>
+  			</person-id>
+  			<fornamn/>
+  			<efternamn/>
+  			<postadress/>
+  			<postnummer/>
+  			<postort/>
+  		</patient>
+  		<skapadAv>
+  			<personal-id>
+  				<ns3:root>1.2.752.129.2.1.4.1</ns3:root>
+  				<ns3:extension>TSTNMT2321000156-1023</ns3:extension>
+  			</personal-id>
+  			<fullstandigtNamn>Jenny Andersson Svensson</fullstandigtNamn>
+  			<forskrivarkod>0000000</forskrivarkod>
+  			<befattning>
+  				<ns3:code>152090</ns3:code>
+  				<ns3:codeSystem>1.2.752.129.2.2.1.4</ns3:codeSystem>
+  				<ns3:displayName>AdministratÃ¶r, annan</ns3:displayName>
+  			</befattning>
+  			<enhet>
+  				<enhets-id>
+  					<ns3:root>1.2.752.129.2.1.4.1</ns3:root>
+  					<ns3:extension>enhet1</ns3:extension>
+  				</enhets-id>
+  				<arbetsplatskod>
+  					<ns3:root>1.2.752.29.4.71</ns3:root>
+  					<ns3:extension>0000000</ns3:extension>
+  				</arbetsplatskod>
+  				<enhetsnamn>nmt_vg3_ve1</enhetsnamn>
+  				<postadress>Bryggaregatan 11</postadress>
+  				<postnummer>65468</postnummer>
+  				<postort>Karlstad</postort>
+  				<telefonnummer>054121314</telefonnummer>
+  				<epost>intygnmt@nordicmedtest.se</epost>
+  				<vardgivare>
+  					<vardgivare-id>
+  						<ns3:root>1.2.752.129.2.1.4.1</ns3:root>
+  						<ns3:extension>vg1</ns3:extension>
+  					</vardgivare-id>
+  					<vardgivarnamn>nmt_vg3</vardgivarnamn>
+  				</vardgivare>
+  			</enhet>
+  			<specialistkompetens>
+  				<ns3:code>N/A</ns3:code>
+  				<ns3:displayName>Medicinsk gastroenterologi och hepatologi</ns3:displayName>
+  			</specialistkompetens>
+  			<specialistkompetens>
+  				<ns3:code>N/A</ns3:code>
+  				<ns3:displayName>Thoraxkirugi</ns3:displayName>
+  			</specialistkompetens>
+  			<specialistkompetens>
+  				<ns3:code>N/A</ns3:code>
+  				<ns3:displayName>Ãron-, nÃ¤s- och halssjukdomar</ns3:displayName>
+  			</specialistkompetens>
+  		</skapadAv>
+  		<svar id="1">
+  			<instans>1</instans>
+  			<delsvar id="1.1">
+  				<ns3:cv>
+  					<ns3:code>UNDERSOKNING</ns3:code>
+  					<ns3:codeSystem>KV_FKMU_0001</ns3:codeSystem>
+  					<ns3:displayName>Min undersÃ¶kning av patienten</ns3:displayName>
+  				</ns3:cv>
+  			</delsvar>
+  			<delsvar id="1.2">2018-01-30</delsvar>
+  		</svar>
+  		<svar id="1">
+  			<instans>2</instans>
+  			<delsvar id="1.1">
+  				<ns3:cv>
+  					<ns3:code>JOURNALUPPGIFTER</ns3:code>
+  					<ns3:codeSystem>KV_FKMU_0001</ns3:codeSystem>
+  					<ns3:displayName>Journaluppgifter frÃ¥n den</ns3:displayName>
+  				</ns3:cv>
+  			</delsvar>
+  			<delsvar id="1.2">2018-01-30</delsvar>
+  		</svar>
+  		<svar id="1">
+  			<instans>3</instans>
+  			<delsvar id="1.1">
+  				<ns3:cv>
+  					<ns3:code>ANHORIG</ns3:code>
+  					<ns3:codeSystem>KV_FKMU_0001</ns3:codeSystem>
+  					<ns3:displayName>AnhÃ¶rigs beskrivning av patienten</ns3:displayName>
+  				</ns3:cv>
+  			</delsvar>
+  			<delsvar id="1.2">2018-01-30</delsvar>
+  		</svar>
+  		<svar id="1">
+  			<instans>4</instans>
+  			<delsvar id="1.1">
+  				<ns3:cv>
+  					<ns3:code>ANNAT</ns3:code>
+  					<ns3:codeSystem>KV_FKMU_0001</ns3:codeSystem>
+  					<ns3:displayName>Annat</ns3:displayName>
+  				</ns3:cv>
+  			</delsvar>
+  			<delsvar id="1.2">2018-01-30</delsvar>
+  			<delsvar id="1.3">Journal from down below</delsvar>
+  		</svar>
+  		<svar id="2">
+  			<delsvar id="2.1">1901-01-20</delsvar>
+  		</svar>
+  		<svar id="3">
+  			<delsvar id="3.1">true</delsvar>
+  		</svar>
+  		<svar id="4">
+  			<instans>1</instans>
+  			<delsvar id="4.1">
+  				<ns3:cv>
+  					<ns3:code>NEUROPSYKIATRISKT</ns3:code>
+  					<ns3:codeSystem>KV_FKMU_0005</ns3:codeSystem>
+  					<ns3:displayName>Neuropsykiatriskt utlÃ¥tande</ns3:displayName>
+  				</ns3:cv>
+  			</delsvar>
+  			<delsvar id="4.2">2018-01-30</delsvar>
+  			<delsvar id="4.3">VÃÂ¥rdcentralen Smultronet</delsvar>
+  		</svar>
+  		<svar id="4">
+  			<instans>2</instans>
+  			<delsvar id="4.1">
+  				<ns3:cv>
+  					<ns3:code>ARBETSTERAPEUT</ns3:code>
+  					<ns3:codeSystem>KV_FKMU_0005</ns3:codeSystem>
+  					<ns3:displayName>Underlag frÃ¥n arbetsterapeut</ns3:displayName>
+  				</ns3:cv>
+  			</delsvar>
+  			<delsvar id="4.2">2018-01-30</delsvar>
+  			<delsvar id="4.3">CSK</delsvar>
+  		</svar>
+  		<svar id="4">
+  			<instans>3</instans>
+  			<delsvar id="4.1">
+  				<ns3:cv>
+  					<ns3:code>LOGOPED</ns3:code>
+  					<ns3:codeSystem>KV_FKMU_0005</ns3:codeSystem>
+  					<ns3:displayName>Underlag frÃ¥n logoped</ns3:displayName>
+  				</ns3:cv>
+  			</delsvar>
+  			<delsvar id="4.2">2018-01-30</delsvar>
+  			<delsvar id="4.3">CentralSjukhuset!!</delsvar>
+  		</svar>
+  		<svar id="5">
+  			<delsvar id="5.1">Patienten har haft besvÃÂ¤ren i olika omgÃÂ¥ngar...</delsvar>
+  		</svar>
+  		<svar id="6">
+  			<delsvar id="6.2">
+  				<ns3:cv>
+  					<ns3:code>S47</ns3:code>
+  					<ns3:codeSystem>1.2.752.116.1.1.1.1.3</ns3:codeSystem>
+  					<ns3:displayName>KlÃ¤mskada pÃ¥ skuldra och Ã¶verarm</ns3:displayName>
+  				</ns3:cv>
+  			</delsvar>
+  			<delsvar id="6.1">KlÃ¤mskada pÃ¥ skuldra och Ã¶verarm</delsvar>
+  			<delsvar id="6.4">
+  				<ns3:cv>
+  					<ns3:code>F205</ns3:code>
+  					<ns3:codeSystem>1.2.752.116.1.1.1.1.3</ns3:codeSystem>
+  					<ns3:displayName>Schizofrent resttillstÃ¥nd</ns3:displayName>
+  				</ns3:cv>
+  			</delsvar>
+  			<delsvar id="6.3">Schizofrent resttillstÃ¥nd</delsvar>
+  			<delsvar id="6.6">
+  				<ns3:cv>
+  					<ns3:code>M659B</ns3:code>
+  					<ns3:codeSystem>1.2.752.116.1.1.1.1.3</ns3:codeSystem>
+  					<ns3:displayName>Ospecifik synovit/tenosynovit i axelled/Ã¶verarm</ns3:displayName>
+  				</ns3:cv>
+  			</delsvar>
+  			<delsvar id="6.5">Ospecifik synovit/tenosynovit i axelled/Ã¶verarm</delsvar>
+  		</svar>
+  		<svar id="7">
+  			<delsvar id="7.1">Detta blir en kort text.</delsvar>
+  		</svar>
+  		<svar id="45">
+  			<delsvar id="45.1">true</delsvar>
+  			<delsvar id="45.2">alla och ingen.</delsvar>
+  		</svar>
+  		<svar id="8">
+  			<delsvar id="8.1">Pga smÃÂ¤rtan pÃÂ¥verkas intellektet</delsvar>
+  		</svar>
+  		<svar id="9">
+  			<delsvar id="9.1">FÃÂ¥r svÃÂ¥rt att kommunicera dÃÂ¥ humÃÂ¶ret inte ÃÂ¤r pÃÂ¥ topp</delsvar>
+  		</svar>
+  		<svar id="10">
+  			<delsvar id="10.1">Har svÃÂ¥rt att koncentrera sig lÃÂ¤ngre ÃÂ¤n 2 minuter</delsvar>
+  		</svar>
+  		<svar id="11">
+  			<delsvar id="11.1">PÃÂ¥verkar inget annat enligt patienten</delsvar>
+  		</svar>
+  		<svar id="12">
+  			<delsvar id="12.1">Har fÃÂ¥tt sÃÂ¤mre syn med ÃÂ¥ldern</delsvar>
+  		</svar>
+  		<svar id="13">
+  			<delsvar id="13.1">Det gÃÂ¶r ont</delsvar>
+  		</svar>
+  		<svar id="14">
+  			<delsvar id="14.1">StÃÂ¤ller till det en hel del</delsvar>
+  		</svar>
+  		<svar id="17">
+  			<delsvar id="17.1">Patienten kan inte rÃÂ¤cka upp armen. Stelhet i axelpartiet</delsvar>
+  		</svar>
+  		<svar id="18">
+  			<delsvar id="18.1">RheabtrÃÂ¤ning</delsvar>
+  		</svar>
+  		<svar id="19">
+  			<delsvar id="19.1">SmÃÂ¤rtlindring och akupunktur</delsvar>
+  		</svar>
+  		<svar id="20">
+  			<delsvar id="20.1">FÃÂ¶r tidigt att sÃÂ¤ga nÃÂ¥got om planerade ÃÂ¥tgÃÂ¤rder</delsvar>
+  		</svar>
+  		<svar id="21">
+  			<delsvar id="21.1">SmÃÂ¤rtlindring</delsvar>
+  		</svar>
+  		<svar id="22">
+  			<delsvar id="22.1">RehabtrÃÂ¤ning ska ge resultat om 1 ÃÂ¥r</delsvar>
+  		</svar>
+  		<svar id="23">
+  			<delsvar id="23.1">Laga mat gÃÂ¥r bra, men endast pÃÂ¥ fredagar</delsvar>
+  		</svar>
+  		<svar id="25">
+  			<delsvar id="25.1">Mycket material ÃÂ¤r hemligstÃÂ¤mplat</delsvar>
+  		</svar>
+  		<svar id="26">
+  			<delsvar id="26.1">true</delsvar>
+  			<delsvar id="26.2">Jag har hemligt material pÃÂ¥ mitt skrivbord som kan vara intressant fÃÂ¶r er</delsvar>
+  		</svar>
+  	</ns2:intyg>
+  </ns2:RegisterCertificate>-! |
+
+!3 Då gäller:
+
+| Intyg i rapporten intyg totalt |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user1 | 2018 | jan | FK 7800 Läkarutlåtande för sjukersättning | 0 | 1 |

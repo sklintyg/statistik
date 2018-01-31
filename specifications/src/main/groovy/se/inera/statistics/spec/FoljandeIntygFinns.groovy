@@ -53,6 +53,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
     String funktionsnedsättning
     String aktivitetsbegränsning
     def signeringstid
+    def intygdata
 
     public void setKommentar(String kommentar) {}
 
@@ -85,6 +86,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
         signeringstid = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
         start = "2013-08-20"
         slut = "2016-12-09"
+        intygdata = null
     }
 
     public void execute() {
@@ -97,6 +99,9 @@ class FoljandeIntygFinns extends FoljandeFinns {
     }
 
     Object getIntygDataString() {
+        if (intygdata != null) {
+            return intygdata;
+        }
         switch (intygformat) {
             case ~/^(?i)NyttJson$/:
                 return executeForNewJsonFormat();
