@@ -480,21 +480,11 @@ module.exports = function(grunt) {
         ]);
     });
 
-    grunt.registerTask('test', function(target) {
-        if (target === 'client') {
-            return grunt.task.run([
-                'injector:sass',
-                'sass',
-                'injector',
-                'postcss',
-                'karma'
-            ]);
-        }
-        else {
-            grunt.task.run([
-                'test:client'
-            ]);
-        }
+    grunt.registerTask('test', function() {
+        return grunt.task.run([
+            'injector:scripts',
+            'karma'
+        ]);
     });
 
     grunt.registerTask('build_no_minify', [
