@@ -571,7 +571,7 @@ angular.module('StatisticsApp').meddelandenPerAmneConfig =
         return 'api/getMeddelandenPerAmne?format=xlsx';
     };
     conf.exportTableUrlVerksamhet = function () {
-        return 'api/verksamhet/getMeddelandenPerAmneVerksamhet?format=xlsx';
+        return 'api/verksamhet/getMeddelandenPerAmne?format=xlsx';
     };
     conf.suffixTitle = function (suffix) {
         return this.title + ' ' + (suffix || '');
