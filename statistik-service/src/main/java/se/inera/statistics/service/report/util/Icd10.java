@@ -18,12 +18,6 @@
  */
 package se.inera.statistics.service.report.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import se.inera.statistics.service.report.model.Icd;
-
 import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.Closeable;
@@ -43,6 +37,13 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+
+import se.inera.statistics.service.report.model.Icd;
 
 public class Icd10 {
 
@@ -578,7 +579,7 @@ public class Icd10 {
         }
     }
 
-    private static class Icd10NotFoundException extends RuntimeException {
+    public static class Icd10NotFoundException extends RuntimeException {
 
         Icd10NotFoundException(String s) {
             super(s);
