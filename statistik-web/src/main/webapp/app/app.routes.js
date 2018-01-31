@@ -103,7 +103,7 @@ var app = angular.module('StatisticsApp')
             }).when('/nationell/intygPerTyp', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
-                controllerAs: 'NationalIntygPerTypePerMonthCtrl',
+                controllerAs: 'NationalIntygPerTypCtrl',
                 resolve: { config: app.intygPerTypePerMonthConfig },
                 title: 'title.intygstyp'
             }).when('/verksamhet', {
