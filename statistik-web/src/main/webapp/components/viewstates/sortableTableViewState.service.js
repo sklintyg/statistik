@@ -22,11 +22,7 @@ angular.module('StatisticsApp').service('sortableTableViewState',
     function() {
         'use strict';
 
-        var state = {
-            sortIndex: -1,
-            sortReverse: true,
-            sortedRows: []
-        };
+        var state = {};
 
         function _reset() {
             state.sortIndex = -1;
