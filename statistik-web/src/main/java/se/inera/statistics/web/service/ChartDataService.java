@@ -104,6 +104,7 @@ public class ChartDataService {
             }
         }
         nationellDataResult = null;
+        buildCache();
     }
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
