@@ -269,8 +269,12 @@ public class IntygCommonManager {
         if (applyDiagnosFilter) {
             return dtos.stream().filter(countDTOAmne -> {
                 final String dxString = countDTOAmne.getDx();
-                final Icd10.Id dx = icd10.findFromIcd10Code(dxString);
-                return isDxMatchInCollection(dx, dxFilter);
+                try {
+                    final Icd10.Id dx = icd10.findFromIcd10Code(dxString);
+                    return isDxMatchInCollection(dx, dxFilter);
+                } catch (Icd10.Icd10NotFoundException e) {
+                    return false;
+                }
             }).collect(Collectors.toList());
         }
         return dtos;
