@@ -7,10 +7,13 @@ navigation-menu {
   .dropdown-toggle {
     @extend %st-typo-08;
     padding: 10px;
+    cursor: pointer;
 
     button {
       margin-top: -6px;
+      margin-bottom: -6px;
       background: transparent;
+      vertical-align: top;
     }
   }
 
