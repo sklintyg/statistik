@@ -73,5 +73,6 @@
     <include file="changelog/db.changelog-v45.0_add_active_intyg_column.xml" />
     <include file="changelog/db.changelog-v46.0_add_columns_for_meddelandefilter.xml" />
     <include file="changelog/db.changelog-v47.0_add_dx_column_for_intygcommon.xml" />
+    <include file="changelog/db.changelog-v48.0_add_indexes.xml" />
 
 </databaseChangeLog>
