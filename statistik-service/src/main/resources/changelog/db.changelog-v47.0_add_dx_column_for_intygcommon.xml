@@ -30,6 +30,12 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="47_add_index_wideline_correlationId" author="fredrik.engstrom">
+        <createIndex unique="false" tableName="wideline" indexName="wideline_correlationId_idx">
+            <column name="correlationId"/>
+        </createIndex>
+    </changeSet>
+
     <changeSet id="47_populate_known_dxs_from_wideline" author="fredrik.engstrom">
         <validCheckSum>3:3de89c42bf5efece3ac91d42da89a1c8</validCheckSum>
         <sql>UPDATE intygcommon
