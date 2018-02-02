@@ -20,7 +20,7 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').factory('chartFactory',
     /** @ngInject */
-    function(COLORS, _, ControllerCommons, $window, $filter) {
+    function(COLORS, _, ControllerCommons, $window, $filter, $log) {
     'use strict';
 
         var labelFormatter = function(maxWidth, sameLengthOnAll) {
@@ -38,9 +38,25 @@ angular.module('StatisticsApp').factory('chartFactory',
         };
 
         function _formatter(value, numberOfChars) {
-            var text = value.length > numberOfChars ? value.substring(0, numberOfChars) + '...' : value;
+            var textToFormat;
 
-            return '<span title="' + value + '">' + $filter('highlightWords')(text) + '</span>';
+            var isObject = angular.isObject(value);
+
+            if (isObject) {
+                textToFormat = value.name;
+            } else {
+                textToFormat = value;
+            }
+
+            var text = textToFormat.length > numberOfChars ? textToFormat.substring(0, numberOfChars) + '...' : textToFormat;
+
+            var filteredText = $filter('highlightWords')(text);
+
+            if (isObject && value.marked) {
+                filteredText = '<b>' + filteredText + '</b>';
+            }
+
+            return '<span title="' + textToFormat + '">' + filteredText + '</span>';
         }
 
         function _getMaxLength(maxLength) {
@@ -101,6 +117,10 @@ angular.module('StatisticsApp').factory('chartFactory',
                         ControllerCommons.makeThousandSeparated(this.y);
 
                     var title = this.x ? this.x : this.point.name;
+
+                    if (angular.isObject(title)) {
+                        title = title.name;
+                    }
 
                     if (overview) {
                         return '<p class="tooltip-style">' +
@@ -206,8 +226,10 @@ angular.module('StatisticsApp').factory('chartFactory',
                         step: 1
                     },
                     categories : _.map(options.categories, function(category) {
-                        var name = ControllerCommons.htmlsafe(category.name);
-                        return category.marked ? '<b>' + name + '</b>' : name;
+                        return {
+                            name: ControllerCommons.htmlsafe(category.name),
+                            marked: category.marked
+                        };
                     })
                 },
                 yAxis : {
@@ -345,6 +367,7 @@ angular.module('StatisticsApp').factory('chartFactory',
             try {
                 chart.exportChartLocal(options, extendedChartOptions);
             } catch (e) {
+                $log.error(e);
                 $window.alert('Diagrammet kunde inte exporteras. Testa att applicera ett filter för att minska datamängden och försök igen.');
             }
         };

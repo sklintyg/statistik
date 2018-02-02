@@ -35,7 +35,7 @@ describe('Chart services', function() {
 
     describe('General configuration of charts', function() {
         it('can setup a basic configuration for a chart', function() {
-            var categories = [{name:'Namn 1'}, {name:'Namn < 1'}];
+            var categories = [{name:'Namn 1', marked: false}, {name:'Namn < 1', marked: true}];
             var series = [{b: 4, data: []}];
 
             var options = {
@@ -45,8 +45,8 @@ describe('Chart services', function() {
 
             var result = chartFactory.getHighChartConfigBase(options);
             expect(result.xAxis.categories.length).toBe(2);
-            expect(result.xAxis.categories[0]).toBe('Namn 1');
-            expect(result.xAxis.categories[1]).toBe('Namn &lt; 1');
+            expect(result.xAxis.categories[0]).toEqual({name: 'Namn 1', marked: false});
+            expect(result.xAxis.categories[1]).toEqual({name: 'Namn &lt; 1', marked: true});
             expect(result.series.length).toBe(1);
             expect(result.series[0].b).toBe(4);
         });
