@@ -28,4 +28,10 @@
             <column name="lakareid"/>
         </createIndex>
     </changeSet>
+    <changeSet id="48_1_add_index_intygcommon_vardgivareid_signeringsdatum" author="fredrik.engstrom">
+        <createIndex unique="false" tableName="intygcommon" indexName="intygcommon_vardgivareid_signeringsdatum_idx">
+            <column name="vardgivareId"/>
+            <column name="signeringsdatum"/>
+        </createIndex>
+    </changeSet>
 </databaseChangeLog>

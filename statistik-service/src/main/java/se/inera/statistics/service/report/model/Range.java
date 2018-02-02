@@ -92,6 +92,10 @@ public final class Range {
         return new Range(QUARTER_PERIOD, clock);
     }
 
+    public boolean isDateInRange(LocalDate date) {
+        return (date.isAfter(from) || date.isEqual(from)) && (date.isBefore(to) || date.isEqual(to));
+    }
+
     private static final class RangeFormatter {
         private final String monthFormat;
 
