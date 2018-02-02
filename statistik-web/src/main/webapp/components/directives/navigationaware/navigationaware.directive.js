@@ -33,7 +33,7 @@ angular.module('StatisticsApp').directive('navigationaware',
 
                 function init(current) {
                     elem.parent().removeClass('active');
-                    if (isActivePage(current, $attrs)){
+                    if (angular.isDefined(current) && isActivePage(current, $attrs)){
                         elem.parent().addClass('active');
                         var groupId = elem.closest('.navigation-group').attr('id');
                         if (groupId) {
