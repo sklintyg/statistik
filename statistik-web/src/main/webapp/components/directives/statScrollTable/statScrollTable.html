@@ -26,7 +26,7 @@
       </thead>
       <tbody class="table-condensed">
       <tr data-ng-repeat="row in rowsShown" class="stat-table-row" title="{{::row.name}}">
-        <td class="scrollable headcol"><span class="headcol-name" ng-class="{bold: row.marked}" ng-bind-html="::row.name | highlightWords"></span></td>
+        <td class="scrollable headcol" data-ng-class="{marked: row.marked}"><span class="headcol-name" ng-bind-html="::row.name | highlightWords"></span></td>
       </tr>
       </tbody>
     </table>

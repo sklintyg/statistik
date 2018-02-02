@@ -201,6 +201,7 @@ angular.module('StatisticsApp').directive('statScrollTable',
 
                         rows.push({
                             name: row.name,
+                            marked: row.marked,
                             data: data
                         });
                     });
