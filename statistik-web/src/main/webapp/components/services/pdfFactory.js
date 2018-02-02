@@ -64,7 +64,7 @@ angular.module('StatisticsApp')
 
                         var tableData = _updatePrintDataTable($scope.headerrows, sortableTableViewState.getSortedRows());
 
-                        angular.forEach(tableData, function(t) {
+                        _.each(tableData, function(t) {
                             table.push({
                                 header: t.headers,
                                 data: formatTableData(t.rows),
@@ -92,11 +92,11 @@ angular.module('StatisticsApp')
 
             function formatTableData(data) {
                 var tableData = [];
-                var tableRows = data.slice(0, MAX_ROWS_TABLE_PDF);
-                angular.forEach(tableRows, function(row) {
+                var tableRows = _.cloneDeep(data.slice(0, MAX_ROWS_TABLE_PDF));
+                _.each(tableRows, function(row) {
                     var rowData = [];
 
-                    angular.forEach(row.data, function(item) {
+                    _.each(row.data, function(item) {
                         rowData.push(item.value);
                     });
 
@@ -124,7 +124,7 @@ angular.module('StatisticsApp')
                 _addListFilter(content, messageService.getProperty('lbl.filter.pdf.intygstyper'), intygstyperFilter);
 
                 if (angular.isArray(table)) {
-                    angular.forEach(table, function(t) {
+                    _.each(table, function(t) {
                         if (t.hasMoreThanMaxRows) {
                             content.push({text: messageService.getProperty('table.warning.text'), style: 'tableWarning'});
                         }
@@ -291,7 +291,7 @@ angular.module('StatisticsApp')
                     boxHeight = svg.substr(boxHeightStart, boxHeightStop - boxHeightStart);
                 }
 
-                angular.forEach(charts, function(chart, index) {
+                _.each(charts, function(chart, index) {
                     var showLegend = numberOfCharts === (index + 1);
 
                     var image = _getChart(chart, chartWidth, chartHeight, showLegend, false, boxHeight);
@@ -356,10 +356,10 @@ angular.module('StatisticsApp')
 
                 _addTableHeaders(body, headerRows);
 
-                angular.forEach(data, function(row) {
+                _.each(data, function(row) {
                     var rowData = [row.name];
 
-                    angular.forEach(row.data, function(item) {
+                    _.each(row.data, function(item) {
                         rowData.push({
                             text: item+'',
                             alignment: 'right'
@@ -398,10 +398,10 @@ angular.module('StatisticsApp')
             }
 
             function _addTableHeaders(body, headerRows) {
-                angular.forEach(headerRows, function(headerRow) {
+                _.each(headerRows, function(headerRow) {
                     var header = [];
 
-                    angular.forEach(headerRow, function(item) {
+                    _.each(headerRow, function(item) {
                         header.push({
                             text: item.text,
                             colSpan: item.colspan,
