@@ -197,14 +197,17 @@ public class IntygCommonManager {
             boolean isTvarsnitt, List<IntygType> intygTypes) {
         List<IntygCommonGroup> intygCommonGroups = new ArrayList<>();
         final Range range = intygFilter.getRange();
+        IntygCommonGroup intygCommonGroup = getIntygCommonGroup(range, vardgivarId, intygFilter, intygTypes);
         int periods = isTvarsnitt ? 1 : range.getNumberOfMonths();
         int periodLength = isTvarsnitt ? range.getNumberOfMonths() : 1;
         for (int i = 0; i < periods; i++) {
             LocalDate periodStart = range.getFrom().plusMonths(i * periodLength).withDayOfMonth(1);
             final LocalDate to = periodStart.plusMonths(periodLength).minusDays(1);
             Range newRange = new Range(periodStart, to);
-            IntygCommonGroup intygCommonGroup = getIntygCommonGroup(newRange, vardgivarId, intygFilter, intygTypes);
-            intygCommonGroups.add(intygCommonGroup);
+            final IntygCommonGroup periodGroup = new IntygCommonGroup(newRange, intygCommonGroup.getIntyg().stream()
+                    .filter(intygCommon -> newRange.isDateInRange(intygCommon.getSigneringsdatum()))
+                    .collect(Collectors.toList()));
+            intygCommonGroups.add(periodGroup);
         }
         return intygCommonGroups;
     }
