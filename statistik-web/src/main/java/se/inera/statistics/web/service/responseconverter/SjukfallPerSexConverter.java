@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import org.jetbrains.annotations.NotNull;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -38,9 +39,12 @@ import java.util.List;
 
 public class SjukfallPerSexConverter {
 
-    private TableData convertToTableData(List<SimpleKonDataRow> list) {
+    static final String SAMTLIGA_LAN = "Samtliga län";
+
+    private TableData convertToTableData(SimpleKonResponse list) {
         List<NamedData> data = new ArrayList<>();
-        for (SimpleKonDataRow row : list) {
+        data.add(getDataForAllCounties(list));
+        for (SimpleKonDataRow row : list.getRows()) {
             int female = row.getFemale();
             int male = row.getMale();
             int rowSum = female + male;
@@ -49,6 +53,14 @@ public class SjukfallPerSexConverter {
 
         return TableData.createWithSingleHeadersRow(data,
                 Arrays.asList("Län", "Antal sjukfall totalt", "Andel sjukfall för kvinnor", "Andel sjukfall för män"));
+    }
+
+    @NotNull
+    private NamedData getDataForAllCounties(SimpleKonResponse list) {
+        final Integer sumForFemale = getSumForSex(list, Kon.FEMALE);
+        final Integer sumForMale = getSumForSex(list, Kon.MALE);
+        final int sum = sumForFemale + sumForMale;
+        return new NamedData(SAMTLIGA_LAN, Arrays.asList(sum, toTableString(sumForFemale, sum), toTableString(sumForMale, sum)));
     }
 
     private String toTableString(int value, int rowSum) {
@@ -61,7 +73,7 @@ public class SjukfallPerSexConverter {
 
     private ChartData convertToChartData(SimpleKonResponse casesPerMonth) {
         final ArrayList<ChartCategory> categories = new ArrayList<>();
-        categories.add(new ChartCategory("Samtliga län"));
+        categories.add(new ChartCategory(SAMTLIGA_LAN));
         for (SimpleKonDataRow casesPerMonthRow : casesPerMonth.getRows()) {
             categories.add(new ChartCategory(casesPerMonthRow.getName()));
         }
@@ -90,7 +102,7 @@ public class SjukfallPerSexConverter {
     }
 
     public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, Range range) {
-        TableData tableData = convertToTableData(casesPerMonth.getRows());
+        TableData tableData = convertToTableData(casesPerMonth);
         ChartData chartData = convertToChartData(casesPerMonth);
         return new SimpleDetailsData(tableData, chartData, range.toString(), FilterDataResponse.empty());
     }
