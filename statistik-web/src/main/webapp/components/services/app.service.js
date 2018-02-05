@@ -27,8 +27,7 @@ angular.module('StatisticsApp').factory('AppService',
 
             var promise = $q.defer();
 
-            var success = function(result) {
-                var data = result.data;
+            var success = function(data) {
                 AppModel.set(data);
                 promise.resolve(data);
             };
