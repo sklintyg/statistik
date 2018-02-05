@@ -27,7 +27,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
         this.updateDataTable = function (scope, tableData) {
             scope.headerrows = tableData.headers;
-            if (scope.headerrows.length > 1) {
+            if (scope.headerrows && scope.headerrows.length > 1) {
                 scope.headerrows[0].centerAlign = true;
             }
             scope.rows = tableData.rows;

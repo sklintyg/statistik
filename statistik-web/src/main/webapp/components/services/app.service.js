@@ -20,19 +20,20 @@
 
 angular.module('StatisticsApp').factory('AppService',
     /** @ngInject */
-    function($http, $log, $q, AppModel) {
+    function($log, $q, AppModel, statisticsData) {
         'use strict';
 
         function _get() {
 
             var promise = $q.defer();
 
-            var restPath = '/api/login/getAppSettings';
-            $http.get(restPath).then(function(result) {
+            var success = function(result) {
                 var data = result.data;
                 AppModel.set(data);
                 promise.resolve(data);
-            }, function(data, status) {
+            };
+
+            var error = function(data, status) {
                 $log.error('error ' + status);
                 // Let calling code handle the error of no data response
                 if (data === null) {
@@ -40,7 +41,9 @@ angular.module('StatisticsApp').factory('AppService',
                 } else {
                     promise.reject(data);
                 }
-            });
+            };
+
+            statisticsData.getAppData(success, error);
 
             return promise.promise;
         }

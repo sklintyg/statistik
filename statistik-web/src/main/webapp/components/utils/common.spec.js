@@ -23,11 +23,99 @@ describe('Test of common functions for controllers', function() {
     beforeEach(module('StatisticsApp'));
 
     var ControllerCommons;
+    var moment;
+    var $route;
 
     // Inject dependencies and mocks
-    beforeEach(inject(function(_ControllerCommons_) {
+    beforeEach(inject(function(_ControllerCommons_, _moment_, _$route_) {
         ControllerCommons = _ControllerCommons_;
+        moment = _moment_;
+        $route = _$route_;
     }));
+
+    describe('updateDataTable', function() {
+        it('empty', function() {
+            var scope = {};
+            var tableData = {};
+
+            ControllerCommons.updateDataTable(scope, tableData);
+
+            var expected = {
+                headerrows: undefined,
+                rows: undefined
+            };
+
+            expect(scope.rows).toEqual(expected.rows);
+            expect(scope.headerrows).toEqual(expected.headerrows);
+        });
+
+        it('one headerrow', function() {
+            var scope = {};
+            var tableData = {
+                headers: [{
+                    name: 'header'
+                }],
+                rows: [{
+                    name: '1'
+                },{
+                    name: '2'
+                }]
+            };
+
+            ControllerCommons.updateDataTable(scope, tableData);
+
+            var expected = {
+                headerrows: [{
+                    name: 'header'
+                }],
+                rows: [{
+                    name: '1'
+                },{
+                    name: '2'
+                }]
+
+            };
+
+            expect(scope.rows).toEqual(expected.rows);
+            expect(scope.headerrows).toEqual(expected.headerrows);
+        });
+
+        it('two headerrows', function() {
+            var scope = {};
+            var tableData = {
+                headers: [{
+                    name: 'header'
+                }, {
+                    name: 'header2'
+                }],
+                rows: [{
+                    name: '1'
+                },{
+                    name: '2'
+                }]
+            };
+
+            ControllerCommons.updateDataTable(scope, tableData);
+
+            var expected = {
+                headerrows: [{
+                    name: 'header',
+                    centerAlign: true
+                }, {
+                    name: 'header2'
+                }],
+                rows: [{
+                    name: '1'
+                },{
+                    name: '2'
+                }]
+
+            };
+
+            expect(scope.rows).toEqual(expected.rows);
+            expect(scope.headerrows).toEqual(expected.headerrows);
+        });
+    });
 
     it('makeThousandSeparated', function() {
         expect(ControllerCommons.makeThousandSeparated()).toBe();
@@ -323,6 +411,78 @@ describe('Test of common functions for controllers', function() {
 
             expect(ControllerCommons.isShowingProtectedPage(location)).toBeTruthy();
         });
+    });
+
+    describe('getExportFileName', function() {
+       it('empty gender & title', function() {
+           $route.current = {
+               title: ''
+           };
+           var statisticsLevel = 'base';
+           var gender = '';
+           var result = ControllerCommons.getExportFileName(statisticsLevel, gender);
+
+           var date = moment().format('YYMMDD_HHmmss');
+
+           expect(result).toEqual('base__' + date);
+       });
+
+        it('empty title', function() {
+
+            $route.current = {
+                title: ''
+            };
+            var statisticsLevel = 'base';
+            var gender = 'män';
+            var result = ControllerCommons.getExportFileName(statisticsLevel, gender);
+
+            var date = moment().format('YYMMDD_HHmmss');
+
+            expect(result).toEqual('base__man_' + date);
+        });
+
+        it('empty gender', function() {
+
+            $route.current = {
+                title: 'testar'
+            };
+            var statisticsLevel = 'base';
+            var gender = '';
+            var result = ControllerCommons.getExportFileName(statisticsLevel, gender);
+
+            var date = moment().format('YYMMDD_HHmmss');
+
+            expect(result).toEqual('base_testar_' + date);
+        });
+
+        it('all included', function() {
+
+            $route.current = {
+                title: 'testar'
+            };
+            var statisticsLevel = 'base';
+            var gender = 'man';
+            var result = ControllerCommons.getExportFileName(statisticsLevel, gender);
+
+            var date = moment().format('YYMMDD_HHmmss');
+
+            expect(result).toEqual('base_testar_man_' + date);
+        });
+
+        it('forbidden chars removed', function() {
+
+            $route.current = {
+                title: 'testar'
+            };
+            var statisticsLevel = 'ÅåÄäÖö.,=';
+            var gender = 'man';
+            var result = ControllerCommons.getExportFileName(statisticsLevel, gender);
+
+            var date = moment().format('YYMMDD_HHmmss');
+
+            expect(result).toEqual('AaAaOo._testar_man_' + date);
+        });
+
     });
 
     describe('combineUrl', function() {

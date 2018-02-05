@@ -46,8 +46,8 @@ angular.module('StatisticsApp').factory('statisticsData',
                 $cacheFactory.get('$http').removeAll();
                 callFailure(failureCallback);
             }
-        }, function (/*response*/) {
-            callFailure(failureCallback);
+        }, function (response) {
+            callFailure(failureCallback, response);
         });
     };
 
@@ -104,9 +104,9 @@ angular.module('StatisticsApp').factory('statisticsData',
         });
     }
 
-    function callFailure(failureCallback) {
+    function callFailure(failureCallback, response) {
         if (angular.isFunction(failureCallback)) {
-            failureCallback();
+            failureCallback(response.data, response.status);
         }
     }
 
@@ -324,6 +324,10 @@ angular.module('StatisticsApp').factory('statisticsData',
 
     factory.getStaticFilterData = function (successCallback, failureCallback) {
         makeRequestNational('login/getStaticFilterData', successCallback, failureCallback, true, true);
+    };
+
+    factory.getAppData = function (successCallback, failureCallback) {
+        makeRequestNational('login/getAppSettings', successCallback, failureCallback, true, true);
     };
 
     factory.getFilterHash = function (params) {
