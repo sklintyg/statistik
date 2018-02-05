@@ -60,7 +60,6 @@ angular.module('StatisticsApp.filter.directive')
 function linkFunction(_, scope, businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState) {
     'use strict';
 
-    //Initially we don't want to see the filter
     scope.filterToApply = false;
     scope.filterViewState = filterViewState.get();
     scope.businessFilter = businessFilter;
