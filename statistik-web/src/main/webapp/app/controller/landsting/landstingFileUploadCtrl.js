@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').controller('landstingFileUploadCtrl',
     /** @ngInject */
-    function ($scope, $rootScope, $timeout, $window, statisticsData, messageService, $location, filterViewState) {
+    function ($scope, $rootScope, $timeout, $window, statisticsData, messageService, $location) {
         'use strict';
 
         $scope.prepopulatedLandstingFileUrl = '/api/landsting/prepopulatedLandstingFile?vgid=' + $location.search().vgid;
