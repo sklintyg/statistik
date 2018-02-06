@@ -3,7 +3,7 @@
 
 environment_name: "demo"
 config_etc_folder: "{{ config_folder }}/{{ environment_name }}"
-profile: hsa-stub,wc-hsa-stub,security-both,qm
+profile: hsa-stub,wc-hsa-stub,security-both,qm,active
 host_url: https://demo.statistik.intygstjanster.se
 xmx_memory: "12048m"
 
