@@ -74,10 +74,8 @@ var Filter = function() {
         });
     };
 
-
-    this.chipsShowAllModal = element(by.id('filterActiveModel'));
-    this.chipsAllCloseBtn = this.chipsShowAllModal.element(by.css('button[data-dismiss="modal"]'));
-
+    this.filterActiveModal = element(by.id('filterActiveModel'));
+    this.filterActiveModalCloseBtn = this.filterActiveModal.element(by.css('button[data-dismiss="modal"]'));
 
     this.isFilterActive = function() {
         expect(this.showAllActiveBtn.isDisplayed()).toBeTruthy();
