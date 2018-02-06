@@ -18,18 +18,18 @@
  */
 
 angular.module('StatisticsApp')
-    .directive('filterChipsList',
+    .directive('filterSelectionList',
     /** @ngInject */
     function() {
         'use strict';
         return {
             scope: {
-                chips: '=',
+                list: '=',
                 title: '@',
                 icon: '@',
                 typeDisabled: '='
             },
             restrict: 'E',
-            templateUrl: '/components/directives/filterChipsList/filterChipsList.html'
+            templateUrl: '/components/directives/filterSelectionList/filterSelectionList.html'
         };
     });

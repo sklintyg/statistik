@@ -18,7 +18,7 @@
  */
 
 angular.module('StatisticsApp')
-    .directive('filterChips',
+    .directive('filterActiveSelection',
     /** @ngInject */
     function(StaticFilterData, _, $uibModal, moment) {
         'use strict';
@@ -27,10 +27,10 @@ angular.module('StatisticsApp')
                 businessFilter: '='
             },
             restrict: 'E',
-            templateUrl: '/components/directives/filterChips/filterChips.html',
+            templateUrl: '/components/directives/filterActiveSelection/filterActiveSelection.html',
             link: function($scope) {
 
-                $scope.chips = {
+                $scope.selections = {
                     date: [],
                     enheter: [],
                     diagnos: [],
@@ -40,22 +40,22 @@ angular.module('StatisticsApp')
                 };
 
                 $scope.showAll = function() {
-                    createChips();
+                    createSelections();
 
                     $uibModal.open({
                         animation: true,
-                        templateUrl: '/components/directives/filterChips/modal/modal.html',
-                        controller: 'FilterChipsModalCtrl',
+                        templateUrl: '/components/directives/filterActiveSelection/modal/modal.html',
+                        controller: 'FilterActiveSelectionModalCtrl',
                         size: 'lg',
                         resolve: {
-                            chips: function () {
-                                return $scope.chips;
+                            selections: function () {
+                                return $scope.selections;
                             }
                         }
                     });
                 };
 
-                function createChips() {
+                function createSelections() {
                     dateFilter();
                     enhetsFilter();
                     diagnosFilter();
@@ -65,14 +65,14 @@ angular.module('StatisticsApp')
                 }
 
                 function dateFilter() {
-                    $scope.chips.date = [];
+                    $scope.selections.date = [];
 
                     if (!$scope.businessFilter.useDefaultPeriod) {
 
                         var fromDate = moment($scope.businessFilter.fromDate).format('YYYY-MM');
                         var toDate = moment($scope.businessFilter.toDate).format('YYYY-MM');
 
-                        $scope.chips.date.push({
+                        $scope.selections.date.push({
                             text: fromDate + ' - ' + toDate
                         });
                     }
@@ -92,7 +92,7 @@ angular.module('StatisticsApp')
                         });
                     });
 
-                    $scope.chips.enheter = _.sortBy(enheter, 'id');
+                    $scope.selections.enheter = _.sortBy(enheter, 'id');
                 }
 
                 function diagnosFilter() {
@@ -108,7 +108,7 @@ angular.module('StatisticsApp')
                         });
                     });
 
-                    $scope.chips.diagnos = _.sortBy(diagnoser, 'id');
+                    $scope.selections.diagnos = _.sortBy(diagnoser, 'id');
                 }
 
                 function sjukskrivningsLangdsFilter() {
@@ -123,7 +123,7 @@ angular.module('StatisticsApp')
                         });
                     });
 
-                    $scope.chips.sjukskrivningslangd = _.sortBy(sjukskrivningslangder, 'id');
+                    $scope.selections.sjukskrivningslangd = _.sortBy(sjukskrivningslangder, 'id');
                 }
 
                 function aldersGruppsFilter() {
@@ -138,7 +138,7 @@ angular.module('StatisticsApp')
                         });
                     });
 
-                    $scope.chips.aldersgrupp = _.sortBy(aldersgrupper, 'id');
+                    $scope.selections.aldersgrupp = _.sortBy(aldersgrupper, 'id');
                 }
 
                 function intygstyperFilter() {
@@ -153,7 +153,7 @@ angular.module('StatisticsApp')
                         });
                     });
 
-                    $scope.chips.intygstyper = _.sortBy(intygstyper, 'id');
+                    $scope.selections.intygstyper = _.sortBy(intygstyper, 'id');
                 }
             }
         };

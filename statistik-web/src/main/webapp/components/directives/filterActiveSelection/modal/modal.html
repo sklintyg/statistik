@@ -1,47 +1,47 @@
-<div class="modal-header"  id="filterChipModel">
+<div class="modal-header"  id="filterActiveModel">
   <button class="close" data-dismiss="modal" data-ng-click="cancel()">×</button>
   <h4 class="modal-title" message key="lbl.filter.modal.title"></h4>
 </div>
 
 <div class="modal-body selected-filters">
-  <filter-chips-list
+  <filter-selection-list
       id="filter-active-intervall"
       title="Valt tidsintervall"
       icon="fa-clock-o"
-      chips="chips.date"></filter-chips-list>
+      list="selections.date"></filter-selection-list>
 
-  <filter-chips-list
+  <filter-selection-list
       id="filter-active-enheter"
     title="Valda enheter"
     icon="fa-building-o"
-    chips="chips.enheter"></filter-chips-list>
+      list="selections.enheter"></filter-selection-list>
 
-  <filter-chips-list
+  <filter-selection-list
       id="filter-active-dignoser"
       title="Valda diagnoser"
       icon="fa-stethoscope"
-      chips="chips.diagnos"></filter-chips-list>
+      list="selections.diagnos"></filter-selection-list>
 
-  <filter-chips-list
+  <filter-selection-list
       id="filter-active-aldersgrupper"
       title="Valda åldersgrupper"
       icon="fa-users"
-      chips="chips.aldersgrupp"
-      ></filter-chips-list>
+      list="selections.aldersgrupp"
+      ></filter-selection-list>
 
-  <filter-chips-list
+  <filter-selection-list
       id="filter-active-sjukskrivningslangd"
       title="Valda sjukskrivningslängder"
       icon="fa-calendar"
-      chips="chips.sjukskrivningslangd"
+      list="selections.sjukskrivningslangd"
       type-disabled="!filterViewState.sjukskrivningslangd"
-  ></filter-chips-list>
+  ></filter-selection-list>
 
-  <filter-chips-list
+  <filter-selection-list
       id="filter-active-intygstyper"
       title="Valda intygstyper"
       icon="fa-file-text-o"
-      chips="chips.intygstyper"
+      list="selections.intygstyper"
       type-disabled="!filterViewState.intygstyper"
-  ></filter-chips-list>
+  ></filter-selection-list>
 </div>

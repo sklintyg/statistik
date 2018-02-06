@@ -1,16 +1,15 @@
 <ul
-    data-ng-if="chips.length > 0"
+    data-ng-if="list.length > 0"
     data-ng-class="{inactive: typeDisabled}"
   >
   <li class="filter-heading">
     <i class="fa {{::icon}}"></i> {{::title}}
   </li>
   <li
-      data-ng-repeat="chip in chips"
-      class="filter-chips"
-      title="{{::chip.text}}">
+      data-ng-repeat="item in list"
+      title="{{::item.text}}">
       <span class="default-text">
-        {{::chip.text}}
+        {{::item.text}}
       </span>
   </li>
 </ul>
