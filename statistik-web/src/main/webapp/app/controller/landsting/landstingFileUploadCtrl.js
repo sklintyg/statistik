@@ -40,8 +40,6 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl',
             $scope.uploadResultMessage = response.message ? response.message : response;
         };
 
-        filterViewState.setMessages([]);
-
         $scope.uploadUrl = 'api/landsting/fileupload?vgid=' + $location.search().vgid;
 
         $scope.dropzoneConfig = {

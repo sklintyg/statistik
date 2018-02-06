@@ -27,11 +27,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
         $scope.UserModel = UserModel;
 
         $rootScope.$on('$routeChangeSuccess', function () {
-            var d = new Date();
-            var currDate = d.getDate();
-            var currMonth = d.getMonth() + 1; //Months are zero based
-            var currYear = d.getFullYear();
-            $scope.currentTime = currYear + '-' + currMonth + '-' + currDate;
+            filterViewState.setMessages([]);
 
             $scope.isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
             $scope.isLandstingShowing = ControllerCommons.isShowingLandsting($location);
@@ -44,7 +40,6 @@ angular.module('StatisticsApp').controller('pageCtrl',
             }
             else {
                 $scope.viewHeader = 'Nationell statistik';
-                filterViewState.setMessages([]);
             }
 
             if (ControllerCommons.isShowingProtectedPage($location)) {
