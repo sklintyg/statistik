@@ -75,7 +75,7 @@ var Filter = function() {
     };
 
 
-    this.chipsShowAllModal = element(by.id('filterChipModel'));
+    this.chipsShowAllModal = element(by.id('filterActiveModel'));
     this.chipsAllCloseBtn = this.chipsShowAllModal.element(by.css('button[data-dismiss="modal"]'));
 
 

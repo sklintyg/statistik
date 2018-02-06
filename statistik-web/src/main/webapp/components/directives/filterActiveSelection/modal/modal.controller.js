@@ -17,11 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').controller('FilterChipsModalCtrl',
-    function($scope, $uibModalInstance, chips, filterViewState) {
+angular.module('StatisticsApp').controller('FilterActiveSelectionModalCtrl',
+    function($scope, $uibModalInstance, selections, filterViewState) {
         'use strict';
 
-        $scope.chips = chips;
+        $scope.selections = selections;
         $scope.filterViewState = filterViewState.get();
 
         $scope.cancel = function() {
