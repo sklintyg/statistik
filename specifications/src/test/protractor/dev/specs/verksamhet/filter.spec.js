@@ -204,7 +204,7 @@ describe('Verksamhetsfilter: ', function() {
             expect(filter.getNames(filter.activeAldersgrupper)).toContain(age1);
             expect(filter.getNames(filter.activeAldersgrupper)).toContain(age2);
 
-            filter.chipsAllCloseBtn.click();
+            filter.filterActiveModalCloseBtn.click();
         }
     });
 
@@ -231,9 +231,9 @@ describe('Verksamhetsfilter: ', function() {
         it('Visa modalen', function() {
             filter.showAllActiveBtn.click();
 
-            expect(filter.chipsShowAllModal.isDisplayed()).toBeTruthy();
+            expect(filter.filterActiveModal.isDisplayed()).toBeTruthy();
 
-            filter.chipsAllCloseBtn.click();
+            filter.filterActiveModalCloseBtn.click();
         });
     });
 
