@@ -65,12 +65,14 @@ public class IntygCommonDxPopulator {
     @PostConstruct
     @Transactional
     public void executeIntygCommonDxPopulation() {
+        LOG.info("Start populate dx in intygcommon");
         final CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
         final CriteriaQuery<IntygCommon> query = criteriaBuilder.createQuery(IntygCommon.class);
         final Root<IntygCommon> from = query.from(IntygCommon.class);
         final CriteriaQuery<IntygCommon> dxIsNullQuery = query.select(from)
                 .where(criteriaBuilder.isNull(from.get("dx")));
         final List<IntygCommon> resultList = manager.createQuery(dxIsNullQuery).getResultList();
+        LOG.info("Found " + resultList.size() + " rows in intygcommon where dx is null which will be populated");
 
         final CriteriaQuery<IntygEvent> ieq = criteriaBuilder.createQuery(IntygEvent.class);
         final Root<IntygEvent> ier = ieq.from(IntygEvent.class);
@@ -79,6 +81,7 @@ public class IntygCommonDxPopulator {
                 .where(criteriaBuilder.equal(ier.get("correlationId"), corridParam));
 
         resultList.forEach(intygCommon -> {
+            LOG.info("Processing intyg" + intygCommon.getIntygid());
             final TypedQuery<IntygEvent> intygEventQuery = manager.createQuery(ieQuery);
             intygEventQuery.setParameter(corridParam, intygCommon.getIntygid());
             final List<IntygEvent> ieResults = intygEventQuery.getResultList();
@@ -86,10 +89,12 @@ public class IntygCommonDxPopulator {
                 final IntygEvent intygEvent = ieResults.get(0);
                 final String dx = getDx(intygEvent, intygEvent.getFormat());
                 if (dx != null) {
+                    LOG.info("Populating dx for intyg" + intygCommon.getIntygid());
                     intygCommon.setDx(dx);
                 }
             }
         });
+        LOG.info("Done populate dx in intygcommon");
     }
 
     private String getDx(IntygEvent event, IntygFormat format) {
