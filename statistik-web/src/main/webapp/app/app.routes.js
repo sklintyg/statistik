@@ -393,7 +393,7 @@ var app = angular.module('StatisticsApp')
             }).when('/landsting/intygPerTyp', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
-                controllerAs: 'LandstingIntygPerTypePerMonthCtrl',
+                controllerAs: 'LandstingIntygPerTypCtrl',
                 resolve: { config: app.intygPerTypePerMonthLandstingConfig },
                 title: 'title.intygstyp'
             }).when('/landsting/om', {
