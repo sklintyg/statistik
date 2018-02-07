@@ -41,7 +41,8 @@ angular.module('StatisticsApp').directive('multiselectDropdown',
                 },
                 enableHTML: true,
                 includeSelectAllOption: true,
-                selectAllText: 'Markera alla'
+                selectAllText: 'Markera alla',
+                nonSelectedText: ''
             });
 
             // Watch for any changes to the length of our select element
