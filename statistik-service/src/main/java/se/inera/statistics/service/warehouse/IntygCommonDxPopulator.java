@@ -22,7 +22,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.service.helper.DocumentHelper;
@@ -34,7 +36,6 @@ import se.inera.statistics.service.processlog.IntygFormat;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -52,7 +53,7 @@ import java.util.List;
  */
 @Component
 @Profile("populateIntygCommonDx")
-public class IntygCommonDxPopulator {
+public class IntygCommonDxPopulator implements ApplicationListener<ContextRefreshedEvent> {
 
     private static final Logger LOG = LoggerFactory.getLogger(IntygCommonDxPopulator.class);
 
@@ -62,9 +63,9 @@ public class IntygCommonDxPopulator {
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
 
-    @PostConstruct
+    @Override
     @Transactional
-    public void executeIntygCommonDxPopulation() {
+    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         LOG.info("Start populate dx in intygcommon");
         final CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
         final CriteriaQuery<IntygCommon> query = criteriaBuilder.createQuery(IntygCommon.class);
