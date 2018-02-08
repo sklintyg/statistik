@@ -13,7 +13,9 @@ include ':liquibase-runner'
 include ':statistik-web'
 include ':specifications'
 include ':fileservice'
+include ':anonymisering'
 
 project(':hsa-integration').projectDir = "$rootDir/integration/hsa-integration" as File
 project(':liquibase-runner').projectDir = "$rootDir/tools/liquibase-runner" as File
 project(':fileservice').projectDir = "$rootDir/tools/fileservice" as File
+project(':anonymisering').projectDir = "$rootDir/tools/anonymisering" as File
