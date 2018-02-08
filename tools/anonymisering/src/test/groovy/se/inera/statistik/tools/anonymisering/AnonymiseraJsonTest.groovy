@@ -38,23 +38,6 @@ class AnonymiseraJsonTest {
     }
 
     @Test
-    void testa_intyg_when_both_fields_are_enkelt() {
-
-        def jsonUpdateClosure = {result ->
-            result.funktionsnedsattning = 'Enkelt'
-            result.aktivitetsbegransning = 'Enkelt'
-        }
-
-        String json = buildJsonIntyg JSON_TEMPLATE_PATH, jsonUpdateClosure
-
-        String expected = buildJsonIntyg JSON_ANONYMIZED_TEMPLATE_PATH, jsonUpdateClosure
-
-        String actual = anonymiseraJson.anonymiseraIntygsJson(json, "10101010-2010")
-
-        JSONAssert.assertEquals(expected, actual, true);
-    }
-
-    @Test
     void test_intyg_when_no_fields_are_enkelt() {
         String json = buildJsonIntyg JSON_TEMPLATE_PATH, {result ->
             result.funktionsnedsattning = 'En text som råkar ha enkelt i sig'
