@@ -27,14 +27,14 @@ class AnonymiseraLakare {
         FROM lakare
         '''
 
-        def sql = getSqlInstance(dataSource)
+        def sql = new Sql(dataSource)
         def hsaIds = sql.rows(query)
         println "${hsaIds.size()} lakare found to anonymize"
         sql.close()
 
         def output = hsaIds.collect {
             StringBuffer result = new StringBuffer()
-            sql = getSqlInstance(dataSource)
+            sql = new Sql(dataSource)
 
             def id = it.id
             try {
@@ -69,9 +69,6 @@ class AnonymiseraLakare {
         println "Done! ${count} lakare anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
     }
 
-    private Sql getSqlInstance(BasicDataSource dataSource) {
-        return Sql.newInstance(dataSource.url, dataSource.username, dataSource.password, dataSource.driverClassName);
-    }
 }
 
 

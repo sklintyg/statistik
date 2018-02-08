@@ -29,14 +29,14 @@ class AnonymiseraHSA {
         FROM hsa
         '''
 
-        def sql = getSqlInstance(dataSource)
+        def sql = new Sql(dataSource)
         def hsaIds = sql.rows(query)
         println "${hsaIds.size()} HSA personnel found to anonymize"
         sql.close()
 
         def output = hsaIds.collect {
             StringBuffer result = new StringBuffer()
-            sql = getSqlInstance(dataSource)
+            sql = new Sql(dataSource)
 
             def id = it.id
             try {
@@ -67,10 +67,6 @@ class AnonymiseraHSA {
         }
 
         println "Done! ${count} HSA personnel anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
-    }
-
-    private Sql getSqlInstance(BasicDataSource dataSource) {
-        return Sql.newInstance(dataSource.url, dataSource.username, dataSource.password, dataSource.driverClassName);
     }
 
     private String anonymizeHsaJson(def s, def anonymiseraHsaId) {
