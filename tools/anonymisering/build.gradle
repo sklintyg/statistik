@@ -3,9 +3,6 @@ apply plugin: 'idea'
 apply plugin: 'groovy'
 apply plugin: 'maven'
 
-group = 'se.inera.statistik'
-version = '4.0.0'
-
 repositories {
     mavenLocal()
     maven { url "https://build-inera.nordicmedtest.se/nexus/repository/central/" }
