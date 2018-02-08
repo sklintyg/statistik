@@ -31,7 +31,7 @@ class AnonymiseraMeddelandehandelser {
         FROM meddelandehandelse
         '''
 
-        def bootStrapsql = getSqlInstance(dataSource)
+        def bootStrapsql = new Sql(dataSource)
         def identities = bootStrapsql.rows(query)
         println "${identities.size()} meddelanden found"
         bootStrapsql.close()
@@ -40,7 +40,7 @@ class AnonymiseraMeddelandehandelser {
         GParsPool.withPool(numberOfThreads) {
             output = identities.collect {
                 StringBuffer result = new StringBuffer()
-                def sql = getSqlInstance(dataSource)
+                def sql = new Sql(dataSource)
                 def identity = it.id
                 try {
                     def meddelande = sql.firstRow("SELECT type, data FROM meddelandehandelse WHERE id = :id" , [id : identity])
@@ -80,9 +80,6 @@ class AnonymiseraMeddelandehandelser {
         println "Done! ${count} meddelanden anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
     }
 
-    private Sql getSqlInstance(BasicDataSource dataSource) {
-        return Sql.newInstance(dataSource.url, dataSource.username, dataSource.password, dataSource.driverClassName);
-    }
 }
 
 

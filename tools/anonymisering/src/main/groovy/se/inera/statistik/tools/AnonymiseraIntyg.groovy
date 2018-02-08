@@ -32,7 +32,7 @@ class AnonymiseraIntyg {
         FROM intyghandelse
         '''
 
-        def bootStrapsql = getSqlInstance(dataSource)
+        def bootStrapsql = new Sql(dataSource)
         def certificateIds = bootStrapsql.rows(query)
         println "${certificateIds.size()} intyg found"
         bootStrapsql.close()
@@ -41,7 +41,7 @@ class AnonymiseraIntyg {
         GParsPool.withPool(numberOfThreads) {
             output = certificateIds.collectParallel {
                 StringBuffer result = new StringBuffer()
-                def sql = getSqlInstance(dataSource)
+                def sql = new Sql(dataSource)
                 def id = it.correlationId
                 println "correlationId: $id"
                 try {
@@ -88,10 +88,6 @@ class AnonymiseraIntyg {
         }
 
         println "Done! ${count} intyg anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
-    }
-
-    private Sql getSqlInstance(BasicDataSource dataSource) {
-        return Sql.newInstance(dataSource.url, dataSource.username, dataSource.password, dataSource.driverClassName);
     }
 
 }
