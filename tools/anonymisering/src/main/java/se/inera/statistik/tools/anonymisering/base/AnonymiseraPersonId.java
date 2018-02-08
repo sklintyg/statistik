@@ -1,3 +1,21 @@
+/*
+ * Copyright (C) 2018 Inera AB (http://www.inera.se)
+ *
+ * This file is part of sklintyg (https://github.com/sklintyg).
+ *
+ * sklintyg is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * sklintyg is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package se.inera.statistik.tools.anonymisering.base;
 
 import java.util.HashMap;
@@ -26,8 +44,8 @@ public class AnonymiseraPersonId {
     private final Map<String, String> actualToAnonymized = Collections.synchronizedMap(new HashMap<String, String>());
     private final Set<String> anonymizedSet = Collections.synchronizedSet(new HashSet<String>());
 
-    public String anonymisera(String patientId) {
-        patientId = normalisera(patientId);
+    public String anonymisera(String patientIdIn) {
+        String patientId = normalisera(patientIdIn);
         String anonymized = actualToAnonymized.get(patientId);
         if (anonymized == null) {
             anonymized = getUniqueRandomPersonid(patientId);
@@ -37,7 +55,8 @@ public class AnonymiseraPersonId {
 
     String normalisera(String personnr) {
         if (Pattern.matches(PERSON_NUMBER_WITHOUT_DASH_REGEX, personnr)) {
-            return personnr.substring(0, 8) + "-" + personnr.substring(8);
+            final int endOfDateIndex = 8;
+            return personnr.substring(0, endOfDateIndex) + "-" + personnr.substring(endOfDateIndex);
         } else {
             return personnr;
         }
@@ -48,7 +67,7 @@ public class AnonymiseraPersonId {
         try {
             do {
                 anonymized = newRandomPersonid(nummer);
-            } while (anonymizedSet.contains(anonymized) || nummer == anonymized);
+            } while (anonymizedSet.contains(anonymized) || nummer.equals(anonymized));
         } catch (Exception ee) {
             System.err.println("Unrecognized personid " + nummer);
             anonymized = nummer;
