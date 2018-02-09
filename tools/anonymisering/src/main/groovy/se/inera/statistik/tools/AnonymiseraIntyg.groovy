@@ -46,7 +46,7 @@ class AnonymiseraIntyg {
         long start = System.currentTimeMillis()
 
         def query = '''
-        SELECT correlationId 
+        SELECT id 
         FROM intyghandelse
         '''
 
@@ -60,14 +60,14 @@ class AnonymiseraIntyg {
             output = certificateIds.collectParallel {
                 StringBuffer result = new StringBuffer()
                 def sql = new Sql(dataSource)
-                def id = it.correlationId
-                println "correlationId: $id"
+                def id = it.id
+                println "id: $id"
                 try {
-                    def intyg = sql.firstRow('SELECT data FROM intyghandelse WHERE correlationId = :id' , [id : id])
+                    def intyg = sql.firstRow('SELECT data FROM intyghandelse WHERE id = :id' , [id : id])
                     try {
                         String jsonDoc = intyg.data
                         String anonymiseradJson = anonymiseraJson.anonymiseraIntygsJson(jsonDoc)
-                        sql.executeUpdate('UPDATE intyghandelse SET data = :document WHERE correlationId = :id',
+                        sql.executeUpdate('UPDATE intyghandelse SET data = :document WHERE id = :id',
                             [document: anonymiseradJson, id: id])
 
                     } catch (Exception ignored) {
@@ -75,12 +75,12 @@ class AnonymiseraIntyg {
                             String xmlDoc = intyg?.data
                             String anonymiseradXml = xmlDoc ? anonymiseraXml.anonymiseraIntygsXml(xmlDoc) : null
                             if (anonymiseradXml) {
-                                sql.executeUpdate('UPDATE intyghandelse SET data = :document WHERE correlationId = :id',
+                                sql.executeUpdate('UPDATE intyghandelse SET data = :document WHERE id = :id',
                                     [document: anonymiseradXml, id: id])
                             }
 
                         } catch (Exception ignore) {
-                            println "Failed to parse intyg ${id}"
+                            println "Failed to parse intyg with id: ${id}"
                         }
                     }
 

@@ -43,22 +43,23 @@ class AnonymiseraHSA {
         long start = System.currentTimeMillis()
 
         def query = '''
-        SELECT id 
+        SELECT count(1) as count
         FROM hsa
         '''
 
         def sql = new Sql(dataSource)
-        def hsaIds = sql.rows(query)
-        println "${hsaIds.size()} HSA personnel found to anonymize"
+        def nrOfRowsQueryResult = sql.rows(query)
+        def nrOfRows = nrOfRowsQueryResult.count.get(0)
+        println "${nrOfRows} HSA personnel found to anonymize"
         sql.close()
 
-        def output = hsaIds.collect {
+        def output = ((nrOfRows - 1)..0).collect {
             StringBuffer result = new StringBuffer()
             sql = new Sql(dataSource)
 
-            def id = it.id
             try {
-                def intyg = sql.firstRow('SELECT data FROM hsa WHERE id = :id' , [id : id])
+                def intyg = sql.firstRow('SELECT * FROM hsa LIMIT :index,1' , [index : it])
+                String id = intyg.id
                 String jsonDoc = intyg.data
                 String anonymiseradJson = anonymizeHsaJson(jsonDoc, anonymiseraHsaId)
                 sql.executeUpdate('UPDATE hsa SET data = :document WHERE id = :id',
@@ -71,7 +72,7 @@ class AnonymiseraHSA {
             } catch (Throwable t) {
                 t.printStackTrace()
 
-                result << "Anonymization of HSA personnel ${id} failed: ${t}"
+                result << "Anonymization of HSA personnel ${it} failed: ${t}"
                 errorCount.incrementAndGet()
             } finally {
                 sql.close()
@@ -87,7 +88,7 @@ class AnonymiseraHSA {
         println "Done! ${count} HSA personnel anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
     }
 
-    private String anonymizeHsaJson(def s, def anonymiseraHsaId) {
+    static String anonymizeHsaJson(def s, def anonymiseraHsaId) {
         def hsa = new JsonSlurper().parseText(s)
         if (hsa.personal) {
             hsa.personal.id = anonymiseraHsaId.anonymisera(hsa.personal.id)
