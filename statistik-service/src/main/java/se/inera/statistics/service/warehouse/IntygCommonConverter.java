@@ -26,6 +26,7 @@ import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.IntygDTO;
+import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 
 import java.time.Clock;
@@ -42,6 +43,9 @@ public class IntygCommonConverter {
     @Autowired
     private Clock clock;
 
+    @Autowired
+    private Icd10 icd10;
+
     IntygCommon toIntygCommon(IntygDTO dto, HsaInfo hsa, String correlationId, EventType eventType) {
         String enhet = HSAServiceHelper.getEnhetId(hsa);
         HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
@@ -53,9 +57,17 @@ public class IntygCommonConverter {
         int kon = patientData.getKon().getNumberRepresentation();
         String intygTyp = dto.getIntygtyp().toUpperCase();
         LocalDate signeringsDatum = dto.getSigneringsdatum();
-        final String diagnoskod = dto.getDiagnoskod();
+        final String diagnoskod = parseDiagnos(dto.getDiagnoskod());
 
         return new IntygCommon(correlationId, patient, signeringsDatum, intygTyp, enhet, vardgivare.getId(), kon, eventType, diagnoskod);
+    }
+
+    String parseDiagnos(String diagnoskod) {
+        try {
+            return icd10.findFromIcd10Code(diagnoskod).getVisibleId();
+        } catch (Exception e) {
+            return WidelineConverter.UNKNOWN_DIAGNOS;
+        }
     }
 
     public List<String> validate(IntygCommon line) {
