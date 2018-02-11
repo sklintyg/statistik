@@ -21,6 +21,8 @@ package se.inera.testsupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -147,6 +149,21 @@ public class RestSupportService {
 
     @Autowired
     private ChangableClock changableClock;
+
+    @Autowired (required = false)
+    @Qualifier("intygCommonDxPopulator")
+    private ApplicationListener intygCommonDxPopulator;
+
+    /**
+     * Can only be invoked when app is started with spring profile "populate-intygcommon-dx".
+     */
+    @GET
+    @Path("invokeIntygCommonDxPopulator")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response populateIntygCommonDx() {
+        intygCommonDxPopulator.onApplicationEvent(null);
+        return Response.ok().build();
+    }
 
     @GET
     @Path("converteddate/{internalDate}")

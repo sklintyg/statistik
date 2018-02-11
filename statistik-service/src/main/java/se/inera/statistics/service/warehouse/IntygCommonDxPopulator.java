@@ -48,8 +48,8 @@ import java.util.List;
 /**
  * This class has as its only purpose to populate the new dx column in table intygcommon. All rows also available
  * in wideline table will be populated directly from there using a sql query from liquibase (script 47). The
- * remaining rows will be populated from this class. It is hence only requiered to activate this class att the
- * first startup after runing liquibase script nr 47.
+ * remaining rows will be populated from this class. It is hence only required to activate this class att the
+ * first startup after running liquibase script nr 47.
  */
 @Component
 @Profile("populateIntygCommonDx")
@@ -62,6 +62,9 @@ public class IntygCommonDxPopulator implements ApplicationListener<ContextRefres
 
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
+
+    @Autowired
+    private IntygCommonConverter intygCommonConverter;
 
     @Override
     @Transactional
@@ -121,7 +124,7 @@ public class IntygCommonDxPopulator implements ApplicationListener<ContextRefres
             final String data = event.getData();
             final RegisterCertificateType rc = registerCertificateHelper.unmarshalRegisterCertificateXml(data);
             IntygDTO dto = registerCertificateHelper.convertToDTO(rc);
-            return dto.getDiagnoskod();
+            return intygCommonConverter.parseDiagnos(dto.getDiagnoskod());
         } catch (Exception e) {
             LOG.warn("Failed to unmarshal intyg xml");
             LOG.debug("Failed to unmarshal intyg xml", e);
