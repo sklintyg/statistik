@@ -9,7 +9,7 @@ ext {
     infraVersion = System.properties['infraVersion'] ?: '3.3+'
 
     intygSchematronVersion = "1.0.12"
-    certificateSchemaVersion = "3.1.0-RC1.1"
+    certificateSchemaVersion = "3.2.0-RC1"
     monitoringSchemaVersion = "1.0.0.0"
 
     activeMqVersion = "5.13.0"
