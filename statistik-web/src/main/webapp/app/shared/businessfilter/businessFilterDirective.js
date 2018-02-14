@@ -22,7 +22,7 @@ angular.module('StatisticsApp.filter.directive', []);
 angular.module('StatisticsApp.filter.directive')
     .directive('businessFilter',
         /** @ngInject */
-        function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter, filterViewState) {
+        function(businessFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter, filterViewState, $timeout) {
         'use strict';
 
         return {
@@ -32,7 +32,7 @@ angular.module('StatisticsApp.filter.directive')
                 $scope.filterButtonIdText = 'Verksamhet';
                 $scope.filterHashParamName = 'filter';
                 linkFunction(_, $scope, businessFilterFactory, $location, messageService, statisticsData,
-                    moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState);
+                    moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState, $timeout);
             },
             templateUrl: '/app/shared/businessfilter/businessFilterView.html'
         };
@@ -41,7 +41,7 @@ angular.module('StatisticsApp.filter.directive')
 angular.module('StatisticsApp.filter.directive')
     .directive('landstingFilter',
         /** @ngInject */
-        function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter, filterViewState) {
+        function(landstingFilterFactory, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, _, $rootScope, $filter, filterViewState, $timeout) {
         'use strict';
 
         return {
@@ -51,13 +51,13 @@ angular.module('StatisticsApp.filter.directive')
                 $scope.filterButtonIdText = 'Landsting';
                 $scope.filterHashParamName = 'landstingfilter';
                 linkFunction(_, $scope, landstingFilterFactory, $location, messageService, statisticsData,
-                    moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState);
+                    moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState, $timeout);
             },
             templateUrl: '/app/shared/businessfilter/businessFilterView.html'
         };
     });
 
-function linkFunction(_, scope, businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState) {
+function linkFunction(_, scope, businessFilter, $location, messageService, statisticsData, moment, TIME_INTERVAL_MIN_DATE, TIME_INTERVAL_MAX_DATE, $rootScope, $filter, filterViewState, $timeout) {
     'use strict';
 
     scope.filterToApply = false;
@@ -202,12 +202,15 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
     };
 
     scope.makeSelection = function() {
-        var formattedFromDate, formattedToDate;
+        $timeout(makeSelection, 50);
+    };
 
+    function makeSelection() {
         if (hasDatepickersValidationError()) {
             scope.showDateValidationError = true;
             scope.isDateSelectOpen = true;
         } else {
+            var formattedFromDate, formattedToDate;
             scope.isDateSelectOpen = false;
             scope.showDateValidationError = false;
             scope.loadingFilter = true;
@@ -262,7 +265,7 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
             statisticsData.getFilterHash(params).then(success, error);
         }
-    };
+    }
 
     scope.resetBusinessFilter = function(form) {
         scope.isDateSelectOpen = false;

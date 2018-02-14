@@ -22,7 +22,7 @@
 describe('Tests for directive button-filter', function () {
     'use strict';
 
-    var element, outerScope, innerScope, compiled;
+    var element, outerScope, innerScope, compiled, $timeout;
 
     //The module under test
     beforeEach(module('StatisticsApp.businessFilter'));
@@ -50,11 +50,8 @@ describe('Tests for directive button-filter', function () {
         $provide.value('statisticsData', mockStatistics);
     }));
 
-    beforeEach(inject(function ($rootScope, $compile) {
-        /*
-         jqLite is really limited (ng 1.2) so if you need more expressive power you will
-         have to include jquery before angular in your karma config
-         */
+    beforeEach(inject(function ($rootScope, $compile, _$timeout_) {
+        $timeout = _$timeout_;
 
         //get the jqLite or jQuery element
         element = angular.element('<business-filter></business-filter>');
@@ -153,6 +150,7 @@ describe('Tests for directive button-filter', function () {
 
             //when
             innerScope.makeSelection();
+            $timeout.flush();
 
             //then
             expect(spy.calledOnce).toBeTruthy();
@@ -177,6 +175,7 @@ describe('Tests for directive button-filter', function () {
 
             //when
             innerScope.makeSelection();
+            $timeout.flush();
 
             //Ensure that we sue the right format
 
@@ -197,6 +196,7 @@ describe('Tests for directive button-filter', function () {
 
             //when
             innerScope.makeSelection();
+            $timeout.flush();
 
             //Ensure that we sue the right format
             expect(spy.getCall(0).args[0].toDate).toEqual(expectedToDate.format('YYYY-MM-DD'), 'To date wasn\'t set correctly');
@@ -222,6 +222,7 @@ describe('Tests for directive button-filter', function () {
 
             //when
             innerScope.makeSelection();
+            $timeout.flush();
 
             //then
             expect(innerScope.showDateValidationError).toBeDefined();
@@ -235,6 +236,7 @@ describe('Tests for directive button-filter', function () {
 
             //when
             innerScope.makeSelection();
+            $timeout.flush();
 
             //then
             expect(innerScope.showDateValidationError).toBeTruthy('showDateValidationError wasn\'t true as expected');
@@ -251,6 +253,7 @@ describe('Tests for directive button-filter', function () {
 
             //when
             innerScope.makeSelection();
+            $timeout.flush();
 
             //then
             expect(innerScope.showDateValidationError).toBeTruthy('showDateValidationError wasn\'t true as expected');
@@ -267,6 +270,7 @@ describe('Tests for directive button-filter', function () {
 
             //when
             innerScope.makeSelection();
+            $timeout.flush();
 
             //then
             expect(innerScope.showDateValidationError).toBeFalsy('showDateValidationError wasn\'t true as expected');
@@ -280,6 +284,8 @@ describe('Tests for directive button-filter', function () {
             innerScope.businessFilter.toDate = inputToDate.toDate();
             //when
             innerScope.makeSelection();
+            $timeout.flush();
+
             //then
             expect(innerScope.showDateValidationError).toBeTruthy('showDateValidationError wasn\'t true as expected');
         });
@@ -291,6 +297,8 @@ describe('Tests for directive button-filter', function () {
             innerScope.businessFilter.toDate = null;
             //when
             innerScope.makeSelection();
+            $timeout.flush();
+
             //then
             expect(innerScope.showDateValidationError).toBeTruthy('showDateValidationError wasn\'t true as expected');
         });
@@ -304,6 +312,8 @@ describe('Tests for directive button-filter', function () {
             innerScope.businessFilter.toDate = inputToDate.toDate();
             //when
             innerScope.makeSelection();
+            $timeout.flush();
+
             //then
             expect(innerScope.showDateValidationError).toBeFalsy('showDateValidationError wasn\'t true as expected');
         });
@@ -318,6 +328,7 @@ describe('Tests for directive button-filter', function () {
 
             //when
             innerScope.makeSelection();
+            $timeout.flush();
 
             //then
             expect(innerScope.showDateValidationError).toBeFalsy('showDateValidationError wasn\'t true as expected');
@@ -332,6 +343,8 @@ describe('Tests for directive button-filter', function () {
             innerScope.businessFilter.toDate = inputToDate.toDate();
             //when
             innerScope.makeSelection();
+            $timeout.flush();
+
             //then
             expect(innerScope.showDateValidationError).toBeTruthy('showDateValidationError wasn\'t true as expected');
         });
@@ -345,6 +358,8 @@ describe('Tests for directive button-filter', function () {
             innerScope.businessFilter.toDate = inputToDate.toDate();
             //when
             innerScope.makeSelection();
+            $timeout.flush();
+
             //then
             expect(innerScope.showDateValidationError).toBeFalsy('showDateValidationError wasn\'t true as expected');
         });
@@ -355,6 +370,8 @@ describe('Tests for directive button-filter', function () {
             innerScope.businessFilter.toDate = null;
             //when
             innerScope.makeSelection();
+            $timeout.flush();
+
             //then
             expect(innerScope.showDateValidationError).toBeFalsy('showDateValidationError wasn\'t false as expected');
         });
