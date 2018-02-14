@@ -64,6 +64,30 @@ class AnonymiseraStatistikDatabas {
             sql.close()
         }
 
+        println "Proceeding to intygcommon"
+        sql = new Sql(dataSource)
+        try {
+            sql.execute('DELETE FROM intygcommon')
+            println "Done! intygcommon emptied."
+        } catch (Throwable t) {
+            t.printStackTrace()
+            println "Error! Check if intygcommon was emptied."
+        } finally {
+            sql.close()
+        }
+
+        println "Proceeding to messagewideline"
+        sql = new Sql(dataSource)
+        try {
+            sql.execute('DELETE FROM messagewideline')
+            println "Done! messagewideline emptied."
+        } catch (Throwable t) {
+            t.printStackTrace()
+            println "Error! Check if messagewideline was emptied."
+        } finally {
+            sql.close()
+        }
+
         println "Proceeding to handelsepekare"
         sql = new Sql(dataSource)
         try {
@@ -84,7 +108,7 @@ class AnonymiseraStatistikDatabas {
         AnonymiseraLakare anonymiseraLakare = new AnonymiseraLakare(dataSource);
         anonymiseraLakare.anonymize(anonymiseraHsaId);
 
-        // Anonymisera meddelanden i ärenedkommunikationen
+        // Anonymisera meddelanden i ärendekommunikationen
         AnonymiseraMeddelandehandelser anonymiseraMeddelanden = new AnonymiseraMeddelandehandelser(dataSource);
         anonymiseraMeddelanden.anonymize(numberOfThreads, anonymiseraXml);
 
