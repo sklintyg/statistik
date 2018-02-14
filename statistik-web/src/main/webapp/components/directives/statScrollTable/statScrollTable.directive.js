@@ -163,10 +163,15 @@ angular.module('StatisticsApp').directive('statScrollTable',
                     if (sortIndex < 0) {
                         $scope.rowsShown = rows;
                     } else {
-                        $scope.rowsShown = _.sortBy(rows, function(row) {
-                            var x = reverse ? -1 : 1;
-                            return x * row.data[sortIndex].sort;
+                        var sortedRows = _.sortBy(rows, function(row) {
+                            return row.data[sortIndex].sort;
                         });
+
+                        if (reverse) {
+                            sortedRows = _.reverse(sortedRows);
+                        }
+
+                        $scope.rowsShown = sortedRows;
                     }
 
                     // Update viewstate
@@ -193,9 +198,17 @@ angular.module('StatisticsApp').directive('statScrollTable',
                         var data = [];
 
                         _.each(row.data, function(d) {
+                            var sortValue = $filter('replaceEmpty')(d);
+
+                            if (angular.isString(sortValue)) {
+                                var parse = parseFloat(sortValue.replace(',', '.'));
+
+                                sortValue = isNaN(parse) ? sortValue : parse;
+                            }
+
                             data.push({
                                 value: $filter('thousandseparated')(d),
-                                sort: $filter('replaceEmpty')(d)
+                                sort: sortValue
                             });
                         });
 
