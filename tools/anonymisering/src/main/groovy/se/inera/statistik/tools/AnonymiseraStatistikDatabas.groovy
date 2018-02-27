@@ -100,6 +100,20 @@ class AnonymiseraStatistikDatabas {
             sql.close()
         }
 
+        println "Preparing HSA-table with index"
+        sql = new Sql(dataSource)
+        try {
+            sql.execute('ALTER TABLE hsa DROP PRIMARY KEY;')
+            sql.execute('ALTER TABLE hsa ADD indexid INT PRIMARY KEY AUTO_INCREMENT')
+            sql.execute('CREATE UNIQUE INDEX id_idx ON hsa (id)')
+            println "Done! Column indexid added to HSA table."
+        } catch (Throwable t) {
+            t.printStackTrace()
+            println "Error! Column indexid was not added to HSA table."
+        } finally {
+            sql.close()
+        }
+
         // Anonymisera HSA
         AnonymiseraHSA anonymiseraHSA = new AnonymiseraHSA(dataSource);
         anonymiseraHSA.anonymize(anonymiseraHsaId);

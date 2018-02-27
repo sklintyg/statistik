@@ -43,27 +43,26 @@ class AnonymiseraHSA {
         long start = System.currentTimeMillis()
 
         def query = '''
-        SELECT count(1) as count
+        SELECT indexid
         FROM hsa
         '''
 
         def sql = new Sql(dataSource)
-        def nrOfRowsQueryResult = sql.rows(query)
-        def nrOfRows = nrOfRowsQueryResult.count.get(0)
-        println "${nrOfRows} HSA personnel found to anonymize"
+        def hsaIds = sql.rows(query)
+        println "${hsaIds.size()} HSA personnel found to anonymize"
         sql.close()
 
-        def output = ((nrOfRows - 1)..0).collect {
+        def output = hsaIds.collect {
             StringBuffer result = new StringBuffer()
             sql = new Sql(dataSource)
 
             try {
-                def intyg = sql.firstRow('SELECT * FROM hsa LIMIT :index,1' , [index : it])
+                def intyg = sql.firstRow('SELECT * FROM hsa WHERE indexid = :id' , [id : it.indexid])
                 String id = intyg.id
                 String jsonDoc = intyg.data
                 String anonymiseradJson = anonymizeHsaJson(jsonDoc, anonymiseraHsaId)
-                sql.executeUpdate('UPDATE hsa SET data = :document WHERE id = :id',
-                    [document: anonymiseradJson, id: id])
+                sql.executeUpdate('UPDATE hsa SET data = :document WHERE indexid = :id',
+                    [document: anonymiseradJson, id: it.indexid])
 
                 int current = count.addAndGet(1)
                 if (current % 10000 == 0) {
