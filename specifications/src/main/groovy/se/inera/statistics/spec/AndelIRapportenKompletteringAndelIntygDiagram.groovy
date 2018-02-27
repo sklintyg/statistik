@@ -18,12 +18,12 @@
  */
 package se.inera.statistics.spec
 
-class AndelIRapportenKompletteringAndelIntyg extends DualSexTimeSeriesReport {
+class AndelIRapportenKompletteringAndelIntygDiagram extends DualSexTimeSeriesReport {
 
     @Override
     public void doExecute() {
         def report = getReportAndelKompletteringar()
-        executeTabell(report)
+        executeDiagram(report)
     }
 
 }

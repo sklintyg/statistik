@@ -96,7 +96,7 @@ angular.module('StatisticsApp').factory('chartFactory',
             return 40;
         }
 
-        function _getTooltip(overview, percentChart, unit, chartType) {
+        function _getTooltip(overview, percentChart, unit, chartType, usingAndel) {
 
             var formatter;
 
@@ -114,7 +114,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                 formatter = function() {
                     var value = percentChart ?
                         Highcharts.numberFormat(this.percentage, 0, ',') + ' %' :
-                        ControllerCommons.makeThousandSeparated(this.y);
+                        ControllerCommons.makeThousandSeparated(this.y) + (usingAndel ? ' %' : '');
 
                     var title = this.x ? this.x : this.point.name;
 
@@ -241,7 +241,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     },
                     labels : {
                         formatter : function() {
-                            return ControllerCommons.makeThousandSeparated(this.value) + (options.percentChart ? ' %' : '');
+                            return ControllerCommons.makeThousandSeparated(this.value) + (options.percentChart || options.usingAndel ? ' %' : '');
                         }
                     },
                     plotLines : [ {
@@ -301,7 +301,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                         showInLegend : false
                     }
                 },
-                tooltip : _getTooltip(options.overview, options.percentChart, options.unit, options.type),
+                tooltip : _getTooltip(options.overview, options.percentChart, options.unit, options.type, options.usingAndel),
                 credits : {
                     enabled : false
                 },

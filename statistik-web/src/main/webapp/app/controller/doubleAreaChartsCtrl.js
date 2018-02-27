@@ -39,8 +39,9 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
         var isLandsting = ControllerCommons.isShowingLandsting($location);
 
-        this.paintChart = function (containerId, yAxisTitle, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft, doneLoadingCallback, yAxisTitleUnit) {
+        this.paintChart = function (containerId, yAxisTitleSuffix, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft, doneLoadingCallback) {
 
+            var yAxisTitleUnit = config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall';
             var chartConfigOptions = {
                 categories: chartCategories,
                 series: chartSeries,
@@ -51,7 +52,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
                 stacked: chartTypeInfo.stacked,
                 verticalLabel: false,
                 labelMaxLength: null,
-                unit: yAxisTitleUnit
+                unit: yAxisTitleUnit,
+                usingAndel: config.usingAndel
             };
 
             var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
@@ -59,7 +61,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             chartOptions.plotOptions.area.lineWidth = 1;
             chartOptions.plotOptions.area.lineColor = 'grey';
             chartOptions.legend.enabled = false;
-            chartOptions.subtitle.text = (chartTypeInfo.usePercentChart ? 'Andel ' : 'Antal ') + yAxisTitle;
+            var yAxisTitlePrefix = (config.usingAndel || chartTypeInfo.usePercentChart) ? 'Andel ' : 'Antal ';
+            chartOptions.subtitle.text = yAxisTitlePrefix + yAxisTitleUnit + ' för ' + yAxisTitleSuffix;
             return new Highcharts.Chart(chartOptions);
         };
 
@@ -95,11 +98,10 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             $scope.hideChart = false;
 
             chartFactory.addColor(chartSeriesFemale);
-            var yAxisTitleUnit = config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall';
-            that.chart1 = that.paintChart('chart1', yAxisTitleUnit + ' för kvinnor', 118, chartCategories, chartSeriesFemale, -100, function() {}, yAxisTitleUnit);
+            that.chart1 = that.paintChart('chart1', 'kvinnor', 118, chartCategories, chartSeriesFemale, -100, function() {}, config);
 
             chartFactory.addColor(chartSeriesMale);
-            that.chart2 = that.paintChart('chart2', yAxisTitleUnit + ' för män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback, yAxisTitleUnit);
+            that.chart2 = that.paintChart('chart2', 'män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback, config);
 
             updateChartsYAxisMaxValue();
         };
@@ -649,6 +651,8 @@ angular.module('StatisticsApp').andelKompletteringarConfig =
         return this.title + ' ' + (suffix || '');
     };
     conf.title = messageService.getProperty('title.andelkompletteringar');
+    conf.chartYAxisTitleUnit = 'intyg';
+    conf.usingAndel = true;
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/andelkompletteringar', active: true},

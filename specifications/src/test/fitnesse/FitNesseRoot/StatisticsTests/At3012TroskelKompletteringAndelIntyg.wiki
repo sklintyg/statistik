@@ -10,7 +10,7 @@ Test
 | script | troskel varde | 5 |
 
 | Enbart foljande intyg finns |
-| intygid | personnr | diagnoskod | signeringstid | skickattidpunkt | intygformat | enhet |
+| intygid | personnr | diagnoskod | signeringstid | signeringstid | intygformat | enhet |
 | 1001 | 19790219-9285 | A40 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LISJP | enhet1 |
 | 1002 | 19790429-9281 | A41 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LISJP | enhet1 |
 | 1003 | 19790709-9282 | A40 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LISJP | enhet1 |

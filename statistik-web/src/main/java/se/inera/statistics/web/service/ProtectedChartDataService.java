@@ -47,6 +47,7 @@ import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.inera.statistics.web.service.responseconverter.AndelKompletteringarConverter;
+import se.inera.statistics.web.service.responseconverter.AndelKompletteringarTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.CompareDiagnosisTimeSeriesConverter;
 import se.inera.statistics.web.service.responseconverter.DegreeOfSickLeaveConverter;
 import se.inera.statistics.web.service.responseconverter.DiagnosisGroupsConverter;
@@ -364,7 +365,7 @@ public class ProtectedChartDataService {
         final Range range = filterSettings.getRange();
         SimpleKonResponse casesPerMonth = warehouse.getAndelKompletteringarTvarsnitt(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData result = MessageAmneTvarsnittConverter.newTvarsnitt().convert(casesPerMonth, filterSettings);
+        SimpleDetailsData result = AndelKompletteringarTvarsnittConverter.newTvarsnitt().convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
     }
 

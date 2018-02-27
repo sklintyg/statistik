@@ -90,17 +90,21 @@ public class SimpleDualSexConverter {
     protected TableData convertToTableData(List<SimpleKonDataRow> list) {
         List<NamedData> data = new ArrayList<>();
         for (SimpleKonDataRow row : list) {
-            final Integer female = row.getFemale();
-            final Integer male = row.getMale();
             final String seriesName = String.format(seriesNameTemplate, row.getName());
-            data.add(new NamedData(seriesName, Arrays.asList(female + male, female, male), isMarked(row)));
+            data.add(new NamedData(seriesName, getMergedSexData(row), isMarked(row)));
         }
 
         return TableData.createWithSingleHeadersRow(data,
                 Arrays.asList(tableGroupTitle, totalColumnName, femaleColumnName, maleColumnName));
     }
 
-    @java.lang.SuppressWarnings("squid:S1172") // Parameter "row" is used by method in extending class
+    protected List<Object> getMergedSexData(SimpleKonDataRow row) {
+        final Integer female = row.getFemale();
+        final Integer male = row.getMale();
+        return Arrays.asList(female + male, female, male);
+    }
+
+        @java.lang.SuppressWarnings("squid:S1172") // Parameter "row" is used by method in extending class
     protected boolean isMarked(SimpleKonDataRow row) {
         return false;
     }

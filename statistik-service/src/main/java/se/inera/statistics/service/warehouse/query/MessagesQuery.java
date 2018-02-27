@@ -110,7 +110,7 @@ public class MessagesQuery {
     public SimpleKonResponse getAndelKompletteringarTvarsnitt(MessagesFilter filter) {
         final MessagesFilter extendedFilter = new MessagesFilter(filter, Collections.singleton(MsgAmne.KOMPLT.name()));
         List<CountDTOAmne> rows = messageWidelineLoader.getKompletteringarPerIntyg(extendedFilter);
-        return convertToSimpleResponseTvarsnittPerAmne(rows); //TODO Fix me
+        return convertToAndelKompletteringarTvarsnitt(rows, filter.getFrom(), filter.getNumberOfMonths());
     }
 
     public KonDataResponse getMessagesPerAmnePerEnhet(MessagesFilter filter) {
@@ -173,6 +173,55 @@ public class MessagesQuery {
             groups.add(msgAmne.name());
         }
         return new KonDataResponse(groups, result);
+    }
+
+    private SimpleKonResponse convertToAndelKompletteringarTvarsnitt(List<CountDTOAmne> rows, LocalDate from, int numberOfMonths) {
+        Map<String, List<CountDTOAmne>> map;
+        if (rows != null) {
+            map = rows.stream().collect(Collectors.groupingBy(CountDTOAmne::getIntygTyp));
+        } else {
+            map = new HashMap<>();
+        }
+
+        final IntygType[] intygTypes = IntygType.values();
+        final int seriesLength = intygTypes.length;
+
+
+        int[] maleKompl = new int[seriesLength];
+        int[] femaleKompl = new int[seriesLength];
+        int[] maleIntyg = new int[seriesLength];
+        int[] femaleIntyg = new int[seriesLength];
+
+        for (IntygType intygType : intygTypes) {
+            List<CountDTOAmne> dtos = map.get(intygType.name());
+            if (dtos != null) {
+                for (CountDTOAmne dto : dtos) {
+                    final int ordinal = IntygType.parseString(dto.getIntygTyp()).getMappedType().ordinal();
+                    if (dto.getKon().equals(Kon.FEMALE)) {
+                        femaleIntyg[ordinal] += 1;
+                        femaleKompl[ordinal] += dto.getAmne() != null ? 1 : 0;
+                    } else {
+                        maleIntyg[ordinal] += 1;
+                        maleKompl[ordinal] += dto.getAmne() != null ? 1 : 0;
+                    }
+                }
+            }
+        }
+
+        final int percentConvertion = 100;
+        final List<SimpleKonDataRow> result = new ArrayList<>();
+        for (int j = 0, intygTypesLength = intygTypes.length; j < intygTypesLength; j++) {
+            final IntygType intygType = intygTypes[j];
+            if (intygType.isIncludeInIntygtypFilter()) {
+                int f = femaleIntyg[j] == 0 ? 0 : percentConvertion * femaleKompl[j] / femaleIntyg[j];
+                int m = maleIntyg[j] == 0 ? 0 : percentConvertion * maleKompl[j] / maleIntyg[j];
+                final int part = femaleKompl[j] + maleKompl[j];
+                final int whole = femaleIntyg[j] + maleIntyg[j];
+                result.add(new SimpleKonDataRow(intygType.name(), f, m, new AndelExtras(part, whole)));
+            }
+        }
+
+        return new SimpleKonResponse(result);
     }
 
     private KonDataResponse convertToAndelKompletteringar(List<CountDTOAmne> rows, LocalDate start, int perioder) {

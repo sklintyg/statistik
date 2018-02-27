@@ -87,7 +87,7 @@ public class SimpleKonResponse {
             sumMale += konField.getMale();
         }
         final String groupName = diagnosgruppResponse.getGroups().get(index);
-        return new SimpleKonDataRow(groupName, sumFemale, sumMale);
+        return new SimpleKonDataRow(groupName, sumFemale, sumMale, diagnosgruppResponse);
     }
 
     public static SimpleKonResponse merge(Collection<SimpleKonResponse> resps, boolean mergeEqualRows) {

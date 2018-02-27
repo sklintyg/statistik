@@ -32,15 +32,19 @@ import se.inera.statistics.web.service.FilterSettings;
 
 public class AndelKompletteringarConverter extends MultiDualSexConverter {
 
-    private static final int PERCENTAGE_CONVERT = 100;
+    static final int PERCENTAGE_CONVERT = 100;
+
+    public AndelKompletteringarConverter() {
+        super("Andel intyg");
+    }
 
     public DualSexStatisticsData convert(KonDataResponse data, FilterSettings filterSettings) {
         final List<IntygType> groups = data.getGroups().stream().map(IntygType::parseString).collect(Collectors.toList());
         final List<KonDataRow> rows = data.getRows();
-        int indexOfEmptyInternalIcd10Group = getIndexOfGroupToRemove(groups, rows);
-        while (indexOfEmptyInternalIcd10Group >= 0) {
-            removeGroupWithIndex(indexOfEmptyInternalIcd10Group, groups, rows);
-            indexOfEmptyInternalIcd10Group = getIndexOfGroupToRemove(groups, rows);
+        int indexOfEmptyInternalGroup = getIndexOfGroupToRemove(groups, rows);
+        while (indexOfEmptyInternalGroup >= 0) {
+            removeGroupWithIndex(indexOfEmptyInternalGroup, groups, rows);
+            indexOfEmptyInternalGroup = getIndexOfGroupToRemove(groups, rows);
         }
         final KonDataResponse konDataResponse = new KonDataResponse(convertGroupNamesToText(groups), rows);
         return super.convert(konDataResponse, filterSettings, null, "%1$s");

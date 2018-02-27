@@ -59,7 +59,8 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
                 stacked: chartTypeInfo.stacked,
                 verticalLabel: config.chartVerticalLabel,
                 labelMaxLength: config.chartLabelLength,
-                unit: config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall'
+                unit: config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall',
+                usingAndel: config.usingAndel
             };
 
 
@@ -705,6 +706,9 @@ angular.module('StatisticsApp').andelKompletteringarTvarsnittConfig =
         };
         conf.showDetailsOptions = false;
         conf.title = messageService.getProperty('title.andelkompletteringar');
+        conf.chartYAxisTitleUnit = 'intyg';
+        conf.usingAndel = true;
+        conf.chartYAxisTitle = 'Andel intyg';
 
         conf.exchangeableViews = [
             {description: 'Tidsserie', state: '/verksamhet/andelkompletteringar', active: false},
