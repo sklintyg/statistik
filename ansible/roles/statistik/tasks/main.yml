@@ -118,6 +118,7 @@
     repo: "{{ config_repository }}"
     dest: "{{ config_folder }}"
     version: "{{ config_version }}"
+    force: yes
 
 - name: Include host in login url
   replace:
