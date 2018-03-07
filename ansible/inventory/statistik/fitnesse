@@ -1,5 +1,5 @@
 [tomcat]
-statistik-fitnesse ansible_ssh_host=fitnesse.inera.nordicmedtest.se ansible_ssh_user=inera ansible_ssh_port=28022 ansible_ssh_private_key_file=~/.ssh/inera_rsa
+statistik-fitnesse ansible_ssh_host=fitnesse2.inera.nordicmedtest.se ansible_ssh_user=inera ansible_ssh_port=28022 ansible_ssh_private_key_file=~/.ssh/inera_rsa
 
 [mysql]
-statistik-fitnesse ansible_ssh_host=fitnesse.inera.nordicmedtest.se ansible_ssh_user=inera ansible_ssh_port=28022 ansible_ssh_private_key_file=~/.ssh/inera_rsa
+statistik-fitnesse ansible_ssh_host=fitnesse2.inera.nordicmedtest.se ansible_ssh_user=inera ansible_ssh_port=28022 ansible_ssh_private_key_file=~/.ssh/inera_rsa
