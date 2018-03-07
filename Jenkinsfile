@@ -39,7 +39,7 @@ stage('integrationTest') {
 stage('deploy') {
     node {
         util.run {
-            ansiblePlaybook extraVars: [version: buildVersion, ansible_ssh_port: "28022", deploy_from_repo: "false"], \
+            ansiblePlaybook extraVars: [version: buildVersion, ansible_ssh_port: "22", deploy_from_repo: "false"], \
                 installation: 'ansible-yum', inventory: 'ansible/inventory/statistik/fitnesse', playbook: 'ansible/deploy.yml'
             util.waitForServer('https://fitnesse2.inera.nordicmedtest.se/version.jsp')
         }
