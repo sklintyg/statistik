@@ -7,9 +7,9 @@ host_url: https://fitnesse2.inera.nordicmedtest.se
 activemq_broker_url: "vm://localhost:61616?broker.persistent=false"
 
 #Temporary Tomcat overrides
-tomcat_service: inera-tomcat
-inera_tomcat_folder: "/var/lib/{{ tomcat_service }}"
-tomcat_conf: "{{ inera_root }}/tomcat7/conf"
-tomcat_bin: "{{ inera_root }}/tomcat7/bin"
-tomcat_lib: "{{ inera_root }}/tomcat7/lib"
-tomcat_etc: "{{ inera_root }}/tomcat7/etc"
+tomcat_service: statistik-fitnesse2-tomcat
+inera_tomcat_folder: "{{ inera_root }}/{{ tomcat_service }}"
+tomcat_conf: "{{ inera_tomcat_folder }}/conf"
+tomcat_bin: "{{ inera_tomcat_folder }}/bin"
+tomcat_lib: "{{ inera_tomcat_folder }}/lib"
+tomcat_etc: "{{ inera_tomcat_folder }}/etc"
