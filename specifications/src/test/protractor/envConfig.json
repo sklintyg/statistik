@@ -4,7 +4,7 @@
         "SELENIUM_ADDRESS": ""
     },
     "build-server": {
-        "ST_URL": "https://fitnesse.inera.nordicmedtest.se/",
+        "ST_URL": "https://fitnesse2.inera.nordicmedtest.se/",
         "SELENIUM_ADDRESS": "http://selenium1.nordicmedtest.se:4444/wd/hub"
     }
 }
