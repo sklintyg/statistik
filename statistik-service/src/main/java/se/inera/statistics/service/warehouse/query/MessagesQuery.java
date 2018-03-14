@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -59,22 +60,12 @@ public class MessagesQuery {
 
     public KonDataResponse getMeddelandenPerAmneAggregated(KonDataResponse resultToAggregateIn, MessagesFilter filter, int cutoff) {
         final KonDataResponse messagesTvarsnittPerAmne = getMessagesPerAmne(filter);
-        final KonDataResponse resultToAggregate = resultToAggregateIn != null
-                ? resultToAggregateIn : ResponseUtil.createEmptyKonDataResponse(messagesTvarsnittPerAmne);
-        Iterator<KonDataRow> rowsNew = messagesTvarsnittPerAmne.getRows().iterator();
-        Iterator<KonDataRow> rowsOld = resultToAggregate.getRows().iterator();
-        List<KonDataRow> list = ResponseUtil.getKonDataRows(filter.getNumberOfMonths(), rowsNew, rowsOld, cutoff);
-        return new KonDataResponse(messagesTvarsnittPerAmne.getGroups(), list);
+        return getKonDataResponseAggregated(resultToAggregateIn, filter, cutoff, messagesTvarsnittPerAmne);
     }
 
     public KonDataResponse getMeddelandenPerAmneOchEnhetAggregated(KonDataResponse resultToAggregateIn, MessagesFilter filter, int cutoff) {
         final KonDataResponse messagesTvarsnittPerAmne = getMessagesTvarsnittPerAmnePerEnhet(filter);
-        final KonDataResponse resultToAggregate = resultToAggregateIn != null
-                ? resultToAggregateIn : ResponseUtil.createEmptyKonDataResponse(messagesTvarsnittPerAmne);
-        Iterator<KonDataRow> rowsNew = messagesTvarsnittPerAmne.getRows().iterator();
-        Iterator<KonDataRow> rowsOld = resultToAggregate.getRows().iterator();
-        List<KonDataRow> list = ResponseUtil.getKonDataRows(filter.getNumberOfMonths(), rowsNew, rowsOld, cutoff);
-        return new KonDataResponse(messagesTvarsnittPerAmne.getGroups(), list);
+        return getKonDataResponseAggregated(resultToAggregateIn, filter, cutoff, messagesTvarsnittPerAmne);
     }
 
     public SimpleKonResponse getMessages(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter, LocalDate start,
@@ -105,6 +96,22 @@ public class MessagesQuery {
         final MessagesFilter extendedFilter = new MessagesFilter(filter, Collections.singleton(MsgAmne.KOMPLT.name()));
         List<CountDTOAmne> rows = messageWidelineLoader.getKompletteringarPerIntyg(extendedFilter);
         return convertToAndelKompletteringar(rows, filter.getFrom(), filter.getNumberOfMonths());
+    }
+
+    public KonDataResponse getAndelKompletteringarAggregated(KonDataResponse resultToAggregateIn, MessagesFilter filter, int cutoff) {
+        final KonDataResponse andelKompletteringar = getAndelKompletteringar(filter);
+        return getKonDataResponseAggregated(resultToAggregateIn, filter, cutoff, andelKompletteringar);
+    }
+
+    @NotNull
+    private KonDataResponse getKonDataResponseAggregated(KonDataResponse resultToAggregateIn, MessagesFilter filter,
+                                                         int cutoff, KonDataResponse andelKompletteringar) {
+        final KonDataResponse resultToAggregate = resultToAggregateIn != null
+                ? resultToAggregateIn : ResponseUtil.createEmptyKonDataResponse(andelKompletteringar);
+        Iterator<KonDataRow> rowsNew = andelKompletteringar.getRows().iterator();
+        Iterator<KonDataRow> rowsOld = resultToAggregate.getRows().iterator();
+        List<KonDataRow> list = ResponseUtil.getKonDataRows(filter.getNumberOfMonths(), rowsNew, rowsOld, cutoff);
+        return new KonDataResponse(andelKompletteringar.getGroups(), list);
     }
 
     public SimpleKonResponse getAndelKompletteringarTvarsnitt(MessagesFilter filter) {

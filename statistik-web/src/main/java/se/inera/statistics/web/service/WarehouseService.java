@@ -167,6 +167,19 @@ public class WarehouseService {
         return messagesQuery.getAndelKompletteringar(getMeddelandeFilter(vardgivarId, filter, range));
     }
 
+    public KonDataResponse getAndelKompletteringarLandsting(FilterSettings filterSettings) {
+        return getAndelKompletteringarLandsting(filterSettings, CutoffUsage.APPLY_CUTOFF_ON_TOTAL);
+    }
+
+    private KonDataResponse getAndelKompletteringarLandsting(final FilterSettings filterSettings, final CutoffUsage cutoffUsage) {
+        Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
+        final Range range = filterSettings.getRange();
+        return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
+            final MessagesFilter meddelandeFilter = getMeddelandeFilter(entry.getKey(), filterSettings.getFilter(), range);
+            return messagesQuery.getAndelKompletteringarAggregated(konDataResponse, meddelandeFilter, 0);
+        }, (konDataResponse, konDataResponse2) -> konDataResponse2);
+    }
+
     public SimpleKonResponse getAndelKompletteringarTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
         return messagesQuery.getAndelKompletteringarTvarsnitt(getMeddelandeFilter(vardgivarId, filter, range));
     }

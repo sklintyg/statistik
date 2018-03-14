@@ -661,3 +661,25 @@ angular.module('StatisticsApp').andelKompletteringarConfig =
     return conf;
 };
 
+angular.module('StatisticsApp').andelKompletteringarLandstingConfig =
+    /** @ngInject */
+    function (messageService) {
+    'use strict';
+
+    var conf = {};
+    conf.defaultChartType = 'line';
+    conf.dataFetcher = 'getAndelKompletteringarLandsting';
+    conf.exportTableUrl = function () {
+        return 'api/landsting/getAndelKompletteringarLandsting?format=xlsx';
+    };
+    conf.showDetailsOptions = false;
+    conf.suffixTitle = function (suffix) {
+        return this.title + ' ' + (suffix || '');
+    };
+    conf.title = messageService.getProperty('title.andelkompletteringar');
+    conf.chartYAxisTitleUnit = 'intyg';
+    conf.usingAndel = true;
+
+    return conf;
+};
+

@@ -19,10 +19,12 @@
 package se.inera.statistics.service.warehouse;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.warehouse.query.AndelExtras;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -48,7 +50,8 @@ public final class ResponseUtil {
         for (KonDataRow row : kdr.getRows()) {
             final ArrayList<KonField> data = new ArrayList<>();
             for (int i = 0; i < row.getData().size(); i++) {
-                data.add(new KonField(0, 0));
+                Object extras = row.getData().get(i).getExtras() instanceof AndelExtras ? new AndelExtras(0, 0) : null;
+                data.add(new KonField(0, 0, extras));
             }
             rows.add(new KonDataRow(row.getName(), data));
         }
@@ -64,12 +67,28 @@ public final class ResponseUtil {
 
             List<KonField> c = new ArrayList<>();
             for (int i = 0; i < a.getData().size(); i++) {
-                c.add(new KonField(filterCutoff(a.getData().get(i).getFemale(), cutoff) + b.getData().get(i).getFemale(),
-                        filterCutoff(a.getData().get(i).getMale(), cutoff) + b.getData().get(i).getMale()));
+                final KonField aKonField = a.getData().get(i);
+                final KonField bKonField = b.getData().get(i);
+                final int female = filterCutoff(aKonField.getFemale(), cutoff) + bKonField.getFemale();
+                final int male = filterCutoff(aKonField.getMale(), cutoff) + bKonField.getMale();
+                final Object extras = getMergedExtras(aKonField, bKonField);
+                c.add(new KonField(female, male, extras));
             }
             list.add(new KonDataRow(a.getName(), c));
         }
         return list;
+    }
+
+    @Nullable
+    private static Object getMergedExtras(KonField aKonField, KonField bKonField) {
+        Object aExtras = aKonField.getExtras();
+        Object bExtras = bKonField.getExtras();
+        if (aExtras instanceof AndelExtras && bExtras instanceof AndelExtras) {
+            AndelExtras aAndelExtra = (AndelExtras) aExtras;
+            AndelExtras bAndelExtra = (AndelExtras) bExtras;
+            return new AndelExtras(aAndelExtra.getPart() + bAndelExtra.getPart(), aAndelExtra.getWhole() + bAndelExtra.getWhole());
+        }
+        return null;
     }
 
     static int filterCutoff(int actual, int cutoff) {

@@ -1,6 +1,5 @@
 ---
 Help: Kan tas med när rapporten Komplettering, Andel intyg har implementerats
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h
@@ -14,7 +13,7 @@ Alla intyg har skickats vidare till Försäkringskassan.
 Endast 5 intyg har signerats och skickats till Försäkringskassan under de senaste 18 månaderna.
 
 | Enbart foljande intyg finns |
-| intygid | personnr | signeringstid | skickattidpunkt | enhet | intygformat |
+| intygid | personnr | signeringstid | signeringstid | enhet | intygformat |
 | 1001 | 19790219-9285 | 2015-02-10T12:24:15 | 2015-02-10T12:24:30 | enhet1 | LISJP |
 | 1002 | 19790429-9272 | 2015-03-10T12:25:15 | 2015-03-10T12:25:30 | enhet2 | LISJP |
 | 1003 | 19790429-9282 | 2015-04-10T12:25:15 | 2015-04-10T12:25:30 | enhet1 | LISJP |
@@ -24,7 +23,7 @@ Endast 5 intyg har signerats och skickats till Försäkringskassan under de sena
 Av dessa 5 har 3st fått kompletteringar och 1 har fått ett avstämningsmöte.
 
 | Foljande meddelanden finns |
-| personnr | skickat | intygsid | meddelandeamne |
+| personnr | skickat | intygsid | ämne |
 | 19790219-9285 | 2015-03-12T10:00:00 | 1001 | KOMPLT |
 | 19790429-9272 | 2015-04-03T10:00:00 | 1002 | AVSTMN |
 | 19790429-9272 | 2015-05-03T10:00:00 | 1003 | KOMPLT |
@@ -46,16 +45,16 @@ För att se hur statistiken beräknas se: [[At2301KompletteringAndelIntyg][http:
 Inloggad:
 
 | Andel i rapporten komplettering andel intyg landsting |
-| inloggad som | månad | grupp | totalt? | män? | kvinnor? |
-| user3 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
-| user3 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0% | 0% | 0% |
-| user3 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0% | 0% | 0% |
-| user3 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 100% | 0% | 100% |
-| user3 | mar | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
-| user3 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0% | 0% | 0% |
-| user3 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0% | 0% | 0% |
-| user3 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 0% | 0% | 0% |
-| user3 | apr | FK 7800 Läkarutlåtande för sjukersättning | 100% | 100% | 0% |
-| user3 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0% | 0% | 0% |
-| user3 | apr | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0% | 0% | 0% |
-| user3 | apr | FK 7263/7804 Läkarintyg för sjukpenning | 50% | 0% | 100% |
+| inloggad som | år   | månad | grupp                                                                     | kön totalt? | män? | kvinnor? |
+| user3        | 2015 | feb   | FK 7800 Läkarutlåtande för sjukersättning                                 | 0%      | 0%   | 0%       |
+| user3        | 2015 | feb   | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0%      | 0%   | 0%       |
+| user3        | 2015 | feb   | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång     | 0%      | 0%   | 0%       |
+| user3        | 2015 | feb   | FK 7263/7804 Läkarintyg för sjukpenning                                   | 100%    | 0%   | 100%     |
+| user3        | 2015 | mar   | FK 7800 Läkarutlåtande för sjukersättning                                 | 0%      | 0%   | 0%       |
+| user3        | 2015 | mar   | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0%      | 0%   | 0%       |
+| user3        | 2015 | mar   | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång     | 0%      | 0%   | 0%       |
+| user3        | 2015 | mar   | FK 7263/7804 Läkarintyg för sjukpenning                                   | 0%      | 0%   | 0%       |
+| user3        | 2015 | apr   | FK 7800 Läkarutlåtande för sjukersättning                                 | 100%    | 100% | 0%       |
+| user3        | 2015 | apr   | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0%      | 0%   | 0%       |
+| user3        | 2015 | apr   | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång     | 0%      | 0%   | 0%       |
+| user3        | 2015 | apr   | FK 7263/7804 Läkarintyg för sjukpenning                                   | 50%     | 0%   | 100%     |

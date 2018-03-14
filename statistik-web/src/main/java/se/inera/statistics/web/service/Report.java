@@ -36,6 +36,7 @@ public enum Report {
     V_INTYGPERTYP(StatisticsLevel.VERKSAMHET, "IntygPerTyp", "Antal utfärdade intyg fördelat på intygstyp"),
     V_MEDDELANDENTOTALT(StatisticsLevel.VERKSAMHET, "MeddelandenTotalt", "Antal inkomna meddelanden"),
     V_MEDDELANDENPERAMNE(StatisticsLevel.VERKSAMHET, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
+    V_ANDELKOMPLETTERINGAR(StatisticsLevel.VERKSAMHET, "AndelKompletteringar", "Andel intyg som får kompletteringar"),
     V_VARDENHET(StatisticsLevel.VERKSAMHET, "Vardenhet", "Antal sjukfall fördelat på vårdenhet"),
     V_SJUKFALLPERLAKARE(StatisticsLevel.VERKSAMHET, "SjukfallPerLakare", "Antal sjukfall fördelat på läkare"),
     V_DIAGNOSGRUPP(StatisticsLevel.VERKSAMHET, "Diagnosgrupp", "Antal sjukfall fördelat på diagnosgrupp"),
@@ -52,7 +53,8 @@ public enum Report {
             "SjukskrivningslangdMerAn90Dagar", "Antal sjukfall som är längre än 90 dagar"),
     L_SJUKFALLTOTALT(StatisticsLevel.LANDSTING, "SjukfallTotalt", "Antal sjukfall"),
     L_VARDENHET(StatisticsLevel.LANDSTING, "Vardenhet", "Antal sjukfall fördelat på vårdenhet"),
-    L_VARDENHETLISTNINGAR(StatisticsLevel.LANDSTING, "VardenhetListningar", "Antal sjukfall per 1000 listningar fördelat på vårdenhet");
+    L_VARDENHETLISTNINGAR(StatisticsLevel.LANDSTING, "VardenhetListningar", "Antal sjukfall per 1000 listningar fördelat på vårdenhet"),
+    L_ANDELKOMPLETTERINGAR(StatisticsLevel.LANDSTING, "AndelKompletteringar", "Andel intyg som får kompletteringar");
 
     private final StatisticsLevel statisticsLevel;
     private final String shortName; //e.g. used in file name, should therefore not contain spaces

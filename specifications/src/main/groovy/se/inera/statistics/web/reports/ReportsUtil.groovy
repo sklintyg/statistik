@@ -161,6 +161,10 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getAndelKompletteringar", filter, "vgid=" + vgid)
     }
 
+    def getReportAndelKompletteringarLandsting(String vgid, filter) {
+        return get("/api/landsting/getAndelKompletteringarLandsting", filter, "vgid=" + vgid, "landstingfilter")
+    }
+
     def getReportAntalIntygLandsting(String vgid, filter) {
         return get("/api/landsting/getIntygPerTypePerMonthLandsting", filter, "vgid=" + vgid)
     }

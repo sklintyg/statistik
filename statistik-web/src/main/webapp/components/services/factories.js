@@ -375,6 +375,10 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestVerksamhet('getNumberOfCasesPerLakarbefattningSomTidsserie', successCallback, failureCallback);
     };
 
+    factory.getAndelKompletteringarLandsting = function (successCallback, failureCallback) {
+        makeRequestLandsting('getAndelKompletteringarLandsting', successCallback, failureCallback);
+    };
+
     factory.getAndelKompletteringarVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet('getAndelKompletteringar', successCallback, failureCallback);
     };

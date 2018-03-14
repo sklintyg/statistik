@@ -309,6 +309,11 @@
                 link: '#/landsting/intygPerTyp',
                 name: 'nav.intygpertyp',
                 ctrl: 'LandstingIntygPerTypCtrl'
+            }, {
+                id: 'navLandstingAndelKompletteringarLink',
+                link: '#/landsting/andelkompletteringar',
+                name: 'nav.andelkompletteringar',
+                ctrl: 'LandstingAndelKompletteringarCtrl'
             }]
         };
 

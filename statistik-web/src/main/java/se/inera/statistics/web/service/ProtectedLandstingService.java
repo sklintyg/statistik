@@ -71,12 +71,7 @@ import se.inera.statistics.web.service.landsting.LandstingFileGenerationExceptio
 import se.inera.statistics.web.service.landsting.LandstingFileReader;
 import se.inera.statistics.web.service.landsting.LandstingFileWriter;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
-import se.inera.statistics.web.service.responseconverter.GroupedSjukfallWithLandstingSortingConverter;
-import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
-import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetTvarsnittConverter;
-import se.inera.statistics.web.service.responseconverter.PeriodConverter;
-import se.inera.statistics.web.service.responseconverter.SimpleMultiDualSexConverter;
-import se.inera.statistics.web.service.responseconverter.SjukfallPerPatientsPerEnhetConverter;
+import se.inera.statistics.web.service.responseconverter.*;
 
 /**
  * Statistics services that requires authorization to use. Unless otherwise noted, the data returned
@@ -378,6 +373,23 @@ public class ProtectedLandstingService {
         final DualSexStatisticsData result = new SimpleMultiDualSexConverter("Antal intyg totalt").convert(intygPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_INTYGPERTYP, getLastLandstingUpdateDate(vg));
     }
+
+    @GET
+    @Path("getAndelKompletteringarLandsting")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    public Response getAndelKompletteringarLandsting(@Context HttpServletRequest request,
+                                                     @QueryParam("landstingfilter") String filterHash,
+                                                     @QueryParam("format") String format) {
+        final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
+        KonDataResponse casesPerMonth = warehouse.getAndelKompletteringarLandsting(filterSettings);
+        DualSexStatisticsData result = new AndelKompletteringarConverter().convert(casesPerMonth, filterSettings);
+        return getResponse(result, format, request, Report.L_ANDELKOMPLETTERINGAR, getLastLandstingUpdateDate(vg));
+    }
+
 
     @GET
     @Path("landstingFilterInfo")

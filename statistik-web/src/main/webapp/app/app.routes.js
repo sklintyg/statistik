@@ -408,6 +408,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'LandstingIntygPerTypCtrl',
                 resolve: { config: app.intygPerTypePerMonthLandstingConfig },
                 title: 'title.intygstyp'
+            }).when('/landsting/andelkompletteringar', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'doubleAreaChartsCtrl',
+                controllerAs: 'LandstingAndelKompletteringarCtrl',
+                resolve: { config: app.andelKompletteringarLandstingConfig },
+                title: 'nav.andelkompletteringar'
             }).when('/landsting/om', {
                 templateUrl: '/app/views/landsting/aboutlandsting.html',
                 controllerAs: 'LandstingAboutCtrl',

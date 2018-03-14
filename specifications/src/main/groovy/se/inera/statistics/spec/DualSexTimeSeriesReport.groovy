@@ -202,4 +202,11 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         return new RuntimeException("Report -Andel kompletteringar- is not YET available on national level");
     }
 
+    def getReportAndelKompletteringarLandsting() {
+        if (inloggad) {
+            return reportsUtil.getReportAndelKompletteringarLandsting(vg, filter);
+        }
+        return new RuntimeException("Report -Andel kompletteringar landsting- is not available on national level");
+    }
+
 }

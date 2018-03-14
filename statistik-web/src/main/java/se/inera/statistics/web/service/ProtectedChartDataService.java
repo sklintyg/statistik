@@ -349,7 +349,7 @@ public class ProtectedChartDataService {
         KonDataResponse casesPerMonth = warehouse.getAndelKompletteringar(filterSettings.getFilter(),
                 filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData result = new AndelKompletteringarConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
+        return getResponse(result, format, request, Report.V_ANDELKOMPLETTERINGAR);
     }
 
     @GET
@@ -366,7 +366,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse casesPerMonth = warehouse.getAndelKompletteringarTvarsnitt(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = AndelKompletteringarTvarsnittConverter.newTvarsnitt().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
+        return getResponse(result, format, request, Report.V_ANDELKOMPLETTERINGAR);
     }
 
     /**
