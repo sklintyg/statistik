@@ -31,7 +31,7 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         def index = report.maleChart.categories.findIndexOf { item -> item.name == getKategoriName() }
         markerad = index < 0 ? null : report.maleChart.categories[index].marked
         def male = report.maleChart.series.find { item ->
-            println("item" + item + " : grupp: " + grupp)
+            println("Chart - item" + item + " : grupp: " + grupp + " : index: " + index)
             item.name.contains(grupp)
         }
         män = index < 0 || male == null ? -1 : male.data[index]
@@ -197,9 +197,9 @@ abstract class DualSexTimeSeriesReport extends Rapport {
 
     def getReportAndelKompletteringar() {
         if (inloggad) {
-            return reportsUtil.getReportAndelKompletteringar(vg, filter);
+            return reportsUtil.getReportAndelKompletteringarInloggad(vg, filter);
         }
-        return new RuntimeException("Report -Andel kompletteringar- is not YET available on national level");
+        return reportsUtil.getReportAndelKompletteringar();
     }
 
     def getReportAndelKompletteringarLandsting() {

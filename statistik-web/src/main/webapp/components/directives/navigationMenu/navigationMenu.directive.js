@@ -120,6 +120,11 @@
                 link: '#/nationell/intygPerTyp',
                 name: 'nav.intygpertyp',
                 ctrl: 'NationalIntygPerTypCtrl'
+            }, {
+                id: 'navNationalAndelKompletteringarLink',
+                link: '#/nationell/andelkompletteringar',
+                name: 'nav.andelkompletteringar',
+                ctrl: 'NationalAndelKompletteringarCtrl'
             }]
         };
 

@@ -11,6 +11,8 @@ Alla intyg har skickats vidare till Försäkringskassan.
 !3 Givet att:
 | script | dagens datum | 2015-11-06 |
 
+| script | troskel varde | 1 |
+
 Endast 5 intyg har signerats och skickats till Försäkringskassan under de senaste 18 månaderna.
 
 | Enbart foljande intyg finns |
@@ -42,7 +44,7 @@ Var ett intyg och dess komplettering hamnar baseras på intygets signeringstidpu
 Nationell:
 
 | Andel i rapporten komplettering andel intyg |
-| år   | månad | grupp | totalt? | män? | kvinnor? |
+| år   | månad | grupp | kön totalt? | män? | kvinnor? |
 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0% | 0% | 0% |
 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0% | 0% | 0% |

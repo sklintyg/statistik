@@ -45,6 +45,7 @@ public class NationellDataResult {
     private SimpleDetailsData konsfordelningPerLan;
     private DualSexStatisticsData meddelandenPerAmne;
     private TableDataReport intygPerTyp;
+    private TableDataReport andelKompletteringar;
 
     SimpleDetailsData getNumberOfCasesPerMonth() {
         return numberOfCasesPerMonth;
@@ -133,4 +134,13 @@ public class NationellDataResult {
     public void setIntygPerTyp(TableDataReport intygPerTyp) {
         this.intygPerTyp = intygPerTyp;
     }
+
+    public TableDataReport getAndelKompletteringar() {
+        return andelKompletteringar;
+    }
+
+    public void setAndelKompletteringar(TableDataReport andelKompletteringar) {
+        this.andelKompletteringar = andelKompletteringar;
+    }
+
 }

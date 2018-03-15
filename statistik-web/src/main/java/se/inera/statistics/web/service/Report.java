@@ -31,6 +31,7 @@ public enum Report {
     N_LANANDELSJUKFALLPERKON(StatisticsLevel.NATIONELL, "LanAndelSjukfallPerKon", "Könsfördelning per län"),
     N_MEDDELANDENPERAMNE(StatisticsLevel.NATIONELL, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
     N_INTYGPERTYP(StatisticsLevel.NATIONELL, "IntygPerTyp", "Antal utfärdade intyg fördelat på intygstyp"),
+    N_ANDELKOMPLETTERINGAR(StatisticsLevel.NATIONELL, "AndelKompletteringar", "Andel intyg som får kompletteringar"),
     V_SJUKFALLTOTALT(StatisticsLevel.VERKSAMHET, "SjukfallTotalt", "Antal sjukfall"),
     V_INTYGPERMANAD(StatisticsLevel.VERKSAMHET, "IntygPerManad", "Antal intyg"),
     V_INTYGPERTYP(StatisticsLevel.VERKSAMHET, "IntygPerTyp", "Antal utfärdade intyg fördelat på intygstyp"),

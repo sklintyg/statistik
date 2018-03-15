@@ -164,7 +164,7 @@ public class WarehouseService {
     }
 
     public KonDataResponse getAndelKompletteringar(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
-        return messagesQuery.getAndelKompletteringar(getMeddelandeFilter(vardgivarId, filter, range));
+        return messagesQuery.getAndelKompletteringar(getMeddelandeFilter(vardgivarId, filter, range), 0);
     }
 
     public KonDataResponse getAndelKompletteringarLandsting(FilterSettings filterSettings) {

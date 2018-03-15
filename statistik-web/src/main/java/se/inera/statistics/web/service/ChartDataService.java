@@ -18,12 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.time.Clock;
@@ -334,6 +329,15 @@ public class ChartDataService {
         LOG.info("Calling getIntygPerTyp for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getIntygPerTyp");
         return getResponse(getNationellDataResult().getIntygPerTyp(), format, Report.N_INTYGPERTYP);
+    }
+
+    @GET
+    @Path("getAndelKompletteringar")
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response getAndelKompletteringar(@QueryParam("format") String format) {
+        LOG.info("Calling getAndelKompletteringar for national");
+        monitoringLogService.logTrackAccessAnonymousChartData("getAndelKompletteringar");
+        return getResponse(getNationellDataResult().getAndelKompletteringar(), format, Report.N_ANDELKOMPLETTERINGAR);
     }
 
     @GET

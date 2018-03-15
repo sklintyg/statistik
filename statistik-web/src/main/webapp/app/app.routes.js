@@ -100,6 +100,12 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'NationalMeddelandenPerAmneCtrl',
                 resolve: { config: app.meddelandenPerAmneConfig },
                 title: 'nav.meddelandenperamne'
+            }).when('/nationell/andelkompletteringar', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'doubleAreaChartsCtrl',
+                controllerAs: 'NationalAndelKompletteringarCtrl',
+                resolve: { config: app.andelKompletteringarConfig },
+                title: 'nav.andelkompletteringar'
             }).when('/nationell/intygPerTyp', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',

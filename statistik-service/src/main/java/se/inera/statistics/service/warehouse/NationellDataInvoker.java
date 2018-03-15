@@ -106,12 +106,27 @@ public class NationellDataInvoker {
     }
 
     private void calculateMeddelandenPerVg(HsaIdVardgivare vardgivareId, NationellDataInfo result) {
+        calculateMsgPerAmne(vardgivareId, result);
+        calulateAndelIntyg(vardgivareId, result);
+    }
+
+    private void calculateMsgPerAmne(HsaIdVardgivare vardgivareId, NationellDataInfo result) {
         final Range range = result.getMeddelandenPerAmneRange();
         final MessagesFilter messagesFilter = new MessagesFilter(vardgivareId, range.getFrom(),
                 range.getNumberOfMonths(), null, null, null, null);
         final KonDataResponse meddelandenPerAmne = result.getMeddelandenPerAmneResult();
         final KonDataResponse resp = messagesQuery.getMeddelandenPerAmneAggregated(meddelandenPerAmne, messagesFilter, cutoff);
         result.setMeddelandenPerAmneResult(resp);
+    }
+
+    private void calulateAndelIntyg(HsaIdVardgivare vardgivareId, NationellDataInfo result) {
+        final Range range = result.getAndelKompletteringarRange();
+        final LocalDate from = range.getFrom();
+        final int numberOfMonths = range.getNumberOfMonths();
+        final MessagesFilter messagesFilter = new MessagesFilter(vardgivareId, from, numberOfMonths, null, null, null, null);
+        final KonDataResponse konDataResponse = result.getAndelKompletteringarResult();
+        final KonDataResponse response = messagesQuery.getAndelKompletteringarAggregated(konDataResponse, messagesFilter, cutoff);
+        result.setAndelKompletteringarResult(response);
     }
 
     private void calculateIntygPerVg(HsaIdVardgivare vardgivareId, NationellDataInfo result) {
@@ -207,6 +222,7 @@ public class NationellDataInvoker {
         result.setOverviewRange(quarterRange);
         result.setMeddelandenPerAmneRange(longRange);
         result.setIntygPerTypeRange(longRange);
+        result.setAndelKompletteringarRange(longRange);
     }
 
     private NationellDataInfo populateResults(NationellDataInfo result, NationellDataHolder data) {
@@ -271,6 +287,10 @@ public class NationellDataInvoker {
 
         if (result.getIntygPerTypResult() == null) {
             result.setIntygPerTypResult(new KonDataResponse(new ArrayList<>(), new ArrayList<>()));
+        }
+
+        if (result.getAndelKompletteringarResult() == null) {
+            result.setAndelKompletteringarResult(new KonDataResponse(new ArrayList<>(), new ArrayList<>()));
         }
 
         return result;

@@ -157,7 +157,11 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getIntygPerTypePerMonth", filter, "vgid=" + vgid)
     }
 
-    def getReportAndelKompletteringar(String vgid, filter) {
+    def getReportAndelKompletteringar() {
+        return get("/api/getAndelKompletteringar")
+    }
+
+    def getReportAndelKompletteringarInloggad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getAndelKompletteringar", filter, "vgid=" + vgid)
     }
 

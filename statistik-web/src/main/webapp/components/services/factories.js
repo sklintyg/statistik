@@ -379,6 +379,10 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestLandsting('getAndelKompletteringarLandsting', successCallback, failureCallback);
     };
 
+    factory.getAndelKompletteringarNational = function (successCallback, failureCallback) {
+        makeRequestNational('getAndelKompletteringar', successCallback, failureCallback);
+    };
+
     factory.getAndelKompletteringarVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet('getAndelKompletteringar', successCallback, failureCallback);
     };

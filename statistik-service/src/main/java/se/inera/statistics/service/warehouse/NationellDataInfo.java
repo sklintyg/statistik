@@ -68,6 +68,8 @@ public class NationellDataInfo {
     private KonDataResponse meddelandenPerAmneResult;
     private KonDataResponse intygPerTypResult;
     private Range intygPerTypeRange;
+    private KonDataResponse andelKompletteringarResult;
+    private Range andelKompletteringarRange;
 
     public SimpleKonResponse getAntalIntygResult() {
         return antalIntygResult;
@@ -340,4 +342,21 @@ public class NationellDataInfo {
     public void setIntygPerTypeRange(Range intygPerTypeRange) {
         this.intygPerTypeRange = intygPerTypeRange;
     }
+
+    public KonDataResponse getAndelKompletteringarResult() {
+        return andelKompletteringarResult;
+    }
+
+    public void setAndelKompletteringarResult(KonDataResponse andelKompletteringarResult) {
+        this.andelKompletteringarResult = andelKompletteringarResult;
+    }
+
+    public Range getAndelKompletteringarRange() {
+        return andelKompletteringarRange;
+    }
+
+    public void setAndelKompletteringarRange(Range andelKompletteringarRange) {
+        this.andelKompletteringarRange = andelKompletteringarRange;
+    }
+
 }

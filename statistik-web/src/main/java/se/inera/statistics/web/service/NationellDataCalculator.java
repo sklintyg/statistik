@@ -44,6 +44,7 @@ import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.overview.OverviewData;
+import se.inera.statistics.web.service.responseconverter.AndelKompletteringarConverter;
 import se.inera.statistics.web.service.responseconverter.CasesPerCountyConverter;
 import se.inera.statistics.web.service.responseconverter.DegreeOfSickLeaveConverter;
 import se.inera.statistics.web.service.responseconverter.DiagnosisGroupsConverter;
@@ -89,6 +90,7 @@ public class NationellDataCalculator {
         result.setOverview(buildOverview(data));
         result.setMeddelandenPerAmne(buildNumberOfMeddelandenPerAmne(data));
         result.setIntygPerTyp(buildIntygPerTyp(data));
+        result.setAndelKompletteringar(buildAndelKompletteringar(data));
         return result;
     }
 
@@ -165,6 +167,13 @@ public class NationellDataCalculator {
         final Range range = data.getIntygPerTypeRange();
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
         return new SimpleMultiDualSexConverter("Antal intyg totalt").convert(intygPerTyp, filterSettings);
+    }
+
+    private TableDataReport buildAndelKompletteringar(NationellDataInfo data) {
+        final KonDataResponse andelKompletteringar = data.getAndelKompletteringarResult();
+        final Range range = data.getAndelKompletteringarRange();
+        final FilterSettings filterSettings = new FilterSettings(Filter.empty(), range);
+        return new AndelKompletteringarConverter().convert(andelKompletteringar, filterSettings);
     }
 
 }

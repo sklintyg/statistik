@@ -92,14 +92,14 @@ public class MessagesQuery {
         return convertToSimpleResponseTvarsnittPerAmne(rows);
     }
 
-    public KonDataResponse getAndelKompletteringar(MessagesFilter filter) {
+    public KonDataResponse getAndelKompletteringar(MessagesFilter filter, int cutoff) {
         final MessagesFilter extendedFilter = new MessagesFilter(filter, Collections.singleton(MsgAmne.KOMPLT.name()));
         List<CountDTOAmne> rows = messageWidelineLoader.getKompletteringarPerIntyg(extendedFilter);
-        return convertToAndelKompletteringar(rows, filter.getFrom(), filter.getNumberOfMonths());
+        return convertToAndelKompletteringar(rows, filter.getFrom(), filter.getNumberOfMonths(), cutoff);
     }
 
     public KonDataResponse getAndelKompletteringarAggregated(KonDataResponse resultToAggregateIn, MessagesFilter filter, int cutoff) {
-        final KonDataResponse andelKompletteringar = getAndelKompletteringar(filter);
+        final KonDataResponse andelKompletteringar = getAndelKompletteringar(filter, cutoff);
         return getKonDataResponseAggregated(resultToAggregateIn, filter, cutoff, andelKompletteringar);
     }
 
@@ -231,7 +231,7 @@ public class MessagesQuery {
         return new SimpleKonResponse(result);
     }
 
-    private KonDataResponse convertToAndelKompletteringar(List<CountDTOAmne> rows, LocalDate start, int perioder) {
+    private KonDataResponse convertToAndelKompletteringar(List<CountDTOAmne> rows, LocalDate start, int perioder, int cutoff) {
         List<KonDataRow> result = new ArrayList<>();
         Map<LocalDate, List<CountDTOAmne>> map;
         if (rows != null) {
@@ -271,10 +271,18 @@ public class MessagesQuery {
             final ArrayList<KonField> data = new ArrayList<>();
             for (int j = 0; j < seriesLength; j++) {
                 if (intygTypes[j].isIncludeInIntygtypFilter()) {
-                    int f = femaleIntyg[j] == 0 ? 0 : percentConvertion * femaleKompl[j] / femaleIntyg[j];
-                    int m = maleIntyg[j] == 0 ? 0 : percentConvertion * maleKompl[j] / maleIntyg[j];
-                    final int part = femaleKompl[j] + maleKompl[j];
-                    final int whole = femaleIntyg[j] + maleIntyg[j];
+                    boolean includeFemale = femaleKompl[j] >= cutoff;
+                    final int femaleKomplJ = includeFemale ? femaleKompl[j] : 0;
+                    final int femaleIntygJ = includeFemale ? femaleIntyg[j] : 0;
+                    int f = femaleIntygJ == 0 ? 0 : percentConvertion * femaleKomplJ / femaleIntygJ;
+
+                    boolean includeMale = maleKompl[j] >= cutoff;
+                    final int maleKomplJ = includeMale ? maleKompl[j] : 0;
+                    final int maleIntygJ = includeMale ? maleIntyg[j] : 0;
+                    int m = maleIntygJ == 0 ? 0 : percentConvertion * maleKomplJ / maleIntygJ;
+
+                    final int part = femaleKomplJ + maleKomplJ;
+                    final int whole = femaleIntygJ + maleIntygJ;
                     data.add(new KonField(f, m, new AndelExtras(part, whole)));
                 }
             }
