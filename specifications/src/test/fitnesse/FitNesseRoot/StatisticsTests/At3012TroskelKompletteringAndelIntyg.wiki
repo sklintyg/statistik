@@ -46,5 +46,5 @@ Nationell:
 
 | Andel i rapporten komplettering andel intyg |
 | år   | månad | grupp                                     | kön totalt? | män? | kvinnor? |
-| 2013 | feb   | FK 7263/7804 Läkarintyg för sjukpenning   | 100%         | 0%   | 100%     |
+| 2013 | feb   | FK 7263/7804 Läkarintyg för sjukpenning   | 100%        | 0%   | 100%     |
 | 2013 | feb   | FK 7800 Läkarutlåtande för sjukersättning | 0%          | 0%   | 0%       |
