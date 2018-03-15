@@ -10,19 +10,19 @@ Test
 | script | troskel varde | 5 |
 
 | Enbart foljande intyg finns |
-| intygid | personnr | diagnoskod | signeringstid | signeringstid | intygformat | enhet |
-| 1001 | 19790219-9285 | A40 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LISJP | enhet1 |
-| 1002 | 19790429-9281 | A41 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LISJP | enhet1 |
-| 1003 | 19790709-9282 | A40 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LISJP | enhet1 |
-| 1004 | 19790717-9181 | A41 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LISJP | enhet1 |
-| 1005 | 19790808-9284 | A40 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LISJP | enhet1 |
-| 1006 | 19790316-9211 | A40 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LISJP | enhet1 |
-| 1007 | 19790918-9230 | A00 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LISJP | enhet3 |
-| 1008 | 19791020-9290 | A41 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LUSE | enhet3 |
-| 1009 | 19791110-9291 | A41 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LUSE | enhet3 |
-| 1010 | 19791110-9010 | A41 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LUSE | enhet3 |
-| 1011 | 19791110-9030 | A41 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LUSE | enhet3 |
-| 1012 | 19791110-9030 | A41 | 2013-02-01T10:00:00 | 2013-02-01T10:00:00 | LUSE | enhet3 |
+| intygid | personnr      | diagnoskod | signeringstid       | intygformat | enhet  |
+| 1001    | 19790219-9285 | A40        | 2013-02-01T10:00:00 | LISJP       | enhet1 |
+| 1002    | 19790429-9281 | A41        | 2013-02-01T10:00:00 | LISJP       | enhet1 |
+| 1003    | 19790709-9282 | A40        | 2013-02-01T10:00:00 | LISJP       | enhet1 |
+| 1004    | 19790717-9181 | A41        | 2013-02-01T10:00:00 | LISJP       | enhet1 |
+| 1005    | 19790808-9284 | A40        | 2013-02-01T10:00:00 | LISJP       | enhet1 |
+| 1006    | 19790316-9211 | A40        | 2013-02-01T10:00:00 | LISJP       | enhet1 |
+| 1007    | 19790918-9230 | A00        | 2013-02-01T10:00:00 | LISJP       | enhet3 |
+| 1008    | 19791020-9290 | A41        | 2013-02-01T10:00:00 | LUSE        | enhet3 |
+| 1009    | 19791110-9291 | A41        | 2013-02-01T10:00:00 | LUSE        | enhet3 |
+| 1010    | 19791110-9010 | A41        | 2013-02-01T10:00:00 | LUSE        | enhet3 |
+| 1011    | 19791110-9030 | A41        | 2013-02-01T10:00:00 | LUSE        | enhet3 |
+| 1012    | 19791110-9030 | A41        | 2013-02-01T10:00:00 | LUSE        | enhet3 |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
@@ -45,6 +45,6 @@ För vg2 räknar man inte in något intyg alls då kriterierna inte uppfylls.
 Nationell:
 
 | Andel i rapporten komplettering andel intyg |
-| år | månad | grupp | totalt | män? | kvinnor? |
-| 2014 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 100% | 0% | 100% |
-| 2014 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
+| år   | månad | grupp                                     | kön totalt? | män? | kvinnor? |
+| 2013 | feb   | FK 7263/7804 Läkarintyg för sjukpenning   | 100%         | 0%   | 100%     |
+| 2013 | feb   | FK 7800 Läkarutlåtande för sjukersättning | 0%          | 0%   | 0%       |
