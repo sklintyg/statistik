@@ -26,19 +26,19 @@ Test
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
-| 19790219-9285 | 2013-02-01T10:00:00   | 1001 | KOMPLT |
-| 19790429-9281 | 2013-02-01T10:00:00   | 1002 | KOMPLT |
-| 19790709-9282 | 2013-02-01T10:00:00   | 1003 | KOMPLT |
-| 19790717-9181 | 2013-02-01T10:00:00   | 1004 | KOMPLT |
-| 19790808-9284 | 2013-02-01T10:00:00   | 1005 | KOMPLT |
-| 19791110-9030 | 2013-02-01T10:00:00   | 1011 | KOMPLT |
+| 19790219-9285 | 2013-02-01T10:00:00 | 1001 | KOMPLT |
+| 19790429-9281 | 2013-02-01T10:00:00 | 1002 | KOMPLT |
+| 19790709-9282 | 2013-02-01T10:00:00 | 1003 | KOMPLT |
+| 19790717-9181 | 2013-02-01T10:00:00 | 1004 | KOMPLT |
+| 19790808-9284 | 2013-02-01T10:00:00 | 1005 | KOMPLT |
+| 19791110-9030 | 2013-02-01T10:00:00 | 1011 | KOMPLT |
 
 !3 Då gäller:
 Tröskelvärdet appliceras per vårdgivare, kön, månad och grupp.
 
 Det måste finnas minst 5 intyg med kompletteringar, av en viss intygstyp (grupp), under en viss månad, skrivna till ett visst kön, inom en viss vårdgivare för att det ska räknas med.
 
-För vg1 räknar man in alla intyg på enhet1: då det finns minst 5 intyg, med kompletteringar, skrivna på kvinnor, under februari, inom en vårdgivare.
+För vg1 räknar man in 5 av 6 intyg på enhet1: då det finns minst 5 intyg, med kompletteringar, skrivna på kvinnor, under februari, inom en vårdgivare. Den sjätte är tillhör en man.
 
 För vg2 räknar man inte in något intyg alls då kriterierna inte uppfylls.
 
@@ -46,5 +46,5 @@ Nationell:
 
 | Andel i rapporten komplettering andel intyg |
 | år | månad | grupp | totalt | män? | kvinnor? |
-| 2014 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 83% | 0% | 100% |
+| 2014 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 100% | 0% | 100% |
 | 2014 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
