@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h
@@ -13,20 +12,19 @@ Alla intyg har skickats vidare till Försäkringskassan.
 Endast 5 intyg har signerats och skickats till Försäkringskassan under de senaste 18 månaderna.
 
 | Enbart foljande intyg finns |
-| intygid | personnr | signeringstid | skickattidpunkt | enhet | intygformat |
-| 1001 | 19790219-9285   | 2015-03-10T12:24:15   | 2015-03-10T12:24:15   | enhet1 | LUSE |
-| 1002 | 19690329-9272   | 2015-03-10T12:25:15   | 2015-03-10T12:25:15   | enhet1 | LISJP |
-| 1003 | 19590129-9282   | 2015-04-10T12:25:15   | 2015-04-10T12:25:15   | enhet1 | LUSE |
-| 1004 | 19490112-1212   | 2015-04-10T12:25:15   | 2015-04-10T12:25:15   | enhet1 | LISJP |
-| 1005 | 19890112-1212   | 2015-04-20T12:25:15   | 2015-04-20T12:25:15   | enhet1 | LUSE |
+| intygid | personnr      | signeringstid       | enhet  | intygformat |
+| 1001    | 19790219-9285 | 2015-03-10T12:24:15 | enhet1 | LUSE        |
+| 1002    | 19690329-9272 | 2015-03-10T12:25:15 | enhet1 | LISJP       |
+| 1003    | 19590129-9282 | 2015-04-10T12:25:15 | enhet1 | LUSE        |
+| 1004    | 19490112-1212 | 2015-04-10T12:25:15 | enhet1 | LISJP       |
+| 1005    | 19890112-1212 | 2015-04-20T12:25:15 | enhet1 | LUSE        |
 
 | Foljande meddelanden finns |
-| personnr | skickat | intygsid | meddelandeamne |
-| 19790219-9285   | 2015-03-12T10:00:00   | 1001 | KOMPLT |
-| 19690329-9272  | 2015-03-13T10:00:00   | 1002 | KOMPLT |
-| 19590129-9282  | 2015-05-03T10:00:00   | 1003 | KOMPLT |
-| 19490112-1212  | 2015-05-10T10:00:00   | 1004 | KOMPLT!-
--! |
+| personnr      | skickat             | intygsid | ämne   |
+| 19790219-9285 | 2015-03-12T10:00:00 | 1001     | KOMPLT |
+| 19690329-9272 | 2015-03-13T10:00:00 | 1002     | KOMPLT |
+| 19590129-9282 | 2015-05-03T10:00:00 | 1003     | KOMPLT |
+| 19490112-1212 | 2015-05-10T10:00:00 | 1004     | KOMPLT |
 
 !3 Då gäller:
 Denna rapport kollar endast efter vilka intyg som har fått kompletteringar, och struntar alltså i och ett intyg har fått en avstämning.
@@ -38,7 +36,7 @@ För att se hur statistiken beräknas, se [[At2301KompletteringAndelIntyg][htt
 Inloggad:
 
 | Andel i rapporten komplettering andel intyg |
-| inloggad som   | månad | grupp | filter intygstyp | totalt? | män? | kvinnor? |
-| user2 | apr | FK 7800 Läkarutlåtande för sjukersättning  | | 50% | 0% | 100% |
-| user2 | apr | FK 7800 Läkarutlåtande för sjukersättning  | LUSE | 50% | 0% | 100% |
-| user2 | apr | FK 7800 Läkarutlåtande för sjukersättning  | SJUKPENNING | 0% | 0% | 0% |
+| inloggad som | år   | månad | grupp                                     | filter intygstyp | kön totalt? | män? | kvinnor? |
+| user2        | 2015 | apr   | FK 7800 Läkarutlåtande för sjukersättning |                  | 50%     | 0%   | 100%     |
+| user2        | 2015 | apr   | FK 7800 Läkarutlåtande för sjukersättning | LUSE             | 50%     | 0%   | 100%     |
+| user2        | 2015 | apr   | FK 7800 Läkarutlåtande för sjukersättning | SJUKPENNING      | 0%      | 0%   | 0%       |

@@ -1,6 +1,5 @@
 ---
 Help: Kan tas med när rapporten Komplettering, Andel intyg har implementerats
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h
@@ -12,16 +11,16 @@ Det finns tre sjukfall med olika start- och sluttider.
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| intygid | personnr | signeringstid | intygformat |
-| 1001 | 19890425-2387 | 2014-01-01T10:00:00 | LISJP |
-| 1002 | 19790429-9281 | 2014-07-01T10:00:00 | LISJP |
-| 1003 | 19670927-2691 | 2014-10-01T10:00:00 | LISJP |
+| intygid | personnr      | enhet  | signeringstid       | intygformat |
+| 1001    | 19890425-2387 | enhet1 | 2014-01-01T10:00:00 | LISJP       |
+| 1002    | 19790429-9281 | enhet1 | 2014-07-01T10:00:00 | LISJP       |
+| 1003    | 19670927-2691 | enhet1 | 2014-10-01T10:00:00 | LISJP       |
 
-!(| Foljande meddelanden finns |
+| Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
 | 19890425-2387 | 2014-02-01T10:00:00 | 1001 | KOMPLT |
 | 19790429-9281 | 2014-08-01T10:00:00 | 1002 | KOMPLT |
-| 19670927-2691 | 2014-11-01T10:00:00 | 1003 | KOMPLT |)!
+| 19670927-2691 | 2014-11-01T10:00:00 | 1003 | KOMPLT |
 
 !3 Då gäller:
 Inloggad:
@@ -31,7 +30,7 @@ För att se hur statistiken beräknas se: [[At2301KompletteringAndelIntyg][http:
 Tidsintervall filtret går på när intyget är signerat.
 
 | Andel i rapporten komplettering andel intyg |
-| inloggad som | år | månad | grupp | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
+| inloggad som | år | månad | grupp | filter startdatum | filter slutdatum | kön totalt? | män? | kvinnor? |
 | user2 | 2014 | jul | FK 7263/7804 Läkarintyg för sjukpenning | 2014-08-01 | 2014-11-30 | -1 | -1 | -1 |
 | user2 | 2014 | jul | FK 7800 Läkarutlåtande för sjukersättning | 2014-08-01 | 2014-11-30 | -1 | -1 | -1 |
 | user2 | 2014 | aug | FK 7263/7804 Läkarintyg för sjukpenning | 2014-08-01 | 2014-11-30 | 0% | 0% | 0% |
