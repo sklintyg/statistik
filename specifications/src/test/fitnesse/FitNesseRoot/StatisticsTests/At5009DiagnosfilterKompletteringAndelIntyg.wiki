@@ -1,9 +1,8 @@
 ---
-Help: Kan tas med när komplettering, andel intyg har implementerats
-Prune
 Test
 ---
-!contents -R2 -g -p -f -h
+''!contents -R2 -g -p -f -h''
+
 Det finns ett antal intyg med ett antal tillhörande meddelanden.
 
 Alla intyg har skickats vidare till Försäkringskassan.
@@ -29,8 +28,6 @@ Endast 5 intyg har signerats och skickats till Försäkringskassan under de sena
 | 19791212-1212 | 2015-05-10T10:00:00 | 1004 | KOMPLT |
 
 !3 Då gäller:
-Denna rapport kollar endast efter vilka intyg som har fått kompletteringar, och struntar alltså i och ett intyg har fått en avstämning.
-
 Var ett intyg hamnar i tidsserien är beroende av när intyget signerades.
 
 För att se hur statistiken beräknas, se [[At2301KompletteringAndelIntyg][http://localhost:9125/StatisticsTests.At2301KompletteringAndelIntyg]]
@@ -39,11 +36,11 @@ Inloggad:
 
 | Andel i rapporten komplettering andel intyg |
 | inloggad som | år | månad | grupp | filter kapitel | filter avsnitt | filter kategorier | kön totalt? | män? | kvinnor? |
-| user2 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | | | | 100% | 100% | 0% |
-| user2 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | G00-G99 | | | 100% | 100% | 0% |
+| user2 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | | | | 100% | 100% | 100% |
+| user2 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | G00-G99 | | | 100% | 0% | 100% |
 | user2 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | | G90-G99 | | 0% | 0% | 0% |
-| user2 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | | | G01 | 100% | 100% | 0% |
-| user2 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | | | | 66% | 50% | 0% |
+| user2 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | | | G01 | 100% | 0% | 100% |
+| user2 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | | | | 66% | 50% | 100% |
 | user2 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | G00-G99 | | | 0% | 0% | 0% |
 | user2 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | | G90-G99 | | 0% | 0% | 0% |
 | user2 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | | | A41 | 100% | 100% | 100% |

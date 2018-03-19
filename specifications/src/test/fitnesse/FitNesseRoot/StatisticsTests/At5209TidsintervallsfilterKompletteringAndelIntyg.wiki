@@ -1,8 +1,6 @@
 ---
-Help: Kan tas med när rapporten Komplettering, Andel intyg har implementerats
 Test
 ---
-!contents -R2 -g -p -f -h
 !3 Givet att:
 Det finns tre sjukfall med olika start- och sluttider.
 
@@ -11,10 +9,10 @@ Det finns tre sjukfall med olika start- och sluttider.
 | script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
-| intygid | personnr      | enhet  | signeringstid       | intygformat |
-| 1001    | 19890425-2387 | enhet1 | 2014-01-01T10:00:00 | LISJP       |
-| 1002    | 19790429-9281 | enhet1 | 2014-07-01T10:00:00 | LISJP       |
-| 1003    | 19670927-2691 | enhet1 | 2014-10-01T10:00:00 | LISJP       |
+| intygid | personnr | enhet | signeringstid | intygformat |
+| 1001 | 19890425-2387 | enhet1 | 2014-01-01T10:00:00 | LISJP |
+| 1002 | 19790429-9281 | enhet1 | 2014-07-01T10:00:00 | LISJP |
+| 1003 | 19670927-2691 | enhet1 | 2014-10-01T10:00:00 | LISJP |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |

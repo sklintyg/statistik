@@ -1,9 +1,6 @@
 ---
-Help: Kan tas med när rapporten Komplettering, Andel intyg har implementerats
-Prune
 Test
 ---
-!contents -R2 -g -p -f -h
 Det finns ett antal intyg med ett antal tillhörande meddelanden.
 
 Alla intyg har skickats vidare till Försäkringskassan.
@@ -14,12 +11,12 @@ Alla intyg har skickats vidare till Försäkringskassan.
 Endast 5 intyg har signerats och skickats till Försäkringskassan under de senaste 18 månaderna.
 
 | Enbart foljande intyg finns |
-| intygid | personnr      | signeringstid       | enhet  | intygformat |
-| 1001    | 19790219-9285 | 2015-03-10T12:24:15 | enhet1 | LUSE        |
-| 1002    | 19790429-9272 | 2015-03-10T12:25:15 | enhet1 | LUSE        |
-| 1003    | 19790429-9282 | 2015-04-10T12:25:15 | enhet2 | LUAE_NA     |
-| 1004    | 19791212-1212 | 2015-04-10T12:25:15 | enhet2 | LUSE        |
-| 1005    | 19791212-1212 | 2015-04-20T12:25:15 | enhet1 | LUAE_NA     |
+| intygid | personnr | signeringstid | enhet | intygformat |
+| 1001 | 19790219-9285 | 2015-03-10T12:24:15 | enhet1 | LUSE |
+| 1002 | 19790429-9272 | 2015-03-10T12:25:15 | enhet1 | LUSE |
+| 1003 | 19790429-9282 | 2015-04-10T12:25:15 | enhet2 | LUAE_NA |
+| 1004 | 19791212-1212 | 2015-04-10T12:25:15 | enhet2 | LUSE |
+| 1005 | 19791212-1212 | 2015-04-20T12:25:15 | enhet1 | LUAE_NA |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
@@ -38,16 +35,16 @@ För att se hur statistiken beräknas, se [[At2301KompletteringAndelIntyg][http:
 Inloggad:
 
 | Andel i rapporten komplettering andel intyg |
-| inloggad som | år   | månad | grupp | filter enheter | allaEnhetsfilterValda? | enhetsfilterlista? | kön totalt? | män? | kvinnor? |
-| user2        | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | | true | [enhet1, enhet2] | 50% | 100% | 0% |
-| user2        | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 50% | 100% | 0% |
-| user2        | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | enhet2 | false | [enhet2] | 0% | 0% | 0% |
-| user2        | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | | true | [enhet1, enhet2] | 0% | 0% | 0% |
-| user2        | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 0% | 0% | 0% |
-| user2        | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | enhet2 | false | [enhet2] | 0% | 0% | 0% |
-| user2        | 2015 | apr | FK 7800 Läkarutlåtande för sjukersättning | | true | [enhet1, enhet2] | 100% | 100% | 0% |
-| user2        | 2015 | apr | FK 7800 Läkarutlåtande för sjukersättning | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 100% | 100% | 0% |
-| user2        | 2015 | apr | FK 7800 Läkarutlåtande för sjukersättning | enhet2 | false | [enhet2] | 100% | 100% | 0% |
-| user2        | 2015 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | | true | [enhet1, enhet2] | 50% | 0% | 100% |
-| user2        | 2015 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 50% | 0% | 100% |
-| user2        | 2015 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | enhet2 | false | [enhet2] | 100% | 0% | 100% |
+| inloggad som | år | månad | grupp | filter enheter | allaEnhetsfilterValda? | enhetsfilterlista? | kön totalt? | män? | kvinnor? |
+| user2 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | | true | [enhet1, enhet2] | 100% | 100% | 0% |
+| user2 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 100% | 100% | 0% |
+| user2 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | enhet2 | false | [enhet2] | 0% | 0% | 0% |
+| user2 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | | true | [enhet1, enhet2] | 0% | 0% | 0% |
+| user2 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 0% | 0% | 0% |
+| user2 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | enhet2 | false | [enhet2] | 0% | 0% | 0% |
+| user2 | 2015 | apr | FK 7800 Läkarutlåtande för sjukersättning | | true | [enhet1, enhet2] | 100% | 100% | 0% |
+| user2 | 2015 | apr | FK 7800 Läkarutlåtande för sjukersättning | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 100% | 100% | 0% |
+| user2 | 2015 | apr | FK 7800 Läkarutlåtande för sjukersättning | enhet2 | false | [enhet2] | 100% | 100% | 0% |
+| user2 | 2015 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | | true | [enhet1, enhet2] | 50% | 0% | 100% |
+| user2 | 2015 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 50% | 0% | 100% |
+| user2 | 2015 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | enhet2 | false | [enhet2] | 100% | 0% | 100% |

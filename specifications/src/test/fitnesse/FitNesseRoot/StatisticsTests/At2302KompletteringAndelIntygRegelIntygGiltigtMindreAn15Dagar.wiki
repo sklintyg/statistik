@@ -1,16 +1,14 @@
 ---
-Help: Kan tas med när komplettering, andel intyg har implementerats
-Prune
 Test
 ---
-''!contents -R2 -g -p -f -h''
-
 Det finns ett antal intyg med ett antal tillhörande meddelanden.
 
 Alla intyg har skickats vidare till Försäkringskassan.
 
 !3 Givet att:
-| script | dagens datum | 2015-11-14 |
+| script | dagens datum | 2015-12-14 |
+
+| script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
 | intygid | personnr | signeringstid | signeringstid | start | slut | enhet | intygformat |
@@ -36,7 +34,7 @@ För att se hur statistiken beräknas se: [[At2301KompletteringAndelIntyg][http:
 Nationell:
 
 | Andel i rapporten komplettering andel intyg |
-| år | månad | grupp | totalt? | män? | kvinnor? |
+| år | månad | grupp | kön totalt? | män? | kvinnor? |
 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 100% | 0% | 100% |
 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 100% | 100% | 0% |
 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | 100% | 100% | 0% |
@@ -51,7 +49,7 @@ Nationell:
 Inloggad:
 
 | Andel i rapporten komplettering andel intyg |
-| inloggad som | år | månad | grupp | totalt? | män? | kvinnor? |
+| inloggad som | år | månad | grupp | kön totalt? | män? | kvinnor? |
 | user1 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 100% | 0% | 100% |
 | user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 100% | 100% | 0% |
 | user1 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | 100% | 100% | 0% |
