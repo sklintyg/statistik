@@ -2,8 +2,6 @@
 Prune
 Test
 ---
-''!contents -R2 -g -p -f -h''
-
 !3 Givet att:
 Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 

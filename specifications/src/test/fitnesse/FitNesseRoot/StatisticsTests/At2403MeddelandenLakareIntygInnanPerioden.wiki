@@ -2,16 +2,17 @@
 Prune
 Test
 ---
-''!contents -R2 -g -p -f -h''
+Givet att:
 
-!3 Givet att:
 Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 
 Meddelanden tillhör intyg som inget av dem är signerat under 2014
 
 | script | dagens datum | 2014-12-28 |
 
-| script | troskel varde | 1 |
+
+
+| script | troskel varde  | 1 |
 
 | Foljande lakare finns |
 | id | förnamn | efternamn |

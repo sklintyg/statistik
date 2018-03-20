@@ -2,9 +2,8 @@
 Prune
 Test
 ---
-''!contents -R2 -g -p -f -h''
+Givet att:
 
-!3 Givet att:
 | script | dagens datum | 2014-11-28 |
 
 | script | troskel varde | 1 |
