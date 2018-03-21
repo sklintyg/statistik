@@ -210,7 +210,7 @@ public class RegisterCertificateHelper {
         return arbetsnedsattnings;
     }
 
-    public RegisterCertificateType unmarshalRegisterCertificateXml(String data) throws JAXBException {
+    synchronized public RegisterCertificateType unmarshalRegisterCertificateXml(String data) throws JAXBException {
         final StringReader reader = new StringReader(convertToV3(data));
         return (RegisterCertificateType) JAXBIntrospector.getValue(getUnmarshaller().unmarshal(reader));
     }
