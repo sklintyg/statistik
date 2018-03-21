@@ -30,9 +30,11 @@ import se.riv.clinicalprocess.healthcond.certificate.v3.Svar;
 
 import javax.xml.bind.JAXBException;
 import java.time.LocalDate;
+import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 import static se.inera.statistics.service.helper.RegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32;
 import static se.inera.statistics.service.helper.RegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32;
 
@@ -286,4 +288,16 @@ public class RegisterCertificateHelperTest {
         return rch.getPatientData(registerCertificateType);
     }
 
+    @Test
+    public void unmarshalRegisterCertificateXmlHandlesConcurrentCalls() {
+        IntStream.range(1,25).parallel().forEach(value -> {
+            try {
+                registerCertificateHelper.unmarshalRegisterCertificateXml(xmlIntyg);
+            } catch (JAXBException e) {
+                //ok in this test
+            } catch (Exception e) {
+                fail("Unexpected exception: " + e.toString());
+            }
+        });
+    }
 }
