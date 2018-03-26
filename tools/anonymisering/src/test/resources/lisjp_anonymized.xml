@@ -130,10 +130,10 @@
       </p2:delsvar>
     </p2:svar>
     <p2:svar id='37' xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:2'>
-      <p2:delsvar id='37.1'>Överskrider inte FMB</p2:delsvar>
+      <p2:delsvar id='37.1'>xxxxxxxxxxx xxxx xxx</p2:delsvar>
     </p2:svar>
     <p2:svar id='33' xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:2'>
-      <p2:delsvar id='33.1'>xxxx</p2:delsvar>
+      <p2:delsvar id='33.1'>true</p2:delsvar>
       <p2:delsvar id='33.2'>xxx xxxx xxxxx xx xxxxxxxxx</p2:delsvar>
     </p2:svar>
     <p2:svar id='34' xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:2'>

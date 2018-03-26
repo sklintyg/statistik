@@ -104,7 +104,7 @@
       </p2:delsvar>
     </p2:svar>
     <p2:svar id='33' xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:2'>
-      <p2:delsvar id='33.1'>xxxx</p2:delsvar>
+      <p2:delsvar id='33.1'>true</p2:delsvar>
       <p2:delsvar id='33.2'>
         xx xxxxxxxxxx
       </p2:delsvar>

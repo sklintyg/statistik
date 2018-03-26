@@ -88,53 +88,45 @@ class AnonymiseraXml {
     }
 
     private void anonymizeCertificateXml(def intyg, String personId) {
-        anonymizePnrNode intyg.'p1:intyg'.'p2:patient'.'p2:person-id'.'p3:extension' //= personId ?: "anonprn" //anonymiseraPersonId.anonymisera((String) intyg.'p1:intyg'.'p2:patient'.'p2:person-id'.'p3:extension')
-        anonymizeNode intyg.'p1:intyg'.'p2:patient'.'p2:fornamn'
-        anonymizeNode intyg.'p1:intyg'.'p2:patient'.'p2:efternamn'
-        anonymizeNode intyg.'p1:intyg'.'p2:patient'.'p2:postadress'
-        anonymizeNode intyg.'p1:intyg'.'p2:patient'.'p2:postnummer'
-        anonymizeNode intyg.'p1:intyg'.'p2:patient'.'p2:postort'
+        anonymizePnrNode intyg.intyg.patient.'person-id'.extension
+        anonymizeNode intyg.intyg.patient.fornamn
+        anonymizeNode intyg.intyg.patient.efternamn
+        anonymizeNode intyg.intyg.patient.postadress
+        anonymizeNode intyg.intyg.patient.postnummer
+        anonymizeNode intyg.intyg.patient.postort
 
-        anonymizeHsaIdNode intyg.'p1:intyg'.'p2:skapadAv'.'p2:personal-id'.'p3:extension'
-        anonymizeNode intyg.'p1:intyg'.'p2:skapadAv'.'p2:fullstandigtNamn'
-        anonymizeNode intyg.'p1:intyg'.'p2:skapadAv'.'p2:forskrivarkod'
+        anonymizeHsaIdNode intyg.intyg.skapadAv.'personal-id'.extension
+        anonymizeNode intyg.intyg.skapadAv.fullstandigtNamn
+        anonymizeNode intyg.intyg.skapadAv.forskrivarkod
 
-        anonymizeDateNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "1.2" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "1.3" }
-        anonymizeDateNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "2.1" }
-        anonymizeDateNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "4.2" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "4.3" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "5.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "6.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "7.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "8.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "9.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "15.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "16.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "17.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "18.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "19.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "20.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "21.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "22.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "23.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "24.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "25.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "26.2" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "29.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "33.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "33.2" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "35.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "39.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "39.2" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "40.2" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "44.1" }
-        anonymizeNode intyg.'p1:intyg'.'p2:svar'.'p2:delsvar'.find{ it.@id == "45.2" }
+        def allDelsvars = intyg.intyg.svar.delsvar.collect{ it.@id }
+        def dateDelsvars = [ "1.2", "2.1", "4.2"]
+        def delsvarsNotToAnonymize = ["1.1",
+                                      "3.1",
+                                      "4.1",
+                                      "6.2", "6.3", "6.4",
+                                      "26.1",
+                                      "27.1",
+                                      "28.1",
+                                      "32.1", "32.2",
+                                      "33.1",
+                                      "34.1",
+                                      "40.1",
+                                      "45.1"] 
+
+        def delsvarsToAnonymize = allDelsvars.minus(dateDelsvars).minus(delsvarsNotToAnonymize)
+
+        dateDelsvars.each { delsvarid ->
+            anonymizeDateNode intyg.intyg.svar.delsvar.find{ it.@id == delsvarid }
+        }
+        delsvarsToAnonymize.each { delsvarid ->
+            anonymizeNode intyg.intyg.svar.delsvar.find{ it.@id == delsvarid }
+        }
     }
 
     private void anonymizeMessageXml(def message) {
-        anonymizePnrNode message."p1:patientPerson-id"."p2:extension"
-        anonymizeNode message."p1:meddelande"
+        anonymizePnrNode message."patientPerson-id".extension
+        anonymizeNode message.meddelande
     }
 
     private void anonymizeNode(def node) {
