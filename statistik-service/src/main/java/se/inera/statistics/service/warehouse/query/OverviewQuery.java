@@ -34,7 +34,6 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -48,22 +47,16 @@ public class OverviewQuery {
     @Autowired
     private SjukfallUtil sjukfallUtil;
 
-    public VerksamhetOverviewResponse getOverview(Aisle aisle, FilterPredicates filter, LocalDate start, int periodlangd) {
-        Iterator<SjukfallGroup> groupIterator = sjukfallUtil.sjukfallGrupper(start, 2, periodlangd, aisle, filter).iterator();
-        SjukfallGroup previousSjukfall = groupIterator.next();
-        SjukfallGroup currentSjukfall = groupIterator.next();
-
-        Iterator<SjukfallGroup> groupIteratorUsingOriginalSjukfallStart = sjukfallUtil
-                .sjukfallGrupperUsingOriginalSjukfallStart(start, 2, periodlangd, aisle, filter).iterator();
-        SjukfallGroup previousSjukfallUsingOriginalSjukfallStart = groupIteratorUsingOriginalSjukfallStart.next();
-        SjukfallGroup currentSjukfallUsingOriginalSjukfallStart = groupIteratorUsingOriginalSjukfallStart.next();
+    public VerksamhetOverviewResponse getOverview(Aisle aisle, FilterPredicates filter, Range currentPeriod, Range previousPeriod) {
+        SjukfallGroup currentSjukfall = getSjukfallGroup(aisle, filter, currentPeriod);
+        SjukfallGroup previousSjukfall = getSjukfallGroup(aisle, filter, previousPeriod);
 
         OverviewKonsfordelning previousKonsfordelning = getOverviewKonsfordelning(previousSjukfall.getRange(),
                 previousSjukfall.getSjukfall());
         OverviewKonsfordelning currentKonsfordelning = getOverviewKonsfordelning(currentSjukfall.getRange(), currentSjukfall.getSjukfall());
 
-        int currentLongSjukfall = SjukskrivningslangdQuery.getLong(currentSjukfallUsingOriginalSjukfallStart.getSjukfall());
-        int previousLongSjukfall = SjukskrivningslangdQuery.getLong(previousSjukfallUsingOriginalSjukfallStart.getSjukfall());
+        int currentLongSjukfall = SjukskrivningslangdQuery.getLong(currentSjukfall.getSjukfall());
+        int previousLongSjukfall = SjukskrivningslangdQuery.getLong(previousSjukfall.getSjukfall());
 
         List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall.getSjukfall(),
                 previousSjukfall.getSjukfall(), Integer.MAX_VALUE);
@@ -72,11 +65,17 @@ public class OverviewQuery {
         List<OverviewChartRowExtended> sjukskrivningsgrad = SjukskrivningsgradQuery
                 .getOverviewSjukskrivningsgrad(currentSjukfall.getSjukfall(), previousSjukfall.getSjukfall());
         List<OverviewChartRow> sjukskrivningslangd = SjukskrivningslangdQuery
-                .getOverviewSjukskrivningslangd(currentSjukfallUsingOriginalSjukfallStart.getSjukfall(), Integer.MAX_VALUE);
+                .getOverviewSjukskrivningslangd(currentSjukfall.getSjukfall(), Integer.MAX_VALUE);
 
         return new VerksamhetOverviewResponse(currentSjukfall.getSjukfall().size(), currentKonsfordelning, previousKonsfordelning,
                 diagnosgrupper, aldersgrupper, sjukskrivningsgrad, sjukskrivningslangd,
                 currentLongSjukfall, percentChange(currentLongSjukfall, previousLongSjukfall));
+    }
+
+    private SjukfallGroup getSjukfallGroup(Aisle aisle, FilterPredicates filter, Range range) {
+        final LocalDate from = range.getFrom();
+        final int periodLength = range.getNumberOfMonths();
+        return sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(from, 1, periodLength, aisle, filter).iterator().next();
     }
 
     private static int percentChange(int current, int previous) {

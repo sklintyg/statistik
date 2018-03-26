@@ -38,7 +38,6 @@ public class NationellDataInfo {
     private Range sjukskrivningsgradRange;
     private Range sjukfallslangdRange;
     private Range lanRange;
-    private Range langaSjukfallRange;
     private Range overviewRange;
     private Range meddelandenPerAmneRange;
 
@@ -49,8 +48,6 @@ public class NationellDataInfo {
     private KonDataResponse sjukskrivningsgradResult;
     private SimpleKonResponse sjukfallslangdResult;
     private SimpleKonResponse lanResult;
-    private SimpleKonResponse langaSjukfallPreviousResult;
-    private SimpleKonResponse langaSjukfallCurrentResult;
 
     private SimpleKonResponse overviewGenderResult;
     private SimpleKonResponse overviewForandringResult;
@@ -127,22 +124,6 @@ public class NationellDataInfo {
         this.lanResult = lanResult;
     }
 
-    public SimpleKonResponse getLangaSjukfallPreviousResult() {
-        return langaSjukfallPreviousResult;
-    }
-
-    void setLangaSjukfallPreviousResult(SimpleKonResponse langaSjukfallPreviousResult) {
-        this.langaSjukfallPreviousResult = langaSjukfallPreviousResult;
-    }
-
-    public SimpleKonResponse getLangaSjukfallCurrentResult() {
-        return langaSjukfallCurrentResult;
-    }
-
-    void setLangaSjukfallCurrentResult(SimpleKonResponse langaSjukfallCurrentResult) {
-        this.langaSjukfallCurrentResult = langaSjukfallCurrentResult;
-    }
-
     public Range getAntalIntygRange() {
         return antalIntygRange;
     }
@@ -197,14 +178,6 @@ public class NationellDataInfo {
 
     void setLanRange(Range lanRange) {
         this.lanRange = lanRange;
-    }
-
-    Range getLangaSjukfallRange() {
-        return langaSjukfallRange;
-    }
-
-    void setLangaSjukfallRange(Range langaSjukfallRange) {
-        this.langaSjukfallRange = langaSjukfallRange;
     }
 
     void setOverviewRange(Range overviewRange) {

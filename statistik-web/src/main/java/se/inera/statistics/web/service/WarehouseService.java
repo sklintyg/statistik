@@ -91,7 +91,7 @@ public class WarehouseService {
 
     public VerksamhetOverviewResponse getOverview(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         VerksamhetOverviewResponse overview = overviewQuery.getOverview(warehouse.get(vardgivarId), filter,
-                ReportUtil.getPreviousPeriod(range).getFrom(), range.getNumberOfMonths());
+                range, ReportUtil.getPreviousOverviewPeriod(range));
 
         List<OverviewChartRowExtended> diagnosisGroups = new DiagnosisGroupsConverter().convert(overview.getDiagnosisGroups());
         List<OverviewChartRowExtended> ageGroups = new AldersGroupsConverter().convert(overview.getAgeGroups());

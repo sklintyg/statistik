@@ -159,20 +159,12 @@ public class NationellDataInvoker {
 
         nationellData.getSjukfallPerLan(aisle, result.getLanRange(), data.getLanResult());
 
-        data.setLangaSjukfallPreviousResult(nationellData.getLangaSjukfall(aisle,
-                ReportUtil.getPreviousPeriod(result.getLangaSjukfallRange()).getFrom(), 2, KVARTAL,
-                data.getLangaSjukfallPreviousResult()));
-        data.setLangaSjukfallCurrentResult(nationellData.getLangaSjukfall(aisle,
-                result.getLangaSjukfallRange().getFrom(), 1, KVARTAL, data.getLangaSjukfallCurrentResult()));
-
-
         final Range overviewRange = result.getOverviewRange();
         nationellData.getAntalIntyg(aisle, overviewRange.getFrom(), 1, KVARTAL, data.getOverviewAntalIntygResult());
-        final LocalDate overviewPrevStart = ReportUtil.getPreviousPeriod(overviewRange).getFrom();
+        final LocalDate overviewPrevStart = ReportUtil.getPreviousOverviewPeriod(overviewRange).getFrom();
         nationellData.getAntalIntyg(aisle, overviewPrevStart, 2, KVARTAL, data.getOverviewForandringResult());
         data.setOverviewDiagnosgrupperResult(nationellData.getDiagnosgrupper(aisle, overviewPrevStart,
                 2, KVARTAL, true, data.getOverviewDiagnosgrupperResult()));
-
 
         data.setOverviewPreviousAldersgrupperResult(nationellData.getAldersgrupper(aisle, overviewPrevStart,
                 1, KVARTAL, data.getOverviewPreviousAldersgrupperResult()));
@@ -181,7 +173,6 @@ public class NationellDataInvoker {
 
         data.setOverviewSjukskrivningsgradResult(nationellData.getSjukskrivningsgrad(aisle, overviewPrevStart,
                 2, KVARTAL, true, data.getOverviewSjukskrivningsgradResult()));
-
 
         data.setOverviewSjukfallslangdPreviousResult(nationellData.getSjukfallslangd(aisle, overviewPrevStart,
                 1, KVARTAL, data.getOverviewSjukfallslangdPreviousResult()));
@@ -218,7 +209,6 @@ public class NationellDataInvoker {
         result.setSjukskrivningsgradRange(longRange);
         result.setSjukfallslangdRange(Range.createForLastMonthsExcludingCurrent(yearRange.getNumberOfMonths(), clock));
         result.setLanRange(yearRange);
-        result.setLangaSjukfallRange(quarterRange);
         result.setOverviewRange(quarterRange);
         result.setMeddelandenPerAmneRange(longRange);
         result.setIntygPerTypeRange(longRange);
@@ -257,16 +247,6 @@ public class NationellDataInvoker {
         result.setSjukfallslangdResult(data.getSjukfallslangdResult());
 
         result.setLanResult(new SimpleKonResponse(data.getLanResult()));
-
-        if (data.getLangaSjukfallPreviousResult() == null) {
-            data.setLangaSjukfallPreviousResult(new SimpleKonResponse(new ArrayList<>()));
-        }
-        result.setLangaSjukfallPreviousResult(data.getLangaSjukfallPreviousResult());
-
-        if (data.getLangaSjukfallCurrentResult() == null) {
-            data.setLangaSjukfallCurrentResult(new SimpleKonResponse(new ArrayList<>()));
-        }
-        result.setLangaSjukfallCurrentResult(data.getLangaSjukfallCurrentResult());
 
         result.setOverviewGenderResult(new SimpleKonResponse(data.getOverviewAntalIntygResult()));
         result.setOverviewForandringResult(new SimpleKonResponse(data.getOverviewForandringResult()));

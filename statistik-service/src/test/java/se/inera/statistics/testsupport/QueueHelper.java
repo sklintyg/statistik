@@ -109,10 +109,10 @@ public class QueueHelper {
         printAndGetCasesPerCountyNationell(range, result, nationellDataInfo);
 
         VerksamhetOverviewResponse verksamhetOverview1 = overviewQuery.getOverview(warehouse.get(new HsaIdVardgivare("vg")),
-                sjukfallUtil.createEnhetFilter(vardenhet1), ReportUtil.getPreviousPeriod(range).getFrom(), range.getNumberOfMonths());
+                sjukfallUtil.createEnhetFilter(vardenhet1), range, ReportUtil.getPreviousOverviewPeriod(range));
         LOG.info("VO data: " + verksamhetOverview1);
         VerksamhetOverviewResponse verksamhetOverview2 = overviewQuery.getOverview(warehouse.get(new HsaIdVardgivare("vg")),
-                sjukfallUtil.createEnhetFilter(vardenhet2), ReportUtil.getPreviousPeriod(range).getFrom(), range.getNumberOfMonths());
+                sjukfallUtil.createEnhetFilter(vardenhet2), range, ReportUtil.getPreviousOverviewPeriod(range));
         LOG.info("VO data: " + verksamhetOverview2);
         OverviewResponse overviewNationell = nationellOverview.getOverview(nationellDataInfo);
         LOG.info("NO data: " + overviewNationell);
@@ -156,11 +156,6 @@ public class QueueHelper {
         LOG.info("SLGL data: " + sjukfallslangdGruppLong2);
         JsonNode sjukfallslangdGruppLong2Node = JSONParser.parse(sjukfallslangdGruppLong2.toString());
         result.put("sjukfallslangdGruppLong2", new TestData(sjukfallslangdGruppLong2, sjukfallslangdGruppLong2Node));
-        SimpleKonResponse sjukfallslangdGruppLongNationell = nationellDataInfo.getLangaSjukfallCurrentResult();
-        LOG.info("Nationell SLGL data: " + sjukfallslangdGruppLongNationell);
-        JsonNode sjukfallslangdGruppLongNationellNode = JSONParser.parse(sjukfallslangdGruppLongNationell.toString());
-        result.put("sjukfallslangdGruppLongNationell",
-                new TestData(sjukfallslangdGruppLongNationell, sjukfallslangdGruppLongNationellNode));
     }
 
     private void printAndGetDegreeOfSickLeave(HsaIdEnhet vardenhet1, HsaIdEnhet vardenhet2, Range range, Map<String, TestData> result) {
