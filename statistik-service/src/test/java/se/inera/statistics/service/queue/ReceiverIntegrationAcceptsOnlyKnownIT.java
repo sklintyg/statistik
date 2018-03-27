@@ -36,6 +36,7 @@ import javax.jms.TextMessage;
 
 import org.apache.activemq.command.ActiveMQQueue;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,6 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
@@ -98,6 +98,7 @@ public class ReceiverIntegrationAcceptsOnlyKnownIT {
     }
 
     @Test
+    @Ignore
     public void onlyKnownAndUnsetIntygTypesAreAcceptedINTYG2734() {
         populate();
         SimpleKonResponse webData = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("enhetId")), sjukfallUtil.createEnhetFilter(new HsaIdEnhet("ENHETID")), LocalDate.parse("2011-01-01"), 12, 1, false);
