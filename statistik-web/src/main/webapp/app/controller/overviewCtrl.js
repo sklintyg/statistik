@@ -35,7 +35,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         var setTooltipText = function (result) {
 
             var popoverTextChangeCurrentVSPrevious = '<br><br>Spalten förändring visar skillnaden i antal sjukfall mellan perioden ' +
-                result.periodText + '  och föregående period ' + result.casesPerMonth.previousPeriodText;
+                result.periodText + ' och samma tremånadersperiod föregående år.';
 
             $scope.popoverText = 'Intygsstatistik är en webbtjänst som visar samlad statistik för sjukskrivning som ordinerats av läkare. ' +
                                     'Tjänsten visar statistik för alla elektroniska läkarintyg. ' +
@@ -43,7 +43,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                                     ' och verksamhetsstatistik som bara går att se med särskild behörighet inom hälso- och sjukvården.';
             $scope.popoverTextSexDistribution = 'Andel kvinnor och andel män av det totala antalet sjukfall under perioden ' + result.periodText + '.';
             $scope.popoverTextChangeProcentage = 'Diagrammet visar hur antalet sjukfall förändrats mellan perioden ' + result.periodText +
-                                                    ' och föregående period ' + result.casesPerMonth.previousPeriodText + '.';
+                                                    ' och samma tremånadersperiod föregående år.';
 
             $scope.popoverTextDiagnosisGroups = 'Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under ' +
                                                 result.periodText + '.' + popoverTextChangeCurrentVSPrevious;

@@ -22,6 +22,7 @@ import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.web.model.overview.BarChartData;
 import se.inera.statistics.web.model.overview.DonutChartData;
 import se.inera.statistics.web.model.overview.OverviewData;
@@ -37,7 +38,7 @@ import java.util.stream.Collectors;
 public class OverviewConverter {
 
     public OverviewData convert(OverviewResponse resp, Range range) {
-        final Range previousPeriod = new Range(range.getFrom().minusMonths(3), range.getTo().minusMonths(3));
+        final Range previousPeriod = ReportUtil.getPreviousOverviewPeriod(range);
         SjukfallPerManadOverview casesPerMonth = new SjukfallPerManadOverview(
                 resp.getCasesPerMonthSexProportion().getMaleProportion(), resp.getCasesPerMonthSexProportion().getFemaleProportion(),
                 resp.getCasesPerMonthAlteration(), previousPeriod.toString());

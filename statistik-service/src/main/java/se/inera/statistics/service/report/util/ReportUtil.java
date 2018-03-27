@@ -42,8 +42,7 @@ public final class ReportUtil {
     }
 
     public static Range getPreviousOverviewPeriod(Range range) {
-        return getPreviousPeriod(range); //FIXA: Använder temporärt getPreviousPeriod för att få fitensse-testerna gröna vid refaktorering
-//        return new Range(range.getFrom().minusYears(1), range.getTo().minusYears(1));
+        return new Range(range.getFrom().minusYears(1), range.getTo().minusYears(1));
     }
 
     public static String toPeriod(LocalDate date) {

@@ -29,7 +29,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     $scope.baseUrl = '#/verksamhet';
 
     var dataReceived = function (result) {
-        var popoverPreviousMonths = ' jämfört med föregående tre månader.';
+        var popoverPreviousMonths = ' jämfört med samma tremånadersperiod föregående år.';
         var popoverTextChangeCurrentVSPrevious = '<br><br>Spalten förändring visar skillnaden i antal sjukfall mellan perioden ' +
             result.periodText + popoverPreviousMonths;
 
