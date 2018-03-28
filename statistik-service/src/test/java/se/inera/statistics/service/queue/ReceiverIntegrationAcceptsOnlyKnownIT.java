@@ -36,7 +36,6 @@ import javax.jms.TextMessage;
 
 import org.apache.activemq.command.ActiveMQQueue;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +97,6 @@ public class ReceiverIntegrationAcceptsOnlyKnownIT {
     }
 
     @Test
-    @Ignore
     public void onlyKnownAndUnsetIntygTypesAreAcceptedINTYG2734() {
         populate();
         SimpleKonResponse webData = sjukfallQuery.getSjukfall(warehouse.get(new HsaIdVardgivare("enhetId")), sjukfallUtil.createEnhetFilter(new HsaIdEnhet("ENHETID")), LocalDate.parse("2011-01-01"), 12, 1, false);
