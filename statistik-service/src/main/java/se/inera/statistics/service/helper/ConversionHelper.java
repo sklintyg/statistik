@@ -71,6 +71,17 @@ public final class ConversionHelper {
         return personId.charAt(DocumentHelper.SEX_DIGIT) % 2 == 0 ? Kon.FEMALE.toString() : Kon.MALE.toString();
     }
 
+    /**
+     * Same as extractAlder() method but will return NO_AGE instead of throwing exception when personId can not be parsed.
+     */
+    public static int extractAlderSafe(String personId, LocalDate start) {
+        try {
+            return extractAlder(personId, start);
+        } catch (IllegalArgumentException ignore) {
+            return NO_AGE;
+        }
+    }
+
     public static int extractAlder(String personId, LocalDate start) {
         LocalDate birthDate = null;
         int age;

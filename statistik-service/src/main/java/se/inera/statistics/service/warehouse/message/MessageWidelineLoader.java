@@ -201,7 +201,7 @@ public class MessageWidelineLoader {
         dto.setAmne(amneCode != null ? MsgAmne.parse(amneCode) : null);
         dto.setEnhet(resultSet.getString("enhet"));
         final String patientid = resultSet.getString("patientid");
-        final int alder = ConversionHelper.extractAlder(patientid, signDate);
+        final int alder = ConversionHelper.extractAlderSafe(patientid, signDate);
         dto.setPatientAge(alder);
         dto.setIntygTyp(resultSet.getString("intygstyp"));
         dto.setDx(resultSet.getString("dx"));

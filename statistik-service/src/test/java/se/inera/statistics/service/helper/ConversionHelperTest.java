@@ -60,4 +60,13 @@ public class ConversionHelperTest {
         assertEquals(39, alder);
     }
 
+    @Test
+    public void testExtractAlderSafe() throws Exception {
+        //When
+        final int alder = ConversionHelper.extractAlderSafe("20170035-0777", LocalDate.of(2015, 3, 5));
+
+        //Then
+        assertEquals(ConversionHelper.NO_AGE, alder);
+    }
+
 }
