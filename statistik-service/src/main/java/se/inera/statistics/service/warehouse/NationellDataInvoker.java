@@ -139,16 +139,17 @@ public class NationellDataInvoker {
     }
 
     private void calculatePerAisle(NationellData nationellData, NationellDataInfo result, NationellDataHolder data, Aisle aisle) {
-        nationellData.getCasesPerMonth(aisle, result.getAntalIntygRange(), data.getAntalIntygResult());
+        final Range antalRange = result.getAntalIntygRange();
+        nationellData.updateAntalIntygResult(aisle, antalRange.getFrom(), antalRange.getNumberOfMonths(), 1, data.getAntalIntygResult());
 
-        data.setDiagnosgrupperResult(nationellData.getDiagnosgrupper(aisle,
-                result.getDiagnosgrupperRange(), data.getDiagnosgrupperResult()));
+        data.setDiagnosgrupperResult(
+                nationellData.getDiagnosgrupper(aisle, result.getDiagnosgrupperRange(), data.getDiagnosgrupperResult()));
 
         for (Icd10.Kapitel kapitel : icd10.getKapitel(false)) {
             nationellData.getDiagnosavsnitt(aisle, result.getDiagnosavsnittRange(), kapitel, data.getDiagnosavsnittResult());
         }
 
-        data.setAldersgrupperResult(nationellData.getHistoricalAgeGroups(aisle, result.getAldersgrupperRange(),
+        data.setAldersgrupperResult(nationellData.getAldersgrupper(aisle, result.getAldersgrupperRange(),
                 data.getAldersgrupperResult()));
 
         data.setSjukskrivningsgradResult(nationellData.getSjukskrivningsgrad(aisle,
@@ -157,36 +158,41 @@ public class NationellDataInvoker {
         data.setSjukfallslangdResult(nationellData.getSjukfallslangd(aisle, result.getSjukfallslangdRange(),
                 data.getSjukfallslangdResult()));
 
-        nationellData.getSjukfallPerLan(aisle, result.getLanRange(), data.getLanResult());
+        nationellData.addSjukfallPerLanToResult(result.getLanRange(), data.getLanResult(), aisle);
 
         final Range overviewRange = result.getOverviewRange();
-        nationellData.getAntalIntyg(aisle, overviewRange.getFrom(), 1, KVARTAL, data.getOverviewAntalIntygResult());
-        final LocalDate overviewPrevStart = ReportUtil.getPreviousOverviewPeriod(overviewRange).getFrom();
-        nationellData.getAntalIntyg(aisle, overviewPrevStart, 2, KVARTAL, data.getOverviewForandringResult());
-        data.setOverviewDiagnosgrupperResult(nationellData.getDiagnosgrupper(aisle, overviewPrevStart,
-                2, KVARTAL, true, data.getOverviewDiagnosgrupperResult()));
+        final Range previousOverviewRange = ReportUtil.getPreviousOverviewPeriod(overviewRange);
+        data.setOverviewForandringCurrentResult(
+                nationellData.getAntalIntygOverviewResult(aisle, overviewRange, data.getOverviewForandringCurrentResult()));
+        data.setOverviewForandringPreviousResult(
+                nationellData.getAntalIntygOverviewResult(aisle, previousOverviewRange, data.getOverviewForandringPreviousResult()));
+        data.setOverviewDiagnosgrupperCurrentResult(
+                nationellData.getDiagnosgrupperOverview(aisle, overviewRange, data.getOverviewDiagnosgrupperCurrentResult()));
+        data.setOverviewDiagnosgrupperPreviousResult(
+                nationellData.getDiagnosgrupperOverview(aisle, previousOverviewRange, data.getOverviewDiagnosgrupperPreviousResult()));
 
-        data.setOverviewPreviousAldersgrupperResult(nationellData.getAldersgrupper(aisle, overviewPrevStart,
-                1, KVARTAL, data.getOverviewPreviousAldersgrupperResult()));
-        data.setOverviewCurrentAldersgrupperResult(nationellData.getAldersgrupper(aisle, overviewRange.getFrom(),
-                1, KVARTAL, data.getOverviewCurrentAldersgrupperResult()));
+        data.setOverviewPreviousAldersgrupperResult(
+                nationellData.getAldersgrupper(aisle, previousOverviewRange, data.getOverviewPreviousAldersgrupperResult()));
+        data.setOverviewCurrentAldersgrupperResult(
+                nationellData.getAldersgrupper(aisle, overviewRange, data.getOverviewCurrentAldersgrupperResult()));
 
-        data.setOverviewSjukskrivningsgradResult(nationellData.getSjukskrivningsgrad(aisle, overviewPrevStart,
-                2, KVARTAL, true, data.getOverviewSjukskrivningsgradResult()));
+        data.setOverviewSjukskrivningsgradCurrentResult(nationellData.getSjukskrivningsgradOverview(aisle,
+                overviewRange, data.getOverviewSjukskrivningsgradCurrentResult()));
+        data.setOverviewSjukskrivningsgradPreviousResult(nationellData.getSjukskrivningsgradOverview(aisle,
+                previousOverviewRange, data.getOverviewSjukskrivningsgradPreviousResult()));
 
-        data.setOverviewSjukfallslangdPreviousResult(nationellData.getSjukfallslangd(aisle, overviewPrevStart,
-                1, KVARTAL, data.getOverviewSjukfallslangdPreviousResult()));
-        data.setOverviewSjukfallslangdCurrentResult(nationellData.getSjukfallslangd(aisle, overviewRange.getFrom(),
-                1, KVARTAL, data.getOverviewSjukfallslangdCurrentResult()));
+        data.setOverviewSjukfallslangdPreviousResult(
+                nationellData.getSjukfallslangd(aisle, previousOverviewRange, data.getOverviewSjukfallslangdPreviousResult()));
+        data.setOverviewSjukfallslangdCurrentResult(
+                nationellData.getSjukfallslangd(aisle, overviewRange, data.getOverviewSjukfallslangdCurrentResult()));
 
-        data.setOverviewLangaSjukfallResult(nationellData.getLangaSjukfall(aisle, overviewRange.getFrom(),
-                1, KVARTAL, data.getOverviewLangaSjukfallResult()));
+        data.setOverviewLangaSjukfallDiffPreviousResult(
+                nationellData.getLangaSjukfall(aisle, previousOverviewRange, data.getOverviewLangaSjukfallDiffPreviousResult()));
+        data.setOverviewLangaSjukfallDiffCurrentResult(
+                nationellData.getLangaSjukfall(aisle, overviewRange, data.getOverviewLangaSjukfallDiffCurrentResult()));
 
-        data.setOverviewLangaSjukfallDiffResult(nationellData.getLangaSjukfall(aisle, overviewPrevStart,
-                2, KVARTAL, data.getOverviewLangaSjukfallDiffResult()));
-
-        nationellData.getSjukfallPerLan(aisle, overviewPrevStart, 1, KVARTAL, data.getOverviewLanPreviousResult());
-        nationellData.getSjukfallPerLan(aisle, overviewRange.getFrom(), 1, KVARTAL, data.getOverviewLanCurrentResult());
+        nationellData.addSjukfallPerLanToResult(previousOverviewRange, data.getOverviewLanPreviousResult(), aisle);
+        nationellData.addSjukfallPerLanToResult(overviewRange, data.getOverviewLanCurrentResult(), aisle);
     }
 
     private void populateLan(NationellDataHolder data) {
@@ -249,15 +255,17 @@ public class NationellDataInvoker {
         result.setLanResult(new SimpleKonResponse(data.getLanResult()));
 
         result.setOverviewGenderResult(new SimpleKonResponse(data.getOverviewAntalIntygResult()));
-        result.setOverviewForandringResult(new SimpleKonResponse(data.getOverviewForandringResult()));
-        result.setOverviewDiagnosgrupperResult(data.getOverviewDiagnosgrupperResult());
+        result.setOverviewForandringResult(data.getOverviewForandringResult());
+        result.setOverviewDiagnosgrupperResult(data.getOverviewDiagnosgrupperResultNullSafe());
         result.setOverviewPreviousAldersgruppResult(data.getOverviewPreviousAldersgrupperResult());
         result.setOverviewCurrentAldersgruppResult(data.getOverviewCurrentAldersgrupperResult());
-        result.setOverviewSjukskrivningsgrader(data.getOverviewSjukskrivningsgradResult());
+        result.setOverviewSjukskrivningsgraderPrevious(data.getOverviewSjukskrivningsgradPreviousResult());
+        result.setOverviewSjukskrivningsgraderCurrent(data.getOverviewSjukskrivningsgradCurrentResult());
         result.setOverviewSjukskrivningslangdPreviousResult(data.getOverviewSjukfallslangdPreviousResult());
         result.setOverviewSjukskrivningslangdCurrentResult(data.getOverviewSjukfallslangdCurrentResult());
         result.setOverviewLangaSjukfallResult(data.getOverviewLangaSjukfallResult());
-        result.setOverviewLangaSjukfallDiffResult(data.getOverviewLangaSjukfallDiffResult());
+        result.setOverviewLangaSjukfallDiffCurrentResult(data.getOverviewLangaSjukfallDiffCurrentResult());
+        result.setOverviewLangaSjukfallDiffPreviousResult(data.getOverviewLangaSjukfallDiffPreviousResult());
         result.setOverviewLanPreviousResult(new SimpleKonResponse(data.getOverviewLanPreviousResult()));
         result.setOverviewLanCurrentResult(new SimpleKonResponse(data.getOverviewLanCurrentResult()));
 

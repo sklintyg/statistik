@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !3 Givet att:
@@ -7,7 +6,7 @@ Sjukfall byter diagnos och grad mitt i.
 
 | script | dagens datum | 2014-07-01 |
 
-| script | troskel varde | 0 |
+| script | troskel varde | 1 |
 
 | Foljande lakare finns |
 | id | förnamn | efternamn | kön | ålder | befattningar |

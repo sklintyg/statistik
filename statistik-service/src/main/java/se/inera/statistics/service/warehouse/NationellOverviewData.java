@@ -87,12 +87,14 @@ public class NationellOverviewData {
     }
 
     private int getForandringLangaSjukskrivningar(NationellDataInfo data) {
-        SimpleKonResponse langaSjukfall = data.getOverviewLangaSjukfallDiffResult();
-        if (langaSjukfall == null || langaSjukfall.getRows().isEmpty()) {
+        SimpleKonResponse langaSjukfallPrevious = data.getOverviewLangaSjukfallDiffPreviousResult();
+        SimpleKonResponse langaSjukfallCurrent = data.getOverviewLangaSjukfallDiffCurrentResult();
+        if (langaSjukfallPrevious == null || langaSjukfallPrevious.getRows().isEmpty()
+                || langaSjukfallCurrent == null || langaSjukfallCurrent.getRows().isEmpty()) {
             return 0;
         }
-        int previous = total(langaSjukfall.getRows().get(0));
-        int current = total(langaSjukfall.getRows().get(1));
+        int previous = total(langaSjukfallPrevious.getRows().get(0));
+        int current = total(langaSjukfallCurrent.getRows().get(0));
         return percentChange(current, previous);
     }
 
@@ -130,26 +132,24 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRowExtended> getSjukskrivningsgrader(NationellDataInfo data) {
-        KonDataResponse periods = data.getOverviewSjukskrivningsgrader();
+        KonDataResponse periodsPrevious = data.getOverviewSjukskrivningsgraderPrevious();
+        KonDataResponse periodsCurrent = data.getOverviewSjukskrivningsgraderCurrent();
 
         Map<String, String> colors = SickLeaveDegree.getColors();
 
         List<OverviewChartRowExtended> result = new ArrayList<>();
-        if (periods == null) {
+        if (periodsPrevious == null || periodsCurrent == null) {
             return result;
         }
-        final List<KonDataRow> rows = periods.getRows();
-        if (rows.size() >= 2) {
-            List<KonField> previousData = rows.get(0).getData();
-            List<KonField> currentData = rows.get(1).getData();
-            for (int i = 0; i < previousData.size(); i++) {
-                int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
-                int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
-                String id = periods.getGroups().get(i);
-                String color = colors.get(id);
+        List<KonField> previousData = periodsPrevious.getRows().get(0).getData();
+        List<KonField> currentData = periodsCurrent.getRows().get(0).getData();
+        for (int i = 0; i < previousData.size(); i++) {
+            int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
+            int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
+            String id = periodsCurrent.getGroups().get(i);
+            String color = colors.get(id);
 
-                result.add(new OverviewChartRowExtended(id, current, percentChange(current, previous), color));
-            }
+            result.add(new OverviewChartRowExtended(id, current, percentChange(current, previous), color));
         }
         return result;
     }

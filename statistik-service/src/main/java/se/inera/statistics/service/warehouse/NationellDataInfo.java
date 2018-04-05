@@ -54,11 +54,13 @@ public class NationellDataInfo {
     private DiagnosgruppResponse overviewDiagnosgrupperResult;
     private SimpleKonResponse overviewPreviousAldersgruppResult;
     private SimpleKonResponse overviewCurrentAldersgruppResult;
-    private KonDataResponse overviewSjukskrivningsgrader;
+    private KonDataResponse overviewSjukskrivningsgraderPrevious;
+    private KonDataResponse overviewSjukskrivningsgraderCurrent;
     private SimpleKonResponse overviewSjukskrivningslangdPreviousResult;
     private SimpleKonResponse overviewSjukskrivningslangdCurrentResult;
     private SimpleKonResponse overviewLangaSjukfallResult;
-    private SimpleKonResponse overviewLangaSjukfallDiffResult;
+    private SimpleKonResponse overviewLangaSjukfallDiffPreviousResult;
+    private SimpleKonResponse overviewLangaSjukfallDiffCurrentResult;
     private SimpleKonResponse overviewLanPreviousResult;
     private SimpleKonResponse overviewLanCurrentResult;
 
@@ -228,12 +230,20 @@ public class NationellDataInfo {
         this.overviewCurrentAldersgruppResult = overviewCurrentAldersgruppResult;
     }
 
-    KonDataResponse getOverviewSjukskrivningsgrader() {
-        return overviewSjukskrivningsgrader;
+    KonDataResponse getOverviewSjukskrivningsgraderPrevious() {
+        return overviewSjukskrivningsgraderPrevious;
     }
 
-    void setOverviewSjukskrivningsgrader(KonDataResponse overviewSjukskrivningsgrader) {
-        this.overviewSjukskrivningsgrader = overviewSjukskrivningsgrader;
+    void setOverviewSjukskrivningsgraderPrevious(KonDataResponse overviewSjukskrivningsgrader) {
+        this.overviewSjukskrivningsgraderPrevious = overviewSjukskrivningsgrader;
+    }
+
+    KonDataResponse getOverviewSjukskrivningsgraderCurrent() {
+        return overviewSjukskrivningsgraderCurrent;
+    }
+
+    void setOverviewSjukskrivningsgraderCurrent(KonDataResponse overviewSjukskrivningsgrader) {
+        this.overviewSjukskrivningsgraderCurrent = overviewSjukskrivningsgrader;
     }
 
     SimpleKonResponse getOverviewSjukskrivningslangdPreviousResult() {
@@ -260,12 +270,20 @@ public class NationellDataInfo {
         this.overviewLangaSjukfallResult = overviewLangaSjukfallResult;
     }
 
-    SimpleKonResponse getOverviewLangaSjukfallDiffResult() {
-        return overviewLangaSjukfallDiffResult;
+    SimpleKonResponse getOverviewLangaSjukfallDiffPreviousResult() {
+        return overviewLangaSjukfallDiffPreviousResult;
     }
 
-    void setOverviewLangaSjukfallDiffResult(SimpleKonResponse overviewLangaSjukfallDiffResult) {
-        this.overviewLangaSjukfallDiffResult = overviewLangaSjukfallDiffResult;
+    void setOverviewLangaSjukfallDiffPreviousResult(SimpleKonResponse overviewLangaSjukfallDiffResult) {
+        this.overviewLangaSjukfallDiffPreviousResult = overviewLangaSjukfallDiffResult;
+    }
+
+    SimpleKonResponse getOverviewLangaSjukfallDiffCurrentResult() {
+        return overviewLangaSjukfallDiffCurrentResult;
+    }
+
+    void setOverviewLangaSjukfallDiffCurrentResult(SimpleKonResponse overviewLangaSjukfallDiffResult) {
+        this.overviewLangaSjukfallDiffCurrentResult = overviewLangaSjukfallDiffResult;
     }
 
     SimpleKonResponse getOverviewLanPreviousResult() {

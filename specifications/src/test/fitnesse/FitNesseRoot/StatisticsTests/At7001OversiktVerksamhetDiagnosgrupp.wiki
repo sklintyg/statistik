@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !3 Givet att:

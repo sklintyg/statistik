@@ -25,6 +25,8 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,15 +44,19 @@ class NationellDataHolder {
     private ArrayList<SimpleKonDataRow> lanResult = new ArrayList<>();
 
     private ArrayList<SimpleKonDataRow> overviewAntalIntygResult = new ArrayList<>();
-    private ArrayList<SimpleKonDataRow> overviewForandringResult = new ArrayList<>();
-    private DiagnosgruppResponse overviewDiagnosgrupperResult;
+    private SimpleKonDataRow overviewForandringCurrentResult;
+    private SimpleKonDataRow overviewForandringPreviousResult;
+    private DiagnosgruppResponse overviewDiagnosgrupperPreviousResult;
+    private DiagnosgruppResponse overviewDiagnosgrupperCurrentResult;
     private SimpleKonResponse overviewPreviousAldersgrupperResult;
     private SimpleKonResponse overviewCurrentAldersgrupperResult;
-    private KonDataResponse overviewSjukskrivningsgradResult;
+    private KonDataResponse overviewSjukskrivningsgradPreviousResult;
+    private KonDataResponse overviewSjukskrivningsgradCurrentResult;
     private SimpleKonResponse overviewSjukfallslangdPreviousResult;
     private SimpleKonResponse overviewSjukfallslangdCurrentResult;
     private SimpleKonResponse overviewLangaSjukfallResult;
-    private SimpleKonResponse overviewLangaSjukfallDiffResult;
+    private SimpleKonResponse overviewLangaSjukfallDiffPreviousResult;
+    private SimpleKonResponse overviewLangaSjukfallDiffCurrentResult;
     private ArrayList<SimpleKonDataRow> overviewLanPreviousResult = new ArrayList<>();
     private ArrayList<SimpleKonDataRow> overviewLanCurrentResult = new ArrayList<>();
 
@@ -102,16 +108,36 @@ class NationellDataHolder {
         return overviewAntalIntygResult;
     }
 
-    ArrayList<SimpleKonDataRow> getOverviewForandringResult() {
-        return overviewForandringResult;
+    SimpleKonDataRow getOverviewForandringCurrentResult() {
+        return overviewForandringCurrentResult;
     }
 
-    DiagnosgruppResponse getOverviewDiagnosgrupperResult() {
-        return overviewDiagnosgrupperResult;
+    SimpleKonDataRow getOverviewForandringPreviousResult() {
+        return overviewForandringPreviousResult;
     }
 
-    void setOverviewDiagnosgrupperResult(DiagnosgruppResponse overviewDiagnosgrupperResult) {
-        this.overviewDiagnosgrupperResult = overviewDiagnosgrupperResult;
+    public void setOverviewForandringCurrentResult(SimpleKonDataRow overviewForandringCurrentResult) {
+        this.overviewForandringCurrentResult = overviewForandringCurrentResult;
+    }
+
+    public void setOverviewForandringPreviousResult(SimpleKonDataRow overviewForandringPreviousResult) {
+        this.overviewForandringPreviousResult = overviewForandringPreviousResult;
+    }
+
+    DiagnosgruppResponse getOverviewDiagnosgrupperPreviousResult() {
+        return overviewDiagnosgrupperPreviousResult;
+    }
+
+    void setOverviewDiagnosgrupperPreviousResult(DiagnosgruppResponse overviewDiagnosgrupperResult) {
+        this.overviewDiagnosgrupperPreviousResult = overviewDiagnosgrupperResult;
+    }
+
+    DiagnosgruppResponse getOverviewDiagnosgrupperCurrentResult() {
+        return overviewDiagnosgrupperCurrentResult;
+    }
+
+    void setOverviewDiagnosgrupperCurrentResult(DiagnosgruppResponse overviewDiagnosgrupperResult) {
+        this.overviewDiagnosgrupperCurrentResult = overviewDiagnosgrupperResult;
     }
 
     SimpleKonResponse getOverviewPreviousAldersgrupperResult() {
@@ -130,12 +156,20 @@ class NationellDataHolder {
         this.overviewCurrentAldersgrupperResult = overviewCurrentAldersgrupperResult;
     }
 
-    KonDataResponse getOverviewSjukskrivningsgradResult() {
-        return overviewSjukskrivningsgradResult;
+    KonDataResponse getOverviewSjukskrivningsgradPreviousResult() {
+        return overviewSjukskrivningsgradPreviousResult;
     }
 
-    void setOverviewSjukskrivningsgradResult(KonDataResponse overviewSjukskrivningsgradResult) {
-        this.overviewSjukskrivningsgradResult = overviewSjukskrivningsgradResult;
+    void setOverviewSjukskrivningsgradPreviousResult(KonDataResponse overviewSjukskrivningsgradResult) {
+        this.overviewSjukskrivningsgradPreviousResult = overviewSjukskrivningsgradResult;
+    }
+
+    KonDataResponse getOverviewSjukskrivningsgradCurrentResult() {
+        return overviewSjukskrivningsgradCurrentResult;
+    }
+
+    void setOverviewSjukskrivningsgradCurrentResult(KonDataResponse overviewSjukskrivningsgradResult) {
+        this.overviewSjukskrivningsgradCurrentResult = overviewSjukskrivningsgradResult;
     }
 
     SimpleKonResponse getOverviewSjukfallslangdPreviousResult() {
@@ -162,12 +196,20 @@ class NationellDataHolder {
         this.overviewLangaSjukfallResult = overviewLangaSjukfallResult;
     }
 
-    SimpleKonResponse getOverviewLangaSjukfallDiffResult() {
-        return overviewLangaSjukfallDiffResult;
+    SimpleKonResponse getOverviewLangaSjukfallDiffPreviousResult() {
+        return overviewLangaSjukfallDiffPreviousResult;
     }
 
-    void setOverviewLangaSjukfallDiffResult(SimpleKonResponse overviewLangaSjukfallDiffResult) {
-        this.overviewLangaSjukfallDiffResult = overviewLangaSjukfallDiffResult;
+    void setOverviewLangaSjukfallDiffPreviousResult(SimpleKonResponse overviewLangaSjukfallDiffPreviousResult) {
+        this.overviewLangaSjukfallDiffPreviousResult = overviewLangaSjukfallDiffPreviousResult;
+    }
+
+    public SimpleKonResponse getOverviewLangaSjukfallDiffCurrentResult() {
+        return overviewLangaSjukfallDiffCurrentResult;
+    }
+
+    public void setOverviewLangaSjukfallDiffCurrentResult(SimpleKonResponse overviewLangaSjukfallDiffCurrentResult) {
+        this.overviewLangaSjukfallDiffCurrentResult = overviewLangaSjukfallDiffCurrentResult;
     }
 
     ArrayList<SimpleKonDataRow> getOverviewLanPreviousResult() {
@@ -184,6 +226,25 @@ class NationellDataHolder {
 
     void setOverviewLanCurrentResult(ArrayList<SimpleKonDataRow> overviewLanCurrentResult) {
         this.overviewLanCurrentResult = overviewLanCurrentResult;
+    }
+
+    public DiagnosgruppResponse getOverviewDiagnosgrupperResultNullSafe() {
+        if (overviewDiagnosgrupperCurrentResult == null || overviewDiagnosgrupperPreviousResult == null) {
+            return new DiagnosgruppResponse(Collections.emptyList(), Collections.emptyList());
+        }
+        return new DiagnosgruppResponse(overviewDiagnosgrupperCurrentResult.getIcdTyps(),
+                Arrays.asList(overviewDiagnosgrupperPreviousResult.getRows().get(0),
+                        overviewDiagnosgrupperCurrentResult.getRows().get(0)));
+    }
+
+    SimpleKonResponse getOverviewForandringResult() {
+        final SimpleKonDataRow prev = overviewForandringPreviousResult != null
+                ? overviewForandringPreviousResult
+                : new SimpleKonDataRow("", -1, -1);
+        final SimpleKonDataRow curr = overviewForandringCurrentResult != null
+                ? overviewForandringCurrentResult
+                : new SimpleKonDataRow("", -1, -1);
+        return new SimpleKonResponse(Arrays.asList(prev, curr));
     }
 
 }
