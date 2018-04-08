@@ -22,12 +22,12 @@ import se.inera.statistics.service.report.common.ReportColor;
 
 public enum MsgAmne {
 
-    KOMPLT("Komplettering", ReportColor.ST_COLOR_02, true),
     AVSTMN("Avstämningsmöte", ReportColor.ST_COLOR_01, true),
+    KOMPLT("Komplettering", ReportColor.ST_COLOR_02, true),
     KONTKT("Kontakt", ReportColor.ST_COLOR_03, true),
-    OVRIGT("Övrigt", ReportColor.ST_COLOR_05, true),
+    OKANT("Okänt", ReportColor.ST_COLOR_13, false),
     PAMINN("Påminnelse", ReportColor.ST_COLOR_04, true),
-    OKANT("Okänt", ReportColor.ST_COLOR_13, false);
+    OVRIGT("Övrigt", ReportColor.ST_COLOR_05, true);
 
     private final String text;
     private final ReportColor color;
