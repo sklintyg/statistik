@@ -3,7 +3,6 @@ var stMessages = {
     'sv': {
     	//generals
         'statistics.header': 'Intygsstatistik',
-        'statistics.header.extra-text': 'Statistiktjänst för ordinerad sjukskrivning',
 
         //navigation
         'nav.national-header': 'Nationell statistik',
