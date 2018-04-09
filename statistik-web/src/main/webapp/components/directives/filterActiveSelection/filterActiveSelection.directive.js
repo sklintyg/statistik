@@ -69,8 +69,8 @@ angular.module('StatisticsApp')
 
                     if (!$scope.businessFilter.useDefaultPeriod) {
 
-                        var fromDate = moment($scope.businessFilter.fromDate).format('YYYY-MM');
-                        var toDate = moment($scope.businessFilter.toDate).format('YYYY-MM');
+                        var fromDate = moment($scope.businessFilter.fromDateSaved).format('YYYY-MM');
+                        var toDate = moment($scope.businessFilter.toDateSaved).format('YYYY-MM');
 
                         $scope.selections.date.push({
                             text: fromDate + ' - ' + toDate
