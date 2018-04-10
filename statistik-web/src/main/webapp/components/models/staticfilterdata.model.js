@@ -73,7 +73,7 @@ angular.module('StatisticsApp').factory('StaticFilterData',
                 });
             });
 
-            data.intygTypes = $filter('orderBy')(data.intygTypes, 'id', false);
+            data.intygTypes = $filter('orderBy')(data.intygTypes, 'name', false);
         }
 
         function setIcd10Structure(app) {
