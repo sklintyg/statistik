@@ -338,7 +338,7 @@ angular.module('StatisticsApp').factory('ControllerCommons',
         };
 
         this.getExportFileName = function(statisticsLevel, gender) {
-            var reportName = $filter('messageFilter')($route.current.title, $route.current.title);
+            var reportName = $filter('messageFilter')($route.current.title, $route.current.title, undefined, undefined, undefined, true);
             var genderString = gender ? gender + '_' : '';
             var name = statisticsLevel + '_' + reportName + '_' + genderString + moment().format('YYMMDD_HHmmss');
             return name.replace(/Å/g, 'A').replace(/Ä/g, 'A').replace(/Ö/g, 'O')
