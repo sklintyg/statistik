@@ -20,7 +20,7 @@
 
 angular.module('StatisticsApp').factory('ControllerCommons',
     /** @ngInject */
-    function(_, $cacheFactory, UserModel, $filter, $route, StaticFilterData) {
+    function(_, $cacheFactory, UserModel, $filter, $route, StaticFilterData, StaticFilterDataService) {
         'use strict';
 
         var that = this;
@@ -75,9 +75,11 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 scope.activeDiagnosFilters = null;
                 return;
             }
-            var dxsTexts = StaticFilterData.getDiagnosFilterInformationText(diagnosIds);
-            var foundInfoTextForAllDxs = dxsTexts && diagnosIds && dxsTexts.length === diagnosIds.length;
-            scope.activeDiagnosFilters = foundInfoTextForAllDxs ? dxsTexts : diagnosIds;
+            StaticFilterDataService.get().then(function() {
+                var dxsTexts = StaticFilterData.getDiagnosFilterInformationText(diagnosIds);
+                var foundInfoTextForAllDxs = dxsTexts && diagnosIds && dxsTexts.length === diagnosIds.length;
+                scope.activeDiagnosFilters = foundInfoTextForAllDxs ? dxsTexts : diagnosIds;
+            });
         };
 
         this.populateActiveEnhetsFilter = function(scope, enhetNames, isAllAvailableEnhetsSelectedInFilter) {

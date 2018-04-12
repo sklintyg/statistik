@@ -120,6 +120,9 @@ angular.module('StatisticsApp').factory('StaticFilterData',
 
         function getDiagnosFilterInformationText(diagnosFilterIds, asObject) {
             var icdStructureAsFlatArray = _.flowRight(_.flattenDeep, icdStructureAsArray)(data.icd10Structure);
+            if (icdStructureAsFlatArray.length === 0) {
+                return [];
+            }
             return _.map(diagnosFilterIds, function(diagnosId){
                 var icdItem = _.find(icdStructureAsFlatArray, function(icd){
                     return icd.numericalId === parseInt(diagnosId, 10);
