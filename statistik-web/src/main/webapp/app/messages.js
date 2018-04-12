@@ -256,7 +256,7 @@ var stMessages = {
             'Tjänsten innehåller information från samtliga elektroniska läkarintyg som utfärdats inom hälso- och sjukvården efter oktober 2013. ' +
             'Intygsstatistik registrerar inte utfallet av intyget, det vill säga vilken bedömning Försäkringskassan gör.</p>' +
             '<p>Utöver läkarintygen innehåller Intygsstatistik dessutom statistik över den ärendekommunikation som sker mellan intygsutförare och Försäkringskassan. ' +
-            'Tjänsten innehåller information från samtliga meddelanden som har skickats elektroniskt som ett ärende från Försäkringskassan till intygsutföraren.</p>' +
+            'Tjänsten innehåller information från samtliga meddelanden som har skickats elektroniskt som ett ärende från Försäkringskassan till intygsutfärdaren.</p>' +
             '<p>Utifrån intygsinformationen hämtar Intygsstatistik därtill mer information om läkaren som skrivit intyget och om vårdenheten som han eller hon arbetar på. ' +
             'Dessa uppgifter hämtas från HSA-katalogen och syftet är att kunna ta fram mer värdefull och intressant statistik.</p>',
 
