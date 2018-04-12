@@ -34,7 +34,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             result.periodText + popoverPreviousMonths;
 
         $scope.subTitlePeriod = result.periodText;
-        $scope.popoverTextAmount = 'Totala antalet sjukfall under perioden ' + result.periodText + ',';
+        $scope.popoverTextAmount = 'Totala antalet sjukfall under perioden ' + result.periodText + '.';
         $scope.popoverTextChangeProcentage = 'Procentsatsen visar förändringen av antalet sjukfall under perioden ' + result.periodText;
         $scope.popoverTextSexDistribution = 'Könsfördelningen av totala antalet sjukfall under perioden ' + result.periodText + popoverPreviousMonths;
         $scope.popoverTextDiagnosisGroups = 'Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under ' +
