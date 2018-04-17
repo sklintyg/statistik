@@ -40,7 +40,7 @@ var stMessages = {
         'nav.landsting.om': 'Om landstingsstatistik',
         'nav.meddelanden': 'Meddelanden, totalt',
         'nav.meddelandenperamne': 'Meddelanden, totalt',
-        'nav.meddelandenperamneochenhet': 'Meddelanden, vårdenhet',
+        'nav.meddelandenperamneochenhet': 'Vårdenhet',
         'nav.intygpertyp': 'Intyg, totalt',
 
         //labels
