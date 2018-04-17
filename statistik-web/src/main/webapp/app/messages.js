@@ -227,6 +227,7 @@ var stMessages = {
         'login.siths.problem': 'Problem med inloggning med SITHS-kort?',
         'login.siths.problem-link': 'Läs mer om hur du kan felsöka.',
 
+        'selectvg.header': 'Välj vårdgivare',
         'login.instruktioner-for-valj-vg': 'Du har behörighet till vårdenheter som tillhör flera olika vårdgivare. Välj den vårdgivare som du vill se verksamhetsstatistik för. <br> Observera att du bara kan se statistik för de vårdenheter som du har behörighet till inom vald vårdgivare.',
         'login.valj-vg.help.text' : 'Beräkningen av statistik baseras på personuppgifter i de elektroniska intyg som hälso- och sjukvården utfärdar. Med beaktande av sekretessen inom hälso- och sjukvården är det i huvudregel förbjudet att lämna ut och samköra personuppgifter från olika vårdgivare. Lagregler möjliggör inte utlämnande av personuppgifter mellan vårdgivare vilket resulterar i att användare av Intygsstatistik inte kan få tillgång till uppgifter från olika vårdgivare utan att genomföra separata val.',
         'login.valj-vg.help.link': 'Varför behöver jag välja vårdgivare?',
