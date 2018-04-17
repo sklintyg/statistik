@@ -8,6 +8,12 @@ navigation-tabs {
     border-bottom: 0;
   }
 
+  .uib-tab:not(.active) .nav-link {
+    &:focus {
+      box-shadow: inset 1px -1px 4px 0 rgba(0, 0, 0, 0.24);
+    }
+  }
+
   .nav-tabs {
     border-bottom: 0;
 
