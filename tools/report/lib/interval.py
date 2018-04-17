@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- mode: Python; fill-column: 75; comment-column: 70; coding: utf-8 ;-*-
 #
-# Copyright (C) 2016 Inera AB (http://www.inera.se)
+# Copyright (C) 2017 Inera AB (http://www.inera.se)
 #
 # This file is part of statistik (https://github.com/sklintyg/statistik).
 #
