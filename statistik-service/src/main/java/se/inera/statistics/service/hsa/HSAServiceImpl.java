@@ -110,13 +110,13 @@ public class HSAServiceImpl implements HSAService {
         HsaInfoVg vardgivare = nonNullBase.getVardgivare();
 
         if (vardgivare == null) {
-            final HsaIdVardgivare vgId = getVardgivareHsaId(enhet, huvudenhet);
-            if (vgId == null || !vgId.equals(key.getVardgivareId())) {
-                LOG.info("VardgivarId mismatch found for enhet: {}. Was {} in HSA but expected {} from intyg", key.getEnhetId(),
-                        key.getVardgivareId(), vgId);
+            final HsaIdVardgivare vgIdFromHsa = getVardgivareHsaId(enhet, huvudenhet);
+            if (vgIdFromHsa == null || !vgIdFromHsa.equals(key.getVardgivareId())) {
+                LOG.info("VardgivarId mismatch found for enhet: {}. Expected {} from intyg but was {} in HSA", key.getEnhetId(),
+                        key.getVardgivareId(), vgIdFromHsa);
             }
-            if (vgId != null && !vgId.isEmpty()) {
-                GetStatisticsCareGiverResponseDto caregiver = getStatisticsCareGiver(vgId.getId());
+            if (vgIdFromHsa != null && !vgIdFromHsa.isEmpty()) {
+                GetStatisticsCareGiverResponseDto caregiver = getStatisticsCareGiver(vgIdFromHsa.getId());
                 vardgivare = createCareGiver(caregiver);
             }
         }
