@@ -24,7 +24,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.springframework.test.util.ReflectionTestUtils;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.report.util.SjukfallslangdUtil;
@@ -58,12 +61,17 @@ public class SjukskrivningslangdQueryTest {
     @Mock
     private WidelineLoader widelineLoader;
 
+    @Spy
+    private Cache cache = new Cache();
+
     private int intyg;
     private int patient;
     private ArrayList<Fact> facts = new ArrayList<>();
+    private SjukfallUtil sjukfallUtil = new SjukfallUtil();
 
     @Before
     public void setUp() throws Exception {
+        ReflectionTestUtils.setField(sjukfallUtil, "cache", cache);
         MockitoAnnotations.initMocks(this);
         facts.clear();
     }
@@ -79,7 +87,7 @@ public class SjukskrivningslangdQueryTest {
 
     private Collection<Sjukfall> calculateSjukfallsHelper(Aisle aisle) {
         final LocalDate from = LocalDate.of(2000, 1, 1);
-        return new SjukfallUtil().sjukfallGrupper(from, 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
+        return sjukfallUtil.sjukfallGrupper(from, 1, 1000000, aisle, SjukfallUtil.ALL_ENHETER).iterator().next().getSjukfall();
     }
 
     @Test

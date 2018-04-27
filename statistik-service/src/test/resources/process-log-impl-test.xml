@@ -70,6 +70,8 @@
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
+    <bean class="se.inera.statistics.service.warehouse.EnhetLoader"/>
+    <bean class="se.inera.statistics.service.caching.Cache"/>
     <bean class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" id="hsaWebServiceCalls"/>
     <bean class="se.inera.statistics.service.hsa.HsaServiceStub" id="hsaServiceStub"/>
     <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>

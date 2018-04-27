@@ -33,6 +33,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
 import se.inera.statistics.service.report.model.Kon;
@@ -96,6 +97,7 @@ public class SjukfallQueryTest {
 
     private BiMap<HsaIdLakare, Integer> lakarIdMap = HashBiMap.create();
 
+    private Cache cache = new Cache();
     private SjukfallUtil sjukfallUtil = new SjukfallUtil();
 
     private FilterPredicates enhetFilter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
@@ -108,6 +110,7 @@ public class SjukfallQueryTest {
 
     @Before
     public void setup() {
+        ReflectionTestUtils.setField(sjukfallUtil, "cache", cache);
         populateLakare();
         LakareManager lakareManager = mockLakareManager();
         sjukfallQuery = new SjukfallQuery();

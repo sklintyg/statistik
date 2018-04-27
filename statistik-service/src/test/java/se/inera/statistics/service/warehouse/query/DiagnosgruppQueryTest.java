@@ -25,11 +25,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10;
@@ -45,21 +47,19 @@ import se.inera.statistics.service.warehouse.WidelineLoader;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:icd10.xml", "classpath:query-test.xml"})
+@ContextConfiguration(classes = {}, locations = {"classpath:icd10.xml", "classpath:query-test.xml"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DiagnosgruppQueryTest {
 
@@ -79,6 +79,9 @@ public class DiagnosgruppQueryTest {
 
     @Mock
     private WidelineLoader widelineLoader;
+
+    @Spy
+    private Cache cache = new Cache();
 
     private int intyg;
     private int patient;

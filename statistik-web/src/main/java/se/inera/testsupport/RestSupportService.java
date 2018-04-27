@@ -29,6 +29,7 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdUser;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.countypopulation.CountyPopulationManagerForTest;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAStore;
@@ -154,6 +155,9 @@ public class RestSupportService {
     @Qualifier("intygCommonDxPopulator")
     private ApplicationListener intygCommonDxPopulator;
 
+    @Autowired
+    private Cache cache;
+
     /**
      * Can only be invoked when app is started with spring profile "populate-intygcommon-dx".
      */
@@ -218,8 +222,7 @@ public class RestSupportService {
     @Produces({ MediaType.APPLICATION_JSON })
     @Transactional
     public Response clearCaches() {
-        sjukfallUtil.clearSjukfallGroupCache();
-        warehouse.clearCaches();
+        cache.clearCaches();
         nationalChartDataService.clearNationellDataCache();
         return Response.ok().build();
     }

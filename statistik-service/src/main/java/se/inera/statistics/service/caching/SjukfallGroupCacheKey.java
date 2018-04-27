@@ -16,14 +16,16 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.warehouse;
+package se.inera.statistics.service.caching;
 
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 
 import java.time.LocalDate;
 import java.util.Date;
 
-class SjukfallGroupCacheKey {
+public class SjukfallGroupCacheKey {
 
     private final LocalDate from;
     private final int periods;
@@ -33,8 +35,8 @@ class SjukfallGroupCacheKey {
     private final boolean useOriginalSjukfallStart;
     private final String key;
 
-    SjukfallGroupCacheKey(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates filter,
-            boolean useOriginalSjukfallStart) {
+    public SjukfallGroupCacheKey(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates filter,
+                          boolean useOriginalSjukfallStart) {
         this.from = from;
         this.periods = periods;
         this.periodSize = periodSize;
@@ -111,6 +113,11 @@ class SjukfallGroupCacheKey {
     }
 
     public String getKey() {
+        return key;
+    }
+
+    @Override
+    public String toString() {
         return key;
     }
 }

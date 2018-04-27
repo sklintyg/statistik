@@ -68,7 +68,7 @@
     <task:annotation-driven executor="taskExecutor"/>
     <task:executor id="taskExecutor" pool-size="5-10" queue-capacity="25" rejection-policy="CALLER_RUNS" />
 
-    <context:component-scan base-package="se.inera.statistics.scheduler.common"/>
+    <bean class="se.inera.statistics.service.caching.Cache" />
     <beans profile="active">
         <context:component-scan base-package="se.inera.statistics.scheduler.active" />
     </beans>

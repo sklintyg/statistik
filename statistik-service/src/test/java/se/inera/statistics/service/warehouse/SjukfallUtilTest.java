@@ -21,8 +21,13 @@ package se.inera.statistics.service.warehouse;
 import com.google.common.collect.HashMultiset;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -49,12 +54,18 @@ import static se.inera.statistics.service.warehouse.Fact.aFact;
 public class SjukfallUtilTest {
     private MutableAisle aisle;
 
+    @InjectMocks
     private SjukfallUtil sjukfallUtil;
+
+    @Spy
+    private Cache cache = new Cache();
+
     private int id = 1;
 
     @Before
     public void setup() {
         sjukfallUtil = new SjukfallUtil();
+        MockitoAnnotations.initMocks(this);
         aisle = new MutableAisle(new HsaIdVardgivare("vgid"));
     }
 

@@ -121,6 +121,7 @@
     <bean class="se.inera.statistics.service.processlog.Processor"/>
     <bean class="se.inera.statistics.service.warehouse.FactConverter"/>
     <bean class="se.inera.statistics.service.warehouse.Warehouse"/>
+    <bean class="se.inera.statistics.service.caching.Cache"/>
     <bean class="se.inera.statistics.service.processlog.VardgivareManager"/>
     <bean class="se.inera.statistics.service.processlog.LakareManager"/>
     <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>

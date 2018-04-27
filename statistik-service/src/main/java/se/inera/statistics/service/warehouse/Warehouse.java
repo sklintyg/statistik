@@ -18,33 +18,24 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import com.google.common.collect.ImmutableMap;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.processlog.Enhet;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 public class Warehouse implements Iterable<Aisle> {
@@ -57,99 +48,28 @@ public class Warehouse implements Iterable<Aisle> {
     @Autowired
     private EnhetLoader enhetLoader;
 
+    @Autowired
+    private Cache cache;
+
     private static IdMap<HsaIdEnhet> enhetsMap = new IdMap<>();
     private static IdMap<HsaIdLakare> lakareMap = new IdMap<>();
 
-    private LoadingCache<HsaIdVardgivare, Aisle> aisleCache;
-    private LoadingCache<HsaIdVardgivare, List<HsaIdEnhet>> vgEnhetsCache;
-    private Cache<HsaIdEnhet, Enhet> enhetsCache;
-
-    @Scheduled(cron = "${scheduler.factReloadJob.cron}")
-    public void clearCaches() {
-        getAisleCache().invalidateAll();
-        getVgEnhetsCache().invalidateAll();
-        getEnhetsCache().invalidateAll();
-    }
-
-    private LoadingCache<HsaIdVardgivare, Aisle> getAisleCache() {
-        if (aisleCache == null) {
-            aisleCache = CacheBuilder.newBuilder()
-                    .softValues()
-                    .build(new CacheLoader<HsaIdVardgivare, Aisle>() {
-                        @Override
-                        public Aisle load(@NotNull HsaIdVardgivare vardgivarId) {
-                            return getAisle(vardgivarId);
-                        }
-                    });
-        }
-        return aisleCache;
-    }
-
-    private LoadingCache<HsaIdVardgivare, List<HsaIdEnhet>> getVgEnhetsCache() {
-        final long maxSize = 500L;
-        if (vgEnhetsCache == null) {
-            vgEnhetsCache = CacheBuilder.newBuilder()
-                    .maximumSize(maxSize)
-                    .build(new CacheLoader<HsaIdVardgivare, List<HsaIdEnhet>>() {
-                        @Override
-                        public List<HsaIdEnhet> load(@NotNull HsaIdVardgivare vardgivareId) {
-                            final List<Enhet> allEnhetsForVg = enhetLoader.getAllEnhetsForVg(vardgivareId);
-                            for (Enhet enhet : allEnhetsForVg) {
-                                getEnhetsCache().put(enhet.getEnhetId(), enhet);
-                            }
-                            return allEnhetsForVg.stream().map(Enhet::getEnhetId).collect(Collectors.toList());
-                        }
-                    });
-        }
-        return vgEnhetsCache;
-    }
-
-    private Cache<HsaIdEnhet, Enhet> getEnhetsCache() {
-        final long maxSize = 5000L;
-        if (enhetsCache == null) {
-            enhetsCache = CacheBuilder.newBuilder().maximumSize(maxSize).build();
-        }
-        return enhetsCache;
-    }
-
-    private Aisle getAisle(HsaIdVardgivare vardgivarId) {
+    private Aisle loadAisle(HsaIdVardgivare vardgivarId) {
         final List<Aisle> ailesForVgs = widelineLoader.getAilesForVgs(Collections.singletonList(vardgivarId));
         return ailesForVgs.isEmpty() ? new Aisle(vardgivarId, Collections.emptyList()) : ailesForVgs.get(0);
     }
 
     public Aisle get(HsaIdVardgivare vardgivarId) {
-        try {
-            return getAisleCache().get(vardgivarId);
-        } catch (ExecutionException e) {
-            LOG.warn("Failed to get aisle from cache for vg: " + vardgivarId);
-        }
-        return getAisle(vardgivarId);
+        return cache.getAisle(vardgivarId, this::loadAisle);
     }
 
     public Collection<Enhet> getEnhets(HsaIdVardgivare vardgivareId) {
-        try {
-            final List<HsaIdEnhet> enhetIds = getVgEnhetsCache().get(vardgivareId);
-            return getEnhetsWithHsaId(enhetIds);
-        } catch (ExecutionException e) {
-            LOG.warn("Could not get enhets from cache for vg: " + vardgivareId);
-        }
-        return enhetLoader.getAllEnhetsForVg(vardgivareId);
+        final List<HsaIdEnhet> enhetIds = cache.getVgEnhets(vardgivareId, vgid -> enhetLoader.getAllEnhetsForVg(vgid));
+        return getEnhetsWithHsaId(enhetIds);
     }
 
     public Collection<Enhet> getEnhetsWithHsaId(Collection<HsaIdEnhet> enhetIds) {
-        final Cache<HsaIdEnhet, Enhet> enhetsCache = getEnhetsCache();
-        final ImmutableMap<HsaIdEnhet, Enhet> allPresent = enhetsCache.getAllPresent(enhetIds);
-        if (allPresent.size() == enhetIds.size()) {
-            return new ArrayList<>(allPresent.values());
-        }
-        final HashSet<HsaIdEnhet> hsaIdEnhetsNotInCache = new HashSet<>(enhetIds);
-        hsaIdEnhetsNotInCache.removeAll(allPresent.keySet());
-        final Set<Enhet> enhets = new HashSet<>(enhetLoader.getEnhets(hsaIdEnhetsNotInCache));
-        for (Enhet enhet : enhets) {
-            enhetsCache.put(enhet.getEnhetId(), enhet);
-        }
-        enhets.addAll(allPresent.values());
-        return enhets;
+        return cache.getEnhetsWithHsaId(enhetIds, ids -> enhetLoader.getEnhets(ids));
     }
 
     public List<VgNumber> getAllVardgivare() {

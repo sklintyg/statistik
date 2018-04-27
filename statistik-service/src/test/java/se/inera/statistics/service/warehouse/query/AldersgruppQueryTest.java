@@ -24,7 +24,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.springframework.test.util.ReflectionTestUtils;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
@@ -60,12 +63,16 @@ public class AldersgruppQueryTest {
     @Mock
     private WidelineLoader widelineLoader;
 
+    @Spy
+    private Cache cache = new Cache();
+
     private int intyg;
     private int patient;
     private ArrayList<Fact> facts = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception {
+        ReflectionTestUtils.setField(sjukfallUtil, "cache", cache);
         MockitoAnnotations.initMocks(this);
         facts.clear();
     }

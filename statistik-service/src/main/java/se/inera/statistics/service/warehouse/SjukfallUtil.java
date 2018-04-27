@@ -25,19 +25,17 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 import java.time.LocalDate;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.Lists;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.service.caching.Cache;
+import se.inera.statistics.service.caching.SjukfallGroupCacheKey;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -47,47 +45,16 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.CounterFunction;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import com.google.common.collect.HashMultiset;
 
 @Component
 public class SjukfallUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SjukfallUtil.class);
-
-    public static final LocalDate START_DATE_OF_DATA_GATHERING = LocalDate.of(2013, 10, 1);
     public static final FilterPredicates ALL_ENHETER = new FilterPredicates(fact -> true, sjukfall -> true,
             FilterPredicates.HASH_EMPTY_FILTER, false);
 
-    private LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> sjukfallGroupsCache;
-
-    @Scheduled(cron = "${scheduler.factReloadJob.cron}")
-    public void clearSjukfallGroupCache() {
-        getSjukfallGroupsCache().invalidateAll();
-    }
-
-    private LoadingCache<SjukfallGroupCacheKey, List<SjukfallGroup>> getSjukfallGroupsCache() {
-        if (sjukfallGroupsCache == null) {
-            sjukfallGroupsCache = CacheBuilder.newBuilder()
-                    .softValues()
-                    .build(new CacheLoader<SjukfallGroupCacheKey, List<SjukfallGroup>>() {
-                        @Override
-                        public List<SjukfallGroup> load(SjukfallGroupCacheKey key) {
-                            final LocalDate from = key.getFrom();
-                            final int periods = key.getPeriods();
-                            final int periodSize = key.getPeriodSize();
-                            final Aisle aisle = key.getAisle();
-                            final FilterPredicates filter = key.getFilter();
-                            final boolean useOriginalSjukfallStart = key.isUseOriginalSjukfallStart();
-                            return Lists
-                                    .newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter, useOriginalSjukfallStart));
-                        }
-                    });
-        }
-        return sjukfallGroupsCache;
-    }
+    @Autowired
+    private Cache cache;
 
     public FilterPredicates createEnhetFilter(HsaIdEnhet... enhetIds) {
         final Set<Integer> availableEnhets = Arrays.stream(enhetIds).map(Warehouse::getEnhet).collect(Collectors.toSet());
@@ -107,15 +74,8 @@ public class SjukfallUtil {
 
     List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates sjukfallFilter,
             boolean useOriginalSjukfallStart) {
-        try {
-            return getSjukfallGroupsCache()
-                    .get(new SjukfallGroupCacheKey(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
-        } catch (ExecutionException e) {
-            // Failed to get from cache. Do nothing and fall through.
-            LOG.warn("Failed to get value from cache");
-            LOG.debug("Failed to get value from cache", e);
-        }
-        return Lists.newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
+        return cache.getSjukfallGroups(
+                new SjukfallGroupCacheKey(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
     }
 
     // CHECKSTYLE:OFF ParameterNumberCheck

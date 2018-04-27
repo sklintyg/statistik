@@ -23,6 +23,23 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
   version="2.0">
-  <persistence-unit name="IneraStatisticsLog" transaction-type="RESOURCE_LOCAL" />
+  <persistence-unit name="IneraStatisticsLog" transaction-type="RESOURCE_LOCAL">
+    <class>se.inera.statistics.service.countypopulation.CountyPopulationRow</class>
+    <class>se.inera.statistics.service.hsa.HSAStore</class>
+    <class>se.inera.statistics.service.landsting.persistance.landsting.Landsting</class>
+    <class>se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet</class>
+    <class>se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdate</class>
+    <class>se.inera.statistics.service.processlog.Enhet</class>
+    <class>se.inera.statistics.service.processlog.EventPointer</class>
+    <class>se.inera.statistics.service.processlog.IntygEvent</class>
+    <class>se.inera.statistics.service.processlog.Lakare</class>
+    <class>se.inera.statistics.service.processlog.message.MessageEvent</class>
+    <class>se.inera.statistics.service.userselection.UserSelection</class>
+    <class>se.inera.statistics.service.warehouse.model.db.IntygCommon</class>
+    <class>se.inera.statistics.service.warehouse.model.db.MessageWideLine</class>
+    <class>se.inera.statistics.service.warehouse.model.db.WideLine</class>
+    <class>se.inera.statistics.service.warehouse.model.db.LocalDateConverter</class>
+    <class>se.inera.statistics.service.warehouse.model.db.LocalTimeConverter</class>
+  </persistence-unit>
 </persistence>
 
