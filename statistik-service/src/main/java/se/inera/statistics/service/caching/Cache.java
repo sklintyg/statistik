@@ -24,10 +24,12 @@ import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
@@ -51,24 +53,36 @@ import java.util.stream.Collectors;
 @Component
 public class Cache {
     private static final Logger LOG = LoggerFactory.getLogger(Cache.class);
-    private static final int MAX_SIZE = 10000;
     private static final String AISLE = "AISLE";
     private static final String SJUKFALLGROUP = "SJUKFALLGROUP";
     private static final String VGENHET = "VGENHET";
     private static final String ENHET = "ENHET";
+    private static final int DEFAULT_MAX_SIZE = 10000;
 
-    private com.google.common.cache.Cache<String, Object> genericCache = CacheBuilder.newBuilder()
-        .maximumSize(MAX_SIZE).expireAfterWrite(1, TimeUnit.DAYS).build();
+    @Value("${cache.maxsize:10000}")
+    private String maxSize;
+
+    private com.google.common.cache.Cache<String, Object> genericCache;
+
+    private com.google.common.cache.Cache<String, Object> getGenericCache() {
+        if (genericCache == null) {
+            final Integer maxSizeInteger = ConversionHelper.parseInt(maxSize);
+            final int maxSizeInt = maxSizeInteger != null ? maxSizeInteger : DEFAULT_MAX_SIZE;
+            genericCache = CacheBuilder.newBuilder()
+                    .maximumSize(maxSizeInt).expireAfterWrite(1, TimeUnit.DAYS).build();
+        }
+        return genericCache;
+    }
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     public void clearCaches() {
-        genericCache.invalidateAll();
+        getGenericCache().invalidateAll();
     }
 
     public List<SjukfallGroup> getSjukfallGroups(SjukfallGroupCacheKey key) {
         LOG.info("Getting sjukfallgroups: {}", key.getKey());
         try {
-            return (List<SjukfallGroup>) genericCache.get(SJUKFALLGROUP + key.getKey(), () -> loadSjukfallgroups(key));
+            return (List<SjukfallGroup>) getGenericCache().get(SJUKFALLGROUP + key.getKey(), () -> loadSjukfallgroups(key));
         } catch (ExecutionException e) {
             LOG.warn("Failed to get value from cache");
             LOG.debug("Failed to get value from cache", e);
@@ -91,7 +105,7 @@ public class Cache {
     public Aisle getAisle(HsaIdVardgivare vardgivarId, Function<HsaIdVardgivare, Aisle> loader) {
         LOG.info("Getting aisle: {}", vardgivarId);
         try {
-            return (Aisle) genericCache.get(AISLE + vardgivarId.getId(), () -> aisleLoader(vardgivarId, loader));
+            return (Aisle) getGenericCache().get(AISLE + vardgivarId.getId(), () -> aisleLoader(vardgivarId, loader));
         } catch (ExecutionException e) {
             LOG.warn("Failed to get aisle from cache for vg: " + vardgivarId);
             return aisleLoader(vardgivarId, loader);
@@ -107,7 +121,7 @@ public class Cache {
         LOG.info("VgEnhets not cached: {}", vardgivareId);
         final List<Enhet> allEnhetsForVg = loader.apply(vardgivareId);
         for (Enhet enhet : allEnhetsForVg) {
-            genericCache.put(ENHET + enhet.getEnhetId(), enhet);
+            getGenericCache().put(ENHET + enhet.getEnhetId(), enhet);
         }
         return allEnhetsForVg.stream().map(Enhet::getEnhetId).collect(Collectors.toList());
     }
@@ -115,7 +129,7 @@ public class Cache {
     public List<HsaIdEnhet> getVgEnhets(HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
         LOG.info("Getting VgEnhets: {}", vardgivareId);
         try {
-            return (List<HsaIdEnhet>) genericCache.get(VGENHET + vardgivareId, () -> loadVgEnhets(vardgivareId, loader));
+            return (List<HsaIdEnhet>) getGenericCache().get(VGENHET + vardgivareId, () -> loadVgEnhets(vardgivareId, loader));
         } catch (ExecutionException e) {
             LOG.warn("Could not get enhets from cache for vg: " + vardgivareId);
             return loadVgEnhets(vardgivareId, loader);
@@ -125,7 +139,7 @@ public class Cache {
     public Collection<Enhet> getEnhetsWithHsaId(Collection<HsaIdEnhet> enhetIds,
                                                 Function<Collection<HsaIdEnhet>, Collection<Enhet>> loader) {
         final List<String> cacheKeys = enhetIds.stream().map(hsaIdEnhet -> ENHET + hsaIdEnhet.getId()).collect(Collectors.toList());
-        final ImmutableMap<String, Object> allPresent = genericCache.getAllPresent(cacheKeys);
+        final ImmutableMap<String, Object> allPresent = getGenericCache().getAllPresent(cacheKeys);
         if (allPresent.size() == enhetIds.size()) {
             LOG.info("All enhets cached");
             return allPresent.values().stream().map(o -> (Enhet) o).collect(Collectors.toList());
@@ -135,7 +149,7 @@ public class Cache {
                 s -> new HsaIdEnhet(s.substring(ENHET.length()))).collect(Collectors.toList()));
         final Set<Enhet> enhets = new HashSet<>(loader.apply(hsaIdEnhetsNotInCache));
         for (Enhet enhet : enhets) {
-            genericCache.put(ENHET + enhet.getEnhetId().getId(), enhet);
+            getGenericCache().put(ENHET + enhet.getEnhetId().getId(), enhet);
         }
         enhets.addAll(allPresent.values().stream().map(o -> (Enhet) o).collect(Collectors.toList()));
         LOG.info("All enhets not cached");

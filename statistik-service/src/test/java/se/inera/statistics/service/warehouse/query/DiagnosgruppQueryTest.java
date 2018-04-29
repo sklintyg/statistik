@@ -59,7 +59,7 @@ import static org.mockito.Matchers.any;
 import static se.inera.statistics.service.warehouse.Fact.aFact;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {}, locations = {"classpath:icd10.xml", "classpath:query-test.xml"})
+@ContextConfiguration(locations = {"classpath:icd10.xml", "classpath:query-test.xml"})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DiagnosgruppQueryTest {
 
