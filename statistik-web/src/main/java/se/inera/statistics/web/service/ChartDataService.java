@@ -21,7 +21,6 @@ package se.inera.statistics.web.service;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -68,9 +67,6 @@ public class ChartDataService {
     private MonitoringLogService monitoringLogService;
 
     @Autowired
-    private Clock clock;
-
-    @Autowired
     private ResponseHandler responseHandler;
 
     @Autowired
@@ -102,19 +98,7 @@ public class ChartDataService {
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     public void buildCache() {
-        buildCache(false);
-    }
-
-    public void buildCache(boolean forceRebuild) {
-        LOG.info("National cache population requested. Forced rebuild: " + forceRebuild);
-        final int sleepTime = 100;
-        while (forceRebuild && dataCalculationOngoing.get()) {
-            try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                LOG.warn("Sleep was interrupted");
-            }
-        }
+        LOG.info("National cache population requested");
         if (!dataCalculationOngoing.getAndSet(true)) {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
