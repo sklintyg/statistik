@@ -2,28 +2,28 @@
   "name": "statistik",
   "version": "0.0.0",
   "dependencies": {
-    "jquery": "3.2.1",
-    "angular": "1.6.8",
-    "angular-route": "1.6.8",
-    "angular-cookies": "1.6.8",
-    "angular-sanitize": "1.6.8",
-    "angular-animate": "1.6.8",
-    "angular-i18n": "1.6.8",
+    "jquery": "3.3.1",
+    "angular": "1.6.10",
+    "angular-route": "1.6.10",
+    "angular-cookies": "1.6.10",
+    "angular-sanitize": "1.6.10",
+    "angular-animate": "1.6.10",
+    "angular-i18n": "1.6.10",
     "bootstrap-sass": "3.3.7",
     "angular-bootstrap": "2.5.0",
-    "bootstrap-multiselect": "0.9.13",
+    "bootstrap-multiselect": "0.9.15",
     "outdated-browser": "1.1.5",
-    "lodash": "4.17.4",
-    "pdfmake": "0.1.35",
-    "momentjs": "2.19.3",
+    "lodash": "4.17.10",
+    "pdfmake": "0.1.36",
+    "momentjs": "2.22.1",
     "dropzone": "4.3.0",
     "ngstorage": "0.3.11",
     "highcharts": "6.0.3",
     "font-awesome": "fontawesome#^4.7.0"
   },
   "devDependencies": {
-    "angular-mocks": "1.6.8",
-    "angular-scenario": "1.6.8"
+    "angular-mocks": "1.6.10",
+    "angular-scenario": "1.6.10"
   },
   "overrides": {
     "angular-i18n": {
@@ -42,6 +42,6 @@
     }
   },
   "resolutions": {
-    "angular": "1.6.8"
+    "angular": "1.6.10"
   }
 }
