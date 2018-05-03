@@ -37,17 +37,16 @@ public class SjukfallIterator implements Iterator<SjukfallGroup> {
     private final int periodSize;
     private final SjukfallCalculator sjukfallCalculator;
 
-    public SjukfallIterator(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates sjukfallFilter,
-            boolean useOriginalSjukfallStart) {
+    public SjukfallIterator(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates sjukfallFilter) {
         this.from = from;
         this.periodSize = periodSize;
         this.sjukfallFilter = sjukfallFilter;
         List<Range> ranges = getRanges(from, periods, periodSize);
-        sjukfallCalculator = getSjukfallCalculator(aisle, sjukfallFilter.getIntygFilter(), useOriginalSjukfallStart, ranges);
+        sjukfallCalculator = getSjukfallCalculator(aisle, sjukfallFilter.getIntygFilter(), ranges);
     }
 
-    SjukfallCalculator getSjukfallCalculator(Aisle aisle, Predicate<Fact> filter, boolean useOriginalSjukfallStart, List<Range> ranges) {
-        return new SjukfallCalculator(aisle, filter, ranges, useOriginalSjukfallStart);
+    SjukfallCalculator getSjukfallCalculator(Aisle aisle, Predicate<Fact> filter, List<Range> ranges) {
+        return new SjukfallCalculator(aisle, filter, ranges);
     }
 
     @SuppressFBWarnings(value = "ICAST_INTEGER_MULTIPLY_CAST_TO_LONG",

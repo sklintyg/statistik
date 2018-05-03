@@ -104,9 +104,8 @@ public class SosReportCreator {
                 final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true,
                         "sosspecial" + fromYear + dx + toYear, false);
 
-                final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(range.getFrom(), 1,
-                        range.getNumberOfMonths(),
-                        aisle, sjukfallFilter);
+                final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(range.getFrom(), 1,
+                        range.getNumberOfMonths(), aisle, sjukfallFilter);
                 for (SjukfallGroup sjukfallGroup : sjukfallGroups) {
                     for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                         if (sjukfall.getStart() <= toIntDay && sjukfall.getEnd() >= fromIntDay

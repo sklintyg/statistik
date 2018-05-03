@@ -57,9 +57,9 @@ public class Cache {
     private static final String SJUKFALLGROUP = "SJUKFALLGROUP";
     private static final String VGENHET = "VGENHET";
     private static final String ENHET = "ENHET";
-    private static final int DEFAULT_MAX_SIZE = 10000;
+    private static final int DEFAULT_MAX_SIZE = 1000;
 
-    @Value("${cache.maxsize:10000}")
+    @Value("${cache.maxsize:1000}")
     private String maxSize;
 
     private com.google.common.cache.Cache<String, Object> genericCache;
@@ -68,8 +68,9 @@ public class Cache {
         if (genericCache == null) {
             final Integer maxSizeInteger = ConversionHelper.parseInt(maxSize);
             final int maxSizeInt = maxSizeInteger != null ? maxSizeInteger : DEFAULT_MAX_SIZE;
+            LOG.info("Creates cache with max size: {}", maxSizeInt);
             genericCache = CacheBuilder.newBuilder()
-                    .maximumSize(maxSizeInt).expireAfterWrite(1, TimeUnit.DAYS).build();
+                    .softValues().expireAfterWrite(1, TimeUnit.DAYS).build();
         }
         return genericCache;
     }
@@ -97,9 +98,8 @@ public class Cache {
         final int periodSize = key.getPeriodSize();
         final Aisle aisle = key.getAisle();
         final FilterPredicates filter = key.getFilter();
-        final boolean useOriginalSjukfallStart = key.isUseOriginalSjukfallStart();
         return Lists
-                .newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter, useOriginalSjukfallStart));
+                .newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter));
     }
 
     public Aisle getAisle(HsaIdVardgivare vardgivarId, Function<HsaIdVardgivare, Aisle> loader) {

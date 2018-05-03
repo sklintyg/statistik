@@ -227,7 +227,7 @@ public class SjukfallUtilTest {
         final ArrayList<SjukfallGroup> sjukfallGrupper = new ArrayList<>();
         sjukfallGrupper.add(new SjukfallGroup(Range.createForLastMonthsExcludingCurrent(1, clock), Arrays.asList(createSjukfall(Kon.FEMALE), createSjukfall(Kon.MALE), createSjukfall(Kon.MALE))));
         final Aisle currentAisle = aisle.createAisle();
-        Mockito.when(spy.sjukfallGrupper(start, periods, periodSize, currentAisle, filter, false)).thenReturn(sjukfallGrupper);
+        Mockito.when(spy.sjukfallGrupper(start, periods, periodSize, currentAisle, filter)).thenReturn(sjukfallGrupper);
 
         //When
         final KonDataResponse response = spy.calculateKonDataResponse(currentAisle, filter, start, periods, periodSize, Arrays.asList("G1"), Arrays.asList(1), new CounterFunction<Integer>() {

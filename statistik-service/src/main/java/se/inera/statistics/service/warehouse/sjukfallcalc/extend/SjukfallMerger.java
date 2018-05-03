@@ -31,13 +31,9 @@ public class SjukfallMerger {
 
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallMerger.class);
     private ExtendedSjukfallCalculator extendedSjukfallCalculator;
-    private final boolean useOriginalSjukfallStart;
 
-    public SjukfallMerger(List<Fact> aisle, boolean useOriginalSjukfallStart) {
-        this.useOriginalSjukfallStart = useOriginalSjukfallStart;
-        if (useOriginalSjukfallStart) {
-            this.extendedSjukfallCalculator = new ExtendedSjukfallCalculator(aisle);
-        }
+    public SjukfallMerger(List<Fact> aisle) {
+        this.extendedSjukfallCalculator = new ExtendedSjukfallCalculator(aisle);
     }
 
     public void mergeAndUpdateSjukfall(long patient, Collection<SjukfallExtended> sjukfallsFromAvailableEnhetsForPatient,
@@ -57,10 +53,8 @@ public class SjukfallMerger {
     private void updateMergedSjukfall(long patient, Collection<SjukfallExtended> sjukfalls, SjukfallExtended sjukfall,
             List<SjukfallExtended> mergableSjukfalls, SjukfallExtended mergedSjukfall) {
         SjukfallExtended mergedSjukfallExtendedWithRealDays = mergedSjukfall.extendWithRealDaysWithinPeriod(sjukfall);
-        if (useOriginalSjukfallStart) {
-            mergedSjukfallExtendedWithRealDays = getSjukfallExtendedToOriginalStartDate(patient, sjukfalls,
-                    mergedSjukfallExtendedWithRealDays);
-        }
+        mergedSjukfallExtendedWithRealDays = getSjukfallExtendedToOriginalStartDate(patient, sjukfalls,
+                mergedSjukfallExtendedWithRealDays);
         for (SjukfallExtended mergableSjukfall : mergableSjukfalls) {
             sjukfalls.remove(mergableSjukfall);
         }

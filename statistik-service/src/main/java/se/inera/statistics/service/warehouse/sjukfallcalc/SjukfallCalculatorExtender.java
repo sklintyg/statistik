@@ -36,9 +36,9 @@ class SjukfallCalculatorExtender {
     private final SjukfallMerger sjukfallMerger;
     private final FactsToSjukfallConverterForAisle factsToSjukfallConverterForAisle;
 
-    SjukfallCalculatorExtender(boolean useOriginalSjukfallStart, List<Fact> aisle) {
+    SjukfallCalculatorExtender(List<Fact> aisle) {
         factsToSjukfallConverterForAisle = new FactsToSjukfallConverterForAisle(aisle, new FactsToSjukfallConverter());
-        sjukfallMerger = new SjukfallMerger(aisle, useOriginalSjukfallStart);
+        sjukfallMerger = new SjukfallMerger(aisle);
     }
 
     void extendSjukfallConnectedByIntygOnOtherEnhets(Multimap<Long, SjukfallExtended> sjukfallForAvailableEnhets) {

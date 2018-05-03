@@ -62,43 +62,17 @@ public class SjukfallUtil {
         return new FilterPredicates(fact -> fact != null && availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue, false);
     }
 
-    public Iterable<SjukfallGroup> sjukfallGrupperUsingOriginalSjukfallStart(final LocalDate from, final int periods, final int periodSize,
-            final Aisle aisle, final FilterPredicates filter) {
-        return sjukfallGrupper(from, periods, periodSize, aisle, filter, true);
-    }
-
-    public Iterable<SjukfallGroup> sjukfallGrupper(final LocalDate from, final int periods, final int periodSize, final Aisle aisle,
-            final FilterPredicates filter) {
-        return sjukfallGrupper(from, periods, periodSize, aisle, filter, filter.isSjukfallangdfilterActive());
-    }
-
-    List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates sjukfallFilter,
-            boolean useOriginalSjukfallStart) {
+    public List<SjukfallGroup> sjukfallGrupper(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates sjukfallFilter) {
         return cache.getSjukfallGroups(
-                new SjukfallGroupCacheKey(from, periods, periodSize, aisle, sjukfallFilter, useOriginalSjukfallStart));
-    }
-
-    // CHECKSTYLE:OFF ParameterNumberCheck
-    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public <T> KonDataResponse calculateKonDataResponseUsingOriginalSjukfallStart(Aisle aisle, FilterPredicates filter, LocalDate start,
-            int periods, int periodSize, List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction) {
-        return calculateKonDataResponse(aisle, filter, start, periods, periodSize, groupNames, groupIds, counterFunction, true);
+                new SjukfallGroupCacheKey(from, periods, periodSize, aisle, sjukfallFilter));
     }
 
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public <T> KonDataResponse calculateKonDataResponse(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize,
             List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction) {
-        return calculateKonDataResponse(aisle, filter, start, periods, periodSize, groupNames, groupIds, counterFunction,
-                filter.isSjukfallangdfilterActive());
-    }
-
-    // CHECKSTYLE:OFF ParameterNumberCheck
-    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    private <T> KonDataResponse calculateKonDataResponse(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize,
-            List<String> groupNames, List<T> groupIds, CounterFunction<T> counterFunction, boolean useOriginalSjukfallStart) {
         List<KonDataRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup : sjukfallGrupper(start, periods, periodSize, aisle, filter, useOriginalSjukfallStart)) {
+        for (SjukfallGroup sjukfallGroup : sjukfallGrupper(start, periods, periodSize, aisle, filter)) {
             final HashMultiset<T> maleCounter = HashMultiset.create();
             final HashMultiset<T> femaleCounter = HashMultiset.create();
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {

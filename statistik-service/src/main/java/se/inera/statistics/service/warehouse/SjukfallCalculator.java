@@ -36,14 +36,13 @@ class SjukfallCalculator {
     private final int maxPeriods;
     private SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator;
 
-    SjukfallCalculator(Aisle aisle, Predicate<Fact> filter, List<Range> ranges, boolean useOriginalSjukfallStart) {
+    SjukfallCalculator(Aisle aisle, Predicate<Fact> filter, List<Range> ranges) {
         final ArrayList<Fact> facts = new ArrayList<>(aisle.getLines());
         boolean extendSjukfall = !SjukfallUtil.ALL_ENHETER.getIntygFilter().equals(filter);
         final Iterable<Fact> filteredAisle = StreamSupport.stream(aisle.spliterator(), true)
                 .filter(filter).collect(Collectors.toList());
         ArrayList<Range> rangeList = new ArrayList<>(ranges);
-        sjukfallPerPeriodCalculator = new SjukfallPerPeriodCalculator(extendSjukfall, useOriginalSjukfallStart, rangeList, facts,
-                filteredAisle);
+        sjukfallPerPeriodCalculator = new SjukfallPerPeriodCalculator(extendSjukfall, rangeList, facts, filteredAisle);
         maxPeriods = rangeList.size();
     }
 

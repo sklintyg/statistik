@@ -5,7 +5,7 @@ environment_name: "demo"
 config_etc_folder: "{{ config_folder }}/{{ environment_name }}"
 profile: hsa-stub,wc-hsa-stub,security-both,qm,active
 host_url: https://demo.statistik.intygstjanster.se
-xmx_memory: "12048m"
+xmx_memory: "8192m"
 
 proxy_env:
   http_proxy: http://bf-proxy.sth:8888

@@ -75,7 +75,7 @@ public class OverviewQuery {
     private SjukfallGroup getSjukfallGroup(Aisle aisle, FilterPredicates filter, Range range) {
         final LocalDate from = range.getFrom();
         final int periodLength = range.getNumberOfMonths();
-        return sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(from, 1, periodLength, aisle, filter).iterator().next();
+        return sjukfallUtil.sjukfallGrupper(from, 1, periodLength, aisle, filter).iterator().next();
     }
 
     private static int percentChange(int current, int previous) {

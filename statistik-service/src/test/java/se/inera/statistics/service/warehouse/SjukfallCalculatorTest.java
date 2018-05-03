@@ -43,7 +43,7 @@ public class SjukfallCalculatorTest {
         //When
         final Aisle aisle = new Aisle(new HsaIdVardgivare(""), Collections.emptyList());
         final Predicate<Fact> intygFilter = SjukfallUtil.ALL_ENHETER.getIntygFilter();
-        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(aisle, intygFilter, ranges, false);
+        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(aisle, intygFilter, ranges);
 
         //Then
         final SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator = (SjukfallPerPeriodCalculator) getField("sjukfallPerPeriodCalculator", SjukfallCalculator.class, sjukfallCalculator);
@@ -64,7 +64,7 @@ public class SjukfallCalculatorTest {
         final Predicate<Fact> filter = fact -> true;
 
         //When
-        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), filter, ranges, false);
+        final SjukfallCalculator sjukfallCalculator = new SjukfallCalculator(new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), filter, ranges);
 
         //Then
         final SjukfallPerPeriodCalculator sjukfallPerPeriodCalculator = (SjukfallPerPeriodCalculator) getField("sjukfallPerPeriodCalculator", SjukfallCalculator.class, sjukfallCalculator);

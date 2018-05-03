@@ -38,17 +38,14 @@ public class SjukfallPerPeriodCalculator {
      *            true = försök att komplettera sjukfall från andra enheter än de man har tillgång till,
      *            false = titta bara på tillgängliga enheter, lämplig att använda t ex om man vet att man
      *            har tillgång till alla enheter
-     * @param useOriginalSjukfallStart
-     *            true = använd faktiskt startdatum, inte första datum på första intyget som är
-     *            tillgängligt för anroparen
      */
-    public SjukfallPerPeriodCalculator(boolean extendSjukfall, boolean useOriginalSjukfallStart, List<Range> ranges, List<Fact> aisle,
+    public SjukfallPerPeriodCalculator(boolean extendSjukfall, List<Range> ranges, List<Fact> aisle,
             Iterable<Fact> filteredAisle) {
         this.extendSjukfall = extendSjukfall;
         this.ranges = ranges;
-        sjukfallPerPatientCalculator = new SjukfallPerPatientCalculator(useOriginalSjukfallStart, ranges, filteredAisle);
+        sjukfallPerPatientCalculator = new SjukfallPerPatientCalculator(ranges, filteredAisle);
         if (this.extendSjukfall) {
-            sjukfallCalculatorExtender = new SjukfallCalculatorExtender(useOriginalSjukfallStart, aisle);
+            sjukfallCalculatorExtender = new SjukfallCalculatorExtender(aisle);
         }
     }
 

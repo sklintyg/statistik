@@ -35,7 +35,7 @@ public class SjukfallIteratorTest {
         //Given
         final LocalDate fromDate = LocalDate.of(2015, 1, 1);
         final int periodSize = 1;
-        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize, new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER, false);
+        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize, new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER);
 
         //When
         final SjukfallGroup group = sjukfallIterator.next();
@@ -63,7 +63,7 @@ public class SjukfallIteratorTest {
         //Given
         final LocalDate fromDate = LocalDate.of(2015, 1, 1);
         final int periodSize = 1;
-        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize, new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER, false);
+        final SjukfallIterator sjukfallIterator = new SjukfallIterator(fromDate, 2, periodSize, new Aisle(new HsaIdVardgivare(""), Collections.<Fact>emptyList()), SjukfallUtil.ALL_ENHETER);
 
         //When and then
         try {

@@ -32,19 +32,16 @@ public class SjukfallGroupCacheKey {
     private final int periodSize;
     private final Aisle aisle;
     private final FilterPredicates filter;
-    private final boolean useOriginalSjukfallStart;
     private final String key;
 
-    public SjukfallGroupCacheKey(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates filter,
-                          boolean useOriginalSjukfallStart) {
+    public SjukfallGroupCacheKey(LocalDate from, int periods, int periodSize, Aisle aisle, FilterPredicates filter) {
         this.from = from;
         this.periods = periods;
         this.periodSize = periodSize;
         this.aisle = aisle;
         this.filter = filter;
-        this.useOriginalSjukfallStart = useOriginalSjukfallStart;
         this.key = getToTimeNullSafe(from) + "_" + periods + "_" + periodSize + "_" + getVardgivareIdNullSafe(aisle) + "_"
-                + useOriginalSjukfallStart + "_" + getHashNullSafe(filter);
+                + getHashNullSafe(filter);
     }
 
     private String getHashNullSafe(FilterPredicates filter) {
@@ -106,10 +103,6 @@ public class SjukfallGroupCacheKey {
 
     public FilterPredicates getFilter() {
         return filter;
-    }
-
-    public boolean isUseOriginalSjukfallStart() {
-        return useOriginalSjukfallStart;
     }
 
     public String getKey() {

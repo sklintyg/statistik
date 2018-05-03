@@ -114,7 +114,7 @@ public final class SjukskrivningslangdQuery {
     private static SimpleKonResponse getLangaSjukfall(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
             int periodLength, SjukfallUtil sjukfallUtil, Function<SjukfallGroup, String> rowNameFunction) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle,
+        for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle,
                 filter)) {
             Counter counter = new Counter<>("");
             for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
@@ -131,7 +131,7 @@ public final class SjukskrivningslangdQuery {
     public static SimpleKonResponse getSjuksrivningslangd(Aisle aisle, FilterPredicates filter, LocalDate from,
             int periods, int periodLength, SjukfallUtil sjukfallUtil) {
         List<SimpleKonDataRow> rows = new ArrayList<>();
-        for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupperUsingOriginalSjukfallStart(from, periods, periodLength, aisle,
+        for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle,
                 filter)) {
             Map<Ranges.Range, Counter<Ranges.Range>> counterMap = SjukskrivningslangdQuery.count(sjukfallGroup.getSjukfall());
             for (Ranges.Range i : SjukfallslangdUtil.RANGES) {
@@ -154,8 +154,7 @@ public final class SjukskrivningslangdQuery {
             final int rangeId = ranges.getRangeCutoffForValue(length);
             counter.add(rangeId);
         };
-        return sjukfallUtil.calculateKonDataResponseUsingOriginalSjukfallStart(aisle, filter, start, periods, periodLength, names, ids,
-                counterFunction);
+        return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
     }
 
     static int getLong(Collection<Sjukfall> sjukfalls) {

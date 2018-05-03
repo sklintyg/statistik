@@ -35,13 +35,11 @@ import java.util.stream.Collectors;
 
 public class SjukfallPerPatientCalculator {
 
-    private final boolean useOriginalSjukfallStart;
     private final List<Range> ranges;
     private List<ArrayListMultimap<Long, Fact>> factsPerPatientAndPeriod;
     private final FactsToSjukfallConverter factsToSjukfallConverter;
 
-    public SjukfallPerPatientCalculator(boolean useOriginalSjukfallStart, List<Range> ranges, Iterable<Fact> filteredAisle) {
-        this.useOriginalSjukfallStart = useOriginalSjukfallStart;
+    public SjukfallPerPatientCalculator(List<Range> ranges, Iterable<Fact> filteredAisle) {
         this.ranges = ranges;
         this.factsPerPatientAndPeriod = FactsPerPatientAndPeriodGrouper.group(filteredAisle, this.ranges);
         this.factsToSjukfallConverter = new FactsToSjukfallConverter();
@@ -49,9 +47,7 @@ public class SjukfallPerPatientCalculator {
 
     public Multimap<Long, SjukfallExtended> getSjukfallsPerPatient(int period) {
         final ArrayListMultimap<Long, SjukfallExtended> currentSjukfallsPerPatient = getSjukfallPerPatientInPeriod(period);
-        if (useOriginalSjukfallStart) {
-            extendWithEarlierStart(period, currentSjukfallsPerPatient);
-        }
+        extendWithEarlierStart(period, currentSjukfallsPerPatient);
         return currentSjukfallsPerPatient;
     }
 
