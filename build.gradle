@@ -8,7 +8,7 @@ plugins {
 ext {
     infraVersion = System.properties['infraVersion'] ?: '3.6.0.+'
 
-    intygSchematronVersion = "1.0.12"
+    intygSchematronVersion = "1.0.26"
     certificateSchemaVersion = "3.2.0-RC1"
     monitoringSchemaVersion = "1.0.0.0"
 
