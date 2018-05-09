@@ -45,6 +45,9 @@ import se.inera.statistics.service.processlog.IntygEvent;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.Receiver;
+import se.inera.statistics.service.processlog.intygsent.IntygSentEvent;
+import se.inera.statistics.service.processlog.intygsent.IntygsentLogConsumer;
+import se.inera.statistics.service.processlog.intygsent.ProcessIntygsentLog;
 import se.inera.statistics.service.processlog.message.MessageEvent;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 import se.inera.statistics.service.processlog.message.ProcessMessageLog;
@@ -107,10 +110,18 @@ public class RestSupportService {
 
     @Autowired
     private Receiver receiver;
+
     @Autowired
     private ProcessMessageLog processMessageLog;
+
     @Autowired
     private MessageLogConsumer messageLogConsumer;
+
+    @Autowired
+    private ProcessIntygsentLog processIntygsentLog;
+
+    @Autowired
+    private IntygsentLogConsumer intygsentLogConsumer;
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
@@ -214,6 +225,7 @@ public class RestSupportService {
         manager.createNativeQuery("TRUNCATE TABLE " + MessageWideLine.TABLE).executeUpdate();
         manager.createNativeQuery("TRUNCATE TABLE " + MessageEvent.TABLE).executeUpdate();
         manager.createNativeQuery("TRUNCATE TABLE " + IntygCommon.TABLE).executeUpdate();
+        manager.createNativeQuery("TRUNCATE TABLE " + IntygSentEvent.TABLE).executeUpdate();
         return clearCaches();
     }
 
@@ -394,6 +406,16 @@ public class RestSupportService {
         countyPopulationInjector.addCountyPopulation(countyPopulation, java.time.LocalDate.parse(date).getYear());
         final LocalDate nextYear = LocalDate.parse(date).plusYears(1);
         countyPopulationManager.getCountyPopulation(new Range(nextYear, nextYear)); // Populate the cache in db
+        return Response.ok().build();
+    }
+
+    @POST
+    @Path("sendIntygToMottagare/{intygId}/{mottagare}")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    public Response sendIntygToMottagare(@PathParam("intygId") String intygId, @PathParam("mottagare") String mottagare) {
+        processIntygsentLog.store(intygId, mottagare, System.currentTimeMillis());
+        intygsentLogConsumer.processBatch();
         return Response.ok().build();
     }
 

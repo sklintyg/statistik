@@ -1,0 +1,72 @@
+---
+Test
+---
+
+
+!1 TEST1: Endast intyg skickade till FK räknas
+
+!3 Givet att:
+| script | dagens datum | 2015-11-06 |
+
+| Enbart foljande intyg finns |
+| intygid | personnr | signeringstid | signeringstid | enhet | intygformat |
+| 1001 | 19790219-9285 | 2015-02-10T12:24:15 | 2015-02-10T12:24:30 | enhet1 | LISJP |
+| 1002 | 19790429-9272 | 2015-03-10T12:25:15 | 2015-03-10T12:25:30 | enhet1 | LISJP |
+| 1003 | 19790429-9272 | 2015-04-10T12:25:15 | 2015-04-10T12:25:30 | enhet1 | LISJP |
+| 1004 | 19791212-1212 | 2015-04-10T12:25:15 | 2015-04-10T12:25:30 | enhet1 | LISJP |
+
+| Intyg skickat till mottagare |
+| intygid | mottagare |
+| 1001    | ANNAT    |
+| 1002    | FKASSA   |
+| 1003    | ANNAT    |
+| 1004    | ANNAT    |
+
+| Foljande meddelanden finns |
+| personnr | skickat | intygsid | ämne |
+| 19790219-9285 | 2015-03-12T10:00:00 | 1001 | KOMPLT |
+| 19790429-9272 | 2015-04-03T10:00:00 | 1002 | KOMPLT |
+| 19790429-9272 | 2015-05-03T10:00:00 | 1003 | KOMPLT |
+
+!3 Då gäller:
+
+| Andel i rapporten komplettering andel intyg som tvarsnitt |
+| inloggad som | grupp        | totalt? | män? | kvinnor? |
+| user1        | FK 7263/7804 | 100%    | 100% | 0%       |
+
+
+
+
+!1 TEST2: Intyg skickas till FK innan de registeras av ST
+
+!3 Givet att:
+| script | dagens datum | 2015-11-06 |
+
+| Enbart foljande intyg finns |
+| intygid | personnr | signeringstid | signeringstid | enhet | intygformat |
+| 1001 | 19790219-9285 | 2015-02-10T12:24:15 | 2015-02-10T12:24:30 | enhet1 | LISJP |
+
+| Intyg skickat till mottagare |
+| intygid | mottagare |
+| 1001    | ANNAT    |
+| 1002    | FKASSA   |
+| 1003    | ANNAT    |
+| 1004    | ANNAT    |
+
+| Foljande intyg finns |
+| intygid | personnr | signeringstid | signeringstid | enhet | intygformat |
+| 1002 | 19790429-9272 | 2015-03-10T12:25:15 | 2015-03-10T12:25:30 | enhet1 | LISJP |
+| 1003 | 19790429-9272 | 2015-04-10T12:25:15 | 2015-04-10T12:25:30 | enhet1 | LISJP |
+| 1004 | 19791212-1212 | 2015-04-10T12:25:15 | 2015-04-10T12:25:30 | enhet1 | LISJP |
+
+| Foljande meddelanden finns |
+| personnr | skickat | intygsid | ämne |
+| 19790219-9285 | 2015-03-12T10:00:00 | 1001 | KOMPLT |
+| 19790429-9272 | 2015-04-03T10:00:00 | 1002 | KOMPLT |
+| 19790429-9272 | 2015-05-03T10:00:00 | 1003 | KOMPLT |
+
+!3 Då gäller:
+
+| Andel i rapporten komplettering andel intyg som tvarsnitt |
+| inloggad som | grupp        | totalt? | män? | kvinnor? |
+| user1        | FK 7263/7804 | 100%    | 100% | 0%       |

@@ -17,6 +17,13 @@ Endast 4 intyg har signerats och skickats till Försäkringskassan under de sena
 | 1003 | 19790429-9272 | 2015-04-10T12:25:15 | 2015-04-10T12:25:30 | enhet1 | LISJP |
 | 1004 | 19791212-1212 | 2015-04-10T12:25:15 | 2015-04-10T12:25:30 | enhet1 | LISJP |
 
+| Intyg skickat till mottagare |
+| intygid | mottagare |
+| 1001    | FKASSA    |
+| 1002    | FKASSA    |
+| 1003    | FKASSA    |
+| 1004    | FKASSA    |
+
 Av dessa 4 har 3st fått kompletteringar.
 
 | Foljande meddelanden finns |

@@ -48,6 +48,8 @@ import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.IntygDTO;
+import se.inera.statistics.service.processlog.intygsent.IntygSentEvent;
+import se.inera.statistics.service.processlog.intygsent.IntygSentHelper;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -83,7 +85,8 @@ public class IntygCommonManager {
             LOG.info("Intygtype not supported. Ignoring intyg: " + intygid);
             return;
         }
-        IntygCommon line = intygCommonConverter.toIntygCommon(dto, hsa, correlationId, type);
+        final boolean sentToFk = isIntygSentToFk(correlationId);
+        IntygCommon line = intygCommonConverter.toIntygCommon(dto, hsa, correlationId, type, sentToFk);
         persistIfValid(logId, intygid, line);
     }
 
@@ -336,6 +339,34 @@ public class IntygCommonManager {
         }
 
         return list.get(0);
+    }
+
+    public void acceptIntygSentToFk(String correlationId) {
+        final IntygCommon intyg = getOne(correlationId);
+        if (intyg != null) {
+            intyg.setSentToFk(true);
+            manager.merge(intyg);
+            LOG.info("Intyg sent accepted: {}", correlationId);
+        } else {
+            LOG.info("Could not accept intyg sent. Intyg not found: {}", correlationId);
+        }
+    }
+
+    private boolean isIntygSentToFk(String correlationId) {
+        final CriteriaBuilder cb = manager.getCriteriaBuilder();
+        final CriteriaQuery<IntygSentEvent> q = cb.createQuery(IntygSentEvent.class);
+        final Root<IntygSentEvent> from = q.from(IntygSentEvent.class);
+        final CriteriaQuery<IntygSentEvent> query = q.select(from).where(cb.equal(from.get("correlationId"), correlationId));
+        final List<IntygSentEvent> resultList = manager.createQuery(query).getResultList();
+        if (resultList.size() > 1) {
+            LOG.warn("Too many rows in IntygSentEvent found for {}", correlationId);
+        }
+        for (IntygSentEvent intygSentEvent : resultList) {
+            if (IntygSentHelper.isFkRecipient(intygSentEvent.getRecipient())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

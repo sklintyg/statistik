@@ -22,6 +22,21 @@ Givet att:
 | 1011 | 19791110-9030 | A41 | 2013-02-01T10:00:00 | LUSE | enhet3 |
 | 1012 | 19791110-9030 | A41 | 2013-02-01T10:00:00 | LUSE | enhet3 |
 
+| Intyg skickat till mottagare |
+| intygid | mottagare |
+| 1001    | FKASSA    |
+| 1002    | FKASSA    |
+| 1003    | FKASSA    |
+| 1004    | FKASSA    |
+| 1005    | FKASSA    |
+| 1006    | FKASSA    |
+| 1007    | FKASSA    |
+| 1008    | FKASSA    |
+| 1009    | FKASSA    |
+| 1010    | FKASSA    |
+| 1011    | FKASSA    |
+| 1012    | FKASSA    |
+
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
 | 19790219-9285 | 2013-02-01T10:00:00 | 1001 | KOMPLT |

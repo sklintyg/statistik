@@ -310,7 +310,7 @@ public class MessageWidelineLoader {
                 + "FROM intygcommon ic "
                 + "LEFT JOIN messagewideline mwl "
                 + "ON ic.intygid = mwl.intygid "
-                + "WHERE (ic.signeringsdatum between ? AND ?) ");
+                + "WHERE (ic.signeringsdatum between ? AND ?) AND ic.sentToFk ");
 
         boolean hasVardgivare = filter.getVardgivarId() != null;
         if (hasVardgivare) {

@@ -79,4 +79,8 @@ public class Processor {
         lakareManager.saveLakare(hsa);
     }
 
+    public void acceptIntygSent(String correlationId) {
+        intygCommonManager.acceptIntygSentToFk(correlationId);
+    }
+
 }

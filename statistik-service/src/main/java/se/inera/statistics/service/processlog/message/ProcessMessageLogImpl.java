@@ -29,11 +29,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.service.processlog.AbstractProcessLog;
-import se.inera.statistics.service.processlog.ProcessLogImpl;
 
 @Component
 public class ProcessMessageLogImpl extends AbstractProcessLog implements ProcessMessageLog {
-    private static final Logger LOG = LoggerFactory.getLogger(ProcessLogImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ProcessMessageLogImpl.class);
 
     public ProcessMessageLogImpl() {
         super("PROCESSED_MESSAGE");

@@ -18,6 +18,14 @@ Endast 5 intyg har signerats och skickats till Försäkringskassan under de sena
 | 1004 | 19490112-1212 | 2015-04-10T12:25:15 | enhet1 | LUSE | 66 år |
 | 1005 | 19890112-1212 | 2015-04-20T12:25:15 | enhet1 | LUSE | 26 år |
 
+| Intyg skickat till mottagare |
+| intygid | mottagare |
+| 1001    | FKASSA    |
+| 1002    | FKASSA    |
+| 1003    | FKASSA    |
+| 1004    | FKASSA    |
+| 1005    | FKASSA    |
+
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
 | 19790219-9285 | 2015-03-12T10:00:00 | 1001 | KOMPLT |

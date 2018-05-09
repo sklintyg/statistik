@@ -20,6 +20,14 @@ Endast 5 intyg har signerats och skickats till Försäkringskassan under de sena
 | 1004 | 19791212-1212 | 2015-04-10T12:25:15 | 2015-04-10T12:25:30 | enhet1 | LUSE |
 | 1005 | 19791212-1212 | 2015-04-20T12:25:15 | 2015-04-20T12:25:30 | enhet1 | LISJP |
 
+| Intyg skickat till mottagare |
+| intygid | mottagare |
+| 1001    | FKASSA    |
+| 1002    | FKASSA    |
+| 1003    | FKASSA    |
+| 1004    | FKASSA    |
+| 1005    | FKASSA    |
+
 Av dessa 5 har 3st fått kompletteringar och 1 har fått ett avstämningsmöte.
 
 | Foljande meddelanden finns |

@@ -46,7 +46,7 @@ public class IntygCommonConverter {
     @Autowired
     private Icd10 icd10;
 
-    IntygCommon toIntygCommon(IntygDTO dto, HsaInfo hsa, String correlationId, EventType eventType) {
+    IntygCommon toIntygCommon(IntygDTO dto, HsaInfo hsa, String correlationId, EventType eventType, boolean sentToFk) {
         String enhet = HSAServiceHelper.getEnhetId(hsa);
         HsaIdVardgivare vardgivare = HSAServiceHelper.getVardgivarId(hsa);
         if (enhet == null) {
@@ -59,7 +59,8 @@ public class IntygCommonConverter {
         LocalDate signeringsDatum = dto.getSigneringsdatum();
         final String diagnoskod = parseDiagnos(dto.getDiagnoskod());
 
-        return new IntygCommon(correlationId, patient, signeringsDatum, intygTyp, enhet, vardgivare.getId(), kon, eventType, diagnoskod);
+        final String vgid = vardgivare.getId();
+        return new IntygCommon(correlationId, patient, signeringsDatum, intygTyp, enhet, vgid, kon, eventType, diagnoskod, sentToFk);
     }
 
     String parseDiagnos(String diagnoskod) {

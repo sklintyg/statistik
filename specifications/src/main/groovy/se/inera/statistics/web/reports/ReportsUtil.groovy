@@ -137,6 +137,11 @@ class ReportsUtil {
         assert response.status == 200
     }
 
+    def sendIntygToMottagare(String intygId, String mottagare) {
+        def response = statistik.post(path: '/api/testsupport/sendIntygToMottagare/' + intygId + "/" + mottagare)
+        assert response.status == 200
+    }
+
     def getReportAntalSjukfall() {
         return get("/api/getNumberOfCasesPerMonth")
     }
