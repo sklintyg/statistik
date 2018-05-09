@@ -70,6 +70,9 @@
   <script src="bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js"></script>
   <script src="bower_components/outdated-browser/outdatedbrowser/outdatedbrowser.min.js"></script>
   <script src="bower_components/lodash/lodash.js"></script>
+  <script src="bower_components/stackblur-canvas/dist/stackblur.js"></script>
+  <script src="bower_components/rgb-color/dist/rgb-color.js"></script>
+  <script src="bower_components/canvg-canvg/canvg.js"></script>
   <script src="bower_components/momentjs/moment.js"></script>
   <script src="bower_components/dropzone/dist/min/dropzone.min.js"></script>
   <script src="bower_components/ngstorage/ngStorage.js"></script>
@@ -78,19 +81,9 @@
   <script src="bower_components/highcharts/modules/offline-exporting.js"></script>
   <script src="bower_components/highcharts/highcharts-more.js"></script>
   <!-- endbower -->
-  <!-- canvg:js -->
-  <!--
-    Beroendet till canvg har lagts till manuellt och inte via Bower för
-    att få med en buggrättning som gör att PDFer skapade i MSEdge fungerar.
-    Beroendet bör ske via Bower igen när canvg släppts i version 1.5 eller högre.
-  -->
-  <script src="js/lib/StackBlur.js"></script>
-  <script src="js/lib/rgbcolor.js"></script>
-  <script src="js/lib/canvg.js"></script>
-  <!-- endcanvg -->
   <!-- endbuild -->
 
-  <script src="bower_components/pdfmake/build/pdfmake.min.js"></script>
+  <script src="bower_components/pdfmake/build/pdfmake.min.js?v=0.1.36"></script>
   <script defer src="js/lib/vfs_fonts.js?v=2"></script>
 
   <!-- build:js({build/.tmp,src/main/webapp}) app/app.main.js -->

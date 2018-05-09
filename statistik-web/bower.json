@@ -9,11 +9,15 @@
     "angular-sanitize": "1.6.10",
     "angular-animate": "1.6.10",
     "angular-i18n": "1.6.10",
+    "bootstrap": "3.3.7",
     "bootstrap-sass": "3.3.7",
     "angular-bootstrap": "2.5.0",
     "bootstrap-multiselect": "0.9.15",
     "outdated-browser": "1.1.5",
     "lodash": "4.17.10",
+    "stackblur-canvas": "1.4.1",
+    "rgb-color": "v1.2.3",
+    "canvg-canvg": "v1.5",
     "pdfmake": "0.1.36",
     "momentjs": "2.22.1",
     "dropzone": "4.3.0",
@@ -28,6 +32,9 @@
   "overrides": {
     "angular-i18n": {
       "main": "angular-locale_sv-se.js"
+    },
+    "rgb-color": {
+      "main": "dist/rgb-color.js"
     },
     "highcharts": {
       "main": [
