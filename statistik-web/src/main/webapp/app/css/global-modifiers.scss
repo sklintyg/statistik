@@ -9,9 +9,8 @@
 }
 
 body {
-  -ms-overflow-style: scrollbar;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
   -webkit-font-smoothing: antialiased;
-  overflow-y: scroll;
 }
 
 input {
