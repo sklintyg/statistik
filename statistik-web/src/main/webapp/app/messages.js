@@ -178,7 +178,7 @@ var stMessages = {
         'title.vardenhet-listning': 'Antal sjukfall per 1000 listningar fördelat på vårdenhet',
         'title.meddelanden' : 'Antal inkomna meddelanden',
         'title.meddelandenperamne' : 'Antal inkomna meddelanden fördelat på ämne',
-        'title.meddelandenperamneochenhet' : 'Antal meddelanden fördelat på vårdenhet',
+        'title.meddelandenperamneochenhet' : 'Antal inkomna meddelanden fördelat på vårdenhet',
         'title.intyg' : 'Antal intyg',
         'title.intygstyp' : 'Antal utfärdade intyg fördelat på intygstyp',
         'title.andelkompletteringar' : 'Andel utfärdade intyg som fått en kompletteringsbegäran',
