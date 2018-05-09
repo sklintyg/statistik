@@ -87,15 +87,23 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl',
 
             if (!question.closed) {
                 var elementToScrollTo = $('#' + question.id);
-                var offset = 100;
-                var options = {
-                    duration: 500,
-                    easing: 'easeInOutQuart',
-                    offset: offset
-                };
 
-                //scroll to this questions panel heading, centered vertically
-                smoothScroll(elementToScrollTo[0], options);
+                var windowElement = $(window);
+                var windowHeight = windowElement.height() / 2;
+                var scrollTop = windowElement.scrollTop();
+                var elementPostion = elementToScrollTo.offset().top;
+
+                if (elementPostion - scrollTop > windowHeight) {
+                    var offset = 100;
+                    var options = {
+                        duration: 500,
+                        easing: 'easeInOutQuart',
+                        offset: offset
+                    };
+
+                    //scroll to this questions panel heading, centered vertically
+                    smoothScroll(elementToScrollTo[0], options);
+                }
             }
         };
 
