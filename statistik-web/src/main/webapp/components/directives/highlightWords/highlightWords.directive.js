@@ -34,7 +34,7 @@ angular.module('StatisticsApp')
                 $(element).addClass('highlight-words');
                 element.setAttribute('data-toggle', 'tooltip');
                 element.setAttribute('data-placement', 'auto right');
-                element.setAttribute('title', PHRASES_TO_HIGHLIGHT[element.innerText]);
+                element.setAttribute('data-original-title', PHRASES_TO_HIGHLIGHT[element.innerText]);
             });
             initToolTip();
         }, 200);
