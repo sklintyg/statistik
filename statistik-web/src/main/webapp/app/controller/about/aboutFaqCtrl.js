@@ -18,7 +18,7 @@
  */
 
 angular.module('StatisticsApp').controller('aboutFaqCtrl',
-    function ($scope, _, messageService, smoothScroll) {
+    function ($scope, _, messageService, smoothScroll, $window) {
         'use strict';
 
         function getQuestions(prefix, idPrefix) {
@@ -88,7 +88,7 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl',
             if (!question.closed) {
                 var elementToScrollTo = $('#' + question.id);
 
-                var windowElement = $(window);
+                var windowElement = $($window);
                 var windowHeight = windowElement.height() / 2;
                 var scrollTop = windowElement.scrollTop();
                 var elementPostion = elementToScrollTo.offset().top;
