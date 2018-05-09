@@ -12,15 +12,9 @@
     "target": "_blank"
   },
   {
-    "key": "patientdatalagen",
-    "url": "http://www.riksdagen.se/sv/Dokument-Lagar/Lagar/Svenskforfattningssamling/Patientdatalag-2008355_sfs-2008-355/?bet=2008:355",
-    "text": "Patientdatalagen (extern länk)",
-    "target": "_blank"
-  },
-  {
-    "key": "dataskyddsforordningen",
-    "url": "http://eur-lex.europa.eu/legal-content/SV/TXT/PDF/?uri=CELEX:32016R0679&rid=1",
-    "text": "Dataskyddsförordningen (extern länk)",
+    "key": "inerasPersonuppgiftshantering",
+    "url": "https://www.inera.se/om-inera/behandling-av-personuppgifter/",
+    "text": "Ineras hemsida",
     "target": "_blank"
   },
   {
