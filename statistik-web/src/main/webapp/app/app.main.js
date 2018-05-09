@@ -29,7 +29,8 @@ var app = angular.module('StatisticsApp',
      'StatisticsApp.treeMultiSelector',
      'StatisticsApp.businessFilter',
      'dropzone',
-     'ngStorage']);
+     'ngStorage',
+     'smoothScroll']);
 
 app.run(
     /** @ngInject */

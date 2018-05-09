@@ -18,15 +18,16 @@
  */
 
 angular.module('StatisticsApp').controller('aboutFaqCtrl',
-    function ($scope, _, messageService) {
+    function ($scope, _, messageService, smoothScroll) {
         'use strict';
 
-        function getQuestions(prefix) {
+        function getQuestions(prefix, idPrefix) {
             var questions = [];
             var numberOfQuestions = 1;
 
             while(hasQuestion(prefix, numberOfQuestions)) {
                 questions.push({
+                    id: 'faq-' + idPrefix + '-' + numberOfQuestions,
                     title: prefix + numberOfQuestions + '.title',
                     closed: true,
                     body: prefix + numberOfQuestions + '.body'
@@ -49,25 +50,25 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl',
         faq.push({
             title: 'Statistik',
             icon: 'fa-area-chart',
-            questions: getQuestions('faq.stats.')
+            questions: getQuestions('faq.stats.', 'stats')
         });
 
         faq.push({
             title: 'Rapporter',
             icon: 'fa-file-text-o',
-            questions: getQuestions('faq.report.')
+            questions: getQuestions('faq.report.', 'report')
         });
 
         faq.push({
             title: 'Sjukfall',
             icon: 'fa-stethoscope',
-            questions: getQuestions('faq.sickness.')
+            questions: getQuestions('faq.sickness.', 'sickness')
         });
 
         faq.push({
             title: 'Tekniska frågor',
             icon: 'fa-wrench',
-            questions: getQuestions('faq.technical.')
+            questions: getQuestions('faq.technical.', 'technical')
         });
 
 
@@ -79,6 +80,23 @@ angular.module('StatisticsApp').controller('aboutFaqCtrl',
 
         $scope.closeAll = function() {
             toggleQuestions(true);
+        };
+
+        $scope.toggleQuestion = function(question) {
+            question.closed = !question.closed;
+
+            if (!question.closed) {
+                var elementToScrollTo = $('#' + question.id);
+                var offset = 100;
+                var options = {
+                    duration: 500,
+                    easing: 'easeInOutQuart',
+                    offset: offset
+                };
+
+                //scroll to this questions panel heading, centered vertically
+                smoothScroll(elementToScrollTo[0], options);
+            }
         };
 
         function toggleQuestions(closed) {
