@@ -1,0 +1,27 @@
+---
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+| script | dagens datum | 2015-11-06 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | signeringstid | enhet | intygformat | kommentar |
+| 19790219-9285 | 2015-02-10T12:24:15 | enhet1 | AF00213 | |
+| 19790219-9285 | 2015-02-12T12:25:15 | enhet1 | AF00213 | |
+| 19790429-9272 | 2015-02-10T12:25:15 | enhet1 | AF00213 | |
+| 19790329-9256 | 2015-03-10T12:25:15 | enhet1 | AF00213 | |
+| 19790529-9289 | 2015-03-10T12:25:15 | enhet1 | AF00213 | |
+
+!3 Då gäller:
+AF00213 = Arbetsförmedlingens medicinska intyg (Även kallat AF MU i kravdokumentation)
+
+Inloggad:
+
+| Intyg i rapporten intyg totalt |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user1 | 2015 | feb | Arbetsförmedlingens medicinska intyg | 1 | 2 |
+| user1 | 2015 | mar | Arbetsförmedlingens medicinska intyg | 1 | 1 |
+| user1 | 2015 | apr | Arbetsförmedlingens medicinska intyg | 0 | 0 |

@@ -1,0 +1,34 @@
+---
+Prune
+Test
+---
+!contents -R2 -g -p -f -h
+| script | dagens datum | 2015-11-06 |
+
+| script | troskel varde | 1  |
+
+
+
+| Enbart foljande intyg finns |
+| personnr | signeringstid | enhet | intygformat | kommentar |
+| 19790219-9285  | 2015-02-10T12:24:15  | enhet1 | TSTRK1007 | |
+| 19790219-9285  | 2015-02-12T12:25:15  | enhet1 | TSTRK1007 | |
+| 19790429-9272  | 2015-02-10T12:25:15  | enhet1 | TSTRK1031 | |
+| 19790329-9256  | 2015-03-10T12:25:15  | enhet1 | TSTRK1031 | |
+| 19790529-9289  | 2015-03-10T12:25:15  | enhet1 | TSTRK1031 | |
+
+
+
+!3 Då gäller:
+TSTRK1007 = Transportstyrelsens läkarintyg (Även kallat TS Bas i kravdokumentation)
+
+TSTRK1031 = Transportstyrelsens läkarintyg, diabetes (Även kallat TS Diabetes i kravdokumentation)
+
+Inloggad:
+
+| Intyg i rapporten intyg totalt |
+| inloggad som  | år | månad | grupp | män? | kvinnor? |
+| user1 | 2015 | feb | Transportstyrelsens läkarintyg | 0 | 2 |
+| user1 | 2015 | feb | Transportstyrelsens läkarintyg, diabetes | 1 | 0 |
+| user1 | 2015 | mar | Transportstyrelsens läkarintyg | 0 | 0 |
+| user1 | 2015 | mar | Transportstyrelsens läkarintyg, diabetes | 1 | 1 |
