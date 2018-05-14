@@ -2,17 +2,16 @@
 Prune
 Test
 ---
-Givet att:
+!3 Givet att:
+| script | dagens datum | 2015-11-06 |
 
-| script | dagens datum   | 2015-11-06   |
-
-| script | troskel varde   | 1 |
+| script | troskel varde | 1 |
 
 | Enbart foljande intyg finns |
 | personnr | signeringstid | enhet | intygformat |
-| 19790219-9285   | 2015-02-10T12:24:15   | enhet1 | LUSE |
-| 19790219-9285   | 2015-02-12T12:25:15   | enhet1 | LUSE |
-| 19790429-9272   | 2015-02-10T12:25:15   | enhet1 | LUSE |
+| 19790219-9285 | 2015-02-10T12:24:15 | enhet1 | LUSE |
+| 19790219-9285 | 2015-02-12T12:25:15 | enhet1 | LUSE |
+| 19790429-9272 | 2015-02-10T12:25:15 | enhet1 | LUSE |
 
 !3 Då gäller:
 Intygstyp filtret har ingen effekt på denna rapport då eftersom rapporten inkluderar intygstyper som inte går att filtrera på.
@@ -20,6 +19,6 @@ Intygstyp filtret har ingen effekt på denna rapport då eftersom rapporten inkl
 Inloggad:
 
 | Intyg i rapporten intyg totalt |
-| inloggad som   | år | månad | grupp | filter intygstyp | män? | kvinnor? |
-| user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning  | | 1 | 2 |
+| inloggad som | år | månad | grupp | filter intygstyp | män? | kvinnor? |
+| user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | | 1 | 2 |
 | user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | SJUKPENNING | 1 | 2 |
