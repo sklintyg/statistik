@@ -33,6 +33,12 @@ var app = angular.module('StatisticsApp')
             }).when('/serverbusy', {
                 templateUrl: '/app/views/error/serverBusy.html',
                 title: 'Tjänsten överbelastad'
+            }).when('/fetchdxsfailed', {
+                templateUrl: '/app/views/error/fetchDxsFailed.html',
+                title: 'Kunde inte ladda data'
+            }).when('/fetchfilterhashfailed', {
+                templateUrl: '/app/views/error/fetchFilterHashFailed.html',
+                title: 'Kunde inte ladda data'
             }).when('/nationell/oversikt', {
                 templateUrl: '/app/views/overview.html',
                 controller: 'overviewCtrl',

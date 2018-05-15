@@ -134,9 +134,9 @@ public class ResponseHandler {
 
         if (result != null && result.isEmpty()) {
             if (filterActive(result.getFilter(), filterSelections)) {
-                messages.add(Message.create(ErrorType.FILTER, ErrorSeverity.WARN, NO_DATA_FILTER_MESSAGE));
+                messages.add(Message.create(ErrorType.FILTER, ErrorSeverity.INFO, NO_DATA_FILTER_MESSAGE));
             } else {
-                messages.add(Message.create(ErrorType.UNSET, ErrorSeverity.WARN, NO_DATA_MESSAGE));
+                messages.add(Message.create(ErrorType.UNSET, ErrorSeverity.INFO, NO_DATA_MESSAGE));
             }
         }
 

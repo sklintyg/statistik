@@ -138,7 +138,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             if (config.showDetailsOptions) {
                 $scope.currentPeriod = result.period;
                 statisticsData.getDiagnosisKapitelAndAvsnittAndKategori(populateDetailsOptions, function() {
-                    $window.alert('Kunde inte ladda data');
+                    $location.path('/fetchdxsfailed');
                 });
             }
 

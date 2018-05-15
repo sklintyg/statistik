@@ -96,7 +96,7 @@ angular.module('StatisticsApp')
                     };
 
                     var error = function () {
-                        throw new Error('Failed to get filter hash value');
+                        $location.path('/fetchfilterhashfailed');
                     };
 
                     statisticsData.getFilterHash(params).then(success, error);
