@@ -2,8 +2,6 @@
 Prune
 Test
 ---
-''!contents -R2 -g -p -f -h''
-
 !3 Givet att:
 | script | dagens datum | 2015-11-06 |
 
@@ -50,15 +48,13 @@ Inloggad:
 | user1 | 2015 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 1 |
 | user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 2 | 0 |
 
-
-
 | Intyg i rapporten intyg totalt diagram |
-| inloggad som  | år | månad | grupp | män? | kvinnor? |
-| user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0 | 2 |
-| user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga  | 0 | 0 |
-| user1 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 0 |
-| user1 | 2015 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |
-| user1 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 |
-| user1 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga  | 1 | 0 |
-| user1 | 2015 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 1 |
-| user1 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | 2 | 0 |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user1 | 2015 | feb | FK 7800 | 0 | 2 |
+| user1 | 2015 | feb | FK 7801 | 0 | 0 |
+| user1 | 2015 | feb | FK 7802 | 0 | 0 |
+| user1 | 2015 | feb | FK 7263/7804 | 0 | 0 |
+| user1 | 2015 | mar | FK 7800 | 0 | 0 |
+| user1 | 2015 | mar | FK 7801 | 1 | 0 |
+| user1 | 2015 | mar | FK 7802 | 0 | 1 |
+| user1 | 2015 | mar | FK 7263/7804 | 2 | 0 |

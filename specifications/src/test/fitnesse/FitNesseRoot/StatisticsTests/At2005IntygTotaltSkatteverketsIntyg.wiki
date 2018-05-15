@@ -2,7 +2,7 @@
 Prune
 Test
 ---
-!contents -R2 -g -p -f -h
+!3 Givet att:
 | script | dagens datum | 2015-11-06 |
 
 | script | troskel varde | 1 |
@@ -21,6 +21,12 @@ DB = Dödsbevis
 Inloggad:
 
 | Intyg i rapporten intyg totalt |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user1 | 2015 | feb | Dödsbevis | 1 | 2 |
+| user1 | 2015 | mar | Dödsbevis | 1 | 1 |
+| user1 | 2015 | apr | Dödsbevis | 0 | 0 |
+
+| Intyg i rapporten intyg totalt diagram |
 | inloggad som | år | månad | grupp | män? | kvinnor? |
 | user1 | 2015 | feb | Dödsbevis | 1 | 2 |
 | user1 | 2015 | mar | Dödsbevis | 1 | 1 |

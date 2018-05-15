@@ -1,11 +1,8 @@
 ---
 Test
 ---
-''!contents -R2 -g -p -f -h''
+Givet att:
 
-Vi har två intyg, ett blir makulerat.
-
-!3 Givet att:
 | script | dagens datum | 2015-11-06 |
 
 | script | troskel varde | 1 |
