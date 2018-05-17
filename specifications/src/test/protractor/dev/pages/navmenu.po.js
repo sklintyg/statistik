@@ -23,6 +23,11 @@ var NavMenu = function() {
     this.navCountyLink = element(by.id('navCountyLink'));
     this.navCasesPerSexLink = element(by.id('navCasesPerSexLink'));
 
+    this.navNationalIntygPerTypeLink = element(by.id('navNationalIntygPerTypeLink'));
+    this.navNationalAndelKompletteringarLink = element(by.id('navNationalAndelKompletteringarLink'));
+
+    this.navMessagesLink = element(by.id('navMessagesLink'));
+
     this.navLandstingAbout = element(by.id('navLandstingAboutLink'));
     this.navLandstingUpload = element(by.id('navLandstingUploadLink'));
 
@@ -46,6 +51,12 @@ var NavMenu = function() {
     this.navAboutInloggningLink = element(by.id('navAboutInloggningLink'));
     this.navAboutFaqLink = element(by.id('navAboutFaqLink'));
     this.navAboutContactLink = element(by.id('navAboutContactLink'));
+
+    this.clickOnMenu = function(id) {
+        var menu = element(by.id(id));
+
+        menu.click();
+    };
 
     var clickLandstingStatisticsToggle = function() {
         that.landstingStatisticsToggle.click();

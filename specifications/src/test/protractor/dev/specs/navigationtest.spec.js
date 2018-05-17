@@ -32,8 +32,11 @@ describe('Navigering i intygsstatistik: ', function() {
         browser.get('/');
     });
 
-    it('Nationellnivå', function() {
-        navmenu.navOverviewLink.click();
+    describe('Nationellnivå', function() {
+        beforeAll(function() {
+            navmenu.navOverviewLink.click();
+        });
+
         validateDetailReport('navCasesPerMonthLink', 1);
         validateDetailReport('navDiagnosisGroupsLink', 2);
         validateDetailReport('navDiagnosisSubGroupsLink', 2);
@@ -42,6 +45,11 @@ describe('Navigering i intygsstatistik: ', function() {
         validateDetailReport('navSickLeaveLengthLink', 1);
         validateDetailReport('navCountyLink', 1);
         validateDetailReport('navCasesPerSexLink', 1);
+
+        validateDetailReport('navNationalIntygPerTypeLink', 2);
+        validateDetailReport('navNationalAndelKompletteringarLink', 2);
+
+        validateDetailReport('navMessagesLink', 2);
     });
 
     it('About', function() {
@@ -61,28 +69,40 @@ describe('Navigering i intygsstatistik: ', function() {
 
     describe('Verksamhetsnivå', function() {
 
-        it('Processledare', function() {
-            features.user.loginUser1(true);
+        describe('Processledare', function() {
+            beforeAll(function() {
+                features.user.loginUser1(true);
+            });
 
             verksamhetsNiva();
 
             validateDetailReport('navBusinessCasesPerBusinessLink', 1, 2, 21);
-            expect(navmenu.navBusinessCasesPerLakareLink.isPresent()).toBeFalsy();
+
+            it('Not present', function() {
+                expect(navmenu.navBusinessCasesPerLakareLink.isPresent()).toBeFalsy();
+            });
         });
 
-        it('Verksamhetschef', function() {
-            features.user.makeSureNotLoggedIn();
-            features.user.loginUser1(false);
+        describe('Verksamhetschef', function() {
+            beforeAll(function() {
+                features.user.makeSureNotLoggedIn();
+                features.user.loginUser1(false);
+            });
 
             verksamhetsNiva();
 
-            expect(navmenu.navBusinessCasesPerBusinessLink.isPresent()).toBeFalsy();
             validateDetailReport('navBusinessCasesPerLakareLink', 1, 2, 1);
+
+            it('Not present', function() {
+                expect(navmenu.navBusinessCasesPerBusinessLink.isPresent()).toBeFalsy();
+            });
         });
 
 
         function verksamhetsNiva() {
-            navmenu.navVerksamhetOversiktLink.click();
+            beforeAll(function() {
+                navmenu.navVerksamhetOversiktLink.click();
+            });
 
             validateDetailReport('navBusinessCasesPerMonthLink', 1);
             validateDetailReport('navBusinessDiagnosisGroupsLink', 2);
@@ -94,6 +114,12 @@ describe('Navigering i intygsstatistik: ', function() {
             validateDetailReport('navBusinessMoreNinetyDaysSickLeaveLink', 1);
             validateDetailReport('navBusinessCasesPerLakaresAlderOchKonLink', 1);
             validateDetailReport('navBusinessCasesPerLakarbefattningLink', 1);
+
+            validateDetailReport('navBusinessIntygPerTypeLink', 2);
+            validateDetailReport('navBusinessAndelKompletteringarLink', 2);
+
+            validateDetailReport('navBusinessMessagesLink', 2);
+            validateDetailReport('navBusinessMessagesEnhetLink', 1);
         }
     });
 
@@ -102,10 +128,12 @@ describe('Navigering i intygsstatistik: ', function() {
         features.user.makeSureNotLoggedIn();
     });
 
-    function validateDetailReport(clickFuncName, expectedNumberOfCharts) {
-        navmenu[clickFuncName].click();
-        pages.report.isAtPage();
+    function validateDetailReport(menuId, expectedNumberOfCharts) {
+        it('Sida: ' + menuId, function() {
+            navmenu.clickOnMenu(menuId);
+            pages.report.isAtPage();
 
-        expect(pages.report.getNumberOfCharts()).toBe(expectedNumberOfCharts, 'Number of charts failed: ' +clickFuncName);
+            expect(pages.report.getNumberOfCharts()).toBe(expectedNumberOfCharts, 'Number of charts failed: ' + menuId);
+        });
     }
 });

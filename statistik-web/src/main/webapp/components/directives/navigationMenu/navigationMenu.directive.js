@@ -315,6 +315,9 @@
                 name: 'nav.intygpertyp',
                 ctrl: 'LandstingIntygPerTypCtrl'
             }, {
+                checkEnable: function() {
+                    return UserModel.get().landstingAvailable;
+                },
                 id: 'navLandstingAndelKompletteringarLink',
                 link: '#/landsting/andelkompletteringar',
                 name: 'nav.andelkompletteringar',

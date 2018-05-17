@@ -44,7 +44,7 @@ angular.module('StatisticsApp').factory('statisticsData',
             } catch (e) {
                 $log.error(e);
                 $cacheFactory.get('$http').removeAll();
-                callFailure(failureCallback);
+                callFailure(failureCallback, result);
             }
         }, function (response) {
             callFailure(failureCallback, response);
@@ -86,7 +86,7 @@ angular.module('StatisticsApp').factory('statisticsData',
                 successCallback(result.data);
             } catch (e) {
                 $log.error(e);
-                callFailure(failureCallback);
+                callFailure(failureCallback, result);
             }
         }, function (response) {
             if (response.status === 403) {
@@ -100,7 +100,7 @@ angular.module('StatisticsApp').factory('statisticsData',
                 $location.path('/serverbusy');
             }
             $log.error('Failed to call server. Status: ' + response.status);
-            callFailure(failureCallback);
+            callFailure(failureCallback, response);
         });
     }
 

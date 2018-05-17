@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*globals browser,protractor */
-/*globals describe,it,helpers */
+/*globals browser */
+/*globals describe,it */
 'use strict';
 
 var testfw = require('../../testFramework.js');
@@ -31,24 +31,29 @@ describe('Nationell basic: ', function() {
         browser.get('/');
     });
 
-    it('Visar rätt rapport', function() {
-        navmenu.navOverviewLink.click();
+    describe('Visar rätt rapport', function() {
+        it('Overview', function() {
+            navmenu.navOverviewLink.click();
+        });
+
         validateDetailReport('navCasesPerMonthLink', 1, 3, 19);
-        validateDetailReport('navDiagnosisGroupsLink', 2, 8, 20);
-        validateDetailReport('navDiagnosisSubGroupsLink', 2, 1, 20);
-        validateDetailReport('navAgeGroupsLink', 1, 2, 11);
+        validateDetailReport('navDiagnosisGroupsLink', 2, 7, 20);
+        validateDetailReport('navDiagnosisSubGroupsLink', 2, 2, 20);
+        validateDetailReport('navAgeGroupsLink', 1, 3, 13);
         validateDetailReport('navSickLeaveDegreeLink', 2, 4, 20);
-        validateDetailReport('navSickLeaveLengthLink', 1, 2, 8);
-        validateDetailReport('navCountyLink', 1, 2, 24);
-        validateDetailReport('navCasesPerSexLink', 1, 2, 23);
+        validateDetailReport('navSickLeaveLengthLink', 1, 3, 8);
+        validateDetailReport('navCountyLink', 1, 3, 24);
+        validateDetailReport('navCasesPerSexLink', 1, 2, 24);
     });
 
-    function validateDetailReport(clickFuncName, expectedNumberOfCharts, expectedNumberOfLegends, expectedRowsInTable) {
-        navmenu[clickFuncName].click();
-        pages.report.isAtPage();
+    function validateDetailReport(menuId, expectedNumberOfCharts, expectedNumberOfLegends, expectedRowsInTable) {
+        it('Sida: '+ menuId, function() {
+            navmenu.clickOnMenu(menuId);
+            pages.report.isAtPage();
 
-        expect(pages.report.getNumberOfCharts()).toBe(expectedNumberOfCharts, 'Number of charts failed: ' +clickFuncName);
-        //expect(pages.report.getChartLegendLabels().count()).toBe(expectedNumberOfLegends, 'Number of legends failed: ' + clickFuncName);
-        //expect(pages.report.getTableRows().count()).toBe(expectedRowsInTable, 'Number of table rows failed: ' + clickFuncName);
+            expect(pages.report.getNumberOfCharts()).toBe(expectedNumberOfCharts, 'Number of charts failed: ' + menuId);
+            expect(pages.report.getChartLegendLabels().count()).toBe(expectedNumberOfLegends, 'Number of legends failed: ' + menuId);
+            expect(pages.report.getTableRows().count()).toBe(expectedRowsInTable, 'Number of table rows failed: ' + menuId);
+        });
     }
 });

@@ -48,7 +48,7 @@ var ReportPage = function() {
 
     this.getChartLegendLabels = function() {
 
-        return element.all(by.css('#chartlegends #legend-label .legend-name'));
+        return element.all(by.css('#chartlegends .legend-name'));
 
         /*
         return .then(function(legends) {
