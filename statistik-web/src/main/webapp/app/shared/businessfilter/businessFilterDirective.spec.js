@@ -17,8 +17,6 @@
  *     along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* globals sinon */
-
 describe('Tests for directive button-filter', function () {
     'use strict';
 
@@ -141,7 +139,7 @@ describe('Tests for directive button-filter', function () {
 
         it('sets all needed parameters on params object', function() {
             //given
-            var spy = sinon.spy(statisticsData, 'getFilterHash');
+            var spy = spyOn(statisticsData, 'getFilterHash').and.callThrough();
 
             var fromDate = moment('2015-01-01', 'YYYY-MM-DD'), toDate = moment('2015-04-01', 'YYYY-MM-DD');
             innerScope.businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
@@ -153,21 +151,23 @@ describe('Tests for directive button-filter', function () {
             $timeout.flush();
 
             //then
-            expect(spy.calledOnce).toBeTruthy();
+            expect(spy).toHaveBeenCalledTimes(1);
+
+            var args = spy.calls.first().args[0];
 
             //then the parameters are defined in the params object sent to the server
-            expect(spy.getCall(0).args[0].enheter).toBeDefined('Enheter was not defined as expected');
-            expect(spy.getCall(0).args[0].diagnoser).toBeDefined('Diagnoser was not defined as expected');
-            expect(spy.getCall(0).args[0].verksamhetstyper).toBeDefined('Verksamhetstyper was not defined as expected');
-            expect(spy.getCall(0).args[0].fromDate).toBeDefined('fromDate was not defined as expected');
-            expect(spy.getCall(0).args[0].toDate).toBeDefined('toDate was not defined as expected');
-            expect(spy.getCall(0).args[0].useDefaultPeriod).toBeDefined('useDefault was not defined as expected');
+            expect(args.enheter).toBeDefined('Enheter was not defined as expected');
+            expect(args.diagnoser).toBeDefined('Diagnoser was not defined as expected');
+            expect(args.verksamhetstyper).toBeDefined('Verksamhetstyper was not defined as expected');
+            expect(args.fromDate).toBeDefined('fromDate was not defined as expected');
+            expect(args.toDate).toBeDefined('toDate was not defined as expected');
+            expect(args.useDefaultPeriod).toBeDefined('useDefault was not defined as expected');
         });
 
         it('formats the internal date to a datestring with yyyy-mm-dd', inject(function(moment) {
 
             //given
-            var spy = sinon.spy(statisticsData, 'getFilterHash');
+            var spy = spyOn(statisticsData, 'getFilterHash').and.callThrough();
             var fromDate = moment('2015-01-01', 'YYYY-MM-DD'), toDate = moment('2015-04-01', 'YYYY-MM-DD');
             innerScope.businessFilter.selectedDiagnoses = ['A00B99', 'D50D89'];
             innerScope.businessFilter.fromDate = fromDate.toDate();
@@ -178,14 +178,14 @@ describe('Tests for directive button-filter', function () {
             $timeout.flush();
 
             //Ensure that we sue the right format
-
-            expect(moment(spy.getCall(0).args[0].fromDate, 'YYYY-MM-DD').isValid()).toBeTruthy('From date doesn\'t have the right format');
-            expect(moment(spy.getCall(0).args[0].toDate, 'YYYY-MM-DD').isValid()).toBeTruthy('To date doesn\'t have the right format');
+            var args = spy.calls.first().args[0];
+            expect(moment(args.fromDate, 'YYYY-MM-DD').isValid()).toBeTruthy('From date doesn\'t have the right format');
+            expect(moment(args.toDate, 'YYYY-MM-DD').isValid()).toBeTruthy('To date doesn\'t have the right format');
         }));
 
         it('sets toDate to the last of the month', function() {
             //given
-            var spy = sinon.spy(statisticsData, 'getFilterHash');
+            var spy = spyOn(statisticsData, 'getFilterHash').and.callThrough();
             var fromDate = moment('2015-01-01', 'YYYY-MM-DD'),
                 inputToDate = moment('2015-04-01', 'YYYY-MM-DD'),
                 expectedToDate = moment('2015-04-30', 'YYYY-MM-DD');
@@ -199,7 +199,8 @@ describe('Tests for directive button-filter', function () {
             $timeout.flush();
 
             //Ensure that we sue the right format
-            expect(spy.getCall(0).args[0].toDate).toEqual(expectedToDate.format('YYYY-MM-DD'), 'To date wasn\'t set correctly');
+            var args = spy.calls.first().args[0];
+            expect(args.toDate).toEqual(expectedToDate.format('YYYY-MM-DD'), 'To date wasn\'t set correctly');
 
         });
     });
