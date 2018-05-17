@@ -120,11 +120,6 @@
                 link: '#/nationell/intygPerTyp',
                 name: 'nav.intygpertyp',
                 ctrl: 'NationalIntygPerTypCtrl'
-            }, {
-                id: 'navNationalAndelKompletteringarLink',
-                link: '#/nationell/andelkompletteringar',
-                name: 'nav.andelkompletteringar',
-                ctrl: 'NationalAndelKompletteringarCtrl'
             }]
         };
 
@@ -138,6 +133,11 @@
                 link: '#/nationell/meddelandenPerAmne',
                 name: 'nav.meddelanden',
                 ctrl: 'NationalMeddelandenPerAmneCtrl'
+            }, {
+                id: 'navNationalAndelKompletteringarLink',
+                link: '#/nationell/andelkompletteringar',
+                name: 'nav.andelkompletteringar',
+                ctrl: 'NationalAndelKompletteringarCtrl'
             }]
         };
 
@@ -240,11 +240,6 @@
                 link: '#/verksamhet/intygPerTyp',
                 name: 'nav.intygpertyp',
                 ctrl: 'VerksamhetIntygPerTypeCtrl'
-            }, {
-                id: 'navBusinessAndelKompletteringarLink',
-                link: '#/verksamhet/andelkompletteringar',
-                name: 'nav.andelkompletteringar',
-                ctrl: 'VerksamhetAndelKompletteringarCtrl'
             }]
         };
 
@@ -263,6 +258,11 @@
                 link: '#/verksamhet/meddelandenPerAmneOchEnhetTvarsnitt',
                 name: 'nav.meddelandenperamneochenhet',
                 ctrl: 'VerksamhetMeddelandenPerAmneOchEnhetCtrl'
+            }, {
+                id: 'navBusinessAndelKompletteringarLink',
+                link: '#/verksamhet/andelkompletteringar',
+                name: 'nav.andelkompletteringar',
+                ctrl: 'VerksamhetAndelKompletteringarCtrl'
             }]
         };
 
@@ -314,14 +314,6 @@
                 link: '#/landsting/intygPerTyp',
                 name: 'nav.intygpertyp',
                 ctrl: 'LandstingIntygPerTypCtrl'
-            }, {
-                checkEnable: function() {
-                    return UserModel.get().landstingAvailable;
-                },
-                id: 'navLandstingAndelKompletteringarLink',
-                link: '#/landsting/andelkompletteringar',
-                name: 'nav.andelkompletteringar',
-                ctrl: 'LandstingAndelKompletteringarCtrl'
             }]
         };
 
@@ -346,6 +338,14 @@
                 link: '#/landsting/meddelandenPerAmneOchEnhet',
                 name: 'nav.meddelandenperamneochenhet',
                 ctrl: 'LandstingMeddelandenPerAmneOchEnhetCtrl'
+            }, {
+                checkEnable: function() {
+                    return UserModel.get().landstingAvailable;
+                },
+                id: 'navLandstingAndelKompletteringarLink',
+                link: '#/landsting/andelkompletteringar',
+                name: 'nav.andelkompletteringar',
+                ctrl: 'LandstingAndelKompletteringarCtrl'
             }]
         };
 
