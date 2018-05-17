@@ -21,22 +21,22 @@ Flera olika sjukfall med olika diagnoser.
 Bara de sjukfall/delar av sjukfall vars diagnos matchar val i diagnosfiltret visas. Om val i diagnosfilter inte överlappar med valt diagnoskapitel visas inga sjukfall.
 
 | Sjukfall i rapporten enskilt diagnoskapitel |
-|inloggad som | filter enheter | filter verksamhetstyper | filter kapitel          | filter avsnitt | filter kategorier | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
-| user1       |                |                         |                         |                |                   | F00-F99             | 2013 | feb   | F40-F48 | 1    | 1        |
-| user1       |                |                         |                         |                |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 1        |
-| user1       |                |                         |                         |                |                   | J00-J99             | 2013 | feb   | J00-J06 | 1    | 0        |
-| user1       | enhet1         | 02                      | F00-F99                 |                |                   | F00-F99             | 2013 | feb   | F40-F48 | 1    | 1        |
-| user1       | enhet1         | 02                      | F00-F99                 |                |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 0        |
-| user1       | enhet1         | 02                      | F00-F99                 |                |                   | J00-J99             | 2013 | feb   | J00-J06 | 0    | 0        |
-| user1       | enhet1         | 02                      | F00-F99,A00-B99         |                |                   | F00-F99             | 2013 | feb   | F40-F48 | 1    | 1        |
-| user1       | enhet1         | 02                      | F00-F99,A00-B99         |                |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 1        |
-| user1       | enhet1         | 02                      | F00-F99,A00-B99         |                |                   | J00-J99             | 2013 | feb   | J00-J06 | 0    | 0        |
-| user1       | enhet1         | 02                      | F00-F99,A00-B99,J00-J99 |                |                   | F00-F99             | 2013 | feb   | F40-F48 | 1    | 1        |
-| user1       | enhet1         | 02                      | F00-F99,A00-B99,J00-J99 |                |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 1        |
-| user1       | enhet1         | 02                      | F00-F99,A00-B99,J00-J99 |                |                   | J00-J99             | 2013 | feb   | J00-J06 | 1    | 0        |
-| user1       | enhet1         | 02                      |                         | J00-J06        |                   | F00-F99             | 2013 | feb   | F40-F48 | 0    | 0        |
-| user1       | enhet1         | 02                      |                         | J00-J06        |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 0        |
-| user1       | enhet1         | 02                      |                         | J00-J06        |                   | J00-J99             | 2013 | feb   | J00-J06 | 1    | 0        |
-| user1       | enhet1         | 02                      |                         |                | F41               | F00-F99             | 2013 | feb   | F40-F48 | 1    | 0        |
-| user1       | enhet1         | 02                      |                         |                | F41               | A00-B99             | 2013 | feb   | A00-A09 | 0    | 0        |
-| user1       | enhet1         | 02                      |                         |                | F41               | J00-J99             | 2013 | feb   | J00-J06 | 0    | 0        |
+|inloggad som | filter enheter | filter kapitel          | filter avsnitt | filter kategorier | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
+| user1       |                |                         |                |                   | F00-F99             | 2013 | feb   | F40-F48 | 1    | 1        |
+| user1       |                |                         |                |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 1        |
+| user1       |                |                         |                |                   | J00-J99             | 2013 | feb   | J00-J06 | 1    | 0        |
+| user1       | enhet1         | F00-F99                 |                |                   | F00-F99             | 2013 | feb   | F40-F48 | 1    | 1        |
+| user1       | enhet1         | F00-F99                 |                |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 0        |
+| user1       | enhet1         | F00-F99                 |                |                   | J00-J99             | 2013 | feb   | J00-J06 | 0    | 0        |
+| user1       | enhet1         | F00-F99,A00-B99         |                |                   | F00-F99             | 2013 | feb   | F40-F48 | 1    | 1        |
+| user1       | enhet1         | F00-F99,A00-B99         |                |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 1        |
+| user1       | enhet1         | F00-F99,A00-B99         |                |                   | J00-J99             | 2013 | feb   | J00-J06 | 0    | 0        |
+| user1       | enhet1         | F00-F99,A00-B99,J00-J99 |                |                   | F00-F99             | 2013 | feb   | F40-F48 | 1    | 1        |
+| user1       | enhet1         | F00-F99,A00-B99,J00-J99 |                |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 1        |
+| user1       | enhet1         | F00-F99,A00-B99,J00-J99 |                |                   | J00-J99             | 2013 | feb   | J00-J06 | 1    | 0        |
+| user1       | enhet1         |                         | J00-J06        |                   | F00-F99             | 2013 | feb   | F40-F48 | 0    | 0        |
+| user1       | enhet1         |                         | J00-J06        |                   | A00-B99             | 2013 | feb   | A00-A09 | 0    | 0        |
+| user1       | enhet1         |                         | J00-J06        |                   | J00-J99             | 2013 | feb   | J00-J06 | 1    | 0        |
+| user1       | enhet1         |                         |                | F41               | F00-F99             | 2013 | feb   | F40-F48 | 1    | 0        |
+| user1       | enhet1         |                         |                | F41               | A00-B99             | 2013 | feb   | A00-A09 | 0    | 0        |
+| user1       | enhet1         |                         |                | F41               | J00-J99             | 2013 | feb   | J00-J06 | 0    | 0        |

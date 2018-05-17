@@ -26,15 +26,14 @@ Om användaren inte gjort något val, eller om användaren valt alla, så visas 
 Enhetsfilter:
 
 | Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet    | vårdgivarnivå | filter enheter | filter verksamhetstyper | allaEnhetsfilterValda? | enhetsfilterlista?            | kommentar                                     |
-| user2        | enhet1       | true          | enhet1,enhet2,vg1-enhet-1  | 02          | true                   | [enhet1, enhet2, vg1-enhet-1] | alla geo och alla typer                       |
-| user2        | enhet1       | true          | enhet1         | 02                      | false                  | [enhet1]                      | enhet1 enligt geo och alla typer              |
-| user2        | enhet1       | true          |                | 02                      | true                   | [enhet1, enhet2, vg1-enhet-1] | Tom geo och alla typer                        |
-| user2        | enhet1       | true          |                | 15                      | false                  | [enhet1]                      | Tom geo och bara enhet1 vald i verksamhetstyp |
-| user2        | enhet1       | true          | enhet1,enhet2,vg1-enhet-1  |             | true                   | [enhet1, enhet2, vg1-enhet-1] | Alla geo och tom typer                        |
-| user2        | enhet1       | true          | enhet1         |                         | false                  | [enhet1]                      | enhet1 enligt geo tom typer                   |
-| user2        | enhet1       | true          |                |                         | true                   | [enhet1, enhet2, vg1-enhet-1] | Tom geo och tom typer                         |
-| user2        | enhet1       | true          | enhet2         | 15                      | false                  | []                            | enhet2 i geo och enhet1 vald i verksamhetstyp |
+| inloggad som | vårdenhet    | vårdgivarnivå | filter enheter              | allaEnhetsfilterValda? | enhetsfilterlista?            | kommentar                                     |
+| user2        | enhet1       | true          | enhet1,enhet2,vg1-enhet-1   | true                   | [enhet1, enhet2, vg1-enhet-1] | alla geo och alla typer                       |
+| user2        | enhet1       | true          | enhet1                      | false                  | [enhet1]                      | enhet1 enligt geo och alla typer              |
+| user2        | enhet1       | true          |                             | true                   | [enhet1, enhet2, vg1-enhet-1] | Tom geo och alla typer                        |
+| user2        | enhet1       | true          | enhet1,enhet2,vg1-enhet-1   | true                   | [enhet1, enhet2, vg1-enhet-1] | Alla geo och tom typer                        |
+| user2        | enhet1       | true          | enhet1                      | false                  | [enhet1]                      | enhet1 enligt geo tom typer                   |
+| user2        | enhet1       | true          |                             | true                   | [enhet1, enhet2, vg1-enhet-1] | Tom geo och tom typer                         |
+| user2        | enhet1       | true          | enhet2                      | false                  | [enhet2]                      | enhet2 i geo                                  |
 
 Diagnosfilter:
 

@@ -31,26 +31,26 @@ Tröskelvärde appliceras efter filtrering.
 
 Inloggad:
 | Sjukfall i rapporten landsting sjukfall totalt |
-| inloggad som | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | år   | månad | män? | kvinnor? |
-| user3        | | | | | | 2014 | feb   | 3    | 0        |
-| user3        | | | | | | 2014 | apr   | 0    | 0        |
-| user3        | A00-B99,C00-D48,F00-F99 | enhet3  | 02                    | 2014-02-01        | 2014-12-30       | 2014 | feb   | 3    | 0        |
-| user3        | A00-B99,C00-D48,F00-F99 | enhet3  | 02                    | 2014-02-01        | 2014-12-30       | 2014 | apr   | 0    | 0        |
-| user3        | F00-F99                 | enhet1,enhet3  | 02             | 2014-02-01        | 2014-12-30       | 2014 | feb   | 0    | 0        |
-| user3        | F00-F99                 | enhet1,enhet3  | 02             | 2014-02-01        | 2014-12-30       | 2014 | apr   | 0    | 0        |
-| user3        | A00-B99,C00-D48,F00-F99 | enhet1,enhet3  | 02             | 2014-04-01        | 2014-12-30       | 2014 | feb   | -1   | -1       |
-| user3        | A00-B99,C00-D48,F00-F99 | enhet1,enhet3  | 02             | 2014-04-01        | 2014-12-30       | 2014 | apr   | 0    | 0        |
+| inloggad som | filter kapitel          | filter enheter | filter startdatum | filter slutdatum | år   | månad | män? | kvinnor? |
+| user3        |                         |                |                   |                  | 2014 | feb   | 3    | 0        |
+| user3        |                         |                |                   |                  | 2014 | apr   | 0    | 0        |
+| user3        | A00-B99,C00-D48,F00-F99 | enhet3         | 2014-02-01        | 2014-12-30       | 2014 | feb   | 3    | 0        |
+| user3        | A00-B99,C00-D48,F00-F99 | enhet3         | 2014-02-01        | 2014-12-30       | 2014 | apr   | 0    | 0        |
+| user3        | F00-F99                 | enhet1,enhet3  | 2014-02-01        | 2014-12-30       | 2014 | feb   | 0    | 0        |
+| user3        | F00-F99                 | enhet1,enhet3  | 2014-02-01        | 2014-12-30       | 2014 | apr   | 0    | 0        |
+| user3        | A00-B99,C00-D48,F00-F99 | enhet1,enhet3  | 2014-04-01        | 2014-12-30       | 2014 | feb   | -1   | -1       |
+| user3        | A00-B99,C00-D48,F00-F99 | enhet1,enhet3  | 2014-04-01        | 2014-12-30       | 2014 | apr   | 0    | 0        |
 
 | Sjukfall i rapporten landsting sjukfall per enhet |
-| inloggad som | vårdenhet    | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
-| user3        | enhet3 | | | | | | 4       | 4    | 0        |
-| user3        | enhet3 | A00-B99,C00-D48,F00-F99 | enhet3  | 02                    | 2014-02-01        | 2014-12-30       | 4       | 4    | 0        |
-| user3        | enhet3 | F00-F99                 | enhet1,enhet3  | 02      | 2014-02-01        | 2014-12-30              | -1      | -1   | -1       |
-| user3        | enhet3 | A00-B99,C00-D48,F00-F99 | enhet1,enhet3  | 02      | 2014-02-01        | 2014-03-31              | 3       | 3    | 0        |
+| inloggad som | vårdenhet    | filter kapitel          | filter enheter | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
+| user3        | enhet3       |                         |                |                   | | 4       | 4    | 0        |
+| user3        | enhet3       | A00-B99,C00-D48,F00-F99 | enhet3         | 2014-02-01        | 2014-12-30       | 4       | 4    | 0        |
+| user3        | enhet3       | F00-F99                 | enhet1,enhet3  | 2014-02-01        | 2014-12-30              | -1      | -1   | -1       |
+| user3        | enhet3       | A00-B99,C00-D48,F00-F99 | enhet1,enhet3  | 2014-02-01        | 2014-03-31              | 3       | 3    | 0        |
 
 | Sjukfall i rapporten landsting sjukfall per listningar per enhet |
-| inloggad som | vårdenhet    | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | antal sjukfall per tusen listningar? |
-| user3        | enhet3 | | | | | | 3,64    |
-| user3        | enhet3 | A00-B99,C00-D48,F00-F99 | enhet3  | 02                    | 2014-02-01        | 2014-12-30       | 3,64    |
-| user3        | enhet3 | F00-F99                 | enhet1,enhet3  | 02             | 2014-02-01        | 2014-12-30       | -1      |
-| user3        | enhet3 | A00-B99,C00-D48,F00-F99 | enhet1,enhet3  | 02             | 2014-04-01        | 2014-12-30       | -1      |
+| inloggad som | vårdenhet    | filter kapitel          | filter enheter | filter startdatum | filter slutdatum | antal sjukfall per tusen listningar? |
+| user3        | enhet3       |                         |                |                   | | 3,64    |
+| user3        | enhet3       | A00-B99,C00-D48,F00-F99 | enhet3         | 2014-02-01        | 2014-12-30       | 3,64    |
+| user3        | enhet3       | F00-F99                 | enhet1,enhet3  | 2014-02-01        | 2014-12-30       | -1      |
+| user3        | enhet3       | A00-B99,C00-D48,F00-F99 | enhet1,enhet3  | 2014-04-01        | 2014-12-30       | -1      |

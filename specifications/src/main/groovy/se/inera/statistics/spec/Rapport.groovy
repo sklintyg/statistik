@@ -45,7 +45,6 @@ abstract class Rapport {
     def filterKategorier
     def filterKod
     def filterEnheter
-    def filterVerksamhetstyper
     def filterSjukskrivningslängd
     def filterIntygstyp
     def filterÅldersgrupp
@@ -185,12 +184,6 @@ abstract class Rapport {
         }
     }
 
-    void setFilterVerksamhetstyper(String verksamhetString) {
-        if (verksamhetString != null && !verksamhetString.trim().isEmpty()) {
-            this.filterVerksamhetstyper = verksamhetString.split(",")*.trim()
-        }
-    }
-
     void setFilterSjukskrivningslängd(String sjukskrivningslängdString) {
         if (sjukskrivningslängdString != null && !sjukskrivningslängdString.trim().isEmpty()) {
             this.filterSjukskrivningslängd = sjukskrivningslängdString.split(",")*.trim().collect {
@@ -254,7 +247,7 @@ abstract class Rapport {
         if (filterKod != null) {
             diagnoser.addAll(filterKod)
         }
-        return new FilterData(diagnoser, filterEnheter, filterVerksamhetstyper, filterSjukskrivningslängd, filterÅldersgrupp, filterIntygstyp, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
+        return new FilterData(diagnoser, filterEnheter, filterSjukskrivningslängd, filterÅldersgrupp, filterIntygstyp, filterStartdatum, filterSlutdatum, filterStartdatum == null || filterSlutdatum == null)
     }
 
     public void reset() {
@@ -272,7 +265,6 @@ abstract class Rapport {
         filterKategorier = null
         filterKod = null
         filterEnheter = null
-        filterVerksamhetstyper = null
         filterSjukskrivningslängd = null
         filterIntygstyp = null
         filterÅldersgrupp = null

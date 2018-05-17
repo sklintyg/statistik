@@ -17,10 +17,10 @@ Test
 !3 Då gäller:
 
 | Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet    | filter enheter | filter verksamhetstyper | filter kategorier | totalt? | män? | kvinnor? |
-| user2        | enhet1 |                |                         |                   | -1      | -1   | -1       |
-| user2        | enhet1 | enhet1         | 10                      | G01               | -1      | -1   | -1       |
-| user2        | enhet1 | enhet2         | 02                      | G01               | -1      | -1   | -1       |
-| user2        | enhet2 |                |                         |                   | 1       | 1    | 0        |
-| user2        | enhet2 | enhet1         | 10                      | G01               | -1      | -1   | -1       |
-| user2        | enhet2 | enhet2         | 02                      | G01               | 1       | 1    | 0        |
+| inloggad som | vårdenhet    | filter enheter | filter kategorier | totalt? | män? | kvinnor? |
+| user2        | enhet1       |                |                   | -1      | -1   | -1       |
+| user2        | enhet1       | enhet1         | G01               | -1      | -1   | -1       |
+| user2        | enhet1       | enhet2         | G01               | -1      | -1   | -1       |
+| user2        | enhet2       |                |                   | 1       | 1    | 0        |
+| user2        | enhet2       | enhet1         | G01               | -1      | -1   | -1       |
+| user2        | enhet2       | enhet2         | G01               | 1       | 1    | 0        |

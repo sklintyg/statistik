@@ -29,11 +29,10 @@ Bara de enheter och sjukfall som motsvarar val i filter visas.
 
 Inloggad:
 | Sjukfall i rapporten landsting sjukfall totalt |
-| inloggad som | filter kapitel | filter enheter       | filter verksamhetstyper | år   | månad | män? | kvinnor? | allaEnhetsfilterValda? | enhetsfilterlista?     |
-| user3        |                |                      |                         | 2014 | jun   | 1    | 0        | true                   | [enhet1, enhet2, enhet3] |
-| user3        |                | enhet1,enhet2,enhet3 | 02                      | 2014 | jun   | 1    | 0        | true                   | [enhet1, enhet2, enhet3] |
-| user3        | F00-F99        |                      | 02                      | 2014 | jun   | 1    | 0        | true                   | [enhet1, enhet2, enhet3] |
-| user3        | F00-F99        | enhet1,enhet2,enhet3 |                         | 2014 | jun   | 1    | 0        | true                   | [enhet1, enhet2, enhet3] |
-| user3        | F00-F99        | enhet1,enhet2,enhet3 | 02                      | 2014 | jun   | 1    | 0        | true                   | [enhet1, enhet2, enhet3] |
-| user3        |                | enhet2               |                         | 2014 | jun   | 0    | 0        | false                  | [enhet2]               |
-| user3        |                |                      | 17                      | 2014 | jun   | 0    | 0        | false                  | [enhet2]               |
+| inloggad som | filter kapitel | filter enheter       | år   | månad | män? | kvinnor? | allaEnhetsfilterValda? | enhetsfilterlista?       |
+| user3        |                |                      | 2014 | jun   | 1    | 0        | true                   | [enhet1, enhet2, enhet3] |
+| user3        |                | enhet1,enhet2,enhet3 | 2014 | jun   | 1    | 0        | true                   | [enhet1, enhet2, enhet3] |
+| user3        | F00-F99        |                      | 2014 | jun   | 1    | 0        | true                   | [enhet1, enhet2, enhet3] |
+| user3        | F00-F99        | enhet1,enhet2,enhet3 | 2014 | jun   | 1    | 0        | true                   | [enhet1, enhet2, enhet3] |
+| user3        | F00-F99        | enhet1,enhet2,enhet3 | 2014 | jun   | 1    | 0        | true                   | [enhet1, enhet2, enhet3] |
+| user3        |                | enhet2               | 2014 | jun   | 0    | 0        | false                  | [enhet2]                 |

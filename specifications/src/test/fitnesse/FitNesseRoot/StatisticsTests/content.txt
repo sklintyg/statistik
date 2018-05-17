@@ -41,7 +41,7 @@ Möjliga värden för kön på läkare: MALE, FEMALE, UNKNOWN
 Möjliga värden på händelsetyp: REVOKED, CREATED
 intygstyp är "fk7263" by default, men kan sättas till valfri sträng (tex "ts-bas").
 Man kan sätta intygsid explicit. Bra t ex om man vill testa makulering. Använd intygid som kolumn.
-Filter kan sättas på alla tester av inloggad användare. De kolumner som kan läggas till är: "filter kapitel", "filter avsnitt", "filter kategorier", "filter enheter", "filter verksamhetstyper". Samtliga dessa filter är tomma som default-värde.
+Filter kan sättas på alla tester av inloggad användare. De kolumner som kan läggas till är: "filter kapitel", "filter avsnitt", "filter kategorier", "filter enheter". Samtliga dessa filter är tomma som default-värde.
 
 
 !*> '''Variables Defined'''

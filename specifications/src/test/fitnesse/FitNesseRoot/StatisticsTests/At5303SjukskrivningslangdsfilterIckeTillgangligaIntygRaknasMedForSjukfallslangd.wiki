@@ -244,10 +244,10 @@ Inloggad:
 !3 Då gäller:
 
 | Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet | filter enheter | filter verksamhetstyper | filter kategorier | filter sjukskrivningslängd                                                                          | totalt? | män? | kvinnor? |
-| user2        | enhet1    |                |                         |                   | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | -1      | -1   | -1       |
-| user2        | enhet1    | enhet1         | 10                      | G01               | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | -1      | -1   | -1       |
-| user2        | enhet1    | enhet2         | 02                      | G01               | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | -1      | -1   | -1       |
-| user2        | enhet2    |                |                         |                   | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | 1       | 1    | 0        |
-| user2        | enhet2    | enhet1         | 10                      | G01               | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | -1      | -1   | -1       |
-| user2        | enhet2    | enhet2         | 02                      | G01               | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | 1       | 1    | 0        |
+| inloggad som | vårdenhet | filter enheter | filter kategorier | filter sjukskrivningslängd                                                                          | totalt? | män? | kvinnor? |
+| user2        | enhet1    |                |                   | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | -1      | -1   | -1       |
+| user2        | enhet1    | enhet1         | G01               | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | -1      | -1   | -1       |
+| user2        | enhet1    | enhet2         | G01               | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | -1      | -1   | -1       |
+| user2        | enhet2    |                |                   | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | 1       | 1    | 0        |
+| user2        | enhet2    | enhet1         | G01               | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | -1      | -1   | -1       |
+| user2        | enhet2    | enhet2         | G01               | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar  | 1       | 1    | 0        |

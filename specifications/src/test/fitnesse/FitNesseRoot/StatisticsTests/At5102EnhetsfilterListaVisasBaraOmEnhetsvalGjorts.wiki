@@ -26,8 +26,8 @@ Enhetsfilterlistan ska innehålla alla de enheter som ingår i urvalet.
 Enhetsfilterlistan ska bara visas om INTE alla enheter är valda i filtret.
 
 | Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet    | vårdgivarnivå | filter kapitel | filter enheter | filter verksamhetstyper | filter startdatum | filter slutdatum | allaEnhetsfilterValda? | enhetsfilterlista? | kommentar         |
-| user2        | enhet1       | true          | G00-G99        | enhet1,enhet2  | 02                      | 2014-06-01        | 2014-09-30       | true                   | [enhet1, enhet2]   |                   |
-| user2        | enhet1       | true          | G00-G99        | enhet1         | 02                      | 2014-06-01        | 2014-09-30       | false                  | [enhet1]           |                   |
-| user2        | enhet1       | true          | G00-G99        |                | 02                      | 2014-06-01        | 2014-09-30       | true                   | [enhet1, enhet2]   |                   |
-| user2        | enhet1       | true          |                |                |                         |                   |                  | true                   | [enhet1, enhet2]   | Inget filter valt |
+| inloggad som | vårdenhet    | vårdgivarnivå | filter kapitel | filter enheter | filter startdatum | filter slutdatum | allaEnhetsfilterValda? | enhetsfilterlista? | kommentar         |
+| user2        | enhet1       | true          | G00-G99        | enhet1,enhet2  | 2014-06-01        | 2014-09-30       | true                   | [enhet1, enhet2]   |                   |
+| user2        | enhet1       | true          | G00-G99        | enhet1         | 2014-06-01        | 2014-09-30       | false                  | [enhet1]           |                   |
+| user2        | enhet1       | true          | G00-G99        |                | 2014-06-01        | 2014-09-30       | true                   | [enhet1, enhet2]   |                   |
+| user2        | enhet1       | true          |                |                |                   |                  | true                   | [enhet1, enhet2]   | Inget filter valt |

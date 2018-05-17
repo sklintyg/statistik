@@ -18,7 +18,7 @@ Test
 När diagnosfilter appliceras, visas längden som sjukfallet får om man räknar med alla intyg fram till och med intyg med rätt diagnos. Intyg efter det filtreras bort.
 
 | Sjukfall i rapporten sjukskrivningslangd |
-| inloggad som | filter enheter | filter verksamhetstyper | filter kapitel | filter avsnitt | filter kategorier | sjukskrivningslängd | totalt? | män? | kvinnor? |
-| user1 | enhet1 | 02 | | | F41 | Under 15 dagar | 1 | 1 | 0 |
-| user1 | enhet1 | 02 | | | F41 | 15-30 dagar | 2 | 1 | 1 |
-| user1 | enhet1 | 02 | | | F41 | 31-60 dagar | 0 | 0 | 0 |
+| inloggad som | filter enheter | filter kapitel | filter avsnitt | filter kategorier | sjukskrivningslängd | totalt? | män? | kvinnor? |
+| user1        | enhet1         |                |                | F41                | Under 15 dagar     | 1 | 1 | 0 |
+| user1        | enhet1         |                |                | F41                | 15-30 dagar        | 2 | 1 | 1 |
+| user1        | enhet1         |                |                | F41                | 31-60 dagar        | 0 | 0 | 0 |

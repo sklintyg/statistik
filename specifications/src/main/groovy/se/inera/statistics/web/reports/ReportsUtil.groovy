@@ -273,7 +273,7 @@ class ReportsUtil {
     }
 
     private boolean isFilterEmpty(FilterData filter) {
-        return filter.useDefaultPeriod && filter.diagnoser.isEmpty() && filter.enheter.isEmpty() && filter.verksamhetstyper.isEmpty() && filter.sjukskrivningslangd.isEmpty() && filter.aldersgrupp.isEmpty() && filter.intygstyper.isEmpty()
+        return filter.useDefaultPeriod && filter.diagnoser.isEmpty() && filter.enheter.isEmpty() && filter.sjukskrivningslangd.isEmpty() && filter.aldersgrupp.isEmpty() && filter.intygstyper.isEmpty()
     }
 
     private String addFilterToQueryStringIfSet(filterQueryName, FilterData filter, queryString) {

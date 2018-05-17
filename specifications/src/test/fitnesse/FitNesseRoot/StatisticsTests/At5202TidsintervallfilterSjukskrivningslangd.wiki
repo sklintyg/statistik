@@ -17,7 +17,7 @@ Intyg bakåt i tiden tas med, trots att de är utanför tidsintervallfilter.
 Intyg "framåt i tiden" (utanför tidsintervallfilter) tas inte med trots att de tillhör sjukfall.
 
 | Sjukfall i rapporten sjukskrivningslangd |
-| inloggad som | filter enheter | filter verksamhetstyper | filter kapitel | filter avsnitt | filter kategorier | filter startdatum | filter slutdatum | sjukskrivningslängd | totalt? | män? | kvinnor? |
-| user1 | enhet1 | 02 | | | F41 | 2015-01-01 | 2015-12-31 | Under 15 dagar | 1 | 1 | 0 |
-| user1 | enhet1 | 02 | | | F41 | 2015-01-01 | 2015-12-31 | 15-30 dagar | 1 | 0 | 1 |
-| user1 | enhet1 | 02 | | | F41 | 2015-01-01 | 2015-12-31 | 31-60 dagar | 0 | 0 | 0 |
+| inloggad som | filter enheter | filter kapitel | filter avsnitt | filter kategorier | filter startdatum | filter slutdatum | sjukskrivningslängd | totalt? | män? | kvinnor? |
+| user1 | enhet1 | | | F41 | 2015-01-01 | 2015-12-31 | Under 15 dagar | 1 | 1 | 0 |
+| user1 | enhet1 | | | F41 | 2015-01-01 | 2015-12-31 | 15-30 dagar | 1 | 0 | 1 |
+| user1 | enhet1 | | | F41 | 2015-01-01 | 2015-12-31 | 31-60 dagar | 0 | 0 | 0 |
