@@ -1,46 +1,61 @@
-<div class="header clearfix" ng-cloak>
-  <div class="headerbox">
-    <span class="headerbox-logo pull-left">
-      <a ng-href="/#/">
-        <img alt="Till startsidan" class="header-logo hidden-print hidden-xs" src="/assets/images/logo_statistik_inv@2x.png"/>
-        <img alt="Till startsidan" class="header-logo hidden-print visible-xs" src="/assets/images/logo_vit_intygsstatistik.png"/>
-        <img class="visible-print-inline-block" src="/assets/images/logo_statistik_dark@2x.png">
-      </a>
-    </span>
-    <span class="headerbox-date pull-left">
-      <div id="location" class="location ng-hide" data-ng-show="isLoggedIn">
-        <span id="verksamhetsNameLabel">{{pageHeaderVerksamhetName}}</span>
-        <show-businesses
-            data-ng-if="showBusinessesDetails"
-            businesses="UserModel.get().businesses"
-            vg-name="vgName"></show-businesses>
-        <select-vardgivare-modal
-            data-ng-if="UserModel.get().enableVerksamhetMenu && UserModel.get().vgs.length > 1"
-            vardgivare="UserModel.get().vgs"
-            select-vardgivare="changeVardgivare(vgId)"></select-vardgivare-modal>
-      </div>
-    </span>
+<div class="header-logo">
+  <img alt="Till startsidan" class="hidden-print hidden-xs" src="/assets/images/logo_statistik_inv@2x.png"/>
+  <img alt="Till startsidan" class="hidden-print visible-xs" src="/assets/images/logo_vit_intygsstatistik.png"/>
+  <img class="visible-print-inline-block" src="/assets/images/logo_statistik_dark@2x.png">
+</div>
+
+<div data-ng-if="UserModel.get().enableVerksamhetMenu" class="header-user">
+  <i class="fa fa-user"></i>
+  <div class="truncate-when-needed">{{UserModel.get().userNameWithAccess}}</div>
+</div>
+
+<div data-ng-if="UserModel.get().enableVerksamhetMenu" class="header-unit">
+
+  <i class="fa fa-building-o"></i>
+
+  <!--
+  <div class="single-text-row-container">
+    <div id="verksamhetsNameLabel" class="verksamhets-name-label truncate-when-needed">{{pageHeaderVerksamhetName}}</div>
+
+    <show-businesses
+        data-ng-if="showBusinessesDetails"
+        businesses="UserModel.get().businesses"
+        vg-name="vgName"></show-businesses>
   </div>
 
-  <div class="pull-right" data-ng-if="AppModel.get().loginVisible">
-    <div class="ng-hide headerbox-login" id="business-login-container" data-ng-show="!UserModel.get().enableVerksamhetMenu">
-      <span class="business-login-span"><span message key="lbl.for-verksamhetsstatistik"></span></span>
-      <button class="btn btn-info" data-ng-click="loginClicked()"
-              type="button" id="business-login-btn" value="Logga in"><span message key="lbl.log-in"></span>
-      </button>
+  <select-vardgivare-modal
+      data-ng-if="UserModel.get().enableVerksamhetMenu && UserModel.get().vgs.length > 1"
+      vardgivare="UserModel.get().vgs"
+      select-vardgivare="changeVardgivare(vgId)"></select-vardgivare-modal> -->
+
+  <div class="header-two-row">
+
+    <div class="hidden-xs" data-ng-if="UserModel.get().enableVerksamhetMenu && UserModel.get().vgs.length > 1">&nbsp;</div>
+
+    <div class="single-text-row-container">
+      <div id="verksamhetsNameLabel" class="verksamhets-name-label truncate-when-needed">{{pageHeaderVerksamhetName}}</div>
+
+      <show-businesses
+          data-ng-if="showBusinessesDetails"
+          businesses="UserModel.get().businesses"
+          vg-name="vgName"></show-businesses>
     </div>
-    <div class="ng-hide" data-ng-show="UserModel.get().enableVerksamhetMenu">
-      <div class="headerbox-avatar pull-right">
-        <img src="/assets/images/avatar.png">
-      </div>
-      <div class="headerbox-user pull-right">
-        <div class="headerbox-user-profile">
-          <span class="logged-in">{{UserModel.get().userNameWithAccess}}</span><br>
-          <span class="pull-right">
-            <a id="logoutLink" href="saml/logout"><span message key="lbl.log-out"></span></a>
-          </span>
-        </div>
-      </div>
-    </div>
+
+    <select-vardgivare-modal
+        data-ng-if="UserModel.get().enableVerksamhetMenu && UserModel.get().vgs.length > 1"
+        vardgivare="UserModel.get().vgs"
+        select-vardgivare="changeVardgivare(vgId)"></select-vardgivare-modal>
   </div>
+</div>
+
+<div data-ng-if="UserModel.get().enableVerksamhetMenu" class="header-links">
+  <a id="logoutLink" href="saml/logout"><span message key="lbl.log-out"></span></a>
+</div>
+
+<div data-ng-if="!UserModel.get().enableVerksamhetMenu" class="header-links">
+  <span class="business-login-span"><span message key="lbl.for-verksamhetsstatistik"></span></span>
+  <button class="btn btn-info" data-ng-click="loginClicked()"
+          type="button" id="business-login-btn">
+    <span message key="lbl.log-in"></span>
+  </button>
 </div>

@@ -1,12 +1,17 @@
-.select-vardgivare-modal {
-  padding: 0;
+select-vardgivare-modal {
+  display: block;
 
-  span {
-    color: #28b4c4;
-  }
+  .select-vardgivare-modal {
+    padding: 0;
 
-  &:hover,
-  &:focus {
-    color: #28b4c4;
+    span {
+      @extend %st-typo-05;
+      color: $st-color-27;
+    }
+
+    &:hover,
+    &:focus {
+      color: $st-color-27;
+    }
   }
 }

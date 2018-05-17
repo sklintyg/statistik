@@ -45,3 +45,12 @@ body {
   }
 }
 
+.overview-widget-link:hover {
+  text-decoration: none;
+}
+
+.truncate-when-needed {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
