@@ -57,7 +57,16 @@ public enum ReportColor {
     ST_COLOR_32("#398439"),
     ST_COLOR_33("#3E8F3E"),
     ST_COLOR_34("#333333"),
-    ST_COLOR_35("#212633");
+    ST_COLOR_35("#212633"),
+    ST_COLOR_36("#D8EEF7"),
+    ST_COLOR_37("#4890E2"),
+    ST_COLOR_38("#3B759D"),
+    ST_COLOR_39("#FFF8E4"),
+    ST_COLOR_40("#F0E1B4"),
+    ST_COLOR_41("#9A6C41"),
+    ST_COLOR_42("#F2DEDE"),
+    ST_COLOR_43("#D0021C"),
+    ST_COLOR_44("#751723");
 
     private final String color;
 

@@ -129,3 +129,21 @@ p {
     }
   }
 }
+
+.alert-info {
+  h1, h2, h3, h4 {
+    color: $state-info-text;
+  }
+}
+
+.alert-warning {
+  h1, h2, h3, h4 {
+    color: $state-warning-text;
+  }
+}
+
+.alert-danger  {
+  h1, h2, h3, h4 {
+    color: $state-danger-text;
+  }
+}
