@@ -20,7 +20,7 @@ var User = function() {
     };
 
     this.isLoggedIn = function() {
-        return headerPo.logoutLink.isDisplayed();
+        return headerPo.logoutLink.isPresent();
     };
 
     this.makeSureNotLoggedIn = function() {

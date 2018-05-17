@@ -17,9 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*globals browser,protractor */
-/*globals pages */
-/*globals describe,it,helpers */
+/*globals browser */
+/*globals describe,it */
 'use strict';
 
 var testfw = require('../testFramework.js');
