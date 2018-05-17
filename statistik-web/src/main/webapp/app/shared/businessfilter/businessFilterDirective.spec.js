@@ -158,7 +158,6 @@ describe('Tests for directive button-filter', function () {
             //then the parameters are defined in the params object sent to the server
             expect(args.enheter).toBeDefined('Enheter was not defined as expected');
             expect(args.diagnoser).toBeDefined('Diagnoser was not defined as expected');
-            expect(args.verksamhetstyper).toBeDefined('Verksamhetstyper was not defined as expected');
             expect(args.fromDate).toBeDefined('fromDate was not defined as expected');
             expect(args.toDate).toBeDefined('toDate was not defined as expected');
             expect(args.useDefaultPeriod).toBeDefined('useDefault was not defined as expected');

@@ -59,7 +59,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.geographyBusinessIds = [];
 
         businessFilter.verksamhetsTyper = [];
-        businessFilter.selectedVerksamhetTypIds = [];
 
         businessFilter.sjukskrivningslangd = [];
         businessFilter.sjukskrivningslangdSaved = [];
@@ -120,24 +119,9 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         return fromDateChanged || toDateChanged || aldersGruppChanged || sjukskrivningslangdChanged || diagnoserChanged || geographyBusinessChanged || intygstyperChanged;
     };
 
-    businessFilter.updateSelectionVerksamhetsTyper = function(verksamhetsTyper) {
-        angular.forEach(verksamhetsTyper, function(verksamhetsTyp) {
-            var selected = true;
-
-            angular.forEach(verksamhetsTyp.units, function(businesse) {
-                selected = selected && businesse.allSelected;
-            });
-
-            if (!selected) {
-                verksamhetsTyp.checked = selected;
-            }
-        });
-    };
-
     businessFilter.resetSelections = function () {
         businessFilter.geographyBusinessIds.length = 0;
         businessFilter.geographyBusinessIdsSaved.length = 0;
-        businessFilter.selectedVerksamhetTypIds.length = 0;
         businessFilter.selectedSjukskrivningslangdIds.length = 0;
         businessFilter.sjukskrivningslangdSaved.length = 0;
         businessFilter.selectedIntygstyperIds.length = 0;
@@ -148,7 +132,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         businessFilter.diagnoserSaved.length = 0;
         businessFilter.deselectAll(businessFilter.geography);
         businessFilter.deselectAll(businessFilter.icd10);
-        businessFilter.updateSelectionVerksamhetsTyper(businessFilter.verksamhetsTyper);
 
         //Reset datepickers
         businessFilter.toDate = null;
@@ -170,9 +153,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
             businessFilter.diagnoserSaved = _.cloneDeep(filterData.diagnoser);
             businessFilter.selectDiagnoses(filterData.diagnoser);
         }
-        businessFilter.selectedVerksamhetTypIds = _.uniqWith(_.map(filterData.verksamhetstyper, function(verksamhetstyp) {
-            return _.find(businessFilter.verksamhetsTyper, function(verksamhet) { return _.includes(verksamhet.ids, verksamhetstyp); }).id;
-        }));
         businessFilter.selectedSjukskrivningslangdIds = filterData.sjukskrivningslangd;
         businessFilter.sjukskrivningslangdSaved = _.cloneDeep(filterData.sjukskrivningslangd);
         businessFilter.selectedIntygstyperIds = filterData.intygstyper;
@@ -433,24 +413,6 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     businessFilter.updateDiagnoses = function () {
         businessFilter.selectedDiagnoses = [];
         businessFilter.collectSummary(businessFilter.icd10, businessFilter.selectedDiagnoses);
-    };
-
-    businessFilter.collectVerksamhetsIds = function () {
-        function getSelectedVerksamhets() {
-            if (businessFilter.selectedVerksamhetTypIds.length === 0) {
-                return businessFilter.verksamhetsTyper;
-            }
-            return _.filter(businessFilter.verksamhetsTyper, function(verksamhetstyp) {
-                return _.includes(businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
-            });
-        }
-
-        var selectedVerksamhettyps = getSelectedVerksamhets();
-        var selectedUnitsFromVerksamhetstyps = _.map(selectedVerksamhettyps, function (verksamhetstyp) {
-            return verksamhetstyp.units;
-        });
-        var selectedUnitsFromVerksamhetstypsFlattened = _.flatten(selectedUnitsFromVerksamhetstyps);
-        return _.map(selectedUnitsFromVerksamhetstypsFlattened, 'id');
     };
 
     businessFilter.setSelectedGeography = function() {

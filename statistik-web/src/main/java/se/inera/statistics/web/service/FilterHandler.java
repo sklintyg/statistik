@@ -341,18 +341,13 @@ public class FilterHandler {
     }
 
     private ArrayList<HsaIdEnhet> getEnhetsFilteredLandsting(HttpServletRequest request, FilterData inFilter) {
-        final List<String> verksamhetstyper = inFilter.getVerksamhetstyper();
-        Set<HsaIdEnhet> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyperLandsting(inFilter, request);
+        Set<HsaIdEnhet> enhetsForLandsting = getEnhetsForLandsting(request);
         final List<String> enheter = inFilter.getEnheter();
         final HashSet<HsaIdEnhet> enhets = new HashSet<>(toHsaIds(enheter));
-        if (verksamhetstyper.isEmpty() && enheter.isEmpty()) {
-            return new ArrayList<>(enhetsMatchingVerksamhetstyp); // All available enhets for user
-        } else if (verksamhetstyper.isEmpty()) {
-            return new ArrayList<>(enhets);
-        } else if (enheter.isEmpty()) {
-            return new ArrayList<>(enhetsMatchingVerksamhetstyp);
+        if (enheter.isEmpty()) {
+            return new ArrayList<>(enhetsForLandsting);
         } else {
-            return new ArrayList<>(Sets.intersection(enhetsMatchingVerksamhetstyp, enhets));
+            return new ArrayList<>(Sets.intersection(enhetsForLandsting, enhets));
         }
     }
 
@@ -361,62 +356,32 @@ public class FilterHandler {
     }
 
     private List<HsaIdEnhet> getEnhetsFiltered(HttpServletRequest request, FilterData inFilter) {
-        final List<String> verksamhetstyper = inFilter.getVerksamhetstyper();
-        Set<HsaIdEnhet> enhetsMatchingVerksamhetstyp = getEnhetsForVerksamhetstyper(verksamhetstyper, request);
+        Set<HsaIdEnhet> allEnheter = getEnhets(request);
         final List<String> enheter = inFilter.getEnheter();
         final HashSet<HsaIdEnhet> enhets = new HashSet<>(toHsaIds(enheter));
-        if (verksamhetstyper.isEmpty() && enheter.isEmpty()) {
-            return new ArrayList<>(enhetsMatchingVerksamhetstyp); // All available enhets for user
-        } else if (verksamhetstyper.isEmpty()) {
-            return new ArrayList<>(enhets);
-        } else if (enheter.isEmpty()) {
-            return new ArrayList<>(enhetsMatchingVerksamhetstyp);
+        if (enheter.isEmpty()) {
+            return new ArrayList<>(allEnheter);
         } else {
-            return new ArrayList<>(Sets.intersection(enhetsMatchingVerksamhetstyp, enhets));
+            return new ArrayList<>(Sets.intersection(allEnheter, enhets));
         }
     }
 
-    private Set<HsaIdEnhet> getEnhetsForVerksamhetstyperLandsting(FilterData filterData, HttpServletRequest request) {
+    private Set<HsaIdEnhet> getEnhetsForLandsting(HttpServletRequest request) {
         final List<Verksamhet> verksamhets = getAllVerksamhetsForLoggedInLandstingsUser(request);
         Set<HsaIdEnhet> enhetsIds = new HashSet<>();
         for (Verksamhet verksamhet : verksamhets) {
-            if (isOfVerksamhetsTyp(filterData.getVerksamhetstyper(), verksamhet.getVerksamhetsTyper())) {
-                enhetsIds.add(verksamhet.getIdUnencoded());
-            }
+            enhetsIds.add(verksamhet.getIdUnencoded());
         }
         return enhetsIds;
     }
 
-    private Set<HsaIdEnhet> getEnhetsForVerksamhetstyper(List<String> verksamhetstyper, HttpServletRequest request) {
+    private Set<HsaIdEnhet> getEnhets(HttpServletRequest request) {
         Set<HsaIdEnhet> enhetsIds = new HashSet<>();
         LoginInfo info = loginServiceUtil.getLoginInfo();
         for (Verksamhet verksamhet : info.getBusinessesForVg(getSelectedVgIdForLoggedInUser(request))) {
-            if (isOfVerksamhetsTyp(verksamhet, verksamhetstyper)) {
-                enhetsIds.add(verksamhet.getIdUnencoded());
-            }
+            enhetsIds.add(verksamhet.getIdUnencoded());
         }
         return enhetsIds;
-    }
-
-    private boolean isOfVerksamhetsTyp(List<String> verksamhetstyper, Set<Verksamhet.VerksamhetsTyp> verksamhetstyperForCurrentVerksamhet) {
-        if (verksamhetstyper == null || verksamhetstyper.isEmpty() || verksamhetstyperForCurrentVerksamhet == null
-                || verksamhetstyperForCurrentVerksamhet.isEmpty()) {
-            return true;
-        }
-        for (Verksamhet.VerksamhetsTyp verksamhetsTyp : verksamhetstyperForCurrentVerksamhet) {
-            if (verksamhetstyper.contains(verksamhetsTyp.getId())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isOfVerksamhetsTyp(Verksamhet verksamhet, List<String> verksamhetstyper) {
-        if (verksamhetstyper.isEmpty()) {
-            return true;
-        }
-        final Set<Verksamhet.VerksamhetsTyp> verksamhetstyperForCurrentVerksamhet = verksamhet.getVerksamhetsTyper();
-        return isOfVerksamhetsTyp(verksamhetstyper, verksamhetstyperForCurrentVerksamhet);
     }
 
     private Predicate<Fact> getDiagnosFilter(final List<String> diagnosIds) {

@@ -112,17 +112,6 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
         leavesLevelLabelText: messageService.getProperty('lbl.filter.modal.leaves', null, '', null, true)
     };
 
-    function getVerksamhetstyper() {
-        var selectedVerksamhettyps = _.filter(scope.businessFilter.verksamhetsTyper, function(verksamhetstyp) {
-            return _.includes(scope.businessFilter.selectedVerksamhetTypIds, verksamhetstyp.id);
-        });
-        var selectedIdsFromVerksamhetstyps = _.map(selectedVerksamhettyps, function (verksamhetstyp) {
-            return verksamhetstyp.ids;
-        });
-        var selectedIdsFromVerksamhetstypsFlattened = _.flatten(selectedIdsFromVerksamhetstyps);
-        return _.uniq(selectedIdsFromVerksamhetstypsFlattened);
-    }
-
     function isValidDate(date) {
         if(date === 'undefined') {
             return false;
@@ -231,7 +220,6 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
             var params = {
                 diagnoser: scope.businessFilter.selectedDiagnoses,
                 enheter: scope.businessFilter.geographyBusinessIds,
-                verksamhetstyper: getVerksamhetstyper(),
                 sjukskrivningslangd: scope.businessFilter.selectedSjukskrivningslangdIds,
                 intygstyper: scope.businessFilter.selectedIntygstyperIds,
                 aldersgrupp: scope.businessFilter.selectedAldersgruppIds,
@@ -291,10 +279,6 @@ function linkFunction(_, scope, businessFilter, $location, messageService, stati
 
     scope.$on('$routeChangeSuccess', function() {
        businessFilter.updateHasUserSelection();
-    });
-
-    scope.$on('selectionsChanged', function() {
-        scope.businessFilter.updateSelectionVerksamhetsTyper(scope.businessFilter.verksamhetsTyper);
     });
 
     scope.$watch('businessFilter.fromDate', function(newValue) {

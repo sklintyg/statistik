@@ -341,7 +341,6 @@ angular.module('StatisticsApp').factory('statisticsData',
 
         var param = {
             'enheter': params.enheter || null,
-            'verksamhetstyper': params.verksamhetstyper || null,
             'sjukskrivningslangd': params.sjukskrivningslangd || null,
             'aldersgrupp': params.aldersgrupp || null,
             'intygstyper': params.intygstyper || null,

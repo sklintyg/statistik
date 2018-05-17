@@ -27,7 +27,6 @@ public class FilterData {
 
     private List<String> diagnoser;
     private List<String> enheter;
-    private List<String> verksamhetstyper;
     private List<String> sjukskrivningslangd;
     private List<String> aldersgrupp;
     private List<String> intygstyper;
@@ -40,12 +39,10 @@ public class FilterData {
     }
 
     // CHECKSTYLE:OFF ParameterNumber
-    public FilterData(List<String> diagnoser, List<String> enheter, List<String> verksamhetstyper, List<String> sjukskrivningslangd,
+    public FilterData(List<String> diagnoser, List<String> enheter, List<String> sjukskrivningslangd,
             List<String> aldersgrupp, List<String> intygstyper, String fromDate, String toDate, boolean useDefaultPeriod) {
         this.diagnoser = diagnoser == null ? Collections.<String> emptyList() : Collections.unmodifiableList(diagnoser);
         this.enheter = enheter == null ? Collections.<String> emptyList() : Collections.unmodifiableList(enheter);
-        this.verksamhetstyper = verksamhetstyper == null ? Collections.<String> emptyList()
-                : Collections.unmodifiableList(verksamhetstyper);
         this.sjukskrivningslangd = sjukskrivningslangd == null ? Collections.<String> emptyList()
                 : Collections.unmodifiableList(sjukskrivningslangd);
         this.aldersgrupp = aldersgrupp == null ? Collections.<String> emptyList() : Collections.unmodifiableList(aldersgrupp);
@@ -57,12 +54,12 @@ public class FilterData {
     // CHECKSTYLE:ON ParameterNumber
 
     public static FilterData empty() {
-        return new FilterData(Collections.<String> emptyList(), Collections.<String> emptyList(), Collections.<String> emptyList(),
+        return new FilterData(Collections.<String> emptyList(), Collections.<String> emptyList(),
                 Collections.<String> emptyList(), Collections.<String> emptyList(), Collections.<String> emptyList(), null, null, true);
     }
 
     public static FilterData createForDxsOnly(List<String> diagnoser) {
-        return new FilterData(diagnoser, Collections.<String> emptyList(), Collections.<String> emptyList(),
+        return new FilterData(diagnoser, Collections.<String> emptyList(),
                 Collections.<String> emptyList(), Collections.<String> emptyList(), Collections.<String> emptyList(), null, null, true);
     }
 
@@ -72,10 +69,6 @@ public class FilterData {
 
     public List<String> getEnheter() {
         return enheter;
-    }
-
-    public List<String> getVerksamhetstyper() {
-        return verksamhetstyper;
     }
 
     public List<String> getSjukskrivningslangd() {
