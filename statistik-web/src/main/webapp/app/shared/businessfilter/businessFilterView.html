@@ -161,7 +161,7 @@
   </fieldset>
 </form>
 
-<div class="filter-level" data-ng-if="filterViewState.messages.length > 0" style="margin-bottom: 10px">
+<div class="filter-level" id="filter-warnings" data-ng-if="filterViewState.messages.length > 0" style="margin-bottom: 10px">
   <div ng-repeat="resultMessage in filterViewState.messages">
     <show-message type="resultMessage.type" severity="resultMessage.severity" text="resultMessage.message"></show-message>
   </div>

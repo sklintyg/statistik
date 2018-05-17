@@ -22,7 +22,7 @@
 var Filter = function() {
     this.container = element(by.id('businessFilterContainer'));
 
-    this.messages = this.container.all(by.repeater('resultMessage in filterViewState.messages'));
+    this.messages = this.container.all(by.css('#filter-warnings show-message'));
 
     this.applyBtn = this.container.element(by.id('filterApplyBtn'));
     this.resetBtn = this.container.element(by.id('filterResetBtn'));
@@ -84,6 +84,11 @@ var Filter = function() {
     this.isFilterInactive = function() {
         expect(this.showAllActiveBtn.isPresent()).toBeFalsy();
     };
+
+    // Landsting
+    this.landstingContainer = element(by.id('landstingFilterContainer'));
+
+    this.landstingMessages = this.landstingContainer.all(by.css('#filter-warnings show-message'));
 
 };
 

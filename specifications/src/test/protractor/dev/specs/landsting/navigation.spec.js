@@ -62,6 +62,36 @@ describe('Navigering landsting: ', function() {
         }
     });
 
+    describe('filter', function() {
+        var filter = pages.filter;
+
+        beforeAll(function() {
+            features.user.makeSureNotLoggedIn();
+            features.user.loginUser3(true);
+
+            navmenu.landstingTab.click();
+            navmenu.navLandstingAbout.click();
+            pages.landstingAbout.isAtPage();
+        });
+
+
+        it('show message on verksamhet', function() {
+            navmenu.verksamhetTab.click();
+
+            filter.sickLeaveLengthBtn.click();
+            filter.sickLeaveLengthList.get(1).click();
+
+            filter.applyBtn.click();
+
+            expect(filter.messages.count()).toBe(1);
+        });
+
+        it('meddelandet syns inte på landstinget', function() {
+            navmenu.landstingTab.click();
+            expect(filter.landstingMessages.count()).toBe(0);
+        });
+    });
+
 
     afterAll(function() {
         features.user.makeSureNotLoggedIn();
