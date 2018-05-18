@@ -1,6 +1,9 @@
 ---
 Test
 ---
+---
+Test
+---
 !contents -R2 -g -p -f -h
 
 Gäller STATISTIK-1029.

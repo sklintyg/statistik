@@ -31,7 +31,7 @@ Inloggad:
 
 | Intyg i rapporten intyg totalt diagram |
 | inloggad som | år | månad | grupp | män? | kvinnor? |
-| user1 | 2015 | feb | TSTRK1007 | 0 | 2 |
-| user1 | 2015 | feb | TSTRK1031 | 1 | 0 |
-| user1 | 2015 | mar | TSTRK1007 | 0 | 0 |
-| user1 | 2015 | mar | TSTRK1031 | 1 | 1 |
+| user1 | 2015 | feb | TSTRK1007 Transportstyrelsens läkarintyg | 0 | 2 |
+| user1 | 2015 | feb | TSTRK1031 Transportstyrelsens läkarintyg, diabetes | 1 | 0 |
+| user1 | 2015 | mar | TSTRK1007 Transportstyrelsens läkarintyg | 0 | 0 |
+| user1 | 2015 | mar | TSTRK1031 Transportstyrelsens läkarintyg, diabetes | 1 | 1 |

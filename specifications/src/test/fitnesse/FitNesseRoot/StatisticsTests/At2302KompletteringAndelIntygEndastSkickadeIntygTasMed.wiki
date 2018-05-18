@@ -1,11 +1,8 @@
 ---
 Test
 ---
-Det finns ett antal intyg med ett antal tillhörande meddelanden.
+Givet att:
 
-Alla intyg har skickats vidare till Försäkringskassan.
-
-!3 Givet att:
 | script | dagens datum | 2015-12-14 |
 
 | script | troskel varde | 1 |
@@ -20,11 +17,10 @@ Alla intyg har skickats vidare till Försäkringskassan.
 
 | Intyg skickat till mottagare |
 | intygid | mottagare |
-| 1001    | FKASSA    |
-| 1002    | FKASSA    |
-| 1003    | FKASSA    |
-| 1004    | FKASSA    |
-| 1005    | FKASSA    |
+| 1001 | FKASSA |
+| 1002 | FKASSA |
+| 1003 | FKASSA |
+| 1004 | FKASSA |
 
 | Foljande meddelanden finns |
 | personnr | intygsid | ämne |
@@ -35,7 +31,7 @@ Alla intyg har skickats vidare till Försäkringskassan.
 | 19791212-1212 | 1005 | KOMPLT |
 
 !3 Då gäller:
-Endast intyg från FK räknas med i statistiken. Därför blir totalen 100% i november nedan eftersom endast 1 LISJP intyg har skickats till FK i november.
+Totalen i november blir 100% eftersom endast 1 LISJP intyg har skickats till FK i november.
 
 För att se hur statistiken beräknas se: [[At2301KompletteringAndelIntyg][http://localhost:9125/StatisticsTests.At2301KompletteringAndelIntyg]]
 

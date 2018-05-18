@@ -28,6 +28,6 @@ Inloggad:
 
 | Intyg i rapporten intyg totalt diagram |
 | inloggad som | år | månad | grupp | män? | kvinnor? |
-| user1 | 2015 | feb | AF00213 | 1 | 2 |
-| user1 | 2015 | mar | AF00213 | 1 | 1 |
-| user1 | 2015 | apr | AF00213 | 0 | 0 |
+| user1 | 2015 | feb | AF00213 Arbetsförmedlingens medicinska intyg | 1 | 2 |
+| user1 | 2015 | mar | AF00213 Arbetsförmedlingens medicinska intyg | 1 | 1 |
+| user1 | 2015 | apr | AF00213 Arbetsförmedlingens medicinska intyg | 0 | 0 |

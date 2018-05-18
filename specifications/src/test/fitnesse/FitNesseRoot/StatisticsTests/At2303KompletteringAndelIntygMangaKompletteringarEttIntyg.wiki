@@ -1,11 +1,8 @@
 ---
 Test
 ---
-Det finns ett antal intyg med ett antal tillhörande meddelanden.
+Givet att:
 
-Alla intyg har skickats vidare till Försäkringskassan.
-
-!3 Givet att:
 | script | dagens datum | 2015-11-14 |
 
 | script | troskel varde | 1 |
@@ -18,9 +15,9 @@ Alla intyg har skickats vidare till Försäkringskassan.
 
 | Intyg skickat till mottagare |
 | intygid | mottagare |
-| 1001    | FKASSA    |
-| 1002    | FKASSA    |
-| 1003    | FKASSA    |
+| 1001 | FKASSA |
+| 1002 | FKASSA |
+| 1003 | FKASSA |
 
 | Foljande meddelanden finns |
 | personnr | intygsid | ämne |
