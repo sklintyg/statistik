@@ -63,7 +63,8 @@ public class ResponseHandler {
     public static final String ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER = "allAvailableAgeGroupsSelectedInFilter";
     public static final String ALL_AVAILABLE_INTYGTYPES_SELECTED_IN_FILTER = "allAvailableIntygTypesSelectedInFilter";
     public static final String FILTERED_ENHETS = "filteredEnhets";
-    public static final int LIMIT_FOR_TOO_MUCH_DATA_MESSAGE = 100;
+    public static final int LIMIT_TOO_MUCH_DATA_MESSAGE_SINGLE_CHART = 100;
+    public static final int LIMIT_TOO_MUCH_DATA_MESSAGE_DUAL_CHART = 50;
     public static final String MESSAGE_KEY = "messages";
 
     @Autowired
@@ -72,19 +73,19 @@ public class ResponseHandler {
     @Autowired
     private Warehouse warehouse;
 
-    Response getResponse(TableDataReport result, String format, List<HsaIdEnhet> availableEnhetsForUser, Report report) {
+    Response getResponse(TableDataReport result, String format, List<HsaIdEnhet> availableEnhetsForUser, ReportInfo report) {
         return getResponse(result, format, availableEnhetsForUser, report, null);
     }
 
     Response getResponse(TableDataReport result, String format, List<HsaIdEnhet> availableEnhetsForUser,
-                         Report report, Map<String, Object> extras) {
+                         ReportInfo report, Map<String, Object> extras) {
         if ("xlsx".equalsIgnoreCase(format)) {
-            return getXlsx(result, availableEnhetsForUser, report);
+            return getXlsx(result, availableEnhetsForUser, report.getReport());
         }
         if ("csv".equalsIgnoreCase(format)) {
-            return CsvConverter.getCsvResponse(result.getTableData(), getFilename(report, "csv"));
+            return CsvConverter.getCsvResponse(result.getTableData(), getFilename(report.getReport(), "csv"));
         }
-        return getResponseForDataReport(result, availableEnhetsForUser, extras);
+        return getResponseForDataReport(result, availableEnhetsForUser, extras, report);
     }
 
     Response getXlsx(TableDataReport result, List<HsaIdEnhet> availableEnhetsForUser, Report report) {
@@ -104,10 +105,10 @@ public class ResponseHandler {
     }
 
     Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser) {
-        return getResponseForDataReport(result, availableEnhetsForUser, null);
+        return getResponseForDataReport(result, availableEnhetsForUser, null, null);
     }
 
-    Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser, Map<String, Object> extras) {
+    Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser, Map<String, Object> extras, ReportInfo report) {
         ObjectMapper mapper = new ObjectMapper();
         @SuppressWarnings("unchecked")
         Map<String, Object> mappedResult = result != null ? mapper.convertValue(result, Map.class) : Maps.newHashMap();
@@ -126,7 +127,7 @@ public class ResponseHandler {
 
         if (result instanceof TableDataReport) {
             final TableDataReport detailReport = (TableDataReport) result;
-            if (containsMoreDataThanLimit(detailReport, LIMIT_FOR_TOO_MUCH_DATA_MESSAGE)) {
+            if (containsMoreDataThanLimit(detailReport, report)) {
                 Message message = Message.create(ErrorType.CHART, ErrorSeverity.INFO, TOO_MUCH_DATA_MESSAGE);
                 messages.add(message);
             }
@@ -188,7 +189,7 @@ public class ResponseHandler {
         return !(aldersGrupp && dxs && enhets && sjukskrivningslangd && intystyper);
     }
 
-    private boolean containsMoreDataThanLimit(TableDataReport detailReport, int limitForTooMuchDataMessage) {
+    private boolean containsMoreDataThanLimit(TableDataReport detailReport, ReportInfo report) {
         if (detailReport == null) {
             return false;
         }
@@ -203,7 +204,12 @@ public class ResponseHandler {
             return false;
         }
 
-        return rows.size() >= limitForTooMuchDataMessage;
+        if (report == null) {
+            return false;
+        }
+
+        final int limit = report.isDualChartReport() ? LIMIT_TOO_MUCH_DATA_MESSAGE_DUAL_CHART : LIMIT_TOO_MUCH_DATA_MESSAGE_SINGLE_CHART;
+        return rows.size() >= limit;
     }
 
     private boolean areAllAvailableEnhetsSelectedInFilter(FilterDataResponse filter, List<HsaIdEnhet> availableEnhetsForUser) {

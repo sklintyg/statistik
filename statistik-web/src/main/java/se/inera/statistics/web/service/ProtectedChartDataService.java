@@ -94,7 +94,6 @@ import java.util.stream.Collectors;
 public class ProtectedChartDataService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProtectedChartDataService.class);
-    public static final int YEAR = 12;
 
     @Autowired
     private WarehouseService warehouse;
@@ -124,11 +123,11 @@ public class ProtectedChartDataService {
     @Autowired
     private Clock clock;
 
-    private Response getResponse(TableDataReport result, String format, HttpServletRequest request, Report report) {
+    private Response getResponse(TableDataReport result, String format, HttpServletRequest request, Report report, ReportType reportType) {
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
         final List<Verksamhet> businesses = loginInfo.getBusinessesForVg(loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final List<HsaIdEnhet> hsaIdEnhets = businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
-        return responseHandler.getResponse(result, format, hsaIdEnhets, report);
+        return responseHandler.getResponse(result, format, hsaIdEnhets, new ReportInfo(report, reportType));
     }
 
     /**
@@ -146,7 +145,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse casesPerMonth = warehouse.getCasesPerMonth(filterSettings.getFilter().getPredicate(),
                 filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = new PeriodConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_SJUKFALLTOTALT);
+        return getResponse(result, format, request, Report.V_SJUKFALLTOTALT, ReportType.TIDSSERIE);
     }
 
     @GET
@@ -163,7 +162,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse casesPerMonth = warehouse.getCasesPerMonthTvarsnitt(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = SimpleDualSexConverter.newGenericTvarsnitt().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_SJUKFALLTOTALT);
+        return getResponse(result, format, request, Report.V_SJUKFALLTOTALT, ReportType.TVARSNITT);
     }
 
     /**
@@ -181,7 +180,7 @@ public class ProtectedChartDataService {
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         SimpleKonResponse intygPerMonth = warehouse.getTotalIntygPerMonth(vg, filterSettings);
         SimpleDetailsData result = new PeriodIntygConverter().convert(intygPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_INTYGPERMANAD);
+        return getResponse(result, format, request, Report.V_INTYGPERMANAD, ReportType.TIDSSERIE);
     }
 
     /**
@@ -199,7 +198,7 @@ public class ProtectedChartDataService {
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         SimpleKonResponse intygPerMonth = warehouse.getTotalIntygTvarsnitt(vg, filterSettings);
         SimpleDetailsData result = SimpleDualSexConverter.newGenericIntygTvarsnitt().convert(intygPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_INTYGPERMANAD);
+        return getResponse(result, format, request, Report.V_INTYGPERMANAD, ReportType.TVARSNITT);
     }
 
     /**
@@ -217,7 +216,7 @@ public class ProtectedChartDataService {
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         KonDataResponse intygPerMonth = warehouse.getIntygPerTypePerMonth(vg, filterSettings);
         final DualSexStatisticsData result = new SimpleMultiDualSexConverter("Antal intyg totalt").convert(intygPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_INTYGPERTYP);
+        return getResponse(result, format, request, Report.V_INTYGPERTYP, ReportType.TIDSSERIE);
     }
 
     /**
@@ -235,7 +234,7 @@ public class ProtectedChartDataService {
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         SimpleKonResponse intygPerMonth = warehouse.getIntygPerTypeTvarsnitt(vg, filterSettings);
         SimpleDetailsData result = SimpleDualSexConverter.newGenericIntygTvarsnitt().convert(intygPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_INTYGPERTYP);
+        return getResponse(result, format, request, Report.V_INTYGPERTYP, ReportType.TVARSNITT);
     }
 
     /**
@@ -253,7 +252,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse casesPerMonth = warehouse.getMessagesPerMonth(filterSettings.getFilter(),
                 filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = MessagePeriodConverter.newTidsserie().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_MEDDELANDENTOTALT);
+        return getResponse(result, format, request, Report.V_MEDDELANDENTOTALT, ReportType.TIDSSERIE);
     }
 
     @GET
@@ -270,7 +269,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse casesPerMonth = warehouse.getMessagesPerMonthTvarsnitt(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = MessagePeriodConverter.newTvarsnitt().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_MEDDELANDENTOTALT);
+        return getResponse(result, format, request, Report.V_MEDDELANDENTOTALT, ReportType.TVARSNITT);
     }
 
     @GET
@@ -285,7 +284,7 @@ public class ProtectedChartDataService {
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmne(filterSettings.getFilter(),
                 filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData result = new MessageAmneConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, ReportType.TIDSSERIE);
     }
 
     @GET
@@ -302,7 +301,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse casesPerMonth = warehouse.getMessagesPerAmneTvarsnitt(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = MessageAmneTvarsnittConverter.newTvarsnitt().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, ReportType.TVARSNITT);
     }
 
     @GET
@@ -317,7 +316,7 @@ public class ProtectedChartDataService {
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhet(filterSettings.getFilter(),
                 filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = new MessageAmnePerEnhetConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, ReportType.TIDSSERIE);
     }
 
     @GET
@@ -334,7 +333,7 @@ public class ProtectedChartDataService {
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhetTvarsnitt(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, ReportType.TVARSNITT);
     }
 
     @GET
@@ -349,7 +348,7 @@ public class ProtectedChartDataService {
         KonDataResponse casesPerMonth = warehouse.getAndelKompletteringar(filterSettings.getFilter(),
                 filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData result = new AndelKompletteringarConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_ANDELKOMPLETTERINGAR);
+        return getResponse(result, format, request, Report.V_ANDELKOMPLETTERINGAR, ReportType.TIDSSERIE);
     }
 
     @GET
@@ -366,7 +365,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse casesPerMonth = warehouse.getAndelKompletteringarTvarsnitt(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = AndelKompletteringarTvarsnittConverter.newTvarsnitt().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_ANDELKOMPLETTERINGAR);
+        return getResponse(result, format, request, Report.V_ANDELKOMPLETTERINGAR, ReportType.TVARSNITT);
     }
 
     /**
@@ -388,7 +387,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse casesPerEnhet = warehouse.getCasesPerEnhet(filter.getPredicate(), idToNameMap, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = new GroupedSjukfallConverter("").convert(casesPerEnhet, filterSettings);
-        return getResponse(result, format, request, Report.V_VARDENHET);
+        return getResponse(result, format, request, Report.V_VARDENHET, ReportType.TVARSNITT);
     }
 
     /**
@@ -410,7 +409,7 @@ public class ProtectedChartDataService {
         KonDataResponse casesPerEnhet = warehouse.getCasesPerEnhetTimeSeries(filter.getPredicate(), idToNameMap, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData result = new SimpleMultiDualSexConverter().convert(casesPerEnhet, filterSettings);
-        return getResponse(result, format, request, Report.V_VARDENHET);
+        return getResponse(result, format, request, Report.V_VARDENHET, ReportType.TIDSSERIE);
     }
 
     /**
@@ -430,7 +429,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse casesPerLakare = warehouse.getCasesPerLakare(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final SimpleDetailsData result = new GroupedSjukfallConverter("").convert(casesPerLakare, filterSettings);
-        return getResponse(result, format, request, Report.V_SJUKFALLPERLAKARE);
+        return getResponse(result, format, request, Report.V_SJUKFALLPERLAKARE, ReportType.TVARSNITT);
     }
 
     @GET
@@ -447,7 +446,7 @@ public class ProtectedChartDataService {
         KonDataResponse casesPerLakare = warehouse.getCasesPerLakareSomTidsserie(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final DualSexStatisticsData result = new SimpleMultiDualSexConverter().convert(casesPerLakare, filterSettings);
-        return getResponse(result, format, request, Report.V_SJUKFALLPERLAKARE);
+        return getResponse(result, format, request, Report.V_SJUKFALLPERLAKARE, ReportType.TIDSSERIE);
     }
 
     /**
@@ -468,7 +467,7 @@ public class ProtectedChartDataService {
         DiagnosgruppResponse diagnosisGroups = warehouse.getDiagnosgrupperPerMonth(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData result = new DiagnosisGroupsConverter().convert(diagnosisGroups, filterSettings);
-        return getResponse(result, format, request, Report.V_DIAGNOSGRUPP);
+        return getResponse(result, format, request, Report.V_DIAGNOSGRUPP, ReportType.TIDSSERIE);
     }
 
     @GET
@@ -485,7 +484,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse diagnosisGroups = warehouse.getDiagnosgrupperTvarsnitt(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = new DiagnosisGroupsTvarsnittConverter().convert(diagnosisGroups, filterSettings);
-        return getResponse(result, format, request, Report.V_DIAGNOSGRUPP);
+        return getResponse(result, format, request, Report.V_DIAGNOSGRUPP, ReportType.TVARSNITT);
     }
 
     /**
@@ -510,7 +509,7 @@ public class ProtectedChartDataService {
                     Collections.singletonList(String.valueOf(icd.toInt())));
             final DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, filterSettings, message);
             final DiagnosisSubGroupStatisticsData result = new DiagnosisSubGroupStatisticsData(data, icd);
-            return getResponse(result, format, request, Report.V_DIAGNOSGRUPPENSKILTDIAGNOSKAPITEL);
+            return getResponse(result, format, request, Report.V_DIAGNOSGRUPPENSKILTDIAGNOSKAPITEL, ReportType.TIDSSERIE);
         } catch (RangeNotFoundException e) {
             LOG.debug("Range not found", e);
             return Response.serverError().entity(e.getMessage()).build();
@@ -543,7 +542,7 @@ public class ProtectedChartDataService {
             final Message message = getDiagnosisSubGroupStatisticsMessage(filter,
                     Collections.singletonList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
             final SimpleDetailsData data = new DiagnosisSubGroupsTvarsnittConverter().convert(diagnosavsnitt, filterSettings, message);
-            return getResponse(data, format, request, Report.V_DIAGNOSGRUPPENSKILTDIAGNOSKAPITEL);
+            return getResponse(data, format, request, Report.V_DIAGNOSGRUPPENSKILTDIAGNOSKAPITEL, ReportType.TVARSNITT);
         } catch (RangeNotFoundException e) {
             LOG.debug("Range not found", e);
             return Response.serverError().entity(e.getMessage()).build();
@@ -568,7 +567,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse resultRows = warehouse.getJamforDiagnoser(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request), diagnosis);
         SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(resultRows, filterSettings, message);
-        return getResponse(data, format, request, Report.V_DIAGNOSGRUPPJAMFORVALFRIADIAGNOSER);
+        return getResponse(data, format, request, Report.V_DIAGNOSGRUPPJAMFORVALFRIADIAGNOSER, ReportType.TVARSNITT);
     }
 
     private Message getCompareDiagnosisMessage(Filter filter, List<String> diagnosis) {
@@ -599,7 +598,7 @@ public class ProtectedChartDataService {
         KonDataResponse resultRows = warehouse.getJamforDiagnoserTidsserie(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request), diagnosis);
         DualSexStatisticsData data = new CompareDiagnosisTimeSeriesConverter().convert(resultRows, filterSettings, message);
-        return getResponse(data, format, request, Report.V_DIAGNOSGRUPPJAMFORVALFRIADIAGNOSER);
+        return getResponse(data, format, request, Report.V_DIAGNOSGRUPPJAMFORVALFRIADIAGNOSER, ReportType.TIDSSERIE);
     }
 
     /**
@@ -657,7 +656,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse ageGroups = warehouse.getAldersgrupper(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(ageGroups, filterSettings);
-        return getResponse(data, format, request, Report.V_ALDERSGRUPP);
+        return getResponse(data, format, request, Report.V_ALDERSGRUPP, ReportType.TVARSNITT);
     }
 
     @GET
@@ -674,7 +673,7 @@ public class ProtectedChartDataService {
         KonDataResponse ageGroups = warehouse.getAldersgrupperSomTidsserie(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData data = new SimpleMultiDualSexConverter().convert(ageGroups, filterSettings);
-        return getResponse(data, format, request, Report.V_ALDERSGRUPP);
+        return getResponse(data, format, request, Report.V_ALDERSGRUPP, ReportType.TIDSSERIE);
     }
 
     /**
@@ -694,7 +693,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse ageGroups = warehouse.getCasesPerDoctorAgeAndGender(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(ageGroups, filterSettings);
-        return getResponse(data, format, request, Report.V_LAKARALDEROCHKON);
+        return getResponse(data, format, request, Report.V_LAKARALDEROCHKON, ReportType.TVARSNITT);
     }
 
     @GET
@@ -711,7 +710,7 @@ public class ProtectedChartDataService {
         KonDataResponse ageGroups = warehouse.getCasesPerDoctorAgeAndGenderTimeSeries(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData data = new SimpleMultiDualSexConverter().convert(ageGroups, filterSettings);
-        return getResponse(data, format, request, Report.V_LAKARALDEROCHKON);
+        return getResponse(data, format, request, Report.V_LAKARALDEROCHKON, ReportType.TIDSSERIE);
     }
 
     /**
@@ -731,7 +730,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse ageGroups = warehouse.getNumberOfCasesPerLakarbefattning(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(ageGroups, filterSettings);
-        return getResponse(data, format, request, Report.V_LAKARBEFATTNING);
+        return getResponse(data, format, request, Report.V_LAKARBEFATTNING, ReportType.TVARSNITT);
     }
 
     @GET
@@ -748,7 +747,7 @@ public class ProtectedChartDataService {
         KonDataResponse ageGroups = warehouse.getNumberOfCasesPerLakarbefattningSomTidsserie(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData data = new SimpleMultiDualSexConverter().convert(ageGroups, filterSettings);
-        return getResponse(data, format, request, Report.V_LAKARBEFATTNING);
+        return getResponse(data, format, request, Report.V_LAKARBEFATTNING, ReportType.TIDSSERIE);
     }
 
     /**
@@ -768,7 +767,7 @@ public class ProtectedChartDataService {
         KonDataResponse degreeOfSickLeaveStatistics = warehouse.getSjukskrivningsgradPerMonth(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData data = new DegreeOfSickLeaveConverter().convert(degreeOfSickLeaveStatistics, filterSettings);
-        return getResponse(data, format, request, Report.V_SJUKSKRIVNINGSGRAD);
+        return getResponse(data, format, request, Report.V_SJUKSKRIVNINGSGRAD, ReportType.TIDSSERIE);
     }
 
     @GET
@@ -786,7 +785,7 @@ public class ProtectedChartDataService {
                 range, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = new SimpleDualSexConverter("", "%1$s %% sjukskrivningsgrad").convert(degreeOfSickLeaveStatistics,
                 filterSettings);
-        return getResponse(data, format, request, Report.V_SJUKSKRIVNINGSGRAD);
+        return getResponse(data, format, request, Report.V_SJUKSKRIVNINGSGRAD, ReportType.TVARSNITT);
     }
 
     /**
@@ -806,7 +805,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse sickLeaveLength = warehouse.getSjukskrivningslangd(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(sickLeaveLength, filterSettings);
-        return getResponse(data, format, request, Report.V_SJUKSKRIVNINGSLANGD);
+        return getResponse(data, format, request, Report.V_SJUKSKRIVNINGSLANGD, ReportType.TVARSNITT);
     }
 
     @GET
@@ -823,7 +822,7 @@ public class ProtectedChartDataService {
         KonDataResponse sickLeaveLength = warehouse.getSjukskrivningslangdTidsserie(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         DualSexStatisticsData data = new SimpleMultiDualSexConverter().convert(sickLeaveLength, filterSettings);
-        return getResponse(data, format, request, Report.V_SJUKSKRIVNINGSLANGD);
+        return getResponse(data, format, request, Report.V_SJUKSKRIVNINGSLANGD, ReportType.TIDSSERIE);
     }
 
     /**
@@ -843,7 +842,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse longSickLeaves = warehouse.getLangaSjukskrivningarPerManad(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = new PeriodConverter().convert(longSickLeaves, filterSettings);
-        return getResponse(data, format, request, Report.V_SJUKSKRIVNINGSLANGDMERAN90DAGAR);
+        return getResponse(data, format, request, Report.V_SJUKSKRIVNINGSLANGDMERAN90DAGAR, ReportType.TIDSSERIE);
     }
 
     @GET
@@ -860,7 +859,7 @@ public class ProtectedChartDataService {
         SimpleKonResponse longSickLeaves = warehouse.getLangaSjukskrivningarTvarsnitt(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(longSickLeaves, filterSettings);
-        return getResponse(data, format, request, Report.V_SJUKSKRIVNINGSLANGDMERAN90DAGAR);
+        return getResponse(data, format, request, Report.V_SJUKSKRIVNINGSLANGDMERAN90DAGAR, ReportType.TVARSNITT);
     }
 
     public boolean hasAccessTo(HttpServletRequest request) {

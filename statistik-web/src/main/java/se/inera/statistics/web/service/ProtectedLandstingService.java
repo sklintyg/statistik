@@ -280,7 +280,7 @@ public class ProtectedLandstingService {
         SimpleKonResponse casesPerMonth = warehouse.getCasesPerMonthLandsting(filterSettings);
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final SimpleDetailsData data = new PeriodConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(data, format, request, Report.L_SJUKFALLTOTALT, getLastLandstingUpdateDate(vgIdForLoggedInUser));
+        return getResponse(data, format, request, Report.L_SJUKFALLTOTALT, ReportType.TIDSSERIE, getLastLandstingUpdateDate(vgIdForLoggedInUser));
     }
 
     @GET
@@ -296,7 +296,7 @@ public class ProtectedLandstingService {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final SimpleDetailsData data = new GroupedSjukfallWithLandstingSortingConverter("Vårdenhet", connectedEnhetIds)
                 .convert(casesPerEnhet, filterSettings);
-        return getResponse(data, format, request, Report.L_VARDENHET, getLastLandstingUpdateDate(vgIdForLoggedInUser));
+        return getResponse(data, format, request, Report.L_VARDENHET, ReportType.TVARSNITT, getLastLandstingUpdateDate(vgIdForLoggedInUser));
     }
 
     private List<HsaIdEnhet> getEnhetIdsToMark(@Context HttpServletRequest request) {
@@ -323,7 +323,7 @@ public class ProtectedLandstingService {
         final List<LandstingEnhet> landstingEnhets = landstingEnhetHandler.getAllLandstingEnhetsForVardgivare(vgIdForLoggedInUser);
         final SimpleDetailsData data = new SjukfallPerPatientsPerEnhetConverter(landstingEnhets, connectedEnhetIds)
                 .convert(casesPerEnhet, filterSettings, null);
-        return getResponse(data, format, request, Report.L_VARDENHETLISTNINGAR, getLastLandstingUpdateDate(vgIdForLoggedInUser));
+        return getResponse(data, format, request, Report.L_VARDENHETLISTNINGAR, ReportType.TVARSNITT, getLastLandstingUpdateDate(vgIdForLoggedInUser));
     }
 
     @GET
@@ -339,7 +339,7 @@ public class ProtectedLandstingService {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmneLandsting(filterSettings);
         DualSexStatisticsData result = new MessageAmneConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, getLastLandstingUpdateDate(vgIdForLoggedInUser));
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE,ReportType.TIDSSERIE, getLastLandstingUpdateDate(vgIdForLoggedInUser));
     }
 
     @GET
@@ -355,7 +355,7 @@ public class ProtectedLandstingService {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhetLandsting(filterSettings);
         SimpleDetailsData result = new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, getLastLandstingUpdateDate(vgIdForLoggedInUser));
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, ReportType.TIDSSERIE, getLastLandstingUpdateDate(vgIdForLoggedInUser));
     }
 
     @GET
@@ -371,7 +371,7 @@ public class ProtectedLandstingService {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
         KonDataResponse intygPerMonth = warehouse.getIntygPerTypeLandsting(filterSettings);
         final DualSexStatisticsData result = new SimpleMultiDualSexConverter("Antal intyg totalt").convert(intygPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_INTYGPERTYP, getLastLandstingUpdateDate(vg));
+        return getResponse(result, format, request, Report.V_INTYGPERTYP, ReportType.TIDSSERIE, getLastLandstingUpdateDate(vg));
     }
 
     @GET
@@ -387,7 +387,7 @@ public class ProtectedLandstingService {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
         KonDataResponse casesPerMonth = warehouse.getAndelKompletteringarLandsting(filterSettings);
         DualSexStatisticsData result = new AndelKompletteringarConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.L_ANDELKOMPLETTERINGAR, getLastLandstingUpdateDate(vg));
+        return getResponse(result, format, request, Report.L_ANDELKOMPLETTERINGAR, ReportType.TIDSSERIE, getLastLandstingUpdateDate(vg));
     }
 
 
@@ -403,12 +403,13 @@ public class ProtectedLandstingService {
         return Response.ok(result).build();
     }
 
-    private Response getResponse(TableDataReport result, String format, HttpServletRequest request, Report report, String fileUploadDate) {
+    private Response getResponse(TableDataReport result, String format, HttpServletRequest request, Report report, ReportType reportType,
+                                 String fileUploadDate) {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final List<HsaIdEnhet> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
         Map<String, Object> extras = new HashMap<>();
         extras.put("fileUploadDate", fileUploadDate);
-        return responseHandler.getResponse(result, format, allEnhets, report, extras);
+        return responseHandler.getResponse(result, format, allEnhets, new ReportInfo(report, reportType), extras);
     }
 
     public boolean hasAccessToLandstingAdmin(HttpServletRequest request) {
