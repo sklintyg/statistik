@@ -108,7 +108,8 @@ public class ResponseHandler {
         return getResponseForDataReport(result, availableEnhetsForUser, null, null);
     }
 
-    Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser, Map<String, Object> extras, ReportInfo report) {
+    Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser, Map<String, Object> extras,
+                                      ReportInfo report) {
         ObjectMapper mapper = new ObjectMapper();
         @SuppressWarnings("unchecked")
         Map<String, Object> mappedResult = result != null ? mapper.convertValue(result, Map.class) : Maps.newHashMap();
