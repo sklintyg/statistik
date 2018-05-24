@@ -102,6 +102,6 @@
     };
     constantModule.constant('PHRASES_TO_HIGHLIGHT', phrasesToHighlight);
 
-
+    constantModule.constant('CATEGORY_TO_HIDE', 'Totalt');
 })();
 

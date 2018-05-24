@@ -20,7 +20,7 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').factory('chartFactory',
     /** @ngInject */
-    function(COLORS, _, ControllerCommons, $window, $filter, $log) {
+    function(COLORS, CATEGORY_TO_HIDE, _, ControllerCommons, $window, $filter, $log) {
     'use strict';
 
         var labelFormatter = function(maxWidth, sameLengthOnAll) {
@@ -146,6 +146,24 @@ angular.module('StatisticsApp').factory('chartFactory',
             };
         }
 
+        function processCategories(categories) {
+
+            // Ta bort kategorienamnet om det bara finns Totalt
+            if (categories.length === 1 && categories[0].name === CATEGORY_TO_HIDE) {
+                return [{
+                    name: '',
+                    marked: false
+                }];
+            }
+
+            return _.map(categories, function(category) {
+                return {
+                    name: ControllerCommons.htmlsafe(category.name),
+                    marked: category.marked
+                };
+            });
+        }
+
         /**
          * Hämtar en config för ett highcharts diagram
          *
@@ -225,12 +243,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                         formatter: labelFormatter(_getMaxLength(options.labelMaxLength), options.verticalLabel),
                         step: 1
                     },
-                    categories : _.map(options.categories, function(category) {
-                        return {
-                            name: ControllerCommons.htmlsafe(category.name),
-                            marked: category.marked
-                        };
-                    })
+                    categories : processCategories(options.categories)
                 },
                 yAxis : {
                     allowDecimals : false,
