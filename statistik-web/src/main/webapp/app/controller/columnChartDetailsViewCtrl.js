@@ -21,7 +21,7 @@
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $routeParams, $window, $location, $timeout, $filter, statisticsData,
-        config, messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState) {
+        config, messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState, StaticFilterDataService) {
         'use strict';
 
         function ensureHighchartTypeIsSet(config) {
@@ -89,8 +89,15 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
 
             $scope.hideChart = false;
             $scope.series = chartFactory.addColor(ajaxResult.series);
+
+            var categories = ajaxResult.categories;
+
+            if (angular.isFunction(config.convertChartCategories)) {
+                categories = config.convertChartCategories(categories);
+            }
+
             chartFactory.setColorToTotalCasesSeries($scope.series);
-            chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
+            chart = paintChart(categories, $scope.series, doneLoadingCallback);
         };
 
         $scope.switchChartType = function (chartType) {
@@ -153,9 +160,14 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         };
 
         function refreshVerksamhet() {
-            statisticsData[config.dataFetcherVerksamhet](populatePageWithData, function () {
-                $scope.dataLoadingError = true;
-            }, ControllerCommons.getExtraPathParam($routeParams));
+            StaticFilterDataService.get().then(function() {
+                statisticsData[config.dataFetcherVerksamhet](
+                    populatePageWithData,
+                    function () {
+                        $scope.dataLoadingError = true;
+                    },
+                    ControllerCommons.getExtraPathParam($routeParams));
+            });
         }
 
         function refreshLandsting() {
@@ -486,7 +498,7 @@ angular.module('StatisticsApp').intygPerMonthTvarsnittConfig =
 
 angular.module('StatisticsApp').intygPerTypeTvarsnittConfig =
     /** @ngInject */
-    function (messageService) {
+    function (messageService, chartFactory) {
     'use strict';
 
     var conf = {};
@@ -500,6 +512,7 @@ angular.module('StatisticsApp').intygPerTypeTvarsnittConfig =
     };
     conf.title = messageService.getProperty('title.intygstyp');
     conf.chartYAxisTitle = 'Antal intyg';
+    conf.convertChartCategories = chartFactory.addCategoryIntygTooltip;
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/intygPerTyp', active: true},

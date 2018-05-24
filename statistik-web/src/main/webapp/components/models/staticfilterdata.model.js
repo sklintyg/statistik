@@ -29,6 +29,7 @@ angular.module('StatisticsApp').factory('StaticFilterData',
         function _reset() {
             data.sjukskrivningLengths = [];
             data.intygTypes = [];
+            data.intygTooltips = {};
             data.aldersgrupps = [];
             data.icd10Structure = [];
             return data;
@@ -74,6 +75,10 @@ angular.module('StatisticsApp').factory('StaticFilterData',
             });
 
             data.intygTypes = $filter('orderBy')(data.intygTypes, 'name', false);
+        }
+
+        function setIntygToolTip(app) {
+            data.intygTooltips = app.intygTooltip;
         }
 
         function setIcd10Structure(app) {
@@ -150,6 +155,7 @@ angular.module('StatisticsApp').factory('StaticFilterData',
                 setAldersgrupps(app);
                 setIcd10Structure(app);
                 setIntygTypes(app);
+                setIntygToolTip(app);
             },
             get: function() {
                 return data;

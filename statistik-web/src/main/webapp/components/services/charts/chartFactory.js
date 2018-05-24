@@ -20,7 +20,7 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').factory('chartFactory',
     /** @ngInject */
-    function(COLORS, CATEGORY_TO_HIDE, _, ControllerCommons, $window, $filter, $log) {
+    function(COLORS, CATEGORY_TO_HIDE, _, ControllerCommons, $window, $filter, $log, StaticFilterData) {
     'use strict';
 
         var labelFormatter = function(maxWidth, sameLengthOnAll) {
@@ -39,13 +39,16 @@ angular.module('StatisticsApp').factory('chartFactory',
 
         function _formatter(value, numberOfChars) {
             var textToFormat;
+            var tooltip;
 
             var isObject = angular.isObject(value);
 
             if (isObject) {
                 textToFormat = value.name;
+                tooltip = value.tooltip;
             } else {
                 textToFormat = value;
+                tooltip = value;
             }
 
             var text = textToFormat.length > numberOfChars ? textToFormat.substring(0, numberOfChars) + '...' : textToFormat;
@@ -56,7 +59,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                 filteredText = '<b>' + filteredText + '</b>';
             }
 
-            return '<span title="' + textToFormat + '">' + filteredText + '</span>';
+            return '<span data-original-title="' + tooltip + '" data-placement="auto right" data-toggle="tooltip">' + filteredText + '</span>';
         }
 
         function _getMaxLength(maxLength) {
@@ -157,8 +160,11 @@ angular.module('StatisticsApp').factory('chartFactory',
             }
 
             return _.map(categories, function(category) {
+                var tooltip = category.tooltip ? category.tooltip : category.name;
+
                 return {
                     name: ControllerCommons.htmlsafe(category.name),
+                    tooltip: ControllerCommons.htmlsafe(tooltip),
                     marked: category.marked
                 };
             });
@@ -451,6 +457,23 @@ angular.module('StatisticsApp').factory('chartFactory',
             }
         };
 
+        var addCategoryIntygTooltip = function(categories) {
+
+            var tooltips = StaticFilterData.get().intygTooltips;
+
+            return _.map(categories, function(category) {
+                var name = tooltips[category.name];
+                var tooltip = category.name;
+
+                if (name) {
+                    category.tooltip = tooltip;
+                    category.name = name;
+                }
+
+                return category;
+            });
+        };
+
         //This is the public api accessible to customers of this factory
         return {
             addColor: addColor,
@@ -459,6 +482,7 @@ angular.module('StatisticsApp').factory('chartFactory',
             exportChart: exportChart,
             showInLegend: showInLegend,
             toggleSeriesVisibility: toggleSeriesVisibility,
-            getChartExportFileName: getChartExportFileName
+            getChartExportFileName: getChartExportFileName,
+            addCategoryIntygTooltip: addCategoryIntygTooltip
         };
     });

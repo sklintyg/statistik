@@ -142,7 +142,7 @@ public class IntygCommonManager {
         final List<String> names = intygTypes.stream().map(intygType -> {
             //AT2002: FK7263 and LISJP should be combined in one group
             if (IntygType.LISJP.equals(intygType)) {
-                return "FK 7263/7804 Läkarintyg för sjukpenning";
+                return IntygType.SJUKPENNING.getText();
             }
             return intygType.getText();
         }).collect(Collectors.toList());

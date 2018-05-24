@@ -26,25 +26,27 @@ import java.util.stream.Collectors;
 
 public enum IntygType {
 
-    FK7263("fk7263", "FK 7263 Läkarintyg", true, true, false),
-    LISU(null, "LISU", true, true, false),
-    LUSE("luse", "FK 7800 Läkarutlåtande för sjukersättning", true, false, true),
-    LUAE_NA("luae_na", "FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga", true, false, true),
-    LUAE_FS("luae_fs", "FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång", true, false, true),
-    LISJP("lisjp", "FK 7804 Läkarintyg för sjukpenning", true, true, false),
-    UNKNOWN(null, "Okänt", false, false, false),
-    SJUKPENNING(null, "FK 7263/7804 Läkarintyg för sjukpenning", false, false, true);
+    FK7263("fk7263", "FK 7263", "FK 7263 Läkarintyg", true, true, false),
+    LISU(null, "LISU", "LISU", true, true, false),
+    LUSE("luse", "FK 7800", "FK 7800 Läkarutlåtande för sjukersättning", true, false, true),
+    LUAE_NA("luae_na", "FK 7801", "FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga", true, false, true),
+    LUAE_FS("luae_fs", "FK 7802", "FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång", true, false, true),
+    LISJP("lisjp", "FK 7804", "FK 7804 Läkarintyg för sjukpenning", true, true, false),
+    UNKNOWN(null, "Okänt", "Okänt", false, false, false),
+    SJUKPENNING(null, "FK 7263/7804", "FK 7263/7804 Läkarintyg för sjukpenning", false, false, true);
 
     private final String itIntygType; //The type name Intygtjansten is using and sends as metadata with all intyg
     private final String text;
+    private final String shortText;
     private final boolean isSupportedIntyg;
     private final boolean isSjukpenningintyg;
     private final boolean includeInIntygtypFilter;
 
-    IntygType(String itIntygType, String text, boolean isSupportedIntyg,
+    IntygType(String itIntygType, String shortText, String text, boolean isSupportedIntyg,
               boolean isSjukpenningintyg, boolean includeInIntygtypFilter) {
         this.itIntygType = itIntygType;
         this.text = text;
+        this.shortText = shortText;
         this.isSupportedIntyg = isSupportedIntyg;
         this.isSjukpenningintyg = isSjukpenningintyg;
         this.includeInIntygtypFilter = includeInIntygtypFilter;
@@ -56,6 +58,10 @@ public enum IntygType {
 
     public String getText() {
         return text;
+    }
+
+    public String getShortText() {
+        return shortText;
     }
 
     public boolean isSupportedIntyg() {

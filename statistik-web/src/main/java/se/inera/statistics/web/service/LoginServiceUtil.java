@@ -233,9 +233,11 @@ public class LoginServiceUtil {
                 .collect(toMap(Enum::name, AgeGroup::getGroupName));
         final Map<String, String> intygTypes = IntygType.getInIntygtypFilter().stream()
                 .collect(toMap(Enum::name, IntygType::getText));
+        final Map<String, String> intygTypeTooltips = Arrays.stream(IntygType.values())
+                .collect(toMap(IntygType::getText, IntygType::getShortText));
 
         final List<Icd> icdStructure = icd10.getIcdStructure();
-        return new StaticFilterData(sjukskrivningLengths, ageGroups, intygTypes, icdStructure);
+        return new StaticFilterData(sjukskrivningLengths, ageGroups, intygTypes, intygTypeTooltips, icdStructure);
     }
 
     UserAccessInfo getUserAccessInfoForVg(HttpServletRequest request, HsaIdVardgivare vgId) {
