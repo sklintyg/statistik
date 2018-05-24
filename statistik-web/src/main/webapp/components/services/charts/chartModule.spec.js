@@ -45,8 +45,8 @@ describe('Chart services', function() {
 
             var result = chartFactory.getHighChartConfigBase(options);
             expect(result.xAxis.categories.length).toBe(2);
-            expect(result.xAxis.categories[0]).toEqual({name: 'Namn 1', marked: false, tooltip: 'Namn 1'});
-            expect(result.xAxis.categories[1]).toEqual({name: 'Namn &lt; 1', marked: true, tooltip: 'Namn &lt; 1'});
+            expect(result.xAxis.categories[0]).toEqual({name: 'Namn 1', marked: false});
+            expect(result.xAxis.categories[1]).toEqual({name: 'Namn &lt; 1', marked: true});
             expect(result.series.length).toBe(1);
             expect(result.series[0].b).toBe(4);
         });
