@@ -122,7 +122,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     var title = this.x ? this.x : this.point.name;
 
                     if (angular.isObject(title)) {
-                        title = title.name;
+                        title = title.oldName ? title.oldName : title.name;
                     }
 
                     if (overview) {
@@ -155,7 +155,8 @@ angular.module('StatisticsApp').factory('chartFactory',
             if (categories.length === 1 && categories[0].name === CATEGORY_TO_HIDE) {
                 return [{
                     name: '',
-                    marked: false
+                    marked: false,
+                    oldName: categories[0].name
                 }];
             }
 
