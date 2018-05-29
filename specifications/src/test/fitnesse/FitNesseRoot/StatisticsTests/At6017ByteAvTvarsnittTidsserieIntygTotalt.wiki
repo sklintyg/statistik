@@ -44,5 +44,5 @@ Byte till tvärsnitt gör att ett stapeldiagram 12 mån med bara två grupper vi
 
 !(| Intyg i rapporten intyg totalt som tvarsnitt diagram |
 | Inloggad som | grupp | totalt? | män? | kvinnor? |
-| user1 | FK 7800 | 2 | 0 | 2 |
-| user1 | FK 7802  | 1 | 1 | 0 |)!
+| user1 | FK 7800 Läkarutlåtande för sjukersättning | 2 | 0 | 2 |
+| user1 | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 1 | 1 | 0 |)!
