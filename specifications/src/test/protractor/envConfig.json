@@ -6,5 +6,9 @@
     "build-server": {
         "ST_URL": "https://fitnesse2.inera.nordicmedtest.se/",
         "SELENIUM_ADDRESS": "http://selenium1.nordicmedtest.se:4444/wd/hub"
+    },
+    "test-pipeline": {
+        "ST_URL": "http://statistik:8080/",
+        "SELENIUM_ADDRESS": ""
     }
 }

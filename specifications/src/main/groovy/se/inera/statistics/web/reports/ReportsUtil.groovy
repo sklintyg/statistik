@@ -47,7 +47,7 @@ class ReportsUtil {
     def statistik = createClient()
 
     private RESTClient createClient() {
-        String host = System.getProperty("statistics.base.url") ?: "http://localhost:8080/"
+        String host = System.getProperty("baseUrl") ?: "http://localhost:8080/"
         def client = new RESTClient(host, JSON)
         client.ignoreSSLIssues()
         client.encoder.putAt(MediaType.MULTIPART_FORM_DATA, new MethodClosure(this, 'encodeMultiPart'));

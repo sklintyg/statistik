@@ -29,12 +29,14 @@ var screenshotReporter = new HtmlScreenshotReporter({
     captureOnlyFailedSpecs: true
 });
 
+var envConfig = require('./environment.js').envConfig;
+
 exports.config = {
     directConnect: true,
     rootElement: '#ng-app',
 
-    seleniumAddress: require('./environment.js').envConfig.SELENIUM_ADDRESS,
-    baseUrl: require('./environment.js').envConfig.ST_URL,
+    seleniumAddress: envConfig.SELENIUM_ADDRESS,
+    baseUrl: envConfig.ST_URL,
 
     specs: ['./dev/specs/**/*.spec.js'],
 
@@ -42,8 +44,12 @@ exports.config = {
     capabilities: {
         //shardTestFiles: true,
         //maxInstances: 3,
-        'browserName': 'chrome',
-        marionette: false
+        browserName: 'chrome',
+        marionette: false,
+        acceptInsecureCerts: true,
+        chromeOptions: {
+            args: [ "--no-sandbox", "--headless", "--disable-gpu", "--window-size=1280x1024" ]
+        }
     },
 
     framework: 'jasmine2',

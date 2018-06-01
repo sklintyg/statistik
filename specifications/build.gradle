@@ -13,9 +13,9 @@ node {
 
 task setupIntygForProtractor(dependsOn: 'classes', type: JavaExec) {
 
-    def baseUrl = System.properties['statistics.base.url'] ?: "http://localhost:8080/"
+    def baseUrl = System.properties['baseUrl'] ?: "http://localhost:8080/"
 
-    jvmArgs = ['-Dstatistics.base.url=' + baseUrl]
+    jvmArgs = ['-DbaseUrl=' + baseUrl]
 
     main = 'se.inera.statistics.InsertIntygHelper'
     classpath = sourceSets.main.runtimeClasspath
@@ -40,7 +40,7 @@ fitnesse {
         outputFormat = project.findProperty('outputFormat') ?: "xml&includehtml"
     }
 
-    extraProperties = ["statistics.base.url": System.properties['statistics.base.url'] ?: "http://localhost:8080/" ]
+    extraProperties = ["baseUrl": System.properties['baseUrl'] ?: "http://localhost:8080/" ]
 }
 
 if (project.hasProperty('runFitnesse')) {
@@ -56,7 +56,7 @@ if (project.hasProperty('runFitnesse')) {
         contextPath = '/'
         contextConfigFile = project(":statistik-web").projectDir.path + "/src/main/webapp/WEB-INF/jetty-context.xml"
         jvmArgs = ["-Dcertificate.logback.file=${projectDir}/src/main/resources/logback-test.xml",
-                   '-Dstatistics.base.url=' + baseUrl,
+                   '-DbaseUrl=' + baseUrl,
                    '-Dspring.profiles.active=dev,testapi,embedded,hsa-stub,security-fake,skipTestIntygInjection',
                    '-Dstatistics.config.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/default.dev.properties',
                    '-Dstatistics.credentials.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/dev-credentials.properties',

@@ -4,4 +4,4 @@
 
 !| Config |
 | property | value |
-| statistics.base.url | ${statistics.base.url} |
+| baseUrl | ${baseUrl} |
