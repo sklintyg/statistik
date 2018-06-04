@@ -70,7 +70,7 @@
     </beans>
 
     <beans profile="embedded">
-        <bean class="se.inera.testsupport.TestIntygInjector" lazy-init="false"/>
+        <bean class="se.inera.testsupport.TestIntygInjector" depends-on="dbUpdate" lazy-init="false"/>
     </beans>
 
 </beans>

@@ -23,6 +23,7 @@ ext {
     groovyAllVersion = "2.3.6"
     groovyHttpVersion = "0.7.1"
     h2Version = "1.4.195"
+    hikariCPVersion = "2.3.5"
     hibernateJpaVersion = "1.0.0.Final"
     hibernateVersion = "4.3.1.Final"
     httpClientVersion = "4.2.1"

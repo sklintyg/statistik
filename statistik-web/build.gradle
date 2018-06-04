@@ -37,7 +37,8 @@ gretty {
     jvmArgs = [
             jvmArgSpringProfiles,
             '-DbaseUrl=' + baseUrl,
-            '-Dstatistics.test.max.intyg=500',
+            '-D' +
+                    'statistics.test.max.intyg=500',
             '-Dstatistics.config.file=' + projectDir + '/src/main/resources/default.dev.properties',
             '-Dstatistics.credentials.file=' + projectDir + '/src/main/resources/dev-credentials.properties',
             '-Dstatistics.resources.folder=' + projectDir + '/../src/main/resources'

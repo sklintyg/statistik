@@ -23,6 +23,8 @@ dependencies {
     compile "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
     compile "org.springframework:spring-orm:${springContextVersion}"
     compile "org.springframework:spring-jms:${springContextVersion}"
+    compile "com.h2database:h2:${h2Version}"
+    compile "com.zaxxer:HikariCP-java6:${hikariCPVersion}"
     compile "org.liquibase:liquibase-core:${liquibaseVersion}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
     compile "com.helger:ph-schematron:${schematronVersion}"
@@ -34,6 +36,4 @@ dependencies {
     testCompile "org.springframework:spring-aop:${springContextVersion}"
     testCompile "org.aspectj:aspectjrt:${aspectJVersion}"
     testCompile "org.aspectj:aspectjweaver:${aspectJVersion}"
-
-    testRuntime "com.h2database:h2:${h2Version}"
 }

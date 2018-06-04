@@ -50,11 +50,8 @@
         </bean>
     </beans>
 
-    <beans profile="!embedded">
+    <beans>
         <import resource="classpath*:process-log-impl.xml"/>
-    </beans>
-    <beans profile="embedded">
-        <import resource="classpath*:embedded-process-log-impl.xml"/>
     </beans>
 
     <beans>
@@ -93,7 +90,7 @@
         <import resource="application-context-qm.xml"/>
 
         <context:annotation-config/>
-        <context:component-scan base-package="se.inera.statistics.service"/>
+        <context:component-scan base-package="se.inera.statistics.service,se.inera.statistics.persistence"/>
 
         <bean id="receiver" class="se.inera.statistics.service.processlog.Receiver"/>
 
