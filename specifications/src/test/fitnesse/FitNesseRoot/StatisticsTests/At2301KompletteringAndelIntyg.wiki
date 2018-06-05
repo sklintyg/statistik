@@ -1,8 +1,7 @@
 ---
+Prune
 Test
 ---
-Alla intyg har skickats vidare till Försäkringskassan.
-
 !3 Givet att:
 | script | dagens datum | 2015-11-06 |
 
@@ -40,7 +39,7 @@ Denna rapport kollar endast efter vilka intyg som har fått kompletteringar, och
 
 Var ett intyg och dess komplettering hamnar baseras på intygets signeringstidpunkt.
 
-"totalt?" nedan kan förklaras så här: Av alla LISJP-intyg som skickats till Försäkringskassan i april (2st) - hur stor andel av dessa fick minst en komplettering? Svar: 1st, alltså 50%. (det finns 2 LISJP intyg som skickats till Försäkringskassan men endast 1 har fått en komplettering).
+"kön totalt?" nedan kan förklaras så här: Av alla LISJP-intyg som signerats i april och skickats till Försäkringskassan (2st) - hur stor andel av dessa fick minst en komplettering? Svar: 1st, alltså 50%. (det finns 2 LISJP intyg som skickats till Försäkringskassan men endast 1 har fått en komplettering).
 
 "män?" nedan kan förklaras så här: Av alla LUSE-intyg som skickats till Försäkringskassan i april OCH tillhör manliga patienter (1st) - hur stor andel av dessa fick minst en komplettering? Svar: 1st, alltså 100%.
 
@@ -59,7 +58,7 @@ Nationell:
 | 2015 | apr | FK 7800 Läkarutlåtande för sjukersättning | 100% | 100% | 0% |
 | 2015 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0% | 0% | 0% |
 | 2015 | apr | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0% | 0% | 0% |
-| 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | 100% | 0% | 100% |
+| 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | 50% | 0% | 100% |
 
 | Andel i rapporten komplettering andel intyg diagram |
 | år | månad | grupp | män? | kvinnor? |

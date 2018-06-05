@@ -1,12 +1,6 @@
 ---
-Help: Ignorerad då den failar efter fix i INTYG-5193
-Prune
 Test
 ---
-Det finns ett antal intyg med ett antal tillhörande meddelanden.
-
-Alla intyg har skickats vidare till Försäkringskassan.
-
 !3 Givet att:
 | script | dagens datum | 2015-11-06 |
 
@@ -22,11 +16,11 @@ Endast 5 intyg har signerats och skickats till Försäkringskassan under de sena
 
 | Intyg skickat till mottagare |
 | intygid | mottagare |
-| 1001    | FKASSA    |
-| 1002    | FKASSA    |
-| 1003    | FKASSA    |
-| 1004    | FKASSA    |
-| 1005    | FKASSA    |
+| 1001 | FKASSA |
+| 1002 | FKASSA |
+| 1003 | FKASSA |
+| 1004 | FKASSA |
+| 1005 | FKASSA |
 
 | Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
@@ -46,8 +40,8 @@ Inloggad:
 
 | Andel i rapporten komplettering andel intyg |
 | inloggad som | år | månad | grupp | filter enheter | allaEnhetsfilterValda? | enhetsfilterlista? | kön totalt? | män? | kvinnor? |
-| user2 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | | true | [enhet1, enhet2] | 100% | 100% | 0% |
-| user2 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 100% | 100% | 0% |
+| user2 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | | true | [enhet1, enhet2] | 50% | 100% | 0% |
+| user2 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 50% | 100% | 0% |
 | user2 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | enhet2 | false | [enhet2] | 0% | 0% | 0% |
 | user2 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | | true | [enhet1, enhet2] | 0% | 0% | 0% |
 | user2 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 0% | 0% | 0% |
