@@ -137,8 +137,10 @@ public class IntygCommonManager {
     }
 
     private KonDataResponse getIntygPerType(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter, boolean isTvarsnitt) {
-        final List<IntygType> intygTypes = Arrays.asList(IntygType.LISJP, IntygType.LUSE, IntygType.LUAE_NA,
-                IntygType.LUAE_FS);
+        final List<IntygType> intygTypes = IntygType.getInIntygtypTotal();
+        // Create new filter without intygstyper
+        IntygCommonFilter newIntygFilter = new IntygCommonFilter(intygFilter.getRange(), intygFilter.getEnheter(), intygFilter.getDiagnoser(), intygFilter.getAldersgrupp(), null);
+
         final List<String> names = intygTypes.stream().map(intygType -> {
             //AT2002: FK7263 and LISJP should be combined in one group
             if (IntygType.LISJP.equals(intygType)) {
@@ -152,7 +154,7 @@ public class IntygCommonManager {
             final int id = IntygType.FK7263.equals(intygType) ? IntygType.LISJP.ordinal() : intygType.ordinal();
             counter.add(id);
         };
-        return calculateKonDataResponse(vardgivarId, intygFilter, isTvarsnitt, names, ids, counterFunction);
+        return calculateKonDataResponse(vardgivarId, newIntygFilter, isTvarsnitt, names, ids, counterFunction);
     }
 
     public SimpleKonResponse getIntygPerTypeTvarsnitt(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter) {
