@@ -39,6 +39,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
 import org.springframework.test.annotation.DirtiesContext;
@@ -64,15 +65,15 @@ import se.inera.statistics.time.ChangableClock;
 @DirtiesContext
 public class ReceiverIntegrationAcceptsOnlyKnownIT {
 
-    private static final String QUEUE_NAME = "intyg.queue";
+    @Value("${jms.receiver.queue.name}")
+    private String queueName;
 
+    @Autowired
     private JmsTemplate jmsTemplate;
 
     @Autowired
     private QueueAspect queueAspect;
-    @Autowired
-    private ConnectionFactory connectionFactory;
-
+    
     @Autowired
     private LogConsumer consumer;
 
@@ -93,7 +94,6 @@ public class ReceiverIntegrationAcceptsOnlyKnownIT {
     @Before
     public void setup() {
         changableClock.setCurrentClock(Clock.fixed(Instant.parse("2014-03-30T10:15:30.00Z"), ZoneId.systemDefault()));
-        this.jmsTemplate = new JmsTemplate(connectionFactory);
     }
 
     @Test
@@ -140,9 +140,8 @@ public class ReceiverIntegrationAcceptsOnlyKnownIT {
     }
 
     private void simpleSend(final String intyg, final String correlationId, String certificateType) {
-        Destination destination = new ActiveMQQueue(QUEUE_NAME);
 
-        this.jmsTemplate.send(destination, new MessageCreator() {
+        this.jmsTemplate.send(queueName, new MessageCreator() {
             public Message createMessage(Session session) throws JMSException {
                 TextMessage message = session.createTextMessage(intyg);
                 message.setStringProperty(JmsReceiver.ACTION, JmsReceiver.CREATED);

@@ -61,13 +61,12 @@ public class ReceiverTransactionalIT {
     private static final Logger LOG = LoggerFactory.getLogger(ReceiverTransactionalIT.class);
     private List<String> persons = new ArrayList<>();
 
+    @Autowired
     private JmsTemplate jmsTemplate;
 
     @Autowired
     private QueueAspect queueAspect;
-    @Autowired
-    private ConnectionFactory connectionFactory;
-
+    
     @Autowired
     private LogConsumer consumer;
 
@@ -77,7 +76,6 @@ public class ReceiverTransactionalIT {
 
     @Before
     public void setup() {
-        this.jmsTemplate = new JmsTemplate(connectionFactory);
         List<String> personNummers;
         personNummers = readList("/personnr/testpersoner.log");
         persons.add(personNummers.get(0)); // k 1950

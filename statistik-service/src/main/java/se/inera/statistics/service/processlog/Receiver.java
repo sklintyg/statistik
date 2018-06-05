@@ -18,15 +18,13 @@
  */
 package se.inera.statistics.service.processlog;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
-
-import com.fasterxml.jackson.databind.JsonNode;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
 public class Receiver  {

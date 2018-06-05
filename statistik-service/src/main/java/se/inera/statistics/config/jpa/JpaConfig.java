@@ -16,33 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.persistence;
+package se.inera.statistics.config.jpa;
 
-import org.h2.tools.Server;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import java.sql.SQLException;
-
 @Configuration
-@Profile("dev")
-public class PersistenceConfigDev extends PersistenceConfigBase {
-
-    @Value("${db.httpPort}")
-    private String databaseHttpPort;
-
-    static final Logger LOG = LoggerFactory.getLogger(PersistenceConfigDev.class);
-    
-    
-    @Bean(destroyMethod = "stop")
-    Server h2WebServer() throws SQLException {
-        LOG.info("Starting H2 Web Server Console");
-        final Server server = Server.createWebServer("-web", "-webAllowOthers", "-webPort", databaseHttpPort);
-        server.start();
-        return server;
-    }
+@Profile("!dev")
+public class JpaConfig extends JpaConfigBase {
 }

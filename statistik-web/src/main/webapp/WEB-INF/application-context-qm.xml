@@ -4,38 +4,40 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
         >
 
-    <bean id="jmsReceiver" class="se.inera.statistics.service.queue.JmsReceiver"/>
+    <!-- TODO: check if MBeans still is of any relevance
 
-    <beans profile="qm">
-      <bean id="jmsFactory" class="org.springframework.jndi.JndiObjectFactoryBean">
-          <property name="jndiName" value="java:comp/env/jms/ConnectionFactory"/>
-      </bean>
-  
-      <bean id="queue" class="org.springframework.jndi.JndiObjectFactoryBean">
-          <property name="jndiName" value="java:comp/env/jms/Queue"/>
-      </bean>
-  
-      <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-          <property name="connectionFactory" ref="jmsFactory"/>
-          <property name="destination" ref="queue"/>
-          <property name="messageListener" ref="jmsReceiver"/>
-          <property name="transactionManager" ref="transactionManager"/>
-      </bean>
+<bean id="jmsReceiver" class="se.inera.statistics.service.queue.JmsReceiver"/>
 
-      <bean id="mbeanServerQm" class="org.springframework.jmx.support.MBeanServerFactoryBean">
-        <!-- indicate to first look for a server -->
-        <property name="locateExistingServerIfPossible" value="true"/>
-      </bean>
+<beans profile="qm">
+<bean id="jmsFactory" class="org.springframework.jndi.JndiObjectFactoryBean">
+  <property name="jndiName" value="java:comp/env/jms/ConnectionFactory"/>
+</bean>
 
-      <bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
-        <property name="server" ref="mbeanServerQm"/>
-        <property name="beans">
-          <map>
-            <entry key="inera-statistics:name=JmsContainer" value-ref="jmsContainer"/>
-          </map>
-        </property>
-        <property name="registrationPolicy" value="REPLACE_EXISTING"/>
-      </bean>
+<bean id="queue" class="org.springframework.jndi.JndiObjectFactoryBean">
+  <property name="jndiName" value="java:comp/env/jms/Queue"/>
+</bean>
 
-    </beans>
+<bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+  <property name="connectionFactory" ref="jmsFactory"/>
+  <property name="destination" ref="queue"/>
+  <property name="messageListener" ref="jmsReceiver"/>
+  <property name="transactionManager" ref="transactionManager"/>
+</bean>
+
+<bean id="mbeanServerQm" class="org.springframework.jmx.support.MBeanServerFactoryBean">
+<property name="locateExistingServerIfPossible" value="true"/>
+</bean>
+
+
+<bean id="exporter" class="org.springframework.jmx.export.MBeanExporter">
+<property name="server" ref="mbeanServerQm"/>
+<property name="beans">
+  <map>
+    <entry key="inera-statistics:name=JmsContainer" value-ref="jmsContainer"/>
+  </map>
+</property>
+<property name="registrationPolicy" value="REPLACE_EXISTING"/>
+</bean>
+</beans>
+-->
 </beans>

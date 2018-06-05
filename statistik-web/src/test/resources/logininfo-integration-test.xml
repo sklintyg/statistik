@@ -30,48 +30,7 @@
 
     <tx:annotation-driven/>
 
-    <jdbc:embedded-database id="dataSource" type="H2"/>
-
     <context:property-placeholder location="classpath:default.dev.properties"/>
-
-
-    <bean id="org.h2.tools.Server"
-          class="org.h2.tools.Server"
-          factory-method="createTcpServer"
-          init-method="start"
-          destroy-method="stop" lazy-init="false">
-        <constructor-arg value="-tcp,-tcpAllowOthers"/>
-    </bean>
-    <bean id="h2WebServer" class="org.h2.tools.Server" factory-method="createWebServer" init-method="start"
-          destroy-method="stop">
-        <constructor-arg value="-web,-webAllowOthers"/>
-    </bean>
-
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="persistenceUnitName" value="IneraStatisticsLog"/>
-        <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="database" value="H2"/>
-            </bean>
-        </property>
-        <property name="jpaProperties">
-            <props>
-                <prop key="hibernate.show_sql">false</prop>
-                <prop key="hibernate.format_sql">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">none</prop>
-            </props>
-        </property>
-    </bean>
-
-    <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="changeLog" value="classpath:changelog/changelog.xml"/>
-    </bean>
-
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
-    </bean>
 
     <bean class="se.inera.statistics.web.util.VersionUtil" id="versionUtil"/>
     <bean class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" id="hsaWebServiceCalls"/>

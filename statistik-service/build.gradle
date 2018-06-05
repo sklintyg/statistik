@@ -28,9 +28,10 @@ dependencies {
     compile "org.liquibase:liquibase-core:${liquibaseVersion}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
     compile "com.helger:ph-schematron:${schematronVersion}"
-
+    
     compileOnly "org.apache.geronimo.specs:geronimo-jms_1.1_spec:${jmsVersion}"
-
+    compileOnly "org.apache.activemq:activemq-client:${activeMqVersion}"
+    
     testCompile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     testCompile "org.apache.activemq:activemq-spring:${activeMqVersion}"
     testCompile "org.springframework:spring-aop:${springContextVersion}"

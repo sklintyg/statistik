@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.persistence;
+package se.inera.statistics.config.jpa;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -33,7 +33,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-public abstract class PersistenceConfigBase {
+public abstract class JpaConfigBase {
 
     @Value("${hibernate.dialect}")
     private String hibernateDialect;
@@ -53,7 +53,7 @@ public abstract class PersistenceConfigBase {
     @Value("${db.password}")
     private String databasePassword;
 
-    static final Logger LOG = LoggerFactory.getLogger(PersistenceConfigBase.class);
+    static final Logger LOG = LoggerFactory.getLogger(JpaConfigBase.class);
 
     @Bean
     LocalContainerEntityManagerFactoryBean entityManagerFactory(final DataSource dataSource) {

@@ -21,6 +21,7 @@ package se.inera.ifv.statistics.spi.authorization.impl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.w3.wsaddressing10.AttributedURIType;
 import se.inera.ifv.hsaws.v3.HsaWsFault;
 import se.inera.ifv.hsaws.v3.HsaWsResponderInterface;
@@ -54,6 +55,7 @@ import java.util.stream.Collectors;
  * This class interfaces with the "old" Web Service-based HSA, e.g. NOT over NTjP. It is subject to be replaced by
  * NTjP-based HSA integration (INTYG-2226).
  */
+@Component
 public class HSAWebServiceCalls {
 
     @Autowired

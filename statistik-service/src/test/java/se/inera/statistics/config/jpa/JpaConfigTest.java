@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.persistence;
-
+package se.inera.statistics.config.jpa;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@Profile("!dev")
-public class PersistenceConfig extends PersistenceConfigBase {
+@PropertySource("classpath:jpa-test.properties")
+public class JpaConfigTest {
+
 }

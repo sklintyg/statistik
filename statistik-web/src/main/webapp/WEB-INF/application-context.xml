@@ -90,7 +90,7 @@
         <import resource="application-context-qm.xml"/>
 
         <context:annotation-config/>
-        <context:component-scan base-package="se.inera.statistics.service,se.inera.statistics.persistence"/>
+        <context:component-scan base-package="se.inera.statistics.service,se.inera.statistics.config"/>
 
         <bean id="receiver" class="se.inera.statistics.service.processlog.Receiver"/>
 

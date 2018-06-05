@@ -11,43 +11,5 @@
             .*/.*jsp-api-[^/]\.jar$|./.*jsp-[^/]\.jar$|./.*taglibs[^/]*\.jar$
         </Arg>
     </Call>
-
-    <New id="DataSource" class="org.eclipse.jetty.plus.jndi.Resource">
-        <Arg>
-            <Ref refid="wac"/>
-        </Arg>
-        <Arg>jdbc/statistik</Arg>
-        <Arg>
-            <New class="com.mysql.jdbc.jdbc2.optional.MysqlConnectionPoolDataSource">
-                <Set name="Url">jdbc:mysql://localhost:3306/statistik</Set>
-                <Set name="User">statistik</Set>
-                <Set name="Password">statistik</Set>
-            </New>
-        </Arg>
-    </New>
-
-    <New id="jmsConnectionFactory" class="org.eclipse.jetty.plus.jndi.Resource">
-        <Arg>
-            <Ref refid="wac"/>
-        </Arg>
-        <Arg>jms/ConnectionFactory</Arg>
-        <Arg>
-            <New class="org.apache.activemq.ActiveMQConnectionFactory">
-                <Arg>vm://localhost?broker.persistent=false</Arg>
-            </New>
-        </Arg>
-    </New>
-
-    <New id="jmsQueue" class="org.eclipse.jetty.plus.jndi.Resource">
-        <Arg>
-            <Ref refid="wac"/>
-        </Arg>
-        <Arg>jms/Queue</Arg>
-        <Arg>
-            <New class="org.apache.activemq.command.ActiveMQQueue">
-                <Arg>statistik.utlatande.queue</Arg>
-            </New>
-        </Arg>
-    </New>
-
+    
 </Configure>

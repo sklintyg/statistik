@@ -24,6 +24,7 @@ import com.google.common.cache.LoadingCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
 import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;

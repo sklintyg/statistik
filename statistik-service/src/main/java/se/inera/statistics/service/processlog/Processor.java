@@ -19,6 +19,7 @@
 package se.inera.statistics.service.processlog;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
@@ -33,6 +34,7 @@ import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMe
  * Process and save information to database for intyg and messages, i.e. extract and save information
  * used by statistiktjansten.
  */
+@Component
 public class Processor {
 
     @Autowired
