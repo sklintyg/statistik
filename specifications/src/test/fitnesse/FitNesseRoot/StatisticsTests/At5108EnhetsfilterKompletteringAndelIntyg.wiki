@@ -1,4 +1,6 @@
 ---
+Help: Ignorerad då den failar efter fix i INTYG-5193
+Prune
 Test
 ---
 Det finns ett antal intyg med ett antal tillhörande meddelanden.

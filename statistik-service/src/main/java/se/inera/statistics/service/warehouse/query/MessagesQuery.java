@@ -93,8 +93,7 @@ public class MessagesQuery {
     }
 
     public KonDataResponse getAndelKompletteringar(MessagesFilter filter, int cutoff) {
-        final MessagesFilter extendedFilter = new MessagesFilter(filter, Collections.singleton(MsgAmne.KOMPLT.name()));
-        List<CountDTOAmne> rows = messageWidelineLoader.getKompletteringarPerIntyg(extendedFilter);
+        List<CountDTOAmne> rows = messageWidelineLoader.getKompletteringarPerIntyg(filter);
         return convertToAndelKompletteringar(rows, filter.getFrom(), filter.getNumberOfMonths(), cutoff);
     }
 
@@ -115,8 +114,7 @@ public class MessagesQuery {
     }
 
     public SimpleKonResponse getAndelKompletteringarTvarsnitt(MessagesFilter filter) {
-        final MessagesFilter extendedFilter = new MessagesFilter(filter, Collections.singleton(MsgAmne.KOMPLT.name()));
-        List<CountDTOAmne> rows = messageWidelineLoader.getKompletteringarPerIntyg(extendedFilter);
+        List<CountDTOAmne> rows = messageWidelineLoader.getKompletteringarPerIntyg(filter);
         return convertToAndelKompletteringarTvarsnitt(rows, filter.getFrom(), filter.getNumberOfMonths());
     }
 
@@ -206,10 +204,10 @@ public class MessagesQuery {
                     final int ordinal = IntygType.parseString(dto.getIntygTyp()).getMappedType().ordinal();
                     if (dto.getKon().equals(Kon.FEMALE)) {
                         femaleIntyg[ordinal] += 1;
-                        femaleKompl[ordinal] += dto.getAmne() != null ? 1 : 0;
+                        femaleKompl[ordinal] += MsgAmne.KOMPLT.equals(dto.getAmne()) ? 1 : 0;
                     } else {
                         maleIntyg[ordinal] += 1;
-                        maleKompl[ordinal] += dto.getAmne() != null ? 1 : 0;
+                        maleKompl[ordinal] += MsgAmne.KOMPLT.equals(dto.getAmne()) ? 1 : 0;
                     }
                 }
             }
@@ -259,10 +257,10 @@ public class MessagesQuery {
                     final int ordinal = IntygType.parseString(dto.getIntygTyp()).getMappedType().ordinal();
                     if (dto.getKon().equals(Kon.FEMALE)) {
                         femaleIntyg[ordinal] += 1;
-                        femaleKompl[ordinal] += dto.getAmne() != null ? 1 : 0;
+                        femaleKompl[ordinal] += MsgAmne.KOMPLT.equals(dto.getAmne()) ? 1 : 0;
                     } else {
                         maleIntyg[ordinal] += 1;
-                        maleKompl[ordinal] += dto.getAmne() != null ? 1 : 0;
+                        maleKompl[ordinal] += MsgAmne.KOMPLT.equals(dto.getAmne()) ? 1 : 0;
                     }
                 }
             }
