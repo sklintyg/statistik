@@ -37,7 +37,6 @@
       <filter-name>CompressingFilter</filter-name>
       <url-pattern>/app/*</url-pattern>
       <url-pattern>/js/*</url-pattern>
-      <url-pattern>/bower_components/*</url-pattern>
       <url-pattern>/api/getOverview</url-pattern>
       <url-pattern>/api/getNumberOfCasesPerMonth</url-pattern>
       <url-pattern>/api/getDiagnoskapitelstatistik</url-pattern>
@@ -55,7 +54,6 @@
       <filter-name>ExpiresFilter</filter-name>
       <url-pattern>/app/*</url-pattern>
       <url-pattern>/assets/*</url-pattern>
-      <url-pattern>/bower_components/*</url-pattern>
       <url-pattern>/js/*</url-pattern>
       <dispatcher>REQUEST</dispatcher>
     </filter-mapping>

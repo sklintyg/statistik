@@ -65,7 +65,11 @@ module.exports = function(grunt) {
                     {
                         context: '/',
                         host: 'localhost',
-                        port: 8080
+                        port: 8080,
+                        rewrite: {
+                            '^/assets/fonts/font-awesome': '/bower_components/font-awesome/fonts/',
+                            '^/assets/fonts/bootstrap': '/bower_components/bootstrap-sass/assets/fonts/bootstrap/'
+                        }
                     }
                 ]
             }
@@ -221,7 +225,11 @@ module.exports = function(grunt) {
         concat: {
             options: {
                 sourceMap: true
-            }
+            },
+            '<%= config.tmp %>/concat/app/pdfmake.js': [
+                '<%= config.client %>/bower_components/pdfmake/build/pdfmake.min.js',
+                '<%= config.client %>/js/lib/vfs_fonts.js'
+            ]
         },
 
         uglify: {
@@ -265,6 +273,11 @@ module.exports = function(grunt) {
                         [/(assets\/images\/.*?\.(?:gif|jpeg|jpg|png|webp|svg))/gm,
                             'Update the JS to reference our revved images']
                     ]
+                },
+                blockReplacements: {
+                    pdfmake: function () {
+                        return '<script defer src="app/pdfmake.js"></script>';
+                    }
                 }
             }
         },
@@ -307,11 +320,6 @@ module.exports = function(grunt) {
                 src: ['{app,components}/**/*.html'],
                 dest: '<%= config.tmp %>/templates.js'
             }
-//            tmp: {
-//                cwd: '<%= config.tmp %>',
-//                src: ['{app,components}/**/*.html'],
-//                dest: '<%= config.tmp %>/tmp-templates.js'
-//            }
         },
 
         // Copies remaining files to places other tasks can use
@@ -325,7 +333,6 @@ module.exports = function(grunt) {
                         dest: '<%= config.dist %>',
                         src: [
                             'assets/**/*',
-                            'bower_components/**/*',
                             'WEB-INF/**/*',
                             'js/**/*',
                             '*.*'
@@ -333,10 +340,24 @@ module.exports = function(grunt) {
                     },
                     {
                         expand: true,
-                        cwd: '<%= config.tmp %>/images',
-                        dest: '<%= config.dist %>/assets/images',
-                        src: ['generated/*']
+                        cwd: '<%= config.client %>/bower_components/font-awesome/fonts/',
+                        dest: '<%= config.dist %>/assets/fonts/font-awesome',
+                        src: ['*']
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= config.client %>/bower_components/bootstrap-sass/assets/fonts/bootstrap/',
+                        dest: '<%= config.dist %>/assets/fonts/bootstrap',
+                        src: ['*']
                     }
+                ]
+            },
+            pdfmake: {
+                expand: true,
+                cwd: '<%= config.tmp %>/concat/',
+                dest: '<%= config.dist %>',
+                src: [
+                    'app/pdfmake.js'
                 ]
             }
         },
@@ -520,6 +541,7 @@ module.exports = function(grunt) {
         'ngAnnotate',
         'cssmin',
         'uglify',
+        'copy:pdfmake',
         'filerev',
         'usemin'
     ]);
