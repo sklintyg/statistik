@@ -9,32 +9,6 @@
 <Configure id="Server" class="org.eclipse.jetty.server.Server">
 
 
-    <!-- =========================================================== -->
-    <!-- Get the platform mbean server                               -->
-    <!-- =========================================================== -->
-    <Call id="MBeanServer" class="java.lang.management.ManagementFactory"
-          name="getPlatformMBeanServer"/>
-
-    <New id="MBeanContainer" class="org.eclipse.jetty.jmx.MBeanContainer">
-        <Arg>
-            <Ref id="MBeanServer"/>
-        </Arg>
-    </New>
-
-    <Call name="addEventListener">
-        <Arg>
-            <Ref id="MBeanContainer"/>
-        </Arg>
-    </Call>
-    <!-- =========================================================== -->
-    <!-- Initialize the Jetty MBean container -->
-    <!-- =========================================================== -->
-    <Call name="addBean">
-        <Arg>
-            <Ref id="MBeanContainer"/>
-        </Arg>
-    </Call>
-
     <!-- Add the static log -->
     <Call name="addBean">
         <Arg>
