@@ -15,7 +15,6 @@
     <beans>
       <security:http security="none" pattern="/services/**"/>
       <security:http security="none" pattern="/app/**"/>
-      <security:http security="none" pattern="/bower_components/**"/>
       <security:http security="none" pattern="/js/**"/>
       <security:http security="none" pattern="/assets/**"/>
     </beans>

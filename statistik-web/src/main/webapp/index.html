@@ -83,8 +83,10 @@
   <!-- endbower -->
   <!-- endbuild -->
 
-  <script src="bower_components/pdfmake/build/pdfmake.min.js?v=0.1.36"></script>
-  <script defer src="js/lib/vfs_fonts.js?v=2"></script>
+  <!-- build:pdfmake({src/main/webapp,node_modules}) app/pdfmake.js -->
+  <script src="bower_components/pdfmake/build/pdfmake.min.js"></script>
+  <script src="js/lib/vfs_fonts.js"></script>
+  <!-- endbuild -->
 
   <!-- build:js({build/.tmp,src/main/webapp}) app/app.main.js -->
   <script src="app/app.main.js"></script>
