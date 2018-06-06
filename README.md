@@ -93,7 +93,7 @@ För att testa applikationen i ett mer prodlikt läge kan man även starta med e
 Köra protractor tester lokalt. Du behöver ha firefox version 46 eller äldre för att testerna ska fungera.
 
  * Starta intygsstatistik med `./gradlew appRun`
- * Starta testerna med `./gradlew protractorTests`
+ * Starta testerna med `./gradlew protractorTest`
 
 ## Gradle
 Vi använder Gradle för att bygga, test, installera och köra intygsstatistik. Gradle spottar ur sig ganska mycket text, generellt sett har det gått bra om det sista som skrivs ut är något i stil med:

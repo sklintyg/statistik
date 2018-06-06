@@ -26,7 +26,7 @@ task setupIntygForProtractor(dependsOn: 'classes', type: JavaExec) {
     classpath = sourceSets.main.runtimeClasspath
 }
 
-task protractorTests(type: NodeTask, dependsOn: [npmInstall, setupIntygForProtractor]) {
+task protractorTest(type: NodeTask, dependsOn: [npmInstall, setupIntygForProtractor]) {
     outputs.upToDateWhen { false }
     def environment = System.properties['protractor.env'] ?: "dev"
 
