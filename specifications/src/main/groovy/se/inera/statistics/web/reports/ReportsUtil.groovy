@@ -24,11 +24,7 @@ import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.HttpResponseException
 import groovyx.net.http.RESTClient
 import org.apache.http.entity.mime.MultipartEntityBuilder
-import se.inera.statistics.service.report.model.KonField
 import se.inera.statistics.web.service.FilterData
-import se.inera.testsupport.Intyg
-import se.inera.testsupport.Meddelande
-import se.inera.testsupport.Personal
 import se.inera.testsupport.RestSupportService
 
 import javax.ws.rs.core.MediaType
@@ -75,73 +71,72 @@ class ReportsUtil {
         return client
     }
 
-    def setCurrentDateTime(long timeMillis) {
-        def response = restClient.post(path: '/api/testsupport/now', body: String.valueOf(timeMillis))
+    // puts a resource
+    def put(name, obj) {
+        def response = restClient.put(path: "/api/testsupport/${name}", body: new JsonBuilder(obj).toString())
         assert response.status == 200
     }
 
-    def setCutoff(long cutoff) {
-        def response = restClient.post(path: '/api/testsupport/cutoff', body: String.valueOf(cutoff))
+    // posts a resource
+    def post(name, body) {
+        def response = restClient.post(path: "/api/testsupport/${name}", body: body)
         assert response.status == 200
+    }
+
+    def post(name) {
+        post(name, "")
+    }
+
+    def setCurrentDateTime(long timeMillis) {
+        post("now", String.valueOf(timeMillis))
+    }
+
+    def setCutoff(cutoff) {
+        post("cutoff", String.valueOf(cutoff))
     }
 
     def clearDatabase() {
-        def response = restClient.post(path: '/api/testsupport/clearDatabase')
-        assert response.status == 200
+        post("clearDatabase")
     }
 
-    def insertIntyg(Intyg intyg) {
-        def builder = new JsonBuilder(intyg)
-        def response = restClient.put(path: '/api/testsupport/intyg', body: builder.toString())
-        assert response.status == 200
+    def insertIntyg(intyg) {
+        put("intyg", intyg)
     }
 
-    def insertPersonal(Personal personal) {
-        def builder = new JsonBuilder(personal)
-        def response = restClient.put(path: '/api/testsupport/personal', body: builder.toString())
-        assert response.status == 200
+    def insertPersonal(personal) {
+        put("personal", personal)
     }
 
     def processIntyg() {
-        def response = restClient.post(path: '/api/testsupport/processIntyg')
-        assert response.status == 200
+        post("processIntyg")
     }
 
-    def insertMeddelande(Meddelande meddelande) {
-        def builder = new JsonBuilder(meddelande)
-        def response = restClient.put(path: '/api/testsupport/meddelande', body: builder.toString())
-        assert response.status == 200
+    def insertMeddelande(meddelande) {
+        put("meddelande", meddelande)
     }
 
     def processMeddelande() {
-        def response = restClient.post(path: '/api/testsupport/processMeddelande')
-        assert response.status == 200
-    }
+        post("processMeddelande")
+      }
 
     def denyCalc() {
-        def response = restClient.post(path: '/api/testsupport/denyCalc')
-        assert response.status == 200
+        post("denyCalc")
     }
 
     def allowCalc() {
-        def response = restClient.post(path: '/api/testsupport/allowCalc')
-        assert response.status == 200
+        post("allowCalc")
     }
 
     def clearCountyPopulation() {
-        def response = restClient.post(path: '/api/testsupport/clearCountyPopulation')
-        assert response.status == 200
+        post("clearCountyPopulation")
     }
 
-    def insertCountyPopulation(Map<String, KonField> countyPopulation, String date) {
-        def builder = new JsonBuilder(countyPopulation)
-        def response = restClient.put(path: '/api/testsupport/countyPopulation/' + date, body: builder.toString())
-        assert response.status == 200
+    def insertCountyPopulation(countyPopulation, date) {
+        put("countyPopulation/${date}", countyPopulation)
     }
 
     def sendIntygToMottagare(String intygId, String mottagare) {
-        def response = restClient.post(path: '/api/testsupport/sendIntygToMottagare/' + intygId + "/" + mottagare)
-        assert response.status == 200
+        post("sendIntygToMottagare/${intygId}/${mottagare}")
     }
 
     def getReportAntalSjukfall() {
@@ -256,29 +251,11 @@ class ReportsUtil {
         }
     }
 
-    private def post(String url, FilterData filter=FilterData.empty(), String queryString="", String bodyString="") {
-        def queryWithFilter = addFilterToQueryStringIfSet(filter, queryString)
-        println("Calling url: " + url + " with query: " + queryWithFilter + " and body: " + bodyString)
-        try {
-            def response = restClient.post(path: url, body: bodyString, requestContentType: JSON, queryString : queryWithFilter)
-            assert response.status == 200
-            println 'data =' + response.data
-            return response.data
-        } catch (HttpResponseException e) {
-            if ('Service Unavailable' == e.message) {
-                println 'error = 503'
-                return []
-            } else {
-                throw e
-            }
-        }
-    }
-
-    private boolean isFilterEmpty(FilterData filter) {
+    private def isFilterEmpty(FilterData filter) {
         return filter.useDefaultPeriod && filter.diagnoser.isEmpty() && filter.enheter.isEmpty() && filter.sjukskrivningslangd.isEmpty() && filter.aldersgrupp.isEmpty() && filter.intygstyper.isEmpty()
     }
 
-    private String addFilterToQueryStringIfSet(filterQueryName, FilterData filter, queryString) {
+    private def addFilterToQueryStringIfSet(filterQueryName, FilterData filter, queryString) {
         if (isFilterEmpty(filter)) {
             return queryString
         }
@@ -468,7 +445,7 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getJamforDiagnoserStatistik/" + diagnosHash, filter, "vgid=" + vgid)
     }
 
-    String getFilterHash(FilterData filterData) {
+    def getFilterHash(filterData) {
         def filterJsonString = new JsonBuilder(filterData).toString()
         println("Filter to filterhash: " + filterJsonString)
         def response = restClient.post(path: "/api/filter", body: filterJsonString, requestContentType: JSON, contentType: TEXT)
@@ -532,7 +509,7 @@ class ReportsUtil {
         restClient.put(path: url)
     }
 
-    def getSocialstyrelsenReport(Integer fromYear, Integer toYear, List<String> dxs) {
+    def getSocialstyrelsenReport(fromYear, toYear, dxs) {
         def queryString = getSocialstyrelseQueryString(fromYear, toYear, dxs)
         return get("/api/testsupport/getSocialstyrelsenReport", FilterData.empty(), queryString, "filter")
     }
@@ -554,12 +531,12 @@ class ReportsUtil {
         queryString
     }
 
-    def getSocialstyrelsenMedianReport(Integer fromYear, Integer toYear, List<String> dxs) {
+    def getSocialstyrelsenMedianReport(fromYear, toYear, dxs) {
         def queryString = getSocialstyrelseQueryString(fromYear, toYear, dxs)
         return get("/api/testsupport/getSocialstyrelsenMedianReport", FilterData.empty(), queryString, "filter")
     }
 
-    def getSocialstyrelsenStdDevReport(Integer fromYear, Integer toYear, List<String> dxs) {
+    def getSocialstyrelsenStdDevReport(fromYear, toYear, dxs) {
         def queryString = getSocialstyrelseQueryString(fromYear, toYear, dxs)
         return get("/api/testsupport/getSocialstyrelsenStdDevReport", FilterData.empty(), queryString, "filter")
     }
@@ -568,15 +545,15 @@ class ReportsUtil {
         return get("/api/testsupport/getFkYearReport")
     }
 
-    def getReportAntalSjukfallLandstingInloggad(String vgid, filter) {
+    def getReportAntalSjukfallLandstingInloggad(vgid, filter) {
         return get("/api/landsting/getNumberOfCasesPerMonthLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 
-    def getReportSjukfallPerEnhetLandsting(String vgid, filter) {
+    def getReportSjukfallPerEnhetLandsting(vgid, filter) {
         return get("/api/landsting/getNumberOfCasesPerEnhetLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 
-    def getReportSjukfallPerListningarPerEnhetLandsting(String vgid, filter) {
+    def getReportSjukfallPerListningarPerEnhetLandsting(vgid, filter) {
         return get("/api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 
