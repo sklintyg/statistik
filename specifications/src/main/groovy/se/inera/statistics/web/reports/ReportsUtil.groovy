@@ -19,13 +19,10 @@
 package se.inera.statistics.web.reports
 
 import groovy.json.JsonBuilder
+import groovy.json.JsonSlurper
 import groovyx.net.http.HttpResponseException
 import groovyx.net.http.RESTClient
-import org.apache.http.HttpEntity
 import org.apache.http.entity.mime.MultipartEntityBuilder
-import org.codehaus.groovy.runtime.MethodClosure
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import se.inera.statistics.service.report.model.KonField
 import se.inera.statistics.web.service.FilterData
 import se.inera.testsupport.Intyg
@@ -35,38 +32,48 @@ import se.inera.testsupport.RestSupportService
 
 import javax.ws.rs.core.MediaType
 
-import static groovyx.net.http.ContentType.JSON
-import static groovyx.net.http.ContentType.TEXT
+import static groovy.json.JsonParserType.CHAR_BUFFER
+import static org.apache.http.entity.ContentType.DEFAULT_BINARY
 
 class ReportsUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ReportsUtil.class);
-    public static final VARDGIVARE = "vg1"
-    public static final VARDGIVARE3 = "vg3"
+    static final JSON = MediaType.APPLICATION_JSON
+    static final TEXT = MediaType.TEXT_PLAIN
+    
+    static final VARDGIVARE = "vg1"
+    static final VARDGIVARE3 = "vg3"
 
-    def statistik = createClient()
+    final statistik = createClient()
+    // CHAR_BUFFER must currently be used in order to eager parse of numbers etc. Ex. 17.0 in JSON ends up as 17 in groovy
+    final jsonp = new JsonSlurper().setType(CHAR_BUFFER)
 
-    private RESTClient createClient() {
-        String host = System.getProperty("baseUrl") ?: "http://localhost:8080/"
-        def client = new RESTClient(host, JSON)
-        client.ignoreSSLIssues()
-        client.encoder.putAt(MediaType.MULTIPART_FORM_DATA, new MethodClosure(this, 'encodeMultiPart'));
-        return client
-    }
-
-    HttpEntity encodeMultiPart(MultipartBody body) {
-        return MultipartEntityBuilder.create()
-                .addBinaryBody(
-                'file',
-                body.file,
-                org.apache.http.entity.ContentType.MULTIPART_FORM_DATA,
-                body.filename
-        ).build()
-    }
-
+    // for file uploads
     class MultipartBody {
         InputStream file
         String filename
+    }
+
+    private RESTClient createClient() {
+        def baseUrl = System.getProperty("baseUrl") ?: "http://localhost:8080/"
+        def client = new RESTClient(baseUrl, JSON)
+        client.ignoreSSLIssues()
+
+        client.encoder[MediaType.MULTIPART_FORM_DATA] = { body ->
+            MultipartEntityBuilder.create().addBinaryBody(
+                    "file",
+                    body.file,
+                    DEFAULT_BINARY,
+                    body.filename
+            ).build()
+        }
+
+        client.parser[JSON] = { resp ->
+            def text = resp.entity.content.text
+            println "JSONResponse: ${text}"
+            jsonp.parseText(text)
+        }
+
+        return client
     }
 
     long getCurrentDateTime() {
@@ -234,7 +241,7 @@ class ReportsUtil {
     private def get(String url, FilterData filter=FilterData.empty(), String queryString="", String filterQueryName="filter") {
         try {
             def queryWithFilter = addFilterToQueryStringIfSet(filterQueryName, filter, queryString)
-            println("GET: " + url + " : " + queryWithFilter)
+            println("GET: " + url + "?" + queryWithFilter)
             def response = statistik.get(path: url, queryString : queryWithFilter)
             return response.data;
         } catch (Throwable e) {
@@ -243,11 +250,11 @@ class ReportsUtil {
                 println 'error = 503'
                 return []
             } else if ('Access is denied' == e.message) {
-                    println 'error: Access is denied'
-                    return []
+                println 'error: Access is denied'
+                return []
             } else if ('Forbidden' == e.message) {
-                    println 'error: Forbidden'
-                    return []
+                println 'error: Forbidden'
+                return []
             } else {
                 throw e
             }
@@ -399,7 +406,7 @@ class ReportsUtil {
         def loginData = logins[user]
         def response = statistik.post(path: '/fake', body: [ userJsonDisplay:loginData ], requestContentType : "application/x-www-form-urlencoded" )
         assert response.status == 302
-        System.out.println("Using logindata: " + loginData)
+        println "Using logindata: ${loginData}"
     }
 
     def getLoginInfo() {
@@ -513,8 +520,8 @@ class ReportsUtil {
     def uploadFile(String vgid, InputStream file, filename) {
         def body = new MultipartBody(file: file, filename: filename);
         try {
-        def response = statistik.post(requestContentType: "multipart/form-data", path: '/api/landsting/fileupload', body: body, queryString : "vgid=" + vgid)
-        return response.data
+            def response = statistik.post(requestContentType: "multipart/form-data", path: '/api/landsting/fileupload', body: body, queryString : "vgid=" + vgid)
+            return response.data
         } catch (HttpResponseException e) {
             return e.getResponse().getData()
         }

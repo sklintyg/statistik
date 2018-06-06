@@ -16,12 +16,10 @@ gretty {
     }
 
     if (project.hasProperty('runWithActiveMQ')) {
-        contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-activemq-context.xml"
         serverConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty.xml" //Configures the jetty server with an mbean server.
-        jvmArgSpringProfiles += ',qm,active' //Add the needed spring profiles to start up an embedded activemq and hook it up to jmx
-    } else {
-        contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
+        jvmArgSpringProfiles += ',qm,active' //Add the needed spring profiles to start up an embedded activemq
     }
+    contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
 
     logbackConfigFile = "${projectDir}/src/main/resources/logback.xml"
     scanInterval = 0

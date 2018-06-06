@@ -11,6 +11,11 @@ node {
     nodeModulesDir = file("${project.projectDir}")
 }
 
+tasks.withType(GroovyCompile) {
+    options.encoding = "UTF-8" // for Java compilation
+    groovyOptions.encoding = "UTF-8" // for Groovy compilation
+}
+
 task setupIntygForProtractor(dependsOn: 'classes', type: JavaExec) {
 
     def baseUrl = System.properties['baseUrl'] ?: "http://localhost:8080/"
@@ -40,7 +45,7 @@ fitnesse {
         outputFormat = project.findProperty('outputFormat') ?: "xml&includehtml"
     }
 
-    extraProperties = ["baseUrl": System.properties['baseUrl'] ?: "http://localhost:8080/" ]
+    extraProperties = ["baseUrl": System.properties['baseUrl'] ?: "http://localhost:8080/"]
 }
 
 if (project.hasProperty('runFitnesse')) {
