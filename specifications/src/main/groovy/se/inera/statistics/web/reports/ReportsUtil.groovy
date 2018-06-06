@@ -68,9 +68,7 @@ class ReportsUtil {
         }
 
         client.parser[JSON] = { resp ->
-            def text = resp.entity.content.text
-            println "JSONResponse: ${text}"
-            jsonp.parseText(text)
+            jsonp.parse(resp.entity.content)
         }
 
         return client
