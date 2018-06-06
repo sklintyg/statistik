@@ -20,6 +20,7 @@ package se.inera.statistics.web.reports
 
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
+import groovyx.net.http.HttpResponseDecorator
 import groovyx.net.http.HttpResponseException
 import groovyx.net.http.RESTClient
 import org.apache.http.entity.mime.MultipartEntityBuilder
@@ -43,7 +44,7 @@ class ReportsUtil {
     static final VARDGIVARE = "vg1"
     static final VARDGIVARE3 = "vg3"
 
-    final statistik = createClient()
+    final restClient = createClient()
     // CHAR_BUFFER must currently be used in order to eager parse of numbers etc. Ex. 17.0 in JSON ends up as 17 in groovy
     final jsonp = new JsonSlurper().setType(CHAR_BUFFER)
 
@@ -58,7 +59,7 @@ class ReportsUtil {
         def client = new RESTClient(baseUrl, JSON)
         client.ignoreSSLIssues()
 
-        client.encoder[MediaType.MULTIPART_FORM_DATA] = { body ->
+        client.encoder[MediaType.MULTIPART_FORM_DATA] = { MultipartBody body ->
             MultipartEntityBuilder.create().addBinaryBody(
                     "file",
                     body.file,
@@ -67,83 +68,79 @@ class ReportsUtil {
             ).build()
         }
 
-        client.parser[JSON] = { resp ->
+        client.parser[JSON] = { HttpResponseDecorator resp ->
             jsonp.parse(resp.entity.content)
         }
 
         return client
     }
 
-    long getCurrentDateTime() {
-        return get('/api/testsupport/now')
-    }
-
     def setCurrentDateTime(long timeMillis) {
-        def response = statistik.post(path: '/api/testsupport/now', body: String.valueOf(timeMillis))
+        def response = restClient.post(path: '/api/testsupport/now', body: String.valueOf(timeMillis))
         assert response.status == 200
     }
 
     def setCutoff(long cutoff) {
-        def response = statistik.post(path: '/api/testsupport/cutoff', body: String.valueOf(cutoff))
+        def response = restClient.post(path: '/api/testsupport/cutoff', body: String.valueOf(cutoff))
         assert response.status == 200
     }
 
     def clearDatabase() {
-        def response = statistik.post(path: '/api/testsupport/clearDatabase')
+        def response = restClient.post(path: '/api/testsupport/clearDatabase')
         assert response.status == 200
     }
 
     def insertIntyg(Intyg intyg) {
         def builder = new JsonBuilder(intyg)
-        def response = statistik.put(path: '/api/testsupport/intyg', body: builder.toString())
+        def response = restClient.put(path: '/api/testsupport/intyg', body: builder.toString())
         assert response.status == 200
     }
 
     def insertPersonal(Personal personal) {
         def builder = new JsonBuilder(personal)
-        def response = statistik.put(path: '/api/testsupport/personal', body: builder.toString())
+        def response = restClient.put(path: '/api/testsupport/personal', body: builder.toString())
         assert response.status == 200
     }
 
     def processIntyg() {
-        def response = statistik.post(path: '/api/testsupport/processIntyg')
+        def response = restClient.post(path: '/api/testsupport/processIntyg')
         assert response.status == 200
     }
 
     def insertMeddelande(Meddelande meddelande) {
         def builder = new JsonBuilder(meddelande)
-        def response = statistik.put(path: '/api/testsupport/meddelande', body: builder.toString())
+        def response = restClient.put(path: '/api/testsupport/meddelande', body: builder.toString())
         assert response.status == 200
     }
 
     def processMeddelande() {
-        def response = statistik.post(path: '/api/testsupport/processMeddelande')
+        def response = restClient.post(path: '/api/testsupport/processMeddelande')
         assert response.status == 200
     }
 
     def denyCalc() {
-        def response = statistik.post(path: '/api/testsupport/denyCalc')
+        def response = restClient.post(path: '/api/testsupport/denyCalc')
         assert response.status == 200
     }
 
     def allowCalc() {
-        def response = statistik.post(path: '/api/testsupport/allowCalc')
+        def response = restClient.post(path: '/api/testsupport/allowCalc')
         assert response.status == 200
     }
 
     def clearCountyPopulation() {
-        def response = statistik.post(path: '/api/testsupport/clearCountyPopulation')
+        def response = restClient.post(path: '/api/testsupport/clearCountyPopulation')
         assert response.status == 200
     }
 
     def insertCountyPopulation(Map<String, KonField> countyPopulation, String date) {
         def builder = new JsonBuilder(countyPopulation)
-        def response = statistik.put(path: '/api/testsupport/countyPopulation/' + date, body: builder.toString())
+        def response = restClient.put(path: '/api/testsupport/countyPopulation/' + date, body: builder.toString())
         assert response.status == 200
     }
 
     def sendIntygToMottagare(String intygId, String mottagare) {
-        def response = statistik.post(path: '/api/testsupport/sendIntygToMottagare/' + intygId + "/" + mottagare)
+        def response = restClient.post(path: '/api/testsupport/sendIntygToMottagare/' + intygId + "/" + mottagare)
         assert response.status == 200
     }
 
@@ -240,7 +237,7 @@ class ReportsUtil {
         try {
             def queryWithFilter = addFilterToQueryStringIfSet(filterQueryName, filter, queryString)
             println("GET: " + url + "?" + queryWithFilter)
-            def response = statistik.get(path: url, queryString : queryWithFilter)
+            def response = restClient.get(path: url, queryString : queryWithFilter)
             return response.data;
         } catch (Throwable e) {
             println "e.message: " + e.message
@@ -263,7 +260,7 @@ class ReportsUtil {
         def queryWithFilter = addFilterToQueryStringIfSet(filter, queryString)
         println("Calling url: " + url + " with query: " + queryWithFilter + " and body: " + bodyString)
         try {
-            def response = statistik.post(path: url, body: bodyString, requestContentType: JSON, queryString : queryWithFilter)
+            def response = restClient.post(path: url, body: bodyString, requestContentType: JSON, queryString : queryWithFilter)
             assert response.status == 200
             println 'data =' + response.data
             return response.data
@@ -402,7 +399,7 @@ class ReportsUtil {
                 "\"vardgivarniva\":\"" + vardgivarniva + "\"" +
                 "}"
         def loginData = logins[user]
-        def response = statistik.post(path: '/fake', body: [ userJsonDisplay:loginData ], requestContentType : "application/x-www-form-urlencoded" )
+        def response = restClient.post(path: '/fake', body: [userJsonDisplay:loginData ], requestContentType : "application/x-www-form-urlencoded" )
         assert response.status == 302
         println "Using logindata: ${loginData}"
     }
@@ -474,7 +471,7 @@ class ReportsUtil {
     String getFilterHash(FilterData filterData) {
         def filterJsonString = new JsonBuilder(filterData).toString()
         println("Filter to filterhash: " + filterJsonString)
-        def response = statistik.post(path: "/api/filter", body: filterJsonString, requestContentType: JSON, contentType: TEXT)
+        def response = restClient.post(path: "/api/filter", body: filterJsonString, requestContentType: JSON, contentType: TEXT)
         assert response.status == 200
         return response.data.getText();
     }
@@ -518,7 +515,7 @@ class ReportsUtil {
     def uploadFile(String vgid, InputStream file, filename) {
         def body = new MultipartBody(file: file, filename: filename);
         try {
-            def response = statistik.post(requestContentType: "multipart/form-data", path: '/api/landsting/fileupload', body: body, queryString : "vgid=" + vgid)
+            def response = restClient.post(requestContentType: "multipart/form-data", path: '/api/landsting/fileupload', body: body, queryString : "vgid=" + vgid)
             return response.data
         } catch (HttpResponseException e) {
             return e.getResponse().getData()
@@ -526,13 +523,13 @@ class ReportsUtil {
     }
 
     def clearLandstingFileUploads() {
-        statistik.delete(path: '/api/testsupport/clearLandstingFileUploads')
+        restClient.delete(path: '/api/testsupport/clearLandstingFileUploads')
     }
 
     def insertLandsting(vgId) {
         def url = "/api/testsupport/landsting/vgid/" + vgId
         println("insertLandsting: " + url)
-        statistik.put(path: url)
+        restClient.put(path: url)
     }
 
     def getSocialstyrelsenReport(Integer fromYear, Integer toYear, List<String> dxs) {
