@@ -1,16 +1,15 @@
 #!/bin/bash
 # Assign backing service addresses from the outer environment
 
-export DATABASE_USERNAME=${DATABASE_USERNAME-statistik}
-export DATABASE_PASSWORD=${DATABASE_PASSWORD-statistik}
-export DATABASE_NAME=${DATABASE_NAME-statistik_test}
-export DATABASE_SERVER=$MYSQL_SERVICE_HOST
-export DATABASE_PORT=$MYSQL_SERVICE_PORT
+export DB_USERNAME=${DATABASE_USERNAME-statistik}
+export DB_PASSWORD=${DATABASE_PASSWORD-statistik}
+export DB_NAME=${DATABASE_NAME-statistik_test}
+export DB_SERVER=$MYSQL_SERVICE_HOST
+export DB_PORT=$MYSQL_SERVICE_PORT
 
 export JMS_RECEIVER_QUEUE_NAME=test.statistik.utlatande.queue
 export JMS_BROKER_USERNAME=${ACTIVEMQ_BROKER_USERNAME-admin}
 export JMS_BROKER_PASSWORD=${ACTIVEMQ_BROKER_PASSWORD-admin}
-export JMS_BROKER_URL=${ACTIVEMQ_AMQ_AMQP_PORT}
 
 export REDIS_PASSWORD=${REDIS_PASSWORD-redis}
 export REDIS_PORT=$REDIS_SERVICE_PORT
