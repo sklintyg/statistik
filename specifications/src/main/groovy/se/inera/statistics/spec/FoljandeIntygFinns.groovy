@@ -122,6 +122,8 @@ class FoljandeIntygFinns extends FoljandeFinns {
                 return executeForIllegalIntygFormat();
             case ~/^(?i)DB$/:
                 return executeForXmlFormatRegisterMedical('/db.xml', "DB");
+            case ~/^(?i)DOI$/:
+                return executeForXmlFormatRegisterMedical('/doi.xml', "DOI");
             default:
                 throw new RuntimeException("Unknown intyg format requested")
         }
