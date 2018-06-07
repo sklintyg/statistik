@@ -43,7 +43,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
+import se.inera.statistics.service.helper.TsBasHelper;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
 import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
@@ -65,6 +67,9 @@ public class HSADecorator {
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
 
+    @Autowired
+    private TsBasHelper tsBasHelper;
+
     @Transactional
     public HsaInfo decorate(JsonNode doc, String documentId) {
         final HsaInfo info = getHSAInfo(documentId);
@@ -80,6 +85,16 @@ public class HSADecorator {
         final HsaInfo info = getHSAInfo(documentId);
         if (missingData(info)) {
             HSAKey key = registerCertificateHelper.extractHSAKey(doc);
+            return getAndUpdateHsaJson(documentId, info, key);
+        }
+        return info;
+    }
+
+    @Transactional
+    public HsaInfo populateHsaData(RegisterTSBasType doc, String documentId) {
+        final HsaInfo info = getHSAInfo(documentId);
+        if (missingData(info)) {
+            HSAKey key = tsBasHelper.extractHSAKey(doc);
             return getAndUpdateHsaJson(documentId, info, key);
         }
         return info;

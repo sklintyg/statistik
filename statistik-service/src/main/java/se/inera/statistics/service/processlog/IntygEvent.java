@@ -84,8 +84,19 @@ public class IntygEvent {
     }
 
     public static IntygFormat getIntygFormat(String intyg) {
-        final boolean isRegisterCertificateXmlFormat = intyg != null && intyg.matches("(?s)^.*<[^>]*RegisterCertificate.*>.*$");
-        return isRegisterCertificateXmlFormat ? IntygFormat.REGISTER_CERTIFICATE : IntygFormat.REGISTER_MEDICAL_CERTIFICATE;
+        if (intyg == null) {
+            return IntygFormat.REGISTER_MEDICAL_CERTIFICATE;
+        }
+
+        if (intyg.matches("(?s)^.*<[^>]*RegisterCertificate.*>.*$")) {
+            return IntygFormat.REGISTER_CERTIFICATE;
+        }
+
+        if (intyg.matches("(?s)^.*<[^>]*RegisterTSBas.*>.*$")) {
+            return IntygFormat.REGISTER_TS_BAS;
+        }
+
+        return IntygFormat.REGISTER_MEDICAL_CERTIFICATE;
     }
 
 }

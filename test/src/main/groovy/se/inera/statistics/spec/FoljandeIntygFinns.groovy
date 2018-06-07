@@ -109,11 +109,11 @@ class FoljandeIntygFinns extends FoljandeFinns {
             case ~/^(?i)LISU$/:
                 return executeForXmlFormat('/lisu.xml', "LISU");
             case ~/^(?i)LUSE$/:
-                return executeForXmlFormatGeneral('/luse.xml', "LUSE");
+                return executeForXmlFormatSit('/luse.xml', "LUSE");
             case ~/^(?i)LUAE_NA$/:
-                return executeForXmlFormatGeneral('/luae_na.xml', "LUAE_NA")
+                return executeForXmlFormatSit('/luae_na.xml', "LUAE_NA")
             case ~/^(?i)LUAE_FS$/:
-                return executeForXmlFormatGeneral('/luae_fs.xml', "LUAE_FS");
+                return executeForXmlFormatSit('/luae_fs.xml', "LUAE_FS");
             case ~/^(?i)LISJP$/:
                 return executeForXmlFormat('/lisjp.xml', "LISJP");
             case ~/^(?i)FK7263SIT$/:
@@ -124,6 +124,8 @@ class FoljandeIntygFinns extends FoljandeFinns {
                 return executeForXmlFormatRegisterCertificate('/db.xml', "DB");
             case ~/^(?i)DOI$/:
                 return executeForXmlFormatRegisterCertificate('/doi.xml', "DOI");
+            case ~/^(?i)TSTRK1007$/:
+                return executeForXmlFormatTsBas('/tstrk1007.xml', "TSTRK1007");
             default:
                 throw new RuntimeException("Unknown intyg format requested")
         }
@@ -140,10 +142,48 @@ class FoljandeIntygFinns extends FoljandeFinns {
         return builder.toString()
     }
 
-    private Node handleGeneralRegisterCertificate(String filepath, String defaultIntygstyp) {
+    private String executeForXmlFormatSit(String filepath, String defaultIntygstyp) {
+        Node result = handleGeneralSit(filepath, defaultIntygstyp)
+
+        def builder = groovy.xml.XmlUtil.serialize(result)
+        return builder.toString()
+    }
+
+    private String executeForXmlFormatTsBas(String filepath, String defaultIntygstyp) {
+        Node result = readXmlFormat(filepath)
+        def intyg = result.value()[0]
+
+        def grundDataNode = findNode(intyg, "grundData")
+
+        def patientNode = findNode(grundDataNode, "patient")
+
+        def patientPersonIdNode = findNode(patientNode, "personId")
+        setExtension(patientPersonIdNode, personnr)
+        setLeafValue(intyg, "intygsTyp", intygstyp != null ? intygstyp : defaultIntygstyp)
+
+        setLeafValue(grundDataNode, "signeringsTidstampel", signeringstid)
+
+        def skapadAvNode = findNode(grundDataNode, "skapadAv")
+        setExtension(findNode(skapadAvNode, "personId"), läkare)
+
+        def skapadAvEnhetNode = findNode(skapadAvNode, "vardenhet")
+        setExtension(findNode(skapadAvEnhetNode, "enhetsId"), enhet)
+
+        def skapadAvEnhetVgNode = findNode(skapadAvEnhetNode, "vardgivare")
+        setExtension(findNode(skapadAvEnhetVgNode, "vardgivarid"), vardgivare)
+
+        def builder = groovy.xml.XmlUtil.serialize(result)
+        return builder.toString()
+    }
+
+    private Node readXmlFormat(String filepath) {
         def slurper = new XmlParser(false, true)
         String intygString = getClass().getResource(filepath).getText('UTF-8')
-        def result = slurper.parseText(intygString)
+        return slurper.parseText(intygString)
+    }
+
+    private Node handleGeneralRegisterCertificate(String filepath, String defaultIntygstyp) {
+        Node result = readXmlFormat(filepath)
         def intyg = result.value()[0]
 
         def patientNode = findNode(intyg, "patient")
@@ -164,13 +204,6 @@ class FoljandeIntygFinns extends FoljandeFinns {
         setExtension(findNode(skapadAvEnhetVgNode, "vardgivare-id"), vardgivare)
 
         return result
-    }
-
-    private String executeForXmlFormatGeneral(String filepath, String defaultIntygstyp) {
-        Node result = handleGeneralSit(filepath, defaultIntygstyp)
-
-        def builder = groovy.xml.XmlUtil.serialize(result)
-        return builder.toString()
     }
 
     private Node handleGeneralSit(String filepath, String defaultIntygstyp) {

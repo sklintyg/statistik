@@ -11,6 +11,7 @@ ext {
     intygSchematronVersion = "1.0.26"
     certificateSchemaVersion = "3.2.0-RC1"
     monitoringSchemaVersion = "1.0.0.0"
+    intygTransportstyrelsenSchemasVersion = "1.0.4"
 
     activeMqVersion = "5.13.0"
     aspectJVersion = "1.8.9"
