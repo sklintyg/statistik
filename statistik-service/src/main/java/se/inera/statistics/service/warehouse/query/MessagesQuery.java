@@ -18,17 +18,11 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.ResponseUtil;
@@ -37,14 +31,7 @@ import se.inera.statistics.service.warehouse.message.MessageWidelineLoader;
 import se.inera.statistics.service.warehouse.message.MsgAmne;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -102,7 +89,6 @@ public class MessagesQuery {
         return getKonDataResponseAggregated(resultToAggregateIn, filter, cutoff, andelKompletteringar);
     }
 
-    @NotNull
     private KonDataResponse getKonDataResponseAggregated(KonDataResponse resultToAggregateIn, MessagesFilter filter,
                                                          int cutoff, KonDataResponse andelKompletteringar) {
         final KonDataResponse resultToAggregate = resultToAggregateIn != null

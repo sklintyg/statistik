@@ -18,17 +18,11 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import org.jetbrains.annotations.NotNull;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.web.model.ChartCategory;
-import se.inera.statistics.web.model.ChartData;
-import se.inera.statistics.web.model.ChartSeries;
-import se.inera.statistics.web.model.NamedData;
-import se.inera.statistics.web.model.SimpleDetailsData;
-import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.model.*;
 import se.inera.statistics.web.service.FilterDataResponse;
 
 import java.text.DecimalFormat;
@@ -55,7 +49,6 @@ public class SjukfallPerSexConverter {
                 Arrays.asList("Län", "Antal sjukfall totalt", "Andel sjukfall för kvinnor", "Andel sjukfall för män"));
     }
 
-    @NotNull
     private NamedData getDataForAllCounties(SimpleKonResponse list) {
         final Integer sumForFemale = getSumForSex(list, Kon.FEMALE);
         final Integer sumForMale = getSumForSex(list, Kon.MALE);

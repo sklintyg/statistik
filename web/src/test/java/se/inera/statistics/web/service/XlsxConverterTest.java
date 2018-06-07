@@ -18,13 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.jetbrains.annotations.NotNull;
+import org.apache.poi.ss.usermodel.*;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -40,7 +34,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class XlsxConverterTest {
 
@@ -56,7 +50,6 @@ public class XlsxConverterTest {
         assertTrue(cellTexts.toString().startsWith("[Landstingsstatistik, Antal sjukfall fördelat på vårdenhet testar"));
     }
 
-    @NotNull
     private ArrayList<String> addXlsxData(Report report, String period) {
         return addXlsxData(report, period, Arrays.asList(), null,
                 Arrays.asList(new NamedData("datarad1", Arrays.asList(1, 2, 3))));
@@ -76,7 +69,6 @@ public class XlsxConverterTest {
         assertTrue(cellTexts.toString().contains("Valda enheter, TestEnhet"));
     }
 
-    @NotNull
     private ArrayList<String> addXlsxDataForEnhetTest(List<String> testEnhet, Collection<HsaIdEnhet> enhetsfilter) {
         return addXlsxData(Report.V_DIAGNOSGRUPP, "", testEnhet, enhetsfilter,
                 Arrays.asList(new NamedData("datarad1", Arrays.asList(1, 2, 3))));
@@ -94,7 +86,6 @@ public class XlsxConverterTest {
         assertTrue(cellTexts.toString().contains("datarad1, 1.0, 2.0, 3.0, datarad2, 10.0, 20.0, 30.0"));
     }
 
-    @NotNull
     private ArrayList<String> addXlsxData(List<NamedData> dataList) {
         return addXlsxData(Report.V_DIAGNOSGRUPP, "", Arrays.asList("TestEnhet"), Arrays.asList(new HsaIdEnhet("enhet1")), dataList);
     }
@@ -102,7 +93,6 @@ public class XlsxConverterTest {
     /**
      * Set up a workbook mock and return all text fields added to it
      */
-    @NotNull
     private ArrayList<String> addXlsxData(Report report, String period, List<String> testEnhet, Collection<HsaIdEnhet> enhetsfilter, List<NamedData> dataList) {
         final ArrayList<String> cellTexts = new ArrayList<>();
         final Icd10 icd10 = Mockito.mock(Icd10.class);

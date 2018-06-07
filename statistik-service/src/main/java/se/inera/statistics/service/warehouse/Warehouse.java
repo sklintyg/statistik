@@ -20,7 +20,6 @@ package se.inera.statistics.service.warehouse;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +30,7 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.processlog.Enhet;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -78,7 +72,6 @@ public class Warehouse implements Iterable<Aisle> {
         return widelineLoader.getAllVgs();
     }
 
-    @NotNull
     @Override
     public Iterator<Aisle> iterator() {
         return new Iterator<Aisle>() {

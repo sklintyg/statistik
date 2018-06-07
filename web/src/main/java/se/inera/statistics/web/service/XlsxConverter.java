@@ -18,6 +18,15 @@
  */
 package se.inera.statistics.web.service;
 
+import com.google.common.annotations.VisibleForTesting;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.web.model.*;
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
@@ -25,28 +34,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Hyperlink;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.annotations.VisibleForTesting;
-import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
-import se.inera.statistics.web.model.NamedData;
-import se.inera.statistics.web.model.TableData;
-import se.inera.statistics.web.model.TableDataReport;
-import se.inera.statistics.web.model.TableHeader;
 
 final class XlsxConverter {
     private static final Logger LOG = LoggerFactory.getLogger(XlsxConverter.class);
@@ -83,7 +70,6 @@ final class XlsxConverter {
         }
     }
 
-    @NotNull
     private CellStyle getBoldStyle(Workbook workbook) {
         CellStyle boldStyle = workbook.createCellStyle();
         Font boldFont = workbook.createFont();
@@ -92,7 +78,6 @@ final class XlsxConverter {
         return boldStyle;
     }
 
-    @NotNull
     private CellStyle getHlinkStyle(Workbook workbook) {
         CellStyle hlinkStyle = workbook.createCellStyle();
         Font hlinkFont = workbook.createFont();

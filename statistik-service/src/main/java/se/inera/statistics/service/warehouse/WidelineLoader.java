@@ -19,7 +19,6 @@
 package se.inera.statistics.service.warehouse;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,7 +104,6 @@ public class WidelineLoader {
                 Warehouse.getNumLakarIdAndRemember(new HsaIdLakare(lakareId)));
     }
 
-    @NotNull
     private List<Aisle> toAisles(Map<HsaIdVardgivare, List<Fact>> facts) {
         List<Aisle> aisles = new ArrayList<>();
         for (Map.Entry<HsaIdVardgivare, List<Fact>> entry : facts.entrySet()) {
