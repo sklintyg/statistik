@@ -18,18 +18,19 @@
  */
 package se.inera.statistics.service.caching;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
@@ -41,8 +42,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -53,42 +52,55 @@ import java.util.stream.Collectors;
 @Component
 public class Cache {
     private static final Logger LOG = LoggerFactory.getLogger(Cache.class);
-    private static final String AISLE = "AISLE";
-    private static final String SJUKFALLGROUP = "SJUKFALLGROUP";
-    private static final String VGENHET = "VGENHET";
-    private static final String ENHET = "ENHET";
-    private static final int DEFAULT_MAX_SIZE = 1000;
+    private static final String REDIS_KEY_PREFIX = "INTYGSSTATISTIK_";
+    private static final String AISLE = REDIS_KEY_PREFIX + "AISLE_";
+    private static final String SJUKFALLGROUP = REDIS_KEY_PREFIX + "SJUKFALLGROUP_";
+    private static final String VGENHET = REDIS_KEY_PREFIX + "VGENHET_";
+    private static final String ENHET = REDIS_KEY_PREFIX + "ENHET_";
 
     @Value("${cache.maxsize:1000}")
     private String maxSize;
 
-    private com.google.common.cache.Cache<String, Object> genericCache;
+    @Autowired
+    private RedisTemplate<String, Object> template;
 
-    private com.google.common.cache.Cache<String, Object> getGenericCache() {
-        if (genericCache == null) {
-            final Integer maxSizeInteger = ConversionHelper.parseInt(maxSize);
-            final int maxSizeInt = maxSizeInteger != null ? maxSizeInteger : DEFAULT_MAX_SIZE;
-            LOG.info("Creates cache with max size: {}", maxSizeInt);
-            genericCache = CacheBuilder.newBuilder()
-                    .softValues().expireAfterWrite(1, TimeUnit.DAYS).build();
-        }
-        return genericCache;
+    public Cache() {
+    }
+
+    /**
+     * Used by tests.
+     */
+    public Cache(RedisTemplate<String, Object> template, String maxSize) {
+        this.template = template;
+        this.maxSize = maxSize;
     }
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     public void clearCaches() {
-        getGenericCache().invalidateAll();
+        final Set<String> keys = template.keys(REDIS_KEY_PREFIX + "*");
+        if (keys != null) {
+            template.delete(keys);
+        } else {
+            LOG.warn("ClearCache was requested but no value was found in cache");
+        }
     }
 
     public List<SjukfallGroup> getSjukfallGroups(SjukfallGroupCacheKey key) {
         LOG.info("Getting sjukfallgroups: {}", key.getKey());
-        try {
-            return (List<SjukfallGroup>) getGenericCache().get(SJUKFALLGROUP + key.getKey(), () -> loadSjukfallgroups(key));
-        } catch (ExecutionException e) {
-            LOG.warn("Failed to get value from cache");
-            LOG.debug("Failed to get value from cache", e);
-            return loadSjukfallgroups(key);
+        final HashOperations<String, String, Object> hashOps = template.opsForHash();
+        final Boolean hasKey = hashOps.hasKey(SJUKFALLGROUP, key.getKey());
+        if (hasKey) { //Spotbugs did not allow a null check here, I'm not sure why
+            try {
+                final Object group = hashOps.get(SJUKFALLGROUP, key.getKey());
+                return (List<SjukfallGroup>) group;
+            } catch (ClassCastException e) {
+                LOG.warn("Failed to cast sjukfallsgroup in cache");
+                hashOps.delete(SJUKFALLGROUP, key.getKey());
+            }
         }
+        final List<SjukfallGroup> sjukfallGroups = loadSjukfallgroups(key);
+        hashOps.put(SJUKFALLGROUP, key.getKey(), sjukfallGroups);
+        return sjukfallGroups;
     }
 
     private List<SjukfallGroup> loadSjukfallgroups(SjukfallGroupCacheKey key) {
@@ -104,12 +116,20 @@ public class Cache {
 
     public Aisle getAisle(HsaIdVardgivare vardgivarId, Function<HsaIdVardgivare, Aisle> loader) {
         LOG.info("Getting aisle: {}", vardgivarId);
-        try {
-            return (Aisle) getGenericCache().get(AISLE + vardgivarId.getId(), () -> aisleLoader(vardgivarId, loader));
-        } catch (ExecutionException e) {
-            LOG.warn("Failed to get aisle from cache for vg: " + vardgivarId);
-            return aisleLoader(vardgivarId, loader);
+        final String key = vardgivarId.getId();
+        final HashOperations<String, Object, Object> hashOps = template.opsForHash();
+        if (hashOps.hasKey(AISLE, key)) {
+            try {
+                final Object aisle = hashOps.get(AISLE, key);
+                return (Aisle) aisle;
+            } catch (ClassCastException e) {
+                LOG.warn("Failed to cast aisle in cache");
+                hashOps.delete(AISLE, key);
+            }
         }
+        final Aisle facts = aisleLoader(vardgivarId, loader);
+        hashOps.put(AISLE, key, facts);
+        return facts;
     }
 
     private Aisle aisleLoader(HsaIdVardgivare vardgivarId, Function<HsaIdVardgivare, Aisle> loader) {
@@ -120,38 +140,48 @@ public class Cache {
     private List<HsaIdEnhet> loadVgEnhets(@NotNull HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
         LOG.info("VgEnhets not cached: {}", vardgivareId);
         final List<Enhet> allEnhetsForVg = loader.apply(vardgivareId);
+        final HashOperations<String, Object, Object> hashOps = template.opsForHash();
         for (Enhet enhet : allEnhetsForVg) {
-            getGenericCache().put(ENHET + enhet.getEnhetId(), enhet);
+            hashOps.put(ENHET, enhet.getEnhetId().getId(), enhet);
         }
         return allEnhetsForVg.stream().map(Enhet::getEnhetId).collect(Collectors.toList());
     }
 
     public List<HsaIdEnhet> getVgEnhets(HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
         LOG.info("Getting VgEnhets: {}", vardgivareId);
-        try {
-            return (List<HsaIdEnhet>) getGenericCache().get(VGENHET + vardgivareId, () -> loadVgEnhets(vardgivareId, loader));
-        } catch (ExecutionException e) {
-            LOG.warn("Could not get enhets from cache for vg: " + vardgivareId);
-            return loadVgEnhets(vardgivareId, loader);
+        final String key = vardgivareId.getId();
+        final HashOperations<String, Object, Object> hashOps = template.opsForHash();
+        if (hashOps.hasKey(VGENHET, key)) {
+            try {
+                final Object enhets = hashOps.get(VGENHET, key);
+                return (List<HsaIdEnhet>) enhets;
+            } catch (ClassCastException e) {
+                LOG.warn("Failed to cast vgenhets in cache");
+                hashOps.delete(VGENHET, key);
+            }
         }
+        final List<HsaIdEnhet> hsaIdEnhets = loadVgEnhets(vardgivareId, loader);
+        hashOps.put(VGENHET, key, hsaIdEnhets);
+        return hsaIdEnhets;
     }
 
     public Collection<Enhet> getEnhetsWithHsaId(Collection<HsaIdEnhet> enhetIds,
                                                 Function<Collection<HsaIdEnhet>, Collection<Enhet>> loader) {
-        final List<String> cacheKeys = enhetIds.stream().map(hsaIdEnhet -> ENHET + hsaIdEnhet.getId()).collect(Collectors.toList());
-        final ImmutableMap<String, Object> allPresent = getGenericCache().getAllPresent(cacheKeys);
-        if (allPresent.size() == enhetIds.size()) {
+        final HashOperations<String, String, Object> hashOps = template.opsForHash();
+        final List<Object> cachedEnhetsObj = hashOps.multiGet(ENHET, enhetIds.stream().map(HsaIdAny::getId).collect(Collectors.toList()));
+        final List<Enhet> cachedEnhets = cachedEnhetsObj.stream().filter(o -> o != null).map(o -> (Enhet) o).collect(Collectors.toList());
+        if (cachedEnhets.size() == enhetIds.size()) {
             LOG.info("All enhets cached");
-            return allPresent.values().stream().map(o -> (Enhet) o).collect(Collectors.toList());
+            return cachedEnhets;
         }
         final HashSet<HsaIdEnhet> hsaIdEnhetsNotInCache = new HashSet<>(enhetIds);
-        hsaIdEnhetsNotInCache.removeAll(allPresent.keySet().stream().map(
-                s -> new HsaIdEnhet(s.substring(ENHET.length()))).collect(Collectors.toList()));
+        final List<HsaIdEnhet> hsaIdsInCache = cachedEnhets.stream().map(Enhet::getEnhetId).collect(Collectors.toList());
+        hsaIdEnhetsNotInCache.removeAll(hsaIdsInCache);
         final Set<Enhet> enhets = new HashSet<>(loader.apply(hsaIdEnhetsNotInCache));
         for (Enhet enhet : enhets) {
-            getGenericCache().put(ENHET + enhet.getEnhetId().getId(), enhet);
+            hashOps.put(ENHET, enhet.getEnhetId().getId(), enhet);
         }
-        enhets.addAll(allPresent.values().stream().map(o -> (Enhet) o).collect(Collectors.toList()));
+        enhets.addAll(cachedEnhets);
         LOG.info("All enhets not cached");
         return enhets;
     }

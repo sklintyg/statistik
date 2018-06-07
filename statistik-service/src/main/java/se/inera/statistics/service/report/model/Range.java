@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.report.model;
 
+import java.io.Serializable;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,7 +26,7 @@ import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.Locale;
 
-public final class Range {
+public final class Range implements Serializable {
     private static final String RANGE_SEPARATOR = "\u2013";
     private static final int DEFAULT_PERIOD = 18;
     private static final int YEAR_PERIOD = 12;

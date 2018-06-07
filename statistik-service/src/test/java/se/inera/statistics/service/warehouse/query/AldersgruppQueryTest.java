@@ -28,6 +28,7 @@ import org.mockito.Spy;
 import org.springframework.test.util.ReflectionTestUtils;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.caching.Cache;
+import se.inera.statistics.service.caching.FakeRedisTemplate;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
@@ -40,7 +41,6 @@ import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.WidelineLoader;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -64,7 +64,7 @@ public class AldersgruppQueryTest {
     private WidelineLoader widelineLoader;
 
     @Spy
-    private Cache cache = new Cache();
+    private Cache cache = new Cache(new FakeRedisTemplate(), "1");
 
     private int intyg;
     private int patient;

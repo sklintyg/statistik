@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -25,7 +26,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import se.inera.statistics.service.report.model.Kon;
 
-public class Fact {
+public class Fact implements Serializable {
     public static final String HEADING = "lan;kommun;forsamling;enhet;lakarintyg;patient;startdatum;kon;alder;diagnoskapitel;"
             + "diagnosavsnitt;diagnoskategori;sjukskrivningsgrad;sjukskrivningslangd;lakarkon;lakaralder;lakarbefattning";
 

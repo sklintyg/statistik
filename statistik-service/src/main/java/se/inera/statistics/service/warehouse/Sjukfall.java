@@ -21,6 +21,7 @@ package se.inera.statistics.service.warehouse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,7 +29,7 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 // CHECKSTYLE:OFF FinalClass
-public class Sjukfall {
+public class Sjukfall implements Serializable {
     // CHECKSTYLE:ON FinalClass
     public static final int MAX_GAP = 5;
 

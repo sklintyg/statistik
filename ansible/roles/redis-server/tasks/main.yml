@@ -1,0 +1,52 @@
+---
+
+- name: Check if redis server is installed
+  stat:
+    path: /usr/local/bin/redis-server
+  register: redis_stat_result
+
+- name: Download redis
+  local_action: get_url url={{ redis_download_url }} dest=/tmp/
+  when: redis_stat_result.stat.exists == False
+  become: no
+
+- name: Copy redis archive to remote
+  copy: src=/tmp/{{ redis_archive }} dest={{ redis_archive_tmp_folder }}
+  when: redis_stat_result.stat.exists == False
+
+- name: Extract redis
+  unarchive: src={{ redis_archive_tmp_folder }}/{{ redis_archive }}
+             dest={{ redis_archive_tmp_folder }} copy=no
+  when: redis_stat_result.stat.exists == False
+
+- name: Build redis
+  command: make
+  args:
+    chdir: "{{ redis_archive_tmp_folder_unarchived }}"
+  when: redis_stat_result.stat.exists == False
+
+- name: Test redis build
+  command: make test
+  args:
+    chdir: "{{ redis_archive_tmp_folder_unarchived }}"
+  when: redis_stat_result.stat.exists == False
+
+- name: Install redis build
+  command: make install
+  become: true
+  become_method: sudo
+  args:
+    chdir: "{{ redis_archive_tmp_folder_unarchived }}"
+  when: redis_stat_result.stat.exists == False
+
+- name: Check if redis server is running
+  shell: /usr/local/bin/redis-cli ping
+  register: redis_ping_result
+  failed_when: false
+
+- name: Start redis server
+  command: /usr/local/bin/redis-server --daemonize yes
+  when: redis_ping_result.stdout != "PONG"
+
+- name: Verify that redis server is running
+  shell: /usr/local/bin/redis-cli ping

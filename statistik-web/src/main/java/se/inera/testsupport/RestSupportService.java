@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -176,7 +177,12 @@ public class RestSupportService {
     @Path("invokeIntygCommonDxPopulator")
     @Produces({ MediaType.APPLICATION_JSON })
     public Response populateIntygCommonDx() {
-        intygCommonDxPopulator.onApplicationEvent(null);
+        intygCommonDxPopulator.onApplicationEvent(new ApplicationEvent(this) {
+            @Override
+            public Object getSource() {
+                return super.getSource();
+            }
+        });
         return Response.ok().build();
     }
 

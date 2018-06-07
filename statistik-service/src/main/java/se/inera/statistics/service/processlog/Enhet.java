@@ -30,6 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import java.io.Serializable;
 import java.util.Comparator;
 
 @Entity
@@ -38,7 +39,7 @@ import java.util.Comparator;
         @NamedQuery(name = "Enhet.getByVg", query = "SELECT e FROM Enhet e WHERE e.vardgivareId = :vgid"),
         @NamedQuery(name = "Enhet.getByEnhetids", query = "SELECT e FROM Enhet e WHERE e.enhetId IN :enhetids")
 })
-public class Enhet {
+public class Enhet implements Serializable {
 
     public static final String TABLE = "enhet";
 

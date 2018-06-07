@@ -25,5 +25,6 @@
 
     <bean class="se.inera.statistics.service.warehouse.query.DiagnosgruppQuery" />
     <bean class="se.inera.statistics.service.warehouse.SjukfallUtil" />
+    <bean class="se.inera.statistics.service.caching.FakeRedisTemplate"/>
     <bean class="se.inera.statistics.service.caching.Cache" />
 </beans>

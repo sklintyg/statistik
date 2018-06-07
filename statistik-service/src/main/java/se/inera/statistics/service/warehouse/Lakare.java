@@ -20,7 +20,9 @@ package se.inera.statistics.service.warehouse;
 
 import se.inera.statistics.service.report.model.Kon;
 
-public class Lakare {
+import java.io.Serializable;
+
+public class Lakare implements Serializable {
 
     private int id;
     private Kon kon;

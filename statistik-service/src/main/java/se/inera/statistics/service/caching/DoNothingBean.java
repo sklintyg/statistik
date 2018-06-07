@@ -16,28 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.warehouse;
+package se.inera.statistics.service.caching;
 
-import se.inera.statistics.service.report.model.Range;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-
-public class SjukfallGroup implements Serializable {
-    private final Range range;
-    private final Collection<Sjukfall> sjukfall;
-
-    public SjukfallGroup(Range range, Collection<Sjukfall> sjukfall) {
-        this.range = range;
-        this.sjukfall = new ArrayList<>(sjukfall);
-    }
-
-    public Range getRange() {
-        return range;
-    }
-
-    public Collection<Sjukfall> getSjukfall() {
-        return sjukfall;
-    }
+/**
+ * This class is used by spring to make sure there is always an instance of the
+ * bean redisServer, even when the redis server is actually provided externally.
+ */
+public class DoNothingBean {
 }

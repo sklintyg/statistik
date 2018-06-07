@@ -18,7 +18,9 @@
  */
 package se.inera.statistics.service.warehouse;
 
-final class Diagnos {
+import java.io.Serializable;
+
+final class Diagnos implements Serializable {
         private final int diagnoskapitel;
         private final int diagnosavsnitt;
         private final int diagnoskategori;

@@ -1,0 +1,8 @@
+---
+# This playbook provisions the redis server installation for Statistik
+
+- hosts: tomcat
+  become: yes
+  serial: 1
+  roles:
+    - redis-server

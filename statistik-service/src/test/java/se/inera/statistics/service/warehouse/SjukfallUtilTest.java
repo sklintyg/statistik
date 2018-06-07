@@ -19,15 +19,23 @@
 package se.inera.statistics.service.warehouse;
 
 import com.google.common.collect.HashMultiset;
+import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
+import redis.embedded.RedisServer;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.caching.Cache;
+import se.inera.statistics.service.caching.FakeRedisTemplate;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -58,7 +66,7 @@ public class SjukfallUtilTest {
     private SjukfallUtil sjukfallUtil;
 
     @Spy
-    private Cache cache = new Cache();
+    private Cache cache = new Cache(new FakeRedisTemplate(), "1");
 
     private int id = 1;
 
@@ -173,23 +181,6 @@ public class SjukfallUtilTest {
 
         Iterator<SjukfallGroup> actives = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle.createAisle(), createEnhetFilterFromInternalIntValues(ENHET1)).iterator();
         assertEquals(2, actives.next().getSjukfall().size());
-    }
-
-    @Test
-    public void testSjukfallCacheIsWorking() throws Exception {
-        //Given
-        LocalDate monthStart = LocalDate.parse("2015-03-11");
-
-        //When
-        final Iterable<SjukfallGroup> sjukfallGroups1 = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle.createAisle(), SjukfallUtil.ALL_ENHETER);
-        final Iterable<SjukfallGroup> sjukfallGroups2 = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle.createAisle(), SjukfallUtil.ALL_ENHETER);
-        final Iterable<SjukfallGroup> sjukfallGroups3 = sjukfallUtil.sjukfallGrupper(monthStart, 2, 1, aisle.createAisle(), SjukfallUtil.ALL_ENHETER);
-        final Iterable<SjukfallGroup> sjukfallGroups4 = sjukfallUtil.sjukfallGrupper(monthStart, 1, 1, aisle.createAisle(), SjukfallUtil.ALL_ENHETER);
-
-        //Then
-        assertSame(sjukfallGroups1, sjukfallGroups2);
-        assertNotSame(sjukfallGroups1, sjukfallGroups3);
-        assertSame(sjukfallGroups1, sjukfallGroups4);
     }
 
     @Test

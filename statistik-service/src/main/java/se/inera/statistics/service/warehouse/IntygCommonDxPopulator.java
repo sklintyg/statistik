@@ -36,6 +36,7 @@ import se.inera.statistics.service.processlog.IntygFormat;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
+import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -68,7 +69,7 @@ public class IntygCommonDxPopulator implements ApplicationListener<ContextRefres
 
     @Override
     @Transactional
-    public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+    public void onApplicationEvent(@Nonnull ContextRefreshedEvent ignore) {
         LOG.info("Start populate dx in intygcommon");
         final CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
         final CriteriaQuery<IntygCommon> query = criteriaBuilder.createQuery(IntygCommon.class);
