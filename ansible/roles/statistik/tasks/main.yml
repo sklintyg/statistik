@@ -57,13 +57,13 @@
 
 - name: Download statistik-web-{{ version }}.war
   get_url:
-    url: "https://build-inera.nordicmedtest.se/nexus/repository/{{ repo }}/se/inera/statistik/statistik-web/{{ version }}/statistik-web-{{ version }}.war"
+    url: "https://build-inera.nordicmedtest.se/nexus/repository/{{ repo }}/se/inera/statistik/web/{{ version }}/statistik-web-{{ version }}.war"
     dest: "{{ releases_folder }}/statistik-web-{{ version }}.war"
   when: deploy_from_repo|bool
 
 - name: Copy statistik-web-{{ version }}.war from THIS machine
   copy:
-    src: "{{ playbook_dir }}/../statistik-web/build/libs/statistik-web-{{ version }}.war"
+    src: "{{ playbook_dir }}/../web/build/libs/statistik-web-{{ version }}.war"
     dest: "{{ releases_folder }}/statistik-web-{{ version }}.war"
   when: not deploy_from_repo|bool
 

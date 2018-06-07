@@ -112,7 +112,7 @@ dependencies {
     // be explicitly specified further down.
     fitnesse(project(":statistik-web")) { transitive = false }
     fitnesse(project(":statistik-service")) { transitive = false }
-    fitnesse(project(":specifications")) { transitive = false }
+    fitnesse(project(":statistik-test")) { transitive = false }
 
     fitnesse "org.fitnesse:fitnesse:${fitnesseVersion}"
     fitnesse "org.codehaus.groovy:groovy-all:${groovyAllVersion}"

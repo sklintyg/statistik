@@ -14,21 +14,21 @@ fullbuild.out
 bin
 target
 build
-statistik-web/node_modules
-statistik-web/src/main/webapp/bower_components/
-statistik-web/src/main/webapp/app/app.css
-statistik-web/.sass-cache/
+web/node_modules
+web/src/main/webapp/bower_components/
+web/src/main/webapp/app/app.css
+web/.sass-cache/
 *.map
-statistik-web/node
-statistik-web/npm-debug.log
+web/node
+web/npm-debug.log
 generatedSource
 
 catalina.base_IS_UNDEFINED
 statistik-gatling/logs
 statistik-gatling/results
 
-specifications/node_modules
-specifications/reports
-specifications/phantomjsdriver.log
+test/node_modules
+test/reports
+test/phantomjsdriver.log
 RecentChanges.wiki
 out

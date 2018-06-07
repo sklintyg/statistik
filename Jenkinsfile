@@ -52,7 +52,7 @@ stage('fitnesse') {
             shgradle "fitnesseTest -PfileOutput -PoutputFormat=html \
                  -DbaseUrl=https://fitnesse2.inera.nordicmedtest.se/ -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
         } finally {
-            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'specifications/', \
+            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'test/', \
                reportFiles: 'fitnesse-results.html', reportName: 'Fitnesse results'
         }
     }
@@ -61,13 +61,13 @@ stage('fitnesse') {
 stage('protractor') {
     node {
         try {
-            sh(script: 'sed -i -r "s,(e.code === \'ECONNRESET\'),e.code === \'ECONNRESET\' || e.code === \'ETIMEDOUT\'," specifications/node_modules/selenium-webdriver/http/index.js')// NMT magic
+            sh(script: 'sed -i -r "s,(e.code === \'ECONNRESET\'),e.code === \'ECONNRESET\' || e.code === \'ETIMEDOUT\'," test/node_modules/selenium-webdriver/http/index.js')// NMT magic
             wrap([$class: 'Xvfb']) {
                 shgradle "protractorTest -Dprotractor.env=build-server -DbaseUrl=https://fitnesse2.inera.nordicmedtest.se/ \
                       -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
             }
         } finally {
-            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'specifications/reports', \
+            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'test/reports', \
                 reportFiles: 'index.html', reportName: 'Protractor results'
         }
     }

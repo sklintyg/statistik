@@ -63,7 +63,7 @@ allprojects {
     }
 
     // Findbugs does not work very well with groovy code. Hence we exclude groovy projects.
-    ext.findbugsExclude = "(fileservice|.*specifications)\$"
+    ext.findbugsExclude = "(fileservice|.*test)\$"
 
     project.afterEvaluate {
         tasks.withType(FindBugs.class).forEach { task ->
@@ -117,7 +117,7 @@ allprojects {
     }
 }
 
-configure(subprojects.findAll { ['statistik-service', 'statistik-web'].contains(it.name) }) {
+configure(subprojects.findAll { ['statistik-service', 'web'].contains(it.name) }) {
     test {
         exclude '**/*IT*'
     }
