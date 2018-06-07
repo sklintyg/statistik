@@ -139,7 +139,8 @@ public class IntygCommonManager {
     private KonDataResponse getIntygPerType(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter, boolean isTvarsnitt) {
         final List<IntygType> intygTypes = IntygType.getInIntygtypTotal();
         // Create new filter without intygstyper
-        IntygCommonFilter newIntygFilter = new IntygCommonFilter(intygFilter.getRange(), intygFilter.getEnheter(), intygFilter.getDiagnoser(), intygFilter.getAldersgrupp(), null);
+        IntygCommonFilter newIntygFilter = new IntygCommonFilter(intygFilter.getRange(), intygFilter.getEnheter(),
+                intygFilter.getDiagnoser(), intygFilter.getAldersgrupp(), null);
 
         final List<String> names = intygTypes.stream().map(intygType -> {
             //AT2002: FK7263 and LISJP should be combined in one group

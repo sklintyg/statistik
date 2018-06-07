@@ -40,7 +40,13 @@ fitnesse {
         outputFormat = project.findProperty('outputFormat') ?: "xml&includehtml"
     }
 
-    extraProperties = ["statistics.base.url": System.properties['statistics.base.url'] ?: "http://localhost:8080/" ]
+    def baseUrl = 'http://localhost:8080/'
+
+    if (project.hasProperty('runWithIntyg')) {
+        baseUrl = 'http://localhost:9101/'
+    }
+
+    extraProperties = ["statistics.base.url": System.properties['statistics.base.url'] ?: baseUrl ]
 }
 
 if (project.hasProperty('runFitnesse')) {
