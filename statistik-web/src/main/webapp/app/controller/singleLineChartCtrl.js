@@ -285,7 +285,7 @@ angular.module('StatisticsApp').intygPerMonthConfig =
 
         var conf = {};
         conf.filter = {
-            intygstyper: true,
+            intygstyper: false,
             sjukskrivningslangd: false
         };
         conf.dataFetcherVerksamhet = 'getNumberOfIntygPerMonthVerksamhet';

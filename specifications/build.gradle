@@ -13,7 +13,13 @@ node {
 
 task setupIntygForProtractor(dependsOn: 'classes', type: JavaExec) {
 
-    def baseUrl = System.properties['statistics.base.url'] ?: "http://localhost:8080/"
+    def statisticsUrl = 'http://localhost:8080/'
+
+    if (project.hasProperty('runWithIntyg')) {
+        statisticsUrl = 'http://localhost:9101/'
+    }
+
+    def baseUrl = System.properties['statistics.base.url'] ?: statisticsUrl
 
     jvmArgs = ['-Dstatistics.base.url=' + baseUrl]
 
@@ -40,7 +46,13 @@ fitnesse {
         outputFormat = project.findProperty('outputFormat') ?: "xml&includehtml"
     }
 
-    extraProperties = ["statistics.base.url": System.properties['statistics.base.url'] ?: "http://localhost:8080/" ]
+    def baseUrl = 'http://localhost:8080/'
+
+    if (project.hasProperty('runWithIntyg')) {
+        baseUrl = 'http://localhost:9101/'
+    }
+
+    extraProperties = ["statistics.base.url": System.properties['statistics.base.url'] ?: baseUrl ]
 }
 
 if (project.hasProperty('runFitnesse')) {

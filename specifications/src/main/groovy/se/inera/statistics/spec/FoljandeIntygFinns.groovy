@@ -94,7 +94,8 @@ class FoljandeIntygFinns extends FoljandeFinns {
             huvudenhet = enhet;
         }
         def finalIntygDataString = getIntygDataString()
-        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(intygid), System.currentTimeMillis(), län, kommun, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
+        Intyg intyg = new Intyg(EventType.valueOf(händelsetyp), finalIntygDataString, String.valueOf(intygid), System.currentTimeMillis(),
+                län, kommun, huvudenhet, enhetsnamn, vardgivare, enhet, läkare)
         reportsUtil.insertIntyg(intyg)
     }
 
@@ -119,6 +120,8 @@ class FoljandeIntygFinns extends FoljandeFinns {
                 return executeForXmlFormat('/fk7263sit.xml', "fk7263");
             case ~/^(?i)felaktigt.*$/:
                 return executeForIllegalIntygFormat();
+            case ~/^(?i)DB$/:
+                return executeForXmlFormatRegisterMedical('/db.xml', "DB");
             default:
                 throw new RuntimeException("Unknown intyg format requested")
         }
@@ -128,21 +131,18 @@ class FoljandeIntygFinns extends FoljandeFinns {
         return "This intyg will not be possible to parse"
     }
 
-    private String executeForXmlFormatGeneral(String filepath, String defaultIntygstyp) {
-        Node result = handleGeneralSit(filepath, defaultIntygstyp)
+    private String executeForXmlFormatRegisterMedical(String filepath, String defaultIntygstyp) {
+        Node result = handleGeneralRegisterMedical(filepath, defaultIntygstyp)
 
         def builder = groovy.xml.XmlUtil.serialize(result)
         return builder.toString()
     }
 
-    private Node handleGeneralSit(String filepath, String defaultIntygstyp) {
+    private Node handleGeneralRegisterMedical(String filepath, String defaultIntygstyp) {
         def slurper = new XmlParser(false, true)
         String intygString = getClass().getResource(filepath).getText('UTF-8')
         def result = slurper.parseText(intygString)
         def intyg = result.value()[0]
-
-        def svarNodes = findNodes(intyg, "svar")
-        setDx(intyg, svarNodes)
 
         def patientNode = findNode(intyg, "patient")
 
@@ -160,7 +160,26 @@ class FoljandeIntygFinns extends FoljandeFinns {
 
         def skapadAvEnhetVgNode = findNode(skapadAvEnhetNode, "vardgivare")
         setExtension(findNode(skapadAvEnhetVgNode, "vardgivare-id"), vardgivare)
-        result
+
+        return result
+    }
+
+    private String executeForXmlFormatGeneral(String filepath, String defaultIntygstyp) {
+        Node result = handleGeneralSit(filepath, defaultIntygstyp)
+
+        def builder = groovy.xml.XmlUtil.serialize(result)
+        return builder.toString()
+    }
+
+    private Node handleGeneralSit(String filepath, String defaultIntygstyp) {
+        def result = handleGeneralRegisterMedical(filepath, defaultIntygstyp)
+
+        def intyg = result.value()[0]
+
+        def svarNodes = findNodes(intyg, "svar")
+        setDx(intyg, svarNodes)
+
+        return result
     }
 
     private String executeForXmlFormat(String filepath, String defaultIntygstyp) {

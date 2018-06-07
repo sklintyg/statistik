@@ -111,6 +111,10 @@ Vi använder Gradle för att bygga, test, installera och köra intygsstatistik. 
 |../gradlew fitnesseTest|kör fitnesse-tester|[projektrot]/specifications|
 
 ## Köra med intygstjänsten
+Installera active mq
+    
+    brew install activemq
+    
 Starta active mq
 
     activemq console

@@ -43,6 +43,9 @@ public class SchemaValidator {
     @Autowired
     private Fk7263sitValidator fk7263sitValidator;
 
+    @Autowired
+    private DbValidator dbValidator;
+
     public ValidateXmlResponse validate(@Nonnull final String typ, @Nonnull final String data) {
         switch (typ) {
             case "FK7263":
@@ -55,8 +58,10 @@ public class SchemaValidator {
                 return luaeNaValidator.validateSchematron(data);
             case "LUSE":
                 return luseValidator.validateSchematron(data);
+            case "DB":
+                return dbValidator.validateSchematron(data);
             default:
-                return new ValidateXmlResponse("Unknown certificate type");
+                return new ValidateXmlResponse("Unknown certificate type: " + typ);
         }
     }
 

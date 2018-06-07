@@ -21,19 +21,23 @@ package se.inera.statistics.service.warehouse;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public enum IntygType {
 
-    FK7263("fk7263", "FK 7263", "FK 7263 Läkarintyg", true, true, false),
-    LISU(null, "LISU", "LISU", true, true, false),
-    LUSE("luse", "FK 7800", "FK 7800 Läkarutlåtande för sjukersättning", true, false, true),
-    LUAE_NA("luae_na", "FK 7801", "FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga", true, false, true),
-    LUAE_FS("luae_fs", "FK 7802", "FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång", true, false, true),
-    LISJP("lisjp", "FK 7804", "FK 7804 Läkarintyg för sjukpenning", true, true, false),
-    UNKNOWN(null, "Okänt", "Okänt", false, false, false),
-    SJUKPENNING(null, "FK 7263/7804", "FK 7263/7804 Läkarintyg för sjukpenning", false, false, true);
+    FK7263("fk7263", "FK 7263", "FK 7263 Läkarintyg", true, true, false, false),
+    LISU(null, "LISU", "LISU", true, true, false, false),
+    LUSE("luse", "FK 7800", "FK 7800 Läkarutlåtande för sjukersättning", true, false, true, true),
+    LUAE_NA("luae_na", "FK 7801", "FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga", true, false, true, true),
+    LUAE_FS("luae_fs", "FK 7802", "FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång", true, false, true, true),
+    LISJP("lisjp", "FK 7804", "FK 7804 Läkarintyg för sjukpenning", true, true, false, true),
+    UNKNOWN(null, "Okänt", "Okänt", false, false, false, false),
+    SJUKPENNING(null, "FK 7263/7804", "FK 7263/7804 Läkarintyg för sjukpenning", false, false, true, false),
+    DB("db", "Dödsbevis", "Dödsbevis", true, false, false, true),
+    DOI("doi", "Dödsorsaksintyg", "Dödsorsaksintyg", true, false, false, true),
+    TSTRK1007("ts-bas", "TSTRK1007", "TSTRK1007 Transportstyrelsens läkarintyg", true, false, false, true);
 
     private final String itIntygType; //The type name Intygtjansten is using and sends as metadata with all intyg
     private final String text;
@@ -41,15 +45,17 @@ public enum IntygType {
     private final boolean isSupportedIntyg;
     private final boolean isSjukpenningintyg;
     private final boolean includeInIntygtypFilter;
+    private final boolean includeInIntygTotalt;
 
     IntygType(String itIntygType, String shortText, String text, boolean isSupportedIntyg,
-              boolean isSjukpenningintyg, boolean includeInIntygtypFilter) {
+              boolean isSjukpenningintyg, boolean includeInIntygtypFilter, boolean includeInIntygTotalt) {
         this.itIntygType = itIntygType;
         this.text = text;
         this.shortText = shortText;
         this.isSupportedIntyg = isSupportedIntyg;
         this.isSjukpenningintyg = isSjukpenningintyg;
         this.includeInIntygtypFilter = includeInIntygtypFilter;
+        this.includeInIntygTotalt = includeInIntygTotalt;
     }
 
     public String getItIntygType() {
@@ -74,6 +80,10 @@ public enum IntygType {
 
     public boolean isIncludeInIntygtypFilter() {
         return includeInIntygtypFilter;
+    }
+
+    public boolean isIncludeInIntygTotalt() {
+        return includeInIntygTotalt;
     }
 
     public static Optional<IntygType> getByName(String name) {
@@ -127,6 +137,12 @@ public enum IntygType {
     public static Collection<IntygType> getInIntygtypFilter() {
         return Arrays.stream(IntygType.values())
                 .filter(IntygType::isIncludeInIntygtypFilter)
+                .collect(Collectors.toList());
+    }
+
+    public static List<IntygType> getInIntygtypTotal() {
+        return Arrays.stream(IntygType.values())
+                .filter(IntygType::isIncludeInIntygTotalt)
                 .collect(Collectors.toList());
     }
 
