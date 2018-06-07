@@ -121,9 +121,9 @@ class FoljandeIntygFinns extends FoljandeFinns {
             case ~/^(?i)felaktigt.*$/:
                 return executeForIllegalIntygFormat();
             case ~/^(?i)DB$/:
-                return executeForXmlFormatRegisterMedical('/db.xml', "DB");
+                return executeForXmlFormatRegisterCertificate('/db.xml', "DB");
             case ~/^(?i)DOI$/:
-                return executeForXmlFormatRegisterMedical('/doi.xml', "DOI");
+                return executeForXmlFormatRegisterCertificate('/doi.xml', "DOI");
             default:
                 throw new RuntimeException("Unknown intyg format requested")
         }
@@ -133,14 +133,14 @@ class FoljandeIntygFinns extends FoljandeFinns {
         return "This intyg will not be possible to parse"
     }
 
-    private String executeForXmlFormatRegisterMedical(String filepath, String defaultIntygstyp) {
-        Node result = handleGeneralRegisterMedical(filepath, defaultIntygstyp)
+    private String executeForXmlFormatRegisterCertificate(String filepath, String defaultIntygstyp) {
+        Node result = handleGeneralRegisterCertificate(filepath, defaultIntygstyp)
 
         def builder = groovy.xml.XmlUtil.serialize(result)
         return builder.toString()
     }
 
-    private Node handleGeneralRegisterMedical(String filepath, String defaultIntygstyp) {
+    private Node handleGeneralRegisterCertificate(String filepath, String defaultIntygstyp) {
         def slurper = new XmlParser(false, true)
         String intygString = getClass().getResource(filepath).getText('UTF-8')
         def result = slurper.parseText(intygString)
@@ -174,7 +174,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
     }
 
     private Node handleGeneralSit(String filepath, String defaultIntygstyp) {
-        def result = handleGeneralRegisterMedical(filepath, defaultIntygstyp)
+        def result = handleGeneralRegisterCertificate(filepath, defaultIntygstyp)
 
         def intyg = result.value()[0]
 
