@@ -13,7 +13,13 @@ node {
 
 task setupIntygForProtractor(dependsOn: 'classes', type: JavaExec) {
 
-    def baseUrl = System.properties['statistics.base.url'] ?: "http://localhost:8080/"
+    def statisticsUrl = 'http://localhost:8080/'
+
+    if (project.hasProperty('runWithIntyg')) {
+        statisticsUrl = 'http://localhost:9101/'
+    }
+
+    def baseUrl = System.properties['statistics.base.url'] ?: statisticsUrl
 
     jvmArgs = ['-Dstatistics.base.url=' + baseUrl]
 

@@ -501,7 +501,7 @@ angular.module('StatisticsApp').intygPerTypePerMonthConfig =
 
     var conf = {};
     conf.filter = {
-        intygstyper: true,
+        intygstyper: false,
         sjukskrivningslangd: false
     };
     conf.dataFetcher = 'getIntygPerTypePerMonthNationell';
@@ -532,7 +532,7 @@ angular.module('StatisticsApp').intygPerTypePerMonthLandstingConfig =
 
     var conf = {};
     conf.filter = {
-        intygstyper: true,
+        intygstyper: false,
         sjukskrivningslangd: false
     };
     conf.dataFetcher = 'getIntygPerTypePerMonthLandsting';
