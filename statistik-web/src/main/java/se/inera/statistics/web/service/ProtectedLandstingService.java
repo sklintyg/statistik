@@ -20,12 +20,7 @@ package se.inera.statistics.web.service;
 
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -43,8 +38,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -118,12 +111,12 @@ public class ProtectedLandstingService {
 
     private LandstingFileWriter landstingFileWriter = new LandstingFileWriter();
 
-    @POST
-    @Path("fileupload")
-    @Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_HTML })
-    @Consumes({ "multipart/form-data" })
-    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
-    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+//    @POST
+//    @Path("fileupload")
+//    @Produces({ MediaType.APPLICATION_JSON, MediaType.TEXT_HTML })
+//    @Consumes({ "multipart/form-data" })
+//    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
+//    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response fileupload(@Context HttpServletRequest request, MultipartBody body) {
         LoginInfo info = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
@@ -160,11 +153,11 @@ public class ProtectedLandstingService {
         }
     }
 
-    @DELETE
-    @Path("landstingEnhets")
-    @Consumes({ MediaType.WILDCARD })
-    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
-    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+//    @DELETE
+//    @Path("landstingEnhets")
+//    @Consumes({ MediaType.WILDCARD })
+//    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
+//    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response clearLandstingEnhets(@Context HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
@@ -178,11 +171,11 @@ public class ProtectedLandstingService {
         }
     }
 
-    @GET
-    @Path("prepopulatedLandstingFile")
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
-    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+//    @GET
+//    @Path("prepopulatedLandstingFile")
+//    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+//    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
+//    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getPrepopulatedLandstingFile(@Context HttpServletRequest request) {
         final HsaIdVardgivare vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final List<Enhet> enhets = enhetManager.getAllEnhetsForVardgivareId(vardgivarId);
@@ -196,11 +189,11 @@ public class ProtectedLandstingService {
         }
     }
 
-    @GET
-    @Path("emptyLandstingFile")
-    @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
-    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+//    @GET
+//    @Path("emptyLandstingFile")
+//    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+//    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
+//    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getEmptyLandstingFile(@Context HttpServletRequest request) {
         try {
             final ByteArrayOutputStream generatedFile = landstingFileWriter.generateExcelFile(Collections.<Enhet> emptyList());
@@ -212,11 +205,11 @@ public class ProtectedLandstingService {
         }
     }
 
-    @GET
-    @Path("lastUpdateInfo")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
-    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+//    @GET
+//    @Path("lastUpdateInfo")
+//    @Produces({ MediaType.APPLICATION_JSON })
+//    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
+//    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getLastLandstingUpdateInfo(@Context HttpServletRequest request) {
         final HsaIdVardgivare vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final HashMap<String, Object> result = new HashMap<>();
@@ -274,11 +267,11 @@ public class ProtectedLandstingService {
         }
     }
 
-    @GET
-    @Path("getNumberOfCasesPerMonthLandsting")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
-    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+//    @GET
+//    @Path("getNumberOfCasesPerMonthLandsting")
+//    @Produces({ MediaType.APPLICATION_JSON })
+//    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
+//    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getNumberOfCasesPerMonthLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash,
             @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
@@ -288,11 +281,11 @@ public class ProtectedLandstingService {
         return getResponse(data, format, request, Report.L_SJUKFALLTOTALT, getLastLandstingUpdateDate(vgIdForLoggedInUser));
     }
 
-    @GET
-    @Path("getNumberOfCasesPerEnhetLandsting")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
-    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+//    @GET
+//    @Path("getNumberOfCasesPerEnhetLandsting")
+//    @Produces({ MediaType.APPLICATION_JSON })
+//    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
+//    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getNumberOfCasesPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash,
             @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
@@ -314,11 +307,11 @@ public class ProtectedLandstingService {
         return businesses.stream().map(Verksamhet::getId).collect(Collectors.toList());
     }
 
-    @GET
-    @Path("getNumberOfCasesPerPatientsPerEnhetLandsting")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
-    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+//    @GET
+//    @Path("getNumberOfCasesPerPatientsPerEnhetLandsting")
+//    @Produces({ MediaType.APPLICATION_JSON })
+//    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
+//    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getNumberOfCasesPerPatientsPerEnhetLandsting(@Context HttpServletRequest request,
             @QueryParam("landstingfilter") String filterHash, @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
@@ -331,12 +324,12 @@ public class ProtectedLandstingService {
         return getResponse(data, format, request, Report.L_VARDENHETLISTNINGAR, getLastLandstingUpdateDate(vgIdForLoggedInUser));
     }
 
-    @GET
-    @Path("getMeddelandenPerAmneLandsting")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+//    @GET
+//    @Path("getMeddelandenPerAmneLandsting")
+//    @Produces({ MediaType.APPLICATION_JSON })
+//    @Consumes({ MediaType.APPLICATION_JSON })
+//    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+//    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getMeddelandenPerAmneLandsting(@Context HttpServletRequest request,
                                                    @QueryParam("landstingfilter") String filterHash,
                                                    @QueryParam("format") String format) {
@@ -347,12 +340,12 @@ public class ProtectedLandstingService {
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, getLastLandstingUpdateDate(vgIdForLoggedInUser));
     }
 
-    @GET
-    @Path("getMeddelandenPerAmnePerEnhetLandsting")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+//    @GET
+//    @Path("getMeddelandenPerAmnePerEnhetLandsting")
+//    @Produces({ MediaType.APPLICATION_JSON })
+//    @Consumes({ MediaType.APPLICATION_JSON })
+//    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+//    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getMeddelandenPerAmnePerEnhetTvarsnitt(@Context HttpServletRequest request,
                                                            @QueryParam("landstingfilter") String filterHash,
                                                            @QueryParam("format") String format) {
@@ -363,12 +356,12 @@ public class ProtectedLandstingService {
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, getLastLandstingUpdateDate(vgIdForLoggedInUser));
     }
 
-    @GET
-    @Path("getIntygPerTypePerMonthLandsting")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @Consumes({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
-    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+//    @GET
+//    @Path("getIntygPerTypePerMonthLandsting")
+//    @Produces({ MediaType.APPLICATION_JSON })
+//    @Consumes({ MediaType.APPLICATION_JSON })
+//    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+//    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
     public Response getNumberOfIntygPerTypePerMonthLandsting(@Context HttpServletRequest request,
                                                              @QueryParam("landstingfilter") String filterHash,
                                                              @QueryParam("format") String format) {
@@ -379,11 +372,11 @@ public class ProtectedLandstingService {
         return getResponse(result, format, request, Report.V_INTYGPERTYP, getLastLandstingUpdateDate(vg));
     }
 
-    @GET
-    @Path("landstingFilterInfo")
-    @Produces({ MediaType.APPLICATION_JSON })
-    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
-    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+//    @GET
+//    @Path("landstingFilterInfo")
+//    @Produces({ MediaType.APPLICATION_JSON })
+//    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
+//    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
     public Response getLandstingFilterInfo(@Context HttpServletRequest request) {
         List<Verksamhet> businesses = filterHandler.getAllVerksamhetsForLoggedInLandstingsUser(request);
         final Map<String, Object> result = new HashMap<>();

@@ -26,7 +26,7 @@ var pages = testfw.pages;
 var features = testfw.features;
 var navmenu = pages.navmenu;
 
-describe('Navigering landsting: ', function() {
+xdescribe('Navigering landsting: ', function() {
 
     beforeAll(function() {
         browser.get('/');

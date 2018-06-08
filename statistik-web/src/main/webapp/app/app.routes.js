@@ -356,48 +356,56 @@ var app = angular.module('StatisticsApp')
                 resolve: { config: app.intygPerTypeTvarsnittConfig },
                 title: 'title.intygstyp'
             }).when('/landsting/filuppladdning', {
-                templateUrl: '/app/views/landsting/fileupload.html',
-                controller: 'landstingFileUploadCtrl',
+                templateUrl: '/app/views/error/landstingReportsNotAvailable.html',
+                // templateUrl: '/app/views/landsting/fileupload.html',
+                // controller: 'landstingFileUploadCtrl',
                 controllerAs: 'LandstingFileUploadCtrl',
                 title: 'Filuppladdning'
             }).when('/landsting/sjukfallPerManad', {
-                templateUrl: '/app/views/detailsView.html',
-                controller: 'singleLineChartCtrl',
+                templateUrl: '/app/views/error/landstingReportsNotAvailable.html',
+                // templateUrl: '/app/views/detailsView.html',
+                // controller: 'singleLineChartCtrl',
                 controllerAs: 'LandstingCasesPerMonthCtrl',
-                resolve: { config: app.casesPerMonthConfig },
+                // resolve: { config: app.casesPerMonthConfig },
                 title: 'nav.sjukfall-totalt'
             }).when('/landsting/sjukfallPerEnhet', {
-                templateUrl: '/app/views/detailsView.html',
-                controller: 'columnChartDetailsViewCtrl',
+                templateUrl: '/app/views/error/landstingReportsNotAvailable.html',
+                // templateUrl: '/app/views/detailsView.html',
+                // controller: 'columnChartDetailsViewCtrl',
                 controllerAs: 'LandstingCasesPerBusinessCtrl',
-                resolve: { config: app.casesPerBusinessConfig },
+                // resolve: { config: app.casesPerBusinessConfig },
                 title: 'nav.vardenhet'
             }).when('/landsting/sjukfallPerListningarPerEnhet', {
-                templateUrl: '/app/views/detailsView.html',
-                controller: 'columnChartDetailsViewCtrl',
+                templateUrl: '/app/views/error/landstingReportsNotAvailable.html',
+                // templateUrl: '/app/views/detailsView.html',
+                // controller: 'columnChartDetailsViewCtrl',
                 controllerAs: 'LandstingCasesPerPatientsPerBusinessCtrl',
-                resolve: { config: app.casesPerPatientsPerBusinessConfig },
+                // resolve: { config: app.casesPerPatientsPerBusinessConfig },
                 title: 'nav.landsting.listningsjamforelse'
             }).when('/landsting/meddelandenPerAmne', {
-                templateUrl: '/app/views/detailsView.html',
-                controller: 'doubleAreaChartsCtrl',
+                templateUrl: '/app/views/error/landstingReportsNotAvailable.html',
+                // templateUrl: '/app/views/detailsView.html',
+                // controller: 'doubleAreaChartsCtrl',
                 controllerAs: 'LandstingMeddelandenPerAmneCtrl',
-                resolve: { config: app.meddelandenPerAmneLandstingConfig },
+                // resolve: { config: app.meddelandenPerAmneLandstingConfig },
                 title: 'nav.meddelandenperamne'
             }).when('/landsting/meddelandenPerAmneOchEnhet', {
-                templateUrl: '/app/views/detailsView.html',
-                controller: 'columnChartDetailsViewCtrl',
+                templateUrl: '/app/views/error/landstingReportsNotAvailable.html',
+                // templateUrl: '/app/views/detailsView.html',
+                // controller: 'columnChartDetailsViewCtrl',
                 controllerAs: 'LandstingMeddelandenPerAmneOchEnhetCtrl',
-                resolve: { config: app.meddelandenPerAmneOchEnhetLandstingConfig },
+                // resolve: { config: app.meddelandenPerAmneOchEnhetLandstingConfig },
                 title: 'nav.meddelandenperamneochenhet'
             }).when('/landsting/intygPerTyp', {
-                templateUrl: '/app/views/detailsView.html',
-                controller: 'doubleAreaChartsCtrl',
+                templateUrl: '/app/views/error/landstingReportsNotAvailable.html',
+                // templateUrl: '/app/views/detailsView.html',
+                // controller: 'doubleAreaChartsCtrl',
                 controllerAs: 'LandstingIntygPerTypCtrl',
-                resolve: { config: app.intygPerTypePerMonthLandstingConfig },
+                // resolve: { config: app.intygPerTypePerMonthLandstingConfig },
                 title: 'title.intygstyp'
             }).when('/landsting/om', {
-                templateUrl: '/app/views/landsting/aboutlandsting.html',
+                templateUrl: '/app/views/error/landstingReportsNotAvailable.html',
+                // templateUrl: '/app/views/landsting/aboutlandsting.html',
                 controllerAs: 'LandstingAboutCtrl',
                 title: 'Om Landstingsstatistik'
             }).when('/om/tjansten', {
