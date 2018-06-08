@@ -30,7 +30,9 @@ public enum IntygFormat {
      */
     REGISTER_CERTIFICATE(1),
 
-    REGISTER_TS_BAS(2);
+    REGISTER_TS_BAS(2),
+
+    REGISTER_TS_DIABETES(3);
 
     private final int intValue;
 

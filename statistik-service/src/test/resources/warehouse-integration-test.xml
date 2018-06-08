@@ -45,6 +45,7 @@
     <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
     <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper"/>
     <bean class="se.inera.statistics.service.helper.TsBasHelper"/>
+    <bean class="se.inera.statistics.service.helper.TsDiabetesHelper"/>
     <bean class="se.inera.statistics.service.helper.SendMessageToCareHelper"/>
 
     <bean id="dataGenerator" class="se.inera.statistics.service.demo.LargeTestDataGenerator" />

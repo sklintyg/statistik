@@ -123,7 +123,7 @@ public class IntygCommonDxPopulator implements ApplicationListener<ContextRefres
     private String getDxRegisterCertificate(IntygEvent event) {
         try {
             final String data = event.getData();
-            final RegisterCertificateType rc = registerCertificateHelper.unmarshalRegisterCertificateXml(data);
+            final RegisterCertificateType rc = registerCertificateHelper.unmarshalXml(data);
             IntygDTO dto = registerCertificateHelper.convertToDTO(rc);
             return intygCommonConverter.parseDiagnos(dto.getDiagnoskod());
         } catch (Exception e) {

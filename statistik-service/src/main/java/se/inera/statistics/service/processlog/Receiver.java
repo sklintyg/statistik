@@ -78,7 +78,7 @@ public class Receiver  {
 
     private void hsaForXml(String documentId, String data) {
         try {
-            final RegisterCertificateType utlatande = registerCertificateHelper.unmarshalRegisterCertificateXml(data);
+            final RegisterCertificateType utlatande = registerCertificateHelper.unmarshalXml(data);
             hsaDecorator.populateHsaData(utlatande, documentId);
         } catch (Exception e) {
             LOG.error("Failed decorating xml intyg {}: '{}'", documentId, e.getMessage());

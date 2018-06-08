@@ -96,6 +96,10 @@ public class IntygEvent {
             return IntygFormat.REGISTER_TS_BAS;
         }
 
+        if (intyg.matches("(?s)^.*<[^>]*RegisterTSDiabetes.*>.*$")) {
+            return IntygFormat.REGISTER_TS_DIABETES;
+        }
+
         return IntygFormat.REGISTER_MEDICAL_CERTIFICATE;
     }
 
