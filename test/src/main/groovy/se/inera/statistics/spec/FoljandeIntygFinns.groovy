@@ -125,7 +125,9 @@ class FoljandeIntygFinns extends FoljandeFinns {
             case ~/^(?i)DOI$/:
                 return executeForXmlFormatRegisterCertificate('/doi.xml', "DOI");
             case ~/^(?i)TSTRK1007$/:
-                return executeForXmlFormatTsBas('/tstrk1007.xml', "TSTRK1007");
+                return executeForXmlFormatTS('/tstrk1007.xml', "TSTRK1007");
+            case ~/^(?i)TSTRK1031$/:
+                return executeForXmlFormatTS('/tstrk1031.xml', "TSTRK1031");
             default:
                 throw new RuntimeException("Unknown intyg format requested")
         }
@@ -149,7 +151,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
         return builder.toString()
     }
 
-    private String executeForXmlFormatTsBas(String filepath, String defaultIntygstyp) {
+    private String executeForXmlFormatTS(String filepath, String defaultIntygstyp) {
         Node result = readXmlFormat(filepath)
         def intyg = result.value()[0]
 
