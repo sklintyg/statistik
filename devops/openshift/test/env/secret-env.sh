@@ -15,10 +15,11 @@ export REDIS_PASSWORD=${REDIS_PASSWORD-redis}
 export REDIS_PORT=$REDIS_SERVICE_PORT
 export REDIS_HOST=$REDIS_SERVICE_HOST
 
-export SPRING_PROFILES_ACTIVE="test,security-fake,hsa-stub,active,testapi"
+export SPRING_PROFILES_ACTIVE="dev,testapi,hsa-stub,security-fake,active"
 
 export CATALINA_OPTS_APPEND="\
 -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5008 \
+-Dspring.profiles.active=${SPRING_PROFILES_ACTIVE} \
 -Dstatistics.config.folder=/opt/$APP_NAME/config \
 -Dstatistics.config.file=/opt/$APP_NAME/config/statistik.properties \
 -Dcertificate.folder=/opt/$APP_NAME/env \
