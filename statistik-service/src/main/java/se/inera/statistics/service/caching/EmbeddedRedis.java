@@ -19,56 +19,36 @@
 package se.inera.statistics.service.caching;
 
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import redis.embedded.RedisServer;
+import redis.embedded.exceptions.EmbeddedRedisException;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-
-public class EmbeddedRedis {
+public class EmbeddedRedis extends RedisServer {
 
     private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(EmbeddedRedis.class);
-    private RedisServer redisServer;
 
-    @Value("${redis.port:6379}")
-    private String port;
+    public EmbeddedRedis(int port) {
+        super(port);
+    }
 
-    @PostConstruct
-    public void init() {
+    @Override
+    public synchronized void start() throws EmbeddedRedisException {
         LOG.info("Starting embedded Redis");
         try {
-            redisServer = new RedisServer(getPort());
-            redisServer.start();
+            super.start();
         } catch (Exception e) {
             LOG.warn("Failed to start embedded Redis. Is it already started?");
         }
     }
 
-    @PreDestroy
-    public void destroy() {
+    @Override
+    public synchronized void stop() throws EmbeddedRedisException {
         LOG.info("Stopping embedded Redis");
         try {
-            redisServer.stop();
+            super.stop();
+            LOG.info("Embedded Redis stopped");
         } catch (Exception e) {
             LOG.warn("Failed to stop embedded Redis. Is it already stopped?");
         }
-        while (redisServer.isActive()) {
-            try {
-                final long sleepTime = 100L;
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                LOG.warn("Sleep interrupted...");
-            }
-        }
-        LOG.info("Embedded Redis stopped");
-    }
-
-    public String getHost() {
-        return "localhost";
-    }
-
-    public int getPort() {
-        return Integer.valueOf(port);
     }
 
 }
