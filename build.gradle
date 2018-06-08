@@ -40,7 +40,7 @@ ext {
     schematronVersion = "4.1.0"
     slf4jVersion = "1.7.21"
     springContextVersion = "4.2.2.RELEASE"
-    springSecuritySamlVersion = "1.0.1.RELEASE"
+    springSecuritySamlVersion = "1.0.3.RELEASE"
     springSecurityVersion = "4.0.3.RELEASE"
     stringTemplateVersion = "4.0.8"
     tomcatVersion = "7.0.57"
