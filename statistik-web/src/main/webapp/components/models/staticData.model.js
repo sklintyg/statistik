@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-angular.module('StatisticsApp').factory('StaticFilterData',
+angular.module('StatisticsApp').factory('StaticData',
     /** @ngInject */
     function($filter, _) {
         'use strict';

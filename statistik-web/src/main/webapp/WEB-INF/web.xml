@@ -46,7 +46,7 @@
       <url-pattern>/api/getCountyStatistics</url-pattern>
       <url-pattern>/api/getSjukfallPerSexStatistics</url-pattern>
       <url-pattern>/api/getIcd10Structure</url-pattern>
-      <url-pattern>/api/login/getStaticFilterData</url-pattern>
+      <url-pattern>/api/login/getStaticData</url-pattern>
     </filter-mapping>
 
     <!-- Map cache filter to all static resources -->

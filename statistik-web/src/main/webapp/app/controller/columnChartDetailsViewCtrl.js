@@ -21,7 +21,7 @@
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $routeParams, $window, $location, $timeout, $filter, statisticsData,
-        config, messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState, StaticFilterDataService) {
+        config, messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState, StaticDataService) {
         'use strict';
 
         function ensureHighchartTypeIsSet(config) {
@@ -160,7 +160,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         };
 
         function refreshVerksamhet() {
-            StaticFilterDataService.get().then(function() {
+            StaticDataService.get().then(function() {
                 statisticsData[config.dataFetcherVerksamhet](
                     populatePageWithData,
                     function () {

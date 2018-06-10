@@ -22,25 +22,25 @@ angular.module('StatisticsApp.filterFactory.factory', []);
 angular.module('StatisticsApp.filterFactory.factory')
     .factory('businessFilterFactory',
         /** @ngInject */
-        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper, ArrayHelper) {
+        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticDataService, StaticData, ControllerCommons, $q, ObjectHelper, ArrayHelper) {
             'use strict';
 
-            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper, ArrayHelper);
+            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticDataService, StaticData, ControllerCommons, $q, ObjectHelper, ArrayHelper);
         }
     );
 
 angular.module('StatisticsApp.filterFactory.factory')
     .factory('landstingFilterFactory',
         /** @ngInject */
-        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper, ArrayHelper) {
+        function (statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticDataService, StaticData, ControllerCommons, $q, ObjectHelper, ArrayHelper) {
             'use strict';
 
-            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper, ArrayHelper);
+            return createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticDataService, StaticData, ControllerCommons, $q, ObjectHelper, ArrayHelper);
         }
     );
 
 
-function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticFilterDataService, StaticFilterData, ControllerCommons, $q, ObjectHelper, ArrayHelper) {
+function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, AppModel, StaticDataService, StaticData, ControllerCommons, $q, ObjectHelper, ArrayHelper) {
     'use strict';
 
     var loadingFilter = false;
@@ -170,7 +170,7 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     }
 
     businessFilter.populateIcd10Structure = function() {
-        businessFilter.setIcd10Structure(StaticFilterData.get().icd10Structure);
+        businessFilter.setIcd10Structure(StaticData.get().icd10Structure);
     };
 
     businessFilter.selectPreselectedFilter = function(preSelectedFilter) {
@@ -213,18 +213,18 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
         return deferred.promise;
     }
 
-    function populateStaticFilterData() {
+    function populateStaticData() {
         if (businessFilter.icd10.subs.length > 0) {
             var deferred = $q.defer();
             deferred.resolve(true);
             return deferred.promise;
         } else {
-            return StaticFilterDataService.get();
+            return StaticDataService.get();
         }
     }
 
     businessFilter.setup = function (businesses, preSelectedFilter) {
-        populateStaticFilterData().then(function() {
+        populateStaticData().then(function() {
             businessFilter.businesses = businesses;
             if (businessFilter.showBusinessFilter()) {
                 businessFilter.populateGeography(businesses);
@@ -280,15 +280,15 @@ function createBusinessFilter(statisticsData, _, treeMultiSelectorUtil, moment, 
     };
 
     businessFilter.populateSjukskrivningsLangd = function() {
-        businessFilter.sjukskrivningslangd = StaticFilterData.get().sjukskrivningLengths;
+        businessFilter.sjukskrivningslangd = StaticData.get().sjukskrivningLengths;
     };
 
     businessFilter.populateIntygstyper = function() {
-        businessFilter.intygstyper = StaticFilterData.get().intygTypes;
+        businessFilter.intygstyper = StaticData.get().intygTypes;
     };
 
     businessFilter.populateAldersgrupp = function() {
-        businessFilter.aldersgrupp = StaticFilterData.get().aldersgrupps;
+        businessFilter.aldersgrupp = StaticData.get().aldersgrupps;
     };
 
     businessFilter.populateVerksamhetsTyper = function (businesses) {

@@ -20,7 +20,7 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').factory('chartFactory',
     /** @ngInject */
-    function(COLORS, CATEGORY_TO_HIDE, _, ControllerCommons, $window, $filter, $log, StaticFilterData) {
+    function(COLORS, CATEGORY_TO_HIDE, _, ControllerCommons, $window, $filter, $log, StaticData) {
     'use strict';
 
         var labelFormatter = function(maxWidth, sameLengthOnAll) {
@@ -460,7 +460,7 @@ angular.module('StatisticsApp').factory('chartFactory',
 
         var addCategoryIntygTooltip = function(categories) {
 
-            var tooltips = StaticFilterData.get().intygTooltips;
+            var tooltips = StaticData.get().intygTooltips;
 
             return _.map(categories, function(category) {
                 var name = tooltips[category.name];

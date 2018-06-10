@@ -20,7 +20,7 @@
 angular.module('StatisticsApp')
     .factory('diagnosisTreeFilter',
         /** @ngInject */
-        function (statisticsData, _, treeMultiSelectorUtil, StaticFilterData, StaticFilterDataService) {
+        function (statisticsData, _, treeMultiSelectorUtil, StaticData, StaticDataService) {
             'use strict';
 
             var diagnosisTreeFilter = {};
@@ -122,8 +122,8 @@ angular.module('StatisticsApp')
             };
 
             var firstTimeInitiationOfDiagnosisTree = function(diagnosHash) {
-                StaticFilterDataService.get().then(function() {
-                    var diagnosisTree = StaticFilterData.get().icd10Structure;
+                StaticDataService.get().then(function() {
+                    var diagnosisTree = StaticData.get().icd10Structure;
                     diagnosisTreeFilter.diagnosisOptionsTree = {subs: diagnosisTree};
 
                     //If we do have a filter hash already then we very much want to apply it.

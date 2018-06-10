@@ -38,7 +38,7 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
-import se.inera.statistics.web.model.StaticFilterData;
+import se.inera.statistics.web.model.StaticData;
 import se.inera.statistics.web.util.VersionUtil;
 
 import java.util.Arrays;
@@ -82,11 +82,11 @@ public class LoginServiceUtilTest {
     @Test
     public void testGetSettings() throws Exception {
         // When
-        final StaticFilterData staticFilterData = loginServiceUtil.getStaticFilterData();
+        final StaticData staticData = loginServiceUtil.getStaticData();
 
         // Then
-        assertEquals(7, staticFilterData.getSjukskrivningLengths().size());
-        assertEquals("Under 15 dagar", staticFilterData.getSjukskrivningLengths().get("GROUP1_0TO14"));
+        assertEquals(7, staticData.getSjukskrivningLengths().size());
+        assertEquals("Under 15 dagar", staticData.getSjukskrivningLengths().get("GROUP1_0TO14"));
     }
 
     @Test

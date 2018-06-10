@@ -20,7 +20,7 @@
 
 angular.module('StatisticsApp').factory('ControllerCommons',
     /** @ngInject */
-    function(_, $cacheFactory, UserModel, $filter, $route, StaticFilterData, StaticFilterDataService) {
+    function(_, $cacheFactory, UserModel, $filter, $route, StaticData, StaticDataService) {
         'use strict';
 
         var that = this;
@@ -75,8 +75,8 @@ angular.module('StatisticsApp').factory('ControllerCommons',
                 scope.activeDiagnosFilters = null;
                 return;
             }
-            StaticFilterDataService.get().then(function() {
-                var dxsTexts = StaticFilterData.getDiagnosFilterInformationText(diagnosIds);
+            StaticDataService.get().then(function() {
+                var dxsTexts = StaticData.getDiagnosFilterInformationText(diagnosIds);
                 var foundInfoTextForAllDxs = dxsTexts && diagnosIds && dxsTexts.length === diagnosIds.length;
                 scope.activeDiagnosFilters = foundInfoTextForAllDxs ? dxsTexts : diagnosIds;
             });

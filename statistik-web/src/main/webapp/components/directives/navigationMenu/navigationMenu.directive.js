@@ -37,12 +37,12 @@
         }]);
 
     /** @ngInject */
-    function NavigationMenuCtrl($rootScope, $scope, $location, AppModel, UserModel, StaticFilterData, _, ControllerCommons, navigationViewState) {
+    function NavigationMenuCtrl($rootScope, $scope, $location, AppModel, UserModel, StaticData, _, ControllerCommons, navigationViewState) {
         $scope.mobile = $scope.isMobile;
         $scope.menus = [];
         $scope.AppModel = AppModel;
         $scope.UserModel = UserModel;
-        $scope.StaticFilterData = StaticFilterData;
+        $scope.StaticData = StaticData;
         $scope.isLoggedIn = AppModel.get().isLoggedIn;
         $scope.isCollapsed = true;
         $scope.isMenuOpen = false;

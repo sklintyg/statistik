@@ -35,7 +35,7 @@ describe('Tests for directive button-filter', function () {
 
     beforeEach(module(function ($provide) {
         var mockStatistics = {
-            getStaticFilterData: function () {
+            getStaticData: function () {
             },
             getFilterHash: function () {
                 return {

@@ -20,13 +20,12 @@
 describe('Test of diagnosisTreeFilter', function() {
     'use strict';
 
-    var diagnosisTreeFilter, StaticFilterData;
+    var diagnosisTreeFilter;
 
     beforeEach(module('StatisticsApp'));
 
-    beforeEach(inject(function(_diagnosisTreeFilter_, _StaticFilterData_) {
+    beforeEach(inject(function(_diagnosisTreeFilter_) {
         diagnosisTreeFilter = _diagnosisTreeFilter_;
-        StaticFilterData = _StaticFilterData_;
     }));
 
     describe('selectAll', function () {

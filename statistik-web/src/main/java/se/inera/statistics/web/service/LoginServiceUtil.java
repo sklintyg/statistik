@@ -60,7 +60,7 @@ import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
-import se.inera.statistics.web.model.StaticFilterData;
+import se.inera.statistics.web.model.StaticData;
 import se.inera.statistics.web.model.UserAccessInfo;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.util.VersionUtil;
@@ -224,7 +224,7 @@ public class LoginServiceUtil {
         return settings;
     }
 
-    StaticFilterData getStaticFilterData() {
+    StaticData getStaticData() {
         final Map<String, String> sjukskrivningLengths = Arrays
                 .stream(SjukfallsLangdGroup.values())
                 .collect(toMap(Enum::name, SjukfallsLangdGroup::getGroupName));
@@ -237,7 +237,7 @@ public class LoginServiceUtil {
                 .collect(toMap(IntygType::getText, IntygType::getShortText));
 
         final List<Icd> icdStructure = icd10.getIcdStructure();
-        return new StaticFilterData(sjukskrivningLengths, ageGroups, intygTypes, intygTypeTooltips, icdStructure);
+        return new StaticData(sjukskrivningLengths, ageGroups, intygTypes, intygTypeTooltips, icdStructure);
     }
 
     UserAccessInfo getUserAccessInfoForVg(HttpServletRequest request, HsaIdVardgivare vgId) {

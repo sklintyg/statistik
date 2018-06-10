@@ -8,7 +8,7 @@ describe('Controller: TreeMultiSelectorModalCtrl', function() {
     beforeEach(function() {
         angular.mock.module(function ($provide) {
                 var mockStatistics = {
-                    getStaticFilterData: function () {
+                    getStaticData: function () {
                     }
                 };
                 $provide.value('statisticsData', mockStatistics);
@@ -495,10 +495,10 @@ describe('Controller: TreeMultiSelectorModalCtrl', function() {
         expect(diagnoser).toContain(D50D89.numericalId);
     }));
 
-    it('deselect all kategorier below unselected avsnitt', inject(function (businessFilterFactory, StaticFilterData) {
+    it('deselect all kategorier below unselected avsnitt', inject(function (businessFilterFactory, StaticData) {
         // Given
-        StaticFilterData.set({dxs: diagnoses});
-        businessFilterFactory.setIcd10Structure(StaticFilterData.get().icd10Structure);
+        StaticData.set({dxs: diagnoses});
+        businessFilterFactory.setIcd10Structure(StaticData.get().icd10Structure);
         businessFilterFactory.dataInitialized = true;
         directiveScope.menuOptions = businessFilterFactory.icd10;
         businessFilterFactory.selectAll(businessFilterFactory.icd10);
@@ -514,10 +514,10 @@ describe('Controller: TreeMultiSelectorModalCtrl', function() {
         expect(diagnoser).toContain(D50D89.numericalId);
     }));
 
-    it('report selected kategoris', inject(function (businessFilterFactory, StaticFilterData) {
+    it('report selected kategoris', inject(function (businessFilterFactory, StaticData) {
         // Given
-        StaticFilterData.set({dxs: diagnoses});
-        businessFilterFactory.setIcd10Structure(StaticFilterData.get().icd10Structure);
+        StaticData.set({dxs: diagnoses});
+        businessFilterFactory.setIcd10Structure(StaticData.get().icd10Structure);
         businessFilterFactory.dataInitialized = true;
         directiveScope.menuOptions = businessFilterFactory.icd10;
         businessFilterFactory.selectAll(businessFilterFactory.icd10);
@@ -553,9 +553,9 @@ describe('Controller: TreeMultiSelectorModalCtrl', function() {
         expect(scope.selectedQuaternaryCounter).toBe(0);
     }));
 
-    it('should only count nodes which are marked as allSelected', inject(function (businessFilterFactory, StaticFilterData) {
-        StaticFilterData.set({dxs: diagnoses});
-        businessFilterFactory.setIcd10Structure(StaticFilterData.get().icd10Structure);
+    it('should only count nodes which are marked as allSelected', inject(function (businessFilterFactory, StaticData) {
+        StaticData.set({dxs: diagnoses});
+        businessFilterFactory.setIcd10Structure(StaticData.get().icd10Structure);
         businessFilterFactory.dataInitialized = true;
         directiveScope.menuOptions = businessFilterFactory.icd10;
 

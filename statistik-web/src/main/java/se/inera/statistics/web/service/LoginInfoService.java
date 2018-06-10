@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
-import se.inera.statistics.web.model.StaticFilterData;
+import se.inera.statistics.web.model.StaticData;
 import se.inera.statistics.web.model.UserAccessInfo;
 
 @Service("loginService")
@@ -70,11 +70,11 @@ public class LoginInfoService {
     }
 
     @GET
-    @Path("getStaticFilterData")
+    @Path("getStaticData")
     @Produces({ MediaType.APPLICATION_JSON })
-    public StaticFilterData getStaticFilterData() {
-        LOG.info("Calling getStaticFilterData");
-        return loginServiceUtil.getStaticFilterData();
+    public StaticData getStaticData() {
+        LOG.info("Calling getStaticData");
+        return loginServiceUtil.getStaticData();
     }
 
 }

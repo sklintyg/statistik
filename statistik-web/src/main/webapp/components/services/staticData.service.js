@@ -18,9 +18,9 @@
  */
 
 
-angular.module('StatisticsApp').factory('StaticFilterDataService',
+angular.module('StatisticsApp').factory('StaticDataService',
     /** @ngInject */
-    function($http, $log, $q, StaticFilterData, statisticsData) {
+    function($http, $log, $q, StaticData, statisticsData) {
         'use strict';
 
         var promise = null;
@@ -30,7 +30,7 @@ angular.module('StatisticsApp').factory('StaticFilterDataService',
                 promise = $q.defer();
 
                 var successCallback = function(data) {
-                    StaticFilterData.set(data);
+                    StaticData.set(data);
                     promise.resolve(data);
                 };
                 var failureCallback = function(data, status) {
@@ -42,7 +42,7 @@ angular.module('StatisticsApp').factory('StaticFilterDataService',
                         promise.reject(data);
                     }
                 };
-                statisticsData.getStaticFilterData(successCallback, failureCallback);
+                statisticsData.getStaticData(successCallback, failureCallback);
             }
 
             return promise.promise;

@@ -20,7 +20,7 @@
 angular.module('StatisticsApp')
     .directive('filterActiveSelection',
     /** @ngInject */
-    function(StaticFilterData, _, $uibModal, moment) {
+    function(StaticData, _, $uibModal, moment) {
         'use strict';
         return {
             scope: {
@@ -98,7 +98,7 @@ angular.module('StatisticsApp')
                 function diagnosFilter() {
                     var filter = $scope.businessFilter.diagnoserSaved;
 
-                    filter = StaticFilterData.getDiagnosFilterInformationText(filter, true);
+                    filter = StaticData.getDiagnosFilterInformationText(filter, true);
 
                     var diagnoser = [];
                     _.each(filter, function(diagnos) {
@@ -119,7 +119,7 @@ angular.module('StatisticsApp')
                     _.each(filter, function(sjukskrivningslangd) {
                         sjukskrivningslangder.push({
                             id: sjukskrivningslangd,
-                            text: StaticFilterData.get().sjukskrivningLengthsObject[sjukskrivningslangd]
+                            text: StaticData.get().sjukskrivningLengthsObject[sjukskrivningslangd]
                         });
                     });
 
@@ -134,7 +134,7 @@ angular.module('StatisticsApp')
                     _.each(filter, function(aldersGrupp) {
                         aldersgrupper.push({
                             id: aldersGrupp,
-                            text: StaticFilterData.get().ageGroups[aldersGrupp]
+                            text: StaticData.get().ageGroups[aldersGrupp]
                         });
                     });
 
@@ -149,7 +149,7 @@ angular.module('StatisticsApp')
                     _.each(filter, function(intygstyp) {
                         intygstyper.push({
                             id: intygstyp,
-                            text: StaticFilterData.get().intygTypesObject[intygstyp]
+                            text: StaticData.get().intygTypesObject[intygstyp]
                         });
                     });
 
