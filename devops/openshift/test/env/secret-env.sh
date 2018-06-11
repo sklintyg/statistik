@@ -15,6 +15,9 @@ export REDIS_PASSWORD=${REDIS_PASSWORD-redis}
 export REDIS_PORT=$REDIS_SERVICE_PORT
 export REDIS_HOST=$REDIS_SERVICE_HOST
 
+export LANG=en_US.UTF-8
+export LC_CTYPE=$LANG
+
 export SPRING_PROFILES_ACTIVE="dev,testapi,hsa-stub,wc-hsa-stub,security-fake,active,hsacached"
 
 export CATALINA_OPTS_APPEND="\
@@ -23,5 +26,6 @@ export CATALINA_OPTS_APPEND="\
 -Dstatistics.config.file=/opt/$APP_NAME/config/statistik.properties \
 -Dcertificate.folder=/opt/$APP_NAME/env \
 -Dstatistics.credentials.file=/opt/$APP_NAME/env/secret-env.properties \
--Dstatistics.resources.folder=/tmp/resources
+-Dstatistics.resources.folder=/tmp/resources \
+-Dfile.encoding=UTF-8 \
 -DbaseUrl=http://${APP_NAME}:8080"
