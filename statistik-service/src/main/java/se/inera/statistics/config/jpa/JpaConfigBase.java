@@ -70,7 +70,7 @@ public abstract class JpaConfigBase {
         jpaProperties.put("hibernate.show_sql", hibernateShowSql);
         jpaProperties.put("hibernate.format_sql", hibernateFormatSql);
         jpaProperties.put("hibernate.id.new_generator_mappings", false);
-        jpaProperties.put("hibernate.enable_lazy_load_no_trans", true);
+        jpaProperties.put("hibernate.enable_lazy_load_no_trans", false);
         entityManagerFactoryBean.setJpaProperties(jpaProperties);
 
         return entityManagerFactoryBean;

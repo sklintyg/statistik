@@ -68,6 +68,10 @@ class ReportsUtil {
             jsonp.parse(resp.entity.content)
         }
 
+        client.parser[MediaType.TEXT_HTML] = { HttpResponseDecorator resp ->
+            resp.entity.content.text
+        }
+
         return client
     }
 
