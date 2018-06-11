@@ -100,6 +100,9 @@ public abstract class JpaConfigBase {
         dataSourceConfig.setJdbcUrl(databaseUrl);
         dataSourceConfig.setUsername(databaseUsername);
         dataSourceConfig.setPassword(databasePassword);
+        dataSourceConfig.setAutoCommit(false);
+        dataSourceConfig.setConnectionTestQuery("SELECT 1");
+        dataSourceConfig.setMaximumPoolSize(20);
         return new HikariDataSource(dataSourceConfig);
     }
 
