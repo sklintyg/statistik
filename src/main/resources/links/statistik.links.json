@@ -88,5 +88,11 @@
     "url": "https://www.inera.se/kundservice/dokument-och-lankar/tjanster/intygsstatistik-dokument/",
     "text": "Instruktioner",
     "target": "_blank"
+  },
+  {
+    "key": "ineraStatistk",
+    "url": "https://www.inera.se/tjanster/intygstjanster/intygsstatistik/",
+    "text": "inera.se",
+    "target": "_blank"
   }
 ]
