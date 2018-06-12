@@ -29,9 +29,10 @@ dependencies {
     compile "org.liquibase:liquibase-core:${liquibaseVersion}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
     compile "com.helger:ph-schematron:${schematronVersion}"
-    compile 'redis.clients:jedis:2.9.0'
-    compile 'it.ozimov:embedded-redis:0.7.2'
-    compile 'org.springframework.data:spring-data-redis:2.0.7.RELEASE'
+    compile "net.javacrumbs.shedlock:shedlock-spring:${shedlockSpringVersion}"
+    compile "net.javacrumbs.shedlock:shedlock-provider-redis-spring:${shedlockSpringVersion}"
+    compile "se.inera.intyg.infra:hsa-integration:${infraVersion}"
+
     compileOnly "org.apache.geronimo.specs:geronimo-jms_1.1_spec:${jmsVersion}"
     compileOnly "org.apache.activemq:activemq-client:${activeMqVersion}"
     

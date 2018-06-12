@@ -25,7 +25,7 @@
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
     ">
 
-    <context:component-scan base-package="se.inera.statistics.web.service.monitoring" />
+    <context:component-scan base-package="se.inera.statistics.web.service.monitoring,se.inera.statistics.service.caching" />
 
     <context:property-placeholder location="file:${statistics.credentials.file}, file:${statistics.config.file}, classpath*:version.properties"
                                   order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
@@ -136,23 +136,6 @@
 
     <beans profile="populate-intygcommon-dx">
         <bean id="intygCommonDxPopulator" class="se.inera.statistics.service.warehouse.IntygCommonDxPopulator" />
-    </beans>
-
-    <beans profile="!dev">
-        <bean id="redisServer" class="se.inera.statistics.service.caching.DoNothingBean"/>
-    </beans>
-    <beans profile="dev">
-        <bean id="redisServer" class="se.inera.statistics.service.caching.EmbeddedRedis"
-              init-method="start"
-              destroy-method="stop" lazy-init="false">
-            <constructor-arg value="${redis.port:6379}" />
-        </bean>
-    </beans>
-    <beans>
-        <bean class="se.inera.statistics.service.caching.Cache" depends-on="redisServer"/>
-        <bean id="redisTemplateProvider" class="se.inera.statistics.service.caching.RedisTemplateProvider"/>
-        <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
-              factory-bean="redisTemplateProvider" factory-method="create" depends-on="redisServer"/>
     </beans>
 
 </beans>

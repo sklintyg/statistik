@@ -209,11 +209,11 @@ De profiler som finns är:
 |---------------|-----------|
 |dev            |starta applikationen i utvecklingsläge|
 |embedded       |skapa testintyg och starta konsol för inbäddad databas (H2). profilen fungerar även med MySQL konfiguration|
+|caching-enabled|profil från infra som aktiverar redis-cache, krävs för att aktivera job schedulers och ta emot inkommande intyg etc.|
 |hsa-stub       |gå inte mot hsa, utan använd en stub istället|
 |security-fake  |stöd enbart simulerad inloggning|
 |security-both  |stöd saml-inloggning och simulerad inloggning|
 |security-saml  |stöd enbart saml-inloggning|
-|active         |processa inkommande intyg|
 |hsacached      |Cachar hsa-anrop för att ej överlasta hsa vid omprocessning|
 |testapi        |Aktiverar REST-interface som enbart används för testning, tex möjlighet att sätta klockan eller rensa intyg |
 

@@ -18,14 +18,13 @@
  */
 package se.inera.statistics.scheduler.active;
 
+import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-
 import se.inera.statistics.service.processlog.Receiver;
 
-@Component
 public class ReceiveHistoryJob {
+    private static final String JOB_NAME = "statistics.scheduler.active.ReceiveHistoryJob.checkReceived";
     private static final int DELAY_MS = 300_000;
 
     public static final int HISTORY_ITEMS = 5;
@@ -36,6 +35,7 @@ public class ReceiveHistoryJob {
     private final History history = new History(HISTORY_ITEMS);
 
     @Scheduled(fixedDelay = DELAY_MS)
+    @SchedulerLock(name = JOB_NAME)
     public void checkReceived() {
         insert(receiver.getAccepted());
     }

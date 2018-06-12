@@ -18,32 +18,32 @@
  */
 package se.inera.statistics.scheduler.active;
 
+import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
-@Component
 public class MessageJob {
     private static final Logger LOG = LoggerFactory.getLogger(MessageJob.class);
+    private static final String JOB_NAME = "statistics.scheduler.active.MessageJob.checkLog";
 
-    private final MessageLogConsumer consumer;
+    private MessageLogConsumer consumer;
 
-    @Autowired
     public MessageJob(MessageLogConsumer consumer) {
         this.consumer = consumer;
     }
 
+
     @Scheduled(cron = "${scheduler.logJob.cron}")
+    @SchedulerLock(name = JOB_NAME)
     public void checkLog() {
         LOG.debug("Message Job");
         long startId;
         long latestHandledId = 0;
         do {
             startId = latestHandledId;
-            latestHandledId = consumer.processBatch(startId);
+            latestHandledId = this.consumer.processBatch(startId);
         } while (startId != latestHandledId);
     }
 

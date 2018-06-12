@@ -36,11 +36,10 @@
     <!-- make sure database has been initalized with depends-on (see java config bean) -->
     <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper" depends-on="dbUpdate"/>
 
-    <task:annotation-driven executor="taskExecutor"/>
+    <task:annotation-driven/>
+<!--
     <task:executor id="taskExecutor" pool-size="5-10" queue-capacity="25" rejection-policy="CALLER_RUNS" />
-
-    <beans profile="active">
-        <context:component-scan base-package="se.inera.statistics.scheduler.active" />
-    </beans>
+-->
+    <context:component-scan base-package="se.inera.statistics.scheduler.active" />
 
 </beans>

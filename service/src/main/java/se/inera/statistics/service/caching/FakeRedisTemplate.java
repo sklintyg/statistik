@@ -32,7 +32,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class FakeRedisTemplate extends RedisTemplate {
+/**
+ * Used when caching is not enabled.
+ */
+public class FakeRedisTemplate extends RedisTemplate<Object, Object> {
 
     public FakeRedisTemplate() {
     }
@@ -47,13 +50,11 @@ public class FakeRedisTemplate extends RedisTemplate {
     }
 
     @Override
-    public Boolean delete(Object key) {
-        return true;
+    public void delete(Object key) {
     }
 
     @Override
-    public Long delete(Collection keys) {
-        return (long) keys.size();
+    public void delete(Collection keys) {
     }
 
     @Override

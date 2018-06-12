@@ -100,7 +100,7 @@ dependencies {
     compile "org.apache.poi:poi-ooxml:${poiVersion}"
     compile "xalan:xalan:${xalanVersion}"
     compile "com.github.ziplet:ziplet:${zipletVersion}"
-
+    
     compileOnly "javax.servlet:javax.servlet-api:${javaxServletVersion}"
 
     gretty "com.h2database:h2:${h2Version}"

@@ -6,7 +6,7 @@ plugins {
 }
 
 ext {
-    infraVersion = System.properties['infraVersion'] ?: '3.6.0.+'
+    infraVersion = System.properties['infraVersion'] ?: '3.7.0.+'
 
     intygSchematronVersion = "1.0.26"
     certificateSchemaVersion = "3.2.0-RC1"
@@ -49,6 +49,7 @@ ext {
     xalanVersion = "2.7.2"
     xmlApisVersion = "1.4.01"
     zipletVersion = "2.1.2"
+    shedlockSpringVersion = "0.18.2"
 
     fitnesseVersion = "20161106"
     junitVersion = "4.11"

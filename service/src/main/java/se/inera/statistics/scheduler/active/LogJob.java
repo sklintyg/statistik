@@ -18,19 +18,19 @@
  */
 package se.inera.statistics.scheduler.active;
 
+import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.LogConsumer;
 
-@Component
 public class LogJob {
     private static final Logger LOG = LoggerFactory.getLogger(LogJob.class);
+    private static final String JOB_NAME = "statistics.scheduler.active.LogJob.checkLog";
+
 
     @Autowired
     private LogConsumer consumer;
@@ -40,6 +40,7 @@ public class LogJob {
     private MonitoringLogService monitoringLogService;
 
     @Scheduled(cron = "${scheduler.logJob.cron}")
+    @SchedulerLock(name = JOB_NAME)
     public void checkLog() {
         LOG.debug("Log Job");
         int count;

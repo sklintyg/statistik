@@ -61,7 +61,7 @@ public class Cache {
     private String maxSize;
 
     @Autowired
-    private RedisTemplate<String, Object> template;
+    private RedisTemplate<Object, Object> template;
 
     public Cache() {
     }
@@ -69,14 +69,14 @@ public class Cache {
     /**
      * Used by tests.
      */
-    public Cache(RedisTemplate<String, Object> template, String maxSize) {
+    public Cache(RedisTemplate<Object, Object> template, String maxSize) {
         this.template = template;
         this.maxSize = maxSize;
     }
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     public void clearCaches() {
-        final Set<String> keys = template.keys(REDIS_KEY_PREFIX + "*");
+        final Set<Object> keys = template.keys(REDIS_KEY_PREFIX + "*");
         if (keys != null) {
             template.delete(keys);
         } else {
@@ -86,7 +86,7 @@ public class Cache {
 
     public List<SjukfallGroup> getSjukfallGroups(SjukfallGroupCacheKey key) {
         LOG.info("Getting sjukfallgroups: {}", key.getKey());
-        final HashOperations<String, String, Object> hashOps = template.opsForHash();
+        final HashOperations<Object, String, Object> hashOps = template.opsForHash();
         final Boolean hasKey = hashOps.hasKey(SJUKFALLGROUP, key.getKey());
         if (hasKey) { //Spotbugs did not allow a null check here, I'm not sure why
             try {
@@ -116,7 +116,7 @@ public class Cache {
     public Aisle getAisle(HsaIdVardgivare vardgivarId, Function<HsaIdVardgivare, Aisle> loader) {
         LOG.info("Getting aisle: {}", vardgivarId);
         final String key = vardgivarId.getId();
-        final HashOperations<String, Object, Object> hashOps = template.opsForHash();
+        final HashOperations<Object, Object, Object> hashOps = template.opsForHash();
         if (hashOps.hasKey(AISLE, key)) {
             try {
                 final Object aisle = hashOps.get(AISLE, key);
@@ -139,7 +139,7 @@ public class Cache {
     private List<HsaIdEnhet> loadVgEnhets(HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
         LOG.info("VgEnhets not cached: {}", vardgivareId);
         final List<Enhet> allEnhetsForVg = loader.apply(vardgivareId);
-        final HashOperations<String, Object, Object> hashOps = template.opsForHash();
+        final HashOperations<Object, Object, Object> hashOps = template.opsForHash();
         for (Enhet enhet : allEnhetsForVg) {
             hashOps.put(ENHET, enhet.getEnhetId().getId(), enhet);
         }
@@ -149,7 +149,7 @@ public class Cache {
     public List<HsaIdEnhet> getVgEnhets(HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
         LOG.info("Getting VgEnhets: {}", vardgivareId);
         final String key = vardgivareId.getId();
-        final HashOperations<String, Object, Object> hashOps = template.opsForHash();
+        final HashOperations<Object, Object, Object> hashOps = template.opsForHash();
         if (hashOps.hasKey(VGENHET, key)) {
             try {
                 final Object enhets = hashOps.get(VGENHET, key);
@@ -166,7 +166,7 @@ public class Cache {
 
     public Collection<Enhet> getEnhetsWithHsaId(Collection<HsaIdEnhet> enhetIds,
                                                 Function<Collection<HsaIdEnhet>, Collection<Enhet>> loader) {
-        final HashOperations<String, String, Object> hashOps = template.opsForHash();
+        final HashOperations<Object, Object, Object> hashOps = template.opsForHash();
         final List<Object> cachedEnhetsObj = hashOps.multiGet(ENHET, enhetIds.stream().map(HsaIdAny::getId).collect(Collectors.toList()));
         final List<Enhet> cachedEnhets = cachedEnhetsObj.stream().filter(o -> o != null).map(o -> (Enhet) o).collect(Collectors.toList());
         if (cachedEnhets.size() == enhetIds.size()) {

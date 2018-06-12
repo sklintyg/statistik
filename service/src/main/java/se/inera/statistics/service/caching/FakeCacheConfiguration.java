@@ -18,9 +18,21 @@
  */
 package se.inera.statistics.service.caching;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.redis.core.RedisTemplate;
+
 /**
- * This class is used by spring to make sure there is always an instance of the
- * bean redisServer, even when the redis server is actually provided externally.
+ * Used when caching is not enabled.
  */
-public class DoNothingBean {
+@Profile("!caching-enabled")
+@Configuration
+public class FakeCacheConfiguration {
+
+    @Bean
+    public RedisTemplate<Object, Object> fakeRedisTemplate() {
+        return new FakeRedisTemplate();
+    }
 }
+
