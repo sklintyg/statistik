@@ -18,8 +18,6 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -58,7 +56,6 @@ public final class ResponseUtil {
         return rows;
     }
 
-    @NotNull
     public static List<KonDataRow> getKonDataRows(int perioder, Iterator<KonDataRow> rowsNew, Iterator<KonDataRow> rowsOld, int cutoff) {
         List<KonDataRow> list = new ArrayList<>(perioder);
         while (rowsNew.hasNext() && rowsOld.hasNext()) {
@@ -79,7 +76,6 @@ public final class ResponseUtil {
         return list;
     }
 
-    @Nullable
     private static Object getMergedExtras(KonField aKonField, KonField bKonField) {
         Object aExtras = aKonField.getExtras();
         Object bExtras = bKonField.getExtras();

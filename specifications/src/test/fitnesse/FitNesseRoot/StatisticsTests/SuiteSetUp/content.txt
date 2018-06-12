@@ -1,7 +1,0 @@
-|Import|
-|se.inera.statistics.spec|
-|se.inera.statistics.web.spec|
-
-!| Config |
-| property | value |
-| statistics.base.url | ${statistics.base.url} |

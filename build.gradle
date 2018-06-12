@@ -23,6 +23,7 @@ ext {
     groovyAllVersion = "2.3.6"
     groovyHttpVersion = "0.7.1"
     h2Version = "1.4.195"
+    hikariCPVersion = "2.3.5"
     hibernateJpaVersion = "1.0.0.Final"
     hibernateVersion = "4.3.1.Final"
     httpClientVersion = "4.2.1"
@@ -62,7 +63,7 @@ allprojects {
     }
 
     // Findbugs does not work very well with groovy code. Hence we exclude groovy projects.
-    ext.findbugsExclude = "(fileservice|.*specifications)\$"
+    ext.findbugsExclude = "(fileservice|.*test)\$"
 
     project.afterEvaluate {
         tasks.withType(FindBugs.class).forEach { task ->
@@ -116,7 +117,7 @@ allprojects {
     }
 }
 
-configure(subprojects.findAll { ['statistik-service', 'statistik-web'].contains(it.name) }) {
+configure(subprojects.findAll { ['statistik-service', 'web'].contains(it.name) }) {
     test {
         exclude '**/*IT*'
     }

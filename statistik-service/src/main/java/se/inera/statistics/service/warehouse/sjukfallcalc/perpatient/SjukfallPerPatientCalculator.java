@@ -20,17 +20,12 @@ package se.inera.statistics.service.warehouse.sjukfallcalc.perpatient;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import org.jetbrains.annotations.NotNull;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.SjukfallExtended;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SjukfallPerPatientCalculator {
@@ -65,7 +60,6 @@ public class SjukfallPerPatientCalculator {
         }
     }
 
-    @NotNull
     private ArrayList<SjukfallExtended> getSjukfallExtendedWithEarlierPeriods(List<SjukfallExtended> currentSjukfalls,
             Collection<SjukfallExtended> allSjukfalls) {
         final ArrayList<SjukfallExtended> sjukfallsExtendedWithEarlierPeriods = new ArrayList<>();

@@ -1,0 +1,114 @@
+apply plugin: 'war'
+apply plugin: 'org.akhikhl.gretty'
+apply plugin: 'com.moowork.grunt'
+apply plugin: 'idea'
+
+gretty {
+    def baseUrl = 'http://localhost:8080'
+    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,testapi,embedded,hsa-stub,wc-hsa-stub,security-fake'
+//    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,testapi,active,hsa-stub,wc-hsa-stub,security-fake,hsacached'
+    servletContainer = 'jetty9'
+    contextPath = '/'
+
+    if (project.hasProperty('runWithIntyg')) {
+        httpPort = 9101
+        baseUrl = 'http://localhost:9101'
+    }
+
+    if (project.hasProperty('runWithActiveMQ')) {
+        serverConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty.xml" //Configures the jetty server with an mbean server.
+        jvmArgSpringProfiles += ',qm,active' //Add the needed spring profiles to start up an embedded activemq
+    }
+    contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
+
+    logbackConfigFile = "${projectDir}/src/main/resources/logback.xml"
+    scanInterval = 0
+    debugPort = 5011
+    debugSuspend = false
+    fastReload = true
+    inplaceMode = 'hard'
+    recompileOnSourceChange = false
+    reloadOnClassChange = false
+    reloadOnConfigChange = false
+    reloadOnLibChange = false
+
+    jvmArgs = [
+            jvmArgSpringProfiles,
+            '-DbaseUrl=' + baseUrl,
+            '-D' +
+                    'statistics.test.max.intyg=500',
+            '-Dstatistics.config.file=' + projectDir + '/src/main/resources/default.dev.properties',
+            '-Dstatistics.credentials.file=' + projectDir + '/src/main/resources/dev-credentials.properties',
+            '-Dstatistics.resources.folder=' + projectDir + '/../src/main/resources'
+    ]
+}
+
+idea {
+    module {
+        excludeDirs += file('node_modules')
+        excludeDirs += file('src/main/webapp/bower_components')
+    }
+}
+
+grunt {
+    colors = true
+}
+
+node {
+    version = '6.11.3'
+    download = true
+    distBaseUrl = 'https://build-inera.nordicmedtest.se/node/'
+}
+
+if (project.hasProperty('statistik.useMinifiedJavaScript')) {
+    war {
+        webAppDirName = 'build/webapp'
+    }
+    war.dependsOn grunt_build
+} else {
+    war.dependsOn grunt_build_no_minify
+}
+
+task bowerInstall(type: NodeTask, dependsOn:npmInstall) {
+    script = file('node_modules/bower/bin/bower')
+    args = ["--config.storage.cache=${gradle.getGradleUserHomeDir()}/caches/bower/cache",
+            "--config.storage.packages=${gradle.getGradleUserHomeDir()}/caches/bower/packages",
+            "--config.storage.registry=${gradle.getGradleUserHomeDir()}/caches/bower/registry",
+            'install']
+    inputs.files file('bower.json')
+    outputs.files file('src/main/webapp/bower_components')
+}
+
+grunt_build.dependsOn bowerInstall
+grunt_build_no_minify.dependsOn bowerInstall
+
+war.dependsOn createVersionPropertyFile
+
+dependencies {
+    compile project(':statistik-service')
+
+    compile "se.riv.clinicalprocess.healthcond.monitoring:clinicalprocess-healthcond-monitoring-schemas:${monitoringSchemaVersion}"
+    compile "se.inera.intyg.infra:dynamiclink:${infraVersion}"
+
+    compile "org.springframework.security.extensions:spring-security-saml2-core:${springSecuritySamlVersion}"
+    compile "xml-apis:xml-apis:${xmlApisVersion}"
+    compile "org.springframework:spring-webmvc:${springContextVersion}"
+    compile "org.apache.commons:commons-lang3:${commonsLang3Version}"
+    compile "org.springframework.security:spring-security-config:${springSecurityVersion}"
+    compile "org.springframework.security:spring-security-taglibs:${springSecurityVersion}"
+    compile "org.apache.poi:poi:${poiVersion}"
+    compile "org.apache.poi:poi-ooxml:${poiVersion}"
+    compile "xalan:xalan:${xalanVersion}"
+    compile "com.github.ziplet:ziplet:${zipletVersion}"
+
+    compileOnly "javax.servlet:javax.servlet-api:${javaxServletVersion}"
+
+    gretty "com.h2database:h2:${h2Version}"
+    gretty "mysql:mysql-connector-java:${mysqlConnectorVersion}"
+    gretty "org.apache.tomcat:tomcat-catalina:${tomcatVersion}"
+    gretty "org.apache.activemq:activemq-client:${activeMqVersion}"
+    gretty "org.apache.activemq:activemq-broker:${activeMqVersion}"
+    gretty "org.apache.activemq:activemq-pool:${activeMqVersion}"
+
+    testRuntime "com.h2database:h2:${h2Version}"
+}

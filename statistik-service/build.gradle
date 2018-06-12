@@ -23,20 +23,20 @@ dependencies {
     compile "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
     compile "org.springframework:spring-orm:${springContextVersion}"
     compile "org.springframework:spring-jms:${springContextVersion}"
+    compile "com.h2database:h2:${h2Version}"
+    compile "com.zaxxer:HikariCP-java6:${hikariCPVersion}"
     compile "org.liquibase:liquibase-core:${liquibaseVersion}"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonVersion}"
     compile "com.helger:ph-schematron:${schematronVersion}"
     compile 'redis.clients:jedis:2.9.0'
     compile 'it.ozimov:embedded-redis:0.7.2'
     compile 'org.springframework.data:spring-data-redis:2.0.7.RELEASE'
-
     compileOnly "org.apache.geronimo.specs:geronimo-jms_1.1_spec:${jmsVersion}"
-
+    compileOnly "org.apache.activemq:activemq-client:${activeMqVersion}"
+    
     testCompile "org.codehaus.groovy:groovy-all:${groovyAllVersion}"
     testCompile "org.apache.activemq:activemq-spring:${activeMqVersion}"
     testCompile "org.springframework:spring-aop:${springContextVersion}"
     testCompile "org.aspectj:aspectjrt:${aspectJVersion}"
     testCompile "org.aspectj:aspectjweaver:${aspectJVersion}"
-
-    testRuntime "com.h2database:h2:${h2Version}"
 }

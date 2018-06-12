@@ -58,7 +58,7 @@ Har du nvm så kan du skriva
     nvm install 6.6
     nvm alias default 6.6
 
-Ta bort `statistik-web/node_modules` och `statistik-web/src/main/webapp/bower_components`
+Ta bort `web/node_modules` och `web/src/main/webapp/bower_components`
 
 Följ anvisningarna i "Bygga klienten utanför gradle"
 
@@ -69,7 +69,7 @@ Installera grunt och bower
 
     npm install -g grunt-cli bower
 
-Gå in i statistk-web och kör
+Gå in i web och kör
 
     npm install
     bower install
@@ -93,7 +93,7 @@ För att testa applikationen i ett mer prodlikt läge kan man även starta med e
 Köra protractor tester lokalt. Du behöver ha firefox version 46 eller äldre för att testerna ska fungera.
 
  * Starta intygsstatistik med `./gradlew appRun`
- * Starta testerna med `./gradlew protractorTests`
+ * Starta testerna med `./gradlew protractorTest`
 
 ## Gradle
 Vi använder Gradle för att bygga, test, installera och köra intygsstatistik. Gradle spottar ur sig ganska mycket text, generellt sett har det gått bra om det sista som skrivs ut är något i stil med:
@@ -106,9 +106,9 @@ Vi använder Gradle för att bygga, test, installera och köra intygsstatistik. 
 |--------------|---------|---------|
 |./gradlew clean build integrationTests|bygg om hela projektet inklusive integrationstester|[projektrot]|
 |./gradlew licenseFormat -PcodeQuality|Lägg till licens-header till alla java-filer som saknar header|[projektrot]|
-|../gradlew appRunDebug|kör webbservern i debugläge|[projektrot]/statistik-web|
-|../gradlew fitnesseWiki |starta fitnesse|[projektrot]/specifications|
-|../gradlew fitnesseTest|kör fitnesse-tester|[projektrot]/specifications|
+|../gradlew appRunDebug|kör webbservern i debugläge|[projektrot]/web|
+|../gradlew fitnesseWiki |starta fitnesse|[projektrot]/test|
+|../gradlew fitnesseTest|kör fitnesse-tester|[projektrot]/test|
 
 ## Köra med intygstjänsten
 Installera active mq
@@ -180,7 +180,7 @@ enhetstester, Gradle kör dessa tester per default. Avslutas klassnamnet med Int
 Gradle kör bara dessa tester om man specifikt säger till (integrationTests). Funktionella tester, dvs klasser som avslutas med FunctionalTest? körs aldrig från Gradle, utan måste körast manuellt från en IDE eller dylikt.
 
 ### Fitnesse/Slim
-Det finns en separat modul som använder Fitnesse, specifications. Fitnesse kan antingen köras som automattest eller som en wiki. I wikiläge startas en webserver på http://localhost:9125/StatisticsTests , och surfar man dit kan man skapa, redigera och köra individuella tester. I automatläge körs alla tester igenom och en rapport skapas (ungefär som motsvarande för JUnit-tester).
+Det finns en separat modul som använder Fitnesse, test. Fitnesse kan antingen köras som automattest eller som en wiki. I wikiläge startas en webserver på http://localhost:9125/StatisticsTests , och surfar man dit kan man skapa, redigera och köra individuella tester. I automatläge körs alla tester igenom och en rapport skapas (ungefär som motsvarande för JUnit-tester).
 
 #### statistics-specification
 Den här modulen testar end-to-end-scenarior, där man kontrollerar att instoppade intyg ger korrekt statistik. Innan man kör måste
@@ -208,12 +208,11 @@ De profiler som finns är:
 |Profilnamn     |Beskrivning|
 |---------------|-----------|
 |dev            |starta applikationen i utvecklingsläge|
-|embedded       |använd inbäddad databas (H2), och lägg in testintyg|
+|embedded       |skapa testintyg och starta konsol för inbäddad databas (H2). profilen fungerar även med MySQL konfiguration|
 |hsa-stub       |gå inte mot hsa, utan använd en stub istället|
 |security-fake  |stöd enbart simulerad inloggning|
 |security-both  |stöd saml-inloggning och simulerad inloggning|
 |security-saml  |stöd enbart saml-inloggning|
-|qm             |läs meddelanden från kön|
 |active         |processa inkommande intyg|
 |hsacached      |Cachar hsa-anrop för att ej överlasta hsa vid omprocessning|
 |testapi        |Aktiverar REST-interface som enbart används för testning, tex möjlighet att sätta klockan eller rensa intyg |
@@ -221,7 +220,7 @@ De profiler som finns är:
 ## Deployment
 Vi använder ansible för att enkelt sätta upp servrar. Följande stämmer för min lokala miljö (Mac, Homebrew), komplettera gärna med andra miljöer.
 
-### Installera ansible
+### Installera ansible (deprecated)
 
     brew install ansible
 

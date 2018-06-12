@@ -19,6 +19,7 @@
 package se.inera.statistics.testsupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.queue.JmsReceiver;
@@ -34,8 +35,8 @@ public class QueueSender {
     @Autowired
     private ConnectionFactory connectionFactory;
 
-    @Autowired
-    private Queue destination;
+    @Value("${jms.receiver.queue.name}")
+    private String queueName;
 
     @PostConstruct
     public void init() {
@@ -51,7 +52,7 @@ public class QueueSender {
     }
 
     private void simpleSend(String intyg, String correlationId, String action, String certificateType) {
-        jmsTemplate.send(destination, session -> {
+        jmsTemplate.send(queueName, session -> {
             TextMessage message = session.createTextMessage(intyg);
             message.setStringProperty(JmsReceiver.ACTION, action);
             message.setStringProperty(JmsReceiver.CERTIFICATE_TYPE, certificateType);

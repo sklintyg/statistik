@@ -21,28 +21,20 @@
 -->
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:tx="http://www.springframework.org/schema/tx"
-        xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:amq="http://activemq.apache.org/schema/core" xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
-    http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
-        http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd"
-        >
+       http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+>
 
-    <bean id="liquibase" class="liquibase.integration.spring.SpringLiquibase">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="changeLog" value="classpath:changelog/changelog.xml"/>
-    </bean>
-
-    <context:component-scan base-package="se.inera.statistics.service.processlog"/>
+    <context:component-scan base-package="se.inera.statistics.service.processlog,se.inera.statistics.config"/>
     <context:component-scan base-package="se.inera.statistics.service.schemavalidation"/>
-    <context:component-scan base-package="se.inera.statistics.service.warehouse, se.inera.statistics.service.monitoring"/>
+    <context:component-scan
+            base-package="se.inera.statistics.service.warehouse,se.inera.statistics.service.monitoring"/>
 
     <bean class="se.inera.statistics.service.hsa.HSADecorator"/>
-
-    <amq:queue id="queue" physicalName="intyg.queue"/>
-
     <amq:broker persistent="false">
         <amq:transportConnectors>
             <amq:transportConnector uri="tcp://localhost:61616"/>
@@ -59,60 +51,13 @@
     <bean class="se.inera.statistics.testsupport.QueueHelper"/>
     <bean class="se.inera.statistics.testsupport.QueueSender"/>
 
-    <bean id="jmsFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
-        <property name="connectionFactory">
-            <bean class="org.apache.activemq.ActiveMQConnectionFactory">
-                <property name="brokerURL" value="tcp://localhost:61616"/>
-            </bean>
-        </property>
-    </bean>
-
-    <bean id="jmsreceiver" class="se.inera.statistics.service.queue.JmsReceiver"/>
-    <bean id="receiver" class="se.inera.statistics.service.processlog.Receiver"/>
-
-    <bean id="jmsContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
-        <property name="connectionFactory" ref="jmsFactory"/>
-        <property name="destination" ref="queue"/>
-        <property name="messageListener" ref="jmsreceiver"/>
-        <property name="transactionManager" ref="transactionManager"/>
-    </bean>
-
     <tx:annotation-driven/>
 
-    <jdbc:embedded-database id="dataSource" type="H2"/>
 
     <context:property-placeholder/>
     <context:property-placeholder location="classpath*:application-context-test.properties" order="2"
-        ignore-resource-not-found="false" ignore-unresolvable="false"/>
+                                  ignore-resource-not-found="false" ignore-unresolvable="false"/>
 
-    <bean id="org.h2.tools.Server"
-        class="org.h2.tools.Server"
-        factory-method="createTcpServer"
-        init-method="start"
-        destroy-method="stop" lazy-init="false">
-        <constructor-arg value="-tcp,-tcpAllowOthers"/>
-    </bean>
-
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="persistenceUnitName" value="IneraStatisticsLog"/>
-        <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="database" value="H2"/>
-            </bean>
-        </property>
-        <property name="jpaProperties">
-            <props>
-                <prop key="hibernate.show_sql">false</prop>
-                <prop key="hibernate.format_sql">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">none</prop>
-            </props>
-        </property>
-    </bean>
-
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
-    </bean>
 
     <bean class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" id="hsaWebServiceCalls"/>
     <bean class="se.inera.statistics.service.hsa.HsaServiceStub" id="hsaServiceStub"/>

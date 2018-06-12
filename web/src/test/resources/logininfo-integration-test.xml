@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2018 Inera AB (http://www.inera.se)
+
+    This file is part of statistik (https://github.com/sklintyg/statistik).
+
+    statistik is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    statistik is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <tx:annotation-driven/>
+
+    <context:property-placeholder location="classpath:default.dev.properties"/>
+
+    <context:component-scan base-package="se.inera.statistics.config.jpa"/>
+    
+    <bean class="se.inera.statistics.web.util.VersionUtil" id="versionUtil"/>
+    <bean class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" id="hsaWebServiceCalls"/>
+    <bean class="se.inera.statistics.service.hsa.HsaServiceStub" id="hsaServiceStub"/>
+    <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
+    <bean class="se.inera.statistics.service.processlog.Processor"/>
+    <bean class="se.inera.statistics.service.processlog.message.ProcessMessageLogImpl"/>
+    <bean class="se.inera.statistics.service.warehouse.Warehouse"/>
+    <bean class="se.inera.statistics.service.processlog.VardgivareManager"/>
+    <bean class="se.inera.statistics.service.processlog.LakareManager"/>
+    <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
+    <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
+    <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
+    <bean class="se.inera.statistics.web.service.LoginServiceUtil"/>
+    <bean class="se.inera.statistics.web.service.LoginInfoService"/>
+    <bean class="se.inera.statistics.service.landsting.LandstingEnhetHandler"/>
+    <bean class="se.inera.statistics.service.landsting.persistance.landsting.LandstingManager"/>
+    <bean class="se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhetManager"/>
+    <bean class="se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateManager"/>
+    <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper"/>
+    <bean class="se.inera.statistics.service.helper.SendMessageToCareHelper"/>
+
+    <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactConverter" />
+    <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
+    <bean class="se.inera.statistics.service.warehouse.WidelineManager" />
+    <bean class="se.inera.statistics.service.warehouse.WidelineLoader" />
+    <bean class="se.inera.statistics.service.warehouse.EnhetLoader" />
+    <bean class="se.inera.statistics.service.warehouse.SjukfallUtil" />
+    <bean class="se.inera.statistics.service.caching.Cache" />
+    <bean class="se.inera.statistics.service.caching.FakeRedisTemplate"/>
+    <bean class="se.inera.statistics.service.warehouse.message.MessageWidelineManager" />
+    <bean class="se.inera.statistics.service.warehouse.message.MessageWidelineConverter" />
+    <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable" />
+    <bean class="se.inera.statistics.service.warehouse.IntygCommonManager" />
+    <bean class="se.inera.statistics.service.warehouse.IntygCommonConverter" />
+
+</beans>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (C) 2013 - 2014 Inera AB (http://www.inera.se)
+  ~
+  ~     This file is part of Inera Statistics (http://code.google.com/p/inera-statistics/).
+  ~
+  ~     Inera Statistics is free software: you can redistribute it and/or modify
+  ~     it under the terms of the GNU LESSER GENERAL PUBLIC LICENSE as published by
+  ~     the Free Software Foundation, either version 3 of the License, or
+  ~     (at your option) any later version.
+  ~
+  ~     Inera Statistics is distributed in the hope that it will be useful,
+  ~     but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~     GNU LESSER GENERAL PUBLIC LICENSE for more details.
+  ~
+  ~     You should have received a copy of the GNU LESSER GENERAL PUBLIC LICENSE
+  ~     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    ">
+
+    <context:component-scan base-package="se.inera.statistics.web.service.monitoring" />
+
+    <context:property-placeholder location="file:${statistics.credentials.file}, file:${statistics.config.file}, classpath*:version.properties"
+                                  order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
+
+    <beans profile="hsa-stub">
+        <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
+        <bean class="se.inera.statistics.service.hsa.HsaServiceStub"/>
+        <bean class="se.inera.statistics.service.hsa.BootstrapBean"/>
+    </beans>
+
+    <beans profile="hsa-stub,wc-hsa-stub">
+        <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+    </beans>
+
+    <beans>
+        <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+            <property name="basenames">
+                <list>
+                    <value>version</value>
+                    <value>buildtime</value>
+                </list>
+            </property>
+        </bean>
+    </beans>
+
+    <beans>
+        <import resource="classpath*:process-log-impl.xml"/>
+    </beans>
+
+    <beans>
+        <context:property-placeholder location="classpath*:application-context.properties" order="2"
+                                      ignore-resource-not-found="false" ignore-unresolvable="false"/>
+
+        <bean id="loginVisibility" class="se.inera.auth.LoginVisibility"/>
+
+        <bean id="applicationContextProvider" class="se.inera.auth.ApplicationContextProvider"/>
+
+        <bean class="se.inera.statistics.hsa.services.HsaOrganizationsServiceImpl"/>
+        <bean id="filterHashHandler" class="se.inera.statistics.web.service.FilterHashHandler"/>
+        <bean id="resultMessageHandler" class="se.inera.statistics.web.service.ResultMessageHandler"/>
+        <bean id="chartDataService" class="se.inera.statistics.web.service.ChartDataService"/>
+        <bean id="nationellDataCalculator" class="se.inera.statistics.web.service.NationellDataCalculator"/>
+        <bean id="pdfService" class="se.inera.statistics.web.service.PdfService"/>
+
+        <bean id="protectedChartDataService" class="se.inera.statistics.web.service.ProtectedChartDataService"/>
+        <bean id="protectedLandstingService" class="se.inera.statistics.web.service.ProtectedLandstingService"/>
+        <bean class="se.inera.statistics.web.service.ResponseHandler"/>
+
+        <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
+        <bean id="loginInfoService" class="se.inera.statistics.web.service.LoginInfoService"/>
+        <bean id="loggingService" class="se.inera.statistics.web.service.LoggingService"/>
+        <bean id="dynamicLinkRepository" class="se.inera.intyg.infra.dynamiclink.repository.DynamicLinkRepositoryImpl" />
+        <bean id="dynamicLinkService" class="se.inera.intyg.infra.dynamiclink.service.DynamicLinkServiceImpl"/>
+        <bean id="linkService" class="se.inera.statistics.web.service.links.LinkService"/>
+        <bean id="pingService" class="se.inera.statistics.web.service.monitoring.PingService"/>
+
+        <import resource="classpath*:hsa-services-config.xml"/>
+        <import resource="classpath*:hsaws-services-config.xml"/>
+        <import resource="classpath*:icd10.xml"/>
+        <import resource="application-context-cxf.xml"/>
+        <import resource="application-context-security.xml"/>
+        <import resource="application-context-jmx.xml"/>
+
+        <context:annotation-config/>
+        <context:component-scan base-package="se.inera.statistics.service,se.inera.statistics.config"/>
+
+        <bean id="receiver" class="se.inera.statistics.service.processlog.Receiver"/>
+
+        <bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
+            <property name="attributes">
+                <map>
+                    <entry key="loginUrl" value="${login.url}"/>
+                    <entry key="healthcheckUtil" value-ref="healthcheckUtil"/>
+                    <entry key="versionUtil" value-ref="versionUtil"/>
+                </map>
+            </property>
+        </bean>
+
+        <bean id="healthcheckUtil" class="se.inera.statistics.web.util.HealthCheckUtil"/>
+        <bean id="versionUtil" class="se.inera.statistics.web.util.VersionUtil"/>
+
+        <bean id="warehouse" class="se.inera.statistics.service.warehouse.Warehouse" />
+        <bean id="warehouseService" class="se.inera.statistics.web.service.WarehouseService" />
+
+        <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactConverter" />
+        <bean id="widelineConverter" class="se.inera.statistics.service.warehouse.WidelineConverter" />
+
+        <bean class="se.inera.statistics.service.processlog.Processor" />
+        <bean class="se.inera.statistics.web.service.LoginServiceUtil" />
+        <bean class="se.inera.statistics.web.service.FilterHandler" />
+    </beans>
+
+    <beans profile="hsacached">
+        <bean class="se.inera.statistics.service.hsa.HsaWebServiceCached" />
+    </beans>
+    <beans profile="!hsacached">
+        <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect" />
+    </beans>
+
+    <beans profile="testapi">
+        <bean class="se.inera.testsupport.RestTemplateStub" />
+        <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable" />
+    </beans>
+    <beans profile="!testapi">
+        <bean class="org.springframework.web.client.RestTemplate" />
+        <bean class="java.time.Clock" factory-method="systemDefaultZone"/>
+    </beans>
+
+    <beans profile="populate-intygcommon-dx">
+        <bean id="intygCommonDxPopulator" class="se.inera.statistics.service.warehouse.IntygCommonDxPopulator" />
+    </beans>
+
+    <beans profile="!dev">
+        <bean id="redisServer" class="se.inera.statistics.service.caching.DoNothingBean"/>
+    </beans>
+    <beans profile="dev">
+        <bean id="redisServer" class="se.inera.statistics.service.caching.EmbeddedRedis"
+              init-method="start"
+              destroy-method="stop" lazy-init="false">
+            <constructor-arg value="${redis.port:6379}" />
+        </bean>
+    </beans>
+    <beans>
+        <bean class="se.inera.statistics.service.caching.Cache" depends-on="redisServer"/>
+        <bean id="redisTemplateProvider" class="se.inera.statistics.service.caching.RedisTemplateProvider"/>
+        <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+              factory-bean="redisTemplateProvider" factory-method="create" depends-on="redisServer"/>
+    </beans>
+
+</beans>

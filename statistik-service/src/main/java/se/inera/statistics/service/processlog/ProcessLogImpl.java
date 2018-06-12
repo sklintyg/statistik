@@ -37,7 +37,7 @@ public class ProcessLogImpl extends AbstractProcessLog implements ProcessLog {
 
     @Override
     @Transactional
-    public final long store(EventType type, String data, String correlationId, long timestamp) {
+    public long store(EventType type, String data, String correlationId, long timestamp) {
         TypedQuery<IntygEvent> select = getManager()
                 .createQuery("SELECT e FROM IntygEvent e WHERE e.correlationId = :correlationId AND e.type = :type", IntygEvent.class);
         select.setParameter("correlationId", correlationId).setParameter("type", type);

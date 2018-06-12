@@ -19,7 +19,6 @@
 package se.inera.statistics.service.caching;
 
 import com.google.common.collect.Lists;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,7 +136,7 @@ public class Cache {
         return loader.apply(vardgivarId);
     }
 
-    private List<HsaIdEnhet> loadVgEnhets(@NotNull HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
+    private List<HsaIdEnhet> loadVgEnhets(HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
         LOG.info("VgEnhets not cached: {}", vardgivareId);
         final List<Enhet> allEnhetsForVg = loader.apply(vardgivareId);
         final HashOperations<String, Object, Object> hashOps = template.opsForHash();

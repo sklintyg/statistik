@@ -33,37 +33,8 @@
 
     <tx:annotation-driven/>
 
-    <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="java:comp/env/jdbc/statistik"/>
-    </bean>
-
-    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="persistenceUnitName" value="IneraStatisticsLog"/>
-        <property name="jpaVendorAdapter">
-            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
-                <property name="database" value="MYSQL"/>
-            </bean>
-        </property>
-        <property name="jpaProperties">
-            <props>
-                <prop key="hibernate.show_sql">false</prop>
-                <prop key="hibernate.format_sql">true</prop>
-                <prop key="hibernate.hbm2ddl.auto">none</prop>
-            </props>
-        </property>
-    </bean>
-
-    <bean id="liquibasecheck" class="se.inera.statistics.service.liquibase.DbChecker">
-      <constructor-arg ref="dataSource"/>
-      <constructor-arg value="changelog/changelog.xml"/>
-    </bean>
-
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
-        <property name="entityManagerFactory" ref="entityManagerFactory"/>
-    </bean>
-
-    <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper"/>
+    <!-- make sure database has been initalized with depends-on (see java config bean) -->
+    <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper" depends-on="dbUpdate"/>
 
     <task:annotation-driven executor="taskExecutor"/>
     <task:executor id="taskExecutor" pool-size="5-10" queue-capacity="25" rejection-policy="CALLER_RUNS" />
