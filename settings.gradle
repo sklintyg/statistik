@@ -8,7 +8,7 @@ pluginManagement {
 rootProject.name = 'statistik'
 
 include ':hsa-integration'
-include ':statistik-service'
+include ':service'
 include ':liquibase-runner'
 include ':web'
 include ':test'
@@ -17,6 +17,7 @@ include ':anonymisering'
 
 project(':web').name = 'statistik-web'
 project(':test').name = 'statistik-test'
+project(':service').name = 'statistik-service'
 
 project(':hsa-integration').projectDir = "$rootDir/integration/hsa-integration" as File
 project(':liquibase-runner').projectDir = "$rootDir/tools/liquibase-runner" as File
