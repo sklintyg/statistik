@@ -26,11 +26,16 @@ import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.processlog.IntygDTO;
+import se.inera.statistics.service.report.model.Kon;
 
 public abstract class IntygHelper<T> {
 
+    private static final Logger LOG = LoggerFactory.getLogger(IntygHelper.class);
     private Unmarshaller jaxbUnmarshaller;
 
     public synchronized T unmarshalXml(String data) throws JAXBException {
@@ -60,7 +65,34 @@ public abstract class IntygHelper<T> {
 
     public abstract String getIntygtyp(T intyg);
 
-    public abstract Patientdata getPatientData(T intyg);
+    public abstract LocalDate getDateForPatientAge(T intyg);
+
+    public Patientdata getPatientData(T intyg) {
+        String patientIdRaw;
+        try {
+            patientIdRaw = getPatientId(intyg);
+        } catch (Exception ignore) {
+            patientIdRaw = "?Unknown?";
+        }
+
+        int alder = ConversionHelper.NO_AGE;
+        Kon kon = Kon.UNKNOWN;
+        try {
+            final String personId = DocumentHelper.getUnifiedPersonId(patientIdRaw);
+            try {
+                final LocalDate dateForPatientAge = getDateForPatientAge(intyg);
+                if (dateForPatientAge != null) {
+                    alder = ConversionHelper.extractAlder(personId, dateForPatientAge);
+                }
+            } finally {
+                kon = Kon.parse(ConversionHelper.extractKon(personId));
+            }
+        } catch (Exception e) {
+            LOG.error("Could not extract age and/or gender: '{}'", patientIdRaw);
+            LOG.debug("Could not extract age and/or gender: '{}'", patientIdRaw, e);
+        }
+        return new Patientdata(alder, kon);
+    }
 
     public abstract LocalDateTime getSigneringsTidpunkt(T intyg);
 

@@ -34,7 +34,6 @@ import org.w3c.dom.NodeList;
 
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 import se.inera.statistics.service.processlog.IntygDTO;
-import se.inera.statistics.service.report.model.Kon;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v3.CVType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v3.DatePeriodType;
@@ -98,6 +97,11 @@ public class RegisterCertificateHelper extends IntygHelper<RegisterCertificateTy
         return intyg.getIntyg().getSigneringstidpunkt();
     }
 
+    @Override
+    public LocalDate getDateForPatientAge(RegisterCertificateType intyg) {
+        return getSistaNedsattningsdag(intyg);
+    }
+
     @SuppressWarnings("squid:S134") //I can't see a better way to write this with fewer nested statements
     public String getDx(RegisterCertificateType intyg) {
         for (Svar svar : intyg.getIntyg().getSvar()) {
@@ -132,35 +136,6 @@ public class RegisterCertificateHelper extends IntygHelper<RegisterCertificateTy
             }
         }
         return new Arbetsnedsattning(nedsattning, datePeriod.getStart(), datePeriod.getEnd());
-    }
-
-    @Override
-    public Patientdata getPatientData(RegisterCertificateType intyg) {
-        String patientIdRaw;
-        try {
-            patientIdRaw = getPatientId(intyg);
-        } catch (Exception ignore) {
-            patientIdRaw = "?Unknown?";
-        }
-
-        int alder = ConversionHelper.NO_AGE;
-        Kon kon = Kon.UNKNOWN;
-        try {
-            final String personId = DocumentHelper.getUnifiedPersonId(patientIdRaw);
-            try {
-                final LocalDate sistaNedsattningsdag = getSistaNedsattningsdag(intyg);
-                if (sistaNedsattningsdag != null) {
-                    alder = ConversionHelper.extractAlder(personId, sistaNedsattningsdag);
-                }
-            } finally {
-                kon = Kon.parse(ConversionHelper.extractKon(personId));
-            }
-        } catch (Exception e) {
-            LOG.error("Could not extract age and/or gender: '{}'", patientIdRaw);
-            LOG.debug("Could not extract age and/or gender: '{}'", patientIdRaw, e);
-        }
-        return new Patientdata(alder, kon);
-
     }
 
     private LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {

@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Test;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.UtlatandeBuilder;
+import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 
 import java.time.LocalDate;
 

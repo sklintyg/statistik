@@ -22,17 +22,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
-import se.inera.statistics.service.report.model.Kon;
 
 @Component
 public class TsBasHelper extends IntygHelper<RegisterTSBasType> {
-
-    private static final Logger LOG = LoggerFactory.getLogger(TsBasHelper.class);
 
     @Override
     protected Class<RegisterTSBasType> getIntygClass() {
@@ -77,30 +72,7 @@ public class TsBasHelper extends IntygHelper<RegisterTSBasType> {
     }
 
     @Override
-    public Patientdata getPatientData(RegisterTSBasType intyg) {
-        String patientIdRaw;
-        try {
-            patientIdRaw = getPatientId(intyg);
-        } catch (Exception ignore) {
-            patientIdRaw = "?Unknown?";
-        }
-
-        int alder = ConversionHelper.NO_AGE;
-        Kon kon = Kon.UNKNOWN;
-        try {
-            final String personId = DocumentHelper.getUnifiedPersonId(patientIdRaw);
-            try {
-                final LocalDate signeringsTidpunkt = getSigneringsTidpunkt(intyg).toLocalDate();
-                if (signeringsTidpunkt != null) {
-                    alder = ConversionHelper.extractAlder(personId, signeringsTidpunkt);
-                }
-            } finally {
-                kon = Kon.parse(ConversionHelper.extractKon(personId));
-            }
-        } catch (Exception e) {
-            LOG.error("Could not extract age and/or gender: '{}'", patientIdRaw);
-            LOG.debug("Could not extract age and/or gender: '{}'", patientIdRaw, e);
-        }
-        return new Patientdata(alder, kon);
+    public LocalDate getDateForPatientAge(RegisterTSBasType intyg) {
+        return getSigneringsTidpunkt(intyg).toLocalDate();
     }
 }

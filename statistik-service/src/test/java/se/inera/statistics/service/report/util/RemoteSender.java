@@ -26,7 +26,7 @@ import org.springframework.jms.core.MessageCreator;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.UtlatandeBuilder;
+import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 import se.inera.statistics.service.queue.JmsReceiver;
 
 import javax.annotation.PostConstruct;
