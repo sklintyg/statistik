@@ -8,7 +8,6 @@
     "{{ proxy_env }}"
   roles:
     - statistik-systemvariabler
-    - statistik-resurser
     - statistik-jarfiler
     - config-folder
     - unlock-config-folder
