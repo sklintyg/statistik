@@ -19,20 +19,12 @@
 package se.inera.statistics.service.warehouse;
 
 import com.google.common.collect.HashMultiset;
-import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
-import redis.embedded.RedisServer;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.caching.FakeRedisTemplate;
@@ -43,19 +35,10 @@ import se.inera.statistics.service.warehouse.query.CounterFunction;
 
 import java.time.Clock;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static se.inera.statistics.service.report.model.Kon.FEMALE;
 import static se.inera.statistics.service.warehouse.Fact.aFact;
 
