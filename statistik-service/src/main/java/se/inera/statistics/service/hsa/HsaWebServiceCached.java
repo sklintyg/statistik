@@ -18,21 +18,21 @@
  */
 package se.inera.statistics.service.hsa;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.hsa.model.GetStatisticsCareGiverResponseDto;
 import se.inera.statistics.hsa.model.GetStatisticsHsaUnitResponseDto;
 import se.inera.statistics.hsa.model.GetStatisticsNamesResponseDto;
 import se.inera.statistics.hsa.model.GetStatisticsPersonResponseDto;
-
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 /**
  * This class is meant to be used when a lot of calls to HSA is expected during a short period of time,

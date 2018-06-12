@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.config.jpa;
 
+import java.sql.SQLException;
+
 import org.h2.tools.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +28,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import java.sql.SQLException;
-
 @Configuration
 @Profile("embedded")
 public class JpaConfigDev extends JpaConfigBase {
@@ -35,9 +35,9 @@ public class JpaConfigDev extends JpaConfigBase {
     @Value("${db.httpPort}")
     private String databaseHttpPort;
 
-    static final Logger LOG = LoggerFactory.getLogger(JpaConfigDev.class);
-    
-    
+    private static final Logger LOG = LoggerFactory.getLogger(JpaConfigDev.class);
+
+
     @Bean(destroyMethod = "stop")
     Server h2WebServer() throws SQLException {
         LOG.info("Starting H2 Web Server Console");

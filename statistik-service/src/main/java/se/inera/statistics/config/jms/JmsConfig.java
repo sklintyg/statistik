@@ -19,6 +19,9 @@
 package se.inera.statistics.config.jms;
 
 
+import javax.jms.ConnectionFactory;
+import javax.jms.MessageListener;
+
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -33,11 +36,9 @@ import org.springframework.jms.connection.JmsTransactionManager;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.support.destination.DestinationResolver;
 import org.springframework.jms.support.destination.DynamicDestinationResolver;
+
 import se.inera.statistics.service.processlog.Receiver;
 import se.inera.statistics.service.queue.JmsReceiver;
-
-import javax.jms.ConnectionFactory;
-import javax.jms.MessageListener;
 
 @Configuration
 @EnableJms
@@ -70,7 +71,7 @@ public class JmsConfig implements JmsListenerConfigurer {
     public DestinationResolver destinationResolver() {
         return new DynamicDestinationResolver();
     }
-    
+
     @Bean
     public JmsTransactionManager jmsTransactionManager() {
         return new JmsTransactionManager(connectionFactory());

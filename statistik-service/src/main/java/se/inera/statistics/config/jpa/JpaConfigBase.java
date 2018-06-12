@@ -18,9 +18,10 @@
  */
 package se.inera.statistics.config.jpa;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import liquibase.integration.spring.SpringLiquibase;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.util.Properties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,9 +30,9 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import java.util.Properties;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import liquibase.integration.spring.SpringLiquibase;
 
 public abstract class JpaConfigBase {
 
@@ -53,7 +54,8 @@ public abstract class JpaConfigBase {
     @Value("${db.password}")
     private String databasePassword;
 
-    static final Logger LOG = LoggerFactory.getLogger(JpaConfigBase.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JpaConfigBase.class);
+    private static final int MAXIMUM_POOL_SIZE = 20;
 
     @Bean
     LocalContainerEntityManagerFactoryBean entityManagerFactory(final DataSource dataSource) {
@@ -102,7 +104,7 @@ public abstract class JpaConfigBase {
         dataSourceConfig.setPassword(databasePassword);
         dataSourceConfig.setAutoCommit(false);
         dataSourceConfig.setConnectionTestQuery("SELECT 1");
-        dataSourceConfig.setMaximumPoolSize(20);
+        dataSourceConfig.setMaximumPoolSize(MAXIMUM_POOL_SIZE);
         return new HikariDataSource(dataSourceConfig);
     }
 
