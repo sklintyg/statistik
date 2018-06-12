@@ -18,23 +18,28 @@
  */
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.ifv.statistics.spi.authorization.impl.HsaCommunicationException;
+import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
+import se.inera.intygstjanster.ts.services.RegisterTSDiabetesResponder.v1.RegisterTSDiabetesType;
 import se.inera.statistics.service.helper.DocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
+import se.inera.statistics.service.helper.TsBasHelper;
+import se.inera.statistics.service.helper.TsDiabetesHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.schemavalidation.SchemaValidator;
 import se.inera.statistics.service.schemavalidation.ValidateXmlResponse;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
-
-import java.util.List;
 
 @Component
 public class LogConsumerImpl implements LogConsumer {
@@ -52,6 +57,12 @@ public class LogConsumerImpl implements LogConsumer {
 
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
+
+    @Autowired
+    private TsBasHelper tsBasHelper;
+
+    @Autowired
+    private TsDiabetesHelper tsDiabetesHelper;
 
     @Autowired
     private SchemaValidator schemaValidator;
@@ -96,27 +107,22 @@ public class LogConsumerImpl implements LogConsumer {
     private boolean handleEvent(IntygEvent event, IntygFormat format) {
         switch (format) {
             case REGISTER_MEDICAL_CERTIFICATE:
-                final boolean successfullyProcessedJson = processJsonMedicalCertificate(event);
-                if (!successfullyProcessedJson) {
-                    return false;
-                }
-                break;
+                return processJsonMedicalCertificate(event);
             case REGISTER_CERTIFICATE:
-                final boolean successfullyProcessedRc = processRegisterCertificate(event);
-                if (!successfullyProcessedRc) {
-                    return false;
-                }
-                break;
+                return processRegisterCertificate(event);
+            case REGISTER_TS_BAS:
+                return processTsBas(event);
+            case REGISTER_TS_DIABETES:
+                return processTsDiabetes(event);
             default:
                 LOG.warn("Unhandled intyg format: " + format);
                 return false;
         }
-        return true;
     }
 
     private boolean processRegisterCertificate(IntygEvent event) {
         try {
-            final RegisterCertificateType rc = registerCertificateHelper.unmarshalRegisterCertificateXml(event.getData());
+            final RegisterCertificateType rc = registerCertificateHelper.unmarshalXml(event.getData());
             final String intygTyp = rc.getIntyg().getTyp().getCode().toUpperCase().trim();
             final String data = RegisterCertificateHelper.convertToV3(event.getData());
             final ValidateXmlResponse validation = schemaValidator.validate(intygTyp, data);
@@ -134,6 +140,48 @@ public class LogConsumerImpl implements LogConsumer {
             return false;
         }
         return true;
+    }
+
+    private boolean processTsBas(IntygEvent event) {
+        try {
+            final RegisterTSBasType rc = tsBasHelper.unmarshalXml(event.getData());
+
+            EventType type = event.getType();
+            HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
+            if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
+                return false;
+            }
+
+            IntygDTO dto = tsBasHelper.convertToDTO(rc);
+            processIntyg(event, dto, hsaInfo);
+
+            return true;
+        } catch (Exception e) {
+            LOG.warn("Failed to unmarshal intyg xml");
+            LOG.debug("Failed to unmarshal intyg xml", e);
+            return false;
+        }
+    }
+
+    private boolean processTsDiabetes(IntygEvent event) {
+        try {
+            final RegisterTSDiabetesType rc = tsDiabetesHelper.unmarshalXml(event.getData());
+
+            EventType type = event.getType();
+            HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
+            if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
+                return false;
+            }
+
+            IntygDTO dto = tsDiabetesHelper.convertToDTO(rc);
+            processIntyg(event, dto, hsaInfo);
+
+            return true;
+        } catch (Exception e) {
+            LOG.warn("Failed to unmarshal intyg xml");
+            LOG.debug("Failed to unmarshal intyg xml", e);
+            return false;
+        }
     }
 
     /**

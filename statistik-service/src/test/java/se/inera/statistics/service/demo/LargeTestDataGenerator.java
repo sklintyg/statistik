@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.UtlatandeBuilder;
+import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
 import se.inera.statistics.service.hsa.HsaInfo;

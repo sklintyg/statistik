@@ -31,7 +31,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.UtlatandeBuilder;
+import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.IntygType;

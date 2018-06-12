@@ -16,15 +16,18 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.helper;
+package se.inera.statistics.service.testsupport;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import org.junit.Assert;
 import org.junit.Test;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.Patientdata;
+import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 
 import java.time.LocalDate;
 

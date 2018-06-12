@@ -203,7 +203,7 @@ public class RegisterCertificateHelperTest {
 
     @Test
     public void testConvertToDTO() throws JAXBException {
-        RegisterCertificateType intyg = registerCertificateHelper.unmarshalRegisterCertificateXml(xmlIntyg);
+        RegisterCertificateType intyg = registerCertificateHelper.unmarshalXml(xmlIntyg);
 
         IntygDTO dto = registerCertificateHelper.convertToDTO(intyg);
         LocalDate signeringsdatum = LocalDate.of(2013, 3, 17);
@@ -292,7 +292,7 @@ public class RegisterCertificateHelperTest {
     public void unmarshalRegisterCertificateXmlHandlesConcurrentCalls() {
         IntStream.range(1,25).parallel().forEach(value -> {
             try {
-                registerCertificateHelper.unmarshalRegisterCertificateXml(xmlIntyg);
+                registerCertificateHelper.unmarshalXml(xmlIntyg);
             } catch (JAXBException e) {
                 //ok in this test
             } catch (Exception e) {

@@ -18,16 +18,21 @@
  */
 package se.inera.statistics.service.processlog;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
+import se.inera.intygstjanster.ts.services.RegisterTSDiabetesResponder.v1.RegisterTSDiabetesType;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
+import se.inera.statistics.service.helper.TsBasHelper;
+import se.inera.statistics.service.helper.TsDiabetesHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
-public class Receiver  {
+public class Receiver {
     private static final Logger LOG = LoggerFactory.getLogger(Receiver.class);
 
     @Autowired
@@ -38,6 +43,12 @@ public class Receiver  {
 
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
+
+    @Autowired
+    private TsBasHelper tsBasHelper;
+
+    @Autowired
+    private TsDiabetesHelper tsDiabetesHelper;
 
     private long accepted;
 
@@ -61,6 +72,12 @@ public class Receiver  {
             case REGISTER_CERTIFICATE:
                 hsaForXml(documentId, data);
                 break;
+            case REGISTER_TS_BAS:
+                hsaForTsBas(documentId, data);
+                break;
+            case REGISTER_TS_DIABETES:
+                hsaForTsDiabetes(documentId, data);
+                break;
             default:
                 LOG.error("Unhandled intyg format: " + intygFormat);
         }
@@ -78,7 +95,27 @@ public class Receiver  {
 
     private void hsaForXml(String documentId, String data) {
         try {
-            final RegisterCertificateType utlatande = registerCertificateHelper.unmarshalRegisterCertificateXml(data);
+            final RegisterCertificateType utlatande = registerCertificateHelper.unmarshalXml(data);
+            hsaDecorator.populateHsaData(utlatande, documentId);
+        } catch (Exception e) {
+            LOG.error("Failed decorating xml intyg {}: '{}'", documentId, e.getMessage());
+            LOG.error("Failed decorating stacktrace:", e);
+        }
+    }
+
+    private void hsaForTsBas(String documentId, String data) {
+        try {
+            final RegisterTSBasType utlatande = tsBasHelper.unmarshalXml(data);
+            hsaDecorator.populateHsaData(utlatande, documentId);
+        } catch (Exception e) {
+            LOG.error("Failed decorating xml intyg {}: '{}'", documentId, e.getMessage());
+            LOG.error("Failed decorating stacktrace:", e);
+        }
+    }
+
+    private void hsaForTsDiabetes(String documentId, String data) {
+        try {
+            final RegisterTSDiabetesType utlatande = tsDiabetesHelper.unmarshalXml(data);
             hsaDecorator.populateHsaData(utlatande, documentId);
         } catch (Exception e) {
             LOG.error("Failed decorating xml intyg {}: '{}'", documentId, e.getMessage());

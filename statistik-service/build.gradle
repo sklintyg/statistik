@@ -18,6 +18,7 @@ dependencies {
 
     compile "se.riv.clinicalprocess.healthcond.certificate:clinicalprocess-healthcond-certificate-schemas:${certificateSchemaVersion}"
     compile "se.inera.intyg.clinicalprocess.healthcond.certificate:intyg-clinicalprocess-healthcond-certificate-schematron:${intygSchematronVersion}"
+    compile "se.inera.intyg.transportstyrelsen:intyg-transportstyrelsen-schemas:${intygTransportstyrelsenSchemasVersion}"
 
     compile "org.hibernate.javax.persistence:hibernate-jpa-2.1-api:${hibernateJpaVersion}"
     compile "org.hibernate:hibernate-entitymanager:${hibernateVersion}"
