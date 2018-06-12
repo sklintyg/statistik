@@ -18,11 +18,13 @@ export REDIS_HOST=$REDIS_SERVICE_HOST
 export LANG=en_US.UTF-8
 export LC_CTYPE=$LANG
 
-export SPRING_PROFILES_ACTIVE="dev,testapi,hsa-stub,wc-hsa-stub,security-fake,active,hsacached"
+#export SPRING_PROFILES_ACTIVE="dev,testapi,hsa-stub,wc-hsa-stub,security-fake,active,hsacached"
+export SPRING_PROFILES_ACTIVE="dev,testapi,embedded,hsa-stub,wc-hsa-stub,security-fake"
 
 export CATALINA_OPTS_APPEND="\
 -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5008 \
 -Dstatistics.config.folder=/opt/$APP_NAME/config \
+-Dstatistics.test.max.intyg=500 \
 -Dstatistics.config.file=/opt/$APP_NAME/config/statistik.properties \
 -Dcertificate.folder=/opt/$APP_NAME/env \
 -Dstatistics.credentials.file=/opt/$APP_NAME/env/secret-env.properties \
