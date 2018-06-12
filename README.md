@@ -204,12 +204,11 @@ De profiler som finns är:
 |Profilnamn     |Beskrivning|
 |---------------|-----------|
 |dev            |starta applikationen i utvecklingsläge|
-|embedded       |använd inbäddad databas (H2), och lägg in testintyg|
+|embedded       |skapa testintyg och starta konsol för inbäddad databas (H2). profilen fungerar även med MySQL konfiguration|
 |hsa-stub       |gå inte mot hsa, utan använd en stub istället|
 |security-fake  |stöd enbart simulerad inloggning|
 |security-both  |stöd saml-inloggning och simulerad inloggning|
 |security-saml  |stöd enbart saml-inloggning|
-|qm             |läs meddelanden från kön|
 |active         |processa inkommande intyg|
 |hsacached      |Cachar hsa-anrop för att ej överlasta hsa vid omprocessning|
 |testapi        |Aktiverar REST-interface som enbart används för testning, tex möjlighet att sätta klockan eller rensa intyg |
@@ -217,7 +216,7 @@ De profiler som finns är:
 ## Deployment
 Vi använder ansible för att enkelt sätta upp servrar. Följande stämmer för min lokala miljö (Mac, Homebrew), komplettera gärna med andra miljöer.
 
-### Installera ansible
+### Installera ansible (deprecated)
 
     brew install ansible
 
