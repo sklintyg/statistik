@@ -31,12 +31,28 @@ angular.module('StatisticsApp')
             },
             restrict: 'E',
             templateUrl: '/components/directives/statsHeader/statsHeader.html',
-            controller: function($scope, AppModel, UserModel) {
+            controller: function($scope, AppModel, UserModel, $uibModal) {
                 $scope.AppModel = AppModel;
                 $scope.UserModel = UserModel;
 
                 $scope.changeVardgivare = function(vgId) {
                     $scope.changeVg({vgId: vgId});
+                };
+
+                $scope.openSettings = function() {
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: '/components/directives/statSettings/statSettings.html',
+                        controller: 'StatSettingsCtrl',
+                        size: 'lg',
+                        backdrop: 'true'
+                    });
+
+                    modalInstance.result.then(function() {
+                        //$scope.selectVardgivare({vgId: value});
+                    }, function() {
+
+                    });
                 };
 
             }

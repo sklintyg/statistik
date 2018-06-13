@@ -48,25 +48,25 @@ $st-color-42: #F2DEDE;
 $st-color-43: #D0021C;
 $st-color-44: #751723;
 
-$stat-btn-color: #008391;
-$stat-header-color: #008391;
+$stat-btn-color: $st-color-15;
+$stat-header-color: $st-color-15;
 
 $stat-link-color-filter: #0b0b0b;
 
 $stat-collapse-panel-bg: #f9f9f9;
 
-$stat-panel-header-from: #008391;
+$stat-panel-header-from: $st-color-15;
 $stat-panel-header-to: #00687d;
-$stat-panel-header-hover: #28b4c4;
+$stat-panel-header-hover: $st-color-27;
 $stat-panel-header-color: #fff;
 $stat-panel-bg: #ebebeb;
 $stat-panel-bg-hover: #f0f0f0;
 
-$stat-header-link-color: #28b4c4;
+$stat-header-link-color: $st-color-27;
 
-$stat-filter-active: #EA8025;
+$stat-filter-active: $st-color-14;
 
-$stat-menu-header-bg: #212633;
+$stat-menu-header-bg: $st-color-35;
 $stat-menu-header-bg-from: #666;
 $stat-menu-header-disabled-bg: #eee;
 
