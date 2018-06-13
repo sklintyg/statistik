@@ -61,7 +61,7 @@
     <bean class="se.inera.statistics.service.warehouse.EnhetLoader" />
     <bean class="se.inera.statistics.service.warehouse.SjukfallUtil" />
     <bean class="se.inera.statistics.service.caching.Cache" />
-    <bean class="se.inera.statistics.service.caching.FakeRedisTemplate"/>
+    <bean class="se.inera.statistics.service.caching.NoOpRedisTemplate"/>
     <bean class="se.inera.statistics.service.warehouse.message.MessageWidelineManager" />
     <bean class="se.inera.statistics.service.warehouse.message.MessageWidelineConverter" />
     <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable" />

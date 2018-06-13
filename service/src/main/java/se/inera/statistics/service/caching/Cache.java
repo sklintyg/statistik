@@ -37,10 +37,7 @@ import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallIterator;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -76,12 +73,8 @@ public class Cache {
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     public void clearCaches() {
-        final Set<Object> keys = template.keys(REDIS_KEY_PREFIX + "*");
-        if (keys != null) {
-            template.delete(keys);
-        } else {
-            LOG.warn("ClearCache was requested but no value was found in cache");
-        }
+        LOG.info("Clear Redis Cache Keys");
+        template.delete(Arrays.asList(AISLE, SJUKFALLGROUP, VGENHET, ENHET));
     }
 
     public List<SjukfallGroup> getSjukfallGroups(SjukfallGroupCacheKey key) {

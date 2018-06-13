@@ -27,7 +27,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.caching.Cache;
-import se.inera.statistics.service.caching.FakeRedisTemplate;
+import se.inera.statistics.service.caching.NoOpRedisTemplate;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.Range;
@@ -49,7 +49,7 @@ public class SjukfallUtilTest {
     private SjukfallUtil sjukfallUtil;
 
     @Spy
-    private Cache cache = new Cache(new FakeRedisTemplate(), "1");
+    private Cache cache = new Cache(new NoOpRedisTemplate(), "1");
 
     private int id = 1;
 

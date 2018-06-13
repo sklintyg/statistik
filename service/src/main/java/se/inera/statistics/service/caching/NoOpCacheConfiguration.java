@@ -28,11 +28,11 @@ import org.springframework.data.redis.core.RedisTemplate;
  */
 @Profile("!caching-enabled")
 @Configuration
-public class FakeCacheConfiguration {
+public class NoOpCacheConfiguration {
 
     @Bean
     public RedisTemplate<Object, Object> fakeRedisTemplate() {
-        return new FakeRedisTemplate();
+        return new NoOpRedisTemplate();
     }
 }
 

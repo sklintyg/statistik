@@ -5,8 +5,7 @@ apply plugin: 'idea'
 
 gretty {
     def baseUrl = 'http://localhost:8080'
-    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,testapi,embedded,hsa-stub,wc-hsa-stub,security-fake'
-//    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,testapi,active,hsa-stub,wc-hsa-stub,security-fake,hsacached'
+    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,caching-enabled,testapi,embedded,hsa-stub,wc-hsa-stub,security-fake'
     servletContainer = 'jetty9'
     contextPath = '/'
 

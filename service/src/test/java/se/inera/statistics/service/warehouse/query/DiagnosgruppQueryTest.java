@@ -32,7 +32,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.caching.Cache;
-import se.inera.statistics.service.caching.FakeRedisTemplate;
+import se.inera.statistics.service.caching.NoOpRedisTemplate;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10;
@@ -82,7 +82,7 @@ public class DiagnosgruppQueryTest {
     private WidelineLoader widelineLoader;
 
     @Spy
-    private Cache cache = new Cache(new FakeRedisTemplate(), "1");
+    private Cache cache = new Cache(new NoOpRedisTemplate(), "1");
 
     private int intyg;
     private int patient;

@@ -34,7 +34,7 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.caching.Cache;
-import se.inera.statistics.service.caching.FakeRedisTemplate;
+import se.inera.statistics.service.caching.NoOpRedisTemplate;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
 import se.inera.statistics.service.report.model.Kon;
@@ -97,7 +97,7 @@ public class SjukfallQueryTest {
 
     private BiMap<HsaIdLakare, Integer> lakarIdMap = HashBiMap.create();
 
-    private Cache cache = new Cache(new FakeRedisTemplate(), "1");
+    private Cache cache = new Cache(new NoOpRedisTemplate(), "1");
     private SjukfallUtil sjukfallUtil = new SjukfallUtil();
 
     private FilterPredicates enhetFilter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
