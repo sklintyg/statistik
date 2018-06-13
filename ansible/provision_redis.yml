@@ -1,8 +1,0 @@
----
-# This playbook provisions the redis server installation for Statistik
-
-- hosts: all
-  become: yes
-  serial: 1
-  roles:
-    - redis-server

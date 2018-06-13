@@ -5,4 +5,3 @@
 - include: provision_tomcat.yml
 #- include: provision_phantomjs.yml
 - include: provision_cron.yml
-- include: provision_redis.yml

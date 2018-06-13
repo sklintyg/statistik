@@ -1,7 +1,0 @@
----
-
-redis_name: "redis-stable"
-redis_archive: "{{ redis_name }}.tar.gz"
-redis_download_url: "http://download.redis.io/{{ redis_archive }}"
-redis_archive_tmp_folder: "/tmp/redis_server/"
-redis_archive_tmp_folder_unarchived: "{{ redis_archive_tmp_folder }}{{ redis_name }}/"
