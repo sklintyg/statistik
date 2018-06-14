@@ -29,7 +29,7 @@
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd"
 >
 
-    <context:component-scan base-package="se.inera.statistics.service.processlog,se.inera.statistics.config"/>
+    <context:component-scan base-package="se.inera.statistics.service.processlog,se.inera.statistics.config.jpa,se.inera.statistics.config.jms"/>
     <context:component-scan base-package="se.inera.statistics.service.schemavalidation"/>
     <context:component-scan
             base-package="se.inera.statistics.service.warehouse,se.inera.statistics.service.monitoring"/>
