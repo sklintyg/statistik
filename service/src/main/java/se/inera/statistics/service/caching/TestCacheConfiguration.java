@@ -28,7 +28,7 @@ import se.inera.intyg.infra.rediscache.core.BasicCacheConfiguration;
  */
 @Profile("test")
 @Configuration
-@Import( { BasicCacheConfiguration.class })
+@Import({ BasicCacheConfiguration.class })
 public class TestCacheConfiguration {
 }
 
