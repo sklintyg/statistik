@@ -19,6 +19,11 @@
 package se.inera.statistics.service.caching;
 
 import com.google.common.collect.Lists;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +40,6 @@ import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallIterator;
-
-import java.time.LocalDate;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * This is a common cache used to get better performance in ST.
@@ -79,82 +79,17 @@ public class Cache {
 
     public List<SjukfallGroup> getSjukfallGroups(SjukfallGroupCacheKey key) {
         LOG.info("Getting sjukfallgroups: {}", key.getKey());
-        final HashOperations<Object, String, Object> hashOps = template.opsForHash();
-        final Boolean hasKey = hashOps.hasKey(SJUKFALLGROUP, key.getKey());
-        if (hasKey) { //Spotbugs did not allow a null check here, I'm not sure why
-            try {
-                final Object group = hashOps.get(SJUKFALLGROUP, key.getKey());
-                return (List<SjukfallGroup>) group;
-            } catch (ClassCastException e) {
-                LOG.warn("Failed to cast sjukfallsgroup in cache");
-                hashOps.delete(SJUKFALLGROUP, key.getKey());
-            }
-        }
-        final List<SjukfallGroup> sjukfallGroups = loadSjukfallgroups(key);
-        hashOps.put(SJUKFALLGROUP, key.getKey(), sjukfallGroups);
-        return sjukfallGroups;
-    }
-
-    private List<SjukfallGroup> loadSjukfallgroups(SjukfallGroupCacheKey key) {
-        LOG.info("Sjukfallgroups not cached: {}", key.getKey());
-        final LocalDate from = key.getFrom();
-        final int periods = key.getPeriods();
-        final int periodSize = key.getPeriodSize();
-        final Aisle aisle = key.getAisle();
-        final FilterPredicates filter = key.getFilter();
-        return Lists
-                .newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter));
-    }
-
-    public Aisle getAisle(HsaIdVardgivare vardgivarId, Function<HsaIdVardgivare, Aisle> loader) {
-        LOG.info("Getting aisle: {}", vardgivarId);
-        final String key = vardgivarId.getId();
-        final HashOperations<Object, Object, Object> hashOps = template.opsForHash();
-        if (hashOps.hasKey(AISLE, key)) {
-            try {
-                final Object aisle = hashOps.get(AISLE, key);
-                return (Aisle) aisle;
-            } catch (ClassCastException e) {
-                LOG.warn("Failed to cast aisle in cache");
-                hashOps.delete(AISLE, key);
-            }
-        }
-        final Aisle facts = aisleLoader(vardgivarId, loader);
-        hashOps.put(AISLE, key, facts);
-        return facts;
-    }
-
-    private Aisle aisleLoader(HsaIdVardgivare vardgivarId, Function<HsaIdVardgivare, Aisle> loader) {
-        LOG.info("Aisle not cached: {}", vardgivarId);
-        return loader.apply(vardgivarId);
-    }
-
-    private List<HsaIdEnhet> loadVgEnhets(HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
-        LOG.info("VgEnhets not cached: {}", vardgivareId);
-        final List<Enhet> allEnhetsForVg = loader.apply(vardgivareId);
-        final HashOperations<Object, Object, Object> hashOps = template.opsForHash();
-        for (Enhet enhet : allEnhetsForVg) {
-            hashOps.put(ENHET, enhet.getEnhetId().getId(), enhet);
-        }
-        return allEnhetsForVg.stream().map(Enhet::getEnhetId).collect(Collectors.toList());
+        return lookup(SJUKFALLGROUP, key.getKey(), () ->  loadSjukfallgroups(key));
     }
 
     public List<HsaIdEnhet> getVgEnhets(HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
         LOG.info("Getting VgEnhets: {}", vardgivareId);
-        final String key = vardgivareId.getId();
-        final HashOperations<Object, Object, Object> hashOps = template.opsForHash();
-        if (hashOps.hasKey(VGENHET, key)) {
-            try {
-                final Object enhets = hashOps.get(VGENHET, key);
-                return (List<HsaIdEnhet>) enhets;
-            } catch (ClassCastException e) {
-                LOG.warn("Failed to cast vgenhets in cache");
-                hashOps.delete(VGENHET, key);
-            }
-        }
-        final List<HsaIdEnhet> hsaIdEnhets = loadVgEnhets(vardgivareId, loader);
-        hashOps.put(VGENHET, key, hsaIdEnhets);
-        return hsaIdEnhets;
+        return lookup(VGENHET, vardgivareId.getId(), () -> loadVgEnhets(vardgivareId, loader));
+    }
+
+    public Aisle getAisle(HsaIdVardgivare vardgivarId, Function<HsaIdVardgivare, Aisle> loader) {
+        LOG.info("Getting aisle: {}", vardgivarId);
+        return lookup(AISLE, vardgivarId.getId(), () -> aisleLoader(vardgivarId, loader));
     }
 
     public Collection<Enhet> getEnhetsWithHsaId(Collection<HsaIdEnhet> enhetIds,
@@ -176,6 +111,51 @@ public class Cache {
         enhets.addAll(cachedEnhets);
         LOG.info("All enhets not cached");
         return enhets;
+    }
+
+    private List<SjukfallGroup> loadSjukfallgroups(SjukfallGroupCacheKey key) {
+        LOG.info("Sjukfallgroups not cached: {}", key.getKey());
+        final LocalDate from = key.getFrom();
+        final int periods = key.getPeriods();
+        final int periodSize = key.getPeriodSize();
+        final Aisle aisle = key.getAisle();
+        final FilterPredicates filter = key.getFilter();
+        return Lists
+                .newArrayList(new SjukfallIterator(from, periods, periodSize, aisle, filter));
+    }
+
+    // returns a typed object from cache, or loads a value if no such hashKey exists
+    private <T>  T lookup(final Object key, final Object hashKey, Supplier<T> loader) {
+        final HashOperations<Object, Object, Object> ops = template.opsForHash();
+
+        if (ops.hasKey(key, hashKey)) {
+            try {
+                return (T) ops.get(key, hashKey);
+            } catch (ClassCastException e) {
+                LOG.warn("Failed to cast {} object in cache: {}", key, e.getMessage());
+                ops.delete(key, hashKey);
+            }
+        }
+
+        final T value = loader.get();
+        ops.put(key, hashKey, value);
+
+        return value;
+    }
+
+    private Aisle aisleLoader(HsaIdVardgivare vardgivarId, Function<HsaIdVardgivare, Aisle> loader) {
+        LOG.info("Aisle not cached: {}", vardgivarId);
+        return loader.apply(vardgivarId);
+    }
+
+    private List<HsaIdEnhet> loadVgEnhets(HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
+        LOG.info("VgEnhets not cached: {}", vardgivareId);
+        final List<Enhet> allEnhetsForVg = loader.apply(vardgivareId);
+        final HashOperations<Object, Object, Object> hashOps = template.opsForHash();
+        for (Enhet enhet : allEnhetsForVg) {
+            hashOps.put(ENHET, enhet.getEnhetId().getId(), enhet);
+        }
+        return allEnhetsForVg.stream().map(Enhet::getEnhetId).collect(Collectors.toList());
     }
 
 }
