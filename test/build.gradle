@@ -75,7 +75,7 @@ if (project.hasProperty('runFitnesse')) {
         jvmArgs = ["-Dcertificate.logback.file=${projectDir}/src/main/resources/logback-test.xml",
                    '-DbaseUrl=' + baseUrl,
                    '-Dspring.profiles.active=dev,testapi,embedded,hsa-stub,security-fake,skipTestIntygInjection',
-                   '-Dstatistics.config.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/default.dev.properties',
+                   '-Dstatistics.config.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/default.properties',
                    '-Dstatistics.credentials.file=' + project(":statistik-web").projectDir.path + '/src/main/resources/dev-credentials.properties',
                    '-Dstatistics.resources.folder=' + projectDir + '/../src/main/resources'
         ]

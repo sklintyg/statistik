@@ -25,7 +25,7 @@
     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
     ">
 
-    <context:component-scan base-package="se.inera.statistics.web.service.monitoring,se.inera.statistics.service.caching" />
+    <context:component-scan base-package="se.inera.statistics.web.service.monitoring" />
 
     <context:property-placeholder location="file:${statistics.credentials.file}, file:${statistics.config.file}, classpath*:version.properties"
                                   order="1" ignore-resource-not-found="false" ignore-unresolvable="true"/>
@@ -90,7 +90,7 @@
         <import resource="application-context-jmx.xml"/>
 
         <context:annotation-config/>
-        <context:component-scan base-package="se.inera.statistics.service,se.inera.statistics.config"/>
+        <context:component-scan base-package="se.inera.statistics.service,se.inera.statistics.config,se.inera.statistics.service.caching"/>
 
         <bean id="receiver" class="se.inera.statistics.service.processlog.Receiver"/>
 
