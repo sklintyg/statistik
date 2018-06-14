@@ -210,6 +210,7 @@ De profiler som finns är:
 |dev            |starta applikationen i utvecklingsläge|
 |embedded       |skapa testintyg och starta konsol för inbäddad databas (H2). profilen fungerar även med MySQL konfiguration|
 |caching-enabled|profil från infra som aktiverar redis-cache, krävs för att aktivera job schedulers och ta emot inkommande intyg etc.|
+|test           |profil som använder extern redis ska användas tillsammans med dev och caching-enabled|
 |hsa-stub       |gå inte mot hsa, utan använd en stub istället|
 |security-fake  |stöd enbart simulerad inloggning|
 |security-both  |stöd saml-inloggning och simulerad inloggning|

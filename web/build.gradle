@@ -5,7 +5,7 @@ apply plugin: 'idea'
 
 gretty {
     def baseUrl = 'http://localhost:8080'
-    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,caching-enabled,testapi,embedded,hsa-stub,wc-hsa-stub,security-fake'
+    def jvmArgSpringProfiles = '-Dspring.profiles.active=dev,testapi,embedded,hsa-stub,wc-hsa-stub,security-fake'
     servletContainer = 'jetty9'
     contextPath = '/'
 
@@ -14,10 +14,6 @@ gretty {
         baseUrl = 'http://localhost:9101'
     }
 
-    if (project.hasProperty('runWithActiveMQ')) {
-        serverConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty.xml" //Configures the jetty server with an mbean server.
-        jvmArgSpringProfiles += ',qm,active' //Add the needed spring profiles to start up an embedded activemq
-    }
     contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
 
     logbackConfigFile = "${projectDir}/src/main/resources/logback.xml"
@@ -34,8 +30,7 @@ gretty {
     jvmArgs = [
             jvmArgSpringProfiles,
             '-DbaseUrl=' + baseUrl,
-            '-D' +
-                    'statistics.test.max.intyg=500',
+            '-Dstatistics.test.max.intyg=500',
             '-Dstatistics.config.file=' + projectDir + '/src/main/resources/default.dev.properties',
             '-Dstatistics.credentials.file=' + projectDir + '/src/main/resources/dev-credentials.properties',
             '-Dstatistics.resources.folder=' + projectDir + '/../src/main/resources'

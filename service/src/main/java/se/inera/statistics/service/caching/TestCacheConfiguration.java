@@ -19,14 +19,16 @@
 package se.inera.statistics.service.caching;
 
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
+import se.inera.intyg.infra.rediscache.core.BasicCacheConfiguration;
 
 /**
- * Activates infra cache configuration.
+ * For external redis cache, but should work with the dev profile activated as well.
  */
-@Profile("!test")
+@Profile("test")
 @Configuration
-@ImportResource({"classpath:basic-cache-config.xml"})
-public class CacheConfiguration {
+@Import( { BasicCacheConfiguration.class })
+public class TestCacheConfiguration {
 }
+
