@@ -41,7 +41,7 @@ public class FilterHashHandler {
     @Autowired
     private UserSelectionManager userSelectionManager;
 
-    String getHash(String filterData) throws FilterException {
+    public String getHash(String filterData) throws FilterException {
         try {
             final JsonParser parser = new ObjectMapper().getFactory().createParser(filterData);
             JsonToken token;
@@ -59,7 +59,7 @@ public class FilterHashHandler {
         }
     }
 
-    Optional<String> getFilterData(String hash) {
+    public Optional<String> getFilterData(String hash) {
         final UserSelection userSelection = userSelectionManager.find(hash);
         if (userSelection == null) {
             return Optional.empty();
@@ -67,7 +67,7 @@ public class FilterHashHandler {
         return Optional.of(userSelection.getValue());
     }
 
-    FilterData getFilterFromHash(String filterHash) {
+    public FilterData getFilterFromHash(String filterHash) {
         final Optional<String> filterData = getFilterData(filterHash);
         if (!filterData.isPresent()) {
             throw new FilterHashMissingException("Could not find filter with given hash: " + filterHash);

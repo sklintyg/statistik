@@ -47,6 +47,7 @@ import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
+import se.inera.statistics.web.service.endpoints.ProtectedLandstingService;
 import se.inera.statistics.web.service.landsting.LandstingEnhetFileParseException;
 import se.inera.statistics.web.service.landsting.LandstingFileGenerationException;
 import se.inera.statistics.web.service.landsting.LandstingFileReader;

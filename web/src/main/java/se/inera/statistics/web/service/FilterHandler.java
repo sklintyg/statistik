@@ -90,7 +90,7 @@ public class FilterHandler {
     @Autowired
     private Clock clock;
 
-    List<HsaIdEnhet> getEnhetsFilterIds(Collection<HsaIdEnhet> filteredEnhets, HttpServletRequest request) {
+    public List<HsaIdEnhet> getEnhetsFilterIds(Collection<HsaIdEnhet> filteredEnhets, HttpServletRequest request) {
         if (filteredEnhets == null) {
             final LoginInfo info = loginServiceUtil.getLoginInfo();
             final List<Verksamhet> businesses = info.getBusinessesForVg(getSelectedVgIdForLoggedInUser(request));
@@ -99,7 +99,7 @@ public class FilterHandler {
         return new ArrayList<>(filteredEnhets);
     }
 
-    FilterSettings getFilterForLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue) {
+    public FilterSettings getFilterForLandsting(HttpServletRequest request, String filterHash, int defaultRangeValue) {
         if (filterHash == null || filterHash.isEmpty()) {
             return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request),
                     Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock));
@@ -126,14 +126,14 @@ public class FilterHandler {
         }
     }
 
-    List<Verksamhet> getAllVerksamhetsForLoggedInLandstingsUser(HttpServletRequest request) {
+    public List<Verksamhet> getAllVerksamhetsForLoggedInLandstingsUser(HttpServletRequest request) {
         final HsaIdVardgivare vgIdForLoggedInUser = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final List<HsaIdEnhet> allEnhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vgIdForLoggedInUser);
         final List<Enhet> enhets = enhetManager.getEnhets(allEnhets);
         return enhets.stream().map(enhet -> loginServiceUtil.enhetToVerksamhet(enhet)).collect(Collectors.toList());
     }
 
-    FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultNumberOfMonthsInRange) {
+    public FilterSettings getFilter(HttpServletRequest request, String filterHash, int defaultNumberOfMonthsInRange) {
         try {
             if (filterHash == null || filterHash.isEmpty()) {
                 return new FilterSettings(getFilterForAllAvailableEnhets(request),
@@ -432,7 +432,7 @@ public class FilterHandler {
         };
     }
 
-    Map<HsaIdEnhet, String> getEnhetNameMap(HttpServletRequest request, Collection<HsaIdEnhet> enhetsIDs) {
+    public Map<HsaIdEnhet, String> getEnhetNameMap(HttpServletRequest request, Collection<HsaIdEnhet> enhetsIDs) {
         final HsaIdVardgivare vgid = getSelectedVgIdForLoggedInUser(request);
         LoginInfo info = loginServiceUtil.getLoginInfo();
         Map<HsaIdEnhet, String> enheter = new HashMap<>();

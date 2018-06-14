@@ -16,27 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.spec
+package se.inera.statistics.web.service;
 
-class SjukfallIRapportenLandstingSjukfallPerEnhet extends SimpleDetailsReport {
+public final class ResponseKeys {
 
-    String vårdenhet
-    String fileUploadDate
+    public static final String ALL_AVAILABLE_DXS_SELECTED_IN_FILTER = "allAvailableDxsSelectedInFilter";
+    public static final String ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER = "allAvailableEnhetsSelectedInFilter";
+    public static final String ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER = "allAvailableSjukskrivningslangdsSelectedInFilter";
+    public static final String ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER = "allAvailableAgeGroupsSelectedInFilter";
+    public static final String ALL_AVAILABLE_INTYGTYPES_SELECTED_IN_FILTER = "allAvailableIntygTypesSelectedInFilter";
 
-    @Override
-    public void doExecute() {
-        def report = getReportSjukfallPerEnhetLandsting()
-        executeTabell(report)
-        fileUploadDate = report["fileUploadDate"]
-    }
+    public static final String FILTERED_ENHETS = "filteredEnhets";
 
-    @Override
-    def getRowNameMatcher() {
-        return vårdenhet
-    }
-
-    def fileUploadDate() {
-        return fileUploadDate
-    }
-
+    private ResponseKeys() { }
 }

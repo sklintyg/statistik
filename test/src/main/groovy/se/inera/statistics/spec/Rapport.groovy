@@ -25,7 +25,7 @@ import se.inera.statistics.service.warehouse.IntygType
 import se.inera.statistics.web.error.Message
 import se.inera.statistics.web.reports.ReportsUtil
 import se.inera.statistics.web.service.FilterData
-import se.inera.statistics.web.service.ResponseHandler
+import se.inera.statistics.web.service.ResponseKeys
 
 abstract class Rapport {
 
@@ -68,11 +68,11 @@ abstract class Rapport {
 
     public final void executeWithReport(report) {
         setMeddelande(report.messages)
-        allaDiagnosfilterValda = report[ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER]
-        allaEnhetsfilterValda = report[ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER]
-        allaSjukskrivningslängdfilterValda = report[ResponseHandler.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER]
-        allaÅldersgruppfilterValda = report[ResponseHandler.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER]
-        enhetsfilterlista = report[ResponseHandler.FILTERED_ENHETS]
+        allaDiagnosfilterValda = report[ResponseKeys.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER]
+        allaEnhetsfilterValda = report[ResponseKeys.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER]
+        allaSjukskrivningslängdfilterValda = report[ResponseKeys.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER]
+        allaÅldersgruppfilterValda = report[ResponseKeys.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER]
+        enhetsfilterlista = report[ResponseKeys.FILTERED_ENHETS]
         sjukskrivningslangdfilterlista = report?.filter?.sjukskrivningslangd
         åldersgruppfilterlista = report?.filter?.aldersgrupp
     }

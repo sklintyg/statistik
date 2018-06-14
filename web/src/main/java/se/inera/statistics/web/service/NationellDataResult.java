@@ -18,15 +18,15 @@
  */
 package se.inera.statistics.web.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.overview.OverviewData;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Contains the final reports for national statistics.
@@ -47,7 +47,7 @@ public class NationellDataResult {
     private TableDataReport intygPerTyp;
     private TableDataReport andelKompletteringar;
 
-    SimpleDetailsData getNumberOfCasesPerMonth() {
+    public SimpleDetailsData getNumberOfCasesPerMonth() {
         return numberOfCasesPerMonth;
     }
 
@@ -95,7 +95,7 @@ public class NationellDataResult {
         this.sjukskrivningsgrad = sjukskrivningsgrad;
     }
 
-    SimpleDetailsData getSjukfallslangd() {
+    public SimpleDetailsData getSjukfallslangd() {
         return sjukfallslangd;
     }
 
@@ -103,7 +103,7 @@ public class NationellDataResult {
         this.sjukfallslangd = sjukfallslangd;
     }
 
-    CasesPerCountyData getSjukfallPerLan() {
+    public CasesPerCountyData getSjukfallPerLan() {
         return sjukfallPerLan;
     }
 
@@ -111,7 +111,7 @@ public class NationellDataResult {
         this.sjukfallPerLan = sjukfallPerLan;
     }
 
-    SimpleDetailsData getKonsfordelningPerLan() {
+    public SimpleDetailsData getKonsfordelningPerLan() {
         return konsfordelningPerLan;
     }
 
@@ -123,7 +123,7 @@ public class NationellDataResult {
         this.meddelandenPerAmne = meddelandenPerAmne;
     }
 
-    DualSexStatisticsData getMeddelandenPerAmne() {
+    public DualSexStatisticsData getMeddelandenPerAmne() {
         return meddelandenPerAmne;
     }
 

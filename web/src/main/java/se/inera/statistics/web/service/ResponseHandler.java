@@ -57,12 +57,6 @@ public class ResponseHandler {
     private static final String TOO_MUCH_DATA_MESSAGE = "Rapporten innehåller mycket data, vilket kan göra diagrammet svårt att läsa. "
             + "Överväg att filtrera resultatet för att minska mängden data.";
 
-    public static final String ALL_AVAILABLE_DXS_SELECTED_IN_FILTER = "allAvailableDxsSelectedInFilter";
-    public static final String ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER = "allAvailableEnhetsSelectedInFilter";
-    public static final String ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER = "allAvailableSjukskrivningslangdsSelectedInFilter";
-    public static final String ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER = "allAvailableAgeGroupsSelectedInFilter";
-    public static final String ALL_AVAILABLE_INTYGTYPES_SELECTED_IN_FILTER = "allAvailableIntygTypesSelectedInFilter";
-    public static final String FILTERED_ENHETS = "filteredEnhets";
     public static final int LIMIT_TOO_MUCH_DATA_MESSAGE_SINGLE_CHART = 100;
     public static final int LIMIT_TOO_MUCH_DATA_MESSAGE_DUAL_CHART = 50;
     public static final String MESSAGE_KEY = "messages";
@@ -73,11 +67,11 @@ public class ResponseHandler {
     @Autowired
     private Warehouse warehouse;
 
-    Response getResponse(TableDataReport result, String format, List<HsaIdEnhet> availableEnhetsForUser, ReportInfo report) {
+    public Response getResponse(TableDataReport result, String format, List<HsaIdEnhet> availableEnhetsForUser, ReportInfo report) {
         return getResponse(result, format, availableEnhetsForUser, report, null);
     }
 
-    Response getResponse(TableDataReport result, String format, List<HsaIdEnhet> availableEnhetsForUser,
+    public Response getResponse(TableDataReport result, String format, List<HsaIdEnhet> availableEnhetsForUser,
                          ReportInfo report, Map<String, Object> extras) {
         if ("xlsx".equalsIgnoreCase(format)) {
             return getXlsx(result, availableEnhetsForUser, report.getReport());
@@ -88,7 +82,7 @@ public class ResponseHandler {
         return getResponseForDataReport(result, availableEnhetsForUser, extras, report);
     }
 
-    Response getXlsx(TableDataReport result, List<HsaIdEnhet> availableEnhetsForUser, Report report) {
+    public Response getXlsx(TableDataReport result, List<HsaIdEnhet> availableEnhetsForUser, Report report) {
         return new XlsxConverter(icd10).getXlsxResponse(result,
                 getFilename(report, "xlsx"),
                 getFilterSelections(result, availableEnhetsForUser), report);
@@ -104,12 +98,12 @@ public class ResponseHandler {
                 + fileExtension;
     }
 
-    Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser) {
+    public Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser) {
         return getResponseForDataReport(result, availableEnhetsForUser, null, null);
     }
 
-    Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser, Map<String, Object> extras,
-                                      ReportInfo report) {
+    private Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser,
+                                              Map<String, Object> extras, ReportInfo report) {
         ObjectMapper mapper = new ObjectMapper();
         @SuppressWarnings("unchecked")
         Map<String, Object> mappedResult = result != null ? mapper.convertValue(result, Map.class) : Maps.newHashMap();

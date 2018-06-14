@@ -26,22 +26,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class FilterSelections {
 
-    @JsonProperty(ResponseHandler.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER)
+    @JsonProperty(ResponseKeys.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER)
     private boolean allAvailableDxsSelectedInFilter;
 
-    @JsonProperty(ResponseHandler.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER)
+    @JsonProperty(ResponseKeys.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER)
     private boolean allAvailableEnhetsSelectedInFilter;
 
-    @JsonProperty(ResponseHandler.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER)
+    @JsonProperty(ResponseKeys.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER)
     private boolean allAvailableSjukskrivningslangdsSelectedInFilter;
 
-    @JsonProperty(ResponseHandler.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER)
+    @JsonProperty(ResponseKeys.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER)
     private boolean allAvailableAgeGroupsSelectedInFilter;
 
-    @JsonProperty(ResponseHandler.ALL_AVAILABLE_INTYGTYPES_SELECTED_IN_FILTER)
+    @JsonProperty(ResponseKeys.ALL_AVAILABLE_INTYGTYPES_SELECTED_IN_FILTER)
     private boolean allAvailableIntygTypesSelectedInFilter;
 
-    @JsonProperty(ResponseHandler.FILTERED_ENHETS)
+    @JsonProperty(ResponseKeys.FILTERED_ENHETS)
     private List<String> enhetNames;
 
     FilterSelections(boolean allAvailableDxsSelectedInFilter,

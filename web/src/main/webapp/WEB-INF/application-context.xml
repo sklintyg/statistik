@@ -66,17 +66,17 @@
         <bean class="se.inera.statistics.hsa.services.HsaOrganizationsServiceImpl"/>
         <bean id="filterHashHandler" class="se.inera.statistics.web.service.FilterHashHandler"/>
         <bean id="resultMessageHandler" class="se.inera.statistics.web.service.ResultMessageHandler"/>
-        <bean id="chartDataService" class="se.inera.statistics.web.service.ChartDataService"/>
+        <bean id="chartDataService" class="se.inera.statistics.web.service.endpoints.ChartDataService"/>
         <bean id="nationellDataCalculator" class="se.inera.statistics.web.service.NationellDataCalculator"/>
-        <bean id="pdfService" class="se.inera.statistics.web.service.PdfService"/>
+        <bean id="pdfService" class="se.inera.statistics.web.service.endpoints.PdfService"/>
 
-        <bean id="protectedChartDataService" class="se.inera.statistics.web.service.ProtectedChartDataService"/>
-        <bean id="protectedLandstingService" class="se.inera.statistics.web.service.ProtectedLandstingService"/>
+        <bean id="protectedChartDataService" class="se.inera.statistics.web.service.endpoints.ProtectedChartDataService"/>
+        <bean id="protectedLandstingService" class="se.inera.statistics.web.service.endpoints.ProtectedLandstingService"/>
         <bean class="se.inera.statistics.web.service.ResponseHandler"/>
 
         <bean class="se.inera.statistics.service.report.model.Lan" id="lan"/>
-        <bean id="loginInfoService" class="se.inera.statistics.web.service.LoginInfoService"/>
-        <bean id="loggingService" class="se.inera.statistics.web.service.LoggingService"/>
+        <bean id="loginInfoService" class="se.inera.statistics.web.service.endpoints.LoginInfoService"/>
+        <bean id="loggingService" class="se.inera.statistics.web.service.endpoints.LoggingService"/>
         <bean id="dynamicLinkRepository" class="se.inera.intyg.infra.dynamiclink.repository.DynamicLinkRepositoryImpl" />
         <bean id="dynamicLinkService" class="se.inera.intyg.infra.dynamiclink.service.DynamicLinkServiceImpl"/>
         <bean id="linkService" class="se.inera.statistics.web.service.links.LinkService"/>

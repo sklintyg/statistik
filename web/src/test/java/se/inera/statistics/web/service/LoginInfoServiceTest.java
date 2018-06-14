@@ -20,24 +20,14 @@ package se.inera.statistics.web.service;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import se.inera.auth.model.User;
-import se.inera.statistics.hsa.model.Vardenhet;
+
 import se.inera.statistics.web.model.LoginInfo;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.Collections;
-import java.util.List;
-
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
+import se.inera.statistics.web.service.endpoints.LoginInfoService;
 
 public class LoginInfoServiceTest {
 

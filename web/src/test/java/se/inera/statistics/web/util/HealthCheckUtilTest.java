@@ -25,7 +25,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
-import se.inera.statistics.web.service.ChartDataService;
+import se.inera.statistics.web.service.endpoints.ChartDataService;
 import se.inera.statistics.web.util.HealthCheckUtil.Status;
 
 import static org.junit.Assert.assertFalse;

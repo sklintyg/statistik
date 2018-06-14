@@ -35,6 +35,7 @@ import se.inera.statistics.service.report.model.Kommun;
 import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.VerksamhetsTyp;
 import se.inera.statistics.web.model.LoginInfo;
+import se.inera.statistics.web.service.endpoints.LoginInfoService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

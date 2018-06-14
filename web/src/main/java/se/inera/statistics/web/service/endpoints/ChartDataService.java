@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.service;
+package se.inera.statistics.web.service.endpoints;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,6 +44,13 @@ import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.overview.OverviewData;
+import se.inera.statistics.web.service.DiagnosisKapitelAndAvsnittAndKategoriResponse;
+import se.inera.statistics.web.service.FilterException;
+import se.inera.statistics.web.service.FilterHashHandler;
+import se.inera.statistics.web.service.NationellDataCalculator;
+import se.inera.statistics.web.service.NationellDataResult;
+import se.inera.statistics.web.service.Report;
+import se.inera.statistics.web.service.ResponseHandler;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 /**
@@ -57,7 +64,7 @@ import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 public class ChartDataService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ChartDataService.class);
-    static final String TEXT_CP1252 = "text/plain; charset=cp1252";
+    public static final String TEXT_CP1252 = "text/plain; charset=cp1252";
 
     @Autowired
     private Icd10 icd10;

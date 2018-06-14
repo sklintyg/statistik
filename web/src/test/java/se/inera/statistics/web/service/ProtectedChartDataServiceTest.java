@@ -36,6 +36,7 @@ import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingsVardgivareStatus;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
+import se.inera.statistics.web.service.endpoints.ProtectedChartDataService;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 import javax.servlet.http.HttpServletRequest;

@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
-import se.inera.statistics.web.service.ChartDataService;
+import se.inera.statistics.web.service.endpoints.ChartDataService;
 import se.inera.statistics.web.service.monitoring.SessionCounterListener;
 
 public class HealthCheckUtil {

@@ -96,7 +96,7 @@
     <logger name="org.opensaml" level="INFO" />
 
   <!-- Enable logging of frontend activities -->
-    <logger name="se.inera.statistics.web.service.LoggingService" level="INFO">
+    <logger name="se.inera.statistics.web.service.endpoints.LoggingService" level="INFO">
       <appender-ref ref="FRONTEND_FILE" />
     </logger>
 
@@ -126,10 +126,10 @@
     </logger>
 
     <!-- Enable logging of access status -->
-    <logger name="se.inera.statistics.web.service.ProtectedChartDataService" level="INFO" additivity="false">
+    <logger name="se.inera.statistics.web.service.endpoints.ProtectedChartDataService" level="INFO" additivity="false">
       <appender-ref ref="ACCESS_FILE" />
     </logger>
-    <logger name="se.inera.statistics.web.service.ProtectedLandstingService" level="INFO" additivity="false">
+    <logger name="se.inera.statistics.web.service.endpoints.ProtectedLandstingService" level="INFO" additivity="false">
       <appender-ref ref="ACCESS_FILE" />
     </logger>
 

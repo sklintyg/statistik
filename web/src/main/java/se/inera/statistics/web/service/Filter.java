@@ -18,11 +18,11 @@
  */
 package se.inera.statistics.web.service;
 
+import java.util.Collection;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-
-import java.util.Collection;
 
 public class Filter {
 
@@ -49,15 +49,15 @@ public class Filter {
         return new Filter(SjukfallUtil.ALL_ENHETER, null, null, null, null, null, null);
     }
 
-    FilterPredicates getPredicate() {
+    public FilterPredicates getPredicate() {
         return predicate;
     }
 
-    Collection<HsaIdEnhet> getEnheter() {
+    public Collection<HsaIdEnhet> getEnheter() {
         return enheter;
     }
 
-    Collection<String> getDiagnoser() {
+    public Collection<String> getDiagnoser() {
         return diagnoser;
     }
 
@@ -69,7 +69,7 @@ public class Filter {
         return aldersgrupp;
     }
 
-    String getFilterHash() {
+    public String getFilterHash() {
         return hash;
     }
 

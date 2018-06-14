@@ -31,6 +31,8 @@ import org.springframework.security.access.AccessDeniedException;
 
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
 import se.inera.statistics.service.warehouse.query.CalcException;
+import se.inera.statistics.web.service.endpoints.ProtectedChartDataService;
+import se.inera.statistics.web.service.endpoints.ProtectedLandstingService;
 
 public class CalcCoordinatorInvoker extends JAXRSInvoker {
 

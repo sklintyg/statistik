@@ -18,9 +18,6 @@
  */
 package se.inera.statistics.web.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import se.inera.statistics.service.report.util.Icd10;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -28,12 +25,16 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import se.inera.statistics.service.report.util.Icd10;
+
 public class ResultMessageHandler {
 
     @Autowired
     private Icd10 icd10;
 
-    boolean isDxFilterDisableAllSelectedDxs(List<String> selectedDxs, Collection<String> filterDiagnoser) {
+    public boolean isDxFilterDisableAllSelectedDxs(List<String> selectedDxs, Collection<String> filterDiagnoser) {
         if (filterDiagnoser == null || filterDiagnoser.isEmpty()) {
             return false;
         }

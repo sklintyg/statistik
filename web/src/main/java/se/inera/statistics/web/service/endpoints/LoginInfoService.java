@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.service;
+package se.inera.statistics.web.service.endpoints;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
@@ -36,6 +36,7 @@ import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.StaticData;
 import se.inera.statistics.web.model.UserAccessInfo;
+import se.inera.statistics.web.service.LoginServiceUtil;
 
 @Service("loginService")
 @Path("/login")

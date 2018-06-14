@@ -16,14 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.service;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.web.model.LogData;
+package se.inera.statistics.web.service.endpoints;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -33,6 +26,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.web.model.LogData;
+import se.inera.statistics.web.service.LoginServiceUtil;
 
 @Service("loggingService")
 @Path("/logging")

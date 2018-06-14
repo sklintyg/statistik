@@ -18,17 +18,18 @@
  */
 package se.inera.statistics.web.service;
 
-import se.inera.statistics.service.report.model.Icd;
-
 import java.util.List;
 import java.util.Map;
 
-class DiagnosisKapitelAndAvsnittAndKategoriResponse {
+import se.inera.statistics.service.report.model.Icd;
+
+public class DiagnosisKapitelAndAvsnittAndKategoriResponse {
     private final List<Icd> kapitels;
     private final Map<String, List<Icd>> avsnitts;
     private final Map<String, List<Icd>> kategoris;
 
-    DiagnosisKapitelAndAvsnittAndKategoriResponse(Map<String, List<Icd>> kategoris, Map<String, List<Icd>> avsnitts, List<Icd> kapitels) {
+    public DiagnosisKapitelAndAvsnittAndKategoriResponse(Map<String, List<Icd>> kategoris,
+                                                         Map<String, List<Icd>> avsnitts, List<Icd> kapitels) {
         this.kapitels = kapitels;
         this.avsnitts = avsnitts;
         this.kategoris = kategoris;

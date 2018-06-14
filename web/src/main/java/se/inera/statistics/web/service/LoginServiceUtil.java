@@ -179,7 +179,7 @@ public class LoginServiceUtil {
                 .collect(Collectors.toList());
     }
 
-    Verksamhet enhetToVerksamhet(Enhet enhet) {
+    public Verksamhet enhetToVerksamhet(Enhet enhet) {
         return new Verksamhet(enhet.getEnhetId(), enhet.getNamn(), enhet.getVardgivareId(), null, enhet.getLansId(),
                 lan.getNamn(enhet.getLansId()), enhet.getKommunId(), kommun.getNamn(enhet.getLansId() + enhet.getKommunId()),
                 getVerksamhetsTyper(enhet.getVerksamhetsTyper()));
@@ -211,11 +211,11 @@ public class LoginServiceUtil {
         }).collect(Collectors.toSet());
     }
 
-    HsaIdVardgivare getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
+    public HsaIdVardgivare getSelectedVgIdForLoggedInUser(HttpServletRequest request) {
         return new HsaIdVardgivare(request.getParameter("vgid"));
     }
 
-    AppSettings getSettings() {
+    public AppSettings getSettings() {
         AppSettings settings = new AppSettings();
         settings.setLoginVisible(loginVisibility.isLoginVisible());
         settings.setLoginUrl(loginUrl);
@@ -224,7 +224,7 @@ public class LoginServiceUtil {
         return settings;
     }
 
-    StaticData getStaticData() {
+    public StaticData getStaticData() {
         final Map<String, String> sjukskrivningLengths = Arrays
                 .stream(SjukfallsLangdGroup.values())
                 .collect(toMap(Enum::name, SjukfallsLangdGroup::getGroupName));
@@ -240,7 +240,7 @@ public class LoginServiceUtil {
         return new StaticData(sjukskrivningLengths, ageGroups, intygTypes, intygTypeTooltips, icdStructure);
     }
 
-    UserAccessInfo getUserAccessInfoForVg(HttpServletRequest request, HsaIdVardgivare vgId) {
+    public UserAccessInfo getUserAccessInfoForVg(HttpServletRequest request, HsaIdVardgivare vgId) {
         final LoginInfo loginInfo = getLoginInfo();
         final HsaIdUser hsaId = loginInfo.getHsaId();
         final LoginInfoVg vgInfo = loginInfo.getLoginInfoForVg(vgId).orElse(null);

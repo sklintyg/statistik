@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.service;
+package se.inera.statistics.web.service.endpoints;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +45,17 @@ import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableDataReport;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
+import se.inera.statistics.web.service.Filter;
+import se.inera.statistics.web.service.FilterHandler;
+import se.inera.statistics.web.service.FilterHashHandler;
+import se.inera.statistics.web.service.FilterSettings;
+import se.inera.statistics.web.service.LoginServiceUtil;
+import se.inera.statistics.web.service.Report;
+import se.inera.statistics.web.service.ReportInfo;
+import se.inera.statistics.web.service.ReportType;
+import se.inera.statistics.web.service.ResponseHandler;
+import se.inera.statistics.web.service.ResultMessageHandler;
+import se.inera.statistics.web.service.WarehouseService;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 import se.inera.statistics.web.service.responseconverter.AndelKompletteringarConverter;
 import se.inera.statistics.web.service.responseconverter.AndelKompletteringarTvarsnittConverter;
