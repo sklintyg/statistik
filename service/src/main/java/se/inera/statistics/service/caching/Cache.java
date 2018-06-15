@@ -19,8 +19,12 @@
 package se.inera.statistics.service.caching;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -74,7 +78,7 @@ public class Cache {
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     public void clearCaches() {
         LOG.info("Clear Redis Cache Keys");
-        template.delete(Arrays.asList(AISLE, SJUKFALLGROUP, VGENHET, ENHET));
+        template.delete(Lists.newArrayList(AISLE, SJUKFALLGROUP, VGENHET, ENHET));
     }
 
     public List<SjukfallGroup> getSjukfallGroups(SjukfallGroupCacheKey key) {
@@ -92,23 +96,30 @@ public class Cache {
         return lookup(AISLE, vardgivarId.getId(), () -> aisleLoader(vardgivarId, loader));
     }
 
-    public Collection<Enhet> getEnhetsWithHsaId(Collection<HsaIdEnhet> enhetIds,
-                                                Function<Collection<HsaIdEnhet>, Collection<Enhet>> loader) {
+    public Collection<Enhet> getEnhetsWithHsaId(final Collection<HsaIdEnhet> enhetIds,
+                                                final Function<Collection<HsaIdEnhet>, Collection<Enhet>> loader) {
         final HashOperations<Object, Object, Object> hashOps = template.opsForHash();
-        final List<Object> cachedEnhetsObj = hashOps.multiGet(ENHET, enhetIds.stream().map(HsaIdAny::getId).collect(Collectors.toList()));
-        final List<Enhet> cachedEnhets = cachedEnhetsObj.stream().filter(o -> o != null).map(o -> (Enhet) o).collect(Collectors.toList());
+        final List<Enhet> cachedEnhets = hashOps.multiGet(ENHET, enhetIds.stream().map(HsaIdAny::getId).collect(Collectors.toList()))
+                .stream()
+                .filter(Objects::nonNull)
+                .map(Enhet.class::cast)
+                .collect(Collectors.toList());
+
         if (cachedEnhets.size() == enhetIds.size()) {
             LOG.info("All enhets cached");
             return cachedEnhets;
         }
-        final HashSet<HsaIdEnhet> hsaIdEnhetsNotInCache = new HashSet<>(enhetIds);
+
+        final Set<HsaIdEnhet> hsaIdEnhetsNotInCache = Sets.newHashSet(enhetIds);
         final List<HsaIdEnhet> hsaIdsInCache = cachedEnhets.stream().map(Enhet::getEnhetId).collect(Collectors.toList());
         hsaIdEnhetsNotInCache.removeAll(hsaIdsInCache);
-        final Set<Enhet> enhets = new HashSet<>(loader.apply(hsaIdEnhetsNotInCache));
-        for (Enhet enhet : enhets) {
-            hashOps.put(ENHET, enhet.getEnhetId().getId(), enhet);
-        }
+
+        final Set<Enhet> enhets = loader.apply(hsaIdEnhetsNotInCache).stream()
+                .peek(e -> hashOps.put(ENHET, e.getEnhetId().getId(), e))
+                .collect(Collectors.toSet());
+
         enhets.addAll(cachedEnhets);
+
         LOG.info("All enhets not cached");
         return enhets;
     }
@@ -125,7 +136,7 @@ public class Cache {
     }
 
     // returns a typed object from cache, or loads a value if no such hashKey exists
-    private <T>  T lookup(final Object key, final Object hashKey, Supplier<T> loader) {
+    private <T>  T lookup(final Object key, final Object hashKey, final Supplier<T> loader) {
         final HashOperations<Object, Object, Object> ops = template.opsForHash();
 
         if (ops.hasKey(key, hashKey)) {
@@ -133,7 +144,6 @@ public class Cache {
                 return (T) ops.get(key, hashKey);
             } catch (ClassCastException e) {
                 LOG.warn("Failed to cast {} object in cache: {}", key, e.getMessage());
-                ops.delete(key, hashKey);
             }
         }
 
@@ -150,12 +160,11 @@ public class Cache {
 
     private List<HsaIdEnhet> loadVgEnhets(HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
         LOG.info("VgEnhets not cached: {}", vardgivareId);
-        final List<Enhet> allEnhetsForVg = loader.apply(vardgivareId);
         final HashOperations<Object, Object, Object> hashOps = template.opsForHash();
-        for (Enhet enhet : allEnhetsForVg) {
-            hashOps.put(ENHET, enhet.getEnhetId().getId(), enhet);
-        }
-        return allEnhetsForVg.stream().map(Enhet::getEnhetId).collect(Collectors.toList());
+        return loader.apply(vardgivareId).stream()
+                .peek(e -> hashOps.put(ENHET, e.getEnhetId().getId(), e))
+                .map(Enhet::getEnhetId)
+                .collect(Collectors.toList());
     }
 
 }
