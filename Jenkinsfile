@@ -84,3 +84,10 @@ stage('notify') {
         util.notifySuccess()
     }
 }
+
+stage('propagate') {
+    node {
+        build job: "statistik-sandbox-build", wait: false, parameters: [[$class: 'StringParameterValue', name: 'STATISTIK_BUILD_VERSION', value: buildVersion]]
+    }
+}
+
