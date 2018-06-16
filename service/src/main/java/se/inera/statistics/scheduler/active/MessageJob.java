@@ -26,7 +26,7 @@ import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
 public class MessageJob {
     private static final Logger LOG = LoggerFactory.getLogger(MessageJob.class);
-    private static final String JOB_NAME = "statistics.scheduler.active.MessageJob.checkLog";
+    private static final String JOB_NAME = "MessageJob.checkLog";
 
     private MessageLogConsumer consumer;
 
@@ -38,12 +38,13 @@ public class MessageJob {
     @Scheduled(cron = "${scheduler.logJob.cron}")
     @SchedulerLock(name = JOB_NAME)
     public void checkLog() {
-        LOG.debug("Message Job");
+        LOG.info(JOB_NAME);
         long startId;
         long latestHandledId = 0;
         do {
             startId = latestHandledId;
-            latestHandledId = this.consumer.processBatch(startId);
+            latestHandledId = consumer.processBatch(startId);
+            LOG.info("Processed batch from id {} to {}", startId, latestHandledId);
         } while (startId != latestHandledId);
     }
 

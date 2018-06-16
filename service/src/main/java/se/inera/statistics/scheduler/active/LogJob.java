@@ -29,7 +29,7 @@ import se.inera.statistics.service.processlog.LogConsumer;
 
 public class LogJob {
     private static final Logger LOG = LoggerFactory.getLogger(LogJob.class);
-    private static final String JOB_NAME = "statistics.scheduler.active.LogJob.checkLog";
+    private static final String JOB_NAME = "LogJob.checkLog";
 
 
     @Autowired
@@ -42,7 +42,7 @@ public class LogJob {
     @Scheduled(cron = "${scheduler.logJob.cron}")
     @SchedulerLock(name = JOB_NAME)
     public void checkLog() {
-        LOG.debug("Log Job");
+        LOG.info(JOB_NAME);
         int count;
         do {
             count = consumer.processBatch();

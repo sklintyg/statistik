@@ -19,12 +19,16 @@
 package se.inera.statistics.scheduler.active;
 
 import net.javacrumbs.shedlock.core.SchedulerLock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import se.inera.statistics.service.processlog.Receiver;
 
 public class ReceiveHistoryJob {
-    private static final String JOB_NAME = "statistics.scheduler.active.ReceiveHistoryJob.checkReceived";
+    private static final Logger LOG = LoggerFactory.getLogger(ReceiveHistoryJob.class);
+
+    private static final String JOB_NAME = "ReceiveHistoryJob.checkReceived";
     private static final int DELAY_MS = 300_000;
 
     public static final int HISTORY_ITEMS = 5;
@@ -37,19 +41,12 @@ public class ReceiveHistoryJob {
     @Scheduled(fixedDelay = DELAY_MS)
     @SchedulerLock(name = JOB_NAME)
     public void checkReceived() {
-        insert(receiver.getAccepted());
-    }
-
-    private synchronized void insert(long accepted) {
-        synchronized (history) {
-            history.add(accepted);
-        }
+        LOG.info(JOB_NAME);
+        history.add(receiver.getAccepted());
     }
 
     public long getCurrentRate() {
-        synchronized (history) {
-            return history.getCurrent() - history.getOldest();
-        }
+        return history.rate();
     }
 
     private static class History {
@@ -61,18 +58,18 @@ public class ReceiveHistoryJob {
             jobHistory = new long[size];
         }
 
-        public void add(long value) {
-            index++;
-            index %= jobHistory.length;
-            jobHistory[index] = value;
+        void add(long value) {
+            synchronized (this) {
+                index++;
+                index %= jobHistory.length;
+                jobHistory[index] = value;
+            }
         }
 
-        public long getCurrent() {
-            return jobHistory[index];
-        }
-
-        public long getOldest() {
-            return jobHistory[(index + 1) % jobHistory.length ];
+        long rate() {
+            synchronized (this) {
+                return jobHistory[index] - jobHistory[(index + 1) % jobHistory.length];
+            }
         }
     }
 }
