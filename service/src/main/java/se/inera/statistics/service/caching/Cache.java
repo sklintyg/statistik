@@ -28,6 +28,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,8 @@ public class Cache {
     private static final String SJUKFALLGROUP = REDIS_KEY_PREFIX + "SJUKFALLGROUP_";
     private static final String VGENHET = REDIS_KEY_PREFIX + "VGENHET_";
     private static final String ENHET = REDIS_KEY_PREFIX + "ENHET_";
+    private static final String JOB_NAME = "Cache.clearCaches";
+
 
     @Value("${cache.maxsize:1000}")
     private String maxSize;
@@ -76,6 +79,7 @@ public class Cache {
     }
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
+    @SchedulerLock(name = JOB_NAME)
     public void clearCaches() {
         LOG.info("Clear Redis Cache Keys");
         template.delete(Lists.newArrayList(AISLE, SJUKFALLGROUP, VGENHET, ENHET));
