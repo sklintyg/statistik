@@ -32,7 +32,7 @@ public class MessageJobTest {
         final MessageJob messageJob = new MessageJob(consumer);
 
         //When
-        messageJob.checkLog();
+        messageJob.run();
 
         //Then
         Mockito.verify(consumer, Mockito.times(3)).processBatch(Mockito.anyLong());

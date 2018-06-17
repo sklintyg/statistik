@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.scheduler.active;
 
+import java.time.Duration;
 import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.provider.redis.spring.RedisLockProvider;
 import net.javacrumbs.shedlock.spring.ScheduledLockConfiguration;
@@ -29,18 +30,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
-
-import java.time.Duration;
 
 /**
  * Jobs depends on external redis for locking, and the same instance as for caching (see infra) is used.
  */
 @Profile("caching-enabled")
 @Configuration
-@EnableAsync
 @EnableScheduling
 public class JobConfiguration {
 
@@ -56,7 +53,7 @@ public class JobConfiguration {
 
     @Bean
     public ScheduledLockConfiguration taskScheduler(final LockProvider lockProvider) {
-        LOG.info("caching-enabled: creating scheduled lock configuration");
+        LOG.info("Profile caching-enabled: creating scheduled lock configuration");
         return ScheduledLockConfigurationBuilder
                 .withLockProvider(lockProvider)
                 .withPoolSize(POOL_SIZE)

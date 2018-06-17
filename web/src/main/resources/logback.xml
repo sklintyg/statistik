@@ -114,9 +114,11 @@
         <appender-ref ref="PROCESS_FILE"/>
     </logger>
     <logger name="se.inera.statistics.scheduler.active.LogJob" level="INFO"  additivity="false">
+      <appender-ref ref="STDOUT"/>
       <appender-ref ref="PROCESS_FILE"/>
     </logger>
     <logger name="se.inera.statistics.scheduler.active.MessageJob" level="INFO"  additivity="false">
+      <appender-ref ref="STDOUT"/>
       <appender-ref ref="PROCESS_FILE"/>
     </logger>
     <logger name="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" level="INFO"  additivity="false">
