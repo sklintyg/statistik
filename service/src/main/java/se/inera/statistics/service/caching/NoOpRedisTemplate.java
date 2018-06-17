@@ -18,9 +18,18 @@
  */
 package se.inera.statistics.service.caching;
 
-import org.springframework.data.redis.core.*;
-
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import org.springframework.data.redis.core.Cursor;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanCursor;
+import org.springframework.data.redis.core.ScanIteration;
+import org.springframework.data.redis.core.ScanOptions;
 
 /**
  * Used when caching is not enabled.
@@ -44,12 +53,12 @@ public class NoOpRedisTemplate extends RedisTemplate<Object, Object> {
     }
 
     @Override
-    public void delete(Collection keys) {
+    public void delete(Collection<Object> keys) {
     }
 
     @Override
     public HashOperations opsForHash() {
-        return new HashOperations() {
+        return new HashOperations<Object, Object, Object>() {
             @Override
             public Long delete(Object key, Object... hashKeys) {
                 return Long.valueOf(hashKeys.length);
@@ -114,7 +123,7 @@ public class NoOpRedisTemplate extends RedisTemplate<Object, Object> {
             }
 
             @Override
-            public Cursor<Map.Entry> scan(Object key, ScanOptions options) {
+            public Cursor<Map.Entry<Object, Object>> scan(Object key, ScanOptions options) {
                 return new ScanCursor() {
                     @Override
                     protected ScanIteration doScan(long cursorId, ScanOptions options) {

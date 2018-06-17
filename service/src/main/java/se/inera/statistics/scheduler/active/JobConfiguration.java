@@ -22,6 +22,8 @@ import net.javacrumbs.shedlock.core.LockProvider;
 import net.javacrumbs.shedlock.provider.redis.spring.RedisLockProvider;
 import net.javacrumbs.shedlock.spring.ScheduledLockConfiguration;
 import net.javacrumbs.shedlock.spring.ScheduledLockConfigurationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +44,7 @@ import java.time.Duration;
 @EnableScheduling
 public class JobConfiguration {
 
+    private static final Logger LOG = LoggerFactory.getLogger(JobConfiguration.class);
     private static final int POOL_SIZE = 5;
     private static final int LOCK_AT_MOST_MINUTES = 20;
 
@@ -52,7 +55,8 @@ public class JobConfiguration {
     private MessageLogConsumer messageLogConsumer;
 
     @Bean
-    public ScheduledLockConfiguration taskScheduler(LockProvider lockProvider) {
+    public ScheduledLockConfiguration taskScheduler(final LockProvider lockProvider) {
+        LOG.info("caching-enabled: creating scheduled lock configuration");
         return ScheduledLockConfigurationBuilder
                 .withLockProvider(lockProvider)
                 .withPoolSize(POOL_SIZE)
@@ -73,10 +77,5 @@ public class JobConfiguration {
     @Bean
     public LogJob logJob() {
         return new LogJob();
-    }
-
-    @Bean
-    public ReceiveHistoryJob receiveHistoryJob() {
-        return new ReceiveHistoryJob();
     }
 }
