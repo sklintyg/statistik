@@ -43,16 +43,16 @@ import se.inera.statistics.service.queue.JmsReceiver;
 @Configuration
 @EnableJms
 public class JmsConfig implements JmsListenerConfigurer {
-    @Value("${jms.broker.url}")
+    @Value("${activemq.broker.url}")
     private String brokerUrl;
 
-    @Value("${jms.broker.username}")
+    @Value("${activemq.broker.username}")
     private String brokerUsername;
 
-    @Value("${jms.broker.password}")
+    @Value("${activemq.broker.password}")
     private String brokerPassword;
 
-    @Value("${jms.receiver.queue.name}")
+    @Value("${activemq.receiver.queue.name}")
     private String queueName;
 
     @Bean

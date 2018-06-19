@@ -35,7 +35,7 @@ public class QueueSender {
     @Autowired
     private ConnectionFactory connectionFactory;
 
-    @Value("${jms.receiver.queue.name}")
+    @Value("${activemq.receiver.queue.name}")
     private String queueName;
 
     @PostConstruct

@@ -60,7 +60,7 @@ import static org.junit.Assert.assertEquals;
 @DirtiesContext
 public class ReceiverIT {
     
-    @Value("${jms.receiver.queue.name}")
+    @Value("${activemq.receiver.queue.name}")
     private String queueName;
 
     @Autowired

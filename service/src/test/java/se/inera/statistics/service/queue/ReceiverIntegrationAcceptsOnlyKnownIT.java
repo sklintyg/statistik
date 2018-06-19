@@ -65,7 +65,7 @@ import se.inera.statistics.time.ChangableClock;
 @DirtiesContext
 public class ReceiverIntegrationAcceptsOnlyKnownIT {
 
-    @Value("${jms.receiver.queue.name}")
+    @Value("${activemq.receiver.queue.name}")
     private String queueName;
 
     @Autowired
