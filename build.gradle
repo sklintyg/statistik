@@ -51,7 +51,7 @@ ext {
     zipletVersion = "2.1.2"
     shedlockSpringVersion = "0.18.2"
 
-    fitnesseVersion = "20161106"
+    fitnesseVersion = "20180127"
     junitVersion = "4.11"
     mockitoVersion = "1.9.5"
     springTestVersion = "4.2.2.RELEASE"
