@@ -27,16 +27,16 @@ import java.util.stream.Collectors;
 
 public enum IntygType {
 
+    DB("db", "Dödsbevis", "Dödsbevis", true, false, false, true),
+    DOI("doi", "Dödsorsaksintyg", "Dödsorsaksintyg", true, false, false, true),
+    SJUKPENNING(null, "FK 7263/7804", "FK 7263/7804 Läkarintyg för sjukpenning", false, false, true, false),
     FK7263("fk7263", "FK 7263", "FK 7263 Läkarintyg", true, true, false, false),
+    LISJP("lisjp", "FK 7804", "FK 7804 Läkarintyg för sjukpenning", true, true, false, true),
     LISU(null, "LISU", "LISU", true, true, false, false),
     LUSE("luse", "FK 7800", "FK 7800 Läkarutlåtande för sjukersättning", true, false, true, true),
     LUAE_NA("luae_na", "FK 7801", "FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga", true, false, true, true),
     LUAE_FS("luae_fs", "FK 7802", "FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång", true, false, true, true),
-    LISJP("lisjp", "FK 7804", "FK 7804 Läkarintyg för sjukpenning", true, true, false, true),
     UNKNOWN(null, "Okänt", "Okänt", false, false, false, false),
-    SJUKPENNING(null, "FK 7263/7804", "FK 7263/7804 Läkarintyg för sjukpenning", false, false, true, false),
-    DB("db", "Dödsbevis", "Dödsbevis", true, false, false, true),
-    DOI("doi", "Dödsorsaksintyg", "Dödsorsaksintyg", true, false, false, true),
     TSTRK1007("ts-bas", "TSTRK1007", "TSTRK1007 Transportstyrelsens läkarintyg", true, false, false, true),
     TSTRK1031("ts-diabetes", "TSTRK1031", "TSTRK1031 Transportstyrelsens läkarintyg diabetes", true, false, false, true);
 

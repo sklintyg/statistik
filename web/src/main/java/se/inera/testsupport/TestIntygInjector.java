@@ -136,7 +136,7 @@ public class TestIntygInjector {
 
     private void publishUtlatanden() {
         UtlatandeBuilder builder = new UtlatandeBuilder();
-        System.out.println(System.getProperty("statistics.test.max.intyg"));
+        LOG.info(System.getProperty("statistics.test.max.intyg"));
         int maxIntyg = Integer.parseInt(System.getProperty("statistics.test.max.intyg", "0"));
         List<String> personNummers = readList("/personnr/testpersoner.log", maxIntyg);
 
