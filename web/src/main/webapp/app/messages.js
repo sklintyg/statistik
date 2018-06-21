@@ -245,10 +245,10 @@ var stMessages = {
 
         // Settings
         'settings.modal.title': 'Inställningar',
-        'settings.modal.1.title': 'Antal inkomna meddelanden fördelat på läkare',
-        'settings.modal.1.description': '<p>Styr din personliga åtkomst till rapporten "Antal inkomna meddelanden fördelat på läkare".</p>' +
+        'settings.modal.showmessagesperlakare.title': 'Antal inkomna meddelanden fördelat på läkare',
+        'settings.modal.showmessagesperlakare.description': '<p>Styr din personliga åtkomst till rapporten "Antal inkomna meddelanden fördelat på läkare".</p>' +
                                         '<p>Observera! Innan du aktiverar visning av denna rapport rekommenderar vi att du gör detta i samförstånd med sjukskrivande läkare på din vårdenhet. Denna statistik kan upplevas som känslig och se därför till att du har samtycke från de läkare som kommer ingå i statistiken.</p>',
-        'settings.modal.1.help': 'Denna rapport visar hur många meddelanden som varje intygsutfärdande läkare har fått på sina utfärdade intyg vid de vårdenheter du har behörighet till.',
+        'settings.modal.showmessagesperlakare.help': 'Denna rapport visar hur många meddelanden som varje intygsutfärdande läkare har fått på sina utfärdade intyg vid de vårdenheter du har behörighet till.',
 
 
         //file upload

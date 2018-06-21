@@ -35,6 +35,7 @@ import se.inera.statistics.hsa.model.Vardenhet;
 import se.inera.statistics.service.landsting.LandstingEnhetHandler;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.user.UserSettingsManager;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
@@ -46,6 +47,8 @@ import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 
 public class LoginServiceUtilTest {
@@ -60,6 +63,9 @@ public class LoginServiceUtilTest {
     private LoginVisibility loginVisibility;
 
     @Mock
+    private UserSettingsManager userSettingsManager;
+
+    @Mock
     private Icd10 icd10;
 
     @Mock
@@ -70,17 +76,17 @@ public class LoginServiceUtilTest {
 
     private LoginServiceUtil loginServiceUtil;
 
-    public final Random rand = new Random();
+    private final Random rand = new Random();
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         loginServiceUtil = Mockito.spy(loginServiceUtilInjected);
         Mockito.doReturn(true).when(loginServiceUtil).isLoggedIn();
     }
 
     @Test
-    public void testGetSettings() throws Exception {
+    public void testGetStaticData() {
         // When
         final StaticData staticData = loginServiceUtil.getStaticData();
 
@@ -90,7 +96,7 @@ public class LoginServiceUtilTest {
     }
 
     @Test
-    public void testGetLoginInfoSeveralVgsNotProcessledare() throws Exception {
+    public void testGetLoginInfoSeveralVgsNotProcessledare() {
         // Given
         final HsaIdUser userId = new HsaIdUser("testuserid");
         final Vardenhet enhet1 = newVardenhet("e1", "vg1");
@@ -109,13 +115,13 @@ public class LoginServiceUtilTest {
         assertEquals(1, loginInfo.getBusinessesForVg(enhet3.getVardgivarId()).size());
 
         assertEquals(enhet1.getVardgivarId(), loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().getHsaId());
-        assertEquals(false, loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().isProcessledare());
-        assertEquals(false, loginInfo.getLoginInfoForVg(enhet3.getVardgivarId()).get().isProcessledare());
+        assertFalse(loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().isProcessledare());
+        assertFalse(loginInfo.getLoginInfoForVg(enhet3.getVardgivarId()).get().isProcessledare());
 
     }
 
     @Test
-    public void testGetLoginInfoSeveralVgsWhenProcessledare() throws Exception {
+    public void testGetLoginInfoSeveralVgsWhenProcessledare() {
         // Given
         final HsaIdUser userId = new HsaIdUser("testuserid");
         final Vardenhet enhet1 = newVardenhet("e1", "vg1");
@@ -139,8 +145,8 @@ public class LoginServiceUtilTest {
         assertEquals(4, loginInfo.getBusinessesForVg(enhet3.getVardgivarId()).size());
 
         assertEquals(enhet1.getVardgivarId(), loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().getHsaId());
-        assertEquals(false, loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().isProcessledare());
-        assertEquals(true, loginInfo.getLoginInfoForVg(enhet3.getVardgivarId()).get().isProcessledare());
+        assertFalse(loginInfo.getLoginInfoForVg(enhet1.getVardgivarId()).get().isProcessledare());
+        assertTrue(loginInfo.getLoginInfoForVg(enhet3.getVardgivarId()).get().isProcessledare());
     }
 
     private Enhet newEnhet(HsaIdVardgivare vg) {

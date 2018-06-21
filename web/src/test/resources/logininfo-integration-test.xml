@@ -43,6 +43,7 @@
     <bean class="se.inera.statistics.service.warehouse.Warehouse"/>
     <bean class="se.inera.statistics.service.processlog.VardgivareManager"/>
     <bean class="se.inera.statistics.service.processlog.LakareManager"/>
+    <bean class="se.inera.statistics.service.user.UserSettingsManager" />
     <bean class="se.inera.statistics.service.hsa.HsaWsResponderMock"/>
     <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
     <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>

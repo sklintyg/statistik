@@ -76,5 +76,6 @@
     <include file="changelog/db.changelog-v48.0_add_indexes.xml" />
     <include file="changelog/db.changelog-v49.0_create_intyg_sent_event_table.xml" />
     <include file="changelog/db.changelog-v50.0_clear_uploaded_landstingdata.xml" />
+    <include file="changelog/db.changelog-v51.0_create_user_settings_table.xml" />
 
 </databaseChangeLog>

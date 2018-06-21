@@ -55,6 +55,8 @@ import se.inera.statistics.service.report.model.VerksamhetsTyp;
 import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
+import se.inera.statistics.service.user.UserSettings;
+import se.inera.statistics.service.user.UserSettingsManager;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.model.AppSettings;
@@ -62,6 +64,7 @@ import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.StaticData;
 import se.inera.statistics.web.model.UserAccessInfo;
+import se.inera.statistics.web.model.UserSettingsDTO;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.util.VersionUtil;
 
@@ -86,6 +89,9 @@ public class LoginServiceUtil {
 
     @Autowired
     private VersionUtil versionUtil;
+
+    @Autowired
+    private UserSettingsManager userSettingsManager;
 
     @Value("${login.url}")
     private String loginUrl;
@@ -136,7 +142,25 @@ public class LoginServiceUtil {
             loginInfoVgs.add(livg);
         }
 
-        return new LoginInfo(realUser.getHsaId(), realUser.getName(), verksamhets, loginInfoVgs);
+        String hsaId = realUser.getHsaId().getId();
+
+        UserSettingsDTO userSettingsDTO = getUserSettings(hsaId);
+
+        return new LoginInfo(realUser.getHsaId(), realUser.getName(), verksamhets, loginInfoVgs, userSettingsDTO);
+    }
+
+    private UserSettingsDTO getUserSettings(String hsaId) {
+        UserSettings userSettings = userSettingsManager.find(hsaId);
+
+        UserSettingsDTO userSettingsDTO;
+
+        if (userSettings != null) {
+            userSettingsDTO = new UserSettingsDTO(userSettings.isShowMessagesPerLakare());
+        } else {
+            userSettingsDTO = new UserSettingsDTO();
+        }
+
+        return userSettingsDTO;
     }
 
     private LoginInfoVg toLoginInfoVg(User realUser, Map.Entry<HsaIdVardgivare, String> vgidWithName) {
@@ -240,12 +264,23 @@ public class LoginServiceUtil {
         return new StaticData(sjukskrivningLengths, ageGroups, intygTypes, intygTypeTooltips, icdStructure);
     }
 
-    public UserAccessInfo getUserAccessInfoForVg(HttpServletRequest request, HsaIdVardgivare vgId) {
+    public UserAccessInfo getUserAccessInfoForVg(HsaIdVardgivare vgId) {
         final LoginInfo loginInfo = getLoginInfo();
         final HsaIdUser hsaId = loginInfo.getHsaId();
         final LoginInfoVg vgInfo = loginInfo.getLoginInfoForVg(vgId).orElse(null);
         final List<Verksamhet> businessesForVg = loginInfo.getBusinessesForVg(vgId);
         return new UserAccessInfo(hsaId, vgInfo, businessesForVg);
+    }
+
+    public UserSettingsDTO saveUserSettings(UserSettingsDTO userSettingsDTO) {
+        User realUser = getCurrentUser();
+        String hsaId = realUser.getHsaId().getId();
+
+        UserSettings userSettings = new UserSettings(hsaId, userSettingsDTO.isShowMessagesPerLakare());
+
+        userSettingsManager.save(userSettings);
+
+        return userSettingsDTO;
     }
 
 }

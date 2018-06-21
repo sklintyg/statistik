@@ -18,26 +18,56 @@
  */
 
 angular.module('StatisticsApp').controller('StatSettingsCtrl',
-    function($scope, $uibModalInstance, messageService) {
+    function($scope, $uibModalInstance, messageService, statisticsData, UserModel, _) {
         'use strict';
 
+        $scope.saving = false;
         $scope.settings = [];
 
+        var oldSettings = UserModel.get().settings;
 
-        $scope.settings.push({
-            title: 'settings.modal.1.title',
-            description: 'settings.modal.1.description',
-            help: messageService.getProperty('settings.modal.1.help'),
-            value: false
-        });
-
+        addSetting('showMessagesPerLakare');
 
         $scope.cancel = function() {
             $uibModalInstance.dismiss();
         };
 
-        $scope.selectVardgivare = function(vgId) {
-            $uibModalInstance.close(vgId);
+        $scope.save = function() {
+            $scope.saving = true;
+
+            var toSave = getSettings();
+
+            statisticsData.saveUserSettings(toSave)
+                .then(
+                    function(newSettings) {
+                        UserModel.setSettings(newSettings);
+                        $scope.saving = false;
+                        $uibModalInstance.close();
+                    },
+                    function() {
+                        $scope.saving = false;
+                    }
+                );
         };
+
+        function getSettings() {
+            var newSettings = {};
+
+            _.each($scope.settings, function(value) {
+                newSettings[value.property] = value.value;
+            });
+
+            return newSettings;
+        }
+
+        function addSetting(property) {
+            $scope.settings.push({
+                property: property,
+                title: 'settings.modal.' + property + '.title',
+                description: 'settings.modal.' + property + '.description',
+                help: messageService.getProperty('settings.modal.' + property + '.help'),
+                value: oldSettings[property]
+            });
+        }
     }
 );

@@ -262,6 +262,18 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestNational('login/getUserAccessInfo/' + vgId, successCallback, failureCallback, false, true);
     };
 
+    factory.saveUserSettings = function (userSettings) {
+        var deferred = $q.defer();
+
+        $http.post('api/login/saveUserSettings', userSettings).then(function (result) {
+            deferred.resolve(result.data);
+        }, function (response) {
+            deferred.reject(response.data);
+        });
+
+        return deferred.promise;
+    };
+
     factory.getSjukfallPerBusinessVerksamhet = function (successCallback, failureCallback) {
         makeRequestVerksamhet('getNumberOfCasesPerEnhet', successCallback, failureCallback);
     };

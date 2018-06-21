@@ -81,7 +81,10 @@ angular.module('StatisticsApp').factory('messageService',
 
         function _getPropertyInLanguage(lang, key, variables) {
             _checkResources();
-            var message = _messageResources[lang][key];
+
+            var normalizedKey = angular.lowercase(key);
+
+            var message = _messageResources[lang][normalizedKey];
 
             angular.forEach(variables, function(value, key) {
                 var regexp = new RegExp('\\$\\{' + key + '\\}', 'g');

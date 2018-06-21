@@ -16,34 +16,45 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.userselection;
+package se.inera.statistics.service.user;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "userselection")
-public class UserSelection {
+@Table(name = "user_settings")
+public class UserSettings {
 
     @Id
-    private String selectionkey;
-    private String value;
+    @Column(name = "hsaid")
+    private String hsaId;
 
-    public UserSelection(String key, String value) {
-        this.selectionkey = key;
-        this.value = value;
+    @Column(name = "show_messages_per_lakare")
+    private boolean showMessagesPerLakare;
+
+    public UserSettings() {
     }
 
-    UserSelection() {
+    public UserSettings(String hsaId, boolean showMessagesPerLakare) {
+        this.hsaId = hsaId;
+        this.showMessagesPerLakare = showMessagesPerLakare;
     }
 
-    public String getSelectionkey() {
-        return selectionkey;
+    public String getHsaId() {
+        return hsaId;
     }
 
-    public String getValue() {
-        return value;
+    public void setHsaId(String hsaId) {
+        this.hsaId = hsaId;
     }
 
+    public boolean isShowMessagesPerLakare() {
+        return showMessagesPerLakare;
+    }
+
+    public void setShowMessagesPerLakare(boolean showMessagesPerLakare) {
+        this.showMessagesPerLakare = showMessagesPerLakare;
+    }
 }

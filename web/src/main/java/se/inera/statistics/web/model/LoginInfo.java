@@ -18,14 +18,14 @@
  */
 package se.inera.statistics.web.model;
 
-import com.google.common.base.Strings;
-import se.inera.statistics.hsa.model.HsaIdUser;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import com.google.common.base.Strings;
+import se.inera.statistics.hsa.model.HsaIdUser;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 public class LoginInfo {
 
@@ -33,18 +33,22 @@ public class LoginInfo {
     private final String name;
     private final List<Verksamhet> businesses;
     private final List<LoginInfoVg> loginInfoVgs;
+    private final UserSettingsDTO userSettings;
 
     public LoginInfo() {
         hsaId = new HsaIdUser("");
         name = "";
         businesses = Collections.emptyList();
         loginInfoVgs = Collections.emptyList();
+        userSettings = new UserSettingsDTO();
     }
-    public LoginInfo(HsaIdUser userId, String userName, List<Verksamhet> businesses, List<LoginInfoVg> loginInfoVgs) {
+    public LoginInfo(HsaIdUser userId, String userName, List<Verksamhet> businesses, List<LoginInfoVg> loginInfoVgs,
+                     UserSettingsDTO userSettings) {
         this.hsaId = userId != null ? userId : new HsaIdUser("");
         this.name = Strings.nullToEmpty(userName);
         this.businesses = businesses != null ? Collections.unmodifiableList(businesses) : Collections.emptyList();
         this.loginInfoVgs = loginInfoVgs != null ? Collections.unmodifiableList(loginInfoVgs) : Collections.emptyList();
+        this.userSettings = userSettings;
     }
 
     public HsaIdUser getHsaId() {
@@ -73,4 +77,7 @@ public class LoginInfo {
                 .collect(Collectors.toList());
     }
 
+    public UserSettingsDTO getUserSettings() {
+        return userSettings;
+    }
 }

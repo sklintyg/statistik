@@ -32,8 +32,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import se.inera.statistics.service.userselection.UserSelection;
-import se.inera.statistics.service.userselection.UserSelectionManager;
+import se.inera.statistics.service.user.UserSelection;
+import se.inera.statistics.service.user.UserSelectionManager;
 
 public class FilterHashHandler {
     private static final Logger LOG = LoggerFactory.getLogger(FilterHashHandler.class);

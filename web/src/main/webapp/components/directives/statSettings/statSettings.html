@@ -11,14 +11,17 @@
         <span message key="{{::setting.title}}"></span>
         <span uib-tooltip="{{::setting.help}}">?</span>
       </h3>
+      <input type="checkbox" ng-model="setting.value" class="settings-checkbox">
       <span message key="{{::setting.description}}"></span>
-      <input type="checkbox" ng-model="setting.value">
     </div>
 
   </div>
 
   <div class="modal-footer">
-    <button class="btn btn-success" data-ng-click="save()">Spara</button>
+    <button class="btn btn-success" data-ng-click="save()">
+      <i class="fa fa-spinner" data-ng-class="{'fa-spin': saving}" data-ng-show="saving"></i>
+      Spara
+    </button>
     <button class="btn btn-default" data-dismiss="modal" data-ng-click="cancel()">Avbryt</button>
   </div>
 </div>
