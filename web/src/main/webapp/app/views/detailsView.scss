@@ -51,6 +51,11 @@
     font-size: 12px;
     margin-bottom: 10px;
     white-space: nowrap;
+    cursor: pointer;
+
+    .detail-checkbox {
+      cursor: pointer;
+    }
   }
 
   .legend-color-square {
