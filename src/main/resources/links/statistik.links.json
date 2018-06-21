@@ -7,7 +7,7 @@
   },
   {
     "key": "highcharts",
-    "url": "http://www.highcharts.com/",
+    "url": "https://www.highcharts.com/",
     "text": "Highsoft AS (extern länk)",
     "target": "_blank"
   },
@@ -25,7 +25,7 @@
   },
   {
     "key": "creativeCommons",
-    "url": "http://creativecommons.org/licenses/by-nc/3.0/legalcode",
+    "url": "https://creativecommons.org/licenses/by-nc/3.0/legalcode",
     "text": "fri licens för icke-kommersiella utövare (extern länk)",
     "target": "_blank"
   },
@@ -42,12 +42,6 @@
     "target": "_blank"
   },
   {
-    "key": "testSiths",
-    "url": "https://test.siths.se/",
-    "text": "test.siths.se",
-    "target": "_blank"
-  },
-  {
     "key": "sarskildBehorighetStatistik",
     "url": "https://www.inera.se/kundservice/dokument-och-lankar/tjanster/intygsstatistik-dokument/",
     "text": "Mer information om behörighet för Intygsstatistik (extern länk)",
@@ -61,20 +55,14 @@
   },
   {
     "key": "ineraStartsida",
-    "url": "http://www.inera.se",
+    "url": "https://www.inera.se",
     "text": "Inera AB (extern länk)",
     "target": "_blank"
   },
   {
     "key": "ineraKundserviceFelanmalan",
-    "url": "http://www.inera.se/felanmalan",
+    "url": "https://www.inera.se/kundservice/felanmalan-och-support/",
     "text": "Kontaktinformation till kundservice (extern länk)",
-    "target": "_blank"
-  },
-  {
-    "key": "ineraKundserviceAnmalFel",
-    "url": "http://www.inera.se/felanmalan",
-    "text": "Ineras kundservice",
     "target": "_blank"
   },
   {
