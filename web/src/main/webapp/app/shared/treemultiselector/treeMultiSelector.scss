@@ -1,4 +1,6 @@
 .tree-multi-selector {
+  $base-ellipsis-width: 75px;
+
   .modal-dialog {
     margin: 30px auto;
     max-height: 1024px;
@@ -8,6 +10,14 @@
 
   .modal-header {
     font-weight: bold;
+  }
+
+  .ellipsis-text {
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    text-overflow: ellipsis;
+    vertical-align: middle;
   }
 
   .modal-body {
@@ -104,7 +114,7 @@
             }
 
             > .ellipsis-text {
-              max-width: calc(100% - 60px);
+              max-width: calc(100% - #{$base-ellipsis-width});
             }
 
             &.leaf {
@@ -121,7 +131,7 @@
             }
 
             > .ellipsis-text {
-              max-width: calc(100% - 90px);
+              max-width: calc(100% - #{$base-ellipsis-width + 30px});
             }
           }
 
@@ -134,7 +144,7 @@
             }
 
             > .ellipsis-text {
-              max-width: calc(100% - 130px);
+              max-width: calc(100% - #{$base-ellipsis-width + 60px});
             }
           }
 
@@ -147,7 +157,7 @@
             }
 
             > .ellipsis-text {
-              max-width: calc(100% - 130px);
+              max-width: calc(100% - #{$base-ellipsis-width + 70px});
             }
           }
 
