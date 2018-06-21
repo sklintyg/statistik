@@ -1,0 +1,131 @@
+---
+Prune
+Test
+---
+TEST#1 - Första intyget i ett sjukfall har diagnos C50
+
+!3 Givet att:
+| script | dagens datum | 2018-01-01 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | län | kommentar |
+| 19671109-2681 | C50 | 2017-01-01 | 2017-01-30 | enhet1 | 01 | 30 dagar |
+| 19671109-2681 | F32 | 2017-02-01 | 2017-02-13 | enhet1 | 01 | 13 dagar |
+| 19790219-9285 | F32 | 2017-01-01 | 2017-01-13 | enhet1 | 01 | 13 dagar |
+
+!3 Då gäller:
+Endast sjukfall som har C50 som första intyg i sjukfallet tas med. Vilket i det här fallet är 1 sjukfall. Sjukskrivningslängd beräknas för samtliga intyg i sjukfallet.
+
+Det är sjukfallets sista intygs diagnos som avgör var sjukfallet hamnar under för diagnos.
+
+| Sjukfall i rapporten socialstyrelsen brostcancer |
+| diagnos | kön? | län? | sjukskrivningslängd? |
+| F32 | FEMALE | 01 | 43 |
+
+TEST#2 - Ett intyg har diagnosen C50 men det är inte det första intyget i sjukfallet
+
+!3 Givet att:
+| script | dagens datum | 2018-01-01 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | län | kommentar |
+| 19671109-2681 | F32 | 2017-01-01 | 2017-01-30 | enhet1 | 01 | 30 dagar |
+| 19671109-2681 | C50 | 2017-02-01 | 2017-02-13 | enhet1 | 01 | 13 dagar |
+| 19790219-9285 | C50 | 2017-01-01 | 2017-01-14 | enhet1 | 01 | 14 dagar |
+
+!3 Då gäller:
+Endast sjukfall som har C50 som första intyg i sjukfallet tas med. Det spelar ingen roll om ett sjukfallet innehåller C50 diagnosen, det tas ändå inte med så länge som det första intyget har en annan diagnos.
+
+| Sjukfall i rapporten socialstyrelsen brostcancer |
+| diagnos | kön? | län? | sjukskrivningslängd? |
+| C50 | FEMALE | 01 | 14!-
+-! |
+
+TEST#3 - Sjukfall som bara har C50 som diagnos.
+
+!3 Givet att:
+| script | dagens datum | 2018-01-01 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | län | kommentar |
+| 19671109-2681 | C50 | 2017-01-01 | 2017-01-10 | enhet1 | 01 | 10 dagar |
+| 19671109-2681 | C50 | 2017-01-11 | 2017-01-30 | enhet1 | 01 | 20 dagar |
+| 19671109-2681 | C50 | 2017-02-01 | 2017-02-20 | enhet1 | 01 | 20 dagar |
+
+!3 Då gäller:
+Tas med en gång i listan.
+
+| Sjukfall i rapporten socialstyrelsen brostcancer |
+| diagnos | kön? | län? | sjukskrivningslängd? |
+| C50 | FEMALE | 01 | 50 |
+
+TEST#4 - Ej avslutat sjukfall
+
+!3 Givet att:
+| script | dagens datum | 2018-01-01 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | län | kommentar |
+| 19671109-2681 | C50 | 2017-01-01 | 2017-01-10 | enhet1 | 01 | 10 dagar |
+| 19671109-2681 | C50 | 2017-12-31 | 2018-01-02 | enhet1 | 01 | 3 dagar |
+
+!3 Då gäller:
+Ena sjukfallet tas inte med alls då det inte är avslutat vid dagens datum.
+
+| Sjukfall i rapporten socialstyrelsen brostcancer |
+| diagnos | kön? | län? | sjukskrivningslängd? |
+| C50 | FEMALE | 01 | 10 |
+
+TEST#5 - Intyg med olika län
+
+!3 Givet att:
+| script | dagens datum | 2018-01-01 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | län | kommentar |
+| 19671109-2681 | C50 | 2017-01-01 | 2017-01-10 | enhet1 | 01 | 10 dagar |
+| 19671109-2681 | C50 | 2017-01-11 | 2017-01-30 | enhet1 | 06 | 20 dagar |
+
+!3 Då gäller:
+Län blir 06 eftersom det är det senaste länet i sjukfallet
+
+| Sjukfall i rapporten socialstyrelsen brostcancer |
+| diagnos | kön? | län? | sjukskrivningslängd? |
+| C50 | FEMALE | 06 | 50 |
+
+TEST#6 - Överlappande intyg
+
+!3 Givet att:
+| script | dagens datum   | 2018-01-01   |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | län | kommentar |
+| 19671109-2681   | C50 | 2017-01-01   | 2017-01-10   | enhet1 | 01 | 10 dagar |
+| 19671109-2681   | C50 | 2017-01-01   | 2017-01-30   | enhet1 | 01 | 30 dagar |
+
+!3 Då gäller:
+Dagar med dubbla intyg räknas bara en gång.
+
+| Sjukfall i rapporten socialstyrelsen brostcancer   |
+| diagnos | kön? | län? | sjukskrivningslängd? |
+| C50 | FEMALE | 01 | 30!-
+-! |
+
+TEST#7 - Sjukfall med underdiagnoser
+
+!3 Givet att:
+| script | dagens datum   | 2018-01-01   |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | län | kommentar |
+| 19671109-2681   | C50.2 | 2017-01-01   | 2017-01-10   | enhet1 | 01 | 10 dagar |
+| 19671109-2661   | C50.1 | 2017-01-01   | 2017-01-30   | enhet1 | 01 | 30 dagar |
+
+!3 Då gäller:
+Sjukfall med underdiagnos till C50 tas med som om de hade C50 som diagnoskod.
+
+| Sjukfall i rapporten socialstyrelsen brostcancer   |
+| diagnos | kön? | län? | sjukskrivningslängd? |
+| C50 | FEMALE | 01 | 30!-
+-! |
+| C50 | FEMALE | 01 | 10 |
