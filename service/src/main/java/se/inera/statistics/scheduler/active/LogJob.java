@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
+import se.inera.statistics.service.helper.MDCHelper;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.LogConsumer;
 
@@ -31,6 +32,8 @@ public class LogJob {
     private static final Logger LOG = LoggerFactory.getLogger(LogJob.class);
     private static final String JOB_NAME = "LogJob.run";
 
+    @Autowired
+    private MDCHelper mdcHelper;
 
     @Autowired
     private LogConsumer consumer;
@@ -42,14 +45,16 @@ public class LogJob {
     @Scheduled(cron = "${scheduler.logJob.cron}")
     @SchedulerLock(name = JOB_NAME)
     public void run() {
-        LOG.info(JOB_NAME);
-        int count;
-        do {
-            count = consumer.processBatch();
-            LOG.info("Processed batch with {} entries", count);
-            if (count > 0) {
-                monitoringLogService.logInFromTable(count);
-            }
-        } while (count > 0);
+        mdcHelper.run(() -> {
+            LOG.info(JOB_NAME);
+            int count;
+            do {
+                count = consumer.processBatch();
+                LOG.info("Processed batch with {} entries", count);
+                if (count > 0) {
+                    monitoringLogService.logInFromTable(count);
+                }
+            } while (count > 0);
+        });
     }
 }

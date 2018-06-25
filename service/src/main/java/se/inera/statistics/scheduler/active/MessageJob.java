@@ -21,7 +21,9 @@ package se.inera.statistics.scheduler.active;
 import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import se.inera.statistics.service.helper.MDCHelper;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
 public class MessageJob {
@@ -34,16 +36,21 @@ public class MessageJob {
         this.consumer = consumer;
     }
 
+    @Autowired
+    MDCHelper mdcHelper;
+
     @Scheduled(cron = "${scheduler.logJob.cron}")
     @SchedulerLock(name = JOB_NAME)
     public void run() {
-        LOG.info(JOB_NAME);
-        long startId;
-        long latestHandledId = 0;
-        do {
-            startId = latestHandledId;
-            latestHandledId = consumer.processBatch(startId);
-            LOG.info("Processed batch from id {} to {}", startId, latestHandledId);
-        } while (startId != latestHandledId);
+        mdcHelper.run(() -> {
+            LOG.info(JOB_NAME);
+            long startId;
+            long latestHandledId = 0;
+            do {
+                startId = latestHandledId;
+                latestHandledId = consumer.processBatch(startId);
+                LOG.info("Processed batch from id {} to {}", startId, latestHandledId);
+            } while (startId != latestHandledId);
+        });
     }
 }

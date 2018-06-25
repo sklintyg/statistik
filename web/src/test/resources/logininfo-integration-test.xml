@@ -32,7 +32,8 @@
     <context:property-placeholder location="classpath:default.properties"/>
 
     <context:component-scan base-package="se.inera.statistics.config.jpa"/>
-    
+
+    <bean class="se.inera.statistics.service.helper.MDCHelper"/>
     <bean class="se.inera.statistics.web.util.VersionUtil" id="versionUtil"/>
     <bean class="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" id="hsaWebServiceCalls"/>
     <bean class="se.inera.statistics.service.hsa.HsaServiceStub" id="hsaServiceStub"/>

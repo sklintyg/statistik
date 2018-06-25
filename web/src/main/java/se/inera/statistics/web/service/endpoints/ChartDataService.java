@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
+import se.inera.statistics.service.helper.MDCHelper;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.web.model.TableDataReport;
@@ -82,6 +83,9 @@ public class ChartDataService {
     @Autowired
     private NationellDataCalculator nationellDataCalculator;
 
+    @Autowired
+    private MDCHelper mdcHelper;
+
     private volatile NationellDataResult nationellDataResult;
     private AtomicBoolean dataCalculationOngoing = new AtomicBoolean(false);
 
@@ -108,17 +112,19 @@ public class ChartDataService {
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     public void buildCache() {
-        LOG.info("National cache population requested");
-        if (!dataCalculationOngoing.getAndSet(true)) {
-            StopWatch stopWatch = new StopWatch();
-            stopWatch.start();
-            nationellDataResult = nationellDataCalculator.getData();
-            stopWatch.stop();
-            LOG.info("National cache populated  " + stopWatch.getTotalTimeMillis());
-            dataCalculationOngoing.set(false);
-        } else {
-            LOG.info("National cache population is already ongoing. This population request is therefore skipped.");
-        }
+        mdcHelper.run(() -> {
+            LOG.info("National cache population requested");
+            if (!dataCalculationOngoing.getAndSet(true)) {
+                StopWatch stopWatch = new StopWatch();
+                stopWatch.start();
+                nationellDataResult = nationellDataCalculator.getData();
+                stopWatch.stop();
+                LOG.info("National cache populated  " + stopWatch.getTotalTimeMillis());
+                dataCalculationOngoing.set(false);
+            } else {
+                LOG.info("National cache population is already ongoing. This population request is therefore skipped.");
+            }
+        });
     }
 
     /*

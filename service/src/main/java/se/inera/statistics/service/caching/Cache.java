@@ -40,6 +40,7 @@ import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.helper.MDCHelper;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
@@ -67,6 +68,9 @@ public class Cache {
     @Autowired
     private RedisTemplate<Object, Object> template;
 
+    @Autowired
+    private MDCHelper mdcHelper;
+
     public Cache() {
     }
 
@@ -81,8 +85,10 @@ public class Cache {
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     @SchedulerLock(name = JOB_NAME)
     public void clearCaches() {
-        LOG.info("Clear Redis Cache Keys");
-        template.delete(Lists.newArrayList(AISLE, SJUKFALLGROUP, VGENHET, ENHET));
+        mdcHelper.run(() -> {
+            LOG.info("Clear Redis Cache Keys");
+            template.delete(Lists.newArrayList(AISLE, SJUKFALLGROUP, VGENHET, ENHET));
+        });
     }
 
     public List<SjukfallGroup> getSjukfallGroups(SjukfallGroupCacheKey key) {

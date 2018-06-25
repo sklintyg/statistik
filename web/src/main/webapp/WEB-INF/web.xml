@@ -12,6 +12,7 @@
             org.springframework.web.filter.DelegatingFilterProxy
         </filter-class>
     </filter>
+
     <!-- Filter for adding expiry (cache) header -->
     <filter>
       <filter-name>CompressingFilter</filter-name>
@@ -27,10 +28,21 @@
        </init-param>
     </filter>
 
+    <filter>
+        <filter-name>LogbackMDCFilter</filter-name>
+        <filter-class>se.inera.statistics.web.logging.LogbackMDCFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>LogbackMDCFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+
 
     <!-- Gzip compression of apis -->
     <filter-mapping>
