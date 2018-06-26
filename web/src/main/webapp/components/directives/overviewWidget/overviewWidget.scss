@@ -60,7 +60,11 @@ overview-widget {
   }
 
   .page-help-tool-tip {
-    margin-top: -3px;
+    margin-top: -5px;
+
+    i {
+      font-size: 24px;
+    }
   }
 
   .overview-widget-header-text,
