@@ -35,7 +35,7 @@ ext {
     jaxb2Version = "0.9.5"
     jmsVersion = "1.1.1"
     liquibaseVersion = "2.0.5"
-    logbackVersion = "1.1.1"
+    logbackVersion = "1.2.3"
     mysqlConnectorVersion = "5.1.39"
     poiVersion = "3.11"
     restAssuredVersion = "2.9.0"

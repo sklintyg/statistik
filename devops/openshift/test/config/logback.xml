@@ -52,19 +52,19 @@
   </appender>
 
   <appender name="PROCESS" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
       <pattern>${TIMESTAMP} [${APP_NAME},process,${TRACE},${HOST}] ${LINE}</pattern>
     </encoder>
   </appender>
 
   <appender name="ACCESS" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
       <pattern>${TIMESTAMP} [${APP_NAME},access,${TRACE},${HOST}] ${LINE}</pattern>
     </encoder>
   </appender>
 
   <appender name="FRONTEND" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
       <pattern>${TIMESTAMP} [${APP_NAME},frontend,${TRACE},${HOST}] ${LINE}</pattern>
     </encoder>
   </appender>
