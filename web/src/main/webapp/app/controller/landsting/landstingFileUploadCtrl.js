@@ -136,6 +136,13 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl',
             }, 1);
         };
 
+        $scope.fileUploadAgreementAccepted = false;
+        $scope.acceptFileUploadAgreement = function() {
+            statisticsData.acceptFileUploadAgreement(function () {
+                $scope.fileUploadAgreementAccepted = true;
+            });
+        };
+
         updateLastUpdateMessage();
 
     }

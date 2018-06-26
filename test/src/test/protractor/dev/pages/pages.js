@@ -11,5 +11,6 @@ module.exports = {
     'navmenu': require('./navmenu.po.js'),
     'filter': require('./filter.po.js'),
     'landstingAbout': require('./landstingAbout.po.js'),
-    'landstingUpload': require('./landstingUpload.po.js')
+    'landstingUpload': require('./landstingUpload.po.js'),
+    'landstingUploadAgreement': require('./landstingUploadAgreement.po.js')
 };

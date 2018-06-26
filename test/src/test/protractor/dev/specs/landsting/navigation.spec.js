@@ -41,6 +41,10 @@ describe('Navigering landsting: ', function() {
             landstingsNiva();
 
             navmenu.navLandstingUpload.click();
+            pages.landstingUploadAgreement.isAtPage();
+            pages.landstingUploadAgreement.agreementCheckbox.click();
+            pages.landstingUploadAgreement.agreementButton.click();
+
             pages.landstingUpload.isAtPage();
         });
 

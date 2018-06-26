@@ -24,6 +24,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -415,6 +416,18 @@ public class ProtectedLandstingService {
         final Map<String, Object> result = new HashMap<>();
         result.put("businesses", businesses);
         return Response.ok(result).build();
+    }
+
+    @PUT
+    @Path("acceptFileUploadAgreement")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
+    @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    public Response acceptFileUploadAgreement(@Context HttpServletRequest request) {
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
+        final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
+        LOG.info("User accepted landsting file upload agreement. User: {}, vg: {}", loginInfo.getHsaId(), vgId);
+        return Response.ok().build();
     }
 
     private Response getResponse(TableDataReport result, String format, HttpServletRequest request, Report report, ReportType reportType,

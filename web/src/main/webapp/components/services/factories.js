@@ -410,6 +410,10 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestLandsting('landstingEnhets', successCallback, failureCallback, 'delete', true);
     };
 
+    factory.acceptFileUploadAgreement = function (successCallback, failureCallback) {
+        makeRequestLandsting('acceptFileUploadAgreement', successCallback, failureCallback, 'put', true);
+    };
+
     factory.logOnServer = function (message) {
         $http.post('api/logging/log', {message: message, url: $location.url()}, {cache: false})
         .then(function (/*result*/) {
