@@ -25,17 +25,18 @@
   
   <property name="APP_NAME" value="statistik"/>
   <property name="TIMESTAMP" value="%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p}"/>
-  <property name="TRACE" value="%X{req.traceId:--},%X{env.localHost:--}"/>
+  <property name="TRACE" value="%X{req.traceId:--}"/>
+  <property name="HOST" value="%X{env.localHost:--}"/>
   <property name="LINE" value="--- %-40.40logger{39} : %msg%n${LOG_EXCEPTION_CONVERSION_WORD:-%rEx}"/>
 
-  <appender name="DEFAULT" class="ch.qos.logback.core.ConsoleAppender">
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <filter class="se.inera.statistics.service.monitoring.MarkerFilter">
       <marker>Monitoring</marker>
       <onMatch>DENY</onMatch>
       <onMismatch>ACCEPT</onMismatch>
     </filter>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-      <pattern>${TIMESTAMP} [${APP_NAME},default,${TRACE}] ${LINE}</pattern>
+      <pattern>${TIMESTAMP} [${APP_NAME},console,${TRACE},${HOST}] ${LINE}</pattern>
     </encoder>
   </appender>
   
@@ -46,25 +47,25 @@
       <onMismatch>DENY</onMismatch>
     </filter>
     <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-      <pattern>${TIMESTAMP} [${APP_NAME},monitoring,${TRACE}] ${LINE}</pattern>
+      <pattern>${TIMESTAMP} [${APP_NAME},monitoring,${TRACE},${HOST}] ${LINE}</pattern>
     </encoder>
   </appender>
 
   <appender name="PROCESS" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>${TIMESTAMP} [${APP_NAME},process,${TRACE}] ${LINE}</pattern>
+      <pattern>${TIMESTAMP} [${APP_NAME},process,${TRACE},${HOST}] ${LINE}</pattern>
     </encoder>
   </appender>
 
   <appender name="ACCESS" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>${TIMESTAMP} [${APP_NAME},access,${TRACE}] ${LINE}</pattern>
+      <pattern>${TIMESTAMP} [${APP_NAME},access,${TRACE},${HOST}] ${LINE}</pattern>
     </encoder>
   </appender>
 
   <appender name="FRONTEND" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>${TIMESTAMP} [${APP_NAME},frontend,${TRACE}] ${LINE}</pattern>
+      <pattern>${TIMESTAMP} [${APP_NAME},frontend,${TRACE},${HOST}] ${LINE}</pattern>
     </encoder>
   </appender>
 
@@ -122,15 +123,15 @@
   </logger>
 
   <root level="INFO">
-    <appender-ref ref="DEFAULT"/>
+    <appender-ref ref="CONSOLE"/>
   </root>
 
   <root level="WARN">
-    <appender-ref ref="DEFAULT"/>
+    <appender-ref ref="CONSOLE"/>
   </root>
 
   <root level="ERROR">
-    <appender-ref ref="DEFAULT"/>
+    <appender-ref ref="CONSOLE"/>
   </root>
 
 

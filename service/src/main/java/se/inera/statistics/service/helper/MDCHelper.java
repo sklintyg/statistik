@@ -19,26 +19,36 @@
 package se.inera.statistics.service.helper;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import java.io.Closeable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.nio.CharBuffer;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.MDC;
+import org.springframework.beans.factory.annotation.Value;
 
 public class MDCHelper {
     static final int TXIDLEN = 8;
     static final String LOCALHOST = "env.localHost";
+    static final String TRACEID = "req.traceId";
     static final char[] BASE62CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
 
+    @Value("${log.trace.header:x-trace-id}")
+    private String header;
+
     public MDCHelper() {
-        Map<String, String> cm = new HashMap<>();
-        cm.put(LOCALHOST, localHost());
-        MDC.setContextMap(cm);
+        MDC.setContextMap(Maps.newHashMap(ImmutableMap.of(LOCALHOST, localHost())));
+    }
+
+    /**
+     * Returns the trace HTTP header name.
+     */
+    public String traceHeader() {
+        return this.header;
     }
 
     /**
@@ -61,7 +71,10 @@ public class MDCHelper {
         if (Strings.isNullOrEmpty(localHost)) {
             MDC.put(LOCALHOST, localHost());
         }
-        return MDC.putCloseable("req.traceId", Strings.isNullOrEmpty(traceId) ? traceId(TXIDLEN) : traceId);
+
+        MDC.put(TRACEID, Strings.isNullOrEmpty(traceId) ? traceId(TXIDLEN) : traceId);
+
+        return () -> closeTrace();
     }
 
     /**
@@ -74,6 +87,11 @@ public class MDCHelper {
         } finally {
             IOUtils.closeQuietly(trace);
         }
+    }
+
+    // Clean-up.
+    void closeTrace() {
+        MDC.remove(TRACEID);
     }
 
     /**

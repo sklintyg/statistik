@@ -32,8 +32,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import se.inera.statistics.service.helper.MDCHelper;
 
-public class LogbackMDCFilter implements Filter {
-    static final String X_TRACE_ID_HEADER = "x-trace-id";
+/**
+ * Initializes logging context and trace id, and shall be defined first in the filter chain (see web.xml).
+ */
+public class LogMDCFilter implements Filter {
 
     @Autowired
     private MDCHelper mdcHelper;
@@ -49,7 +51,7 @@ public class LogbackMDCFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
                 filterConfig.getServletContext());
     }
@@ -60,7 +62,7 @@ public class LogbackMDCFilter implements Filter {
 
     Closeable open(final ServletRequest request) {
         if (request instanceof HttpServletRequest) {
-            return mdcHelper.openTrace(((HttpServletRequest) request).getHeader(X_TRACE_ID_HEADER));
+            return mdcHelper.openTrace(((HttpServletRequest) request).getHeader(mdcHelper.traceHeader()));
         }
         return null;
     }

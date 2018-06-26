@@ -29,12 +29,12 @@
     </filter>
 
     <filter>
-        <filter-name>LogbackMDCFilter</filter-name>
-        <filter-class>se.inera.statistics.web.logging.LogbackMDCFilter</filter-class>
+        <filter-name>LogMDCFilter</filter-name>
+        <filter-class>se.inera.statistics.web.logging.LogMDCFilter</filter-class>
     </filter>
 
     <filter-mapping>
-        <filter-name>LogbackMDCFilter</filter-name>
+        <filter-name>LogMDCFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
