@@ -29,7 +29,7 @@ stage('integrationTest') {
         try {
             shgradle "integrationTest testReport -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
         } finally {
-            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/integrationTest', \
+            publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'service/build/reports/tests/integrationTest', \
                 reportFiles: 'index.html', reportName: 'Integration test results'
 
         }
