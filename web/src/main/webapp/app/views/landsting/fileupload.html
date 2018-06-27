@@ -1,13 +1,20 @@
-<div id="landsting-upload-agreement-page" id="landsting-upload-agreement-page" data-ng-if="!fileUploadAgreementAccepted">
+<div class="container-fluid" id="landsting-upload-agreement-page" data-ng-if="!fileUploadAgreementAccepted">
   <h1>Filuppladdning</h1>
   <p>Denna sida ser du eftersom du har statistikbehörighet för hela vårdgivaren {{vgName}}.</p>
   <p>Om ditt landsting vill kunna använda landstingsstatistiken, behöver du (eller någon annan med vårdgivarbehörighet för samma vårdgivare) rapportera in vilka vårdenheter som ingår i landstinget. Detta gör du genom att ladda upp en excel-fil som innehåller namn och HSA-id på de vårdenheter som ska ingå.</p>
   <p><b>Observera att ditt landsting endast får anmäla uppföljning av privata vårdenheter som landstinget har ett samarbete med, d.v.s. de man har avtal med. Landstinget ansvarar för att informera anmälda vårdenheter om uppföljningen.</b></p>
   <p>Mer utförliga instruktioner för hur du administrerar listan av enheter finns här: <span dynamiclink key="administrationAvLandsting"></span></p>
-  <input type="checkbox" ng-model="agreementAcceptedChecked" ng-init="agreementAcceptedChecked=false" id="agreementAcceptedChecked"/>
-  <label for="agreementAcceptedChecked" style="display: inline; font-weight: normal">Jag intygar härmed att de privata vårdenheter som anges i min uppladdade fil har avtal med min vårdgivare och att jag informerat de privata vårdenheterna att vi kommer ta del av deras data.</label>
-  <div><button id="agreementButton" data-ng-disabled="!agreementAcceptedChecked" data-ng-class="disabled" class="btn btn-default" data-ng-click="acceptFileUploadAgreement()">Gå vidare</button></div>
+
+  <div class="checkbox">
+    <label for="agreementAcceptedChecked">
+      <input type="checkbox" ng-model="agreementAcceptedChecked" id="agreementAcceptedChecked" style="margin-top: 2px;" />
+
+      Jag intygar härmed att de privata vårdenheter som anges i min uppladdade fil har avtal med min vårdgivare och att jag informerat de privata vårdenheterna att vi kommer ta del av deras data.
+    </label>
+  </div>
+  <button id="agreementButton" data-ng-disabled="!agreementAcceptedChecked" class="btn btn-default" data-ng-click="acceptFileUploadAgreement()">Gå vidare</button>
 </div>
+
 <div class="container-fluid" id="landsting-upload-page" data-ng-if="fileUploadAgreementAccepted">
   <div id="about-content">
     <section>

@@ -137,6 +137,7 @@ angular.module('StatisticsApp').controller('landstingFileUploadCtrl',
         };
 
         $scope.fileUploadAgreementAccepted = false;
+        $scope.agreementAcceptedChecked = false;
         $scope.acceptFileUploadAgreement = function() {
             statisticsData.acceptFileUploadAgreement(function () {
                 $scope.fileUploadAgreementAccepted = true;
