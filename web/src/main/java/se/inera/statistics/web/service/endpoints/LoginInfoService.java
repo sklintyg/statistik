@@ -25,12 +25,11 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
@@ -52,6 +51,8 @@ public class LoginInfoService {
     @GET
     @Path("getLoginInfo")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_login_info",
+            help = "API-tjänst för åtkomst till login info")
     public LoginInfo getLoginInfo() {
         return loginServiceUtil.getLoginInfo();
     }
@@ -59,6 +60,8 @@ public class LoginInfoService {
     @GET
     @Path("getAppSettings")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_app_settings",
+            help = "API-tjänst för åtkomst till app-inställningar")
     public AppSettings getAppSettings(@Context HttpServletRequest request) {
         return loginServiceUtil.getSettings();
     }
@@ -66,6 +69,8 @@ public class LoginInfoService {
     @GET
     @Path("getUserAccessInfo/{vgId}")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_user_access_info_for_caregiver",
+            help = "API-tjänst för åtkomst till användarens rättigheter till information från vårdgivare")
     public UserAccessInfo getUserAccessInfo(@Context HttpServletRequest request, @PathParam("vgId") String vgId) {
         return loginServiceUtil.getUserAccessInfoForVg(request, new HsaIdVardgivare(vgId));
     }
@@ -73,6 +78,8 @@ public class LoginInfoService {
     @GET
     @Path("getStaticData")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_static_data",
+            help = "API-tjänst för åtkomst till statisk referensdata")
     public StaticData getStaticData() {
         LOG.info("Calling getStaticData");
         return loginServiceUtil.getStaticData();

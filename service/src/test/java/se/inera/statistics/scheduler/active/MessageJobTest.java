@@ -20,8 +20,7 @@ package se.inera.statistics.scheduler.active;
 
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.slf4j.MDC;
-import se.inera.statistics.service.helper.MDCHelper;
+import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
 public class MessageJobTest {
@@ -30,10 +29,10 @@ public class MessageJobTest {
     public void testCheckLogContinueProcessingUntilDone() throws Exception {
         //Given
         MessageLogConsumer consumer = Mockito.mock(MessageLogConsumer.class);
-        MDCHelper mdcHelper = Mockito.mock(MDCHelper.class);
+        LogMDCHelper mdcHelper = Mockito.mock(LogMDCHelper.class);
         Mockito.when(consumer.processBatch(Mockito.anyLong())).thenReturn(100L).thenReturn(101L).thenReturn(101L);
         final MessageJob messageJob = new MessageJob(consumer);
-        messageJob.mdcHelper = new MDCHelper();
+        messageJob.logMDCHelper = new LogMDCHelper();
 
         //When
         messageJob.run();

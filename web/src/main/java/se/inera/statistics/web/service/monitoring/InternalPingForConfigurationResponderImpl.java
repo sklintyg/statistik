@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
+import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.statistics.web.util.HealthCheckUtil;
 import se.inera.statistics.web.util.VersionUtil;
 import se.riv.clinicalprocess.healthcond.monitoring.rivtabp21.v1.InternalPingForConfigurationResponderInterface;
@@ -50,6 +51,8 @@ public class InternalPingForConfigurationResponderImpl implements InternalPingFo
     private HealthCheckUtil healthCheck;
 
     @Override
+    @PrometheusTimeMethod(name = "ws_internal_ping_for_configuration",
+            help = "WS-tjänst (intern) för att kontrollera status för applikationen med stödtjänster")
     public InternalPingForConfigurationResponseType internalPingForConfiguration(
             @WebParam(partName = "LogicalAddress", name = "LogicalAddress", targetNamespace = "urn:riv:itintegration:registry:1",
                     header = true) String logicalAddress,

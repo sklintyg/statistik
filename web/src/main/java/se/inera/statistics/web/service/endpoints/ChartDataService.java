@@ -40,7 +40,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
-import se.inera.statistics.service.helper.MDCHelper;
+import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
+import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.web.model.TableDataReport;
@@ -84,7 +85,7 @@ public class ChartDataService {
     private NationellDataCalculator nationellDataCalculator;
 
     @Autowired
-    private MDCHelper mdcHelper;
+    private LogMDCHelper logMDCHelper;
 
     private volatile NationellDataResult nationellDataResult;
     private AtomicBoolean dataCalculationOngoing = new AtomicBoolean(false);
@@ -111,8 +112,10 @@ public class ChartDataService {
     }
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
+    @PrometheusTimeMethod(name = "job_build_cache",
+            help = "Jobb för att uppdatera information i cache")
     public void buildCache() {
-        mdcHelper.run(() -> {
+        logMDCHelper.run(() -> {
             LOG.info("National cache population requested");
             if (!dataCalculationOngoing.getAndSet(true)) {
                 StopWatch stopWatch = new StopWatch();
@@ -149,6 +152,8 @@ public class ChartDataService {
     @GET
     @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_number_of_cases_per_month",
+            help = "API-tjänst för åtkomst till antal sjukfall per måndad på nationell nivå")
     public Response getNumberOfCasesPerMonth(@QueryParam("format") String format) {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getNumberOfCasesPerMonth");
@@ -174,6 +179,7 @@ public class ChartDataService {
     @GET
     @Path("getDiagnoskapitel")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_diagnosis_groups", help = "API-tjänst för åtkomst till ICD-10 diagnoskapitel")
     public List<Icd> getDiagnoskapitel() {
         LOG.info("Calling getKapitel");
         monitoringLogService.logTrackAccessAnonymousChartData("getKapitel");
@@ -193,6 +199,8 @@ public class ChartDataService {
     @GET
     @Path("getDiagnosisKapitelAndAvsnittAndKategori")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_diagnosis_group_and_ection_and_category",
+            help = "API-tjänst för åtkomst till ICD-10 diagnoskapitel, avsnitt och kategorier")
     public DiagnosisKapitelAndAvsnittAndKategoriResponse getDiagnosisKapitelAndAvsnittAndKod() {
         LOG.info("Calling getDiagnosisKapitelAndAvsnittAndKategori");
         monitoringLogService.logTrackAccessAnonymousChartData("getDiagnosisKapitelAndAvsnittAndKategori");
@@ -223,6 +231,8 @@ public class ChartDataService {
     @GET
     @Path("getDiagnoskapitelstatistik")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_diagnosis_group_data",
+            help = "API-tjänst för åtkomst till nationell statistik för sjukfall per diagnoskaptiel och -grupp")
     public Response getDiagnoskapitelstatistik(@QueryParam("format") String format) {
         LOG.info("Calling getDiagnoskapitelstatistik for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getDiagnoskapitelstatistik");
@@ -235,6 +245,8 @@ public class ChartDataService {
     @GET
     @Path("getDiagnosavsnittstatistik/{groupId}")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_diagnosis_group_data_for_id",
+            help = "API-tjänst för åtkomst till nationell statistik för sjukfall per diagnosavsnitt för ett kapitel")
     public Response getDiagnosavsnittstatistik(@PathParam("groupId") String groupId, @QueryParam("format") String format) {
         LOG.info("Calling getDiagnosavsnittstatistik for national with groupId: " + groupId);
         monitoringLogService.logTrackAccessAnonymousChartData("getDiagnosavsnittstatistik");
@@ -249,6 +261,8 @@ public class ChartDataService {
     @GET
     @Path("getOverview")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_overview",
+            help = "API-tjänst för åtkomst till senaste 3 mån. kön, ålder, diagnos, sjukskrivningslängd.")
     public OverviewData getOverviewData() {
         return getNationellDataResult().getOverview();
     }
@@ -259,6 +273,8 @@ public class ChartDataService {
     @GET
     @Path("getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_age_groups_statistics",
+            help = "API-tjänst för åtkomst till statistk för sjukfall grupperad på ålder och kön")
     public Response getAgeGroupsStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getAgeGroupsStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getAgeGroupsStatistics");
@@ -271,6 +287,8 @@ public class ChartDataService {
     @GET
     @Path("getDegreeOfSickLeaveStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_degree_of_sickLeave_statistics",
+            help = "API-tjänst för åtkomst till sjukskrivningsgrad per kalendermånad")
     public Response getDegreeOfSickLeaveStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getDegreeOfSickLeaveStatistics");
@@ -283,6 +301,7 @@ public class ChartDataService {
     @GET
     @Path("getSickLeaveLengthData")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_sick_leave_length_data", help = "API-tjänst för åtkomst till grupperad sjukfallslängd")
     public Response getSickLeaveLengthData(@QueryParam("format") String format) {
         LOG.info("Calling getSickLeaveLengthData for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getSickLeaveLengthData");
@@ -295,6 +314,8 @@ public class ChartDataService {
     @GET
     @Path("getCountyStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_county_statistics",
+            help = "API-tjänst för åtkomst till sjukfall per län")
     public Response getCountyStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getCountyStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getCountyStatistics");
@@ -307,6 +328,8 @@ public class ChartDataService {
     @GET
     @Path("getSjukfallPerSexStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_sjukfall_per_sex_statistics",
+            help = "API-tjänst för åtkomst till sjukfall per kön")
     public Response getSjukfallPerSexStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getSjukfallPerSexStatistics");
@@ -316,6 +339,8 @@ public class ChartDataService {
     @GET
     @Path("getMeddelandenPerAmne")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_message_per_subject",
+            help = "API-tjänst för åtkomst till meddelande per ämne")
     public Response getMeddelandenPerAmne(@QueryParam("format") String format) {
         LOG.info("Calling getMeddelandenPerAmne for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getMeddelandenPerAmne");
@@ -325,6 +350,8 @@ public class ChartDataService {
     @GET
     @Path("getIntygPerTyp")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_num_certificates_per_type",
+            help = "API-tjänst för åtkomst till antal sjukintyg per typ")
     public Response getIntygPerTyp(@QueryParam("format") String format) {
         LOG.info("Calling getIntygPerTyp for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getIntygPerTyp");
@@ -334,6 +361,8 @@ public class ChartDataService {
     @GET
     @Path("getAndelKompletteringar")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_amount_of_completions",
+            help = "API-tjänst för åtkomst till andel kompletteringar")
     public Response getAndelKompletteringar(@QueryParam("format") String format) {
         LOG.info("Calling getAndelKompletteringar for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getAndelKompletteringar");
@@ -343,6 +372,8 @@ public class ChartDataService {
     @GET
     @Path("getIcd10Structure")
     @Produces({ MediaType.APPLICATION_JSON })
+    @PrometheusTimeMethod(name = "api_get_icd10_structure",
+            help = "API-tjänst för åtkomst till ICD-10 kodder")
     public List<Icd> getIcd10Structure() {
         LOG.info("Calling getIcd10Structure");
         monitoringLogService.logTrackAccessAnonymousChartData("getIcd10Structure");
@@ -352,6 +383,8 @@ public class ChartDataService {
     @POST
     @Path("filter")
     @Produces({ MediaType.TEXT_PLAIN })
+    @PrometheusTimeMethod(name = "api_get_hash_for_filter_data",
+            help = "API-tjänst för åtkomst till signatur (hash) för filterdata")
     public Response getFilterHash(String filterData) {
         LOG.info("Calling post FilterHash: " + filterData);
         monitoringLogService.logTrackAccessAnonymousChartData("getFilterHash");
@@ -365,6 +398,8 @@ public class ChartDataService {
 
     @GET
     @Path("filter/{filterHash}")
+    @PrometheusTimeMethod(name = "api_get_filter_for_filter_hash",
+            help = "API-tjänst för åtkomst till filterdata med given signatur")
     public Response getFilterData(@PathParam("filterHash") String filterHash) {
         LOG.info("Calling get FilterData: " + filterHash);
         monitoringLogService.logTrackAccessAnonymousChartData("getFilterData");

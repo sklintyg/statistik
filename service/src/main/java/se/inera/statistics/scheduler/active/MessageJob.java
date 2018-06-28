@@ -23,7 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import se.inera.statistics.service.helper.MDCHelper;
+import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
+import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
 public class MessageJob {
@@ -37,12 +38,13 @@ public class MessageJob {
     }
 
     @Autowired
-    MDCHelper mdcHelper;
+    LogMDCHelper logMDCHelper;
 
     @Scheduled(cron = "${scheduler.logJob.cron}")
     @SchedulerLock(name = JOB_NAME)
+    @PrometheusTimeMethod(name = "job_process_messages", help = "Jobb för att hantera inkomna meddelanden från kön")
     public void run() {
-        mdcHelper.run(() -> {
+        logMDCHelper.run(() -> {
             LOG.info(JOB_NAME);
             long startId;
             long latestHandledId = 0;

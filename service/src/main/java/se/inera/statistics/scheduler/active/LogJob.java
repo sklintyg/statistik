@@ -24,7 +24,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
-import se.inera.statistics.service.helper.MDCHelper;
+import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
+import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.LogConsumer;
 
@@ -33,7 +34,7 @@ public class LogJob {
     private static final String JOB_NAME = "LogJob.run";
 
     @Autowired
-    private MDCHelper mdcHelper;
+    private LogMDCHelper logMDCHelper;
 
     @Autowired
     private LogConsumer consumer;
@@ -44,8 +45,9 @@ public class LogJob {
 
     @Scheduled(cron = "${scheduler.logJob.cron}")
     @SchedulerLock(name = JOB_NAME)
+    @PrometheusTimeMethod(name = "job_process_certificates", help = "Jobb för att hantera inkomna sjukintyg från kön")
     public void run() {
-        mdcHelper.run(() -> {
+        logMDCHelper.run(() -> {
             LOG.info(JOB_NAME);
             int count;
             do {

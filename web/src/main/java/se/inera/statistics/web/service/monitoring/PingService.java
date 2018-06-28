@@ -24,6 +24,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 
 /**
  * Created by eriklupander on 2017-06-26.
@@ -35,6 +36,7 @@ public class PingService {
     @GET
     @Path("/")
     @Produces("text/plain")
+    @PrometheusTimeMethod(name = "api_ping", help = "API-tjänst för att kontrollera om applikationen svarar")
     public Response ping() {
         return Response.ok("OK")
                 .header("Access-Control-Allow-Origin", "*")

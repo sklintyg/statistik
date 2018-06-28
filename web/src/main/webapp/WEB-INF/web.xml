@@ -15,22 +15,22 @@
 
     <!-- Filter for adding expiry (cache) header -->
     <filter>
-      <filter-name>CompressingFilter</filter-name>
-      <filter-class>com.github.ziplet.filter.compression.CompressingFilter</filter-class>
+        <filter-name>CompressingFilter</filter-name>
+        <filter-class>com.github.ziplet.filter.compression.CompressingFilter</filter-class>
     </filter>
 
     <filter>
-       <filter-name>ExpiresFilter</filter-name>
-       <filter-class>org.apache.catalina.filters.ExpiresFilter</filter-class>
-       <init-param>
-          <param-name>ExpiresDefault</param-name>
-          <param-value>access plus 1 years</param-value>
-       </init-param>
+        <filter-name>ExpiresFilter</filter-name>
+        <filter-class>org.apache.catalina.filters.ExpiresFilter</filter-class>
+        <init-param>
+            <param-name>ExpiresDefault</param-name>
+            <param-value>access plus 1 years</param-value>
+        </init-param>
     </filter>
 
     <filter>
         <filter-name>LogMDCFilter</filter-name>
-        <filter-class>se.inera.statistics.web.logging.LogMDCFilter</filter-class>
+        <filter-class>se.inera.intyg.infra.monitoring.logging.LogMDCServletFilter</filter-class>
     </filter>
 
     <filter-mapping>
@@ -46,28 +46,28 @@
 
     <!-- Gzip compression of apis -->
     <filter-mapping>
-      <filter-name>CompressingFilter</filter-name>
-      <url-pattern>/app/*</url-pattern>
-      <url-pattern>/js/*</url-pattern>
-      <url-pattern>/api/getOverview</url-pattern>
-      <url-pattern>/api/getNumberOfCasesPerMonth</url-pattern>
-      <url-pattern>/api/getDiagnoskapitelstatistik</url-pattern>
-      <url-pattern>/api/getAgeGroupsStatistics</url-pattern>
-      <url-pattern>/api/getDegreeOfSickLeaveStatistics</url-pattern>
-      <url-pattern>/api/getSickLeaveLengthData</url-pattern>
-      <url-pattern>/api/getCountyStatistics</url-pattern>
-      <url-pattern>/api/getSjukfallPerSexStatistics</url-pattern>
-      <url-pattern>/api/getIcd10Structure</url-pattern>
-      <url-pattern>/api/login/getStaticData</url-pattern>
+        <filter-name>CompressingFilter</filter-name>
+        <url-pattern>/app/*</url-pattern>
+        <url-pattern>/js/*</url-pattern>
+        <url-pattern>/api/getOverview</url-pattern>
+        <url-pattern>/api/getNumberOfCasesPerMonth</url-pattern>
+        <url-pattern>/api/getDiagnoskapitelstatistik</url-pattern>
+        <url-pattern>/api/getAgeGroupsStatistics</url-pattern>
+        <url-pattern>/api/getDegreeOfSickLeaveStatistics</url-pattern>
+        <url-pattern>/api/getSickLeaveLengthData</url-pattern>
+        <url-pattern>/api/getCountyStatistics</url-pattern>
+        <url-pattern>/api/getSjukfallPerSexStatistics</url-pattern>
+        <url-pattern>/api/getIcd10Structure</url-pattern>
+        <url-pattern>/api/login/getStaticData</url-pattern>
     </filter-mapping>
 
     <!-- Map cache filter to all static resources -->
     <filter-mapping>
-      <filter-name>ExpiresFilter</filter-name>
-      <url-pattern>/app/*</url-pattern>
-      <url-pattern>/assets/*</url-pattern>
-      <url-pattern>/js/*</url-pattern>
-      <dispatcher>REQUEST</dispatcher>
+        <filter-name>ExpiresFilter</filter-name>
+        <url-pattern>/app/*</url-pattern>
+        <url-pattern>/assets/*</url-pattern>
+        <url-pattern>/js/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
 
     <context-param>
@@ -85,25 +85,34 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
 
-  <!-- Integration services (used for new HSA stubs under /services) -->
-  <servlet>
-    <servlet-name>services</servlet-name>
-    <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
-    <init-param>
-      <param-name>config-location</param-name>
-      <param-value>/WEB-INF/services-cxf-servlet.xml</param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
+    <!-- Integration services (used for new HSA stubs under /services) -->
+    <servlet>
+        <servlet-name>services</servlet-name>
+        <servlet-class>org.apache.cxf.transport.servlet.CXFServlet</servlet-class>
+        <init-param>
+            <param-name>config-location</param-name>
+            <param-value>/WEB-INF/services-cxf-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>metrics</servlet-name>
+        <servlet-class>io.prometheus.client.exporter.MetricsServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>cxf</servlet-name>
         <url-pattern>/api/*</url-pattern>
     </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>services</servlet-name>
-    <url-pattern>/services/*</url-pattern>
-  </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>services</servlet-name>
+        <url-pattern>/services/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>metrics</servlet-name>
+        <url-pattern>/metrics</url-pattern>
+    </servlet-mapping>
 
     <!-- Listener for external logback configuration file -->
     <listener>
@@ -118,9 +127,9 @@
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
     </listener>
-  <listener>
-    <listener-class>se.inera.statistics.web.service.monitoring.SessionCounterListener</listener-class>
-  </listener>
+    <listener>
+        <listener-class>se.inera.statistics.web.service.monitoring.SessionCounterListener</listener-class>
+    </listener>
 
     <error-page>
         <error-code>404</error-code>
@@ -128,9 +137,9 @@
     </error-page>
 
     <error-page>
-      <exception-type>java.lang.Throwable</exception-type>
-      <location>/error.jsp</location>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/error.jsp</location>
     </error-page>
-    
+
 </web-app>
 

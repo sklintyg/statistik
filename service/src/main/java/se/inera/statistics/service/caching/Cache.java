@@ -37,10 +37,10 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.MDCHelper;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
@@ -69,7 +69,7 @@ public class Cache {
     private RedisTemplate<Object, Object> template;
 
     @Autowired
-    private MDCHelper mdcHelper;
+    private LogMDCHelper logMDCHelper;
 
     public Cache() {
     }
@@ -85,7 +85,7 @@ public class Cache {
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     @SchedulerLock(name = JOB_NAME)
     public void clearCaches() {
-        mdcHelper.run(() -> {
+        logMDCHelper.run(() -> {
             LOG.info("Clear Redis Cache Keys");
             template.delete(Lists.newArrayList(AISLE, SJUKFALLGROUP, VGENHET, ENHET));
         });

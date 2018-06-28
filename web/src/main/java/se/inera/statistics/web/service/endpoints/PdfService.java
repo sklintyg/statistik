@@ -30,6 +30,7 @@ import javax.xml.bind.DatatypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.statistics.web.model.LogData;
 
 @Service("pdfService")
@@ -44,6 +45,7 @@ public class PdfService {
 
     @POST
     @Path("create")
+    @PrometheusTimeMethod(name = "api_post_for_pdf_creation", help = "API-tjänst för att skapa ett PDF dokumenrt")
     public Response pdf(@Context HttpServletRequest request, @FormParam("pdf") String pdf, @FormParam("name") String name,
             @FormParam("url") String url) {
 
