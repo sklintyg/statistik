@@ -48,6 +48,7 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.landsting.LandstingEnhetFileData;
@@ -131,6 +132,8 @@ public class ProtectedLandstingService {
     @Consumes({ "multipart/form-data" })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_post_file",
+            help = "API-tjänst för skyddad åtkomst till uppladdning av filer.")
     public Response fileupload(@Context HttpServletRequest request, MultipartBody body) {
         LoginInfo info = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
@@ -172,6 +175,8 @@ public class ProtectedLandstingService {
     @Consumes({ MediaType.WILDCARD })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_delete_unit",
+            help = "API-tjänst för skyddad åtkomst till borttagning av enhet.")
     public Response clearLandstingEnhets(@Context HttpServletRequest request) {
         LoginInfo info = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
@@ -190,6 +195,8 @@ public class ProtectedLandstingService {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_get_prepopulated_county_file",
+            help = "API-tjänst för skyddad åtkomst till excel fil med landstingsdata.")
     public Response getPrepopulatedLandstingFile(@Context HttpServletRequest request) {
         final HsaIdVardgivare vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final List<Enhet> enhets = enhetManager.getAllEnhetsForVardgivareId(vardgivarId);
@@ -208,6 +215,8 @@ public class ProtectedLandstingService {
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_get_empty_county_file",
+            help = "API-tjänst för skyddad åtkomst till en tom excel fil (mall).")
     public Response getEmptyLandstingFile(@Context HttpServletRequest request) {
         try {
             final ByteArrayOutputStream generatedFile = landstingFileWriter.generateExcelFile(Collections.<Enhet> emptyList());
@@ -224,6 +233,8 @@ public class ProtectedLandstingService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandstingAdmin(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_get_last_county_udpate",
+            help = "API-tjänst för skyddad åtkomst till senaste uppdateringar för landsting.")
     public Response getLastLandstingUpdateInfo(@Context HttpServletRequest request) {
         final HsaIdVardgivare vardgivarId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         final HashMap<String, Object> result = new HashMap<>();
@@ -286,6 +297,8 @@ public class ProtectedLandstingService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_get_number_of_cases_per_month_and_county",
+            help = "API-tjänst för skyddad åtkomst till antal sjukfall per månad och landsting.")
     public Response getNumberOfCasesPerMonthLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash,
             @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 18);
@@ -300,6 +313,8 @@ public class ProtectedLandstingService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_get_number_of_cases_per_unit_and_county",
+            help = "API-tjänst för skyddad åtkomst till antal sjukfall per enhet och landsting.")
     public Response getNumberOfCasesPerEnhetLandsting(@Context HttpServletRequest request, @QueryParam("landstingfilter") String filterHash,
             @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
@@ -326,6 +341,8 @@ public class ProtectedLandstingService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_get_number_of_cases_per_patients_and_unit_and_county",
+            help = "API-tjänst för skyddad åtkomst till antal sjukfall per patienter, enhet och landsting.")
     public Response getNumberOfCasesPerPatientsPerEnhetLandsting(@Context HttpServletRequest request,
             @QueryParam("landstingfilter") String filterHash, @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilterForLandsting(request, filterHash, 12);
@@ -344,6 +361,8 @@ public class ProtectedLandstingService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_get_messages_per_subject_and_county",
+            help = "API-tjänst för skyddad åtkomst till antal meddelanden per ämne och landsting.")
     public Response getMeddelandenPerAmneLandsting(@Context HttpServletRequest request,
                                                    @QueryParam("landstingfilter") String filterHash,
                                                    @QueryParam("format") String format) {
@@ -361,6 +380,8 @@ public class ProtectedLandstingService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_get_messages_per_subject_and_county_cross_section",
+            help = "API-tjänst för skyddad åtkomst till ett tvärsnitt av antal meddelanden per ämne och landsting.")
     public Response getMeddelandenPerAmnePerEnhetTvarsnitt(@Context HttpServletRequest request,
                                                            @QueryParam("landstingfilter") String filterHash,
                                                            @QueryParam("format") String format) {
@@ -378,6 +399,8 @@ public class ProtectedLandstingService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_get_number_of_certificates_per_type_and_month_and_county",
+            help = "API-tjänst för skyddad åtkomst till antal intyg per type, månad och landsting.")
     public Response getNumberOfIntygPerTypePerMonthLandsting(@Context HttpServletRequest request,
                                                              @QueryParam("landstingfilter") String filterHash,
                                                              @QueryParam("format") String format) {
@@ -395,6 +418,8 @@ public class ProtectedLandstingService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_get_amount_of_additions",
+            help = "API-tjänst för skyddad åtkomst till andel kompletteringar per landsting.")
     public Response getAndelKompletteringarLandsting(@Context HttpServletRequest request,
                                                      @QueryParam("landstingfilter") String filterHash,
                                                      @QueryParam("format") String format) {
@@ -411,6 +436,8 @@ public class ProtectedLandstingService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_get_filterinfo_for_county",
+            help = "API-tjänst för skyddad åtkomst till filter-info för landsting.")
     public Response getLandstingFilterInfo(@Context HttpServletRequest request) {
         List<Verksamhet> businesses = filterHandler.getAllVerksamhetsForLoggedInLandstingsUser(request);
         final Map<String, Object> result = new HashMap<>();
@@ -423,6 +450,8 @@ public class ProtectedLandstingService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedLandstingService.hasAccessToLandsting(#request)")
     @PostAuthorize(value = "@protectedLandstingService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_put_filterinfo_for_county",
+            help = "API-tjänst för skyddad åtkomst till att spara filter-info för landsting.")
     public Response acceptFileUploadAgreement(@Context HttpServletRequest request) {
         final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
         final HsaIdVardgivare vgId = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);

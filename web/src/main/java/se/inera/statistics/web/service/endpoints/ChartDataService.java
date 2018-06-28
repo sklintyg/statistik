@@ -361,7 +361,7 @@ public class ChartDataService {
     @GET
     @Path("getAndelKompletteringar")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_amount_of_completions",
+    @PrometheusTimeMethod(name = "api_get_amount_of_additions",
             help = "API-tjänst för åtkomst till andel kompletteringar")
     public Response getAndelKompletteringar(@QueryParam("format") String format) {
         LOG.info("Calling getAndelKompletteringar for national");

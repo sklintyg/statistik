@@ -31,6 +31,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import java.util.Map;
+import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 
 @Path("/links")
 @Component
@@ -42,6 +43,8 @@ public class LinkService {
     @GET
     @Path("/")
     @Produces("application/json;charset=UTF-8")
+    @PrometheusTimeMethod(name = "api_get_links",
+            help = "API-tjänst för åtkomst till dynamiska länkar")
     public Map<String, DynamicLink> getLinks() {
         return dynamicLinkService.getAllAsMap();
     }

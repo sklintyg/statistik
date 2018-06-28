@@ -21,6 +21,7 @@ package se.inera.statistics.service.monitoring;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import se.inera.intyg.infra.monitoring.logging.MarkerFilter;
 
 @Service("serviceMonitoringLogService")
 public class MonitoringLogServiceImpl implements MonitoringLogService {
@@ -39,7 +40,7 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
     }
 
     private void logEvent(MonitoringEvent logEvent, Object... logMsgArgs) {
-        LOG.info(LogMarkers.MONITORING, buildMessage(logEvent), logMsgArgs);
+        LOG.info(MarkerFilter.MONITORING, buildMessage(logEvent), logMsgArgs);
     }
 
     private String buildMessage(MonitoringEvent logEvent) {
