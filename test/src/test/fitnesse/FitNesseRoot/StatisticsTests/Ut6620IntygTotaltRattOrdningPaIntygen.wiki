@@ -1,0 +1,22 @@
+---
+Test
+---
+
+Testar att intygen kommer i bokstavsordning i diagrammet
+
+!3 Givet att:
+|script|dagens datum|2015-11-06|
+
+|script|troskel varde|1|
+
+|Enbart foljande intyg finns                                   |
+|personnr     |signeringstid      |enhet |intygformat|kommentar|
+|19790219-9285|2015-02-10T12:24:15|enhet1|TSTRK1007  |         |
+
+!3 Då gäller:
+
+Inloggad:
+
+|Intyg i rapporten intyg totalt diagram |
+|inloggad som|år  |månad|grupp     | grupper lista? |
+|user1       |2015|feb  |TSTRK1007 | Dödsbevis,Dödsorsaksintyg,FK 7263/7804 Läkarintyg för sjukpenning,FK 7800 Läkarutlåtande för sjukersättning,FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga,FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång,TSTRK1007 Transportstyrelsens läkarintyg,TSTRK1031 Transportstyrelsens läkarintyg diabetes |

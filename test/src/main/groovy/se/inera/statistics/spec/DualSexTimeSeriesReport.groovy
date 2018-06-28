@@ -25,9 +25,19 @@ abstract class DualSexTimeSeriesReport extends Rapport {
     String år
     String månad
     String grupp
+    String grupperLista
+
+    /**
+     * List of groups ordered as in the response. Makes it possible to validate that all groups are returned and in the correct order.
+     */
+    def grupperLista() {
+        return grupperLista
+    }
 
     public void executeDiagram(report) {
         executeWithReport(report)
+        grupperLista = report.maleChart.series.collect { item -> item.name }.join(",")
+
         def index = report.maleChart.categories.findIndexOf { item -> item.name == getKategoriName() }
         markerad = index < 0 ? null : report.maleChart.categories[index].marked
         def male = report.maleChart.series.find { item ->
@@ -46,6 +56,8 @@ abstract class DualSexTimeSeriesReport extends Rapport {
 
     public void executeTabell(report) {
         executeWithReport(report)
+        grupperLista = report.tableData.headers[0].collect { item -> item.text }.join(",")
+
         def index = report.tableData.headers[0].findIndexOf { item ->
             println("item" + item + " : grupp: " + grupp)
             item.text != null && item.text.contains(grupp)
