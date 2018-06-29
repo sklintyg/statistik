@@ -23,6 +23,7 @@ import org.junit.Test;
 import se.inera.statistics.service.JSONSource;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.warehouse.IntygType;
 
 import java.time.LocalDate;
 
@@ -179,7 +180,7 @@ public class DocumentHelperTest {
 
         assertEquals("19121212-1212", dto.getPatientid());
         assertEquals("VardenhetY", dto.getEnhet());
-        assertEquals("FK7263", dto.getIntygtyp());
+        assertEquals(IntygType.getByItIntygType("FK7263"), dto.getIntygtyp());
         assertEquals(98, dto.getPatientData().getAlder());
         assertEquals(Kon.MALE, dto.getPatientData().getKon());
         assertEquals(signeringsdatum, dto.getSigneringsdatum());

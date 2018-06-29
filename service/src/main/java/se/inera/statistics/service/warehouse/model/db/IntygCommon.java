@@ -19,8 +19,11 @@
 package se.inera.statistics.service.warehouse.model.db;
 
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.warehouse.IntygType;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,7 +43,7 @@ public class IntygCommon {
     private String enhet;
     private String patientid;
     private LocalDate signeringsdatum;
-    private String intygtyp;
+    @Enumerated(EnumType.STRING) private IntygType intygtyp;
     private String vardgivareId;
     private int kon;
     private EventType eventType;
@@ -48,7 +51,7 @@ public class IntygCommon {
     private boolean sentToFk;
 
     // CHECKSTYLE:OFF ParameterNumber
-    public IntygCommon(String intygid, String patientid, LocalDate signeringsdatum, String intygtyp, String enhet, String vardgivareId,
+    public IntygCommon(String intygid, String patientid, LocalDate signeringsdatum, IntygType intygtyp, String enhet, String vardgivareId,
             int kon, EventType eventType, String dx, boolean sentToFk) {
         this.intygid = intygid;
         this.patientid = patientid;
@@ -83,7 +86,7 @@ public class IntygCommon {
         return signeringsdatum;
     }
 
-    public String getIntygtyp() {
+    public IntygType getIntygtyp() {
         return intygtyp;
     }
 

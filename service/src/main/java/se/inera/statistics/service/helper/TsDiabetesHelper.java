@@ -25,6 +25,7 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Component;
 
 import se.inera.intygstjanster.ts.services.RegisterTSDiabetesResponder.v1.RegisterTSDiabetesType;
+import se.inera.statistics.service.warehouse.IntygType;
 
 @Component
 public class TsDiabetesHelper extends IntygHelper<RegisterTSDiabetesType> {
@@ -60,8 +61,8 @@ public class TsDiabetesHelper extends IntygHelper<RegisterTSDiabetesType> {
     }
 
     @Override
-    public String getIntygtyp(RegisterTSDiabetesType intyg) {
-        return intyg.getIntyg().getIntygsTyp().trim();
+    public IntygType getIntygtyp(RegisterTSDiabetesType intyg) {
+        return IntygType.getByItIntygType(intyg.getIntyg().getIntygsTyp().trim());
     }
 
     @Override

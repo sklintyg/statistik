@@ -25,6 +25,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.service.processlog.message.MessageEventType;
+import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
 
 import java.time.LocalDate;
@@ -70,7 +71,7 @@ public class MessageWidelineManagerTest {
         line1.setSkickatTidpunkt(LocalTime.now());
         line1.setIntygId("i-123");
         line1.setMeddelandeId(correlationId);
-        line1.setIntygstyp("LISJP");
+        line1.setIntygstyp(IntygType.LISJP);
 
         messageWidelineManager.saveWideline(line1);
     }

@@ -80,18 +80,14 @@ public class IntygCommonManager {
     public void accept(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
         LOG.info("accepting a new entry into table IntygCommon");
         final String intygid = dto.getIntygid();
-        final String intygtyp = dto.getIntygtyp();
-        if (!isSupportedIntygType(intygtyp)) {
+        final IntygType intygtyp = dto.getIntygtyp();
+        if (!intygtyp.isSupportedIntyg()) {
             LOG.info("Intygtype not supported. Ignoring intyg: " + intygid);
             return;
         }
         final boolean sentToFk = isIntygSentToFk(correlationId);
         IntygCommon line = intygCommonConverter.toIntygCommon(dto, hsa, correlationId, type, sentToFk);
         persistIfValid(logId, intygid, line);
-    }
-
-    private boolean isSupportedIntygType(String intygType) {
-        return IntygType.parseString(intygType).isSupportedIntyg();
     }
 
     private void persistIfValid(long logId, String intygid, IntygCommon line) {
@@ -151,7 +147,7 @@ public class IntygCommonManager {
         }).collect(Collectors.toList());
         final List<Integer> ids = intygTypes.stream().map(Enum::ordinal).collect(Collectors.toList());
         final CounterFunctionIntyg<Integer> counterFunction = (intyg, counter) -> {
-            final IntygType intygType = IntygType.parseString(intyg.getIntygtyp());
+            final IntygType intygType = intyg.getIntygtyp();
             final int id = IntygType.FK7263.equals(intygType) ? IntygType.LISJP.ordinal() : intygType.ordinal();
             counter.add(id);
         };
@@ -258,8 +254,7 @@ public class IntygCommonManager {
             q.setParameter("enhetIds", enhetIds);
         }
         if (intygTypesToQuery != null) {
-            final List<String> intygTypeStrings = intygTypesToQuery.stream().map(Enum::name).collect(Collectors.toList());
-            q.setParameter("intygTypes", intygTypeStrings);
+            q.setParameter("intygTypes", intygTypesToQuery);
         }
 
         List<IntygCommon> resultList = q.getResultList();

@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.warehouse.IntygType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -219,7 +220,7 @@ public final class DocumentHelper {
         String diagnos = DocumentHelper.getDiagnos(intyg);
         String lakareid = DocumentHelper.getLakarId(intyg);
         String intygsId = DocumentHelper.getIntygId(intyg);
-        String intygTyp = DocumentHelper.getIntygType(intyg).toUpperCase().trim();
+        IntygType intygTyp = IntygType.getByItIntygType(DocumentHelper.getIntygType(intyg).trim());
         List<Arbetsnedsattning> arbetsnedsattnings = DocumentHelper.getArbetsnedsattning(intyg);
 
         String dateTime = DocumentHelper.getSigneringsDatum(intyg);

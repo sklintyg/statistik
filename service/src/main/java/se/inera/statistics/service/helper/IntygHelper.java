@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.warehouse.IntygType;
 
 public abstract class IntygHelper<T> {
 
@@ -63,7 +64,7 @@ public abstract class IntygHelper<T> {
 
     public abstract String getIntygId(T intyg);
 
-    public abstract String getIntygtyp(T intyg);
+    public abstract IntygType getIntygtyp(T intyg);
 
     public abstract LocalDate getDateForPatientAge(T intyg);
 
@@ -116,7 +117,7 @@ public abstract class IntygHelper<T> {
 
         String lakareid = getLakareId(intyg);
         String intygsId = getIntygId(intyg);
-        String intygTyp = getIntygtyp(intyg);
+        IntygType intygTyp = getIntygtyp(intyg);
         LocalDate signeringsDatum = getSigneringsTidpunkt(intyg).toLocalDate();
 
         dto.setEnhet(enhet);

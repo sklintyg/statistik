@@ -55,7 +55,7 @@ public class IntygCommonConverter {
         String patient = dto.getPatientid();
         Patientdata patientData = dto.getPatientData();
         int kon = patientData.getKon().getNumberRepresentation();
-        String intygTyp = dto.getIntygtyp().toUpperCase();
+        IntygType intygTyp = dto.getIntygtyp();
         LocalDate signeringsDatum = dto.getSigneringsdatum();
         final String diagnoskod = parseDiagnos(dto.getDiagnoskod());
 
@@ -84,6 +84,12 @@ public class IntygCommonConverter {
 
     private void checkField(List<String> errors, String field, String fieldName) {
         if (field == null || field.isEmpty()) {
+            errors.add(fieldName + " not found.");
+        }
+    }
+
+    private void checkField(List<String> errors, IntygType field, String fieldName) {
+        if (field == null) {
             errors.add(fieldName + " not found.");
         }
     }

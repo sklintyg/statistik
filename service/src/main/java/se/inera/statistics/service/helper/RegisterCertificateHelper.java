@@ -34,6 +34,7 @@ import org.w3c.dom.NodeList;
 
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 import se.inera.statistics.service.processlog.IntygDTO;
+import se.inera.statistics.service.warehouse.IntygType;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v3.CVType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v3.DatePeriodType;
@@ -88,8 +89,8 @@ public class RegisterCertificateHelper extends IntygHelper<RegisterCertificateTy
     }
 
     @Override
-    public String getIntygtyp(RegisterCertificateType intyg) {
-        return intyg.getIntyg().getTyp().getCode().trim();
+    public IntygType getIntygtyp(RegisterCertificateType intyg) {
+        return IntygType.getByItIntygType(intyg.getIntyg().getTyp().getCode().trim());
     }
 
     @Override

@@ -32,6 +32,7 @@ import se.inera.intygstjanster.ts.services.v1.TSBasIntyg;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.warehouse.IntygType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -211,7 +212,7 @@ public class TsBasHelperTest {
         LocalDate signeringsdatum = LocalDate.of(2013, 3, 17);
 
         assertEquals("19121212-1212", dto.getPatientid());
-        assertEquals("ts-bas", dto.getIntygtyp());
+        assertEquals(IntygType.getByItIntygType("ts-bas"), dto.getIntygtyp());
         assertEquals("Enhetsid", dto.getEnhet());
         assertEquals(100, dto.getPatientData().getAlder());
         assertEquals(Kon.MALE, dto.getPatientData().getKon());

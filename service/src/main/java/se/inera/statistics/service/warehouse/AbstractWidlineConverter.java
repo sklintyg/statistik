@@ -30,6 +30,12 @@ public abstract class AbstractWidlineConverter {
         }
     }
 
+    protected void checkField(List<String> errors, IntygType field, String fieldName) {
+        if (field == null) {
+            errors.add(fieldName + " not found.");
+        }
+    }
+
     protected void checkField(List<String> errors, HsaIdAny field, String fieldName) {
         if (field == null || field.getId().isEmpty()) {
             errors.add(fieldName + " not found.");
@@ -39,6 +45,13 @@ public abstract class AbstractWidlineConverter {
     protected void checkField(List<String> errors, String field, String fieldName, int max) {
         checkField(errors, field, fieldName);
         if (field != null && field.length() > max) {
+            errors.add(fieldName + " input too long");
+        }
+    }
+
+    protected void checkField(List<String> errors, IntygType field, String fieldName, int max) {
+        checkField(errors, field, fieldName);
+        if (field != null && field.name().length() > max) {
             errors.add(fieldName + " input too long");
         }
     }

@@ -66,18 +66,14 @@ public class WidelineManager {
     @Transactional(noRollbackFor = Exception.class)
     public void accept(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
         final String intygid = dto.getIntygid();
-        final String intygtyp = dto.getIntygtyp();
-        if (!isSupportedIntygType(intygtyp)) {
+        final IntygType intygtyp = dto.getIntygtyp();
+        if (!intygtyp.isSupportedIntyg()) {
             LOG.info("Intygtype not supported. Ignoring intyg: " + intygid);
             return;
         }
         for (WideLine line : widelineConverter.toWideline(dto, hsa, logId, correlationId, type)) {
             persistIfValid(logId, intygid, line);
         }
-    }
-
-    private boolean isSupportedIntygType(String intygType) {
-        return IntygType.parseString(intygType).isSjukpenningintyg();
     }
 
     @Transactional

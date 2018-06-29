@@ -25,7 +25,6 @@ import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.warehouse.IntygCommonManager;
-import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.WidelineManager;
 import se.inera.statistics.service.warehouse.message.MessageWidelineManager;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
@@ -68,7 +67,7 @@ public class Processor {
         if (intyg == null) {
             return false;
         }
-        return IntygType.parseString(intyg.getIntygtyp()).isSjukpenningintyg();
+        return intyg.getIntygtyp().isSjukpenningintyg();
     }
 
     public void accept(SendMessageToCareType message, long logId, String messageId, MessageEventType type) {

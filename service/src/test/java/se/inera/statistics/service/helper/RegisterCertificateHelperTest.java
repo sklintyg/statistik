@@ -21,6 +21,7 @@ package se.inera.statistics.service.helper;
 import org.junit.Test;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.warehouse.IntygType;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v3.DatePeriodType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v3.PersonId;
@@ -209,7 +210,7 @@ public class RegisterCertificateHelperTest {
         LocalDate signeringsdatum = LocalDate.of(2013, 3, 17);
 
         assertEquals("19121212-1212", dto.getPatientid());
-        assertEquals("FK7263", dto.getIntygtyp());
+        assertEquals(IntygType.getByItIntygType("FK7263"), dto.getIntygtyp());
         assertEquals("Enhetsid", dto.getEnhet());
         assertEquals(100, dto.getPatientData().getAlder());
         assertEquals(Kon.MALE, dto.getPatientData().getKon());

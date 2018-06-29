@@ -25,6 +25,7 @@ import java.time.format.DateTimeFormatter;
 import org.springframework.stereotype.Component;
 
 import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
+import se.inera.statistics.service.warehouse.IntygType;
 
 @Component
 public class TsBasHelper extends IntygHelper<RegisterTSBasType> {
@@ -60,8 +61,8 @@ public class TsBasHelper extends IntygHelper<RegisterTSBasType> {
     }
 
     @Override
-    public String getIntygtyp(RegisterTSBasType intyg) {
-        return intyg.getIntyg().getIntygsTyp().trim();
+    public IntygType getIntygtyp(RegisterTSBasType intyg) {
+        return IntygType.getByItIntygType(intyg.getIntyg().getIntygsTyp().trim());
     }
 
     @Override

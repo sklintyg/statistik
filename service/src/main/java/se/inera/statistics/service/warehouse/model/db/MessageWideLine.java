@@ -19,6 +19,7 @@
 package se.inera.statistics.service.warehouse.model.db;
 
 import se.inera.statistics.service.processlog.message.MessageEventType;
+import se.inera.statistics.service.warehouse.IntygType;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -54,7 +55,7 @@ public class MessageWideLine {
     private int alder;
     private String enhet;
     private String vardgivareid;
-    private String intygstyp;
+    @Enumerated(EnumType.STRING) private IntygType intygstyp;
 
     public MessageWideLine() {
         // Used by WidelineConverter
@@ -64,7 +65,7 @@ public class MessageWideLine {
     @SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public MessageWideLine(long id, long logId, String meddelandeId, String intygId, MessageEventType meddelandeTyp,
                            String patientid, LocalDateTime skickatTidpunkt, String amneCode, int kon, int alder,
-                           String enhet, String vardgivareid, String intygstyp) {
+                           String enhet, String vardgivareid, IntygType intygstyp) {
         this.id = id;
         this.logId = logId;
         this.meddelandeId = meddelandeId;
@@ -186,11 +187,11 @@ public class MessageWideLine {
         this.vardgivareid = vardgivareid;
     }
 
-    public String getIntygstyp() {
+    public IntygType getIntygstyp() {
         return intygstyp;
     }
 
-    public void setIntygstyp(String intygstyp) {
+    public void setIntygstyp(IntygType intygstyp) {
         this.intygstyp = intygstyp;
     }
 

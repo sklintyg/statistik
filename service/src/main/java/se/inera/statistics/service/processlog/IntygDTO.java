@@ -19,6 +19,7 @@
 package se.inera.statistics.service.processlog;
 
 import se.inera.statistics.service.helper.Patientdata;
+import se.inera.statistics.service.warehouse.IntygType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,7 +31,7 @@ public class IntygDTO {
     private String enhet;
     private String patientid;
     private LocalDate signeringsdatum;
-    private String intygtyp;
+    private IntygType intygtyp;
     private Patientdata patientData;
 
     // WideLine
@@ -73,11 +74,11 @@ public class IntygDTO {
         this.signeringsdatum = signeringsdatum;
     }
 
-    public String getIntygtyp() {
+    public IntygType getIntygtyp() {
         return intygtyp;
     }
 
-    public void setIntygtyp(String intygtyp) {
+    public void setIntygtyp(IntygType intygtyp) {
         this.intygtyp = intygtyp;
     }
 
