@@ -36,7 +36,7 @@ public class PingService {
     @GET
     @Path("/")
     @Produces("text/plain")
-    @PrometheusTimeMethod(name = "api_ping", help = "API-tjänst för att kontrollera om applikationen svarar")
+    @PrometheusTimeMethod(help = "API-tjänst för att kontrollera om applikationen svarar")
     public Response ping() {
         return Response.ok("OK")
                 .header("Access-Control-Allow-Origin", "*")

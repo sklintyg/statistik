@@ -52,7 +52,7 @@ public class LoggingService {
     @Path("log")
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_post_frontend_log", help = "API-tjänst för att logga från frontend app")
+    @PrometheusTimeMethod(help = "API-tjänst för att logga från frontend app")
     public Response frontendLogging(@Context HttpServletRequest request, LogData logData) {
         String user = loginServiceUtil.isLoggedIn() ? getHsaIdForLoggedInUser(request).getId() : "Anonymous";
         LOG.info(user + " : " + logData.getMessage() + " [" + logData.getUrl() + "]");

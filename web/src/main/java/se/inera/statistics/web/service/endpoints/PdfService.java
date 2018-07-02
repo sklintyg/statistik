@@ -45,7 +45,7 @@ public class PdfService {
 
     @POST
     @Path("create")
-    @PrometheusTimeMethod(name = "api_post_for_pdf_creation", help = "API-tjänst för att skapa ett PDF dokumenrt")
+    @PrometheusTimeMethod(help = "API-tjänst för att skapa ett PDF dokument")
     public Response pdf(@Context HttpServletRequest request, @FormParam("pdf") String pdf, @FormParam("name") String name,
             @FormParam("url") String url) {
 

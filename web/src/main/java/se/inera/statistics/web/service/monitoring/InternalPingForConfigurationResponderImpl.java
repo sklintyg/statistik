@@ -51,7 +51,7 @@ public class InternalPingForConfigurationResponderImpl implements InternalPingFo
     private HealthCheckUtil healthCheck;
 
     @Override
-    @PrometheusTimeMethod(name = "ws_internal_ping_for_configuration",
+    @PrometheusTimeMethod(
             help = "WS-tjänst (intern) för att kontrollera status för applikationen med stödtjänster")
     public InternalPingForConfigurationResponseType internalPingForConfiguration(
             @WebParam(partName = "LogicalAddress", name = "LogicalAddress", targetNamespace = "urn:riv:itintegration:registry:1",

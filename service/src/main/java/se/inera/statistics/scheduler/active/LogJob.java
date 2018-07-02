@@ -45,7 +45,7 @@ public class LogJob {
 
     @Scheduled(cron = "${scheduler.logJob.cron}")
     @SchedulerLock(name = JOB_NAME)
-    @PrometheusTimeMethod(name = "job_process_certificates", help = "Jobb för att hantera inkomna sjukintyg från kön")
+    @PrometheusTimeMethod(help = "Jobb för att hantera inkomna sjukintyg från kön")
     public void run() {
         logMDCHelper.run(() -> {
             LOG.info(JOB_NAME);

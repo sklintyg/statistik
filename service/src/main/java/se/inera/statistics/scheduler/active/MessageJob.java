@@ -42,7 +42,7 @@ public class MessageJob {
 
     @Scheduled(cron = "${scheduler.logJob.cron}")
     @SchedulerLock(name = JOB_NAME)
-    @PrometheusTimeMethod(name = "job_process_messages", help = "Jobb för att hantera inkomna meddelanden från kön")
+    @PrometheusTimeMethod(help = "Jobb för att hantera inkomna meddelanden från kön")
     public void run() {
         logMDCHelper.run(() -> {
             LOG.info(JOB_NAME);

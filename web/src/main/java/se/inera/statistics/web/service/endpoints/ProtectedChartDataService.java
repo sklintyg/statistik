@@ -150,7 +150,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_number_of_cases_per_month",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till antal sjukfall per månad")
     public Response getNumberOfCasesPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
                                              @QueryParam("format") String format) {
@@ -167,7 +167,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_number_of_cases_per_month_cross_section",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till tvärsnittet av antal sjukfall per månad")
     public Response getNumberOfCasesPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
                                                       @QueryParam("format") String format) {
@@ -189,7 +189,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_total_number_of_certificates_per_month",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till totalt antal intyg per måndad")
     public Response getTotalNumberOfIntygPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -209,7 +209,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_total_number_of_certificates_per_month_cross_section",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till tvärsnittet av totalt antal intyg per måndad")
     public Response getTotalNumberOfIntygTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -229,7 +229,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_number_of_certificates_per_type_and_month",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till antal intyg per typ och månad för en given verksamhet")
     public Response getNumberOfIntygPerTypePerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -249,7 +249,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_number_of_certificates_per_type_and_month_cross_section",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till tvärsnittet av antal intyg per typ och månad för en given verksamhet")
     public Response getNumberOfIntygPerTypeTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -269,7 +269,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_number_of_messages_per_month",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till antal meddelanden per månad för en given verksamhet")
     public Response getNumberOfMeddelandenPerMonth(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -286,7 +286,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_number_of_messages_per_month_cross_section",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till tvärsnittet av antal meddelanden per månad")
     public Response getNumberOfMeddelandenPerMonthTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -305,7 +305,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_messages_per_subject",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till meddelanden per ämne")
     public Response getMeddelandenPerAmne(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -322,7 +322,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_messages_per_subject_cross_section",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till tvärsnittet av meddelanden per ämne")
     public Response getMeddelandenPerAmneTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -341,7 +341,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_messages_per_subject_and_unit",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till meddelanden per ämne och enhet")
     public Response getMeddelandenPerAmnePerEnhet(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -358,7 +358,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_messages_per_subject_and_unit_cross_section",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till tvärsnittet av meddelanden per ämne och enhet")
     public Response getMeddelandenPerAmnePerEnhetTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -377,7 +377,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_amount_of_additions",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till andel kompletteringar")
     public Response getAndelKompletteringar(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
                                           @QueryParam("format") String format) {
@@ -394,7 +394,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_amount_of_additions_cross_section",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till tvärsnittet av andel kompletteringar")
     public Response getAndelKompletteringarTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
                                                    @QueryParam("format") String format) {
@@ -416,7 +416,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_number_of_cases_per_unit",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till antal sjukfall per enhet")
     public Response getNumberOfCasesPerEnhet(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -440,7 +440,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_number_of_cases_per_unit_time_series",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till en tidsserie med antal sjukfall per enhet")
     public Response getNumberOfCasesPerEnhetTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -464,7 +464,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_number_of_cases_per_physician",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till antal sjukfall per läkare")
     public Response getNumberOfCasesPerLakare(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -483,7 +483,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_number_of_cases_per_physician_time_series",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till en tidsserie med antal sjukfall per läkare")
     public Response getNumberOfCasesPerLakareSomTidsserie(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -506,7 +506,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_diagnosis_groups",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till sjukfall per diagnoskaptiel och -grupp")
     public Response getDiagnosisGroupStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -525,7 +525,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_diagnosis_groups_cross_section",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till sjukfall per diagnoskaptiel och -grupp")
     public Response getDiagnosisGroupTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -547,7 +547,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_diagnosis_sub_groups",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till sjukfall per diagnosavsnitt för ett givet diagnoskapitel")
     public Response getDiagnosisSubGroupStatistics(@Context HttpServletRequest request, @PathParam("groupId") String groupId,
             @QueryParam("filter") String filterHash, @QueryParam("format") String format) {
@@ -584,7 +584,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_diagnosis_sub_groups_cross_section",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till tvärsnittet av sjukfall per diagnosavsnitt för ett givet diagnoskapitel")
     public Response getDiagnosisSubGroupTvarsnitt(@Context HttpServletRequest request, @PathParam("groupId") String groupId,
             @QueryParam("filter") String filterHash, @QueryParam("format") String format) {
@@ -610,7 +610,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_diagnosis_comparison",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till jämförelse mellan olika diagnoser")
     public Response getCompareDiagnosisStatistics(@Context HttpServletRequest request, @PathParam("diagnosHash") String diagnosisHash,
             @QueryParam("filter") String filterHash, @QueryParam("format") String format) {
@@ -643,7 +643,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_diagnosis_comparison_timee_series",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till en tidsserie med jämförelse mellan olika diagnoser")
     public Response getCompareDiagnosisStatisticsTimeSeries(@Context HttpServletRequest request,
             @PathParam("diagnosHash") String diagnosisHash, @QueryParam("filter") String filterHash, @QueryParam("format") String format) {
@@ -671,7 +671,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_overview_data",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till topp-listan för diagnos, ålder etc.")
     public Response getOverviewData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 3);
@@ -709,7 +709,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_age_groups",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till sjukfall grupperade över ålder och kön.")
     public Response getAgeGroupsStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -728,7 +728,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_age_groups_time_series",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till en tidsserie med sjukfall grupperade över ålder och kön.")
     public Response getAgeGroupsStatisticsAsTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -750,7 +750,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_cases_per_physician_age_and_gender",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till en sjukfall grupperade över läkarens ålder och kön.")
     public Response getCasesPerDoctorAgeAndGenderStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -769,7 +769,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_cases_per_physician_age_and_gender_time_series",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till en tidsserie med sjukfall grupperade över läkarens ålder och kön.")
     public Response getCasesPerDoctorAgeAndGenderTimeSeriesStatistics(@Context HttpServletRequest request,
             @QueryParam("filter") String filterHash, @QueryParam("format") String format) {
@@ -791,7 +791,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_cases_per_physician_title",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till sjukfall grupperade över läkarens befattning.")
     public Response getNumberOfCasesPerLakarbefattning(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -810,7 +810,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_cases_per_physician_title_time_series",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till en tidsserie med sjukfall grupperade över läkarens befattning.")
     public Response getNumberOfCasesPerLakarbefattningSomTidsserie(@Context HttpServletRequest request,
             @QueryParam("filter") String filterHash, @QueryParam("format") String format) {
@@ -832,7 +832,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_sickleave_per_month",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till sjukskrivningsgrad per månad.")
     public Response getDegreeOfSickLeaveStatistics(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -851,7 +851,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_sickleave_per_month_cross_section",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till ett tvärsmnitt av sjukskrivningsgrad per månad.")
     public Response getDegreeOfSickLeaveTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -874,7 +874,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_sickleave_length",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till sjukfallens längd (grupperat).")
     public Response getSickLeaveLength(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -893,7 +893,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_sickleave_length_time_series",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till en tidsserie med sjukfallens längd (grupperat).")
     public Response getSickLeaveLengthTimeSeries(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -915,7 +915,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_long_sickleaves_per_gender",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till sjukfallens längd per kön (långa).")
     public Response getLongSickLeavesData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
@@ -934,7 +934,7 @@ public class ProtectedChartDataService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_long_sickleaves_per_gender_cross_section",
+    @PrometheusTimeMethod(
             help = "API-tjänst för skyddad åtkomst till en tidsserie med sjukfallens längd per kön (långa).")
     public Response getLongSickLeavesTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {

@@ -63,7 +63,7 @@ public class Sjukskrivningsperiod {
         if (periodsIn.size() < 2) {
             return new ArrayList<>(periodsIn);
         }
-        final LinkedList<Sjukskrivningsperiod> periods = new LinkedList<>(periodsIn);
+        final List<Sjukskrivningsperiod> periods = new LinkedList<>(periodsIn);
         periods.sort(Comparator.comparingInt(Sjukskrivningsperiod::getStart));
         for (int i = 1; i < periods.size(); i++) {
             final Sjukskrivningsperiod p1 = periods.get(i - 1);

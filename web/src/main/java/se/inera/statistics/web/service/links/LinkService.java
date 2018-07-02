@@ -43,7 +43,7 @@ public class LinkService {
     @GET
     @Path("/")
     @Produces("application/json;charset=UTF-8")
-    @PrometheusTimeMethod(name = "api_get_links",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till dynamiska länkar")
     public Map<String, DynamicLink> getLinks() {
         return dynamicLinkService.getAllAsMap();

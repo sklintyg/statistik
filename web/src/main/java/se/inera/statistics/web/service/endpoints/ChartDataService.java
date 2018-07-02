@@ -112,8 +112,7 @@ public class ChartDataService {
     }
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
-    @PrometheusTimeMethod(name = "job_build_cache",
-            help = "Jobb för att uppdatera information i cache")
+    @PrometheusTimeMethod(help = "Jobb för att uppdatera information i cache")
     public void buildCache() {
         logMDCHelper.run(() -> {
             LOG.info("National cache population requested");
@@ -152,7 +151,7 @@ public class ChartDataService {
     @GET
     @Path("getNumberOfCasesPerMonth")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_number_of_cases_per_month",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till antal sjukfall per måndad på nationell nivå")
     public Response getNumberOfCasesPerMonth(@QueryParam("format") String format) {
         LOG.info("Calling getNumberOfCasesPerMonth for national");
@@ -179,7 +178,7 @@ public class ChartDataService {
     @GET
     @Path("getDiagnoskapitel")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_diagnosis_groups", help = "API-tjänst för åtkomst till ICD-10 diagnoskapitel")
+    @PrometheusTimeMethod(help = "API-tjänst för åtkomst till ICD-10 diagnoskapitel")
     public List<Icd> getDiagnoskapitel() {
         LOG.info("Calling getKapitel");
         monitoringLogService.logTrackAccessAnonymousChartData("getKapitel");
@@ -199,7 +198,7 @@ public class ChartDataService {
     @GET
     @Path("getDiagnosisKapitelAndAvsnittAndKategori")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_diagnosis_group_and_ection_and_category",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till ICD-10 diagnoskapitel, avsnitt och kategorier")
     public DiagnosisKapitelAndAvsnittAndKategoriResponse getDiagnosisKapitelAndAvsnittAndKod() {
         LOG.info("Calling getDiagnosisKapitelAndAvsnittAndKategori");
@@ -231,7 +230,7 @@ public class ChartDataService {
     @GET
     @Path("getDiagnoskapitelstatistik")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_diagnosis_group_data",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till nationell statistik för sjukfall per diagnoskaptiel och -grupp")
     public Response getDiagnoskapitelstatistik(@QueryParam("format") String format) {
         LOG.info("Calling getDiagnoskapitelstatistik for national");
@@ -245,7 +244,7 @@ public class ChartDataService {
     @GET
     @Path("getDiagnosavsnittstatistik/{groupId}")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_diagnosis_group_data_for_id",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till nationell statistik för sjukfall per diagnosavsnitt för ett kapitel")
     public Response getDiagnosavsnittstatistik(@PathParam("groupId") String groupId, @QueryParam("format") String format) {
         LOG.info("Calling getDiagnosavsnittstatistik for national with groupId: " + groupId);
@@ -261,7 +260,7 @@ public class ChartDataService {
     @GET
     @Path("getOverview")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_overview",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till senaste 3 mån. kön, ålder, diagnos, sjukskrivningslängd.")
     public OverviewData getOverviewData() {
         return getNationellDataResult().getOverview();
@@ -273,7 +272,7 @@ public class ChartDataService {
     @GET
     @Path("getAgeGroupsStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_age_groups_statistics",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till statistk för sjukfall grupperad på ålder och kön")
     public Response getAgeGroupsStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getAgeGroupsStatistics for national");
@@ -287,7 +286,7 @@ public class ChartDataService {
     @GET
     @Path("getDegreeOfSickLeaveStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_degree_of_sickLeave_statistics",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till sjukskrivningsgrad per kalendermånad")
     public Response getDegreeOfSickLeaveStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getDegreeOfSickLeaveStatistics for national");
@@ -301,7 +300,7 @@ public class ChartDataService {
     @GET
     @Path("getSickLeaveLengthData")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_sick_leave_length_data", help = "API-tjänst för åtkomst till grupperad sjukfallslängd")
+    @PrometheusTimeMethod(help = "API-tjänst för åtkomst till grupperad sjukfallslängd")
     public Response getSickLeaveLengthData(@QueryParam("format") String format) {
         LOG.info("Calling getSickLeaveLengthData for national");
         monitoringLogService.logTrackAccessAnonymousChartData("getSickLeaveLengthData");
@@ -314,7 +313,7 @@ public class ChartDataService {
     @GET
     @Path("getCountyStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_county_statistics",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till sjukfall per län")
     public Response getCountyStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getCountyStatistics for national");
@@ -328,7 +327,7 @@ public class ChartDataService {
     @GET
     @Path("getSjukfallPerSexStatistics")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_sjukfall_per_sex_statistics",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till sjukfall per kön")
     public Response getSjukfallPerSexStatistics(@QueryParam("format") String format) {
         LOG.info("Calling getSjukfallPerSexStatistics for national");
@@ -339,7 +338,7 @@ public class ChartDataService {
     @GET
     @Path("getMeddelandenPerAmne")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_message_per_subject",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till meddelande per ämne")
     public Response getMeddelandenPerAmne(@QueryParam("format") String format) {
         LOG.info("Calling getMeddelandenPerAmne for national");
@@ -350,7 +349,7 @@ public class ChartDataService {
     @GET
     @Path("getIntygPerTyp")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_num_certificates_per_type",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till antal sjukintyg per typ")
     public Response getIntygPerTyp(@QueryParam("format") String format) {
         LOG.info("Calling getIntygPerTyp for national");
@@ -361,7 +360,7 @@ public class ChartDataService {
     @GET
     @Path("getAndelKompletteringar")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_amount_of_additions",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till andel kompletteringar")
     public Response getAndelKompletteringar(@QueryParam("format") String format) {
         LOG.info("Calling getAndelKompletteringar for national");
@@ -372,7 +371,7 @@ public class ChartDataService {
     @GET
     @Path("getIcd10Structure")
     @Produces({ MediaType.APPLICATION_JSON })
-    @PrometheusTimeMethod(name = "api_get_icd10_structure",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till ICD-10 kodder")
     public List<Icd> getIcd10Structure() {
         LOG.info("Calling getIcd10Structure");
@@ -383,7 +382,7 @@ public class ChartDataService {
     @POST
     @Path("filter")
     @Produces({ MediaType.TEXT_PLAIN })
-    @PrometheusTimeMethod(name = "api_get_hash_for_filter_data",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till signatur (hash) för filterdata")
     public Response getFilterHash(String filterData) {
         LOG.info("Calling post FilterHash: " + filterData);
@@ -398,7 +397,7 @@ public class ChartDataService {
 
     @GET
     @Path("filter/{filterHash}")
-    @PrometheusTimeMethod(name = "api_get_filter_for_filter_hash",
+    @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till filterdata med given signatur")
     public Response getFilterData(@PathParam("filterHash") String filterHash) {
         LOG.info("Calling get FilterData: " + filterHash);
