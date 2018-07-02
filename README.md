@@ -217,6 +217,7 @@ De profiler som finns är:
 |security-saml  |stöd enbart saml-inloggning|
 |hsacached      |Cachar hsa-anrop för att ej överlasta hsa vid omprocessning|
 |testapi        |Aktiverar REST-interface som enbart används för testning, tex möjlighet att sätta klockan eller rensa intyg |
+|noprocessing   |Stänger av automatisk processning av intyg (tex för fitnesse-körning) |
 
 ## Deployment
 Vi använder ansible för att enkelt sätta upp servrar. Följande stämmer för min lokala miljö (Mac, Homebrew), komplettera gärna med andra miljöer.

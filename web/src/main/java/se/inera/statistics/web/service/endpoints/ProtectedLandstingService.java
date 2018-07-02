@@ -418,7 +418,7 @@ public class ProtectedLandstingService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
     @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
-    @PrometheusTimeMethod(name = "api_protected_get_amount_of_additions",
+    @PrometheusTimeMethod(name = "api_protected_get_amount_of_additions_for_county",
             help = "API-tjänst för skyddad åtkomst till andel kompletteringar per landsting.")
     public Response getAndelKompletteringarLandsting(@Context HttpServletRequest request,
                                                      @QueryParam("landstingfilter") String filterHash,
