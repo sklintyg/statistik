@@ -571,8 +571,8 @@ public class ProtectedChartDataService {
 
     private Message getDiagnosisSubGroupStatisticsMessage(Filter filter, List<String> diagnosis) {
         if (resultMessageHandler.isDxFilterDisableAllSelectedDxs(diagnosis, filter.getDiagnoser())) {
-            String msg = "Du har gjort ett val av diagnoskapitel eller diagnosavsnitt som inte matchar det val du gjort i diagnosfilter "
-                    + "(se Visa filter högst upp på sidan).";
+            String msg = "Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfiltret "
+                    + "(se 'Visa alla aktiva filter' ovan).";
             return Message.create(ErrorType.FILTER, ErrorSeverity.WARN, msg);
         }
         return null;
@@ -630,8 +630,8 @@ public class ProtectedChartDataService {
     private Message getCompareDiagnosisMessage(Filter filter, List<String> diagnosis) {
         if (resultMessageHandler.isDxFilterDisableAllSelectedDxs(diagnosis, filter.getDiagnoser())) {
 
-            String msg = "Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfilter "
-                    + "(se Visa filter högst upp på sidan).";
+            String msg = "Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfiltret "
+                    + "(se 'Visa alla aktiva filter' ovan).";
             return Message.create(ErrorType.FILTER, ErrorSeverity.WARN, msg);
         }
         return null;
