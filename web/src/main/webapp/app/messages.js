@@ -219,7 +219,7 @@ var stMessages = {
         'login.header.verksamhet': 'Logga in för verksamhetsstatistik',
         'login.header': 'Logga in',
         'login.alert-info.behorighet': 'Det verkar som att du saknar medarbetaruppdraget "Statistik" i HSA.',
-        'login.alert-inaktivitet': 'Du har loggats ut på grund av inaktivitet. Vänligen logga in på nytt.',
+        'login.alert-inaktivitet': 'Du är utloggad. Du har blivit utloggad från Intygsstatistik på grund av inaktivitet. Vänligen logga in igen för att komma vidare.',
         'login.alert-info': 'Info!',
         'login.alert-danger': 'Ajdå!',
         'login.instruktioner-for-login': 'För att logga in behöver du ett SITHS-kort samt medarbetaruppdraget "Statistik" i HSA-katalogen.',
@@ -249,7 +249,7 @@ var stMessages = {
         'alert.upload.success': 'Uppladdningen lyckades!',
         'info.upload.dropfile.here': 'Släpp fil här för att ladda upp eller ',
         'info.upload.dropfile.here.add': 'lägg till',
-        'info.upload.fallbacktext': 'Din webläsare stödjer inte filuppladdning via "dra och släpp". Vänligen använd knappen nedan för att ladda upp filen.',
+        'info.upload.fallbacktext': 'Din webbläsare stödjer inte filuppladdning via "dra och släpp". Vänligen använd knappen nedan för att ladda upp filen.',
 
         'faq.stats.1.title': 'Vad innehåller Intygsstatistik?',
         'faq.stats.1.body': '<p>Innehållet i Intygsstatistik baseras främst på de elektroniska läkarintyg som utfärdas när en läkare ' +
