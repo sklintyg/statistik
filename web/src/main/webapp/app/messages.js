@@ -75,8 +75,8 @@ var stMessages = {
         'lbl.filter.btn.showall': 'Visa alla aktiva filter',
         'lbl.filter.inactive': 'Detta filter går inte att applicera på vald rapport.',
 
-        'lbl.filter.verksamhet.link': 'Visa snabbval av enheter baserat på verksamhetstyper',
-        'lbl.filter.verksamhet.link.collapse': 'Dölj snabbval av enheter baserat på verksamhetstyper',
+        'lbl.filter.verksamhet.link': 'Visa snabbval av enheter utifrån verksamhetstyp',
+        'lbl.filter.verksamhet.link.collapse': 'Dölj snabbval av enheter utifrån verksamhetstyp',
         'lbl.filter.verksamhet.search.hint': 'Sök efter län, kommun eller enhet...',
         'lbl.filter.verksamhet.quickselection.title': 'Välj alla enheter med verksamhetstyp',
         'lbl.filter.verksamhet.select-all': 'Markera alla enheter',
