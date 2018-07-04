@@ -39,7 +39,6 @@
 
   .table-headers {
     float: left;
-    max-width: 34em;
   }
 
   .headcol {
@@ -52,9 +51,22 @@
 
   .headcol-name {
     display: inline-block;
-    max-width: 34rem;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+
+  @media (max-width: $screen-md-max) {
+    .headcol-name,
+    .table-headers {
+      max-width: 34rem;
+    }
+  }
+
+  @media (max-width: $screen-xs-max) {
+    .headcol-name,
+    .table-headers {
+      max-width: 20rem;
+    }
   }
 
   .scrolling {
