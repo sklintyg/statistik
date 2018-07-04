@@ -78,7 +78,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         };
 
         $scope.showInLegend = function(index) {
-            return chartFactory.showInLegend(chart.series, index);
+            return chart && chartFactory.showInLegend(chart.series, index);
         };
 
         var populatePageWithDataSuccess = function (result) {

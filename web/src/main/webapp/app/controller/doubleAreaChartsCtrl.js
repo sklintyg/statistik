@@ -111,7 +111,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         };
 
         $scope.showInLegend = function(index) {
-            return chartFactory.showInLegend(that.chart1.series, index) && chartFactory.showInLegend(that.chart2.series, index);
+            return that.chart1 && that.chart2 && chartFactory.showInLegend(that.chart1.series, index) && chartFactory.showInLegend(that.chart2.series, index);
         };
 
         var populatePageWithDataSuccess = function(result) {

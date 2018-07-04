@@ -105,7 +105,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         };
 
         $scope.showInLegend = function(index) {
-            return chartFactory.showInLegend(chart.series, index);
+            return chart && chartFactory.showInLegend(chart.series, index);
         };
 
         $scope.toggleSeriesVisibility = function (index) {
