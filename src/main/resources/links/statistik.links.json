@@ -2,13 +2,13 @@
   {
     "key": "statistikAnvandarmanual",
     "url": "https://www.inera.se/kundservice/dokument-och-lankar/tjanster/intygsstatistik-dokument/",
-    "text": "användarmanualer (extern länk)",
+    "text": "användarmanualer",
     "target": "_blank"
   },
   {
     "key": "highcharts",
     "url": "https://www.highcharts.com/",
-    "text": "Highsoft AS (extern länk)",
+    "text": "Highsoft AS",
     "target": "_blank"
   },
   {
@@ -20,13 +20,13 @@
   {
     "key": "ptsCookies",
     "url": "https://pts.se/sv/privat/internet/integritet/kakor-cookies/",
-    "text": "Post- och telestyrelsens webbplats (extern länk).",
+    "text": "Post- och telestyrelsens webbplats.",
     "target": "_blank"
   },
   {
     "key": "creativeCommons",
     "url": "https://creativecommons.org/licenses/by-nc/3.0/legalcode",
-    "text": "fri licens för icke-kommersiella utövare (extern länk)",
+    "text": "fri licens för icke-kommersiella utövare",
     "target": "_blank"
   },
   {
@@ -44,7 +44,7 @@
   {
     "key": "sarskildBehorighetStatistik",
     "url": "https://www.inera.se/kundservice/dokument-och-lankar/tjanster/intygsstatistik-dokument/",
-    "text": "Mer information om behörighet för Intygsstatistik (extern länk)",
+    "text": "Mer information om behörighet för Intygsstatistik",
     "target": "_blank"
   },
   {
@@ -56,13 +56,13 @@
   {
     "key": "ineraStartsida",
     "url": "https://www.inera.se",
-    "text": "Inera AB (extern länk)",
+    "text": "Inera AB",
     "target": "_blank"
   },
   {
     "key": "ineraKundserviceFelanmalan",
     "url": "https://www.inera.se/kundservice/felanmalan-och-support/",
-    "text": "Kontaktinformation till kundservice (extern länk)",
+    "text": "Kontaktinformation till kundservice",
     "target": "_blank"
   },
   {

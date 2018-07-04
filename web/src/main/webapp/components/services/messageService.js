@@ -124,10 +124,23 @@ angular.module('StatisticsApp').factory('messageService',
         }
 
         function _buildDynamicLink(linkKey) {
-            var dynamicLink = '<a href="' + _links[linkKey].url + '"';
-            dynamicLink += _links[linkKey].tooltip ? ' title="' + _links[linkKey].tooltip + '"' : '';
-            dynamicLink += _links[linkKey].target ? ' target="' + _links[linkKey].target + '">' : '>';
-            dynamicLink += _links[linkKey].text + '</a>';
+            var link = _links[linkKey];
+
+            if (!angular.isDefined(link)) {
+                return 'WARNING: could not resolve dynamic link: ' + linkKey;
+            }
+
+            var dynamicLink = '<a href="' + link.url + '"';
+            dynamicLink += link.tooltip ? ' title="' + link.tooltip + '"' : '';
+            dynamicLink += link.target ? ' target="' + link.target + '">' : '>';
+            dynamicLink += link.text;
+
+            if (link.target) {
+                dynamicLink += ' <i class="fa fa-external-link"></i></a>';
+            }
+
+            dynamicLink += '</a>';
+
             return dynamicLink;
         }
 

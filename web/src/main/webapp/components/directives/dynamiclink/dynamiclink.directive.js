@@ -28,7 +28,10 @@ angular.module('StatisticsApp').directive('dynamiclink',
                     'linkclass': '@'
                 },
                 template: '<a href="{{ url }}" class="external-link {{linkclass}}" ng-attr-target="{{ target || undefined}}" ' +
-                    'ng-attr-title="{{ tooltip || undefined }}" ng-bind-html="text"></a>',
+                    'ng-attr-title="{{ tooltip || undefined }}">' +
+                    '<span ng-bind-html="text"></span> ' +
+                    '<i ng-if="target" class="fa fa-external-link"></i>' +
+                    '</a>',
                 link: function(scope) { //  element, attr
                     scope.$watch(function() {
                         return dynamicLinkService.getLink(scope.key);
