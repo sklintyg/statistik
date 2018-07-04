@@ -1,4 +1,8 @@
 
+body {
+  @extend %st-typo-04;
+}
+
 .btn-info {
   background-image: none;
   box-shadow: none;
@@ -150,4 +154,8 @@ p {
   h1, h2, h3, h4 {
     color: $state-danger-text;
   }
+}
+
+.modal-title {
+  @extend %st-typo-13;
 }
