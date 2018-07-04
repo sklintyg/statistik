@@ -35,28 +35,31 @@ public class FilterDataResponse {
     private List<String> sjukskrivningslangd;
     private List<String> aldersgrupp;
     private List<String> intygstyper;
+    private boolean useDefaultPeriod;
 
     // To be used by json converter
     private FilterDataResponse() {
     }
 
     FilterDataResponse(String filterhash, Collection<String> diagnoser, Collection<HsaIdEnhet> enheter,
-            Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp, Collection<String> intygstyper) {
+            Collection<String> sjukskrivningslangd, Collection<String> aldersgrupp, Collection<String> intygstyper,
+                       boolean useDefaultPeriod) {
         this.filterhash = filterhash;
         this.diagnoser = diagnoser == null ? null : Collections.unmodifiableList(new ArrayList<>(diagnoser));
         this.sjukskrivningslangd = sjukskrivningslangd == null ? null : Collections.unmodifiableList(new ArrayList<>(sjukskrivningslangd));
         this.aldersgrupp = aldersgrupp == null ? null : Collections.unmodifiableList(new ArrayList<>(aldersgrupp));
         this.intygstyper = intygstyper == null ? null : Collections.unmodifiableList(new ArrayList<>(intygstyper));
         this.enheter = enheter == null ? null : Lists.transform(new ArrayList<>(enheter), hsaId -> hsaId.getId());
+        this.useDefaultPeriod = useDefaultPeriod;
     }
 
     public FilterDataResponse(Filter filter) {
         this(filter.getFilterHash(), filter.getDiagnoser(), filter.getEnheter(), filter.getSjukskrivningslangd(),
-                filter.getAldersgrupp(), filter.getIntygstyper());
+                filter.getAldersgrupp(), filter.getIntygstyper(), filter.isUseDefaultPeriod());
     }
 
     public static FilterDataResponse empty() {
-        return new FilterDataResponse(null, null, null, null, null, null);
+        return new FilterDataResponse(null, null, null, null, null, null, true);
     }
 
     public List<String> getDiagnoser() {
@@ -83,4 +86,7 @@ public class FilterDataResponse {
         return filterhash;
     }
 
+    public boolean isUseDefaultPeriod() {
+        return useDefaultPeriod;
+    }
 }

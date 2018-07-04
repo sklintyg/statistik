@@ -51,8 +51,8 @@ import se.inera.statistics.web.model.TableDataReport;
 
 public class ResponseHandler {
 
-    private static final String NO_DATA_MESSAGE = "Ingen data tillgänglig. Det beror på att det inte finns någon data för verksamheten.";
-    private static final String NO_DATA_FILTER_MESSAGE = "Det finns ingen statistik att visa för den angivna filtreringen. Överväg en "
+    static final String NO_DATA_MESSAGE = "Ingen data tillgänglig. Det beror på att det inte finns någon data för verksamheten.";
+    static final String NO_DATA_FILTER_MESSAGE = "Det finns ingen statistik att visa för den angivna filtreringen. Överväg en "
             + "mindre restriktiv filtrering.";
     private static final String TOO_MUCH_DATA_MESSAGE = "Rapporten innehåller mycket data, vilket kan göra diagrammet svårt att läsa. "
             + "Överväg att filtrera resultatet för att minska mängden data.";
@@ -130,7 +130,7 @@ public class ResponseHandler {
 
         if (result != null && result.isEmpty()) {
             if (filterActive(result.getFilter(), filterSelections)) {
-                messages.add(Message.create(ErrorType.FILTER, ErrorSeverity.INFO, NO_DATA_FILTER_MESSAGE));
+                messages.add(Message.create(ErrorType.FILTER, ErrorSeverity.WARN, NO_DATA_FILTER_MESSAGE));
             } else {
                 messages.add(Message.create(ErrorType.UNSET, ErrorSeverity.INFO, NO_DATA_MESSAGE));
             }
@@ -173,6 +173,7 @@ public class ResponseHandler {
             return false;
         }
 
+        boolean useDefaultPeriod = filter.isUseDefaultPeriod();
         boolean aldersGrupp = filterSelections.isAllAvailableAgeGroupsSelectedInFilter() || filter.getAldersgrupp().isEmpty();
         boolean dxs = filterSelections.isAllAvailableDxsSelectedInFilter() || filter.getDiagnoser().isEmpty();
         boolean enhets = filterSelections.isAllAvailableEnhetsSelectedInFilter() || filter.getEnheter().isEmpty();
@@ -181,7 +182,7 @@ public class ResponseHandler {
         boolean intystyper = filterSelections.isAllAvailableIntygTypesSelectedInFilter()
                 || filter.getIntygstyper().isEmpty();
 
-        return !(aldersGrupp && dxs && enhets && sjukskrivningslangd && intystyper);
+        return !(useDefaultPeriod && aldersGrupp && dxs && enhets && sjukskrivningslangd && intystyper);
     }
 
     private boolean containsMoreDataThanLimit(TableDataReport detailReport, ReportInfo report) {

@@ -229,9 +229,8 @@ public class FilterHandlerTest {
         FilterSettings filter1 = filterHandler.getFilter(request, filterHash, 1);
 
         //Then
-        final String wantedToMonth = toDate.substring(0, 7);
         final String nowMonth = LocalDate.now().toString().substring(0, 7);
-        assertEquals("Det finns ingen statistik innan 2013-09 och ingen efter " + wantedToMonth + ", visar "
+        assertEquals("Det finns ingen statistik innan 2013-10 och ingen efter " + nowMonth + ", visar "
                 + "statistik mellan 2013-10 och " + nowMonth + ".", filter1.getMessage().getMessage());
     }
 

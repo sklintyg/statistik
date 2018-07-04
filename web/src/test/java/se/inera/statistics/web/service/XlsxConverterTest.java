@@ -39,7 +39,7 @@ import static org.junit.Assert.assertTrue;
 public class XlsxConverterTest {
 
     @Test
-    public void testStatisticsLevelAndReportNameAndPeriodAreShownCorrect() throws Exception {
+    public void testStatisticsLevelAndReportNameAndPeriodAreShownCorrect() {
         ArrayList<String> cellTexts = addXlsxData(Report.N_SJUKSKRIVNINGSLANGD, "jan - feb");
         assertTrue(cellTexts.toString().startsWith("[Nationell statistik, Antal sjukfall fördelat på sjukskrivningslängd jan - feb"));
 
@@ -56,7 +56,7 @@ public class XlsxConverterTest {
     }
 
     @Test
-    public void testExportShouldAlwaysContainListOfEnhets() throws Exception {
+    public void testExportShouldAlwaysContainListOfEnhets() {
         ArrayList<String> cellTexts = addXlsxDataForEnhetTest(
                 Arrays.asList("TestEnhet"),
                 Arrays.asList(new HsaIdEnhet("enhet1")));
@@ -75,7 +75,7 @@ public class XlsxConverterTest {
     }
 
     @Test
-    public void testAllDataRowsAreAdded() throws Exception {
+    public void testAllDataRowsAreAdded() {
         ArrayList<String> cellTexts = addXlsxData(Arrays.asList(
                 new NamedData("datarad1", Arrays.asList(1, 2, 3))));
         assertTrue(cellTexts.toString().contains("datarad1, 1.0, 2.0, 3.0"));
@@ -122,7 +122,7 @@ public class XlsxConverterTest {
         final TableDataReport tableData = Mockito.mock(TableDataReport.class);
         final TableData data = new TableData(dataList, Arrays.asList(Arrays.asList(new TableHeader("th"))));
         Mockito.when(tableData.getTableData()).thenReturn(data);
-        Mockito.when(tableData.getFilter()).thenReturn(new FilterDataResponse("", null, enhetsfilter, null, null, null));
+        Mockito.when(tableData.getFilter()).thenReturn(new FilterDataResponse("", null, enhetsfilter, null, null, null, true));
         Mockito.when(tableData.getPeriod()).thenReturn(period);
 
         final FilterSelections filterSelections = new FilterSelections(false, false, false, false, false, testEnhet);

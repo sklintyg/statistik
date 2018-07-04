@@ -33,9 +33,11 @@ public class Filter {
     private Collection<String> aldersgrupp;
     private final String hash;
     private Collection<String> intygstyper;
+    private boolean useDefaultPeriod;
 
+    //CHECKSTYLE:OFF ParameterNumber
     Filter(FilterPredicates predicate, Collection<HsaIdEnhet> enheter, Collection<String> diagnoser, Collection<String> sjukskrivningslangd,
-            Collection<String> aldersgrupp, String hashValue, Collection<String> intygstyper) {
+            Collection<String> aldersgrupp, String hashValue, Collection<String> intygstyper, boolean useDefaultPeriod) {
         this.predicate = predicate;
         this.enheter = enheter;
         this.diagnoser = diagnoser;
@@ -43,10 +45,12 @@ public class Filter {
         this.aldersgrupp = aldersgrupp;
         this.hash = hashValue;
         this.intygstyper = intygstyper;
+        this.useDefaultPeriod = useDefaultPeriod;
     }
+    //CHECKSTYLE:On ParameterNumber
 
     public static Filter empty() {
-        return new Filter(SjukfallUtil.ALL_ENHETER, null, null, null, null, null, null);
+        return new Filter(SjukfallUtil.ALL_ENHETER, null, null, null, null, null, null, true);
     }
 
     public FilterPredicates getPredicate() {
@@ -79,5 +83,9 @@ public class Filter {
 
     public void setIntygstyper(Collection<String> intygstyper) {
         this.intygstyper = intygstyper;
+    }
+
+    public boolean isUseDefaultPeriod() {
+        return useDefaultPeriod;
     }
 }

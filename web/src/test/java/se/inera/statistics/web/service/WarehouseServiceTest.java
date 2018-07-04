@@ -112,7 +112,7 @@ public class WarehouseServiceTest {
         final FilterPredicates predicate1 =  new FilterPredicates(predicate, sjukfall -> true, testhash, false);
         final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
         final ArrayList<String> diagnoser = new ArrayList<>();
-        final Filter filter = new Filter(predicate1, enheter, diagnoser, null, null, testhash, null);
+        final Filter filter = new Filter(predicate1, enheter, diagnoser, null, null, testhash, null, true);
         final Range range = new Range(clock);
         final FilterSettings filterSettings = new FilterSettings(filter, range);
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
@@ -141,7 +141,7 @@ public class WarehouseServiceTest {
         final FilterPredicates predicate1 = new FilterPredicates(predicate, sjukfall -> true, testhash, false);
         final ArrayList<HsaIdEnhet> enheter = new ArrayList<>();
         final ArrayList<String> diagnoser = new ArrayList<>();
-        final Filter filter = new Filter(predicate1, enheter, diagnoser, null, null, testhash, null);
+        final Filter filter = new Filter(predicate1, enheter, diagnoser, null, null, testhash, null, true);
         final Range range = new Range(clock);
         final FilterSettings filterSettings = new FilterSettings(filter, range);
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
