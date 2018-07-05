@@ -62,6 +62,7 @@ angular.module('StatisticsApp').controller('StatSettingsCtrl',
 
         function addSetting(property) {
             $scope.settings.push({
+                id: 'setting-' + property.toLowerCase(),
                 property: property,
                 title: 'settings.modal.' + property + '.title',
                 description: 'settings.modal.' + property + '.description',

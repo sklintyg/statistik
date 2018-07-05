@@ -11,7 +11,9 @@
         <span message key="{{::setting.title}}"></span>
         <span uib-tooltip="{{::setting.help}}">?</span>
       </h3>
-      <input type="checkbox" ng-model="setting.value" class="settings-checkbox">
+      <stat-toggle class="settings-checkbox"
+                   value="setting.value"
+                   toggle-id="{{::setting.id}}"></stat-toggle>
       <span message key="{{::setting.description}}"></span>
     </div>
 

@@ -1,0 +1,8 @@
+<label class="switch">
+  <input type="checkbox" ng-disabled="disable" ng-model="value" data-ng-attr-id="{{::toggleId}}">
+  <span class="slider round"></span>
+</label>
+
+<label ng-if="::label" for="{{::toggleId}}" class="toggle-label">
+  {{::label}}
+</label>
