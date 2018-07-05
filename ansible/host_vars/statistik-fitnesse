@@ -1,7 +1,7 @@
 ---
 # file: host_vars/statistik-test
 config_etc_folder: "{{ config_folder }}/test"
-profile: dev,testapi,hsa-stub,wc-hsa-stub,security-fake,qm
+profile: dev,testapi,hsa-stub,wc-hsa-stub,security-fake,qm,caching-enabled
 host_url: https://fitnesse2.inera.nordicmedtest.se
 
 activemq_broker_url: "vm://localhost:61616?broker.persistent=false"
