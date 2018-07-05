@@ -126,6 +126,18 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             chartFactory.exportChart(chart, $scope.viewHeader, $scope.subTitle);
         };
 
+        $scope.reportActive = function() {
+            return ControllerCommons.reportActive(config.activeSettingProperty);
+        };
+
+        $scope.activateReport = function() {
+            $scope.saving = true;
+            ControllerCommons
+                .activateReport(config.activeSettingProperty)
+                .finally(function() {
+                    $scope.saving = false;
+                });
+        };
         function refreshVerksamhet() {
             statisticsData[config.dataFetcherVerksamhet](populatePageWithData, function () {
                 $scope.dataLoadingError = true;

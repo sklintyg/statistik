@@ -112,6 +112,19 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
             chartFactory.toggleSeriesVisibility(chart.series[index]);
         };
 
+        $scope.reportActive = function() {
+            return ControllerCommons.reportActive(config.activeSettingProperty);
+        };
+
+        $scope.activateReport = function() {
+            $scope.saving = true;
+            ControllerCommons
+                .activateReport(config.activeSettingProperty)
+                .finally(function() {
+                    $scope.saving = false;
+                });
+        };
+
         var populateDetailsOptions = function (result) {
             var basePath = isVerksamhet ? '#/verksamhet/diagnosavsnitttvarsnitt' : '#/nationell/diagnosavsnitttvarsnitt';
             ControllerCommons.populateDetailsOptions(result, basePath, $scope, $routeParams, messageService, config);
@@ -506,6 +519,7 @@ angular.module('StatisticsApp').intygPerTypeTvarsnittConfig =
         intygstyper: false,
         sjukskrivningslangd: false
     };
+    conf.activeSettingProperty = 'showMessagesPerLakare';
     conf.dataFetcherVerksamhet = 'getIntygPerTypeTvarsnittVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getIntygPerTypeTvarsnitt?format=xlsx';

@@ -106,5 +106,13 @@ stats-header {
     }
 
     padding-right: 25px;
+
+    a {
+      margin-left: 15px;
+    }
+
+    a:first-of-type {
+      margin-left: 0;
+    }
   }
 }

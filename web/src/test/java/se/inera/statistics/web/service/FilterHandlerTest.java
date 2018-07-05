@@ -39,6 +39,7 @@ import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
+import se.inera.statistics.web.model.UserSettingsDTO;
 import se.inera.statistics.web.model.Verksamhet;
 import se.inera.statistics.web.util.SpyableClock;
 
@@ -241,7 +242,7 @@ public class FilterHandlerTest {
     }
 
     private void setupLoginServiceMock(HttpServletRequest request, HsaIdVardgivare vgid, List<Verksamhet> businesses, ArrayList<LoginInfoVg> loginInfoVgs) {
-        LoginInfo loginInfo = new LoginInfo(new HsaIdUser(""), "", businesses, loginInfoVgs);
+        LoginInfo loginInfo = new LoginInfo(new HsaIdUser(""), "", businesses, loginInfoVgs, new UserSettingsDTO());
         Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(request)).thenReturn(vgid);
     }

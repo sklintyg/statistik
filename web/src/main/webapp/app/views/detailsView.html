@@ -1,4 +1,30 @@
-<div id="chart-content" class="details-view">
+<div ng-if="!reportActive()" class="report-not-active">
+
+  <div class="info-text">
+    <p>
+      Denna rapport visar statistik för enskilda intygsskrivande läkare.
+      Det vill säga att du som användare kan få se hur många meddelanden som varje intygsutfärdande läkare har fått på de vårdenheter du har behörighet till.
+    </p>
+    <p>
+      För att få ta del av denna rapport behöver du aktivera den.
+      Innan du aktiverar visning av denna rapport rekommenderar vi att du gör detta i samförstånd med sjukskrivande läkare på din vårdenhet.
+      Denna statistik kan upplevas som känslig och se därför till att du har samtycke från de läkare som kommer ingå i statistiken.
+      När du aktiverar rapporten så aktiveras den endast för dig och ingen annan även om de också har behörighet till samma vårdenhet/er som du.
+      Aktiveringen är alltså unik för dig som användare.
+    </p>
+    <p>
+      Du kan när som helst inaktivera visningen genom att gå till dina personliga inställningar.
+    </p>
+    <p>
+      <button id="activate-report-btn" class="btn btn-success" data-ng-click="activateReport()">
+        <i class="fa fa-spinner" data-ng-class="{'fa-spin': saving}" data-ng-show="saving"></i>
+        Aktivera
+      </button>
+    </p>
+  </div>
+</div>
+
+<div id="chart-content" class="details-view" >
   <div class="clearfix">
     <span class="pull-left right-2px-padding">
       <h1 class="national-statistic-h1" id="reportHeader" data-ng-bind-html="subTitle | highlightWords"></h1>

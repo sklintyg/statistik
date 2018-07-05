@@ -17,9 +17,13 @@ body {
   margin-left: 10px;
 }
 
-h1, h2, h3 {
+h1, h2 {
   color: $stat-header-color;
   font-weight: 700;
+}
+
+h3 {
+  @extend %st-typo-03;
 }
 
 h1 {

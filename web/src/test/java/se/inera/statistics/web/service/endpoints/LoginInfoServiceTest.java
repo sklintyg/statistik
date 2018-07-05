@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.service;
+package se.inera.statistics.web.service.endpoints;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,7 +27,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import se.inera.statistics.web.model.LoginInfo;
-import se.inera.statistics.web.service.endpoints.LoginInfoService;
+import se.inera.statistics.web.service.LoginServiceUtil;
 
 public class LoginInfoServiceTest {
 
@@ -35,7 +35,7 @@ public class LoginInfoServiceTest {
     private LoginServiceUtil loginServiceUtil;
 
     @InjectMocks
-    LoginInfoService loginInfoService;
+    private LoginInfoService loginInfoService;
 
 
     @Before

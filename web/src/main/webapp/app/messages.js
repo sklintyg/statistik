@@ -47,6 +47,7 @@ var stMessages = {
         'lbl.mobile-menu': 'Meny',
         'lbl.log-in': 'Logga in',
         'lbl.log-out': 'Logga ut',
+        'lbl.settings': 'Inställningar',
         'lbl.for-verksamhetsstatistik': 'För verksamhetsstatistik: ',
         'lbl.aterstall': 'Återställ',
         'lbl.clear': 'Rensa',
@@ -241,6 +242,14 @@ var stMessages = {
 
         //error messages
         'error.unsignedcerts.couldnotbeloaded': '<strong>Kunde inte hämta ej signerade intyg.</strong>',
+
+        // Settings
+        'settings.modal.title': 'Inställningar',
+        'settings.modal.showmessagesperlakare.title': 'Antal inkomna meddelanden fördelat på läkare',
+        'settings.modal.showmessagesperlakare.description': '<p>Styr din personliga åtkomst till rapporten "Antal inkomna meddelanden fördelat på läkare".</p>' +
+                                        '<p>Observera! Innan du aktiverar visning av denna rapport rekommenderar vi att du gör detta i samförstånd med sjukskrivande läkare på din vårdenhet. Denna statistik kan upplevas som känslig och se därför till att du har samtycke från de läkare som kommer ingå i statistiken.</p>',
+        'settings.modal.showmessagesperlakare.help': 'Denna rapport visar hur många meddelanden som varje intygsutfärdande läkare har fått på sina utfärdade intyg vid de vårdenheter du har behörighet till.',
+
 
         //file upload
         'upload.filesize.error': 'Filen är för stor. Max tillåten storlek är {{maxFilesize}}MB',

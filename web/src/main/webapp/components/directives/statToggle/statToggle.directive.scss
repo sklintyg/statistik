@@ -1,0 +1,108 @@
+stat-toggle {
+  $width: 70px;
+  $height: 32px;
+
+  $wc-color-07: #212121;
+  $wc-color-10: #37BC9B;
+  $wc-color-20: #F2F2F2;
+  $wc-color-23: #A9B2BD;
+
+  display: inline-block;
+  margin-left: 10px;
+  margin-bottom: 10px;
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: $width;
+    height: $height;
+    margin-bottom: 0;
+
+    input {
+      opacity: 0.01; //Important: 0.01 is not practically visible, but if we set it to 0, protractor won't find it..
+    }
+  }
+
+  .toggle-label {
+    margin-bottom: 0;
+    padding-left: 5px;
+    font-weight: normal;
+    cursor: pointer;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: .4s;
+    background-color: $st-color-17;
+    border-radius: $height / 2;
+    border: $wc-color-23 1px solid;
+
+    &:after {
+      position: absolute;
+      content: "";
+      height: $height;
+      width: $height;
+      left: -1px;
+      bottom: -1px;
+      background-color: $st-color-17;
+      border: $wc-color-23 1px solid;
+      transition: .4s;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px 0 rgba(0,0,0,0.5);
+    }
+
+    &:before {
+      //@extend %wc-typo-06;
+
+      content: 'Nej';
+      color: $wc-color-07;
+      display: block;
+      position: absolute;
+      transform: translate(-50%,-50%);
+      top: 50%;
+      left: 70%;
+    }
+  }
+
+  input:focus {
+    + .slider {
+      outline: thin dotted;
+      outline-offset: 0;
+    }
+  }
+
+  input:checked {
+    + .slider {
+      background-color: $wc-color-10;
+    }
+
+    + .slider:before {
+      content: 'Ja';
+      left: 30%;
+      color: $st-color-17;
+    }
+
+    + .slider:after {
+      transform: translateX($width - $height);
+    }
+  }
+
+  input:disabled {
+    + .slider {
+      background: $wc-color-20;
+      &:after {
+        background-color: $wc-color-20;
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+
+

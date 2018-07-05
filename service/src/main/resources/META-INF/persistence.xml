@@ -35,7 +35,8 @@
     <class>se.inera.statistics.service.processlog.Lakare</class>
     <class>se.inera.statistics.service.processlog.message.MessageEvent</class>
     <class>se.inera.statistics.service.processlog.intygsent.IntygSentEvent</class>
-    <class>se.inera.statistics.service.userselection.UserSelection</class>
+    <class>se.inera.statistics.service.user.UserSelection</class>
+    <class>se.inera.statistics.service.user.UserSettings</class>
     <class>se.inera.statistics.service.warehouse.model.db.IntygCommon</class>
     <class>se.inera.statistics.service.warehouse.model.db.MessageWideLine</class>
     <class>se.inera.statistics.service.warehouse.model.db.WideLine</class>

@@ -24,8 +24,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import se.inera.statistics.service.userselection.UserSelection;
-import se.inera.statistics.service.userselection.UserSelectionManager;
+import se.inera.statistics.service.user.UserSelection;
+import se.inera.statistics.service.user.UserSelectionManager;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;

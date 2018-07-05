@@ -114,6 +114,19 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             return that.chart1 && that.chart2 && chartFactory.showInLegend(that.chart1.series, index) && chartFactory.showInLegend(that.chart2.series, index);
         };
 
+        $scope.reportActive = function() {
+            return ControllerCommons.reportActive(config.activeSettingProperty);
+        };
+
+        $scope.activateReport = function() {
+            $scope.saving = true;
+            ControllerCommons
+                .activateReport(config.activeSettingProperty)
+                .finally(function() {
+                    $scope.saving = false;
+                });
+        };
+
         var populatePageWithDataSuccess = function(result) {
             ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.filterhash,
                 result.filter.diagnoser, result.allAvailableDxsSelectedInFilter,

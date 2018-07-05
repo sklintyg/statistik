@@ -29,6 +29,7 @@ angular.module('StatisticsApp').factory('UserModel', ['_',
             data.userName = '';
             data.userNameWithAccess = '';
             data.vgs = [];
+            data.settings = {};
             _resetUserAccessInfo();
             return data;
         }
@@ -53,6 +54,7 @@ angular.module('StatisticsApp').factory('UserModel', ['_',
                 data.userName = loginInfo.name;
                 data.userNameWithAccess = loginInfo.name;
                 data.vgs = _.map(loginInfo.vgs, function(vg) {return {id: vg.hsaId, name: vg.name};});
+                data.settings = loginInfo.userSettings;
             },
             setUserAccessInfo: function(userAccessInfo) {
                 data.businesses = userAccessInfo.businesses;
@@ -63,6 +65,9 @@ angular.module('StatisticsApp').factory('UserModel', ['_',
                 data.landstingAvailable = userAccessInfo.vgInfo.landstingsvardgivareWithUpload;
                 data.isLandstingAdmin = userAccessInfo.vgInfo.landstingAdmin;
                 data.enableVerksamhetMenu = userAccessInfo.businesses && userAccessInfo.businesses.length >= 1;
+            },
+            setSettings: function(settings) {
+                data.settings = settings;
             },
             get: function() {
                 return data;

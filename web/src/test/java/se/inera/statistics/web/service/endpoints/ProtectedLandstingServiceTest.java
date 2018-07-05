@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.service;
+package se.inera.statistics.web.service.endpoints;
 
 import com.google.common.collect.Lists;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
@@ -47,6 +47,9 @@ import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EnhetManager;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.LoginInfoVg;
+import se.inera.statistics.web.model.UserSettingsDTO;
+import se.inera.statistics.web.service.LoginServiceUtil;
+import se.inera.statistics.web.service.WarehouseService;
 import se.inera.statistics.web.service.endpoints.ProtectedLandstingService;
 import se.inera.statistics.web.service.landsting.LandstingEnhetFileParseException;
 import se.inera.statistics.web.service.landsting.LandstingFileGenerationException;
@@ -125,7 +128,7 @@ public class ProtectedLandstingServiceTest {
         //Given
         final MultipartBody mb = Mockito.mock(MultipartBody.class);
         final HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), new ArrayList<>()));
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), new ArrayList<>(), new UserSettingsDTO()));
 
         //When
         final Response response = chartDataService.fileupload(req, mb);
@@ -149,7 +152,7 @@ public class ProtectedLandstingServiceTest {
         final HsaIdVardgivare vg = new HsaIdVardgivare("TestVg");
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vg);
         final LoginInfoVg loginInfoVg = new LoginInfoVg(vg, "", LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE, new UserAccessLevel(true, 1));
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), Lists.newArrayList(loginInfoVg)));
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), Lists.newArrayList(loginInfoVg), new UserSettingsDTO()));
         Mockito.when(landstingFileReader.readExcelData(any(DataSource.class))).thenThrow(new LandstingEnhetFileParseException(""));
 
         //When
@@ -176,7 +179,7 @@ public class ProtectedLandstingServiceTest {
         final HsaIdVardgivare vg = new HsaIdVardgivare("TestVg");
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vg);
         final LoginInfoVg loginInfoVg = new LoginInfoVg(vg, "", LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE, new UserAccessLevel(true, 1));
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), Lists.newArrayList(loginInfoVg)));
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(new HsaIdUser(""), "", new ArrayList<>(), Lists.newArrayList(loginInfoVg), new UserSettingsDTO()));
         final String msg = "This is a test message";
         Mockito.when(landstingFileReader.readExcelData(any(DataSource.class))).thenThrow(new LandstingEnhetFileParseException(msg));
 
@@ -206,7 +209,7 @@ public class ProtectedLandstingServiceTest {
         final HsaIdVardgivare vg = new HsaIdVardgivare("TestVg");
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vg);
         final LoginInfoVg loginInfoVg = new LoginInfoVg(vg, "", LandstingsVardgivareStatus.NO_LANDSTINGSVARDGIVARE, new UserAccessLevel(true, 1));
-        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(user.getHsaId(), user.getName(), new ArrayList<>(), Lists.newArrayList(loginInfoVg)));
+        Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(new LoginInfo(user.getHsaId(), user.getName(), new ArrayList<>(), Lists.newArrayList(loginInfoVg), new UserSettingsDTO()));
         final ArrayList<LandstingEnhetFileDataRow> parseResult = new ArrayList<>();
         Mockito.when(landstingFileReader.readExcelData(any(DataSource.class))).thenReturn(parseResult);
 
@@ -309,7 +312,7 @@ public class ProtectedLandstingServiceTest {
         final HsaIdVardgivare vgId = new HsaIdVardgivare("testvgid");
         final HsaIdUser hsaId = new HsaIdUser("testhsaid");
         final String name = "test name";
-        final LoginInfo loginInfo = new LoginInfo(hsaId, name, new ArrayList<>(), new ArrayList<>());
+        final LoginInfo loginInfo = new LoginInfo(hsaId, name, new ArrayList<>(), new ArrayList<>(), new UserSettingsDTO());
         Mockito.when(loginServiceUtil.getLoginInfo()).thenReturn(loginInfo);
         Mockito.when(loginServiceUtil.getSelectedVgIdForLoggedInUser(req)).thenReturn(vgId);
 

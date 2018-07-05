@@ -18,15 +18,13 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
@@ -35,13 +33,12 @@ import se.inera.statistics.web.model.AppSettings;
 import se.inera.statistics.web.model.LoginInfo;
 import se.inera.statistics.web.model.StaticData;
 import se.inera.statistics.web.model.UserAccessInfo;
+import se.inera.statistics.web.model.UserSettingsDTO;
 import se.inera.statistics.web.service.LoginServiceUtil;
 
 @Service("loginService")
 @Path("/login")
 public class LoginInfoService {
-
-    private static final Logger LOG = LoggerFactory.getLogger(LoginInfoService.class);
 
     @Autowired
     private LoginServiceUtil loginServiceUtil;
@@ -62,7 +59,7 @@ public class LoginInfoService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till app-inställningar")
-    public AppSettings getAppSettings(@Context HttpServletRequest request) {
+    public AppSettings getAppSettings() {
         return loginServiceUtil.getSettings();
     }
 
@@ -71,8 +68,8 @@ public class LoginInfoService {
     @Produces({ MediaType.APPLICATION_JSON })
     @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till användarens rättigheter till information från vårdgivare")
-    public UserAccessInfo getUserAccessInfo(@Context HttpServletRequest request, @PathParam("vgId") String vgId) {
-        return loginServiceUtil.getUserAccessInfoForVg(request, new HsaIdVardgivare(vgId));
+    public UserAccessInfo getUserAccessInfo(@PathParam("vgId") String vgId) {
+        return loginServiceUtil.getUserAccessInfoForVg(new HsaIdVardgivare(vgId));
     }
 
     @GET
@@ -81,8 +78,15 @@ public class LoginInfoService {
     @PrometheusTimeMethod(
             help = "API-tjänst för åtkomst till statisk referensdata")
     public StaticData getStaticData() {
-        LOG.info("Calling getStaticData");
         return loginServiceUtil.getStaticData();
+    }
+
+    @POST
+    @Path("saveUserSettings")
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_JSON })
+    public UserSettingsDTO saveUserSettings(UserSettingsDTO userSettingsDTO) {
+        return loginServiceUtil.saveUserSettings(userSettingsDTO);
     }
 
 }
