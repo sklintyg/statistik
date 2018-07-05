@@ -35,6 +35,6 @@ Inloggad:
 | Meddelanden i rapporten meddelanden per lakare som tvarsnitt |
 | inloggad som | vårdgivarnivå | läkare | grupp | filter intygstyp | män? | kvinnor? |
 | user1 | false | Anna Andersson | Komplettering | | 2 | 0 |
-| user1 | false | Anna Andersson | Komplettering | SJUKPENNING | -1 | -1 |
+| user1 | false | Anna Andersson | Komplettering | SJUKPENNING | 2 | 0 |
 | user1 | false | Bo Bengtsson | Komplettering | | 0 | 3 |
 | user1 | false | Bo Bengtsson | Komplettering | LUSE | 0 | 3 |

@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !3 Givet att:
@@ -32,9 +31,9 @@ Läkaren som har signerat intyget får också tillhörande meddelanden. Varje me
 Inloggad:
 
 | Meddelanden i rapporten meddelanden per lakare som tvarsnitt |
-| inloggad som | vårdgivarnivå | läkare | grupp | totalt? | män? | kvinnor? |
-| user1 | false | Anna Andersson | Avstämningsmöte | 3 | 2 | 1 |
-| user1 | false | Anna Andersson | Komplettering | 2 | 2 | 0 |
+| inloggad som | vårdgivarnivå | läkare | grupp | totalt? |
+| user1 | false | Anna Andersson | Avstämningsmöte | 5 |
+| user1 | false | Anna Andersson | Komplettering | 5 |
 
 Byte till tidsserie gör att ytdiagram 18 mån visas. Varje läkare får en legend för varje grupp (meddelandeämne) som ska tas med.
 
@@ -42,7 +41,7 @@ Eftersom inga intyg är signerade i juli för läkaren Anna Andersson, visas hon
 
 | Meddelanden i rapporten meddelanden per lakare som tidsserie |
 | inloggad som | vårdgivarnivå | år | månad | grupp | män? | kvinnor? |
-| user1 | false | 2014 | jun | Anna Andersson : Avstämningsmöte | 2 | 1 |
-| user1 | false | 2014 | jun | Anna Andersson : Komplettering | 2 | 0 |
-| user1 | false | 2014 | jul | Anna Andersson : Avstämningsmöte | -1 | -1 |
-| user1 | false | 2014 | jul | Anna Andersson : Komplettering | -1 | -1 |
+| user1 | false | 2014 | jun | Anna Andersson : Avstämningsmöte | 0 | 2 |
+| user1 | false | 2014 | jun | Anna Andersson : Komplettering | 2 | 1 |
+| user1 | false | 2014 | jul | Anna Andersson : Avstämningsmöte | 0 | 0 |
+| user1 | false | 2014 | jul | Anna Andersson : Komplettering | 0 | 0 |

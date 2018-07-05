@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 Givet att:
@@ -8,9 +7,7 @@ Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 
 | script | dagens datum | 2014-11-28 |
 
-
-
-| script | troskel varde  | 1 |
+| script | troskel varde | 1 |
 
 | Foljande lakare finns |
 | id | förnamn | efternamn |
@@ -39,7 +36,7 @@ Inloggad:
 
 | Meddelanden i rapporten meddelanden per lakare som tvarsnitt |
 | inloggad som | vårdgivarnivå | läkare | grupp | totalt? | män? | kvinnor? |
-| user1 | false | Anna Andersson LAKARE1 | Avstämningsmöte | 0 | 0 | 0 |
+| user1 | false | Anna Andersson LAKARE1 | Avstämningsmöte | 2 | 0 | 0 |
 | user1 | false | Anna Andersson LAKARE1 | Komplettering | 2 | 2 | 0 |
 | user1 | false | Anna Andersson LAKARE2 | Avstämningsmöte | 3 | 0 | 2 |
 | user1 | false | Anna Andersson LAKARE2 | Komplettering | 3 | 0 | 1 |

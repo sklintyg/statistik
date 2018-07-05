@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 Givet att:
@@ -35,7 +34,7 @@ Inloggad:
 | Meddelanden i rapporten meddelanden per lakare som tvarsnitt |
 | inloggad som | vårdgivarnivå | läkare | grupp | filter enheter | allaEnhetsfilterValda? | enhetsfilterlista? | kön totalt? | män? | kvinnor? |
 | user2 | false | Anna Andersson | Avstämningsmöte | | true | [enhet1, enhet2] | 3 | 1 | 2 |
-| user2 | false | Anna Andersson | Avstämningsmöte | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 2 | 1 | 2 |
+| user2 | false | Anna Andersson | Avstämningsmöte | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 3 | 1 | 2 |
 | user2 | false | Anna Andersson | Avstämningsmöte | enhet1 | false | [enhet1] | 1 | 1 | 0 |
 | user2 | false | Anna Andersson | Komplettering | | true | [enhet1, enhet2] | 2 | 1 | 1 |
 | user2 | false | Anna Andersson | Komplettering | enhet1,enhet2,vg1-enhet-1 | true | [enhet1, enhet2] | 2 | 1 | 1 |
