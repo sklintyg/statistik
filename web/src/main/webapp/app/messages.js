@@ -120,7 +120,7 @@ var stMessages = {
 
         //business statistics overview
         'business.overview-header': 'Verksamhetsstatistik',
-        'business.widget.header.total-antal': 'Totalt antal',
+        'business.widget.header.total-antal': 'Totalt antal sjukfall',
         'business.widget.header.konsfordelning-sjukfall': 'Fördelning mellan kön',
         'business.widget.header.fordelning-diagnosgrupper': 'Fördelning diagnosgrupper',
         'business.widget.header.fordelning-aldersgrupper': 'Fördelning åldersgrupper',
