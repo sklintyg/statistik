@@ -133,7 +133,7 @@ angular.module('StatisticsApp').factory('messageService',
                 return 'WARNING: could not resolve dynamic link: ' + linkKey;
             }
 
-            var dynamicLink = '<a href="' + link.url + '"';
+            var dynamicLink = '<a class="external-link" href="' + link.url + '"';
             dynamicLink += link.tooltip ? ' title="' + link.tooltip + '"' : '';
             dynamicLink += link.target ? ' target="' + link.target + '">' : '>';
             dynamicLink += link.text;
