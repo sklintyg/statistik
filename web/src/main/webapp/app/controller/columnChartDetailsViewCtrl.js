@@ -519,7 +519,6 @@ angular.module('StatisticsApp').intygPerTypeTvarsnittConfig =
         intygstyper: false,
         sjukskrivningslangd: false
     };
-    conf.activeSettingProperty = 'showMessagesPerLakare';
     conf.dataFetcherVerksamhet = 'getIntygPerTypeTvarsnittVerksamhet';
     conf.exportTableUrlVerksamhet = function () {
         return 'api/verksamhet/getIntygPerTypeTvarsnitt?format=xlsx';
@@ -706,6 +705,7 @@ angular.module('StatisticsApp').meddelandenPerAmneOchLakareTvarsnittConfig =
             intygstyper: true,
             sjukskrivningslangd: false
         };
+        conf.activeSettingProperty = 'showMessagesPerLakare';
         conf.highchartType = 'column';
         conf.defaultChartType = 'stackedcolumn';
         conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneOchLakareTvarsnittVerksamhet';

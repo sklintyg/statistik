@@ -300,6 +300,7 @@ angular.module('StatisticsApp').meddelandenPerAmneOchLakareConfig =
             intygstyper: true,
             sjukskrivningslangd: false
         };
+        conf.activeSettingProperty = 'showMessagesPerLakare';
         conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneOchLakareVerksamhet';
         conf.chartYAxisTitle = 'Antal meddelanden';
         conf.exportTableUrlVerksamhet = function () {
