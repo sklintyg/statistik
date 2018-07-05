@@ -20,7 +20,7 @@
 
 angular.module('StatisticsApp').factory('ControllerCommons',
     /** @ngInject */
-    function(_, $cacheFactory, UserModel, $filter, $route, StaticData, StaticDataService) {
+    function(_, $cacheFactory, UserModel, UserService, $filter, $route, StaticData, StaticDataService) {
         'use strict';
 
         var that = this;
@@ -352,6 +352,18 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             //Make sure query params are not started twice with a '?'
             var fixedQueryString = urlBase.indexOf('?') > 0 ? queryString.replace('?', '&') : queryString;
             return urlBase + fixedQueryString;
+        };
+
+        this.reportActive = function(activeSettingProperty) {
+            if (angular.isDefined(activeSettingProperty)) {
+                return !!UserModel.get().settings[activeSettingProperty];
+            }
+
+            return true;
+        };
+
+        this.activateReport = function(activeSettingProperty) {
+            return UserService.updateOneSetting(activeSettingProperty, true);
         };
 
         return this;
