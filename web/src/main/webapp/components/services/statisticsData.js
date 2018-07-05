@@ -310,6 +310,14 @@ angular.module('StatisticsApp').factory('statisticsData',
         makeRequestVerksamhet('getMeddelandenPerAmnePerEnhetTvarsnitt', successCallback, failureCallback);
     };
 
+    factory.getMeddelandenPerAmneOchLakareVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getMeddelandenPerAmnePerLakare', successCallback, failureCallback);
+    };
+
+    factory.getMeddelandenPerAmneOchLakareTvarsnittVerksamhet = function (successCallback, failureCallback) {
+        makeRequestVerksamhet('getMeddelandenPerAmnePerLakareTvarsnitt', successCallback, failureCallback);
+    };
+
     factory.getMeddelandenPerAmneLandsting = function (successCallback, failureCallback) {
         makeRequestLandsting('getMeddelandenPerAmneLandsting', successCallback, failureCallback);
     };

@@ -669,7 +669,7 @@ angular.module('StatisticsApp').meddelandenPerAmneTvarsnittConfig =
         return conf;
     };
 
-angular.module('StatisticsApp').meddelandenPerAmnOchEnhetTvarsnittConfig =
+angular.module('StatisticsApp').meddelandenPerAmneOchEnhetTvarsnittConfig =
     /** @ngInject */
         function (messageService) {
         'use strict';
@@ -692,6 +692,33 @@ angular.module('StatisticsApp').meddelandenPerAmnOchEnhetTvarsnittConfig =
         conf.exchangeableViews = [
             {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchEnhet', active: false},
             {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchEnhetTvarsnitt', active: true}];
+
+        return conf;
+    };
+
+angular.module('StatisticsApp').meddelandenPerAmneOchLakareTvarsnittConfig =
+    /** @ngInject */
+        function (messageService) {
+        'use strict';
+
+        var conf = {};
+        conf.filter = {
+            intygstyper: true,
+            sjukskrivningslangd: false
+        };
+        conf.highchartType = 'column';
+        conf.defaultChartType = 'stackedcolumn';
+        conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneOchLakareTvarsnittVerksamhet';
+        conf.chartYAxisTitleUnit = 'meddelanden';
+        conf.exportTableUrlVerksamhet = function () {
+            return 'api/verksamhet/getMeddelandenPerAmnePerLakareTvarsnitt?format=xlsx';
+        };
+        conf.title = messageService.getProperty('title.meddelandenperamneochlakare');
+        conf.chartFootnotes = ['help.verksamhet.meddelandenperamneochlakare'];
+
+        conf.exchangeableViews = [
+            {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchLakare', active: false},
+            {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchLakareTvarsnitt', active: true}];
 
         return conf;
     };

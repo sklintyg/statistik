@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 Givet att:
@@ -24,7 +23,7 @@ Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 | id | förnamn | efternamn |
 | lakare1 | Anna | Bengtsson |
 
-| Enbart foljande intyg finns |
+| Foljande intyg finns |
 | intygid | personnr | signeringstid | enhet | läkare |
 | 1002 | 19800830-9275 | 2014-06-01T10:00:00 | enhet1 | lakare1 |
 

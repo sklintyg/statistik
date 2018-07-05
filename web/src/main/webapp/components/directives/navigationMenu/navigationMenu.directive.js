@@ -259,6 +259,11 @@
                 name: 'nav.meddelandenperamneochenhet',
                 ctrl: 'VerksamhetMeddelandenPerAmneOchEnhetCtrl'
             }, {
+                id: 'navBusinessMessagesLakareLink',
+                link: '#/verksamhet/meddelandenPerAmneOchLakareTvarsnitt',
+                name: 'nav.meddelandenperamneochlakare',
+                ctrl: 'VerksamhetMeddelandenPerAmneOchLakareCtrl'
+            }, {
                 id: 'navBusinessAndelKompletteringarLink',
                 link: '#/verksamhet/andelkompletteringar',
                 name: 'nav.andelkompletteringar',

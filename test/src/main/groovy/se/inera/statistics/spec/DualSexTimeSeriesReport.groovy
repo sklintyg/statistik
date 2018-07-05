@@ -179,6 +179,13 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         return reportsUtil.getReportAntalMeddelanden()
     }
 
+    def getReportMeddelandenLakare() {
+        if (inloggad) {
+            return reportsUtil.getReportAntalMeddelandenLakareInloggad(vg, filter)
+        }
+        throw new RuntimeException("Report -Meddelanden per ämne per läkare- is not available on national level");
+    }
+
     def getReportMeddelandenVardenhetLandsting() {
         if (inloggad) {
             return reportsUtil.getReportAntalMeddelandenLandsting(vg, filter)
@@ -190,7 +197,14 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         if (inloggad) {
             return reportsUtil.getReportAntalMeddelandenVardenhetTvarsnittInloggad(vg, filter)
         }
-        return new RuntimeException("Report -Meddelanden per ämne per enhet- is not available on national level");
+        return new RuntimeException("Report -Meddelanden per ämne per enhet som tvärsnitt- is not available on national level");
+    }
+
+    def getReportMeddelandenLakareTvarsnitt() {
+        if (inloggad) {
+            return reportsUtil.getReportAntalMeddelandenLakareTvarsnittInloggad(vg, filter)
+        }
+        return new RuntimeException("Report -Meddelanden per ämne per lakare som tvärsnitt- is not available on national level");
     }
 
     def getReportIntygTotalt() {

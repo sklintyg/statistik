@@ -113,7 +113,7 @@ public class NationellDataInvoker {
     private void calculateMsgPerAmne(HsaIdVardgivare vardgivareId, NationellDataInfo result) {
         final Range range = result.getMeddelandenPerAmneRange();
         final MessagesFilter messagesFilter = new MessagesFilter(vardgivareId, range.getFrom(),
-                range.getNumberOfMonths(), null, null, null, null);
+                range.getTo(), null, null, null, null);
         final KonDataResponse meddelandenPerAmne = result.getMeddelandenPerAmneResult();
         final KonDataResponse resp = messagesQuery.getMeddelandenPerAmneAggregated(meddelandenPerAmne, messagesFilter, cutoff);
         result.setMeddelandenPerAmneResult(resp);
@@ -122,8 +122,8 @@ public class NationellDataInvoker {
     private void calulateAndelIntyg(HsaIdVardgivare vardgivareId, NationellDataInfo result) {
         final Range range = result.getAndelKompletteringarRange();
         final LocalDate from = range.getFrom();
-        final int numberOfMonths = range.getNumberOfMonths();
-        final MessagesFilter messagesFilter = new MessagesFilter(vardgivareId, from, numberOfMonths, null, null, null, null);
+        final LocalDate to = range.getTo();
+        final MessagesFilter messagesFilter = new MessagesFilter(vardgivareId, from, to, null, null, null, null);
         final KonDataResponse konDataResponse = result.getAndelKompletteringarResult();
         final KonDataResponse response = messagesQuery.getAndelKompletteringarAggregated(konDataResponse, messagesFilter, cutoff);
         result.setAndelKompletteringarResult(response);

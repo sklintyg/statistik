@@ -40,7 +40,7 @@ Byte till tidsserie gör att ytdiagram 18 mån visas. Varje läkare får en lege
 
 Eftersom inga intyg är signerade i juli för läkaren Anna Andersson, visas hon därför inte upp.
 
-| Meddelanden i rapporten meddelanden per lakare |
+| Meddelanden i rapporten meddelanden per lakare som tidsserie |
 | inloggad som | vårdgivarnivå | år | månad | grupp | män? | kvinnor? |
 | user1 | false | 2014 | jun | Anna Andersson : Avstämningsmöte | 2 | 1 |
 | user1 | false | 2014 | jun | Anna Andersson : Komplettering | 2 | 0 |

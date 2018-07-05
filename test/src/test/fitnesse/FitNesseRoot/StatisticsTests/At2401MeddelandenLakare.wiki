@@ -43,9 +43,9 @@ Inloggad:
 | user1 | false | Bo Bengtsson | Komplettering | 3 | 0 | 1 |
 
 | Meddelanden i rapporten meddelanden per lakare som tvarsnitt diagram |
-| inloggad som | vårdgivarnivå | läkare | grupp | män? | kvinnor? |
-| user1 | false | Anna Andersson | Avstämningsmöte | 0 | 0 |
-| user1 | false | Anna Andersson | Komplettering | 2 | 0 |
-| user1 | false | Bo Bengtsson | Avstämningsmöte | 0 | 2 |
-| user1 | false | Bo Bengtsson | Komplettering | 0 | 1!-
--! |
+| inloggad som | vårdgivarnivå | läkare | grupp | totalt? |
+| user1 | false | Anna Andersson | Avstämningsmöte | 0 |
+| user1 | false | Anna Andersson | Komplettering | 2 |
+| user1 | false | Bo Bengtsson | Avstämningsmöte | 2 |
+| user1 | false | Bo Bengtsson | Komplettering | 1 |
+

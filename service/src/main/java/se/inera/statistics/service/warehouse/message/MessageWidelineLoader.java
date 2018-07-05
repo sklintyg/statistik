@@ -39,6 +39,7 @@ import org.springframework.stereotype.Component;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.model.Kon;
@@ -206,6 +207,7 @@ public class MessageWidelineLoader {
         dto.setIntygTyp(resultSet.getString("intygstyp"));
         dto.setDx(resultSet.getString("dx"));
         dto.setIntygid(resultSet.getString("intygid"));
+        dto.setLakareId(new HsaIdLakare(resultSet.getString("lakareId")));
         return dto;
     }
 
@@ -257,7 +259,7 @@ public class MessageWidelineLoader {
 
         StringBuilder sql = new StringBuilder("SELECT "
                 + "mwl.intygid, mwl.amnecode, mwl.kon, mwl.amneCode, mwl.enhet AS enhet, mwl.alder, "
-                + "mwl.intygstyp, mwl.patientid, ic.signeringsdatum, ic.dx "
+                + "mwl.intygstyp, mwl.patientid, ic.signeringsdatum, ic.dx, ic.lakareId "
                 + "FROM messagewideline AS mwl "
                 + "INNER JOIN intygcommon AS ic "
                 + "ON mwl.intygid = ic.intygid "
@@ -305,7 +307,7 @@ public class MessageWidelineLoader {
             throws SQLException {
 
         StringBuilder sql = new StringBuilder("SELECT "
-                + "ic.intygid, ic.kon, ic.intygtyp as intygstyp, ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, "
+                + "ic.intygid, ic.kon, ic.intygtyp as intygstyp, ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, ic.lakareId, "
                 + "mwl.amneCode "
                 + "FROM intygcommon ic "
                 + "LEFT JOIN messagewideline mwl "

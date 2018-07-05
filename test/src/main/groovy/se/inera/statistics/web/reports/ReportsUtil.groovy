@@ -191,8 +191,16 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerEnhet", filter, "vgid=" + vgid)
     }
 
+    def getReportAntalMeddelandenLakareInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerLakare", filter, "vgid=" + vgid)
+    }
+
     def getReportAntalMeddelandenVardenhetTvarsnittInloggad(String vgid, filter) {
         return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerEnhetTvarsnitt", filter, "vgid=" + vgid)
+    }
+
+    def getReportAntalMeddelandenLakareTvarsnittInloggad(String vgid, filter) {
+        return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerLakareTvarsnitt", filter, "vgid=" + vgid)
     }
 
     def getReportAntalMeddelandenVardenhetLandsting(String vgid, filter) {

@@ -21,7 +21,10 @@ package se.inera.statistics.service.warehouse.query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
+import se.inera.statistics.service.processlog.Lakare;
+import se.inera.statistics.service.processlog.LakareManager;
 import se.inera.statistics.service.report.model.*;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.IntygType;
@@ -32,9 +35,7 @@ import se.inera.statistics.service.warehouse.message.MsgAmne;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Component
@@ -44,6 +45,9 @@ public class MessagesQuery {
 
     @Autowired
     private MessageWidelineLoader messageWidelineLoader;
+
+    @Autowired
+    private LakareManager lakareManager;
 
     public KonDataResponse getMeddelandenPerAmneAggregated(KonDataResponse resultToAggregateIn, MessagesFilter filter, int cutoff) {
         final KonDataResponse messagesTvarsnittPerAmne = getMessagesPerAmne(filter);
@@ -112,6 +116,16 @@ public class MessagesQuery {
     public KonDataResponse getMessagesTvarsnittPerAmnePerEnhet(MessagesFilter filter) {
         List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter);
         return convertToSimpleResponseTvarsnittPerAmnePerEnhet(rows);
+    }
+
+    public KonDataResponse getMessagesPerAmnePerLakare(MessagesFilter filter) {
+        List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter);
+        return convertToMessagesPerAmnePerLakare(rows, filter.getFrom(), filter.getNumberOfMonths());
+    }
+
+    public KonDataResponse getMessagesTvarsnittPerAmnePerLakare(MessagesFilter filter) {
+        List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter);
+        return convertToSimpleResponseTvarsnittPerAmnePerLakare(rows);
     }
 
     public SimpleKonResponse getAntalMeddelanden(LocalDate start, int perioder) {
@@ -282,12 +296,57 @@ public class MessagesQuery {
         return new KonDataResponse(groups, result);
     }
 
-    private static <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Set<Object> seen = ConcurrentHashMap.newKeySet();
-        return t -> seen.add(keyExtractor.apply(t));
+    private KonDataResponse convertToMessagesPerAmnePerLakare(List<CountDTOAmne> rows, LocalDate start, int perioder) {
+        List<HsaIdLakare> lakares = getLakareFromRows(rows);
+        final Map<HsaIdLakare, String> lakareNames = getLakareNames(lakares);
+        return convertToMessagesPerAmnePerType(rows, start, perioder, lakares, CountDTOAmne::getLakareId, lakareNames::get);
+    }
+
+    private Map<HsaIdLakare, String> getLakareNames(List<HsaIdLakare> lakares) {
+        final List<Lakare> allLakareInResponse = lakareManager.getAllSpecifiedLakares(lakares);
+        final List<String> allLakarNames = allLakareInResponse.stream()
+                .map(lakare -> getLakareName(lakare, false)).collect(Collectors.toList());
+        final Set<String> duplicateNames = findUpperCaseDuplicates(allLakarNames);
+        return allLakareInResponse.stream().collect(Collectors.toMap(Lakare::getLakareId, lakare -> {
+            final String lakareName = getLakareName(lakare, false);
+            if (duplicateNames.contains(lakareName.toUpperCase())) {
+                return getLakareName(lakare, true);
+            }
+            return lakareName;
+        }));
+    }
+
+    private Set<String> findUpperCaseDuplicates(Collection<String> list) {
+        Set<String> duplicates = new HashSet<>();
+        Set<String> uniques = new HashSet<>();
+
+        for (String current : list) {
+            final String currentUpper = current.toUpperCase();
+            if (!uniques.add(currentUpper)) {
+                duplicates.add(currentUpper);
+            }
+        }
+
+        return duplicates;
+    }
+
+    private String getLakareName(Lakare lakare, boolean includeHsaId) {
+        final String nameSuffix = includeHsaId ? " " + lakare.getLakareId().getId() : "";
+        return lakare.getTilltalsNamn() + " " + lakare.getEfterNamn() + nameSuffix;
+    }
+
+    private List<HsaIdLakare> getLakareFromRows(List<CountDTOAmne> rows) {
+        return rows != null
+                ? rows.stream().map(CountDTOAmne::getLakareId).distinct().collect(Collectors.toList())
+                : Collections.emptyList();
     }
 
     private KonDataResponse convertToMessagesPerAmnePerEnhet(List<CountDTOAmne> rows, LocalDate start, int perioder) {
+        return convertToMessagesPerAmnePerType(rows, start, perioder, getEnhets(rows), CountDTOAmne::getEnhet, enhet -> enhet);
+    }
+
+    private <T> KonDataResponse convertToMessagesPerAmnePerType(List<CountDTOAmne> rows, LocalDate start, int perioder, List<T> types,
+                                                                Function<CountDTOAmne, T> typeInDto, Function<T, String> typeToName) {
         Map<LocalDate, List<CountDTOAmne>> map;
         if (rows != null) {
             map = rows.stream().collect(Collectors.groupingBy(CountDTOAmne::getDate));
@@ -295,18 +354,16 @@ public class MessagesQuery {
             map = new HashMap<>();
         }
 
-        List<String> enhets = getEnhets(rows);
-
         final MsgAmne[] msgAmnes = MsgAmne.values();
         final int seriesLength = msgAmnes.length;
 
 
         List<KonDataRow> result = new ArrayList<>();
         for (int i = 0; i < perioder; i++) {
-            int[][][] series = new int[2][][]; //First order is gender, second is enhet and third is amne
-            series[0] = new int[enhets.size()][];
-            series[1] = new int[enhets.size()][];
-            for (int j = 0; j < enhets.size(); j++) {
+            int[][][] series = new int[2][][]; //First order is gender, second is type and third is amne
+            series[0] = new int[types.size()][];
+            series[1] = new int[types.size()][];
+            for (int j = 0; j < types.size(); j++) {
                 series[0][j] = new int[seriesLength];
                 series[1][j] = new int[seriesLength];
             }
@@ -318,13 +375,13 @@ public class MessagesQuery {
 
             if (dtos != null) {
                 for (CountDTOAmne dto : dtos) {
-                    final int enhetIndex = enhets.indexOf(dto.getEnhet());
-                    series[dto.getKon().equals(Kon.FEMALE) ? 0 : 1][enhetIndex][dto.getAmne().ordinal()] += dto.getCount();
+                    final int index = types.indexOf(typeInDto.apply(dto));
+                    series[dto.getKon().equals(Kon.FEMALE) ? 0 : 1][index][dto.getAmne().ordinal()] += dto.getCount();
                 }
             }
 
             final ArrayList<KonField> data = new ArrayList<>();
-            for (int k = 0; k < enhets.size(); k++) {
+            for (int k = 0; k < types.size(); k++) {
                 for (int j = 0; j < seriesLength; j++) {
                     data.add(new KonField(series[0][k][j], series[1][k][j]));
                 }
@@ -333,9 +390,9 @@ public class MessagesQuery {
         }
 
         final ArrayList<String> groups = new ArrayList<>();
-        for (String enhet : enhets) {
+        for (T type : types) {
             for (MsgAmne msgAmne : msgAmnes) {
-                groups.add(enhet + GROUP_NAME_SEPARATOR + msgAmne.name());
+                groups.add(typeToName.apply(type) + GROUP_NAME_SEPARATOR + msgAmne.name());
             }
         }
         return new KonDataResponse(groups, result);
@@ -425,30 +482,41 @@ public class MessagesQuery {
         return new SimpleKonResponse(result);
     }
 
+    private KonDataResponse convertToSimpleResponseTvarsnittPerAmnePerLakare(List<CountDTOAmne> rows) {
+        List<HsaIdLakare> lakares = getLakareFromRows(rows);
+        final Map<HsaIdLakare, String> lakareNames = getLakareNames(lakares);
+        return convertToSimpleResponseTvarsnittPerAmnePerType(rows, lakares, CountDTOAmne::getLakareId, lakareNames::get);
+    }
+
     private KonDataResponse convertToSimpleResponseTvarsnittPerAmnePerEnhet(List<CountDTOAmne> rows) {
+        return convertToSimpleResponseTvarsnittPerAmnePerType(rows, getEnhets(rows), CountDTOAmne::getEnhet, enhet -> enhet);
+    }
+
+    private <T> KonDataResponse convertToSimpleResponseTvarsnittPerAmnePerType(List<CountDTOAmne> rows, List<T> types,
+                                                                               Function<CountDTOAmne, T> typeInDto,
+                                                                               Function<T, String> typeToName) {
         final MsgAmne[] msgAmnes = MsgAmne.values();
         final int seriesLength = msgAmnes.length;
-        List<String> enhets = getEnhets(rows);
         List<KonDataRow> result = new ArrayList<>();
-        final int enhetsSize = enhets.size();
-        int[][][] series = new int[2][][]; //First order is gender, second is enhet and third is amne
-        series[0] = new int[enhetsSize][];
-        series[1] = new int[enhetsSize][];
-        for (int j = 0; j < enhetsSize; j++) {
+        final int typesSize = types.size();
+        int[][][] series = new int[2][][]; //First order is gender, second is type and third is amne
+        series[0] = new int[typesSize][];
+        series[1] = new int[typesSize][];
+        for (int j = 0; j < typesSize; j++) {
             series[0][j] = new int[seriesLength];
             series[1][j] = new int[seriesLength];
         }
         for (CountDTOAmne dto : rows) {
-            final int enhetIndex = enhets.indexOf(dto.getEnhet());
-                series[dto.getKon().equals(Kon.FEMALE) ? 0 : 1][enhetIndex][dto.getAmne().ordinal()] += dto.getCount();
+            final int index = types.indexOf(typeInDto.apply(dto));
+                series[dto.getKon().equals(Kon.FEMALE) ? 0 : 1][index][dto.getAmne().ordinal()] += dto.getCount();
         }
 
-        for (int k = 0; k < enhetsSize; k++) {
+        for (int k = 0; k < typesSize; k++) {
             final ArrayList<KonField> data = new ArrayList<>();
             for (int j = 0; j < seriesLength; j++) {
                 data.add(new KonField(series[0][k][j], series[1][k][j]));
             }
-            result.add(new KonDataRow(enhets.get(k), data));
+            result.add(new KonDataRow(typeToName.apply(types.get(k)), data));
         }
 
         final ArrayList<String> groups = new ArrayList<>();

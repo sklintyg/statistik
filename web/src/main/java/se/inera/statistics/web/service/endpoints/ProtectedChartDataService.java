@@ -85,6 +85,8 @@ import se.inera.statistics.web.service.responseconverter.GroupedSjukfallConverte
 import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetTvarsnittConverter;
+import se.inera.statistics.web.service.responseconverter.MessageAmnePerTypeConverter;
+import se.inera.statistics.web.service.responseconverter.MessageAmnePerTypeTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmneTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.MessagePeriodConverter;
 import se.inera.statistics.web.service.responseconverter.PeriodConverter;
@@ -349,7 +351,7 @@ public class ProtectedChartDataService {
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhet(filterSettings.getFilter(),
                 filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = new MessageAmnePerEnhetConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, ReportType.TIDSSERIE);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNEPERENHET, ReportType.TIDSSERIE);
     }
 
     @GET
@@ -368,7 +370,45 @@ public class ProtectedChartDataService {
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhetTvarsnitt(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         SimpleDetailsData result = new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, ReportType.TVARSNITT);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNEPERENHET, ReportType.TVARSNITT);
+    }
+
+    @GET
+    @Path("getMeddelandenPerAmnePerLakare")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_get_messages_per_subject_and_lakare",
+            help = "API-tjänst för skyddad åtkomst till meddelanden per ämne och läkare")
+    public Response getMeddelandenPerAmnePerLakare(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+                                                  @QueryParam("format") String format) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
+        KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerLakare(filterSettings.getFilter(),
+                filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleDetailsData result = new MessageAmnePerTypeConverter("Antal meddelanden totalt", "Läkare")
+                .convert(casesPerMonth, filterSettings);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNEPERLAKARE, ReportType.TIDSSERIE);
+    }
+
+    @GET
+    @Path("getMeddelandenPerAmnePerLakareTvarsnitt")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    @PreAuthorize(value = "@protectedChartDataService.hasAccessTo(#request)")
+    @PostAuthorize(value = "@protectedChartDataService.userAccess(#request)")
+    @PrometheusTimeMethod(name = "api_protected_get_messages_per_subject_and_lakare_cross_section",
+            help = "API-tjänst för skyddad åtkomst till tvärsnittet av meddelanden per ämne och läkare")
+    public Response getMeddelandenPerAmnePerLakareTvarsnitt(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
+                                                           @QueryParam("format") String format) {
+        final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
+        final Filter filter = filterSettings.getFilter();
+        final Range range = filterSettings.getRange();
+        KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerLakareTvarsnitt(filter, range,
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+        SimpleDetailsData result = new MessageAmnePerTypeTvarsnittConverter("Antal meddelanden totalt", "Läkare")
+                .convert(casesPerMonth, filterSettings);
+        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNEPERLAKARE, ReportType.TVARSNITT);
     }
 
     @GET

@@ -341,8 +341,20 @@ var app = angular.module('StatisticsApp')
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
                 controllerAs: 'VerksamhetMeddelandenPerAmneOchEnhetCtrl',
-                resolve: { config: app.meddelandenPerAmnOchEnhetTvarsnittConfig },
+                resolve: { config: app.meddelandenPerAmneOchEnhetTvarsnittConfig },
                 title: 'nav.meddelandenperamneochenhet'
+            }).when('/verksamhet/meddelandenPerAmneOchLakare', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'singleLineChartCtrl',
+                controllerAs: 'VerksamhetMeddelandenPerAmneOchLakareCtrl',
+                resolve: { config: app.meddelandenPerAmneOchLakareConfig },
+                title: 'nav.meddelandenperamneochlakare'
+            }).when('/verksamhet/meddelandenPerAmneOchLakareTvarsnitt', {
+                templateUrl: '/app/views/detailsView.html',
+                controller: 'columnChartDetailsViewCtrl',
+                controllerAs: 'VerksamhetMeddelandenPerAmneOchLakareCtrl',
+                resolve: { config: app.meddelandenPerAmneOchLakareTvarsnittConfig },
+                title: 'nav.meddelandenperamneochlakare'
             }).when('/verksamhet/intyg', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'singleLineChartCtrl',

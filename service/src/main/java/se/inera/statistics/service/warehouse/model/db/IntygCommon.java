@@ -49,10 +49,11 @@ public class IntygCommon {
     private EventType eventType;
     private String dx;
     private boolean sentToFk;
+    private String lakareId;
 
     // CHECKSTYLE:OFF ParameterNumber
     public IntygCommon(String intygid, String patientid, LocalDate signeringsdatum, IntygType intygtyp, String enhet, String vardgivareId,
-            int kon, EventType eventType, String dx, boolean sentToFk) {
+                       int kon, EventType eventType, String dx, boolean sentToFk, String lakareId) {
         this.intygid = intygid;
         this.patientid = patientid;
         this.kon = kon;
@@ -63,6 +64,7 @@ public class IntygCommon {
         this.eventType = eventType;
         this.dx = dx;
         this.sentToFk = sentToFk;
+        this.lakareId = lakareId;
     }
     // CHECKSTYLE:ON ParameterNumber
 
@@ -120,6 +122,10 @@ public class IntygCommon {
 
     public void setSentToFk(boolean sentToFk) {
         this.sentToFk = sentToFk;
+    }
+
+    public String getLakareId() {
+        return lakareId;
     }
 
 }

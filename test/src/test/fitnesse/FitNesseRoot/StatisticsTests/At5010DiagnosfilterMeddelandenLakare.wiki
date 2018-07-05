@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 Givet att:
@@ -31,12 +30,12 @@ Läkaren som har signerat intyget får också tillhörande meddelanden. Varje me
 Inloggad:
 
 | Meddelanden i rapporten meddelanden per lakare som tvarsnitt |
-| inloggad som | vårdgivarnivå | läkare | grupp | filter kapitel | filter avsnitt | filter kategorier | totalt? | män? | kvinnor? |
+| inloggad som | vårdgivarnivå | läkare | grupp | filter kapitel | filter avsnitt | filter kategorier | kön totalt? | män? | kvinnor? |
 | user1 | false | Anna Andersson | Avstämningsmöte | | | | 2 | 0 | 2 |
 | user1 | false | Anna Andersson | Avstämningsmöte | G00-G99 | | | 2 | 0 | 2 |
 | user1 | false | Anna Andersson | Avstämningsmöte | | G90-G99 | | -1 | -1 | -1 |
 | user1 | false | Anna Andersson | Avstämningsmöte | | | G01 | 2 | 0 | 2 |
 | user1 | false | Anna Andersson | Komplettering | | | | 3 | 2 | 1 |
 | user1 | false | Anna Andersson | Komplettering | G00-G99 | | | 1 | 0 | 1 |
-| user1 | false | Anna Andersson | Komplettering | | A40-A49 | | 2 | 2 | 0 |
+| user1 | false | Anna Andersson | Komplettering | | A30-A49 | | 2 | 2 | 0 |
 | user1 | false | Anna Andersson | Komplettering | | | G99 | -1 | -1 | -1 |

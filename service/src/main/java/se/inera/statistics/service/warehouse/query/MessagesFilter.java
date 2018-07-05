@@ -22,24 +22,25 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Collection;
 
 public class MessagesFilter {
 
     private HsaIdVardgivare vardgivarId;
     private final LocalDate from;
-    private final int numberOfMonths;
+    private final LocalDate to;
     private final Collection<HsaIdEnhet> enheter;
     private final Collection<String> aldersgrupp;
     private final Collection<String> diagnoser;
     private Collection<String> intygstyper;
     private Collection<String> amne;
 
-    public MessagesFilter(HsaIdVardgivare vardgivarId, LocalDate from, int numberOfMonths, Collection<HsaIdEnhet> enheter,
+    public MessagesFilter(HsaIdVardgivare vardgivarId, LocalDate from, LocalDate to, Collection<HsaIdEnhet> enheter,
                           Collection<String> aldersgrupp, Collection<String> diagnoser, Collection<String> intygstyper) {
         this.vardgivarId = vardgivarId;
         this.from = from;
-        this.numberOfMonths = numberOfMonths;
+        this.to = to;
         this.enheter = enheter;
         this.aldersgrupp = aldersgrupp;
         this.diagnoser = diagnoser;
@@ -49,7 +50,7 @@ public class MessagesFilter {
     public MessagesFilter(MessagesFilter messagesFilter, Collection<String> amne) {
         this.vardgivarId = messagesFilter.vardgivarId;
         this.from = messagesFilter.from;
-        this.numberOfMonths = messagesFilter.numberOfMonths;
+        this.to = messagesFilter.to;
         this.enheter = messagesFilter.enheter;
         this.aldersgrupp = messagesFilter.aldersgrupp;
         this.diagnoser = messagesFilter.diagnoser;
@@ -66,11 +67,13 @@ public class MessagesFilter {
     }
 
     public LocalDate getTo() {
-        return from.plusMonths(numberOfMonths);
+        return to;
     }
 
     public int getNumberOfMonths() {
-        return numberOfMonths;
+        Period diff = Period.between(from, to.plusDays(1));
+        final int monthsPerYear = 12;
+        return diff.getYears() * monthsPerYear + diff.getMonths();
     }
 
     public Collection<HsaIdEnhet> getEnheter() {

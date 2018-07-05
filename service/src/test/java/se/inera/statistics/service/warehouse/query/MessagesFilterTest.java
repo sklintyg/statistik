@@ -16,12 +16,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.service.responseconverter;
+package se.inera.statistics.service.warehouse.query;
 
-public class MessageAmnePerEnhetTvarsnittConverter extends MessageAmnePerTypeTvarsnittConverter {
+import org.junit.Test;
 
-    public MessageAmnePerEnhetTvarsnittConverter() {
-        super("Antal meddelanden totalt", "Enhet");
+import java.time.LocalDate;
+
+import static org.junit.Assert.*;
+
+public class MessagesFilterTest {
+
+    @Test
+    public void getNumberOfMonths() {
+        assertEquals(2, createMessagesFilter("2018-03-05", "2018-05-06").getNumberOfMonths()); //Simple case
+        assertEquals(14, createMessagesFilter("2017-03-05", "2018-05-06").getNumberOfMonths()); //More than one year
+        assertEquals(1, createMessagesFilter("2018-03-05", "2018-05-01").getNumberOfMonths()); //Not two full months
+    }
+
+    private MessagesFilter createMessagesFilter(String from, String to) {
+        return new MessagesFilter(null, LocalDate.parse(from), LocalDate.parse(to), null, null, null, null);
     }
 
 }

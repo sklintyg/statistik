@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.warehouse.message;
 
+import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.report.model.Kon;
 
 import java.time.LocalDate;
@@ -32,6 +33,7 @@ public class CountDTOAmne {
     private String intygTyp;
     private String dx;
     private String intygid;
+    private HsaIdLakare lakareId;
 
     public int getCount() {
         return count;
@@ -104,4 +106,13 @@ public class CountDTOAmne {
     public String getIntygid() {
         return intygid;
     }
+
+    public HsaIdLakare getLakareId() {
+        return lakareId;
+    }
+
+    public void setLakareId(HsaIdLakare lakareId) {
+        this.lakareId = lakareId;
+    }
+
 }

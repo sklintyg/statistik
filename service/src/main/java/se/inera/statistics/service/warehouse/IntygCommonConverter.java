@@ -58,9 +58,11 @@ public class IntygCommonConverter {
         IntygType intygTyp = dto.getIntygtyp();
         LocalDate signeringsDatum = dto.getSigneringsdatum();
         final String diagnoskod = parseDiagnos(dto.getDiagnoskod());
+        final String lakareId = dto.getLakareId();
 
         final String vgid = vardgivare.getId();
-        return new IntygCommon(correlationId, patient, signeringsDatum, intygTyp, enhet, vgid, kon, eventType, diagnoskod, sentToFk);
+        return new IntygCommon(correlationId, patient, signeringsDatum, intygTyp, enhet,
+                vgid, kon, eventType, diagnoskod, sentToFk, lakareId);
     }
 
     String parseDiagnos(String diagnoskod) {

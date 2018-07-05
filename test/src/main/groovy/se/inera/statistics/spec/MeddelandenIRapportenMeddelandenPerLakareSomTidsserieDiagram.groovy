@@ -16,12 +16,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.service.responseconverter;
+package se.inera.statistics.spec
 
-public class MessageAmnePerEnhetTvarsnittConverter extends MessageAmnePerTypeTvarsnittConverter {
+class MeddelandenIRapportenMeddelandenPerLakareSomTidsserieDiagram extends DualSexTimeSeriesReport {
 
-    public MessageAmnePerEnhetTvarsnittConverter() {
-        super("Antal meddelanden totalt", "Enhet");
+    @Override
+    public void doExecute() {
+        def report = getReportMeddelandenLakare()
+        executeDiagram(report)
     }
 
 }

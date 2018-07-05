@@ -278,7 +278,7 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetConfig =
         conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneOchEnhetVerksamhet';
         conf.chartYAxisTitle = 'Antal meddelanden';
         conf.exportTableUrlVerksamhet = function () {
-            return 'api/verksamhet/getTotalNumberOfIntygPerMonth?format=xlsx';
+            return 'api/verksamhet/getMeddelandenPerAmnePerEnhet?format=xlsx';
         };
         conf.title = messageService.getProperty('title.meddelandenperamneochenhet');
         conf.chartFootnotes = ['help.verksamhet.meddelandenperamneochenhet'];
@@ -286,6 +286,31 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetConfig =
         conf.exchangeableViews = [
             {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchEnhet', active: true},
             {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchEnhetTvarsnitt', active: false}];
+
+        return conf;
+    };
+
+angular.module('StatisticsApp').meddelandenPerAmneOchLakareConfig =
+    /** @ngInject */
+        function (messageService) {
+        'use strict';
+
+        var conf = {};
+        conf.filter = {
+            intygstyper: true,
+            sjukskrivningslangd: false
+        };
+        conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneOchLakareVerksamhet';
+        conf.chartYAxisTitle = 'Antal meddelanden';
+        conf.exportTableUrlVerksamhet = function () {
+            return 'api/verksamhet/getMeddelandenPerAmnePerLakare?format=xlsx';
+        };
+        conf.title = messageService.getProperty('title.meddelandenperamneochlakare');
+        conf.chartFootnotes = ['help.verksamhet.meddelandenperamneochlakare'];
+
+        conf.exchangeableViews = [
+            {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchLakare', active: true},
+            {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchLakareTvarsnitt', active: false}];
 
         return conf;
     };

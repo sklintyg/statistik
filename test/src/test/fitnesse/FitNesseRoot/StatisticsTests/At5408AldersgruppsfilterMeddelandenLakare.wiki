@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 Givet att:
@@ -33,8 +32,8 @@ Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 Inloggad:
 
 | Meddelanden i rapporten meddelanden per lakare som tvarsnitt |
-| inloggad som | vårdgivarnivå | läkare | grupp | filter åldersgrupp | totalt? | män? | kvinnor? |
+| inloggad som | vårdgivarnivå | läkare | grupp | filter åldersgrupp | kön totalt? | män? | kvinnor? |
 | user1 | false | Anna Andersson | Avstämningsmöte | | 2 | 0 | 2 |
-| user1 | false | Anna Andersson | Avstämningsmöte | 41-45år | 2 | 0 | 2 |
+| user1 | false | Anna Andersson | Avstämningsmöte | 41-45 år | 2 | 0 | 2 |
 | user1 | false | Anna Andersson | Komplettering | | 3 | 2 | 1 |
-| user1 | false | Anna Andersson | Komplettering | Under 16 år, 16-20år, 21-25år, 26-30år, 36-40år, 41-45år, 46-50år, 51-55år, 56-60år | 1 | 0 | 1 |
+| user1 | false | Anna Andersson | Komplettering | Under 16 år, 16-20 år, 21-25 år, 26-30 år, 36-40 år, 41-45 år, 46-50 år, 51-55 år, 56-60 år | 1 | 0 | 1 |

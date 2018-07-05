@@ -185,9 +185,17 @@ public class WarehouseService {
         return messagesQuery.getMessagesPerAmnePerEnhet(getMeddelandeFilter(vardgivarId, filter, range));
     }
 
+    public KonDataResponse getMessagesPerAmnePerLakare(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
+        return messagesQuery.getMessagesPerAmnePerLakare(getMeddelandeFilter(vardgivarId, filter, range));
+    }
+
     private MessagesFilter getMeddelandeFilter(HsaIdVardgivare vardgivarId, Filter filter, Range range) {
-        return new MessagesFilter(vardgivarId, range.getFrom(), range.getNumberOfMonths(), filter.getEnheter(),
+        return new MessagesFilter(vardgivarId, range.getFrom(), range.getTo(), filter.getEnheter(),
                 filter.getAldersgrupp(), filter.getDiagnoser(), filter.getIntygstyper());
+    }
+
+    public KonDataResponse getMessagesPerAmnePerLakareTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
+        return messagesQuery.getMessagesTvarsnittPerAmnePerLakare(getMeddelandeFilter(vardgivarId, filter, range));
     }
 
     public KonDataResponse getMessagesPerAmnePerEnhetTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId) {

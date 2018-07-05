@@ -371,7 +371,7 @@ public class ProtectedLandstingService {
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmneLandsting(filterSettings);
         DualSexStatisticsData result = new MessageAmneConverter().convert(casesPerMonth, filterSettings);
         final String lastLandstingUpdateDate = getLastLandstingUpdateDate(vgIdForLoggedInUser);
-        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, TIDSSERIE, lastLandstingUpdateDate);
+        return getResponse(result, format, request, Report.L_MEDDELANDENPERAMNE, TIDSSERIE, lastLandstingUpdateDate);
     }
 
     @GET
@@ -390,7 +390,7 @@ public class ProtectedLandstingService {
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhetLandsting(filterSettings);
         SimpleDetailsData result = new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
         final String lastLandstingUpdateDate = getLastLandstingUpdateDate(vgIdForLoggedInUser);
-        return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNE, TIDSSERIE, lastLandstingUpdateDate);
+        return getResponse(result, format, request, Report.L_MEDDELANDENPERAMNEPERENHET, TIDSSERIE, lastLandstingUpdateDate);
     }
 
     @GET
