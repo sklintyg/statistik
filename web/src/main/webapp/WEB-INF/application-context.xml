@@ -117,6 +117,8 @@
         <bean class="se.inera.statistics.service.processlog.Processor" />
         <bean class="se.inera.statistics.web.service.LoginServiceUtil" />
         <bean class="se.inera.statistics.web.service.FilterHandler" />
+
+        <bean class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration"/>
     </beans>
 
     <beans profile="hsacached">

@@ -30,7 +30,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 public class NoOpCacheConfiguration {
 
-    @Bean
+    @Bean(name = "rediscache")
     public RedisTemplate<Object, Object> fakeRedisTemplate() {
         return new NoOpRedisTemplate();
     }

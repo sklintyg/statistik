@@ -94,6 +94,7 @@ dependencies {
     compile "org.apache.poi:poi-ooxml:${poiVersion}"
     compile "xalan:xalan:${xalanVersion}"
     compile "com.github.ziplet:ziplet:${zipletVersion}"
+    compile "org.springframework.session:spring-session:${springSessionVersion}"
 
     compileOnly "javax.servlet:javax.servlet-api:${javaxServletVersion}"
 

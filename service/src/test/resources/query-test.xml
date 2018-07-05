@@ -26,6 +26,6 @@
     <bean class="se.inera.intyg.infra.monitoring.logging.LogMDCHelper"/>
     <bean class="se.inera.statistics.service.warehouse.query.DiagnosgruppQuery" />
     <bean class="se.inera.statistics.service.warehouse.SjukfallUtil" />
-    <bean class="se.inera.statistics.service.caching.NoOpRedisTemplate"/>
+    <bean class="se.inera.statistics.service.caching.NoOpRedisTemplate" id="rediscache"/>
     <bean class="se.inera.statistics.service.caching.Cache" />
 </beans>
