@@ -22,7 +22,7 @@
 angular.module('StatisticsApp').controller('singleLineChartCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $routeParams, $timeout, $window, $filter, statisticsData, config, $location,
-        messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState) {
+        messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState, $route) {
         'use strict';
 
         var chart;
@@ -136,6 +136,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
                 .activateReport(config.activeSettingProperty)
                 .finally(function() {
                     $scope.saving = false;
+                    $route.reload();
                 });
         };
         function refreshVerksamhet() {

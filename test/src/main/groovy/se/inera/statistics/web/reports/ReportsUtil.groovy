@@ -501,6 +501,11 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getNumberOfCasesPerMonthTvarsnitt", filter, "vgid=" + vgid)
     }
 
+    def updateUserSettings(settings) {
+        def response = restClient.post(path: "/api/login/saveUserSettings", body: new JsonBuilder(settings).toString())
+        assert response.status == 200
+    }
+
     def uploadFile(String vgid, InputStream file, filename) {
         def body = new MultipartBody(file: file, filename: filename);
         try {

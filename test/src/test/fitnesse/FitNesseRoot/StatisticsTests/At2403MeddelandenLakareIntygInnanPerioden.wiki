@@ -31,6 +31,10 @@ Meddelanden tillhör intyg som inget av dem är signerat under 2014
 | 19800820-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
 | 19800820-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
 
+| Anvandarens installningar |
+| användare | visaLäkarrapporten |
+| user1     | JA                 |
+
 !3 Då gäller:
 Då tvärsnitt endast visar de 12 senaste månaderna, så finns det inget intyg som har fått meddelanden under denna period i det här fallet.
 

@@ -32,6 +32,10 @@ Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 | 19800820-9275 | 2014-07-01T10:00:00 | 1001 | KOMPLT |
 | 19800830-9275 | 2014-07-01T10:00:00 | 1002 | KOMPLT |
 
+| Anvandarens installningar |
+| användare | visaLäkarrapporten |
+| user1     | JA                 |
+
 !3 Då gäller:
 Alla läkarens meddelanden visas för det senaste namnet som slagits upp i HSA-katalogen, dvs. inte nödvändigtvis det namn som läkaren hade när intyg utfärdades.
 

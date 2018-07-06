@@ -26,6 +26,10 @@ Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 | 19700120-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
 | 19700120-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
 
+| Anvandarens installningar |
+| användare | visaLäkarrapporten |
+| user1     | JA                 |
+
 !3 Då gäller:
 Åldern avgörs av signeringstiden på intyget.
 

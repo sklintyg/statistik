@@ -45,10 +45,13 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.warehouse.query.MessagesQuery;
 import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
@@ -386,7 +389,13 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerLakare(filterSettings.getFilter(),
                 filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-        SimpleDetailsData result = new MessageAmnePerTypeConverter("Antal meddelanden totalt", "Läkare")
+
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
+        if (!loginInfo.getUserSettings().isShowMessagesPerLakare()) {
+            casesPerMonth = makeFakeLakare(casesPerMonth, false);
+        }
+
+        SimpleDetailsData result = new MessageAmnePerTypeConverter("Antal meddelanden totalt", "Period")
                 .convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNEPERLAKARE, ReportType.TIDSSERIE);
     }
@@ -406,9 +415,38 @@ public class ProtectedChartDataService {
         final Range range = filterSettings.getRange();
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerLakareTvarsnitt(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+
+        final LoginInfo loginInfo = loginServiceUtil.getLoginInfo();
+        if (!loginInfo.getUserSettings().isShowMessagesPerLakare()) {
+            casesPerMonth = makeFakeLakare(casesPerMonth, true);
+        }
+
         SimpleDetailsData result = new MessageAmnePerTypeTvarsnittConverter("Antal meddelanden totalt", "Läkare")
                 .convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNEPERLAKARE, ReportType.TVARSNITT);
+    }
+
+    /**
+     * Takes a KonDataResponse and makes it fake by replacing all names and data. This is used when the user settings does not
+     * allow the user to view the messages per lakare report.
+     * @return The faked result.
+     */
+    private KonDataResponse makeFakeLakare(KonDataResponse casesPerMonth, boolean replaceRowName) {
+        final String fakeName = "Inget Namn";
+        final List<KonDataRow> rows = casesPerMonth.getRows();
+        final List<KonDataRow> newRows = rows.stream().map(konDataRow -> {
+            final List<KonField> kdrs = konDataRow.getData().stream()
+                    .map(konField -> new KonField(2, 2)).collect(Collectors.toList());
+            final String name = replaceRowName ? fakeName : konDataRow.getName();
+            return new KonDataRow(name, kdrs);
+        }).collect(Collectors.toList());
+        return new KonDataResponse(casesPerMonth.getGroups().stream().map(s -> {
+            final int indexOfSeparator = s.indexOf(MessagesQuery.GROUP_NAME_SEPARATOR);
+            if (indexOfSeparator < 0) {
+                return s;
+            }
+            return fakeName + s.substring(indexOfSeparator);
+        }).collect(Collectors.toList()), newRows);
     }
 
     @GET

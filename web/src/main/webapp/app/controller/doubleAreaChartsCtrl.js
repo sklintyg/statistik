@@ -21,7 +21,7 @@
 angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $routeParams, $window, $timeout, $filter, statisticsData, config, messageService,
-            $location, chartFactory, _, pdfFactory, ControllerCommons, filterViewState) {
+            $location, chartFactory, _, pdfFactory, ControllerCommons, filterViewState, $route) {
         'use strict';
 
         var that = this;
@@ -124,6 +124,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
                 .activateReport(config.activeSettingProperty)
                 .finally(function() {
                     $scope.saving = false;
+                    $route.reload();
                 });
         };
 

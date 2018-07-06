@@ -26,6 +26,10 @@ Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 | 19800820-9265 | 2014-07-01T10:00:00 | 1002 | KOMPLT |
 | 19800820-9265 | 2014-07-01T10:00:00 | 1002 | KOMPLT |
 
+| Anvandarens installningar |
+| användare | visaLäkarrapporten |
+| user1     | JA                 |
+
 !3 Då gäller:
 Läkaren som har signerat intyget får också tillhörande meddelanden. Varje meddelande räknas, oavsett om de tillhör samma intyg.
 

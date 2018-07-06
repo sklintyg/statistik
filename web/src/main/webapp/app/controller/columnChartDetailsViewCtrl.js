@@ -21,7 +21,7 @@
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $routeParams, $window, $location, $timeout, $filter, statisticsData,
-        config, messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState, StaticDataService) {
+        config, messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState, StaticDataService, $route) {
         'use strict';
 
         function ensureHighchartTypeIsSet(config) {
@@ -122,6 +122,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
                 .activateReport(config.activeSettingProperty)
                 .finally(function() {
                     $scope.saving = false;
+                    $route.reload();
                 });
         };
 
