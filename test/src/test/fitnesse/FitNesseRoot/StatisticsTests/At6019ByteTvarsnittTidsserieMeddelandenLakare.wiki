@@ -31,9 +31,9 @@ Läkaren som har signerat intyget får också tillhörande meddelanden. Varje me
 Inloggad:
 
 | Meddelanden i rapporten meddelanden per lakare som tvarsnitt |
-| inloggad som | vårdgivarnivå | läkare | grupp | totalt? |
-| user1 | false | Anna Andersson | Avstämningsmöte | 5 |
-| user1 | false | Anna Andersson | Komplettering | 5 |
+| inloggad som | vårdgivarnivå | läkare | grupp | kön totalt? |
+| user1 | false | Anna Andersson | Avstämningsmöte | 2 |
+| user1 | false | Anna Andersson | Komplettering | 3 |
 
 Byte till tidsserie gör att ytdiagram 18 mån visas. Varje läkare får en legend för varje grupp (meddelandeämne) som ska tas med.
 
