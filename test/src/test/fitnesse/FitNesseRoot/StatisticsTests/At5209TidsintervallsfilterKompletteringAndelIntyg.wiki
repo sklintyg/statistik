@@ -34,7 +34,7 @@ För att se hur statistiken beräknas se: [[At2301KompletteringAndelIntyg][http:
 Tidsintervall filtret går på när intyget är signerat.
 
 | Andel i rapporten komplettering andel intyg |
-| inloggad som | år | månad | grupp | filter startdatum | filter slutdatum | kön totalt? | män? | kvinnor? |
+| inloggad som | år | månad | grupp | filter startdatum | filter slutdatum | grupp totalt? | män? | kvinnor? |
 | user2 | 2014 | jul | FK 7263/7804 Läkarintyg för sjukpenning | 2014-08-01 | 2014-11-30 | -1 | -1 | -1 |
 | user2 | 2014 | jul | FK 7800 Läkarutlåtande för sjukersättning | 2014-08-01 | 2014-11-30 | -1 | -1 | -1 |
 | user2 | 2014 | aug | FK 7263/7804 Läkarintyg för sjukpenning | 2014-08-01 | 2014-11-30 | 0% | 0% | 0% |

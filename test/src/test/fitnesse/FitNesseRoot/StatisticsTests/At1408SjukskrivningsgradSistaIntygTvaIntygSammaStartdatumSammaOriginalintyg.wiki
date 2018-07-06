@@ -22,7 +22,7 @@ Den högsta sjukskrivningsgraden visas.
 Nationell:
 
 | Sjukfall i rapporten sjukskrivningsgrad |
-| år   | månad | sjukskrivningsgrad | kön totalt? | män? | kvinnor? |
+| år   | månad | sjukskrivningsgrad | grupp totalt? | män? | kvinnor? |
 | 2013 | feb   | 100 %              | 1           | 0    | 1        |
 | 2013 | feb   | 50 %               | 0           | 0    | 0        |
 | 2013 | mar   | 100 %              | 1           | 0    | 1        |
@@ -31,7 +31,7 @@ Nationell:
 Inloggad:
 
 | Sjukfall i rapporten sjukskrivningsgrad |
-| inloggad som | år   | månad | sjukskrivningsgrad | kön totalt? | män? | kvinnor? |
+| inloggad som | år   | månad | sjukskrivningsgrad | grupp totalt? | män? | kvinnor? |
 | user1        | 2013 | feb   | 100 %              | 1           | 0    | 1        |
 | user1        | 2013 | feb   | 50 %               | 0           | 0    | 0        |
 | user1        | 2013 | mar   | 100 %              | 1           | 0    | 1        |

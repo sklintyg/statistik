@@ -40,7 +40,7 @@ För att se hur statistiken beräknas, se [[At2301KompletteringAndelIntyg][http:
 Inloggad:
 
 | Andel i rapporten komplettering andel intyg |
-| inloggad som | år | månad | grupp | filter intygstyp | kön totalt? | män? | kvinnor? |
+| inloggad som | år | månad | grupp | filter intygstyp | grupp totalt? | män? | kvinnor? |
 | user2 | 2015 | apr | FK 7800 Läkarutlåtande för sjukersättning | | 50% | 0% | 100% |
 | user2 | 2015 | apr | FK 7800 Läkarutlåtande för sjukersättning | LUSE | 50% | 0% | 100% |
 | user2 | 2015 | apr | FK 7800 Läkarutlåtande för sjukersättning | SJUKPENNING | 0% | 0% | 0% |

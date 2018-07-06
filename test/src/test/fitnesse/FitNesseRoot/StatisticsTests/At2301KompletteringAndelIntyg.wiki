@@ -38,14 +38,14 @@ Denna rapport kollar endast efter vilka intyg som har fått kompletteringar, och
 
 Var ett intyg och dess komplettering hamnar baseras på intygets signeringstidpunkt.
 
-"kön totalt?" nedan kan förklaras så här: Av alla LISJP-intyg som signerats i april och skickats till Försäkringskassan (2st) - hur stor andel av dessa fick minst en komplettering? Svar: 1st, alltså 50%. (det finns 2 LISJP intyg som skickats till Försäkringskassan men endast 1 har fått en komplettering).
+"grupp totalt?" nedan kan förklaras så här: Av alla LISJP-intyg som signerats i april och skickats till Försäkringskassan (2st) - hur stor andel av dessa fick minst en komplettering? Svar: 1st, alltså 50%. (det finns 2 LISJP intyg som skickats till Försäkringskassan men endast 1 har fått en komplettering).
 
 "män?" nedan kan förklaras så här: Av alla LUSE-intyg som skickats till Försäkringskassan i april OCH tillhör manliga patienter (1st) - hur stor andel av dessa fick minst en komplettering? Svar: 1st, alltså 100%.
 
 Nationell:
 
 | Andel i rapporten komplettering andel intyg |
-| år | månad | grupp | kön totalt? | män? | kvinnor? |
+| år | månad | grupp | grupp totalt? | män? | kvinnor? |
 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0% | 0% | 0% |
 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0% | 0% | 0% |
@@ -77,7 +77,7 @@ Nationell:
 Inloggad:
 
 | Andel i rapporten komplettering andel intyg |
-| inloggad som | år | månad | grupp | kön totalt? | män? | kvinnor? |
+| inloggad som | år | månad | grupp | grupp totalt? | män? | kvinnor? |
 | user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0% | 0% | 0% |
 | user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 0% | 0% | 0% |
 | user1 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0% | 0% | 0% |

@@ -35,7 +35,7 @@ abstract class Rapport {
     boolean inloggad
     def män
     def kvinnor
-    def könTotalt
+    def gruppTotalt
     def totalt
     def färg
     Boolean markerad
@@ -87,8 +87,8 @@ abstract class Rapport {
         return kvinnor
     }
 
-    def könTotalt() {
-        return könTotalt
+    def gruppTotalt() {
+        return gruppTotalt
     }
 
     def totalt() {

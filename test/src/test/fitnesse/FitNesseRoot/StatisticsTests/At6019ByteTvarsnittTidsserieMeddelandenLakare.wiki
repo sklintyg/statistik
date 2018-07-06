@@ -35,7 +35,7 @@ Läkaren som har signerat intyget får också tillhörande meddelanden. Varje me
 Inloggad:
 
 | Meddelanden i rapporten meddelanden per lakare som tvarsnitt |
-| inloggad som | vårdgivarnivå | läkare | grupp | kön totalt? |
+| inloggad som | vårdgivarnivå | läkare | grupp | grupp totalt? |
 | user1 | false | Anna Andersson | Avstämningsmöte | 2 |
 | user1 | false | Anna Andersson | Komplettering | 3 |
 

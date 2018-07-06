@@ -65,7 +65,7 @@ abstract class DualSexTimeSeriesReport extends Rapport {
         def row = report.tableData.rows.find { currentRow -> currentRow.name == getKategoriName()  }
         if (index < 0 || row == null) {
             totalt = -1
-            könTotalt = -1;
+            gruppTotalt = -1;
             kvinnor = -1
             män = -1
         } else {
@@ -73,7 +73,7 @@ abstract class DualSexTimeSeriesReport extends Rapport {
             def womenIndex = totalIndex + 1
             def menIndex = womenIndex + 1
             totalt = row.data[0]
-            könTotalt = row.data[totalIndex];
+            gruppTotalt = row.data[totalIndex];
             kvinnor = row.data[womenIndex]
             män = row.data[menIndex]
             markerad = row.marked
