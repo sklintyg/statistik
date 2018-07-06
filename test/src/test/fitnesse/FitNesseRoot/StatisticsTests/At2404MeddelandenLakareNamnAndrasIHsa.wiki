@@ -33,7 +33,7 @@ Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 | 19800830-9275 | 2014-07-01T10:00:00 | 1002 | KOMPLT |
 
 | Anvandarens installningar |
-| användare | visaLäkarrapporten |
+| användare | visa läkarrapporten |
 | user1     | JA                 |
 
 !3 Då gäller:

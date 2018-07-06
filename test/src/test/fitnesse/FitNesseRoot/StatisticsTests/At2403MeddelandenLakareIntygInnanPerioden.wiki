@@ -32,7 +32,7 @@ Meddelanden tillhör intyg som inget av dem är signerat under 2014
 | 19800820-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
 
 | Anvandarens installningar |
-| användare | visaLäkarrapporten |
+| användare | visa läkarrapporten |
 | user1     | JA                 |
 
 !3 Då gäller:
