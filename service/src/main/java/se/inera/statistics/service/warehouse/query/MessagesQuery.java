@@ -35,7 +35,6 @@ import se.inera.statistics.service.warehouse.message.MsgAmne;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -308,13 +307,14 @@ public class MessagesQuery {
         final List<String> allLakarNames = allLakareInResponse.stream()
                 .map(lakare -> getLakareName(lakare, false)).collect(Collectors.toList());
         final Set<String> duplicateNames = findUpperCaseDuplicates(allLakarNames);
-        final Map<HsaIdLakare, String> mappedLakarnames = allLakareInResponse.stream().collect(Collectors.toMap(Lakare::getLakareId, lakare -> {
-            final String lakareName = getLakareName(lakare, false);
-            if (duplicateNames.contains(lakareName.toUpperCase())) {
-                return getLakareName(lakare, true);
-            }
-            return lakareName;
-        }));
+        final Map<HsaIdLakare, String> mappedLakarnames = allLakareInResponse.stream().collect(
+                Collectors.toMap(Lakare::getLakareId, lakare -> {
+                    final String lakareName = getLakareName(lakare, false);
+                    if (duplicateNames.contains(lakareName.toUpperCase())) {
+                        return getLakareName(lakare, true);
+                    }
+                    return lakareName;
+                }));
         return includeMissingLakare(mappedLakarnames, lakares);
     }
 
