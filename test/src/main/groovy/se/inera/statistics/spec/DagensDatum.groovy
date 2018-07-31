@@ -22,11 +22,14 @@ import se.inera.statistics.web.reports.ReportsUtil
 
 class DagensDatum {
 
+    static Date currentDate = new Date(new ReportsUtil().getCurrentDateTime())
+
     private ReportsUtil reportsUtil = new ReportsUtil()
 
     DagensDatum(String dateString) {
         def date = Date.parse("yyyy-MM-dd", dateString)
-        reportsUtil.setCurrentDateTime(date.time);
+        reportsUtil.setCurrentDateTime(date.time)
+        currentDate = date
     }
 
 }

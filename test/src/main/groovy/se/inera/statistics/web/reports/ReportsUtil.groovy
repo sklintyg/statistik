@@ -91,6 +91,11 @@ class ReportsUtil {
         post(name, "")
     }
 
+    long getCurrentDateTime() {
+        def get = restClient.get(path: "/api/testsupport/now")
+        get.responseData
+    }
+
     def setCurrentDateTime(long timeMillis) {
         post("now", String.valueOf(timeMillis))
     }

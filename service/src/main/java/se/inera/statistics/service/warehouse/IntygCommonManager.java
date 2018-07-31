@@ -41,6 +41,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.HashMultiset;
+import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -90,7 +91,8 @@ public class IntygCommonManager {
         persistIfValid(logId, intygid, line);
     }
 
-    private void persistIfValid(long logId, String intygid, IntygCommon line) {
+    @Transactional
+    public void persistIfValid(long logId, String intygid, IntygCommon line) {
         List<String> errors = intygCommonConverter.validate(line);
 
         if (errors.isEmpty()) {
@@ -98,12 +100,16 @@ public class IntygCommonManager {
         } else {
             StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid)
                     .append(" error count ")
-                    .append(errCount++);
+                    .append(increaseAndGetErrCount());
             for (String error : errors) {
                 errorBuilder.append('\n').append(error);
             }
             LOG.error(errorBuilder.toString());
         }
+    }
+
+    private static int increaseAndGetErrCount() {
+        return errCount++;
     }
 
     public SimpleKonResponse getIntyg(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter) {

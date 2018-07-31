@@ -100,4 +100,4 @@ Inloggad:
 Nationell:
 | Sjukfall i rapporten sjukfall totalt |
 | år   | månad | män? | kvinnor? |
-| 2013 | feb   | -1   | -1       |
+| 2013 | feb   | 0   | 0       |

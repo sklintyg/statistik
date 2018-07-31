@@ -135,8 +135,8 @@ public class WidelineLoader {
         LOG.info("Get all vgs from db");
         final ArrayList<VgNumber> vgs = new ArrayList<>();
 
-        final String sql = "SELECT vardgivareid, count(vardgivareid) AS antal FROM wideline w1 "
-                + "WHERE w1.active = true GROUP BY vardgivareid ORDER BY antal ASC;";
+        final String sql = "SELECT vardgivareid, count(vardgivareid) AS antal FROM intygcommon w1 "
+                + "GROUP BY vardgivareid ORDER BY antal ASC;";
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
              ResultSet resultSet = statement.executeQuery()) {

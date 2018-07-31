@@ -83,7 +83,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
         enhetsnamn = null
         funktionsnedsättning = "Default funktionsnedsattning"
         aktivitetsbegränsning = "Default arbetsbegransning"
-        signeringstid = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(new Date());
+        signeringstid = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(DagensDatum.currentDate)
         start = "2013-08-20"
         slut = "2016-12-09"
         intygdata = null

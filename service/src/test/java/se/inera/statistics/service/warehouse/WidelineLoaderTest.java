@@ -31,8 +31,10 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.inera.statistics.service.warehouse.model.db.WideLine;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -54,6 +56,9 @@ public class WidelineLoaderTest {
 
     @Autowired
     WidelineManager widelineManager;
+
+    @Autowired
+    IntygCommonManager intygCommonManager;
 
     @Autowired
     Warehouse warehouse;
@@ -90,7 +95,7 @@ public class WidelineLoaderTest {
     }
 
     @Test
-    public void testGetAllVgsIsDistinct() {
+    public void testGetAllVgsAreDistinct() {
         insertLine(EventType.CREATED, "1", VG1);
         insertLine(EventType.CREATED, "2", VG1);
         insertLine(EventType.CREATED, "3", VG2);
@@ -150,5 +155,9 @@ public class WidelineLoaderTest {
         line1.setLakareId(new HsaIdLakare("lakare"));
         line1.setCorrelationId(correlationId);
         widelineManager.saveWideline(line1);
+        final IntygCommon line = new IntygCommon(correlationId, patientId, LocalDate.now(),
+                IntygType.LISJP, line1.getEnhet().getId(),vg.getId(), line1.getKon(), event,
+                line1.getDiagnoskod(), true, line1.getLakareId().getId());
+        intygCommonManager.persistIfValid(1L, "1", line);
     }
 }

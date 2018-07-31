@@ -103,3 +103,46 @@ Givet att:
 | Andel i rapporten komplettering andel intyg som tvarsnitt |
 | inloggad som | grupp        | totalt? | män? | kvinnor? |
 | user1        | FK 7263/7804 | 66%     | 50%  | 100%     |
+
+!1 TEST4: Beräkningarna stämmer enligt testfall från NMT (se kommentarer i jiran INTYG-5193)
+
+!3 Givet att:
+| script | dagens datum | 2018-08-01 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| intygid | personnr | signeringstid | enhet | intygformat |
+| 1001 | 19790219-9215 | 2018-07-10T12:24:15 | enhet1 | LUSE |
+| 1002 | 19790429-9272 | 2018-07-10T12:25:15 | enhet1 | LUSE |
+
+| Intyg skickat till mottagare |
+| intygid | mottagare |
+| 1001 | FKASSA |
+| 1002 | FKASSA |
+
+| Foljande meddelanden finns |
+| personnr | skickat | intygsid | ämne |
+| 19790219-9215 | 2018-07-10T10:00:00 | 1001 | KOMPLT |
+
+!3 Då gäller:
+
+Nationell:
+
+| Andel i rapporten komplettering andel intyg |
+| år | månad | grupp | grupp totalt? | män? | kvinnor? |
+| 2018 | jul | FK 7800 Läkarutlåtande för sjukersättning | 50% | 50% | 0% |
+
+| Andel i rapporten komplettering andel intyg diagram |
+| år | månad | grupp | män? | kvinnor? |
+| 2018 | jul | FK 7800 Läkarutlåtande för sjukersättning | 50 | 0 |
+
+Inloggad:
+
+| Andel i rapporten komplettering andel intyg |
+| inloggad som | år | månad | grupp | grupp totalt? | män? | kvinnor? |
+| user1 | 2018 | jul | FK 7800 Läkarutlåtande för sjukersättning | 50% | 50% | 0% |
+
+| Andel i rapporten komplettering andel intyg diagram |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user1 | 2018 | jul | FK 7800 Läkarutlåtande för sjukersättning | 50 | 0 |
