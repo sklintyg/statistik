@@ -130,8 +130,8 @@ Givet att:
 Nationell:
 
 | Andel i rapporten komplettering andel intyg |
-| år | månad | grupp | grupp totalt? | män? | kvinnor? |
-| 2018 | jul | FK 7800 Läkarutlåtande för sjukersättning | 50% | 50% | 0% |
+| år   | månad | grupp                                     | totalt? | grupp totalt? | män? | kvinnor? |
+| 2018 | jul   | FK 7800 Läkarutlåtande för sjukersättning | 50%     | 50%           | 50%  | 0%       |
 
 | Andel i rapporten komplettering andel intyg diagram |
 | år | månad | grupp | män? | kvinnor? |
@@ -140,8 +140,8 @@ Nationell:
 Inloggad:
 
 | Andel i rapporten komplettering andel intyg |
-| inloggad som | år | månad | grupp | grupp totalt? | män? | kvinnor? |
-| user1 | 2018 | jul | FK 7800 Läkarutlåtande för sjukersättning | 50% | 50% | 0% |
+| inloggad som | år   | månad | grupp                                     | totalt? | grupp totalt? | män? | kvinnor? |
+| user1        | 2018 | jul   | FK 7800 Läkarutlåtande för sjukersättning | 50%     | 50%           | 50%  | 0%       |
 
 | Andel i rapporten komplettering andel intyg diagram |
 | inloggad som | år | månad | grupp | män? | kvinnor? |

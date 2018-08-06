@@ -20,6 +20,8 @@ package se.inera.statistics.web.service.responseconverter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 import se.inera.statistics.service.report.model.KonDataResponse;
@@ -84,11 +86,17 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
 
     @Override
     protected Object getRowSum(KonDataRow row) {
-        final AndelExtras total = row.getData().stream().reduce(new AndelExtras(0, 0),
-                (andelExtras, konField) -> konField.getExtras() instanceof AndelExtras
-                ? (AndelExtras) konField.getExtras() : new AndelExtras(0, 0),
-                (andelExtras, andelExtras2) -> new AndelExtras(andelExtras.getPart() + andelExtras2.getPart(),
-                andelExtras.getWhole() + andelExtras2.getWhole()));
+        final AndelExtras emptyAndelExtras = new AndelExtras(0, 0);
+        final BinaryOperator<AndelExtras> andelExtrasCombiner = (andelExtras, andelExtras2) ->
+            new AndelExtras(andelExtras.getPart() + andelExtras2.getPart(), andelExtras.getWhole() + andelExtras2.getWhole());
+
+        final BiFunction<AndelExtras, KonField, AndelExtras> andelExtraExtractor = (andelExtras, konField) -> {
+            if (konField.getExtras() instanceof AndelExtras) {
+                return andelExtrasCombiner.apply(andelExtras, (AndelExtras) konField.getExtras());
+            }
+            return andelExtras;
+        };
+        final AndelExtras total = row.getData().stream().reduce(emptyAndelExtras, andelExtraExtractor, andelExtrasCombiner);
         final int tot = total.getWhole() == 0 ? 0 : PERCENTAGE_CONVERT * total.getPart() / total.getWhole();
         return tot + "%";
     }
