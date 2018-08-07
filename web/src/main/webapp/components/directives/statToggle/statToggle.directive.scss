@@ -58,9 +58,7 @@ stat-toggle {
     }
 
     &:before {
-      //@extend %wc-typo-06;
-
-      content: 'Nej';
+      content: 'Av';
       color: $wc-color-07;
       display: block;
       position: absolute;
@@ -83,7 +81,7 @@ stat-toggle {
     }
 
     + .slider:before {
-      content: 'Ja';
+      content: 'På';
       left: 30%;
       color: $st-color-17;
     }

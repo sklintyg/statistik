@@ -21,7 +21,7 @@
 angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $routeParams, $window, $timeout, $filter, statisticsData, config, messageService,
-            $location, chartFactory, _, pdfFactory, ControllerCommons, filterViewState, $route) {
+            $location, chartFactory, _, pdfFactory, ControllerCommons, filterViewState, $route, UserModel) {
         'use strict';
 
         var that = this;
@@ -124,9 +124,17 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
                 .activateReport(config.activeSettingProperty)
                 .finally(function() {
                     $scope.saving = false;
-                    $route.reload();
                 });
         };
+
+        $scope.$watch(
+            function() { return UserModel.get().settings[config.activeSettingProperty]; },
+            function(newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    $route.reload();
+                }
+            }
+        );
 
         var populatePageWithDataSuccess = function(result) {
             ControllerCommons.populateActiveFilters($scope, statisticsData, result.filter.filterhash,

@@ -22,7 +22,7 @@
 angular.module('StatisticsApp').controller('singleLineChartCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $routeParams, $timeout, $window, $filter, statisticsData, config, $location,
-        messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState, $route) {
+        messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState, $route, UserModel) {
         'use strict';
 
         var chart;
@@ -139,6 +139,16 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
                     $route.reload();
                 });
         };
+
+        $scope.$watch(
+            function() { return UserModel.get().settings[config.activeSettingProperty]; },
+            function(newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    $route.reload();
+                }
+            }
+        );
+
         function refreshVerksamhet() {
             statisticsData[config.dataFetcherVerksamhet](populatePageWithData, function () {
                 $scope.dataLoadingError = true;

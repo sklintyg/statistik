@@ -20,7 +20,7 @@
 /* globals Highcharts */
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
     /** @ngInject */
-    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, $filter, statisticsData,
+    function ($scope, $rootScope, $routeParams, $window, $location, $timeout, $filter, statisticsData, UserModel,
         config, messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState, StaticDataService, $route) {
         'use strict';
 
@@ -122,9 +122,17 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
                 .activateReport(config.activeSettingProperty)
                 .finally(function() {
                     $scope.saving = false;
-                    $route.reload();
                 });
         };
+
+        $scope.$watch(
+            function() { return UserModel.get().settings[config.activeSettingProperty]; },
+            function(newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    $route.reload();
+                }
+            }
+        );
 
         var populateDetailsOptions = function (result) {
             var basePath = isVerksamhet ? '#/verksamhet/diagnosavsnitttvarsnitt' : '#/nationell/diagnosavsnitttvarsnitt';
