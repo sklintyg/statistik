@@ -37,7 +37,7 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
     static final int PERCENTAGE_CONVERT = 100;
 
     public AndelKompletteringarConverter() {
-        super("Andel intyg");
+        super("Total andel som fått komplettering, alla intygstyper inkluderade");
     }
 
     public DualSexStatisticsData convert(KonDataResponse data, FilterSettings filterSettings) {

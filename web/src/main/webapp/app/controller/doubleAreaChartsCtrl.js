@@ -676,6 +676,10 @@ angular.module('StatisticsApp').andelKompletteringarConfig =
     conf.chartYAxisTitleUnit = 'intyg';
     conf.usingAndel = true;
 
+    conf.chartFootnotes = function() {
+        return ['help.nationell.komplettering'];
+    };
+
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/andelkompletteringar', active: true},
         {description: 'Tvärsnitt', state: '/verksamhet/andelkompletteringartvarsnitt', active: false}];
@@ -701,6 +705,13 @@ angular.module('StatisticsApp').andelKompletteringarLandstingConfig =
     conf.title = messageService.getProperty('title.andelkompletteringar');
     conf.chartYAxisTitleUnit = 'intyg';
     conf.usingAndel = true;
+
+    conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
+        return $filter('messageFilter')('help.landsting.komplettering', '', '', [result.fileUploadDate], '');
+    };
+    conf.chartFootnotes = function() {
+        return [];
+    };
 
     return conf;
 };

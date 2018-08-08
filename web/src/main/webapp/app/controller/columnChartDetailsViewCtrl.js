@@ -773,6 +773,10 @@ angular.module('StatisticsApp').andelKompletteringarTvarsnittConfig =
         conf.usingAndel = true;
         conf.chartYAxisTitle = 'Andel intyg';
 
+        conf.chartFootnotes = function() {
+            return ['help.nationell.komplettering'];
+        };
+
         conf.exchangeableViews = [
             {description: 'Tidsserie', state: '/verksamhet/andelkompletteringar', active: false},
             {description: 'Tvärsnitt', state: '/verksamhet/andelkompletteringartvarsnitt', active: true}];
