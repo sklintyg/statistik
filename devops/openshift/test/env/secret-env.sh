@@ -11,13 +11,14 @@ export ACTIVEMQ_RECEIVER_QUEUE_NAME=test.statistik.utlatande.queue
 export ACTIVEMQ_BROKER_USERNAME=${ACTIVEMQ_BROKER_USERNAME:-admin}
 export ACTIVEMQ_BROKER_PASSWORD=${ACTIVEMQ_BROKER_PASSWORD:-admin}
 
-export REDIS_PASSWORD=${REDIS_PASSWORD-redis}
+export REDIS_PASSWORD=${REDIS_PASSWORD:-redis}
 export REDIS_PORT=$REDIS_SERVICE_PORT
 export REDIS_HOST=$REDIS_SERVICE_HOST
 
-export SPRING_PROFILES_ACTIVE="${SPRING_PROFILES_ACTIVE:-test,caching-enabled,testapi,hsa-stub,wc-hsa-stub,security-fake}"
+SPRING_PROFILES_ACTIVE="${SPRING_PROFILES_ACTIVE:-test,caching-enabled,testapi,hsa-stub,wc-hsa-stub,security-fake}"
 
 export CATALINA_OPTS_APPEND="\
+-Dspring.profiles.active=$SPRING_PROFILES_ACTIVE \
 -Dstatistics.config.folder=/opt/$APP_NAME/config \
 -Dstatistics.config.file=/opt/$APP_NAME/config/statistik.properties \
 -Dcertificate.logback.file=classpath:logback-ocp.xml \

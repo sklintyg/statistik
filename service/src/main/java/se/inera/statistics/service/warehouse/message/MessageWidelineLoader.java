@@ -341,7 +341,7 @@ public class MessageWidelineLoader {
             sql.append(" AND (amneCode IN ('").append(amneSql).append("') OR amneCode IS NULL) ");
         }
 
-        sql.append(" GROUP BY ic.intygid, mwl.amneCode, ic.kon, ic.intygtyp, ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum");
+        sql.append(" GROUP BY ic.intygid, mwl.amneCode, ic.kon, ic.intygtyp, ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, ic.lakareId");
 
         LOG.debug("sql: {}", sql);
 
