@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 
 public enum IntygType {
 
+    AF00213("af00213", "AF00213", "AF00213 Arbetsförmedlingens medicinska utlåtande", true, false, false, true),
     DB("db", "Dödsbevis", "Dödsbevis", true, false, false, true),
     DOI("doi", "Dödsorsaksintyg", "Dödsorsaksintyg", true, false, false, true),
     SJUKPENNING(null, "FK 7263/7804", "FK 7263/7804 Läkarintyg för sjukpenning", false, false, true, false),
