@@ -119,8 +119,8 @@ angular.module('StatisticsApp')
                 }
 
                 _addListFilter(content, messageService.getProperty('lbl.filter.pdf.diagnoser'), diagnosFilter);
-                _addListFilter(content, messageService.getProperty('lbl.filter.pdf.aldersgrupp'), aldersgruppFilter);
                 _addListFilter(content, messageService.getProperty('lbl.filter.pdf.sjukskrivningslangd'), sjukskrivningslangdFilter);
+                _addListFilter(content, messageService.getProperty('lbl.filter.pdf.aldersgrupp'), aldersgruppFilter);
                 _addListFilter(content, messageService.getProperty('lbl.filter.pdf.intygstyper'), intygstyperFilter);
 
                 if (angular.isArray(table)) {

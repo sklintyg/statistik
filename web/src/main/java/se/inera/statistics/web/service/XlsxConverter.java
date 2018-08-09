@@ -128,8 +128,8 @@ final class XlsxConverter {
             currentRow = addFilter(sheet, currentRow, enheter, "Valda enheter");
         }
         currentRow = addFilter(sheet, currentRow, getDxNames(dxs), "Valda diagnoser");
-        currentRow = addFilter(sheet, currentRow, aldersgrupps, "Valda åldersgrupper");
         currentRow = addFilter(sheet, currentRow, sjukskrivningslangds, "Valda sjukskrivningslängder");
+        currentRow = addFilter(sheet, currentRow, aldersgrupps, "Valda åldersgrupper");
         currentRow = addFilter(sheet, currentRow, intygstyper, "Valda intygstyper");
 
         int currentRowDataSheet = useSeparateSheetForFilters ? startRow : currentRow;

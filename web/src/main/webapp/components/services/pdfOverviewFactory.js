@@ -52,8 +52,8 @@ angular.module('StatisticsApp')
             }
 
             pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.diagnoser'), diagnosFilter);
-            pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.aldersgrupp'), aldersgruppFilter);
             pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.sjukskrivningslangd'), sjukskrivningslangdFilter);
+            pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.aldersgrupp'), aldersgruppFilter);
             pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.intygstyper'), intygstyperFilter);
 
             angular.forEach(charts, function(chart) {
