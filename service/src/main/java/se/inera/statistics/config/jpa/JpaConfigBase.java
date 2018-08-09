@@ -36,6 +36,10 @@ import liquibase.integration.spring.SpringLiquibase;
 
 public abstract class JpaConfigBase {
 
+
+    static final String LIQUIBASE_SCRIPT = "changelog/changelog.xml";
+    static final Logger LOG = LoggerFactory.getLogger(JpaConfigBase.class);
+
     @Value("${hibernate.dialect}")
     private String hibernateDialect;
     @Value("${hibernate.hbm2ddl.auto}")
@@ -46,66 +50,77 @@ public abstract class JpaConfigBase {
     private String hibernateFormatSql;
 
     @Value("${db.driver}")
-    private String databaseDriver;
+    private String driver;
     @Value("${db.url}")
-    private String databaseUrl;
+    private String url;
     @Value("${db.username}")
-    private String databaseUsername;
+    private String username;
     @Value("${db.password}")
-    private String databasePassword;
+    private String password;
+    @Value("${db.pool.maxSize}")
+    private int maxPoolSize;
 
-    private static final Logger LOG = LoggerFactory.getLogger(JpaConfigBase.class);
-    private static final int MAXIMUM_POOL_SIZE = 20;
+    static final long IDLE_TIMEOUT = 15000L;
+    static final long CONN_TIMEOUT = 3000L;
+    static final int MIN_IDLE = 3;
 
-    @Bean
+    @Bean(name = "entityManagerFactory")
     LocalContainerEntityManagerFactoryBean entityManagerFactory(final DataSource dataSource) {
         final LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManagerFactoryBean.setPersistenceUnitName("IneraStatisticsLog");
         entityManagerFactoryBean.setPackagesToScan("se.inera.statistics.service");
-
-        final Properties jpaProperties = new Properties();
-
-        jpaProperties.put("hibernate.dialect", hibernateDialect);
-        jpaProperties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddl);
-        jpaProperties.put("hibernate.show_sql", hibernateShowSql);
-        jpaProperties.put("hibernate.format_sql", hibernateFormatSql);
-        jpaProperties.put("hibernate.id.new_generator_mappings", false);
-        jpaProperties.put("hibernate.enable_lazy_load_no_trans", false);
-        entityManagerFactoryBean.setJpaProperties(jpaProperties);
+        entityManagerFactoryBean.setJpaProperties(additionalProperties());
 
         return entityManagerFactoryBean;
     }
 
-    @Bean
+    @Bean(name = "transactionManager")
     JpaTransactionManager transactionManager(final EntityManagerFactory entityManagerFactory) {
         final JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
     }
 
+    @SuppressWarnings("ContextJavaBeanUnresolvedMethodsInspection")
+    @Bean(name = "dataSource", destroyMethod = "shutdown")
+    DataSource dataSource() {
+        LOG.info("Initialize data-source with url: {}", url);
+
+        final HikariConfig config = new HikariConfig();
+
+        config.setDriverClassName(driver);
+        config.setJdbcUrl(url);
+        config.setUsername(username);
+        config.setPassword(password);
+        config.setAutoCommit(false);
+        config.setMinimumIdle(MIN_IDLE);
+        config.setMaximumPoolSize(maxPoolSize);
+        config.setConnectionTimeout(CONN_TIMEOUT);
+        config.setIdleTimeout(IDLE_TIMEOUT);
+
+        return new HikariDataSource(config);
+    }
+
+    Properties additionalProperties() {
+        final Properties jpaProperties = new Properties();
+        jpaProperties.put("hibernate.dialect", hibernateDialect);
+        jpaProperties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddl);
+        jpaProperties.put("hibernate.show_sql", hibernateShowSql);
+        jpaProperties.put("hibernate.format_sql", hibernateFormatSql);
+        jpaProperties.put("hibernate.id.new_generator_mappings", false);
+        jpaProperties.put("hibernate.enable_lazy_load_no_trans", false);
+
+        return jpaProperties;
+    }
+
     @Bean(name = "dbUpdate")
     SpringLiquibase initDb(final DataSource dataSource) {
         final SpringLiquibase springLiquibase = new SpringLiquibase();
         springLiquibase.setDataSource(dataSource);
-        springLiquibase.setChangeLog("classpath:changelog/changelog.xml");
+        springLiquibase.setChangeLog("classpath:" + LIQUIBASE_SCRIPT);
         return springLiquibase;
-    }
-
-    @SuppressWarnings("ContextJavaBeanUnresolvedMethodsInspection")
-    @Bean(destroyMethod = "shutdown")
-    DataSource standaloneDataSource() {
-        LOG.info("Initialize data-source with url: {}", databaseUrl);
-        final HikariConfig dataSourceConfig = new HikariConfig();
-        dataSourceConfig.setDriverClassName(databaseDriver);
-        dataSourceConfig.setJdbcUrl(databaseUrl);
-        dataSourceConfig.setUsername(databaseUsername);
-        dataSourceConfig.setPassword(databasePassword);
-        dataSourceConfig.setAutoCommit(false);
-        dataSourceConfig.setConnectionTestQuery("SELECT 1");
-        dataSourceConfig.setMaximumPoolSize(MAXIMUM_POOL_SIZE);
-        return new HikariDataSource(dataSourceConfig);
     }
 
 }

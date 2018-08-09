@@ -30,6 +30,8 @@
     <tx:annotation-driven/>
 
     <context:property-placeholder/>
+    <context:property-placeholder location="classpath*:application-context-test.properties" order="2"
+                                  ignore-resource-not-found="false" ignore-unresolvable="false"/>
 
     <context:component-scan base-package="se.inera.statistics.config.jpa"/>
 

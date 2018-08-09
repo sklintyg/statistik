@@ -29,7 +29,7 @@
 
     <tx:annotation-driven/>
 
-    <context:property-placeholder location="classpath:default.properties"/>
+    <context:property-placeholder location="classpath:default.properties,classpath:dev.properties"/>
 
     <context:component-scan base-package="se.inera.statistics.config.jpa"/>
 

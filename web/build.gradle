@@ -31,8 +31,8 @@ gretty {
             jvmArgSpringProfiles,
             '-DbaseUrl=' + baseUrl,
             '-Dstatistics.test.max.intyg=200',
-            '-Dstatistics.config.file=' + projectDir + '/src/main/resources/default.properties',
-            '-Dstatistics.credentials.file=' + projectDir + '/src/main/resources/dev-credentials.properties',
+            '-Dstatistics.config.file=' + projectDir + '/src/test/resources/dev.properties',
+            '-Dstatistics.credentials.file=' + projectDir + '/src/test/resources/dev-credentials.properties',
             '-Dstatistics.resources.folder=' + projectDir + '/../src/main/resources'
     ]
 }
@@ -95,15 +95,11 @@ dependencies {
     compile "xalan:xalan:${xalanVersion}"
     compile "com.github.ziplet:ziplet:${zipletVersion}"
     compile "org.springframework.session:spring-session:${springSessionVersion}"
+    compile "org.apache.activemq:activemq-spring:${activeMqVersion}"
+    compile "org.springframework:spring-jms:${springContextVersion}"
+    compile "mysql:mysql-connector-java:${mysqlConnectorVersion}"
 
     compileOnly "javax.servlet:javax.servlet-api:${javaxServletVersion}"
 
-    gretty "com.h2database:h2:${h2Version}"
-    gretty "mysql:mysql-connector-java:${mysqlConnectorVersion}"
     gretty "org.apache.tomcat:tomcat-catalina:${tomcatVersion}"
-    gretty "org.apache.activemq:activemq-client:${activeMqVersion}"
-    gretty "org.apache.activemq:activemq-broker:${activeMqVersion}"
-    gretty "org.apache.activemq:activemq-pool:${activeMqVersion}"
-
-    testRuntime "com.h2database:h2:${h2Version}"
 }
