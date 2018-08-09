@@ -102,8 +102,8 @@ public class MessageWidelineLoader {
 
     public List<CountDTOAmne> getAntalMeddelandenPerAmne(MessagesFilter filter) {
         try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement stmt = prepareStatementAmne(connection, filter)) {
+                Connection connection = dataSource.getConnection();
+                PreparedStatement stmt = prepareStatementAmne(connection, filter)) {
 
             ResultSet resultSet = stmt.executeQuery();
 
@@ -126,8 +126,8 @@ public class MessageWidelineLoader {
 
     public List<CountDTOAmne> getKompletteringarPerIntyg(MessagesFilter filter) {
         try (
-            Connection connection = dataSource.getConnection();
-            PreparedStatement stmt = prepareStatementKompletteringarPerIntyg(connection, filter)) {
+                Connection connection = dataSource.getConnection();
+                PreparedStatement stmt = prepareStatementKompletteringarPerIntyg(connection, filter)) {
 
             ResultSet resultSet = stmt.executeQuery();
 
@@ -172,8 +172,8 @@ public class MessageWidelineLoader {
                 final String dxString = countDTOAmne.getDx();
                 final Icd10.Id dx = icd10.findFromIcd10Code(dxString);
                 return isDxMatchInCollection(dx, filter.getDiagnoser());
-                }).collect(Collectors.toList());
-            }
+            }).collect(Collectors.toList());
+        }
         return dtos;
     }
 
@@ -278,7 +278,7 @@ public class MessageWidelineLoader {
 
         final Collection<String> intygstyper = filter.getIntygstyper();
         if (intygstyper != null && !intygstyper.isEmpty()) {
-            List<IntygType> intygTypeFilter =  filter.getIntygstyper().stream()
+            List<IntygType> intygTypeFilter = filter.getIntygstyper().stream()
                     .map(IntygType::getByName).filter(Optional::isPresent).map(Optional::get)
                     .flatMap(intygType -> intygType.getUnmappedTypes().stream())
                     .collect(Collectors.toList());
@@ -306,7 +306,7 @@ public class MessageWidelineLoader {
     private PreparedStatement prepareStatementKompletteringarPerIntyg(Connection connection, MessagesFilter filter)
             throws SQLException {
 
-        StringBuilder sql = new StringBuilder("SELECT "
+        final StringBuilder sql = new StringBuilder("SELECT "
                 + "ic.intygid, ic.kon, ic.intygtyp as intygstyp, ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, ic.lakareId, "
                 + "mwl.amneCode "
                 + "FROM intygcommon ic "
@@ -314,7 +314,7 @@ public class MessageWidelineLoader {
                 + "ON ic.intygid = mwl.intygid "
                 + "WHERE (ic.signeringsdatum between ? AND ?) AND ic.sentToFk ");
 
-        boolean hasVardgivare = filter.getVardgivarId() != null;
+        final boolean hasVardgivare = filter.getVardgivarId() != null;
         if (hasVardgivare) {
             sql.append(" AND ic.vardgivareid = ? ");
         }
@@ -327,7 +327,7 @@ public class MessageWidelineLoader {
 
         final Collection<String> intygstyper = filter.getIntygstyper();
         if (intygstyper != null && !intygstyper.isEmpty()) {
-            List<IntygType> intygTypeFilter =  filter.getIntygstyper().stream()
+            List<IntygType> intygTypeFilter = filter.getIntygstyper().stream()
                     .map(IntygType::getByName).filter(Optional::isPresent).map(Optional::get)
                     .flatMap(intygType -> intygType.getUnmappedTypes().stream())
                     .collect(Collectors.toList());
@@ -341,7 +341,8 @@ public class MessageWidelineLoader {
             sql.append(" AND (amneCode IN ('").append(amneSql).append("') OR amneCode IS NULL) ");
         }
 
-        sql.append(" GROUP BY ic.intygid, mwl.amneCode, ic.kon, ic.intygtyp, ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, ic.lakareId");
+        sql.append(" GROUP BY ic.intygid, mwl.amneCode, ic.kon, ic.intygtyp, ")
+                .append("ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, ic.lakareId");
 
         LOG.debug("sql: {}", sql);
 
