@@ -356,7 +356,8 @@ angular.module('StatisticsApp').factory('ControllerCommons',
 
         this.reportActive = function(activeSettingProperty) {
             if (angular.isDefined(activeSettingProperty)) {
-                return !!UserModel.get().settings[activeSettingProperty];
+                var reportIsActive = UserModel.get().settings[activeSettingProperty];
+                return !angular.isDefined(reportIsActive) || !!reportIsActive;
             }
 
             return true;

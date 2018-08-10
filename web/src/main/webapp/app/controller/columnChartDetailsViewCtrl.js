@@ -155,7 +155,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
                 result.filteredEnhets, result.allAvailableEnhetsSelectedInFilter,
                 result.filter.sjukskrivningslangd, result.allAvailableSjukskrivningslangdsSelectedInFilter,
                 result.filter.aldersgrupp, result.allAvailableAgeGroupsSelectedInFilter,
-                result.filter.intygstyp, result.allAvailableIntygTypesSelectedInFilter);
+                result.filter.intygstyper, result.allAvailableIntygTypesSelectedInFilter);
             var messages = ControllerCommons.getResultMessageList(result, messageService);
             $scope.resultMessageList = ControllerCommons.removeFilterMessages(messages);
             filterViewState.setMessages(messages);
