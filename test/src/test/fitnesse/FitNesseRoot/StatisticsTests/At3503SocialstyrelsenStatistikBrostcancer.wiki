@@ -2,8 +2,7 @@
 Prune
 Test
 ---
-TEST#1 - Första intyget i ett sjukfall har diagnos C50
-
+!1 TEST#1 - Första intyget i ett sjukfall har diagnos C50
 !3 Givet att:
 | script | dagens datum | 2018-01-01 |
 
@@ -22,8 +21,7 @@ Det är sjukfallets sista intygs diagnos som avgör var sjukfallet hamnar under 
 | bröstcancervariant | diagnos | kön? | län? | sjukskrivningslängd? |
 | JA | F32 | FEMALE | 01 | 43 |
 
-TEST#2 - Ett intyg har diagnosen C50 men det är inte det första intyget i sjukfallet
-
+!1 TEST#2 - Ett intyg har diagnosen C50 men det är inte det första intyget i sjukfallet
 !3 Givet att:
 | script | dagens datum | 2018-01-01 |
 
@@ -37,4 +35,4 @@ Endast sjukfall som har C50 som första intyg i sjukfallet tas med. Det spelar i
 
 | Sjukfall i rapporten socialstyrelsen |
 | bröstcancervariant | diagnos | kön? | län? | sjukskrivningslängd? |
-| JA | C50 | FEMALE | 01 | null |
+| JA | C50 | FEMALE | 01 | -1 |
