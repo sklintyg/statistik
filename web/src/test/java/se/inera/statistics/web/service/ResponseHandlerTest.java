@@ -36,8 +36,11 @@ import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
 import se.inera.statistics.web.error.Message;
+import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.FilteredDataReport;
 import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.model.TableDataReport;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -452,6 +455,26 @@ public class ResponseHandlerTest {
         assertEquals(ErrorType.UNSET, message.getType());
         assertEquals(ErrorSeverity.INFO, message.getSeverity());
         assertEquals(ResponseHandler.NO_DATA_MESSAGE, message.getMessage());
+    }
+
+    @Test
+    public void testGetXlsxFilenameContainsNoSpacesAllReportsINTYG6852() {
+        for (Report report : Report.values()) {
+            final String filename = getFilenameForReport(report);
+            assertFalse("Xslx filename contains space: " + filename, filename.matches(".*\\s.*"));
+        }
+    }
+
+    private String getFilenameForReport(Report report) {
+        final SimpleDetailsData data = new SimpleDetailsData(new TableData(Collections.emptyList(), Collections.emptyList()),
+                new ChartData(Collections.emptyList(), Collections.emptyList()), "", FilterDataResponse.empty());
+        final Response xlsx = responseHandler.getXlsx(data, Collections.emptyList(), report);
+        final String header = xlsx.getHeaderString("Content-Disposition");
+        final String startStr = "filename=";
+        final String endStr = ".xlsx";
+        final int startIndex = header.indexOf(startStr) + startStr.length();
+        final int endIndex = header.indexOf(endStr);
+        return header.substring(startIndex, endIndex);
     }
 
 }

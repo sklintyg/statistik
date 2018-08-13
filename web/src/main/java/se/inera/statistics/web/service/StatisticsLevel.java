@@ -20,7 +20,7 @@ package se.inera.statistics.web.service;
 
 public enum StatisticsLevel {
 
-    NATIONELL("Nationellstatistik"),
+    NATIONELL("Nationell statistik"),
     VERKSAMHET("Verksamhetsstatistik"),
     LANDSTING("Landstingsstatistik");
 

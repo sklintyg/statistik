@@ -41,7 +41,7 @@ public class XlsxConverterTest {
     @Test
     public void testStatisticsLevelAndReportNameAndPeriodAreShownCorrect() {
         ArrayList<String> cellTexts = addXlsxData(Report.N_SJUKSKRIVNINGSLANGD, "jan - feb");
-        assertTrue(cellTexts.toString().startsWith("[Nationellstatistik, Antal sjukfall fördelat på sjukskrivningslängd jan - feb"));
+        assertTrue(cellTexts.toString().startsWith("[Nationell statistik, Antal sjukfall fördelat på sjukskrivningslängd jan - feb"));
 
         cellTexts = addXlsxData(Report.V_DIAGNOSGRUPP, "2001 till 2003");
         assertTrue(cellTexts.toString().startsWith("[Verksamhetsstatistik, Antal sjukfall fördelat på diagnosgrupp 2001 till 2003"));

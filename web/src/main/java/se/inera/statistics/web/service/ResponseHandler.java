@@ -89,13 +89,14 @@ public class ResponseHandler {
     }
 
     private String getFilename(Report report, String fileExtension) {
-        return report.getStatisticsLevel().getText()
+        final String filename = report.getStatisticsLevel().getText()
                 + "_"
                 + report.getShortName()
                 + "_"
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("YYMMdd_HHmmss"))
                 + "."
                 + fileExtension;
+        return filename.replaceAll("\\s", "");
     }
 
     public Response getResponseForDataReport(FilteredDataReport result, List<HsaIdEnhet> availableEnhetsForUser) {
