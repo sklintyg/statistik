@@ -16,7 +16,6 @@ gretty {
 
     contextConfigFile = "${projectDir}/src/main/webapp/WEB-INF/jetty-context.xml"
 
-    logbackConfigFile = "${projectDir}/src/main/resources/logback.xml"
     scanInterval = 0
     debugPort = 5011
     debugSuspend = false
