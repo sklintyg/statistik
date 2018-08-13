@@ -561,6 +561,11 @@ class ReportsUtil {
         return get("/api/testsupport/getSocialstyrelsenMedianReport", FilterData.empty(), queryString, "filter")
     }
 
+    def getSocialstyrelsenAntalReport(fromYear, toYear, dxs, boolean checkSjukfallsStartingWithDx) {
+        def queryString = getSocialstyrelseQueryString(fromYear, toYear, dxs, checkSjukfallsStartingWithDx)
+        return get("/api/testsupport/getSocialstyrelsenAntalReport", FilterData.empty(), queryString, "filter")
+    }
+
     def getSocialstyrelsenStdDevReport(fromYear, toYear, dxs, boolean checkSjukfallsStartingWithDx) {
         def queryString = getSocialstyrelseQueryString(fromYear, toYear, dxs, checkSjukfallsStartingWithDx)
         return get("/api/testsupport/getSocialstyrelsenStdDevReport", FilterData.empty(), queryString, "filter")

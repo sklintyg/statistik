@@ -76,4 +76,13 @@ public enum SjukfallsLangdGroup {
         }
     }
 
+    public static SjukfallsLangdGroup getByLength(int length) {
+        for (SjukfallsLangdGroup group : values()) {
+            if (group.from <= length && group.to >= length) {
+                return group;
+            }
+        }
+        throw new IllegalArgumentException("Length could not be matched to a group: " + length);
+    }
+
 }

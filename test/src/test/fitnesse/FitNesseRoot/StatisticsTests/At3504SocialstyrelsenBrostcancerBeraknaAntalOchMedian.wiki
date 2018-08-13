@@ -55,8 +55,8 @@ Test
 | JA | F33 | 156.5 | null | 156.5 | null | 156.5 |
 | JA | C50 | 60 | 60 | 35.5 | 32 | 60 |
 
-!(| Sjukfall i rapporten socialstyrelsen som antal |
-| bröstcancervariant | diagnos | totalt? | kvinnor? | män? | <15 K? | <15 M? | 15-30 K? | 15-30 M? | 31-60 K? | 31-60 M? | 61-90 K? | 61-90 M? | 91-180 K? | 91-180 M? | 180-365 K? | 180-365 M? | >365 K? | >365 M? |
+| Sjukfall i rapporten socialstyrelsen som antal |
+| bröstcancervariant | diagnos | totalt? | kvinnor? | män? | under 15 Dagar K? | under 15 Dagar M? | från15Till30DagarK? | från15Till30DagarM? | från31Till60DagarK? | från31Till60DagarM? | från61Till90DagarK? | från61Till90DagarM? | från91Till180DagarK? | från91Till180DagarM? | från181Till365DagarK? | från181Till365DagarM? | över365DagarK? | över365DagarM? |
 | JA | F32 | 3 | 1 | 2 | 0 | 2 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | JA | F33 | 2 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 1 | 0 | 0 |
-| JA | C50 | 10 | 6 | 4 | 0 | 0 | 0 | 1 | 4 | 2 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 |)!
+| JA | C50 | 10 | 6 | 4 | 0 | 0 | 0 | 1 | 4 | 2 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 |

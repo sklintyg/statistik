@@ -52,9 +52,11 @@ import se.inera.statistics.service.processlog.intygsent.ProcessIntygsentLog;
 import se.inera.statistics.service.processlog.message.MessageEvent;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 import se.inera.statistics.service.processlog.message.ProcessMessageLog;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.NationellDataInvoker;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
@@ -70,6 +72,7 @@ import se.inera.statistics.web.service.endpoints.ChartDataService;
 import se.inera.testsupport.fkrapport.FkReportCreator;
 import se.inera.testsupport.fkrapport.FkReportDataRow;
 import se.inera.testsupport.socialstyrelsenspecial.SosCalculatedRow;
+import se.inera.testsupport.socialstyrelsenspecial.SosCountRow;
 import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
 import se.inera.testsupport.socialstyrelsenspecial.SosRow;
 
@@ -91,9 +94,13 @@ import java.time.Clock;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service("restSupportService")
 public class RestSupportService {
@@ -437,17 +444,82 @@ public class RestSupportService {
                                      @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
                                      @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam,
                                      @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
+        final List<SosRow> sosReport = getSosRows(dx, startWithSpecifiedDx, fromYearParam, toYearParam);
+        return Response.ok(sosReport).build();
+    }
+
+    private List<SosRow> getSosRows(List<String> dx, String startWithSpecifiedDx, String fromYearParam, String toYearParam) {
         final Iterator<Aisle> aisles = warehouse.iterator();
         int fromYear = getYear(fromYearParam);
         int toYear = getYear(toYearParam);
         final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx,
                 Boolean.parseBoolean(startWithSpecifiedDx), changableClock, fromYear, toYear);
-        final List<SosRow> sosReport = sosReportCreator.getSosReport();
-        return Response.ok(sosReport).build();
+        return sosReportCreator.getSosReport();
     }
 
     private int getYear(String yearParam) {
         return yearParam == null ? LocalDate.now(changableClock).minusYears(1).getYear() : Integer.parseInt(yearParam);
+    }
+
+    /**
+     * Get sjukfall count information requested by socialstyrelsen (INTYG-6691).
+     */
+    @GET
+    @Path("getSocialstyrelsenAntalReport")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public Response getSosCountStatistics(@QueryParam(SOC_PARAM_DX) List<String> dx,
+                                     @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
+                                     @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam,
+                                     @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
+        final List<SosRow> sosRows = getSosRows(dx, startWithSpecifiedDx, fromYearParam, toYearParam);
+        final List<SosCountRow> sosCountRows = getSosCountRows(sosRows);
+        final List<Map<String, Object>> response = createCountResponse(sosCountRows);
+        return Response.ok(response).build();
+    }
+
+    private List<Map<String, Object>> createCountResponse(List<SosCountRow> sosCountRows) {
+        return sosCountRows.stream().map((Function<SosCountRow, Map<String, Object>>) r -> {
+                final HashMap<String, Object> map = new HashMap<>();
+                map.put("diagnos", r.getDiagnos());
+                map.put("totalt", r.getTotalt());
+                map.put("kvinnor", r.getKvinnor());
+                map.put("man", r.getMan());
+                for (SjukfallsLangdGroup group : SjukfallsLangdGroup.values()) {
+                    map.put(group.getGroupName() + " K", r.getFemaleByLength(group));
+                    map.put(group.getGroupName() + " M", r.getMaleByLength(group));
+                }
+                return map;
+            }).collect(Collectors.toList());
+    }
+
+    private List<SosCountRow> getSosCountRows(List<SosRow> sosRows) {
+        final Map<String, List<SosRow>> sosRowsByDx = sosRows.stream().collect(Collectors.groupingBy(SosRow::getDiagnos));
+        return sosRowsByDx.entrySet().stream().map(stringListEntry -> {
+            final Map<Kon, List<SosRow>> rowsByGender = stringListEntry.getValue().stream().collect(Collectors.groupingBy(SosRow::getKon));
+
+            final List<SosRow> maleRows = getNullSafeList(rowsByGender.get(Kon.MALE));
+            final Map<SjukfallsLangdGroup, Integer> malePerLength = getCountPerSjukfallsLangd(maleRows);
+
+            final List<SosRow> femaleRows = getNullSafeList(rowsByGender.get(Kon.FEMALE));
+            final Map<SjukfallsLangdGroup, Integer> femalePerLength = getCountPerSjukfallsLangd(femaleRows);
+
+            final String diagnos = stringListEntry.getKey();
+            final int femaleCount = femaleRows.size();
+            final int maleCount = maleRows.size();
+            final int total = femaleCount + maleCount;
+            return new SosCountRow(diagnos, total, femaleCount, maleCount, malePerLength, femalePerLength);
+        }).collect(Collectors.toList());
+    }
+
+    private <T> List<T> getNullSafeList(List<T> list) {
+        return list != null ? list : Collections.emptyList();
+    }
+
+    private Map<SjukfallsLangdGroup, Integer> getCountPerSjukfallsLangd(List<SosRow> sosRows) {
+        final Map<SjukfallsLangdGroup, List<SosRow>> rowsByLength = sosRows.stream().collect(
+                Collectors.groupingBy(sosRow -> SjukfallsLangdGroup.getByLength(sosRow.getLength())));
+        return rowsByLength.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, it -> it.getValue().size()));
     }
 
     /**
