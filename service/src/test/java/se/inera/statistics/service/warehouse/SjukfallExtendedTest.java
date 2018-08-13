@@ -20,7 +20,6 @@ package se.inera.statistics.service.warehouse;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -32,9 +31,9 @@ public class SjukfallExtendedTest {
     @Test
     public void testGetAllDxs() throws Exception {
         //Given
-        final SjukfallExtended se1 = new SjukfallExtended(createFact(1, 1, 1, 1));
-        final SjukfallExtended se2 = se1.extendSjukfall(createFact(2, 2, 2, 2));
-        final SjukfallExtended se3 = se2.extendSjukfall(createFact(3, 3, 3, 3));
+        final SjukfallExtended se1 = new SjukfallExtended(createDxFact(1, 1, 1, 1));
+        final SjukfallExtended se2 = se1.extendSjukfall(createDxFact(2, 2, 2, 2));
+        final SjukfallExtended se3 = se2.extendSjukfall(createDxFact(3, 3, 3, 3));
 
         //When
         final List<Diagnos> allDxs = se3.getAllDxs();
@@ -55,8 +54,25 @@ public class SjukfallExtendedTest {
         assertEquals(3, allDxs.get(2).getDiagnoskod());
     }
 
-    private Fact createFact(int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod) {
+    private Fact createDxFact(int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod) {
         return new Fact(1, 1, 1, 1, 1 , lakarintyg++, 1, 1,1,1,1, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod,1,1,1,null, 1);
+    }
+
+    @Test
+    public void testGetRealDays() throws Exception {
+        //Given
+        final SjukfallExtended se1 = new SjukfallExtended(createDaysFact(6210, 6239)); //30 days
+        final SjukfallExtended se2 = se1.extendSjukfall(createDaysFact(6241, 6253)); //1 day gap from previous and then 13 days
+
+        //When
+        final int realDays = se2.getRealDays();
+
+        //Then
+        assertEquals(43, realDays);
+    }
+
+    private Fact createDaysFact(int startDate, int endDate) {
+        return new Fact(1, 1, 1, 1, 1 , lakarintyg++, 1, startDate,endDate,1,1, 1, 1, 1, 1,1,1,1,null, 1);
     }
 
 }

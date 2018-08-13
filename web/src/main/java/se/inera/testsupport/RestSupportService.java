@@ -102,6 +102,7 @@ public class RestSupportService {
     public static final String SOC_PARAM_FROMYEAR = "fromyear";
     public static final String SOC_PARAM_TOYEAR = "toyear";
     public static final String SOC_PARAM_DX = "dx";
+    public static final String SOC_PARAM_STARTDX = "sjukfallstartingwithdx";
 
     @Autowired
     private ChartDataService nationalChartDataService;
@@ -432,12 +433,15 @@ public class RestSupportService {
     @Path("getSocialstyrelsenReport")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response getSosStatistics(@QueryParam(SOC_PARAM_DX) List<String> dx, @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam,
-            @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
+    public Response getSosStatistics(@QueryParam(SOC_PARAM_DX) List<String> dx,
+                                     @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
+                                     @QueryParam(SOC_PARAM_FROMYEAR) String fromYearParam,
+                                     @QueryParam(SOC_PARAM_TOYEAR) String toYearParam) {
         final Iterator<Aisle> aisles = warehouse.iterator();
         int fromYear = getYear(fromYearParam);
         int toYear = getYear(toYearParam);
-        final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx, changableClock, fromYear, toYear);
+        final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx,
+                Boolean.parseBoolean(startWithSpecifiedDx), changableClock, fromYear, toYear);
         final List<SosRow> sosReport = sosReportCreator.getSosReport();
         return Response.ok(sosReport).build();
     }
@@ -453,12 +457,15 @@ public class RestSupportService {
     @Path("getSocialstyrelsenMedianReport")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response getSosMedianStatistics(@QueryParam("dx") List<String> dx, @QueryParam("fromyear") String fromYearParam,
-            @QueryParam("toyear") String toYearParam) {
+    public Response getSosMedianStatistics(@QueryParam("dx") List<String> dx,
+                                           @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
+                                           @QueryParam("fromyear") String fromYearParam,
+                                           @QueryParam("toyear") String toYearParam) {
         final Iterator<Aisle> aisles = warehouse.iterator();
         int fromYear = getYear(fromYearParam);
         int toYear = getYear(toYearParam);
-        final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx, changableClock, fromYear, toYear);
+        final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx,
+                Boolean.parseBoolean(startWithSpecifiedDx), changableClock, fromYear, toYear);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getMedianValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
     }
@@ -470,12 +477,15 @@ public class RestSupportService {
     @Path("getSocialstyrelsenStdDevReport")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response getSosStdDevStatistics(@QueryParam("dx") List<String> dx, @QueryParam("fromyear") String fromYearParam,
-            @QueryParam("toyear") String toYearParam) {
+    public Response getSosStdDevStatistics(@QueryParam("dx") List<String> dx,
+                                           @QueryParam(SOC_PARAM_STARTDX) String startWithSpecifiedDx,
+                                           @QueryParam("fromyear") String fromYearParam,
+                                           @QueryParam("toyear") String toYearParam) {
         final Iterator<Aisle> aisles = warehouse.iterator();
         int fromYear = getYear(fromYearParam);
         int toYear = getYear(toYearParam);
-        final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx, changableClock, fromYear, toYear);
+        final SosReportCreator sosReportCreator = new SosReportCreator(aisles, sjukfallUtil, icd10, dx,
+                Boolean.parseBoolean(startWithSpecifiedDx), changableClock, fromYear, toYear);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getStdDevValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
     }

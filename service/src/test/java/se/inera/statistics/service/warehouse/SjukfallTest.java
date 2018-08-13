@@ -375,4 +375,18 @@ public class SjukfallTest {
         return new Fact(1L, 1,1,1,1, lakarintyg,1, startdatum,1,1,1,1, diagnosavsnitt,1,1, sjukskrivningsgrad,1,1,new int[0],1);
     }
 
+    @Test
+    public void testFirstAndLastDx() {
+        final SjukfallExtended se = new SjukfallExtended(createFactDxOrder(1, 10, 20, 5));
+        final SjukfallExtended se2 = se.extendSjukfall(createFactDxOrder(2, 5, 8, 6));
+        final SjukfallExtended se3 = se2.extendSjukfall(createFactDxOrder(3, 9, 9, 7));
+        final Sjukfall sjukfall = Sjukfall.create(se3);
+        assertEquals(6, sjukfall.getFirstDx().getDiagnosavsnitt());
+        assertEquals(5, sjukfall.getLastDx().getDiagnosavsnitt());
+    }
+
+    private Fact createFactDxOrder(int lakarintyg, int startdatum, int slutdatum, int diagnosavsnitt) {
+        return new Fact(1L, 1,1,1,1, lakarintyg,1, startdatum,slutdatum,1,1,1, diagnosavsnitt,1,1, 1,1,1,new int[0],1);
+    }
+
 }

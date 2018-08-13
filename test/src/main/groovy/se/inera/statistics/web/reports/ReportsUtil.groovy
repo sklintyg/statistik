@@ -531,12 +531,12 @@ class ReportsUtil {
         restClient.put(path: url)
     }
 
-    def getSocialstyrelsenReport(fromYear, toYear, dxs) {
-        def queryString = getSocialstyrelseQueryString(fromYear, toYear, dxs)
+    def getSocialstyrelsenReport(fromYear, toYear, dxs, boolean checkSjukfallsStartingWithDx) {
+        def queryString = getSocialstyrelseQueryString(fromYear, toYear, dxs, checkSjukfallsStartingWithDx)
         return get("/api/testsupport/getSocialstyrelsenReport", FilterData.empty(), queryString, "filter")
     }
 
-    private String getSocialstyrelseQueryString(Integer fromYear, Integer toYear, List<String> dxs) {
+    private String getSocialstyrelseQueryString(Integer fromYear, Integer toYear, List<String> dxs, boolean checkSjukfallsStartingWithDx) {
         def qs = new StringBuilder();
         if (fromYear != null) {
             qs.append("&" + RestSupportService.SOC_PARAM_FROMYEAR + "=" + fromYear);
@@ -549,17 +549,20 @@ class ReportsUtil {
                 qs.append("&" + RestSupportService.SOC_PARAM_DX + "=" + dx);
             }
         }
+        if (checkSjukfallsStartingWithDx) {
+            qs.append("&" + RestSupportService.SOC_PARAM_STARTDX + "=true");
+        }
         def queryString = qs.replaceFirst("&", "")
         queryString
     }
 
-    def getSocialstyrelsenMedianReport(fromYear, toYear, dxs) {
-        def queryString = getSocialstyrelseQueryString(fromYear, toYear, dxs)
+    def getSocialstyrelsenMedianReport(fromYear, toYear, dxs, boolean checkSjukfallsStartingWithDx) {
+        def queryString = getSocialstyrelseQueryString(fromYear, toYear, dxs, checkSjukfallsStartingWithDx)
         return get("/api/testsupport/getSocialstyrelsenMedianReport", FilterData.empty(), queryString, "filter")
     }
 
-    def getSocialstyrelsenStdDevReport(fromYear, toYear, dxs) {
-        def queryString = getSocialstyrelseQueryString(fromYear, toYear, dxs)
+    def getSocialstyrelsenStdDevReport(fromYear, toYear, dxs, boolean checkSjukfallsStartingWithDx) {
+        def queryString = getSocialstyrelseQueryString(fromYear, toYear, dxs, checkSjukfallsStartingWithDx)
         return get("/api/testsupport/getSocialstyrelsenStdDevReport", FilterData.empty(), queryString, "filter")
     }
 

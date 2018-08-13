@@ -30,34 +30,33 @@ Test
 | 19481109-2681 | C50 | 2017-01-01 | 2017-03-01 | 06 | enhet1 |
 
 !3 Då gäller:
-!3 
-| Comment |
-| Sjukfall i rapporten socialstyrelsen brostcancer |
-| diagnos | kön? | län? | sjukskrivningslängd? |
-| F32 | Male | 01 | 10 |
-| F32 | Male | 01 | 12 |
-| C50 | Male | 01 | 29 |
-| C50 | Female | 01 | 32 |
-| C50 | Male | 01 | 41 |
-| F32 | Female | 01 | 51 |
-| C50 | Male | 06 | 32 |
-| C50 | Female | 06 | 60 |
-| C50 | Female | 06 | 60 |
-| C50 | Male | 06 | 91 |
-| C50 | Female | 06 | 91 |
-| F33 | Male | 06 | 69 |
-| F33 | Male | 06 | 244 |
-| C50 | Female | 06 | 121 |
-| C50 | Female | 06 | 60 |
 
-| Sjukfall i rapporten socialstyrelsen brostcancer median |
-| diagnos | totalt? | kvinnor? | män? | lan01? | lan06? |
-| F32 | 12 | 51 | 11 | 12 | 0 |
-| F33 | 156.5 | 0 | 156.5 | 0 | 156.5 |
-| C50 | 60 | 60 | 35.5 | 32 | 60 |
+| Sjukfall i rapporten socialstyrelsen |
+| bröstcancervariant | diagnos | kön? | län? | sjukskrivningslängd? |
+| JA | F32 | MALE | 01 | 10 |
+| JA | F32 | MALE | 01 | 12 |
+| JA | C50 | MALE | 01 | 29 |
+| JA | C50 | FEMALE | 01 | 32 |
+| JA | C50 | MALE | 01 | 41 |
+| JA | F32 | FEMALE | 01 | 51 |
+| JA | C50 | MALE | 06 | 32 |
+| JA | C50 | FEMALE | 06 | 60 |
+| JA | C50 | FEMALE | 06 | 60 |
+| JA | C50 | MALE | 06 | 91 |
+| JA | C50 | FEMALE | 06 | 91 |
+| JA | F33 | MALE | 06 | 69 |
+| JA | F33 | MALE | 06 | 244 |
+| JA | C50 | FEMALE | 06 | 121 |
+| JA | C50 | FEMALE | 06 | 60 |
 
-!(| Sjukfall i rapporten socialstyrelsen brostcancer antal |
-| diagnos | totalt? | kvinnor? | män? | <15 K? | <15 M? | 15-30 K? | 15-30 M? | 31-60 K? | 31-60 M? | 61-90 K? | 61-90 M? | 91-180 K? | 91-180 M? | 180-365 K? | 180-365 M? | >365 K? | >365 M? |
-| F32 | 3 | 1 | 2 | 0 | 2 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| F33 | 2 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 1 | 0 | 0 |
-| C50 | 10 | 6 | 4 | 0 | 0 | 0 | 1 | 4 | 2 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 |)!
+| Sjukfall i rapporten socialstyrelsen som median |
+| bröstcancervariant | diagnos | totalt? | kvinnor? | män? | lan01? | lan06? |
+| JA | F32 | 12 | 51 | 11 | 12 | null |
+| JA | F33 | 156.5 | null | 156.5 | null | 156.5 |
+| JA | C50 | 60 | 60 | 35.5 | 32 | 60 |
+
+!(| Sjukfall i rapporten socialstyrelsen som antal |
+| bröstcancervariant | diagnos | totalt? | kvinnor? | män? | <15 K? | <15 M? | 15-30 K? | 15-30 M? | 31-60 K? | 31-60 M? | 61-90 K? | 61-90 M? | 91-180 K? | 91-180 M? | 180-365 K? | 180-365 M? | >365 K? | >365 M? |
+| JA | F32 | 3 | 1 | 2 | 0 | 2 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| JA | F33 | 2 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 1 | 0 | 0 |
+| JA | C50 | 10 | 6 | 4 | 0 | 0 | 0 | 1 | 4 | 2 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 |)!

@@ -23,6 +23,7 @@ class SjukfallIRapportenSocialstyrelsen extends Rapport {
     def startår
     def slutår
     def diagnoser
+    boolean bröstcancervariant
 
     def diagnos
     def kön
@@ -35,6 +36,11 @@ class SjukfallIRapportenSocialstyrelsen extends Rapport {
 
     void setSlutår(slutår) {
         this.slutår = Integer.parseInt(slutår)
+    }
+
+    void setBröstcancervariant(String variant) {
+        this.bröstcancervariant = "JA".equalsIgnoreCase(variant)
+        setDiagnoser("C50")
     }
 
     void setDiagnoser(diagnoser) {
@@ -67,7 +73,7 @@ class SjukfallIRapportenSocialstyrelsen extends Rapport {
     }
 
     def getReport() {
-        return reportsUtil.getSocialstyrelsenReport(startår, slutår, diagnoser);
+        return reportsUtil.getSocialstyrelsenReport(startår, slutår, diagnoser, bröstcancervariant);
     }
 
     public void doExecute() {

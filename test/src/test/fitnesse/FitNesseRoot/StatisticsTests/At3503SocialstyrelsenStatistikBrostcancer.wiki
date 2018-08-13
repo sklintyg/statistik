@@ -2,7 +2,7 @@
 Prune
 Test
 ---
-TEST#1 - Första intyget i ett sjukfall har diagnos C50
+!1 TEST#1 - Första intyget i ett sjukfall har diagnos C50
 
 !3 Givet att:
 | script | dagens datum | 2018-01-01 |
@@ -18,11 +18,16 @@ Endast sjukfall som har C50 som första intyg i sjukfallet tas med. Vilket i det
 
 Det är sjukfallets sista intygs diagnos som avgör var sjukfallet hamnar under för diagnos.
 
-| Sjukfall i rapporten socialstyrelsen brostcancer |
-| diagnos | kön? | län? | sjukskrivningslängd? |
-| F32 | FEMALE | 01 | 43 |
+| Sjukfall i rapporten socialstyrelsen |
+| bröstcancervariant | diagnos | kön? | län? | sjukskrivningslängd? |
+| JA | F32 | FEMALE | 01 | 43 |
 
-TEST#2 - Ett intyg har diagnosen C50 men det är inte det första intyget i sjukfallet
+| Sjukfall i rapporten socialstyrelsen som median |
+| bröstcancervariant | diagnos | totalt? |
+| JA                 | F32     | 43      |
+| JA                 | C50     | -1      |
+
+!1 TEST#2 - Ett intyg har diagnosen C50 men det är inte det första intyget i sjukfallet
 
 !3 Givet att:
 | script | dagens datum | 2018-01-01 |
@@ -36,12 +41,17 @@ TEST#2 - Ett intyg har diagnosen C50 men det är inte det första intyget i sjuk
 !3 Då gäller:
 Endast sjukfall som har C50 som första intyg i sjukfallet tas med. Det spelar ingen roll om ett sjukfallet innehåller C50 diagnosen, det tas ändå inte med så länge som det första intyget har en annan diagnos.
 
-| Sjukfall i rapporten socialstyrelsen brostcancer |
-| diagnos | kön? | län? | sjukskrivningslängd? |
-| C50 | FEMALE | 01 | 14!-
--! |
+| Sjukfall i rapporten socialstyrelsen |
+| bröstcancervariant | diagnos | kön? | län? | sjukskrivningslängd? |
+| JA | C50 | FEMALE | 01 | 14 |
 
-TEST#3 - Sjukfall som bara har C50 som diagnos.
+| Sjukfall i rapporten socialstyrelsen som median |
+| bröstcancervariant | diagnos | totalt? |
+| JA                 | C50     | 14      |
+| JA                 | F32     | -1      |
+
+
+!1 TEST#3 - Sjukfall som bara har C50 som diagnos.
 
 !3 Givet att:
 | script | dagens datum | 2018-01-01 |
@@ -55,11 +65,15 @@ TEST#3 - Sjukfall som bara har C50 som diagnos.
 !3 Då gäller:
 Tas med en gång i listan.
 
-| Sjukfall i rapporten socialstyrelsen brostcancer |
-| diagnos | kön? | län? | sjukskrivningslängd? |
-| C50 | FEMALE | 01 | 50 |
+| Sjukfall i rapporten socialstyrelsen |
+| bröstcancervariant | diagnos | kön? | län? | sjukskrivningslängd? |
+| JA | C50 | FEMALE | 01 | 50 |
 
-TEST#4 - Ej avslutat sjukfall
+| Sjukfall i rapporten socialstyrelsen som median |
+| bröstcancervariant | diagnos | totalt? |
+| JA                 | C50     | 50      |
+
+!1 TEST#4 - Ej avslutat sjukfall
 
 !3 Givet att:
 | script | dagens datum | 2018-01-01 |
@@ -72,11 +86,15 @@ TEST#4 - Ej avslutat sjukfall
 !3 Då gäller:
 Ena sjukfallet tas inte med alls då det inte är avslutat vid dagens datum.
 
-| Sjukfall i rapporten socialstyrelsen brostcancer |
-| diagnos | kön? | län? | sjukskrivningslängd? |
-| C50 | FEMALE | 01 | 10 |
+| Sjukfall i rapporten socialstyrelsen |
+| bröstcancervariant | diagnos | kön? | län? | sjukskrivningslängd? |
+| JA | C50 | FEMALE | 01 | 10 |
 
-TEST#5 - Intyg med olika län
+| Sjukfall i rapporten socialstyrelsen som median |
+| bröstcancervariant | diagnos | totalt? |
+| JA                 | C50     | 10      |
+
+!1 TEST#5 - Intyg med olika län
 
 !3 Givet att:
 | script | dagens datum | 2018-01-01 |
@@ -89,43 +107,53 @@ TEST#5 - Intyg med olika län
 !3 Då gäller:
 Län blir 06 eftersom det är det senaste länet i sjukfallet
 
-| Sjukfall i rapporten socialstyrelsen brostcancer |
-| diagnos | kön? | län? | sjukskrivningslängd? |
-| C50 | FEMALE | 06 | 50 |
+| Sjukfall i rapporten socialstyrelsen |
+| bröstcancervariant | diagnos | kön? | län? | sjukskrivningslängd? |
+| JA | C50 | FEMALE | 06 | 50 |
 
-TEST#6 - Överlappande intyg
+| Sjukfall i rapporten socialstyrelsen som median |
+| bröstcancervariant | diagnos | totalt? | lan01? | lan06? |
+| JA                 | C50     | 30      | null   | 30     |
+
+!1 TEST#6 - Överlappande intyg
 
 !3 Givet att:
 | script | dagens datum   | 2018-01-01   |
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start | slut | enhet | län | kommentar |
-| 19671109-2681   | C50 | 2017-01-01   | 2017-01-10   | enhet1 | 01 | 10 dagar |
-| 19671109-2681   | C50 | 2017-01-01   | 2017-01-30   | enhet1 | 01 | 30 dagar |
+| 19671109-2681 | C50 | 2017-01-01 | 2017-01-10 | enhet1 | 01 | 10 dagar |
+| 19671109-2681 | C50 | 2017-01-01 | 2017-01-30 | enhet1 | 01 | 30 dagar |
 
 !3 Då gäller:
 Dagar med dubbla intyg räknas bara en gång.
 
-| Sjukfall i rapporten socialstyrelsen brostcancer   |
-| diagnos | kön? | län? | sjukskrivningslängd? |
-| C50 | FEMALE | 01 | 30!-
--! |
+| Sjukfall i rapporten socialstyrelsen |
+| bröstcancervariant | diagnos | kön? | län? | sjukskrivningslängd? |
+| JA | C50 | FEMALE | 01 | 30 |
 
-TEST#7 - Sjukfall med underdiagnoser
+| Sjukfall i rapporten socialstyrelsen som median |
+| bröstcancervariant | diagnos | totalt? |
+| JA                 | C50     | 30      |
+
+!1 TEST#7 - Sjukfall med underdiagnoser
 
 !3 Givet att:
-| script | dagens datum   | 2018-01-01   |
+| script | dagens datum | 2018-01-01 |
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start | slut | enhet | län | kommentar |
-| 19671109-2681   | C50.2 | 2017-01-01   | 2017-01-10   | enhet1 | 01 | 10 dagar |
-| 19671109-2661   | C50.1 | 2017-01-01   | 2017-01-30   | enhet1 | 01 | 30 dagar |
+| 19671109-2681 | C50.2 | 2017-01-01 | 2017-01-10 | enhet1 | 01 | 10 dagar |
+| 19671109-2661 | C50.1 | 2017-01-01 | 2017-01-30 | enhet1 | 01 | 30 dagar |
 
 !3 Då gäller:
 Sjukfall med underdiagnos till C50 tas med som om de hade C50 som diagnoskod.
 
-| Sjukfall i rapporten socialstyrelsen brostcancer   |
-| diagnos | kön? | län? | sjukskrivningslängd? |
-| C50 | FEMALE | 01 | 30!-
--! |
-| C50 | FEMALE | 01 | 10 |
+| Sjukfall i rapporten socialstyrelsen |
+| bröstcancervariant | diagnos | kön? | län? | sjukskrivningslängd? |
+| JA | C50 | FEMALE | 01 | 30 |
+| JA | C50 | FEMALE | 01 | 10 |
+
+| Sjukfall i rapporten socialstyrelsen som median |
+| bröstcancervariant | diagnos | totalt? |
+| JA                 | C50     | 20      |

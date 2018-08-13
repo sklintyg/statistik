@@ -68,7 +68,7 @@ public class Sjukskrivningsperiod {
         for (int i = 1; i < periods.size(); i++) {
             final Sjukskrivningsperiod p1 = periods.get(i - 1);
             final Sjukskrivningsperiod p2 = periods.get(i);
-            if (p1.getEnd() >= p2.getStart() - 1) {
+            if (p1.getEnd() >= p2.getStart()) {
                 final int mergedLength = Math.max(p1.getEnd(), p2.getEnd()) - p1.getStart();
                 final Sjukskrivningsperiod mergedPeriod = new Sjukskrivningsperiod(p1.getStart(), mergedLength);
                 periods.remove(i);
@@ -82,6 +82,5 @@ public class Sjukskrivningsperiod {
         }
         return periods;
     }
-
 
 }

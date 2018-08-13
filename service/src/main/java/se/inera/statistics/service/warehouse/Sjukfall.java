@@ -211,6 +211,14 @@ public class Sjukfall implements Serializable {
         return firstIntygId;
     }
 
+    public Diagnos getFirstDx() {
+        return diagnoses.get(0);
+    }
+
+    public Diagnos getLastDx() {
+        return diagnoses.get(diagnoses.size() - 1);
+    }
+
     private static class UnknownRangeTypeException extends RuntimeException {
         UnknownRangeTypeException(String s) {
             super(s);

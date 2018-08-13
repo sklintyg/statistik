@@ -50,12 +50,14 @@ abstract class SjukfallIRapportenSocialstyrelsenSom extends Rapport {
     def startår
     def slutår
     def diagnoser
+    boolean bröstcancervariant
 
     void reset() {
         super.reset()
         this.startår = null
         this.slutår = null
         this.diagnoser = null
+        bröstcancervariant = false
     }
 
     void setStartår(startår) {
@@ -74,6 +76,11 @@ abstract class SjukfallIRapportenSocialstyrelsenSom extends Rapport {
         if (diagnoser != null && !diagnoser.trim().isEmpty()) {
             this.diagnoser = diagnoser.split(",")*.trim().collect{ it }
         }
+    }
+
+    void setBröstcancervariant(String variant) {
+        this.bröstcancervariant = "JA".equalsIgnoreCase(variant)
+        setDiagnoser("C50")
     }
 
     def totalt() { return totalt }

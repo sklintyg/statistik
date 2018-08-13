@@ -34,6 +34,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.Diagnos;
 import se.inera.statistics.service.warehouse.Fact;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.FilterPredicates;
@@ -45,6 +46,8 @@ public class SosReportCreator {
 
     private final Iterator<Aisle> aisles;
     private final SjukfallUtil sjukfallUtil;
+    private final boolean startWithSpecifiedDxs;
+    private final Icd10 icd10;
     private HashMap<String, Integer> dxsToShowInReport = new HashMap<>();
     private Clock clock;
     private int fromYear;
@@ -58,10 +61,13 @@ public class SosReportCreator {
      * @param toYear
      *            To which year to calculate
      */
+    // CHECKSTYLE:OFF ParameterNumberCheck
+    @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public SosReportCreator(Iterator<Aisle> aisles, SjukfallUtil sjukfallUtil, Icd10 icd10, List<String> dxStrings,
-                            Clock clock, int fromYear, int toYear) {
+                            boolean startWithSpecifiedDxs, Clock clock, int fromYear, int toYear) {
         this.aisles = aisles;
         this.sjukfallUtil = sjukfallUtil;
+        this.startWithSpecifiedDxs = startWithSpecifiedDxs;
         this.clock = clock;
         if (dxStrings == null || dxStrings.isEmpty()) {
             populateDefaultDxs();
@@ -73,6 +79,7 @@ public class SosReportCreator {
         }
         this.fromYear = fromYear;
         this.toYear = toYear;
+        this.icd10 = icd10;
     }
 
     private void populateDefaultDxs() {
@@ -100,7 +107,8 @@ public class SosReportCreator {
             for (Map.Entry<String, Integer> stringIntegerEntry : dxsToShowInReport.entrySet()) {
                 final Integer dx = stringIntegerEntry.getValue();
                 final String dxString = stringIntegerEntry.getKey();
-                final Predicate<Fact> intygFilter = fact -> fact.getDiagnoskod() == dx || fact.getDiagnoskategori() == dx;
+                final Predicate<Fact> intygFilter = startWithSpecifiedDxs ? fact -> true
+                        : fact -> fact.getDiagnoskod() == dx || fact.getDiagnoskategori() == dx;
                 final FilterPredicates sjukfallFilter = new FilterPredicates(intygFilter, sjukfall -> true,
                         "sosspecial" + fromYear + dx + toYear, false);
 
@@ -110,14 +118,33 @@ public class SosReportCreator {
                     for (Sjukfall sjukfall : sjukfallGroup.getSjukfall()) {
                         if (sjukfall.getStart() <= toIntDay && sjukfall.getEnd() >= fromIntDay
                                 && sjukfall.getEnd() < nowMinusFiveDaysIntDay) {
-                            final SosRow sosRow = new SosRow(dxString, sjukfall.getKon(), sjukfall.getLanskod(), sjukfall.getRealDays());
-                            sosRows.add(sosRow);
+                            final Kon kon = sjukfall.getKon();
+                            final String lanskod = sjukfall.getLanskod();
+                            final int realDays = sjukfall.getRealDays();
+                            if (startWithSpecifiedDxs) {
+                                if (dxMatching(sjukfall.getFirstDx(), dx)) {
+                                    final Diagnos lastDx = sjukfall.getLastDx();
+                                    final int dxKat = lastDx.getDiagnoskategori();
+                                    final Icd10.Id icd10Id = icd10.findIcd10FromNumericId(dxKat);
+                                    final SosRow sosRow = new SosRow(icd10Id.getVisibleId(), kon, lanskod, realDays);
+                                    sosRows.add(sosRow);
+                                }
+                            } else {
+                                final SosRow sosRow = new SosRow(dxString, kon, lanskod, realDays);
+                                sosRows.add(sosRow);
+                            }
                         }
                     }
                 }
             }
         }
         return sosRows;
+    }
+
+    private boolean dxMatching(Diagnos dx, Integer dxToMatch) {
+        return dxToMatch != null
+                && (dx.getDiagnosavsnitt() == dxToMatch || dx.getDiagnoskapitel() == dxToMatch
+                    || dx.getDiagnoskategori() == dxToMatch || dx.getDiagnoskod() == dxToMatch);
     }
 
     LocalDate getLastDateOfYear() {
