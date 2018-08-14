@@ -30,7 +30,7 @@ Test
 | 19481109-2681 | C50 | 2017-01-01 | 2017-03-01 | 06 | enhet1 |
 
 !3 Då gäller:
-
+| Comment |
 | Sjukfall i rapporten socialstyrelsen |
 | bröstcancervariant | diagnos | kön? | län? | sjukskrivningslängd? |
 | JA | F32 | MALE | 01 | 10 |
@@ -53,10 +53,10 @@ Test
 | bröstcancervariant | diagnos | totalt? | kvinnor? | män? | lan01? | lan06? |
 | JA | F32 | 12 | 51 | 11 | 12 | null |
 | JA | F33 | 156.5 | null | 156.5 | null | 156.5 |
-| JA | C50 | 60 | 60 | 35.5 | 32 | 60 |
+| JA | C50 | 60 | 60 | 41 | 32 | 60 |
 
 | Sjukfall i rapporten socialstyrelsen som antal |
 | bröstcancervariant | diagnos | totalt? | kvinnor? | män? | under 15 Dagar K? | under 15 Dagar M? | från15Till30DagarK? | från15Till30DagarM? | från31Till60DagarK? | från31Till60DagarM? | från61Till90DagarK? | från61Till90DagarM? | från91Till180DagarK? | från91Till180DagarM? | från181Till365DagarK? | från181Till365DagarM? | över365DagarK? | över365DagarM? |
 | JA | F32 | 3 | 1 | 2 | 0 | 2 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | JA | F33 | 2 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 1 | 0 | 0 |
-| JA | C50 | 10 | 6 | 4 | 0 | 0 | 0 | 1 | 4 | 2 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 |
+| JA | C50 | 10 | 6 | 4 | 0 | 0 | 0 | 1 | 4 | 2 | 0 | 0 | 2 | 1 | 0 | 0 | 0 | 0 |
