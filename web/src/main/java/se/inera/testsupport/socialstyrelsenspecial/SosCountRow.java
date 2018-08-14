@@ -58,11 +58,13 @@ public class SosCountRow {
     }
 
     public Integer getMaleByLength(SjukfallsLangdGroup length) {
-        return malePerLength.get(length);
+        final Integer count = malePerLength.get(length);
+        return count != null ? count : 0;
     }
 
-    public Integer getFemaleByLength(SjukfallsLangdGroup length) {
-        return femalePerLength.get(length);
+    public int getFemaleByLength(SjukfallsLangdGroup length) {
+        final Integer count = femalePerLength.get(length);
+        return count != null ? count : 0;
     }
 
 }
