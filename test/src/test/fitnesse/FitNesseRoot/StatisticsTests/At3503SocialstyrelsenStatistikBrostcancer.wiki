@@ -35,4 +35,5 @@ Endast sjukfall som har C50 som första intyg i sjukfallet tas med. Det spelar i
 
 | Sjukfall i rapporten socialstyrelsen |
 | bröstcancervariant | diagnos | kön? | län? | sjukskrivningslängd? |
-| JA | C50 | FEMALE | 01 | -1 |
+| JA | F32 | -1 | -1 | -1 |
+| JA | C50 | -1 | -1 | -1 |
