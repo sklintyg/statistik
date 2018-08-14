@@ -41,7 +41,6 @@ import se.inera.statistics.web.service.FilterHandler;
 import se.inera.statistics.web.service.FilterHashHandler;
 import se.inera.statistics.web.service.LoginServiceUtil;
 import se.inera.statistics.web.service.WarehouseService;
-import se.inera.statistics.web.service.endpoints.ProtectedChartDataService;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
 
 import javax.servlet.http.HttpServletRequest;

@@ -50,7 +50,6 @@ import se.inera.statistics.web.model.LoginInfoVg;
 import se.inera.statistics.web.model.UserSettingsDTO;
 import se.inera.statistics.web.service.LoginServiceUtil;
 import se.inera.statistics.web.service.WarehouseService;
-import se.inera.statistics.web.service.endpoints.ProtectedLandstingService;
 import se.inera.statistics.web.service.landsting.LandstingEnhetFileParseException;
 import se.inera.statistics.web.service.landsting.LandstingFileGenerationException;
 import se.inera.statistics.web.service.landsting.LandstingFileReader;
