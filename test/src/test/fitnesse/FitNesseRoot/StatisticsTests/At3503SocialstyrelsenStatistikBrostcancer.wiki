@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !1 TEST#1 - Första intyget i ett sjukfall har diagnos C50
