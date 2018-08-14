@@ -117,7 +117,7 @@ var app = angular.module('StatisticsApp')
                 controller: 'doubleAreaChartsCtrl',
                 controllerAs: 'NationalIntygPerTypCtrl',
                 resolve: { config: app.intygPerTypePerMonthConfig },
-                title: 'title.intygstyp'
+                title: 'nav.intygpertyp'
             }).when('/verksamhet', {
                 redirectTo: '/verksamhet/oversikt'
             }).when('/valjVardgivare', {
@@ -360,25 +360,25 @@ var app = angular.module('StatisticsApp')
                 controller: 'singleLineChartCtrl',
                 controllerAs: 'VerksamhetIntygPerMonthCtrl',
                 resolve: { config: app.intygPerMonthConfig },
-                title: 'title.intyg'
+                title: 'nav.intyg'
             }).when('/verksamhet/intygTvarsnitt', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
                 controllerAs: 'VerksamhetIntygPerMonthTvarsnittCtrl',
                 resolve: { config: app.intygPerMonthTvarsnittConfig },
-                title: 'title.intyg'
+                title: 'nav.intyg'
             }).when('/verksamhet/intygPerTyp', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
                 controllerAs: 'VerksamhetIntygPerTypeCtrl',
                 resolve: { config: app.intygPerTypePerMonthConfig },
-                title: 'title.intygstyp'
+                title: 'nav.intygpertyp'
             }).when('/verksamhet/intygPerTypTvarsnitt', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'columnChartDetailsViewCtrl',
                 controllerAs: 'VerksamhetIntygPerTypeCtrl',
                 resolve: { config: app.intygPerTypeTvarsnittConfig },
-                title: 'title.intygstyp'
+                title: 'nav.intygpertyp'
             }).when('/verksamhet/andelkompletteringar', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
@@ -431,7 +431,7 @@ var app = angular.module('StatisticsApp')
                 controller: 'doubleAreaChartsCtrl',
                 controllerAs: 'LandstingIntygPerTypCtrl',
                 resolve: { config: app.intygPerTypePerMonthLandstingConfig },
-                title: 'title.intygstyp'
+                title: 'nav.intygpertyp'
             }).when('/landsting/andelkompletteringar', {
                 templateUrl: '/app/views/detailsView.html',
                 controller: 'doubleAreaChartsCtrl',
