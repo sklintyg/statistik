@@ -1,20 +1,20 @@
 <div class="stat-settings">
   <div class="modal-header">
     <button class="close" data-dismiss="modal" data-ng-click="cancel()">×</button>
-    <h4 class="modal-title" message key="settings.modal.title"></h4>
+    <h4 class="modal-title" message key="settings.modal.title" disable-highlight-words="true"></h4>
   </div>
 
   <div class="modal-body">
 
     <div ng-repeat="setting in settings">
       <h3>
-        <span message key="{{::setting.title}}"></span>
+        <span message key="{{::setting.title}}" disable-highlight-words="true"></span>
         <span uib-tooltip="{{::setting.help}}">?</span>
       </h3>
       <stat-toggle class="settings-checkbox"
                    value="setting.value"
                    toggle-id="{{::setting.id}}"></stat-toggle>
-      <span message key="{{::setting.description}}"></span>
+      <span message key="{{::setting.description}}" disable-highlight-words="true"></span>
     </div>
 
   </div>
