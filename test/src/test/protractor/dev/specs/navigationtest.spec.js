@@ -47,9 +47,9 @@ describe('Navigering i intygsstatistik: ', function() {
         validateDetailReport('navCasesPerSexLink', 1);
 
         validateDetailReport('navNationalIntygPerTypeLink', 2);
-        validateDetailReport('navNationalAndelKompletteringarLink', 2);
 
         validateDetailReport('navMessagesLink', 2);
+        validateDetailReport('navNationalAndelKompletteringarLink', 2);
     });
 
     it('About', function() {
@@ -76,10 +76,11 @@ describe('Navigering i intygsstatistik: ', function() {
 
             verksamhetsNiva();
 
-            validateDetailReport('navBusinessCasesPerBusinessLink', 1, 2, 21);
+            validateDetailReport('navBusinessCasesPerBusinessLink', 1);
 
             it('Not present', function() {
                 expect(navmenu.navBusinessCasesPerLakareLink.isPresent()).toBeFalsy();
+                expect(navmenu.navBusinessMessagesLakareLink.isPresent()).toBeFalsy();
             });
         });
 
@@ -91,7 +92,8 @@ describe('Navigering i intygsstatistik: ', function() {
 
             verksamhetsNiva();
 
-            validateDetailReport('navBusinessCasesPerLakareLink', 1, 2, 1);
+            validateDetailReport('navBusinessCasesPerLakareLink', 1);
+            validateDetailReport('navBusinessMessagesLakareLink', 1);
 
             it('Not present', function() {
                 expect(navmenu.navBusinessCasesPerBusinessLink.isPresent()).toBeFalsy();
@@ -116,10 +118,10 @@ describe('Navigering i intygsstatistik: ', function() {
             validateDetailReport('navBusinessCasesPerLakarbefattningLink', 1);
 
             validateDetailReport('navBusinessIntygPerTypeLink', 2);
-            validateDetailReport('navBusinessAndelKompletteringarLink', 2);
 
             validateDetailReport('navBusinessMessagesLink', 2);
             validateDetailReport('navBusinessMessagesEnhetLink', 1);
+            validateDetailReport('navBusinessAndelKompletteringarLink', 2);
         }
     });
 

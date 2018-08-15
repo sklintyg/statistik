@@ -46,6 +46,7 @@ var NavMenu = function() {
     this.navBusinessCasesPerLakareLink = element(by.id('navBusinessCasesPerLakareLink')); //Not visible to processledare
     this.navBusinessCasesPerLakaresAlderOchKonLink = element(by.id('navBusinessCasesPerLakaresAlderOchKonLink'));
     this.navBusinessCasesPerLakarbefattningLink = element(by.id('navBusinessCasesPerLakarbefattningLink'));
+    this.navBusinessMessagesLakareLink = element(by.id('navBusinessMessagesLakareLink')); //Not visible to processledare
 
     this.navAboutTjanstLink = element(by.id('navAboutTjanstLink'));
     this.navAboutInloggningLink = element(by.id('navAboutInloggningLink'));

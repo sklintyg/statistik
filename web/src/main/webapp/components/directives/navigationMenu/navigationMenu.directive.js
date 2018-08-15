@@ -259,6 +259,9 @@
                 name: 'nav.meddelandenperamneochenhet',
                 ctrl: 'VerksamhetMeddelandenPerAmneOchEnhetCtrl'
             }, {
+                checkVisible: function() {
+                    return !UserModel.get().isProcessledare;
+                },
                 id: 'navBusinessMessagesLakareLink',
                 link: '#/verksamhet/meddelandenPerAmneOchLakareTvarsnitt',
                 name: 'nav.meddelandenperamneochlakare',
