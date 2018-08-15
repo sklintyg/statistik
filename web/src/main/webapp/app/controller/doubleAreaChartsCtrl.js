@@ -659,6 +659,10 @@ angular.module('StatisticsApp').andelKompletteringarConfig =
     'use strict';
 
     var conf = {};
+    conf.filter = {
+        intygstyper: true,
+        sjukskrivningslangd: false
+    };
     conf.defaultChartType = 'line';
     conf.dataFetcher = 'getAndelKompletteringarNational';
     conf.dataFetcherVerksamhet = 'getAndelKompletteringarVerksamhet';
@@ -693,6 +697,10 @@ angular.module('StatisticsApp').andelKompletteringarLandstingConfig =
     'use strict';
 
     var conf = {};
+    conf.filter = {
+        intygstyper: true,
+        sjukskrivningslangd: false
+    };
     conf.defaultChartType = 'line';
     conf.dataFetcher = 'getAndelKompletteringarLandsting';
     conf.exportTableUrl = function () {

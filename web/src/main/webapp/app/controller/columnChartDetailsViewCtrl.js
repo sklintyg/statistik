@@ -763,6 +763,10 @@ angular.module('StatisticsApp').andelKompletteringarTvarsnittConfig =
         'use strict';
 
         var conf = {};
+        conf.filter = {
+            intygstyper: true,
+            sjukskrivningslangd: false
+        };
         conf.dataFetcherVerksamhet = 'getAndelKompletteringarTvarsnittVerksamhet';
         conf.exportTableUrlVerksamhet = function () {
             return 'api/verksamhet/getAndelKompletteringarTvarsnitt?format=xlsx';
