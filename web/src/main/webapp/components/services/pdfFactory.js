@@ -22,7 +22,7 @@ angular.module('StatisticsApp')
     .factory('pdfFactory',
         /** @ngInject */
         function($window, $timeout, thousandseparatedFilter, $location, _, MAX_ROWS_TABLE_PDF, messageService, $rootScope,
-            ControllerCommons, sortableTableViewState) {
+            ControllerCommons, sortableTableViewState, filterViewState) {
 
             'use strict';
 
@@ -112,16 +112,8 @@ angular.module('StatisticsApp')
 
                 _addHeader(content, headers);
                 content.push(_convertChartsToImages(charts));
-                if (enhetsFilterAllSelected) {
-                    _addListFilter(content, messageService.getProperty('lbl.filter.pdf.enheteralla'), enhetsFilter);
-                } else {
-                    _addListFilter(content, messageService.getProperty('lbl.filter.pdf.enheter'), enhetsFilter);
-                }
 
-                _addListFilter(content, messageService.getProperty('lbl.filter.pdf.diagnoser'), diagnosFilter);
-                _addListFilter(content, messageService.getProperty('lbl.filter.pdf.sjukskrivningslangd'), sjukskrivningslangdFilter);
-                _addListFilter(content, messageService.getProperty('lbl.filter.pdf.aldersgrupp'), aldersgruppFilter);
-                _addListFilter(content, messageService.getProperty('lbl.filter.pdf.intygstyper'), intygstyperFilter);
+                _addAllFilters(content, enhetsFilterAllSelected, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter, intygstyperFilter);
 
                 if (angular.isArray(table)) {
                     _.each(table, function(t) {
@@ -240,6 +232,27 @@ angular.module('StatisticsApp')
                         bold: true
                     }
                 };
+            }
+
+            function _addAllFilters(content, enhetsFilterAllSelected, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter, intygstyperFilter) {
+                if (enhetsFilterAllSelected) {
+                    _addListFilter(content, messageService.getProperty('lbl.filter.pdf.enheteralla'), enhetsFilter);
+                } else {
+                    _addListFilter(content, messageService.getProperty('lbl.filter.pdf.enheter'), enhetsFilter);
+                }
+
+                _addListFilter(content, messageService.getProperty('lbl.filter.pdf.diagnoser'), diagnosFilter);
+
+                if (filterViewState.get().sjukskrivningslangd) {
+                    _addListFilter(content, messageService.getProperty('lbl.filter.pdf.sjukskrivningslangd'), sjukskrivningslangdFilter);
+                }
+
+                _addListFilter(content, messageService.getProperty('lbl.filter.pdf.aldersgrupp'), aldersgruppFilter);
+
+                if (filterViewState.get().intygstyper) {
+                    _addListFilter(content, messageService.getProperty('lbl.filter.pdf.intygstyper'),
+                        intygstyperFilter);
+                }
             }
 
             function _addListFilter(content, rubrik, filter) {
@@ -509,7 +522,8 @@ angular.module('StatisticsApp')
                     header: _addHeader,
                     chart: _getChart,
                     table: _getTableLayout,
-                    filter: _addListFilter
+                    filter: _addListFilter,
+                    allFilters: _addAllFilters
                 }
             };
         }

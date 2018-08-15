@@ -21,7 +21,7 @@ angular.module('StatisticsApp')
     .factory('pdfOverviewFactory',
 
         /** @ngInject */
-        function($window, pdfFactory, $timeout, messageService) {
+        function(pdfFactory, $timeout) {
         'use strict';
 
         function _printOverview($scope, charts) {
@@ -45,16 +45,7 @@ angular.module('StatisticsApp')
 
             pdfFactory.factory.header(content, headers);
 
-            if (enhetsFilterAllSelected) {
-                pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.enheteralla'), enhetsFilter);
-            } else {
-                pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.enheter'), enhetsFilter);
-            }
-
-            pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.diagnoser'), diagnosFilter);
-            pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.sjukskrivningslangd'), sjukskrivningslangdFilter);
-            pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.aldersgrupp'), aldersgruppFilter);
-            pdfFactory.factory.filter(content, messageService.getProperty('lbl.filter.pdf.intygstyper'), intygstyperFilter);
+            pdfFactory.factory.allFilters(content, enhetsFilterAllSelected, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter, intygstyperFilter);
 
             angular.forEach(charts, function(chart) {
                 if (angular.isArray(chart)) {
