@@ -26,7 +26,7 @@ module.exports = function(config) {
             'src/main/webapp/bower_components/lodash/lodash.js',
             'src/main/webapp/bower_components/stackblur-canvas/dist/stackblur.js',
             'src/main/webapp/bower_components/rgb-color/dist/rgb-color.js',
-            'src/main/webapp/bower_components/canvg-canvg/canvg.js',
+            'src/main/webapp/bower_components/canvg-canvg/dist/browser/canvg.js',
             'src/main/webapp/bower_components/momentjs/moment.js',
             'src/main/webapp/bower_components/dropzone/dist/min/dropzone.min.js',
             'src/main/webapp/bower_components/ngstorage/ngStorage.js',
@@ -91,8 +91,14 @@ module.exports = function(config) {
         // - Safari (only Mac)
         // - PhantomJS
         // - IE (only Windows)
-        browsers: ['PhantomJS'],
+        browsers: ['ChromeHeadless'],
 
+        plugins : [
+            'karma-chrome-launcher',
+            'karma-coverage',
+            'karma-jasmine',
+            'karma-ng-html2js-preprocessor'
+        ],
 
         // Continuous Integration mode
         // if true, it capture browsers, run tests and exit

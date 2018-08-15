@@ -54,12 +54,23 @@
                 if (first[propertyName] === second[propertyName]) {
                     return 0;
                 }
-                if (ObjectHelper.isEmpty(first[propertyName]) || (isSet(alwaysLast) && first[propertyName].indexOf(alwaysLast) > -1)) {
+
+                if (ObjectHelper.isEmpty(first[propertyName])) {
                     return 1;
                 }
-                if (ObjectHelper.isEmpty(second[propertyName]) || (isSet(alwaysLast) && second[propertyName].indexOf(alwaysLast) > -1)) {
+
+                if (ObjectHelper.isEmpty(second[propertyName])) {
                     return -1;
                 }
+
+                if (isSet(alwaysLast) && first[propertyName].indexOf(alwaysLast) > -1) {
+                    return 1;
+                }
+
+                if (isSet(alwaysLast) && second[propertyName].indexOf(alwaysLast) > -1) {
+                    return -1;
+                }
+
                 for (var i = 0; true; i++) {
                     if (first[propertyName].length <= i) {
                         return -1;
