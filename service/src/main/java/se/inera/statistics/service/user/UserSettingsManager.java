@@ -32,11 +32,7 @@ public class UserSettingsManager {
 
     @Transactional
     public void save(UserSettings userSettings) {
-        if (find(userSettings.getHsaId()) == null) {
-            manager.persist(userSettings);
-        } else {
-            manager.merge(userSettings);
-        }
+        manager.merge(userSettings);
     }
 
     @Transactional

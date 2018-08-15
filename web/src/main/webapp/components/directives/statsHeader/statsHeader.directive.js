@@ -40,18 +40,12 @@ angular.module('StatisticsApp')
                 };
 
                 $scope.openSettings = function() {
-                    var modalInstance = $uibModal.open({
+                    $uibModal.open({
                         animation: true,
                         templateUrl: '/components/directives/statSettings/statSettings.html',
                         controller: 'StatSettingsCtrl',
                         size: 'lg',
                         backdrop: 'true'
-                    });
-
-                    modalInstance.result.then(function() {
-                        //$scope.selectVardgivare({vgId: value});
-                    }, function() {
-
                     });
                 };
 

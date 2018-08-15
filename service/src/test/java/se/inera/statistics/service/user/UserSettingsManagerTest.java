@@ -48,28 +48,12 @@ public class UserSettingsManagerTest {
     }
 
     @Test
-    public void persistWhenMissing() {
-        Mockito.when(entityManager.find(Mockito.eq(UserSettings.class), Mockito.anyString())).thenReturn(null);
-
+    public void save() {
         UserSettings userSettings = new UserSettings();
         userSettings.setHsaId("test");
 
         userSettingsManager.save(userSettings);
 
-        Mockito.verify(entityManager, Mockito.times(1)).persist(Mockito.any());
-        Mockito.verify(entityManager, Mockito.times(0)).merge(Mockito.any());
-    }
-
-    @Test
-    public void mergeWhenFound() {
-        Mockito.when(entityManager.find(Mockito.eq(UserSettings.class), Mockito.anyString())).thenReturn(new UserSettings());
-
-        UserSettings userSettings = new UserSettings();
-        userSettings.setHsaId("test");
-
-        userSettingsManager.save(userSettings);
-
-        Mockito.verify(entityManager, Mockito.times(0)).persist(Mockito.any());
         Mockito.verify(entityManager, Mockito.times(1)).merge(Mockito.any());
     }
 }
