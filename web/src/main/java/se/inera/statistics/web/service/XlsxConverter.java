@@ -18,15 +18,6 @@
  */
 package se.inera.statistics.web.service;
 
-import com.google.common.annotations.VisibleForTesting;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.web.model.*;
-
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
@@ -34,6 +25,28 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Hyperlink;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.annotations.VisibleForTesting;
+import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
+import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.model.TableDataReport;
+import se.inera.statistics.web.model.TableHeader;
 
 final class XlsxConverter {
     private static final Logger LOG = LoggerFactory.getLogger(XlsxConverter.class);
@@ -93,13 +106,14 @@ final class XlsxConverter {
         int currentRow = 0;
         currentRow = addReportHeader(tableData, report, sheet, currentRow);
         sheet.createRow(currentRow++);
-        currentRow = addFilters(tableData.getFilter(), filterSelections, sheet, currentRow);
+        currentRow = addFilters(tableData.getActiveFilters(), tableData.getFilter(), filterSelections, sheet, currentRow);
         sheet.createRow(currentRow++);
         currentRow = addDataTable(tableData.getTableData(), sheet, currentRow);
         LOG.info(currentRow + " rows added to xlsx-export");
     }
 
-    private int addFilters(FilterDataResponse filter, FilterSelections filterSelections, Sheet dataSheet, int startRow) {
+    private int addFilters(ActiveFilters activeFilters, FilterDataResponse filter, FilterSelections filterSelections,
+                           Sheet dataSheet, int startRow) {
         final List<String> enheter = filterSelections.getEnhetNames();
         final List<String> dxs = filterSelections.isAllAvailableDxsSelectedInFilter()
                 ? Collections.emptyList() : filter.getDiagnoser();
@@ -122,15 +136,26 @@ final class XlsxConverter {
             sheet.createRow(currentRow++);
         }
 
-        if (filterSelections.isAllAvailableEnhetsSelectedInFilter()) {
-            currentRow = addFilter(sheet, currentRow, enheter, "Enheter");
-        } else {
-            currentRow = addFilter(sheet, currentRow, enheter, "Valda enheter");
+        if (activeFilters == null || activeFilters.isEnhets()) {
+            if (filterSelections.isAllAvailableEnhetsSelectedInFilter()) {
+                currentRow = addFilter(sheet, currentRow, enheter, "Enheter");
+            } else {
+                currentRow = addFilter(sheet, currentRow, enheter, "Valda enheter");
+            }
         }
-        currentRow = addFilter(sheet, currentRow, getDxNames(dxs), "Valda diagnoser");
-        currentRow = addFilter(sheet, currentRow, sjukskrivningslangds, "Valda sjukskrivningslängder");
-        currentRow = addFilter(sheet, currentRow, aldersgrupps, "Valda åldersgrupper");
-        currentRow = addFilter(sheet, currentRow, intygstyper, "Valda intygstyper");
+
+        if (activeFilters == null || activeFilters.isDiagnos()) {
+            currentRow = addFilter(sheet, currentRow, getDxNames(dxs), "Valda diagnoser");
+        }
+        if (activeFilters == null || activeFilters.isSjukskrivningslangds()) {
+            currentRow = addFilter(sheet, currentRow, sjukskrivningslangds, "Valda sjukskrivningslängder");
+        }
+        if (activeFilters == null || activeFilters.isAgeGroups()) {
+            currentRow = addFilter(sheet, currentRow, aldersgrupps, "Valda åldersgrupper");
+        }
+        if (activeFilters == null || activeFilters.isIntygTypes()) {
+            currentRow = addFilter(sheet, currentRow, intygstyper, "Valda intygstyper");
+        }
 
         int currentRowDataSheet = useSeparateSheetForFilters ? startRow : currentRow;
         if (useSeparateSheetForFilters) {
