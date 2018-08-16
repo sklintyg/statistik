@@ -33,7 +33,7 @@
 </div>
 
 <div data-ng-if="UserModel.get().enableVerksamhetMenu" class="header-links">
-  <a id="settingsLink" href ng-click="openSettings()"><span message key="lbl.settings"></span></a>
+  <a id="settingsLink" data-ng-if="showSettings()" href ng-click="openSettings()"><span message key="lbl.settings"></span></a>
 
   <a id="logoutLink" href="saml/logout"><span message key="lbl.log-out"></span></a>
 </div>

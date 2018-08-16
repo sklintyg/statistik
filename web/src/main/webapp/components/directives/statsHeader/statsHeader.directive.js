@@ -35,6 +35,10 @@ angular.module('StatisticsApp')
                 $scope.AppModel = AppModel;
                 $scope.UserModel = UserModel;
 
+                $scope.showSettings = function() {
+                    return !UserModel.get().isProcessledare;
+                };
+
                 $scope.changeVardgivare = function(vgId) {
                     $scope.changeVg({vgId: vgId});
                 };
