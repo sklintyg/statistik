@@ -9,7 +9,7 @@
     <div ng-repeat="setting in settings">
       <h3>
         <span message key="{{::setting.title}}" disable-highlight-words="true"></span>
-        <span uib-tooltip="{{::setting.help}}">?</span>
+        <i uib-tooltip="{{::setting.help}}" class="fa fa-question-circle"></i>
       </h3>
       <stat-toggle class="settings-checkbox"
                    value="setting.value"
