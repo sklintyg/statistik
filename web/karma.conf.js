@@ -2,6 +2,8 @@
 // http://karma-runner.github.io/0.10/config/configuration-file.html
 
 module.exports = function(config) {
+    'use strict';
+
     config.set({
         // base path, that will be used to resolve files and exclude
         basePath: '',
@@ -91,7 +93,16 @@ module.exports = function(config) {
         // - Safari (only Mac)
         // - PhantomJS
         // - IE (only Windows)
-        browsers: ['ChromeHeadless'],
+        browsers: ['ChromeHeadlessNoSandbox'],
+        customLaunchers: {
+            ChromeHeadlessNoSandbox: {
+                base: 'ChromeHeadless',
+                flags: [
+                    '--no-sandbox', // required to run without privileges in docker
+                    '--disable-web-security'
+                ]
+            }
+        },
 
         plugins : [
             'karma-chrome-launcher',
