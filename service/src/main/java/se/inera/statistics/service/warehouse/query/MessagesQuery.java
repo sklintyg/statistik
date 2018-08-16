@@ -18,25 +18,40 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
-import se.inera.statistics.service.report.model.*;
+import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.ResponseUtil;
 import se.inera.statistics.service.warehouse.message.CountDTOAmne;
 import se.inera.statistics.service.warehouse.message.MessageWidelineLoader;
 import se.inera.statistics.service.warehouse.message.MsgAmne;
-
-import java.time.LocalDate;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Component
 public class MessagesQuery {
@@ -100,7 +115,10 @@ public class MessagesQuery {
         Iterator<KonDataRow> rowsNew = andelKompletteringar.getRows().iterator();
         Iterator<KonDataRow> rowsOld = resultToAggregate.getRows().iterator();
         List<KonDataRow> list = ResponseUtil.getKonDataRows(filter.getNumberOfMonths(), rowsNew, rowsOld, cutoff);
-        return new KonDataResponse(andelKompletteringar.getGroups(), list);
+        ActiveFilters activeFilters = resultToAggregateIn != null
+                ? resultToAggregateIn.getActiveFilters() : ActiveFilters.getForMeddelanden();
+
+        return new KonDataResponse(activeFilters, andelKompletteringar.getGroups(), list);
     }
 
     public SimpleKonResponse getAndelKompletteringarTvarsnitt(MessagesFilter filter) {
@@ -177,7 +195,7 @@ public class MessagesQuery {
         for (MsgAmne msgAmne : msgAmnes) {
             groups.add(msgAmne.name());
         }
-        return new KonDataResponse(groups, result);
+        return new KonDataResponse(ActiveFilters.getForMeddelanden(), groups, result);
     }
 
     private SimpleKonResponse convertToAndelKompletteringarTvarsnitt(List<CountDTOAmne> rows, LocalDate from, int numberOfMonths) {
@@ -226,7 +244,7 @@ public class MessagesQuery {
             }
         }
 
-        return new SimpleKonResponse(result);
+        return new SimpleKonResponse(ActiveFilters.getForMeddelanden(), result);
     }
 
     private KonDataResponse convertToAndelKompletteringar(List<CountDTOAmne> rows, LocalDate start, int perioder, int cutoff) {
@@ -293,7 +311,7 @@ public class MessagesQuery {
                 groups.add(intygTypes[j].name());
             }
         }
-        return new KonDataResponse(groups, result);
+        return new KonDataResponse(ActiveFilters.getForMeddelanden(), groups, result);
     }
 
     private KonDataResponse convertToMessagesPerAmnePerLakare(List<CountDTOAmne> rows, LocalDate start, int perioder) {
@@ -403,7 +421,7 @@ public class MessagesQuery {
                 groups.add(typeToName.apply(type) + GROUP_NAME_SEPARATOR + msgAmne.name());
             }
         }
-        return new KonDataResponse(groups, result);
+        return new KonDataResponse(ActiveFilters.getForMeddelanden(), groups, result);
     }
 
     private List<String> getEnhets(List<CountDTOAmne> rows) {
@@ -443,7 +461,7 @@ public class MessagesQuery {
             result.add(new SimpleKonDataRow(displayDate, female, male));
         }
 
-        return new SimpleKonResponse(result);
+        return new SimpleKonResponse(ActiveFilters.getForMeddelanden(), result);
     }
 
     private SimpleKonResponse convertToSimpleResponseTvarsnitt(List<MessageWidelineLoader.CountDTO> rows) {
@@ -462,7 +480,7 @@ public class MessagesQuery {
 
         result.add(new SimpleKonDataRow("Totalt", female, male));
 
-        return new SimpleKonResponse(result);
+        return new SimpleKonResponse(ActiveFilters.getForMeddelanden(), result);
     }
 
     private SimpleKonResponse convertToSimpleResponseTvarsnittPerAmne(List<CountDTOAmne> rows) {
@@ -487,7 +505,7 @@ public class MessagesQuery {
             result.add(new SimpleKonDataRow(text, femaleSeries[i], maleSeries[i], msgAmne));
         }
 
-        return new SimpleKonResponse(result);
+        return new SimpleKonResponse(ActiveFilters.getForMeddelanden(), result);
     }
 
     private KonDataResponse convertToSimpleResponseTvarsnittPerAmnePerLakare(List<CountDTOAmne> rows) {
@@ -531,7 +549,7 @@ public class MessagesQuery {
         for (MsgAmne msgAmne : msgAmnes) {
             groups.add(msgAmne.name());
         }
-        return new KonDataResponse(groups, result);
+        return new KonDataResponse(ActiveFilters.getForMeddelanden(), groups, result);
     }
 
 }

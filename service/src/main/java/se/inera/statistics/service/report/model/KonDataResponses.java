@@ -18,15 +18,15 @@
  */
 package se.inera.statistics.service.report.model;
 
-import com.google.common.collect.HashMultimap;
-import se.inera.statistics.hsa.model.HsaIdAny;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import com.google.common.collect.HashMultimap;
+import se.inera.statistics.hsa.model.HsaIdAny;
 
 public final class KonDataResponses {
 
@@ -52,7 +52,7 @@ public final class KonDataResponses {
             finalNames.add(hsaIdsToNames.get(key) + nameSuffix);
         }
 
-        return new KonDataResponse(finalNames, response.getRows());
+        return new KonDataResponse(response.getActiveFilters(), finalNames, response.getRows());
     }
 
     private static HashMap<HsaIdAny, Integer> getDuplicatesPerId(Map<HsaIdAny, String> idsToNames, List<HsaIdAny> idsToCompare) {

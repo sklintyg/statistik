@@ -18,18 +18,23 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.web.model.*;
-import se.inera.statistics.web.service.FilterDataResponse;
-
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.model.ChartCategory;
+import se.inera.statistics.web.model.ChartData;
+import se.inera.statistics.web.model.ChartSeries;
+import se.inera.statistics.web.model.NamedData;
+import se.inera.statistics.web.model.SimpleDetailsData;
+import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.service.FilterDataResponse;
 
 public class SjukfallPerSexConverter {
 
@@ -97,6 +102,6 @@ public class SjukfallPerSexConverter {
     public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, Range range) {
         TableData tableData = convertToTableData(casesPerMonth);
         ChartData chartData = convertToChartData(casesPerMonth);
-        return new SimpleDetailsData(tableData, chartData, range.toString(), FilterDataResponse.empty());
+        return new SimpleDetailsData(tableData, chartData, range.toString(), casesPerMonth.getActiveFilters(), FilterDataResponse.empty());
     }
 }

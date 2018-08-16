@@ -18,20 +18,6 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import com.google.common.collect.Lists;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.OverviewChartRow;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.util.Ranges;
-import se.inera.statistics.service.report.util.ReportUtil;
-import se.inera.statistics.service.report.util.SjukfallslangdUtil;
-import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.FilterPredicates;
-import se.inera.statistics.service.warehouse.SjukfallGroup;
-import se.inera.statistics.service.warehouse.SjukfallUtil;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,6 +26,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import com.google.common.collect.Lists;
+import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.OverviewChartRow;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.util.Ranges;
+import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.report.util.SjukfallslangdUtil;
+import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.FilterPredicates;
+import se.inera.statistics.service.warehouse.Sjukfall;
+import se.inera.statistics.service.warehouse.SjukfallGroup;
+import se.inera.statistics.service.warehouse.SjukfallUtil;
 
 public final class SjukskrivningslangdQuery {
     private static Ranges ranges = SjukfallslangdUtil.RANGES;
@@ -125,7 +126,7 @@ public final class SjukskrivningslangdQuery {
             rows.add(new SimpleKonDataRow(rowNameFunction.apply(sjukfallGroup), counter.getCountFemale(), counter.getCountMale()));
         }
 
-        return new SimpleKonResponse(rows);
+        return new SimpleKonResponse(ActiveFilters.getForSjukfall(), rows);
     }
 
     public static SimpleKonResponse getSjuksrivningslangd(Aisle aisle, FilterPredicates filter, LocalDate from,
@@ -139,7 +140,7 @@ public final class SjukskrivningslangdQuery {
                 rows.add(new SimpleKonDataRow(i.getName(), counter.getCountFemale(), counter.getCountMale()));
             }
         }
-        return new SimpleKonResponse(rows);
+        return new SimpleKonResponse(ActiveFilters.getForSjukfall(), rows);
 
     }
 

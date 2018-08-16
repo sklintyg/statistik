@@ -18,14 +18,17 @@
  */
 package se.inera.statistics.web.model;
 
+import java.util.List;
+
+import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.service.FilterDataResponse;
-
-import java.util.List;
 
 public interface FilteredDataReport {
 
     FilterDataResponse getFilter();
+
+    ActiveFilters getActiveFilters();
 
     List<Message> getMessages();
 

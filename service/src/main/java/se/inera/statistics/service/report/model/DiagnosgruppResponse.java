@@ -26,8 +26,8 @@ public class DiagnosgruppResponse extends KonDataResponse {
 
     private final List<? extends Icd> icdTyps;
 
-    public DiagnosgruppResponse(List<? extends Icd> icdTyps, List<KonDataRow> rows) {
-        super(getStringGroups(icdTyps), rows);
+    public DiagnosgruppResponse(ActiveFilters activeFilters, List<? extends Icd> icdTyps, List<KonDataRow> rows) {
+        super(activeFilters, getStringGroups(icdTyps), rows);
         this.icdTyps = icdTyps;
     }
 

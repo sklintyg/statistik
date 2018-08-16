@@ -16,22 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.web.model;
+package se.inera.statistics.service.report.model;
 
-import se.inera.statistics.service.report.util.Icd10;
+public abstract class ActiveFilterResponse {
 
-public class DiagnosisSubGroupStatisticsData extends DualSexStatisticsData {
+    private ActiveFilters activeFilters;
 
-    private final String dxGroup;
-
-    public DiagnosisSubGroupStatisticsData(DualSexStatisticsData data, Icd10.Id dxGroup) {
-        super(data.getTableData(), data.getMaleChart(), data.getFemaleChart(),
-                data.getPeriod(), data.getActiveFilters(), data.getFilter(), data.getMessages());
-        this.dxGroup = dxGroup != null ? dxGroup.getVisibleId() + " " + dxGroup.getName() : "";
+    public ActiveFilterResponse(ActiveFilters activeFilters) {
+        this.activeFilters = activeFilters;
     }
 
-    public String getDxGroup() {
-        return dxGroup;
+    public ActiveFilters getActiveFilters() {
+        return activeFilters;
     }
-
 }

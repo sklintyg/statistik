@@ -223,38 +223,38 @@ public class NationellDataInvoker {
 
     private NationellDataInfo populateResults(NationellDataInfo result, NationellDataHolder data) {
 
-        result.setAntalIntygResult(new SimpleKonResponse(data.getAntalIntygResult()));
+        result.setAntalIntygResult(new SimpleKonResponse(null, data.getAntalIntygResult()));
 
         if (data.getDiagnosgrupperResult() == null) {
-            data.setDiagnosgrupperResult(new DiagnosgruppResponse(new ArrayList<>(), new ArrayList<>()));
+            data.setDiagnosgrupperResult(new DiagnosgruppResponse(null, new ArrayList<>(), new ArrayList<>()));
         }
         result.setDiagnosgrupperResult(data.getDiagnosgrupperResult());
 
         for (Icd10.Kapitel kapitel : icd10.getKapitel(false)) {
             if (!data.getDiagnosavsnittResult().containsKey(kapitel)) {
-                data.getDiagnosavsnittResult().put(kapitel, new DiagnosgruppResponse(new ArrayList<>(), new ArrayList<>()));
+                data.getDiagnosavsnittResult().put(kapitel, new DiagnosgruppResponse(null, new ArrayList<>(), new ArrayList<>()));
             }
         }
         result.setDiagnosavsnittResult(data.getDiagnosavsnittResult());
 
         if (data.getAldersgrupperResult() == null) {
-            data.setAldersgrupperResult(new SimpleKonResponse(new ArrayList<>()));
+            data.setAldersgrupperResult(new SimpleKonResponse(null, new ArrayList<>()));
         }
         result.setAldersgrupperResult(data.getAldersgrupperResult());
 
         if (data.getSjukskrivningsgradResult() == null) {
-            data.setSjukskrivningsgradResult(new KonDataResponse(new ArrayList<>(), new ArrayList<>()));
+            data.setSjukskrivningsgradResult(new KonDataResponse(null, new ArrayList<>(), new ArrayList<>()));
         }
         result.setSjukskrivningsgradResult(data.getSjukskrivningsgradResult());
 
         if (data.getSjukfallslangdResult() == null) {
-            data.setSjukfallslangdResult(new SimpleKonResponse(new ArrayList<>()));
+            data.setSjukfallslangdResult(new SimpleKonResponse(null, new ArrayList<>()));
         }
         result.setSjukfallslangdResult(data.getSjukfallslangdResult());
 
-        result.setLanResult(new SimpleKonResponse(data.getLanResult()));
+        result.setLanResult(new SimpleKonResponse(null, data.getLanResult()));
 
-        result.setOverviewGenderResult(new SimpleKonResponse(data.getOverviewAntalIntygResult()));
+        result.setOverviewGenderResult(new SimpleKonResponse(null, data.getOverviewAntalIntygResult()));
         result.setOverviewForandringResult(data.getOverviewForandringResult());
         result.setOverviewDiagnosgrupperResult(data.getOverviewDiagnosgrupperResultNullSafe());
         result.setOverviewPreviousAldersgruppResult(data.getOverviewPreviousAldersgrupperResult());
@@ -266,19 +266,19 @@ public class NationellDataInvoker {
         result.setOverviewLangaSjukfallResult(data.getOverviewLangaSjukfallResult());
         result.setOverviewLangaSjukfallDiffCurrentResult(data.getOverviewLangaSjukfallDiffCurrentResult());
         result.setOverviewLangaSjukfallDiffPreviousResult(data.getOverviewLangaSjukfallDiffPreviousResult());
-        result.setOverviewLanPreviousResult(new SimpleKonResponse(data.getOverviewLanPreviousResult()));
-        result.setOverviewLanCurrentResult(new SimpleKonResponse(data.getOverviewLanCurrentResult()));
+        result.setOverviewLanPreviousResult(new SimpleKonResponse(null, data.getOverviewLanPreviousResult()));
+        result.setOverviewLanCurrentResult(new SimpleKonResponse(null, data.getOverviewLanCurrentResult()));
 
         if (result.getMeddelandenPerAmneResult() == null) {
-            result.setMeddelandenPerAmneResult(new KonDataResponse(new ArrayList<>(), new ArrayList<>()));
+            result.setMeddelandenPerAmneResult(new KonDataResponse(null, new ArrayList<>(), new ArrayList<>()));
         }
 
         if (result.getIntygPerTypResult() == null) {
-            result.setIntygPerTypResult(new KonDataResponse(new ArrayList<>(), new ArrayList<>()));
+            result.setIntygPerTypResult(new KonDataResponse(null, new ArrayList<>(), new ArrayList<>()));
         }
 
         if (result.getAndelKompletteringarResult() == null) {
-            result.setAndelKompletteringarResult(new KonDataResponse(new ArrayList<>(), new ArrayList<>()));
+            result.setAndelKompletteringarResult(new KonDataResponse(null, new ArrayList<>(), new ArrayList<>()));
         }
 
         return result;

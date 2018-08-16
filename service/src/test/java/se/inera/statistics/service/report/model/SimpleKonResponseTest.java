@@ -29,7 +29,7 @@ import static org.junit.Assert.*;
 public class SimpleKonResponseTest {
 
     @Test
-    public void testCreateWithNullInput() throws Exception {
+    public void testCreateWithNullInput() {
         //Given
         final KonDataResponse diagnosgruppResponse = null;
 
@@ -42,9 +42,9 @@ public class SimpleKonResponseTest {
     }
 
     @Test
-    public void testCreateWithEmptyInput() throws Exception {
+    public void testCreateWithEmptyInput() {
         //Given
-        final KonDataResponse diagnosgruppResponse = new KonDataResponse(new ArrayList<String>(), new ArrayList<KonDataRow>());
+        final KonDataResponse diagnosgruppResponse = new KonDataResponse(null, new ArrayList<String>(), new ArrayList<KonDataRow>());
 
         //When
         final SimpleKonResponse result = SimpleKonResponse.create(diagnosgruppResponse);
@@ -55,11 +55,11 @@ public class SimpleKonResponseTest {
     }
 
     @Test
-    public void testCreateGroupDataSummed() throws Exception {
+    public void testCreateGroupDataSummed() {
         //Given
         final List<String> groups = Arrays.asList("Group1");
         final List<KonDataRow> rows = Arrays.asList(new KonDataRow("rowname1", Arrays.asList(new KonField(1, 2))), new KonDataRow("rowname2", Arrays.asList(new KonField(3, 4))));
-        final KonDataResponse diagnosgruppResponse = new KonDataResponse(groups, rows);
+        final KonDataResponse diagnosgruppResponse = new KonDataResponse(null, groups, rows);
 
         //When
         final SimpleKonResponse result = SimpleKonResponse.create(diagnosgruppResponse);
@@ -74,11 +74,11 @@ public class SimpleKonResponseTest {
     }
 
     @Test
-    public void testMerge() throws Exception {
+    public void testMerge() {
         //Given
         final ArrayList<SimpleKonResponse> responses = new ArrayList<>();
-        responses.add(new SimpleKonResponse(Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
-        responses.add(new SimpleKonResponse(Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
+        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
+        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
 
         //When
         final SimpleKonResponse mergedResp = SimpleKonResponse.merge(responses, false);
@@ -97,13 +97,13 @@ public class SimpleKonResponseTest {
     }
 
     @Test
-    public void testMergeWithEqualGroupsWithMergeEqualRowsFlag() throws Exception {
+    public void testMergeWithEqualGroupsWithMergeEqualRowsFlag() {
         //Given
         final ArrayList<SimpleKonResponse> responses = new ArrayList<>();
-        responses.add(new SimpleKonResponse(Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
-        responses.add(new SimpleKonResponse(Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
-        responses.add(new SimpleKonResponse(Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
-        responses.add(new SimpleKonResponse(Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
+        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
+        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
+        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
+        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
 
         //When
         final SimpleKonResponse mergedResp = SimpleKonResponse.merge(responses, true);
@@ -122,13 +122,13 @@ public class SimpleKonResponseTest {
     }
 
     @Test
-    public void testMergeWithEqualGroupsWithoutMergeEqualRowsFlag() throws Exception {
+    public void testMergeWithEqualGroupsWithoutMergeEqualRowsFlag() {
         //Given
         final ArrayList<SimpleKonResponse> responses = new ArrayList<>();
-        responses.add(new SimpleKonResponse(Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
-        responses.add(new SimpleKonResponse(Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
-        responses.add(new SimpleKonResponse(Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
-        responses.add(new SimpleKonResponse(Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
+        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
+        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
+        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
+        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
 
         //When
         final SimpleKonResponse mergedResp = SimpleKonResponse.merge(responses, false);

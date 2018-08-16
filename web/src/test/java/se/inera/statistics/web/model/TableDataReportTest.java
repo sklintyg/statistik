@@ -22,6 +22,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.service.FilterDataResponse;
 
@@ -32,7 +34,7 @@ import java.util.List;
 public class TableDataReportTest {
 
     @Test
-    public void testIsEmptyTrue() throws Exception {
+    public void testIsEmptyTrue() {
         //Given
         final TableDataReport tableDataReport = new TableDataReport() {
 
@@ -60,6 +62,11 @@ public class TableDataReportTest {
             public List<ChartData> getChartDatas() {
                 return Collections.emptyList();
             }
+
+            @Override
+            public ActiveFilters getActiveFilters() {
+                return null;
+            }
         };
 
         //When
@@ -70,7 +77,7 @@ public class TableDataReportTest {
     }
 
     @Test
-    public void testIsEmptyFalse() throws Exception {
+    public void testIsEmptyFalse() {
         //Given
         final TableDataReport tableDataReport = new TableDataReport() {
 
@@ -98,6 +105,11 @@ public class TableDataReportTest {
             public List<ChartData> getChartDatas() {
                 return Arrays.asList(new ChartData(Arrays.asList(new ChartSeries("", Arrays.asList(1,2))), Arrays.asList(new ChartCategory("cat1"), new ChartCategory("cat2"))));
             }
+
+            @Override
+            public ActiveFilters getActiveFilters() {
+                return null;
+            }
         };
 
         //When
@@ -108,7 +120,7 @@ public class TableDataReportTest {
     }
 
     @Test
-    public void testIsEmptyTrueWithZeroValues() throws Exception {
+    public void testIsEmptyTrueWithZeroValues() {
         //Given
         final TableDataReport tableDataReport = new TableDataReport() {
 
@@ -135,6 +147,11 @@ public class TableDataReportTest {
             @Override
             public List<ChartData> getChartDatas() {
                 return Arrays.asList(new ChartData(Arrays.asList(new ChartSeries("", Arrays.asList(0,0))), Arrays.asList(new ChartCategory("cat1"), new ChartCategory("cat2"))));
+            }
+
+            @Override
+            public ActiveFilters getActiveFilters() {
+                return null;
             }
         };
 

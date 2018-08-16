@@ -18,7 +18,13 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import java.time.Clock;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
+
+import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -27,11 +33,6 @@ import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterSettings;
-import se.inera.statistics.web.service.responseconverter.GroupedSjukfallConverter;
-
-import java.time.Clock;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -46,7 +47,7 @@ public class GroupedSjukfallConverterTest {
         businessRows.add(new SimpleKonDataRow("enhet1", 12, 13));
         businessRows.add(new SimpleKonDataRow("enhet2", 20, 30));
         businessRows.add(new SimpleKonDataRow("enhet3", 5, 25));
-        SimpleKonResponse casesPerUnit = new SimpleKonResponse(businessRows);
+        SimpleKonResponse casesPerUnit = new SimpleKonResponse(ActiveFilters.getForSjukfall(), businessRows);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
         SimpleDetailsData result = converter.convert(casesPerUnit, filterSettings);
         TableData tableData = result.getTableData();

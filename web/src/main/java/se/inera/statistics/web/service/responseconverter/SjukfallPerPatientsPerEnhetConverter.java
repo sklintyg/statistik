@@ -76,7 +76,8 @@ public class SjukfallPerPatientsPerEnhetConverter {
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
         final List<Message> combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
-        return new SimpleDetailsData(tableData, chartData, range.toString(), filterResponse, combinedMessage);
+        return new SimpleDetailsData(tableData, chartData, range.toString(), casesPerMonth.getActiveFilters(),
+                filterResponse, combinedMessage);
     }
 
     private TableData convertToTableData(List<SimpleKonDataRow> list) {

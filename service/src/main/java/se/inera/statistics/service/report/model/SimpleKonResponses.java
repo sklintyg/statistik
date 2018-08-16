@@ -18,14 +18,14 @@
  */
 package se.inera.statistics.service.report.model;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 public final class SimpleKonResponses {
 
@@ -39,7 +39,7 @@ public final class SimpleKonResponses {
         for (SimpleKonDataRow row : rows) {
             updatedRows.add(new SimpleKonDataRow(namePerExtras.get(row.getExtras()), row.getData(), row.getExtras()));
         }
-        return new SimpleKonResponse(updatedRows);
+        return new SimpleKonResponse(input.getActiveFilters(), updatedRows);
     }
 
     private static Map<Object, String> getNamePerExtrasWhereExtrasIsAddedToDuplicates(List<SimpleKonDataRow> rows) {

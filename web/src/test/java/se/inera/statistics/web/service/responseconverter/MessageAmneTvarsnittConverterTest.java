@@ -18,7 +18,14 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import java.time.Clock;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.Test;
+
+import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -27,25 +34,18 @@ import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterSettings;
 
-import java.time.Clock;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MessageAmneTvarsnittConverterTest {
 
     @Test
-    public void testConvertEmptyDataWillRemoveOkantAmne() throws Exception {
+    public void testConvertEmptyDataWillRemoveOkantAmne() {
         //Given
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.year(Clock.systemDefaultZone()));
         final List<SimpleKonDataRow> simpleKonDataRows = Arrays.stream(MsgAmne.values())
                 .map(msgAmne -> new SimpleKonDataRow(msgAmne.name(), 0, 0, msgAmne))
                 .collect(Collectors.toList());
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(ActiveFilters.getForMeddelanden(), simpleKonDataRows);
 
         //When
         final MessageAmneTvarsnittConverter converter = MessageAmneTvarsnittConverter.newTvarsnitt();
@@ -56,13 +56,13 @@ public class MessageAmneTvarsnittConverterTest {
     }
 
     @Test
-    public void testConvertNonEmptyDataWillKeepOkantAmne() throws Exception {
+    public void testConvertNonEmptyDataWillKeepOkantAmne() {
         //Given
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.year(Clock.systemDefaultZone()));
         final List<SimpleKonDataRow> simpleKonDataRows = Arrays.stream(MsgAmne.values())
                 .map(msgAmne -> new SimpleKonDataRow(msgAmne.name(), 1, 0, msgAmne))
                 .collect(Collectors.toList());
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(ActiveFilters.getForMeddelanden(), simpleKonDataRows);
 
         //When
         final MessageAmneTvarsnittConverter converter = MessageAmneTvarsnittConverter.newTvarsnitt();

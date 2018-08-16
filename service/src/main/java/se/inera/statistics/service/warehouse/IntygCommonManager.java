@@ -39,9 +39,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.collect.HashMultiset;
-import org.springframework.transaction.annotation.Transactional;
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -51,6 +51,7 @@ import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.processlog.intygsent.IntygSentEvent;
 import se.inera.statistics.service.processlog.intygsent.IntygSentHelper;
+import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -135,7 +136,7 @@ public class IntygCommonManager {
         Iterator<KonDataRow> rowsNew = messagesTvarsnittPerAmne.getRows().iterator();
         Iterator<KonDataRow> rowsOld = resultToAggregate.getRows().iterator();
         List<KonDataRow> list = ResponseUtil.getKonDataRows(intygFilter.getRange().getNumberOfMonths(), rowsNew, rowsOld, cutoff);
-        return new KonDataResponse(messagesTvarsnittPerAmne.getGroups(), list);
+        return new KonDataResponse(ActiveFilters.getForIntyg(), messagesTvarsnittPerAmne.getGroups(), list);
     }
 
     private KonDataResponse getIntygPerType(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter, boolean isTvarsnitt) {
@@ -184,7 +185,7 @@ public class IntygCommonManager {
             rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(intygCommonGroup.getRange().getFrom()), list));
         }
 
-        return new KonDataResponse(groupNames, rows);
+        return new KonDataResponse(ActiveFilters.getForIntyg(), groupNames, rows);
     }
 
     private SimpleKonResponse getIntygCommonMaleFemale(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter,
@@ -198,7 +199,7 @@ public class IntygCommonManager {
             final String periodName = rowNameFunction.apply(intygCommonGroup);
             result.add(new SimpleKonDataRow(periodName, female, male));
         }
-        return new SimpleKonResponse(result);
+        return new SimpleKonResponse(ActiveFilters.getForIntyg(), result);
     }
 
     private List<IntygCommonGroup> getIntygCommonGroups(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter,

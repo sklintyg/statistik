@@ -18,8 +18,18 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
@@ -39,15 +49,6 @@ import se.inera.statistics.service.warehouse.query.MessagesQuery;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import static se.inera.statistics.service.warehouse.ResponseUtil.filterCutoff;
 
@@ -124,7 +125,7 @@ class NationellData {
             list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale(), cutoff) + b.getFemale(),
                     filterCutoff(a.getMale(), cutoff) + b.getMale()));
         }
-        return new SimpleKonResponse(list);
+        return new SimpleKonResponse(null, list);
     }
 
     KonDataResponse getSjukskrivningsgrad(Aisle aisle, Range range, KonDataResponse sjukskrivningsgradResult) {
@@ -145,7 +146,7 @@ class NationellData {
         Iterator<KonDataRow> rowsNew = grader.getRows().iterator();
         Iterator<KonDataRow> rowsOld = sjukskrivningsgradResult.getRows().iterator();
         List<KonDataRow> list = ResponseUtil.getKonDataRows(perioder, rowsNew, rowsOld, cutoff);
-        return new KonDataResponse(sjukskrivningsgradResult.getGroups(), list);
+        return new KonDataResponse(null, sjukskrivningsgradResult.getGroups(), list);
     }
 
     SimpleKonResponse getSjukfallslangd(Aisle aisle, Range range, SimpleKonResponse sjukfallslangdResult) {
@@ -164,7 +165,7 @@ class NationellData {
             final int male = filterCutoff(a.getMale(), cutoff) + b.getMale();
             list.add(new SimpleKonDataRow(a.getName(), female, male));
         }
-        return new SimpleKonResponse(list);
+        return new SimpleKonResponse(null, list);
     }
 
     DiagnosgruppResponse getDiagnosgrupperOverview(Aisle aisle, Range range, DiagnosgruppResponse diagnosgrupperResult) {
@@ -198,7 +199,7 @@ class NationellData {
         }
         final List<? extends Icd> icdTyps = diagnosgrupperResult.getIcdTyps().size() < diagnosgrupper.getIcdTyps().size()
                 ? diagnosgrupper.getIcdTyps() : diagnosgrupperResult.getIcdTyps();
-        return new DiagnosgruppResponse(icdTyps, list);
+        return new DiagnosgruppResponse(null, icdTyps, list);
     }
 
     private int safeSumForIndex(KonDataRow newRow, KonDataRow existingRow, int index, Kon kon) {
@@ -233,7 +234,7 @@ class NationellData {
             }
             list.add(new KonDataRow(a.getName(), c));
         }
-        diagnosavsnitts.put(kapitel, new DiagnosgruppResponse(diagnosavsnitts.get(kapitel).getIcdTyps(), list));
+        diagnosavsnitts.put(kapitel, new DiagnosgruppResponse(null, diagnosavsnitts.get(kapitel).getIcdTyps(), list));
     }
 
     void addSjukfallPerLanToResult(Range range, ArrayList<SimpleKonDataRow> result, Aisle aisle) {
@@ -289,7 +290,7 @@ class NationellData {
             list.add(new SimpleKonDataRow(a.getName(), filterCutoff(a.getFemale(), cutoff) + b.getFemale(),
                     filterCutoff(a.getMale(), cutoff) + b.getMale()));
         }
-        return new SimpleKonResponse(list);
+        return new SimpleKonResponse(null, list);
     }
 
     private SimpleKonResponse createEmptySimpleKonResponse(SimpleKonResponse base) {
@@ -297,7 +298,7 @@ class NationellData {
         for (SimpleKonDataRow existingRow : base.getRows()) {
             rows.add(new SimpleKonDataRow(existingRow.getName(), 0, 0));
         }
-        return new SimpleKonResponse(rows);
+        return new SimpleKonResponse(null, rows);
     }
 
 }

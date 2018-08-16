@@ -27,10 +27,10 @@ import static org.junit.Assert.*;
 public class SimpleKonResponsesTest {
 
     @Test
-    public void testAddExtrasToNameDuplicatesEmptyInput() throws Exception {
+    public void testAddExtrasToNameDuplicatesEmptyInput() {
         //Given
         final ArrayList<SimpleKonDataRow> skdr = new ArrayList<>();
-        final SimpleKonResponse skr = new SimpleKonResponse(skdr);
+        final SimpleKonResponse skr = new SimpleKonResponse(null, skdr);
 
         //When
         final SimpleKonResponse result = SimpleKonResponses.addExtrasToNameDuplicates(skr);
@@ -40,13 +40,13 @@ public class SimpleKonResponsesTest {
     }
 
     @Test
-    public void testAddExtrasToNameDuplicates() throws Exception {
+    public void testAddExtrasToNameDuplicates() {
         //Given
         final ArrayList<SimpleKonDataRow> skdr = new ArrayList<>();
         skdr.add(new SimpleKonDataRow("ABC", 0, 0, 1));
         skdr.add(new SimpleKonDataRow("abc", 0, 0, 2));
         skdr.add(new SimpleKonDataRow("CBA", 0, 0, 3));
-        final SimpleKonResponse skr = new SimpleKonResponse(skdr);
+        final SimpleKonResponse skr = new SimpleKonResponse(null, skdr);
 
         //When
         final SimpleKonResponse result = SimpleKonResponses.addExtrasToNameDuplicates(skr);

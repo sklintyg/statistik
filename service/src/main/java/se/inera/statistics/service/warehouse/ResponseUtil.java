@@ -18,15 +18,15 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.warehouse.query.AndelExtras;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public final class ResponseUtil {
 
@@ -35,12 +35,12 @@ public final class ResponseUtil {
 
     public static KonDataResponse createEmptyKonDataResponse(KonDataResponse kdr) {
         final ArrayList<KonDataRow> rows = getKonDataRows(kdr);
-        return new KonDataResponse(kdr.getGroups(), rows);
+        return new KonDataResponse(kdr.getActiveFilters(), kdr.getGroups(), rows);
     }
 
     static DiagnosgruppResponse createEmptyDiagnosgruppResponse(DiagnosgruppResponse kdr) {
         final ArrayList<KonDataRow> rows = getKonDataRows(kdr);
-        return new DiagnosgruppResponse(kdr.getIcdTyps(), rows);
+        return new DiagnosgruppResponse(kdr.getActiveFilters(), kdr.getIcdTyps(), rows);
     }
 
     private static <T extends KonDataResponse> ArrayList<KonDataRow> getKonDataRows(T kdr) {

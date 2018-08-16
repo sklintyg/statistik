@@ -18,6 +18,11 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import com.google.common.collect.HashMultimap;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -25,11 +30,6 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.web.model.ChartData;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class DiagnosisGroupsTvarsnittConverter extends SimpleDualSexConverter {
 
@@ -41,7 +41,7 @@ public class DiagnosisGroupsTvarsnittConverter extends SimpleDualSexConverter {
     protected ChartData convertToChartData(SimpleKonResponse inputData) {
         HashMultimap<String, KonField> mergedGroups = getMergedGroups(inputData);
         final ArrayList<SimpleKonDataRow> mergedGroupSums = calculateMergedGroupSums(mergedGroups);
-        final SimpleKonResponse merged = new SimpleKonResponse(mergedGroupSums);
+        final SimpleKonResponse merged = new SimpleKonResponse(inputData.getActiveFilters(), mergedGroupSums);
         return super.convertToChartData(merged);
     }
 

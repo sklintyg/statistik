@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.ChartData;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DiagnosisSubGroupsTvarsnittConverter extends SimpleDualSexConverter {
 
@@ -53,7 +53,7 @@ public class DiagnosisSubGroupsTvarsnittConverter extends SimpleDualSexConverter
                 }
             }
         }
-        return new SimpleKonResponse(simpleKonDataRows);
+        return new SimpleKonResponse(skr.getActiveFilters(), simpleKonDataRows);
     }
 
     private KonField getDataForOtherGroups(SimpleKonResponse skr, List<Integer> topIndexes) {

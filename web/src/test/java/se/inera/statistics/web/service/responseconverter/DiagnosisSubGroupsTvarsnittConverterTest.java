@@ -19,6 +19,8 @@
 package se.inera.statistics.web.service.responseconverter;
 
 import org.junit.Test;
+
+import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -35,7 +37,7 @@ import static org.junit.Assert.*;
 public class DiagnosisSubGroupsTvarsnittConverterTest {
 
     @Test
-    public void testConvertedResponseDoesNotContainEmptyOvrigtGroupINTYG1821() throws Exception {
+    public void testConvertedResponseDoesNotContainEmptyOvrigtGroupINTYG1821() {
         //Given
         ArrayList<KonField> data = new ArrayList<>();
         data.add(new KonField(1, 0));
@@ -49,7 +51,7 @@ public class DiagnosisSubGroupsTvarsnittConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 0));
         final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(ActiveFilters.getForSjukfall(), simpleKonDataRows);
 
         //When
         final ChartData result = new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);
@@ -69,7 +71,7 @@ public class DiagnosisSubGroupsTvarsnittConverterTest {
     }
 
     @Test
-    public void testConvertedResponseDoesNotContainOvrigtGroupWhenOnly7NoneEmptySeriesExistsINTYG1821() throws Exception {
+    public void testConvertedResponseDoesNotContainOvrigtGroupWhenOnly7NoneEmptySeriesExistsINTYG1821() {
         //Given
         ArrayList<KonField> data = new ArrayList<>();
         data.add(new KonField(1, 0));
@@ -83,7 +85,7 @@ public class DiagnosisSubGroupsTvarsnittConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 1));
         final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(ActiveFilters.getForSjukfall(), simpleKonDataRows);
 
         //When
         final ChartData result = new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);
@@ -94,7 +96,7 @@ public class DiagnosisSubGroupsTvarsnittConverterTest {
     }
 
     @Test
-    public void testConvertedResponseDoesContainNoneEmptyOvrigtGroupINTYG1821() throws Exception {
+    public void testConvertedResponseDoesContainNoneEmptyOvrigtGroupINTYG1821() {
         //Given
         ArrayList<KonDataRow> rows = new ArrayList<>();
         ArrayList<KonField> data = new ArrayList<>();
@@ -109,7 +111,7 @@ public class DiagnosisSubGroupsTvarsnittConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 1));
         final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(ActiveFilters.getForSjukfall(), simpleKonDataRows);
 
         //When
         final ChartData result = new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);

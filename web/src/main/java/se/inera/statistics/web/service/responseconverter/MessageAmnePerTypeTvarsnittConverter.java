@@ -49,10 +49,11 @@ public class MessageAmnePerTypeTvarsnittConverter extends MultiDualSexConverter 
             removeGroupWithIndex(indexOfEmptyInternalIcd10Group, groups, rows);
             indexOfEmptyInternalIcd10Group = getIndexOfGroupToRemove(groups, rows);
         }
-        final KonDataResponse konDataResponse = new KonDataResponse(convertGroupNamesToText(groups), rows);
+        final KonDataResponse konDataResponse = new KonDataResponse(data.getActiveFilters(), convertGroupNamesToText(groups), rows);
         final DualSexStatisticsData dssd = super.convert(konDataResponse, filterSettings, null, "%1$s", COLORS);
         final ChartData chartData = MessageAmnePerTypeConverter.merge(dssd.getFemaleChart(), dssd.getMaleChart());
-        return new SimpleDetailsData(dssd.getTableData(), chartData, dssd.getPeriod(), dssd.getFilter(), dssd.getMessages());
+        return new SimpleDetailsData(dssd.getTableData(), chartData, dssd.getPeriod(), data.getActiveFilters(),
+                dssd.getFilter(), dssd.getMessages());
     }
 
     private List<String> convertGroupNamesToText(List<MsgAmne> groups) {

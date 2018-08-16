@@ -59,7 +59,7 @@ public final class AndelKompletteringarTvarsnittConverter extends SimpleDualSexC
             return new SimpleKonDataRow(parsedName, simpleKonDataRow.getData(), simpleKonDataRow.getExtras());
         }).collect(Collectors.toList());
 
-        return super.convert(new SimpleKonResponse(rowsToShow), filterSettings, message);
+        return super.convert(new SimpleKonResponse(casesPerMonth.getActiveFilters(), rowsToShow), filterSettings, message);
     }
 
     @Override

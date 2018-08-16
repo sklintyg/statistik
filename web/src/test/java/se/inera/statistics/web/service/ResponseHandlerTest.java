@@ -27,6 +27,7 @@ import org.mockito.MockitoAnnotations;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
+import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.Icd10;
@@ -75,7 +76,7 @@ public class ResponseHandlerTest {
     @Test
     public void testGetResponseWithNullData() {
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, null), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) response.getEntity()).get("empty"));
@@ -100,7 +101,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, Arrays.asList("1", "2", "3"), null, null, null, null, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));
@@ -114,7 +115,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, Arrays.asList("2", "1", "3"), null, null, null, null, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));
@@ -128,7 +129,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, Arrays.asList("1", "2"), null, null, null, null, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null,null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertFalse((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));
@@ -151,7 +152,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, enhets, null, null, null, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, enhets, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, enhets, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER));
@@ -166,7 +167,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, filteredEnhets, null, null, null, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, availableEnhets, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, availableEnhets, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER));
@@ -181,7 +182,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, filteredEnhets, null, null, null, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, availableEnhets, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, availableEnhets, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertFalse((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_ENHETS_SELECTED_IN_FILTER));
@@ -209,6 +210,11 @@ public class ResponseHandlerTest {
             @Override
             public boolean isEmpty() {
                 return false;
+            }
+
+            @Override
+            public ActiveFilters getActiveFilters() {
+                return null;
             }
         };
 
@@ -243,6 +249,11 @@ public class ResponseHandlerTest {
             public boolean isEmpty() {
                 return false;
             }
+
+            @Override
+            public ActiveFilters getActiveFilters() {
+                return null;
+            }
         };
 
         //When
@@ -269,7 +280,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, null, sjukskrivningslangds, null, null, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER));
@@ -284,7 +295,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, null, sjukskrivningslangds, null, null, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER));
@@ -298,7 +309,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, null, sjukskrivningslangds.subList(0, sjukskrivningslangds.size() - 1), null, null, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertFalse((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_SJUKSKRIVNINGSLANGDS_SELECTED_IN_FILTER));
@@ -312,7 +323,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, null, null, ageGroups, null, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER));
@@ -327,7 +338,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, null, null, ageGroups, null, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER));
@@ -341,7 +352,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, null, null, ageGroups.subList(0, ageGroups.size() - 1), null, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertFalse((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_AGEGROUPS_SELECTED_IN_FILTER));
@@ -355,7 +366,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, null, null, null, intygstyper, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_INTYGTYPES_SELECTED_IN_FILTER));
@@ -370,7 +381,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, null, null, null, intygstyper, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_INTYGTYPES_SELECTED_IN_FILTER));
@@ -384,7 +395,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, null, null, null, intygstyper.subList(0, intygstyper.size() - 1), true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertFalse((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_INTYGTYPES_SELECTED_IN_FILTER));
@@ -398,7 +409,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, null, null, null, null, useDefaultPeriod);
 
         //When
-        Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        Response response = responseHandler.getResponse(new SimpleDetailsData(null,null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) ((Map) response.getEntity()).get("filter")).get("useDefaultPeriod"));
@@ -412,7 +423,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, null, null, null, null, useDefaultPeriod);
 
         //When
-        Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        Response response = responseHandler.getResponse(new SimpleDetailsData(null,null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertFalse((Boolean) ((Map) ((Map) response.getEntity()).get("filter")).get("useDefaultPeriod"));
@@ -425,7 +436,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = FilterDataResponse.empty();
 
         //When
-        Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         validateNoDataNoFilterMessage(response);
@@ -437,7 +448,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, null, null, null, null, null, false);
 
         //When
-        Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         validateNoDataFilterMessage(response);
@@ -467,7 +478,7 @@ public class ResponseHandlerTest {
 
     private String getFilenameForReport(Report report) {
         final SimpleDetailsData data = new SimpleDetailsData(new TableData(Collections.emptyList(), Collections.emptyList()),
-                new ChartData(Collections.emptyList(), Collections.emptyList()), "", FilterDataResponse.empty());
+                new ChartData(Collections.emptyList(), Collections.emptyList()), "", null, FilterDataResponse.empty());
         final Response xlsx = responseHandler.getXlsx(data, Collections.emptyList(), report);
         final String header = xlsx.getHeaderString("Content-Disposition");
         final String startStr = "filename=";

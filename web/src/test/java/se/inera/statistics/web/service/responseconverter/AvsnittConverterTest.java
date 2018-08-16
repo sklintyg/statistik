@@ -19,6 +19,8 @@
 package se.inera.statistics.web.service.responseconverter;
 
 import org.junit.Test;
+
+import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -45,7 +47,7 @@ public class AvsnittConverterTest {
 
     @Test
     public void tableConverterTestEmptyInput() {
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Icd>(), new ArrayList<KonDataRow>());
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), new ArrayList<>(), new ArrayList<>());
         TableData tableData = new DiagnosisGroupsConverter().convertTable(resp, "");
         assertEquals("[[;1, ;1], [Period;1, Antal sjukfall totalt;1]]", tableData.getHeaders().toString());
         assertEquals("[]", tableData.getRows().toString());
@@ -62,7 +64,7 @@ public class AvsnittConverterTest {
         diagnosisGroupData.add(new KonField(3, 2));
         // CHECKSTYLE:ON MagicNumber
         rows.add(new KonDataRow("period1", diagnosisGroupData));
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(avsnitts, rows);
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), avsnitts, rows);
 
         //When
         TableData tableData = new DiagnosisGroupsConverter().convertTable(resp, "%1$s");
@@ -74,7 +76,7 @@ public class AvsnittConverterTest {
 
     @Test
     public void converterTestEmpty() {
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<Icd>(), new ArrayList<KonDataRow>());
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), new ArrayList<>(), new ArrayList<>());
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range(clock));
         DualSexStatisticsData data = new DiagnosisGroupsConverter().convert(resp, filterSettings);
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
@@ -92,7 +94,7 @@ public class AvsnittConverterTest {
         diagnosisGroupData.add(new KonField(3, 2));
         // CHECKSTYLE:ON MagicNumber
         rows.add(new KonDataRow("period1", diagnosisGroupData));
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(avsnitts, rows);
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), avsnitts, rows);
 
         //When
         DiagnosisGroupsConverter converter = new DiagnosisGroupsConverter();

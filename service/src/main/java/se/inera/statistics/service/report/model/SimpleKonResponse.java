@@ -18,19 +18,20 @@
  */
 package se.inera.statistics.service.report.model;
 
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class SimpleKonResponse {
+import com.google.common.collect.LinkedHashMultimap;
+import com.google.common.collect.Multimap;
+
+public class SimpleKonResponse extends ActiveFilterResponse {
 
     private final List<SimpleKonDataRow> rows;
 
-    public SimpleKonResponse(List<SimpleKonDataRow> rows) {
+    public SimpleKonResponse(ActiveFilters activeFilters, List<SimpleKonDataRow> rows) {
+        super(activeFilters);
         this.rows = rows;
     }
 
@@ -69,13 +70,13 @@ public class SimpleKonResponse {
 
     public static SimpleKonResponse create(KonDataResponse konDataResponse) {
         if (konDataResponse == null) {
-            return new SimpleKonResponse(Collections.<SimpleKonDataRow>emptyList());
+            return new SimpleKonResponse(null, Collections.<SimpleKonDataRow>emptyList());
         }
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         for (int i = 0; i < konDataResponse.getGroups().size(); i++) {
             simpleKonDataRows.add(createRowFromDataIndex(konDataResponse, i));
         }
-        return new SimpleKonResponse(simpleKonDataRows);
+        return new SimpleKonResponse(konDataResponse.getActiveFilters(), simpleKonDataRows);
     }
 
     private static SimpleKonDataRow createRowFromDataIndex(KonDataResponse diagnosgruppResponse, int index) {
@@ -92,9 +93,11 @@ public class SimpleKonResponse {
 
     public static SimpleKonResponse merge(Collection<SimpleKonResponse> resps, boolean mergeEqualRows) {
         final ArrayList<SimpleKonDataRow> rows = new ArrayList<>();
+        ActiveFilters activeFilters = null;
         if (mergeEqualRows) {
             Multimap<String, SimpleKonDataRow> mappedResps = LinkedHashMultimap.create();
             for (SimpleKonResponse resp : resps) {
+                activeFilters = resp.getActiveFilters();
                 for (SimpleKonDataRow row : resp.getRows()) {
                     mappedResps.put(row.getName(), row);
                 }
@@ -104,10 +107,12 @@ public class SimpleKonResponse {
             }
         } else {
             for (SimpleKonResponse resp : resps) {
+                activeFilters = resp.getActiveFilters();
                 rows.addAll(resp.getRows());
             }
         }
-        return new SimpleKonResponse(rows);
+
+        return new SimpleKonResponse(activeFilters, rows);
     }
 
     private static SimpleKonDataRow mergeRows(Collection<SimpleKonDataRow> rows) {

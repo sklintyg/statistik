@@ -53,10 +53,11 @@ public class MessageAmnePerTypeConverter extends MultiDualSexConverter {
         }
         final Map<String, String> groupsAndColors = convertGroupNamesToTextAndColorMap(amnes, separatedGroups);
         final ArrayList<String> groups = new ArrayList<>(groupsAndColors.keySet());
-        final KonDataResponse konDataResponse = new KonDataResponse(groups, rows);
+        final KonDataResponse konDataResponse = new KonDataResponse(data.getActiveFilters(), groups, rows);
         final DualSexStatisticsData dssd = super.convert(konDataResponse, filterSettings, null, "%1$s", groupsAndColors);
         final ChartData chartData = merge(dssd.getFemaleChart(), dssd.getMaleChart());
-        return new SimpleDetailsData(dssd.getTableData(), chartData, dssd.getPeriod(), dssd.getFilter(), dssd.getMessages());
+        return new SimpleDetailsData(dssd.getTableData(), chartData, dssd.getPeriod(), data.getActiveFilters(),
+                dssd.getFilter(), dssd.getMessages());
     }
 
     static ChartData merge(ChartData femaleChart, ChartData maleChart) {

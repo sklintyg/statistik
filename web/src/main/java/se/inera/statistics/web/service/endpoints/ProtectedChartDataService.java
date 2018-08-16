@@ -18,11 +18,6 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
-import java.time.Clock;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -33,6 +28,12 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.Clock;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -440,7 +442,7 @@ public class ProtectedChartDataService {
             final String name = replaceRowName ? fakeName : konDataRow.getName();
             return new KonDataRow(name, kdrs);
         }).collect(Collectors.toList());
-        return new KonDataResponse(casesPerMonth.getGroups().stream().map(s -> {
+        return new KonDataResponse(casesPerMonth.getActiveFilters(), casesPerMonth.getGroups().stream().map(s -> {
             final int indexOfSeparator = s.indexOf(MessagesQuery.GROUP_NAME_SEPARATOR);
             if (indexOfSeparator < 0) {
                 return s;

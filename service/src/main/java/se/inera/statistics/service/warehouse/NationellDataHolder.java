@@ -18,17 +18,17 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.SimpleKonDataRow;
-import se.inera.statistics.service.report.model.SimpleKonResponse;
-import se.inera.statistics.service.report.util.Icd10;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.SimpleKonDataRow;
+import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.service.report.util.Icd10;
 
 /**
  * Hold data between calculations per vg.
@@ -230,9 +230,9 @@ class NationellDataHolder {
 
     public DiagnosgruppResponse getOverviewDiagnosgrupperResultNullSafe() {
         if (overviewDiagnosgrupperCurrentResult == null || overviewDiagnosgrupperPreviousResult == null) {
-            return new DiagnosgruppResponse(Collections.emptyList(), Collections.emptyList());
+            return new DiagnosgruppResponse(null, Collections.emptyList(), Collections.emptyList());
         }
-        return new DiagnosgruppResponse(overviewDiagnosgrupperCurrentResult.getIcdTyps(),
+        return new DiagnosgruppResponse(null, overviewDiagnosgrupperCurrentResult.getIcdTyps(),
                 Arrays.asList(overviewDiagnosgrupperPreviousResult.getRows().get(0),
                         overviewDiagnosgrupperCurrentResult.getRows().get(0)));
     }
@@ -244,7 +244,7 @@ class NationellDataHolder {
         final SimpleKonDataRow curr = overviewForandringCurrentResult != null
                 ? overviewForandringCurrentResult
                 : new SimpleKonDataRow("", -1, -1);
-        return new SimpleKonResponse(Arrays.asList(prev, curr));
+        return new SimpleKonResponse(null, Arrays.asList(prev, curr));
     }
 
 }

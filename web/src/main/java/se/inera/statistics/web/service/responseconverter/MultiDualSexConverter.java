@@ -18,6 +18,13 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -34,13 +41,6 @@ import se.inera.statistics.web.model.TableHeader;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterDataResponse;
 import se.inera.statistics.web.service.FilterSettings;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 abstract class MultiDualSexConverter {
 
@@ -78,14 +78,15 @@ abstract class MultiDualSexConverter {
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
         final List<Message> combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
-        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse, combinedMessage);
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), dataIn.getActiveFilters(),
+                filterResponse, combinedMessage);
     }
 
     private KonDataResponse createEmptyResponse() {
         final List<String> groups = Collections.singletonList(TOTAL);
         final List<KonField> data = Collections.singletonList(new KonField(0, 0));
         final List<KonDataRow> rows = Collections.singletonList(new KonDataRow(TOTAL, data));
-        return new KonDataResponse(groups, rows);
+        return new KonDataResponse(null, groups, rows);
     }
 
     private ChartData extractChartData(KonDataResponse data, Kon sex, String seriesNameTemplate, Map<String, String> colors) {

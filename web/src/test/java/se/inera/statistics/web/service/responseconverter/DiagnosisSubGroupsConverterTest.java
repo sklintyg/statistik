@@ -19,6 +19,8 @@
 package se.inera.statistics.web.service.responseconverter;
 
 import org.junit.Test;
+
+import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -40,7 +42,7 @@ public class DiagnosisSubGroupsConverterTest {
     private final Clock clock = Clock.systemDefaultZone();
 
     @Test
-    public void testGetTopColumnIndexesAllAreIncluded() throws Exception {
+    public void testGetTopColumnIndexesAllAreIncluded() {
         //Given
         ArrayList<KonDataRow> rows = new ArrayList<>();
         ArrayList<KonField> data = new ArrayList<>();
@@ -48,7 +50,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(2, 1));
         data.add(new KonField(2, 2));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
         List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
@@ -58,7 +60,7 @@ public class DiagnosisSubGroupsConverterTest {
     }
 
     @Test
-    public void testGetTopColumnIndexesShowsSevenGroupsEvenWhenThereExistsMoreAndOneOfTheGroupsThenIsOvrigt() throws Exception {
+    public void testGetTopColumnIndexesShowsSevenGroupsEvenWhenThereExistsMoreAndOneOfTheGroupsThenIsOvrigt() {
         //Given
         ArrayList<KonDataRow> rows = new ArrayList<>();
         ArrayList<KonField> data = new ArrayList<>();
@@ -74,7 +76,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(2, 2));
         rows.add(new KonDataRow("", data));
         final List<Icd> icdTyps = getIcds(data.size());
-        DiagnosgruppResponse response = new DiagnosgruppResponse(icdTyps, rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), icdTyps, rows);
 
         //When
         List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
@@ -94,7 +96,7 @@ public class DiagnosisSubGroupsConverterTest {
     }
 
     @Test
-    public void testGetTopColumnIndexesAllAreIncludedWhenUpToSevenHasNoneEmptyDataINTYG1877() throws Exception {
+    public void testGetTopColumnIndexesAllAreIncludedWhenUpToSevenHasNoneEmptyDataINTYG1877() {
         //Given
         ArrayList<KonDataRow> rows = new ArrayList<>();
         ArrayList<KonField> data = new ArrayList<>();
@@ -107,7 +109,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(2, 2));
         data.add(new KonField(2, 2));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
         List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
@@ -118,7 +120,7 @@ public class DiagnosisSubGroupsConverterTest {
     }
 
     @Test
-    public void testGetTopColumnIndexesCorrectOrder() throws Exception {
+    public void testGetTopColumnIndexesCorrectOrder() {
         //Given
         ArrayList<KonDataRow> rows = new ArrayList<>();
         ArrayList<KonField> data = new ArrayList<>();
@@ -126,7 +128,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(2, 0));
         data.add(new KonField(2, 2));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
         List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
@@ -142,7 +144,7 @@ public class DiagnosisSubGroupsConverterTest {
     }
 
     @Test
-    public void testGetTopColumnIndexesRowWithZeroIsExcluded() throws Exception {
+    public void testGetTopColumnIndexesRowWithZeroIsExcluded() {
         //Given
         ArrayList<KonDataRow> rows = new ArrayList<>();
         ArrayList<KonField> data = new ArrayList<>();
@@ -150,7 +152,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(0, 0));
         data.add(new KonField(2, 2));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
         List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
@@ -162,7 +164,7 @@ public class DiagnosisSubGroupsConverterTest {
     }
 
     @Test
-    public void testConvertedResponseDoesNotContainEmptyOvrigtGroupINTYG1821() throws Exception {
+    public void testConvertedResponseDoesNotContainEmptyOvrigtGroupINTYG1821() {
         //Given
         ArrayList<KonDataRow> rows = new ArrayList<>();
         ArrayList<KonField> data = new ArrayList<>();
@@ -177,7 +179,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 0));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
         final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));
@@ -188,7 +190,7 @@ public class DiagnosisSubGroupsConverterTest {
     }
 
     @Test
-    public void testConvertedResponseDoesNotContainOvrigtGroupWhenOnly7NoneEmptySeriesExistsINTYG1821() throws Exception {
+    public void testConvertedResponseDoesNotContainOvrigtGroupWhenOnly7NoneEmptySeriesExistsINTYG1821() {
         //Given
         ArrayList<KonDataRow> rows = new ArrayList<>();
         ArrayList<KonField> data = new ArrayList<>();
@@ -203,7 +205,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 1));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
         final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));
@@ -214,7 +216,7 @@ public class DiagnosisSubGroupsConverterTest {
     }
 
     @Test
-    public void testConvertedResponseDoesContainNoneEmptyOvrigtGroupINTYG1821() throws Exception {
+    public void testConvertedResponseDoesContainNoneEmptyOvrigtGroupINTYG1821() {
         //Given
         ArrayList<KonDataRow> rows = new ArrayList<>();
         ArrayList<KonField> data = new ArrayList<>();
@@ -229,7 +231,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 1));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(getIcds(data.size()), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
         final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));

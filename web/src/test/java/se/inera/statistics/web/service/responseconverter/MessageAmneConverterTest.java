@@ -18,32 +18,31 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import org.junit.Test;
-import org.mockito.Mockito;
-import se.inera.statistics.service.report.model.KonDataResponse;
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.warehouse.message.MsgAmne;
-import se.inera.statistics.time.ChangableClock;
-import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.service.Filter;
-import se.inera.statistics.web.service.FilterSettings;
-
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+
+import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.warehouse.message.MsgAmne;
+import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.service.Filter;
+import se.inera.statistics.web.service.FilterSettings;
+
+import static org.junit.Assert.assertEquals;
 
 public class MessageAmneConverterTest {
 
     @Test
-    public void testConvertEmptySeriesWillRemoveOkantAmne() throws Exception {
+    public void testConvertEmptySeriesWillRemoveOkantAmne() {
         //Given
         final MessageAmneConverter messageAmneConverter = new MessageAmneConverter();
         final Filter filter = Filter.empty();
@@ -56,7 +55,7 @@ public class MessageAmneConverterTest {
         final FilterSettings filterSettings = new FilterSettings(filter, Range.year(Clock.systemUTC()));
 
         //When
-        final KonDataResponse response = new KonDataResponse(groups, rows);
+        final KonDataResponse response = new KonDataResponse(ActiveFilters.getForMeddelanden(), groups, rows);
         final DualSexStatisticsData convert = messageAmneConverter.convert(response, filterSettings);
 
         //Then
@@ -64,7 +63,7 @@ public class MessageAmneConverterTest {
     }
 
     @Test
-    public void testConvertNonEmptySeriesWillKeepOkantAmne() throws Exception {
+    public void testConvertNonEmptySeriesWillKeepOkantAmne() {
         //Given
         final MessageAmneConverter messageAmneConverter = new MessageAmneConverter();
         final Filter filter = Filter.empty();
@@ -77,7 +76,7 @@ public class MessageAmneConverterTest {
         final FilterSettings filterSettings = new FilterSettings(filter, Range.year(Clock.systemUTC()));
 
         //When
-        final KonDataResponse response = new KonDataResponse(groups, rows);
+        final KonDataResponse response = new KonDataResponse(ActiveFilters.getForMeddelanden(), groups, rows);
         final DualSexStatisticsData convert = messageAmneConverter.convert(response, filterSettings);
 
         //Then

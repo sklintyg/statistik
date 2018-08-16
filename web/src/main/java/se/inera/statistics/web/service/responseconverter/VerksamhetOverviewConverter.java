@@ -18,6 +18,14 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
@@ -31,13 +39,6 @@ import se.inera.statistics.web.model.overview.VerksamhetNumberOfCasesPerMonthOve
 import se.inera.statistics.web.model.overview.VerksamhetOverviewData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterDataResponse;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class VerksamhetOverviewConverter {
 
@@ -68,7 +69,7 @@ public class VerksamhetOverviewConverter {
         List<Message> messages = message == null ? new ArrayList<>() : Arrays.asList(message);
 
         return new VerksamhetOverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
-                sickLeaveLength, filterResponse, messages);
+                sickLeaveLength, ActiveFilters.getForSjukfall(), filterResponse, messages);
     }
 
     private Comparator<DonutChartData> comp() {

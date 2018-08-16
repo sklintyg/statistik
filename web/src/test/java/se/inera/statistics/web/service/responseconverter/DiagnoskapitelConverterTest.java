@@ -19,6 +19,8 @@
 package se.inera.statistics.web.service.responseconverter;
 
 import org.junit.Test;
+
+import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -41,7 +43,7 @@ public class DiagnoskapitelConverterTest {
 
     @Test
     public void converterTestEmpty() {
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(new ArrayList<>(), new ArrayList<>());
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(null, new ArrayList<>(), new ArrayList<>());
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), new Range(clock));
         DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(resp, filterSettings);
         assertEquals("[]", data.getFemaleChart().getCategories().toString());
@@ -59,7 +61,7 @@ public class DiagnoskapitelConverterTest {
         diagnosisGroupData.add(new KonField(3, 2));
         // CHECKSTYLE:ON MagicNumber
         rows.add(new KonDataRow("period1", diagnosisGroupData));
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(avsnitts, rows);
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), avsnitts, rows);
 
         //When
         DiagnosisSubGroupsConverter converter = new DiagnosisSubGroupsConverter();
@@ -101,7 +103,7 @@ public class DiagnoskapitelConverterTest {
         diagnosisGroupData.add(new KonField(2, 20));
         diagnosisGroupData.add(new KonField(6, 60));
         rows.add(new KonDataRow("period1", diagnosisGroupData));
-        DiagnosgruppResponse resp = new DiagnosgruppResponse(avsnitts, rows);
+        DiagnosgruppResponse resp = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), avsnitts, rows);
 
         //When
         DiagnosisSubGroupsConverter converter = new DiagnosisSubGroupsConverter();

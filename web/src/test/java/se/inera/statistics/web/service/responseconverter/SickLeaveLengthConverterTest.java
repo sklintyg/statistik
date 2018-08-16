@@ -19,6 +19,8 @@
 package se.inera.statistics.web.service.responseconverter;
 
 import org.junit.Test;
+
+import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -49,7 +51,7 @@ public class SickLeaveLengthConverterTest {
         sjukfallslangdRows.add(new SimpleKonDataRow("< 20 dagar", 13, 14));
         sjukfallslangdRows.add(new SimpleKonDataRow("20-50 dagar", 24, 15));
         sjukfallslangdRows.add(new SimpleKonDataRow("> 50 dagar", 3, 9));
-        SimpleKonResponse sjukfallslangdResponse = new SimpleKonResponse(sjukfallslangdRows);
+        SimpleKonResponse sjukfallslangdResponse = new SimpleKonResponse(ActiveFilters.getForSjukfall(), sjukfallslangdRows);
 
         //When
         final Range range = Range.createForLastMonthsExcludingCurrent(7, Clock.systemDefaultZone());

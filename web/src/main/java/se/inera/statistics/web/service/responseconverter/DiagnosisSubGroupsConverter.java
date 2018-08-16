@@ -64,7 +64,8 @@ public class DiagnosisSubGroupsConverter {
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
         final List<Message> combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
-        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), filterResponse, combinedMessage);
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(),
+                diagnosisGroups.getActiveFilters(), filterResponse, combinedMessage);
     }
 
     private ChartData extractChartData(DiagnosgruppResponse data, List<Integer> topIndexes, Kon sex) {

@@ -21,6 +21,7 @@ package se.inera.statistics.web.model;
 import java.util.Arrays;
 import java.util.List;
 
+import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.service.FilterDataResponse;
 
@@ -30,15 +31,17 @@ public class DualSexStatisticsData extends TableDataReport {
     private final ChartData maleChart;
     private final ChartData femaleChart;
     private final String period;
+    private final ActiveFilters activeFilters;
     private final FilterDataResponse filter;
     private final List<Message> messages;
 
-    public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart, String period, FilterDataResponse filter,
-            List<Message> messages) {
+    public DualSexStatisticsData(TableData tableData, ChartData maleChart, ChartData femaleChart, String period,
+                                 ActiveFilters activeFilters, FilterDataResponse filter, List<Message> messages) {
         this.tableData = tableData;
         this.maleChart = maleChart;
         this.femaleChart = femaleChart;
         this.period = period;
+        this.activeFilters = activeFilters;
         this.filter = filter;
         this.messages = messages;
     }
@@ -76,4 +79,8 @@ public class DualSexStatisticsData extends TableDataReport {
         return Arrays.asList(maleChart, femaleChart);
     }
 
+    @Override
+    public ActiveFilters getActiveFilters() {
+        return activeFilters;
+    }
 }

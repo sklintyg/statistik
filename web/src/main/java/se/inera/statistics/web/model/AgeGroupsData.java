@@ -18,12 +18,13 @@
  */
 package se.inera.statistics.web.model;
 
+import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.web.service.FilterDataResponse;
 
 public class AgeGroupsData extends SimpleDetailsData {
 
-    public AgeGroupsData(TableData tableData, ChartData chartData, String period, FilterDataResponse filter) {
-        super(tableData, chartData, period, filter);
+    public AgeGroupsData(TableData tableData, ChartData chartData, String period, ActiveFilters activeFilters, FilterDataResponse filter) {
+        super(tableData, chartData, period, activeFilters, filter);
     }
 
 }

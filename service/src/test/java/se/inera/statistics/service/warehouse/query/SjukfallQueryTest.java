@@ -261,11 +261,11 @@ public class SjukfallQueryTest {
     }
 
     @Test
-    public void testGetSjukfallPerEnhetSeries() throws Exception {
+    public void testGetSjukfallPerEnhetSeries() {
         //Given
         final Clock clock = Clock.systemDefaultZone();
         final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
-        Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(FilterPredicates.class), any(LocalDate.class), anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class))).thenReturn(new KonDataResponse(Collections.<String>emptyList(), Collections.<KonDataRow>emptyList()));
+        Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(FilterPredicates.class), any(LocalDate.class), anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class))).thenReturn(new KonDataResponse(null, Collections.<String>emptyList(), Collections.<KonDataRow>emptyList()));
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
 
         final FilterPredicates filter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
@@ -286,11 +286,11 @@ public class SjukfallQueryTest {
     }
 
     @Test
-    public void testGetSjukfallPerEnhetSeriesTwoEnhetsWthSameNameWillGetIdAsSuffixSTATISTIK1121() throws Exception {
+    public void testGetSjukfallPerEnhetSeriesTwoEnhetsWthSameNameWillGetIdAsSuffixSTATISTIK1121() {
         //Given
         final Clock clock = Clock.systemDefaultZone();
         final SjukfallUtil sjukfallUtilMock = Mockito.mock(SjukfallUtil.class);
-        final KonDataResponse konDataResponse = new KonDataResponse(Arrays.asList("1", "2", "3"), Collections.<KonDataRow>emptyList());
+        final KonDataResponse konDataResponse = new KonDataResponse(null, Arrays.asList("1", "2", "3"), Collections.<KonDataRow>emptyList());
         Mockito.when(sjukfallUtilMock.calculateKonDataResponse(any(Aisle.class), any(FilterPredicates.class), any(LocalDate.class), anyInt(), anyInt(), anyListOf(String.class), anyListOf(Object.class), any(CounterFunction.class))).thenReturn(konDataResponse);
         ReflectionTestUtils.setField(sjukfallQuery, "sjukfallUtil", sjukfallUtilMock);
         final FilterPredicates enhetFilterFromInternalIntValues = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);

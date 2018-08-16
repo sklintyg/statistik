@@ -29,13 +29,13 @@ import static org.junit.Assert.*;
 public class KonDataResponseTest {
 
     @Test
-    public void testCreateNewWithoutEmptyGroupsNullInput() throws Exception {
+    public void testCreateNewWithoutEmptyGroupsNullInput() {
         //Given
         final List<String> groups = null;
         final List<KonDataRow> rows = null;
 
         //When
-        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(groups, rows, Collections.<String>emptyList());
+        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(null, groups, rows, Collections.<String>emptyList());
 
         //Then
         assertTrue(result.getGroups().isEmpty());
@@ -43,13 +43,13 @@ public class KonDataResponseTest {
     }
 
     @Test
-    public void testCreateNewWithoutEmptyGroupsSingleObjectNoChange() throws Exception {
+    public void testCreateNewWithoutEmptyGroupsSingleObjectNoChange() {
         //Given
         final List<String> groups = Arrays.asList("ett");
         final List<KonDataRow> rows = Arrays.asList(new KonDataRow("KDR1", Arrays.asList(new KonField(2, 3))));
 
         //When
-        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(groups, rows, Collections.<String>emptyList());
+        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(null, groups, rows, Collections.<String>emptyList());
 
         //Then
         assertEquals(1, result.getGroups().size());
@@ -57,7 +57,7 @@ public class KonDataResponseTest {
     }
 
     @Test
-    public void testCreateNewWithoutEmptyGroupsEmptyGroupRemoved() throws Exception {
+    public void testCreateNewWithoutEmptyGroupsEmptyGroupRemoved() {
         //Given
         final List<String> groups = Arrays.asList("ett", "empty", "two");
         final List<KonDataRow> rows = Arrays.asList(
@@ -66,7 +66,7 @@ public class KonDataResponseTest {
                 new KonDataRow("KDR3", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5))));
 
         //When
-        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(groups, rows, Collections.<String>emptyList());
+        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(null, groups, rows, Collections.<String>emptyList());
 
         //Then
         assertEquals(2, result.getGroups().size());
@@ -79,7 +79,7 @@ public class KonDataResponseTest {
     }
 
     @Test
-    public void testCreateNewWithoutEmptyGroupsEmptyGroupRemovedButSpecifiedEmptyGroupKept() throws Exception {
+    public void testCreateNewWithoutEmptyGroupsEmptyGroupRemovedButSpecifiedEmptyGroupKept() {
         //Given
         final List<String> groups = Arrays.asList("ett", "empty", "two", "empty2");
         final List<KonDataRow> rows = Arrays.asList(
@@ -88,7 +88,7 @@ public class KonDataResponseTest {
                 new KonDataRow("KDR3", Arrays.asList(new KonField(2, 3), new KonField(0, 0), new KonField(4, 5), new KonField(0, 0))));
 
         //When
-        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(groups, rows, Arrays.asList("empty2"));
+        final KonDataResponse result = KonDataResponse.createNewWithoutEmptyGroups(null, groups, rows, Arrays.asList("empty2"));
 
         //Then
         assertEquals(3, result.getGroups().size());
