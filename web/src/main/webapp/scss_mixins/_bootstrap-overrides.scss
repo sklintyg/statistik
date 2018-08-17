@@ -144,20 +144,32 @@ p {
 
 .alert-info {
   h1, h2, h3, h4 {
-    color: $state-info-text;
+    color: $st-color-38;
   }
+  color: $st-color-38;
+  background-color: $st-color-36;
+  border-color: $st-color-37;
+  background-image: none;
 }
 
 .alert-warning {
   h1, h2, h3, h4 {
-    color: $state-warning-text;
+    color: $st-color-41;
   }
+  color: $st-color-41;
+  background-color: $st-color-39;
+  border-color: $st-color-40;
+  background-image: none;
 }
 
 .alert-danger  {
   h1, h2, h3, h4 {
-    color: $state-danger-text;
+    color: $st-color-44;
   }
+  color: $st-color-44;
+  background-color: $st-color-42;
+  border-color: $st-color-43;
+  background-image: none;
 }
 
 .modal-title {
