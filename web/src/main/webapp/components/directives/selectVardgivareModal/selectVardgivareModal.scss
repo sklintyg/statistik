@@ -12,6 +12,7 @@ select-vardgivare-modal {
     &:hover,
     &:focus {
       color: $st-color-27;
+      text-decoration: underline;
     }
   }
 }
