@@ -87,7 +87,7 @@ För att köra hela bygget
 
 För att testa applikationen i ett mer prodlikt läge kan man även starta med en flagga för att köra i minifierat, läge då css/js är packade och sammanslagna, genom att starta:
 
-    ./gradlew clean appRunWar -Pstatistik.useMinifiedJavaScript
+    ./gradlew clean appRunWar -PuseMinifiedJavaScript
 
 ## Protractor
 Köra protractor tester lokalt. Du behöver ha firefox version 46 eller äldre för att testerna ska fungera.

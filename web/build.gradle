@@ -53,7 +53,7 @@ node {
     distBaseUrl = 'https://build-inera.nordicmedtest.se/node/'
 }
 
-if (project.hasProperty('statistik.useMinifiedJavaScript')) {
+if (project.hasProperty('useMinifiedJavaScript')) {
     war {
         webAppDirName = 'build/webapp'
     }
