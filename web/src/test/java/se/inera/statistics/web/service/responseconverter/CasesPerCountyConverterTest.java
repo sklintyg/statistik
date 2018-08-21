@@ -20,13 +20,12 @@ package se.inera.statistics.web.service.responseconverter;
 
 import org.junit.Test;
 import se.inera.statistics.service.countypopulation.CountyPopulation;
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.CasesPerCountyData;
-import se.inera.statistics.web.service.responseconverter.CasesPerCountyConverter;
 
 import java.time.Clock;
 import java.time.LocalDate;
@@ -45,7 +44,7 @@ public class CasesPerCountyConverterTest {
         final String name = "Rad1";
         final String lanCode = "01";
         simpleKonDataRows.add(new SimpleKonDataRow(name, 1, 2, lanCode));
-        final SimpleKonResponse sjukfallPerLan = new SimpleKonResponse(ActiveFilters.getForSjukfall(), simpleKonDataRows);
+        final SimpleKonResponse sjukfallPerLan = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
         final HashMap<String, KonField> populationPerCounty = new HashMap<>();
         populationPerCounty.put(lanCode, new KonField(300, 200));
         final Range range = Range.year(clock);

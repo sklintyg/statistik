@@ -24,7 +24,6 @@ import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
-import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
@@ -49,7 +48,7 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
             removeGroupWithIndex(indexOfEmptyInternalGroup, groups, rows);
             indexOfEmptyInternalGroup = getIndexOfGroupToRemove(groups, rows);
         }
-        final KonDataResponse konDataResponse = new KonDataResponse(ActiveFilters.getForMeddelanden(),
+        final KonDataResponse konDataResponse = new KonDataResponse(data.getAvailableFilters(),
                 convertGroupNamesToText(groups), rows);
         return super.convert(konDataResponse, filterSettings, null, "%1$s");
     }

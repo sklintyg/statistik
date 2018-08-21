@@ -43,7 +43,7 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataResponses;
@@ -108,7 +108,7 @@ public class SjukfallQuery {
             result.add(new SimpleKonDataRow(rowName.apply(sjukfallGroup), female, male));
         }
 
-        return new SimpleKonResponse(ActiveFilters.getForSjukfall(), result);
+        return new SimpleKonResponse(AvailableFilters.getForSjukfall(), result);
     }
 
     public SimpleKonResponse getSjukfallPerEnhet(Aisle aisle, FilterPredicates filter, LocalDate from, int periods,
@@ -117,7 +117,7 @@ public class SjukfallQuery {
         for (SjukfallGroup sjukfallGroup : sjukfallUtil.sjukfallGrupper(from, periods, periodLength, aisle, filter)) {
             rows.addAll(getSjukfallForGroup(idsToNames, cutoffUsage, sjukfallGroup));
         }
-        return new SimpleKonResponse(ActiveFilters.getForSjukfall(), rows);
+        return new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
     }
 
     private List<SimpleKonDataRow> getSjukfallForGroup(Map<HsaIdEnhet, String> idsToNames, CutoffUsage cutoffUsage,
@@ -272,7 +272,7 @@ public class SjukfallQuery {
             final Optional<HsaIdLakare> lakarId = Warehouse.getLakarId(Integer.parseInt(lakareIdNum));
             return lakarId.map(HsaIdAny::getId).orElse(lakareIdNum);
         }).collect(Collectors.toList());
-        return new KonDataResponse(response.getActiveFilters(), updatedLakareNames, response.getRows());
+        return new KonDataResponse(response.getAvailableFilters(), updatedLakareNames, response.getRows());
     }
 
     public void setCutoff(int cutoff) {

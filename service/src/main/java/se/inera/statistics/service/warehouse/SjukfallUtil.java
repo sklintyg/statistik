@@ -36,7 +36,7 @@ import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.caching.SjukfallGroupCacheKey;
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -87,7 +87,7 @@ public class SjukfallUtil {
             rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(sjukfallGroup.getRange().getFrom()), list));
         }
 
-        return new KonDataResponse(ActiveFilters.getForSjukfall(), groupNames, rows);
+        return new KonDataResponse(AvailableFilters.getForSjukfall(), groupNames, rows);
     }
 
     public <T> KonDataResponse calculateKonDataResponse(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodSize,
@@ -115,7 +115,7 @@ public class SjukfallUtil {
         }
 
         final List<String> groupNames = hashSet.stream().map(String::valueOf).collect(Collectors.toList());
-        return new KonDataResponse(ActiveFilters.getForSjukfall(), groupNames, rows);
+        return new KonDataResponse(AvailableFilters.getForSjukfall(), groupNames, rows);
     }
     // CHECKSTYLE:ON
 
@@ -138,7 +138,7 @@ public class SjukfallUtil {
         for (Integer group : groups) {
             rows.add(new SimpleKonDataRow(String.valueOf(group), femaleCounter.count(group), maleCounter.count(group)));
         }
-        return new SimpleKonResponse(ActiveFilters.getForSjukfall(), rows);
+        return new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
     }
 
 }

@@ -39,7 +39,7 @@ public final class SimpleKonResponses {
         for (SimpleKonDataRow row : rows) {
             updatedRows.add(new SimpleKonDataRow(namePerExtras.get(row.getExtras()), row.getData(), row.getExtras()));
         }
-        return new SimpleKonResponse(input.getActiveFilters(), updatedRows);
+        return new SimpleKonResponse(input.getAvailableFilters(), updatedRows);
     }
 
     private static Map<Object, String> getNamePerExtrasWhereExtrasIsAddedToDuplicates(List<SimpleKonDataRow> rows) {

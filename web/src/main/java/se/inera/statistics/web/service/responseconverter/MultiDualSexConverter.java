@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -71,22 +72,22 @@ abstract class MultiDualSexConverter {
     DualSexStatisticsData convert(KonDataResponse dataIn, FilterSettings filterSettings, Message message, String seriesNameTemplate,
                                   Map<String, String> colors) {
         TableData tableData = convertTable(dataIn, seriesNameTemplate);
-        KonDataResponse data = dataIn.getGroups().isEmpty() ? createEmptyResponse() : dataIn;
+        KonDataResponse data = dataIn.getGroups().isEmpty() ? createEmptyResponse(dataIn.getAvailableFilters()) : dataIn;
         ChartData maleChart = extractChartData(data, Kon.MALE, seriesNameTemplate, colors);
         ChartData femaleChart = extractChartData(data, Kon.FEMALE, seriesNameTemplate, colors);
         final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
         final List<Message> combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
-        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), dataIn.getActiveFilters(),
+        return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(), dataIn.getAvailableFilters(),
                 filterResponse, combinedMessage);
     }
 
-    private KonDataResponse createEmptyResponse() {
+    private KonDataResponse createEmptyResponse(AvailableFilters availableFilters) {
         final List<String> groups = Collections.singletonList(TOTAL);
         final List<KonField> data = Collections.singletonList(new KonField(0, 0));
         final List<KonDataRow> rows = Collections.singletonList(new KonDataRow(TOTAL, data));
-        return new KonDataResponse(null, groups, rows);
+        return new KonDataResponse(availableFilters, groups, rows);
     }
 
     private ChartData extractChartData(KonDataResponse data, Kon sex, String seriesNameTemplate, Map<String, String> colors) {

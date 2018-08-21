@@ -20,7 +20,7 @@ package se.inera.statistics.web.service.responseconverter;
 
 import org.junit.Test;
 
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -31,7 +31,6 @@ import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterSettings;
-import se.inera.statistics.web.service.responseconverter.SimpleDualSexConverter;
 
 import java.time.Clock;
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class SickLeaveLengthConverterTest {
         sjukfallslangdRows.add(new SimpleKonDataRow("< 20 dagar", 13, 14));
         sjukfallslangdRows.add(new SimpleKonDataRow("20-50 dagar", 24, 15));
         sjukfallslangdRows.add(new SimpleKonDataRow("> 50 dagar", 3, 9));
-        SimpleKonResponse sjukfallslangdResponse = new SimpleKonResponse(ActiveFilters.getForSjukfall(), sjukfallslangdRows);
+        SimpleKonResponse sjukfallslangdResponse = new SimpleKonResponse(AvailableFilters.getForSjukfall(), sjukfallslangdRows);
 
         //When
         final Range range = Range.createForLastMonthsExcludingCurrent(7, Clock.systemDefaultZone());

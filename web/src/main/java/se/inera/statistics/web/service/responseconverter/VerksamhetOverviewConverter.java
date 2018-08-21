@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import se.inera.statistics.service.report.model.ActiveFilters;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
@@ -69,7 +68,7 @@ public class VerksamhetOverviewConverter {
         List<Message> messages = message == null ? new ArrayList<>() : Arrays.asList(message);
 
         return new VerksamhetOverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
-                sickLeaveLength, ActiveFilters.getForSjukfall(), filterResponse, messages);
+                sickLeaveLength, resp.getAvailableFilters(), filterResponse, messages);
     }
 
     private Comparator<DonutChartData> comp() {

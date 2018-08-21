@@ -18,8 +18,14 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.OverviewChartRow;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -27,14 +33,10 @@ import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.warehouse.Aisle;
-import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.FilterPredicates;
+import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
 
 @Component
 public class OverviewQuery {
@@ -67,9 +69,9 @@ public class OverviewQuery {
         List<OverviewChartRow> sjukskrivningslangd = SjukskrivningslangdQuery
                 .getOverviewSjukskrivningslangd(currentSjukfall.getSjukfall(), Integer.MAX_VALUE);
 
-        return new VerksamhetOverviewResponse(currentSjukfall.getSjukfall().size(), currentKonsfordelning, previousKonsfordelning,
-                diagnosgrupper, aldersgrupper, sjukskrivningsgrad, sjukskrivningslangd,
-                currentLongSjukfall, percentChange(currentLongSjukfall, previousLongSjukfall));
+        return new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), currentSjukfall.getSjukfall().size(),
+                currentKonsfordelning, previousKonsfordelning, diagnosgrupper, aldersgrupper, sjukskrivningsgrad,
+                sjukskrivningslangd, currentLongSjukfall, percentChange(currentLongSjukfall, previousLongSjukfall));
     }
 
     private SjukfallGroup getSjukfallGroup(Aisle aisle, FilterPredicates filter, Range range) {

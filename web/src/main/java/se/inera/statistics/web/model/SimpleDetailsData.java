@@ -21,7 +21,7 @@ package se.inera.statistics.web.model;
 import java.util.Arrays;
 import java.util.List;
 
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.service.FilterDataResponse;
 
@@ -31,22 +31,22 @@ public class SimpleDetailsData extends TableDataReport {
     private final ChartData chartData;
     private final String period;
     private final FilterDataResponse filter;
-    private final ActiveFilters activeFilters;
+    private final AvailableFilters availableFilters;
     private final List<Message> messages;
 
-    public SimpleDetailsData(TableData tableData, ChartData chartData, String period, ActiveFilters activeFilters,
+    public SimpleDetailsData(TableData tableData, ChartData chartData, String period, AvailableFilters availableFilters,
                              FilterDataResponse filter, List<Message> messages) {
         this.tableData = tableData;
         this.chartData = chartData;
         this.period = period;
-        this.activeFilters = activeFilters;
+        this.availableFilters = availableFilters;
         this.filter = filter;
         this.messages = messages;
     }
 
-    public SimpleDetailsData(TableData tableData, ChartData chartData, String period, ActiveFilters activeFilters,
+    public SimpleDetailsData(TableData tableData, ChartData chartData, String period, AvailableFilters availableFilters,
                              FilterDataResponse filter) {
-        this(tableData, chartData, period, activeFilters, filter, null);
+        this(tableData, chartData, period, availableFilters, filter, null);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class SimpleDetailsData extends TableDataReport {
     }
 
     @Override
-    public ActiveFilters getActiveFilters() {
-        return activeFilters;
+    public AvailableFilters getAvailableFilters() {
+        return availableFilters;
     }
 }

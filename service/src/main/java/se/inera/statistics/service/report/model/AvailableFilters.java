@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.service.report.model;
 
-public class ActiveFilters {
+public final class AvailableFilters {
 
     private boolean diagnos;
     private boolean enhets;
@@ -26,7 +26,7 @@ public class ActiveFilters {
     private boolean ageGroups;
     private boolean intygTypes;
 
-    public ActiveFilters(boolean diagnos, boolean enhets, boolean ageGroups, boolean sjukskrivningslangds, boolean intygTypes) {
+    private AvailableFilters(boolean diagnos, boolean enhets, boolean ageGroups, boolean sjukskrivningslangds, boolean intygTypes) {
         this.diagnos = diagnos;
         this.enhets = enhets;
         this.sjukskrivningslangds = sjukskrivningslangds;
@@ -55,15 +55,19 @@ public class ActiveFilters {
     }
 
 
-    public static ActiveFilters getForIntyg() {
-        return new ActiveFilters(true, true, true, false, false);
+    public static AvailableFilters getForIntyg() {
+        return new AvailableFilters(true, true, true, false, false);
     }
 
-    public static ActiveFilters getForSjukfall() {
-        return new ActiveFilters(true, true, true, true, false);
+    public static AvailableFilters getForSjukfall() {
+        return new AvailableFilters(true, true, true, true, false);
     }
 
-    public static ActiveFilters getForMeddelanden() {
-        return new ActiveFilters(true, true, true, false, true);
+    public static AvailableFilters getForMeddelanden() {
+        return new AvailableFilters(true, true, true, false, true);
+    }
+
+    public static AvailableFilters getForNationell() {
+        return new AvailableFilters(false, false, false, false, false);
     }
 }

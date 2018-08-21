@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.web.model.overview;
 
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.FilteredDataReport;
 import se.inera.statistics.web.service.FilterDataResponse;
@@ -33,7 +33,7 @@ public class VerksamhetOverviewData implements FilteredDataReport {
     private final List<DonutChartData> ageGroups;
     private final List<DonutChartData> degreeOfSickLeaveGroups;
     private final SickLeaveLengthOverview sickLeaveLength;
-    private final ActiveFilters activeFilters;
+    private final AvailableFilters availableFilters;
     private final FilterDataResponse filter;
     private final List<Message> messages;
 
@@ -42,7 +42,7 @@ public class VerksamhetOverviewData implements FilteredDataReport {
     public VerksamhetOverviewData(String periodText, VerksamhetNumberOfCasesPerMonthOverview casesPerMonth,
                                   List<DonutChartData> diagnosisGroups,
                                   List<DonutChartData> ageGroups, List<DonutChartData> degreeOfSickLeaveGroups,
-                                  SickLeaveLengthOverview sickLeaveLength, ActiveFilters activeFilters,
+                                  SickLeaveLengthOverview sickLeaveLength, AvailableFilters availableFilters,
                                   FilterDataResponse filter, List<Message> messages) {
         this.periodText = periodText;
         this.casesPerMonth = casesPerMonth;
@@ -50,7 +50,7 @@ public class VerksamhetOverviewData implements FilteredDataReport {
         this.ageGroups = ageGroups;
         this.degreeOfSickLeaveGroups = degreeOfSickLeaveGroups;
         this.sickLeaveLength = sickLeaveLength;
-        this.activeFilters = activeFilters;
+        this.availableFilters = availableFilters;
         this.filter = filter;
         this.messages = messages;
     }
@@ -96,7 +96,7 @@ public class VerksamhetOverviewData implements FilteredDataReport {
     }
 
     @Override
-    public ActiveFilters getActiveFilters() {
-        return activeFilters;
+    public AvailableFilters getAvailableFilters() {
+        return availableFilters;
     }
 }

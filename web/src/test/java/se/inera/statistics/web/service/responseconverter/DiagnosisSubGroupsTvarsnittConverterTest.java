@@ -20,14 +20,12 @@ package se.inera.statistics.web.service.responseconverter;
 
 import org.junit.Test;
 
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.ChartData;
-import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsConverter;
-import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsTvarsnittConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +49,7 @@ public class DiagnosisSubGroupsTvarsnittConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 0));
         final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(ActiveFilters.getForSjukfall(), simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
 
         //When
         final ChartData result = new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);
@@ -85,7 +83,7 @@ public class DiagnosisSubGroupsTvarsnittConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 1));
         final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(ActiveFilters.getForSjukfall(), simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
 
         //When
         final ChartData result = new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);
@@ -111,7 +109,7 @@ public class DiagnosisSubGroupsTvarsnittConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 1));
         final List<SimpleKonDataRow> simpleKonDataRows = toSimpleKonDataRows(data);
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(ActiveFilters.getForSjukfall(), simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForSjukfall(), simpleKonDataRows);
 
         //When
         final ChartData result = new DiagnosisSubGroupsTvarsnittConverter().convertToChartData(casesPerMonth);

@@ -35,12 +35,12 @@ public final class ResponseUtil {
 
     public static KonDataResponse createEmptyKonDataResponse(KonDataResponse kdr) {
         final ArrayList<KonDataRow> rows = getKonDataRows(kdr);
-        return new KonDataResponse(kdr.getActiveFilters(), kdr.getGroups(), rows);
+        return new KonDataResponse(kdr.getAvailableFilters(), kdr.getGroups(), rows);
     }
 
     static DiagnosgruppResponse createEmptyDiagnosgruppResponse(DiagnosgruppResponse kdr) {
         final ArrayList<KonDataRow> rows = getKonDataRows(kdr);
-        return new DiagnosgruppResponse(kdr.getActiveFilters(), kdr.getIcdTyps(), rows);
+        return new DiagnosgruppResponse(kdr.getAvailableFilters(), kdr.getIcdTyps(), rows);
     }
 
     private static <T extends KonDataResponse> ArrayList<KonDataRow> getKonDataRows(T kdr) {

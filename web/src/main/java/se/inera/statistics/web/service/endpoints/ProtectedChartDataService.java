@@ -442,7 +442,7 @@ public class ProtectedChartDataService {
             final String name = replaceRowName ? fakeName : konDataRow.getName();
             return new KonDataRow(name, kdrs);
         }).collect(Collectors.toList());
-        return new KonDataResponse(casesPerMonth.getActiveFilters(), casesPerMonth.getGroups().stream().map(s -> {
+        return new KonDataResponse(casesPerMonth.getAvailableFilters(), casesPerMonth.getGroups().stream().map(s -> {
             final int indexOfSeparator = s.indexOf(MessagesQuery.GROUP_NAME_SEPARATOR);
             if (indexOfSeparator < 0) {
                 return s;

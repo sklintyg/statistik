@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
@@ -124,6 +125,7 @@ public class XlsxConverterTest {
         Mockito.when(tableData.getTableData()).thenReturn(data);
         Mockito.when(tableData.getFilter()).thenReturn(new FilterDataResponse("", null, enhetsfilter, null, null, null, true));
         Mockito.when(tableData.getPeriod()).thenReturn(period);
+        Mockito.when(tableData.getAvailableFilters()).thenReturn(AvailableFilters.getForSjukfall());
 
         final FilterSelections filterSelections = new FilterSelections(false, false, false, false, false, testEnhet);
         xlsxConverter.addData(workbook, tableData, filterSelections, report);

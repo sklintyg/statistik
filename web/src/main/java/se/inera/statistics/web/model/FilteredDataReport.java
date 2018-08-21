@@ -20,7 +20,7 @@ package se.inera.statistics.web.model;
 
 import java.util.List;
 
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.service.FilterDataResponse;
 
@@ -28,7 +28,7 @@ public interface FilteredDataReport {
 
     FilterDataResponse getFilter();
 
-    ActiveFilters getActiveFilters();
+    AvailableFilters getAvailableFilters();
 
     List<Message> getMessages();
 

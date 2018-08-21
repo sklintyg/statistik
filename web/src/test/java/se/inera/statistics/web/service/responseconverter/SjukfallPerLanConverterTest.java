@@ -29,7 +29,7 @@ import java.util.List;
 import org.junit.Test;
 
 import se.inera.statistics.service.countypopulation.CountyPopulation;
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -39,7 +39,6 @@ import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
-import se.inera.statistics.web.service.responseconverter.CasesPerCountyConverter;
 
 public class SjukfallPerLanConverterTest {
 
@@ -53,7 +52,7 @@ public class SjukfallPerLanConverterTest {
         perCountyRows1.add(new SimpleKonDataRow("<20", 13, 14, "01"));
         perCountyRows1.add(new SimpleKonDataRow("20-50", 24, 15, "02"));
         perCountyRows1.add(new SimpleKonDataRow(">50", 3, 9, "03"));
-        SimpleKonResponse ageGroupsResponseNew = new SimpleKonResponse(ActiveFilters.getForSjukfall(), perCountyRows1);
+        SimpleKonResponse ageGroupsResponseNew = new SimpleKonResponse(AvailableFilters.getForSjukfall(), perCountyRows1);
 
         LocalDate fromNew = LocalDate.of(2013, 5, 1);
         LocalDate toNew = LocalDate.of(2013, 7, 1);

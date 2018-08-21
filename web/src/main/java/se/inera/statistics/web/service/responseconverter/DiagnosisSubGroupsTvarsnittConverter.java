@@ -53,7 +53,7 @@ public class DiagnosisSubGroupsTvarsnittConverter extends SimpleDualSexConverter
                 }
             }
         }
-        return new SimpleKonResponse(skr.getActiveFilters(), simpleKonDataRows);
+        return new SimpleKonResponse(skr.getAvailableFilters(), simpleKonDataRows);
     }
 
     private KonField getDataForOtherGroups(SimpleKonResponse skr, List<Integer> topIndexes) {

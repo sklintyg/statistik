@@ -30,7 +30,7 @@ public class SimpleKonResponsesTest {
     public void testAddExtrasToNameDuplicatesEmptyInput() {
         //Given
         final ArrayList<SimpleKonDataRow> skdr = new ArrayList<>();
-        final SimpleKonResponse skr = new SimpleKonResponse(null, skdr);
+        final SimpleKonResponse skr = new SimpleKonResponse(AvailableFilters.getForSjukfall(), skdr);
 
         //When
         final SimpleKonResponse result = SimpleKonResponses.addExtrasToNameDuplicates(skr);
@@ -46,7 +46,7 @@ public class SimpleKonResponsesTest {
         skdr.add(new SimpleKonDataRow("ABC", 0, 0, 1));
         skdr.add(new SimpleKonDataRow("abc", 0, 0, 2));
         skdr.add(new SimpleKonDataRow("CBA", 0, 0, 3));
-        final SimpleKonResponse skr = new SimpleKonResponse(null, skdr);
+        final SimpleKonResponse skr = new SimpleKonResponse(AvailableFilters.getForSjukfall(), skdr);
 
         //When
         final SimpleKonResponse result = SimpleKonResponses.addExtrasToNameDuplicates(skr);

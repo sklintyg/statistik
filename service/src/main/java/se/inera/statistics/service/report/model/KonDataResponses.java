@@ -52,7 +52,7 @@ public final class KonDataResponses {
             finalNames.add(hsaIdsToNames.get(key) + nameSuffix);
         }
 
-        return new KonDataResponse(response.getActiveFilters(), finalNames, response.getRows());
+        return new KonDataResponse(response.getAvailableFilters(), finalNames, response.getRows());
     }
 
     private static HashMap<HsaIdAny, Integer> getDuplicatesPerId(Map<HsaIdAny, String> idsToNames, List<HsaIdAny> idsToCompare) {

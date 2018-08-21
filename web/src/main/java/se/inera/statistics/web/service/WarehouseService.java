@@ -33,6 +33,7 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EnhetManager;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
@@ -94,7 +95,8 @@ public class WarehouseService {
         List<OverviewChartRowExtended> diagnosisGroups = new DiagnosisGroupsConverter().convert(overview.getDiagnosisGroups());
         List<OverviewChartRowExtended> ageGroups = new AldersGroupsConverter().convert(overview.getAgeGroups());
 
-        return new VerksamhetOverviewResponse(overview.getTotalCases(), overview.getCasesPerMonthSexProportionPreviousPeriod(),
+        return new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), overview.getTotalCases(),
+                overview.getCasesPerMonthSexProportionPreviousPeriod(),
                 overview.getCasesPerMonthSexProportionBeforePreviousPeriod(),
                 diagnosisGroups, ageGroups, overview.getDegreeOfSickLeaveGroups(), overview.getSickLeaveLengthGroups(),
                 overview.getLongSickLeavesTotal(), overview.getLongSickLeavesAlternation());
@@ -343,7 +345,7 @@ public class WarehouseService {
                     return sjukfallQuery.getSjukfall(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(),
                             range.getNumberOfMonths(), 1, true);
                 });
-        return SimpleKonResponse.merge(results, true);
+        return SimpleKonResponse.merge(results, true, AvailableFilters.getForSjukfall());
     }
 
     public SimpleKonResponse getCasesPerEnhetLandsting(final FilterSettings filterSettings) {
@@ -368,7 +370,7 @@ public class WarehouseService {
                     return sjukfallQuery.getSjukfallPerEnhet(aisle, filterSettings.getFilter().getPredicate(), range.getFrom(), 1,
                             range.getNumberOfMonths(), idsToNames, cutoffUsage);
                 });
-        final SimpleKonResponse merged = SimpleKonResponse.merge(results, false);
+        final SimpleKonResponse merged = SimpleKonResponse.merge(results, false, AvailableFilters.getForSjukfall());
         return SimpleKonResponses.addExtrasToNameDuplicates(merged);
     }
 

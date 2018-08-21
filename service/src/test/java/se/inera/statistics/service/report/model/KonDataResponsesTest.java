@@ -35,7 +35,7 @@ public class KonDataResponsesTest {
         //Given
         final ArrayList<String> groups = new ArrayList<>();
         final ArrayList<KonDataRow> rows = new ArrayList<>();
-        final KonDataResponse response = new KonDataResponse(ActiveFilters.getForIntyg(), groups, rows);
+        final KonDataResponse response = new KonDataResponse(AvailableFilters.getForIntyg(), groups, rows);
         final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
 
         //When
@@ -51,7 +51,7 @@ public class KonDataResponsesTest {
         //Given
         final List<String> groups = Arrays.asList("1", "2", "3");
         final List<KonDataRow> rows = new ArrayList<>();
-        final KonDataResponse response = new KonDataResponse(ActiveFilters.getForIntyg(), groups, rows);
+        final KonDataResponse response = new KonDataResponse(AvailableFilters.getForIntyg(), groups, rows);
         final HashMap<HsaIdEnhet, String> idsToNames = new HashMap<>();
         idsToNames.put(new HsaIdEnhet("1"), "abc");
         idsToNames.put(new HsaIdEnhet("2"), "Abc");

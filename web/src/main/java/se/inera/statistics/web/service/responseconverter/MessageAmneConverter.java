@@ -47,7 +47,7 @@ public class MessageAmneConverter extends MultiDualSexConverter {
             removeGroupWithIndex(indexOfEmptyInternalIcd10Group, groups, rows);
             indexOfEmptyInternalIcd10Group = getIndexOfGroupToRemove(groups, rows);
         }
-        final KonDataResponse konDataResponse = new KonDataResponse(data.getActiveFilters(), convertGroupNamesToText(groups), rows);
+        final KonDataResponse konDataResponse = new KonDataResponse(data.getAvailableFilters(), convertGroupNamesToText(groups), rows);
         return super.convert(konDataResponse, filterSettings, null, "%1$s", COLORS);
     }
 

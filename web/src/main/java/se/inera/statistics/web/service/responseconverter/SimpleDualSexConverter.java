@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -79,15 +79,15 @@ public class SimpleDualSexConverter {
     public SimpleDetailsData convert(SimpleKonResponse casesPerMonthIn, FilterSettings filterSettings, Message message) {
         TableData tableData = convertToTableData(casesPerMonthIn.getRows());
         SimpleKonResponse casesPerMonth = casesPerMonthIn.getRows().isEmpty()
-                ? new SimpleKonResponse(casesPerMonthIn.getActiveFilters(),
+                ? new SimpleKonResponse(casesPerMonthIn.getAvailableFilters(),
                     Arrays.asList(new SimpleKonDataRow("Totalt", 0, 0))) : casesPerMonthIn;
         ChartData chartData = convertToChartData(casesPerMonth);
         final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
         final List<Message> combinedMessage = Converters.combineMessages(filterSettings.getMessage(), message);
-        final ActiveFilters activeFilters = casesPerMonth.getActiveFilters();
-        return new SimpleDetailsData(tableData, chartData, range.toString(), activeFilters, filterResponse, combinedMessage);
+        final AvailableFilters availableFilters = casesPerMonth.getAvailableFilters();
+        return new SimpleDetailsData(tableData, chartData, range.toString(), availableFilters, filterResponse, combinedMessage);
     }
 
     protected TableData convertToTableData(List<SimpleKonDataRow> list) {

@@ -20,7 +20,7 @@ package se.inera.statistics.web.service.responseconverter;
 
 import org.junit.Test;
 
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -29,7 +29,6 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterSettings;
-import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsConverter;
 
 import java.time.Clock;
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(2, 1));
         data.add(new KonField(2, 2));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), getIcds(data.size()), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(AvailableFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
         List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
@@ -76,7 +75,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(2, 2));
         rows.add(new KonDataRow("", data));
         final List<Icd> icdTyps = getIcds(data.size());
-        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), icdTyps, rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(AvailableFilters.getForSjukfall(), icdTyps, rows);
 
         //When
         List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
@@ -109,7 +108,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(2, 2));
         data.add(new KonField(2, 2));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), getIcds(data.size()), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(AvailableFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
         List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
@@ -128,7 +127,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(2, 0));
         data.add(new KonField(2, 2));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), getIcds(data.size()), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(AvailableFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
         List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
@@ -152,7 +151,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(0, 0));
         data.add(new KonField(2, 2));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), getIcds(data.size()), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(AvailableFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
         List<Integer> result = new DiagnosisSubGroupsConverter().getTopColumnIndexes(response);
@@ -179,7 +178,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 0));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), getIcds(data.size()), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(AvailableFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
         final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));
@@ -205,7 +204,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 1));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), getIcds(data.size()), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(AvailableFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
         final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));
@@ -231,7 +230,7 @@ public class DiagnosisSubGroupsConverterTest {
         data.add(new KonField(6, 0));
         data.add(new KonField(0, 1));
         rows.add(new KonDataRow("", data));
-        DiagnosgruppResponse response = new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), getIcds(data.size()), rows);
+        DiagnosgruppResponse response = new DiagnosgruppResponse(AvailableFilters.getForSjukfall(), getIcds(data.size()), rows);
 
         //When
         final DualSexStatisticsData result = new DiagnosisSubGroupsConverter().convert(response, new FilterSettings(Filter.empty(), Range.quarter(clock)));

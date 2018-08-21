@@ -26,6 +26,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -34,7 +35,6 @@ import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterSettings;
-import se.inera.statistics.web.service.responseconverter.SimpleDualSexConverter;
 
 public class SimpleMultiDualSexConverterTest {
 
@@ -47,7 +47,7 @@ public class SimpleMultiDualSexConverterTest {
         dualSexRows.add(new SimpleKonDataRow("jan 12", 12, 13));
         dualSexRows.add(new SimpleKonDataRow("feb 12", 20, 30));
         dualSexRows.add(new SimpleKonDataRow("mar 12", 5, 25));
-        SimpleKonResponse casesPerMonth = new SimpleKonResponse(null, dualSexRows);
+        SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForNationell(), dualSexRows);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
         SimpleDetailsData result = converter.convert(casesPerMonth, filterSettings);
         TableData tableData = result.getTableData();

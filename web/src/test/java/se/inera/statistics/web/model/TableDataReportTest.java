@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.service.FilterDataResponse;
 
@@ -64,7 +64,7 @@ public class TableDataReportTest {
             }
 
             @Override
-            public ActiveFilters getActiveFilters() {
+            public AvailableFilters getAvailableFilters() {
                 return null;
             }
         };
@@ -107,7 +107,7 @@ public class TableDataReportTest {
             }
 
             @Override
-            public ActiveFilters getActiveFilters() {
+            public AvailableFilters getAvailableFilters() {
                 return null;
             }
         };
@@ -150,7 +150,7 @@ public class TableDataReportTest {
             }
 
             @Override
-            public ActiveFilters getActiveFilters() {
+            public AvailableFilters getAvailableFilters() {
                 return null;
             }
         };

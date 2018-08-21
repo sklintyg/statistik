@@ -51,7 +51,7 @@ import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.processlog.intygsent.IntygSentEvent;
 import se.inera.statistics.service.processlog.intygsent.IntygSentHelper;
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -136,7 +136,7 @@ public class IntygCommonManager {
         Iterator<KonDataRow> rowsNew = messagesTvarsnittPerAmne.getRows().iterator();
         Iterator<KonDataRow> rowsOld = resultToAggregate.getRows().iterator();
         List<KonDataRow> list = ResponseUtil.getKonDataRows(intygFilter.getRange().getNumberOfMonths(), rowsNew, rowsOld, cutoff);
-        return new KonDataResponse(ActiveFilters.getForIntyg(), messagesTvarsnittPerAmne.getGroups(), list);
+        return new KonDataResponse(AvailableFilters.getForIntyg(), messagesTvarsnittPerAmne.getGroups(), list);
     }
 
     private KonDataResponse getIntygPerType(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter, boolean isTvarsnitt) {
@@ -185,7 +185,7 @@ public class IntygCommonManager {
             rows.add(new KonDataRow(ReportUtil.toDiagramPeriod(intygCommonGroup.getRange().getFrom()), list));
         }
 
-        return new KonDataResponse(ActiveFilters.getForIntyg(), groupNames, rows);
+        return new KonDataResponse(AvailableFilters.getForIntyg(), groupNames, rows);
     }
 
     private SimpleKonResponse getIntygCommonMaleFemale(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter,
@@ -199,7 +199,7 @@ public class IntygCommonManager {
             final String periodName = rowNameFunction.apply(intygCommonGroup);
             result.add(new SimpleKonDataRow(periodName, female, male));
         }
-        return new SimpleKonResponse(ActiveFilters.getForIntyg(), result);
+        return new SimpleKonResponse(AvailableFilters.getForIntyg(), result);
     }
 
     private List<IntygCommonGroup> getIntygCommonGroups(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter,

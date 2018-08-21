@@ -35,7 +35,7 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.processlog.EnhetManager;
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -92,7 +92,7 @@ public class WarehouseServiceTest {
         rows.add(new SimpleKonDataRow("ABC", 0, 0, 1));
         rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
         rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
-        final SimpleKonResponse response = new SimpleKonResponse(ActiveFilters.getForSjukfall(), rows);
+        final SimpleKonResponse response = new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
         final Range range = new Range(clock);
         Mockito.when(sjukfallQuery.getSjukfallPerEnhet(null, null, range.getFrom(), 1, range.getNumberOfMonths(), null, CutoffUsage.DO_NOT_APPLY_CUTOFF)).thenReturn(response);
 
@@ -121,7 +121,7 @@ public class WarehouseServiceTest {
         rows.add(new SimpleKonDataRow("ABC", 0, 0, 1));
         rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
         rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
-        final SimpleKonResponse simpleKonResponse = new SimpleKonResponse(ActiveFilters.getForSjukfall(), rows);
+        final SimpleKonResponse simpleKonResponse = new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
         Mockito.when(sjukfallQuery.getSjukfallPerEnhet(any(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(), eq(range.getNumberOfMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_PER_SEX))).thenReturn(simpleKonResponse);
         Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
 
@@ -150,7 +150,7 @@ public class WarehouseServiceTest {
         rows.add(new SimpleKonDataRow("ABC", 0, 0, 1));
         rows.add(new SimpleKonDataRow("abc", 0, 0, 2));
         rows.add(new SimpleKonDataRow("CBA", 0, 0, 3));
-        final SimpleKonResponse simpleKonResponse = new SimpleKonResponse(ActiveFilters.getForSjukfall(), rows);
+        final SimpleKonResponse simpleKonResponse = new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
         Mockito.when(sjukfallQuery.getSjukfallPerEnhet(any(Aisle.class), eq(predicate1), eq(range.getFrom()), anyInt(), eq(range.getNumberOfMonths()), any(Map.class), eq(CutoffUsage.APPLY_CUTOFF_ON_TOTAL))).thenReturn(simpleKonResponse);
         Mockito.when(enhetManager.getEnhets(enheter)).thenReturn(Arrays.asList(new Enhet(new HsaIdVardgivare("1"), new HsaIdEnhet("e1"), "namne1", "1", "1", "")));
 

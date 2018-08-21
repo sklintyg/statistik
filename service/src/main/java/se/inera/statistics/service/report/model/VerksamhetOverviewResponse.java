@@ -22,7 +22,7 @@ import java.util.List;
 
 @java.lang.SuppressWarnings("common-java:DuplicatedBlocks") // Code will not be cleaner if extracting a common class for
                                                             // OverviewResponse and VerksamhetOverviewResponse.
-public class VerksamhetOverviewResponse {
+public class VerksamhetOverviewResponse extends AvailableFiltersResponse {
 
     private final int totalCases;
     private final OverviewKonsfordelning casesPerMonthSexProportionPreviousPeriod;
@@ -40,11 +40,13 @@ public class VerksamhetOverviewResponse {
 
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public VerksamhetOverviewResponse(int totalCases, OverviewKonsfordelning casesPerMonthSexProportionPreviousPeriod,
+    public VerksamhetOverviewResponse(AvailableFilters availableFilters, int totalCases,
+            OverviewKonsfordelning casesPerMonthSexProportionPreviousPeriod,
             OverviewKonsfordelning casesPerMonthSexProportionBeforePreviousPeriod, List<OverviewChartRowExtended> diagnosisGroups,
             List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
             List<OverviewChartRow> sickLeaveLengthGroups,
             int longSickLeavesTotal, int longSickLeavesAlternation) {
+        super(availableFilters);
         this.totalCases = totalCases;
         this.casesPerMonthSexProportionPreviousPeriod = casesPerMonthSexProportionPreviousPeriod;
         this.casesPerMonthSexProportionBeforePreviousPeriod = casesPerMonthSexProportionBeforePreviousPeriod;

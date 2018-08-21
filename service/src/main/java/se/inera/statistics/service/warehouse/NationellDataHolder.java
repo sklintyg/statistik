@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -230,9 +231,9 @@ class NationellDataHolder {
 
     public DiagnosgruppResponse getOverviewDiagnosgrupperResultNullSafe() {
         if (overviewDiagnosgrupperCurrentResult == null || overviewDiagnosgrupperPreviousResult == null) {
-            return new DiagnosgruppResponse(null, Collections.emptyList(), Collections.emptyList());
+            return new DiagnosgruppResponse(AvailableFilters.getForNationell(), Collections.emptyList(), Collections.emptyList());
         }
-        return new DiagnosgruppResponse(null, overviewDiagnosgrupperCurrentResult.getIcdTyps(),
+        return new DiagnosgruppResponse(AvailableFilters.getForNationell(), overviewDiagnosgrupperCurrentResult.getIcdTyps(),
                 Arrays.asList(overviewDiagnosgrupperPreviousResult.getRows().get(0),
                         overviewDiagnosgrupperCurrentResult.getRows().get(0)));
     }
@@ -244,7 +245,7 @@ class NationellDataHolder {
         final SimpleKonDataRow curr = overviewForandringCurrentResult != null
                 ? overviewForandringCurrentResult
                 : new SimpleKonDataRow("", -1, -1);
-        return new SimpleKonResponse(null, Arrays.asList(prev, curr));
+        return new SimpleKonResponse(AvailableFilters.getForNationell(), Arrays.asList(prev, curr));
     }
 
 }

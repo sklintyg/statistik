@@ -32,6 +32,7 @@ class InsertIntygHelper {
 
         ReportsUtil util = new ReportsUtil();
 
+        util.clearLandstingFileUploads();
         util.insertLandsting(ReportsUtil.VARDGIVARE3)
 
         ArrayList<IntygData> intygs = getIntygs()

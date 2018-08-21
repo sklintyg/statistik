@@ -18,15 +18,15 @@
  */
 package se.inera.statistics.service.report.model;
 
-public abstract class ActiveFilterResponse {
+public abstract class AvailableFiltersResponse {
 
-    private ActiveFilters activeFilters;
+    private AvailableFilters availableFilters;
 
-    public ActiveFilterResponse(ActiveFilters activeFilters) {
-        this.activeFilters = activeFilters;
+    public AvailableFiltersResponse(AvailableFilters availableFilters) {
+        this.availableFilters = availableFilters;
     }
 
-    public ActiveFilters getActiveFilters() {
-        return activeFilters;
+    public AvailableFilters getAvailableFilters() {
+        return availableFilters;
     }
 }

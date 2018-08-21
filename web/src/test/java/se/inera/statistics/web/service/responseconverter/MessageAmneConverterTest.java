@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
@@ -55,7 +55,7 @@ public class MessageAmneConverterTest {
         final FilterSettings filterSettings = new FilterSettings(filter, Range.year(Clock.systemUTC()));
 
         //When
-        final KonDataResponse response = new KonDataResponse(ActiveFilters.getForMeddelanden(), groups, rows);
+        final KonDataResponse response = new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, rows);
         final DualSexStatisticsData convert = messageAmneConverter.convert(response, filterSettings);
 
         //Then
@@ -76,7 +76,7 @@ public class MessageAmneConverterTest {
         final FilterSettings filterSettings = new FilterSettings(filter, Range.year(Clock.systemUTC()));
 
         //When
-        final KonDataResponse response = new KonDataResponse(ActiveFilters.getForMeddelanden(), groups, rows);
+        final KonDataResponse response = new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, rows);
         final DualSexStatisticsData convert = messageAmneConverter.convert(response, filterSettings);
 
         //Then

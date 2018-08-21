@@ -102,6 +102,7 @@ public class SjukfallPerSexConverter {
     public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, Range range) {
         TableData tableData = convertToTableData(casesPerMonth);
         ChartData chartData = convertToChartData(casesPerMonth);
-        return new SimpleDetailsData(tableData, chartData, range.toString(), casesPerMonth.getActiveFilters(), FilterDataResponse.empty());
+        return new SimpleDetailsData(tableData, chartData, range.toString(), casesPerMonth.getAvailableFilters(),
+                FilterDataResponse.empty());
     }
 }

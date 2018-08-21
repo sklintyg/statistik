@@ -29,22 +29,9 @@ import static org.junit.Assert.*;
 public class SimpleKonResponseTest {
 
     @Test
-    public void testCreateWithNullInput() {
-        //Given
-        final KonDataResponse diagnosgruppResponse = null;
-
-        //When
-        final SimpleKonResponse result = SimpleKonResponse.create(diagnosgruppResponse);
-
-        //Then
-        assertEquals(0, result.getGroups().size());
-        assertEquals(0, result.getRows().size());
-    }
-
-    @Test
     public void testCreateWithEmptyInput() {
         //Given
-        final KonDataResponse diagnosgruppResponse = new KonDataResponse(null, new ArrayList<String>(), new ArrayList<KonDataRow>());
+        final KonDataResponse diagnosgruppResponse = new KonDataResponse(AvailableFilters.getForSjukfall(), new ArrayList<>(), new ArrayList<>());
 
         //When
         final SimpleKonResponse result = SimpleKonResponse.create(diagnosgruppResponse);
@@ -59,7 +46,7 @@ public class SimpleKonResponseTest {
         //Given
         final List<String> groups = Arrays.asList("Group1");
         final List<KonDataRow> rows = Arrays.asList(new KonDataRow("rowname1", Arrays.asList(new KonField(1, 2))), new KonDataRow("rowname2", Arrays.asList(new KonField(3, 4))));
-        final KonDataResponse diagnosgruppResponse = new KonDataResponse(null, groups, rows);
+        final KonDataResponse diagnosgruppResponse = new KonDataResponse(AvailableFilters.getForSjukfall(), groups, rows);
 
         //When
         final SimpleKonResponse result = SimpleKonResponse.create(diagnosgruppResponse);
@@ -77,11 +64,11 @@ public class SimpleKonResponseTest {
     public void testMerge() {
         //Given
         final ArrayList<SimpleKonResponse> responses = new ArrayList<>();
-        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
-        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
+        responses.add(new SimpleKonResponse(AvailableFilters.getForSjukfall(), Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
+        responses.add(new SimpleKonResponse(AvailableFilters.getForSjukfall(), Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
 
         //When
-        final SimpleKonResponse mergedResp = SimpleKonResponse.merge(responses, false);
+        final SimpleKonResponse mergedResp = SimpleKonResponse.merge(responses, false, AvailableFilters.getForSjukfall());
 
         //Then
         assertEquals(2, mergedResp.getGroups().size());
@@ -100,13 +87,13 @@ public class SimpleKonResponseTest {
     public void testMergeWithEqualGroupsWithMergeEqualRowsFlag() {
         //Given
         final ArrayList<SimpleKonResponse> responses = new ArrayList<>();
-        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
-        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
-        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
-        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
+        responses.add(new SimpleKonResponse(AvailableFilters.getForSjukfall(), Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
+        responses.add(new SimpleKonResponse(AvailableFilters.getForSjukfall(), Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
+        responses.add(new SimpleKonResponse(AvailableFilters.getForSjukfall(), Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
+        responses.add(new SimpleKonResponse(AvailableFilters.getForSjukfall(), Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
 
         //When
-        final SimpleKonResponse mergedResp = SimpleKonResponse.merge(responses, true);
+        final SimpleKonResponse mergedResp = SimpleKonResponse.merge(responses, true, AvailableFilters.getForSjukfall());
 
         //Then
         assertEquals(2, mergedResp.getGroups().size());
@@ -125,13 +112,13 @@ public class SimpleKonResponseTest {
     public void testMergeWithEqualGroupsWithoutMergeEqualRowsFlag() {
         //Given
         final ArrayList<SimpleKonResponse> responses = new ArrayList<>();
-        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
-        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
-        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
-        responses.add(new SimpleKonResponse(null, Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
+        responses.add(new SimpleKonResponse(AvailableFilters.getForSjukfall(), Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
+        responses.add(new SimpleKonResponse(AvailableFilters.getForSjukfall(), Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
+        responses.add(new SimpleKonResponse(AvailableFilters.getForSjukfall(), Arrays.asList(new SimpleKonDataRow("First", 1, 2))));
+        responses.add(new SimpleKonResponse(AvailableFilters.getForSjukfall(), Arrays.asList(new SimpleKonDataRow("Second", 10, 20))));
 
         //When
-        final SimpleKonResponse mergedResp = SimpleKonResponse.merge(responses, false);
+        final SimpleKonResponse mergedResp = SimpleKonResponse.merge(responses, false, AvailableFilters.getForSjukfall());
 
         //Then
         assertEquals(4, mergedResp.getGroups().size());

@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Lists;
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
@@ -106,7 +106,7 @@ public final class AldersgruppQuery {
                 rows.add(new SimpleKonDataRow(i.getName(), counter.getCountFemale(), counter.getCountMale()));
             }
         }
-        return new SimpleKonResponse(ActiveFilters.getForSjukfall(), rows);
+        return new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
     }
 
     public static KonDataResponse getAldersgrupperSomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,

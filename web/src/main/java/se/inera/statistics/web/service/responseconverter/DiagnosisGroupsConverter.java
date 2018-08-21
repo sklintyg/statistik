@@ -95,7 +95,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter {
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         final Range range = filterSettings.getRange();
         return new DualSexStatisticsData(tableData, maleChart, femaleChart, range.toString(),
-                diagnosisGroups.getActiveFilters(), filterResponse,
+                diagnosisGroups.getAvailableFilters(), filterResponse,
                 Converters.combineMessages(filterSettings.getMessage()));
     }
 

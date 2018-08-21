@@ -26,7 +26,7 @@ public class DiagnosisSubGroupStatisticsData extends DualSexStatisticsData {
 
     public DiagnosisSubGroupStatisticsData(DualSexStatisticsData data, Icd10.Id dxGroup) {
         super(data.getTableData(), data.getMaleChart(), data.getFemaleChart(),
-                data.getPeriod(), data.getActiveFilters(), data.getFilter(), data.getMessages());
+                data.getPeriod(), data.getAvailableFilters(), data.getFilter(), data.getMessages());
         this.dxGroup = dxGroup != null ? dxGroup.getVisibleId() + " " + dxGroup.getName() : "";
     }
 

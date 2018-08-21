@@ -40,7 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.annotations.VisibleForTesting;
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
 import se.inera.statistics.web.model.NamedData;
@@ -106,13 +106,13 @@ final class XlsxConverter {
         int currentRow = 0;
         currentRow = addReportHeader(tableData, report, sheet, currentRow);
         sheet.createRow(currentRow++);
-        currentRow = addFilters(tableData.getActiveFilters(), tableData.getFilter(), filterSelections, sheet, currentRow);
+        currentRow = addFilters(tableData.getAvailableFilters(), tableData.getFilter(), filterSelections, sheet, currentRow);
         sheet.createRow(currentRow++);
         currentRow = addDataTable(tableData.getTableData(), sheet, currentRow);
         LOG.info(currentRow + " rows added to xlsx-export");
     }
 
-    private int addFilters(ActiveFilters activeFilters, FilterDataResponse filter, FilterSelections filterSelections,
+    private int addFilters(AvailableFilters availableFilters, FilterDataResponse filter, FilterSelections filterSelections,
                            Sheet dataSheet, int startRow) {
         final List<String> enheter = filterSelections.getEnhetNames();
         final List<String> dxs = filterSelections.isAllAvailableDxsSelectedInFilter()
@@ -136,7 +136,7 @@ final class XlsxConverter {
             sheet.createRow(currentRow++);
         }
 
-        if (activeFilters == null || activeFilters.isEnhets()) {
+        if (availableFilters.isEnhets()) {
             if (filterSelections.isAllAvailableEnhetsSelectedInFilter()) {
                 currentRow = addFilter(sheet, currentRow, enheter, "Enheter");
             } else {
@@ -144,16 +144,16 @@ final class XlsxConverter {
             }
         }
 
-        if (activeFilters == null || activeFilters.isDiagnos()) {
+        if (availableFilters.isDiagnos()) {
             currentRow = addFilter(sheet, currentRow, getDxNames(dxs), "Valda diagnoser");
         }
-        if (activeFilters == null || activeFilters.isSjukskrivningslangds()) {
+        if (availableFilters.isSjukskrivningslangds()) {
             currentRow = addFilter(sheet, currentRow, sjukskrivningslangds, "Valda sjukskrivningslängder");
         }
-        if (activeFilters == null || activeFilters.isAgeGroups()) {
+        if (availableFilters.isAgeGroups()) {
             currentRow = addFilter(sheet, currentRow, aldersgrupps, "Valda åldersgrupper");
         }
-        if (activeFilters == null || activeFilters.isIntygTypes()) {
+        if (availableFilters.isIntygTypes()) {
             currentRow = addFilter(sheet, currentRow, intygstyper, "Valda intygstyper");
         }
 

@@ -26,7 +26,7 @@ import java.util.List;
 import org.junit.Test;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -51,7 +51,7 @@ public class GroupedSjukfallWithLandstingSortingConverterTest {
         businessRows.add(new SimpleKonDataRow("enhet1", 12, 13));
         businessRows.add(new SimpleKonDataRow("enhet2", 20, 30));
         businessRows.add(new SimpleKonDataRow("enhet3", 5, 25));
-        SimpleKonResponse casesPerUnit = new SimpleKonResponse(ActiveFilters.getForSjukfall(), businessRows);
+        SimpleKonResponse casesPerUnit = new SimpleKonResponse(AvailableFilters.getForSjukfall(), businessRows);
         final FilterSettings filterSettings = new FilterSettings(Filter.empty(), Range.createForLastMonthsExcludingCurrent(1, Clock.systemDefaultZone()));
 
         //When

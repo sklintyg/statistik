@@ -39,7 +39,7 @@ import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
@@ -115,10 +115,10 @@ public class MessagesQuery {
         Iterator<KonDataRow> rowsNew = andelKompletteringar.getRows().iterator();
         Iterator<KonDataRow> rowsOld = resultToAggregate.getRows().iterator();
         List<KonDataRow> list = ResponseUtil.getKonDataRows(filter.getNumberOfMonths(), rowsNew, rowsOld, cutoff);
-        ActiveFilters activeFilters = resultToAggregateIn != null
-                ? resultToAggregateIn.getActiveFilters() : ActiveFilters.getForMeddelanden();
+        AvailableFilters availableFilters = resultToAggregateIn != null
+                ? resultToAggregateIn.getAvailableFilters() : AvailableFilters.getForMeddelanden();
 
-        return new KonDataResponse(activeFilters, andelKompletteringar.getGroups(), list);
+        return new KonDataResponse(availableFilters, andelKompletteringar.getGroups(), list);
     }
 
     public SimpleKonResponse getAndelKompletteringarTvarsnitt(MessagesFilter filter) {
@@ -195,7 +195,7 @@ public class MessagesQuery {
         for (MsgAmne msgAmne : msgAmnes) {
             groups.add(msgAmne.name());
         }
-        return new KonDataResponse(ActiveFilters.getForMeddelanden(), groups, result);
+        return new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, result);
     }
 
     private SimpleKonResponse convertToAndelKompletteringarTvarsnitt(List<CountDTOAmne> rows, LocalDate from, int numberOfMonths) {
@@ -244,7 +244,7 @@ public class MessagesQuery {
             }
         }
 
-        return new SimpleKonResponse(ActiveFilters.getForMeddelanden(), result);
+        return new SimpleKonResponse(AvailableFilters.getForMeddelanden(), result);
     }
 
     private KonDataResponse convertToAndelKompletteringar(List<CountDTOAmne> rows, LocalDate start, int perioder, int cutoff) {
@@ -311,7 +311,7 @@ public class MessagesQuery {
                 groups.add(intygTypes[j].name());
             }
         }
-        return new KonDataResponse(ActiveFilters.getForMeddelanden(), groups, result);
+        return new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, result);
     }
 
     private KonDataResponse convertToMessagesPerAmnePerLakare(List<CountDTOAmne> rows, LocalDate start, int perioder) {
@@ -421,7 +421,7 @@ public class MessagesQuery {
                 groups.add(typeToName.apply(type) + GROUP_NAME_SEPARATOR + msgAmne.name());
             }
         }
-        return new KonDataResponse(ActiveFilters.getForMeddelanden(), groups, result);
+        return new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, result);
     }
 
     private List<String> getEnhets(List<CountDTOAmne> rows) {
@@ -461,7 +461,7 @@ public class MessagesQuery {
             result.add(new SimpleKonDataRow(displayDate, female, male));
         }
 
-        return new SimpleKonResponse(ActiveFilters.getForMeddelanden(), result);
+        return new SimpleKonResponse(AvailableFilters.getForMeddelanden(), result);
     }
 
     private SimpleKonResponse convertToSimpleResponseTvarsnitt(List<MessageWidelineLoader.CountDTO> rows) {
@@ -480,7 +480,7 @@ public class MessagesQuery {
 
         result.add(new SimpleKonDataRow("Totalt", female, male));
 
-        return new SimpleKonResponse(ActiveFilters.getForMeddelanden(), result);
+        return new SimpleKonResponse(AvailableFilters.getForMeddelanden(), result);
     }
 
     private SimpleKonResponse convertToSimpleResponseTvarsnittPerAmne(List<CountDTOAmne> rows) {
@@ -505,7 +505,7 @@ public class MessagesQuery {
             result.add(new SimpleKonDataRow(text, femaleSeries[i], maleSeries[i], msgAmne));
         }
 
-        return new SimpleKonResponse(ActiveFilters.getForMeddelanden(), result);
+        return new SimpleKonResponse(AvailableFilters.getForMeddelanden(), result);
     }
 
     private KonDataResponse convertToSimpleResponseTvarsnittPerAmnePerLakare(List<CountDTOAmne> rows) {
@@ -549,7 +549,7 @@ public class MessagesQuery {
         for (MsgAmne msgAmne : msgAmnes) {
             groups.add(msgAmne.name());
         }
-        return new KonDataResponse(ActiveFilters.getForMeddelanden(), groups, result);
+        return new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, result);
     }
 
 }

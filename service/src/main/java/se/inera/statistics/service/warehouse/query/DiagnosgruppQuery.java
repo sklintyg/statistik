@@ -33,7 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.collect.Lists;
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.Kon;
@@ -90,7 +90,7 @@ public class DiagnosgruppQuery {
         for (Icd10.Kapitel k : kapitel) {
             avsnitt.add(new Icd(k.getVisibleId(), k.getName(), k.toInt()));
         }
-        return new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), avsnitt, rows);
+        return new DiagnosgruppResponse(AvailableFilters.getForSjukfall(), avsnitt, rows);
     }
 
     public DiagnosgruppResponse getDiagnosgrupper(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength) {
@@ -168,7 +168,7 @@ public class DiagnosgruppQuery {
             final Icd10.Id kategori = kategoris.get(i);
             rows.add(new SimpleKonDataRow((kategori.getVisibleId() + " " + kategori.getName()).trim(), row));
         }
-        return new SimpleKonResponse(ActiveFilters.getForSjukfall(), rows);
+        return new SimpleKonResponse(AvailableFilters.getForSjukfall(), rows);
     }
 
     public KonDataResponse getJamforDiagnoserTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength,
@@ -192,7 +192,7 @@ public class DiagnosgruppQuery {
         final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(start, periods, periodLength, aisle, filter);
         final List<Icd10RangeType> rangeTypes = Collections.singletonList(rangeType);
         final List<KonDataRow> rows = getKonDataRows(sjukfallGroups, kapitel.getSubItems(), rangeTypes, countAllDxs);
-        return new DiagnosgruppResponse(ActiveFilters.getForSjukfall(), icdTyps, rows);
+        return new DiagnosgruppResponse(AvailableFilters.getForSjukfall(), icdTyps, rows);
     }
     // CHECKSTYLE:ON ParameterNumber
 

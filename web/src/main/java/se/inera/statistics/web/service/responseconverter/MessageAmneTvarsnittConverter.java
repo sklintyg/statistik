@@ -55,7 +55,7 @@ public final class MessageAmneTvarsnittConverter extends SimpleDualSexConverter 
             return true;
         }).collect(Collectors.toList());
 
-        return super.convert(new SimpleKonResponse(casesPerMonth.getActiveFilters(), rowsToShow), filterSettings, message);
+        return super.convert(new SimpleKonResponse(casesPerMonth.getAvailableFilters(), rowsToShow), filterSettings, message);
     }
 
 }

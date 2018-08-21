@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 import org.junit.Test;
 
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -45,7 +45,7 @@ public class MessageAmneTvarsnittConverterTest {
         final List<SimpleKonDataRow> simpleKonDataRows = Arrays.stream(MsgAmne.values())
                 .map(msgAmne -> new SimpleKonDataRow(msgAmne.name(), 0, 0, msgAmne))
                 .collect(Collectors.toList());
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(ActiveFilters.getForMeddelanden(), simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForMeddelanden(), simpleKonDataRows);
 
         //When
         final MessageAmneTvarsnittConverter converter = MessageAmneTvarsnittConverter.newTvarsnitt();
@@ -62,7 +62,7 @@ public class MessageAmneTvarsnittConverterTest {
         final List<SimpleKonDataRow> simpleKonDataRows = Arrays.stream(MsgAmne.values())
                 .map(msgAmne -> new SimpleKonDataRow(msgAmne.name(), 1, 0, msgAmne))
                 .collect(Collectors.toList());
-        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(ActiveFilters.getForMeddelanden(), simpleKonDataRows);
+        final SimpleKonResponse casesPerMonth = new SimpleKonResponse(AvailableFilters.getForMeddelanden(), simpleKonDataRows);
 
         //When
         final MessageAmneTvarsnittConverter converter = MessageAmneTvarsnittConverter.newTvarsnitt();

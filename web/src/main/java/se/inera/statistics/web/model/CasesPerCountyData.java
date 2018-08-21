@@ -18,16 +18,16 @@
  */
 package se.inera.statistics.web.model;
 
-import se.inera.statistics.service.report.model.ActiveFilters;
+import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.web.service.FilterDataResponse;
 
 public class CasesPerCountyData extends SimpleDetailsData {
 
     private String sourceDate;
 
-    public CasesPerCountyData(TableData tableData, ChartData chartData, String period, ActiveFilters activeFilters,
+    public CasesPerCountyData(TableData tableData, ChartData chartData, String period, AvailableFilters availableFilters,
                               FilterDataResponse filter, String sourceDate) {
-        super(tableData, chartData, period, activeFilters, filter);
+        super(tableData, chartData, period, availableFilters, filter);
         this.sourceDate = sourceDate;
     }
 

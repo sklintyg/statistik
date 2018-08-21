@@ -22,13 +22,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class KonDataResponse extends ActiveFilterResponse {
+public class KonDataResponse extends AvailableFiltersResponse {
 
     private final List<String> groups;
     private final List<KonDataRow> rows;
 
-    public KonDataResponse(ActiveFilters activeFilters, List<String> groups, List<KonDataRow> rows) {
-        super(activeFilters);
+    public KonDataResponse(AvailableFilters availableFilters, List<String> groups, List<KonDataRow> rows) {
+        super(availableFilters);
         this.groups = groups;
         this.rows = rows;
     }
@@ -64,19 +64,19 @@ public class KonDataResponse extends ActiveFilterResponse {
     }
 
     public static KonDataResponse createNewWithoutEmptyGroups(KonDataResponse konDataResponse) {
-        return createNewWithoutEmptyGroups(konDataResponse.getActiveFilters(), konDataResponse.getGroups(),
+        return createNewWithoutEmptyGroups(konDataResponse.getAvailableFilters(), konDataResponse.getGroups(),
                 konDataResponse.getRows(), Collections.<String> emptyList());
     }
 
     public static KonDataResponse createNewWithoutEmptyGroups(KonDataResponse konDataResponse, List<String> groupsToRetainEvenWhenEmpty) {
-        return createNewWithoutEmptyGroups(konDataResponse.getActiveFilters(), konDataResponse.getGroups(),
+        return createNewWithoutEmptyGroups(konDataResponse.getAvailableFilters(), konDataResponse.getGroups(),
                 konDataResponse.getRows(), groupsToRetainEvenWhenEmpty);
     }
 
-    public static KonDataResponse createNewWithoutEmptyGroups(ActiveFilters activeFilters, List<String> groups, List<KonDataRow> rows,
-            List<String> groupsToRetainEvenWhenEmpty) {
+    public static KonDataResponse createNewWithoutEmptyGroups(AvailableFilters availableFilters, List<String> groups, List<KonDataRow> rows,
+                                                              List<String> groupsToRetainEvenWhenEmpty) {
         if (groups == null || rows == null) {
-            return new KonDataResponse(activeFilters, Collections.<String> emptyList(), Collections.<KonDataRow> emptyList());
+            return new KonDataResponse(availableFilters, Collections.<String> emptyList(), Collections.<KonDataRow> emptyList());
         }
         final List<String> groupsFiltered = new ArrayList<>();
         final List<List<KonField>> rowsDataFiltered = initRowsDataFiltered(rows);
@@ -91,7 +91,7 @@ public class KonDataResponse extends ActiveFilterResponse {
             }
         }
         final ArrayList<KonDataRow> konDataRows = createKonDataRows(rows, rowsDataFiltered);
-        return new KonDataResponse(activeFilters, groupsFiltered, konDataRows);
+        return new KonDataResponse(availableFilters, groupsFiltered, konDataRows);
     }
 
     private static List<List<KonField>> initRowsDataFiltered(List<KonDataRow> rows) {
