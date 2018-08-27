@@ -1,0 +1,88 @@
+---
+Prune
+Test
+---
+!3 Givet att:
+| script | dagens datum | 2018-08-23 |
+
+Ålder på patienten tas från när sjukfallet tar slut.
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | kommentar |
+| 19790717-9191 | C50 | 2017-01-01 | 2017-01-05 | |
+| 19790717-9191 | G93.3 | 2017-01-06 | 2017-01-10 | 37 år |
+| 19790808-9274 | C50 | 2017-01-01 | 2017-01-05 | |
+| 19790808-9274 | G93.3 | 2017-01-06 | 2017-01-12 | 37 år |
+| 19690620-8810 | G93.3 | 2017-01-01 | 2017-01-29 | 47 år |
+| 19690621-8801 | G93.3 | 2017-01-01 | 2017-02-01 | 47 år |
+| 19790918-9230 | G93.3 | 2017-01-01 | 2017-02-10 | 37 år |
+| 19790618-9282 | F43 | 2017-01-01 | 2017-02-10 | |
+| 19790618-9282 | G93.3 | 2017-02-11 | 2017-02-20 | 37 år |
+| 19410622-8818 | G93.3 | 2017-01-01 | 2017-02-01 | 75 år |
+| 19471109-2681 | G93.3 | 2017-01-01 | 2017-03-01 | 69 år |
+| 19681002-9288 | G93.3 | 2017-01-01 | 2017-03-01 | 48 år |
+| 19791110-9291 | G93.3 | 2017-01-01 | 2017-04-01 | 37 år |
+| 19671122-2940 | G93.3 | 2017-01-01 | 2017-04-01 | 47 år |
+| 19891230-9296 | F43 | 2017-01-01 | 2017-01-14 | |
+| 19891230-9296 | F43 | 2017-01-15 | 2017-02-01 | |
+| 19891230-9296 | G93.3 | 2017-02-02 | 2017-03-10 | 27 år |
+| 19801013-9297 | C50 | 2017-01-01 | 2017-05-01 | |
+| 19801013-9297 | G93.3 | 2017-05-02 | 2017-09-01 | 36 år |
+| 19801207-9284 | G93.3 | 2017-01-01 | 2017-05-01 | 36 år |
+| 19991109-2681 | G93.3 | 2017-01-01 | 2017-03-01 | 17 år |
+| 19800101-9312 | C50 | 2017-01-01 | 2017-03-01 | |
+
+!3 Då gäller:
+| Comment |
+| Sjukfall i rapporten socialstyrelsen |
+| mecfsvariant | kön? | sjukskrivningslängd? | ålder? |
+| JA | MALE | 10 | 37 |
+| JA | MALE | 12 | 37 |
+| JA | MALE | 29 | 47 |
+| JA | FEMALE | 32 | 47 |
+| JA | MALE | 41 | 37 |
+| JA | FEMALE | 51 | 37 |
+| JA | MALE | 32 | 75 |
+| JA | FEMALE | 60 | 69 |
+| JA | FEMALE | 60 | 48 |
+| JA | MALE | 91 | 37 |
+| JA | FEMALE | 91 | 47 |
+| JA | MALE | 69 | 27 |
+| JA | MALE | 244 | 36 |
+| JA | FEMALE | 121 | 36 |
+| JA | FEMALE | 60 | 17 |
+
+
+
+| Sjukfall i rapporten socialstyrelsen som median q1 q3 |
+| kön | åldersgrupp | q1? | median? | q3? |
+| FEMALE | 18-30 år | null | null | null |
+| FEMALE | 31-40 år | 51 | 86 | 121 |
+| FEMALE | 41-50 år | 32 | 60 | 91 |
+| FEMALE | 51+år | 60 | 60 | 60 |
+| MALE | 18-30 år | 69 | 69 | 69 |
+| MALE | 31-40 år | 11 | 41 | 167,5 |
+| MALE | 41-50 år | 29 | 29 | 29 |
+| MALE | 51+år | 32 | 32 | 32 |
+
+| Sjukfall i rapporten socialstyrelsen som antal |
+| mecfsvariant | åldersgrupp | totalt? | kvinnor? | män? | under15dagarK? | under15dagarM? | från15Till30K? | från15Till30M? | från31Till60DagarK? | från31Till60DagarM? | från61Till90DagarK? | från61Till90DagarM? | från91Till180DagarK? | från91Till180DagarM? | från181Till365DagarK? | från181Till365DagarM? | över365DagarK? | över365DagarM? |
+| JA | 18-30 år | 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
+| JA | 31-40 år | 7 | 2 | 5 | 0 | 2 | 0 | 0 | 1 | 1 | 0 | 0 | 1 | 1 | 0 | 1 | 0 | 0 |
+| JA | 41-50 år | 4 | 3 | 1 | 0 | 0 | 0 | 1 | 2 | 0 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 |
+| JA | 51+ år | 2 | 1 | 1 | 0 | 0 | 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+Rapporten nedan beräknar hur stor andel av sjukfallen som innehåller minst en diagnos mer än G93.3.
+
+| Andel sjukfall i rapporten socialstyrelsen andel |
+| totalt? |
+| 0,33 |
+
+Rapporten nedan listar diagnoser som dyker upp i sjukfall som inkluderar diagnosen G93.3 och i hur många sjukfall som de dyker upp.
+
+Om en diagnos förekommer flera gånger i ett sjukfall så räknas den ändå bara en gång.
+
+!(| Sjukfall i rapporten socialstyrelsen |
+| diagnos | totalt? |
+| C50 | 3 |
+| F43 | 2 |)!
