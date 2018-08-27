@@ -52,8 +52,6 @@ Test
 | JA | FEMALE | 121 | 36 |
 | JA | FEMALE | 60 | 17 |
 
-
-
 | Sjukfall i rapporten socialstyrelsen som median q1 q3 |
 | kön | åldersgrupp | q1? | median? | q3? |
 | FEMALE | 18-30 år | null | null | null |
@@ -82,7 +80,7 @@ Rapporten nedan listar diagnoser som dyker upp i sjukfall som inkluderar diagnos
 
 Om en diagnos förekommer flera gånger i ett sjukfall så räknas den ändå bara en gång.
 
-!(| Sjukfall i rapporten socialstyrelsen |
-| diagnos | totalt? |
-| C50 | 3 |
-| F43 | 2 |)!
+!(| Sjukfall i rapporten socialstyrelsen som antal |
+| mecfsvariant | diagnos | totalt? |
+| JA | C50 | 3 |
+| JA | F43 | 2 |)!
