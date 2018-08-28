@@ -72,6 +72,8 @@ Test
 
 Rapporten nedan beräknar hur stor andel av sjukfallen som innehåller minst en diagnos mer än G93.3.
 
+Här räknar man in alla sjukfall oavsett ålder på patienten.
+
 | Andel sjukfall i rapporten socialstyrelsen andel |
 | totalt? |
 | 0,33 |
@@ -79,6 +81,8 @@ Rapporten nedan beräknar hur stor andel av sjukfallen som innehåller minst en 
 Rapporten nedan listar diagnoser som dyker upp i sjukfall som inkluderar diagnosen G93.3 och i hur många sjukfall som de dyker upp.
 
 Om en diagnos förekommer flera gånger i ett sjukfall så räknas den ändå bara en gång.
+
+Här räknar man in alla sjukfall oavsett ålder på patienten.
 
 !(| Sjukfall i rapporten socialstyrelsen som antal |
 | mecfsvariant | diagnos | totalt? |
