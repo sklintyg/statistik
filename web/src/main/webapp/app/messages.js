@@ -313,7 +313,7 @@ var stMessages = {
             'När du väljer ”Excel” laddas tabellen ner till din dator och går sedan att öppna i Excel.</p>',
 
         'faq.sickness.1.title': 'Vad är ett sjukfall?',
-        'faq.sickness.1.body': '<p>Intygsstatistik omfattar ett sjukfall de elektroniska läkarintyg (FK 7263 och FK 7804) som utfärdats för en viss patient vid en ' +
+        'faq.sickness.1.body': '<p>I Intygsstatistik omfattar ett sjukfall de elektroniska läkarintyg (FK 7263 och FK 7804) som utfärdats för en viss patient vid en ' +
             'sjukskrivning och som följer på varandra med max fem dagars uppehåll. ' +
             'Intygen måste även vara utfärdade av samma vårdgivare för att räknas till samma sjukfall. ' +
             'Om det är mer än fem dagar mellan två intyg eller om två intyg är utfärdade av olika vårdgivare, så räknas det som två sjukfall.</p>' +
