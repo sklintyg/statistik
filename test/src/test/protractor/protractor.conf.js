@@ -48,7 +48,7 @@ exports.config = {
         marionette: false,
         acceptInsecureCerts: true,
         chromeOptions: {
-            args: [ "--no-sandbox", "--headless", "--disable-gpu", "--window-size=1280x1024" ]
+            args: [ '--no-sandbox', '--headless', '--disable-gpu', '--window-size=1280x1024' ]
         }
     },
 

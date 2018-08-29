@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').factory('navigationViewState',
     /** @ngInject */
-    function() {
+    function(ObjectHelper) {
         'use strict';
 
         var ids = {
@@ -28,7 +28,9 @@ angular.module('StatisticsApp').factory('navigationViewState',
             landsting: 'landsting'
         };
 
-        var state = {};
+        var state = {
+            diagnosHash: '-'
+        };
 
         function _reset() {
             state.active = 'nationell';
@@ -44,12 +46,19 @@ angular.module('StatisticsApp').factory('navigationViewState',
             state.active = newState.active;
         }
 
+        function _setDiagnosHash(hash) {
+            if (ObjectHelper.isNotEmpty(hash)) {
+                state.diagnosHash = hash;
+            }
+        }
+
         _reset();
 
         // Return public API for the service
         return {
             get: _get,
             set: _set,
+            setDiagnosHash: _setDiagnosHash,
             ids: ids
         };
     }
