@@ -71,6 +71,8 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
             chartFactory.setColorToTotalCasesSeries($scope.series);
             destroyChart(chart);
             chart = paintChart(ajaxResult.categories, $scope.series, doneLoadingCallback);
+
+            $scope.series = chart.series;
         };
 
         $scope.switchChartType = function (chartType) {

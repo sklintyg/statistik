@@ -103,6 +103,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             chartFactory.addColor(chartSeriesMale);
             that.chart2 = that.paintChart('chart2', 'män', 97, chartCategories, chartSeriesMale, -80, doneLoadingCallback, config);
 
+            $scope.series = that.chart2.series;
+
             updateChartsYAxisMaxValue();
         };
 

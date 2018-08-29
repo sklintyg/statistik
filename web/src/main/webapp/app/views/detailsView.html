@@ -182,7 +182,7 @@
                    data-ng-class="{'clear-both': $index%2 == 0}"
                    class="col-xs-12 col-sm-6">
                 <label class="legend-label">
-                  <input type="checkbox" checked="" class="detail-checkbox" data-ng-click="toggleSeriesVisibility($index)" />
+                  <input type="checkbox" checked="checked" data-ng-checked="seriesData.visible" class="detail-checkbox" data-ng-click="toggleSeriesVisibility($index)" />
                   <span class="legend-color-square"
                         data-ng-attr-style="background-color: {{::seriesData.color}}!important"></span>
                   <span class="legend-name" ng-bind-html="::seriesData.name | highlightWords"></span>

@@ -98,6 +98,8 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
 
             chartFactory.setColorToTotalCasesSeries($scope.series);
             chart = paintChart(categories, $scope.series, doneLoadingCallback);
+
+            $scope.series = chart.series;
         };
 
         $scope.switchChartType = function (chartType) {
