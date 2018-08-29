@@ -75,7 +75,7 @@ public class ResponseHandlerTest {
     @Test
     public void testGetResponseWithNullData() {
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, null), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, AvailableFilters.getForSjukfall(), null), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) response.getEntity()).get("empty"));
@@ -100,7 +100,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, Arrays.asList("1", "2", "3"), null, null, null, null, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, AvailableFilters.getForSjukfall(), filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));
@@ -114,7 +114,7 @@ public class ResponseHandlerTest {
         FilterDataResponse filterDataResponse = new FilterDataResponse(null, Arrays.asList("2", "1", "3"), null, null, null, null, true);
 
         //When
-        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, null, filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
+        final Response response = responseHandler.getResponse(new SimpleDetailsData(null, null, null, AvailableFilters.getForSjukfall(), filterDataResponse), null, null, new ReportInfo(Report.V_ALDERSGRUPP, ReportType.TVARSNITT));
 
         //Then
         assertTrue((Boolean) ((Map) response.getEntity()).get(ResponseKeys.ALL_AVAILABLE_DXS_SELECTED_IN_FILTER));

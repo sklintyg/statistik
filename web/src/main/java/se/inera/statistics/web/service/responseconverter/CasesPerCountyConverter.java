@@ -243,7 +243,8 @@ public class CasesPerCountyConverter {
         ChartData chartData = convertToChart();
         Range fullRange = new Range(range.getFrom(), range.getTo());
         final String originDate = countyPopulation.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        return new CasesPerCountyData(tableData, chartData, fullRange.toString(), null, FilterDataResponse.empty(), originDate);
+        return new CasesPerCountyData(tableData, chartData, fullRange.toString(), resp.getAvailableFilters(),
+                FilterDataResponse.empty(), originDate);
     }
 
 }
