@@ -319,7 +319,7 @@ public class RestSupportService {
         } while (count > 0);
         clearCaches();
 
-        nationalChartDataService.buildCache();
+        nationalChartDataService.buildNationalDataCache();
 
         return Response.ok().build();
     }

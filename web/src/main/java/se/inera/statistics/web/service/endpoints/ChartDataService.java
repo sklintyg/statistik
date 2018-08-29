@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -33,13 +34,17 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
+
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 import se.inera.statistics.service.report.model.Icd;
@@ -93,9 +98,15 @@ public class ChartDataService {
     private NationellDataResult getNationellDataResult() {
         if (nationellDataResult == null) {
             LOG.info("National cache is not set. Requesting population.");
-            buildCache();
+            buildNationalDataCache();
         }
         return nationellDataResult != null ? nationellDataResult : new NationellDataResult();
+    }
+
+    // always pouplate national cache on startup
+    @EventListener(ContextRefreshedEvent.class)
+    void contextRefreshedEvent() {
+        getNationellDataResult();
     }
 
     public void clearNationellDataCache() {
@@ -113,7 +124,7 @@ public class ChartDataService {
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     @PrometheusTimeMethod(help = "Jobb för att uppdatera information i cache")
-    public void buildCache() {
+    public void buildNationalDataCache() {
         logMDCHelper.run(() -> {
             LOG.info("National cache population requested");
             if (!dataCalculationOngoing.getAndSet(true)) {
