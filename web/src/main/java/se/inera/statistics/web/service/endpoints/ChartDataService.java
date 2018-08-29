@@ -106,7 +106,7 @@ public class ChartDataService {
     // always populate national cache on startup
     @EventListener(ContextRefreshedEvent.class)
     void contextRefreshedEvent() {
-        getNationellDataResult();
+        new Thread(() -> getNationellDataResult()).start();
     }
 
     public void clearNationellDataCache() {
