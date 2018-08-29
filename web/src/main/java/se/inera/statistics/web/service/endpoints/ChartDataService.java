@@ -103,7 +103,7 @@ public class ChartDataService {
         return nationellDataResult != null ? nationellDataResult : new NationellDataResult();
     }
 
-    // always pouplate national cache on startup
+    // always populate national cache on startup
     @EventListener(ContextRefreshedEvent.class)
     void contextRefreshedEvent() {
         getNationellDataResult();
