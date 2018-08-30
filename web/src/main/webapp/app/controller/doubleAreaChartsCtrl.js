@@ -21,7 +21,7 @@
 angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $routeParams, $window, $timeout, $filter, statisticsData, config, messageService,
-            $location, chartFactory, _, pdfFactory, ControllerCommons, filterViewState, $route, UserModel, navigationViewState) {
+            $location, chartFactory, _, pdfFactory, ControllerCommons, filterViewState, $route, UserModel) {
         'use strict';
 
         var that = this;
@@ -207,7 +207,6 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
 
         var isExistingDiagnosisHashValid = $routeParams.diagnosHash !== '-';
         if (isExistingDiagnosisHashValid) {
-            navigationViewState.setDiagnosHash($routeParams.diagnosHash);
             $scope.spinnerText = 'Laddar information...';
             $scope.doneLoading = false;
             $scope.dataLoadingError = false;

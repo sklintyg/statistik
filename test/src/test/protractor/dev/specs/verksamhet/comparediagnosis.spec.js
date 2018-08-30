@@ -132,8 +132,9 @@ describe('Jämför diagnoser: ', function() {
     });
 
     it('Det är möjligt att spara valen först när minst en diagnos är vald', function() {
-        //Make sure no selection exists changing level
-        report.compareDiagnosisLevelSection.click();
+        //Make sure no selection exists by reloading report
+        pages.navmenu.navBusinessAgeGroupsLink.click();
+        pages.navmenu.navBusinessCompareDiagnosisLink.click();
 
         //Open dx selection dialog
         report.compareDiagnosisBtn.click();
@@ -153,8 +154,9 @@ describe('Jämför diagnoser: ', function() {
     });
 
     it('Valen återställs när dialogen stängts utan att spara enligt INTYG-3993', function() {
-        //Make sure no selection exists changing level
-        report.compareDiagnosisLevelChapter.click();
+        //Make sure no selection exists by reloading report
+        pages.navmenu.navBusinessAgeGroupsLink.click();
+        pages.navmenu.navBusinessCompareDiagnosisLink.click();
 
         //Open dx selection dialog
         report.compareDiagnosisBtn.click();
@@ -176,32 +178,6 @@ describe('Jämför diagnoser: ', function() {
         //Clean up by closing dialog
         report.compareDiagnosisCloseBtn.click();
         expect(report.compareDiagnosisSaveAndCloseBtn.isPresent()).toBe(false); //Dialog closed
-    });
-
-    it('Kommer ihåg inställningen när man går mellan två rapporter', function() {
-        //Make sure no selection exists changing level
-        report.compareDiagnosisLevelSection.click();
-        report.compareDiagnosisLevelChapter.click();
-
-        //Open dx selection dialog
-        report.compareDiagnosisBtn.click();
-
-        report.compareDiagnosisDepthList(0).first().click();
-
-        var first = report.compareDiagnosisDepthList(0).first();
-        var diagnoses = first.getText();
-        first.element(by.css('input')).click();
-
-        expect(report.compareDiagnosisDepthList(1).count()).toEqual(0);
-
-        report.compareDiagnosisSaveAndCloseBtn.click();
-
-        expect(report.getTableRowsLabel().first().getText()).toEqual(diagnoses);
-
-        pages.navmenu.navBusinessAgeGroupsLink.click();
-        pages.navmenu.navBusinessCompareDiagnosisLink.click();
-
-        expect(report.getTableRowsLabel().first().getText()).toEqual(diagnoses);
     });
 
     afterAll(function() {

@@ -21,7 +21,7 @@
 angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
     /** @ngInject */
     function ($scope, $rootScope, $routeParams, $window, $location, $timeout, $filter, statisticsData, UserModel,
-        config, messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState, StaticDataService, $route, navigationViewState) {
+        config, messageService, chartFactory, pdfFactory, _, ControllerCommons, filterViewState, StaticDataService, $route) {
         'use strict';
 
         function ensureHighchartTypeIsSet(config) {
@@ -205,7 +205,6 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         };
 
         if (diagnosHashExists()) {
-            navigationViewState.setDiagnosHash($routeParams.diagnosHash);
             $scope.spinnerText = 'Laddar information...';
             $scope.doneLoading = false;
             $scope.dataLoadingError = false;
