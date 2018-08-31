@@ -55,6 +55,18 @@
     text-overflow: ellipsis;
   }
 
+  .headcol-name,
+  .table-headers {
+    max-width: 78rem;
+  }
+
+  @media (max-width: 1500px) {
+    .headcol-name,
+    .table-headers {
+      max-width: 48rem;
+    }
+  }
+
   @media (max-width: $screen-md-max) {
     .headcol-name,
     .table-headers {
