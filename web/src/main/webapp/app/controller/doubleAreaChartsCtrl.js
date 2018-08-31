@@ -591,7 +591,6 @@ angular.module('StatisticsApp').meddelandenPerAmneConfig =
     };
     conf.dataFetcher = 'getMeddelandenPerAmne';
     conf.dataFetcherVerksamhet = 'getMeddelandenPerAmneVerksamhet';
-    conf.dataFetcherLandsting = 'getSjukfallPerBusinessLandsting';
     conf.chartYAxisTitleUnit = 'meddelanden';
     conf.exportTableUrl = function () {
         return 'api/getMeddelandenPerAmne?format=xlsx';
@@ -635,7 +634,7 @@ angular.module('StatisticsApp').meddelandenPerAmneLandstingConfig =
     conf.dataFetcher = 'getMeddelandenPerAmneLandsting';
     conf.chartYAxisTitleUnit = 'meddelanden';
     conf.exportTableUrl = function () {
-        return 'api/landsting/getSjukfallPerBusinessLandsting?format=xlsx';
+        return 'api/landsting/getMeddelandenPerAmneLandsting?format=xlsx';
     };
     conf.suffixTitle = function (suffix) {
         return this.title + ' ' + (suffix || '');

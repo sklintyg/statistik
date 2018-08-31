@@ -749,7 +749,7 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetLandstingConfig =
         conf.dataFetcherLandsting = 'getMeddelandenPerAmneOchEnhetLandsting';
         conf.chartYAxisTitleUnit = 'meddelanden';
         conf.exportTableUrlLandsting = function () {
-            return 'api/landsting/getMeddelandenPerAmneOchEnhetLandsting?format=xlsx';
+            return 'api/landsting/getMeddelandenPerAmnePerEnhetLandsting?format=xlsx';
         };
         conf.title = messageService.getProperty('title.meddelandenperamneochenhet');
         conf.chartFootnotes = [];

@@ -52,7 +52,7 @@ angular.module('StatisticsApp').factory('statisticsData',
     };
 
     function checkQueryStringForVgId() {
-        return $rootScope.queryString.indexOf('vgid=') !== -1;
+        return $rootScope.queryString && $rootScope.queryString.indexOf('vgid=') !== -1;
     }
 
     var makeRequestVerksamhet = function (restFunctionName, successCallback, failureCallback, httpMethod, notAbortable) {

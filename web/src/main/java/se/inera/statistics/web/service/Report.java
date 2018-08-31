@@ -31,16 +31,17 @@ public enum Report {
     N_LANANDELSJUKFALLPERKON(StatisticsLevel.NATIONELL, "LanAndelSjukfallPerKon", "Andel sjukfall per kön fördelat på län"),
     N_MEDDELANDENPERAMNE(StatisticsLevel.NATIONELL, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
     N_INTYGPERTYP(StatisticsLevel.NATIONELL, "IntygPerTyp", "Antal utfärdade intyg fördelat på intygstyp"),
-    N_ANDELKOMPLETTERINGAR(StatisticsLevel.NATIONELL, "Kompletteringandelintyg", "Andel intyg som får kompletteringar"),
+    N_ANDELKOMPLETTERINGAR(StatisticsLevel.NATIONELL, "Kompletteringandelintyg", "Andel utfärdade intyg som fått en kompletteringsbegäran"),
     V_SJUKFALLTOTALT(StatisticsLevel.VERKSAMHET, "SjukfallTotalt", "Antal sjukfall"),
     V_INTYGPERMANAD(StatisticsLevel.VERKSAMHET, "IntygPerManad", "Antal intyg"),
     V_INTYGPERTYP(StatisticsLevel.VERKSAMHET, "IntygPerTyp", "Antal utfärdade intyg fördelat på intygstyp"),
     V_MEDDELANDENTOTALT(StatisticsLevel.VERKSAMHET, "MeddelandenTotalt", "Antal inkomna meddelanden"),
     V_MEDDELANDENPERAMNE(StatisticsLevel.VERKSAMHET, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
     V_MEDDELANDENPERAMNEPERENHET(StatisticsLevel.VERKSAMHET, "MeddelandenPerAmnePerEnhet",
-            "Antal inkomna meddelanden fördelat på ämne och enhet"),
+            "Antal inkomna meddelanden fördelat på vårdenhet"),
     V_MEDDELANDENPERAMNEPERLAKARE(StatisticsLevel.VERKSAMHET, "Lakare", "Antal inkomna meddelanden fördelat på ämne och lakare"),
-    V_ANDELKOMPLETTERINGAR(StatisticsLevel.VERKSAMHET, "Kompletteringandelintyg", "Andel intyg som får kompletteringar"),
+    V_ANDELKOMPLETTERINGAR(StatisticsLevel.VERKSAMHET, "Kompletteringandelintyg",
+            "Andel utfärdade intyg som fått en kompletteringsbegäran"),
     V_VARDENHET(StatisticsLevel.VERKSAMHET, "Vardenhet", "Antal sjukfall fördelat på vårdenhet"),
     V_SJUKFALLPERLAKARE(StatisticsLevel.VERKSAMHET, "SjukfallPerLakare", "Antal sjukfall fördelat på läkare"),
     V_DIAGNOSGRUPP(StatisticsLevel.VERKSAMHET, "Diagnosgrupp", "Antal sjukfall fördelat på diagnosgrupp"),
@@ -58,10 +59,10 @@ public enum Report {
     L_SJUKFALLTOTALT(StatisticsLevel.LANDSTING, "SjukfallTotalt", "Antal sjukfall"),
     L_VARDENHET(StatisticsLevel.LANDSTING, "Vardenhet", "Antal sjukfall fördelat på vårdenhet"),
     L_VARDENHETLISTNINGAR(StatisticsLevel.LANDSTING, "VardenhetListningar", "Antal sjukfall per 1000 listningar fördelat på vårdenhet"),
-    L_ANDELKOMPLETTERINGAR(StatisticsLevel.LANDSTING, "Kompletteringandelintyg", "Andel intyg som får kompletteringar"),
+    L_ANDELKOMPLETTERINGAR(StatisticsLevel.LANDSTING, "Kompletteringandelintyg", "Andel utfärdade intyg som fått en kompletteringsbegäran"),
     L_MEDDELANDENPERAMNE(StatisticsLevel.LANDSTING, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
     L_MEDDELANDENPERAMNEPERENHET(StatisticsLevel.LANDSTING, "MeddelandenPerAmnePerEnhet",
-            "Antal inkomna meddelanden fördelat på ämne per enhet");
+            "Antal inkomna meddelanden fördelat på vårdenhet");
 
     private final StatisticsLevel statisticsLevel;
     private final String shortName; //e.g. used in file name, should therefore not contain spaces
