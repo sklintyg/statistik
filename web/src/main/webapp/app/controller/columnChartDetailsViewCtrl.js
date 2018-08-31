@@ -670,7 +670,7 @@ angular.module('StatisticsApp').meddelandenPerAmneTvarsnittConfig =
             return 'api/verksamhet/getMeddelandenPerAmneTvarsnitt?format=xlsx';
         };
         conf.title = messageService.getProperty('title.meddelandenperamne');
-        conf.chartFootnotes = ['help.nationell.degreeofsickleave'];
+        conf.chartFootnotes = ['help.nationell.meddelandenperamne'];
 
         conf.exchangeableViews = [
             {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmne', active: false},
