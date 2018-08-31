@@ -30,6 +30,8 @@ import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.query.AndelExtras;
 import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.model.TableHeader;
 import se.inera.statistics.web.service.FilterSettings;
 
 public class AndelKompletteringarConverter extends MultiDualSexConverter {
@@ -114,6 +116,38 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
             data.add(konField.getMale() + "%");
         }
         return data;
+    }
+
+    /**
+     * Add specific tooltips in table headers for this report.
+     */
+    @Override
+    TableData convertTable(KonDataResponse resp, String seriesNameTemplate) {
+        final TableData tableData = super.convertTable(resp, seriesNameTemplate);
+        final List<List<TableHeader>> newHeaders = tableData.getHeaders().stream().map(row -> row.stream().map(
+                this::getTableHeaderWithTitle).collect(Collectors.toList())).collect(Collectors.toList());
+        return new TableData(tableData.getRows(), newHeaders);
+    }
+
+    private TableHeader getTableHeaderWithTitle(TableHeader tableHeader) {
+        return new TableHeader(tableHeader.getText(), tableHeader.getColspan(), getTitle(tableHeader), tableHeader.getMeta());
+    }
+
+    private String getTitle(TableHeader tableHeader) {
+        final String text = tableHeader.getText();
+        final String meta = tableHeader.getMeta();
+        switch (text) {
+            case MultiDualSexConverter.TOTAL:
+                return "Kolumnen Totalt visar hur stor andel av alla utfärdade "
+                        + meta + " som har fått en komplettering.";
+            case MultiDualSexConverter.MAN:
+                return "Kolumnen Män visar hur stor andel av alla "
+                        + meta + " utfärdade till manliga patienter som har fått en komplettering.";
+            case MultiDualSexConverter.KVINNOR:
+                return "Kolumnen Kvinnor visar hur stor andel av alla "
+                        + meta + " utfärdade till kvinnliga patienter som har fått en komplettering.";
+        }
+        return null;
     }
 
 }

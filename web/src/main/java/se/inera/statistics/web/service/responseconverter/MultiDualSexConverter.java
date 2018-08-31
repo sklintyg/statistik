@@ -45,7 +45,9 @@ import se.inera.statistics.web.service.FilterSettings;
 
 abstract class MultiDualSexConverter {
 
-    private static final String TOTAL = "Totalt";
+    public static final String TOTAL = "Totalt";
+    public static final String KVINNOR = "Kvinnor";
+    public static final String MAN = "Män";
     private static final int NUMBER_OF_COLUMNS = 3;
     private final String tableHeader;
     private final String tableSeriesHeader;
@@ -138,20 +140,17 @@ abstract class MultiDualSexConverter {
         List<TableHeader> topHeaderRow = new ArrayList<>();
         topHeaderRow.add(new TableHeader(""));
         topHeaderRow.add(new TableHeader(""));
-        List<String> degreesOfSickLeave = resp.getGroups();
-        for (String groupName : degreesOfSickLeave) {
-            final String seriesName = "%1$s".equals(seriesNameTemplate) ? groupName : String.format(seriesNameTemplate, groupName);
-            topHeaderRow.add(new TableHeader(seriesName, NUMBER_OF_COLUMNS));
-        }
-
+        List<String> groups = resp.getGroups();
         List<TableHeader> subHeaderRow = new ArrayList<>();
         subHeaderRow.add(new TableHeader(tableSeriesHeader));
         subHeaderRow.add(new TableHeader(tableHeader));
-        degreesOfSickLeave.forEach((String s) -> {
-            subHeaderRow.add(new TableHeader(TOTAL));
-            subHeaderRow.add(new TableHeader("Kvinnor"));
-            subHeaderRow.add(new TableHeader("Män"));
-        });
+        for (String groupName : groups) {
+            final String seriesName = "%1$s".equals(seriesNameTemplate) ? groupName : String.format(seriesNameTemplate, groupName);
+            topHeaderRow.add(new TableHeader(seriesName, NUMBER_OF_COLUMNS));
+            subHeaderRow.add(new TableHeader(TOTAL, 1, null, seriesName));
+            subHeaderRow.add(new TableHeader(KVINNOR, 1, null, seriesName));
+            subHeaderRow.add(new TableHeader(MAN, 1, null, seriesName));
+        }
 
         List<List<TableHeader>> headers = new ArrayList<>();
         headers.add(topHeaderRow);

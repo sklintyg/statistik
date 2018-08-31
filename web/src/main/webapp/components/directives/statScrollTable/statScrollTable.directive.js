@@ -80,6 +80,10 @@ angular.module('StatisticsApp').directive('statScrollTable',
                     $scope.doneLoading = true;
                 };
 
+                $scope.getHeaderTitle = function(header) {
+                    return header.title ? header.title : header.text;
+                };
+
                 function checkHeaderAndRowLength(rows, headers) {
                     if (!angular.isArray(headers) || !angular.isArray(rows)) {
                         return false;

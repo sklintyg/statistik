@@ -18,14 +18,25 @@
  */
 package se.inera.statistics.web.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 public class TableHeader {
 
     private final String text;
     private final int colspan;
+    private final String title;
+    private final String meta;
 
-    public TableHeader(String text, int colspan) {
+    public TableHeader(String text, int colspan, String title, String meta) {
         this.text = text;
         this.colspan = colspan;
+        this.title = title;
+        this.meta = meta;
+    }
+
+    public TableHeader(String text, int colspan) {
+        this(text, colspan, null, null);
     }
 
     public TableHeader(String text) {
@@ -40,8 +51,19 @@ public class TableHeader {
         return colspan;
     }
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    public String getTitle() {
+        return title;
+    }
+
+    @JsonIgnore
+    public String getMeta() {
+        return meta;
+    }
+
     @Override
     public String toString() {
         return text + ";" + colspan;
     }
+
 }
