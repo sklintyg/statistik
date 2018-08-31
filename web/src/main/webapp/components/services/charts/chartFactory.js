@@ -55,8 +55,14 @@ angular.module('StatisticsApp').factory('chartFactory',
 
             var filteredText = $filter('highlightWords')(text);
 
+            var skipDefaultToolTip = filteredText !== text;
+
             if (isObject && value.marked) {
                 filteredText = '<b>' + filteredText + '</b>';
+            }
+
+            if (skipDefaultToolTip) {
+                return filteredText;
             }
 
             return '<span data-original-title="' + tooltip + '" data-placement="auto right" data-toggle="tooltip">' + filteredText + '</span>';
