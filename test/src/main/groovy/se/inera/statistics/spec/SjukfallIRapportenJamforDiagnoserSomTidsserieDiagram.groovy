@@ -23,10 +23,15 @@ import se.inera.statistics.service.report.util.Icd10RangeType
 
 class SjukfallIRapportenJamforDiagnoserSomTidsserieDiagram extends DualSexTimeSeriesReport {
 
-    def valdaDiagnoskategorier = ""
+    def valdaDiagnoser = []
+
+    public void reset() {
+        super.reset()
+        valdaDiagnoser = []
+    }
 
     public void doExecute() {
-        def report = getReportJamforDiagnoserSomTidsserie(valdaDiagnoskategorier)
+        def report = getReportJamforDiagnoserSomTidsserie(valdaDiagnoser)
         executeDiagram(report)
     }
 
@@ -34,11 +39,39 @@ class SjukfallIRapportenJamforDiagnoserSomTidsserieDiagram extends DualSexTimeSe
         super.setGrupp(diagnoskategori)
     }
 
+    void setValdaDiagnoskapitel(String kapitelString) {
+        if (kapitelString != null && !kapitelString.trim().isEmpty()) {
+            this.valdaDiagnoser.addAll(kapitelString.split(",")*.trim().collect{
+                def code = it.replaceAll("intern", "")
+                String.valueOf(Icd10.icd10ToInt(code, Icd10RangeType.KAPITEL) * (it.endsWith("intern") ? -1 : 1))
+            })
+        }
+    }
+
+    void setValdaDiagnosavsnitt(String avsnittString) {
+        if (avsnittString != null && !avsnittString.trim().isEmpty()) {
+            this.valdaDiagnoser.addAll(avsnittString.split(",")*.trim().collect{
+                def code = it.replaceAll("intern", "")
+                String.valueOf(Icd10.icd10ToInt(code, Icd10RangeType.AVSNITT) * (it.endsWith("intern") ? -1 : 1))
+            })
+        }
+    }
+
     void setValdaDiagnoskategorier(String kategoriString) {
         if (kategoriString != null && !kategoriString.trim().isEmpty()) {
-            this.valdaDiagnoskategorier = kategoriString.split(",")*.trim().collect{
-                String.valueOf(Icd10.icd10ToInt(it, Icd10RangeType.KATEGORI))
-            }
+            this.valdaDiagnoser.addAll(kategoriString.split(",")*.trim().collect{
+                def code = it.replaceAll("intern", "")
+                String.valueOf(Icd10.icd10ToInt(code, Icd10RangeType.KATEGORI) * (it.endsWith("intern") ? -1 : 1))
+            })
+        }
+    }
+
+    void setValdaDiagnoskoder(String kodString) {
+        if (kodString != null && !kodString.trim().isEmpty()) {
+            this.valdaDiagnoser.addAll(kodString.split(",")*.trim().collect{
+                def code = it.replaceAll("intern", "")
+                String.valueOf(Icd10.icd10ToInt(code, Icd10RangeType.KOD) * (it.endsWith("intern") ? -1 : 1))
+            })
         }
     }
 

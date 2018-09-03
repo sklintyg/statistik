@@ -305,6 +305,8 @@ public class Icd10 {
 
         public abstract Optional<Id> getParent();
 
+        public abstract Icd10RangeType getRangeType();
+
         public String getVisibleId() {
             return isInternal() ? "" : getId();
         }
@@ -369,6 +371,11 @@ public class Icd10 {
             return Optional.empty();
         }
 
+        @Override
+        public Icd10RangeType getRangeType() {
+            return Icd10RangeType.KAPITEL;
+        }
+
         public static Kapitel valueOf(String line) {
             return new Kapitel(line.substring(0, ENDINDEX_ID), line.substring(STARTINDEX_DESCRIPTION));
         }
@@ -419,6 +426,11 @@ public class Icd10 {
         @Override
         public Optional<Id> getParent() {
             return Optional.of(getKapitel());
+        }
+
+        @Override
+        public Icd10RangeType getRangeType() {
+            return Icd10RangeType.AVSNITT;
         }
 
         @Override
@@ -473,6 +485,11 @@ public class Icd10 {
         @Override
         public Optional<Id> getParent() {
             return Optional.of(getAvsnitt());
+        }
+
+        @Override
+        public Icd10RangeType getRangeType() {
+            return Icd10RangeType.KATEGORI;
         }
 
         @Override
@@ -534,6 +551,11 @@ public class Icd10 {
         @Override
         public Optional<Id> getParent() {
             return Optional.of(getKategori());
+        }
+
+        @Override
+        public Icd10RangeType getRangeType() {
+            return Icd10RangeType.KOD;
         }
 
         @Override

@@ -24,6 +24,7 @@ import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Icd10RangeType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -59,6 +60,11 @@ public class ResultMessagHandlerTest {
             @Override
             public Optional<Icd10.Id> getParent() {
                 return Optional.empty();
+            }
+
+            @Override
+            public Icd10RangeType getRangeType() {
+                return null;
             }
         });
     }

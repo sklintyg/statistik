@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -174,9 +175,12 @@ public class DiagnosgruppQuery {
     public KonDataResponse getJamforDiagnoserTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength,
             List<String> diagnosis) {
         final List<Icd10.Id> kategoris = Lists.transform(diagnosis, diagnos -> icd10.findIcd10FromNumericId(Integer.valueOf(diagnos)));
+        final List<Icd10RangeType> rangeTypes = kategoris.stream().map(id -> id.getRangeType()).distinct().collect(Collectors.toList());
         final List<String> names = Lists.transform(kategoris, id -> (id.getVisibleId() + " " + id.getName()).trim());
         final List<Integer> ids = Lists.transform(kategoris, id -> id.toInt());
-        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> counter.add(sjukfall.getDiagnoskategori());
+        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
+            sjukfall.getIcd10CodeForTypes(rangeTypes).stream().forEach(integer -> counter.add(integer));
+        };
 
         return sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodLength, names, ids, counterFunction);
     }
