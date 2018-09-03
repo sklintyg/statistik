@@ -235,6 +235,8 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
 
         $scope.showDiagnosisSelector = config.showDiagnosisSelector;
 
+        $scope.useSpecialPrintTable = !!config.useSpecialPrintTable;
+
         $scope.exportChart = function () {
             chartFactory.exportChart(chart, $scope.viewHeader, $scope.subTitle);
         };
@@ -702,6 +704,7 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetTvarsnittConfig =
         conf.exchangeableViews = [
             {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchEnhet', active: false},
             {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchEnhetTvarsnitt', active: true}];
+        conf.useSpecialPrintTable = true;
 
         return conf;
     };
@@ -730,6 +733,7 @@ angular.module('StatisticsApp').meddelandenPerAmneOchLakareTvarsnittConfig =
         conf.exchangeableViews = [
             {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchLakare', active: false},
             {description: 'Tvärsnitt', state: '/verksamhet/meddelandenPerAmneOchLakareTvarsnitt', active: true}];
+        conf.useSpecialPrintTable = true;
 
         return conf;
     };
@@ -756,6 +760,7 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetLandstingConfig =
         conf.chartFootnotesExtra = function(result, isVerksamhet, isLandsting, $filter) {
             return $filter('messageFilter')('help.landsting.meddelandenperamneochenhet', '', '', [result.fileUploadDate], '');
         };
+        conf.useSpecialPrintTable = true;
         return conf;
     };
 
