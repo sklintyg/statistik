@@ -45,7 +45,8 @@
               'sorted-reverse': sortableTableVS.getSortReverse()}"
               data-ng-click="sortByColumn($index, $parent.$parent.$last)"
               colspan="{{::header.colspan}}"
-              title="{{::getHeaderTitle(header)}}"
+              data-toggle="tooltip"
+              data-original-title="{{::getHeaderTitle(header)}}"
               style="white-space: nowrap;">
             <span ng-bind-html="::header.text | highlightWords"></span>
             <i data-ng-if="$parent.$parent.$last" class="fa fa-sort" aria-hidden="true"></i>
