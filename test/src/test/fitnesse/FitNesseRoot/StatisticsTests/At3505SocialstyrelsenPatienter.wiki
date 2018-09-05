@@ -25,7 +25,6 @@ Test
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start | slut |
 | 19671109-2681 | G93.3 | 2017-01-01 | 2017-01-30 |
-| 19671109-2681 | G93.3 | 2016-01-01 | 2016-01-30 |
 
 !3 Då gäller:
 Vilken ålder en patient får beräknas utifrån vilken ålder patienten har vid årets slut, det år då intyget har gällt.
@@ -33,7 +32,6 @@ Vilken ålder en patient får beräknas utifrån vilken ålder patienten har vid
 | Patienter i rapporten socialstyrelsen patienter |
 | personnummer | år | kön? | ålder? |
 | 19671109-2681 | 2017 | FEMALE | 50 |
-| 19671109-2681 | 2016 | FEMALE | 49 |
 
 !3 TEST#3 - Endast intyg med diagnosen G93.3 tas med.
 !3 Givet att:
@@ -47,7 +45,7 @@ Vilken ålder en patient får beräknas utifrån vilken ålder patienten har vid
 !3 Då gäller:
 Endast intyg med diagnosen G93.3 räknas.
 
-| Patienter i rapporten socialstyrelsen patienter |
+| Patienter i rapporten socialstyrelsen patienter |
 | personnummer | år | kön? | ålder? |
 | 19671109-2681 | 2017 | FEMALE | 50 |
 
@@ -65,4 +63,17 @@ En patient vars intyg som har en tidsperiod som löper över olika år, räknas 
 | Patienter i rapporten socialstyrelsen patienter |
 | personnummer | år | kön? | ålder? |
 | 19671109-2681 | 2016 | FEMALE | 49 |
+
+!3 Givet att:
+| script | dagens datum | 2018-01-01 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut |
+| 19671109-2681 | G93.3 | 2016-12-01 | 2017-01-30 |
+
+!3 Då gäller:
+En patient vars intyg som har en tidsperiod som löper över olika år, räknas en gång för varje år.
+
+| Patienter i rapporten socialstyrelsen patienter |
+| personnummer | år | kön? | ålder? |
 | 19671109-2681 | 2017 | FEMALE | 50 |
