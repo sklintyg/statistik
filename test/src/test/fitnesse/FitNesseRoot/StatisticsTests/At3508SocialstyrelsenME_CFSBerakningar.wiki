@@ -55,11 +55,11 @@ Test
 | Sjukfall i rapporten socialstyrelsen som median q1 q3 |
 | kön | åldersgrupp | q1? | median? | q3? |
 | FEMALE | 18-30 år | null | null | null |
-| FEMALE | 31-40 år | 51 | 86 | 121 |
-| FEMALE | 41-50 år | 32 | 60 | 91 |
+| FEMALE | 31-40 år | 68,5 | 86 | 103,5 |
+| FEMALE | 41-50 år | 46 | 60 | 75 |
 | FEMALE | 51+år | 60 | 60 | 60 |
 | MALE | 18-30 år | 69 | 69 | 69 |
-| MALE | 31-40 år | 11 | 41 | 167,5 |
+| MALE | 31-40 år | 12 | 41 | 91 |
 | MALE | 41-50 år | 29 | 29 | 29 |
 | MALE | 51+år | 32 | 32 | 32 |
 
