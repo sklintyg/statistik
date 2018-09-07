@@ -7,9 +7,9 @@ Test
 | script | dagens datum | 2018-01-01 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start | slut | kommentar |
-| 19670109-2681 | F32 | 2017-01-01 | 2017-01-30 | 30 dagar |
-| 19670109-2681 | G93.3 | 2017-02-01 | 2017-02-13 | 13 dagar |
+| personnr | diagnoskod | start | slut | kommentar | enhet |
+| 19670109-2681 | F32 | 2017-01-01 | 2017-01-30 | 30 dagar | enhet1 |
+| 19670109-2681 | G93.3 | 2017-02-01 | 2017-02-13 | 13 dagar | enhet1 |
 
 !3 Då gäller:
 Endast sjukfall som har G93.3 som sista diagnos i sjukfallet tas med. Sjukskrivningslängd beräknas för samtliga intyg i sjukfallet.
@@ -23,9 +23,9 @@ Endast sjukfall som har G93.3 som sista diagnos i sjukfallet tas med. Sjukskrivn
 | script | dagens datum | 2018-01-01 |
 
 | Enbart foljande intyg finns |
-| personnr | diagnoskod | start | slut | kommentar |
-| 19790219-9285 | G93.3 | 2017-01-01 | 2017-01-13 | 13 dagar |
-| 19790219-9285 | F32 | 2017-01-14 | 2017-01-30 | 17 dagar |
+| personnr | diagnoskod | start | slut | kommentar | enhet |
+| 19790219-9285 | G93.3 | 2017-01-01 | 2017-01-13 | 13 dagar | enhet1 |
+| 19790219-9285 | F32 | 2017-01-14 | 2017-01-30 | 17 dagar | enhet1 |
 
 !3 Då gäller:
 Sjukallet tas inte med eftersom det inte har G93.3 som slutdiagnos.

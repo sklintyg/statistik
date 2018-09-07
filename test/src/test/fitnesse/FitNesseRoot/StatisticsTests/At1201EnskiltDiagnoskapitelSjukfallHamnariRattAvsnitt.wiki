@@ -9,6 +9,8 @@ Ett intyg har diagnos P14.
 
 | script | dagens datum | 2013-11-06 |
 
+| script | troskel varde | 1 |
+
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start    | slut       | enhet |
 | 19790219-9285 | P14 | 2013-02-01 | 2013-02-14 | enhet1 |

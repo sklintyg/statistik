@@ -251,11 +251,12 @@ public class Icd10 {
     }
 
     public Id findFromIcd10Code(String icd10) {
+        final String normalized = icd10.toUpperCase(Locale.ENGLISH).replaceAll("[^A-Z0-9-]", "");
         return Stream
                 .of(idToKategoriMap, idToAvsnittMap, idToKapitelMap, idToKodMap, idToInternalMap)
-                .filter(idMap -> idMap.containsKey(icd10))
+                .filter(idMap -> idMap.containsKey(normalized))
                 .findAny()
-                .map((java.util.function.Function<IdMap<? extends Id>, Id>) idMap -> idMap.get(icd10))
+                .map((java.util.function.Function<IdMap<? extends Id>, Id>) idMap -> idMap.get(normalized))
                 .orElseThrow((Supplier<RuntimeException>) () -> new Icd10NotFoundException("ICD10 with id could not be found: " + icd10));
     }
 

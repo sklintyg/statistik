@@ -71,11 +71,17 @@ import se.inera.statistics.time.ChangableClock;
 import se.inera.statistics.web.service.endpoints.ChartDataService;
 import se.inera.testsupport.fkrapport.FkReportCreator;
 import se.inera.testsupport.fkrapport.FkReportDataRow;
+import se.inera.testsupport.socialstyrelsenspecial.IntygCommonSosManager;
+import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs1Row;
+import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs2Row;
 import se.inera.testsupport.socialstyrelsenspecial.SosCalculatedRow;
 import se.inera.testsupport.socialstyrelsenspecial.SosCountRow;
+import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs1ReportCreator;
 import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
+import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs2ReportCreator;
 import se.inera.testsupport.socialstyrelsenspecial.SosRow;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -177,6 +183,13 @@ public class RestSupportService {
 
     @Autowired
     private Cache cache;
+
+    private IntygCommonSosManager intygCommonSosManager;
+
+    @PostConstruct
+    public void setup() {
+        intygCommonSosManager = new IntygCommonSosManager(icd10, manager);
+    }
 
     /**
      * Can only be invoked when app is started with spring profile "populate-intygcommon-dx".
@@ -560,6 +573,33 @@ public class RestSupportService {
                 Boolean.parseBoolean(startWithSpecifiedDx), changableClock, fromYear, toYear);
         final List<SosCalculatedRow> medianValuesSosReport = sosReportCreator.getStdDevValuesSosReport();
         return Response.ok(medianValuesSosReport).build();
+    }
+
+    /**
+     * Special report for Socialstyrelsen regarding dx G933 (INTYG-6994).
+     */
+    @GET
+    @Path("getSocialstyrelsenMeCfs1Report")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public Response getSocialstyrelsenMeCfs1Report() {
+        final SosMeCfs1ReportCreator sosMeCfs1ReportCreator = new SosMeCfs1ReportCreator(intygCommonSosManager, warehouse);
+        final List<SosMeCfs1Row> sosReport = sosMeCfs1ReportCreator.getSosReport(nationellData.getCutoff());
+        return Response.ok(sosReport).build();
+    }
+
+    /**
+     * Special report for Socialstyrelsen regarding dx G933 (INTYG-6994).
+     */
+    @GET
+    @Path("getSocialstyrelsenMeCfs2Report")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public Response getSocialstyrelsenMeCfs2Report() {
+        final Iterator<Aisle> aisles = warehouse.iterator();
+        final List<SosMeCfs2Row> sosReport = new SosMeCfs2ReportCreator(aisles, sjukfallUtil,
+                nationellData.getCutoff(), icd10).getSosReport();
+        return Response.ok(sosReport).build();
     }
 
     /**

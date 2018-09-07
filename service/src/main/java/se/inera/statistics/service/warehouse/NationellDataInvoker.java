@@ -90,6 +90,10 @@ public class NationellDataInvoker {
         this.cutoff = cutoff;
     }
 
+    public int getCutoff() {
+        return cutoff;
+    }
+
     public NationellDataInfo getAll() {
         final NationellData nationellData = new NationellData(messagesQuery, lans, query, sjukfallUtil, cutoff);
         final NationellDataInfo result = new NationellDataInfo(); //Will contain the final results
