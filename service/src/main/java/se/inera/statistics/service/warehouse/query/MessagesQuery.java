@@ -219,7 +219,7 @@ public class MessagesQuery {
             List<CountDTOAmne> dtos = map.get(intygType.name());
             if (dtos != null) {
                 for (CountDTOAmne dto : dtos) {
-                    final int ordinal = IntygType.parseString(dto.getIntygTyp()).getMappedType().ordinal();
+                    final int ordinal = IntygType.parseString(dto.getIntygTyp()).ordinal();
                     if (dto.getKon().equals(Kon.FEMALE)) {
                         femaleIntyg[ordinal] += 1;
                         femaleKompl[ordinal] += MsgAmne.KOMPLT.equals(dto.getAmne()) ? 1 : 0;
@@ -235,7 +235,7 @@ public class MessagesQuery {
         final List<SimpleKonDataRow> result = new ArrayList<>();
         for (int j = 0, intygTypesLength = intygTypes.length; j < intygTypesLength; j++) {
             final IntygType intygType = intygTypes[j];
-            if (intygType.isIncludeInIntygtypFilter()) {
+            if (intygType.isIncludedInKompletteringReport()) {
                 int f = femaleIntyg[j] == 0 ? 0 : percentConvertion * femaleKompl[j] / femaleIntyg[j];
                 int m = maleIntyg[j] == 0 ? 0 : percentConvertion * maleKompl[j] / maleIntyg[j];
                 final int part = femaleKompl[j] + maleKompl[j];
@@ -272,7 +272,7 @@ public class MessagesQuery {
 
             if (dtos != null) {
                 for (CountDTOAmne dto : dtos) {
-                    final int ordinal = IntygType.parseString(dto.getIntygTyp()).getMappedType().ordinal();
+                    final int ordinal = IntygType.parseString(dto.getIntygTyp()).ordinal();
                     if (dto.getKon().equals(Kon.FEMALE)) {
                         femaleIntyg[ordinal] += 1;
                         femaleKompl[ordinal] += MsgAmne.KOMPLT.equals(dto.getAmne()) ? 1 : 0;
@@ -286,7 +286,7 @@ public class MessagesQuery {
             final int percentConvertion = 100;
             final ArrayList<KonField> data = new ArrayList<>();
             for (int j = 0; j < seriesLength; j++) {
-                if (intygTypes[j].isIncludeInIntygtypFilter()) {
+                if (intygTypes[j].isIncludedInKompletteringReport()) {
                     boolean includeFemale = femaleKompl[j] >= cutoff;
                     final int femaleKomplJ = includeFemale ? femaleKompl[j] : 0;
                     final int femaleIntygJ = includeFemale ? femaleIntyg[j] : 0;
@@ -307,7 +307,7 @@ public class MessagesQuery {
 
         final ArrayList<String> groups = new ArrayList<>();
         for (int j = 0; j < seriesLength; j++) {
-            if (intygTypes[j].isIncludeInIntygtypFilter()) {
+            if (intygTypes[j].isIncludedInKompletteringReport()) {
                 groups.add(intygTypes[j].name());
             }
         }

@@ -44,11 +44,11 @@ Inloggad:
 
 | Andel i rapporten komplettering andel intyg |
 | inloggad som | år | månad | grupp | filter kapitel | filter avsnitt | filter kategorier | grupp totalt? | män? | kvinnor? |
-| user2 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | | | | 100% | 100% | 100% |
-| user2 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | G00-G99 | | | 100% | 0% | 100% |
-| user2 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | | G90-G99 | | 0% | 0% | 0% |
-| user2 | 2015 | mar | FK 7263/7804 Läkarintyg för sjukpenning | | | G01 | 100% | 0% | 100% |
-| user2 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | | | | 66% | 50% | 100% |
-| user2 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | G00-G99 | | | 0% | 0% | 0% |
-| user2 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | | G90-G99 | | 0% | 0% | 0% |
-| user2 | 2015 | apr | FK 7263/7804 Läkarintyg för sjukpenning | | | A41 | 100% | 100% | 100% |
+| user2 | 2015 | mar | FK 7804 Läkarintyg för sjukpenning | | | | 100% | 100% | 100% |
+| user2 | 2015 | mar | FK 7804 Läkarintyg för sjukpenning | G00-G99 | | | 100% | 0% | 100% |
+| user2 | 2015 | mar | FK 7804 Läkarintyg för sjukpenning | | G90-G99 | | 0% | 0% | 0% |
+| user2 | 2015 | mar | FK 7804 Läkarintyg för sjukpenning | | | G01 | 100% | 0% | 100% |
+| user2 | 2015 | apr | FK 7804 Läkarintyg för sjukpenning | | | | 66% | 50% | 100% |
+| user2 | 2015 | apr | FK 7804 Läkarintyg för sjukpenning | G00-G99 | | | 0% | 0% | 0% |
+| user2 | 2015 | apr | FK 7804 Läkarintyg för sjukpenning | | G90-G99 | | 0% | 0% | 0% |
+| user2 | 2015 | apr | FK 7804 Läkarintyg för sjukpenning | | | A41 | 100% | 100% | 100% |
