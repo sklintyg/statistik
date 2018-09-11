@@ -29,6 +29,7 @@ import se.inera.statistics.service.warehouse.Warehouse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,8 +61,8 @@ public class SosMeCfs1ReportCreator {
                     LOG.info("Number of vgs done: " + counter + " for year: " + year);
                 }
             }
-            final List<KonDataRow> rows = intygPerAgeGroupSos.getRows();
-            final List<String> groups = intygPerAgeGroupSos.getGroups();
+            final List<KonDataRow> rows = intygPerAgeGroupSos != null ? intygPerAgeGroupSos.getRows() : Collections.emptyList();
+            final List<String> groups = intygPerAgeGroupSos != null ? intygPerAgeGroupSos.getGroups() : Collections.emptyList();
             for (KonDataRow row : rows) {
                 for (Kon gender : genders) {
                     final List<Integer> dataForGender = row.getDataForSex(gender);

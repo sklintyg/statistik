@@ -536,6 +536,14 @@ class ReportsUtil {
         return get("/api/testsupport/getSocialstyrelsenReport", FilterData.empty(), queryString, "filter")
     }
 
+    def getSocialstyrelsenMecfs1Report() {
+        return get("/api/testsupport/getSocialstyrelsenMeCfs1Report", FilterData.empty())
+    }
+
+    def getSocialstyrelsenMecfs2Report() {
+        return get("/api/testsupport/getSocialstyrelsenMeCfs2Report", FilterData.empty())
+    }
+
     private String getSocialstyrelseQueryString(Integer fromYear, Integer toYear, List<String> dxs, boolean checkSjukfallsStartingWithDx) {
         def qs = new StringBuilder();
         if (fromYear != null) {

@@ -47,9 +47,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -73,13 +75,18 @@ public class IntygCommonSosManager {
         final AgeGroupSoc[] groups = AgeGroupSoc.values();
         final List<String> names = Arrays.stream(groups).map(AgeGroupSoc::getGroupName).collect(Collectors.toList());
         final List<Integer> ids = Arrays.stream(groups).map(Enum::ordinal).collect(Collectors.toList());
+        final Set<String> uniquePnrs = new HashSet<>();
 
         final CounterFunctionIntyg<Integer> counterFunction = (intyg, counter) -> {
-            final String birthYearString = intyg.getPatientid().substring(0, 4);
-            final int birthYear = Integer.parseInt(birthYearString);
-            final int ageAtEndOfYear = year - birthYear;
-            final AgeGroupSoc ageGroup = AgeGroupSoc.getGroupForAge(ageAtEndOfYear).orElse(AgeGroupSoc.GROUP1_0TO16);
-            counter.add(ageGroup.ordinal());
+            final String patientid = intyg.getPatientid();
+            final boolean isUniquePnr = uniquePnrs.add(patientid);
+            if (isUniquePnr) {
+                final String birthYearString = patientid.substring(0, 4);
+                final int birthYear = Integer.parseInt(birthYearString);
+                final int ageAtEndOfYear = year - birthYear;
+                final AgeGroupSoc ageGroup = AgeGroupSoc.getGroupForAge(ageAtEndOfYear).orElse(AgeGroupSoc.GROUP1_0TO16);
+                counter.add(ageGroup.ordinal());
+            }
         };
         final Range range = new Range(LocalDate.of(year, 1, 1), LocalDate.of(year, 12, 31));
         final List<String> dxs = Collections.singletonList(String.valueOf(icd10.findFromIcd10Code("G933").toInt()));

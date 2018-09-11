@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !3 Givet att:
@@ -31,7 +30,27 @@ Test
 | 19960429-8810 | 2015 | MALE | 19 |
 | 19740808-9274 | 2015 | MALE | 41 |
 
-| Patienter i rapporten socialstyrelsen patienter som antal |
-| år | totalt? | kvinnor? | män? | 18-30årK? | 18-30årM? | 31-40årK? | 31-40årM? | 41-50årK? | 41-50årM? | 51+årK? | 51+årM? |
-| 2014 | 4 | 1 | 3 | 0 | 2 | 0 | 1 | 1 | 0 | 0 | 0 |
-| 2015 | 3 | 1 | 2 | 0 | 1 | 0 | 0 | 0 | 1 | 1 | 0 |
+| Comment |
+| Patienter i rapporten socialstyrelsen mecfs patienter som antal |
+| år   | totalt? | kvinnor? | män? | 18-30årK? | 18-30årM? | 31-40årK? | 31-40årM? | 41-50årK? | 41-50årM? | 51+årK? | 51+årM? |
+| 2014 | 4       | 1        | 3    | 0         | 2         | 0         | 1         | 1         | 0         | 0       | 0       |
+| 2015 | 3       | 1        | 2    | 0         | 1         | 0         | 0         | 0         | 1         | 1       | 0       |
+
+| Patienter i rapporten socialstyrelsen mecfs1 patienter som antal |
+| år   | kön    | åldersgrupp | antal? |
+| 2014 | FEMALE | 18-30       | 0      |
+| 2014 | FEMALE | 31-40       | 0      |
+| 2014 | FEMALE | 41-50       | 1      |
+| 2014 | FEMALE | 51+         | 0      |
+| 2014 | MALE   | 18-30       | 2      |
+| 2014 | MALE   | 31-40       | 1      |
+| 2014 | MALE   | 41-50       | 0      |
+| 2014 | MALE   | 51+         | 0      |
+| 2015 | FEMALE | 18-30       | 0      |
+| 2015 | FEMALE | 31-40       | 0      |
+| 2015 | FEMALE | 41-50       | 0      |
+| 2015 | FEMALE | 51+         | 1      |
+| 2015 | MALE   | 18-30       | 1      |
+| 2015 | MALE   | 31-40       | 0      |
+| 2015 | MALE   | 41-50       | 1      |
+| 2015 | MALE   | 51+         | 0      |
