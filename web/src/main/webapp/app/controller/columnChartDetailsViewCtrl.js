@@ -539,6 +539,7 @@ angular.module('StatisticsApp').intygPerTypeTvarsnittConfig =
     conf.title = messageService.getProperty('title.intygstyp');
     conf.chartYAxisTitle = 'Antal intyg';
     conf.convertChartCategories = chartFactory.addCategoryIntygTooltip;
+    conf.chartYAxisTitleUnit = 'intyg';
 
     conf.exchangeableViews = [
         {description: 'Tidsserie', state: '/verksamhet/intygPerTyp', active: true},
