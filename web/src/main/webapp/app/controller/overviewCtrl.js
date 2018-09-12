@@ -100,7 +100,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                 align: 'center',
                 y: 15,
                 floating: true,
-                text: (alteration > 0 ? "+" : "") + alteration + ' %',
+                text: (alteration > 0 ? '+' : '') + alteration + ' %',
                 style: {
                     fontFamily: 'Helvetica, Arial, sans-serif',
                     color: '#FFFFFF',
