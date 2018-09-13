@@ -43,6 +43,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         var isLandsting = ControllerCommons.isShowingLandsting($location);
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
+            var yAxisTitleUnit = config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall';
             var chartConfigOptions = {
                 categories: chartCategories,
                 series: chartSeries,
@@ -53,7 +54,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
                 stacked: chartTypeInfo.stacked,
                 verticalLabel: false,
                 labelMaxLength: null,
-                unit: 'sjukfall'
+                unit: yAxisTitleUnit
             };
 
             var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
@@ -295,6 +296,7 @@ angular.module('StatisticsApp').meddelandenPerAmneOchEnhetConfig =
         };
         conf.title = messageService.getProperty('title.meddelandenperamneochenhet');
         conf.chartFootnotes = ['help.verksamhet.meddelandenperamneochenhet'];
+        conf.chartYAxisTitleUnit = 'meddelanden';
 
         conf.exchangeableViews = [
             {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchEnhet', active: true},
@@ -321,6 +323,7 @@ angular.module('StatisticsApp').meddelandenPerAmneOchLakareConfig =
         };
         conf.title = messageService.getProperty('title.meddelandenperamneochlakare');
         conf.chartFootnotes = ['help.verksamhet.meddelandenperamneochlakare'];
+        conf.chartYAxisTitleUnit = 'meddelanden';
 
         conf.exchangeableViews = [
             {description: 'Tidsserie', state: '/verksamhet/meddelandenPerAmneOchLakare', active: true},
