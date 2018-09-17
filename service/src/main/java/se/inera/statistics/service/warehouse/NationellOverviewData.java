@@ -18,9 +18,13 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import se.inera.statistics.service.countypopulation.CountyPopulation;
+import se.inera.statistics.service.countypopulation.CountyPopulationManager;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Icd;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
@@ -41,6 +45,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Contains calculations for each overview report on national statistics.
@@ -50,6 +55,9 @@ public class NationellOverviewData {
 
     private static final int MAX_LAN = 5;
     private static final int PERCENT = 100;
+
+    @Autowired
+    private CountyPopulationManager countyPopulationManager;
 
     public OverviewResponse getOverview(NationellDataInfo data) {
         OverviewKonsfordelning sexProportion = getSexProportion(data);
@@ -78,12 +86,33 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRowExtended> getIntygPerLan(NationellDataInfo data) {
-        SimpleKonResponse previousData = data.getOverviewLanPreviousResult();
-        SimpleKonResponse currentData = data.getOverviewLanCurrentResult();
-
+        final Range range = data.getOverviewRange();
+        SimpleKonResponse previousData = perPopulation(data.getOverviewLanPreviousResult(), range);
+        SimpleKonResponse currentData = perPopulation(data.getOverviewLanCurrentResult(), range);
         Set<String> include = getTop(MAX_LAN, currentData);
-
         return getResult(include, previousData, currentData, null);
+    }
+
+    private SimpleKonResponse perPopulation(SimpleKonResponse overviewLanPreviousResult, Range range) {
+        final CountyPopulation countyPopulation = countyPopulationManager.getCountyPopulation(range);
+        final Map<String, KonField> populationPerCountyCode = countyPopulation.getPopulationPerCountyCode();
+        final List<SimpleKonDataRow> rows = overviewLanPreviousResult.getRows().stream().map(simpleKonDataRow -> {
+            final KonField data = simpleKonDataRow.getData();
+            final Object county = simpleKonDataRow.getExtras();
+            final KonField population = populationPerCountyCode.get(county);
+            final int female = getGenderPerPopulation(data, population, Kon.FEMALE);
+            final int male = getGenderPerPopulation(data, population, Kon.MALE);
+            return new SimpleKonDataRow(simpleKonDataRow.getName(), female, male, county);
+        }).collect(Collectors.toList());
+        return new SimpleKonResponse(overviewLanPreviousResult.getAvailableFilters(), rows);
+    }
+
+    private int getGenderPerPopulation(KonField data, KonField konField, Kon gender) {
+        if (konField == null || konField.getValue(gender) == 0) {
+            return 0;
+        }
+        final int million = 1000000;
+        return million * data.getValue(gender) / konField.getValue(gender);
     }
 
     private int getForandringLangaSjukskrivningar(NationellDataInfo data) {
@@ -187,7 +216,7 @@ public class NationellOverviewData {
     }
 
     private List<OverviewChartRowExtended> getResult(Set<String> include, SimpleKonResponse previousData,
-            SimpleKonResponse currentData, String rest) {
+                                                     SimpleKonResponse currentData, String rest) {
         List<OverviewChartRowExtended> result = new ArrayList<>();
 
         int restCurrent = 0;
