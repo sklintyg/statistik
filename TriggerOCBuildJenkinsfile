@@ -15,7 +15,7 @@ env:
   - name: commonVersion
     value: $COMMON_VERSION
   - name: gitRef
-    value: $GIT_REF
+    value: v$STATISTIK_BUILD_VERSION
   - name: gitUrl
     value: $GIT_URL
     """
