@@ -72,7 +72,7 @@ public class VerksamhetOverviewConverter {
     }
 
     private Comparator<DonutChartData> comp() {
-        return (o1, o2) -> o2.getQuantity() - o1.getQuantity();
+        return (o1, o2) -> Double.compare(o2.getQuantity().doubleValue(), o1.getQuantity().doubleValue());
     }
 
     private Function<OverviewChartRowExtended, DonutChartData> mapOverviewRowData() {

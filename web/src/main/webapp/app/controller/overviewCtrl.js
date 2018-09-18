@@ -54,7 +54,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
 
             $scope.popoverTextSickLeaveLength = 'Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden ' + result.periodText + '.' +
                                                     '<br><br>Ställ markören i respektive stapel för att se antalet sjukfall.';
-            $scope.popoverTextPerCountyDescription = 'Kartan visar de län med flest antal sjukfall under ' + result.periodText + '.' +
+            $scope.popoverTextPerCountyDescription = 'Kartan visar de län med flest antal sjukfall per 1000 invånare under ' + result.periodText + '.' +
                 popoverTextChangeCurrentVSPrevious;
         };
 

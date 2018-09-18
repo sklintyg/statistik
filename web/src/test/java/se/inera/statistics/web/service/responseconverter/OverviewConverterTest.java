@@ -119,7 +119,7 @@ public class OverviewConverterTest {
         List<DonutChartData> countyResult = data.getPerCounty();
         assertEquals(1, countyResult.size());
         assertEquals("countyName", countyResult.get(0).getName());
-        assertEquals(8, countyResult.get(0).getQuantity());
+        assertEquals(0.008, countyResult.get(0).getQuantity());
         assertEquals(9, countyResult.get(0).getAlternation());
 
         SickLeaveLengthOverview sickGroupsResult = data.getSickLeaveLength();

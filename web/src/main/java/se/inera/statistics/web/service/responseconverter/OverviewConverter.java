@@ -52,7 +52,7 @@ public class OverviewConverter {
         List<DonutChartData> degreeOfSickLeaveGroups = resp.getDegreeOfSickLeaveGroups().stream().map(mapOverviewRowData()).sorted(comp())
                 .collect(Collectors.toList());
 
-        List<DonutChartData> perCounty = resp.getPerCounty().stream().map(mapOverviewRowData()).sorted(comp()).collect(Collectors.toList());
+        List<DonutChartData> perCounty = resp.getPerCounty().stream().map(mapRowDataMilli()).sorted(comp()).collect(Collectors.toList());
 
         ArrayList<BarChartData> sickLeaveLengthData = new ArrayList<>();
         for (OverviewChartRow row : resp.getSickLeaveLengthGroups()) {
@@ -66,10 +66,22 @@ public class OverviewConverter {
     }
 
     private Comparator<DonutChartData> comp() {
-        return (o1, o2) -> o2.getQuantity() - o1.getQuantity();
+        return (o1, o2) -> Double.compare(o2.getQuantity().doubleValue(), o1.getQuantity().doubleValue());
     }
 
     private Function<OverviewChartRowExtended, DonutChartData> mapOverviewRowData() {
         return (r) -> new DonutChartData(r.getName(), r.getQuantity(), r.getAlternation(), r.getColor());
     }
+
+    /**
+     * The county report is calculated per million citizens but should be
+     * presented per thousand citizens. That conversion is performed here.
+     */
+    private Function<OverviewChartRowExtended, DonutChartData> mapRowDataMilli() {
+        return (r) -> {
+            final double thousand = 1000d;
+            return new DonutChartData(r.getName(), r.getQuantity() / thousand, r.getAlternation(), r.getColor());
+        };
+    }
+
 }

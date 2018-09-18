@@ -22,10 +22,10 @@ public class DonutChartData {
 
     private final String color;
     private final String name;
-    private final int quantity;
-    private final int alternation;
+    private final Number quantity;
+    private final Number alternation;
 
-    public DonutChartData(String name, int quantity, int alternation, String color) {
+    public DonutChartData(String name, Number quantity, Number alternation, String color) {
         this.color = color;
         this.name = name;
         this.quantity = quantity;
@@ -40,11 +40,11 @@ public class DonutChartData {
         return name;
     }
 
-    public int getQuantity() {
+    public Number getQuantity() {
         return quantity;
     }
 
-    public int getAlternation() {
+    public Number getAlternation() {
         return alternation;
     }
 
