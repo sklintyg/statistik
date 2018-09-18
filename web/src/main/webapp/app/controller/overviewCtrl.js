@@ -262,6 +262,9 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             chartOptions.chart.height = 350;
             chartOptions.chart.width = 180;
             chartOptions.chart.plotBorderWidth = 0;
+            chartOptions.chart.style = {
+                zIndex: 1
+            };
 
             chartOptions.legend.enabled = false;
             chartOptions.plotOptions = {
