@@ -87,7 +87,11 @@ stage('notify') {
 
 stage('propagate') {
     node {
-        build job: "statistik-sandbox-build", wait: false, parameters: [[$class: 'StringParameterValue', name: 'STATISTIK_BUILD_VERSION', value: buildVersion]]
+        build job: "statistik-sandbox-build", wait: false, parameters: [
+            [$class: 'StringParameterValue', name: 'STATISTIK_BUILD_VERSION', value: buildVersion],
+            [$class: 'StringParameterValue', name: 'INFRA_VERSION', value: infraVersion],
+            [$class: 'StringParameterValue', name: 'GIT_REF', value: 'v${buildVersion}']
+        ]
     }
 }
 
