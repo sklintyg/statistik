@@ -150,7 +150,7 @@ public class WarehouseService {
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
             final MessagesFilter meddelandeFilter = getMeddelandeFilter(entry.getKey(), filterSettings.getFilter(), range);
-            return messagesQuery.getMeddelandenPerAmneAggregated(konDataResponse, meddelandeFilter, 0);
+            return messagesQuery.getMeddelandenPerAmneAggregated(konDataResponse, meddelandeFilter, sjukfallQuery.getCutoff());
         }, (konDataResponse, konDataResponse2) -> konDataResponse2);
     }
 
@@ -175,7 +175,7 @@ public class WarehouseService {
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
             final MessagesFilter meddelandeFilter = getMeddelandeFilter(entry.getKey(), filterSettings.getFilter(), range);
-            return messagesQuery.getAndelKompletteringarAggregated(konDataResponse, meddelandeFilter, 0);
+            return messagesQuery.getAndelKompletteringarAggregated(konDataResponse, meddelandeFilter, sjukfallQuery.getCutoff());
         }, (konDataResponse, konDataResponse2) -> konDataResponse2);
     }
 
@@ -213,7 +213,7 @@ public class WarehouseService {
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
             final MessagesFilter meddelandeFilter = getMeddelandeFilter(entry.getKey(), filterSettings.getFilter(), range);
-            return messagesQuery.getMeddelandenPerAmneOchEnhetAggregated(konDataResponse, meddelandeFilter, 0);
+            return messagesQuery.getMeddelandenPerAmneOchEnhetAggregated(konDataResponse, meddelandeFilter, sjukfallQuery.getCutoff());
         }, (konDataResponse, konDataResponse2) -> konDataResponse2);
     }
 
