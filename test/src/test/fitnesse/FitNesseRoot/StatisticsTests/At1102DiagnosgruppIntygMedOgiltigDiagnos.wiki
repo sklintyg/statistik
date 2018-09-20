@@ -7,32 +7,32 @@ Test
 
 Ett intyg har diagnoskoden P99, vilken inte finns med i ICD-10.
 
-| script | dagens datum | 2013-11-06 |
+|script|dagens datum|2013-11-06|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet |
-| 19790316-9261 | P99 | 2013-02-01 | 2013-02-14 | enhet1 |
+|Enbart foljande intyg finns                          |
+|personnr     |diagnoskod|start     |slut      |enhet |
+|19790316-9261|P99       |2013-02-01|2013-02-14|enhet1|
 
 !3 Då gäller:
 
 Sjukfallet hamnar i gruppen "Utan giltig ICD-10 kod" både i diagram och tabell.
 
 Nationell:
-| Sjukfall i rapporten diagnosgrupp |
-| år   | månad | grupp                   | män? | kvinnor? |
-| 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 1        |
+|Sjukfall i rapporten diagnosgrupp              |
+|år  |månad|grupp                 |män?|kvinnor?|
+|2013|feb  |Utan giltig ICD-10 kod|0   |1       |
 
-| Sjukfall i rapporten diagnosgrupp diagram |
-| år   | månad | grupp                   | män? | kvinnor? |
-| 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 1        |
+|Sjukfall i rapporten diagnosgrupp diagram      |
+|år  |månad|grupp                 |män?|kvinnor?|
+|2013|feb  |Utan giltig ICD-10 kod|0   |1       |
 
 Inloggad:
-| Sjukfall i rapporten diagnosgrupp |
-|inloggad som | år   | månad | grupp             | män? | kvinnor? |
-| user1 | 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 1        |
+|Sjukfall i rapporten diagnosgrupp                           |
+|inloggad som|år  |månad|grupp                 |män?|kvinnor?|
+|user1       |2013|feb  |Utan giltig ICD-10 kod|0   |1       |
 
-| Sjukfall i rapporten diagnosgrupp diagram |
-|inloggad som | år   | månad | grupp             | män? | kvinnor? |
-| user1 | 2013 | feb   | Utan giltig ICD-10 kod  | 0    | 1        |
+|Sjukfall i rapporten diagnosgrupp diagram                   |
+|inloggad som|år  |månad|grupp                 |män?|kvinnor?|
+|user1       |2013|feb  |Utan giltig ICD-10 kod|0   |1       |

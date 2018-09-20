@@ -6,29 +6,29 @@ Test
 !3 Givet att:
 Det finns intyg där inget enhets-id angetts och intyg skrivna på enheter som inte går att slå upp i HSA.
 
-| script | dagens datum | 2013-03-06 |
+|script|dagens datum|2013-03-06|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start | slut | enhet | kommentar |
-| 19791020-9290 | G01 | 2013-02-01 | 2013-02-06 | enhet1 | |
-| 19790810-9288 | G01 | 2013-02-01 | 2013-02-06 | EJHSA | |
-| 19791110-9291 | G01 | 2013-02-01 | 2013-03-06 | EJHSANR2 | |
-| 19790316-9261 | G01 | 2013-02-01 | 2013-03-06 | UTANENHETSID | |
+|Enbart foljande intyg finns                                          |
+|personnr     |diagnoskod|start     |slut      |enhet       |kommentar|
+|19791020-9290|G01       |2013-02-01|2013-02-06|enhet1      |         |
+|19790810-9288|G01       |2013-02-01|2013-02-06|EJHSA       |         |
+|19791110-9291|G01       |2013-02-01|2013-03-06|EJHSANR2    |         |
+|19790316-9261|G01       |2013-02-01|2013-03-06|UTANENHETSID|         |
 
 !3 Då gäller:
 Om enheten inte går att slå upp i HSA och vi därmed inte kan hitta någon vårdgivare, filtreras intyget bort.
 
 Inloggad nivå
 
-| Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet | vårdgivarnivå | totalt? | män? | kvinnor? |
-| user1 | enhet1 | false | 1 | 1 | 0 |
-| user1 | EJHSA | false | -1 | -1 | -1 |
-| user1 | EJHSANR2 | false | -1 | -1 | -1 |
-| user1 | Utan enhets-id | false | -1 | -1 | -1 |
-| user1 | enhet1 | true | 1 | 1 | 0 |
-| user1 | EJHSA | true | -1 | -1 | -1 |
-| user1 | EJHSANR2 | true | -1 | -1 | -1 |
-| user1 | Utan enhets-id | true | -1 | -1 | -1 |
+|Sjukfall i rapporten sjukfall per enhet                        |
+|inloggad som|vårdenhet     |vårdgivarnivå|totalt?|män?|kvinnor?|
+|user1       |enhet1        |false        |1      |1   |0       |
+|user1       |EJHSA         |false        |-1     |-1  |-1      |
+|user1       |EJHSANR2      |false        |-1     |-1  |-1      |
+|user1       |Utan enhets-id|false        |-1     |-1  |-1      |
+|user1       |enhet1        |true         |1      |1   |0       |
+|user1       |EJHSA         |true         |-1     |-1  |-1      |
+|user1       |EJHSANR2      |true         |-1     |-1  |-1      |
+|user1       |Utan enhets-id|true         |-1     |-1  |-1      |

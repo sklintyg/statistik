@@ -2,21 +2,21 @@
 Test
 ---
 !3 Givet att:
-| script | dagens datum | 2014-12-06 |
+|script|dagens datum|2014-12-06|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start | slut | enhet | kommentar |
-| 19791230-9296 | G01 | 2013-09-05 | 2013-12-30 | enhet1 | |
-| 19791230-9296 | G01 | 2014-01-01 | 2014-02-20 | enhet2 | |
+|Enbart foljande intyg finns                                    |
+|personnr     |diagnoskod|start     |slut      |enhet |kommentar|
+|19791230-9296|G01       |2013-09-05|2013-12-30|enhet1|         |
+|19791230-9296|G01       |2014-01-01|2014-02-20|enhet2|         |
 
 !3 Då gäller:
-| Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet | filter enheter | filter kategorier | totalt? | män? | kvinnor? |
-| user2 | enhet1 | | | -1 | -1 | -1 |
-| user2 | enhet1 | enhet1 | G01 | -1 | -1 | -1 |
-| user2 | enhet1 | enhet2 | G01 | -1 | -1 | -1 |
-| user2 | enhet2 | | | 1 | 1 | 0 |
-| user2 | enhet2 | enhet1 | G01 | -1 | -1 | -1 |
-| user2 | enhet2 | enhet2 | G01 | 1 | 1 | 0 |
+|Sjukfall i rapporten sjukfall per enhet                                      |
+|inloggad som|vårdenhet|filter enheter|filter kategorier|totalt?|män?|kvinnor?|
+|user2       |enhet1   |              |                 |-1     |-1  |-1      |
+|user2       |enhet1   |enhet1        |G01              |-1     |-1  |-1      |
+|user2       |enhet1   |enhet2        |G01              |-1     |-1  |-1      |
+|user2       |enhet2   |              |                 |1      |1   |0       |
+|user2       |enhet2   |enhet1        |G01              |-1     |-1  |-1      |
+|user2       |enhet2   |enhet2        |G01              |1      |1   |0       |

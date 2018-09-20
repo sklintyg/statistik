@@ -14,22 +14,22 @@ processningen inte stoppar upp när ogiltiga intyg upptäcks.
 
 !3 Givet att:
 
-| script | dagens datum | 2014-12-10 |
+|script|dagens datum|2014-12-10|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr      | diagnoskod | start      | slut       | arbetsförmåga | start2     | slut2      | arbetsförmåga2 | enhet  |
-| 19680524-9281 | A00        | 2014-10-01 | 2014-10-15 | 0             | 2014-10-18 | 2014-10-17 | 25             | enhet1 |
-| 19680524-9282 | A00        | 2014-11-14 | 2014-11-13 | 50            | 2014-11-16 | 2014-11-30 | 75             | enhet1 |
-| 19680524-9283 | A00        | 2014-10-01 | 2014-10-15 | 0             | 2014-10-18 | 2014-10-19 | 25             | enhet1 |
-| 19680524-9284 | A00        | 2014-11-11 | 2014-11-13 | 50            | 2014-11-16 | 2014-11-30 | 75             | enhet1 |
+|Enbart foljande intyg finns                                                                             |
+|personnr     |diagnoskod|start     |slut      |arbetsförmåga|start2    |slut2     |arbetsförmåga2|enhet |
+|19680524-9281|A00       |2014-10-01|2014-10-15|0            |2014-10-18|2014-10-17|25            |enhet1|
+|19680524-9282|A00       |2014-11-14|2014-11-13|50           |2014-11-16|2014-11-30|75            |enhet1|
+|19680524-9283|A00       |2014-10-01|2014-10-15|0            |2014-10-18|2014-10-19|25            |enhet1|
+|19680524-9284|A00       |2014-11-11|2014-11-13|50           |2014-11-16|2014-11-30|75            |enhet1|
 
 !3 Då gäller:
 
-| Sjukfall i rapporten sjukskrivningsgrad som tvarsnitt |
-| inloggad som | sjukskrivningsgrad   | män? | kvinnor? |
-| user1        | 25 %                 | 0    | 2        |
-| user1        | 50 %                 | 0    | 1        |
-| user1        | 75 %                 | 0    | 1        |
-| user1        | 100 %                | 0    | 2        |
+|Sjukfall i rapporten sjukskrivningsgrad som tvarsnitt|
+|inloggad som  |sjukskrivningsgrad  |män?  |kvinnor?  |
+|user1         |25 %                |0     |2         |
+|user1         |50 %                |0     |1         |
+|user1         |75 %                |0     |1         |
+|user1         |100 %               |0     |2         |

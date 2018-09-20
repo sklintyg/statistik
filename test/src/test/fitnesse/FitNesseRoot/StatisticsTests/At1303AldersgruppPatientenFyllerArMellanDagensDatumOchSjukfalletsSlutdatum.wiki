@@ -7,29 +7,29 @@ Efter diskussion i STATISTIK-889.
 !3 Givet att:
 Ett sjukfall består av ett intyg. Patienten fyller år mellan dagens datum och slutdatum för sjukfall.
 
-| script | dagens datum | 2014-11-28 |
+|script|dagens datum|2014-11-28|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | start | slut | enhet | kommentar |
-| 19881011-2394 | 2014-10-01 | 2014-12-15 | enhet2 | |
+|Enbart foljande intyg finns                         |
+|personnr     |start     |slut      |enhet |kommentar|
+|19881011-2394|2014-10-01|2014-12-15|enhet2|         |
 
 !3 Då gäller:
 Sjukfallet hamnar i åldersgrupp efter patientens ålder vid sjukfallets slutdatum. Det innebär att en högre ålder än patientens ålder vid dagens datum kan visas.
 
 Nationell:
 
-| Sjukfall i rapporten aldersgrupp |
-| åldersgrupp | totalt? | män? | kvinnor? |
-| 21-25 år | 0 | 0 | 0 |
-| 26-30 år | 1 | 1 | 0 |
-| 31-35 år | 0 | 0 | 0 |
+|Sjukfall i rapporten aldersgrupp |
+|åldersgrupp|totalt?|män?|kvinnor?|
+|21-25 år   |0      |0   |0       |
+|26-30 år   |1      |1   |0       |
+|31-35 år   |0      |0   |0       |
 
 Inloggad:
 
-| Sjukfall i rapporten aldersgrupp |
-| inloggad som | vårdgivarnivå | åldersgrupp | totalt? | män? | kvinnor? |
-| user2 | false | 21-25 år | 0 | 0 | 0 |
-| user2 | false | 26-30 år | 1 | 1 | 0 |
-| user2 | false | 31-35 år | 0 | 0 | 0 |
+|Sjukfall i rapporten aldersgrupp                            |
+|inloggad som|vårdgivarnivå|åldersgrupp|totalt?|män?|kvinnor?|
+|user2       |false        |21-25 år   |0      |0   |0       |
+|user2       |false        |26-30 år   |1      |1   |0       |
+|user2       |false        |31-35 år   |0      |0   |0       |

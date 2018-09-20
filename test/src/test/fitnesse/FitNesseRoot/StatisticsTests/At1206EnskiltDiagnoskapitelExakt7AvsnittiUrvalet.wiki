@@ -20,23 +20,23 @@ Det finns ett sjukfall med diagnos som faller inom avsnitt:
 
 Det finns inga sjukfall med diagnos som faller inom övriga avsnitt.
 
-| script | dagens datum | 2013-11-06 |
+|script|dagens datum|2013-11-06|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet |
-| 19790219-9285 | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790429-9281 | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790709-9282 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790810-9288 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790316-9261 | C33 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790618-9282 | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19671127-3026 | C40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19671109-2681 | C41 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19680524-9288 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19820910-9282 | C45 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19821128-9288 | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
+|Enbart foljande intyg finns                          |
+|personnr     |diagnoskod|start     |slut      |enhet |
+|19790219-9285|C01       |2013-02-01|2013-02-14|enhet1|
+|19790429-9281|C01       |2013-02-01|2013-02-14|enhet1|
+|19790709-9282|C20       |2013-02-01|2013-02-14|enhet1|
+|19790810-9288|C20       |2013-02-01|2013-02-14|enhet1|
+|19790316-9261|C33       |2013-02-01|2013-02-14|enhet1|
+|19790618-9282|C34       |2013-02-01|2013-02-14|enhet1|
+|19671127-3026|C40       |2013-02-01|2013-02-14|enhet1|
+|19671109-2681|C41       |2013-02-01|2013-02-14|enhet1|
+|19680524-9288|C43       |2013-02-01|2013-02-14|enhet1|
+|19820910-9282|C45       |2013-02-01|2013-02-14|enhet1|
+|19821128-9288|C50       |2013-02-01|2013-02-14|enhet1|
 
 
 !3 Då gäller:
@@ -44,27 +44,27 @@ Det finns inga sjukfall med diagnos som faller inom övriga avsnitt.
 Alla sju diagnosavsnitt visas med namn. Gruppen "Övriga" visas inte.
 
 Nationell:
-| Sjukfall i rapporten enskilt diagnoskapitel diagram |
-| valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
-| C00-D48             | 2013 | feb   | C00-C14 | 0    | 2        |
-| C00-D48             | 2013 | feb   | C15-C26 | 0    | 2        |
-| C00-D48             | 2013 | feb   | C30-C39 | 0    | 2        |
-| C00-D48             | 2013 | feb   | C40-C41 | 0    | 2        |
-| C00-D48             | 2013 | feb   | C43-C44 | 0    | 1        |
-| C00-D48             | 2013 | feb   | C45-C49 | 0    | 1        |
-| C00-D48             | 2013 | feb   | C50-C50 | 0    | 1        |
-| C00-D48             | 2013 | feb   | Övriga  | -1   | -1       |
+|Sjukfall i rapporten enskilt diagnoskapitel diagram |
+|valt diagnoskapitel|år  |månad|grupp  |män?|kvinnor?|
+|C00-D48            |2013|feb  |C00-C14|0   |2       |
+|C00-D48            |2013|feb  |C15-C26|0   |2       |
+|C00-D48            |2013|feb  |C30-C39|0   |2       |
+|C00-D48            |2013|feb  |C40-C41|0   |2       |
+|C00-D48            |2013|feb  |C43-C44|0   |1       |
+|C00-D48            |2013|feb  |C45-C49|0   |1       |
+|C00-D48            |2013|feb  |C50-C50|0   |1       |
+|C00-D48            |2013|feb  |Övriga |-1  |-1      |
 
 Inloggad:
-| Sjukfall i rapporten enskilt diagnoskapitel diagram |
-|inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
-| user1       | C00-D48             | 2013 | feb   | C00-C14 | 0    | 2        |
-| user1       | C00-D48             | 2013 | feb   | C15-C26 | 0    | 2        |
-| user1       | C00-D48             | 2013 | feb   | C30-C39 | 0    | 2        |
-| user1       | C00-D48             | 2013 | feb   | C40-C41 | 0    | 2        |
-| user1       | C00-D48             | 2013 | feb   | C43-C44 | 0    | 1        |
-| user1       | C00-D48             | 2013 | feb   | C45-C49 | 0    | 1        |
-| user1       | C00-D48             | 2013 | feb   | C50-C50 | 0    | 1        |
-| user1       | C00-D48             | 2013 | feb   | Övriga  | -1   | -1       |
+|Sjukfall i rapporten enskilt diagnoskapitel diagram              |
+|inloggad som|valt diagnoskapitel|år  |månad|grupp  |män?|kvinnor?|
+|user1       |C00-D48            |2013|feb  |C00-C14|0   |2       |
+|user1       |C00-D48            |2013|feb  |C15-C26|0   |2       |
+|user1       |C00-D48            |2013|feb  |C30-C39|0   |2       |
+|user1       |C00-D48            |2013|feb  |C40-C41|0   |2       |
+|user1       |C00-D48            |2013|feb  |C43-C44|0   |1       |
+|user1       |C00-D48            |2013|feb  |C45-C49|0   |1       |
+|user1       |C00-D48            |2013|feb  |C50-C50|0   |1       |
+|user1       |C00-D48            |2013|feb  |Övriga |-1  |-1      |
 
 

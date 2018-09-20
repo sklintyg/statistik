@@ -5,26 +5,26 @@ Test
 !3 Givet att:
 Ett sjukfall består av två intyg, det första utfärdat av en Överläkare och det andra av en Företagsläkare.
 
-| script | dagens datum | 2014-11-28 |
+|script|dagens datum|2014-11-28|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Foljande lakare finns |
-| id | kön | ålder | befattningar | kommentar |
-| lakare1 | MALE | 44 | 201010 | Överläkare |
-| lakare2 | FEMALE | 34 | 201013 | Företagsläkare |
+|Foljande lakare finns                           |
+|id     |kön   |ålder|befattningar|kommentar     |
+|lakare1|MALE  |44   |201010      |Överläkare    |
+|lakare2|FEMALE|34   |201013      |Företagsläkare|
 
-| Enbart foljande intyg finns |
-| personnr | start | slut | enhet | läkare | kommentar |
-| 19800820-9275 | 2014-06-01 | 2014-06-15 | enhet1 | lakare1 | |
-| 19800820-9275 | 2014-06-16 | 2014-06-30 | enhet1 | lakare2 | |
+|Enbart foljande intyg finns                                 |
+|personnr     |start     |slut      |enhet |läkare |kommentar|
+|19800820-9275|2014-06-01|2014-06-15|enhet1|lakare1|         |
+|19800820-9275|2014-06-16|2014-06-30|enhet1|lakare2|         |
 
 !3 Då gäller:
 Det visas ett sjukfall för gruppen Överläkare och ett sjukfall för gruppen Företagsläkare.
 
 Inloggad:
 
-| Sjukfall i rapporten lakarbefattning |
-| inloggad som | vårdgivarnivå | läkarbefattning | totalt? | män? | kvinnor? |
-| user1 | false | Överläkare | 1 | 1 | 0 |
-| user1 | false | Företagsläkare | 1 | 1 | 0 |
+|Sjukfall i rapporten lakarbefattning                            |
+|inloggad som|vårdgivarnivå|läkarbefattning|totalt?|män?|kvinnor?|
+|user1       |false        |Överläkare     |1      |1   |0       |
+|user1       |false        |Företagsläkare |1      |1   |0       |

@@ -7,22 +7,22 @@ Testar INTYG-3694
 
 !3 Givet att:
 
-| script | dagens datum | 2013-11-06 |
+|script|dagens datum|2013-11-06|
 
-| Enbart foljande intyg finns |
-| personnr      | diagnoskod | start      | slut       | enhet  |
-| 19790316-9261 | F401       | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790316-9262 | F40        | 2013-02-01 | 2013-02-14 | enhet1 |
+|Enbart foljande intyg finns                          |
+|personnr     |diagnoskod|start     |slut      |enhet |
+|19790316-9261|F401      |2013-02-01|2013-02-14|enhet1|
+|19790316-9262|F40       |2013-02-01|2013-02-14|enhet1|
 
 !3 Då gäller:
 
-| Sjukfall i rapporten enskilt diagnoskapitel |
-|inloggad som | valt diagnoskapitel | grupp               | år   | månad | män? | kvinnor? |
-| user1       | F40                 | F401                | 2013 | feb   | 0    | 1        |
-| user1       | F40                 | Okänd kod inom F40  | 2013 | feb   | 0    | 1        |
+|Sjukfall i rapporten enskilt diagnoskapitel                                 |
+|inloggad som|valt diagnoskapitel|grupp             |år  |månad|män?|kvinnor?|
+|user1       |F40                |F401              |2013|feb  |0   |1       |
+|user1       |F40                |Okänd kod inom F40|2013|feb  |0   |1       |
 
-| Sjukfall i rapporten jamfor diagnoser diagram |
-| inloggad som | valda diagnoskoder    | diagnoskategori    | män? | kvinnor? |
-| user1        | F400, F401, F40intern | F400               | 0    | 0        |
-| user1        | F400, F401, F40intern | F401               | 0    | 1        |
-| user1        | F400, F401, F40intern | Okänd kod inom F40 | 0    | 1        |
+|Sjukfall i rapporten jamfor diagnoser diagram                      |
+|inloggad som|valda diagnoskoder   |diagnoskategori   |män?|kvinnor?|
+|user1       |F400, F401, F40intern|F400              |0   |0       |
+|user1       |F400, F401, F40intern|F401              |0   |1       |
+|user1       |F400, F401, F40intern|Okänd kod inom F40|0   |1       |

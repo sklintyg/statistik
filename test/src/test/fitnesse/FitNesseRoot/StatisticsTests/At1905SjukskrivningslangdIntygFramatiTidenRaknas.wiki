@@ -5,38 +5,38 @@ Test
 !3 Givet att:
 Det är den 1 januari 2015. Ett sjukfall består av två intyg, varav det sista sträcker sig tre månader framåt i tiden.
 
-| script | dagens datum | 2015-01-01 |
+|script|dagens datum|2015-01-01|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start | slut | enhet | kommentar |
-| 19671122-2940 | G01 | 2014-08-01 | 2014-12-15 | enhet1 | 4,5 månader |
-| 19671122-2940 | G01 | 2014-12-16 | 2015-04-01 | enhet1 | 3,5 månader, intyg som sträcker sig framåt i tiden |
+|Enbart foljande intyg finns                                                                             |
+|personnr     |diagnoskod|start     |slut      |enhet |kommentar                                         |
+|19671122-2940|G01       |2014-08-01|2014-12-15|enhet1|4,5 månader                                       |
+|19671122-2940|G01       |2014-12-16|2015-04-01|enhet1|3,5 månader, intyg som sträcker sig framåt i tiden|
 
 !3 Då gäller:
 Sjukfallet hamnar i gruppen "181-365 dagar". Även dagar med intyg framåt i tiden räknas med.
 
 Nationell:
 
-| Sjukfall i rapporten sjukskrivningslangd |
-| sjukskrivningslängd | totalt? | män? | kvinnor? |
-| 91-180 dagar | 0 | 0 | 0 |
-| 181-365 dagar | 1 | 0 | 1 |
+|Sjukfall i rapporten sjukskrivningslangd |
+|sjukskrivningslängd|totalt?|män?|kvinnor?|
+|91-180 dagar       |0      |0   |0       |
+|181-365 dagar      |1      |0   |1       |
 
-| Sjukfall i oversikt sjukskrivningslangd |
-| grupp | antal? |
-| 91-180 dagar | 0 |
-| 181-365 dagar | 1 |
+|Sjukfall i oversikt sjukskrivningslangd|
+|grupp                  |antal?         |
+|91-180 dagar           |0              |
+|181-365 dagar          |1              |
 
 Inloggad:
 
-| Sjukfall i rapporten sjukskrivningslangd |
-| inloggad som | sjukskrivningslängd | totalt? | män? | kvinnor? |
-| user1 | 91-180 dagar | 0 | 0 | 0 |
-| user1 | 181-365 dagar | 1 | 0 | 1 |
+|Sjukfall i rapporten sjukskrivningslangd              |
+|inloggad som|sjukskrivningslängd|totalt?|män?|kvinnor?|
+|user1       |91-180 dagar       |0      |0   |0       |
+|user1       |181-365 dagar      |1      |0   |1       |
 
-| Sjukfall i oversikt sjukskrivningslangd |
-| inloggad som | grupp | antal? |
-| user1 | 91-180 dagar | 0 |
-| user1 | 181-365 dagar | 1 |
+|Sjukfall i oversikt sjukskrivningslangd|
+|inloggad som  |grupp          |antal?  |
+|user1         |91-180 dagar   |0       |
+|user1         |181-365 dagar  |1       |

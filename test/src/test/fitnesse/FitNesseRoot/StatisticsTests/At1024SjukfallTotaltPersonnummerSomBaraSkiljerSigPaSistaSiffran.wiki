@@ -7,29 +7,29 @@ Test
 
 Det finns två intyg för två personnummer som bara skiljer sig på sista siffran. Minst ett av dem måste därmed vara ett ogiltigt personnummer.
 
-| script | dagens datum | 2013-11-06 |
+|script|dagens datum|2013-11-06|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet |
-| 19790219-9285 | G01 | 2013-02-05 | 2013-02-06 | enhet1 |
-| 19790219-9286 | G01 | 2013-02-11 | 2013-02-12 | enhet1 |
+|Enbart foljande intyg finns                          |
+|personnr     |diagnoskod|start     |slut      |enhet |
+|19790219-9285|G01       |2013-02-05|2013-02-06|enhet1|
+|19790219-9286|G01       |2013-02-11|2013-02-12|enhet1|
 
 !3 Då gäller:
 
 Ingen validering av personnummers giltighet görs. Intyg med personnummer som bara skiljer sig på sista siffran kopplas inte ihop till ett sjukfall. 
 
 Nationell:
-| Sjukfall i rapporten sjukfall totalt |
-| år   | månad | män? | kvinnor? |
-| 2013 | jan   | 0    | 0        |
-| 2013 | feb   | 0    | 2        |
-| 2013 | mar   | 0    | 0        |
+|Sjukfall i rapporten sjukfall totalt|
+|år     |månad   |män?   |kvinnor?   |
+|2013   |jan     |0      |0          |
+|2013   |feb     |0      |2          |
+|2013   |mar     |0      |0          |
 
 Inloggad:
-| Sjukfall i rapporten sjukfall totalt |
-| inloggad som | år   | månad | män? | kvinnor? |
-| user1  | 2013 | jan   | 0    | 0        |
-| user1  | 2013 | feb   | 0    | 2        |
-| user1  | 2013 | mar   | 0    | 0        |
+|Sjukfall i rapporten sjukfall totalt |
+|inloggad som|år  |månad|män?|kvinnor?|
+|user1       |2013|jan  |0   |0       |
+|user1       |2013|feb  |0   |2       |
+|user1       |2013|mar  |0   |0       |

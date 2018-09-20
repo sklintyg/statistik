@@ -4,53 +4,53 @@ Test
 !3 Givet att:
 Flera olika sjukfall med olika diagnoser och datum.
 
-| script | dagens datum | 2015-01-01 |
+|script|dagens datum|2015-01-01|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start | slut | enhet |
-| 19790717-9191 | hej | 2013-12-01 | 2013-12-14 | enhet1 |
-| 19790219-9285 | P99 | 2013-12-01 | 2013-12-14 | enhet1 |
-| 19790808-9274 | F40 | 2013-12-01 | 2013-12-14 | enhet1 |
-| 19790429-9281 | F40 | 2013-12-01 | 2013-12-14 | enhet1 |
-| 19010620-8810 | F40 | 2013-12-01 | 2013-12-14 | enhet1 |
-| 19010621-8801 | F40 | 2013-12-01 | 2013-12-14 | enhet1 |
-| 19790918-9230 | M40 | 2013-12-01 | 2013-12-14 | enhet1 |
-| 19791020-9290 | A00 | 2013-12-01 | 2013-12-14 | enhet1 |
-| 19790618-9282 | R00 | 2013-12-01 | 2014-12-14 | enhet1 |
-| 19010622-8818 | R00 | 2013-12-01 | 2014-12-14 | enhet1 |
-| 19471109-2681 | O40 | 2013-12-01 | 2014-12-14 | enhet1 |
-| 19680102-9288 | P99 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19791110-9291 | P99 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19671122-2940 | bla | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19791230-9296 | P99 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19671127-3026 | F40 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19010619-8805 | F40 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19800113-9297 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19671109-2681 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19800207-9294 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19481109-2681 | A00 | 2014-12-01 | 2014-12-14 | enhet1 |
+|Enbart foljande intyg finns                          |
+|personnr     |diagnoskod|start     |slut      |enhet |
+|19790717-9191|hej       |2013-12-01|2013-12-14|enhet1|
+|19790219-9285|P99       |2013-12-01|2013-12-14|enhet1|
+|19790808-9274|F40       |2013-12-01|2013-12-14|enhet1|
+|19790429-9281|F40       |2013-12-01|2013-12-14|enhet1|
+|19010620-8810|F40       |2013-12-01|2013-12-14|enhet1|
+|19010621-8801|F40       |2013-12-01|2013-12-14|enhet1|
+|19790918-9230|M40       |2013-12-01|2013-12-14|enhet1|
+|19791020-9290|A00       |2013-12-01|2013-12-14|enhet1|
+|19790618-9282|R00       |2013-12-01|2014-12-14|enhet1|
+|19010622-8818|R00       |2013-12-01|2014-12-14|enhet1|
+|19471109-2681|O40       |2013-12-01|2014-12-14|enhet1|
+|19680102-9288|P99       |2014-12-01|2014-12-14|enhet1|
+|19791110-9291|P99       |2014-12-01|2014-12-14|enhet1|
+|19671122-2940|bla       |2014-12-01|2014-12-14|enhet1|
+|19791230-9296|P99       |2014-12-01|2014-12-14|enhet1|
+|19671127-3026|F40       |2014-12-01|2014-12-14|enhet1|
+|19010619-8805|F40       |2014-12-01|2014-12-14|enhet1|
+|19800113-9297|M40       |2014-12-01|2014-12-14|enhet1|
+|19671109-2681|M40       |2014-12-01|2014-12-14|enhet1|
+|19800207-9294|M40       |2014-12-01|2014-12-14|enhet1|
+|19481109-2681|A00       |2014-12-01|2014-12-14|enhet1|
 
 !3 Då gäller:
 Översiktsrapporten på diagnosgrupper visar antal sjukfall i respektive diagnosgrupp de senaste 3 månaderna (oktober-december). Förändringen anger procentuell ökning/minskning jämfört med föregående tre månader.
 
 Verksamhetsnivå:
 
-| Sjukfall i oversikt diagnos |
-| inloggad som | grupp | antal? | förändring? |
-| user1 | F00-F99 Psykiska sjukdomar | 2 | -50 |
-| user1 | M00-M99 Muskuloskeletala sjukdomar | 3 | 200 |
-| user1 | Andra diagnosgrupper | 2 | 0 |
-| user1 | Utan giltig ICD-10 kod | 4 | 100 |
-| user1 | R00-R99 Symtomdiagnoser | 2 | 0 |
+|Sjukfall i oversikt diagnos                                       |
+|inloggad som|grupp                             |antal?|förändring?|
+|user1       |F00-F99 Psykiska sjukdomar        |2     |-50        |
+|user1       |M00-M99 Muskuloskeletala sjukdomar|3     |200        |
+|user1       |Andra diagnosgrupper              |2     |0          |
+|user1       |Utan giltig ICD-10 kod            |4     |100        |
+|user1       |R00-R99 Symtomdiagnoser           |2     |0          |
 
 Nationell:
 
-| Sjukfall i oversikt diagnos |
-| grupp | antal? | förändring? |
-| F00-F99 Psykiska sjukdomar | 2 | -50 |
-| M00-M99 Muskuloskeletala sjukdomar | 3 | 200 |
-| Andra diagnosgrupper | 2 | 0 |
-| Utan giltig ICD-10 kod | 4 | 100 |
-| R00-R99 Symtomdiagnoser | 2 | 0 |
+|Sjukfall i oversikt diagnos                          |
+|grupp                             |antal?|förändring?|
+|F00-F99 Psykiska sjukdomar        |2     |-50        |
+|M00-M99 Muskuloskeletala sjukdomar|3     |200        |
+|Andra diagnosgrupper              |2     |0          |
+|Utan giltig ICD-10 kod            |4     |100        |
+|R00-R99 Symtomdiagnoser           |2     |0          |

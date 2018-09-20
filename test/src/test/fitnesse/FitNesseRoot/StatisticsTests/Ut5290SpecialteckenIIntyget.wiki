@@ -7,13 +7,13 @@ Test
 Testar att skicka in ett intyg med "konstiga" specialtecken.
 Visar även hur man kan skicka in ett intyg med specifikt intygsdata direkt in till ST via Fitnesse.
 
-| script | dagens datum | 2018-03-01 |
+|script|dagens datum|2018-03-01|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| enhet | intygdata |
-| enhet1 | !-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+|Enbart foljande intyg finns|
+|enhet      |intygdata      |
+|enhet1                     |!-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   <ns2:RegisterCertificate xmlns="urn:riv:clinicalprocess:healthcond:certificate:3" xmlns:ns2="urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:3" xmlns:ns3="urn:riv:clinicalprocess:healthcond:certificate:types:3">
   	<ns2:intyg>
   		<intygs-id>
@@ -264,6 +264,6 @@ Visar även hur man kan skicka in ett intyg med specifikt intygsdata direkt in t
 
 !3 Då gäller:
 
-| Intyg i rapporten intyg totalt |
-| inloggad som | år | månad | grupp | män? | kvinnor? |
-| user1 | 2018 | jan | FK 7800 Läkarutlåtande för sjukersättning | 0 | 1 |
+|Intyg i rapporten intyg totalt                                                 |
+|inloggad som|år  |månad|grupp                                    |män?|kvinnor?|
+|user1       |2018|jan  |FK 7800 Läkarutlåtande för sjukersättning|0   |1       |

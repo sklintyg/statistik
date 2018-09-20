@@ -2,17 +2,17 @@
 Test
 ---
 !3 Givet att:
-| script | dagens datum | 2015-11-06 |
+|script|dagens datum|2015-11-06|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | signeringstid | enhet | intygformat | kommentar |
-| 19790219-9285 | 2015-02-10T12:24:15 | enhet1 | DB | |
-| 19790219-9285 | 2015-02-12T12:25:15 | enhet1 | DB | |
-| 19790429-9272 | 2015-02-10T12:25:15 | enhet1 | DB | |
-| 19790329-9256 | 2015-03-10T12:25:15 | enhet1 | DB | |
-| 19790529-9289 | 2015-03-10T12:25:15 | enhet1 | DB | |
+|Enbart foljande intyg finns                                   |
+|personnr     |signeringstid      |enhet |intygformat|kommentar|
+|19790219-9285|2015-02-10T12:24:15|enhet1|DB         |         |
+|19790219-9285|2015-02-12T12:25:15|enhet1|DB         |         |
+|19790429-9272|2015-02-10T12:25:15|enhet1|DB         |         |
+|19790329-9256|2015-03-10T12:25:15|enhet1|DB         |         |
+|19790529-9289|2015-03-10T12:25:15|enhet1|DB         |         |
 
 !3 Då gäller:
 DB = Dödsbevis

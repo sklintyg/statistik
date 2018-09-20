@@ -13,15 +13,15 @@ Sjukfall består av intyg med diagnoskod som kommer från primärvårdskodverket
 
 |Enbart foljande intyg finns                          |
 |personnr     |diagnoskod|start     |slut      |enhet |
-|19680102-9288|A 35-P     |2013-02-01|2013-02-14|enhet1|
-|19790808-9274|G30-     |2013-02-01|2013-02-14|enhet1|
+|19680102-9288|A 35-P    |2013-02-01|2013-02-14|enhet1|
+|19790808-9274|G30-      |2013-02-01|2013-02-14|enhet1|
 
 !3 Då gäller:
 
 Primärvårdskoder (och alla koder) tvättas och matchas till vanliga ICD-10-kodverket.
 
 Nationell:
-|Sjukfall i rapporten diagnosgrupp diagram |
+|Sjukfall i rapporten diagnosgrupp diagram                                                                              |
 |år  |månad|grupp                                                                                         |män?|kvinnor?|
 |2013|feb  |A00-E90, G00-L99, N00-N99 Somatiska sjukdomar                                                 |1   |1       |
 |2013|feb  |F00-F99 Psykiska sjukdomar                                                                    |0   |0       |

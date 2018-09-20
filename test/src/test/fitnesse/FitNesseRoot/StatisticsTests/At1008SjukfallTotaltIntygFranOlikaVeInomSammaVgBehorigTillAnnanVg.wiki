@@ -7,14 +7,14 @@ Test
 
 Två intyg för samma patient har uppehåll med 2 dagar. Intygen är utfärdade på olika vårdenheter inom samma vårdgivare. Inlogg med vårdgivarbehörighet för en annan vårdgivare än den där utfärdande enheter ingår.
 
-| script | dagens datum | 2013-11-06 |
+|script|dagens datum|2013-11-06|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
-| 19790330-9230 | G01        | 2013-02-01 | 2013-02-06 | enhet1 | user3 har inte behörighet till enhet1 |
-| 19790330-9230 | G01        | 2013-02-09 | 2013-02-14 | enhet2 | user3 har inte behörighet till enhet2 |
+|Enbart foljande intyg finns                                                                |
+|personnr     |diagnoskod|start     |slut      |enhet |kommentar                            |
+|19790330-9230|G01       |2013-02-01|2013-02-06|enhet1|user3 har inte behörighet till enhet1|
+|19790330-9230|G01       |2013-02-09|2013-02-14|enhet2|user3 har inte behörighet till enhet2|
 
 
 !3 Då gäller:
@@ -22,15 +22,15 @@ Två intyg för samma patient har uppehåll med 2 dagar. Intygen är utfärdade 
 Det blir noll sjukfall.
 
 Nationell nivå
-| Sjukfall i rapporten sjukfall totalt |
-| år   | månad | män? | kvinnor? |
-| 2013 | jan   | 0    | 0        |
-| 2013 | feb   | 1    | 0        |
-| 2013 | mar   | 0    | 0        |
+|Sjukfall i rapporten sjukfall totalt|
+|år     |månad   |män?   |kvinnor?   |
+|2013   |jan     |0      |0          |
+|2013   |feb     |1      |0          |
+|2013   |mar     |0      |0          |
 
 Inloggad nivå
-| Sjukfall i rapporten sjukfall totalt |
-| inloggad som | vårdgivarnivå | år   | månad | män? | kvinnor? |
-| user3        | true          | 2013 | jan   | 0    | 0        |
-| user3        | true          | 2013 | feb   | 0    | 0        |
-| user3        | true          | 2013 | mar   | 0    | 0        |
+|Sjukfall i rapporten sjukfall totalt               |
+|inloggad som|vårdgivarnivå|år  |månad|män?|kvinnor?|
+|user3       |true         |2013|jan  |0   |0       |
+|user3       |true         |2013|feb  |0   |0       |
+|user3       |true         |2013|mar  |0   |0       |

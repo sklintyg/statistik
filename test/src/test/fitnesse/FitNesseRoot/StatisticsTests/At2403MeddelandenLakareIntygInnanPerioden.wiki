@@ -7,33 +7,33 @@ Två intyg för samma patient, utfärdade av olika läkare på samma enhet.
 
 Meddelanden tillhör intyg som inget av dem är signerat under 2014
 
-| script | dagens datum | 2014-12-28 |
+|script|dagens datum|2014-12-28|
 
 
 
-| script | troskel varde  | 1 |
+|script|troskel varde|1|
 
-| Foljande lakare finns |
-| id | förnamn | efternamn |
-| lakare1 | Anna | Andersson |
-| lakare2 | Bo | Bengtsson |
+|Foljande lakare finns    |
+|id     |förnamn|efternamn|
+|lakare1|Anna   |Andersson|
+|lakare2|Bo     |Bengtsson|
 
-| Enbart foljande intyg finns |
-| intygid | personnr | signeringstid | enhet | läkare |
-| 1001 | 19800820-9275 | 2013-06-01T10:00:00 | enhet1 | lakare1 |
-| 1002 | 19800820-9265 | 2013-06-01T10:00:00 | enhet1 | lakare2 |
+|Enbart foljande intyg finns                             |
+|intygid|personnr     |signeringstid      |enhet |läkare |
+|1001   |19800820-9275|2013-06-01T10:00:00|enhet1|lakare1|
+|1002   |19800820-9265|2013-06-01T10:00:00|enhet1|lakare2|
 
-| Foljande meddelanden finns |
-| personnr | skickat | intygsid | ämne |
-| 19800820-9275 | 2014-07-01T10:00:00 | 1001 | KOMPLT |
-| 19800820-9275 | 2014-07-01T10:00:00 | 1001 | KOMPLT |
-| 19800820-9265 | 2014-07-01T10:00:00 | 1002 | KOMPLT |
-| 19800820-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
-| 19800820-9265 | 2014-07-01T10:00:00 | 1002 | AVSTMN |
+|Foljande meddelanden finns                       |
+|personnr     |skickat            |intygsid|ämne  |
+|19800820-9275|2014-07-01T10:00:00|1001    |KOMPLT|
+|19800820-9275|2014-07-01T10:00:00|1001    |KOMPLT|
+|19800820-9265|2014-07-01T10:00:00|1002    |KOMPLT|
+|19800820-9265|2014-07-01T10:00:00|1002    |AVSTMN|
+|19800820-9265|2014-07-01T10:00:00|1002    |AVSTMN|
 
-| Anvandarens installningar |
-| användare | visa läkarrapporten |
-| user1     | JA                 |
+|Anvandarens installningar    |
+|användare|visa läkarrapporten|
+|user1    |JA                 |
 
 !3 Då gäller:
 Då tvärsnitt endast visar de 12 senaste månaderna, så finns det inget intyg som har fått meddelanden under denna period i det här fallet.
@@ -42,9 +42,9 @@ Tidpunkten som räknas är signeringstid.
 
 Inloggad:
 
-| Meddelanden i rapporten meddelanden per lakare som tvarsnitt |
-| inloggad som | vårdgivarnivå | läkare | grupp | totalt? | män? | kvinnor? |
-| user1 | false | Anna Andersson | Avstämningsmöte | -1 | -1 | -1 |
-| user1 | false | Anna Andersson | Komplettering | -1 | -1 | -1 |
-| user1 | false | Bo Bengtsson | Avstämningsmöte | -1 | -1 | -1 |
-| user1 | false | Bo Bengtsson | Komplettering | -1 | -1 | -1 |
+|Meddelanden i rapporten meddelanden per lakare som tvarsnitt                   |
+|inloggad som|vårdgivarnivå|läkare        |grupp          |totalt?|män?|kvinnor?|
+|user1       |false        |Anna Andersson|Avstämningsmöte|-1     |-1  |-1      |
+|user1       |false        |Anna Andersson|Komplettering  |-1     |-1  |-1      |
+|user1       |false        |Bo Bengtsson  |Avstämningsmöte|-1     |-1  |-1      |
+|user1       |false        |Bo Bengtsson  |Komplettering  |-1     |-1  |-1      |

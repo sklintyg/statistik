@@ -7,36 +7,36 @@ Test
 
 Det finns två exakt likadana intyg för en patient.
 
-| script | dagens datum | 2014-11-28 |
+|script|dagens datum|2014-11-28|
 
-| script | troskel varde | 0 |
+|script|troskel varde|0|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet |
-| 19790717-9191 | G01 | 2014-04-05 | 2014-05-16 | enhet1 |
-| 19790717-9191 | G01 | 2014-04-05 | 2014-05-16 | enhet1 |
+|Enbart foljande intyg finns                          |
+|personnr     |diagnoskod|start     |slut      |enhet |
+|19790717-9191|G01       |2014-04-05|2014-05-16|enhet1|
+|19790717-9191|G01       |2014-04-05|2014-05-16|enhet1|
 
 !3 Då gäller:
 
 Bara ett sjukfall visas.
 
-| Sjukfall i rapporten sjukfall totalt |
-| inloggad som | år   | månad | män? | kvinnor? | kommentar |
-| user1  | 2013 | jun   | 0    | 0        | |
-| user1  | 2013 | jul   | 0    | 0        | |
-| user1  | 2013 | aug   | 0    | 0        | |
-| user1  | 2013 | sep   | 0    | 0        | |
-| user1  | 2013 | okt   | 0    | 0        | |
-| user1  | 2013 | nov   | 0    | 0        | |
-| user1  | 2013 | dec   | 0    | 0        | |
-| user1  | 2014 | jan   | 0    | 0        | |
-| user1  | 2014 | feb   | 0    | 0        | |
-| user1  | 2014 | mar   | 0    | 0        | |
-| user1  | 2014 | apr   | 1    | 0        | |
-| user1  | 2014 | maj   | 1    | 0        | |
-| user1  | 2014 | jun   | 0    | 0        | |
-| user1  | 2014 | jul   | 0    | 0        | |
-| user1  | 2014 | aug   | 0    | 0        | |
-| user1  | 2014 | sep   | 0    | 0        | |
-| user1  | 2014 | okt   | 0    | 0        | |
-| user1  | 2014 | nov   | 0    | 0        | |
+|Sjukfall i rapporten sjukfall totalt           |
+|inloggad som|år  |månad|män?|kvinnor?|kommentar|
+|user1       |2013|jun  |0   |0       |         |
+|user1       |2013|jul  |0   |0       |         |
+|user1       |2013|aug  |0   |0       |         |
+|user1       |2013|sep  |0   |0       |         |
+|user1       |2013|okt  |0   |0       |         |
+|user1       |2013|nov  |0   |0       |         |
+|user1       |2013|dec  |0   |0       |         |
+|user1       |2014|jan  |0   |0       |         |
+|user1       |2014|feb  |0   |0       |         |
+|user1       |2014|mar  |0   |0       |         |
+|user1       |2014|apr  |1   |0       |         |
+|user1       |2014|maj  |1   |0       |         |
+|user1       |2014|jun  |0   |0       |         |
+|user1       |2014|jul  |0   |0       |         |
+|user1       |2014|aug  |0   |0       |         |
+|user1       |2014|sep  |0   |0       |         |
+|user1       |2014|okt  |0   |0       |         |
+|user1       |2014|nov  |0   |0       |         |

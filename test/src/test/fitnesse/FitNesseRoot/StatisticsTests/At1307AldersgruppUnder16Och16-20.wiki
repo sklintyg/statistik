@@ -6,19 +6,19 @@ Test
 Gäller INTYG-4382
 
 !3 Givet att:
-| script | dagens datum | 2017-08-30 |
+|script|dagens datum|2017-08-30|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr      | start      | slut       | enhet  |
-| 20010801-2377 | 2017-06-01 | 2017-08-31 | enhet1 |
-| 20010901-2388 | 2017-06-01 | 2017-08-31 | enhet1 |
+|Enbart foljande intyg finns               |
+|personnr     |start     |slut      |enhet |
+|20010801-2377|2017-06-01|2017-08-31|enhet1|
+|20010901-2388|2017-06-01|2017-08-31|enhet1|
 
 
 !3 Då gäller:
-| Sjukfall i rapporten aldersgrupp |
-| inloggad som | åldersgrupp | män? | kvinnor? |
-| user1        | Under 16 år | 0    | 1        |
-| user1        | 16-20 år    | 1    | 0        |
+|Sjukfall i rapporten aldersgrupp      |
+|inloggad som|åldersgrupp|män?|kvinnor?|
+|user1       |Under 16 år|0   |1       |
+|user1       |16-20 år   |1   |0       |
 

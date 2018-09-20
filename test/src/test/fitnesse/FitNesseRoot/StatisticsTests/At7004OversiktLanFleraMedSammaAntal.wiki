@@ -7,52 +7,52 @@ Testar att om två län har samma antal sjukfall, så visas båda två på över
 
 !3 Givet att:
 
-| script | dagens datum | 2013-11-06 |
+|script|dagens datum|2013-11-06|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Angivna invanarantal |
-| länkod | kvinnor | män   | datum      | kommentar |
-| 10     | 50000   | 50000 | 2012-12-31 | Blekinge län |
-| 20     | 50000   | 50000 | 2012-12-31 | Dalarnas län |
-| 13     | 50000   | 50000 | 2012-12-31 | Hallands län |
-| 08     | 50000   | 50000 | 2012-12-31 | Kalmar län |
-| 07     | 50000   | 50000 | 2012-12-31 | Kronobergs län |
-| 09     | 50000   | 50000 | 2012-12-31 | Gotlands län |
-| 21     | 50000   | 50000 | 2012-12-31 | Gävleborgs län |
-| 23     | 50000   | 50000 | 2012-12-31 | Jämtlands län |
-| 06     | 50000   | 50000 | 2012-12-31 | Jönköpings län |
-| 25     | 50000   | 50000 | 2012-12-31 | Norrbottens län |
-| 12     | 50000   | 50000 | 2012-12-31 | Skåne län |
-| 01     | 50000   | 50000 | 2012-12-31 | Stockholms län |
-| 04     | 50000   | 50000 | 2012-12-31 | Södermanlands län |
-| 03     | 50000   | 50000 | 2012-12-31 | Uppsala län |
-| 17     | 50000   | 50000 | 2012-12-31 | Värmlands län |
-| 24     | 50000   | 50000 | 2012-12-31 | Västerbottens län |
-| 22     | 50000   | 50000 | 2012-12-31 | Västernorrlands län |
-| 19     | 50000   | 50000 | 2012-12-31 | Västmanlands län |
-| 14     | 50000   | 50000 | 2012-12-31 | Västra Götalands län |
-| 18     | 50000   | 50000 | 2012-12-31 | Örebro län |
+|Angivna invanarantal                                |
+|länkod|kvinnor|män  |datum     |kommentar           |
+|10    |50000  |50000|2012-12-31|Blekinge län        |
+|20    |50000  |50000|2012-12-31|Dalarnas län        |
+|13    |50000  |50000|2012-12-31|Hallands län        |
+|08    |50000  |50000|2012-12-31|Kalmar län          |
+|07    |50000  |50000|2012-12-31|Kronobergs län      |
+|09    |50000  |50000|2012-12-31|Gotlands län        |
+|21    |50000  |50000|2012-12-31|Gävleborgs län      |
+|23    |50000  |50000|2012-12-31|Jämtlands län       |
+|06    |50000  |50000|2012-12-31|Jönköpings län      |
+|25    |50000  |50000|2012-12-31|Norrbottens län     |
+|12    |50000  |50000|2012-12-31|Skåne län           |
+|01    |50000  |50000|2012-12-31|Stockholms län      |
+|04    |50000  |50000|2012-12-31|Södermanlands län   |
+|03    |50000  |50000|2012-12-31|Uppsala län         |
+|17    |50000  |50000|2012-12-31|Värmlands län       |
+|24    |50000  |50000|2012-12-31|Västerbottens län   |
+|22    |50000  |50000|2012-12-31|Västernorrlands län |
+|19    |50000  |50000|2012-12-31|Västmanlands län    |
+|14    |50000  |50000|2012-12-31|Västra Götalands län|
+|18    |50000  |50000|2012-12-31|Örebro län          |
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet  | län |
-| 19790717-9191 | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 10  |
-| 19790808-9274 | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 10  |
-| 19790918-9230 | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 20  |
-| 19791020-9290 | G01 | 2013-09-05 | 2013-09-06 | enhet1 | 20  |
+|Enbart foljande intyg finns                              |
+|personnr     |diagnoskod|start     |slut      |enhet |län|
+|19790717-9191|G01       |2013-09-05|2013-09-06|enhet1|10 |
+|19790808-9274|G01       |2013-09-05|2013-09-06|enhet1|10 |
+|19790918-9230|G01       |2013-09-05|2013-09-06|enhet1|20 |
+|19791020-9290|G01       |2013-09-05|2013-09-06|enhet1|20 |
 
 !3 Då gäller:
 
 Nationell:
-| Sjukfall i rapporten lan |
-| län          | kolumngrupp    | totalt? | kvinnor? | män? |
-| Blekinge län | antal sjukfall | 2       | 0    | 2        |
-| Dalarnas län | antal sjukfall | 2       | 0    | 2        |
+|Sjukfall i rapporten lan                         |
+|län         |kolumngrupp   |totalt?|kvinnor?|män?|
+|Blekinge län|antal sjukfall|2      |0       |2   |
+|Dalarnas län|antal sjukfall|2      |0       |2   |
 
 
 I översikten visar antal-kolumnen "antal sjukfall per 1000000 invånare"
 
-| Sjukfall i oversikt per lan |
-| grupp        | antal? | förändring? |
-| Blekinge län | 0.04   | 0           |
-| Dalarnas län | 0.04   | 0           |
+|Sjukfall i oversikt per lan    |
+|grupp       |antal?|förändring?|
+|Blekinge län|0.04  |0          |
+|Dalarnas län|0.04  |0          |

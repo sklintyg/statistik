@@ -5,25 +5,25 @@ Givet att:
 
 Ett sjukfall med diagnos F40.
 
-| script | dagens datum | 2013-11-06 |
+|script|dagens datum|2013-11-06|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start | slut | enhet |
-| 19680524-9288 | F40 | 2013-02-01 | 2013-03-14 | enhet1 |
+|Enbart foljande intyg finns                          |
+|personnr     |diagnoskod|start     |slut      |enhet |
+|19680524-9288|F40       |2013-02-01|2013-03-14|enhet1|
 
 !3 Då gäller:
 Om val i rapport och diagnosval i filter INTE överlappar, visas ett informationsmeddelande för användaren.
 
-| Sjukfall i rapporten jamfor diagnoser diagram |
-| inloggad som | valda diagnoskategorier | filter enheter | filter kapitel | meddelande? | diagnoskategori | totalt? | män? | kvinnor? |
-| user1 | F32, F40 | | | null | A00 | -1 | -1 | -1 |
-| user1 | F32, F40 | enhet1 | F00-F99 | null | A00 | -1 | -1 | -1 |
-| user1 | F32, A00 | enhet1 | A00-B99 | Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering. | A00 | 0 | 0 | 0 |
-| user1 | F32, F40 | enhet1 | A00-B99 | Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfiltret (se 'Visa alla aktiva filter' ovan).,Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering. | A00 | -1 | -1 | -1 |
+|Sjukfall i rapporten jamfor diagnoser diagram                                                                                                                                                                                                                                                                                             |
+|inloggad som|valda diagnoskategorier|filter enheter|filter kapitel|meddelande?                                                                                                                                                                                                                      |diagnoskategori|totalt?|män?|kvinnor?|
+|user1       |F32, F40               |              |              |null                                                                                                                                                                                                                             |A00            |-1     |-1  |-1      |
+|user1       |F32, F40               |enhet1        |F00-F99       |null                                                                                                                                                                                                                             |A00            |-1     |-1  |-1      |
+|user1       |F32, A00               |enhet1        |A00-B99       |Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering.                                                                                                                        |A00            |0      |0   |0       |
+|user1       |F32, F40               |enhet1        |A00-B99       |Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfiltret (se 'Visa alla aktiva filter' ovan).,Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering.|A00            |-1     |-1  |-1      |
 
-| Sjukfall i rapporten enskilt diagnoskapitel diagram |
-| inloggad som | filter enheter | filter kapitel | filter avsnitt | meddelande? | valt diagnoskapitel | år | månad | grupp | män? | kvinnor? |
-| user1 | | | | null | F00-F99 | 2013 | feb | F40-F48 | 0 | 1 |
-| user1 | enhet1 | F00-F99,A00-B99 | | null | F00-F99 | 2013 | feb | F40-F48 | 0 | 1 |
-| user1 | enhet1 | | F40-F48,A00-A09 | null | F00-F99 | 2013 | feb | F40-F48 | 0 | 1 |
-| user1 | enhet1 | | F40-F48 | Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfiltret (se 'Visa alla aktiva filter' ovan).,Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering. | A00-B99 | 2013 | feb | A00-A09 | -1 | -1 |
+|Sjukfall i rapporten enskilt diagnoskapitel diagram                                                                                                                                                                                                                                                                                               |
+|inloggad som|filter enheter|filter kapitel |filter avsnitt |meddelande?                                                                                                                                                                                                                      |valt diagnoskapitel|år  |månad|grupp  |män?|kvinnor?|
+|user1       |              |               |               |null                                                                                                                                                                                                                             |F00-F99            |2013|feb  |F40-F48|0   |1       |
+|user1       |enhet1        |F00-F99,A00-B99|               |null                                                                                                                                                                                                                             |F00-F99            |2013|feb  |F40-F48|0   |1       |
+|user1       |enhet1        |               |F40-F48,A00-A09|null                                                                                                                                                                                                                             |F00-F99            |2013|feb  |F40-F48|0   |1       |
+|user1       |enhet1        |               |F40-F48        |Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfiltret (se 'Visa alla aktiva filter' ovan).,Det finns ingen statistik att visa för den angivna filtreringen. Överväg en mindre restriktiv filtrering.|A00-B99            |2013|feb  |A00-A09|-1  |-1      |

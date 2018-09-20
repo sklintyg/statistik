@@ -5,26 +5,26 @@ Test
 !3 Givet att:
 Ett sjukfall består av två intyg utfärdade av två olika läkare med samma namn på samma enhet.
 
-| script | dagens datum | 2014-11-28 |
+|script|dagens datum|2014-11-28|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Foljande lakare finns |
-| id | förnamn | efternamn |
-| LAKARE1 | Anna | Andersson |
-| LAKARE2 | Anna | Andersson |
+|Foljande lakare finns    |
+|id     |förnamn|efternamn|
+|LAKARE1|Anna   |Andersson|
+|LAKARE2|Anna   |Andersson|
 
-| Enbart foljande intyg finns |
-| personnr | start | slut | enhet | läkare | kommentar |
-| 19790808-9274 | 2014-06-01 | 2014-06-15 | enhet1 | LAKARE1 | |
-| 19790808-9274 | 2014-06-16 | 2014-07-30 | enhet1 | LAKARE2 | |
+|Enbart foljande intyg finns                                 |
+|personnr     |start     |slut      |enhet |läkare |kommentar|
+|19790808-9274|2014-06-01|2014-06-15|enhet1|LAKARE1|         |
+|19790808-9274|2014-06-16|2014-07-30|enhet1|LAKARE2|         |
 
 !3 Då gäller:
 Sjukfallet räknas med en gång för varje läkare. Läkarna presenteras med namn och HSA-id för att kunna skilja dem åt.
 
 Inloggad:
 
-| Sjukfall i rapporten sjukfall per lakare |
-| inloggad som | vårdgivarnivå | läkare | totalt? | män? | kvinnor? |
-| user1 | false | Anna Andersson LAKARE1 | 1 | 1 | 0 |
-| user1 | false | Anna Andersson LAKARE2 | 1 | 1 | 0 |
+|Sjukfall i rapporten sjukfall per lakare                               |
+|inloggad som|vårdgivarnivå|läkare                |totalt?|män?|kvinnor?|
+|user1       |false        |Anna Andersson LAKARE1|1      |1   |0       |
+|user1       |false        |Anna Andersson LAKARE2|1      |1   |0       |

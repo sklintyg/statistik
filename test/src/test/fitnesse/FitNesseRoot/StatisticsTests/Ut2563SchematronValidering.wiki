@@ -8,58 +8,58 @@ Testar samtliga intygs-format som intygsstatistik hanterar.
 !1 FK7263SIT
 
 !3 Givet att:
-| script | dagens datum | 2014-12-01 |
+|script|dagens datum|2014-12-01|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr      | diagnoskod | start      | slut       | arbetsförmåga | start2      | slut2      | arbetsförmåga2 | enhet  | intygformat     | kommentar |
-| 19671122-2940 | A00        | 2014-09-01 | 2014-09-15 | 0             | 2014-09-16  | 2014-09-28 | 25             | enhet1 | FK7263SIT       | Accepteras av schematron |
-| 19671122-2941 | A00        | 2014-09-01 | 2014-09-15 | 50            | x2014-09-16 | 2014-09-28 | 75             | enhet1 | FK7263SIT       | Accepteras inte av schematron |
+|Enbart foljande intyg finns                                                                                                                        |
+|personnr     |diagnoskod|start     |slut      |arbetsförmåga|start2     |slut2     |arbetsförmåga2|enhet |intygformat|kommentar                    |
+|19671122-2940|A00       |2014-09-01|2014-09-15|0            |2014-09-16 |2014-09-28|25            |enhet1|FK7263SIT  |Accepteras av schematron     |
+|19671122-2941|A00       |2014-09-01|2014-09-15|50           |x2014-09-16|2014-09-28|75            |enhet1|FK7263SIT  |Accepteras inte av schematron|
 
 !3 Då gäller:
 
-| Sjukfall i rapporten sjukskrivningsgrad som tvarsnitt |
-| inloggad som | sjukskrivningsgrad   | män? | kvinnor? |
-| user2        | 25 %                 | 0    | 0        |
-| user2        | 50 %                 | 0    | 0        |
-| user2        | 75 %                 | 0    | 1        |
-| user2        | 100 %                | 0    | 1        |
+|Sjukfall i rapporten sjukskrivningsgrad som tvarsnitt|
+|inloggad som  |sjukskrivningsgrad  |män?  |kvinnor?  |
+|user2         |25 %                |0     |0         |
+|user2         |50 %                |0     |0         |
+|user2         |75 %                |0     |1         |
+|user2         |100 %               |0     |1         |
 
 
 !1 LISU är ersatt av LISJP
 
 !3 Givet att:
-| script | dagens datum | 2014-12-01 |
+|script|dagens datum|2014-12-01|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr      | start      | slut       | funktionsnedsättning | enhet  | intygformat | kommentar |
-| 19671122-2940 | 2014-09-01 | 2014-09-15 | Lite text            | enhet1 | LISU        | Accepteras av schematron |
-| 19671122-2941 | 2014-09-01 | 2014-09-15 |                      | enhet1 | LISU        | Accepteras inte av schematron |
+|Enbart foljande intyg finns                                                                              |
+|personnr     |start     |slut      |funktionsnedsättning|enhet |intygformat|kommentar                    |
+|19671122-2940|2014-09-01|2014-09-15|Lite text           |enhet1|LISU       |Accepteras av schematron     |
+|19671122-2941|2014-09-01|2014-09-15|                    |enhet1|LISU       |Accepteras inte av schematron|
 
 !3 Då gäller:
 
-| Sjukfall i rapporten sjukfall totalt som tvarsnitt |
-| inloggad som | grupp  | män? | kvinnor? |
-| user2        | Totalt | 0    | 0        |
+|Sjukfall i rapporten sjukfall totalt som tvarsnitt|
+|inloggad som     |grupp     |män?    |kvinnor?    |
+|user2            |Totalt    |0       |0           |
 
 
 !1 LISJP
 
 !3 Givet att:
-| script | dagens datum | 2014-12-01 |
+|script|dagens datum|2014-12-01|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr      | start      | slut       | funktionsnedsättning | enhet  | intygformat | kommentar |
-| 19671122-2940 | 2014-09-01 | 2014-09-15 | Lite text            | enhet1 | LISJP       | Accepteras av schematron |
-| 19671122-2941 | 2014-09-01 | 2014-09-15 |                      | enhet1 | LISJP       | Accepteras inte av schematron |
+|Enbart foljande intyg finns                                                                              |
+|personnr     |start     |slut      |funktionsnedsättning|enhet |intygformat|kommentar                    |
+|19671122-2940|2014-09-01|2014-09-15|Lite text           |enhet1|LISJP      |Accepteras av schematron     |
+|19671122-2941|2014-09-01|2014-09-15|                    |enhet1|LISJP      |Accepteras inte av schematron|
 
 !3 Då gäller:
 
-| Sjukfall i rapporten sjukfall totalt som tvarsnitt |
-| inloggad som | grupp  | män? | kvinnor? |
-| user2        | Totalt | 0    | 1        |
+|Sjukfall i rapporten sjukfall totalt som tvarsnitt|
+|inloggad som     |grupp     |män?    |kvinnor?    |
+|user2            |Totalt    |0       |1           |

@@ -22,56 +22,56 @@ Det finns ett sjukfall med diagnos som faller inom avsnitt:
 
 Det finns inga sjukfall med diagnos som faller inom övriga avsnitt.
 
-| script | dagens datum | 2013-11-06 |
+|script|dagens datum|2013-11-06|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet |
-| 19790219-9285 | C01 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790429-9281 | C02 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790709-9282 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790717-9191 | C20 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790808-9274| C20 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790918-9230 | C33 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19791020-9290 | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19791230-9296 | C34 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19800113-9297 | C40 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790810-9288 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790316-9261 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790618-9282 | C43 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19680102-9288 | C46 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19800926-9252 | C46 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19810217-9291 | C46 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19800207-9294 | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19800504-9294 | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19671122-2940 | C50 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19790407-2920 | C51 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19671127-3026 | C51 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19800820-9275 | C51 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19671109-2681 | C65 | 2013-02-01 | 2013-02-14 | enhet1 |
-| 19680524-9288 | C65 | 2013-02-01 | 2013-02-14 | enhet1 |
+|Enbart foljande intyg finns                          |
+|personnr     |diagnoskod|start     |slut      |enhet |
+|19790219-9285|C01       |2013-02-01|2013-02-14|enhet1|
+|19790429-9281|C02       |2013-02-01|2013-02-14|enhet1|
+|19790709-9282|C20       |2013-02-01|2013-02-14|enhet1|
+|19790717-9191|C20       |2013-02-01|2013-02-14|enhet1|
+|19790808-9274|C20       |2013-02-01|2013-02-14|enhet1|
+|19790918-9230|C33       |2013-02-01|2013-02-14|enhet1|
+|19791020-9290|C34       |2013-02-01|2013-02-14|enhet1|
+|19791230-9296|C34       |2013-02-01|2013-02-14|enhet1|
+|19800113-9297|C40       |2013-02-01|2013-02-14|enhet1|
+|19790810-9288|C43       |2013-02-01|2013-02-14|enhet1|
+|19790316-9261|C43       |2013-02-01|2013-02-14|enhet1|
+|19790618-9282|C43       |2013-02-01|2013-02-14|enhet1|
+|19680102-9288|C46       |2013-02-01|2013-02-14|enhet1|
+|19800926-9252|C46       |2013-02-01|2013-02-14|enhet1|
+|19810217-9291|C46       |2013-02-01|2013-02-14|enhet1|
+|19800207-9294|C50       |2013-02-01|2013-02-14|enhet1|
+|19800504-9294|C50       |2013-02-01|2013-02-14|enhet1|
+|19671122-2940|C50       |2013-02-01|2013-02-14|enhet1|
+|19790407-2920|C51       |2013-02-01|2013-02-14|enhet1|
+|19671127-3026|C51       |2013-02-01|2013-02-14|enhet1|
+|19800820-9275|C51       |2013-02-01|2013-02-14|enhet1|
+|19671109-2681|C65       |2013-02-01|2013-02-14|enhet1|
+|19680524-9288|C65       |2013-02-01|2013-02-14|enhet1|
 
 !3 Då gäller:
 
 De sex diagnosavsnitt med flest totalt antal sjukfall visas. Samma diagnosavsnitt visas för både män och kvinnor. Sjukfall inom övriga diagnosavsnitt summeras i gruppen "Övriga".
 
 Nationell:
-| Sjukfall i rapporten enskilt diagnoskapitel diagram |
-| valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
-| C00-D48             | 2013 | feb   | C15-C26 | 2    | 1        |
-| C00-D48             | 2013 | feb   | C30-C39 | 3    | 0        |
-| C00-D48             | 2013 | feb   | C43-C44 | 0    | 3        |
-| C00-D48             | 2013 | feb   | C45-C49 | 2    | 1        |
-| C00-D48             | 2013 | feb   | C50-C50 | 2    | 1        |
-| C00-D48             | 2013 | feb   | C51-C58 | 1    | 2        |
-| C00-D48             | 2013 | feb   | Övriga  | 1    | 4        |
+|Sjukfall i rapporten enskilt diagnoskapitel diagram |
+|valt diagnoskapitel|år  |månad|grupp  |män?|kvinnor?|
+|C00-D48            |2013|feb  |C15-C26|2   |1       |
+|C00-D48            |2013|feb  |C30-C39|3   |0       |
+|C00-D48            |2013|feb  |C43-C44|0   |3       |
+|C00-D48            |2013|feb  |C45-C49|2   |1       |
+|C00-D48            |2013|feb  |C50-C50|2   |1       |
+|C00-D48            |2013|feb  |C51-C58|1   |2       |
+|C00-D48            |2013|feb  |Övriga |1   |4       |
 
 Inloggad:
-| Sjukfall i rapporten enskilt diagnoskapitel diagram |
-|inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
-| user1       | C00-D48             | 2013 | feb   | C15-C26 | 2    | 1        |
-| user1       | C00-D48             | 2013 | feb   | C30-C39 | 3    | 0        |
-| user1       | C00-D48             | 2013 | feb   | C43-C44 | 0    | 3        |
-| user1       | C00-D48             | 2013 | feb   | C45-C49 | 2    | 1        |
-| user1       | C00-D48             | 2013 | feb   | C50-C50 | 2    | 1        |
-| user1       | C00-D48             | 2013 | feb   | C51-C58 | 1    | 2        |
-| user1       | C00-D48             | 2013 | feb   | Övriga  | 1    | 4        |
+|Sjukfall i rapporten enskilt diagnoskapitel diagram              |
+|inloggad som|valt diagnoskapitel|år  |månad|grupp  |män?|kvinnor?|
+|user1       |C00-D48            |2013|feb  |C15-C26|2   |1       |
+|user1       |C00-D48            |2013|feb  |C30-C39|3   |0       |
+|user1       |C00-D48            |2013|feb  |C43-C44|0   |3       |
+|user1       |C00-D48            |2013|feb  |C45-C49|2   |1       |
+|user1       |C00-D48            |2013|feb  |C50-C50|2   |1       |
+|user1       |C00-D48            |2013|feb  |C51-C58|1   |2       |
+|user1       |C00-D48            |2013|feb  |Övriga |1   |4       |

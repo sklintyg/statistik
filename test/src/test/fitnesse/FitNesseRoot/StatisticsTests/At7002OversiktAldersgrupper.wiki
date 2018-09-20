@@ -4,48 +4,48 @@ Test
 !3 Givet att:
 Flera olika sjukfall med olika åldrar och datum.
 
-| script | dagens datum | 2015-01-01 |
+|script|dagens datum|2015-01-01|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start | slut | enhet |
-| 19801210-9289 | M40 | 2013-12-01 | 2014-12-14 | enhet1 |
-| 19280228-7886 | R00 | 2013-12-01 | 2013-12-14 | enhet1 |
-| 19280219-8059 | R00 | 2013-12-01 | 2013-12-14 | enhet1 |
-| 19800326-2388 | M40 | 2013-12-01 | 2014-09-14 | enhet1 |
-| 19280128-8158 | L40 | 2013-12-01 | 2014-12-14 | enhet1 |
-| 19280128-8075 | P99 | 2013-12-01 | 2014-12-14 | enhet1 |
-| 19581030-2868 | P99 | 2013-12-01 | 2014-12-14 | enhet1 |
-| 19581003-3356 | bla | 2013-12-01 | 2014-12-14 | enhet1 |
-| 19580926-2743 | P99 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19580913-2896 | F40 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19911002-2390 | F40 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19911002-2382 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 20050326-1388 | hej | 2013-12-01 | 2013-12-14 | enhet1 |
-| 20050327-1395 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 20050326-2368 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
-| 19700326-1388 | M40 | 2014-12-01 | 2014-12-14 | enhet1 |
+|Enbart foljande intyg finns                          |
+|personnr     |diagnoskod|start     |slut      |enhet |
+|19801210-9289|M40       |2013-12-01|2014-12-14|enhet1|
+|19280228-7886|R00       |2013-12-01|2013-12-14|enhet1|
+|19280219-8059|R00       |2013-12-01|2013-12-14|enhet1|
+|19800326-2388|M40       |2013-12-01|2014-09-14|enhet1|
+|19280128-8158|L40       |2013-12-01|2014-12-14|enhet1|
+|19280128-8075|P99       |2013-12-01|2014-12-14|enhet1|
+|19581030-2868|P99       |2013-12-01|2014-12-14|enhet1|
+|19581003-3356|bla       |2013-12-01|2014-12-14|enhet1|
+|19580926-2743|P99       |2014-12-01|2014-12-14|enhet1|
+|19580913-2896|F40       |2014-12-01|2014-12-14|enhet1|
+|19911002-2390|F40       |2014-12-01|2014-12-14|enhet1|
+|19911002-2382|M40       |2014-12-01|2014-12-14|enhet1|
+|20050326-1388|hej       |2013-12-01|2013-12-14|enhet1|
+|20050327-1395|M40       |2014-12-01|2014-12-14|enhet1|
+|20050326-2368|M40       |2014-12-01|2014-12-14|enhet1|
+|19700326-1388|M40       |2014-12-01|2014-12-14|enhet1|
 
 !3 Då gäller:
 Översiktsrapporten på åldersgrupper visar antal sjukfall i respektive åldersgrupp de senaste 3 månaderna (oktober-december). Förändringen anger procentuell ökning/minskning jämfört med samma tremånadersperiod året innan.
 
 Verksamhetsnivå:
 
-| Sjukfall i oversikt aldersgrupp |
-| inloggad som | grupp | antal? | förändring? |
-| user1 | Under 16 år | 2 | 100 |
-| user1 | 21-25 år | 2 | 0 |
-| user1 | Andra åldersgrupper | 2 | 0 |
-| user1 | 56-60 år | 4 | 100 |
-| user1 | Över 65 år | 2 | -50 |
+|Sjukfall i oversikt aldersgrupp                    |
+|inloggad som|grupp              |antal?|förändring?|
+|user1       |Under 16 år        |2     |100        |
+|user1       |21-25 år           |2     |0          |
+|user1       |Andra åldersgrupper|2     |0          |
+|user1       |56-60 år           |4     |100        |
+|user1       |Över 65 år         |2     |-50        |
 
 Nationell:
 
-| Sjukfall i oversikt aldersgrupp |
-| grupp | antal? | förändring? |
-| Under 16 år | 2 | 100 |
-| 21-25 år | 2 | 0 |
-| Andra åldersgrupper | 2 | 0 |
-| 56-60 år | 4 | 100 |
-| Över 65 år | 2 | -50 |
+|Sjukfall i oversikt aldersgrupp       |
+|grupp              |antal?|förändring?|
+|Under 16 år        |2     |100        |
+|21-25 år           |2     |0          |
+|Andra åldersgrupper|2     |0          |
+|56-60 år           |4     |100        |
+|Över 65 år         |2     |-50        |

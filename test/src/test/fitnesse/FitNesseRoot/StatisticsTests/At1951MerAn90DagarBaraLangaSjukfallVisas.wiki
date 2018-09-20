@@ -7,23 +7,23 @@ Test
 
 Två sjukfall består av ett intyg vardera. Ett av sjukfallen är 7 månader långt.
 
-| script | dagens datum | 2013-11-06 |
+|script|dagens datum|2013-11-06|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start | slut | enhet | kommentar |
-| 19790717-9191 | G01 | 2013-02-05 | 2013-09-06 | enhet1 | |
-| 19790808-9274 | G01 | 2013-02-05 | 2013-02-06 | enhet1 | |
+|Enbart foljande intyg finns                                    |
+|personnr     |diagnoskod|start     |slut      |enhet |kommentar|
+|19790717-9191|G01       |2013-02-05|2013-09-06|enhet1|         |
+|19790808-9274|G01       |2013-02-05|2013-02-06|enhet1|         |
 
 !3 Då gäller:
 
 Det syns ett sjukfall för februari-september.
 
-| Sjukfall i rapporten langa sjukfall |
-| inloggad som | år   | månad | män? | kvinnor? |
-| user1  | 2013 | jan   | 0    | 0        |
-| user1  | 2013 | feb   | 1    | 0        |
-| user1  | 2013 | mar   | 1    | 0        |
-| user1  | 2013 | sep   | 1    | 0        |
-| user1  | 2013 | okt   | 0    | 0        |
+|Sjukfall i rapporten langa sjukfall  |
+|inloggad som|år  |månad|män?|kvinnor?|
+|user1       |2013|jan  |0   |0       |
+|user1       |2013|feb  |1   |0       |
+|user1       |2013|mar  |1   |0       |
+|user1       |2013|sep  |1   |0       |
+|user1       |2013|okt  |0   |0       |

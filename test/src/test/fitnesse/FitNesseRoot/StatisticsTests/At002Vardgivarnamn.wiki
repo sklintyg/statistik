@@ -6,20 +6,20 @@ Test
 Testar vårdgivarnamnet i LoginInfo
 
 Inloggad:
-| Sjukfall i rapporten sjukfall totalt |
-| inloggad som | vårdgivarnamn?   |
-| user1        | Fitnessetestvårdgivare1 |
-| user2        | Fitnessetestvårdgivare1 |
-| user3        | Fitnessetestvårdgivare3 |
-| user4        | Fitnessetestvårdgivare1 |
-| user5_vg1    | Fitnessetestvårdgivare1 |
-| user5_vg3    | Fitnessetestvårdgivare3 |
-| user6        | Fitnessetestvårdgivare3 |
+|Sjukfall i rapporten sjukfall totalt|
+|inloggad som|vårdgivarnamn?         |
+|user1       |Fitnessetestvårdgivare1|
+|user2       |Fitnessetestvårdgivare1|
+|user3       |Fitnessetestvårdgivare3|
+|user4       |Fitnessetestvårdgivare1|
+|user5_vg1   |Fitnessetestvårdgivare1|
+|user5_vg3   |Fitnessetestvårdgivare3|
+|user6       |Fitnessetestvårdgivare3|
 
 
 Testar att valdVg fungerar
 
-| Sjukfall i rapporten sjukfall totalt |
-| inloggad som | vald vg | vårdgivarnamn?   |
-| user5_vg1    | vg1     | Fitnessetestvårdgivare1 |
-| user5_vg1    | vg3     | Fitnessetestvårdgivare3 |
+|Sjukfall i rapporten sjukfall totalt        |
+|inloggad som|vald vg|vårdgivarnamn?         |
+|user5_vg1   |vg1    |Fitnessetestvårdgivare1|
+|user5_vg1   |vg3    |Fitnessetestvårdgivare3|

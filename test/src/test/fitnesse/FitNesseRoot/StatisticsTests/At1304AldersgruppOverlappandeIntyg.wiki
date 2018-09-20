@@ -5,30 +5,30 @@ Test
 !3 Givet att:
 Ett sjukfall består av två intyg som överlappar varandra. Det andra intyget består av två olika sjukskrivningsgrader med olika tidsperioder.
 
-| script | dagens datum | 2015-04-15 |
+|script|dagens datum|2015-04-15|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | start | slut | arbetsförmåga | start2 | slut2 | arbetsförmåga2 | enhet | kommentar |
-| 19890511-2390 | 2015-03-16 | 2015-04-20 | 25 | | | | enhet2 | 25 år |
-| 19890511-2390 | 2015-03-17 | 2015-04-05 | 50 | 2015-04-06 | 2015-05-15 | 75 | enhet2 | Fyller 26 år |
+|Enbart foljande intyg finns                                                                               |
+|personnr     |start     |slut      |arbetsförmåga|start2    |slut2     |arbetsförmåga2|enhet |kommentar   |
+|19890511-2390|2015-03-16|2015-04-20|25           |          |          |              |enhet2|25 år       |
+|19890511-2390|2015-03-17|2015-04-05|50           |2015-04-06|2015-05-15|75            |enhet2|Fyller 26 år|
 
 !3 Då gäller:
 Den högsta åldern i ett sjukfall visas, i detta fall 26.
 
 Nationell nivå
 
-| Sjukfall i rapporten aldersgrupp |
-| åldersgrupp | totalt? | män? | kvinnor? |
-| 21-25 år | 0 | 0 | 0 |
-| 26-30 år | 1 | 1 | 0 |
-| 31-35 år | 0 | 0 | 0 |
+|Sjukfall i rapporten aldersgrupp |
+|åldersgrupp|totalt?|män?|kvinnor?|
+|21-25 år   |0      |0   |0       |
+|26-30 år   |1      |1   |0       |
+|31-35 år   |0      |0   |0       |
 
 Inloggad nivå
 
-| Sjukfall i rapporten aldersgrupp |
-| inloggad som | vårdgivarnivå | åldersgrupp | totalt? | män? | kvinnor? |
-| user2 | false | 21-25 år | 0 | 0 | 0 |
-| user2 | false | 26-30 år | 1 | 1 | 0 |
-| user2 | false | 31-35 år | 0 | 0 | 0 |
+|Sjukfall i rapporten aldersgrupp                            |
+|inloggad som|vårdgivarnivå|åldersgrupp|totalt?|män?|kvinnor?|
+|user2       |false        |21-25 år   |0      |0   |0       |
+|user2       |false        |26-30 år   |1      |1   |0       |
+|user2       |false        |31-35 år   |0      |0   |0       |

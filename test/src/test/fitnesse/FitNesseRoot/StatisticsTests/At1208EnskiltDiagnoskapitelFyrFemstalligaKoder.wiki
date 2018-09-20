@@ -7,35 +7,35 @@ Test
 
 Flera sjukfall med diagnoskoder på olika nivåer.
 
-| script | dagens datum | 2013-11-06 |
+|script|dagens datum|2013-11-06|
 
-!| Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet  | kommentar |
-| 19790407-9020 | F401  | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod|
-| 19790407-9120 | f401  | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, gemen |
-| 19790407-8220 | F40.1 | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, formaterad med punkt |
-| 19790407-9320 | F40-1 | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, formaterad med bindestreck |
-| 19790407-9420 | F40 1 | 2013-02-01 | 2013-02-14 | enhet1 | En existerande kod, formaterad med mellanslag |
-| 19790407-9520 | F403  | 2013-02-01 | 2013-02-14 | enhet1 | Icke existerande kod |
-| 19790407-9620 | F402B | 2013-02-01 | 2013-02-14 | enhet1 | Existerande femställig kod |
-| 19790407-9720 | F402b | 2013-02-01 | 2013-02-14 | enhet1 | Existerande femställig kod, gemen |
-| 19790407-9820 | F51-  | 2013-02-01 | 2013-02-14 | enhet1 | Existerande kod från PV-kodverk |
-| 19790407-9920 | F89-P | 2013-02-01 | 2013-02-14 | enhet1 | Existerande kod från PV-kodverk |
-| 19790407-1020 | F989P | 2013-02-01 | 2013-02-14 | enhet1 | Existerande kod från PV-kodverk |
-| 19790407-1030 | D180A | 2013-02-01 | 2013-02-14 | enhet1 |  |
+!| Enbart foljande intyg finns                                                                       |
+|personnr     |diagnoskod|start     |slut      |enhet |kommentar                                     |
+|19790407-9020|F401      |2013-02-01|2013-02-14|enhet1|En existerande kod                            |
+|19790407-9120|f401      |2013-02-01|2013-02-14|enhet1|En existerande kod, gemen                     |
+|19790407-8220|F40.1     |2013-02-01|2013-02-14|enhet1|En existerande kod, formaterad med punkt      |
+|19790407-9320|F40-1     |2013-02-01|2013-02-14|enhet1|En existerande kod, formaterad med bindestreck|
+|19790407-9420|F40 1     |2013-02-01|2013-02-14|enhet1|En existerande kod, formaterad med mellanslag |
+|19790407-9520|F403      |2013-02-01|2013-02-14|enhet1|Icke existerande kod                          |
+|19790407-9620|F402B     |2013-02-01|2013-02-14|enhet1|Existerande femställig kod                    |
+|19790407-9720|F402b     |2013-02-01|2013-02-14|enhet1|Existerande femställig kod, gemen             |
+|19790407-9820|F51-      |2013-02-01|2013-02-14|enhet1|Existerande kod från PV-kodverk               |
+|19790407-9920|F89-P     |2013-02-01|2013-02-14|enhet1|Existerande kod från PV-kodverk               |
+|19790407-1020|F989P     |2013-02-01|2013-02-14|enhet1|Existerande kod från PV-kodverk               |
+|19790407-1030|D180A     |2013-02-01|2013-02-14|enhet1|                                              |
 
 !3 Då gäller:
 
 Bara existerande koder visas. Koderna tvättas och sorteras in i ICD-10.
 
 Inloggad:
-!| Sjukfall i rapporten enskilt diagnoskapitel |
-|inloggad som | valt diagnoskapitel | år   | månad | grupp   | män? | kvinnor? |
-| user1       | F40                 | 2013 | feb   | F401    | 0    | 5        |
-| user1       | F40                 | 2013 | feb   | F402B   | 0    | 2        |
-| user1       | F40-F48             | 2013 | feb   | F40     | 0    | 8        |
-| user1       | F00-F99             | 2013 | feb   | F40-F48 | 0    | 8        |
-| user1       | F50-F59             | 2013 | feb   | F51     | 0    | 1        |
-| user1       | F80-F89             | 2013 | feb   | F89     | 0    | 1        |
-| user1       | F98                 | 2013 | feb   | F989    | 0    | 1        |
-| user1       | D18                 | 2013 | feb   | D180A   | 1    | 0        |
+!| Sjukfall i rapporten enskilt diagnoskapitel                    |
+|inloggad som|valt diagnoskapitel|år  |månad|grupp  |män?|kvinnor?|
+|user1       |F40                |2013|feb  |F401   |0   |5       |
+|user1       |F40                |2013|feb  |F402B  |0   |2       |
+|user1       |F40-F48            |2013|feb  |F40    |0   |8       |
+|user1       |F00-F99            |2013|feb  |F40-F48|0   |8       |
+|user1       |F50-F59            |2013|feb  |F51    |0   |1       |
+|user1       |F80-F89            |2013|feb  |F89    |0   |1       |
+|user1       |F98                |2013|feb  |F989   |0   |1       |
+|user1       |D18                |2013|feb  |D180A  |1   |0       |

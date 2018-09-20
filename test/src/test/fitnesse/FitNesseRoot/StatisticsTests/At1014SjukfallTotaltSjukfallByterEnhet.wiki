@@ -7,14 +7,14 @@ Test
 
 Ett sjukfall består av två intyg för samma patient. Sjukfallet börjar på enhet1 i mars och övergår sen till enhet2 i april.
 
-| script | dagens datum | 2013-11-06 |
+|script|dagens datum|2013-11-06|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | enhet |
-| 19791020-9290 | G01 | 2013-03-01 | 2013-03-30 | enhet1 |
-| 19791020-9290 | G01 | 2013-04-01 | 2013-04-30 | enhet2 |
+|Enbart foljande intyg finns                          |
+|personnr     |diagnoskod|start     |slut      |enhet |
+|19791020-9290|G01       |2013-03-01|2013-03-30|enhet1|
+|19791020-9290|G01       |2013-04-01|2013-04-30|enhet2|
 
 !3 Då gäller:
 
@@ -24,15 +24,15 @@ Som inloggad med behörighet till bara enhet2 syns sjukfallet bara för april.
 Bara det som hör till den egna vårdenheten syns.
 
 Nationell:
-| Sjukfall i rapporten sjukfall totalt |
-| år   | månad | män? | kvinnor? |
-| 2013 | mar   | 1    | 0        |
-| 2013 | apr   | 1    | 0        |
+|Sjukfall i rapporten sjukfall totalt|
+|år     |månad   |män?   |kvinnor?   |
+|2013   |mar     |1      |0          |
+|2013   |apr     |1      |0          |
 
 Inloggad:
-| Sjukfall i rapporten sjukfall totalt |
-| inloggad som | år   | månad | män? | kvinnor? |
-| user1        | 2013 | mar   | 1    | 0        |
-| user1        | 2013 | apr   | 0    | 0        |
-| user4        | 2013 | mar   | 0    | 0        |
-| user4        | 2013 | apr   | 1    | 0        |
+|Sjukfall i rapporten sjukfall totalt |
+|inloggad som|år  |månad|män?|kvinnor?|
+|user1       |2013|mar  |1   |0       |
+|user1       |2013|apr  |0   |0       |
+|user4       |2013|mar  |0   |0       |
+|user4       |2013|apr  |1   |0       |

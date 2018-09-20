@@ -5,29 +5,29 @@ Test
 !3 Givet att:
 Ett sjukfall består av två intyg som överlappar varandra. Det andra intyget består av två olika sjukskrivningsgrader med olika tidsperioder.
 
-| script | dagens datum | 2015-04-15 |
+|script|dagens datum|2015-04-15|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | start | slut | arbetsförmåga | start2 | slut2 | arbetsförmåga2 | enhet | kommentar |
-| 19890315-2398 | 2015-01-17 | 2015-04-05 | 50 | 2015-04-06 | 2215-05-15 | 75 | enhet2 | Fyller 26 år under första delen, andra delen har ett slutdatum mer än 5 år framåt i tiden |
+|Enbart foljande intyg finns                                                                                                                                                            |
+|personnr     |start     |slut      |arbetsförmåga|start2    |slut2     |arbetsförmåga2|enhet |kommentar                                                                                |
+|19890315-2398|2015-01-17|2015-04-05|50           |2015-04-06|2215-05-15|75            |enhet2|Fyller 26 år under första delen, andra delen har ett slutdatum mer än 5 år framåt i tiden|
 
 !3 Då gäller:
 Den andra delen av intyget sorteras bort eftersom slutdatum är mer än 5 år framåt i tiden (se At102). Åldern för hela intyget sätts av den högsta åldern under sjukfallets gång, vilket är 226 år. Sjukfallet hamnar i gruppen "Över 65 år".
 
 Nationell nivå
 
-| Sjukfall i rapporten aldersgrupp |
-| åldersgrupp | totalt? | män? | kvinnor? |
-| 21-25 år | 0 | 0 | 0 |
-| 26-30 år | 0 | 0 | 0 |
-| Över 65 år | 1 | 1 | 0 |
+|Sjukfall i rapporten aldersgrupp |
+|åldersgrupp|totalt?|män?|kvinnor?|
+|21-25 år   |0      |0   |0       |
+|26-30 år   |0      |0   |0       |
+|Över 65 år |1      |1   |0       |
 
 Inloggad nivå
 
-| Sjukfall i rapporten aldersgrupp |
-| inloggad som | åldersgrupp | totalt? | män? | kvinnor? |
-| user2 | 21-25 år | 0 | 0 | 0 |
-| user2 | 26-30 år | 0 | 0 | 0 |
-| user2 | Över 65 år | 1 | 1 | 0 |
+|Sjukfall i rapporten aldersgrupp              |
+|inloggad som|åldersgrupp|totalt?|män?|kvinnor?|
+|user2       |21-25 år   |0      |0   |0       |
+|user2       |26-30 år   |0      |0   |0       |
+|user2       |Över 65 år |1      |1   |0       |

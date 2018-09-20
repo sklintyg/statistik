@@ -7,21 +7,21 @@ Test
 
 Ett sjukfall består av tre intyg, varav mittenintyget har blivit makulerat.
 
-| script | dagens datum | 2013-11-06 |
+|script|dagens datum|2013-11-06|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr      | händelsetyp | intygid| diagnoskod | start      | slut       | enhet  |
-| 19790717-9191 | CREATED   |1000         | G01        | 2013-02-01 | 2013-02-10 | enhet1 |
-| 19790717-9191 | CREATED   |1001         | G01        | 2013-02-11 | 2013-02-20 | enhet1 |
-| 19790717-9191 | REVOKED   |1001         | G01        | 2013-02-11 | 2013-02-20 | enhet1 |
-| 19790717-9191 | CREATED   |1002         | G01        | 2013-02-21 | 2013-02-28 | enhet1 |
+|Enbart foljande intyg finns                                              |
+|personnr     |händelsetyp|intygid|diagnoskod|start     |slut      |enhet |
+|19790717-9191|CREATED    |1000   |G01       |2013-02-01|2013-02-10|enhet1|
+|19790717-9191|CREATED    |1001   |G01       |2013-02-11|2013-02-20|enhet1|
+|19790717-9191|REVOKED    |1001   |G01       |2013-02-11|2013-02-20|enhet1|
+|19790717-9191|CREATED    |1002   |G01       |2013-02-21|2013-02-28|enhet1|
 
 !3 Då gäller:
 
 Två sjukfall visas (eftersom det är mer än 5 dagar mellan första och sista intyget).
 
-| Sjukfall i rapporten sjukfall per enhet |
-| inloggad som | vårdenhet    | vårdgivarnivå  | totalt? | män? | kvinnor? |
-| user1        | enhet1 | false          | 2       | 2    | 0        |
+|Sjukfall i rapporten sjukfall per enhet                   |
+|inloggad som|vårdenhet|vårdgivarnivå|totalt?|män?|kvinnor?|
+|user1       |enhet1   |false        |2      |2   |0       |

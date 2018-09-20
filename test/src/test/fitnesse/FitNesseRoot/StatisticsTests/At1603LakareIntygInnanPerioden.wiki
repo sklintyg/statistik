@@ -5,26 +5,26 @@ Test
 !3 Givet att:
 Ett sjukfall består av två intyg, varav inget är aktivt under 2014.
 
-| script | dagens datum | 2014-12-28 |
+|script|dagens datum|2014-12-28|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Foljande lakare finns |
-| id | förnamn | efternamn |
-| lakare1 | Anna | Andersson |
-| lakare2 | Bo | Bengtsson |
+|Foljande lakare finns    |
+|id     |förnamn|efternamn|
+|lakare1|Anna   |Andersson|
+|lakare2|Bo     |Bengtsson|
 
-| Enbart foljande intyg finns |
-| personnr | start | slut | enhet | läkare | kommentar |
-| 19791230-9296 | 2013-10-01 | 2013-11-15 | enhet1 | lakare1 | |
-| 19791230-9296 | 2013-11-16 | 2013-12-30 | enhet1 | lakare2 | |
+|Enbart foljande intyg finns                                 |
+|personnr     |start     |slut      |enhet |läkare |kommentar|
+|19791230-9296|2013-10-01|2013-11-15|enhet1|lakare1|         |
+|19791230-9296|2013-11-16|2013-12-30|enhet1|lakare2|         |
 
 !3 Då gäller:
 Sjukfallet visas inte för någon av läkarna.
 
 Inloggad:
 
-| Sjukfall i rapporten sjukfall per lakare |
-| inloggad som | läkare | totalt? | män? | kvinnor? |
-| user1 | Anna Andersson | -1 | -1 | -1 |
-| user1 | Bo Bengtsson | -1 | -1 | -1 |
+|Sjukfall i rapporten sjukfall per lakare         |
+|inloggad som|läkare        |totalt?|män?|kvinnor?|
+|user1       |Anna Andersson|-1     |-1  |-1      |
+|user1       |Bo Bengtsson  |-1     |-1  |-1      |

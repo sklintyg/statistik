@@ -15,29 +15,29 @@ vg2
 1 kvinna 100%
 4 män 25%
 
-| script | dagens datum | 2013-11-06 |
+|script|dagens datum|2013-11-06|
 
-| script | troskel varde | 3 |
+|script|troskel varde|3|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start    | slut       | arbetsförmåga | enhet  |
-| 19790219-9285 | G40 | 2013-02-01 | 2013-02-14 | 0             | enhet1 |
-| 19790429-9281 | F41 | 2013-02-01 | 2013-02-14 | 0             | enhet1 |
-| 19790709-9282 | F40 | 2013-02-01 | 2013-02-14 | 0             | enhet1 |
-| 19790717-9191 | G41 | 2013-02-01 | 2013-02-14 | 75            | enhet1 |
-| 19790808-9274 | A40 | 2013-02-01 | 2013-02-14 | 75            | enhet1 |
-| 19680102-9288 | F40 | 2013-02-01 | 2013-02-14 | 0             | enhet3 |
-| 19800926-9252 | G00 | 2013-02-01 | 2013-02-14 | 75            | enhet3 |
-| 19810217-9291 | A41 | 2013-02-01 | 2013-02-14 | 75            | enhet3 |
-| 19881224-2397 | A41 | 2013-02-01 | 2013-02-14 | 75            | enhet3 |
-| 19881011-2394 | G41 | 2013-02-01 | 2013-02-14 | 75            | enhet3 |
+|Enbart foljande intyg finns                                        |
+|personnr     |diagnoskod|start     |slut      |arbetsförmåga|enhet |
+|19790219-9285|G40       |2013-02-01|2013-02-14|0            |enhet1|
+|19790429-9281|F41       |2013-02-01|2013-02-14|0            |enhet1|
+|19790709-9282|F40       |2013-02-01|2013-02-14|0            |enhet1|
+|19790717-9191|G41       |2013-02-01|2013-02-14|75           |enhet1|
+|19790808-9274|A40       |2013-02-01|2013-02-14|75           |enhet1|
+|19680102-9288|F40       |2013-02-01|2013-02-14|0            |enhet3|
+|19800926-9252|G00       |2013-02-01|2013-02-14|75           |enhet3|
+|19810217-9291|A41       |2013-02-01|2013-02-14|75           |enhet3|
+|19881224-2397|A41       |2013-02-01|2013-02-14|75           |enhet3|
+|19881011-2394|G41       |2013-02-01|2013-02-14|75           |enhet3|
 
 !3 Då gäller:
 
 Tröskelvärdet appliceras per vårdgivare, kön och sjukskrivningsgrad.
 
 Nationell:
-| Sjukfall i rapporten sjukskrivningsgrad |
-| år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| 2013 | feb   | 100 %                | 0    | 3        |
-| 2013 | feb   | 25 %                 | 4    | 0        |
+|Sjukfall i rapporten sjukskrivningsgrad    |
+|år  |månad|sjukskrivningsgrad|män?|kvinnor?|
+|2013|feb  |100 %             |0   |3       |
+|2013|feb  |25 %              |4   |0       |

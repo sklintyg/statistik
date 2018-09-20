@@ -15,27 +15,27 @@ Intyg 2:
 2014-11-03 - 2014-11-15 100% 
 2014-11-16 - 2014-11-30 50%
 
-| script | dagens datum | 2014-12-10 |
+|script|dagens datum|2014-12-10|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr      | diagnoskod | start      | slut       | arbetsförmåga | start2     | slut2      | arbetsförmåga2 | enhet  |
-| 19680524-9288 | A00        | 2014-10-01 | 2014-10-15 | 0             | 2014-10-16 | 2014-11-02 | 50             | enhet1 |
-| 19680524-9288 | A00        | 2014-11-03 | 2014-11-15 | 0             | 2014-11-16 | 2014-11-30 | 50             | enhet1 |
+|Enbart foljande intyg finns                                                                             |
+|personnr     |diagnoskod|start     |slut      |arbetsförmåga|start2    |slut2     |arbetsförmåga2|enhet |
+|19680524-9288|A00       |2014-10-01|2014-10-15|0            |2014-10-16|2014-11-02|50            |enhet1|
+|19680524-9288|A00       |2014-11-03|2014-11-15|0            |2014-11-16|2014-11-30|50            |enhet1|
 
 !3 Då gäller:
 
 Det blir ett sjukfall som syns för 50% i oktober och 50% i november. Detta beror på att om det finns två grader en viss månad, så väljs den senaste graden den månaden.
 
 Nationell:
-| Sjukfall i rapporten sjukskrivningsgrad |
-| år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| 2014 | okt   | 50 %                 | 0    | 1        |
-| 2014 | nov   | 50 %                 | 0    | 1        |
+|Sjukfall i rapporten sjukskrivningsgrad    |
+|år  |månad|sjukskrivningsgrad|män?|kvinnor?|
+|2014|okt  |50 %              |0   |1       |
+|2014|nov  |50 %              |0   |1       |
 
 Inloggad:
-| Sjukfall i rapporten sjukskrivningsgrad |
-| inloggad som | år   | månad | sjukskrivningsgrad   | män? | kvinnor? |
-| user1        | 2014 | okt   | 50 %                 | 0    | 1        |
-| user1        | 2014 | nov   | 50 %                 | 0    | 1        |
+|Sjukfall i rapporten sjukskrivningsgrad                 |
+|inloggad som|år  |månad|sjukskrivningsgrad|män?|kvinnor?|
+|user1       |2014|okt  |50 %              |0   |1       |
+|user1       |2014|nov  |50 %              |0   |1       |

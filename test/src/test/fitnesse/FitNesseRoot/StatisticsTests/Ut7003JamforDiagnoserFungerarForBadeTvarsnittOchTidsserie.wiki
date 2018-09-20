@@ -5,52 +5,52 @@ Test
 !3 Givet att:
 Ett sjukfall består av tre intyg med olika diagnoskategorier.
 
-| script | dagens datum | 2013-11-06 |
+|script|dagens datum|2013-11-06|
 
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start | slut | enhet |
-| 19790219-9285 | B020 | 2013-02-01 | 2013-03-14 | enhet1 |
+|Enbart foljande intyg finns                          |
+|personnr     |diagnoskod|start     |slut      |enhet |
+|19790219-9285|B020      |2013-02-01|2013-03-14|enhet1|
 
 !3 Då gäller:
 Alla valda diagnoskategorier visas. Sjukfallet visas i alla kategorier som det har diagnoser i.
 
 !2 Diagnoskategori
 
-| Sjukfall i rapporten jamfor diagnoser diagram |
-| inloggad som | valda diagnoskategorier | diagnoskategori | totalt? | män? | kvinnor? |
-| user1 | B02 | B02 | 1 | 0 | 1 |
+|Sjukfall i rapporten jamfor diagnoser diagram                             |
+|inloggad som|valda diagnoskategorier|diagnoskategori|totalt?|män?|kvinnor?|
+|user1       |B02                    |B02            |1      |0   |1       |
 
-| Sjukfall i rapporten jamfor diagnoser som tidsserie diagram |
-| inloggad som | år | månad | valda diagnoskategorier | diagnoskategori | män? | kvinnor? |
-| user1 | 2013 | feb | B02 | B02 | 0 | 1 |
+|Sjukfall i rapporten jamfor diagnoser som tidsserie diagram                  |
+|inloggad som|år  |månad|valda diagnoskategorier|diagnoskategori|män?|kvinnor?|
+|user1       |2013|feb  |B02                    |B02            |0   |1       |
 
 !2 Diagnosavsnitt
 
-| Sjukfall i rapporten jamfor diagnoser diagram |
-| inloggad som | valda diagnosavsnitt | diagnoskategori | totalt? | män? | kvinnor? |
-| user1 | B00-B09 | B00-B09 | 1 | 0 | 1 |
+|Sjukfall i rapporten jamfor diagnoser diagram                          |
+|inloggad som|valda diagnosavsnitt|diagnoskategori|totalt?|män?|kvinnor?|
+|user1       |B00-B09             |B00-B09        |1      |0   |1       |
 
-| Sjukfall i rapporten jamfor diagnoser som tidsserie diagram |
-| inloggad som | år | månad | valda diagnosavsnitt | diagnoskategori | män? | kvinnor? |
-| user1 | 2013 | feb | B00-B09 | B00-B09 | 0 | 1 |
+|Sjukfall i rapporten jamfor diagnoser som tidsserie diagram               |
+|inloggad som|år  |månad|valda diagnosavsnitt|diagnoskategori|män?|kvinnor?|
+|user1       |2013|feb  |B00-B09             |B00-B09        |0   |1       |
 
 !2 Diagnoskapitel
 
-| Sjukfall i rapporten jamfor diagnoser diagram |
-| inloggad som | valda diagnoskapitel | diagnoskategori | totalt? | män? | kvinnor? |
-| user1 | A00-B99 | A00-B99 | 1 | 0 | 1 |
+|Sjukfall i rapporten jamfor diagnoser diagram                          |
+|inloggad som|valda diagnoskapitel|diagnoskategori|totalt?|män?|kvinnor?|
+|user1       |A00-B99             |A00-B99        |1      |0   |1       |
 
-| Sjukfall i rapporten jamfor diagnoser som tidsserie diagram |
-| inloggad som | år | månad | valda diagnoskapitel | diagnoskategori | män? | kvinnor? |
-| user1 | 2013 | feb | A00-B99 | A00-B99 | 0 | 1 |
+|Sjukfall i rapporten jamfor diagnoser som tidsserie diagram               |
+|inloggad som|år  |månad|valda diagnoskapitel|diagnoskategori|män?|kvinnor?|
+|user1       |2013|feb  |A00-B99             |A00-B99        |0   |1       |
 
 !2 Diagnoskod
 
-| Sjukfall i rapporten jamfor diagnoser diagram |
-| inloggad som | valda diagnoskoder | diagnoskategori | totalt? | män? | kvinnor? |
-| user1 | B020 | B020 | 1 | 0 | 1 |
+|Sjukfall i rapporten jamfor diagnoser diagram                        |
+|inloggad som|valda diagnoskoder|diagnoskategori|totalt?|män?|kvinnor?|
+|user1       |B020              |B020           |1      |0   |1       |
 
-| Sjukfall i rapporten jamfor diagnoser som tidsserie diagram |
-| inloggad som | år | månad | valda diagnoskoder | diagnoskategori | män? | kvinnor? |
-| user1 | 2013 | feb | B020 | B020 | 0 | 1 |
+|Sjukfall i rapporten jamfor diagnoser som tidsserie diagram             |
+|inloggad som|år  |månad|valda diagnoskoder|diagnoskategori|män?|kvinnor?|
+|user1       |2013|feb  |B020              |B020           |0   |1       |
 
