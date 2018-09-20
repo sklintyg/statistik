@@ -27,25 +27,6 @@ Testar samtliga intygs-format som intygsstatistik hanterar.
 |user2         |100 %               |0     |1         |
 
 
-!1 LISU är ersatt av LISJP
-
-!3 Givet att:
-|script|dagens datum|2014-12-01|
-
-|script|troskel varde|1|
-
-|Enbart foljande intyg finns                                                                              |
-|personnr     |start     |slut      |funktionsnedsättning|enhet |intygformat|kommentar                    |
-|19671122-2940|2014-09-01|2014-09-15|Lite text           |enhet1|LISU       |Accepteras av schematron     |
-|19671122-2941|2014-09-01|2014-09-15|                    |enhet1|LISU       |Accepteras inte av schematron|
-
-!3 Då gäller:
-
-|Sjukfall i rapporten sjukfall totalt som tvarsnitt|
-|inloggad som     |grupp     |män?    |kvinnor?    |
-|user2            |Totalt    |0       |0           |
-
-
 !1 LISJP
 
 !3 Givet att:

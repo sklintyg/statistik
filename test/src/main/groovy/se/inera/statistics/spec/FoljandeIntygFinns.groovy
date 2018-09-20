@@ -106,8 +106,6 @@ class FoljandeIntygFinns extends FoljandeFinns {
         switch (intygformat) {
             case ~/^(?i)NyttJson$/:
                 return executeForNewJsonFormat();
-            case ~/^(?i)LISU$/:
-                return executeForXmlFormat('/lisu.xml', "LISU");
             case ~/^(?i)LUSE$/:
                 return executeForXmlFormatSit('/luse.xml', "LUSE");
             case ~/^(?i)LUAE_NA$/:

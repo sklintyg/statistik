@@ -33,7 +33,6 @@ public enum IntygType {
     SJUKPENNING(null, "FK 7263/7804", "FK 7263/7804 Läkarintyg för sjukpenning", false, false, true, false),
     FK7263("fk7263", "FK 7263", "FK 7263 Läkarintyg", true, true, false, false),
     LISJP("lisjp", "FK 7804", "FK 7804 Läkarintyg för sjukpenning", true, true, false, true),
-    LISU(null, "LISU", "LISU", true, true, false, false),
     LUSE("luse", "FK 7800", "FK 7800 Läkarutlåtande för sjukersättning", true, false, true, true),
     LUAE_NA("luae_na", "FK 7801", "FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga", true, false, true, true),
     LUAE_FS("luae_fs", "FK 7802", "FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång", true, false, true, true),
