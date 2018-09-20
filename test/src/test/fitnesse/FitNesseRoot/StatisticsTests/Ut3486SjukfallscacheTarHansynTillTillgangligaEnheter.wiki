@@ -1,3 +1,6 @@
+---
+Test
+---
 !contents -R2 -g -p -f -h
 
 Testar INTYG-3486. Ser till att två anrop efter varandra ej blir samma för användare på samma VG och med identiska filter, dvs att man inte får se cachade data

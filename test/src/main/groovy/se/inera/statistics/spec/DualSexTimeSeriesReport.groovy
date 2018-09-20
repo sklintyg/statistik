@@ -188,7 +188,7 @@ abstract class DualSexTimeSeriesReport extends Rapport {
 
     def getReportMeddelandenVardenhetLandsting() {
         if (inloggad) {
-            return reportsUtil.getReportAntalMeddelandenLandsting(vg, filter)
+            return reportsUtil.getReportAntalMeddelandenVardenhetLandsting(vg, filter)
         }
         throw new RuntimeException("Report -Meddelanden per ämne landsting- is not available on national level");
     }

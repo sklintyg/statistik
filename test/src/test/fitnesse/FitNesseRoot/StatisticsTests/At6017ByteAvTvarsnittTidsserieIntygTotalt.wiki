@@ -1,48 +1,47 @@
 ---
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h
 !3 Givet att:
-| script | dagens datum | 2015-11-06 |
+|script|dagens datum|2015-11-06|
 
-| script | troskel varde | 1 |
+|script|troskel varde|1|
 
-| Enbart foljande intyg finns |
-| personnr | signeringstid | enhet | intygformat | kommentar |
-| 19790219-9285 | 2015-02-10T12:24:15 | enhet1 | LUSE | |
-| 19790329-9286 | 2015-03-10T12:25:15 | enhet1 | LUSE | |
-| 19790529-9219 | 2015-03-10T12:25:15 | enhet1 | LUAE_FS | |
-| 19790529-9219 | 2014-10-01T12:25:15 | enhet1 | LUAE_FS | |
+|Enbart foljande intyg finns                                   |
+|personnr     |signeringstid      |enhet |intygformat|kommentar|
+|19790219-9285|2015-02-10T12:24:15|enhet1|LUSE       |         |
+|19790329-9286|2015-03-10T12:25:15|enhet1|LUSE       |         |
+|19790529-9219|2015-03-10T12:25:15|enhet1|LUAE_FS    |         |
+|19790529-9219|2014-10-01T12:25:15|enhet1|LUAE_FS    |         |
 
 !3 Då gäller:
 Statistiken baseras på alla intygstyper och dess signeringstidpunkt.
 
 Inloggad:
 
-| Intyg i rapporten intyg totalt |
-| inloggad som | år | månad | grupp | män? | kvinnor? |
-| user1 | 2014 | okt | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 |
-| user1 | 2014 | okt | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 1 | 0 |
-| user1 | 2014 | nov | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 |
-| user1 | 2014 | nov | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 0 |
-| user1 | 2014 | dec | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 |
-| user1 | 2014 | dec | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 0 |
-| user1 | 2015 | jan | FK 7800 Läkarutlåtande för sjukersättning | 0 | 0 |
-| user1 | 2015 | jan | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 0 |
-| user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | 0 | 1 |
-| user1 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 0 | 0 |
-| user1 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | 0 | 1 |
-| user1 | 2015 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 1 | 0 |
+|Intyg i rapporten intyg totalt                                                                             |
+|inloggad som|år  |månad|grupp                                                                |män?|kvinnor?|
+|user1       |2014|okt  |FK 7800 Läkarutlåtande för sjukersättning                            |0   |0       |
+|user1       |2014|okt  |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång|1   |0       |
+|user1       |2014|nov  |FK 7800 Läkarutlåtande för sjukersättning                            |0   |0       |
+|user1       |2014|nov  |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång|0   |0       |
+|user1       |2014|dec  |FK 7800 Läkarutlåtande för sjukersättning                            |0   |0       |
+|user1       |2014|dec  |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång|0   |0       |
+|user1       |2015|jan  |FK 7800 Läkarutlåtande för sjukersättning                            |0   |0       |
+|user1       |2015|jan  |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång|0   |0       |
+|user1       |2015|feb  |FK 7800 Läkarutlåtande för sjukersättning                            |0   |1       |
+|user1       |2015|feb  |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång|0   |0       |
+|user1       |2015|mar  |FK 7800 Läkarutlåtande för sjukersättning                            |0   |1       |
+|user1       |2015|mar  |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång|1   |0       |
 
 Byte till tvärsnitt gör att ett stapeldiagram 12 mån med bara två grupper visas. Det intyg som utfärdades i oktober 2014 tas inte med i tvärsnittet eftersom det är mer än 12 månader innan dagens datum.
 
-| Intyg i rapporten intyg totalt som tvarsnitt |
-| Inloggad som | grupp | totalt? | män? | kvinnor? |
-| user1 | FK 7800 Läkarutlåtande för sjukersättning | 2 | 0 | 2 |
-| user1 | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 1 | 1 | 0 |
+|Intyg i rapporten intyg totalt som tvarsnitt                                                            |
+|Inloggad som|grupp                                                                |totalt?|män?|kvinnor?|
+|user1       |FK 7800 Läkarutlåtande för sjukersättning                            |2      |0   |2       |
+|user1       |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång|1      |1   |0       |
 
 !(| Intyg i rapporten intyg totalt som tvarsnitt diagram |
-| Inloggad som | grupp | totalt? | män? | kvinnor? |
-| user1 | FK 7800 Läkarutlåtande för sjukersättning | 2 | 0 | 2 |
-| user1 | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 1 | 1 | 0 |)!
+|Inloggad som|grupp                                                                |totalt?|män?|kvinnor?|
+|user1       |FK 7800 Läkarutlåtande för sjukersättning                            |2      |0   |2       |
+|user1       |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång|1      |1   |0       |)!

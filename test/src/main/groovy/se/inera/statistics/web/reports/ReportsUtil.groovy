@@ -209,8 +209,7 @@ class ReportsUtil {
     }
 
     def getReportAntalMeddelandenVardenhetLandsting(String vgid, filter) {
-        throw new RuntimeException("Ej implementerat an!")
-//        return get("/api/landsting/getMeddelandenPerAmneLandsting", filter, "vgid=" + vgid, "landstingfilter")
+        return get("/api/landsting/getMeddelandenPerAmnePerEnhetLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 
     def getReportAntalMeddelandenInloggad(String vgid, filter) {

@@ -1,3 +1,6 @@
+---
+Test
+---
 !contents -R2 -g -p -f -h
 
 Testar INTYG-2943.

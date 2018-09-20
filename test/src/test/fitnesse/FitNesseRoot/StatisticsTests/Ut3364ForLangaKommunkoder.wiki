@@ -1,3 +1,7 @@
+---
+Test
+---
+
 !contents -R2 -g -p -f -h
 
 En kommunkod kan i HSA vara upp till fyra siffror långt. Om vi får något längre (har hänt i produktion, se INTYG-3364)
