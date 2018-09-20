@@ -5,7 +5,7 @@ Givet att:
 
 |script|dagens datum|2015-11-06|
 
-|script|troskel varde|1|
+|script|troskel varde|0|
 
 Endast 5 intyg har signerats och skickats till Försäkringskassan under de senaste 18 månaderna.
 

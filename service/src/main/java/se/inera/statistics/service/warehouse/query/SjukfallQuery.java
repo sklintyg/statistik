@@ -82,6 +82,14 @@ public class SjukfallQuery {
         this.cutoff = cutoff;
     }
 
+    public int getCutoff() {
+        return cutoff;
+    }
+
+    public void setCutoff(int cutoff) {
+        this.cutoff = cutoff;
+    }
+
     public SimpleKonResponse getSjukfall(Aisle aisle, FilterPredicates filter, LocalDate start, int perioder,
             int periodlangd, boolean applyCutoff) {
         final Function<SjukfallGroup, String> rowNameFunction = sjukfallGroup -> ReportUtil
@@ -273,10 +281,6 @@ public class SjukfallQuery {
             return lakarId.map(HsaIdAny::getId).orElse(lakareIdNum);
         }).collect(Collectors.toList());
         return new KonDataResponse(response.getAvailableFilters(), updatedLakareNames, response.getRows());
-    }
-
-    public void setCutoff(int cutoff) {
-        this.cutoff = cutoff;
     }
 
     private static class SjukfallPerGender {
