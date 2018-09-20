@@ -236,7 +236,7 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
         $scope.useSpecialPrintTable = true;
 
         $scope.exportChart = function (chartName, gender) {
-            chartFactory.exportChart(that[chartName], $scope.viewHeader, $scope.subTitle, gender);
+            chartFactory.exportChart(that[chartName], $scope.viewHeader, $scope.subTitle + ' ' + $scope.subTitlePeriod, gender);
         };
 
         $scope.printPdf = function () {

@@ -126,7 +126,7 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
 
 
         $scope.exportChart = function () {
-            chartFactory.exportChart(chart, $scope.viewHeader, $scope.subTitle);
+            chartFactory.exportChart(chart, $scope.viewHeader, $scope.subTitle + ' ' + $scope.subTitlePeriod);
         };
 
         $scope.reportActive = function() {
