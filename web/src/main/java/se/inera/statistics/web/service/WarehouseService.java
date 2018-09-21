@@ -384,7 +384,7 @@ public class WarehouseService {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final IntygCommonFilter intygCommonFilter = getIntygCommonFilter(filterSettings);
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
-            return intygCommonManager.getIntygPerTypeTidsserieAggregated(konDataResponse, entry.getKey(), intygCommonFilter, 0);
+            return intygCommonManager.getIntygPerTypeTidsserieAggregated(konDataResponse, entry.getKey(), intygCommonFilter, sjukfallQuery.getCutoff());
         }, (konDataResponse, konDataResponse2) -> konDataResponse2);
     }
 
