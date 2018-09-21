@@ -1,5 +1,5 @@
 <span class="select-vardgivare">
-  <p message key="login.instruktioner-for-valj-vg"></p>
+  <p message key="{{::instructionTextId}}"></p>
 
   <ul>
     <li data-ng-repeat="vgInfo in vardgivare | orderBy:'name'">
@@ -7,8 +7,6 @@
       <span data-ng-if="currentVgid == vgInfo.id" title="Vald vårdgivare"><strong>{{::vgInfo.name}}</strong> (vald vårdgivare)</span>
     </li>
   </ul>
-
-  <p data-ng-if="isLogin" message key="login.valj-vg.change-after-login"></p>
 
   <p>
     <button class="btn btn-link btn-link-minimal valj-vg-help" ng-click="isCollapsed = !isCollapsed" ng-switch="isCollapsed">
