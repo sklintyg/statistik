@@ -27,9 +27,13 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
 
         var chart;
 
+        var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
+        var isLandsting = ControllerCommons.isShowingLandsting($location);
+
         var defaultChartType = 'line';
-        var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType);
+        var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType, isVerksamhet);
         $scope.activeChartType = chartTypeInfo.activeChartType;
+
         $scope.status = {
             isTableOpen: true,
             isChartCollapsed: false
@@ -38,9 +42,6 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
         $scope.chartContainers = [
             {id: 'chart1', name: 'diagram'}
         ];
-
-        var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
-        var isLandsting = ControllerCommons.isShowingLandsting($location);
 
         var paintChart = function (chartCategories, chartSeries, doneLoadingCallback) {
             var yAxisTitleUnit = config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall';

@@ -35,7 +35,7 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
         var isLandsting = ControllerCommons.isShowingLandsting($location);
         var chart = {};
         var defaultChartType = 'column';
-        var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, ensureHighchartTypeIsSet(config), defaultChartType);
+        var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, ensureHighchartTypeIsSet(config), defaultChartType, isVerksamhet);
         $scope.activeChartType = chartTypeInfo.activeChartType;
 
         $scope.chartContainers = [
