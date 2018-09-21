@@ -26,11 +26,11 @@ Användare har behörighet till både enhet1 och enhet 2. Om ingen filtrering g�
 
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
 | inloggad som | vårdenhet | grupp | filter enheter | totalt? | män? | kvinnor? |
-| user2 | enhet1 | Komplettering | | 2 | 2 | 0 |
-| user2 | enhet1 | Komplettering | enhet1 | 2 | 2 | 0 |
-| user2 | enhet1 | Komplettering | enhet2 | -1 | -1 | -1 |
-| user2 | enhet1 | Komplettering | enhet1,enhet2 | 2 | 2 | 0 |
-| user2 | enhet2 | Komplettering | | 1 | 1 | 0 |
-| user2 | enhet2 | Komplettering | enhet1 | -1 | -1 | -1 |
-| user2 | enhet2 | Komplettering | enhet2 | 1 | 1 | 0 |
-| user2 | enhet2 | Komplettering | enhet1,enhet2 | 1 | 1 | 0 |
+| user2 | Enhet enhet1 | Komplettering | | 2 | 2 | 0 |
+| user2 | Enhet enhet1 | Komplettering | enhet1 | 2 | 2 | 0 |
+| user2 | Enhet enhet1 | Komplettering | enhet2 | -1 | -1 | -1 |
+| user2 | Enhet enhet1 | Komplettering | enhet1,enhet2 | 2 | 2 | 0 |
+| user2 | Enhet enhet2 | Komplettering | | 1 | 1 | 0 |
+| user2 | Enhet enhet2 | Komplettering | enhet1 | -1 | -1 | -1 |
+| user2 | Enhet enhet2 | Komplettering | enhet2 | 1 | 1 | 0 |
+| user2 | Enhet enhet2 | Komplettering | enhet1,enhet2 | 1 | 1 | 0 |

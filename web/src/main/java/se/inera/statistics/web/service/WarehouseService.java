@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -183,8 +184,9 @@ public class WarehouseService {
         return messagesQuery.getAndelKompletteringarTvarsnitt(getMeddelandeFilter(vardgivarId, filter, range));
     }
 
-    public KonDataResponse getMessagesPerAmnePerEnhet(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
-        return messagesQuery.getMessagesPerAmnePerEnhet(getMeddelandeFilter(vardgivarId, filter, range));
+    public KonDataResponse getMessagesPerAmnePerEnhet(Filter filter, Range range, HsaIdVardgivare vardgivarId,
+                                                      Map<HsaIdEnhet, String> idToNameMap) {
+        return messagesQuery.getMessagesPerAmnePerEnhet(getMeddelandeFilter(vardgivarId, filter, range), idToNameMap);
     }
 
     public KonDataResponse getMessagesPerAmnePerLakare(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
@@ -200,8 +202,9 @@ public class WarehouseService {
         return messagesQuery.getMessagesTvarsnittPerAmnePerLakare(getMeddelandeFilter(vardgivarId, filter, range));
     }
 
-    public KonDataResponse getMessagesPerAmnePerEnhetTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
-        return messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(getMeddelandeFilter(vardgivarId, filter, range));
+    public KonDataResponse getMessagesPerAmnePerEnhetTvarsnitt(Filter filter, Range range, HsaIdVardgivare vardgivarId,
+                                                               Map<HsaIdEnhet, String> idToNameMap) {
+        return messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(getMeddelandeFilter(vardgivarId, filter, range), idToNameMap);
     }
 
     public KonDataResponse getMessagesPerAmnePerEnhetLandsting(FilterSettings filterSettings) {
@@ -212,8 +215,11 @@ public class WarehouseService {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
+            final Map<HsaIdEnhet, String> idsToNames = entry.getValue().stream()
+                    .collect(Collectors.toMap(Enhet::getEnhetId, Enhet::getNamn));
             final MessagesFilter meddelandeFilter = getMeddelandeFilter(entry.getKey(), filterSettings.getFilter(), range);
-            return messagesQuery.getMeddelandenPerAmneOchEnhetAggregated(konDataResponse, meddelandeFilter, sjukfallQuery.getCutoff());
+            final int cutoff = sjukfallQuery.getCutoff();
+            return messagesQuery.getMeddelandenPerAmneOchEnhetAggregated(konDataResponse, meddelandeFilter, cutoff, idsToNames);
         }, (konDataResponse, konDataResponse2) -> konDataResponse2);
     }
 

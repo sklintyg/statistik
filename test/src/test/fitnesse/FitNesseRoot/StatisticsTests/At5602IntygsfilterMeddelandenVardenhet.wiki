@@ -25,9 +25,9 @@ Inloggad:
 
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
 | inloggad som | vårdenhet | grupp | filter intygstyp | totalt? | män? | kvinnor? |
-| user2 | enhet1 | Komplettering | | 2 | 2 | 0 |
-| user2 | enhet1 | Komplettering | LUSE | -1 | -1 | -1 |
-| user2 | enhet1 | Komplettering | SJUKPENNING, LUAE_NA, LUSE, LUAE_FS | 2 | 2 | 0 |
-| user2 | enhet2 | Komplettering | | 1 | 1 | 0 |
-| user2 | enhet2 | Komplettering | LUSE | 1 | 1 | 0 |
-| user2 | enhet2 | Komplettering | SJUKPENNING, LUAE_NA, LUSE, LUAE_FS | 1 | 1 | 0 |
+| user2 | Enhet enhet1 | Komplettering | | 2 | 2 | 0 |
+| user2 | Enhet enhet1 | Komplettering | LUSE | -1 | -1 | -1 |
+| user2 | Enhet enhet1 | Komplettering | SJUKPENNING, LUAE_NA, LUSE, LUAE_FS | 2 | 2 | 0 |
+| user2 | Enhet enhet2 | Komplettering | | 1 | 1 | 0 |
+| user2 | Enhet enhet2 | Komplettering | LUSE | 1 | 1 | 0 |
+| user2 | Enhet enhet2 | Komplettering | SJUKPENNING, LUAE_NA, LUSE, LUAE_FS | 1 | 1 | 0 |

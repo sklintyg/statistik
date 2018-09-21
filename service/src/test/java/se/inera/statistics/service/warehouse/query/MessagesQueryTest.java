@@ -22,13 +22,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
+import se.inera.statistics.service.warehouse.message.CountDTOAmne;
 import se.inera.statistics.service.warehouse.message.MessageWidelineLoader;
 import se.inera.statistics.service.warehouse.message.MsgAmne;
 
 import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -56,14 +62,40 @@ public class MessagesQueryTest {
         coll.setStrength(Collator.PRIMARY);
 
         //When
-        final KonDataResponse messagesTvarsnittPerAmnePerEnhet = messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(null);
-        final List<String> groups = messagesTvarsnittPerAmnePerEnhet.getGroups().stream().map(a -> MsgAmne.parse(a).getText()).collect(Collectors.toList());
+        final KonDataResponse response = messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(null, new HashMap<>());
+        final List<String> groups = response.getGroups().stream().map(a -> MsgAmne.parse(a).getText()).collect(Collectors.toList());
         final List<String> sortedGroups = new ArrayList<>(groups);
         sortedGroups.sort(coll);
 
         //Then
         assertEquals(MsgAmne.values().length, groups.size());
         assertArrayEquals(sortedGroups.toArray(new String[0]), groups.toArray(new String[0]));
-
     }
+
+    @Test
+    public void testNamesAreTranslatedUsingTheIdToNameMap() {
+        //Given
+        final MessagesFilter filter = null;
+        final String enhetsidtest = "enhetsidtest";
+        final CountDTOAmne countDTOAmne = createCountDTOAmne(enhetsidtest);
+        Mockito.when(messageWidelineLoader.getAntalMeddelandenPerAmne(filter)).thenReturn(Arrays.asList(countDTOAmne));
+        final HashMap<HsaIdEnhet, String> idToNameMap = new HashMap<>();
+        final String testenhetsnamn = "testenhetsnamn";
+        idToNameMap.put(new HsaIdEnhet(enhetsidtest), testenhetsnamn);
+
+        //When
+        final KonDataResponse resp = messagesQuery.getMessagesTvarsnittPerAmnePerEnhet(filter, idToNameMap);
+
+        //Then
+        resp.getRows().forEach(r -> assertEquals(testenhetsnamn, r.getName()));
+    }
+
+    private CountDTOAmne createCountDTOAmne(String enhetId) {
+        final CountDTOAmne countDTOAmne = new CountDTOAmne();
+        countDTOAmne.setEnhet(enhetId);
+        countDTOAmne.setAmne(MsgAmne.KOMPLT);
+        countDTOAmne.setKon(Kon.FEMALE);
+        return countDTOAmne;
+    }
+
 }

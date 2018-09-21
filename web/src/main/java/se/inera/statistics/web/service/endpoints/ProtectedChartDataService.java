@@ -353,8 +353,10 @@ public class ProtectedChartDataService {
     public Response getMeddelandenPerAmnePerEnhet(@Context HttpServletRequest request, @QueryParam("filter") String filterHash,
             @QueryParam("format") String format) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
+        final List<HsaIdEnhet> enhetsFilterIds = filterHandler.getEnhetsFilterIds(filterSettings.getFilter().getEnheter(), request);
+        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds);
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhet(filterSettings.getFilter(),
-                filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+                filterSettings.getRange(), loginServiceUtil.getSelectedVgIdForLoggedInUser(request), idToNameMap);
         SimpleDetailsData result = new MessageAmnePerEnhetConverter().convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNEPERENHET, ReportType.TIDSSERIE);
     }
@@ -372,8 +374,10 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 12);
         final Filter filter = filterSettings.getFilter();
         final Range range = filterSettings.getRange();
+        final List<HsaIdEnhet> enhetsFilterIds = filterHandler.getEnhetsFilterIds(filterSettings.getFilter().getEnheter(), request);
+        Map<HsaIdEnhet, String> idToNameMap = filterHandler.getEnhetNameMap(request, enhetsFilterIds);
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhetTvarsnitt(filter, range,
-                loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
+                loginServiceUtil.getSelectedVgIdForLoggedInUser(request), idToNameMap);
         SimpleDetailsData result = new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNEPERENHET, ReportType.TVARSNITT);
     }

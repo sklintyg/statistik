@@ -9,9 +9,9 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 |script|troskel varde|1|
 
 |Enbart foljande intyg finns                                            |
-|intygid|personnr     |signeringstid      |diagnoskod|intygformat|enhet |
-|1001   |19790717-9191|2014-04-05T10:00:00|G01       |LUSE       |enhet1|
-|1002   |19691230-1234|2014-06-03T10:00:00|G01       |LUSE       |enhet2|
+|intygid|personnr     |signeringstid      |diagnoskod|intygformat|enhet | enhetsnamn |
+|1001   |19790717-9191|2014-04-05T10:00:00|G01       |LUSE       |enhet1| Enhet ett  |
+|1002   |19691230-1234|2014-06-03T10:00:00|G01       |LUSE       |enhet2| Enhet två  |
 
 |Foljande meddelanden finns                       |
 |personnr     |skickat            |intygsid|ämne  |
@@ -31,10 +31,10 @@ Statistiken baseras på meddelanden för alla intygstyper som har ärendekommuni
 Inloggad:
 
 |Meddelanden i rapporten meddelanden vardenhet som tvarsnitt landsting|
-|inloggad som  |vårdenhet  |grupp            |totalt? |män? |kvinnor? |
-|user3         |enhet1     |Komplettering    |2       |1    |0        |
-|user3         |enhet1     |Avstämningsmöte  |2       |1    |0        |
-|user3         |enhet1     |Övrigt           |2       |0    |0        |
-|user3         |enhet2     |Komplettering    |1       |1    |0        |
-|user3         |enhet2     |Avstämningsmöte  |1       |0    |0        |
-|user3         |enhet2     |Övrigt           |1       |0    |0        |
+|inloggad som  | vårdenhet |grupp            |totalt? |män? |kvinnor? |
+|user3         | Enhet ett |Komplettering    |2       |1    |0        |
+|user3         | Enhet ett |Avstämningsmöte  |2       |1    |0        |
+|user3         | Enhet ett |Övrigt           |2       |0    |0        |
+|user3         | Enhet två |Komplettering    |1       |1    |0        |
+|user3         | Enhet två |Avstämningsmöte  |1       |0    |0        |
+|user3         | Enhet två |Övrigt           |1       |0    |0        |

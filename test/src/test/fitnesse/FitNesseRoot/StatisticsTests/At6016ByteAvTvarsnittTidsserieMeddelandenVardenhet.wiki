@@ -28,24 +28,24 @@ Inloggad:
 
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
 | inloggad som | vårdenhet | grupp | totalt? | män? | kvinnor? |
-| user2 | enhet1 | Komplettering | 2 | 1 | 0 |
-| user2 | enhet1 | Avstämningsmöte | 2 | 1 | 0 |
-| user2 | enhet2 | Komplettering | 1 | 1 | 0 |
-| user2 | enhet2 | Avstämningsmöte | 1 | 0 | 0 |
+| user2 | Enhet enhet1 | Komplettering | 2 | 1 | 0 |
+| user2 | Enhet enhet1 | Avstämningsmöte | 2 | 1 | 0 |
+| user2 | Enhet enhet2 | Komplettering | 1 | 1 | 0 |
+| user2 | Enhet enhet2 | Avstämningsmöte | 1 | 0 | 0 |
 
 Byte till tidsserie gör att ytdiagram 18 mån visas. Varje enhet får en legend för varje grupp (meddelandeämne) som ska tas med. Kvinnor och män visas i separata diagram.
 
 | Meddelanden i rapporten meddelanden vardenhet som tidsserie |
 | inloggad som | år | månad | grupp | män? | kvinnor? |
-| user2 | 2014 | apr | enhet1 : Komplettering | 1 | 0 |
-| user2 | 2014 | apr | enhet1 : Avstämningsmöte | 1 | 0 |
-| user2 | 2014 | apr | enhet2 : Komplettering | 0 | 0 |
-| user2 | 2014 | apr | enhet2 : Avstämningsmöte | 0 | 0 |
-| user2 | 2014 | maj | enhet1 : Komplettering | 0 | 0 |
-| user2 | 2014 | maj | enhet1 : Avstämningsmöte | 0 | 0 |
-| user2 | 2014 | maj | enhet2 : Komplettering | 0 | 0 |
-| user2 | 2014 | maj | enhet2 : Avstämningsmöte | 0 | 0 |
-| user2 | 2014 | jun | enhet1 : Komplettering | 0 | 0 |
-| user2 | 2014 | jun | enhet1 : Avstämningsmöte | 0 | 0 |
-| user2 | 2014 | jun | enhet2 : Komplettering | 1 | 0 |
-| user2 | 2014 | jun | enhet2 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | apr | Enhet enhet1 : Komplettering | 1 | 0 |
+| user2 | 2014 | apr | Enhet enhet1 : Avstämningsmöte | 1 | 0 |
+| user2 | 2014 | apr | Enhet enhet2 : Komplettering | 0 | 0 |
+| user2 | 2014 | apr | Enhet enhet2 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | maj | Enhet enhet1 : Komplettering | 0 | 0 |
+| user2 | 2014 | maj | Enhet enhet1 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | maj | Enhet enhet2 : Komplettering | 0 | 0 |
+| user2 | 2014 | maj | Enhet enhet2 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | jun | Enhet enhet1 : Komplettering | 0 | 0 |
+| user2 | 2014 | jun | Enhet enhet1 : Avstämningsmöte | 0 | 0 |
+| user2 | 2014 | jun | Enhet enhet2 : Komplettering | 1 | 0 |
+| user2 | 2014 | jun | Enhet enhet2 : Avstämningsmöte | 0 | 0 |
