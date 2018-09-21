@@ -29,7 +29,7 @@ I rapporten "Meddelanden, vårdenhet" slår tidsintervallsfiltret på när ett m
 
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
 | inloggad som | vårdenhet | grupp | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
-| user2 | enhet1 | Komplettering | 2014-01-01 | 2014-11-30 | 1 | 0 | 1 |
-| user2 | enhet1 | Övrigt | 2014-01-01 | 2014-11-30 | 1 | 0 | 0 |
-| user2 | enhet2 | Komplettering | 2014-01-01 | 2014-11-30 | 1 | 0 | 0 |
-| user2 | enhet2 | Övrigt | 2014-01-01 | 2014-11-30 | 1 | 1 | 0 |
+| user2 | Enhet enhet1 | Komplettering | 2014-01-01 | 2014-11-30 | 1 | 0 | 1 |
+| user2 | Enhet enhet1 | Övrigt | 2014-01-01 | 2014-11-30 | 1 | 0 | 0 |
+| user2 | Enhet enhet2 | Komplettering | 2014-01-01 | 2014-11-30 | 1 | 0 | 0 |
+| user2 | Enhet enhet2 | Övrigt | 2014-01-01 | 2014-11-30 | 1 | 1 | 0 |

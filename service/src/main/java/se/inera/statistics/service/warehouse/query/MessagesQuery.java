@@ -69,8 +69,9 @@ public class MessagesQuery {
         return getKonDataResponseAggregated(resultToAggregateIn, filter, cutoff, messagesTvarsnittPerAmne);
     }
 
-    public KonDataResponse getMeddelandenPerAmneOchEnhetAggregated(KonDataResponse resultToAggregateIn, MessagesFilter filter, int cutoff) {
-        final KonDataResponse messagesTvarsnittPerAmne = getMessagesTvarsnittPerAmnePerEnhet(filter);
+    public KonDataResponse getMeddelandenPerAmneOchEnhetAggregated(KonDataResponse resultToAggregateIn, MessagesFilter filter,
+                                                                   int cutoff, Map<HsaIdEnhet, String> idToNameMap) {
+        final KonDataResponse messagesTvarsnittPerAmne = getMessagesTvarsnittPerAmnePerEnhet(filter, idToNameMap);
         return getKonDataResponseAggregated(resultToAggregateIn, filter, cutoff, messagesTvarsnittPerAmne);
     }
 
@@ -126,14 +127,14 @@ public class MessagesQuery {
         return convertToAndelKompletteringarTvarsnitt(rows, filter.getFrom(), filter.getNumberOfMonths());
     }
 
-    public KonDataResponse getMessagesPerAmnePerEnhet(MessagesFilter filter) {
+    public KonDataResponse getMessagesPerAmnePerEnhet(MessagesFilter filter, Map<HsaIdEnhet, String> idToNameMap) {
         List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter);
-        return convertToMessagesPerAmnePerEnhet(rows, filter.getFrom(), filter.getNumberOfMonths());
+        return convertToMessagesPerAmnePerEnhet(rows, filter.getFrom(), filter.getNumberOfMonths(), idToNameMap);
     }
 
-    public KonDataResponse getMessagesTvarsnittPerAmnePerEnhet(MessagesFilter filter) {
+    public KonDataResponse getMessagesTvarsnittPerAmnePerEnhet(MessagesFilter filter, Map<HsaIdEnhet, String> idToNameMap) {
         List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter);
-        return convertToSimpleResponseTvarsnittPerAmnePerEnhet(rows);
+        return convertToSimpleResponseTvarsnittPerAmnePerEnhet(rows, idToNameMap);
     }
 
     public KonDataResponse getMessagesPerAmnePerLakare(MessagesFilter filter) {
@@ -367,8 +368,10 @@ public class MessagesQuery {
                 : Collections.emptyList();
     }
 
-    private KonDataResponse convertToMessagesPerAmnePerEnhet(List<CountDTOAmne> rows, LocalDate start, int perioder) {
-        return convertToMessagesPerAmnePerType(rows, start, perioder, getEnhets(rows), CountDTOAmne::getEnhet, enhet -> enhet);
+    private KonDataResponse convertToMessagesPerAmnePerEnhet(List<CountDTOAmne> rows, LocalDate start, int perioder,
+                                                             Map<HsaIdEnhet, String> idToNameMap) {
+        final Function<String, String> idToNameFunction = enhet -> idToNameMap.get(new HsaIdEnhet(enhet));
+        return convertToMessagesPerAmnePerType(rows, start, perioder, getEnhets(rows), CountDTOAmne::getEnhet, idToNameFunction);
     }
 
     private <T> KonDataResponse convertToMessagesPerAmnePerType(List<CountDTOAmne> rows, LocalDate start, int perioder, List<T> types,
@@ -514,8 +517,9 @@ public class MessagesQuery {
         return convertToSimpleResponseTvarsnittPerAmnePerType(rows, lakares, CountDTOAmne::getLakareId, lakareNames::get);
     }
 
-    private KonDataResponse convertToSimpleResponseTvarsnittPerAmnePerEnhet(List<CountDTOAmne> rows) {
-        return convertToSimpleResponseTvarsnittPerAmnePerType(rows, getEnhets(rows), CountDTOAmne::getEnhet, enhet -> enhet);
+    private KonDataResponse convertToSimpleResponseTvarsnittPerAmnePerEnhet(List<CountDTOAmne> rows, Map<HsaIdEnhet, String> idToNameMap) {
+        final Function<String, String> idToNameFunction = enhet -> idToNameMap.get(new HsaIdEnhet(enhet));
+        return convertToSimpleResponseTvarsnittPerAmnePerType(rows, getEnhets(rows), CountDTOAmne::getEnhet, idToNameFunction);
     }
 
     private <T> KonDataResponse convertToSimpleResponseTvarsnittPerAmnePerType(List<CountDTOAmne> rows, List<T> types,

@@ -28,9 +28,9 @@ Inloggad:
 
 | Meddelanden i rapporten meddelanden vardenhet som tvarsnitt |
 | inloggad som | vårdenhet | grupp | filter sjukskrivningslängd | totalt? | män? | kvinnor? |
-| user2 | enhet1 | Komplettering | Under 15 dagar | 2 | 1 | 0 |
-| user2 | enhet1 | Avstämning | Under 15 dagar | 2 | 1 | 0 |
-| user2 | enhet1 | Övrigt | Under 15 dagar | 2 | 0 | 0 |
-| user2 | enhet2 | Komplettering | Under 15 dagar | 1 | 1 | 0 |
-| user2 | enhet2 | Avstämning | Under 15 dagar | 1 | 0 | 0 |
-| user2 | enhet2 | Övrigt | Under 15 dagar | 1 | 0 | 0 |
+| user2 | Enhet enhet1 | Komplettering | Under 15 dagar | 2 | 1 | 0 |
+| user2 | Enhet enhet1 | Avstämning | Under 15 dagar | 2 | 1 | 0 |
+| user2 | Enhet enhet1 | Övrigt | Under 15 dagar | 2 | 0 | 0 |
+| user2 | Enhet enhet2 | Komplettering | Under 15 dagar | 1 | 1 | 0 |
+| user2 | Enhet enhet2 | Avstämning | Under 15 dagar | 1 | 0 | 0 |
+| user2 | Enhet enhet2 | Övrigt | Under 15 dagar | 1 | 0 | 0 |
