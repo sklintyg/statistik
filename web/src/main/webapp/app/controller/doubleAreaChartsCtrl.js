@@ -32,12 +32,12 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
             isChartCollapsed: false
         };
 
-        var defaultChartType = 'area';
-        var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType);
-        $scope.activeChartType = chartTypeInfo.activeChartType;
-
         var isVerksamhet = ControllerCommons.isShowingVerksamhet($location);
         var isLandsting = ControllerCommons.isShowingLandsting($location);
+
+        var defaultChartType = 'area';
+        var chartTypeInfo = ControllerCommons.getChartTypeInfo($routeParams, config, defaultChartType, isVerksamhet);
+        $scope.activeChartType = chartTypeInfo.activeChartType;
 
         this.paintChart = function (containerId, yAxisTitleSuffix, yAxisTitleXPos, chartCategories, chartSeries, chartSpacingLeft, doneLoadingCallback) {
 
