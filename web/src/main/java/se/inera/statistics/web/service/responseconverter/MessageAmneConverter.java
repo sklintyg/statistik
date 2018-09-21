@@ -33,7 +33,7 @@ import se.inera.statistics.web.service.FilterSettings;
 public class MessageAmneConverter extends MultiDualSexConverter {
 
     public MessageAmneConverter() {
-        super("Antal meddelanden totalt");
+        super("Antal meddelanden totalt", "Period", MultiDualSexConverter.INKOMNA_MEDDELANDEN_TITLE);
     }
 
     private static final Map<String, String> COLORS = Arrays.stream(MsgAmne.values())

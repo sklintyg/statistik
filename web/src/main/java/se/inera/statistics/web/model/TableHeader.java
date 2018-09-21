@@ -40,7 +40,11 @@ public class TableHeader {
     }
 
     public TableHeader(String text) {
-        this(text, 1);
+        this(text, null);
+    }
+
+    public TableHeader(String text, String title) {
+        this(text, 1, title, null);
     }
 
     public String getText() {

@@ -43,7 +43,11 @@ import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterDataResponse;
 import se.inera.statistics.web.service.FilterSettings;
 
-abstract class MultiDualSexConverter {
+public abstract class MultiDualSexConverter {
+
+    public static final String INKOMNA_MEDDELANDEN_TITLE = "Meddelanden som skickats elektroniskt från Försäkringskassan "
+            + "till hälso- och sjukvården. Ett meddelande rör alltid ett visst elektroniskt intyg som utfärdats av "
+            + "hälso- och sjukvården och som skickats till Försäkringskassan.";
 
     public static final String TOTAL = "Totalt";
     public static final String KVINNOR = "Kvinnor";
@@ -51,6 +55,7 @@ abstract class MultiDualSexConverter {
     private static final int NUMBER_OF_COLUMNS = 3;
     private final String tableHeader;
     private final String tableSeriesHeader;
+    private String tableHeaderTitle = null;
 
     MultiDualSexConverter() {
         this.tableHeader = "Antal sjukfall totalt";
@@ -65,6 +70,12 @@ abstract class MultiDualSexConverter {
     MultiDualSexConverter(String tableHeader, String tableSeriesHeader) {
         this.tableHeader = tableHeader;
         this.tableSeriesHeader = tableSeriesHeader;
+    }
+
+    MultiDualSexConverter(String tableHeader, String tableSeriesHeader, String tableHeaderTitle) {
+        this.tableHeader = tableHeader;
+        this.tableSeriesHeader = tableSeriesHeader;
+        this.tableHeaderTitle = tableHeaderTitle;
     }
 
     DualSexStatisticsData convert(KonDataResponse dataIn, FilterSettings filterSettings, Message message, String seriesNameTemplate) {
@@ -143,7 +154,7 @@ abstract class MultiDualSexConverter {
         List<String> groups = resp.getGroups();
         List<TableHeader> subHeaderRow = new ArrayList<>();
         subHeaderRow.add(new TableHeader(tableSeriesHeader));
-        subHeaderRow.add(new TableHeader(tableHeader));
+        subHeaderRow.add(new TableHeader(tableHeader, tableHeaderTitle));
         for (String groupName : groups) {
             final String seriesName = "%1$s".equals(seriesNameTemplate) ? groupName : String.format(seriesNameTemplate, groupName);
             topHeaderRow.add(new TableHeader(seriesName, NUMBER_OF_COLUMNS));

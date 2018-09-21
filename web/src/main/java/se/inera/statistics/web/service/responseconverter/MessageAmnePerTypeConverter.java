@@ -41,6 +41,10 @@ public class MessageAmnePerTypeConverter extends MultiDualSexConverter {
         super(tableHeader, tableSeriesHeader);
     }
 
+    public MessageAmnePerTypeConverter(String tableHeader, String tableSeriesHeader, String tableHeaderTitle) {
+        super(tableHeader, tableSeriesHeader, tableHeaderTitle);
+    }
+
     public SimpleDetailsData convert(KonDataResponse data, FilterSettings filterSettings) {
         final List<String[]> separatedGroups = data.getGroups().stream()
                 .map(s -> s.split(MessagesQuery.GROUP_NAME_SEPARATOR)).collect(Collectors.toList());

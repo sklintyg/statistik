@@ -21,7 +21,7 @@ package se.inera.statistics.web.service.responseconverter;
 public class MessageAmnePerEnhetConverter extends MessageAmnePerTypeConverter {
 
     public MessageAmnePerEnhetConverter() {
-        super("Antal meddelanden totalt", "Period");
+        super("Antal meddelanden totalt", "Period", MultiDualSexConverter.INKOMNA_MEDDELANDEN_TITLE);
     }
 
 }

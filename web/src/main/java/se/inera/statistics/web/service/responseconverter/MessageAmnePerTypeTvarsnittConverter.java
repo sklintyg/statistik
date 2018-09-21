@@ -38,6 +38,10 @@ public class MessageAmnePerTypeTvarsnittConverter extends MultiDualSexConverter 
         super(tableHeader, tableSeriesHeader);
     }
 
+    public MessageAmnePerTypeTvarsnittConverter(String tableHeader, String tableSeriesHeader, String tableHeaderTitle) {
+        super(tableHeader, tableSeriesHeader, tableHeaderTitle);
+    }
+
     private static final Map<String, String> COLORS = Arrays.stream(MsgAmne.values())
             .collect(Collectors.toMap(MsgAmne::getText, msgAmne -> msgAmne.getColor().getColor()));
 
