@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -358,8 +359,14 @@ public class MessagesQuery {
     }
 
     private String getLakareName(Lakare lakare, boolean includeHsaId) {
-        final String nameSuffix = includeHsaId ? " " + lakare.getLakareId().getId() : "";
-        return lakare.getTilltalsNamn() + " " + lakare.getEfterNamn() + nameSuffix;
+        final String hsaid = lakare.getLakareId().getId();
+        final String tilltalsNamn = lakare.getTilltalsNamn();
+        final String efterNamn = lakare.getEfterNamn();
+        if (Strings.isNullOrEmpty(tilltalsNamn) && Strings.isNullOrEmpty(efterNamn)) {
+            return hsaid;
+        }
+        final String nameSuffix = includeHsaId ? " " + hsaid : "";
+        return (tilltalsNamn + " " + efterNamn + nameSuffix).trim();
     }
 
     private List<HsaIdLakare> getLakareFromRows(List<CountDTOAmne> rows) {
