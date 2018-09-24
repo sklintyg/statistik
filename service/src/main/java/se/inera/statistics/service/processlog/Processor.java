@@ -56,7 +56,9 @@ public class Processor {
 
     public void accept(IntygDTO dto, HsaInfo hsa, long logId, String correlationId, EventType type) {
         final String enhetId = dto.getEnhet();
-        saveEnhetAndLakare(hsa, enhetId);
+        if (type != EventType.REVOKED) {
+            saveEnhetAndLakare(hsa, enhetId);
+        }
         intygCommonManager.accept(dto, hsa, logId, correlationId, type);
         if (isSjukpenningIntyg(dto)) {
             widelineManager.accept(dto, hsa, logId, correlationId, type);
