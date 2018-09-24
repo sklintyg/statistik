@@ -42,6 +42,7 @@ import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.helper.ConversionHelper;
+import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.AgeGroup;
 import se.inera.statistics.service.report.util.Icd10;
@@ -263,7 +264,8 @@ public class MessageWidelineLoader {
                 + "FROM messagewideline AS mwl "
                 + "INNER JOIN intygcommon AS ic "
                 + "ON mwl.intygid = ic.intygid "
-                + "WHERE (ic.signeringsdatum between ? AND ?)  ");
+                + "WHERE (ic.signeringsdatum between ? AND ?) "
+                + "AND ic.eventType != " + EventType.REVOKED.ordinal());
 
         boolean hasVardgivare = filter.getVardgivarId() != null;
         if (hasVardgivare) {
@@ -312,7 +314,8 @@ public class MessageWidelineLoader {
                 + "FROM intygcommon ic "
                 + "LEFT JOIN messagewideline mwl "
                 + "ON ic.intygid = mwl.intygid "
-                + "WHERE (ic.signeringsdatum between ? AND ?) AND ic.sentToFk ");
+                + "WHERE (ic.signeringsdatum between ? AND ?) AND ic.sentToFk "
+                + "AND ic.eventType != " + EventType.REVOKED.ordinal());
 
         final boolean hasVardgivare = filter.getVardgivarId() != null;
         if (hasVardgivare) {
