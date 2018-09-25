@@ -12,10 +12,8 @@ env:
     value: $INFRA_VERSION
   - name: buildVersion
     value: $STATISTIK_BUILD_VERSION
-  - name: commonVersion
-    value: $COMMON_VERSION
   - name: gitRef
-    value: v$STATISTIK_BUILD_VERSION
+    value: $GIT_REF
   - name: gitUrl
     value: $GIT_URL
     """
