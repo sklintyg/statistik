@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').directive('statScrollTable',
     /** @ngInject */
-    function ($filter, _, $timeout, messageService, sortableTableViewState, MAX_INIT_ROWS_TABLE, MAX_INIT_COLUMNS_TABLE) {
+    function ($filter, _, $timeout, messageService, sortableTableViewState, MAX_INIT_ROWS_TABLE, MAX_INIT_COLUMNS_TABLE, ObjectHelper) {
         'use strict';
 
         return {
@@ -81,7 +81,11 @@ angular.module('StatisticsApp').directive('statScrollTable',
                 };
 
                 $scope.getHeaderTitle = function(header) {
-                    return header.title ? header.title : header.text;
+                    return header.title;
+                };
+
+                $scope.haveToolTip = function(header) {
+                    return ObjectHelper.isNotEmpty($scope.getHeaderTitle(header));
                 };
 
                 function checkHeaderAndRowLength(rows, headers) {

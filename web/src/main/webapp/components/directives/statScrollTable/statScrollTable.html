@@ -18,8 +18,7 @@
             data-ng-repeat="header in headerrow | limitTo: 1"
             class="scrollable details-table-data ellipsis sorter-false headcol"
             data-ng-class="{centeralign: headerrow.centerAlign}"
-            colspan="{{::header.colspan}}"
-            title="{{::header.text}}">
+            colspan="{{::header.colspan}}">
           {{::header.text}}
         </td>
       </tr>
@@ -46,6 +45,7 @@
               data-ng-click="sortByColumn($index, $parent.$parent.$last)"
               colspan="{{::header.colspan}}"
               uib-tooltip="{{::getHeaderTitle(header)}}"
+              tooltip-enable="{{::haveToolTip(header)}}"
               tooltip-placement="auto top"
               tooltip-append-to-body="true"
               style="white-space: nowrap;">
