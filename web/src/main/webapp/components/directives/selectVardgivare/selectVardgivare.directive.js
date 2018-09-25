@@ -27,8 +27,7 @@ angular.module('StatisticsApp').directive('selectVardgivare',
             scope: {
                 vardgivare: '=',
                 isLogin: '=',
-                selectVardgivare: '&',
-                instructionTextId: '@'
+                selectVardgivare: '&'
             },
             templateUrl: '/components/directives/selectVardgivare/selectVardgivare.html',
             controller: function($scope) {
