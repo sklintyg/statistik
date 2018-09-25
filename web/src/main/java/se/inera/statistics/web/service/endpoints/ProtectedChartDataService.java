@@ -18,11 +18,6 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
-import java.time.Clock;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -33,6 +28,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.time.Clock;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,7 +94,6 @@ import se.inera.statistics.web.service.responseconverter.MessageAmnePerTypeConve
 import se.inera.statistics.web.service.responseconverter.MessageAmnePerTypeTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmneTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.MessagePeriodConverter;
-import se.inera.statistics.web.service.responseconverter.MultiDualSexConverter;
 import se.inera.statistics.web.service.responseconverter.PeriodConverter;
 import se.inera.statistics.web.service.responseconverter.PeriodIntygConverter;
 import se.inera.statistics.web.service.responseconverter.SimpleDualSexConverter;
@@ -402,8 +401,7 @@ public class ProtectedChartDataService {
             casesPerMonth = makeFakeLakare(casesPerMonth, false);
         }
 
-        SimpleDetailsData result = new MessageAmnePerTypeConverter("Antal meddelanden totalt", "Period",
-                MultiDualSexConverter.INKOMNA_MEDDELANDEN_TITLE)
+        SimpleDetailsData result = new MessageAmnePerTypeConverter("Antal meddelanden totalt", "Period")
                 .convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNEPERLAKARE, ReportType.TIDSSERIE);
     }
@@ -429,8 +427,7 @@ public class ProtectedChartDataService {
             casesPerMonth = makeFakeLakare(casesPerMonth, true);
         }
 
-        SimpleDetailsData result = new MessageAmnePerTypeTvarsnittConverter("Antal meddelanden totalt", "Läkare",
-                MultiDualSexConverter.INKOMNA_MEDDELANDEN_TITLE)
+        SimpleDetailsData result = new MessageAmnePerTypeTvarsnittConverter("Antal meddelanden totalt", "Läkare")
                 .convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNEPERLAKARE, ReportType.TVARSNITT);
     }
