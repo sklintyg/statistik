@@ -54,6 +54,7 @@
     <bean class="se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhetManager"/>
     <bean class="se.inera.statistics.service.landsting.persistance.landstingenhetupdate.LandstingEnhetUpdateManager"/>
     <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper"/>
+    <bean class="se.inera.statistics.service.helper.SjukpenningRegisterCertificateHelper"/>
     <bean class="se.inera.statistics.service.helper.SendMessageToCareHelper"/>
 
     <bean id="factPopulator" class="se.inera.statistics.service.warehouse.FactConverter" />

@@ -31,6 +31,7 @@ import se.inera.ifv.statistics.spi.authorization.impl.HsaCommunicationException;
 import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
 import se.inera.intygstjanster.ts.services.RegisterTSDiabetesResponder.v1.RegisterTSDiabetesType;
 import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.SjukpenningRegisterCertificateHelper;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.helper.RegisterCertificateHelper;
 import se.inera.statistics.service.helper.TsBasHelper;
@@ -39,6 +40,7 @@ import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.schemavalidation.SchemaValidator;
 import se.inera.statistics.service.schemavalidation.ValidateXmlResponse;
+import se.inera.statistics.service.warehouse.IntygType;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
 @Component
@@ -57,6 +59,9 @@ public class LogConsumerImpl implements LogConsumer {
 
     @Autowired
     private RegisterCertificateHelper registerCertificateHelper;
+
+    @Autowired
+    private SjukpenningRegisterCertificateHelper sjukpenningRegisterCertificateHelper;
 
     @Autowired
     private TsBasHelper tsBasHelper;
@@ -123,14 +128,14 @@ public class LogConsumerImpl implements LogConsumer {
     private boolean processRegisterCertificate(IntygEvent event) {
         try {
             final RegisterCertificateType rc = registerCertificateHelper.unmarshalXml(event.getData());
-            final String intygTyp = rc.getIntyg().getTyp().getCode().toUpperCase().trim();
+            final IntygType intygTyp = registerCertificateHelper.getIntygtyp(rc);
             final String data = RegisterCertificateHelper.convertToV3(event.getData());
             final ValidateXmlResponse validation = schemaValidator.validate(intygTyp, data);
             if (!validation.isValid()) {
                 LOG.warn("Register certificate validation failed: " + validation.getValidationErrors());
                 return false;
             }
-            final boolean successfullyProcessedXml = processXmlCertificate(event, rc);
+            final boolean successfullyProcessedXml = processXmlCertificate(event, rc, intygTyp);
             if (!successfullyProcessedXml) {
                 return false;
             }
@@ -204,14 +209,20 @@ public class LogConsumerImpl implements LogConsumer {
     /**
      * @return true for success, otherwise false
      */
-    private boolean processXmlCertificate(IntygEvent event, RegisterCertificateType rc) {
+    private boolean processXmlCertificate(IntygEvent event, RegisterCertificateType rc, IntygType intygType) {
         EventType type = event.getType();
         HsaInfo hsaInfo = hsa.populateHsaData(rc, event.getCorrelationId());
         if (hsaInfo == null && !type.equals(EventType.REVOKED)) {
             return false;
         }
 
-        IntygDTO dto = registerCertificateHelper.convertToDTO(rc);
+        IntygDTO dto;
+
+        if (intygType.isSjukpenningintyg()) {
+            dto = sjukpenningRegisterCertificateHelper.convertToDTO(rc);
+        } else {
+            dto = registerCertificateHelper.convertToDTO(rc);
+        }
         processIntyg(event, dto, hsaInfo);
 
         return true;

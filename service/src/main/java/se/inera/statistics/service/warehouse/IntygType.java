@@ -23,7 +23,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public enum IntygType {
 
@@ -40,7 +42,8 @@ public enum IntygType {
     TSTRK1007("ts-bas", "TSTRK1007", "TSTRK1007 Transportstyrelsens läkarintyg", true, false, false, true),
     TSTRK1031("ts-diabetes", "TSTRK1031", "TSTRK1031 Transportstyrelsens läkarintyg diabetes", true, false, false, true);
 
-    private static final List<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT = Arrays.asList(LISJP, LUSE, LUAE_NA, LUAE_FS);
+    private static final Set<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT = Stream.of(LISJP, LUSE, LUAE_NA, LUAE_FS)
+            .collect(Collectors.toSet());
 
     private final String itIntygType; //The type name Intygtjansten is using and sends as metadata with all intyg
     private final String text;
