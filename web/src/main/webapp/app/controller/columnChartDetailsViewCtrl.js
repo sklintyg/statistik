@@ -373,7 +373,7 @@ angular.module('StatisticsApp').casesPerPatientsPerBusinessConfig =
         return $filter('messageFilter')('help.landsting.vardenhet-listning2', '', '', [result.fileUploadDate], '');
     };
 
-    conf.chartYAxisTitle = 'Antal sjukfall per 1000 listningar';
+    conf.chartYAxisTitle = 'Antal sjukfall per 1000 listningar i arbetsför ålder';
     return conf;
 };
 
