@@ -104,7 +104,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
             }
         }
         return TableData.createWithSingleHeadersRow(data,
-                Arrays.asList("Vårdenhet", "Antal sjukfall", "Antal listningar", "Antal sjukfall per 1000 listningar"));
+                Arrays.asList("Vårdenhet", "Antal sjukfall", "Antal listningar i arbetsför ålder", "Antal sjukfall per 1000 listningar"));
     }
 
     static String roundToTwoDecimalsAndFormatToString(float number) {
@@ -147,7 +147,7 @@ public class SjukfallPerPatientsPerEnhetConverter {
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Antal sjukfall per 1000 listningar", filteredSummedData));
+        series.add(new ChartSeries("Antal sjukfall per 1000 listningar i arbetsför ålder", filteredSummedData));
 
         return new ChartData(series, categories);
     }
