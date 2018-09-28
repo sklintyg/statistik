@@ -99,15 +99,11 @@ public class NationellOverviewData {
     }
 
     private int getLangaSjukskrivningar(NationellDataInfo data) {
-        SimpleKonResponse langaSjukfall = data.getOverviewLangaSjukfallResult();
+        Integer langaSjukfall = data.getOverviewLangaSjukfallResult();
         if (langaSjukfall == null) {
             return 0;
         }
-        final List<SimpleKonDataRow> rows = langaSjukfall.getRows();
-        if (rows.isEmpty()) {
-            return 0;
-        }
-        return rows.get(0).getFemale() + rows.get(0).getMale();
+        return langaSjukfall;
     }
 
     private List<OverviewChartRow> getSjukskrivningslangdgrupper(NationellDataInfo data) {

@@ -58,7 +58,7 @@ public class NationellDataInfo {
     private KonDataResponse overviewSjukskrivningsgraderCurrent;
     private SimpleKonResponse overviewSjukskrivningslangdPreviousResult;
     private SimpleKonResponse overviewSjukskrivningslangdCurrentResult;
-    private SimpleKonResponse overviewLangaSjukfallResult;
+    private Integer overviewLangaSjukfallResult;
     private SimpleKonResponse overviewLangaSjukfallDiffPreviousResult;
     private SimpleKonResponse overviewLangaSjukfallDiffCurrentResult;
     private SimpleKonResponse overviewLanPreviousResult;
@@ -262,11 +262,11 @@ public class NationellDataInfo {
         this.overviewSjukskrivningslangdCurrentResult = overviewSjukskrivningslangdCurrentResult;
     }
 
-    SimpleKonResponse getOverviewLangaSjukfallResult() {
+    Integer getOverviewLangaSjukfallResult() {
         return overviewLangaSjukfallResult;
     }
 
-    void setOverviewLangaSjukfallResult(SimpleKonResponse overviewLangaSjukfallResult) {
+    void setOverviewLangaSjukfallResult(Integer overviewLangaSjukfallResult) {
         this.overviewLangaSjukfallResult = overviewLangaSjukfallResult;
     }
 
