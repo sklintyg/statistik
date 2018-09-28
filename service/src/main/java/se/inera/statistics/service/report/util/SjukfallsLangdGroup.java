@@ -19,6 +19,7 @@
 package se.inera.statistics.service.report.util;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -35,6 +36,8 @@ public enum SjukfallsLangdGroup {
     GROUP7_366PLUS("Över 365 dagar", 366, Integer.MAX_VALUE - 1);
 
     private static final Logger LOG = LoggerFactory.getLogger(SjukfallsLangdGroup.class);
+
+    private static final List<SjukfallsLangdGroup> LONG_SJUKFALLS = Arrays.asList(GROUP5_91TO180, GROUP6_181TO365, GROUP7_366PLUS);
 
     private final String groupName;
     private final int from;
@@ -83,6 +86,10 @@ public enum SjukfallsLangdGroup {
             }
         }
         throw new IllegalArgumentException("Length could not be matched to a group: " + length);
+    }
+
+    public boolean isLongSjukfallInOverview() {
+        return LONG_SJUKFALLS.contains(this);
     }
 
 }

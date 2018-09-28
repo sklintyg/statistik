@@ -21,6 +21,8 @@ package se.inera.statistics.service.warehouse;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +40,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 import se.inera.statistics.service.warehouse.query.MessagesFilter;
 import se.inera.statistics.service.warehouse.query.MessagesQuery;
@@ -271,7 +274,7 @@ public class NationellDataInvoker {
         result.setOverviewSjukskrivningsgraderCurrent(data.getOverviewSjukskrivningsgradCurrentResult());
         result.setOverviewSjukskrivningslangdPreviousResult(data.getOverviewSjukfallslangdPreviousResult());
         result.setOverviewSjukskrivningslangdCurrentResult(data.getOverviewSjukfallslangdCurrentResult());
-        result.setOverviewLangaSjukfallResult(data.getOverviewLangaSjukfallResult());
+        result.setOverviewLangaSjukfallResult(toLangaSjukfall(data.getOverviewSjukfallslangdCurrentResult()));
         result.setOverviewLangaSjukfallDiffCurrentResult(data.getOverviewLangaSjukfallDiffCurrentResult());
         result.setOverviewLangaSjukfallDiffPreviousResult(data.getOverviewLangaSjukfallDiffPreviousResult());
         result.setOverviewLanPreviousResult(new SimpleKonResponse(AvailableFilters.getForNationell(), data.getOverviewLanPreviousResult()));
@@ -292,6 +295,22 @@ public class NationellDataInvoker {
         }
 
         return result;
+    }
+
+    private Integer toLangaSjukfall(SimpleKonResponse resp) {
+        if (resp == null) {
+            return 0;
+        }
+        final List<SimpleKonDataRow> rows = resp.getRows();
+        if (rows == null) {
+            return 0;
+        }
+        return rows.stream()
+                .filter(Objects::nonNull)
+                .filter(r -> SjukfallsLangdGroup.getByName(r.getName())
+                        .map(SjukfallsLangdGroup::isLongSjukfallInOverview).orElse(false))
+                .map(r -> r.getFemale() + r.getMale())
+                .reduce(0, (i1, i2) -> i1 + i2);
     }
 
     public void setCutoff(int cutoff) {
