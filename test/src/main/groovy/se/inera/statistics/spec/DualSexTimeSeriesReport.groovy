@@ -62,7 +62,7 @@ abstract class DualSexTimeSeriesReport extends Rapport {
             println("item" + item + " : grupp: " + grupp)
             item.text != null && item.text.contains(grupp)
         }
-        def row = report.tableData.rows.find { currentRow -> currentRow.name == getKategoriName()  }
+        def row = report.tableData.rows.find { currentRow -> currentRow.name.contains(getKategoriName())  }
         if (index < 0 || row == null) {
             totalt = -1
             gruppTotalt = -1;
