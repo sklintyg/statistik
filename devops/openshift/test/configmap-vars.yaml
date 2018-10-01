@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  NTJP_WS_CERTIFICATE_TYPE_VALUE: JKS
+kind: ConfigMap
+metadata:
+  name: statistik-test-configmap-envvar
+type: Opaque
