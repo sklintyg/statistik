@@ -134,7 +134,7 @@ public class SosMeCfs2ReportCreator {
         for (int i = 0; i < mostCombinedDxs.size(); i++) {
             final Map.Entry<Integer, Long> combinedDx = mostCombinedDxs.get(i);
             final String dxId = icd10.findIcd10FromNumericId(combinedDx.getKey()).getId();
-            final String text = "Vanligaste annan diagnos #" + (i + 1) + " är " + dxId;
+            final String text = "Vanligaste annan diagnos #" + (i + 1) + " är " + dxId + " med " + combinedDx.getValue() + " förekomster";
             collect.add(new SosMeCfs2Row(null, text, 0, 0, 0, 0));
         }
         return collect;
