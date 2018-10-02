@@ -16,22 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.helper;
+package se.inera.statistics.service.helper.certificate;
 
+import org.junit.Assert;
 import org.junit.Test;
+
+import se.inera.statistics.service.helper.ConversionHelper;
+import se.inera.statistics.service.helper.Patientdata;
+import se.inera.statistics.service.helper.certificate.RegisterCertificateHelper;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
-import se.riv.clinicalprocess.healthcond.certificate.types.v3.DatePeriodType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v3.PersonId;
 import se.riv.clinicalprocess.healthcond.certificate.v3.Intyg;
 import se.riv.clinicalprocess.healthcond.certificate.v3.Patient;
-import se.riv.clinicalprocess.healthcond.certificate.v3.Svar;
 
 import javax.xml.bind.JAXBException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
@@ -197,7 +199,7 @@ public class RegisterCertificateHelperTest {
     @Test
     public void testGetPatientDataWithNull() throws Exception {
         final Patientdata result = callGetPatientdata(null, LocalDate.of(2017, 02, 21));
-        assertEquals(ConversionHelper.NO_AGE, result.getAlder());
+        Assert.assertEquals(ConversionHelper.NO_AGE, result.getAlder());
     }
 
     @Test

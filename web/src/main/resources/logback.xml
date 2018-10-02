@@ -110,7 +110,7 @@
     <logger name="se.inera.statistics.service.hsa.HSAServiceImpl" level="INFO" additivity="false">
       <appender-ref ref="PROCESS_FILE"/>
     </logger>
-    <logger name="se.inera.statistics.service.helper.DocumentHelper" level="INFO" additivity="false">
+    <logger name="se.inera.statistics.service.helper.certificate.JsonDocumentHelper" level="INFO" additivity="false">
         <appender-ref ref="PROCESS_FILE"/>
     </logger>
     <logger name="se.inera.statistics.scheduler.active.LogJob" level="INFO"  additivity="false">

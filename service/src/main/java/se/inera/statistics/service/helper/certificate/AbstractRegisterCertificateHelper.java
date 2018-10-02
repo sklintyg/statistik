@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.helper;
+package se.inera.statistics.service.helper.certificate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import se.inera.statistics.service.helper.IntygHelper;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v3.CVType;

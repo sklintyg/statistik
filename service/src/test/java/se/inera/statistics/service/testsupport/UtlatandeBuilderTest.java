@@ -25,9 +25,8 @@ import org.junit.Test;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
 import se.inera.statistics.service.helper.Patientdata;
-import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 
 import java.time.LocalDate;
 
@@ -44,7 +43,7 @@ public class UtlatandeBuilderTest {
     @Test
     public void getAge() {
         JsonNode result = new UtlatandeBuilder().build("19121212-1212", LocalDate.parse("2012-12-12"), LocalDate.parse("2012-12-12"), new HsaIdLakare("lakare"), new HsaIdEnhet("vardenhet1"), new HsaIdVardgivare("vardgivare"), "A01", 50);
-        final Patientdata patientData = DocumentHelper.getPatientData(result);
+        final Patientdata patientData = JsonDocumentHelper.getPatientData(result);
 
         assertEquals(100, patientData.getAlder());
     }

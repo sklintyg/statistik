@@ -21,7 +21,7 @@ package se.inera.statistics.service.demo;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Test;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
 import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 
 import java.time.LocalDate;
@@ -37,7 +37,7 @@ public class UtlatandeBuilderTest {
         final JsonNode result = builder.build("19121212-1212", LocalDate.parse("2013-01-01"), LocalDate.parse("2013-01-21"), new HsaIdEnhet("vardenhet"), "diagnos", 50);
 
         assertEquals("19121212-1212", result.path("grundData").path("patient").path("personId").asText());
-        assertEquals("diagnos", DocumentHelper.getDiagnos(result));
+        assertEquals("diagnos", JsonDocumentHelper.getDiagnos(result));
     }
 
 }

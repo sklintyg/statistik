@@ -16,14 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.helper;
+package se.inera.statistics.service.helper.certificate;
 
 import java.time.LocalDate;
 import java.util.stream.IntStream;
 import javax.xml.bind.JAXBException;
 
+import org.junit.Assert;
 import org.junit.Test;
 
+import se.inera.statistics.service.helper.ConversionHelper;
+import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.IntygType;
@@ -37,10 +40,10 @@ import se.riv.clinicalprocess.healthcond.certificate.v3.Svar;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
-import static se.inera.statistics.service.helper.SjukpenningRegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32;
-import static se.inera.statistics.service.helper.SjukpenningRegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32;
+import static se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32;
+import static se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32;
 
-public class SjukpenningRegisterCertificateHelperTest {
+public class FkRegisterCertificateHelperTest {
 
     private static final String xmlIntyg = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p1:RegisterCertificate xmlns:ns3=\"urn:riv:insuranceprocess:healthreporting:2\"\n" +
             "    xmlns:ns0=\"urn:riv:insuranceprocess:healthreporting:RegisterMedicalCertificateResponder:3\"\n" +
@@ -193,7 +196,7 @@ public class SjukpenningRegisterCertificateHelperTest {
             "   </p1:intyg>\n" +
             "</p1:RegisterCertificate>";
 
-    private SjukpenningRegisterCertificateHelper registerCertificateHelper = new SjukpenningRegisterCertificateHelper();
+    private FkRegisterCertificateHelper registerCertificateHelper = new FkRegisterCertificateHelper();
 
 
     @Test
@@ -240,7 +243,7 @@ public class SjukpenningRegisterCertificateHelperTest {
     @Test
     public void testGetPatientDataWithNull() throws Exception {
         final Patientdata result = callGetPatientdata(null, LocalDate.of(2017, 02, 21));
-        assertEquals(ConversionHelper.NO_AGE, result.getAlder());
+        Assert.assertEquals(ConversionHelper.NO_AGE, result.getAlder());
     }
 
     @Test
@@ -251,7 +254,7 @@ public class SjukpenningRegisterCertificateHelperTest {
 
     private Patientdata callGetPatientdata(String pnr, final LocalDate intygDate) {
         //Given
-        SjukpenningRegisterCertificateHelper rch = new SjukpenningRegisterCertificateHelper() {
+        FkRegisterCertificateHelper rch = new FkRegisterCertificateHelper() {
             @Override
             public DatePeriodType getDatePeriodTypeContent(Svar.Delsvar delsvar) {
                 final DatePeriodType datePeriodType = new DatePeriodType();

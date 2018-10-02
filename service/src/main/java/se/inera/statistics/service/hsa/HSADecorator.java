@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.service.hsa;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,14 +45,14 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
 import se.inera.intygstjanster.ts.services.RegisterTSDiabetesResponder.v1.RegisterTSDiabetesType;
-import se.inera.statistics.service.helper.RegisterCertificateHelper;
-import se.inera.statistics.service.helper.TsBasHelper;
-import se.inera.statistics.service.helper.TsDiabetesHelper;
+import se.inera.statistics.service.helper.RegisterCertificateResolver;
+import se.inera.statistics.service.helper.certificate.TsBasHelper;
+import se.inera.statistics.service.helper.certificate.TsDiabetesHelper;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
-import static se.inera.statistics.service.helper.DocumentHelper.getEnhetId;
-import static se.inera.statistics.service.helper.DocumentHelper.getLakarId;
-import static se.inera.statistics.service.helper.DocumentHelper.getVardgivareId;
+import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.getEnhetId;
+import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.getLakarId;
+import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.getVardgivareId;
 
 @Component
 public class HSADecorator {
@@ -67,7 +67,7 @@ public class HSADecorator {
     private HSAService service;
 
     @Autowired
-    private RegisterCertificateHelper registerCertificateHelper;
+    private RegisterCertificateResolver registerCertificateResolver;
 
     @Autowired
     private TsBasHelper tsBasHelper;
@@ -89,7 +89,7 @@ public class HSADecorator {
     public HsaInfo populateHsaData(RegisterCertificateType doc, String documentId) {
         final HsaInfo info = getHSAInfo(documentId);
         if (missingData(info)) {
-            HSAKey key = registerCertificateHelper.extractHSAKey(doc);
+            HSAKey key = registerCertificateResolver.extractHSAKey(doc);
             return getAndUpdateHsaJson(documentId, info, key);
         }
         return info;

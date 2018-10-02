@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.helper;
+package se.inera.statistics.service.helper.certificate;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import se.inera.statistics.service.helper.SjukskrivningsGrad;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
@@ -32,7 +33,7 @@ import se.riv.clinicalprocess.healthcond.certificate.types.v3.DatePeriodType;
 import se.riv.clinicalprocess.healthcond.certificate.v3.Svar;
 
 @Component
-public class SjukpenningRegisterCertificateHelper extends AbstractRegisterCertificateHelper {
+public class FkRegisterCertificateHelper extends AbstractRegisterCertificateHelper {
 
     public static final String DIAGNOS_SVAR_ID_6 = "6";
     public static final String DIAGNOS_DELSVAR_ID_6 = "6.2";
@@ -42,11 +43,18 @@ public class SjukpenningRegisterCertificateHelper extends AbstractRegisterCertif
 
     @Override
     public LocalDate getDateForPatientAge(RegisterCertificateType intyg) {
-        return getSistaNedsattningsdag(intyg);
+        LocalDate date = getSistaNedsattningsdag(intyg);
+
+        // Use signeringsTidpunkt when sistaNedsattningsdag is missing in intyg.
+        if (date == null) {
+            date = getSigneringsTidpunkt(intyg).toLocalDate();
+        }
+
+        return date;
     }
 
     @SuppressWarnings("squid:S134") //I can't see a better way to write this with fewer nested statements
-    public String getDx(RegisterCertificateType intyg) {
+    private String getDx(RegisterCertificateType intyg) {
 
         for (Svar svar : intyg.getIntyg().getSvar()) {
             if (DIAGNOS_SVAR_ID_6.equals(svar.getId())) {
@@ -94,8 +102,8 @@ public class SjukpenningRegisterCertificateHelper extends AbstractRegisterCertif
         return to;
     }
 
-    public List<Arbetsnedsattning> getArbetsnedsattning(RegisterCertificateType intyg) {
-        final ArrayList<Arbetsnedsattning> arbetsnedsattnings = new ArrayList<>();
+    private List<Arbetsnedsattning> getArbetsnedsattning(RegisterCertificateType intyg) {
+        final List<Arbetsnedsattning> arbetsnedsattnings = new ArrayList<>();
         for (Svar svar : intyg.getIntyg().getSvar()) {
             if (BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32.equals(svar.getId())) {
                 final Arbetsnedsattning arbetsnedsattning = getArbetsnedsattning(svar);

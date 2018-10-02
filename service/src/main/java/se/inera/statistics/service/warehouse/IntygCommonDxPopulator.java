@@ -18,24 +18,7 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.Profile;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.JSONParser;
-import se.inera.statistics.service.helper.RegisterCertificateHelper;
-import se.inera.statistics.service.processlog.IntygDTO;
-import se.inera.statistics.service.processlog.IntygEvent;
-import se.inera.statistics.service.processlog.IntygFormat;
-import se.inera.statistics.service.warehouse.model.db.IntygCommon;
-import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
-
+import java.util.List;
 import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -44,7 +27,25 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Root;
-import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import se.inera.statistics.service.helper.JSONParser;
+import se.inera.statistics.service.helper.RegisterCertificateResolver;
+import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
+import se.inera.statistics.service.processlog.IntygDTO;
+import se.inera.statistics.service.processlog.IntygEvent;
+import se.inera.statistics.service.processlog.IntygFormat;
+import se.inera.statistics.service.warehouse.model.db.IntygCommon;
+import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
 /**
  * This class has as its only purpose to populate the new dx column in table intygcommon. All rows also available
@@ -62,7 +63,7 @@ public class IntygCommonDxPopulator implements ApplicationListener<ContextRefres
     private EntityManager manager;
 
     @Autowired
-    private RegisterCertificateHelper registerCertificateHelper;
+    private RegisterCertificateResolver registerCertificateResolver;
 
     @Autowired
     private IntygCommonConverter intygCommonConverter;
@@ -116,15 +117,16 @@ public class IntygCommonDxPopulator implements ApplicationListener<ContextRefres
 
     private String getDxJsonMedicalCertificate(IntygEvent event) {
         JsonNode intyg = JSONParser.parse(event.getData());
-        IntygDTO dto = DocumentHelper.convertToDTO(intyg);
+        IntygDTO dto = JsonDocumentHelper.convertToDTO(intyg);
         return dto.getDiagnoskod();
     }
 
     private String getDxRegisterCertificate(IntygEvent event) {
         try {
             final String data = event.getData();
-            final RegisterCertificateType rc = registerCertificateHelper.unmarshalXml(data);
-            IntygDTO dto = registerCertificateHelper.convertToDTO(rc);
+
+            final RegisterCertificateType rc = registerCertificateResolver.unmarshalXml(data);
+            IntygDTO dto = registerCertificateResolver.convertToDTO(rc);
             return intygCommonConverter.parseDiagnos(dto.getDiagnoskod());
         } catch (Exception e) {
             LOG.warn("Failed to unmarshal intyg xml");

@@ -50,10 +50,11 @@
     <bean class="se.inera.statistics.service.processlog.LakareManager"/>
     <bean class="se.inera.statistics.service.hsa.HSAServiceImpl"/>
     <bean class="se.inera.statistics.service.hsa.HsaWebServiceDirect"/>
-    <bean class="se.inera.statistics.service.helper.RegisterCertificateHelper"/>
-    <bean class="se.inera.statistics.service.helper.SjukpenningRegisterCertificateHelper"/>
-    <bean class="se.inera.statistics.service.helper.TsBasHelper"/>
-    <bean class="se.inera.statistics.service.helper.TsDiabetesHelper"/>
+    <bean class="se.inera.statistics.service.helper.RegisterCertificateResolver"/>
+    <bean class="se.inera.statistics.service.helper.certificate.RegisterCertificateHelper"/>
+    <bean class="se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper"/>
+    <bean class="se.inera.statistics.service.helper.certificate.TsBasHelper"/>
+    <bean class="se.inera.statistics.service.helper.certificate.TsDiabetesHelper"/>
     <bean class="se.inera.statistics.service.countypopulation.CountyPopulationManagerMock"/>
     <bean class="se.inera.statistics.service.helper.SendMessageToCareHelper"/>
     <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable"/>

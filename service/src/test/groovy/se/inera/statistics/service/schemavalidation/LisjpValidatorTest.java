@@ -19,7 +19,7 @@
 package se.inera.statistics.service.schemavalidation;
 
 import org.junit.Test;
-import se.inera.statistics.service.helper.RegisterCertificateHelper;
+import se.inera.statistics.service.helper.certificate.RegisterCertificateHelper;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

@@ -30,12 +30,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.ifv.statistics.spi.authorization.impl.HsaCommunicationException;
 import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
 import se.inera.intygstjanster.ts.services.RegisterTSDiabetesResponder.v1.RegisterTSDiabetesType;
-import se.inera.statistics.service.helper.DocumentHelper;
-import se.inera.statistics.service.helper.SjukpenningRegisterCertificateHelper;
 import se.inera.statistics.service.helper.JSONParser;
-import se.inera.statistics.service.helper.RegisterCertificateHelper;
-import se.inera.statistics.service.helper.TsBasHelper;
-import se.inera.statistics.service.helper.TsDiabetesHelper;
+import se.inera.statistics.service.helper.RegisterCertificateResolver;
+import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
+import se.inera.statistics.service.helper.certificate.RegisterCertificateHelper;
+import se.inera.statistics.service.helper.certificate.TsBasHelper;
+import se.inera.statistics.service.helper.certificate.TsDiabetesHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.schemavalidation.SchemaValidator;
@@ -58,10 +58,7 @@ public class LogConsumerImpl implements LogConsumer {
     private HSADecorator hsa;
 
     @Autowired
-    private RegisterCertificateHelper registerCertificateHelper;
-
-    @Autowired
-    private SjukpenningRegisterCertificateHelper sjukpenningRegisterCertificateHelper;
+    private RegisterCertificateResolver registerCertificateResolver;
 
     @Autowired
     private TsBasHelper tsBasHelper;
@@ -127,8 +124,8 @@ public class LogConsumerImpl implements LogConsumer {
 
     private boolean processRegisterCertificate(IntygEvent event) {
         try {
-            final RegisterCertificateType rc = registerCertificateHelper.unmarshalXml(event.getData());
-            final IntygType intygTyp = registerCertificateHelper.getIntygtyp(rc);
+            final RegisterCertificateType rc = registerCertificateResolver.unmarshalXml(event.getData());
+            final IntygType intygTyp = registerCertificateResolver.getIntygtyp(rc);
             final String data = RegisterCertificateHelper.convertToV3(event.getData());
             final ValidateXmlResponse validation = schemaValidator.validate(intygTyp, data);
             if (!validation.isValid()) {
@@ -200,7 +197,7 @@ public class LogConsumerImpl implements LogConsumer {
             return false;
         }
 
-        IntygDTO dto = DocumentHelper.convertToDTO(intyg);
+        IntygDTO dto = JsonDocumentHelper.convertToDTO(intyg);
         processIntyg(event, dto, hsaInfo);
 
         return true;
@@ -216,13 +213,8 @@ public class LogConsumerImpl implements LogConsumer {
             return false;
         }
 
-        IntygDTO dto;
+        IntygDTO dto = registerCertificateResolver.resolveIntygHelper(intygType).convertToDTO(rc);
 
-        if (intygType.isSjukpenningintyg()) {
-            dto = sjukpenningRegisterCertificateHelper.convertToDTO(rc);
-        } else {
-            dto = registerCertificateHelper.convertToDTO(rc);
-        }
         processIntyg(event, dto, hsaInfo);
 
         return true;

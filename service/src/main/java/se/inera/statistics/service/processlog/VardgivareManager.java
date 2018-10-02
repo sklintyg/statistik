@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
 import se.inera.statistics.service.helper.HSAServiceHelper;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.warehouse.WidelineConverter;
@@ -39,7 +39,7 @@ import se.inera.statistics.service.warehouse.WidelineConverter;
 @Component
 public class VardgivareManager {
     private static final Logger LOG = LoggerFactory.getLogger(VardgivareManager.class);
-    public static final HsaIdEnhet UTAN_ENHETSID = new HsaIdEnhet(DocumentHelper.UTANENHETSID);
+    public static final HsaIdEnhet UTAN_ENHETSID = new HsaIdEnhet(JsonDocumentHelper.UTANENHETSID);
 
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;

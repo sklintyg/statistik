@@ -27,16 +27,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.JSONSource;
-import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.processlog.EventType;
 import se.inera.statistics.service.processlog.IntygDTO;
-import se.inera.statistics.service.warehouse.model.db.WideLine;
 
 import java.time.Clock;
-import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertEquals;
 
@@ -59,7 +57,7 @@ public class PopulationTest {
 
     @Test
     public void addingIntygAddsToCorrectAisle() {
-        IntygDTO dto = DocumentHelper.convertToDTO(rawDocument);
+        IntygDTO dto = JsonDocumentHelper.convertToDTO(rawDocument);
         widelineManager.accept(dto, JSON_NODE, 0, "0", EventType.CREATED);
         Aisle aisle = warehouse.get(new HsaIdVardgivare("VARDGIVARID"));
         assertEquals(4, aisle.getSize());
