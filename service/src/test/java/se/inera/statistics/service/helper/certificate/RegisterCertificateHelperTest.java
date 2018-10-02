@@ -170,7 +170,7 @@ public class RegisterCertificateHelperTest {
         LocalDate signeringsdatum = LocalDate.of(2015, 12, 7);
 
         assertEquals("191212121212", dto.getPatientid());
-        assertEquals(IntygType.getByItIntygType("DB"), dto.getIntygtyp());
+        assertEquals(IntygType.parseString("DB"), dto.getIntygtyp());
         assertEquals("Enhetsid", dto.getEnhet());
         assertEquals(102, dto.getPatientData().getAlder());
         assertEquals(Kon.MALE, dto.getPatientData().getKon());

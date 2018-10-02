@@ -52,6 +52,9 @@ public class SchemaValidator {
     @Autowired
     private Af00213Validator af00213Validator;
 
+    @Autowired
+    private TsBasValidator tsBasValidator;
+
     public ValidateXmlResponse validate(@Nonnull final IntygType typ, @Nonnull final String data) {
         switch (typ) {
             case FK7263:
@@ -70,6 +73,8 @@ public class SchemaValidator {
                 return doiValidator.validateSchematron(data);
             case AF00213:
                 return af00213Validator.validateSchematron(data);
+            case TSTRK1007:
+                return tsBasValidator.validateSchematron(data);
             default:
                 return new ValidateXmlResponse("Unknown certificate type: " + typ);
         }

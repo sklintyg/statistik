@@ -21,6 +21,7 @@ package se.inera.statistics.service.warehouse;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -47,11 +48,10 @@ public enum IntygType {
     private static final Set<IntygType> IS_SJUKPENNING = Stream.of(LISJP, FK7263)
             .collect(Collectors.toSet());
 
-    private static final Set<IntygType> INCLUDED_IN_INTYG_TOTALT_REPORT = Stream.of(AF00213, LISJP, LUSE, LUAE_NA, LUAE_FS,
-            TSTRK1007, TSTRK1031).collect(Collectors.toSet());
+    private static final List<IntygType> INCLUDED_IN_INTYG_TOTALT_REPORT = Arrays.asList(AF00213, LISJP, LUSE, LUAE_NA, LUAE_FS,
+            TSTRK1007, TSTRK1031);
 
-    private static final Set<IntygType> INCLUDED_IN_INTYG_FILTER = Stream.of(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS)
-            .collect(Collectors.toSet());
+    private static final List<IntygType> INCLUDED_IN_INTYG_FILTER = Arrays.asList(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS);
 
 
     private final String itIntygType; //The type name Intygtjansten is using and sends as metadata with all intyg

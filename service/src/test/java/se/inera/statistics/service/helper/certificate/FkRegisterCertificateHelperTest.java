@@ -214,7 +214,7 @@ public class FkRegisterCertificateHelperTest {
         LocalDate signeringsdatum = LocalDate.of(2013, 3, 17);
 
         assertEquals("19121212-1212", dto.getPatientid());
-        assertEquals(IntygType.getByItIntygType("FK7263"), dto.getIntygtyp());
+        assertEquals(IntygType.parseString("FK7263"), dto.getIntygtyp());
         assertEquals("Enhetsid", dto.getEnhet());
         assertEquals(100, dto.getPatientData().getAlder());
         assertEquals(Kon.MALE, dto.getPatientData().getKon());

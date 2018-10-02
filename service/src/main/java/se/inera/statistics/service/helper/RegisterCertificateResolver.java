@@ -52,6 +52,7 @@ public class RegisterCertificateResolver {
             case DB:
             case DOI:
             case AF00213:
+            case TSTRK1007:
                 return registerCertificateHelper;
             default:
                 throw new RuntimeException("Unknown certificate type: " + intygType);
@@ -59,7 +60,7 @@ public class RegisterCertificateResolver {
     }
 
     public IntygType getIntygtyp(RegisterCertificateType intyg) {
-        return IntygType.getByItIntygType(intyg.getIntyg().getTyp().getCode().trim());
+        return registerCertificateHelper.getIntygtyp(intyg);
     }
 
     public RegisterCertificateType unmarshalXml(String data) throws JAXBException {
