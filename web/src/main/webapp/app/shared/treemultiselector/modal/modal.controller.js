@@ -174,9 +174,20 @@ angular.module('StatisticsApp.treeMultiSelector.modal', ['ui.bootstrap', 'unders
             }
         }
 
+        function collapseAll(item) {
+            for (var i = 0; item && item.visibleSubs && i < item.visibleSubs.length; i++) {
+                var visibleSub = item.visibleSubs[i];
+                if (visibleSub.showChildren) {
+                    collapseAll(visibleSub);
+                }
+                visibleSub.showChildren = false;
+            }
+        }
+
         $scope.filterMenuItems = function (items, text, restartFiltering) {
             var matchFunction = getIsMatchingFilterFunction(text);
             var filteredItems = $scope.filterItems(items, matchFunction, restartFiltering);
+            collapseAll(filteredItems);
             expandIfOnlyOneVisible(filteredItems);
             return filteredItems;
         };

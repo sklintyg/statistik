@@ -424,6 +424,48 @@ describe('Controller: TreeMultiSelectorModalCtrl', function() {
         expect(menuItems).toEqual(expectedResult);
     }));
 
+    it('node should be fully expanded if only one match is found when filtering and collapsed if filter is removed', inject(function () {
+        //Given
+        var menuItems = {subs: [
+                {visibleName: 'Enhet1', subs: [
+                        {visibleName: 'sub11'},
+                        {visibleName: 'sub12', subs: [{visibleName: 'sub121'}, {visibleName: 'sub122'}]},
+                        {visibleName: 'sub13'}
+                    ]},
+                {
+                    visibleName: 'Enhet2', subs: [
+                        {visibleName: 'sub4'},
+                        {visibleName: 'sub5'},
+                        {visibleName: 'sub6'}
+                    ]
+                }
+            ]};
+        scope.setupVisibleSubs(menuItems);
+
+        //When filter is used
+        scope.filterMenuItems(menuItems, 'sub122', true);
+
+        //Then node is expanded
+        var joc = jasmine.objectContaining;
+        var expectedResult = joc({visibleSubs: [
+                joc({visibleName: 'Enhet1', visibleSubs: [
+                        joc({visibleName: 'sub12', visibleSubs: [joc({visibleName: 'sub122'})]})
+                    ]})
+            ]});
+        expect(menuItems).toEqual(expectedResult);
+
+        //When filter is removed
+        scope.filterMenuItems(menuItems, '', true);
+
+        //Then node is collapsed
+        joc = jasmine.objectContaining;
+        expectedResult = joc({visibleSubs: [
+                joc({visibleName: 'Enhet1', showChildren: false}),
+                joc({visibleName: 'Enhet2', showChildren: false})
+            ]});
+        expect(menuItems).toEqual(expectedResult);
+    }));
+
     it('leaves count is counting correct when 0', inject(function () {
         //Given
         var sub11 = {visibleName: 'sub11', allSelected: false, someSelected: false};
