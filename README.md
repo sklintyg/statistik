@@ -121,12 +121,15 @@ Starta active mq
 
 Starta intygsstatistik, kommer att starta på port 9101
 
-    ./gradlew appRun -PrunWithIntyg -PrunWithActiveMQ
+Öppna default.properties  
+Ändra activemq.broker.url till "tcp://localhost:61616"  
+
+    ./gradlew appRun -PrunWithIntyg
 
 ### Intygstjänsten
-Öppna jetty-web.xml
-Ändra jms/Queue till statistik.utlatande.queue
-Ändra jms/ConnectionFactory till "tcp://localhost:61616"
+Öppna default.properties  
+Ändra activemq.destination.queue.name till dev.statistik.utlatande.queue  
+Ändra activemq.broker.url till "tcp://localhost:61616"  
 
 Starta intygstjänsten
 
