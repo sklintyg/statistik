@@ -22,10 +22,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -227,7 +229,10 @@ class NationellDataHolder {
         if (overviewDiagnosgrupperCurrentResult == null || overviewDiagnosgrupperPreviousResult == null) {
             return new DiagnosgruppResponse(AvailableFilters.getForNationell(), Collections.emptyList(), Collections.emptyList());
         }
-        return new DiagnosgruppResponse(AvailableFilters.getForNationell(), overviewDiagnosgrupperCurrentResult.getIcdTyps(),
+        final List<Icd> currentIcdTyps = overviewDiagnosgrupperCurrentResult.getIcdTyps();
+        final List<Icd> previousIcdTyps = overviewDiagnosgrupperPreviousResult.getIcdTyps();
+        final List<Icd> icdTyps = currentIcdTyps.size() < previousIcdTyps.size() ? previousIcdTyps : currentIcdTyps;
+        return new DiagnosgruppResponse(AvailableFilters.getForNationell(), icdTyps,
                 Arrays.asList(overviewDiagnosgrupperPreviousResult.getRows().get(0),
                         overviewDiagnosgrupperCurrentResult.getRows().get(0)));
     }

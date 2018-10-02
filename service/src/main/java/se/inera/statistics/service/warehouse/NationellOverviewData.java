@@ -270,10 +270,10 @@ public class NationellOverviewData {
         if (rows.size() >= 2) {
             List<KonField> previousData = rows.get(0).getData();
             List<KonField> currentData = rows.get(1).getData();
-            for (int i = 0; i < currentData.size(); i++) {
-                int previous = previousData.get(i).getFemale() + previousData.get(i).getMale();
-                int current = currentData.get(i).getFemale() + currentData.get(i).getMale();
-                final List<? extends Icd> icdTyps = periods.getIcdTyps();
+            final List<? extends Icd> icdTyps = periods.getIcdTyps();
+            for (int i = 0; i < icdTyps.size(); i++) {
+                int previous = previousData.size() > i ? previousData.get(i).getFemale() + previousData.get(i).getMale() : 0;
+                int current = currentData.size() > i ? currentData.get(i).getFemale() + currentData.get(i).getMale() : 0;
                 final Icd icd = icdTyps.get(i);
                 final int numericalId = icd.getNumericalId();
                 final String rowName = String.valueOf(numericalId);
