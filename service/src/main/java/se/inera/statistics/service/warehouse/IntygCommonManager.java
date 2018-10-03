@@ -18,13 +18,6 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.ParameterExpression;
-import javax.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +27,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -140,7 +140,7 @@ public class IntygCommonManager {
     }
 
     private KonDataResponse getIntygPerType(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter, boolean isTvarsnitt) {
-        final List<IntygType> intygTypes = IntygType.getInIntygtypTotal();
+        final Collection<IntygType> intygTypes = IntygType.getInIntygtypTotal();
         // Create new filter without intygstyper
         IntygCommonFilter newIntygFilter = new IntygCommonFilter(intygFilter.getRange(), intygFilter.getEnheter(),
                 intygFilter.getDiagnoser(), intygFilter.getAldersgrupp(), null);

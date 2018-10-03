@@ -18,12 +18,13 @@
  */
 package se.inera.statistics.service.helper;
 
-import org.junit.Test;
-import se.inera.statistics.service.warehouse.WidelineConverter;
-
 import java.time.LocalDate;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+
+import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
+
+import static org.junit.Assert.assertEquals;
 
 public class ConversionHelperTest {
 
@@ -67,6 +68,12 @@ public class ConversionHelperTest {
 
         //Then
         assertEquals(ConversionHelper.NO_AGE, alder);
+    }
+
+    @Test
+    public void testGetUnifiedPersonIdTrimsNonBreakingSpace() throws Exception {
+        final String unifiedPersonId = ConversionHelper.getUnifiedPersonId("19790717-9191 ");
+        assertEquals("19790717-9191", unifiedPersonId);
     }
 
 }

@@ -23,6 +23,8 @@ import javax.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import se.inera.statistics.service.warehouse.IntygType;
+
 @Component
 public class SchemaValidator {
 
@@ -50,24 +52,29 @@ public class SchemaValidator {
     @Autowired
     private Af00213Validator af00213Validator;
 
-    public ValidateXmlResponse validate(@Nonnull final String typ, @Nonnull final String data) {
+    @Autowired
+    private TsBasValidator tsBasValidator;
+
+    public ValidateXmlResponse validate(@Nonnull final IntygType typ, @Nonnull final String data) {
         switch (typ) {
-            case "FK7263":
+            case FK7263:
                 return fk7263sitValidator.validateSchematron(data);
-            case "LISJP":
+            case LISJP:
                 return lisjpValidator.validateSchematron(data);
-            case "LUAE_FS":
+            case LUAE_FS:
                 return luaeFsValidator.validateSchematron(data);
-            case "LUAE_NA":
+            case LUAE_NA:
                 return luaeNaValidator.validateSchematron(data);
-            case "LUSE":
+            case LUSE:
                 return luseValidator.validateSchematron(data);
-            case "DB":
+            case DB:
                 return dbValidator.validateSchematron(data);
-            case "DOI":
+            case DOI:
                 return doiValidator.validateSchematron(data);
-            case "AF00213":
+            case AF00213:
                 return af00213Validator.validateSchematron(data);
+            case TSTRK1007:
+                return tsBasValidator.validateSchematron(data);
             default:
                 return new ValidateXmlResponse("Unknown certificate type: " + typ);
         }

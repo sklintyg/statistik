@@ -26,9 +26,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
 import se.inera.intygstjanster.ts.services.RegisterTSDiabetesResponder.v1.RegisterTSDiabetesType;
 import se.inera.statistics.service.helper.JSONParser;
-import se.inera.statistics.service.helper.RegisterCertificateHelper;
-import se.inera.statistics.service.helper.TsBasHelper;
-import se.inera.statistics.service.helper.TsDiabetesHelper;
+import se.inera.statistics.service.helper.RegisterCertificateResolver;
+import se.inera.statistics.service.helper.certificate.TsBasHelper;
+import se.inera.statistics.service.helper.certificate.TsDiabetesHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
@@ -42,7 +42,7 @@ public class Receiver {
     private HSADecorator hsaDecorator;
 
     @Autowired
-    private RegisterCertificateHelper registerCertificateHelper;
+    private RegisterCertificateResolver registerCertificateResolver;
 
     @Autowired
     private TsBasHelper tsBasHelper;
@@ -95,7 +95,7 @@ public class Receiver {
 
     private void hsaForXml(String documentId, String data) {
         try {
-            final RegisterCertificateType utlatande = registerCertificateHelper.unmarshalXml(data);
+            final RegisterCertificateType utlatande = registerCertificateResolver.unmarshalXml(data);
             hsaDecorator.populateHsaData(utlatande, documentId);
         } catch (Exception e) {
             LOG.error("Failed decorating xml intyg {}: '{}'", documentId, e.getMessage());

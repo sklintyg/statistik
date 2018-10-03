@@ -27,7 +27,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
 import se.inera.statistics.service.helper.JSONParser;
 import se.inera.statistics.service.hsa.HsaInfo;
 import se.inera.statistics.service.report.model.Kon;
@@ -66,7 +66,7 @@ public class ProcessorTest {
         Mockito.doNothing().when(widelineManager).accept(intygDTOCaptor.capture(), hsaCaptor.capture(), anyLong(), anyString(), any(EventType.class));
         Mockito.doNothing().when(vardgivareManager).saveEnhet(any(HsaInfo.class), any(String.class));
 
-        IntygDTO dto = DocumentHelper.convertToDTO(utlatande);
+        IntygDTO dto = JsonDocumentHelper.convertToDTO(utlatande);
 
         processor.accept(dto, null, 1L, "1", EventType.CREATED);
 

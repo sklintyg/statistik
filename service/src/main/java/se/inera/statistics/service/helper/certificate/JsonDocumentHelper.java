@@ -16,15 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.helper;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import se.inera.statistics.service.processlog.Arbetsnedsattning;
-import se.inera.statistics.service.processlog.IntygDTO;
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.warehouse.IntygType;
+package se.inera.statistics.service.helper.certificate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -33,14 +25,25 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class DocumentHelper {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    private static final Logger LOG = LoggerFactory.getLogger(DocumentHelper.class);
+import com.fasterxml.jackson.databind.JsonNode;
+import se.inera.statistics.service.helper.ConversionHelper;
+import se.inera.statistics.service.helper.Matcher;
+import se.inera.statistics.service.helper.Patientdata;
+import se.inera.statistics.service.processlog.Arbetsnedsattning;
+import se.inera.statistics.service.processlog.IntygDTO;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.warehouse.IntygType;
+
+public final class JsonDocumentHelper {
+
+    private static final Logger LOG = LoggerFactory.getLogger(JsonDocumentHelper.class);
 
     private static final String OBSERVATIONER = "observationer";
     private static final String EXTENSION = "extension";
     private static final String PATIENT = "patient";
-    static final int SEX_DIGIT = 11;
     private static final int MAX_SJUKSKRIVNING = 100;
 
     private static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationskategori")
@@ -62,7 +65,7 @@ public final class DocumentHelper {
     private static final String NEDSATT_MED_75 = "nedsattMed75";
     private static final String NEDSATT_MED_100 = "nedsattMed100";
 
-    private DocumentHelper() {
+    private JsonDocumentHelper() {
     }
 
     public static String getIntygType(JsonNode intyg) {
@@ -91,20 +94,7 @@ public final class DocumentHelper {
 
     public static String getPersonId(JsonNode document) {
         String personIdRaw = getPersonIdFromIntyg(document);
-        return getUnifiedPersonId(personIdRaw);
-    }
-
-    public static String getUnifiedPersonId(String personIdRaw1) {
-        // "replaceAll" below is a fance "trim" that will also remove non breaking spaces
-        String safePersonId = personIdRaw1 != null ? personIdRaw1.replaceAll("(^\\h*)|(\\h*$)", "") : "";
-        if (safePersonId.matches("[0-9]{8}-[0-9]{4}")) {
-            return safePersonId;
-        } else if (safePersonId.matches("[0-9]{12}")) {
-            return safePersonId.substring(0, ConversionHelper.DATE_PART_OF_PERSON_ID) + "-"
-                    + safePersonId.substring(ConversionHelper.DATE_PART_OF_PERSON_ID);
-        } else {
-            throw new PersonIdParseException("Failed to parse person id");
-        }
+        return ConversionHelper.getUnifiedPersonId(personIdRaw);
     }
 
     private static String getPersonIdFromIntyg(JsonNode document) {
@@ -213,17 +203,17 @@ public final class DocumentHelper {
 
         IntygDTO dto = new IntygDTO();
 
-        String enhet = DocumentHelper.getEnhetId(intyg);
-        String patient = DocumentHelper.getPersonId(intyg);
-        Patientdata patientData = DocumentHelper.getPatientData(intyg);
+        String enhet = JsonDocumentHelper.getEnhetId(intyg);
+        String patient = JsonDocumentHelper.getPersonId(intyg);
+        Patientdata patientData = JsonDocumentHelper.getPatientData(intyg);
 
-        String diagnos = DocumentHelper.getDiagnos(intyg);
-        String lakareid = DocumentHelper.getLakarId(intyg);
-        String intygsId = DocumentHelper.getIntygId(intyg);
-        IntygType intygTyp = IntygType.getByItIntygType(DocumentHelper.getIntygType(intyg).trim());
-        List<Arbetsnedsattning> arbetsnedsattnings = DocumentHelper.getArbetsnedsattning(intyg);
+        String diagnos = JsonDocumentHelper.getDiagnos(intyg);
+        String lakareid = JsonDocumentHelper.getLakarId(intyg);
+        String intygsId = JsonDocumentHelper.getIntygId(intyg);
+        IntygType intygTyp = IntygType.getByItIntygType(JsonDocumentHelper.getIntygType(intyg).trim());
+        List<Arbetsnedsattning> arbetsnedsattnings = JsonDocumentHelper.getArbetsnedsattning(intyg);
 
-        String dateTime = DocumentHelper.getSigneringsDatum(intyg);
+        String dateTime = JsonDocumentHelper.getSigneringsDatum(intyg);
         LocalDate signeringsDatum = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME).toLocalDate();
 
         dto.setEnhet(enhet);

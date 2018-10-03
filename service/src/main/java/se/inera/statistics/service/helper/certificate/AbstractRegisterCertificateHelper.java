@@ -16,40 +16,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.helper;
+package se.inera.statistics.service.helper.certificate;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.JAXBException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
 
 import org.apache.neethi.builders.converters.ConverterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import se.inera.statistics.service.processlog.Arbetsnedsattning;
-import se.inera.statistics.service.processlog.IntygDTO;
+import se.inera.statistics.service.helper.IntygHelper;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v3.CVType;
 import se.riv.clinicalprocess.healthcond.certificate.types.v3.DatePeriodType;
 import se.riv.clinicalprocess.healthcond.certificate.v3.Svar;
 
-@Component
-public class RegisterCertificateHelper extends IntygHelper<RegisterCertificateType> {
+public abstract class AbstractRegisterCertificateHelper extends IntygHelper<RegisterCertificateType> {
 
-    public static final String DIAGNOS_SVAR_ID_6 = "6";
-    public static final String DIAGNOS_DELSVAR_ID_6 = "6.2";
-    public static final String BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32 = "32";
-    public static final String BEHOV_AV_SJUKSKRIVNING_NIVA_DELSVARSVAR_ID_32 = "32.1";
-    public static final String BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32 = "32.2";
-
-    private static final Logger LOG = LoggerFactory.getLogger(RegisterCertificateHelper.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractRegisterCertificateHelper.class);
 
     @Override
     protected Class<RegisterCertificateType> getIntygClass() {
@@ -90,76 +79,12 @@ public class RegisterCertificateHelper extends IntygHelper<RegisterCertificateTy
 
     @Override
     public IntygType getIntygtyp(RegisterCertificateType intyg) {
-        return IntygType.getByItIntygType(intyg.getIntyg().getTyp().getCode().trim());
+        return IntygType.parseString(intyg.getIntyg().getTyp().getCode().trim());
     }
 
     @Override
     public LocalDateTime getSigneringsTidpunkt(RegisterCertificateType intyg) {
         return intyg.getIntyg().getSigneringstidpunkt();
-    }
-
-    @Override
-    public LocalDate getDateForPatientAge(RegisterCertificateType intyg) {
-        return getSistaNedsattningsdag(intyg);
-    }
-
-    @SuppressWarnings("squid:S134") //I can't see a better way to write this with fewer nested statements
-    public String getDx(RegisterCertificateType intyg) {
-        for (Svar svar : intyg.getIntyg().getSvar()) {
-            if (DIAGNOS_SVAR_ID_6.equals(svar.getId())) {
-                for (Svar.Delsvar delsvar : svar.getDelsvar()) {
-                    if (DIAGNOS_DELSVAR_ID_6.equals(delsvar.getId())) {
-                        CVType diagnos = getCVSvarContent(delsvar);
-                        return diagnos.getCode();
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    private Arbetsnedsattning getArbetsnedsattning(Svar svar) {
-        int nedsattning = -1;
-        DatePeriodType datePeriod = new DatePeriodType();
-
-        for (Svar.Delsvar delsvar : svar.getDelsvar()) {
-            switch (delsvar.getId()) {
-                case BEHOV_AV_SJUKSKRIVNING_NIVA_DELSVARSVAR_ID_32:
-                    String sjukskrivningsnivaString = getCVSvarContent(delsvar).getCode();
-                    final SjukskrivningsGrad sjukskrivningsGrad = SjukskrivningsGrad.valueOf(sjukskrivningsnivaString);
-                    nedsattning = sjukskrivningsGrad.getNedsattning();
-                    break;
-                case BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32:
-                    datePeriod = getDatePeriodTypeContent(delsvar);
-                    break;
-                default:
-                    break;
-            }
-        }
-        return new Arbetsnedsattning(nedsattning, datePeriod.getStart(), datePeriod.getEnd());
-    }
-
-    private LocalDate getSistaNedsattningsdag(RegisterCertificateType document) {
-        final List<Arbetsnedsattning> arbetsnedsattnings = getArbetsnedsattning(document);
-        LocalDate to = null;
-        for (Arbetsnedsattning arbetsnedsattning : arbetsnedsattnings) {
-            final LocalDate candidate = arbetsnedsattning.getSlut();
-            if (to == null || candidate.isAfter(to)) {
-                to = candidate;
-            }
-        }
-        return to;
-    }
-
-    public List<Arbetsnedsattning> getArbetsnedsattning(RegisterCertificateType intyg) {
-        final ArrayList<Arbetsnedsattning> arbetsnedsattnings = new ArrayList<>();
-        for (Svar svar : intyg.getIntyg().getSvar()) {
-            if (BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32.equals(svar.getId())) {
-                final Arbetsnedsattning arbetsnedsattning = getArbetsnedsattning(svar);
-                arbetsnedsattnings.add(arbetsnedsattning);
-            }
-        }
-        return arbetsnedsattnings;
     }
 
     /**
@@ -276,22 +201,4 @@ public class RegisterCertificateHelper extends IntygHelper<RegisterCertificateTy
         }
         throw new ConverterException("Unexpected outcome while converting DatePeriodType");
     }
-
-    @Override
-    public IntygDTO convertToDTO(RegisterCertificateType intyg) {
-        IntygDTO dto = super.convertToDTO(intyg);
-
-        if (dto == null) {
-            return null;
-        }
-
-        String diagnos = getDx(intyg);
-        List<Arbetsnedsattning> arbetsnedsattnings = getArbetsnedsattning(intyg);
-
-        dto.setDiagnoskod(diagnos);
-        dto.setArbetsnedsattnings(arbetsnedsattnings);
-
-        return dto;
-    }
-
 }

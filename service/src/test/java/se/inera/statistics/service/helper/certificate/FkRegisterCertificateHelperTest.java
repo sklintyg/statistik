@@ -16,9 +16,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.helper;
+package se.inera.statistics.service.helper.certificate;
 
+import java.time.LocalDate;
+import java.util.stream.IntStream;
+import javax.xml.bind.JAXBException;
+
+import org.junit.Assert;
 import org.junit.Test;
+
+import se.inera.statistics.service.helper.ConversionHelper;
+import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.IntygType;
@@ -29,17 +37,13 @@ import se.riv.clinicalprocess.healthcond.certificate.v3.Intyg;
 import se.riv.clinicalprocess.healthcond.certificate.v3.Patient;
 import se.riv.clinicalprocess.healthcond.certificate.v3.Svar;
 
-import javax.xml.bind.JAXBException;
-import java.time.LocalDate;
-import java.util.stream.IntStream;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
-import static se.inera.statistics.service.helper.RegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32;
-import static se.inera.statistics.service.helper.RegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32;
+import static se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_PERIOD_DELSVARSVAR_ID_32;
+import static se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper.BEHOV_AV_SJUKSKRIVNING_SVAR_ID_32;
 
-public class RegisterCertificateHelperTest {
+public class FkRegisterCertificateHelperTest {
 
     private static final String xmlIntyg = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><p1:RegisterCertificate xmlns:ns3=\"urn:riv:insuranceprocess:healthreporting:2\"\n" +
             "    xmlns:ns0=\"urn:riv:insuranceprocess:healthreporting:RegisterMedicalCertificateResponder:3\"\n" +
@@ -192,7 +196,7 @@ public class RegisterCertificateHelperTest {
             "   </p1:intyg>\n" +
             "</p1:RegisterCertificate>";
 
-    private RegisterCertificateHelper registerCertificateHelper = new RegisterCertificateHelper();
+    private FkRegisterCertificateHelper registerCertificateHelper = new FkRegisterCertificateHelper();
 
 
     @Test
@@ -210,7 +214,7 @@ public class RegisterCertificateHelperTest {
         LocalDate signeringsdatum = LocalDate.of(2013, 3, 17);
 
         assertEquals("19121212-1212", dto.getPatientid());
-        assertEquals(IntygType.getByItIntygType("FK7263"), dto.getIntygtyp());
+        assertEquals(IntygType.parseString("FK7263"), dto.getIntygtyp());
         assertEquals("Enhetsid", dto.getEnhet());
         assertEquals(100, dto.getPatientData().getAlder());
         assertEquals(Kon.MALE, dto.getPatientData().getKon());
@@ -239,7 +243,7 @@ public class RegisterCertificateHelperTest {
     @Test
     public void testGetPatientDataWithNull() throws Exception {
         final Patientdata result = callGetPatientdata(null, LocalDate.of(2017, 02, 21));
-        assertEquals(ConversionHelper.NO_AGE, result.getAlder());
+        Assert.assertEquals(ConversionHelper.NO_AGE, result.getAlder());
     }
 
     @Test
@@ -250,7 +254,7 @@ public class RegisterCertificateHelperTest {
 
     private Patientdata callGetPatientdata(String pnr, final LocalDate intygDate) {
         //Given
-        RegisterCertificateHelper rch = new RegisterCertificateHelper() {
+        FkRegisterCertificateHelper rch = new FkRegisterCertificateHelper() {
             @Override
             public DatePeriodType getDatePeriodTypeContent(Svar.Delsvar delsvar) {
                 final DatePeriodType datePeriodType = new DatePeriodType();
@@ -262,7 +266,7 @@ public class RegisterCertificateHelperTest {
         return callGetPatientdata(pnr, rch);
     }
 
-    private Patientdata callGetPatientdata(String pnr, RegisterCertificateHelper rch) {
+    private Patientdata callGetPatientdata(String pnr, AbstractRegisterCertificateHelper rch) {
         RegisterCertificateType registerCertificateType = new RegisterCertificateType();
         final Intyg intyg = new Intyg();
         registerCertificateType.setIntyg(intyg);

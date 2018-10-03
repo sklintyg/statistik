@@ -16,11 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.helper;
+package se.inera.statistics.service.helper.certificate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Test;
 import se.inera.statistics.service.JSONSource;
+import se.inera.statistics.service.helper.ConversionHelper;
+import se.inera.statistics.service.helper.JSONParser;
+import se.inera.statistics.service.helper.Patientdata;
+import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.IntygType;
@@ -33,13 +37,13 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class DocumentHelperTest {
+public class JsonDocumentHelperTest {
 
     private JsonNode document = JSONParser.parse(JSONSource.readTemplateAsString());
 
     @Test
     public void prepare() {
-        final Patientdata patientData = DocumentHelper.getPatientData(document);
+        final Patientdata patientData = JsonDocumentHelper.getPatientData(document);
 
         assertEquals(98, patientData.getAlder());
         assertEquals(Kon.MALE, patientData.getKon());
@@ -47,22 +51,22 @@ public class DocumentHelperTest {
 
     @Test
     public void getEnhet() {
-        assertEquals("VardenhetY", DocumentHelper.getEnhetId(document));
+        assertEquals("VardenhetY", JsonDocumentHelper.getEnhetId(document));
     }
 
     @Test
     public void getDiagnos() {
-        assertEquals("S47", DocumentHelper.getDiagnos(document));
+        assertEquals("S47", JsonDocumentHelper.getDiagnos(document));
     }
 
     @Test
     public void getVardgivareId() {
-        assertEquals("VardgivarId", DocumentHelper.getVardgivareId(document));
+        assertEquals("VardgivarId", JsonDocumentHelper.getVardgivareId(document));
     }
 
     @Test
     public void getAge() {
-        final int age = DocumentHelper.getPatientData(document).getAlder();
+        final int age = JsonDocumentHelper.getPatientData(document).getAlder();
 
         assertEquals(98, age);
     }
@@ -134,47 +138,47 @@ public class DocumentHelperTest {
 
     @Test
     public void getForstaDag() {
-        String date = DocumentHelper.getForstaNedsattningsdag(document);
+        String date = JsonDocumentHelper.getForstaNedsattningsdag(document);
 
         assertEquals("2011-01-26", date);
     }
 
     @Test
     public void getSistaDag() {
-        String date = DocumentHelper.getSistaNedsattningsdag(document);
+        String date = JsonDocumentHelper.getSistaNedsattningsdag(document);
 
         assertEquals("2011-05-31", date);
     }
 
     @Test
     public void getIntygId() {
-        assertEquals("80832895-5a9c-450a-bd74-08af43750788", DocumentHelper.getIntygId(document));
+        assertEquals("80832895-5a9c-450a-bd74-08af43750788", JsonDocumentHelper.getIntygId(document));
     }
 
     @Test
     public void getPersonId() {
-        String id = DocumentHelper.getPersonId(document);
+        String id = JsonDocumentHelper.getPersonId(document);
 
         assertEquals("19121212-1212", id);
     }
 
     @Test
     public void getLakarId() {
-        String id = DocumentHelper.getLakarId(document);
+        String id = JsonDocumentHelper.getLakarId(document);
 
         assertEquals("Personal HSA-ID", id);
     }
 
     @Test
     public void testConvertToDTONull() {
-        IntygDTO dto = DocumentHelper.convertToDTO(null);
+        IntygDTO dto = JsonDocumentHelper.convertToDTO(null);
 
         assertNull(dto);
     }
 
     @Test
     public void testConvertToDTO() {
-        IntygDTO dto = DocumentHelper.convertToDTO(document);
+        IntygDTO dto = JsonDocumentHelper.convertToDTO(document);
 
         LocalDate signeringsdatum = LocalDate.of(2011, 1, 26);
 
@@ -184,12 +188,6 @@ public class DocumentHelperTest {
         assertEquals(98, dto.getPatientData().getAlder());
         assertEquals(Kon.MALE, dto.getPatientData().getKon());
         assertEquals(signeringsdatum, dto.getSigneringsdatum());
-    }
-
-    @Test
-    public void testGetUnifiedPersonIdTrimsNonBreakingSpace() throws Exception {
-        final String unifiedPersonId = DocumentHelper.getUnifiedPersonId("19790717-9191 ");
-        assertEquals("19790717-9191", unifiedPersonId);
     }
 
     // CHECKSTYLE:ON MagicNumber

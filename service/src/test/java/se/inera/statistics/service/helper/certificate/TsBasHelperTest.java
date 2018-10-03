@@ -16,12 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.helper;
+package se.inera.statistics.service.helper.certificate;
 
 import javax.xml.bind.JAXBException;
 import java.time.LocalDate;
 import java.util.stream.IntStream;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
@@ -29,6 +30,9 @@ import se.inera.intygstjanster.ts.services.types.v1.II;
 import se.inera.intygstjanster.ts.services.v1.GrundData;
 import se.inera.intygstjanster.ts.services.v1.Patient;
 import se.inera.intygstjanster.ts.services.v1.TSBasIntyg;
+import se.inera.statistics.service.helper.ConversionHelper;
+import se.inera.statistics.service.helper.Patientdata;
+import se.inera.statistics.service.helper.certificate.TsBasHelper;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
@@ -233,7 +237,7 @@ public class TsBasHelperTest {
     @Test
     public void testGetPatientDataWithNoDatePeriod() {
         final Patientdata result = callGetPatientdata("19500910-1824", tsBasHelper);
-        assertEquals(ConversionHelper.NO_AGE, result.getAlder());
+        Assert.assertEquals(ConversionHelper.NO_AGE, result.getAlder());
     }
 
     private Patientdata callGetPatientdata(String pnr, TsBasHelper rch) {

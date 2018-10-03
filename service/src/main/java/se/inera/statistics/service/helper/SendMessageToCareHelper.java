@@ -18,19 +18,20 @@
  */
 package se.inera.statistics.service.helper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-import se.inera.statistics.service.report.model.Kon;
-import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
-
+import java.io.StringReader;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.JAXBIntrospector;
 import javax.xml.bind.Unmarshaller;
-import java.io.StringReader;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import se.inera.statistics.service.report.model.Kon;
+import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
 
 @Component
 public class SendMessageToCareHelper {
@@ -71,7 +72,7 @@ public class SendMessageToCareHelper {
 
     public Patientdata getPatientData(SendMessageToCareType message) {
         final String patientIdRaw = getPatientId(message);
-        final String personId = DocumentHelper.getUnifiedPersonId(patientIdRaw);
+        final String personId = ConversionHelper.getUnifiedPersonId(patientIdRaw);
         int alder;
         try {
             alder = ConversionHelper.extractAlder(personId, getSkickatDate(message));

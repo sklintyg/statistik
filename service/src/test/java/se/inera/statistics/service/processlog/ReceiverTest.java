@@ -29,9 +29,9 @@ import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.intygstjanster.ts.services.RegisterTSBasResponder.v1.RegisterTSBasType;
 import se.inera.intygstjanster.ts.services.RegisterTSDiabetesResponder.v1.RegisterTSDiabetesType;
 import se.inera.statistics.service.IntygCreatorHelper;
-import se.inera.statistics.service.helper.RegisterCertificateHelper;
-import se.inera.statistics.service.helper.TsBasHelper;
-import se.inera.statistics.service.helper.TsDiabetesHelper;
+import se.inera.statistics.service.helper.RegisterCertificateResolver;
+import se.inera.statistics.service.helper.certificate.TsBasHelper;
+import se.inera.statistics.service.helper.certificate.TsDiabetesHelper;
 import se.inera.statistics.service.hsa.HSADecorator;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
 
@@ -43,7 +43,7 @@ import static org.mockito.Mockito.verify;
 public class ReceiverTest {
 
     @Mock
-    private RegisterCertificateHelper registerCertificateHelper;
+    private RegisterCertificateResolver registerCertificateResolver;
 
     @Mock
     private TsBasHelper tsBasHelper;

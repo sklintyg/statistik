@@ -18,25 +18,27 @@
  */
 package se.inera.statistics.service.helper;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import se.inera.statistics.service.report.model.Kon;
-
 import java.time.LocalDate;
 import java.time.MonthDay;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import se.inera.statistics.service.report.model.Kon;
+
 public final class ConversionHelper {
     private static final Logger LOG = LoggerFactory.getLogger(ConversionHelper.class);
 
     private static final int UNKNOWN = 0;
-    static final int DATE_PART_OF_PERSON_ID = 8;
+    private static final int DATE_PART_OF_PERSON_ID = 8;
     private static final int DAY_PART_OF_DATE_PART = 6;
     private static final int MONTH_PART_OF_DATE_PART = 4;
     private static final int SAMORDNINGSNUMMER_DAY_CONSTANT = 60;
     private static final DateTimeFormatter MONTHDAY_FORMATTER = DateTimeFormatter.ofPattern("MMdd");
+    private static final int SEX_DIGIT = 11;
     public static final int NO_AGE = -1;
 
     private ConversionHelper() {
@@ -67,8 +69,21 @@ public final class ConversionHelper {
         return onlyNumberString.replaceFirst("(........)(....)", "$1-$2");
     }
 
-    protected static String extractKon(String personId) {
-        return personId.charAt(DocumentHelper.SEX_DIGIT) % 2 == 0 ? Kon.FEMALE.toString() : Kon.MALE.toString();
+    public static String getUnifiedPersonId(String personIdRaw1) {
+        // "replaceAll" below is a fance "trim" that will also remove non breaking spaces
+        String safePersonId = personIdRaw1 != null ? personIdRaw1.replaceAll("(^\\h*)|(\\h*$)", "") : "";
+        if (safePersonId.matches("[0-9]{8}-[0-9]{4}")) {
+            return safePersonId;
+        } else if (safePersonId.matches("[0-9]{12}")) {
+            return safePersonId.substring(0, DATE_PART_OF_PERSON_ID) + "-"
+                    + safePersonId.substring(DATE_PART_OF_PERSON_ID);
+        } else {
+            throw new PersonIdParseException("Failed to parse person id");
+        }
+    }
+
+    public static String extractKon(String personId) {
+        return personId.charAt(SEX_DIGIT) % 2 == 0 ? Kon.FEMALE.toString() : Kon.MALE.toString();
     }
 
     /**

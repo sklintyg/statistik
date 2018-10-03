@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.service.helper;
 
+import java.io.StringReader;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.JAXBIntrospector;
 import javax.xml.bind.Unmarshaller;
-import java.io.StringReader;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,7 +79,7 @@ public abstract class IntygHelper<T> {
         int alder = ConversionHelper.NO_AGE;
         Kon kon = Kon.UNKNOWN;
         try {
-            final String personId = DocumentHelper.getUnifiedPersonId(patientIdRaw);
+            final String personId = ConversionHelper.getUnifiedPersonId(patientIdRaw);
             try {
                 final LocalDate dateForPatientAge = getDateForPatientAge(intyg);
                 if (dateForPatientAge != null) {

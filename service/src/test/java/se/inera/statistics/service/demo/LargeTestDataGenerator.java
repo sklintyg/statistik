@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
-import se.inera.statistics.service.helper.DocumentHelper;
+import se.inera.statistics.service.helper.certificate.JsonDocumentHelper;
 import se.inera.statistics.service.testsupport.UtlatandeBuilder;
 import se.inera.statistics.service.hsa.HSAKey;
 import se.inera.statistics.service.hsa.HSAService;
@@ -49,7 +49,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static se.inera.statistics.service.helper.DocumentHelper.*;
+import static se.inera.statistics.service.helper.certificate.JsonDocumentHelper.*;
 
 public class LargeTestDataGenerator {
     private static final int NUMBER_OF_UNITS = 3000;
@@ -122,7 +122,7 @@ public class LargeTestDataGenerator {
                 HSAKey hsaKey = extractHSAKey(utlatande);
                 HsaInfo hsaInfo = hsaService.getHSAInfo(hsaKey);
                 try {
-                    IntygDTO dto = DocumentHelper.convertToDTO(utlatande);
+                    IntygDTO dto = JsonDocumentHelper.convertToDTO(utlatande);
                     widelineManager.accept(dto, hsaInfo, count++, "" + count, EventType.CREATED);
                     if (count > maxIntyg) {
                         break maxIntyg;
