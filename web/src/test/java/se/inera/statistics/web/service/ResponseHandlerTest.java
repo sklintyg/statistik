@@ -223,8 +223,9 @@ public class ResponseHandlerTest {
         //Then
         final Map<String, Object> entity = (Map<String, Object>) response.getEntity();
         final List<String> enhetsNames = (List<String>) entity.get(ResponseKeys.FILTERED_ENHETS);
-        assertEquals(1, enhetsNames.size());
-        assertEquals("ett", enhetsNames.get(0));
+        assertEquals(2, enhetsNames.size());
+        assertEquals("2", enhetsNames.get(0));
+        assertEquals("ett", enhetsNames.get(1));
     }
 
     @Test

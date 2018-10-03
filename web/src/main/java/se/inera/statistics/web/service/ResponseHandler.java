@@ -26,7 +26,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.ws.rs.core.Response;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -290,13 +292,33 @@ public class ResponseHandler {
     }
 
     private List<String> getEnhetNames(Collection<HsaIdEnhet> enhetIds) {
+        if (enhetIds == null) {
+            return new ArrayList<>();
+        }
+
         final Collection<Enhet> enhets = warehouse.getEnhetsWithHsaId(enhetIds);
+
         final Map<String, List<Enhet>> enhetsByName = enhets.stream().collect(Collectors.groupingBy(Enhet::getNamn));
-        return enhetsByName.entrySet().stream()
+
+        List<String> enhetNames = enhetsByName.entrySet().stream()
                 .map(entry -> entry.getValue().size() > 1
                         ? entry.getValue().stream().map(e2 -> e2.getNamn() + " " + e2.getEnhetId()).collect(Collectors.toList())
                         : Collections.singletonList(entry.getKey()))
-                .flatMap(List::stream).sorted().collect(Collectors.toList());
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+
+
+        // Add enheter without name
+        Set<HsaIdEnhet> foundEnhetsIds = enhets.stream().map(Enhet::getEnhetId).collect(Collectors.toSet());
+        Set<HsaIdEnhet> noNameFound = new HashSet<>(enhetIds);
+        noNameFound.removeAll(foundEnhetsIds);
+
+        return Stream.concat(
+                    enhetNames.stream(),
+                    noNameFound.stream().map(HsaIdEnhet::getId)
+                )
+                .sorted()
+                .collect(Collectors.toList());
     }
 
 }
