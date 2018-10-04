@@ -32,3 +32,7 @@ test/reports
 test/phantomjsdriver.log
 RecentChanges.wiki
 out
+
+devops/openshift/*.jks
+devops/openshift/*.p12
+secret-vars.yaml

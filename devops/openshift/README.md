@@ -9,8 +9,8 @@
 (1.) Clone the github repo and switch to the release branch specified in the release notes, e.g:
 
     
-    > git clone https://github.com/sklintyg/rehabstod.git
-    > git checkout release/2018-4
+    > git clone https://github.com/sklintyg/statistik.git
+    > git checkout release/7.0.0
     > cd devops/openshift
     
 Note that we strongly recommend using a git account that has read-only (e.g. public) access to the repo.
@@ -76,3 +76,25 @@ Note that the deploytemplate may be pre-installed in the OCP cluster.
     -p STAGE=devtest -p DATABASE_NAME=statistikdevtest \
     -p HEALTH_URI=/inera-certificate/services \
     -o yaml | oc apply -f -
+
+
+# PROD
+##### Create env var secret and config map
+
+    oc create -f prod/configmap-vars.yaml
+    oc create -f prod/secret-vars.yaml
+    
+##### Create file secret and config map
+
+    oc create configmap "statistik-prod-config" --from-file=prod/config/
+    oc create secret generic "statistik-prod-env" --from-file=prod/env/ --type=Opaque
+    oc create secret generic "statistik-prod-certifikat" --from-file=prod/certifikat/ --type=Opaque
+ 
+##### DEPLOY PROD
+
+    oc process deploytemplate-webapp \
+        -p APP_NAME=statistik-prod \
+        -p IMAGE=<url to NEXUS> \
+        -p STAGE=prod -p DATABASE_NAME=<samma som på riktigt> \
+        -p HEALTH_URI=/ \
+        -o yaml | oc apply -f -
