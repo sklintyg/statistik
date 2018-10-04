@@ -312,6 +312,22 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         });
 
         charts.push({
+            chart: degreeOfSickLeaveChart,
+            title: messageService.getProperty('business.widget.header.fordelning-sjukskrivningsgrad'),
+            width: 300,
+            height: 300,
+            displayWidth: 150,
+            table: {
+                header: ['',
+                    messageService.getProperty('overview.widget.table.column.sjukskrivningsgrad'),
+                    messageService.getProperty('overview.widget.table.column.antal'),
+                    messageService.getProperty('overview.widget.table.column.forandring')
+                ],
+                data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.degreeOfSickLeaveGroups)
+            }
+        });
+
+        charts.push({
             chart: sickLeaveLengthChart,
             title: messageService.getProperty('business.widget.header.fordelning-sjukskrivningslangd'),
             width: 680,
@@ -327,22 +343,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
                     text: messageService.getProperty('overview.widget.fordelning-sjukskrivningslangd.overgar-90-3-manader')
                 }
             ]
-        });
-
-        charts.push({
-            chart: degreeOfSickLeaveChart,
-            title: messageService.getProperty('business.widget.header.fordelning-sjukskrivningsgrad'),
-            width: 300,
-            height: 300,
-            displayWidth: 150,
-            table: {
-                header: ['',
-                    messageService.getProperty('overview.widget.table.column.sjukskrivningsgrad'),
-                    messageService.getProperty('overview.widget.table.column.antal'),
-                    messageService.getProperty('overview.widget.table.column.forandring')
-                ],
-                data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.degreeOfSickLeaveGroups)
-            }
         });
 
 
