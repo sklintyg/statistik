@@ -38,8 +38,7 @@ describe('Verksamhetsöversikt: ', function() {
 
     it('Alla diagram syns', function() {
         expect(overview.alterationChart.isDisplayed()).toBeTruthy();
-        expect(overview.distributionPerSexOld.isDisplayed()).toBeTruthy();
-        expect(overview.distributionPerSexNew.isDisplayed()).toBeTruthy();
+        expect(overview.distributionPerSex.isDisplayed()).toBeTruthy();
         expect(overview.diagnosisChart.isDisplayed()).toBeTruthy();
         expect(overview.ageChart.isDisplayed()).toBeTruthy();
         expect(overview.degreeOfSickLeaveChart.isDisplayed()).toBeTruthy();
@@ -53,7 +52,7 @@ describe('Verksamhetsöversikt: ', function() {
         });
 
         it('Fördelning per kön', function() {
-            overview.distributionPerSexOld.click();
+            overview.distributionPerSex.click();
             report.isAtPage('title.sickleave');
         });
 

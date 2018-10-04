@@ -25,7 +25,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     messageService, pdfOverviewFactory, thousandseparatedFilter, ControllerCommons, _, COLORS, filterViewState) {
     'use strict';
 
-    var newSexProportionChart = {}, oldSexProportionChart = {}, sickLeaveLengthChart = {};
+    var sickLeaveLengthChart = {};
     $scope.baseUrl = '#/verksamhet';
 
     var dataReceived = function (result) {
@@ -117,64 +117,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         };
     };
 
-    var paintSexProportionChart = function(containerId, male, female, period) {
-        var femaleColor = '#EA8025', maleColor = '#008391';
-
-        var series = [
-            {
-                type: 'pie',
-                name: 'Könsfördelning',
-                showInLegend: true,
-                data: [
-                    {name: 'Kvinnor', y: female, color: femaleColor},
-                    {name: 'Män', y: male, color: maleColor}
-                ]
-            }
-        ];
-
-        var chartConfigOptions = {
-            categories: [],
-            series: series,
-            type: 'pie',
-            overview: true,
-            percentChart: true,
-            renderTo: containerId,
-            unit: 'sjukfall'
-        };
-
-        var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
-        chartOptions.chart.height = 220;
-        chartOptions.chart.width = 220;
-        chartOptions.chart.plotBorderWidth = 0;
-        chartOptions.subtitle = null;
-        chartOptions.title = {
-            text: period,
-            verticalAlign: 'bottom',
-            x: -3,
-            y: 5,
-            style: {
-                color: '#274b6d',
-                fontWeight: 'bold',
-                fontSize: '12px'
-            }
-
-        };
-        chartOptions.legend = {
-            labelFormat: '{name} {percentage:.0f} % (antal: {y})',
-            verticalAlign: 'top',
-            borderWidth: 0,
-            useHTML: false,
-            layout: 'vertical',
-            itemStyle: {
-                color: '#008391',
-                fontWeight: 'bold'
-            }
-
-        };
-
-        return new Highcharts.Chart(chartOptions);
-    };
-
     var paintDonutChart = function(chartData) {
 
         var chartConfigOptions = {
@@ -211,16 +153,11 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
 
     var updateCharts = function (result) {
 
+        $scope.casesPerMonthMaleProportion = result.casesPerMonth.proportionMale;
+        $scope.casesPerMonthFemaleProportion = result.casesPerMonth.proportionFemale;
+
         chartFactory.addColor(result.casesPerMonth.totalCases);
         $scope.alterationChartOptions = paintPerMonthAlternationChart(result.casesPerMonth.totalCases);
-
-        chartFactory.addColor(result.casesPerMonth.amountMaleOld);
-        oldSexProportionChart = paintSexProportionChart('sexProportionChartOld', result.casesPerMonth.amountMaleOld,
-                                    result.casesPerMonth.amountFemaleOld, result.casesPerMonth.oldPeriod);
-
-        chartFactory.addColor(result.casesPerMonth.amountFemaleNew);
-        newSexProportionChart = paintSexProportionChart('sexProportionChartNew', result.casesPerMonth.amountMaleNew,
-                                    result.casesPerMonth.amountFemaleNew, result.casesPerMonth.newPeriod);
 
         chartFactory.addColor(result.diagnosisGroups);
         var diagnosisDonutData = extractDonutData(result.diagnosisGroups);
@@ -326,18 +263,17 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         var degreeOfSickLeaveChart = $('#degreeOfSickLeaveChart').highcharts();
         var perMonthAlterationChart = $('#alterationChart').highcharts();
 
-        charts.push([{
+        charts.push([
+            {
+                title: messageService.getProperty('business.widget.header.konsfordelning-sjukfall'),
+                male: $scope.casesPerMonthMaleProportion + ' %',
+                female: $scope.casesPerMonthFemaleProportion + ' %',
+                genderImage: true
+            },
+            {
                 chart: perMonthAlterationChart,
                 title: messageService.getProperty('business.widget.header.total-antal'),
                 width: 300,
-                height: 300,
-                displayWidth: 150
-            },
-            {
-                chart: [oldSexProportionChart, newSexProportionChart],
-                title: messageService.getProperty('business.widget.header.konsfordelning-sjukfall'),
-                width: 300,
-                showLegend: true,
                 height: 300,
                 displayWidth: 150
             }
@@ -414,14 +350,6 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     };
 
     $scope.$on('$destroy', function() {
-        if(newSexProportionChart && typeof newSexProportionChart.destroy === 'function') {
-            newSexProportionChart.destroy();
-        }
-
-        if(oldSexProportionChart && typeof oldSexProportionChart.destroy === 'function') {
-            oldSexProportionChart.destroy();
-        }
-
         if(sickLeaveLengthChart && typeof sickLeaveLengthChart.destroy === 'function') {
             sickLeaveLengthChart.destroy();
         }

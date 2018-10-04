@@ -98,7 +98,6 @@ public class WarehouseService {
 
         return new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), overview.getTotalCases(),
                 overview.getCasesPerMonthSexProportionPreviousPeriod(),
-                overview.getCasesPerMonthSexProportionBeforePreviousPeriod(),
                 diagnosisGroups, ageGroups, overview.getDegreeOfSickLeaveGroups(), overview.getSickLeaveLengthGroups(),
                 overview.getLongSickLeavesTotal(), overview.getLongSickLeavesAlternation());
     }

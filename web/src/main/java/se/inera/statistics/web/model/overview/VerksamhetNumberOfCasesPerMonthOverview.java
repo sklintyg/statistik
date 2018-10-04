@@ -20,51 +20,25 @@ package se.inera.statistics.web.model.overview;
 
 public class VerksamhetNumberOfCasesPerMonthOverview {
 
-    private final int amountMaleNew;
-    private final int amountFemaleNew;
-    private final String newPeriod;
-    private final int amountMaleOld;
-    private final int amountFemaleOld;
-    private final String oldPeriod;
+    private final int proportionMale;
+    private final int proportionFemale;
     private final int totalCases;
 
-    public VerksamhetNumberOfCasesPerMonthOverview(int amountMaleNew, int amountFemaleNew, String newPeriod, int amountMaleOld,
-            int amountFemaleOld, String oldPeriod, int totalCases) {
-        this.amountMaleNew = amountMaleNew;
-        this.amountFemaleNew = amountFemaleNew;
-        this.newPeriod = newPeriod;
-        this.amountMaleOld = amountMaleOld;
-        this.amountFemaleOld = amountFemaleOld;
-        this.oldPeriod = oldPeriod;
+    public VerksamhetNumberOfCasesPerMonthOverview(int proportionMale, int proportionFemale, int totalCases) {
+        this.proportionMale = proportionMale;
+        this.proportionFemale = proportionFemale;
         this.totalCases = totalCases;
-    }
-
-    public String getNewPeriod() {
-        return newPeriod;
-    }
-
-    public String getOldPeriod() {
-        return oldPeriod;
     }
 
     public int getTotalCases() {
         return totalCases;
     }
 
-    public int getAmountMaleNew() {
-        return amountMaleNew;
+    public int getProportionMale() {
+        return proportionMale;
     }
 
-    public int getAmountFemaleNew() {
-        return amountFemaleNew;
+    public int getProportionFemale() {
+        return proportionFemale;
     }
-
-    public int getAmountMaleOld() {
-        return amountMaleOld;
-    }
-
-    public int getAmountFemaleOld() {
-        return amountFemaleOld;
-    }
-
 }

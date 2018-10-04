@@ -53,8 +53,6 @@ public class OverviewQuery {
         SjukfallGroup currentSjukfall = getSjukfallGroup(aisle, filter, currentPeriod);
         SjukfallGroup previousSjukfall = getSjukfallGroup(aisle, filter, previousPeriod);
 
-        OverviewKonsfordelning previousKonsfordelning = getOverviewKonsfordelning(previousSjukfall.getRange(),
-                previousSjukfall.getSjukfall());
         OverviewKonsfordelning currentKonsfordelning = getOverviewKonsfordelning(currentSjukfall.getRange(), currentSjukfall.getSjukfall());
 
         int currentLongSjukfall = SjukskrivningslangdQuery.getLong(currentSjukfall.getSjukfall());
@@ -70,7 +68,7 @@ public class OverviewQuery {
                 .getOverviewSjukskrivningslangd(currentSjukfall.getSjukfall(), Integer.MAX_VALUE);
 
         return new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), currentSjukfall.getSjukfall().size(),
-                currentKonsfordelning, previousKonsfordelning, diagnosgrupper, aldersgrupper, sjukskrivningsgrad,
+                currentKonsfordelning, diagnosgrupper, aldersgrupper, sjukskrivningsgrad,
                 sjukskrivningslangd, currentLongSjukfall, percentChange(currentLongSjukfall, previousLongSjukfall));
     }
 

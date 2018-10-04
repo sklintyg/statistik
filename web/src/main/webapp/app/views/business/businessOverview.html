@@ -52,6 +52,33 @@
 				<div spinner label="{{::spinnerText}}" show-spinner="!doneLoading" show-content="doneLoading">
 					<!-- Start business overview boxes -->
 					<div class="row">
+						<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 left-2px-padding right-2px-padding">
+							<a data-ng-href="{{::baseUrl}}/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLink" class="overview-widget-link">
+								<div class="overview-widget" >
+									<div class="overview-widget-header">
+										<h2 class="overview-widget-title">
+											<span message key="business.widget.header.konsfordelning-sjukfall"></span>
+											<span class="page-help-tool-tip pull-right">
+										<i class="fa fa-question-circle"
+											 uib-tooltip-html="popoverTextSexDistribution"
+											 tooltip-class="popover-content"
+											 tooltip-append-to-body="true"
+											 tooltip-trigger="mouseenter"
+										></i>
+									</span>
+										</h2>
+									</div>
+									<div class="overview-widget-content img-responsive">
+										<p class="overview-distribution-per-sex-values">
+											<span>{{casesPerMonthFemaleProportion}} % </span>
+											<span>{{casesPerMonthMaleProportion}} % </span>
+										</p>
+										<img id="overview-distribution-per-sex-image" class="center-block" src="/assets/images/distribution_sex_stat.png"/>
+									</div>
+								</div>
+							</a>
+						</div>
+
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-3 left-2px-padding right-2px-padding">
 							<a data-ng-href="{{::baseUrl}}/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLinkOld" class="overview-widget-link">
 								<overview-widget title-key="business.widget.header.total-antal"
@@ -61,35 +88,12 @@
 								</overview-widget>
 							</a>
 						</div>
-						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-9 left-2px-padding right-2px-padding">
-							<a data-ng-href="{{::baseUrl}}/sjukfallPerManad{{queryString}}" id="casesPerMonthProportionPerSexLink" class="overview-widget-link">
-								<div class="overview-widget" >
-									<div class="overview-widget-header">
-										<h2 class="overview-widget-title">
-											<span message key="business.widget.header.konsfordelning-sjukfall"></span>
-											<span class="page-help-tool-tip pull-right">
-												<i class="fa fa-question-circle"
-													 uib-tooltip-html="popoverTextSexDistribution"
-													 tooltip-class="popover-content"
-													 tooltip-placement="auto left"
-													 tooltip-trigger="mouseenter"
-												></i>
-											</span>
-										</h2>
-									</div>
-									<div class="overview-widget-content">
-										<div class="col-xs-12 col-sm-6" id="sexProportionChartOld"></div>
-										<div class="col-xs-12 col-sm-6" id="sexProportionChartNew"></div>
-									</div>
-								</div>
-							</a>
-						</div>
 					</div>
 
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
 							<a data-ng-href="{{::baseUrl}}/diagnosgrupp{{queryString}}" id="diagnosisGroupsHeaderLink" class="overview-widget-link">
-								<overview-widget title-key="national.widget.header.fordelning-diagnosgrupper"
+								<overview-widget title-key="business.widget.header.fordelning-diagnosgrupper"
 																 tooltip-content="popoverTextDiagnosisGroups"
 																 chart-id="diagnosisChart"
 																 options="diagnosisDonutChartOptions"
@@ -102,7 +106,7 @@
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
 							<a data-ng-href="{{::baseUrl}}/aldersgrupper{{queryString}}" id="ageGroupsHeaderLink" class="overview-widget-link">
-								<overview-widget title-key="national.widget.header.fordelning-aldersgrupper"
+								<overview-widget title-key="business.widget.header.fordelning-aldersgrupper"
 																 tooltip-content="popoverTextAgeGroups"
 																 chart-id="ageChart"
 																 options="ageChartOptions"
@@ -150,7 +154,7 @@
 						</div>
 						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
 							<a data-ng-href="{{::baseUrl}}/sjukskrivningsgrad{{queryString}}" id="degreeOfSickLeaveHeaderLink" class="overview-widget-link">
-								<overview-widget title-key="national.widget.header.fordelning-sjukskrivningsgrad"
+								<overview-widget title-key="business.widget.header.fordelning-sjukskrivningsgrad"
 																 tooltip-content="popoverTextDegreeOfSickLeave"
 																 chart-id="degreeOfSickLeaveChart"
 																 options="degreeOfSickLeaveChartOptions"

@@ -26,7 +26,6 @@ public class VerksamhetOverviewResponse extends AvailableFiltersResponse {
 
     private final int totalCases;
     private final OverviewKonsfordelning casesPerMonthSexProportionPreviousPeriod;
-    private final OverviewKonsfordelning casesPerMonthSexProportionBeforePreviousPeriod;
 
     private final List<OverviewChartRowExtended> diagnosisGroups;
 
@@ -42,14 +41,13 @@ public class VerksamhetOverviewResponse extends AvailableFiltersResponse {
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public VerksamhetOverviewResponse(AvailableFilters availableFilters, int totalCases,
             OverviewKonsfordelning casesPerMonthSexProportionPreviousPeriod,
-            OverviewKonsfordelning casesPerMonthSexProportionBeforePreviousPeriod, List<OverviewChartRowExtended> diagnosisGroups,
+            List<OverviewChartRowExtended> diagnosisGroups,
             List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
             List<OverviewChartRow> sickLeaveLengthGroups,
             int longSickLeavesTotal, int longSickLeavesAlternation) {
         super(availableFilters);
         this.totalCases = totalCases;
         this.casesPerMonthSexProportionPreviousPeriod = casesPerMonthSexProportionPreviousPeriod;
-        this.casesPerMonthSexProportionBeforePreviousPeriod = casesPerMonthSexProportionBeforePreviousPeriod;
         this.diagnosisGroups = diagnosisGroups;
         this.ageGroups = ageGroups;
         this.degreeOfSickLeaveGroups = degreeOfSickLeaveGroups;
@@ -65,10 +63,6 @@ public class VerksamhetOverviewResponse extends AvailableFiltersResponse {
 
     public OverviewKonsfordelning getCasesPerMonthSexProportionPreviousPeriod() {
         return casesPerMonthSexProportionPreviousPeriod;
-    }
-
-    public OverviewKonsfordelning getCasesPerMonthSexProportionBeforePreviousPeriod() {
-        return casesPerMonthSexProportionBeforePreviousPeriod;
     }
 
     public List<OverviewChartRowExtended> getDiagnosisGroups() {
@@ -98,8 +92,7 @@ public class VerksamhetOverviewResponse extends AvailableFiltersResponse {
     @Override
     public String toString() {
         return "{\"VerksamhetOverviewResponse\":{\"totalCases\":" + totalCases + ", \"casesPerMonthSexProportionPreviousPeriod\":"
-                + casesPerMonthSexProportionPreviousPeriod + ", \"casesPerMonthSexProportionBeforePreviousPeriod\":"
-                + casesPerMonthSexProportionBeforePreviousPeriod + ", \"diagnosisGroups\":" + diagnosisGroups + ", \"ageGroups\":"
+                + casesPerMonthSexProportionPreviousPeriod + ", \"diagnosisGroups\":" + diagnosisGroups + ", \"ageGroups\":"
                 + ageGroups
                 + ", \"degreeOfSickLeaveGroups\":" + degreeOfSickLeaveGroups + ", \"sickLeaveLengthGroups\":" + sickLeaveLengthGroups
                 + ", \"longSickLeavesTotal\":"

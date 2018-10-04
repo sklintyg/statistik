@@ -17,15 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* globals browser */
-
 'use strict';
 
 var VerksamhetOverviewPage = function() {
     this.container = element(by.id('business-overview'));
 
-    this.distributionPerSexOld = this.container.element(by.id('sexProportionChartOld'));
-    this.distributionPerSexNew = this.container.element(by.id('sexProportionChartNew'));
+    this.distributionPerSex = this.container.element(by.id('overview-distribution-per-sex-image'));
     this.alterationChart = this.container.element(by.id('alterationChart'));
     this.diagnosisChart = this.container.element(by.id('diagnosisChart'));
     this.ageChart = this.container.element(by.id('ageChart'));

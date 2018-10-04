@@ -39,9 +39,8 @@ Test
 | Sjukfall i oversikt per kon |
 | inloggad som | field          | value?            |
 | user2        | totalCases     | 5                 |
-| user2        | newPeriod      | juni–augusti 2018 |
-| user2        | amountMaleNew  | 3                 |
-| user2        | amountFemaleNew| 2                 |
+| user2        | proportionMale  | 60                 |
+| user2        | proportionFemale| 40                 |
 
 | Sjukfall i oversikt sjukskrivningslangd varden |
 | inloggad som | field               | value? |
