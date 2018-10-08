@@ -70,7 +70,7 @@ public final class ConversionHelper {
     }
 
     public static String getUnifiedPersonId(String personIdRaw1) {
-        // "replaceAll" below is a fance "trim" that will also remove non breaking spaces
+        // "replaceAll" below is a fancy "trim" that will also remove non breaking spaces
         String safePersonId = personIdRaw1 != null ? personIdRaw1.replaceAll("(^\\h*)|(\\h*$)", "") : "";
         if (safePersonId.matches("[0-9]{8}-[0-9]{4}")) {
             return safePersonId;
