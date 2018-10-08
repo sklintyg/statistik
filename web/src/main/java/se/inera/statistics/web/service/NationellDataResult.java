@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ import se.inera.statistics.web.model.overview.OverviewData;
 /**
  * Contains the final reports for national statistics.
  */
-public class NationellDataResult {
+public class NationellDataResult implements Serializable {
 
     private SimpleDetailsData numberOfCasesPerMonth;
     // private SimpleDetailsData numberOfMeddelandenPerMonth;

@@ -18,7 +18,9 @@
  */
 package se.inera.statistics.web.model.overview;
 
-public class SjukfallPerManadOverview {
+import java.io.Serializable;
+
+public class SjukfallPerManadOverview implements Serializable {
 
     private final int proportionMale;
     private final int proportionFemale;

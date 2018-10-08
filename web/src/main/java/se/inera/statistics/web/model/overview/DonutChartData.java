@@ -18,7 +18,9 @@
  */
 package se.inera.statistics.web.model.overview;
 
-public class DonutChartData {
+import java.io.Serializable;
+
+public class DonutChartData implements Serializable {
 
     private final String color;
     private final String name;

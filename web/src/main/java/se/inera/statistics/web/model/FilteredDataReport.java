@@ -18,13 +18,14 @@
  */
 package se.inera.statistics.web.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.service.FilterDataResponse;
 
-public interface FilteredDataReport {
+public interface FilteredDataReport extends Serializable {
 
     FilterDataResponse getFilter();
 

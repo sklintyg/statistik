@@ -19,7 +19,9 @@
 package se.inera.statistics.web.model;
 
 
-public class ChartCategory {
+import java.io.Serializable;
+
+public class ChartCategory implements Serializable {
 
     private final String name;
     private final boolean marked;

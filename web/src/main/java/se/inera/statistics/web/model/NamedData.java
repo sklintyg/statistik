@@ -18,10 +18,11 @@
  */
 package se.inera.statistics.web.model;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-public class NamedData {
+public class NamedData implements Serializable {
 
     private final String name;
     private final List<Object> data;

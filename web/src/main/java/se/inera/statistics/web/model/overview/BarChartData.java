@@ -18,7 +18,9 @@
  */
 package se.inera.statistics.web.model.overview;
 
-public class BarChartData {
+import java.io.Serializable;
+
+public class BarChartData implements Serializable {
 
     private final String name;
     private final int quantity;

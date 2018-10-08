@@ -21,7 +21,9 @@ package se.inera.statistics.web.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-public class TableHeader {
+import java.io.Serializable;
+
+public class TableHeader implements Serializable {
 
     private final String text;
     private final int colspan;

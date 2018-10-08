@@ -262,7 +262,6 @@ public class RestSupportService {
     @Transactional
     public Response clearCaches() {
         cache.clearCaches();
-        nationalChartDataService.clearNationellDataCache();
         return Response.ok().build();
     }
 

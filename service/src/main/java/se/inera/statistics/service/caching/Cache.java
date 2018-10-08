@@ -59,6 +59,7 @@ public class Cache {
     private static final Logger LOG = LoggerFactory.getLogger(Cache.class);
     private static final String REDIS_KEY_PREFIX = "INTYGSSTATISTIK_";
     private static final String AISLE = REDIS_KEY_PREFIX + "AISLE_";
+    private static final String NATIONAL_DATA = REDIS_KEY_PREFIX + "NATIONAL_DATA_";
     private static final String SJUKFALLGROUP = REDIS_KEY_PREFIX + "SJUKFALLGROUP_";
     private static final String VGENHET = REDIS_KEY_PREFIX + "VGENHET_";
     private static final String ENHET = REDIS_KEY_PREFIX + "ENHET_";
@@ -91,7 +92,7 @@ public class Cache {
     public void clearCaches() {
         logMDCHelper.run(() -> {
             LOG.info("Clear Redis Cache Keys");
-            template.delete(Lists.newArrayList(AISLE, SJUKFALLGROUP, VGENHET, ENHET));
+            template.delete(Lists.newArrayList(AISLE, SJUKFALLGROUP, VGENHET, ENHET, NATIONAL_DATA));
         });
     }
 
@@ -167,6 +168,25 @@ public class Cache {
         return value;
     }
 
+    /**
+     * Gets a typed object from cache if existing and sets a new value for the same key.
+     * @return The old value if it existed, else the new value.
+     */
+    private <T>  T getAndSet(final Object key, final Object hashKey, final Supplier<T> loader) {
+        final HashOperations<Object, Object, Object> ops = template.opsForHash();
+        T t = null;
+        try {
+            t = (T) ops.get(key, hashKey);
+        } catch (ClassCastException e) {
+            LOG.warn("Failed to cast {} object in cache: {}", key, e.getMessage());
+        }
+
+        final T value = loader.get();
+        ops.put(key, hashKey, value);
+
+        return t;
+    }
+
     private Aisle aisleLoader(HsaIdVardgivare vardgivarId, Function<HsaIdVardgivare, Aisle> loader) {
         LOG.info("Aisle not cached: {}", vardgivarId);
         return loader.apply(vardgivarId);
@@ -179,6 +199,18 @@ public class Cache {
                 .peek(e -> hashOps.put(ENHET, e.getEnhetId().getId(), e))
                 .map(Enhet::getEnhetId)
                 .collect(Collectors.toList());
+    }
+
+    public <T> T getNationalData(Supplier<T> supplier) {
+        LOG.info("Getting national data");
+        return lookup(NATIONAL_DATA, supplier.getClass().toString(), supplier);
+    }
+
+
+    public synchronized boolean getAndSetNationaldataCalculationOngoing(boolean b) {
+        LOG.info("Getting and setting ongoing national data calculation");
+        final Boolean ongoingCalculation = getAndSet(NATIONAL_DATA, "ONGOING_CALCULATION", () -> b);
+        return ongoingCalculation != null ? ongoingCalculation : false;
     }
 
 }

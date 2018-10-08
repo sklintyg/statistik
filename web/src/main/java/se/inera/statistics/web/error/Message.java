@@ -18,10 +18,12 @@
  */
 package se.inera.statistics.web.error;
 
+import java.io.Serializable;
+
 /**
  * @author Magnus Ekstrand on 2016-11-09.
  */
-public final class Message {
+public final class Message implements Serializable {
 
     private ErrorType type = null;
     private ErrorSeverity severity = null;

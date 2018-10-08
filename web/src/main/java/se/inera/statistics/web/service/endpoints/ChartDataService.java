@@ -24,7 +24,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -47,6 +46,7 @@ import org.springframework.util.StopWatch;
 
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
+import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.web.model.TableDataReport;
@@ -92,52 +92,38 @@ public class ChartDataService {
     @Autowired
     private LogMDCHelper logMDCHelper;
 
-    private volatile NationellDataResult nationellDataResult;
-    private AtomicBoolean dataCalculationOngoing = new AtomicBoolean(false);
+    @Autowired
+    private Cache cache;
 
     private NationellDataResult getNationellDataResult() {
-        if (nationellDataResult == null) {
-            LOG.info("National cache is not set. Requesting population.");
-            buildNationalDataCache();
-        }
-        return nationellDataResult != null ? nationellDataResult : new NationellDataResult();
+        LOG.info("National cache is not set. Requesting population.");
+        return buildNationalDataCache();
     }
 
     // always populate national cache on startup
     @EventListener(ContextRefreshedEvent.class)
     void contextRefreshedEvent() {
-        new Thread(() -> getNationellDataResult()).start();
-    }
-
-    public void clearNationellDataCache() {
-        LOG.info("Clear national cache requested");
-        final int sleepTime = 1000;
-        while (dataCalculationOngoing.get()) {
-            try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                LOG.warn("Sleep was interrupted");
-            }
-        }
-        nationellDataResult = null;
+        new Thread(this::getNationellDataResult).start();
     }
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")
     @PrometheusTimeMethod(help = "Jobb för att uppdatera information i cache")
-    public void buildNationalDataCache() {
+    public NationellDataResult buildNationalDataCache() {
+        final List<NationellDataResult> nationalData = new ArrayList<>();
         logMDCHelper.run(() -> {
             LOG.info("National cache population requested");
-            if (!dataCalculationOngoing.getAndSet(true)) {
+            if (!cache.getAndSetNationaldataCalculationOngoing(true)) {
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
-                nationellDataResult = nationellDataCalculator.getData();
+                nationalData.add(cache.getNationalData(nationellDataCalculator::getData));
                 stopWatch.stop();
                 LOG.info("National cache populated  " + stopWatch.getTotalTimeMillis());
-                dataCalculationOngoing.set(false);
+                cache.getAndSetNationaldataCalculationOngoing(false);
             } else {
                 LOG.info("National cache population is already ongoing. This population request is therefore skipped.");
             }
         });
+        return nationalData.isEmpty() ? new NationellDataResult() : nationalData.get(0);
     }
 
     /*

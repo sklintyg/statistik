@@ -20,9 +20,10 @@ package se.inera.statistics.web.model;
 
 import se.inera.statistics.service.report.model.Kon;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ChartSeries {
+public class ChartSeries implements Serializable {
 
     private final String name;
     private final List<? extends Number> data;

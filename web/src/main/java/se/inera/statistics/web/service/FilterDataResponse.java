@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,7 +28,7 @@ import com.google.common.collect.Lists;
 
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 
-public class FilterDataResponse {
+public class FilterDataResponse implements Serializable {
 
     private String filterhash;
     private List<String> diagnoser;

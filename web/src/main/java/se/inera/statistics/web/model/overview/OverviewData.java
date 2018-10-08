@@ -18,9 +18,10 @@
  */
 package se.inera.statistics.web.model.overview;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class OverviewData {
+public class OverviewData implements Serializable {
 
     private final String periodText;
     private final SjukfallPerManadOverview casesPerMonth;

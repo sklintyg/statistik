@@ -18,9 +18,10 @@
  */
 package se.inera.statistics.web.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ChartData {
+public class ChartData implements Serializable {
 
     private final List<ChartSeries> series;
     private final List<ChartCategory> categories;

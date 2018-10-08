@@ -18,7 +18,9 @@
  */
 package se.inera.statistics.service.report.model;
 
-public final class AvailableFilters {
+import java.io.Serializable;
+
+public final class AvailableFilters implements Serializable {
 
     private boolean diagnos;
     private boolean enhets;

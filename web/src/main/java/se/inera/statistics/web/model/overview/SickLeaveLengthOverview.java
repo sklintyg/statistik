@@ -18,9 +18,10 @@
  */
 package se.inera.statistics.web.model.overview;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class SickLeaveLengthOverview {
+public class SickLeaveLengthOverview implements Serializable {
 
     private final List<BarChartData> chartData;
     private final int longSickLeavesTotal;

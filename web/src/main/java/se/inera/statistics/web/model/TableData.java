@@ -18,11 +18,12 @@
  */
 package se.inera.statistics.web.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TableData {
+public class TableData implements Serializable {
 
     private final List<NamedData> rows;
     private final List<List<TableHeader>> headers;
