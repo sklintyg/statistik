@@ -77,6 +77,7 @@ public class NationellDataCalculator {
     private NationellDataInvoker nationellDataInvoker;
 
     public NationellDataResult getData() {
+        LOG.info("National data calculation: Start");
         final NationellDataInfo data = nationellDataInvoker.getAll();
         final NationellDataResult result = new NationellDataResult();
         result.setNumberOfCasesPerMonth(buildNumberOfCasesPerMonth(data));
@@ -91,6 +92,7 @@ public class NationellDataCalculator {
         result.setMeddelandenPerAmne(buildNumberOfMeddelandenPerAmne(data));
         result.setIntygPerTyp(buildIntygPerTyp(data));
         result.setAndelKompletteringar(buildAndelKompletteringar(data));
+        LOG.info("National data calculation: Done");
         return result;
     }
 

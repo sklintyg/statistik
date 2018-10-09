@@ -96,7 +96,6 @@ public class ChartDataService {
     private Cache cache;
 
     private NationellDataResult getNationellDataResult() {
-        LOG.info("National cache is not set. Requesting population.");
         return buildNationalDataCache();
     }
 
@@ -111,13 +110,13 @@ public class ChartDataService {
     public NationellDataResult buildNationalDataCache() {
         final List<NationellDataResult> nationalData = new ArrayList<>();
         logMDCHelper.run(() -> {
-            LOG.info("National cache population requested");
+            LOG.info("National data requested");
             if (!cache.getAndSetNationaldataCalculationOngoing(true)) {
                 StopWatch stopWatch = new StopWatch();
                 stopWatch.start();
                 nationalData.add(cache.getNationalData(nationellDataCalculator::getData));
                 stopWatch.stop();
-                LOG.info("National cache populated  " + stopWatch.getTotalTimeMillis());
+                LOG.info("National data fetched " + stopWatch.getTotalTimeMillis());
                 cache.getAndSetNationaldataCalculationOngoing(false);
             } else {
                 LOG.info("National cache population is already ongoing. This population request is therefore skipped.");
