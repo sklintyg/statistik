@@ -26,7 +26,7 @@ Test
 
 | Sjukfall i oversikt aldersgrupp |
 | inloggad som | grupp    | antal? |
-| user2        | 36-40 år | 5      |
+| user2        | 31-40 år | 5      |
 
 
 | Sjukfall i oversikt sjukskrivningsgrad |
@@ -64,7 +64,7 @@ Nationell:
 
 | Sjukfall i oversikt aldersgrupp |
 | grupp    | antal? |
-| 36-40 år | 5      |
+| 31-40 år | 5      |
 
 
 | Sjukfall i oversikt sjukskrivningsgrad |

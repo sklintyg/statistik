@@ -42,6 +42,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.Counter;
@@ -110,9 +111,9 @@ class NationellData {
         }
     }
 
-    SimpleKonResponse getAldersgrupper(Aisle aisle, Range range, SimpleKonResponse aldersgrupperResult) {
+    SimpleKonResponse getAldersgrupper(Aisle aisle, Range range, SimpleKonResponse aldersgrupperResult, Ranges ranges) {
         SimpleKonResponse aldersgrupper = AldersgruppQuery.getAldersgrupper(aisle,
-                SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil);
+                SjukfallUtil.ALL_ENHETER, range.getFrom(), 1, range.getNumberOfMonths(), sjukfallUtil, ranges);
         if (aldersgrupperResult == null) {
             aldersgrupperResult = createEmptySimpleKonResponse(aldersgrupper);
         }

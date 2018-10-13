@@ -172,12 +172,12 @@ public class QueueHelper {
 
     private void printAndGetAgeGroups(HsaIdEnhet vardenhet1, HsaIdEnhet vardenhet2, Range range, Map<String, TestData> result) {
         SimpleKonResponse ageGroups1 = AldersgruppQuery.getAldersgrupper(warehouse.get(new HsaIdVardgivare("EnVG")),
-                sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR, sjukfallUtil);
+                sjukfallUtil.createEnhetFilter(vardenhet1), range.getFrom(), 1, YEAR, sjukfallUtil, AldersgruppQuery.RANGES);
         LOG.info("AG data: " + ageGroups1);
         JsonNode ageGroups1Node = JSONParser.parse(ageGroups1.toString());
         result.put("ageGroups1", new TestData(ageGroups1, ageGroups1Node));
         SimpleKonResponse ageGroups2 = AldersgruppQuery.getAldersgrupper(warehouse.get(new HsaIdVardgivare("VG2")),
-                sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR, sjukfallUtil);
+                sjukfallUtil.createEnhetFilter(vardenhet2), range.getFrom(), 1, YEAR, sjukfallUtil, AldersgruppQuery.RANGES);
         LOG.info("AG data: " + ageGroups2);
         JsonNode ageGroups2Node = JSONParser.parse(ageGroups2.toString());
         result.put("ageGroups2", new TestData(ageGroups2, ageGroups2Node));

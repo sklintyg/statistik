@@ -20,7 +20,6 @@ package se.inera.statistics.web.service.responseconverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -51,7 +50,9 @@ public class VerksamhetOverviewConverter {
 
         List<DonutChartData> ageGroups = resp.getAgeGroups().stream().map(mapOverviewRowData()).collect(Collectors.toList());
 
-        List<DonutChartData> degreeOfSickLeaveGroups = resp.getDegreeOfSickLeaveGroups().stream().map(mapOverviewRowData()).sorted(comp())
+        List<DonutChartData> degreeOfSickLeaveGroups = resp.getDegreeOfSickLeaveGroups().stream()
+                .sorted((o1, o2) -> OverviewConverter.getNameAsNumber(o2) - OverviewConverter.getNameAsNumber(o1))
+                .map(mapOverviewRowData())
                 .collect(Collectors.toList());
 
         ArrayList<BarChartData> sickLeaveLengthData = new ArrayList<>();
@@ -66,10 +67,6 @@ public class VerksamhetOverviewConverter {
 
         return new VerksamhetOverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
                 sickLeaveLength, resp.getAvailableFilters(), filterResponse, messages);
-    }
-
-    private Comparator<DonutChartData> comp() {
-        return (o1, o2) -> Double.compare(o2.getQuantity().doubleValue(), o1.getQuantity().doubleValue());
     }
 
     private Function<OverviewChartRowExtended, DonutChartData> mapOverviewRowData() {

@@ -24,6 +24,8 @@ import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.model.OverviewResponse;
 import se.inera.statistics.service.report.model.OverviewKonsfordelning;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.AgeGroup;
+import se.inera.statistics.service.report.util.DiagnosisGroup;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.web.model.overview.DonutChartData;
@@ -77,7 +79,8 @@ public class OverviewConverterTest {
         List<OverviewChartRowExtended> diagnosisGroups = new ArrayList<>();
         diagnosisGroups.add(new OverviewChartRowExtended(String.valueOf(Icd10.icd10ToInt("A00-B99", Icd10RangeType.KAPITEL)), 1, -2, null));
         List<OverviewChartRowExtended> ageGroups = new ArrayList<>();
-        ageGroups.add(new OverviewChartRowExtended("ageName", 3, 2, null));
+        final String ageName = "ageName";
+        ageGroups.add(new OverviewChartRowExtended(ageName, 3, 2, null));
         List<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<>();
         degreeOfSickLeaveGroups.add(new OverviewChartRowExtended("degName", 5, 6, null));
         List<OverviewChartRow> sickLeaveLengthGroups = new ArrayList<>();
@@ -99,14 +102,17 @@ public class OverviewConverterTest {
         assertEquals(0, casesPerMonth.getProportionMale());
 
         List<DonutChartData> diagnosisGroupsResult = data.getDiagnosisGroups();
-        assertEquals(5, diagnosisGroupsResult.size());
-        assertEquals("A00-E90, G00-L99, N00-N99 Somatiska sjukdomar", diagnosisGroupsResult.get(0).getName());
+        assertEquals(6, diagnosisGroupsResult.size());
+        for (int i = 0; i < 5; i++) {
+            assertEquals(DiagnosisGroup.values()[i].getName(), diagnosisGroupsResult.get(i).getName());
+        }
+        assertEquals(DiagnosisGroupsConverter.DIAGNOS_REST_NAME, diagnosisGroupsResult.get(5).getName());
         assertEquals(1, diagnosisGroupsResult.get(0).getQuantity());
         assertEquals(-67, diagnosisGroupsResult.get(0).getAlternation());
 
         List<DonutChartData> ageGroupsResult = data.getAgeGroups();
         assertEquals(1, ageGroupsResult.size());
-        assertEquals("ageName", ageGroupsResult.get(0).getName());
+        assertEquals(ageName, ageGroupsResult.get(0).getName());
         assertEquals(3, ageGroupsResult.get(0).getQuantity());
         assertEquals(200, ageGroupsResult.get(0).getAlternation());
 

@@ -43,11 +43,12 @@ public class DiagnosisGroupsConverterTest {
 
 
         List<OverviewChartRowExtended> expectedList = new ArrayList<>();
-        expectedList.add(new OverviewChartRowExtended(DiagnosisGroup.F00_F99.getName(), 35, 40, DiagnosisGroup.F00_F99.getColor()));
         expectedList.add(new OverviewChartRowExtended(DiagnosisGroup.A00_B99.getName(), 20, 0, DiagnosisGroup.A00_B99.getColor()));
+        expectedList.add(new OverviewChartRowExtended(DiagnosisGroup.F00_F99.getName(), 35, 40, DiagnosisGroup.F00_F99.getColor()));
         expectedList.add(new OverviewChartRowExtended(DiagnosisGroup.M00_M99.getName(), 10, 0, DiagnosisGroup.M00_M99.getColor()));
         expectedList.add(new OverviewChartRowExtended(DiagnosisGroup.O00_O99.getName(), 5, 0, DiagnosisGroup.O00_O99.getColor()));
-        expectedList.add(new OverviewChartRowExtended(DiagnosisGroupsConverter.DIAGNOS_REST_NAME, 3, -143, DiagnosisGroupsConverter.DIAGNOS_REST_COLOR));
+        expectedList.add(new OverviewChartRowExtended(DiagnosisGroup.P00_P96.getName(), 1, 0, DiagnosisGroup.P00_P96.getColor()));
+        expectedList.add(new OverviewChartRowExtended(DiagnosisGroupsConverter.DIAGNOS_REST_NAME, 2, -125, DiagnosisGroupsConverter.DIAGNOS_REST_COLOR));
 
         List<OverviewChartRowExtended> convertedList = new DiagnosisGroupsConverter().convert(rows);
 

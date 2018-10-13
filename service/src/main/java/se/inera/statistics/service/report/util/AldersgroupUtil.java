@@ -30,6 +30,11 @@ public final class AldersgroupUtil {
             .collect(Collectors.toList())
             .toArray(new Ranges.Range[0]));
 
+    public static final Ranges OVERVIEW_RANGES = new Ranges(Arrays.stream(OverviewAgeGroup.values())
+            .map(group -> range(group.getGroupName(), group.getTo() + 1, group.getColor()))
+            .collect(Collectors.toList())
+            .toArray(new Ranges.Range[0]));
+
     private AldersgroupUtil() {
     }
 

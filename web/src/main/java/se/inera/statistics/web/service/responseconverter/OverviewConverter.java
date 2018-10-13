@@ -49,8 +49,9 @@ public class OverviewConverter {
         List<DonutChartData> ageGroups = new AldersGroupsConverter().convert(resp.getAgeGroups()).stream().map(mapOverviewRowData())
                 .collect(Collectors.toList());
 
-        List<DonutChartData> degreeOfSickLeaveGroups = resp.getDegreeOfSickLeaveGroups().stream().map(mapOverviewRowData()).sorted(comp())
-                .collect(Collectors.toList());
+        List<DonutChartData> degreeOfSickLeaveGroups = resp.getDegreeOfSickLeaveGroups().stream()
+                .sorted((o1, o2) -> getNameAsNumber(o2) - getNameAsNumber(o1))
+                .map(mapOverviewRowData()).collect(Collectors.toList());
 
         List<DonutChartData> perCounty = resp.getPerCounty().stream().map(mapRowDataMilli()).sorted(comp()).collect(Collectors.toList());
 
@@ -63,6 +64,14 @@ public class OverviewConverter {
 
         return new OverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups, sickLeaveLength,
                 perCounty);
+    }
+
+    static int getNameAsNumber(OverviewChartRowExtended row) {
+        try {
+            return Integer.parseInt(row.getName().replaceAll("[^0-9]", ""));
+        } catch (NumberFormatException e) {
+            return -1;
+        }
     }
 
     private Comparator<DonutChartData> comp() {

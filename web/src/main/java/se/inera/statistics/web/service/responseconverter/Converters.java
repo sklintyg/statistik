@@ -22,7 +22,6 @@ import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.web.error.Message;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -40,8 +39,6 @@ public final class Converters {
 
     public static List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> rows, int maxRows,
                                                          String extraText, String extraColor) {
-        Collections.sort(rows, (o1, o2) -> o2.getQuantity() - o1.getQuantity());
-
         List<OverviewChartRowExtended> result = new ArrayList<>();
         int i = 0;
         int numberOfRows = rows.size();

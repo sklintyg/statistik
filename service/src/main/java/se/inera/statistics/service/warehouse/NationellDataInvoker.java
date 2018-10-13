@@ -41,6 +41,7 @@ import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
+import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
 import se.inera.statistics.service.warehouse.query.MessagesFilter;
 import se.inera.statistics.service.warehouse.query.MessagesQuery;
@@ -158,7 +159,7 @@ public class NationellDataInvoker {
         }
 
         data.setAldersgrupperResult(nationellData.getAldersgrupper(aisle, result.getAldersgrupperRange(),
-                data.getAldersgrupperResult()));
+                data.getAldersgrupperResult(), AldersgruppQuery.RANGES));
 
         data.setSjukskrivningsgradResult(nationellData.getSjukskrivningsgrad(aisle,
                 result.getSjukskrivningsgradRange(), data.getSjukskrivningsgradResult()));
@@ -179,10 +180,10 @@ public class NationellDataInvoker {
         data.setOverviewDiagnosgrupperPreviousResult(
                 nationellData.getDiagnosgrupperOverview(aisle, previousOverviewRange, data.getOverviewDiagnosgrupperPreviousResult()));
 
-        data.setOverviewPreviousAldersgrupperResult(
-                nationellData.getAldersgrupper(aisle, previousOverviewRange, data.getOverviewPreviousAldersgrupperResult()));
-        data.setOverviewCurrentAldersgrupperResult(
-                nationellData.getAldersgrupper(aisle, overviewRange, data.getOverviewCurrentAldersgrupperResult()));
+        data.setOverviewPreviousAldersgrupperResult(nationellData.getAldersgrupper(aisle, previousOverviewRange,
+                data.getOverviewPreviousAldersgrupperResult(), AldersgruppQuery.OVERVIEW_RANGES));
+        data.setOverviewCurrentAldersgrupperResult(nationellData.getAldersgrupper(aisle, overviewRange,
+                data.getOverviewCurrentAldersgrupperResult(), AldersgruppQuery.OVERVIEW_RANGES));
 
         data.setOverviewSjukskrivningsgradCurrentResult(nationellData.getSjukskrivningsgradOverview(aisle,
                 overviewRange, data.getOverviewSjukskrivningsgradCurrentResult()));

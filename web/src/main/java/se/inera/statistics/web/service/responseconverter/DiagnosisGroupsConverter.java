@@ -35,7 +35,6 @@ import se.inera.statistics.web.service.FilterDataResponse;
 import se.inera.statistics.web.service.FilterSettings;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -51,7 +50,7 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter {
     public static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_GROUPS_WITHOUT_UNKNOWN = createDiagnosisGroupsMap(false);
     private static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_CHART_GROUPS = DIAGNOSIS_GROUPS_WITH_UNKNOWN;
     static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
-    private static final int DISPLAYED_DIAGNOSIS_GROUPS = 5;
+    private static final int DISPLAYED_DIAGNOSIS_GROUPS = 6;
     static final String DIAGNOS_REST_NAME = "Andra diagnosgrupper";
     static final String DIAGNOS_REST_COLOR = "#5D5D5D";
 
@@ -100,18 +99,17 @@ public class DiagnosisGroupsConverter extends MultiDualSexConverter {
     }
 
     public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> diagnosisGroups) {
-        List<OverviewChartRowExtended> merged = mergeOverviewChartGroups(diagnosisGroups);
-        Collections.sort(merged, (o1, o2) -> o2.getQuantity() - o1.getQuantity());
-
+        List<OverviewChartRowExtended> merged = mergeAndSortOverviewChartGroups(diagnosisGroups);
         return Converters.convert(merged, DISPLAYED_DIAGNOSIS_GROUPS, DIAGNOS_REST_NAME, DIAGNOS_REST_COLOR);
     }
 
-    private List<OverviewChartRowExtended> mergeOverviewChartGroups(List<OverviewChartRowExtended> allGroups) {
+    private List<OverviewChartRowExtended> mergeAndSortOverviewChartGroups(List<OverviewChartRowExtended> allGroups) {
         Map<String, OverviewChartRowExtended> mergedGroups = new TreeMap<>(new Comparator<String>() {
+            final List<String> orderedDiagnosisChartGroups = getDiagnosisChartGroupsAsList(true);
 
             @Override
             public int compare(String o1, String o2) {
-                return getDiagnosisChartGroupsAsList(true).indexOf(o1) - getDiagnosisChartGroupsAsList(true).indexOf(o2);
+                return orderedDiagnosisChartGroups.indexOf(o1) - orderedDiagnosisChartGroups.indexOf(o2);
             }
 
         });

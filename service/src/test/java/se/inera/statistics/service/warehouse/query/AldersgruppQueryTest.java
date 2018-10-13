@@ -32,6 +32,7 @@ import se.inera.statistics.service.caching.NoOpRedisTemplate;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
 import se.inera.statistics.service.report.util.AldersgroupUtil;
+import se.inera.statistics.service.report.util.OverviewAgeGroup;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.Fact;
@@ -82,7 +83,7 @@ public class AldersgruppQueryTest {
         fact(4010, 10, 45);
         Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
         Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
-        Map<Ranges.Range,Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall);
+        Map<Ranges.Range,Counter<Ranges.Range>> count = AldersgruppQuery.count(sjukfall, AldersgruppQuery.RANGES);
         assertEquals(1, count.get(AldersgroupUtil.RANGES.rangeFor("41-45 år")).getCount());
     }
 
@@ -106,13 +107,15 @@ public class AldersgruppQueryTest {
         fact(4010, 10, 100);
         Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
         Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
-        List<OverviewChartRowExtended> count = AldersgruppQuery.getOverviewAldersgrupper(sjukfall, sjukfall, 4);
+        List<OverviewChartRowExtended> count = AldersgruppQuery.getOverviewAldersgrupper(sjukfall, sjukfall);
 
-        assertEquals(4, count.size());
+        assertEquals(6, count.size());
         assertEquals(4, count.get(0).getQuantity());
         assertEquals(2, count.get(1).getQuantity());
-        assertEquals(2, count.get(2).getQuantity());
-        assertEquals(3, count.get(3).getQuantity());
+        assertEquals(0, count.get(2).getQuantity());
+        assertEquals(5, count.get(3).getQuantity());
+        assertEquals(0, count.get(4).getQuantity());
+        assertEquals(1, count.get(5).getQuantity());
     }
 
     private void fact(int startday, int length, int alder) {
@@ -123,6 +126,43 @@ public class AldersgruppQueryTest {
                 withSjukskrivningsgrad(100).withStartdatum(startday).withSlutdatum(startday + length - 1).
                 withLakarkon(Kon.FEMALE).withLakaralder(32).withLakarbefattning(new int[]{201010}).withLakarid(1).build();
         facts.add(fact);
+    }
+
+
+    @Test
+    public void testGetOverviewAldersgrupperReturnsAllOverviewGroups() {
+        //Given
+        facts(20, 45, 47);
+        Mockito.when(widelineLoader.getAilesForVgs(any())).thenReturn(Collections.singletonList(new Aisle(VARDGIVARE, facts)));
+        Collection<Sjukfall> sjukfall = calculateSjukfallsHelper(warehouse.get(VARDGIVARE));
+
+        //When
+        List<OverviewChartRowExtended> count = AldersgruppQuery.getOverviewAldersgrupper(sjukfall, sjukfall);
+
+        //Then
+        final OverviewAgeGroup[] ageGroups = OverviewAgeGroup.values();
+        assertEquals(ageGroups.length, count.size());
+        for (int i = 0; i < ageGroups.length; i++) {
+            OverviewAgeGroup ageGroup = ageGroups[i];
+            assertEquals(ageGroup.getGroupName(), count.get(i).getName());
+            switch (ageGroup) {
+                case GROUP1_0TO20:
+                    assertEquals(1, count.get(i).getQuantity());
+                    break;
+                case GROUP4_41TO50:
+                    assertEquals(2, count.get(i).getQuantity());
+                    break;
+                default:
+                    assertEquals(0, count.get(i).getQuantity());
+                    break;
+            }
+        }
+    }
+
+    private void facts(int... ages) {
+        for (int age : ages) {
+            fact(4010, 10, age);
+        }
     }
 
 }

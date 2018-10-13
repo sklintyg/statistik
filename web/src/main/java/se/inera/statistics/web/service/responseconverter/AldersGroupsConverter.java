@@ -19,15 +19,33 @@
 package se.inera.statistics.web.service.responseconverter;
 
 import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.util.OverviewAgeGroup;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AldersGroupsConverter {
-    private static final String ALDERSGRUPPER_REST = "Andra åldersgrupper";
+    static final String ALDERSGRUPPER_REST = "Andra åldersgrupper";
     private static final String ALDERSGRUPPER_REST_COLOR = "#5D5D5D";
     private static final int DISPLAYED_AGE_GROUPS = 5;
+    private static final List<String> ORDERED_GROUPS_FOR_OVERVIEW = Stream.of(
+            OverviewAgeGroup.GROUP2_21TO30,
+            OverviewAgeGroup.GROUP3_31TO40,
+            OverviewAgeGroup.GROUP4_41TO50,
+            OverviewAgeGroup.GROUP5_51TO60)
+            .map(OverviewAgeGroup::getGroupName).collect(Collectors.toList());
 
     public List<OverviewChartRowExtended> convert(List<OverviewChartRowExtended> aldersGroups) {
+        Collections.sort(aldersGroups, Comparator.comparingInt(this::getGroupOrder));
         return Converters.convert(aldersGroups, DISPLAYED_AGE_GROUPS, ALDERSGRUPPER_REST, ALDERSGRUPPER_REST_COLOR);
     }
+
+    private int getGroupOrder(OverviewChartRowExtended o2) {
+        final int i = ORDERED_GROUPS_FOR_OVERVIEW.indexOf(o2.getName());
+        return i < 0 ? Integer.MAX_VALUE : i;
+    }
+
 }

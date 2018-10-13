@@ -59,7 +59,7 @@ public class OverviewQuery {
         int previousLongSjukfall = SjukskrivningslangdQuery.getLong(previousSjukfall.getSjukfall());
 
         List<OverviewChartRowExtended> aldersgrupper = AldersgruppQuery.getOverviewAldersgrupper(currentSjukfall.getSjukfall(),
-                previousSjukfall.getSjukfall(), Integer.MAX_VALUE);
+                previousSjukfall.getSjukfall());
         List<OverviewChartRowExtended> diagnosgrupper = query.getOverviewDiagnosgrupper(currentSjukfall.getSjukfall(),
                 previousSjukfall.getSjukfall(), Integer.MAX_VALUE);
         List<OverviewChartRowExtended> sjukskrivningsgrad = SjukskrivningsgradQuery

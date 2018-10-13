@@ -266,7 +266,7 @@ public class WarehouseService {
 
     public SimpleKonResponse getAldersgrupper(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
         return AldersgruppQuery.getAldersgrupper(warehouse.get(vardgivarId), filter, range.getFrom(), 1, range.getNumberOfMonths(),
-                sjukfallUtil);
+                sjukfallUtil, AldersgruppQuery.RANGES);
     }
 
     public KonDataResponse getAldersgrupperSomTidsserie(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {

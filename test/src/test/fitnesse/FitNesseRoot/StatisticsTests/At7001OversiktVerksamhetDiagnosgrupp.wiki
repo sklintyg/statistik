@@ -41,9 +41,9 @@ Verksamhetsnivå:
 |inloggad som|grupp                             |antal?|förändring?|
 |user1       |F00-F99 Psykiska sjukdomar        |2     |-50        |
 |user1       |M00-M99 Muskuloskeletala sjukdomar|3     |200        |
-|user1       |Andra diagnosgrupper              |2     |0          |
-|user1       |Utan giltig ICD-10 kod            |4     |100        |
-|user1       |R00-R99 Symtomdiagnoser           |2     |0          |
+|user1       |Andra diagnosgrupper              |6     |50          |
+|user1       |A00-E90, G00-L99, N00-N99 Somatiska sjukdomar |1     |0          |
+|user1       |O00-O99 Graviditet och förlossning |1     |0          |
 
 Nationell:
 
@@ -51,6 +51,6 @@ Nationell:
 |grupp                             |antal?|förändring?|
 |F00-F99 Psykiska sjukdomar        |2     |-50        |
 |M00-M99 Muskuloskeletala sjukdomar|3     |200        |
-|Andra diagnosgrupper              |2     |0          |
-|Utan giltig ICD-10 kod            |4     |100        |
-|R00-R99 Symtomdiagnoser           |2     |0          |
+|Andra diagnosgrupper              |6     |50          |
+|A00-E90, G00-L99, N00-N99 Somatiska sjukdomar |1     |0          |
+|O00-O99 Graviditet och förlossning |1     |0          |
