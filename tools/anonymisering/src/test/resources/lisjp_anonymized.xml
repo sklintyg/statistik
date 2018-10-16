@@ -142,10 +142,10 @@
     </p2:svar>
     <p2:svar id='39' xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:2'>
       <p2:delsvar id='39.1'>
-
-        xxxxxxxxxxxxx
-        xxxxxxxx9999
-
+        <p3:cv xmlns:p3='urn:riv:clinicalprocess:healthcond:certificate:types:2'>
+          <p3:code>PROGNOS_OKLAR</p3:code>
+          <p3:codeSystem>KV_FKMU_0006</p3:codeSystem>
+        </p3:cv>
       </p2:delsvar>
     </p2:svar>
     <p2:svar id='40' xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:2'>

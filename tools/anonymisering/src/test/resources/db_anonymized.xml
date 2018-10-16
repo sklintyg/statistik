@@ -69,39 +69,39 @@
       <tag0:delsvar id='1.1'>xxxxxxx</tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='2' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
-      <tag0:delsvar id='2.1'>xxxxx</tag0:delsvar>
+      <tag0:delsvar id='2.1'>false</tag0:delsvar>
       <tag0:delsvar id='2.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='2.3'>9999x99x99</tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='3' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
       <tag0:delsvar id='3.1'>xxxxxx</tag0:delsvar>
       <tag0:delsvar id='3.2'>
-
-        xxxxxxx
-        99x9999xx99x9x9999xx999x9999999x9999
-        xxxxxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>SJUKHUS</ns3:code>
+          <ns3:codeSystem>65f0069f-14b5-4634-b187-5193580a3349</ns3:codeSystem>
+          <ns3:displayName>Sjukhus</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='4' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
-      <tag0:delsvar id='4.1'>xxxx</tag0:delsvar>
+      <tag0:delsvar id='4.1'>true</tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='5' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
-      <tag0:delsvar id='5.1'>xxxx</tag0:delsvar>
-      <tag0:delsvar id='5.2'>xxxx</tag0:delsvar>
+      <tag0:delsvar id='5.1'>true</tag0:delsvar>
+      <tag0:delsvar id='5.2'>true</tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='6' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
-      <tag0:delsvar id='6.1'>xxxxx</tag0:delsvar>
+      <tag0:delsvar id='6.1'>false</tag0:delsvar>
       <tag0:delsvar id='6.2'>
-
-        xxxxxxxxxxxxxxxxxxxxxx
-        xx99xx9xxx9x9x9x99x9x99x999x999999xx
-        xxxxxxxxxxxxxx xxxxxxxxxxxx xxx xxxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>UNDERSOKNING_SKA_GORAS</ns3:code>
+          <ns3:codeSystem>da46dd8c-b3f1-4e39-8d62-777d069213ea</ns3:codeSystem>
+          <ns3:displayName>Rättsmedicinsk undersökning ska göras</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='7' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
-      <tag0:delsvar id='7.1'>xxxx</tag0:delsvar>
+      <tag0:delsvar id='7.1'>true</tag0:delsvar>
     </tag0:svar>
   </ns2:intyg>
 </ns2:RegisterCertificate>

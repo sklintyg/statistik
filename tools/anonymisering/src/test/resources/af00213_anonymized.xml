@@ -68,19 +68,19 @@
     </tag0:skapadAv>
 
     <tag0:svar id='1' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
-      <tag0:delsvar id='1.1'>xxxx</tag0:delsvar>
+      <tag0:delsvar id='1.1'>true</tag0:delsvar>
       <tag0:delsvar id='1.2'>xxxxxx xxx xxx xxxxxx</tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='2' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
-      <tag0:delsvar id='2.1'>xxxx</tag0:delsvar>
+      <tag0:delsvar id='2.1'>true</tag0:delsvar>
       <tag0:delsvar id='2.2'>xxxxx xx xxxxxxxxxxxxxxxxxxxxx</tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='3' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
-      <tag0:delsvar id='3.1'>xxxx</tag0:delsvar>
+      <tag0:delsvar id='3.1'>true</tag0:delsvar>
       <tag0:delsvar id='3.2'>xxxxx xx xxxxxxxxx xxxxxxxxxx</tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='4' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
-      <tag0:delsvar id='4.1'>xxxx</tag0:delsvar>
+      <tag0:delsvar id='4.1'>true</tag0:delsvar>
       <tag0:delsvar id='4.2'>xxxxx xx xxxxxxxx xxxxxxxx</tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='5' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>

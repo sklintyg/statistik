@@ -137,7 +137,19 @@ class AnonymiseraXml {
     }
 
     private void anonymizeNode(def node) {
-        node?.replaceBody AnonymizeString.anonymize(node.toString())
+        String nodeBody = node.toString()
+
+        // Skip boolean values
+        if (nodeBody == "false" || nodeBody == "true") {
+            return
+        }
+
+        // Skip codeSystem
+        if (node.cv != "") {
+            return
+        }
+
+        node?.replaceBody AnonymizeString.anonymize(nodeBody)
     }
 
     private void anonymizeDateNode(def node) {

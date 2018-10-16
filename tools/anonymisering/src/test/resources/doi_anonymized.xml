@@ -69,32 +69,32 @@
       <tag0:delsvar id='1.1'>xxxxxxx</tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='2' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
-      <tag0:delsvar id='2.1'>xxxxx</tag0:delsvar>
+      <tag0:delsvar id='2.1'>false</tag0:delsvar>
       <tag0:delsvar id='2.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='2.3'>9999x99x99</tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='3' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
       <tag0:delsvar id='3.1'>xxxxxx</tag0:delsvar>
       <tag0:delsvar id='3.2'>
-
-        xxxxxxx
-        99x9999xx99x9x9999xx999x9999999x9999
-        xxxxxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>SJUKHUS</ns3:code>
+          <ns3:codeSystem>65f0069f-14b5-4634-b187-5193580a3349</ns3:codeSystem>
+          <ns3:displayName>Sjukhus</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='4' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
-      <tag0:delsvar id='4.1'>xxxx</tag0:delsvar>
+      <tag0:delsvar id='4.1'>true</tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='8' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
       <tag0:delsvar id='8.1'>xxxxxxxx xxxxxxxxx</tag0:delsvar>
       <tag0:delsvar id='8.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='8.3'>
-
-        99999999
-        9x9x999x999x9x9x9x9
-        xxxxxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>90734009</ns3:code>
+          <ns3:codeSystem>1.2.752.116.2.1.1.1</ns3:codeSystem>
+          <ns3:displayName>kronisk</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='9' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
@@ -102,11 +102,11 @@
       <tag0:delsvar id='9.1'>xxxxx 9</tag0:delsvar>
       <tag0:delsvar id='9.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='9.3'>
-
-        99999999
-        9x9x999x999x9x9x9x9
-        xxxxxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>90734009</ns3:code>
+          <ns3:codeSystem>1.2.752.116.2.1.1.1</ns3:codeSystem>
+          <ns3:displayName>kronisk</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='9' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
@@ -114,11 +114,11 @@
       <tag0:delsvar id='9.1'>xxxxx 9</tag0:delsvar>
       <tag0:delsvar id='9.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='9.3'>
-
-        999999999
-        9x9x999x999x9x9x9x9
-        xxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>424124008</ns3:code>
+          <ns3:codeSystem>1.2.752.116.2.1.1.1</ns3:codeSystem>
+          <ns3:displayName>akut</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='9' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
@@ -126,134 +126,134 @@
       <tag0:delsvar id='9.1'>xxxxx 9</tag0:delsvar>
       <tag0:delsvar id='9.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='9.3'>
-
-        99999999
-        9x9x999x999x9x9x9x9
-        xxxxxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>90734009</ns3:code>
+          <ns3:codeSystem>1.2.752.116.2.1.1.1</ns3:codeSystem>
+          <ns3:displayName>kronisk</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='10' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
       <tag0:delsvar id='10.1'>xxxxxxxxxx xxxxxxx 9</tag0:delsvar>
       <tag0:delsvar id='10.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='10.3'>
-
-        99999999
-        9x9x999x999x9x9x9x9
-        xxxxxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>90734009</ns3:code>
+          <ns3:codeSystem>1.2.752.116.2.1.1.1</ns3:codeSystem>
+          <ns3:displayName>kronisk</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='10' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
       <tag0:delsvar id='10.1'>xxxxxxxxxx xxxxxxx 9</tag0:delsvar>
       <tag0:delsvar id='10.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='10.3'>
-
-        999999999
-        9x9x999x999x9x9x9x9
-        xxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>424124008</ns3:code>
+          <ns3:codeSystem>1.2.752.116.2.1.1.1</ns3:codeSystem>
+          <ns3:displayName>akut</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='10' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
       <tag0:delsvar id='10.1'>xxxxxxxxxx xxxxxxx 9</tag0:delsvar>
       <tag0:delsvar id='10.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='10.3'>
-
-        99999999
-        9x9x999x999x9x9x9x9
-        xxxxxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>90734009</ns3:code>
+          <ns3:codeSystem>1.2.752.116.2.1.1.1</ns3:codeSystem>
+          <ns3:displayName>kronisk</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='10' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
       <tag0:delsvar id='10.1'>xxxxxxxxxx xxxxxxx 9</tag0:delsvar>
       <tag0:delsvar id='10.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='10.3'>
-
-        999999999
-        9x9x999x999x9x9x9x9
-        xxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>424124008</ns3:code>
+          <ns3:codeSystem>1.2.752.116.2.1.1.1</ns3:codeSystem>
+          <ns3:displayName>akut</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='10' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
       <tag0:delsvar id='10.1'>xxxxxxxxxx xxxxxxx 9</tag0:delsvar>
       <tag0:delsvar id='10.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='10.3'>
-
-        99999999
-        9x9x999x999x9x9x9x9
-        xxxxxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>90734009</ns3:code>
+          <ns3:codeSystem>1.2.752.116.2.1.1.1</ns3:codeSystem>
+          <ns3:displayName>kronisk</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='10' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
       <tag0:delsvar id='10.1'>xxxxxxxxxx xxxxxxx 9</tag0:delsvar>
       <tag0:delsvar id='10.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='10.3'>
-
-        999999999
-        9x9x999x999x9x9x9x9
-        xxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>424124008</ns3:code>
+          <ns3:codeSystem>1.2.752.116.2.1.1.1</ns3:codeSystem>
+          <ns3:displayName>akut</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='10' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
       <tag0:delsvar id='10.1'>xxxxxxxxxx xxxxxxx 9</tag0:delsvar>
       <tag0:delsvar id='10.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='10.3'>
-
-        99999999
-        9x9x999x999x9x9x9x9
-        xxxxxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>90734009</ns3:code>
+          <ns3:codeSystem>1.2.752.116.2.1.1.1</ns3:codeSystem>
+          <ns3:displayName>kronisk</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='10' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
       <tag0:delsvar id='10.1'>xxxxxxxxxx xxxxxxx 9</tag0:delsvar>
       <tag0:delsvar id='10.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='10.3'>
-
-        999999999
-        9x9x999x999x9x9x9x9
-        xxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>424124008</ns3:code>
+          <ns3:codeSystem>1.2.752.116.2.1.1.1</ns3:codeSystem>
+          <ns3:displayName>akut</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='11' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
-      <tag0:delsvar id='11.1'>xxxx</tag0:delsvar>
+      <tag0:delsvar id='11.1'>true</tag0:delsvar>
       <tag0:delsvar id='11.2'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='11.3'>xxxxxxxxx</tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='12' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
-      <tag0:delsvar id='12.1'>xxxx</tag0:delsvar>
+      <tag0:delsvar id='12.1'>true</tag0:delsvar>
       <tag0:delsvar id='12.2'>
-
-        xxxxxxxxx
-        x9x9x9xxxx999x99x9x9x99x999x9xx999xx
-        xxxxxxxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>SJALVMORD</ns3:code>
+          <ns3:codeSystem>e5d1d1fb-d918-47b4-9e69-483d3be523ee</ns3:codeSystem>
+          <ns3:displayName>Självmord</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
       <tag0:delsvar id='12.3'>9999x99x99</tag0:delsvar>
       <tag0:delsvar id='12.4'>xxxxxxxxxxx</tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='13' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
       <tag0:delsvar id='13.1'>
-
-        xxxxxxxxxxxxxxxxx
-        x9999999xx99xx9xx9x99xxxxx9x9x99999x
-        xxxxxxx xxxxxxxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>KLINISK_OBDUKTION</ns3:code>
+          <ns3:codeSystem>f9051865-b97c-4ee3-98ab-db2b7a11176e</ns3:codeSystem>
+          <ns3:displayName>Klinisk obduktion</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='13' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
       <tag0:delsvar id='13.1'>
-
-        xxxxxxxxxxxxxxxxxxxxxxx
-        x9999999xx99xx9xx9x99xxxxx9x9x99999x
-        xxxxxxxxxxxx xxxx xxxxx
-
+        <ns3:cv xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>
+          <ns3:code>UNDERSOKNING_FORE_DODEN</ns3:code>
+          <ns3:codeSystem>f9051865-b97c-4ee3-98ab-db2b7a11176e</ns3:codeSystem>
+          <ns3:displayName>Undersökning före döden</ns3:displayName>
+        </ns3:cv>
       </tag0:delsvar>
     </tag0:svar>
     <tag0:svar id='14' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>

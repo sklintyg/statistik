@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><p1:RegisterCertificate xmlns:p1='urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2'>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p1:RegisterCertificate xmlns:p1='urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2'>
   <p1:intyg>
     <p2:intygs-id xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:2'>
       <p3:root xmlns:p3='urn:riv:clinicalprocess:healthcond:certificate:types:2'>6ea04fd0-5fef-4809-823b-efeddf8a4d55</p3:root>
@@ -114,10 +115,10 @@
     </p2:svar>
     <p2:svar id='39' xmlns:p2='urn:riv:clinicalprocess:healthcond:certificate:2'>
       <p2:delsvar id='39.1'>
-
-        9
-        xxxxxxxx9999
-
+        <p3:cv xmlns:p3='urn:riv:clinicalprocess:healthcond:certificate:types:2'>
+          <p3:code>4</p3:code>
+          <p3:codeSystem>KV_FKMU_0006</p3:codeSystem>
+        </p3:cv>
       </p2:delsvar>
       <p2:delsvar id='39.2'>xxxxxx xxx xxxxxxxxxx xxx xxxxx xxxxxxxxx xxxxxxxxx xxxxxx xxxxxx xxxxx xxxxxx x xxxxx xxxxxxxx
         xxxxx xxxxxxxxxxxxxxxxx xxxxxx xx xxx xx xxxx xxxxxxxxxx xxx xxxxxxxxx xxxx xxx xxxxxxxxx xx xxxxxxxxx xxx xxx
