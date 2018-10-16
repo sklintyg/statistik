@@ -2,11 +2,6 @@ stat-toggle {
   $width: 70px;
   $height: 32px;
 
-  $wc-color-07: #212121;
-  $wc-color-10: #37BC9B;
-  $wc-color-20: #F2F2F2;
-  $wc-color-23: #A9B2BD;
-
   display: inline-block;
   margin-left: 10px;
   margin-bottom: 10px;
@@ -41,7 +36,7 @@ stat-toggle {
     transition: .4s;
     background-color: $st-color-17;
     border-radius: $height / 2;
-    border: $wc-color-23 1px solid;
+    border: $st-color-23 1px solid;
 
     &:after {
       position: absolute;
@@ -51,7 +46,7 @@ stat-toggle {
       left: -1px;
       bottom: -1px;
       background-color: $st-color-17;
-      border: $wc-color-23 1px solid;
+      border: $st-color-23 1px solid;
       transition: .4s;
       border-radius: 50%;
       box-shadow: 0 1px 3px 0 rgba(0,0,0,0.5);
@@ -59,7 +54,7 @@ stat-toggle {
 
     &:before {
       content: 'Av';
-      color: $wc-color-07;
+      color: $st-color-34;
       display: block;
       position: absolute;
       transform: translate(-50%,-50%);
@@ -77,7 +72,7 @@ stat-toggle {
 
   input:checked {
     + .slider {
-      background-color: $wc-color-10;
+      background-color: $st-color-33;
     }
 
     + .slider:before {
@@ -88,16 +83,6 @@ stat-toggle {
 
     + .slider:after {
       transform: translateX($width - $height);
-    }
-  }
-
-  input:disabled {
-    + .slider {
-      background: $wc-color-20;
-      &:after {
-        background-color: $wc-color-20;
-        box-shadow: none;
-      }
     }
   }
 }
