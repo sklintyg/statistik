@@ -22,6 +22,8 @@ import groovy.sql.Sql
 import groovyx.gpars.GParsPool
 import org.apache.commons.dbcp2.BasicDataSource
 import se.inera.statistik.tools.anonymisering.base.AnonymiseraJson
+import se.inera.statistik.tools.anonymisering.base.AnonymiseraTsBas
+import se.inera.statistik.tools.anonymisering.base.AnonymiseraTsDiabetes
 import se.inera.statistik.tools.anonymisering.base.AnonymiseraXml
 
 import java.util.concurrent.atomic.AtomicInteger
@@ -30,13 +32,22 @@ class AnonymiseraIntyg {
 
     private final int DEFAULT_NUMBEROFTHREADS = 5;
 
-    private BasicDataSource dataSource;
+    private BasicDataSource dataSource
+    private AnonymiseraJson anonymiseraJson
+    private AnonymiseraXml anonymiseraXml
+    private AnonymiseraTsBas anonymiseraTsBas
+    private AnonymiseraTsDiabetes anonymiseraTsDiabetes
 
-    AnonymiseraIntyg(BasicDataSource dataSource) {
-        this.dataSource = dataSource;
+    AnonymiseraIntyg(BasicDataSource dataSource, AnonymiseraJson anonymiseraJson, AnonymiseraXml anonymiseraXml,
+                     AnonymiseraTsBas anonymiseraTsBas, AnonymiseraTsDiabetes anonymiseraTsDiabetes) {
+        this.dataSource = dataSource
+        this.anonymiseraJson = anonymiseraJson
+        this.anonymiseraXml = anonymiseraXml
+        this.anonymiseraTsBas = anonymiseraTsBas
+        this.anonymiseraTsDiabetes = anonymiseraTsDiabetes
     }
 
-    void anonymize(int numberOfThreads, AnonymiseraJson anonymiseraJson, AnonymiseraXml anonymiseraXml) {
+    void anonymize(int numberOfThreads) {
         numberOfThreads = numberOfThreads > 0 ? numberOfThreads : DEFAULT_NUMBEROFTHREADS
 
         final AtomicInteger count = new AtomicInteger(0)
@@ -59,29 +70,21 @@ class AnonymiseraIntyg {
         GParsPool.withPool(numberOfThreads) {
             output = certificateIds.collectParallel {
                 StringBuffer result = new StringBuffer()
-                def sql = new Sql(dataSource)
+                Sql sql = new Sql(dataSource)
                 def id = it.id
                 println "id: $id"
                 try {
                     def intyg = sql.firstRow('SELECT data FROM intyghandelse WHERE id = :id' , [id : id])
+
                     try {
-                        String jsonDoc = intyg.data
-                        String anonymiseradJson = anonymiseraJson.anonymiseraIntygsJson(jsonDoc)
-                        sql.executeUpdate('UPDATE intyghandelse SET data = :document WHERE id = :id',
-                            [document: anonymiseradJson, id: id])
+                        String intygData = intyg?.data
+
+                        String anonymizedIntyg = anonymizeIntyg(intygData)
+
+                        updateDatabase(sql, anonymizedIntyg, id)
 
                     } catch (Exception ignored) {
-                        try {
-                            String xmlDoc = intyg?.data
-                            String anonymiseradXml = xmlDoc ? anonymiseraXml.anonymiseraIntygsXml(xmlDoc) : null
-                            if (anonymiseradXml) {
-                                sql.executeUpdate('UPDATE intyghandelse SET data = :document WHERE id = :id',
-                                    [document: anonymiseradXml, id: id])
-                            }
-
-                        } catch (Exception ignore) {
-                            println "Failed to parse intyg with id: ${id}"
-                        }
+                        println "Failed to parse intyg with id: ${id}"
                     }
 
                     int current = count.addAndGet(1)
@@ -106,6 +109,32 @@ class AnonymiseraIntyg {
         }
 
         println "Done! ${count} intyg anonymized with ${errorCount} errors in ${(int)((end-start) / 1000)} seconds"
+    }
+
+    String anonymizeIntyg(String intygData) {
+        //  intygData.matches("(?s)^.*<[^>]*RegisterCertificate.*>.*$")
+        if ((intygData ==~ /(?s)^.*<[^>]*RegisterCertificate.*>.*$/)) {
+            return intygData ? anonymiseraXml.anonymiseraIntygsXml(intygData) : null
+
+            //intygData.matches("(?s)^.*<[^>]*RegisterTSBas.*>.*$")
+        } else if ((intygData ==~ /(?s)^.*<[^>]*RegisterTSBas.*>.*$/)) {
+            return intygData ? anonymiseraTsBas.anonymisera(intygData) : null
+
+            //intygData.matches("(?s)^.*<[^>]*RegisterTSDiabetes.*>.*$")
+        } else if ((intygData ==~ /(?s)^.*<[^>]*RegisterTSDiabetes.*>.*$/)) {
+
+            return intygData ? anonymiseraTsDiabetes.anonymisera(intygData) : null
+
+        } else {
+            return anonymiseraJson.anonymiseraIntygsJson(intygData)
+        }
+    }
+
+    void updateDatabase(sql, document, id) {
+        if (document) {
+            sql.executeUpdate('UPDATE intyghandelse SET data = :document WHERE id = :id',
+                    [document: document, id: id])
+        }
     }
 
 }

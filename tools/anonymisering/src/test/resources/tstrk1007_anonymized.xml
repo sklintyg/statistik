@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:RegisterCertificate xmlns:ns2='urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:3'>
+    <ns2:intyg>
+        <tag0:intygs-id xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <ns3:root xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>SE0000000000-1337</ns3:root>
+            <ns3:extension xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>intygsId0</ns3:extension>
+        </tag0:intygs-id>
+        <tag0:typ xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <ns3:code xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>TSTRK1007</ns3:code>
+            <ns3:codeSystem xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>f6fb361a-e31d-48b8-8657-99b63912dd9b</ns3:codeSystem>
+            <ns3:displayName xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>Transportstyrelsens läkarintyg</ns3:displayName>
+        </tag0:typ>
+        <tag0:version xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>6.7</tag0:version>
+        <tag0:signeringstidpunkt xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>2013-08-12T15:57:00</tag0:signeringstidpunkt>
+        <tag0:skickatTidpunkt xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>2013-08-12T15:57:00</tag0:skickatTidpunkt>
+        <tag0:patient xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:person-id>
+                <ns3:root xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>1.2.752.129.2.1.3.1</ns3:root>
+                <ns3:extension xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>19680725-8820</ns3:extension>
+            </tag0:person-id>
+            <tag0:fornamn>xxxx</tag0:fornamn>
+            <tag0:efternamn>xxxxxxxxxx</tag0:efternamn>
+            <tag0:postadress>xxxxxxxxx 99</tag0:postadress>
+            <tag0:postnummer>99999</tag0:postnummer>
+            <tag0:postort>xxxxxxx</tag0:postort>
+        </tag0:patient>
+        <tag0:skapadAv xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:personal-id>
+                <ns3:root xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>1.2.752.129.2.1.4.1</ns3:root>
+                <ns3:extension xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>SE833377567</ns3:extension>
+            </tag0:personal-id>
+            <tag0:fullstandigtNamn>xxxxxx xxxxxxxx</tag0:fullstandigtNamn>
+            <tag0:befattning>
+                <ns3:code xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>ST_LAKARE</ns3:code>
+                <ns3:codeSystem xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>1.2.752.129.2.2.1.4</ns3:codeSystem>
+            </tag0:befattning>
+            <tag0:enhet>
+                <tag0:enhets-id>
+                    <ns3:root xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>1.2.752.129.2.1.4.1</ns3:root>
+                    <ns3:extension xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>SE0000000000-1337</ns3:extension>
+                </tag0:enhets-id>
+                <tag0:arbetsplatskod>
+                    <ns3:root xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>1.2.752.29.4.71</ns3:root>
+                    <ns3:extension xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>N/A</ns3:extension>
+                </tag0:arbetsplatskod>
+                <tag0:enhetsnamn>Vårdenhet Väst</tag0:enhetsnamn>
+                <tag0:postadress>Enhetsvägen 12</tag0:postadress>
+                <tag0:postnummer>54321</tag0:postnummer>
+                <tag0:postort>Tumba</tag0:postort>
+                <tag0:telefonnummer>08-1337</tag0:telefonnummer>
+                <tag0:vardgivare>
+                    <tag0:vardgivare-id>
+                        <ns3:root xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>1.2.752.129.2.1.4.1</ns3:root>
+                        <ns3:extension xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>SE0000000000-HAHAHHSAA</ns3:extension>
+                    </tag0:vardgivare-id>
+                    <tag0:vardgivarnamn>Vårdgivarnamn</tag0:vardgivarnamn>
+                </tag0:vardgivare>
+            </tag0:enhet>
+            <tag0:specialistkompetens>
+                <ns3:code xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>N/A</ns3:code>
+                <ns3:displayName xmlns:ns3='urn:riv:clinicalprocess:healthcond:certificate:types:3'>SPECIALITET</ns3:displayName>
+            </tag0:specialistkompetens>
+        </tag0:skapadAv>
+        <tag0:svar id='1' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>1</tag0:instans>
+            <tag0:delsvar id='1.1'>
+
+                xxx9
+                99x99x9xx999xx99xxxx99xxx99999x99999
+                x9
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='1' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>2</tag0:instans>
+            <tag0:delsvar id='1.1'>
+
+                xxx9
+                99x99x9xx999xx99xxxx99xxx99999x99999
+                x9x
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='1' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>3</tag0:instans>
+            <tag0:delsvar id='1.1'>
+
+                xxx9
+                99x99x9xx999xx99xxxx99xxx99999x99999
+                x
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='1' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>4</tag0:instans>
+            <tag0:delsvar id='1.1'>
+
+                xxx9
+                99x99x9xx999xx99xxxx99xxx99999x99999
+                xx
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='1' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>5</tag0:instans>
+            <tag0:delsvar id='1.1'>
+
+                xxx9
+                99x99x9xx999xx99xxxx99xxx99999x99999
+                x9
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='1' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>6</tag0:instans>
+            <tag0:delsvar id='1.1'>
+
+                xxx9
+                99x99x9xx999xx99xxxx99xxx99999x99999
+                x9x
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='1' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>7</tag0:instans>
+            <tag0:delsvar id='1.1'>
+
+                xxx9
+                99x99x9xx999xx99xxxx99xxx99999x99999
+                x
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='1' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>8</tag0:instans>
+            <tag0:delsvar id='1.1'>
+
+                xxx9
+                99x99x9xx999xx99xxxx99xxx99999x99999
+                xx
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='1' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>9</tag0:instans>
+            <tag0:delsvar id='1.1'>
+
+                xxx9
+                99x99x9xx999xx99xxxx99xxx99999x99999
+                xxxx
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='1' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>10</tag0:instans>
+            <tag0:delsvar id='1.1'>
+
+                xxx99
+                99x99x9xx999xx99xxxx99xxx99999x99999
+                xxxxx
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='2' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='2.1'>
+
+                xxx9
+                x9xx9x99xx999x9x99xx99xxx999x9999999
+                xxxx
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='3' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='3.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='4' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='4.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='5' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='5.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='6' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='6.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='7' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='7.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='8' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='8.1'>9x9</tag0:delsvar>
+            <tag0:delsvar id='8.4'>9x9</tag0:delsvar>
+            <tag0:delsvar id='8.7'>xxxx</tag0:delsvar>
+            <tag0:delsvar id='8.2'>9x9</tag0:delsvar>
+            <tag0:delsvar id='8.5'>9x9</tag0:delsvar>
+            <tag0:delsvar id='8.8'>xxxx</tag0:delsvar>
+            <tag0:delsvar id='8.3'>9x9</tag0:delsvar>
+            <tag0:delsvar id='8.6'>9x9</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='9' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='9.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='10' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='10.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='11' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='11.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='12' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='12.1'>xxxx</tag0:delsvar>
+            <tag0:delsvar id='12.2'>xxxx x xxxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='13' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='13.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='14' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='14.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='15' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='15.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='16' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='16.1'>xxxx</tag0:delsvar>
+            <tag0:delsvar id='16.2'>xxxxxxxxx xxx xxxxxxxxxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='17' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='17.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='18' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='18.1'>
+
+                x99
+                9x9x999x999x9x9x9x9x9
+                xxxxxxxx xxxxxxxx xxx 9
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='19' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='19.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='20' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='20.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='21' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='21.1'>xxxx</tag0:delsvar>
+            <tag0:delsvar id='21.2'>xxxxxxxxxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='22' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='22.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='23' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='23.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='24' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='24.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='25' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='25.1'>xxxx</tag0:delsvar>
+            <tag0:delsvar id='25.2'>xxxx</tag0:delsvar>
+            <tag0:delsvar id='25.3'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='26' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='26.1'>xxxx</tag0:delsvar>
+            <tag0:delsvar id='26.2'>xxxxxxxxx xxx xxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='27' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='27.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='28' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='28.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='29' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='29.1'>xxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='30' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='30.1'>xxxx</tag0:delsvar>
+            <tag0:delsvar id='30.2'>99 xxxxxxx</tag0:delsvar>
+            <tag0:delsvar id='30.3'>xxxxxxxxxxxxx</tag0:delsvar>
+            <tag0:delsvar id='30.4'>xxxx xxxxxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='31' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='31.1'>xxxx</tag0:delsvar>
+            <tag0:delsvar id='31.2'>xxxxxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='32' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='32.1'>xxx xxxxxx xx xxxxx xxxxxxxxx</tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='33' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>1</tag0:instans>
+            <tag0:delsvar id='33.1'>
+
+                xxx9
+                x999xx99x9xxxx9x99x9x99x99999x99x9x9
+                x9
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='33' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>2</tag0:instans>
+            <tag0:delsvar id='33.1'>
+
+                xxx9
+                x999xx99x9xxxx9x99x9x99x99999x99x9x9
+                x9x
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='33' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>3</tag0:instans>
+            <tag0:delsvar id='33.1'>
+
+                xxx9
+                x999xx99x9xxxx9x99x9x99x99999x99x9x9
+                x
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='33' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>4</tag0:instans>
+            <tag0:delsvar id='33.1'>
+
+                xxx9
+                x999xx99x9xxxx9x99x9x99x99999x99x9x9
+                xx
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='33' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>5</tag0:instans>
+            <tag0:delsvar id='33.1'>
+
+                xxx9
+                x999xx99x9xxxx9x99x9x99x99999x99x9x9
+                x9
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='33' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>6</tag0:instans>
+            <tag0:delsvar id='33.1'>
+
+                xxx9
+                x999xx99x9xxxx9x99x9x99x99999x99x9x9
+                x9x
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='33' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>7</tag0:instans>
+            <tag0:delsvar id='33.1'>
+
+                xxx9
+                x999xx99x9xxxx9x99x9x99x99999x99x9x9
+                x
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='33' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>8</tag0:instans>
+            <tag0:delsvar id='33.1'>
+
+                xxx9
+                x999xx99x9xxxx9x99x9x99x99999x99x9x9
+                xx
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='33' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>9</tag0:instans>
+            <tag0:delsvar id='33.1'>
+
+                xxx9
+                x999xx99x9xxxx9x99x9x99x99999x99x9x9
+                xxxx
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='33' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:instans>10</tag0:instans>
+            <tag0:delsvar id='33.1'>
+
+                xxx99
+                x999xx99x9xxxx9x99x9x99x99999x99x9x9
+                xxxxx (xxx x9x x9x xx xx xx xxxxx xxxxxxx)
+
+            </tag0:delsvar>
+        </tag0:svar>
+        <tag0:svar id='34' xmlns:tag0='urn:riv:clinicalprocess:healthcond:certificate:3'>
+            <tag0:delsvar id='34.1'>xxxxxxxxxxxxxx</tag0:delsvar>
+        </tag0:svar>
+    </ns2:intyg>
+</ns2:RegisterCertificate>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<p1:RegisterTSDiabetes xmlns:p1='urn:local:se:intygstjanster:services:RegisterTSDiabetesResponder:1'>
+  <p1:intyg>
+    <p3:intygsId xmlns:p3='urn:local:se:intygstjanster:services:1'>987654321</p3:intygsId>
+    <p3:intygsTyp xmlns:p3='urn:local:se:intygstjanster:services:1'>ts-diabetes</p3:intygsTyp>
+    <p3:version xmlns:p3='urn:local:se:intygstjanster:services:1'>02</p3:version>
+    <p3:utgava xmlns:p3='urn:local:se:intygstjanster:services:1'>06</p3:utgava>
+    <p3:grundData xmlns:p3='urn:local:se:intygstjanster:services:1'>
+      <p3:signeringsTidstampel>2013-08-12T15:57:00</p3:signeringsTidstampel>
+      <p3:skapadAv>
+        <p3:personId>
+          <p2:root xmlns:p2='urn:local:se:intygstjanster:services:types:1'>1.2.752.129.2.1.4.1</p2:root>
+          <p2:extension xmlns:p2='urn:local:se:intygstjanster:services:types:1'>SE833377567</p2:extension>
+        </p3:personId>
+        <p3:fullstandigtNamn>xxxxxx xxxxxxxx</p3:fullstandigtNamn>
+        <p3:atLakare>false</p3:atLakare>
+        <p3:vardenhet>
+          <p3:enhetsId>
+            <p2:root xmlns:p2='urn:local:se:intygstjanster:services:types:1'>1.2.752.129.2.1.4.1</p2:root>
+            <p2:extension xmlns:p2='urn:local:se:intygstjanster:services:types:1'>SE0000000000-1337</p2:extension>
+          </p3:enhetsId>
+          <p3:enhetsnamn>Vårdenhet Väst</p3:enhetsnamn>
+          <p3:postadress>Enhetsvägen 12</p3:postadress>
+          <p3:postnummer>54321</p3:postnummer>
+          <p3:postort>Tumba</p3:postort>
+          <p3:telefonnummer>08-1337</p3:telefonnummer>
+          <p3:vardgivare>
+            <p3:vardgivarid>
+              <p2:root xmlns:p2='urn:local:se:intygstjanster:services:types:1'>1.2.752.129.2.1.4.1</p2:root>
+              <p2:extension xmlns:p2='urn:local:se:intygstjanster:services:types:1'>SE0000000000-HAHAHHSAA</p2:extension>
+            </p3:vardgivarid>
+            <p3:vardgivarnamn>Vårdgivarnamn</p3:vardgivarnamn>
+          </p3:vardgivare>
+        </p3:vardenhet>
+        <p3:specialiteter>SPECIALITET</p3:specialiteter>
+        <p3:befattningar>ST_LAKARE</p3:befattningar>
+      </p3:skapadAv>
+      <p3:patient>
+        <p3:personId>
+          <p2:root xmlns:p2='urn:local:se:intygstjanster:services:types:1'>1.2.752.129.2.1.3.1</p2:root>
+          <p2:extension xmlns:p2='urn:local:se:intygstjanster:services:types:1'>19680725-8820</p2:extension>
+        </p3:personId>
+        <p3:fullstandigtNamn>xxxx xxxxxxxxxx</p3:fullstandigtNamn>
+        <p3:fornamn>xxxx</p3:fornamn>
+        <p3:efternamn>xxxxxxxxxx</p3:efternamn>
+        <p3:postadress>xxxxxxxxx 99</p3:postadress>
+        <p3:postnummer>99999</p3:postnummer>
+        <p3:postort>xxxxxxx</p3:postort>
+      </p3:patient>
+    </p3:grundData>
+    <p3:intygAvser xmlns:p3='urn:local:se:intygstjanster:services:1'>
+      <p3:korkortstyp>AM</p3:korkortstyp>
+      <p3:korkortstyp>A1</p3:korkortstyp>
+      <p3:korkortstyp>A2</p3:korkortstyp>
+      <p3:korkortstyp>A</p3:korkortstyp>
+      <p3:korkortstyp>B</p3:korkortstyp>
+      <p3:korkortstyp>BE</p3:korkortstyp>
+      <p3:korkortstyp>TRAKTOR</p3:korkortstyp>
+      <p3:korkortstyp>C1</p3:korkortstyp>
+      <p3:korkortstyp>C1E</p3:korkortstyp>
+      <p3:korkortstyp>C</p3:korkortstyp>
+      <p3:korkortstyp>CE</p3:korkortstyp>
+      <p3:korkortstyp>D1</p3:korkortstyp>
+      <p3:korkortstyp>D1E</p3:korkortstyp>
+      <p3:korkortstyp>D</p3:korkortstyp>
+      <p3:korkortstyp>DE</p3:korkortstyp>
+      <p3:korkortstyp>TAXI</p3:korkortstyp>
+    </p3:intygAvser>
+    <p3:identitetStyrkt xmlns:p3='urn:local:se:intygstjanster:services:1'>
+      <p3:idkontroll>IDK6</p3:idkontroll>
+    </p3:identitetStyrkt>
+    <p3:diabetes xmlns:p3='urn:local:se:intygstjanster:services:1'>
+      <p3:debutArDiabetes>2012</p3:debutArDiabetes>
+      <p3:diabetesTyp>TYP2</p3:diabetesTyp>
+      <p3:harBehandlingKost>true</p3:harBehandlingKost>
+      <p3:harBehandlingTabletter>true</p3:harBehandlingTabletter>
+      <p3:harBehandlingInsulin>true</p3:harBehandlingInsulin>
+      <p3:insulinBehandlingSedanAr>2012</p3:insulinBehandlingSedanAr>
+      <p3:annanBehandlingBeskrivning>xxxxxx</p3:annanBehandlingBeskrivning>
+    </p3:diabetes>
+    <p3:hypoglykemier xmlns:p3='urn:local:se:intygstjanster:services:1'>
+      <p3:harKunskapOmAtgarder>true</p3:harKunskapOmAtgarder>
+      <p3:harTeckenNedsattHjarnfunktion>true</p3:harTeckenNedsattHjarnfunktion>
+      <p3:saknarFormagaKannaVarningstecken>true</p3:saknarFormagaKannaVarningstecken>
+      <p3:harAllvarligForekomst>true</p3:harAllvarligForekomst>
+      <p3:allvarligForekomstBeskrivning>xxxxxxxxxxx</p3:allvarligForekomstBeskrivning>
+      <p3:harAllvarligForekomstTrafiken>true</p3:harAllvarligForekomstTrafiken>
+      <p3:allvarligForekomstTrafikBeskrivning>xxxxxxxxxxx</p3:allvarligForekomstTrafikBeskrivning>
+      <p3:genomforEgenkontrollBlodsocker>true</p3:genomforEgenkontrollBlodsocker>
+      <p3:harAllvarligForekomstVakenTid>false</p3:harAllvarligForekomstVakenTid>
+    </p3:hypoglykemier>
+    <p3:separatOgonLakarintygKommerSkickas xmlns:p3='urn:local:se:intygstjanster:services:1'>false</p3:separatOgonLakarintygKommerSkickas>
+    <p3:synfunktion xmlns:p3='urn:local:se:intygstjanster:services:1'>
+      <p3:harSynfaltsdefekt>false</p3:harSynfaltsdefekt>
+      <p3:synskarpaUtanKorrektion>
+        <p3:hogerOga>0.0</p3:hogerOga>
+        <p3:vansterOga>0.0</p3:vansterOga>
+        <p3:binokulart>0.0</p3:binokulart>
+      </p3:synskarpaUtanKorrektion>
+      <p3:synskarpaMedKorrektion>
+        <p3:hogerOga>0.0</p3:hogerOga>
+        <p3:vansterOga>0.0</p3:vansterOga>
+        <p3:binokulart>0.0</p3:binokulart>
+      </p3:synskarpaMedKorrektion>
+      <p3:harDiplopi>true</p3:harDiplopi>
+      <p3:finnsSynfaltsprovning>true</p3:finnsSynfaltsprovning>
+      <p3:synfaltsprovningUtanAnmarkning>true</p3:synfaltsprovningUtanAnmarkning>
+      <p3:finnsProvningOgatsRorlighet>true</p3:finnsProvningOgatsRorlighet>
+    </p3:synfunktion>
+    <p3:ovrigKommentar xmlns:p3='urn:local:se:intygstjanster:services:1'>xxxxxxxxxxx xx xxx xxxxxxx xxxxxx</p3:ovrigKommentar>
+    <p3:bedomning xmlns:p3='urn:local:se:intygstjanster:services:1'>
+      <p3:korkortstyp>AM</p3:korkortstyp>
+      <p3:korkortstyp>A1</p3:korkortstyp>
+      <p3:korkortstyp>A2</p3:korkortstyp>
+      <p3:korkortstyp>A</p3:korkortstyp>
+      <p3:korkortstyp>B</p3:korkortstyp>
+      <p3:korkortstyp>BE</p3:korkortstyp>
+      <p3:korkortstyp>TRAKTOR</p3:korkortstyp>
+      <p3:korkortstyp>C1</p3:korkortstyp>
+      <p3:korkortstyp>C1E</p3:korkortstyp>
+      <p3:korkortstyp>C</p3:korkortstyp>
+      <p3:korkortstyp>CE</p3:korkortstyp>
+      <p3:korkortstyp>D1</p3:korkortstyp>
+      <p3:korkortstyp>D1E</p3:korkortstyp>
+      <p3:korkortstyp>D</p3:korkortstyp>
+      <p3:korkortstyp>DE</p3:korkortstyp>
+      <p3:korkortstyp>TAXI</p3:korkortstyp>
+      <p3:lamplighetInnehaBehorighetSpecial>true</p3:lamplighetInnehaBehorighetSpecial>
+      <p3:behovAvLakareSpecialistKompetens>xxxxxxxxxxx xxxxxxxxxxxxxx</p3:behovAvLakareSpecialistKompetens>
+    </p3:bedomning>
+  </p1:intyg>
+</p1:RegisterTSDiabetes>

@@ -36,10 +36,6 @@ class AnonymiseraXml {
     }
 
     String anonymiseraIntygsXml(String s) {
-        anonymiseraIntygsXml(s, null)
-    }
-
-    String anonymiseraIntygsXml(String s, String personId) {
         def slurper = new XmlSlurper()
         slurper.keepIgnorableWhitespace = true
         def intyg = slurper.parseText(s)
@@ -48,7 +44,7 @@ class AnonymiseraXml {
             p2: 'urn:riv:clinicalprocess:healthcond:certificate:2',
             p1: 'urn:riv:clinicalprocess:healthcond:certificate:RegisterCertificateResponder:2')
 
-        anonymizeCertificateXml(intyg, personId)
+        anonymizeCertificateXml(intyg)
         return buildOutput(s, intyg)
     }
 
@@ -87,7 +83,7 @@ class AnonymiseraXml {
         return document;
     }
 
-    private void anonymizeCertificateXml(def intyg, String personId) {
+    private void anonymizeCertificateXml(def intyg) {
         anonymizePnrNode intyg.intyg.patient.'person-id'.extension
         anonymizeNode intyg.intyg.patient.fornamn
         anonymizeNode intyg.intyg.patient.efternamn
@@ -100,27 +96,38 @@ class AnonymiseraXml {
         anonymizeNode intyg.intyg.skapadAv.forskrivarkod
 
         def allDelsvars = intyg.intyg.svar.delsvar.collect{ it.@id }
-        def dateDelsvars = [ "1.2", "2.1", "4.2"]
-        def delsvarsNotToAnonymize = ["1.1",
-                                      "3.1",
-                                      "4.1",
-                                      "6.2", "6.3", "6.4",
-                                      "26.1",
-                                      "27.1",
-                                      "28.1",
-                                      "32.1", "32.2",
-                                      "33.1",
-                                      "34.1",
-                                      "40.1",
-                                      "45.1"] 
+        def dateDelsvars = []
+        def delsvarsNotToAnonymize = []
+
+        def fkIntyg = ['fk7263', 'luse', 'lisjp', 'luae_fs', 'luae_na']
+
+        if (fkIntyg.contains(intyg.intyg.typ.code.toString().toLowerCase())) {
+            dateDelsvars = [ "1.2", "2.1", "4.2"]
+            delsvarsNotToAnonymize = ["1.1",
+                                          "3.1",
+                                          "4.1",
+                                          "6.2", "6.3", "6.4",
+                                          "26.1",
+                                          "27.1",
+                                          "28.1",
+                                          "32.1", "32.2",
+                                          "33.1",
+                                          "34.1",
+                                          "40.1",
+                                          "45.1"]
+        }
 
         def delsvarsToAnonymize = allDelsvars.minus(dateDelsvars).minus(delsvarsNotToAnonymize)
 
         dateDelsvars.each { delsvarid ->
-            anonymizeDateNode intyg.intyg.svar.delsvar.find{ it.@id == delsvarid }
+            intyg.intyg.svar.delsvar.findAll{ it.@id == delsvarid }.each { node ->
+                anonymizeDateNode node
+            }
         }
         delsvarsToAnonymize.each { delsvarid ->
-            anonymizeNode intyg.intyg.svar.delsvar.find{ it.@id == delsvarid }
+            intyg.intyg.svar.delsvar.findAll{ it.@id == delsvarid }.each { node ->
+                anonymizeNode node
+            }
         }
     }
 

@@ -36,6 +36,8 @@ class AnonymiseraStatistikDatabas {
         AnonymiseraDatum anonymiseraDatum = new AnonymiseraDatum()
         AnonymiseraJson anonymiseraJson = new AnonymiseraJson(anonymiseraHsaId, anonymiseraDatum, anonymiseraPersonId)
         AnonymiseraXml anonymiseraXml = new AnonymiseraXml(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
+        AnonymiseraTsBas anonymiseraTsBas = new AnonymiseraTsBas(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
+        AnonymiseraTsDiabetes anonymiseraTsDiabetes = new AnonymiseraTsDiabetes(anonymiseraPersonId, anonymiseraHsaId, anonymiseraDatum)
 
         def props = new Properties()
         new File("dataSource.properties").withInputStream {
@@ -49,8 +51,8 @@ class AnonymiseraStatistikDatabas {
                 initialSize: numberOfThreads, maxTotal: numberOfThreads)
 
         // Anonymisera Intyg
-        AnonymiseraIntyg anonymiseraIntyg = new AnonymiseraIntyg(dataSource);
-        anonymiseraIntyg.anonymize(numberOfThreads, anonymiseraJson, anonymiseraXml);
+        AnonymiseraIntyg anonymiseraIntyg = new AnonymiseraIntyg(dataSource, anonymiseraJson, anonymiseraXml, anonymiseraTsBas, anonymiseraTsDiabetes)
+        anonymiseraIntyg.anonymize(numberOfThreads)
 
         println "Proceeding to wideline"
         def sql = new Sql(dataSource)
@@ -96,6 +98,18 @@ class AnonymiseraStatistikDatabas {
         } catch (Throwable t) {
             t.printStackTrace()
             println "Error! Check if handelsepekare was reset."
+        } finally {
+            sql.close()
+        }
+
+        println "Reset tries on messages in meddelandehandelse"
+        sql = new Sql(dataSource)
+        try {
+            sql.execute('UPDATE meddelandehandelse SET tries = 0')
+            println "Done! Tries reset."
+        } catch (Throwable t) {
+            t.printStackTrace()
+            println "Error! Check if tries were reset."
         } finally {
             sql.close()
         }
