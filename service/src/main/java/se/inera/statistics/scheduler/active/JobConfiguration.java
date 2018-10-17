@@ -19,10 +19,7 @@
 package se.inera.statistics.scheduler.active;
 
 import java.time.Duration;
-import net.javacrumbs.shedlock.core.LockProvider;
-import net.javacrumbs.shedlock.provider.redis.spring.RedisLockProvider;
-import net.javacrumbs.shedlock.spring.ScheduledLockConfiguration;
-import net.javacrumbs.shedlock.spring.ScheduledLockConfigurationBuilder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +28,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
+import net.javacrumbs.shedlock.core.LockProvider;
+import net.javacrumbs.shedlock.provider.redis.spring.RedisLockProvider;
+import net.javacrumbs.shedlock.spring.ScheduledLockConfiguration;
+import net.javacrumbs.shedlock.spring.ScheduledLockConfigurationBuilder;
+import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
+import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
 /**
@@ -51,6 +55,12 @@ public class JobConfiguration {
     @Autowired
     private MessageLogConsumer messageLogConsumer;
 
+    @Autowired
+    private LogConsumer consumer;
+
+    @Autowired
+    private LogMDCHelper logMDCHelper;
+
     @Bean
     public ScheduledLockConfiguration taskScheduler(final LockProvider lockProvider) {
         LOG.info("Profile caching-enabled: creating scheduled lock configuration");
@@ -67,12 +77,7 @@ public class JobConfiguration {
     }
 
     @Bean
-    public MessageJob messageJob() {
-        return new MessageJob(messageLogConsumer);
-    }
-
-    @Bean
     public LogJob logJob() {
-        return new LogJob();
+        return new LogJob(consumer, messageLogConsumer, logMDCHelper);
     }
 }

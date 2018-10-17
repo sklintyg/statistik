@@ -49,9 +49,6 @@
     <logger name="se.inera.statistics.scheduler.active.LogJob" level="INFO"  additivity="false">
         <appender-ref ref="PROCESS"/>
     </logger>
-    <logger name="se.inera.statistics.scheduler.active.MessageJob" level="INFO"  additivity="false">
-        <appender-ref ref="PROCESS"/>
-    </logger>
     <logger name="se.inera.statistics.web.service.endpoints.ChartDataService" level="INFO"  additivity="false">
         <appender-ref ref="PROCESS"/>
     </logger>

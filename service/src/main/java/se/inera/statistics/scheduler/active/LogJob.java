@@ -18,34 +18,40 @@
  */
 package se.inera.statistics.scheduler.active;
 
-import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
+
+import net.javacrumbs.shedlock.core.SchedulerLock;
 import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.LogConsumer;
+import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
 public class LogJob {
     private static final Logger LOG = LoggerFactory.getLogger(LogJob.class);
     private static final String JOB_NAME = "LogJob.run";
 
-    @Autowired
-    private LogMDCHelper logMDCHelper;
-
-    @Autowired
     private LogConsumer consumer;
+    private MessageLogConsumer messageLogConsumer;
+    private LogMDCHelper logMDCHelper;
 
     @Autowired
     @Qualifier("serviceMonitoringLogService")
     private MonitoringLogService monitoringLogService;
 
+    public LogJob(LogConsumer consumer, MessageLogConsumer messageLogConsumer, LogMDCHelper logMDCHelper) {
+        this.consumer = consumer;
+        this.messageLogConsumer = messageLogConsumer;
+        this.logMDCHelper = logMDCHelper;
+    }
+
     @Scheduled(cron = "${scheduler.logJob.cron}")
     @SchedulerLock(name = JOB_NAME)
-    @PrometheusTimeMethod(help = "Jobb för att hantera inkomna sjukintyg från kön")
+    @PrometheusTimeMethod(help = "Jobb för att hantera inkomna intyg och meddelanden från kön")
     public void run() {
         logMDCHelper.run(() -> {
             LOG.info(JOB_NAME);
@@ -57,6 +63,16 @@ public class LogJob {
                     monitoringLogService.logInFromTable(count);
                 }
             } while (count > 0);
+
+
+            // Process messages after intyg
+            long startId;
+            long latestHandledId = 0;
+            do {
+                startId = latestHandledId;
+                latestHandledId = messageLogConsumer.processBatch(startId);
+                LOG.info("Processed message batch from id {} to {}", startId, latestHandledId);
+            } while (startId != latestHandledId);
         });
     }
 }

@@ -21,24 +21,26 @@ package se.inera.statistics.scheduler.active;
 import org.junit.Test;
 import org.mockito.Mockito;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
+import se.inera.statistics.service.processlog.LogConsumer;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
-public class MessageJobTest {
+public class LogJobTest {
 
     @Test
-    public void testCheckLogContinueProcessingUntilDone() throws Exception {
+    public void testCheckLogContinueProcessingUntilDone() {
         //Given
-        MessageLogConsumer consumer = Mockito.mock(MessageLogConsumer.class);
-        LogMDCHelper mdcHelper = Mockito.mock(LogMDCHelper.class);
-        Mockito.when(consumer.processBatch(Mockito.anyLong())).thenReturn(100L).thenReturn(101L).thenReturn(101L);
-        final MessageJob messageJob = new MessageJob(consumer);
-        messageJob.logMDCHelper = new LogMDCHelper();
+        LogConsumer logConsumer = Mockito.mock(LogConsumer.class);
+        MessageLogConsumer messageLogConsumer = Mockito.mock(MessageLogConsumer.class);
+        LogMDCHelper mdcHelper = new LogMDCHelper();
+
+        Mockito.when(messageLogConsumer.processBatch(Mockito.anyLong())).thenReturn(100L).thenReturn(101L).thenReturn(101L);
+        final LogJob logJob = new LogJob(logConsumer, messageLogConsumer, mdcHelper);
 
         //When
-        messageJob.run();
+        logJob.run();
 
         //Then
-        Mockito.verify(consumer, Mockito.times(3)).processBatch(Mockito.anyLong());
+        Mockito.verify(messageLogConsumer, Mockito.times(3)).processBatch(Mockito.anyLong());
     }
 
 }
