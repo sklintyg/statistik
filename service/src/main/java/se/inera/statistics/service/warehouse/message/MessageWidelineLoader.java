@@ -260,12 +260,12 @@ public class MessageWidelineLoader {
 
         StringBuilder sql = new StringBuilder("SELECT "
                 + "mwl.intygid, mwl.amnecode, mwl.kon, mwl.amneCode, mwl.enhet AS enhet, mwl.alder, "
-                + "mwl.intygstyp, mwl.patientid, ic.signeringsdatum, ic.dx, ic.lakareId "
-                + "FROM messagewideline AS mwl "
-                + "INNER JOIN intygcommon AS ic "
-                + "ON mwl.intygid = ic.intygid "
-                + "WHERE (ic.signeringsdatum between ? AND ?) "
-                + "AND ic.eventType != " + EventType.REVOKED.ordinal());
+                + "mwl.intygstyp, mwl.patientid, mwl.intygSigneringsdatum as signeringsdatum, mwl.intygDx as dx, "
+                + "mwl.intygLakareId as lakareId "
+                + "FROM "
+                    + "messagewideline AS mwl "
+                + "WHERE "
+                    + "(mwl.intygSigneringsdatum between ? AND ?) ");
 
         boolean hasVardgivare = filter.getVardgivarId() != null;
         if (hasVardgivare) {
@@ -312,8 +312,7 @@ public class MessageWidelineLoader {
                 + "ic.intygid, ic.kon, ic.intygtyp as intygstyp, ic.patientid, ic.dx, ic.enhet, ic.signeringsdatum, ic.lakareId, "
                 + "mwl.amneCode "
                 + "FROM intygcommon ic "
-                + "LEFT JOIN messagewideline mwl "
-                + "ON ic.intygid = mwl.intygid "
+                    + "LEFT JOIN messagewideline mwl ON ic.intygid = mwl.intygid "
                 + "WHERE (ic.signeringsdatum between ? AND ?) AND ic.sentToFk "
                 + "AND ic.eventType != " + EventType.REVOKED.ordinal());
 

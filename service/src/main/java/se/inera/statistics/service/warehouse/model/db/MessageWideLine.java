@@ -18,9 +18,9 @@
  */
 package se.inera.statistics.service.warehouse.model.db;
 
-import se.inera.statistics.service.processlog.message.MessageEventType;
-import se.inera.statistics.service.warehouse.IntygType;
-
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -28,9 +28,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+
+import se.inera.statistics.service.processlog.message.MessageEventType;
+import se.inera.statistics.service.warehouse.IntygType;
 
 @Entity
 @Table(name = MessageWideLine.TABLE)
@@ -55,7 +55,11 @@ public class MessageWideLine {
     private int alder;
     private String enhet;
     private String vardgivareid;
-    @Enumerated(EnumType.STRING) private IntygType intygstyp;
+    @Enumerated(EnumType.STRING)
+    private IntygType intygstyp;
+    private LocalDate intygSigneringsdatum;
+    private String intygLakareId;
+    private String intygDx;
 
     public MessageWideLine() {
         // Used by WidelineConverter
@@ -65,7 +69,8 @@ public class MessageWideLine {
     @SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public MessageWideLine(long id, long logId, String meddelandeId, String intygId, MessageEventType meddelandeTyp,
                            String patientid, LocalDateTime skickatTidpunkt, String amneCode, int kon, int alder,
-                           String enhet, String vardgivareid, IntygType intygstyp) {
+                           String enhet, String vardgivareid, IntygType intygstyp, LocalDate intygSigneringsdatum,
+                           String intygLakareId, String intygDx) {
         this.id = id;
         this.logId = logId;
         this.meddelandeId = meddelandeId;
@@ -80,6 +85,9 @@ public class MessageWideLine {
         this.enhet = enhet;
         this.vardgivareid = vardgivareid;
         this.intygstyp = intygstyp;
+        this.intygSigneringsdatum = intygSigneringsdatum;
+        this.intygLakareId = intygLakareId;
+        this.intygDx = intygDx;
     }
     // CHECKSTYLE:ON ParameterNumber
 
@@ -195,4 +203,27 @@ public class MessageWideLine {
         this.intygstyp = intygstyp;
     }
 
+    public LocalDate getIntygSigneringsdatum() {
+        return intygSigneringsdatum;
+    }
+
+    public void setIntygSigneringsdatum(LocalDate intygSigneringsdatum) {
+        this.intygSigneringsdatum = intygSigneringsdatum;
+    }
+
+    public String getIntygLakareId() {
+        return intygLakareId;
+    }
+
+    public void setIntygLakareId(String intygLakareId) {
+        this.intygLakareId = intygLakareId;
+    }
+
+    public String getIntygDx() {
+        return intygDx;
+    }
+
+    public void setIntygDx(String intygDx) {
+        this.intygDx = intygDx;
+    }
 }

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2018 Inera AB (http://www.inera.se)
+
+    This file is part of statistik (https://github.com/sklintyg/statistik).
+
+    statistik is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    statistik is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd"
+        logicalFilePath="liquibase/db.changelog-v55.0_add_columns_to_messeagewideline.xml">
+    <changeSet id="55_0_add_columns_to_messeagewideline" author="martin.hesslund">
+        <addColumn tableName="messagewideline">
+          <column name="intygSigneringsdatum" type="date" defaultValueDate="1970-01-01">
+            <constraints nullable="false" />
+          </column>
+          <column name="intygLakareId" type="varchar(128)" />
+          <column name="intygDx" type="varchar(128)" />
+        </addColumn>
+    </changeSet>
+
+
+  <changeSet id="55_1_add_index_messeagewideline_intygid" author="martin.hesslund">
+    <createIndex unique="false" tableName="messagewideline" indexName="messagewideline_intygid_idx">
+      <column name="intygid"/>
+    </createIndex>
+
+    <createIndex unique="false" tableName="messagewideline" indexName="messagewideline_intygsigneringsdatum_vardgivareid_idx">
+      <column name="intygSigneringsdatum"/>
+      <column name="vardgivareid"/>
+    </createIndex>
+  </changeSet>
+
+  <changeSet id="55_2_add_column_intygcommon" author="martin.hesslund">
+    <addColumn tableName="intygcommon">
+      <column name="active" type="boolean" defaultValueBoolean="true">
+        <constraints nullable="false" />
+      </column>
+    </addColumn>
+  </changeSet>
+
+  <changeSet id="55_3_update_intygcommon_active_column" author="martin.hesslund">
+    <sql>UPDATE intygcommon as ic SET ic.active = false WHERE ic.intygid IN (SELECT i.intygid FROM intygcommon as i WHERE i.eventType = 1 AND ic.intygid = i.intygid)</sql>
+  </changeSet>
+
+  <changeSet id="55_4_update_messagewideline_columns" author="martin.hesslund">
+    <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+      <dbms type="mysql" />
+    </preConditions>
+
+    <sql>
+      UPDATE
+        messagewideline
+        INNER JOIN intygcommon as ic ON ic.intygid = messagewideline.intygid
+      SET
+        intygSigneringsdatum = ic.signeringsdatum,
+        intygLakareId = ic.lakareId,
+        intygDx = ic.dx
+    </sql>
+  </changeSet>
+
+</databaseChangeLog>

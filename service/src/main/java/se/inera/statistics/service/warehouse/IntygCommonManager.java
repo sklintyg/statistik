@@ -29,6 +29,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -97,7 +98,7 @@ public class IntygCommonManager {
         List<String> errors = intygCommonConverter.validate(line);
 
         if (errors.isEmpty()) {
-            manager.persist(line);
+            save(line);
         } else {
             StringBuilder errorBuilder = new StringBuilder("Faulty intyg logid ").append(logId).append(" id ").append(intygid)
                     .append(" error count ")
@@ -107,6 +108,33 @@ public class IntygCommonManager {
             }
             LOG.error(errorBuilder.toString());
         }
+    }
+
+    @Transactional
+    public void save(IntygCommon line) {
+        manager.persist(line);
+        if (revokeIntygsId(line)) {
+            inactivateIntyg(line.getIntygid());
+        }
+    }
+
+    private boolean revokeIntygsId(IntygCommon line) {
+        return EventType.REVOKED.equals(line.getEventType()) || isIntygsIdAlreadyRevoked(line.getIntygid());
+    }
+
+    private boolean isIntygsIdAlreadyRevoked(String intygid) {
+        final int revokedOrdinal = EventType.REVOKED.ordinal();
+        final Query query = manager.createQuery("SELECT intygid "
+                + "FROM IntygCommon "
+                + "WHERE eventType = " + revokedOrdinal + " AND intygid = :intygid");
+        query.setParameter("intygid", intygid);
+        return !query.getResultList().isEmpty();
+    }
+
+    private void inactivateIntyg(String intygid) {
+        final Query query = manager.createQuery("UPDATE IntygCommon SET active = false WHERE intygid = :intygid");
+        query.setParameter("intygid", intygid);
+        query.executeUpdate();
     }
 
     private static int increaseAndGetErrCount() {
@@ -239,10 +267,7 @@ public class IntygCommonManager {
         ql.append("WHERE r.vardgivareId = :vardgivarId ");
         ql.append("AND r.signeringsdatum >= :fromDate ");
         ql.append("AND r.signeringsdatum <= :toDate ");
-        ql.append("AND r.intygid not in ");
-        ql.append("(select intygid from IntygCommon where eventType = ");
-        ql.append(EventType.REVOKED.ordinal());
-        ql.append(" )");
+        ql.append("AND r.active = true ");
 
         final Collection<HsaIdEnhet> enheter = intygFilter.getEnheter();
         if (enheter != null) {

@@ -18,9 +18,7 @@
  */
 package se.inera.statistics.service.warehouse.model.db;
 
-import se.inera.statistics.service.processlog.EventType;
-import se.inera.statistics.service.warehouse.IntygType;
-
+import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -28,7 +26,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDate;
+
+import se.inera.statistics.service.processlog.EventType;
+import se.inera.statistics.service.warehouse.IntygType;
 
 @Entity
 @Table(name = IntygCommon.TABLE)
@@ -50,6 +50,7 @@ public class IntygCommon {
     private String dx;
     private boolean sentToFk;
     private String lakareId;
+    private boolean active;
 
     // CHECKSTYLE:OFF ParameterNumber
     public IntygCommon(String intygid, String patientid, LocalDate signeringsdatum, IntygType intygtyp, String enhet, String vardgivareId,
@@ -65,6 +66,7 @@ public class IntygCommon {
         this.dx = dx;
         this.sentToFk = sentToFk;
         this.lakareId = lakareId;
+        this.active = !EventType.REVOKED.equals(eventType);
     }
     // CHECKSTYLE:ON ParameterNumber
 
@@ -128,4 +130,11 @@ public class IntygCommon {
         return lakareId;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

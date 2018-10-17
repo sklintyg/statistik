@@ -18,20 +18,21 @@
  */
 package se.inera.statistics.service.warehouse.message;
 
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.processlog.message.ProcessMessageLog;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.List;
 
 @Component
 public class MessageWidelineManager {

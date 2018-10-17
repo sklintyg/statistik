@@ -80,5 +80,6 @@
     <include file="changelog/db.changelog-v52.0_add_lakare_column_to_intygcommon.xml" />
     <include file="changelog/db.changelog-v53.0_add_indexes.xml" />
     <include file="changelog/db.changelog-v54.0_add_column_to_meddelandehandelse.xml" />
+    <include file="changelog/db.changelog-v55.0_add_columns_to_messeagewideline.xml" />
 
 </databaseChangeLog>

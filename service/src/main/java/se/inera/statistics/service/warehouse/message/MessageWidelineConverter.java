@@ -18,8 +18,13 @@
  */
 package se.inera.statistics.service.warehouse.message;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.processlog.message.MessageEventType;
@@ -28,10 +33,6 @@ import se.inera.statistics.service.warehouse.IntygCommonManager;
 import se.inera.statistics.service.warehouse.model.db.IntygCommon;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class MessageWidelineConverter extends AbstractWidlineConverter {
@@ -79,6 +80,9 @@ public class MessageWidelineConverter extends AbstractWidlineConverter {
             line.setEnhet(intygCommon.getEnhet());
             line.setVardgivareid(intygCommon.getVardgivareId());
             line.setIntygstyp(intygCommon.getIntygtyp());
+            line.setIntygSigneringsdatum(intygCommon.getSigneringsdatum());
+            line.setIntygDx(intygCommon.getDx());
+            line.setIntygLakareId(intygCommon.getLakareId());
         }
 
         return line;

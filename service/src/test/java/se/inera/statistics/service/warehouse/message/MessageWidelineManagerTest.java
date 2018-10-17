@@ -35,7 +35,7 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:process-log-impl-test.xml", "classpath:icd10.xml" })
-@DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class MessageWidelineManagerTest {
     @Autowired
     private MessageWidelineManager messageWidelineManager;
@@ -72,6 +72,9 @@ public class MessageWidelineManagerTest {
         line1.setIntygId("i-123");
         line1.setMeddelandeId(correlationId);
         line1.setIntygstyp(IntygType.LISJP);
+        line1.setIntygSigneringsdatum(LocalDate.now());
+        line1.setIntygLakareId("123");
+        line1.setIntygDx("");
 
         messageWidelineManager.saveWideline(line1);
     }

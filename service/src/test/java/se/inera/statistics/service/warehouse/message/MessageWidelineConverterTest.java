@@ -25,6 +25,7 @@ import se.inera.statistics.service.processlog.message.MessageEventType;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.model.db.MessageWideLine;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,7 +35,8 @@ public class MessageWidelineConverterTest {
 
     private static final Logger LOG = LoggerFactory.getLogger(MessageWidelineConverterTest.class);
 
-    private MessageWideLine wideLine = new MessageWideLine(1, 1, "1231", "123-123-123", MessageEventType.SENT, "19121212-1212", LocalDateTime.now(), "AMNE", 1, 103, "e1", "v1", IntygType.LISJP);
+    private MessageWideLine wideLine = new MessageWideLine(1, 1, "1231", "123-123-123", MessageEventType.SENT, "19121212-1212",
+            LocalDateTime.now(), "AMNE", 1, 103, "e1", "v1", IntygType.LISJP, LocalDate.now(), "lakare-1234", "");
     private MessageWidelineConverter converter = new MessageWidelineConverter();
 
     @Test
