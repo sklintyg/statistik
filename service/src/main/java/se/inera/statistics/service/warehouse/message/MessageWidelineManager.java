@@ -54,8 +54,9 @@ public class MessageWidelineManager {
 
         if (errors.isEmpty()) {
             saveWideline(line);
+            processMessageLog.setProcessed(logId);
         } else {
-            processMessageLog.increaseNumberOfTries(meddelandeId);
+            processMessageLog.increaseNumberOfTries(logId);
 
             StringBuilder errorString = new StringBuilder(
                     "Faulty meddelande logid " + logId + " id " + meddelandeId + " error count " + errCount);

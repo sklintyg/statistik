@@ -105,7 +105,7 @@ class AnonymiseraStatistikDatabas {
         println "Reset tries on messages in meddelandehandelse"
         sql = new Sql(dataSource)
         try {
-            sql.execute('UPDATE meddelandehandelse SET tries = 0')
+            sql.execute('UPDATE meddelandehandelse SET tries = 0, processed = 0')
             println "Done! Tries reset."
         } catch (Throwable t) {
             t.printStackTrace()

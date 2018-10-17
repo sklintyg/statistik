@@ -41,6 +41,7 @@ public class MessageEvent {
     private String data;
     private String correlationId;
     private int tries;
+    private boolean processed;
     private long timestamp;
 
     public MessageEvent() {
@@ -100,5 +101,13 @@ public class MessageEvent {
 
     public void setTries(int tries) {
         this.tries = tries;
+    }
+
+    public boolean isProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(boolean processed) {
+        this.processed = processed;
     }
 }

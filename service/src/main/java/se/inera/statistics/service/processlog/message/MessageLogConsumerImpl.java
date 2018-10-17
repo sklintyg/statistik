@@ -18,17 +18,18 @@
  */
 package se.inera.statistics.service.processlog.message;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.service.helper.SendMessageToCareHelper;
 import se.inera.statistics.service.processlog.Processor;
 import se.riv.clinicalprocess.healthcond.certificate.sendMessageToCare.v2.SendMessageToCareType;
-
-import java.util.List;
 
 @Component
 public class MessageLogConsumerImpl implements MessageLogConsumer {
@@ -85,8 +86,7 @@ public class MessageLogConsumerImpl implements MessageLogConsumer {
     }
 
     private void increaseTries(MessageEvent event) {
-        event.setTries(event.getTries() + 1);
-        processLog.update(event);
+        processLog.increaseNumberOfTries(event.getId());
     }
 
     private boolean handleEvent(MessageEvent event) {

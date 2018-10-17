@@ -79,5 +79,6 @@
     <include file="changelog/db.changelog-v51.0_create_user_settings_table.xml" />
     <include file="changelog/db.changelog-v52.0_add_lakare_column_to_intygcommon.xml" />
     <include file="changelog/db.changelog-v53.0_add_indexes.xml" />
+    <include file="changelog/db.changelog-v54.0_add_column_to_meddelandehandelse.xml" />
 
 </databaseChangeLog>

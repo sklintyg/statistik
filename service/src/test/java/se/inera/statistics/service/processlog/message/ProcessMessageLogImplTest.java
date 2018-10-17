@@ -18,6 +18,10 @@
  */
 package se.inera.statistics.service.processlog.message;
 
+import java.util.List;
+import javax.transaction.NotSupportedException;
+import javax.transaction.SystemException;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.DirtiesContext;
@@ -25,11 +29,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.NotSupportedException;
-import javax.transaction.SystemException;
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -40,7 +41,7 @@ public class ProcessMessageLogImplTest extends ProcessMessageLogImpl {
 
     // CHECKSTYLE:OFF MagicNumber
     @Test
-    public void storedEventCanBeFetched() throws InterruptedException, NotSupportedException, SystemException {
+    public void storedEventCanBeFetched() {
         long id = store(MessageEventType.SENT, "data", "corr", 123L);
         MessageEvent event = get(id);
         assertEquals("data", event.getData());
@@ -63,6 +64,33 @@ public class ProcessMessageLogImplTest extends ProcessMessageLogImpl {
     }
 
     @Test
+    public void testSetProcessed() {
+        // Given
+        List<MessageEvent> pending = getPending(100, 0, 100);
+
+        int pendingCount = pending.size();
+
+        MessageEvent event = new MessageEvent(MessageEventType.SENT, "1", "corr1", 123L);
+        long id = update(event);
+
+        pending = getPending(100, 0, 100);
+
+        int pendingCountAfterAdd = pending.size();
+
+        assertEquals(pendingCount + 1, pendingCountAfterAdd);
+
+
+        // When
+        setProcessed(id);
+
+        // Then
+        pending = getPending(100, 0, 100);
+        int pendingCountProcessed = pending.size();
+
+        assertEquals(pendingCount, pendingCountProcessed);
+    }
+
+    @Test
     public void testMaxNumberOfTries() {
         MessageEvent event = new MessageEvent(MessageEventType.SENT, "1", "corr1", 123L);
         event.setTries(4);
@@ -81,7 +109,7 @@ public class ProcessMessageLogImplTest extends ProcessMessageLogImpl {
     // CHECKSTYLE:ON MagicNumber
 
     @Transactional
-    private MessageEvent get(long id) {
+    protected MessageEvent get(long id) {
         return getManager().find(MessageEvent.class, id);
     }
 }

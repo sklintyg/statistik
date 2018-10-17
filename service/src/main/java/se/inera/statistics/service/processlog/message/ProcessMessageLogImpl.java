@@ -65,18 +65,23 @@ public class ProcessMessageLogImpl extends AbstractProcessLog implements Process
 
     @Override
     @Transactional(noRollbackFor = Exception.class)
-    public long increaseNumberOfTries(String messageId) {
-        Query select = getManager().createQuery("UPDATE MessageEvent e SET e.tries = e.tries + 1 WHERE e.correlationId = "
-        + ":correlationId");
-        select.setParameter("correlationId", messageId);
+    public long increaseNumberOfTries(long logid) {
+        Query select = getManager().createQuery("UPDATE MessageEvent e SET e.tries = e.tries + 1 WHERE e.id = :logId");
+        select.setParameter("logId", logid);
+        return select.executeUpdate();
+    }
+
+    @Override
+    public long setProcessed(long logId) {
+        Query select = getManager().createQuery("UPDATE MessageEvent e SET e.processed = 1 WHERE e.id = :logId");
+        select.setParameter("logId", logId);
         return select.executeUpdate();
     }
 
     @Override
     @Transactional
     public List<MessageEvent> getPending(int max, long firstId, int maxNumberOfTries) {
-        String query = "SELECT e FROM MessageEvent e WHERE e.id > :lastId AND e.tries <= :maxTries AND (SELECT count(*) FROM "
-                + "MessageWideLine w WHERE e.correlationId = w.meddelandeId) = 0 ORDER BY e.id ASC";
+        String query = "SELECT e FROM MessageEvent e WHERE e.id > :lastId AND e.tries <= :maxTries AND e.processed = 0 ORDER BY e.id ASC";
 
         TypedQuery<MessageEvent> allQuery = getManager().createQuery(query, MessageEvent.class);
         allQuery.setParameter("lastId", firstId);
