@@ -21,10 +21,8 @@ package se.inera.statistics.service.helper;
 import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXB;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.JAXBIntrospector;
-import javax.xml.bind.Unmarshaller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,19 +35,10 @@ import se.inera.statistics.service.warehouse.IntygType;
 public abstract class IntygHelper<T> {
 
     private static final Logger LOG = LoggerFactory.getLogger(IntygHelper.class);
-    private Unmarshaller jaxbUnmarshaller;
 
     public synchronized T unmarshalXml(String data) throws JAXBException {
         final StringReader reader = new StringReader(data);
-        return (T) JAXBIntrospector.getValue(getUnmarshaller().unmarshal(reader));
-    }
-
-    private Unmarshaller getUnmarshaller() throws JAXBException {
-        if (jaxbUnmarshaller == null) {
-            jaxbUnmarshaller = JAXBContext.newInstance(getIntygClass()).createUnmarshaller();
-            jaxbUnmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
-        }
-        return jaxbUnmarshaller;
+        return JAXB.unmarshal(reader, getIntygClass());
     }
 
     protected abstract Class<T> getIntygClass();

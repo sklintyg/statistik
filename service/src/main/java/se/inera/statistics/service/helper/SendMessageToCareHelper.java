@@ -21,10 +21,7 @@ package se.inera.statistics.service.helper;
 import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.JAXBIntrospector;
-import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.JAXB;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,20 +35,9 @@ public class SendMessageToCareHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(SendMessageToCareHelper.class);
 
-    private Unmarshaller unmarshaller;
-
-    private Unmarshaller getUnmarshaller() throws JAXBException {
-        if (unmarshaller == null) {
-            Unmarshaller jaxbUnmarshaller = JAXBContext.newInstance(SendMessageToCareType.class).createUnmarshaller();
-            jaxbUnmarshaller.setEventHandler(new javax.xml.bind.helpers.DefaultValidationEventHandler());
-            unmarshaller = jaxbUnmarshaller;
-        }
-        return unmarshaller;
-    }
-
-    public SendMessageToCareType unmarshalSendMessageToCareTypeXml(String data) throws JAXBException {
+    public SendMessageToCareType unmarshalSendMessageToCareTypeXml(String data) {
         final StringReader reader = new StringReader(data);
-        return (SendMessageToCareType) JAXBIntrospector.getValue(getUnmarshaller().unmarshal(reader));
+        return JAXB.unmarshal(reader, SendMessageToCareType.class);
     }
 
     public String getIntygId(SendMessageToCareType message) {

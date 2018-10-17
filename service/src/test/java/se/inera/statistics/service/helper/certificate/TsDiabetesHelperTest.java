@@ -205,6 +205,22 @@ public class TsDiabetesHelperTest {
     }
 
     @Test
+    public void testConvertToDTOWithWrongOuterElementInXmlShouldWorkIntyg7276() throws JAXBException {
+        final String faultyXml = xmlIntyg.replaceAll("ns3:RegisterTSDiabetes", "ThisIsWrong");
+        RegisterTSDiabetesType intyg = tsDiabetesHelper.unmarshalXml(faultyXml);
+
+        IntygDTO dto = tsDiabetesHelper.convertToDTO(intyg);
+        LocalDate signeringsdatum = LocalDate.of(2013, 3, 17);
+
+        assertEquals("19121212-1212", dto.getPatientid());
+        assertEquals(IntygType.getByItIntygType("ts-diabetes"), dto.getIntygtyp());
+        assertEquals("Enhetsid", dto.getEnhet());
+        assertEquals(100, dto.getPatientData().getAlder());
+        assertEquals(Kon.MALE, dto.getPatientData().getKon());
+        assertEquals(signeringsdatum, dto.getSigneringsdatum());
+    }
+
+    @Test
     public void testExtractHSAKey() throws JAXBException {
         RegisterTSDiabetesType intyg = tsDiabetesHelper.unmarshalXml(xmlIntyg);
 
