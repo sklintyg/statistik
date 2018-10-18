@@ -112,19 +112,12 @@ class AnonymiseraIntyg {
     }
 
     String anonymizeIntyg(String intygData) {
-        //  intygData.matches("(?s)^.*<[^>]*RegisterCertificate.*>.*$")
         if ((intygData ==~ /(?s)^.*<[^>]*RegisterCertificate.*>.*$/)) {
             return intygData ? anonymiseraXml.anonymiseraIntygsXml(intygData) : null
-
-            //intygData.matches("(?s)^.*<[^>]*RegisterTSBas.*>.*$")
         } else if ((intygData ==~ /(?s)^.*<[^>]*RegisterTSBas.*>.*$/)) {
             return intygData ? anonymiseraTsBas.anonymisera(intygData) : null
-
-            //intygData.matches("(?s)^.*<[^>]*RegisterTSDiabetes.*>.*$")
         } else if ((intygData ==~ /(?s)^.*<[^>]*RegisterTSDiabetes.*>.*$/)) {
-
             return intygData ? anonymiseraTsDiabetes.anonymisera(intygData) : null
-
         } else {
             return anonymiseraJson.anonymiseraIntygsJson(intygData)
         }
