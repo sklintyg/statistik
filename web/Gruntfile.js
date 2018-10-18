@@ -16,6 +16,8 @@ module.exports = function(grunt) {
         sasslint: 'grunt-sass-lint'
     });
 
+    var sass = require('node-sass');
+
     var serveStatic = require('serve-static');
 
     // Time how long tasks take. Can help when optimizing build times
@@ -382,7 +384,8 @@ module.exports = function(grunt) {
                     '<%= config.client %>/app',
                     '<%= config.client %>/components',
                     '<%= config.node_modules %>/compass-mixins/lib'
-                ]
+                ],
+                implementation: sass
             },
             client: {
                 files: {
