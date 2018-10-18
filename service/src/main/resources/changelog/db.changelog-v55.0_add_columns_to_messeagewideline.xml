@@ -54,7 +54,7 @@
   </changeSet>
 
   <changeSet id="55_3_update_intygcommon_active_column" author="martin.hesslund">
-    <sql>UPDATE intygcommon as ic SET ic.active = false WHERE ic.intygid IN (SELECT i.intygid FROM intygcommon as i WHERE i.eventType = 1 AND ic.intygid = i.intygid)</sql>
+    <sql>UPDATE intygcommon SET active = false WHERE intygid IN (SELECT intygid FROM (SELECT intygid FROM intygcommon WHERE eventType = 1) as intyg)</sql>
   </changeSet>
 
   <changeSet id="55_4_update_messagewideline_columns" author="martin.hesslund">
