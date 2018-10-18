@@ -21,7 +21,7 @@ HSA fileservice hämta en lista över sjukvårdsenheter från HSA och uppdaterar
 
 Den här sektionen beskriver hur man bygger Inera Statistics för att kunna köras helt fristående.
 
-Vi använder Gradle, för närvarande version 2.13, för att bygga applikationerna.
+Vi använder Gradle för att bygga applikationerna.
 
 Börja med att skapa en lokal klon av källkodsrepositoryt:
 
@@ -50,20 +50,11 @@ För att starta applikationen i debugläge används:
 Applikationen kommer då att starta upp med debugPort = **5011**. Det är denna port du ska använda när du sätter upp din
 debug-konfiguration i din utvecklingsmiljö.
 
-### Uppgradera från node 0.12
-Installera nodjs 6.6.0 tex med NVM, https://github.com/creationix/nvm
-
-Har du nvm så kan du skriva
-
-    nvm install 6.6
-    nvm alias default 6.6
-
-Ta bort `web/node_modules` och `web/src/main/webapp/bower_components`
-
-Följ anvisningarna i "Bygga klienten utanför gradle"
-
 ### Bygga klienten utanför gradle
-Installera nodjs 6.5.0 tex med NVM, https://github.com/creationix/nvm
+Installera nodjs 10.12.0 tex med NVM, https://github.com/creationix/nvm
+
+    nvm install 10.12
+    nvm alias default 10.12
 
 Installera grunt och bower
 
