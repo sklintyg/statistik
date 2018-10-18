@@ -18,14 +18,15 @@
  */
 package se.inera.statistics.service.processlog.intygsent;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.service.processlog.Processor;
 
-import java.util.List;
+import se.inera.statistics.service.processlog.Processor;
 
 @Component
 public class IntygsentLogConsumerImpl implements IntygsentLogConsumer {
@@ -40,7 +41,7 @@ public class IntygsentLogConsumerImpl implements IntygsentLogConsumer {
 
     @Transactional
     @Override
-    public synchronized long processBatch() {
+    public synchronized int processBatch() {
         List<IntygSentEvent> result = processLog.getPending(BATCH_SIZE);
         if (result.isEmpty()) {
             return 0;

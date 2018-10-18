@@ -20,8 +20,6 @@ package se.inera.statistics.scheduler.active;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import net.javacrumbs.shedlock.core.SchedulerLock;
@@ -29,22 +27,25 @@ import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
 import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.LogConsumer;
+import se.inera.statistics.service.processlog.intygsent.IntygsentLogConsumer;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
 public class LogJob {
     private static final Logger LOG = LoggerFactory.getLogger(LogJob.class);
     private static final String JOB_NAME = "LogJob.run";
 
-    private LogConsumer consumer;
-    private MessageLogConsumer messageLogConsumer;
-    private LogMDCHelper logMDCHelper;
-
-    @Autowired
-    @Qualifier("serviceMonitoringLogService")
     private MonitoringLogService monitoringLogService;
 
-    public LogJob(LogConsumer consumer, MessageLogConsumer messageLogConsumer, LogMDCHelper logMDCHelper) {
+    private LogConsumer consumer;
+    private MessageLogConsumer messageLogConsumer;
+    private IntygsentLogConsumer intygsentLogConsumer;
+    private LogMDCHelper logMDCHelper;
+
+    public LogJob(MonitoringLogService monitoringLogService, LogConsumer consumer, IntygsentLogConsumer intygsentLogConsumer,
+                  MessageLogConsumer messageLogConsumer, LogMDCHelper logMDCHelper) {
+        this.monitoringLogService = monitoringLogService;
         this.consumer = consumer;
+        this.intygsentLogConsumer = intygsentLogConsumer;
         this.messageLogConsumer = messageLogConsumer;
         this.logMDCHelper = logMDCHelper;
     }
@@ -64,6 +65,10 @@ public class LogJob {
                 }
             } while (count > 0);
 
+            do {
+                count = intygsentLogConsumer.processBatch();
+                LOG.info("Processed sent batch with {} entries", count);
+            } while (count > 0);
 
             // Process messages after intyg
             long startId;

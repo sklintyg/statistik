@@ -20,6 +20,6 @@ package se.inera.statistics.service.processlog.intygsent;
 
 public interface IntygsentLogConsumer {
 
-    long processBatch();
+    int processBatch();
 
 }

@@ -23,6 +23,7 @@ import java.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -34,7 +35,9 @@ import net.javacrumbs.shedlock.provider.redis.spring.RedisLockProvider;
 import net.javacrumbs.shedlock.spring.ScheduledLockConfiguration;
 import net.javacrumbs.shedlock.spring.ScheduledLockConfigurationBuilder;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
+import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.LogConsumer;
+import se.inera.statistics.service.processlog.intygsent.IntygsentLogConsumer;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
 /**
@@ -59,7 +62,14 @@ public class JobConfiguration {
     private LogConsumer consumer;
 
     @Autowired
+    private IntygsentLogConsumer intygsentLogConsumer;
+
+    @Autowired
     private LogMDCHelper logMDCHelper;
+
+    @Autowired
+    @Qualifier("serviceMonitoringLogService")
+    private MonitoringLogService monitoringLogService;
 
     @Bean
     public ScheduledLockConfiguration taskScheduler(final LockProvider lockProvider) {
@@ -78,6 +88,6 @@ public class JobConfiguration {
 
     @Bean
     public LogJob logJob() {
-        return new LogJob(consumer, messageLogConsumer, logMDCHelper);
+        return new LogJob(monitoringLogService, consumer, intygsentLogConsumer, messageLogConsumer, logMDCHelper);
     }
 }

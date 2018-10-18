@@ -20,8 +20,11 @@ package se.inera.statistics.scheduler.active;
 
 import org.junit.Test;
 import org.mockito.Mockito;
+
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
+import se.inera.statistics.service.monitoring.MonitoringLogService;
 import se.inera.statistics.service.processlog.LogConsumer;
+import se.inera.statistics.service.processlog.intygsent.IntygsentLogConsumer;
 import se.inera.statistics.service.processlog.message.MessageLogConsumer;
 
 public class LogJobTest {
@@ -29,17 +32,24 @@ public class LogJobTest {
     @Test
     public void testCheckLogContinueProcessingUntilDone() {
         //Given
+        MonitoringLogService monitoringLogService = Mockito.mock(MonitoringLogService.class);
         LogConsumer logConsumer = Mockito.mock(LogConsumer.class);
+        IntygsentLogConsumer intygsentLogConsumer = Mockito.mock(IntygsentLogConsumer.class);
         MessageLogConsumer messageLogConsumer = Mockito.mock(MessageLogConsumer.class);
         LogMDCHelper mdcHelper = new LogMDCHelper();
 
+        Mockito.when(logConsumer.processBatch()).thenReturn(100).thenReturn(0);
+        Mockito.when(intygsentLogConsumer.processBatch()).thenReturn(100).thenReturn(100).thenReturn(100).thenReturn(100).thenReturn(0);
         Mockito.when(messageLogConsumer.processBatch(Mockito.anyLong())).thenReturn(100L).thenReturn(101L).thenReturn(101L);
-        final LogJob logJob = new LogJob(logConsumer, messageLogConsumer, mdcHelper);
+
+        final LogJob logJob = new LogJob(monitoringLogService, logConsumer, intygsentLogConsumer, messageLogConsumer, mdcHelper);
 
         //When
         logJob.run();
 
         //Then
+        Mockito.verify(logConsumer, Mockito.times(2)).processBatch();
+        Mockito.verify(intygsentLogConsumer, Mockito.times(5)).processBatch();
         Mockito.verify(messageLogConsumer, Mockito.times(3)).processBatch(Mockito.anyLong());
     }
 
