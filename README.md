@@ -146,6 +146,11 @@ uppfyller detta krav så fallerar bygget. För att lägga till licens-header kö
 
 ## Releasebyggen
 
+
+## Omkörning av statistiken
+
+Beskrivning finns i [OMKORNING.md](OMKORNING.md)
+
 ## Liquibase
 Liquibase används för att skapa och underhålla underliggande databas. Alla ändringar av databasen måste reflekteras i liquibase-script. Vi använder H2 under utveckling och MySql i andra sammanhang, så scripten måste fungera för båda dessa alternativ.
 
