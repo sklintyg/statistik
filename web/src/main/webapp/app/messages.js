@@ -228,9 +228,9 @@ var stMessages = {
         'login.alert-inaktivitet': 'Du är utloggad. Du har blivit utloggad från Intygsstatistik på grund av inaktivitet. Vänligen logga in igen för att komma vidare.',
         'login.alert-info': 'Info!',
         'login.alert-danger': 'Ajdå!',
-        'login.instruktioner-for-login': 'För att logga in behöver du ett SITHS-kort samt medarbetaruppdraget "Statistik" i HSA-katalogen.',
+        'login.instruktioner-for-login': 'För att logga in behöver du ett SITHS/Efos-kort samt medarbetaruppdraget "Statistik" i HSA-katalogen.',
         'login.btn.siths-login': 'Logga in',
-        'login.siths.problem': 'Problem med inloggning med SITHS-kort?',
+        'login.siths.problem': 'Problem med inloggning med SITHS/Efos-kort?',
         'login.siths.problem-link': 'Läs mer om hur du kan felsöka.',
 
         'selectvg.header': 'Välj vårdgivare',
@@ -331,7 +331,7 @@ var stMessages = {
             'Uppföljningsområde kan vara en eller flera vårdenheter, eller hela vårdgivaren om du har ett övergripande uppföljningsansvar. ' +
             'Det krävs att du har ett medarbetaruppdrag för statistik som delas ut av din verksamhetschef och sätts av din HSA-administratör. För att kunna logga in och se statistik krävs:</p>' +
             '<ul>' +
-            '<li>ett SITHS-kort med pinkod</li>' +
+            '<li>ett SITHS/Efos-kort med pinkod</li>' +
             '<li>en kortläsare med tillhörande programvara, NetID</li>' +
             '<li>ett medarbetaruppdrag i HSA som ger dig rätt att ta del av statistik</li>' +
             '</ul>' +
