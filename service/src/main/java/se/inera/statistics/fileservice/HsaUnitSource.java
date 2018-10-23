@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.intyg.statistik.tools;
+package se.inera.statistics.fileservice;
 
 import com.google.common.io.ByteStreams;
 import org.apache.http.HttpEntity;
@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -60,7 +61,7 @@ public final class HsaUnitSource {
     private HsaUnitSource() {
     }
 
-    public static ByteArrayInputStream getUnits(String certFileName, String certPass, String trustStoreName, String trustPass, String url) {
+    public static InputStream getUnits(String certFileName, String certPass, String trustStoreName, String trustPass, String url) {
         try (InputStream keystoreInput = new BufferedInputStream(new FileInputStream(certFileName));
                 InputStream truststoreInput = new BufferedInputStream(new FileInputStream(trustStoreName))) {
             final HttpParams httpParams = new BasicHttpParams();
@@ -77,14 +78,14 @@ public final class HsaUnitSource {
 
             final DefaultHttpClient httpClient = new DefaultHttpClient(new PoolingClientConnectionManager(schemeRegistry), httpParams);
 
-            final String zipFileName = "hsazip.zip";
-            LOG.info("Fetching data from: " + url + " and saving into file: " + zipFileName);
+            final File fetchedFile = File.createTempFile("hsazip-", ".zip");
+            LOG.info("Fetching data from: " + url + " and saving into file: " + fetchedFile);
             HttpGet httpget = new HttpGet(url);
             HttpResponse response = httpClient.execute(httpget);
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 try (InputStream instream = entity.getContent();
-                     OutputStream receivedZipFile = new FileOutputStream(zipFileName);) {
+                     OutputStream receivedZipFile = new FileOutputStream(fetchedFile)) {
                     byte[] buffer = new byte[BUFFER_SIZE];
 
                     int len;
@@ -92,7 +93,7 @@ public final class HsaUnitSource {
                         receivedZipFile.write(buffer, 0, len);
                     }
                 }
-                try (ZipFile zipFile = new ZipFile(zipFileName)) {
+                try (ZipFile zipFile = new ZipFile(fetchedFile)) {
                     final ZipEntry entry = zipFile.getEntry("hsaunits.xml");
                     int len = (int) entry.getSize();
                     final InputStream stream = new BufferedInputStream(zipFile.getInputStream(entry));

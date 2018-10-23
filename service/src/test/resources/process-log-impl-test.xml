@@ -58,6 +58,7 @@
     <bean class="se.inera.statistics.service.countypopulation.CountyPopulationManagerMock"/>
     <bean class="se.inera.statistics.service.helper.SendMessageToCareHelper"/>
     <bean class="se.inera.statistics.time.ChangableClock" factory-method="newChangable"/>
+    <bean class="se.inera.statistics.fileservice.UpdateEnhetNamnFromHsaFileService"/>
 
     <context:component-scan base-package="se.inera.statistics.service.warehouse,se.inera.statistics.service.monitoring,se.inera.statistics.config.jpa"/>
 

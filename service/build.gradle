@@ -34,6 +34,7 @@ dependencies {
     compile "se.inera.intyg.infra:common-redis-cache-core:${infraVersion}"
     compile "net.javacrumbs.shedlock:shedlock-spring:${shedlockSpringVersion}"
     compile "net.javacrumbs.shedlock:shedlock-provider-redis-spring:${shedlockSpringVersion}"
+    compile "org.apache.httpcomponents:httpclient:${httpClientVersion}"
 
     compileOnly "org.apache.geronimo.specs:geronimo-jms_1.1_spec:${jmsVersion}"
     compileOnly "org.apache.activemq:activemq-client:${activeMqVersion}"
@@ -43,4 +44,6 @@ dependencies {
     testCompile "org.springframework:spring-aop:${springContextVersion}"
     testCompile "org.aspectj:aspectjrt:${aspectJVersion}"
     testCompile "org.aspectj:aspectjweaver:${aspectJVersion}"
+    testCompile "org.eclipse.jetty:jetty-server:${jettyVersion}"
+
 }
