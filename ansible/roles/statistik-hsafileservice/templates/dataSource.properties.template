@@ -1,4 +1,0 @@
-dataSource.url={{ database_url }}
-dataSource.driver={{ database_driver }}
-dataSource.username={{ database_username }}
-dataSource.password={{ database_password }}

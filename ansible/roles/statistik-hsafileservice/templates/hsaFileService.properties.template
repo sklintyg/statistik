@@ -1,7 +1,0 @@
-certificate.file={{ hsa_certificate_file }}
-certificate.password={{ hsa_certificate_password_result.stdout }}
-certificate.type={{ hsa_certificate_type }}
-truststore.file={{ hsa_truststore_file }}
-truststore.password={{ hsa_truststore_password_result.stdout }}
-truststore.type={{ hsa_truststore_type }}
-hsaunits.url={{ hsaunits_url }}
