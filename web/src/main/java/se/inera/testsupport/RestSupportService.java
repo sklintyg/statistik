@@ -329,6 +329,12 @@ public class RestSupportService {
             count = consumer.processBatch();
             LOG.info("Processed batch with {} entries", count);
         } while (count > 0);
+
+        do {
+            count = intygsentLogConsumer.processBatch();
+            LOG.info("Processed batch with {} entries", count);
+        } while (count > 0);
+
         clearCaches();
 
         nationalChartDataService.buildNationalDataCache();
