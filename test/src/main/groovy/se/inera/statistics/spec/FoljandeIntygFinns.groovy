@@ -130,6 +130,8 @@ class FoljandeIntygFinns extends FoljandeFinns {
                 return executeForXmlFormatTS('/ts-bas.xml', "ts-bas");
             case ~/^(?i)TSTRK1031$/:
                 return executeForXmlFormatTS('/ts-diabetes.xml', "ts-diabetes");
+            case ~/^(?i)TSTRK1031-v3$/:
+                return executeForXmlFormatRegisterCertificate('/tstrk1031.xml', "TSTRK1031");
             default:
                 throw new RuntimeException("Unknown intyg format requested")
         }
