@@ -17,9 +17,10 @@ Test
 |19790529-9289|2015-02-10T12:25:15|enhet1|DB          |         |
 |19790219-9285|2015-02-12T12:25:15|enhet1|DOI         |         |
 |19790429-9272|2015-02-10T12:25:15|enhet1|AF00213     |         |
-|19790219-9285|2015-02-12T12:25:15|enhet1|TSTRK1007   |         |
-|19790429-9272|2015-02-10T12:25:15|enhet1|TSTRK1007-v3|         |
-|19790429-9272|2015-02-10T12:25:15|enhet1|TSTRK1031   |         |
+|19790219-9285|2015-02-12T12:25:15|enhet1|TSTRK1007-oldformat|         |
+|19790429-9272|2015-02-10T12:25:15|enhet1|TSTRK1007   |         |
+|19790429-9272|2015-02-10T12:25:15|enhet1|TSTRK1031-v2|         |
+|19790219-9285|2015-02-10T12:25:15|enhet1|TSTRK1031-v3|         |
 |19790629-9234|2015-03-29T12:25:15|enhet1|felaktigt   |         |
 
 !3 Då gäller:
@@ -35,4 +36,4 @@ Nationell:
 |2015|feb  |FK 7263/7804 Läkarintyg för sjukpenning                                  |3   |0       |
 |2015|feb  |AF00213 Arbetsförmedlingens medicinska utlåtande                         |1   |0       |
 |2015|feb  |TSTRK1007 Transportstyrelsens läkarintyg                                 |1   |1       |
-|2015|feb  |TSTRK1031 Transportstyrelsens läkarintyg diabetes                        |1   |0       |
+|2015|feb  |TSTRK1031 Transportstyrelsens läkarintyg diabetes                        |1   |1       |

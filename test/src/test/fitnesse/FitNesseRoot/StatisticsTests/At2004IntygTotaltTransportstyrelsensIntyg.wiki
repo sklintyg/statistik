@@ -8,14 +8,12 @@ Test
 
 | Enbart foljande intyg finns |
 | personnr | signeringstid | enhet | intygformat | kommentar |
-| 19790219-9285 | 2015-02-10T12:24:15 | enhet1 | TSTRK1007 | |
-| 19790219-9285 | 2015-02-12T12:25:15 | enhet1 | TSTRK1007-v3 | |
-| 19790429-9272 | 2015-02-10T12:25:15 | enhet1 | TSTRK1031 | |
-| 19790329-9256 | 2015-03-10T12:25:15 | enhet1 | TSTRK1031 | |
-| 19790529-9289 | 2015-03-10T12:25:15 | enhet1 | TSTRK1031 | |
+| 19790219-9285 | 2015-02-10T12:24:15 | enhet1 | TSTRK1007-oldformat | |
+| 19790219-9285 | 2015-02-12T12:25:15 | enhet1 | TSTRK1007 | |
+| 19790429-9272 | 2015-02-10T12:25:15 | enhet1 | TSTRK1031-v2 | |
+| 19790329-9256 | 2015-03-10T12:25:15 | enhet1 | TSTRK1031-v2 | |
+| 19790529-9289 | 2015-03-10T12:25:15 | enhet1 | TSTRK1031-v3 | |
 | 19790529-9269 | 2015-03-10T12:25:15 | enhet1 | TSTRK1031-v3 | |
-
-#|19790529-9269|2015-03-10T12:25:15|enhet1|TSTRK1031-002|         |
 
 #|19790529-9269|2015-03-10T12:25:15|enhet1|TSTRK1009| |
 
@@ -25,9 +23,11 @@ Då gäller:
 
 TSTRK1007 = Transportstyrelsens läkarintyg (Även kallat TS Bas i kravdokumentation)
 
-TSTRK1031 = Transportstyrelsens läkarintyg, diabetes (Även kallat TS Diabetes i kravdokumentation)
+TSTRK1007-oldformat = Samma som den ovan, men de tidigare formatet. Dessa intyg klumpas samman med TSTRK1007.
 
-TSTRK1031-002 = Samma som den ovan, men en ny version. Dessa intyg klumpas samman med TSTRK1031.
+TSTRK1031-v2 = Transportstyrelsens läkarintyg, diabetes (Även kallat TS Diabetes i kravdokumentation)
+
+TSTRK1031-v3 = Samma som den ovan, men en ny version. Dessa intyg klumpas samman med TSTRK1031.
 
 Inloggad:
 
