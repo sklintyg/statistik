@@ -62,15 +62,17 @@ public class VerksamhetOverviewConverter {
         SickLeaveLengthOverview sickLeaveLength = new SickLeaveLengthOverview(sickLeaveLengthData, resp.getLongSickLeavesTotal(),
                 resp.getLongSickLeavesAlternation());
 
+        List<DonutChartData> kompletteringar = resp.getKompletteringar().stream().map(mapOverviewRowData()).collect(Collectors.toList());
+
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
         List<Message> messages = message == null ? new ArrayList<>() : Arrays.asList(message);
 
         return new VerksamhetOverviewData(range.toString(), casesPerMonth, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
-                sickLeaveLength, resp.getAvailableFilters(), filterResponse, messages);
+                sickLeaveLength, kompletteringar, resp.getAvailableFilters(), filterResponse, messages);
     }
 
     private Function<OverviewChartRowExtended, DonutChartData> mapOverviewRowData() {
-        return (r) -> new DonutChartData(r.getName(), r.getQuantity(), r.getAlternation(), r.getColor());
+        return (r) -> new DonutChartData(r.getName(), r.getQuantity(), r.getAlternation(), r.getColor(), r.isHideInTable());
     }
 
 }

@@ -36,15 +36,19 @@ public class VerksamhetOverviewResponse extends AvailableFiltersResponse {
     private final List<OverviewChartRow> sickLeaveLengthGroups;
     private final int longSickLeavesTotal;
     private final int longSickLeavesAlternation;
+    private final List<OverviewChartRowExtended> kompletteringar;
 
     // CHECKSTYLE:OFF ParameterNumberCheck
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public VerksamhetOverviewResponse(AvailableFilters availableFilters, int totalCases,
-            OverviewKonsfordelning casesPerMonthSexProportionPreviousPeriod,
-            List<OverviewChartRowExtended> diagnosisGroups,
-            List<OverviewChartRowExtended> ageGroups, List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
-            List<OverviewChartRow> sickLeaveLengthGroups,
-            int longSickLeavesTotal, int longSickLeavesAlternation) {
+                                      OverviewKonsfordelning casesPerMonthSexProportionPreviousPeriod,
+                                      List<OverviewChartRowExtended> diagnosisGroups,
+                                      List<OverviewChartRowExtended> ageGroups,
+                                      List<OverviewChartRowExtended> degreeOfSickLeaveGroups,
+                                      List<OverviewChartRow> sickLeaveLengthGroups,
+                                      int longSickLeavesTotal,
+                                      int longSickLeavesAlternation,
+                                      List<OverviewChartRowExtended> kompletteringar) {
         super(availableFilters);
         this.totalCases = totalCases;
         this.casesPerMonthSexProportionPreviousPeriod = casesPerMonthSexProportionPreviousPeriod;
@@ -54,6 +58,7 @@ public class VerksamhetOverviewResponse extends AvailableFiltersResponse {
         this.sickLeaveLengthGroups = sickLeaveLengthGroups;
         this.longSickLeavesTotal = longSickLeavesTotal;
         this.longSickLeavesAlternation = longSickLeavesAlternation;
+        this.kompletteringar = kompletteringar;
     }
     // CHECKSTYLE:ON ParameterNumberCheck
 
@@ -87,6 +92,10 @@ public class VerksamhetOverviewResponse extends AvailableFiltersResponse {
 
     public int getLongSickLeavesAlternation() {
         return longSickLeavesAlternation;
+    }
+
+    public List<OverviewChartRowExtended> getKompletteringar() {
+        return kompletteringar;
     }
 
     @Override

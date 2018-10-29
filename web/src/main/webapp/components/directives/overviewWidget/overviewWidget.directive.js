@@ -31,6 +31,7 @@ angular.module('StatisticsApp').directive('overviewWidget',
                 chartId: '@',
                 options: '<',
                 groups: '<',
+                tableQuantityPostfix: '@',
                 columnTitle1: '@',
                 columnTitle2: '@',
                 columnTitle3: '@'
@@ -50,6 +51,12 @@ angular.module('StatisticsApp').directive('overviewWidget',
                         chart.destroy();
                     }
                 });
+
+                $scope.tableFilter = function (item) {
+                    if (!item.hideInTable) {
+                        return item;
+                    }
+                };
             }
         };
     });

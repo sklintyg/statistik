@@ -89,9 +89,11 @@ public class WarehouseService {
     @Autowired
     private EnhetManager enhetManager;
 
-    public VerksamhetOverviewResponse getOverview(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {
-        VerksamhetOverviewResponse overview = overviewQuery.getOverview(warehouse.get(vardgivarId), filter,
-                range, ReportUtil.getPreviousOverviewPeriod(range));
+    public VerksamhetOverviewResponse getOverview(Filter filter, Range range, HsaIdVardgivare vardgivarId) {
+        final MessagesFilter messagesFilterWithoutRange = new MessagesFilter(vardgivarId, null, null, filter.getEnheter(),
+                filter.getAldersgrupp(), filter.getDiagnoser(), filter.getIntygstyper());
+        VerksamhetOverviewResponse overview = overviewQuery.getOverview(warehouse.get(vardgivarId), filter.getPredicate(),
+                range, ReportUtil.getPreviousOverviewPeriod(range), messagesFilterWithoutRange);
 
         List<OverviewChartRowExtended> diagnosisGroups = new DiagnosisGroupsConverter().convert(overview.getDiagnosisGroups());
         List<OverviewChartRowExtended> ageGroups = new AldersGroupsConverter().convert(overview.getAgeGroups());
@@ -99,7 +101,7 @@ public class WarehouseService {
         return new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), overview.getTotalCases(),
                 overview.getCasesPerMonthSexProportionPreviousPeriod(),
                 diagnosisGroups, ageGroups, overview.getDegreeOfSickLeaveGroups(), overview.getSickLeaveLengthGroups(),
-                overview.getLongSickLeavesTotal(), overview.getLongSickLeavesAlternation());
+                overview.getLongSickLeavesTotal(), overview.getLongSickLeavesAlternation(), overview.getKompletteringar());
     }
 
     public SimpleKonResponse getCasesPerMonth(FilterPredicates filter, Range range, HsaIdVardgivare vardgivarId) {

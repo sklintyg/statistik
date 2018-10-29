@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.web.model.overview;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 
 public class DonutChartData implements Serializable {
@@ -27,11 +29,19 @@ public class DonutChartData implements Serializable {
     private final Number quantity;
     private final Number alternation;
 
-    public DonutChartData(String name, Number quantity, Number alternation, String color) {
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private final Boolean hideInTable;
+
+    public DonutChartData(String name, Number quantity, Number alternation, String color, Boolean hideInTable) {
         this.color = color;
         this.name = name;
         this.quantity = quantity;
         this.alternation = alternation;
+        this.hideInTable = hideInTable;
+    }
+
+    public DonutChartData(String name, Number quantity, Number alternation, String color) {
+        this(name, quantity, alternation, color, null);
     }
 
     public String getColor() {
@@ -48,6 +58,10 @@ public class DonutChartData implements Serializable {
 
     public Number getAlternation() {
         return alternation;
+    }
+
+    public Boolean getHideInTable() {
+        return hideInTable;
     }
 
 }

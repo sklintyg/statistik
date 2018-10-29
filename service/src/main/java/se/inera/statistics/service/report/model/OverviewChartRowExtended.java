@@ -22,11 +22,17 @@ public class OverviewChartRowExtended extends OverviewChartRow {
 
     private final int alternation;
     private final String color;
+    private final Boolean hideInTable;
 
     public OverviewChartRowExtended(String name, int quantity, int alternation, String color) {
+        this(name, quantity, alternation, color, null);
+    }
+
+    public OverviewChartRowExtended(String name, int quantity, int alternation, String color, Boolean hideInTable) {
         super(name, quantity);
         this.color = color;
         this.alternation = alternation;
+        this.hideInTable = hideInTable;
     }
 
     public int getAlternation() {
@@ -35,6 +41,10 @@ public class OverviewChartRowExtended extends OverviewChartRow {
 
     public String getColor() {
         return color;
+    }
+
+    public Boolean isHideInTable() {
+        return hideInTable;
     }
 
     @Override

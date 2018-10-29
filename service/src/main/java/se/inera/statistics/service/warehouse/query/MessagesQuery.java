@@ -40,11 +40,14 @@ import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Lakare;
 import se.inera.statistics.service.processlog.LakareManager;
+import se.inera.statistics.service.report.common.ReportColor;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
@@ -561,6 +564,42 @@ public class MessagesQuery {
             groups.add(msgAmne.name());
         }
         return new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, result);
+    }
+
+    public List<OverviewChartRowExtended> getOverviewKompletteringar(MessagesFilter messagesFilterWithoutRange,
+                                                                     Range currentPeriod, Range previousPeriod) {
+        MessagesFilter messageFilterCurrentRange = getMessageFilterForSjukpenningWithRange(messagesFilterWithoutRange, currentPeriod);
+        MessagesFilter messageFilterPreviousRange = getMessageFilterForSjukpenningWithRange(messagesFilterWithoutRange, previousPeriod);
+        final SimpleKonResponse andelKompletteringarCurrent = getAndelKompletteringarTvarsnitt(messageFilterCurrentRange);
+        final SimpleKonResponse andelKompletteringarPrevious = getAndelKompletteringarTvarsnitt(messageFilterPreviousRange);
+        final AndelExtras currentExtras = (AndelExtras) andelKompletteringarCurrent.getRows().stream()
+                .filter(p -> IntygType.getByItIntygType(p.getName()).isSjukpenningintyg()).findAny()
+                .orElse(new SimpleKonDataRow(null, 0, 0)).getExtras();
+        final int maxPercentage = 100;
+        final int current = currentExtras.getWhole() != 0 ? maxPercentage * currentExtras.getPart() / currentExtras.getWhole() : 0;
+        final AndelExtras previousExtras = (AndelExtras) andelKompletteringarPrevious.getRows().stream()
+                .filter(p -> IntygType.getByItIntygType(p.getName()).isSjukpenningintyg()).findAny()
+                .orElse(new SimpleKonDataRow(null, 0, 0)).getExtras();
+        final int previous = previousExtras.getWhole() != 0 ? maxPercentage * previousExtras.getPart() / previousExtras.getWhole() : 0;
+        List<OverviewChartRowExtended> resp = new ArrayList<>();
+        resp.add(new OverviewChartRowExtended("Sjukpenningintyg med komplettering", current, current - previous,
+                ReportColor.ST_COLOR_01.getColor(), false));
+        resp.add(new OverviewChartRowExtended("Sjukpenningintyg utan komplettering", maxPercentage - current, 0,
+                ReportColor.ST_COLOR_02.getColor(), true));
+        return resp;
+    }
+
+    private MessagesFilter getMessageFilterForSjukpenningWithRange(MessagesFilter filter, Range range) {
+        final Collection<String> intygstyper = filter.getIntygstyper() == null || filter.getIntygstyper().isEmpty()
+                ? Collections.singleton(IntygType.SJUKPENNING.name())
+                : filter.getIntygstyper().stream().filter(s -> IntygType.SJUKPENNING.getText().equals(s)).collect(Collectors.toSet());
+        final HsaIdVardgivare vgid = filter.getVardgivarId();
+        final LocalDate from = range.getFrom();
+        final LocalDate to = range.getTo();
+        final Collection<HsaIdEnhet> enheter = filter.getEnheter();
+        final Collection<String> aldersgrupp = filter.getAldersgrupp();
+        final Collection<String> diagnoser = filter.getDiagnoser();
+        return new MessagesFilter(vgid, from, to, enheter, aldersgrupp, diagnoser, intygstyper);
     }
 
 }

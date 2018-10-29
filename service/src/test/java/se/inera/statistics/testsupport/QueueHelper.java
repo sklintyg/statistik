@@ -35,6 +35,7 @@ import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.ReportUtil;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.NationellDataInfo;
 import se.inera.statistics.service.warehouse.NationellDataInvoker;
@@ -43,12 +44,14 @@ import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
+import se.inera.statistics.service.warehouse.query.MessagesFilter;
 import se.inera.statistics.service.warehouse.query.OverviewQuery;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,11 +110,16 @@ public class QueueHelper {
         printAndGetSjukfallslangdGrupp(vardenhet1, vardenhet2, range, result, nationellDataInfo);
         printAndGetCasesPerCountyNationell(range, result, nationellDataInfo);
 
-        VerksamhetOverviewResponse verksamhetOverview1 = overviewQuery.getOverview(warehouse.get(new HsaIdVardgivare("vg")),
-                sjukfallUtil.createEnhetFilter(vardenhet1), range, ReportUtil.getPreviousOverviewPeriod(range));
+        final HsaIdVardgivare vg = new HsaIdVardgivare("vg");
+        final MessagesFilter messagesFilter = new MessagesFilter(vg, null, null, Collections.singleton(vardenhet1),
+                Collections.emptySet(), Collections.emptySet(), Collections.emptySet());
+        VerksamhetOverviewResponse verksamhetOverview1 = overviewQuery.getOverview(warehouse.get(vg),
+                sjukfallUtil.createEnhetFilter(vardenhet1), range, ReportUtil.getPreviousOverviewPeriod(range), messagesFilter);
         LOG.info("VO data: " + verksamhetOverview1);
-        VerksamhetOverviewResponse verksamhetOverview2 = overviewQuery.getOverview(warehouse.get(new HsaIdVardgivare("vg")),
-                sjukfallUtil.createEnhetFilter(vardenhet2), range, ReportUtil.getPreviousOverviewPeriod(range));
+        final MessagesFilter messagesFilter2 = new MessagesFilter(vg, null, null, Collections.singleton(vardenhet2),
+                Collections.emptySet(), Collections.emptySet(), Collections.emptySet());
+        VerksamhetOverviewResponse verksamhetOverview2 = overviewQuery.getOverview(warehouse.get(vg),
+                sjukfallUtil.createEnhetFilter(vardenhet2), range, ReportUtil.getPreviousOverviewPeriod(range), messagesFilter2);
         LOG.info("VO data: " + verksamhetOverview2);
         OverviewResponse overviewNationell = nationellOverview.getOverview(nationellDataInfo);
         LOG.info("NO data: " + overviewNationell);

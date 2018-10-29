@@ -45,6 +45,8 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
                 '<br><br>Ställ markören i respektive stapel för att se antalet sjukfall.';
         $scope.popoverTextDegreeOfSickLeave = 'Diagrammet visar antalet sjukfall per sjukskrivningsgrad under perioden  ' + result.periodText + '.' +
             popoverTextChangeCurrentVSPrevious;
+        $scope.popoverTextKompletteringar = 'Diagrammet visar hur stor andel läkarintyg för sjukpenning (FK 7804), av alla sjukpenningintyg som skickats till Försäkringskassan, som har fått minst en komplettering tillbaka under perioden ' + result.periodText + '.' +
+            '<br><br>Spalten förändring visar skillnaden i procentenheter för andel sjukpenningintyg med komplettering mellan perioden ' + result.periodText + ' jämfört med samma tremånadersperiod föregående år.';
         $scope.popoverTextPeriod = result.periodText;
         $scope.doneLoading = true;
 
@@ -117,14 +119,14 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         };
     };
 
-    var paintDonutChart = function(chartData) {
+    var paintDonutChart = function(chartData, dataUnit) {
 
         var chartConfigOptions = {
             categories: [],
             series: [],
             type: 'pie',
             overview: true,
-            unit: 'sjukfall'
+            unit: dataUnit ? dataUnit : 'sjukfall'
         };
 
         var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
@@ -168,6 +170,11 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         var ageGroupsDonutData = extractDonutData(result.ageGroups);
         $scope.ageChartOptions = paintDonutChart(ageGroupsDonutData);
         $scope.ageGroups = result.ageGroups;
+
+        chartFactory.addColor(result.degreeOfSickLeaveGroups);
+        var kompletteringarDonutData = extractDonutData(result.kompletteringar);
+        $scope.kompletteringarChartOptions = paintDonutChart(kompletteringarDonutData, '%');
+        $scope.kompletteringar = result.kompletteringar;
 
         chartFactory.addColor(result.degreeOfSickLeaveGroups);
         var degreeOfSickLeaveDonutData = extractDonutData(result.degreeOfSickLeaveGroups);

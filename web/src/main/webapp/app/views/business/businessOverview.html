@@ -165,6 +165,20 @@
 								</div>
 							</a>
 						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 left-2px-padding right-2px-padding">
+							<a data-ng-href="{{::baseUrl}}/andelkompletteringar{{queryString}}" id="kompletteringarHeaderLink" class="overview-widget-link">
+								<overview-widget title-key="business.widget.header.kompletteringar"
+												 tooltip-content="popoverTextKompletteringar"
+												 chart-id="kompletteringarChart"
+												 options="kompletteringarChartOptions"
+												 groups="kompletteringar"
+												 table-quantity-postfix=" %"
+												 column-title1="overview.widget.table.column.kompletteringar"
+												 column-title2="overview.widget.table.column.andel"
+												 column-title3="overview.widget.table.column.forandring">
+								</overview-widget>
+							</a>
+						</div>
 					</div>
 					<!-- End business overview boxes -->
 				</div>

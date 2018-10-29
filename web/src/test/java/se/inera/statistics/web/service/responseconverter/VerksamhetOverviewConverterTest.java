@@ -54,13 +54,14 @@ public class VerksamhetOverviewConverterTest {
         List<OverviewChartRowExtended> ageGroups = new ArrayList<>();
         List<OverviewChartRowExtended> degreeOfSickLeaveGroups = new ArrayList<>();
         List<OverviewChartRow> sickLeaveLengthGroups = new ArrayList<>();
+        List<OverviewChartRowExtended> kompletteringar = new ArrayList<>();
         int longSickLeavesTotal = 3;
         int longSickLeavesAlternation = 4;
         final int totalCases = 5;
 
         //When
         VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), totalCases, overviewKonsfordelning, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
-                sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation);
+                sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, kompletteringar);
         VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range(clock), Filter.empty(), null);
 
         //Then
@@ -81,6 +82,8 @@ public class VerksamhetOverviewConverterTest {
         degreeOfSickLeaveGroups.add(new OverviewChartRowExtended("degName", 5, 6, null));
         List<OverviewChartRow> sickLeaveLengthGroups = new ArrayList<>();
         sickLeaveLengthGroups.add(new OverviewChartRow("sickName", 7));
+        List<OverviewChartRowExtended> kompletteringar = new ArrayList<>();
+        kompletteringar.add(new OverviewChartRowExtended("kompletteringname", 9, 3, null));
         int longSickLeavesTotal = 5;
         int longSickLeavesAlternation = 6;
         List<OverviewChartRowExtended> perCounty = new ArrayList<>();
@@ -89,7 +92,7 @@ public class VerksamhetOverviewConverterTest {
         int totalCases = 7;
         //When
         VerksamhetOverviewResponse resp = new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), totalCases, overviewKonsfordelning, diagnosisGroups, ageGroups, degreeOfSickLeaveGroups,
-                sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation);
+                sickLeaveLengthGroups, longSickLeavesTotal, longSickLeavesAlternation, kompletteringar);
         VerksamhetOverviewData data = new VerksamhetOverviewConverter().convert(resp, new Range(clock), Filter.empty(), null);
 
         //Then
@@ -123,6 +126,12 @@ public class VerksamhetOverviewConverterTest {
         assertEquals(7, sickGroupsResult.getChartData().get(0).getQuantity());
         assertEquals(longSickLeavesAlternation, sickGroupsResult.getLongSickLeavesAlternation());
         assertEquals(longSickLeavesTotal, sickGroupsResult.getLongSickLeavesTotal());
+
+        List<DonutChartData> kompletteringResult = data.getKompletteringar();
+        assertEquals(1, kompletteringResult.size());
+        assertEquals("kompletteringname", kompletteringResult.get(0).getName());
+        assertEquals(9, kompletteringResult.get(0).getQuantity());
+        assertEquals(3, kompletteringResult.get(0).getAlternation());
     }
 
     // CHECKSTYLE:ON MagicNumber

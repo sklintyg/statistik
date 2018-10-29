@@ -762,7 +762,7 @@ public class ProtectedChartDataService {
         final Filter filter = filterSettings.getFilter();
         final Range range = Range.quarter(clock);
         final Message message = getOverviewMsg(filterHash, range);
-        VerksamhetOverviewResponse response = warehouse.getOverview(filter.getPredicate(), range,
+        VerksamhetOverviewResponse response = warehouse.getOverview(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final VerksamhetOverviewData overviewData = new VerksamhetOverviewConverter().convert(response, range, filter, message);
 

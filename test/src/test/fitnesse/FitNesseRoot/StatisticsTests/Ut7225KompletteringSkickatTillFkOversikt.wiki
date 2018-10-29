@@ -1,0 +1,43 @@
+---
+Test
+---
+
+!3 Givet att:
+|script|dagens datum|2015-05-06|
+
+|Enbart foljande intyg finns                                                     |
+|intygid|personnr     |signeringstid      |enhet |intygformat|
+|1001   |19790219-9285|2015-02-10T12:24:30|enhet1|LISJP      |
+|1002   |19790429-9272|2015-03-10T12:25:30|enhet1|LISJP      |
+|1003   |19790429-9272|2015-04-10T12:25:30|enhet1|LISJP      |
+|1004   |19791212-1212|2015-04-10T12:25:30|enhet1|LISJP      |
+|1005   |19790219-9285|2014-02-10T12:24:30|enhet1|LISJP      |
+|1006   |19790429-9272|2014-03-10T12:25:30|enhet1|LISJP      |
+|1007   |19790429-9272|2014-04-10T12:25:30|enhet1|LISJP      |
+|1008   |19791212-1212|2014-04-10T12:25:30|enhet1|LISJP      |
+
+|Intyg skickat till mottagare|
+|intygid      |mottagare     |
+|1001         |FKASSA        |
+|1002         |FKASSA        |
+|1003         |FKASSA        |
+|1004         |FKASSA        |
+|1005         |FKASSA        |
+|1006         |ANNAT         |
+|1007         |FKASSA        |
+|1008         |FKASSA        |
+
+|Foljande meddelanden finns                       |
+|personnr     |skickat            |intygsid|ämne  |
+|19790219-9285|2015-03-12T10:00:00|1001    |KOMPLT|
+|19790429-9272|2015-04-03T10:00:00|1002    |KOMPLT|
+|19790429-9272|2015-04-13T10:00:00|1003    |KOMPLT|
+|19790219-9285|2014-03-12T10:00:00|1005    |KOMPLT|
+|19790429-9272|2014-04-03T10:00:00|1006    |KOMPLT|
+|19790429-9272|2014-04-13T10:00:00|1007    |KOMPLT|
+
+!3 Då gäller:
+
+|Andel kompletteringar oversikt|
+|inloggad som|grupp                             |andel?|förändring?|
+|user1       |Sjukpenningintyg med komplettering|75    |9          |

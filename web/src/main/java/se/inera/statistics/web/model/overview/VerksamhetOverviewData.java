@@ -36,20 +36,22 @@ public class VerksamhetOverviewData implements FilteredDataReport {
     private final AvailableFilters availableFilters;
     private final FilterDataResponse filter;
     private final List<Message> messages;
+    private final List<DonutChartData> kompletteringar;
 
     // CHECKSTYLE:OFF ParameterNumber
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
     public VerksamhetOverviewData(String periodText, VerksamhetNumberOfCasesPerMonthOverview casesPerMonth,
                                   List<DonutChartData> diagnosisGroups,
                                   List<DonutChartData> ageGroups, List<DonutChartData> degreeOfSickLeaveGroups,
-                                  SickLeaveLengthOverview sickLeaveLength, AvailableFilters availableFilters,
-                                  FilterDataResponse filter, List<Message> messages) {
+                                  SickLeaveLengthOverview sickLeaveLength, List<DonutChartData> kompletteringar,
+                                  AvailableFilters availableFilters, FilterDataResponse filter, List<Message> messages) {
         this.periodText = periodText;
         this.casesPerMonth = casesPerMonth;
         this.diagnosisGroups = diagnosisGroups;
         this.ageGroups = ageGroups;
         this.degreeOfSickLeaveGroups = degreeOfSickLeaveGroups;
         this.sickLeaveLength = sickLeaveLength;
+        this.kompletteringar = kompletteringar;
         this.availableFilters = availableFilters;
         this.filter = filter;
         this.messages = messages;
@@ -78,6 +80,10 @@ public class VerksamhetOverviewData implements FilteredDataReport {
 
     public SickLeaveLengthOverview getSickLeaveLength() {
         return sickLeaveLength;
+    }
+
+    public List<DonutChartData> getKompletteringar() {
+        return kompletteringar;
     }
 
     @Override

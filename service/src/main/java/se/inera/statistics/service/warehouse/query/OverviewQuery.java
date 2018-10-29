@@ -47,9 +47,13 @@ public class OverviewQuery {
     private DiagnosgruppQuery query;
 
     @Autowired
+    private MessagesQuery messagesQuery;
+
+    @Autowired
     private SjukfallUtil sjukfallUtil;
 
-    public VerksamhetOverviewResponse getOverview(Aisle aisle, FilterPredicates filter, Range currentPeriod, Range previousPeriod) {
+    public VerksamhetOverviewResponse getOverview(Aisle aisle, FilterPredicates filter, Range currentPeriod,
+                                                  Range previousPeriod, MessagesFilter messagesFilterWithoutRange) {
         SjukfallGroup currentSjukfall = getSjukfallGroup(aisle, filter, currentPeriod);
         SjukfallGroup previousSjukfall = getSjukfallGroup(aisle, filter, previousPeriod);
 
@@ -67,9 +71,12 @@ public class OverviewQuery {
         List<OverviewChartRow> sjukskrivningslangd = SjukskrivningslangdQuery
                 .getOverviewSjukskrivningslangd(currentSjukfall.getSjukfall(), Integer.MAX_VALUE);
 
+        List<OverviewChartRowExtended> kompletteringar = messagesQuery.getOverviewKompletteringar(
+                messagesFilterWithoutRange, currentPeriod, previousPeriod);
+
         return new VerksamhetOverviewResponse(AvailableFilters.getForSjukfall(), currentSjukfall.getSjukfall().size(),
                 currentKonsfordelning, diagnosgrupper, aldersgrupper, sjukskrivningsgrad,
-                sjukskrivningslangd, currentLongSjukfall, percentChange(currentLongSjukfall, previousLongSjukfall));
+                sjukskrivningslangd, currentLongSjukfall, percentChange(currentLongSjukfall, previousLongSjukfall), kompletteringar);
     }
 
     private SjukfallGroup getSjukfallGroup(Aisle aisle, FilterPredicates filter, Range range) {
