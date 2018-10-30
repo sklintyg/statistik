@@ -290,11 +290,11 @@ angular.module('StatisticsApp').factory('ControllerCommons',
             });
         }
 
-        this.formatOverViewTablePDF = function(thousandseparatedFilter, data) {
+        this.formatOverViewTablePDF = function(thousandseparatedFilter, data, tableQuantityPostfix) {
             var tableData = [];
 
             _.each(data, function(row) {
-                tableData.push([row.color, row.name, thousandseparatedFilter(row.quantity), row.alternation + ' %']);
+                tableData.push([row.color, row.name, thousandseparatedFilter(row.quantity) + (tableQuantityPostfix ? tableQuantityPostfix : ''), row.alternation + ' %']);
             });
 
             return tableData;

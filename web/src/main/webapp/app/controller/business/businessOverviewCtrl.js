@@ -269,6 +269,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         var ageDonutChart = $('#ageChart').highcharts();
         var degreeOfSickLeaveChart = $('#degreeOfSickLeaveChart').highcharts();
         var perMonthAlterationChart = $('#alterationChart').highcharts();
+        var kompletteringarChart = $('#kompletteringarChart').highcharts();
 
         charts.push([
             {
@@ -352,6 +353,21 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             ]
         });
 
+        charts.push({
+            chart: kompletteringarChart,
+            title: messageService.getProperty('business.widget.header.kompletteringar'),
+            width: 300,
+            height: 300,
+            displayWidth: 150,
+            table: {
+                header: ['',
+                    messageService.getProperty('overview.widget.table.column.kompletteringar'),
+                    messageService.getProperty('overview.widget.table.column.andel'),
+                    messageService.getProperty('overview.widget.table.column.forandring')
+                ],
+                data: ControllerCommons.formatOverViewTablePDF(thousandseparatedFilter, $scope.kompletteringar, ' %')
+            }
+        });
 
         pdfOverviewFactory.printOverview($scope, charts);
     };

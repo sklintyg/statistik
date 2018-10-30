@@ -582,9 +582,10 @@ public class MessagesQuery {
                 .orElse(new SimpleKonDataRow(null, 0, 0)).getExtras();
         final int previous = previousExtras.getWhole() != 0 ? maxPercentage * previousExtras.getPart() / previousExtras.getWhole() : 0;
         List<OverviewChartRowExtended> resp = new ArrayList<>();
-        resp.add(new OverviewChartRowExtended("Sjukpenningintyg med komplettering", current, current - previous,
+        final int alternation = current - previous;
+        resp.add(new OverviewChartRowExtended("Sjukpenningintyg med komplettering", current, alternation,
                 ReportColor.ST_COLOR_01.getColor(), false));
-        resp.add(new OverviewChartRowExtended("Sjukpenningintyg utan komplettering", maxPercentage - current, 0,
+        resp.add(new OverviewChartRowExtended("Sjukpenningintyg utan komplettering", maxPercentage - current, -1 * alternation,
                 ReportColor.ST_COLOR_02.getColor(), true));
         return resp;
     }
