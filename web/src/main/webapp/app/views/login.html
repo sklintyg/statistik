@@ -3,15 +3,21 @@
     <span message key="login.header"></span> <i class="glyphicon glyphicon-log-in"></i>
   </h1>
 
-  <p message key="login.instruktioner-for-login"></p>
-
   <p data-ng-if="loggedInWithoutStatistikuppdrag" class="alert alert-danger">
     <strong message key="login.alert-danger"></strong> <span message key="login.alert-info.behorighet"></span>
   </p>
   <p data-ng-if="loginTimedOut && !loggedInWithoutStatistikuppdrag" class="alert alert-info">
     <strong message key="login.alert-info"></strong> <span message key="login.alert-inaktivitet"></span>
   </p>
+  <p data-ng-if="(errorUrlParam == 'loginfailed')" class="alert alert-info">
+    <strong message key="login.alert-info"></strong> <span message key="login.alert-loginfailed"></span>
+  </p>
+  <p data-ng-if="(hasActiveStatUrl)" class="alert alert-info">
+    <strong message key="login.alert-info"></strong> <span message key="login.alert-loginrequired"></span>
+  </p>
 
+
+  <p message key="login.instruktioner-for-login"></p>
   <p>
     <a class="btn btn-success login-button" href="saml/login" message key="login.btn.siths-login"></a>
   </p>

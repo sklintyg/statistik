@@ -163,6 +163,13 @@
             <property name="defaultTargetUrl" value="/#/verksamhet"/>
         </bean>
 
+        <!-- Handler deciding where to redirect user after failed login -->
+        <bean id="failureRedirectHandler"
+              class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+            <property name="useForward" value="true"/>
+            <property name="defaultFailureUrl" value="/#/login?error=loginfailed"/>
+        </bean>
+
         <!-- Central storage of cryptographic keys -->
         <bean id="keyManager" class="org.springframework.security.saml.key.JKSKeyManager">
             <constructor-arg value="${saml.keystore.file}"/>

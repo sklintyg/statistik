@@ -19,7 +19,7 @@
 
 angular.module('StatisticsApp').controller('loginCtrl',
     /** @ngInject */
-    function ($scope, $rootScope, $uibModal) {
+    function ($scope, $rootScope, $uibModal, $location, $cookies) {
         'use strict';
 
         $scope.isLoggedIn = $rootScope.isLoggedIn;
@@ -36,6 +36,9 @@ angular.module('StatisticsApp').controller('loginCtrl',
         $scope.ok = function () {
             $scope.modalInstance.close();
         };
+
+        $scope.errorUrlParam = $location.search().error;
+        $scope.hasActiveStatUrl = $cookies.get('statUrl');
 
     }
 );
