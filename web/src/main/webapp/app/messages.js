@@ -3,6 +3,7 @@ var stMessages = {
     'sv': {
     	//generals
         'statistics.header': 'Intygsstatistik',
+        'empty': '',
 
         //navigation
         'nav.national-header': 'Nationell statistik',
