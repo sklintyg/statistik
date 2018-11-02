@@ -48,7 +48,7 @@ fitnesse {
     wikiStartPage = "StatisticsTests"
 
     if (project.hasProperty('fileOutput')) {
-        outputFormat = project.findProperty('outputFormat') ?: "xml&includehtml"
+        outputFormat = project.findProperty('outputFormat') ?: "xml&PoutputFormat"
     }
 
     def baseUrl = 'http://localhost:8080/'
