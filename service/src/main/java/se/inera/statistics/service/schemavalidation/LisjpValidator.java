@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 class LisjpValidator extends RegisterCertificateValidator {
 
     LisjpValidator() {
-        super("lisjp.sch");
+        super("lisjp.v1.sch");
     }
 
 }

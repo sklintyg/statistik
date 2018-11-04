@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 public class LuseValidator extends RegisterCertificateValidator {
 
     LuseValidator() {
-        super("luse.sch");
+        super("luse.v1.sch");
     }
 
 }

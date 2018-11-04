@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 class DbValidator extends RegisterCertificateValidator {
 
     DbValidator() {
-        super("db.sch");
+        super("db.v1.sch");
     }
 
 }

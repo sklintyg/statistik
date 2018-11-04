@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 class TsBasValidator extends RegisterCertificateValidator {
 
     TsBasValidator() {
-        super("tstrk1007.sch");
+        super("tstrk1007.v6.sch");
     }
 
 }

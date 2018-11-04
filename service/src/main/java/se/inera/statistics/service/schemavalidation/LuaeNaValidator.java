@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 class LuaeNaValidator extends RegisterCertificateValidator {
 
     LuaeNaValidator() {
-        super("luae_na.sch");
+        super("luae_na.v1.sch");
     }
 
 }

@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 class TsDiabetesValidator extends RegisterCertificateValidator {
 
     TsDiabetesValidator() {
-        super("tstrk1031.sch");
+        super("tstrk1031.v3.sch");
     }
 
 }

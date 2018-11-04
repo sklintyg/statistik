@@ -24,7 +24,7 @@ import org.springframework.stereotype.Component;
 class DoiValidator extends RegisterCertificateValidator {
 
     DoiValidator() {
-        super("doi.sch");
+        super("doi.v1.sch");
     }
 
 }
