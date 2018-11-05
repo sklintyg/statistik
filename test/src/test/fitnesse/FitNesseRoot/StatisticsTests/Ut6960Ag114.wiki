@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !3 Givet att:
@@ -11,9 +10,6 @@ Test
 | personnr      | signeringstid       | enhet  | intygformat | kommentar |
 | 19790219-9285 | 2015-02-10T12:24:15 | enhet1 | AG1-14      |           |
 | 19790219-9285 | 2015-02-12T12:25:15 | enhet1 | AG1-14      |           |
-| 19790429-9272 | 2015-02-10T12:25:15 | enhet1 | AG7804      |           |
-| 19790329-9256 | 2015-03-10T12:25:15 | enhet1 | AG7804      |           |
-| 19790529-9289 | 2015-03-10T12:25:15 | enhet1 | AG7804      |           |
 
 !3 Då gäller:
 Inloggad:
@@ -21,13 +17,9 @@ Inloggad:
 | Intyg i rapporten intyg totalt |
 | inloggad som  | år | månad | grupp | män? | kvinnor? |
 | user1 | 2015 | feb | AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperiod | 0 | 2 |
-| user1 | 2015 | feb | AG7804 Läkarintyg om arbetsförmåga - arbetsgivare | 1 | 0 |
 | user1 | 2015 | mar | AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperiod | 0 | 0 |
-| user1 | 2015 | mar | AG7804 Läkarintyg om arbetsförmåga - arbetsgivare | 1 | 1 |
 
 | Intyg i rapporten intyg totalt diagram |
 | inloggad som  | år | månad | grupp | män? | kvinnor? |
 | user1 | 2015 | feb | AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperiod | 0 | 2 |
-| user1 | 2015 | feb | AG7804 Läkarintyg om arbetsförmåga - arbetsgivare | 1 | 0 |
 | user1 | 2015 | mar | AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperiod | 0 | 0 |
-| user1 | 2015 | mar | AG7804 Läkarintyg om arbetsförmåga - arbetsgivare | 1 | 1 |

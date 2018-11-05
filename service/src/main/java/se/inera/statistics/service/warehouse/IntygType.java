@@ -40,7 +40,8 @@ public enum IntygType {
     LUAE_FS("luae_fs", "FK 7802", "FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång", true),
     UNKNOWN(null, "Okänt", "Okänt", false),
     TSTRK1007("ts-bas", "TSTRK1007", "TSTRK1007 Transportstyrelsens läkarintyg", true),
-    TSTRK1031("ts-diabetes", "TSTRK1031", "TSTRK1031 Transportstyrelsens läkarintyg diabetes", true);
+    TSTRK1031("ts-diabetes", "TSTRK1031", "TSTRK1031 Transportstyrelsens läkarintyg diabetes", true),
+    AG114("ag114", "AG1-14", "AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperioden", true);
 
     private static final Set<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT = Stream.of(LISJP, LUSE, LUAE_NA, LUAE_FS)
             .collect(Collectors.toSet());
@@ -48,8 +49,8 @@ public enum IntygType {
     private static final Set<IntygType> IS_SJUKPENNING = Stream.of(LISJP, FK7263)
             .collect(Collectors.toSet());
 
-    private static final List<IntygType> INCLUDED_IN_INTYG_TOTALT_REPORT = Arrays.asList(AF00213, LISJP, LUSE, LUAE_NA, LUAE_FS,
-            TSTRK1007, TSTRK1031);
+    private static final List<IntygType> INCLUDED_IN_INTYG_TOTALT_REPORT =
+            Arrays.asList(AG114, AF00213, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1007, TSTRK1031);
 
     private static final List<IntygType> INCLUDED_IN_INTYG_FILTER = Arrays.asList(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS);
 
