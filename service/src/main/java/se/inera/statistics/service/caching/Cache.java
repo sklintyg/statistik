@@ -47,6 +47,7 @@ import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
+import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallIterator;
 
@@ -63,6 +64,7 @@ public class Cache {
     private static final String SJUKFALLGROUP = REDIS_KEY_PREFIX + "SJUKFALLGROUP_";
     private static final String VGENHET = REDIS_KEY_PREFIX + "VGENHET_";
     private static final String ENHET = REDIS_KEY_PREFIX + "ENHET_";
+    private static final String EXISTING_INTYGTYPES = REDIS_KEY_PREFIX + "EXISTING_INTYGTYPES_";
     private static final String JOB_NAME = "Cache.clearCaches";
 
 
@@ -92,7 +94,7 @@ public class Cache {
     public void clearCaches() {
         logMDCHelper.run(() -> {
             LOG.info("Clear Redis Cache Keys");
-            template.delete(Lists.newArrayList(AISLE, SJUKFALLGROUP, VGENHET, ENHET, NATIONAL_DATA));
+            template.delete(Lists.newArrayList(AISLE, SJUKFALLGROUP, VGENHET, ENHET, NATIONAL_DATA, EXISTING_INTYGTYPES));
         });
     }
 
@@ -206,11 +208,15 @@ public class Cache {
         return lookup(NATIONAL_DATA, supplier.getClass().toString(), supplier);
     }
 
-
     public synchronized boolean getAndSetNationaldataCalculationOngoing(boolean b) {
         LOG.info("Getting and setting ongoing national data calculation");
         final Boolean ongoingCalculation = getAndSet(NATIONAL_DATA, "ONGOING_CALCULATION", () -> b);
         return ongoingCalculation != null ? ongoingCalculation : false;
+    }
+
+    public Collection<IntygType> getAllExistingIntygTypes(Supplier<Collection<IntygType>> supplier) {
+        LOG.info("Getting all existing intyg types");
+        return lookup(EXISTING_INTYGTYPES, supplier.getClass().toString(), supplier);
     }
 
 }

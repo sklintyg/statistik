@@ -77,6 +77,9 @@ public class IntygCommonManager {
     @Autowired
     private Icd10 icd10;
 
+    @Autowired
+    private Warehouse warehouse;
+
     @PersistenceContext(unitName = "IneraStatisticsLog")
     private EntityManager manager;
 
@@ -168,7 +171,8 @@ public class IntygCommonManager {
     }
 
     private KonDataResponse getIntygPerType(HsaIdVardgivare vardgivarId, IntygCommonFilter intygFilter, boolean isTvarsnitt) {
-        final Collection<IntygType> intygTypes = IntygType.getInIntygtypTotal();
+        final List<IntygType> intygTypes = new ArrayList<>(IntygType.getInIntygtypTotal());
+        intygTypes.retainAll(warehouse.getAllExistingIntygTypes());
         // Create new filter without intygstyper
         IntygCommonFilter newIntygFilter = new IntygCommonFilter(intygFilter.getRange(), intygFilter.getEnheter(),
                 intygFilter.getDiagnoser(), intygFilter.getAldersgrupp(), null);
@@ -397,6 +401,11 @@ public class IntygCommonManager {
             }
         }
         return false;
+    }
+
+    public Collection<IntygType> getAllExistingIntygTypes() {
+        final TypedQuery<IntygType> q = manager.createQuery("SELECT DISTINCT intygtyp FROM IntygCommon", IntygType.class);
+        return q.getResultList();
     }
 
 }

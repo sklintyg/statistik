@@ -47,6 +47,9 @@ public class Warehouse implements Iterable<Aisle> {
     @Autowired
     private Cache cache;
 
+    @Autowired
+    private IntygCommonManager intygCommonManager;
+
     private static IdMap<HsaIdEnhet> enhetsMap = new IdMap<>();
     private static IdMap<HsaIdLakare> lakareMap = new IdMap<>();
 
@@ -184,6 +187,10 @@ public class Warehouse implements Iterable<Aisle> {
             return Collections.unmodifiableMap(map);
         }
 
+    }
+
+    public Collection<IntygType> getAllExistingIntygTypes() {
+        return cache.getAllExistingIntygTypes(intygCommonManager::getAllExistingIntygTypes);
     }
 
 }

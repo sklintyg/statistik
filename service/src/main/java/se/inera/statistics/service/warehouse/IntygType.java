@@ -43,16 +43,17 @@ public enum IntygType {
     TSTRK1031("ts-diabetes", "TSTRK1031", "TSTRK1031 Transportstyrelsens läkarintyg diabetes", true),
     AG114("ag114", "AG1-14", "AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperioden", true);
 
-    private static final Set<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT = Stream.of(LISJP, LUSE, LUAE_NA, LUAE_FS)
-            .collect(Collectors.toSet());
+    private static final Set<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT = Collections.unmodifiableSet(
+            Stream.of(LISJP, LUSE, LUAE_NA, LUAE_FS).collect(Collectors.toSet()));
 
-    private static final Set<IntygType> IS_SJUKPENNING = Stream.of(LISJP, FK7263)
-            .collect(Collectors.toSet());
+    private static final Set<IntygType> IS_SJUKPENNING = Collections.unmodifiableSet(
+            Stream.of(LISJP, FK7263).collect(Collectors.toSet()));
 
-    private static final List<IntygType> INCLUDED_IN_INTYG_TOTALT_REPORT =
-            Arrays.asList(AG114, AF00213, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1007, TSTRK1031);
+    private static final List<IntygType> INCLUDED_IN_INTYG_TOTALT_REPORT = Collections.unmodifiableList(
+            Arrays.asList(AG114, AF00213, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1007, TSTRK1031));
 
-    private static final List<IntygType> INCLUDED_IN_INTYG_FILTER = Arrays.asList(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS);
+    private static final List<IntygType> INCLUDED_IN_INTYG_FILTER = Collections.unmodifiableList(
+            Arrays.asList(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS));
 
 
     private final String itIntygType; //The type name Intygtjansten is using and sends as metadata with all intyg
@@ -132,11 +133,11 @@ public enum IntygType {
         return UNKNOWN;
     }
 
-    public static Collection<IntygType> getInIntygtypFilter() {
+    public static List<IntygType> getInIntygtypFilter() {
         return INCLUDED_IN_INTYG_FILTER;
     }
 
-    public static Collection<IntygType> getInIntygtypTotal() {
+    public static List<IntygType> getInIntygtypTotal() {
         return INCLUDED_IN_INTYG_TOTALT_REPORT;
     }
 
