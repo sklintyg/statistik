@@ -50,7 +50,7 @@ public enum IntygType {
             Stream.of(LISJP, FK7263).collect(Collectors.toSet()));
 
     private static final List<IntygType> INCLUDED_IN_INTYG_TOTALT_REPORT = Collections.unmodifiableList(
-            Arrays.asList(AG114, AF00213, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1007, TSTRK1031));
+            Arrays.asList(AG114, AF00213, DB, DOI, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1007, TSTRK1031));
 
     private static final List<IntygType> INCLUDED_IN_INTYG_FILTER = Collections.unmodifiableList(
             Arrays.asList(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS));

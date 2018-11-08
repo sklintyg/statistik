@@ -19,14 +19,14 @@ DOI = Dödsorsaksintyg
 
 Inloggad:
 
-#| Intyg i rapporten intyg totalt |
-#| inloggad som | år | månad | grupp | män? | kvinnor? |
-#| user1 | 2015 | feb | Dödsorsaksintyg | 1 | 2 |
-#| user1 | 2015 | mar | Dödsorsaksintyg | 1 | 1 |
-#| user1 | 2015 | apr | Dödsorsaksintyg | 0 | 0 |
+| Intyg i rapporten intyg totalt |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user1 | 2015 | feb | Dödsorsaksintyg | 1 | 2 |
+| user1 | 2015 | mar | Dödsorsaksintyg | 1 | 1 |
+| user1 | 2015 | apr | Dödsorsaksintyg | 0 | 0 |
 
-#| Intyg i rapporten intyg totalt diagram |
-#| inloggad som | år | månad | grupp | män? | kvinnor? |
-#| user1 | 2015 | feb | Dödsorsaksintyg | 1 | 2 |
-#| user1 | 2015 | mar | Dödsorsaksintyg | 1 | 1 |
-#| user1 | 2015 | apr | Dödsorsaksintyg | 0 | 0 |
+| Intyg i rapporten intyg totalt diagram |
+| inloggad som | år | månad | grupp | män? | kvinnor? |
+| user1 | 2015 | feb | Dödsorsaksintyg | 1 | 2 |
+| user1 | 2015 | mar | Dödsorsaksintyg | 1 | 1 |
+| user1 | 2015 | apr | Dödsorsaksintyg | 0 | 0 |
