@@ -45,7 +45,7 @@
       <stat-cookie-banner></stat-cookie-banner>
 
       <div class="container-fluid page-content-wrapper">
-        <navigation-tabs></navigation-tabs>
+        <navigation-tabs ng-if="!hideNavigationTabs"></navigation-tabs>
 
         <div class="row content-wrapper" ng-cloak>
           <div class="col-xs-12" id="view" data-ng-view></div>

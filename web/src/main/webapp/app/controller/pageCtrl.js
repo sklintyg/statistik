@@ -29,6 +29,8 @@ angular.module('StatisticsApp').controller('pageCtrl',
         $rootScope.$on('$routeChangeSuccess', function () {
             filterViewState.setMessages([]);
 
+            $rootScope.hideNavigationTabs = false;
+
             $scope.isVerksamhetShowing = ControllerCommons.isShowingVerksamhet($location);
             $scope.isLandstingShowing = ControllerCommons.isShowingLandsting($location);
 

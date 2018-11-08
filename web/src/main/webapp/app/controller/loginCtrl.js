@@ -22,6 +22,8 @@ angular.module('StatisticsApp').controller('loginCtrl',
     function ($scope, $rootScope, $uibModal, $location, $cookies) {
         'use strict';
 
+        $rootScope.hideNavigationTabs = true;
+
         $scope.isLoggedIn = $rootScope.isLoggedIn;
 
         $scope.open = function () {

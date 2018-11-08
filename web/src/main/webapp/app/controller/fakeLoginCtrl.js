@@ -19,8 +19,10 @@
 
 angular.module('StatisticsApp').controller('fakeLoginCtrl',
     /** @ngInject */
-    function($scope, _) {
+    function($scope, $rootScope, _) {
         'use strict';
+
+        $rootScope.hideNavigationTabs = true;
 
         $scope.selectedPerson = '0';
         $scope.fakeUserContext = '';
