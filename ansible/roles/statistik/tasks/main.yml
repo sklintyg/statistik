@@ -10,9 +10,6 @@
     path: "{{ releases_folder }}"
     state: directory
 
-- name: Remove old liquibase runner files
-  shell: rm -rf "{{ releases_folder }}/liquibase-runner-*"
-
 - name: Make sure liquibase runner file download is forced when using shapshot repo
   file:
     state: absent
@@ -112,6 +109,11 @@
   file:
     state: absent
     path: "{{ releases_folder }}/liquibase-runner-{{ version }}.zip"
+
+- name: Remove unzipped liquibase-runner-{{ version }} from releases
+  file:
+    state: absent
+    path: "{{ releases_folder }}/liquibase-runner-{{ version }}"
 
 - name: update configuration to {{ config_version }}
   git:
