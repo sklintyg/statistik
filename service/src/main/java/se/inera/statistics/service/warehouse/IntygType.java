@@ -29,19 +29,19 @@ import java.util.stream.Stream;
 
 public enum IntygType {
 
-    AF00213("af00213", "AF00213", "AF00213 Arbetsförmedlingens medicinska utlåtande", true),
-    DB("db", "Dödsbevis", "Dödsbevis", true),
-    DOI("doi", "Dödsorsaksintyg", "Dödsorsaksintyg", true),
-    SJUKPENNING(null, "FK 7263/7804", "FK 7263/7804 Läkarintyg för sjukpenning", false),
-    FK7263("fk7263", "FK 7263", "FK 7263 Läkarintyg", true),
-    LISJP("lisjp", "FK 7804", "FK 7804 Läkarintyg för sjukpenning", true),
-    LUSE("luse", "FK 7800", "FK 7800 Läkarutlåtande för sjukersättning", true),
-    LUAE_NA("luae_na", "FK 7801", "FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga", true),
-    LUAE_FS("luae_fs", "FK 7802", "FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång", true),
-    UNKNOWN(null, "Okänt", "Okänt", false),
-    TSTRK1007("ts-bas", "TSTRK1007", "TSTRK1007 Transportstyrelsens läkarintyg", true),
-    TSTRK1031("ts-diabetes", "TSTRK1031", "TSTRK1031 Transportstyrelsens läkarintyg diabetes", true),
-    AG114("ag114", "AG1-14", "AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperioden", true);
+    AF00213("AF00213", "af00213", "AF00213", "AF00213 Arbetsförmedlingens medicinska utlåtande", true),
+    DB("DB", "db", "Dödsbevis", "Dödsbevis", true),
+    DOI("DOI", "doi", "Dödsorsaksintyg", "Dödsorsaksintyg", true),
+    SJUKPENNING(null, null, "FK 7263/7804", "FK 7263/7804 Läkarintyg för sjukpenning", false),
+    FK7263("FK7263", "fk7263", "FK 7263", "FK 7263 Läkarintyg", true),
+    LISJP("LISJP", "lisjp", "FK 7804", "FK 7804 Läkarintyg för sjukpenning", true),
+    LUSE("LUSE", "luse", "FK 7800", "FK 7800 Läkarutlåtande för sjukersättning", true),
+    LUAE_NA("LUAE_NA", "luae_na", "FK 7801", "FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga", true),
+    LUAE_FS("LUAE_FS", "luae_fs", "FK 7802", "FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång", true),
+    UNKNOWN(null, null, "Okänt", "Okänt", false),
+    TSTRK1007("TSTRK1007", "ts-bas", "TSTRK1007", "TSTRK1007 Transportstyrelsens läkarintyg", true),
+    TSTRK1031("TSTRK1031", "ts-diabetes", "TSTRK1031", "TSTRK1031 Transportstyrelsens läkarintyg diabetes", true),
+    AG114("AG1-14", "ag114", "AG1-14", "AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperioden", true);
 
     private static final Set<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT = Collections.unmodifiableSet(
             Stream.of(LISJP, LUSE, LUAE_NA, LUAE_FS).collect(Collectors.toSet()));
@@ -56,16 +56,22 @@ public enum IntygType {
             Arrays.asList(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS));
 
 
+    private final String kodverksKod; //From https://riv-ta.atlassian.net/wiki/download/attachments/270532953/Kv%20intygstyp.xlsx
     private final String itIntygType; //The type name Intygtjansten is using and sends as metadata with all intyg
     private final String text;
     private final String shortText;
     private final boolean isSupportedIntyg;
 
-    IntygType(String itIntygType, String shortText, String text, boolean isSupportedIntyg) {
+    IntygType(String kodverksKod, String itIntygType, String shortText, String text, boolean isSupportedIntyg) {
+        this.kodverksKod = kodverksKod;
         this.itIntygType = itIntygType;
         this.text = text;
         this.shortText = shortText;
         this.isSupportedIntyg = isSupportedIntyg;
+    }
+
+    public String getKodverksKod() {
+        return kodverksKod;
     }
 
     public String getItIntygType() {
@@ -101,6 +107,15 @@ public enum IntygType {
 
     public static Optional<IntygType> getByName(String name) {
         return Arrays.stream(values()).filter(group -> group.text.equalsIgnoreCase(name)).findFirst();
+    }
+
+    public static IntygType parseRivtaCode(String stringType) {
+        for (IntygType intygType : values()) {
+            if (intygType.kodverksKod != null && intygType.kodverksKod.equalsIgnoreCase(stringType)) {
+                return intygType;
+            }
+        }
+        return UNKNOWN;
     }
 
     public static IntygType parseString(String stringType) {

@@ -79,7 +79,7 @@ public abstract class AbstractRegisterCertificateHelper extends IntygHelper<Regi
 
     @Override
     public IntygType getIntygtyp(RegisterCertificateType intyg) {
-        return IntygType.parseString(intyg.getIntyg().getTyp().getCode().trim());
+        return IntygType.parseRivtaCode(intyg.getIntyg().getTyp().getCode().trim());
     }
 
     @Override

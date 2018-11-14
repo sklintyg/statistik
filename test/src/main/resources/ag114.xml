@@ -6,7 +6,7 @@
             <ns3:extension>1234567-af114</ns3:extension>
         </intygs-id>
         <typ>
-            <ns3:code>AG114</ns3:code>
+            <ns3:code>AG1-14</ns3:code>
             <ns3:codeSystem>b64ea353-e8f6-4832-b563-fc7d46f29548</ns3:codeSystem>
             <ns3:displayName>Läkarintyg om arbetsförmåga – sjuklöneperiod (AG1-14)</ns3:displayName>
         </typ>

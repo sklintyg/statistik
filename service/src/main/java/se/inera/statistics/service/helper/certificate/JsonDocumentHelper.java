@@ -210,7 +210,7 @@ public final class JsonDocumentHelper {
         String diagnos = JsonDocumentHelper.getDiagnos(intyg);
         String lakareid = JsonDocumentHelper.getLakarId(intyg);
         String intygsId = JsonDocumentHelper.getIntygId(intyg);
-        IntygType intygTyp = IntygType.getByItIntygType(JsonDocumentHelper.getIntygType(intyg).trim());
+        IntygType intygTyp = IntygType.parseRivtaCode(JsonDocumentHelper.getIntygType(intyg).trim());
         List<Arbetsnedsattning> arbetsnedsattnings = JsonDocumentHelper.getArbetsnedsattning(intyg);
 
         String dateTime = JsonDocumentHelper.getSigneringsDatum(intyg);

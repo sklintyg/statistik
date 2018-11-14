@@ -573,12 +573,12 @@ public class MessagesQuery {
         final SimpleKonResponse andelKompletteringarCurrent = getAndelKompletteringarTvarsnitt(messageFilterCurrentRange);
         final SimpleKonResponse andelKompletteringarPrevious = getAndelKompletteringarTvarsnitt(messageFilterPreviousRange);
         final AndelExtras currentExtras = (AndelExtras) andelKompletteringarCurrent.getRows().stream()
-                .filter(p -> IntygType.getByItIntygType(p.getName()).isSjukpenningintyg()).findAny()
+                .filter(p -> IntygType.parseString(p.getName()).isSjukpenningintyg()).findAny()
                 .orElse(new SimpleKonDataRow(null, 0, 0)).getExtras();
         final int maxPercentage = 100;
         final int current = currentExtras.getWhole() != 0 ? maxPercentage * currentExtras.getPart() / currentExtras.getWhole() : 0;
         final AndelExtras previousExtras = (AndelExtras) andelKompletteringarPrevious.getRows().stream()
-                .filter(p -> IntygType.getByItIntygType(p.getName()).isSjukpenningintyg()).findAny()
+                .filter(p -> IntygType.parseString(p.getName()).isSjukpenningintyg()).findAny()
                 .orElse(new SimpleKonDataRow(null, 0, 0)).getExtras();
         final int previous = previousExtras.getWhole() != 0 ? maxPercentage * previousExtras.getPart() / previousExtras.getWhole() : 0;
         List<OverviewChartRowExtended> resp = new ArrayList<>();
