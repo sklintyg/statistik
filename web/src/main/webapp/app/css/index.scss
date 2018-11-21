@@ -3,7 +3,7 @@ $left-container-width: 240px;
 html,
 body {
   display: flex;
-  flex: 1;
+  flex: 1 0 auto;
   flex-direction: column;
   min-height: 100vh;
 }
@@ -15,7 +15,7 @@ body {
 .main-container {
   display: flex;
   flex-direction: row;
-  flex: 1 1 auto;
+  flex: 1 0 auto;
 }
 
 .left-container {
@@ -26,7 +26,7 @@ body {
 }
 
 .right-container {
-  flex: 1;
+  flex: 1 1 auto;
   max-width: calc(100% - #{$left-container-width});
   overflow: hidden;
   padding-right: 10px;
