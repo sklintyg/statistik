@@ -26,6 +26,18 @@
 
     <include resource="logback-ocp-base.xml"/>
 
+    <!-- ST Is not using IntygUser from infra -->
+    <appender name="ST_MONITORING" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="se.inera.intyg.infra.monitoring.logging.MarkerFilter">
+            <marker>Monitoring</marker>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${TIMESTAMP} [monitoring,${SESSION},${TRACE}] ${LINE}</pattern>
+        </encoder>
+    </appender>
+
     <!-- Enable logging of frontend activities -->
     <logger name="se.inera.statistics.web.service.endpoints.LoggingService" level="INFO">
         <appender-ref ref="FRONTEND" />
@@ -41,16 +53,13 @@
     <logger name="se.inera.statistics.service.hsa.HSAServiceImpl" level="INFO" additivity="false">
         <appender-ref ref="PROCESS"/>
     </logger>
-    <logger name="se.inera.statistics.service.helper.DocumentHelper" level="INFO" additivity="false">
+    <logger name="se.inera.statistics.service.helper.certificate.JsonDocumentHelper" level="INFO" additivity="false">
         <appender-ref ref="PROCESS"/>
     </logger>
     <logger name="se.inera.statistics.scheduler.active.LogJob" level="INFO"  additivity="false">
         <appender-ref ref="PROCESS"/>
     </logger>
-    <logger name="se.inera.statistics.scheduler.active.MessageJob" level="INFO"  additivity="false">
-        <appender-ref ref="PROCESS"/>
-    </logger>
-    <logger name="se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls" level="INFO"  additivity="false">
+    <logger name="se.inera.statistics.web.service.endpoints.ChartDataService" level="INFO"  additivity="false">
         <appender-ref ref="PROCESS"/>
     </logger>
 
@@ -64,10 +73,10 @@
 
     <!-- Enable monitoring logging -->
     <logger name="se.inera.statistics.web.service.monitoring" level="INFO" additivity="false">
-        <appender-ref ref="MONITORING" />
+        <appender-ref ref="ST_MONITORING" />
     </logger>
 
-    <root level="WARN">
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
 
