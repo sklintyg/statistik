@@ -77,11 +77,26 @@ describe('Navigering i intygsstatistik: ', function() {
             verksamhetsNiva();
 
             validateDetailReport('navBusinessCasesPerBusinessLink', 1);
+            validateDetailReport('navBusinessMessagesEnhetLink', 1);
 
             it('Not present', function() {
                 expect(navmenu.navBusinessCasesPerLakareLink.isPresent()).toBeFalsy();
                 expect(navmenu.navBusinessMessagesLakareLink.isPresent()).toBeFalsy();
             });
+        });
+
+        describe('Del Processledare', function() {
+            beforeAll(function() {
+                features.user.makeSureNotLoggedIn();
+                features.user.loginUser2(false);
+            });
+
+            verksamhetsNiva();
+
+            validateDetailReport('navBusinessCasesPerBusinessLink', 1);
+            validateDetailReport('navBusinessMessagesEnhetLink', 1);
+            validateDetailReport('navBusinessCasesPerLakareLink', 1);
+            validateDetailReport('navBusinessMessagesLakareLink', 1);
         });
 
         describe('Verksamhetschef', function() {
@@ -97,6 +112,7 @@ describe('Navigering i intygsstatistik: ', function() {
 
             it('Not present', function() {
                 expect(navmenu.navBusinessCasesPerBusinessLink.isPresent()).toBeFalsy();
+                expect(navmenu.navBusinessMessagesEnhetLink.isPresent()).toBeFalsy();
             });
         });
 
@@ -120,7 +136,6 @@ describe('Navigering i intygsstatistik: ', function() {
             validateDetailReport('navBusinessIntygPerTypeLink', 2);
 
             validateDetailReport('navBusinessMessagesLink', 2);
-            validateDetailReport('navBusinessMessagesEnhetLink', 1);
             validateDetailReport('navBusinessAndelKompletteringarLink', 2);
         }
     });

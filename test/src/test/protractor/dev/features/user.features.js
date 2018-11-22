@@ -9,6 +9,11 @@ var User = function() {
         fakeloginPo.login('Anna', 'Modig', 'user1', 'vg1', processledare);
     };
 
+    this.loginUser2 = function(processledare) {
+        headerPo.clickLogin();
+        fakeloginPo.login('Anna', 'Modig', 'user2', 'vg1', processledare);
+    };
+
     this.loginUser3 = function(processledare) {
         headerPo.clickLogin();
         fakeloginPo.login('Anna', 'Modig', 'user3', 'vg3', processledare);
