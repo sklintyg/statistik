@@ -76,6 +76,7 @@
             <delsvar id="3.1">true</delsvar>
         </svar>
         <svar id="4">
+            <instans>1</instans>
             <delsvar id="4.1">Klämskada skuldra</delsvar>
             <delsvar id="4.2">
                 <ns3:cv>
