@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.web.service.monitoring;
 
+import io.prometheus.client.Collector;
 import io.prometheus.client.Gauge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,8 +26,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import se.inera.ifv.statistics.spi.authorization.impl.HSAWebServiceCalls;
 import se.inera.statistics.service.warehouse.query.CalcCoordinator;
@@ -38,6 +37,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.Time;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Exposes health metrics as Prometheus values. To simplify any 3rd party scraping applications, all metrics produced
@@ -51,9 +51,8 @@ import java.util.Collections;
  *
  * @author eriklupander
  */
-@EnableScheduling
 @Component
-public class HealthMonitor {
+public class HealthMonitor extends Collector {
 
     private static final String PREFIX = "health_";
     private static final String NORMAL = "_normal";
@@ -93,7 +92,6 @@ public class HealthMonitor {
 
     private static final long MILLIS_PER_SECOND = 1000L;
 
-    private static final long DELAY = 30000L;
     private static final String CURR_TIME_SQL = "SELECT CURRENT_TIME()";
 
     @Value("${app.name}")
@@ -119,16 +117,19 @@ public class HealthMonitor {
     public void init() {
         redisScript = new DefaultRedisScript<>(
                 "return #redis.call('keys','spring:session:" + appName + ":index:*')", Long.class);
+        this.register();
     }
 
-    @Scheduled(fixedDelay = DELAY)
-    public void healthCheck() {
+    @Override
+    public List<MetricFamilySamples> collect() {
         UPTIME.set(getUptime());
         LOGGED_IN_USERS.set(countSessions());
         DB_ACCESSIBLE.set(checkTimeFromDb() ? 0 : 1);
         HSA_ACCESSIBLE.set(getHsaStatus() ? 0 : 1);
         CHARTSERVICE_ACCESSIBLE.set(getOverviewStatus() ? 0 : 1);
         WORKLOAD_STATUS.set(getWorkloadStatus());
+
+        return Collections.emptyList();
     }
 
     private long getUptime() {
