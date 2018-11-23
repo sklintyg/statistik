@@ -279,3 +279,53 @@ Försöker man komma åt en verksamhet som man saknar behörighet till, så retu
 ## Övrigt
 ### Söka i json-dokument i databasen
 Det finns inbyggt stöd för json i PostgreSQL 9.3 och senare, och det har vi använt när vi behövt göra adhoc-analyser. D v s, för att analysera innehåll i json-objekt lagrade i en tabell så har vi exporterat tabellen till PostgreSQL. Det finns ett exempelskript incheckat under tools/dbscripts/postgresql .
+
+## Testa SAML lokalt
+Om man vill testa av så applikationen startar korrekt med spring-saml profil kan man göra enligt följande:
+
+
+- Ändra i web/build.gradle så profilen "security-fake" byts ut mot "security-saml"
+
+- Ändra i web/build.gradle. Kommentera bort blocket jvmArgs och ersätt med följande:
+
+
+    jvmArgs = [
+                jvmArgSpringProfiles,
+                '-DbaseUrl=' + baseUrl,
+                '-Dstatistics.test.max.intyg=200',
+                '-Dstatistics.config.file=' + projectDir + '/../../statistik-konfiguration/demo/statistics.properties',
+                '-Dstatistics.config.folder=' + projectDir + '/../../statistik-konfiguration/demo',
+                '-Dstatistics.certificate.folder=' + projectDir + '/../../statistik-konfiguration/demo/certifikat',
+                '-Dstatistics.credentials.file=' + projectDir + '/../../statistik-konfiguration/demo/credentials.properties',
+                '-Dstatistics.resources.folder=' + projectDir + '/../src/main/resources'
+        ]
+
+- Se till att ha /statistik-konfiguration repot klonat och avkrypterat.
+- Starta lokala instanser av mysql, redis-server och activemq. Kan behöva göras i tre separata konsolfönster.
+
+
+    > mysqld
+    > redis-server
+    > cd $ACTIVEMQ_HOME/bin
+    > ./activemq start
+    
+- Skapa användare och databas för 'statistik' i din lokala MySQL
+
+    > mysql -u root
+    $ CREATE DATABASE statistik;
+    $ CREATE USER statistik;
+    $ GRANT ALL ON statistik.* to 'statistik'@'localhost' IDENTIFIED BY 'statistik';
+
+- Starta statistiktjänsten
+
+    > ./gradlew build appRun
+    
+Nu bootas SAML-subsystemet, SP/IdP-metadata läses från /statistik-konfiguration/demo, certifikaten i /statistik-konfiguration/demo/certifikat osv används. 
+
+Man kan dock inte logga in pga att SÄKs IdP inte tillåter omdirigering till oregistrerade consumer endpoints. Detta _bör_ gå att ta sig runt genom att registrera hostnamnet för den den AssertionConsumerService i sin _hosts_ fil, t.ex:
+
+    localhost verifiering.statistik.intygstjanster.se
+    
+Man behöver dessutom antingen starta statistiktjänsten på port 443 eller sätta upp port-forwarding lokalt från 443 till 8080. Slutligen måste man naturligtvis ha ett SITHS-testkort och kortläsare. Vi har inte testat detta fullt ut själva men i teorin kan det fungera, speciellt om man har en Windows-dator med IE11.
+
+
