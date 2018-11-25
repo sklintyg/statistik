@@ -1,0 +1,24 @@
+intygsskolan-modal {
+
+  .intygsskolan-link {
+    span {
+      color: $st-color-47;
+
+      i {
+        display: inline;
+      }
+    }
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
+
+    padding: 15px;
+    border-radius: 4px;
+    background: white;
+    position: fixed;
+    bottom: 0;
+    max-width: 240px;
+  }
+}

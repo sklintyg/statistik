@@ -50,8 +50,6 @@ describe('Logga in med och utan landstingsaccess ', function() {
 
         navmenu.nationalTab.click();
         navmenu.landstingTab.click();
-
-        pages.landstingAbout.isAtPage();
     });
 
 

@@ -357,29 +357,7 @@
                 link: '#/landsting/andelkompletteringar',
                 name: 'nav.andelkompletteringar',
                 ctrl: 'LandstingAndelKompletteringarCtrl'
-            }]
-        };
-
-        var about = {
-            id: 'about-statistics-toggle',
-            menuId: 'about-statistic-menu-content',
-            navigationId: 'about-statistics-collapse',
-            name: 'nav.about-header',
-            show: false,
-            subMenu: [{
-                id: 'navAboutTjanstLink',
-                link: '#/om/tjansten',
-                name: 'nav.allmant-om-tjansten',
-                ctrl: 'AboutServiceCtrl'
-            },{
-                checkVisible: function() {
-                    return UserModel.get().hasLandstingAccess;
-                },
-                id: 'navLandstingAboutLink',
-                link: '#/landsting/om',
-                name: 'nav.landsting.om',
-                ctrl: 'LandstingAboutCtrl'
-            },{
+            }, {
                 checkVisible: function() {
                     return UserModel.get().isLandstingAdmin;
                 },
@@ -387,27 +365,12 @@
                 link: '#/landsting/filuppladdning',
                 name: 'nav.landsting.filuppladdning',
                 ctrl: 'LandstingFileUploadCtrl'
-            },{
-                id: 'navAboutInloggningLink',
-                link: '#/om/inloggning',
-                name: 'nav.inloggning-behorighet',
-                ctrl: 'AboutLoginCtrl'
-            },{
-                id: 'navAboutFaqLink',
-                link: '#/om/vanligafragor',
-                name: 'nav.faq',
-                ctrl: 'AboutFaqCtrl'
-            },{
-                id: 'navAboutContactLink',
-                link: '#/om/kontakt',
-                name: 'nav.kontakt-support',
-                ctrl: 'AboutContactCtrl'
             }]
         };
 
-        var nationell = [sjukfallNationell, intygNationell, kommunikationNationell, about];
-        var verksamhet = [sjukfallVerksamhet, intygVerksamhet, kommunikationVerksamhet, about];
-        var landsting = [sjukfallLandsting, intygLandsting, kommunikationLandsting, about];
+        var nationell = [sjukfallNationell, intygNationell, kommunikationNationell];
+        var verksamhet = [sjukfallVerksamhet, intygVerksamhet, kommunikationVerksamhet];
+        var landsting = [sjukfallLandsting, intygLandsting, kommunikationLandsting];
 
         $scope.$on('navigationUpdate', function (event, navigationGroupId) {
 

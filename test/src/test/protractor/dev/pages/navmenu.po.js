@@ -11,7 +11,6 @@ var NavMenu = function() {
     this.nationalStatisticsToggle = element(by.id('national-statistics-toggle'));
     this.landstingStatisticsToggle = element(by.id('landsting-statistics-toggle'));
     this.businessStatisticsToggle = element(by.id('business-statistics-toggle'));
-    this.aboutStatisticsToggle = element(by.id('about-statistics-toggle'));
 
     this.navOverviewLink = element(by.id('navOverviewLink'));
     this.navCasesPerMonthLink = element(by.id('navCasesPerMonthLink'));
@@ -28,7 +27,6 @@ var NavMenu = function() {
 
     this.navMessagesLink = element(by.id('navMessagesLink'));
 
-    this.navLandstingAbout = element(by.id('navLandstingAboutLink'));
     this.navLandstingUpload = element(by.id('navLandstingUploadLink'));
 
 
@@ -50,9 +48,6 @@ var NavMenu = function() {
     this.navBusinessMessagesEnhetLink = element(by.id('navBusinessMessagesEnhetLink'));
 
     this.navAboutTjanstLink = element(by.id('navAboutTjanstLink'));
-    this.navAboutInloggningLink = element(by.id('navAboutInloggningLink'));
-    this.navAboutFaqLink = element(by.id('navAboutFaqLink'));
-    this.navAboutContactLink = element(by.id('navAboutContactLink'));
 
     this.clickOnMenu = function(id) {
         var menu = element(by.id(id));
@@ -82,14 +77,6 @@ var NavMenu = function() {
 
     this.expandNationalStatisticsToggle = function() {
         expandMenu(this.nationalStatisticsToggle, clickNationalStatisticsToggle);
-    };
-
-    var clickAboutStatisticsToggle = function() {
-        that.aboutStatisticsToggle.click();
-    };
-
-    this.expandAboutStatisticsToggle = function() {
-        expandMenu(this.aboutStatisticsToggle, clickAboutStatisticsToggle);
     };
 
     function expandMenu(menu, openFunction) {

@@ -438,28 +438,10 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'LandstingAndelKompletteringarCtrl',
                 resolve: { config: app.andelKompletteringarLandstingConfig },
                 title: 'nav.andelkompletteringar'
-            }).when('/landsting/om', {
-                templateUrl: '/app/views/landsting/aboutlandsting.html',
-                controllerAs: 'LandstingAboutCtrl',
-                title: 'Om Landstingsstatistik'
-            }).when('/om/tjansten', {
-                templateUrl: '/app/views/about/about.html',
-                controller: 'aboutServiceCtrl',
-                controllerAs: 'AboutServiceCtrl',
-                title: 'Om tjänsten'
             }).when('/om/kontakt', {
                 templateUrl: '/app/views/about/contact.html',
                 controllerAs: 'AboutContactCtrl',
                 title: 'Kontakt till support'
-            }).when('/om/vanligafragor', {
-                templateUrl: '/app/views/about/faq.html',
-                controller: 'aboutFaqCtrl',
-                controllerAs: 'AboutFaqCtrl',
-                title: 'Vanliga frågor och svar'
-            }).when('/om/inloggning', {
-                templateUrl: '/app/views/about/login.html',
-                controllerAs: 'AboutLoginCtrl',
-                title: 'Inloggning och behörighet'
             }).when('/', {
                 redirectTo: '/nationell/oversikt'
             }).when('/nationell', {

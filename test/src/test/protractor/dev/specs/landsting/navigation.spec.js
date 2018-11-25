@@ -60,9 +60,6 @@ describe('Navigering landsting: ', function() {
 
         function landstingsNiva() {
             navmenu.landstingTab.click();
-
-            navmenu.navLandstingAbout.click();
-            pages.landstingAbout.isAtPage();
         }
     });
 
@@ -74,8 +71,6 @@ describe('Navigering landsting: ', function() {
             features.user.loginUser3(true);
 
             navmenu.landstingTab.click();
-            navmenu.navLandstingAbout.click();
-            pages.landstingAbout.isAtPage();
         });
 
 
