@@ -231,8 +231,6 @@ var stMessages = {
         'login.alert-danger': 'Ajdå!',
         'login.instruktioner-for-login': 'För att logga in behöver du ett SITHS/Efos-kort samt medarbetaruppdraget "Statistik" i HSA-katalogen.',
         'login.btn.siths-login': 'Logga in',
-        'login.siths.problem': 'Problem med inloggning med SITHS/Efos-kort?',
-        'login.siths.problem-link': 'Läs mer om hur du kan felsöka.',
 
         'selectvg.header': 'Välj vårdgivare',
         'login.instruktioner-for-valj-vg': 'Du har behörighet till vårdenheter som tillhör flera olika vårdgivare. Välj den vårdgivare som du vill se statistik för. Observera att du bara kan se verksamhetsstatistik för de vårdenheter som du har behörighet till inom vald vårdgivare.',
