@@ -9,7 +9,6 @@ var stMessages = {
         'nav.national-header': 'Nationell statistik',
         'nav.landsting-header': 'Landstingsstatistik',
         'nav.business-header': 'Verksamhetsstatistik',
-        'nav.about-header': 'Om tjänsten',
 
         'nav.sjukfall-header': 'Sjukfall',
         'nav.intyg-header': 'Intyg',
@@ -32,12 +31,8 @@ var stMessages = {
         'nav.lakaralder-kon':'Läkarålder och -kön',
         'nav.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',
         'nav.allmant-om-tjansten': 'Allmänt om tjänsten',
-        'nav.inloggning-behorighet': 'Inloggning och behörighet',
-        'nav.faq': 'Vanliga frågor och svar',
-        'nav.kontakt-support': 'Kontakt till support',
         'nav.landsting.filuppladdning': 'Filuppladdning',
         'nav.landsting.listningsjamforelse': 'Vårdenhet, listningar',
-        'nav.landsting.om': 'Om landstingsstatistik',
         'nav.meddelanden': 'Meddelanden, totalt',
         'nav.meddelandenperamne': 'Meddelanden, totalt',
         'nav.meddelandenperamneochenhet': 'Vårdenhet',
@@ -250,6 +245,10 @@ var stMessages = {
         //about texts
         'about.service': 'Om Intygsstatistik',
         'about.cookies': '<h3>Om kakor (cookies)</h3><p>Så kallade kakor (cookies) används för att underlätta för besökaren på webbplatsen. En kaka är en textfil som lagras på din dator och som innehåller information. Denna webbplats använder så kallade sessionskakor. Sessionskakor lagras temporärt i din dators minne under tiden du är inne på en webbsida. Sessionskakor försvinner när du stänger din webbläsare. Ingen personlig information om dig sparas vid användning av sessionskakor.</p><p>Om du inte accepterar användandet av kakor kan du stänga av det via din webbläsares säkerhetsinställningar. Du kan även ställa in webbläsaren så att du får en varning varje gång webbplatsen försöker sätta en kaka på din dator.</p><p><strong>Observera!</strong> Om du stänger av kakor i din webbläsare kan du inte logga in i Webcert.</p><p>Allmän information om kakor (cookies) och lagen om elektronisk kommunikation finns på Post- och telestyrelsens webbplats.</p><p><LINK:ptsCookiesMerOm></p>',
+
+        //Intygsskolan
+        'intygsskolan.modal.title' : 'Om Intygsstatistik',
+        'intygsskolan.link.text': 'Hitta svar på dina frågor i Ineras intygsskola',
 
         //error messages
         'error.unsignedcerts.couldnotbeloaded': '<strong>Kunde inte hämta ej signerade intyg.</strong>',

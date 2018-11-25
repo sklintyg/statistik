@@ -34,8 +34,6 @@
 @import 'css/index.scss';
 @import 'shared/businessfilter/businessFilter.scss';
 @import 'shared/treemultiselector/treeMultiSelector.scss';
-@import 'views/about/about.scss';
-@import 'views/about/faq.scss';
 @import 'views/business/businessOverview.scss';
 @import 'views/detailsView.scss';
 @import 'views/login.scss';
@@ -46,6 +44,7 @@
 @import 'directives/filterList/filterList.scss';
 @import 'directives/filterSelectionList/filterSelectionList.scss';
 @import 'directives/highlightWords/highlightWords.scss';
+@import 'directives/intygsskolanModal/intygsskolanModal.scss';
 @import 'directives/navigationMenu/navigationMenu.scss';
 @import 'directives/navigationTabs/navigationTabs.directive.scss';
 @import 'directives/overviewWidget/overviewWidget.scss';

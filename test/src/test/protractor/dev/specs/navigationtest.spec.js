@@ -52,21 +52,6 @@ describe('Navigering i intygsstatistik: ', function() {
         validateDetailReport('navNationalAndelKompletteringarLink', 2);
     });
 
-    it('About', function() {
-        var about = pages.about;
-        
-        navmenu.expandAboutStatisticsToggle();
-        navmenu.navAboutTjanstLink.click();
-        about.isAtAbout();
-        navmenu.navAboutInloggningLink.click();
-        about.isAtLogin();
-        navmenu.navAboutFaqLink.click();
-        about.isAtFaq();
-        navmenu.navAboutContactLink.click();
-        about.isAtContact();
-    });
-
-
     describe('Verksamhetsnivå', function() {
 
         describe('Processledare', function() {
