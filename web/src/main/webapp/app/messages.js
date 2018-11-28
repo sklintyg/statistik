@@ -105,9 +105,9 @@ var stMessages = {
 
         //national statistics overview
         'national.overview-header': 'Nationell statistik',
-        'national.overview-header2': 'Utvecklingen i Sverige de senaste tre månaderna, ',
+        'national.overview-header2': 'Sjukfallsutvecklingen i Sverige de senaste tre månaderna, ',
         'national.widget.header.konsfordelning': 'Fördelning mellan kön',
-        'national.widget.header.forandring': 'Förändring',
+        'national.widget.header.forandring': 'Förändring antal sjukfall',
         'national.widget.total-antal.help': 'Totalt antal sjukfall under perioden ',
         'national.widget.header.fordelning-diagnosgrupper': 'Fördelning diagnosgrupper',
         'national.widget.header.fordelning-aldersgrupper': 'Fördelning åldersgrupper',

@@ -36,10 +36,10 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
         $scope.subTitlePeriod = result.periodText;
         $scope.popoverTextAmount = 'Totala antalet sjukfall under perioden ' + result.periodText + '.';
         $scope.popoverTextChangeProcentage = 'Procentsatsen visar förändringen av antalet sjukfall under perioden ' + result.periodText;
-        $scope.popoverTextSexDistribution = 'Könsfördelningen av totala antalet sjukfall under perioden ' + result.periodText + popoverPreviousMonths;
-        $scope.popoverTextDiagnosisGroups = 'Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under ' +
+        $scope.popoverTextSexDistribution = 'Andel kvinnor och andel män av det totala antalet sjukfall under periode ' + result.periodText + popoverPreviousMonths;
+        $scope.popoverTextDiagnosisGroups = 'Diagrammet visar antal sjukfall inom olika diagnosgrupper under ' +
                                                 result.periodText + '.' + popoverTextChangeCurrentVSPrevious;
-        $scope.popoverTextAgeGroups = 'Diagrammet visar de åldersgrupper som har flest sjukfall under ' + result.periodText + '.' +
+        $scope.popoverTextAgeGroups = 'Diagrammet visar antal sjukfall inom olika åldersgrupper under ' + result.periodText + '.' +
             popoverTextChangeCurrentVSPrevious;
         $scope.popoverTextSickLeaveLength = 'Diagrammet visar antal sjukfall per sjukskrivningslängd under perioden ' + result.periodText + '.' +
                 '<br><br>Ställ markören i respektive stapel för att se antalet sjukfall.';
@@ -254,7 +254,7 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
     }
 
     refresh();
-    $scope.subTitle = 'Utveckling för verksamheten de senaste tre månaderna, ';
+    $scope.subTitle = 'Sjukfallsutvecklingen för verksamheten de senaste tre månaderna, ';
     $scope.spinnerText = 'Laddar information...';
     $scope.doneLoading = false;
     $scope.dataLoadingError = false;
