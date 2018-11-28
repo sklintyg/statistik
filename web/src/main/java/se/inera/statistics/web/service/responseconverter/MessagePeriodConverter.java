@@ -18,6 +18,8 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import se.inera.statistics.web.MessagesText;
+
 public final class MessagePeriodConverter extends SimpleDualSexConverter {
 
     private MessagePeriodConverter(String tableGroupTitle, String seriesNameTemplate, String totalColumnName,
@@ -26,19 +28,19 @@ public final class MessagePeriodConverter extends SimpleDualSexConverter {
     }
 
     public static MessagePeriodConverter newTidsserie() {
-        return new MessagePeriodConverter("Period",
+        return new MessagePeriodConverter(MessagesText.REPORT_PERIOD,
                 "%1$s",
-                "Antal meddelanden totalt",
-                "Antal meddelanden för kvinnor",
-                "Antal meddelanden för män");
+                MessagesText.REPORT_ANTAL_MEDDELANDEN_TOTALT,
+                MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
+                MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
     }
 
     public static MessagePeriodConverter newTvarsnitt() {
         return new MessagePeriodConverter("",
                 "%1$s",
-                "Antal meddelanden totalt",
-                "Antal meddelanden för kvinnor",
-                "Antal meddelanden för män");
+                MessagesText.REPORT_ANTAL_MEDDELANDEN_TOTALT,
+                MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
+                MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
     }
 
 }

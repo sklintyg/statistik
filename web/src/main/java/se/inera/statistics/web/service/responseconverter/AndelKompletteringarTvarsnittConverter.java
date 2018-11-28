@@ -28,6 +28,7 @@ import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.query.AndelExtras;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
@@ -45,9 +46,9 @@ public final class AndelKompletteringarTvarsnittConverter extends SimpleDualSexC
     public static AndelKompletteringarTvarsnittConverter newTvarsnitt() {
         return new AndelKompletteringarTvarsnittConverter("",
                 "%1$s",
-                "Andel intyg totalt",
-                "Andel intyg för kvinnor",
-                "Andel intyg för män");
+                MessagesText.REPORT_COLUMN_ANDEL_INTYG_TOTALT,
+                MessagesText.REPORT_COLUMN_ANDEL_INTYG_FEMALE,
+                MessagesText.REPORT_COLUMN_ANDEL_INTYG_MALE);
     }
 
     @Override
@@ -78,9 +79,9 @@ public final class AndelKompletteringarTvarsnittConverter extends SimpleDualSexC
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Totalt", totals));
-        series.add(new ChartSeries("Kvinnor", casesPerMonth.getDataForSex(Kon.FEMALE), Kon.FEMALE));
-        series.add(new ChartSeries("Män", casesPerMonth.getDataForSex(Kon.MALE), Kon.MALE));
+        series.add(new ChartSeries(MessagesText.REPORT_GROUP_TOTALT, totals));
+        series.add(new ChartSeries(MessagesText.REPORT_GROUP_FEMALE, casesPerMonth.getDataForSex(Kon.FEMALE), Kon.FEMALE));
+        series.add(new ChartSeries(MessagesText.REPORT_GROUP_MALE, casesPerMonth.getDataForSex(Kon.MALE), Kon.MALE));
 
         return new ChartData(series, categories);
     }

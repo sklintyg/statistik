@@ -18,6 +18,10 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import java.time.Clock;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import se.inera.statistics.service.report.model.AvailableFilters;
@@ -26,15 +30,14 @@ import se.inera.statistics.service.report.model.Icd;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterSettings;
 
-import java.time.Clock;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class DiagnosisSubGroupsConverterTest {
 
@@ -185,7 +188,7 @@ public class DiagnosisSubGroupsConverterTest {
 
         //Then
         assertEquals(6, result.getFemaleChart().getSeries().size());
-        assertTrue(result.getFemaleChart().getSeries().stream().noneMatch(chartSeries -> DiagnosisSubGroupsConverter.OTHER_GROUP_NAME.equals(chartSeries.getName())));
+        assertTrue(result.getFemaleChart().getSeries().stream().noneMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
     }
 
     @Test
@@ -211,7 +214,7 @@ public class DiagnosisSubGroupsConverterTest {
 
         //Then
         assertEquals(7, result.getFemaleChart().getSeries().size());
-        assertTrue(result.getFemaleChart().getSeries().stream().noneMatch(chartSeries -> DiagnosisSubGroupsConverter.OTHER_GROUP_NAME.equals(chartSeries.getName())));
+        assertTrue(result.getFemaleChart().getSeries().stream().noneMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
     }
 
     @Test
@@ -237,7 +240,7 @@ public class DiagnosisSubGroupsConverterTest {
 
         //Then
         assertEquals(7, result.getFemaleChart().getSeries().size());
-        assertTrue(result.getFemaleChart().getSeries().stream().anyMatch(chartSeries -> DiagnosisSubGroupsConverter.OTHER_GROUP_NAME.equals(chartSeries.getName())));
+        assertTrue(result.getFemaleChart().getSeries().stream().anyMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
     }
 
 }

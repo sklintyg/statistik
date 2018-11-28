@@ -43,6 +43,7 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
 import se.inera.statistics.web.error.Message;
@@ -52,12 +53,6 @@ import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableDataReport;
 
 public class ResponseHandler {
-
-    static final String NO_DATA_MESSAGE = "Ingen data tillgänglig. Det beror på att det inte finns någon data för verksamheten.";
-    static final String NO_DATA_FILTER_MESSAGE = "Det finns ingen statistik att visa för den angivna filtreringen. Överväg en "
-            + "mindre restriktiv filtrering.";
-    private static final String TOO_MUCH_DATA_MESSAGE = "Rapporten innehåller mycket data, vilket kan göra diagrammet svårt att läsa. "
-            + "Överväg att filtrera resultatet för att minska mängden data.";
 
     public static final int LIMIT_TOO_MUCH_DATA_MESSAGE_SINGLE_CHART = 100;
     public static final int LIMIT_TOO_MUCH_DATA_MESSAGE_DUAL_CHART = 50;
@@ -126,16 +121,16 @@ public class ResponseHandler {
         if (result instanceof TableDataReport) {
             final TableDataReport detailReport = (TableDataReport) result;
             if (containsMoreDataThanLimit(detailReport, report)) {
-                Message message = Message.create(ErrorType.CHART, ErrorSeverity.INFO, TOO_MUCH_DATA_MESSAGE);
+                Message message = Message.create(ErrorType.CHART, ErrorSeverity.INFO, MessagesText.MESSAGE_TOO_MUCH_DATA);
                 messages.add(message);
             }
         }
 
         if (result != null && result.isEmpty()) {
             if (filterActive(result.getFilter(), filterSelections)) {
-                messages.add(Message.create(ErrorType.FILTER, ErrorSeverity.WARN, NO_DATA_FILTER_MESSAGE));
+                messages.add(Message.create(ErrorType.FILTER, ErrorSeverity.WARN, MessagesText.MESSAGE_NO_DATA_FILTER));
             } else {
-                messages.add(Message.create(ErrorType.UNSET, ErrorSeverity.INFO, NO_DATA_MESSAGE));
+                messages.add(Message.create(ErrorType.UNSET, ErrorSeverity.INFO, MessagesText.MESSAGE_NO_DATA));
             }
         }
 

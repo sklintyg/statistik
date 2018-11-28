@@ -31,6 +31,7 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
@@ -45,21 +46,18 @@ import se.inera.statistics.web.service.FilterSettings;
 
 abstract class MultiDualSexConverter {
 
-    public static final String TOTAL = "Totalt";
-    public static final String KVINNOR = "Kvinnor";
-    public static final String MAN = "Män";
     private static final int NUMBER_OF_COLUMNS = 3;
     private final String tableHeader;
     private final String tableSeriesHeader;
 
     MultiDualSexConverter() {
-        this.tableHeader = "Antal sjukfall totalt";
-        this.tableSeriesHeader = "Period";
+        this.tableHeader = MessagesText.REPORT_ANTAL_SJUKFALL_TOTALT;
+        this.tableSeriesHeader = MessagesText.REPORT_PERIOD;
     }
 
     MultiDualSexConverter(String tableHeader) {
         this.tableHeader = tableHeader;
-        this.tableSeriesHeader = "Period";
+        this.tableSeriesHeader = MessagesText.REPORT_PERIOD;
     }
 
     MultiDualSexConverter(String tableHeader, String tableSeriesHeader) {
@@ -86,9 +84,9 @@ abstract class MultiDualSexConverter {
     }
 
     private KonDataResponse createEmptyResponse(AvailableFilters availableFilters) {
-        final List<String> groups = Collections.singletonList(TOTAL);
+        final List<String> groups = Collections.singletonList(MessagesText.REPORT_GROUP_TOTALT);
         final List<KonField> data = Collections.singletonList(new KonField(0, 0));
-        final List<KonDataRow> rows = Collections.singletonList(new KonDataRow(TOTAL, data));
+        final List<KonDataRow> rows = Collections.singletonList(new KonDataRow(MessagesText.REPORT_GROUP_TOTALT, data));
         return new KonDataResponse(availableFilters, groups, rows);
     }
 
@@ -147,9 +145,9 @@ abstract class MultiDualSexConverter {
         for (String groupName : groups) {
             final String seriesName = "%1$s".equals(seriesNameTemplate) ? groupName : String.format(seriesNameTemplate, groupName);
             topHeaderRow.add(new TableHeader(seriesName, NUMBER_OF_COLUMNS));
-            subHeaderRow.add(new TableHeader(TOTAL, 1, null, seriesName));
-            subHeaderRow.add(new TableHeader(KVINNOR, 1, null, seriesName));
-            subHeaderRow.add(new TableHeader(MAN, 1, null, seriesName));
+            subHeaderRow.add(new TableHeader(MessagesText.REPORT_GROUP_TOTALT, 1, null, seriesName));
+            subHeaderRow.add(new TableHeader(MessagesText.REPORT_GROUP_FEMALE, 1, null, seriesName));
+            subHeaderRow.add(new TableHeader(MessagesText.REPORT_GROUP_MALE, 1, null, seriesName));
         }
 
         List<List<TableHeader>> headers = new ArrayList<>();

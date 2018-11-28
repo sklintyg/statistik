@@ -18,12 +18,23 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import com.google.common.collect.Maps;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.landsting.persistance.landstingenhet.LandstingEnhet;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
@@ -35,16 +46,6 @@ import se.inera.statistics.web.service.EnhetWithPatients;
 import se.inera.statistics.web.service.Filter;
 import se.inera.statistics.web.service.FilterDataResponse;
 import se.inera.statistics.web.service.FilterSettings;
-
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 public class SjukfallPerPatientsPerEnhetConverter {
 
@@ -104,7 +105,8 @@ public class SjukfallPerPatientsPerEnhetConverter {
             }
         }
         return TableData.createWithSingleHeadersRow(data,
-                Arrays.asList("Vårdenhet", "Antal sjukfall", "Antal listningar i arbetsför ålder", "Antal sjukfall per 1000 listningar"));
+                Arrays.asList(MessagesText.REPORT_VARDENHET, MessagesText.REPORT_ANTAL_SJUKFALL,
+                        MessagesText.REPORT_ANTAL_LISTNINGAR, MessagesText.REPORT_ANTAL_SJUKFALL_PER_1000_LISTNINGAR));
     }
 
     static String roundToTwoDecimalsAndFormatToString(float number) {
@@ -143,11 +145,11 @@ public class SjukfallPerPatientsPerEnhetConverter {
 
         if (filteredSummedData.isEmpty()) {
             filteredSummedData.add(0);
-            categories.add(new ChartCategory("Totalt"));
+            categories.add(new ChartCategory(MessagesText.REPORT_GROUP_TOTALT));
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Antal sjukfall per 1000 listningar i arbetsför ålder", filteredSummedData));
+        series.add(new ChartSeries(MessagesText.REPORT_ANTAL_SJUKFALL_PER_1000, filteredSummedData));
 
         return new ChartData(series, categories);
     }

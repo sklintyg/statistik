@@ -18,13 +18,13 @@
  */
 package se.inera.statistics.web.service;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -42,6 +42,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.annotations.VisibleForTesting;
 import se.inera.statistics.service.report.model.AvailableFilters;
 import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.model.DiagnosisSubGroupStatisticsData;
 import se.inera.statistics.web.model.NamedData;
 import se.inera.statistics.web.model.TableData;
@@ -53,7 +54,7 @@ final class XlsxConverter {
     private static final int LAST_MERGE_COLUMN = 5;
 
     private final Icd10 icd10;
-    private final String dataSheetName = "tabell";
+    private final String dataSheetName = MessagesText.EXCEL_TABLE_SHEET_NAME;
 
     XlsxConverter(Icd10 icd10) {
         this.icd10 = icd10;
@@ -126,40 +127,40 @@ final class XlsxConverter {
 
         final boolean useSeparateSheetForFilters = isUseSeparateSheetForFilters(enheter, dxs, sjukskrivningslangds,
                 aldersgrupps, intygstyper);
-        String urvalSheetName = "urval";
+        String urvalSheetName = MessagesText.EXCEL_FILTER_SHEET_NAME;
         final Sheet sheet = useSeparateSheetForFilters ? dataSheet.getWorkbook().createSheet(urvalSheetName) : dataSheet;
         int currentRow = useSeparateSheetForFilters ? 0 : startRow;
 
         if (useSeparateSheetForFilters) {
-            final String linkText = "Se tabellen i fliken \"" + dataSheetName + "\"";
+            final String linkText = MessagesText.EXCEL_TABLE_SHEET_LINK + " \"" + dataSheetName + "\"";
             addLink(sheet, linkText, currentRow++, "'" + dataSheetName + "'!A1");
             sheet.createRow(currentRow++);
         }
 
         if (availableFilters.isEnhets()) {
             if (filterSelections.isAllAvailableEnhetsSelectedInFilter()) {
-                currentRow = addFilter(sheet, currentRow, enheter, "Enheter");
+                currentRow = addFilter(sheet, currentRow, enheter, MessagesText.EXCEL_FILTER_ENHET_ALL);
             } else {
-                currentRow = addFilter(sheet, currentRow, enheter, "Valda enheter");
+                currentRow = addFilter(sheet, currentRow, enheter, MessagesText.EXCEL_FILTER_ENHETER);
             }
         }
 
         if (availableFilters.isDiagnos()) {
-            currentRow = addFilter(sheet, currentRow, getDxNames(dxs), "Valda diagnoser");
+            currentRow = addFilter(sheet, currentRow, getDxNames(dxs), MessagesText.EXCEL_FILTER_DIAGNOSER);
         }
         if (availableFilters.isSjukskrivningslangds()) {
-            currentRow = addFilter(sheet, currentRow, sjukskrivningslangds, "Valda sjukskrivningslängder");
+            currentRow = addFilter(sheet, currentRow, sjukskrivningslangds, MessagesText.EXCEL_FILTER_LANGDER);
         }
         if (availableFilters.isAgeGroups()) {
-            currentRow = addFilter(sheet, currentRow, aldersgrupps, "Valda åldersgrupper");
+            currentRow = addFilter(sheet, currentRow, aldersgrupps, MessagesText.EXCEL_FILTER_AGEGROUPS);
         }
         if (availableFilters.isIntygTypes()) {
-            currentRow = addFilter(sheet, currentRow, intygstyper, "Valda intygstyper");
+            currentRow = addFilter(sheet, currentRow, intygstyper, MessagesText.EXCEL_FILTER_INTYGTYPES);
         }
 
         int currentRowDataSheet = useSeparateSheetForFilters ? startRow : currentRow;
         if (useSeparateSheetForFilters) {
-            final String linkText = "Se aktuellt urval i fliken \"" + urvalSheetName + "\"";
+            final String linkText = MessagesText.EXCEL_FILTER_SHEET_LINK + " \"" + urvalSheetName + "\"";
             addLink(dataSheet, linkText, currentRowDataSheet++, "'" + urvalSheetName + "'!A1");
         }
 

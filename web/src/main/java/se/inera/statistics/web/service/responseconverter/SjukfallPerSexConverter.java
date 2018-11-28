@@ -28,6 +28,7 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.ChartSeries;
@@ -38,7 +39,7 @@ import se.inera.statistics.web.service.FilterDataResponse;
 
 public class SjukfallPerSexConverter {
 
-    static final String SAMTLIGA_LAN = "Samtliga län";
+    static final String SAMTLIGA_LAN = MessagesText.REPORT_SAMTLIGA_LAN;
 
     private TableData convertToTableData(SimpleKonResponse list) {
         List<NamedData> data = new ArrayList<>();
@@ -51,7 +52,10 @@ public class SjukfallPerSexConverter {
         }
 
         return TableData.createWithSingleHeadersRow(data,
-                Arrays.asList("Län", "Antal sjukfall totalt", "Andel sjukfall för kvinnor", "Andel sjukfall för män"));
+                Arrays.asList(MessagesText.REPORT_LAN,
+                        MessagesText.REPORT_COLUMN_ANTAL_SJUKFALL_TOTALT,
+                        MessagesText.REPORT_COLUMN_ANDEL_SJUKFALL_FEMALE,
+                        MessagesText.REPORT_COLUMN_ANDEL_SJUKFALL_MALE));
     }
 
     private NamedData getDataForAllCounties(SimpleKonResponse list) {
@@ -77,8 +81,8 @@ public class SjukfallPerSexConverter {
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Kvinnor", getSeriesForSexWithTotal(casesPerMonth, Kon.FEMALE), Kon.FEMALE));
-        series.add(new ChartSeries("Män", getSeriesForSexWithTotal(casesPerMonth, Kon.MALE), Kon.MALE));
+        series.add(new ChartSeries(MessagesText.REPORT_GROUP_FEMALE, getSeriesForSexWithTotal(casesPerMonth, Kon.FEMALE), Kon.FEMALE));
+        series.add(new ChartSeries(MessagesText.REPORT_GROUP_MALE, getSeriesForSexWithTotal(casesPerMonth, Kon.MALE), Kon.MALE));
 
         return new ChartData(series, categories);
     }

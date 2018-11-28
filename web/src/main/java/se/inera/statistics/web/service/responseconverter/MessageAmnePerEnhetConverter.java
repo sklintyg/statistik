@@ -18,10 +18,12 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import se.inera.statistics.web.MessagesText;
+
 public class MessageAmnePerEnhetConverter extends MessageAmnePerTypeConverter {
 
     public MessageAmnePerEnhetConverter() {
-        super("Antal meddelanden totalt", "Period");
+        super(MessagesText.REPORT_ANTAL_MEDDELANDEN_TOTALT, MessagesText.REPORT_PERIOD);
     }
 
 }

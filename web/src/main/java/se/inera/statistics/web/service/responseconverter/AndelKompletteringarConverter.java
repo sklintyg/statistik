@@ -29,6 +29,7 @@ import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.query.AndelExtras;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.model.TableData;
 import se.inera.statistics.web.model.TableHeader;
@@ -39,7 +40,7 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
     static final int PERCENTAGE_CONVERT = 100;
 
     public AndelKompletteringarConverter() {
-        super("Total andel som fått komplettering, alla intygstyper inkluderade");
+        super(MessagesText.REPORT_ANDEL_KOMPLETTERINGAR);
     }
 
     public DualSexStatisticsData convert(KonDataResponse data, FilterSettings filterSettings) {
@@ -137,13 +138,13 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
         final String text = tableHeader.getText();
         final String meta = tableHeader.getMeta();
         switch (text) {
-            case MultiDualSexConverter.TOTAL:
+            case MessagesText.REPORT_GROUP_TOTALT:
                 return "Kolumnen Totalt visar hur stor andel av alla utfärdade "
                         + meta + " som har fått en komplettering.";
-            case MultiDualSexConverter.MAN:
+            case MessagesText.REPORT_GROUP_MALE:
                 return "Kolumnen Män visar hur stor andel av alla "
                         + meta + " utfärdade till manliga patienter som har fått en komplettering.";
-            case MultiDualSexConverter.KVINNOR:
+            case MessagesText.REPORT_GROUP_FEMALE:
                 return "Kolumnen Kvinnor visar hur stor andel av alla "
                         + meta + " utfärdade till kvinnliga patienter som har fått en komplettering.";
         }

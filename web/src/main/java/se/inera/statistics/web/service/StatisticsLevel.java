@@ -18,11 +18,13 @@
  */
 package se.inera.statistics.web.service;
 
+import se.inera.statistics.web.MessagesText;
+
 public enum StatisticsLevel {
 
-    NATIONELL("Nationell statistik"),
-    VERKSAMHET("Verksamhetsstatistik"),
-    LANDSTING("Landstingsstatistik");
+    NATIONELL(MessagesText.STATISTICS_LEVEL_NATIONELL),
+    VERKSAMHET(MessagesText.STATISTICS_LEVEL_VERKSAMHET),
+    LANDSTING(MessagesText.STATISTICS_LEVEL_LANDSTING);
 
     private final String text;
 

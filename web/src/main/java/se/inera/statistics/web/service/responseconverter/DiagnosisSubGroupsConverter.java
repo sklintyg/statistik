@@ -18,14 +18,17 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import se.inera.statistics.service.report.model.DiagnosgruppResponse;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
@@ -37,17 +40,10 @@ import se.inera.statistics.web.service.FilterDataResponse;
 import se.inera.statistics.web.service.FilterSettings;
 import se.inera.statistics.web.util.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class DiagnosisSubGroupsConverter {
-
-    private static final Logger LOG = LoggerFactory.getLogger(DiagnosisSubGroupsConverter.class);
 
     static final int MAX_NUMBER_OF_CHART_SERIES = 7;
     static final int OTHER_GROUP_INDEX = -1;
-    static final String OTHER_GROUP_NAME = "Övriga";
 
     private DiagnosisGroupsConverter diagnosisGroupsConverter = new DiagnosisGroupsConverter();
 
@@ -77,13 +73,13 @@ public class DiagnosisSubGroupsConverter {
     private List<ChartSeries> getTopColumns(KonDataResponse data, List<Integer> topIndexes, Kon sex) {
         List<ChartSeries> topColumns = new ArrayList<>();
         if (topIndexes.isEmpty()) {
-            topColumns.add(new ChartSeries("Totalt", createList(data.getRows().size(), 0)));
+            topColumns.add(new ChartSeries(MessagesText.REPORT_GROUP_TOTALT, createList(data.getRows().size(), 0)));
             return topColumns;
         }
         for (Integer index : topIndexes) {
             if (index == OTHER_GROUP_INDEX) {
                 List<Integer> remainingData = sumRemaining(topIndexes, data, sex);
-                topColumns.add(new ChartSeries(OTHER_GROUP_NAME, remainingData));
+                topColumns.add(new ChartSeries(MessagesText.REPORT_GROUP_OTHER, remainingData));
             } else {
                 List<Integer> indexData = data.getDataFromIndex(index, sex);
                 topColumns.add(new ChartSeries(data.getGroups().get(index), indexData));

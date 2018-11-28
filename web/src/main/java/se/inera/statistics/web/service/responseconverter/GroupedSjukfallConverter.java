@@ -19,7 +19,6 @@
 package se.inera.statistics.web.service.responseconverter;
 
 import java.util.Collections;
-import java.util.Comparator;
 
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
@@ -35,12 +34,7 @@ public class GroupedSjukfallConverter extends SimpleDualSexConverter {
 
     @Override
     public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, FilterSettings filterSettings, Message message) {
-        Collections.sort(casesPerMonth.getRows(), new Comparator<SimpleKonDataRow>() {
-            @Override
-            public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
+        Collections.sort(casesPerMonth.getRows(), (SimpleKonDataRow o1, SimpleKonDataRow o2) -> o1.getName().compareTo(o2.getName()));
         return super.convert(casesPerMonth, filterSettings, message);
     }
 

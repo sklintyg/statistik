@@ -18,6 +18,9 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import se.inera.statistics.service.report.model.AvailableFilters;
@@ -25,12 +28,11 @@ import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.model.ChartData;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class DiagnosisSubGroupsTvarsnittConverterTest {
 
@@ -56,7 +58,7 @@ public class DiagnosisSubGroupsTvarsnittConverterTest {
 
         //Then
         assertEquals(6, result.getCategories().size());
-        assertTrue(result.getCategories().stream().noneMatch(chartSeries -> DiagnosisSubGroupsConverter.OTHER_GROUP_NAME.equals(chartSeries.getName())));
+        assertTrue(result.getCategories().stream().noneMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
     }
 
     private List<SimpleKonDataRow> toSimpleKonDataRows(ArrayList<KonField> data) {
@@ -90,7 +92,7 @@ public class DiagnosisSubGroupsTvarsnittConverterTest {
 
         //Then
         assertEquals(7, result.getCategories().size());
-        assertTrue(result.getCategories().stream().noneMatch(chartSeries -> DiagnosisSubGroupsConverter.OTHER_GROUP_NAME.equals(chartSeries.getName())));
+        assertTrue(result.getCategories().stream().noneMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
     }
 
     @Test
@@ -116,7 +118,7 @@ public class DiagnosisSubGroupsTvarsnittConverterTest {
 
         //Then
         assertEquals(7, result.getCategories().size());
-        assertTrue(result.getCategories().stream().anyMatch(chartSeries -> DiagnosisSubGroupsConverter.OTHER_GROUP_NAME.equals(chartSeries.getName())));
+        assertTrue(result.getCategories().stream().anyMatch(chartSeries -> MessagesText.REPORT_GROUP_OTHER.equals(chartSeries.getName())));
     }
 
 }

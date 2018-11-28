@@ -18,17 +18,18 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.service.report.util.OverviewAgeGroup;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.util.OverviewAgeGroup;
+import se.inera.statistics.web.MessagesText;
+
 public class AldersGroupsConverter {
-    static final String ALDERSGRUPPER_REST = "Andra åldersgrupper";
+    private static final String ALDERSGRUPPER_REST = MessagesText.REPORT_ALDERSGRUPPER_REST;
     private static final String ALDERSGRUPPER_REST_COLOR = "#5D5D5D";
     private static final int DISPLAYED_AGE_GROUPS = 5;
     private static final List<String> ORDERED_GROUPS_FOR_OVERVIEW = Stream.of(

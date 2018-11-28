@@ -18,6 +18,11 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
+import java.time.Clock;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -28,11 +33,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.time.Clock;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +55,7 @@ import se.inera.statistics.service.report.model.VerksamhetOverviewResponse;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.warehouse.query.MessagesQuery;
 import se.inera.statistics.service.warehouse.query.RangeNotFoundException;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
 import se.inera.statistics.web.error.Message;
@@ -401,7 +402,7 @@ public class ProtectedChartDataService {
             casesPerMonth = makeFakeLakare(casesPerMonth, false);
         }
 
-        SimpleDetailsData result = new MessageAmnePerTypeConverter("Antal meddelanden totalt", "Period")
+        SimpleDetailsData result = new MessageAmnePerTypeConverter(MessagesText.REPORT_ANTAL_MEDDELANDEN_TOTALT, MessagesText.REPORT_PERIOD)
                 .convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNEPERLAKARE, ReportType.TIDSSERIE);
     }
@@ -427,8 +428,8 @@ public class ProtectedChartDataService {
             casesPerMonth = makeFakeLakare(casesPerMonth, true);
         }
 
-        SimpleDetailsData result = new MessageAmnePerTypeTvarsnittConverter("Antal meddelanden totalt", "Läkare")
-                .convert(casesPerMonth, filterSettings);
+        SimpleDetailsData result = new MessageAmnePerTypeTvarsnittConverter(MessagesText.REPORT_ANTAL_MEDDELANDEN_TOTALT,
+                MessagesText.REPORT_LAKARE).convert(casesPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_MEDDELANDENPERAMNEPERLAKARE, ReportType.TVARSNITT);
     }
 
@@ -642,7 +643,7 @@ public class ProtectedChartDataService {
             final DiagnosgruppResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupper(filter.getPredicate(), range, groupId,
                     loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
             final Icd10.Id icd = icd10.findFromIcd10Code(groupId);
-            final Message message = getDiagnosisSubGroupStatisticsMessage(filter,
+            final Message message = getCompareDiagnosisMessage(filter,
                     Collections.singletonList(String.valueOf(icd.toInt())));
             final DualSexStatisticsData data = new DiagnosisSubGroupsConverter().convert(diagnosavsnitt, filterSettings, message);
             final DiagnosisSubGroupStatisticsData result = new DiagnosisSubGroupStatisticsData(data, icd);
@@ -651,15 +652,6 @@ public class ProtectedChartDataService {
             LOG.debug("Range not found", e);
             return Response.serverError().entity(e.getMessage()).build();
         }
-    }
-
-    private Message getDiagnosisSubGroupStatisticsMessage(Filter filter, List<String> diagnosis) {
-        if (resultMessageHandler.isDxFilterDisableAllSelectedDxs(diagnosis, filter.getDiagnoser())) {
-            String msg = "Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfiltret "
-                    + "(se 'Visa alla aktiva filter' ovan).";
-            return Message.create(ErrorType.FILTER, ErrorSeverity.WARN, msg);
-        }
-        return null;
     }
 
     @GET
@@ -678,7 +670,7 @@ public class ProtectedChartDataService {
             final Range range = filterSettings.getRange();
             final SimpleKonResponse diagnosavsnitt = warehouse.getUnderdiagnosgrupperTvarsnitt(filter.getPredicate(),
                     range, groupId, loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
-            final Message message = getDiagnosisSubGroupStatisticsMessage(filter,
+            final Message message = getCompareDiagnosisMessage(filter,
                     Collections.singletonList(String.valueOf(icd10.findFromIcd10Code(groupId).toInt())));
             final SimpleDetailsData data = new DiagnosisSubGroupsTvarsnittConverter().convert(diagnosavsnitt, filterSettings, message);
             return getResponse(data, format, request, Report.V_DIAGNOSGRUPPENSKILTDIAGNOSKAPITEL, ReportType.TVARSNITT);
@@ -704,7 +696,12 @@ public class ProtectedChartDataService {
         final boolean emptyDiagnosisHash = diagnosisHash == null || diagnosisHash.isEmpty();
         final List<String> diagnosis = emptyDiagnosisHash ? Collections.<String> emptyList()
                 : filterHashHandler.getFilterFromHash(diagnosisHash).getDiagnoser();
-        final Message message = emptyDiagnosisHash ? createMessage("Inga diagnoser valda") : getCompareDiagnosisMessage(filter, diagnosis);
+        final Message message;
+        if (emptyDiagnosisHash)  {
+            message = createMessage(MessagesText.MESSAGE_NO_DIAGNOSIS);
+        } else {
+            message = getCompareDiagnosisMessage(filter, diagnosis);
+        }
         SimpleKonResponse resultRows = warehouse.getJamforDiagnoser(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request), diagnosis);
         SimpleDetailsData data = SimpleDualSexConverter.newGenericTvarsnitt().convert(resultRows, filterSettings, message);
@@ -714,8 +711,7 @@ public class ProtectedChartDataService {
     private Message getCompareDiagnosisMessage(Filter filter, List<String> diagnosis) {
         if (resultMessageHandler.isDxFilterDisableAllSelectedDxs(diagnosis, filter.getDiagnoser())) {
 
-            String msg = "Du har gjort ett val av diagnos som inte matchar det val du gjort i diagnosfiltret "
-                    + "(se 'Visa alla aktiva filter' ovan).";
+            String msg = MessagesText.MESSAGE_DIAGNOS_MISS_MATCH;
             return Message.create(ErrorType.FILTER, ErrorSeverity.WARN, msg);
         }
         return null;
@@ -737,7 +733,12 @@ public class ProtectedChartDataService {
         final boolean emptyDiagnosisHash = diagnosisHash == null || diagnosisHash.isEmpty();
         final List<String> diagnosis = emptyDiagnosisHash ? Collections.<String> emptyList()
                 : filterHashHandler.getFilterFromHash(diagnosisHash).getDiagnoser();
-        final Message message = emptyDiagnosisHash ? createMessage("Inga diagnoser valda") : getCompareDiagnosisMessage(filter, diagnosis);
+        final Message message;
+        if (emptyDiagnosisHash)  {
+            message = createMessage(MessagesText.MESSAGE_NO_DIAGNOSIS);
+        } else {
+            message = getCompareDiagnosisMessage(filter, diagnosis);
+        }
         KonDataResponse resultRows = warehouse.getJamforDiagnoserTidsserie(filter.getPredicate(), range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request), diagnosis);
         DualSexStatisticsData data = new CompareDiagnosisTimeSeriesConverter().convert(resultRows, filterSettings, message);

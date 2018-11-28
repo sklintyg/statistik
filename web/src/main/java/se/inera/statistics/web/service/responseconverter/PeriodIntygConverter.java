@@ -18,14 +18,16 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import se.inera.statistics.web.MessagesText;
+
 public class PeriodIntygConverter extends SimpleDualSexConverter {
 
     public PeriodIntygConverter() {
-        super("Period",
+        super(MessagesText.REPORT_PERIOD,
                 "%1$s",
-                "Antal intyg totalt",
-                "Antal intyg för kvinnor",
-                "Antal intyg för män");
+                MessagesText.REPORT_COLUMN_ANTAL_INTYG_TOTALT,
+                MessagesText.REPORT_COLUMN_ANTAL_INTYG_FEMALE,
+                MessagesText.REPORT_COLUMN_ANTAL_INTYG_MALE);
     }
 
 }

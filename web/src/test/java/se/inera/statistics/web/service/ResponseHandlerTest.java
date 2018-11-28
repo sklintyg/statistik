@@ -18,12 +18,22 @@
  */
 package se.inera.statistics.web.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import javax.ws.rs.core.Response;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
@@ -34,6 +44,7 @@ import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
 import se.inera.statistics.web.error.Message;
@@ -41,15 +52,6 @@ import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.FilteredDataReport;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.model.TableData;
-
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -458,14 +460,14 @@ public class ResponseHandlerTest {
         Message message = (Message) ((List) ((Map) response.getEntity()).get(ResponseHandler.MESSAGE_KEY)).get(0);
         assertEquals(ErrorType.FILTER, message.getType());
         assertEquals(ErrorSeverity.WARN, message.getSeverity());
-        assertEquals(ResponseHandler.NO_DATA_FILTER_MESSAGE, message.getMessage());
+        assertEquals(MessagesText.MESSAGE_NO_DATA_FILTER, message.getMessage());
     }
 
     private void validateNoDataNoFilterMessage(Response response) {
         Message message = (Message) ((List) ((Map) response.getEntity()).get(ResponseHandler.MESSAGE_KEY)).get(0);
         assertEquals(ErrorType.UNSET, message.getType());
         assertEquals(ErrorSeverity.INFO, message.getSeverity());
-        assertEquals(ResponseHandler.NO_DATA_MESSAGE, message.getMessage());
+        assertEquals(MessagesText.MESSAGE_NO_DATA, message.getMessage());
     }
 
     @Test

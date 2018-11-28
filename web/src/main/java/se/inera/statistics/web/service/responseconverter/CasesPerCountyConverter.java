@@ -32,6 +32,7 @@ import se.inera.statistics.service.report.model.Lan;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.model.CasesPerCountyData;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
@@ -45,16 +46,16 @@ import se.inera.statistics.web.service.FilterDataResponse;
 
 public class CasesPerCountyConverter {
 
-    public static final float THOUSAND = 1000F;
-    public static final String SAMTLIGA_LAN = "Samtliga län";
-    public static final String LAN = "Län";
-    public static final String H_ANTAL_SJUKFALL = "Antal sjukfall";
-    public static final String H_ANTAL_INVANARE = "Antal invånare";
-    public static final String H_ANTAL_SJUKFALL_PER_1000_INVANARE = "Antal sjukfall per 1000 invånare";
-    public static final String H_TOTALT = "Totalt";
-    public static final String H_KVINNOR = "Kvinnor";
-    public static final String H_MAN = "Män";
-    public static final int COLSPAN = 3;
+    private static final float THOUSAND = 1000F;
+    private static final String SAMTLIGA_LAN = MessagesText.REPORT_SAMTLIGA_LAN;
+    private static final String LAN = MessagesText.REPORT_LAN;
+    private static final String H_ANTAL_SJUKFALL = MessagesText.REPORT_ANTAL_SJUKFALL;
+    private static final String H_ANTAL_INVANARE = MessagesText.REPORT_ANTAL_INVANARE;
+    private static final String H_ANTAL_SJUKFALL_PER_1000_INVANARE = MessagesText.REPORT_ANTAL_SJUKFALL_PER_1000_INVANARE;
+    private static final String H_TOTALT = MessagesText.REPORT_GROUP_TOTALT;
+    private static final String H_KVINNOR = MessagesText.REPORT_GROUP_FEMALE;
+    private static final String H_MAN = MessagesText.REPORT_GROUP_MALE;
+    private static final int COLSPAN = 3;
     private final SimpleKonResponse resp;
     private final Range range;
     private final CountyPopulation countyPopulation;

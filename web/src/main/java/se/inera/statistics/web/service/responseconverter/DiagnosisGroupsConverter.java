@@ -18,22 +18,6 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import se.inera.statistics.service.report.model.DiagnosgruppResponse;
-import se.inera.statistics.service.report.model.Icd;
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.model.OverviewChartRowExtended;
-import se.inera.statistics.service.report.model.Range;
-import se.inera.statistics.service.report.util.DiagnosisGroup;
-import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.web.model.ChartCategory;
-import se.inera.statistics.web.model.ChartData;
-import se.inera.statistics.web.model.ChartSeries;
-import se.inera.statistics.web.model.DualSexStatisticsData;
-import se.inera.statistics.web.model.TableData;
-import se.inera.statistics.web.service.Filter;
-import se.inera.statistics.web.service.FilterDataResponse;
-import se.inera.statistics.web.service.FilterSettings;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -44,14 +28,31 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import se.inera.statistics.service.report.model.DiagnosgruppResponse;
+import se.inera.statistics.service.report.model.Icd;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.model.OverviewChartRowExtended;
+import se.inera.statistics.service.report.model.Range;
+import se.inera.statistics.service.report.util.DiagnosisGroup;
+import se.inera.statistics.service.report.util.Icd10;
+import se.inera.statistics.web.MessagesText;
+import se.inera.statistics.web.model.ChartCategory;
+import se.inera.statistics.web.model.ChartData;
+import se.inera.statistics.web.model.ChartSeries;
+import se.inera.statistics.web.model.DualSexStatisticsData;
+import se.inera.statistics.web.model.TableData;
+import se.inera.statistics.web.service.Filter;
+import se.inera.statistics.web.service.FilterDataResponse;
+import se.inera.statistics.web.service.FilterSettings;
+
 public class DiagnosisGroupsConverter extends MultiDualSexConverter {
 
-    public static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_GROUPS_WITH_UNKNOWN = createDiagnosisGroupsMap(true);
-    public static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_GROUPS_WITHOUT_UNKNOWN = createDiagnosisGroupsMap(false);
+    private static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_GROUPS_WITH_UNKNOWN = createDiagnosisGroupsMap(true);
+    private static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_GROUPS_WITHOUT_UNKNOWN = createDiagnosisGroupsMap(false);
     private static final Map<DiagnosisGroup, List<Integer>> DIAGNOSIS_CHART_GROUPS = DIAGNOSIS_GROUPS_WITH_UNKNOWN;
     static final Map<Integer, String> DIAGNOSKAPITEL_TO_DIAGNOSGRUPP = map(DIAGNOSIS_CHART_GROUPS);
     private static final int DISPLAYED_DIAGNOSIS_GROUPS = 6;
-    static final String DIAGNOS_REST_NAME = "Andra diagnosgrupper";
+    static final String DIAGNOS_REST_NAME = MessagesText.REPORT_DIAGNOSIS_REST;
     static final String DIAGNOS_REST_COLOR = "#5D5D5D";
 
     private static Map<Integer, String> map(Map<DiagnosisGroup, List<Integer>> diagnosisChartGroups) {

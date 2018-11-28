@@ -24,6 +24,7 @@ import java.util.List;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.model.ChartData;
 
 public class DiagnosisSubGroupsTvarsnittConverter extends SimpleDualSexConverter {
@@ -41,12 +42,12 @@ public class DiagnosisSubGroupsTvarsnittConverter extends SimpleDualSexConverter
     private SimpleKonResponse getTopColumns(SimpleKonResponse skr, List<Integer> topIndexes) {
         final ArrayList<SimpleKonDataRow> simpleKonDataRows = new ArrayList<>();
         if (topIndexes.isEmpty()) {
-            simpleKonDataRows.add(new SimpleKonDataRow("Totalt", 0, 0));
+            simpleKonDataRows.add(new SimpleKonDataRow(MessagesText.REPORT_GROUP_TOTALT, 0, 0));
         } else {
             for (Integer index : topIndexes) {
                 if (index == DiagnosisSubGroupsConverter.OTHER_GROUP_INDEX) {
                     final KonField otherData = getDataForOtherGroups(skr, topIndexes);
-                    simpleKonDataRows.add(new SimpleKonDataRow(DiagnosisSubGroupsConverter.OTHER_GROUP_NAME, otherData));
+                    simpleKonDataRows.add(new SimpleKonDataRow(MessagesText.REPORT_GROUP_OTHER, otherData));
                 } else {
                     final SimpleKonDataRow row = skr.getRows().get(index);
                     simpleKonDataRows.add(row);

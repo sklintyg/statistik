@@ -18,10 +18,12 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import se.inera.statistics.web.MessagesText;
+
 public class PeriodConverter extends SimpleDualSexConverter {
 
     public PeriodConverter() {
-        super("Period", "%1$s");
+        super(MessagesText.REPORT_PERIOD, "%1$s");
     }
 
 }

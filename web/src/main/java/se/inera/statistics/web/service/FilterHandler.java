@@ -18,8 +18,6 @@
  */
 package se.inera.statistics.web.service;
 
-import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -35,6 +33,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +58,7 @@ import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
 import se.inera.statistics.service.warehouse.Warehouse;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
 import se.inera.statistics.web.error.Message;
@@ -113,16 +114,14 @@ public class FilterHandler {
             LOG.debug("Could not use selected landsting filter. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhetsLandsting(request),
                     Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
-                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN,
-                            "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, MessagesText.FILTER_COULD_NOT_APPLY));
         } catch (TooEarlyEndDateException e) {
             LOG.warn("End date too early. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("End date too early. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhets(request),
                     Range.createForLastMonthsIncludingCurrent(defaultRangeValue, clock),
                     Message.create(ErrorType.FILTER, ErrorSeverity.WARN,
-                            "Det finns ingen statistik att visa för den angivna filtreringen. "
-                                    + "Överväg en mindre restriktiv filtrering."));
+                            MessagesText.FILTER_NO_DATA));
         }
     }
 
@@ -147,16 +146,13 @@ public class FilterHandler {
             LOG.debug("Could not use selected filter. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhets(request),
                     Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock),
-                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN,
-                            "Kunde ej applicera valt filter. Vänligen kontrollera filterinställningarna."));
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, MessagesText.FILTER_COULD_NOT_APPLY));
         } catch (TooEarlyEndDateException e) {
             LOG.warn("End date too early. Falling back to default filter. Msg: " + e.getMessage());
             LOG.debug("End date too early. Falling back to default filter.", e);
             return new FilterSettings(getFilterForAllAvailableEnhets(request),
                     Range.createForLastMonthsIncludingCurrent(defaultNumberOfMonthsInRange, clock),
-                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN,
-                            "Det finns ingen statistik att visa för den angivna filtreringen. "
-                                    + "Överväg en mindre restriktiv filtrering."));
+                    Message.create(ErrorType.FILTER, ErrorSeverity.WARN, MessagesText.FILTER_NO_DATA));
         }
     }
 
@@ -285,19 +281,19 @@ public class FilterHandler {
 
             final String formattedLowestStartDate = LOWEST_ACCEPTED_START_DATE.format(formatter);
             final String formattedHighestEndDate = highestAcceptedEndDate.format(formatter);
-            message = String.format("Det finns ingen statistik innan %s och ingen efter %s, visar statistik mellan %s och %s.",
+            message = String.format(MessagesText.FILTER_WRONG_FROM_AND_END_DATE,
                     formattedLowestStartDate, formattedHighestEndDate, formattedLowestStartDate, formattedHighestEndDate);
         } else if (isBefore) {
             if (to.isBefore(LOWEST_ACCEPTED_START_DATE)) {
                 throw new TooEarlyEndDateException();
             } else {
                 from = LOWEST_ACCEPTED_START_DATE;
-                message = String.format("Det finns ingen statistik innan %s. Visar statistik från tidigast möjliga datum.",
+                message = String.format(MessagesText.FILTER_WRONG_FROM_DATE,
                         LOWEST_ACCEPTED_START_DATE.format(formatter));
             }
         } else if (isAfter) {
             to = highestAcceptedEndDate;
-            message = String.format("Det finns ingen statistik efter %s. Visar statistik fram till senast möjliga datum.",
+            message = String.format(MessagesText.FILTER_WRONG_END_DATE,
                     highestAcceptedEndDate.format(formatter));
         }
 

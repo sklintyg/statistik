@@ -18,16 +18,15 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
+import java.util.Collections;
+import java.util.List;
+
 import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.web.model.ChartData;
 import se.inera.statistics.web.model.TableData;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class GroupedSjukfallWithLandstingSortingConverter extends SimpleDualSexConverter {
 
@@ -40,23 +39,15 @@ public class GroupedSjukfallWithLandstingSortingConverter extends SimpleDualSexC
 
     @Override
     protected TableData convertToTableData(List<SimpleKonDataRow> list) {
-        Collections.sort(list, new Comparator<SimpleKonDataRow>() {
-            @Override
-            public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {
-                return o1.getName().compareToIgnoreCase(o2.getName());
-            }
-        });
+        Collections.sort(list, (SimpleKonDataRow o1, SimpleKonDataRow o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
         return super.convertToTableData(list);
     }
 
     @Override
     protected ChartData convertToChartData(SimpleKonResponse casesPerMonth) {
-        Collections.sort(casesPerMonth.getRows(), new Comparator<SimpleKonDataRow>() {
-            @Override
-            public int compare(SimpleKonDataRow o1, SimpleKonDataRow o2) {
-                return Math.max(o2.getMale(), o2.getFemale()) - Math.max(o1.getMale(), o1.getFemale());
-            }
-        });
+        Collections.sort(casesPerMonth.getRows(),
+                (SimpleKonDataRow o1, SimpleKonDataRow o2) ->
+                        Math.max(o2.getMale(), o2.getFemale()) - Math.max(o1.getMale(), o1.getFemale()));
         return super.convertToChartData(casesPerMonth);
     }
 

@@ -27,6 +27,7 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.ChartCategory;
 import se.inera.statistics.web.model.ChartData;
@@ -42,9 +43,9 @@ public class SimpleDualSexConverter {
 
     private final String tableGroupTitle;
     private String seriesNameTemplate;
-    private String totalColumnName = "Antal sjukfall totalt";
-    private String femaleColumnName = "Antal sjukfall för kvinnor";
-    private String maleColumnName = "Antal sjukfall för män";
+    private String totalColumnName = MessagesText.REPORT_COLUMN_ANTAL_SJUKFALL_TOTALT;
+    private String femaleColumnName = MessagesText.REPORT_COLUMN_ANTAL_SJUKFALL_FEMALE;
+    private String maleColumnName = MessagesText.REPORT_COLUMN_ANTAL_SJUKFALL_MALE;
 
     public SimpleDualSexConverter(String tableGroupTitle, String seriesNameTemplate) {
         this.tableGroupTitle = tableGroupTitle;
@@ -67,9 +68,9 @@ public class SimpleDualSexConverter {
     public static SimpleDualSexConverter newGenericIntygTvarsnitt() {
         return new SimpleDualSexConverter("",
                 "%1$s",
-                "Antal intyg totalt",
-                "Antal intyg för kvinnor",
-                "Antal intyg för män");
+                MessagesText.REPORT_COLUMN_ANTAL_INTYG_TOTALT,
+                MessagesText.REPORT_COLUMN_ANTAL_INTYG_FEMALE,
+                MessagesText.REPORT_COLUMN_ANTAL_INTYG_MALE);
     }
 
     public SimpleDetailsData convert(SimpleKonResponse casesPerMonth, FilterSettings filterSettings) {
@@ -80,7 +81,7 @@ public class SimpleDualSexConverter {
         TableData tableData = convertToTableData(casesPerMonthIn.getRows());
         SimpleKonResponse casesPerMonth = casesPerMonthIn.getRows().isEmpty()
                 ? new SimpleKonResponse(casesPerMonthIn.getAvailableFilters(),
-                    Arrays.asList(new SimpleKonDataRow("Totalt", 0, 0))) : casesPerMonthIn;
+                    Arrays.asList(new SimpleKonDataRow(MessagesText.REPORT_GROUP_TOTALT, 0, 0))) : casesPerMonthIn;
         ChartData chartData = convertToChartData(casesPerMonth);
         final Filter filter = filterSettings.getFilter();
         final FilterDataResponse filterResponse = new FilterDataResponse(filter);
@@ -120,9 +121,9 @@ public class SimpleDualSexConverter {
         }
 
         final ArrayList<ChartSeries> series = new ArrayList<>();
-        series.add(new ChartSeries("Totalt", casesPerMonth.getSummedData()));
-        series.add(new ChartSeries("Kvinnor", casesPerMonth.getDataForSex(Kon.FEMALE), Kon.FEMALE));
-        series.add(new ChartSeries("Män", casesPerMonth.getDataForSex(Kon.MALE), Kon.MALE));
+        series.add(new ChartSeries(MessagesText.REPORT_GROUP_TOTALT, casesPerMonth.getSummedData()));
+        series.add(new ChartSeries(MessagesText.REPORT_GROUP_FEMALE, casesPerMonth.getDataForSex(Kon.FEMALE), Kon.FEMALE));
+        series.add(new ChartSeries(MessagesText.REPORT_GROUP_MALE, casesPerMonth.getDataForSex(Kon.MALE), Kon.MALE));
 
         return new ChartData(series, categories);
     }

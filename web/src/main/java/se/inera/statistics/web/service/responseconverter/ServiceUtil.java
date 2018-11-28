@@ -18,12 +18,13 @@
  */
 package se.inera.statistics.web.service.responseconverter;
 
-import se.inera.statistics.service.report.model.KonDataRow;
-import se.inera.statistics.service.report.model.KonField;
-import se.inera.statistics.web.model.NamedData;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import se.inera.statistics.service.report.model.KonDataRow;
+import se.inera.statistics.service.report.model.KonField;
+import se.inera.statistics.web.MessagesText;
+import se.inera.statistics.web.model.NamedData;
 
 public final class ServiceUtil {
 
@@ -64,7 +65,7 @@ public final class ServiceUtil {
                 sumData.remove(sumData.size() - 1);
             }
         }
-        return new NamedData("Totalt", sumData);
+        return new NamedData(MessagesText.REPORT_GROUP_TOTALT, sumData);
     }
 
 }

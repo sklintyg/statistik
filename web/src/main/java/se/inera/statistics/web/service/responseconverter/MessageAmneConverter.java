@@ -27,13 +27,14 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.warehouse.message.MsgAmne;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.model.DualSexStatisticsData;
 import se.inera.statistics.web.service.FilterSettings;
 
 public class MessageAmneConverter extends MultiDualSexConverter {
 
     public MessageAmneConverter() {
-        super("Antal meddelanden totalt");
+        super(MessagesText.REPORT_ANTAL_MEDDELANDEN_TOTALT);
     }
 
     private static final Map<String, String> COLORS = Arrays.stream(MsgAmne.values())

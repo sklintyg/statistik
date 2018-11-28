@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 import se.inera.statistics.service.report.model.SimpleKonDataRow;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.warehouse.message.MsgAmne;
+import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.Message;
 import se.inera.statistics.web.model.SimpleDetailsData;
 import se.inera.statistics.web.service.FilterSettings;
@@ -38,9 +39,9 @@ public final class MessageAmneTvarsnittConverter extends SimpleDualSexConverter 
     public static MessageAmneTvarsnittConverter newTvarsnitt() {
         return new MessageAmneTvarsnittConverter("",
                 "%1$s",
-                "Antal meddelanden totalt",
-                "Antal meddelanden för kvinnor",
-                "Antal meddelanden för män");
+                MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_TOTALT,
+                MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_FEMALE,
+                MessagesText.REPORT_COLUMN_ANTAL_MESSAGES_MALE);
     }
 
     @Override
