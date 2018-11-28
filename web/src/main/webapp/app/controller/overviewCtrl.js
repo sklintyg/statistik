@@ -45,9 +45,9 @@ angular.module('StatisticsApp').controller('overviewCtrl',
             $scope.popoverTextChangeProcentage = 'Diagrammet visar hur antalet sjukfall förändrats mellan perioden ' + result.periodText +
                                                     ' och samma tremånadersperiod föregående år.';
 
-            $scope.popoverTextDiagnosisGroups = 'Diagrammet visar antal sjukfall inom de vanligast förekommande diagnosgrupperna under ' +
+            $scope.popoverTextDiagnosisGroups = 'Diagrammet visar antal sjukfall inom olika diagnosgrupper under ' +
                                                 result.periodText + '.' + popoverTextChangeCurrentVSPrevious;
-            $scope.popoverTextAgeGroups = 'Diagrammet visar de åldersgrupper som har flest sjukfall under ' + result.periodText + '.' +
+            $scope.popoverTextAgeGroups = 'Diagrammet visar antal sjukfall inom olika åldersgrupper under månad ' + result.periodText + '.' +
                 popoverTextChangeCurrentVSPrevious;
             $scope.popoverTextDegreeOfSickLeave = 'Diagrammet visar antalet sjukfall per sjukskrivningsgrad under perioden  ' +
                                                 result.periodText + '.' + popoverTextChangeCurrentVSPrevious;
@@ -326,7 +326,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
         statisticsData.getOverview(dataReceived, function () {
             $scope.dataLoadingError = true;
         });
-        $scope.subTitle = 'Utvecklingen i Sverige de senaste tre månaderna, ';
+        $scope.subTitle = messageService.getProperty('national.overview-header2');
         $scope.spinnerText = 'Laddar information...';
         $scope.doneLoading = false;
         $scope.dataLoadingError = false;
