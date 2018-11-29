@@ -2,21 +2,6 @@
   margin: 0 auto;
   overflow: visible !important;
 
-  .tooltip-style {
-    background: $stat-highcharts-tooltip-bg;
-    color: $stat-highcharts-tooltip-color;
-    display: block;
-    font-size: 12px;
-    margin: 0;
-    padding: 8px;
-    text-align: left;
-
-    .title {
-      display: inline-block;
-      margin-bottom: 3px;
-    }
-  }
-
   svg {
     overflow: visible !important;
   }

@@ -105,7 +105,7 @@ angular.module('StatisticsApp').factory('chartFactory',
             return 40;
         }
 
-        function _getTooltip(overview, percentChart, unit, chartType, usingAndel) {
+        function _getTooltip(overview, percentChart, unit, chartType, usingAndel, maxWidth) {
 
             var formatter;
 
@@ -114,10 +114,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                     var value = percentChart ?
                         Highcharts.numberFormat(this.percentage, 0, ',') + ' %' :
                         ControllerCommons.makeThousandSeparated(this.point.z);
-
-                    return '<p class="tooltip-style">' +
-                        '<nobr><b>' + value + '</b></nobr> ' + unit + ' för ' + this.series.name  +
-                        '</p>';
+                    return '<b>' + value + '</b> ' + unit + ' för ' + this.series.name;
                 };
             } else {
                 formatter = function() {
@@ -132,27 +129,36 @@ angular.module('StatisticsApp').factory('chartFactory',
                     }
 
                     if (overview) {
-                        return '<p class="tooltip-style">' +
-                            '<nobr><b>' + value + '</b></nobr> ' + unit + ' för ' + title +
-                            '</p>';
+                        return '<b>' + value + '</b> ' + unit + ' för ' + title;
                     }
 
-                    return '<p class="tooltip-style">' +
-                        '<span class="title">' + title + ':</span><br>' +
-                        '<nobr><b>' + value + '</b></nobr> ' + unit + ' för ' + this.series.name +
-                        '</p>';
+                    return title + ':<br><b>' + value + '</b> ' + unit + ' för ' + this.series.name;
                 };
             }
 
-
             return {
+                hideDelay: 500,
                 backgroundColor : '#fff',
                 borderWidth : 2,
-                padding: 1,
-                style: {},
-                useHTML: true,
+                padding: 9,
+                style: {
+                    whiteSpace: 'nowrap',
+                    width: '600px'
+                },
+                responsiveWidthPercentage: maxWidth || null,
+                useHTML: false,
+                outside: typeof(maxWidth) === 'undefined',
                 formatter: formatter
             };
+        }
+
+        function onChartRender() {
+            /* jshint ignore:start */
+            this.tooltip.update({
+                style: {
+                    width: Math.floor(0.01 * this.tooltip.options.responsiveWidthPercentage * this.chartWidth) + 'px'
+                }});
+            /* jshint ignore:end */
         }
 
         function processCategories(categories) {
@@ -175,6 +181,13 @@ angular.module('StatisticsApp').factory('chartFactory',
                     marked: category.marked
                 };
             });
+        }
+
+        function _addChartEvent(config, eventName, callback) {
+            if(typeof(config.chart.events) !== 'object') {
+                config.chart.events = {};
+            }
+            config.chart.events[eventName] = callback;
         }
 
         /**
@@ -327,7 +340,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                         showInLegend : false
                     }
                 },
-                tooltip : _getTooltip(options.overview, options.percentChart, options.unit, options.type, options.usingAndel),
+                tooltip : _getTooltip(options.overview, options.percentChart, options.unit, options.type, options.usingAndel, options.maxWidthPercentage),
                 credits : {
                     enabled : false
                 },
@@ -353,7 +366,11 @@ angular.module('StatisticsApp').factory('chartFactory',
             };
 
             if (options.doneLoadingCallback) {
-                config.chart.events = { load: options.doneLoadingCallback };
+                _addChartEvent(config, 'load', options.doneLoadingCallback);
+            }
+
+            if (typeof(options.maxWidthPercentage) === 'number') {
+                _addChartEvent(config, 'render', onChartRender);
             }
 
             return config;

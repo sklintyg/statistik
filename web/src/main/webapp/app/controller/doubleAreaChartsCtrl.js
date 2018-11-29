@@ -53,7 +53,8 @@ angular.module('StatisticsApp').controller('doubleAreaChartsCtrl',
                 verticalLabel: false,
                 labelMaxLength: null,
                 unit: yAxisTitleUnit,
-                usingAndel: config.usingAndel
+                usingAndel: config.usingAndel,
+                maxWidthPercentage: 80
             };
 
             var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);

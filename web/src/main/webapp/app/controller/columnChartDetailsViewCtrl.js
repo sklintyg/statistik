@@ -60,9 +60,9 @@ angular.module('StatisticsApp').controller('columnChartDetailsViewCtrl',
                 verticalLabel: config.chartVerticalLabel,
                 labelMaxLength: config.chartLabelLength,
                 unit: config.chartYAxisTitleUnit ? config.chartYAxisTitleUnit : 'sjukfall',
-                usingAndel: config.usingAndel
+                usingAndel: config.usingAndel,
+                maxWidthPercentage: 80
             };
-
 
             var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
             chartOptions.legend.enabled = false;

@@ -141,7 +141,8 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                 series: series,
                 type: 'pie',
                 overview: true,
-                unit: 'sjukfall'
+                unit: 'sjukfall',
+                maxWidthPercentage: 120
             };
 
             var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
@@ -217,7 +218,8 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                 type: 'column',
                 overview: true,
                 renderTo: containerId,
-                unit: 'sjukfall'
+                unit: 'sjukfall',
+                maxWidthPercentage: 80
             };
 
             var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
@@ -255,7 +257,8 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                 series: series,
                 type: 'bubble',
                 overview: true,
-                unit: 'sjukfall per miljon invånare'
+                unit: 'sjukfall per miljon invånare',
+                maxWidthPercentage: 120
             };
 
             var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
@@ -447,7 +450,6 @@ angular.module('StatisticsApp').controller('overviewCtrl',
 
 
             pdfOverviewFactory.printOverview($scope, charts);
-
 
             sickLeavePerCountyChart2.destroy();
         };
