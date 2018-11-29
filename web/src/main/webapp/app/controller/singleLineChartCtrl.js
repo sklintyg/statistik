@@ -55,7 +55,8 @@ angular.module('StatisticsApp').controller('singleLineChartCtrl',
                 stacked: chartTypeInfo.stacked,
                 verticalLabel: false,
                 labelMaxLength: null,
-                unit: yAxisTitleUnit
+                unit: yAxisTitleUnit,
+                maxWidthPercentage: 80
             };
 
             var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);

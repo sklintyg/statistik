@@ -126,7 +126,8 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             series: [],
             type: 'pie',
             overview: true,
-            unit: dataUnit ? dataUnit : 'sjukfall'
+            unit: dataUnit ? dataUnit : 'sjukfall',
+            maxWidthPercentage: 120
         };
 
         var chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
@@ -224,7 +225,8 @@ function ($scope, $rootScope, $window, $timeout, statisticsData, $routeParams, c
             type: 'column',
             overview: true,
             renderTo: containerId,
-            unit: 'sjukfall'
+            unit: 'sjukfall',
+            maxWidthPercentage: 80
         };
 
         chartOptions = chartFactory.getHighChartConfigBase(chartConfigOptions);
