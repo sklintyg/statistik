@@ -119,4 +119,11 @@ stats-header {
       margin-right: 15px;
     }
   }
+
+  .vl {
+    border-left: 1px solid $stat-menu-header-bg-from;
+    height: 100%;
+    margin-right: 15px;
+  }
+
 }
