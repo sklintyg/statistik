@@ -1,12 +1,12 @@
 plugins {
-    id "se.inera.intyg.plugin.common" version "1.0.62" apply false
+    id "se.inera.intyg.plugin.common" version "1.0.67" apply false
     id "se.inera.intyg.plugin.fitnesse" version "1.0.8" apply false
     id "org.akhikhl.gretty" version "1.4.2" apply false
     id "com.moowork.node" version "1.1.1" apply false
 }
 
 ext {
-    infraVersion = System.properties['infraVersion'] ?: '3.8.0.+'
+    infraVersion = System.properties['infraVersion'] ?: '3.9.0.+'
 
     intygSchematronVersion = "1.0.31"
     certificateSchemaVersion = "3.2.0-RC3"
