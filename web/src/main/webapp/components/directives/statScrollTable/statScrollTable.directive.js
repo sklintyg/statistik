@@ -42,7 +42,7 @@ angular.module('StatisticsApp').directive('statScrollTable',
                 $scope.rowsShown = [];
                 $scope.fixedHeader = [];
                 $scope.scrollHeader = [];
-                $scope.tableVisible = true;
+                $scope.tableVisible = getTableVisibility();
                 $scope.doneLoading = true;
                 $scope.message = messageService.getProperty('info.hidden-table');
                 $scope.messageSeverity = 'INFO';
@@ -71,8 +71,8 @@ angular.module('StatisticsApp').directive('statScrollTable',
                     maxColumns = null;
 
                     $timeout(function() {
-                        watchHeader($scope.headerRows);
-                        watchRows($scope.rows);
+                        watchHeader();
+                        watchRows();
                     });
                 };
 
@@ -88,36 +88,36 @@ angular.module('StatisticsApp').directive('statScrollTable',
                     return ObjectHelper.isNotEmpty($scope.getHeaderTitle(header));
                 };
 
-                function checkHeaderAndRowLength(rows, headers) {
-                    if (!angular.isArray(headers) || !angular.isArray(rows)) {
+                function getTableVisibility() {
+                    if (!angular.isArray($scope.headerRows) || !angular.isArray($scope.rows)) {
+                        return true;
+                    }
+
+                    if (maxRows !== null && $scope.rows.length > maxRows) {
                         return false;
                     }
 
-                    if (maxRows !== null && rows.length > maxRows) {
-                        $scope.tableVisible = false;
-                        return false;
-                    }
-
-                    if (maxColumns !== null && headers[0].length > (maxColumns/3) + 1) {
-                        $scope.tableVisible = false;
+                    if (maxColumns !== null && $scope.headerRows[0].length > (maxColumns/3) + 1) {
                         return false;
                     }
 
                     return true;
                 }
 
-                function watchHeader(headerRows) {
-                    if (!checkHeaderAndRowLength($scope.rows, headerRows)) {
+                function watchHeader() {
+                    if (!angular.isArray($scope.headerRows) || !angular.isArray($scope.rows)) {
                         return;
                     }
+                    $scope.tableVisible = getTableVisibility();
 
-                    $scope.headers = headerRows;
+                    $scope.headers = $scope.headerRows;
                 }
 
-                function watchRows(rows) {
-                    if (!checkHeaderAndRowLength(rows, $scope.headerRows)) {
+                function watchRows() {
+                    if (!angular.isArray($scope.headerRows) || !angular.isArray($scope.rows)) {
                         return;
                     }
+                    $scope.tableVisible = getTableVisibility();
 
                     setWidth();
                     processData();
