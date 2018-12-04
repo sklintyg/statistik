@@ -416,7 +416,7 @@ public class ProtectedLandstingService {
         KonDataResponse intygPerMonth = warehouse.getIntygPerTypeLandsting(filterSettings);
         final String header = "Antal intyg totalt";
         final DualSexStatisticsData result = new SimpleMultiDualSexConverter(header).convert(intygPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_INTYGPERTYP, TIDSSERIE, getLastLandstingUpdateDate(vg));
+        return getResponse(result, format, request, Report.L_INTYGPERTYP, TIDSSERIE, getLastLandstingUpdateDate(vg));
     }
 
     @GET

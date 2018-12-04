@@ -61,6 +61,7 @@ public enum Report {
     L_VARDENHETLISTNINGAR(StatisticsLevel.LANDSTING, "VardenhetListningar", "Antal sjukfall per 1000 listningar fördelat på vårdenhet"),
     L_ANDELKOMPLETTERINGAR(StatisticsLevel.LANDSTING, "Kompletteringandelintyg", "Andel utfärdade intyg som fått en kompletteringsbegäran"),
     L_MEDDELANDENPERAMNE(StatisticsLevel.LANDSTING, "MeddelandenPerAmne", "Antal inkomna meddelanden fördelat på ämne"),
+    L_INTYGPERTYP(StatisticsLevel.LANDSTING, "IntygPerTyp", "Antal utfärdade intyg fördelat på intygstyp"),
     L_MEDDELANDENPERAMNEPERENHET(StatisticsLevel.LANDSTING, "MeddelandenPerAmnePerEnhet",
             "Antal inkomna meddelanden fördelat på vårdenhet");
 
