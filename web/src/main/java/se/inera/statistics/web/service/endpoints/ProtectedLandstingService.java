@@ -18,6 +18,13 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.activation.DataSource;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
@@ -31,13 +38,6 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.ByteArrayOutputStream;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.apache.cxf.jaxrs.ext.multipart.MultipartBody;
 import org.slf4j.Logger;
@@ -81,7 +81,13 @@ import se.inera.statistics.web.service.landsting.LandstingFileGenerationExceptio
 import se.inera.statistics.web.service.landsting.LandstingFileReader;
 import se.inera.statistics.web.service.landsting.LandstingFileWriter;
 import se.inera.statistics.web.service.monitoring.MonitoringLogService;
-import se.inera.statistics.web.service.responseconverter.*;
+import se.inera.statistics.web.service.responseconverter.AndelKompletteringarConverter;
+import se.inera.statistics.web.service.responseconverter.GroupedSjukfallWithLandstingSortingConverter;
+import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
+import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetTvarsnittConverter;
+import se.inera.statistics.web.service.responseconverter.PeriodConverter;
+import se.inera.statistics.web.service.responseconverter.SimpleMultiDualSexConverter;
+import se.inera.statistics.web.service.responseconverter.SjukfallPerPatientsPerEnhetConverter;
 
 import static se.inera.statistics.web.service.ReportType.TIDSSERIE;
 import static se.inera.statistics.web.service.ReportType.TVARSNITT;
@@ -409,7 +415,7 @@ public class ProtectedLandstingService {
         KonDataResponse intygPerMonth = warehouse.getIntygPerTypeLandsting(filterSettings);
         final String header = "Antal intyg totalt";
         final DualSexStatisticsData result = new SimpleMultiDualSexConverter(header).convert(intygPerMonth, filterSettings);
-        return getResponse(result, format, request, Report.V_INTYGPERTYP, TIDSSERIE, getLastLandstingUpdateDate(vg));
+        return getResponse(result, format, request, Report.L_INTYGPERTYP, TIDSSERIE, getLastLandstingUpdateDate(vg));
     }
 
     @GET
