@@ -438,6 +438,10 @@ var app = angular.module('StatisticsApp')
                 controllerAs: 'LandstingAndelKompletteringarCtrl',
                 resolve: { config: app.andelKompletteringarLandstingConfig },
                 title: 'nav.andelkompletteringar'
+            }).when('/landsting/om', {
+                templateUrl: '/app/views/landsting/aboutlandsting.html',
+                controllerAs: 'LandstingAboutCtrl',
+                title: 'Om Landstingsstatistik'
             }).when('/om/kontakt', {
                 templateUrl: '/app/views/about/contact.html',
                 controllerAs: 'AboutContactCtrl',
