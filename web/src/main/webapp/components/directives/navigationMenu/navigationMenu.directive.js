@@ -357,7 +357,15 @@
                 link: '#/landsting/andelkompletteringar',
                 name: 'nav.andelkompletteringar',
                 ctrl: 'LandstingAndelKompletteringarCtrl'
-            }, {
+            }]
+        };
+
+        var miscLandsting = {
+            id: 'misclandsting-statistics-toggle',
+            name: 'nav.landsting-header',
+            navigationId: 'misclandsting-statistics-collapse',
+            show: true,
+            subMenu: [{
                 checkVisible: function() {
                     return UserModel.get().isLandstingAdmin;
                 },
@@ -365,12 +373,20 @@
                 link: '#/landsting/filuppladdning',
                 name: 'nav.landsting.filuppladdning',
                 ctrl: 'LandstingFileUploadCtrl'
+            },{
+                checkVisible: function() {
+                    return UserModel.get().hasLandstingAccess;
+                },
+                id: 'navLandstingAboutLink',
+                link: '#/landsting/om',
+                name: 'nav.landsting.om',
+                ctrl: 'LandstingAboutCtrl'
             }]
         };
 
         var nationell = [sjukfallNationell, intygNationell, kommunikationNationell];
         var verksamhet = [sjukfallVerksamhet, intygVerksamhet, kommunikationVerksamhet];
-        var landsting = [sjukfallLandsting, intygLandsting, kommunikationLandsting];
+        var landsting = [sjukfallLandsting, intygLandsting, kommunikationLandsting, miscLandsting];
 
         $scope.$on('navigationUpdate', function (event, navigationGroupId) {
 
