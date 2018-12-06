@@ -31,7 +31,7 @@ var stMessages = {
         'nav.lakaralder-kon':'Läkarålder och -kön',
         'nav.sjukskrivningslangd-mer-an-90-dagar':'Mer än 90 dagar',
         'nav.allmant-om-tjansten': 'Allmänt om tjänsten',
-        'nav.landsting.filuppladdning': 'Ladda upp fil',
+        'nav.landsting.filuppladdning': 'Filuppladdning',
         'nav.landsting.listningsjamforelse': 'Vårdenhet, listningar',
         'nav.landsting.om': 'Om landstingsstatistik',
         'nav.meddelanden': 'Meddelanden, totalt',
