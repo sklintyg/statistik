@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h
@@ -19,12 +18,13 @@ user2 har medarbetaruppdrag på enhet1 och enhet2.
 | 1002 | 19790717-9191 | G01 | 2014-02-05 | 2014-02-06 | enhet2 |
 | 1003 | 19790219-9285 | G01 | 2014-02-05 | 2014-02-06 | enhet3 |
 
-!(| Foljande meddelanden finns |
+| Foljande meddelanden finns |
 | personnr | skickat | intygsid | ämne |
 | 19790717-9191 | 2014-02-05 | 1001 | KOMPLT |
 | 19790717-9191 | 2014-02-05 | 1002 | KOMPLT |
-| 19790219-9285 | 2014-02-05 | 1003 | KOMPLT |)!| script | Rensa uppladdade landstingsfiler |
+| 19790219-9285 | 2014-02-05 | 1003 | KOMPLT |
 
+| script | Rensa uppladdade landstingsfiler |
 
 
 | Uppladdade landstingsfiler |
@@ -57,16 +57,14 @@ Inloggad:
 | user2 | true | enhet1 | nej |
 | user2 | true | enhet3 | nej |
 
-!(| Meddelanden i rapporten meddelanden vardenhet som tvarsnitt landsting |
-| inloggad som | vårdgivarnivå | vårdenhet | markerad? |
-| user1 | false | enhet1 | ja |
-| user1 | false | enhet2 | nej |
-| user1 | false | enhet3 | nej |
-| user2 | false | enhet1 | ja |
-| user2 | false | enhet2 | ja |
-| user2 | false | enhet3 | nej |
-| user2 | true | enhet1 | nej |
-| user2 | true | enhet2 | nej |
-| user2 | true | enhet3 | nej |
-
-)!
+#| Meddelanden i rapporten meddelanden vardenhet som tvarsnitt landsting |
+#| inloggad som | vårdgivarnivå | vårdenhet | markerad? |
+#| user1 | false | enhet1 | ja |
+#| user1 | false | enhet2 | nej |
+#| user1 | false | enhet3 | nej |
+#| user2 | false | enhet1 | ja |
+#| user2 | false | enhet2 | ja |
+#| user2 | false | enhet3 | nej |
+#| user2 | true | enhet1 | nej |
+#| user2 | true | enhet2 | nej |
+#| user2 | true | enhet3 | nej |
