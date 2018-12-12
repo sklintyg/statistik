@@ -56,6 +56,7 @@
     <bean class="se.inera.statistics.service.helper.RegisterCertificateResolver"/>
     <bean class="se.inera.statistics.service.helper.certificate.RegisterCertificateHelper"/>
     <bean class="se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper"/>
+    <bean class="se.inera.statistics.service.helper.certificate.Ag114RegisterCertificateHelper"/>
     <bean class="se.inera.statistics.service.helper.certificate.Ag7804RegisterCertificateHelper"/>
     <bean class="se.inera.statistics.service.helper.SendMessageToCareHelper"/>
 
