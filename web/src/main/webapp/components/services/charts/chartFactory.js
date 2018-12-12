@@ -263,7 +263,7 @@ angular.module('StatisticsApp').factory('chartFactory',
                         align : 'right',
                         style: {
                             whiteSpace: 'pre',
-                            width: '200px'
+                            width: (_getMaxLength(options.labelMaxLength) * 7) + 'px'
                         },
                         useHTML: true,
                         formatter: labelFormatter(_getMaxLength(options.labelMaxLength), options.verticalLabel),
