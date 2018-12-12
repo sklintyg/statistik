@@ -112,6 +112,7 @@ angular.module('StatisticsApp')
 
                 _addHeader(content, headers);
                 content.push(_convertChartsToImages(charts));
+                _addLegends(content, charts);
 
                 _addAllFilters(content, enhetsFilterAllSelected, enhetsFilter, diagnosFilter, sjukskrivningslangdFilter, aldersgruppFilter, intygstyperFilter);
 
@@ -282,6 +283,12 @@ angular.module('StatisticsApp')
                 content.push({ text: headers.subHeader, style: 'subheader' });
             }
 
+            function _addLegends(content, charts) {
+                _.each(charts[0].series, function(serie) {
+                    content.push({text: [{text: '\u25A0 ', color: serie.color}, serie.name]});
+                });
+            }
+
             function _convertChartsToImages(charts) {
                 var content = [];
                 var width = 510;
@@ -304,10 +311,8 @@ angular.module('StatisticsApp')
                     boxHeight = svg.substr(boxHeightStart, boxHeightStop - boxHeightStart);
                 }
 
-                _.each(charts, function(chart, index) {
-                    var showLegend = numberOfCharts === (index + 1);
-
-                    var image = _getChart(chart, chartWidth, chartHeight, showLegend, false, boxHeight);
+                _.each(charts, function(chart) {
+                    var image = _getChart(chart, chartWidth, chartHeight, false, false, boxHeight);
 
                     content.push({
                         image: image,
