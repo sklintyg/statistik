@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import se.inera.statistics.service.helper.certificate.AbstractRegisterCertificateHelper;
+import se.inera.statistics.service.helper.certificate.Ag114RegisterCertificateHelper;
 import se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper;
 import se.inera.statistics.service.helper.certificate.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HSAKey;
@@ -40,6 +41,9 @@ public class RegisterCertificateResolver {
     @Autowired
     private FkRegisterCertificateHelper fkRegisterCertificateHelper;
 
+    @Autowired
+    private Ag114RegisterCertificateHelper ag114RegisterCertificateHelper;
+
     public AbstractRegisterCertificateHelper resolveIntygHelper(IntygType intygType) {
 
         switch (intygType) {
@@ -49,12 +53,13 @@ public class RegisterCertificateResolver {
             case LUAE_NA:
             case LUAE_FS:
                 return fkRegisterCertificateHelper;
+            case AG114:
+                return ag114RegisterCertificateHelper;
             case DB:
             case DOI:
             case AF00213:
             case TSTRK1007:
             case TSTRK1031:
-            case AG114:
                 return registerCertificateHelper;
             default:
                 throw new RuntimeException("Unknown certificate type: " + intygType);

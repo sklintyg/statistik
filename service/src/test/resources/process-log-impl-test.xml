@@ -53,6 +53,7 @@
     <bean class="se.inera.statistics.service.helper.RegisterCertificateResolver"/>
     <bean class="se.inera.statistics.service.helper.certificate.RegisterCertificateHelper"/>
     <bean class="se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper"/>
+    <bean class="se.inera.statistics.service.helper.certificate.Ag114RegisterCertificateHelper"/>
     <bean class="se.inera.statistics.service.helper.certificate.TsBasHelper"/>
     <bean class="se.inera.statistics.service.helper.certificate.TsDiabetesHelper"/>
     <bean class="se.inera.statistics.service.countypopulation.CountyPopulationManagerMock"/>
