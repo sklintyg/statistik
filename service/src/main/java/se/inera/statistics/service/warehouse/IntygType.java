@@ -41,7 +41,8 @@ public enum IntygType {
     UNKNOWN(null, null, "Okänt", "Okänt", false),
     TSTRK1007("TSTRK1007", "ts-bas", "TSTRK1007", "TSTRK1007 Transportstyrelsens läkarintyg", true),
     TSTRK1031("TSTRK1031", "ts-diabetes", "TSTRK1031", "TSTRK1031 Transportstyrelsens läkarintyg diabetes", true),
-    AG114("AG1-14", "ag114", "AG1-14", "AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperioden", true);
+    AG114("AG1-14", "ag114", "AG1-14", "AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperioden", true),
+    AG7804("AG7804", "ag7804", "AG7804", "AG7804 Läkarintyg om arbetsförmåga - arbetsgivare", true);
 
     private static final Set<IntygType> INCLUDED_IN_KOMPLETTERING_REPORT = Collections.unmodifiableSet(
             Stream.of(LISJP, LUSE, LUAE_NA, LUAE_FS).collect(Collectors.toSet()));
@@ -50,7 +51,7 @@ public enum IntygType {
             Stream.of(LISJP, FK7263).collect(Collectors.toSet()));
 
     private static final List<IntygType> INCLUDED_IN_INTYG_TOTALT_REPORT = Collections.unmodifiableList(
-            Arrays.asList(AG114, AF00213, DB, DOI, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1007, TSTRK1031));
+            Arrays.asList(AF00213, AG114, AG7804, DB, DOI, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1007, TSTRK1031));
 
     private static final List<IntygType> INCLUDED_IN_INTYG_FILTER = Collections.unmodifiableList(
             Arrays.asList(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS));

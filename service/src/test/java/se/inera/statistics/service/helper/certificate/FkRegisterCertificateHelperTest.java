@@ -219,6 +219,7 @@ public class FkRegisterCertificateHelperTest {
         assertEquals(100, dto.getPatientData().getAlder());
         assertEquals(Kon.MALE, dto.getPatientData().getKon());
         assertEquals(signeringsdatum, dto.getSigneringsdatum());
+        assertEquals("S47", dto.getDiagnoskod());
 
     }
 

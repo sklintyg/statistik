@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import se.inera.statistics.service.helper.certificate.AbstractRegisterCertificateHelper;
+import se.inera.statistics.service.helper.certificate.Ag7804RegisterCertificateHelper;
 import se.inera.statistics.service.helper.certificate.FkRegisterCertificateHelper;
 import se.inera.statistics.service.helper.certificate.RegisterCertificateHelper;
 import se.inera.statistics.service.hsa.HSAKey;
@@ -40,6 +41,9 @@ public class RegisterCertificateResolver {
     @Autowired
     private FkRegisterCertificateHelper fkRegisterCertificateHelper;
 
+    @Autowired
+    private Ag7804RegisterCertificateHelper ag7804RegisterCertificateHelper;
+
     public AbstractRegisterCertificateHelper resolveIntygHelper(IntygType intygType) {
 
         switch (intygType) {
@@ -49,6 +53,8 @@ public class RegisterCertificateResolver {
             case LUAE_NA:
             case LUAE_FS:
                 return fkRegisterCertificateHelper;
+            case AG7804:
+                return ag7804RegisterCertificateHelper;
             case DB:
             case DOI:
             case AF00213:

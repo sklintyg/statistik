@@ -134,6 +134,8 @@ class FoljandeIntygFinns extends FoljandeFinns {
                 return executeForXmlFormatRegisterCertificate('/tstrk1031.xml', "TSTRK1031");
             case ~/^(?i)AG1-14/:
                 return executeForXmlFormatRegisterCertificate('/ag114.xml', "AG1-14");
+            case ~/^(?i)AG7804/:
+                return executeForXmlFormatRegisterCertificateWithDX('/ag7804.xml', "AG7804", "6", "6.2");
             default:
                 throw new RuntimeException("Unknown intyg format requested")
         }
@@ -145,6 +147,18 @@ class FoljandeIntygFinns extends FoljandeFinns {
 
     private String executeForXmlFormatRegisterCertificate(String filepath, String defaultIntygstyp) {
         Node result = handleGeneralRegisterCertificate(filepath, defaultIntygstyp)
+
+        def builder = groovy.xml.XmlUtil.serialize(result)
+        return builder.toString()
+    }
+
+    private String executeForXmlFormatRegisterCertificateWithDX(String filepath, String defaultIntygstyp, String dxId, String dxDelSvarId) {
+        Node result = handleGeneralRegisterCertificate(filepath, defaultIntygstyp)
+
+        def intyg = result.value()[0]
+
+        def svarNodes = findNodes(intyg, "svar")
+        setDx(intyg, svarNodes, dxId, dxDelSvarId)
 
         def builder = groovy.xml.XmlUtil.serialize(result)
         return builder.toString()
@@ -220,7 +234,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
         def intyg = result.value()[0]
 
         def svarNodes = findNodes(intyg, "svar")
-        setDx(intyg, svarNodes)
+        setDx(intyg, svarNodes, "6", "6.2")
 
         return result
     }
@@ -230,7 +244,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
         def intyg = result.value()[0]
 
         def svarNodes = findNodes(intyg, "svar")
-        setDx(intyg, svarNodes)
+        setDx(intyg, svarNodes, "6", "6.2")
 
         def funktionsnedsattningNode = svarNodes.find{ it.@id=="35" }
         def funktionsnedsattningCodeNode = funktionsnedsattningNode.value().find{it.@id=="35.1"}
@@ -268,15 +282,15 @@ class FoljandeIntygFinns extends FoljandeFinns {
         return builder.toString()
     }
 
-    private void setDx(intyg, svarNodes) {
-        def svar6 = svarNodes.find { it.@id == "6" }
+    private void setDx(intyg, svarNodes, String svarId, String delsvarId) {
+        def svar = svarNodes.find { it.@id == svarId }
         if ("UTANDIAGNOSKOD".equalsIgnoreCase(diagnoskod)) {
-            if (svar6 != null) {
-                intyg.remove(svar6)
+            if (svar != null) {
+                intyg.remove(svar)
             }
         } else {
-            def dxCodeSvarNode = svar6
-            def dxCodeNode = dxCodeSvarNode.find { it.@id == "6.2" }.value()[0]
+            def dxCodeSvarNode = svar
+            def dxCodeNode = dxCodeSvarNode.find { it.@id == delsvarId }.value()[0]
             setLeafValue(dxCodeNode, "code", diagnoskod)
         }
     }

@@ -61,6 +61,9 @@ public class SchemaValidator {
     @Autowired
     private Ag114Validator ag114Validator;
 
+    @Autowired
+    private Ag7804Validator ag7804Validator;
+
     public ValidateXmlResponse validate(@Nonnull final IntygType typ, @Nonnull final String data) {
         switch (typ) {
             case FK7263:
@@ -85,6 +88,8 @@ public class SchemaValidator {
                 return tsDiabetesValidator.validateSchematron(data);
             case AG114:
                 return ag114Validator.validateSchematron(data);
+            case AG7804:
+                return ag7804Validator.validateSchematron(data);
             default:
                 return new ValidateXmlResponse("Unknown certificate type: " + typ);
         }
