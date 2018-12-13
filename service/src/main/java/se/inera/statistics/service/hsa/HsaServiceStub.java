@@ -49,11 +49,7 @@ public class HsaServiceStub {
     }
 
     public void deleteEnhet(String id) {
-        for (Vardenhet enhet: vardenheter) {
-            if (enhet.getId().getId().equals(id)) {
-                vardenheter.remove(enhet);
-            }
-        }
+        vardenheter.removeIf(vardenhet -> vardenhet.getId().getId().equals(id));
     }
 
     public List<Medarbetaruppdrag> getMedarbetaruppdrag() {

@@ -294,9 +294,9 @@ public class ProtectedLandstingService {
             final HashMap<String, Object> map = new HashMap<>();
             map.put("message", message);
             return Response.status(status).entity(map).build();
-        default:
-            throw new RuntimeException("Unhandled upload result format: " + format);
         }
+
+        throw new RuntimeException("Unhandled upload result format: " + format);
     }
 
     @GET

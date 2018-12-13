@@ -18,6 +18,33 @@
  */
 package se.inera.testsupport;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +53,7 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdUser;
@@ -72,41 +100,14 @@ import se.inera.statistics.web.service.endpoints.ChartDataService;
 import se.inera.testsupport.fkrapport.FkReportCreator;
 import se.inera.testsupport.fkrapport.FkReportDataRow;
 import se.inera.testsupport.socialstyrelsenspecial.IntygCommonSosManager;
-import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs1Row;
-import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs2Row;
 import se.inera.testsupport.socialstyrelsenspecial.SosCalculatedRow;
 import se.inera.testsupport.socialstyrelsenspecial.SosCountRow;
 import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs1ReportCreator;
-import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
+import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs1Row;
 import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs2ReportCreator;
+import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs2Row;
+import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
 import se.inera.testsupport.socialstyrelsenspecial.SosRow;
-
-import javax.annotation.PostConstruct;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.time.Clock;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service("restSupportService")
 public class RestSupportService {
@@ -179,7 +180,7 @@ public class RestSupportService {
 
     @Autowired (required = false)
     @Qualifier("intygCommonDxPopulator")
-    private ApplicationListener intygCommonDxPopulator;
+    private ApplicationListener<ApplicationEvent> intygCommonDxPopulator;
 
     @Autowired
     private Cache cache;

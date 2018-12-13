@@ -18,6 +18,13 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Lists;
 import se.inera.statistics.service.report.model.Kon;
@@ -25,17 +32,10 @@ import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.SimpleKonResponse;
 import se.inera.statistics.service.report.util.Ranges;
 import se.inera.statistics.service.warehouse.Aisle;
+import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.Lakare;
 import se.inera.statistics.service.warehouse.Sjukfall;
-import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Function;
 
 import static se.inera.statistics.service.report.util.Ranges.range;
 
@@ -62,9 +62,9 @@ public final class LakaresAlderOchKonQuery {
             return "Manlig läkare";
         case UNKNOWN:
             return "Okänt kön";
-        default:
-            throw new IllegalArgumentException("Unhandled type: " + kon);
         }
+
+        throw new IllegalArgumentException("Unhandled type: " + kon);
     }
 
     public SimpleKonResponse getSjukfallPerLakaresAlderOchKon(Aisle aisle, FilterPredicates filter, LocalDate start,

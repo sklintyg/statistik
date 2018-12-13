@@ -19,6 +19,7 @@
 package se.inera.statistics.service.warehouse;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -26,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.Splitter;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
@@ -69,8 +71,8 @@ class FactConverter {
         if (lakarbefattningString == null || lakarbefattningString.isEmpty()) {
             return new int[] {LakarbefattningQuery.UNKNOWN_BEFATTNING_CODE};
         }
-        final String[] befattningStrings = lakarbefattningString.split(",");
-        final int[] befattnings = new int[befattningStrings.length];
+        final List<String> befattningStrings = Splitter.on(',').splitToList(lakarbefattningString);
+        final int[] befattnings = new int[befattningStrings.size()];
         int parsedBefattningsAdded = 0;
         for (String befattningString : befattningStrings) {
             String befattning = befattningString.trim();

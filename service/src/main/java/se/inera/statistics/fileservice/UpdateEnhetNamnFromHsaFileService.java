@@ -18,20 +18,20 @@
  */
 package se.inera.statistics.fileservice;
 
-import net.javacrumbs.shedlock.core.SchedulerLock;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Scheduled;
-import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
-import se.inera.statistics.fileservice.model.FileGetHsaUnitsResponse;
-
+import java.io.InputStream;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.xml.bind.JAXB;
-import java.io.InputStream;
-import java.util.LinkedHashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+
+import net.javacrumbs.shedlock.core.SchedulerLock;
+import se.inera.intyg.infra.monitoring.annotation.PrometheusTimeMethod;
+import se.inera.statistics.fileservice.model.FileGetHsaUnitsResponse;
 
 public class UpdateEnhetNamnFromHsaFileService {
 
@@ -75,7 +75,6 @@ public class UpdateEnhetNamnFromHsaFileService {
 
         LOG.info("Updating enhet names");
         final Integer updateCount = resp.getHsaUnits().getHsaUnit().stream().reduce(0, (integer, hsaUnit) -> {
-            LinkedHashMap<String, Object> map4 = new LinkedHashMap<String, Object>(2);
             final Query q = manager.createNativeQuery("update enhet set namn = :namn where enhetId = :id and namn <> :namn");
             final String name = hsaUnit.getName();
             q.setParameter("namn", name);

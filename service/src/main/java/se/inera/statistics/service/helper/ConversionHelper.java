@@ -110,7 +110,7 @@ public final class ConversionHelper {
 
             if (day > SAMORDNINGSNUMMER_DAY_CONSTANT) {
                 dateString = dateString.substring(0, MONTH_PART_OF_DATE_PART)
-                        + (MONTHDAY_FORMATTER.format(MonthDay.of(month, day - SAMORDNINGSNUMMER_DAY_CONSTANT)));
+                        + MONTHDAY_FORMATTER.format(MonthDay.of(month, day - SAMORDNINGSNUMMER_DAY_CONSTANT));
             }
             birthDate = LocalDate.from(DateTimeFormatter.BASIC_ISO_DATE.parse(dateString));
             LocalDate referenceDate = LocalDate.from(start);

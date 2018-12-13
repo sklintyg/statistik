@@ -18,9 +18,9 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import se.inera.statistics.service.report.model.Kon;
-
 import java.io.Serializable;
+
+import se.inera.statistics.service.report.model.Kon;
 
 public class Lakare implements Serializable {
 
@@ -57,7 +57,7 @@ public class Lakare implements Serializable {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Lakare)) {
             return false;
         }
 

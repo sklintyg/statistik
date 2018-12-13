@@ -18,14 +18,15 @@
  */
 package se.inera.statistics.web.service.interceptor;
 
-import com.google.common.base.Strings;
+import java.util.List;
+import java.util.stream.Stream;
+
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingMessage;
 
-import java.util.List;
+import com.google.common.base.Strings;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Stream.of;
 
 public class LogInInterceptor extends LoggingInInterceptor {
 
@@ -55,7 +56,7 @@ public class LogInInterceptor extends LoggingInInterceptor {
 
         int index = -1;
         if (payloadIndex > -1) {
-            List<String> lookupList = of(LOOKUP_CONTENTTYPE, LOOKUP_PDF).collect(toList());
+            List<String> lookupList = Stream.of(LOOKUP_CONTENTTYPE, LOOKUP_PDF).collect(toList());
             for (String s : lookupList) {
                 index = payload.indexOf(s, payloadIndex);
                 if (index > -1) {

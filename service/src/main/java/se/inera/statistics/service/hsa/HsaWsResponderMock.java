@@ -156,15 +156,15 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         final String enhetId = getEnhetId(key.getEnhetId().getId(), isHuvudenhet);
         root.put("id", enhetId);
         root.put("namn", getEnhetsNamn(enhetId));
-        root.put(ENHETS_TYP, asList(VerksamhetsTyp.VARDCENTRAL_ID));
-        root.put("agarform", asList("Landsting/Region"));
+        root.set(ENHETS_TYP, asList(VerksamhetsTyp.VARDCENTRAL_ID));
+        root.set("agarform", asList("Landsting/Region"));
         root.put("startdatum", "");
         root.put("slutdatum", "");
-        root.put("arkiverad", (JsonNode) null);
+        root.set("arkiverad", null);
         root.put("organisationsnamn", "Organisationsnamn");
-        root.put("vardform", (JsonNode) null);
-        root.put("geografi", createGeografiskIndelning(key));
-        root.put("verksamhet", asList(createVerksamhet(key)));
+        root.set("vardform", null);
+        root.set("geografi", createGeografiskIndelning(key));
+        root.set("verksamhet", asList(createVerksamhet(key)));
         root.put("vgid", key.getVardgivareId().getId());
         return root;
     }
@@ -190,13 +190,13 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     private JsonNode createPersonal(HSAKey key) {
         ObjectNode root = factory.objectNode();
         root.put("id", key.getLakareId().getId());
-        root.put("initial", (JsonNode) null);
-        root.put("kon", (JsonNode) null);
-        root.put(ALDER, (JsonNode) null);
-        root.put(BEFATTNING, (JsonNode) null);
-        root.put("specialitet", (JsonNode) null);
-        root.put("yrkesgrupp", (JsonNode) null);
-        root.put(SKYDDAD, (JsonNode) null);
+        root.set("initial", null);
+        root.set("kon", null);
+        root.set(ALDER, null);
+        root.set(BEFATTNING, null);
+        root.set("specialitet", null);
+        root.set("yrkesgrupp", null);
+        root.set(SKYDDAD, null);
         root.put(TILLTALSNAMN, getTilltalsnamn(key));
         root.put(EFTERNAMN, getEfternamn(key));
         return root;
@@ -206,12 +206,12 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
                                      List<String> befattnings, boolean skyddad) {
         ObjectNode root = factory.objectNode();
         root.put("id", id.getId());
-        root.put("initial", (JsonNode) null);
+        root.set("initial", null);
         root.put("kon", String.valueOf(kon.getHsaRepresantation()));
         root.put(ALDER, String.valueOf(age));
-        root.put(BEFATTNING, toArrayNode(befattnings));
-        root.put("specialitet", (JsonNode) null);
-        root.put("yrkesgrupp", (JsonNode) null);
+        root.set(BEFATTNING, toArrayNode(befattnings));
+        root.set("specialitet", null);
+        root.set("yrkesgrupp", null);
         root.put(SKYDDAD, skyddad);
         root.put("tilltalsnamn", firstName);
         root.put(EFTERNAMN, lastName);
@@ -280,7 +280,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
         int numberOfVerksamhet = (key.getEnhetId().hashCode() & POSITIVE_MASK) % VERKSAMHET_MODULO;
         int i = 0;
         while (returnSet.size() < numberOfVerksamhet) {
-            int index = ((key.getVardgivareId().getId() + key.getEnhetId().getId() + i).hashCode()) & POSITIVE_MASK;
+            int index = (key.getVardgivareId().getId() + key.getEnhetId().getId() + i).hashCode() & POSITIVE_MASK;
             returnSet.add(VERKSAMHET_CODES.get(index % VERKSAMHET_CODES.size()));
             i++;
         }

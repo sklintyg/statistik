@@ -18,12 +18,12 @@
  */
 package se.inera.statistics.service.warehouse.query;
 
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.warehouse.Sjukfall;
-
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.warehouse.Sjukfall;
 
 public class Counter<T> {
 
@@ -65,7 +65,7 @@ public class Counter<T> {
     public static <K> Map<K, Counter<K>> mapFor(Iterable<K> i) {
         Map<K, Counter<K>> counters = new HashMap<>();
         for (K next: i) {
-            counters.put(next, new Counter(next));
+            counters.put(next, new Counter<>(next));
         }
         return counters;
     }

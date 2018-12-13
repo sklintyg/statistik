@@ -18,7 +18,6 @@
  */
 package se.inera.testsupport;
 
-import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import javax.annotation.PostConstruct;
 
 import org.apache.cxf.helpers.IOUtils;
 import org.slf4j.Logger;
@@ -168,7 +168,7 @@ public class TestIntygInjector {
 
         HsaIdVardgivare vardgivare = random(VG);
 
-        HsaIdEnhet vardenhet = random(Lists.newArrayList((VARDGIVARE.get(vardgivare))));
+        HsaIdEnhet vardenhet = random(Lists.newArrayList(VARDGIVARE.get(vardgivare)));
 
         HsaIdLakare lakare = random(LAKARE);
 

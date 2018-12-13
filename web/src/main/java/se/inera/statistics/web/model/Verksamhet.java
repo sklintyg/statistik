@@ -18,18 +18,19 @@
  */
 package se.inera.statistics.web.model;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
-import org.apache.commons.lang3.text.translate.UnicodeEscaper;
-import org.apache.commons.lang3.text.translate.UnicodeUnescaper;
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdVardgivare;
-
 import java.io.Serializable;
 import java.util.Set;
 
-import static org.apache.commons.lang3.text.translate.UnicodeEscaper.above;
-import static org.apache.commons.lang3.text.translate.UnicodeEscaper.between;
+import org.apache.commons.text.translate.CharSequenceTranslator;
+import org.apache.commons.text.translate.UnicodeEscaper;
+import org.apache.commons.text.translate.UnicodeUnescaper;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdVardgivare;
+
+import static org.apache.commons.text.translate.UnicodeEscaper.above;
+import static org.apache.commons.text.translate.UnicodeEscaper.between;
 
 @JsonAutoDetect(
         fieldVisibility = JsonAutoDetect.Visibility.ANY,
@@ -120,7 +121,7 @@ public class Verksamhet implements Serializable {
         return new UnicodeUnescaper().translate(encodedId.replace('_', '\\'));
     }
 
-    public static class VerksamhetsTyp implements Serializable {
+    public static final class VerksamhetsTyp implements Serializable {
         private final String id;
         private final String name;
 

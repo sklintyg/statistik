@@ -21,7 +21,6 @@ package se.inera.statistics.service.warehouse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Sjukskrivningsperiod {
@@ -63,7 +62,7 @@ public class Sjukskrivningsperiod {
         if (periodsIn.size() < 2) {
             return new ArrayList<>(periodsIn);
         }
-        final List<Sjukskrivningsperiod> periods = new LinkedList<>(periodsIn);
+        final List<Sjukskrivningsperiod> periods = new ArrayList<>(periodsIn);
         periods.sort(Comparator.comparingInt(Sjukskrivningsperiod::getStart));
         for (int i = 1; i < periods.size(); i++) {
             final Sjukskrivningsperiod p1 = periods.get(i - 1);

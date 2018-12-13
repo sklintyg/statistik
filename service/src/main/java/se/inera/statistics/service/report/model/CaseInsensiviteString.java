@@ -18,9 +18,9 @@
  */
 package se.inera.statistics.service.report.model;
 
-import com.google.common.base.Objects;
-
 import java.util.Locale;
+
+import com.google.common.base.Objects;
 
 public class CaseInsensiviteString {
 
@@ -39,7 +39,7 @@ public class CaseInsensiviteString {
         if (this == o) {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof CaseInsensiviteString)) {
             return false;
         }
         CaseInsensiviteString that = (CaseInsensiviteString) o;

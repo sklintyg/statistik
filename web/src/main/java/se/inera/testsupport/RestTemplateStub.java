@@ -25,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
+import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,12 +34,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import se.inera.statistics.service.report.model.KonField;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import javax.annotation.PostConstruct;
+import se.inera.statistics.service.report.model.KonField;
 
 @Component
 public class RestTemplateStub extends RestTemplate implements CountyPopulationInjector {
@@ -102,7 +100,7 @@ public class RestTemplateStub extends RestTemplate implements CountyPopulationIn
 
     @Override
     public <T> T postForObject(String url, Object request, Class<T> responseType, Object... uriVariables) {
-        if (scbPopulationUrl.equalsIgnoreCase(url.toString())) {
+        if (scbPopulationUrl.equalsIgnoreCase(url)) {
             try {
                 final String requestedYear = getRequestedYear(request);
                 if (countyPopulationPerYear.containsKey(requestedYear)) {

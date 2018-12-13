@@ -18,11 +18,11 @@
  */
 package se.inera.testsupport.socialstyrelsenspecial;
 
-import se.inera.statistics.service.report.model.Kon;
-
 import java.util.Objects;
 
-public class SosMeCfs2Tuple {
+import se.inera.statistics.service.report.model.Kon;
+
+public final class SosMeCfs2Tuple {
 
     private Kon kon;
     private String ageGroup;
