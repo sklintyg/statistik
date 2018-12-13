@@ -15,26 +15,22 @@ Test
 | Foljande meddelanden finns |
 | meddelandeid | personnr | skickat | intygsid | ämne |
 | 2001 | 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT |
-| 2002 | 19790717-9191 | 2014-06-03T10:00:00 | 1001 | KOMPLT |
 
 | Foljande kompletteringsbegaran finns |
 | personnr | meddelandeid | frageid |
 | 19790717-9191 | 2001 | 35 |
-| 19790717-9191 | 2001 | 1 |
-| 19790717-9191 | 2002 | 5 |
+
+| Foljande intyg finns |
+| intygid | personnr | händelsetyp | signeringstid | diagnoskod | intygformat | enhet |
+| 1001 | 19790717-9191 | REVOKED | 2014-05-05T10:00:00 | G01 | LUSE | enhet1 |
 
 !3 Då gäller:
-5 är ett okänt frågeid för Intygsstatistik och tas inte med i statistiken
+Även om det intyg som meddelandet och dess kompletteringsbegäran tillhör makuleras så ska meddelandet ändå finnas kvar i statistiken.
 
-Förklaring frågeid:
-
-1= Intyget baseras på
-
-35= Funktionsnedsättning
+35= Funktionsnedsättning.
 
 Inloggad:
 
 | Kompletteringar i rapporten kompletteringar per fraga som tvarsnitt |
 | inloggad som | grupp | totalt? | män? | kvinnor? |
-| user1 | Intyget baseras på | 1 | 1 | 0 |
 | user1 | Funktionsnedsättning | 1 | 1 | 0 |
