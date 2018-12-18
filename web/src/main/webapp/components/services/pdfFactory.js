@@ -53,7 +53,7 @@ angular.module('StatisticsApp')
                 };
 
                 var table;
-                if ($scope.useSpecialPrintTable) {
+                if ($scope.useSpecialPrintTable) { //Used when table must be horizontally divided on separate pages
 
                     var isTableVisible = $scope.status.isTableOpen;
                     $scope.status.isTableOpen = true;
@@ -447,13 +447,16 @@ angular.module('StatisticsApp')
 
                 var topLevelHeaders = _.tail(headers[0]); //Take all headers but the first, the first is handled separately
 
-                var firstColumnWidth = $('.stat-scroll-table .headcol').width();
+                var firstColumnWidth = calcWidth(_.max(rows, function(row) { return calcWidth(row.name); }).name);
                 var remainingWidth = 0;
                 var printTable;
 
-                $('.stat-scroll-table .scrolling thead tr:first td').each(function(index, td) {
-                    var columnWidth = $(td).width();
+                _.each(headers[0], function(header, index) {
+                    if (index === 0) {
+                        return;
+                    }
 
+                    var columnWidth = calcWidth(header.text);
                     if (remainingWidth > columnWidth) {
                         remainingWidth -= columnWidth;
                     } else {
@@ -465,7 +468,7 @@ angular.module('StatisticsApp')
                     }
 
                     // Add columns to table
-                    var topHeader = addTopHeader(printTable, index);
+                    var topHeader = addTopHeader(printTable, index - 1);
 
                     //Add the sub level headers, the colspan of the top level header
                     //decides how many sub level columns we have.
@@ -503,6 +506,19 @@ angular.module('StatisticsApp')
                     });
 
                     return printTable;
+                }
+
+                function calcWidth(text, font) {
+                    var f = font || '12px arial',
+                        o = $('<div></div>')
+                            .text(text)
+                            .css({'position': 'absolute', 'float': 'left', 'white-space': 'nowrap', 'visibility': 'hidden', 'font': f})
+                            .appendTo($('body')),
+                        w = o.width();
+
+                    o.remove();
+
+                    return w;
                 }
 
                 chartTable.width('');
