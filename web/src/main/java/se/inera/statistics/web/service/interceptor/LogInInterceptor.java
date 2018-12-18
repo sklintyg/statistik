@@ -18,20 +18,19 @@
  */
 package se.inera.statistics.web.service.interceptor;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingMessage;
 
 import com.google.common.base.Strings;
 
-import static java.util.stream.Collectors.toList;
-
 public class LogInInterceptor extends LoggingInInterceptor {
 
     private static final String LOOKUP_CONTENTTYPE = "Content-Type:";
     private static final String LOOKUP_PDF = "pdf=";
+    private static final List<String> LOOKUP_LIST = Arrays.asList(LOOKUP_CONTENTTYPE, LOOKUP_PDF);
 
     @Override
     protected String formatLoggingMessage(LoggingMessage loggingMessage) {
@@ -56,8 +55,7 @@ public class LogInInterceptor extends LoggingInInterceptor {
 
         int index = -1;
         if (payloadIndex > -1) {
-            List<String> lookupList = Stream.of(LOOKUP_CONTENTTYPE, LOOKUP_PDF).collect(toList());
-            for (String s : lookupList) {
+            for (String s : LOOKUP_LIST) {
                 index = payload.indexOf(s, payloadIndex);
                 if (index > -1) {
                     return index;
