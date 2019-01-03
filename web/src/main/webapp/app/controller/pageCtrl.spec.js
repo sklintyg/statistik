@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 Inera AB (http://www.inera.se)
+ * Copyright (C) 2019 Inera AB (http://www.inera.se)
  *
  *     This file is part of Inera Statistics (http://code.google.com/p/inera-statistics/).
  *
