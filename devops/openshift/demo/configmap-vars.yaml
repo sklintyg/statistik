@@ -1,0 +1,22 @@
+apiVersion: v1
+data:
+  SPRING_PROFILES_ACTIVE: "test,hsa-stub,wc-hsa-stub,security-both,testapi,caching-enabled"
+  ACTIVEMQ_RECEIVER_QUEUE_NAME: "demo.statistik.utlatande.queue"
+  ACTIVEMQ_BROKER_URL: "${activemq.amq.tcp.port}?jms.nonBlockingRedelivery=true&jms.redeliveryPolicy.maximumRedeliveries=3&jms.redeliveryPolicy.maximumRedeliveryDelay=6000&jms.redeliveryPolicy.initialRedeliveryDelay=4000&jms.redeliveryPolicy.useExponentialBackOff=true&jms.redeliveryPolicy.backOffMultiplier=2"
+  LOGIN_URL: "fakelogin"
+  NTJP_WS_CERTIFICATE_FILE: "${certificate.folder}/test.intygstjanster.sjunet.org.jks"
+  NTJP_WS_TRUSTSTORE_FILE: "${certificate.folder}/truststore.jks"
+  SAML_IDP_METADATA_FILE: "file://${statistics.config.folder}/idp-sakerhetstjanst.xml"
+  SAML_SP_METADATA_FILE: "file://${statistics.config.folder}/sp-sakerhetstjanst.xml"
+  SAML_KEYSTORE_FILE: "file://${certificate.folder}/test.statistik.jks"
+  SAML_KEYSTORE_ALIAS: "test.statistik.intygstjanster.se"
+  SAML_TRUSTSTORE_FILE: "file://${certificate.folder}/test.statistik.jks"
+  REDIS_HOST: "${redis.service.host}"
+  REDIS_PORT: "${redis.service.port}"
+  DB_NAME: "statistik"
+  DB_SERVER: "${mysql.service.host}"
+  DB_PORT: "${mysql.service.port}"
+kind: ConfigMap
+metadata:
+  name: statistik-demo-configmap-envvar
+type: Opaque
