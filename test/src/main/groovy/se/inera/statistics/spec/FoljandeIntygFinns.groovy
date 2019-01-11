@@ -137,7 +137,7 @@ class FoljandeIntygFinns extends FoljandeFinns {
             case ~/^(?i)AG7804/:
                 return executeForXmlFormatRegisterCertificateWithDX('/ag7804.xml', "AG7804", "6", "6.2");
             default:
-                throw new RuntimeException("Unknown intyg format requested")
+                throw new RuntimeException("Unknown intyg format requested: " + intygformat)
         }
     }
 
