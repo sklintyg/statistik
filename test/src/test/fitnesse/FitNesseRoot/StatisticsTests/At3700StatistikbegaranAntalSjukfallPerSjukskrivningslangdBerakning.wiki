@@ -1,0 +1,55 @@
+---
+Prune
+Test
+---
+!3 Givet att:
+| script | dagens datum | 2018-08-23 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | kommentar | enhet |
+| 19790717-9191 | C50 | 2017-01-01 | 2017-01-05 | | enhet1 |
+| 19790717-9191 | G93.3 | 2017-01-06 | 2017-01-10 | 10 dagar | enhet1 |
+| 19790808-9274 | C50 | 2017-01-01 | 2017-01-05 | | enhet1 |
+| 19790808-9274 | G93.3 | 2017-01-06 | 2017-01-12 | 12 dagar | enhet1 |
+| 19690620-8810 | G93.3 | 2017-01-01 | 2017-01-29 | 29 dagar | enhet1 |
+| 19690621-8801 | G93.3 | 2017-01-01 | 2017-02-01 | 32 dagar | enhet1 |
+| 19790918-9230 | G93.3 | 2017-01-01 | 2017-02-10 | 41 dagar | enhet1 |
+| 19790618-9282 | F43 | 2017-01-01 | 2017-02-10 | | enhet1 |
+| 19790618-9282 | G93.3 | 2017-02-11 | 2017-02-20 | 51 dagar | enhet1 |
+| 19410622-8818 | G93.3 | 2017-01-01 | 2017-02-01 | 32 dagar | enhet1 |
+| 19471109-2681 | G93.3 | 2017-01-01 | 2017-03-01 | 60 dagar | enhet1 |
+| 19681002-9288 | G93.3 | 2017-01-01 | 2017-03-01 | 60 dagar | enhet1 |
+| 19791110-9291 | G93.3 | 2017-01-01 | 2017-04-01 | 91 dagar | enhet1 |
+| 19671122-2940 | G93.3 | 2017-01-01 | 2017-04-01 | 91 dagar | enhet1 |
+| 19891230-9296 | F43 | 2017-01-01 | 2017-01-14 | | enhet1 |
+| 19891230-9296 | F43 | 2017-01-15 | 2017-02-01 | | enhet1 |
+| 19891230-9296 | G93.3 | 2017-02-02 | 2017-03-10 | 69 dagar | enhet1 |
+| 19801013-9297 | C50 | 2017-01-01 | 2017-05-01 | | enhet1 |
+| 19801013-9297 | G93.3 | 2017-05-02 | 2017-09-01 | 244 dagar | enhet1 |
+| 19801207-9284 | G93.3 | 2017-01-01 | 2017-05-01 | 121 dagar | enhet1 |
+| 19991109-2681 | G93.3 | 2017-01-01 | 2017-03-01 | 60 dagar | enhet1 |
+| 19800101-9312 | C50 | 2017-01-01 | 2017-03-01 | 60 dagar | enhet1 |
+| 19800101-9312 | F43 | 2016-01-01 | 2017-02-01 | 398 dagar | enhet1 |
+
+!3 Då gäller:
+| Sjukfall i rapporten sjukfall per sjukskrivningslangd |
+| sjukskrivningslängd | antal? |
+| Under 8 dagar | 0 |
+| 8-14 dagar | 2 |
+| 15-30 dagar | 1 |
+| 31-60 dagar | 8 |
+| 61-90 dagar | 1 |
+| 91-180 dagar | 3 |
+| 181-365 dagar | 1 |
+| Över 365 dagar | 1 |
+| Vanligaste diagnos i sjukfall över 180 dagar #1 är G93 med 1 förekomster | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #2 är F43 med 1 förekomster | 0 |
+| Vanligaste diagnos i sjukfall 91-180 dagar #1 är G93 med 3 förekomster | 0 |
+
+Längst ned är två tio-i-topp listor med de vanligaste diagnoserna för gruppen 91-180 dagar och för alla sjukfall som är över 180 dagar långa.
+
+Diagnoser på fyr- och femställig nivå grupperas under den treställiga nivån.
+
+Varje diagnos räknas. Om ett sjukfall med fyra intyg som alla har G93 som diagnos. Då räknas den diagnosen 4 gånger.
