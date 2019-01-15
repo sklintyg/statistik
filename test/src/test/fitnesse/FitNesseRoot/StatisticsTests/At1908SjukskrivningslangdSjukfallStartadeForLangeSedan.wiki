@@ -1,41 +1,42 @@
 ---
+Prune
 Test
 ---
 !contents -R2 -g -p -f -h
 !3 Givet att:
 Ett sjukfall består av ett intyg som pågått ända sedan 2012.
 
-|script|dagens datum|2015-02-01|
+| script | dagens datum | 2015-02-01 |
 
-|script|troskel varde|1|
+| script | troskel varde | 1 |
 
-|Enbart foljande intyg finns                          |
-|personnr     |diagnoskod|start     |slut      |enhet |
-|19671109-2681|A01       |2012-01-02|2015-03-30|enhet1|
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet |
+| 19671109-2681 | A01 | 2012-01-02 | 2015-03-30 | enhet1 |
 
 !3 Då gäller:
 Sjukfallet visas i gruppen "Över 365 dagar". Intyg med mycket gammalt startdatum försvinner inte utan räknas med trots att inget nytt intyg utfärdats.
 
 Nationell
 
-|Sjukfall i rapporten sjukskrivningslangd |
-|sjukskrivningslängd|totalt?|män?|kvinnor?|
-|181-365 dagar      |0      |0   |0       |
-|Över 365 dagar     |1      |0   |1       |
+| Sjukfall i rapporten sjukskrivningslangd |
+| sjukskrivningslängd | totalt? | män? | kvinnor? |
+| 2-3 år | 0 | 0 | 0 |
+| 3- år | 1 | 0 | 1 |
 
-|Sjukfall i oversikt sjukskrivningslangd|
-|grupp                  |antal?         |
-|181-365 dagar          |0              |
-|Över 365 dagar         |1              |
+| Sjukfall i oversikt sjukskrivningslangd |
+| grupp | antal? |
+| 2-3 år | 0 |
+| 3- år | 1 |
 
 Inloggad
 
-|Sjukfall i rapporten sjukskrivningslangd              |
-|inloggad som|sjukskrivningslängd|totalt?|män?|kvinnor?|
-|user1       |181-365 dagar      |0      |0   |0       |
-|user1       |Över 365 dagar     |1      |0   |1       |
+| Sjukfall i rapporten sjukskrivningslangd |
+| inloggad som | sjukskrivningslängd | totalt? | män? | kvinnor? |
+| user1 | 2-3 år | 0 | 0 | 0 |
+| user1 | 3- år | 1 | 0 | 1 |
 
-|Sjukfall i oversikt sjukskrivningslangd|
-|inloggad som  |grupp           |antal? |
-|user2         |181-365 dagar   |0      |
-|user2         |Över 365 dagar  |1      |
+| Sjukfall i oversikt sjukskrivningslangd |
+| inloggad som | grupp | antal? |
+| user2 | 2-3 år | 0 |
+| user2 | 3- år | 1 |

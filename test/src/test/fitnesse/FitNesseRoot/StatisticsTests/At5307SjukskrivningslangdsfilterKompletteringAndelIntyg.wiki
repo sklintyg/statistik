@@ -1,4 +1,5 @@
 ---
+Prune
 Test
 ---
 Det finns ett antal intyg med ett antal tillhörande meddelanden.
@@ -20,11 +21,11 @@ Endast 5 intyg har signerats och skickats till Försäkringskassan under de sena
 
 | Intyg skickat till mottagare |
 | intygid | mottagare |
-| 1001    | FKASSA    |
-| 1002    | FKASSA    |
-| 1003    | FKASSA    |
-| 1004    | FKASSA    |
-| 1005    | FKASSA    |
+| 1001 | FKASSA |
+| 1002 | FKASSA |
+| 1003 | FKASSA |
+| 1004 | FKASSA |
+| 1005 | FKASSA |
 
 Av dessa 5 har 3st fått kompletteringar och 1 har fått ett avstämningsmöte.
 
@@ -44,15 +45,15 @@ Inloggad:
 
 | Andel i rapporten komplettering andel intyg |
 | inloggad som | år | månad | grupp | filter sjukskrivningslängd | grupp totalt? | män? | kvinnor? |
-| user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | Över 365 dagar | 0% | 0% | 0% |
-| user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | Över 365 dagar | 0% | 0% | 0% |
-| user1 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | Över 365 dagar | 0% | 0% | 0% |
-| user1 | 2015 | feb | FK 7804 Läkarintyg för sjukpenning | Över 365 dagar | 100% | 0% | 100% |
-| user1 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | Över 365 dagar | 0% | 0% | 0% |
-| user1 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | Över 365 dagar | 0% | 0% | 0% |
-| user1 | 2015 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | Över 365 dagar | 0% | 0% | 0% |
-| user1 | 2015 | mar | FK 7804 Läkarintyg för sjukpenning | Över 365 dagar | 0% | 0% | 0% |
-| user1 | 2015 | apr | FK 7800 Läkarutlåtande för sjukersättning | Över 365 dagar | 100% | 100% | 0% |
-| user1 | 2015 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | Över 365 dagar | 0% | 0% | 0% |
-| user1 | 2015 | apr | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | Över 365 dagar | 0% | 0% | 0% |
-| user1 | 2015 | apr | FK 7804 Läkarintyg för sjukpenning | Över 365 dagar | 50% | 0% | 100% |
+| user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | 1-2 år | 0% | 0% | 0% |
+| user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga  | 1-2 år | 0% | 0% | 0% |
+| user1 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 1-2 år | 0% | 0% | 0% |
+| user1 | 2015 | feb | FK 7804 Läkarintyg för sjukpenning | 1-2 år | 100% | 0% | 100% |
+| user1 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | 1-2 år | 0% | 0% | 0% |
+| user1 | 2015 | mar | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 1-2 år | 0% | 0% | 0% |
+| user1 | 2015 | mar | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 1-2 år | 0% | 0% | 0% |
+| user1 | 2015 | mar | FK 7804 Läkarintyg för sjukpenning | 1-2 år | 0% | 0% | 0% |
+| user1 | 2015 | apr | FK 7800 Läkarutlåtande för sjukersättning | 1-2 år | 100% | 100% | 0% |
+| user1 | 2015 | apr | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 1-2 år | 0% | 0% | 0% |
+| user1 | 2015 | apr | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 1-2 år | 0% | 0% | 0% |
+| user1 | 2015 | apr | FK 7804 Läkarintyg för sjukpenning | 1-2 år | 50% | 0% | 100% |

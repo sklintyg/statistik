@@ -1,4 +1,5 @@
 ---
+Prune
 Test
 ---
 !contents -R2 -g -p -f -h
@@ -15,14 +16,14 @@ Test
 !3 Då gäller:
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | sjukskrivningslängd | filter sjukskrivningslängd | totalt? | män? | kvinnor? |
-| user2 | Över 365 dagar | | 2 | 1 | 1 |
-| user2 | Över 365 dagar | Över 365 dagar | 2 | 1 | 1 |
-| user1 | Över 365 dagar | | 2 | 1 | 1 |
-| user1 | Över 365 dagar | Över 365 dagar | 2 | 1 | 1 |
+| user2 | 1-2 år | | 2 | 1 | 1 |
+| user2 | 1-2 år | 1-2 år | 2 | 1 | 1 |
+| user1 | 1-2 år | | 2 | 1 | 1 |
+| user1 | 1-2 år | 1-2 år | 2 | 1 | 1 |
 
 | Sjukfall i rapporten sjukfall totalt som tvarsnitt |
 | inloggad som | grupp | filter sjukskrivningslängd | totalt? | män? | kvinnor? |
 | user2 | Totalt | | 2 | 1 | 1 |
-| user2 | Totalt | Över 365 dagar | 2 | 1 | 1 |
+| user2 | Totalt | 1-2 år | 2 | 1 | 1 |
 | user1 | Totalt | | 2 | 1 | 1 |
-| user1 | Totalt | Över 365 dagar | 2 | 1 | 1 |
+| user1 | Totalt | 1-2 år | 2 | 1 | 1 |

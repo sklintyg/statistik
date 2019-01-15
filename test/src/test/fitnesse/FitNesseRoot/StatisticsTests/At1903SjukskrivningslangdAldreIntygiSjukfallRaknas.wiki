@@ -1,32 +1,33 @@
 ---
+Prune
 Test
 ---
 !contents -R2 -g -p -f -h
 !3 Givet att:
 Ett sjukfall består av två intyg, där det första intyget inte varit giltigt under det senaste året.
 
-|script|dagens datum|2015-01-01|
+| script | dagens datum | 2015-01-01 |
 
-|script|troskel varde|1|
+| script | troskel varde | 1 |
 
-|Enbart foljande intyg finns                                                               |
-|personnr     |diagnoskod|start     |slut      |enhet |kommentar                           |
-|19671122-2940|G01       |2013-08-01|2013-12-01|enhet1|intyg äldre än 1 år, 5 månader långt|
-|19671122-2940|G01       |2013-12-02|2014-02-01|enhet1|2 månader långt                     |
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | kommentar |
+| 19671122-2940 | G01 | 2013-08-01 | 2013-12-01 | enhet1 | intyg äldre än 1 år, 5 månader långt |
+| 19671122-2940 | G01 | 2013-12-02 | 2014-02-01 | enhet1 | 2 månader långt |
 
 !3 Då gäller:
-Sjukfallet syns i gruppen "181-365 dagar". Även intyg som ligger före tidsintervallet för rapporten räknas med.
+Sjukfallet syns i gruppen "181-364 dagar". Även intyg som ligger före tidsintervallet för rapporten räknas med.
 
 Nationell:
 
-|Sjukfall i rapporten sjukskrivningslangd |
-|sjukskrivningslängd|totalt?|män?|kvinnor?|
-|61-90 dagar        |0      |0   |0       |
-|181-365 dagar      |1      |0   |1       |
+| Sjukfall i rapporten sjukskrivningslangd |
+| sjukskrivningslängd | totalt? | män? | kvinnor? |
+| 61-90 dagar | 0 | 0 | 0 |
+| 181-364 dagar | 1 | 0 | 1 |
 
 Inloggad:
 
-|Sjukfall i rapporten sjukskrivningslangd              |
-|inloggad som|sjukskrivningslängd|totalt?|män?|kvinnor?|
-|user1       |61-90 dagar        |0      |0   |0       |
-|user1       |181-365 dagar      |1      |0   |1       |
+| Sjukfall i rapporten sjukskrivningslangd |
+| inloggad som | sjukskrivningslängd | totalt? | män? | kvinnor? |
+| user1 | 61-90 dagar | 0 | 0 | 0 |
+| user1 | 181-364 dagar | 1 | 0 | 1 |
