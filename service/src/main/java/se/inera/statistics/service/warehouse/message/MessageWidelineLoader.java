@@ -171,8 +171,12 @@ public class MessageWidelineLoader {
         if (applyDiagnosFilter) {
             return dtos.stream().filter(countDTOAmne -> {
                 final String dxString = countDTOAmne.getDx();
-                final Icd10.Id dx = icd10.findFromIcd10Code(dxString);
-                return isDxMatchInCollection(dx, filter.getDiagnoser());
+                try {
+                    final Icd10.Id dx = icd10.findFromIcd10Code(dxString);
+                    return isDxMatchInCollection(dx, filter.getDiagnoser());
+                } catch (Icd10.Icd10NotFoundException e) {
+                    return false;
+                }
             }).collect(Collectors.toList());
         }
         return dtos;

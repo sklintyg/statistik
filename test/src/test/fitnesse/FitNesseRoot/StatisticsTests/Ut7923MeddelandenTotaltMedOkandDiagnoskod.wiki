@@ -1,0 +1,26 @@
+---
+Test
+---
+
+Testar INTYG-7923
+
+!3 Givet att:
+
+|script|dagens datum|2014-11-06|
+
+|Enbart foljande intyg finns                                            |
+|intygid|personnr     |signeringstid      |diagnoskod|intygformat|enhet | kommentar |
+|1001   |19691230-1234|2014-06-03T10:00:00|G75       |LISJP      |enhet1| Diagnosen finns ej |
+|1002   |19691230-1235|2014-06-03T10:00:00|G01       |LISJP      |enhet1| |
+
+|Foljande meddelanden finns                       |
+|personnr     |skickat            |intygsid|ämne  |
+|19691230-1234|2014-06-05T10:00:00|1001    |KOMPLT|
+|19691230-1235|2014-06-05T10:00:00|1002    |KOMPLT|
+
+!3 Då gäller:
+
+|Meddelanden i rapporten meddelanden totalt                   |
+|inloggad som|år  |månad|filter avsnitt |grupp          |totalt?|män?|kvinnor?|
+|user1       |2014|jun  |G00-G99        |Komplettering  |1      |1   |0       |
+
