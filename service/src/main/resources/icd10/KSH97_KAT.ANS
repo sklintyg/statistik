@@ -1691,6 +1691,7 @@ V94    Andra och icke specificerade transportolyckor på vatten
 V95    Olycka med motordriven luftfarkost med skada på ombordvarande
 V96    Olycka med ej motordriven luftfarkost med skada på ombordvarande
 V97    Andra specificerade olyckor vid lufttransport
+V98    Andra specificerade transportolyckor 
 V99    Transportolycka, ospecificerad
 W00    Fall i samma plan i samband med is och snö
 W01    Fall i samma plan genom halkning, snavning eller snubbling
