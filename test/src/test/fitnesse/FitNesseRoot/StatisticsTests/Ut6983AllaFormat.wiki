@@ -24,6 +24,7 @@ Test
 |19790629-9234|2015-03-29T12:25:15|enhet1|felaktigt          |         |
 |19790219-9285|2015-02-10T12:25:15|enhet1|AG1-14             |         |
 |19790219-9285|2015-02-10T12:25:15|enhet1|AG7804             |         |
+|19790219-9285|2015-02-10T12:25:15|enhet1|TSTRK1009          |         |
 
 !3 Då gäller:
 Verifierar att vi kan ta emot på alla format
@@ -41,3 +42,4 @@ Nationell:
 |2015|feb  |TSTRK1031 Transportstyrelsens läkarintyg diabetes                        |1   |1       |
 |2015|feb  |AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperiod                      |0   |1       |
 |2015|feb  |AG7804 Läkarintyg om arbetsförmåga - arbetsgivare                        |0   |1       |
+|2015|feb  |TSTRK1009 Transportstyrelsen Läkares anmälan                         |0   |1       |

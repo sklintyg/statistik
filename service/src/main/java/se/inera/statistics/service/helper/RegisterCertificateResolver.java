@@ -66,6 +66,7 @@ public class RegisterCertificateResolver {
             case AF00213:
             case TSTRK1007:
             case TSTRK1031:
+            case TSTRK1009:
                 return registerCertificateHelper;
             default:
                 throw new RuntimeException("Unknown certificate type: " + intygType);

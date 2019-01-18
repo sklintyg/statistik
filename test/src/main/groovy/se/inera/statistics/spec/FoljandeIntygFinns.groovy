@@ -105,37 +105,39 @@ class FoljandeIntygFinns extends FoljandeFinns {
         }
         switch (intygformat) {
             case ~/^(?i)NyttJson$/:
-                return executeForNewJsonFormat();
+                return executeForNewJsonFormat()
             case ~/^(?i)LUSE$/:
-                return executeForXmlFormatSit('/luse.xml', "LUSE");
+                return executeForXmlFormatSit('/luse.xml', "LUSE")
             case ~/^(?i)LUAE_NA$/:
                 return executeForXmlFormatSit('/luae_na.xml', "LUAE_NA")
             case ~/^(?i)LUAE_FS$/:
-                return executeForXmlFormatSit('/luae_fs.xml', "LUAE_FS");
+                return executeForXmlFormatSit('/luae_fs.xml', "LUAE_FS")
             case ~/^(?i)LISJP$/:
-                return executeForXmlFormat('/lisjp.xml', "LISJP");
+                return executeForXmlFormat('/lisjp.xml', "LISJP")
             case ~/^(?i)FK7263SIT$/:
-                return executeForXmlFormat('/fk7263sit.xml', "fk7263");
+                return executeForXmlFormat('/fk7263sit.xml', "fk7263")
             case ~/^(?i)felaktigt.*$/:
-                return executeForIllegalIntygFormat();
+                return executeForIllegalIntygFormat()
             case ~/^(?i)DB$/:
-                return executeForXmlFormatRegisterCertificate('/db.xml', "DB");
+                return executeForXmlFormatRegisterCertificate('/db.xml', "DB")
             case ~/^(?i)DOI$/:
-                return executeForXmlFormatRegisterCertificate('/doi.xml', "DOI");
+                return executeForXmlFormatRegisterCertificate('/doi.xml', "DOI")
             case ~/^(?i)AF00213$/:
-                return executeForXmlFormatRegisterCertificate('/af00213.xml', "AF00213");
+                return executeForXmlFormatRegisterCertificate('/af00213.xml', "AF00213")
             case ~/^(?i)TSTRK1007$/:
-                return executeForXmlFormatRegisterCertificate('/tstrk1007.xml', "TSTRK1007");
+                return executeForXmlFormatRegisterCertificate('/tstrk1007.xml', "TSTRK1007")
             case ~/^(?i)TSTRK1007-oldformat$/:
-                return executeForXmlFormatTS('/ts-bas.xml', "ts-bas");
+                return executeForXmlFormatTS('/ts-bas.xml', "ts-bas")
             case ~/^(?i)TSTRK1031-v2$/:
-                return executeForXmlFormatTS('/ts-diabetes.xml', "ts-diabetes");
+                return executeForXmlFormatTS('/ts-diabetes.xml', "ts-diabetes")
             case ~/^(?i)TSTRK1031-v3$/:
-                return executeForXmlFormatRegisterCertificate('/tstrk1031.xml', "TSTRK1031");
+                return executeForXmlFormatRegisterCertificate('/tstrk1031.xml', "TSTRK1031")
+            case ~/^(?i)TSTRK1009$/:
+                return executeForXmlFormatRegisterCertificate('/tstrk1009.xml', "TSTRK1009")
             case ~/^(?i)AG1-14/:
-                return executeForXmlFormatRegisterCertificateWithDX('/ag114.xml', "AG1-14", "4", "4.2");
+                return executeForXmlFormatRegisterCertificateWithDX('/ag114.xml', "AG1-14", "4", "4.2")
             case ~/^(?i)AG7804/:
-                return executeForXmlFormatRegisterCertificateWithDX('/ag7804.xml', "AG7804", "6", "6.2");
+                return executeForXmlFormatRegisterCertificateWithDX('/ag7804.xml', "AG7804", "6", "6.2")
             default:
                 throw new RuntimeException("Unknown intyg format requested: " + intygformat)
         }
