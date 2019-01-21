@@ -27,6 +27,5 @@
     - debug: var=repo
 
   roles:
-    - app-resources
     - statistik-systemvariabler
     - statistik

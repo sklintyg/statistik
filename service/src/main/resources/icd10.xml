@@ -24,20 +24,20 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean class="org.springframework.core.io.ClassPathResource" id="icd10KapitelAnsiFile" >
-        <constructor-arg value="icd10/KSH97_KAP.ANS"/>
+        <constructor-arg value="diagnoskoder/KSH97_KAP.ANS"/>
     </bean>
     <bean class="org.springframework.core.io.ClassPathResource" id="icd10AvsnittAnsiFile" >
-        <constructor-arg value="icd10/KSH97_AVS.ANS"/>
+        <constructor-arg value="diagnoskoder/KSH97_AVS.ANS"/>
     </bean>
     <bean class="org.springframework.core.io.ClassPathResource" id="icd10KategoriAnsiFile" >
-        <constructor-arg value="icd10/KSH97_KAT.ANS"/>
+        <constructor-arg value="diagnoskoder/KSH97_KAT.ANS"/>
     </bean>
     
     <bean class="org.springframework.core.io.ClassPathResource" id="icd10KodAnsiFile" >
-        <constructor-arg value="icd10/KSH97_KOD.ANS"/>
+        <constructor-arg value="diagnoskoder/KSH97_KOD.ANS"/>
     </bean>
     <bean class="org.springframework.core.io.ClassPathResource" id="icd10VwxyKodAnsiFile" >
-        <constructor-arg value="icd10/KSH97_KXX.ANS"/>
+        <constructor-arg value="diagnoskoder/KSH97_KXX.ANS"/>
     </bean>
 
     <bean class="se.inera.statistics.service.report.util.Icd10" />

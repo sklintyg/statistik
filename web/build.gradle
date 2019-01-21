@@ -85,7 +85,7 @@ gretty {
             '-Dstatistics.test.max.intyg=200',
             '-Dstatistics.config.file=' + projectDir + '/src/test/resources/dev.properties',
             '-Dstatistics.credentials.file=' + projectDir + '/src/test/resources/dev-credentials.properties',
-            '-Dstatistics.resources.folder=' + projectDir + '/../src/main/resources'
+            '-Dstatistics.resources.folder=classpath:'
     ]
 }
 
@@ -115,4 +115,5 @@ dependencies {
     compileOnly "javax.servlet:javax.servlet-api:${javaxServletVersion}"
 
     gretty "org.apache.tomcat:tomcat-catalina:${tomcatVersion}"
+    gretty "se.inera.intyg.refdata:refdata:${refDataVersion}"
 }

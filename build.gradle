@@ -7,6 +7,7 @@ plugins {
 
 ext {
     infraVersion = System.properties['infraVersion'] ?: '3.9.0.+'
+    refDataVersion = System.properties['refDataVersion'] ?: '1.0.0.+'
 
     intygSchematronVersion = "1.0.36"
     certificateSchemaVersion = "3.2.0-RC3"
@@ -91,6 +92,7 @@ allprojects {
         testCompile "junit:junit:${junitVersion}"
         testCompile "org.springframework:spring-test:${springTestVersion}"
         testCompile "org.mockito:mockito-core:${mockitoVersion}"
+        testCompile "se.inera.intyg.refdata:refdata:${refDataVersion}"
     }
 
     group = 'se.inera.statistik'
