@@ -108,6 +108,8 @@ import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs2ReportCreator;
 import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs2Row;
 import se.inera.testsupport.socialstyrelsenspecial.SosReportCreator;
 import se.inera.testsupport.socialstyrelsenspecial.SosRow;
+import se.inera.testsupport.specialrapport.SjukfallLengthSpecialReportCreator;
+import se.inera.testsupport.specialrapport.SjukfallLengthSpecialRow;
 
 @Service("restSupportService")
 public class RestSupportService {
@@ -625,6 +627,20 @@ public class RestSupportService {
         final FkReportCreator fkReportCreator = new FkReportCreator(aisles, icd10, dxList, changableClock);
         final List<FkReportDataRow> reportData = fkReportCreator.getReportData();
         return Response.ok(reportData).build();
+    }
+
+    /**
+     * Special report for regarding sjukfall lengths (INTYG-7983).
+     */
+    @GET
+    @Path("getSpecialLengthReport")
+    @Produces({ MediaType.APPLICATION_JSON })
+    @Consumes({ MediaType.APPLICATION_JSON })
+    public Response getSpecialLengthReport() {
+        final Iterator<Aisle> aisles = warehouse.iterator();
+        final List<SjukfallLengthSpecialRow> sosReport = new SjukfallLengthSpecialReportCreator(aisles, sjukfallUtil, icd10)
+                .getReport(2017);
+        return Response.ok(sosReport).build();
     }
 
 }

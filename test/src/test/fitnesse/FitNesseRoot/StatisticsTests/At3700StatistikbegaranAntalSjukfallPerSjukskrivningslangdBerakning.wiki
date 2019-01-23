@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !3 Givet att:
@@ -28,13 +27,16 @@ Test
 | 19891230-9296 | G93.3 | 2017-02-02 | 2017-03-10 | 69 dagar | enhet1 |
 | 19801013-9297 | C50 | 2017-01-01 | 2017-05-01 | | enhet1 |
 | 19801013-9297 | G93.3 | 2017-05-02 | 2017-09-01 | 244 dagar | enhet1 |
+| 19801013-9297 | G93.3 | 2017-05-02 | 2017-09-01 | 244 dagar | enhet1 |
+| 19801013-9297 | G93.3 | 2017-05-02 | 2017-09-01 | 244 dagar | enhet1 |
 | 19801207-9284 | G93.3 | 2017-01-01 | 2017-05-01 | 121 dagar | enhet1 |
 | 19991109-2681 | G93.3 | 2017-01-01 | 2017-03-01 | 60 dagar | enhet1 |
 | 19800101-9312 | C50 | 2017-01-01 | 2017-03-01 | 60 dagar | enhet1 |
-| 19800101-9312 | F43 | 2016-01-01 | 2017-02-01 | 398 dagar | enhet1 |
+| 19800101-9313 | F43 | 2016-01-01 | 2017-02-01 | 398 dagar | enhet1 |
+| 19800101-9313 | F43 | 2016-01-01 | 2017-02-01 | 398 dagar | enhet1 |
 
 !3 Då gäller:
-| Sjukfall i rapporten sjukfall per sjukskrivningslangd |
+| Sjukfall i specialrapporten sjukfall per sjukskrivningslangd |
 | sjukskrivningslängd | antal? |
 | Under 8 dagar | 0 |
 | 8-14 dagar | 2 |
@@ -44,8 +46,9 @@ Test
 | 91-180 dagar | 3 |
 | 181-365 dagar | 1 |
 | Över 365 dagar | 1 |
-| Vanligaste diagnos i sjukfall över 180 dagar #1 är G93 med 1 förekomster | 0 |
-| Vanligaste diagnos i sjukfall över 180 dagar #2 är F43 med 1 förekomster | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #1 är G93 med 3 förekomster | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #2 är F43 med 2 förekomster | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #3 är C50 med 1 förekomster | 0 |
 | Vanligaste diagnos i sjukfall 91-180 dagar #1 är G93 med 3 förekomster | 0 |
 
 Längst ned är två tio-i-topp listor med de vanligaste diagnoserna för gruppen 91-180 dagar och för alla sjukfall som är över 180 dagar långa.

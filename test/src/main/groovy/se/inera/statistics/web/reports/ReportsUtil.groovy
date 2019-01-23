@@ -594,5 +594,9 @@ class ReportsUtil {
         return get("/api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 
+    def getSpecialReportSjukfallLength() {
+        return get("/api/testsupport/getSpecialLengthReport")
+    }
+
 }
 
