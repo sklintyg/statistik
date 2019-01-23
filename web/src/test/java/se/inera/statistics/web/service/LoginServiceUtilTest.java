@@ -24,8 +24,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.util.ReflectionTestUtils;
 import se.inera.auth.AuthUtil;
 import se.inera.auth.LoginVisibility;
+import se.inera.auth.idpdiscovery.IdpNameDiscoveryService;
 import se.inera.auth.model.User;
 import se.inera.intyg.infra.integration.hsa.model.Vardgivare;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
@@ -43,6 +45,7 @@ import se.inera.statistics.web.model.StaticData;
 import se.inera.statistics.web.util.VersionUtil;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -50,6 +53,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 public class LoginServiceUtilTest {
 
@@ -71,6 +75,9 @@ public class LoginServiceUtilTest {
     @Mock
     private VersionUtil versionUtil;
 
+    @Mock
+    private IdpNameDiscoveryService idpNameDiscoveryService;
+
     @InjectMocks
     private LoginServiceUtil loginServiceUtilInjected;
 
@@ -83,6 +90,11 @@ public class LoginServiceUtilTest {
         MockitoAnnotations.initMocks(this);
         loginServiceUtil = Mockito.spy(loginServiceUtilInjected);
         Mockito.doReturn(true).when(loginServiceUtil).isLoggedIn();
+
+        when(idpNameDiscoveryService.buildIdpNameMap()).thenReturn(new HashMap<>());
+
+        ReflectionTestUtils.setField(loginServiceUtilInjected, "defaultIDP", "default-idp");
+        ReflectionTestUtils.setField(loginServiceUtilInjected, "defaultAlias", "defaultAlias");
     }
 
     @Test
@@ -131,7 +143,7 @@ public class LoginServiceUtilTest {
         final User user = new User(userId, "testname", Arrays.asList(new Vardgivare("vg2", "Vårdgivare 2")), vardenhetsList);
         AuthUtil.setUserToSecurityContext(user);
 
-        Mockito.when(warehouse.getEnhets(any())).thenAnswer(invocationOnMock -> {
+        when(warehouse.getEnhets(any())).thenAnswer(invocationOnMock -> {
             final HsaIdVardgivare vg = (HsaIdVardgivare) invocationOnMock.getArguments()[0];
             return Arrays.asList(newEnhet(vg), newEnhet(vg), newEnhet(vg), newEnhet(vg));
         });
@@ -161,7 +173,7 @@ public class LoginServiceUtilTest {
     public void testGetAppSettingsContainsCorrectProjectVersion() {
         // Given
         String projectVersion = "TestversionXXX";
-        Mockito.when(versionUtil.getProjectVersion()).thenReturn(projectVersion);
+        when(versionUtil.getProjectVersion()).thenReturn(projectVersion);
 
         // When
         AppSettings settings = loginServiceUtil.getSettings();

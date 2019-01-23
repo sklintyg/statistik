@@ -18,7 +18,9 @@
  */
 package se.inera.auth;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.saml.SAMLCredential;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -29,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -44,9 +47,34 @@ public class CookieAuthenticationSuccessHandler implements AuthenticationSuccess
     private String defaultTargetUrl;
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
+    private static final int MAX_AGE = 999999999;
+    static final String SELECTED_SAMBI_IDP = "selectedSambiIdp";
+
+    @Value("${sakerhetstjanst.saml.idp.metadata.url}")
+    private String defaultIdpEntityId;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
+
+        // If the IdP used was OTHER than our default IDP, stuff a Set-Cookie with the EntityID of the IdP
+        // into the response.
+        // This MUST be done prior to calling super.
+        if (authentication.isAuthenticated() && authentication.getCredentials() instanceof SAMLCredential) {
+            String remoteEntityId = ((SAMLCredential) authentication.getCredentials()).getRemoteEntityID();
+
+            if (remoteEntityId != null) {
+                if (!defaultIdpEntityId.equals(remoteEntityId)) {
+                    Cookie cookie = new Cookie(SELECTED_SAMBI_IDP, URLEncoder.encode(remoteEntityId, "UTF-8"));
+                    cookie.setVersion(0);
+                    cookie.setHttpOnly(false);
+                    cookie.setMaxAge(MAX_AGE);
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
+                }
+            }
+        }
+
         if (request == null || request.getCookies() == null) {
             redirectStrategy.sendRedirect(request, response, defaultTargetUrl);
             return;

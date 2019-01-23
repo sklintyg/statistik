@@ -2,6 +2,7 @@ apiVersion: v1
 data:
   NTJP_WS_CERTIFICATE_TYPE: PKCS12
   NTJP_WS_TRUSTSTORE_TYPE: JKS
+  SAKERHETSTJANST_SAML_IDP_METADATA_URL: "https://idp2.sakerhetstjanst.sjunet.org:443/idp/saml"
 kind: ConfigMap
 metadata:
   name: statistik-prod-configmap-envvar

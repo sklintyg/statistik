@@ -19,10 +19,15 @@
 
   <p message key="login.instruktioner-for-login"></p>
   <p>
-    <a class="btn btn-success login-button" href="saml/login" message key="login.btn.siths-login"></a>
+    <a class="btn btn-success login-button" href="{{ defaultUrl }}" message key="login.btn.siths-login"></a>
   </p>
 
   <p>
     <span dynamiclink key="st-lank-002"></span>
+  </p>
+
+  <p>
+    <a class="btn btn-success login-button" href="{{ sambiUrl }}">{{ sambiLabel }}</a>
+  <div ng-if="hasStoredLogin"><a href="/saml/login/discovery">Visa fler alternativ </a></div>
   </p>
 </div>
