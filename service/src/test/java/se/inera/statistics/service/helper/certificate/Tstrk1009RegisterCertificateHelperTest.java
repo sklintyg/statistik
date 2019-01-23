@@ -22,17 +22,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
-import org.junit.Assert;
 import org.junit.Test;
 import se.riv.clinicalprocess.healthcond.certificate.registerCertificate.v3.RegisterCertificateType;
-import se.riv.clinicalprocess.healthcond.certificate.types.v3.PersonId;
-import se.riv.clinicalprocess.healthcond.certificate.v3.Intyg;
-import se.riv.clinicalprocess.healthcond.certificate.v3.Patient;
 import javax.xml.bind.JAXBException;
 import java.time.LocalDate;
 import java.util.stream.IntStream;
-import se.inera.statistics.service.helper.ConversionHelper;
-import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.processlog.IntygDTO;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.IntygType;
@@ -309,57 +303,6 @@ public class Tstrk1009RegisterCertificateHelperTest {
         assertEquals(Kon.MALE, dto.getPatientData().getKon());
         assertEquals(signeringsdatum, dto.getSigneringsdatum());
         assertNull(dto.getDiagnoskod());
-    }
-
-    @Test
-    public void testGetPatientDataHappyPath() throws Exception {
-        final Patientdata result = callGetPatientdata("19500910-1824", LocalDate.of(2017, 02, 21));
-        assertEquals(66, result.getAlder());
-    }
-
-    @Test
-    public void testGetPatientDataWithTrailingSpace() throws Exception {
-        final Patientdata result = callGetPatientdata("19500910-1824 ", LocalDate.of(2017, 02, 21));
-        assertEquals(66, result.getAlder());
-    }
-
-    @Test
-    public void testGetPatientDataWithStartingSpace() throws Exception {
-        final Patientdata result = callGetPatientdata(" 19500910-1824", LocalDate.of(2017, 02, 21));
-        assertEquals(66, result.getAlder());
-    }
-
-    @Test
-    public void testGetPatientDataWithNull() throws Exception {
-        final Patientdata result = callGetPatientdata(null, LocalDate.of(2017, 02, 21));
-        Assert.assertEquals(ConversionHelper.NO_AGE, result.getAlder());
-    }
-
-    @Test
-    public void testGetPatientDataWithNoDatePeriod() throws Exception {
-        final Patientdata result = callGetPatientdata("19500910-1824", null);
-        assertEquals(ConversionHelper.NO_AGE, result.getAlder());
-    }
-
-    private Patientdata callGetPatientdata(String pnr, LocalDate signeraDate) {
-        RegisterCertificateType registerCertificateType = new RegisterCertificateType();
-        final Intyg intyg = new Intyg();
-        registerCertificateType.setIntyg(intyg);
-
-        final Patient patient = new Patient();
-        intyg.setPatient(patient);
-
-        final PersonId personId = new PersonId();
-        patient.setPersonId(personId);
-
-        if (signeraDate != null) {
-            intyg.setSigneringstidpunkt(signeraDate.atStartOfDay());
-        }
-
-        personId.setExtension(pnr);
-
-        //When
-        return registerCertificateHelper.getPatientData(registerCertificateType);
     }
 
     @Test
