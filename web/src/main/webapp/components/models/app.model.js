@@ -31,6 +31,9 @@ angular.module('StatisticsApp').factory('AppModel',
             data.loginUrl = '';
             data.loginVisible = false;
             data.projectVersion = '';
+            data.defaultIDP = '';
+            data.defaultAlias = '';
+            data.idpMap = {};
             return data;
         }
 
@@ -45,6 +48,9 @@ angular.module('StatisticsApp').factory('AppModel',
                 data.loginUrl = app.loginUrl;
                 data.loginVisible = app.loginVisible;
                 data.projectVersion = app.projectVersion;
+                data.defaultIDP = app.defaultIDP;
+                data.defaultAlias = app.defaultAlias;
+                data.idpMap = app.idpMap;
             },
             get: function() {
                 return data;

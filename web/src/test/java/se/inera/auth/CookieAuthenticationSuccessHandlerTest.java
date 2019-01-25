@@ -24,13 +24,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.web.RedirectStrategy;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.mockito.Matchers.any;
@@ -45,8 +45,17 @@ public class CookieAuthenticationSuccessHandlerTest {
     @Mock
     private RedirectStrategy redirectStrategy;
 
+    private Authentication authentication;
+    private HttpServletResponse resp = mock(HttpServletResponse.class);
+
     @InjectMocks
     private CookieAuthenticationSuccessHandler cas = new CookieAuthenticationSuccessHandler();
+
+    @Before
+    public void init() {
+        this.authentication = mock(Authentication.class);
+        when(authentication.isAuthenticated()).thenReturn(false);
+    }
 
     @Test
     public void testOnAuthenticationSuccessRedirectDefault() throws IOException, ServletException {
@@ -54,9 +63,10 @@ public class CookieAuthenticationSuccessHandlerTest {
 
         cas.setDefaultTargetUrl(defaultTargetUrl);
         HttpServletRequest request = mock(HttpServletRequest.class);
+
         when(request.getCookies()).thenReturn(new Cookie[0]);
 
-        cas.onAuthenticationSuccess(request, null, null);
+        cas.onAuthenticationSuccess(request, resp, authentication);
 
         verify(redirectStrategy).sendRedirect(any(), any(), eq(defaultTargetUrl));
     }
@@ -69,7 +79,7 @@ public class CookieAuthenticationSuccessHandlerTest {
         Cookie[] cookies = {new Cookie("statUrl", targetUrl)};
         when(request.getCookies()).thenReturn(cookies);
 
-        cas.onAuthenticationSuccess(request, null, null);
+        cas.onAuthenticationSuccess(request, resp, authentication);
 
         verify(redirectStrategy).sendRedirect(any(), any(), eq(targetUrl));
     }

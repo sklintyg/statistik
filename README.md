@@ -280,29 +280,24 @@ Försöker man komma åt en verksamhet som man saknar behörighet till, så retu
 ### Söka i json-dokument i databasen
 Det finns inbyggt stöd för json i PostgreSQL 9.3 och senare, och det har vi använt när vi behövt göra adhoc-analyser. D v s, för att analysera innehåll i json-objekt lagrade i en tabell så har vi exporterat tabellen till PostgreSQL. Det finns ett exempelskript incheckat under tools/dbscripts/postgresql .
 
-## Testa SAML lokalt
+## Testa SAML / Sambi lokalt
 Om man vill testa av så applikationen startar korrekt med spring-saml profil kan man göra enligt följande:
-
-
-- Ändra i web/build.gradle så profilen "security-fake" byts ut mot "security-saml"
 
 - Ändra i web/build.gradle. Kommentera bort blocket jvmArgs och ersätt med följande:
 
 
     jvmArgs = [
-                jvmArgSpringProfiles,
+                '-Dspring.profiles.active=dev,caching-enabled,testapi,embedded,hsa-stub,wc-hsa-stub,security-both,noprocessing',
                 '-DbaseUrl=' + baseUrl,
                 '-Dstatistics.test.max.intyg=200',
-                '-Dstatistics.config.file=' + projectDir + '/../../statistik-konfiguration/demo/statistics.properties',
-                '-Dstatistics.config.folder=' + projectDir + '/../../statistik-konfiguration/demo',
-                '-Dstatistics.certificate.folder=' + projectDir + '/../../statistik-konfiguration/demo/certifikat',
-                '-Dstatistics.credentials.file=' + projectDir + '/../../statistik-konfiguration/demo/credentials.properties',
-                '-Dstatistics.resources.folder=' + projectDir + '/../src/main/resources'
+                '-Dstatistics.config.file=' + projectDir + '/../devops/openshift/dev/config/statistik.properties',
+                '-Dstatistics.credentials.file=' + projectDir + '/../devops/openshift/dev/env/secret-env.properties',
+                '-Dcertificate.folder=' + projectDir + '/../devops/openshift/dev/certifikat',
+                '-Dstatistics.resources.folder=classpath:'
         ]
 
-- Se till att ha /statistik-konfiguration repot klonat och avkrypterat.
+- Se till att kopiera certifikat för ändamålet till /devops/openshift/dev/certifikat
 - Starta lokala instanser av mysql, redis-server och activemq. Kan behöva göras i tre separata konsolfönster.
-
 
     > mysqld
     > redis-server
@@ -320,12 +315,6 @@ Om man vill testa av så applikationen startar korrekt med spring-saml profil ka
 
     > ./gradlew build appRun
     
-Nu bootas SAML-subsystemet, SP/IdP-metadata läses från /statistik-konfiguration/demo, certifikaten i /statistik-konfiguration/demo/certifikat osv används. 
+Nu bootas SAML-subsystemet, SP/IdP-metadata läses från /devops/openshift/dev/config, certifikaten från /devops/openshift/dev/certifikat osv används. 
 
-Man kan dock inte logga in pga att SÄKs IdP inte tillåter omdirigering till oregistrerade consumer endpoints. Detta _bör_ gå att ta sig runt genom att registrera hostnamnet för den den AssertionConsumerService i sin _hosts_ fil, t.ex:
-
-    localhost verifiering.statistik.intygstjanster.se
-    
-Man behöver dessutom antingen starta statistiktjänsten på port 443 eller sätta upp port-forwarding lokalt från 443 till 8080. Slutligen måste man naturligtvis ha ett SITHS-testkort och kortläsare. Vi har inte testat detta fullt ut själva men i teorin kan det fungera, speciellt om man har en Windows-dator med IE11.
-
-
+Om SAMBI-metadata för Trial-miljö används så skall Sambi-inloggning mot IdPn https://trial-idp-01.sambi.se/saml2/idp/metadata.php (aka "Sambi Trial IdP") fungera även lokalt.

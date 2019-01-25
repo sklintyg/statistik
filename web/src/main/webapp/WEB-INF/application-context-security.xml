@@ -13,20 +13,21 @@
 
     <!-- Unsecured pages -->
     <beans>
-      <security:http security="none" pattern="/services/**"/>
-      <security:http security="none" pattern="/app/**"/>
-      <security:http security="none" pattern="/js/**"/>
-      <security:http security="none" pattern="/assets/**"/>
+        <security:http security="none" pattern="/services/**"/>
+        <security:http security="none" pattern="/app/**"/>
+        <security:http security="none" pattern="/js/**"/>
+        <security:http security="none" pattern="/assets/**"/>
     </beans>
 
     <beans>
-      <!-- SessionRegistry is needed for keeping track of authenticated sessions (i.e users), this impl performs audit logging of login and logouts. -->
-      <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+        <!-- SessionRegistry is needed for keeping track of authenticated sessions (i.e users), this impl performs audit logging of login and logouts. -->
+        <bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl"/>
 
-      <!-- Session authentication strategy that registers authenticated sessions with the session registry -->
-      <bean id="registerSessionAuthenticationStrategy" class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
-        <constructor-arg ref="sessionRegistry" />
-      </bean>
+        <!-- Session authentication strategy that registers authenticated sessions with the session registry -->
+        <bean id="registerSessionAuthenticationStrategy"
+              class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
+            <constructor-arg ref="sessionRegistry"/>
+        </bean>
 
         <!-- Logger for SAML messages and events -->
         <bean id="samlLogger" class="org.springframework.security.saml.log.SAMLDefaultLogger"/>
@@ -63,13 +64,17 @@
 
         <bean id="http403ForbiddenEntryPoint"
               class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint"/>
-        <security:global-method-security pre-post-annotations="enabled" />
+        <security:global-method-security pre-post-annotations="enabled"/>
+
+        <!-- Custom service to resolve IdP names from metadata -->
+        <bean id="idpNameDiscoveryService" class="se.inera.auth.idpdiscovery.IdpNameDiscoveryServiceImpl" />
     </beans>
     <!-- =============================================================== -->
     <!-- Dev profile only supports Fake login                            -->
     <!-- =============================================================== -->
     <beans profile="security-fake">
-        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
+        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint"
+                       pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
             <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
@@ -89,7 +94,8 @@
     <!-- Test and QA profile support both Säkerhetstjänst and Fake login -->
     <!-- =============================================================== -->
     <beans profile="security-both">
-        <security:http create-session="always" use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
+        <security:http create-session="always" use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint"
+                       pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
             <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter position="PRE_AUTH_FILTER" ref="fakeAuthFilter"/>
@@ -112,20 +118,21 @@
     <!-- =============================================================== -->
     <beans profile="security-saml">
 
-        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint" pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
+        <security:http use-expressions="false" entry-point-ref="http403ForbiddenEntryPoint"
+                       pattern="(\/api\/verksamhet\/.*)|(\/api\/landsting\/.*)" request-matcher="regex">
             <security:csrf disabled="true"/>
             <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
-           <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
-       </security:http>
-       <security:http use-expressions="false" entry-point-ref="samlEntryPoint" pattern="/saml/**">
-           <security:csrf disabled="true"/>
-           <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
             <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
         </security:http>
-      <security:http create-session="always" entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/login/**">
-        <security:csrf disabled="true"/>
-        <security:intercept-url pattern="/**" access="permitAll"/>
-      </security:http>
+        <security:http use-expressions="false" entry-point-ref="samlEntryPoint" pattern="/saml/**">
+            <security:csrf disabled="true"/>
+            <security:intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY"/>
+            <security:custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter"/>
+        </security:http>
+        <security:http create-session="always" entry-point-ref="http403ForbiddenEntryPoint" pattern="/api/login/**">
+            <security:csrf disabled="true"/>
+            <security:intercept-url pattern="/**" access="permitAll"/>
+        </security:http>
         <security:authentication-manager alias="authenticationManager">
             <security:authentication-provider ref="samlAuthenticationProvider"/>
         </security:authentication-manager>
@@ -139,7 +146,7 @@
             <property name="sessionAuthenticationStrategy" ref="registerSessionAuthenticationStrategy"/>
         </bean>
         <bean id="fakeSuccessHandler"
-            class="se.inera.auth.CookieAuthenticationSuccessHandler">
+              class="se.inera.auth.CookieAuthenticationSuccessHandler">
             <property name="defaultTargetUrl" value="/#/verksamhet"/>
         </bean>
         <bean id="fakeAuthenticationProvider"
@@ -150,12 +157,12 @@
 
     <beans profile="security-saml,security-both">
         <bean id="samlFilter" class="org.springframework.security.web.FilterChainProxy">
-          <security:filter-chain-map request-matcher="ant">
-            <security:filter-chain pattern="/saml/login/**" filters="samlEntryPoint"/>
-            <security:filter-chain pattern="/saml/logout/**" filters="samlLogoutFilter"/>
-            <security:filter-chain pattern="/saml/SSO/**" filters="samlWebSSOProcessingFilter"/>
-            <security:filter-chain pattern="/saml/SingleLogout/**" filters="samlLogoutProcessingFilter"/>
-          </security:filter-chain-map>
+            <security:filter-chain-map request-matcher="ant">
+                <security:filter-chain pattern="/saml/login/**" filters="samlEntryPoint"/>
+                <security:filter-chain pattern="/saml/logout/**" filters="samlLogoutFilter"/>
+                <security:filter-chain pattern="/saml/SSO/**" filters="samlWebSSOProcessingFilter"/>
+                <security:filter-chain pattern="/saml/SingleLogout/**" filters="samlLogoutProcessingFilter"/>
+            </security:filter-chain-map>
         </bean>
 
         <!-- Handler deciding where to redirect user after successful login -->
@@ -191,76 +198,83 @@
                     <property name="authnContexts">
                         <list>
                             <value>urn:oasis:names:tc:SAML:2.0:ac:classes:TLSClient</value>
+                            <value>http://id.sambi.se/loa/loa3</value>
                         </list>
                     </property>
                 </bean>
             </property>
         </bean>
 
-      <!-- IDP Metadata configuration - paths to metadata of IDPs in circle of trust is here -->
-      <!-- Do no forget to call initalize method on providers -->
-      <bean id="metadata" class="org.springframework.security.saml.metadata.CachingMetadataManager">
+        <!-- IDP Metadata configuration - paths to metadata of IDPs in circle of trust is here -->
+        <!-- Do no forget to call initalize method on providers -->
+        <bean id="metadata" class="org.springframework.security.saml.metadata.CachingMetadataManager">
 
-        <constructor-arg>
-          <list>
+            <constructor-arg>
+                <list>
 
-            <!-- START SERVICE PROVIDER BEAN FOR SITHS -->
-            <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
-              <constructor-arg>
-                <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
-                  <constructor-arg>
-                    <value type="java.io.File">${saml.sp.metadata.file}</value>
-                  </constructor-arg>
-                  <property name="parserPool" ref="parserPool"/>
-                </bean>
-              </constructor-arg>
-              <property name="metadataTrustCheck" value="true"/>
+                    <!-- START SERVICE PROVIDER BEAN FOR SITHS -->
+                    <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
+                        <constructor-arg>
+                            <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
+                                <constructor-arg>
+                                    <value type="java.io.File">${saml.sp.metadata.file}</value>
+                                </constructor-arg>
+                                <property name="parserPool" ref="parserPool"/>
+                            </bean>
+                        </constructor-arg>
+                        <property name="metadataTrustCheck" value="true"/>
 
-              <constructor-arg>
-                <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
-                  <property name="alias" value="defaultAlias"/>
-                  <property name="local" value="true"/>
-                  <property name="securityProfile" value="metaiop"/>
-                  <property name="sslSecurityProfile" value="metaiop"/>
-                  <property name="signMetadata" value="true"/>
-                  <!-- The signingKey and encryptionKey refers to the _aliases_ of the key in the keystore defined in the keyManager bean -->
-                  <property name="signingKey" value="${saml.keystore.alias}"/>          <!-- sakerhetstjanst.saml.keystore.alias -->
-                  <property name="encryptionKey" value="${saml.keystore.alias}"/>       <!-- sakerhetstjanst.saml.keystore.alias -->
-                  <property name="requireArtifactResolveSigned" value="true"/>
-                  <property name="requireLogoutRequestSigned" value="false"/>
-                  <property name="requireLogoutResponseSigned" value="false"/>
-                </bean>
-              </constructor-arg>
-            </bean>
-            <!--  END SERVICE PROVIDER BEAN FOR SITHS -->
+                        <constructor-arg>
+                            <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
+                                <property name="alias" value="${sakerhetstjanst.saml.default.alias}"/>
+                                <property name="local" value="true"/>
+                                <property name="securityProfile" value="metaiop"/>
+                                <property name="sslSecurityProfile" value="metaiop"/>
+                                <property name="signMetadata" value="true"/>
+                                <!-- The signingKey and encryptionKey refers to the _aliases_ of the key in the keystore defined in the keyManager bean -->
+                                <property name="signingKey"
+                                          value="${saml.keystore.alias}"/>          <!-- sakerhetstjanst.saml.keystore.alias -->
+                                <property name="encryptionKey"
+                                          value="${saml.keystore.alias}"/>       <!-- sakerhetstjanst.saml.keystore.alias -->
+                                <property name="requireArtifactResolveSigned" value="true"/>
+                                <property name="requireLogoutRequestSigned" value="true"/>
+                                <property name="requireLogoutResponseSigned" value="false"/>
 
-
-            <!-- START IDENTITY PROVIDER BEAN FOR SITHS -->
-            <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
-              <constructor-arg>
-                <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
-                  <constructor-arg>
-                    <value type="java.io.File">${saml.idp.metadata.file}</value>
-                  </constructor-arg>
-                  <property name="parserPool" ref="parserPool"/>
-                </bean>
-              </constructor-arg>
-              <constructor-arg>
-                <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
-                  <property name="alias" value="defaultAlias"/>
-                </bean>
-              </constructor-arg>
-
-              <property name="metadataTrustCheck" value="true"/>
-            </bean>
-            <!-- END IDENTITY PROVIDER BEAN FOR SITHS -->
+                                <property name="idpDiscoveryEnabled" value="true"/>
+                                <property name="idpDiscoveryResponseURL" value="${sambi.discovery.response.url}"/>
+                                <property name="idpDiscoveryURL" value="${sambi.discovery.url}"/>
+                            </bean>
+                        </constructor-arg>
+                    </bean>
+                    <!--  END SERVICE PROVIDER BEAN FOR SITHS -->
 
 
-          </list>
-        </constructor-arg>
-        <property name="refreshCheckInterval" value="86400000"/>
+                    <!-- START IDENTITY PROVIDER BEAN FOR SITHS -->
+                    <bean class="org.springframework.security.saml.metadata.ExtendedMetadataDelegate">
+                        <constructor-arg>
+                            <bean class="org.opensaml.saml2.metadata.provider.FilesystemMetadataProvider">
+                                <constructor-arg>
+                                    <value type="java.io.File">${saml.idp.metadata.file}</value>
+                                </constructor-arg>
+                                <property name="parserPool" ref="parserPool"/>
+                            </bean>
+                        </constructor-arg>
+                        <constructor-arg>
+                            <bean class="org.springframework.security.saml.metadata.ExtendedMetadata">
+                                <property name="alias" value="${sakerhetstjanst.saml.default.alias}"/>
+                            </bean>
+                        </constructor-arg>
 
-      </bean>
+                        <property name="metadataTrustCheck" value="false"/>
+                    </bean>
+                    <!-- END IDENTITY PROVIDER BEAN FOR SITHS -->
+
+
+                </list>
+            </constructor-arg>
+            <property name="refreshCheckInterval" value="86400000"/>
+
+        </bean>
 
         <!-- SAML Authentication Provider responsible for validating of received SAML messages -->
         <bean id="samlAuthenticationProvider" class="org.springframework.security.saml.SAMLAuthenticationProvider">
@@ -273,7 +287,7 @@
             <property name="authenticationManager" ref="authenticationManager"/>
             <property name="authenticationSuccessHandler" ref="successRedirectHandler"/>
             <property name="authenticationFailureHandler" ref="failureHandler"/>
-          <property name="sessionAuthenticationStrategy" ref="registerSessionAuthenticationStrategy"/>
+            <property name="sessionAuthenticationStrategy" ref="registerSessionAuthenticationStrategy"/>
         </bean>
 
         <!-- Processing filter for WebSSO Holder-of-Key profile -->
@@ -353,7 +367,8 @@
         </bean>
 
         <!-- Logout handler terminating local session -->
-        <bean id="logoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
+        <bean id="logoutHandler"
+              class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler">
             <property name="invalidateHttpSession" value="true"/>
         </bean>
 
@@ -372,7 +387,8 @@
         </bean>
 
         <!-- Handler for successful logout -->
-        <bean id="successLogoutHandler" class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
+        <bean id="successLogoutHandler"
+              class="org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler">
             <property name="defaultTargetUrl" value="/"/>
         </bean>
     </beans>
