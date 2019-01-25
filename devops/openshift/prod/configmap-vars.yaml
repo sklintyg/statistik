@@ -3,6 +3,8 @@ data:
   NTJP_WS_CERTIFICATE_TYPE: PKCS12
   NTJP_WS_TRUSTSTORE_TYPE: JKS
   SAKERHETSTJANST_SAML_IDP_METADATA_URL: "https://idp2.sakerhetstjanst.sjunet.org:443/idp/saml"
+  SAMBI_DISCOVERY_URL: 'https://fed.sambi.se/prod/ds'
+  SAMBI_DISCOVERY_RESPONSE.URL: '/saml/login/alias/defaultAlias?disco=true'
 kind: ConfigMap
 metadata:
   name: statistik-prod-configmap-envvar
