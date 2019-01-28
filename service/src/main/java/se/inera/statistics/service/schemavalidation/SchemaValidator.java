@@ -53,6 +53,9 @@ public class SchemaValidator {
     private Af00213Validator af00213Validator;
 
     @Autowired
+    private Af00251Validator af00251Validator;
+
+    @Autowired
     private TsBasValidator tsBasValidator;
 
     @Autowired
@@ -85,6 +88,8 @@ public class SchemaValidator {
                 return doiValidator.validateSchematron(data);
             case AF00213:
                 return af00213Validator.validateSchematron(data);
+            case AF00251:
+                return af00251Validator.validateSchematron(data);
             case TSTRK1007:
                 return tsBasValidator.validateSchematron(data);
             case TSTRK1009:

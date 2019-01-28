@@ -30,6 +30,8 @@ import java.util.stream.Stream;
 public enum IntygType {
 
     AF00213("AF00213", "af00213", "AF00213", "AF00213 Arbetsförmedlingens medicinska utlåtande", true),
+    AF00251("AF00251", "af00251", "AF00251", "AF00251 Läkarintyg för deltagare i arbetsmarknadspolitiska program "
+            + "med aktivitetsstöd, utvecklingsersättning eller etableringsersättning", true),
     DB("DB", "db", "Dödsbevis", "Dödsbevis", true),
     DOI("DOI", "doi", "Dödsorsaksintyg", "Dödsorsaksintyg", true),
     SJUKPENNING(null, null, "FK 7263/7804", "FK 7263/7804 Läkarintyg för sjukpenning", false),
@@ -52,7 +54,7 @@ public enum IntygType {
             Stream.of(LISJP, FK7263).collect(Collectors.toSet()));
 
     private static final List<IntygType> INCLUDED_IN_INTYG_TOTALT_REPORT = Collections.unmodifiableList(
-            Arrays.asList(AF00213, AG114, AG7804, DB, DOI, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1009, TSTRK1007, TSTRK1031));
+            Arrays.asList(AF00213, AF00251, AG114, AG7804, DB, DOI, LISJP, LUSE, LUAE_NA, LUAE_FS, TSTRK1009, TSTRK1007, TSTRK1031));
 
     private static final List<IntygType> INCLUDED_IN_INTYG_FILTER = Collections.unmodifiableList(
             Arrays.asList(SJUKPENNING, LUSE, LUAE_NA, LUAE_FS));

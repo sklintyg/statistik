@@ -124,6 +124,8 @@ class FoljandeIntygFinns extends FoljandeFinns {
                 return executeForXmlFormatRegisterCertificate('/doi.xml', "DOI")
             case ~/^(?i)AF00213$/:
                 return executeForXmlFormatRegisterCertificate('/af00213.xml', "AF00213")
+            case ~/^(?i)AF00251$/:
+                return executeForXmlFormatRegisterCertificate('/af00251.xml', "AF00251")
             case ~/^(?i)TSTRK1007$/:
                 return executeForXmlFormatRegisterCertificate('/tstrk1007.xml', "TSTRK1007")
             case ~/^(?i)TSTRK1007-oldformat$/:

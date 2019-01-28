@@ -64,6 +64,7 @@ public class RegisterCertificateResolver {
             case DB:
             case DOI:
             case AF00213:
+            case AF00251:
             case TSTRK1007:
             case TSTRK1031:
             case TSTRK1009:
