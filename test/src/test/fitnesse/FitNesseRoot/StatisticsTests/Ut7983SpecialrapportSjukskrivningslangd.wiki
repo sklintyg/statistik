@@ -2,7 +2,7 @@
 Test
 ---
 
-!1 Grupper utan sjukfall finns med i rapporten med antal = 0
+!1 Grupper utan sjukfall finns med i rapporten med antal = 0 och diagnoser i intyg utanför perioden räknas inte med i topp tio.
 
 !3 Givet att:
 | script | dagens datum | 2018-08-23 |
@@ -12,19 +12,20 @@ Test
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start | slut | kommentar | enhet |
 | 19790717-9191 | G93.3 | 2017-01-01 | 2017-01-10 | 10 dagar | enhet1 |
+| 19790717-9191 | G93.3 | 2016-01-01 | 2016-12-30 | 10 dagar | enhet1 |
 
 !3 Då gäller:
 | Sjukfall i specialrapporten sjukfall per sjukskrivningslangd |
 | sjukskrivningslängd | antal? |
 | Under 8 dagar | 0 |
-| 8-14 dagar | 1 |
+| 8-14 dagar | 0 |
 | 15-30 dagar | 0 |
 | 31-60 dagar | 0 |
 | 61-90 dagar | 0 |
 | 91-180 dagar | 0 |
 | 181-365 dagar | 0 |
-| Över 365 dagar | 0 |
-
+| Över 365 dagar | 1 |
+| Vanligaste diagnos i sjukfall över 180 dagar #1 är G93 med 1 förekomster | 0 |
 
 
 
