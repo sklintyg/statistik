@@ -18,12 +18,12 @@
     "stackblur-canvas": "1.4.1",
     "rgb-color": "v1.2.3",
     "canvg-canvg": "v1.5.3",
-    "momentjs": "2.22.2",
+    "momentjs": "2.24.0",
     "dropzone": "4.3.0",
     "ngstorage": "0.3.11",
     "highcharts": "6.0.7",
     "font-awesome": "fontawesome#^4.7.0",
-    "pdfmake": "0.1.38"
+    "pdfmake": "0.1.41"
   },
   "devDependencies": {
     "angular-mocks": "1.6.10",
