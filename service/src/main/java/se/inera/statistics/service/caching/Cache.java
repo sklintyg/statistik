@@ -205,7 +205,7 @@ public class Cache {
 
     public <T> T getNationalData(Supplier<T> supplier) {
         LOG.info("Getting national data");
-        return lookup(NATIONAL_DATA, supplier.getClass().toString(), supplier);
+        return lookup(NATIONAL_DATA, NATIONAL_DATA, supplier);
     }
 
     public synchronized boolean getAndSetNationaldataCalculationOngoing(boolean b) {
@@ -216,7 +216,7 @@ public class Cache {
 
     public Collection<IntygType> getAllExistingIntygTypes(Supplier<Collection<IntygType>> supplier) {
         LOG.info("Getting all existing intyg types");
-        return lookup(EXISTING_INTYGTYPES, supplier.getClass().toString(), supplier);
+        return lookup(EXISTING_INTYGTYPES, NATIONAL_DATA, supplier);
     }
 
 }

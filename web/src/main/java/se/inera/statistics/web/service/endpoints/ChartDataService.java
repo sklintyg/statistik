@@ -118,6 +118,8 @@ public class ChartDataService {
                     nationalData.add(cache.getNationalData(nationellDataCalculator::getData));
                     stopWatch.stop();
                     LOG.info("National data fetched " + stopWatch.getTotalTimeMillis());
+                } catch (Exception e) {
+                    LOG.error("National data generation failed", e);
                 } finally {
                     cache.getAndSetNationaldataCalculationOngoing(false);
                 }
