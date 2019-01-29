@@ -112,12 +112,17 @@ public class ChartDataService {
         logMDCHelper.run(() -> {
             LOG.info("National data requested");
             if (!cache.getAndSetNationaldataCalculationOngoing(true)) {
-                StopWatch stopWatch = new StopWatch();
-                stopWatch.start();
-                nationalData.add(cache.getNationalData(nationellDataCalculator::getData));
-                stopWatch.stop();
-                LOG.info("National data fetched " + stopWatch.getTotalTimeMillis());
-                cache.getAndSetNationaldataCalculationOngoing(false);
+                try {
+                    StopWatch stopWatch = new StopWatch();
+                    stopWatch.start();
+                    nationalData.add(cache.getNationalData(nationellDataCalculator::getData));
+                    stopWatch.stop();
+                    LOG.info("National data fetched " + stopWatch.getTotalTimeMillis());
+                } catch (Exception e) {
+                    LOG.error("National data generation failed", e);
+                } finally {
+                    cache.getAndSetNationaldataCalculationOngoing(false);
+                }
             } else {
                 LOG.info("National cache population is already ongoing. This population request is therefore skipped.");
             }
