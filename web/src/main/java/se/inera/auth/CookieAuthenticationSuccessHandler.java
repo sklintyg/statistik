@@ -48,7 +48,7 @@ public class CookieAuthenticationSuccessHandler implements AuthenticationSuccess
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     private static final int MAX_AGE = 999999999;
-    static final String SELECTED_SAMBI_IDP = "selectedSambiIdp";
+    static final String SELECTED_SAMBI_IDP = "selectedSambiIdpST";
 
     @Value("${sakerhetstjanst.saml.idp.metadata.url}")
     private String defaultIdpEntityId;

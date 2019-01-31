@@ -43,7 +43,7 @@ angular.module('StatisticsApp').controller('loginCtrl',
         $scope.hasActiveStatUrl = $cookies.get('statUrl');
 
         // Start SAMBI code
-        var SELECTED_SAMBI_IDP_KEY = 'selectedSambiIdp';
+        var SELECTED_SAMBI_IDP_KEY = 'selectedSambiIdpST';
         var DEFAULT_LOGIN_URL = '/saml/login/alias/' + AppModel.get().defaultAlias;
 
         $scope.resetCookie = function () {
