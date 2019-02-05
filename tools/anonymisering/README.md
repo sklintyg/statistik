@@ -14,7 +14,7 @@ Anonymisering görs på
 
 ### Att köra applikationen (exempel)
 
-Tänk på att använda rätt version av skriptet. Det bör stå i beställningen.
+Tänk på att använda rätt version av skriptet. Det bör stå i beställningen, men högst sannolikt är det absolut senaste bygget av anonymiseringsskriptet som skall användas (eftersom alla de senaste fixarna då kommer med samtidigt som anonymiseringsskriptet alltid kommer att vara bakåtkompatibelt).
 
 1. Hämta zip-filen i repot, exempelvis:
 https://build-inera.nordicmedtest.se/nexus/#browse/search=keyword%3Danonymisering%20AND%20version%3D6.0.0.539
