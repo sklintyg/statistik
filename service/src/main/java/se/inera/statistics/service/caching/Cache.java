@@ -115,10 +115,15 @@ public class Cache {
 
     public Collection<Enhet> getEnhetsWithHsaId(final Collection<HsaIdEnhet> enhetIds,
                                                 final Function<Collection<HsaIdEnhet>, Collection<Enhet>> loader) {
-        final HashOperations<Object, Object, Object> hashOps = template.opsForHash();
-        final List<Enhet> cachedEnhets = hashOps.multiGet(ENHET, enhetIds.stream().map(HsaIdAny::getId).collect(Collectors.toList()))
+        final HashOperations<Object, String, Object> hashOps = template.opsForHash();
+        final List<String> enhetIdStrings = enhetIds.stream().map(HsaIdAny::getId).collect(Collectors.toList());
+        final List<Enhet> cachedEnhets = hashOps.multiGet(ENHET, enhetIdStrings)
                 .stream()
                 .filter(Objects::nonNull)
+                .filter(o -> Objects.nonNull(((CacheValueWrapper) o).getValue())
+                        && ENHET.equals(((CacheValueWrapper) o).getKey())
+                        && enhetIdStrings.contains(((CacheValueWrapper) o).getHashKey()))
+                .map(o -> CacheValueWrapper.class.cast(o).getValue())
                 .map(Enhet.class::cast)
                 .collect(Collectors.toList());
 
@@ -132,7 +137,7 @@ public class Cache {
         hsaIdEnhetsNotInCache.removeAll(hsaIdsInCache);
 
         final Set<Enhet> enhets = loader.apply(hsaIdEnhetsNotInCache).stream()
-                .peek(e -> hashOps.put(ENHET, e.getEnhetId().getId(), e))
+                .peek(e -> hashOps.put(ENHET, e.getEnhetId().getId(), new CacheValueWrapper<>(ENHET, e.getEnhetId().getId(), e)))
                 .collect(Collectors.toSet());
 
         enhets.addAll(cachedEnhets);
@@ -153,40 +158,51 @@ public class Cache {
     }
 
     // returns a typed object from cache, or loads a value if no such hashKey exists
-    private <T>  T lookup(final Object key, final Object hashKey, final Supplier<T> loader) {
-        final HashOperations<Object, Object, Object> ops = template.opsForHash();
+    private <T>  T lookup(final String key, final String hashKey, final Supplier<T> loader) {
+        return lookup(key, hashKey, loader, false);
+    }
 
+    private <T>  T lookup(final String key, final String hashKey, final Supplier<T> loader, boolean getAndSet) {
+        final HashOperations<Object, String, CacheValueWrapper<T>> ops = template.opsForHash();
+        CacheValueWrapper<T> wrapper = null;
         if (ops.hasKey(key, hashKey)) {
             try {
-                return (T) ops.get(key, hashKey);
+                wrapper = ops.get(key, hashKey);
+                if (wrapper == null) {
+                    LOG.warn("Empty response from redis cache. Wanted key='{}' and hk='{}' but got null", key, hashKey);
+                } else if (wrapper.isMatch(key, hashKey)) {
+                    LOG.info("Matching value found in cache for key='{}' and hk='{}'", key, hashKey);
+                    if (!getAndSet) {
+                        return wrapper.getValue();
+                    }
+                } else {
+                    LOG.warn("Mismatching response from redis cache. Wanted key='{}' and hk='{}' but got k='{}' and hk='{}'",
+                            key, hashKey, wrapper.getKey(), wrapper.getHashKey());
+                }
             } catch (ClassCastException e) {
                 LOG.warn("Failed to cast {} object in cache: {}", key, e.getMessage());
             }
         }
 
-        final T value = loader.get();
-        ops.put(key, hashKey, value);
+        final CacheValueWrapper<T> value = new CacheValueWrapper<>(key, hashKey, loader.get());
+        if (value.getValue() != null) {
+            ops.put(key, hashKey, value);
+        } else {
+            LOG.warn("Calculated value was null for key='{}' and hk='{}'", key, hashKey);
+        }
 
-        return value;
+        if (getAndSet) {
+            return (wrapper != null) ? wrapper.getValue() : null;
+        }
+        return value.getValue();
     }
 
     /**
      * Gets a typed object from cache if existing and sets a new value for the same key.
      * @return The old value if it existed, else the new value.
      */
-    private <T>  T getAndSet(final Object key, final Object hashKey, final Supplier<T> loader) {
-        final HashOperations<Object, Object, Object> ops = template.opsForHash();
-        T t = null;
-        try {
-            t = (T) ops.get(key, hashKey);
-        } catch (ClassCastException e) {
-            LOG.warn("Failed to cast {} object in cache: {}", key, e.getMessage());
-        }
-
-        final T value = loader.get();
-        ops.put(key, hashKey, value);
-
-        return t;
+    private <T>  T getAndSet(final String key, final String hashKey, final Supplier<T> loader) {
+        return lookup(key, hashKey, loader, true);
     }
 
     private Aisle aisleLoader(HsaIdVardgivare vardgivarId, Function<HsaIdVardgivare, Aisle> loader) {
@@ -196,9 +212,9 @@ public class Cache {
 
     private List<HsaIdEnhet> loadVgEnhets(HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
         LOG.info("VgEnhets not cached: {}", vardgivareId);
-        final HashOperations<Object, Object, Object> hashOps = template.opsForHash();
+        final HashOperations<Object, String, Object> hashOps = template.opsForHash();
         return loader.apply(vardgivareId).stream()
-                .peek(e -> hashOps.put(ENHET, e.getEnhetId().getId(), e))
+                .peek(e -> hashOps.put(ENHET, e.getEnhetId().getId(), new CacheValueWrapper<>(ENHET, e.getEnhetId().getId(), e)))
                 .map(Enhet::getEnhetId)
                 .collect(Collectors.toList());
     }
