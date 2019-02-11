@@ -6,7 +6,7 @@ node {
     version = '10.15.1'
     download = true
     distBaseUrl = 'https://build-inera.nordicmedtest.se/node/'
-    workDir = file("${project.buildDir}/nodejs")
+    workDir = file("${rootProject.projectDir}/.gradle/nodejs")
     nodeModulesDir = file("${project.projectDir}")
 }
 

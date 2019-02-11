@@ -61,11 +61,8 @@ stage('fitnesse') {
 stage('protractor') {
     node {
         try {
-            //sh(script: 'sed -i -r "s,(e.code === \'ECONNRESET\'),e.code === \'ECONNRESET\' || e.code === \'ETIMEDOUT\'," test/node_modules/selenium-webdriver/http/index.js')// NMT magic
-            wrap([$class: 'Xvfb']) {
-                shgradle "protractorTest -Dprotractor.env=build-server -DbaseUrl=https://fitnesse2.inera.nordicmedtest.se/ \
+            shgradle "protractorTest -Dprotractor.env=build-server -DbaseUrl=https://fitnesse2.inera.nordicmedtest.se/ \
                       -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
-            }
         } finally {
             publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'test/reports', \
                 reportFiles: 'index.html', reportName: 'Protractor results'
