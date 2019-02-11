@@ -1,4 +1,5 @@
 ---
+Prune
 Test
 ---
 !3 Givet att:
@@ -34,6 +35,7 @@ Test
 | 19800101-9312 | C50 | 2017-01-01 | 2017-03-01 | 60 dagar | enhet1 |
 | 19800101-9313 | F43 | 2016-01-01 | 2017-02-01 | 398 dagar | enhet1 |
 | 19800101-9313 | F43 | 2016-01-01 | 2017-02-01 | 398 dagar | enhet1 |
+| 19801207-9284 | F43 | 2017-12-20 | 2018-01-01 | 12 dagar | enhet1 |
 
 !3 Då gäller:
 | Sjukfall i specialrapporten sjukfall per sjukskrivningslangd |
