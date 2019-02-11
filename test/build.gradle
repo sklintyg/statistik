@@ -3,10 +3,12 @@ apply plugin: 'se.inera.intyg.plugin.fitnesse'
 apply plugin: 'com.moowork.grunt'
 
 node {
-    version = '10.15.1'
+    version = "${nodeJsVersion}"
+    npmVersion = "${npmVersion}"
     download = true
     distBaseUrl = 'https://build-inera.nordicmedtest.se/node/'
     workDir = file("${rootProject.projectDir}/.gradle/nodejs")
+    npmWorkDir = file("${rootProject.projectDir}/.gradle/npm")
     nodeModulesDir = file("${project.projectDir}")
 }
 

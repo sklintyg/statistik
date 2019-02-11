@@ -59,6 +59,9 @@ ext {
     mockitoVersion = "1.9.5"
     springTestVersion = "4.2.2.RELEASE"
     jettyVersion = "9.4.12.v20180830"
+
+    nodeJsVersion = "10.15.1"
+    npmVersion = "6.4.1"
 }
 
 allprojects {
