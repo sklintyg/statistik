@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -58,7 +59,8 @@ import se.inera.statistics.service.warehouse.SjukfallIterator;
 @Component
 public class Cache {
     private static final Logger LOG = LoggerFactory.getLogger(Cache.class);
-    private static final String REDIS_KEY_PREFIX = "INTYGSSTATISTIK_";
+    private static final String INSTANCE_UUID = UUID.randomUUID().toString();
+    private static final String REDIS_KEY_PREFIX = "INTYGSSTATISTIK_" + INSTANCE_UUID;
     private static final String AISLE = REDIS_KEY_PREFIX + "AISLE_";
     private static final String NATIONAL_DATA = REDIS_KEY_PREFIX + "NATIONAL_DATA_";
     private static final String SJUKFALLGROUP = REDIS_KEY_PREFIX + "SJUKFALLGROUP_";
