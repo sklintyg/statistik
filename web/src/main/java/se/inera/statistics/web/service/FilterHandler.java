@@ -57,7 +57,6 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.Warehouse;
 import se.inera.statistics.web.MessagesText;
 import se.inera.statistics.web.error.ErrorSeverity;
 import se.inera.statistics.web.error.ErrorType;
@@ -309,13 +308,12 @@ public class FilterHandler {
     private Filter getFilterForAllAvailableEnhetsLandsting(HttpServletRequest request) {
         final HsaIdVardgivare vardgivarId = getSelectedVgIdForLoggedInUser(request);
         final List<HsaIdEnhet> enhets = landstingEnhetHandler.getAllEnhetsForVardgivare(vardgivarId);
-        final Set<Integer> availableEnhets = enhets.stream().map(Warehouse::getEnhet).collect(Collectors.toSet());
-        return getFilterForEnhets(availableEnhets, enhets);
+        return getFilterForEnhets(enhets);
     }
 
-    private Filter getFilterForEnhets(@Nonnull final Set<Integer> enhetsAsIntIds, @Nonnull List<HsaIdEnhet> enhetsAsHsaIds) {
-        final String hashValue = FilterPredicates.getHashValueForEnhets(enhetsAsIntIds);
-        final FilterPredicates predicate = new FilterPredicates(fact -> enhetsAsIntIds.contains(fact.getEnhet()), sjukfall -> true,
+    private Filter getFilterForEnhets(@Nonnull List<HsaIdEnhet> enhetsAsHsaIds) {
+        final String hashValue = FilterPredicates.getHashValueForEnhets(enhetsAsHsaIds);
+        final FilterPredicates predicate = new FilterPredicates(fact -> enhetsAsHsaIds.contains(fact.getEnhet()), sjukfall -> true,
                 hashValue, false);
         final List<String> sjukskrivningslangd = toReadableSjukskrivningslangdName(null);
         final List<String> aldersgrupp = toReadableAgeGroupNames(null);
@@ -331,8 +329,7 @@ public class FilterHandler {
                     FilterPredicates.HASH_EMPTY_FILTER, toReadableIntygTypeName(null), true);
         }
         List<HsaIdEnhet> hsaIds = info.getBusinessesForVg(vgId).stream().map(Verksamhet::getId).collect(Collectors.toList());
-        final Set<Integer> availableEnhets = hsaIds.stream().map(Warehouse::getEnhet).collect(Collectors.toSet());
-        return getFilterForEnhets(availableEnhets, hsaIds);
+        return getFilterForEnhets(hsaIds);
     }
 
     private ArrayList<HsaIdEnhet> getEnhetsFilteredLandsting(HttpServletRequest request, FilterData inFilter) {

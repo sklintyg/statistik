@@ -25,6 +25,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.caching.NoOpRedisTemplate;
@@ -36,11 +38,12 @@ import se.inera.statistics.service.warehouse.query.CounterFunction;
 import java.time.Clock;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 import static se.inera.statistics.service.report.model.Kon.FEMALE;
-import static se.inera.statistics.service.warehouse.Fact.aFact;
+import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
 
 public class SjukfallUtilTest {
     private MutableAisle aisle;
@@ -76,10 +79,10 @@ public class SjukfallUtilTest {
 
         Sjukfall sjukfall = sjukfalls.iterator().next();
         assertEquals(20, sjukfall.getRealDays());
-        final List<Integer> lakare = sjukfall.getLakare().stream().map(lakare1 -> lakare1.getId()).collect(Collectors.toList());
+        final List<HsaIdLakare> lakare = sjukfall.getLakare().stream().map(lakare1 -> lakare1.getId()).collect(Collectors.toList());
         assertEquals(2, lakare.size());
-        assertTrue(lakare.contains(1));
-        assertTrue(lakare.contains(2));
+        assertTrue(lakare.contains(new HsaIdLakare("1")));
+        assertTrue(lakare.contains(new HsaIdLakare("2")));
     }
 
     @Test
@@ -217,11 +220,12 @@ public class SjukfallUtilTest {
     }
 
     private Sjukfall createSjukfall(Kon kon) {
-        return Sjukfall.create(new SjukfallExtended(new Fact(1L, 0, 1, 2, 3, 4, 1, 6, 15, kon.getNumberRepresentation(), 30, 0, 0, 0, 0, 100, 1, 30, new int[0], 0)));
+        return Sjukfall.create(new SjukfallExtended(FactBuilder.newFact(1L, 0, 1, 2, 3, 4, 1, 6, 15, kon.getNumberRepresentation(), 30, 0, 0, 0, 0, 100, 1, 30, new int[0], 0)));
     }
 
     public static FilterPredicates createEnhetFilterFromInternalIntValues(Integer... enhetIds) {
-        final HashSet<Integer> availableEnhets = new HashSet<>(Arrays.asList(enhetIds));
+        final Set<HsaIdEnhet> availableEnhets = Arrays.stream(enhetIds)
+                .map(integer -> new HsaIdEnhet(String.valueOf(integer))).collect(Collectors.toSet());
         final String hashValue = FilterPredicates.getHashValueForEnhets(availableEnhets);
         return new FilterPredicates(fact -> availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue, false);
     }

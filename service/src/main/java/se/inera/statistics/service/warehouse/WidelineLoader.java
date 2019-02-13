@@ -96,12 +96,12 @@ public class WidelineLoader {
         String lakareId = resultSet.getString("lakareid");
 
         return new Fact(id, ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf),
-                ConversionHelper.extractForsamling(lkf), Warehouse.getEnhetAndRemember(new HsaIdEnhet(enhet)), intyg,
+                ConversionHelper.extractForsamling(lkf), new HsaIdEnhet(enhet), intyg,
                 ConversionHelper.patientIdToInt(patientid), startdatum, slutdatum, kon, alder,
                 factConverter.extractKapitel(diagnoskapitel), factConverter.extractAvsnitt(diagnosavsnitt),
                 factConverter.extractKategori(diagnoskategori), factConverter.extractKod(diagnoskod, diagnoskategori),
                 sjukskrivningsgrad, lakarkon, lakaralder, factConverter.parseBefattning(lakarbefattning, correlationId),
-                Warehouse.getNumLakarIdAndRemember(new HsaIdLakare(lakareId)));
+                new HsaIdLakare(lakareId));
     }
 
     private List<Aisle> toAisles(Map<HsaIdVardgivare, List<Fact>> facts) {

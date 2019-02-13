@@ -18,11 +18,13 @@
  */
 package se.inera.statistics.service.warehouse;
 
+import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10RangeType;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,12 +44,12 @@ public class Sjukfall implements Serializable {
     private int sjukskrivningsgrad;
     private Set<Lakare> lakare = new HashSet<>();
     private Lakare lastLakare;
-    private int[] enhets;
+    private Collection<HsaIdEnhet> enhets;
     private int realDays;
     private long firstIntygId;
     private List<Diagnos> diagnoses = new ArrayList<>();
     private Diagnos diagnos;
-    private int lastEnhet;
+    private HsaIdEnhet lastEnhet;
 
     private Sjukfall() {
     }
@@ -66,7 +68,7 @@ public class Sjukfall implements Serializable {
         sjukfall.lan = extendedSjukfall.getLan();
         sjukfall.lakare = extendedSjukfall.getLakare();
         sjukfall.lastLakare = extendedSjukfall.getLastLakare();
-        sjukfall.enhets = toArray(extendedSjukfall.getEnhets());
+        sjukfall.enhets = extendedSjukfall.getEnhets();
         sjukfall.lastEnhet = extendedSjukfall.getLastEnhet();
         sjukfall.firstIntygId = extendedSjukfall.getFirstIntygId();
         return sjukfall;
@@ -199,11 +201,11 @@ public class Sjukfall implements Serializable {
         return lastLakare;
     }
 
-    public int[] getEnhets() {
+    public Collection<HsaIdEnhet> getEnhets() {
         return enhets;
     }
 
-    public int getLastEnhet() {
+    public HsaIdEnhet getLastEnhet() {
         return lastEnhet;
     }
 

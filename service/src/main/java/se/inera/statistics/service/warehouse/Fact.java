@@ -24,7 +24,8 @@ import java.util.Comparator;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
 
 public class Fact implements Serializable {
     public static final String HEADING = "lan;kommun;forsamling;enhet;lakarintyg;patient;startdatum;kon;alder;diagnoskapitel;"
@@ -36,7 +37,7 @@ public class Fact implements Serializable {
     private int lan;
     private int kommun;
     private int forsamling;
-    private int enhet;
+    private HsaIdEnhet enhet;
     private long lakarintyg;
     private long patient;
     private int startdatum;
@@ -51,13 +52,13 @@ public class Fact implements Serializable {
     private int lakarkon;
     private int lakaralder;
     private int[] lakarbefattnings;
-    private int lakarid;
+    private HsaIdLakare lakarid;
 
     // CHECKSTYLE:OFF ParameterNumber
     @java.lang.SuppressWarnings("squid:S00107") // Suppress parameter number warning in Sonar
-    public Fact(long id, int lan, int kommun, int forsamling, int enhet, long lakarintyg, long patient, int startdatum, int slutdatum,
-            int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod, int sjukskrivningsgrad,
-            int lakarkon, int lakaralder, int[] lakarbefattnings, int lakarid) {
+    public Fact(long id, int lan, int kommun, int forsamling, HsaIdEnhet enhet, long lakarintyg, long patient, int startdatum,
+                int slutdatum, int kon, int alder, int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod,
+                int sjukskrivningsgrad, int lakarkon, int lakaralder, int[] lakarbefattnings, HsaIdLakare lakarid) {
         this.id = id;
         this.lan = lan;
         this.kommun = kommun;
@@ -108,7 +109,7 @@ public class Fact implements Serializable {
         return sjukskrivningsgrad;
     }
 
-    public int getEnhet() {
+    public HsaIdEnhet getEnhet() {
         return enhet;
     }
 
@@ -160,7 +161,7 @@ public class Fact implements Serializable {
         return kon;
     }
 
-    public int getLakarid() {
+    public HsaIdLakare getLakarid() {
         return lakarid;
     }
 
@@ -220,153 +221,6 @@ public class Fact implements Serializable {
         return slutdatum - startdatum + 1;
     }
 
-    public static class FactBuilder {
-        private long id = -1;
-        private int lan = -1;
-        private int kommun = -1;
-        private int forsamling = -1;
-        private int enhet = -1;
-        private long lakarintyg = -1;
-        private int patient = -1;
-        private int startdatum = -1;
-        private int slutdatum = -1;
-        private int kon = -1;
-        private int alder = -1;
-        private int diagnoskapitel = -1;
-        private int diagnosavsnitt = -1;
-        private int diagnoskategori = -1;
-        private int diagnoskod = -1;
-        private int sjukskrivningsgrad = -1;
-        private int lakarkon = -1;
-        private int lakaralder = -1;
-        private int[] lakarbefattnings = null;
-        private int lakarid = -1;
-        private Boolean enkelt = false;
 
-        @java.lang.SuppressWarnings({ "squid:MethodCyclomaticComplexity", "squid:S1067" }) // I can't think of a better
-                                                                                           // way to write this
-        public Fact build() {
-            if (id == -1 || lan == -1 || kommun == -1 || forsamling == -1 || enhet == -1 || lakarintyg == -1 || patient == -1
-                    || startdatum == -1 || slutdatum == -1 || kon == -1 || alder == -1 || diagnoskapitel == -1 || diagnosavsnitt == -1
-                    || diagnoskategori == -1 || diagnoskod == -1 || sjukskrivningsgrad == -1 || lakarkon == -1
-                    || lakaralder == -1 || lakarbefattnings == null || lakarid == -1 || enkelt == null) {
-                throw new UninitializedValuesException("unintialized values");
-            }
-            return new Fact(id, lan, kommun, forsamling, enhet, lakarintyg, patient, startdatum, slutdatum, kon, alder, diagnoskapitel,
-                    diagnosavsnitt, diagnoskategori, diagnoskod, sjukskrivningsgrad, lakarkon,
-                    lakaralder, lakarbefattnings, lakarid);
-        }
-
-        public FactBuilder withId(long id) {
-            this.id = id;
-            return this;
-        }
-
-        public FactBuilder withLan(int lan) {
-            this.lan = lan;
-            return this;
-        }
-
-        public FactBuilder withKommun(int kommun) {
-            this.kommun = kommun;
-            return this;
-        }
-
-        public FactBuilder withForsamling(int forsamling) {
-            this.forsamling = forsamling;
-            return this;
-        }
-
-        public FactBuilder withEnhet(int enhet) {
-            this.enhet = enhet;
-            return this;
-        }
-
-        public FactBuilder withLakarintyg(long lakarintyg) {
-            this.lakarintyg = lakarintyg;
-            return this;
-        }
-
-        public FactBuilder withPatient(int patient) {
-            this.patient = patient;
-            return this;
-        }
-
-        public FactBuilder withStartdatum(int startdatum) {
-            this.startdatum = startdatum;
-            return this;
-        }
-
-        public FactBuilder withSlutdatum(int slutdatum) {
-            this.slutdatum = slutdatum;
-            return this;
-        }
-
-        public FactBuilder withKon(Kon kon) {
-            this.kon = kon == null ? Kon.UNKNOWN.getNumberRepresentation() : kon.getNumberRepresentation();
-            return this;
-        }
-
-        public FactBuilder withAlder(int alder) {
-            this.alder = alder;
-            return this;
-        }
-
-        public FactBuilder withDiagnoskapitel(int diagnoskapitel) {
-            this.diagnoskapitel = diagnoskapitel;
-            return this;
-        }
-
-        public FactBuilder withDiagnosavsnitt(int diagnosavsnitt) {
-            this.diagnosavsnitt = diagnosavsnitt;
-            return this;
-        }
-
-        public FactBuilder withDiagnoskategori(int diagnoskategori) {
-            this.diagnoskategori = diagnoskategori;
-            return this;
-        }
-
-        public FactBuilder withDiagnoskod(int diagnoskod) {
-            this.diagnoskod = diagnoskod;
-            return this;
-        }
-
-        public FactBuilder withSjukskrivningsgrad(int sjukskrivningsgrad) {
-            this.sjukskrivningsgrad = sjukskrivningsgrad;
-            return this;
-        }
-
-        public FactBuilder withLakarkon(Kon lakarkon) {
-            this.lakarkon = lakarkon == null ? Kon.UNKNOWN.getNumberRepresentation() : lakarkon.getNumberRepresentation();
-            return this;
-        }
-
-        public FactBuilder withLakaralder(int lakaralder) {
-            this.lakaralder = lakaralder;
-            return this;
-        }
-
-        public FactBuilder withLakarbefattning(int[] lakarbefattnings) {
-            this.lakarbefattnings = lakarbefattnings;
-            return this;
-        }
-
-        public FactBuilder withLakarid(int lakarid) {
-            this.lakarid = lakarid;
-            return this;
-        }
-
-        private static class UninitializedValuesException extends RuntimeException {
-
-            UninitializedValuesException(String s) {
-                super(s);
-            }
-        }
-    }
-
-    public static FactBuilder aFact() {
-        return new FactBuilder();
-    }
 
 }

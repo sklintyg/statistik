@@ -38,7 +38,6 @@ import org.springframework.stereotype.Component;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.HashMultiset;
 import com.google.common.collect.Multiset;
-import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.processlog.Lakare;
@@ -55,7 +54,6 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
-import se.inera.statistics.service.warehouse.Warehouse;
 
 @Component
 public class SjukfallQuery {
@@ -133,25 +131,21 @@ public class SjukfallQuery {
         List<SimpleKonDataRow> rows = new ArrayList<>();
         SjukfallPerGender sjukfallPerGenderPerEnhet = getSjukfallPerGenderPerEnhet(sjukfallGroup);
         for (Map.Entry<HsaIdEnhet, String> enhetIdAndName : idsToNames.entrySet()) {
-            final HsaIdEnhet enhetId = enhetIdAndName.getKey();
-            final int enhetIntId = Warehouse.getEnhet(enhetId);
-            final Optional<SimpleKonDataRow> dataForEnhet = getDataForEnhet(cutoffUsage, sjukfallPerGenderPerEnhet, enhetIdAndName, enhetId,
-                    enhetIntId);
-            if (dataForEnhet.isPresent()) {
-                rows.add(dataForEnhet.get());
-            }
+            final Optional<SimpleKonDataRow> dataForEnhet = getDataForEnhet(cutoffUsage, sjukfallPerGenderPerEnhet, enhetIdAndName);
+            dataForEnhet.ifPresent(rows::add);
         }
         return rows;
     }
 
     private Optional<SimpleKonDataRow> getDataForEnhet(CutoffUsage cutoffUsage, SjukfallPerGender sjukfallPerGenderPerEnhet,
-            Map.Entry<HsaIdEnhet, String> enhetIdAndName, HsaIdEnhet enhetId, int enhetIntId) {
-        if (enhetIntId < 0) {
+            Map.Entry<HsaIdEnhet, String> enhetIdAndName) {
+        final HsaIdEnhet enhetId = enhetIdAndName.getKey();
+        if (enhetId.isEmpty()) {
             return Optional.empty();
         }
         final String enhetName = enhetIdAndName.getValue();
-        int female = sjukfallPerGenderPerEnhet.femalePerEnhet.count(enhetIntId);
-        int male = sjukfallPerGenderPerEnhet.malePerEnhet.count(enhetIntId);
+        int female = sjukfallPerGenderPerEnhet.femalePerEnhet.count(enhetId);
+        int male = sjukfallPerGenderPerEnhet.malePerEnhet.count(enhetId);
         if (CutoffUsage.APPLY_CUTOFF_PER_SEX.equals(cutoffUsage)) {
             male = male >= cutoff ? male : 0;
             female = female >= cutoff ? female : 0;
@@ -186,7 +180,7 @@ public class SjukfallQuery {
 
     public SimpleKonResponse getSjukfallPerLakare(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
             int periodLength) {
-        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> {
+        final CounterFunction<HsaIdLakare> counterFunction = (sjukfall, counter) -> {
             for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
                 counter.add(lakare.getId());
             }
@@ -210,7 +204,6 @@ public class SjukfallQuery {
     }
 
     private String lakarNamn(Lakare lakare) {
-
         String name = lakare.getTilltalsNamn() + " " + lakare.getEfterNamn();
 
         if (name.trim().isEmpty()) {
@@ -229,8 +222,8 @@ public class SjukfallQuery {
             Map<HsaIdEnhet, String> idsToNames) {
         final ArrayList<Map.Entry<HsaIdEnhet, String>> groupEntries = new ArrayList<>(idsToNames.entrySet());
         final List<String> names = groupEntries.stream().map(entry -> entry.getKey().getId()).collect(Collectors.toList());
-        final List<Integer> ids = groupEntries.stream().map(entry -> Warehouse.getEnhet(entry.getKey())).collect(Collectors.toList());
-        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> counter.add(sjukfall.getLastEnhet());
+        final List<HsaIdEnhet> ids = groupEntries.stream().map(Map.Entry::getKey).collect(Collectors.toList());
+        final CounterFunction<HsaIdEnhet> counterFunction = (sjukfall, counter) -> counter.add(sjukfall.getLastEnhet());
         final KonDataResponse response = sjukfallUtil.calculateKonDataResponse(aisle, filter, start, periods, periodSize, names, ids,
                 counterFunction);
         return KonDataResponses.changeIdGroupsToNamesAndAddIdsToDuplicates(response, idsToNames);
@@ -238,14 +231,14 @@ public class SjukfallQuery {
 
     public KonDataResponse getSjukfallPerLakareSomTidsserie(Aisle aisle, FilterPredicates filter, LocalDate start, int periods,
             int periodLength) {
-        final CounterFunction<Integer> counterFunction = (sjukfall, counter) -> counter.add(sjukfall.getLastLakare().getId());
+        final CounterFunction<HsaIdLakare> counterFunction = (sjukfall, counter) -> counter.add(sjukfall.getLastLakare().getId());
         return getSjukfallPerLakareCommon(aisle, filter, start, periods, periodLength, counterFunction);
     }
 
     private KonDataResponse getSjukfallPerLakareCommon(Aisle aisle, FilterPredicates filter, LocalDate start, int periods, int periodLength,
-            CounterFunction<Integer> counterFunction) {
-        final Function<Sjukfall, Collection<Integer>> groupsFunction = sjukfall -> {
-            final ArrayList<Integer> integers = new ArrayList<>();
+            CounterFunction<HsaIdLakare> counterFunction) {
+        final Function<Sjukfall, Collection<HsaIdLakare>> groupsFunction = sjukfall -> {
+            final ArrayList<HsaIdLakare> integers = new ArrayList<>();
             for (se.inera.statistics.service.warehouse.Lakare lakare : sjukfall.getLakare()) {
                 integers.add(lakare.getId());
             }
@@ -259,39 +252,30 @@ public class SjukfallQuery {
     }
 
     private KonDataResponse changeLakareIdToLakarName(final KonDataResponse response) {
-        final List<HsaIdLakare> lakares = response.getGroups().stream().map(group -> {
-            final Optional<HsaIdLakare> lakarId = Warehouse.getLakarId(Integer.parseInt(group));
-            if (!lakarId.isPresent()) {
-                LOG.error("Could not find lakare with internal id: " + group);
-                return HsaIdLakare.empty();
-            }
-            return lakarId.get();
-        }).collect(Collectors.toList());
+        final List<HsaIdLakare> lakares = response.getGroups().stream().map(HsaIdLakare::new).collect(Collectors.toList());
         final List<Lakare> allLakareInResponse = lakareManager.getAllSpecifiedLakares(lakares);
         final Set<String> nameDuplicates = findDuplicates(allLakareInResponse);
         final List<String> updatedLakareNames = response.getGroups().stream().map(lakareIdNum -> {
+            final HsaIdLakare hsaIdLakare = new HsaIdLakare(lakareIdNum);
             for (Lakare lakare : allLakareInResponse) {
-                if (lakareIdNum.equals(String.valueOf(Warehouse.getNumLakarId(lakare.getLakareId())))) {
+                if (hsaIdLakare.equals(lakare.getLakareId())) {
                     final String namn = lakarNamn(lakare);
                     return namn + (nameDuplicates.contains(namn) ? " " + lakare.getLakareId() : "");
                 }
             }
             LOG.warn("Could not find name for lakare: " + lakareIdNum);
-            final Optional<HsaIdLakare> lakarId = Warehouse.getLakarId(Integer.parseInt(lakareIdNum));
-            return lakarId.map(HsaIdAny::getId).orElse(lakareIdNum);
+            return hsaIdLakare.getId();
         }).collect(Collectors.toList());
         return new KonDataResponse(response.getAvailableFilters(), updatedLakareNames, response.getRows());
     }
 
     private static class SjukfallPerGender {
-        private Multiset<Integer> femalePerEnhet = HashMultiset.create();
-        private Multiset<Integer> malePerEnhet = HashMultiset.create();
+        private Multiset<HsaIdEnhet> femalePerEnhet = HashMultiset.create();
+        private Multiset<HsaIdEnhet> malePerEnhet = HashMultiset.create();
 
         void add(Sjukfall sjukfall) {
-            final Multiset<Integer> sjukfallPerEnhet = sjukfall.getKon() == Kon.FEMALE ? femalePerEnhet : malePerEnhet;
-            for (Integer enhetId : sjukfall.getEnhets()) {
-                sjukfallPerEnhet.add(enhetId);
-            }
+            final Multiset<HsaIdEnhet> sjukfallPerEnhet = sjukfall.getKon() == Kon.FEMALE ? femalePerEnhet : malePerEnhet;
+            sjukfallPerEnhet.addAll(sjukfall.getEnhets());
         }
     }
 

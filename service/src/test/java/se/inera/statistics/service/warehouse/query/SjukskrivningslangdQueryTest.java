@@ -49,7 +49,7 @@ import java.util.Map;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static se.inera.statistics.service.warehouse.Fact.aFact;
+import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
 
 public class SjukskrivningslangdQueryTest {
 

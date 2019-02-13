@@ -21,6 +21,7 @@ package se.inera.statistics.service.warehouse.query;
 import org.junit.Test;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.FactBuilder;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallExtended;
 
@@ -98,7 +99,7 @@ public class CounterTest {
     }
 
     private Sjukfall createSjukfall(Kon kon) {
-        final SjukfallExtended sjukfall = new SjukfallExtended(new Fact(1L, 1,1,1,1,1,1,1,1,kon.getNumberRepresentation(),1,1,1,1,1,1,1,1,new int[0],1));
+        final SjukfallExtended sjukfall = new SjukfallExtended(FactBuilder.newFact(1L, 1,1,1,1,1,1,1,1,kon.getNumberRepresentation(),1,1,1,1,1,1,1,1,new int[0],1));
         return Sjukfall.create(sjukfall);
     }
 }

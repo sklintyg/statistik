@@ -19,24 +19,27 @@
 package se.inera.statistics.service.warehouse;
 
 import java.io.Serializable;
+import java.util.Objects;
 
+import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.report.model.Kon;
 
 public class Lakare implements Serializable {
 
-    private int id;
+    private static final long serialVersionUID = -3030152743446943570L;
+    private HsaIdLakare id;
     private Kon kon;
     private int age;
     private int[] befattnings;
 
-    public Lakare(int lakareId, Kon kon, int age, int[] befattnings) {
+    public Lakare(HsaIdLakare lakareId, Kon kon, int age, int[] befattnings) {
         this.id = lakareId;
         this.kon = kon;
         this.age = age;
         this.befattnings = befattnings;
     }
 
-    public int getId() {
+    public HsaIdLakare getId() {
         return id;
     }
 
@@ -57,21 +60,16 @@ public class Lakare implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Lakare)) {
+        if (o == null || !(o instanceof Lakare)) {
             return false;
         }
-
         Lakare lakare = (Lakare) o;
-
-        if (id != lakare.id) {
-            return false;
-        }
-
-        return true;
+        return Objects.equals(id, lakare.id);
     }
 
     @Override
     public int hashCode() {
-        return id;
+        return Objects.hash(id);
     }
+
 }

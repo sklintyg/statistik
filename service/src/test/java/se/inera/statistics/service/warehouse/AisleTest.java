@@ -25,7 +25,7 @@ import se.inera.statistics.service.report.model.Kon;
 import java.util.Iterator;
 
 import static org.junit.Assert.assertEquals;
-import static se.inera.statistics.service.warehouse.Fact.aFact;
+import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
 
 public class AisleTest {
 

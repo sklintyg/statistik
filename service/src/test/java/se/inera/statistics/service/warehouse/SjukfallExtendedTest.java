@@ -55,7 +55,7 @@ public class SjukfallExtendedTest {
     }
 
     private Fact createDxFact(int diagnoskapitel, int diagnosavsnitt, int diagnoskategori, int diagnoskod) {
-        return new Fact(1, 1, 1, 1, 1 , lakarintyg++, 1, 1,1,1,1, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod,1,1,1,null, 1);
+        return FactBuilder.newFact(1, 1, 1, 1, 1 , lakarintyg++, 1, 1,1,1,1, diagnoskapitel, diagnosavsnitt, diagnoskategori, diagnoskod,1,1,1,null, 1);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class SjukfallExtendedTest {
     }
 
     private Fact createDaysFact(int startDate, int endDate) {
-        return new Fact(1, 1, 1, 1, 1 , lakarintyg++, 1, startDate,endDate,1,1, 1, 1, 1, 1,1,1,1,null, 1);
+        return FactBuilder.newFact(1, 1, 1, 1, 1 , lakarintyg++, 1, startDate,endDate,1,1, 1, 1, 1, 1,1,1,1,null, 1);
     }
 
 }

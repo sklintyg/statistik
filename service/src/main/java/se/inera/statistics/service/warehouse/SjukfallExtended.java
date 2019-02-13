@@ -27,6 +27,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.report.model.Kon;
 
 public class SjukfallExtended {
@@ -85,7 +87,7 @@ public class SjukfallExtended {
     }
 
     private Lakare getLakareFromFact(Fact line) {
-        final int lakarid = line.getLakarid();
+        final HsaIdLakare lakarid = line.getLakarid();
         final Kon lakarKon = Kon.byNumberRepresentation(line.getLakarkon());
         final int lakaralder = line.getLakaralder();
         final int[] lakarbefattnings = line.getLakarbefattnings();
@@ -234,11 +236,11 @@ public class SjukfallExtended {
         return getLakareFromFact(getLastFact());
     }
 
-    public Set<Integer> getEnhets() {
+    public Set<HsaIdEnhet> getEnhets() {
         return facts.stream().map(Fact::getEnhet).collect(Collectors.toSet());
     }
 
-    int getLastEnhet() {
+    HsaIdEnhet getLastEnhet() {
         return getLastFact().getEnhet();
     }
 

@@ -18,9 +18,12 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import java.util.Arrays;
-import java.util.Set;
+import se.inera.statistics.hsa.model.HsaIdAny;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+
+import java.util.Collection;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class FilterPredicates {
 
@@ -65,10 +68,8 @@ public class FilterPredicates {
         return sjukfallangdfilterActive;
     }
 
-    public static String getHashValueForEnhets(Set<Integer> enhetIds) {
-        final Object[] numericalIds = enhetIds.toArray();
-        Arrays.sort(numericalIds);
-        return Arrays.toString(numericalIds);
+    public static String getHashValueForEnhets(Collection<HsaIdEnhet> enhetIds) {
+        return "_" + enhetIds.stream().map(HsaIdAny::getId).sorted().collect(Collectors.joining("_"));
     }
 
 }
