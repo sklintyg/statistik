@@ -18,14 +18,11 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.caching.Cache;
 import se.inera.statistics.service.processlog.Enhet;
@@ -49,9 +46,6 @@ public class Warehouse implements Iterable<Aisle> {
 
     @Autowired
     private IntygCommonManager intygCommonManager;
-
-    private static IdMap<HsaIdEnhet> enhetsMap = new IdMap<>();
-    private static IdMap<HsaIdLakare> lakareMap = new IdMap<>();
 
     private Aisle loadAisle(HsaIdVardgivare vardgivarId) {
         final List<Aisle> ailesForVgs = widelineLoader.getAilesForVgs(Collections.singletonList(vardgivarId));
@@ -124,69 +118,6 @@ public class Warehouse implements Iterable<Aisle> {
                 return toIndex;
             }
         };
-    }
-
-    static int getEnhetAndRemember(HsaIdEnhet id) {
-        return enhetsMap.getOrCreateId(id);
-    }
-
-    public static int getEnhet(HsaIdEnhet id) {
-        return enhetsMap.maybeGetId(id);
-    }
-
-    public static Optional<HsaIdEnhet> getEnhetId(int enhetIntId) {
-        return enhetsMap.getKey(enhetIntId);
-    }
-
-    public static Map<HsaIdEnhet, Integer> getEnhetsView() {
-        return enhetsMap.getView();
-    }
-
-    public static int getNumLakarIdAndRemember(HsaIdLakare id) {
-        return lakareMap.getOrCreateId(id);
-    }
-
-    public static int getNumLakarId(HsaIdLakare id) {
-        return lakareMap.maybeGetId(id);
-    }
-
-    public static Optional<HsaIdLakare> getLakarId(int lakarIntId) {
-        return lakareMap.getKey(lakarIntId);
-    }
-
-    private static class IdMap<T> {
-        private final BiMap<T, Integer> map = HashBiMap.create();
-
-        synchronized Integer getOrCreateId(T key) {
-            Integer id = map.get(key);
-            if (id == null) {
-                id = map.size() + 1;
-                map.put(key, id);
-            }
-            return id;
-        }
-
-        synchronized Integer maybeGetId(T key) {
-            Integer id = map.get(key);
-            if (id == null) {
-                return -1;
-            } else {
-                return id;
-            }
-        }
-
-        public synchronized Optional<T> getKey(int id) {
-            final T result = map.inverse().get(id);
-            if (result == null) {
-                return Optional.empty();
-            }
-            return Optional.of(result);
-        }
-
-        public synchronized Map<T, Integer> getView() {
-            return Collections.unmodifiableMap(map);
-        }
-
     }
 
     public Collection<IntygType> getAllExistingIntygTypes() {

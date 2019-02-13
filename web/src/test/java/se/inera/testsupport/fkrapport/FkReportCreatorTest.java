@@ -38,6 +38,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.util.Icd10;
@@ -185,7 +187,7 @@ public class FkReportCreatorTest {
     }
 
     private Fact createFact(int startdatum, int slutdatum, int lakarintyg) {
-        return new Fact(1L, 1,1,1,1, lakarintyg,1, startdatum, slutdatum,1,1,1,1,1,1,1,1,1, new int[0],1);
+        return new Fact(1L, 1,1,1,new HsaIdEnhet("1"), lakarintyg,1, startdatum, slutdatum,1,1,1,1,1,1,1,1,1, new int[0],new HsaIdLakare("1"));
     }
 
 }

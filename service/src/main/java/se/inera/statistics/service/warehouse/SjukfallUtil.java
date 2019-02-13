@@ -58,7 +58,7 @@ public class SjukfallUtil {
     private Cache cache;
 
     public FilterPredicates createEnhetFilter(HsaIdEnhet... enhetIds) {
-        final Set<Integer> availableEnhets = Arrays.stream(enhetIds).map(Warehouse::getEnhet).collect(Collectors.toSet());
+        final Set<HsaIdEnhet> availableEnhets = Arrays.stream(enhetIds).collect(Collectors.toSet());
         final String hashValue = FilterPredicates.getHashValueForEnhets(availableEnhets);
         return new FilterPredicates(fact -> fact != null && availableEnhets.contains(fact.getEnhet()), sjukfall -> true, hashValue, false);
     }

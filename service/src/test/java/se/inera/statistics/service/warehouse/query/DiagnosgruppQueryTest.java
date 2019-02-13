@@ -57,7 +57,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static se.inera.statistics.service.warehouse.Fact.aFact;
+import static se.inera.statistics.service.warehouse.FactBuilder.aFact;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:icd10.xml", "classpath:query-test.xml"})

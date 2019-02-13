@@ -21,6 +21,7 @@ package se.inera.statistics.service.warehouse.sjukfallcalc.perpatient;
 import com.google.common.collect.ArrayListMultimap;
 import org.junit.Test;
 import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.FactBuilder;
 import se.inera.statistics.service.warehouse.SjukfallExtended;
 
 import java.util.ArrayList;
@@ -111,7 +112,7 @@ public class FactsToSjukfallConverterForAisleTest {
     }
 
     private Fact createFact(int startdatum, int slutdatum, int patient) {
-        return new Fact(1L, 1,1,1,1,1, patient, startdatum, slutdatum,1,1,1,1,1,1,1,1,1, new int[0],1);
+        return FactBuilder.newFact(1L, 1,1,1,1,1, patient, startdatum, slutdatum,1,1,1,1,1,1,1,1,1, new int[0],1);
     }
 
 }

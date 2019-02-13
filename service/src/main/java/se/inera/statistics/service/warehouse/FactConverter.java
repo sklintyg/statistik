@@ -28,6 +28,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.google.common.base.Splitter;
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.service.helper.ConversionHelper;
 import se.inera.statistics.service.report.util.Icd10;
 import se.inera.statistics.service.report.util.Icd10RangeType;
@@ -43,7 +45,7 @@ class FactConverter {
 
     Fact toFact(WideLine wideline) {
         String lkf = wideline.getLkf();
-        int enhet = Warehouse.getEnhetAndRemember(wideline.getEnhet());
+        HsaIdEnhet enhet = wideline.getEnhet();
         long intyg = wideline.getLakarintyg();
         long patientid = ConversionHelper.patientIdToInt(wideline.getPatientid());
         int startdatum = wideline.getStartdatum();
@@ -58,7 +60,7 @@ class FactConverter {
         int lakarkon = wideline.getLakarkon();
         int lakaralder = wideline.getLakaralder();
         int[] lakarbefattnings = parseBefattning(wideline.getLakarbefattning(), wideline.getCorrelationId());
-        int lakare = Warehouse.getNumLakarIdAndRemember(wideline.getLakareId());
+        HsaIdLakare lakare = wideline.getLakareId();
 
         return new Fact(wideline.getId(), ConversionHelper.extractLan(lkf), ConversionHelper.extractKommun(lkf),
                 ConversionHelper.extractForsamling(lkf), enhet, intyg, patientid, startdatum, slutdatum, kon, alder,

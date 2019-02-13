@@ -22,6 +22,7 @@ import com.google.common.collect.ArrayListMultimap;
 import org.junit.Test;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.FactBuilder;
 import se.inera.statistics.service.warehouse.SjukfallIterator;
 import se.inera.statistics.service.warehouse.WidelineConverter;
 
@@ -120,7 +121,7 @@ public class FactsPerPatientAndPeriodGrouperTest {
 
     private Fact createFact(long patient, LocalDate startDatum) {
         final int start = WidelineConverter.toDay(startDatum);
-        return new Fact(1L, 1,1,1,1,1, patient, start,start,1,1,1,1,1,1,1,1,1,new int[0],1);
+        return FactBuilder.newFact(1L, 1,1,1,1,1, patient, start,start,1,1,1,1,1,1,1,1,1,new int[0],1);
     }
 
 }

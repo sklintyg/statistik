@@ -81,7 +81,7 @@ public class WidelineToWarehouseIT {
         Fact fact = a.iterator().next();
         Assert.assertEquals(23, fact.getAlder());
         Assert.assertEquals(patientId, ConversionHelper.patientIdToString(fact.getPatient()));
-        Assert.assertEquals(Warehouse.getEnhetAndRemember(enhet), fact.getEnhet());
+        Assert.assertEquals(enhet, fact.getEnhet());
         Assert.assertEquals(78002, fact.getForsamling());
         Assert.assertEquals(780, fact.getKommun());
         Assert.assertEquals(7, fact.getLan());
