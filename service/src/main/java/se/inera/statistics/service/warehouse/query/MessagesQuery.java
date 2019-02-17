@@ -80,14 +80,14 @@ public class MessagesQuery {
     }
 
     public SimpleKonResponse getMessages(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter, LocalDate start,
-            int perioder) {
+                                         int perioder) {
         LocalDate to = start.plusMonths(perioder);
         List<MessageWidelineLoader.CountDTO> rows = messageWidelineLoader.getAntalMeddelandenPerMonth(start, to, vardgivare, enheter);
         return convertToSimpleResponse(rows, start, perioder);
     }
 
     public SimpleKonResponse getMessagesTvarsnitt(HsaIdVardgivare vardgivare, Collection<HsaIdEnhet> enheter,
-            LocalDate start, int perioder) {
+                                                  LocalDate start, int perioder) {
         LocalDate to = start.plusMonths(perioder);
         List<MessageWidelineLoader.CountDTO> rows = messageWidelineLoader.getAntalMeddelandenPerMonth(start, to, vardgivare, enheter);
         return convertToSimpleResponseTvarsnitt(rows);
@@ -221,16 +221,20 @@ public class MessagesQuery {
         int[] femaleIntyg = new int[seriesLength];
 
         for (IntygType intygType : intygTypes) {
-            List<CountDTOAmne> dtos = map.get(intygType.name());
-            if (dtos != null) {
-                for (CountDTOAmne dto : dtos) {
-                    final int ordinal = IntygType.parseString(dto.getIntygTyp()).ordinal();
-                    if (dto.getKon().equals(Kon.FEMALE)) {
+            List<CountDTOAmne> allDtos = map.get(intygType.name());
+            if (allDtos != null) {
+                final Map<String, List<CountDTOAmne>> dtosPerIntygid = allDtos.stream()
+                        .collect(Collectors.groupingBy(CountDTOAmne::getIntygid));
+                for (List<CountDTOAmne> dtos : dtosPerIntygid.values()) {
+                    final CountDTOAmne aDto = dtos.get(0);
+                    final boolean isKomplt = dtos.stream().anyMatch(dto -> MsgAmne.KOMPLT.equals(dto.getAmne()));
+                    final int ordinal = IntygType.parseString(aDto.getIntygTyp()).ordinal();
+                    if (aDto.getKon().equals(Kon.FEMALE)) {
                         femaleIntyg[ordinal] += 1;
-                        femaleKompl[ordinal] += MsgAmne.KOMPLT.equals(dto.getAmne()) ? 1 : 0;
+                        femaleKompl[ordinal] += isKomplt ? 1 : 0;
                     } else {
                         maleIntyg[ordinal] += 1;
-                        maleKompl[ordinal] += MsgAmne.KOMPLT.equals(dto.getAmne()) ? 1 : 0;
+                        maleKompl[ordinal] += isKomplt ? 1 : 0;
                     }
                 }
             }
@@ -273,17 +277,21 @@ public class MessagesQuery {
             LocalDate temp = start.plusMonths(i);
             String displayDate = ReportUtil.toDiagramPeriod(temp);
 
-            List<CountDTOAmne> dtos = map.get(temp);
+            List<CountDTOAmne> allDtos = map.get(temp);
 
-            if (dtos != null) {
-                for (CountDTOAmne dto : dtos) {
-                    final int ordinal = IntygType.parseString(dto.getIntygTyp()).ordinal();
-                    if (dto.getKon().equals(Kon.FEMALE)) {
+            if (allDtos != null) {
+                final Map<String, List<CountDTOAmne>> dtosPerIntygid = allDtos.stream()
+                        .collect(Collectors.groupingBy(CountDTOAmne::getIntygid));
+                for (List<CountDTOAmne> dtos : dtosPerIntygid.values()) {
+                    final CountDTOAmne aDto = dtos.get(0);
+                    final boolean isKomplt = dtos.stream().anyMatch(dto -> MsgAmne.KOMPLT.equals(dto.getAmne()));
+                    final int ordinal = IntygType.parseString(aDto.getIntygTyp()).ordinal();
+                    if (aDto.getKon().equals(Kon.FEMALE)) {
                         femaleIntyg[ordinal] += 1;
-                        femaleKompl[ordinal] += MsgAmne.KOMPLT.equals(dto.getAmne()) ? 1 : 0;
+                        femaleKompl[ordinal] += isKomplt ? 1 : 0;
                     } else {
                         maleIntyg[ordinal] += 1;
-                        maleKompl[ordinal] += MsgAmne.KOMPLT.equals(dto.getAmne()) ? 1 : 0;
+                        maleKompl[ordinal] += isKomplt ? 1 : 0;
                     }
                 }
             }
@@ -439,12 +447,12 @@ public class MessagesQuery {
 
     private List<String> getEnhets(List<CountDTOAmne> rows) {
         return rows != null
-                    ? rows.stream().map(CountDTOAmne::getEnhet).distinct().collect(Collectors.toList())
-                    : Collections.emptyList();
+                ? rows.stream().map(CountDTOAmne::getEnhet).distinct().collect(Collectors.toList())
+                : Collections.emptyList();
     }
 
     private SimpleKonResponse convertToSimpleResponse(List<MessageWidelineLoader.CountDTO> rows, LocalDate start,
-            int perioder) {
+                                                      int perioder) {
         List<SimpleKonDataRow> result = new ArrayList<>();
         Map<LocalDate, List<MessageWidelineLoader.CountDTO>> map;
         if (rows != null) {
@@ -548,7 +556,7 @@ public class MessagesQuery {
         }
         for (CountDTOAmne dto : rows) {
             final int index = types.indexOf(typeInDto.apply(dto));
-                series[dto.getKon().equals(Kon.FEMALE) ? 0 : 1][index][dto.getAmne().ordinal()] += dto.getCount();
+            series[dto.getKon().equals(Kon.FEMALE) ? 0 : 1][index][dto.getAmne().ordinal()] += dto.getCount();
         }
 
         for (int k = 0; k < typesSize; k++) {
