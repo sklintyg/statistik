@@ -1,12 +1,10 @@
 ---
-Prune
 Test
 ---
-
 !1 Test1
 
 !3 Givet att:
-|script|dagens datum|2019-02-15|
+|script|dagens datum|2019-03-15|
 
 |script|troskel varde|5|
 
@@ -57,6 +55,10 @@ Nationell:
 |2018|nov  |FK 7804 Läkarintyg för sjukpenning      |0   |100     |
 
 Inloggad:
+
+|Andel i rapporten komplettering andel intyg som tvarsnitt|
+|inloggad som|grupp                             |totalt?|män?|kvinnor?|
+|user1       |FK 7804 Läkarintyg för sjukpenning|50%    |0%  |50%     |
 
 |Andel i rapporten komplettering andel intyg|
 |inloggad som|år  |månad|grupp                             |grupp totalt?|män?|kvinnor?|
@@ -118,6 +120,10 @@ Nationell:
 |2018|nov  |FK 7804 Läkarintyg för sjukpenning      |0   |100     |
 
 Inloggad:
+
+|Andel i rapporten komplettering andel intyg som tvarsnitt|
+|inloggad som|grupp                             |totalt?|män?|kvinnor?|
+|user1       |FK 7804 Läkarintyg för sjukpenning|100%   |0%  |100%    |
 
 |Andel i rapporten komplettering andel intyg|
 |inloggad som|år  |månad|grupp                             |grupp totalt?|män?|kvinnor?|
@@ -185,9 +191,13 @@ Nationell:
 
 Inloggad:
 
+|Andel i rapporten komplettering andel intyg som tvarsnitt|
+|inloggad som|grupp                             |totalt?|män?|kvinnor?|
+|user1       |FK 7804 Läkarintyg för sjukpenning|50%    |0%  |50%     |
+
 |Andel i rapporten komplettering andel intyg|
 |inloggad som|år  |månad|grupp                             |grupp totalt?|män?|kvinnor?|
-|user1       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|50%         |0%  |50%    |
+|user1       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|50%          |0%  |50%     |
 
 |Andel i rapporten komplettering andel intyg diagram|
 |inloggad som|år  |månad|grupp                             |män?|kvinnor?|
@@ -255,9 +265,13 @@ Nationell:
 
 Inloggad:
 
+|Andel i rapporten komplettering andel intyg som tvarsnitt|
+|inloggad som|grupp                             |totalt?|män?|kvinnor?|
+|user1       |FK 7804 Läkarintyg för sjukpenning|50%    |0%  |50%     |
+
 |Andel i rapporten komplettering andel intyg|
 |inloggad som|år  |månad|grupp                             |grupp totalt?|män?|kvinnor?|
-|user1       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|50%         |0%  |50%    |
+|user1       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|50%          |0%  |50%     |
 
 |Andel i rapporten komplettering andel intyg diagram|
 |inloggad som|år  |månad|grupp                             |män?|kvinnor?|
