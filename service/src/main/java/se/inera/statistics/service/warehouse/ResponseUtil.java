@@ -48,7 +48,7 @@ public final class ResponseUtil {
         for (KonDataRow row : kdr.getRows()) {
             final ArrayList<KonField> data = new ArrayList<>();
             for (int i = 0; i < row.getData().size(); i++) {
-                Object extras = row.getData().get(i).getExtras() instanceof AndelExtras ? new AndelExtras(0, 0) : null;
+                Object extras = row.getData().get(i).getExtras() instanceof AndelExtras ? new AndelExtras(0, 0, 0, 0) : null;
                 data.add(new KonField(0, 0, extras));
             }
             rows.add(new KonDataRow(row.getName(), data));
@@ -68,7 +68,7 @@ public final class ResponseUtil {
                 final KonField bKonField = b.getData().get(i);
                 final int female = filterCutoff(aKonField.getFemale(), cutoff) + bKonField.getFemale();
                 final int male = filterCutoff(aKonField.getMale(), cutoff) + bKonField.getMale();
-                final Object extras = getMergedExtras(aKonField, bKonField);
+                final Object extras = getMergedExtras(aKonField, bKonField, cutoff);
                 c.add(new KonField(female, male, extras));
             }
             list.add(new KonDataRow(a.getName(), c));
@@ -76,19 +76,32 @@ public final class ResponseUtil {
         return list;
     }
 
-    private static Object getMergedExtras(KonField aKonField, KonField bKonField) {
+    private static Object getMergedExtras(KonField aKonField, KonField bKonField, int cutoff) {
         Object aExtras = aKonField.getExtras();
         Object bExtras = bKonField.getExtras();
         if (aExtras instanceof AndelExtras && bExtras instanceof AndelExtras) {
             AndelExtras aAndelExtra = (AndelExtras) aExtras;
             AndelExtras bAndelExtra = (AndelExtras) bExtras;
-            return new AndelExtras(aAndelExtra.getPart() + bAndelExtra.getPart(), aAndelExtra.getWhole() + bAndelExtra.getWhole());
+
+            final int femaleKomplA = filterCutoff(aAndelExtra.getFemaleKompl(), cutoff);
+            final int femaleKompl = femaleKomplA + bAndelExtra.getFemaleKompl();
+            final int femaleIntyg = (isApplyCutoff(femaleKomplA, cutoff) ? 0 : aAndelExtra.getFemaleIntyg()) + bAndelExtra.getFemaleIntyg();
+
+            final int maleKomplA = filterCutoff(aAndelExtra.getMaleKompl(), cutoff);
+            final int maleKompl = maleKomplA + bAndelExtra.getMaleKompl();
+            final int maleIntyg = (isApplyCutoff(maleKomplA, cutoff) ? 0 : aAndelExtra.getMaleIntyg()) + bAndelExtra.getMaleIntyg();
+
+            return new AndelExtras(femaleIntyg, femaleKompl, maleIntyg, maleKompl);
         }
         return null;
     }
 
     static int filterCutoff(int actual, int cutoff) {
-        return actual < cutoff ? 0 : actual;
+        return isApplyCutoff(actual, cutoff) ? 0 : actual;
+    }
+
+    private static boolean isApplyCutoff(int actual, int cutoff) {
+        return actual < cutoff;
     }
 
 }

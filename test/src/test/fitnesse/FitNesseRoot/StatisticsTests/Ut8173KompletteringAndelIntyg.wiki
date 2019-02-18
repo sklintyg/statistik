@@ -1,0 +1,75 @@
+---
+Test
+---
+Testar att sammanslagning på nationell- och landstings- nivå inte gör att andelen kompletteringar blir mer än 100%
+
+!3 Givet att:
+|script|dagens datum|2019-02-15|
+
+|script|troskel varde|2|
+
+|Enbart foljande intyg finns|
+|intygid|personnr     |signeringstid      |enhet |intygformat|
+|1000   |19790219-9290|2018-11-10T12:24:15|enhet1|LISJP      |
+|1001   |19790219-9291|2018-11-10T12:24:15|enhet1|LISJP      |
+|1002   |19790219-9292|2018-11-10T12:24:15|enhet1|LISJP      |
+|1003   |19790219-9293|2018-11-10T12:24:15|enhet3|LISJP      |
+|1004   |19790219-9294|2018-11-10T12:24:15|enhet3|LISJP      |
+
+|Intyg skickat till mottagare|
+|intygid|mottagare|
+|1000   |FKASSA   |
+|1001   |FKASSA   |
+|1002   |FKASSA   |
+|1003   |FKASSA   |
+|1004   |FKASSA   |
+
+|Foljande meddelanden finns|
+|personnr     |skickat            |intygsid|ämne  |
+|19790219-9290|2018-11-12T10:00:00|1000    |KOMPLT|
+|19790219-9291|2018-11-12T10:00:00|1001    |KOMPLT|
+|19790219-9292|2018-11-12T10:00:00|1002    |KOMPLT|
+|19790219-9293|2018-11-12T10:00:00|1003    |KOMPLT|
+|19790219-9294|2018-11-12T10:00:00|1004    |KOMPLT|
+
+
+!3 Då gäller:
+
+Nationell:
+
+|Andel i rapporten komplettering andel intyg|
+|år  |månad|grupp                             |grupp totalt?|män?|kvinnor?|
+|2018|nov  |FK 7804 Läkarintyg för sjukpenning|100%         |100%  |0%    |
+
+|Andel i rapporten komplettering andel intyg diagram|
+|år  |månad|grupp                                   |män?|kvinnor?|
+|2018|nov  |FK 7804 Läkarintyg för sjukpenning      |100   |0     |
+
+Inloggad:
+
+|Andel i rapporten komplettering andel intyg|
+|inloggad som|år  |månad|grupp                             |grupp totalt?|män?|kvinnor?|
+|user1       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|100%         |100%  |0%    |
+|user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|100%         |100%  |0%    |
+
+|Andel i rapporten komplettering andel intyg diagram|
+|inloggad som|år  |månad|grupp                             |män?|kvinnor?|
+|user1       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|100   |0     |
+|user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|100   |0     |
+
+
+Landsting:
+
+|script|Rensa uppladdade landstingsfiler|
+
+|Uppladdade landstingsfiler|
+|användare|filnamn       |statusmeddelande?|
+|user3    |vg3lista1.xlsx|Data updated ok  |
+
+|Andel i rapporten komplettering andel intyg landsting|
+|inloggad som|år  |månad|grupp                             |grupp totalt?|män?|kvinnor?|
+|user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|100%         |100%  |0%    |
+
+|Andel i rapporten komplettering andel intyg landsting diagram|
+|inloggad som|år  |månad|grupp                             |män?|kvinnor?|
+|user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|100   |0     |
