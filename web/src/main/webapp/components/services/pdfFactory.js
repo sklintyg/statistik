@@ -467,7 +467,9 @@ angular.module('StatisticsApp')
 
                 var topLevelHeaders = _.tail(headers[0]); //Take all headers but the first, the first is handled separately
 
-                var firstColumnWidth = calcWidth(_.max(rows, function(row) { return calcWidth(row.name); }).name);
+                var font = '12px arial bold';
+                var firstColumnWidths = _.map(rows, function(row) { return calcWidth(row.name); });
+                var firstColumnWidth = _.max(firstColumnWidths);
                 var remainingWidth = 0;
                 var printTable;
 
@@ -476,7 +478,16 @@ angular.module('StatisticsApp')
                         return;
                     }
 
-                    var columnWidth = calcWidth(header.text);
+                    var columnWidth = calcWidth(header.text, font) + 4;
+                    var columnWidthSub = 0;
+                    var subColumn = currentDataColumn;
+                    _.each(_.range(header.colspan), function() {
+                        columnWidthSub += calcWidth(headers[1][subColumn].text, font) + 4;
+                        subColumn++;
+                    });
+
+                    columnWidth = Math.max(columnWidth, columnWidthSub);
+
                     if (remainingWidth > columnWidth) {
                         remainingWidth -= columnWidth;
                     } else {
