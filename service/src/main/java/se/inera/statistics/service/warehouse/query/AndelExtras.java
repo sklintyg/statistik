@@ -20,20 +20,45 @@ package se.inera.statistics.service.warehouse.query;
 
 public class AndelExtras {
 
-    private int part;
-    private int whole;
+    private int femaleIntyg;
+    private int femaleKompl;
+    private int maleIntyg;
+    private int maleKompl;
 
-    public AndelExtras(int part, int whole) {
-        this.part = part;
-        this.whole = whole;
+    public AndelExtras(int femaleIntyg, int femaleKompl, int maleIntyg, int maleKompl) {
+        this.femaleIntyg = femaleIntyg;
+        this.femaleKompl = femaleKompl;
+        this.maleIntyg = maleIntyg;
+        this.maleKompl = maleKompl;
     }
 
     public int getPart() {
-        return part;
+        return femaleKompl + maleKompl;
     }
 
     public int getWhole() {
-        return whole;
+        return femaleIntyg + maleIntyg;
+    }
+
+    public int getFemaleIntyg() {
+        return femaleIntyg;
+    }
+
+    public int getFemaleKompl() {
+        return femaleKompl;
+    }
+
+    public int getMaleIntyg() {
+        return maleIntyg;
+    }
+
+    public int getMaleKompl() {
+        return maleKompl;
+    }
+
+    public static AndelExtras combined(AndelExtras a, AndelExtras b) {
+        return new AndelExtras(a.getFemaleIntyg() + b.getFemaleIntyg(), a.getFemaleKompl() + b.getFemaleKompl(),
+                a.getMaleIntyg() + b.getMaleIntyg(), a.getMaleKompl() + b.getMaleKompl());
     }
 
 }
