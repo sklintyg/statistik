@@ -247,9 +247,8 @@ public class MessagesQuery {
             if (intygType.isIncludedInKompletteringReport()) {
                 int f = femaleIntyg[j] == 0 ? 0 : percentConvertion * femaleKompl[j] / femaleIntyg[j];
                 int m = maleIntyg[j] == 0 ? 0 : percentConvertion * maleKompl[j] / maleIntyg[j];
-                final int part = femaleKompl[j] + maleKompl[j];
-                final int whole = femaleIntyg[j] + maleIntyg[j];
-                result.add(new SimpleKonDataRow(intygType.name(), f, m, new AndelExtras(part, whole)));
+                final AndelExtras extras = new AndelExtras(femaleIntyg[j], femaleKompl[j], maleIntyg[j], maleKompl[j]);
+                result.add(new SimpleKonDataRow(intygType.name(), f, m, extras));
             }
         }
 
@@ -310,9 +309,7 @@ public class MessagesQuery {
                     final int maleIntygJ = includeMale ? maleIntyg[j] : 0;
                     int m = maleIntygJ == 0 ? 0 : percentConvertion * maleKomplJ / maleIntygJ;
 
-                    final int part = femaleKomplJ + maleKomplJ;
-                    final int whole = femaleIntygJ + maleIntygJ;
-                    data.add(new KonField(f, m, new AndelExtras(part, whole)));
+                    data.add(new KonField(f, m, new AndelExtras(femaleIntygJ, femaleKomplJ, maleIntygJ, maleKomplJ)));
                 }
             }
             result.add(new KonDataRow(displayDate, data));

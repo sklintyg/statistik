@@ -21,7 +21,6 @@ package se.inera.statistics.web.service.responseconverter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
-import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 import se.inera.statistics.service.report.model.KonDataResponse;
@@ -52,8 +51,24 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
             indexOfEmptyInternalGroup = getIndexOfGroupToRemove(groups, rows);
         }
         final KonDataResponse konDataResponse = new KonDataResponse(data.getAvailableFilters(),
-                convertGroupNamesToText(groups), rows);
+                convertGroupNamesToText(groups), updateGenderFields(rows));
         return super.convert(konDataResponse, filterSettings, null, "%1$s");
+    }
+
+    private List<KonDataRow> updateGenderFields(List<KonDataRow> rows) {
+        return rows.stream().map(konDataRow -> {
+            final int percentageConvertion = 100;
+            return new KonDataRow(konDataRow.getName(), konDataRow.getData().stream().map(konField -> {
+                final Object extrasObj = konField.getExtras();
+                if (!(extrasObj instanceof AndelExtras)) {
+                    throw new RuntimeException("Wrong extras type, expected AndelExtras but got " + extrasObj.toString());
+                }
+                final AndelExtras extras = (AndelExtras) extrasObj;
+                final int f = extras.getFemaleIntyg() == 0 ? 0 : percentageConvertion * extras.getFemaleKompl() / extras.getFemaleIntyg();
+                final int m = extras.getMaleIntyg() == 0 ? 0 : percentageConvertion * extras.getMaleKompl() / extras.getMaleIntyg();
+                return new KonField(f, m, extras);
+            }).collect(Collectors.toList()));
+        }).collect(Collectors.toList());
     }
 
     private List<String> convertGroupNamesToText(List<IntygType> groups) {
@@ -76,7 +91,11 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
         int count = 0;
         for (KonDataRow row : rows) {
             final KonField konField = row.getData().get(index);
-            count += konField.getFemale() + konField.getMale();
+            final Object extrasObj = konField.getExtras();
+            if (extrasObj instanceof AndelExtras) {
+                final AndelExtras extras = (AndelExtras) extrasObj;
+                count += extras.getWhole();
+            }
         }
         return count;
     }
@@ -90,17 +109,15 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
 
     @Override
     protected Object getRowSum(KonDataRow row) {
-        final AndelExtras emptyAndelExtras = new AndelExtras(0, 0);
-        final BinaryOperator<AndelExtras> andelExtrasCombiner = (andelExtras, andelExtras2) ->
-            new AndelExtras(andelExtras.getPart() + andelExtras2.getPart(), andelExtras.getWhole() + andelExtras2.getWhole());
+        final AndelExtras emptyAndelExtras = new AndelExtras(0, 0, 0, 0);
 
         final BiFunction<AndelExtras, KonField, AndelExtras> andelExtraExtractor = (andelExtras, konField) -> {
             if (konField.getExtras() instanceof AndelExtras) {
-                return andelExtrasCombiner.apply(andelExtras, (AndelExtras) konField.getExtras());
+                return AndelExtras.combined(andelExtras, (AndelExtras) konField.getExtras());
             }
             return andelExtras;
         };
-        final AndelExtras total = row.getData().stream().reduce(emptyAndelExtras, andelExtraExtractor, andelExtrasCombiner);
+        final AndelExtras total = row.getData().stream().reduce(emptyAndelExtras, andelExtraExtractor, AndelExtras::combined);
         final int tot = total.getWhole() == 0 ? 0 : PERCENTAGE_CONVERT * total.getPart() / total.getWhole();
         return tot + "%";
     }
@@ -110,7 +127,7 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
         List<Object> data = new ArrayList<>();
         for (KonField konField : row.getData()) {
             final AndelExtras tot = konField.getExtras() instanceof AndelExtras
-                    ? (AndelExtras) konField.getExtras() : new AndelExtras(0, 0);
+                    ? (AndelExtras) konField.getExtras() : new AndelExtras(0, 0, 0, 0);
             final int total = tot.getWhole() == 0 ? 0 : PERCENTAGE_CONVERT * tot.getPart() / tot.getWhole();
             data.add(total + "%");
             data.add(konField.getFemale() + "%");
