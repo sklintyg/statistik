@@ -22,7 +22,7 @@ angular.module('StatisticsApp')
     .factory('pdfFactory',
         /** @ngInject */
         function($window, $timeout, thousandseparatedFilter, $location, _, MAX_ROWS_TABLE_PDF, messageService, $rootScope,
-            ControllerCommons, sortableTableViewState, filterViewState) {
+            ControllerCommons, sortableTableViewState, filterViewState, chartFactory) {
 
             'use strict';
 
@@ -284,8 +284,16 @@ angular.module('StatisticsApp')
             }
 
             function _addLegends(content, charts) {
-                _.each(charts[0].series, function(serie) {
-                    content.push({text: [{text: '\u25A0 ', color: serie.color}, serie.name]});
+                _.each(charts[0].series, function(serie, index) {
+
+                    if (chartFactory.showInLegend(charts[0].series, index)) {
+                        content.push({
+                            text: [
+                                {text: '\u25A0 ', color: serie.color},
+                                serie.name
+                            ]
+                        });
+                    }
                 });
             }
 
