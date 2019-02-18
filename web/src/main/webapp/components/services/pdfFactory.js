@@ -231,6 +231,9 @@ angular.module('StatisticsApp')
                         fontSize: 20,
                         color: 'white',
                         bold: true
+                    },
+                    legendInactive: {
+                        color: 'lightgray'
                     }
                 };
             }
@@ -287,11 +290,20 @@ angular.module('StatisticsApp')
                 _.each(charts[0].series, function(serie, index) {
 
                     if (chartFactory.showInLegend(charts[0].series, index)) {
+
+                        var color = serie.color;
+                        var style = '';
+
+                        if (!serie.visible) {
+                            color = 'lightgray';
+                            style = 'legendInactive';
+                        }
                         content.push({
                             text: [
-                                {text: '\u25A0 ', color: serie.color},
+                                {text: '\u25A0 ', color: color},
                                 serie.name
-                            ]
+                            ],
+                            style: style
                         });
                     }
                 });
