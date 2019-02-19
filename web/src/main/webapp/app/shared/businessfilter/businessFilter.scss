@@ -44,6 +44,12 @@ business-filter, landsting-filter {
     .input-wrapper div {
       display: inline-block;
     }
+
+    .datepicker {
+      input {
+        white-space: nowrap;
+      }
+    }
   }
 
   .bottom-buttons {
