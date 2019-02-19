@@ -82,7 +82,7 @@ public class DiagnosgruppQueryTest {
     private WidelineLoader widelineLoader;
 
     @Spy
-    private Cache cache = new Cache(new NoOpRedisTemplate(), "1");
+    private Cache cache = new Cache(new NoOpRedisTemplate());
 
     private int intyg;
     private int patient;

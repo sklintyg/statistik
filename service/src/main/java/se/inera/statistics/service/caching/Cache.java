@@ -31,7 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -68,9 +67,6 @@ public class Cache {
     private static final String JOB_NAME = "Cache.clearCaches";
 
 
-    @Value("${cache.maxsize:1000}")
-    private String maxSize;
-
     @Autowired
     @Qualifier("rediscache")
     private RedisTemplate<Object, Object> template;
@@ -84,9 +80,8 @@ public class Cache {
     /**
      * Used by tests.
      */
-    public Cache(RedisTemplate<Object, Object> template, String maxSize) {
+    public Cache(RedisTemplate<Object, Object> template) {
         this.template = template;
-        this.maxSize = maxSize;
     }
 
     @Scheduled(cron = "${scheduler.factReloadJob.cron}")

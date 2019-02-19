@@ -52,7 +52,7 @@ public class SjukfallUtilTest {
     private SjukfallUtil sjukfallUtil;
 
     @Spy
-    private Cache cache = new Cache(new NoOpRedisTemplate(), "1");
+    private Cache cache = new Cache(new NoOpRedisTemplate());
 
     private int id = 1;
 

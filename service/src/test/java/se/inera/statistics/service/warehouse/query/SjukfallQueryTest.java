@@ -98,7 +98,7 @@ public class SjukfallQueryTest {
 
     private BiMap<HsaIdLakare, Integer> lakarIdMap = HashBiMap.create();
 
-    private Cache cache = new Cache(new NoOpRedisTemplate(), "1");
+    private Cache cache = new Cache(new NoOpRedisTemplate());
     private SjukfallUtil sjukfallUtil = new SjukfallUtil();
 
     private FilterPredicates enhetFilter = SjukfallUtilTest.createEnhetFilterFromInternalIntValues(ENHET1_ID);
