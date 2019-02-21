@@ -281,7 +281,7 @@ Försöker man komma åt en verksamhet som man saknar behörighet till, så retu
 Det finns inbyggt stöd för json i PostgreSQL 9.3 och senare, och det har vi använt när vi behövt göra adhoc-analyser. D v s, för att analysera innehåll i json-objekt lagrade i en tabell så har vi exporterat tabellen till PostgreSQL. Det finns ett exempelskript incheckat under tools/dbscripts/postgresql .
 
 ## Testa SAML / Sambi lokalt
-Om man vill testa av så applikationen startar korrekt med spring-saml profil kan man göra enligt följande:
+Om man vill testa av så applikationen startar korrekt med security-saml/security-both profil kan man göra enligt följande:
 
 - Ändra i web/build.gradle. Kommentera bort blocket jvmArgs och ersätt med följande:
 
