@@ -1,0 +1,38 @@
+---
+Test
+---
+!3 Givet att:
+| script | dagens datum | 2018-08-23 |
+
+| script | troskel varde | 1 |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod | start | slut | enhet | kommentar |
+| 19790717-9191 | C50 | 2016-12-30 | 2017-01-05 | enhet1 | Startar före period. Tas med i under 8 dgr|
+| 19790717-9192 | C50 | 2016-12-25 | 2016-12-30 | enhet1 | Se nästa rad |
+| 19790717-9192 | C50 | 2017-01-02 | 2017-01-05 | enhet1 | Två intyg där det första slutar före period. Tas med i 8-14 dgr|
+| 19790717-9193 | C50 | 2016-10-01 | 2018-01-05 | enhet1 | Innesluter hela perioden. Slutar efter period. Tas EJ med|
+| 19790717-9194 | C50 | 2017-10-01 | 2018-01-05 | enhet1 | Ett intyg. Slutar efter period. Tas EJ med|
+| 19790717-9195 | C50 | 2017-12-01 | 2017-12-30 | enhet1 | Se nästa rad|
+| 19790717-9195 | C50 | 2018-01-02 | 2018-01-03 | enhet1 | Två intyg varav ett efter period. Tas EJ med|
+| 19790717-9196 | C50 | 2017-12-01 | 2017-12-30 | enhet1 | Se nästa rad|
+| 19790717-9196 | C50 | 2017-12-31 | 2018-01-03 | enhet1 | Två intyg varav ett slutar efter period. Tas EJ med|
+| 19790717-9197 | C50 | 2017-06-01 | 2017-06-20 | enhet1 | Ett intyg i period. Tas med i 15-30 dgr|
+| 19790717-9198 | C50 | 2017-06-01 | 2017-06-20 | enhet1 | Se nästa rad|
+| 19790717-9198 | C50 | 2017-06-22 | 2017-07-10 | enhet1 | Två intyg i period. Tas med i 31-60 dgr|
+| 19790717-9199 | C50 | 2016-06-22 | 2016-12-31 | enhet1 | Slutar före period. Tas EJ med|
+| 19790717-9200 | C50 | 2016-10-15 | 2017-01-01 | enhet1 | Slutar på periodens första dag. Tas med i 61-90 dgr|
+| 19790717-9201 | C50 | 2017-09-01 | 2017-12-31 | enhet1 | Slutar på periodens sista dag. Tas med i 91-180 dgr|
+
+!3 Då gäller:
+
+| Sjukfall i specialrapporten sjukfall per sjukskrivningslangd |
+| sjukskrivningslängd | antal? |
+| Under 8 dagar | 1 |
+| 8-14 dagar | 1 |
+| 15-30 dagar | 1 |
+| 31-60 dagar | 1 |
+| 61-90 dagar | 1 |
+| 91-180 dagar | 1 |
+| 181-365 dagar | 0 |
+| Över 365 dagar | 0 |

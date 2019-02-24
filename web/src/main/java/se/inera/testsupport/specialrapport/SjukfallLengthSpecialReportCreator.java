@@ -27,6 +27,7 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.Sjukfall;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
+import se.inera.statistics.service.warehouse.WidelineConverter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -63,21 +64,27 @@ public class SjukfallLengthSpecialReportCreator {
             Aisle aisle = it.next();
             final LocalDate fromDate = LocalDate.of(year, 1, 1);
             final LocalDate toDate = LocalDate.of(year, 12, 31);
+            final int endDay = WidelineConverter.toDay(toDate);
             final FilterPredicates filter = new FilterPredicates(f -> true, s -> true, "SpecialLength", true);
 
             final Range range = new Range(fromDate, toDate);
+
+            //Must include one extra month to get any sjukfall that is continued after the
+            // period but has no active intyg when the period ends.
             final Iterable<SjukfallGroup> sjukfallGroups = sjukfallUtil.sjukfallGrupper(range.getFrom(), 1,
-                    range.getNumberOfMonths(), aisle, filter);
+                    range.getNumberOfMonths() + 1, aisle, filter);
 
             for (SjukfallGroup sjukfallGroup : sjukfallGroups) {
                 final Collection<Sjukfall> sjukfalls = sjukfallGroup.getSjukfall();
                     for (Sjukfall sjukfall : sjukfalls) {
-                        final int realDays = sjukfall.getRealDays();
-                        final List<Integer> kats = sjukfall.getAllIcd10OfTypes(Collections.singletonList(Icd10RangeType.KATEGORI));
-                        final SjukfallsLangdGroupSpecial lengthGroup = getByLength(realDays);
+                        if (sjukfall.getEnd() <= endDay) {
+                            final int realDays = sjukfall.getRealDays();
+                            final List<Integer> kats = sjukfall.getAllIcd10OfTypes(Collections.singletonList(Icd10RangeType.KATEGORI));
+                            final SjukfallsLangdGroupSpecial lengthGroup = getByLength(realDays);
 
-                        final SjukfallLengthSpecialComputeRow sosRow = new SjukfallLengthSpecialComputeRow(kats, lengthGroup);
-                        rows.add(sosRow);
+                            final SjukfallLengthSpecialComputeRow sosRow = new SjukfallLengthSpecialComputeRow(kats, lengthGroup);
+                            rows.add(sosRow);
+                        }
                     }
             }
         }
