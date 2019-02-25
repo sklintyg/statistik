@@ -7,7 +7,7 @@ plugins {
 
 ext {
     infraVersion = System.properties['infraVersion'] ?: '3.10.0.+'
-    refDataVersion = System.properties['refDataVersion'] ?: '1.0.0.+'
+    refDataVersion = System.properties['refDataVersion'] ?: '1.0-SNAPSHOT'
 
     intygSchematronVersion = "1.0.37"
     certificateSchemaVersion = "3.2.0-RC3"
@@ -67,6 +67,7 @@ ext {
 allprojects {
     repositories {
         mavenLocal()
+        maven { url "https://build-inera.nordicmedtest.se/nexus/repository/snapshots/" }
         maven { url "https://build-inera.nordicmedtest.se/nexus/repository/releases/" }
         mavenCentral()
     }
