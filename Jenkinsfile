@@ -1,7 +1,7 @@
 #!groovy
 
 def buildVersion = "7.3.0.${BUILD_NUMBER}"
-def infraVersion = "3.9.0.+"
+def infraVersion = "3.10.0.+"
 def refDataVersion = "1.0-SNAPSHOT"
 
 stage('checkout') {
@@ -90,6 +90,7 @@ stage('propagate') {
         build job: "statistik-sandbox-build", wait: false, parameters: [
             [$class: 'StringParameterValue', name: 'STATISTIK_BUILD_VERSION', value: buildVersion],
             [$class: 'StringParameterValue', name: 'INFRA_VERSION', value: infraVersion],
+            [$class: 'StringParameterValue', name: 'REF_DATA_VERSION', value: refDataVersion],
             [$class: 'StringParameterValue', name: 'GIT_REF', value: gitRef],
             [$class: 'StringParameterValue', name: 'RELEASE_FLAG', value: releaseFlag]
         ]
