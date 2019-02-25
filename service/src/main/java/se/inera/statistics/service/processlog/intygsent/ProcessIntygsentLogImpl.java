@@ -18,18 +18,16 @@
  */
 package se.inera.statistics.service.processlog.intygsent;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.List;
+import javax.persistence.TypedQuery;
+
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import se.inera.statistics.service.processlog.AbstractProcessLog;
 
-import javax.persistence.TypedQuery;
-import java.util.List;
+import se.inera.statistics.service.processlog.AbstractProcessLog;
 
 @Component
 public class ProcessIntygsentLogImpl extends AbstractProcessLog implements ProcessIntygsentLog {
-    private static final Logger LOG = LoggerFactory.getLogger(ProcessIntygsentLogImpl.class);
 
     public ProcessIntygsentLogImpl() {
         super("PROCESSED_INTYGSENT");

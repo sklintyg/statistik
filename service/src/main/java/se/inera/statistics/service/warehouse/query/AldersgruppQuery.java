@@ -21,8 +21,6 @@ package se.inera.statistics.service.warehouse.query;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -60,22 +58,6 @@ public final class AldersgruppQuery {
             String color = counter.getKey().getColor();
             result.add(new OverviewChartRowExtended(counter.getKey().getName(), current, current - previous, color));
         }
-        return result;
-    }
-
-    private static Collection<Ranges.Range> rowsToKeep(Map<Ranges.Range, Counter<Ranges.Range>> count, int noOfRows) {
-        List<Counter<Ranges.Range>> sorted = new ArrayList<>();
-        sorted.addAll(count.values());
-        Collections.sort(sorted, Counter.byTotalCount());
-
-        Collection<Ranges.Range> result = new HashSet<>();
-        for (Counter<Ranges.Range> counter : sorted) {
-            result.add(counter.getKey());
-            if (result.size() == noOfRows) {
-                break;
-            }
-        }
-
         return result;
     }
 

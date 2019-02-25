@@ -18,18 +18,15 @@
  */
 package se.inera.statistics.service.warehouse.sjukfallcalc.extend;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import se.inera.statistics.service.warehouse.Fact;
-import se.inera.statistics.service.warehouse.SjukfallExtended;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import se.inera.statistics.service.warehouse.Fact;
+import se.inera.statistics.service.warehouse.SjukfallExtended;
+
 public class SjukfallMerger {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SjukfallMerger.class);
     private ExtendedSjukfallCalculator extendedSjukfallCalculator;
 
     public SjukfallMerger(List<Fact> aisle) {

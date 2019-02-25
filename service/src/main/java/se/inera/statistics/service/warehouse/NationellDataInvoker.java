@@ -55,7 +55,6 @@ public class NationellDataInvoker {
     private static final int DEFAULT_CUTOFF = 5;
     private static final int YEAR = 12;
     private static final int EIGHTEEN_MONTHS = 18;
-    private static final int KVARTAL = 3;
 
     @Autowired
     private Warehouse warehouse;
@@ -99,7 +98,7 @@ public class NationellDataInvoker {
     }
 
     public NationellDataInfo getAll() {
-        final NationellData nationellData = new NationellData(messagesQuery, lans, query, sjukfallUtil, cutoff);
+        final NationellData nationellData = new NationellData(lans, query, sjukfallUtil, cutoff);
         final NationellDataInfo result = new NationellDataInfo(); //Will contain the final results
         final NationellDataHolder data = new NationellDataHolder(); //Hold data between calculations per vg
 

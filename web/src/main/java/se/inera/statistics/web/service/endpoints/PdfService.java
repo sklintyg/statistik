@@ -18,11 +18,9 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.DatatypeConverter;
@@ -46,7 +44,7 @@ public class PdfService {
     @POST
     @Path("create")
     @PrometheusTimeMethod(help = "API-tjänst för att skapa ett PDF dokument")
-    public Response pdf(@Context HttpServletRequest request, @FormParam("pdf") String pdf, @FormParam("name") String name,
+    public Response pdf(@FormParam("pdf") String pdf, @FormParam("name") String name,
             @FormParam("url") String url) {
 
         byte[] array = DatatypeConverter.parseBase64Binary(pdf);
@@ -62,7 +60,7 @@ public class PdfService {
                 .header("Content-Disposition", "attachment; filename=" + cleanName);
 
         LogData logData = new LogData("Printing pdf", url);
-        loggingService.frontendLogging(request, logData);
+        loggingService.frontendLogging(logData);
 
         return response.build();
     }

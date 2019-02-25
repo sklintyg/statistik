@@ -18,12 +18,10 @@
  */
 package se.inera.statistics.web.service.endpoints;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -53,13 +51,13 @@ public class LoggingService {
     @Consumes({ MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_JSON })
     @PrometheusTimeMethod(help = "API-tjänst för att logga från frontend app")
-    public Response frontendLogging(@Context HttpServletRequest request, LogData logData) {
-        String user = loginServiceUtil.isLoggedIn() ? getHsaIdForLoggedInUser(request).getId() : "Anonymous";
+    public Response frontendLogging(LogData logData) {
+        String user = loginServiceUtil.isLoggedIn() ? getHsaIdForLoggedInUser().getId() : "Anonymous";
         LOG.info(user + " : " + logData.getMessage() + " [" + logData.getUrl() + "]");
         return Response.ok().build();
     }
 
-    private HsaIdUser getHsaIdForLoggedInUser(@Context HttpServletRequest request) {
+    private HsaIdUser getHsaIdForLoggedInUser() {
         return loginServiceUtil.getLoginInfo().getHsaId();
     }
 

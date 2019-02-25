@@ -47,7 +47,6 @@ import se.inera.statistics.service.report.util.ReportUtil;
 import se.inera.statistics.service.warehouse.query.AldersgruppQuery;
 import se.inera.statistics.service.warehouse.query.Counter;
 import se.inera.statistics.service.warehouse.query.DiagnosgruppQuery;
-import se.inera.statistics.service.warehouse.query.MessagesQuery;
 import se.inera.statistics.service.warehouse.query.SjukfallQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningsgradQuery;
 import se.inera.statistics.service.warehouse.query.SjukskrivningslangdQuery;
@@ -61,8 +60,6 @@ import static se.inera.statistics.service.warehouse.ResponseUtil.filterCutoff;
 class NationellData {
     private static final Logger LOG = LoggerFactory.getLogger(NationellData.class);
 
-    private MessagesQuery messagesQuery;
-
     private Lan lans;
 
     private DiagnosgruppQuery query;
@@ -71,16 +68,11 @@ class NationellData {
 
     private int cutoff;
 
-    NationellData(MessagesQuery messagesQuery, Lan lans, DiagnosgruppQuery query, SjukfallUtil sjukfallUtil, int cutoff) {
-        this.messagesQuery = messagesQuery;
+    NationellData(Lan lans, DiagnosgruppQuery query, SjukfallUtil sjukfallUtil, int cutoff) {
         this.query = query;
         this.lans = lans;
         this.sjukfallUtil = sjukfallUtil;
         this.cutoff = cutoff;
-    }
-
-    private SimpleKonResponse getMeddelandenPerMonth(Range range) {
-        return messagesQuery.getAntalMeddelanden(range.getFrom(), range.getNumberOfMonths());
     }
 
     SimpleKonDataRow getAntalIntygOverviewResult(Aisle aisle, Range range, SimpleKonDataRow antalIntygResult) {

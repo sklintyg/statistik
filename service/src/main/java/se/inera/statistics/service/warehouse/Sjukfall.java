@@ -18,10 +18,6 @@
  */
 package se.inera.statistics.service.warehouse;
 
-import se.inera.statistics.hsa.model.HsaIdEnhet;
-import se.inera.statistics.service.report.model.Kon;
-import se.inera.statistics.service.report.util.Icd10RangeType;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +25,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
+
+import se.inera.statistics.hsa.model.HsaIdEnhet;
+import se.inera.statistics.service.report.model.Kon;
+import se.inera.statistics.service.report.util.Icd10RangeType;
 
 // CHECKSTYLE:OFF FinalClass
 public class Sjukfall implements Serializable {
@@ -72,16 +72,6 @@ public class Sjukfall implements Serializable {
         sjukfall.lastEnhet = extendedSjukfall.getLastEnhet();
         sjukfall.firstIntygId = extendedSjukfall.getFirstIntygId();
         return sjukfall;
-    }
-
-    private static int[] toArray(Set<Integer> integers) {
-        final int[] ints = new int[integers.size()];
-        final ArrayList<Integer> integersList = new ArrayList<>(integers);
-        for (int i = 0; i < integersList.size(); i++) {
-            int nextInt = integersList.get(i);
-            ints[i] = nextInt;
-        }
-        return ints;
     }
 
     public Kon getKon() {

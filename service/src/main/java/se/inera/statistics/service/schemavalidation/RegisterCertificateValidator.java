@@ -66,8 +66,4 @@ public abstract class RegisterCertificateValidator implements SchematronValidato
         }
     }
 
-    private Source stringToSource(String xmlData) {
-        return new StreamSource(new StringReader(xmlData));
-    }
-
 }

@@ -31,10 +31,10 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.common.base.Strings;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdLakare;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
@@ -128,7 +128,7 @@ public class MessagesQuery {
 
     public SimpleKonResponse getAndelKompletteringarTvarsnitt(MessagesFilter filter) {
         List<CountDTOAmne> rows = messageWidelineLoader.getKompletteringarPerIntyg(filter);
-        return convertToAndelKompletteringarTvarsnitt(rows, filter.getFrom(), filter.getNumberOfMonths());
+        return convertToAndelKompletteringarTvarsnitt(rows);
     }
 
     public KonDataResponse getMessagesPerAmnePerEnhet(MessagesFilter filter, Map<HsaIdEnhet, String> idToNameMap) {
@@ -149,13 +149,6 @@ public class MessagesQuery {
     public KonDataResponse getMessagesTvarsnittPerAmnePerLakare(MessagesFilter filter) {
         List<CountDTOAmne> rows = messageWidelineLoader.getAntalMeddelandenPerAmne(filter);
         return convertToSimpleResponseTvarsnittPerAmnePerLakare(rows);
-    }
-
-    public SimpleKonResponse getAntalMeddelanden(LocalDate start, int perioder) {
-        LocalDate to = start.plusMonths(perioder);
-        List<MessageWidelineLoader.CountDTO> rows = messageWidelineLoader.getAntalMeddelandenPerMonth(start, to);
-
-        return convertToSimpleResponse(rows, start, perioder);
     }
 
     private KonDataResponse convertToMessagesPerAmne(List<CountDTOAmne> rows, LocalDate start, int perioder) {
@@ -203,7 +196,7 @@ public class MessagesQuery {
         return new KonDataResponse(AvailableFilters.getForMeddelanden(), groups, result);
     }
 
-    private SimpleKonResponse convertToAndelKompletteringarTvarsnitt(List<CountDTOAmne> rows, LocalDate from, int numberOfMonths) {
+    private SimpleKonResponse convertToAndelKompletteringarTvarsnitt(List<CountDTOAmne> rows) {
         Map<String, List<CountDTOAmne>> map;
         if (rows != null) {
             map = rows.stream().collect(Collectors.groupingBy(CountDTOAmne::getIntygTyp));

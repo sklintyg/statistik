@@ -144,10 +144,6 @@ public class WarehouseService {
     }
 
     public KonDataResponse getMessagesPerAmneLandsting(final FilterSettings filterSettings) {
-        return getMeddelandenPerAmneLandsting(filterSettings, CutoffUsage.APPLY_CUTOFF_ON_TOTAL);
-    }
-
-    private KonDataResponse getMeddelandenPerAmneLandsting(final FilterSettings filterSettings, final CutoffUsage cutoffUsage) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
@@ -169,10 +165,6 @@ public class WarehouseService {
     }
 
     public KonDataResponse getAndelKompletteringarLandsting(FilterSettings filterSettings) {
-        return getAndelKompletteringarLandsting(filterSettings, CutoffUsage.APPLY_CUTOFF_ON_TOTAL);
-    }
-
-    private KonDataResponse getAndelKompletteringarLandsting(final FilterSettings filterSettings, final CutoffUsage cutoffUsage) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {
@@ -209,10 +201,6 @@ public class WarehouseService {
     }
 
     public KonDataResponse getMessagesPerAmnePerEnhetLandsting(FilterSettings filterSettings) {
-        return getMeddelandenPerAmneOchEnhetLandsting(filterSettings, CutoffUsage.APPLY_CUTOFF_ON_TOTAL);
-    }
-
-    private KonDataResponse getMeddelandenPerAmneOchEnhetLandsting(final FilterSettings filterSettings, final CutoffUsage cutoffUsage) {
         Map<HsaIdVardgivare, Collection<Enhet>> enhetsPerVgid = mapEnhetsToVgids(filterSettings.getFilter().getEnheter());
         final Range range = filterSettings.getRange();
         return enhetsPerVgid.entrySet().stream().reduce(null, (konDataResponse, entry) -> {

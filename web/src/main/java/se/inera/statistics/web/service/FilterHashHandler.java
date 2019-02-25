@@ -79,8 +79,7 @@ public class FilterHashHandler {
     private FilterData parseFilterData(String filterDataString) {
         try {
             ObjectMapper m = new ObjectMapper();
-            JsonNode rootNode = null;
-            rootNode = m.readTree(filterDataString);
+            JsonNode rootNode = m.readTree(filterDataString);
             final ArrayList<String> diagnoser = getJsonArray(rootNode.path("diagnoser"));
             final ArrayList<String> enheter = getJsonArray(rootNode.path("enheter"));
             final ArrayList<String> sjukskrivningslangd = getJsonArray(rootNode.path("sjukskrivningslangd"));

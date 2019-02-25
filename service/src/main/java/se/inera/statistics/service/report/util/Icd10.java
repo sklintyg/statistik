@@ -18,7 +18,6 @@
  */
 package se.inera.statistics.service.report.util;
 
-import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
@@ -37,6 +36,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -125,8 +125,7 @@ public class Icd10 {
     }
 
     @PostConstruct
-    @java.lang.SuppressWarnings("squid:UnusedPrivateMethod") // Suppress Sonar warning. Method is invoked by Spring.
-    private void init() {
+    public void init() {
         try {
             populateIdMap(icd10KapitelAnsiFile, idToKapitelMap, Kapitel::valueOf);
             populateIdMap(icd10AvsnittAnsiFile, idToAvsnittMap, s -> Avsnitt.valueOf(s, idToKapitelMap.values()));

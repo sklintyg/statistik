@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import se.inera.statistics.service.helper.ConversionHelper;
-import se.inera.statistics.service.helper.Matcher;
 import se.inera.statistics.service.helper.Patientdata;
 import se.inera.statistics.service.processlog.Arbetsnedsattning;
 import se.inera.statistics.service.processlog.IntygDTO;
@@ -41,16 +40,6 @@ public final class JsonDocumentHelper {
 
     private static final Logger LOG = LoggerFactory.getLogger(JsonDocumentHelper.class);
 
-    private static final String OBSERVATIONER = "observationer";
-    private static final String EXTENSION = "extension";
-    private static final String PATIENT = "patient";
-    private static final int MAX_SJUKSKRIVNING = 100;
-
-    private static final Matcher DIAGNOS_MATCHER = Matcher.Builder.matcher("observationskategori")
-            .add(Matcher.Builder.matcher("code", "439401001")).add(Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1"));
-    private static final Matcher ARBETSFORMAGA_MATCHER = Matcher.Builder.matcher("observationskod")
-            .add(Matcher.Builder.matcher("code", "302119000")).add(Matcher.Builder.matcher("codeSystem", "1.2.752.116.2.1.1.1"));
-    private static final String DOCUMENT_ID = "1.2.752.129.2.1.2.1";
     public static final String UTANENHETSID = "UTANENHETSID";
     private static final int NEDSATT100 = 100;
     private static final int NEDSATT25 = 25;
@@ -59,7 +48,6 @@ public final class JsonDocumentHelper {
     private static final String GRUND_DATA = "grundData";
     private static final String SKAPAD_AV = "skapadAv";
     private static final String VARDENHET = "vardenhet";
-    private static final String OBSERVATIONSPERIOD = "observationsperiod";
     private static final String NEDSATT_MED_25 = "nedsattMed25";
     private static final String NEDSATT_MED_50 = "nedsattMed50";
     private static final String NEDSATT_MED_75 = "nedsattMed75";
