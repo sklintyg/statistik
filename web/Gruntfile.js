@@ -189,7 +189,6 @@ module.exports = function(grunt) {
                     '<%= config.client %>/index.html',
                     '<%= config.client %>/error.jsp',
                     '<%= config.client %>/version.jsp',
-                    '<%= config.client %>/healthcheck.jsp',
                     'karma.conf.js'
                 ],
                 ignorePath: '<%= config.client %>/',
@@ -466,9 +465,6 @@ module.exports = function(grunt) {
                         '<%= config.client %>/{app,components}/**/*.css'
                     ],
                     '<%= config.client %>/version.jsp': [
-                        '<%= config.client %>/{app,components}/**/*.css'
-                    ],
-                    '<%= config.client %>/healthcheck.jsp': [
                         '<%= config.client %>/{app,components}/**/*.css'
                     ]
                 }
