@@ -504,7 +504,7 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
     }
 
     public static boolean shouldExistInHsa(String hsaId) {
-        return hsaId != null && !hsaId.startsWith("EJHSA") && !"UTANENHETSID".equals(hsaId) && !hsaId.contains("WEBCERT");
+        return hsaId != null && !hsaId.startsWith("EJHSA") && !"UTANENHETSID".equals(hsaId);
     }
 
     private StatisticsHsaUnit createHsaUnit(HSAKey key, boolean isHuvudenhet) {
