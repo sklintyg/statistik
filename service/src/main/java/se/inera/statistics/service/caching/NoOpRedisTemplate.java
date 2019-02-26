@@ -23,13 +23,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.springframework.data.redis.core.Cursor;
-import org.springframework.data.redis.core.HashOperations;
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ScanCursor;
-import org.springframework.data.redis.core.ScanIteration;
-import org.springframework.data.redis.core.ScanOptions;
+import org.springframework.data.redis.core.ValueOperations;
 
 /**
  * Used when caching is not enabled.
@@ -57,86 +55,96 @@ public class NoOpRedisTemplate extends RedisTemplate<Object, Object> {
     }
 
     @Override
-    public HashOperations opsForHash() {
-        return new HashOperations<Object, Object, Object>() {
+    public Boolean expire(Object key, final long timeout, final TimeUnit unit) {
+        return false;
+    }
+
+    @Override
+    public ValueOperations opsForValue() {
+
+        return new ValueOperations<Object, Object>() {
+
             @Override
-            public Long delete(Object key, Object... hashKeys) {
-                return Long.valueOf(hashKeys.length);
+            public void set(Object key, Object value) {
             }
 
             @Override
-            public Boolean hasKey(Object key, Object hashKey) {
+            public void set(Object key, Object value, long timeout, TimeUnit unit) {
+            }
+
+            @Override
+            public Boolean setIfAbsent(Object key, Object value) {
                 return false;
             }
 
             @Override
-            public Object get(Object key, Object hashKey) {
+            public void multiSet(Map<?, ?> map) {
+            }
+
+            @Override
+            public Boolean multiSetIfAbsent(Map<?, ?> map) {
+                return false;
+            }
+
+            @Override
+            public Object get(Object key) {
                 return null;
             }
 
             @Override
-            public List multiGet(Object key, Collection hashKeys) {
+            public Object getAndSet(Object key, Object value) {
+                return null;
+            }
+
+            @Override
+            public List<Object> multiGet(Collection<Object> keys) {
                 return Collections.emptyList();
             }
 
             @Override
-            public Long increment(Object key, Object hashKey, long delta) {
-                return 0L;
+            public Long increment(Object key, long delta) {
+                return null;
             }
 
             @Override
-            public Double increment(Object key, Object hashKey, double delta) {
-                return 0D;
+            public Double increment(Object key, double delta) {
+                return null;
             }
 
             @Override
-            public Set keys(Object key) {
-                return Collections.emptySet();
+            public Integer append(Object key, String value) {
+                return null;
+            }
+
+            @Override
+            public String get(Object key, long start, long end) {
+                return null;
+            }
+
+            @Override
+            public void set(Object key, Object value, long offset) {
             }
 
             @Override
             public Long size(Object key) {
-                return 0L;
+                return null;
             }
 
             @Override
-            public void putAll(Object key, Map m) {
+            public Boolean setBit(Object key, long offset, boolean value) {
+                return null;
             }
 
             @Override
-            public void put(Object key, Object hashKey, Object value) {
+            public Boolean getBit(Object key, long offset) {
+                return null;
             }
 
             @Override
-            public Boolean putIfAbsent(Object key, Object hashKey, Object value) {
-                return false;
-            }
-
-            @Override
-            public List values(Object key) {
-                return Collections.emptyList();
-            }
-
-            @Override
-            public Map entries(Object key) {
-                return Collections.emptyMap();
-            }
-
-            @Override
-            public Cursor<Map.Entry<Object, Object>> scan(Object key, ScanOptions options) {
-                return new ScanCursor() {
-                    @Override
-                    protected ScanIteration doScan(long cursorId, ScanOptions options) {
-                        return new ScanIteration(0, Collections.emptyList());
-                    }
-                };
-            }
-
-            @Override
-            public RedisOperations getOperations() {
+            public RedisOperations<Object, Object> getOperations() {
                 return NoOpRedisTemplate.this;
             }
-
         };
     }
+
 }

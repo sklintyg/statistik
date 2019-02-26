@@ -18,29 +18,18 @@
  */
 package se.inera.statistics.service.caching;
 
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import net.javacrumbs.shedlock.core.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
-import net.javacrumbs.shedlock.core.SchedulerLock;
 import se.inera.intyg.infra.monitoring.logging.LogMDCHelper;
-import se.inera.statistics.hsa.model.HsaIdAny;
 import se.inera.statistics.hsa.model.HsaIdEnhet;
 import se.inera.statistics.hsa.model.HsaIdVardgivare;
 import se.inera.statistics.service.processlog.Enhet;
@@ -49,6 +38,16 @@ import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.IntygType;
 import se.inera.statistics.service.warehouse.SjukfallGroup;
 import se.inera.statistics.service.warehouse.SjukfallIterator;
+
+import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * This is a common cache used to get better performance in ST.
@@ -65,6 +64,10 @@ public class Cache {
     private static final String ENHET = REDIS_KEY_PREFIX + "ENHET_";
     private static final String EXISTING_INTYGTYPES = REDIS_KEY_PREFIX + "EXISTING_INTYGTYPES_";
     private static final String JOB_NAME = "Cache.clearCaches";
+    private static final int MILLIS_PER_SEC = 1000;
+    private static final int SECS_PER_MIN = 60;
+    private static final int MIN_PER_HOUR = 60;
+    private static final int HOURS_PER_DAY = 24;
 
 
     @Autowired
@@ -73,6 +76,11 @@ public class Cache {
 
     @Autowired
     private LogMDCHelper logMDCHelper;
+
+    // All keys for the application in redis will be cleared by cron every night, so the ttl set
+    // on each key is just an extra safety and also a way for redis to know that the keys can be
+    // removed in case of memory shortage.
+    private long cacheExpireMillis = HOURS_PER_DAY * MIN_PER_HOUR * SECS_PER_MIN * MILLIS_PER_SEC;
 
     public Cache() {
     }
@@ -89,29 +97,32 @@ public class Cache {
     public void clearCaches() {
         logMDCHelper.run(() -> {
             LOG.info("Clear Redis Cache Keys");
-            template.delete(Lists.newArrayList(AISLE, SJUKFALLGROUP, VGENHET, ENHET, NATIONAL_DATA, EXISTING_INTYGTYPES));
+            final Set<Object> keys = template.keys(REDIS_KEY_PREFIX + "*");
+            template.delete(keys);
         });
     }
 
     public List<SjukfallGroup> getSjukfallGroups(SjukfallGroupCacheKey key) {
         LOG.info("Getting sjukfallgroups: {}", key.getKey());
-        return lookup(SJUKFALLGROUP, key.getKey(), () ->  loadSjukfallgroups(key));
+        return lookup(SJUKFALLGROUP + key.getKey(), () ->  loadSjukfallgroups(key));
     }
 
     public List<HsaIdEnhet> getVgEnhets(HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
         LOG.info("Getting VgEnhets: {}", vardgivareId);
-        return lookup(VGENHET, vardgivareId.getId(), () -> loadVgEnhets(vardgivareId, loader));
+        return lookup(VGENHET + vardgivareId.getId(), () -> loadVgEnhets(vardgivareId, loader));
     }
 
     public Aisle getAisle(HsaIdVardgivare vardgivarId, Function<HsaIdVardgivare, Aisle> loader) {
         LOG.info("Getting aisle: {}", vardgivarId);
-        return lookup(AISLE, vardgivarId.getId(), () -> aisleLoader(vardgivarId, loader));
+        return lookup(AISLE + vardgivarId.getId(), () -> {
+            return aisleLoader(vardgivarId, loader);
+        });
     }
 
     public Collection<Enhet> getEnhetsWithHsaId(final Collection<HsaIdEnhet> enhetIds,
                                                 final Function<Collection<HsaIdEnhet>, Collection<Enhet>> loader) {
-        final HashOperations<Object, Object, Object> hashOps = template.opsForHash();
-        final List<Enhet> cachedEnhets = hashOps.multiGet(ENHET, enhetIds.stream().map(HsaIdAny::getId).collect(Collectors.toList()))
+        final ValueOperations<Object, Object> ops = template.opsForValue();
+        final List<Enhet> cachedEnhets = ops.multiGet(enhetIds.stream().map(v -> ENHET + v.getId()).collect(Collectors.toList()))
                 .stream()
                 .filter(Objects::nonNull)
                 .map(Enhet.class::cast)
@@ -127,7 +138,7 @@ public class Cache {
         hsaIdEnhetsNotInCache.removeAll(hsaIdsInCache);
 
         final Set<Enhet> enhets = loader.apply(hsaIdEnhetsNotInCache).stream()
-                .peek(e -> hashOps.put(ENHET, e.getEnhetId().getId(), e))
+                .peek(e -> ops.set(ENHET + e.getEnhetId().getId(), e))
                 .collect(Collectors.toSet());
 
         enhets.addAll(cachedEnhets);
@@ -148,40 +159,39 @@ public class Cache {
     }
 
     // returns a typed object from cache, or loads a value if no such hashKey exists
-    private <T>  T lookup(final Object key, final Object hashKey, final Supplier<T> loader) {
-        final HashOperations<Object, Object, Object> ops = template.opsForHash();
-
-        if (ops.hasKey(key, hashKey)) {
+    private <T>  T lookup(final Object key, final Supplier<T> loader) {
+        final ValueOperations<Object, Object> ops = template.opsForValue();
+        final Object value = ops.get(key);
+        if (value != null) {
             try {
-                return (T) ops.get(key, hashKey);
+                return (T) value;
             } catch (ClassCastException e) {
                 LOG.warn("Failed to cast {} object in cache: {}", key, e.getMessage());
             }
         }
 
-        final T value = loader.get();
-        ops.put(key, hashKey, value);
-
-        return value;
+        final T calulatedValue = loader.get();
+        ops.set(key, calulatedValue);
+        template.expire(key, cacheExpireMillis, TimeUnit.MILLISECONDS);
+        return calulatedValue;
     }
 
     /**
      * Gets a typed object from cache if existing and sets a new value for the same key.
-     * @return The old value if it existed, else the new value.
+     * @return The old value if it existed, else null.
      */
-    private <T>  T getAndSet(final Object key, final Object hashKey, final Supplier<T> loader) {
-        final HashOperations<Object, Object, Object> ops = template.opsForHash();
-        T t = null;
+    private <T>  T getAndSet(final Object key, final Supplier<T> loader) {
+        final ValueOperations<Object, Object> ops = template.opsForValue();
+        final T newValue = loader.get();
+        final Object existingValue = ops.getAndSet(key, newValue);
+        template.expire(key, cacheExpireMillis, TimeUnit.MILLISECONDS);
+
         try {
-            t = (T) ops.get(key, hashKey);
+            return (T) existingValue;
         } catch (ClassCastException e) {
-            LOG.warn("Failed to cast {} object in cache: {}", key, e.getMessage());
+            LOG.error("Failed to cast {} object in cache: {}", key, e.getMessage());
+            return null;
         }
-
-        final T value = loader.get();
-        ops.put(key, hashKey, value);
-
-        return t;
     }
 
     private Aisle aisleLoader(HsaIdVardgivare vardgivarId, Function<HsaIdVardgivare, Aisle> loader) {
@@ -191,27 +201,30 @@ public class Cache {
 
     private List<HsaIdEnhet> loadVgEnhets(HsaIdVardgivare vardgivareId, Function<HsaIdVardgivare, List<Enhet>> loader) {
         LOG.info("VgEnhets not cached: {}", vardgivareId);
-        final HashOperations<Object, Object, Object> hashOps = template.opsForHash();
+        final ValueOperations<Object, Object> ops = template.opsForValue();
         return loader.apply(vardgivareId).stream()
-                .peek(e -> hashOps.put(ENHET, e.getEnhetId().getId(), e))
-                .map(Enhet::getEnhetId)
+                .peek(e -> {
+                    final String key = ENHET + e.getEnhetId().getId();
+                    ops.set(key, e);
+                    template.expire(key, cacheExpireMillis, TimeUnit.MILLISECONDS);
+                }).map(Enhet::getEnhetId)
                 .collect(Collectors.toList());
     }
 
     public <T> T getNationalData(Supplier<T> supplier) {
         LOG.info("Getting national data");
-        return lookup(NATIONAL_DATA, NATIONAL_DATA, supplier);
+        return lookup(NATIONAL_DATA + "VALUES", supplier);
     }
 
     public synchronized boolean getAndSetNationaldataCalculationOngoing(boolean b) {
         LOG.info("Getting and setting ongoing national data calculation");
-        final Boolean ongoingCalculation = getAndSet(NATIONAL_DATA, "ONGOING_CALCULATION", () -> b);
+        final Boolean ongoingCalculation = getAndSet(NATIONAL_DATA + "ONGOING_CALCULATION", () -> b);
         return ongoingCalculation != null ? ongoingCalculation : false;
     }
 
     public Collection<IntygType> getAllExistingIntygTypes(Supplier<Collection<IntygType>> supplier) {
         LOG.info("Getting all existing intyg types");
-        return lookup(EXISTING_INTYGTYPES, NATIONAL_DATA, supplier);
+        return lookup(EXISTING_INTYGTYPES, supplier);
     }
 
 }
