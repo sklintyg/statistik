@@ -4,6 +4,8 @@ def buildVersion = "7.3.0.${BUILD_NUMBER}"
 def infraVersion = "3.10.0.+"
 def refDataVersion = "1.0-SNAPSHOT"
 
+def versionFlags = "-DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion} -DrefDataVersion=${refDataVersion}"
+
 stage('checkout') {
     node {
         git url: "https://github.com/sklintyg/statistik.git", branch: GIT_BRANCH
@@ -15,7 +17,7 @@ stage('build') {
     node {
         try {
             shgradle "--refresh-dependencies clean build testReport sonarqube -PcodeQuality -PcodeCoverage -DgruntColors=false -PuseMinifiedJavaScript \
-                  -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+                  ${versionFlags}"
         } finally {
             publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'build/reports/allTests', \
                 reportFiles: 'index.html', reportName: 'JUnit results'
@@ -28,7 +30,7 @@ stage('build') {
 stage('integrationTest') {
     node {
         try {
-            shgradle "integrationTest testReport -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+            shgradle "integrationTest testReport ${versionFlags}"
         } finally {
             publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'service/build/reports/tests/integrationTest', \
                 reportFiles: 'index.html', reportName: 'Integration test results'
@@ -51,7 +53,7 @@ stage('fitnesse') {
     node {
         try {
             shgradle "fitnesseTest -PfileOutput -PoutputFormat=html \
-                 -DbaseUrl=https://fitnesse2.inera.nordicmedtest.se/ -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+                 -DbaseUrl=https://fitnesse2.inera.nordicmedtest.se/ ${versionFlags}"
         } finally {
             publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'test/', \
                reportFiles: 'fitnesse-results.html', reportName: 'Fitnesse results'
@@ -64,8 +66,7 @@ stage('protractor') {
         try {
             //sh(script: 'sed -i -r "s,(e.code === \'ECONNRESET\'),e.code === \'ECONNRESET\' || e.code === \'ETIMEDOUT\'," test/node_modules/selenium-webdriver/http/index.js')// NMT magic
             wrap([$class: 'Xvfb']) {
-                shgradle "protractorTest -Dprotractor.env=build-server -DbaseUrl=https://fitnesse2.inera.nordicmedtest.se/ \
-                      -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion}"
+                shgradle "protractorTest -Dprotractor.env=build-server -DbaseUrl=https://fitnesse2.inera.nordicmedtest.se/ ${versionFlags}"
             }
         } finally {
             publishHTML allowMissing: true, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'test/reports', \
@@ -76,7 +77,7 @@ stage('protractor') {
 
 stage('tag and upload') {
     node {
-        shgradle "uploadArchives tagRelease -DbuildVersion=${buildVersion} -DinfraVersion=${infraVersion} -PuseMinifiedJavaScript"
+        shgradle "uploadArchives tagRelease ${versionFlags} -PuseMinifiedJavaScript"
     }
 }
 
