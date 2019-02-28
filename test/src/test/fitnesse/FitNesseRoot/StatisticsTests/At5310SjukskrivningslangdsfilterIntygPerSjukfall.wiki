@@ -1,0 +1,23 @@
+---
+Prune
+Test
+---
+!3 Givet att:
+| script   | dagens datum   | 2018-11-06   |
+
+| script   | troskel varde   | 1   |
+
+| Enbart foljande intyg finns |
+| personnr | diagnoskod   | start | slut | enhet | kommentar |
+| 19890717-9191   | G01 | 2018-01-01   | 2018-02-01   | enhet1   | 31 dagar |
+| 19790717-9191   | G01 | 2018-02-01  | 2018-04-01   | enhet1   | 59 dagar |
+| 19690717-9191   | G01 | 2018-01-01   | 2018-02-01   | enhet1  | 31 dagar |
+
+!3 Då gäller:
+Inloggad:
+
+| Sjukfall i rapporten intyg per sjukfall som tvarsnitt |
+| inloggad som   | antal intyg   | filter sjukskrivningslängd | totalt?   | män?   | kvinnor?   |
+| user1 | 1 intyg | Under 15 dagar | 0 | 0 | 0 |
+| user1 | 1 intyg | 31-60 dagar | 3 | 3 | 0 |
+| user1 | 1 intyg | 15-30 dagar | 0 | 0 | 0 |
