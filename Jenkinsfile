@@ -39,9 +39,9 @@ stage('integrationTest') {
     }
 }
 
-stage('tag') {
+stage('tag and upload') {
     node {
-        shgradle "tagRelease ${versionFlags} -PuseMinifiedJavaScript"
+        shgradle "uploadArchives tagRelease ${versionFlags} -PuseMinifiedJavaScript"
     }
 }
 
