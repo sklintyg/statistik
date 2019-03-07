@@ -761,9 +761,13 @@ public class ProtectedChartDataService {
             help = "API-tjänst för skyddad åtkomst till topp-listan för diagnos, ålder etc.")
     public Response getOverviewData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 3);
-        final Filter filter = filterSettings.getFilter();
+        final Filter orgFilter = filterSettings.getFilter();
+
+        // Overview report will always use default date range
         final Range range = Range.quarter(clock);
         final Message message = getOverviewMsg(filterHash, range);
+        final Filter filter = new Filter(orgFilter, true);
+
         VerksamhetOverviewResponse response = warehouse.getOverview(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final VerksamhetOverviewData overviewData = new VerksamhetOverviewConverter().convert(response, range, filter, message);

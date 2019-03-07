@@ -49,6 +49,17 @@ public class Filter {
     }
     //CHECKSTYLE:On ParameterNumber
 
+    public Filter(Filter filter, boolean useDefaultPeriod) {
+        this.predicate = filter.predicate;
+        this.enheter = filter.enheter;
+        this.diagnoser = filter.diagnoser;
+        this.sjukskrivningslangd = filter.sjukskrivningslangd;
+        this.aldersgrupp = filter.aldersgrupp;
+        this.hash = filter.hash;
+        this.intygstyper = filter.intygstyper;
+        this.useDefaultPeriod = useDefaultPeriod;
+    }
+
     public static Filter empty() {
         return new Filter(SjukfallUtil.ALL_ENHETER, null, null, null, null, null, null, true);
     }
