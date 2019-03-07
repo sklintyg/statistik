@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 !contents -R2 -g -p -f -h
@@ -18,20 +17,24 @@ Testar INTYG-3735
 |lakare2|Bo     |Bengtsson|
 
 |Enbart foljande intyg finns                                                                                                         |
-|personnr     |diagnoskod|signeringstid      |start     |slut      |arbetsförmåga|start2    |slut2     |arbetsförmåga2|enhet |läkare |
-|19790407-0220|A00       |2014-09-01T10:00:00|2014-09-01|2014-10-15|0            |2014-10-16|2014-11-28|50            |enhet1|lakare1|
-|19870407-0220|M00       |2014-09-01T10:00:00|2014-09-01|2014-10-15|0            |2014-10-16|2014-11-28|50            |enhet1|lakare1|
-|19890407-0220|P00       |2014-09-01T10:00:00|2014-09-01|2014-10-15|0            |2014-10-16|2014-11-28|50            |enhet1|lakare1|
-|19990407-0220|R00       |2014-09-01T10:00:00|2014-09-01|2014-10-15|0            |2014-10-16|2014-11-28|50            |enhet1|lakare2|
-|19980407-0220|UA5104    |2014-09-01T10:00:00|2014-09-01|2014-10-15|0            |2014-10-16|2014-11-28|50            |enhet1|lakare2|
+|personnr     |diagnoskod|signeringstid      |start     |slut      |arbetsförmåga|start2    |slut2     |arbetsförmåga2|enhet |läkare |intygid|intygformat|
+|19790407-0220|A00       |2014-09-01T10:00:00|2014-09-01|2014-10-15|0            |2014-10-16|2014-11-28|50            |enhet1|lakare1|1001   |LISJP      |
+|19870407-0220|M00       |2014-09-01T10:00:00|2014-09-01|2014-10-15|0            |2014-10-16|2014-11-28|50            |enhet1|lakare1|1002   |FK7263SIT      |
+|19890407-0220|P00       |2014-09-01T10:00:00|2014-09-01|2014-10-15|0            |2014-10-16|2014-11-28|50            |enhet1|lakare1|1003   |LUSE      |
+|19990407-0220|R00       |2014-09-01T10:00:00|2014-09-01|2014-10-15|0            |2014-10-16|2014-11-28|50            |enhet1|lakare2|1004   |LUAE_NA      |
+|19980407-0220|UA5104    |2014-09-01T10:00:00|2014-09-01|2014-10-15|0            |2014-10-16|2014-11-28|50            |enhet1|lakare2|1005   |FK7263SIT      |
+|19990407-0220|R00       |2014-09-01T10:00:00|2014-09-01|2014-10-15|0            |2014-10-16|2014-11-28|50            |enhet1|lakare2|1006   |LUAE_FS      |
+|19990407-0220|R00       |2014-09-01T10:00:00|2014-09-01|2014-10-15|0            |2014-10-16|2014-11-28|50            |enhet1|lakare2|1007   |FK7263SIT      |
 
 |Foljande meddelanden finns|
-|personnr       |intygsid  |
-|19790407-0220  |1001      |
-|19870407-0220  |1002      |
-|19890407-0220  |1003      |
-|19990407-0220  |1004      |
-|19980407-0220  |1005      |
+|personnr       |intygsid  |ämne  |skickat            |
+|19790407-0220  |1001      |AVSTMN|2014-09-01T10:00:00|
+|19870407-0220  |1002      |KOMPLT|2014-09-01T10:00:00|
+|19890407-0220  |1003      |KONTKT|2014-09-01T10:00:00|
+|19990407-0220  |1004      |OKANT |2014-09-01T10:00:00|
+|19980407-0220  |1005      |PAMINN|2014-09-01T10:00:00|
+|19980407-0220  |1006      |OVRIGT|2014-09-01T10:00:00|
+|19980407-0220  |1007      |FEL   |2014-09-01T10:00:00|
 
 !3 Då gäller:
 Nationell:
@@ -63,18 +66,18 @@ Nationell:
 
 |Sjukfall i oversikt aldersgrupp|
 |grupp                |färg?    |
-|16-20 år             |#032C53  |
-|26-30 år             |#799745  |
-|21-25 år             |#FFBA3E  |
-|Under 16 år          |#E11964  |
+|21-30 år             |#FFBA3E  |
+|31-40 år             |#3CA3FF  |
+|41-50 år             |#2A5152  |
+|51-60 år             |#5CC2BC  |
 |Andra åldersgrupper  |#5D5D5D  |
 
 |Sjukfall i oversikt diagnos                          |
 |grupp                                        |färg?  |
 |A00-E90, G00-L99, N00-N99 Somatiska sjukdomar|#E11964|
+|F00-F99 Psykiska sjukdomar                   |#032C53|
 |M00-M99 Muskuloskeletala sjukdomar           |#FFBA3E|
 |P00-P96, Q00-Q99, S00-Y98 Övrigt             |#3CA3FF|
-|R00-R99 Symtomdiagnoser                      |#C37EB2|
 |Andra diagnosgrupper                         |#5D5D5D|
 
 Inloggad:
@@ -86,20 +89,21 @@ Inloggad:
 |user1           |50       |#032C53    |
 |user1           |25       |#E11964    |
 
-|Sjukfall i oversikt aldersgrupp         |
-|inloggad som|grupp              |färg?  |
-|user1       |16-20 år           |#032C53|
-|user1       |26-30 år           |#799745|
-|user1       |21-25 år           |#FFBA3E|
-|user1       |Under 16 år        |#E11964|
-|user1       |Andra åldersgrupper|#5D5D5D|
+|Sjukfall i oversikt aldersgrupp|
+|inloggad som|grupp              |färg?    |
+|user1       |21-30 år           |#FFBA3E  |
+|user1       |31-40 år           |#3CA3FF  |
+|user1       |41-50 år           |#2A5152  |
+|user1       |51-60 år           |#5CC2BC  |
+|user1       |Andra åldersgrupper|#5D5D5D  |
+
 
 |Sjukfall i oversikt diagnos                                       |
 |inloggad som|grupp                                        |färg?  |
 |user1       |A00-E90, G00-L99, N00-N99 Somatiska sjukdomar|#E11964|
+|user1       |F00-F99 Psykiska sjukdomar                   |#032C53|
 |user1       |M00-M99 Muskuloskeletala sjukdomar           |#FFBA3E|
 |user1       |P00-P96, Q00-Q99, S00-Y98 Övrigt             |#3CA3FF|
-|user1       |R00-R99 Symtomdiagnoser                      |#C37EB2|
 |user1       |Andra diagnosgrupper                         |#5D5D5D|
 
 |Sjukfall i rapporten sjukskrivningsgrad diagram   |
@@ -135,14 +139,14 @@ Inloggad:
 |user1       |2013|nov  |Z00-Z99 Faktorer av betydelse för hälsotillståndet och för kontakter med hälso- och sjukvården|#2A5152|
 |user1       |2013|nov  |Utan giltig ICD-10 kod                                                                        |#FB7F4D|
 
-!(| Meddelanden i rapporten meddelanden totalt diagram |
+| Meddelanden i rapporten meddelanden totalt diagram |
 |inloggad som|år  |månad|grupp          |färg?  |
 |user1       |2013|sep  |Avstämningsmöte|#E11964|
 |user1       |2013|sep  |Komplettering  |#032C53|
 |user1       |2013|sep  |Kontakt        |#FFBA3E|
 |user1       |2013|sep  |Påminnelse     |#799745|
 |user1       |2013|sep  |Övrigt         |#3CA3FF|
-|user1       |2013|sep  |Okänt          |#FB7F4D|)!
+|user1       |2013|sep  |Okänt          |#5D5D5D|
 
 |Meddelanden i rapporten meddelanden vardenhet som tvarsnitt diagram|
 |inloggad som      |vårdenhet     |ämne                |färg?       |
@@ -151,27 +155,23 @@ Inloggad:
 |user1             |enhet1        |Kontakt             |#FFBA3E     |
 |user1             |enhet1        |Påminnelse          |#799745     |
 |user1             |enhet1        |Övrigt              |#3CA3FF     |
-|user1             |enhet1        |Okänt               |#FB7F4D     |
+|user1             |enhet1        |Okänt               |#5D5D5D     |
 
-!(| Intyg i rapporten intyg totalt diagram |
+| Intyg i rapporten intyg totalt diagram |
 |inloggad som|år  |månad|grupp                                                                    |färg?  |
-|user1       |2013|sep  |FK 7263/FK 7804 Läkarintyg för sjukpenning                               |#E11964|
-|user1       |2013|sep  |FK 7800 Läkarutlåtande för sjukersättning                                |#032C53|
-|user1       |2013|sep  |FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga|#FFBA3E|
-|user1       |2013|sep  |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång    |#799745|
+|user1       |2014|sep  |FK 7263/7804 Läkarintyg för sjukpenning                               |#E11964|
+|user1       |2014|sep  |FK 7800 Läkarutlåtande för sjukersättning                                |#032C53|
+|user1       |2014|sep  |FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga|#FFBA3E|
+|user1       |2014|sep  |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång    |#799745|
 
-)!
-
-!(| Andel i rapporten komplettering andel intyg diagram |
+| Andel i rapporten komplettering andel intyg diagram |
 |inloggad som|år  |månad|grupp                                                                    |färg?  |
-|user1       |2013|sep  |FK 7263/FK 7804 Läkarintyg för sjukpenning                               |#E11964|
-|user1       |2013|sep  |FK 7800 Läkarutlåtande för sjukersättning                                |#032C53|
-|user1       |2013|sep  |FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga|#FFBA3E|
-|user1       |2013|sep  |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång    |#799745|
+|user1       |2014|sep  |FK 7804 Läkarintyg för sjukpenning                                       |#E11964|
+|user1       |2014|sep  |FK 7800 Läkarutlåtande för sjukersättning                                |#032C53|
+|user1       |2014|sep  |FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga|#FFBA3E|
+|user1       |2014|sep  |FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång    |#799745|
 
-)!
-
-|Meddelanden i rapporten meddelanden per lakare diagram           |
+|Meddelanden i rapporten meddelanden per lakare som tvarsnitt diagram           |
 |inloggad som|vårdgivarnivå|läkare        |grupp          |färg?  |
 |user1       |false        |Anna Andersson|Avstämningsmöte|#E11964|
 |user1       |false        |Anna Andersson|Komplettering  |#032C53|
@@ -183,4 +183,4 @@ Inloggad:
 |user1       |false        |Bo Bengtsson  |Kontakt        |#FFBA3E|
 |user1       |false        |Bo Bengtsson  |Påminnelse     |#799745|
 |user1       |false        |Bo Bengtsson  |Övrigt         |#3CA3FF|
-|user1       |false        |Bo Bengtsson  |Okänt          |#FB7F4D|
+|user1       |false        |Bo Bengtsson  |Okänt          |#5D5D5D|

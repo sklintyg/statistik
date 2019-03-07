@@ -88,6 +88,7 @@ import se.inera.statistics.web.service.responseconverter.DiagnosisGroupsTvarsnit
 import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsConverter;
 import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.GroupedSjukfallConverter;
+import se.inera.statistics.web.service.responseconverter.IntygTotaltConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetTvarsnittConverter;
@@ -244,7 +245,7 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         KonDataResponse intygPerMonth = warehouse.getIntygPerTypePerMonth(vg, filterSettings);
-        final DualSexStatisticsData result = new SimpleMultiDualSexConverter("Antal intyg totalt").convert(intygPerMonth, filterSettings);
+        final DualSexStatisticsData result = new IntygTotaltConverter("Antal intyg totalt").convert(intygPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_INTYGPERTYP, ReportType.TIDSSERIE);
     }
 

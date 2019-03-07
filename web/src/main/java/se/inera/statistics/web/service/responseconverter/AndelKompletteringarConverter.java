@@ -19,10 +19,13 @@
 package se.inera.statistics.web.service.responseconverter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
+import se.inera.statistics.service.report.common.ReportColor;
 import se.inera.statistics.service.report.model.KonDataResponse;
 import se.inera.statistics.service.report.model.KonDataRow;
 import se.inera.statistics.service.report.model.KonField;
@@ -52,7 +55,18 @@ public class AndelKompletteringarConverter extends MultiDualSexConverter {
         }
         final KonDataResponse konDataResponse = new KonDataResponse(data.getAvailableFilters(),
                 convertGroupNamesToText(groups), updateGenderFields(rows));
-        return super.convert(konDataResponse, filterSettings, null, "%1$s");
+        final Map<String, String> colors = getColorMap(groups);
+        return super.convert(konDataResponse, filterSettings, null, "%1$s", colors);
+    }
+
+    static Map<String, String> getColorMap(List<IntygType> groups) {
+        final ReportColor[] allColors = ReportColor.values();
+        final Map<String, String> colors = new HashMap<>();
+        for (int i = 0; i < groups.size(); i++) {
+            final IntygType intygType = groups.get(i);
+            colors.put(intygType.getText(), allColors[i].getColor());
+        }
+        return colors;
     }
 
     private List<KonDataRow> updateGenderFields(List<KonDataRow> rows) {
