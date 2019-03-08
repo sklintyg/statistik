@@ -22,6 +22,7 @@ Testar att intygen kommer i bokstavsordning i diagrammet
 |19790429-9272|2015-02-10T12:25:15|enhet1|TSTRK1031-v2|         |
 |19790219-9285|2015-02-10T12:25:15|enhet1|AG7804      |         |
 |19790219-9285|2015-02-10T12:25:15|enhet1|TSTRK1009   |         |
+|19790219-9285|2015-02-10T12:25:15|enhet1|TSTRK1062   |         |
 
 !3 Då gäller:
 
@@ -29,4 +30,4 @@ Inloggad:
 
 |Intyg i rapporten intyg totalt diagram                                                                                                                                                                                                                                                                                                                                                                         |
 |inloggad som|år  |månad|grupp    |grupper lista?                                                                                                                                                                                                                                                                                                                                                               |
-|user1       |2015|feb  |TSTRK1007|AF00213 Arbetsförmedlingens medicinska utlåtande,AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperioden,AG7804 Läkarintyg om arbetsförmåga - arbetsgivare,Dödsbevis,Dödsorsaksintyg,FK 7263/7804 Läkarintyg för sjukpenning,FK 7800 Läkarutlåtande för sjukersättning,FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga,FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång,TSTRK1009 Transportstyrelsen Läkares anmälan,TSTRK1007 Transportstyrelsens läkarintyg,TSTRK1031 Transportstyrelsens läkarintyg diabetes|
+|user1       |2015|feb  |TSTRK1007|AF00213 Arbetsförmedlingens medicinska utlåtande,AG1-14 Läkarintyg om arbetsförmåga - sjuklöneperioden,AG7804 Läkarintyg om arbetsförmåga - arbetsgivare,Dödsbevis,Dödsorsaksintyg,FK 7263/7804 Läkarintyg för sjukpenning,FK 7800 Läkarutlåtande för sjukersättning,FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga,FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång,TSTRK1009 Transportstyrelsen Läkares anmälan,TSTRK1007 Transportstyrelsens läkarintyg,TSTRK1031 Transportstyrelsens läkarintyg diabetes,TSTRK1062 Transportstyrelsens läkarintyg ADHD|
