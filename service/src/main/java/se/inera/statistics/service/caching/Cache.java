@@ -68,6 +68,8 @@ public class Cache {
     private static final int SECS_PER_MIN = 60;
     private static final int MIN_PER_HOUR = 60;
     private static final int HOURS_PER_DAY = 24;
+    private static final long ONE_HOUR_IN_MILLIS = MIN_PER_HOUR * SECS_PER_MIN * MILLIS_PER_SEC;
+    private static final long ONE_DAY_IN_MILLIS = HOURS_PER_DAY * ONE_HOUR_IN_MILLIS;
 
 
     @Autowired
@@ -80,7 +82,7 @@ public class Cache {
     // All keys for the application in redis will be cleared by cron every night, so the ttl set
     // on each key is just an extra safety and also a way for redis to know that the keys can be
     // removed in case of memory shortage.
-    private long cacheExpireMillis = HOURS_PER_DAY * MIN_PER_HOUR * SECS_PER_MIN * MILLIS_PER_SEC;
+    private static final long DEFAULT_TTL = ONE_DAY_IN_MILLIS;
 
     public Cache() {
     }
@@ -172,26 +174,8 @@ public class Cache {
 
         final T calulatedValue = loader.get();
         ops.set(key, calulatedValue);
-        template.expire(key, cacheExpireMillis, TimeUnit.MILLISECONDS);
+        template.expire(key, DEFAULT_TTL, TimeUnit.MILLISECONDS);
         return calulatedValue;
-    }
-
-    /**
-     * Gets a typed object from cache if existing and sets a new value for the same key.
-     * @return The old value if it existed, else null.
-     */
-    private <T>  T getAndSet(final Object key, final Supplier<T> loader) {
-        final ValueOperations<Object, Object> ops = template.opsForValue();
-        final T newValue = loader.get();
-        final Object existingValue = ops.getAndSet(key, newValue);
-        template.expire(key, cacheExpireMillis, TimeUnit.MILLISECONDS);
-
-        try {
-            return (T) existingValue;
-        } catch (ClassCastException e) {
-            LOG.error("Failed to cast {} object in cache: {}", key, e.getMessage());
-            return null;
-        }
     }
 
     private Aisle aisleLoader(HsaIdVardgivare vardgivarId, Function<HsaIdVardgivare, Aisle> loader) {
@@ -206,7 +190,7 @@ public class Cache {
                 .peek(e -> {
                     final String key = ENHET + e.getEnhetId().getId();
                     ops.set(key, e);
-                    template.expire(key, cacheExpireMillis, TimeUnit.MILLISECONDS);
+                    template.expire(key, DEFAULT_TTL, TimeUnit.MILLISECONDS);
                 }).map(Enhet::getEnhetId)
                 .collect(Collectors.toList());
     }
@@ -216,10 +200,24 @@ public class Cache {
         return lookup(NATIONAL_DATA + "VALUES", supplier);
     }
 
-    public synchronized boolean getAndSetNationaldataCalculationOngoing(boolean b) {
+    public synchronized boolean getAndSetNationaldataCalculationOngoing(boolean isOngoing) {
         LOG.info("Getting and setting ongoing national data calculation");
-        final Boolean ongoingCalculation = getAndSet(NATIONAL_DATA + "ONGOING_CALCULATION", () -> b);
-        return ongoingCalculation != null ? ongoingCalculation : false;
+
+        final ValueOperations<Object, Object> ops = template.opsForValue();
+
+        final String key = NATIONAL_DATA + "ONGOING_CALCULATION";
+        if (!isOngoing) {
+            template.delete(key);
+            return false;
+        }
+
+        final Object existingValue = ops.getAndSet(key, isOngoing);
+        if (existingValue == null) {
+            template.expire(key, ONE_HOUR_IN_MILLIS, TimeUnit.MILLISECONDS);
+            return false;
+        }
+
+        return true;
     }
 
     public Collection<IntygType> getAllExistingIntygTypes(Supplier<Collection<IntygType>> supplier) {
