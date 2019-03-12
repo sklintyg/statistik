@@ -51,7 +51,7 @@ var NavMenu = function() {
 
     this.clickOnMenu = function(id) {
         var menu = element(by.id(id));
-
+        browser.executeScript("arguments[0].scrollIntoView(true);", menu.getWebElement());
         menu.click();
     };
 

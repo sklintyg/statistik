@@ -1,0 +1,37 @@
+.stat-cookie-banner-modal {
+  background: $st-color-19;
+  padding: 20px;
+  border-radius: 4px;
+  color: $st-color-34;
+
+  .btn-primary {
+    @extend %st-typo-04;
+    background-image: linear-gradient($st-color-30-top, $st-color-30-bottom);
+    border-radius: 4px;
+    border-color: $st-color-33;
+    border-width: 1px;
+    color: $st-color-17;
+    &:focus {
+      background-image: none;
+      background-color: $st-color-32;
+    }
+    &:hover {
+      background-image: none;
+      background-color: $st-color-31;
+    }
+    &:disabled {
+      background-image: none;
+      background-color: $st-color-21;
+      color: $st_color-24
+    }
+  }
+
+  .no-left-padding {
+    padding-left: 0px;
+  }
+
+  .no-right-padding {
+    padding-right: 0px;
+  }
+
+}

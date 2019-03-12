@@ -18,7 +18,8 @@
  */
 
 angular.module('StatisticsApp').directive('statCookieBanner',
-    function() {
+    /** @ngInject */
+    function($uibModal) {
         'use strict';
 
         return {
@@ -27,8 +28,6 @@ angular.module('StatisticsApp').directive('statCookieBanner',
             templateUrl: '/components/directives/statCookieBanner/statCookieBanner.html',
             controller: function($scope, $timeout, $localStorage) {
                 $scope.isOpen = false;
-                $scope.showDetails = false;
-
 
                 if (!$localStorage.cookieBannerShown) {
                     $timeout(function() {
@@ -38,8 +37,22 @@ angular.module('StatisticsApp').directive('statCookieBanner',
 
                 $scope.onCookieConsentClick = function() {
                     $scope.isOpen = false;
-
                     $localStorage.cookieBannerShown = true;
+                };
+            },
+            link: function($scope) {
+                $scope.openDialog = function() {
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        templateUrl: '/components/directives/statCookieBanner/modal/modal.html',
+                        controller: 'StatCookieBannerModalCtrl',
+                        size: 'lg',
+                        backdrop: 'true',
+                        scope: $scope,
+                        resolve: { }
+                    });
+
+                    modalInstance.result.then(function(){}, function(){});
                 };
             }
         };
