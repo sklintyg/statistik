@@ -2,7 +2,21 @@
   background: $st-color-19;
   padding: 20px;
   border-radius: 4px;
-  color: $st-color-34;
+
+  .modal-title {
+    @extend %st-typo-13;
+    color: $st-color-34;
+  }
+
+  .modal-text-title {
+    @extend %st-typo-03;
+    color: $st-color-34;
+  }
+
+  .modal-text {
+    @extend %st-typo-04;
+    color: $st-color-34;
+  }
 
   .btn-primary {
     @extend %st-typo-04;
@@ -26,12 +40,8 @@
     }
   }
 
-  .no-left-padding {
-    padding-left: 0px;
-  }
+}
 
-  .no-right-padding {
-    padding-right: 0px;
-  }
-
+.modal-open {
+  overflow: inherit;
 }
