@@ -88,6 +88,7 @@ import se.inera.statistics.web.service.responseconverter.DiagnosisGroupsTvarsnit
 import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsConverter;
 import se.inera.statistics.web.service.responseconverter.DiagnosisSubGroupsTvarsnittConverter;
 import se.inera.statistics.web.service.responseconverter.GroupedSjukfallConverter;
+import se.inera.statistics.web.service.responseconverter.IntygTotaltConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmneConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetConverter;
 import se.inera.statistics.web.service.responseconverter.MessageAmnePerEnhetTvarsnittConverter;
@@ -244,7 +245,7 @@ public class ProtectedChartDataService {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 18);
         final HsaIdVardgivare vg = loginServiceUtil.getSelectedVgIdForLoggedInUser(request);
         KonDataResponse intygPerMonth = warehouse.getIntygPerTypePerMonth(vg, filterSettings);
-        final DualSexStatisticsData result = new SimpleMultiDualSexConverter("Antal intyg totalt").convert(intygPerMonth, filterSettings);
+        final DualSexStatisticsData result = new IntygTotaltConverter("Antal intyg totalt").convert(intygPerMonth, filterSettings);
         return getResponse(result, format, request, Report.V_INTYGPERTYP, ReportType.TIDSSERIE);
     }
 
@@ -760,9 +761,13 @@ public class ProtectedChartDataService {
             help = "API-tjänst för skyddad åtkomst till topp-listan för diagnos, ålder etc.")
     public Response getOverviewData(@Context HttpServletRequest request, @QueryParam("filter") String filterHash) {
         final FilterSettings filterSettings = filterHandler.getFilter(request, filterHash, 3);
-        final Filter filter = filterSettings.getFilter();
+        final Filter orgFilter = filterSettings.getFilter();
+
+        // Overview report will always use default date range
         final Range range = Range.quarter(clock);
         final Message message = getOverviewMsg(filterHash, range);
+        final Filter filter = new Filter(orgFilter, true);
+
         VerksamhetOverviewResponse response = warehouse.getOverview(filter, range,
                 loginServiceUtil.getSelectedVgIdForLoggedInUser(request));
         final VerksamhetOverviewData overviewData = new VerksamhetOverviewConverter().convert(response, range, filter, message);

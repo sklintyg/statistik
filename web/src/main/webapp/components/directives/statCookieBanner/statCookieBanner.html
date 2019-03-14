@@ -1,39 +1,13 @@
 <div class="stat-cookie-banner banner-slide-in" ng-if="isOpen">
   <div class="container-fluid">
-    <div class="alert alert-info">
       <div class="row">
         <div class="col-sm-10">
-          Vi använder kakor (cookies) för att den här webbplatsen ska fungera på ett bra sätt för dig. Genom att fortsätta använda den här webbplatsen
-          accepterar du vår användning av kakor.<br>
-
-          <div data-ng-if="showDetails">
-            <p><br>Den typ av kakor som används på den här webbplatsen kallas för sessionskakor. De lagras temporärt i
-              din dators minne under tiden du är inne på webbplatsen.
-              Sessionskakor sparar ingen personlig information om dig, och de försvinner när du stänger din webbläsare.
-            </p>
-
-            <p>
-              I den nationella delen av Intygsstatistik används sessionskakor för att möjliggöra uppföljning av hur tjänsten används, i syfte att kunna förbättra användarupplevelsen.
-              I den delen av Intygsstatistik som kräver inloggning används kakor för att du ska kunna navigera i tjänsten utan att behöva logga in på nytt varje gång du går till en ny sida.
-            </p>
-
-            <p>
-              Om du inte accepterar användningen av kakor kan du ställa in webbläsaren så att kakor blockeras.
-              Observera att det då inte går att logga in. Då går det endast att se den nationella statistiken.
-            </p>
-
-            <p>Mer information om kakor (cookies) på <span dynamiclink key="ptsCookiesBanner"></span></p>
-
-          </div>
-          <a href data-ng-click="showDetails=!showDetails">Så här använder vi kakor <i class="glyphicon"
-                                                                                      ng-class="{'glyphicon-chevron-up': showDetails, 'glyphicon-chevron-down': !showDetails}"></i></a>
+          <span>Vi använder kakor (cookies) för att den här webbplatsen ska fungera på ett bra sätt för dig. Genom att fortsätta använda den här webbplatsen accepterar du vår användning av kakor. <a href data-ng-click="openDialog()">Så här använder vi kakor.</a></span>
         </div>
         <div class="col-sm-2 text-right">
-          <button class="btn btn-default" id="cookie-usage-consent-btn" data-ng-click="onCookieConsentClick()">Jag förstår</button>
+          <button class="btn btn-default" id="cookie-usage-consent-btn" data-ng-click="onCookieConsentClick()">Jag godkänner</button>
         </div>
       </div>
-    </div>
-
   </div>
 </div>
 

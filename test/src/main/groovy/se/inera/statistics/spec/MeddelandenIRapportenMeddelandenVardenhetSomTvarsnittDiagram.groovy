@@ -43,6 +43,7 @@ class MeddelandenIRapportenMeddelandenVardenhetSomTvarsnittDiagram extends Rappo
         markerad = index < 0 ? null : report.chartData.categories[index].marked
         def total = report.chartData.series.find { item -> item.name.equalsIgnoreCase(ämne) }
         totalt = index < 0 || total == null ? -1 : total.data[index]
+        färg = total == null ? null : total.color
     }
 
     def getReportMeddelandenVardenhetTvarsnitt() {

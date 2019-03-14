@@ -24,6 +24,7 @@
     <!-- endbuild -->
 </head>
 <body data-ng-controller="pageCtrl">
+  <stat-cookie-banner></stat-cookie-banner>
   <highlight-words></highlight-words>
 
   <div class="header-container">
@@ -42,8 +43,6 @@
       <navigation-menu login-visible="AppModel.get().loginVisible" query-string="queryString"></navigation-menu>
     </div>
     <div class="right-container">
-      <stat-cookie-banner></stat-cookie-banner>
-
       <div class="container-fluid page-content-wrapper">
         <navigation-tabs ng-if="!hideNavigationTabs"></navigation-tabs>
 
@@ -147,6 +146,7 @@
   <script src="/components/directives/showHelpText/showHelpText.directive.js"></script>
   <script src="/components/directives/showMessage/showMessage.directive.js"></script>
   <script src="/components/directives/spinner/spinner.directive.js"></script>
+  <script src="/components/directives/statCookieBanner/modal/modal.controller.js"></script>
   <script src="/components/directives/statCookieBanner/statCookieBanner.directive.js"></script>
   <script src="/components/directives/statScrollTable/statScrollTable.directive.js"></script>
   <script src="/components/directives/statSettings/statSettings.controller.js"></script>

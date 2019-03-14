@@ -4,11 +4,12 @@ stat-cookie-banner {
 
 .stat-cookie-banner {
   border: 0;
-  margin: 10px 10px 0;
+  background-color: $st-color-36;
+  color: $st-color-34;
+  padding: 20px;
 
-  .alert {
-    margin-bottom: 0;
-    max-width: inherit;
+  a {
+    color: $st-color-38;
   }
 
   .container-fluid {
