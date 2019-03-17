@@ -32,7 +32,7 @@ class SjukfallISpecialrapportenSjukfallPerSjukskrivningslangd extends Rapport {
     }
 
     public void executeTabell(report) {
-        def row = report.find { currentRow -> currentRow.group == sjukskrivningslängd }
+        def row = report.find { currentRow -> currentRow.group.startsWith(sjukskrivningslängd) }
         antal = row == null ? -1 : row.antal
     }
 
