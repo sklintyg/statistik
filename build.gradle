@@ -9,7 +9,7 @@ ext {
     infraVersion = System.properties['infraVersion'] ?: '3.10.0.+'
     refDataVersion = System.properties['refDataVersion'] ?: '1.0-SNAPSHOT'
 
-    intygSchematronVersion = "1.0.38"
+    intygSchematronVersion = "1.0.39"
     certificateSchemaVersion = "3.2.0-RC3"
     monitoringSchemaVersion = "1.0.0.0"
     intygTransportstyrelsenSchemasVersion = "1.0.4"
