@@ -65,6 +65,9 @@ public class SchemaValidator {
     private Tstrk1009Validator tstrk1009Validator;
 
     @Autowired
+    private Tstrk1062Validator tstrk1062Validator;
+
+    @Autowired
     private Ag114Validator ag114Validator;
 
     @Autowired
@@ -96,6 +99,8 @@ public class SchemaValidator {
                 return tstrk1009Validator.validateSchematron(data);
             case TSTRK1031:
                 return tsDiabetesValidator.validateSchematron(data);
+            case TSTRK1062:
+                return tstrk1062Validator.validateSchematron(data);
             case AG114:
                 return ag114Validator.validateSchematron(data);
             case AG7804:
