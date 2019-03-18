@@ -18,10 +18,8 @@
  */
 package se.inera.testsupport.specialrapport;
 
-import org.apache.commons.collections.ListUtils;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.report.util.Icd10RangeType;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.FilterPredicates;
 import se.inera.statistics.service.warehouse.Sjukfall;
@@ -47,6 +45,7 @@ import static java.util.stream.Collectors.counting;
 public class SjukfallLengthSpecialReportCreator {
 
     public static final int MAX_SIZE = 10;
+    public static final int PERCENTAGE = 100;
     private final Iterator<Aisle> aisles;
     private final SjukfallUtil sjukfallUtil;
     private final Icd10 icd10;
@@ -79,10 +78,10 @@ public class SjukfallLengthSpecialReportCreator {
                     for (Sjukfall sjukfall : sjukfalls) {
                         if (sjukfall.getEnd() <= endDay) {
                             final int realDays = sjukfall.getRealDays();
-                            final List<Integer> kats = sjukfall.getAllIcd10OfTypes(Collections.singletonList(Icd10RangeType.KATEGORI));
+                            final int kat = sjukfall.getDiagnoskategori();
                             final SjukfallsLangdGroupSpecial lengthGroup = getByLength(realDays);
 
-                            final SjukfallLengthSpecialComputeRow sosRow = new SjukfallLengthSpecialComputeRow(kats, lengthGroup);
+                            final SjukfallLengthSpecialComputeRow sosRow = new SjukfallLengthSpecialComputeRow(kat, lengthGroup);
                             rows.add(sosRow);
                         }
                     }
@@ -115,20 +114,26 @@ public class SjukfallLengthSpecialReportCreator {
     private List<SjukfallLengthSpecialRow> getSjukfallLengthSpecialRows(
             Collection<SjukfallsLangdGroupSpecial> groups, String groupName,
             Map<SjukfallsLangdGroupSpecial, List<SjukfallLengthSpecialComputeRow>> rowsGroupedByLength) {
+        long totalNumberOfSjukfallInGroups = rowsGroupedByLength.entrySet().stream()
+                .filter(sjukfallsLangdGroupSpecialListEntry -> groups.contains(sjukfallsLangdGroupSpecialListEntry.getKey()))
+                .mapToLong(sjukfallsLangdGroupSpecialListEntry -> sjukfallsLangdGroupSpecialListEntry.getValue().size())
+                .sum();
         List<SjukfallLengthSpecialRow> rows = new ArrayList<>();
-        final List<String> collect = rowsGroupedByLength.entrySet().stream()
+        final List<String> topList = rowsGroupedByLength.entrySet().stream()
                 .filter(sjukfallsLangdGroupSpecialListEntry -> groups.contains(sjukfallsLangdGroupSpecialListEntry.getKey()))
                 .map(Map.Entry::getValue)
                 .flatMap((Function<List<SjukfallLengthSpecialComputeRow>, Stream<Integer>>) calcRows -> calcRows.stream()
-                        .map(SjukfallLengthSpecialComputeRow::getKats)
-                        .reduce(new ArrayList<>(), ListUtils::union).stream())
+                        .map(SjukfallLengthSpecialComputeRow::getKat))
                 .collect(Collectors.groupingBy(Function.identity(), counting())).entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .limit(MAX_SIZE)
-                .map(amount -> icd10.findIcd10FromNumericId(amount.getKey()).getVisibleId() + " med " + amount.getValue() + " förekomster")
+                .map(amount -> icd10.findIcd10FromNumericId(amount.getKey()).getVisibleId() + " med "
+                        + amount.getValue() + " förekomster" + " ("
+                        + (PERCENTAGE * amount.getValue() / (double) totalNumberOfSjukfallInGroups)
+                        + "% av " + totalNumberOfSjukfallInGroups + ")")
                 .collect(Collectors.toList());
-        for (int i = 0; i < collect.size(); i++) {
-            final String s = collect.get(i);
+        for (int i = 0; i < topList.size(); i++) {
+            final String s = topList.get(i);
             rows.add(new SjukfallLengthSpecialRow("Vanligaste diagnos i sjukfall " + groupName + " #" + (i + 1) + " är " + s, 0));
         }
         return rows;

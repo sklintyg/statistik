@@ -1,7 +1,6 @@
 ---
 Test
 ---
-
 !1 Grupper utan sjukfall finns med i rapporten med antal = 0 och diagnoser i intyg utanför perioden räknas inte med i topp tio.
 
 !3 Givet att:
@@ -25,71 +24,12 @@ Test
 | 91-180 dagar | 0 |
 | 181-365 dagar | 0 |
 | Över 365 dagar | 1 |
-| Vanligaste diagnos i sjukfall över 180 dagar #1 är G93 med 1 förekomster | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #1 är G93 med 1 förekomster (100.0% av 1)| 0 |
 
 
 
 
-!1 Max 10 rader visas för "tio i topp" för gruppen "91-180 dagar"
-
-!3 Givet att:
-| script | dagens datum | 2018-08-23 |
-
-| script | troskel varde | 1 |
-
-| Enbart foljande intyg finns |
-| personnr | diagnoskod | start | slut | kommentar | enhet |
-| 19790717-9191 | C50 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9191 | C50 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9191 | C50 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9192 | C51 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9192 | C51 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9192 | C51 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9193 | C52 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9193 | C52 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9193 | C52 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9194 | C53 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9194 | C53 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9194 | C53 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9195 | C54 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9195 | C54 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9195 | C54 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9196 | C55 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9196 | C55 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9196 | C55 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9197 | C56 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9197 | C56 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9197 | C56 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9198 | C57 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9198 | C57 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9198 | C57 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9199 | C58 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9199 | C58 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9199 | C58 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9190 | C60 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9190 | C60 | 2017-01-01 | 2017-05-01 | | enhet1 |
-| 19790717-9200 | C61 | 2017-01-01 | 2017-05-01 | | enhet1 |
-
-!3 Då gäller:
-| Sjukfall i specialrapporten sjukfall per sjukskrivningslangd |
-| sjukskrivningslängd | antal? |
-| Under 8 dagar | 0 |
-| 8-14 dagar | 0 |
-| 15-30 dagar | 0 |
-| 31-60 dagar | 0 |
-| 61-90 dagar | 0 |
-| 91-180 dagar | 11 |
-| 181-365 dagar | 0 |
-| Över 365 dagar | 0 |
-| Vanligaste diagnos i sjukfall 91-180 dagar #10 är C60 med 2 förekomster | 0 |
-| Vanligaste diagnos i sjukfall 91-180 dagar #11 är C61 med 1 förekomster | -1 |
-
-
-
-
-
-
-!1 Max 10 rader visas för "tio i topp" för gruppen "över 180 dagar"
+!1 Max 10 rader visas för "tio i topp"
 
 !3 Givet att:
 | script | dagens datum | 2018-08-23 |
@@ -98,34 +38,26 @@ Test
 
 | Enbart foljande intyg finns |
 | personnr | diagnoskod | start | slut | kommentar | enhet |
-| 19790717-9191 | C50 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9191 | C50 | 2016-12-01 | 2017-12-31 | | enhet1 |
+| 19790716-9191 | C50 | 2017-01-01 | 2017-05-01 | | enhet1 |
+| 19790716-9192 | C51 | 2017-01-01 | 2017-05-01 | | enhet1 |
+| 19790716-9193 | C52 | 2017-01-01 | 2017-05-01 | | enhet1 |
+| 19790716-9194 | C53 | 2017-01-01 | 2017-05-01 | | enhet1 |
+| 19790716-9195 | C54 | 2017-01-01 | 2017-05-01 | | enhet1 |
+| 19790716-9196 | C55 | 2017-01-01 | 2017-05-01 | | enhet1 |
+| 19790716-9197 | C56 | 2017-01-01 | 2017-05-01 | | enhet1 |
+| 19790716-9198 | C57 | 2017-01-01 | 2017-05-01 | | enhet1 |
+| 19790716-9199 | C58 | 2017-01-01 | 2017-05-01 | | enhet1 |
+| 19790716-9190 | C60 | 2017-01-01 | 2017-05-01 | | enhet1 |
+| 19790716-9200 | C61 | 2017-01-01 | 2017-05-01 | | enhet1 |
 | 19790717-9191 | C50 | 2016-12-01 | 2017-12-31 | | enhet1 |
 | 19790717-9192 | C51 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9192 | C51 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9192 | C51 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9193 | C52 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9193 | C52 | 2016-12-01 | 2017-12-31 | | enhet1 |
 | 19790717-9193 | C52 | 2016-12-01 | 2017-12-31 | | enhet1 |
 | 19790717-9194 | C53 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9194 | C53 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9194 | C53 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9195 | C54 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9195 | C54 | 2016-12-01 | 2017-12-31 | | enhet1 |
 | 19790717-9195 | C54 | 2016-12-01 | 2017-12-31 | | enhet1 |
 | 19790717-9196 | C55 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9196 | C55 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9196 | C55 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9197 | C56 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9197 | C56 | 2016-12-01 | 2017-12-31 | | enhet1 |
 | 19790717-9197 | C56 | 2016-12-01 | 2017-12-31 | | enhet1 |
 | 19790717-9198 | C57 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9198 | C57 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9198 | C57 | 2016-12-01 | 2017-12-31 | | enhet1 |
 | 19790717-9199 | C58 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9199 | C58 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9199 | C58 | 2016-12-01 | 2017-12-31 | | enhet1 |
-| 19790717-9190 | C60 | 2016-12-01 | 2017-12-31 | | enhet1 |
 | 19790717-9190 | C60 | 2016-12-01 | 2017-12-31 | | enhet1 |
 | 19790717-9200 | C61 | 2016-12-01 | 2017-12-31 | | enhet1 |
 
@@ -137,8 +69,28 @@ Test
 | 15-30 dagar | 0 |
 | 31-60 dagar | 0 |
 | 61-90 dagar | 0 |
-| 91-180 dagar | 0 |
+| 91-180 dagar | 11 |
 | 181-365 dagar | 0 |
 | Över 365 dagar | 11 |
-| Vanligaste diagnos i sjukfall över 180 dagar #10 är C60 med 2 förekomster | 0 |
-| Vanligaste diagnos i sjukfall över 180 dagar #11 är C61 med 1 förekomster | -1 |
+| Vanligaste diagnos i sjukfall 91-180 dagar #1 är | 0 |
+| Vanligaste diagnos i sjukfall 91-180 dagar #2 är | 0 |
+| Vanligaste diagnos i sjukfall 91-180 dagar #3 är | 0 |
+| Vanligaste diagnos i sjukfall 91-180 dagar #4 är | 0 |
+| Vanligaste diagnos i sjukfall 91-180 dagar #5 är | 0 |
+| Vanligaste diagnos i sjukfall 91-180 dagar #6 är | 0 |
+| Vanligaste diagnos i sjukfall 91-180 dagar #7 är | 0 |
+| Vanligaste diagnos i sjukfall 91-180 dagar #8 är | 0 |
+| Vanligaste diagnos i sjukfall 91-180 dagar #9 är | 0 |
+| Vanligaste diagnos i sjukfall 91-180 dagar #10 är | 0 |
+| Vanligaste diagnos i sjukfall 91-180 dagar #11 är | -1 |
+| Vanligaste diagnos i sjukfall över 180 dagar #1 är | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #2 är | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #3 är | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #4 är | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #5 är | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #6 är | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #7 är | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #8 är | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #9 är | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #10 är | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #11 är | -1 |

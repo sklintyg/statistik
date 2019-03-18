@@ -18,20 +18,18 @@
  */
 package se.inera.testsupport.specialrapport;
 
-import java.util.List;
-
 public class SjukfallLengthSpecialComputeRow {
 
-    private List<Integer> kats;
+    private int kat;
     private SjukfallsLangdGroupSpecial length;
 
-    public SjukfallLengthSpecialComputeRow(List<Integer> kats, SjukfallsLangdGroupSpecial length) {
-        this.kats = kats;
+    public SjukfallLengthSpecialComputeRow(int kat, SjukfallsLangdGroupSpecial length) {
+        this.kat = kat;
         this.length = length;
     }
 
-    public List<Integer> getKats() {
-        return kats;
+    public int getKat() {
+        return kat;
     }
 
     public SjukfallsLangdGroupSpecial getLength() {

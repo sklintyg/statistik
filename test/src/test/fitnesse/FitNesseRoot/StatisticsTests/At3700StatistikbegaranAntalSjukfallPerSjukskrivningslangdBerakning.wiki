@@ -47,10 +47,9 @@ Test
 | 91-180 dagar | 3 |
 | 181-365 dagar | 1 |
 | Över 365 dagar | 1 |
-| Vanligaste diagnos i sjukfall över 180 dagar #1 är G93 med 3 förekomster | 0 |
-| Vanligaste diagnos i sjukfall över 180 dagar #2 är F43 med 2 förekomster | 0 |
-| Vanligaste diagnos i sjukfall över 180 dagar #3 är C50 med 1 förekomster | 0 |
-| Vanligaste diagnos i sjukfall 91-180 dagar #1 är G93 med 3 förekomster | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #1 är G93 med 1 förekomster (50.0% av 2) | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #2 är F43 med 1 förekomster (50.0% av 2) | 0 |
+| Vanligaste diagnos i sjukfall 91-180 dagar #1 är G93 med 3 förekomster (100.0% av 3) | 0 |
 
 Längst ned är två tio-i-topp listor med de vanligaste diagnoserna för gruppen 91-180 dagar och för alla sjukfall som är över 180 dagar långa.
 

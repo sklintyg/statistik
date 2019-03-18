@@ -630,16 +630,17 @@ public class RestSupportService {
     }
 
     /**
-     * Special report for regarding sjukfall lengths (INTYG-7983).
+     * Special report for regarding sjukfall lengths (INTYG-7983). Using the last full year if no specific year is requested.
      */
     @GET
     @Path("getSpecialLengthReport")
     @Produces({ MediaType.APPLICATION_JSON })
     @Consumes({ MediaType.APPLICATION_JSON })
-    public Response getSpecialLengthReport() {
+    public Response getSpecialLengthReport(@QueryParam("year") String yearParam) {
+        int year = getYear(yearParam);
         final Iterator<Aisle> aisles = warehouse.iterator();
         final List<SjukfallLengthSpecialRow> sosReport = new SjukfallLengthSpecialReportCreator(aisles, sjukfallUtil, icd10)
-                .getReport(2017);
+                .getReport(year);
         return Response.ok(sosReport).build();
     }
 
