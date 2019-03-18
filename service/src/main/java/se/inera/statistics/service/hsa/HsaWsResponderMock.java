@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.hsa;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -428,8 +429,10 @@ public class HsaWsResponderMock implements HsaWsResponderInterface, HsaDataInjec
 
     @Override
     public PingResponseType ping(AttributedURIType logicalAddress, AttributedURIType id, PingType parameters) throws HsaWsFault {
-        // Is part of HSAWebServiceCalls but is never used
-        throw new UnusedMethodException();
+        final PingResponseType resp = new PingResponseType();
+        resp.setMessage("");
+        resp.setResponseTime(new BigInteger("1"));
+        return resp;
     }
 
     @Override
