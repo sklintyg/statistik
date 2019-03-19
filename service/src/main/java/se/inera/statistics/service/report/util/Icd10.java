@@ -141,6 +141,7 @@ public class Icd10 {
                     .collect(Collectors.toMap(Id::toInt, java.util.function.Function.identity()));
         } catch (IOException e) {
             LOG.error("Could not parse ICD10: " + e);
+            throw new RuntimeException(e);
         }
     }
 
