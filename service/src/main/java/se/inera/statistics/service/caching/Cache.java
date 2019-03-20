@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -66,7 +67,10 @@ public class Cache {
     private static final String ENHET = REDIS_KEY_PREFIX + "ENHET_";
     private static final String EXISTING_INTYGTYPES = REDIS_KEY_PREFIX + "EXISTING_INTYGTYPES_";
     private static final String JOB_NAME = "Cache.clearCaches";
-
+    private static final int MILLIS_PER_SEC = 1000;
+    private static final int SECS_PER_MIN = 60;
+    private static final int MIN_PER_HOUR = 60;
+    private static final long ONE_HOUR_IN_MILLIS = MIN_PER_HOUR * SECS_PER_MIN * MILLIS_PER_SEC;
 
     @Value("${cache.maxsize:1000}")
     private String maxSize;
@@ -208,10 +212,26 @@ public class Cache {
         return lookup(NATIONAL_DATA, NATIONAL_DATA, supplier);
     }
 
-    public synchronized boolean getAndSetNationaldataCalculationOngoing(boolean b) {
+    public synchronized boolean getAndSetNationaldataCalculationOngoing(boolean isOngoing) {
         LOG.info("Getting and setting ongoing national data calculation");
-        final Boolean ongoingCalculation = getAndSet(NATIONAL_DATA, "ONGOING_CALCULATION", () -> b);
-        return ongoingCalculation != null ? ongoingCalculation : false;
+
+        final HashOperations<Object, Object, Object> ops = template.opsForHash();
+
+        final String hashKey = "ONGOING_CALCULATION";
+        final String key = NATIONAL_DATA;
+        if (!isOngoing) {
+            template.delete(key);
+            return false;
+        }
+
+        final Object existingValue = ops.get(key, hashKey);
+        ops.put(key, hashKey, true);
+        if (existingValue == null) {
+            template.expire(key, ONE_HOUR_IN_MILLIS, TimeUnit.MILLISECONDS);
+            return false;
+        }
+
+        return true;
     }
 
     public Collection<IntygType> getAllExistingIntygTypes(Supplier<Collection<IntygType>> supplier) {
