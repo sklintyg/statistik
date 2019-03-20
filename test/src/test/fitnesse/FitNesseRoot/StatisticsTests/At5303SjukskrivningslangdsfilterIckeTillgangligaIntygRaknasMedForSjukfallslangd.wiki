@@ -30,17 +30,17 @@ Inloggad:
 
 | Sjukfall i rapporten diagnosgrupp diagram |
 | inloggad som | år | månad | grupp | filter sjukskrivningslängd | män? | kvinnor? |
-| user1 | 2013 | feb | A00-E90, G00-L99, N00-N99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 0 | 1 |
-| user1 | 2013 | feb | F00-F99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 0 | 0 |
-| user1 | 2013 | mar | A00-E90, G00-L99, N00-N99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 0 | 0 |
-| user1 | 2013 | mar | F00-F99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 0 | 1 |
+| user1 | 2013 | feb | A00-E90, G00-L99, N00-N99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år  | 0 | 1 |
+| user1 | 2013 | feb | F00-F99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år  | 0 | 0 |
+| user1 | 2013 | mar | A00-E90, G00-L99, N00-N99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | 0 | 0 |
+| user1 | 2013 | mar | F00-F99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | 0 | 1 |
 
 | Sjukfall i rapporten diagnosgrupp |
 | inloggad som | år | månad | grupp | filter sjukskrivningslängd | män? | kvinnor? |
-| user1 | 2013 | feb | A00-B99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 0 | 1 |
-| user1 | 2013 | feb | F00-F99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 0 | 0 |
-| user1 | 2013 | mar | A00-B99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 0 | 0 |
-| user1 | 2013 | mar | F00-F99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 0 | 1 |
+| user1 | 2013 | feb | A00-B99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | 0 | 1 |
+| user1 | 2013 | feb | F00-F99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år  | 0 | 0 |
+| user1 | 2013 | mar | A00-B99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | 0 | 0 |
+| user1 | 2013 | mar | F00-F99 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år  | 0 | 1 |
 
 !1 Från AT132
 !3 Givet att:
@@ -62,10 +62,10 @@ Inloggad:
 
 | Sjukfall i rapporten sjukskrivningsgrad |
 | inloggad som | år | månad | sjukskrivningsgrad | filter sjukskrivningslängd | män? | kvinnor? |
-| user1 | 2014 | mar | 100 % | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 0 | 0 |
-| user1 | 2014 | mar | 50 % | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 0 | 1 |
-| user1 | 2014 | apr | 100 % | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 0 | 1 |
-| user1 | 2014 | apr | 50 % | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 0 | 0 |
+| user1 | 2014 | mar | 100 % | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | 0 | 0 |
+| user1 | 2014 | mar | 50 % | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | 0 | 1 |
+| user1 | 2014 | apr | 100 % | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år  | 0 | 1 |
+| user1 | 2014 | apr | 50 % | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | 0 | 0 |
 
 !1 Från AT144
 !3 Givet att:
@@ -94,36 +94,36 @@ Inloggad:
 
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | filter sjukskrivningslängd | vårdenhet | män? | kvinnor? |
-| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | enhet1 | -1 | -1 |
-| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | enhet2 | 1 | 0 |
+| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | enhet1 | -1 | -1 |
+| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | enhet2 | 1 | 0 |
 
 | Sjukfall i rapporten jamfor diagnoser diagram |
 | inloggad som | filter sjukskrivningslängd | valda diagnoskategorier | diagnoskategori | män? | kvinnor? |
-| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | F32, M54 | F32 | 0 | 0 |
-| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | F32, M54 | M54 | 1 | 0 |
+| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | F32, M54 | F32 | 0 | 0 |
+| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | F32, M54 | M54 | 1 | 0 |
 
 | Sjukfall i rapporten aldersgrupp |
 | inloggad som | filter sjukskrivningslängd | åldersgrupp | män? | kvinnor? |
-| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 21-25 år | 1 | 0 |
+| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | 21-25 år | 1 | 0 |
 
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | filter sjukskrivningslängd | sjukskrivningslängd | män? | kvinnor? |
-| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 91-180 dagar | 1 | 0 |
+| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | 91-180 dagar | 1 | 0 |
 
 | Sjukfall i rapporten sjukfall per lakare |
 | inloggad som | filter sjukskrivningslängd | läkare | män? | kvinnor? |
-| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | Anna Andersson | -1 | -1 |
-| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | Bo Bengtsson | 1 | 0 |
+| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | Anna Andersson | -1 | -1 |
+| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | Bo Bengtsson | 1 | 0 |
 
 | Sjukfall i rapporten lakarkonalder |
 | inloggad som | filter sjukskrivningslängd | läkargrupp | män? | kvinnor? |
-| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | Kvinnlig läkare 30-39 år | 0 | 0 |
-| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | Manlig läkare 40-49 år | 1 | 0 |
+| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | Kvinnlig läkare 30-39 år | 0 | 0 |
+| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | Manlig läkare 40-49 år | 1 | 0 |
 
 | Sjukfall i rapporten lakarbefattning |
 | inloggad som | filter sjukskrivningslängd | läkarbefattning | män? | kvinnor? |
-| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | Överläkare | -1 | -1 |
-| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | Företagsläkare | 1 | 0 |
+| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | Överläkare | -1 | -1 |
+| user2 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | Företagsläkare | 1 | 0 |
 
 !1 Från AT151
 !3 Givet att:
@@ -150,9 +150,9 @@ Inloggad:
 
 | Sjukfall i rapporten lakarbefattning |
 | inloggad som | läkarbefattning | filter sjukskrivningslängd | män? | kvinnor? |
-| user1 | Företagsläkare | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | -1 | -1 |
-| user1 | Specialistläkare | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 1 | 0 |
-| user1 | Skolläkare | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 1 | 0 |
+| user1 | Företagsläkare | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | -1 | -1 |
+| user1 | Specialistläkare | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | 1 | 0 |
+| user1 | Skolläkare | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | 1 | 0 |
 
 !1 Från AT152
 !3 Givet att:
@@ -180,8 +180,8 @@ Inloggad:
 
 | Sjukfall i rapporten sjukfall per lakare |
 | inloggad som | läkare | filter sjukskrivningslängd | män? | kvinnor? |
-| user1 | Anna Andersson | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | -1 | -1 |
-| user1 | Bo Bengtsson | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 1 | 0 |
+| user1 | Anna Andersson | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | -1 | -1 |
+| user1 | Bo Bengtsson | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | 1 | 0 |
 
 !1 Från AT154
 !3 Givet att:
@@ -197,9 +197,9 @@ Inloggad:
 !3 Då gäller:
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet | filter enheter | filter kategorier | filter sjukskrivningslängd | totalt? | män? | kvinnor? |
-| user2 | enhet1 | | | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | -1 | -1 | -1 |
-| user2 | enhet1 | enhet1 | G01 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | -1 | -1 | -1 |
-| user2 | enhet1 | enhet2 | G01 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | -1 | -1 | -1 |
-| user2 | enhet2 | | | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 1 | 1 | 0 |
-| user2 | enhet2 | enhet1 | G01 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | -1 | -1 | -1 |
-| user2 | enhet2 | enhet2 | G01 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2-3 år, 3- år | 1 | 1 | 0 |
+| user2 | enhet1 | | | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | -1 | -1 | -1 |
+| user2 | enhet1 | enhet1 | G01 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | -1 | -1 | -1 |
+| user2 | enhet1 | enhet2 | G01 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | -1 | -1 | -1 |
+| user2 | enhet2 | | | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | 1 | 1 | 0 |
+| user2 | enhet2 | enhet1 | G01 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | -1 | -1 | -1 |
+| user2 | enhet2 | enhet2 | G01 | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | 1 | 1 | 0 |

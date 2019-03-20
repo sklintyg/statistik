@@ -21,22 +21,22 @@ Nationell
 
 | Sjukfall i rapporten sjukskrivningslangd |
 | sjukskrivningslängd | totalt? | män? | kvinnor? |
-| 2-3 år | 0 | 0 | 0 |
-| 3- år | 1 | 0 | 1 |
+| 1-2 år | 0 | 0 | 0 |
+| 2- år | 1 | 0 | 1 |
 
 | Sjukfall i oversikt sjukskrivningslangd |
 | grupp | antal? |
-| 2-3 år | 0 |
-| 3- år | 1 |
+| 1-2 år | 0 |
+| 2- år | 1 |
 
 Inloggad
 
 | Sjukfall i rapporten sjukskrivningslangd |
 | inloggad som | sjukskrivningslängd | totalt? | män? | kvinnor? |
-| user1 | 2-3 år | 0 | 0 | 0 |
-| user1 | 3- år | 1 | 0 | 1 |
+| user1 | 1-2 år | 0 | 0 | 0 |
+| user1 | 2- år | 1 | 0 | 1 |
 
 | Sjukfall i oversikt sjukskrivningslangd |
 | inloggad som | grupp | antal? |
-| user2 | 2-3 år | 0 |
-| user2 | 3- år | 1 |
+| user2 | 1-2 år | 0 |
+| user2 | 2- år | 1 |

@@ -25,17 +25,15 @@ Test
 | user2 | 91-180 dagar | | 0 | 0 | 0 |
 | user2 | 181-364 dagar | | 1 | 0 | 1 |
 | user2 | 1-2 år | | 0 | 0 | 0 |
-| user2 | 2-3 år | | 1 | 1 | 0 |
-| user2 | 3- år | | 0 | 0 | 0 |
+| user2 | 2- år | | 1 | 1 | 0 |
 | user2 | Under 15 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 1 | 0 | 1 |
-| user2 | 15-30 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 | 0 |
-| user2 | 31-60 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 | 0 |
-| user2 | 61-90 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 1 | 1 | 0 |
-| user2 | 91-180 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 | 0 |
-| user2 | 181-364 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 | 0 |
-| user2 | 1-2 år | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 | 0 |
-| user2 | 2-3 år | Under 15 dagar, 61-90 dagar, 2-3 år | 1 | 1 | 0 |
-| user2 | 3- år | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 | 0 |
+| user2 | 15-30 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 | 0 |
+| user2 | 31-60 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 | 0 |
+| user2 | 61-90 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 1 | 1 | 0 |
+| user2 | 91-180 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 | 0 |
+| user2 | 181-364 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 | 0 |
+| user2 | 1-2 år | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 | 0 |
+| user2 | 2- år | Under 15 dagar, 61-90 dagar, 2-3 år | 1 | 1 | 0 |
 | user2 | Under 15 dagar | 181-364 dagar | 0 | 0 | 0 |
 | user2 | 15-30 dagar | 181-364 dagar | 0 | 0 | 0 |
 | user2 | 31-60 dagar | 181-364 dagar | 0 | 0 | 0 |
@@ -43,8 +41,7 @@ Test
 | user2 | 91-180 dagar | 181-364 dagar | 0 | 0 | 0 |
 | user2 | 181-364 dagar | 181-364 dagar | 1 | 0 | 1 |
 | user2 | 1-2 år | 181-364 dagar | 0 | 0 | 0 |
-| user2 | 2-3 år | 181-364 dagar | 0 | 0 | 0 |
-| user2 | 3- år | 181-364 dagar | 0 | 0 | 0 |
+| user2 | 2- år | 181-364 dagar | 0 | 0 | 0 |
 
 | Sjukfall i rapporten sjukskrivningslangd som tidsserie |
 | inloggad som | år | månad | sjukskrivningslängd | filter sjukskrivningslängd | män? | kvinnor? |
@@ -55,17 +52,15 @@ Test
 | user2 | 2014 | feb | 91-180 dagar | | 0 | 0 |
 | user2 | 2014 | feb | 181-364 dagar | | 0 | 0 |
 | user2 | 2014 | feb | 1-2 år | | 0 | 0 |
-| user2 | 2014 | feb | 2-3 år | | 1 | 0 |
-| user2 | 2014 | feb | 3- år | | 0 | 0 |
+| user2 | 2014 | feb | 2- år | | 1 | 0 |
 | user2 | 2014 | feb | Under 15 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 |
-| user2 | 2014 | feb | 15-30 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 |
-| user2 | 2014 | feb | 31-60 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 |
-| user2 | 2014 | feb | 61-90 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 |
-| user2 | 2014 | feb | 91-180 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 |
-| user2 | 2014 | feb | 181-364 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 |
-| user2 | 2014 | feb | 1-2 år | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 |
-| user2 | 2014 | feb | 2-3 år | Under 15 dagar, 61-90 dagar, 2-3 år | 1 | 0 |
-| user2 | 2014 | feb | 3- år | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 |
+| user2 | 2014 | feb | 15-30 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 |
+| user2 | 2014 | feb | 31-60 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 |
+| user2 | 2014 | feb | 61-90 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 |
+| user2 | 2014 | feb | 91-180 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 |
+| user2 | 2014 | feb | 181-364 dagar | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 |
+| user2 | 2014 | feb | 1-2 år | Under 15 dagar, 61-90 dagar, 2-3 år | 0 | 0 |
+| user2 | 2014 | feb | 2- år | Under 15 dagar, 61-90 dagar, 2-3 år | 1 | 0 |
 | user2 | 2014 | feb | Under 15 dagar | 15-30 dagar | 0 | 0 |
 | user2 | 2014 | feb | 15-30 dagar | 15-30 dagar | 1 | 0 |
 | user2 | 2014 | feb | 31-60 dagar | 15-30 dagar | 0 | 0 |
@@ -73,5 +68,4 @@ Test
 | user2 | 2014 | feb | 91-180 dagar | 15-30 dagar | 0 | 0 |
 | user2 | 2014 | feb | 181-364 dagar | 15-30 dagar | 0 | 0 |
 | user2 | 2014 | feb | 1-2 år | 15-30 dagar | 0 | 0 |
-| user2 | 2014 | feb | 2-3 år | 15-30 dagar | 0 | 0 |
-| user2 | 2014 | feb | 3- år | 15-30 dagar | 0 | 0 |
+| user2 | 2014 | feb | 2- år | 15-30 dagar | 0 | 0 |
