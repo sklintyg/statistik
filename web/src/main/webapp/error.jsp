@@ -54,92 +54,83 @@
 <div class="container-fluid">
 
     <div class="row-fluid">
-        <div class="span6">
-            <img class="pull-right" src="/assets/images/404.png" style="width: 50%"/>
-        </div>
-        <div class="span6">
+        <c:choose>
 
-            <c:choose>
+            <c:when test="${param.reason eq \"medarbetaruppdrag\"}">
+                <h1>
+                    Inget medarbetaruppdrag
+                </h1>
 
-                <c:when test="${param.reason eq \"medarbetaruppdrag\"}">
-                    <h1>
-                        Inget medarbetaruppdrag
-                    </h1>
+                <div id="noAuth" class="alert alert-error">
+                    Medarbetaruppdrag saknas
+                </div>
 
-                    <div id="noAuth" class="alert alert-error">
-                        Medarbetaruppdrag saknas
-                    </div>
-                    
-                </c:when>
+            </c:when>
 
-                <c:when test="${param.reason eq \"badcredentials\"}">
-                    <h1>
-                        Inloggningen misslyckades
-                    </h1>
+            <c:when test="${param.reason eq \"badcredentials\"}">
+                <h1>
+                    Inloggningen misslyckades
+                </h1>
 
-                    <div id="noAuth" class="alert alert-error">
-                        Inloggningen misslyckades
-                    </div>
-                    
-                </c:when>
+                <div id="noAuth" class="alert alert-error">
+                    Inloggningen misslyckades
+                </div>
 
-                <c:when test="${param.reason eq \"notfound\"}">
-                    <h1>
-                        not found
-                    </h1>
+            </c:when>
 
-                    <div id="notFound" class="alert alert-error">
-                        not found text
-                    </div>
-                </c:when>
+            <c:when test="${param.reason eq \"notfound\"}">
+                <h1>
+                    not found
+                </h1>
 
-                <c:otherwise>
-                    <h1>
-                        Tekniskt fel
-                    </h1>
+                <div id="notFound" class="alert alert-error">
+                    not found text
+                </div>
+            </c:when>
 
-                    <div id="genericTechProblem" class="alert alert-error">
-                        Ett tekniskt fel har inträffat. Prova igen eller kontakta support om problemet kvarstår.
-                    </div>
-                    
-                    <!-- reason: generic -->
-                </c:otherwise>
-            </c:choose>
+            <c:otherwise>
+                <h1>
+                    Tekniskt fel
+                </h1>
 
-            <a href="/" class="btn btn-success" id="loginBtn">Till förstasidan</a>
+                <div id="genericTechProblem" class="alert alert-error">
+                    Ett tekniskt fel har inträffat. Prova igen eller kontakta support om problemet kvarstår.
+                </div>
+
+                <!-- reason: generic -->
+            </c:otherwise>
+        </c:choose>
+
+        <a href="/" class="btn btn-success" id="loginBtn">Till förstasidan</a>
 
 
-            <!--
-            Error:
-            <c:catch>
-             <c:out value="${pageContext.errorData.throwable.message}" />,
+        <!--
+        Error:
+        <c:catch>
+         <c:out value="${pageContext.errorData.throwable.message}" />,
 
-             Stacktrace:
-            <c:forEach items="${pageContext.errorData.throwable.stackTrace}" var="element">
-              <c:out value="${element}" />,
-              </c:forEach>
-             </c:catch>
+         Stacktrace:
+        <c:forEach items="${pageContext.errorData.throwable.stackTrace}" var="element">
+          <c:out value="${element}" />,
+          </c:forEach>
+         </c:catch>
 
-             Spring security exception message:
-             <c:out value="${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}"/>
+         Spring security exception message:
+         <c:out value="${sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}"/>
 
-            Spring security exceptions recursive:
-            <c:set var="current_exception" value="${sessionScope.SPRING_SECURITY_LAST_EXCEPTION}" />
-            <c:forEach begin="0" end="10" step="1" var="i">
-                <c:if test="${not empty current_exception}">
-                    <c:out value="" />
-                    <c:out value="${current_exception.message}" />
-                    <c:forEach items="${current_exception.stackTrace}" var="element">
-                        <c:out value="${element}" />
-                    </c:forEach>
-                    <c:set var="current_exception" value="${current_exception.cause}" />
-                </c:if>
-            </c:forEach>
-          -->
-
-
-
-        </div>
+        Spring security exceptions recursive:
+        <c:set var="current_exception" value="${sessionScope.SPRING_SECURITY_LAST_EXCEPTION}" />
+        <c:forEach begin="0" end="10" step="1" var="i">
+            <c:if test="${not empty current_exception}">
+                <c:out value="" />
+                <c:out value="${current_exception.message}" />
+                <c:forEach items="${current_exception.stackTrace}" var="element">
+                    <c:out value="${element}" />
+                </c:forEach>
+                <c:set var="current_exception" value="${current_exception.cause}" />
+            </c:if>
+        </c:forEach>
+      -->
     </div>
 </div>
 
