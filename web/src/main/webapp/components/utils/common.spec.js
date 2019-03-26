@@ -434,9 +434,12 @@ describe('Test of common functions for controllers', function() {
             };
             var statisticsLevel = 'base';
             var gender = 'män';
-            var result = ControllerCommons.getExportFileName(statisticsLevel, gender);
-
-            var date = moment().format('YYMMDD_HHmmss');
+            var date, result, dateAfter;
+            do {
+                date = moment().format('YYMMDD_HHmmss');
+                result = ControllerCommons.getExportFileName(statisticsLevel, gender);
+                dateAfter = moment().format('YYMMDD_HHmmss');
+            } while (date !== dateAfter);
 
             expect(result).toEqual('base__man_' + date);
         });
@@ -448,9 +451,12 @@ describe('Test of common functions for controllers', function() {
             };
             var statisticsLevel = 'base';
             var gender = '';
-            var result = ControllerCommons.getExportFileName(statisticsLevel, gender);
-
-            var date = moment().format('YYMMDD_HHmmss');
+            var date, result, dateAfter;
+            do {
+                date = moment().format('YYMMDD_HHmmss');
+                result = ControllerCommons.getExportFileName(statisticsLevel, gender);
+                dateAfter = moment().format('YYMMDD_HHmmss');
+            } while (date !== dateAfter);
 
             expect(result).toEqual('base_testar_' + date);
         });
@@ -462,9 +468,12 @@ describe('Test of common functions for controllers', function() {
             };
             var statisticsLevel = 'base';
             var gender = 'man';
-            var result = ControllerCommons.getExportFileName(statisticsLevel, gender);
-
-            var date = moment().format('YYMMDD_HHmmss');
+            var date, result, dateAfter;
+            do {
+                date = moment().format('YYMMDD_HHmmss');
+                result = ControllerCommons.getExportFileName(statisticsLevel, gender);
+                dateAfter = moment().format('YYMMDD_HHmmss');
+            } while (date !== dateAfter);
 
             expect(result).toEqual('base_testar_man_' + date);
         });
@@ -476,9 +485,12 @@ describe('Test of common functions for controllers', function() {
             };
             var statisticsLevel = 'ÅåÄäÖö.,=';
             var gender = 'man';
-            var result = ControllerCommons.getExportFileName(statisticsLevel, gender);
-
-            var date = moment().format('YYMMDD_HHmmss');
+            var date, result, dateAfter;
+            do {
+                date = moment().format('YYMMDD_HHmmss');
+                result = ControllerCommons.getExportFileName(statisticsLevel, gender);
+                dateAfter = moment().format('YYMMDD_HHmmss');
+            } while (date !== dateAfter);
 
             expect(result).toEqual('AaAaOo._testar_man_' + date);
         });
