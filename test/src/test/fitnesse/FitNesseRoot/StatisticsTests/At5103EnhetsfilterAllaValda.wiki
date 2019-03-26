@@ -47,6 +47,6 @@ Sjukskrivningslängdfilter:
 
 | Sjukfall i rapporten sjukfall per enhet |
 | inloggad som | vårdenhet    | vårdgivarnivå | filter sjukskrivningslängd  | allaSjukskrivningslängdfilterValda? | sjukskrivningslangdfilterlista? | kommentar |
-| user2        | enhet1       | true          |                             | true                                | [Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar] | Inget alternativ valt |
+| user2        | enhet1       | true          |                             | true                                | [Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år] | Inget alternativ valt |
 | user2        | enhet1       | true          | Under 15 dagar, 61-90 dagar | false                               | [Under 15 dagar, 61-90 dagar] | Några (men inte alla) alternativ valda |
-| user2        | enhet1       | true          | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar | true | [Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-365 dagar, Över 365 dagar]| Samtliga alternativ valda |
+| user2        | enhet1       | true          | Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år | true | [Under 15 dagar, 15-30 dagar, 31-60 dagar, 61-90 dagar, 91-180 dagar, 181-364 dagar, 1-2 år, 2- år]| Samtliga alternativ valda |

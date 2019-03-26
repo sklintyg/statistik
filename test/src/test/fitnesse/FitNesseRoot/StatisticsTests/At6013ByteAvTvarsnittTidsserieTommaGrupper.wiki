@@ -302,7 +302,7 @@ SJUKSKRIVNINGSLANGD: Alla grupper visas alltid.
 | inloggad som | sjukskrivningslängd | totalt? | män? | kvinnor? |
 | user2 | 61-90 dagar | 0 | 0 | 0 |
 | user2 | 91-180 dagar | 1 | 1 | 0 |
-| user2 | Över 365 dagar | 0 | 0 | 0 |
+| user2 | 1-2 år | 0 | 0 | 0 |
 
 | Sjukfall i rapporten sjukskrivningslangd som tidsserie |
 | inloggad som | år | månad | sjukskrivningslängd | män? | kvinnor? |
@@ -340,7 +340,7 @@ SJUKSKRIVNINGSLANGD: Alla grupper visas alltid.
 | user2 | 2014 | aug | 91-180 dagar | 1 | 0 |
 | user2 | 2014 | sep | 91-180 dagar | 1 | 0 |
 | user2 | 2014 | okt | 91-180 dagar | 1 | 0 |
-| user2 | 2014 | jan | Över 365 dagar | 0 | 0 |
+| user2 | 2014 | jan | 1-2 år | 0 | 0 |
 
 LÄKARE: Bara de läkare som har data på sig under tidsintervallet visas.
 

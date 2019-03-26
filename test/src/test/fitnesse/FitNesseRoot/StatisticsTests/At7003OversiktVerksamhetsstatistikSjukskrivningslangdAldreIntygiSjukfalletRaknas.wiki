@@ -25,8 +25,9 @@ Inloggad:
 |user2         |31-60 dagar     |0      |
 |user2         |61-90 dagar     |0      |
 |user2         |91-180 dagar    |0      |
-|user2         |181-365 dagar   |0      |
-|user2         |Över 365 dagar  |0      |
+|user2         |181-364 dagar   |0      |
+|user2         |1-2 år          |0      |
+|user2         |2- år           |0      |
 
 Nationell:
 |Sjukfall i oversikt sjukskrivningslangd|
@@ -36,5 +37,6 @@ Nationell:
 |31-60 dagar            |0              |
 |61-90 dagar            |0              |
 |91-180 dagar           |0              |
-|181-365 dagar          |0              |
-|Över 365 dagar         |0              |
+|181-364 dagar          |0              |
+|1-2 år                 |0              |
+|2- år                  |0              |

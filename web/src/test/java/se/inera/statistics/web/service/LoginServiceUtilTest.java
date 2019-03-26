@@ -103,7 +103,7 @@ public class LoginServiceUtilTest {
         final StaticData staticData = loginServiceUtil.getStaticData();
 
         // Then
-        assertEquals(7, staticData.getSjukskrivningLengths().size());
+        assertEquals(8, staticData.getSjukskrivningLengths().size());
         assertEquals("Under 15 dagar", staticData.getSjukskrivningLengths().get("GROUP1_0TO14"));
     }
 

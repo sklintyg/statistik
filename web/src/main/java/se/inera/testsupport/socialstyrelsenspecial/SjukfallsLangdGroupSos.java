@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package se.inera.statistics.service.report.util;
+package se.inera.testsupport.socialstyrelsenspecial;
 
 import java.util.Arrays;
 import java.util.List;
@@ -25,21 +25,19 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public enum SjukfallsLangdGroup {
+public enum SjukfallsLangdGroupSos {
 
     GROUP1_0TO14("Under 15 dagar", 0, 14),
     GROUP2_15TO30("15-30 dagar", 15, 30),
     GROUP3_31TO60("31-60 dagar", 31, 60),
     GROUP4_61TO90("61-90 dagar", 61, 90),
     GROUP5_91TO180("91-180 dagar", 91, 180),
-    GROUP6_181TO364("181-364 dagar", 181, 364),
-    GROUP7_365TO730("1-2 år", 365, 730),
-    GROUP8_731PLUS("2- år", 731, Integer.MAX_VALUE - 1);
+    GROUP6_181TO365("181-365 dagar", 181, 365),
+    GROUP7_366PLUS("Över 365 dagar", 366, Integer.MAX_VALUE - 1);
 
-    private static final Logger LOG = LoggerFactory.getLogger(SjukfallsLangdGroup.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SjukfallsLangdGroupSos.class);
 
-    private static final List<SjukfallsLangdGroup> LONG_SJUKFALLS =
-            Arrays.asList(GROUP5_91TO180, GROUP6_181TO364, GROUP7_365TO730, GROUP8_731PLUS);
+    private static final List<SjukfallsLangdGroupSos> LONG_SJUKFALLS = Arrays.asList(GROUP5_91TO180, GROUP6_181TO365, GROUP7_366PLUS);
 
     private final String groupName;
     private final int from;
@@ -49,7 +47,7 @@ public enum SjukfallsLangdGroup {
      * @param from Range start, inclusive
      * @param to Range end, inclusive
      */
-    SjukfallsLangdGroup(String groupName, int from, int to) {
+    SjukfallsLangdGroupSos(String groupName, int from, int to) {
         this.groupName = groupName;
         this.from = from;
         this.to = to;
@@ -67,13 +65,13 @@ public enum SjukfallsLangdGroup {
         return to;
     }
 
-    public static Optional<SjukfallsLangdGroup> getByName(String name) {
+    public static Optional<SjukfallsLangdGroupSos> getByName(String name) {
         return Arrays.stream(values()).filter(group -> group.groupName.equalsIgnoreCase(name)).findFirst();
     }
 
-    public static Optional<SjukfallsLangdGroup> parse(String name) {
+    public static Optional<SjukfallsLangdGroupSos> parse(String name) {
         try {
-            final SjukfallsLangdGroup sjukfallsLangdGroup = valueOf(name);
+            final SjukfallsLangdGroupSos sjukfallsLangdGroup = valueOf(name);
             return Optional.of(sjukfallsLangdGroup);
         } catch (IllegalArgumentException e) {
             LOG.debug("Failed to parse name: {}", name, e);
@@ -81,8 +79,8 @@ public enum SjukfallsLangdGroup {
         }
     }
 
-    public static SjukfallsLangdGroup getByLength(int length) {
-        for (SjukfallsLangdGroup group : values()) {
+    public static SjukfallsLangdGroupSos getByLength(int length) {
+        for (SjukfallsLangdGroupSos group : values()) {
             if (group.from <= length && group.to >= length) {
                 return group;
             }

@@ -154,7 +154,7 @@ Inloggad:
 |inloggad som|sjukskrivningslängd|totalt?|män?|kvinnor?|
 |user2       |15-30 dagar        |1      |1   |0       |
 |user2       |91-180 dagar       |1      |0   |1       |
-|user2       |181-365 dagar      |0      |0   |0       |
+|user2       |181-364 dagar      |0      |0   |0       |
 
 |Sjukfall i rapporten langa sjukfall  |
 |inloggad som|år  |månad|män?|kvinnor?|

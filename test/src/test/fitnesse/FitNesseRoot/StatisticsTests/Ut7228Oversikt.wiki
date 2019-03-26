@@ -52,8 +52,9 @@ Test
 | user2        | Under 15 dagar | 1      |
 | user2        | 15-30 dagar    | 0      |
 | user2        | 91-180 dagar   | 4      |
-| user2        | 181-365 dagar  | 0      |
-| user2        | Över 365 dagar | 0      |
+| user2        | 181-364 dagar  | 0      |
+| user2        | 1-2 år         | 0      |
+| user2        | 2- år          | 0      |
 
 
 Nationell:
@@ -89,5 +90,6 @@ Nationell:
 | Under 15 dagar | 1      |
 | 15-30 dagar    | 0      |
 | 91-180 dagar   | 4      |
-| 181-365 dagar  | 0      |
-| Över 365 dagar | 0      |
+| 181-364 dagar  | 0      |
+| 1-2 år         | 0      |
+| 2- år          | 0      |

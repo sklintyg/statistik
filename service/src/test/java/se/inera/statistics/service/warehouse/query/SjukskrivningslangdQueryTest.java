@@ -115,8 +115,8 @@ public class SjukskrivningslangdQueryTest {
         assertAmountAndName(count.get(1), 2, "15-30");
         assertAmountAndName(count.get(2), 5, "31-60");
         assertAmountAndName(count.get(3), 1, "91-180");
-        assertAmountAndName(count.get(4), 1, "181-365");
-        assertAmountAndName(count.get(5), 1, "Över 365");
+        assertAmountAndName(count.get(4), 1, "181-364");
+        assertAmountAndName(count.get(5), 1, "1-2 år");
     }
 
     private void assertAmountAndName(Counter<Ranges.Range> rangeCounter, int expectedAmount, String nameContains) {

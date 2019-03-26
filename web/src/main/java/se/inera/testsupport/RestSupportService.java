@@ -84,7 +84,6 @@ import se.inera.statistics.service.report.model.Kon;
 import se.inera.statistics.service.report.model.KonField;
 import se.inera.statistics.service.report.model.Range;
 import se.inera.statistics.service.report.util.Icd10;
-import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
 import se.inera.statistics.service.warehouse.Aisle;
 import se.inera.statistics.service.warehouse.NationellDataInvoker;
 import se.inera.statistics.service.warehouse.SjukfallUtil;
@@ -100,6 +99,7 @@ import se.inera.statistics.web.service.endpoints.ChartDataService;
 import se.inera.testsupport.fkrapport.FkReportCreator;
 import se.inera.testsupport.fkrapport.FkReportDataRow;
 import se.inera.testsupport.socialstyrelsenspecial.IntygCommonSosManager;
+import se.inera.testsupport.socialstyrelsenspecial.SjukfallsLangdGroupSos;
 import se.inera.testsupport.socialstyrelsenspecial.SosCalculatedRow;
 import se.inera.testsupport.socialstyrelsenspecial.SosCountRow;
 import se.inera.testsupport.socialstyrelsenspecial.SosMeCfs1ReportCreator;
@@ -506,7 +506,7 @@ public class RestSupportService {
                 map.put("totalt", r.getTotalt());
                 map.put("kvinnor", r.getKvinnor());
                 map.put("man", r.getMan());
-                for (SjukfallsLangdGroup group : SjukfallsLangdGroup.values()) {
+                for (SjukfallsLangdGroupSos group : SjukfallsLangdGroupSos.values()) {
                     map.put(group.getGroupName() + " K", r.getFemaleByLength(group));
                     map.put(group.getGroupName() + " M", r.getMaleByLength(group));
                 }
@@ -520,10 +520,10 @@ public class RestSupportService {
             final Map<Kon, List<SosRow>> rowsByGender = stringListEntry.getValue().stream().collect(Collectors.groupingBy(SosRow::getKon));
 
             final List<SosRow> maleRows = getNullSafeList(rowsByGender.get(Kon.MALE));
-            final Map<SjukfallsLangdGroup, Integer> malePerLength = getCountPerSjukfallsLangd(maleRows);
+            final Map<SjukfallsLangdGroupSos, Integer> malePerLength = getCountPerSjukfallsLangd(maleRows);
 
             final List<SosRow> femaleRows = getNullSafeList(rowsByGender.get(Kon.FEMALE));
-            final Map<SjukfallsLangdGroup, Integer> femalePerLength = getCountPerSjukfallsLangd(femaleRows);
+            final Map<SjukfallsLangdGroupSos, Integer> femalePerLength = getCountPerSjukfallsLangd(femaleRows);
 
             final String diagnos = stringListEntry.getKey();
             final int femaleCount = femaleRows.size();
@@ -537,9 +537,9 @@ public class RestSupportService {
         return list != null ? list : Collections.emptyList();
     }
 
-    private Map<SjukfallsLangdGroup, Integer> getCountPerSjukfallsLangd(List<SosRow> sosRows) {
-        final Map<SjukfallsLangdGroup, List<SosRow>> rowsByLength = sosRows.stream().collect(
-                Collectors.groupingBy(sosRow -> SjukfallsLangdGroup.getByLength(sosRow.getLength())));
+    private Map<SjukfallsLangdGroupSos, Integer> getCountPerSjukfallsLangd(List<SosRow> sosRows) {
+        final Map<SjukfallsLangdGroupSos, List<SosRow>> rowsByLength = sosRows.stream().collect(
+                Collectors.groupingBy(sosRow -> SjukfallsLangdGroupSos.getByLength(sosRow.getLength())));
         return rowsByLength.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, it -> it.getValue().size()));
     }
 

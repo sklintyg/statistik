@@ -1,5 +1,4 @@
 ---
-Prune
 Test
 ---
 Det finns ett antal intyg med ett antal tillhörande meddelanden.
@@ -46,7 +45,7 @@ Inloggad:
 | Andel i rapporten komplettering andel intyg |
 | inloggad som | år | månad | grupp | filter sjukskrivningslängd | grupp totalt? | män? | kvinnor? |
 | user1 | 2015 | feb | FK 7800 Läkarutlåtande för sjukersättning | 1-2 år | 0% | 0% | 0% |
-| user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga  | 1-2 år | 0% | 0% | 0% |
+| user1 | 2015 | feb | FK 7801 Läkarutlåtande för aktivitetsersättning vid nedsatt arbetsförmåga | 1-2 år | 0% | 0% | 0% |
 | user1 | 2015 | feb | FK 7802 Läkarutlåtande för aktivitetsersättning vid förlängd skolgång | 1-2 år | 0% | 0% | 0% |
 | user1 | 2015 | feb | FK 7804 Läkarintyg för sjukpenning | 1-2 år | 100% | 0% | 100% |
 | user1 | 2015 | mar | FK 7800 Läkarutlåtande för sjukersättning | 1-2 år | 0% | 0% | 0% |

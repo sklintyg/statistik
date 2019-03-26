@@ -28,7 +28,7 @@ Test
 | 19801013-9297 | C50 | 2017-01-01 | 2017-05-01 | | enhet1 |
 | 19801013-9297 | G93.3 | 2017-05-02 | 2017-09-01 | 244 dagar | enhet1 |
 | 19801013-9297 | G93.3 | 2017-05-02 | 2017-09-01 | 244 dagar | enhet1 |
-| 19801013-9297 | G93.3 | 2017-05-02 | 2017-09-01 | 244 dagar | enhet1 |
+| 19801013-9291 | G93.3 | 2017-01-02 | 2017-09-01 | 243 dagar | enhet1 |
 | 19801207-9284 | G93.3 | 2017-01-01 | 2017-05-01 | 121 dagar | enhet1 |
 | 19991109-2681 | G93.3 | 2017-01-01 | 2017-03-01 | 60 dagar | enhet1 |
 | 19800101-9312 | C50 | 2017-01-01 | 2017-03-01 | 60 dagar | enhet1 |
@@ -45,10 +45,10 @@ Test
 | 31-60 dagar | 8 |
 | 61-90 dagar | 1 |
 | 91-180 dagar | 3 |
-| 181-365 dagar | 1 |
+| 181-365 dagar | 2 |
 | Över 365 dagar | 1 |
-| Vanligaste diagnos i sjukfall över 180 dagar #1 är G93 med 1 förekomster (50.0% av 2) | 0 |
-| Vanligaste diagnos i sjukfall över 180 dagar #2 är F43 med 1 förekomster (50.0% av 2) | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #1 är G93 med 2 förekomster (66.66666666666667% av 3) | 0 |
+| Vanligaste diagnos i sjukfall över 180 dagar #2 är F43 med 1 förekomster (33.333333333333336% av 3) | 0 |
 | Vanligaste diagnos i sjukfall 91-180 dagar #1 är G93 med 3 förekomster (100.0% av 3) | 0 |
 
 Längst ned är två tio-i-topp listor med de vanligaste diagnoserna för gruppen 91-180 dagar och för alla sjukfall som är över 180 dagar långa.

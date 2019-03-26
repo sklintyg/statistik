@@ -18,8 +18,6 @@
  */
 package se.inera.testsupport.socialstyrelsenspecial;
 
-import se.inera.statistics.service.report.util.SjukfallsLangdGroup;
-
 import java.util.Map;
 
 public class SosCountRow {
@@ -28,11 +26,11 @@ public class SosCountRow {
     private Number totalt;
     private Number kvinnor;
     private Number man;
-    private Map<SjukfallsLangdGroup, Integer> malePerLength;
-    private Map<SjukfallsLangdGroup, Integer> femalePerLength;
+    private Map<SjukfallsLangdGroupSos, Integer> malePerLength;
+    private Map<SjukfallsLangdGroupSos, Integer> femalePerLength;
 
     public SosCountRow(String diagnos, Number totalt, Number kvinnor, Number man,
-                       Map<SjukfallsLangdGroup, Integer> malePerLength, Map<SjukfallsLangdGroup, Integer> femalePerLength) {
+                       Map<SjukfallsLangdGroupSos, Integer> malePerLength, Map<SjukfallsLangdGroupSos, Integer> femalePerLength) {
         this.diagnos = diagnos;
         this.totalt = totalt;
         this.kvinnor = kvinnor;
@@ -57,12 +55,12 @@ public class SosCountRow {
         return man;
     }
 
-    public Integer getMaleByLength(SjukfallsLangdGroup length) {
+    public Integer getMaleByLength(SjukfallsLangdGroupSos length) {
         final Integer count = malePerLength.get(length);
         return count != null ? count : 0;
     }
 
-    public int getFemaleByLength(SjukfallsLangdGroup length) {
+    public int getFemaleByLength(SjukfallsLangdGroupSos length) {
         final Integer count = femalePerLength.get(length);
         return count != null ? count : 0;
     }

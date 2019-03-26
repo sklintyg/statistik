@@ -91,7 +91,7 @@ Inloggad:
 | inloggad som | sjukskrivningslängd | filter kapitel | filter enheter | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
 | user2        | 15-30 dagar         | G00-G99        | enhet1,enhet2  | 2013-10-01 | 2014-01-30 | 0 | 0 | 0 |
 | user2        | 91-180 dagar        | G00-G99        | enhet1,enhet2  | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
-| user2        | 181-365 dagar       | G00-G99        | enhet1,enhet2  | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
+| user2        | 181-364 dagar       | G00-G99        | enhet1,enhet2  | 2013-10-01 | 2014-01-30 | 1 | 0 | 1 |
 
 | Sjukfall i rapporten langa sjukfall |
 | inloggad som | år   | månad | filter kapitel | filter enheter | filter startdatum | filter slutdatum | totalt? | män? | kvinnor? |
