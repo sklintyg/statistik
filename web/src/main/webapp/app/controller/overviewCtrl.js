@@ -257,7 +257,7 @@ angular.module('StatisticsApp').controller('overviewCtrl',
                 series: series,
                 type: 'bubble',
                 overview: true,
-                unit: 'sjukfall per miljon invånare',
+                unit: 'sjukfall per 1000 invånare',
                 maxWidthPercentage: 120
             };
 
