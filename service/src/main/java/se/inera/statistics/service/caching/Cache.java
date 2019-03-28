@@ -62,6 +62,7 @@ public class Cache {
     private static final String REDIS_KEY_PREFIX = "INTYGSSTATISTIK_";
     private static final String AISLE = REDIS_KEY_PREFIX + "AISLE_";
     private static final String NATIONAL_DATA = REDIS_KEY_PREFIX + "NATIONAL_DATA_";
+    private static final String NATIONAL_DATA_CALCULATING = REDIS_KEY_PREFIX + "NATIONAL_DATA_ONGOING_CALCULATION";
     private static final String SJUKFALLGROUP = REDIS_KEY_PREFIX + "SJUKFALLGROUP_";
     private static final String VGENHET = REDIS_KEY_PREFIX + "VGENHET_";
     private static final String ENHET = REDIS_KEY_PREFIX + "ENHET_";
@@ -98,7 +99,8 @@ public class Cache {
     public void clearCaches() {
         logMDCHelper.run(() -> {
             LOG.info("Clear Redis Cache Keys");
-            template.delete(Lists.newArrayList(AISLE, SJUKFALLGROUP, VGENHET, ENHET, NATIONAL_DATA, EXISTING_INTYGTYPES));
+            template.delete(Lists.newArrayList(
+                    AISLE, SJUKFALLGROUP, VGENHET, ENHET, NATIONAL_DATA, NATIONAL_DATA_CALCULATING, EXISTING_INTYGTYPES));
         });
     }
 
@@ -218,7 +220,7 @@ public class Cache {
         final HashOperations<Object, Object, Object> ops = template.opsForHash();
 
         final String hashKey = "ONGOING_CALCULATION";
-        final String key = NATIONAL_DATA;
+        final String key = NATIONAL_DATA_CALCULATING;
         if (!isOngoing) {
             template.delete(key);
             return false;
