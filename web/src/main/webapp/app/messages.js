@@ -230,7 +230,7 @@ var stMessages = {
         'login.alert-loginrequired': 'Inloggning krävs. Du försöker nå en sida som kräver inloggning. Vänligen logga in för att komma vidare.',
         'login.alert-info': 'Info!',
         'login.alert-danger': 'Ajdå!',
-        'login.instruktioner-for-login': 'För att logga in behöver du ett SITHS/Efos-kort samt medarbetaruppdraget "Statistik" i HSA-katalogen.',
+        'login.instruktioner-for-login': 'För att logga in behöver du ett SITHS-kort samt medarbetaruppdraget "Statistik" i HSA-katalogen.',
         'login.btn.siths-login': 'Logga in',
 
         'selectvg.header': 'Välj vårdgivare',
@@ -267,80 +267,7 @@ var stMessages = {
         'alert.upload.success': 'Uppladdningen lyckades!',
         'info.upload.dropfile.here': 'Släpp fil här för att ladda upp eller ',
         'info.upload.dropfile.here.add': 'lägg till',
-        'info.upload.fallbacktext': 'Din webbläsare stödjer inte filuppladdning via "dra och släpp". Vänligen använd knappen nedan för att ladda upp filen.',
-
-        'faq.stats.1.title': 'Vad innehåller Intygsstatistik?',
-        'faq.stats.1.body': '<p>Innehållet i Intygsstatistik baseras främst på de elektroniska läkarintyg som utfärdas när en läkare ' +
-            'bedömer att en individ behöver exempelvis sjukskrivas eller är i behov av aktivitetsersättning. ' +
-            'Tjänsten innehåller information från samtliga elektroniska läkarintyg som utfärdats inom hälso- och sjukvården efter oktober 2013. ' +
-            'Intygsstatistik registrerar inte utfallet av intyget, det vill säga vilken bedömning Försäkringskassan gör.</p>' +
-            '<p>Utöver läkarintygen innehåller Intygsstatistik dessutom statistik över den ärendekommunikation som sker mellan intygsutfärdare och Försäkringskassan. ' +
-            'Tjänsten innehåller information från samtliga meddelanden som har skickats elektroniskt som ett ärende från Försäkringskassan till intygsutfärdaren.</p>' +
-            '<p>Utifrån intygsinformationen hämtar Intygsstatistik därtill mer information om läkaren som skrivit intyget och om vårdenheten som han eller hon arbetar på. ' +
-            'Dessa uppgifter hämtas från HSA-katalogen och syftet är att kunna ta fram mer värdefull och intressant statistik.</p>',
-
-        'faq.stats.2.title': 'Vilka intyg filtreras bort från statistiken?',
-        'faq.stats.2.body': '<p>Läkarintyg som inte motsvarar Intygsstatistiks kvalitetskrav filtreras bort och kommer inte med i några statistikrapporter. ' +
-            'Filtreringen görs för att öka kvaliteten i den resulterande statistiken.</p>' +
-            '<p>Kraven som ställs på läkarintyg för att de ska kunna vara del av statistiken är:</p>' +
-            '<ul>' +
-            '<li>Patientens födelsedatum i läkarintyget (utifrån personnummer eller samordningsnummer) måste motsvara ett riktigt datum.</li>' +
-            '<li>Intyget får inte vara makulerat.</li>' +
-            '<li>Den enhet inom hälso- och sjukvården som utfärdar intyget måste finnas i den nationella HSA-katalogen ' +
-            '(en elektronisk katalog som innehåller kvalitetssäkrade uppgifter om bland annat enheter och personer i hälso- och sjukvården).</li>' +
-            '<li>Den enhet inom hälso- och sjukvården som utfärdar intyget måste vara kopplad till en vårdgivare i den nationella HSA-katalogen.</li>' +
-            '</ul>' +
-            '<p>Ytterligare krav som ställs endast på Läkarintyg för sjukpenning är:</p>' +
-            '<ul>' +
-            '<li>Startdatumet för sjukskrivningsperioden måste vara efter 2009-12-31.</li>' +
-            '<li>Start- eller slutdatum för sjukskrivningsperioden måste vara mindre än fem år fram i tiden.</li>' +
-            '<li>Slutdatum för sjukskrivningsperioden måste vara efter startdatumet.</li>' +
-            '</ul>',
-        'faq.stats.3.title': 'Vad är nationell statistik?',
-        'faq.stats.3.body': '<p>Nationell statistik är statistik för alla elektroniska läkarintyg som utfärdats samt alla elektroniska meddelanden som har mottagits av landets olika vårdgivare. ' +
-                'Statistiken avidentifieras och lämnas ut från respektive vårdgivare för att sammanställas på nationell nivå. ' +
-                'För att statistiken inte ska kunna kopplas till enskilda personer så appliceras tröskelvärden i den nationella statistiken.</p>' +
-            '<p>Tröskelvärden innebär att om en vårdgivare har färre än fem sjukfall/intyg/meddelanden i en viss grupp räknas inte dessa in i statistiken. ' +
-            'Det kan leda till en liten felmarginal i statistiken då det presenterade antalet kan vara något lägre än det faktiska antalet på grund av att vissa sjukfall/intyg/meddelanden kan ha filtrerats bort.</p>',
-
-        'faq.stats.4.title': 'Varför ser jag ingen statistik för den valda verksamheten?',
-        'faq.stats.4.body': '<p>Det beror på att det i dagsläget inte finns inrapporterad data för verksamheten eller att du gjort ett för begränsat filterval.</p>',
-
-
-        'faq.report.1.title': 'Hur skriver jag ut en rapport?',
-        'faq.report.1.body': '<p>På varje rapportsida finns en knapp med texten ”Spara som” ovanför diagrammet. ' +
-            'När du väljer "PDF" laddas ett pdf-dokument ner till din dator. Dokumentet innehåller rapportens diagram, tabell och uppgifter om eventuella filtreringar. ' +
-            'När dokumentet laddats ner kan du öppna det och skriva ut det.</p>',
-
-        'faq.report.2.title': 'Hur exporterar jag tabellen till Excel?',
-        'faq.report.2.body': '<p>På varje rapportsida finns en knapp med texten ”Spara som” ovanför diagrammet. ' +
-            'När du väljer ”Excel” laddas tabellen ner till din dator och går sedan att öppna i Excel.</p>',
-
-        'faq.sickness.1.title': 'Vad är ett sjukfall?',
-        'faq.sickness.1.body': '<p>I Intygsstatistik omfattar ett sjukfall de elektroniska läkarintyg (FK 7263 och FK 7804) som utfärdats för en viss patient vid en ' +
-            'sjukskrivning och som följer på varandra med max fem dagars uppehåll. ' +
-            'Intygen måste även vara utfärdade av samma vårdgivare för att räknas till samma sjukfall. ' +
-            'Om det är mer än fem dagar mellan två intyg eller om två intyg är utfärdade av olika vårdgivare, så räknas det som två sjukfall.</p>' +
-            '<p>Exempel: Om intyg 1 gäller till den 14 augusti och intyg 2 gäller från den 17 augusti räknas de båda intygen till samma sjukfall. ' +
-            'Om intyg 2 istället hade varit giltigt från den 21 augusti skulle intygen ha räknats som två skilda sjukfall.</p>',
-
-
-        'faq.technical.1.title': 'Hur ofta uppdateras Intygsstatistik?',
-        'faq.technical.1.body': '<p>Intygsstatistik uppdateras löpande med nya läkarintyg och meddelanden. Den nationella statistiken uppdateras vid varje månadsskifte. ' +
-            'Statistiken för verksamhetsuppföljning som kräver inloggning uppdateras en gång per dygn.</p>',
-
-        'faq.technical.2.title': 'Vilka olika typer av behörighet finns för att logga in i Intygsstatistik?',
-        'faq.technical.2.body': '<p>Den allmänna delen av Intygsstatistik som visar nationell statistik kräver inte någon registrering eller behörighet. ' +
-            'Om du har ansvar för verksamhetsuppföljning inom hälso- och sjukvården kan du ta del av statistik som är särskilt riktad till ditt uppföljningsområde. ' +
-            'Uppföljningsområde kan vara en eller flera vårdenheter, eller hela vårdgivaren om du har ett övergripande uppföljningsansvar. ' +
-            'Det krävs att du har ett medarbetaruppdrag för statistik som delas ut av din verksamhetschef och sätts av din HSA-administratör. För att kunna logga in och se statistik krävs:</p>' +
-            '<ul>' +
-            '<li>ett SITHS/Efos-kort med pinkod</li>' +
-            '<li>en kortläsare med tillhörande programvara, NetID</li>' +
-            '<li>ett medarbetaruppdrag i HSA som ger dig rätt att ta del av statistik</li>' +
-            '</ul>' +
-            '<p><LINK:sarskildBehorighetStatistik></p>'
-
+        'info.upload.fallbacktext': 'Din webbläsare stödjer inte filuppladdning via "dra och släpp". Vänligen använd knappen nedan för att ladda upp filen.'
     },
     'en': {
         'webcert.header': 'Statistics Application (en)'
