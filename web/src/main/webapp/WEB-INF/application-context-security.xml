@@ -162,8 +162,11 @@
                 <security:filter-chain pattern="/saml/logout/**" filters="samlLogoutFilter"/>
                 <security:filter-chain pattern="/saml/SSO/**" filters="samlWebSSOProcessingFilter"/>
                 <security:filter-chain pattern="/saml/SingleLogout/**" filters="samlLogoutProcessingFilter"/>
+                <security:filter-chain pattern="/saml/metadata/**" filters="metadataDisplayFilter"/>
             </security:filter-chain-map>
         </bean>
+
+        <bean id="metadataDisplayFilter" class="org.springframework.security.saml.metadata.MetadataDisplayFilter"/>
 
         <!-- Handler deciding where to redirect user after successful login -->
         <bean id="successRedirectHandler" class="se.inera.auth.CookieAuthenticationSuccessHandler">
