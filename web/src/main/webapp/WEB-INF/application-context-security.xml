@@ -200,7 +200,6 @@
                     <property name="forceAuthN" value="true"/>
                     <property name="authnContexts">
                         <list>
-                            <value>urn:oasis:names:tc:SAML:2.0:ac:classes:TLSClient</value>
                             <value>http://id.sambi.se/loa/loa3</value>
                         </list>
                     </property>
