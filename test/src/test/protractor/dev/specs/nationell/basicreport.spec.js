@@ -41,7 +41,7 @@ describe('Nationell basic: ', function() {
         validateDetailReport('navDiagnosisSubGroupsLink', 2, 2, 20);
         validateDetailReport('navAgeGroupsLink', 1, 3, 13);
         validateDetailReport('navSickLeaveDegreeLink', 2, 4, 20);
-        validateDetailReport('navSickLeaveLengthLink', 1, 3, 8);
+        validateDetailReport('navSickLeaveLengthLink', 1, 3, 9);
         validateDetailReport('navCountyLink', 1, 3, 24);
         validateDetailReport('navCasesPerSexLink', 1, 2, 24);
     });
