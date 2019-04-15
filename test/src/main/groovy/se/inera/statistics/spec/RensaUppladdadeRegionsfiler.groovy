@@ -18,12 +18,14 @@
  */
 package se.inera.statistics.spec
 
-class SjukfallIRapportenLandstingSjukfallPerListningarPerEnhetDiagram extends LandstingSjukfallPerListningarPerEnhetReport {
+import se.inera.statistics.web.reports.ReportsUtil
 
-    @Override
-    public void doExecute() {
-        def report = getReportSjukfallPerListningarPerEnhetLandsting()
-        executeDiagram(report)
+class RensaUppladdadeRegionsfiler {
+
+    protected final ReportsUtil reportsUtil = new ReportsUtil()
+
+    RensaUppladdadeRegionsfiler() {
+        reportsUtil.clearRegionFileUploads()
     }
 
 }

@@ -68,29 +68,29 @@ Testar att alla rapporter hanterar sjukfall med flera värden under samma period
 
 !4 Inloggad:
 
-!5 Landsting
+!5 Region
 
-!6 Initiering av landstingstestet
+!6 Initiering av regionstestet
 
-|script|Rensa uppladdade landstingsfiler|
+|script|Rensa uppladdade regionsfiler|
 
-|Uppladdade landstingsfiler                 |
+|Uppladdade regionsfiler                 |
 |användare|filnamn        |statusmeddelande?|
 |user2    |vg1lista12.xlsx|Data updated ok  |
 
-|Sjukfall i rapporten landsting sjukfall totalt         |
+|Sjukfall i rapporten region sjukfall totalt         |
 |inloggad som|år  |månad|filter kategorier|män?|kvinnor?|
 |user2       |2014|jun  |F32              |1   |0       |
 |user2       |2014|jun  |                 |1   |0       |
 
-|Sjukfall i rapporten landsting sjukfall per enhet     |
+|Sjukfall i rapporten region sjukfall per enhet     |
 |inloggad som|vårdenhet|filter kategorier|män?|kvinnor?|
 |user2       |enhet1   |F32              |1   |0       |
 |user2       |enhet2   |F32              |-1  |-1      |
 |user2       |enhet1   |                 |1   |0       |
 |user2       |enhet2   |                 |1   |0       |
 
-|Sjukfall i rapporten landsting sjukfall per listningar per enhet             |
+|Sjukfall i rapporten region sjukfall per listningar per enhet             |
 |inloggad som|vårdenhet|filter kategorier|antal sjukfall per tusen listningar?|
 |user2       |enhet1   |F32              |1,00                                |
 |user2       |enhet2   |F32              |-1                                  |

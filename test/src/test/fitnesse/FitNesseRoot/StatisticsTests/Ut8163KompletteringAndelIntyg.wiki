@@ -69,19 +69,19 @@ Inloggad:
 |user1       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|0   |100     |
 
 
-Landsting:
+Region:
 
-|script|Rensa uppladdade landstingsfiler|
+|script|Rensa uppladdade regionsfiler|
 
-|Uppladdade landstingsfiler|
+|Uppladdade regionsfiler|
 |användare|filnamn       |statusmeddelande?|
 |user3    |vg3lista1.xlsx|Data updated ok  |
 
-|Andel i rapporten komplettering andel intyg landsting|
+|Andel i rapporten komplettering andel intyg region|
 |inloggad som|år  |månad|grupp                             |grupp totalt?|män?|kvinnor?|
 |user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|100%         |0%  |100%    |
 
-|Andel i rapporten komplettering andel intyg landsting diagram|
+|Andel i rapporten komplettering andel intyg region diagram|
 |inloggad som|år  |månad|grupp                             |män?|kvinnor?|
 |user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|0   |100     |
 
@@ -134,19 +134,19 @@ Inloggad:
 |user1       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|0   |100     |
 
 
-Landsting:
+Region:
 
-|script|Rensa uppladdade landstingsfiler|
+|script|Rensa uppladdade regionsfiler|
 
-|Uppladdade landstingsfiler|
+|Uppladdade regionsfiler|
 |användare|filnamn       |statusmeddelande?|
 |user3    |vg3lista1.xlsx|Data updated ok  |
 
-|Andel i rapporten komplettering andel intyg landsting|
+|Andel i rapporten komplettering andel intyg region|
 |inloggad som|år  |månad|grupp                             |grupp totalt?|män?|kvinnor?|
 |user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|100%         |0%  |100%    |
 
-|Andel i rapporten komplettering andel intyg landsting diagram|
+|Andel i rapporten komplettering andel intyg region diagram|
 |inloggad som|år  |månad|grupp                             |män?|kvinnor?|
 |user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|0   |100     |
 
@@ -204,19 +204,19 @@ Inloggad:
 |user1       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|0   |50     |
 
 
-Landsting:
+Region:
 
-|script|Rensa uppladdade landstingsfiler|
+|script|Rensa uppladdade regionsfiler|
 
-|Uppladdade landstingsfiler|
+|Uppladdade regionsfiler|
 |användare|filnamn       |statusmeddelande?|
 |user3    |vg3lista1.xlsx|Data updated ok  |
 
-|Andel i rapporten komplettering andel intyg landsting|
+|Andel i rapporten komplettering andel intyg region|
 |inloggad som|år  |månad|grupp                             |grupp totalt?|män?|kvinnor?|
 |user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|50%         |0%  |50%    |
 
-|Andel i rapporten komplettering andel intyg landsting diagram|
+|Andel i rapporten komplettering andel intyg region diagram|
 |inloggad som|år  |månad|grupp                             |män?|kvinnor?|
 |user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|0   |50     |
 
@@ -278,18 +278,18 @@ Inloggad:
 |user1       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|0   |50     |
 
 
-Landsting:
+Region:
 
-|script|Rensa uppladdade landstingsfiler|
+|script|Rensa uppladdade regionsfiler|
 
-|Uppladdade landstingsfiler|
+|Uppladdade regionsfiler|
 |användare|filnamn       |statusmeddelande?|
 |user3    |vg3lista1.xlsx|Data updated ok  |
 
-|Andel i rapporten komplettering andel intyg landsting|
+|Andel i rapporten komplettering andel intyg region|
 |inloggad som|år  |månad|grupp                             |grupp totalt?|män?|kvinnor?|
 |user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|50%         |0%  |50%    |
 
-|Andel i rapporten komplettering andel intyg landsting diagram|
+|Andel i rapporten komplettering andel intyg region diagram|
 |inloggad som|år  |månad|grupp                             |män?|kvinnor?|
 |user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|0   |50     |

@@ -19,9 +19,9 @@ Det finns ett gäng intyg och ett gäng meddelanden. Observera att inga meddelan
 |19790717-9191|2014-06-03T10:00:00|1001    |AVSTMN|
 |19691230-1234|2014-06-03T10:00:00|1002    |KOMPLT|
 
-|script|Rensa uppladdade landstingsfiler|
+|script|Rensa uppladdade regionsfiler|
 
-|Uppladdade landstingsfiler                |
+|Uppladdade regionsfiler                |
 |användare|filnamn       |statusmeddelande?|
 |user3    |vg3lista1.xlsx|Data updated ok  |
 
@@ -30,7 +30,7 @@ Statistiken baseras på meddelanden för alla intygstyper som har ärendekommuni
 
 Inloggad:
 
-|Meddelanden i rapporten meddelanden vardenhet som tvarsnitt landsting|
+|Meddelanden i rapporten meddelanden vardenhet som tvarsnitt region|
 |inloggad som  | vårdenhet |grupp            |totalt? |män? |kvinnor? |
 |user3         | Enhet ett |Komplettering    |2       |1    |0        |
 |user3         | Enhet ett |Avstämningsmöte  |2       |1    |0        |

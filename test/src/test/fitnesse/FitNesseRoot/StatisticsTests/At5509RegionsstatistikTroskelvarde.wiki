@@ -24,9 +24,9 @@ Gäller STATISTIK-1028.
 | 19671127-3026 | G01 | 2013-02-05 | 2013-02-06 | enhet3 | |
 | 19680524-9288 | G01 | 2013-02-05 | 2013-02-06 | enhet3 | |
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn | statusmeddelande? |
 | user3 | vg3lista1.xlsx | Data updated ok |
 
@@ -38,19 +38,19 @@ För rapporten "Listningsjämförelse" behöver bara antalet sjukfall vara över
 
 Inloggad:
 
-| Sjukfall i rapporten landsting sjukfall totalt |
+| Sjukfall i rapporten region sjukfall totalt |
 | inloggad som | år | månad | män? | kvinnor? |
 | user3 | 2013 | jan | 0 | 0 |
 | user3 | 2013 | feb | 6 | 3 |
 | user3 | 2013 | mar | 0 | 0 |
 | user3 | 2013 | apr | 0 | 0 |
 
-| Sjukfall i rapporten landsting sjukfall per enhet |
+| Sjukfall i rapporten region sjukfall per enhet |
 | inloggad som | vårdenhet | totalt? | män? | kvinnor? |
 | user3 | enhet2 | 4 | 4 | 0 |
 | user3 | enhet3 | 3 | 0 | 3 |
 
-| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| Sjukfall i rapporten region sjukfall per listningar per enhet |
 | inloggad som | vårdenhet | antal sjukfall per tusen listningar? |
 | user3 | enhet1 | 27,27 |
 | user3 | enhet3 | 2,73 |

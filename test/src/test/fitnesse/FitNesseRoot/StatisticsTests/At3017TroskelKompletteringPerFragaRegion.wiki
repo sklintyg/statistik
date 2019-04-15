@@ -23,9 +23,9 @@ Det finns 5 kompletteringsbegäran för fråga 1 och 4 kompletteringsbegäran f�
 
 Det finns 5 kompletteringsbegäran för fråga 1 på enhet2; 4 kompletteringsbegäranden för kvinnor och 1 kompletteringsbegäran för en man.
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn | statusmeddelande? |
 | user3 | vg3lista1.xlsx | Data updated ok |
 
@@ -40,7 +40,7 @@ Tröskelvärdet appliceras per vårdgivare, kön och grupp (fråga).
 
 Nationell nivå:
 
-| Kompletteringar i rapporten kompletteringar per fraga som tvarsnitt landsting |
+| Kompletteringar i rapporten kompletteringar per fraga som tvarsnitt region |
 | inloggad som | grupp | totalt? | män? | kvinnor? |
 | user3 | Intyget baseras på | 5 | 5 | 0 |
 | user3 | Funktionsnedsättning | 0 | 0 | 0 |

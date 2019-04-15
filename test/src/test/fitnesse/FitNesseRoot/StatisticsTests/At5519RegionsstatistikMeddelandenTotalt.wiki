@@ -23,16 +23,16 @@ Test
 | 19591230-1254 | 2014-06-03T10:00:00 | 1004 | AVSTMN |
 | 19491230-1264 | 2014-03-03T10:00:00 | 1005 | AVSTMN |
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn | statusmeddelande? |
 | user3 | vg3lista1.xlsx | Data updated ok |
 
 !3 Då gäller:
 Inloggad:
 
-| Meddelanden i rapporten meddelanden totalt landsting |
+| Meddelanden i rapporten meddelanden totalt region |
 | inloggad som | år | månad | grupp | män? | kvinnor? |
 | user3 | 2014 | feb | Komplettering | 0 | 0 |
 | user3 | 2014 | feb | Avstämningsmöte | 0 | 0 |

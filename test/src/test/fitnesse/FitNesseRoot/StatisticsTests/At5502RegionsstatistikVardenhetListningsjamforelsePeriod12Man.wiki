@@ -18,9 +18,9 @@ Det finns två sjukfall, ett som pågått under det senaste året och ett som in
 | 19790717-9191 | G01        | 2013-11-05 | 2013-12-31 | enhet3 |           |
 | 19790219-9285 | G01        | 2014-01-05 | 2014-01-30 | enhet3 |           |
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx  | Data updated ok   |
 
@@ -29,10 +29,10 @@ Det finns två sjukfall, ett som pågått under det senaste året och ett som in
 Bara sjukfall som pågått under de senaste 12 månaderna (inklusive nuvarande) visas.
 
 Inloggad:
-| Sjukfall i rapporten landsting sjukfall per enhet |
+| Sjukfall i rapporten region sjukfall per enhet |
 | inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
 | user3        | enhet3 | 1       | 0    | 1        |
 
-| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| Sjukfall i rapporten region sjukfall per listningar per enhet |
 | inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
 | user3        | enhet3 | 0,91    |

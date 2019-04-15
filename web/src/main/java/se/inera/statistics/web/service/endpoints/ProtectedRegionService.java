@@ -397,8 +397,8 @@ public class ProtectedRegionService {
         final FilterSettings filterSettings = filterHandler.getFilterForRegion(request, filterHash, 12);
         KonDataResponse casesPerMonth = warehouse.getMessagesPerAmnePerEnhetRegion(filterSettings);
         SimpleDetailsData result = new MessageAmnePerEnhetTvarsnittConverter().convert(casesPerMonth, filterSettings);
-        final String lastLandstingUpdateDate = getLastRegionUpdateDate(vgIdForLoggedInUser);
-        return getResponse(result, format, request, Report.L_MEDDELANDENPERAMNEPERENHET, TIDSSERIE, lastLandstingUpdateDate);
+        final String lastRegionUpdateDate = getLastRegionUpdateDate(vgIdForLoggedInUser);
+        return getResponse(result, format, request, Report.L_MEDDELANDENPERAMNEPERENHET, TIDSSERIE, lastRegionUpdateDate);
     }
 
     @GET

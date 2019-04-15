@@ -6,7 +6,7 @@ Test
 !3 Givet att:
 | script | dagens datum | 2013-11-06 |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn                   | statusmeddelande?                                                   | kommentar                                                 |
 | user1     | vg1lista1.xlsx            | Data updated ok                                                     | Lista innehåller bara tillåtna tecken i respektive kolumn |
 | user1     | vg1lista2streck.xlsx      | Rad 2: Kolumn “Antal listade patienter” innehåller inte ett heltal  | Kolumn för listningar innehåller otillåtet tecken         |

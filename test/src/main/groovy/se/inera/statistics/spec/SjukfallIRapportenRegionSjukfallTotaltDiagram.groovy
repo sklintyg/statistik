@@ -18,19 +18,17 @@
  */
 package se.inera.statistics.spec
 
-class SjukfallIRapportenLandstingSjukfallPerEnhetDiagram extends SimpleDetailsReport {
-
-    String vårdenhet
+class SjukfallIRapportenRegionSjukfallTotaltDiagram extends SimpleDetailsReport {
 
     @Override
     public void doExecute() {
-        def report = getReportSjukfallPerEnhetLandsting()
+        def report = getReportSjukfallTotaltRegion()
         executeDiagram(report)
     }
 
     @Override
     def getRowNameMatcher() {
-        return vårdenhet
+        return månad + " " + år
     }
 
 }

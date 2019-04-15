@@ -81,7 +81,7 @@ För att testa applikationen i ett mer prodlikt läge kan man även starta med e
     ./gradlew clean appRunWar -PuseMinifiedJavaScript
 
 ## Protractor
-Köra protractor tester lokalt. Du behöver ha firefox version 46 eller äldre för att testerna ska fungera.
+Köra protractor tester lokalt. Du behöver ha chrome version 65 eller nyare för att testerna ska fungera.
 
  * Starta intygsstatistik med `./gradlew appRun`
  * Starta testerna med `./gradlew protractorTest`

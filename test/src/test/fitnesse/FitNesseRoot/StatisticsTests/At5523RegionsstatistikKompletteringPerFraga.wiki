@@ -16,9 +16,9 @@ Test
 | 19790717-9191 | 2014-04-05T10:00:00 | 1001 | KOMPLT | 35,1,1 |
 | 19790717-9161 | 2014-06-03T10:00:00 | 1002 | KOMPLT | 1 |
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn | statusmeddelande? |
 | user3 | vg3lista1.xlsx | Data updated ok |
 
@@ -31,7 +31,7 @@ Förklaring frågeid:
 
 Nationell nivå:
 
-| Kompletteringar i rapporten kompletteringar per fraga som tvarsnitt landsting |
+| Kompletteringar i rapporten kompletteringar per fraga som tvarsnitt region |
 | inloggad som | grupp | totalt? | män? | kvinnor? |
 | user3 | Intyget baseras på | 3 | 2 | 1 |
 | user3 | Funktionsnedsättning | 1 | 1 | 0 |

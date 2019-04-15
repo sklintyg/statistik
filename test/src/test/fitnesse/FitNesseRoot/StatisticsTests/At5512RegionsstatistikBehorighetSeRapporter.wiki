@@ -21,9 +21,9 @@ user6 har medarbetaruppdrag på enhet4, som tillhör vg3 men som inte finns med 
 | 19790808-9274 | G01        | 2014-02-05 | 2014-02-06 | enhet2 |           |
 | 19790219-9285 | G01        | 2014-02-05 | 2014-02-06 | enhet3 |           |
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx  | Data updated ok   |
 
@@ -32,13 +32,13 @@ user6 har medarbetaruppdrag på enhet4, som tillhör vg3 men som inte finns med 
 Alla användare som har uppdrag statistik på minst en enhet inom en vårdgivare som skickat in lista (vg6 i detta fall) får se regionsstatistiken, oavsett om deras enhet finns med i listan.
 
 Inloggad:
-| Sjukfall i rapporten landsting sjukfall totalt |
+| Sjukfall i rapporten region sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? |
 | user3        | 2014 | feb   | 2    | 1        |
 | user1        | 2014 | feb   | -1   | -1       |
 | user6        | 2014 | feb   | 2    | 1        |
 
-| Sjukfall i rapporten landsting sjukfall per enhet |
+| Sjukfall i rapporten region sjukfall per enhet |
 | inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
 | user3        | enhet1 | 1       | 1    | 0        |
 | user3        | enhet2 | 1       | 1    | 0        |
@@ -50,7 +50,7 @@ Inloggad:
 | user6        | enhet2 | 1       | 1    | 0        |
 | user6        | enhet3 | 1       | 0    | 1        |
 
-| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| Sjukfall i rapporten region sjukfall per listningar per enhet |
 | inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
 | user3        | enhet1 | 9,09    |
 | user3        | enhet3 | 0,91    |

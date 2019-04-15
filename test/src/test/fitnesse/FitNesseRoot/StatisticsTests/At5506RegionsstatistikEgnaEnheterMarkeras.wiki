@@ -24,10 +24,10 @@ user2 har medarbetaruppdrag på enhet1 och enhet2.
 | 19790717-9191 | 2014-02-05 | 1002 | KOMPLT |
 | 19790219-9285 | 2014-02-05 | 1003 | KOMPLT |
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn | statusmeddelande? |
 | user1 | vg3lista1.xlsx | Data updated ok |
 
@@ -36,7 +36,7 @@ Alla användare som har uppdrag statistik på minst en enhet inom en vårdgivare
 
 Inloggad:
 
-| Sjukfall i rapporten landsting sjukfall per enhet |
+| Sjukfall i rapporten region sjukfall per enhet |
 | inloggad som | vårdgivarnivå | vårdenhet | markerad? |
 | user1 | false | enhet1 | ja |
 | user1 | false | enhet2 | nej |
@@ -48,7 +48,7 @@ Inloggad:
 | user2 | true | enhet2 | nej |
 | user2 | true | enhet3 | nej |
 
-| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| Sjukfall i rapporten region sjukfall per listningar per enhet |
 | inloggad som | vårdgivarnivå | vårdenhet | markerad? |
 | user1 | false | enhet1 | ja |
 | user1 | false | enhet3 | nej |
@@ -57,7 +57,7 @@ Inloggad:
 | user2 | true | enhet1 | nej |
 | user2 | true | enhet3 | nej |
 
-#| Meddelanden i rapporten meddelanden vardenhet som tvarsnitt landsting |
+#| Meddelanden i rapporten meddelanden vardenhet som tvarsnitt region |
 #| inloggad som | vårdgivarnivå | vårdenhet | markerad? |
 #| user1 | false | enhet1 | ja |
 #| user1 | false | enhet2 | nej |

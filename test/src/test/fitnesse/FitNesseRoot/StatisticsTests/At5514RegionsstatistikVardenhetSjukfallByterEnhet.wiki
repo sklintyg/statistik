@@ -17,9 +17,9 @@ Ett sjukfall går över tre enheter.
 | 19790808-9274 | G01        | 2013-02-12 | 2013-02-20 | enhet2 |           |
 | 19790808-9274 | G01        | 2013-02-21 | 2013-03-20 | enhet3 |           |
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx  | Data updated ok   |
 
@@ -27,13 +27,13 @@ Ett sjukfall går över tre enheter.
 
 Sjukfallet visas en gång för var och en av enheterna.
 
-| Sjukfall i rapporten landsting sjukfall per enhet |
+| Sjukfall i rapporten region sjukfall per enhet |
 | inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
 | user3        | enhet1 | 1       | 1    | 0        |
 | user3        | enhet2 | 1       | 1    | 0        |
 | user3        | enhet3 | 1       | 1    | 0        |
 
-| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| Sjukfall i rapporten region sjukfall per listningar per enhet |
 | inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
 | user3        | enhet1 | 9,09    |
 | user3        | enhet2 | -1      |

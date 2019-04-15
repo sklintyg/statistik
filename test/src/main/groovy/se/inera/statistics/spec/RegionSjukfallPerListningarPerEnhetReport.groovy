@@ -18,7 +18,7 @@
  */
 package se.inera.statistics.spec
 
-abstract class LandstingSjukfallPerListningarPerEnhetReport extends Rapport {
+abstract class RegionSjukfallPerListningarPerEnhetReport extends Rapport {
 
     def vårdenhet
     def antalSjukfall
@@ -73,11 +73,11 @@ abstract class LandstingSjukfallPerListningarPerEnhetReport extends Rapport {
         }
     }
 
-    def getReportSjukfallPerListningarPerEnhetLandsting() {
+    def getReportSjukfallPerListningarPerEnhetRegion() {
         if (inloggad) {
-            return reportsUtil.getReportSjukfallPerListningarPerEnhetLandsting(vg, filter);
+            return reportsUtil.getReportSjukfallPerListningarPerEnhetRegion(vg, filter);
         }
-        throw new RuntimeException("Report -Landsting Sjukfall per listningar per enhet- is not available on national level");
+        throw new RuntimeException("Report -Region Sjukfall per listningar per enhet- is not available on national level");
     }
 
 }

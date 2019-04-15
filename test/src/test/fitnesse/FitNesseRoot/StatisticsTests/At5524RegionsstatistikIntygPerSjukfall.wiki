@@ -13,14 +13,14 @@ Test
 | 19500414-0055   | G01 | 2018-01-01   | 2018-02-01   | enhet2   |
 | 19500414-0055   | G01 | 2018-02-02   | 2018-03-01   | enhet2   |
 
-| script  | Rensa uppladdade landstingsfiler  |
+| script  | Rensa uppladdade regionsfiler  |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare  | filnamn | statusmeddelande?  |
 | user3 | vg3lista1.xlsx  | Data updated ok |
 
 !3 Då gäller:
-Landsting:
+Region:
 
 | Sjukfall i rapporten intyg per sjukfall som tvarsnitt    |
 | inloggad som    | antal intyg    | totalt?    | män?    | kvinnor?    |

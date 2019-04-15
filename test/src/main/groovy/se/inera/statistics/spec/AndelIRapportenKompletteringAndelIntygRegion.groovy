@@ -18,25 +18,12 @@
  */
 package se.inera.statistics.spec
 
-class SjukfallIRapportenLandstingSjukfallPerEnhet extends SimpleDetailsReport {
-
-    String vårdenhet
-    String fileUploadDate
+class AndelIRapportenKompletteringAndelIntygRegion extends DualSexTimeSeriesReport {
 
     @Override
     public void doExecute() {
-        def report = getReportSjukfallPerEnhetLandsting()
+        def report = getReportAndelKompletteringarRegion()
         executeTabell(report)
-        fileUploadDate = report["fileUploadDate"]
-    }
-
-    @Override
-    def getRowNameMatcher() {
-        return vårdenhet
-    }
-
-    def fileUploadDate() {
-        return fileUploadDate
     }
 
 }

@@ -196,11 +196,11 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getAndelKompletteringarTvarsnitt", filter, "vgid=" + vgid)
     }
 
-    def getReportAndelKompletteringarLandsting(String vgid, filter) {
+    def getReportAndelKompletteringarRegion(String vgid, filter) {
         return get("/api/landsting/getAndelKompletteringarLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 
-    def getReportAntalIntygLandsting(String vgid, filter) {
+    def getReportAntalIntygRegion(String vgid, filter) {
         return get("/api/landsting/getIntygPerTypePerMonthLandsting", filter, "vgid=" + vgid)
     }
 
@@ -224,7 +224,7 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmnePerLakareTvarsnitt", filter, "vgid=" + vgid)
     }
 
-    def getReportAntalMeddelandenVardenhetLandsting(String vgid, filter) {
+    def getReportAntalMeddelandenVardenhetRegion(String vgid, filter) {
         return get("/api/landsting/getMeddelandenPerAmnePerEnhetLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 
@@ -236,7 +236,7 @@ class ReportsUtil {
         return get(getVerksamhetUrlPrefix() + "/getMeddelandenPerAmneTvarsnitt", filter, "vgid=" + vgid)
     }
 
-    def getReportAntalMeddelandenLandsting(String vgid, filter) {
+    def getReportAntalMeddelandenRegion(String vgid, filter) {
         return get("/api/landsting/getMeddelandenPerAmneLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 
@@ -536,11 +536,11 @@ class ReportsUtil {
         }
     }
 
-    def clearLandstingFileUploads() {
+    def clearRegionFileUploads() {
         restClient.delete(path: '/api/testsupport/clearLandstingFileUploads')
     }
 
-    def insertLandsting(vgId) {
+    def insertRegion(vgId) {
         def url = "/api/testsupport/landsting/vgid/" + vgId
         println("insertRegion: " + url)
         restClient.put(path: url)
@@ -598,15 +598,15 @@ class ReportsUtil {
         return get("/api/testsupport/getFkYearReport")
     }
 
-    def getReportAntalSjukfallLandstingInloggad(vgid, filter) {
+    def getReportAntalSjukfallRegionInloggad(vgid, filter) {
         return get("/api/landsting/getNumberOfCasesPerMonthLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 
-    def getReportSjukfallPerEnhetLandsting(vgid, filter) {
+    def getReportSjukfallPerEnhetRegion(vgid, filter) {
         return get("/api/landsting/getNumberOfCasesPerEnhetLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 
-    def getReportSjukfallPerListningarPerEnhetLandsting(vgid, filter) {
+    def getReportSjukfallPerListningarPerEnhetRegion(vgid, filter) {
         return get("/api/landsting/getNumberOfCasesPerPatientsPerEnhetLandsting", filter, "vgid=" + vgid, "landstingfilter")
     }
 

@@ -52,8 +52,8 @@ public class RegionEnhetManager {
     @Transactional
     public List<RegionEnhet> getByRegionId(Long regionId) {
         TypedQuery<RegionEnhet> query = manager
-                .createQuery("SELECT l FROM RegionEnhet l where l.landstingId = :landstingId", RegionEnhet.class)
-                .setParameter("landstingId", regionId);
+                .createQuery("SELECT l FROM RegionEnhet l where l.regionId = :regionId", RegionEnhet.class)
+                .setParameter("regionId", regionId);
         return query.getResultList();
     }
 

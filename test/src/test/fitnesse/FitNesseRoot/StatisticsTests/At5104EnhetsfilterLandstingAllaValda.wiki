@@ -17,9 +17,9 @@ Gäller INTYG-1855.
 | 19790219-9285 | C01        | 2014-04-05 | 2014-04-06 | enhet2 |           |
 | 19790918-9231 | F01        | 2014-06-05 | 2014-06-06 | enhet3 |           |
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx | Data updated ok   |
 
@@ -28,7 +28,7 @@ Gäller INTYG-1855.
 Bara de enheter och sjukfall som motsvarar val i filter visas.
 
 Inloggad:
-| Sjukfall i rapporten landsting sjukfall totalt |
+| Sjukfall i rapporten region sjukfall totalt |
 | inloggad som | filter kapitel | filter enheter       | år   | månad | män? | kvinnor? | allaEnhetsfilterValda? | enhetsfilterlista?       |
 | user3        |                |                      | 2014 | jun   | 1    | 0        | true                   | [enhet1, enhet2, enhet3] |
 | user3        |                | enhet1,enhet2,enhet3 | 2014 | jun   | 1    | 0        | true                   | [enhet1, enhet2, enhet3] |

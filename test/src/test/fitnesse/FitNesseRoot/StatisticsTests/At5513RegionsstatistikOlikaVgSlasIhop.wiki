@@ -19,9 +19,9 @@ Test
 | 19790429-9281 | G01        | 2013-02-05 | 2013-03-06 | enhet3 |           |
 | 19790709-9282 | G01        | 2013-02-05 | 2013-02-06 | enhet4 |           |
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx  | Data updated ok   |
 
@@ -30,7 +30,7 @@ Test
 Sjukfall från olika VG visas sammanslagna.
 
 Inloggad:
-| Sjukfall i rapporten landsting sjukfall totalt |
+| Sjukfall i rapporten region sjukfall totalt |
 | inloggad som | år    | månad | män? | kvinnor? |
 | user3        | 2013 | jan   | 0    | 0        |
 | user3        | 2013 | feb   | 4    | 2        |

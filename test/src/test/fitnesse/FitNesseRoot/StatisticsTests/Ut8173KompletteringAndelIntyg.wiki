@@ -1,7 +1,7 @@
 ---
 Test
 ---
-Testar att sammanslagning på nationell- och landstings- nivå inte gör att andelen kompletteringar blir mer än 100%
+Testar att sammanslagning på nationell- och regions- nivå inte gör att andelen kompletteringar blir mer än 100%
 
 !3 Givet att:
 |script|dagens datum|2019-02-15|
@@ -58,18 +58,18 @@ Inloggad:
 |user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|100   |0     |
 
 
-Landsting:
+Region:
 
-|script|Rensa uppladdade landstingsfiler|
+|script|Rensa uppladdade regionsfiler|
 
-|Uppladdade landstingsfiler|
+|Uppladdade regionsfiler|
 |användare|filnamn       |statusmeddelande?|
 |user3    |vg3lista1.xlsx|Data updated ok  |
 
-|Andel i rapporten komplettering andel intyg landsting|
+|Andel i rapporten komplettering andel intyg region|
 |inloggad som|år  |månad|grupp                             |grupp totalt?|män?|kvinnor?|
 |user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|100%         |100%  |0%    |
 
-|Andel i rapporten komplettering andel intyg landsting diagram|
+|Andel i rapporten komplettering andel intyg region diagram|
 |inloggad som|år  |månad|grupp                             |män?|kvinnor?|
 |user3       |2018|nov  |FK 7804 Läkarintyg för sjukpenning|100   |0     |

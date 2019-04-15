@@ -18,6 +18,7 @@
  */
 package se.inera.statistics.service.region.persistance.regionenhet;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,7 +39,8 @@ public class RegionEnhet {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private long landstingId;
+    @Column(name = "landstingId")
+    private long regionId;
 
     private String enhetensHsaId;
 
@@ -47,8 +49,8 @@ public class RegionEnhet {
     private RegionEnhet() {
     }
 
-    public RegionEnhet(long landstingId, HsaIdEnhet enhetensHsaId, Integer listadePatienter) {
-        this.landstingId = landstingId;
+    public RegionEnhet(long regionId, HsaIdEnhet enhetensHsaId, Integer listadePatienter) {
+        this.regionId = regionId;
         this.enhetensHsaId = enhetensHsaId.getId();
         this.listadePatienter = listadePatienter;
     }
@@ -57,8 +59,8 @@ public class RegionEnhet {
         return id;
     }
 
-    public long getLandstingId() {
-        return landstingId;
+    public long getRegionId() {
+        return regionId;
     }
 
     public HsaIdEnhet getEnhetensHsaId() {

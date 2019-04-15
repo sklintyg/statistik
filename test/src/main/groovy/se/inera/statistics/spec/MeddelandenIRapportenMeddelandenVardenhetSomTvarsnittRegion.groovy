@@ -18,12 +18,19 @@
  */
 package se.inera.statistics.spec
 
-class AndelIRapportenKompletteringAndelIntygLandstingDiagram extends DualSexTimeSeriesReport {
+class MeddelandenIRapportenMeddelandenVardenhetSomTvarsnittRegion extends DualSexTimeSeriesReport {
+
+    def vårdenhet
 
     @Override
     public void doExecute() {
-        def report = getReportAndelKompletteringarLandsting()
-        executeDiagram(report)
+        def report = getReportMeddelandenVardenhetRegion()
+        executeTabell(report)
+    }
+
+    @Override
+    protected String getKategoriName() {
+        vårdenhet
     }
 
 }

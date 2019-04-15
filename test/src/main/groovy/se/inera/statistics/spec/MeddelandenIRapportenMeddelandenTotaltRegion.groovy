@@ -18,17 +18,12 @@
  */
 package se.inera.statistics.spec
 
-class SjukfallIRapportenLandstingSjukfallTotaltDiagram extends SimpleDetailsReport {
+class MeddelandenIRapportenMeddelandenTotaltRegion extends DualSexTimeSeriesReport {
 
     @Override
     public void doExecute() {
-        def report = getReportSjukfallTotaltLandsting()
-        executeDiagram(report)
-    }
-
-    @Override
-    def getRowNameMatcher() {
-        return månad + " " + år
+        def report = getReportMeddelandenTotaltRegion()
+        executeTabell(report)
     }
 
 }

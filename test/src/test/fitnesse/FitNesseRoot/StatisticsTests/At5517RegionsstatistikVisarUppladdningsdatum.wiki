@@ -15,24 +15,24 @@ Gäller INTYG-3999
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
 | 19790717-9191 | G01        | 2014-02-05 | 2014-02-06 | enhet1 |           |
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user1     | vg3lista1.xlsx  | Data updated ok   |
 
 !3 Då gäller:
 
 Inloggad:
-| Sjukfall i rapporten landsting sjukfall per enhet |
+| Sjukfall i rapporten region sjukfall per enhet |
 | inloggad som | vårdgivarnivå | vårdenhet    | fileUploadDate? |
 | user1        | false         | enhet1 | 2014-12-06 |
 
-| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| Sjukfall i rapporten region sjukfall per listningar per enhet |
 | inloggad som | vårdgivarnivå | vårdenhet    | fileUploadDate? |
 | user1        | false         | enhet1 | 2014-12-06 |
 
-| Sjukfall i rapporten landsting sjukfall totalt |
+| Sjukfall i rapporten region sjukfall totalt |
 | inloggad som | vårdgivarnivå | månad | år   | fileUploadDate? |
 | user1        | false         | jan | 2014 | 2014-12-06 |
 
@@ -41,22 +41,22 @@ Inloggad:
 
 | script | dagens datum | 2015-02-11 |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user1     | vg3lista1.xlsx  | Data updated ok   |
 
 !3 Då gäller:
 
 Inloggad:
-| Sjukfall i rapporten landsting sjukfall per enhet |
+| Sjukfall i rapporten region sjukfall per enhet |
 | inloggad som | vårdgivarnivå | vårdenhet    | fileUploadDate? |
 | user1        | false         | enhet1 | 2015-02-11 |
 
-| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| Sjukfall i rapporten region sjukfall per listningar per enhet |
 | inloggad som | vårdgivarnivå | vårdenhet    | fileUploadDate? |
 | user1        | false         | enhet1 | 2015-02-11 |
 
-| Sjukfall i rapporten landsting sjukfall totalt |
+| Sjukfall i rapporten region sjukfall totalt |
 | inloggad som | vårdgivarnivå | månad | år   | fileUploadDate? |
 | user1        | false         | jan | 2014 | 2015-02-11 |
 

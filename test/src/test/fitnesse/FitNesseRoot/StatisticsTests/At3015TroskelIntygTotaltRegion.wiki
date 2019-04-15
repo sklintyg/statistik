@@ -24,9 +24,9 @@ Det finns 6 sjukfall för vg3; 1 kvinna och 5 män.
 | 19791110-9010 | A41 | 2013-02-01T10:00:00 | LISJP | enhet3 |
 | 19791110-9030 | A41 | 2013-02-01T10:00:00 | LISJP | enhet3 |
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn | statusmeddelande? |
 | user3 | vg3lista1.xlsx | Data updated ok |
 
@@ -34,9 +34,9 @@ Det finns 6 sjukfall för vg3; 1 kvinna och 5 män.
 För vg1 visas inga sjukfall för män och kvinnor. För vg3 visas inga sjukfall för kvinnor.
 Tröskelvärdet appliceras per vårdgivare, kön, månad och grupp.
 
-Landsting:
+Region:
 
-| Intyg i rapporten intyg totalt landsting |
+| Intyg i rapporten intyg totalt region |
 | inloggad som | år | månad | grupp | män? | kvinnor? |
 | user3 | 2013 | jan | FK 7263/7804 Läkarintyg för sjukpenning | 0 | 0 |
 | user3 | 2013 | feb | FK 7263/7804 Läkarintyg för sjukpenning | 5 | 0 |

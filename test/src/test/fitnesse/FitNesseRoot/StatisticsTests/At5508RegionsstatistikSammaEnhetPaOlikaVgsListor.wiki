@@ -20,9 +20,9 @@ Båda filerna innehåller enhet2 (som har olika enhetsnamn i listorna).
 | personnr      | diagnoskod | start      | slut       | enhet  | kommentar |
 | 19790219-9285 | G01        | 2014-02-05 | 2014-02-06 | enhet2 |           |
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx  | Data updated ok   |
 | user1     | vg1lista1.xlsx  | Data updated ok   |
@@ -32,17 +32,17 @@ Båda filerna innehåller enhet2 (som har olika enhetsnamn i listorna).
 Att en enhet finns på två vårdgivares listor spelar ingen roll. Båda vårdgivarna får se den enheten. Enhetsnamn i listan spelar ingen roll, namnet som visas upp är det som vi får från HSA.
 
 Inloggad:
-| Sjukfall i rapporten landsting sjukfall totalt |
+| Sjukfall i rapporten region sjukfall totalt |
 | inloggad som | år   | månad | män? | kvinnor? |
 | user3        | 2014 | feb   | 0    | 1        |
 | user1        | 2014 | feb   | 0    | 1        |
 
-| Sjukfall i rapporten landsting sjukfall per enhet |
+| Sjukfall i rapporten region sjukfall per enhet |
 | inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
 | user3        | enhet2 | 1       | 0    | 1        |
 | user1        | enhet2 | 1       | 0    | 1        |
 
-| Sjukfall i rapporten landsting sjukfall per listningar per enhet |
+| Sjukfall i rapporten region sjukfall per listningar per enhet |
 | inloggad som | vårdenhet    | antal sjukfall per tusen listningar? |
 | user3        | enhet2 | -1      |
 | user1        | enhet2 | 1,25    |

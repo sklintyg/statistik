@@ -45,9 +45,9 @@ Test
 |19790808-9284|2013-02-01T10:00:00|1005    |KOMPLT|
 |19791110-9030|2013-02-01T10:00:00|1011    |KOMPLT|
 
-|script|Rensa uppladdade landstingsfiler|
+|script|Rensa uppladdade regionsfiler|
 
-|Uppladdade landstingsfiler                |
+|Uppladdade regionsfiler                |
 |användare|filnamn       |statusmeddelande?|
 |user3    |vg3lista1.xlsx|Data updated ok  |
 
@@ -62,7 +62,7 @@ För vg2 räknar man inte in något intyg alls då kriterierna inte uppfylls.
 
 Nationell:
 
-|Andel i rapporten komplettering andel intyg landsting                                        |
+|Andel i rapporten komplettering andel intyg region                                        |
 |inloggad som|år  |månad|grupp                                    |grupp totalt?|män?|kvinnor?|
 |user3       |2013|feb  |FK 7804 Läkarintyg för sjukpenning       |100%         |0%  |100%    |
 |user3       |2013|feb  |FK 7800 Läkarutlåtande för sjukersättning|0%           |0%  |0%      |

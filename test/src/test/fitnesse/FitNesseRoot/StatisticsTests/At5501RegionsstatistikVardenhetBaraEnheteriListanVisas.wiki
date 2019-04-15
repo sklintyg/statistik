@@ -20,9 +20,9 @@ Det finns fyra sjukfall på fyra olika enheter. Tre av dem ingår i den inskicka
 | 19790808-9274 | G01        | 2013-02-05 | 2013-02-06 | enhet3 |           |
 | 19790429-9281 | G01        | 2013-02-05 | 2013-02-06 | enhet4 |           |
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn        | statusmeddelande? |
 | user3     | vg3lista1.xlsx  | Data updated ok   |
 
@@ -31,7 +31,7 @@ Det finns fyra sjukfall på fyra olika enheter. Tre av dem ingår i den inskicka
 Bara enheter som ingår i listan visas med sina respektive sjukfall.
 
 Inloggad:
-| Sjukfall i rapporten landsting sjukfall per enhet |
+| Sjukfall i rapporten region sjukfall per enhet |
 | inloggad som | vårdenhet    | totalt? | män? | kvinnor? |
 | user3        | enhet1 | 1       | 1    | 0        |
 | user3        | enhet2 | 1       | 0    | 1        |

@@ -413,7 +413,7 @@ public class RestSupportService {
         LOG.info("Clearing all uploaded region files");
         final List<RegionEnhet> allRegionEnhets = regionEnhetManager.getAll();
         allRegionEnhets.forEach(regionEnhet -> {
-            final long regionId = regionEnhet.getLandstingId();
+            final long regionId = regionEnhet.getRegionId();
             regionEnhetManager.removeByRegionId(regionId);
             regionEnhetUpdateManager.update(regionId, this.getClass().getSimpleName(), new HsaIdUser(""), "-",
                     RegionEnhetUpdateOperation.REMOVE);

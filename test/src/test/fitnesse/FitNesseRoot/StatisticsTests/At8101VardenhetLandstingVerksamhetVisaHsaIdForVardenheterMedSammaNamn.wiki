@@ -18,9 +18,9 @@ Två vårdenheter har samma namn.
 |19790918-9232|G01       |2014-10-05|2014-10-06|enhet1|test      |         |
 |19790219-9285|G01       |2014-02-05|2014-02-06|enhet2|Test      |         |
 
-|script|Rensa uppladdade landstingsfiler|
+|script|Rensa uppladdade regionsfiler|
 
-|Uppladdade landstingsfiler                          |
+|Uppladdade regionsfiler                          |
 |användare|filnamn                 |statusmeddelande?|
 |user1    |vg1lista11sammanamn.xlsx|Data updated ok  |
 
@@ -34,12 +34,12 @@ Inloggad:
 |user1       |test ENHET1|true         |1      |1   |0       |
 |user1       |Test ENHET2|true         |1      |0   |1       |
 
-|Sjukfall i rapporten landsting sjukfall per enhet|
+|Sjukfall i rapporten region sjukfall per enhet|
 |inloggad som |vårdenhet   |totalt? |män?|kvinnor?|
 |user1        |test ENHET1 |1       |1   |0       |
 |user1        |Test ENHET2 |1       |0   |1       |
 
-|Sjukfall i rapporten landsting sjukfall per listningar per enhet|
+|Sjukfall i rapporten region sjukfall per listningar per enhet|
 |inloggad som |vårdenhet   |antal sjukfall per tusen listningar? |
 |user1        |test ENHET1 |1,00                                 |
 |user1        |Test ENHET2 |10,00                                |

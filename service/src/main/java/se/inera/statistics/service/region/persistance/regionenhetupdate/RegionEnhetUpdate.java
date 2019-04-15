@@ -19,6 +19,7 @@
 package se.inera.statistics.service.region.persistance.regionenhetupdate;
 
 import java.sql.Timestamp;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -35,7 +36,8 @@ import se.inera.statistics.hsa.model.HsaIdUser;
 public class RegionEnhetUpdate {
 
     @Id
-    private long landstingId;
+    @Column(name = "landstingId")
+    private long regionId;
 
     private String updatedByName;
 
@@ -51,9 +53,9 @@ public class RegionEnhetUpdate {
     private RegionEnhetUpdate() {
     }
 
-    public RegionEnhetUpdate(long landstingId, String updatedByName, HsaIdUser updatedByHsaid, Timestamp timestamp, String filename,
+    public RegionEnhetUpdate(long regionId, String updatedByName, HsaIdUser updatedByHsaid, Timestamp timestamp, String filename,
                              RegionEnhetUpdateOperation operation) {
-        this.landstingId = landstingId;
+        this.regionId = regionId;
         this.updatedByName = updatedByName;
         setUpdatedByHsaid(updatedByHsaid);
         this.timestamp = timestamp;
@@ -61,12 +63,12 @@ public class RegionEnhetUpdate {
         this.operation = operation;
     }
 
-    public long getLandstingId() {
-        return landstingId;
+    public long getRegionId() {
+        return regionId;
     }
 
-    public void setLandstingId(long landstingId) {
-        this.landstingId = landstingId;
+    public void setRegionId(long regionId) {
+        this.regionId = regionId;
     }
 
     public String getUpdatedByName() {

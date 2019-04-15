@@ -21,9 +21,9 @@ Test
 | 19500414-0055 | G01 | 2018-07-02 | 2018-08-01 | enhet3 |
 | 19790717-9191 | G01 | 2018-05-01 | 2018-06-01 | enhet3 |
 
-| script | Rensa uppladdade landstingsfiler |
+| script | Rensa uppladdade regionsfiler |
 
-| Uppladdade landstingsfiler |
+| Uppladdade regionsfiler |
 | användare | filnamn | statusmeddelande? |
 | user3 | vg3lista1.xlsx | Data updated ok |
 
@@ -34,7 +34,7 @@ För vg3 visas inga sjukfall alls då det finns 4 sjukfall för män som har 1 i
 
 Tröskelvärdet appliceras per vårdgivare, kön, månad och grupp.
 
-Landsting:
+Region:
 
 | Sjukfall i rapporten intyg per sjukfall som tvarsnitt |
 | inloggad som | antal intyg | totalt? | män? | kvinnor? |
