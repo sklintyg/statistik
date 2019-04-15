@@ -18,6 +18,11 @@
  */
 package se.inera.statistics.web.service.landsting;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -25,12 +30,8 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import se.inera.statistics.service.processlog.Enhet;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
+import se.inera.statistics.service.processlog.Enhet;
 
 public class LandstingFileWriter {
 
@@ -38,7 +39,7 @@ public class LandstingFileWriter {
 
     public ByteArrayOutputStream generateExcelFile(List<Enhet> enhets) throws LandstingFileGenerationException {
         try {
-            final InputStream stream = LandstingFileWriter.class.getResourceAsStream("/MALL_landstingsstatistik.xlsx");
+            final InputStream stream = LandstingFileWriter.class.getResourceAsStream("/MALL_regionsstatistik.xlsx");
             Workbook workbook = new XSSFWorkbook(stream);
             Sheet sheet = workbook.getSheetAt(0);
             final int startRow = 1;

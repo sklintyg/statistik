@@ -1,7 +1,7 @@
 <div class="container-fluid" id="landsting-upload-agreement-page" data-ng-if="!fileUploadAgreementAccepted">
   <h1>Filuppladdning</h1>
   <p>Denna sida ser du eftersom du har behörighet för hela vårdgivaren {{vgName}}.</p>
-  <p>För att ditt landsting ska kunna använda landstingsstatistiken behöver du (eller någon annan med samma behörighet som du) rapportera in vilka vårdenheter som ingår i landstinget, det inkluderar även privata vårdgivare med landstingsavtal. Detta gör du genom att ladda upp en excel-fil som innehåller namn och HSA-id på de vårdenheter som ska ingå.</p>
+  <p>För att din region ska kunna använda regionsstatistiken behöver du (eller någon annan med samma behörighet som du) rapportera in vilka vårdenheter som ingår i regionen, det inkluderar även privata vårdgivare med regionsavtal. Detta gör du genom att ladda upp en excel-fil som innehåller namn och HSA-id på de vårdenheter som ska ingå.</p>
   <p>Mer utförliga instruktioner för hur du administrerar listan av enheter finns här: <span dynamiclink key="administrationAvLandsting"></span></p>
   <p>För att komma vidare till sidan för filuppladdning behöver du först intyga följande:</p>
 
@@ -9,11 +9,11 @@
     <label for="agreementAcceptedChecked" style="padding-left: 24px;">
       <input type="checkbox" ng-model="agreementAcceptedChecked" id="agreementAcceptedChecked" style="margin-top: 2px; margin-left: -24px" />
 
-      Jag intygar härmed på landstingets vägnar att de <b>privata vårdenheter</b> som anges i min uppladdade fil
+      Jag intygar härmed på regionens vägnar att de <b>privata vårdenheter</b> som anges i min uppladdade fil
       <ul>
-        <li>har avtal med landstinget,</li>
-        <li>har informerats om att landstinget avser att instruera Inera att göra deras statistik tillgänglig för landstinget, och</li>
-        <li>har inte motsatt sig tillgängliggörandet</li>
+        <li>har avtal med regionen,</li>
+        <li>har informerats om att regionen avser att instruera Inera att göra deras statistik tillgänglig för regionen, och</li>
+        <li>har inte motsatt sig tillgängliggörandet.</li>
       </ul>
     </label>
   </div>
@@ -26,7 +26,7 @@
       <div class="row">
         <div class="col-sm-12 col-md-8">
           <h1 style="margin-bottom: 0px;">Filuppladdning</h1>
-          <p>För att rapportera in vilka vårdenheter som ingår i ditt landsting behöver du fullfölja följande steg:</p>
+          <p>För att rapportera in vilka vårdenheter som ingår i din region behöver du fullfölja följande steg:</p>
           <ol>
             <li>Ladda ner en av följande Excel-mallar:
               <ul>
@@ -34,7 +34,7 @@
                 <li><a data-ng-href="{{emptyLandstingFileUrl}}">Tom fil (Excel)</a></li>
               </ul>
             </li>
-            <li>Ange följande för alla de vårdenheter som som ska ingå i landstingsstatistiken:
+            <li>Ange följande för alla de vårdenheter som som ska ingå i regionsstatistiken:
               <ol type="a">
                 <li>Vårdenhetsnamn</li>
                 <li>HSA-id för vårdenhet</li>
@@ -43,10 +43,10 @@
             </li>
             <li>Spara filen på din dator.</li>
             <li>Ladda upp filen här nedanför.</li>
-            <li>Landstingsstatistiken visas nu för de angivna enheterna.</li>
+            <li>Regionsstatistiken visas nu för de angivna enheterna.</li>
           </ol>
 
-          <p>För att uppdatera vilka enheter som ingår i landstingsstatistiken eller enheternas listningar, redigerar du filen och laddar upp den på nytt. Det är alltid informationen i den senast uppladdade filen som gäller.</p>
+          <p>För att uppdatera vilka enheter som ingår i regionsstatistiken eller enheternas listningar, redigerar du filen och laddar upp den på nytt. Det är alltid informationen i den senast uppladdade filen som gäller.</p>
           <p>Mer utförliga instruktioner för hur du administrerar listan av enheter finns här: <span dynamiclink key="administrationAvLandsting"></span></p>
         </div>
       </div>
@@ -68,21 +68,18 @@
               <h5 message key="alert.upload.failed"></h5>
               <h5>{{uploadResultMessage}}</h5>
               <h5>
-                <span message key="info.upload.dropfile.here"></span>
-                <a message key="info.upload.dropfile.here.add"></a>
+                <a message key="info.upload.dropfile.here"></a>
               </h5>
             </div>
 
             <h5 data-ng-if="!uploading && !uploadCompleted">
-              <span message key="info.upload.dropfile.here"></span>
-              <a message key="info.upload.dropfile.here.add"></a>
+              <a message key="info.upload.dropfile.here"></a>
             </h5>
 
             <div data-ng-if="uploadCompleted && uploadSuccess">
               <h5 message key="alert.upload.success"></h5>
               <h5>
-              <span message key="info.upload.dropfile.here"></span>
-              <a message key="info.upload.dropfile.here.add"></a>
+                <a message key="info.upload.dropfile.here"></a>
               </h5>
             </div>
           </div>
@@ -105,11 +102,11 @@
 
   <br/>
   <button class="btn btn-default" confirm-click confirmed-click-action="clearLandstingEnhets()"
-        confirm-message="Rapporter för landstingsstatistik kommer inte vara tillgängliga ifall du rensar. Vill du rensa data?">Rensa data</button>
+        confirm-message="Rapporter för regionsstatistik kommer inte vara tillgängliga ifall du rensar. Vill du verkligen rensa data?">Rensa data</button>
   <br/>
   <div data-ng-show="parsedRows">
     <div>
-      <h2><b>Just nu finns följande information inrapporterad till landstingsstatistiken:</b></h2>
+      <h2><b>Just nu finns följande information inrapporterad till regionsstatistiken:</b></h2>
     </div>
     <div data-ng-repeat="row in parsedRows">{{row}}</div>
   </div>

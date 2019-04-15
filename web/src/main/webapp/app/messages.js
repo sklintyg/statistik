@@ -7,7 +7,7 @@ var stMessages = {
 
         //navigation
         'nav.national-header': 'Nationell statistik',
-        'nav.landsting-header': 'Landstingsstatistik',
+        'nav.landsting-header': 'Regionsstatistik',
         'nav.business-header': 'Verksamhetsstatistik',
 
         'nav.sjukfall-header': 'Sjukfall',
@@ -33,7 +33,7 @@ var stMessages = {
         'nav.allmant-om-tjansten': 'Allmänt om tjänsten',
         'nav.landsting.filuppladdning': 'Filuppladdning',
         'nav.landsting.listningsjamforelse': 'Vårdenhet, listningar',
-        'nav.landsting.om': 'Om landstingsstatistik',
+        'nav.landsting.om': 'Om regionsstatistik',
         'nav.meddelanden': 'Meddelanden, totalt',
         'nav.meddelandenperamne': 'Meddelanden, totalt',
         'nav.meddelandenperamneochenhet': 'Vårdenhet',
@@ -270,8 +270,7 @@ var stMessages = {
         'upload.filetype.error': 'Felaktig filtyp. Formaten som stöds är .xls och .xlsx',
         'alert.upload.failed': 'Uppladdningen misslyckades!',
         'alert.upload.success': 'Uppladdningen lyckades!',
-        'info.upload.dropfile.here': 'Släpp fil här för att ladda upp eller ',
-        'info.upload.dropfile.here.add': 'lägg till',
+        'info.upload.dropfile.here': 'Släpp fil eller klicka här för att ladda upp filen.',
         'info.upload.fallbacktext': 'Din webbläsare stödjer inte filuppladdning via "dra och släpp". Vänligen använd knappen nedan för att ladda upp filen.'
     },
     'en': {

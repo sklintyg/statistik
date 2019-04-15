@@ -38,7 +38,7 @@ angular.module('StatisticsApp').controller('pageCtrl',
                 $scope.viewHeader = 'Verksamhetsstatistik';
             }
             else if ($scope.isLandstingShowing) {
-                $scope.viewHeader = 'Landstingsstatistik';
+                $scope.viewHeader = 'Regionsstatistik';
             }
             else {
                 $scope.viewHeader = 'Nationell statistik';
